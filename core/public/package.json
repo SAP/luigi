@@ -1,0 +1,10 @@
+{
+  "name": "@kyma-project/luigi-core",
+  "version": "0.2.1",
+  "description": "luigi-core",
+  "license": "Apache-2.0",
+  "repository": {
+    "type": "git",
+    "url": "ssh://github.com/kyma-project/luigi.git"
+  }
+}

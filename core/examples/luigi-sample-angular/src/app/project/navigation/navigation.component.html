@@ -1,0 +1,22 @@
+<div class="navigation">
+    <ul>
+        <li
+            *ngFor="let nav of topNavConfig"
+            class="navigationNode"
+            (click)="handleClick(nav.routerLink)"
+        >
+        {{nav.name}}
+        </li>
+    </ul>
+</div>
+<div class="leftNavigation">
+    <ul>
+        <li
+            *ngFor="let nav of leftNavConfig"
+            class="navigationNode"
+            (click)="handleClick(nav.routerLink)"
+        >
+        {{nav.name}}
+        </li>
+    </ul>
+</div>

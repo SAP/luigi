@@ -1,0 +1,38 @@
+.navigation {
+    position: fixed;
+    height: 52px;
+    width: 100%;
+    background-color: gray;
+    > ul {
+        list-style: none;
+        padding: 0 10px;
+        > li {
+            padding: 0 10px;
+            float: left;
+        }
+    }
+}
+
+.navigationNode {
+    padding: 0;
+    margin: 0;
+    position: relative;
+    cursor: pointer;
+    text-decoration: none;
+}
+
+body{
+    padding:0;
+}
+
+.leftNavigation {
+    position: fixed;
+    top: 52px;
+    left: 0;
+    width: 320px;
+    height: 100%;
+    background-color: lightgray;
+    > ul {
+        list-style: none;
+    }
+}

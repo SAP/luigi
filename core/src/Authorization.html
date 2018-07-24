@@ -1,0 +1,158 @@
+{#if authorizationEnabled && !isLoggedIn}
+<button class=" fd-button--secondary fd-button--m fd-global-nav__btn"
+              aria-label="Login" on:click=startAuthorization()><span class=" fd-identifier--s fd-identifier--circle ">Login</span></button>
+{/if}
+{#if authorizationEnabled && isLoggedIn}
+  <button class=" fd-button--secondary fd-button--m fd-global-nav__btn"
+                aria-label="Login" on:click=logout()><span class=" fd-identifier--s fd-identifier--circle ">Logout</span></button>
+{/if}
+<span id="authorization"></span>
+
+<script type="text/javascript">
+  import { getConfigValueAsync, getConfigValue, getConfigValueFromObject } from './services/config.js';
+  import { isFunction, deepMerge } from './utilities/helpers.js';
+  import { oAuth2ImplicitGrant } from './providers/auth/oAuth2ImplicitGrant.js';
+  import { openIdConnect } from './providers/auth/openIdConnect.js';
+
+  let authorizationEnabled = false;
+  let isLoggedIn = false;
+  let settings;
+  let idpProviderInstance;
+
+  const standardProviders = {
+    oAuth2ImplicitGrant,
+    openIdConnect
+  };
+
+  const getStoredAuthData = () =>  JSON.parse(localStorage.getItem('luigi.auth'));
+
+  const isAuthValid = () => getStoredAuthData().accessTokenExpirationDate > Number(new Date());
+
+  const IdpProviderException = (message) => {
+    this.message = message;
+    this.name = 'IdpProviderException';
+  }
+
+  const getIdpProviderInstance = (idpProviderName, idpProviderSettings) => {
+    if (isFunction(standardProviders[idpProviderName])) {
+      return new standardProviders[idpProviderName](idpProviderSettings);
+    }
+
+    // custom provided provider provided via config: 
+    const customIdpProvider = getConfigValueFromObject(idpProviderSettings, 'customIdpProvider');
+    if (customIdpProvider) {
+      ['login', 'logout'].forEach((requiredFnName) => {
+        if(!isFunction(customIdpProvider[requiredFnName])) {
+          throw new IdpProviderException(`${requiredFnName} function does not exist in custom IDP Provider ${idpProviderName}`);
+        }
+      });
+      
+      return new customIdpProvider(idpProviderSettings);
+    }
+
+    throw new IdpProviderException(`IDP Provider ${idpProviderName} does not exist.`);
+  };
+
+  export default {
+    oncreate() {
+      const idpProviderName = getConfigValue('auth.use');
+      const idpProviderSettings = getConfigValue(`auth.${idpProviderName}`);
+      authorizationEnabled = !!idpProviderSettings;
+      this.set({
+        authorizationEnabled
+      });
+
+      if (!authorizationEnabled) {
+        return;
+      }
+
+      idpProviderInstance = getIdpProviderInstance(idpProviderName, idpProviderSettings);
+
+      const authData = getStoredAuthData();
+      if (!authData) {
+        return;
+      }
+      this.set({
+        isLoggedIn: isAuthValid(),
+        logoutUrl: idpProviderInstance.settings.logoutUrl
+      });
+
+      // TODO: Re-auth via id_token if not logged in
+      // TODO: Check periodically if authorization is still valid
+      // const onAuthExpiredFn = getConfigValue('auth.events.onAuthExpired');
+    },
+    onstate({ changed, current, previous }) {
+      const onLogoutFn = getConfigValue('auth.events.onLogout');
+      const onAuthSuccessfulFn = getConfigValue('auth.events.onAuthSuccessful');
+
+      if (onLogoutFn && previous && previous.isLoggedIn && !current.isLoggedIn) { onLogoutFn(); }
+      if (onAuthSuccessfulFn && (!previous || !previous.isLoggedIn) && current.isLoggedIn) {
+        const authData = getStoredAuthData();
+        onAuthSuccessfulFn(authData); 
+      }
+    },
+    methods: {
+        startAuthorization: function() { idpProviderInstance.login(); },
+        logout: function() {
+          const authData = getStoredAuthData();
+
+          const logoutCallback = () => {
+            this.set({
+              isLoggedIn: false
+            });
+            localStorage.removeItem('luigi.auth');
+          }
+
+          const customLogoutFn = getConfigValue(`auth.${getConfigValue('auth.use')}.logoutFn`);
+          if (isFunction(customLogoutFn)) {
+              return customLogoutFn(idpProviderInstance.settings, authData, logoutCallback);
+          } 
+
+          if (isFunction(idpProviderInstance.logout)) {
+            return idpProviderInstance.logout(authData, logoutCallback);
+          } 
+
+          window.location.href = idpProviderInstance.settings.logoutUrl;
+          return logoutCallback();
+        },
+    },
+    components: {},
+    // store: () => store
+  };
+</script>
+
+
+<style type="text/scss">
+
+
+@import 'node_modules/fundamental-ui/scss/icons';
+@import 'node_modules/fundamental-ui/scss/core';
+@import 'node_modules/fundamental-ui/scss/components/button';
+@import 'node_modules/fundamental-ui/scss/components/dropdown';
+@import 'node_modules/fundamental-ui/scss/components/global-nav';
+@import 'node_modules/fundamental-ui/scss/components/side-nav';
+@import 'node_modules/fundamental-ui/scss/helpers';
+
+.fd-ui__header {
+    position: fixed;
+    z-index: 1;
+    background: #ffffff;
+    width: 100%;
+    min-height: 50px;
+    height: 50px;
+    border-bottom: solid 1px #dededf;
+    padding: 0 10px;
+}
+
+.fd-global-nav__product-name {
+    color: #0a6ed1;
+    height: 50px;
+    font-size: 24px;
+    line-height: 1em;
+    padding: 13px 0;
+}
+ 
+.hideNavComponent {
+    display: none;
+}
+</style>

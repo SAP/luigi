@@ -1,0 +1,21 @@
+<div  *ngIf="modalActive" class="fd-ui__overlay fd-overlay fd-overlay--modal" aria-hidden="false">
+  <div class="fd-modal" role="dialog">
+    <div class="fd-modal__content" role="document">
+      <header class="fd-modal__header">
+        <h1 class="fd-modal__title">Modal Header</h1>
+        <button (click)="onCloseModalClick()" class=" fd-button--secondary fd-modal__close"></button>
+      </header>
+      <div class="fd-modal__body">
+        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna
+          aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+          Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.</p>
+      </div>
+      <footer class="fd-modal__footer">
+        <div class="fd-modal__actions">
+          <button (click)="onCloseModalClick()" class=" fd-button--secondary">Cancel</button>
+          <button (click)="onCloseModalClick()" class=" fd-button--primary">Confirm</button>
+        </div>
+      </footer>
+    </div>
+  </div>
+</div>

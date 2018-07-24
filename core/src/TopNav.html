@@ -1,0 +1,110 @@
+
+<div class="fd-ui__header {hideNavComponent ? 'hideNavComponent' : ''}">
+  <Backdrop />
+  <nav class="fd-global-nav">
+    <div class="fd-global-nav__group fd-global-nav__group--left">
+      <div class="fd-global-nav__logo fd-has-margin-left-none"></div>
+      <div class="fd-global-nav__product-name">
+        <a href="/">LUIGI</a>
+      </div>
+    </div>
+    <div class="fd-global-nav__group fd-global-nav__group--right">
+      <div class="fd-global-nav__actions">
+        {#if children && pathData.length > 0}
+          {#each children as node}
+            {#if !node.hideFromNav}
+              <button class=" fd-button--secondary fd-button--m fd-global-nav__btn {node === selectedNode ? 'is-selected' : ''}"
+              aria-label="{node.label}" on:click=handleClick(node)><span class=" fd-identifier--s fd-identifier--circle ">{node.label}</span></button>
+            {/if}
+          {/each}
+        {/if}
+        <Authorization />
+      </div>
+    </div>
+  </nav>
+</div>
+
+<script type="text/javascript">
+    import Backdrop from './Backdrop.html';
+    import Authorization from './Authorization.html';
+    import { handleRouteClick } from './services/routing.js';
+    import { getConfigValue } from './services/config.js';
+
+    const setTopNavData = (current, component) => {
+        if (current.pathData && 0 < current.pathData.length) {
+            const children = current.pathData[0].children;
+            var selectedNode = null;
+            children.map((node) => {
+                current.pathData.forEach(n => {
+                   if (!selectedNode && n === node) {
+                       selectedNode = node;
+                   }
+                });
+            });
+            component.set({
+                children: children,
+                selectedNode: selectedNode
+            });
+            window.TOPNAVDATA = children;
+        }
+    };
+
+    export default {
+        oncreate() {
+            this.set({
+                hideNavComponent: getConfigValue('navigation.hideNav')
+            });
+        },
+        onstate({ changed, current, previous }) {
+            if (!previous || previous.pathData != current.pathData) {
+                setTopNavData(current, this);
+            }
+        },
+        methods: {
+            handleClick: (node) => handleRouteClick(node)
+        },
+        components: {
+            Backdrop,
+            Authorization
+        }
+    };
+</script>
+
+<style type="text/scss">
+
+
+@import 'node_modules/fundamental-ui/scss/icons';
+@import 'node_modules/fundamental-ui/scss/core';
+@import 'node_modules/fundamental-ui/scss/components/button';
+@import 'node_modules/fundamental-ui/scss/components/dropdown';
+@import 'node_modules/fundamental-ui/scss/components/global-nav';
+@import 'node_modules/fundamental-ui/scss/components/side-nav';
+@import 'node_modules/fundamental-ui/scss/helpers';
+
+.fd-ui__header {
+    position: fixed;
+    z-index: 1;
+    background: #ffffff;
+    width: 100%;
+    min-height: 50px;
+    height: 50px;
+    border-bottom: solid 1px #dededf;
+    padding: 0 10px;
+}
+
+.backdrop {
+  height: 50px;
+}
+
+.fd-global-nav__product-name {
+    color: #0a6ed1;
+    height: 50px;
+    font-size: 24px;
+    line-height: 1em;
+    padding: 13px 0;
+}
+ 
+.hideNavComponent {
+    display: none;
+}
+</style>

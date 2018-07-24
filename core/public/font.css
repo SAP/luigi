@@ -1,0 +1,32 @@
+@font-face {
+    font-family: '72';
+    src: url('fonts/72-Light.eot');
+    src: url('fonts/72-Light.eot?') format('embedded-opentype'),
+      url('fonts/72-Light.woff2') format('woff2'),
+      url('fonts/72-Light.woff') format('woff'),
+      url('fonts/72-Light.ttf') format('truetype');
+    font-style: normal;
+    font-weight: 200;
+}
+
+@font-face {
+  font-family: '72';
+  src: url('fonts/72-Regular.eot');
+  src: url('fonts/72-Regular.eot?') format('embedded-opentype'),
+    url('fonts/72-Regular.woff2') format('woff2'),
+    url('fonts/72-Regular.woff') format('woff'),
+    url('fonts/72-Regular.ttf') format('truetype');
+  font-style: normal;
+  font-weight: 400;
+}
+
+@font-face {
+  font-family: '72';
+  src: url('fonts/72-Bold.eot');
+  src: url('fonts/72-Bold.eot?') format('embedded-opentype'),
+    url('fonts/72-Bold.woff2') format('woff2'),
+    url('fonts/72-Bold.woff') format('woff'),
+    url('fonts/72-Bold.ttf') format('truetype');
+  font-style: normal;
+  font-weight: 600;
+}

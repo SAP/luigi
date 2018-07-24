@@ -1,0 +1,10 @@
+{
+  "lerna": "2.11.0",
+  "packages": [
+    "client",
+    "core",
+    "core/public",
+    "core/examples/luigi-sample-angular"
+  ],
+  "version": "0.0.0"
+}

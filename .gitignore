@@ -1,0 +1,6 @@
+# npm
+node_modules
+
+# IDEs
+.idea
+.angulardoc.json
