@@ -10,13 +10,50 @@ const getViewUrl = pathData => {
   return lastElement ? lastElement.viewUrl : '';
 };
 
+const hideElementChildren = (node) => {
+  if (node.children) {
+    Array.from(node.children).forEach((child) => {
+      child.style.display = 'none';
+    });
+  }
+};
+
+export const getActiveIframe = (node) => {
+  return node.firstChild;
+};
+
+export const setPreviousActiveIframe = (node) => {
+  hideElementChildren(node);
+  const children = Array.from(node.children);
+  children.forEach((child, index) => {
+    // fallback if this is executed but just one iframe there
+    if (children.length === 1 || index === 1) {
+      child.style.display = 'block';
+    }
+    if (children.length > 1) {
+      if (index === 0) {
+        node.removeChild(child);
+      }
+    }
+  });
+};
+
+export const removeInactiveIframes = (node) => {
+  const children = Array.from(node.children);
+  children.forEach((child, index) => {
+    if (index > 0) {
+      node.removeChild(child);
+    }
+  });
+};
+
 const removeElementChildren = node => {
   while (node.firstChild) {
     node.removeChild(node.firstChild);
   }
 };
 
-const isNotSameDomain = (config, component) => {
+export const isNotSameDomain = (config, component) => {
   if (config.iframe) {
     const previousUrl = getUrlWithoutHash(config.iframe.src);
     const nextUrl = getUrlWithoutHash(component.get().viewUrl);
@@ -26,16 +63,22 @@ const isNotSameDomain = (config, component) => {
 };
 
 const navigateIframe = (config, component, node) => {
+  // debugger;
   clearTimeout(timeoutHandle);
   if (isNotSameDomain(config, component) || config.builderCompatibilityMode) {
     const componentData = component.get();
-    removeElementChildren(node);
+    // preserveView, hide other frames, else remove
+    if (config.iframe === null) {
+      hideElementChildren(node);
+    } else {
+      removeElementChildren(node);
+    }
 
     if (componentData.viewUrl) {
       config.iframe = document.createElement('iframe');
       config.iframe.src = componentData.viewUrl;
 
-      node.appendChild(config.iframe);
+      node.prepend(config.iframe);
 
       if (config.builderCompatibilityMode) {
         config.iframe.addEventListener('load', () => {
@@ -47,11 +90,13 @@ const navigateIframe = (config, component, node) => {
       }
     }
   } else {
+    config.iframe.style.display = 'block';
     config.iframe.contentWindow.postMessage(
       {
         msg: 'luigi.navigate',
         viewUrl: component.get().viewUrl,
-        context: JSON.stringify(component.get().context)
+        context: JSON.stringify(component.get().context),
+        internal: JSON.stringify(component.prepareInternalData())
       },
       '*'
     );
@@ -151,6 +196,13 @@ export const matchPath = async path => {
   return null;
 };
 
+/**
+  navigateTo used for navigation
+  @param route string  absolute path of the new route
+  @param options object  navi options, eg preserveView
+  @param windowElem object  defaults to window
+  @param documentElem object  defaults to document
+ */
 export const navigateTo = (
   route,
   windowElem = window,
@@ -158,7 +210,6 @@ export const navigateTo = (
 ) => {
   const event = documentElem.createEvent('Event');
   event.initEvent('popstate', true, true);
-
   if (windowElem.isHashRoute) {
     return (windowElem.location.hash = route);
   }

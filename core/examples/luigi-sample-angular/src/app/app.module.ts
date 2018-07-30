@@ -1,6 +1,7 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-import { LocationStrategy, HashLocationStrategy } from '@angular/common';
+import { FormsModule } from '@angular/forms';
+
 import { AppComponent } from './app.component';
 import { ProjectComponent } from './project/project.component';
 import { UsersComponent } from './project/users/users.component';
@@ -16,6 +17,7 @@ import { Miscellaneous2Component } from './project/miscellaneous2/miscellaneous2
 import { NavigationComponent } from './project/navigation/navigation.component';
 import { ModalComponent } from './project/modal/modal.component';
 import { CodeSnippetComponent } from './project/code-snippet/code-snippet.component';
+
 
 @NgModule({
   declarations: [
@@ -34,8 +36,8 @@ import { CodeSnippetComponent } from './project/code-snippet/code-snippet.compon
     ModalComponent,
     CodeSnippetComponent
   ],
-  imports: [BrowserModule, AppRoutingModule],
+  imports: [BrowserModule, FormsModule, AppRoutingModule],
   providers: [],
   bootstrap: [AppComponent]
 })
-export class AppModule {}
+export class AppModule { }

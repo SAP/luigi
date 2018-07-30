@@ -1,3 +1,19 @@
 <p>
   settings of {{projectId}} works!
 </p>
+
+<div class="testSection">
+  LuigiClient hasBack/GoBack test:<br>
+
+  <div *ngIf="hasBack">
+    <a href="javascript:void(0)" (click)="goBack()">go back (with context: {{callbackValue}})</a>
+    <p>
+      <label>Modify goBack callback value: <br />
+      <input type="text" [(ngModel)]="callbackValue" /></label>
+    </p>
+  </div>
+  <div *ngIf="!hasBack">
+    <a href="javascript:void(0)" (click)="luigiClient.linkManager().navigate('/projects/pr2')">No go back state available, click here</a>
+    to go to project two, where you can enter such a state
+  </div>
+</div>

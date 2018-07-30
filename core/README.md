@@ -24,21 +24,7 @@ Go to the `{luigi-core-root-folder}` folder and run the following command:
 
 `npm run-script bundle-develop && cp -r ./public/ {PATH_TO_SAMPLEAPP}/node_modules/luigi-core/`
 
-**Build and watch approach**
-
-Follow these steps:
-
-1. Go to `cd {luigi-core-root-folder}`.
-2. Go to `cd public` and run `npm link` once. It links `luigi-core` to the global `node_modules`.
-3. Run `npm run bundle -- --watch`. It builds and updates on change.
-4. Navigate to `cd {app-folder}/node_modules`.
-5. Remove or move the `luigi-core` and `luigi-client` folders.
-6. Run `npm link luigi-core`. This links `luigi-core` to the global `node_modules`.
-7. The autoreload of your application only updates the application. Select the CMD + R key combination to reflect the changes of the linked module on the website.
-
-Follow the same steps to apply changes in the `luigi-client` module.
-
-**Build with Lerna**
+**Link and build with Lerna**
 
 This mono repository uses [Lerna](https://lernajs.io/) for project management. Check that Lerna is installed. If not, run `npm install --global lerna`
 
@@ -54,7 +40,24 @@ lerna bootstrap
 The `lerna run` command runs the given script in every package referenced in the `lerna.json` file.
 ```bash
 lerna run bundle
+// or with watch mode:
+lerna run bundle-develop
 ```
+
+
+**Link manually and build**
+
+Follow these steps:
+
+1. Go to `cd {luigi-core-root-folder}`.
+2. Go to `cd public` and run `npm link` once. It links `@kyma-project/luigi-core` to the global `node_modules`.
+3. Run `npm run bundle -- --watch`. It builds and updates on change.
+4. Navigate to `cd {app-folder}/node_modules`.
+5. Remove or move the `@kyma-project/luigi-core` and `@kyma-project/luigi-client` folders.
+6. Run `npm link luigi-core`. This links `@kyma-project/luigi-core` to the global `node_modules`.
+7. The autoreload of your application only updates the application. Select the CMD + R key combination to reflect the changes of the linked module on the website.
+
+Follow the same steps to apply changes in the `@kyma-project/luigi-client` module.
 
 ### Run tests
 

@@ -12,29 +12,24 @@ export class ProjectComponent implements OnInit {
   public projectId: string;
   public luigiClient: LuigiClient;
   public modalActive = false;
+  public preservedViewCallbackContext: any;
 
   public constructor(private activatedRoute: ActivatedRoute) {
     LuigiClient.addInitListener(() => {
       const eventData = LuigiClient.getEventData();
       this.projectId = eventData.currentProject;
+      this.preservedViewCallbackContext = eventData.context;
       console.info('project ID as luigi param: ' + eventData.currentProject);
     });
 
-    // Available luigi-client newer than 0.0.9
-    if (typeof LuigiClient.addContextUpdateListener === 'function') {
-      LuigiClient.addContextUpdateListener(() => {
-        const eventData = LuigiClient.getEventData();
-        this.projectId = eventData.currentProject;
-        console.info(
-          'context update: project ID as luigi param: ' +
-            eventData.currentProject
-        );
-      });
-    } else {
+    LuigiClient.addContextUpdateListener(() => {
+      const eventData = LuigiClient.getEventData();
+      this.projectId = eventData.currentProject;
       console.info(
-        'luigiClient.addContextUpdateListener does not exist, consider upgrading luigi-client!'
+        'context update: project ID as luigi param: ' +
+        eventData.currentProject
       );
-    }
+    });
   }
 
   public ngOnInit() {

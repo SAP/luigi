@@ -4,6 +4,7 @@ const assert = chai.assert;
 const sinon = require('sinon');
 const MockBrowser = require('mock-browser').mocks.MockBrowser;
 const routing = require('../src/services/routing');
+import { deepMerge } from '../src/utilities/helpers.js';
 
 describe('Routing', () => {
   describe('#handleRouteChange()', () => {
@@ -19,10 +20,16 @@ describe('Routing', () => {
                 pathSegment: 'a1',
                 context: {
                   varA1: 'maskopatol'
+                },
+                style: {
+                  display: null
                 }
               },
               {
-                pathSegment: 'a2'
+                pathSegment: 'a2',
+                style: {
+                  display: null
+                }
               }
             ],
             context: {
@@ -41,6 +48,8 @@ describe('Routing', () => {
       const window = mockBrowser.getWindow();
       global.window = window;
       const document = mockBrowser.getDocument();
+      global.document = document;
+
       const component = {
         set: obj => {
           component.get = () => obj;
@@ -56,16 +65,22 @@ describe('Routing', () => {
             pathSegment: 'a1',
             context: {
               varA1: 'maskopatol'
+            },
+            style: {
+              display: null
             }
           },
           {
-            pathSegment: 'a2'
+            pathSegment: 'a2',
+            style: {
+              display: null
+            }
           }
         ],
         context: {
           varA: 'tets'
         },
-        appendChild: sinon.spy()
+        prepend: sinon.spy()
       };
 
       const config = {
@@ -77,7 +92,7 @@ describe('Routing', () => {
       // when
       window.LuigiConfig = sampleLuigiConfig;
       window.LuigiConfig.navigation.hideNav = false;
-      document.createElement = sinon.spy();
+      sinon.stub(document, 'createElement').callsFake(() => ({ src: null }));
       await routing.handleRouteChange(path, component, node, config, window);
 
       // then
@@ -90,19 +105,26 @@ describe('Routing', () => {
 
     it('should set component data without hash path', async () => {
       // given
-      const path = '/projects';
+      const path = '#/projects';
       const expectedViewUrl = '/aaa.html';
       const mockBrowser = new MockBrowser();
       const window = mockBrowser.getWindow();
+      global.window = window;
       const document = mockBrowser.getDocument();
+      global.document = document;
+
+      let savedObj = {};
       const component = {
         set: obj => {
-          component.get = () => obj;
+          savedObj = deepMerge(savedObj, obj);
+          component.get = () => {
+            return savedObj;
+          };
         }
       };
 
       const node = {
-        pathSegment: '/projects',
+        pathSegment: '#/projects',
         label: 'AAA',
         viewUrl: '/aaa.html',
         children: [
@@ -110,16 +132,22 @@ describe('Routing', () => {
             pathSegment: 'a1',
             context: {
               varA1: 'maskopatol'
+            },
+            style: {
+              display: null
             }
           },
           {
-            pathSegment: 'a2'
+            pathSegment: 'a2',
+            style: {
+              display: null
+            }
           }
         ],
         context: {
           varA: 'tets'
         },
-        appendChild: sinon.spy()
+        prepend: sinon.spy()
       };
 
       const config = {
@@ -127,11 +155,23 @@ describe('Routing', () => {
         builderCompatibilityMode: false,
         navigateOk: null
       };
+      const preservedViews = [
+        {
+          path: 'sample.html#!/one',
+          nextPath: 'sample.html#!/two',
+          context: {}
+        }
+      ];
+      component.set({ preservedViews });
 
       // when
       window.LuigiConfig = sampleLuigiConfig;
       window.LuigiConfig.navigation.hideNav = false;
-      document.createElement = sinon.spy();
+      const docMock = sinon.mock(document);
+      docMock.expects('createElement')
+        .returns({ src: null })
+        .once();
+
       await routing.handleRouteChange(path, component, node, config, window);
 
       // then
@@ -140,8 +180,16 @@ describe('Routing', () => {
         component.get().hideNav,
         window.LuigiConfig.navigation.hideNav
       );
+
+      assert.equal(
+        component.get().preservedViews.length,
+        1
+      );
+      docMock.restore();
+      docMock.verify();
     });
   });
+
 
   describe('#handleRouteClick()', () => {
     const nodeWithParent = {
@@ -252,6 +300,98 @@ describe('Routing', () => {
 
       assert.equal(singleStateWithPath.path, expectedRoute);
       assert.equal(dispatchCallsNum + 1, expectedDispatchCallsNum);
+    });
+  });
+
+  describe('Unit tests', () => {
+    describe('setPreviousActiveIframe', () => {
+      it('standard', () => {
+        const removeChild = sinon.spy();
+        let node = {
+          removeChild: sinon.spy(),
+          children: [
+            {
+              style: {
+                display: null
+              }
+            }
+          ]
+        };
+
+        routing.setPreviousActiveIframe(node);
+
+        assert.equal(node.children[0].style.display, 'block');
+        assert.equal(node.children.length, 1);
+      });
+
+      it('goBack', () => {
+        let node = {
+          removeChild: sinon.spy(),
+          children: [
+            {
+              style: {
+                display: null
+              }
+            },
+            {
+              style: {
+                display: null
+              }
+            }
+          ]
+        };
+
+        routing.setPreviousActiveIframe(node);
+
+        assert.equal(node.children[0].style.display, 'none');
+        assert.equal(node.children[1].style.display, 'block');
+        assert.isTrue(node.removeChild.calledWith(node.children[0]));
+      });
+    });
+
+    it('removeInactiveIframes', () => {
+      let node = {
+        removeChild: sinon.spy(),
+        children: [
+          {
+            style: {
+              display: null
+            }
+          },
+          {
+            style: {
+              display: null
+            }
+          },
+          {
+            style: {
+              display: null
+            }
+          }
+        ]
+      };
+
+      routing.removeInactiveIframes(node);
+
+      assert.equal(node.removeChild.callCount, 2);
+    });
+
+    it('isNotSameDomain', () => {
+      const component = {
+        set: obj => {
+          component.get = () => obj;
+        }
+      };
+      const config = {
+        iframe: {
+          src: 'http://url.com/app.html!#/prevUrl'
+        }
+      };
+      component.set({ viewUrl: 'http://url.com/app.html!#/someUrl' });
+      assert.isFalse(routing.isNotSameDomain(config, component));
+
+      component.set({ viewUrl: 'http://otherurl.de/app.html!#/someUrl' });
+      assert.isTrue(routing.isNotSameDomain(config, component));
     });
   });
 });
