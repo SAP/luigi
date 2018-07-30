@@ -1,5 +1,11 @@
 var client = (function () {
+
+
+
   var eventData = {};
+
+
+  
   var Luigi = {};
   var _contextUpdated;
 
