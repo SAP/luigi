@@ -1,4 +1,6 @@
 # Luigi
+[![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2Fkyma-project%2Fluigi.svg?type=shield)](https://app.fossa.io/projects/git%2Bgithub.com%2Fkyma-project%2Fluigi?ref=badge_shield)
+
 
 ## Overview
 
@@ -40,3 +42,7 @@ lerna run bundle
 
 ### Code formatting rules
 All projects in the repository use [Prettier](https://prettier.io) to format source code. Run `npm install` in the root folder to install it along with [husky](https://github.com/typicode/husky), the Git hooks manager. Both tools ensure proper codebase formatting before committing it.
+
+
+## License
+[![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2Fkyma-project%2Fluigi.svg?type=large)](https://app.fossa.io/projects/git%2Bgithub.com%2Fkyma-project%2Fluigi?ref=badge_large)
