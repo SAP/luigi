@@ -16,16 +16,18 @@ Build and deploy the project using one of the following approaches:
 
 Go to the `{luigi-core-root-folder}` folder and run the following command:
 
-`npm run-script bundle && cp -r ./public/ {PATH_TO_SAMPLEAPP}/node_modules/luigi-core/`
+`npm run-script bundle && cp -r ./public/ {PATH_TO_SAMPLEAPP}/node_modules/@kyma-project/luigi-core/`
 
-**Build and deploy in the development mode**
+**Build and deploy in development mode**
 
+For non-minified sources, use this one.
 Go to the `{luigi-core-root-folder}` folder and run the following command:
 
-`npm run-script bundle-develop && cp -r ./public/ {PATH_TO_SAMPLEAPP}/node_modules/luigi-core/`
+`npm run-script bundle-develop && cp -r ./public/ {PATH_TO_SAMPLEAPP}/node_modules/@kyma-project/luigi-core/`
 
 **Link and build with Lerna**
 
+Preferred way for developing.
 This mono repository uses [Lerna](https://lernajs.io/) for project management. Check that Lerna is installed. If not, run `npm install --global lerna`
 
 Follow these steps:
@@ -40,14 +42,14 @@ lerna bootstrap
 The `lerna run` command runs the given script in every package referenced in the `lerna.json` file.
 ```bash
 lerna run bundle
-// or with watch mode:
+// or non-minified and watcher:
 lerna run bundle-develop
 ```
 
-
 **Link manually and build**
 
-Follow these steps:
+If you do not want to use lerna.
+To manually link local modules, follow these steps:
 
 1. Go to `cd {luigi-core-root-folder}`.
 2. Go to `cd public` and run `npm link` once. It links `@kyma-project/luigi-core` to the global `node_modules`.
