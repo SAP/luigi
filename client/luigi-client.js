@@ -1,11 +1,6 @@
-var client = (function () {
-
-
-
+var client = (function() {
   var eventData = {};
 
-
-  
   var Luigi = {};
   var _contextUpdated;
 
@@ -35,7 +30,7 @@ var client = (function () {
     }
   }
 
-  window.addEventListener('message', function (e) {
+  window.addEventListener('message', function(e) {
     if ('luigi.init' === e.data.msg) {
       setContext(e.data.context);
       Luigi.initialized = true;
@@ -58,7 +53,7 @@ var client = (function () {
      * Adds a listener that will react once Luigi is initialized.
      * @param {function} initFn - a function that will be called once Luigi is initialized
      */
-    addInitListener: function (initFn) {
+    addInitListener: function(initFn) {
       window._init = initFn;
       if (Luigi.initialized && window._init) {
         window._init();
@@ -68,7 +63,7 @@ var client = (function () {
      * Use it to get Luigi context changes
      * @param contextUpdatedFn a function that will be called every time Luigi context was changed
      */
-    addContextUpdateListener: function (contextUpdatedFn) {
+    addContextUpdateListener: function(contextUpdatedFn) {
       _contextUpdated = contextUpdatedFn;
       if (Luigi.initialized && _contextUpdated) {
         _contextUpdated();
@@ -80,19 +75,23 @@ var client = (function () {
      * sessionId
      * currentEnvironmentId
      */
-    getEventData: function () {
+    getEventData: function() {
       return eventData;
     },
     /**
      * Lets you navigate to another route.
      */
-    linkManager: function () {
-      var _navigate = function (sessionId, path, contextParams) {
+    linkManager: function() {
+      var _navigate = function(sessionId, path, contextParams) {
         var relativePath = path[0] !== '/';
         var navigation = {
           msg: 'luigi.navigation.open',
           sessionId: sessionId,
-          params: Object.assign({ link: path }, { relative: relativePath }, contextParams)
+          params: Object.assign(
+            { link: path },
+            { relative: relativePath },
+            contextParams
+          )
         };
         window.parent.postMessage(navigation, '*');
       };
@@ -103,7 +102,7 @@ var client = (function () {
          * @param path path to be navigated to
          * @param sessionId current Luigi sessionId
          */
-        navigate: function (path, sessionId) {
+        navigate: function(path, sessionId) {
           _navigate(sessionId, path);
         },
 
@@ -116,7 +115,7 @@ var client = (function () {
             console.error(
               `Navigation not possible, navigationContext '${navigationContext}' not found.`
             );
-            return { navigate: () => { } };
+            return { navigate: () => {} };
           }
           return {
             /**
@@ -125,7 +124,7 @@ var client = (function () {
              * @param sessionId current Luigi sessionId
              */
             navigate: (path, sessionId) => {
-              _navigate(sessionId, path, {fromContext: navigationContext});
+              _navigate(sessionId, path, { fromContext: navigationContext });
             }
           };
         },
@@ -140,7 +139,7 @@ var client = (function () {
             console.error(
               'Navigation not possible, no parent navigationContext found.'
             );
-            return { navigate: () => { } };
+            return { navigate: () => {} };
           }
 
           return {
@@ -159,21 +158,21 @@ var client = (function () {
     /**
      * Lets you manage UX specific options.
      */
-    uxManager: function () {
+    uxManager: function() {
       return {
         /**
          * Adds a backdrop for core to block the UI
          */
-        addBackdrop: function () {
+        addBackdrop: function() {
           window.parent.postMessage({ msg: 'luigi.add-backdrop' }, '*');
         },
         /**
          * Removes the backdrop
          */
-        removeBackdrop: function () {
+        removeBackdrop: function() {
           window.parent.postMessage({ msg: 'luigi.remove-backdrop' }, '*');
         }
-      }
+      };
     }
   };
 })();
