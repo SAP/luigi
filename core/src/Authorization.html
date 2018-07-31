@@ -92,7 +92,13 @@
       }
     },
     methods: {
-        startAuthorization: function() { idpProviderInstance.login(); },
+        startAuthorization: function() { 
+          idpProviderInstance.login().then((res) => {
+            if(res) {
+              alert(res);
+            }
+          });
+        },
         logout: function() {
           const authData = getStoredAuthData();
 
