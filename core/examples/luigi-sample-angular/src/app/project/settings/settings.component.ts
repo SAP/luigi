@@ -13,7 +13,10 @@ export class SettingsComponent implements OnInit {
   hasBack: boolean;
   callbackValue: string = 'default value';
 
-  constructor(private activatedRoute: ActivatedRoute, private cdr: ChangeDetectorRef) { }
+  constructor(
+    private activatedRoute: ActivatedRoute,
+    private cdr: ChangeDetectorRef
+  ) {}
 
   ngOnInit() {
     this.activatedRoute.params.subscribe((params: Params) => {
@@ -29,7 +32,7 @@ export class SettingsComponent implements OnInit {
   goBack() {
     // going back with some sample callback context,
     // that will be handed over to previous view
-    // this.luigiClient.linkManager().goBack(function() { return this.callbackValue; }.bind(this));
-    this.luigiClient.linkManager().goBack({ foo: 'bar' });
+    console.log('going back with context:', this.callbackValue);
+    this.luigiClient.linkManager().goBack(this.callbackValue);
   }
 }

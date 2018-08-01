@@ -15,19 +15,21 @@ export class ProjectComponent implements OnInit {
   public preservedViewCallbackContext: any;
 
   public constructor(private activatedRoute: ActivatedRoute) {
-    LuigiClient.addInitListener(() => {
-      const eventData = LuigiClient.getEventData();
-      this.projectId = eventData.currentProject;
-      this.preservedViewCallbackContext = eventData.context;
-      console.info('project ID as luigi param: ' + eventData.currentProject);
+    LuigiClient.addInitListener(initialContext => {
+      this.projectId = initialContext.currentProject;
+      console.info(
+        'project ID as luigi param: ' + initialContext.currentProject
+      );
     });
 
-    LuigiClient.addContextUpdateListener(() => {
-      const eventData = LuigiClient.getEventData();
-      this.projectId = eventData.currentProject;
+    LuigiClient.addContextUpdateListener(updatedContext => {
+      this.projectId = updatedContext.currentProject;
+      this.preservedViewCallbackContext = updatedContext.goBackContext;
       console.info(
         'context update: project ID as luigi param: ' +
-        eventData.currentProject
+          updatedContext.currentProject,
+        'goBackContext?',
+        this.preservedViewCallbackContext
       );
     });
   }

@@ -3,17 +3,17 @@
 </p>
 
 <div class="testSection">
-  LuigiClient hasBack/GoBack test:<br>
+  LuigiClient hasBack/GoBack:<br>
 
   <div *ngIf="hasBack">
-    <a href="javascript:void(0)" (click)="goBack()">go back (with context: {{callbackValue}})</a>
+    <a href="javascript:void(0)" (click)="goBack()">click here</a> to go back (with context: {{callbackValue}})
     <p>
       <label>Modify goBack callback value: <br />
       <input type="text" [(ngModel)]="callbackValue" /></label>
     </p>
   </div>
   <div *ngIf="!hasBack">
-    <a href="javascript:void(0)" (click)="luigiClient.linkManager().navigate('/projects/pr2')">No go back state available, click here</a>
-    to go to project two, where you can enter such a state
+    No go back state available, <a href="javascript:void(0)" (click)="luigiClient.linkManager().navigate('/projects/pr2')">Click here</a>
+    to go to <i>project two</i>, where you can try out hasBack functionality
   </div>
 </div>

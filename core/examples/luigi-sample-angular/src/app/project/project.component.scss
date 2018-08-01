@@ -1,9 +1,9 @@
 .nav-examples {
-  &>* {
+  margin-bottom: 100px;
+  & > * {
     line-height: 1.75em;
   }
   li:not(:last-of-type) {
     padding-bottom: 20px;
   }
-
 }

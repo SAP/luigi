@@ -7,18 +7,18 @@
 <script type="text/javascript">
     import TopNav from './TopNav.html';
     import LeftNav from './LeftNav.html';
-    import { removeInactiveIframes, getActiveIframe, setPreviousActiveIframe, handleRouteChange, matchPath, concatenatePath, getNodePath, navigateTo } from './services/routing.js';
+    import * as Routing from './services/routing.js';
     import { isFunction } from './utilities/helpers.js';
 
     const trimLeadingSlash = (str) => str.replace(/^\//, '');
-    const isValidBackRoute = (pv, str) => {
-        if (pv.length === 0) {
+    const isValidBackRoute = (preservedViews, routeHash) => {
+        if (preservedViews.length === 0) {
             return false;
         }
         // we're only checking the previous goBack state and 
         // compare it with the new route
-        const routePath = str.startsWith('/') ? str : `/${str}`;
-        const firstPreservedView = pv[0];
+        const routePath = routeHash.startsWith('/') ? routeHash : `/${routeHash}`;
+        const firstPreservedView = preservedViews[0];
         const paths = [firstPreservedView.path, firstPreservedView.nextPath];
         return paths.includes(routePath);
     };
@@ -29,32 +29,35 @@
             const pv = component.get().preservedViews;
             if (!isValidBackRoute(pv, getModifiedHash(event))) {
                 component.set({preservedViews: []});
-                removeInactiveIframes(node);
+                Routing.removeInactiveIframes(node);
             }
-            handleRouteChange(getModifiedHash(event), component, node, config);
+            Routing.handleRouteChange(getModifiedHash(event), component, node, config);
         });
 
-        handleRouteChange(window.location.hash, component, node, config);
+        Routing.handleRouteChange(window.location.hash, component, node, config);
     };
 
     const enablePathRouting = (component, node, config) => {
         window.addEventListener('popstate', () => {
             const getModifiedPathname = window.history.state.path.split('/').slice(1).join('/');
-            handleRouteChange(getModifiedPathname, component, node, config);
+            Routing.handleRouteChange(getModifiedPathname, component, node, config);
         });
 
-        handleRouteChange(trimLeadingSlash(window.location.pathname), component, node, config);
+        Routing.handleRouteChange(trimLeadingSlash(window.location.pathname), component, node, config);
     };
 
-    const handlePreserveView = (component, data, config, node) => {
-        const pv = component.get().preservedViews;
+    const addPreserveView = (component, data, config, node) => {
         if (data.params.preserveView) {
+            const pv = component.get().preservedViews;
             pv.push({
-                path: getNodePath(component.get().currentNode),
-                nextPath: getNodePath(component.get().currentNode) + data.params.link,
+                path: Routing.getNodePath(component.get().currentNode),
+                nextPath: Routing.getNodePath(component.get().currentNode) + data.params.link,
                 context: component.get().context
             });
             component.set({preservedViews: pv});
+
+            // Resetting iframe config to null, since Routing.navigateTo will then create a new iframe
+            // instead of using the existing instance for route.
             config.iframe = null;
         }
     }
@@ -63,27 +66,26 @@
         let path = data.params.link;
         if (data.params.fromClosestContext) { // from the closest navigation context
             const node = [...component.get().navigationPath].reverse().find((n) => n.navigationContext && n.navigationContext.length > 0);
-            path = concatenatePath(getNodePath(node), data.params.link);
+            path = Routing.concatenatePath(Routing.getNodePath(node), data.params.link);
         } else if (data.params.fromContext) { // from a given navigation context
             const navigationContext = data.params.fromContext;
             const node = component.get().navigationPath.find((n) => navigationContext === n.navigationContext);
-            path = concatenatePath(getNodePath(node), data.params.link);
+            path = Routing.concatenatePath(Routing.getNodePath(node), data.params.link);
         } else if (data.params.relative) { // relative
-            path = concatenatePath(getNodePath(component.get().currentNode), data.params.link);
+            path = Routing.concatenatePath(Routing.getNodePath(component.get().currentNode), data.params.link);
         }
 
-        const matchedPath = await matchPath(path);
+        const matchedPath = await Routing.matchPath(path);
         if (matchedPath !== null) {
-            handlePreserveView(component, data, config, node);
-            navigateTo(matchedPath);
+            addPreserveView(component, data, config, node);
+            Routing.navigateTo(matchedPath);
         }
     };
 
-    const sendContextToClient = (component, config, callbackFn) => {
-        const goBackValue = isFunction(callbackFn) ? callbackFn() : callbackFn;
+    const sendContextToClient = (component, config, goBackContext = {}) => {
         config.iframe.contentWindow.postMessage({
             msg: 'luigi.init',
-            context: JSON.stringify(Object.assign({}, component.get().context, goBackValue)),
+            context: JSON.stringify(Object.assign({}, component.get().context, goBackContext)),
             internal: JSON.stringify(component.prepareInternalData())
         }, '*');
     };
@@ -108,7 +110,7 @@
                 const config = {
                     iframe: null,
                     navigateOk: null,
-                    builderCompatibilityMode: window.builderCompatibilityMode || false
+                    builderCompatibilityMode: Boolean(window.builderCompatibilityMode)
                 };
 
                 window.addEventListener("message", (e) => {
@@ -121,26 +123,32 @@
                     }
 
                     if ('luigi.navigation.open' === e.data.msg) {
+                        // if a user goes somewhere else and does not use goBack, cleanup
+                        this.set({ goBackContext: undefined });
                         console.log('luigi.navigation.open', e.data);
                         handleNavigation(this, e.data, config, node);
                     }
 
                     if ('luigi.navigation.back' === e.data.msg) {
                         // go back: context from the view
-                        const pvs = this.get().preservedViews;
-                        if (pvs && pvs.length) {
+                        const preservedViews = this.get().preservedViews;
+                        if (preservedViews && preservedViews.length) {
                             // remove current active iframe and data
-                            setPreviousActiveIframe(node);
-                            const pv = pvs.pop();
+                            Routing.setActiveIframeToPrevious(node);
+                            const previousActiveIframeData = preservedViews.pop();
                             // set new active iframe and preservedViews
-                            config.iframe = getActiveIframe(node);
-                            this.set({'preservedViews': pvs});
-                            // TODO: check if handleNavigtion or history pop to update hash / path
-                            handleNavigation(this, {params: {link: pv.path}}, config, node);
+                            config.iframe = Routing.getActiveIframe(node);
+                            this.set({
+                                'preservedViews': preservedViews,
+                                'goBackContext': e.data.goBackContext
+                            });
+                            console.log('set goBackContext', e.data);
 
-                            // send stored context
-                            // const additionalContextFn = e.data.callbackFn;
-                            // sendContextToClient(this, config, additionalContextFn);
+                            // TODO: check if handleNavigtion or history pop to update hash / path
+                            handleNavigation(this, {params: {link: previousActiveIframeData.path}}, config, node);
+                            // sendContextToClient(this, config, {goBackContext: e.data.goBackContext});
+                        } else {
+                            console.error('goBack() not possible, no preserved views found.');
                         }
                     }
                 });

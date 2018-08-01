@@ -168,7 +168,8 @@ describe('Routing', () => {
       window.LuigiConfig = sampleLuigiConfig;
       window.LuigiConfig.navigation.hideNav = false;
       const docMock = sinon.mock(document);
-      docMock.expects('createElement')
+      docMock
+        .expects('createElement')
         .returns({ src: null })
         .once();
 
@@ -181,15 +182,11 @@ describe('Routing', () => {
         window.LuigiConfig.navigation.hideNav
       );
 
-      assert.equal(
-        component.get().preservedViews.length,
-        1
-      );
+      assert.equal(component.get().preservedViews.length, 1);
       docMock.restore();
       docMock.verify();
     });
   });
-
 
   describe('#handleRouteClick()', () => {
     const nodeWithParent = {
@@ -304,7 +301,7 @@ describe('Routing', () => {
   });
 
   describe('Unit tests', () => {
-    describe('setPreviousActiveIframe', () => {
+    describe('setActiveIframeToPrevious', () => {
       it('standard', () => {
         const removeChild = sinon.spy();
         let node = {
@@ -318,7 +315,7 @@ describe('Routing', () => {
           ]
         };
 
-        routing.setPreviousActiveIframe(node);
+        routing.setActiveIframeToPrevious(node);
 
         assert.equal(node.children[0].style.display, 'block');
         assert.equal(node.children.length, 1);
@@ -341,7 +338,7 @@ describe('Routing', () => {
           ]
         };
 
-        routing.setPreviousActiveIframe(node);
+        routing.setActiveIframeToPrevious(node);
 
         assert.equal(node.children[0].style.display, 'none');
         assert.equal(node.children[1].style.display, 'block');

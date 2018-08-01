@@ -10,35 +10,29 @@ const getViewUrl = pathData => {
   return lastElement ? lastElement.viewUrl : '';
 };
 
-const hideElementChildren = (node) => {
+const hideElementChildren = node => {
   if (node.children) {
-    Array.from(node.children).forEach((child) => {
+    Array.from(node.children).forEach(child => {
       child.style.display = 'none';
     });
   }
 };
 
-export const getActiveIframe = (node) => {
+export const getActiveIframe = node => {
   return node.firstChild;
 };
 
-export const setPreviousActiveIframe = (node) => {
+export const setActiveIframeToPrevious = node => {
+  const iframesInDom = Array.from(node.children);
+  if (iframesInDom.length === 1) {
+    return;
+  }
   hideElementChildren(node);
-  const children = Array.from(node.children);
-  children.forEach((child, index) => {
-    // fallback if this is executed but just one iframe there
-    if (children.length === 1 || index === 1) {
-      child.style.display = 'block';
-    }
-    if (children.length > 1) {
-      if (index === 0) {
-        node.removeChild(child);
-      }
-    }
-  });
+  node.removeChild(iframesInDom[0]);
+  iframesInDom[1].display = 'block';
 };
 
-export const removeInactiveIframes = (node) => {
+export const removeInactiveIframes = node => {
   const children = Array.from(node.children);
   children.forEach((child, index) => {
     if (index > 0) {
@@ -63,10 +57,11 @@ export const isNotSameDomain = (config, component) => {
 };
 
 const navigateIframe = (config, component, node) => {
-  // debugger;
   clearTimeout(timeoutHandle);
   if (isNotSameDomain(config, component) || config.builderCompatibilityMode) {
     const componentData = component.get();
+    // if a user goes somewhere else and does not use goBack, cleanup
+    component.set({ goBackContext: undefined });
     // preserveView, hide other frames, else remove
     if (config.iframe === null) {
       hideElementChildren(node);
@@ -90,12 +85,15 @@ const navigateIframe = (config, component, node) => {
       }
     }
   } else {
+    const goBackContext = component.get().goBackContext;
     config.iframe.style.display = 'block';
     config.iframe.contentWindow.postMessage(
       {
         msg: 'luigi.navigate',
         viewUrl: component.get().viewUrl,
-        context: JSON.stringify(component.get().context),
+        context: JSON.stringify(
+          Object.assign({}, component.get().context, { goBackContext })
+        ),
         internal: JSON.stringify(component.prepareInternalData())
       },
       '*'

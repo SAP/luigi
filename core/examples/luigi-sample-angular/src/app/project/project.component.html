@@ -6,6 +6,12 @@
 </p>
 <div *ngIf="projectId && projectId !== 'overview.html'">
   LuigiClient navigation methods:<br>
+
+  <div *ngIf="preservedViewCallbackContext">
+    Context received from goBack():<br />
+    <pre>{{ preservedViewCallbackContext | json }}</pre>
+  </div>
+  
   <ul class="nav-examples">
     <li>
       <a href="javascript:void(0)" (click)="luigiClient.linkManager().navigate('/overview')">absolute: to overview</a>
@@ -33,9 +39,5 @@
     </li>
   </ul>
 </div>
-
-<p *ngIf="preservedViewCallbackContext">
-Preserved View Context: {{preservedViewCallbackContext}}
-</p>
 
 <app-modal [modalActive]="modalActive" (modalClosed)="toggleModal()"></app-modal>

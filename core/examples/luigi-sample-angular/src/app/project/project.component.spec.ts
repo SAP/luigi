@@ -1,6 +1,6 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { ActivatedRoute } from '@angular/router';
-import { Observable } from 'rxjs/Observable';
+import { of } from 'rxjs';
 
 import { ProjectComponent } from './project.component';
 
@@ -15,7 +15,10 @@ describe('ProjectComponent', () => {
       .overrideComponent(ProjectComponent, {
         set: {
           providers: [
-            { provide: ActivatedRoute, useValue: { params: Observable.of({ projectId: 'pr1' }) } }
+            {
+              provide: ActivatedRoute,
+              useValue: { params: of({ projectId: 'pr1' }) }
+            }
           ]
         }
       })
