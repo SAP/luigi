@@ -12,12 +12,17 @@
   </div>
 </section>
 
-<section class="fd-section" *ngIf="projectId && projectId !== 'overview.html'">
+<section class="fd-section" *ngIf="preservedViewCallbackContext">
   <div class="fd-panel">
-    <div *ngIf="preservedViewCallbackContext">
-      Context received from linkManager().goBack():<br />
+    <div class="fd-alert" role="alert">
+      <span class="fd-status-label fd-status-label--available"></span> Context received from linkManager().goBack():<br />
       <pre>{{ preservedViewCallbackContext | json }}</pre>
     </div>
+  </div>
+</section>
+
+<section class="fd-section" *ngIf="projectId && projectId !== 'overview.html'">
+  <div class="fd-panel">
     <p><strong>LuigiClient linkManager methods:</strong></p>
     <ul class="fd-list-group">
       <li class="fd-list-group__item">

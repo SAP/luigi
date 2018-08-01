@@ -60,8 +60,6 @@ const navigateIframe = (config, component, node) => {
   clearTimeout(timeoutHandle);
   if (isNotSameDomain(config, component) || config.builderCompatibilityMode) {
     const componentData = component.get();
-    // if a user goes somewhere else and does not use goBack, cleanup
-    component.set({ goBackContext: undefined });
     // preserveView, hide other frames, else remove
     if (config.iframe === null) {
       hideElementChildren(node);
@@ -98,6 +96,8 @@ const navigateIframe = (config, component, node) => {
       },
       '*'
     );
+    // clear goBackContext after sending it to the client
+    component.set({ goBackContext: undefined });
 
     /**
      * check if luigi responded

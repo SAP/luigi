@@ -123,8 +123,6 @@
                     }
 
                     if ('luigi.navigation.open' === e.data.msg) {
-                        // if a user goes somewhere else and does not use goBack, cleanup
-                        this.set({ goBackContext: undefined });
                         handleNavigation(this, e.data, config, node);
                     }
 
