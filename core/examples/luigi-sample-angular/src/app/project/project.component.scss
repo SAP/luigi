@@ -1,7 +1,12 @@
-.nav-examples {
-  margin-bottom: 100px;
+section {
+  button {
+    margin-bottom: 0.75rem;
+  }
   & > * {
     line-height: 1.75em;
+  }
+  li {
+    display: block;
   }
   li:not(:last-of-type) {
     padding-bottom: 20px;

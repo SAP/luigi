@@ -125,7 +125,6 @@
                     if ('luigi.navigation.open' === e.data.msg) {
                         // if a user goes somewhere else and does not use goBack, cleanup
                         this.set({ goBackContext: undefined });
-                        console.log('luigi.navigation.open', e.data);
                         handleNavigation(this, e.data, config, node);
                     }
 
@@ -142,11 +141,9 @@
                                 'preservedViews': preservedViews,
                                 'goBackContext': e.data.goBackContext
                             });
-                            console.log('set goBackContext', e.data);
 
-                            // TODO: check if handleNavigtion or history pop to update hash / path
+                            // TODO: check if handleNavigation or history pop to update hash / path
                             handleNavigation(this, {params: {link: previousActiveIframeData.path}}, config, node);
-                            // sendContextToClient(this, config, {goBackContext: e.data.goBackContext});
                         } else {
                             console.error('goBack() not possible, no preserved views found.');
                         }

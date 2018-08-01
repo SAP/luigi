@@ -32,7 +32,6 @@ export class SettingsComponent implements OnInit {
   goBack() {
     // going back with some sample callback context,
     // that will be handed over to previous view
-    console.log('going back with context:', this.callbackValue);
     this.luigiClient.linkManager().goBack(this.callbackValue);
   }
 }

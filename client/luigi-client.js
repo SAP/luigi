@@ -13,7 +13,7 @@ var client = (function() {
       try {
         internalData = JSON.parse(rawData);
       } catch (e) {
-        console.log('unable to parse luigi context data', e);
+        console.info('unable to parse luigi context data', e);
       }
     } else {
       internalData = rawData;
@@ -25,7 +25,7 @@ var client = (function() {
       try {
         eventData = JSON.parse(rawData);
       } catch (e) {
-        console.log('unable to parse luigi context data', e);
+        console.info('unable to parse luigi context data', e);
       }
     } else {
       eventData = rawData;

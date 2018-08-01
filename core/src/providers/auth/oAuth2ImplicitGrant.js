@@ -4,33 +4,40 @@ export class oAuth2ImplicitGrant {
   constructor(settings = {}) {
     const defaultSettings = {
       oAuthData: {
-        redirect_uri: window.location.origin + '/luigi-core/auth/oauth2/callback.html',
+        redirect_uri:
+          window.location.origin + '/luigi-core/auth/oauth2/callback.html',
         response_type: 'id_token token',
-        scope: '',
+        scope: ''
       }
     };
     const mergedSettings = deepMerge(defaultSettings, settings);
 
     // Prepend current url to redirect_uri, if it is a relative path
     if (!mergedSettings.oAuthData.redirect_uri.startsWith('http')) {
-      const hasLeadingSlash = mergedSettings.oAuthData.redirect_uri.startsWith('/');
-      mergedSettings.oAuthData.redirect_uri = window.location.origin + (hasLeadingSlash ? '' : '/') + mergedSettings.oAuthData.redirect_uri;
+      const hasLeadingSlash = mergedSettings.oAuthData.redirect_uri.startsWith(
+        '/'
+      );
+      mergedSettings.oAuthData.redirect_uri =
+        window.location.origin +
+        (hasLeadingSlash ? '' : '/') +
+        mergedSettings.oAuthData.redirect_uri;
     }
     this.settings = mergedSettings;
   }
 
   login() {
     const settings = this.settings;
-    const generatedNonce = settings.nonceFn && settings.nonceFn() || this._generateNonce();
+    const generatedNonce =
+      (settings.nonceFn && settings.nonceFn()) || this._generateNonce();
 
     const createInputElement = (name, value) => {
-      const inputElem = document.createElement("input");
+      const inputElem = document.createElement('input');
       inputElem.name = name;
       inputElem.id = name;
       inputElem.value = value;
       inputElem.type = 'hidden';
       return inputElem;
-    }
+    };
 
     const formElem = document.createElement('form');
     formElem.name = 'signIn';
@@ -59,15 +66,15 @@ export class oAuth2ImplicitGrant {
     const settings = this.settings;
     const logoutreq = `${settings.logoutUrl}?id_token_hint=${
       authData.idToken
-      }&client_id=${settings.oAuthData.client_id}&post_logout_redirect_uri=${
+    }&client_id=${settings.oAuthData.client_id}&post_logout_redirect_uri=${
       window.location.origin
-      }`;
+    }`;
 
     const request = new XMLHttpRequest();
     request.open('GET', logoutreq);
-    request.addEventListener('load', (event) => {
+    request.addEventListener('load', event => {
       if (request.status >= 200 && request.status < 300) {
-        console.log(request.responseText);
+        console.info(request.responseText);
         return logoutCallback();
       }
 
@@ -78,25 +85,27 @@ export class oAuth2ImplicitGrant {
   }
 
   renewToken() {
-    console.log('​renewToken is not implemented yet');
+    console.error('​renewToken is not implemented yet');
   }
 
   _generateNonce() {
     const nonceKey = 'luigiNonceCnt';
-    let cnt = parseInt(encodeURIComponent(localStorage.getItem("luigiNonceCnt")));
+    let cnt = parseInt(
+      encodeURIComponent(localStorage.getItem('luigiNonceCnt'))
+    );
     if (!cnt || isNaN(cnt) || cnt >= 999999) {
       cnt = 0;
     }
-    localStorage.setItem("luigiNonceCnt", ++cnt);
+    localStorage.setItem('luigiNonceCnt', ++cnt);
     const rndstr = Math.floor(Math.random() * 1e9) + '';
     let nonce = rndstr;
     for (var i = 0; i < 9 - rndstr.length; i++) {
-      nonce = "X" + nonce;
+      nonce = 'X' + nonce;
     }
     const cntstr = cnt + '';
     for (var i = 0; i < 6 - cntstr.length; i++) {
-      nonce = nonce + "X";
+      nonce = nonce + 'X';
     }
     return nonce + cntstr;
-  };
+  }
 }

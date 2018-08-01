@@ -1,6 +1,6 @@
 
 <div class="fd-ui__header {hideNavComponent ? 'hideNavComponent' : ''}">
-  <Backdrop />
+  <Backdrop heightCssClass="height-50"/>
   <nav class="fd-global-nav">
     <div class="fd-global-nav__group fd-global-nav__group--left">
       <div class="fd-global-nav__logo fd-has-margin-left-none"></div>
@@ -92,10 +92,10 @@
     padding: 0 10px;
 }
 
-.backdrop {
-  height: 50px;
+.fd-global-nav {
+  height: 100%;
+  border: none;
 }
-
 .fd-global-nav__product-name {
     color: #0a6ed1;
     height: 50px;
@@ -103,7 +103,7 @@
     line-height: 1em;
     padding: 13px 0;
 }
- 
+
 .hideNavComponent {
     display: none;
 }
