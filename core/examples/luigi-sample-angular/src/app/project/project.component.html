@@ -1,33 +1,43 @@
-<p>
-  project {{ projectId }} works!
-</p>
-<p>
-  <button (click)="toggleModal()">Add backdrop</button>
-</p>
-<div *ngIf="projectId && projectId !== 'overview.html'">
-  LuigiClient navigation methods:<br>
-  <ul class="nav-examples">
-    <li>
-      <a href="javascript:void(0)" (click)="luigiClient.linkManager().navigate('/overview')">absolute: to overview</a>
-      <app-code-snippet data="luigiClient.linkManager().navigate('/overview')"></app-code-snippet>
-    </li>
-    <li>
-      <a href="javascript:void(0)" (click)="luigiClient.linkManager().navigate('users/groups/stakeholders')">relative: to stakeholders</a>
-      <app-code-snippet data="luigiClient.linkManager().navigate('users/groups/stakeholders')"></app-code-snippet>
-    </li>
-    <li>
-      <a href="javascript:void(0)" (click)="luigiClient.linkManager().fromClosestContext().navigate('/users/groups/stakeholders')">closest parent: to stakeholders</a>
-      <app-code-snippet data="luigiClient.linkManager().fromClosestContext().navigate('/users/groups/stakeholders')"></app-code-snippet>
-    </li>
-    <li>
-      <a href="javascript:void(0)" (click)="luigiClient.linkManager().fromContext('project').navigate('/settings')">parent by name: project to settings</a>
-      <app-code-snippet data="luigiClient.linkManager().fromContext('project').navigate('/settings')"></app-code-snippet>
-    </li>
-    <li>
-      <a href="javascript:void(0)" (click)="luigiClient.linkManager().fromContext('FOOMARK').navigate('/settings')">parent by name: with nonexisting context</a> (look at the console)
-      <app-code-snippet data="luigiClient.linkManager().fromContext('FOOMARK').navigate('/settings')"></app-code-snippet>
-    </li>
-  </ul>
-</div>
+<section class="fd-section">
+  <div class="fd-section__header">
+    <h1 class="fd-section__title">Project {{ projectId }}</h1>
+  </div>
+  <div class="fd-panel">
+      <p><strong>LuigiClient uxManager methods:</strong></p>
+      <button class="fd-button" (click)="toggleModal()">Add backdrop</button>
+      <p>
+        <app-code-snippet data="luigiClient.uxManager().addBackdrop()"></app-code-snippet>
+        <app-code-snippet data="luigiClient.uxManager().removeBackdrop()"></app-code-snippet>
+      </p>
+  </div>
+</section>
+
+<section class="fd-section" *ngIf="projectId && projectId !== 'overview.html'">
+  <div class="fd-panel">
+    <p><strong>LuigiClient navigation methods:</strong></p>
+    <ul class="fd-list-group">
+      <li class="fd-list-group__item">
+        <a href="javascript:void(0)" (click)="luigiClient.linkManager().navigate('/overview')">absolute: to overview</a>
+        <app-code-snippet data="luigiClient.linkManager().navigate('/overview')"></app-code-snippet>
+      </li>
+      <li class="fd-list-group__item">
+        <a href="javascript:void(0)" (click)="luigiClient.linkManager().navigate('users/groups/stakeholders')">relative: to stakeholders</a>
+        <app-code-snippet data="luigiClient.linkManager().navigate('users/groups/stakeholders')"></app-code-snippet>
+      </li>
+      <li class="fd-list-group__item">
+        <a href="javascript:void(0)" (click)="luigiClient.linkManager().fromClosestContext().navigate('/users/groups/stakeholders')">closest parent: to stakeholders</a>
+        <app-code-snippet data="luigiClient.linkManager().fromClosestContext().navigate('/users/groups/stakeholders')"></app-code-snippet>
+      </li>
+      <li class="fd-list-group__item">
+        <a href="javascript:void(0)" (click)="luigiClient.linkManager().fromContext('project').navigate('/settings')">parent by name: project to settings</a>
+        <app-code-snippet data="luigiClient.linkManager().fromContext('project').navigate('/settings')"></app-code-snippet>
+      </li>
+      <li class="fd-list-group__item">
+        <a href="javascript:void(0)" (click)="luigiClient.linkManager().fromContext('FOOMARK').navigate('/settings')">parent by name: with nonexisting context</a> (look at the console)
+        <app-code-snippet data="luigiClient.linkManager().fromContext('FOOMARK').navigate('/settings')"></app-code-snippet>
+      </li>
+    </ul>
+  </div>
+</section>
 
 <app-modal [modalActive]="modalActive" (modalClosed)="toggleModal()"></app-modal>
