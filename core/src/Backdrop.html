@@ -1,6 +1,6 @@
 {#if backdropActive}
     <div
-     class="fd-ui__overlay fd-overlay fd-overlay--modal"
+     class="fd-ui__overlay fd-overlay fd-overlay--modal {heightCssClass}"
      aria-hidden="false"
     >
     </div>
@@ -10,11 +10,16 @@
   export default {
     data() {
       return {
-        fadeDuration: 300,
         backdropActive: false
       }
     },
     oncreate() {
+      if (this.options.data && this.options.data.heightCssClass) {
+        this.set({ heightCssClass: this.options.data.heightCssClass})
+      } else {
+        this.set({ heightCssClass: 'height-auto' })
+      }
+
       window.addEventListener("message", (e) => {
         if ('luigi.add-backdrop' === e.data.msg) {
           this.set({backdropActive: true});
@@ -37,11 +42,17 @@
   top: 0;
   bottom: 0;
   right: 0;
-  margin-bottom: -1px; /* TopNav has border 1px */
 }
 
 .fd-overlay--modal {
-  height: auto;
   width: 100%;
+}
+
+.fd-overlay--modal.height-50 {
+  height: 50px;
+}
+
+.fd-overlay--modal.height-auto {
+  height: auto;
 }
 </style>
