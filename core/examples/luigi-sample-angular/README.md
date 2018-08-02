@@ -2,7 +2,7 @@
 
 ## Development
 
-Linking and building with [Lerna](https://lernajs.io/) is the preferred development method. This mono repository uses Lerna  for project management. 
+Linking and building with [Lerna](https://lernajs.io/) is the preferred development method. This monorepo uses Lerna for project management. 
 
 To have this application running, follow these steps:
 
@@ -42,7 +42,7 @@ To have this application running, follow these steps:
     ```
     b. Luigi Client is not bundled, so you are fine just updating it without bundling. 
     
-    c. The autoreload of your application only updates the application. Type CMD + R to reflect the changes of the linked modules (Luigi Core and Luigi Client) on the website.
+    c. *The autoreload of your application only updates the application*. Type CMD + R to reflect the changes of the linked modules (Luigi Core and Luigi Client) on the website.
 
 
 <!-- ## Run server
