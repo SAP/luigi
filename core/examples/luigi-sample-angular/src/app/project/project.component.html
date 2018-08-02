@@ -12,9 +12,18 @@
   </div>
 </section>
 
+<section class="fd-section" *ngIf="preservedViewCallbackContext">
+  <div class="fd-panel">
+    <div class="fd-alert" role="alert">
+      <span class="fd-status-label fd-status-label--available"></span> Context received from linkManager().goBack():<br />
+      <pre>{{ preservedViewCallbackContext | json }}</pre>
+    </div>
+  </div>
+</section>
+
 <section class="fd-section" *ngIf="projectId && projectId !== 'overview.html'">
   <div class="fd-panel">
-    <p><strong>LuigiClient navigation methods:</strong></p>
+    <p><strong>LuigiClient linkManager methods:</strong></p>
     <ul class="fd-list-group">
       <li class="fd-list-group__item">
         <a href="javascript:void(0)" (click)="luigiClient.linkManager().navigate('/overview')">absolute: to overview</a>
@@ -36,6 +45,10 @@
         <a href="javascript:void(0)" (click)="luigiClient.linkManager().fromContext('FOOMARK').navigate('/settings')">parent by name: with nonexisting context</a> (look at the console)
         <app-code-snippet data="luigiClient.linkManager().fromContext('FOOMARK').navigate('/settings')"></app-code-snippet>
       </li>
+      <li class="fd-list-group__item">
+      <a href="javascript:void(0)" (click)="luigiClient.linkManager().fromContext('project').navigate('/settings', null, true)">with preserved view: project to settings and back</a>
+      <app-code-snippet data="luigiClient.linkManager().fromContext('project').navigate('/settings', null, true)"></app-code-snippet>
+    </li>
     </ul>
   </div>
 </section>

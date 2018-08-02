@@ -45,7 +45,7 @@ export class openIdConnect {
         return;
       })
       .catch(err => {
-        console.log(err);
+        console.error(err);
         return err;
       });
   }
@@ -107,7 +107,7 @@ export class openIdConnect {
           : this.settings.post_logout_redirect_uri;
       })
       .catch(err => {
-        console.log(err);
+        console.error(err);
       });
   }
 }
