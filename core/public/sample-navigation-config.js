@@ -59,24 +59,26 @@ const projectDetailNavProviderFn = context => {
       {
         category: 'Usermanagement',
         pathSegment: 'users',
+        navigationContext: 'usermngmt',
         label: 'Users and Groups',
-        viewUrl: '/temp.html#/projects/' + projectId + '/users',
+        viewUrl: 'http://localhost:8001/example.html#/p/' + projectId + '/u',
         children: [
           {
             category: 'Groups',
             pathSegment: 'groups',
             label: 'Groups',
-            viewUrl: '/temp.html#/projects/' + projectId + '/users/groups',
+            viewUrl:
+              'http://localhost:8001/example.html#/p/' + projectId + '/ug',
             children: [
               {
                 pathSegment: 'stakeholders',
                 label: 'Stakeholders',
-                viewUrl: '/temp.html'
+                viewUrl: 'http://localhost:8001/example.html'
               },
               {
                 pathSegment: 'customers',
                 label: 'Customers',
-                viewUrl: '/temp.html'
+                viewUrl: 'http://localhost:8001/example.html'
               }
             ]
           },
@@ -84,7 +86,7 @@ const projectDetailNavProviderFn = context => {
             pathSegment: 'usersoverview',
             label: 'Users Overview',
             viewUrl:
-              '/temp.html#/projects/' + projectId + '/users/usersoverview'
+              'http://localhost:8001/example.html#/p/' + projectId + '/uo'
           }
         ]
       },
@@ -92,23 +94,24 @@ const projectDetailNavProviderFn = context => {
         category: 'Usermanagement',
         pathSegment: 'developers',
         label: 'Developers',
-        viewUrl: '/temp.html'
+        viewUrl: 'http://localhost:8001/example.html'
       },
       {
         category: 'Settings',
         pathSegment: 'settings',
         label: 'Project Settings',
-        viewUrl: '/temp.html'
+        viewUrl:
+          'http://localhost:8001/example.html?p={context.currentProject}&pizza&aaa={nodeParams.aaa}'
       },
       {
         pathSegment: 'miscellaneous',
         label: 'Miscellaneous',
-        viewUrl: '/temp.html'
+        viewUrl: 'http://localhost:8001/example.html'
       },
       {
         pathSegment: 'miscellaneous2',
         label: 'Miscellaneous2',
-        viewUrl: '/temp.html'
+        viewUrl: 'http://localhost:8001/example.html'
       }
     ];
     getProjectPlugins(projectId).then(result => {
@@ -145,7 +148,7 @@ const projectsNavProviderFn = context => {
           navigationContext: 'project',
           pathSegment: project.id,
           label: project.name,
-          viewUrl: '/temp.html',
+          viewUrl: 'http://localhost:8001/example.html',
           context: {
             currentProject: project.id
           },
@@ -164,25 +167,28 @@ window.LuigiConfig = {
     nodes: [
       {
         pathSegment: '',
-        label: 'Overview',
-        viewUrl: '/temp.html?aaahii=aahaaa'
+        label: 'Banana',
+        viewUrl: 'http://localhost:8001/example.html'
       },
       {
         pathSegment: 'projects',
         label: 'Projects',
-        viewUrl: '/temp.html',
+        viewUrl: 'http://localhost:8001/example.html',
         children: projectsNavProviderFn
       },
       {
         hideFromNav: true,
         pathSegment: 'hiddenSample',
         label: 'Hidden',
-        viewUrl: '/temp.html',
+        viewUrl: 'http://localhost:8001/example.html',
         children: projectsNavProviderFn
       }
     ],
     // hides the navigation completely if set to true
     hideNav: false
+  },
+  routing: {
+    nodeParamPrefix: '~'
   }
 };
 

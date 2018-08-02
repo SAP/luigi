@@ -1,5 +1,6 @@
 var client = (function() {
   var eventData = {};
+  var nodeParams = {};
   var Luigi = {};
   var internalData = {};
   var _contextUpdated;
@@ -20,7 +21,7 @@ var client = (function() {
     }
   }
 
-  function setContext(rawData) {
+  function setContext(rawData, params) {
     if (typeof rawData === 'string') {
       try {
         eventData = JSON.parse(rawData);
@@ -36,6 +37,8 @@ var client = (function() {
     Luigi.currentEnvironmentId = eventData.currentEnvironmentId;
     Luigi.sessionId = eventData.sessionId;
 
+    nodeParams = params;
+
     // let the app know that context was updated
     if (_contextUpdated) {
       _contextUpdated(eventData);
@@ -45,16 +48,15 @@ var client = (function() {
   window.addEventListener('message', function(e) {
     if ('luigi.init' === e.data.msg) {
       setInternalData(e.data.internal);
-      setContext(e.data.context);
+      setContext(e.data.context, e.data.nodeParam);
       Luigi.initialized = true;
-
       if (window._init) {
         window._init(eventData);
       }
     }
     if ('luigi.navigate' === e.data.msg) {
       setInternalData(e.data.internal);
-      setContext(e.data.context);
+      setContext(e.data.context, e.data.nodeParams);
       window.location.replace(e.data.viewUrl);
       window.parent.postMessage({ msg: 'luigi.navigate.ok' }, '*');
     }
@@ -93,7 +95,14 @@ var client = (function() {
       return eventData;
     },
     /**
+     * Fetch node parameters
+     */
+    getNodeParams: function() {
+      return nodeParams;
+    },
+    /**
      * Navigate to another route.
+     * Lets you navigate to another route.
      */
     linkManager: function() {
       /**
@@ -243,4 +252,6 @@ var client = (function() {
   };
 })();
 
-export { client as LuigiClient };
+//export { client as LuigiClient };
+
+window.Luigi = client;
