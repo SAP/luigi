@@ -12,7 +12,7 @@ npm install luigi-client
 ```
 
 Import the client in places where you want to use it:
-```
+```javascript
 // es5
 var LuigiClient = require('@kyma-project/luigi-client').LuigiClient;
 

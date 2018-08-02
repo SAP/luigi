@@ -34,7 +34,7 @@ To have this application running, follow these steps:
 
     In your favourite browser, go to http://localhost:4200/
 
-6. Reflect changes on luigi code on the example app
+6. Reflect changes on luigi code on the example app.
 
     a. For Luigi Core you have to let it bundle again on every change you apply to it. The easiest approach is to open Luigi´s root folder in another tab in your terminal window and have the following running: 
     ```bash    
