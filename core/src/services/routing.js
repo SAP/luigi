@@ -57,7 +57,7 @@ export const isNotSameDomain = (config, component) => {
   return true;
 };
 
-const getContentViewParamPrefix = () => {
+export const getContentViewParamPrefix = () => {
   return (
     getConfigValue('routing.contentViewParamPrefix') ||
     defaultContentViewParamPrefix

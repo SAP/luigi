@@ -60,7 +60,7 @@
             // instead of using the existing instance for route.
             config.iframe = null;
         }
-    }
+    };
 
     const handleNavigation = async (component, data, config, node) => {
         let path = data.params.link;
@@ -73,6 +73,13 @@
             path = Routing.concatenatePath(Routing.getNodePath(node), data.params.link);
         } else if (data.params.relative) { // relative
             path = Routing.concatenatePath(Routing.getNodePath(component.get().currentNode), data.params.link);
+        }
+
+        if (data.params.nodeParams) {
+            path += '?';
+            Object.entries(data.params.nodeParams).forEach(entry => {
+                path += (Routing.getContentViewParamPrefix() + encodeURIComponent(entry[0]) + '=' + encodeURIComponent(entry[1]) + '&');
+            });
         }
 
         const matchedPath = await Routing.matchPath(path);
