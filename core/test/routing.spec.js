@@ -23,13 +23,15 @@ describe('Routing', () => {
                 },
                 style: {
                   display: null
-                }
+                },
+                viewUrl: '{context.varA1}/a1.html#p={nodeParams.param1}'
               },
               {
                 pathSegment: 'a2',
                 style: {
                   display: null
-                }
+                },
+                viewUrl: '{context.varA2}/a2.html#p={nodeParams.param2}'
               }
             ],
             context: {
@@ -185,6 +187,141 @@ describe('Routing', () => {
       assert.equal(component.get().preservedViews.length, 1);
       docMock.restore();
       docMock.verify();
+    });
+
+    it('should set component data with hash path and node params', async () => {
+      // given
+      const path = '#/projects/a1?~param1=tets';
+      const expectedViewUrl = '{context.varA1}/a1.html#p={nodeParams.param1}';
+      const expectedProcessedViewUrl = 'maskopatol/a1.html#p=tets';
+      const mockBrowser = new MockBrowser();
+      const window = mockBrowser.getWindow();
+      global.window = window;
+      const document = mockBrowser.getDocument();
+      global.document = document;
+
+      const component = {
+        set: obj => {
+          component.get = () => obj;
+        }
+      };
+
+      const node = {
+        pathSegment: '#/projects',
+        label: 'AAA',
+        viewUrl: '/aaa.html',
+        children: [
+          {
+            pathSegment: 'a1',
+            context: {
+              varA1: 'maskopatol'
+            },
+            style: {
+              display: null
+            },
+            viewUrl: '{context.varA1}/a1.html#p={nodeParams.param1}'
+          },
+          {
+            pathSegment: 'a2',
+            style: {
+              display: null
+            }
+          }
+        ],
+        context: {
+          varA: 'tets'
+        },
+        prepend: sinon.spy()
+      };
+
+      const config = {
+        iframe: null,
+        builderCompatibilityMode: false,
+        navigateOk: null
+      };
+
+      // when
+      window.LuigiConfig = sampleLuigiConfig;
+      window.LuigiConfig.navigation.hideNav = false;
+      const iframeMock = { src: null };
+      sinon.stub(document, 'createElement').callsFake(() => iframeMock);
+      await routing.handleRouteChange(path, component, node, config, window);
+
+      // then
+      assert.equal(component.get().viewUrl, expectedViewUrl);
+      assert.equal(iframeMock.src, expectedProcessedViewUrl);
+      assert.equal(
+        component.get().hideNav,
+        window.LuigiConfig.navigation.hideNav
+      );
+    });
+
+    it('should set component data with hash path and clear unused context/node params', async () => {
+      // given
+      const path = '#/projects/a2?~param1=tets';
+      const expectedViewUrl = '{context.varA2}/a2.html#p={nodeParams.param2}';
+      const expectedProcessedViewUrl = '/a2.html#p=';
+      const mockBrowser = new MockBrowser();
+      const window = mockBrowser.getWindow();
+      global.window = window;
+      const document = mockBrowser.getDocument();
+      global.document = document;
+
+      const component = {
+        set: obj => {
+          component.get = () => obj;
+        }
+      };
+
+      const node = {
+        pathSegment: '#/projects',
+        label: 'AAA',
+        viewUrl: '/aaa.html',
+        children: [
+          {
+            pathSegment: 'a1',
+            context: {
+              varA1: 'maskopatol'
+            },
+            style: {
+              display: null
+            },
+            viewUrl: '{context.varA1}/a1.html#p={nodeParams.param1}'
+          },
+          {
+            pathSegment: 'a2',
+            style: {
+              display: null
+            },
+            viewUrl: '{context.varA2}/a1.html#p={nodeParams.param2}'
+          }
+        ],
+        context: {
+          varA: 'tets'
+        },
+        prepend: sinon.spy()
+      };
+
+      const config = {
+        iframe: null,
+        builderCompatibilityMode: false,
+        navigateOk: null
+      };
+
+      // when
+      window.LuigiConfig = sampleLuigiConfig;
+      window.LuigiConfig.navigation.hideNav = false;
+      const iframeMock = { src: null };
+      sinon.stub(document, 'createElement').callsFake(() => iframeMock);
+      await routing.handleRouteChange(path, component, node, config, window);
+
+      // then
+      assert.equal(component.get().viewUrl, expectedViewUrl);
+      assert.equal(iframeMock.src, expectedProcessedViewUrl);
+      assert.equal(
+        component.get().hideNav,
+        window.LuigiConfig.navigation.hideNav
+      );
     });
   });
 
