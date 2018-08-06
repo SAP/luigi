@@ -24,15 +24,12 @@ export const getActiveIframe = node => {
 
 export const setActiveIframeToPrevious = node => {
   const iframesInDom = Array.from(node.children);
-  if (iframesInDom.length === 0) {
-    return;
-  } else if (iframesInDom.length === 1) {
-    iframesInDom[0].style.display = 'block';
+  if (iframesInDom.length === 1) {
     return;
   }
   hideElementChildren(node);
   node.removeChild(iframesInDom[0]);
-  iframesInDom[1].style.display = 'block';
+  iframesInDom[1].display = 'block';
 };
 
 export const removeInactiveIframes = node => {

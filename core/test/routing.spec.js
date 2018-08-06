@@ -303,59 +303,46 @@ describe('Routing', () => {
   describe('Unit tests', () => {
     describe('setActiveIframeToPrevious', () => {
       it('standard', () => {
+        const removeChild = sinon.spy();
         let node = {
+          removeChild: sinon.spy(),
           children: [
             {
               style: {
                 display: null
               }
             }
-          ],
-          removeChild: child => {
-            node.children.forEach((c, i) => {
-              if (c === child) {
-                node.children.splice(i, 1);
-              }
-            });
-          }
+          ]
         };
 
         routing.setActiveIframeToPrevious(node);
 
-        assert.equal(node.children.length, 1);
         assert.equal(node.children[0].style.display, 'block');
+        assert.equal(node.children.length, 1);
       });
 
       it('goBack', () => {
         let node = {
+          removeChild: sinon.spy(),
           children: [
             {
               style: {
                 display: null
-              },
-              id: 1
+              }
             },
             {
               style: {
                 display: null
-              },
-              id: 2
-            }
-          ],
-          removeChild: child => {
-            node.children.forEach((c, i) => {
-              if (c === child) {
-                node.children.splice(i, 1);
               }
-            });
-          }
+            }
+          ]
         };
 
         routing.setActiveIframeToPrevious(node);
 
-        assert.equal(node.children.length, 1);
-        assert.equal(node.children[0].style.display, 'block');
-        assert.equal(node.children[0].id, 2);
+        assert.equal(node.children[0].style.display, 'none');
+        assert.equal(node.children[1].style.display, 'block');
+        assert.isTrue(node.removeChild.calledWith(node.children[0]));
       });
     });
 
