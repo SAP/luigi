@@ -176,7 +176,7 @@ var client = (function() {
         },
 
         /**
-         * Adds node parameters, which is then be used by navigate function
+         * Adds node parameters, which are then used by the navigate function
          * Usage: linkManager.withParams({foo: "bar"}).navigate("path")
          * Can be chained with context settings functions like this: linkManager.fromContext("currentTeam").withParams({foo: "bar"}).navigate("path")
          * @param {object} nodeParams
