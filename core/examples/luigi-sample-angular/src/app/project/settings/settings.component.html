@@ -3,6 +3,20 @@
     <h1 class="fd-section__title">Settings of {{ projectId }}</h1>
   </div>
   <div class="fd-panel">
-    Settings content.
-  </div>
+    LuigiClient hasBack/GoBack:<br>
+
+    <div *ngIf="hasBack">
+      <p>
+        <label>Modify goBackContext value, that you receive then via LuigiClient.addContextUpdateListener(): <br />
+        <input type="text" [(ngModel)]="callbackValue" /></label>
+      </p>
+      <p>
+        Then <a href="javascript:void(0)" (click)="goBack()">click here</a> to go back to your preserved view.
+      </p>
+    </div>
+    <div *ngIf="!hasBack">
+      No go back state available, <a href="javascript:void(0)" (click)="luigiClient.linkManager().navigate('/projects/pr2')">Click here</a>
+      to go to <i>project two</i>, where you can try out hasBack functionality
+    </div>
+</div>
 </section>
