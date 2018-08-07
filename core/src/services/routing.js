@@ -29,7 +29,7 @@ export const setActiveIframeToPrevious = node => {
   }
   hideElementChildren(node);
   node.removeChild(iframesInDom[0]);
-  iframesInDom[1].display = 'block';
+  iframesInDom[1].style.display = 'block';
 };
 
 export const removeInactiveIframes = node => {
