@@ -5,6 +5,14 @@ import store from './store'
 
 Vue.config.productionTip = false
 
+import { LuigiClient } from '@kyma-project/luigi-client'
+
+Vue.mixin({
+  created () {
+    this.luigiClient = LuigiClient
+  },
+})
+
 new Vue({
   router,
   store,

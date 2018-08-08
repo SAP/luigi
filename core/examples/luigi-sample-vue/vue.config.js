@@ -16,7 +16,6 @@ module.exports = {
   lintOnSave: true,
   runtimeCompiler: true,
   outputDir: 'dist',
-  //baseUrl: '/',
   configureWebpack: {
     plugins: [
       new CopyWebpackPlugin(

@@ -5,7 +5,9 @@
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
-    "lint": "vue-cli-service lint"
+    "lint": "vue-cli-service lint",
+    "test:unit": "vue-cli-service test:unit",
+    "test:e2e": "vue-cli-service test:e2e"
   },
   "dependencies": {
     "@kyma-project/luigi-client": "^0.2.1",
@@ -17,8 +19,12 @@
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "^3.0.0-rc.11",
+    "@vue/cli-plugin-e2e-cypress": "^3.0.0-rc.11",
     "@vue/cli-plugin-eslint": "^3.0.0-rc.11",
+    "@vue/cli-plugin-unit-mocha": "^3.0.0-rc.11",
     "@vue/cli-service": "^3.0.0-rc.11",
+    "@vue/test-utils": "^1.0.0-beta.20",
+    "chai": "^4.1.2",
     "node-sass": "^4.9.0",
     "webpack": "^4.16.1",
     "copy-webpack-plugin": "~4.4.1",
