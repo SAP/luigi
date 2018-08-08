@@ -11,7 +11,7 @@ export class SettingsComponent implements OnInit {
   luigiClient: LuigiClient;
   projectId: string;
   hasBack: boolean;
-  callbackValue: string = 'default value';
+  callbackValue = 'default value';
 
   constructor(
     private activatedRoute: ActivatedRoute,
