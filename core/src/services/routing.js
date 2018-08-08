@@ -80,7 +80,7 @@ const replaceVars = (viewUrl, params, prefix) => {
     Object.entries(params).forEach(entry => {
       processedUrl = processedUrl.replace(
         '{' + prefix + entry[0] + '}',
-        entry[1]
+        encodeURIComponent(entry[1])
       );
     });
   }
@@ -135,8 +135,10 @@ const navigateIframe = (config, component, node) => {
       {
         msg: 'luigi.navigate',
         viewUrl: component.get().viewUrl,
-        context: Object.assign({}, componentData.context, { goBackContext }),
-        nodeParams: Object.assign({}, componentData.nodeParams),
+        context: JSON.stringify(
+          Object.assign({}, componentData.context, { goBackContext })
+        ),
+        nodeParams: JSON.stringify(Object.assign({}, componentData.nodeParams)),
         internal: JSON.stringify(component.prepareInternalData())
       },
       '*'
@@ -170,7 +172,9 @@ const parseParams = paramsString => {
     pairs.forEach(pairString => {
       const keyValue = pairString.split('=');
       if (keyValue && keyValue.length > 0) {
-        result[keyValue[0]] = keyValue[1];
+        result[decodeURIComponent(keyValue[0])] = decodeURIComponent(
+          keyValue[1]
+        );
       }
     });
   }

@@ -15,7 +15,7 @@
 
         <h2>Navigation</h2>
         <p><label>path to go:   </label>  <input id="pathInput" type="text"> </p>
-        <p>relative <input id="pathRelativeCB" type="checkbox"></p>
+        <p>with params <input id="withParams" type="text"></p>
         <p>from a context <input id="pathMark" type="text"></p>
         <p>from the closest context <input id="pathClosestMarkCB" type="checkbox"></p>
         <p><button id="pathButton" onclick="go()">GO!</button></p>
@@ -36,21 +36,24 @@
                 if (!to) {
                     return;
                 }
-                var relative = document.getElementById('pathRelativeCB').checked;
-                console.log("RELATIVE: " + relative);
+                var withParams = document.getElementById('withParams').value;
+                console.log("WITH PARAMS: " + withParams);
                 var navigationMark = document.getElementById('pathMark').value;
                 console.log("FROM CONTEXT: " + navigationMark);
                 var closestNavigationMark = document.getElementById('pathClosestMarkCB').checked;
                 console.log("FROM CLOSEST CONTEXT: " + closestNavigationMark);
+                var lm = Luigi.linkManager();
                 if (closestNavigationMark) {
-                    Luigi.linkManager().fromClosestContext().navigate(to, Luigi.getEventData().sessionId);
+                    lm = lm.fromClosestContext();
                 } else if (navigationMark) {
-                    Luigi.linkManager().fromContext(navigationMark).navigate(to, Luigi.getEventData().sessionId);
-                } else if (relative) {
-                    Luigi.linkManager().navigateFromHere(to, Luigi.getEventData().sessionId);
-                } else {
-                    Luigi.linkManager().navigate(to, Luigi.getEventData().sessionId);
+                    lm = lm.fromContext(navigationMark)
                 }
+
+                if (withParams) {
+                   lm = lm.withParams(JSON.parse(withParams));
+                }
+
+                lm.navigate(to, Luigi.getEventData().sessionId);
             };
 
             document.getElementById('pathButton').onclick = go;

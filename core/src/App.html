@@ -78,7 +78,7 @@
         if (data.params.nodeParams) {
             path += '?';
             Object.entries(data.params.nodeParams).forEach(entry => {
-                path += (Routing.getContentViewParamPrefix() + encodeURIComponent(entry[0]) + '=' + encodeURIComponent(entry[1]) + '&');
+                path += (encodeURIComponent(Routing.getContentViewParamPrefix() + entry[0]) + '=' + encodeURIComponent(entry[1]) + '&');
             });
         }
 
@@ -93,7 +93,7 @@
         config.iframe.contentWindow.postMessage({
             msg: 'luigi.init',
             context: JSON.stringify(Object.assign({}, component.get().context, goBackContext)),
-            nodeParams: Object.assign({}, component.get().nodeParams),
+            nodeParams: JSON.stringify(Object.assign({}, component.get().nodeParams)),
             internal: JSON.stringify(component.prepareInternalData())
         }, '*');
     };

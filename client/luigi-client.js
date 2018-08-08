@@ -21,7 +21,7 @@ var client = (function() {
     }
   }
 
-  function setContext(rawData, params) {
+  function setContext(rawData, rawParams) {
     if (typeof rawData === 'string') {
       try {
         eventData = JSON.parse(rawData);
@@ -37,7 +37,15 @@ var client = (function() {
     Luigi.currentEnvironmentId = eventData.currentEnvironmentId;
     Luigi.sessionId = eventData.sessionId;
 
-    nodeParams = params;
+    if (typeof rawParams === 'string') {
+      try {
+        nodeParams = JSON.parse(rawParams);
+      } catch (e) {
+        console.info('unable to parse luigi context data', e);
+      }
+    } else {
+      nodeParams = rawParams;
+    }
 
     // let the app know that context was updated
     if (_contextUpdated) {
@@ -240,6 +248,6 @@ var client = (function() {
   };
 })();
 
-//export { client as LuigiClient };
+export { client as LuigiClient };
 
 window.Luigi = client;

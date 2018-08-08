@@ -2,6 +2,12 @@
   <div class="fd-section__header">
     <h1 class="fd-section__title">Settings of {{ projectId }}</h1>
   </div>
+
+  <div *ngIf="nodeParams" class="fd-panel">
+      Called with params:<br>
+        <p> {{nodeParams}} </p>
+  </div>
+
   <div class="fd-panel">
     LuigiClient hasBack/GoBack:<br>
 
