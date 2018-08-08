@@ -28,7 +28,7 @@ export class SettingsComponent implements OnInit {
       this.hasBack = LuigiClient.linkManager().hasBack();
       this.nodeParams =
         Object.keys(LuigiClient.getNodeParams()).length > 0
-          ? JSON.stringify(LuigiClient.getNodeParams())
+          ? LuigiClient.getNodeParams()
           : null;
       this.cdr.detectChanges();
     });

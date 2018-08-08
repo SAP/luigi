@@ -1,11 +1,15 @@
+<section class="fd-section" *ngIf="nodeParams">
+  <div class="fd-panel">
+    <div class="fd-alert" role="alert">
+      <span class="fd-status-label fd-status-label--available"></span> Called with params:<br />
+      <pre>{{ nodeParams | json }}</pre>
+    </div>
+  </div>
+</section>
+
 <section class="fd-section">
   <div class="fd-section__header">
     <h1 class="fd-section__title">Settings of {{ projectId }}</h1>
-  </div>
-
-  <div *ngIf="nodeParams" class="fd-panel">
-      Called with params:<br>
-        <p> {{nodeParams}} </p>
   </div>
 
   <div class="fd-panel">
