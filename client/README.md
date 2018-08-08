@@ -2,7 +2,7 @@
 
 ## Overview
 
-This project contains a library that allows your application to use all features of the [Luigi framework](../core/README.md).
+This project contains a library that allows your application to use all features of the [Luigi framework](../core).
 
 ## Installation
 
@@ -20,6 +20,4 @@ var LuigiClient = require('@kyma-project/luigi-client').LuigiClient;
 import { LuigiClient } from '@kyma-project/luigi-client';`
 ```
 
-## See it in action
-
-You can see Luigi Client in action by running the [Angular example app](/core/examples/luigi-sample-angular/README.md).
+You can see the Luigi Client in action by running the [Angular example application](/core/examples/luigi-sample-angular).

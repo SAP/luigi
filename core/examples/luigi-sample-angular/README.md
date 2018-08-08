@@ -1,4 +1,8 @@
-# Sample luigi application written in Angular
+# Sample Luigi application written in Angular
+
+## Overview
+
+This is the Angular-based sample application which runs with Luigi framework.
 
 ## Development
 
@@ -13,12 +17,12 @@ To have this application running, follow these steps:
 
 2. Install dependencies.
     ```bash
-    # Lerna bootstrap makes npm install and links cross-dependencies.
+    # The `lerna bootstrap` command executes the Node Package Manager (NPM) installation and links cross-dependencies.
 
     lerna bootstrap
     ```
 
-3. Bundle luigi core.
+3. Bundle the Luigi core.
     ```bash
     # Lerna runs the bundle script in every package where the script exists.
 
@@ -32,17 +36,17 @@ To have this application running, follow these steps:
 
 5. Open it in your browser.
 
-    In your favourite browser, go to http://localhost:4200/
+    Open it in your browser by going to [http://localhost:4200/](http://localhost:4200/)`.
 
-6. Reflect changes on luigi code on the example app.
+6. Reflect changes in the Luigi code on the exemplary application.
 
-    a. For Luigi Core you have to let it bundle again on every change you apply to it. The easiest approach is to open Luigi´s root folder in another tab in your terminal window and have the following running: 
+    - You must let the Luigi core to bundle every change you apply to it. The easiest approach is to open the Luigi root folder in another tab of your terminal window and run the following command: 
     ```bash    
     cd core && npm run bundle -- --watch
     ```
-    b. Luigi Client is not bundled, so you are fine just updating it without bundling. 
+    - The Luigi Client is not bundled, so you are able to update it without bundling.
     
-    c. *The autoreload of your application only updates the application*. Type CMD + R to reflect the changes of the linked modules (Luigi Core and Luigi Client) on the website.
+    - The auto-reload of your application only updates the application. Type `CMD + R` to reflect the changes of the linked modules (Luigi Core and Luigi Client) in the website.
 
 
 <!-- ## Run server
