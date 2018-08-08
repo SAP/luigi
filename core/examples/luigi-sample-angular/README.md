@@ -1,25 +1,53 @@
-# Sample luigi sample application written in Angular
+# Sample Luigi application written in Angular
+
+## Overview
+
+This is the Angular-based sample application which runs with Luigi framework.
 
 ## Development
 
-This mono repository uses [Lerna](https://lernajs.io/) for project management. Ensure that you have installed lerna, if not then run   
-`npm install --global lerna`
+Linking and building with [Lerna](https://lernajs.io/) is the preferred development method. This monorepo uses Lerna for project management. 
 
-To start developing this application, follow these steps:
+To have this application running, follow these steps:
 
-1. Install dependencies.  
-`lerna bootstrap` executes npm install and links cross-dependencies
-```bash
-lerna bootstrap
-```
+1. Install Lerna globally.
+    ```bash
+    npm install -g lerna
+    ```
 
-2. Bundle cross-dependencies.  
-`lerna run` runs the given script in every package referenced in lerna.json
-```bash
-lerna run bundle
-```
+2. Install dependencies.
+    ```bash
+    # The `lerna bootstrap` command executes the Node Package Manager (NPM) installation and links cross-dependencies.
 
-## Run server
+    lerna bootstrap
+    ```
+
+3. Bundle the Luigi core.
+    ```bash
+    # Lerna runs the bundle script in every package where the script exists.
+
+    lerna run bundle
+    ```
+
+4. Start the example application.
+    ```bash
+    npm start
+    ```
+
+5. Open it in your browser by going to [http://localhost:4200/](http://localhost:4200/)`.
+
+6. Reflect changes in the Luigi code on the exemplary application.
+
+    - You must let the Luigi core to bundle every change you apply to it. The easiest approach is to open the Luigi root folder in another tab of your terminal window and run the following command: 
+    ```bash    
+    cd core && npm run bundle -- --watch
+    ```
+    - The Luigi Client is not bundled, so you are able to update it without bundling.
+    
+    - The auto-reload of your application only updates the application. Type `CMD + R` to reflect the changes of the linked Luigi Core and Luigi Client modules in the website.
+
+
+<!-- ## Run server
 * Using Angular CLI (standard): `npm run start`
 
 > If you want to enable path routing instead of hash, run the app without Angular CLI.
@@ -35,4 +63,4 @@ For running OpenID Connect (OIDC) locally, for example with DEX, follow these st
 2. Add `127.0.0.1 your.address` to `/etc/hosts` 
 3. Set __LuigiConfig.auth.use__ to `openIdConnect`
 4. Run using `npm run start -- --host your.address`
-5. Open [your.address:4200](http://your.address:4200)
+5. Open [your.address:4200](http://your.address:4200) -->
