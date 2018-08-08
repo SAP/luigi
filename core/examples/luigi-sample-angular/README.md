@@ -34,9 +34,7 @@ To have this application running, follow these steps:
     npm start
     ```
 
-5. Open it in your browser.
-
-    Open it in your browser by going to [http://localhost:4200/](http://localhost:4200/)`.
+5. Open it in your browser by going to [http://localhost:4200/](http://localhost:4200/)`.
 
 6. Reflect changes in the Luigi code on the exemplary application.
 
@@ -46,7 +44,7 @@ To have this application running, follow these steps:
     ```
     - The Luigi Client is not bundled, so you are able to update it without bundling.
     
-    - The auto-reload of your application only updates the application. Type `CMD + R` to reflect the changes of the linked modules (Luigi Core and Luigi Client) in the website.
+    - The auto-reload of your application only updates the application. Type `CMD + R` to reflect the changes of the linked Luigi Core and Luigi Client modules in the website.
 
 
 <!-- ## Run server
