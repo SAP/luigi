@@ -12,7 +12,7 @@ export class SettingsComponent implements OnInit {
   projectId: string;
   hasBack: boolean;
   nodeParams = null;
-  callbackValue: string = 'default value';
+  callbackValue = 'default value';
 
   constructor(
     private activatedRoute: ActivatedRoute,

@@ -145,7 +145,7 @@
                             config.iframe = Routing.getActiveIframe(node);
                             this.set({
                                 'preservedViews': preservedViews,
-                                'goBackContext': e.data.goBackContext
+                                'goBackContext': e.data.goBackContext && JSON.parse(e.data.goBackContext)
                             });
 
                             // TODO: check if handleNavigation or history pop to update hash / path

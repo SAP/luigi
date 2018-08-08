@@ -219,7 +219,10 @@ var client = (function() {
         goBack: function(goBackValue) {
           if (this.hasBack()) {
             window.parent.postMessage(
-              { msg: 'luigi.navigation.back', goBackContext: goBackValue },
+              {
+                msg: 'luigi.navigation.back',
+                goBackContext: goBackValue && JSON.stringify(goBackValue)
+              },
               '*'
             );
           }

@@ -17,7 +17,7 @@
         <input type="text" [(ngModel)]="callbackValue" /></label>
       </p>
       <p>
-        Then <a href="javascript:void(0)" (click)="goBack()">click here</a> to go back to your preserved view.
+      <button class="fd-button" (click)="goBack()">Click here</button> to go back to your preserved view.
       </p>
     </div>
     <div *ngIf="!hasBack">
