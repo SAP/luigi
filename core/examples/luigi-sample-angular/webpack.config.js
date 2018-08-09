@@ -1,4 +1,4 @@
-const fs = require('fs');
+
 const path = require('path');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const ProgressPlugin = require('webpack/lib/ProgressPlugin');
@@ -16,14 +16,6 @@ const {
 } = require('webpack');
 const { AngularCompilerPlugin } = require('@ngtools/webpack');
 
-const nodeModules = path.join(process.cwd(), 'node_modules');
-const realNodeModules = fs.realpathSync(nodeModules);
-const genDirNodeModules = path.join(
-  process.cwd(),
-  'src',
-  '$$_gendir',
-  'node_modules'
-);
 const entryPoints = [
   'inline',
   'polyfills',
@@ -460,16 +452,7 @@ module.exports = {
   ],
   optimization: {
     splitChunks: {
-      cacheGroups: {
-        vendor: {
-          name: 'vendor',
-          minChunks: 2
-        },
-        main: {
-          name: 'main',
-          minChunks: 2
-        }
-      }
+      chunks: 'all'
     }
   },
   node: {
