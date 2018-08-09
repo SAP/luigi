@@ -2,8 +2,9 @@
 
 ## Overview
 
-This repository contains sample applications showing Luigi framework capabilities.
+This repository contains sample applications showing the Luigi framework capabilities.
 
 ## Installation
 
-See particular subfolders for installation instructions.
+See the particular subfolders for the installation instructions:
+* [Angular example application](/core/examples/luigi-sample-angular)
