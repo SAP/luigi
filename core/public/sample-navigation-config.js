@@ -183,11 +183,12 @@ window.Luigi.setConfig({
     ],
     // hides the navigation completely if set to true
     hideNav: false
+  },
+  routing: {
+    // uses hash based navigation if set to true
+    useHashRouting: true
   }
 });
-
-// uses hash based navigation if set to true
-isHashRoute = true;
 
 // upon route change, context will get updated and your app should also know about it
 // (eg pushing the context to the app state/store)

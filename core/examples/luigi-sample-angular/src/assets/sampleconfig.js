@@ -1,5 +1,3 @@
-var isHashRoute = true;
-
 var getAllProjects = function() {
   return new Promise(function(resolve) {
     resolve([
@@ -283,5 +281,9 @@ Luigi.setConfig({
       }
     ],
     hideNav: false
+  },
+
+  routing: {
+    useHashRouting: true
   }
 });

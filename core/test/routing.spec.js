@@ -44,11 +44,11 @@ describe('Routing', () => {
       // given
       const path = '#/projects';
       const expectedViewUrl = '/aaa.html';
-      const mockBrowser = new MockBrowser();
-      const window = mockBrowser.getWindow();
-      global.window = window;
-      const document = mockBrowser.getDocument();
-      global.document = document;
+      // const mockBrowser = new MockBrowser();
+      // const window = mockBrowser.getWindow();
+      // global.window = window;
+      // const document = mockBrowser.getDocument();
+      // global.document = document;
 
       const component = {
         set: obj => {
@@ -90,8 +90,8 @@ describe('Routing', () => {
       };
 
       // when
-      window.LuigiConfig = sampleLuigiConfig;
-      window.LuigiConfig.navigation.hideNav = false;
+      window.Luigi.config = sampleLuigiConfig;
+      window.Luigi.config.navigation.hideNav = false;
       sinon.stub(document, 'createElement').callsFake(() => ({ src: null }));
       await routing.handleRouteChange(path, component, node, config, window);
 
@@ -99,7 +99,7 @@ describe('Routing', () => {
       assert.equal(component.get().viewUrl, expectedViewUrl);
       assert.equal(
         component.get().hideNav,
-        window.LuigiConfig.navigation.hideNav
+        window.Luigi.config.navigation.hideNav
       );
     });
 
@@ -165,8 +165,9 @@ describe('Routing', () => {
       component.set({ preservedViews });
 
       // when
-      window.LuigiConfig = sampleLuigiConfig;
-      window.LuigiConfig.navigation.hideNav = false;
+      window.Luigi = {};
+      window.Luigi.config = sampleLuigiConfig;
+      window.Luigi.config.navigation.hideNav = false;
       const docMock = sinon.mock(document);
       docMock
         .expects('createElement')
@@ -179,7 +180,7 @@ describe('Routing', () => {
       assert.equal(component.get().viewUrl, expectedViewUrl);
       assert.equal(
         component.get().hideNav,
-        window.LuigiConfig.navigation.hideNav
+        window.Luigi.config.navigation.hideNav
       );
 
       assert.equal(component.get().preservedViews.length, 1);
@@ -202,12 +203,19 @@ describe('Routing', () => {
     it('should set proper location hash with parent node', () => {
       // given
       const expectedRoute = '#/projects/project-one';
-      const mockBrowser = new MockBrowser();
-      const window = mockBrowser.getWindow();
-      const document = mockBrowser.getDocument();
+      // const mockBrowser = new MockBrowser();
+      // const window = mockBrowser.getWindow();
+      // const document = mockBrowser.getDocument();
 
       // when
-      window.isHashRoute = true;
+      window.Luigi = {
+        config: {
+          routing: {
+            useHashRouting: true
+          }
+        }
+      };
+      // window.isHashRoute = true;
       routing.handleRouteClick(nodeWithParent, window, document);
 
       // then
@@ -222,7 +230,15 @@ describe('Routing', () => {
       const document = mockBrowser.getDocument();
 
       // when
-      window.isHashRoute = true;
+      window.Luigi = {
+        config: {
+          routing: {
+            useHashRouting: true
+          }
+        }
+      };
+      // window.isHashRoute = true;
+
       routing.handleRouteClick(nodeWithoutParent, window, document);
 
       // then
@@ -233,15 +249,23 @@ describe('Routing', () => {
       // given
       const expectedRoute = '/projects/project-one';
       const expectedPushStateCallsNum = 1;
-      const mockBrowser = new MockBrowser();
-      const window = mockBrowser.getWindow();
-      const document = mockBrowser.getDocument();
+      //  const mockBrowser = new MockBrowser();
+      //  const window = mockBrowser.getWindow();
+      //  global.window = window;
+      //  const document = mockBrowser.getDocument();
 
       window.history.pushState = sinon.spy();
       const pushStateCallsNum = window.history.pushState.callCount;
 
       // when
-      window.isHashRoute = false;
+      window.Luigi = {
+        config: {
+          routing: {
+            useHashRouting: false
+          }
+        }
+      };
+      // window.isHashRoute = false;
       routing.handleRouteClick(nodeWithParent, window, document);
 
       // then
@@ -264,7 +288,14 @@ describe('Routing', () => {
       const pushStateCallsNum = window.history.pushState.callCount;
 
       // when
-      window.isHashRoute = false;
+      window.Luigi = {
+        config: {
+          routing: {
+            useHashRouting: false
+          }
+        }
+      };
+      // window.isHashRoute = false;
       routing.handleRouteClick(nodeWithoutParent, window, document);
 
       // then
@@ -279,16 +310,22 @@ describe('Routing', () => {
       // given
       const expectedRoute = '/projects';
       const expectedDispatchCallsNum = 1;
-      const mockBrowser = new MockBrowser();
-      const window = mockBrowser.getWindow();
-      const document = mockBrowser.getDocument();
+      // const mockBrowser = new MockBrowser();
+      // const window = mockBrowser.getWindow();
+      // const document = mockBrowser.getDocument();
 
       window.history.pushState = sinon.spy();
       window.dispatchEvent = sinon.spy();
       const dispatchCallsNum = window.dispatchEvent.callCount;
 
       // when
-      window.isHashRoute = false;
+      window.Luigi = {
+        config: {
+          routing: {
+            useHashRouting: false
+          }
+        }
+      };
       routing.handleRouteClick(nodeWithoutParent, window, document);
 
       // then

@@ -8,6 +8,7 @@
     import TopNav from './TopNav.html';
     import LeftNav from './LeftNav.html';
     import * as Routing from './services/routing.js';
+    import { getConfigValue }  from './services/config.js';
     import { isFunction } from './utilities/helpers.js';
 
     const trimLeadingSlash = (str) => str.replace(/^\//, '');
@@ -15,7 +16,7 @@
         if (preservedViews.length === 0) {
             return false;
         }
-        // we're only checking the previous goBack state and 
+        // we're only checking the previous goBack state and
         // compare it with the new route
         const routePath = routeHash.startsWith('/') ? routeHash : `/${routeHash}`;
         const firstPreservedView = preservedViews[0];
@@ -152,7 +153,7 @@
                 // them to prevent memory leaks
                 // this.on('destroy', storeListener.cancel);
 
-                if (window['isHashRoute']) {
+                if (getConfigValue('routing.useHashRouting')) {
                     return enableHashRouting(this, node, config);
                 }
 
@@ -183,7 +184,7 @@
     }
 
     :global(body) {
-        -webkit-font-smoothing: antialiased; 
+        -webkit-font-smoothing: antialiased;
         margin: 0;
         line-height: 1.42857;
     }

@@ -208,7 +208,7 @@ export const navigateTo = (
 ) => {
   const event = documentElem.createEvent('Event');
   event.initEvent('popstate', true, true);
-  if (windowElem.isHashRoute) {
+  if (getConfigValue('routing.useHashRouting')) {
     return (windowElem.location.hash = route);
   }
 
