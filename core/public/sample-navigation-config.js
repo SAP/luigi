@@ -186,7 +186,8 @@ window.Luigi.setConfig({
   },
   routing: {
     // uses hash based navigation if set to true
-    useHashRouting: true
+    useHashRouting: true,
+    nodeParamPrefix: '~'
   }
 });
 
