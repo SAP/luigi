@@ -242,8 +242,9 @@ describe('Routing', () => {
       };
 
       // when
-      window.LuigiConfig = sampleLuigiConfig;
-      window.LuigiConfig.navigation.hideNav = false;
+      window.Luigi = {};
+      window.Luigi.config = sampleLuigiConfig;
+      window.Luigi.config.navigation.hideNav = false;
       const iframeMock = { src: null };
       sinon.stub(document, 'createElement').callsFake(() => iframeMock);
       await routing.handleRouteChange(path, component, node, config, window);
@@ -253,7 +254,7 @@ describe('Routing', () => {
       assert.equal(iframeMock.src, expectedProcessedViewUrl);
       assert.equal(
         component.get().hideNav,
-        window.LuigiConfig.navigation.hideNav
+        window.Luigi.config.navigation.hideNav
       );
     });
 
@@ -310,8 +311,9 @@ describe('Routing', () => {
       };
 
       // when
-      window.LuigiConfig = sampleLuigiConfig;
-      window.LuigiConfig.navigation.hideNav = false;
+      window.Luigi = {};
+      window.Luigi.config = sampleLuigiConfig;
+      window.Luigi.config.navigation.hideNav = false;
       const iframeMock = { src: null };
       sinon.stub(document, 'createElement').callsFake(() => iframeMock);
       await routing.handleRouteChange(path, component, node, config, window);
@@ -321,7 +323,7 @@ describe('Routing', () => {
       assert.equal(iframeMock.src, expectedProcessedViewUrl);
       assert.equal(
         component.get().hideNav,
-        window.LuigiConfig.navigation.hideNav
+        window.Luigi.config.navigation.hideNav
       );
     });
   });
