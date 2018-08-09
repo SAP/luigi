@@ -1,51 +1,55 @@
-# Sample luigi application written in Vue.JS
+# Sample Luigi application written in Vue.JS
+
+## Overview
+
+This is the Vue.JS-based sample application which runs with Luigi framework.
 
 ## Development
 
-This mono repository uses [Lerna](https://lernajs.io/) for project management. Ensure that you have installed lerna, if not then run   
-`npm install --global lerna`
+Linking and building with [Lerna](https://lernajs.io/) is the preferred development method. This monorepo uses Lerna for project management. 
 
-To start developing this application, follow these steps:
+To have this application running, follow these steps:
 
-1. Install dependencies.  
-`lerna bootstrap` executes npm install and links cross-dependencies
-```bash
-lerna bootstrap
-```
+1. Ensure that you have installed Lerna. If not, run the following command.
+    
+    Install Lerna globally
+    
+    ```bash
+    npm install -g lerna
+    ```
 
-2. Bundle cross-dependencies.  
-`lerna run` runs the given script in every package referenced in lerna.json
-```bash
-lerna run bundle
-```
+2. Install dependencies.
+    ```bash
+    # The `lerna bootstrap` command executes the Node Package Manager (NPM) installation and links cross-dependencies.
 
-## Run server
+    lerna bootstrap
+    ```
 
-### Compiles and hot-reloads for development
-```
-npm run serve
-```
+3. Bundle the Luigi core.
+    ```bash
+    # Lerna runs the bundle script in every package where the script exists and were referenced in the lerna.json.
 
-### Compiles and minifies for production
+    lerna run bundle
+    ```
+    
+4. Start the example application.
+    ```bash
+    cd core/examples/luigi-sample-vue
+    npm run serve
+    ```
+    
+5. Open it in your browser by going to [http://localhost:8081/](http://localhost:8081/)`.
+
+### Testing
+
+This example contains basic unit test which you can execute with `npm run test:unit`
+Additionally this example contains a small e2e integration test suit which can be executed with `npm run test:e2e`.
+
+### Build
+
 ```
 npm run build
 ```
 
-### Lints and fixes files
-```
-npm run lint
-```
-
-### Run your unit tests
-```
-npm run test:unit
-```
-
-### Run your end-to-end tests
-```
-npm run test:e2e
-```
-
-## Use OpenID Connect
-
-currently only available in the angular sample
+The build compiles and minifies the source files for production usage.
+The build generates a `dist` folder which can be served via a webserver.
