@@ -42,13 +42,17 @@
         <app-code-snippet data="luigiClient.linkManager().fromContext('project').navigate('/settings')"></app-code-snippet>
       </li>
       <li class="fd-list-group__item">
+        <a href="javascript:void(0)" (click)="luigiClient.linkManager().fromClosestContext().withParams({foo: 'bar'}).navigate('settings')">project to settings with params (foo=bar)</a>
+        <app-code-snippet data="luigiClient.linkManager().fromClosestContext().withParams({foo: 'bar'}).navigate('settings')"></app-code-snippet>
+      </li>
+      <li class="fd-list-group__item">
         <a href="javascript:void(0)" (click)="luigiClient.linkManager().fromContext('FOOMARK').navigate('/settings')">parent by name: with nonexisting context</a> (look at the console)
         <app-code-snippet data="luigiClient.linkManager().fromContext('FOOMARK').navigate('/settings')"></app-code-snippet>
       </li>
       <li class="fd-list-group__item">
-      <a href="javascript:void(0)" (click)="luigiClient.linkManager().fromContext('project').navigate('/settings', null, true)">with preserved view: project to settings and back</a>
-      <app-code-snippet data="luigiClient.linkManager().fromContext('project').navigate('/settings', null, true)"></app-code-snippet>
-    </li>
+        <a href="javascript:void(0)" (click)="luigiClient.linkManager().fromContext('project').navigate('/settings', null, true)">with preserved view: project to settings and back</a>
+        <app-code-snippet data="luigiClient.linkManager().fromContext('project').navigate('/settings', null, true)"></app-code-snippet>
+      </li>
     </ul>
   </div>
 </section>

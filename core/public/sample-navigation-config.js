@@ -183,6 +183,9 @@ window.LuigiConfig = {
     ],
     // hides the navigation completely if set to true
     hideNav: false
+  },
+  routing: {
+    nodeParamPrefix: '~'
   }
 };
 

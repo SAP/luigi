@@ -4,6 +4,7 @@ import { getPathWithoutHash, getUrlWithoutHash } from '../utilities/helpers';
 
 const iframeNavFallbackTimeout = 2000;
 let timeoutHandle;
+const defaultContentViewParamPrefix = '~';
 
 const getViewUrl = pathData => {
   const lastElement = [...pathData.navigationPath].pop();
@@ -24,7 +25,10 @@ export const getActiveIframe = node => {
 
 export const setActiveIframeToPrevious = node => {
   const iframesInDom = Array.from(node.children);
-  if (iframesInDom.length === 1) {
+  if (iframesInDom.length === 0) {
+    return;
+  } else if (iframesInDom.length === 1) {
+    iframesInDom[0].style.display = 'block';
     return;
   }
   hideElementChildren(node);
@@ -56,8 +60,50 @@ export const isNotSameDomain = (config, component) => {
   return true;
 };
 
+export const getContentViewParamPrefix = () => {
+  return (
+    getConfigValue('routing.contentViewParamPrefix') ||
+    defaultContentViewParamPrefix
+  );
+};
+
+const contextVarPrefix = 'context.';
+const nodeParamsVarPrefix = 'nodeParams.';
+
+const escapeRegExp = string => {
+  return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+};
+
+const replaceVars = (viewUrl, params, prefix) => {
+  let processedUrl = viewUrl;
+  if (params) {
+    Object.entries(params).forEach(entry => {
+      processedUrl = processedUrl.replace(
+        '{' + prefix + entry[0] + '}',
+        encodeURIComponent(entry[1])
+      );
+    });
+  }
+  processedUrl = processedUrl.replace(
+    new RegExp('\\{' + escapeRegExp(prefix) + '[^\\}]+\\}', 'g'),
+    ''
+  );
+  return processedUrl;
+};
+
 const navigateIframe = (config, component, node) => {
   clearTimeout(timeoutHandle);
+  const componentData = component.get();
+  let viewUrl = componentData.viewUrl;
+  if (viewUrl) {
+    viewUrl = replaceVars(viewUrl, componentData.context, contextVarPrefix);
+    viewUrl = replaceVars(
+      viewUrl,
+      componentData.nodeParams,
+      nodeParamsVarPrefix
+    );
+  }
+
   if (isNotSameDomain(config, component) || config.builderCompatibilityMode) {
     const componentData = component.get();
     // preserveView, hide other frames, else remove
@@ -69,14 +115,14 @@ const navigateIframe = (config, component, node) => {
 
     if (componentData.viewUrl) {
       config.iframe = document.createElement('iframe');
-      config.iframe.src = componentData.viewUrl;
+      config.iframe.src = viewUrl;
 
       node.prepend(config.iframe);
 
       if (config.builderCompatibilityMode) {
         config.iframe.addEventListener('load', () => {
           config.iframe.contentWindow.postMessage(
-            ['init', JSON.stringify(component.get().context)],
+            ['init', JSON.stringify(componentData.context)],
             '*'
           );
         });
@@ -90,8 +136,9 @@ const navigateIframe = (config, component, node) => {
         msg: 'luigi.navigate',
         viewUrl: component.get().viewUrl,
         context: JSON.stringify(
-          Object.assign({}, component.get().context, { goBackContext })
+          Object.assign({}, componentData.context, { goBackContext })
         ),
+        nodeParams: JSON.stringify(Object.assign({}, componentData.nodeParams)),
         internal: JSON.stringify(component.prepareInternalData())
       },
       '*'
@@ -117,20 +164,53 @@ const navigateIframe = (config, component, node) => {
   }
 };
 
-const buildRoute = (node, path) =>
+const parseParams = paramsString => {
+  const result = {};
+  const viewParamString = paramsString;
+  const pairs = viewParamString ? viewParamString.split('&') : null;
+  if (pairs) {
+    pairs.forEach(pairString => {
+      const keyValue = pairString.split('=');
+      if (keyValue && keyValue.length > 0) {
+        result[decodeURIComponent(keyValue[0])] = decodeURIComponent(
+          keyValue[1]
+        );
+      }
+    });
+  }
+  return result;
+};
+
+const getNodeParams = params => {
+  const result = {};
+  const paramPrefix = getContentViewParamPrefix();
+  if (params) {
+    Object.entries(params).forEach(entry => {
+      if (entry[0].startsWith(paramPrefix)) {
+        const paramName = entry[0].substr(paramPrefix.length);
+        result[paramName] = entry[1];
+      }
+    });
+  }
+  return result;
+};
+
+const buildRoute = (node, path, params) =>
   !node.parent
-    ? path
-    : buildRoute(node.parent, `/${node.parent.pathSegment}${path}`);
+    ? path + (params ? '?' + params : '')
+    : buildRoute(node.parent, `/${node.parent.pathSegment}${path}`, params);
 
 export const handleRouteChange = async (path, component, node, config) => {
   try {
     const pathUrl = path && path.length ? getPathWithoutHash(path) : path;
     const pathData = await getNavigationPath(
       getConfigValueAsync('navigation.nodes'),
-      pathUrl
+      pathUrl.split('?')[0]
     );
     const hideNav = getConfigValue('navigation.hideNav');
     const viewUrl = getViewUrl(pathData);
+    const params = parseParams(pathUrl.split('?')[1]);
+    const nodeParams = getNodeParams(params);
 
     component.set({
       hideNav: hideNav,
@@ -140,7 +220,8 @@ export const handleRouteChange = async (path, component, node, config) => {
         pathData.navigationPath && pathData.navigationPath.length > 0
           ? pathData.navigationPath[pathData.navigationPath.length - 1]
           : null,
-      context: pathData.context
+      context: pathData.context,
+      nodeParams: nodeParams
     });
 
     navigateIframe(config, component, node);
@@ -178,14 +259,15 @@ export const matchPath = async path => {
     const pathUrl = 0 < path.length ? getPathWithoutHash(path) : path;
     const pathData = await getNavigationPath(
       getConfigValueAsync('navigation.nodes'),
-      pathUrl
+      pathUrl.split('?')[0]
     );
     if (pathData.navigationPath.length > 0) {
       const lastNode =
         pathData.navigationPath[pathData.navigationPath.length - 1];
       return buildRoute(
         lastNode,
-        '/' + (lastNode.pathSegment ? lastNode.pathSegment : '')
+        '/' + (lastNode.pathSegment ? lastNode.pathSegment : ''),
+        pathUrl.split('?')[1]
       );
     }
   } catch (err) {
