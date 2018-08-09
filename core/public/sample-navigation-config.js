@@ -158,7 +158,7 @@ const projectsNavProviderFn = context => {
 };
 
 // Luigi configuration provided as a global variable
-window.LuigiConfig = {
+window.Luigi.setConfig({
   // navigation structure and settings
   navigation: {
     nodes: [
@@ -184,7 +184,7 @@ window.LuigiConfig = {
     // hides the navigation completely if set to true
     hideNav: false
   }
-};
+});
 
 // uses hash based navigation if set to true
 isHashRoute = true;

@@ -1,5 +1,15 @@
 import { isFunction, isPromise } from '../utilities/helpers.js';
 
+(function() {
+  window.Luigi = {
+    setConfig: configInput => {
+      window.Luigi.config = configInput;
+    },
+    getConfig: () => {
+      return window.Luigi.config;
+    }
+  };
+})();
 /*
  * Gets value of the given property on the given object.
  */
@@ -17,7 +27,7 @@ export const getConfigValueFromObject = (object, property) => {
  * Gets value of the given property on Luigi config object.
  */
 export const getConfigValue = property => {
-  return getConfigValueFromObject(window.LuigiConfig, property);
+  return getConfigValueFromObject(window.Luigi.config, property);
 };
 
 /*
@@ -47,7 +57,7 @@ export const getConfigValueFromObjectAsync = (
  */
 export const getConfigValueAsync = (property, ...parameters) => {
   return getConfigValueFromObjectAsync(
-    window.LuigiConfig,
+    window.Luigi.config,
     property,
     parameters
   );
