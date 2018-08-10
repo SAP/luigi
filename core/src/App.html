@@ -209,6 +209,10 @@
     div :global(div) {
       font-family: '72', sans-serif;
     }
+    
+    :global(a) {
+      cursor: pointer;
+    }
 
     .iframeContainer {
       position: fixed;
@@ -216,6 +220,10 @@
       left: 320px;
       bottom: 0;
       right: 0;
+      width: auto;
+      min-width: auto;
+      min-height: auto;
+      display: block;
     }
 
     .iframeContainer :global(iframe) {
