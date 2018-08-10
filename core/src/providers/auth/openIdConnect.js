@@ -5,7 +5,8 @@ export class openIdConnect {
   constructor(settings = {}) {
     const defaultSettings = {
       redirect_uri: window.location.origin,
-      post_logout_redirect_uri: window.location.origin,
+      post_logout_redirect_uri:
+        window.location.origin + '/luigi-core/auth/oauth2/logout.html',
       response_type: 'id_token token',
       filterProtocolClaims: true,
       loadUserInfo: true,

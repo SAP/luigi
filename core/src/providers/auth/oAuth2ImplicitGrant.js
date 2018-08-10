@@ -26,62 +26,57 @@ export class oAuth2ImplicitGrant {
   }
 
   login() {
-    const settings = this.settings;
-    const generatedNonce =
-      (settings.nonceFn && settings.nonceFn()) || this._generateNonce();
+    return new Promise((resolve, reject) => {
+      const settings = this.settings;
+      const generatedNonce =
+        (settings.nonceFn && settings.nonceFn()) || this._generateNonce();
 
-    const createInputElement = (name, value) => {
-      const inputElem = document.createElement('input');
-      inputElem.name = name;
-      inputElem.id = name;
-      inputElem.value = value;
-      inputElem.type = 'hidden';
-      return inputElem;
-    };
+      const createInputElement = (name, value) => {
+        const inputElem = document.createElement('input');
+        inputElem.name = name;
+        inputElem.id = name;
+        inputElem.value = value;
+        inputElem.type = 'hidden';
+        return inputElem;
+      };
 
-    const formElem = document.createElement('form');
-    formElem.name = 'signIn';
-    formElem.id = 'signIn';
-    formElem.method = 'POST';
-    // formElem.target = 'signInTarget';
-    formElem.target = '_self';
-    formElem.action = settings.authorizeUrl;
+      const formElem = document.createElement('form');
+      formElem.name = 'signIn';
+      formElem.id = 'signIn';
+      formElem.method = 'POST';
+      // formElem.target = 'signInTarget';
+      formElem.target = '_self';
+      formElem.action = settings.authorizeUrl;
 
-    settings.oAuthData.state = window.location.href;
+      settings.oAuthData.state = window.location.href;
 
-    for (const name in settings.oAuthData) {
-      const node = createInputElement(name, settings.oAuthData[name]);
+      for (const name in settings.oAuthData) {
+        const node = createInputElement(name, settings.oAuthData[name]);
+        formElem.appendChild(node.cloneNode());
+      }
+
+      const node = createInputElement('nonce', generatedNonce);
       formElem.appendChild(node.cloneNode());
-    }
 
-    const node = createInputElement('nonce', generatedNonce);
-    formElem.appendChild(node.cloneNode());
-
-    document.getElementById('authorization').appendChild(formElem);
-    document.querySelector('form#signIn').submit();
+      document.getElementsByTagName('body')[0].appendChild(formElem);
+      document.querySelector('form#signIn').submit();
+      // TODO: We're not resolving the promise at any time,
+      // since oauth2 is redirecting off the page
+      // maybe it is possible to catch errors
+      document.querySelector('form#signIn').addEventListener('load', e => {
+        console.log('load, e', e, this);
+      });
+    });
   }
 
-  logout(authData, logoutCallback) {
-    // yaas logout
+  logout(authData) {
     const settings = this.settings;
-    const logoutreq = `${settings.logoutUrl}?id_token_hint=${
+    const logouturl = `${settings.logoutUrl}?id_token_hint=${
       authData.idToken
     }&client_id=${settings.oAuthData.client_id}&post_logout_redirect_uri=${
       window.location.origin
-    }`;
-
-    const request = new XMLHttpRequest();
-    request.open('GET', logoutreq);
-    request.addEventListener('load', event => {
-      if (request.status >= 200 && request.status < 300) {
-        console.info(request.responseText);
-        return logoutCallback();
-      }
-
-      console.warn(request.statusText, request.responseText);
-      logoutCallback();
-    });
-    request.send();
+    }/luigi-core/auth/oauth2/logout.html`;
+    window.location.href = logouturl;
   }
 
   renewToken() {
