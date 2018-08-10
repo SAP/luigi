@@ -49,12 +49,6 @@ describe('Routing', () => {
       // given
       const path = '#/projects';
       const expectedViewUrl = '/aaa.html';
-      // const mockBrowser = new MockBrowser();
-      // const window = mockBrowser.getWindow();
-      // global.window = window;
-      // const document = mockBrowser.getDocument();
-      // global.document = document;
-
       const component = {
         set: obj => {
           component.get = () => obj;
@@ -196,12 +190,6 @@ describe('Routing', () => {
       const path = '#/projects/a1?~param1=tets';
       const expectedViewUrl = '{context.varA1}/a1.html#p={nodeParams.param1}';
       const expectedProcessedViewUrl = 'maskopatol/a1.html#p=tets';
-      const mockBrowser = new MockBrowser();
-      const window = mockBrowser.getWindow();
-      global.window = window;
-      const document = mockBrowser.getDocument();
-      global.document = document;
-
       const component = {
         set: obj => {
           component.get = () => obj;
@@ -341,9 +329,6 @@ describe('Routing', () => {
     it('should set proper location hash with parent node', () => {
       // given
       const expectedRoute = '#/projects/project-one';
-      // const mockBrowser = new MockBrowser();
-      // const window = mockBrowser.getWindow();
-      // const document = mockBrowser.getDocument();
 
       // when
       window.Luigi = {
@@ -353,7 +338,6 @@ describe('Routing', () => {
           }
         }
       };
-      // window.isHashRoute = true;
       routing.handleRouteClick(nodeWithParent, window, document);
 
       // then
@@ -363,9 +347,6 @@ describe('Routing', () => {
     it('should set proper location hash with normal node', () => {
       // given
       const expectedRoute = '#/projects';
-      const mockBrowser = new MockBrowser();
-      const window = mockBrowser.getWindow();
-      const document = mockBrowser.getDocument();
 
       // when
       window.Luigi = {
@@ -375,7 +356,6 @@ describe('Routing', () => {
           }
         }
       };
-      // window.isHashRoute = true;
 
       routing.handleRouteClick(nodeWithoutParent, window, document);
 
@@ -387,10 +367,6 @@ describe('Routing', () => {
       // given
       const expectedRoute = '/projects/project-one';
       const expectedPushStateCallsNum = 1;
-      //  const mockBrowser = new MockBrowser();
-      //  const window = mockBrowser.getWindow();
-      //  global.window = window;
-      //  const document = mockBrowser.getDocument();
 
       window.history.pushState = sinon.spy();
       const pushStateCallsNum = window.history.pushState.callCount;
@@ -403,7 +379,6 @@ describe('Routing', () => {
           }
         }
       };
-      // window.isHashRoute = false;
       routing.handleRouteClick(nodeWithParent, window, document);
 
       // then
@@ -418,9 +393,6 @@ describe('Routing', () => {
       // given
       const expectedRoute = '/projects';
       const expectedPushStateCallsNum = 1;
-      const mockBrowser = new MockBrowser();
-      const window = mockBrowser.getWindow();
-      const document = mockBrowser.getDocument();
 
       window.history.pushState = sinon.spy();
       const pushStateCallsNum = window.history.pushState.callCount;
@@ -433,7 +405,6 @@ describe('Routing', () => {
           }
         }
       };
-      // window.isHashRoute = false;
       routing.handleRouteClick(nodeWithoutParent, window, document);
 
       // then
@@ -448,9 +419,6 @@ describe('Routing', () => {
       // given
       const expectedRoute = '/projects';
       const expectedDispatchCallsNum = 1;
-      // const mockBrowser = new MockBrowser();
-      // const window = mockBrowser.getWindow();
-      // const document = mockBrowser.getDocument();
 
       window.history.pushState = sinon.spy();
       window.dispatchEvent = sinon.spy();
