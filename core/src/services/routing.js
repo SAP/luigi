@@ -10,6 +10,26 @@ const getViewUrl = pathData => {
   return lastElement ? lastElement.viewUrl : '';
 };
 
+const getDefaultPathSegment = function(pathData) {
+  const lastElement = [...pathData.navigationPath].pop();
+
+  if (lastElement.defaultPathSegment) {
+    const pathExists = lastElement.children.find(
+      childNode => childNode.pathSegment === lastElement.defaultPathSegment
+    );
+
+    return pathExists
+      ? lastElement.defaultPathSegment
+      : getFirstChildPathSegment();
+  } else {
+    return getFirstChildPathSegment();
+  }
+
+  function getFirstChildPathSegment() {
+    return lastElement.children[0].pathSegment;
+  }
+};
+
 const hideElementChildren = node => {
   if (node.children) {
     Array.from(node.children).forEach(child => {
@@ -131,6 +151,12 @@ export const handleRouteChange = async (path, component, node, config) => {
     );
     const hideNav = getConfigValue('navigation.hideNav');
     const viewUrl = getViewUrl(pathData);
+
+    if (path !== '' && !viewUrl) {
+      const defaultPathSegment = getDefaultPathSegment(pathData);
+      navigateTo(`/${pathUrl}/${defaultPathSegment}`);
+      return;
+    }
 
     component.set({
       hideNav: hideNav,
