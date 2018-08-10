@@ -31,6 +31,21 @@ export const getConfigValue = property => {
 };
 
 /*
+ * Gets boolean value of the given property on Luigi config object.
+ * Function return true if the property value is equal true or 'true'. Otherwise the function returns false.
+ */
+export const getConfigBooleanValue = property => {
+  const configuredValue = getConfigValueFromObject(
+    window.Luigi.config,
+    property
+  );
+  if (configuredValue === true || configuredValue === 'true') {
+    return true;
+  }
+  return false;
+};
+
+/*
  * Gets value of the given property on the given object.
  * If the value is a Function it is called and the result of that call is the value.
  * If the value is not a Promise it is wrapped to a Promise so that the returned value is definitely a Promise.

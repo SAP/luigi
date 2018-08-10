@@ -45,7 +45,7 @@
     import Backdrop from './Backdrop.html';
     import { getChildren } from './services/navigation.js';
     import { handleRouteClick } from './services/routing.js';
-    import { getConfigValue } from './services/config.js';
+    import { getConfigValue, getConfigBooleanValue } from './services/config.js';
 
     const getNodes = (children, pathData) => {
         if (children && 0 < children.length) {
@@ -108,7 +108,7 @@
     export default {
         oncreate() {
             this.set({
-                hideNavComponent: getConfigValue('settings.hideNavigation')
+                hideNavComponent: getConfigBooleanValue('settings.hideNavigation')
             });
 
         },

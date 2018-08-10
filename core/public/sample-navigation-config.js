@@ -189,7 +189,8 @@ window.Luigi.setConfig({
   },
   settings: {
     // hides the navigation completely if set to true
-    hideNavigation: false
+    //hideNavigation: true
+    //backdropDisabled : true
   }
 });
 
