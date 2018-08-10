@@ -1,8 +1,5 @@
 const chai = require('chai');
-const expect = chai.expect;
 const assert = chai.assert;
-const sinon = require('sinon');
-const MockBrowser = require('mock-browser').mocks.MockBrowser;
 const config = require('../src/services/config');
 
 describe('Config', () => {
