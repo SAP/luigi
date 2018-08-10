@@ -207,7 +207,7 @@ export const handleRouteChange = async (path, component, node, config) => {
       getConfigValueAsync('navigation.nodes'),
       pathUrl.split('?')[0]
     );
-    const hideNav = getConfigValue('navigation.hideNav');
+    const hideNav = getConfigValue('settings.hideNavigation');
     const viewUrl = getViewUrl(pathData);
     const params = parseParams(pathUrl.split('?')[1]);
     const nodeParams = getNodeParams(params);

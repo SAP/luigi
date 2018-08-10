@@ -39,6 +39,9 @@ describe('Routing', () => {
             }
           }
         ]
+      },
+      settings: {
+        hideNavigation: false
       }
     };
 
@@ -93,7 +96,6 @@ describe('Routing', () => {
 
       // when
       window.Luigi.config = sampleLuigiConfig;
-      window.Luigi.config.navigation.hideNav = false;
       sinon.stub(document, 'createElement').callsFake(() => ({ src: null }));
       await routing.handleRouteChange(path, component, node, config, window);
 
@@ -101,7 +103,7 @@ describe('Routing', () => {
       assert.equal(component.get().viewUrl, expectedViewUrl);
       assert.equal(
         component.get().hideNav,
-        window.Luigi.config.navigation.hideNav
+        window.Luigi.config.settings.hideNavigation
       );
     });
 
@@ -169,7 +171,6 @@ describe('Routing', () => {
       // when
       window.Luigi = {};
       window.Luigi.config = sampleLuigiConfig;
-      window.Luigi.config.navigation.hideNav = false;
       const docMock = sinon.mock(document);
       docMock
         .expects('createElement')
@@ -182,7 +183,7 @@ describe('Routing', () => {
       assert.equal(component.get().viewUrl, expectedViewUrl);
       assert.equal(
         component.get().hideNav,
-        window.Luigi.config.navigation.hideNav
+        window.Luigi.config.settings.hideNavigation
       );
 
       assert.equal(component.get().preservedViews.length, 1);
@@ -244,7 +245,6 @@ describe('Routing', () => {
       // when
       window.Luigi = {};
       window.Luigi.config = sampleLuigiConfig;
-      window.Luigi.config.navigation.hideNav = false;
       const iframeMock = { src: null };
       sinon.stub(document, 'createElement').callsFake(() => iframeMock);
       await routing.handleRouteChange(path, component, node, config, window);
@@ -254,7 +254,7 @@ describe('Routing', () => {
       assert.equal(iframeMock.src, expectedProcessedViewUrl);
       assert.equal(
         component.get().hideNav,
-        window.Luigi.config.navigation.hideNav
+        window.Luigi.config.settings.hideNavigation
       );
     });
 
@@ -313,7 +313,6 @@ describe('Routing', () => {
       // when
       window.Luigi = {};
       window.Luigi.config = sampleLuigiConfig;
-      window.Luigi.config.navigation.hideNav = false;
       const iframeMock = { src: null };
       sinon.stub(document, 'createElement').callsFake(() => iframeMock);
       await routing.handleRouteChange(path, component, node, config, window);
@@ -323,7 +322,7 @@ describe('Routing', () => {
       assert.equal(iframeMock.src, expectedProcessedViewUrl);
       assert.equal(
         component.get().hideNav,
-        window.Luigi.config.navigation.hideNav
+        window.Luigi.config.settings.hideNavigation
       );
     });
   });

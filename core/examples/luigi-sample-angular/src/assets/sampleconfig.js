@@ -279,11 +279,14 @@ Luigi.setConfig({
           }
         ]
       }
-    ],
-    hideNav: false
+    ]
   },
 
   routing: {
     useHashRouting: true
+  },
+  settings: {
+    hideNavigation: false
+    //backdropDisabled : true
   }
 });

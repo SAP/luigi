@@ -180,14 +180,16 @@ window.Luigi.setConfig({
         viewUrl: '/temp.html',
         children: projectsNavProviderFn
       }
-    ],
-    // hides the navigation completely if set to true
-    hideNav: false
+    ]
   },
   routing: {
     // uses hash based navigation if set to true
     useHashRouting: true,
     nodeParamPrefix: '~'
+  },
+  settings: {
+    // hides the navigation completely if set to true
+    hideNavigation: false
   }
 });
 
