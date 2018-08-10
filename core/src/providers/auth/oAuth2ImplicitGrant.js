@@ -1,4 +1,4 @@
-import { deepMerge } from '../../utilities/helpers.js';
+import { deepMerge, prependOrigin } from '../../utilities/helpers.js';
 
 export class oAuth2ImplicitGrant {
   constructor(settings = {}) {
@@ -8,20 +8,12 @@ export class oAuth2ImplicitGrant {
           window.location.origin + '/luigi-core/auth/oauth2/callback.html',
         response_type: 'id_token token',
         scope: ''
-      }
+      },
+      post_logout_redirect_uri:
+        window.location.origin + '/luigi-core/auth/oauth2/logout.html'
     };
     const mergedSettings = deepMerge(defaultSettings, settings);
 
-    // Prepend current url to redirect_uri, if it is a relative path
-    if (!mergedSettings.oAuthData.redirect_uri.startsWith('http')) {
-      const hasLeadingSlash = mergedSettings.oAuthData.redirect_uri.startsWith(
-        '/'
-      );
-      mergedSettings.oAuthData.redirect_uri =
-        window.location.origin +
-        (hasLeadingSlash ? '' : '/') +
-        mergedSettings.oAuthData.redirect_uri;
-    }
     this.settings = mergedSettings;
   }
 
@@ -48,6 +40,9 @@ export class oAuth2ImplicitGrant {
       formElem.target = '_self';
       formElem.action = settings.authorizeUrl;
 
+      settings.oAuthData.redirect_uri = prependOrigin(
+        settings.oAuthData.redirect_uri
+      );
       settings.oAuthData.state = window.location.href;
 
       for (const name in settings.oAuthData) {
@@ -73,9 +68,11 @@ export class oAuth2ImplicitGrant {
     const settings = this.settings;
     const logouturl = `${settings.logoutUrl}?id_token_hint=${
       authData.idToken
-    }&client_id=${settings.oAuthData.client_id}&post_logout_redirect_uri=${
-      window.location.origin
-    }/luigi-core/auth/oauth2/logout.html`;
+    }&client_id=${
+      settings.oAuthData.client_id
+    }&post_logout_redirect_uri=${prependOrigin(
+      settings.post_logout_redirect_uri
+    )}`;
     window.location.href = logouturl;
   }
 

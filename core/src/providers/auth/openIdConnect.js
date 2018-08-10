@@ -1,4 +1,4 @@
-import { deepMerge } from '../../utilities/helpers.js';
+import { deepMerge, prependOrigin } from '../../utilities/helpers.js';
 import { waitForKeyExistency } from '../../utilities/async-helpers.js';
 
 export class openIdConnect {
@@ -17,15 +17,8 @@ export class openIdConnect {
     const mergedSettings = deepMerge(defaultSettings, settings);
 
     // Prepend current url to redirect_uri, if it is a relative path
-    const prependUrl = path => {
-      if (!path.startsWith('http')) {
-        const hasLeadingSlash = path.startsWith('/') || path === '';
-        return window.location.origin + (hasLeadingSlash ? '' : '/') + path;
-      }
-      return path;
-    };
     ['redirect_uri', 'post_logout_redirect_uri'].forEach(key => {
-      mergedSettings[key] = prependUrl(mergedSettings[key]);
+      mergedSettings[key] = prependOrigin(mergedSettings[key]);
     });
 
     this.settings = mergedSettings;
