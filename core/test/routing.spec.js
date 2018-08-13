@@ -1,9 +1,10 @@
+const rewire = require('rewire');
 const chai = require('chai');
 const expect = chai.expect;
 const assert = chai.assert;
 const sinon = require('sinon');
 const MockBrowser = require('mock-browser').mocks.MockBrowser;
-const routing = require('../src/services/routing');
+const routing = rewire('../src/services/routing');
 import { deepMerge } from '../src/utilities/helpers.js';
 
 describe('Routing', () => {
@@ -539,6 +540,93 @@ describe('Routing', () => {
 
       component.set({ viewUrl: 'http://otherurl.de/app.html!#/someUrl' });
       assert.isTrue(routing.isNotSameDomain(config, component));
+    });
+
+    describe('defaultPathSegments', () => {
+      const getDefaultPathSegment = routing.__get__('getDefaultPathSegment');
+
+      it('should return first child if no dps set', () => {
+        const pathData = {
+          navigationPath: [
+            {
+              // DOESN'T MATTER
+            },
+            {
+              pathSegment: 'groups',
+              children: [
+                {
+                  pathSegment: 'stakeholders',
+                  viewUrl:
+                    '/sampleapp.html#/projects/1/users/groups/stakeholders'
+                },
+                {
+                  pathSegment: 'customers',
+                  viewUrl: '/sampleapp.html#/projects/1/users/groups/customers'
+                }
+              ]
+            }
+          ],
+          context: {}
+        };
+
+        assert.equal(getDefaultPathSegment(pathData), 'stakeholders');
+      });
+
+      it('should child with pathSegment equal to defaultPathSegment', () => {
+        const pathData = {
+          navigationPath: [
+            {
+              // DOESN'T MATTER
+            },
+            {
+              pathSegment: 'groups',
+              defaultPathSegment: 'customers',
+              children: [
+                {
+                  pathSegment: 'stakeholders',
+                  viewUrl:
+                    '/sampleapp.html#/projects/1/users/groups/stakeholders'
+                },
+                {
+                  pathSegment: 'customers',
+                  viewUrl: '/sampleapp.html#/projects/1/users/groups/customers'
+                }
+              ]
+            }
+          ],
+          context: {}
+        };
+
+        assert.equal(getDefaultPathSegment(pathData), 'customers');
+      });
+
+      it('should return first child if given defaultPathSegment does not exist', () => {
+        const pathData = {
+          navigationPath: [
+            {
+              // DOESN'T MATTER
+            },
+            {
+              pathSegment: 'groups',
+              defaultPathSegment: 'NOSUCHPATH',
+              children: [
+                {
+                  pathSegment: 'stakeholders',
+                  viewUrl:
+                    '/sampleapp.html#/projects/1/users/groups/stakeholders'
+                },
+                {
+                  pathSegment: 'customers',
+                  viewUrl: '/sampleapp.html#/projects/1/users/groups/customers'
+                }
+              ]
+            }
+          ],
+          context: {}
+        };
+
+        assert.equal(getDefaultPathSegment(pathData), 'stakeholders');
+      });
     });
   });
 });
