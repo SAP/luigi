@@ -158,7 +158,7 @@ const projectsNavProviderFn = context => {
 };
 
 // Luigi configuration provided as a global variable
-window.LuigiConfig = {
+window.Luigi.setConfig({
   // navigation structure and settings
   navigation: {
     nodes: [
@@ -180,17 +180,19 @@ window.LuigiConfig = {
         viewUrl: '/temp.html',
         children: projectsNavProviderFn
       }
-    ],
-    // hides the navigation completely if set to true
-    hideNav: false
+    ]
   },
   routing: {
+    // uses hash based navigation if set to true
+    useHashRouting: true,
     nodeParamPrefix: '~'
+  },
+  settings: {
+    // hides the navigation completely if set to true
+    // hideNavigation: true
+    // backdropDisabled: true
   }
-};
-
-// uses hash based navigation if set to true
-isHashRoute = true;
+});
 
 // upon route change, context will get updated and your app should also know about it
 // (eg pushing the context to the app state/store)

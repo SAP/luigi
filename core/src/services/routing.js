@@ -1,5 +1,9 @@
 import { getNavigationPath } from './navigation';
-import { getConfigValue, getConfigValueAsync } from './config';
+import {
+  getConfigValue,
+  getConfigValueAsync,
+  getConfigBooleanValue
+} from './config';
 import { getPathWithoutHash, getUrlWithoutHash } from '../utilities/helpers';
 
 const iframeNavFallbackTimeout = 2000;
@@ -207,7 +211,7 @@ export const handleRouteChange = async (path, component, node, config) => {
       getConfigValueAsync('navigation.nodes'),
       pathUrl.split('?')[0]
     );
-    const hideNav = getConfigValue('navigation.hideNav');
+    const hideNav = getConfigBooleanValue('settings.hideNavigation');
     const viewUrl = getViewUrl(pathData);
     const params = parseParams(pathUrl.split('?')[1]);
     const nodeParams = getNodeParams(params);
@@ -290,7 +294,7 @@ export const navigateTo = (
 ) => {
   const event = documentElem.createEvent('Event');
   event.initEvent('popstate', true, true);
-  if (windowElem.isHashRoute) {
+  if (getConfigValue('routing.useHashRouting')) {
     return (windowElem.location.hash = route);
   }
 

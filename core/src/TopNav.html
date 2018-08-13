@@ -28,7 +28,7 @@
     import Backdrop from './Backdrop.html';
     import Authorization from './Authorization.html';
     import { handleRouteClick } from './services/routing.js';
-    import { getConfigValue } from './services/config.js';
+    import { getConfigValue, getConfigBooleanValue } from './services/config.js';
 
     const setTopNavData = (current, component) => {
         if (current.pathData && 0 < current.pathData.length) {
@@ -52,7 +52,7 @@
     export default {
         oncreate() {
             this.set({
-                hideNavComponent: getConfigValue('navigation.hideNav')
+                hideNavComponent: getConfigBooleanValue('settings.hideNavigation')
             });
         },
         onstate({ changed, current, previous }) {
