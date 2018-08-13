@@ -9,8 +9,7 @@ export class oAuth2ImplicitGrant {
         response_type: 'id_token token',
         scope: ''
       },
-      post_logout_redirect_uri:
-        window.location.origin + '/luigi-core/auth/oauth2/logout.html'
+      post_logout_redirect_uri: window.location.origin + '/logout.html'
     };
     const mergedSettings = deepMerge(defaultSettings, settings);
 

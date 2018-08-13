@@ -177,7 +177,7 @@ LuigiConfig = {
    * 
    */
   auth: {
-    use: 'openIdConnect',
+    use: 'oAuth2ImplicitGrant',
     openIdConnect: {
       authority: 'https://example-authority.com',
       client_id: 'client',
@@ -190,6 +190,7 @@ LuigiConfig = {
     oAuth2ImplicitGrant: {
       authorizeUrl: 'https://example-url.com/authorize',
       logoutUrl: 'https://example-url.com/logout',
+      post_logout_redirect_uri: '/logout.html',
       oAuthData: {
         client_id: 'egDuozijY5SVr0NSIowUP1dT6RVqHnlp',
 
