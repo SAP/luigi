@@ -286,7 +286,7 @@ Luigi.setConfig({
     useHashRouting: true
   },
   settings: {
-    //hideNavigation: true
-    //backdropDisabled : true
+    // hideNavigation: true
+    // backdropDisabled: true
   }
 });
