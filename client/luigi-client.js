@@ -1,5 +1,6 @@
 var client = (function() {
   var eventData = {};
+  var nodeParams = {};
   var Luigi = {};
   var internalData = {};
   var _contextUpdated;
@@ -20,7 +21,7 @@ var client = (function() {
     }
   }
 
-  function setContext(rawData) {
+  function setContext(rawData, rawParams) {
     if (typeof rawData === 'string') {
       try {
         eventData = JSON.parse(rawData);
@@ -36,6 +37,16 @@ var client = (function() {
     Luigi.currentEnvironmentId = eventData.currentEnvironmentId;
     Luigi.sessionId = eventData.sessionId;
 
+    if (typeof rawParams === 'string') {
+      try {
+        nodeParams = JSON.parse(rawParams);
+      } catch (e) {
+        console.info('unable to parse luigi context data', e);
+      }
+    } else {
+      nodeParams = rawParams;
+    }
+
     // let the app know that context was updated
     if (_contextUpdated) {
       _contextUpdated(eventData);
@@ -45,16 +56,15 @@ var client = (function() {
   window.addEventListener('message', function(e) {
     if ('luigi.init' === e.data.msg) {
       setInternalData(e.data.internal);
-      setContext(e.data.context);
+      setContext(e.data.context, e.data.nodeParams);
       Luigi.initialized = true;
-
       if (window._init) {
         window._init(eventData);
       }
     }
     if ('luigi.navigate' === e.data.msg) {
       setInternalData(e.data.internal);
-      setContext(e.data.context);
+      setContext(e.data.context, e.data.nodeParams);
       window.location.replace(e.data.viewUrl);
       window.parent.postMessage({ msg: 'luigi.navigate.ok' }, '*');
     }
@@ -93,18 +103,28 @@ var client = (function() {
       return eventData;
     },
     /**
+     * Fetch node parameters
+     */
+    getNodeParams: function() {
+      return nodeParams;
+    },
+    /**
      * Navigate to another route.
+     * Lets you navigate to another route.
      */
     linkManager: function() {
+      var options = {
+        preserveView: false,
+        nodeParams: {}
+      };
+
       /**
        * Internal function which creates the navigation postMessage for Luigi Core
        *
        * @param {string} path path to be navigated to
        * @param {string} sessionId  current Luigi sessionId
-       * @param {object} contextParams  route specific parameters
-       * @param {boolean} preserveView open route in a new view window to goBack to last state afterwards
        */
-      var _navigate = function(sessionId, path, contextParams, preserveView) {
+      var _navigate = function(sessionId, path) {
         var relativePath = path[0] !== '/';
         var navigation = {
           msg: 'luigi.navigation.open',
@@ -112,8 +132,7 @@ var client = (function() {
           params: Object.assign(
             { link: path },
             { relative: relativePath },
-            { preserveView: preserveView },
-            contextParams
+            options
           )
         };
         window.parent.postMessage(navigation, '*');
@@ -127,7 +146,8 @@ var client = (function() {
          * @param {boolean} preserveView open route in a new view window to goBack to last state afterwards
          */
         navigate: function(path, sessionId, preserveView) {
-          _navigate(sessionId, path, {}, preserveView);
+          options.preserveView = preserveView;
+          _navigate(sessionId, path);
         },
 
         /**
@@ -140,24 +160,10 @@ var client = (function() {
             console.error(
               `Navigation not possible, navigationContext '${navigationContext}' not found.`
             );
-            return { navigate: () => {} };
+          } else {
+            options.fromContext = navigationContext;
           }
-          return {
-            /**
-             * Navigates to the given path in the hosting Luigi app, relative to the node in the current path having the given navigation context.
-             * @param {string} path path to be navigated to, relative to the node in the current path having the given navigation context
-             * @param {string} sessionId current Luigi sessionId
-             * @param {boolean} preserveView open route in a new view window to goBack to last state afterwards
-             */
-            navigate: (path, sessionId, preserveView) => {
-              _navigate(
-                sessionId,
-                path,
-                { fromContext: navigationContext },
-                preserveView
-              );
-            }
-          };
+          return this;
         },
 
         /**
@@ -170,25 +176,24 @@ var client = (function() {
             console.error(
               'Navigation not possible, no parent navigationContext found.'
             );
-            return { navigate: () => {} };
+          } else {
+            delete options.fromContext;
+            options.fromClosestContext = true;
           }
+          return this;
+        },
 
-          return {
-            /**
-             * Navigates to the given path in the hosting Luigi app, relative to the closest node in the current path having a navigation context.
-             * @param {string} path path to be navigated to, relative to the closest node in the current path having a navigation context
-             * @param {string} sessionId current Luigi sessionId
-             * @param {boolean} preserveView create an additional view window to goBack to last state afterwards
-             */
-            navigate: (path, sessionId, preserveView) => {
-              _navigate(
-                sessionId,
-                path,
-                { fromClosestContext: true },
-                preserveView
-              );
-            }
-          };
+        /**
+         * Adds node parameters, which are then used by the navigate function
+         * Usage: linkManager.withParams({foo: "bar"}).navigate("path")
+         * Can be chained with context settings functions like this: linkManager.fromContext("currentTeam").withParams({foo: "bar"}).navigate("path")
+         * @param {object} nodeParams
+         * */
+        withParams(nodeParams) {
+          if (nodeParams) {
+            Object.assign(options.nodeParams, nodeParams);
+          }
+          return this;
         },
 
         /**
@@ -214,7 +219,10 @@ var client = (function() {
         goBack: function(goBackValue) {
           if (this.hasBack()) {
             window.parent.postMessage(
-              { msg: 'luigi.navigation.back', goBackContext: goBackValue },
+              {
+                msg: 'luigi.navigation.back',
+                goBackContext: goBackValue && JSON.stringify(goBackValue)
+              },
               '*'
             );
           }
@@ -244,3 +252,5 @@ var client = (function() {
 })();
 
 export { client as LuigiClient };
+
+window.Luigi = client;
