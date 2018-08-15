@@ -6,8 +6,6 @@
       </div>
       <div class="fd-panel">
         LuigiClient hasBack/GoBack:<br>
-        {{luigiClient.linkManager().hasBack()}}
-        {{hasBack}}
         <div v-if="hasBack">
           <p>
             <label>Modify goBackContext value, that you receive then via LuigiClient.addContextUpdateListener(): <br/>

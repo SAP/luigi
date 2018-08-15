@@ -8,11 +8,9 @@ This is the Vue.JS-based sample application which runs with Luigi framework.
 
 Linking and building with [Lerna](https://lernajs.io/) is the preferred development method. This monorepo uses Lerna for project management. 
 
-To have this application running, follow these steps:
+To run this application, follow these steps:
 
 1. Ensure that you have installed Lerna. If not, run the following command.
-    
-    Install Lerna globally
     
     ```bash
     npm install -g lerna
@@ -38,12 +36,12 @@ To have this application running, follow these steps:
     npm run serve
     ```
     
-5. Open it in your browser by going to [http://localhost:8081/](http://localhost:8081/)`.
+5. Open it in your browser by going to [http://localhost:8081/](http://localhost:8081/).
 
 ### Testing
 
-This example contains basic unit test which you can execute with `npm run test:unit`
-Additionally this example contains a small e2e integration test suit which can be executed with `npm run test:e2e`.
+This example contains the basic unit test which you can run with the `npm run test:unit` command.
+Additionally, this example contains a small e2e integration test suit which you can run using `npm run test:e2e`.
 
 ### Build
 
@@ -52,4 +50,4 @@ npm run build
 ```
 
 The build compiles and minifies the source files for production usage.
-The build generates a `dist` folder which can be served via a webserver.
+The build generates a `dist` folder which you can serve using a webserver.
