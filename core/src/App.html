@@ -8,6 +8,7 @@
     import TopNav from './TopNav.html';
     import LeftNav from './LeftNav.html';
     import * as Routing from './services/routing.js';
+    import { getConfigValue }  from './services/config.js';
     import { isFunction } from './utilities/helpers.js';
 
     const trimLeadingSlash = (str) => str.replace(/^\//, '');
@@ -15,7 +16,7 @@
         if (preservedViews.length === 0) {
             return false;
         }
-        // we're only checking the previous goBack state and 
+        // we're only checking the previous goBack state and
         // compare it with the new route
         const routePath = routeHash.startsWith('/') ? routeHash : `/${routeHash}`;
         const firstPreservedView = preservedViews[0];
@@ -60,7 +61,7 @@
             // instead of using the existing instance for route.
             config.iframe = null;
         }
-    }
+    };
 
     const handleNavigation = async (component, data, config, node) => {
         let path = data.params.link;
@@ -75,6 +76,13 @@
             path = Routing.concatenatePath(Routing.getNodePath(component.get().currentNode), data.params.link);
         }
 
+        if (data.params.nodeParams) {
+            path += '?';
+            Object.entries(data.params.nodeParams).forEach(entry => {
+                path += (encodeURIComponent(Routing.getContentViewParamPrefix() + entry[0]) + '=' + encodeURIComponent(entry[1]) + '&');
+            });
+        }
+
         const matchedPath = await Routing.matchPath(path);
         if (matchedPath !== null) {
             addPreserveView(component, data, config, node);
@@ -86,6 +94,7 @@
         config.iframe.contentWindow.postMessage({
             msg: 'luigi.init',
             context: JSON.stringify(Object.assign({}, component.get().context, goBackContext)),
+            nodeParams: JSON.stringify(Object.assign({}, component.get().nodeParams)),
             internal: JSON.stringify(component.prepareInternalData())
         }, '*');
     };
@@ -152,7 +161,7 @@
                 // them to prevent memory leaks
                 // this.on('destroy', storeListener.cancel);
 
-                if (window['isHashRoute']) {
+                if (getConfigValue('routing.useHashRouting')) {
                     return enableHashRouting(this, node, config);
                 }
 
@@ -183,7 +192,7 @@
     }
 
     :global(body) {
-        -webkit-font-smoothing: antialiased; 
+        -webkit-font-smoothing: antialiased;
         margin: 0;
         line-height: 1.42857;
     }
@@ -201,6 +210,10 @@
     div :global(div) {
       font-family: '72', sans-serif;
     }
+    
+    :global(a) {
+      cursor: pointer;
+    }
 
     .iframeContainer {
       position: fixed;
@@ -208,6 +221,10 @@
       left: 320px;
       bottom: 0;
       right: 0;
+      width: auto;
+      min-width: auto;
+      min-height: auto;
+      display: block;
     }
 
     .iframeContainer :global(iframe) {

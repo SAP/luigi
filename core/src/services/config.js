@@ -1,5 +1,15 @@
 import { isFunction, isPromise } from '../utilities/helpers.js';
 
+(function() {
+  window.Luigi = {
+    setConfig: configInput => {
+      window.Luigi.config = configInput;
+    },
+    getConfig: () => {
+      return window.Luigi.config;
+    }
+  };
+})();
 /*
  * Gets value of the given property on the given object.
  */
@@ -17,7 +27,22 @@ export const getConfigValueFromObject = (object, property) => {
  * Gets value of the given property on Luigi config object.
  */
 export const getConfigValue = property => {
-  return getConfigValueFromObject(window.LuigiConfig, property);
+  return getConfigValueFromObject(window.Luigi.config, property);
+};
+
+/*
+ * Gets boolean value of the given property on Luigi config object.
+ * Function return true if the property value is equal true or 'true'. Otherwise the function returns false.
+ */
+export const getConfigBooleanValue = property => {
+  const configuredValue = getConfigValueFromObject(
+    window.Luigi.config,
+    property
+  );
+  if (configuredValue === true || configuredValue === 'true') {
+    return true;
+  }
+  return false;
 };
 
 /*
@@ -47,7 +72,7 @@ export const getConfigValueFromObjectAsync = (
  */
 export const getConfigValueAsync = (property, ...parameters) => {
   return getConfigValueFromObjectAsync(
-    window.LuigiConfig,
+    window.Luigi.config,
     property,
     parameters
   );

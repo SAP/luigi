@@ -11,6 +11,7 @@ export class SettingsComponent implements OnInit {
   luigiClient: LuigiClient;
   projectId: string;
   hasBack: boolean;
+  nodeParams = null;
   callbackValue = 'default value';
 
   constructor(
@@ -25,6 +26,10 @@ export class SettingsComponent implements OnInit {
     this.luigiClient = LuigiClient;
     LuigiClient.addInitListener(() => {
       this.hasBack = LuigiClient.linkManager().hasBack();
+      this.nodeParams =
+        Object.keys(LuigiClient.getNodeParams()).length > 0
+          ? LuigiClient.getNodeParams()
+          : null;
       this.cdr.detectChanges();
     });
   }
