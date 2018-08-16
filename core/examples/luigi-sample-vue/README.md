@@ -25,7 +25,7 @@ To run this application, follow these steps:
 
 3. Bundle the Luigi core.
     ```bash
-    # Lerna runs the bundle script in every package where the script exists and were referenced in the lerna.json.
+    # Lerna runs the bundle script in every package where the script exists and was referenced in the lerna.json.
 
     lerna run bundle
     ```
