@@ -6,7 +6,17 @@ Navigation parameters allow you to specify routing configuration, set the appear
 
 When navigating between nodes that are located on the same domain, Luigi triggers a hash or path change. Then, it sends an updated context in order not to fully reload the view. This is to the advantage of a single-page application based micro frontend. Navigation between domains triggers a full page load in order to comply with cross domain security concepts.
 
-This code sample demonstrates your options when configuring the navigation. 
+This image shows where the how the Luigi navigation is positioned.  There is 
+
+- A top navigation
+- A side navigation
+- A main content window
+
+The image shows where you can use various methods and parameters to fill the navigation or display a micro frontend.  
+
+![Navigation layout](assets/navigation-structure.png)
+
+This code sample demonstrates your options when configuring navigation for Luigi. 
 
 ````
 window.Luigi.setConfig({
