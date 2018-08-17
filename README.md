@@ -13,16 +13,16 @@ Luigi consists of two components: **luigi core** and **luigi client**.
 To get started with Luigi, familiarize yourself with **[luigi core](https://github.com/kyma-project/luigi/blob/master/core/README.md)**.
 
 - [Application setup](docs/application-setup.md)
-- [Navigation configuration](docs/nav-config.md)
-- [Authorization configuration](docs/auth-config.md)
-- [Routing mechanism configuration](docs/router-config.md)
+- [Navigation configuration](docs/navigation-configuration.md)
+- [Authorization configuration](docs/authorization-configuration.md)
+- [Routing mechanism configuration](docs/router-configuration.md)
 - [General settings](docs/general-settings.md)
 
 Learn about the **[luigi client](https://github.com/kyma-project/luigi/blob/master/client/README.md)**.
 
 - [Lifecycle](docs/lifecycle.md)
-- [Link Manager](docs/linkmngr.md)
-- [UX Manager](docs/uxmngr.md)
+- [Link Manager](docs/link-manager.md)
+- [UX Manager](docs/ux-manager.md)
 
 ## Development
 
