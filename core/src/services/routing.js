@@ -12,21 +12,14 @@ const getViewUrl = pathData => {
 };
 
 const getDefaultPathSegment = function(pathData) {
-  const lastElement = [...pathData.navigationPath].pop();
-
-  if (lastElement.defaultPathSegment) {
-    const pathExists = lastElement.children.find(
-      childNode => childNode.pathSegment === lastElement.defaultPathSegment
-    );
-
-    return pathExists
-      ? lastElement.defaultPathSegment
-      : getFirstChildPathSegment();
+  const lastElement =
+    pathData.navigationPath[pathData.navigationPath.length - 1];
+  const pathExists = lastElement.children.find(
+    childNode => childNode.pathSegment === lastElement.defaultPathSegment
+  );
+  if (lastElement.defaultPathSegment && pathExists) {
+    return lastElement.defaultPathSegment;
   } else {
-    return getFirstChildPathSegment();
-  }
-
-  function getFirstChildPathSegment() {
     return lastElement.children[0].pathSegment;
   }
 };
