@@ -33,6 +33,26 @@ describe('Routing', () => {
                   display: null
                 },
                 viewUrl: '{context.varA2}/a2.html#p={nodeParams.param2}'
+              },
+              {
+                pathSegment: 'teams',
+                defaultPathSegment: 't2',
+                children: [
+                  {
+                    pathSegment: 't1',
+                    style: {
+                      display: null
+                    },
+                    viewUrl: 't1.html'
+                  },
+                  {
+                    pathSegment: 't2',
+                    style: {
+                      display: null
+                    },
+                    viewUrl: 't2.html'
+                  }
+                ]
               }
             ],
             context: {
@@ -324,6 +344,34 @@ describe('Routing', () => {
         window.LuigiConfig.navigation.hideNav
       );
     });
+
+    it('should get DefaultPathSegment if viewUrl is not defined', async () => {
+      // given
+      const path = '#/projects/teams';
+      const expectedPath = '/projects/teams/t2';
+      const mockBrowser = new MockBrowser();
+      const window = mockBrowser.getWindow();
+      global.window = window;
+
+      const component = {};
+      const node = {};
+      const config = {};
+
+      window.history.pushState = sinon.spy();
+
+      // when
+      window.LuigiConfig = sampleLuigiConfig;
+      window.LuigiConfig.navigation.hideNav = false;
+      await routing.handleRouteChange(path, component, node, config, window);
+
+      // then
+      sinon.assert.calledWith(
+        window.history.pushState,
+        sinon.match.any,
+        sinon.match.any,
+        expectedPath
+      );
+    });
   });
 
   describe('#handleRouteClick()', () => {
@@ -438,195 +486,153 @@ describe('Routing', () => {
     });
   });
 
-  describe('Unit tests', () => {
-    describe('setActiveIframeToPrevious', () => {
-      it('standard', () => {
-        let node = {
-          children: [
-            {
-              style: {
-                display: null
-              }
-            }
-          ],
-          removeChild: child => {
-            node.children.forEach((c, i) => {
-              if (c === child) {
-                node.children.splice(i, 1);
-              }
-            });
-          }
-        };
-
-        routing.setActiveIframeToPrevious(node);
-
-        assert.equal(node.children.length, 1);
-        assert.equal(node.children[0].style.display, 'block');
-      });
-
-      it('goBack', () => {
-        let node = {
-          children: [
-            {
-              style: {
-                display: null
-              },
-              id: 1
-            },
-            {
-              style: {
-                display: null
-              },
-              id: 2
-            }
-          ],
-          removeChild: child => {
-            node.children.forEach((c, i) => {
-              if (c === child) {
-                node.children.splice(i, 1);
-              }
-            });
-          }
-        };
-
-        routing.setActiveIframeToPrevious(node);
-
-        assert.equal(node.children.length, 1);
-        assert.equal(node.children[0].style.display, 'block');
-        assert.equal(node.children[0].id, 2);
-      });
-    });
-
-    it('removeInactiveIframes', () => {
+  describe('setActiveIframeToPrevious', () => {
+    it('standard', () => {
       let node = {
-        removeChild: sinon.spy(),
         children: [
           {
             style: {
               display: null
             }
-          },
-          {
-            style: {
-              display: null
-            }
-          },
-          {
-            style: {
-              display: null
-            }
           }
-        ]
-      };
-
-      routing.removeInactiveIframes(node);
-
-      assert.equal(node.removeChild.callCount, 2);
-    });
-
-    it('isNotSameDomain', () => {
-      const component = {
-        set: obj => {
-          component.get = () => obj;
+        ],
+        removeChild: child => {
+          node.children.forEach((c, i) => {
+            if (c === child) {
+              node.children.splice(i, 1);
+            }
+          });
         }
       };
-      const config = {
-        iframe: {
-          src: 'http://url.com/app.html!#/prevUrl'
-        }
-      };
-      component.set({ viewUrl: 'http://url.com/app.html!#/someUrl' });
-      assert.isFalse(routing.isNotSameDomain(config, component));
 
-      component.set({ viewUrl: 'http://otherurl.de/app.html!#/someUrl' });
-      assert.isTrue(routing.isNotSameDomain(config, component));
+      routing.setActiveIframeToPrevious(node);
+
+      assert.equal(node.children.length, 1);
+      assert.equal(node.children[0].style.display, 'block');
     });
 
-    describe('defaultPathSegments', () => {
-      const getDefaultPathSegment = routing.__get__('getDefaultPathSegment');
-
-      it('should return first child if no dps set', () => {
-        const pathData = {
-          navigationPath: [
-            {
-              // DOESN'T MATTER
+    it('goBack', () => {
+      let node = {
+        children: [
+          {
+            style: {
+              display: null
             },
-            {
-              pathSegment: 'groups',
-              children: [
-                {
-                  pathSegment: 'stakeholders',
-                  viewUrl:
-                    '/sampleapp.html#/projects/1/users/groups/stakeholders'
-                },
-                {
-                  pathSegment: 'customers',
-                  viewUrl: '/sampleapp.html#/projects/1/users/groups/customers'
-                }
-              ]
-            }
-          ],
-          context: {}
-        };
-
-        assert.equal(getDefaultPathSegment(pathData), 'stakeholders');
-      });
-
-      it('should child with pathSegment equal to defaultPathSegment', () => {
-        const pathData = {
-          navigationPath: [
-            {
-              // DOESN'T MATTER
+            id: 1
+          },
+          {
+            style: {
+              display: null
             },
-            {
-              pathSegment: 'groups',
-              defaultPathSegment: 'customers',
-              children: [
-                {
-                  pathSegment: 'stakeholders',
-                  viewUrl:
-                    '/sampleapp.html#/projects/1/users/groups/stakeholders'
-                },
-                {
-                  pathSegment: 'customers',
-                  viewUrl: '/sampleapp.html#/projects/1/users/groups/customers'
-                }
-              ]
+            id: 2
+          }
+        ],
+        removeChild: child => {
+          node.children.forEach((c, i) => {
+            if (c === child) {
+              node.children.splice(i, 1);
             }
-          ],
-          context: {}
-        };
+          });
+        }
+      };
 
-        assert.equal(getDefaultPathSegment(pathData), 'customers');
-      });
+      routing.setActiveIframeToPrevious(node);
 
-      it('should return first child if given defaultPathSegment does not exist', () => {
-        const pathData = {
-          navigationPath: [
-            {
-              // DOESN'T MATTER
-            },
-            {
-              pathSegment: 'groups',
-              defaultPathSegment: 'NOSUCHPATH',
-              children: [
-                {
-                  pathSegment: 'stakeholders',
-                  viewUrl:
-                    '/sampleapp.html#/projects/1/users/groups/stakeholders'
-                },
-                {
-                  pathSegment: 'customers',
-                  viewUrl: '/sampleapp.html#/projects/1/users/groups/customers'
-                }
-              ]
-            }
-          ],
-          context: {}
-        };
+      assert.equal(node.children.length, 1);
+      assert.equal(node.children[0].style.display, 'block');
+      assert.equal(node.children[0].id, 2);
+    });
+  });
 
-        assert.equal(getDefaultPathSegment(pathData), 'stakeholders');
-      });
+  it('removeInactiveIframes', () => {
+    let node = {
+      removeChild: sinon.spy(),
+      children: [
+        {
+          style: {
+            display: null
+          }
+        },
+        {
+          style: {
+            display: null
+          }
+        },
+        {
+          style: {
+            display: null
+          }
+        }
+      ]
+    };
+
+    routing.removeInactiveIframes(node);
+
+    assert.equal(node.removeChild.callCount, 2);
+  });
+
+  it('isNotSameDomain', () => {
+    const component = {
+      set: obj => {
+        component.get = () => obj;
+      }
+    };
+    const config = {
+      iframe: {
+        src: 'http://url.com/app.html!#/prevUrl'
+      }
+    };
+    component.set({ viewUrl: 'http://url.com/app.html!#/someUrl' });
+    assert.isFalse(routing.isNotSameDomain(config, component));
+
+    component.set({ viewUrl: 'http://otherurl.de/app.html!#/someUrl' });
+    assert.isTrue(routing.isNotSameDomain(config, component));
+  });
+
+  describe('defaultPathSegments', () => {
+    const getDefaultPathSegment = routing.__get__('getDefaultPathSegment');
+    const getPathData = function() {
+      return {
+        navigationPath: [
+          {
+            // DOESN'T MATTER
+          },
+          {
+            pathSegment: 'groups',
+            children: [
+              {
+                pathSegment: 'stakeholders',
+                viewUrl: '/sampleapp.html#/projects/1/users/groups/stakeholders'
+              },
+              {
+                pathSegment: 'customers',
+                viewUrl: '/sampleapp.html#/projects/1/users/groups/customers'
+              }
+            ]
+          }
+        ],
+        context: {}
+      };
+    };
+
+    it('should return first child if no defaultPathSegment is set', () => {
+      let pathData = getPathData();
+
+      assert.equal(getDefaultPathSegment(pathData), 'stakeholders');
+    });
+
+    it('should child with pathSegment equal to defaultPathSegment', () => {
+      let pathData = getPathData();
+      pathData.navigationPath[1].defaultPathSegment = 'customers';
+
+      assert.equal(getDefaultPathSegment(pathData), 'customers');
+    });
+
+    it('should return first child if given defaultPathSegment does not exist', () => {
+      const pathData = getPathData();
+      pathData.navigationPath[1].defaultPathSegment = 'NOSUCHPATH';
+
+      assert.equal(getDefaultPathSegment(pathData), 'stakeholders');
     });
   });
 });
