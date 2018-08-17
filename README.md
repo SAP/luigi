@@ -10,9 +10,7 @@ Luigi consists of two components: **luigi core** and **luigi client**.
 
 ## Getting started with luigi
 
-To get started with Luigi, become familiar with **[luigi core](https://github.com/kyma-project/luigi/blob/master/core/README.md)**.
-
-When you are ready to begin developing your own application, uses these links to navigate to documentation related to  **luigi core**:
+To get started with Luigi, familiarize yourself with **[luigi core](https://github.com/kyma-project/luigi/blob/master/core/README.md)**.
 
 - [Application setup](docs/001-lcr-application-setup.md)
 - [Navigation configuration](docs/002-lcr-nav-config.md)
