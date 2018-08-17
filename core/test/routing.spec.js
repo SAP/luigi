@@ -23,13 +23,15 @@ describe('Routing', () => {
                 },
                 style: {
                   display: null
-                }
+                },
+                viewUrl: '{context.varA1}/a1.html#p={nodeParams.param1}'
               },
               {
                 pathSegment: 'a2',
                 style: {
                   display: null
-                }
+                },
+                viewUrl: '{context.varA2}/a2.html#p={nodeParams.param2}'
               }
             ],
             context: {
@@ -37,6 +39,9 @@ describe('Routing', () => {
             }
           }
         ]
+      },
+      settings: {
+        hideNavigation: false
       }
     };
 
@@ -44,12 +49,6 @@ describe('Routing', () => {
       // given
       const path = '#/projects';
       const expectedViewUrl = '/aaa.html';
-      const mockBrowser = new MockBrowser();
-      const window = mockBrowser.getWindow();
-      global.window = window;
-      const document = mockBrowser.getDocument();
-      global.document = document;
-
       const component = {
         set: obj => {
           component.get = () => obj;
@@ -90,8 +89,7 @@ describe('Routing', () => {
       };
 
       // when
-      window.LuigiConfig = sampleLuigiConfig;
-      window.LuigiConfig.navigation.hideNav = false;
+      window.Luigi.config = sampleLuigiConfig;
       sinon.stub(document, 'createElement').callsFake(() => ({ src: null }));
       await routing.handleRouteChange(path, component, node, config, window);
 
@@ -99,7 +97,7 @@ describe('Routing', () => {
       assert.equal(component.get().viewUrl, expectedViewUrl);
       assert.equal(
         component.get().hideNav,
-        window.LuigiConfig.navigation.hideNav
+        window.Luigi.config.settings.hideNavigation
       );
     });
 
@@ -165,8 +163,8 @@ describe('Routing', () => {
       component.set({ preservedViews });
 
       // when
-      window.LuigiConfig = sampleLuigiConfig;
-      window.LuigiConfig.navigation.hideNav = false;
+      window.Luigi = {};
+      window.Luigi.config = sampleLuigiConfig;
       const docMock = sinon.mock(document);
       docMock
         .expects('createElement')
@@ -179,12 +177,141 @@ describe('Routing', () => {
       assert.equal(component.get().viewUrl, expectedViewUrl);
       assert.equal(
         component.get().hideNav,
-        window.LuigiConfig.navigation.hideNav
+        window.Luigi.config.settings.hideNavigation
       );
 
       assert.equal(component.get().preservedViews.length, 1);
       docMock.restore();
       docMock.verify();
+    });
+
+    it('should set component data with hash path and node params', async () => {
+      // given
+      const path = '#/projects/a1?~param1=tets';
+      const expectedViewUrl = '{context.varA1}/a1.html#p={nodeParams.param1}';
+      const expectedProcessedViewUrl = 'maskopatol/a1.html#p=tets';
+      const component = {
+        set: obj => {
+          component.get = () => obj;
+        }
+      };
+
+      const node = {
+        pathSegment: '#/projects',
+        label: 'AAA',
+        viewUrl: '/aaa.html',
+        children: [
+          {
+            pathSegment: 'a1',
+            context: {
+              varA1: 'maskopatol'
+            },
+            style: {
+              display: null
+            },
+            viewUrl: '{context.varA1}/a1.html#p={nodeParams.param1}'
+          },
+          {
+            pathSegment: 'a2',
+            style: {
+              display: null
+            }
+          }
+        ],
+        context: {
+          varA: 'tets'
+        },
+        prepend: sinon.spy()
+      };
+
+      const config = {
+        iframe: null,
+        builderCompatibilityMode: false,
+        navigateOk: null
+      };
+
+      // when
+      window.Luigi = {};
+      window.Luigi.config = sampleLuigiConfig;
+      const iframeMock = { src: null };
+      sinon.stub(document, 'createElement').callsFake(() => iframeMock);
+      await routing.handleRouteChange(path, component, node, config, window);
+
+      // then
+      assert.equal(component.get().viewUrl, expectedViewUrl);
+      assert.equal(iframeMock.src, expectedProcessedViewUrl);
+      assert.equal(
+        component.get().hideNav,
+        window.Luigi.config.settings.hideNavigation
+      );
+    });
+
+    it('should set component data with hash path and clear unused context/node params', async () => {
+      // given
+      const path = '#/projects/a2?~param1=tets';
+      const expectedViewUrl = '{context.varA2}/a2.html#p={nodeParams.param2}';
+      const expectedProcessedViewUrl = '/a2.html#p=';
+      const mockBrowser = new MockBrowser();
+      const window = mockBrowser.getWindow();
+      global.window = window;
+      const document = mockBrowser.getDocument();
+      global.document = document;
+
+      const component = {
+        set: obj => {
+          component.get = () => obj;
+        }
+      };
+
+      const node = {
+        pathSegment: '#/projects',
+        label: 'AAA',
+        viewUrl: '/aaa.html',
+        children: [
+          {
+            pathSegment: 'a1',
+            context: {
+              varA1: 'maskopatol'
+            },
+            style: {
+              display: null
+            },
+            viewUrl: '{context.varA1}/a1.html#p={nodeParams.param1}'
+          },
+          {
+            pathSegment: 'a2',
+            style: {
+              display: null
+            },
+            viewUrl: '{context.varA2}/a1.html#p={nodeParams.param2}'
+          }
+        ],
+        context: {
+          varA: 'tets'
+        },
+        prepend: sinon.spy()
+      };
+
+      const config = {
+        iframe: null,
+        builderCompatibilityMode: false,
+        navigateOk: null
+      };
+
+      // when
+      window.Luigi = {};
+      window.Luigi.config = sampleLuigiConfig;
+      const iframeMock = { src: null };
+      sinon.stub(document, 'createElement').callsFake(() => iframeMock);
+      await routing.handleRouteChange(path, component, node, config, window);
+
+      // then
+      assert.equal(component.get().viewUrl, expectedViewUrl);
+      assert.equal(iframeMock.src, expectedProcessedViewUrl);
+      assert.equal(
+        component.get().hideNav,
+        window.Luigi.config.settings.hideNavigation
+      );
     });
   });
 
@@ -202,12 +329,15 @@ describe('Routing', () => {
     it('should set proper location hash with parent node', () => {
       // given
       const expectedRoute = '#/projects/project-one';
-      const mockBrowser = new MockBrowser();
-      const window = mockBrowser.getWindow();
-      const document = mockBrowser.getDocument();
 
       // when
-      window.isHashRoute = true;
+      window.Luigi = {
+        config: {
+          routing: {
+            useHashRouting: true
+          }
+        }
+      };
       routing.handleRouteClick(nodeWithParent, window, document);
 
       // then
@@ -217,12 +347,16 @@ describe('Routing', () => {
     it('should set proper location hash with normal node', () => {
       // given
       const expectedRoute = '#/projects';
-      const mockBrowser = new MockBrowser();
-      const window = mockBrowser.getWindow();
-      const document = mockBrowser.getDocument();
 
       // when
-      window.isHashRoute = true;
+      window.Luigi = {
+        config: {
+          routing: {
+            useHashRouting: true
+          }
+        }
+      };
+
       routing.handleRouteClick(nodeWithoutParent, window, document);
 
       // then
@@ -233,15 +367,18 @@ describe('Routing', () => {
       // given
       const expectedRoute = '/projects/project-one';
       const expectedPushStateCallsNum = 1;
-      const mockBrowser = new MockBrowser();
-      const window = mockBrowser.getWindow();
-      const document = mockBrowser.getDocument();
 
       window.history.pushState = sinon.spy();
       const pushStateCallsNum = window.history.pushState.callCount;
 
       // when
-      window.isHashRoute = false;
+      window.Luigi = {
+        config: {
+          routing: {
+            useHashRouting: false
+          }
+        }
+      };
       routing.handleRouteClick(nodeWithParent, window, document);
 
       // then
@@ -256,15 +393,18 @@ describe('Routing', () => {
       // given
       const expectedRoute = '/projects';
       const expectedPushStateCallsNum = 1;
-      const mockBrowser = new MockBrowser();
-      const window = mockBrowser.getWindow();
-      const document = mockBrowser.getDocument();
 
       window.history.pushState = sinon.spy();
       const pushStateCallsNum = window.history.pushState.callCount;
 
       // when
-      window.isHashRoute = false;
+      window.Luigi = {
+        config: {
+          routing: {
+            useHashRouting: false
+          }
+        }
+      };
       routing.handleRouteClick(nodeWithoutParent, window, document);
 
       // then
@@ -279,16 +419,19 @@ describe('Routing', () => {
       // given
       const expectedRoute = '/projects';
       const expectedDispatchCallsNum = 1;
-      const mockBrowser = new MockBrowser();
-      const window = mockBrowser.getWindow();
-      const document = mockBrowser.getDocument();
 
       window.history.pushState = sinon.spy();
       window.dispatchEvent = sinon.spy();
       const dispatchCallsNum = window.dispatchEvent.callCount;
 
       // when
-      window.isHashRoute = false;
+      window.Luigi = {
+        config: {
+          routing: {
+            useHashRouting: false
+          }
+        }
+      };
       routing.handleRouteClick(nodeWithoutParent, window, document);
 
       // then
@@ -303,46 +446,59 @@ describe('Routing', () => {
   describe('Unit tests', () => {
     describe('setActiveIframeToPrevious', () => {
       it('standard', () => {
-        const removeChild = sinon.spy();
         let node = {
-          removeChild: sinon.spy(),
           children: [
             {
               style: {
                 display: null
               }
             }
-          ]
+          ],
+          removeChild: child => {
+            node.children.forEach((c, i) => {
+              if (c === child) {
+                node.children.splice(i, 1);
+              }
+            });
+          }
         };
 
         routing.setActiveIframeToPrevious(node);
 
-        assert.equal(node.children[0].style.display, 'block');
         assert.equal(node.children.length, 1);
+        assert.equal(node.children[0].style.display, 'block');
       });
 
       it('goBack', () => {
         let node = {
-          removeChild: sinon.spy(),
           children: [
             {
               style: {
                 display: null
-              }
+              },
+              id: 1
             },
             {
               style: {
                 display: null
-              }
+              },
+              id: 2
             }
-          ]
+          ],
+          removeChild: child => {
+            node.children.forEach((c, i) => {
+              if (c === child) {
+                node.children.splice(i, 1);
+              }
+            });
+          }
         };
 
         routing.setActiveIframeToPrevious(node);
 
-        assert.equal(node.children[0].style.display, 'none');
-        assert.equal(node.children[1].style.display, 'block');
-        assert.isTrue(node.removeChild.calledWith(node.children[0]));
+        assert.equal(node.children.length, 1);
+        assert.equal(node.children[0].style.display, 'block');
+        assert.equal(node.children[0].id, 2);
       });
     });
 

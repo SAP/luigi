@@ -45,7 +45,7 @@
     import Backdrop from './Backdrop.html';
     import Authorization from './Authorization.html';
     import { handleRouteClick } from './services/routing.js';
-    import { getConfigValue } from './services/config.js';
+    import { getConfigValue, getConfigBooleanValue } from './services/config.js';
 
     const initAriaControls = () => {
       // Fundamental UI specific javascript
@@ -101,7 +101,7 @@
 
           this.set({
               authorizationEnabled: !!idpProviderSettings,
-              hideNavComponent: getConfigValue('navigation.hideNav')
+              hideNavComponent: getConfigBooleanValue('settings.hideNavigation')
           });
 
           // at last, init aria-control handler
@@ -131,55 +131,10 @@ $fd-icons-path: 'node_modules/fundamental-ui/scss/icons/';
 @import 'node_modules/fundamental-ui/scss/core';
 @import 'node_modules/fundamental-ui/scss/components/action-bar';
 @import 'node_modules/fundamental-ui/scss/components/button';
-// @import 'node_modules/fundamental-ui/scss/components/dropdown';
 @import 'node_modules/fundamental-ui/scss/components/popover';
 @import 'node_modules/fundamental-ui/scss/components/menu';
 @import 'node_modules/fundamental-ui/scss/components/global-nav';
 @import 'node_modules/fundamental-ui/scss/components/side-nav';
-
-// @import 'node_modules/fundamental-ui/scss/helpers';
-
-// @import 'node_modules/fundamental-ui/scss/components/action-bar.scss';
-// @import 'node_modules/fundamental-ui/scss/components/add-button.scss';
-// @import 'node_modules/fundamental-ui/scss/components/alert.scss';
-// @import 'node_modules/fundamental-ui/scss/components/badge.scss';
-// @import 'node_modules/fundamental-ui/scss/components/breadcrumb.scss';
-// @import 'node_modules/fundamental-ui/scss/components/button-group.scss';
-// @import 'node_modules/fundamental-ui/scss/components/button.scss';
-// @import 'node_modules/fundamental-ui/scss/components/calendar.scss';
-// @import 'node_modules/fundamental-ui/scss/components/contextual-menu.scss';
-// @import 'node_modules/fundamental-ui/scss/components/date-picker.scss';
-// @import 'node_modules/fundamental-ui/scss/components/dropdown.scss';
-// @import 'node_modules/fundamental-ui/scss/components/form.scss';
-// @import 'node_modules/fundamental-ui/scss/components/global-nav.scss';
-// @import 'node_modules/fundamental-ui/scss/components/identifier.scss';
-// @import 'node_modules/fundamental-ui/scss/components/image.scss';
-// @import 'node_modules/fundamental-ui/scss/components/inline-help.scss';
-// @import 'node_modules/fundamental-ui/scss/components/input-group.scss';
-// @import 'node_modules/fundamental-ui/scss/components/label.scss';
-// @import 'node_modules/fundamental-ui/scss/components/link.scss';
-// @import 'node_modules/fundamental-ui/scss/components/list-group.scss';
-// @import 'node_modules/fundamental-ui/scss/components/mega-menu.scss';
-// @import 'node_modules/fundamental-ui/scss/components/menu.scss';
-// @import 'node_modules/fundamental-ui/scss/components/modal.scss';
-// @import 'node_modules/fundamental-ui/scss/components/nav.scss';
-// @import 'node_modules/fundamental-ui/scss/components/pagination.scss';
-// @import 'node_modules/fundamental-ui/scss/components/panel-grid.scss';
-// @import 'node_modules/fundamental-ui/scss/components/panel.scss';
-// @import 'node_modules/fundamental-ui/scss/components/popover.scss';
-// @import 'node_modules/fundamental-ui/scss/components/product-tile.scss';
-// @import 'node_modules/fundamental-ui/scss/components/side-nav.scss';
-// @import 'node_modules/fundamental-ui/scss/components/spinner.scss';
-// @import 'node_modules/fundamental-ui/scss/components/status-label.scss';
-// @import 'node_modules/fundamental-ui/scss/components/table.scss';
-// @import 'node_modules/fundamental-ui/scss/components/tabs.scss';
-// @import 'node_modules/fundamental-ui/scss/components/tag.scss';
-// @import 'node_modules/fundamental-ui/scss/components/tile-grid.scss';
-// @import 'node_modules/fundamental-ui/scss/components/tile.scss';
-// @import 'node_modules/fundamental-ui/scss/components/time-picker.scss';
-// @import 'node_modules/fundamental-ui/scss/components/time.scss';
-// @import 'node_modules/fundamental-ui/scss/components/toggle.scss';
-// @import 'node_modules/fundamental-ui/scss/components/tree.scss';
 
 .user-settings .fd-popover__body {
   right: 0;

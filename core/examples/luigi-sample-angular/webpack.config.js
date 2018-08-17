@@ -1,4 +1,4 @@
-const fs = require('fs');
+
 const path = require('path');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const ProgressPlugin = require('webpack/lib/ProgressPlugin');
@@ -14,22 +14,8 @@ const {
   SourceMapDevToolPlugin,
   NamedModulesPlugin
 } = require('webpack');
-const {
-  NamedLazyChunksWebpackPlugin,
-  BaseHrefWebpackPlugin,
-  PostcssCliResources
-} = require('@angular/cli/plugins/webpack');
-const { CommonsChunkPlugin } = require('webpack').optimize;
 const { AngularCompilerPlugin } = require('@ngtools/webpack');
 
-const nodeModules = path.join(process.cwd(), 'node_modules');
-const realNodeModules = fs.realpathSync(nodeModules);
-const genDirNodeModules = path.join(
-  process.cwd(),
-  'src',
-  '$$_gendir',
-  'node_modules'
-);
 const entryPoints = [
   'inline',
   'polyfills',
@@ -133,14 +119,6 @@ const postcssPlugins = function(loader) {
       },
       { url: 'rebase' }
     ]),
-    PostcssCliResources({
-      deployUrl:
-        loader.loaders[loader.loaderIndex].options.ident == 'extracted'
-          ? ''
-          : deployUrl,
-      loader,
-      filename: `[name]${hashFormat.file}.[ext]`
-    }),
     autoprefixer({ grid: true })
   ];
 };
@@ -427,7 +405,6 @@ module.exports = {
       onDetected: false,
       cwd: projectRoot
     }),
-    new NamedLazyChunksWebpackPlugin(),
     new HtmlWebpackPlugin({
       template: './src/sampleapp.html',
       filename: './sampleapp.html',
@@ -454,33 +431,11 @@ module.exports = {
         }
       }
     }),
-    new BaseHrefWebpackPlugin({}),
-    new CommonsChunkPlugin({
-      name: ['inline'],
-      minChunks: null
-    }),
-    new CommonsChunkPlugin({
-      name: ['vendor'],
-      minChunks: module => {
-        return (
-          module.resource &&
-          (module.resource.startsWith(nodeModules) ||
-            module.resource.startsWith(genDirNodeModules) ||
-            module.resource.startsWith(realNodeModules))
-        );
-      },
-      chunks: ['main']
-    }),
     new SourceMapDevToolPlugin({
       filename: '[file].map[query]',
       moduleFilenameTemplate: '[resource-path]',
       fallbackModuleFilenameTemplate: '[resource-path]?[hash]',
       sourceRoot: 'webpack:///'
-    }),
-    new CommonsChunkPlugin({
-      name: ['main'],
-      minChunks: 2,
-      async: 'common'
     }),
     new NamedModulesPlugin({}),
     new AngularCompilerPlugin({
@@ -495,6 +450,11 @@ module.exports = {
       compilerOptions: {}
     })
   ],
+  optimization: {
+    splitChunks: {
+      chunks: 'all'
+    }
+  },
   node: {
     fs: 'empty',
     global: true,
