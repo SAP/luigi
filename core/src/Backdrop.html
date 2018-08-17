@@ -7,6 +7,7 @@
 {/if}
 
 <script type="text/javascript">
+  import { getConfigValue } from './services/config.js';
   export default {
     data() {
       return {
@@ -14,20 +15,23 @@
       }
     },
     oncreate() {
-      if (this.options.data && this.options.data.heightCssClass) {
-        this.set({ heightCssClass: this.options.data.heightCssClass})
-      } else {
-        this.set({ heightCssClass: 'height-auto' })
-      }
+      const backdropDisabled = getConfigValue('settings.backdropDisabled');
+      if(!backdropDisabled){
+        if (this.options.data && this.options.data.heightCssClass) {
+          this.set({ heightCssClass: this.options.data.heightCssClass})
+        } else {
+          this.set({ heightCssClass: 'height-auto' })
+        }
 
-      window.addEventListener("message", (e) => {
-        if ('luigi.add-backdrop' === e.data.msg) {
-          this.set({backdropActive: true});
-        }
-        if ('luigi.remove-backdrop' === e.data.msg) {
-          this.set({backdropActive: false});
-        }
-      });
+        window.addEventListener("message", (e) => {
+          if ('luigi.add-backdrop' === e.data.msg) {
+            this.set({backdropActive: true});
+          }
+          if ('luigi.remove-backdrop' === e.data.msg) {
+            this.set({backdropActive: false});
+          }
+        });
+      }
     },
   };
 </script>

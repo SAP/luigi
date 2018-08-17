@@ -40,7 +40,7 @@ To have this application running, follow these steps:
 
     - You must let the Luigi core to bundle every change you apply to it. The easiest approach is to open the Luigi root folder in another tab of your terminal window and run the following command: 
     ```bash    
-    cd core && npm run bundle -- --watch
+    lerna run bundle-develop
     ```
     - The Luigi Client is not bundled, so you are able to update it without bundling.
     
