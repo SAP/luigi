@@ -41,7 +41,7 @@ module.exports = {
                   sass.render(
                     {
                       data: content,
-                      includePaths: ['src','node_modules/fundamental-ui/scss'],
+                      includePaths: ['src', 'node_modules/fundamental-ui/scss'],
                       sourceMap: true,
                       outFile: 'x' // this is necessary, but is ignored
                     },

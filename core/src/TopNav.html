@@ -51,24 +51,22 @@
       // Fundamental UI specific javascript
       // copied from sap.github.io/fundamental/demo-pages/full-width-app-demo.html
 
-      //dropdown
+      // popover
       const els = document.querySelectorAll("[aria-controls]");
       for (let i = 0; i < els.length; i++) {
           const el = els[i];
           el.addEventListener('click', function(e) {
-              let targetId = this.getAttribute("aria-controls");
-              let target = document.getElementById(targetId);
+              const targetId = this.getAttribute("aria-controls");
+              const target = document.getElementById(targetId);
 
-              //dropdown
-              const isDropdown = this.getAttribute("aria-haspopup") === "true";
-              if (isDropdown) {
-                console.log('isDropdown');
+              // popover
+              const isPopover = this.getAttribute("aria-haspopup") === "true";
+              if (isPopover) {
                 //trigger
                 const isExpanded = this.getAttribute("aria-expanded") === "true";
-                this.setAttribute("aria-expanded", !isExpanded);
+                this.setAttribute("aria-expanded", (!isExpanded).toString());
                 //target
-                const targetIsHidden = target.getAttribute("aria-hidden") === "true";
-                target.setAttribute("aria-hidden", isExpanded);
+                target.setAttribute("aria-hidden", isExpanded.toString());
                 return;
               }
           })

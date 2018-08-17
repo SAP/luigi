@@ -70,7 +70,7 @@ export const getPathWithoutHash = path => {
  * @param {path} string full url, relative or absolute path
  */
 export const prependOrigin = path => {
-  if (path.startsWith('http') || path === '') {
+  if (path.startsWith('http')) {
     return path;
   }
   const hasLeadingSlash = path.startsWith('/');
