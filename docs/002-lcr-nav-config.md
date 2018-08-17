@@ -1,114 +1,115 @@
 ---
-title: Navigation configuration
+title: Navigation Configuration
 type: CLI reference
 ---
 
 ## Overview
 
-Prior to the implementation of luigi, you need to set up your application. This document shows you how to set up a web application using the luigi microfrontend framework.
+Navigation parameters allow you to specify routing configuration, set the appearance of navigation, and define navigation structure. 
 
-## Application setup 
+## A basic example
 
-To integrate luigi into your web applications:
+When navigating between nodes that are located on the same domain, Luigi triggers a hash or path change. Then, it sends an updated context in order not to fully reload the view. This is to the advantage of a single-page application based micro frontend. Navigation between domains triggers a full page load in order to comply with cross domain security concepts.
 
-1. Add luigi npm packages to your project dependencies. 
-2. Give luigi exclusive control over the entry file (index.html). This means that if you have a single page application, you should transfer it to a two page application. After that, make sure the existing router doesn't interfer.
-3. Define your luigi configuration.
-4. Start your server to run the application.
-
-### Command examples
-
-The examples on this page demonstrate commands that perform each of the necessary steps to set up your application. Each set of commands appears grouped by the framework on which you execute it.
-
-### Application setup for an application not using a framework
-
-> Note: Live Server must be installed as your development server.
-
-1. If you do not have Live Server installed, use this command to install it.
+This code sample demonstrates your options when configuring the navigation. 
 
 ````
-npm install -g live-server
+window.Luigi.setConfig({
+  routing: {
+    // uses hash based navigation if set to true
+    useHashRouting: true,
+    nodeParamPrefix: '~'
+  }
+  // navigation structure and settings
+  navigation: {
+    nodes: [
+        // STATIC navigation node
+      {
+        pathSegment: 'settings',
+        label: 'Settings',
+        viewUrl: 'https://admin.mydomain.com/settings',
+        // optional
+        children: [node, node, node],
+        hideFromNav: false,
+      },
+        // DYNAMIC navigation node
+      {
+        navigationContext: 'contextName',
+        pathSegment: project.id,
+        context: {
+          currentProject: project.id
+        }
+        children: [node, node, node]
+      }
+    ]
+  }
+});
 ````
+### Routing
 
-2. Use the following commands to create a directory for your application, install luigi, make assets available, and start your local server.
+- **useHashRouting** - Defines either hash-based or path-based routing. Hash-based routing uses the classic shebang For example, `url.com/!#/yourpath`. Path-based routing is uses the common path structure. For example, ` url.com/yourpath`. 
+- **nodeParamPrefix** - The function `LuigiClient.linkManager().withParam()`, found in the Luigi client, provides a way to simply attach query parameters to the view URL for activities such as sorting and filtering.  The URL contains the parameters to allow deep linking. If you want to use a different character prefix, define yours here. The default character is `~`.
 
-````
-$ mkdir my-plain-app && cd my-plain-app
-$ npm init -y
-$ npm i -S @kyma-project/luigi-core@0.2.1 @kyma-project/luigi-client@0.2.1
-$ mkdir -p public/assets
-$ curl https://raw.githubusercontent.com/kyma-project/luigi/master/core/examples/luigi-sample-angular/src/index.html > public/index.html
-$ curl https://raw.githubusercontent.com/kyma-project/luigi/master/core/examples/luigi-sample-angular/src/assets/sampleexternal.html > public/assets/temp.html
-$ echo "LuigiConfig={navigation: {nodes: () => [{pathSegment:'home',label:'Home',children:[{pathSegment:'hw',label:'Hello World\!',viewUrl:'/assets/temp.html'}]}]}}" > public/assets/sampleconfig.js
-$ cp -r node_modules/\@kyma-project/luigi-* public
-$ live-server --entry-file=index.html public
+### Navigation parameters
 
-````
+- **pathSegment** - Specifies the partial URL of the current segment. A static settings example would reflect  luigidomain.test/settings, while a dynamic one would get loaded on any other value.
+- **label** - Contains the display name of the navigation node.
+- **hideFromNav** - Shows or hides a navigation node. You can still navigate to the node. But, it will not show up in the top or left pane.
+- **viewUrl** - Contains the URL or path to a view that renders when entering the navigation node. Use either a full URL or a relative path. This value may consist of variables if you have specified a **navigationContext** with a dynamic **pathSegment**
+- **navigationContext** - Contains a named node that is mainly for use in combination with a dynamic **pathSegment** to start navigation from a dynamic node using ` LuigiClient.navigationManager().fromContext('contextname')`.
+- **context** - Sends the specified object as context to the view. Use this parameter in combination with the dynamic **pathSegment** to receive the context through the context listeners of **luigi client**. This is an alternative to using the dynamic value in the **viewUrl**.
 
-### Application setup for Angular 6
+### A dynamic viewURL
 
-> The Angular CLI is a prerequisite for this example.
+In this example, the web application is accessible at a URL such as `https://luigi.corp/something/sample_1/products`. The micro frontend loads using a second URL such as `https://admin.my.test/project/sample_1/products?sort=asc`.
 
-1. If you do not have the Angular CLI installed, download and install it from [this URL](https://cli.angular.io/).
+The view loads with these dynamic URL parameters:
 
-2. Use the following commands to create your application, install luigi, make assets available, and serve your application.
-
-````
-$ ng new my-dream-app --routing && cd my-dream-app
-$ npm i -S @kyma-project/luigi-core@0.2.1 @kyma-project/luigi-client@0.2.1
-$ mv src/index.html src/angular.html
-$ curl https://raw.githubusercontent.com/kyma-project/luigi/master/core/examples/luigi-sample-angular/src/index.html > src/index.html
-$ echo "LuigiConfig={navigation: {nodes: () => [{pathSegment:'home',label:'Home',children:[{pathSegment:'hw',label:'Hello World\!',viewUrl:'/angular.html'}]}]}}" > src/assets/sampleconfig.js
-$ sed 's/"src\/index.html"/"src\/angular.html"/g' angular.json > tmp.json && mv tmp.json angular.json
-$ sed 's/"src\/assets"/"src\/assets","src\/index.html",{"glob": "**","input": "node_modules\/@kyma-project\/luigi-core", "output": "\/luigi-core"},{"glob": "**","input": "node_modules\/@kyma-project\/luigi-client","output": "\/luigi-client"}/g' angular.json > tmp.json && mv tmp.json angular.json
-$ ng serve
-
-````
-
-### Application setup for SAPUI5/OpenUI5
-
-> Note: Live Server must be installed as your development server.
-
-1. If you do not have Live Server installed, use this command to install it.
-
-````
-npm install -g live-server
-````
-
-2. Use the following commands to create a directory for your application, install luigi, make assets available, and start your local server.
-
-````
-$ mkdir my-ui5-app && cd my-ui5-app
-$ npm init -y
-$ npm i -S @kyma-project/luigi-core@0.2.1 @kyma-project/luigi-client@0.2.1
-$ mkdir -p public/assets
-$ curl https://raw.githubusercontent.com/kyma-project/luigi/master/core/examples/luigi-sample-angular/src/index.html > public/index.html
-$ curl https://raw.githubusercontent.com/SAP/openui5/master/src/sap.m/test/sap/m/demokit/helloworld/index.html  | sed 's/src="..\/..\/..\/..\/..\/resources\/sap-ui-core.js"/src="https:\/\/openui5.hana.ondemand.com\/resources\/sap-ui-core.js"/g' > public/ui5.html
-$ echo "LuigiConfig={navigation: {nodes: () => [{pathSegment:'home',label:'Home',children:[{pathSegment:'hw',label:'Hello World\!',viewUrl:'/ui5.html'}]}]}}" > public/assets/sampleconfig.js
-$ cp -r node_modules/\@kyma-project/luigi-* public
-$ live-server --entry-file=index.html public
+- `project.id = sample_1`
+- `sort = asc`
 
 ````
-
-### Application setup for VUE.JS
-
-> The VUE CLI is a prerequisite for this example.
-
-1. If you do not have Live Server installed, use this command to install it.
+Luigi.setConfig({
+  routing: {
+    nodeParamPrefix: '~'
+  },
+  navigation: {
+    nodes: [
+      {
+        pathSegment: 'something',
+        label: 'Something',
+        viewUrl: 'https://admin.my.test/project',
+        children: [
+          // DYNAMIC navigation node
+          {
+            navigationContext: 'project',
+            pathSegment: project.id,
+            viewUrl: 'https://admin.my.test/project/' + project.id,
+            context: {
+              currentProject: project.id
+            }
+            children: [
+              {
+                pathSegment: 'products',
+                label: 'Products',
+                viewUrl: 'https://admin.my.test/project/' + project.id + '/products'
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+});
+````
+If you start navigating form within a navigationContext's child, navigate to the specific product route with **luigi client**.
 
 ````
-npm install -g @vue/cli
+LuigiClient.linkManager().fromContext('project').withParam({sort: 'asc'}).navigate('/products');
 ````
 
-2. Use the following commands to create a directory for your application, install luigi, make assets available, and start your local server.
+Or to navigate directly from any other node:
 
 ````
-$ vue create -d my-vue-app && cd my-vue-app
-$ npm i -S @kyma-project/luigi-core@0.2.1 @kyma-project/luigi-client@0.2.1
-$ mkdir -p public/assets
-$ mv public/index.html public/vue.html
-$ curl https://raw.githubusercontent.com/kyma-project/luigi/master/core/examples/luigi-sample-angular/src/index.html > public/index.html
-$ echo "LuigiConfig={navigation: {nodes: () => [{pathSegment:'home',label:'Home',children:[{pathSegment:'hw',label:'Hello World\!',viewUrl:'/vue.html'}]}]}}" > public/assets/sampleconfig.js
-$ echo "const webpack=require('webpack');const CopyWebpackPlugin=require('copy-webpack-plugin');module.exports={pages:{sampleapp:{entry:'src/main.js',template:'public/vue.html',filename:'vue.html'}},lintOnSave:true,runtimeCompiler:true,outputDir:'dist',configureWebpack:{plugins:[new CopyWebpackPlugin([{context:'public',to:'index.html',from:'index.html'},{context:'node_modules/@kyma-project/luigi-core',to:'./luigi-core',from:{glob:'**',dot:true}},{context:'node_modules/@kyma-project/luigi-client',to:'./luigi-client',from:{glob:'**',dot:true}}],{ignore:['.gitkeep','**/.DS_Store','**/Thumbs.db'],debug:'warning'})]}};" > vue.config.js
-$ npm run serve
+LuigiClient.linkManager().withParam({sort: 'asc'}).navigate('/something/sample_1/products');
 ````

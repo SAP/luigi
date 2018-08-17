@@ -1,5 +1,5 @@
 ---
-title: Application setup
+title: Application Setup
 type: CLI reference
 ---
 

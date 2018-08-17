@@ -65,12 +65,11 @@ auth: {
 ````
 
 - **authorizeUrl** - Contains the URL or address of the OAuth2 authorization server.
-- **logoutUrl** - Endpoint for terminating the auth session
-- **oAuthData** - Object with data that gets sent to authorizeUrl
-- **client_id** - Your app client id
-- **scope** - Permissions that are requested upon login
-- **redirect_uri** - Url to return to after login, default is the app root /
-- **response_type** - defaults to id_token token
-any other parameter that is added to oAuthData will be added additionally to the authorization payload
-- **nonceFn** - provide a function that returns a string in order to override default nonce
-- **logoutFn** - provide a function to override logoutUrl functionality for custom logout. It needs to execute logoutCallback() after logout 
+- **logoutUrl** - Contains the endpoint to terminate the auth session.
+- **oAuthData** - Comprises the object with data sent to authorizeUrl.
+- **client_id** - Holds your app client id
+- **scope** - Defines permissions that are requested at login.
+- **redirect_uri** - Contains the URL to return to after login. The default is the app root `/`.
+- **response_type** - Defaults to the **id_token**. Any other parameter that is added to oAuthData is also added to the authorization payload.
+- **nonceFn** - Provides a function that returns a string in order to override the default **nonce**.
+- **logoutFn** - Provides a function to override **logoutUrl** functionality for a custom logout. It needs to execute the function **logoutCallback()** after logout. 
