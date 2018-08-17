@@ -1,8 +1,3 @@
----
-title: Routing Mechanism Configuration
-type: CLI reference
----
-
 ## Overview
 
 You can configure how Luigi should tackle routing in your application in the section **Routing** of the configuration file. In the example, you can choose the routing strategy to apply in your application as either hash or path location routing. Path location routing is the default strategy. You don't need to define the option if you prefer to use the path location routing strategy such as https://myawesomeapp/projects/project2/users/groups.

@@ -1,8 +1,3 @@
----
-title: Link Manager
-type: CLI reference
----
-
 ## Overview
 
 Use the Link Manager instead of an internal router to: 

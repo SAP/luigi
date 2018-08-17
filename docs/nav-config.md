@@ -1,8 +1,3 @@
----
-title: Navigation Configuration
-type: CLI reference
----
-
 ## Overview
 
 Navigation parameters allow you to specify routing configuration, set the appearance of navigation, and define navigation structure. 

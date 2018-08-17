@@ -1,8 +1,3 @@
----
-title: Life Cycle
-type: CLI reference
----
-
 ## Overview
 
 There are various parameters and functions available to Luigi pertaining the life cycle of listeners, navigation nodes and event data.  

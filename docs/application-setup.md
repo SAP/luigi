@@ -1,8 +1,3 @@
----
-title: Application Setup
-type: CLI reference
----
-
 ## Overview
 
 Prior to the implementation of luigi, you need to set up your application. This document shows you how to set up a web application using the luigi microfrontend framework.

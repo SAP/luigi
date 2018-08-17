@@ -1,8 +1,3 @@
----
-title: Authorization Configuration
-type: CLI reference
----
-
 ## Overview
 
 Luigi provides OpenID Connect and OAuth2 Implicit Grant authorization out of the box. The `use` key defines the currently active authorization provider.

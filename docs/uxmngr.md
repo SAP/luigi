@@ -1,8 +1,3 @@
----
-title: UX Manager
-type: CLI reference
----
-
 ## Overview
 
 Use the UX Manager to manage the appearance in Luigi.   

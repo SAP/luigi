@@ -1,8 +1,3 @@
----
-title: General Settings
-type: CLI reference
----
-
 ## Overview
 
 The configuration file also contains a section called **Settings**. You can configure addition options for Luigi in it.
