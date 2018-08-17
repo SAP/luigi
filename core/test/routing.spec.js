@@ -597,8 +597,10 @@ describe('Routing', () => {
     assert.isTrue(routing.isNotSameDomain(config, component));
   });
 
-  xdescribe('defaultPathSegments', () => {
-    // const getDefaultPathSegment = routing.__get__('getDefaultPathSegment');
+  describe('defaultPathSegments', () => {
+    const routing = rewire('../src/services/routing');
+
+    const getDefaultPathSegment = routing.__get__('getDefaultPathSegment');
     const getPathData = function() {
       return {
         navigationPath: [
