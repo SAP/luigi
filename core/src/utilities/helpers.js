@@ -74,5 +74,8 @@ export const prependOrigin = path => {
     return path;
   }
   const hasLeadingSlash = path.startsWith('/');
-  return window.location.origin + (hasLeadingSlash ? '' : '/') + path;
+  if (path.length) {
+    return window.location.origin + (hasLeadingSlash ? '' : '/') + path;
+  }
+  return window.location.origin;
 };

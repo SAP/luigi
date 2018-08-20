@@ -8,7 +8,7 @@ export class openIdConnect {
       post_logout_redirect_uri: window.location.origin + '/logout.html',
       response_type: 'id_token token',
       filterProtocolClaims: true,
-      loadUserInfo: true,
+      loadUserInfo: false,
       automaticSilentRenew: false
       // silentRequestTimeout:10000,
       // silent_redirect_uri: '/luigi-core/auth/oidc/silent-callback.html', // not yet implemented
@@ -22,7 +22,7 @@ export class openIdConnect {
 
     this.settings = mergedSettings;
     waitForKeyExistency(window, 'Oidc').then(res => {
-      this.client = new Oidc.OidcClient(settings);
+      this.client = new Oidc.OidcClient(this.settings);
       // Oidc.Log.logger = console;
       // Oidc.Log.level = Oidc.Log.INFO;
       this._processLoginResponse();
@@ -31,20 +31,23 @@ export class openIdConnect {
   }
 
   login() {
-    return this.client
-      .createSigninRequest(this.settings)
-      .then(req => {
-        window.location = req.url;
-        return;
-      })
-      .catch(err => {
-        console.error(err);
-        return err;
-      });
+    return waitForKeyExistency(this, 'client').then(res => {
+      return this.client
+        .createSigninRequest(this.settings)
+        .then(req => {
+          window.location = req.url;
+          return;
+        })
+        .catch(err => {
+          console.error(err);
+          return err;
+        });
+    });
   }
 
   logout(authData, callback) {
     callback();
+    window.location.href = this.settings.post_logout_redirect_uri;
     // TODO: dex logout is not yet supported
     // const signoutData = {
     //   id_token_hint: authData && authData.idToken,
@@ -60,14 +63,14 @@ export class openIdConnect {
 
   _processLogoutResponse() {
     // TODO: dex logout is not yet supported
-    // if (window.location.href.indexOf("?") >= 0) {
-    //   this.client.processSignoutResponse().then((response) => {
-    //     localStorage.removeItem('luigi.auth');
-    //     log("signout response", response);
-    //   }).catch(function (err) {
-    //     log(err);
-    //   });
-    // }
+    if (window.location.href.indexOf("?") >= 0) {
+      this.client.processSignoutResponse().then((response) => {
+        localStorage.removeItem('luigi.auth');
+        log("signout response", response);
+      }).catch(function (err) {
+        log(err);
+      });
+    }
   }
 
   _processLoginResponse() {
@@ -97,7 +100,7 @@ export class openIdConnect {
         localStorage.setItem('luigi.auth', JSON.stringify(data));
         window.location.href = hashParams.state
           ? decodeURIComponent(hashParams.state)
-          : this.settings.post_logout_redirect_uri;
+          : this.settings.redirect_uri;
       })
       .catch(err => {
         console.error(err);

@@ -39,7 +39,7 @@
     // custom provided provider provided via config: 
     const customIdpProvider = getConfigValueFromObject(idpProviderSettings, 'customIdpProvider');
     if (customIdpProvider) {
-      ['login', 'logout'].forEach((requiredFnName) => {
+      ['login'].forEach((requiredFnName) => {
         if(!isFunction(customIdpProvider[requiredFnName])) {
           throw new IdpProviderException(`${requiredFnName} function does not exist in custom IDP Provider ${idpProviderName}`);
         }

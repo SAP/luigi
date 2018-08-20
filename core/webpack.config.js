@@ -2,6 +2,7 @@ const { readFileSync } = require('fs');
 const babelSettings = JSON.parse(readFileSync('.babelrc'));
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const sass = require('node-sass');
+const CopyWebpackPlugin = require('copy-webpack-plugin');
 
 module.exports = {
   entry: {
@@ -76,6 +77,9 @@ module.exports = {
       }
     ]
   },
-  plugins: [new ExtractTextPlugin('luigi.css')],
+  plugins: [
+    new ExtractTextPlugin('luigi.css'),
+    new CopyWebpackPlugin(['node_modules/oidc-client/dist/oidc-client.min.js'])
+  ],
   mode: 'production'
 };
