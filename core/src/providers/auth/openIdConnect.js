@@ -98,9 +98,14 @@ export class openIdConnect {
           profile: hashParams.profile
         };
         localStorage.setItem('luigi.auth', JSON.stringify(data));
-        window.location.href = hashParams.state
-          ? decodeURIComponent(hashParams.state)
-          : this.settings.redirect_uri;
+
+        // since localStorage has no callback we need to wait couple of ms before proceeding
+        // else persistence might fail.
+        setTimeout(() => {
+          window.location.href = hashParams.state
+            ? decodeURIComponent(hashParams.state)
+            : this.settings.redirect_uri;
+        }, 50);
       })
       .catch(err => {
         console.error(err);
