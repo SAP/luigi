@@ -63,15 +63,16 @@ export class oAuth2ImplicitGrant {
     });
   }
 
-  logout(authData) {
+  logout(authData, logoutCallback) {
     const settings = this.settings;
     const logouturl = `${settings.logoutUrl}?id_token_hint=${
       authData.idToken
-    }&client_id=${
+      }&client_id=${
       settings.oAuthData.client_id
-    }&post_logout_redirect_uri=${prependOrigin(
-      settings.post_logout_redirect_uri
-    )}`;
+      }&post_logout_redirect_uri=${prependOrigin(
+        settings.post_logout_redirect_uri
+      )}`;
+    logoutCallback && logoutCallback();
     window.location.href = logouturl;
   }
 
