@@ -1,6 +1,6 @@
-## Overview
+## Authorization Configuration
 
-Luigi provides OpenID Connect and OAuth2 Implicit Grant authorization out of the box. The `use` key defines the currently active authorization provider.
+Luigi provides OpenID Connect and OAuth2 Implicit Grant authorization out of the box. The **use** key defines the active authorization provider.
 
 ````
 auth: {
@@ -28,12 +28,12 @@ auth: {
 }
 ````
 
-- **authority** - Contains the OpenID Connect server address used to authenticate.
-- **client_id** - Contains your app client id.
-- **scope** - Defines the permissions to request at login.
-- **redirect_uri** - Sets the URL to return to after login. The default is the app root `/`.
-- **post_logout_redirect_uri** - Sets the URL to return after logout. The default is `/logout.html`.
-- **automaticSilentRenew** - Enables the renewal of the automatic token if it is supported by the server. This value defaults to false.
+- **authority** contains the OpenID Connect server address used to authenticate.
+- **client_id** contains your app client id.
+- **scope** defines the permissions to request at login.
+- **redirect_uri** sets the URL to return to after login. The default application root is `/`.
+- **post_logout_redirect_uri** sets the URL to return after logout. The default URL is `/logout.html`.
+- **automaticSilentRenew** enables the renewal of the automatic token if it is supported by the server. The default value is `false`.
 
 ## OAuth2 Implicit Grant configuration
 
@@ -59,12 +59,12 @@ auth: {
   },
 ````
 
-- **authorizeUrl** - Contains the URL or address of the OAuth2 authorization server.
-- **logoutUrl** - Contains the endpoint to terminate the auth session.
-- **oAuthData** - Comprises the object with data sent to authorizeUrl.
-- **client_id** - Holds your app client id
-- **scope** - Defines permissions that are requested at login.
-- **redirect_uri** - Contains the URL to return to after login. The default is the app root `/`.
-- **response_type** - Defaults to the **id_token**. Any other parameter that is added to oAuthData is also added to the authorization payload.
-- **nonceFn** - Provides a function that returns a string in order to override the default **nonce**.
-- **logoutFn** - Provides a function to override **logoutUrl** functionality for a custom logout. It needs to execute the function **logoutCallback()** after logout. 
+- **authorizeUrl** contains the URL or address of the OAuth2 authorization server.
+- **logoutUrl** contains the endpoint to terminate the authorization session.
+- **oAuthData** comprises the object with data sent to the **authorizeUrl**.
+- **client_id** holds your application client ID.
+- **scope** defines permissions that are requested at login.
+- **redirect_uri** contains the URL to return to after login. The default application root is `/`.
+- **response_type** defaults to the **id_token**. Any other parameter that is added to oAuthData is also added to the authorization payload.
+- **nonceFn** provides a function that returns a string in order to override the default **nonce**.
+- **logoutFn** provides a function to override **logoutUrl** functionality for a custom logout. It needs to execute the function **logoutCallback()** after logout. 

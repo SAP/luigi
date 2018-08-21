@@ -1,4 +1,4 @@
-## Overview
+## UX Manager
 
 Use the UX Manager to manage the appearance in Luigi.   
 
@@ -9,5 +9,5 @@ LuigiClient.uxManager().addBackdrop()
 LuigiClient.uxManager().removeBackdrop()
 ````
 
-- **addBackdrop()** - Adds a backdrop to block the top and side navigation. It is created based on Fundamental UI Modal, which you can use in your micro fortend to achieve the same behaviour
-- **removeBackdrop()** - Removes the backdrop
+- **addBackdrop()** - Adds a backdrop to block the top and side navigation. It is based on Fundamental UI Modal, which you can use in your micro front-end to achieve the same behaviour.
+- **removeBackdrop()** - Removes the backdrop.
