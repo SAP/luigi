@@ -8,7 +8,7 @@ To integrate luigi into your web applications:
 
 1. Add luigi npm packages to your project dependencies. 
 2. Give luigi exclusive control over the entry file (index.html). This means that if you have a single page application, you should transfer it to a two page application. After that, make sure the existing router doesn't interfer.
-3. Define your luigi [navigation configuration](002-lcr-nav-config.md).
+3. Define your luigi [navigation configuration](navigation-configuration.md).
 4. Start your server to run the application.
 
 ## Command examples
@@ -89,7 +89,7 @@ $ live-server --entry-file=index.html public
 
 > The VUE CLI is a prerequisite for this example.
 
-1. If you do not have Live Server installed, use this command to install it.
+1. If you do not have VUE CLI installed, use this command to install it.
 
 ````
 npm install -g @vue/cli

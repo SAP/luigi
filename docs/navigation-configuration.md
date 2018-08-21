@@ -52,7 +52,7 @@ window.Luigi.setConfig({
 ````
 ### Routing
 
-- **useHashRouting** - Defines either hash-based or path-based routing. Hash-based routing uses the classic shebang For example, `url.com/!#/yourpath`. Path-based routing is uses the common path structure. For example, ` url.com/yourpath`. 
+- **useHashRouting** - Defines either hash-based or path-based routing. Hash-based routing uses the classic shebang. For example, `url.com/#/yourpath`. Path-based routing is uses the common path structure. For example, ` url.com/yourpath`. 
 - **nodeParamPrefix** - The function `LuigiClient.linkManager().withParam()`, found in the Luigi client, provides a way to simply attach query parameters to the view URL for activities such as sorting and filtering.  The URL contains the parameters to allow deep linking. If you want to use a different character prefix, define yours here. The default character is `~`.
 
 ### Navigation parameters
