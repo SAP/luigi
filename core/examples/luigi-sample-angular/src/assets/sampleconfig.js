@@ -66,7 +66,7 @@ var projectDetailNavProviderFn = function(context) {
             category: 'Groups',
             pathSegment: 'groups',
             label: 'Groups',
-            viewUrl: '/sampleapp.html#/projects/' + projectId + '/users/groups',
+            defaultPathSegment: 'customers',
             children: [
               {
                 pathSegment: 'stakeholders',
@@ -115,6 +115,23 @@ var projectDetailNavProviderFn = function(context) {
         pathSegment: 'miscellaneous2',
         label: 'Miscellaneous2',
         viewUrl: '/sampleapp.html#/projects/' + projectId + '/miscellaneous2'
+      },
+      {
+        pathSegment: 'dps',
+        label: 'Default Child Node Example',
+        defaultPathSegment: 'dps2',
+        children: [
+          {
+            pathSegment: 'dps1',
+            label: 'First Child',
+            viewUrl: '/sampleapp.html#/projects/' + projectId + '/dps/dps1'
+          },
+          {
+            pathSegment: 'dps2',
+            label: 'Second Child',
+            viewUrl: '/sampleapp.html#/projects/' + projectId + '/dps/dps2'
+          }
+        ]
       }
     ];
     getProjectPlugins(projectId).then(result => {

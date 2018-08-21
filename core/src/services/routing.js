@@ -16,6 +16,7 @@ const getViewUrl = pathData => {
 };
 
 const getDefaultPathSegment = function(pathData) {
+  debugger;
   const lastElement =
     pathData.navigationPath[pathData.navigationPath.length - 1];
   const pathExists = lastElement.children.find(
@@ -26,6 +27,16 @@ const getDefaultPathSegment = function(pathData) {
   } else {
     return lastElement.children[0].pathSegment;
   }
+};
+
+const isExistingRoute = function(path, pathData) {
+  const lastElement =
+    pathData.navigationPath[pathData.navigationPath.length - 1];
+
+  const routeSplit = path.replace(/\/$/, '').split('/');
+  const lastPathSegment = routeSplit[routeSplit.length - 1];
+
+  return lastElement.pathSegment === lastPathSegment;
 };
 
 const hideElementChildren = node => {
@@ -231,8 +242,12 @@ export const handleRouteChange = async (path, component, node, config) => {
     const nodeParams = getNodeParams(params);
 
     if (path !== '' && !viewUrl) {
-      const defaultPathSegment = getDefaultPathSegment(pathData);
-      navigateTo(`/${pathUrl}/${defaultPathSegment}`);
+      const routeExists = isExistingRoute(path, pathData);
+
+      if (routeExists) {
+        const defaultPathSegment = getDefaultPathSegment(pathData);
+        navigateTo(`/${pathUrl}/${defaultPathSegment}`);
+      } // TODO else display 404 page
       return;
     }
 

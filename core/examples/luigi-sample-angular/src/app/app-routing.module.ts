@@ -10,6 +10,8 @@ import { SettingsComponent } from './project/settings/settings.component';
 import { GroupsComponent } from './project/users/groups/groups.component';
 import { StakeholdersComponent } from './project/users/groups/stakeholders/stakeholders.component';
 import { Miscellaneous2Component } from './project/miscellaneous2/miscellaneous2.component';
+import { ChildNode2Component } from './project/default-child/dps2/child-node-2.component';
+import { ChildNode1Component } from './project/default-child/dps1/child-node-1.component';
 
 const routes: Routes = [
   { path: 'projects/:projectId', component: ProjectComponent },
@@ -36,6 +38,14 @@ const routes: Routes = [
   {
     path: 'projects/:projectId/miscellaneous2',
     component: Miscellaneous2Component
+  },
+  {
+    path: 'projects/:projectId/dps/dps1',
+    component: ChildNode1Component
+  },
+  {
+    path: 'projects/:projectId/dps/dps2',
+    component: ChildNode2Component
   }
 ];
 
