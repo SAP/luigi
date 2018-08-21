@@ -631,7 +631,7 @@ describe('Routing', () => {
       assert.equal(getDefaultPathSegment(pathData), 'stakeholders');
     });
 
-    it('should child with pathSegment equal to defaultPathSegment', () => {
+    it('should return child with pathSegment equal to defaultPathSegment', () => {
       let pathData = getPathData();
       pathData.navigationPath[1].defaultPathSegment = 'customers';
 
