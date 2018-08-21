@@ -66,7 +66,7 @@ var projectDetailNavProviderFn = function(context) {
             category: 'Groups',
             pathSegment: 'groups',
             label: 'Groups',
-            defaultPathSegment: 'customers',
+            viewUrl: '/sampleapp.html#/projects/' + projectId + '/users/groups',
             children: [
               {
                 pathSegment: 'stakeholders',
