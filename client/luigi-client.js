@@ -177,6 +177,10 @@ var client = (function() {
          * @param {boolean} preserveView open route in a new view window to goBack to last state afterwards
          */
         navigate: function(path, sessionId, preserveView) {
+          if (options.errorSkipNavigation) {
+            options.errorSkipNavigation = undefined;
+            return;
+          }
           options.preserveView = preserveView;
           _navigate(sessionId, path);
         },
@@ -189,6 +193,7 @@ var client = (function() {
         fromContext(navigationContext) {
           if (!eventData.parentNavigationContexts.includes(navigationContext)) {
             console.error('Navigation not possible, navigationContext ' + navigationContext + ' not found.');
+            options.errorSkipNavigation = true;
           } else {
             options.fromContext = navigationContext;
           }
