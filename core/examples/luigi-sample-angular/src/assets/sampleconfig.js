@@ -115,6 +115,23 @@ var projectDetailNavProviderFn = function(context) {
         pathSegment: 'miscellaneous2',
         label: 'Miscellaneous2',
         viewUrl: '/sampleapp.html#/projects/' + projectId + '/miscellaneous2'
+      },
+      {
+        pathSegment: 'dps',
+        label: 'Default Child Node Example',
+        defaultPathSegment: 'dps2',
+        children: [
+          {
+            pathSegment: 'dps1',
+            label: 'First Child',
+            viewUrl: '/sampleapp.html#/projects/' + projectId + '/dps/dps1'
+          },
+          {
+            pathSegment: 'dps2',
+            label: 'Second Child',
+            viewUrl: '/sampleapp.html#/projects/' + projectId + '/dps/dps2'
+          }
+        ]
       }
     ];
     getProjectPlugins(projectId).then(result => {
@@ -179,7 +196,7 @@ Luigi.setConfig({
     openIdConnect: {
       authority: 'https://example-authority.com',
       client_id: 'client',
-      scope: 'audience:server:client_id:client openid profile email groups',
+      scope: 'audience:server:client_id:client openid profile email groups'
       // optional parameters
       // redirect_uri: '',
       // post_logout_redirect_uri: '/logout.html',

@@ -25,6 +25,7 @@
     "node-sass": "^4.9.0",
     "oidc-client": "^1.5.2",
     "pre-push": "^0.1.1",
+    "rewire": "^4.0.1",
     "sinon": "^5.1.0",
     "source-map-loader": "^0.2.3",
     "style-loader": "^0.21.0",
@@ -58,5 +59,6 @@
   "repository": {
     "type": "git",
     "url": "ssh://github.com/kyma-project/luigi.git"
-  }
+  },
+  "dependencies": {}
 }
