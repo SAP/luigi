@@ -16,7 +16,6 @@ const getViewUrl = pathData => {
 };
 
 const getDefaultPathSegment = function(pathData) {
-  debugger;
   const lastElement =
     pathData.navigationPath[pathData.navigationPath.length - 1];
   const pathExists = lastElement.children.find(
