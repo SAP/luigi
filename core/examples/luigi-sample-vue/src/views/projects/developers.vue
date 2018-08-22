@@ -1,0 +1,22 @@
+<template>
+  <div>
+    <section class="fd-section">
+      <div class="fd-section__header">
+        <h1 class="fd-section__title">Developers</h1>
+      </div>
+      <div class="fd-panel">
+        Developers content.
+      </div>
+    </section>
+  </div>
+</template>
+
+<script>
+  export default {
+    name: "developers"
+  }
+</script>
+
+<style scoped>
+
+</style>
