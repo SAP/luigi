@@ -5,4 +5,4 @@ export const authLibraries = {
     oidc.setAttribute('src', '/luigi-core/oidc-client.min.js');
     document.body.appendChild(oidc);
   }
-}
+};

@@ -1,7 +1,7 @@
 var isHashRoute = true;
 
-var getAllProjects = function () {
-  return new Promise(function (resolve) {
+var getAllProjects = function() {
+  return new Promise(function(resolve) {
     resolve([
       {
         id: 'pr1',
@@ -15,8 +15,8 @@ var getAllProjects = function () {
   });
 };
 
-var getProjectPlugins = function (projectId) {
-  return new Promise(function (resolve) {
+var getProjectPlugins = function(projectId) {
+  return new Promise(function(resolve) {
     if (projectId === 'pr2') {
       resolve([
         {
@@ -54,8 +54,8 @@ var getProjectPlugins = function (projectId) {
   });
 };
 
-var projectDetailNavProviderFn = function (context) {
-  return new Promise(function (resolve) {
+var projectDetailNavProviderFn = function(context) {
+  return new Promise(function(resolve) {
     var projectId = context.currentProject;
     var children = [
       {
@@ -134,8 +134,8 @@ var projectDetailNavProviderFn = function (context) {
   });
 };
 
-var projectsNavProviderFn = function (context) {
-  return new Promise(function (resolve) {
+var projectsNavProviderFn = function(context) {
+  return new Promise(function(resolve) {
     getAllProjects().then(result => {
       var children = [];
       result.forEach(project => {
@@ -191,7 +191,7 @@ LuigiConfig = {
       authorizeUrl: 'https://example-url.com/authorize',
       logoutUrl: 'https://example-url.com/logout',
       oAuthData: {
-        client_id: 'egDuozijY5SVr0NSIowUP1dT6RVqHnlp',
+        client_id: 'egDuozijY5SVr0NSIowUP1dT6RVqHnlp'
 
         // optional: redirect_uri and response_type are provided by default
         // scope: '',
@@ -199,7 +199,7 @@ LuigiConfig = {
         // response_type: 'id_token token',
 
         // all specified values inside oAuthData will be added to the oauth call, i.e display="popup",
-      },
+      }
       // optional , will be provided by default
       // nonceFn: () => {
       //   console.log('custom nonce function called');
