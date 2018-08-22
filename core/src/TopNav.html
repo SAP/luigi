@@ -5,7 +5,7 @@
     <div class="fd-global-nav__group fd-global-nav__group--left">
       <div class="fd-global-nav__logo fd-has-margin-left-none"></div>
       <div class="fd-global-nav__product-name">
-        <a href="/">LUIGI</a>
+        <a on:click="goTo('/overview')">LUIGI</a>
       </div>
     </div>
     <div class="fd-global-nav__group fd-global-nav__group--right">
@@ -113,7 +113,14 @@
             }
         },
         methods: {
-            handleClick: (node) => handleRouteClick(node)
+            handleClick: (node) => handleRouteClick(node),
+            goTo: (path) => {
+              if(getConfigBooleanValue('routing.useHashRouting')) {
+                window.location.hash = path;
+              } else {
+                window.location.pathname = path;
+              }
+            }
         },
         components: {
             Backdrop,
