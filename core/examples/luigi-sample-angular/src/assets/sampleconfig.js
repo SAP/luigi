@@ -192,19 +192,21 @@ Luigi.setConfig({
    *
    */
   auth: {
-    use: 'openIdConnect',
+    use: 'oAuth2ImplicitGrant',
     openIdConnect: {
       authority: 'https://example-authority.com',
       client_id: 'client',
-      scope: 'audience:server:client_id:client openid profile email groups',
-      redirect_uri: '',
-      post_logout_redirect_uri: '',
-      automaticSilentRenew: true,
-      loadUserInfo: false
+      scope: 'audience:server:client_id:client openid profile email groups'
+      // optional parameters
+      // redirect_uri: '',
+      // post_logout_redirect_uri: '/logout.html',
+      // automaticSilentRenew: true,
+      // loadUserInfo: false // returned metadata must contain userinfo_endpoint
     },
     oAuth2ImplicitGrant: {
       authorizeUrl: 'https://example-url.com/authorize',
       logoutUrl: 'https://example-url.com/logout',
+      post_logout_redirect_uri: '/logout.html',
       oAuthData: {
         client_id: 'egDuozijY5SVr0NSIowUP1dT6RVqHnlp'
 

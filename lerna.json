@@ -4,7 +4,8 @@
     "client",
     "core",
     "core/public",
-    "core/examples/luigi-sample-angular"
+    "core/examples/luigi-sample-angular",
+    "core/examples/luigi-sample-vue"
   ],
   "version": "0.0.0"
 }
