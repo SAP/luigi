@@ -24,7 +24,17 @@
               {
                 "glob": "fundamental-ui.min.css",
                 "input": "node_modules/fundamental-ui/dist",
-                "output": ""
+                "output": "/fundamental-ui"
+              },
+              {
+                "glob": "fonts/**",
+                "input": "node_modules/fundamental-ui/dist",
+                "output": "/fundamental-ui"
+              },
+              {
+                "glob": "SAP-icons.*",
+                "input": "node_modules/fundamental-ui/dist",
+                "output": "/fundamental-ui"
               },
               {
                 "glob": "**",
