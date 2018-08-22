@@ -15,7 +15,7 @@ The examples on this page demonstrate commands that perform each of the necessar
 
 ### Application setup for an application not using a framework
 
-> **Note:** A development server capable of hosting Single Page Applications must be installed. We recommend Live Server.
+>**NOTE:** A development server capable of hosting Single Page Applications must be installed. We recommend Live Server.
 
 1. If you do not have Live Server installed, use this command to install it.
 
@@ -40,7 +40,7 @@ $ live-server --entry-file=index.html public
 
 ### Application setup for Angular 6
 
-> **Note:** The Angular CLI is a prerequisite for this example.
+>**NOTE:** The Angular CLI is a prerequisite for this example.
 
 1. If you do not have the Angular CLI installed, download and install it from [this URL](https://cli.angular.io/).
 
@@ -60,7 +60,7 @@ $ ng serve
 
 ### Application setup for SAPUI5/OpenUI5
 
-> **Note:** Live Server must be installed as your development server.
+>**NOTE:** Live Server must be installed as your development server.
 
 1. If you do not have Live Server installed, use this command to install it.
 
@@ -85,7 +85,7 @@ $ live-server --entry-file=index.html public
 
 ### Application setup for VUE.JS
 
-> **Note:** The VUE CLI is a prerequisite for this example.
+>**NOTE:** The VUE CLI is a prerequisite for this example.
 
 1. If you do not have VUE CLI installed, use this command to install it.
 
