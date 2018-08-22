@@ -1,12 +1,10 @@
-{#if authorizationEnabled && !isLoggedIn}
-<button class=" fd-button--secondary fd-button--m fd-global-nav__btn"
-              aria-label="Login" on:click=startAuthorization()><span class=" fd-identifier--s fd-identifier--circle ">Login</span></button>
-{/if}
-{#if authorizationEnabled && isLoggedIn}
-  <button class=" fd-button--secondary fd-button--m fd-global-nav__btn"
-                aria-label="Login" on:click=logout()><span class=" fd-identifier--s fd-identifier--circle ">Logout</span></button>
-{/if}
-<span id="authorization"></span>
+<ul class="fd-menu__list">
+  <li>
+    {#if authorizationEnabled && isLoggedIn}
+    <a href="#" aria-label="Logout" on:click=logout() class="fd-menu__item">Logout</a>
+    {/if}
+  </li>
+</ul>
 
 <script type="text/javascript">
   import { getConfigValueAsync, getConfigValue, getConfigValueFromObject } from './services/config.js';
@@ -41,7 +39,7 @@
     // custom provided provider provided via config: 
     const customIdpProvider = getConfigValueFromObject(idpProviderSettings, 'customIdpProvider');
     if (customIdpProvider) {
-      ['login', 'logout'].forEach((requiredFnName) => {
+      ['login'].forEach((requiredFnName) => {
         if(!isFunction(customIdpProvider[requiredFnName])) {
           throw new IdpProviderException(`${requiredFnName} function does not exist in custom IDP Provider ${idpProviderName}`);
         }
@@ -69,11 +67,13 @@
       idpProviderInstance = getIdpProviderInstance(idpProviderName, idpProviderSettings);
 
       const authData = getStoredAuthData();
-      if (!authData) {
+      if (!authData || !isAuthValid()) {
+        this.startAuthorization();
         return;
       }
+
       this.set({
-        isLoggedIn: isAuthValid(),
+        isLoggedIn: true,
         logoutUrl: idpProviderInstance.settings.logoutUrl
       });
 
@@ -129,14 +129,11 @@
 
 
 <style type="text/scss">
-
-
+$fd-icons-path: 'node_modules/fundamental-ui/scss/icons/';
 @import 'node_modules/fundamental-ui/scss/icons';
 @import 'node_modules/fundamental-ui/scss/core';
-@import 'node_modules/fundamental-ui/scss/components/button';
-@import 'node_modules/fundamental-ui/scss/components/dropdown';
-@import 'node_modules/fundamental-ui/scss/components/global-nav';
-@import 'node_modules/fundamental-ui/scss/components/side-nav';
+@import 'node_modules/fundamental-ui/scss/components/popover';
+@import 'node_modules/fundamental-ui/scss/components/menu';
 @import 'node_modules/fundamental-ui/scss/helpers';
 
 .fd-ui__header {

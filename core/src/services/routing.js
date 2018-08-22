@@ -206,7 +206,7 @@ const buildRoute = (node, path, params) =>
 
 export const handleRouteChange = async (path, component, node, config) => {
   try {
-    const pathUrl = path && path.length ? getPathWithoutHash(path) : path;
+    const pathUrl = path && path.length ? getPathWithoutHash(path) : '';
     const pathData = await getNavigationPath(
       getConfigValueAsync('navigation.nodes'),
       pathUrl.split('?')[0]

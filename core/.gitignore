@@ -25,6 +25,7 @@ yarn-error.log*
 .vscode/
 public/luigi.css
 public/luigi.js
+public/luigi.vendor.js
 
 # maps
 *.map
