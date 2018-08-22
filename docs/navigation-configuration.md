@@ -1,4 +1,4 @@
-## Navigation Configuration
+# Navigation Configuration
 
 Navigation parameters allow you to specify routing configuration, set the appearance of navigation, and define navigation structure. 
 
@@ -52,7 +52,7 @@ window.Luigi.setConfig({
 ````
 ### Routing
 
-- **useHashRouting** defines either hash-based (url.com/#/yourpath) or path-based url.com/yourpath) routing.
+- **useHashRouting** defines either hash-based (`url.com/#/yourpath`) or path-based `url.com/yourpath`) routing.
 - **nodeParamPrefix** sets the prefix character when using the `LuigiClient.linkManager().withParam()` function, which provides a way to simply attach query parameters to the view URL for activities such as sorting and filtering.  The URL contains the parameters to allow deep linking. If you want to use a different character prefix, define yours here. The default character is `~`.
 
 ### Navigation parameters

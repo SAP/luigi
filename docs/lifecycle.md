@@ -1,4 +1,4 @@
-## Lifecycle
+# Lifecycle
 
 There are various parameters and functions available to Luigi pertaining the lifecycle of listeners, navigation Nodes and Event data.  
 

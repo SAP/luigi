@@ -1,4 +1,4 @@
-## Authorization Configuration
+# Authorization Configuration
 
 Luigi provides OpenID Connect and OAuth2 Implicit Grant authorization out of the box. The **use** key defines the active authorization provider.
 
@@ -29,7 +29,7 @@ auth: {
 ````
 
 - **authority** contains the OpenID Connect server address used to authenticate.
-- **client_id** contains your app client id.
+- **client_id** contains your app client ID.
 - **scope** defines the permissions to request at login.
 - **redirect_uri** sets the URL to return to after login. The default application root is `/`.
 - **post_logout_redirect_uri** sets the URL to return after logout. The default URL is `/logout.html`.

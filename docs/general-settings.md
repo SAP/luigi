@@ -1,4 +1,4 @@
-## General Settings
+# General Settings
 
 The configuration file also contains a section called **Settings** in which you can configure additional Luigi options.
 

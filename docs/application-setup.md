@@ -1,11 +1,19 @@
-## Application setup
+# Application setup
 
 Prior to the implementation of Luigi, you need to set up your application. This document shows you how to set up a web application using the Luigi micro front-end framework.
 
 ## Intitial steps
 
+Follow these steps to build a web application based on Luigi:
+
 1. Add Luigi npm packages to your project dependencies. 
-2. Give Luigi exclusive control over the entry `index.html` file. If you have a single page application, transfer it to a two-page application. Make sure the existing router doesn't interfere.
+
+````
+npm install --save @kyma-project/luigi-core
+npm install --save @kyma-project/luigi-client
+````
+
+2. Give Luigi exclusive control over the entry `index.html` file. If you have a single page application, transfer it to a two-page application. Your app should run  to make sure the existing router doesn't interfere.
 3. Define your Luigi [navigation configuration](navigation-configuration.md).
 4. Start your server to run the application.
 
@@ -15,7 +23,7 @@ The examples on this page demonstrate commands that perform each of the necessar
 
 ### Application setup for an application not using a framework
 
->**NOTE:** A development server capable of hosting Single Page Applications must be installed. We recommend Live Server.
+>**NOTE:** You need a development server capable of hosting Single Page Applications. The recommended server is Live Server.
 
 1. If you do not have Live Server installed, use this command to install it.
 
