@@ -1,4 +1,5 @@
-export const isFunction = anyParam => (anyParam && {}.toString.call(anyParam) === '[object Function]');
+export const isFunction = anyParam =>
+  anyParam && {}.toString.call(anyParam) === '[object Function]';
 
 export const isPromise = anyParam => anyParam && isFunction(anyParam.then);
 
@@ -7,7 +8,8 @@ export const isPromise = anyParam => anyParam && isFunction(anyParam.then);
  * @param item mixed
  * @returns {boolean}
  */
-export const isObject = item => item && typeof item === 'object' && !Array.isArray(item);
+export const isObject = item =>
+  item && typeof item === 'object' && !Array.isArray(item);
 
 /**
  * Deep merge two objects.
@@ -38,14 +40,17 @@ export const getUrlWithoutHash = url => {
   }
   const urlWithoutHash = url.split('#')[0];
 
-  // We assume that any URL not starting with 
+  // We assume that any URL not starting with
   // http is on the current page's domain
   if (!urlWithoutHash.startsWith('http')) {
-    return window.location.origin + (urlWithoutHash.startsWith('/') ? '' : '/') + urlWithoutHash;
+    return (
+      window.location.origin +
+      (urlWithoutHash.startsWith('/') ? '' : '/') +
+      urlWithoutHash
+    );
   }
   return urlWithoutHash;
-}
-
+};
 
 /**
  * Checks if a given input string begins a hash with slash
@@ -58,4 +63,19 @@ export const getPathWithoutHash = path => {
     path = path.substr(1);
   }
   return path;
+};
+
+/**
+ *  Prepend current url to redirect_uri, if it is a relative path
+ * @param {path} string full url, relative or absolute path
+ */
+export const prependOrigin = path => {
+  if (path.startsWith('http')) {
+    return path;
+  }
+  const hasLeadingSlash = path.startsWith('/');
+  if (path.length) {
+    return window.location.origin + (hasLeadingSlash ? '' : '/') + path;
+  }
+  return window.location.origin;
 };

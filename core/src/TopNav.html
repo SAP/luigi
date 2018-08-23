@@ -5,7 +5,7 @@
     <div class="fd-global-nav__group fd-global-nav__group--left">
       <div class="fd-global-nav__logo fd-has-margin-left-none"></div>
       <div class="fd-global-nav__product-name">
-        <a href="/">LUIGI</a>
+        <a on:click="goTo('/overview')">LUIGI</a>
       </div>
     </div>
     <div class="fd-global-nav__group fd-global-nav__group--right">
@@ -14,11 +14,28 @@
           {#each children as node}
             {#if !node.hideFromNav}
               <button class=" fd-button--secondary fd-button--m fd-global-nav__btn {node === selectedNode ? 'is-selected' : ''}"
-              aria-label="{node.label}" on:click=handleClick(node)><span class=" fd-identifier--s fd-identifier--circle ">{node.label}</span></button>
+              aria-label="{node.label}" on:click=handleClick(node)><span class="">{node.label}</span></button>
             {/if}
           {/each}
         {/if}
-        <Authorization />
+
+        {#if authorizationEnabled}
+        <div class="fd-popover user-settings">
+          <div class="fd-popover__control">
+          <button class="fd-popover__control fd-button--secondary fd-button--m fd-global-nav__btn sap-icon--action-settings"
+          aria-controls="PROFILE_POPOVER" aria-expanded="false" aria-haspopup="true"></button>
+          </div>
+          <div class="fd-popover__body" aria-hidden="true" id="PROFILE_POPOVER">
+            <nav class="fd-menu" id="">
+              <Authorization />
+              <!-- <ul class="fd-menu__list">
+                <li><a href="#" class="fd-menu__item">Option 1</a></li>
+                <li><a href="#" class="fd-menu__item">Option 1</a></li>
+              </ul> -->
+            </nav>
+          </div>
+        </div>
+        {/if}
       </div>
     </div>
   </nav>
@@ -28,32 +45,67 @@
     import Backdrop from './Backdrop.html';
     import Authorization from './Authorization.html';
     import { handleRouteClick } from './services/routing.js';
-    import { getConfigValue } from './services/config.js';
+    import { getConfigValue, getConfigBooleanValue } from './services/config.js';
+
+    const initAriaControls = () => {
+      // Fundamental UI specific javascript
+      // copied from sap.github.io/fundamental/demo-pages/full-width-app-demo.html
+
+      // popover
+      const els = document.querySelectorAll("[aria-controls]");
+      for (let i = 0; i < els.length; i++) {
+          const el = els[i];
+          el.addEventListener('click', function(e) {
+              const targetId = this.getAttribute("aria-controls");
+              const target = document.getElementById(targetId);
+
+              // popover
+              const isPopover = this.getAttribute("aria-haspopup") === "true";
+              if (isPopover) {
+                //trigger
+                const isExpanded = this.getAttribute("aria-expanded") === "true";
+                this.setAttribute("aria-expanded", (!isExpanded).toString());
+                //target
+                target.setAttribute("aria-hidden", isExpanded.toString());
+                return;
+              }
+          })
+      }
+
+    };
 
     const setTopNavData = (current, component) => {
-        if (current.pathData && 0 < current.pathData.length) {
-            const children = current.pathData[0].children;
-            var selectedNode = null;
-            children.map((node) => {
-                current.pathData.forEach(n => {
-                   if (!selectedNode && n === node) {
-                       selectedNode = node;
-                   }
-                });
-            });
-            component.set({
-                children: children,
-                selectedNode: selectedNode
-            });
-            window.TOPNAVDATA = children;
-        }
+      if (current.pathData && 0 < current.pathData.length) {
+        const children = current.pathData[0].children;
+        let selectedNode = null;
+        children.map((node) => {
+          current.pathData.forEach(n => {
+            if (!selectedNode && n === node) {
+              selectedNode = node;
+            }
+          });
+        });
+        component.set({
+          children: children,
+          selectedNode: selectedNode
+        });
+        window.TOPNAVDATA = children;
+      }
     };
 
     export default {
         oncreate() {
-            this.set({
-                hideNavComponent: getConfigValue('navigation.hideNav')
-            });
+          // Authentication detection
+          const idpProviderName = getConfigValue('auth.use');
+          const idpProviderSettings = getConfigValue(`auth.${idpProviderName}`);
+
+          this.set({
+              authorizationEnabled: !!idpProviderSettings,
+              hideNavComponent: getConfigBooleanValue('settings.hideNavigation')
+          });
+
+          // at last, init aria-control handler
+          initAriaControls();
         },
         onstate({ changed, current, previous }) {
             if (!previous || previous.pathData != current.pathData) {
@@ -61,26 +113,39 @@
             }
         },
         methods: {
-            handleClick: (node) => handleRouteClick(node)
+            handleClick: (node) => handleRouteClick(node),
+            goTo: (path) => {
+              if(getConfigBooleanValue('routing.useHashRouting')) {
+                window.location.hash = path;
+              } else {
+                window.location.pathname = path;
+              }
+            }
         },
         components: {
             Backdrop,
             Authorization
         }
     };
+
 </script>
 
 <style type="text/scss">
-
+$fd-scss-font-path: 'node_modules/fundamental-ui/scss/fonts/';
+$fd-icons-path: 'node_modules/fundamental-ui/scss/icons/';
 
 @import 'node_modules/fundamental-ui/scss/icons';
 @import 'node_modules/fundamental-ui/scss/core';
+@import 'node_modules/fundamental-ui/scss/components/action-bar';
 @import 'node_modules/fundamental-ui/scss/components/button';
-@import 'node_modules/fundamental-ui/scss/components/dropdown';
+@import 'node_modules/fundamental-ui/scss/components/popover';
+@import 'node_modules/fundamental-ui/scss/components/menu';
 @import 'node_modules/fundamental-ui/scss/components/global-nav';
 @import 'node_modules/fundamental-ui/scss/components/side-nav';
-@import 'node_modules/fundamental-ui/scss/helpers';
 
+.user-settings .fd-popover__body {
+  right: 0;
+}
 .fd-ui__header {
     position: fixed;
     z-index: 1;

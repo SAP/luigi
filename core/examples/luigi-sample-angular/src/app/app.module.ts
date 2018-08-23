@@ -17,7 +17,8 @@ import { Miscellaneous2Component } from './project/miscellaneous2/miscellaneous2
 import { NavigationComponent } from './project/navigation/navigation.component';
 import { ModalComponent } from './project/modal/modal.component';
 import { CodeSnippetComponent } from './project/code-snippet/code-snippet.component';
-
+import { ChildNode1Component } from './project/default-child/dps1/child-node-1.component';
+import { ChildNode2Component } from './project/default-child/dps2/child-node-2.component';
 
 @NgModule({
   declarations: [
@@ -34,10 +35,12 @@ import { CodeSnippetComponent } from './project/code-snippet/code-snippet.compon
     Miscellaneous2Component,
     NavigationComponent,
     ModalComponent,
-    CodeSnippetComponent
+    CodeSnippetComponent,
+    ChildNode1Component,
+    ChildNode2Component
   ],
   imports: [BrowserModule, FormsModule, AppRoutingModule],
   providers: [],
   bootstrap: [AppComponent]
 })
-export class AppModule { }
+export class AppModule {}

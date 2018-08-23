@@ -10,21 +10,46 @@ describe('Svelte', () => {
     cy.contains('LUIGI');
     cy.contains('Overview');
     cy.contains('Projects');
-    cy.get('li').should('have.length', 2);
+    cy.get('button').should('have.length', 2);
+    cy.get('li').should('have.length', 0);
   });
 
   it('Overview page', () => {
-    cy.get('li')
+    cy.contains('LUIGI');
+    cy.contains('Overview');
+    cy.contains('Projects');
+    cy.get('button')
       .first()
       .click();
-    cy.get('li').should('have.length', 2);
+    cy.get('button').should('have.length', 2);
+    cy.get('li').should('have.length', 0);
   });
 
   it('Projects page', () => {
-    cy.get('li')
+    cy.contains('LUIGI');
+    cy.contains('Overview');
+    cy.contains('Projects');
+    cy.get('button')
       .first()
       .next()
       .click();
-    cy.get('li').should('have.length', 4);
+    cy.get('button').should('have.length', 2);
+    cy.get('li').should('have.length', 2);
+    cy.contains('Project One');
+    cy.contains('Project Two');
+  });
+
+  it('Project one page', () => {
+    cy.contains('LUIGI');
+    cy.contains('Overview');
+    cy.contains('Projects');
+    cy.contains('Project One');
+    cy.contains('Project Two');
+    cy.get('li')
+      .first()
+      .find('a')
+      .click();
+    cy.get('button').should('have.length', 2);
+    cy.get('li').should('have.length', 7);
   });
 });

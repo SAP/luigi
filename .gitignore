@@ -4,3 +4,7 @@ node_modules
 # IDEs
 .idea
 .angulardoc.json
+
+# Lerna
+lerna-debug.log
+oidc-client.min.js

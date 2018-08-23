@@ -45,7 +45,7 @@
     import Backdrop from './Backdrop.html';
     import { getChildren } from './services/navigation.js';
     import { handleRouteClick } from './services/routing.js';
-    import { getConfigValue } from './services/config.js';
+    import { getConfigValue, getConfigBooleanValue } from './services/config.js';
 
     const getNodes = (children, pathData) => {
         if (children && 0 < children.length) {
@@ -108,7 +108,7 @@
     export default {
         oncreate() {
             this.set({
-                hideNavComponent: getConfigValue('navigation.hideNav')
+                hideNavComponent: getConfigBooleanValue('settings.hideNavigation')
             });
 
         },
@@ -127,12 +127,13 @@
 </script>
 
 <style type="text/scss">
-
 @import 'node_modules/fundamental-ui/scss/core';
 @import 'node_modules/fundamental-ui/scss/icons';
 @import 'node_modules/fundamental-ui/scss/components/side-nav';
 @import 'node_modules/fundamental-ui/scss/helpers';
-
+a {
+    cursor: pointer;
+}
 .fd-app__sidebar{
     position: fixed;
     top: 50px;

@@ -2,6 +2,7 @@ const { readFileSync } = require('fs');
 const babelSettings = JSON.parse(readFileSync('.babelrc'));
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const sass = require('node-sass');
+const CopyWebpackPlugin = require('copy-webpack-plugin');
 
 module.exports = {
   entry: {
@@ -41,7 +42,7 @@ module.exports = {
                   sass.render(
                     {
                       data: content,
-                      includePaths: ['src','node_modules/fundamental-ui/scss'],
+                      includePaths: ['src', 'node_modules/fundamental-ui/scss'],
                       sourceMap: true,
                       outFile: 'x' // this is necessary, but is ignored
                     },
@@ -76,6 +77,9 @@ module.exports = {
       }
     ]
   },
-  plugins: [new ExtractTextPlugin('luigi.css')],
+  plugins: [
+    new ExtractTextPlugin('luigi.css'),
+    new CopyWebpackPlugin(['node_modules/oidc-client/dist/oidc-client.min.js'])
+  ],
   mode: 'production'
 };

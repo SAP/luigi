@@ -2,41 +2,32 @@
 
 ## Overview
 
-Luigi is a micro front-end framework written in Svelte.
+Luigi is a micro front-end JavaScript framework that enables the creation of an administrative dashboard which is driven by local and distributed views. Luigi enables the communication between a web application and content-views which the application contains such as routing, navigation, authorization, and user experience elements.
 
-### Table of contents
+Luigi consists of two components: **Luigi core** and **Luigi client**.
 
-This is the table of contents for all `README.md` documents in the `luigi` repository:
-* [Core](core/README.md)
-    * [Examples](core/examples/README.md)
-* [Client](client/README.md)
+ **Luigi core** is installed in the web application while **Luigi client** is installed in the application(s) running in the content-view. Both of these components interact with one another to leverage communication between both the web application and the content-view, without compromising the security principles behind the iframe pattern.
 
-Read them to learn more about each project in this repository.
+## Installation
+
+To get started with Luigi, read the [Luigi core](https://github.com/kyma-project/luigi/blob/master/core/README.md) document.
+
+- [Application setup](docs/application-setup.md)
+- [Navigation configuration](docs/navigation-configuration.md)
+- [Authorization configuration](docs/authorization-configuration.md)
+- [Routing mechanism configuration](docs/router-configuration.md)
+- [General settings](docs/general-settings.md)
+
+See [this](https://github.com/kyma-project/luigi/blob/master/client/README.md) document to learn more about the Luigi client.
+
+- [Lifecycle](docs/lifecycle.md)
+- [Link Manager](docs/link-manager.md)
+- [UX Manager](docs/ux-manager.md)
 
 ## Development
 
-This mono repository uses [Lerna](https://lernajs.io/) for project management.
+To run Luigi during your development phase, use the [Angular example application](/core/examples/luigi-sample-angular).
 
-To start developing `core`, `client`, or `examples` projects, follow these steps:
+### Code formatting for contributors
 
-1. Install Lerna.
-```bash
-npm install --global lerna
-```
-
-2. Go to the `example` application and install dependencies.
-```bash
-# Lerna bootstrap makes npm install and links cross-dependencies.
-
-lerna bootstrap
-```
-
-3. Bundle cross-dependencies.
-```bash
-# Lerna runs the bundle script in every package where the script exists.
-
-lerna run bundle
-```
-
-### Code formatting rules
-All projects in the repository use [Prettier](https://prettier.io) to format source code. Run `npm install` in the root folder to install it along with [husky](https://github.com/typicode/husky), the Git hooks manager. Both tools ensure proper codebase formatting before committing it.
+All projects in the repository use [Prettier](https://prettier.io) to format source code. Run the `npm install` command in the root folder to install it along with [husky](https://github.com/typicode/husky), the Git hooks manager. Both tools ensure proper codebase formatting before committing it.
