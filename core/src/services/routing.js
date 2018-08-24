@@ -106,7 +106,7 @@ const replaceVars = (viewUrl, params, prefix) => {
   if (params) {
     Object.entries(params).forEach(entry => {
       processedUrl = processedUrl.replace(
-        '{' + prefix + entry[0] + '}',
+        new RegExp(escapeRegExp('{' + prefix + entry[0] + '}'), 'g'),
         encodeURIComponent(entry[1])
       );
     });
@@ -161,7 +161,7 @@ const navigateIframe = (config, component, node) => {
     config.iframe.contentWindow.postMessage(
       {
         msg: 'luigi.navigate',
-        viewUrl: component.get().viewUrl,
+        viewUrl: viewUrl,
         context: JSON.stringify(
           Object.assign({}, componentData.context, { goBackContext })
         ),
