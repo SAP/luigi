@@ -4,10 +4,7 @@ import { getConfigValue } from './services/config';
 import { waitForKeyExistency } from './utilities/async-helpers.js';
 
 let app;
-waitForKeyExistency(
-  window.Luigi,
-  'config'
-).then((isLuigiConfigLoaded) => {
+waitForKeyExistency(window.Luigi, 'config').then(isLuigiConfigLoaded => {
   if (isLuigiConfigLoaded) {
     const authLib = getConfigValue('auth.use');
     if (authLib && authLibraries[authLib]) {

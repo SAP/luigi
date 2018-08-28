@@ -15,6 +15,29 @@ const getViewUrl = pathData => {
   return lastElement ? lastElement.viewUrl : '';
 };
 
+const getDefaultPathSegment = function(pathData) {
+  const lastElement =
+    pathData.navigationPath[pathData.navigationPath.length - 1];
+  const pathExists = lastElement.children.find(
+    childNode => childNode.pathSegment === lastElement.defaultPathSegment
+  );
+  if (lastElement.defaultPathSegment && pathExists) {
+    return lastElement.defaultPathSegment;
+  } else {
+    return lastElement.children[0].pathSegment;
+  }
+};
+
+const isExistingRoute = function(path, pathData) {
+  const lastElement =
+    pathData.navigationPath[pathData.navigationPath.length - 1];
+
+  const routeSplit = path.replace(/\/$/, '').split('/');
+  const lastPathSegment = routeSplit[routeSplit.length - 1];
+
+  return lastElement.pathSegment === lastPathSegment;
+};
+
 const hideElementChildren = node => {
   if (node.children) {
     Array.from(node.children).forEach(child => {
@@ -83,7 +106,7 @@ const replaceVars = (viewUrl, params, prefix) => {
   if (params) {
     Object.entries(params).forEach(entry => {
       processedUrl = processedUrl.replace(
-        '{' + prefix + entry[0] + '}',
+        new RegExp(escapeRegExp('{' + prefix + entry[0] + '}'), 'g'),
         encodeURIComponent(entry[1])
       );
     });
@@ -138,7 +161,7 @@ const navigateIframe = (config, component, node) => {
     config.iframe.contentWindow.postMessage(
       {
         msg: 'luigi.navigate',
-        viewUrl: component.get().viewUrl,
+        viewUrl: viewUrl,
         context: JSON.stringify(
           Object.assign({}, componentData.context, { goBackContext })
         ),
@@ -211,10 +234,21 @@ export const handleRouteChange = async (path, component, node, config) => {
       getConfigValueAsync('navigation.nodes'),
       pathUrl.split('?')[0]
     );
+
     const hideNav = getConfigBooleanValue('settings.hideNavigation');
     const viewUrl = getViewUrl(pathData);
     const params = parseParams(pathUrl.split('?')[1]);
     const nodeParams = getNodeParams(params);
+
+    if (path !== '' && !viewUrl) {
+      const routeExists = isExistingRoute(path, pathData);
+
+      if (routeExists) {
+        const defaultPathSegment = getDefaultPathSegment(pathData);
+        navigateTo(`/${pathUrl}/${defaultPathSegment}`);
+      } // TODO else display 404 page
+      return;
+    }
 
     component.set({
       hideNav: hideNav,

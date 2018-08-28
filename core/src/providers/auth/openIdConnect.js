@@ -63,13 +63,16 @@ export class openIdConnect {
 
   _processLogoutResponse() {
     // TODO: dex logout is not yet supported
-    if (window.location.href.indexOf("?") >= 0) {
-      this.client.processSignoutResponse().then((response) => {
-        localStorage.removeItem('luigi.auth');
-        log("signout response", response);
-      }).catch(function (err) {
-        log(err);
-      });
+    if (window.location.href.indexOf('?') >= 0) {
+      this.client
+        .processSignoutResponse()
+        .then(response => {
+          localStorage.removeItem('luigi.auth');
+          log('signout response', response);
+        })
+        .catch(function(err) {
+          log(err);
+        });
     }
   }
 
