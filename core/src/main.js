@@ -16,11 +16,22 @@ waitForKeyExistency(window.Luigi, 'config').then(isLuigiConfigLoaded => {
       data: {}
     });
     window.app = app;
-  } else {
-    console.error(
-      'Missing Luigi.config. Please configure Luigi via Luigi.setConfig(config) function'
-    );
   }
+}, e => {
+  const errorMsg = 'Ups.. Looks like Luigi was not configured. Please use Luigi.setConfig(config) function to configure Luigi.';
+  console.error(errorMsg);
+  var errorTextNode = document.createTextNode(errorMsg);
+  var fd_ui = document.createElement("div");
+  fd_ui.setAttribute("class", "fd-ui");
+  fd_ui.setAttribute("style","text-align: center;" )
+
+  var errorDiv = document.createElement("div");
+  errorDiv.setAttribute("class", "fd-alert fd-alert--error")
+  errorDiv.setAttribute("style", "max-width: 800px; display: inline-block; margin-top: 40px;")
+  errorDiv.appendChild(errorTextNode);
+
+  fd_ui.appendChild(errorDiv);
+  document.body.appendChild(fd_ui);
 });
 
 export default app;
