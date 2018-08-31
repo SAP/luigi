@@ -105,7 +105,7 @@ var client = (function() {
       setContext(e.data.context, e.data.nodeParams);
 
       if (hasHash(e.data.viewUrl) && hasHash(window.location.href)) {
-        window.location.hash = window.location.href.split('#')[1];
+        window.location.hash = e.data.viewUrl.split('#')[1];
       } else {
         window.location.replace(e.data.viewUrl);
       }
