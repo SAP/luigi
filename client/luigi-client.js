@@ -87,7 +87,11 @@ var client = (function() {
     }
   }
 
-  window.addEventListener('message', function(e) {
+  function hasHash(string) {
+    return string.indexOf('#') !== -1;
+  }
+
+  window.addEventListener('message', function (e) {
     if ('luigi.init' === e.data.msg) {
       setInternalData(e.data.internal);
       setContext(e.data.context, e.data.nodeParams);
@@ -99,7 +103,13 @@ var client = (function() {
     if ('luigi.navigate' === e.data.msg) {
       setInternalData(e.data.internal);
       setContext(e.data.context, e.data.nodeParams);
-      window.location.replace(e.data.viewUrl);
+
+      if (hasHash(e.data.viewUrl) && hasHash(window.location.href)) {
+        window.location.hash = e.data.viewUrl.split('#')[1];
+      } else {
+        window.location.replace(e.data.viewUrl);
+      }
+
       window.parent.postMessage({ msg: 'luigi.navigate.ok' }, '*');
     }
   });
