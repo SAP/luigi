@@ -14,8 +14,6 @@
     "chai": "^4.1.2",
     "copy-webpack-plugin": "^4.5.2",
     "css-loader": "^0.28.11",
-    "cypress": "^3.0.1",
-    "cypress-svelte-unit-test": "^1.1.1",
     "extract-text-webpack-plugin": "^4.0.0-beta.0",
     "fundamental-ui": "^1.0.0",
     "jsdom": "11.12.0",
@@ -39,8 +37,6 @@
     "bundle": "webpack --display-error-details",
     "bundle-develop": "webpack -d --watch",
     "test": "./node_modules/mocha/bin/mocha --require babel-register --require babel-polyfill --require jsdom-global/register",
-    "cypress-test": "cypress run",
-    "cypress-open": "cypress open",
     "bundlesize": "bundlesize",
     "prepush": "npm run bundle && npm run bundlesize"
   },
