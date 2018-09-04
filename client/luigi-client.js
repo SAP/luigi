@@ -203,7 +203,7 @@ var client = (function() {
          * Usage: linkManager.fromContext("currentTeam").navigate("path")
          * @param {object} navigationContext
          * */
-        fromContext(navigationContext) {
+        fromContext: function(navigationContext) {
           if (!eventData.parentNavigationContexts.includes(navigationContext)) {
             options.errorSkipNavigation = true;
             console.error(
@@ -222,7 +222,7 @@ var client = (function() {
          * This has to be a parent navigation context, it is not possible to go to child navigation contexts
          * Usage: linkManager.fromClosestContext().navigate("path")
          */
-        fromClosestContext() {
+        fromClosestContext: function() {
           if (eventData.parentNavigationContexts.length === 0) {
             console.error(
               'Navigation not possible, no parent navigationContext found.'
@@ -240,7 +240,7 @@ var client = (function() {
          * Can be chained with context settings functions like this: linkManager.fromContext("currentTeam").withParams({foo: "bar"}).navigate("path")
          * @param {object} nodeParams
          * */
-        withParams(nodeParams) {
+        withParams: function(nodeParams) {
           if (nodeParams) {
             Object.assign(options.nodeParams, nodeParams);
           }
@@ -302,6 +302,6 @@ var client = (function() {
   };
 })();
 
-export { client as LuigiClient };
-
 window.Luigi = client;
+
+module.exports = client;

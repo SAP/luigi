@@ -13,11 +13,7 @@ npm install luigi-client
 
 Import the client in places where you want to use it:
 ```javascript
-// es5
-var LuigiClient = require('@kyma-project/luigi-client').LuigiClient;
-
-// es6 and beyond
-import { LuigiClient } from '@kyma-project/luigi-client';`
+var LuigiClient = require('@kyma-project/luigi-client');
 ```
 
 You can see the Luigi Client in action by running the [Angular example application](/core/examples/luigi-sample-angular).
