@@ -24,7 +24,7 @@ window.Luigi.setConfig({
     // uses hash based navigation if set to true
     useHashRouting: true,
     nodeParamPrefix: '~'
-  }
+  },
   // navigation structure and settings
   navigation: {
     nodes: [
