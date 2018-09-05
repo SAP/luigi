@@ -92,7 +92,7 @@ Luigi.setConfig({
             viewUrl: 'https://admin.my.test/project/' + project.id,
             context: {
               currentProject: project.id
-            }
+            },
             children: [
               {
                 pathSegment: 'products',
