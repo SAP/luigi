@@ -117,6 +117,12 @@ var projectDetailNavProviderFn = function(context) {
         viewUrl: '/sampleapp.html#/projects/' + projectId + '/miscellaneous2'
       },
       {
+        pathSegment: 'misc2-isolated',
+        label: 'Miscellaneous2 (Isolated View)',
+        isolateView: true,
+        viewUrl: '/sampleapp.html#/projects/' + projectId + '/miscellaneous2'
+      },
+      {
         pathSegment: 'dps',
         label: 'Default Child Node Example',
         defaultPathSegment: 'dps2',

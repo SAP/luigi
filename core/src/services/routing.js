@@ -10,9 +10,9 @@ const iframeNavFallbackTimeout = 2000;
 let timeoutHandle;
 const defaultContentViewParamPrefix = '~';
 
-const getViewUrl = pathData => {
+const getLastNodeObject = pathData => {
   const lastElement = [...pathData.navigationPath].pop();
-  return lastElement ? lastElement.viewUrl : '';
+  return lastElement ? lastElement : {};
 };
 
 const getDefaultPathSegment = function(pathData) {
@@ -80,12 +80,18 @@ const removeElementChildren = node => {
 
 export const isNotSameDomain = (config, component) => {
   if (config.iframe) {
-    const previousUrl = getUrlWithoutHash(config.iframe.src);
-    const nextUrl = getUrlWithoutHash(component.get().viewUrl);
+    const componentData = component.get();
+    const previousUrl = getUrlWithoutHash(componentData.previousNodeValues.viewUrl);
+    const nextUrl = getUrlWithoutHash(componentData.viewUrl);
     return previousUrl != nextUrl;
   }
   return true;
 };
+
+export const hasIframeIsolation = component => {
+  const componentData = component.get();
+  return componentData.isolateView || componentData.previousNodeValues.isolateView;
+}
 
 export const getContentViewParamPrefix = () => {
   return (
@@ -131,7 +137,10 @@ const navigateIframe = (config, component, node) => {
     );
   }
 
-  if (isNotSameDomain(config, component) || config.builderCompatibilityMode) {
+  if (isNotSameDomain(config, component)
+    || hasIframeIsolation(component)
+    || Boolean(config.builderCompatibilityMode)
+  ){
     const componentData = component.get();
     // preserveView, hide other frames, else remove
     if (config.iframe === null) {
@@ -236,7 +245,8 @@ export const handleRouteChange = async (path, component, node, config) => {
     );
 
     const hideNav = getConfigBooleanValue('settings.hideNavigation');
-    const viewUrl = getViewUrl(pathData);
+    const viewUrl = getLastNodeObject(pathData).viewUrl || '';
+    const isolateView = getLastNodeObject(pathData).isolateView || false;
     const params = parseParams(pathUrl.split('?')[1]);
     const nodeParams = getNodeParams(params);
 
@@ -250,6 +260,7 @@ export const handleRouteChange = async (path, component, node, config) => {
       return;
     }
 
+    const previousCompData = component.get();
     component.set({
       hideNav: hideNav,
       viewUrl: viewUrl,
@@ -259,7 +270,12 @@ export const handleRouteChange = async (path, component, node, config) => {
           ? pathData.navigationPath[pathData.navigationPath.length - 1]
           : null,
       context: pathData.context,
-      nodeParams: nodeParams
+      nodeParams: nodeParams,
+      isolateView: isolateView,
+      previousNodeValues: (previousCompData) ? {
+        viewUrl: previousCompData.viewUrl,
+        isolateView: previousCompData.isolateView
+      } : {}
     });
 
     navigateIframe(config, component, node);
