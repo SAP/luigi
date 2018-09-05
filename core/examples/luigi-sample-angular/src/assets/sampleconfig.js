@@ -192,7 +192,7 @@ Luigi.setConfig({
    *
    */
   auth: {
-    use: 'oAuth2ImplicitGrant',
+    // use: 'oAuth2ImplicitGrant',
     openIdConnect: {
       authority: 'https://example-authority.com',
       client_id: 'client',
