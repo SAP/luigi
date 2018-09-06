@@ -22,18 +22,19 @@ Types of changes
 ### Added
 - Preserve view and go back feature.
 - Default child nodes feature.
+- Support for url parameters.
 - Add vue.js example app by [@DamianLion](https://github.com/DamianLion)
 - On angular example app, update angular version from version 5 to 6.
 - On angular example app, introduce fundamental-ui css framework.
 - Backdrop functionality can now be disabled via Luigi Config object.
 - Add error message for missing Luigi Config.
 - Improvements on authorization, remove login button, trigger auth flow on page load.
-- Support for url parameters.
 - Add documentation.
 
 ### Changed
 - 'hideNav' flag to disable top and left navigations is called now "hideNavigation" and is under "settings".
 - 'isHashRoute' flag to activate hash routing is moved to Luigi Config object under 'settings' and is called now 'useHashRouting'.
+- Luigi Config is now under "window.Luigi.config" instead of "window.LuigiConfig" and "setConfig" and "getConfig" helper methods are available.
 
 ### Fixed
 - On angular example app, fix path routing issues by simplifying app chunks split.
