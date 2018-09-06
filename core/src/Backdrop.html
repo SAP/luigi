@@ -7,7 +7,7 @@
 {/if}
 
 <script type="text/javascript">
-  import { getConfigValue } from './services/config.js';
+  import {luigi} from './main.js';
   export default {
     data() {
       return {
@@ -15,7 +15,7 @@
       }
     },
     oncreate() {
-      const backdropDisabled = getConfigValue('settings.backdropDisabled');
+      const backdropDisabled = luigi.getConfigValue('settings.backdropDisabled');
       if(!backdropDisabled){
         if (this.options.data && this.options.data.heightCssClass) {
           this.set({ heightCssClass: this.options.data.heightCssClass})

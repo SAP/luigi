@@ -1,10 +1,6 @@
-import { getNavigationPath } from './navigation';
-import {
-  getConfigValue,
-  getConfigValueAsync,
-  getConfigBooleanValue
-} from './config';
-import { getPathWithoutHash, getUrlWithoutHash } from '../utilities/helpers';
+import {getNavigationPath} from './navigation';
+import {luigi} from '../main.js';
+import {getPathWithoutHash, getUrlWithoutHash} from '../utilities/helpers';
 
 const iframeNavFallbackTimeout = 2000;
 let timeoutHandle;
@@ -15,7 +11,7 @@ const getViewUrl = pathData => {
   return lastElement ? lastElement.viewUrl : '';
 };
 
-const getDefaultPathSegment = function(pathData) {
+const getDefaultPathSegment = function (pathData) {
   const lastElement =
     pathData.navigationPath[pathData.navigationPath.length - 1];
   const pathExists = lastElement.children.find(
@@ -28,7 +24,7 @@ const getDefaultPathSegment = function(pathData) {
   }
 };
 
-const isExistingRoute = function(path, pathData) {
+const isExistingRoute = function (path, pathData) {
   const lastElement =
     pathData.navigationPath[pathData.navigationPath.length - 1];
 
@@ -89,7 +85,7 @@ export const isNotSameDomain = (config, component) => {
 
 export const getContentViewParamPrefix = () => {
   return (
-    getConfigValue('routing.contentViewParamPrefix') ||
+    luigi.getConfigValue('routing.contentViewParamPrefix') ||
     defaultContentViewParamPrefix
   );
 };
@@ -231,11 +227,11 @@ export const handleRouteChange = async (path, component, node, config) => {
   try {
     const pathUrl = path && path.length ? getPathWithoutHash(path) : '';
     const pathData = await getNavigationPath(
-      getConfigValueAsync('navigation.nodes'),
+      luigi.getConfigValueAsync('navigation.nodes'),
       pathUrl.split('?')[0]
     );
 
-    const hideNav = getConfigBooleanValue('settings.hideNavigation');
+    const hideNav = luigi.getConfigBooleanValue('settings.hideNavigation');
     const viewUrl = getViewUrl(pathData);
     const params = parseParams(pathUrl.split('?')[1]);
     const nodeParams = getNodeParams(params);
@@ -296,7 +292,7 @@ export const matchPath = async path => {
   try {
     const pathUrl = 0 < path.length ? getPathWithoutHash(path) : path;
     const pathData = await getNavigationPath(
-      getConfigValueAsync('navigation.nodes'),
+      luigi.getConfigValueAsync('navigation.nodes'),
       pathUrl.split('?')[0]
     );
     if (pathData.navigationPath.length > 0) {
@@ -315,20 +311,18 @@ export const matchPath = async path => {
 };
 
 /**
-  navigateTo used for navigation
-  @param route string  absolute path of the new route
-  @param options object  navi options, eg preserveView
-  @param windowElem object  defaults to window
-  @param documentElem object  defaults to document
+ navigateTo used for navigation
+ @param route string  absolute path of the new route
+ @param options object  navi options, eg preserveView
+ @param windowElem object  defaults to window
+ @param documentElem object  defaults to document
  */
-export const navigateTo = (
-  route,
-  windowElem = window,
-  documentElem = document
-) => {
+export const navigateTo = (route,
+                           windowElem = window,
+                           documentElem = document) => {
   const event = documentElem.createEvent('Event');
   event.initEvent('popstate', true, true);
-  if (getConfigValue('routing.useHashRouting')) {
+  if (luigi.getConfigValue('routing.useHashRouting')) {
     return (windowElem.location.hash = route);
   }
 
@@ -343,11 +337,9 @@ export const navigateTo = (
   windowElem.dispatchEvent(event);
 };
 
-export const handleRouteClick = (
-  node,
-  windowElem = window,
-  documentElem = document
-) => {
+export const handleRouteClick = (node,
+                                 windowElem = window,
+                                 documentElem = document) => {
   const route = buildRoute(node, `/${node.pathSegment}`);
   navigateTo(route, windowElem, documentElem);
 };

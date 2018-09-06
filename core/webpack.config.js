@@ -3,6 +3,7 @@ const babelSettings = JSON.parse(readFileSync('.babelrc'));
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const sass = require('node-sass');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
+const path = require('path')
 
 module.exports = {
   entry: {
@@ -13,10 +14,14 @@ module.exports = {
     extensions: ['.js', '.html']
   },
   output: {
-    path: __dirname + '/public',
+    path: path.resolve(__dirname, 'public'),
     filename: 'luigi.js',
-    chunkFilename: 'luigi.[id].js'
+    chunkFilename: 'luigi.[id].js',
+    library: 'LuigiLib',
+    libraryTarget: 'umd',
+    umdNamedDefine: true
   },
+  target: 'web',
   module: {
     rules: [
       {

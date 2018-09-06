@@ -45,7 +45,7 @@
     import Backdrop from './Backdrop.html';
     import Authorization from './Authorization.html';
     import { handleRouteClick } from './services/routing.js';
-    import { getConfigValue, getConfigBooleanValue } from './services/config.js';
+    import {luigi} from './main.js';
 
     const initAriaControls = () => {
       // Fundamental UI specific javascript
@@ -96,12 +96,12 @@
     export default {
         oncreate() {
           // Authentication detection
-          const idpProviderName = getConfigValue('auth.use');
-          const idpProviderSettings = getConfigValue(`auth.${idpProviderName}`);
+          const idpProviderName = luigi.getConfigValue('auth.use');
+          const idpProviderSettings = luigi.getConfigValue(`auth.${idpProviderName}`);
 
           this.set({
               authorizationEnabled: !!idpProviderSettings,
-              hideNavComponent: getConfigBooleanValue('settings.hideNavigation')
+              hideNavComponent: luigi.getConfigBooleanValue('settings.hideNavigation')
           });
 
           // at last, init aria-control handler
@@ -115,7 +115,7 @@
         methods: {
             handleClick: (node) => handleRouteClick(node),
             goTo: (path) => {
-              if(getConfigBooleanValue('routing.useHashRouting')) {
+              if(luigi.getConfigBooleanValue('routing.useHashRouting')) {
                 window.location.hash = path;
               } else {
                 window.location.pathname = path;
