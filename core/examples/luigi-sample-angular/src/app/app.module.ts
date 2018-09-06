@@ -19,6 +19,7 @@ import { ModalComponent } from './project/modal/modal.component';
 import { CodeSnippetComponent } from './project/code-snippet/code-snippet.component';
 import { ChildNode1Component } from './project/default-child/dps1/child-node-1.component';
 import { ChildNode2Component } from './project/default-child/dps2/child-node-2.component';
+import { OverviewComponent } from './overview/overview.component';
 
 @NgModule({
   declarations: [
@@ -37,7 +38,8 @@ import { ChildNode2Component } from './project/default-child/dps2/child-node-2.c
     ModalComponent,
     CodeSnippetComponent,
     ChildNode1Component,
-    ChildNode2Component
+    ChildNode2Component,
+    OverviewComponent
   ],
   imports: [BrowserModule, FormsModule, AppRoutingModule],
   providers: [],

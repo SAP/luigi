@@ -1,0 +1,36 @@
+<header class="fd-page__header">
+  <div class="fd-action-bar">
+    <div class="fd-action-bar__header">
+      <h1 class="fd-action-bar__title">
+          Luigi Angular Example
+      </h1>
+      <p class="fd-action-bar__description">Check out the links to the Luigi feature demos here.</p>
+    </div>
+  </div>
+</header>
+
+<section class="fd-section">
+  <div class="fd-section__header">
+    <h1 class="fd-section__title">LuigiClient Features</h1>
+  </div>
+  <div class="fd-panel">
+      <ul class="fd-list-group">
+        <li class="fd-list-group__item clickable" *ngFor="let item of luigiClientLinks" (click)="luigiClient.linkManager().navigate(item.link)">
+          <strong>{{item.text}}</strong> &nbsp;&ndash; {{item.description}}
+        </li>
+      </ul>
+  </div>
+</section>
+
+<section class="fd-section">
+  <div class="fd-section__header">
+    <h1 class="fd-section__title">Luigi Core Features</h1>
+  </div>
+  <div class="fd-panel">
+      <ul class="fd-list-group">
+        <li class="fd-list-group__item clickable" *ngFor="let item of luigiCoreLinks" (click)="luigiClient.linkManager().navigate(item.link)">
+          <strong>{{item.text}}</strong> &nbsp;&ndash; {{item.description}}
+        </li>
+      </ul>
+  </div>
+</section>
