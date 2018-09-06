@@ -188,11 +188,11 @@ Luigi.setConfig({
    *  - openIdConnect (eg. DEX)
    *  - oAuth2ImplicitGrant
    * custom:
-   *  - customIdpProvider (if you provide a class to LuigiConfig.auth.customIdpProvider)
+   *  - customIdpProvider (if you provide a class to Luigi.config.auth.customIdpProvider)
    *
    */
   auth: {
-    use: 'oAuth2ImplicitGrant',
+    // use: 'oAuth2ImplicitGrant',
     openIdConnect: {
       authority: 'https://example-authority.com',
       client_id: 'client',

@@ -165,7 +165,7 @@ var projectsNavProviderFn = function(context) {
   });
 };
 
-LuigiConfig = {
+Luigi.setConfig({
   /**
    * auth identity provider settings
    *
@@ -173,7 +173,7 @@ LuigiConfig = {
    *  - openIdConnect (eg. DEX)
    *  - oAuth2ImplicitGrant
    * custom:
-   *  - customIdpProvider (if you provide a class to LuigiConfig.auth.customIdpProvider)
+   *  - customIdpProvider (if you provide a class to Luigi.config.auth.customIdpProvider)
    *
    */
   auth: {
@@ -284,4 +284,4 @@ LuigiConfig = {
     ],
     hideNav: false
   }
-};
+});
