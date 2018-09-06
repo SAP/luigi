@@ -23,7 +23,7 @@ export class OverviewComponent implements OnInit {
   public luigiCoreLinks: any[] = [
     {
       link: '/projects/pr2/dps',
-      text: 'defaultPathSegment',
+      text: 'defaultChildNode',
       description: 'navigation node configuration to set a specific node as initial target'
     }
   ];
