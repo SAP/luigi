@@ -25,7 +25,7 @@
 </template>
 
 <script>
-  import { LuigiClient } from '@kyma-project/luigi-client';
+  import * as LuigiClient from '@kyma-project/luigi-client';
 
   export default {
     name: "modal",
