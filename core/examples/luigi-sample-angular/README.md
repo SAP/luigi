@@ -61,6 +61,6 @@ For running OpenID Connect (OIDC) locally, for example with DEX, follow these st
 
 1. Run your app locally
 2. Add `127.0.0.1 your.address` to `/etc/hosts` 
-3. Set __LuigiConfig.auth.use__ to `openIdConnect`
+3. Set __Luigi.config.auth.use__ to `openIdConnect`
 4. Run using `npm run start -- --host your.address`
 5. Open [your.address:4200](http://your.address:4200) -->
