@@ -119,7 +119,7 @@ var projectDetailNavProviderFn = function(context) {
       {
         pathSegment: 'dps',
         label: 'Default Child Node Example',
-        defaultPathSegment: 'dps2',
+        defaultChildNode: 'dps2',
         children: [
           {
             pathSegment: 'dps1',
