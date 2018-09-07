@@ -1,4 +1,4 @@
-import { getConfigValueFromObjectAsync } from './config';
+import {luigi} from '../main.js';
 
 export const getNavigationPath = async (rootNavProviderPromise, activePath) => {
   const rootNode = {};
@@ -25,7 +25,7 @@ export const getChildren = async (node, context) => {
 
   if (node && node._childrenProvider && !node._childrenProviderUsed) {
     try {
-      const children = await getConfigValueFromObjectAsync(
+      const children = await luigi.getConfigValueFromObjectAsync(
         node,
         '_childrenProvider',
         context ? context : node.context
@@ -53,12 +53,10 @@ export const bindChildrenToParent = node => {
   }
 };
 
-const buildNode = async (
-  nodeNamesInCurrentPath,
-  nodesInCurrentPath,
-  childrenOfCurrentNode,
-  context
-) => {
+const buildNode = async (nodeNamesInCurrentPath,
+                         nodesInCurrentPath,
+                         childrenOfCurrentNode,
+                         context) => {
   if (!context.parentNavigationContexts) {
     context.parentNavigationContexts = [];
   }

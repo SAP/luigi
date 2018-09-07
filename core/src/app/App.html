@@ -8,8 +8,7 @@
     import TopNav from './TopNav.html';
     import LeftNav from './LeftNav.html';
     import * as Routing from './services/routing.js';
-    import { getConfigValue }  from './services/config.js';
-    import { isFunction } from './utilities/helpers.js';
+    import {luigi} from './main.js';
 
     const trimLeadingSlash = (str) => str.replace(/^\//, '');
     const isValidBackRoute = (preservedViews, routeHash) => {
@@ -161,7 +160,7 @@
                 // them to prevent memory leaks
                 // this.on('destroy', storeListener.cancel);
 
-                if (getConfigValue('routing.useHashRouting')) {
+                if (luigi.getConfigValue('routing.useHashRouting')) {
                     return enableHashRouting(this, node, config);
                 }
 
@@ -210,7 +209,7 @@
     div :global(div) {
       font-family: '72', sans-serif;
     }
-    
+
     :global(a) {
       cursor: pointer;
     }

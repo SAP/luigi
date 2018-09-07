@@ -3,20 +3,25 @@ const babelSettings = JSON.parse(readFileSync('.babelrc'));
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const sass = require('node-sass');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
+const path = require('path')
 
 module.exports = {
   entry: {
-    index: ['./src/main.js']
+    index: [path.resolve(__dirname,'src','app','main.js')]
   },
   resolve: {
     mainFields: ['svelte', 'browser', 'module', 'main'],
     extensions: ['.js', '.html']
   },
   output: {
-    path: __dirname + '/public',
+    path: path.resolve(__dirname, 'public'),
     filename: 'luigi.js',
-    chunkFilename: 'luigi.[id].js'
+    chunkFilename: 'luigi.[id].js',
+    library: 'Luigi',
+    libraryTarget: 'umd',
+    umdNamedDefine: true
   },
+  target: 'web',
   module: {
     rules: [
       {
