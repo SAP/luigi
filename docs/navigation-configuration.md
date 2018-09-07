@@ -36,6 +36,7 @@ window.Luigi.setConfig({
         // optional
         children: [node, node, node],
         hideFromNav: false,
+        isolateView: false,
       },
         // DYNAMIC navigation Node
       {
@@ -64,6 +65,7 @@ window.Luigi.setConfig({
 - **navigationContext** contains a named Node that is mainly for use in combination with a dynamic **pathSegment** to start navigation from a dynamic Node using ` LuigiClient.navigationManager().fromContext('contextname')`.
 - **context** sends the specified object as context to the view. Use this parameter in combination with the dynamic **pathSegment** to receive the context through the context listeners of **Luigi client**. This is an alternative to using the dynamic value in the **viewUrl**.
 - **defaultChildNode** sets the child node that will be automatically activated if the current node has no **viewUrl** defined. Provide the **pathSegment** of the child node you want to activate as a string.
+- **isolateView** renders the view in a new frame when you enter and leave the Node. This setting overrides the same-domain frame re-usage. The **isolateView** is disabled by default.
 
 ### A dynamic viewURL
 

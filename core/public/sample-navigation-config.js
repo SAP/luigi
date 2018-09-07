@@ -107,7 +107,8 @@ const projectDetailNavProviderFn = context => {
       },
       {
         pathSegment: 'miscellaneous2',
-        label: 'Miscellaneous2',
+        label: 'Miscellaneous2 (isolated view)',
+        isolateView: true,
         viewUrl: '/temp.html'
       }
     ];
