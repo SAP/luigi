@@ -1,4 +1,12 @@
-import { getConfigValueFromObjectAsync } from './config';
+import { getConfigValue, getConfigValueFromObjectAsync } from './config';
+
+const isNodeAccessPermitted = (currentPath, currentNavigationStructure, node) => {
+  const permissionCheckerFn = getConfigValue('navigation.nodeAccessibilityResolver');
+  if (typeof permissionCheckerFn !== 'function') {
+    return true;
+  }
+  return permissionCheckerFn(currentPath, currentNavigationStructure, node);
+}
 
 export const getNavigationPath = async (rootNavProviderPromise, activePath) => {
   const rootNode = {};
@@ -7,7 +15,7 @@ export const getNavigationPath = async (rootNavProviderPromise, activePath) => {
   }
   try {
     const topNavNodes = await rootNavProviderPromise;
-    rootNode.children = topNavNodes;
+    rootNode.children = topNavNodes && topNavNodes.filter((child) => isNodeAccessPermitted(activePath, [], child));
     if (!activePath) {
       activePath = '';
     }
@@ -29,13 +37,13 @@ export const getChildren = async (node, context) => {
         node,
         '_childrenProvider',
         context ? context : node.context
-      );
+      )
       node.children = children;
       bindChildrenToParent(node);
       node._childrenProviderUsed = true;
       return children;
     } catch (err) {
-      console.error('Could not lazy-load childen for node', err);
+      console.error('Could not lazy-load children for node', err);
     }
   } else if (node && node.children) {
     bindChildrenToParent(node);
@@ -81,7 +89,12 @@ const buildNode = async (
         node.navigationContext
       );
       try {
-        const children = await getChildren(node, newContext);
+        let children = await getChildren(node, newContext);
+        if (children instanceof Array) {
+          children = children.filter((child) => isNodeAccessPermitted(nodeNamesInCurrentPath, node.parent, child));
+        } else {
+          children = isNodeAccessPermitted(nodeNamesInCurrentPath, node.parent, children) ? children : undefined; 
+        }
         result = buildNode(
           nodeNamesInCurrentPath,
           nodesInCurrentPath,

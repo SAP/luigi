@@ -1,3 +1,21 @@
+var navigationPermissionChecker = function(currentPath, currentNavigationStructure, nodeToCheckPermissionFor) {
+  // depending on the current path and context returns true or false
+  // true means the current node is accessible, false the opposite
+
+  const mockCurrentUserGroups = ['admins'];
+  if (nodeToCheckPermissionFor.constraints) {
+    // check if user has required groups
+    const res = nodeToCheckPermissionFor.constraints.filter(
+      function(c) {
+        return mockCurrentUserGroups.indexOf(c) !== -1;
+      }
+    ).length !== 0;
+    console.log('checking', nodeToCheckPermissionFor.label, nodeToCheckPermissionFor.constraints, res);
+  }
+
+  return true;
+};
+
 var getAllProjects = function() {
   return new Promise(function(resolve) {
     resolve([
@@ -108,6 +126,7 @@ var projectDetailNavProviderFn = function(context) {
       },
       {
         pathSegment: 'miscellaneous',
+        constraints: ['unicorns'],
         label: 'Miscellaneous',
         viewUrl: '/sampleapp.html#/projects/' + projectId + '/miscellaneous'
       },
@@ -263,6 +282,7 @@ Luigi.setConfig({
     }
   },
   navigation: {
+    nodeAccessibilityResolver: navigationPermissionChecker,
     nodes: () => [
       {
         pathSegment: 'overview',
@@ -280,6 +300,12 @@ Luigi.setConfig({
         pathSegment: 'hidden-sample',
         label: 'Hidden',
         viewUrl: '/sampleapp.html#/projects/overview.html'
+      },
+      {
+        pathSegment: 'forbidden-sample',
+        label: 'Forbidden',
+        viewUrl: '/sampleapp.html#/projects/overview.html',
+        constraints: ['unicorns']
       },
       {
         pathSegment: 'ext',
