@@ -34,7 +34,7 @@ export class oAuth2ImplicitGrant {
       const formElem = document.createElement('form');
       formElem.name = 'signIn';
       formElem.id = 'signIn';
-      formElem.method = 'POST';
+      formElem.method = 'GET';
       // formElem.target = 'signInTarget';
       formElem.target = '_self';
       formElem.action = settings.authorizeUrl;
