@@ -17,7 +17,7 @@ var LuigiClient = require('@kyma-project/luigi-client');
 ```
 or
 ```javascript
-import * as LuigiClient from '@kyma-project/luigi-client';
+import LuigiClient from '@kyma-project/luigi-client';
 ```
 or, if you are not using any bundler, Luigi is also available as a global object:
 ```javascript
