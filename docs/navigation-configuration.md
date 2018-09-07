@@ -24,7 +24,7 @@ window.Luigi.setConfig({
     // uses hash based navigation if set to true
     useHashRouting: true,
     nodeParamPrefix: '~'
-  }
+  },
   // navigation structure and settings
   navigation: {
     nodes: [
@@ -92,7 +92,7 @@ Luigi.setConfig({
             viewUrl: 'https://admin.my.test/project/' + project.id,
             context: {
               currentProject: project.id
-            }
+            },
             children: [
               {
                 pathSegment: 'products',
