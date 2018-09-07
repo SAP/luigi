@@ -9,6 +9,7 @@ export class oAuth2ImplicitGrant {
         response_type: 'id_token token',
         scope: ''
       },
+      authorizeMethod: 'GET',
       post_logout_redirect_uri: window.location.origin + '/logout.html'
     };
     const mergedSettings = deepMerge(defaultSettings, settings);
@@ -34,10 +35,9 @@ export class oAuth2ImplicitGrant {
       const formElem = document.createElement('form');
       formElem.name = 'signIn';
       formElem.id = 'signIn';
-      formElem.method = 'GET';
-      // formElem.target = 'signInTarget';
-      formElem.target = '_self';
       formElem.action = settings.authorizeUrl;
+      formElem.method = settings.authorizeMethod;
+      formElem.target = '_self';
 
       settings.oAuthData.redirect_uri = prependOrigin(
         settings.oAuthData.redirect_uri
