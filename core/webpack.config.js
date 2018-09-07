@@ -7,7 +7,7 @@ const path = require('path')
 
 module.exports = {
   entry: {
-    index: ['./src/main.js']
+    index: [path.resolve(__dirname,'src','app','main.js')]
   },
   resolve: {
     mainFields: ['svelte', 'browser', 'module', 'main'],
@@ -17,7 +17,7 @@ module.exports = {
     path: path.resolve(__dirname, 'public'),
     filename: 'luigi.js',
     chunkFilename: 'luigi.[id].js',
-    library: 'LuigiLib',
+    library: 'Luigi',
     libraryTarget: 'umd',
     umdNamedDefine: true
   },

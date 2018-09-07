@@ -4,8 +4,8 @@ const expect = chai.expect;
 const assert = chai.assert;
 const sinon = require('sinon');
 const MockBrowser = require('mock-browser').mocks.MockBrowser;
-const routing = require('../src/services/routing');
-import { deepMerge } from '../src/utilities/helpers.js';
+const routing = require('../src/app/services/routing');
+import { deepMerge } from '../src/app/utilities/helpers.js';
 
 describe('Routing', () => {
   describe('#handleRouteChange()', () => {

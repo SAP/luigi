@@ -1,5 +1,5 @@
 {
-  "name": "luigi-core-private",
+  "name": "@kyma-project/luigi-core",
   "version": "0.3.0",
   "private": true,
   "description": "luigi-core development version, only the public folder is being published to npm as a package",

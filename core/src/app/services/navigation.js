@@ -1,4 +1,4 @@
-import {luigi} from './../main.js';
+import {luigi} from '../main.js';
 
 export const getNavigationPath = async (rootNavProviderPromise, activePath) => {
   const rootNode = {};
