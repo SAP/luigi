@@ -207,6 +207,7 @@ Luigi.setConfig({
       authorizeUrl: 'https://example-url.com/authorize',
       logoutUrl: 'https://example-url.com/logout',
       post_logout_redirect_uri: '/logout.html',
+      authorizeMethod: 'GET',
       oAuthData: {
         client_id: 'egDuozijY5SVr0NSIowUP1dT6RVqHnlp'
 
@@ -267,19 +268,19 @@ Luigi.setConfig({
       {
         pathSegment: 'overview',
         label: 'Overview',
-        viewUrl: '/sampleapp.html#/projects/overview.html'
+        viewUrl: '/sampleapp.html#/overview'
       },
       {
         pathSegment: 'projects',
         label: 'Projects',
-        viewUrl: '/sampleapp.html#/projects/overview.html',
+        viewUrl: '/sampleapp.html#/projects/overview',
         children: projectsNavProviderFn
       },
       {
         hideFromNav: true,
         pathSegment: 'hidden-sample',
         label: 'Hidden',
-        viewUrl: '/sampleapp.html#/projects/overview.html'
+        viewUrl: '/sampleapp.html#/projects/overview'
       },
       {
         pathSegment: 'ext',
