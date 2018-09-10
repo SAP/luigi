@@ -22,7 +22,7 @@ Types of changes are detected based on PR labels and are mapped to sections as p
 
 ## [Unreleased]
 
-## [core-0.3.1] 2018-09-07
+## [core-0.3.1] - 2018-09-07
 
 #### :bug: Bug Fix
 * [#31](https://github.com/kyma-project/luigi/pull/31) Redirect from root node to first child ([@y-kkamil](https://github.com/y-kkamil))
