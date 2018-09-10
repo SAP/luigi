@@ -22,7 +22,7 @@ Types of changes are detected based on PR labels and are mapped to sections as p
 
 ## [Unreleased]
 
-## core-0.3.1 (2018-09-07)
+## [core-0.3.1] 2018-09-07
 
 #### :bug: Bug Fix
 * [#31](https://github.com/kyma-project/luigi/pull/31) Redirect from root node to first child ([@y-kkamil](https://github.com/y-kkamil))
@@ -79,4 +79,5 @@ Types of changes are detected based on PR labels and are mapped to sections as p
 
 [Unreleased]: https://github.com/kyma-project/luigi/compare/core-0.3.0...HEAD
 [core-0.3.0]: https://github.com/kyma-project/luigi/compare/v0.2.1...core-0.3.0
+[core-0.3.1]: https://github.com/kyma-project/luigi/compare/core-0.3.0...core-0.3.1
 [client-0.3.0]: https://github.com/kyma-project/luigi/compare/v0.2.1...client-0.3.0
