@@ -77,7 +77,7 @@ Types of changes are detected based on PR labels and are mapped to sections as p
 - Client: Link manager for navigation.
 - Client: UX manager for backdrop.
 
-[Unreleased]: https://github.com/kyma-project/luigi/compare/core-0.3.0...HEAD
+[Unreleased]: https://github.com/kyma-project/luigi/compare/core-0.3.1...HEAD
 [core-0.3.0]: https://github.com/kyma-project/luigi/compare/v0.2.1...core-0.3.0
 [core-0.3.1]: https://github.com/kyma-project/luigi/compare/core-0.3.0...core-0.3.1
 [client-0.3.0]: https://github.com/kyma-project/luigi/compare/v0.2.1...client-0.3.0
