@@ -1,22 +1,38 @@
 # Changelog
-All notable changes to this project will be documented in this file.
 
-The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/). 
 <!-- , -->
 <!-- #and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html). -->
 
 <!-- 
-Types of changes
-  - 'Added' for new features.
-  - 'Changed' for changes in existing functionality.
-  - 'Deprecated' for soon-to-be removed features.
-  - 'Removed' for now removed features.
-  - 'Fixed' for any bug fixes.
-  - 'Security' in case of vulnerabilities. 
+Generate changelog using lerna-changelog tool.
+
+
+Types of changes are detected based on PR labels and are mapped to sections as per configuration in the package.json
+  "changelog": {
+    "labels": {
+      "breaking": ":boom: Breaking Change",
+      "enhancement": ":rocket: Enhancement",
+      "bug": ":bug: Bug Fix",
+      "documentation": ":memo: Documentation"
+    }
+    ...
+  }
 -->
 
 
 ## [Unreleased]
+
+## core-0.3.1 (2018-09-07)
+
+#### :bug: Bug Fix
+* [#31](https://github.com/kyma-project/luigi/pull/31) Redirect from root node to first child ([@y-kkamil](https://github.com/y-kkamil))
+* [#50](https://github.com/kyma-project/luigi/pull/50) #49 [fix] OAuth2 implicit grant flow should use GET as default reques… ([@aartek](https://github.com/aartek))
+
+#### Committers: 4
+- Artur ([@aartek](https://github.com/aartek))
+- Markus ([@maxmarkus](https://github.com/maxmarkus))
+- [@kwiatekus](https://github.com/kwiatekus)
+- [@y-kkamil](https://github.com/y-kkamil)
 
 ## [core-0.3.0] - 2018-09-05
 ### Added
