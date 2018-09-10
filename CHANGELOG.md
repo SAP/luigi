@@ -1,11 +1,9 @@
 # Changelog
 
-<!-- , -->
-<!-- #and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html). -->
-
 <!-- 
-Generate changelog using lerna-changelog tool.
+Generate changelog using lerna-changelog tool, i.e
 
+./node_modules/lerna-changelog/bin/cli.js --ignoreCommitters (--from core-0.3.0)
 
 Types of changes are detected based on PR labels and are mapped to sections as per configuration in the package.json
   "changelog": {
@@ -19,20 +17,12 @@ Types of changes are detected based on PR labels and are mapped to sections as p
   }
 -->
 
-
-## [Unreleased]
-
 ## [core-0.3.1] - 2018-09-07
 
 #### :bug: Bug Fix
 * [#31](https://github.com/kyma-project/luigi/pull/31) Redirect from root node to first child ([@y-kkamil](https://github.com/y-kkamil))
 * [#50](https://github.com/kyma-project/luigi/pull/50) #49 [fix] OAuth2 implicit grant flow should use GET as default reques… ([@aartek](https://github.com/aartek))
 
-#### Committers: 4
-- Artur ([@aartek](https://github.com/aartek))
-- Markus ([@maxmarkus](https://github.com/maxmarkus))
-- [@kwiatekus](https://github.com/kwiatekus)
-- [@y-kkamil](https://github.com/y-kkamil)
 
 ## [core-0.3.0] - 2018-09-05
 ### Added
@@ -77,7 +67,6 @@ Types of changes are detected based on PR labels and are mapped to sections as p
 - Client: Link manager for navigation.
 - Client: UX manager for backdrop.
 
-[Unreleased]: https://github.com/kyma-project/luigi/compare/core-0.3.1...HEAD
 [core-0.3.0]: https://github.com/kyma-project/luigi/compare/v0.2.1...core-0.3.0
 [core-0.3.1]: https://github.com/kyma-project/luigi/compare/core-0.3.0...core-0.3.1
 [client-0.3.0]: https://github.com/kyma-project/luigi/compare/v0.2.1...client-0.3.0
