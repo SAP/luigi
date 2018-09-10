@@ -8,6 +8,16 @@ const routing = require('../src/services/routing');
 import { deepMerge } from '../src/utilities/helpers.js';
 
 describe('Routing', () => {
+  let component;
+  beforeEach(() => {
+    component = {
+      set: obj => {
+        component.get = () => obj;
+      },
+      get: () => ({})
+    };
+  })
+
   describe('#handleRouteChange()', () => {
     const sampleLuigiConfig = {
       navigation: {
@@ -36,7 +46,7 @@ describe('Routing', () => {
               },
               {
                 pathSegment: 'teams',
-                defaultPathSegment: 't2',
+                defaultChildNode: 't2',
                 children: [
                   {
                     pathSegment: 't1',
@@ -70,11 +80,6 @@ describe('Routing', () => {
       // given
       const path = '#/projects';
       const expectedViewUrl = '/aaa.html';
-      const component = {
-        set: obj => {
-          component.get = () => obj;
-        }
-      };
 
       const node = {
         pathSegment: '#/projects',
@@ -133,10 +138,10 @@ describe('Routing', () => {
       global.document = document;
 
       let savedObj = {};
-      const component = {
+      const componentSaved = {
         set: obj => {
           savedObj = deepMerge(savedObj, obj);
-          component.get = () => {
+          componentSaved.get = () => {
             return savedObj;
           };
         }
@@ -181,7 +186,7 @@ describe('Routing', () => {
           context: {}
         }
       ];
-      component.set({ preservedViews });
+      componentSaved.set({ preservedViews });
 
       // when
       window.Luigi = {};
@@ -192,16 +197,16 @@ describe('Routing', () => {
         .returns({ src: null })
         .once();
 
-      await routing.handleRouteChange(path, component, node, config, window);
+      await routing.handleRouteChange(path, componentSaved, node, config, window);
 
       // then
-      assert.equal(component.get().viewUrl, expectedViewUrl);
+      assert.equal(componentSaved.get().viewUrl, expectedViewUrl);
       assert.equal(
-        component.get().hideNav,
+        componentSaved.get().hideNav,
         window.Luigi.config.settings.hideNavigation
       );
 
-      assert.equal(component.get().preservedViews.length, 1);
+      assert.equal(componentSaved.get().preservedViews.length, 1);
       docMock.restore();
       docMock.verify();
     });
@@ -211,11 +216,6 @@ describe('Routing', () => {
       const path = '#/projects/a1?~param1=tets';
       const expectedViewUrl = '{context.varA1}/a1.html#p={nodeParams.param1}';
       const expectedProcessedViewUrl = 'maskopatol/a1.html#p=tets';
-      const component = {
-        set: obj => {
-          component.get = () => obj;
-        }
-      };
 
       const node = {
         pathSegment: '#/projects',
@@ -278,12 +278,6 @@ describe('Routing', () => {
       const document = mockBrowser.getDocument();
       global.document = document;
 
-      const component = {
-        set: obj => {
-          component.get = () => obj;
-        }
-      };
-
       const node = {
         pathSegment: '#/projects',
         label: 'AAA',
@@ -335,7 +329,7 @@ describe('Routing', () => {
       );
     });
 
-    it('should get DefaultPathSegment if viewUrl is not defined', async () => {
+    it('should get DefaultChildNode if viewUrl is not defined', async () => {
       // given
       const path = '#/projects/teams';
       const expectedPath = '/projects/teams/t2';
@@ -580,27 +574,36 @@ describe('Routing', () => {
   });
 
   it('isNotSameDomain', () => {
-    const component = {
-      set: obj => {
-        component.get = () => obj;
-      }
-    };
     const config = {
       iframe: {
         src: 'http://url.com/app.html!#/prevUrl'
       }
     };
-    component.set({ viewUrl: 'http://url.com/app.html!#/someUrl' });
+    component.set({ viewUrl: 'http://url.com/app.html!#/someUrl', previousNodeValues: { viewUrl: config.iframe.src } });
     assert.isFalse(routing.isNotSameDomain(config, component));
 
-    component.set({ viewUrl: 'http://otherurl.de/app.html!#/someUrl' });
+    component.set({ viewUrl: 'http://otherurl.de/app.html!#/someUrl', previousNodeValues: { viewUrl: config.iframe.src } });
     assert.isTrue(routing.isNotSameDomain(config, component));
   });
 
-  describe('defaultPathSegments', () => {
+  it('hasIframeIsolation', () => {
+    // no node is set to isolateView
+    component.set({ isolateView: false, previousNodeValues: { isolateView: false } });
+    assert.isFalse(routing.hasIframeIsolation(component));
+
+    // new node is set to isolateView
+    component.set({ isolateView: true, previousNodeValues: { isolateView: false } });
+    assert.isTrue(routing.hasIframeIsolation(component));
+
+    // current node is set to isolateView
+    component.set({ isolateView: false, previousNodeValues: { isolateView: true } });
+    assert.isTrue(routing.hasIframeIsolation(component));
+  });
+
+  describe('defaultChildNodes', () => {
     const routing = rewire('../src/services/routing');
 
-    const getDefaultPathSegment = routing.__get__('getDefaultPathSegment');
+    const getDefaultChildNode = routing.__get__('getDefaultChildNode');
     const getPathData = function() {
       return {
         navigationPath: [
@@ -625,24 +628,24 @@ describe('Routing', () => {
       };
     };
 
-    it('should return first child if no defaultPathSegment is set', () => {
+    it('should return first child if no defaultChildNode is set', () => {
       let pathData = getPathData();
 
-      assert.equal(getDefaultPathSegment(pathData), 'stakeholders');
+      assert.equal(getDefaultChildNode(pathData), 'stakeholders');
     });
 
-    it('should return child with pathSegment equal to defaultPathSegment', () => {
+    it('should return child with pathSegment equal to defaultChildNode', () => {
       let pathData = getPathData();
-      pathData.navigationPath[1].defaultPathSegment = 'customers';
+      pathData.navigationPath[1].defaultChildNode = 'customers';
 
-      assert.equal(getDefaultPathSegment(pathData), 'customers');
+      assert.equal(getDefaultChildNode(pathData), 'customers');
     });
 
-    it('should return first child if given defaultPathSegment does not exist', () => {
+    it('should return first child if given defaultChildNode does not exist', () => {
       const pathData = getPathData();
-      pathData.navigationPath[1].defaultPathSegment = 'NOSUCHPATH';
+      pathData.navigationPath[1].defaultChildNode = 'NOSUCHPATH';
 
-      assert.equal(getDefaultPathSegment(pathData), 'stakeholders');
+      assert.equal(getDefaultChildNode(pathData), 'stakeholders');
     });
   });
 });

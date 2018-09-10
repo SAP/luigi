@@ -3,6 +3,23 @@
     <h1 class="fd-section__title">Child Node 2</h1>
   </div>
   <div class="fd-panel">
-    This is Child 2 component
+  <p>Navigation node config for this <strong>defaultChildNode</strong> demo:</p>
+<app-code-snippet data="{
+  pathSegment: 'dps',
+  label: 'Default Child Node Example',
+  defaultChildNode: 'dps2',
+  children: [
+    {
+      pathSegment: 'dps1',
+      label: 'First Child',
+      viewUrl: '/sampleapp.html#/projects/' + projectId + '/dps/dps1'
+    },
+    {
+      pathSegment: 'dps2',
+      label: 'Second Child',
+      viewUrl: '/sampleapp.html#/projects/' + projectId + '/dps/dps2'
+    }
+  ]
+}"></app-code-snippet>
   </div>
 </section>
