@@ -7,7 +7,7 @@ import {
   SimpleChanges
 } from '@angular/core';
 
-import { LuigiClient } from '@kyma-project/luigi-client';
+import LuigiClient from '@kyma-project/luigi-client';
 
 @Component({
   selector: 'app-modal',
