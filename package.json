@@ -15,8 +15,8 @@
     "repo": "kyma-project/luigi",
     "labels": {
       "breaking": ":boom: Breaking Change",
-      "enhancement": ":rocket: Enhancement",
-      "bug": ":bug: Bug Fix",
+      "enhancement": ":rocket: Added",
+      "bug": ":bug: Fixed",
       "area/documentation": ":memo: Documentation"
     },
     "cacheDir": ".changelog"
