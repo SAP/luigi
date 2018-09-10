@@ -89,7 +89,7 @@
         if (current.pathData && 1 < current.pathData.length) {
             const componentData = component.get();
             const lastElement = [...current.pathData].pop();
-            const children = await getChildren(lastElement);
+            const children = await getChildren(lastElement, componentData.context);
             const groupedChildren = getGroupedChildren(children, current);
 
             if (groupedChildren && 1 < componentData.pathData.length) {

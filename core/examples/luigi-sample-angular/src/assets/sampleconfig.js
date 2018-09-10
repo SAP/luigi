@@ -1,23 +1,21 @@
-var navigationPermissionChecker = function(currentPath, currentNavigationStructure, nodeToCheckPermissionFor) {
+var navigationPermissionChecker = function (nodeToCheckPermissionFor, currentNode, currentContext) {
   // depending on the current path and context returns true or false
   // true means the current node is accessible, false the opposite
-
   const mockCurrentUserGroups = ['admins'];
   if (nodeToCheckPermissionFor.constraints) {
     // check if user has required groups
-    const res = nodeToCheckPermissionFor.constraints.filter(
-      function(c) {
+    return nodeToCheckPermissionFor.constraints.filter(
+      function (c) {
         return mockCurrentUserGroups.indexOf(c) !== -1;
       }
     ).length !== 0;
-    console.log('checking', nodeToCheckPermissionFor.label, nodeToCheckPermissionFor.constraints, res);
   }
 
   return true;
 };
 
-var getAllProjects = function() {
-  return new Promise(function(resolve) {
+var getAllProjects = function () {
+  return new Promise(function (resolve) {
     resolve([
       {
         id: 'pr1',
@@ -31,8 +29,8 @@ var getAllProjects = function() {
   });
 };
 
-var getProjectPlugins = function(projectId) {
-  return new Promise(function(resolve) {
+var getProjectPlugins = function (projectId) {
+  return new Promise(function (resolve) {
     if (projectId === 'pr2') {
       resolve([
         {
@@ -70,8 +68,8 @@ var getProjectPlugins = function(projectId) {
   });
 };
 
-var projectDetailNavProviderFn = function(context) {
-  return new Promise(function(resolve) {
+var projectDetailNavProviderFn = function (context) {
+  return new Promise(function (resolve) {
     var projectId = context.currentProject;
     var children = [
       {
@@ -168,8 +166,8 @@ var projectDetailNavProviderFn = function(context) {
   });
 };
 
-var projectsNavProviderFn = function(context) {
-  return new Promise(function(resolve) {
+var projectsNavProviderFn = function (context) {
+  return new Promise(function (resolve) {
     getAllProjects().then(result => {
       var children = [];
       result.forEach(project => {

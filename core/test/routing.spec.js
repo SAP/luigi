@@ -6,8 +6,14 @@ const sinon = require('sinon');
 const MockBrowser = require('mock-browser').mocks.MockBrowser;
 const routing = require('../src/services/routing');
 import { deepMerge } from '../src/utilities/helpers.js';
+import { afterEach } from 'mocha';
 
 describe('Routing', () => {
+  afterEach(() => {
+    if (document.createElement.restore) {
+      document.createElement.restore();
+    }
+  });
   describe('#handleRouteChange()', () => {
     const sampleLuigiConfig = {
       navigation: {
@@ -110,6 +116,7 @@ describe('Routing', () => {
       };
 
       // when
+      window.Luigi = {};
       window.Luigi.config = sampleLuigiConfig;
       sinon.stub(document, 'createElement').callsFake(() => ({ src: null }));
       await routing.handleRouteChange(path, component, node, config, window);
@@ -601,7 +608,7 @@ describe('Routing', () => {
     const routing = rewire('../src/services/routing');
 
     const getDefaultPathSegment = routing.__get__('getDefaultPathSegment');
-    const getPathData = function() {
+    const getPathData = function () {
       return {
         navigationPath: [
           {
