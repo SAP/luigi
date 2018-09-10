@@ -1,7 +1,7 @@
 import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { ActivatedRoute, Params } from '@angular/router';
 
-import { LuigiClient } from '@kyma-project/luigi-client';
+import LuigiClient from '@kyma-project/luigi-client';
 
 @Component({
   selector: 'app-project',
