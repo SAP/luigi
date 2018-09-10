@@ -27,6 +27,7 @@ window.Luigi.setConfig({
   },
   // navigation structure and settings
   navigation: {
+    nodeAccessibilityResolver: function (nodeToCheckPermissionFor, parentNode, currentContext) {}
     nodes: [
         // STATIC navigation Node
       {
@@ -56,6 +57,10 @@ window.Luigi.setConfig({
 - **nodeParamPrefix** sets the prefix character when using the `LuigiClient.linkManager().withParam()` function, which provides a way to simply attach query parameters to the view URL for activities such as sorting and filtering.  The URL contains the parameters to allow deep linking. If you want to use a different character prefix, define yours here. The default character is `~`.
 
 ### Navigation parameters
+
+- **nodeAccessibilityResolver** allows you to define a permission checker function that gets executed on every Node. If it returns false, the Node and it's children are removed from the navigation structure. You may want to add custom values to Nodes to receive it in the **nodeAccessibilityResolver** function. See [angular sampleconfig.js](../core/examples/luigi-sample-angular/src/assets/sampleconfig.js) for our constraints example.
+
+## Nodes
 
 - **pathSegment** specifies the partial URL of the current segment. A static settings example reflects `luigidomain.test/settings`, while a dynamic one loads on any other value.
 - **label** contains the display name of the navigation Node.

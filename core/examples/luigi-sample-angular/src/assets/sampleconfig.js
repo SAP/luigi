@@ -1,4 +1,4 @@
-var navigationPermissionChecker = function (nodeToCheckPermissionFor, currentNode, currentContext) {
+var navigationPermissionChecker = function (nodeToCheckPermissionFor, parentNode, currentContext) {
   // depending on the current path and context returns true or false
   // true means the current node is accessible, false the opposite
   const mockCurrentUserGroups = ['admins'];

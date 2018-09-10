@@ -16,8 +16,8 @@ export const getNavigationPath = async (rootNavProviderPromise, activePath) => {
   try {
     const topNavNodes = await rootNavProviderPromise;
     rootNode.children = topNavNodes;
-    getChildren(rootNode); // keep it, it mutates rootNode
-
+    getChildren(rootNode); // keep it, mutates and filters children
+    
     if (!activePath) {
       activePath = '';
     }
@@ -56,7 +56,8 @@ export const getChildren = async (node, context) => {
 };
 
 export const bindChildrenToParent = node => {
-  if (node && node.children) {
+  // Checking for pathSegment to exclude virtual root node
+  if (node && node.pathSegment && node.children) {
     node.children.forEach(child => {
       child.parent = node;
     });
