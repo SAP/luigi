@@ -15,20 +15,26 @@ const getLastNodeObject = pathData => {
   return lastElement ? lastElement : {};
 };
 
-const getDefaultPathSegment = function(pathData) {
+const getDefaultChildNode = function(pathData) {
   const lastElement =
     pathData.navigationPath[pathData.navigationPath.length - 1];
+
   const pathExists = lastElement.children.find(
-    childNode => childNode.pathSegment === lastElement.defaultPathSegment
+    childNode => childNode.pathSegment === lastElement.defaultChildNode
   );
-  if (lastElement.defaultPathSegment && pathExists) {
-    return lastElement.defaultPathSegment;
+
+  if (lastElement.defaultChildNode && pathExists) {
+    return lastElement.defaultChildNode;
   } else {
     return lastElement.children[0].pathSegment;
   }
 };
 
 const isExistingRoute = function(path, pathData) {
+  if (path === '') {
+    return true;
+  }
+
   const lastElement =
     pathData.navigationPath[pathData.navigationPath.length - 1];
 
@@ -250,12 +256,12 @@ export const handleRouteChange = async (path, component, node, config) => {
     const params = parseParams(pathUrl.split('?')[1]);
     const nodeParams = getNodeParams(params);
 
-    if (path !== '' && !viewUrl) {
+    if (!viewUrl) {
       const routeExists = isExistingRoute(path, pathData);
 
       if (routeExists) {
-        const defaultPathSegment = getDefaultPathSegment(pathData);
-        navigateTo(`/${pathUrl}/${defaultPathSegment}`);
+        const defaultChildNode = getDefaultChildNode(pathData);
+        navigateTo(`${pathUrl ? `/${pathUrl}` : ''}/${defaultChildNode}`);
       } // TODO else display 404 page
       return;
     }

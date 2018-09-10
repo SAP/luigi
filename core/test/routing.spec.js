@@ -46,7 +46,7 @@ describe('Routing', () => {
               },
               {
                 pathSegment: 'teams',
-                defaultPathSegment: 't2',
+                defaultChildNode: 't2',
                 children: [
                   {
                     pathSegment: 't1',
@@ -329,7 +329,7 @@ describe('Routing', () => {
       );
     });
 
-    it('should get DefaultPathSegment if viewUrl is not defined', async () => {
+    it('should get DefaultChildNode if viewUrl is not defined', async () => {
       // given
       const path = '#/projects/teams';
       const expectedPath = '/projects/teams/t2';
@@ -590,20 +590,20 @@ describe('Routing', () => {
     // no node is set to isolateView
     component.set({ isolateView: false, previousNodeValues: { isolateView: false } });
     assert.isFalse(routing.hasIframeIsolation(component));
-    
+
     // new node is set to isolateView
     component.set({ isolateView: true, previousNodeValues: { isolateView: false } });
     assert.isTrue(routing.hasIframeIsolation(component));
-    
+
     // current node is set to isolateView
     component.set({ isolateView: false, previousNodeValues: { isolateView: true } });
     assert.isTrue(routing.hasIframeIsolation(component));
   });
 
-  describe('defaultPathSegments', () => {
+  describe('defaultChildNodes', () => {
     const routing = rewire('../src/services/routing');
 
-    const getDefaultPathSegment = routing.__get__('getDefaultPathSegment');
+    const getDefaultChildNode = routing.__get__('getDefaultChildNode');
     const getPathData = function() {
       return {
         navigationPath: [
@@ -628,24 +628,24 @@ describe('Routing', () => {
       };
     };
 
-    it('should return first child if no defaultPathSegment is set', () => {
+    it('should return first child if no defaultChildNode is set', () => {
       let pathData = getPathData();
 
-      assert.equal(getDefaultPathSegment(pathData), 'stakeholders');
+      assert.equal(getDefaultChildNode(pathData), 'stakeholders');
     });
 
-    it('should return child with pathSegment equal to defaultPathSegment', () => {
+    it('should return child with pathSegment equal to defaultChildNode', () => {
       let pathData = getPathData();
-      pathData.navigationPath[1].defaultPathSegment = 'customers';
+      pathData.navigationPath[1].defaultChildNode = 'customers';
 
-      assert.equal(getDefaultPathSegment(pathData), 'customers');
+      assert.equal(getDefaultChildNode(pathData), 'customers');
     });
 
-    it('should return first child if given defaultPathSegment does not exist', () => {
+    it('should return first child if given defaultChildNode does not exist', () => {
       const pathData = getPathData();
-      pathData.navigationPath[1].defaultPathSegment = 'NOSUCHPATH';
+      pathData.navigationPath[1].defaultChildNode = 'NOSUCHPATH';
 
-      assert.equal(getDefaultPathSegment(pathData), 'stakeholders');
+      assert.equal(getDefaultChildNode(pathData), 'stakeholders');
     });
   });
 });
