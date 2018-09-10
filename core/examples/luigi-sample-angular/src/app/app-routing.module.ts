@@ -12,8 +12,10 @@ import { StakeholdersComponent } from './project/users/groups/stakeholders/stake
 import { Miscellaneous2Component } from './project/miscellaneous2/miscellaneous2.component';
 import { ChildNode2Component } from './project/default-child/dps2/child-node-2.component';
 import { ChildNode1Component } from './project/default-child/dps1/child-node-1.component';
+import { OverviewComponent } from './overview/overview.component';
 
 const routes: Routes = [
+  { path: 'overview', component: OverviewComponent },
   { path: 'projects/:projectId', component: ProjectComponent },
   { path: 'projects/:projectId/users', component: UsersComponent },
   {
