@@ -1,11 +1,11 @@
 # Changelog
 
 <!-- 
-Generate changelog using lerna-changelog tool, i.e
+Generate the changelog the using lerna-changelog tool, i.e
 
 ./node_modules/lerna-changelog/bin/cli.js --ignoreCommitters (--from core-0.3.0)
 
-Types of changes are detected based on PR labels and are mapped to sections as per configuration in the package.json
+The lerna-changelog tool detects changes based on PR labels and maps them to sections as per the configuration in the package.json file.
   "changelog": {
     "labels": {
       "breaking": ":boom: Breaking Change",
@@ -19,7 +19,7 @@ Types of changes are detected based on PR labels and are mapped to sections as p
 
 ## [core-0.3.1] - 2018-09-07
 
-#### :bug: Bug Fix
+#### :bug: Fixed
 * [#31](https://github.com/kyma-project/luigi/pull/31) Redirect from root node to first child ([@y-kkamil](https://github.com/y-kkamil))
 * [#50](https://github.com/kyma-project/luigi/pull/50) #49 [fix] OAuth2 implicit grant flow should use GET as default reques… ([@aartek](https://github.com/aartek))
 
