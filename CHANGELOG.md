@@ -17,6 +17,12 @@ The lerna-changelog tool detects changes based on PR labels and maps them to sec
   }
 -->
 
+## [core-0.3.2] - 2018-09-10
+
+#### :rocket: Added
+* [#33](https://github.com/kyma-project/luigi/pull/33) Ensure es5 compliance for luigi client ([@y-kkamil](https://github.com/y-kkamil))
+
+
 ## [core-0.3.1] - 2018-09-07
 
 #### :bug: Fixed
@@ -69,4 +75,5 @@ The lerna-changelog tool detects changes based on PR labels and maps them to sec
 
 [core-0.3.0]: https://github.com/kyma-project/luigi/compare/v0.2.1...core-0.3.0
 [core-0.3.1]: https://github.com/kyma-project/luigi/compare/core-0.3.0...core-0.3.1
+[core-0.3.2]: https://github.com/kyma-project/luigi/compare/core-0.3.1...core-0.3.2
 [client-0.3.0]: https://github.com/kyma-project/luigi/compare/v0.2.1...client-0.3.0
