@@ -1,9 +1,14 @@
 # Changelog
 
 <!-- 
-Generate the changelog the using lerna-changelog tool, i.e
+Generate the changelog using the lerna-changelog tool. 
+Run the following command to generate changelog content for pull requests that were merged since the time when the last git tag was created.
 
-./node_modules/lerna-changelog/bin/cli.js --ignoreCommitters (--from core-0.3.0)
+./node_modules/lerna-changelog/bin/cli.js --ignoreCommiters
+
+You can also generate changelog content corresponding to pull requests that were merged in between particular git tags. 
+
+./node_modules/lerna-changelog/bin/cli.js --ignoreCommiters --from core-0.3.0 --to core-0.3.1
 
 The lerna-changelog tool detects changes based on PR labels and maps them to sections as per the configuration in the package.json file.
   "changelog": {
@@ -17,7 +22,7 @@ The lerna-changelog tool detects changes based on PR labels and maps them to sec
   }
 -->
 
-## [core-0.3.2] - 2018-09-10
+## [client-0.3.2] - 2018-09-10
 
 #### :rocket: Added
 * [#33](https://github.com/kyma-project/luigi/pull/33) Ensure es5 compliance for luigi client ([@y-kkamil](https://github.com/y-kkamil))
@@ -75,5 +80,5 @@ The lerna-changelog tool detects changes based on PR labels and maps them to sec
 
 [core-0.3.0]: https://github.com/kyma-project/luigi/compare/v0.2.1...core-0.3.0
 [core-0.3.1]: https://github.com/kyma-project/luigi/compare/core-0.3.0...core-0.3.1
-[core-0.3.2]: https://github.com/kyma-project/luigi/compare/core-0.3.1...core-0.3.2
+[client-0.3.2]: https://github.com/kyma-project/luigi/compare/client-0.3.1...client-0.3.2
 [client-0.3.0]: https://github.com/kyma-project/luigi/compare/v0.2.1...client-0.3.0
