@@ -16,8 +16,8 @@ export const getNavigationPath = async (rootNavProviderPromise, activePath) => {
   try {
     const topNavNodes = await rootNavProviderPromise;
     rootNode.children = topNavNodes;
-    getChildren(rootNode); // keep it, mutates and filters children
-    
+    await getChildren(rootNode); // keep it, mutates and filters children
+
     if (!activePath) {
       activePath = '';
     }

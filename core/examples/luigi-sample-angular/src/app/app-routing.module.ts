@@ -13,9 +13,11 @@ import { Miscellaneous2Component } from './project/miscellaneous2/miscellaneous2
 import { ChildNode2Component } from './project/default-child/dps2/child-node-2.component';
 import { ChildNode1Component } from './project/default-child/dps1/child-node-1.component';
 import { OverviewComponent } from './overview/overview.component';
+import { RestrictedComponent } from './restricted/restricted.component';
 
 const routes: Routes = [
   { path: 'overview', component: OverviewComponent },
+  { path: 'restricted', component: RestrictedComponent },
   { path: 'projects/:projectId', component: ProjectComponent },
   { path: 'projects/:projectId/users', component: UsersComponent },
   {

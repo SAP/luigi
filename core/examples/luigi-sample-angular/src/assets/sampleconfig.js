@@ -309,7 +309,7 @@ Luigi.setConfig({
       {
         pathSegment: 'forbidden-sample',
         label: 'Forbidden',
-        viewUrl: '/sampleapp.html#/projects/overview.html',
+        viewUrl: '/sampleapp.html#/restricted',
         constraints: ['unicorns']
       },
       {
