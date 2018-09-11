@@ -1,5 +1,7 @@
 # Changelog
 
+> Note: All the versions not mentioned in the changelog file do not contain changes. 
+
 <!-- 
 Generate the changelog using the lerna-changelog tool. 
 Run the following command to generate changelog content for pull requests that have been merged since the time when the last git tag was created:
@@ -36,7 +38,8 @@ The lerna-changelog tool detects changes based on PR labels and maps them to sec
 
 
 ## [core-0.3.0] - 2018-09-05
-### Added
+
+#### :rocket: Added
 - Preserve view and go back feature.
 - Default child nodes feature.
 - Support for url parameters.
@@ -48,25 +51,26 @@ The lerna-changelog tool detects changes based on PR labels and maps them to sec
 - Improvements on authorization, remove login button, trigger auth flow on page load.
 - Add documentation.
 
-### Changed
+#### Changed
 - 'hideNav' flag to disable top and left navigations is called now "hideNavigation" and is under "settings".
 - 'isHashRoute' flag to activate hash routing is moved to Luigi Config object under 'settings' and is called now 'useHashRouting'.
 - Luigi Config is now under "window.Luigi.config" instead of "window.LuigiConfig" and "setConfig" and "getConfig" helper methods are available.
 
-### Fixed
+#### :bug: Fixed
 - On angular example app, fix path routing issues by simplifying app chunks split.
 - On backdrop functionality, fix some small visual errors.
 
 ## [client-0.3.0] - 2018-09-05
-### Added
+
+#### :rocket: Added
 - Support for url parameters.
 - Add documentation.
 
-### Fixed
+#### :bug: Fixed
 - Prevent reloading of whole browser window when navigating with hash routing and only hash changes.
 
 ## 0.2.1 - 2018-07-24
-### Added
+#### :rocket: Added
 - Core: Angular example application.
 - Core: Hash-based and path-based routing.
 - Core: Navigation setup.
