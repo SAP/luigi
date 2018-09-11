@@ -201,7 +201,7 @@ Luigi.setConfig({
     use: 'mockedAuth',
     mockedAuth: {
       authorizeUrl: 'http://localhost:4200/assets/auth-mock/login-mock.html',
-      logoutUrl: 'http://localhost:4200/assets/auth-mock/logout-mock',
+      logoutUrl: 'http://localhost:4200/assets/auth-mock/logout-mock.html',
       post_logout_redirect_uri: '/logout.html',
       authorizeMethod: 'GET',
       oAuthData: {

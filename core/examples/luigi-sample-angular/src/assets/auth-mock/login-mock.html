@@ -79,7 +79,6 @@
 </div>
 <script>
   window.onload = function() {
-    debugger;
     const redirectUrl = decodeURIComponent(window.location.href.match(/redirect_uri=(.*?)(&|$)/)[1]);
     const state = decodeURIComponent(window.location.href.match(/state=(.*?)(&|$)/)[1]);
     const expiresIn = 3600;
