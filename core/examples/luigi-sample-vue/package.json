@@ -10,8 +10,8 @@
     "test:e2e": "vue-cli-service test:e2e"
   },
   "dependencies": {
-    "@kyma-project/luigi-client": "^0.2.1",
-    "@kyma-project/luigi-core": "^0.2.1",
+    "@kyma-project/luigi-client": "^0.3.2",
+    "@kyma-project/luigi-core": "^0.3.2",
     "fundamental-ui": "^1.1.0",
     "vue": "^2.5.17",
     "vue-router": "^3.0.1",

@@ -51,6 +51,4 @@ npm install --global local-web-server
 
 To perform the unit test on JavaScript files, run `npm test`.
 
-To test svelte components using cypress-svelte-unit-test, run `npm run cypress-test`. It runs all tests headlessly in the Electron browser.
 
-To test svelte components in an interactive mode using cypress-svelte-unit-test, run `npm run cypress-open`.
