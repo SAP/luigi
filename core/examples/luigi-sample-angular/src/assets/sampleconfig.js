@@ -198,7 +198,16 @@ Luigi.setConfig({
    *
    */
   auth: {
-    // use: 'oAuth2ImplicitGrant',
+    use: 'mockedIdp',
+    mockedIdp: {
+      authorizeUrl: 'http://localhost:4200/assets/auth-mock/login-mock.html',
+      logoutUrl: 'http://localhost:4200/assets/auth-mock/logout-mock',
+      post_logout_redirect_uri: '/logout.html',
+      authorizeMethod: 'GET',
+      oAuthData: {
+        client_id: 'egDuozijY5SVr0NSIowUP1dT6RVqHnlp'
+      }
+    },
     openIdConnect: {
       authority: 'https://example-authority.com',
       client_id: 'client',
