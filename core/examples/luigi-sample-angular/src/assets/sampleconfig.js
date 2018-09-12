@@ -1,7 +1,7 @@
 var navigationPermissionChecker = function (nodeToCheckPermissionFor, parentNode, currentContext) {
   // depending on the current path and context returns true or false
   // true means the current node is accessible, false the opposite
-  const mockCurrentUserGroups = ['admins'];
+  var mockCurrentUserGroups = ['admins'];
   if (nodeToCheckPermissionFor.constraints) {
     // check if user has required groups
     return nodeToCheckPermissionFor.constraints.filter(
@@ -249,12 +249,12 @@ Luigi.setConfig({
       // logoutFn: (settings, authData, logoutCallback) => {
       //   console.log('logoutFn called');
       //   // auth example
-      //   const logoutreq = `${settings.logoutUrl}?id_token_hint=${
+      //   var logoutreq = `${settings.logoutUrl}?id_token_hint=${
       //     authData.idToken
       //     }&client_id=${settings.oauthData.client_id}&post_logout_redirect_uri=${
       //     window.location.origin
       //     }/auth/logout.html`;
-      //   const request = new XMLHttpRequest();
+      //   var request = new XMLHttpRequest();
       //   request.open('GET', logoutreq);
       //   request.addEventListener('load', function (event) {
       //     if (request.status >= 200 && request.status < 300) {
