@@ -157,8 +157,8 @@ var projectDetailNavProviderFn = function (context) {
         ]
       }
     ];
-    getProjectPlugins(projectId).then(result => {
-      result.forEach(plugin => {
+    getProjectPlugins(projectId).then(function (result) {
+      result.forEach(function (plugin) {
         children.push({
           category: plugin.category,
           pathSegment: plugin.viewId,
@@ -174,9 +174,9 @@ var projectDetailNavProviderFn = function (context) {
 
 var projectsNavProviderFn = function (context) {
   return new Promise(function (resolve) {
-    getAllProjects().then(result => {
+    getAllProjects().then(function (result) {
       var children = [];
-      result.forEach(project => {
+      result.forEach(function (project) {
         children.push({
           /**
            * navigationContext:
@@ -271,65 +271,67 @@ Luigi.setConfig({
     },
 
     events: {
-      onLogout: () => {
+      onLogout: function () {
         console.log('onLogout');
       },
-      onAuthSuccessful: data => {
+      onAuthSuccessful: function (data) {
         console.log('onAuthSuccessful', data);
       },
-      onAuthExpired: () => {
+      onAuthExpired: function () {
         console.log('onAuthExpired');
       },
       // TODO: define luigi-client api for getting errors
-      onAuthError: err => {
+      onAuthError: function (err) {
         console.log('authErrorHandler 1', err);
       }
     }
   },
   navigation: {
     nodeAccessibilityResolver: navigationPermissionChecker,
-    nodes: () => [
-      {
-        pathSegment: 'overview',
-        label: 'Overview',
-        viewUrl: '/sampleapp.html#/overview'
-      },
-      {
-        pathSegment: 'projects',
-        label: 'Projects',
-        viewUrl: '/sampleapp.html#/projects/overview',
-        children: projectsNavProviderFn
-      },
-      {
-        hideFromNav: true,
-        pathSegment: 'hidden-sample',
-        label: 'Hidden',
-        viewUrl: '/sampleapp.html#/projects/overview'
-      },
-      {
-        pathSegment: 'forbidden-sample',
-        label: 'Forbidden',
-        viewUrl: '/sampleapp.html#/restricted',
-        constraints: ['unicorns']
-      },
-      {
-        pathSegment: 'ext',
-        label: 'External Page',
-        viewUrl: '/assets/sampleexternal.html#ext',
-        children: [
-          {
-            pathSegment: 'one',
-            label: 'One',
-            viewUrl: '/assets/sampleexternal.html#one'
-          },
-          {
-            pathSegment: 'two',
-            label: 'Two',
-            viewUrl: '/assets/sampleexternal.html#two'
-          }
-        ]
-      }
-    ]
+    nodes: function () {
+      return [
+        {
+          pathSegment: 'overview',
+          label: 'Overview',
+          viewUrl: '/sampleapp.html#/overview'
+        },
+        {
+          pathSegment: 'projects',
+          label: 'Projects',
+          viewUrl: '/sampleapp.html#/projects/overview',
+          children: projectsNavProviderFn
+        },
+        {
+          hideFromNav: true,
+          pathSegment: 'hidden-sample',
+          label: 'Hidden',
+          viewUrl: '/sampleapp.html#/projects/overview'
+        },
+        {
+          pathSegment: 'forbidden-sample',
+          label: 'Forbidden',
+          viewUrl: '/sampleapp.html#/restricted',
+          constraints: ['unicorns']
+        },
+        {
+          pathSegment: 'ext',
+          label: 'External Page',
+          viewUrl: '/assets/sampleexternal.html#ext',
+          children: [
+            {
+              pathSegment: 'one',
+              label: 'One',
+              viewUrl: '/assets/sampleexternal.html#one'
+            },
+            {
+              pathSegment: 'two',
+              label: 'Two',
+              viewUrl: '/assets/sampleexternal.html#two'
+            }
+          ]
+        }
+      ]
+    }
   },
 
   routing: {

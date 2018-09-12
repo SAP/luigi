@@ -1,11 +1,11 @@
 import { getConfigValue, getConfigValueFromObjectAsync } from './config';
 
-const isNodeAccessPermitted = (currentPath, currentNavigationStructure, node) => {
+const isNodeAccessPermitted = (nodeToCheckPermissionFor, parentNode, currentContext) => {
   const permissionCheckerFn = getConfigValue('navigation.nodeAccessibilityResolver');
   if (typeof permissionCheckerFn !== 'function') {
     return true;
   }
-  return permissionCheckerFn(currentPath, currentNavigationStructure, node);
+  return permissionCheckerFn(nodeToCheckPermissionFor, parentNode, currentContext);
 }
 
 export const getNavigationPath = async (rootNavProviderPromise, activePath) => {
