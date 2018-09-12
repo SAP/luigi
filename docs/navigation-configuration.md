@@ -59,7 +59,8 @@ window.Luigi.setConfig({
 
 ### Navigation parameters
 
-- **nodeAccessibilityResolver** allows you to define a permission checker function that gets executed on every Node. If it returns false, the Node and it's children are removed from the navigation structure. You may want to add custom values to Nodes to receive it in the **nodeAccessibilityResolver** function. See [angular sampleconfig.js](../core/examples/luigi-sample-angular/src/assets/sampleconfig.js) for our constraints example.
+- **nodeAccessibilityResolver** allows you to define a permission checker function that gets executed on every Node. If it returns `false`, Luigi removes the Node and its children from the navigation structure.
+**nodeAccessibilityResolver** receives all values defined in the Node configuration. See [angular sampleconfig.js](../core/examples/luigi-sample-angular/src/assets/sampleconfig.js) for the **constraints** example.
 
 ## Nodes
 
