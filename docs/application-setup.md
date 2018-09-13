@@ -2,6 +2,13 @@
 
 Prior to the implementation of Luigi, you need to set up your application. This document shows you how to set up a web application using the Luigi micro front-end framework.
 
+Choose your framework to view instructions for application setup:
+
+[Application setup without a framework](#noframework) <br>
+[Angular 6](#angular6)<br>
+[SAPUI5/OpenUI5](#sapui5)<br>
+[VUE.JS](#vuejs)
+
 ## Intitial steps
 
 Follow these steps to build a web application based on Luigi:
@@ -21,7 +28,7 @@ npm install --save @kyma-project/luigi-client
 
 The examples on this page demonstrate commands that perform each of the necessary steps to set up your application. Each set of commands is grouped by the framework on which you execute it.
 
-### Application setup for an application not using a framework
+### Application setup for an application not using a framework <a name="noframework"></a>
 
 >**NOTE:** You need a development server capable of hosting Single Page Applications. The recommended server is Live Server.
 
@@ -46,7 +53,7 @@ $ live-server --entry-file=index.html public
 
 ````
 
-### Application setup for Angular 6
+### Application setup for Angular 6 <a name="angular6"></a>
 
 >**NOTE:** The Angular CLI is a prerequisite for this example.
 
@@ -66,7 +73,7 @@ $ ng serve
 
 ````
 
-### Application setup for SAPUI5/OpenUI5
+### Application setup for SAPUI5/OpenUI5 <a name="sapui5"></a>
 
 >**NOTE:** Live Server must be installed as your development server.
 
@@ -91,7 +98,7 @@ $ live-server --entry-file=index.html public
 
 ````
 
-### Application setup for VUE.JS
+### Application setup for VUE.JS <a name="vuejs"></a>
 
 >**NOTE:** The VUE CLI is a prerequisite for this example.
 
