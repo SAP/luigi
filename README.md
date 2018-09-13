@@ -24,7 +24,7 @@ See [this](https://github.com/kyma-project/luigi/blob/master/client/README.md) d
 
 ### Luigi client
 
-Luigi client enables integration of Luigi in views. Configure the lifecycle and links of the client. Customize the appearance of Luigi client as well.
+Luigi client enables integration of Luigi in views. Configure the lifecycle and links of the client. Customize the appearance in the view as well.
 
 - [Lifecycle](docs/lifecycle.md) - Gives you details on the life cycle of listeners, navigation nodes and event data.
 - [Link Manager](docs/link-manager.md) - Shows how to configure the Link Manager.
