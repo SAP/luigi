@@ -18,6 +18,7 @@
   let idpProviderInstance;
 
   const standardProviders = {
+    mockAuth: oAuth2ImplicitGrant,
     oAuth2ImplicitGrant,
     openIdConnect
   };
@@ -36,7 +37,7 @@
       return new standardProviders[idpProviderName](idpProviderSettings);
     }
 
-    // custom provided provider provided via config: 
+    // custom provided provider provided via config:
     const customIdpProvider = getConfigValueFromObject(idpProviderSettings, 'customIdpProvider');
     if (customIdpProvider) {
       ['login'].forEach((requiredFnName) => {
@@ -44,7 +45,7 @@
           throw new IdpProviderException(`${requiredFnName} function does not exist in custom IDP Provider ${idpProviderName}`);
         }
       });
-      
+
       return new customIdpProvider(idpProviderSettings);
     }
 
@@ -98,11 +99,11 @@
       if (onLogoutFn && previous && previous.isLoggedIn && !current.isLoggedIn) { onLogoutFn(); }
       if (onAuthSuccessfulFn && (!previous || !previous.isLoggedIn) && current.isLoggedIn) {
         const authData = getStoredAuthData();
-        onAuthSuccessfulFn(authData); 
+        onAuthSuccessfulFn(authData);
       }
     },
     methods: {
-        startAuthorization: function() { 
+        startAuthorization: function() {
           idpProviderInstance.login().then((res) => {
             if(res) {
               alert(res);
@@ -122,11 +123,11 @@
           const customLogoutFn = getConfigValue(`auth.${getConfigValue('auth.use')}.logoutFn`);
           if (isFunction(customLogoutFn)) {
             return customLogoutFn(idpProviderInstance.settings, authData, logoutCallback);
-          } 
+          }
 
           if (isFunction(idpProviderInstance.logout)) {
             return idpProviderInstance.logout(authData, logoutCallback);
-          } 
+          }
 
           logoutCallback();
           window.location.href = idpProviderInstance.settings.logoutUrl;
@@ -164,7 +165,7 @@ $fd-icons-path: 'node_modules/fundamental-ui/scss/icons/';
     line-height: 1em;
     padding: 13px 0;
 }
- 
+
 .hideNavComponent {
     display: none;
 }
