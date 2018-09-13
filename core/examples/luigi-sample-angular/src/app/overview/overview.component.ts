@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { LuigiClient } from '@kyma-project/luigi-client';
+import LuigiClient from '@kyma-project/luigi-client';
 
 @Component({
   selector: 'app-overview',
@@ -18,7 +18,8 @@ export class OverviewComponent implements OnInit {
       link: '/projects/pr2',
       text: 'linkManager()',
       description: 'navigation methods'
-    }];
+    }
+  ];
 
   public luigiCoreLinks: any[] = [
     {
