@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Luigi Mock Identity Provider</title>
+  <style type="text/css">
+    body {
+      background-color: #f3f4f5
+    }
+
+    .form-input {
+      border-radius: 4px;
+      border: 1px solid #CCC;
+      box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+      color: #666;
+      display: block;
+      font-size: 14px;
+      height: 20px;
+      line-height: 1.42857143;
+      margin: auto;
+      padding: 6px 12px;
+      width: 200px;
+    }
+
+    #login-button {
+      display: block;
+      margin: auto;
+      cursor: pointer;
+      border-radius: 4px;
+      font-size: 1rem;
+      background-color: #ffffff;
+      color: #0a6ed1;
+      border: solid 1px #0a6ed1;
+      padding: 0 10px;
+      height: 36px;
+      max-height: 36px;
+      min-width: 36px;
+      transition: all 0.125s ease-in;
+    }
+
+    #login-button:hover {
+      border-color: #085caf;
+      color: #085caf;
+      box-shadow: 0 0 0 1px #0a6ed1;
+    }
+
+    .panel {
+      background-color: #ffffff;
+      box-shadow: 0 5px 20px 0 rgba(50, 54, 58, 0.08);
+      border-radius: 4px;
+      border: none;
+      width: 50%;
+      margin: auto;
+      min-width: 270px;
+      padding: 15px;
+    }
+
+    h1 {
+      text-align: center;
+      font-size: 1.42857143rem;
+      line-height: 1.33333333;
+      font-weight: 400;
+      display: block;
+      margin-bottom: 20px;
+      color: #32363a;
+      font-family: '72', -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Helvetica Neue, Arial, sans-serif, Apple Color Emoji, Segoe UI Emoji, Segoe UI Symbol;
+
+    }
+  </style>
+</head>
+<body>
+
+<div class="panel">
+  <h1>Login to Luigi sample app</h1>
+  <form>
+    <input type="text" class="form-input" value="LuigiUsername"><br>
+    <input type="password" class="form-input" value="LuigiPassword"><br>
+    <button id="login-button">Login</button>
+  </form>
+</div>
+<script>
+  window.onload = function() {
+    const redirectUrl = decodeURIComponent(window.location.href.match(/redirect_uri=(.*?)(&|$)/)[1]);
+    const state = decodeURIComponent(window.location.href.match(/state=(.*?)(&|$)/)[1]);
+    const expiresIn = 3600;
+
+    const goTo = `${redirectUrl}#
+      expires_in=${expiresIn}&
+      state=${state}&
+      access_token=thisisanaccesstokenthatisnotreallyneeded&
+      id_token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.
+      eyJpc3MiOiJodHRwOi8vbG9jYWxob3N0OjQyMDAiLCJzdWIiOiJtYXNrb3BhdG9sIiwiZXhwIjoxNjQzNzY0OTIwLCJhe
+      nAiOiJtYXNrb3BhdG9sIiwibm9uY2UiOiJidE5rWVZzc1FldVlWNmEyR1RVZm1wWVFFelBRN3c1ZENCbU54SG54IiwiZW
+      1haWwiOiJsdWlnaXVzZXJAa3ltYS5jeCJ9.80GanA3z-Rl67VQAb-lvMNpDZKcVI32CQZIoM9imF5w&
+      token_type=bearer`;
+
+    const loginButton = document.getElementById('login-button');
+
+    loginButton.addEventListener('click', function(ev) {
+      ev.preventDefault();
+      window.location = removeIndent(goTo);
+    });
+
+    function removeIndent(goToString) {
+      return goToString.replace(/\s\s+/g, '');
+    }
+  };
+</script>
+</body>
+</html>
