@@ -215,8 +215,8 @@ Luigi.setConfig({
    *
    */
   auth: {
-    use: 'mockedAuth',
-    mockedAuth: {
+    use: 'mockAuth',
+    mockAuth: {
       authorizeUrl: `${window.location.origin}/assets/auth-mock/login-mock.html`,
       logoutUrl: `${window.location.origin}/assets/auth-mock/logout-mock.html`,
       post_logout_redirect_uri: '/logout.html',
