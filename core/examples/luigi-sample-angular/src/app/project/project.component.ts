@@ -21,6 +21,15 @@ export class ProjectComponent implements OnInit {
         'project ID as luigi param: ' + initialContext.currentProject
       );
     });
+  }
+
+  public ngOnInit() {
+    this.activatedRoute.params.subscribe((params: Params) => {
+      console.info('project ID as URL param: ' + params['projectId']);
+      this.projectId = params['projectId'];
+    });
+
+    this.luigiClient = LuigiClient;
 
     LuigiClient.addContextUpdateListener(updatedContext => {
       this.projectId = updatedContext.currentProject;
@@ -31,16 +40,10 @@ export class ProjectComponent implements OnInit {
         'goBackContext?',
         this.preservedViewCallbackContext
       );
-      this.changeDetector.detectChanges();
+      if (!(this.changeDetector['destroyed'])) {
+        this.changeDetector.detectChanges();
+      }
     });
-  }
-
-  public ngOnInit() {
-    this.activatedRoute.params.subscribe((params: Params) => {
-      console.info('project ID as URL param: ' + params['projectId']);
-      this.projectId = params['projectId'];
-    });
-    this.luigiClient = LuigiClient;
   }
 
   toggleModal() {
