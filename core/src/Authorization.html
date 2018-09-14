@@ -8,7 +8,7 @@
 
 <script type="text/javascript">
   import { getConfigValueAsync, getConfigValue, getConfigValueFromObject } from './services/config.js';
-  import { isFunction, deepMerge } from './utilities/helpers.js';
+  import { isFunction, isPromise, deepMerge } from './utilities/helpers.js';
   import { oAuth2ImplicitGrant } from './providers/auth/oAuth2ImplicitGrant.js';
   import { openIdConnect } from './providers/auth/openIdConnect.js';
 
@@ -32,7 +32,7 @@
     this.name = 'IdpProviderException';
   }
 
-  const getIdpProviderInstance = (idpProviderName, idpProviderSettings) => {
+  const getIdpProviderInstance = async(idpProviderName, idpProviderSettings) => {
     if (isFunction(standardProviders[idpProviderName])) {
       return new standardProviders[idpProviderName](idpProviderSettings);
     }
@@ -65,22 +65,32 @@
         return;
       }
 
+      const checkAuth = () => {
+        const authData = getStoredAuthData();
+        if (!authData || !isAuthValid()) {
+          this.startAuthorization();
+          return;
+        }
+
+        this.set({
+          isLoggedIn: true,
+          logoutUrl: idpProviderInstance.settings.logoutUrl
+        });
+
+        // TODO: Re-auth via id_token if not logged in
+        // TODO: Check periodically if authorization is still valid
+        // const onAuthExpiredFn = getConfigValue('auth.events.onAuthExpired');
+      };
+
+
       idpProviderInstance = getIdpProviderInstance(idpProviderName, idpProviderSettings);
-
-      const authData = getStoredAuthData();
-      if (!authData || !isAuthValid()) {
-        this.startAuthorization();
-        return;
+      if (isPromise(idpProviderInstance)) {
+        return idpProviderInstance.then((resolved) => {
+          idpProviderInstance = resolved;
+          checkAuth();
+        });
       }
-
-      this.set({
-        isLoggedIn: true,
-        logoutUrl: idpProviderInstance.settings.logoutUrl
-      });
-
-      // TODO: Re-auth via id_token if not logged in
-      // TODO: Check periodically if authorization is still valid
-      // const onAuthExpiredFn = getConfigValue('auth.events.onAuthExpired');
+      checkAuth();
     },
     onstate({ changed, current, previous }) {
       const onLogoutFn = getConfigValue('auth.events.onLogout');
@@ -112,15 +122,15 @@
 
           const customLogoutFn = getConfigValue(`auth.${getConfigValue('auth.use')}.logoutFn`);
           if (isFunction(customLogoutFn)) {
-              return customLogoutFn(idpProviderInstance.settings, authData, logoutCallback);
+            return customLogoutFn(idpProviderInstance.settings, authData, logoutCallback);
           }
 
           if (isFunction(idpProviderInstance.logout)) {
             return idpProviderInstance.logout(authData, logoutCallback);
           }
 
+          logoutCallback();
           window.location.href = idpProviderInstance.settings.logoutUrl;
-          return logoutCallback();
         },
     },
     components: {},
