@@ -2,7 +2,7 @@
 
 Prior to the implementation of Luigi, you need to set up your application. This document shows you how to set up a web application using the Luigi micro front-end framework.
 
-Choose the framework used to build your application:
+Choose the framework to build your application:
 
 [Application setup without a framework](#noframework) <br>
 [Angular 6](#angular6)<br>
