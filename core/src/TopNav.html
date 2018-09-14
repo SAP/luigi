@@ -23,9 +23,9 @@
         <div class="fd-popover user-settings">
           <div class="fd-popover__control">
           <button class="fd-popover__control fd-button--secondary fd-button--m fd-global-nav__btn sap-icon--action-settings"
-          aria-controls="PROFILE_POPOVER" aria-expanded="false" aria-haspopup="true"></button>
+          aria-expanded="{dropDownStates.PROFILE_POPOVER || false}" aria-haspopup="true" on:click="toggleDropdownState('PROFILE_POPOVER')"></button>
           </div>
-          <div class="fd-popover__body" aria-hidden="true" id="PROFILE_POPOVER">
+          <div class="fd-popover__body" aria-hidden="{dropDownStatesNegated.PROFILE_POPOVER || true}" id="PROFILE_POPOVER">
             <nav class="fd-menu" id="">
               <Authorization />
               <!-- <ul class="fd-menu__list">
@@ -46,33 +46,10 @@
     import Authorization from './Authorization.html';
     import { handleRouteClick } from './services/routing.js';
     import { getConfigValue, getConfigBooleanValue } from './services/config.js';
-
-    const initAriaControls = () => {
-      // Fundamental UI specific javascript
-      // copied from sap.github.io/fundamental/demo-pages/full-width-app-demo.html
-
-      // popover
-      const els = document.querySelectorAll("[aria-controls]");
-      for (let i = 0; i < els.length; i++) {
-          const el = els[i];
-          el.addEventListener('click', function(e) {
-              const targetId = this.getAttribute("aria-controls");
-              const target = document.getElementById(targetId);
-
-              // popover
-              const isPopover = this.getAttribute("aria-haspopup") === "true";
-              if (isPopover) {
-                //trigger
-                const isExpanded = this.getAttribute("aria-expanded") === "true";
-                this.setAttribute("aria-expanded", (!isExpanded).toString());
-                //target
-                target.setAttribute("aria-hidden", isExpanded.toString());
-                return;
-              }
-          })
-      }
-
-    };
+  
+    const getNegatedBoolString = (str) => {
+      return (str === 'true') ? 'false' : 'true';
+    }
 
     const setTopNavData = (current, component) => {
       if (current.pathData && 0 < current.pathData.length) {
@@ -103,24 +80,44 @@
               authorizationEnabled: !!idpProviderSettings,
               hideNavComponent: getConfigBooleanValue('settings.hideNavigation')
           });
-
-          // at last, init aria-control handler
-          initAriaControls();
         },
         onstate({ changed, current, previous }) {
             if (!previous || previous.pathData != current.pathData) {
                 setTopNavData(current, this);
             }
         },
-        methods: {
-            handleClick: (node) => handleRouteClick(node),
-            goTo: (path) => {
-              if(getConfigBooleanValue('routing.useHashRouting')) {
-                window.location.hash = path;
-              } else {
-                window.location.pathname = path;
+        data() {
+          return {
+            dropDownStates: {}
+          }
+        },
+        computed: {
+          dropDownStatesNegated({dropDownStates}) {
+            const negated = {};
+            for (const key in dropDownStates) {
+              if (dropDownStates.hasOwnProperty(key)) {
+                negated[key] = getNegatedBoolString(dropDownStates[key]);
               }
             }
+            return negated;
+          }
+        },
+        methods: {
+          handleClick: (node) => handleRouteClick(node),
+          goTo(path) {
+            if(getConfigBooleanValue('routing.useHashRouting')) {
+              window.location.hash = path;
+            } else {
+              window.location.pathname = path;
+            }
+          },
+          toggleDropdownState(name) {
+            const dropDownStates = this.get().dropDownStates || {};
+            dropDownStates[name] = getNegatedBoolString(dropDownStates[name]);
+            this.set({
+              dropDownStates
+            });
+          }
         },
         components: {
             Backdrop,

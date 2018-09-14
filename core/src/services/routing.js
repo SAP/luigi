@@ -286,7 +286,7 @@ export const handleRouteChange = async (path, component, node, config) => {
 
     navigateIframe(config, component, node);
   } catch (err) {
-    console.error('Could not handle route change', err);
+    console.info('Could not handle route change', err);
   }
 };
 
