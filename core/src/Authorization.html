@@ -24,7 +24,7 @@
   };
 
   const getStoredAuthData = () =>  JSON.parse(localStorage.getItem('luigi.auth'));
-
+  const newlyAuthorized = () =>  JSON.parse(localStorage.getItem('luigi.newlyAuthorized'));
   const isAuthValid = () => getStoredAuthData().accessTokenExpirationDate > Number(new Date());
 
   const IdpProviderException = (message) => {
@@ -74,7 +74,8 @@
 
         this.set({
           isLoggedIn: true,
-          logoutUrl: idpProviderInstance.settings.logoutUrl
+          logoutUrl: idpProviderInstance.settings.logoutUrl,
+          newlyAuthorized: newlyAuthorized()
         });
 
         // TODO: Re-auth via id_token if not logged in
@@ -97,13 +98,15 @@
       const onAuthSuccessfulFn = getConfigValue('auth.events.onAuthSuccessful');
 
       if (onLogoutFn && previous && previous.isLoggedIn && !current.isLoggedIn) { onLogoutFn(); }
-      if (onAuthSuccessfulFn && (!previous || !previous.isLoggedIn) && current.isLoggedIn) {
+      if (onAuthSuccessfulFn && (!previous || !previous.isLoggedIn) && current.isLoggedIn && current.newlyAuthorized) {
+        localStorage.removeItem('luigi.newlyAuthorized');
         const authData = getStoredAuthData();
         onAuthSuccessfulFn(authData);
       }
     },
     methods: {
-        startAuthorization: function() {
+      startAuthorization: function() {
+          localStorage.setItem('luigi.newlyAuthorized', true);
           idpProviderInstance.login().then((res) => {
             if(res) {
               alert(res);
