@@ -23,6 +23,22 @@ The lerna-changelog tool detects changes based on PR labels and maps them to sec
     ...
   }
 -->
+## [core-0.3.3] - 2018-09-14
+
+#### :rocket: Added
+* [#67](https://github.com/kyma-project/luigi/pull/67) Navigation Node visibility with custom nodeAccessibilityResolver ([@maxmarkus](https://github.com/maxmarkus))
+
+#### :bug: Fixed
+* [#82](https://github.com/kyma-project/luigi/pull/82) Fixed changedetector bug ([@dariadomagala](https://github.com/dariadomagala))
+* [#71](https://github.com/kyma-project/luigi/pull/71) Fixed top navigation popover behavior ([@maxmarkus](https://github.com/maxmarkus))
+* [#76](https://github.com/kyma-project/luigi/pull/76) Fixed broken routing after successful OIDC authentication ([@maxmarkus](https://github.com/maxmarkus))
+* [#57](https://github.com/kyma-project/luigi/pull/57) Fixed preserve view and back example ([@dariadomagala](https://github.com/dariadomagala))
+* [#75](https://github.com/kyma-project/luigi/pull/75) Fixed import of LuigiClient on angular app ([@jesusreal](https://github.com/jesusreal))
+
+#### :memo: Documentation
+* [#80](https://github.com/kyma-project/luigi/pull/80) Luigi documentation refinements ([@dpolitesap](https://github.com/dpolitesap))
+* [#34](https://github.com/kyma-project/luigi/pull/34) Introduce changelog file ([@jesusreal](https://github.com/jesusreal))
+
 
 ## [client-0.3.2] - 2018-09-10
 
@@ -84,5 +100,6 @@ The lerna-changelog tool detects changes based on PR labels and maps them to sec
 
 [core-0.3.0]: https://github.com/kyma-project/luigi/compare/v0.2.1...core-0.3.0
 [core-0.3.1]: https://github.com/kyma-project/luigi/compare/core-0.3.0...core-0.3.1
+[core-0.3.3]: https://github.com/kyma-project/luigi/compare/core-0.3.2...core-0.3.3
 [client-0.3.2]: https://github.com/kyma-project/luigi/compare/client-0.3.1...client-0.3.2
 [client-0.3.0]: https://github.com/kyma-project/luigi/compare/v0.2.1...client-0.3.0

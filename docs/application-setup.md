@@ -44,7 +44,7 @@ npm install -g live-server
 ````
 $ mkdir my-plain-app && cd my-plain-app
 $ npm init -y
-$ npm i -S @kyma-project/luigi-core@0.2.1 @kyma-project/luigi-client@0.2.1
+$ npm i -S @kyma-project/luigi-core@latest @kyma-project/luigi-client@latest fundamental-ui@latest
 $ mkdir -p public/assets
 $ curl https://raw.githubusercontent.com/kyma-project/Luigi/master/core/examples/luigi-sample-angular/src/index.html > public/index.html
 $ curl https://raw.githubusercontent.com/kyma-project/Luigi/master/core/examples/luigi-sample-angular/src/assets/sampleexternal.html > public/assets/temp.html
@@ -65,14 +65,13 @@ $ live-server --entry-file=index.html public
 
 ````
 $ ng new my-dream-app --routing && cd my-dream-app
-$ npm i -S @kyma-project/luigi-core@0.2.1 @kyma-project/luigi-client@0.2.1
+$ npm i -S @kyma-project/luigi-core@latest @kyma-project/luigi-client@latest fundamental-ui@latest
 $ mv src/index.html src/angular.html
 $ curl https://raw.githubusercontent.com/kyma-project/Luigi/master/core/examples/luigi-sample-angular/src/index.html > src/index.html
 $ curl https://raw.githubusercontent.com/kyma-project/Luigi/master/core/examples/luigi-sample-angular/src/assets/basicConfiguration.js > src/assets/sampleconfig.js
 $ sed 's/"src\/index.html"/"src\/angular.html"/g' angular.json > tmp.json && mv tmp.json angular.json
-$ sed 's/"src\/assets"/"src\/assets","src\/index.html",{"glob": "**","input": "node_modules\/@kyma-project\/luigi-core", "output": "\/luigi-core"},{"glob": "**","input": "node_modules\/@kyma-project\/luigi-client","output": "\/luigi-client"}/g' angular.json > tmp.json && mv tmp.json angular.json
+$ sed 's/"src\/assets"/"src\/assets","src\/index.html", {"glob": "fundamental-ui.min.css", "input": "node_modules\/fundamental-ui\/dist","output": "\/fundamental-ui"}, {"glob": "fonts\/**","input": "node_modules\/fundamental-ui\/dist","output": "\/fundamental-ui"}, {"glob": "SAP-icons.*","input": "node_modules\/fundamental-ui\/dist","output": "\/fundamental-ui"}, {"glob": "**","input": "node_modules\/@kyma-project\/luigi-core", "output": "\/luigi-core"},{"glob": "**","input": "node_modules\/@kyma-project\/luigi-client","output": "\/luigi-client"}/g' angular.json > tmp.json && mv tmp.json angular.json
 $ ng serve
-
 ````
 <a name="sapui5"></a>
 
@@ -91,7 +90,7 @@ npm install -g live-server
 ````
 $ mkdir my-ui5-app && cd my-ui5-app
 $ npm init -y
-$ npm i -S @kyma-project/luigi-core@0.2.1 @kyma-project/luigi-client@0.2.1
+$ npm i -S @kyma-project/luigi-core@latest @kyma-project/luigi-client@latest fundamental-ui@latest
 $ mkdir -p public/assets
 $ curl https://raw.githubusercontent.com/kyma-project/Luigi/master/core/examples/luigi-sample-angular/src/index.html > public/index.html
 $ curl https://raw.githubusercontent.com/SAP/openui5/master/src/sap.m/test/sap/m/demokit/helloworld/index.html  | sed 's/src="..\/..\/..\/..\/..\/resources\/sap-ui-core.js"/src="https:\/\/openui5.hana.ondemand.com\/resources\/sap-ui-core.js"/g' > public/ui5.html
@@ -117,7 +116,7 @@ npm install -g @vue/cli
 
 ````
 $ vue create -d my-vue-app && cd my-vue-app
-$ npm i -S @kyma-project/luigi-core@0.2.1 @kyma-project/luigi-client@0.2.1
+$ npm i -S @kyma-project/luigi-core@latest @kyma-project/luigi-client@latest fundamental-ui@latest
 $ mkdir -p public/assets
 $ mv public/index.html public/vue.html
 $ curl https://raw.githubusercontent.com/kyma-project/Luigi/master/core/examples/luigi-sample-angular/src/index.html > public/index.html
