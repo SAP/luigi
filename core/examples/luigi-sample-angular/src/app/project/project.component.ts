@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { ActivatedRoute, Params } from '@angular/router';
 
 import LuigiClient from '@kyma-project/luigi-client';
@@ -14,13 +14,22 @@ export class ProjectComponent implements OnInit {
   public modalActive = false;
   public preservedViewCallbackContext: any;
 
-  public constructor(private activatedRoute: ActivatedRoute) {
+  public constructor(private activatedRoute: ActivatedRoute, private changeDetector: ChangeDetectorRef) {
     LuigiClient.addInitListener(initialContext => {
       this.projectId = initialContext.currentProject;
       console.info(
         'project ID as luigi param: ' + initialContext.currentProject
       );
     });
+  }
+
+  public ngOnInit() {
+    this.activatedRoute.params.subscribe((params: Params) => {
+      console.info('project ID as URL param: ' + params['projectId']);
+      this.projectId = params['projectId'];
+    });
+
+    this.luigiClient = LuigiClient;
 
     LuigiClient.addContextUpdateListener(updatedContext => {
       this.projectId = updatedContext.currentProject;
@@ -31,15 +40,10 @@ export class ProjectComponent implements OnInit {
         'goBackContext?',
         this.preservedViewCallbackContext
       );
+      if (!(this.changeDetector['destroyed'])) {
+        this.changeDetector.detectChanges();
+      }
     });
-  }
-
-  public ngOnInit() {
-    this.activatedRoute.params.subscribe((params: Params) => {
-      console.info('project ID as URL param: ' + params['projectId']);
-      this.projectId = params['projectId'];
-    });
-    this.luigiClient = LuigiClient;
   }
 
   toggleModal() {

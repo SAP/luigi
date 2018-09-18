@@ -2,7 +2,7 @@
 
 ## Overview
 
-Luigi is a micro front-end JavaScript framework that enables the creation of an administrative dashboard which is driven by local and distributed views. Luigi enables the communication between a web application and content-views which the application contains such as routing, navigation, authorization, and user experience elements.
+Luigi is a micro front-end JavaScript framework that enables the creation of an administrative user interface which is driven by local and distributed views. Luigi enables the communication between a web application and content-views which the application contains such as routing, navigation, authorization, and user experience elements.
 
 Luigi consists of two components: **Luigi core** and **Luigi client**.
 
@@ -10,23 +10,27 @@ Luigi consists of two components: **Luigi core** and **Luigi client**.
 
 ## Installation
 
-To get started with Luigi, read the [Luigi core](https://github.com/kyma-project/luigi/blob/master/core/README.md) document.
+### Luigi core
 
-- [Application setup](docs/application-setup.md)
-- [Navigation configuration](docs/navigation-configuration.md)
-- [Authorization configuration](docs/authorization-configuration.md)
-- [Routing mechanism configuration](docs/router-configuration.md)
-- [General settings](docs/general-settings.md)
+Luigi core is the part of Luigi that enables navigation, security and routing. To get started with Luigi, read [this](docs/application-setup.md) document.
+
+- [Application setup](docs/application-setup.md) shows you the first steps to prepare your application for development.
+- [Navigation configuration](docs/navigation-configuration.md) shows you how to configure navigation.
+- [Authorization configuration](docs/authorization-configuration.md) shows you how to secure Luigi.
+- [Routing mechanism configuration](docs/router-configuration.md) demonstrates routing in Luigi.
+- [General settings](docs/general-settings.md) provides you with configuration parameters.
 
 See [this](https://github.com/kyma-project/luigi/blob/master/client/README.md) document to learn more about the Luigi client.
 
-- [Lifecycle](docs/lifecycle.md)
-- [Link Manager](docs/link-manager.md)
-- [UX Manager](docs/ux-manager.md)
+### Luigi client
 
-## Development
+Luigi client enables integration of Luigi in views. You can easily configure the lifecycle and links of the client, as well as customize the appearance of your navigation.
 
-To run Luigi during your development phase, use the [Angular example application](/core/examples/luigi-sample-angular).
+- [Lifecycle](docs/lifecycle.md) gives you details on the life cycle of listeners, navigation Nodes and Event data.
+- [Link Manager](docs/link-manager.md) shows how to configure the Link Manager.
+- [UX Manager](docs/ux-manager.md) shows how to set up the UX Manager.
+
+View [example applications](/core/examples).
 
 ### Code formatting for contributors
 

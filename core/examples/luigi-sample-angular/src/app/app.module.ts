@@ -20,6 +20,7 @@ import { CodeSnippetComponent } from './project/code-snippet/code-snippet.compon
 import { ChildNode1Component } from './project/default-child/dps1/child-node-1.component';
 import { ChildNode2Component } from './project/default-child/dps2/child-node-2.component';
 import { OverviewComponent } from './overview/overview.component';
+import { RestrictedComponent } from './restricted/restricted.component';
 
 @NgModule({
   declarations: [
@@ -39,7 +40,8 @@ import { OverviewComponent } from './overview/overview.component';
     CodeSnippetComponent,
     ChildNode1Component,
     ChildNode2Component,
-    OverviewComponent
+    OverviewComponent,
+    RestrictedComponent
   ],
   imports: [BrowserModule, FormsModule, AppRoutingModule],
   providers: [],

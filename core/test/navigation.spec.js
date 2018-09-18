@@ -3,9 +3,9 @@ const chai = require('chai');
 const expect = chai.expect;
 const assert = chai.assert;
 
-const sampleNavPromise = new Promise(function(resolve) {
+const sampleNavPromise = new Promise(function (resolve) {
   const lazyLoadedChildrenNodesProviderFn = () => {
-    return new Promise(function(resolve) {
+    return new Promise(function (resolve) {
       resolve([
         {
           pathSegment: 'b1',
@@ -49,8 +49,14 @@ const sampleNavPromise = new Promise(function(resolve) {
   ]);
 });
 
-describe('Navigation', function() {
-  describe('#getNavigationPath()', function() {
+describe('Navigation', function () {
+  afterEach(() => {
+    // reset
+    window.Luigi = {
+      config: {}
+    };
+  });
+  describe('#getNavigationPath()', function () {
     it('should not fail for undefined arguments', () => {
       navigation.getNavigationPath(undefined, undefined);
     });
@@ -158,12 +164,12 @@ describe('Navigation', function() {
     };
     it('should not fail if arguments are undefined', async () => {
       const children = await navigation.getChildren(undefined, undefined);
-      expect(children).to.be.undefined;
+      expect(children.length).to.equal(0);
     });
-    it("should return node if it doesn't have children", async () => {
+    it("should return empty array if it doesn't have children", async () => {
       const aNode = {};
       const children = await navigation.getChildren(aNode, undefined);
-      expect(children).to.equal(aNode);
+      expect(children.length).to.equal(0);
     });
     it('should return nodes children and bind them if children are provided', async () => {
       const children = await navigation.getChildren(
@@ -192,6 +198,34 @@ describe('Navigation', function() {
         'context'
       );
       expect(children).to.equal(nodeWithChildrenProvider.children);
+    });
+    it('uses navigationPermissionChecker and returns correct amount of children', async () => {
+      //given
+      window.Luigi = {
+        config: {
+          navigation: {
+            nodeAccessibilityResolver: (nodeToCheckPermissionFor, currentNode, currentContext) => {
+              if (nodeToCheckPermissionFor.constraints) {
+                return nodeToCheckPermissionFor.constraints === 'other_scope';
+              }
+              return true;
+            }
+          }
+        }
+      };
+
+      const nodeWithChildren = {
+        label: 'someNode',
+        children: [
+          { label: 'child1', constraints: 'some_scope' },
+          { label: 'child2' }
+        ]
+      };
+      const children = await navigation.getChildren(
+        nodeWithChildren
+      );
+      expect(children.length).to.equal(1);
+      expect(children[0].label).to.equal('child2');
     });
   });
 });
