@@ -2,6 +2,13 @@
 
 Prior to the implementation of Luigi, you need to set up your application. This document shows you how to set up a web application using the Luigi micro front-end framework.
 
+Choose the framework to build your application:
+
+[Application setup without a framework](#noframework) <br>
+[Angular 6](#angular6)<br>
+[SAPUI5/OpenUI5](#sapui5)<br>
+[VUE.JS](#vuejs)
+
 ## Intitial steps
 
 Follow these steps to build a web application based on Luigi:
@@ -21,7 +28,8 @@ npm install --save @kyma-project/luigi-client
 
 The examples on this page demonstrate commands that perform each of the necessary steps to set up your application. Each set of commands is grouped by the framework on which you execute it.
 
-### Application setup for an application not using a framework
+<a name="noframework"></a> 
+### Application setup for an application not using a framework 
 
 >**NOTE:** You need a development server capable of hosting Single Page Applications. The recommended server is Live Server.
 
@@ -45,8 +53,9 @@ $ cp -r node_modules/\@kyma-project/luigi-* public
 $ live-server --entry-file=index.html public
 
 ````
+<a name="angular6"></a>
 
-### Application setup for Angular 6
+### Application setup for Angular 6 
 
 >**NOTE:** The Angular CLI is a prerequisite for this example.
 
@@ -64,8 +73,9 @@ $ sed 's/"src\/index.html"/"src\/angular.html"/g' angular.json > tmp.json && mv 
 $ sed 's/"src\/assets"/"src\/assets","src\/index.html", {"glob": "fundamental-ui.min.css", "input": "node_modules\/fundamental-ui\/dist","output": "\/fundamental-ui"}, {"glob": "fonts\/**","input": "node_modules\/fundamental-ui\/dist","output": "\/fundamental-ui"}, {"glob": "SAP-icons.*","input": "node_modules\/fundamental-ui\/dist","output": "\/fundamental-ui"}, {"glob": "**","input": "node_modules\/@kyma-project\/luigi-core", "output": "\/luigi-core"},{"glob": "**","input": "node_modules\/@kyma-project\/luigi-client","output": "\/luigi-client"}/g' angular.json > tmp.json && mv tmp.json angular.json
 $ ng serve
 ````
+<a name="sapui5"></a>
 
-### Application setup for SAPUI5/OpenUI5
+### Application setup for SAPUI5/OpenUI5 
 
 >**NOTE:** Live Server must be installed as your development server.
 
@@ -90,7 +100,9 @@ $ live-server --entry-file=index.html public
 
 ````
 
-### Application setup for VUE.JS
+<a name="vuejs"></a>
+
+### Application setup for VUE.JS 
 
 >**NOTE:** The VUE CLI is a prerequisite for this example.
 
