@@ -3,23 +3,40 @@ context('Luigi Sample Application', () => {
     cy.visit('http://localhost:4000');
   });
 
-  it('tets', () => {
-    cy.get('.form-input')
-      .first()
-      .clear()
-      .type('fake@email.com')
-      .should('have.value', 'fake@email.com');
+  it('Login', () => {
+    cy.login('tets@email.com', 'tets');
+    cy.get('.fd-global-nav').contains('Overview');
+    cy.location().should(loc => {
+      expect(loc.hash).to.eq('#/overview');
+    });
+  });
 
-    cy.get('.form-input')
-      .last()
-      .clear()
-      .type('tets')
-      .should('have.value', 'tets');
-
-    cy.get('#login-button').click();
-
-    cy.get('.fd-global-nav')
-      .first()
-      .contains('Overview');
+  it('Go to subpage with uxManager features', () => {
+    cy.login('tets', 'tets');
+    cy.location().should(loc => {
+      expect(loc.hash).to.eq('#/overview');
+    });
+    cy.wait(3000);
+    cy.get('iframe').then($iframe => {
+      const $iframeBody = $iframe.contents().find('body');
+      cy.wrap($iframeBody)
+        .contains('uxManager()')
+        .click();
+      cy.location().should(loc => {
+        expect(loc.hash).to.eq('#/projects/pr2');
+      });
+      cy.wait(2000);
+      cy.wrap($iframeBody).should('contain', 'LuigiClient uxManager methods:');
+      cy.wrap($iframeBody).should(
+        'contain',
+        'LuigiClient linkManager methods:'
+      );
+      cy.wrap($iframeBody)
+        .contains('absolute: to overview')
+        .click();
+      cy.location().should(loc => {
+        expect(loc.hash).to.eq('#/overview');
+      });
+    });
   });
 });
