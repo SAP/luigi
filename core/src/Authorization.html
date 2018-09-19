@@ -25,9 +25,8 @@
   const isAuthValid = () => getStoredAuthData().accessTokenExpirationDate > Number(new Date());
 
   const IdpProviderException = (message) => {
-    this.message = message;
-    this.name = 'IdpProviderException';
-  }
+    return {message, name: 'IdpProviderException'}
+  };
 
   const getIdpProviderInstance = async(idpProviderName, idpProviderSettings) => {
     if (isFunction(standardProviders[idpProviderName])) {
