@@ -90,8 +90,8 @@
     },
     methods: {
       startAuthorization: function() {
-          localStorage.setItem('luigi.newlyAuthorized', true);
           idpProviderInstance.login().then((res) => {
+            localStorage.setItem('luigi.newlyAuthorized', true);
             if(res) {
               alert(res);
             }
