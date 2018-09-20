@@ -21,34 +21,38 @@ describe('Luigi Sample Application', () => {
       cy.wait(3000);
       cy.get('iframe').then($iframe => {
         const $iframeBody = $iframe.contents().find('body');
-        //first
         cy.goToFeaturesPage($iframeBody);
+
+        //navigate using absolute path
         cy.wrap($iframeBody)
           .contains('absolute: to overview')
           .click();
         cy.location().should(loc => {
           expect(loc.hash).to.eq('#/overview');
         });
-        //second
         cy.goToFeaturesPage($iframeBody);
+
+        //navigate using relative path
         cy.wrap($iframeBody)
           .contains('relative: to stakeholders')
           .click();
         cy.location().should(loc => {
           expect(loc.hash).to.eq('#/projects/pr2/users/groups/stakeholders');
         });
-        //third
         cy.goToOverviewPage();
         cy.goToFeaturesPage($iframeBody);
+
+        //navigate using closest context
         cy.wrap($iframeBody)
           .contains('closest parent: to stakeholders')
           .click();
         cy.location().should(loc => {
           expect(loc.hash).to.eq('#/projects/pr2/users/groups/stakeholders');
         });
-        //forth
         cy.goToOverviewPage();
         cy.goToFeaturesPage($iframeBody);
+
+        //navigate using context
         cy.wrap($iframeBody)
           .contains('parent by name: project to settings')
           .click();
@@ -62,7 +66,8 @@ describe('Luigi Sample Application', () => {
         cy.location().should(loc => {
           expect(loc.hash).to.eq('#/projects/pr2');
         });
-        //fifth
+
+        //navigate with params
         cy.wrap($iframeBody)
           .contains('project to settings with params (foo=bar)')
           .click();
@@ -77,26 +82,40 @@ describe('Luigi Sample Application', () => {
         cy.location().should(loc => {
           expect(loc.hash).to.eq('#/projects/pr2');
         });
-        //sixth
+
+        //don't navigate
         cy.wrap($iframeBody)
           .contains('parent by name: with nonexisting context')
           .click();
         cy.location().should(loc => {
           expect(loc.hash).to.eq('#/projects/pr2');
         });
-        //seventh
+
+        //navigate with preserve view functionality
         cy.wrap($iframeBody)
           .contains('with preserved view: project to settings and back')
           .click();
         cy.location().should(loc => {
           expect(loc.hash).to.eq('#/projects/pr2/settings');
         });
-        cy.wrap($iframeBody).should('contain', 'Settings');
-        //   .clear()
-        //   .type('test value');
-        // cy.wrap($iframeBody)
-        //   .contains('Click here')
-        //   .click();
+        cy.wait(1000);
+        cy.get('iframe')
+          .first()
+          .then($preserveViewiFrame => {
+            const $preserveViewiFrameBody = $preserveViewiFrame
+              .contents()
+              .find('body');
+            cy.wrap($preserveViewiFrameBody)
+              .find('input')
+              .clear()
+              .type('tets');
+            cy.wrap($preserveViewiFrameBody)
+              .find('button')
+              .click();
+            cy.location().should(loc => {
+              expect(loc.hash).to.eq('#/projects/pr2');
+            });
+          });
       });
     });
   });
