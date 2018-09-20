@@ -5,9 +5,7 @@ const sass = require('node-sass');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 
 module.exports = {
-  entry: {
-    index: ['./src/main.js']
-  },
+  entry: ['babel-polyfill', './src/main.js'],
   resolve: {
     mainFields: ['svelte', 'browser', 'module', 'main'],
     extensions: ['.js', '.html']
@@ -21,7 +19,6 @@ module.exports = {
     rules: [
       {
         test: /\.(html|js)$/,
-        exclude: /node_modules/,
         use: {
           loader: 'babel-loader',
           query: babelSettings
