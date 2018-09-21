@@ -17,19 +17,18 @@ export class SettingsComponent implements OnInit {
   constructor(
     private activatedRoute: ActivatedRoute,
     private cdr: ChangeDetectorRef
-  ) {}
+  ) { }
 
   ngOnInit() {
     this.activatedRoute.params.subscribe((params: Params) => {
       this.projectId = params['projectId'];
     });
     this.luigiClient = LuigiClient;
-    LuigiClient.addInitListener(() => {
+    LuigiClient.addInitListener((init) => {
       this.hasBack = LuigiClient.linkManager().hasBack();
-      this.nodeParams =
-        Object.keys(LuigiClient.getNodeParams()).length > 0
-          ? LuigiClient.getNodeParams()
-          : null;
+      this.nodeParams = Object.keys(LuigiClient.getNodeParams()).length > 0
+        ? LuigiClient.getNodeParams()
+        : null;
       this.cdr.detectChanges();
     });
   }
