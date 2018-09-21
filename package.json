@@ -7,7 +7,9 @@
     "prettier": "^1.13.7"
   },
   "scripts": {
-    "precommit": "./scripts/apply-prettier.sh"
+    "precommit": "./scripts/apply-prettier.sh",
+    "test:open": "cypress open",
+    "test:run": "cypress run"
   },
   "prettier": {
     "singleQuote": true

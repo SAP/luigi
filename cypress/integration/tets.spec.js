@@ -118,5 +118,43 @@ describe('Luigi Sample Application', () => {
           });
       });
     });
+
+    it('uxManager features', () => {
+      cy.login('tets', 'tets');
+      cy.location().should(loc => {
+        expect(loc.hash).to.eq('#/overview');
+      });
+      cy.wait(3000);
+      cy.get('iframe').then($iframe => {
+        const $iframeBody = $iframe.contents().find('body');
+        cy.goToFeaturesPage($iframeBody);
+        cy.wrap($iframeBody).should(
+          'not.contain',
+          'Lorem tipsum dolor sit amet'
+        );
+        cy.wrap($iframeBody)
+          .contains('Add backdrop')
+          .click();
+        cy.wrap($iframeBody).should('contain', 'Lorem tipsum dolor sit amet');
+        cy.wrap($iframeBody)
+          .contains('Confirm')
+          .click();
+        cy.wrap($iframeBody).should(
+          'not.contain',
+          'Lorem tipsum dolor sit amet'
+        );
+        cy.wrap($iframeBody)
+          .contains('Add backdrop')
+          .click();
+        cy.wrap($iframeBody).should('contain', 'Lorem tipsum dolor sit amet');
+        cy.wrap($iframeBody)
+          .contains('Cancel')
+          .click();
+        cy.wrap($iframeBody).should(
+          'not.contain',
+          'Lorem tipsum dolor sit amet'
+        );
+      });
+    });
   });
 });
