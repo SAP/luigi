@@ -12,12 +12,54 @@ describe('Luigi Sample Application', () => {
       });
     });
   });
+
+  describe('Navigation', () => {
+    it('Click around using navigation', () => {
+      cy.login('tets@email.com', 'tets');
+
+      //overview page
+      cy.get('.fd-global-nav').contains('Overview');
+      cy.location().should(loc => {
+        expect(loc.hash).to.eq('#/overview');
+      });
+      cy.get('.fd-ui__header')
+        .contains('Projects')
+        .click();
+
+      //projects page
+      cy.get('.fd-app__sidebar').should('contain', 'Project One');
+      cy.get('.fd-app__sidebar').should('contain', 'Project Two');
+      cy.get('.fd-app__sidebar')
+        .contains('Project One')
+        .click();
+
+      //project one page
+      cy.location().should(loc => {
+        expect(loc.hash).to.eq('#/projects/pr1');
+      });
+      cy.get('.fd-app__sidebar').should('not.contain', 'Project One');
+      cy.get('.fd-app__sidebar').should('contain', 'Miscellaneous2');
+      cy.get('.fd-app__sidebar')
+        .contains('Default Child Node Example')
+        .click();
+
+      //default child node example
+      cy.location().should(loc => {
+        expect(loc.hash).to.eq('#/projects/pr1/dps/dps2');
+      });
+      cy.get('.fd-app__sidebar').should('contain', 'First Child');
+      cy.get('.fd-app__sidebar').should('contain', 'Second Child');
+    });
+  });
+
   describe('Luigi client features', () => {
     it('linkManager features', () => {
       cy.login('tets', 'tets');
       cy.location().should(loc => {
         expect(loc.hash).to.eq('#/overview');
       });
+
+      //wait for the iFrame to be loaded
       cy.wait(3000);
       cy.get('iframe').then($iframe => {
         const $iframeBody = $iframe.contents().find('body');
@@ -98,6 +140,8 @@ describe('Luigi Sample Application', () => {
         cy.location().should(loc => {
           expect(loc.hash).to.eq('#/projects/pr2/settings');
         });
+
+        //wait for the second iFrame to be loaded
         cy.wait(1000);
         cy.get('iframe')
           .first()
@@ -124,6 +168,8 @@ describe('Luigi Sample Application', () => {
       cy.location().should(loc => {
         expect(loc.hash).to.eq('#/overview');
       });
+
+      //wait for the iFrame to be loaded
       cy.wait(3000);
       cy.get('iframe').then($iframe => {
         const $iframeBody = $iframe.contents().find('body');
@@ -132,10 +178,16 @@ describe('Luigi Sample Application', () => {
           'not.contain',
           'Lorem tipsum dolor sit amet'
         );
+        cy.get('.fd-ui__overlay').should('not.exist');
+
+        //open modal with backdrop
         cy.wrap($iframeBody)
           .contains('Add backdrop')
           .click();
         cy.wrap($iframeBody).should('contain', 'Lorem tipsum dolor sit amet');
+        cy.get('.fd-ui__overlay').should('exist');
+
+        //close modal
         cy.wrap($iframeBody)
           .contains('Confirm')
           .click();
@@ -143,18 +195,26 @@ describe('Luigi Sample Application', () => {
           'not.contain',
           'Lorem tipsum dolor sit amet'
         );
-        cy.wrap($iframeBody)
-          .contains('Add backdrop')
-          .click();
-        cy.wrap($iframeBody).should('contain', 'Lorem tipsum dolor sit amet');
-        cy.wrap($iframeBody)
-          .contains('Cancel')
-          .click();
-        cy.wrap($iframeBody).should(
-          'not.contain',
-          'Lorem tipsum dolor sit amet'
-        );
+        cy.get('.fd-ui__overlay').should('not.exist');
       });
+    });
+  });
+
+  describe('Logout', () => {
+    it('Logout and login again', () => {
+      cy.login('tets@email.com', 'tets');
+
+      //logout
+      cy.get('.sap-icon--customer').click();
+      cy.contains('Logout').click();
+      cy.get('body').should('contain', 'Logout successful');
+      cy.location().should(loc => {
+        expect(loc.pathname).to.eq('/logout.html');
+      });
+
+      //login again
+      cy.contains('Login again').click();
+      cy.get('body').should('contain', 'Login to Luigi sample app');
     });
   });
 });
