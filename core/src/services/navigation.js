@@ -121,7 +121,7 @@ const applyContext = (context, addition, navigationContext) => {
   return context;
 };
 
-const findMatchingNode = (urlPathElement, nodes) => {
+export const findMatchingNode = (urlPathElement, nodes) => {
   let result = null;
   nodes.some(node => {
     // Static Nodes

@@ -228,4 +228,43 @@ describe('Navigation', function () {
       expect(children[0].label).to.equal('child2');
     });
   });
+  describe('#findMatchingNode()', () => {
+    it('substitutes dynamic path', () => {
+      // given
+      const staticNode = {
+        label: 'Other',
+        pathSegment: 'other'
+      };
+      const dynamicNode = {
+        pathSegment: ':group',
+        viewUrl: '/users/groups/:group',
+        context: {
+          currentGroup: ':group'
+        },
+        children: [
+          {
+            label: 'Group Settings',
+            pathSegment: 'settings',
+            viewUrl: '/users/groups/:group/settings'
+          }
+        ]
+      };
+      const nodes = [
+        staticNode,
+        dynamicNode
+      ];
+
+      // when
+      const resNull = navigation.findMatchingNode('avengers', [staticNode]);
+      const resStatic = navigation.findMatchingNode('other', nodes);
+      const resDynamic = navigation.findMatchingNode('avengers', nodes);
+
+      // then
+      expect(resNull).to.equal(null);
+      expect(resStatic.pathSegment).to.equal('other');
+      expect(resDynamic.pathSegment).to.equal('avengers');
+      expect(resDynamic.viewUrl).to.contain('/avengers');
+      expect(resDynamic.context.currentGroup).to.equal('avengers');
+    });
+  });
 });
