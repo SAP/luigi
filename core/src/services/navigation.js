@@ -1,4 +1,5 @@
 import { getConfigValue, getConfigValueFromObjectAsync } from './config';
+import { isFunction } from '../utilities/helpers';
 
 const isNodeAccessPermitted = (nodeToCheckPermissionFor, parentNode, currentContext) => {
   const permissionCheckerFn = getConfigValue('navigation.nodeAccessibilityResolver');
@@ -124,6 +125,21 @@ const findMatchingNode = (urlPathElement, nodes) => {
   let result = null;
   nodes.some(node => {
     if (node.pathSegment === urlPathElement) {
+      result = node;
+      return true;
+    }
+    if (node.pathSegment.startsWith(':')) {
+      const key = node.pathSegment.slice(0);
+      node.pathSegment = node.pathSegment.replace(key, urlPathElement);
+      node.viewUrl = node.viewUrl.replace(key, urlPathElement);
+      node.pathParam = {
+        key: key,
+        value: urlPathElement
+      };
+
+      if (isFunction(node.label)) {
+        node.label = node.label(urlPathElement);
+      }
       result = node;
       return true;
     }

@@ -11,7 +11,7 @@ import { DevelopersComponent } from './project/developers/developers.component';
 import { MiscellaneousComponent } from './project/miscellaneous/miscellaneous.component';
 import { UsersoverviewComponent } from './project/users/usersoverview/usersoverview.component';
 import { GroupsComponent } from './project/users/groups/groups.component';
-import { StakeholdersComponent } from './project/users/groups/stakeholders/stakeholders.component';
+import { GroupDetailsComponent } from './project/users/groups/group-details/group-details.component';
 import { CustomersComponent } from './project/users/groups/customers/customers.component';
 import { Miscellaneous2Component } from './project/miscellaneous2/miscellaneous2.component';
 import { NavigationComponent } from './project/navigation/navigation.component';
@@ -21,6 +21,7 @@ import { ChildNode1Component } from './project/default-child/dps1/child-node-1.c
 import { ChildNode2Component } from './project/default-child/dps2/child-node-2.component';
 import { OverviewComponent } from './overview/overview.component';
 import { RestrictedComponent } from './restricted/restricted.component';
+import { LuigiContextService } from './services/luigi-context.service';
 
 @NgModule({
   declarations: [
@@ -32,7 +33,7 @@ import { RestrictedComponent } from './restricted/restricted.component';
     MiscellaneousComponent,
     UsersoverviewComponent,
     GroupsComponent,
-    StakeholdersComponent,
+    GroupDetailsComponent,
     CustomersComponent,
     Miscellaneous2Component,
     NavigationComponent,
@@ -44,7 +45,7 @@ import { RestrictedComponent } from './restricted/restricted.component';
     RestrictedComponent
   ],
   imports: [BrowserModule, FormsModule, AppRoutingModule],
-  providers: [],
+  providers: [LuigiContextService],
   bootstrap: [AppComponent]
 })
-export class AppModule {}
+export class AppModule { }

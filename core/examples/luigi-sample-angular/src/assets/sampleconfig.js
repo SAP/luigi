@@ -14,6 +14,12 @@ var navigationPermissionChecker = function (nodeToCheckPermissionFor, parentNode
   return true;
 };
 
+function toTitleCase(str) {
+  return str.replace(/\w\S*/g, function (txt) {
+    return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
+  });
+}
+
 var getAllProjects = function () {
   return new Promise(function (resolve) {
     resolve([
@@ -85,21 +91,28 @@ var projectDetailNavProviderFn = function (context) {
             viewUrl: '/sampleapp.html#/projects/' + projectId + '/users/groups',
             children: [
               {
-                pathSegment: 'stakeholders',
-                label: 'Stakeholders',
+                pathSegment: ':group',
                 viewUrl:
                   '/sampleapp.html#/projects/' +
                   projectId +
-                  '/users/groups/stakeholders'
-              },
-              {
-                pathSegment: 'customers',
-                label: 'Customers',
-                viewUrl:
-                  '/sampleapp.html#/projects/' +
-                  projectId +
-                  '/users/groups/customers'
+                  '/users/groups/:group'
               }
+              // {
+              //   pathSegment: 'stakeholders',
+              //   label: 'Stakeholders',
+              //   viewUrl:
+              //     '/sampleapp.html#/projects/' +
+              //     projectId +
+              //     '/users/groups/stakeholders'
+              // },
+              // {
+              //   pathSegment: 'customers',
+              //   label: 'Customers',
+              //   viewUrl:
+              //     '/sampleapp.html#/projects/' +
+              //     projectId +
+              //     '/users/groups/customers'
+              // }
             ]
           },
           {
