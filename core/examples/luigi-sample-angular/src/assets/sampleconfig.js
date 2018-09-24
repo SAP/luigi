@@ -95,24 +95,18 @@ var projectDetailNavProviderFn = function (context) {
                 viewUrl:
                   '/sampleapp.html#/projects/' +
                   projectId +
-                  '/users/groups/:group'
+                  '/users/groups/:group',
+                children: [
+                  {
+                    label: 'Group Settings',
+                    pathSegment: 'settings',
+                    viewUrl:
+                      '/sampleapp.html#/projects/' +
+                      projectId +
+                      '/users/groups/:group/settings'
+                  }
+                ]
               }
-              // {
-              //   pathSegment: 'stakeholders',
-              //   label: 'Stakeholders',
-              //   viewUrl:
-              //     '/sampleapp.html#/projects/' +
-              //     projectId +
-              //     '/users/groups/stakeholders'
-              // },
-              // {
-              //   pathSegment: 'customers',
-              //   label: 'Customers',
-              //   viewUrl:
-              //     '/sampleapp.html#/projects/' +
-              //     projectId +
-              //     '/users/groups/customers'
-              // }
             ]
           },
           {

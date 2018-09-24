@@ -12,7 +12,6 @@ import { MiscellaneousComponent } from './project/miscellaneous/miscellaneous.co
 import { UsersoverviewComponent } from './project/users/usersoverview/usersoverview.component';
 import { GroupsComponent } from './project/users/groups/groups.component';
 import { GroupDetailsComponent } from './project/users/groups/group-details/group-details.component';
-import { CustomersComponent } from './project/users/groups/customers/customers.component';
 import { Miscellaneous2Component } from './project/miscellaneous2/miscellaneous2.component';
 import { NavigationComponent } from './project/navigation/navigation.component';
 import { ModalComponent } from './project/modal/modal.component';
@@ -22,6 +21,7 @@ import { ChildNode2Component } from './project/default-child/dps2/child-node-2.c
 import { OverviewComponent } from './overview/overview.component';
 import { RestrictedComponent } from './restricted/restricted.component';
 import { LuigiContextService } from './services/luigi-context.service';
+import { GroupSettingsComponent } from './project/users/groups/group-details/group-settings/group-settings.component';
 
 @NgModule({
   declarations: [
@@ -34,7 +34,6 @@ import { LuigiContextService } from './services/luigi-context.service';
     UsersoverviewComponent,
     GroupsComponent,
     GroupDetailsComponent,
-    CustomersComponent,
     Miscellaneous2Component,
     NavigationComponent,
     ModalComponent,
@@ -42,7 +41,8 @@ import { LuigiContextService } from './services/luigi-context.service';
     ChildNode1Component,
     ChildNode2Component,
     OverviewComponent,
-    RestrictedComponent
+    RestrictedComponent,
+    GroupSettingsComponent
   ],
   imports: [BrowserModule, FormsModule, AppRoutingModule],
   providers: [LuigiContextService],

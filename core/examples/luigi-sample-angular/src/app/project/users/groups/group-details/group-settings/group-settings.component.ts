@@ -1,16 +1,16 @@
-import { Component, OnInit, ChangeDetectorRef, OnDestroy } from '@angular/core';
-import { Subscription } from 'rxjs';
+import { Component, OnInit, OnDestroy, ChangeDetectorRef } from '@angular/core';
 import LuigiClient from '@kyma-project/luigi-client';
 
-import { LuigiContextService, IContextMessage } from '../../../../services/luigi-context.service';
-import { toTitleCase } from '../../../../services/helpers';
+import { LuigiContextService, IContextMessage } from '../../../../../services/luigi-context.service';
+import { Subscription } from 'rxjs';
+import { toTitleCase } from '../../../../../services/helpers';
 
 @Component({
-  selector: 'app-group-details',
-  templateUrl: './group-details.component.html',
-  styleUrls: ['./group-details.component.css']
+  selector: 'app-group-settings',
+  templateUrl: './group-settings.component.html',
+  styleUrls: ['./group-settings.component.css']
 })
-export class GroupDetailsComponent implements OnInit, OnDestroy {
+export class GroupSettingsComponent implements OnInit, OnDestroy {
   public luigiClient: LuigiClient = LuigiClient;
   public pathParams: { [key: string]: string };
   public groupLabel: string;
