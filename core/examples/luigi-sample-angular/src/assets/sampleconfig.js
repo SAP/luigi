@@ -96,6 +96,9 @@ var projectDetailNavProviderFn = function (context) {
                   '/sampleapp.html#/projects/' +
                   projectId +
                   '/users/groups/:group',
+                context: {
+                  currentGroup: ':group'
+                },
                 children: [
                   {
                     label: 'Group Settings',

@@ -124,22 +124,32 @@ const applyContext = (context, addition, navigationContext) => {
 const findMatchingNode = (urlPathElement, nodes) => {
   let result = null;
   nodes.some(node => {
+    // Static Nodes
     if (node.pathSegment === urlPathElement) {
       result = node;
       return true;
     }
+
+    // Dynamic Nodes
     if (node.pathSegment.startsWith(':')) {
       const key = node.pathSegment.slice(0);
-      node.pathSegment = node.pathSegment.replace(key, urlPathElement);
-      node.viewUrl = node.viewUrl.replace(key, urlPathElement);
       node.pathParam = {
         key: key,
         value: urlPathElement
       };
 
-      if (isFunction(node.label)) {
-        node.label = node.label(urlPathElement);
+      // path substitutions
+      node.pathSegment = node.pathSegment.replace(key, urlPathElement);
+      node.viewUrl = node.viewUrl.replace(key, urlPathElement);
+      if (node.context) {
+        Object.entries(node.context).map((entry) => {
+          const dynKey = entry[1];
+          if (dynKey.startsWith(':')) {
+            node.context[entry[0]] = dynKey.replace(key, urlPathElement);
+          }
+        });
       }
+
       result = node;
       return true;
     }

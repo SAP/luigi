@@ -20,8 +20,13 @@ export class GroupDetailsComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.lcSubscription = this.luigiService.getContext().subscribe((ctx: IContextMessage) => {
+      // We can directly access our custom specified context value here
+      this.groupLabel = toTitleCase(ctx.context.currentGroup);
+
+      // Default way, if context is not specified in Node configuration
       this.pathParams = this.luigiClient.getPathParams();
       this.groupLabel = this.pathParams && this.pathParams.group && toTitleCase(this.pathParams.group);
+
       this.cdr.detectChanges();
     })
   }
