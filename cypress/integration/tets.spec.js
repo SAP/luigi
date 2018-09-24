@@ -1,6 +1,6 @@
 describe('Luigi Sample Application', () => {
   beforeEach(() => {
-    cy.visit('http://localhost:4000');
+    cy.visit('http://localhost:4200');
   });
 
   describe('Login', () => {
