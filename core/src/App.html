@@ -71,7 +71,6 @@
 
     const addPreserveView = (component, data, config, node) => {
         if (data.params.preserveView) {
-            console.log('TCL: addPreserveView -> data', data, node);
             const pv = component.get().preservedViews;
             const nextPath = buildPath(component, data);
             pv.push({
@@ -79,9 +78,7 @@
                 nextPath: nextPath.startsWith('/') ? nextPath : '/' + nextPath,
                 context: component.get().context
             });
-            console.log('pv', pv);
             component.set({preservedViews: pv});
-
             // Resetting iframe config to null, since Routing.navigateTo will then create a new iframe
             // instead of using the existing instance for route.
             config.iframe = null;
