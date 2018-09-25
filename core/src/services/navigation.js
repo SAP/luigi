@@ -123,6 +123,11 @@ const applyContext = (context, addition, navigationContext) => {
 
 export const findMatchingNode = (urlPathElement, nodes) => {
   let result = null;
+  const hasInvalidPathSegments = (nodes.length > 1) ? nodes.filter(n => n.pathSegment.startsWith(':')).length !== 0 : false;
+  if (hasInvalidPathSegments) {
+    console.warn('Static and dynamic Nodes or multiple dynamic Nodes are not allowed on the same level. Remove the static Node, if you want to use the dynamic one.', urlPathElement, nodes);
+    return false;
+  }
   nodes.some(node => {
     // Static Nodes
     if (node.pathSegment === urlPathElement) {

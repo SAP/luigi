@@ -2,6 +2,7 @@ const navigation = require('../src/services/navigation');
 const chai = require('chai');
 const expect = chai.expect;
 const assert = chai.assert;
+const sinon = require('sinon');
 
 const sampleNavPromise = new Promise(function (resolve) {
   const lazyLoadedChildrenNodesProviderFn = () => {
@@ -56,7 +57,7 @@ describe('Navigation', function () {
       config: {}
     };
   });
-  describe('#getNavigationPath()', function () {
+  describe('getNavigationPath()', function () {
     it('should not fail for undefined arguments', () => {
       navigation.getNavigationPath(undefined, undefined);
     });
@@ -147,7 +148,7 @@ describe('Navigation', function () {
     });
   });
 
-  describe('#getChildren()', () => {
+  describe('getChildren()', () => {
     const nodeWithChildren = {
       children: [{ name: 'children1' }, { name: 'children2' }]
     };
@@ -228,14 +229,14 @@ describe('Navigation', function () {
       expect(children[0].label).to.equal('child2');
     });
   });
-  describe('#findMatchingNode()', () => {
+  describe('findMatchingNode()', () => {
     it('substitutes dynamic path', () => {
       // given
-      const staticNode = {
+      const staticNode = () => ({
         label: 'Other',
         pathSegment: 'other'
-      };
-      const dynamicNode = {
+      });
+      const dynamicNode = () => ({
         pathSegment: ':group',
         viewUrl: '/users/groups/:group',
         context: {
@@ -248,23 +249,38 @@ describe('Navigation', function () {
             viewUrl: '/users/groups/:group/settings'
           }
         ]
-      };
-      const nodes = [
-        staticNode,
-        dynamicNode
-      ];
+      });
+      const nodes = () => ([
+        staticNode(),
+        dynamicNode()
+      ]);
 
+      console.warn = sinon.spy();
+
+      // truthy tests
       // when
-      const resNull = navigation.findMatchingNode('avengers', [staticNode]);
-      const resStatic = navigation.findMatchingNode('other', nodes);
-      const resDynamic = navigation.findMatchingNode('avengers', nodes);
+      const resStaticOk = navigation.findMatchingNode('other', [staticNode()]);
+      const resDynamicOk = navigation.findMatchingNode('avengers', [dynamicNode()]);
 
-      // then
+
+      // // then
+      expect(resStaticOk.pathSegment).to.equal('other');
+      expect(resDynamicOk.pathSegment).to.equal('avengers');
+      expect(resDynamicOk.viewUrl).to.contain('/avengers');
+      expect(resDynamicOk.context.currentGroup).to.equal('avengers');
+
+      // falsy tests
+      const resNull = navigation.findMatchingNode('avengers', [staticNode()]);
       expect(resNull).to.equal(null);
-      expect(resStatic.pathSegment).to.equal('other');
-      expect(resDynamic.pathSegment).to.equal('avengers');
-      expect(resDynamic.viewUrl).to.contain('/avengers');
-      expect(resDynamic.context.currentGroup).to.equal('avengers');
+      sinon.assert.notCalled(console.warn);
+
+      const resStaticWarning = navigation.findMatchingNode('other', nodes());
+      expect(resStaticWarning).to.equal(false, 'pathSegment: ' + resStaticWarning.pathSegment);
+      sinon.assert.calledOnce(console.warn);
+
+      const resMultipleDynamicWarning = navigation.findMatchingNode('other', [dynamicNode(), dynamicNode()]);
+      expect(resMultipleDynamicWarning).to.equal(false, 'pathSegment: ' + resStaticWarning.pathSegment);
+      sinon.assert.calledTwice(console.warn);
     });
   });
 });
