@@ -17,6 +17,7 @@ import { RestrictedComponent } from './restricted/restricted.component';
 
 const routes: Routes = [
   { path: 'overview', component: OverviewComponent },
+  { path: 'settings', component: SettingsComponent },
   { path: 'restricted', component: RestrictedComponent },
   { path: 'projects/:projectId', component: ProjectComponent },
   { path: 'projects/:projectId/users', component: UsersComponent },
