@@ -1,15 +1,12 @@
 {
   "devDependencies": {
-    "cypress": "^3.1.0",
     "husky": "^0.14.3",
     "lerna": "^2.11.0",
     "lerna-changelog": "^0.8.0",
     "prettier": "^1.13.7"
   },
   "scripts": {
-    "precommit": "./scripts/apply-prettier.sh",
-    "test:open": "cypress open",
-    "test:run": "cypress run"
+    "precommit": "./scripts/apply-prettier.sh"
   },
   "prettier": {
     "singleQuote": true
