@@ -20,8 +20,6 @@ Luigi core is the part of Luigi that enables navigation, security and routing. T
 - [Routing mechanism configuration](docs/router-configuration.md) demonstrates routing in Luigi.
 - [General settings](docs/general-settings.md) provides you with configuration parameters.
 
-See [this](https://github.com/kyma-project/luigi/blob/master/client/README.md) document to learn more about the Luigi client.
-
 ### Luigi client
 
 Luigi client enables integration of Luigi in views. You can easily configure the lifecycle and links of the client, as well as customize the appearance of your navigation.
@@ -29,6 +27,8 @@ Luigi client enables integration of Luigi in views. You can easily configure the
 - [Lifecycle](docs/lifecycle.md) gives you details on the life cycle of listeners, navigation Nodes and Event data.
 - [Link Manager](docs/link-manager.md) shows how to configure the Link Manager.
 - [UX Manager](docs/ux-manager.md) shows how to set up the UX Manager.
+
+See [this](https://github.com/kyma-project/luigi/blob/master/client/README.md) document to learn more about the Luigi client. 
 
 View [example applications](/core/examples).
 
