@@ -323,6 +323,11 @@ Luigi.setConfig({
           constraints: ['unicorns']
         },
         {
+          pathSegment: 'settings',
+          label: 'Settings',
+          viewUrl: '/sampleapp.html#/settings'
+        },
+        {
           pathSegment: 'ext',
           label: 'External Page',
           viewUrl: '/assets/sampleexternal.html#ext',
