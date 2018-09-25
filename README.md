@@ -35,3 +35,10 @@ View [example applications](/core/examples).
 ### Code formatting for contributors
 
 All projects in the repository use [Prettier](https://prettier.io) to format source code. Run the `npm install` command in the root folder to install it along with [husky](https://github.com/typicode/husky), the Git hooks manager. Both tools ensure proper codebase formatting before committing it.
+
+## Tests
+
+To run UI tests locally:
+
+- Run `npm run cypress:run` in the root folder to start tests in the headless browser.
+- Run `npm run cypress:open` in the root folder to start tests in the interactive mode.
