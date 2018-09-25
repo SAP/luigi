@@ -29,7 +29,7 @@ To have this application running, follow these steps:
     lerna run bundle
     ```
 
-4. Start the example application from `luigi/core/examples/luigi-sample-angular` folder.
+4. Start the example application from the `luigi/core/examples/luigi-sample-angular` folder.
     ```bash
     npm start
     ```
