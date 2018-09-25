@@ -28,13 +28,16 @@ export class ProjectComponent implements OnInit {
   public ngOnInit() {
     // Centralized approach of LuigiClient.addContextUpdateListener
     this.lcSubscription = this.luigiService.getContext().subscribe((ctx: IContextMessage) => {
-      if (ctx.contextType == 'init') {
+      if (ctx.contextType == 'init' || ctx.contextType == 'update') {
         this.projectId = ctx.context.currentProject;
         console.info('project ID as luigi param: ' + ctx.context.currentProject);
-      }
-
-      if (ctx.contextType == 'update') {
-        // Not required, as we using LuigiClient.addContextUpdateListener direcly in this file
+        this.preservedViewCallbackContext = ctx.context.goBackContext;
+        console.info(
+          'context update: project ID as luigi param: ' +
+          ctx.context.currentProject,
+          'goBackContext?',
+          this.preservedViewCallbackContext
+        );
       }
     });
 
@@ -45,22 +48,26 @@ export class ProjectComponent implements OnInit {
 
     this.luigiClient = LuigiClient;
 
-    LuigiClient.addContextUpdateListener(updatedContext => {
-      this.projectId = updatedContext.currentProject;
-      this.preservedViewCallbackContext = updatedContext.goBackContext;
-      console.info(
-        'context update: project ID as luigi param: ' +
-        updatedContext.currentProject,
-        'goBackContext?',
-        this.preservedViewCallbackContext
-      );
 
-      // Be sure to check for destroyed ChangeDetectorRef,
-      // else you get runtime Errors
-      if (!(this.changeDetector['destroyed'])) {
-        this.changeDetector.detectChanges();
-      }
-    });
+    // Only one contextListener allowed per microfrontend, better rely on centralized approach.
+    // Take a look at ngOnInit in this component and app.component.ts where we set the listeners.
+    // 
+    // LuigiClient.addContextUpdateListener(updatedContext => {
+    //   this.projectId = updatedContext.currentProject;
+    //   this.preservedViewCallbackContext = updatedContext.goBackContext;
+    //   console.info(
+    //     'context update: project ID as luigi param: ' +
+    //     updatedContext.currentProject,
+    //     'goBackContext?',
+    //     this.preservedViewCallbackContext
+    //   );
+
+    //   // Be sure to check for destroyed ChangeDetectorRef,
+    //   // else you get runtime Errors
+    //   if (!(this.changeDetector['destroyed'])) {
+    //     this.changeDetector.detectChanges();
+    //   }
+    // });
   }
 
   toggleModal() {

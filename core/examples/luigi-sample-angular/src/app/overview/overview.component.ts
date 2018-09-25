@@ -31,6 +31,11 @@ export class OverviewComponent {
       link: '/projects/pr1/users/groups',
       text: 'dynamic Nodes',
       description: 'navigation Node configuration to set a specific node as dynamic'
+    },
+    {
+      link: '/projects/pr1/avengers',
+      text: 'virtual children',
+      description: 'navigation Node configuration to fixate a navigation menu and omit the children'
     }
   ];
 }

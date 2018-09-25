@@ -165,6 +165,63 @@ var projectDetailNavProviderFn = function (context) {
             viewUrl: '/sampleapp.html#/projects/' + projectId + '/dps/dps2'
           }
         ]
+      },
+      {
+        pathSegment: 'avengers',
+        label: 'Virtual Children Example',
+        viewUrl:
+          '/sampleapp.html#/projects/' +
+          projectId +
+          '/dynamic/avengers',
+        virtualChildren: true,
+        fixedNavigation: true,
+        keepNavigation: true,
+        stickyNavigation: true,
+        preserveNavigation: true,
+        hideChildren: true,
+        context: {
+          label: 'Avengers'
+        },
+        children: ['Captain America', 'Iron Man', 'Thor', 'Hulk', 'Black Widow', 'Hawkeye', 'Loki'].map(name => ({
+          pathSegment: name.toLowerCase().split(' ').join('-'),
+          label: name,
+          context: {
+            label: name,
+            links: ['Super Power']
+          },
+          viewUrl:
+            '/sampleapp.html#/projects/' +
+            projectId +
+            '/dynamic/' + name.toLowerCase().split(' ').join('-'),
+          children: [
+            {
+              label: 'Super Power',
+              pathSegment: 'super-power',
+              context: {
+                label: 'Super Power',
+                links: ['Details']
+              },
+              viewUrl:
+                '/sampleapp.html#/projects/' +
+                projectId +
+                '/dynamic/super-power',
+              children: [
+                {
+                  label: 'Details',
+                  pathSegment: 'details',
+                  context: {
+                    label: 'Details',
+                    links: false
+                  },
+                  viewUrl:
+                    '/sampleapp.html#/projects/' +
+                    projectId +
+                    '/dynamic/details'
+                }
+              ]
+            }
+          ]
+        }))
       }
     ];
     getProjectPlugins(projectId).then(function (result) {

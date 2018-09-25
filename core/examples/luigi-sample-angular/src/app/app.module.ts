@@ -22,6 +22,7 @@ import { OverviewComponent } from './overview/overview.component';
 import { RestrictedComponent } from './restricted/restricted.component';
 import { LuigiContextService } from './services/luigi-context.service';
 import { GroupSettingsComponent } from './project/users/groups/group-details/group-settings/group-settings.component';
+import { DynamicComponent } from './project/dynamic/dynamic.component';
 
 @NgModule({
   declarations: [
@@ -42,7 +43,8 @@ import { GroupSettingsComponent } from './project/users/groups/group-details/gro
     ChildNode2Component,
     OverviewComponent,
     RestrictedComponent,
-    GroupSettingsComponent
+    GroupSettingsComponent,
+    DynamicComponent
   ],
   imports: [BrowserModule, FormsModule, AppRoutingModule],
   providers: [LuigiContextService],

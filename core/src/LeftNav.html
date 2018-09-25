@@ -88,16 +88,31 @@
         const nodes = getNodes(children, current.pathData);
         return groupBy(nodes, 'category');
     };
+    const getWithoutVirtualChildren = (children) => {
+        let virtualChildFound = false;
+        const res = [];
+        children.forEach(node => {
+            if (virtualChildFound) {
+                return;
+            }
+            if (node.virtualChildren) {
+                virtualChildFound = true;
+            }
+            res.push(node);
+        });
+        return res;
+    }
 
     const setLeftNavData = async (current, component) => {
         if (current.pathData && 1 < current.pathData.length) {
             const componentData = component.get();
-            const lastElement = [...current.pathData].pop();
+            const pathDataWithoutVirtualChildren = getWithoutVirtualChildren(componentData.pathData);
+            const lastElement = [...pathDataWithoutVirtualChildren].pop();
             const children = await getChildren(lastElement, componentData.context);
-            const groupedChildren = getGroupedChildren(children, current);
 
-            if (groupedChildren && 1 < componentData.pathData.length) {
-                const selectedNode = [...componentData.pathData].pop();
+            const groupedChildren = getGroupedChildren(children, current);
+            if (groupedChildren && 1 < pathDataWithoutVirtualChildren.length) {
+                const selectedNode = [...pathDataWithoutVirtualChildren].pop();
                 component.set({ selectedNode: selectedNode });
             }
 
