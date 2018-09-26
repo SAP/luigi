@@ -47,23 +47,7 @@
         Routing.handleRouteChange(trimLeadingSlash(window.location.pathname), component, node, config);
     };
 
-    const addPreserveView = (component, data, config, node) => {
-        if (data.params.preserveView) {
-            const pv = component.get().preservedViews;
-            pv.push({
-                path: Routing.getNodePath(component.get().currentNode),
-                nextPath: Routing.getNodePath(component.get().currentNode) + data.params.link,
-                context: component.get().context
-            });
-            component.set({preservedViews: pv});
-
-            // Resetting iframe config to null, since Routing.navigateTo will then create a new iframe
-            // instead of using the existing instance for route.
-            config.iframe = null;
-        }
-    };
-
-    const handleNavigation = async (component, data, config, node) => {
+    const buildPath = (component, data) => {
         let path = data.params.link;
         if (data.params.fromClosestContext) { // from the closest navigation context
             const node = [...component.get().navigationPath].reverse().find((n) => n.navigationContext && n.navigationContext.length > 0);
@@ -76,13 +60,33 @@
             path = Routing.concatenatePath(Routing.getNodePath(component.get().currentNode), data.params.link);
         }
 
-        if (data.params.nodeParams) {
+        if (data.params.nodeParams && Object.keys(data.params.nodeParams).length) {
             path += '?';
             Object.entries(data.params.nodeParams).forEach(entry => {
                 path += (encodeURIComponent(Routing.getContentViewParamPrefix() + entry[0]) + '=' + encodeURIComponent(entry[1]) + '&');
             });
         }
+        return path;
+    };
 
+    const addPreserveView = (component, data, config, node) => {
+        if (data.params.preserveView) {
+            const pv = component.get().preservedViews;
+            const nextPath = buildPath(component, data);
+            pv.push({
+                path: Routing.getNodePath(component.get().currentNode),
+                nextPath: nextPath.startsWith('/') ? nextPath : '/' + nextPath,
+                context: component.get().context
+            });
+            component.set({preservedViews: pv});
+            // Resetting iframe config to null, since Routing.navigateTo will then create a new iframe
+            // instead of using the existing instance for route.
+            config.iframe = null;
+        }
+    };
+
+    const handleNavigation = async (component, data, config, node) => {
+        const path = buildPath(component, data);
         const matchedPath = await Routing.matchPath(path);
         if (matchedPath !== null) {
             addPreserveView(component, data, config, node);
