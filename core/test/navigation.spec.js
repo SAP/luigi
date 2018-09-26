@@ -250,12 +250,9 @@ describe('Navigation', function () {
           }
         ]
       });
-      const nodes = () => ([
-        staticNode(),
-        dynamicNode()
-      ]);
 
       console.warn = sinon.spy();
+      console.error = sinon.spy();
 
       // truthy tests
       // when
@@ -274,13 +271,15 @@ describe('Navigation', function () {
       expect(resNull).to.equal(null);
       sinon.assert.notCalled(console.warn);
 
-      const resStaticWarning = navigation.findMatchingNode('other', nodes());
-      expect(resStaticWarning).to.equal(false, 'pathSegment: ' + resStaticWarning.pathSegment);
+      const resStaticWarning = navigation.findMatchingNode('avengers', [staticNode(), dynamicNode()]);
+      expect(resStaticWarning.pathSegment).to.equal('avengers', 'static warning pathSegment: ' + resStaticWarning.pathSegment);
       sinon.assert.calledOnce(console.warn);
 
-      const resMultipleDynamicWarning = navigation.findMatchingNode('other', [dynamicNode(), dynamicNode()]);
-      expect(resMultipleDynamicWarning).to.equal(false, 'pathSegment: ' + resStaticWarning.pathSegment);
-      sinon.assert.calledTwice(console.warn);
+      const resMultipleDynamicError = navigation.findMatchingNode('twoDynamic', [dynamicNode(), dynamicNode()]);
+      expect(resMultipleDynamicError).to.equal(null);
+      sinon.assert.calledOnce(console.warn);
+      sinon.assert.calledOnce(console.error);
+      sinon.reset();
     });
   });
 });
