@@ -99,6 +99,7 @@
             msg: 'luigi.init',
             context: JSON.stringify(Object.assign({}, component.get().context, goBackContext)),
             nodeParams: JSON.stringify(Object.assign({}, component.get().nodeParams)),
+            pathParams: JSON.stringify(Object.assign({}, component.get().pathParams)),
             internal: JSON.stringify(component.prepareInternalData())
         }, '*');
     };

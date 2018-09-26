@@ -1,6 +1,5 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { CustomersComponent } from './project/users/groups/customers/customers.component';
 import { UsersoverviewComponent } from './project/users/usersoverview/usersoverview.component';
 import { MiscellaneousComponent } from './project/miscellaneous/miscellaneous.component';
 import { DevelopersComponent } from './project/developers/developers.component';
@@ -8,7 +7,8 @@ import { ProjectComponent } from './project/project.component';
 import { UsersComponent } from './project/users/users.component';
 import { SettingsComponent } from './project/settings/settings.component';
 import { GroupsComponent } from './project/users/groups/groups.component';
-import { StakeholdersComponent } from './project/users/groups/stakeholders/stakeholders.component';
+import { GroupDetailsComponent } from './project/users/groups/group-details/group-details.component';
+import { GroupSettingsComponent } from './project/users/groups/group-details/group-settings/group-settings.component';
 import { Miscellaneous2Component } from './project/miscellaneous2/miscellaneous2.component';
 import { ChildNode2Component } from './project/default-child/dps2/child-node-2.component';
 import { ChildNode1Component } from './project/default-child/dps1/child-node-1.component';
@@ -27,12 +27,12 @@ const routes: Routes = [
   },
   { path: 'projects/:projectId/users/groups', component: GroupsComponent },
   {
-    path: 'projects/:projectId/users/groups/stakeholders',
-    component: StakeholdersComponent
+    path: 'projects/:projectId/users/groups/:groupId',
+    component: GroupDetailsComponent
   },
   {
-    path: 'projects/:projectId/users/groups/customers',
-    component: CustomersComponent
+    path: 'projects/:projectId/users/groups/:groupId/settings',
+    component: GroupSettingsComponent
   },
   { path: 'projects/:projectId/developers', component: DevelopersComponent },
   { path: 'projects/:projectId/settings', component: SettingsComponent },
@@ -58,4 +58,4 @@ const routes: Routes = [
   imports: [RouterModule.forRoot(routes, { useHash: true })],
   exports: [RouterModule]
 })
-export class AppRoutingModule {}
+export class AppRoutingModule { }

@@ -10,6 +10,7 @@ import LuigiClient from '@kyma-project/luigi-client';
 export class SettingsComponent implements OnInit {
   luigiClient: LuigiClient;
   projectId: string;
+  groupId: string;
   hasBack: boolean;
   nodeParams = null;
   callbackValue = 'default value';
@@ -22,6 +23,7 @@ export class SettingsComponent implements OnInit {
   ngOnInit() {
     this.activatedRoute.params.subscribe((params: Params) => {
       this.projectId = params['projectId'];
+      this.groupId = params['groupId'];
     });
     this.luigiClient = LuigiClient;
     LuigiClient.addInitListener((init) => {
