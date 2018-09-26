@@ -173,14 +173,10 @@ var projectDetailNavProviderFn = function (context) {
           '/sampleapp.html#/projects/' +
           projectId +
           '/dynamic/avengers',
-        virtualChildren: true,
-        fixedNavigation: true,
-        keepNavigation: true,
-        stickyNavigation: true,
-        preserveNavigation: true,
-        hideChildren: true,
+        keepSelectedForChildren: true,
         context: {
-          label: 'Avengers'
+          label: 'Avengers',
+          links: ['Captain America', 'Iron Man', 'Thor', 'Hulk', 'Black Widow', 'Hawkeye', 'Loki']
         },
         children: ['Captain America', 'Iron Man', 'Thor', 'Hulk', 'Black Widow', 'Hawkeye', 'Loki'].map(name => ({
           pathSegment: name.toLowerCase().split(' ').join('-'),

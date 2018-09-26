@@ -161,3 +161,81 @@ export const findMatchingNode = (urlPathElement, nodes) => {
   });
   return result;
 };
+
+
+export const getNodes = (children, pathData) => {
+  if (children && 0 < children.length) {
+    return children;
+  }
+
+  if (2 < pathData.length) {
+    const lastElement = pathData[pathData.length - 1];
+    const oneBeforeLast = pathData[pathData.length - 2];
+    const nestedNode = pathData.length > 1 ? oneBeforeLast : lastElement;
+
+    if (nestedNode && nestedNode.children) {
+      return nestedNode.children;
+    }
+  }
+
+  return [];
+};
+
+export const groupBy = (nodes, property) => {
+  const result = {};
+  nodes.forEach(node => {
+    const key = node[property];
+    let arr = result[key];
+    if (!arr) {
+      arr = [];
+      result[key] = arr;
+    }
+    arr.push(node);
+  });
+
+  return result;
+};
+
+export const getGroupedChildren = (children, current) => {
+  const nodes = getNodes(children, current.pathData);
+  return groupBy(nodes, 'category');
+};
+
+export const getTruncatedVirtualChildren = (children) => {
+  let virtualChildFound = false;
+  const res = [];
+  children.forEach(node => {
+    if (virtualChildFound) {
+      return;
+    }
+    if (node.keepSelectedForChildren) {
+      virtualChildFound = true;
+    }
+    res.push(node);
+  });
+  return res;
+}
+
+export const getLeftNavData = async (current, componentData) => {
+  const updatedCompData = {};
+  if (current.pathData && 1 < current.pathData.length) {
+    const pathDataTruncatedVirtualChildren = getTruncatedVirtualChildren(componentData.pathData);
+    console.log('TCL: getLeftNavData -> componentData.pathData', current, componentData.pathData, componentData.context);
+    let lastElement = [...pathDataTruncatedVirtualChildren].pop();
+    let selectedNode;
+    if (lastElement.keepSelectedForChildren) {
+      selectedNode = lastElement;
+      pathDataTruncatedVirtualChildren.pop();
+      lastElement = [...pathDataTruncatedVirtualChildren].pop();
+    }
+
+    const children = await getChildren(lastElement, componentData.context);
+    const groupedChildren = getGroupedChildren(children, current);
+    if (groupedChildren && 1 < pathDataTruncatedVirtualChildren.length) {
+      updatedCompData.selectedNode = selectedNode || lastElement;
+    }
+
+    updatedCompData.children = groupedChildren;
+  }
+  return updatedCompData;
+};

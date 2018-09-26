@@ -283,4 +283,30 @@ describe('Navigation', function () {
       sinon.assert.calledTwice(console.warn);
     });
   });
+  describe('getLeftNavData()', () => {
+    it('returns empty object if no pathData was found (empty nav)', () => {
+      const res = navigation.getLeftNavData({ pathData: [] });
+      expect(res).to.be.empty;
+    });
+    // it('returns correct data on standard usecase', () => {
+    //   // given
+    //   const current = {
+    //     pathData: [
+    //       {
+    //         children: [
+    //           { pathSegment: "overview" },
+    //           { pathSegment: "projects" }
+    //         ]
+    //       },
+    //       {
+    //         pathSegment: 'projects'
+    //       }
+    //     ],
+
+    //   }
+    //   // when
+    //   const res = navigation.getLeftNavData(current, current.pathData);
+    //   expect(res).not.to.be.empty;
+  });
+});
 });
