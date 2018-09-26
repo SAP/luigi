@@ -1,52 +1,38 @@
 <div class="fd-app__sidebar {hideNavComponent ? 'hideNavComponent' : ''}">
-    <Backdrop />
     {#if children && pathData.length > 1}
-        <nav class="fd-side-nav">
-            {#each Object.entries(children) as [key, nodes]}
-                {#if key === 'undefined'}
-                    <div class="fd-side-nav__group">
-                        <ul class="fd-side-nav__list">
-                            {#each nodes as node}
-                                {#if !node.hideFromNav}
-                                {#if node.label}
-                                <li class="fd-side-nav__item">
-                                    <a class="fd-side-nav__link {node === selectedNode ? 'is-selected' : ''}" on:click=handleClick(node)>
-                                        {node.label}
-                                    </a>
-                                </li>
-                                {/if}
-                                {/if}
-                            {/each}
-                        </ul>
-                    </div>
-                {/if}
-            {/each}
-            {#each Object.entries(children) as [key, nodes]}
-                {#if key !== 'undefined'}
-                    <div class="fd-side-nav__group">
-                        <h1 class="fd-side-nav__title">{key}</h1>
-                        <ul class="fd-side-nav__list">
-                            {#each nodes as node}
-                                {#if !node.hideFromNav}
-                                {#if node.label}
-                                <li class="fd-side-nav__item">
-                                    <a class="fd-side-nav__link {node === selectedNode ? 'is-selected' : ''}" on:click=handleClick(node)>
-                                        {node.label}
-                                    </a>
-                                </li>
-                                {/if}
-                                {/if}
-                            {/each}
-                        </ul>
-                    </div>
-                {/if}
-            {/each}
-        </nav>
+    <nav class="fd-side-nav">
+        {#each Object.entries(children) as [key, nodes]} {#if key === 'undefined'}
+        <div class="fd-side-nav__group">
+            <ul class="fd-side-nav__list">
+                {#each nodes as node} {#if !node.hideFromNav} {#if node.label}
+                <li class="fd-side-nav__item">
+                    <a class="fd-side-nav__link {node === selectedNode ? 'is-selected' : ''}" on:click=handleClick(node)>
+                        {node.label}
+                    </a>
+                </li>
+                {/if} {/if} {/each}
+            </ul>
+        </div>
+        {/if} {/each} {#each Object.entries(children) as [key, nodes]} {#if key !== 'undefined'}
+        <div class="fd-side-nav__group">
+            <h1 class="fd-side-nav__title">{key}</h1>
+            <ul class="fd-side-nav__list">
+                {#each nodes as node} {#if !node.hideFromNav} {#if node.label}
+                <li class="fd-side-nav__item">
+                    <a class="fd-side-nav__link {node === selectedNode ? 'is-selected' : ''}" on:click=handleClick(node)>
+                        {node.label}
+                    </a>
+                </li>
+                {/if} {/if} {/each}
+            </ul>
+        </div>
+        {/if} {/each}
+    </nav>
     {/if}
 </div>
 
 <script type="text/javascript">
-    import Backdrop from './Backdrop.html';
+
     import { getChildren } from './services/navigation.js';
     import { handleRouteClick } from './services/routing.js';
     import { getConfigValue, getConfigBooleanValue } from './services/config.js';
@@ -123,37 +109,32 @@
         },
         methods: {
             handleClick: (node) => handleRouteClick(node)
-        },
-        components: {
-            Backdrop
         }
     };
 </script>
 
 <style type="text/scss">
-@import 'node_modules/fundamental-ui/scss/core';
-@import 'node_modules/fundamental-ui/scss/icons';
-@import 'node_modules/fundamental-ui/scss/components/side-nav';
-@import 'node_modules/fundamental-ui/scss/helpers';
-a {
-    cursor: pointer;
-}
-.fd-app__sidebar{
-    position: fixed;
-    top: 50px;
-    left: 0;
-    width: 320px;
-    bottom: 0;
-    background-color: white;
-    color: #32363a;
-    overflow-y: auto;
-}
-
-.fd-side-nav__group {
-    margin-top: 20px;
-}
-
-.hideNavComponent {
-    display: none;
-}
-</style>
+    @import 'node_modules/fundamental-ui/scss/core';
+    @import 'node_modules/fundamental-ui/scss/icons';
+    @import 'node_modules/fundamental-ui/scss/components/side-nav';
+    @import 'node_modules/fundamental-ui/scss/helpers';
+    a {
+        cursor: pointer;
+    }
+    .fd-app__sidebar{
+        position: fixed;
+        top: 50px;
+        left: 0;
+        width: 320px;
+        bottom: 0;
+        background-color: white;
+        color: #32363a;
+        overflow-y: auto;
+    }
+    .fd-side-nav__group {
+        margin-top: 20px;
+    }
+    .hideNavComponent {
+        display: none;
+    }
+    </style>

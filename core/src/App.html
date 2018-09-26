@@ -1,14 +1,17 @@
-<div id="app">
-    <div class="fd-page {hideNav? 'iframeContainerNoNav' : 'iframeContainer'}" use:init="context"></div>
-    <TopNav pathData={navigationPath} />
-    <LeftNav pathData={navigationPath} />
-</div>
+<Backdrop>
+    <div id="app">
+        <div class="fd-page {hideNav? 'iframeContainerNoNav' : 'iframeContainer'}" use:init="context"></div>
+        <TopNav pathData={navigationPath} />
+        <LeftNav pathData={navigationPath} />
+    </div>
+</Backdrop>
 
 <script type="text/javascript">
+    import Backdrop from './Backdrop.html';
     import TopNav from './TopNav.html';
     import LeftNav from './LeftNav.html';
     import * as Routing from './services/routing.js';
-    import { getConfigValue }  from './services/config.js';
+    import { getConfigValue } from './services/config.js';
     import { isFunction } from './utilities/helpers.js';
 
     const trimLeadingSlash = (str) => str.replace(/^\//, '');
@@ -29,7 +32,7 @@
         window.addEventListener('hashchange', (event) => {
             const pv = component.get().preservedViews;
             if (!isValidBackRoute(pv, getModifiedHash(event))) {
-                component.set({preservedViews: []});
+                component.set({ preservedViews: [] });
                 Routing.removeInactiveIframes(node);
             }
             Routing.handleRouteChange(getModifiedHash(event), component, node, config);
@@ -78,7 +81,7 @@
                 nextPath: nextPath.startsWith('/') ? nextPath : '/' + nextPath,
                 context: component.get().context
             });
-            component.set({preservedViews: pv});
+            component.set({ preservedViews: pv });
             // Resetting iframe config to null, since Routing.navigateTo will then create a new iframe
             // instead of using the existing instance for route.
             config.iframe = null;
@@ -108,12 +111,12 @@
         data() {
             return {
                 preservedViews: [
-                // {
-                //     path: '/project/p2/settings',
-                //     nextPath: '/project/p2',
-                //     context: {}
-                //     iframe: Element
-                // }
+                    // {
+                    //     path: '/project/p2/settings',
+                    //     nextPath: '/project/p2',
+                    //     context: {}
+                    //     iframe: Element
+                    // }
                 ]
             }
         },
@@ -155,7 +158,7 @@
                             });
 
                             // TODO: check if handleNavigation or history pop to update hash / path
-                            handleNavigation(this, {params: {link: previousActiveIframeData.path}}, config, node);
+                            handleNavigation(this, { params: { link: previousActiveIframeData.path } }, config, node);
                         } else {
                             console.error('goBack() not possible, no preserved views found.');
                         }
@@ -181,6 +184,7 @@
             }
         },
         components: {
+            Backdrop,
             TopNav,
             LeftNav
         }
@@ -190,34 +194,32 @@
 <style type="text/scss">
     @import 'node_modules/fundamental-ui/scss/core/elements';
     @import 'node_modules/fundamental-ui/scss/layout/page';
-
     :global(html) {
         box-sizing: border-box;
         font-size: 14px;
     }
-
     :global(body) {
         -webkit-font-smoothing: antialiased;
         margin: 0;
         line-height: 1.42857;
     }
-
     :global(*) {
         box-sizing: inherit;
-
     }
-
     :global(*:before),
     :global(*:after) {
         box-sizing: inherit;
     }
-
     div :global(div) {
       font-family: '72', sans-serif;
     }
     
     :global(a) {
       cursor: pointer;
+    }
+
+    .fd-page{
+        z-index:1001;
     }
 
     .iframeContainer {
@@ -231,13 +233,11 @@
       min-height: auto;
       display: block;
     }
-
     .iframeContainer :global(iframe) {
       border: none;
       width: 100%;
       height: 100%;
     }
-
     .iframeContainerNoNav {
       position: fixed;
       top: 0;
@@ -245,11 +245,9 @@
       bottom: 0;
       right: 0;
     }
-
     .iframeContainerNoNav :global(iframe) {
       border: none;
       width: 100%;
       height: 100%;
     }
-
 </style>
