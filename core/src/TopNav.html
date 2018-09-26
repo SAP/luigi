@@ -22,8 +22,8 @@
         {#if authorizationEnabled}
         <div class="fd-popover user-settings">
           <div class="fd-popover__control">
-          <button class="fd-popover__control fd-button--secondary fd-button--m fd-global-nav__btn sap-icon--action-settings"
-          aria-expanded="{dropDownStates.PROFILE_POPOVER || false}" aria-haspopup="true" on:click="toggleDropdownState('PROFILE_POPOVER')"></button>
+          <button class="fd-popover__control fd-button--secondary fd-button--m fd-global-nav__btn sap-icon--customer"
+          aria-expanded="{dropDownStates.PROFILE_POPOVER || false}" aria-haspopup="true" on:click="toggleDropdownState('PROFILE_POPOVER')" on:blur="closeDropdown('PROFILE_POPOVER')"></button>
           </div>
           <div class="fd-popover__body" aria-hidden="{dropDownStatesNegated.PROFILE_POPOVER || true}" id="PROFILE_POPOVER">
             <nav class="fd-menu" id="">
@@ -46,7 +46,7 @@
     import Authorization from './Authorization.html';
     import { handleRouteClick } from './services/routing.js';
     import { getConfigValue, getConfigBooleanValue } from './services/config.js';
-  
+
     const getNegatedBoolString = (str) => {
       return (str === 'true') ? 'false' : 'true';
     }
@@ -114,6 +114,13 @@
           toggleDropdownState(name) {
             const dropDownStates = this.get().dropDownStates || {};
             dropDownStates[name] = getNegatedBoolString(dropDownStates[name]);
+            this.set({
+              dropDownStates
+            });
+          },
+          closeDropdown(name) {
+            const dropDownStates = this.get().dropDownStates || {};
+            dropDownStates[name] = 'false';
             this.set({
               dropDownStates
             });

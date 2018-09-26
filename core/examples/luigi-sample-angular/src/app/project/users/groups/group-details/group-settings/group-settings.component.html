@@ -1,0 +1,13 @@
+<section class="fd-section">
+  <div class="fd-section__header">
+    <h1 class="fd-section__title">Group Settings</h1>
+  </div>
+
+  <div class="fd-panel">
+    <p>This is a child of a dynamic node with value: <strong>{{pathParams?.group}}</strong></p>
+  
+    <a class="clickable" (click)="luigiClient.linkManager().fromContext('project').navigate('/users/groups/' + pathParams?.group)">
+      <span class="sap-icon--navigation-left-arrow"></span> Back to {{groupLabel}}
+    </a>
+  </div>
+</section>

@@ -6,3 +6,23 @@
     Groups content.
   </div>
 </section>
+
+
+<section class="fd-section">
+  <div class="fd-section__header">
+    <h1 class="fd-section__title">Go to dynamic child node</h1>
+  </div>
+  <div class="fd-panel">
+      <strong>Dynamic node example:</strong>
+      <br/>Enter a custom group id and press the arrow button to navigate.
+      <ul class="fd-list-group">
+        <li class="fd-list-group__item">
+          <input type="text" [(ngModel)]="customValue" />
+          &nbsp;
+          <button *ngIf="customValue" class="fd-button clickable" (click)="luigiClient.linkManager().navigate(customValue)">
+            <span class="sap-icon--navigation-right-arrow"></span>
+          </button>
+        </li>
+      </ul>
+  </div>
+</section>
