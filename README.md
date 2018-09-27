@@ -38,7 +38,9 @@ All projects in the repository use [Prettier](https://prettier.io) to format sou
 
 ## Tests
 
-To test that existing features still work as expected after your changes, you can run UI tests from luigi-sample-angular example. To run tests, start the sample application by using `npm start` command in the application folder. When the application is ready:
+To ensure that existing features still work as expected after your changes, you can run UI tests from the 'luigi-sample-angular' example. Before running the tests, start the sample application by using the `npm start` command in the application folder.
+
+When the application is ready:
 
 - Run `npm run cypress:run` in the __core/examples/luigi-sample-angular__ folder to start tests in the headless browser.
 - Run `npm run cypress:open` in the __core/examples/luigi-sample-angular__ folder to start tests in the interactive mode.
