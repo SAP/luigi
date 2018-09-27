@@ -3,55 +3,6 @@ describe('Luigi Sample Application', () => {
     cy.visit('http://localhost:4200');
   });
 
-  describe('Login', () => {
-    it('Login', () => {
-      cy.login('tets@email.com', 'tets');
-      cy.get('.fd-global-nav').contains('Overview');
-      cy.location().should(loc => {
-        expect(loc.hash).to.eq('#/overview');
-      });
-    });
-  });
-
-  describe('Navigation', () => {
-    it('Click around using navigation', () => {
-      cy.login('tets@email.com', 'tets');
-
-      //overview page
-      cy.get('.fd-global-nav').contains('Overview');
-      cy.location().should(loc => {
-        expect(loc.hash).to.eq('#/overview');
-      });
-      cy.get('.fd-ui__header')
-        .contains('Projects')
-        .click();
-
-      //projects page
-      cy.get('.fd-app__sidebar').should('contain', 'Project One');
-      cy.get('.fd-app__sidebar').should('contain', 'Project Two');
-      cy.get('.fd-app__sidebar')
-        .contains('Project One')
-        .click();
-
-      //project one page
-      cy.location().should(loc => {
-        expect(loc.hash).to.eq('#/projects/pr1');
-      });
-      cy.get('.fd-app__sidebar').should('not.contain', 'Project One');
-      cy.get('.fd-app__sidebar').should('contain', 'Miscellaneous2');
-      cy.get('.fd-app__sidebar')
-        .contains('Default Child Node Example')
-        .click();
-
-      //default child node example
-      cy.location().should(loc => {
-        expect(loc.hash).to.eq('#/projects/pr1/dps/dps2');
-      });
-      cy.get('.fd-app__sidebar').should('contain', 'First Child');
-      cy.get('.fd-app__sidebar').should('contain', 'Second Child');
-    });
-  });
-
   describe('Luigi client features', () => {
     it('linkManager features', () => {
       cy.login('tets', 'tets');
@@ -197,24 +148,6 @@ describe('Luigi Sample Application', () => {
         );
         cy.get('.fd-ui__overlay').should('not.exist');
       });
-    });
-  });
-
-  describe('Logout', () => {
-    it('Logout and login again', () => {
-      cy.login('tets@email.com', 'tets');
-
-      //logout
-      cy.get('.sap-icon--action-settings').click();
-      cy.contains('Logout').click();
-      cy.get('body').should('contain', 'Logout successful');
-      cy.location().should(loc => {
-        expect(loc.pathname).to.eq('/logout.html');
-      });
-
-      //login again
-      cy.contains('Login again').click();
-      cy.get('body').should('contain', 'Login to Luigi sample app');
     });
   });
 });

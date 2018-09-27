@@ -12,6 +12,7 @@ Cypress.Commands.add('login', (email, password) => {
     .should('have.value', 'tets');
 
   cy.get('#login-button').click();
+  cy.get('.fd-global-nav').contains('Overview');
 });
 
 Cypress.Commands.add('goToFeaturesPage', iframe => {

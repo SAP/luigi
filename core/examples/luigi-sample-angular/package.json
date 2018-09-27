@@ -14,8 +14,8 @@
     "testWebpack": "karma start ./karma.conf.js",
     "e2eWebpack": "protractor ./protractor.conf.js",
     "pree2eWebpack": "webdriver-manager update --standalone false --gecko false --quiet",
-    "test:open": "cypress open",
-    "test:run": "cypress run"
+    "e2e:open": "cypress open",
+    "e2e:run": "cypress run"
   },
   "dependencies": {
     "@angular/animations": "^6.1.0",
