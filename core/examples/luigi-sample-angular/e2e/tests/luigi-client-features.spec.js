@@ -5,9 +5,6 @@ describe('Luigi client features', () => {
 
   it('linkManager features', () => {
     cy.login('tets', 'tets');
-    cy.location().should(loc => {
-      expect(loc.hash).to.eq('#/overview');
-    });
 
     //wait for the iFrame to be loaded
     cy.wait(3000);
@@ -115,9 +112,6 @@ describe('Luigi client features', () => {
 
   it('uxManager features', () => {
     cy.login('tets', 'tets');
-    cy.location().should(loc => {
-      expect(loc.hash).to.eq('#/overview');
-    });
 
     //wait for the iFrame to be loaded
     cy.wait(3000);

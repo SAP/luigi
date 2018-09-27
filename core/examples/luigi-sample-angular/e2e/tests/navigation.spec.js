@@ -7,9 +7,6 @@ describe('Navigation', () => {
     cy.login('tets@email.com', 'tets');
 
     //overview page
-    cy.location().should(loc => {
-      expect(loc.hash).to.eq('#/overview');
-    });
     cy.get('.fd-ui__header')
       .contains('Projects')
       .click();

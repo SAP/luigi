@@ -5,9 +5,6 @@ describe('Login Flow', () => {
 
   it('Login', () => {
     cy.login('tets@email.com', 'tets');
-    cy.location().should(loc => {
-      expect(loc.hash).to.eq('#/overview');
-    });
   });
 
   it('Logout and login again', () => {
