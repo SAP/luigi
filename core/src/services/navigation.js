@@ -1,4 +1,5 @@
 import { getConfigValue, getConfigValueFromObjectAsync } from './config';
+import { isFunction } from '../utilities/helpers';
 
 const isNodeAccessPermitted = (nodeToCheckPermissionFor, parentNode, currentContext) => {
   const permissionCheckerFn = getConfigValue('navigation.nodeAccessibilityResolver');
@@ -120,10 +121,46 @@ const applyContext = (context, addition, navigationContext) => {
   return context;
 };
 
-const findMatchingNode = (urlPathElement, nodes) => {
+export const findMatchingNode = (urlPathElement, nodes) => {
   let result = null;
+  const dynamicSegmentsLength = nodes.filter(n => n.pathSegment.startsWith(':')).length;
+  if (nodes.length > 1) {
+    if (dynamicSegmentsLength === 1) {
+      console.warn('Invalid Node setup detected. \nStatic and dynamic nodes cannot be used together on the same level. Static node gets cleaned up. \nRemove the static Node from the configuration to resolve this warning. \nAffected pathSegment:', urlPathElement, 'Children:', nodes);
+      nodes = nodes.filter(n => n.pathSegment.startsWith(':'));
+    }
+    if (dynamicSegmentsLength > 1) {
+      console.error('Invalid Node setup detected. \nMultiple dynamic Nodes are not allowed on the same level. Stopped navigation. \nInvalid Children:', nodes);
+      return null;
+    }
+  }
   nodes.some(node => {
+    // Static Nodes
     if (node.pathSegment === urlPathElement) {
+      result = node;
+      return true;
+    }
+
+    // Dynamic Nodes
+    if (node.pathSegment.startsWith(':')) {
+      const key = node.pathSegment.slice(0);
+      node.pathParam = {
+        key: key,
+        value: urlPathElement
+      };
+
+      // path substitutions
+      node.pathSegment = node.pathSegment.replace(key, urlPathElement);
+      node.viewUrl = node.viewUrl.replace(key, urlPathElement);
+      if (node.context) {
+        Object.entries(node.context).map((entry) => {
+          const dynKey = entry[1];
+          if (dynKey === key) {
+            node.context[entry[0]] = dynKey.replace(dynKey, urlPathElement);
+          }
+        });
+      }
+
       result = node;
       return true;
     }
