@@ -109,15 +109,15 @@
 
           const customLogoutFn = getConfigValue(`auth.${getConfigValue('auth.use')}.logoutFn`);
           if (isFunction(customLogoutFn)) {
-            return customLogoutFn(idpProviderInstance.settings, authData, logoutCallback);
+            customLogoutFn(idpProviderInstance.settings, authData, logoutCallback);
           }
-
-          if (isFunction(idpProviderInstance.logout)) {
-            return idpProviderInstance.logout(authData, logoutCallback);
+          else if (isFunction(idpProviderInstance.logout)) {
+            idpProviderInstance.logout(authData, logoutCallback);
           }
-
-          logoutCallback();
-          window.location.href = idpProviderInstance.settings.logoutUrl;
+          else {
+            window.location.href = idpProviderInstance.settings.logoutUrl;
+            logoutCallback();
+          }
         },
     },
     components: {},
