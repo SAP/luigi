@@ -15,7 +15,7 @@ describe('Luigi Sample Application', () => {
       cy.login('tets@email.com', 'tets');
 
       //logout
-      cy.get('.sap-icon--action-settings').click();
+      cy.get('.sap-icon--customer').click();
       cy.contains('Logout').click();
       cy.get('body').should('contain', 'Logout successful');
       cy.location().should(loc => {

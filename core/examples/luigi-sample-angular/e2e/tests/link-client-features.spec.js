@@ -86,10 +86,10 @@ describe('Luigi Sample Application', () => {
 
         //navigate with preserve view functionality
         cy.wrap($iframeBody)
-          .contains('with preserved view: project to settings and back')
+          .contains('with preserved view: project to global settings and back')
           .click();
         cy.location().should(loc => {
-          expect(loc.hash).to.eq('#/projects/pr2/settings');
+          expect(loc.hash).to.eq('#/settings');
         });
 
         //wait for the second iFrame to be loaded
