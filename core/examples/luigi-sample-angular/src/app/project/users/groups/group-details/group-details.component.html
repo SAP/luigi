@@ -1,0 +1,24 @@
+<section class="fd-section">
+  <div class="fd-section__header">
+    <h1 class="fd-section__title">{{groupLabel}}</h1>
+  </div>
+
+  <div class="fd-panel">
+    <p>This is a dynamic node with value: <strong>{{pathParams?.group}}</strong></p>
+  
+    <a class="clickable" (click)="luigiClient.linkManager().fromContext('project').navigate('/users/groups')">
+      <span class="sap-icon--navigation-left-arrow"></span> Back to Groups
+    </a>
+  </div>
+</section>
+<section class="fd-section">
+  <div class="fd-panel">
+  <p>Navigation Node configuration for <strong>dynamic node</strong> demo:</p>
+<app-code-snippet data="{
+  {
+    pathSegment: ':group',
+    viewUrl: '/sampleapp.html#/groups/:group'
+  }
+}"></app-code-snippet>
+  </div>
+</section>
