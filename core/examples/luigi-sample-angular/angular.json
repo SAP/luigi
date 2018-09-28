@@ -22,21 +22,6 @@
               "src/index.html",
               "src/logout.html",
               {
-                "glob": "fundamental-ui.min.css",
-                "input": "node_modules/fundamental-ui/dist",
-                "output": "/fundamental-ui"
-              },
-              {
-                "glob": "fonts/**",
-                "input": "node_modules/fundamental-ui/dist",
-                "output": "/fundamental-ui"
-              },
-              {
-                "glob": "SAP-icons.*",
-                "input": "node_modules/fundamental-ui/dist",
-                "output": "/fundamental-ui"
-              },
-              {
                 "glob": "**",
                 "input": "node_modules/@kyma-project/luigi-core",
                 "output": "/luigi-core"
