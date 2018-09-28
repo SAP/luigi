@@ -115,8 +115,8 @@
             idpProviderInstance.logout(authData, logoutCallback);
           }
           else {
-            window.location.href = idpProviderInstance.settings.logoutUrl;
             logoutCallback();
+            window.location.href = idpProviderInstance.settings.logoutUrl;
           }
         },
     },
