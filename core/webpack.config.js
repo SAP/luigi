@@ -81,5 +81,8 @@ module.exports = {
     new ExtractTextPlugin('luigi.css'),
     new CopyWebpackPlugin(['node_modules/oidc-client/dist/oidc-client.min.js'])
   ],
-  mode: 'production'
+  mode: 'production',
+  stats: {
+    warnings: false
+  }
 };
