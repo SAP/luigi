@@ -47,6 +47,12 @@ To have this application running, follow these steps:
     - The auto-reload of your application only updates the application. Type `CMD + R` to reflect the changes of the linked Luigi Core and Luigi Client modules in the website.
 
 
+## Tests
+
+To run UI tests locally, the sample application has to be running. When the application is ready:
+
+- Run `npm run cypress:run` to start tests in the headless browser.
+- Run `npm run cypress:open` to start tests in the interactive mode.
 <!-- ## Run server
 * Using Angular CLI (standard): `npm run start`
 

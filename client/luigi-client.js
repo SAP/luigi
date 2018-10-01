@@ -39,16 +39,21 @@
 
   var Luigi = {};
   var currentContext = {};
+  var defaultContextKeys = ['context', 'internal', 'nodeParams', 'pathParams'];
   var _contextUpdated;
+
+  // Setting default context as empty objects.
+  for (var i = 0; i < defaultContextKeys.length; i++) {
+    currentContext[defaultContextKeys[i]] = {};
+  }
 
   function requestContext() {
     window.parent.postMessage({ msg: 'luigi.get-context' }, '*');
   }
 
   function setContext(rawData) {
-    var keysToParse = ['context', 'internal', 'nodeParams', 'pathParams'];
-    for (var index = 0; index < keysToParse.length; index++) {
-      var key = keysToParse[index];
+    for (var index = 0; index < defaultContextKeys.length; index++) {
+      var key = defaultContextKeys[index];
       try {
         rawData[key] = JSON.parse(rawData[key]);
       } catch (e) {
@@ -227,7 +232,7 @@
          * */
         withParams: function (nodeParams) {
           if (nodeParams) {
-            Object.assign(options.currentContext.nodeParams, nodeParams);
+            Object.assign(options.nodeParams, nodeParams);
           }
           return this;
         },
@@ -239,7 +244,7 @@
          */
         hasBack: function () {
           return Boolean(
-            currentContext.internalData.viewStackSize && currentContext.internalData.viewStackSize !== 0
+            currentContext.internal.viewStackSize !== 0
           );
         },
 
