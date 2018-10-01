@@ -238,7 +238,8 @@ Luigi.setConfig({
     openIdConnect: {
       authority: 'https://example-authority.com',
       client_id: 'client',
-      scope: 'audience:server:client_id:client openid profile email groups'
+      scope: 'audience:server:client_id:client openid profile email groups',
+      logoutUrl: 'https://example-url.com/logout',
       // optional parameters
       // redirect_uri: '',
       // post_logout_redirect_uri: '/logout.html',
