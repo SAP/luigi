@@ -220,7 +220,6 @@ export const getLeftNavData = async (current, componentData) => {
   const updatedCompData = {};
   if (current.pathData && 1 < current.pathData.length) {
     const pathDataTruncatedVirtualChildren = getTruncatedVirtualChildren(componentData.pathData);
-    console.log('TCL: getLeftNavData -> componentData.pathData', current, componentData.pathData, componentData.context);
     let lastElement = [...pathDataTruncatedVirtualChildren].pop();
     let selectedNode;
     if (lastElement.keepSelectedForChildren) {
@@ -231,10 +230,7 @@ export const getLeftNavData = async (current, componentData) => {
 
     const children = await getChildren(lastElement, componentData.context);
     const groupedChildren = getGroupedChildren(children, current);
-    if (groupedChildren && 1 < pathDataTruncatedVirtualChildren.length) {
-      updatedCompData.selectedNode = selectedNode || lastElement;
-    }
-
+    updatedCompData.selectedNode = selectedNode || lastElement;
     updatedCompData.children = groupedChildren;
   }
   return updatedCompData;
