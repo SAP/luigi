@@ -168,7 +168,7 @@ var projectDetailNavProviderFn = function (context) {
       },
       {
         pathSegment: 'avengers',
-        label: 'Virtual Children Example',
+        label: 'Keep Selected Example',
         viewUrl:
           '/sampleapp.html#/projects/' +
           projectId +

@@ -34,7 +34,7 @@ export class OverviewComponent {
     },
     {
       link: '/projects/pr1/avengers',
-      text: 'virtual children',
+      text: 'keepSelectedForChildren',
       description: 'navigation Node configuration to fixate a navigation menu and omit the children'
     }
   ];
