@@ -52,7 +52,7 @@ export class openIdConnect {
 
   logout(authData, callback) {
     callback();
-    window.location.href = this.settings.post_logout_redirect_uri;
+    window.location.href = this.settings.logoutUrl;
     // TODO: dex logout is not yet supported
     // const signoutData = {
     //   id_token_hint: authData && authData.idToken,
