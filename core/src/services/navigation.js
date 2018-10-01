@@ -123,10 +123,16 @@ const applyContext = (context, addition, navigationContext) => {
 
 export const findMatchingNode = (urlPathElement, nodes) => {
   let result = null;
-  const hasInvalidPathSegments = (nodes.length > 1) ? nodes.filter(n => n.pathSegment.startsWith(':')).length !== 0 : false;
-  if (hasInvalidPathSegments) {
-    console.warn('Static and dynamic Nodes or multiple dynamic Nodes are not allowed on the same level. Remove the static Node, if you want to use the dynamic one.', urlPathElement, nodes);
-    return false;
+  const dynamicSegmentsLength = nodes.filter(n => n.pathSegment.startsWith(':')).length;
+  if (nodes.length > 1) {
+    if (dynamicSegmentsLength === 1) {
+      console.warn('Invalid Node setup detected. \nStatic and dynamic nodes cannot be used together on the same level. Static node gets cleaned up. \nRemove the static Node from the configuration to resolve this warning. \nAffected pathSegment:', urlPathElement, 'Children:', nodes);
+      nodes = nodes.filter(n => n.pathSegment.startsWith(':'));
+    }
+    if (dynamicSegmentsLength > 1) {
+      console.error('Invalid Node setup detected. \nMultiple dynamic Nodes are not allowed on the same level. Stopped navigation. \nInvalid Children:', nodes);
+      return null;
+    }
   }
   nodes.some(node => {
     // Static Nodes
@@ -149,8 +155,8 @@ export const findMatchingNode = (urlPathElement, nodes) => {
       if (node.context) {
         Object.entries(node.context).map((entry) => {
           const dynKey = entry[1];
-          if (dynKey.startsWith(':')) {
-            node.context[entry[0]] = dynKey.replace(key, urlPathElement);
+          if (dynKey === key) {
+            node.context[entry[0]] = dynKey.replace(dynKey, urlPathElement);
           }
         });
       }

@@ -48,7 +48,6 @@ export class ProjectComponent implements OnInit {
 
     this.luigiClient = LuigiClient;
 
-
     // Only one contextListener allowed per microfrontend, better rely on centralized approach.
     // Take a look at ngOnInit in this component and app.component.ts where we set the listeners.
     // 

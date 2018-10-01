@@ -15,21 +15,21 @@ To have this application running, follow these steps:
     npm install -g lerna
     ```
 
-2. Install dependencies.
+2. Install dependencies. Execute the following command in the root `luigi` folder.
     ```bash
     # The `lerna bootstrap` command executes the Node Package Manager (NPM) installation and links cross-dependencies.
 
     lerna bootstrap
     ```
 
-3. Bundle the Luigi core.
+3. Bundle the Luigi core by executing the following in the `luigi/core` folder.
     ```bash
     # Lerna runs the bundle script in every package where the script exists.
 
     lerna run bundle
     ```
 
-4. Start the example application.
+4. Start the example application from the `luigi/core/examples/luigi-sample-angular` folder.
     ```bash
     npm start
     ```
@@ -47,6 +47,12 @@ To have this application running, follow these steps:
     - The auto-reload of your application only updates the application. Type `CMD + R` to reflect the changes of the linked Luigi Core and Luigi Client modules in the website.
 
 
+## Tests
+
+To run UI tests locally, the sample application has to be running. When the application is ready:
+
+- Run `npm run cypress:run` to start tests in the headless browser.
+- Run `npm run cypress:open` to start tests in the interactive mode.
 <!-- ## Run server
 * Using Angular CLI (standard): `npm run start`
 

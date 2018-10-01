@@ -16,4 +16,4 @@ LuigiClient.getPathParams()
 - **addContextUpdateListener(contextUpdatedFn)** registers a listener that is called upon any navigation change, and calls the **contextUpdatedFn** with a new context object.
 - **getNodeParams()** returns the configuration object of the active navigation Node.
 - **getEventData()** returns the context object. Usually it is not required as the **addContextUpdateListener** receives the same values.
-- **getPathParams()** returns the dynamic path parameters of the active url.
+- **getPathParams()** returns the dynamic path parameters of the active URL.

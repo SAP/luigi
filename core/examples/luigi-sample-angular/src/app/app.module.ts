@@ -25,29 +25,29 @@ import { GroupSettingsComponent } from './project/users/groups/group-details/gro
 import { DynamicComponent } from './project/dynamic/dynamic.component';
 
 @NgModule({
-  declarations: [
-    AppComponent,
-    ProjectComponent,
-    UsersComponent,
-    SettingsComponent,
-    DevelopersComponent,
-    MiscellaneousComponent,
-    UsersoverviewComponent,
-    GroupsComponent,
-    GroupDetailsComponent,
-    Miscellaneous2Component,
-    NavigationComponent,
-    ModalComponent,
-    CodeSnippetComponent,
-    ChildNode1Component,
-    ChildNode2Component,
-    OverviewComponent,
-    RestrictedComponent,
-    GroupSettingsComponent,
-    DynamicComponent
-  ],
-  imports: [BrowserModule, FormsModule, AppRoutingModule],
-  providers: [LuigiContextService],
-  bootstrap: [AppComponent]
+    declarations: [
+        AppComponent,
+        ProjectComponent,
+        UsersComponent,
+        SettingsComponent,
+        DevelopersComponent,
+        MiscellaneousComponent,
+        UsersoverviewComponent,
+        GroupsComponent,
+        GroupDetailsComponent,
+        Miscellaneous2Component,
+        NavigationComponent,
+        ModalComponent,
+        CodeSnippetComponent,
+        ChildNode1Component,
+        ChildNode2Component,
+        OverviewComponent,
+        RestrictedComponent,
+        GroupSettingsComponent,
+        DynamicComponent
+    ],
+    imports: [BrowserModule, FormsModule, AppRoutingModule],
+    providers: [LuigiContextService],
+    bootstrap: [AppComponent]
 })
 export class AppModule { }
