@@ -62,10 +62,10 @@ module.exports = {
         }
       },
       {
-        test: /\.css$/,
+        test: /\.(css)$/,
         use: ExtractTextPlugin.extract({
-          fallback: 'style-loader',
-          use: 'css-loader'
+          fallback: 'file-loader',
+          use: [{ loader: 'css-loader', options: { url: false } }]
         })
       },
       {
@@ -79,7 +79,10 @@ module.exports = {
   },
   plugins: [
     new ExtractTextPlugin('luigi.css'),
-    new CopyWebpackPlugin(['node_modules/oidc-client/dist/oidc-client.min.js'])
+    new CopyWebpackPlugin([
+      'node_modules/oidc-client/dist/oidc-client.min.js',
+      'node_modules/fundamental-ui/dist/SAP-icons.woff'
+    ])
   ],
   mode: 'production'
 };
