@@ -62,7 +62,4 @@
   @import '~fundamental-ui/scss/components/modal';
   @import '~fundamental-ui/scss/components/button';
 
-  .fd-overlay--modal {
-    width: calc(100% - #{$left-nav-width});
-  }
 </style>

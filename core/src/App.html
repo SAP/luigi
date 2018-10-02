@@ -1,10 +1,12 @@
-<Backdrop>
-    <div id="app">
+
+<div id="app">
+    <Backdrop>
         <div class="fd-page {hideNav? 'iframeContainerNoNav' : 'iframeContainer'}" use:init="context"></div>
         <TopNav pathData={navigationPath} />
         <LeftNav pathData={navigationPath} />
-    </div>
-</Backdrop>
+    </Backdrop>
+</div>
+
 
 <script type="text/javascript">
     import Backdrop from './Backdrop.html';
