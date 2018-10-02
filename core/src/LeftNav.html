@@ -9,7 +9,7 @@
                             {#each nodes as node}
                                 {#if !node.hideFromNav}
                                 {#if node.label}
-                                <li class="fd-side-nav__item">
+                                <li class="fd-side-nav__item {node.externalLinkUrl ? 'fd-side-nav__item--external' : ''}">
                                     <a class="fd-side-nav__link {node === selectedNode ? 'is-selected' : ''}" on:click=handleClick(node)>
                                         {node.label}
                                     </a>
@@ -29,7 +29,7 @@
                             {#each nodes as node}
                                 {#if !node.hideFromNav}
                                 {#if node.label}
-                                <li class="fd-side-nav__item">
+                                <li class="fd-side-nav__item {node.externalLinkUrl ? 'fd-side-nav__item--external' : ''}">
                                     <a class="fd-side-nav__link {node === selectedNode ? 'is-selected' : ''}" on:click=handleClick(node)>
                                         {node.label}
                                     </a>

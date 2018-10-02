@@ -66,6 +66,8 @@ window.Luigi.setConfig({
 ## Nodes
 
 - **pathSegment** specifies the partial URL of the current segment. A static settings example reflects `luigidomain.test/settings`, while a dynamic one, prefixed with a colon, loads on any other value. **pathSegments** must not contain slashes.
+- **externalLinkUrl** specifies the external URL that Node leads to. If this property is set, **pathSegment** will be ignored.
+- **sameWindow** defines if the external URL should be opened in new or current tab. Works only if **externalLinkUrl** is set.
 - **label** contains the display name of the navigation Node.
 - **hideFromNav** shows or hides a navigation Node. You can still navigate to the Node but it will not show up in the top or left pane.
 - **viewUrl** contains the URL or path to a view that renders when entering the navigation Node. Use either a full URL or a relative path. This value may consist of variables if you have specified a **navigationContext** with a dynamic **pathSegment**. If **viewUrl** is undefined, Luigi activates the child node specified in **defaultChildNode**. When both **viewUrl** and **defaultChildNode** are undefined, Luigi opens the first child of the current node.

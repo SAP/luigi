@@ -339,6 +339,11 @@ Luigi.setConfig({
           viewUrl: '/sampleapp.html#/settings'
         },
         {
+          label: 'Open Google in this tab',
+          sameWindow: true,
+          externalLinkUrl: 'http://google.com'
+        },
+        {
           pathSegment: 'ext',
           label: 'External Page',
           viewUrl: '/assets/sampleexternal.html#ext',
@@ -352,7 +357,19 @@ Luigi.setConfig({
               pathSegment: 'two',
               label: 'Two',
               viewUrl: '/assets/sampleexternal.html#two'
-            }
+            },
+            {
+              label: 'Open Github in new tab',
+              category: 'Super useful Github links',
+              sameWindow: false,
+              externalLinkUrl: 'http://github.com'
+            },
+            {
+              label: 'Open Github in this tab',
+              category: 'Super useful Github links',
+              sameWindow: true,
+              externalLinkUrl: 'http://github.com'
+            },
           ]
         }
       ]

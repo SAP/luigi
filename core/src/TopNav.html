@@ -13,7 +13,7 @@
         {#if children && pathData.length > 0}
           {#each children as node}
             {#if !node.hideFromNav}
-              <button class=" fd-button--secondary fd-button--m fd-global-nav__btn {node === selectedNode ? 'is-selected' : ''}"
+              <button class=" fd-button--secondary fd-button--m fd-global-nav__btn {node === selectedNode ? 'is-selected' : ''} {node.externalLinkUrl ? 'fd-global-nav__btn--external' : ''}"
               aria-label="{node.label}" on:click=handleClick(node)><span class="">{node.label}</span></button>
             {/if}
           {/each}
