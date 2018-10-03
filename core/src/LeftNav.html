@@ -12,7 +12,11 @@
                                 <li class="fd-side-nav__item {node.externalLinkUrl ? 'fd-side-nav__item--external' : ''}">
                                     <a class="fd-side-nav__link {node === selectedNode ? 'is-selected' : ''}" on:click=handleClick(node)>
                                         {node.label}
+                                        {#if node.externalLinkUrl}
+                                            <span class="sap-icon--action sap-icon--s"></span>
+                                        {/if}
                                     </a>
+                                    
                                 </li>
                                 {/if}
                                 {/if}
@@ -32,7 +36,11 @@
                                 <li class="fd-side-nav__item {node.externalLinkUrl ? 'fd-side-nav__item--external' : ''}">
                                     <a class="fd-side-nav__link {node === selectedNode ? 'is-selected' : ''}" on:click=handleClick(node)>
                                         {node.label}
+                                        {#if node.externalLinkUrl}
+                                            <span class="sap-icon--action sap-icon--s"></span>
+                                        {/if}
                                     </a>
+                                    
                                 </li>
                                 {/if}
                                 {/if}
@@ -46,99 +54,98 @@
 </div>
 
 <script type="text/javascript">
-    import Backdrop from './Backdrop.html';
-    import { getChildren } from './services/navigation.js';
-    import { handleRouteClick } from './services/routing.js';
-    import { getConfigValue, getConfigBooleanValue } from './services/config.js';
+  import Backdrop from './Backdrop.html';
+  import { getChildren } from './services/navigation.js';
+  import { handleRouteClick } from './services/routing.js';
+  import { getConfigValue, getConfigBooleanValue } from './services/config.js';
 
-    const getNodes = (children, pathData) => {
-        if (children && 0 < children.length) {
-            return children;
-        }
+  const getNodes = (children, pathData) => {
+    if (children && 0 < children.length) {
+      return children;
+    }
 
-        if (2 < pathData.length) {
-            const lastElement = pathData[pathData.length - 1];
-            const oneBeforeLast = pathData[pathData.length - 2];
-            const nestedNode = pathData.length > 1 ? oneBeforeLast : lastElement;
+    if (2 < pathData.length) {
+      const lastElement = pathData[pathData.length - 1];
+      const oneBeforeLast = pathData[pathData.length - 2];
+      const nestedNode = pathData.length > 1 ? oneBeforeLast : lastElement;
 
-            if (nestedNode && nestedNode.children) {
-                return nestedNode.children;
-            }
-        }
+      if (nestedNode && nestedNode.children) {
+        return nestedNode.children;
+      }
+    }
 
-        return [];
-    };
+    return [];
+  };
 
-    const groupBy = (nodes, property) => {
-        const result = {};
-        nodes.forEach(node => {
-            const key = node[property];
-            let arr = result[key];
-            if (!arr) {
-                arr = [];
-                result[key] = arr;
-            }
-            arr.push(node);
-        });
+  const groupBy = (nodes, property) => {
+    const result = {};
+    nodes.forEach(node => {
+      const key = node[property];
+      let arr = result[key];
+      if (!arr) {
+        arr = [];
+        result[key] = arr;
+      }
+      arr.push(node);
+    });
 
-        return result;
-    };
+    return result;
+  };
 
-    const getGroupedChildren = (children, current) => {
-        const nodes = getNodes(children, current.pathData);
-        return groupBy(nodes, 'category');
-    };
+  const getGroupedChildren = (children, current) => {
+    const nodes = getNodes(children, current.pathData);
+    return groupBy(nodes, 'category');
+  };
 
-    const setLeftNavData = async (current, component) => {
-        if (current.pathData && 1 < current.pathData.length) {
-            const componentData = component.get();
-            const lastElement = [...current.pathData].pop();
-            const children = await getChildren(lastElement, componentData.context);
-            const groupedChildren = getGroupedChildren(children, current);
+  const setLeftNavData = async (current, component) => {
+    if (current.pathData && 1 < current.pathData.length) {
+      const componentData = component.get();
+      const lastElement = [...current.pathData].pop();
+      const children = await getChildren(lastElement, componentData.context);
+      const groupedChildren = getGroupedChildren(children, current);
 
-            if (groupedChildren && 1 < componentData.pathData.length) {
-                const selectedNode = [...componentData.pathData].pop();
-                component.set({ selectedNode: selectedNode });
-            }
+      if (groupedChildren && 1 < componentData.pathData.length) {
+        const selectedNode = [...componentData.pathData].pop();
+        component.set({ selectedNode: selectedNode });
+      }
 
-            component.set({
-                children: groupedChildren
-            });
+      component.set({
+        children: groupedChildren
+      });
 
-            window.LEFTNAVDATA = groupedChildren;
-        }
-    };
+      window.LEFTNAVDATA = groupedChildren;
+    }
+  };
 
-    export default {
-        oncreate() {
-            this.set({
-                hideNavComponent: getConfigBooleanValue('settings.hideNavigation')
-            });
-
-        },
-        onstate({ changed, current, previous }) {
-            if (!previous || previous.pathData != current.pathData) {
-                setLeftNavData(current, this);
-            }
-        },
-        methods: {
-            handleClick: (node) => handleRouteClick(node)
-        },
-        components: {
-            Backdrop
-        }
-    };
+  export default {
+    oncreate() {
+      this.set({
+        hideNavComponent: getConfigBooleanValue('settings.hideNavigation')
+      });
+    },
+    onstate({ changed, current, previous }) {
+      if (!previous || previous.pathData != current.pathData) {
+        setLeftNavData(current, this);
+      }
+    },
+    methods: {
+      handleClick: node => handleRouteClick(node)
+    },
+    components: {
+      Backdrop
+    }
+  };
 </script>
 
 <style type="text/scss">
-@import 'node_modules/fundamental-ui/scss/core';
-@import 'node_modules/fundamental-ui/scss/icons';
-@import 'node_modules/fundamental-ui/scss/components/side-nav';
-@import 'node_modules/fundamental-ui/scss/helpers';
-a {
+  @import 'node_modules/fundamental-ui/scss/core';
+  @import 'node_modules/fundamental-ui/scss/icons';
+  @import 'node_modules/fundamental-ui/scss/components/side-nav';
+  @import 'node_modules/fundamental-ui/scss/helpers';
+  a {
     cursor: pointer;
-}
-.fd-app__sidebar{
+  }
+  .fd-app__sidebar {
     position: fixed;
     top: 50px;
     left: 0;
@@ -147,13 +154,19 @@ a {
     background-color: white;
     color: #32363a;
     overflow-y: auto;
-}
+  }
 
-.fd-side-nav__group {
+  .fd-side-nav__group {
     margin-top: 20px;
-}
+  }
+  .fd-side-nav__link {
+    .sap-icon--action {
+      margin-left: 0.3em;
+      vertical-align: middle;
+    }
+  }
 
-.hideNavComponent {
+  .hideNavComponent {
     display: none;
-}
+  }
 </style>

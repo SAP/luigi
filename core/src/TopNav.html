@@ -14,7 +14,12 @@
           {#each children as node}
             {#if !node.hideFromNav}
               <button class=" fd-button--secondary fd-button--m fd-global-nav__btn {node === selectedNode ? 'is-selected' : ''} {node.externalLinkUrl ? 'fd-global-nav__btn--external' : ''}"
-              aria-label="{node.label}" on:click=handleClick(node)><span class="">{node.label}</span></button>
+              aria-label="{node.label}" on:click=handleClick(node)>
+                <span class="">{node.label}</span>
+                {#if node.externalLinkUrl}
+                  <span class="sap-icon--action sap-icon--s"></span>
+                {/if}
+              </button>
             {/if}
           {/each}
         {/if}
@@ -42,138 +47,137 @@
 </div>
 
 <script type="text/javascript">
-    import Backdrop from './Backdrop.html';
-    import Authorization from './Authorization.html';
-    import { handleRouteClick } from './services/routing.js';
-    import { getConfigValue, getConfigBooleanValue } from './services/config.js';
+  import Backdrop from './Backdrop.html';
+  import Authorization from './Authorization.html';
+  import { handleRouteClick } from './services/routing.js';
+  import { getConfigValue, getConfigBooleanValue } from './services/config.js';
 
-    const getNegatedBoolString = (str) => {
-      return (str === 'true') ? 'false' : 'true';
+  const getNegatedBoolString = str => {
+    return str === 'true' ? 'false' : 'true';
+  };
+
+  const setTopNavData = (current, component) => {
+    if (current.pathData && 0 < current.pathData.length) {
+      const children = current.pathData[0].children;
+      let selectedNode = null;
+      children.map(node => {
+        current.pathData.forEach(n => {
+          if (!selectedNode && n === node) {
+            selectedNode = node;
+          }
+        });
+      });
+      component.set({
+        children: children,
+        selectedNode: selectedNode
+      });
+      window.TOPNAVDATA = children;
     }
+  };
 
-    const setTopNavData = (current, component) => {
-      if (current.pathData && 0 < current.pathData.length) {
-        const children = current.pathData[0].children;
-        let selectedNode = null;
-        children.map((node) => {
-          current.pathData.forEach(n => {
-            if (!selectedNode && n === node) {
-              selectedNode = node;
-            }
-          });
-        });
-        component.set({
-          children: children,
-          selectedNode: selectedNode
-        });
-        window.TOPNAVDATA = children;
+  export default {
+    oncreate() {
+      // Authentication detection
+      const idpProviderName = getConfigValue('auth.use');
+      const idpProviderSettings = getConfigValue(`auth.${idpProviderName}`);
+
+      this.set({
+        authorizationEnabled: !!idpProviderSettings,
+        hideNavComponent: getConfigBooleanValue('settings.hideNavigation')
+      });
+    },
+    onstate({ changed, current, previous }) {
+      if (!previous || previous.pathData != current.pathData) {
+        setTopNavData(current, this);
       }
-    };
-
-    export default {
-        oncreate() {
-          // Authentication detection
-          const idpProviderName = getConfigValue('auth.use');
-          const idpProviderSettings = getConfigValue(`auth.${idpProviderName}`);
-
-          this.set({
-              authorizationEnabled: !!idpProviderSettings,
-              hideNavComponent: getConfigBooleanValue('settings.hideNavigation')
-          });
-        },
-        onstate({ changed, current, previous }) {
-            if (!previous || previous.pathData != current.pathData) {
-                setTopNavData(current, this);
-            }
-        },
-        data() {
-          return {
-            dropDownStates: {}
+    },
+    data() {
+      return {
+        dropDownStates: {}
+      };
+    },
+    computed: {
+      dropDownStatesNegated({ dropDownStates }) {
+        const negated = {};
+        for (const key in dropDownStates) {
+          if (dropDownStates.hasOwnProperty(key)) {
+            negated[key] = getNegatedBoolString(dropDownStates[key]);
           }
-        },
-        computed: {
-          dropDownStatesNegated({dropDownStates}) {
-            const negated = {};
-            for (const key in dropDownStates) {
-              if (dropDownStates.hasOwnProperty(key)) {
-                negated[key] = getNegatedBoolString(dropDownStates[key]);
-              }
-            }
-            return negated;
-          }
-        },
-        methods: {
-          handleClick: (node) => handleRouteClick(node),
-          goTo(path) {
-            if(getConfigBooleanValue('routing.useHashRouting')) {
-              window.location.hash = path;
-            } else {
-              window.location.pathname = path;
-            }
-          },
-          toggleDropdownState(name) {
-            const dropDownStates = this.get().dropDownStates || {};
-            dropDownStates[name] = getNegatedBoolString(dropDownStates[name]);
-            this.set({
-              dropDownStates
-            });
-          },
-          closeDropdown(name) {
-            const dropDownStates = this.get().dropDownStates || {};
-            dropDownStates[name] = 'false';
-            this.set({
-              dropDownStates
-            });
-          }
-        },
-        components: {
-            Backdrop,
-            Authorization
         }
-    };
-
+        return negated;
+      }
+    },
+    methods: {
+      handleClick: node => handleRouteClick(node),
+      goTo(path) {
+        if (getConfigBooleanValue('routing.useHashRouting')) {
+          window.location.hash = path;
+        } else {
+          window.location.pathname = path;
+        }
+      },
+      toggleDropdownState(name) {
+        const dropDownStates = this.get().dropDownStates || {};
+        dropDownStates[name] = getNegatedBoolString(dropDownStates[name]);
+        this.set({
+          dropDownStates
+        });
+      },
+      closeDropdown(name) {
+        const dropDownStates = this.get().dropDownStates || {};
+        dropDownStates[name] = 'false';
+        this.set({
+          dropDownStates
+        });
+      }
+    },
+    components: {
+      Backdrop,
+      Authorization
+    }
+  };
 </script>
 
 <style type="text/scss">
-$fd-scss-font-path: 'node_modules/fundamental-ui/scss/fonts/';
-$fd-icons-path: 'node_modules/fundamental-ui/scss/icons/';
+    $fd-scss-font-path: 'node_modules/fundamental-ui/scss/fonts/';
+    $fd-icons-path: 'node_modules/fundamental-ui/scss/icons/';
 
-@import 'node_modules/fundamental-ui/scss/icons';
-@import 'node_modules/fundamental-ui/scss/core';
-@import 'node_modules/fundamental-ui/scss/components/action-bar';
-@import 'node_modules/fundamental-ui/scss/components/button';
-@import 'node_modules/fundamental-ui/scss/components/popover';
-@import 'node_modules/fundamental-ui/scss/components/menu';
-@import 'node_modules/fundamental-ui/scss/components/global-nav';
-@import 'node_modules/fundamental-ui/scss/components/side-nav';
+    @import 'node_modules/fundamental-ui/scss/icons';
+    @import 'node_modules/fundamental-ui/scss/core';
+    @import 'node_modules/fundamental-ui/scss/components/action-bar';
+    @import 'node_modules/fundamental-ui/scss/components/button';
+    @import 'node_modules/fundamental-ui/scss/components/popover';
+    @import 'node_modules/fundamental-ui/scss/components/menu';
+    @import 'node_modules/fundamental-ui/scss/components/global-nav';
+    @import 'node_modules/fundamental-ui/scss/components/side-nav';
 
-.user-settings .fd-popover__body {
-  right: 0;
-}
-.fd-ui__header {
-    position: fixed;
-    z-index: 1;
-    background: #ffffff;
-    width: 100%;
-    min-height: 50px;
-    height: 50px;
-    border-bottom: solid 1px #dededf;
-    padding: 0 10px;
-}
+    .user-settings .fd-popover__body {
+      right: 0;
+    }
+    .fd-ui__header {
+      position: fixed;
+      z-index: 1;
+      background: #ffffff;
+      width: 100%;
+      min-height: 50px;
+      height: 50px;
+      border-bottom: solid 1px #dededf;
+      padding: 0 10px;
+    }
 
-.fd-global-nav {
-  height: 100%;
-  border: none;
-}
-.fd-global-nav__product-name {
-    color: #0a6ed1;
-    height: 50px;
-    font-size: 24px;
-    line-height: 1em;
-    padding: 13px 0;
-}
+    .fd-global-nav {
+      height: 100%;
+      border: none;
+    }
+    .fd-global-nav__product-name {
+      color: #0a6ed1;
+      height: 50px;
+      font-size: 24px;
+      line-height: 1em;
+      padding: 13px 0;
+    }
 
-.hideNavComponent {
-    display: none;
-}
+    .hideNavComponent {
+      display: none;
+    }
 </style>
