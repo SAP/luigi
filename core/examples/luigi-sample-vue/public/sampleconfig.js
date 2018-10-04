@@ -182,6 +182,7 @@ Luigi.setConfig({
       authority: 'https://example-authority.com',
       client_id: 'client',
       scope: 'audience:server:client_id:client openid profile email groups',
+      logoutUrl: 'https://example-url.com/logout',
       redirect_uri: '',
       post_logout_redirect_uri: '',
       automaticSilentRenew: true,

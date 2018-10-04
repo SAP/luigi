@@ -109,15 +109,15 @@
 
           const customLogoutFn = getConfigValue(`auth.${getConfigValue('auth.use')}.logoutFn`);
           if (isFunction(customLogoutFn)) {
-            return customLogoutFn(idpProviderInstance.settings, authData, logoutCallback);
+            customLogoutFn(idpProviderInstance.settings, authData, logoutCallback);
           }
-
-          if (isFunction(idpProviderInstance.logout)) {
-            return idpProviderInstance.logout(authData, logoutCallback);
+          else if (isFunction(idpProviderInstance.logout)) {
+            idpProviderInstance.logout(authData, logoutCallback);
           }
-
-          logoutCallback();
-          window.location.href = idpProviderInstance.settings.logoutUrl;
+          else {
+            logoutCallback();
+            window.location.href = idpProviderInstance.settings.logoutUrl;
+          }
         },
     },
     components: {},
@@ -127,33 +127,5 @@
 
 
 <style type="text/scss">
-$fd-icons-path: 'node_modules/fundamental-ui/scss/icons/';
-@import 'node_modules/fundamental-ui/scss/icons';
-@import 'node_modules/fundamental-ui/scss/core';
-@import 'node_modules/fundamental-ui/scss/components/popover';
-@import 'node_modules/fundamental-ui/scss/components/menu';
-@import 'node_modules/fundamental-ui/scss/helpers';
-
-.fd-ui__header {
-    position: fixed;
-    z-index: 1;
-    background: #ffffff;
-    width: 100%;
-    min-height: 50px;
-    height: 50px;
-    border-bottom: solid 1px #dededf;
-    padding: 0 10px;
-}
-
-.fd-global-nav__product-name {
-    color: #0a6ed1;
-    height: 50px;
-    font-size: 24px;
-    line-height: 1em;
-    padding: 13px 0;
-}
-
-.hideNavComponent {
-    display: none;
-}
+  @import 'node_modules/fundamental-ui/scss/components/menu';
 </style>
