@@ -1,14 +1,21 @@
 <div id="app">
     <div class="fd-page {hideNav? 'iframeContainerNoNav' : 'iframeContainer'}" use:init="context"></div>
+    {#if showLoadingIndicator}
+    <div in:fade='{delay: 250, duration: 250}' out:fade='{duration: 250}' class="fd-page {hideNav? 'spinnerContainerNoNav' : 'spinnerContainer'}" aria-hidden="false" aria-label="Loading">
+        <div class="fd-spinner"><div></div></div>
+    </div>
+    {/if}
+    
     <TopNav pathData={navigationPath} />
     <LeftNav pathData={navigationPath} />
 </div>
 
 <script type="text/javascript">
+    import { fade } from 'svelte-transitions';
     import TopNav from './TopNav.html';
     import LeftNav from './LeftNav.html';
     import * as Routing from './services/routing.js';
-    import { getConfigValue }  from './services/config.js';
+    import { getConfigValue, getConfigValueFromObject }  from './services/config.js';
     import { isFunction } from './utilities/helpers.js';
 
     const trimLeadingSlash = (str) => str.replace(/^\//, '');
@@ -107,6 +114,7 @@
     export default {
         data() {
             return {
+                showLoadingIndicator: false,
                 preservedViews: [
                 // {
                 //     path: '/project/p2/settings',
@@ -130,6 +138,14 @@
                 window.addEventListener("message", (e) => {
                     if ('luigi.get-context' === e.data.msg && config.iframe) {
                         sendContextToClient(this, config, {});
+                    }
+
+                    if ('luigi.show-loading-indicator' === e.data.msg) {
+                        this.set({'showLoadingIndicator': true});
+                    }
+
+                    if ('luigi.hide-loading-indicator' === e.data.msg) {
+                        this.set({'showLoadingIndicator': false});
                     }
 
                     if ('luigi.navigate.ok' === e.data.msg) {
@@ -176,14 +192,16 @@
         methods: {
             prepareInternalData() {
                 return {
-                    viewStackSize: this.get().preservedViews.length
+                    viewStackSize: this.get().preservedViews.length,
+                    autoHideLoadingIndicator: getConfigValueFromObject(this.get(), 'currentNode.loadingIndicator.hideAutomatically') !== false
                 }
             }
         },
         components: {
             TopNav,
             LeftNav
-        }
+        },
+        transitions: { fade }
     };
 </script>
 
@@ -219,7 +237,7 @@
       cursor: pointer;
     }
 
-    .iframeContainer {
+    .iframeContainer, .spinnerContainer {
       position: fixed;
       top: 50px;
       left: 320px;
@@ -237,7 +255,7 @@
       height: 100%;
     }
 
-    .iframeContainerNoNav {
+    .iframeContainerNoNav, .spinnerContainerNoNav {
       position: fixed;
       top: 0;
       left: 0;
@@ -251,4 +269,10 @@
       height: 100%;
     }
 
+    .spinnerContainer, .spinnerContainerNoNav {
+        background: rgba(243,244,245,0.8);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
 </style>

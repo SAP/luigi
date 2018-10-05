@@ -2,7 +2,8 @@ import { getNavigationPath } from './navigation';
 import {
   getConfigValue,
   getConfigValueAsync,
-  getConfigBooleanValue
+  getConfigBooleanValue,
+  getConfigValueFromObject
 } from './config';
 import { getPathWithoutHash, getUrlWithoutHash } from '../utilities/helpers';
 
@@ -156,6 +157,12 @@ const navigateIframe = (config, component, node) => {
     }
 
     if (componentData.viewUrl) {
+      if (getConfigValueFromObject(componentData, 'currentNode.loadingIndicator.enabled') !== false) {
+        component.set({ 'showLoadingIndicator': true });
+      } else {
+        component.set({ 'showLoadingIndicator': false });
+      }
+      config.navigateOk = undefined;
       config.iframe = document.createElement('iframe');
       config.iframe.src = viewUrl;
 
@@ -163,6 +170,7 @@ const navigateIframe = (config, component, node) => {
 
       if (config.builderCompatibilityMode) {
         config.iframe.addEventListener('load', () => {
+          window.postMessage({ msg: 'luigi.hide-loading-indicator' }, '*');
           config.iframe.contentWindow.postMessage(
             ['init', JSON.stringify(componentData.context)],
             '*'

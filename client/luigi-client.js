@@ -51,6 +51,10 @@
     window.parent.postMessage({ msg: 'luigi.get-context' }, '*');
   }
 
+  function hideLoadingIndicator() {
+    window.parent.postMessage({ msg: 'luigi.hide-loading-indicator' }, '*');
+  }
+
   function setContext(rawData) {
     for (var index = 0; index < defaultContextKeys.length; index++) {
       var key = defaultContextKeys[index];
@@ -78,6 +82,10 @@
       Luigi.initialized = true;
       if (window._init) {
         window._init(currentContext.context);
+      }
+
+      if (currentContext.internal.autoHideLoadingIndicator) {
+        hideLoadingIndicator();
       }
     }
     if ('luigi.navigate' === e.data.msg) {
@@ -275,6 +283,16 @@
      */
     uxManager: function () {
       return {
+        /**
+         * Shows a spinner with backdrop to block the microfrontend frame
+         */
+        showLoadingIndicator: function () {
+          window.parent.postMessage({ msg: 'luigi.show-loading-indicator' }, '*');
+        },
+        /**
+         * Hides the spinner
+         */
+        hideLoadingIndicator: hideLoadingIndicator,
         /**
          * Adds a backdrop for Core to block the UI
          */
