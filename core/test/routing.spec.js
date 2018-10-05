@@ -10,10 +10,13 @@ import { afterEach } from 'mocha';
 
 describe('Routing', () => {
   let component;
+  let lastObj;
   beforeEach(() => {
+    lastObj = {};
     component = {
       set: obj => {
-        component.get = () => obj;
+        lastObj = Object.assign(lastObj, obj);
+        component.get = () => lastObj;
       },
       get: () => ({})
     };
@@ -119,9 +122,10 @@ describe('Routing', () => {
         navigateOk: null
       };
 
-      // when
       window.Luigi = {};
       window.Luigi.config = sampleLuigiConfig;
+
+      // when
       sinon.stub(document, 'createElement').callsFake(() => ({ src: null }));
       await routing.handleRouteChange(path, component, node, config, window);
 
@@ -131,6 +135,43 @@ describe('Routing', () => {
         component.get().hideNav,
         window.Luigi.config.settings.hideNavigation
       );
+      assert.equal(component.get().showLoadingIndicator, true);
+    });
+
+    it('should set component data with hash path using disabled loadingIndicator', async () => {
+      // given
+      const path = '#/projects';
+      const expectedViewUrl = '/aaa.html';
+
+      const node = {
+        pathSegment: 'projects',
+        label: 'AAA',
+        viewUrl: '/aaa.html',
+        loadingIndicator: {
+          enabled: false
+        },
+        prepend: sinon.spy()
+      };
+
+      const config = {
+        iframe: null,
+        builderCompatibilityMode: false,
+        navigateOk: null
+      };
+
+      // when
+      window.Luigi = {};
+      window.Luigi.config = {
+        navigation: {
+          nodes: () => [node]
+        }
+      };
+      sinon.stub(document, 'createElement').callsFake(() => ({ src: null }));
+      await routing.handleRouteChange(path, component, node, config, window);
+
+      // then
+      assert.equal(component.get().viewUrl, expectedViewUrl);
+      assert.equal(component.get().showLoadingIndicator, false);
     });
 
     it('should set component data without hash path', async () => {
@@ -609,7 +650,7 @@ describe('Routing', () => {
   describe('defaultChildNodes', () => {
     const routing = rewire('../src/services/routing');
     const getDefaultChildNode = routing.__get__('getDefaultChildNode');
-    const getPathData = function() {
+    const getPathData = function () {
       return {
         navigationPath: [
           {
