@@ -15,6 +15,11 @@ export class OverviewComponent {
       description: 'backdrop methods'
     },
     {
+      link: '/ext',
+      text: 'uxManager()',
+      description: 'loading indicator methods'
+    },
+    {
       link: '/projects/pr2',
       text: 'linkManager()',
       description: 'navigation methods'
@@ -31,11 +36,6 @@ export class OverviewComponent {
       link: '/projects/pr1/users/groups',
       text: 'dynamic Nodes',
       description: 'navigation Node configuration to set a specific node as dynamic'
-    },
-    {
-      link: '/ext',
-      text: 'loadingIndicator',
-      description: 'navigation Node configuration with manual loading indicator'
     }
   ];
 }
