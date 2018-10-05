@@ -24,7 +24,7 @@ Luigi core is the part of Luigi that enables navigation, security and routing. T
 
 Luigi client enables integration of Luigi in views. You can easily configure the lifecycle and links of the client, as well as customize the appearance of your navigation.
 
-- [Lifecycle](docs/lifecycle.md) gives you details on the life cycle of listeners, navigation Nodes, and Event data.
+- [Lifecycle](docs/lifecycle.md) gives you details on the life cycle of listeners, navigation Nodes and Event data.
 - [Link Manager](docs/link-manager.md) shows how to configure the Link Manager.
 - [UX Manager](docs/ux-manager.md) shows how to set up the UX Manager.
 
@@ -42,5 +42,5 @@ To ensure that existing features still work as expected after your changes, you 
 
 When the application is ready:
 
-- Run `npm run cypress:run` in the __core/examples/luigi-sample-angular__ folder to start tests in the headless browser.
-- Run `npm run cypress:open` in the __core/examples/luigi-sample-angular__ folder to start tests in the interactive mode.
+- Run `npm run cypress:run` in the `core/examples/luigi-sample-angular` folder to start tests in the headless browser.
+- Run `npm run cypress:open` in the `core/examples/luigi-sample-angular` folder to start tests in the interactive mode.
