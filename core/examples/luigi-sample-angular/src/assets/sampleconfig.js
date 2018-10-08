@@ -1,5 +1,27 @@
-var getAllProjects = function() {
-  return new Promise(function(resolve) {
+var navigationPermissionChecker = function (nodeToCheckPermissionFor, parentNode, currentContext) {
+  // depending on the current path and context returns true or false
+  // true means the current node is accessible, false the opposite
+  var mockCurrentUserGroups = ['admins'];
+  if (nodeToCheckPermissionFor.constraints) {
+    // check if user has required groups
+    return nodeToCheckPermissionFor.constraints.filter(
+      function (c) {
+        return mockCurrentUserGroups.indexOf(c) !== -1;
+      }
+    ).length !== 0;
+  }
+
+  return true;
+};
+
+function toTitleCase(str) {
+  return str.replace(/\w\S*/g, function (txt) {
+    return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
+  });
+}
+
+var getAllProjects = function () {
+  return new Promise(function (resolve) {
     resolve([
       {
         id: 'pr1',
@@ -13,8 +35,8 @@ var getAllProjects = function() {
   });
 };
 
-var getProjectPlugins = function(projectId) {
-  return new Promise(function(resolve) {
+var getProjectPlugins = function (projectId) {
+  return new Promise(function (resolve) {
     if (projectId === 'pr2') {
       resolve([
         {
@@ -52,8 +74,8 @@ var getProjectPlugins = function(projectId) {
   });
 };
 
-var projectDetailNavProviderFn = function(context) {
-  return new Promise(function(resolve) {
+var projectDetailNavProviderFn = function (context) {
+  return new Promise(function (resolve) {
     var projectId = context.currentProject;
     var children = [
       {
@@ -69,20 +91,24 @@ var projectDetailNavProviderFn = function(context) {
             viewUrl: '/sampleapp.html#/projects/' + projectId + '/users/groups',
             children: [
               {
-                pathSegment: 'stakeholders',
-                label: 'Stakeholders',
+                pathSegment: ':group',
                 viewUrl:
                   '/sampleapp.html#/projects/' +
                   projectId +
-                  '/users/groups/stakeholders'
-              },
-              {
-                pathSegment: 'customers',
-                label: 'Customers',
-                viewUrl:
-                  '/sampleapp.html#/projects/' +
-                  projectId +
-                  '/users/groups/customers'
+                  '/users/groups/:group',
+                context: {
+                  currentGroup: ':group'
+                },
+                children: [
+                  {
+                    label: 'Group Settings',
+                    pathSegment: 'settings',
+                    viewUrl:
+                      '/sampleapp.html#/projects/' +
+                      projectId +
+                      '/users/groups/:group/settings'
+                  }
+                ]
               }
             ]
           },
@@ -108,6 +134,7 @@ var projectDetailNavProviderFn = function(context) {
       },
       {
         pathSegment: 'miscellaneous',
+        constraints: ['unicorns'],
         label: 'Miscellaneous',
         viewUrl: '/sampleapp.html#/projects/' + projectId + '/miscellaneous'
       },
@@ -140,8 +167,8 @@ var projectDetailNavProviderFn = function(context) {
         ]
       }
     ];
-    getProjectPlugins(projectId).then(result => {
-      result.forEach(plugin => {
+    getProjectPlugins(projectId).then(function (result) {
+      result.forEach(function (plugin) {
         children.push({
           category: plugin.category,
           pathSegment: plugin.viewId,
@@ -155,11 +182,11 @@ var projectDetailNavProviderFn = function(context) {
   });
 };
 
-var projectsNavProviderFn = function(context) {
-  return new Promise(function(resolve) {
-    getAllProjects().then(result => {
+var projectsNavProviderFn = function (context) {
+  return new Promise(function (resolve) {
+    getAllProjects().then(function (result) {
       var children = [];
-      result.forEach(project => {
+      result.forEach(function (project) {
         children.push({
           /**
            * navigationContext:
@@ -198,11 +225,21 @@ Luigi.setConfig({
    *
    */
   auth: {
-    // use: 'oAuth2ImplicitGrant',
+    use: 'mockAuth',
+    mockAuth: {
+      authorizeUrl: `${window.location.origin}/assets/auth-mock/login-mock.html`,
+      logoutUrl: `${window.location.origin}/assets/auth-mock/logout-mock.html`,
+      post_logout_redirect_uri: '/logout.html',
+      authorizeMethod: 'GET',
+      oAuthData: {
+        client_id: 'egDuozijY5SVr0NSIowUP1dT6RVqHnlp'
+      }
+    },
     openIdConnect: {
       authority: 'https://example-authority.com',
       client_id: 'client',
-      scope: 'audience:server:client_id:client openid profile email groups'
+      scope: 'audience:server:client_id:client openid profile email groups',
+      logoutUrl: 'https://example-url.com/logout',
       // optional parameters
       // redirect_uri: '',
       // post_logout_redirect_uri: '/logout.html',
@@ -232,12 +269,12 @@ Luigi.setConfig({
       // logoutFn: (settings, authData, logoutCallback) => {
       //   console.log('logoutFn called');
       //   // auth example
-      //   const logoutreq = `${settings.logoutUrl}?id_token_hint=${
+      //   var logoutreq = `${settings.logoutUrl}?id_token_hint=${
       //     authData.idToken
       //     }&client_id=${settings.oauthData.client_id}&post_logout_redirect_uri=${
       //     window.location.origin
       //     }/auth/logout.html`;
-      //   const request = new XMLHttpRequest();
+      //   var request = new XMLHttpRequest();
       //   request.open('GET', logoutreq);
       //   request.addEventListener('load', function (event) {
       //     if (request.status >= 200 && request.status < 300) {
@@ -254,58 +291,72 @@ Luigi.setConfig({
     },
 
     events: {
-      onLogout: () => {
+      onLogout: function () {
         console.log('onLogout');
       },
-      onAuthSuccessful: data => {
+      onAuthSuccessful: function (data) {
         console.log('onAuthSuccessful', data);
       },
-      onAuthExpired: () => {
+      onAuthExpired: function () {
         console.log('onAuthExpired');
       },
       // TODO: define luigi-client api for getting errors
-      onAuthError: err => {
+      onAuthError: function (err) {
         console.log('authErrorHandler 1', err);
       }
     }
   },
   navigation: {
-    nodes: () => [
-      {
-        pathSegment: 'overview',
-        label: 'Overview',
-        viewUrl: '/sampleapp.html#/overview'
-      },
-      {
-        pathSegment: 'projects',
-        label: 'Projects',
-        viewUrl: '/sampleapp.html#/projects/overview',
-        children: projectsNavProviderFn
-      },
-      {
-        hideFromNav: true,
-        pathSegment: 'hidden-sample',
-        label: 'Hidden',
-        viewUrl: '/sampleapp.html#/projects/overview'
-      },
-      {
-        pathSegment: 'ext',
-        label: 'External Page',
-        viewUrl: '/assets/sampleexternal.html#ext',
-        children: [
-          {
-            pathSegment: 'one',
-            label: 'One',
-            viewUrl: '/assets/sampleexternal.html#one'
-          },
-          {
-            pathSegment: 'two',
-            label: 'Two',
-            viewUrl: '/assets/sampleexternal.html#two'
-          }
-        ]
-      }
-    ]
+    nodeAccessibilityResolver: navigationPermissionChecker,
+    nodes: function () {
+      return [
+        {
+          pathSegment: 'overview',
+          label: 'Overview',
+          viewUrl: '/sampleapp.html#/overview'
+        },
+        {
+          pathSegment: 'projects',
+          label: 'Projects',
+          viewUrl: '/sampleapp.html#/projects/overview',
+          children: projectsNavProviderFn
+        },
+        {
+          hideFromNav: true,
+          pathSegment: 'hidden-sample',
+          label: 'Hidden',
+          viewUrl: '/sampleapp.html#/projects/overview'
+        },
+        {
+          pathSegment: 'forbidden-sample',
+          label: 'Forbidden',
+          viewUrl: '/sampleapp.html#/restricted',
+          constraints: ['unicorns']
+        },
+        {
+          pathSegment: 'settings',
+          label: 'Settings',
+          viewUrl: '/sampleapp.html#/settings'
+        },
+        {
+          pathSegment: 'ext',
+          label: 'External Page',
+          viewUrl: '/assets/sampleexternal.html#ext',
+          children: [
+            {
+              pathSegment: 'one',
+              label: 'One',
+              viewUrl: '/assets/sampleexternal.html#one'
+            },
+            {
+              pathSegment: 'two',
+              label: 'Two',
+              viewUrl: '/assets/sampleexternal.html#two'
+            }
+          ]
+        }
+      ]
+    }
   },
 
   routing: {

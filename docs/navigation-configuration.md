@@ -27,6 +27,7 @@ window.Luigi.setConfig({
   },
   // navigation structure and settings
   navigation: {
+    nodeAccessibilityResolver: function (nodeToCheckPermissionFor, parentNode, currentContext) {}
     nodes: [
         // STATIC navigation Node
       {
@@ -41,10 +42,11 @@ window.Luigi.setConfig({
         // DYNAMIC navigation Node
       {
         navigationContext: 'contextName',
-        pathSegment: project.id,
+        pathSegment: ':projectId',
+        viewUrl: '/some/path/:projectId',
         context: {
-          currentProject: project.id
-        }
+          projectId: ':projectId'
+        },
         children: [node, node, node]
       }
     ]
@@ -58,7 +60,12 @@ window.Luigi.setConfig({
 
 ### Navigation parameters
 
-- **pathSegment** specifies the partial URL of the current segment. A static settings example reflects `luigidomain.test/settings`, while a dynamic one loads on any other value.
+- **nodeAccessibilityResolver** allows you to define a permission checker function that gets executed on every Node. If it returns `false`, Luigi removes the Node and its children from the navigation structure.
+**nodeAccessibilityResolver** receives all values defined in the Node configuration. See [angular sampleconfig.js](../core/examples/luigi-sample-angular/src/assets/sampleconfig.js) for the **constraints** example.
+
+## Nodes
+
+- **pathSegment** specifies the partial URL of the current segment. A static settings example reflects `luigidomain.test/settings`, while a dynamic one, prefixed with a colon, loads on any other value. **pathSegments** must not contain slashes.
 - **label** contains the display name of the navigation Node.
 - **hideFromNav** shows or hides a navigation Node. You can still navigate to the Node but it will not show up in the top or left pane.
 - **viewUrl** contains the URL or path to a view that renders when entering the navigation Node. Use either a full URL or a relative path. This value may consist of variables if you have specified a **navigationContext** with a dynamic **pathSegment**. If **viewUrl** is undefined, Luigi activates the child node specified in **defaultChildNode**. When both **viewUrl** and **defaultChildNode** are undefined, Luigi opens the first child of the current node.
@@ -73,7 +80,7 @@ In this example, the web application is accessible at a URL such as `https://Lui
 
 The view loads with these dynamic URL parameters:
 
-- `project.id = sample_1`
+- `:projectId = sample_1`
 - `sort = asc`
 
 ````
@@ -87,24 +94,22 @@ Luigi.setConfig({
         pathSegment: 'something',
         label: 'Something',
         viewUrl: 'https://admin.my.test/project',
-        children: [
-          // DYNAMIC navigation Node
-          {
-            navigationContext: 'project',
-            pathSegment: project.id,
-            viewUrl: 'https://admin.my.test/project/' + project.id,
-            context: {
-              currentProject: project.id
-            },
-            children: [
-              {
-                pathSegment: 'products',
-                label: 'Products',
-                viewUrl: 'https://admin.my.test/project/' + project.id + '/products'
-              }
-            ]
-          }
-        ]
+        children: [{ 
+          navigationContext: 'project',
+          pathSegment: ':projectId',
+          viewUrl: 'https://admin.my.test/project/:projectId',
+          // Optional, you can always call LuigiClient.getPathParams() to get the parameters
+          // context: {
+          //  currentProject: ':projectId'
+          // },
+          children: [
+            {
+              pathSegment: 'products',
+              label: 'Products',
+              viewUrl: 'https://admin.my.test/project/:projectId/products'
+            }
+          ]
+        }
       }
     ]
   }

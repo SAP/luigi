@@ -1,6 +1,6 @@
 <ul class="fd-menu__list">
   <li>
-    {#if authorizationEnabled && isLoggedIn}
+    {#if isLoggedIn}
     <a href="#" aria-label="Logout" on:click=logout() class="fd-menu__item">Logout</a>
     {/if}
   </li>
@@ -8,35 +8,32 @@
 
 <script type="text/javascript">
   import { getConfigValueAsync, getConfigValue, getConfigValueFromObject } from './services/config.js';
-  import { isFunction, deepMerge } from './utilities/helpers.js';
+  import { isFunction, isPromise, deepMerge } from './utilities/helpers.js';
   import { oAuth2ImplicitGrant } from './providers/auth/oAuth2ImplicitGrant.js';
   import { openIdConnect } from './providers/auth/openIdConnect.js';
 
-  let authorizationEnabled = false;
-  let isLoggedIn = false;
-  let settings;
   let idpProviderInstance;
 
   const standardProviders = {
+    mockAuth: oAuth2ImplicitGrant,
     oAuth2ImplicitGrant,
     openIdConnect
   };
 
-  const getStoredAuthData = () =>  JSON.parse(localStorage.getItem('luigi.auth'));
-
+  const getStoredAuthData = () => JSON.parse(localStorage.getItem('luigi.auth'));
+  const newlyAuthorized = () => JSON.parse(localStorage.getItem('luigi.newlyAuthorized'));
   const isAuthValid = () => getStoredAuthData().accessTokenExpirationDate > Number(new Date());
 
   const IdpProviderException = (message) => {
-    this.message = message;
-    this.name = 'IdpProviderException';
-  }
+    return {message, name: 'IdpProviderException'}
+  };
 
-  const getIdpProviderInstance = (idpProviderName, idpProviderSettings) => {
+  const getIdpProviderInstance = async(idpProviderName, idpProviderSettings) => {
     if (isFunction(standardProviders[idpProviderName])) {
       return new standardProviders[idpProviderName](idpProviderSettings);
     }
 
-    // custom provided provider provided via config: 
+    // custom provider provided via config:
     const customIdpProvider = getConfigValueFromObject(idpProviderSettings, 'customIdpProvider');
     if (customIdpProvider) {
       ['login'].forEach((requiredFnName) => {
@@ -44,7 +41,7 @@
           throw new IdpProviderException(`${requiredFnName} function does not exist in custom IDP Provider ${idpProviderName}`);
         }
       });
-      
+
       return new customIdpProvider(idpProviderSettings);
     }
 
@@ -55,45 +52,45 @@
     oncreate() {
       const idpProviderName = getConfigValue('auth.use');
       const idpProviderSettings = getConfigValue(`auth.${idpProviderName}`);
-      authorizationEnabled = !!idpProviderSettings;
-      this.set({
-        authorizationEnabled
-      });
-
+      const authorizationEnabled = !!idpProviderSettings;
       if (!authorizationEnabled) {
         return;
       }
 
-      idpProviderInstance = getIdpProviderInstance(idpProviderName, idpProviderSettings);
-
-      const authData = getStoredAuthData();
-      if (!authData || !isAuthValid()) {
-        this.startAuthorization();
-        return;
-      }
-
-      this.set({
-        isLoggedIn: true,
-        logoutUrl: idpProviderInstance.settings.logoutUrl
-      });
-
-      // TODO: Re-auth via id_token if not logged in
-      // TODO: Check periodically if authorization is still valid
-      // const onAuthExpiredFn = getConfigValue('auth.events.onAuthExpired');
-    },
-    onstate({ changed, current, previous }) {
-      const onLogoutFn = getConfigValue('auth.events.onLogout');
-      const onAuthSuccessfulFn = getConfigValue('auth.events.onAuthSuccessful');
-
-      if (onLogoutFn && previous && previous.isLoggedIn && !current.isLoggedIn) { onLogoutFn(); }
-      if (onAuthSuccessfulFn && (!previous || !previous.isLoggedIn) && current.isLoggedIn) {
+      const checkAuth = () => {
         const authData = getStoredAuthData();
-        onAuthSuccessfulFn(authData); 
+        if (!authData || !isAuthValid()) {
+          this.startAuthorization();
+          return;
+        }
+
+        this.set({ isLoggedIn: true });
+
+        const onAuthSuccessfulFn = getConfigValue('auth.events.onAuthSuccessful');
+        if (onAuthSuccessfulFn && newlyAuthorized()) {
+          localStorage.removeItem('luigi.newlyAuthorized');
+          onAuthSuccessfulFn(authData);
+        }
+
+        // TODO: Re-auth via id_token if not logged in
+        // TODO: Check periodically if authorization is still valid
+        // const onAuthExpiredFn = getConfigValue('auth.events.onAuthExpired');
+      };
+
+
+      idpProviderInstance = getIdpProviderInstance(idpProviderName, idpProviderSettings);
+      if (isPromise(idpProviderInstance)) {
+        return idpProviderInstance.then((resolved) => {
+          idpProviderInstance = resolved;
+          checkAuth();
+        });
       }
+      checkAuth();
     },
     methods: {
-        startAuthorization: function() { 
+      startAuthorization: function() {
           idpProviderInstance.login().then((res) => {
+            localStorage.setItem('luigi.newlyAuthorized', true);
             if(res) {
               alert(res);
             }
@@ -103,23 +100,24 @@
           const authData = getStoredAuthData();
 
           const logoutCallback = () => {
-            this.set({
-              isLoggedIn: false
-            });
+            const onLogoutFn = getConfigValue('auth.events.onLogout');
+            if (onLogoutFn) { onLogoutFn(); }
+
+            this.set({ isLoggedIn: false });
             localStorage.removeItem('luigi.auth');
           }
 
           const customLogoutFn = getConfigValue(`auth.${getConfigValue('auth.use')}.logoutFn`);
           if (isFunction(customLogoutFn)) {
-              return customLogoutFn(idpProviderInstance.settings, authData, logoutCallback);
-          } 
-
-          if (isFunction(idpProviderInstance.logout)) {
-            return idpProviderInstance.logout(authData, logoutCallback);
-          } 
-
-          window.location.href = idpProviderInstance.settings.logoutUrl;
-          return logoutCallback();
+            customLogoutFn(idpProviderInstance.settings, authData, logoutCallback);
+          }
+          else if (isFunction(idpProviderInstance.logout)) {
+            idpProviderInstance.logout(authData, logoutCallback);
+          }
+          else {
+            logoutCallback();
+            window.location.href = idpProviderInstance.settings.logoutUrl;
+          }
         },
     },
     components: {},
@@ -129,33 +127,5 @@
 
 
 <style type="text/scss">
-$fd-icons-path: 'node_modules/fundamental-ui/scss/icons/';
-@import 'node_modules/fundamental-ui/scss/icons';
-@import 'node_modules/fundamental-ui/scss/core';
-@import 'node_modules/fundamental-ui/scss/components/popover';
-@import 'node_modules/fundamental-ui/scss/components/menu';
-@import 'node_modules/fundamental-ui/scss/helpers';
-
-.fd-ui__header {
-    position: fixed;
-    z-index: 1;
-    background: #ffffff;
-    width: 100%;
-    min-height: 50px;
-    height: 50px;
-    border-bottom: solid 1px #dededf;
-    padding: 0 10px;
-}
-
-.fd-global-nav__product-name {
-    color: #0a6ed1;
-    height: 50px;
-    font-size: 24px;
-    line-height: 1em;
-    padding: 13px 0;
-}
- 
-.hideNavComponent {
-    display: none;
-}
+  @import 'node_modules/fundamental-ui/scss/components/menu';
 </style>

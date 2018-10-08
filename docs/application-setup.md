@@ -2,6 +2,13 @@
 
 Prior to the implementation of Luigi, you need to set up your application. This document shows you how to set up a web application using the Luigi micro front-end framework.
 
+Choose the framework to build your application:
+
+[Application setup without a framework](#noframework) <br>
+[Angular 6](#angular6)<br>
+[SAPUI5/OpenUI5](#sapui5)<br>
+[VUE.JS](#vuejs)
+
 ## Intitial steps
 
 Follow these steps to build a web application based on Luigi:
@@ -21,7 +28,8 @@ npm install --save @kyma-project/luigi-client
 
 The examples on this page demonstrate commands that perform each of the necessary steps to set up your application. Each set of commands is grouped by the framework on which you execute it.
 
-### Application setup for an application not using a framework
+<a name="noframework"></a> 
+### Application setup for an application not using a framework 
 
 >**NOTE:** You need a development server capable of hosting Single Page Applications. The recommended server is Live Server.
 
@@ -36,7 +44,7 @@ npm install -g live-server
 ````
 $ mkdir my-plain-app && cd my-plain-app
 $ npm init -y
-$ npm i -S @kyma-project/luigi-core@0.2.1 @kyma-project/luigi-client@0.2.1
+$ npm i -S @kyma-project/luigi-core@latest @kyma-project/luigi-client@latest fundamental-ui@latest
 $ mkdir -p public/assets
 $ curl https://raw.githubusercontent.com/kyma-project/Luigi/master/core/examples/luigi-sample-angular/src/index.html > public/index.html
 $ curl https://raw.githubusercontent.com/kyma-project/Luigi/master/core/examples/luigi-sample-angular/src/assets/sampleexternal.html > public/assets/temp.html
@@ -45,8 +53,9 @@ $ cp -r node_modules/\@kyma-project/luigi-* public
 $ live-server --entry-file=index.html public
 
 ````
+<a name="angular6"></a>
 
-### Application setup for Angular 6
+### Application setup for Angular 6 
 
 >**NOTE:** The Angular CLI is a prerequisite for this example.
 
@@ -56,17 +65,17 @@ $ live-server --entry-file=index.html public
 
 ````
 $ ng new my-dream-app --routing && cd my-dream-app
-$ npm i -S @kyma-project/luigi-core@0.2.1 @kyma-project/luigi-client@0.2.1
+$ npm i -S @kyma-project/luigi-core@latest @kyma-project/luigi-client@latest fundamental-ui@latest
 $ mv src/index.html src/angular.html
 $ curl https://raw.githubusercontent.com/kyma-project/Luigi/master/core/examples/luigi-sample-angular/src/index.html > src/index.html
 $ curl https://raw.githubusercontent.com/kyma-project/Luigi/master/core/examples/luigi-sample-angular/src/assets/basicConfiguration.js > src/assets/sampleconfig.js
 $ sed 's/"src\/index.html"/"src\/angular.html"/g' angular.json > tmp.json && mv tmp.json angular.json
-$ sed 's/"src\/assets"/"src\/assets","src\/index.html",{"glob": "**","input": "node_modules\/@kyma-project\/luigi-core", "output": "\/luigi-core"},{"glob": "**","input": "node_modules\/@kyma-project\/luigi-client","output": "\/luigi-client"}/g' angular.json > tmp.json && mv tmp.json angular.json
+$ sed 's/"src\/assets"/"src\/assets","src\/index.html", {"glob": "fundamental-ui.min.css", "input": "node_modules\/fundamental-ui\/dist","output": "\/fundamental-ui"}, {"glob": "fonts\/**","input": "node_modules\/fundamental-ui\/dist","output": "\/fundamental-ui"}, {"glob": "SAP-icons.*","input": "node_modules\/fundamental-ui\/dist","output": "\/fundamental-ui"}, {"glob": "**","input": "node_modules\/@kyma-project\/luigi-core", "output": "\/luigi-core"},{"glob": "**","input": "node_modules\/@kyma-project\/luigi-client","output": "\/luigi-client"}/g' angular.json > tmp.json && mv tmp.json angular.json
 $ ng serve
-
 ````
+<a name="sapui5"></a>
 
-### Application setup for SAPUI5/OpenUI5
+### Application setup for SAPUI5/OpenUI5 
 
 >**NOTE:** Live Server must be installed as your development server.
 
@@ -81,7 +90,7 @@ npm install -g live-server
 ````
 $ mkdir my-ui5-app && cd my-ui5-app
 $ npm init -y
-$ npm i -S @kyma-project/luigi-core@0.2.1 @kyma-project/luigi-client@0.2.1
+$ npm i -S @kyma-project/luigi-core@latest @kyma-project/luigi-client@latest fundamental-ui@latest
 $ mkdir -p public/assets
 $ curl https://raw.githubusercontent.com/kyma-project/Luigi/master/core/examples/luigi-sample-angular/src/index.html > public/index.html
 $ curl https://raw.githubusercontent.com/SAP/openui5/master/src/sap.m/test/sap/m/demokit/helloworld/index.html  | sed 's/src="..\/..\/..\/..\/..\/resources\/sap-ui-core.js"/src="https:\/\/openui5.hana.ondemand.com\/resources\/sap-ui-core.js"/g' > public/ui5.html
@@ -91,7 +100,9 @@ $ live-server --entry-file=index.html public
 
 ````
 
-### Application setup for VUE.JS
+<a name="vuejs"></a>
+
+### Application setup for VUE.JS 
 
 >**NOTE:** The VUE CLI is a prerequisite for this example.
 
@@ -105,7 +116,7 @@ npm install -g @vue/cli
 
 ````
 $ vue create -d my-vue-app && cd my-vue-app
-$ npm i -S @kyma-project/luigi-core@0.2.1 @kyma-project/luigi-client@0.2.1
+$ npm i -S @kyma-project/luigi-core@latest @kyma-project/luigi-client@latest fundamental-ui@latest
 $ mkdir -p public/assets
 $ mv public/index.html public/vue.html
 $ curl https://raw.githubusercontent.com/kyma-project/Luigi/master/core/examples/luigi-sample-angular/src/index.html > public/index.html

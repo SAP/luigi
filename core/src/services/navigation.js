@@ -1,4 +1,13 @@
-import { getConfigValueFromObjectAsync } from './config';
+import { getConfigValue, getConfigValueFromObjectAsync } from './config';
+import { isFunction } from '../utilities/helpers';
+
+const isNodeAccessPermitted = (nodeToCheckPermissionFor, parentNode, currentContext) => {
+  const permissionCheckerFn = getConfigValue('navigation.nodeAccessibilityResolver');
+  if (typeof permissionCheckerFn !== 'function') {
+    return true;
+  }
+  return permissionCheckerFn(nodeToCheckPermissionFor, parentNode, currentContext);
+}
 
 export const getNavigationPath = async (rootNavProviderPromise, activePath) => {
   const rootNode = {};
@@ -8,11 +17,13 @@ export const getNavigationPath = async (rootNavProviderPromise, activePath) => {
   try {
     const topNavNodes = await rootNavProviderPromise;
     rootNode.children = topNavNodes;
+    await getChildren(rootNode); // keep it, mutates and filters children
+
     if (!activePath) {
       activePath = '';
     }
     const nodeNamesInCurrentPath = activePath.split('/');
-    return buildNode(nodeNamesInCurrentPath, [rootNode], topNavNodes, {});
+    return buildNode(nodeNamesInCurrentPath, [rootNode], rootNode.children, {});
   } catch (err) {
     console.error('Failed to load top navigation nodes.', err);
   }
@@ -30,23 +41,24 @@ export const getChildren = async (node, context) => {
         '_childrenProvider',
         context ? context : node.context
       );
-      node.children = children;
+      node.children = (children instanceof Array) && children.filter((child) => isNodeAccessPermitted(child, node, context)) || [];
       bindChildrenToParent(node);
       node._childrenProviderUsed = true;
-      return children;
+      return node.children;
     } catch (err) {
-      console.error('Could not lazy-load childen for node', err);
+      console.error('Could not lazy-load children for node', err);
     }
   } else if (node && node.children) {
     bindChildrenToParent(node);
     return node.children;
   } else {
-    return node;
+    return [];
   }
 };
 
 export const bindChildrenToParent = node => {
-  if (node && node.children) {
+  // Checking for pathSegment to exclude virtual root node
+  if (node && node.pathSegment && node.children) {
     node.children.forEach(child => {
       child.parent = node;
     });
@@ -81,7 +93,8 @@ const buildNode = async (
         node.navigationContext
       );
       try {
-        const children = await getChildren(node, newContext);
+        let children = await getChildren(node, newContext);
+
         result = buildNode(
           nodeNamesInCurrentPath,
           nodesInCurrentPath,
@@ -108,10 +121,46 @@ const applyContext = (context, addition, navigationContext) => {
   return context;
 };
 
-const findMatchingNode = (urlPathElement, nodes) => {
+export const findMatchingNode = (urlPathElement, nodes) => {
   let result = null;
+  const dynamicSegmentsLength = nodes.filter(n => n.pathSegment.startsWith(':')).length;
+  if (nodes.length > 1) {
+    if (dynamicSegmentsLength === 1) {
+      console.warn('Invalid Node setup detected. \nStatic and dynamic nodes cannot be used together on the same level. Static node gets cleaned up. \nRemove the static Node from the configuration to resolve this warning. \nAffected pathSegment:', urlPathElement, 'Children:', nodes);
+      nodes = nodes.filter(n => n.pathSegment.startsWith(':'));
+    }
+    if (dynamicSegmentsLength > 1) {
+      console.error('Invalid Node setup detected. \nMultiple dynamic Nodes are not allowed on the same level. Stopped navigation. \nInvalid Children:', nodes);
+      return null;
+    }
+  }
   nodes.some(node => {
+    // Static Nodes
     if (node.pathSegment === urlPathElement) {
+      result = node;
+      return true;
+    }
+
+    // Dynamic Nodes
+    if (node.pathSegment.startsWith(':')) {
+      const key = node.pathSegment.slice(0);
+      node.pathParam = {
+        key: key,
+        value: urlPathElement
+      };
+
+      // path substitutions
+      node.pathSegment = node.pathSegment.replace(key, urlPathElement);
+      node.viewUrl = node.viewUrl.replace(key, urlPathElement);
+      if (node.context) {
+        Object.entries(node.context).map((entry) => {
+          const dynKey = entry[1];
+          if (dynKey === key) {
+            node.context[entry[0]] = dynKey.replace(dynKey, urlPathElement);
+          }
+        });
+      }
+
       result = node;
       return true;
     }

@@ -9,12 +9,13 @@
     "build": "ng build",
     "test": "ng test",
     "lint": "ng lint",
-    "e2e": "ng e2e",
     "startWebpack": "webpack-dev-server --port=4200",
     "buildWebpack": "webpack",
     "testWebpack": "karma start ./karma.conf.js",
     "e2eWebpack": "protractor ./protractor.conf.js",
-    "pree2eWebpack": "webdriver-manager update --standalone false --gecko false --quiet"
+    "pree2eWebpack": "webdriver-manager update --standalone false --gecko false --quiet",
+    "e2e:open": "cypress open",
+    "e2e:run": "cypress run"
   },
   "dependencies": {
     "@angular/animations": "^6.1.0",
@@ -29,8 +30,8 @@
     "ajv": "^6.1.1",
     "core-js": "^2.4.1",
     "fundamental-ui": "^1.1.0",
-    "@kyma-project/luigi-core": "0.3.2",
-    "@kyma-project/luigi-client": "0.3.2",
+    "@kyma-project/luigi-core": "^0.3.2",
+    "@kyma-project/luigi-client": "^0.3.2",
     "zone.js": "^0.8.14",
     "rxjs": "^6.2.0"
   },
@@ -48,7 +49,7 @@
     "circular-dependency-plugin": "^4.2.1",
     "codelyzer": "^4.4.1",
     "copy-webpack-plugin": "~4.4.1",
-    "cypress": "^3.0.3",
+    "cypress": "^3.1.0",
     "file-loader": "^1.1.5",
     "html-webpack-plugin": "^3.0.0",
     "istanbul-instrumenter-loader": "^3.0.0",

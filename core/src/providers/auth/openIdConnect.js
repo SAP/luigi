@@ -21,12 +21,17 @@ export class openIdConnect {
     });
 
     this.settings = mergedSettings;
-    waitForKeyExistency(window, 'Oidc').then(res => {
+
+    return waitForKeyExistency(window, 'Oidc').then(res => {
       this.client = new Oidc.OidcClient(this.settings);
       // Oidc.Log.logger = console;
       // Oidc.Log.level = Oidc.Log.INFO;
-      this._processLoginResponse();
-      this._processLogoutResponse();
+      return Promise.all([
+        this._processLoginResponse(),
+        this._processLogoutResponse()
+      ]).then(() => {
+        return this;
+      });
     });
   }
 
@@ -47,7 +52,7 @@ export class openIdConnect {
 
   logout(authData, callback) {
     callback();
-    window.location.href = this.settings.post_logout_redirect_uri;
+    window.location.href = this.settings.logoutUrl;
     // TODO: dex logout is not yet supported
     // const signoutData = {
     //   id_token_hint: authData && authData.idToken,
@@ -62,56 +67,67 @@ export class openIdConnect {
   }
 
   _processLogoutResponse() {
-    // TODO: dex logout is not yet supported
-    if (window.location.href.indexOf('?') >= 0) {
-      this.client
-        .processSignoutResponse()
-        .then(response => {
-          localStorage.removeItem('luigi.auth');
-          log('signout response', response);
-        })
-        .catch(function(err) {
-          log(err);
-        });
-    }
+    return new Promise((resolve, reject) => {
+      // TODO: dex logout does not yet support proper logout
+      if (window.location.href.indexOf('?logout') >= 0) {
+        this.client
+          .processSignoutResponse()
+          .then(response => {
+            localStorage.removeItem('luigi.auth');
+            log('signout response', response);
+            resolve(response);
+          })
+          .catch(function (err) {
+            reject(response);
+            log(err);
+          });
+      }
+      resolve(true);
+    });
   }
 
   _processLoginResponse() {
-    if (window.location.hash.indexOf('access_token') === -1) {
-      return;
-    }
+    return new Promise((resolve, reject) => {
+      if (window.location.hash.indexOf('access_token') === -1) {
+        return resolve(true);
+      }
 
-    window.location.hash = decodeURIComponent(window.location.hash);
-    this.client
-      .processSigninResponse()
-      .then(hashParams => {
-        if (hashParams.error) {
-          return console.error(
-            'Error',
-            hashParams.error,
-            hashParams.error_description,
-            hashParams
-          );
-        }
-        const data = {
-          accessToken: hashParams.access_token,
-          accessTokenExpirationDate: hashParams.expires_at * 1000,
-          scope: hashParams.scope,
-          idToken: hashParams.id_token,
-          profile: hashParams.profile
-        };
-        localStorage.setItem('luigi.auth', JSON.stringify(data));
+      window.location.hash = decodeURIComponent(window.location.hash);
+      this.client
+        .processSigninResponse()
+        .then(hashParams => {
+          if (hashParams.error) {
+            return console.error(
+              'Error',
+              hashParams.error,
+              hashParams.error_description,
+              hashParams
+            );
+          }
+          const data = {
+            accessToken: hashParams.access_token,
+            accessTokenExpirationDate: hashParams.expires_at * 1000,
+            scope: hashParams.scope,
+            idToken: hashParams.id_token,
+            profile: hashParams.profile
+          };
+          localStorage.setItem('luigi.auth', JSON.stringify(data));
 
-        // since localStorage has no callback we need to wait couple of ms before proceeding
-        // else persistence might fail.
-        if (hashParams.state) {
+          // since localStorage has no callback we need to wait couple of ms before proceeding
+          // else persistence might fail.
           setTimeout(() => {
-            window.location.href = decodeURIComponent(hashParams.state);
+            if (hashParams.state) {
+              window.location.href = decodeURIComponent(hashParams.state);
+            } else {
+              window.location.href = window.location.origin;
+            }
+            // resolve(true); // not resolving in order to not interrupt window.location.href
           }, 50);
-        }
-      })
-      .catch(err => {
-        console.error(err);
-      });
+        })
+        .catch(err => {
+          console.error(err);
+          reject(err);
+        });
+    });
   }
 }

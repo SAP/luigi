@@ -23,6 +23,38 @@ The lerna-changelog tool detects changes based on PR labels and maps them to sec
     ...
   }
 -->
+## [v0.3.5] - 2018-09-26
+
+#### :rocket: Added
+* [#104](https://github.com/kyma-project/luigi/pull/104) Dynamic pathSegments in navigation nodes ([@maxmarkus](https://github.com/maxmarkus))
+
+#### :bug: Fixed
+* [#84](https://github.com/kyma-project/luigi/pull/84) Remove unnecessary files from public folder ([@dariadomagala](https://github.com/dariadomagala))
+* [#103](https://github.com/kyma-project/luigi/pull/103) Fix behavior of the logout dropdown ([@dariadomagala](https://github.com/dariadomagala))
+* [#102](https://github.com/kyma-project/luigi/pull/102) Fix 'preserve view' feature for sibiling nodes ([@maxmarkus](https://github.com/maxmarkus))
+* [#89](https://github.com/kyma-project/luigi/pull/89) Fix unnecessary 'authSuccessfull' handler execution on each page refresh ([@dariadomagala](https://github.com/dariadomagala))
+* [#79](https://github.com/kyma-project/luigi/pull/79) Fix fundamental-ui issues in applications setup docu ([@jesusreal](https://github.com/jesusreal))
+
+#### :memo: Documentation
+* [#107](https://github.com/kyma-project/luigi/pull/107) Commands path info in angular example readme ([@parostatkiem](https://github.com/parostatkiem))
+
+
+## [core-0.3.3] - 2018-09-14
+
+#### :rocket: Added
+* [#67](https://github.com/kyma-project/luigi/pull/67) Navigation Node visibility with custom nodeAccessibilityResolver ([@maxmarkus](https://github.com/maxmarkus))
+
+#### :bug: Fixed
+* [#82](https://github.com/kyma-project/luigi/pull/82) Fixed changedetector bug ([@dariadomagala](https://github.com/dariadomagala))
+* [#71](https://github.com/kyma-project/luigi/pull/71) Fixed top navigation popover behavior ([@maxmarkus](https://github.com/maxmarkus))
+* [#76](https://github.com/kyma-project/luigi/pull/76) Fixed broken routing after successful OIDC authentication ([@maxmarkus](https://github.com/maxmarkus))
+* [#57](https://github.com/kyma-project/luigi/pull/57) Fixed preserve view and back example ([@dariadomagala](https://github.com/dariadomagala))
+* [#75](https://github.com/kyma-project/luigi/pull/75) Fixed import of LuigiClient on angular app ([@jesusreal](https://github.com/jesusreal))
+
+#### :memo: Documentation
+* [#80](https://github.com/kyma-project/luigi/pull/80) Luigi documentation refinements ([@dpolitesap](https://github.com/dpolitesap))
+* [#34](https://github.com/kyma-project/luigi/pull/34) Introduce changelog file ([@jesusreal](https://github.com/jesusreal))
+
 
 ## [client-0.3.2] - 2018-09-10
 
@@ -82,7 +114,10 @@ The lerna-changelog tool detects changes based on PR labels and maps them to sec
 - Client: Link manager for navigation.
 - Client: UX manager for backdrop.
 
+
 [core-0.3.0]: https://github.com/kyma-project/luigi/compare/v0.2.1...core-0.3.0
 [core-0.3.1]: https://github.com/kyma-project/luigi/compare/core-0.3.0...core-0.3.1
+[core-0.3.3]: https://github.com/kyma-project/luigi/compare/core-0.3.2...core-0.3.3
 [client-0.3.2]: https://github.com/kyma-project/luigi/compare/client-0.3.1...client-0.3.2
 [client-0.3.0]: https://github.com/kyma-project/luigi/compare/v0.2.1...client-0.3.0
+[v0.3.5]: https://github.com/kyma-project/luigi/compare/core-0.3.3...v0.3.5

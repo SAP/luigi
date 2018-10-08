@@ -8,11 +8,13 @@
                         <ul class="fd-side-nav__list">
                             {#each nodes as node}
                                 {#if !node.hideFromNav}
+                                {#if node.label}
                                 <li class="fd-side-nav__item">
                                     <a class="fd-side-nav__link {node === selectedNode ? 'is-selected' : ''}" on:click=handleClick(node)>
                                         {node.label}
                                     </a>
                                 </li>
+                                {/if}
                                 {/if}
                             {/each}
                         </ul>
@@ -26,11 +28,13 @@
                         <ul class="fd-side-nav__list">
                             {#each nodes as node}
                                 {#if !node.hideFromNav}
+                                {#if node.label}
                                 <li class="fd-side-nav__item">
                                     <a class="fd-side-nav__link {node === selectedNode ? 'is-selected' : ''}" on:click=handleClick(node)>
                                         {node.label}
                                     </a>
                                 </li>
+                                {/if}
                                 {/if}
                             {/each}
                         </ul>
@@ -89,7 +93,7 @@
         if (current.pathData && 1 < current.pathData.length) {
             const componentData = component.get();
             const lastElement = [...current.pathData].pop();
-            const children = await getChildren(lastElement);
+            const children = await getChildren(lastElement, componentData.context);
             const groupedChildren = getGroupedChildren(children, current);
 
             if (groupedChildren && 1 < componentData.pathData.length) {
@@ -127,10 +131,7 @@
 </script>
 
 <style type="text/scss">
-@import 'node_modules/fundamental-ui/scss/core';
-@import 'node_modules/fundamental-ui/scss/icons';
 @import 'node_modules/fundamental-ui/scss/components/side-nav';
-@import 'node_modules/fundamental-ui/scss/helpers';
 a {
     cursor: pointer;
 }

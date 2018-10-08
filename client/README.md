@@ -8,7 +8,7 @@ This project contains a library that allows your application to use all features
 
 Install the client in your project using npm:
 ```bash
-npm install luigi-client
+npm install @kyma-project/luigi-client
 ```
 
 Import the client in places where you want to use it, depending on the environment of your choice:

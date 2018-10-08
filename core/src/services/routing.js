@@ -15,7 +15,7 @@ const getLastNodeObject = pathData => {
   return lastElement ? lastElement : {};
 };
 
-const getDefaultChildNode = function(pathData) {
+const getDefaultChildNode = function (pathData) {
   const lastElement =
     pathData.navigationPath[pathData.navigationPath.length - 1];
 
@@ -30,7 +30,7 @@ const getDefaultChildNode = function(pathData) {
   }
 };
 
-const isExistingRoute = function(path, pathData) {
+const isExistingRoute = function (path, pathData) {
   if (path === '') {
     return true;
   }
@@ -146,7 +146,7 @@ const navigateIframe = (config, component, node) => {
   if (isNotSameDomain(config, component)
     || hasIframeIsolation(component)
     || Boolean(config.builderCompatibilityMode)
-  ){
+  ) {
     const componentData = component.get();
     // preserveView, hide other frames, else remove
     if (config.iframe === null) {
@@ -181,6 +181,7 @@ const navigateIframe = (config, component, node) => {
           Object.assign({}, componentData.context, { goBackContext })
         ),
         nodeParams: JSON.stringify(Object.assign({}, componentData.nodeParams)),
+        pathParams: JSON.stringify(Object.assign({}, componentData.pathParams)),
         internal: JSON.stringify(component.prepareInternalData())
       },
       '*'
@@ -237,6 +238,14 @@ const getNodeParams = params => {
   return result;
 };
 
+const getPathParams = nodes => {
+  const params = {};
+  nodes.filter(n => n.pathParam).map(n => (n.pathParam)).forEach(pp => {
+    params[pp.key.replace(':', '')] = pp.value;
+  });
+  return params;
+};
+
 const buildRoute = (node, path, params) =>
   !node.parent
     ? path + (params ? '?' + params : '')
@@ -255,6 +264,7 @@ export const handleRouteChange = async (path, component, node, config) => {
     const isolateView = getLastNodeObject(pathData).isolateView || false;
     const params = parseParams(pathUrl.split('?')[1]);
     const nodeParams = getNodeParams(params);
+    const pathParams = getPathParams(pathData.navigationPath);
 
     if (!viewUrl) {
       const routeExists = isExistingRoute(path, pathData);
@@ -268,16 +278,17 @@ export const handleRouteChange = async (path, component, node, config) => {
 
     const previousCompData = component.get();
     component.set({
-      hideNav: hideNav,
-      viewUrl: viewUrl,
+      hideNav,
+      viewUrl,
       navigationPath: pathData.navigationPath,
       currentNode:
         pathData.navigationPath && pathData.navigationPath.length > 0
           ? pathData.navigationPath[pathData.navigationPath.length - 1]
           : null,
       context: pathData.context,
-      nodeParams: nodeParams,
-      isolateView: isolateView,
+      nodeParams,
+      pathParams,
+      isolateView,
       previousNodeValues: (previousCompData) ? {
         viewUrl: previousCompData.viewUrl,
         isolateView: previousCompData.isolateView
@@ -286,7 +297,7 @@ export const handleRouteChange = async (path, component, node, config) => {
 
     navigateIframe(config, component, node);
   } catch (err) {
-    console.error('Could not handle route change', err);
+    console.info('Could not handle route change', err);
   }
 };
 
