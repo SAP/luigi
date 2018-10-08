@@ -56,11 +56,11 @@ const routes: Routes = [
   {
     path: 'projects/:projectId/dynamic/:dynamicValue',
     component: DynamicComponent
-  },
+  }
 ];
 
 @NgModule({
   imports: [RouterModule.forRoot(routes, { useHash: true })],
   exports: [RouterModule]
 })
-export class AppRoutingModule { }
+export class AppRoutingModule {}

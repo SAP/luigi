@@ -1,7 +1,10 @@
 import { Component, OnInit, ChangeDetectorRef, OnDestroy } from '@angular/core';
 import { Subscription } from 'rxjs';
 import LuigiClient from '@kyma-project/luigi-client';
-import { LuigiContextService, IContextMessage } from '../../services/luigi-context.service';
+import {
+  LuigiContextService,
+  IContextMessage
+} from '../../services/luigi-context.service';
 import { toTitleCase } from '../../services/helpers';
 
 @Component({
@@ -16,20 +19,27 @@ export class DynamicComponent implements OnInit, OnDestroy {
   public links: string[];
   private lcSubscription: Subscription;
 
-  constructor(private luigiService: LuigiContextService, private cdr: ChangeDetectorRef) { }
+  constructor(
+    private luigiService: LuigiContextService,
+    private cdr: ChangeDetectorRef
+  ) {}
 
   ngOnInit() {
-    this.lcSubscription = this.luigiService.getContext().subscribe((ctx: IContextMessage) => {
-      if (!ctx.context) {
-        console.warn('To use this component properly, Node configuration requires context.label to be defined. context.links can be defined as array of strings to generate links to children');
-        return;
-      }
+    this.lcSubscription = this.luigiService
+      .getContext()
+      .subscribe((ctx: IContextMessage) => {
+        if (!ctx.context) {
+          console.warn(
+            'To use this component properly, Node configuration requires context.label to be defined. context.links can be defined as array of strings to generate links to children'
+          );
+          return;
+        }
 
-      // We can directly access our specified context values here
-      this.nodeLabel = toTitleCase(ctx.context.label);
-      this.links = ctx.context.links;
-      this.cdr.detectChanges();
-    })
+        // We can directly access our specified context values here
+        this.nodeLabel = toTitleCase(ctx.context.label);
+        this.links = ctx.context.links;
+        this.cdr.detectChanges();
+      });
   }
 
   ngOnDestroy() {
@@ -39,6 +49,9 @@ export class DynamicComponent implements OnInit, OnDestroy {
   }
 
   public slugify(str: string): string {
-    return str.toLowerCase().split(' ').join('-');
+    return str
+      .toLowerCase()
+      .split(' ')
+      .join('-');
   }
 }
