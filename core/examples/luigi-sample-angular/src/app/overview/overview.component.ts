@@ -31,6 +31,11 @@ export class OverviewComponent {
       link: '/projects/pr1/users/groups',
       text: 'dynamic Nodes',
       description: 'navigation Node configuration to set a specific node as dynamic'
+    },
+    {
+      link: 'http://google.com',
+      text: 'external URL node',
+      description: 'navigation Node configuration to set a specific node as dynamic'
     }
   ];
 }
