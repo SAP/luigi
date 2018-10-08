@@ -1,7 +1,9 @@
 <ul class="fd-menu__list">
   <li>
     {#if isLoggedIn}
-    <a href="#" aria-label="Logout" on:click=logout() class="fd-menu__item">Logout</a>
+      <a href="#" aria-label="Logout" on:click=logout() class="fd-menu__item">Logout</a>
+    {:else}
+      <a href="#" aria-label="Login" on:click=startAuthorization() class="fd-menu__item">Login</a>
     {/if}
   </li>
 </ul>
@@ -60,7 +62,10 @@
       const checkAuth = () => {
         const authData = getStoredAuthData();
         if (!authData || !isAuthValid()) {
-          this.startAuthorization();
+          if(!getConfigValue('auth.disableAutoLogin')) {
+            this.startAuthorization();
+            return;
+          }
           return;
         }
 
