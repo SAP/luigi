@@ -20,7 +20,7 @@ describe('Routing', () => {
       },
       get: () => ({})
     };
-  })
+  });
   afterEach(() => {
     if (document.createElement.restore) {
       document.createElement.restore();
@@ -244,7 +244,13 @@ describe('Routing', () => {
         .returns({ src: null })
         .once();
 
-      await routing.handleRouteChange(path, componentSaved, node, config, window);
+      await routing.handleRouteChange(
+        path,
+        componentSaved,
+        node,
+        config,
+        window
+      );
 
       // then
       assert.equal(componentSaved.get().viewUrl, expectedViewUrl);
@@ -626,31 +632,46 @@ describe('Routing', () => {
         src: 'http://url.com/app.html!#/prevUrl'
       }
     };
-    component.set({ viewUrl: 'http://url.com/app.html!#/someUrl', previousNodeValues: { viewUrl: config.iframe.src } });
+    component.set({
+      viewUrl: 'http://url.com/app.html!#/someUrl',
+      previousNodeValues: { viewUrl: config.iframe.src }
+    });
     assert.isFalse(routing.isNotSameDomain(config, component));
 
-    component.set({ viewUrl: 'http://otherurl.de/app.html!#/someUrl', previousNodeValues: { viewUrl: config.iframe.src } });
+    component.set({
+      viewUrl: 'http://otherurl.de/app.html!#/someUrl',
+      previousNodeValues: { viewUrl: config.iframe.src }
+    });
     assert.isTrue(routing.isNotSameDomain(config, component));
   });
 
   it('hasIframeIsolation', () => {
     // no node is set to isolateView
-    component.set({ isolateView: false, previousNodeValues: { isolateView: false } });
+    component.set({
+      isolateView: false,
+      previousNodeValues: { isolateView: false }
+    });
     assert.isFalse(routing.hasIframeIsolation(component));
 
     // new node is set to isolateView
-    component.set({ isolateView: true, previousNodeValues: { isolateView: false } });
+    component.set({
+      isolateView: true,
+      previousNodeValues: { isolateView: false }
+    });
     assert.isTrue(routing.hasIframeIsolation(component));
 
     // current node is set to isolateView
-    component.set({ isolateView: false, previousNodeValues: { isolateView: true } });
+    component.set({
+      isolateView: false,
+      previousNodeValues: { isolateView: true }
+    });
     assert.isTrue(routing.hasIframeIsolation(component));
   });
 
   describe('defaultChildNodes', () => {
     const routing = rewire('../src/services/routing');
     const getDefaultChildNode = routing.__get__('getDefaultChildNode');
-    const getPathData = function () {
+    const getPathData = function() {
       return {
         navigationPath: [
           {
