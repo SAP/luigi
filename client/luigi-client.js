@@ -284,7 +284,7 @@
     uxManager: function () {
       return {
         /**
-         * Shows a spinner with backdrop to block the microfrontend frame
+         * Shows a spinner with backdrop to block the micro front-end frame
          */
         showLoadingIndicator: function () {
           window.parent.postMessage({ msg: 'luigi.show-loading-indicator' }, '*');
