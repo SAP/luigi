@@ -207,15 +207,23 @@ export const getGroupedChildren = (children, current) => {
   return groupBy(nodes, 'category');
 };
 
-export const getTruncatedVirtualChildren = (children) => {
-  let virtualChildFound = false;
+/**
+ * getTruncatedChildren
+ * 
+ * Returns an array of children without the childs below
+ * a Node that has keepSelectedForChildren enabled
+ * @param array children 
+ * @returns array children
+ */
+export const getTruncatedChildren = (children) => {
+  let childToKeepFound = false;
   const res = [];
   children.forEach(node => {
-    if (virtualChildFound) {
+    if (childToKeepFound) {
       return;
     }
     if (node.keepSelectedForChildren) {
-      virtualChildFound = true;
+      childToKeepFound = true;
     }
     res.push(node);
   });
@@ -225,13 +233,13 @@ export const getTruncatedVirtualChildren = (children) => {
 export const getLeftNavData = async (current, componentData) => {
   const updatedCompData = {};
   if (current.pathData && 1 < current.pathData.length) {
-    const pathDataTruncatedVirtualChildren = getTruncatedVirtualChildren(componentData.pathData);
-    let lastElement = [...pathDataTruncatedVirtualChildren].pop();
+    const pathDataTruncatedChildren = getTruncatedChildren(componentData.pathData);
+    let lastElement = [...pathDataTruncatedChildren].pop();
     let selectedNode;
     if (lastElement.keepSelectedForChildren) {
       selectedNode = lastElement;
-      pathDataTruncatedVirtualChildren.pop();
-      lastElement = [...pathDataTruncatedVirtualChildren].pop();
+      pathDataTruncatedChildren.pop();
+      lastElement = [...pathDataTruncatedChildren].pop();
     }
 
     const children = await getChildren(lastElement, componentData.context);
