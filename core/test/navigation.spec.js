@@ -4,9 +4,9 @@ const expect = chai.expect;
 const assert = chai.assert;
 const sinon = require('sinon');
 
-const sampleNavPromise = new Promise(function (resolve) {
+const sampleNavPromise = new Promise(function(resolve) {
   const lazyLoadedChildrenNodesProviderFn = () => {
-    return new Promise(function (resolve) {
+    return new Promise(function(resolve) {
       resolve([
         {
           pathSegment: 'b1',
@@ -50,14 +50,27 @@ const sampleNavPromise = new Promise(function (resolve) {
   ]);
 });
 
-describe('Navigation', function () {
+describe('Navigation', function() {
+  before(() => {
+    function mockStorage() {
+      return {
+        getItem: function(key) {
+          return JSON.stringify({
+            accessTokenExpirationDate: Number(new Date()) + 1
+          });
+        }
+      };
+    }
+
+    global['localStorage'] = mockStorage();
+  });
   afterEach(() => {
     // reset
     window.Luigi = {
       config: {}
     };
   });
-  describe('getNavigationPath()', function () {
+  describe('getNavigationPath()', function() {
     it('should not fail for undefined arguments', () => {
       navigation.getNavigationPath(undefined, undefined);
     });
@@ -205,7 +218,11 @@ describe('Navigation', function () {
       window.Luigi = {
         config: {
           navigation: {
-            nodeAccessibilityResolver: (nodeToCheckPermissionFor, currentNode, currentContext) => {
+            nodeAccessibilityResolver: (
+              nodeToCheckPermissionFor,
+              currentNode,
+              currentContext
+            ) => {
               if (nodeToCheckPermissionFor.constraints) {
                 return nodeToCheckPermissionFor.constraints === 'other_scope';
               }
@@ -222,9 +239,7 @@ describe('Navigation', function () {
           { label: 'child2' }
         ]
       };
-      const children = await navigation.getChildren(
-        nodeWithChildren
-      );
+      const children = await navigation.getChildren(nodeWithChildren);
       expect(children.length).to.equal(1);
       expect(children[0].label).to.equal('child2');
     });
@@ -257,8 +272,9 @@ describe('Navigation', function () {
       // truthy tests
       // when
       const resStaticOk = navigation.findMatchingNode('other', [staticNode()]);
-      const resDynamicOk = navigation.findMatchingNode('avengers', [dynamicNode()]);
-
+      const resDynamicOk = navigation.findMatchingNode('avengers', [
+        dynamicNode()
+      ]);
 
       // // then
       expect(resStaticOk.pathSegment).to.equal('other');
@@ -271,11 +287,20 @@ describe('Navigation', function () {
       expect(resNull).to.equal(null);
       sinon.assert.notCalled(console.warn);
 
-      const resStaticWarning = navigation.findMatchingNode('avengers', [staticNode(), dynamicNode()]);
-      expect(resStaticWarning.pathSegment).to.equal('avengers', 'static warning pathSegment: ' + resStaticWarning.pathSegment);
+      const resStaticWarning = navigation.findMatchingNode('avengers', [
+        staticNode(),
+        dynamicNode()
+      ]);
+      expect(resStaticWarning.pathSegment).to.equal(
+        'avengers',
+        'static warning pathSegment: ' + resStaticWarning.pathSegment
+      );
       sinon.assert.calledOnce(console.warn);
 
-      const resMultipleDynamicError = navigation.findMatchingNode('twoDynamic', [dynamicNode(), dynamicNode()]);
+      const resMultipleDynamicError = navigation.findMatchingNode(
+        'twoDynamic',
+        [dynamicNode(), dynamicNode()]
+      );
       expect(resMultipleDynamicError).to.equal(null);
       sinon.assert.calledOnce(console.warn);
       sinon.assert.calledOnce(console.error);
