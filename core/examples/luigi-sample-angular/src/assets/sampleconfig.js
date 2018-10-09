@@ -342,7 +342,6 @@ Luigi.setConfig({
           pathSegment: 'ext',
           label: 'External Page',
           loadingIndicator: {
-            enabled: true,
             hideAutomatically: false
           },
           viewUrl: '/assets/sampleexternal.html#ext',
@@ -351,7 +350,6 @@ Luigi.setConfig({
               pathSegment: 'one',
               label: 'One',
               loadingIndicator: {
-                enabled: true,
                 hideAutomatically: false
               },
               viewUrl: '/assets/sampleexternal.html#one'
@@ -360,7 +358,6 @@ Luigi.setConfig({
               pathSegment: 'two',
               label: 'Two',
               loadingIndicator: {
-                enabled: true,
                 hideAutomatically: false
               },
               viewUrl: '/assets/sampleexternal.html#two'

@@ -10,15 +10,13 @@ import { afterEach } from 'mocha';
 
 describe('Routing', () => {
   let component;
-  let lastObj;
   beforeEach(() => {
-    lastObj = {};
+    let lastObj = {};
     component = {
       set: obj => {
-        lastObj = Object.assign(lastObj, obj);
-        component.get = () => lastObj;
+        Object.assign(lastObj, obj);
       },
-      get: () => ({})
+      get: () => lastObj
     };
   });
   afterEach(() => {
@@ -671,7 +669,7 @@ describe('Routing', () => {
   describe('defaultChildNodes', () => {
     const routing = rewire('../src/services/routing');
     const getDefaultChildNode = routing.__get__('getDefaultChildNode');
-    const getPathData = function() {
+    const getPathData = function () {
       return {
         navigationPath: [
           {
