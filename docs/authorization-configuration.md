@@ -1,13 +1,14 @@
 # Authorization Configuration
 
-Luigi provides OpenID Connect and OAuth2 Implicit Grant authorization out of the box. The **use** key defines the active authorization provider.
+Luigi provides OpenID Connect and OAuth2 Implicit Grant authorization out of the box. The **use** key defines the active authorization provider and the **disableAutoLogin** key allows to disable the automatic login flow that is provided by default.
 
 ````
 auth: {
   use: 'openIdConnect',
   openIdConnect: {
     ...
-  }
+  },
+  disableAutoLogin: true
 }
 ````
 
@@ -17,14 +18,16 @@ The following code snippet demonstrates how to configure authorization using Ope
 
 ````
 auth: {
-    use: 'openIdConnect',
-    openIdConnect: {
-      authority: 'https://example-authority.com',
-      client_id: 'client',
-      scope: 'audience:server:client_id:client openid profile email groups',
-      redirect_uri: '',
-      post_logout_redirect_uri: '/logout.html',
-      automaticSilentRenew: true
+  use: 'openIdConnect',
+  openIdConnect: {
+    authority: 'https://example-authority.com',
+    client_id: 'client',
+    scope: 'audience:server:client_id:client openid profile email groups',
+    redirect_uri: '',
+    post_logout_redirect_uri: '/logout.html',
+    automaticSilentRenew: true
+  },
+  disableAutoLogin: false
 }
 ````
 
@@ -57,6 +60,7 @@ auth: {
     nonceFn: () => {},
     logoutFn: (settings, authData, logoutCallback) => {}
   },
+  disableAutoLogin: false
 ````
 
 - **authorizeUrl** contains the URL or address of the OAuth2 authorization server.
@@ -67,4 +71,4 @@ auth: {
 - **redirect_uri** contains the URL to return to after login. The default application root is `/`.
 - **response_type** defaults to the **id_token**. Any other parameter that is added to oAuthData is also added to the authorization payload.
 - **nonceFn** provides a function that returns a string in order to override the default **nonce**.
-- **logoutFn** provides a function to override **logoutUrl** functionality for a custom logout. It needs to execute the function **logoutCallback()** after logout. 
+- **logoutFn** provides a function to override **logoutUrl** functionality for a custom logout. It needs to execute the function **logoutCallback()** after logout.
