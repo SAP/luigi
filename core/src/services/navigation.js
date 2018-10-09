@@ -1,5 +1,4 @@
 import { getConfigValue, getConfigValueFromObjectAsync } from './config';
-import { isFunction } from '../utilities/helpers';
 
 const isNodeAccessPermitted = (
   nodeToCheckPermissionFor,

@@ -15,7 +15,7 @@ const getLastNodeObject = pathData => {
   return lastElement ? lastElement : {};
 };
 
-const getDefaultChildNode = function (pathData) {
+const getDefaultChildNode = function(pathData) {
   const lastElement =
     pathData.navigationPath[pathData.navigationPath.length - 1];
 
@@ -30,14 +30,13 @@ const getDefaultChildNode = function (pathData) {
   }
 };
 
-const isExistingRoute = function (path, pathData) {
-  if (path === '') {
+const isExistingRoute = function(path, pathData) {
+  if (!path) {
     return true;
   }
 
   const lastElement =
     pathData.navigationPath[pathData.navigationPath.length - 1];
-
   const routeSplit = path.replace(/\/$/, '').split('/');
   const lastPathSegment = routeSplit[routeSplit.length - 1];
 
@@ -87,7 +86,9 @@ const removeElementChildren = node => {
 export const isNotSameDomain = (config, component) => {
   if (config.iframe) {
     const componentData = component.get();
-    const previousUrl = getUrlWithoutHash(componentData.previousNodeValues.viewUrl);
+    const previousUrl = getUrlWithoutHash(
+      componentData.previousNodeValues.viewUrl
+    );
     const nextUrl = getUrlWithoutHash(componentData.viewUrl);
     return previousUrl != nextUrl;
   }
@@ -96,8 +97,10 @@ export const isNotSameDomain = (config, component) => {
 
 export const hasIframeIsolation = component => {
   const componentData = component.get();
-  return componentData.isolateView || componentData.previousNodeValues.isolateView;
-}
+  return (
+    componentData.isolateView || componentData.previousNodeValues.isolateView
+  );
+};
 
 export const getContentViewParamPrefix = () => {
   return (
@@ -143,9 +146,10 @@ const navigateIframe = (config, component, node) => {
     );
   }
 
-  if (isNotSameDomain(config, component)
-    || hasIframeIsolation(component)
-    || Boolean(config.builderCompatibilityMode)
+  if (
+    isNotSameDomain(config, component) ||
+    hasIframeIsolation(component) ||
+    Boolean(config.builderCompatibilityMode)
   ) {
     const componentData = component.get();
     // preserveView, hide other frames, else remove
@@ -240,9 +244,12 @@ const getNodeParams = params => {
 
 const getPathParams = nodes => {
   const params = {};
-  nodes.filter(n => n.pathParam).map(n => (n.pathParam)).forEach(pp => {
-    params[pp.key.replace(':', '')] = pp.value;
-  });
+  nodes
+    .filter(n => n.pathParam)
+    .map(n => n.pathParam)
+    .forEach(pp => {
+      params[pp.key.replace(':', '')] = pp.value;
+    });
   return params;
 };
 
@@ -289,10 +296,12 @@ export const handleRouteChange = async (path, component, node, config) => {
       nodeParams,
       pathParams,
       isolateView,
-      previousNodeValues: (previousCompData) ? {
-        viewUrl: previousCompData.viewUrl,
-        isolateView: previousCompData.isolateView
-      } : {}
+      previousNodeValues: previousCompData
+        ? {
+            viewUrl: previousCompData.viewUrl,
+            isolateView: previousCompData.isolateView
+          }
+        : {}
     });
 
     navigateIframe(config, component, node);
