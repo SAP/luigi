@@ -89,7 +89,7 @@ describe('Luigi client features', () => {
       });
 
       //wait for the second iFrame to be loaded
-      // cy.wait(1000);
+      cy.wait(500);
       cy.get('iframe')
         .first()
         .then($preserveViewiFrame => {
@@ -113,6 +113,7 @@ describe('Luigi client features', () => {
 
   describe('uxManager', () => {
     it('backdrop', () => {
+      cy.wait(500);
       cy.get('iframe').then($iframe => {
         const $iframeBody = $iframe.contents().find('body');
         cy.goToFeaturesPage($iframeBody);
@@ -144,6 +145,7 @@ describe('Luigi client features', () => {
 
       cy.get('.fd-spinner').should('not.exist');
 
+      cy.wait(250);
       cy.get('iframe').then($iframe => {
         const $iframeBody = $iframe.contents().find('body');
 
