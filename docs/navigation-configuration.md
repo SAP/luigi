@@ -73,6 +73,8 @@ window.Luigi.setConfig({
 - **context** sends the specified object as context to the view. Use this parameter in combination with the dynamic **pathSegment** to receive the context through the context listeners of **Luigi client**. This is an alternative to using the dynamic value in the **viewUrl**.
 - **defaultChildNode** sets the child node that Luigi activates automatically if the current node has no **viewUrl** defined. Provide **pathSegment** of the child node you want to activate as a string.
 - **isolateView** renders the view in a new frame when you enter and leave the Node. This setting overrides the same-domain frame re-usage. The **isolateView** is disabled by default.
+- **loadingIndicator.enabled** shows a loading indicator when switching between micro front-ends. If you have a super fast micro front-end, you can disable this feature to prevent the flickering of the loading indicator. The **loadingIndicator.loadingIndicator** is enabled by default.
+- **loadingIndicator.hideAutomatically** disables the automatic hiding of the loading indicator once the micro front-end is loaded. Only considered if the loading indicator is enabled. Does not apply if the loading indicator is activated manually with the `LuigiClient.uxManager().showLoadingIndicator()` function. If the loading indicator is enabled and automatic hiding is disabled, use `LuigiClient.uxManager().hideLoadingIndicator()` to hide it manually in your micro front-end during the startup. The **loadingIndicator.hideAutomatically** is enabled by default.
 
 ### A dynamic viewURL
 
