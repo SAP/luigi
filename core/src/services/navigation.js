@@ -191,3 +191,85 @@ export const findMatchingNode = (urlPathElement, nodes) => {
   });
   return result;
 };
+
+
+export const getNodes = (children, pathData) => {
+  if (children && 0 < children.length) {
+    return children;
+  }
+
+  if (2 < pathData.length) {
+    const lastElement = pathData[pathData.length - 1];
+    const oneBeforeLast = pathData[pathData.length - 2];
+    const nestedNode = pathData.length > 1 ? oneBeforeLast : lastElement;
+
+    if (nestedNode && nestedNode.children) {
+      return nestedNode.children;
+    }
+  }
+
+  return [];
+};
+
+export const groupBy = (nodes, property) => {
+  const result = {};
+  nodes.forEach(node => {
+    const key = node[property];
+    let arr = result[key];
+    if (!arr) {
+      arr = [];
+      result[key] = arr;
+    }
+    arr.push(node);
+  });
+
+  return result;
+};
+
+export const getGroupedChildren = (children, current) => {
+  const nodes = getNodes(children, current.pathData);
+  return groupBy(nodes, 'category');
+};
+
+/**
+ * getTruncatedChildren
+ * 
+ * Returns an array of children without the childs below
+ * a Node that has keepSelectedForChildren enabled
+ * @param array children 
+ * @returns array children
+ */
+export const getTruncatedChildren = (children) => {
+  let childToKeepFound = false;
+  const res = [];
+  children.forEach(node => {
+    if (childToKeepFound) {
+      return;
+    }
+    if (node.keepSelectedForChildren) {
+      childToKeepFound = true;
+    }
+    res.push(node);
+  });
+  return res;
+}
+
+export const getLeftNavData = async (current, componentData) => {
+  const updatedCompData = {};
+  if (current.pathData && 1 < current.pathData.length) {
+    const pathDataTruncatedChildren = getTruncatedChildren(componentData.pathData);
+    let lastElement = [...pathDataTruncatedChildren].pop();
+    let selectedNode;
+    if (lastElement.keepSelectedForChildren) {
+      selectedNode = lastElement;
+      pathDataTruncatedChildren.pop();
+      lastElement = [...pathDataTruncatedChildren].pop();
+    }
+
+    const children = await getChildren(lastElement, componentData.context);
+    const groupedChildren = getGroupedChildren(children, current);
+    updatedCompData.selectedNode = selectedNode || lastElement;
+    updatedCompData.children = groupedChildren;
+  }
+  return updatedCompData;
+};

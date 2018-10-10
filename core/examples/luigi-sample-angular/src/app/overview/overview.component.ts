@@ -30,12 +30,20 @@ export class OverviewComponent {
     {
       link: '/projects/pr1/dps',
       text: 'defaultChildNode',
-      description: 'navigation Node configuration to set a specific node as initial target'
+      description:
+        'navigation Node configuration to set a specific Node as an initial target'
     },
     {
       link: '/projects/pr1/users/groups',
       text: 'dynamic Nodes',
-      description: 'navigation Node configuration to set a specific node as dynamic'
+      description:
+        'navigation Node configuration to set a specific Node as dynamic'
+    },
+    {
+      link: '/projects/pr1/avengers',
+      text: 'keepSelectedForChildren',
+      description:
+        'navigation Node configuration to focus on a navigation menu and omit the children'
     }
   ];
 }

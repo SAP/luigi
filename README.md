@@ -42,5 +42,5 @@ To ensure that existing features still work as expected after your changes, you 
 
 When the application is ready:
 
-- Run `npm run cypress:run` in the `core/examples/luigi-sample-angular` folder to start tests in the headless browser.
-- Run `npm run cypress:open` in the `core/examples/luigi-sample-angular` folder to start tests in the interactive mode.
+- Run `npm run e2e:run` in the `core/examples/luigi-sample-angular` folder to start tests in the headless browser.
+- Run `npm run e2e:open` in the `core/examples/luigi-sample-angular` folder to start tests in the interactive mode.

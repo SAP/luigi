@@ -1,4 +1,5 @@
-(function (root, factory) { // UMD wrapper
+(function(root, factory) {
+  // UMD wrapper
   if (typeof define === 'function' && define.amd) {
     define(factory);
   } else if (typeof module === 'object' && module.exports) {
@@ -6,7 +7,8 @@
   } else {
     root.LuigiClient = factory();
   }
-}(typeof self !== 'undefined' ? self : this, function () { // actual Luigi code
+})(typeof self !== 'undefined' ? self : this, function() {
+  // actual Luigi code
 
   // Object.assign polyfill
   if (typeof Object.assign != 'function') {
@@ -57,7 +59,12 @@
       try {
         rawData[key] = JSON.parse(rawData[key]);
       } catch (e) {
-        console.info('unable to parse luigi context data for', key, rawData[key], e);
+        console.info(
+          'unable to parse luigi context data for',
+          key,
+          rawData[key],
+          e
+        );
       }
     }
     currentContext = rawData;
@@ -191,12 +198,16 @@
          * @param {object} navigationContext
          * */
         fromContext: function fromContext(navigationContext) {
-          if (!currentContext.context.parentNavigationContexts.includes(navigationContext)) {
+          if (
+            !currentContext.context.parentNavigationContexts.includes(
+              navigationContext
+            )
+          ) {
             options.errorSkipNavigation = true;
             console.error(
               'Navigation not possible, navigationContext ' +
-              navigationContext +
-              ' not found.'
+                navigationContext +
+                ' not found.'
             );
           } else {
             options.fromContext = navigationContext;
@@ -299,4 +310,4 @@
       };
     }
   };
-}));
+});
