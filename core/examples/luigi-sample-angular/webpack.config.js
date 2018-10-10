@@ -390,6 +390,13 @@ module.exports = {
             glob: '**',
             dot: true
           }
+        },
+        {
+          context: 'node_modules/@kyma-project/luigi-client',
+          to: './luigi-client',
+          from: {
+            glob: 'luigi-client.js'
+          }
         }
       ],
       {

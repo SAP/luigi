@@ -11,13 +11,14 @@ import { afterEach } from 'mocha';
 describe('Routing', () => {
   let component;
   beforeEach(() => {
+    let lastObj = {};
     component = {
       set: obj => {
-        component.get = () => obj;
+        Object.assign(lastObj, obj);
       },
-      get: () => ({})
+      get: () => lastObj
     };
-  })
+  });
   afterEach(() => {
     if (document.createElement.restore) {
       document.createElement.restore();
@@ -119,9 +120,10 @@ describe('Routing', () => {
         navigateOk: null
       };
 
-      // when
       window.Luigi = {};
       window.Luigi.config = sampleLuigiConfig;
+
+      // when
       sinon.stub(document, 'createElement').callsFake(() => ({ src: null }));
       await routing.handleRouteChange(path, component, node, config, window);
 
@@ -131,6 +133,43 @@ describe('Routing', () => {
         component.get().hideNav,
         window.Luigi.config.settings.hideNavigation
       );
+      assert.equal(component.get().showLoadingIndicator, true);
+    });
+
+    it('should set component data with hash path using disabled loadingIndicator', async () => {
+      // given
+      const path = '#/projects';
+      const expectedViewUrl = '/aaa.html';
+
+      const node = {
+        pathSegment: 'projects',
+        label: 'AAA',
+        viewUrl: '/aaa.html',
+        loadingIndicator: {
+          enabled: false
+        },
+        prepend: sinon.spy()
+      };
+
+      const config = {
+        iframe: null,
+        builderCompatibilityMode: false,
+        navigateOk: null
+      };
+
+      // when
+      window.Luigi = {};
+      window.Luigi.config = {
+        navigation: {
+          nodes: () => [node]
+        }
+      };
+      sinon.stub(document, 'createElement').callsFake(() => ({ src: null }));
+      await routing.handleRouteChange(path, component, node, config, window);
+
+      // then
+      assert.equal(component.get().viewUrl, expectedViewUrl);
+      assert.equal(component.get().showLoadingIndicator, false);
     });
 
     it('should set component data without hash path', async () => {
@@ -203,7 +242,13 @@ describe('Routing', () => {
         .returns({ src: null })
         .once();
 
-      await routing.handleRouteChange(path, componentSaved, node, config, window);
+      await routing.handleRouteChange(
+        path,
+        componentSaved,
+        node,
+        config,
+        window
+      );
 
       // then
       assert.equal(componentSaved.get().viewUrl, expectedViewUrl);
@@ -585,24 +630,39 @@ describe('Routing', () => {
         src: 'http://url.com/app.html!#/prevUrl'
       }
     };
-    component.set({ viewUrl: 'http://url.com/app.html!#/someUrl', previousNodeValues: { viewUrl: config.iframe.src } });
+    component.set({
+      viewUrl: 'http://url.com/app.html!#/someUrl',
+      previousNodeValues: { viewUrl: config.iframe.src }
+    });
     assert.isFalse(routing.isNotSameDomain(config, component));
 
-    component.set({ viewUrl: 'http://otherurl.de/app.html!#/someUrl', previousNodeValues: { viewUrl: config.iframe.src } });
+    component.set({
+      viewUrl: 'http://otherurl.de/app.html!#/someUrl',
+      previousNodeValues: { viewUrl: config.iframe.src }
+    });
     assert.isTrue(routing.isNotSameDomain(config, component));
   });
 
   it('hasIframeIsolation', () => {
     // no node is set to isolateView
-    component.set({ isolateView: false, previousNodeValues: { isolateView: false } });
+    component.set({
+      isolateView: false,
+      previousNodeValues: { isolateView: false }
+    });
     assert.isFalse(routing.hasIframeIsolation(component));
 
     // new node is set to isolateView
-    component.set({ isolateView: true, previousNodeValues: { isolateView: false } });
+    component.set({
+      isolateView: true,
+      previousNodeValues: { isolateView: false }
+    });
     assert.isTrue(routing.hasIframeIsolation(component));
 
     // current node is set to isolateView
-    component.set({ isolateView: false, previousNodeValues: { isolateView: true } });
+    component.set({
+      isolateView: false,
+      previousNodeValues: { isolateView: true }
+    });
     assert.isTrue(routing.hasIframeIsolation(component));
   });
 
