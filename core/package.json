@@ -28,6 +28,7 @@
     "style-loader": "^0.21.0",
     "svelte": "^2.8.0",
     "svelte-loader": "^2.9.1",
+    "svelte-transitions": "^1.2.0",
     "url-loader": "^1.0.1",
     "webpack": "^4.11.1",
     "webpack-cli": "^3.0.3"
@@ -54,6 +55,5 @@
   "repository": {
     "type": "git",
     "url": "ssh://github.com/kyma-project/luigi.git"
-  },
-  "dependencies": {}
+  }
 }
