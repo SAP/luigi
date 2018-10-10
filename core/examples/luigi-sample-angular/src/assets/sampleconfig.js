@@ -394,16 +394,25 @@ Luigi.setConfig({
         {
           pathSegment: 'ext',
           label: 'External Page',
+          loadingIndicator: {
+            hideAutomatically: false
+          },
           viewUrl: '/assets/sampleexternal.html#ext',
           children: [
             {
               pathSegment: 'one',
               label: 'One',
+              loadingIndicator: {
+                hideAutomatically: false
+              },
               viewUrl: '/assets/sampleexternal.html#one'
             },
             {
               pathSegment: 'two',
               label: 'Two',
+              loadingIndicator: {
+                hideAutomatically: false
+              },
               viewUrl: '/assets/sampleexternal.html#two'
             }
           ]

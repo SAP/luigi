@@ -1,13 +1,13 @@
 describe('Luigi client features', () => {
   beforeEach(() => {
     cy.visit('http://localhost:4200');
-  });
-
-  it('linkManager features', () => {
     cy.login('tets', 'tets');
 
     //wait for the iFrame to be loaded
-    cy.wait(3000);
+    cy.wait(1000);
+  });
+
+  it('linkManager features', () => {
     cy.get('iframe').then($iframe => {
       const $iframeBody = $iframe.contents().find('body');
       cy.goToFeaturesPage($iframeBody);
@@ -89,7 +89,7 @@ describe('Luigi client features', () => {
       });
 
       //wait for the second iFrame to be loaded
-      cy.wait(1000);
+      cy.wait(500);
       cy.get('iframe')
         .first()
         .then($preserveViewiFrame => {
@@ -110,30 +110,54 @@ describe('Luigi client features', () => {
     });
   });
 
-  it('uxManager features', () => {
-    cy.login('tets', 'tets');
 
-    //wait for the iFrame to be loaded
-    cy.wait(3000);
-    cy.get('iframe').then($iframe => {
-      const $iframeBody = $iframe.contents().find('body');
-      cy.goToFeaturesPage($iframeBody);
-      cy.wrap($iframeBody).should('not.contain', 'Lorem tipsum dolor sit amet');
-      cy.get('.fd-ui__overlay').should('not.exist');
+  describe('uxManager', () => {
+    it('backdrop', () => {
+      cy.wait(500);
+      cy.get('iframe').then($iframe => {
+        const $iframeBody = $iframe.contents().find('body');
+        cy.goToFeaturesPage($iframeBody);
+        cy.wrap($iframeBody).should('not.contain', 'Lorem tipsum dolor sit amet');
+        cy.get('.fd-ui__overlay').should('not.exist');
 
-      //open modal with backdrop
-      cy.wrap($iframeBody)
-        .contains('Add backdrop')
+        //open modal with backdrop
+        cy.wrap($iframeBody)
+          .contains('Add backdrop')
+          .click();
+        cy.wrap($iframeBody).should('contain', 'Lorem tipsum dolor sit amet');
+        cy.get('.fd-ui__overlay').should('exist');
+
+        //close modal
+        cy.wrap($iframeBody)
+          .contains('Confirm')
+          .click();
+        cy.wrap($iframeBody).should('not.contain', 'Lorem tipsum dolor sit amet');
+        cy.get('.fd-ui__overlay').should('not.exist');
+      });
+    });
+
+    it('loading indicator', () => {
+      cy.get('.fd-ui__header')
+        .contains('External Page')
         .click();
-      cy.wrap($iframeBody).should('contain', 'Lorem tipsum dolor sit amet');
-      cy.get('.fd-ui__overlay').should('exist');
 
-      //close modal
-      cy.wrap($iframeBody)
-        .contains('Confirm')
-        .click();
-      cy.wrap($iframeBody).should('not.contain', 'Lorem tipsum dolor sit amet');
-      cy.get('.fd-ui__overlay').should('not.exist');
+      cy.get('.fd-spinner').should('exist');
+
+      cy.get('.fd-spinner').should('not.exist');
+
+      cy.wait(250);
+      cy.get('iframe').then($iframe => {
+        const $iframeBody = $iframe.contents().find('body');
+
+        // show loading indicator
+        cy.wrap($iframeBody)
+          .contains('Show loading indicator')
+          .click();
+        cy.get('.fd-spinner').should('exist');
+
+        // wait for programmatic hide of loading indicator
+        cy.get('.fd-spinner').should('not.exist');
+      });
     });
   });
 });
