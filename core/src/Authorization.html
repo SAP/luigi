@@ -62,10 +62,10 @@
       const checkAuth = () => {
         const authData = getStoredAuthData();
         if (!authData || !isAuthValid()) {
-          if (!getConfigValue('auth.disableAutoLogin')) {
-            this.startAuthorization();
+          if (getConfigValue('auth.disableAutoLogin')) {
             return;
           };
+          this.startAuthorization();
           return;
         };
 
