@@ -6,9 +6,9 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "docu": "npm run docu:validate && npm run docu:generate:section",
-    "docu:generate:new-file": "../node_modules/.bin/documentation build luigi-client.js -f md --markdown-toc=false -o ../docs/luigi-client-api.md",
-    "docu:generate:section": "../node_modules/.bin/documentation readme luigi-client.js -f md --readme-file=../docs/luigi-client-api.md --section='Luigi Client API' --markdown-toc=false --quiet --github false",
-    "docu:validate": "../node_modules/.bin/documentation lint luigi-client.js "
+    "docu:generate:new-file": "documentation build luigi-client.js -f md --markdown-toc=false -o ../docs/luigi-client-api.md",
+    "docu:generate:section": "documentation readme luigi-client.js -f md --readme-file=../docs/luigi-client-api.md --section='Luigi Client API' --markdown-toc=false --quiet --github false",
+    "docu:validate": "documentation lint luigi-client.js "
   },
   "repository": {
     "type": "git",
@@ -22,5 +22,8 @@
     "UI",
     "extensibility"
   ],
-  "license": "Apache-2.0"
+  "license": "Apache-2.0",
+  "devDependencies": {
+    "documentation": "^8.1.2"
+  }
 }

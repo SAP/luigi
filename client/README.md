@@ -27,11 +27,7 @@ You can see the Luigi Client in action by running the [Angular example applicati
 
 
 ## Generate documentation
-```bash
-# Please install dependencies in luigi root folder if you didn't
-cd .. 
-npm install
-
 # Validate and generate documentation
-npm run docu 
+npm install
+npm run docu
 ```
