@@ -167,7 +167,7 @@
         nodeParams: {},
         errorSkipNavigation: false,
         fromContext: null,
-        fromClosestContext: true
+        fromClosestContext: false
       };
 
       return {
