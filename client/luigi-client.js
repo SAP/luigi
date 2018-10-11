@@ -169,26 +169,9 @@
       var options = {
         preserveView: false,
         nodeParams: {},
-      };
-
-      /**
-       * Creates and sends the navigation postMessage for Luigi Core.
-       * @param {string} path path to be navigated to
-       * @param {string} sessionId  current Luigi sessionId
-       * @private 
-       */
-      var _navigate = function _navigate(sessionId, path) {
-        var relativePath = path[0] !== '/';
-        var navigationOpenMsg = {
-          msg: 'luigi.navigation.open',
-          sessionId: sessionId,
-          params: Object.assign(
-            { link: path },
-            { relative: relativePath },
-            options
-          )
-        };
-        window.parent.postMessage(navigationOpenMsg, '*');
+        errorSkipNavigation: false,
+        fromContext: null,
+        fromClosestContext: true
       };
 
       return {
@@ -205,11 +188,20 @@
          */
         navigate: function navigate(path, sessionId, preserveView) {
           if (options.errorSkipNavigation) {
-            options.errorSkipNavigation = undefined;
+            options.errorSkipNavigation = false;
             return;
           }
           options.preserveView = preserveView;
-          _navigate(sessionId, path);
+          var relativePath = path[0] !== '/';
+          var navigationOpenMsg = {
+            msg: 'luigi.navigation.open',
+            sessionId: sessionId,
+            params: Object.assign(
+              { link: path, relative: relativePath },
+              options
+            )
+          };
+          window.parent.postMessage(navigationOpenMsg, '*');
         },
 
         /**
@@ -220,19 +212,16 @@
          * LuigiClient.linkManager().fromContext('project').navigate('/settings')
          */
         fromContext: function fromContext(navigationContext) {
-          if (
-            !currentContext.context.parentNavigationContexts.includes(
-              navigationContext
-            )
-          ) {
+          var navigationContextInParent = currentContext.context.parentNavigationContexts.includes(navigationContext);
+          if (navigationContextInParent) {
+            options.fromContext = navigationContext;
+          } else {
             options.errorSkipNavigation = true;
             console.error(
               'Navigation not possible, navigationContext ' +
                 navigationContext +
                 ' not found.'
             );
-          } else {
-            options.fromContext = navigationContext;
           }
           return this;
         },
@@ -244,13 +233,14 @@
          * LuigiClient.linkManager().fromClosestContext().navigate('/users/groups/stakeholders')
          */
         fromClosestContext: function fromClosestContext() {
-          if (currentContext.context.parentNavigationContexts.length === 0) {
+          var hasParentNavigationContext = currentContext.context.parentNavigationContexts.length === 0;
+          if (hasParentNavigationContext) {
+            options.fromContext = null;
+            options.fromClosestContext = true;
+          } else {
             console.error(
               'Navigation not possible, no parent navigationContext found.'
             );
-          } else {
-            delete options.fromContext;
-            options.fromClosestContext = true;
           }
           return this;
         },
