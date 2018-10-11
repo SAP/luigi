@@ -8,7 +8,7 @@ There are various parameters and functions available to Luigi pertaining the lif
 
 ### addInitListener
 
-Adds a listener that will react once Luigi is initialized.
+Registers a listener that is called with a context object as soon as Luigi is instantiated. Defer your application bootstrap if you are dependent on authentication data from Luigi.
 
 #### Parameters
 
@@ -16,7 +16,7 @@ Adds a listener that will react once Luigi is initialized.
 
 ### addContextUpdateListener
 
-Adds a listener that will react once Luigi context is updated.
+Registers a listener that is called upon any navigation change, and calls the contextUpdatedFn with a new context object.
 
 #### Parameters
 
@@ -24,19 +24,19 @@ Adds a listener that will react once Luigi context is updated.
 
 ### getEventData
 
-Fetch context object from context.
+Returns the context object. Usually it is not required as the addContextUpdateListener receives the same values.
 
 Returns **{idToken: [string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String), sessionId: [string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String), currentEnvironmentId: [string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)}** node parameters
 
 ### getNodeParams
 
-Fetch node parameters from context.
+Returns the configuration object of the active navigation Node..
 
 Returns **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** node parameters
 
 ### getPathParams
 
-Fetch path parameters from context.
+Returns the dynamic path parameters of the active URL.
 
 Returns **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** path parameters
 
@@ -84,8 +84,7 @@ Returns **[linkManager](#linkmanager)** link manager instance
 
 ### fromClosestContext
 
-Sets the current navigation context, which is then be used by navigate function
-This has to be a parent navigation context, it is not possible to go to child navigation contexts
+Sets the current navigation context, which is then be used by navigate function. This has to be a parent navigation context, it is not possible to go to child navigation contexts
 
 #### Examples
 
@@ -122,7 +121,7 @@ Returns **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/
 
 ### goBack
 
-Discards the active view and navigates back to the last visited view (preserved view), if preserveView was set before //jtest add link to preserveView
+Discards the active view and navigates back to the last visited view (preserved view), if preserveView was set before
 
 #### Parameters
 
