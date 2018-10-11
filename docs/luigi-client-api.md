@@ -30,7 +30,7 @@ Returns **{idToken: [string](https://developer.mozilla.org/docs/Web/JavaScript/R
 
 ### getNodeParams
 
-Returns the configuration object of the active navigation Node..
+Returns the configuration object of the active navigation Node.
 
 Returns **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** node parameters
 
@@ -63,7 +63,7 @@ Navigates to the given path in the hosting Luigi app. Contains either a full abs
 ```javascript
 LuigiClient.linkManager().navigate('/overview')
 LuigiClient.linkManager().navigate('users/groups/stakeholders')
-LuigiClient.linkManager().fromContext('project').navigate('/settings', null, true) // preserve view
+LuigiClient.linkManager().navigate('/settings', null, true) // preserve view
 ```
 
 ### fromContext
@@ -84,7 +84,7 @@ Returns **[linkManager](#linkmanager)** link manager instance
 
 ### fromClosestContext
 
-Sets the current navigation context, which is then be used by navigate function. This has to be a parent navigation context, it is not possible to go to child navigation contexts
+Sets the current navigation context, which is then be used by navigate function. This has to be a parent navigation context, it is not possible to go to child navigation contexts.
 
 #### Examples
 
@@ -96,7 +96,7 @@ Returns **[linkManager](#linkmanager)** link manager instance
 
 ### withParams
 
-Sends node parameters to the route, which are then used by the navigate function. Use it optionally in combination with any of the navigation functions and receive it with as part of the context object in LuigiClient
+Sends node parameters to the route, which are then used by the navigate function. Use it optionally in combination with any of the navigation functions and receive it with as part of the context object in LuigiClient.
 
 #### Parameters
 
@@ -106,7 +106,8 @@ Sends node parameters to the route, which are then used by the navigate function
 
 ```javascript
 LuigiClient.linkManager.withParams({foo: "bar"}).navigate("path")
-Can be chained with context settings functions like this: 
+
+// Can be chained with context settings functions like this: 
 LuigiClient.linkManager.fromContext("currentTeam").withParams({foo: "bar"}).navigate("path")
 ```
 
@@ -114,14 +115,13 @@ Returns **[linkManager](#linkmanager)** link manager instance
 
 ### hasBack
 
-If navigate was called with preserveView, this function
-returns truthy. Can be used to show a back button
+If navigate was called with preserveView, this function returns truthy. Can be used to show a back button.
 
 Returns **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)** a boolean with the information if there is a preserved view available to which a user can return.
 
 ### goBack
 
-Discards the active view and navigates back to the last visited view (preserved view), if preserveView was set before
+Discards the active view and navigates back to the last visited view (preserved view), if preserveView was set before.
 
 #### Parameters
 
@@ -140,40 +140,16 @@ Use the UX Manager to manage the appearance in Luigi.
 
 ### showLoadingIndicator
 
-Adds a backdrop with a loading indicator for the micro front-end frame. This overrides the **loadingIndicator.enabled** setting
-
-#### Examples
-
-```javascript
-LuigiClient.uxManager().showLoadingIndicator()
-```
+Adds a backdrop with a loading indicator for the micro front-end frame. This overrides the **loadingIndicator.enabled** setting.
 
 ### hideLoadingIndicator
 
 Removes the loading indicator. Use it after calling **showLoadingIndicator()** or to hide the indicator when you use the `loadingIndicator.hideAutomatically: false` Node configuration.
 
-#### Examples
-
-```javascript
-LuigiClient.uxManager().hideLoadingIndicator()
-```
-
 ### addBackdrop
 
-Adds a backdrop to block the top and side navigation. It is based on Fundamental UI Modal, which you can use in your micro front-end to achieve the same behaviour
-
-#### Examples
-
-```javascript
-LuigiClient.uxManager().addBackdrop()
-```
+Adds a backdrop to block the top and side navigation. It is based on Fundamental UI Modal, which you can use in your micro front-end to achieve the same behaviour.
 
 ### removeBackdrop
 
-Removes the backdrop
-
-#### Examples
-
-```javascript
-LuigiClient.uxManager().removeBackdrop()
-```
+Removes the backdrop.

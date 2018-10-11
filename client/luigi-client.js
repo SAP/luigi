@@ -148,7 +148,7 @@
       return currentContext.context;
     },
     /**
-     * Returns the configuration object of the active navigation Node..
+     * Returns the configuration object of the active navigation Node.
      * @returns {Object} node parameters
      * @memberof lifecycle
      */
@@ -176,7 +176,7 @@
       };
 
       /**
-       * Creates and sends the navigation postMessage for Luigi Core
+       * Creates and sends the navigation postMessage for Luigi Core.
        * @param {string} path path to be navigated to
        * @param {string} sessionId  current Luigi sessionId
        * @private 
@@ -199,14 +199,13 @@
         /** @lends linkManager */
         /**
          * Navigates to the given path in the hosting Luigi app. Contains either a full absolute path or a relative path without a leading slash that uses the active route as a base. This is a classical navigation.
-         * @method
          * @param {string} path path to be navigated to
          * @param {string} sessionId  current Luigi sessionId
          * @param {boolean} preserveView Preserve a view by setting it to true. It keeps the current view opened in the background and opens the new route in a new frame.You must use the function goBack() to navigate back afterwards.You can use this feature at unlimited levels.The preserved views are discarded as soon as the standard navigate() function is in use in place of goBack().
          * @example 
          * LuigiClient.linkManager().navigate('/overview')
          * LuigiClient.linkManager().navigate('users/groups/stakeholders')
-         * LuigiClient.linkManager().fromContext('project').navigate('/settings', null, true) // preserve view
+         * LuigiClient.linkManager().navigate('/settings', null, true) // preserve view
          */
         navigate: function navigate(path, sessionId, preserveView) {
           if (options.errorSkipNavigation) {
@@ -243,7 +242,7 @@
         },
 
         /**
-         * Sets the current navigation context, which is then be used by navigate function. This has to be a parent navigation context, it is not possible to go to child navigation contexts
+         * Sets the current navigation context, which is then be used by navigate function. This has to be a parent navigation context, it is not possible to go to child navigation contexts.
          * @returns {linkManager} link manager instance
          * @example 
          * LuigiClient.linkManager().fromClosestContext().navigate('/users/groups/stakeholders')
@@ -261,12 +260,13 @@
         },
 
         /**
-         * Sends node parameters to the route, which are then used by the navigate function. Use it optionally in combination with any of the navigation functions and receive it with as part of the context object in LuigiClient
+         * Sends node parameters to the route, which are then used by the navigate function. Use it optionally in combination with any of the navigation functions and receive it with as part of the context object in LuigiClient.
          * @param {Object} nodeParams
          * @returns {linkManager} link manager instance
          * @example 
          * LuigiClient.linkManager.withParams({foo: "bar"}).navigate("path")
-         * Can be chained with context settings functions like this: 
+         * 
+         * // Can be chained with context settings functions like this: 
          * LuigiClient.linkManager.fromContext("currentTeam").withParams({foo: "bar"}).navigate("path")
          */
         withParams: function withParams(nodeParams) {
@@ -277,8 +277,7 @@
         },
 
         /**
-         * If navigate was called with preserveView, this function
-         * returns truthy. Can be used to show a back button
+         * If navigate was called with preserveView, this function returns truthy. Can be used to show a back button.
          * @returns {boolean} a boolean with the information if there is a preserved view available to which a user can return.
          */
         hasBack: function hasBack() {
@@ -288,7 +287,7 @@
         },
 
         /**
-         * Discards the active view and navigates back to the last visited view (preserved view), if preserveView was set before
+         * Discards the active view and navigates back to the last visited view (preserved view), if preserveView was set before.
          * @param {any} goBackValue data that is handed over as goBackContext to the last visited view 
          * @example 
          * LuigiClient.linkManager().goBack({ foo: 'bar' });
@@ -314,29 +313,25 @@
       return {
         /** @lends uxManager */
         /**
-         * Adds a backdrop with a loading indicator for the micro front-end frame. This overrides the **loadingIndicator.enabled** setting
-         * @example LuigiClient.uxManager().showLoadingIndicator()
+         * Adds a backdrop with a loading indicator for the micro front-end frame. This overrides the **loadingIndicator.enabled** setting.
          */
         showLoadingIndicator: function showLoadingIndicator() {
           window.parent.postMessage({ msg: 'luigi.show-loading-indicator' }, '*');
         },
         /**
          * Removes the loading indicator. Use it after calling **showLoadingIndicator()** or to hide the indicator when you use the `loadingIndicator.hideAutomatically: false` Node configuration.
-         * @example LuigiClient.uxManager().hideLoadingIndicator()
          */
         hideLoadingIndicator: function hideLoadingIndicator() {
           window.parent.postMessage({ msg: 'luigi.hide-loading-indicator' }, '*');
         },
         /**
-         * Adds a backdrop to block the top and side navigation. It is based on Fundamental UI Modal, which you can use in your micro front-end to achieve the same behaviour
-         * @example LuigiClient.uxManager().addBackdrop()
+         * Adds a backdrop to block the top and side navigation. It is based on Fundamental UI Modal, which you can use in your micro front-end to achieve the same behaviour.
          */
         addBackdrop: function addBackdrop() {
           window.parent.postMessage({ msg: 'luigi.add-backdrop' }, '*');
         },
         /**
-         * Removes the backdrop
-         * @example LuigiClient.uxManager().removeBackdrop()
+         * Removes the backdrop.
          */
         removeBackdrop: function removeBackdrop() {
           window.parent.postMessage({ msg: 'luigi.remove-backdrop' }, '*');
