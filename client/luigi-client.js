@@ -119,7 +119,7 @@
      */
     /**
      * Registers a listener that is called with a context object as soon as Luigi is instantiated. Defer your application bootstrap if you are dependent on authentication data from Luigi.
-     * @param {function} initFn a function that will be called once Luigi is initialized
+     * @param {function} initFn the function that will be called once Luigi is initialized
      * @memberof lifecycle
      */
     addInitListener: function addInitListener(initFn) {
@@ -129,8 +129,8 @@
       }
     },
     /**
-     * Registers a listener that is called upon any navigation change, and calls the contextUpdatedFn with a new context object.
-     * @param {function} contextUpdatedFn a callback function that will be called every time Luigi context was changed
+     * Registers a listener that is called upon any navigation change.
+     * @param {function} contextUpdatedFn the listener function that will be called every time Luigi context was changed
      * @memberof lifecycle
      */
     addContextUpdateListener: function addContextUpdateListener(contextUpdatedFn) {
@@ -140,7 +140,7 @@
       }
     },
     /**
-     * Returns the context object. Usually it is not required as the addContextUpdateListener receives the same values.
+     * Returns the context object. Usually it is not required as the {@link #addContextUpdateListener addContextUpdateListener()} receives the same values.
      * @returns {{idToken: string, sessionId: string, currentEnvironmentId: string} } node parameters
      * @memberof lifecycle
      */
@@ -201,7 +201,7 @@
          * Navigates to the given path in the hosting Luigi app. Contains either a full absolute path or a relative path without a leading slash that uses the active route as a base. This is a classical navigation.
          * @param {string} path path to be navigated to
          * @param {string} sessionId  current Luigi sessionId
-         * @param {boolean} preserveView Preserve a view by setting it to true. It keeps the current view opened in the background and opens the new route in a new frame.You must use the function goBack() to navigate back afterwards.You can use this feature at unlimited levels.The preserved views are discarded as soon as the standard navigate() function is in use in place of goBack().
+         * @param {boolean} preserveView Preserve a view by setting it to true. It keeps the current view opened in the background and opens the new route in a new frame. You must use the function {@link #goBack goBack()} to navigate back afterwards. You can use this feature at unlimited levels.The preserved views are discarded as soon as the standard {@link #navigate navigate()} function is in use in place of {@link #goBack goBack()} .
          * @example 
          * LuigiClient.linkManager().navigate('/overview')
          * LuigiClient.linkManager().navigate('users/groups/stakeholders')
@@ -217,7 +217,7 @@
         },
 
         /**
-         * Sets the current navigation context to that of a specific parent Node that has the *navigationContext* field declared in its navigation configuration. This navigation context is then used by navigate function.
+         * Sets the current navigation context to that of a specific parent Node that has the `navigationContext` field declared in its navigation configuration. This navigation context is then used by navigate function.
          * @param {Object} navigationContext
          * @returns {linkManager} link manager instance
          * @example 
@@ -260,7 +260,7 @@
         },
 
         /**
-         * Sends node parameters to the route, which are then used by the navigate function. Use it optionally in combination with any of the navigation functions and receive it with as part of the context object in LuigiClient.
+         * Sends node parameters to the route, which are then used by the navigate function. Use it optionally in combination with any of the navigation functions and receive it with as part of the context object in Luigi Client.
          * @param {Object} nodeParams
          * @returns {linkManager} link manager instance
          * @example 
@@ -277,7 +277,7 @@
         },
 
         /**
-         * If navigate was called with preserveView, this function returns truthy. Can be used to show a back button.
+         * If {@link #navigate navigate()} checks if there are one or more preserved views. Can be used to show a back button.
          * @returns {boolean} a boolean with the information if there is a preserved view available to which a user can return.
          */
         hasBack: function hasBack() {
@@ -287,8 +287,8 @@
         },
 
         /**
-         * Discards the active view and navigates back to the last visited view (preserved view), if preserveView was set before.
-         * @param {any} goBackValue data that is handed over as goBackContext to the last visited view 
+         * Discards the active view and navigates back to the last visited view (preserved view), if a preserved view was set before.
+         * @param {any} goBackValue data that is handed over in `goBackContext` field to the last visited view 
          * @example 
          * LuigiClient.linkManager().goBack({ foo: 'bar' });
          * LuigiClient.linkManager().goBack(true);
@@ -313,13 +313,13 @@
       return {
         /** @lends uxManager */
         /**
-         * Adds a backdrop with a loading indicator for the micro front-end frame. This overrides the **loadingIndicator.enabled** setting.
+         * Adds a backdrop with a loading indicator for the micro front-end frame. This overrides the `loadingIndicator.enabled` setting.
          */
         showLoadingIndicator: function showLoadingIndicator() {
           window.parent.postMessage({ msg: 'luigi.show-loading-indicator' }, '*');
         },
         /**
-         * Removes the loading indicator. Use it after calling **showLoadingIndicator()** or to hide the indicator when you use the `loadingIndicator.hideAutomatically: false` Node configuration.
+         * Removes the loading indicator. Use it after calling {@link #showLoadingIndicator showLoadingIndicator()} or to hide the indicator when you use the `loadingIndicator.hideAutomatically: false` Node configuration.
          */
         hideLoadingIndicator: function hideLoadingIndicator() {
           window.parent.postMessage({ msg: 'luigi.hide-loading-indicator' }, '*');

@@ -12,19 +12,19 @@ Registers a listener that is called with a context object as soon as Luigi is in
 
 #### Parameters
 
--   `initFn` **[function](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Statements/function)** a function that will be called once Luigi is initialized
+-   `initFn` **[function](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Statements/function)** the function that will be called once Luigi is initialized
 
 ### addContextUpdateListener
 
-Registers a listener that is called upon any navigation change, and calls the contextUpdatedFn with a new context object.
+Registers a listener that is called upon any navigation change.
 
 #### Parameters
 
--   `contextUpdatedFn` **[function](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Statements/function)** a callback function that will be called every time Luigi context was changed
+-   `contextUpdatedFn` **[function](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Statements/function)** the listener function that will be called every time Luigi context was changed
 
 ### getEventData
 
-Returns the context object. Usually it is not required as the addContextUpdateListener receives the same values.
+Returns the context object. Usually it is not required as the [addContextUpdateListener()](#addContextUpdateListener) receives the same values.
 
 Returns **{idToken: [string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String), sessionId: [string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String), currentEnvironmentId: [string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)}** node parameters
 
@@ -56,7 +56,7 @@ Navigates to the given path in the hosting Luigi app. Contains either a full abs
 
 -   `path` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** path to be navigated to
 -   `sessionId` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** current Luigi sessionId
--   `preserveView` **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)** Preserve a view by setting it to true. It keeps the current view opened in the background and opens the new route in a new frame.You must use the function goBack() to navigate back afterwards.You can use this feature at unlimited levels.The preserved views are discarded as soon as the standard navigate() function is in use in place of goBack().
+-   `preserveView` **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)** Preserve a view by setting it to true. It keeps the current view opened in the background and opens the new route in a new frame. You must use the function [goBack()](#goBack) to navigate back afterwards. You can use this feature at unlimited levels.The preserved views are discarded as soon as the standard [navigate()](#navigate) function is in use in place of [goBack()](#goBack) .
 
 #### Examples
 
@@ -68,7 +68,7 @@ LuigiClient.linkManager().navigate('/settings', null, true) // preserve view
 
 ### fromContext
 
-Sets the current navigation context to that of a specific parent Node that has the _navigationContext_ field declared in its navigation configuration. This navigation context is then used by navigate function.
+Sets the current navigation context to that of a specific parent Node that has the `navigationContext` field declared in its navigation configuration. This navigation context is then used by navigate function.
 
 #### Parameters
 
@@ -96,7 +96,7 @@ Returns **[linkManager](#linkmanager)** link manager instance
 
 ### withParams
 
-Sends node parameters to the route, which are then used by the navigate function. Use it optionally in combination with any of the navigation functions and receive it with as part of the context object in LuigiClient.
+Sends node parameters to the route, which are then used by the navigate function. Use it optionally in combination with any of the navigation functions and receive it with as part of the context object in Luigi Client.
 
 #### Parameters
 
@@ -115,17 +115,17 @@ Returns **[linkManager](#linkmanager)** link manager instance
 
 ### hasBack
 
-If navigate was called with preserveView, this function returns truthy. Can be used to show a back button.
+If [navigate()](#navigate) checks if there are one or more preserved views. Can be used to show a back button.
 
 Returns **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)** a boolean with the information if there is a preserved view available to which a user can return.
 
 ### goBack
 
-Discards the active view and navigates back to the last visited view (preserved view), if preserveView was set before.
+Discards the active view and navigates back to the last visited view (preserved view), if a preserved view was set before.
 
 #### Parameters
 
--   `goBackValue` **any** data that is handed over as goBackContext to the last visited view
+-   `goBackValue` **any** data that is handed over in `goBackContext` field to the last visited view
 
 #### Examples
 
@@ -140,11 +140,11 @@ Use the UX Manager to manage the appearance in Luigi.
 
 ### showLoadingIndicator
 
-Adds a backdrop with a loading indicator for the micro front-end frame. This overrides the **loadingIndicator.enabled** setting.
+Adds a backdrop with a loading indicator for the micro front-end frame. This overrides the `loadingIndicator.enabled` setting.
 
 ### hideLoadingIndicator
 
-Removes the loading indicator. Use it after calling **showLoadingIndicator()** or to hide the indicator when you use the `loadingIndicator.hideAutomatically: false` Node configuration.
+Removes the loading indicator. Use it after calling [showLoadingIndicator()](#showLoadingIndicator) or to hide the indicator when you use the `loadingIndicator.hideAutomatically: false` Node configuration.
 
 ### addBackdrop
 
