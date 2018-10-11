@@ -24,3 +24,14 @@ or, if you are not using any bundler, Luigi is also available as a global object
 window.LuigiClient
 ```
 You can see the Luigi Client in action by running the [Angular example application](/core/examples/luigi-sample-angular).
+
+
+## Generate documentation
+```bash
+# Please install dependencies in luigi root folder if you didn't
+cd .. 
+npm install
+
+# Validate and generate documentation
+npm run docu 
+```
