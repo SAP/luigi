@@ -173,17 +173,33 @@ var projectDetailNavProviderFn = function(context) {
       {
         pathSegment: 'avengers',
         label: 'Keep Selected Example',
-        viewUrl:
-          '/sampleapp.html#/projects/' +
-          projectId +
-          '/dynamic/avengers',
+        viewUrl: '/sampleapp.html#/projects/' + projectId + '/dynamic/avengers',
         keepSelectedForChildren: true,
         context: {
           label: 'Avengers',
-          links: ['Captain America', 'Iron Man', 'Thor', 'Hulk', 'Black Widow', 'Hawkeye', 'Loki']
+          links: [
+            'Captain America',
+            'Iron Man',
+            'Thor',
+            'Hulk',
+            'Black Widow',
+            'Hawkeye',
+            'Loki'
+          ]
         },
-        children: ['Captain America', 'Iron Man', 'Thor', 'Hulk', 'Black Widow', 'Hawkeye', 'Loki'].map(name => ({
-          pathSegment: name.toLowerCase().split(' ').join('-'),
+        children: [
+          'Captain America',
+          'Iron Man',
+          'Thor',
+          'Hulk',
+          'Black Widow',
+          'Hawkeye',
+          'Loki'
+        ].map(name => ({
+          pathSegment: name
+            .toLowerCase()
+            .split(' ')
+            .join('-'),
           label: name,
           context: {
             label: name,
@@ -192,7 +208,11 @@ var projectDetailNavProviderFn = function(context) {
           viewUrl:
             '/sampleapp.html#/projects/' +
             projectId +
-            '/dynamic/' + name.toLowerCase().split(' ').join('-'),
+            '/dynamic/' +
+            name
+              .toLowerCase()
+              .split(' ')
+              .join('-'),
           children: [
             {
               label: 'Super Power',
@@ -222,6 +242,22 @@ var projectDetailNavProviderFn = function(context) {
             }
           ]
         }))
+      },
+      {
+        label: 'Open Github in new tab',
+        category: 'Super useful Github links',
+        externalLink: {
+          url: 'http://github.com',
+          sameWindow: false
+        }
+      },
+      {
+        label: 'Open Github in this tab',
+        category: 'Super useful Github links',
+        externalLink: {
+          url: 'http://github.com',
+          sameWindow: true
+        }
       }
     ];
     getProjectPlugins(projectId).then(function(result) {
@@ -427,22 +463,6 @@ Luigi.setConfig({
                 hideAutomatically: false
               },
               viewUrl: '/assets/sampleexternal.html#two'
-            },
-            {
-              label: 'Open Github in new tab',
-              category: 'Super useful Github links',
-              externalLink: {
-                url: 'http://github.com',
-                sameWindow: false
-              }
-            },
-            {
-              label: 'Open Github in this tab',
-              category: 'Super useful Github links',
-              externalLink: {
-                url: 'http://github.com',
-                sameWindow: true
-              }
             }
           ]
         }

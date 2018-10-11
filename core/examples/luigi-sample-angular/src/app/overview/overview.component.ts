@@ -40,8 +40,10 @@ export class OverviewComponent {
         'navigation Node configuration to set a specific node as dynamic'
     },
     {
-      link: 'http://google.com',
-      text: 'external URL node'
+      link: '/projects/pr1',
+      text: 'external URL node',
+      description:
+        'navigation Node configuration to direct to an external website'
     },
     {
       link: '/projects/pr1/avengers',
