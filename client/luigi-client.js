@@ -38,24 +38,14 @@
   }
 
   // actual Luigi code
-  var Luigi = {};
-  var currentContext = {};
+  var luigiInitialized = false
   var defaultContextKeys = ['context', 'internal', 'nodeParams', 'pathParams'];
-  var _contextUpdated;
-
-  // Setting default context as empty objects.
-  for (var i = 0; i < defaultContextKeys.length; i++) {
-    currentContext[defaultContextKeys[i]] = {};
-  }
-
-  /**
-   * Request the context from the main app running Luigi Core
-   * @private
-   */
-  function requestContext() {
-    window.parent.postMessage({ msg: 'luigi.get-context' }, '*');
-  }
-
+  var currentContext = defaultContextKeys.reduce(function(acc, key) {
+    acc[key] = {};
+    return acc
+  }, {});
+  var _onContextUpdatedFn;
+  var _onInitFn;
 
   /**
    * Save context data every time navigation to a different node happens
@@ -76,41 +66,47 @@
       }
     }
     currentContext = rawData;
-
-    Luigi.token = currentContext.context.idToken;
   }
 
   function hasHash(string) {
     return string.indexOf('#') !== -1;
   }
 
-  window.addEventListener('message', function messageListener(e) {
-    if ('luigi.init' === e.data.msg) {
-      setContext(e.data);
-      Luigi.initialized = true;
-      if (window._init) {
-        window._init(currentContext.context);
+  /**
+   * Adds event listener for communication with Luigi Core and starts communication
+   * @private
+   */
+  function luigiClientInit() {
+    window.addEventListener('message', function messageListener(e) {
+      if ('luigi.init' === e.data.msg) {
+        setContext(e.data);
+        luigiInitialized = true;
+        if (_onInitFn) {
+          _onInitFn(currentContext.context);
+        }
       }
-    }
-    if ('luigi.navigate' === e.data.msg) {
-      setContext(e.data);
+      if ('luigi.navigate' === e.data.msg) {
+        setContext(e.data);
 
-      if (hasHash(e.data.viewUrl) && hasHash(window.location.href)) {
-        window.location.hash = e.data.viewUrl.split('#')[1];
-      } else {
-        window.location.replace(e.data.viewUrl);
+        if (hasHash(e.data.viewUrl) && hasHash(window.location.href)) {
+          window.location.hash = e.data.viewUrl.split('#')[1];
+        } else {
+          window.location.replace(e.data.viewUrl);
+        }
+
+        // execute the context change listener if set by the microfrontend
+        if (_onContextUpdatedFn) {
+          _onContextUpdatedFn(currentContext.context);
+        }
+
+        window.parent.postMessage({ msg: 'luigi.navigate.ok' }, '*');
       }
+    });
 
-      // execute the context change listener if set by the microfrontend
-      if (_contextUpdated) {
-        _contextUpdated(currentContext.context);
-      }
+    window.parent.postMessage({ msg: 'luigi.get-context' }, '*');
+  }
 
-      window.parent.postMessage({ msg: 'luigi.navigate.ok' }, '*');
-    }
-  });
-
-  requestContext();
+  luigiClientInit();
 
   return {
     /**
@@ -123,9 +119,9 @@
      * @memberof lifecycle
      */
     addInitListener: function addInitListener(initFn) {
-      window._init = initFn;
-      if (Luigi.initialized && window._init) {
-        window._init(currentContext.context);
+      _onInitFn = initFn;
+      if (luigiInitialized && _onInitFn) {
+        _onInitFn(currentContext.context);
       }
     },
     /**
@@ -134,9 +130,9 @@
      * @memberof lifecycle
      */
     addContextUpdateListener: function addContextUpdateListener(contextUpdatedFn) {
-      _contextUpdated = contextUpdatedFn;
-      if (Luigi.initialized && _contextUpdated) {
-        _contextUpdated(currentContext.context);
+      _onContextUpdatedFn = contextUpdatedFn;
+      if (luigiInitialized && _onContextUpdatedFn) {
+        _onContextUpdatedFn(currentContext.context);
       }
     },
     /**
