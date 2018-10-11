@@ -48,35 +48,31 @@
   var _onInitFn;
 
   /**
-   * Save context data every time navigation to a different node happens
-   * @private
-   */
-  function setContext(rawData) {
-    for (var index = 0; index < defaultContextKeys.length; index++) {
-      var key = defaultContextKeys[index];
-      try {
-        rawData[key] = JSON.parse(rawData[key]);
-      } catch (e) {
-        console.info(
-          'unable to parse luigi context data for',
-          key,
-          rawData[key],
-          e
-        );
-      }
-    }
-    currentContext = rawData;
-  }
-
-  function hasHash(string) {
-    return string.indexOf('#') !== -1;
-  }
-
-  /**
    * Adds event listener for communication with Luigi Core and starts communication
    * @private
    */
   function luigiClientInit() {
+    /**
+     * Save context data every time navigation to a different node happens
+     * @private
+     */
+    function setContext(rawData) {
+      for (var index = 0; index < defaultContextKeys.length; index++) {
+        var key = defaultContextKeys[index];
+        try {
+          rawData[key] = JSON.parse(rawData[key]);
+        } catch (e) {
+          console.info(
+            'unable to parse luigi context data for',
+            key,
+            rawData[key],
+            e
+          );
+        }
+      }
+      currentContext = rawData;
+    }
+
     window.addEventListener('message', function messageListener(e) {
       if ('luigi.init' === e.data.msg) {
         setContext(e.data);
@@ -87,8 +83,8 @@
       }
       if ('luigi.navigate' === e.data.msg) {
         setContext(e.data);
-
-        if (hasHash(e.data.viewUrl) && hasHash(window.location.href)) {
+        var hashRoutingModeActive = e.data.viewUrl.indexOf('#') !== -1 && window.location.href.indexOf('#') !== -1;
+        if (hashRoutingModeActive) {
           window.location.hash = e.data.viewUrl.split('#')[1];
         } else {
           window.location.replace(e.data.viewUrl);
