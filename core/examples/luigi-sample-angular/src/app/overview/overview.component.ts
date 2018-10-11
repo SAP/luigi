@@ -15,6 +15,11 @@ export class OverviewComponent {
       description: 'backdrop methods'
     },
     {
+      link: '/ext',
+      text: 'uxManager()',
+      description: 'loading indicator methods'
+    },
+    {
       link: '/projects/pr2',
       text: 'linkManager()',
       description: 'navigation methods'
@@ -25,17 +30,24 @@ export class OverviewComponent {
     {
       link: '/projects/pr1/dps',
       text: 'defaultChildNode',
-      description: 'navigation Node configuration to set a specific node as initial target'
+      description:
+        'navigation Node configuration to set a specific Node as an initial target'
     },
     {
       link: '/projects/pr1/users/groups',
       text: 'dynamic Nodes',
-      description: 'navigation Node configuration to set a specific node as dynamic'
+      description:
+        'navigation Node configuration to set a specific node as dynamic'
     },
     {
       link: 'http://google.com',
-      text: 'external URL node',
-      description: 'navigation Node configuration to set a specific node as dynamic'
+      text: 'external URL node'
+    },
+    {
+      link: '/projects/pr1/avengers',
+      text: 'keepSelectedForChildren',
+      description:
+        'navigation Node configuration to focus on a navigation menu and omit the children'
     }
   ];
 }
