@@ -397,6 +397,27 @@ module.exports = {
           from: {
             glob: 'luigi-client.js'
           }
+        },
+        {
+          context: 'node_modules/fundamental-ui/dist',
+          to: './fundamental-ui',
+          from: {
+            glob: 'fundamental-ui.min.css'
+          }
+        },
+        {
+          context: 'node_modules/fundamental-ui/dist',
+          to: './fundamental-ui',
+          from: {
+            glob: 'fonts/**'
+          }
+        },
+        {
+          context: 'node_modules/fundamental-ui/dist',
+          to: './fundamental-ui',
+          from: {
+            glob: 'SAP-icons.*'
+          }
         }
       ],
       {
