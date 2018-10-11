@@ -1,0 +1,16 @@
+<section class="fd-section">
+  <div class="fd-section__header">
+    <h1 class="fd-section__title">{{nodeLabel}}</h1>
+  </div>
+  <div class="fd-panel" *ngIf="!links">
+    {{nodeLabel}} content.
+  </div>
+  <div class="fd-panel" *ngIf="links">
+    <ul class="fd-list-group">
+        <li class="fd-list-group__item clickable" *ngFor="let link of links" (click)="luigiClient.linkManager().navigate(slugify(link))">
+          <span class="sap-icon--navigation-right-arrow"></span>  &nbsp; {{link}}
+        </li>
+      </ul>
+  </div>
+</section>
+
