@@ -84,5 +84,8 @@ module.exports = {
       'node_modules/fundamental-ui/dist/SAP-icons.woff'
     ])
   ],
-  mode: 'production'
+  mode: 'production',
+  stats: {
+    warnings: false
+  }
 };

@@ -25,6 +25,11 @@
                 "glob": "**",
                 "input": "node_modules/@kyma-project/luigi-core",
                 "output": "/luigi-core"
+              },
+              {
+                "glob": "luigi-client.js",
+                "input": "node_modules/@kyma-project/luigi-client",
+                "output": "/luigi-client"
               }
             ],
             "styles": ["src/styles.css"],
