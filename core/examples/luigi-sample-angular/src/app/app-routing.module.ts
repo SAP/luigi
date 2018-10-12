@@ -14,6 +14,7 @@ import { ChildNode2Component } from './project/default-child/dps2/child-node-2.c
 import { ChildNode1Component } from './project/default-child/dps1/child-node-1.component';
 import { OverviewComponent } from './overview/overview.component';
 import { RestrictedComponent } from './restricted/restricted.component';
+import { DynamicComponent } from './project/dynamic/dynamic.component';
 
 const routes: Routes = [
   { path: 'overview', component: OverviewComponent },
@@ -51,6 +52,10 @@ const routes: Routes = [
   {
     path: 'projects/:projectId/dps/dps2',
     component: ChildNode2Component
+  },
+  {
+    path: 'projects/:projectId/dynamic/:dynamicValue',
+    component: DynamicComponent
   }
 ];
 
@@ -58,4 +63,4 @@ const routes: Routes = [
   imports: [RouterModule.forRoot(routes, { useHash: true })],
   exports: [RouterModule]
 })
-export class AppRoutingModule { }
+export class AppRoutingModule {}

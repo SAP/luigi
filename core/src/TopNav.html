@@ -36,19 +36,20 @@
 </div>
 
 <script type="text/javascript">
+  import Backdrop from './Backdrop.html';
   import Authorization from './Authorization.html';
   import { handleRouteClick } from './services/routing.js';
   import { getConfigValue, getConfigBooleanValue } from './services/config.js';
 
-  const getNegatedBoolString = (str) => {
-    return (str === 'true') ? 'false' : 'true';
-  }
+  const getNegatedBoolString = str => {
+    return str === 'true' ? 'false' : 'true';
+  };
 
   const setTopNavData = (current, component) => {
     if (current.pathData && 0 < current.pathData.length) {
       const children = current.pathData[0].children;
       let selectedNode = null;
-      children.map((node) => {
+      children.map(node => {
         current.pathData.forEach(n => {
           if (!selectedNode && n === node) {
             selectedNode = node;
@@ -82,7 +83,7 @@
     data() {
       return {
         dropDownStates: {}
-      }
+      };
     },
     computed: {
       dropDownStatesNegated({ dropDownStates }) {
@@ -96,7 +97,7 @@
       }
     },
     methods: {
-      handleClick: (node) => handleRouteClick(node),
+      handleClick: node => handleRouteClick(node),
       goTo(path) {
         if (getConfigBooleanValue('routing.useHashRouting')) {
           window.location.hash = path;
@@ -123,45 +124,43 @@
       Authorization
     }
   };
-
 </script>
 
 <style type="text/scss">
-  $fd-scss-font-path: 'node_modules/fundamental-ui/scss/fonts/';
-  $fd-icons-path: 'node_modules/fundamental-ui/scss/icons/';
   @import 'node_modules/fundamental-ui/scss/icons';
-  @import 'node_modules/fundamental-ui/scss/core';
   @import 'node_modules/fundamental-ui/scss/components/action-bar';
   @import 'node_modules/fundamental-ui/scss/components/button';
   @import 'node_modules/fundamental-ui/scss/components/popover';
   @import 'node_modules/fundamental-ui/scss/components/menu';
   @import 'node_modules/fundamental-ui/scss/components/global-nav';
-  @import 'node_modules/fundamental-ui/scss/components/side-nav';
+
   .user-settings .fd-popover__body {
     right: 0;
   }
   .fd-ui__header {
-      position: fixed;
-      z-index: 1;
-      background: #ffffff;
-      width: 100%;
-      min-height: 50px;
-      height: 50px;
-      border-bottom: solid 1px #dededf;
-      padding: 0 10px;
+    position: fixed;
+    z-index: 1;
+    background: #ffffff;
+    width: 100%;
+    min-height: 50px;
+    height: 50px;
+    border-bottom: solid 1px #dededf;
+    padding: 0 10px;
   }
+
   .fd-global-nav {
     height: 100%;
     border: none;
   }
   .fd-global-nav__product-name {
-      color: #0a6ed1;
-      height: 50px;
-      font-size: 24px;
-      line-height: 1em;
-      padding: 13px 0;
+    color: #0a6ed1;
+    height: 50px;
+    font-size: 24px;
+    line-height: 1em;
+    padding: 13px 0;
   }
+
   .hideNavComponent {
-      display: none;
+    display: none;
   }
-  </style>
+</style>

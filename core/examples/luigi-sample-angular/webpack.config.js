@@ -28,7 +28,7 @@ const baseHref = '';
 const deployUrl = '';
 const projectRoot = process.cwd();
 const maximumInlineSize = 10;
-const postcssPlugins = function(loader) {
+const postcssPlugins = function (loader) {
   return [
     postcssImports({
       resolve: (url, context) => {
@@ -389,6 +389,13 @@ module.exports = {
           from: {
             glob: '**',
             dot: true
+          }
+        },
+        {
+          context: 'node_modules/@kyma-project/luigi-client',
+          to: './luigi-client',
+          from: {
+            glob: 'luigi-client.js'
           }
         }
       ],

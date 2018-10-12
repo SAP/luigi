@@ -9,7 +9,9 @@ export interface IContextMessage {
 
 @Injectable()
 export class LuigiContextService {
-  private subject: ReplaySubject<IContextMessage> = new ReplaySubject<IContextMessage>(1);
+  private subject: ReplaySubject<IContextMessage> = new ReplaySubject<
+    IContextMessage
+  >(1);
 
   /**
    * Set current context
