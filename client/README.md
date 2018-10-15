@@ -25,9 +25,14 @@ window.LuigiClient
 ```
 You can see the Luigi Client in action by running the [Angular example application](/core/examples/luigi-sample-angular).
 
+## Usage
 
-## Generate documentation
-# Validate and generate documentation
+Use additional instructions to work with Luigi Client.
+
+
+### Generate documentation
+Validate and generate documentation using npm
+```bash
 npm install
 npm run docu
 ```

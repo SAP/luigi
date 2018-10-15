@@ -106,12 +106,12 @@
 
   return {
     /**
-     * There are various parameters and functions available to Luigi pertaining the lifecycle of listeners, navigation Nodes and Event data.
+     * There are various parameters and functions available to Luigi pertaining to the lifecycle of listeners, navigation Nodes, and Event data.
      * @name lifecycle
      */
     /**
-     * Registers a listener that is called with a context object as soon as Luigi is instantiated. Defer your application bootstrap if you are dependent on authentication data from Luigi.
-     * @param {function} initFn the function that will be called once Luigi is initialized
+     * Registers a listener that is called with a context object as soon as Luigi is instantiated. Defer your application bootstrap if you depend on authentication data from Luigi.
+     * @param {function} initFn the function that is called once Luigi is initialized
      * @memberof lifecycle
      */
     addInitListener: function addInitListener(initFn) {
@@ -122,7 +122,7 @@
     },
     /**
      * Registers a listener that is called upon any navigation change.
-     * @param {function} contextUpdatedFn the listener function that will be called every time Luigi context was changed
+     * @param {function} contextUpdatedFn the listener function that is called every time Luigi context was changed
      * @memberof lifecycle
      */
     addContextUpdateListener: function addContextUpdateListener(contextUpdatedFn) {
@@ -132,8 +132,8 @@
       }
     },
     /**
-     * Returns the context object. Usually it is not required as the {@link #addContextUpdateListener addContextUpdateListener()} receives the same values.
-     * @returns {{idToken: string, sessionId: string, currentEnvironmentId: string} } node parameters
+     * Returns the context object. Typically it is not required as the {@link #addContextUpdateListener addContextUpdateListener()} receives the same values.
+     * @returns {{idToken: string, sessionId: string, currentEnvironmentId: string} } node parameters.
      * @memberof lifecycle
      */
     getEventData: function getEventData() {
@@ -141,7 +141,7 @@
     },
     /**
      * Returns the configuration object of the active navigation Node.
-     * @returns {Object} node parameters
+     * @returns {Object} node parameters.
      * @memberof lifecycle
      */
     getNodeParams: function getNodeParams() {
@@ -149,7 +149,7 @@
     },
     /**
      * Returns the dynamic path parameters of the active URL.
-     * @returns {Object} path parameters
+     * @returns {Object} path parameters.
      * @memberof lifecycle
      */
     getPathParams: function getPathParams() {
@@ -176,7 +176,7 @@
          * Navigates to the given path in the hosting Luigi app. Contains either a full absolute path or a relative path without a leading slash that uses the active route as a base. This is a classical navigation.
          * @param {string} path path to be navigated to
          * @param {string} sessionId  current Luigi sessionId
-         * @param {boolean} preserveView Preserve a view by setting it to true. It keeps the current view opened in the background and opens the new route in a new frame. You must use the function {@link #goBack goBack()} to navigate back afterwards. You can use this feature at unlimited levels.The preserved views are discarded as soon as the standard {@link #navigate navigate()} function is in use in place of {@link #goBack goBack()} .
+         * @param {boolean} preserveView Preserve a view by setting it to `true`. It keeps the current view opened in the background and opens the new route in a new frame. Use the {@link #goBack goBack()} function to navigate back afterwards. You can use this feature at unlimited levels. The preserved views are discarded as soon as the standard {@link #navigate navigate()} function is used in place of {@link #goBack goBack()}.
          * @example 
          * LuigiClient.linkManager().navigate('/overview')
          * LuigiClient.linkManager().navigate('users/groups/stakeholders')
@@ -203,7 +203,7 @@
         /**
          * Sets the current navigation context to that of a specific parent Node that has the {@link navigation-configuration.md navigationContext} field declared in its navigation configuration. This navigation context is then used by navigate function.
          * @param {Object} navigationContext
-         * @returns {linkManager} link manager instance
+         * @returns {linkManager} link manager instance.
          * @example 
          * LuigiClient.linkManager().fromContext('project').navigate('/settings')
          */
@@ -223,8 +223,8 @@
         },
 
         /**
-         * Sets the current navigation context, which is then be used by navigate function. This has to be a parent navigation context, it is not possible to go to child navigation contexts.
-         * @returns {linkManager} link manager instance
+         * Sets the current navigation context, which is then be used by the navigate function. This has to be a parent navigation context, it is not possible to go to child navigation contexts.
+         * @returns {linkManager} link manager instance.
          * @example 
          * LuigiClient.linkManager().fromClosestContext().navigate('/users/groups/stakeholders')
          */
@@ -244,7 +244,7 @@
         /**
          * Sends node parameters to the route, which are then used by the navigate function. Use it optionally in combination with any of the navigation functions and receive it with as part of the context object in Luigi Client.
          * @param {Object} nodeParams
-         * @returns {linkManager} link manager instance
+         * @returns {linkManager} link manager instance.
          * @example 
          * LuigiClient.linkManager.withParams({foo: "bar"}).navigate("path")
          * 
@@ -259,8 +259,8 @@
         },
 
         /**
-         * If {@link #navigate navigate()} checks if there are one or more preserved views. Can be used to show a back button.
-         * @returns {boolean} a boolean with the information if there is a preserved view available to which a user can return.
+         * Checks if there are one or more preserved views. Can be used to show a back button.
+         * @returns {boolean} a boolean with the information if there is a preserved view available to which a user can return..
          */
         hasBack: function hasBack() {
           return Boolean(
@@ -307,7 +307,7 @@
           window.parent.postMessage({ msg: 'luigi.hide-loading-indicator' }, '*');
         },
         /**
-         * Adds a backdrop to block the top and side navigation. It is based on Fundamental UI Modal, which you can use in your micro front-end to achieve the same behaviour.
+         * Adds a backdrop to block the top and side navigation. It is based on Fundamental UI Modal, which you can use in your micro front-end to achieve the same behavior.
          */
         addBackdrop: function addBackdrop() {
           window.parent.postMessage({ msg: 'luigi.add-backdrop' }, '*');
