@@ -260,7 +260,7 @@
 
         /**
          * Checks if there are one or more preserved views. Can be used to show a back button.
-         * @returns {boolean} a boolean with the information if there is a preserved view available to which a user can return..
+         * @returns {boolean} a boolean with the information if there is a preserved view available to which a user can return.
          */
         hasBack: function hasBack() {
           return Boolean(

@@ -117,7 +117,7 @@ Returns **[linkManager](#linkmanager)** link manager instance.
 
 Checks if there are one or more preserved views. Can be used to show a back button.
 
-Returns **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)** a boolean with the information if there is a preserved view available to which a user can return..
+Returns **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)** a boolean with the information if there is a preserved view available to which a user can return.
 
 ### goBack
 
