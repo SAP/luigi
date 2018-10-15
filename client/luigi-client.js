@@ -201,7 +201,7 @@
         },
 
         /**
-         * Sets the current navigation context to that of a specific parent Node that has the `navigationContext` field declared in its navigation configuration. This navigation context is then used by navigate function.
+         * Sets the current navigation context to that of a specific parent Node that has the {@link navigation-configuration.md navigationContext} field declared in its navigation configuration. This navigation context is then used by navigate function.
          * @param {Object} navigationContext
          * @returns {linkManager} link manager instance
          * @example 
@@ -295,13 +295,13 @@
       return {
         /** @lends uxManager */
         /**
-         * Adds a backdrop with a loading indicator for the micro front-end frame. This overrides the `loadingIndicator.enabled` setting.
+         * Adds a backdrop with a loading indicator for the micro front-end frame. This overrides the {@link navigation-configuration.md#nodes loadingIndicator.enabled} setting.
          */
         showLoadingIndicator: function showLoadingIndicator() {
           window.parent.postMessage({ msg: 'luigi.show-loading-indicator' }, '*');
         },
         /**
-         * Removes the loading indicator. Use it after calling {@link #showLoadingIndicator showLoadingIndicator()} or to hide the indicator when you use the `loadingIndicator.hideAutomatically: false` Node configuration.
+         * Removes the loading indicator. Use it after calling {@link #showLoadingIndicator showLoadingIndicator()} or to hide the indicator when you use the {@link navigation-configuration.md#nodes loadingIndicator.hideAutomatically: false} Node configuration.
          */
         hideLoadingIndicator: function hideLoadingIndicator() {
           window.parent.postMessage({ msg: 'luigi.hide-loading-indicator' }, '*');

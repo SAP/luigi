@@ -68,7 +68,7 @@ LuigiClient.linkManager().navigate('/settings', null, true) // preserve view
 
 ### fromContext
 
-Sets the current navigation context to that of a specific parent Node that has the `navigationContext` field declared in its navigation configuration. This navigation context is then used by navigate function.
+Sets the current navigation context to that of a specific parent Node that has the [navigationContext](navigation-configuration.md) field declared in its navigation configuration. This navigation context is then used by navigate function.
 
 #### Parameters
 
@@ -140,11 +140,11 @@ Use the UX Manager to manage the appearance in Luigi.
 
 ### showLoadingIndicator
 
-Adds a backdrop with a loading indicator for the micro front-end frame. This overrides the `loadingIndicator.enabled` setting.
+Adds a backdrop with a loading indicator for the micro front-end frame. This overrides the [loadingIndicator.enabled](navigation-configuration.md#nodes) setting.
 
 ### hideLoadingIndicator
 
-Removes the loading indicator. Use it after calling [showLoadingIndicator()](#showLoadingIndicator) or to hide the indicator when you use the `loadingIndicator.hideAutomatically: false` Node configuration.
+Removes the loading indicator. Use it after calling [showLoadingIndicator()](#showLoadingIndicator) or to hide the indicator when you use the [loadingIndicator.hideAutomatically: false](navigation-configuration.md#nodes) Node configuration.
 
 ### addBackdrop
 
