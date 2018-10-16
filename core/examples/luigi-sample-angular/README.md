@@ -31,14 +31,14 @@ To have this application running, follow these steps:
 
 4. Start the example application from the `luigi/core/examples/luigi-sample-angular` folder.
 
-`/assets/sampleConfiguration.js` is the default configuration with a showcase of all available features. If you want to try out the much simpler example, change the configuration reference in `index.html` to `basicConfiguration.js`.
+`/assets/sampleConfiguration.js` is the default configuration with a showcase of all available features. If you want to try out a much simpler example, change the configuration reference in `index.html` to `basicConfiguration.js`.
 
-To run Luigi with hash based routing, change the **routing.useHashrouting** configuration to `true` and run the following command:
+- To run Luigi with hash based routing, change the **routing.useHashrouting** configuration to `true` and run the following command:
     ```bash
     npm run start
     ```
 
-To run Luigi with path based routing, change the **routing.useHashrouting** configuration to `false` and run the following command:
+- To run Luigi with path based routing, change the **routing.useHashrouting** configuration to `false` and run the following command:
     ```bash
     npm run startWebpack
     ```
