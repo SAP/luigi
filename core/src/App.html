@@ -146,6 +146,7 @@
   export default {
     data() {
       return {
+        isNavigateBack: false,
         showLoadingIndicator: false,
         preservedViews: [
           // {
@@ -194,11 +195,13 @@
           }
 
           if ('luigi.navigation.open' === e.data.msg) {
+            this.set({ isNavigateBack: false });
             handleNavigation(this, e.data, config, node);
           }
 
           if ('luigi.navigation.back' === e.data.msg) {
             // go back: context from the view
+            this.set({ isNavigateBack: false });
             const preservedViews = this.get().preservedViews;
             if (preservedViews && preservedViews.length) {
               // remove current active iframe and data
@@ -207,6 +210,7 @@
               // set new active iframe and preservedViews
               config.iframe = Routing.getActiveIframe(node);
               this.set({
+                isNavigateBack: true,
                 preservedViews: preservedViews,
                 goBackContext:
                   e.data.goBackContext && JSON.parse(e.data.goBackContext)

@@ -16,7 +16,7 @@ const getLastNodeObject = pathData => {
   return lastElement ? lastElement : {};
 };
 
-const getDefaultChildNode = function(pathData) {
+const getDefaultChildNode = function (pathData) {
   const lastElement =
     pathData.navigationPath[pathData.navigationPath.length - 1];
 
@@ -31,7 +31,7 @@ const getDefaultChildNode = function(pathData) {
   }
 };
 
-const isExistingRoute = function(path, pathData) {
+const isExistingRoute = function (path, pathData) {
   if (path === '') {
     return true;
   }
@@ -88,6 +88,9 @@ const removeElementChildren = node => {
 export const isNotSameDomain = (config, component) => {
   if (config.iframe) {
     const componentData = component.get();
+    if (componentData.isNavigateBack) {
+      return false;
+    }
     const previousUrl = getUrlWithoutHash(
       componentData.previousNodeValues.viewUrl
     );
@@ -312,9 +315,9 @@ export const handleRouteChange = async (path, component, node, config) => {
       isolateView,
       previousNodeValues: previousCompData
         ? {
-            viewUrl: previousCompData.viewUrl,
-            isolateView: previousCompData.isolateView
-          }
+          viewUrl: previousCompData.viewUrl,
+          isolateView: previousCompData.isolateView
+        }
         : {}
     });
 
