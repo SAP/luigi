@@ -1,6 +1,4 @@
-
 <div class="fd-ui__header {hideNavComponent ? 'hideNavComponent' : ''}">
-  <Backdrop heightCssClass="height-50"/>
   <nav class="fd-global-nav">
     <div class="fd-global-nav__group fd-global-nav__group--left">
       <div class="fd-global-nav__logo fd-has-margin-left-none"></div>
@@ -27,8 +25,8 @@
         {#if authorizationEnabled}
         <div class="fd-popover user-settings">
           <div class="fd-popover__control">
-          <button class="fd-popover__control fd-button--secondary fd-button--m fd-global-nav__btn sap-icon--customer"
-          aria-expanded="{dropDownStates.PROFILE_POPOVER || false}" aria-haspopup="true" on:click="toggleDropdownState('PROFILE_POPOVER')" on:blur="closeDropdown('PROFILE_POPOVER')"></button>
+            <button class="fd-popover__control fd-button--secondary fd-button--m fd-global-nav__btn sap-icon--customer" aria-expanded="{dropDownStates.PROFILE_POPOVER || false}"
+              aria-haspopup="true" on:click="toggleDropdownState('PROFILE_POPOVER')" on:blur="closeDropdown('PROFILE_POPOVER')"></button>
           </div>
           <div class="fd-popover__body" aria-hidden="{dropDownStatesNegated.PROFILE_POPOVER || true}" id="PROFILE_POPOVER">
             <nav class="fd-menu" id="">
@@ -132,7 +130,6 @@
       }
     },
     components: {
-      Backdrop,
       Authorization
     }
   };
@@ -151,9 +148,13 @@
   .user-settings .fd-popover__body {
     right: 0;
   }
+  
+  :global(body.backdrop) .fd-ui__header {
+    z-index: 1;
+  }
+
   .fd-ui__header {
     position: fixed;
-    z-index: 1;
     background: #ffffff;
     width: 100%;
     min-height: 50px;

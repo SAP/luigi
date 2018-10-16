@@ -26,6 +26,7 @@ yarn-error.log*
 public/luigi.css
 public/luigi.js
 public/luigi.vendor.js
+public/SAP-icons.woff
 
 # maps
 *.map
