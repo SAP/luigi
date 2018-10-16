@@ -13,10 +13,10 @@
         {#if children && pathData.length > 0}
           {#each children as node}
             {#if !node.hideFromNav}
-              <button class=" fd-button--secondary fd-button--m fd-global-nav__btn {node === selectedNode ? 'is-selected' : ''} {node.externalLinkUrl ? 'fd-global-nav__btn--external' : ''}"
+              <button class=" fd-button--secondary fd-button--m fd-global-nav__btn {node === selectedNode ? 'is-selected' : ''} {node.externalLink && node.externalLink.url ? 'fd-global-nav__btn--external' : ''}"
               aria-label="{node.label}" on:click=handleClick(node)>
                 <span class="">{node.label}</span>
-                {#if node.externalLinkUrl}
+                {#if node.externalLink && node.externalLink.url}
                   <span class="sap-icon--action sap-icon--s"></span>
                 {/if}
               </button>
