@@ -1,16 +1,16 @@
 
 <div id="app {hideNav? 'no-nav' : ''}">
-<Backdrop>
+  <Backdrop>
     <div class="fd-page iframeContainer" use:init="context"></div>
-    {#if showLoadingIndicator}
-    <div in:fade='{delay: 250, duration: 250}' out:fade='{duration: 250}' class="fd-page spinnerContainer" aria-hidden="false" aria-label="Loading">
-        <div class="fd-spinner"><div></div></div>
-    </div>
-    {/if}
-    
-    <TopNav pathData={navigationPath} />
-    <LeftNav pathData={navigationPath} />
-    </Backdrop>
+  </Backdrop>
+  {#if showLoadingIndicator}
+  <div in:fade='{delay: 250, duration: 250}' out:fade='{duration: 250}' class="fd-page spinnerContainer" aria-hidden="false" aria-label="Loading">
+      <div class="fd-spinner"></div>
+  </div>
+  {/if}
+
+  <TopNav pathData={navigationPath} />
+  <LeftNav pathData={navigationPath} />
 </div>
 
 
@@ -278,10 +278,6 @@
 
   :global(a) {
     cursor: pointer;
-  }
-
-  .fd-page {
-    z-index: 1001;
   }
 
   .iframeContainer,
