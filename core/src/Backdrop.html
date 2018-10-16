@@ -25,11 +25,9 @@
         window.addEventListener("message", (e) => {
           if ('luigi.add-backdrop' === e.data.msg) {
             this.set({ backdropActive: true });
-            document.body.classList.add('backdrop');
           }
           if ('luigi.remove-backdrop' === e.data.msg) {
             this.set({ backdropActive: false });
-            document.body.classList.remove('backdrop');
           }
         });
       }
