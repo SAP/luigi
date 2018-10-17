@@ -1,30 +1,85 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Some external sample page</title>
+  <title>External sample page</title>
+  <link rel='stylesheet' href='/fundamental-ui/fundamental-ui.min.css'> 
   <style type="text/css">
   body {
     font-family: Arial, Helvetica, sans-serif;
   }
-  div {
+  .section-spacer {
     height: 800px;
-    padding: 20px 0 20px 10px;
+  }
+  .fd-panel {
+    padding: 15px;
+  }
+  a {
+    color: #0a6ed1;
+    text-decoration: none;
+  }
+  a:hover {
+    color: #085caf;
   }
   </style>
 </head>
 <body>
 <a name="ext"></a>
-<div>
-  External Sample
-</div>
+<header class="fd-page__header">
+  <div class="fd-action-bar">
+    <div class="fd-action-bar__header">
+      <h1 class="fd-action-bar__title">
+          Cross Domain Example
+      </h1>
+      <p class="fd-action-bar__description">This page behaves equally to an external hosted micro front-end. <br />For demo purposes, it utilizes manual hiding of the loading indicator.</p>
+    </div>
+  </div>
+</header>
+
+<section class="fd-section">
+  <div class="fd-panel">
+    <p><strong>Luigi Client Features:</strong></p>
+    
+    <p><a href="javascript:demoLoadingIndicator()">Show loading indicator</a> - and hide it after 3 seconds.<br />
+      <pre>LuigiClient.uxManager().showLoadingIndicator();
+LuigiClient.uxManager().hideLoadingIndicator();</pre>
+    </p>
+    
+</section>
+
+<div class="section-spacer"></div>
 <a name="one"></a>
-<div>
-  One
-</div>
+<section class="fd-section">
+  <div class="fd-panel">
+    <p><strong>One</strong></p>
+  </div>
+</section>
+
+<div class="section-spacer"></div>
 <a name="two"></a>
-<div>
-  Two
-</div>
+<section class="fd-section">
+  <div class="fd-panel">
+    <p><strong>Two</strong></p>
+  </div>
+</section>
+<div class="section-spacer"></div>
+<script type="text/javascript" src="/luigi-client/luigi-client.js"></script>
+<script type="text/javascript">
+// If Node has loadingIndicator.hideAutomatically set to false, we need to manually 
+// trigger LuigiClient.uxManager().hideLoadingIndicator();
+
+console.info('Delaying loading indicator for demo purposes');
+
+function demoLoadingIndicator() {
+  LuigiClient.uxManager().showLoadingIndicator();
+  hideLoadingIndicator();
+}
+function hideLoadingIndicator() {
+  setTimeout(function(){
+    LuigiClient.uxManager().hideLoadingIndicator();
+  }, 3000);
+}
+hideLoadingIndicator();
+</script>
 
 </body>
 </html>

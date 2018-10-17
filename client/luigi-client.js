@@ -1,4 +1,5 @@
-(function (root, factory) { // UMD wrapper
+(function(root, factory) {
+  // UMD wrapper
   if (typeof define === 'function' && define.amd) {
     define(factory);
   } else if (typeof module === 'object' && module.exports) {
@@ -6,7 +7,8 @@
   } else {
     root.LuigiClient = factory();
   }
-}(typeof self !== 'undefined' ? self : this, function () { // actual Luigi code
+})(typeof self !== 'undefined' ? self : this, function() {
+  // actual Luigi code
 
   // Object.assign polyfill
   if (typeof Object.assign != 'function') {
@@ -57,22 +59,24 @@
       try {
         rawData[key] = JSON.parse(rawData[key]);
       } catch (e) {
-        console.info('unable to parse luigi context data for', key, rawData[key], e);
+        console.info(
+          'unable to parse luigi context data for',
+          key,
+          rawData[key],
+          e
+        );
       }
     }
     currentContext = rawData;
 
     Luigi.token = currentContext.context.idToken;
-    // Luigi.linkManagerData = currentContext.context.linkManagerData;
-    // Luigi.currentEnvironmentId = currentContext.context.currentEnvironmentId;
-    // Luigi.sessionId = currentContext.context.sessionId;
   }
 
   function hasHash(string) {
     return string.indexOf('#') !== -1;
   }
 
-  window.addEventListener('message', function (e) {
+  window.addEventListener('message', function messageListener(e) {
     if ('luigi.init' === e.data.msg) {
       setContext(e.data);
       Luigi.initialized = true;
@@ -105,7 +109,7 @@
      * Adds a listener that will react once Luigi is initialized.
      * @param {function} initFn - a function that will be called once Luigi is initialized
      */
-    addInitListener: function (initFn) {
+    addInitListener: function addInitListener(initFn) {
       window._init = initFn;
       if (Luigi.initialized && window._init) {
         window._init(currentContext.context);
@@ -115,7 +119,7 @@
      * Use it to get Luigi context changes
      * @param contextUpdatedFn a function that will be called every time Luigi context was changed
      */
-    addContextUpdateListener: function (contextUpdatedFn) {
+    addContextUpdateListener: function addContextUpdateListener(contextUpdatedFn) {
       _contextUpdated = contextUpdatedFn;
       if (Luigi.initialized && _contextUpdated) {
         _contextUpdated(currentContext.context);
@@ -127,26 +131,26 @@
      * sessionId
      * currentEnvironmentId
      */
-    getEventData: function () {
+    getEventData: function getEventData() {
       return currentContext.context;
     },
     /**
      * Fetch node parameters
      */
-    getNodeParams: function () {
+    getNodeParams: function getNodeParams() {
       return currentContext.nodeParams;
     },
     /**
      * Fetch node parameters
      */
-    getPathParams: function () {
+    getPathParams: function getPathParams() {
       return currentContext.pathParams;
     },
     /**
      * Navigate to another route.
      * Lets you navigate to another route.
      */
-    linkManager: function () {
+    linkManager: function linkManager() {
       var options = {
         preserveView: false,
         nodeParams: {}
@@ -158,7 +162,7 @@
        * @param {string} path path to be navigated to
        * @param {string} sessionId  current Luigi sessionId
        */
-      var _navigate = function (sessionId, path) {
+      var _navigate = function _navigate(sessionId, path) {
         var relativePath = path[0] !== '/';
         var navigation = {
           msg: 'luigi.navigation.open',
@@ -179,7 +183,7 @@
          * @param {string} sessionId  current Luigi sessionId
          * @param {boolean} preserveView open route in a new view window to goBack to last state afterwards
          */
-        navigate: function (path, sessionId, preserveView) {
+        navigate: function navigate(path, sessionId, preserveView) {
           if (options.errorSkipNavigation) {
             options.errorSkipNavigation = undefined;
             return;
@@ -193,13 +197,17 @@
          * Usage: linkManager.fromContext("currentTeam").navigate("path")
          * @param {object} navigationContext
          * */
-        fromContext: function (navigationContext) {
-          if (!currentContext.context.parentNavigationContexts.includes(navigationContext)) {
+        fromContext: function fromContext(navigationContext) {
+          if (
+            !currentContext.context.parentNavigationContexts.includes(
+              navigationContext
+            )
+          ) {
             options.errorSkipNavigation = true;
             console.error(
               'Navigation not possible, navigationContext ' +
-              navigationContext +
-              ' not found.'
+                navigationContext +
+                ' not found.'
             );
           } else {
             options.fromContext = navigationContext;
@@ -212,7 +220,7 @@
          * This has to be a parent navigation context, it is not possible to go to child navigation contexts
          * Usage: linkManager.fromClosestContext().navigate("path")
          */
-        fromClosestContext: function () {
+        fromClosestContext: function fromClosestContext() {
           if (currentContext.context.parentNavigationContexts.length === 0) {
             console.error(
               'Navigation not possible, no parent navigationContext found.'
@@ -230,7 +238,7 @@
          * Can be chained with context settings functions like this: linkManager.fromContext("currentTeam").withParams({foo: "bar"}).navigate("path")
          * @param {object} nodeParams
          * */
-        withParams: function (nodeParams) {
+        withParams: function withParams(nodeParams) {
           if (nodeParams) {
             Object.assign(options.nodeParams, nodeParams);
           }
@@ -242,7 +250,7 @@
          * returns truthy. Can be used to show a back button
          * @return boolean
          */
-        hasBack: function () {
+        hasBack: function hasBack() {
           return Boolean(
             currentContext.internal.viewStackSize !== 0
           );
@@ -257,7 +265,7 @@
          * @param {mixed} goBackValue data that is handed over as goBackContext after going back
          * @return void
          */
-        goBack: function (goBackValue) {
+        goBack: function goBack(goBackValue) {
           if (this.hasBack()) {
             window.parent.postMessage(
               {
@@ -273,21 +281,33 @@
     /**
      * Manage UX specific options.
      */
-    uxManager: function () {
+    uxManager: function uxManager() {
       return {
+        /**
+         * Shows a spinner with backdrop to block the micro front-end frame
+         */
+        showLoadingIndicator: function showLoadingIndicator() {
+          window.parent.postMessage({ msg: 'luigi.show-loading-indicator' }, '*');
+        },
+        /**
+         * Hides the spinner
+         */
+        hideLoadingIndicator: function hideLoadingIndicator() {
+          window.parent.postMessage({ msg: 'luigi.hide-loading-indicator' }, '*');
+        },
         /**
          * Adds a backdrop for Core to block the UI
          */
-        addBackdrop: function () {
+        addBackdrop: function addBackdrop() {
           window.parent.postMessage({ msg: 'luigi.add-backdrop' }, '*');
         },
         /**
          * Removes the backdrop
          */
-        removeBackdrop: function () {
+        removeBackdrop: function removeBackdrop() {
           window.parent.postMessage({ msg: 'luigi.remove-backdrop' }, '*');
         }
       };
     }
   };
-}));
+});

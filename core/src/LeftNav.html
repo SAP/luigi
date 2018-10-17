@@ -1,156 +1,90 @@
 <div class="fd-app__sidebar {hideNavComponent ? 'hideNavComponent' : ''}">
-    <Backdrop />
     {#if children && pathData.length > 1}
-        <nav class="fd-side-nav">
-            {#each Object.entries(children) as [key, nodes]}
-                {#if key === 'undefined'}
-                    <div class="fd-side-nav__group">
-                        <ul class="fd-side-nav__list">
-                            {#each nodes as node}
-                                {#if !node.hideFromNav}
-                                {#if node.label}
-                                <li class="fd-side-nav__item">
-                                    <a class="fd-side-nav__link {node === selectedNode ? 'is-selected' : ''}" on:click=handleClick(node)>
-                                        {node.label}
-                                    </a>
-                                </li>
-                                {/if}
-                                {/if}
-                            {/each}
-                        </ul>
-                    </div>
-                {/if}
-            {/each}
-            {#each Object.entries(children) as [key, nodes]}
-                {#if key !== 'undefined'}
-                    <div class="fd-side-nav__group">
-                        <h1 class="fd-side-nav__title">{key}</h1>
-                        <ul class="fd-side-nav__list">
-                            {#each nodes as node}
-                                {#if !node.hideFromNav}
-                                {#if node.label}
-                                <li class="fd-side-nav__item">
-                                    <a class="fd-side-nav__link {node === selectedNode ? 'is-selected' : ''}" on:click=handleClick(node)>
-                                        {node.label}
-                                    </a>
-                                </li>
-                                {/if}
-                                {/if}
-                            {/each}
-                        </ul>
-                    </div>
-                {/if}
-            {/each}
-        </nav>
+    <nav class="fd-side-nav">
+        {#each Object.entries(children) as [key, nodes]} {#if key === 'undefined'}
+        <div class="fd-side-nav__group">
+            <ul class="fd-side-nav__list">
+                {#each nodes as node} {#if !node.hideFromNav} {#if node.label}
+                <li class="fd-side-nav__item">
+                    <a class="fd-side-nav__link {node === selectedNode ? 'is-selected' : ''}" on:click=handleClick(node)>
+                        {node.label}
+                    </a>
+                </li>
+                {/if} {/if} {/each}
+            </ul>
+        </div>
+        {/if} {/each} {#each Object.entries(children) as [key, nodes]} {#if key !== 'undefined'}
+        <div class="fd-side-nav__group">
+            <h1 class="fd-side-nav__title">{key}</h1>
+            <ul class="fd-side-nav__list">
+                {#each nodes as node} {#if !node.hideFromNav} {#if node.label}
+                <li class="fd-side-nav__item">
+                    <a class="fd-side-nav__link {node === selectedNode ? 'is-selected' : ''}" on:click=handleClick(node)>
+                        {node.label}
+                    </a>
+                </li>
+                {/if} {/if} {/each}
+            </ul>
+        </div>
+        {/if} {/each}
+    </nav>
     {/if}
 </div>
 
 <script type="text/javascript">
     import Backdrop from './Backdrop.html';
-    import { getChildren } from './services/navigation.js';
+    import { getChildren, getLeftNavData } from './services/navigation.js';
     import { handleRouteClick } from './services/routing.js';
     import { getConfigValue, getConfigBooleanValue } from './services/config.js';
 
-    const getNodes = (children, pathData) => {
-        if (children && 0 < children.length) {
-            return children;
-        }
-
-        if (2 < pathData.length) {
-            const lastElement = pathData[pathData.length - 1];
-            const oneBeforeLast = pathData[pathData.length - 2];
-            const nestedNode = pathData.length > 1 ? oneBeforeLast : lastElement;
-
-            if (nestedNode && nestedNode.children) {
-                return nestedNode.children;
-            }
-        }
-
-        return [];
-    };
-
-    const groupBy = (nodes, property) => {
-        const result = {};
-        nodes.forEach(node => {
-            const key = node[property];
-            let arr = result[key];
-            if (!arr) {
-                arr = [];
-                result[key] = arr;
-            }
-            arr.push(node);
-        });
-
-        return result;
-    };
-
-    const getGroupedChildren = (children, current) => {
-        const nodes = getNodes(children, current.pathData);
-        return groupBy(nodes, 'category');
-    };
-
     const setLeftNavData = async (current, component) => {
-        if (current.pathData && 1 < current.pathData.length) {
-            const componentData = component.get();
-            const lastElement = [...current.pathData].pop();
-            const children = await getChildren(lastElement, componentData.context);
-            const groupedChildren = getGroupedChildren(children, current);
-
-            if (groupedChildren && 1 < componentData.pathData.length) {
-                const selectedNode = [...componentData.pathData].pop();
-                component.set({ selectedNode: selectedNode });
-            }
-
-            component.set({
-                children: groupedChildren
-            });
-
-            window.LEFTNAVDATA = groupedChildren;
-        }
+      const componentData = component.get();
+      const leftNavData = await getLeftNavData(current, componentData);
+      if (!leftNavData) {
+        return;
+      }
+      component.set(leftNavData);
+      window.LEFTNAVDATA = leftNavData.groupedChildren;
     };
 
     export default {
-        oncreate() {
-            this.set({
-                hideNavComponent: getConfigBooleanValue('settings.hideNavigation')
-            });
-
-        },
-        onstate({ changed, current, previous }) {
-            if (!previous || previous.pathData != current.pathData) {
-                setLeftNavData(current, this);
-            }
-        },
-        methods: {
-            handleClick: (node) => handleRouteClick(node)
-        },
-        components: {
-            Backdrop
+      oncreate() {
+        this.set({
+          hideNavComponent: getConfigBooleanValue('settings.hideNavigation')
+        });
+      },
+      onstate({ changed, current, previous }) {
+        if (!previous || previous.pathData != current.pathData) {
+          setLeftNavData(current, this);
         }
+      },
+      methods: {
+        handleClick: node => handleRouteClick(node)
+      }
     };
 </script>
 
 <style type="text/scss">
-@import 'node_modules/fundamental-ui/scss/components/side-nav';
-a {
-    cursor: pointer;
-}
-.fd-app__sidebar{
-    position: fixed;
-    top: 50px;
-    left: 0;
-    width: 320px;
-    bottom: 0;
-    background-color: white;
-    color: #32363a;
-    overflow-y: auto;
-}
+    @import 'node_modules/fundamental-ui/scss/components/side-nav';
+    a {
+      cursor: pointer;
+    }
+    .fd-app__sidebar {
+      position: fixed;
+      top: 50px;
+      left: 0;
+      width: 320px;
+      bottom: 0;
+      background-color: white;
+      color: #32363a;
+      overflow-y: auto;
+    }
 
-.fd-side-nav__group {
-    margin-top: 20px;
-}
+    .fd-side-nav__group {
+      margin-top: 20px;
+    }
 
-.hideNavComponent {
-    display: none;
-}
+    .hideNavComponent {
+      display: none;
+    }
 </style>

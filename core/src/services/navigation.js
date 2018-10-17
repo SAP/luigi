@@ -1,13 +1,23 @@
 import { getConfigValue, getConfigValueFromObjectAsync } from './config';
 import { isFunction } from '../utilities/helpers';
 
-const isNodeAccessPermitted = (nodeToCheckPermissionFor, parentNode, currentContext) => {
-  const permissionCheckerFn = getConfigValue('navigation.nodeAccessibilityResolver');
+const isNodeAccessPermitted = (
+  nodeToCheckPermissionFor,
+  parentNode,
+  currentContext
+) => {
+  const permissionCheckerFn = getConfigValue(
+    'navigation.nodeAccessibilityResolver'
+  );
   if (typeof permissionCheckerFn !== 'function') {
     return true;
   }
-  return permissionCheckerFn(nodeToCheckPermissionFor, parentNode, currentContext);
-}
+  return permissionCheckerFn(
+    nodeToCheckPermissionFor,
+    parentNode,
+    currentContext
+  );
+};
 
 export const getNavigationPath = async (rootNavProviderPromise, activePath) => {
   const rootNode = {};
@@ -41,7 +51,12 @@ export const getChildren = async (node, context) => {
         '_childrenProvider',
         context ? context : node.context
       );
-      node.children = (children instanceof Array) && children.filter((child) => isNodeAccessPermitted(child, node, context)) || [];
+      node.children =
+        (children instanceof Array &&
+          children.filter(child =>
+            isNodeAccessPermitted(child, node, context)
+          )) ||
+        [];
       bindChildrenToParent(node);
       node._childrenProviderUsed = true;
       return node.children;
@@ -123,14 +138,23 @@ const applyContext = (context, addition, navigationContext) => {
 
 export const findMatchingNode = (urlPathElement, nodes) => {
   let result = null;
-  const dynamicSegmentsLength = nodes.filter(n => n.pathSegment.startsWith(':')).length;
+  const dynamicSegmentsLength = nodes.filter(n => n.pathSegment.startsWith(':'))
+    .length;
   if (nodes.length > 1) {
     if (dynamicSegmentsLength === 1) {
-      console.warn('Invalid Node setup detected. \nStatic and dynamic nodes cannot be used together on the same level. Static node gets cleaned up. \nRemove the static Node from the configuration to resolve this warning. \nAffected pathSegment:', urlPathElement, 'Children:', nodes);
+      console.warn(
+        'Invalid Node setup detected. \nStatic and dynamic nodes cannot be used together on the same level. Static node gets cleaned up. \nRemove the static Node from the configuration to resolve this warning. \nAffected pathSegment:',
+        urlPathElement,
+        'Children:',
+        nodes
+      );
       nodes = nodes.filter(n => n.pathSegment.startsWith(':'));
     }
     if (dynamicSegmentsLength > 1) {
-      console.error('Invalid Node setup detected. \nMultiple dynamic Nodes are not allowed on the same level. Stopped navigation. \nInvalid Children:', nodes);
+      console.error(
+        'Invalid Node setup detected. \nMultiple dynamic Nodes are not allowed on the same level. Stopped navigation. \nInvalid Children:',
+        nodes
+      );
       return null;
     }
   }
@@ -153,7 +177,7 @@ export const findMatchingNode = (urlPathElement, nodes) => {
       node.pathSegment = node.pathSegment.replace(key, urlPathElement);
       node.viewUrl = node.viewUrl.replace(key, urlPathElement);
       if (node.context) {
-        Object.entries(node.context).map((entry) => {
+        Object.entries(node.context).map(entry => {
           const dynKey = entry[1];
           if (dynKey === key) {
             node.context[entry[0]] = dynKey.replace(dynKey, urlPathElement);
@@ -166,4 +190,86 @@ export const findMatchingNode = (urlPathElement, nodes) => {
     }
   });
   return result;
+};
+
+
+export const getNodes = (children, pathData) => {
+  if (children && 0 < children.length) {
+    return children;
+  }
+
+  if (2 < pathData.length) {
+    const lastElement = pathData[pathData.length - 1];
+    const oneBeforeLast = pathData[pathData.length - 2];
+    const nestedNode = pathData.length > 1 ? oneBeforeLast : lastElement;
+
+    if (nestedNode && nestedNode.children) {
+      return nestedNode.children;
+    }
+  }
+
+  return [];
+};
+
+export const groupBy = (nodes, property) => {
+  const result = {};
+  nodes.forEach(node => {
+    const key = node[property];
+    let arr = result[key];
+    if (!arr) {
+      arr = [];
+      result[key] = arr;
+    }
+    arr.push(node);
+  });
+
+  return result;
+};
+
+export const getGroupedChildren = (children, current) => {
+  const nodes = getNodes(children, current.pathData);
+  return groupBy(nodes, 'category');
+};
+
+/**
+ * getTruncatedChildren
+ * 
+ * Returns an array of children without the childs below
+ * a Node that has keepSelectedForChildren enabled
+ * @param array children 
+ * @returns array children
+ */
+export const getTruncatedChildren = (children) => {
+  let childToKeepFound = false;
+  const res = [];
+  children.forEach(node => {
+    if (childToKeepFound) {
+      return;
+    }
+    if (node.keepSelectedForChildren) {
+      childToKeepFound = true;
+    }
+    res.push(node);
+  });
+  return res;
+}
+
+export const getLeftNavData = async (current, componentData) => {
+  const updatedCompData = {};
+  if (current.pathData && 1 < current.pathData.length) {
+    const pathDataTruncatedChildren = getTruncatedChildren(componentData.pathData);
+    let lastElement = [...pathDataTruncatedChildren].pop();
+    let selectedNode;
+    if (lastElement.keepSelectedForChildren) {
+      selectedNode = lastElement;
+      pathDataTruncatedChildren.pop();
+      lastElement = [...pathDataTruncatedChildren].pop();
+    }
+
+    const children = await getChildren(lastElement, componentData.context);
+    const groupedChildren = getGroupedChildren(children, current);
+    updatedCompData.selectedNode = selectedNode || lastElement;
+    updatedCompData.children = groupedChildren;
+  }
+  return updatedCompData;
 };
