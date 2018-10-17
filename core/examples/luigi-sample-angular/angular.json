@@ -47,7 +47,10 @@
                 "output": "/luigi-client"
               }
             ],
-            "styles": ["src/styles.css"],
+            "styles": [
+              "src/styles.css",
+              "node_modules/fundamental-ui/dist/fundamental-ui.min.css"
+            ],
             "scripts": []
           },
           "configurations": {
