@@ -404,6 +404,13 @@ export const handleRouteClick = (
   windowElem = window,
   documentElem = document
 ) => {
+  if (node.externalLink && node.externalLink.url) {
+    node.externalLink.sameWindow
+      ? (windowElem.location.href = node.externalLink.url)
+      : windowElem.open(node.externalLink.url).focus();
+    // externalLinkUrl property is provided so there's no need to trigger routing mechanizm
+    return;
+  }
   const route = buildRoute(node, `/${node.pathSegment}`);
   navigateTo(route, windowElem, documentElem);
 };
