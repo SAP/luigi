@@ -8,12 +8,21 @@
     </div>
     <div class="fd-global-nav__group fd-global-nav__group--right">
       <div class="fd-global-nav__actions">
-        {#if children && pathData.length > 0} {#each children as node} {#if !node.hideFromNav}
-        <button class=" fd-button--secondary fd-button--m fd-global-nav__btn {node === selectedNode ? 'is-selected' : ''}" aria-label="{node.label}"
-          on:click=handleClick(node)>
-          <span class="">{node.label}</span>
-        </button>
-        {/if} {/each} {/if} {#if authorizationEnabled}
+        {#if children && pathData.length > 0}
+          {#each children as node}
+            {#if !node.hideFromNav}
+              <button class=" fd-button--secondary fd-button--m fd-global-nav__btn {node === selectedNode ? 'is-selected' : ''} {node.externalLink && node.externalLink.url ? 'fd-global-nav__btn--external' : ''}"
+              aria-label="{node.label}" on:click=handleClick(node)>
+                <span class="">{node.label}</span>
+                {#if node.externalLink && node.externalLink.url}
+                  <span class="sap-icon--action sap-icon--s"></span>
+                {/if}
+              </button>
+            {/if}
+          {/each}
+        {/if}
+
+        {#if authorizationEnabled}
         <div class="fd-popover user-settings">
           <div class="fd-popover__control">
             <button class="fd-popover__control fd-button--secondary fd-button--m fd-global-nav__btn sap-icon--customer" aria-expanded="{dropDownStates.PROFILE_POPOVER || false}"
@@ -127,6 +136,8 @@
 </script>
 
 <style type="text/scss">
+  $fd-icons-path: 'node_modules/fundamental-ui/scss/icons/';
+
   @import 'node_modules/fundamental-ui/scss/icons';
   @import 'node_modules/fundamental-ui/scss/components/action-bar';
   @import 'node_modules/fundamental-ui/scss/components/button';
