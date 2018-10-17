@@ -28,7 +28,7 @@ const baseHref = '';
 const deployUrl = '';
 const projectRoot = process.cwd();
 const maximumInlineSize = 10;
-const postcssPlugins = function (loader) {
+const postcssPlugins = function(loader) {
   return [
     postcssImports({
       resolve: (url, context) => {
@@ -396,6 +396,27 @@ module.exports = {
           to: './luigi-client',
           from: {
             glob: 'luigi-client.js'
+          }
+        },
+        {
+          context: 'node_modules/fundamental-ui/dist',
+          to: '/fundamental-ui',
+          from: {
+            glob: 'fundamental-ui.min.css'
+          }
+        },
+        {
+          context: 'node_modules/fundamental-ui/dist',
+          to: '/fundamental-ui',
+          from: {
+            glob: 'fonts/**'
+          }
+        },
+        {
+          context: 'node_modules/fundamental-ui/dist',
+          to: '/fundamental-ui',
+          from: {
+            glob: 'SAP-icons.*'
           }
         }
       ],
