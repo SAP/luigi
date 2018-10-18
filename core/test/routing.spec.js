@@ -669,7 +669,7 @@ describe('Routing', () => {
   describe('defaultChildNodes', () => {
     const routing = rewire('../src/services/routing');
     const getDefaultChildNode = routing.__get__('getDefaultChildNode');
-    const getPathData = function () {
+    const getPathData = function() {
       return {
         navigationPath: [
           {

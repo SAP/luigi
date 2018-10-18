@@ -38,11 +38,11 @@
   }
 
   // actual Luigi code
-  var luigiInitialized = false
+  var luigiInitialized = false;
   var defaultContextKeys = ['context', 'internal', 'nodeParams', 'pathParams'];
   var currentContext = defaultContextKeys.reduce(function(acc, key) {
     acc[key] = {};
-    return acc
+    return acc;
   }, {});
   var _onContextUpdatedFn;
   var _onInitFn;
@@ -83,7 +83,9 @@
       }
       if ('luigi.navigate' === e.data.msg) {
         setContext(e.data);
-        var hashRoutingModeActive = e.data.viewUrl.indexOf('#') !== -1 && window.location.href.indexOf('#') !== -1;
+        var hashRoutingModeActive =
+          e.data.viewUrl.indexOf('#') !== -1 &&
+          window.location.href.indexOf('#') !== -1;
         if (hashRoutingModeActive) {
           window.location.hash = e.data.viewUrl.split('#')[1];
         } else {
@@ -125,7 +127,9 @@
      * @param {function} contextUpdatedFn the listener function that is called every time Luigi context was changed
      * @memberof lifecycle
      */
-    addContextUpdateListener: function addContextUpdateListener(contextUpdatedFn) {
+    addContextUpdateListener: function addContextUpdateListener(
+      contextUpdatedFn
+    ) {
       _onContextUpdatedFn = contextUpdatedFn;
       if (luigiInitialized && _onContextUpdatedFn) {
         _onContextUpdatedFn(currentContext.context);
@@ -177,7 +181,7 @@
          * @param {string} path path to be navigated to
          * @param {string} sessionId  current Luigi sessionId
          * @param {boolean} preserveView Preserve a view by setting it to `true`. It keeps the current view opened in the background and opens the new route in a new frame. Use the {@link #goBack goBack()} function to navigate back afterwards. You can use this feature at unlimited levels. The preserved views are discarded as soon as the standard {@link #navigate navigate()} function is used in place of {@link #goBack goBack()}.
-         * @example 
+         * @example
          * LuigiClient.linkManager().navigate('/overview')
          * LuigiClient.linkManager().navigate('users/groups/stakeholders')
          * LuigiClient.linkManager().navigate('/settings', null, true) // preserve view
@@ -204,11 +208,13 @@
          * Sets the current navigation context to that of a specific parent Node that has the {@link navigation-configuration.md navigationContext} field declared in its navigation configuration. This navigation context is then used by navigate function.
          * @param {Object} navigationContext
          * @returns {linkManager} link manager instance.
-         * @example 
+         * @example
          * LuigiClient.linkManager().fromContext('project').navigate('/settings')
          */
         fromContext: function fromContext(navigationContext) {
-          var navigationContextInParent = currentContext.context.parentNavigationContexts.includes(navigationContext);
+          var navigationContextInParent = currentContext.context.parentNavigationContexts.includes(
+            navigationContext
+          );
           if (navigationContextInParent) {
             options.fromContext = navigationContext;
           } else {
@@ -225,11 +231,12 @@
         /**
          * Sets the current navigation context, which is then be used by the navigate function. This has to be a parent navigation context, it is not possible to go to child navigation contexts.
          * @returns {linkManager} link manager instance.
-         * @example 
+         * @example
          * LuigiClient.linkManager().fromClosestContext().navigate('/users/groups/stakeholders')
          */
         fromClosestContext: function fromClosestContext() {
-          var hasParentNavigationContext = currentContext.context.parentNavigationContexts.length === 0;
+          var hasParentNavigationContext =
+            currentContext.context.parentNavigationContexts.length === 0;
           if (hasParentNavigationContext) {
             options.fromContext = null;
             options.fromClosestContext = true;
@@ -245,10 +252,10 @@
          * Sends node parameters to the route, which are then used by the navigate function. Use it optionally in combination with any of the navigation functions and receive it with as part of the context object in Luigi Client.
          * @param {Object} nodeParams
          * @returns {linkManager} link manager instance.
-         * @example 
+         * @example
          * LuigiClient.linkManager.withParams({foo: "bar"}).navigate("path")
-         * 
-         * // Can be chained with context settings functions like this: 
+         *
+         * // Can be chained with context settings functions like this:
          * LuigiClient.linkManager.fromContext("currentTeam").withParams({foo: "bar"}).navigate("path")
          */
         withParams: function withParams(nodeParams) {
@@ -263,15 +270,13 @@
          * @returns {boolean} a boolean with the information if there is a preserved view available to which a user can return.
          */
         hasBack: function hasBack() {
-          return Boolean(
-            currentContext.internal.viewStackSize !== 0
-          );
+          return Boolean(currentContext.internal.viewStackSize !== 0);
         },
 
         /**
          * Discards the active view and navigates back to the last visited view (preserved view), if a preserved view was set before.
-         * @param {any} goBackValue data that is handed over in `goBackContext` field to the last visited view 
-         * @example 
+         * @param {any} goBackValue data that is handed over in `goBackContext` field to the last visited view
+         * @example
          * LuigiClient.linkManager().goBack({ foo: 'bar' });
          * LuigiClient.linkManager().goBack(true);
          */
@@ -298,13 +303,19 @@
          * Adds a backdrop with a loading indicator for the micro front-end frame. This overrides the {@link navigation-configuration.md#nodes loadingIndicator.enabled} setting.
          */
         showLoadingIndicator: function showLoadingIndicator() {
-          window.parent.postMessage({ msg: 'luigi.show-loading-indicator' }, '*');
+          window.parent.postMessage(
+            { msg: 'luigi.show-loading-indicator' },
+            '*'
+          );
         },
         /**
          * Removes the loading indicator. Use it after calling {@link #showLoadingIndicator showLoadingIndicator()} or to hide the indicator when you use the {@link navigation-configuration.md#nodes loadingIndicator.hideAutomatically: false} Node configuration.
          */
         hideLoadingIndicator: function hideLoadingIndicator() {
-          window.parent.postMessage({ msg: 'luigi.hide-loading-indicator' }, '*');
+          window.parent.postMessage(
+            { msg: 'luigi.hide-loading-indicator' },
+            '*'
+          );
         },
         /**
          * Adds a backdrop to block the top and side navigation. It is based on Fundamental UI Modal, which you can use in your micro front-end to achieve the same behavior.
