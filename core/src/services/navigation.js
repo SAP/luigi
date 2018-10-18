@@ -193,7 +193,6 @@ export const findMatchingNode = (urlPathElement, nodes) => {
   return result;
 };
 
-
 const isLoggedIn = () => {
   const getStoredAuthData = () =>
     JSON.parse(localStorage.getItem('luigi.auth'));
