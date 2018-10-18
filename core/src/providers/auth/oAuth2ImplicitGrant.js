@@ -55,7 +55,7 @@ export class oAuth2ImplicitGrant {
       document.getElementsByTagName('body')[0].appendChild(formElem);
       setTimeout(() => {
         document.querySelector('form#signIn').submit();
-      }, 50);
+      });
 
       // TODO: We're not resolving the promise at any time,
       // since oauth2 is redirecting off the page
