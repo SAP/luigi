@@ -263,9 +263,7 @@
          * @returns {boolean} a boolean with the information if there is a preserved view available to which a user can return.
          */
         hasBack: function hasBack() {
-          return Boolean(
-            currentContext.internal.viewStackSize !== 0
-          );
+          return Boolean(currentContext.internal.viewStackSize !== 0);
         },
 
         /**
@@ -298,13 +296,19 @@
          * Adds a backdrop with a loading indicator for the micro front-end frame. This overrides the {@link navigation-configuration.md#nodes loadingIndicator.enabled} setting.
          */
         showLoadingIndicator: function showLoadingIndicator() {
-          window.parent.postMessage({ msg: 'luigi.show-loading-indicator' }, '*');
+          window.parent.postMessage(
+            { msg: 'luigi.show-loading-indicator' },
+            '*'
+          );
         },
         /**
          * Removes the loading indicator. Use it after calling {@link #showLoadingIndicator showLoadingIndicator()} or to hide the indicator when you use the {@link navigation-configuration.md#nodes loadingIndicator.hideAutomatically: false} Node configuration.
          */
         hideLoadingIndicator: function hideLoadingIndicator() {
-          window.parent.postMessage({ msg: 'luigi.hide-loading-indicator' }, '*');
+          window.parent.postMessage(
+            { msg: 'luigi.hide-loading-indicator' },
+            '*'
+          );
         },
         /**
          * Adds a backdrop to block the top and side navigation. It is based on Fundamental UI Modal, which you can use in your micro front-end to achieve the same behavior.

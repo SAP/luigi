@@ -1,7 +1,9 @@
 <ul class="fd-menu__list">
   <li>
     {#if isLoggedIn}
-    <a href="#" aria-label="Logout" on:click=logout() class="fd-menu__item">Logout</a>
+      <a href="#" aria-label="Logout" on:click=logout() class="fd-menu__item">Logout</a>
+    {:else}
+      <a href="#" aria-label="Login" on:click=startAuthorization() class="fd-menu__item">Login</a>
     {/if}
   </li>
 </ul>
@@ -31,19 +33,19 @@
   const getIdpProviderInstance = async(idpProviderName, idpProviderSettings) => {
     if (isFunction(standardProviders[idpProviderName])) {
       return new standardProviders[idpProviderName](idpProviderSettings);
-    }
+    };
 
     // custom provider provided via config:
     const customIdpProvider = getConfigValueFromObject(idpProviderSettings, 'customIdpProvider');
     if (customIdpProvider) {
       ['login'].forEach((requiredFnName) => {
-        if(!isFunction(customIdpProvider[requiredFnName])) {
+        if (!isFunction(customIdpProvider[requiredFnName])) {
           throw new IdpProviderException(`${requiredFnName} function does not exist in custom IDP Provider ${idpProviderName}`);
-        }
+        };
       });
 
       return new customIdpProvider(idpProviderSettings);
-    }
+    };
 
     throw new IdpProviderException(`IDP Provider ${idpProviderName} does not exist.`);
   };
@@ -55,14 +57,17 @@
       const authorizationEnabled = !!idpProviderSettings;
       if (!authorizationEnabled) {
         return;
-      }
+      };
 
       const checkAuth = () => {
         const authData = getStoredAuthData();
         if (!authData || !isAuthValid()) {
+          if (getConfigValue('auth.disableAutoLogin')) {
+            return;
+          };
           this.startAuthorization();
           return;
-        }
+        };
 
         this.set({ isLoggedIn: true });
 
@@ -70,7 +75,7 @@
         if (onAuthSuccessfulFn && newlyAuthorized()) {
           localStorage.removeItem('luigi.newlyAuthorized');
           onAuthSuccessfulFn(authData);
-        }
+        };
 
         // TODO: Re-auth via id_token if not logged in
         // TODO: Check periodically if authorization is still valid
@@ -84,41 +89,41 @@
           idpProviderInstance = resolved;
           checkAuth();
         });
-      }
+      };
       checkAuth();
     },
     methods: {
       startAuthorization: function() {
-          idpProviderInstance.login().then((res) => {
-            localStorage.setItem('luigi.newlyAuthorized', true);
-            if(res) {
-              alert(res);
-            }
-          });
-        },
-        logout: function() {
-          const authData = getStoredAuthData();
+        idpProviderInstance.login().then((res) => {
+          localStorage.setItem('luigi.newlyAuthorized', true);
+          if (res) {
+            alert(res);
+          };
+        });
+      },
+      logout: function() {
+        const authData = getStoredAuthData();
 
-          const logoutCallback = () => {
-            const onLogoutFn = getConfigValue('auth.events.onLogout');
-            if (onLogoutFn) { onLogoutFn(); }
+        const logoutCallback = () => {
+          const onLogoutFn = getConfigValue('auth.events.onLogout');
+          if (onLogoutFn) { onLogoutFn(); };
 
-            this.set({ isLoggedIn: false });
-            localStorage.removeItem('luigi.auth');
-          }
+          this.set({ isLoggedIn: false });
+          localStorage.removeItem('luigi.auth');
+        };
 
-          const customLogoutFn = getConfigValue(`auth.${getConfigValue('auth.use')}.logoutFn`);
-          if (isFunction(customLogoutFn)) {
-            customLogoutFn(idpProviderInstance.settings, authData, logoutCallback);
-          }
-          else if (isFunction(idpProviderInstance.logout)) {
-            idpProviderInstance.logout(authData, logoutCallback);
-          }
-          else {
-            logoutCallback();
-            window.location.href = idpProviderInstance.settings.logoutUrl;
-          }
-        },
+        const customLogoutFn = getConfigValue(`auth.${getConfigValue('auth.use')}.logoutFn`);
+        if (isFunction(customLogoutFn)) {
+          customLogoutFn(idpProviderInstance.settings, authData, logoutCallback);
+        }
+        else if (isFunction(idpProviderInstance.logout)) {
+          idpProviderInstance.logout(authData, logoutCallback);
+        }
+        else {
+          logoutCallback();
+          window.location.href = idpProviderInstance.settings.logoutUrl;
+        };
+      },
     },
     components: {},
     // store: () => store
