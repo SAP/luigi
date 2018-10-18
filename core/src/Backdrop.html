@@ -1,9 +1,6 @@
-{#if backdropActive}
-<div class="fd-ui__overlay fd-overlay fd-overlay--modal {heightCssClass}" aria-hidden="false">
+<div class="{backdropActive ? 'fd-ui__overlay fd-overlay fd-overlay--modal ' + heightCssClass : ''}" aria-hidden="false">
   <slot></slot>
 </div>
-{/if}
-<slot></slot>
 
 <script type="text/javascript">
   import { getConfigValue } from './services/config.js';

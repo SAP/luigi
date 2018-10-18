@@ -242,6 +242,22 @@ var projectDetailNavProviderFn = function(context) {
             }
           ]
         }))
+      },
+      {
+        label: 'Open Github in new tab',
+        category: 'Super useful Github links',
+        externalLink: {
+          url: 'http://github.com',
+          sameWindow: false
+        }
+      },
+      {
+        label: 'Open Github in this tab',
+        category: 'Super useful Github links',
+        externalLink: {
+          url: 'http://github.com',
+          sameWindow: true
+        }
       }
     ];
     getProjectPlugins(projectId).then(function(result) {
@@ -417,6 +433,13 @@ Luigi.setConfig({
           pathSegment: 'settings',
           label: 'Settings',
           viewUrl: '/sampleapp.html#/settings'
+        },
+        {
+          label: 'Open Google in this tab',
+          externalLink: {
+            url: 'http://google.com',
+            sameWindow: true
+          }
         },
         {
           pathSegment: 'ext',
