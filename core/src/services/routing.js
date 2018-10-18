@@ -32,13 +32,12 @@ const getDefaultChildNode = function(pathData) {
 };
 
 const isExistingRoute = function(path, pathData) {
-  if (path === '') {
+  if (!path) {
     return true;
   }
 
   const lastElement =
     pathData.navigationPath[pathData.navigationPath.length - 1];
-
   const routeSplit = path.replace(/\/$/, '').split('/');
   const lastPathSegment = routeSplit[routeSplit.length - 1];
 
