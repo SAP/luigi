@@ -32,13 +32,12 @@ const getDefaultChildNode = function(pathData) {
 };
 
 const isExistingRoute = function(path, pathData) {
-  if (path === '') {
+  if (!path) {
     return true;
   }
 
   const lastElement =
     pathData.navigationPath[pathData.navigationPath.length - 1];
-
   const routeSplit = path.replace(/\/$/, '').split('/');
   const lastPathSegment = routeSplit[routeSplit.length - 1];
 
@@ -404,6 +403,13 @@ export const handleRouteClick = (
   windowElem = window,
   documentElem = document
 ) => {
+  if (node.externalLink && node.externalLink.url) {
+    node.externalLink.sameWindow
+      ? (windowElem.location.href = node.externalLink.url)
+      : windowElem.open(node.externalLink.url).focus();
+    // externalLinkUrl property is provided so there's no need to trigger routing mechanizm
+    return;
+  }
   const route = buildRoute(node, `/${node.pathSegment}`);
   navigateTo(route, windowElem, documentElem);
 };

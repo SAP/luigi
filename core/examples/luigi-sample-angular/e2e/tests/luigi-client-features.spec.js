@@ -110,14 +110,16 @@ describe('Luigi client features', () => {
     });
   });
 
-
   describe('uxManager', () => {
     it('backdrop', () => {
       cy.wait(500);
       cy.get('iframe').then($iframe => {
         const $iframeBody = $iframe.contents().find('body');
         cy.goToFeaturesPage($iframeBody);
-        cy.wrap($iframeBody).should('not.contain', 'Lorem tipsum dolor sit amet');
+        cy.wrap($iframeBody).should(
+          'not.contain',
+          'Lorem tipsum dolor sit amet'
+        );
         cy.get('.fd-ui__overlay').should('not.exist');
 
         //open modal with backdrop
@@ -131,7 +133,10 @@ describe('Luigi client features', () => {
         cy.wrap($iframeBody)
           .contains('Confirm')
           .click();
-        cy.wrap($iframeBody).should('not.contain', 'Lorem tipsum dolor sit amet');
+        cy.wrap($iframeBody).should(
+          'not.contain',
+          'Lorem tipsum dolor sit amet'
+        );
         cy.get('.fd-ui__overlay').should('not.exist');
       });
     });

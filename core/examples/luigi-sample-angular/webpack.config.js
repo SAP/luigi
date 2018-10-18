@@ -23,12 +23,19 @@ const entryPoints = [
   'vendor',
   'main'
 ];
+const cssFiles = [
+  path.join(process.cwd(), 'src/styles.css'),
+  path.join(
+    process.cwd(),
+    'node_modules/fundamental-ui/dist/fundamental-ui.min.css'
+  )
+];
 const hashFormat = { chunk: '', extract: '', file: '.[hash:20]', script: '' };
 const baseHref = '';
 const deployUrl = '';
 const projectRoot = process.cwd();
 const maximumInlineSize = 10;
-const postcssPlugins = function (loader) {
+const postcssPlugins = function(loader) {
   return [
     postcssImports({
       resolve: (url, context) => {
@@ -137,7 +144,7 @@ module.exports = {
   entry: {
     main: ['./src/main.ts'],
     polyfills: ['./src/polyfills.ts'],
-    styles: ['./src/styles.css']
+    styles: cssFiles
   },
   output: {
     path: path.join(process.cwd(), 'dist'),
@@ -168,7 +175,7 @@ module.exports = {
         }
       },
       {
-        exclude: [path.join(process.cwd(), 'src/styles.css')],
+        exclude: cssFiles,
         test: /\.css$/,
         use: [
           {
@@ -185,7 +192,7 @@ module.exports = {
         ]
       },
       {
-        exclude: [path.join(process.cwd(), 'src/styles.css')],
+        exclude: cssFiles,
         test: /\.scss$|\.sass$/,
         use: [
           {
@@ -210,7 +217,7 @@ module.exports = {
         ]
       },
       {
-        exclude: [path.join(process.cwd(), 'src/styles.css')],
+        exclude: cssFiles,
         test: /\.less$/,
         use: [
           {
@@ -233,7 +240,7 @@ module.exports = {
         ]
       },
       {
-        exclude: [path.join(process.cwd(), 'src/styles.css')],
+        exclude: cssFiles,
         test: /\.styl$/,
         use: [
           {
@@ -257,7 +264,7 @@ module.exports = {
         ]
       },
       {
-        include: [path.join(process.cwd(), 'src/styles.css')],
+        include: cssFiles,
         test: /\.css$/,
         use: [
           'style-loader',
@@ -275,7 +282,7 @@ module.exports = {
         ]
       },
       {
-        include: [path.join(process.cwd(), 'src/styles.css')],
+        include: cssFiles,
         test: /\.scss$|\.sass$/,
         use: [
           'style-loader',
@@ -301,7 +308,7 @@ module.exports = {
         ]
       },
       {
-        include: [path.join(process.cwd(), 'src/styles.css')],
+        include: cssFiles,
         test: /\.less$/,
         use: [
           'style-loader',
@@ -325,7 +332,7 @@ module.exports = {
         ]
       },
       {
-        include: [path.join(process.cwd(), 'src/styles.css')],
+        include: cssFiles,
         test: /\.styl$/,
         use: [
           'style-loader',
@@ -400,21 +407,21 @@ module.exports = {
         },
         {
           context: 'node_modules/fundamental-ui/dist',
-          to: './fundamental-ui',
+          to: 'fundamental-ui',
           from: {
             glob: 'fundamental-ui.min.css'
           }
         },
         {
           context: 'node_modules/fundamental-ui/dist',
-          to: './fundamental-ui',
+          to: 'fundamental-ui',
           from: {
             glob: 'fonts/**'
           }
         },
         {
           context: 'node_modules/fundamental-ui/dist',
-          to: './fundamental-ui',
+          to: 'fundamental-ui',
           from: {
             glob: 'SAP-icons.*'
           }
