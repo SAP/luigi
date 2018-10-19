@@ -229,7 +229,7 @@
         },
 
         /**
-         * Sets the current navigation context, which is then be used by the navigate function. This has to be a parent navigation context, it is not possible to go to child navigation contexts.
+         * Sets the current navigation context, which is then used by the navigate function. This has to be a parent navigation context, it is not possible to go to child navigation contexts.
          * @returns {linkManager} link manager instance.
          * @example
          * LuigiClient.linkManager().fromClosestContext().navigate('/users/groups/stakeholders')
@@ -249,7 +249,7 @@
         },
 
         /**
-         * Sends node parameters to the route, which are then used by the navigate function. Use it optionally in combination with any of the navigation functions and receive it with as part of the context object in Luigi Client.
+         * Sends node parameters to the route, which are then used by the navigate function. Use it optionally in combination with any of the navigation functions and receive it as part of the context object in Luigi Client.
          * @param {Object} nodeParams
          * @returns {linkManager} link manager instance.
          * @example

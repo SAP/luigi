@@ -126,7 +126,7 @@ Luigi.setConfig({
 If you start navigating form within a **navigationContext**'s child, navigate to the specific product route with **Luigi client**.
 
 ```
-LuigiClient.linkManager().fromContext('project').withParam({sort: 'asc'}).navigate('/products');
+LuigiClient.linkManager().fromContext('project').withParam({sort: 'asc'}).navigate('sample_1/products');
 ```
 
 You can also navigate directly from any other Node:

@@ -36,7 +36,7 @@ All projects in the repository use [Prettier](https://prettier.io) to format sou
 
 ## Tests
 
-To ensure that existing features still work as expected after your changes, you can run UI tests from the 'luigi-sample-angular' example. Before running the tests, start the sample application by using the `npm start` command in the application folder.
+To ensure that existing features still work as expected after your changes, you can run UI tests from the [Angular example application](/core/examples/luigi-sample-angular). Before running the tests, start the sample application by using the `npm start` command in the application folder.
 
 When the application is ready:
 
