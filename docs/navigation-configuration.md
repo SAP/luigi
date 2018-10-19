@@ -56,7 +56,9 @@ window.Luigi.setConfig({
 
 ### Routing
 
-- **useHashRouting** defines either hash-based (`url.com/#/yourpath`) or path-based (`url.com/yourpath`) routing.
+You can configure the way Luigi tackles routing in your application in the **Routing** section of the configuration file. In the example, you can choose the routing strategy to apply in your application as either hash or path location routing.
+
+- **useHashRouting** defines either hash-based (`url.com/#/yourpath`) or path-based (`url.com/yourpath`) routing. Set it to `true` if you prefer to use the hash location routing. Otherwise path location routing is the default strategy.
 - **nodeParamPrefix** sets the prefix character when using the `LuigiClient.linkManager().withParam()` function, which provides a way to simply attach query parameters to the view URL for activities such as sorting and filtering. The URL contains the parameters to allow deep linking. If you want to use a different character prefix, define yours here. The default character is `~`.
 
 ### Navigation parameters

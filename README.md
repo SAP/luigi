@@ -17,7 +17,6 @@ Luigi core is the part of Luigi that enables navigation, security and routing. T
 - [Application setup](docs/application-setup.md) shows you the first steps to prepare your application for development.
 - [Navigation configuration](docs/navigation-configuration.md) shows you how to configure navigation.
 - [Authorization configuration](docs/authorization-configuration.md) shows you how to secure Luigi.
-- [Routing mechanism configuration](docs/router-configuration.md) demonstrates routing in Luigi.
 - [General settings](docs/general-settings.md) provides you with configuration parameters.
 
 ### Luigi client
