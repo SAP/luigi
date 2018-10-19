@@ -64,7 +64,7 @@ You can configure the way Luigi tackles routing in your application in the **Rou
 ### Navigation parameters
 
 - **nodeAccessibilityResolver** allows you to define a permission checker function that gets executed on every Node. If it returns `false`, Luigi removes the Node and its children from the navigation structure.
-  **nodeAccessibilityResolver** receives all values defined in the Node configuration. See [angular sampleconfig.js](../core/examples/luigi-sample-angular/src/assets/sampleconfig.js) for the **constraints** example.
+  **nodeAccessibilityResolver** receives all values defined in the Node configuration. See [angular sampleconfig.js](../core/examples/luigi-sample-angular/src/assets/extendedConfiguration.js) for the **constraints** example.
 
 ## Nodes
 
