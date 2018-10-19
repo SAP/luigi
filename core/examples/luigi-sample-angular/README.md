@@ -31,26 +31,26 @@ To have this application running, follow these steps:
 
 4. Start the example application from the `luigi/core/examples/luigi-sample-angular` folder.
 
-`/assets/sampleConfiguration.js` is the default configuration with a showcase of all available features. If you want to try out a much simpler example, change the configuration reference in `index.html` to `basicConfiguration.js`.
+    `/assets/sampleConfiguration.js` is the default configuration with a showcase of all available features. If you want to try out a much simpler example, change the configuration reference in `index.html` to `basicConfiguration.js`.
 
-- To run Luigi with hash based routing, change the **routing.useHashrouting** configuration to `true` and run the following command:
-    ```bash
-    npm run start
-    ```
+    - To run Luigi with hash based routing, change the **routing.useHashrouting** configuration to `true` and run the following command:
+        ```bash
+        npm run start
+        ```
 
-- To run Luigi with path based routing, change the **routing.useHashrouting** configuration to `false` and run the following command:
-    ```bash
-    npm run startWebpack
-    ```
+    - To run Luigi with path based routing, change the **routing.useHashrouting** configuration to `false` and run the following command:
+        ```bash
+        npm run startWebpack
+        ```
 
-5. Open it in your browser by going to [http://localhost:4200/](http://localhost:4200/)`.
+5. Open it in your browser by going to [http://localhost:4200/](http://localhost:4200/).
 
 6. Optional: Reflect changes in the Luigi Core code on the exemplary application.
 
     - You must let the Luigi core to bundle every change you apply to it. The easiest approach is to open the Luigi root folder in another tab of your terminal window and run the following command: 
-    ```bash    
-    lerna run bundle-develop
-    ```
+      ```bash    
+      lerna run bundle-develop
+      ```
     - The Luigi Client is not bundled, so you are able to update it without bundling.
     
     - The auto-reload of your application only updates the application. Type `CMD + R` to reflect the changes of the linked Luigi Core and Luigi Client modules in the website.
@@ -60,8 +60,8 @@ To have this application running, follow these steps:
 
 To run UI tests locally, the sample application has to be running. When the application is ready:
 
-- Run `npm run cypress:run` to start tests in the headless browser.
-- Run `npm run cypress:open` to start tests in the interactive mode.
+- Run `npm run e2e:run` to start tests in the headless browser.
+- Run `npm run e2e:open` to start tests in the interactive mode.
 <!-- ## Run server
 * Using Angular CLI (standard): `npm run start`
 
