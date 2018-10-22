@@ -1,11 +1,11 @@
 import { getConfigValue, getConfigValueFromObjectAsync } from './config';
-import { isFunction } from '../utilities/helpers';
 
 const isNodeAccessPermitted = (
   nodeToCheckPermissionFor,
   parentNode,
   currentContext
 ) => {
+  if (!isLoggedIn()) return false;
   const permissionCheckerFn = getConfigValue(
     'navigation.nodeAccessibilityResolver'
   );
@@ -138,8 +138,9 @@ const applyContext = (context, addition, navigationContext) => {
 
 export const findMatchingNode = (urlPathElement, nodes) => {
   let result = null;
-  const dynamicSegmentsLength = nodes.filter(n => n.pathSegment.startsWith(':'))
-    .length;
+  const dynamicSegmentsLength = nodes.filter(
+    n => n.pathSegment && n.pathSegment.startsWith(':')
+  ).length;
   if (nodes.length > 1) {
     if (dynamicSegmentsLength === 1) {
       console.warn(
@@ -166,7 +167,7 @@ export const findMatchingNode = (urlPathElement, nodes) => {
     }
 
     // Dynamic Nodes
-    if (node.pathSegment.startsWith(':')) {
+    if (node.pathSegment && node.pathSegment.startsWith(':')) {
       const key = node.pathSegment.slice(0);
       node.pathParam = {
         key: key,
@@ -192,6 +193,13 @@ export const findMatchingNode = (urlPathElement, nodes) => {
   return result;
 };
 
+const isLoggedIn = () => {
+  const getStoredAuthData = () =>
+    JSON.parse(localStorage.getItem('luigi.auth'));
+  const isAuthValid = () =>
+    getStoredAuthData().accessTokenExpirationDate > Number(new Date());
+  return getStoredAuthData() && isAuthValid();
+};
 
 export const getNodes = (children, pathData) => {
   if (children && 0 < children.length) {
@@ -233,13 +241,13 @@ export const getGroupedChildren = (children, current) => {
 
 /**
  * getTruncatedChildren
- * 
+ *
  * Returns an array of children without the childs below
  * a Node that has keepSelectedForChildren enabled
- * @param array children 
+ * @param array children
  * @returns array children
  */
-export const getTruncatedChildren = (children) => {
+export const getTruncatedChildren = children => {
   let childToKeepFound = false;
   const res = [];
   children.forEach(node => {
@@ -252,12 +260,14 @@ export const getTruncatedChildren = (children) => {
     res.push(node);
   });
   return res;
-}
+};
 
 export const getLeftNavData = async (current, componentData) => {
   const updatedCompData = {};
   if (current.pathData && 1 < current.pathData.length) {
-    const pathDataTruncatedChildren = getTruncatedChildren(componentData.pathData);
+    const pathDataTruncatedChildren = getTruncatedChildren(
+      componentData.pathData
+    );
     let lastElement = [...pathDataTruncatedChildren].pop();
     let selectedNode;
     if (lastElement.keepSelectedForChildren) {
