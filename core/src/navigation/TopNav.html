@@ -1,12 +1,7 @@
 <div class="fd-ui__header {hideNavComponent ? 'hideNavComponent' : ''}">
   <nav class="fd-global-nav">
     <div class="fd-global-nav__group fd-global-nav__group--left">
-      <div on:click="goTo('/')" class="fd-global-nav__logo fd-has-margin-left-none" ref:logo style="background-image: 'none'"></div>
-      <div class="fd-global-nav__product-name">
-        {#if title}
-        <a on:click="goTo('/')">{title}</a>
-        {/if}
-      </div>
+      <LogoTitle />
     </div>
 
     <div class="fd-global-nav__group fd-global-nav__group--right">
@@ -48,10 +43,11 @@
 </div>
 
 <script type="text/javascript">
-  import Backdrop from './Backdrop.html';
-  import Authorization from './Authorization.html';
-  import { handleRouteClick } from './services/routing.js';
-  import { getConfigValue, getConfigValueAsync, getConfigBooleanValue } from './services/config.js';
+  import LogoTitle from './LogoTitle.html';
+  import Backdrop from '../Backdrop.html';
+  import Authorization from '../Authorization.html';
+  import { handleRouteClick } from '../services/routing.js';
+  import { getConfigValue, getConfigValueAsync, getConfigBooleanValue } from '../services/config.js';
 
   const getNegatedBoolString = str => {
     return str === 'true' ? 'false' : 'true';
@@ -76,37 +72,8 @@
     }
   };
 
-  const processHeaderSettings = (component) => {
-    getConfigValueAsync('settings.header').then((header) => {
-      if (!header) { return; }
-
-      // Set Title and Logo
-      if (header.title) {
-        component.set({ title: header.title });
-        document.title = header.title;
-      }
-      if (header.logo) {
-        component.refs.logo.style.backgroundImage = 'url(' + header.logo + ')';
-      }
-
-      // Set Favicon
-      if (header.favicon) {
-        if (!header.favicon.split('?')[0].endsWith('.ico')) {
-          console.warn('Favicon is not an .ico filetype and might get displayed wrong.');
-        }
-        const link = document.createElement('link');
-        link.type = 'image/x-icon';
-        link.rel = 'shortcut icon';
-        link.href = header.favicon;
-        document.getElementsByTagName('head')[0].appendChild(link);
-      }
-    });
-  }
-
   export default {
     oncreate() {
-      processHeaderSettings(this);
-
       // Authentication detection
       const idpProviderName = getConfigValue('auth.use');
       const idpProviderSettings = getConfigValue(`auth.${idpProviderName}`);
@@ -162,7 +129,8 @@
       }
     },
     components: {
-      Authorization
+      Authorization,
+      LogoTitle
     }
   };
 </script>
@@ -194,13 +162,6 @@
   .fd-global-nav {
     height: 100%;
     border: none;
-  }
-  .fd-global-nav__product-name {
-    color: #0a6ed1;
-    height: 50px;
-    font-size: 24px;
-    line-height: 1em;
-    padding: 13px 0;
   }
 
   .hideNavComponent {
