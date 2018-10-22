@@ -16,7 +16,7 @@ const getLastNodeObject = pathData => {
   return lastElement ? lastElement : {};
 };
 
-const getDefaultChildNode = function (pathData) {
+const getDefaultChildNode = function(pathData) {
   const lastElement =
     pathData.navigationPath[pathData.navigationPath.length - 1];
 
@@ -31,14 +31,13 @@ const getDefaultChildNode = function (pathData) {
   }
 };
 
-const isExistingRoute = function (path, pathData) {
-  if (path === '') {
+const isExistingRoute = function(path, pathData) {
+  if (!path) {
     return true;
   }
 
   const lastElement =
     pathData.navigationPath[pathData.navigationPath.length - 1];
-
   const routeSplit = path.replace(/\/$/, '').split('/');
   const lastPathSegment = routeSplit[routeSplit.length - 1];
 
@@ -315,9 +314,9 @@ export const handleRouteChange = async (path, component, node, config) => {
       isolateView,
       previousNodeValues: previousCompData
         ? {
-          viewUrl: previousCompData.viewUrl,
-          isolateView: previousCompData.isolateView
-        }
+            viewUrl: previousCompData.viewUrl,
+            isolateView: previousCompData.isolateView
+          }
         : {}
     });
 

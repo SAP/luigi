@@ -53,7 +53,10 @@ export class oAuth2ImplicitGrant {
       formElem.appendChild(node.cloneNode());
 
       document.getElementsByTagName('body')[0].appendChild(formElem);
-      document.querySelector('form#signIn').submit();
+      setTimeout(() => {
+        document.querySelector('form#signIn').submit();
+      });
+
       // TODO: We're not resolving the promise at any time,
       // since oauth2 is redirecting off the page
       // maybe it is possible to catch errors

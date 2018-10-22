@@ -1,11 +1,11 @@
 import { getConfigValue, getConfigValueFromObjectAsync } from './config';
-import { isFunction } from '../utilities/helpers';
 
 const isNodeAccessPermitted = (
   nodeToCheckPermissionFor,
   parentNode,
   currentContext
 ) => {
+  if (!isLoggedIn()) return false;
   const permissionCheckerFn = getConfigValue(
     'navigation.nodeAccessibilityResolver'
   );
@@ -191,6 +191,14 @@ export const findMatchingNode = (urlPathElement, nodes) => {
     }
   });
   return result;
+};
+
+const isLoggedIn = () => {
+  const getStoredAuthData = () =>
+    JSON.parse(localStorage.getItem('luigi.auth'));
+  const isAuthValid = () =>
+    getStoredAuthData().accessTokenExpirationDate > Number(new Date());
+  return getStoredAuthData() && isAuthValid();
 };
 
 export const getNodes = (children, pathData) => {
