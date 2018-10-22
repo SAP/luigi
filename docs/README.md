@@ -13,6 +13,6 @@ This directory contains the following documents that relate to the project:
 
 **Luigi Client**
 
-* [Lifecycle](luigi-client-api.md#lifecycle) gives you details on the life cycle of listeners, navigation nodes and event data.
-* [Link Manager](luigi-client-api.md#linkmanager) guides you through configuration of the Link Manager.
+* [Lifecycle](luigi-client-api.md#lifecycle) gives you details on the life cycle of listeners, navigation Nodes, and Event data.
+* [Link Manager](luigi-client-api.md#linkmanager) guides you through the configuration of the Link Manager.
 * [UX Manager](luigi-client-api.md#uxmanager) shows you how to set up the UX Manager.

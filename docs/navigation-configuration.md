@@ -21,7 +21,7 @@ This code sample demonstrates your options when configuring navigation for Luigi
 ```
 window.Luigi.setConfig({
   routing: {
-    // uses hash based navigation if set to true
+    // uses hash-based navigation if set to true
     useHashRouting: true,
     nodeParamPrefix: '~'
   },
