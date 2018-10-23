@@ -171,7 +171,9 @@
         nodeParams: {},
         errorSkipNavigation: false,
         fromContext: null,
-        fromClosestContext: false
+        fromClosestContext: false,
+        relativePath: false,
+        link: ''
       };
 
       return {
@@ -196,10 +198,10 @@
           var navigationOpenMsg = {
             msg: 'luigi.navigation.open',
             sessionId: sessionId,
-            params: Object.assign(
-              { link: path, relative: relativePath },
-              options
-            )
+            params: Object.assign(options, {
+              link: path,
+              relative: relativePath
+            })
           };
           window.parent.postMessage(navigationOpenMsg, '*');
         },
