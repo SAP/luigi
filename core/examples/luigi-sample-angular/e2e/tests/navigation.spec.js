@@ -44,7 +44,7 @@ describe('Navigation', () => {
 
       // dig into the iframe
       cy.wait(150);
-      cy.get('iframe').then(function ($element) {
+      cy.get('iframe').then(function($element) {
         let iframeBody, cyIframe;
         // this gets the body of your iframe
         iframeBody = $element.contents().find('body');
@@ -52,7 +52,8 @@ describe('Navigation', () => {
         cyIframe = cy.wrap(iframeBody);
         //now you can forget about that you are in iframe. you can do necessary actions finding the elements inside the iframe
         // {cyElement is the cypress object here}
-        cyIframe.find('.fd-list-group__item strong')
+        cyIframe
+          .find('.fd-list-group__item strong')
           .contains('keepSelectedForChildren')
           .click();
 
@@ -60,7 +61,8 @@ describe('Navigation', () => {
         iframeBody = $element.contents().find('body');
         // wrap this body with cy so as to do cy actions inside iframe elements
         cyIframe = cy.wrap(iframeBody);
-        cyIframe.find('.fd-list-group__item')
+        cyIframe
+          .find('.fd-list-group__item')
           .contains('Thor')
           .click();
       });
