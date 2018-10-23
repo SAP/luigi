@@ -67,32 +67,32 @@
     );
   };
 
-  const buildPath = (component, data) => {
-    let path = data.params.link;
-    if (data.params.fromClosestContext) {
+  const buildPath = (component, params) => {
+    let path = params.link;
+    if (params.fromClosestContext) {
       // from the closest navigation context
       const node = [...component.get().navigationPath]
         .reverse()
         .find(n => n.navigationContext && n.navigationContext.length > 0);
-      path = Routing.concatenatePath(Routing.getNodePath(node), data.params.link);
-    } else if (data.params.fromContext) {
+      path = Routing.concatenatePath(Routing.getNodePath(node), params.link);
+    } else if (params.fromContext) {
       // from a given navigation context
-      const navigationContext = data.params.fromContext;
+      const navigationContext = params.fromContext;
       const node = component
         .get()
         .navigationPath.find(n => navigationContext === n.navigationContext);
-      path = Routing.concatenatePath(Routing.getNodePath(node), data.params.link);
-    } else if (data.params.relative) {
+      path = Routing.concatenatePath(Routing.getNodePath(node), params.link);
+    } else if (params.relative) {
       // relative
       path = Routing.concatenatePath(
         Routing.getNodePath(component.get().currentNode),
-        data.params.link
+        params.link
       );
     }
 
-    if (data.params.nodeParams && Object.keys(data.params.nodeParams).length) {
+    if (params.nodeParams && Object.keys(params.nodeParams).length) {
       path += '?';
-      Object.entries(data.params.nodeParams).forEach(entry => {
+      Object.entries(params.nodeParams).forEach(entry => {
         path +=
           encodeURIComponent(Routing.getContentViewParamPrefix() + entry[0]) +
           '=' +
@@ -103,10 +103,10 @@
     return path;
   };
 
-  const addPreserveView = (component, data, config, node) => {
+  const addPreserveView = (component, data, config) => {
     if (data.params.preserveView) {
       const pv = component.get().preservedViews;
-      const nextPath = buildPath(component, data);
+      const nextPath = buildPath(component, data.params);
       pv.push({
         path: Routing.getNodePath(component.get().currentNode),
         nextPath: nextPath.startsWith('/') ? nextPath : '/' + nextPath,
@@ -119,11 +119,11 @@
     }
   };
 
-  const handleNavigation = async (component, data, config, node) => {
-    const path = buildPath(component, data);
+  const handleNavigation = async (component, data, config) => {
+    const path = buildPath(component, data.params);
     const matchedPath = await Routing.matchPath(path);
     if (matchedPath !== null) {
-      addPreserveView(component, data, config, node);
+      addPreserveView(component, data, config);
       Routing.navigateTo(matchedPath);
     }
   };
@@ -194,7 +194,7 @@
           }
 
           if ('luigi.navigation.open' === e.data.msg) {
-            handleNavigation(this, e.data, config, node);
+            handleNavigation(this, e.data, config);
           }
 
           if ('luigi.navigation.back' === e.data.msg) {
@@ -216,8 +216,7 @@
               handleNavigation(
                 this,
                 { params: { link: previousActiveIframeData.path } },
-                config,
-                node
+                config
               );
             } else {
               console.error('goBack() not possible, no preserved views found.');

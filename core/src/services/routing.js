@@ -376,15 +376,10 @@ export const matchPath = async path => {
   @param windowElem object  defaults to window
   @param documentElem object  defaults to document
  */
-export const navigateTo = (
-  route,
-  windowElem = window,
-  documentElem = document
-) => {
-  const event = documentElem.createEvent('Event');
-  event.initEvent('popstate', true, true);
+export const navigateTo = (route, windowElem = window) => {
   if (getConfigValue('routing.useHashRouting')) {
-    return (windowElem.location.hash = route);
+    windowElem.location.hash = route;
+    return;
   }
 
   windowElem.history.pushState(
@@ -395,14 +390,10 @@ export const navigateTo = (
     route
   );
 
-  windowElem.dispatchEvent(event);
+  windowElem.dispatchEvent(new Event('popstate'));
 };
 
-export const handleRouteClick = (
-  node,
-  windowElem = window,
-  documentElem = document
-) => {
+export const handleRouteClick = (node, windowElem = window) => {
   if (node.externalLink && node.externalLink.url) {
     node.externalLink.sameWindow
       ? (windowElem.location.href = node.externalLink.url)
@@ -411,5 +402,5 @@ export const handleRouteClick = (
     return;
   }
   const route = buildRoute(node, `/${node.pathSegment}`);
-  navigateTo(route, windowElem, documentElem);
+  navigateTo(route, windowElem);
 };
