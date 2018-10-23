@@ -49,6 +49,13 @@ export class ProjectComponent implements OnInit {
             'goBackContext?',
             this.preservedViewCallbackContext
           );
+          // Since Luigi runs outside of Zone.js, changes need
+          // to be updated manually
+          // Be sure to check for destroyed ChangeDetectorRef,
+          // else you get runtime Errors
+          if (!this.changeDetector['destroyed']) {
+            this.changeDetector.detectChanges();
+          }
         }
       });
 

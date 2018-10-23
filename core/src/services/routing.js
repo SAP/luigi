@@ -32,13 +32,12 @@ const getDefaultChildNode = function(pathData) {
 };
 
 const isExistingRoute = function(path, pathData) {
-  if (path === '') {
+  if (!path) {
     return true;
   }
 
   const lastElement =
     pathData.navigationPath[pathData.navigationPath.length - 1];
-
   const routeSplit = path.replace(/\/$/, '').split('/');
   const lastPathSegment = routeSplit[routeSplit.length - 1];
 
@@ -149,9 +148,10 @@ const navigateIframe = (config, component, node) => {
   }
 
   if (
-    isNotSameDomain(config, component) ||
-    hasIframeIsolation(component) ||
-    Boolean(config.builderCompatibilityMode)
+    !componentData.isNavigateBack &&
+    (isNotSameDomain(config, component) ||
+      hasIframeIsolation(component) ||
+      Boolean(config.builderCompatibilityMode))
   ) {
     const componentData = component.get();
     // preserveView, hide other frames, else remove
