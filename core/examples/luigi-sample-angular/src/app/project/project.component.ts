@@ -49,6 +49,12 @@ export class ProjectComponent implements OnInit {
             'goBackContext?',
             this.preservedViewCallbackContext
           );
+          // We're not in Zone.js context here (Luigi is external)
+          // Be sure to check for destroyed ChangeDetectorRef,
+          // else you get runtime Errors
+          if (!this.changeDetector['destroyed']) {
+            this.changeDetector.detectChanges();
+          }
         }
       });
 
