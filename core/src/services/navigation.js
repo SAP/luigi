@@ -28,11 +28,7 @@ export const getNavigationPath = async (rootNavProviderPromise, activePath) => {
     const topNavNodes = await rootNavProviderPromise;
     rootNode.children = topNavNodes;
     await getChildren(rootNode); // keep it, mutates and filters children
-
-    if (!activePath) {
-      activePath = '';
-    }
-    const nodeNamesInCurrentPath = activePath.split('/');
+    const nodeNamesInCurrentPath = (activePath || '').split('/');
     return buildNode(nodeNamesInCurrentPath, [rootNode], rootNode.children, {});
   } catch (err) {
     console.error('Failed to load top navigation nodes.', err);
@@ -40,30 +36,30 @@ export const getNavigationPath = async (rootNavProviderPromise, activePath) => {
 };
 
 export const getChildren = async (node, context) => {
-  if (node && !node._childrenProvider) {
+  if (!node) {
+    return [];
+  }
+
+  if (!node._childrenProvider) {
     node._childrenProvider = node.children;
   }
 
-  if (node && node._childrenProvider && !node._childrenProviderUsed) {
+  if (node._childrenProvider && !node._childrenProviderUsed) {
     try {
-      const children = await getConfigValueFromObjectAsync(
-        node,
-        '_childrenProvider',
-        context ? context : node.context
-      );
-      node.children =
-        (children instanceof Array &&
-          children.filter(child =>
-            isNodeAccessPermitted(child, node, context)
-          )) ||
-        [];
+      node.children = (
+        (await getConfigValueFromObjectAsync(
+          node,
+          '_childrenProvider',
+          context || node.context
+        )) || []
+      ).filter(child => isNodeAccessPermitted(child, node, context));
       bindChildrenToParent(node);
       node._childrenProviderUsed = true;
       return node.children;
     } catch (err) {
       console.error('Could not lazy-load children for node', err);
     }
-  } else if (node && node.children) {
+  } else if (node.children) {
     bindChildrenToParent(node);
     return node.children;
   } else {
