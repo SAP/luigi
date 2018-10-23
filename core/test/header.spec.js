@@ -33,54 +33,67 @@ describe('LogoTitle', function() {
       logoTitle.processHeaderSettings(component);
     });
 
-    it('should resolve header by json', async () => {
-      // given
-      window.Luigi.config = {
-        settings: {
-          header: {
-            logo: 'data:image/svg+xml;base64,XXX=',
-            title: 'Luigi Demo',
-            favicon: '/assets/favicon.ico'
+    const headerSettings = {
+      logo: 'data:image/svg+xml;base64,XXX=',
+      title: 'Luigi Demo',
+      favicon: '/assets/favicon.ico'
+    };
+
+    [
+      {
+        setting: headerSettings,
+        description: 'plain json'
+      },
+      {
+        setting: () => {
+          return new Promise(function(resolve) {
+            resolve(headerSettings);
+          });
+        },
+        description: 'promised function'
+      }
+    ].forEach(test => {
+      it('should resolve header properly for ' + test.description, async () => {
+        // given
+        window.Luigi.config = {
+          settings: {
+            header: test.setting
           }
-        }
-      };
-      component.refs = {
-        logo: {
-          style: {
-            backgroundImage: null
+        };
+        component.refs = {
+          logo: {
+            style: {
+              backgroundImage: null
+            }
           }
-        }
-      };
-      const appendChild = sinon.spy();
-      document.getElementsByTagName = () => [{ appendChild }];
+        };
+        const appendChild = sinon.spy();
+        document.getElementsByTagName = () => [{ appendChild }];
 
-      // then
-      await logoTitle.processHeaderSettings(component);
+        // then
+        await logoTitle.processHeaderSettings(component);
 
-      // when
-      // title
-      assert.equal(
-        document.title,
-        window.Luigi.config.settings.header.title,
-        'document title'
-      );
-      assert.equal(
-        component.get().title,
-        window.Luigi.config.settings.header.title,
-        'component title'
-      );
+        // when
+        // title
+        assert.equal(document.title, headerSettings.title, 'document title');
+        assert.equal(
+          component.get().title,
+          headerSettings.title,
+          'component title'
+        );
 
-      // logo
-      assert.equal(
-        component.refs.logo.style.backgroundImage,
-        'url(' + window.Luigi.config.settings.header.logo + ')',
-        'backgroundImage logo'
-      );
+        // logo
+        assert.equal(
+          component.refs.logo.style.backgroundImage,
+          'url(' + headerSettings.logo + ')',
+          'backgroundImage logo'
+        );
 
-      // favicon
-      assert(appendChild.calledOnce);
-      // Next assertion does not work and we do not want to recreate implementation
-      // sinon.assert.calledWith(appendChild, '<link type="image/x-icon" rel="shortcut icon" href="/assets/favicon.ico"></link>');
+        // favicon
+        assert(appendChild.calledOnce);
+        // Next assertion does not work and we do not want to recreate implementation
+        // sinon.assert.calledWith(appendChild, '<link type="image/x-icon" rel="shortcut icon" href="/assets/favicon.ico"></link>');
+      });
     });
   });
 });
