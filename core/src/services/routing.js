@@ -87,9 +87,6 @@ const removeElementChildren = node => {
 export const isNotSameDomain = (config, component) => {
   if (config.iframe) {
     const componentData = component.get();
-    if (componentData.isNavigateBack) {
-      return false;
-    }
     const previousUrl = getUrlWithoutHash(
       componentData.previousNodeValues.viewUrl
     );
@@ -151,9 +148,10 @@ const navigateIframe = (config, component, node) => {
   }
 
   if (
-    isNotSameDomain(config, component) ||
-    hasIframeIsolation(component) ||
-    Boolean(config.builderCompatibilityMode)
+    !componentData.isNavigateBack &&
+    (isNotSameDomain(config, component) ||
+      hasIframeIsolation(component) ||
+      Boolean(config.builderCompatibilityMode))
   ) {
     const componentData = component.get();
     // preserveView, hide other frames, else remove
