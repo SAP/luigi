@@ -1,12 +1,9 @@
 {
   "devDependencies": {
-    "husky": "^0.14.3",
+    "husky": "^1.1.2",
     "lerna": "^2.11.0",
     "lerna-changelog": "^0.8.0",
     "prettier": "^1.13.7"
-  },
-  "scripts": {
-    "precommit": "./scripts/apply-prettier.sh"
   },
   "prettier": {
     "singleQuote": true
@@ -20,5 +17,11 @@
       "area/documentation": ":memo: Documentation"
     },
     "cacheDir": ".changelog"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "./scripts/apply-prettier.sh",
+      "pre-push": "lerna run docu:validate"
+    }
   }
 }

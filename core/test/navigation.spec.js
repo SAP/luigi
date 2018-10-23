@@ -51,6 +51,19 @@ const sampleNavPromise = new Promise(function(resolve) {
 });
 
 describe('Navigation', function() {
+  before(() => {
+    function mockStorage() {
+      return {
+        getItem: function(key) {
+          return JSON.stringify({
+            accessTokenExpirationDate: Number(new Date()) + 1
+          });
+        }
+      };
+    }
+
+    global['localStorage'] = mockStorage();
+  });
   afterEach(() => {
     // reset
     window.Luigi = {

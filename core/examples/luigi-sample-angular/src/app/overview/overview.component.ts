@@ -37,7 +37,13 @@ export class OverviewComponent {
       link: '/projects/pr1/users/groups',
       text: 'dynamic Nodes',
       description:
-        'navigation Node configuration to set a specific Node as dynamic'
+        'navigation Node configuration to set a specific node as dynamic'
+    },
+    {
+      link: '/projects/pr1',
+      text: 'external URL node',
+      description:
+        'navigation Node configuration to direct to an external website'
     },
     {
       link: '/projects/pr1/avengers',
