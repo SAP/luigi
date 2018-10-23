@@ -30,15 +30,18 @@ Returns **{idToken: [string](https://developer.mozilla.org/docs/Web/JavaScript/R
 
 ### getNodeParams
 
-Returns the configuration object of the active navigation Node.
+Returns the node parameters of the active URL.
+Node parameters are defined like URL query parameters but with a specific prefix (default is '~') that marks them to be passed to the micro-frontend view (e.g. <https://my.luigi.app/home/products?~sort=asc~page=3>).
 
-Returns **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** node parameters.
+Returns **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** node parameters where object property name is the node parameter name (without the prefix) and its value is the value of the node parameter (e.g. {sort: 'asc', page: 3})
 
 ### getPathParams
 
 Returns the dynamic path parameters of the active URL.
+Path parameters are defined by navigation nodes with dynamic pathSegment (starting with ':', e.g. ':productId').
+All such parameters in the current navigation path (as defined by the active URL) are returned.
 
-Returns **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** path parameters.
+Returns **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** path parameters where object property name is the path parameter name and its value is the actual value of the path parameter (e.g. {productId: '1234', ...})
 
 ## linkManager
 
@@ -107,7 +110,7 @@ Sends node parameters to the route, which are then used by the navigate function
 ```javascript
 LuigiClient.linkManager.withParams({foo: "bar"}).navigate("path")
 
-// Can be chained with context settings functions like this: 
+// Can be chained with context settings functions like this:
 LuigiClient.linkManager.fromContext("currentTeam").withParams({foo: "bar"}).navigate("path")
 ```
 

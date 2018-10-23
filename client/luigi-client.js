@@ -144,8 +144,9 @@
       return currentContext.context;
     },
     /**
-     * Returns the configuration object of the active navigation Node.
-     * @returns {Object} node parameters.
+     * Returns the node parameters of the active URL.
+     * Node parameters are defined like URL query parameters but with a specific prefix (default is '~') that marks them to be passed to the micro-frontend view (e.g. https://my.luigi.app/home/products?~sort=asc~page=3).
+     * @returns {Object} node parameters where object property name is the node parameter name (without the prefix) and its value is the value of the node parameter (e.g. {sort: 'asc', page: 3})
      * @memberof lifecycle
      */
     getNodeParams: function getNodeParams() {
@@ -153,7 +154,9 @@
     },
     /**
      * Returns the dynamic path parameters of the active URL.
-     * @returns {Object} path parameters.
+     * Path parameters are defined by navigation nodes with dynamic pathSegment (starting with ':', e.g. ':productId').
+     * All such parameters in the current navigation path (as defined by the active URL) are returned.
+     * @returns {Object} path parameters where object property name is the path parameter name and its value is the actual value of the path parameter (e.g. {productId: '1234', ...})
      * @memberof lifecycle
      */
     getPathParams: function getPathParams() {
