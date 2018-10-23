@@ -32,6 +32,7 @@ The lerna-changelog tool detects changes based on PR labels and maps them to sec
 * [#118](https://github.com/kyma-project/luigi/pull/118) Keep left-side navigation on a node hierarchy level ([@maxmarkus](https://github.com/maxmarkus))
 * [#129](https://github.com/kyma-project/luigi/pull/129) Add automatic loading indicator to show processing ([@maxmarkus](https://github.com/maxmarkus))
 * [#105](https://github.com/kyma-project/luigi/pull/105) Enable e2e tests ([@dariadomagala](https://github.com/dariadomagala))
+* [#142](https://github.com/kyma-project/luigi/pull/142) View preservation is now allowed also cross-domain ([@maxmarkus](https://github.com/maxmarkus))
 
 #### :bug: Fixed
 * [#140](https://github.com/kyma-project/luigi/pull/140) Fix css issues in core and angular example ([@jesusreal](https://github.com/jesusreal))
