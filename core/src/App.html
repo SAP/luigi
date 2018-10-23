@@ -222,6 +222,21 @@
               console.error('goBack() not possible, no preserved views found.');
             }
           }
+
+          if ('luigi.navigation.pathExists' === e.data.msg) {
+            console.log('TODO: CHECK PATH ', e.data.data.path);
+            const pathExists = true;
+            config.iframe.contentWindow.postMessage(
+              {
+                msg: 'luigi.navigation.pathExists.answer',
+                data: {
+                  correlationId: e.data.data.id,
+                  pathExists
+                }
+              },
+              '*'
+            );
+          }
         });
 
         // listeners are not automatically removed — cancel

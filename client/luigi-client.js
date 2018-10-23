@@ -46,6 +46,7 @@
   }, {});
   var _onContextUpdatedFn;
   var _onInitFn;
+  var pathExistsPromises = {};
 
   /**
    * Adds event listener for communication with Luigi Core and starts communication
@@ -98,6 +99,15 @@
         }
 
         window.parent.postMessage({ msg: 'luigi.navigate.ok' }, '*');
+      }
+      if ('luigi.navigation.pathExists.answer' === e.data.msg) {
+        console.log(
+          'Luigi client received luigi.navigation.pathExists.answer',
+          e.data.data
+        );
+        var data = e.data.data;
+        pathExistsPromises[data.correlationId].success(data.correlationId);
+        pathExistsPromises[data.correlationId].error(data.correlationId);
       }
     });
 
@@ -177,6 +187,32 @@
       };
 
       return {
+        /** @lends linkManager */
+        pathExists: function pathExists(path) {
+          var currentId = Date.now();
+          pathExistsPromises[currentId] = {
+            success: function() {},
+            error: function() {},
+            then: function(success, error) {
+              this.success = success;
+              this.error = error;
+            }
+          };
+          var pathExistsMsg = {
+            msg: 'luigi.navigation.pathExists',
+            data: {
+              path: path,
+              id: currentId
+            }
+          };
+          console.log(
+            'Luigi client sent luigi.navigation.pathExists',
+            pathExistsMsg.data
+          );
+          window.parent.postMessage(pathExistsMsg, '*');
+          return pathExistsPromises[currentId];
+        },
+
         /** @lends linkManager */
         /**
          * Navigates to the given path in the hosting Luigi app. Contains either a full absolute path or a relative path without a leading slash that uses the active route as a base. This is a classical navigation.

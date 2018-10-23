@@ -59,6 +59,21 @@ export class ProjectComponent implements OnInit {
 
     this.luigiClient = LuigiClient;
 
+    [1000, 1100].map(time => {
+      setTimeout(() => {
+        this.luigiClient
+          .linkManager()
+          .pathExists('path/to/check')
+          .then(
+            function(id) {
+              console.log('SUCCCESS handler for', id);
+            },
+            function(id) {
+              console.log('ERROR handler for', id);
+            }
+          );
+      }, time);
+    });
     // Only one contextListener allowed per microfrontend, better rely on centralized approach.
     // Take a look at ngOnInit in this component and app.component.ts where we set the listeners.
     //
