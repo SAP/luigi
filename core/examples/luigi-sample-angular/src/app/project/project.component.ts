@@ -25,7 +25,12 @@ export class ProjectComponent implements OnInit, OnDestroy {
     private activatedRoute: ActivatedRoute,
     private changeDetector: ChangeDetectorRef,
     private luigiService: LuigiContextService
-  ) {}
+  ) {
+    this.pathExists = {
+      formValue: '/projects/pr2',
+      result: null
+    };
+  }
 
   ngOnDestroy() {
     if (this.lcSubscription) {
@@ -66,11 +71,6 @@ export class ProjectComponent implements OnInit, OnDestroy {
     });
 
     this.luigiClient = LuigiClient;
-
-    this.pathExists = {
-      formValue: 'default/path/value',
-      result: null
-    };
 
     // Only one contextListener allowed per microfrontend, better rely on centralized approach.
     // Take a look at ngOnInit in this component and app.component.ts where we set the listeners.
