@@ -295,11 +295,13 @@ export const handleRouteChange = async (path, component, node, config) => {
 
       if (routeExists) {
         const defaultChildNode = getDefaultChildNode(pathData);
-
         navigateTo(`${pathUrl ? `/${pathUrl}` : ''}/${defaultChildNode}`);
-      } // TODO else display 404 page
-      else {
-        console.log('route doesnt exist');
+      } else {
+        window.dispatchEvent(
+          new CustomEvent('displayAlert', {
+            detail: 'Could not find the requested route' //error 404
+          })
+        );
       }
       return;
     }
