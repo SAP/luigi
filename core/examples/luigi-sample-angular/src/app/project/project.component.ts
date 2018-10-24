@@ -102,11 +102,11 @@ export class ProjectComponent implements OnInit, OnDestroy {
       .linkManager()
       .pathExists(this.pathExists.formValue)
       .then(
-        path => {
+        () => {
           this.pathExists.result = true;
           this.changeDetector.detectChanges();
         },
-        path => {
+        () => {
           this.pathExists.result = false;
           this.changeDetector.detectChanges();
         }

@@ -104,10 +104,11 @@
       if ('luigi.navigation.pathExists.answer' === e.data.msg) {
         var data = e.data.data;
         if (data.pathExists) {
-          pathExistsPromises[data.correlationId].success(data);
+          pathExistsPromises[data.correlationId].success();
         } else {
-          pathExistsPromises[data.correlationId].error(data);
+          pathExistsPromises[data.correlationId].error();
         }
+        delete pathExistsPromises[data.correlationId];
       }
     });
 
@@ -187,28 +188,6 @@
       };
 
       return {
-        /** @lends linkManager */
-        pathExists: function pathExists(path) {
-          var currentId = Date.now();
-          pathExistsPromises[currentId] = {
-            success: function() {},
-            error: function() {},
-            then: function(success, error) {
-              this.success = success;
-              this.error = error;
-            }
-          };
-          var pathExistsMsg = {
-            msg: 'luigi.navigation.pathExists',
-            data: {
-              path: path,
-              id: currentId
-            }
-          };
-          window.parent.postMessage(pathExistsMsg, '*');
-          return pathExistsPromises[currentId];
-        },
-
         /** @lends linkManager */
         /**
          * Navigates to the given path in the hosting Luigi app. Contains either a full absolute path or a relative path without a leading slash that uses the active route as a base. This is a classical navigation.
@@ -297,6 +276,28 @@
             Object.assign(options.nodeParams, nodeParams);
           }
           return this;
+        },
+
+        /** @lends linkManager */
+        pathExists: function pathExists(path) {
+          var currentId = Date.now();
+          pathExistsPromises[currentId] = {
+            success: function() {},
+            error: function() {},
+            then: function(success, error) {
+              this.success = success;
+              this.error = error;
+            }
+          };
+          var pathExistsMsg = {
+            msg: 'luigi.navigation.pathExists',
+            data: {
+              path: path,
+              id: currentId
+            }
+          };
+          window.parent.postMessage(pathExistsMsg, '*');
+          return pathExistsPromises[currentId];
         },
 
         /**

@@ -26,20 +26,6 @@
     <p><strong>LuigiClient linkManager methods:</strong></p>
     <ul class="fd-list-group">
       <li class="fd-list-group__item">
-        <a href="javascript:void(0)" (click)="luigiClient.linkManager().navigate('/settings', null, true)">Check if path exists</a>
-        <app-code-snippet data="luigiClient.linkManager().pathExists('{{pathExists.formValue}}')"></app-code-snippet>
-        <span>
-          <input type="text" [(ngModel)]="pathExists.formValue"/>
-          <button class="fd-button" (click)="checkIfPathExists()">Check</button>
-        </span>
-        <div *ngIf="pathExists.result === true">
-          Path Exists!
-        </div>
-        <div *ngIf="pathExists.result === false">
-          Path does not exist!
-        </div>
-      </li>
-      <li class="fd-list-group__item">
         <a href="javascript:void(0)" (click)="luigiClient.linkManager().navigate('/overview')">absolute: to overview</a>
         <app-code-snippet data="luigiClient.linkManager().navigate('/overview')"></app-code-snippet>
       </li>
@@ -66,6 +52,21 @@
       <li class="fd-list-group__item">
         <a href="javascript:void(0)" (click)="luigiClient.linkManager().navigate('/settings', null, true)">with preserved view: project to global settings and back</a>
         <app-code-snippet data="luigiClient.linkManager().navigate('/settings', null, true)"></app-code-snippet>
+      </li>
+      <li class="fd-list-group__item">
+        <a href="javascript:void(0)" (click)="luigiClient.linkManager().navigate('/settings', null, true)">Check if path
+          exists</a>
+        <app-code-snippet data="luigiClient.linkManager().pathExists('{{pathExists.formValue}}')"></app-code-snippet>
+        <span>
+          <input type="text" [(ngModel)]="pathExists.formValue" />
+          <button class="fd-button" (click)="checkIfPathExists()">Check</button>
+        </span>
+        <div *ngIf="pathExists.result === true">
+          Path exists!
+        </div>
+        <div *ngIf="pathExists.result === false">
+          Path does not exist!
+        </div>
       </li>
     </ul>
   </div>
