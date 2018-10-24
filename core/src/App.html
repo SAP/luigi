@@ -194,6 +194,7 @@
           }
 
           if ('luigi.navigation.open' === e.data.msg) {
+            this.set({ isNavigateBack: false });
             handleNavigation(this, e.data, config);
           }
 
