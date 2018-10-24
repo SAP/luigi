@@ -58,7 +58,7 @@ var getProjectPlugins = function (projectId) {
           category: 'ExternalViews',
           viewId: 'abc',
           label: 'A B C',
-          viewUrl: 'https://a.b.c/index.html'
+          viewUrl: 'http://crockford.com'
         },
         {
           category: 'ExternalViews',
@@ -225,7 +225,7 @@ Luigi.setConfig({
    *
    */
   auth: {
-    use: 'mockAuth',
+    use: 'openIdConnect',
     mockAuth: {
       authorizeUrl: `${window.location.origin}/assets/auth-mock/login-mock.html`,
       logoutUrl: `${window.location.origin}/assets/auth-mock/logout-mock.html`,
@@ -236,23 +236,27 @@ Luigi.setConfig({
       }
     },
     openIdConnect: {
-      authority: 'https://example-authority.com',
-      client_id: 'client',
-      scope: 'audience:server:client_id:client openid profile email groups',
-      logoutUrl: 'https://example-url.com/logout',
-      // optional parameters
-      // redirect_uri: '',
-      // post_logout_redirect_uri: '/logout.html',
-      // automaticSilentRenew: true,
-      // loadUserInfo: false // returned metadata must contain userinfo_endpoint
+      authority: 'https://accounts.google.com',
+      client_id: '326008160752-bfc0vipcghr5m6vlcrlq685sv02pk1d0.apps.googleusercontent.com',
+      scope: 'openid profile email',
+      logoutUrl: 'https://www.google.com/accounts/Logout',
+      redirect_uri: '',
+
+    //   // optional parameters
+    //   // redirect_uri: '',
+      post_logout_redirect_uri: '/logout.html',
+    //   // automaticSilentRenew: true,
+    //   // loadUserInfo: false // returned metadata must contain userinfo_endpoint
     },
     oAuth2ImplicitGrant: {
-      authorizeUrl: 'https://example-url.com/authorize',
+      authorizeUrl: 'https://dex.kyma.local/auth',
       logoutUrl: 'https://example-url.com/logout',
       post_logout_redirect_uri: '/logout.html',
       authorizeMethod: 'GET',
       oAuthData: {
-        client_id: 'egDuozijY5SVr0NSIowUP1dT6RVqHnlp'
+        client_id: 'console',
+        redirect_uri: '/luigi-core/auth/oauth2/callback.html',
+        scope: 'openid profile email groups',
 
         // optional: redirect_uri and response_type are provided by default
         // scope: '',
@@ -293,6 +297,8 @@ Luigi.setConfig({
     events: {
       onLogout: function () {
         console.log('onLogout');
+        sessionStorage.clear();
+        localStorage.clear();
       },
       onAuthSuccessful: function (data) {
         console.log('onAuthSuccessful', data);

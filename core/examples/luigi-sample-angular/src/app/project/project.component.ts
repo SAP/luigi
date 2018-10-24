@@ -15,6 +15,7 @@ export class ProjectComponent implements OnInit {
   public luigiClient: LuigiClient;
   public modalActive = false;
   public preservedViewCallbackContext: any;
+  private token: string;
   private lcSubscription: Subscription;
 
   public constructor(private activatedRoute: ActivatedRoute, private changeDetector: ChangeDetectorRef, private luigiService: LuigiContextService) { }
@@ -61,6 +62,10 @@ export class ProjectComponent implements OnInit {
         this.changeDetector.detectChanges();
       }
     });
+  }
+
+  showToken() {
+    console.log(this.luigiClient.getToken());
   }
 
   toggleModal() {

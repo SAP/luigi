@@ -72,8 +72,8 @@
           onAuthSuccessfulFn(authData);
         }
 
-        // TODO: Re-auth via id_token if not logged in
-        // TODO: Check periodically if authorization is still valid
+        window.postMessage({msg: 'luigi.auth.tokenIssued', authData: getStoredAuthData()}, '*');
+        // if silent token refresh then do nothing, else run the function
         // const onAuthExpiredFn = getConfigValue('auth.events.onAuthExpired');
       };
 
@@ -105,7 +105,7 @@
 
             this.set({ isLoggedIn: false });
             localStorage.removeItem('luigi.auth');
-          }
+          };
 
           const customLogoutFn = getConfigValue(`auth.${getConfigValue('auth.use')}.logoutFn`);
           if (isFunction(customLogoutFn)) {
@@ -118,7 +118,7 @@
             logoutCallback();
             window.location.href = idpProviderInstance.settings.logoutUrl;
           }
-        },
+        }
     },
     components: {},
     // store: () => store

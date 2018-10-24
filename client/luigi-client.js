@@ -41,6 +41,7 @@
   var currentContext = {};
   var defaultContextKeys = ['context', 'internal', 'nodeParams', 'pathParams'];
   var _contextUpdated;
+  var authData = {};
 
   // Setting default context as empty objects.
   for (var i = 0; i < defaultContextKeys.length; i++) {
@@ -61,8 +62,6 @@
       }
     }
     currentContext = rawData;
-
-    Luigi.token = currentContext.context.idToken;
   }
 
   function hasHash(string) {
@@ -77,7 +76,7 @@
         window._init(currentContext.context);
       }
     }
-    if ('luigi.navigate' === e.data.msg) {
+    else if ('luigi.navigate' === e.data.msg) {
       setContext(e.data);
 
       if (hasHash(e.data.viewUrl) && hasHash(window.location.href)) {
@@ -92,6 +91,9 @@
       }
 
       window.parent.postMessage({ msg: 'luigi.navigate.ok' }, '*');
+    }
+    else if ('luigi.auth.tokenIssued' === e.data.msg) {
+      authData = e.data.authData;
     }
   });
 
@@ -117,6 +119,12 @@
       if (Luigi.initialized && _contextUpdated) {
         _contextUpdated(currentContext.context);
       }
+    },
+    /**
+     * Get token data
+     */
+    getToken: function getToken() {
+      return authData.accessToken;
     },
     /**
      * Fetch context object containing:

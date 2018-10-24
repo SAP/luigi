@@ -5,7 +5,7 @@
         <div class="fd-spinner"><div></div></div>
     </div>
     {/if}
-    
+
     <TopNav pathData={navigationPath} />
     <LeftNav pathData={navigationPath} />
 </div>
@@ -111,6 +111,13 @@
         }, '*');
     };
 
+    const sendAuthDataToClient = (iframe, authData) => {
+      iframe.contentWindow.postMessage({
+        msg: 'luigi.auth.tokenIssued',
+        authData
+      }, '*');
+    };
+
     export default {
         data() {
             return {
@@ -181,6 +188,10 @@
                             console.error('goBack() not possible, no preserved views found.');
                         }
                     }
+
+                    if ('luigi.auth.tokenIssued' === e.data.msg) {
+                      sendAuthDataToClient(config.iframe, e.data.authData);
+                    }
                 });
 
                 // listeners are not automatically removed — cancel
@@ -209,6 +220,8 @@
     };
 </script>
 
+<iframe src="https://mindmup.github.io/3rdpartycookiecheck/start.html" style="display:none" />
+
 <style type="text/scss">
     @import 'node_modules/fundamental-ui/scss/layout/page';
 
@@ -236,7 +249,7 @@
     div :global(div) {
       font-family: '72', sans-serif;
     }
-    
+
     :global(a) {
       cursor: pointer;
     }
@@ -267,7 +280,7 @@
     }
 
     .no-nav {
-        .iframeContainer, .spinnerContainer {   
+        .iframeContainer, .spinnerContainer {
             position: fixed;
             top: 0;
             left: 0;
