@@ -412,6 +412,10 @@ describe('Routing', () => {
   });
 
   describe('#handleRouteClick()', () => {
+    beforeEach(() => {
+      window.dispatchEvent = sinon.spy();
+    });
+
     const nodeWithParent = {
       pathSegment: 'project-one',
       parent: {
@@ -453,7 +457,7 @@ describe('Routing', () => {
         }
       };
 
-      routing.handleRouteClick(nodeWithoutParent, window, document);
+      routing.handleRouteClick(nodeWithoutParent, window);
 
       // then
       assert.equal(window.location.hash, expectedRoute);
@@ -475,7 +479,7 @@ describe('Routing', () => {
           }
         }
       };
-      routing.handleRouteClick(nodeWithParent, window, document);
+      routing.handleRouteClick(nodeWithParent, window);
 
       // then
       const pushStateArgs = window.history.pushState.args[0];
