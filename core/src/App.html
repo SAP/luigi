@@ -1,5 +1,13 @@
 
 <div id="app {hideNav? 'no-nav' : ''}">
+  {#if displayAlert}
+    <div class="fd-ui__overlay fd-overlay fd-overlay--alert" aria-hidden="false">
+      <div class="fd-alert fd-alert--warning fd-alert--dismissible" role="alert" >
+          <button class="fd-alert__close"  aria-label="Close"></button>
+          Lorem ipsum dolor sit amet, consectetur adipisicing elit
+      </div>
+  </div>
+  {/if}
   <Backdrop>
     <div class="fd-page iframeContainer" use:init="context"></div>
   </Backdrop>
@@ -23,6 +31,7 @@
   import { getConfigValue, getConfigValueFromObject } from './services/config.js';
   import { isFunction } from './utilities/helpers.js';
 
+  const displayAlert = true;
   const trimLeadingSlash = str => str.replace(/^\//, '');
   const isValidBackRoute = (preservedViews, routeHash) => {
     if (preservedViews.length === 0) {
@@ -147,6 +156,7 @@
     data() {
       return {
         showLoadingIndicator: false,
+        displayAlert: true,
         preservedViews: [
           // {
           //     path: '/project/p2/settings',

@@ -79,3 +79,15 @@ export const prependOrigin = path => {
   }
   return window.location.origin;
 };
+
+export const containsAllSegments = (source, target) => {
+  const mandatorySegments = source.split('/');
+  const givenSegments = target.split('/');
+  let result = true;
+  mandatorySegments.forEach(segment => {
+    if (!givenSegments.includes(segment)) {
+      result = false;
+    }
+  });
+  return result;
+};

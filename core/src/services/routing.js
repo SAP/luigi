@@ -5,7 +5,11 @@ import {
   getConfigBooleanValue,
   getConfigValueFromObject
 } from './config';
-import { getPathWithoutHash, getUrlWithoutHash } from '../utilities/helpers';
+import {
+  getPathWithoutHash,
+  getUrlWithoutHash,
+  containsAllSegments
+} from '../utilities/helpers';
 
 const iframeNavFallbackTimeout = 2000;
 let timeoutHandle;
@@ -291,10 +295,21 @@ export const handleRouteChange = async (path, component, node, config) => {
 
       if (routeExists) {
         const defaultChildNode = getDefaultChildNode(pathData);
+
         navigateTo(`${pathUrl ? `/${pathUrl}` : ''}/${defaultChildNode}`);
       } // TODO else display 404 page
+      else {
+        console.log('route doesnt exist');
+      }
       return;
     }
+    // console.log('viewUrl', viewUrl)
+    // console.log('pathUrl', pathUrl)
+    // console.log('pathData', pathData)
+    // console.log('isolateView',isolateView)
+    !isolateView &&
+      !containsAllSegments(pathUrl, viewUrl) &&
+      console.warn('poprawiono');
 
     const previousCompData = component.get();
     component.set({
