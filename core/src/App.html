@@ -188,6 +188,10 @@
           }
         });
 
+        window.addEventListener('hideAlert', event => {
+          this.set({ alertMessage: null });
+        });
+
         window.addEventListener('message', e => {
           if ('luigi.get-context' === e.data.msg && config.iframe) {
             sendContextToClient(this, config, {});

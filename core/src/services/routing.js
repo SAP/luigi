@@ -306,12 +306,14 @@ export const handleRouteChange = async (path, component, node, config) => {
       return;
     }
 
-    if (!isolateView && !containsAllSegments(pathUrl, viewUrl)) {
+    if (!containsAllSegments(pathUrl, pathData.navigationPath)) {
       window.dispatchEvent(
         new CustomEvent('displayAlert', {
           detail: 'Could not map the exact target node for the requested route'
         })
       );
+    } else {
+      window.dispatchEvent(new CustomEvent('hideAlert'));
     }
 
     const previousCompData = component.get();
