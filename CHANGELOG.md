@@ -65,7 +65,7 @@ The lerna-changelog tool detects changes based on PR labels and maps them to sec
 ## [core-0.3.3] - 2018-09-14
 
 #### :rocket: Added
-* [#67](https://github.com/kyma-project/luigi/pull/67) Navigation Node visibility with custom nodeAccessibilityResolver ([@maxmarkus](https://github.com/maxmarkus))
+* [#67](https://github.com/kyma-project/luigi/pull/67) Navigation node visibility with custom nodeAccessibilityResolver ([@maxmarkus](https://github.com/maxmarkus))
 
 #### :bug: Fixed
 * [#82](https://github.com/kyma-project/luigi/pull/82) Fixed changedetector bug ([@dariadomagala](https://github.com/dariadomagala))

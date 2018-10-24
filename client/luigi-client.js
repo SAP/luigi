@@ -118,7 +118,7 @@
 
   return {
     /**
-     * There are various parameters and functions available to Luigi pertaining to the lifecycle of listeners, navigation Nodes, and Event data.
+     * There are various parameters and functions available to Luigi pertaining to the lifecycle of listeners, navigation nodes, and Event data.
      * @name lifecycle
      */
     /**
@@ -154,7 +154,7 @@
       return currentContext.context;
     },
     /**
-     * Returns the configuration object of the active navigation Node.
+     * Returns the configuration object of the active navigation node.
      * @returns {Object} node parameters.
      * @memberof lifecycle
      */
@@ -239,7 +239,7 @@
         },
 
         /**
-         * Sets the current navigation context to that of a specific parent Node that has the {@link navigation-configuration.md navigationContext} field declared in its navigation configuration. This navigation context is then used by navigate function.
+         * Sets the current navigation context to that of a specific parent node that has the {@link navigation-configuration.md navigationContext} field declared in its navigation configuration. This navigation context is then used by navigate function.
          * @param {Object} navigationContext
          * @returns {linkManager} link manager instance.
          * @example
@@ -263,7 +263,7 @@
         },
 
         /**
-         * Sets the current navigation context, which is then be used by the navigate function. This has to be a parent navigation context, it is not possible to go to child navigation contexts.
+         * Sets the current navigation context, which is then used by the navigate function. This has to be a parent navigation context, it is not possible to go to child navigation contexts.
          * @returns {linkManager} link manager instance.
          * @example
          * LuigiClient.linkManager().fromClosestContext().navigate('/users/groups/stakeholders')
@@ -283,7 +283,7 @@
         },
 
         /**
-         * Sends node parameters to the route, which are then used by the navigate function. Use it optionally in combination with any of the navigation functions and receive it with as part of the context object in Luigi Client.
+         * Sends node parameters to the route, which are then used by the navigate function. Use it optionally in combination with any of the navigation functions and receive it as part of the context object in Luigi Client.
          * @param {Object} nodeParams
          * @returns {linkManager} link manager instance.
          * @example
@@ -343,7 +343,7 @@
           );
         },
         /**
-         * Removes the loading indicator. Use it after calling {@link #showLoadingIndicator showLoadingIndicator()} or to hide the indicator when you use the {@link navigation-configuration.md#nodes loadingIndicator.hideAutomatically: false} Node configuration.
+         * Removes the loading indicator. Use it after calling {@link #showLoadingIndicator showLoadingIndicator()} or to hide the indicator when you use the {@link navigation-configuration.md#nodes loadingIndicator.hideAutomatically: false} node configuration.
          */
         hideLoadingIndicator: function hideLoadingIndicator() {
           window.parent.postMessage(
