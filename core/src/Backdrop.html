@@ -1,10 +1,6 @@
-{#if backdropActive}
-    <div
-     class="fd-ui__overlay fd-overlay fd-overlay--modal {heightCssClass}"
-     aria-hidden="false"
-    >
-    </div>
-{/if}
+<div class="{backdropActive ? 'fd-ui__overlay fd-overlay fd-overlay--modal ' + heightCssClass : ''}" aria-hidden="false">
+  <slot></slot>
+</div>
 
 <script type="text/javascript">
   import { getConfigValue } from './services/config.js';
@@ -16,19 +12,19 @@
     },
     oncreate() {
       const backdropDisabled = getConfigValue('settings.backdropDisabled');
-      if(!backdropDisabled){
+      if (!backdropDisabled) {
         if (this.options.data && this.options.data.heightCssClass) {
-          this.set({ heightCssClass: this.options.data.heightCssClass})
+          this.set({ heightCssClass: this.options.data.heightCssClass })
         } else {
           this.set({ heightCssClass: 'height-auto' })
         }
 
         window.addEventListener("message", (e) => {
           if ('luigi.add-backdrop' === e.data.msg) {
-            this.set({backdropActive: true});
+            this.set({ backdropActive: true });
           }
           if ('luigi.remove-backdrop' === e.data.msg) {
-            this.set({backdropActive: false});
+            this.set({ backdropActive: false });
           }
         });
       }
@@ -37,26 +33,13 @@
 </script>
 
 <style type="text/scss">
-@import 'node_modules/fundamental-ui/scss/layout/overlay';
-
-/* Due to approach use (splitted backdrop) we need to override styles fd styles */
-.fd-overlay {
-  position: absolute;
-  left: 0;
-  top: 0;
-  bottom: 0;
-  right: 0;
-}
-
-.fd-overlay--modal {
-  width: 100%;
-}
-
-.fd-overlay--modal.height-50 {
-  height: 50px;
-}
-
-.fd-overlay--modal.height-auto {
-  height: auto;
-}
-</style>
+  @import 'node_modules/fundamental-ui/scss/layout/overlay';
+  /* Due to approach use (splitted backdrop) we need to override styles fd styles */
+  .fd-overlay {
+    position: fixed;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    right: 0;
+  }
+  </style>

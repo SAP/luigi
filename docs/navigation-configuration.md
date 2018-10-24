@@ -1,6 +1,6 @@
 # Navigation Configuration
 
-Navigation parameters allow you to specify routing configuration, set the appearance of navigation, and define navigation structure. 
+Navigation parameters allow you to specify routing configuration, set the appearance of navigation, and define navigation structure.
 
 ## A basic example
 
@@ -12,13 +12,13 @@ These are the elements of the Luigi navigation:
 - A side navigation
 - A main content window
 
-The image shows where you can use various methods and parameters to fill the navigation or display a micro front-end.  
+The image shows where you can use various methods and parameters to fill the navigation or display a micro front-end.
 
 ![Navigation layout](assets/navigation-structure.png)
 
-This code sample demonstrates your options when configuring navigation for Luigi. 
+This code sample demonstrates your options when configuring navigation for Luigi.
 
-````
+```
 window.Luigi.setConfig({
   routing: {
     // uses hash based navigation if set to true
@@ -52,29 +52,32 @@ window.Luigi.setConfig({
     ]
   }
 });
-````
+```
+
 ### Routing
 
 - **useHashRouting** defines either hash-based (`url.com/#/yourpath`) or path-based (`url.com/yourpath`) routing.
-- **nodeParamPrefix** sets the prefix character when using the `LuigiClient.linkManager().withParam()` function, which provides a way to simply attach query parameters to the view URL for activities such as sorting and filtering.  The URL contains the parameters to allow deep linking. If you want to use a different character prefix, define yours here. The default character is `~`.
+- **nodeParamPrefix** sets the prefix character when using the `LuigiClient.linkManager().withParam()` function, which provides a way to simply attach query parameters to the view URL for activities such as sorting and filtering. The URL contains the parameters to allow deep linking. If you want to use a different character prefix, define yours here. The default character is `~`.
 
 ### Navigation parameters
 
 - **nodeAccessibilityResolver** allows you to define a permission checker function that gets executed on every Node. If it returns `false`, Luigi removes the Node and its children from the navigation structure.
-**nodeAccessibilityResolver** receives all values defined in the Node configuration. See [angular sampleconfig.js](../core/examples/luigi-sample-angular/src/assets/sampleconfig.js) for the **constraints** example.
+  **nodeAccessibilityResolver** receives all values defined in the Node configuration. See [angular sampleconfig.js](../core/examples/luigi-sample-angular/src/assets/sampleconfig.js) for the **constraints** example.
 
 ## Nodes
 
 - **pathSegment** specifies the partial URL of the current segment. A static settings example reflects `luigidomain.test/settings`, while a dynamic one, prefixed with a colon, loads on any other value. **pathSegments** must not contain slashes.
-- **label** contains the display name of the navigation Node.
-- **hideFromNav** shows or hides a navigation Node. You can still navigate to the Node but it will not show up in the top or left pane.
-- **viewUrl** contains the URL or path to a view that renders when entering the navigation Node. Use either a full URL or a relative path. This value may consist of variables if you have specified a **navigationContext** with a dynamic **pathSegment**. If **viewUrl** is undefined, Luigi activates the child node specified in **defaultChildNode**. When both **viewUrl** and **defaultChildNode** are undefined, Luigi opens the first child of the current node.
-- **navigationContext** contains a named Node that is mainly for use in combination with a dynamic **pathSegment** to start navigation from a dynamic Node using ` LuigiClient.navigationManager().fromContext('contextname')`.
-- **context** sends the specified object as context to the view. Use this parameter in combination with the dynamic **pathSegment** to receive the context through the context listeners of **Luigi client**. This is an alternative to using the dynamic value in the **viewUrl**.
-- **defaultChildNode** sets the child node that Luigi activates automatically if the current node has no **viewUrl** defined. Provide **pathSegment** of the child node you want to activate as a string.
-- **isolateView** renders the view in a new frame when you enter and leave the Node. This setting overrides the same-domain frame re-usage. The **isolateView** is disabled by default.
-- **loadingIndicator.enabled** shows a loading indicator when switching between micro front-ends. If you have a super fast micro front-end, you can disable this feature to prevent the flickering of the loading indicator. The **loadingIndicator.loadingIndicator** is enabled by default.
-- **loadingIndicator.hideAutomatically** disables the automatic hiding of the loading indicator once the micro front-end is loaded. Only considered if the loading indicator is enabled. Does not apply if the loading indicator is activated manually with the `LuigiClient.uxManager().showLoadingIndicator()` function. If the loading indicator is enabled and automatic hiding is disabled, use `LuigiClient.uxManager().hideLoadingIndicator()` to hide it manually in your micro front-end during the startup. The **loadingIndicator.hideAutomatically** is enabled by default.
+- **externalLink** is an object which specifies that the Node links to an external URL. If this property is set, **pathSegment** is ignored. It consists of the following properties:
+  - **sameWindow** defines if the external URL is opened in a new or current tab.
+  - **url** is the external URL that the Node leads to.
+
+* **label** contains the display name of the navigation Node.
+* **hideFromNav** shows or hides a navigation Node. You can still navigate to the Node but it will not show up in the top or left pane.
+* **viewUrl** contains the URL or path to a view that renders when you enter the navigation Node. Use either a full URL or a relative path. This value may consist of variables if you have specified a **navigationContext** with a dynamic **pathSegment**. If **viewUrl** is undefined, Luigi activates the child Node specified in **defaultChildNode**. When both **viewUrl** and **defaultChildNode** are undefined, Luigi opens the first child of the current Node.
+* **navigationContext** contains a named Node that is mainly for use in combination with a dynamic **pathSegment** to start navigation from a dynamic Node using `LuigiClient.navigationManager().fromContext('contextname')`.
+* **context** sends the specified object as context to the view. Use this parameter in combination with the dynamic **pathSegment** to receive the context through the context listeners of **Luigi client**. This is an alternative to the dynamic value in the **viewUrl**.
+* **defaultChildNode** sets the child Node that Luigi activates automatically if the current Node has no **viewUrl** defined. Provide **pathSegment** of the child Node you want to activate as a string.
+* **isolateView** renders the view in a new frame when you enter and leave the Node. This setting overrides the same-domain frame re-usage. The **isolateView** is disabled by default.
 
 ### A dynamic viewURL
 
@@ -85,7 +88,7 @@ The view loads with these dynamic URL parameters:
 - `:projectId = sample_1`
 - `sort = asc`
 
-````
+```
 Luigi.setConfig({
   routing: {
     nodeParamPrefix: '~'
@@ -96,7 +99,7 @@ Luigi.setConfig({
         pathSegment: 'something',
         label: 'Something',
         viewUrl: 'https://admin.my.test/project',
-        children: [{ 
+        children: [{
           navigationContext: 'project',
           pathSegment: ':projectId',
           viewUrl: 'https://admin.my.test/project/:projectId',
@@ -116,15 +119,16 @@ Luigi.setConfig({
     ]
   }
 });
-````
+```
+
 If you start navigating form within a **navigationContext**'s child, navigate to the specific product route with **Luigi client**.
 
-````
+```
 LuigiClient.linkManager().fromContext('project').withParam({sort: 'asc'}).navigate('/products');
-````
+```
 
 You can also navigate directly from any other Node:
 
-````
+```
 LuigiClient.linkManager().withParam({sort: 'asc'}).navigate('/something/sample_1/products');
-````
+```

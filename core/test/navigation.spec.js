@@ -51,6 +51,19 @@ const sampleNavPromise = new Promise(function(resolve) {
 });
 
 describe('Navigation', function() {
+  before(() => {
+    function mockStorage() {
+      return {
+        getItem: function(key) {
+          return JSON.stringify({
+            accessTokenExpirationDate: Number(new Date()) + 1
+          });
+        }
+      };
+    }
+
+    global['localStorage'] = mockStorage();
+  });
   afterEach(() => {
     // reset
     window.Luigi = {
@@ -292,6 +305,62 @@ describe('Navigation', function() {
       sinon.assert.calledOnce(console.warn);
       sinon.assert.calledOnce(console.error);
       sinon.reset();
+    });
+  });
+  describe('getLeftNavData()', () => {
+    it('returns empty object if no pathData was found (empty nav)', async () => {
+      const res = await navigation.getLeftNavData({ pathData: [] });
+      expect(res).to.be.empty;
+    });
+    it('returns correct data on standard usecase', async () => {
+      // given
+      const current = {
+        pathData: [
+          {
+            children: [{ pathSegment: 'overview' }, { pathSegment: 'projects' }]
+          },
+          {
+            pathSegment: 'projects',
+            children: [
+              {
+                pathSegment: 'settings'
+              }
+            ]
+          },
+          {
+            pathSegment: 'settings'
+          }
+        ]
+      };
+      // when
+      const res = await navigation.getLeftNavData(current, current);
+      expect(res.selectedNode.pathSegment).to.equal('settings');
+    });
+    it('returns correct data on virtual node keepSelectedForChildren usecase', async () => {
+      // given
+      const current = {
+        pathData: [
+          {
+            pathSegment: 'home',
+            children: [{ pathSegment: 'overview' }, { pathSegment: 'projects' }]
+          },
+          {
+            pathSegment: 'projects',
+            keepSelectedForChildren: true,
+            children: [
+              {
+                pathSegment: 'settings'
+              }
+            ]
+          },
+          {
+            pathSegment: 'settings'
+          }
+        ]
+      };
+      // when
+      const res = await navigation.getLeftNavData(current, current);
+      expect(res.selectedNode.pathSegment).to.equal('projects');
     });
   });
 });

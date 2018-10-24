@@ -1,7 +1,9 @@
 <ul class="fd-menu__list">
   <li>
     {#if isLoggedIn}
-    <a href="#" aria-label="Logout" on:click=logout() class="fd-menu__item">Logout</a>
+      <a href="#" aria-label="Logout" on:click=logout() class="fd-menu__item">Logout</a>
+    {:else}
+      <a href="#" aria-label="Login" on:click=startAuthorization() class="fd-menu__item">Login</a>
     {/if}
   </li>
 </ul>
@@ -11,6 +13,7 @@
   import { isFunction, isPromise, deepMerge } from './utilities/helpers.js';
   import { oAuth2ImplicitGrant } from './providers/auth/oAuth2ImplicitGrant.js';
   import { openIdConnect } from './providers/auth/openIdConnect.js';
+  import { getStoredAuthData } from './utilities/auth-helpers';
 
   let idpProviderInstance;
 
@@ -20,7 +23,6 @@
     openIdConnect
   };
 
-  const getStoredAuthData = () => JSON.parse(localStorage.getItem('luigi.auth'));
   const newlyAuthorized = () => JSON.parse(localStorage.getItem('luigi.newlyAuthorized'));
   const isAuthValid = () => getStoredAuthData().accessTokenExpirationDate > Number(new Date());
 
@@ -31,19 +33,19 @@
   const getIdpProviderInstance = async(idpProviderName, idpProviderSettings) => {
     if (isFunction(standardProviders[idpProviderName])) {
       return new standardProviders[idpProviderName](idpProviderSettings);
-    }
+    };
 
     // custom provider provided via config:
     const customIdpProvider = getConfigValueFromObject(idpProviderSettings, 'customIdpProvider');
     if (customIdpProvider) {
       ['login'].forEach((requiredFnName) => {
-        if(!isFunction(customIdpProvider[requiredFnName])) {
+        if (!isFunction(customIdpProvider[requiredFnName])) {
           throw new IdpProviderException(`${requiredFnName} function does not exist in custom IDP Provider ${idpProviderName}`);
-        }
+        };
       });
 
       return new customIdpProvider(idpProviderSettings);
-    }
+    };
 
     throw new IdpProviderException(`IDP Provider ${idpProviderName} does not exist.`);
   };
@@ -55,14 +57,17 @@
       const authorizationEnabled = !!idpProviderSettings;
       if (!authorizationEnabled) {
         return;
-      }
+      };
 
       const checkAuth = () => {
         const authData = getStoredAuthData();
         if (!authData || !isAuthValid()) {
+          if (getConfigValue('auth.disableAutoLogin')) {
+            return;
+          };
           this.startAuthorization();
           return;
-        }
+        };
 
         this.set({ isLoggedIn: true });
 
@@ -72,7 +77,6 @@
           onAuthSuccessfulFn(authData);
         }
 
-        window.postMessage({msg: 'luigi.auth.tokenIssued', authData: getStoredAuthData()}, '*');
         // if silent token refresh then do nothing, else run the function
         // const onAuthExpiredFn = getConfigValue('auth.events.onAuthExpired');
       };
@@ -84,41 +88,41 @@
           idpProviderInstance = resolved;
           checkAuth();
         });
-      }
+      };
       checkAuth();
     },
     methods: {
       startAuthorization: function() {
-          idpProviderInstance.login().then((res) => {
-            localStorage.setItem('luigi.newlyAuthorized', true);
-            if(res) {
-              alert(res);
-            }
-          });
-        },
-        logout: function() {
-          const authData = getStoredAuthData();
-
-          const logoutCallback = () => {
-            const onLogoutFn = getConfigValue('auth.events.onLogout');
-            if (onLogoutFn) { onLogoutFn(); }
-
-            this.set({ isLoggedIn: false });
-            localStorage.removeItem('luigi.auth');
+        idpProviderInstance.login().then((res) => {
+          localStorage.setItem('luigi.newlyAuthorized', true);
+          if (res) {
+            alert(res);
           };
+        });
+      },
+      logout: function() {
+        const authData = getStoredAuthData();
 
-          const customLogoutFn = getConfigValue(`auth.${getConfigValue('auth.use')}.logoutFn`);
-          if (isFunction(customLogoutFn)) {
-            customLogoutFn(idpProviderInstance.settings, authData, logoutCallback);
-          }
-          else if (isFunction(idpProviderInstance.logout)) {
-            idpProviderInstance.logout(authData, logoutCallback);
-          }
-          else {
-            logoutCallback();
-            window.location.href = idpProviderInstance.settings.logoutUrl;
-          }
+        const logoutCallback = () => {
+          const onLogoutFn = getConfigValue('auth.events.onLogout');
+          if (onLogoutFn) { onLogoutFn(); };
+
+          this.set({ isLoggedIn: false });
+          localStorage.removeItem('luigi.auth');
+        };
+
+        const customLogoutFn = getConfigValue(`auth.${getConfigValue('auth.use')}.logoutFn`);
+        if (isFunction(customLogoutFn)) {
+          customLogoutFn(idpProviderInstance.settings, authData, logoutCallback);
         }
+        else if (isFunction(idpProviderInstance.logout)) {
+          idpProviderInstance.logout(authData, logoutCallback);
+        }
+        else {
+          logoutCallback();
+          window.location.href = idpProviderInstance.settings.logoutUrl;
+        };
+      },
     },
     components: {},
     // store: () => store
@@ -127,5 +131,6 @@
 
 
 <style type="text/scss">
+  @import 'node_modules/fundamental-ui/scss/core';
   @import 'node_modules/fundamental-ui/scss/components/menu';
 </style>

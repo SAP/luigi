@@ -8,9 +8,8 @@ describe('RestrictedComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ RestrictedComponent ]
-    })
-    .compileComponents();
+      declarations: [RestrictedComponent]
+    }).compileComponents();
   }));
 
   beforeEach(() => {

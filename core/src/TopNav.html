@@ -1,6 +1,4 @@
-
 <div class="fd-ui__header {hideNavComponent ? 'hideNavComponent' : ''}">
-  <Backdrop heightCssClass="height-50"/>
   <nav class="fd-global-nav">
     <div class="fd-global-nav__group fd-global-nav__group--left">
       <div class="fd-global-nav__logo fd-has-margin-left-none"></div>
@@ -13,8 +11,13 @@
         {#if children && pathData.length > 0}
           {#each children as node}
             {#if !node.hideFromNav}
-              <button class=" fd-button--secondary fd-button--m fd-global-nav__btn {node === selectedNode ? 'is-selected' : ''}"
-              aria-label="{node.label}" on:click=handleClick(node)><span class="">{node.label}</span></button>
+              <button class=" fd-button--secondary fd-button--m fd-global-nav__btn {node === selectedNode ? 'is-selected' : ''} {node.externalLink && node.externalLink.url ? 'fd-global-nav__btn--external' : ''}"
+              aria-label="{node.label}" on:click=handleClick(node)>
+                <span class="">{node.label}</span>
+                {#if node.externalLink && node.externalLink.url}
+                  <span class="sap-icon--action sap-icon--s"></span>
+                {/if}
+              </button>
             {/if}
           {/each}
         {/if}
@@ -22,8 +25,8 @@
         {#if authorizationEnabled}
         <div class="fd-popover user-settings">
           <div class="fd-popover__control">
-          <button class="fd-popover__control fd-button--secondary fd-button--m fd-global-nav__btn sap-icon--customer"
-          aria-expanded="{dropDownStates.PROFILE_POPOVER || false}" aria-haspopup="true" on:click="toggleDropdownState('PROFILE_POPOVER')" on:blur="closeDropdown('PROFILE_POPOVER')"></button>
+            <button class="fd-popover__control fd-button--secondary fd-button--m fd-global-nav__btn sap-icon--customer" aria-expanded="{dropDownStates.PROFILE_POPOVER || false}"
+              aria-haspopup="true" on:click="toggleDropdownState('PROFILE_POPOVER')" on:blur="closeDropdown('PROFILE_POPOVER')"></button>
           </div>
           <div class="fd-popover__body" aria-hidden="{dropDownStatesNegated.PROFILE_POPOVER || true}" id="PROFILE_POPOVER">
             <nav class="fd-menu" id="">
@@ -47,15 +50,15 @@
   import { handleRouteClick } from './services/routing.js';
   import { getConfigValue, getConfigBooleanValue } from './services/config.js';
 
-  const getNegatedBoolString = (str) => {
-    return (str === 'true') ? 'false' : 'true';
-  }
+  const getNegatedBoolString = str => {
+    return str === 'true' ? 'false' : 'true';
+  };
 
   const setTopNavData = (current, component) => {
     if (current.pathData && 0 < current.pathData.length) {
       const children = current.pathData[0].children;
       let selectedNode = null;
-      children.map((node) => {
+      children.map(node => {
         current.pathData.forEach(n => {
           if (!selectedNode && n === node) {
             selectedNode = node;
@@ -89,10 +92,10 @@
     data() {
       return {
         dropDownStates: {}
-      }
+      };
     },
     computed: {
-      dropDownStatesNegated({dropDownStates}) {
+      dropDownStatesNegated({ dropDownStates }) {
         const negated = {};
         for (const key in dropDownStates) {
           if (dropDownStates.hasOwnProperty(key)) {
@@ -103,23 +106,23 @@
       }
     },
     methods: {
-      handleClick: (node) => handleRouteClick(node),
+      handleClick: node => handleRouteClick(node),
       goTo(path) {
-        if(getConfigBooleanValue('routing.useHashRouting')) {
+        if (getConfigBooleanValue('routing.useHashRouting')) {
           window.location.hash = path;
         } else {
           window.location.pathname = path;
         }
       },
       toggleDropdownState(name) {
-        const dropDownStates = this.get().dropDownStates || {};
+        const dropDownStates = this.get().dropDownStates || {};
         dropDownStates[name] = getNegatedBoolString(dropDownStates[name]);
         this.set({
           dropDownStates
         });
       },
       closeDropdown(name) {
-        const dropDownStates = this.get().dropDownStates || {};
+        const dropDownStates = this.get().dropDownStates || {};
         dropDownStates[name] = 'false';
         this.set({
           dropDownStates
@@ -127,50 +130,48 @@
       }
     },
     components: {
-      Backdrop,
       Authorization
     }
   };
-
 </script>
 
 <style type="text/scss">
-$fd-icons-path: 'node_modules/fundamental-ui/scss/icons/';
+  $fd-icons-path: 'node_modules/fundamental-ui/scss/icons/';
 
-@import 'node_modules/fundamental-ui/scss/icons';
-@import 'node_modules/fundamental-ui/scss/components/action-bar';
-@import 'node_modules/fundamental-ui/scss/components/button';
-@import 'node_modules/fundamental-ui/scss/components/popover';
-@import 'node_modules/fundamental-ui/scss/components/menu';
-@import 'node_modules/fundamental-ui/scss/components/global-nav';
+  @import 'node_modules/fundamental-ui/scss/icons';
+  @import 'node_modules/fundamental-ui/scss/components/action-bar';
+  @import 'node_modules/fundamental-ui/scss/components/button';
+  @import 'node_modules/fundamental-ui/scss/components/popover';
+  @import 'node_modules/fundamental-ui/scss/components/menu';
+  @import 'node_modules/fundamental-ui/scss/components/global-nav';
 
-.user-settings .fd-popover__body {
-  right: 0;
-}
-.fd-ui__header {
-  position: fixed;
-  z-index: 1;
-  background: #ffffff;
-  width: 100%;
-  min-height: 50px;
-  height: 50px;
-  border-bottom: solid 1px #dededf;
-  padding: 0 10px;
-}
+  .user-settings .fd-popover__body {
+    right: 0;
+  }
+  .fd-ui__header {
+    position: fixed;
+    z-index: 1;
+    background: #ffffff;
+    width: 100%;
+    min-height: 50px;
+    height: 50px;
+    border-bottom: solid 1px #dededf;
+    padding: 0 10px;
+  }
 
-.fd-global-nav {
-  height: 100%;
-  border: none;
-}
-.fd-global-nav__product-name {
-  color: #0a6ed1;
-  height: 50px;
-  font-size: 24px;
-  line-height: 1em;
-  padding: 13px 0;
-}
+  .fd-global-nav {
+    height: 100%;
+    border: none;
+  }
+  .fd-global-nav__product-name {
+    color: #0a6ed1;
+    height: 50px;
+    font-size: 24px;
+    line-height: 1em;
+    padding: 13px 0;
+  }
 
-.hideNavComponent {
-  display: none;
-}
+  .hideNavComponent {
+    display: none;
+  }
 </style>

@@ -70,7 +70,7 @@ $ mv src/index.html src/angular.html
 $ curl https://raw.githubusercontent.com/kyma-project/Luigi/master/core/examples/luigi-sample-angular/src/index.html > src/index.html
 $ curl https://raw.githubusercontent.com/kyma-project/Luigi/master/core/examples/luigi-sample-angular/src/assets/basicConfiguration.js > src/assets/sampleconfig.js
 $ sed 's/"src\/index.html"/"src\/angular.html"/g' angular.json > tmp.json && mv tmp.json angular.json
-$ sed 's/"src\/assets"/"src\/assets","src\/index.html", {"glob": "fundamental-ui.min.css", "input": "node_modules\/fundamental-ui\/dist","output": "\/fundamental-ui"}, {"glob": "fonts\/**","input": "node_modules\/fundamental-ui\/dist","output": "\/fundamental-ui"}, {"glob": "SAP-icons.*","input": "node_modules\/fundamental-ui\/dist","output": "\/fundamental-ui"}, {"glob": "**","input": "node_modules\/@kyma-project\/luigi-core", "output": "\/luigi-core"},{"glob": "**","input": "node_modules\/@kyma-project\/luigi-client","output": "\/luigi-client"}/g' angular.json > tmp.json && mv tmp.json angular.json
+$ sed 's/"src\/assets"/"src\/assets","src\/index.html", {"glob": "**","input": "node_modules\/@kyma-project\/luigi-core", "output": "\/luigi-core"},{"glob": "**","input": "node_modules\/@kyma-project\/luigi-client","output": "\/luigi-client"}/g' angular.json > tmp.json && mv tmp.json angular.json
 $ ng serve
 ````
 <a name="sapui5"></a>

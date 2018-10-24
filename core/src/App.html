@@ -1,291 +1,348 @@
-<div id="app {hideNav? 'no-nav' : ''}">
-    <div class="fd-page iframeContainer" use:init="context"></div>
-    {#if showLoadingIndicator}
-    <div in:fade='{delay: 250, duration: 250}' out:fade='{duration: 250}' class="fd-page spinnerContainer" aria-hidden="false" aria-label="Loading">
-        <div class="fd-spinner"><div></div></div>
-    </div>
-    {/if}
 
-    <TopNav pathData={navigationPath} />
-    <LeftNav pathData={navigationPath} />
+<div id="app {hideNav? 'no-nav' : ''}">
+  <Backdrop>
+    <div class="fd-page iframeContainer" use:init="context"></div>
+  </Backdrop>
+  {#if showLoadingIndicator}
+  <div in:fade='{delay: 250, duration: 250}' out:fade='{duration: 250}' class="fd-page spinnerContainer" aria-hidden="false" aria-label="Loading">
+    <div class="fd-spinner"><div></div></div>
+  </div>
+  {/if}
+
+  <TopNav pathData={navigationPath} />
+  <LeftNav pathData={navigationPath} />
 </div>
 
+
 <script type="text/javascript">
-    import { fade } from 'svelte-transitions';
-    import TopNav from './TopNav.html';
-    import LeftNav from './LeftNav.html';
-    import * as Routing from './services/routing.js';
-    import { getConfigValue, getConfigValueFromObject }  from './services/config.js';
-    import { isFunction } from './utilities/helpers.js';
+  import Backdrop from './Backdrop.html';
+  import { fade } from 'svelte-transitions';
+  import TopNav from './TopNav.html';
+  import LeftNav from './LeftNav.html';
+  import * as Routing from './services/routing.js';
+  import { getConfigValue, getConfigValueFromObject } from './services/config.js';
+  import { getStoredAuthData } from './utilities/auth-helpers';
+  import { isFunction } from './utilities/helpers.js';
 
-    const trimLeadingSlash = (str) => str.replace(/^\//, '');
-    const isValidBackRoute = (preservedViews, routeHash) => {
-        if (preservedViews.length === 0) {
-            return false;
-        }
-        // we're only checking the previous goBack state and
-        // compare it with the new route
-        const routePath = routeHash.startsWith('/') ? routeHash : `/${routeHash}`;
-        const firstPreservedView = preservedViews[0];
-        const paths = [firstPreservedView.path, firstPreservedView.nextPath];
-        return paths.includes(routePath);
-    };
+  const trimLeadingSlash = str => str.replace(/^\//, '');
+  const isValidBackRoute = (preservedViews, routeHash) => {
+    if (preservedViews.length === 0) {
+      return false;
+    }
+    // we're only checking the previous goBack state and
+    // compare it with the new route
+    const routePath = routeHash.startsWith('/') ? routeHash : `/${routeHash}`;
+    const firstPreservedView = preservedViews[0];
+    const paths = [firstPreservedView.path, firstPreservedView.nextPath];
+    return paths.includes(routePath);
+  };
 
-    const getModifiedHash = s => s.newURL.split('#/')[1];
-    const enableHashRouting = (component, node, config) => {
-        window.addEventListener('hashchange', (event) => {
-            const pv = component.get().preservedViews;
-            if (!isValidBackRoute(pv, getModifiedHash(event))) {
-                component.set({preservedViews: []});
-                Routing.removeInactiveIframes(node);
+  const getModifiedHash = s => s.newURL.split('#/')[1];
+  const enableHashRouting = (component, node, config) => {
+    window.addEventListener('hashchange', event => {
+      const pv = component.get().preservedViews;
+      if (!isValidBackRoute(pv, getModifiedHash(event))) {
+        component.set({ preservedViews: [] });
+        Routing.removeInactiveIframes(node);
+      }
+      Routing.handleRouteChange(getModifiedHash(event), component, node, config);
+    });
+
+    Routing.handleRouteChange(window.location.hash, component, node, config);
+  };
+
+  const enablePathRouting = (component, node, config) => {
+    window.addEventListener('popstate', () => {
+      const getModifiedPathname = window.history.state.path
+        .split('/')
+        .slice(1)
+        .join('/');
+      Routing.handleRouteChange(getModifiedPathname, component, node, config);
+    });
+
+    Routing.handleRouteChange(
+      trimLeadingSlash(window.location.pathname),
+      component,
+      node,
+      config
+    );
+  };
+
+  const buildPath = (component, data) => {
+    let path = data.params.link;
+    if (data.params.fromClosestContext) {
+      // from the closest navigation context
+      const node = [...component.get().navigationPath]
+        .reverse()
+        .find(n => n.navigationContext && n.navigationContext.length > 0);
+      path = Routing.concatenatePath(Routing.getNodePath(node), data.params.link);
+    } else if (data.params.fromContext) {
+      // from a given navigation context
+      const navigationContext = data.params.fromContext;
+      const node = component
+        .get()
+        .navigationPath.find(n => navigationContext === n.navigationContext);
+      path = Routing.concatenatePath(Routing.getNodePath(node), data.params.link);
+    } else if (data.params.relative) {
+      // relative
+      path = Routing.concatenatePath(
+        Routing.getNodePath(component.get().currentNode),
+        data.params.link
+      );
+    }
+
+    if (data.params.nodeParams && Object.keys(data.params.nodeParams).length) {
+      path += '?';
+      Object.entries(data.params.nodeParams).forEach(entry => {
+        path +=
+          encodeURIComponent(Routing.getContentViewParamPrefix() + entry[0]) +
+          '=' +
+          encodeURIComponent(entry[1]) +
+          '&';
+      });
+    }
+    return path;
+  };
+
+  const addPreserveView = (component, data, config, node) => {
+    if (data.params.preserveView) {
+      const pv = component.get().preservedViews;
+      const nextPath = buildPath(component, data);
+      pv.push({
+        path: Routing.getNodePath(component.get().currentNode),
+        nextPath: nextPath.startsWith('/') ? nextPath : '/' + nextPath,
+        context: component.get().context
+      });
+      component.set({ preservedViews: pv });
+      // Resetting iframe config to null, since Routing.navigateTo will then create a new iframe
+      // instead of using the existing instance for route.
+      config.iframe = null;
+    }
+  };
+
+  const handleNavigation = async (component, data, config, node) => {
+    const path = buildPath(component, data);
+    const matchedPath = await Routing.matchPath(path);
+    if (matchedPath !== null) {
+      addPreserveView(component, data, config, node);
+      Routing.navigateTo(matchedPath);
+    }
+  };
+
+  const sendContextToClient = (component, config, goBackContext = {}) => {
+    config.iframe.contentWindow.postMessage(
+      {
+        msg: 'luigi.init',
+        context: JSON.stringify(
+          Object.assign({}, component.get().context, goBackContext)
+        ),
+        nodeParams: JSON.stringify(Object.assign({}, component.get().nodeParams)),
+        pathParams: JSON.stringify(Object.assign({}, component.get().pathParams)),
+        internal: JSON.stringify(component.prepareInternalData()),
+        authData: getStoredAuthData()
+      },
+      '*'
+    );
+  };
+
+  const sendAuthDataToClient = (iframe, authData) => {
+    iframe.contentWindow.postMessage({
+      msg: 'luigi.auth.tokenIssued',
+      authData
+    }, '*');
+  };
+
+  export default {
+    data() {
+      return {
+        isNavigateBack: false,
+        showLoadingIndicator: false,
+        preservedViews: [
+          // {
+          //     path: '/project/p2/settings',
+          //     nextPath: '/project/p2',
+          //     context: {}
+          //     iframe: Element
+          // }
+        ]
+      };
+    },
+    oncreate() {},
+    onstate({ changed, current, previous }) {},
+    actions: {
+      init(node) {
+        const config = {
+          iframe: null,
+          navigateOk: null,
+          builderCompatibilityMode: Boolean(window.builderCompatibilityMode)
+        };
+
+        window.addEventListener('message', e => {
+          if ('luigi.get-context' === e.data.msg && config.iframe) {
+            sendContextToClient(this, config, {});
+
+            const loadingIndicatorAutoHideEnabled =
+              getConfigValueFromObject(
+                this.get(),
+                'currentNode.loadingIndicator.hideAutomatically'
+              ) !== false;
+            if (loadingIndicatorAutoHideEnabled) {
+              this.set({ showLoadingIndicator: false });
             }
-            Routing.handleRouteChange(getModifiedHash(event), component, node, config);
+          }
+
+          if ('luigi.show-loading-indicator' === e.data.msg) {
+            this.set({ showLoadingIndicator: true });
+          }
+
+          if ('luigi.hide-loading-indicator' === e.data.msg) {
+            this.set({ showLoadingIndicator: false });
+          }
+
+          if ('luigi.navigate.ok' === e.data.msg) {
+            config.navigateOk = true;
+          }
+
+          if ('luigi.navigation.open' === e.data.msg) {
+            this.set({ isNavigateBack: false });
+            handleNavigation(this, e.data, config, node);
+          }
+
+          if ('luigi.navigation.back' === e.data.msg) {
+            // go back: context from the view
+            this.set({ isNavigateBack: false });
+            const preservedViews = this.get().preservedViews;
+            if (preservedViews && preservedViews.length) {
+              // remove current active iframe and data
+              Routing.setActiveIframeToPrevious(node);
+              const previousActiveIframeData = preservedViews.pop();
+              // set new active iframe and preservedViews
+              config.iframe = Routing.getActiveIframe(node);
+              this.set({
+                isNavigateBack: true,
+                preservedViews: preservedViews,
+                goBackContext:
+                e.data.goBackContext && JSON.parse(e.data.goBackContext)
+              });
+
+              // TODO: check if handleNavigation or history pop to update hash / path
+              handleNavigation(
+                this,
+                { params: { link: previousActiveIframeData.path } },
+                config,
+                node
+              );
+            } else {
+              console.error('goBack() not possible, no preserved views found.');
+            }
+          }
+
+          if ('luigi.auth.tokenIssued' === e.data.msg) {
+            sendAuthDataToClient(config.iframe, e.data.authData);
+          }
         });
 
-        Routing.handleRouteChange(window.location.hash, component, node, config);
-    };
+        // listeners are not automatically removed — cancel
+        // them to prevent memory leaks
+        // this.on('destroy', storeListener.cancel);
 
-    const enablePathRouting = (component, node, config) => {
-        window.addEventListener('popstate', () => {
-            const getModifiedPathname = window.history.state.path.split('/').slice(1).join('/');
-            Routing.handleRouteChange(getModifiedPathname, component, node, config);
-        });
-
-        Routing.handleRouteChange(trimLeadingSlash(window.location.pathname), component, node, config);
-    };
-
-    const buildPath = (component, data) => {
-        let path = data.params.link;
-        if (data.params.fromClosestContext) { // from the closest navigation context
-            const node = [...component.get().navigationPath].reverse().find((n) => n.navigationContext && n.navigationContext.length > 0);
-            path = Routing.concatenatePath(Routing.getNodePath(node), data.params.link);
-        } else if (data.params.fromContext) { // from a given navigation context
-            const navigationContext = data.params.fromContext;
-            const node = component.get().navigationPath.find((n) => navigationContext === n.navigationContext);
-            path = Routing.concatenatePath(Routing.getNodePath(node), data.params.link);
-        } else if (data.params.relative) { // relative
-            path = Routing.concatenatePath(Routing.getNodePath(component.get().currentNode), data.params.link);
+        if (getConfigValue('routing.useHashRouting')) {
+          return enableHashRouting(this, node, config);
         }
 
-        if (data.params.nodeParams && Object.keys(data.params.nodeParams).length) {
-            path += '?';
-            Object.entries(data.params.nodeParams).forEach(entry => {
-                path += (encodeURIComponent(Routing.getContentViewParamPrefix() + entry[0]) + '=' + encodeURIComponent(entry[1]) + '&');
-            });
-        }
-        return path;
-    };
-
-    const addPreserveView = (component, data, config, node) => {
-        if (data.params.preserveView) {
-            const pv = component.get().preservedViews;
-            const nextPath = buildPath(component, data);
-            pv.push({
-                path: Routing.getNodePath(component.get().currentNode),
-                nextPath: nextPath.startsWith('/') ? nextPath : '/' + nextPath,
-                context: component.get().context
-            });
-            component.set({preservedViews: pv});
-            // Resetting iframe config to null, since Routing.navigateTo will then create a new iframe
-            // instead of using the existing instance for route.
-            config.iframe = null;
-        }
-    };
-
-    const handleNavigation = async (component, data, config, node) => {
-        const path = buildPath(component, data);
-        const matchedPath = await Routing.matchPath(path);
-        if (matchedPath !== null) {
-            addPreserveView(component, data, config, node);
-            Routing.navigateTo(matchedPath);
-        }
-    };
-
-    const sendContextToClient = (component, config, goBackContext = {}) => {
-        config.iframe.contentWindow.postMessage({
-            msg: 'luigi.init',
-            context: JSON.stringify(Object.assign({}, component.get().context, goBackContext)),
-            nodeParams: JSON.stringify(Object.assign({}, component.get().nodeParams)),
-            pathParams: JSON.stringify(Object.assign({}, component.get().pathParams)),
-            internal: JSON.stringify(component.prepareInternalData())
-        }, '*');
-    };
-
-    const sendAuthDataToClient = (iframe, authData) => {
-      iframe.contentWindow.postMessage({
-        msg: 'luigi.auth.tokenIssued',
-        authData
-      }, '*');
-    };
-
-    export default {
-        data() {
-            return {
-                showLoadingIndicator: false,
-                preservedViews: [
-                // {
-                //     path: '/project/p2/settings',
-                //     nextPath: '/project/p2',
-                //     context: {}
-                //     iframe: Element
-                // }
-                ]
-            }
-        },
-        oncreate() { },
-        onstate({ changed, current, previous }) { },
-        actions: {
-            init(node) {
-                const config = {
-                    iframe: null,
-                    navigateOk: null,
-                    builderCompatibilityMode: Boolean(window.builderCompatibilityMode)
-                };
-
-                window.addEventListener("message", (e) => {
-                    if ('luigi.get-context' === e.data.msg && config.iframe) {
-                        sendContextToClient(this, config, {});
-
-                        const loadingIndicatorAutoHideEnabled = getConfigValueFromObject(this.get(), 'currentNode.loadingIndicator.hideAutomatically') !== false;
-                        if (loadingIndicatorAutoHideEnabled) {
-                            this.set({'showLoadingIndicator': false});
-                        }
-                    }
-
-                    if ('luigi.show-loading-indicator' === e.data.msg) {
-                        this.set({'showLoadingIndicator': true});
-                    }
-
-                    if ('luigi.hide-loading-indicator' === e.data.msg) {
-                        this.set({'showLoadingIndicator': false});
-                    }
-
-                    if ('luigi.navigate.ok' === e.data.msg) {
-                        config.navigateOk = true;
-                    }
-
-                    if ('luigi.navigation.open' === e.data.msg) {
-                        handleNavigation(this, e.data, config, node);
-                    }
-
-                    if ('luigi.navigation.back' === e.data.msg) {
-                        // go back: context from the view
-                        const preservedViews = this.get().preservedViews;
-                        if (preservedViews && preservedViews.length) {
-                            // remove current active iframe and data
-                            Routing.setActiveIframeToPrevious(node);
-                            const previousActiveIframeData = preservedViews.pop();
-                            // set new active iframe and preservedViews
-                            config.iframe = Routing.getActiveIframe(node);
-                            this.set({
-                                'preservedViews': preservedViews,
-                                'goBackContext': e.data.goBackContext && JSON.parse(e.data.goBackContext)
-                            });
-
-                            // TODO: check if handleNavigation or history pop to update hash / path
-                            handleNavigation(this, {params: {link: previousActiveIframeData.path}}, config, node);
-                        } else {
-                            console.error('goBack() not possible, no preserved views found.');
-                        }
-                    }
-
-                    if ('luigi.auth.tokenIssued' === e.data.msg) {
-                      sendAuthDataToClient(config.iframe, e.data.authData);
-                    }
-                });
-
-                // listeners are not automatically removed — cancel
-                // them to prevent memory leaks
-                // this.on('destroy', storeListener.cancel);
-
-                if (getConfigValue('routing.useHashRouting')) {
-                    return enableHashRouting(this, node, config);
-                }
-
-                return enablePathRouting(this, node, config);
-            }
-        },
-        methods: {
-            prepareInternalData() {
-                return {
-                    viewStackSize: this.get().preservedViews.length
-                }
-            }
-        },
-        components: {
-            TopNav,
-            LeftNav
-        },
-        transitions: { fade }
-    };
+        return enablePathRouting(this, node, config);
+      }
+    },
+    methods: {
+      prepareInternalData() {
+        return {
+          viewStackSize: this.get().preservedViews.length
+        };
+      }
+    },
+    components: {
+      Backdrop,
+      TopNav,
+      LeftNav
+    },
+    transitions: { fade }
+  };
 </script>
 
-<iframe src="https://mindmup.github.io/3rdpartycookiecheck/start.html" style="display:none" />
-
 <style type="text/scss">
-    @import 'node_modules/fundamental-ui/scss/layout/page';
+  @import 'node_modules/fundamental-ui/scss/layout/page';
+  @import 'node_modules/fundamental-ui/scss/components/spinner';
+  @import 'static.css';
 
-    :global(html) {
-        box-sizing: border-box;
-        font-size: 14px;
-    }
+  :global(html) {
+    box-sizing: border-box;
+    font-size: 14px;
+  }
+  :global(body) {
+    -webkit-font-smoothing: antialiased;
+    margin: 0;
+    line-height: 1.42857;
+  }
+  :global(*) {
+    box-sizing: inherit;
+  }
+  :global(*:before),
+  :global(*:after) {
+    box-sizing: inherit;
+  }
+  div :global(div) {
+    font-family: '72', sans-serif;
+  }
 
-    :global(body) {
-        -webkit-font-smoothing: antialiased;
-        margin: 0;
-        line-height: 1.42857;
-    }
+  :global(a) {
+    cursor: pointer;
+  }
 
-    :global(*) {
-        box-sizing: inherit;
+  .iframeContainer,
+  .spinnerContainer {
+    position: fixed;
+    top: 50px;
+    left: 320px;
+    bottom: 0;
+    right: 0;
+    width: auto;
+    min-width: auto;
+    min-height: auto;
+    display: block;
+  }
+  .iframeContainer :global(iframe) {
+    border: none;
+    width: 100%;
+    height: 100%;
+  }
+  .iframeContainerNoNav {
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+  }
+  .iframeContainerNoNav :global(iframe) {
+    border: none;
+    width: 100%;
+    height: 100%;
+  }
 
-    }
+  .spinnerContainer {
+    background: rgba(243, 244, 245, 0.8);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
 
-    :global(*:before),
-    :global(*:after) {
-        box-sizing: inherit;
-    }
-
-    div :global(div) {
-      font-family: '72', sans-serif;
-    }
-
-    :global(a) {
-      cursor: pointer;
-    }
-
-    .iframeContainer, .spinnerContainer {
+  .no-nav {
+    .iframeContainer,
+    .spinnerContainer {
       position: fixed;
-      top: 50px;
-      left: 320px;
+      top: 0;
+      left: 0;
       bottom: 0;
       right: 0;
-      width: auto;
-      min-width: auto;
-      min-height: auto;
-      display: block;
     }
-
-    .iframeContainer :global(iframe) {
-      border: none;
-      width: 100%;
-      height: 100%;
-    }
-
-    .spinnerContainer {
-        background: rgba(243,244,245,0.8);
-        display: flex;
-        align-items: center;
-        justify-content: center;
-    }
-
-    .no-nav {
-        .iframeContainer, .spinnerContainer {
-            position: fixed;
-            top: 0;
-            left: 0;
-            bottom: 0;
-            right: 0;
-        }
-    }
+  }
 </style>
