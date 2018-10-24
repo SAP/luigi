@@ -144,7 +144,7 @@ export const findMatchingNode = (urlPathElement, nodes) => {
   if (nodes.length > 1) {
     if (dynamicSegmentsLength === 1) {
       console.warn(
-        'Invalid Node setup detected. \nStatic and dynamic nodes cannot be used together on the same level. Static node gets cleaned up. \nRemove the static Node from the configuration to resolve this warning. \nAffected pathSegment:',
+        'Invalid node setup detected. \nStatic and dynamic nodes cannot be used together on the same level. Static node gets cleaned up. \nRemove the static node from the configuration to resolve this warning. \nAffected pathSegment:',
         urlPathElement,
         'Children:',
         nodes
@@ -153,20 +153,20 @@ export const findMatchingNode = (urlPathElement, nodes) => {
     }
     if (dynamicSegmentsLength > 1) {
       console.error(
-        'Invalid Node setup detected. \nMultiple dynamic Nodes are not allowed on the same level. Stopped navigation. \nInvalid Children:',
+        'Invalid node setup detected. \nMultiple dynamic nodes are not allowed on the same level. Stopped navigation. \nInvalid Children:',
         nodes
       );
       return null;
     }
   }
   nodes.some(node => {
-    // Static Nodes
+    // Static nodes
     if (node.pathSegment === urlPathElement) {
       result = node;
       return true;
     }
 
-    // Dynamic Nodes
+    // Dynamic nodes
     if (node.pathSegment && node.pathSegment.startsWith(':')) {
       const key = node.pathSegment.slice(0);
       node.pathParam = {
@@ -243,7 +243,7 @@ export const getGroupedChildren = (children, current) => {
  * getTruncatedChildren
  *
  * Returns an array of children without the childs below
- * a Node that has keepSelectedForChildren enabled
+ * a node that has keepSelectedForChildren enabled
  * @param array children
  * @returns array children
  */
