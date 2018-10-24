@@ -167,7 +167,7 @@
           builderCompatibilityMode: Boolean(window.builderCompatibilityMode)
         };
 
-        window.addEventListener('message', e => {
+        window.addEventListener('message', async (e) => {
           if ('luigi.get-context' === e.data.msg && config.iframe) {
             sendContextToClient(this, config, {});
 
@@ -224,13 +224,16 @@
           }
 
           if ('luigi.navigation.pathExists' === e.data.msg) {
-            console.log('TODO: CHECK PATH ', e.data.data.path);
-            const pathExists = true;
+            const data = e.data.data;
+            const matchedPath = await Routing.matchPath(data.path);
+            const normalizedPath = (data.path.endsWith('/')) ? data.path.slice(0,-1) : data.path;
+            const pathExists = matchedPath === normalizedPath;
             config.iframe.contentWindow.postMessage(
               {
                 msg: 'luigi.navigation.pathExists.answer',
                 data: {
-                  correlationId: e.data.data.id,
+                  path: data.path,
+                  correlationId: data.id,
                   pathExists
                 }
               },
