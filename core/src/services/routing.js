@@ -303,13 +303,14 @@ export const handleRouteChange = async (path, component, node, config) => {
       }
       return;
     }
-    // console.log('viewUrl', viewUrl)
-    // console.log('pathUrl', pathUrl)
-    // console.log('pathData', pathData)
-    // console.log('isolateView',isolateView)
-    !isolateView &&
-      !containsAllSegments(pathUrl, viewUrl) &&
-      console.warn('poprawiono');
+
+    if (!isolateView && !containsAllSegments(pathUrl, viewUrl)) {
+      window.dispatchEvent(
+        new CustomEvent('displayAlert', {
+          detail: 'Could not map the exact target node for the requested route'
+        })
+      );
+    }
 
     const previousCompData = component.get();
     component.set({
