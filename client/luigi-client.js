@@ -108,7 +108,7 @@
 
   return {
     /**
-     * There are various parameters and functions available to Luigi pertaining to the lifecycle of listeners, navigation Nodes, and Event data.
+     * There are various parameters and functions available to Luigi pertaining to the lifecycle of listeners, navigation nodes, and Event data.
      * @name lifecycle
      */
     /**
@@ -144,7 +144,7 @@
       return currentContext.context;
     },
     /**
-     * Returns the configuration object of the active navigation Node.
+     * Returns the configuration object of the active navigation node.
      * @returns {Object} node parameters.
      * @memberof lifecycle
      */
@@ -205,7 +205,7 @@
         },
 
         /**
-         * Sets the current navigation context to that of a specific parent Node that has the {@link navigation-configuration.md navigationContext} field declared in its navigation configuration. This navigation context is then used by navigate function.
+         * Sets the current navigation context to that of a specific parent node that has the {@link navigation-configuration.md navigationContext} field declared in its navigation configuration. This navigation context is then used by navigate function.
          * @param {Object} navigationContext
          * @returns {linkManager} link manager instance.
          * @example
@@ -309,7 +309,7 @@
           );
         },
         /**
-         * Removes the loading indicator. Use it after calling {@link #showLoadingIndicator showLoadingIndicator()} or to hide the indicator when you use the {@link navigation-configuration.md#nodes loadingIndicator.hideAutomatically: false} Node configuration.
+         * Removes the loading indicator. Use it after calling {@link #showLoadingIndicator showLoadingIndicator()} or to hide the indicator when you use the {@link navigation-configuration.md#nodes loadingIndicator.hideAutomatically: false} node configuration.
          */
         hideLoadingIndicator: function hideLoadingIndicator() {
           window.parent.postMessage(

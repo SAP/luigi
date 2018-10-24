@@ -31,25 +31,25 @@ export class OverviewComponent {
       link: '/projects/pr1/dps',
       text: 'defaultChildNode',
       description:
-        'navigation Node configuration to set a specific Node as an initial target'
+        'navigation node configuration to set a specific node as an initial target'
     },
     {
       link: '/projects/pr1/users/groups',
-      text: 'dynamic Nodes',
+      text: 'dynamic nodes',
       description:
-        'navigation Node configuration to set a specific node as dynamic'
+        'navigation node configuration to set a specific node as dynamic'
     },
     {
       link: '/projects/pr1',
       text: 'external URL node',
       description:
-        'navigation Node configuration to direct to an external website'
+        'navigation node configuration to direct to an external website'
     },
     {
       link: '/projects/pr1/avengers',
       text: 'keepSelectedForChildren',
       description:
-        'navigation Node configuration to focus on a navigation menu and omit the children'
+        'navigation node configuration to focus on a navigation menu and omit the children'
     }
   ];
 }
