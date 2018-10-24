@@ -31,7 +31,7 @@ To have this application running, follow these steps:
 
 4. Start the example application from the `luigi/core/examples/luigi-sample-angular` folder.
 
-    `/assets/sampleConfiguration.js` is the default configuration with a showcase of all available features. If you want to try out a much simpler example, change the configuration reference in `index.html` to `basicConfiguration.js`.
+    [`extendedConfiguration.js`](src/assets/extendedConfiguration.js) is the default configuration with a showcase of all available features. If you want to try out a much simpler example, change the configuration reference in [`index.html`](src/index.html) to [`basicConfiguration.js`](src/assets/basicConfiguration.js).
 
     - To run Luigi with hash-based routing, change the **routing.useHashrouting** configuration to `true` and run the following command:
         ```bash
