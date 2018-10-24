@@ -11,4 +11,16 @@ section {
   li:not(:last-of-type) {
     padding-bottom: 20px;
   }
+  &.link-manager {
+    input {
+      display: inline;
+      max-width: 25em;
+    }
+    button {
+      margin-bottom: 0;
+      padding-top: 1px;
+      padding-bottom: 1px;
+      margin-left: 4px;
+    }
+  }
 }

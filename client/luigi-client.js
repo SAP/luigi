@@ -100,14 +100,14 @@
 
         window.parent.postMessage({ msg: 'luigi.navigate.ok' }, '*');
       }
+
       if ('luigi.navigation.pathExists.answer' === e.data.msg) {
-        console.log(
-          'Luigi client received luigi.navigation.pathExists.answer',
-          e.data.data
-        );
         var data = e.data.data;
-        pathExistsPromises[data.correlationId].success(data.correlationId);
-        pathExistsPromises[data.correlationId].error(data.correlationId);
+        if (data.pathExists) {
+          pathExistsPromises[data.correlationId].success(data);
+        } else {
+          pathExistsPromises[data.correlationId].error(data);
+        }
       }
     });
 
@@ -205,10 +205,6 @@
               id: currentId
             }
           };
-          console.log(
-            'Luigi client sent luigi.navigation.pathExists',
-            pathExistsMsg.data
-          );
           window.parent.postMessage(pathExistsMsg, '*');
           return pathExistsPromises[currentId];
         },
