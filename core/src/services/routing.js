@@ -148,9 +148,10 @@ const navigateIframe = (config, component, node) => {
   }
 
   if (
-    isNotSameDomain(config, component) ||
-    hasIframeIsolation(component) ||
-    Boolean(config.builderCompatibilityMode)
+    !componentData.isNavigateBack &&
+    (isNotSameDomain(config, component) ||
+      hasIframeIsolation(component) ||
+      Boolean(config.builderCompatibilityMode))
   ) {
     const componentData = component.get();
     // preserveView, hide other frames, else remove
