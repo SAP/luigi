@@ -4,7 +4,7 @@ import {
 } from '../../services/config.js';
 
 export const processHeaderSettings = component => {
-  getConfigValueAsync('settings.header').then(header => {
+  return getConfigValueAsync('settings.header').then(header => {
     if (!header) {
       return;
     }
@@ -29,7 +29,7 @@ export const processHeaderSettings = component => {
       const link = Object.assign(document.createElement('link'), {
         type: 'image/x-icon',
         rel: 'shortcut icon',
-        href: header.favicon,
+        href: header.favicon
       });
       document.getElementsByTagName('head')[0].appendChild(link);
     }
