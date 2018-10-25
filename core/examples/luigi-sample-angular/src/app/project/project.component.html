@@ -53,7 +53,7 @@
         <a href="javascript:void(0)" (click)="luigiClient.linkManager().navigate('/settings', null, true)">with preserved view: project to global settings and back</a>
         <app-code-snippet data="luigiClient.linkManager().navigate('/settings', null, true)"></app-code-snippet>
       </li>
-      <li class="fd-list-group__item">
+      <li class="fd-list-group__item check-path">
         <a href="javascript:void(0)" (click)="luigiClient.linkManager().navigate('/settings', null, true)">Check if path
           exists</a>
         <app-code-snippet data="luigiClient.linkManager().pathExists('{{pathExists.formValue}}')"></app-code-snippet>
@@ -61,12 +61,14 @@
           <input type="text" [(ngModel)]="pathExists.formValue" />
           <button class="fd-button" (click)="checkIfPathExists()">Check</button>
         </span>
-        <div *ngIf="pathExists.result === true">
-          Path exists!
-        </div>
-        <div *ngIf="pathExists.result === false">
-          Path does not exist!
-        </div>
+        <p class="check-path-result">
+          <ng-container *ngIf="pathExists.result === true">
+            Path exists!
+          </ng-container>
+          <ng-container *ngIf="pathExists.result === false">
+            Path does not exist!
+          </ng-container>
+        </p>
       </li>
     </ul>
   </div>

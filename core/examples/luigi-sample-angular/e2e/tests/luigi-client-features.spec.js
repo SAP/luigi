@@ -107,6 +107,29 @@ describe('Luigi client features', () => {
             expect(loc.hash).to.eq('#/projects/pr2');
           });
         });
+
+      // check if path exists
+      cy.go(-2);
+      [
+        { path: 'projects/pr2/', successExpected: false },
+        { path: '/projects/pr2/', successExpected: true },
+        { path: '/projects/pr2', successExpected: true }
+      ].map(data => {
+        const msgExpected = data.successExpected
+          ? 'Path exists'
+          : 'Path does not exist';
+        const checkPathSelector = '.link-manager .check-path';
+        cy.wrap($iframeBody)
+          .find(checkPathSelector + ' input')
+          .clear()
+          .type(data.path);
+        cy.wrap($iframeBody)
+          .find(checkPathSelector + ' button')
+          .click();
+        cy.wrap($iframeBody)
+          .find(checkPathSelector + ' .check-path-result')
+          .contains(msgExpected);
+      });
     });
   });
 
