@@ -1,24 +1,26 @@
-
 <div id="app {hideNav? 'no-nav' : ''}">
-  {#if alertMessage}
-      <div class="fd-alert fd-alert--error fd-alert--dismissible" role="alert" id="j2ALl423">
-        <button on:click="set({alertMessage:null})" class="fd-alert__close" aria-controls="j2ALl423" aria-label="Close"></button>
-        {alertMessage}
-      </div>
-    {/if}
-  <Backdrop >
-    <div class="fd-page iframeContainer" use:init="context"/>
-    
-   
-  </Backdrop>
-  {#if showLoadingIndicator}
-  <div in:fade='{delay: 250, duration: 250}' out:fade='{duration: 250}' class="fd-page spinnerContainer" aria-hidden="false" aria-label="Loading">
-      <div class="fd-spinner"><div></div></div>
-  </div>
-  {/if}
+	{#if alertMessage}
+	<div class="fd-alert fd-alert--error fd-alert--dismissible" role="alert" id="j2ALl423">
+		<button on:click="set({alertMessage:null})" class="fd-alert__close" aria-controls="j2ALl423" aria-label="Close"></button>
+		{alertMessage}
+	</div>
+	{/if}
+	<Backdrop>
+		<div class="fd-page iframeContainer" use:init="context" />
 
-  <TopNav pathData={navigationPath} />
-  <LeftNav pathData={navigationPath} />
+
+	</Backdrop>
+	{#if showLoadingIndicator}
+	<div in:fade='{delay: 250, duration: 250}' out:fade='{duration: 250}' class="fd-page spinnerContainer" aria-hidden="false"
+	 aria-label="Loading">
+		<div class="fd-spinner">
+			<div></div>
+		</div>
+	</div>
+	{/if}
+
+	<TopNav pathData={navigationPath} />
+	<LeftNav pathData={navigationPath} />
 </div>
 
 
@@ -179,19 +181,6 @@
           navigateOk: null,
           builderCompatibilityMode: Boolean(window.builderCompatibilityMode)
         };
-        window.addEventListener('displayAlert', event => {
-          if (event && event.detail) {
-            this.set({ alertMessage: event.detail });
-          } else {
-            console.error(
-              'Error alert has been triggered but no message was provided in "detail" property'
-            );
-          }
-        });
-
-        window.addEventListener('hideAlert', event => {
-          this.set({ alertMessage: null });
-        });
 
         window.addEventListener('message', e => {
           if ('luigi.get-context' === e.data.msg && config.iframe) {
@@ -250,6 +239,20 @@
             } else {
               console.error('goBack() not possible, no preserved views found.');
             }
+          }
+
+          if ('luigi.displayAlert' === e.data.msg) {
+            if (e.data.detail) {
+              this.set({ alertMessage: e.data.detail });
+            } else {
+              console.error(
+                'Error alert has been triggered but no message was provided in "detail" property'
+              );
+            }
+          }
+
+          if ('luigi.hideAlert' === e.data.msg) {
+            this.set({ alertMessage: null });
           }
         });
 
