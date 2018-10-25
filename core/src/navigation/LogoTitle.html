@@ -1,5 +1,5 @@
 
-<div on:click="goTo('/')" class="fd-global-nav__logo fd-has-margin-left-none" ref:logo style="background-image: 'none'"></div>
+<div on:click="goTo('/')" class="fd-global-nav__logo fd-has-margin-left-none" ref:logo></div>
 <div class="fd-global-nav__product-name">
   {#if title}
   <a on:click="goTo('/')">{title}</a>
@@ -7,7 +7,7 @@
 </div>
 
 <script type="text/javascript">
-  import { processHeaderSettings } from './services/logo-title.js';
+  import { processHeaderSettings } from './services/header.js';
 
   export default {
     oncreate() {
@@ -29,6 +29,7 @@
   @import 'node_modules/fundamental-ui/scss/components/global-nav';
   .fd-global-nav__logo {
     cursor: pointer;
+    background-image: none;
   }
   .fd-global-nav__product-name {
     color: #0a6ed1;

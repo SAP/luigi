@@ -44,7 +44,6 @@
 
 <script type="text/javascript">
   import LogoTitle from './LogoTitle.html';
-  import Backdrop from '../Backdrop.html';
   import Authorization from '../Authorization.html';
   import { handleRouteClick } from '../services/routing.js';
   import { getConfigValue, getConfigValueAsync, getConfigBooleanValue } from '../services/config.js';
@@ -106,13 +105,6 @@
     },
     methods: {
       handleClick: node => handleRouteClick(node),
-      goTo(path) {
-        if (getConfigBooleanValue('routing.useHashRouting')) {
-          window.location.hash = path;
-        } else {
-          window.location.pathname = path;
-        }
-      },
       toggleDropdownState(name) {
         const dropDownStates = this.get().dropDownStates || {};
         dropDownStates[name] = getNegatedBoolString(dropDownStates[name]);

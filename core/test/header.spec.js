@@ -1,4 +1,4 @@
-const logoTitle = require('../src/navigation/services/logo-title');
+const headerService = require('../src/navigation/services/header');
 const chai = require('chai');
 const expect = chai.expect;
 const assert = chai.assert;
@@ -30,7 +30,7 @@ describe('LogoTitle', function() {
   describe.only('processHeaderSettings()', function() {
     it('should not fail for undefined arguments', () => {
       window.Luigi.config = {};
-      logoTitle.processHeaderSettings(component);
+      headerService.processHeaderSettings(component);
     });
 
     const headerSettings = {
@@ -71,7 +71,7 @@ describe('LogoTitle', function() {
         document.getElementsByTagName = () => [{ appendChild }];
 
         // then
-        await logoTitle.processHeaderSettings(component);
+        await headerService.processHeaderSettings(component);
 
         // when
         // title

@@ -20,15 +20,17 @@ export const processHeaderSettings = component => {
 
     // Set Favicon
     if (header.favicon) {
-      if (!header.favicon.split('?')[0].endsWith('.ico')) {
+      const isInvalidIcoFile = !header.favicon.split('?')[0].endsWith('.ico');
+      if (isInvalidIcoFile) {
         console.warn(
           'Favicon is not an .ico filetype and might get displayed wrong.'
         );
       }
-      const link = document.createElement('link');
-      link.type = 'image/x-icon';
-      link.rel = 'shortcut icon';
-      link.href = header.favicon;
+      const link = Object.assign(document.createElement('link'), {
+        type: 'image/x-icon',
+        rel: 'shortcut icon',
+        href: header.favicon,
+      });
       document.getElementsByTagName('head')[0].appendChild(link);
     }
   });
