@@ -283,6 +283,15 @@
          * Checks if a path exists in the main application, i.e., if that path can be navigated to. This helper method can be used e.g. to conditionally display a DOM element like a button.
          * @param {string} path path which existence you want to check
          * @returns {promise} A promise that once checked if a path exists will execute success handler if the path exists, or the error handler otherwise.
+         * @example
+         *  let pathExists;
+         *  this.luigiClient
+         *  .linkManager()
+         *  .pathExists('projects/pr2')
+         *  .then(
+         *    () => { pathExists = true; },
+         *    () => { pathExists = false; },
+         *  );
          */
         pathExists: function pathExists(path) {
           var currentId = Date.now();
