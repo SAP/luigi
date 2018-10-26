@@ -25,12 +25,7 @@ describe('LogoTitle', function() {
 
     it('should not fail for undefined arguments', async () => {
       window.Luigi.config = {};
-      await headerService.processHeaderSettings().then(
-        () => {},
-        () => {
-          throw new Error('Error happened');
-        }
-      );
+      await headerService.processHeaderSettings();
     });
 
     it('should resolve title', async () => {
@@ -51,13 +46,22 @@ describe('LogoTitle', function() {
         component.set.calledWith({ title: headerSettings.title }),
         'component set() title'
       );
+    });
+
+    it('should hide logo if not defined', async () => {
+      setHeaderSettings({});
+
+      // when
+      await headerService.processHeaderSettings(component);
+
+      // then
       assert(
         component.set.calledWith({ hasLogo: false }),
-        'component set() hasLogo'
+        'component set() hasLogo false'
       );
     });
 
-    it('should resolve logo', async () => {
+    it('should resolve logo and set hasLogo', async () => {
       // given
       const headerSettings = {
         logo: 'data:image/svg+xml;base64,XXX='
@@ -117,10 +121,6 @@ describe('LogoTitle', function() {
         'document.getElementsByTagName() call'
       );
       assert(appendChild.calledOnceWith(expectedLink), 'appendChild() call');
-      assert(
-        component.set.calledOnceWith({ hasLogo: false }),
-        'component set() hasLogo'
-      );
     });
   });
 });
