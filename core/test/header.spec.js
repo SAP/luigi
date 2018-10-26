@@ -7,7 +7,7 @@ describe('LogoTitle', function() {
     sinon.restore();
   });
 
-  describe.only('processHeaderSettings()', function() {
+  describe('processHeaderSettings()', function() {
     let component;
     const setHeaderSettings = headerSettings => {
       window.Luigi.config = {
