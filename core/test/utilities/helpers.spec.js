@@ -28,14 +28,15 @@ describe('Helpers()', () => {
       assert.equal(containsAllSegments(sourceUrl, targetPathSegments), true);
     });
 
-    it('should return false when totally wrong data provided', async () => {
-      const sourceUrl = 'mas/ko/pa/tol';
+    it('should return false when wrong data provided', async () => {
+      const differentSourceUrl = 'mas/ko/pa/tol';
+      const similarSourceUrl = 'luigi/is/os/awesome';
       const targetPathSegments = [
         {
           //doesn't matter, it's omitted anyway
         },
         {
-          pathSegment: 'Luigi'
+          pathSegment: 'luigi'
         },
         {
           pathSegment: 'is'
@@ -47,7 +48,14 @@ describe('Helpers()', () => {
           pathSegment: 'awesome'
         }
       ];
-      assert.equal(containsAllSegments(sourceUrl, targetPathSegments), false);
+      assert.equal(
+        containsAllSegments(differentSourceUrl, targetPathSegments),
+        false
+      );
+      assert.equal(
+        containsAllSegments(similarSourceUrl, targetPathSegments),
+        false
+      );
     });
 
     it("should return false when pathSegments numbers don't match", async () => {
