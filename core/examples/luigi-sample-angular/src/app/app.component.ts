@@ -12,9 +12,9 @@ import {
 })
 export class AppComponent implements OnInit {
   public luigiClient: LuigiClient = LuigiClient;
-  public title = 'app';
+  public title: string = 'app';
 
-  constructor(private luigiService: LuigiContextService) {}
+  constructor(private luigiService: LuigiContextService) { }
 
   ngOnInit() {
     this.luigiClient.addInitListener(context =>

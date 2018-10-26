@@ -31,7 +31,7 @@ export class GroupDetailsComponent implements OnInit, OnDestroy {
         // We can directly access our custom specified context value here
         this.groupLabel = toTitleCase(ctx.context.currentGroup);
 
-        // Default way, if context is not specified in Node configuration
+        // Default way, if context is not specified in node configuration
         this.pathParams = this.luigiClient.getPathParams();
         this.groupLabel =
           this.pathParams &&
