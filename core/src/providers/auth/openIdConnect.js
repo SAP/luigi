@@ -1,5 +1,6 @@
-import { deepMerge, prependOrigin } from '../../utilities/helpers.js';
-import { waitForKeyExistency } from '../../utilities/async-helpers.js';
+import { deepMerge, prependOrigin } from '../../utilities/helpers';
+import { waitForKeyExistency } from '../../utilities/async-helpers';
+import { receiveThirdPartyCookiesMessage } from '../../utilities/third-party-cookies-check';
 
 export class openIdConnect {
   constructor(settings = {}) {
@@ -10,7 +11,8 @@ export class openIdConnect {
       filterProtocolClaims: true,
       loadUserInfo: false,
       automaticSilentRenew: true,
-      accessTokenExpiringNotificationTime: 3500,
+      accessTokenExpiringNotificationTime: 60,
+      thirdPartyCookiesScriptLocation: '',
       silent_redirect_uri:
         window.location.origin + '/luigi-core/auth/oidc/silent-callback.html'
     };
@@ -80,10 +82,18 @@ export class openIdConnect {
   }
 
   setTokenExpirationAction() {
+    debugger;
     if (!this.settings.automaticSilentRenew) {
       this.client.events.addAccessTokenExpired(() => {
-        window.location = this.settings.logoutUrl;
+        window.location = this.settings.logoutUrl + '?reason=tokenExpired';
       });
+    }
+
+    if (this.settings.thirdPartyCookiesScriptLocation) {
+      const iframe = document.createElement('iframe');
+      iframe.src = this.settings.thirdPartyCookiesScriptLocation;
+      iframe.style.display = 'none';
+      document.body.appendChild(iframe);
     }
 
     this.client.events.addSilentRenewError(e => {
@@ -91,13 +101,16 @@ export class openIdConnect {
         case 'interaction_required':
         case 'login_required':
         case 'account_selection_required':
-        case 'consent_required':
-          //check 3rd party cookies
+        case 'consent_required': // possible cause: disabled third party cookies in the browser
           window.location.href =
-            this.settings.logoutUrl + '?reason=tokenExpiry&error=' + e.message;
+            this.settings.logoutUrl +
+            '?reason=tokenExpired&checkThirdPartyCookies&error=' +
+            e.message;
           break;
         default:
           console.error(e);
+          window.location.href =
+            this.settings.logoutUrl + '?reason=tokenExpired&error=' + e.message;
       }
     });
   }
