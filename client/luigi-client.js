@@ -238,7 +238,7 @@
          */
         fromClosestContext: function fromClosestContext() {
           var hasParentNavigationContext =
-            currentContext.context.parentNavigationContexts.length === 0;
+            currentContext.context.parentNavigationContexts.length > 0;
           if (hasParentNavigationContext) {
             options.fromContext = null;
             options.fromClosestContext = true;
