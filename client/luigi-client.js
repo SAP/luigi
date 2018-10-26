@@ -225,9 +225,10 @@
          * LuigiClient.linkManager().fromContext('project').navigate('/settings')
          */
         fromContext: function fromContext(navigationContext) {
-          var navigationContextInParent = currentContext.context.parentNavigationContexts.includes(
-            navigationContext
-          );
+          var navigationContextInParent =
+            currentContext.context.parentNavigationContexts.indexOf(
+              navigationContext
+            ) !== -1;
           if (navigationContextInParent) {
             options.fromContext = navigationContext;
           } else {
