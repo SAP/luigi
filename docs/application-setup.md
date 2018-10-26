@@ -1,6 +1,6 @@
 # Application setup
 
-Prior to the implementation of Luigi, you need to set up your application. This document shows you how to set up a web application using the Luigi micro front-end framework.
+Prior to start developing with Luigi, you need to set up your application. This document shows you how to set up a web application using the Luigi micro front-end framework.
 
 Choose the framework to build your application:
 
