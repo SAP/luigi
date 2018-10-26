@@ -109,7 +109,7 @@ describe('Luigi client features', () => {
         });
 
       // check if path exists
-      cy.go(-2);
+      cy.goToFeaturesPage($iframeBody);
       [
         { path: 'projects/pr2/', successExpected: false },
         { path: '/projects/pr2/', successExpected: true },
