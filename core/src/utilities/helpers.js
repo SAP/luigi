@@ -81,6 +81,12 @@ export const prependOrigin = path => {
 };
 
 export const containsAllSegments = (sourceUrl, targetPathSegments) => {
+  if (!sourceUrl || !mandatorySegments || !mandatorySegments.length) {
+    console.error(
+      'Ooops, seems like the developers have misconfigured something'
+    );
+    return false;
+  }
   const mandatorySegments = sourceUrl.split('/');
   let result = true;
 

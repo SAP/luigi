@@ -35,16 +35,16 @@ describe('Helpers()', () => {
           //doesn't matter, it's omitted anyway
         },
         {
-          pathSegment: 'Sinon'
+          pathSegment: 'Luigi'
         },
         {
           pathSegment: 'is'
         },
         {
-          pathSegment: 'totally'
+          pathSegment: 'so'
         },
         {
-          pathSegment: 'unusable'
+          pathSegment: 'awesome'
         }
       ];
       assert.equal(containsAllSegments(sourceUrl, targetPathSegments), false);
@@ -52,7 +52,7 @@ describe('Helpers()', () => {
 
     it("should return false when pathSegments numbers don't match", async () => {
       const tooShortSourceUrl = 'one/two';
-      const tooLongSourceUrl = 'lets/change/Sinon/to/Jest/someday';
+      const tooLongSourceUrl = 'three/four/five/six';
       const targetPathSegments = [
         {
           //doesn't matter, it's omitted anyway

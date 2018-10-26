@@ -301,7 +301,7 @@ export const handleRouteChange = async (path, component, node, config) => {
         window.parent.postMessage(
           {
             msg: 'luigi.displayAlert',
-            detail: 'Could not find the requested route'
+            errorMessage: 'Could not find the requested route'
           },
           '*'
         ); //error 404
@@ -313,7 +313,8 @@ export const handleRouteChange = async (path, component, node, config) => {
       window.parent.postMessage(
         {
           msg: 'luigi.displayAlert',
-          detail: 'Could not map the exact target node for the requested route'
+          errorMessage:
+            'Could not map the exact target node for the requested route'
         },
         '*'
       );

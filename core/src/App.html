@@ -7,8 +7,6 @@
 	{/if}
 	<Backdrop>
 		<div class="fd-page iframeContainer" use:init="context" />
-
-
 	</Backdrop>
 	{#if showLoadingIndicator}
 	<div in:fade='{delay: 250, duration: 250}' out:fade='{duration: 250}' class="fd-page spinnerContainer" aria-hidden="false"
@@ -242,11 +240,11 @@
           }
 
           if ('luigi.displayAlert' === e.data.msg) {
-            if (e.data.detail) {
-              this.set({ alertMessage: e.data.detail });
+            if (e.data.errorMessage) {
+              this.set({ alertMessage: e.data.errorMessage });
             } else {
               console.error(
-                'Error alert has been triggered but no message was provided in "detail" property'
+                'Ooops, seems like the developers have misconfigured something'
               );
             }
           }
