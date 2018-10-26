@@ -54,8 +54,7 @@
         <app-code-snippet data="luigiClient.linkManager().navigate('/settings', null, true)"></app-code-snippet>
       </li>
       <li class="fd-list-group__item check-path">
-        <a href="javascript:void(0)" (click)="luigiClient.linkManager().navigate('/settings', null, true)">Check if path
-          exists</a>
+        <span>Check if path exists</span>
         <app-code-snippet data="luigiClient.linkManager().pathExists('{{pathExists.formValue}}')"></app-code-snippet>
         <span>
           <input type="text" [(ngModel)]="pathExists.formValue" />
