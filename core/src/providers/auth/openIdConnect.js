@@ -1,6 +1,6 @@
 import { deepMerge, prependOrigin } from '../../utilities/helpers';
 import { waitForKeyExistency } from '../../utilities/async-helpers';
-import { receiveThirdPartyCookiesMessage } from '../../utilities/third-party-cookies-check';
+import '../../utilities/third-party-cookies-check';
 
 export class openIdConnect {
   constructor(settings = {}) {
@@ -27,8 +27,6 @@ export class openIdConnect {
 
     return waitForKeyExistency(window, 'Oidc').then(res => {
       this.client = new Oidc.UserManager(this.settings);
-      Oidc.Log.logger = console;
-      Oidc.Log.level = Oidc.Log.INFO;
 
       this.client.events.addUserLoaded(authenticatedUser => {
         debugger;
