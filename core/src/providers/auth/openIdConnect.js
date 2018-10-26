@@ -10,7 +10,7 @@ export class openIdConnect {
       response_type: 'id_token token',
       filterProtocolClaims: true,
       loadUserInfo: false,
-      automaticSilentRenew: true,
+      automaticSilentRenew: false,
       accessTokenExpiringNotificationTime: 60,
       thirdPartyCookiesScriptLocation: '',
       silent_redirect_uri:

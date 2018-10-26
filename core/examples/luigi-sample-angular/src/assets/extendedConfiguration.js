@@ -318,7 +318,7 @@ Luigi.setConfig({
    *
    */
   auth: {
-    use: 'openIdConnect',
+    use: 'mockAuth',
     disableAutoLogin: false,
     mockAuth: {
       authorizeUrl: `${
@@ -332,11 +332,10 @@ Luigi.setConfig({
       }
     },
     openIdConnect: {
-      authority: 'https://accounts.google.com',
-      client_id:
-        '326008160752-bfc0vipcghr5m6vlcrlq685sv02pk1d0.apps.googleusercontent.com',
+      authority: 'https://example-authority.com',
+      client_id: 'client',
       scope: 'openid profile email',
-      logoutUrl: `${window.location.origin}/logout.html`
+      logoutUrl: 'https://example-url.com/logout'
       // optional parameters
       // redirect_uri: '',
       // post_logout_redirect_uri: '/logout.html',
@@ -344,12 +343,12 @@ Luigi.setConfig({
       // loadUserInfo: false // returned metadata must contain userinfo_endpoint
     },
     oAuth2ImplicitGrant: {
-      authorizeUrl: 'https://dex.swinka.cluster.kyma.cx/auth',
-      logoutUrl: 'http://luigi.com:4200/logout.html',
+      authorizeUrl: 'https://example-url.com/authorize',
+      logoutUrl: 'https://example-url.com/logout',
       post_logout_redirect_uri: '/logout.html',
       authorizeMethod: 'GET',
       oAuthData: {
-        client_id: 'luigi',
+        client_id: 'egDuozijY5SVr0NSIowUP1dT6RVqHnlp',
         redirect_uri: '/luigi-core/auth/oauth2/callback.html',
         scope: 'openid profile email groups'
 
