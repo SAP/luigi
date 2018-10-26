@@ -14,7 +14,10 @@ export const processHeaderSettings = component => {
       component.set({ title: header.title });
       document.title = header.title;
     }
-    if (header.logo) {
+
+    const hasLogo = Boolean(header.logo);
+    component.set({ hasLogo });
+    if (hasLogo) {
       component.refs.logo.style.backgroundImage = 'url(' + header.logo + ')';
     }
 
