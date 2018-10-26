@@ -48,8 +48,12 @@ describe('LogoTitle', function() {
       // then
       assert.equal(document.title, headerSettings.title, 'document title');
       assert(
-        component.set.calledOnceWith({ title: headerSettings.title }),
-        'component.set() call'
+        component.set.calledWith({ title: headerSettings.title }),
+        'component set() title'
+      );
+      assert(
+        component.set.calledWith({ hasLogo: false }),
+        'component set() hasLogo'
       );
     });
 
@@ -76,6 +80,10 @@ describe('LogoTitle', function() {
         component.refs.logo.style.backgroundImage,
         'url(' + headerSettings.logo + ')',
         'backgroundImage logo'
+      );
+      assert(
+        component.set.calledOnceWith({ hasLogo: true }),
+        'component set() hasLogo'
       );
     });
 
@@ -109,6 +117,10 @@ describe('LogoTitle', function() {
         'document.getElementsByTagName() call'
       );
       assert(appendChild.calledOnceWith(expectedLink), 'appendChild() call');
+      assert(
+        component.set.calledOnceWith({ hasLogo: false }),
+        'component set() hasLogo'
+      );
     });
   });
 });
