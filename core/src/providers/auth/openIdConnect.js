@@ -29,7 +29,6 @@ export class openIdConnect {
       this.client = new Oidc.UserManager(this.settings);
 
       this.client.events.addUserLoaded(authenticatedUser => {
-        debugger;
         const data = {
           accessToken: authenticatedUser.access_token,
           accessTokenExpirationDate: authenticatedUser.expires_at * 1000,
