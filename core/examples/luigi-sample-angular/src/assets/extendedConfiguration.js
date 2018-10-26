@@ -333,9 +333,10 @@ Luigi.setConfig({
     },
     openIdConnect: {
       authority: 'https://accounts.google.com',
-      client_id: '326008160752-bfc0vipcghr5m6vlcrlq685sv02pk1d0.apps.googleusercontent.com',
+      client_id:
+        '326008160752-bfc0vipcghr5m6vlcrlq685sv02pk1d0.apps.googleusercontent.com',
       scope: 'openid profile email',
-      logoutUrl: '${window.location.origin}/assets/auth-mock/logout-mock.html'
+      logoutUrl: `${window.location.origin}/logout.html`
       // optional parameters
       // redirect_uri: '',
       // post_logout_redirect_uri: '/logout.html',
@@ -343,14 +344,14 @@ Luigi.setConfig({
       // loadUserInfo: false // returned metadata must contain userinfo_endpoint
     },
     oAuth2ImplicitGrant: {
-      authorizeUrl: 'https://dex.kyma.local/auth',
-      logoutUrl: 'https://example-url.com/logout',
+      authorizeUrl: 'https://dex.swinka.cluster.kyma.cx/auth',
+      logoutUrl: 'http://luigi.com:4200/logout.html',
       post_logout_redirect_uri: '/logout.html',
       authorizeMethod: 'GET',
       oAuthData: {
-        client_id: 'console',
+        client_id: 'luigi',
         redirect_uri: '/luigi-core/auth/oauth2/callback.html',
-        scope: 'openid profile email groups',
+        scope: 'openid profile email groups'
 
         // optional: redirect_uri and response_type are provided by default
         // scope: '',

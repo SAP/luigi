@@ -11,7 +11,8 @@ export class openIdConnect {
       loadUserInfo: false,
       automaticSilentRenew: true,
       accessTokenExpiringNotificationTime: 3500,
-      silent_redirect_uri: window.location.origin + '/luigi-core/auth/oidc/silent-callback.html',
+      silent_redirect_uri:
+        window.location.origin + '/luigi-core/auth/oidc/silent-callback.html'
     };
     const mergedSettings = deepMerge(defaultSettings, settings);
 
@@ -24,10 +25,11 @@ export class openIdConnect {
 
     return waitForKeyExistency(window, 'Oidc').then(res => {
       this.client = new Oidc.UserManager(this.settings);
-      // Oidc.Log.logger = console;
-      // Oidc.Log.level = Oidc.Log.INFO;
+      Oidc.Log.logger = console;
+      Oidc.Log.level = Oidc.Log.INFO;
 
-      this.client.events.addUserLoaded(function(authenticatedUser) {
+      this.client.events.addUserLoaded(authenticatedUser => {
+        debugger;
         const data = {
           accessToken: authenticatedUser.access_token,
           accessTokenExpirationDate: authenticatedUser.expires_at * 1000,
@@ -37,7 +39,10 @@ export class openIdConnect {
         };
         localStorage.setItem('luigi.auth', JSON.stringify(data));
 
-        window.postMessage({msg: 'luigi.auth.tokenIssued', authData: data}, '*');
+        window.postMessage(
+          { msg: 'luigi.auth.tokenIssued', authData: data },
+          '*'
+        );
       });
 
       return Promise.all([
@@ -51,12 +56,10 @@ export class openIdConnect {
 
   login() {
     return waitForKeyExistency(this, 'client').then(res => {
-      return this.client
-        .signinRedirect(this.settings)
-        .catch(err => {
-          console.error(err);
-          return err;
-        });
+      return this.client.signinRedirect(this.settings).catch(err => {
+        console.error(err);
+        return err;
+      });
     });
   }
 
@@ -76,6 +79,29 @@ export class openIdConnect {
     // });
   }
 
+  setTokenExpirationAction() {
+    if (!this.settings.automaticSilentRenew) {
+      this.client.events.addAccessTokenExpired(() => {
+        window.location = this.settings.logoutUrl;
+      });
+    }
+
+    this.client.events.addSilentRenewError(e => {
+      switch (e.message) {
+        case 'interaction_required':
+        case 'login_required':
+        case 'account_selection_required':
+        case 'consent_required':
+          //check 3rd party cookies
+          window.location.href =
+            this.settings.logoutUrl + '?reason=tokenExpiry&error=' + e.message;
+          break;
+        default:
+          console.error(e);
+      }
+    });
+  }
+
   _processLogoutResponse() {
     return new Promise((resolve, reject) => {
       // TODO: dex logout does not yet support proper logout
@@ -87,7 +113,7 @@ export class openIdConnect {
             log('signout response', response);
             resolve(response);
           })
-          .catch(function (err) {
+          .catch(function(err) {
             reject(response);
             log(err);
           });
@@ -118,7 +144,9 @@ export class openIdConnect {
           // else persistence might fail.
           setTimeout(() => {
             if (authenticatedUser.state) {
-              window.location.href = decodeURIComponent(authenticatedUser.state);
+              window.location.href = decodeURIComponent(
+                authenticatedUser.state
+              );
             } else {
               window.location.href = window.location.origin;
             }

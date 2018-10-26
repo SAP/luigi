@@ -83,6 +83,28 @@ export class oAuth2ImplicitGrant {
     console.error('​renewToken is not implemented yet');
   }
 
+  setTokenExpirationAction() {
+    const expirationCheckInterval = 5000;
+    const logoutBeforeExpirationTime = 85000000;
+
+    setInterval(() => {
+      let authData;
+      try {
+        authData = JSON.parse(localStorage.getItem('luigi.auth'));
+      } catch (e) {
+        console.warn(
+          'Error parsing authorization data. Silent refresh/Auto-logout might not work!'
+        );
+      }
+      const tokenExpirationDate = authData.accessTokenExpirationDate;
+      const currentDate = new Date();
+
+      if (tokenExpirationDate - currentDate - logoutBeforeExpirationTime < 0) {
+        window.location = this.settings.logoutUrl;
+      }
+    }, expirationCheckInterval);
+  }
+
   _generateNonce() {
     const nonceKey = 'luigiNonceCnt';
     let cnt = parseInt(

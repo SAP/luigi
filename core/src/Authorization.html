@@ -33,7 +33,7 @@
   const getIdpProviderInstance = async(idpProviderName, idpProviderSettings) => {
     if (isFunction(standardProviders[idpProviderName])) {
       return new standardProviders[idpProviderName](idpProviderSettings);
-    };
+    }
 
     // custom provider provided via config:
     const customIdpProvider = getConfigValueFromObject(idpProviderSettings, 'customIdpProvider');
@@ -41,11 +41,11 @@
       ['login'].forEach((requiredFnName) => {
         if (!isFunction(customIdpProvider[requiredFnName])) {
           throw new IdpProviderException(`${requiredFnName} function does not exist in custom IDP Provider ${idpProviderName}`);
-        };
+        }
       });
 
       return new customIdpProvider(idpProviderSettings);
-    };
+    }
 
     throw new IdpProviderException(`IDP Provider ${idpProviderName} does not exist.`);
   };
@@ -64,10 +64,10 @@
         if (!authData || !isAuthValid()) {
           if (getConfigValue('auth.disableAutoLogin')) {
             return;
-          };
+          }
           this.startAuthorization();
           return;
-        };
+        }
 
         this.set({ isLoggedIn: true });
 
@@ -77,10 +77,10 @@
           onAuthSuccessfulFn(authData);
         }
 
-        // if silent token refresh then do nothing, else run the function
-        // const onAuthExpiredFn = getConfigValue('auth.events.onAuthExpired');
+        if (isFunction(idpProviderInstance.setTokenExpirationAction)) {
+          idpProviderInstance.setTokenExpirationAction();
+        }
       };
-
 
       idpProviderInstance = getIdpProviderInstance(idpProviderName, idpProviderSettings);
       if (isPromise(idpProviderInstance)) {
@@ -97,7 +97,7 @@
           localStorage.setItem('luigi.newlyAuthorized', true);
           if (res) {
             alert(res);
-          };
+          }
         });
       },
       logout: function() {
