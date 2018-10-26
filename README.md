@@ -17,16 +17,15 @@ Luigi core is the part of Luigi that enables navigation, security and routing. T
 - [Application setup](docs/application-setup.md) shows you the first steps to prepare your application for development.
 - [Navigation configuration](docs/navigation-configuration.md) shows you how to configure navigation.
 - [Authorization configuration](docs/authorization-configuration.md) shows you how to secure Luigi.
-- [Routing mechanism configuration](docs/router-configuration.md) demonstrates routing in Luigi.
 - [General settings](docs/general-settings.md) provides you with configuration parameters.
 
 ### Luigi client
 
 Luigi client enables integration of Luigi in views. You can easily configure the lifecycle and links of the client, as well as customize the appearance of your navigation.
 
-- [Lifecycle](docs/luigi-client-api.md#lifecycle) gives you details on the life cycle of listeners, navigation Nodes and Event data.
-- [Link Manager](docs/luigi-client-api.md#linkmanager) shows how to configure the Link Manager.
-- [UX Manager](docs/luigi-client-api.md#uxmanager) shows how to set up the UX Manager.
+- [Lifecycle](docs/luigi-client-api.md#lifecycle) gives you details on the life cycle of listeners, navigation nodes and event data.
+- [Link Manager](docs/luigi-client-api.md#linkmanager) allows you to navigate to a specific route.
+- [UX Manager](docs/luigi-client-api.md#uxmanager) helps you to manage the appearance in Luigi.
 
 See [this](https://github.com/kyma-project/luigi/blob/master/client/README.md) document to learn more about the Luigi client. 
 
@@ -38,7 +37,7 @@ All projects in the repository use [Prettier](https://prettier.io) to format sou
 
 ## Tests
 
-To ensure that existing features still work as expected after your changes, you can run UI tests from the 'luigi-sample-angular' example. Before running the tests, start the sample application by using the `npm start` command in the application folder.
+To ensure that existing features still work as expected after your changes, run UI tests from the [Angular example application](/core/examples/luigi-sample-angular). Before running the tests, start the sample application by using the `npm start` command in the application folder.
 
 When the application is ready:
 

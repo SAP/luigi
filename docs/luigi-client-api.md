@@ -4,7 +4,7 @@
 
 ## lifecycle
 
-There are various parameters and functions available to Luigi pertaining to the lifecycle of listeners, navigation Nodes, and Event data.
+There are various parameters and functions available to Luigi pertaining to the lifecycle of listeners, navigation nodes, and Event data.
 
 ### addInitListener
 
@@ -71,7 +71,137 @@ LuigiClient.linkManager().navigate('/settings', null, true) // preserve view
 
 ### fromContext
 
-Sets the current navigation context to that of a specific parent Node that has the [navigationContext](navigation-configuration.md) field declared in its navigation configuration. This navigation context is then used by navigate function.
+Sets the current navigation context to that of a specific parent node that has the [navigationContext](navigation-configuration.md) field declared in its navigation configuration. This navigation context is then used by navigate function.
+
+#### Parameters
+
+-   `navigationContext` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** 
+
+#### Examples
+
+```javascript
+LuigiClient.linkManager().fromContext('project').navigate('/settings')
+```
+
+Returns **[linkManager](#linkmanager)** link manager instance.
+
+### fromClosestContext
+
+Sets the current navigation context, which is then used by the navigate function. This has to be a parent navigation context, it is not possible to go to child navigation contexts.
+
+#### Examples
+
+```javascript
+LuigiClient.linkManager().fromClosestContext().navigate('/users/groups/stakeholders')
+```
+
+Returns **[linkManager](#linkmanager)** link manager instance.
+
+### withParams
+
+Sends node parameters to the route, which are then used by the navigate function. Use it optionally in combination with any of the navigation functions and receive it as part of the context object in Luigi Client.
+
+#### Parameters
+
+-   `nodeParams` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** 
+
+#### Examples
+
+```javascript
+LuigiClient.linkManager.withParams({foo: "bar"}).navigate("path")
+
+// Can be chained with context settings functions like this:
+LuigiClient.linkManager.fromContext("currentTeam").withParams({foo: "bar"}).navigate("path")
+```
+
+Returns **[linkManager](#linkmanager)** link manager instance.
+
+### hasBack
+
+Checks if there are one or more preserved views. Can be used to show a back button.
+
+Returns **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)** a boolean with the information if there is a preserved view available to which a user can return.
+
+### goBack
+
+Discards the active view and navigates back to the last visited view (preserved view), if a preserved view was set before.
+
+#### Parameters
+
+-   `goBackValue` **any** data that is handed over in `goBackContext` field to the last visited view
+
+#### Examples
+
+```javascript
+LuigiClient.linkManager().goBack({ foo: 'bar' });
+LuigiClient.linkManager().goBack(true);
+```
+
+## uxManager
+
+Use the UX Manager to manage the appearance in Luigi.
+
+### showLoadingIndicator
+
+Adds a backdrop with a loading indicator for the micro front-end frame. This overrides the [loadingIndicator.enabled](navigation-configuration.md#nodes) setting.
+
+### hideLoadingIndicator
+
+Removes the loading indicator. Use it after calling [showLoadingIndicator()](#showLoadingIndicator) or to hide the indicator when you use the [loadingIndicator.hideAutomatically: false](navigation-configuration.md#nodes) node configuration.
+
+### addBackdrop
+
+Adds a backdrop to block the top and side navigation. It is based on Fundamental UI Modal, which you can use in your micro front-end to achieve the same behavior.
+
+### removeBackdrop
+
+Removes the backdrop.
+
+# Node parameters are defined like URL query parameters but with a specific prefix allowing them to be passed to the micro front-end view.  The default prefix is **~** and it is used in the following example: `https://my.luigi.app/home/products?~sort=asc~page=3`.
+
+Returns the configuration object of the active navigation node.
+
+> > > > > > > master
+
+Returns **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** node parameters, where the object property name is the node parameter name without the prefix, and its value is the value of the node parameter. For example `{sort: 'asc', page: 3}`
+
+### getPathParams
+
+Returns the dynamic path parameters of the active URL.
+Path parameters are defined by navigation nodes with a dynamic **pathSegment** value starting with **:** such as `productId`.
+All such parameters in the current navigation path (as defined by the active URL) are returned.
+
+Returns **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** path parameters, where the object property name is the path parameter name without the prefix, and its value is the actual value of the path parameter. For example `{productId: 1234, ...}`
+
+## linkManager
+
+Lets you navigate to another route. Use the Link Manager instead of an internal router to:
+
+-   route inside micro front-ends
+-   reflect the route
+-   keep the navigation state in Luigi
+
+### navigate
+
+Navigates to the given path in the hosting Luigi app. Contains either a full absolute path or a relative path without a leading slash that uses the active route as a base. This is a classical navigation.
+
+#### Parameters
+
+-   `path` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** path to be navigated to
+-   `sessionId` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** current Luigi sessionId
+-   `preserveView` **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)** Preserve a view by setting it to `true`. It keeps the current view opened in the background and opens the new route in a new frame. Use the [goBack()](#goBack) function to navigate back afterwards. You can use this feature at unlimited levels. The preserved views are discarded as soon as the standard [navigate()](#navigate) function is used in place of [goBack()](#goBack).
+
+#### Examples
+
+```javascript
+LuigiClient.linkManager().navigate('/overview')
+LuigiClient.linkManager().navigate('users/groups/stakeholders')
+LuigiClient.linkManager().navigate('/settings', null, true) // preserve view
+```
+
+### fromContext
+
+Sets the current navigation context to that of a specific parent node that has the [navigationContext](navigation-configuration.md) field declared in its navigation configuration. This navigation context is then used by navigate function.
 
 #### Parameters
 
@@ -147,7 +277,7 @@ Adds a backdrop with a loading indicator for the micro front-end frame. This ove
 
 ### hideLoadingIndicator
 
-Removes the loading indicator. Use it after calling [showLoadingIndicator()](#showLoadingIndicator) or to hide the indicator when you use the [loadingIndicator.hideAutomatically: false](navigation-configuration.md#nodes) Node configuration.
+Removes the loading indicator. Use it after calling [showLoadingIndicator()](#showLoadingIndicator) or to hide the indicator when you use the [loadingIndicator.hideAutomatically: false](navigation-configuration.md#nodes) node configuration.
 
 ### addBackdrop
 
