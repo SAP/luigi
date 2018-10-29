@@ -111,9 +111,16 @@ describe('Luigi client features', () => {
       // check if path exists
       cy.goToFeaturesPage($iframeBody);
       [
+        // non-existent relative path
         { path: 'projects/pr2/', successExpected: false },
+        // non-existent absolute path
+        { path: '/developers', successExpected: false },
+        // existent absolute path with '/' at the end
         { path: '/projects/pr2/', successExpected: true },
-        { path: '/projects/pr2', successExpected: true }
+        // existent absolute path without '/' at the end
+        { path: '/projects/pr2', successExpected: true },
+        // existent relative path
+        { path: 'developers', successExpected: true }
       ].map(data => {
         const msgExpected = data.successExpected
           ? 'Path exists'
