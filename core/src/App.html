@@ -229,8 +229,11 @@
 
           if ('luigi.navigation.pathExists' === e.data.msg) {
             const data = e.data.data;
-            const matchedPath = await Routing.matchPath(data.path);
-            const normalizedPath = (data.path.endsWith('/')) ? data.path.slice(0,-1) : data.path;
+            const path = buildPath(this, data);
+            const matchedPath = await Routing.matchPath(path);
+
+            let normalizedPath = ((!path.startsWith('/')) ? '/' : '') +
+              ((path.endsWith('/')) ? path.slice(0,-1) : path);
             const pathExists = matchedPath === normalizedPath;
             config.iframe.contentWindow.postMessage(
               {

@@ -183,7 +183,7 @@
         errorSkipNavigation: false,
         fromContext: null,
         fromClosestContext: false,
-        relativePath: false,
+        relative: false,
         link: ''
       };
 
@@ -307,8 +307,9 @@
           var pathExistsMsg = {
             msg: 'luigi.navigation.pathExists',
             data: {
-              path: path,
-              id: currentId
+              id: currentId,
+              link: path,
+              relative: path[0] !== '/'
             }
           };
           window.parent.postMessage(pathExistsMsg, '*');
