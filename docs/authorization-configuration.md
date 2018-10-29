@@ -38,7 +38,7 @@ auth: {
 - **post_logout_redirect_uri** sets the URL to return after logout. The default URL is `/logout.html`.
 - **automaticSilentRenew** enables the automatic silent renewal of the token if it is supported by the server. The default value is `false`. For this mechanism to work, browser must have third-party cookies support enabled.
 - **accessTokenExpiringNotificationTime** is the number of seconds before an access token is to expire and triggers silent token refresh. The default value is 60.
-- **thirdPartyCookiesScriptLocation** is the URL to the page containing third-party cookies support check.
+- **thirdPartyCookiesScriptLocation** is the URL to the page containing third-party cookies support check. See more about it in [Third-party cookies and silent token refresh section](#Third-party-cookies-and-silent-token-refresh). 
 
 ## OAuth2 Implicit Grant configuration
 
@@ -77,4 +77,5 @@ auth: {
 
 ### Third-party cookies and silent token refresh
 
-OpenID connect configuration lets you specify **automaticSilentRenew** option. When it is set to `true` Luigi will try to automatically renew the token before it expires. Be aware that this mechanism requires the browser to support third-party cookies.
+OpenID connect configuration lets you specify **automaticSilentRenew** option. When it is set to `true` Luigi will try to automatically renew the token in the background before it expires. Be aware that this mechanism requires the browser to support [third-party cookies](https://developer.mozilla.org/en-US/docs/Web/HTTP/Cookies#Third-party_cookies).
+It is possible to detect whether user's browser supports it by using the script in [`third-party-cookies`](https://github.com/kyma-project/luigi/tree/master/core/third-party-cookies) catalog. Deploy these files on a **different domain** than your main application and set `thirdPartyCookiesScriptLocation` to the `init.html` file. Luigi will then detect the cookies support at the initialization and warn in the console. 
