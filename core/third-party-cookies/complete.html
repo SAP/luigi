@@ -1,6 +1,9 @@
 <body>
 <script>
-  if (document.cookie !== 'luigiCookie=true') {
+  if (document.cookie === 'luigiCookie=true') {
+    window.parent.postMessage('luigi.3pcEnabled', '*');
+  }
+  else {
     window.parent.postMessage('luigi.3pcDisabled', '*');
   }
 </script>

@@ -1,6 +1,6 @@
 import { deepMerge, prependOrigin } from '../../utilities/helpers';
 import { waitForKeyExistency } from '../../utilities/async-helpers';
-import '../../utilities/third-party-cookies-check';
+import { thirdPartyCookiesStatus } from '../../utilities/third-party-cookies-check';
 
 export class openIdConnect {
   constructor(settings = {}) {
@@ -100,7 +100,9 @@ export class openIdConnect {
         case 'consent_required': // possible cause: disabled third party cookies in the browser
           window.location.href =
             this.settings.logoutUrl +
-            '?reason=tokenExpired&checkThirdPartyCookies&error=' +
+            '?reason=tokenExpired&thirdPartyCookies=' +
+            thirdPartyCookiesStatus() +
+            '&error=' +
             e.message;
           break;
         default:

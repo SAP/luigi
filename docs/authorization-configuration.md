@@ -78,4 +78,9 @@ auth: {
 ### Third-party cookies and silent token refresh
 
 OpenID connect configuration lets you specify **automaticSilentRenew** option. When it is set to `true` Luigi will try to automatically renew the token in the background before it expires. Be aware that this mechanism requires the browser to support [third-party cookies](https://developer.mozilla.org/en-US/docs/Web/HTTP/Cookies#Third-party_cookies).
-It is possible to detect whether user's browser supports it by using the script in [`third-party-cookies`](https://github.com/kyma-project/luigi/tree/master/core/third-party-cookies) catalog. Deploy these files on a **different domain** than your main application and set `thirdPartyCookiesScriptLocation` to the `init.html` file. Luigi will then detect the cookies support at the initialization and warn in the console if user's browser has it disabled. 
+It is possible to detect whether user's browser supports it by using the script in [`third-party-cookies`](https://github.com/kyma-project/luigi/tree/master/core/third-party-cookies) catalog. Deploy these files on a **different domain** than your main application and set `thirdPartyCookiesScriptLocation` to the `init.html` file. Luigi will then detect the cookies support at the initialization and warn in the console if user's browser has it disabled.
+
+In addition, when Luigi fails to renew the token and then logs out the user, it will add query params `?reason=tokenExpired&thirdPartyCookies=[VALUE]`, where `VALUE` is one of (`disabled`, `enabled`, `not_checked`) to the logout page redirect. Application developer can read these params and provide proper logout page based on them. 
+- `disabled` means that third party cookies is disabled
+- `enabled` means third party cookies are supported by the browser
+- `not_checked` means that the script was not provided in `thirdPartyCookiesScriptLocation` or it could not be loaded
