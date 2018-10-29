@@ -1,6 +1,11 @@
 section {
   button {
     margin-bottom: 0.75rem;
+    &:focus {
+      border-color: #085caf;
+      color: #085caf;
+      box-shadow: 0 0 0 1px #0a6ed1;
+    }
   }
   & > * {
     line-height: 1.75em;

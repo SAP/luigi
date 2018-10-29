@@ -57,15 +57,15 @@
         <span>Check if path exists</span>
         <app-code-snippet data="luigiClient.linkManager().pathExists('{{pathExists.formValue}}')"></app-code-snippet>
         <span>
-          <input type="text" [(ngModel)]="pathExists.formValue" />
+          <input type="text" [(ngModel)]="pathExists.formValue" (input)="resetPathExistsResult()"/>
           <button class="fd-button" (click)="checkIfPathExists()">Check</button>
         </span>
         <p class="check-path-result">
           <ng-container *ngIf="pathExists.result === true">
-            Path exists!
+            Path {{pathExists.formValue}} exists!
           </ng-container>
           <ng-container *ngIf="pathExists.result === false">
-            Path does not exist!
+            Path {{pathExists.formValue}} does not exist!
           </ng-container>
         </p>
       </li>

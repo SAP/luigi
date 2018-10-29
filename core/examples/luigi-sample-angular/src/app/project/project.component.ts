@@ -106,4 +106,8 @@ export class ProjectComponent implements OnInit, OnDestroy {
         this.changeDetector.detectChanges();
       });
   }
+
+  resetPathExistsResult() {
+    this.pathExists.result = undefined;
+  }
 }

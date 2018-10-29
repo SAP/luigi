@@ -123,8 +123,8 @@ describe('Luigi client features', () => {
         { path: 'developers', successExpected: true }
       ].map(data => {
         const msgExpected = data.successExpected
-          ? 'Path exists'
-          : 'Path does not exist';
+          ? `Path ${data.path} exists`
+          : `Path ${data.path} does not exist`;
         const checkPathSelector = '.link-manager .check-path';
         cy.wrap($iframeBody)
           .find(checkPathSelector + ' input')
