@@ -23,7 +23,9 @@ export const processHeaderSettings = component => {
 
     // Set Favicon
     if (header.favicon) {
-      const isInvalidIcoFile = !header.favicon.split('?')[0].endsWith('.ico');
+      const isInvalidIcoFile =
+        !header.favicon.split('?')[0].endsWith('.ico') &&
+        !header.favicon.startsWith('data:image');
       if (isInvalidIcoFile) {
         console.warn(
           'Favicon is not an .ico filetype and might get displayed wrong.'
@@ -32,7 +34,9 @@ export const processHeaderSettings = component => {
       const link = Object.assign(document.createElement('link'), {
         type: 'image/x-icon',
         rel: 'shortcut icon',
-        href: header.favicon
+        [header.favicon.startsWith('data:image')
+          ? 'src'
+          : 'href']: header.favicon
       });
       document.getElementsByTagName('head')[0].appendChild(link);
     }
