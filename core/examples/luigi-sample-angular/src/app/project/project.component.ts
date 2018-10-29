@@ -101,15 +101,9 @@ export class ProjectComponent implements OnInit, OnDestroy {
     this.luigiClient
       .linkManager()
       .pathExists(this.pathExists.formValue)
-      .then(
-        () => {
-          this.pathExists.result = true;
-          this.changeDetector.detectChanges();
-        },
-        () => {
-          this.pathExists.result = false;
-          this.changeDetector.detectChanges();
-        }
-      );
+      .then((pathExists: boolean) => {
+        this.pathExists.result = pathExists;
+        this.changeDetector.detectChanges();
+      });
   }
 }
