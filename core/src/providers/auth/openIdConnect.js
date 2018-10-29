@@ -79,7 +79,6 @@ export class openIdConnect {
   }
 
   setTokenExpirationAction() {
-    debugger;
     if (!this.settings.automaticSilentRenew) {
       this.client.events.addAccessTokenExpired(() => {
         window.location = this.settings.logoutUrl + '?reason=tokenExpired';
