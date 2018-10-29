@@ -12,7 +12,7 @@ auth: {
 }
 ````
 
-## Open ID Connect configuration
+## OpenID Connect configuration
 
 The following code snippet demonstrates how to configure authorization using OpenID Connect in Luigi. 
 
@@ -36,7 +36,9 @@ auth: {
 - **scope** defines the permissions to request at login.
 - **redirect_uri** sets the URL to return to after login. The default application root is `/`.
 - **post_logout_redirect_uri** sets the URL to return after logout. The default URL is `/logout.html`.
-- **automaticSilentRenew** enables the renewal of the automatic token if it is supported by the server. The default value is `false`.
+- **automaticSilentRenew** enables the automatic silent renewal of the token if it is supported by the server. The default value is `false`. For this mechanism to work, browser must have third-party cookies support enabled.
+- **accessTokenExpiringNotificationTime** is the number of seconds before an access token is to expire and triggers silent token refresh. The default value is 60.
+- **thirdPartyCookiesScriptLocation** is the URL to the page containing third-party cookies support check.
 
 ## OAuth2 Implicit Grant configuration
 
@@ -72,3 +74,7 @@ auth: {
 - **response_type** defaults to the **id_token**. Any other parameter that is added to oAuthData is also added to the authorization payload.
 - **nonceFn** provides a function that returns a string in order to override the default **nonce**.
 - **logoutFn** provides a function to override **logoutUrl** functionality for a custom logout. It needs to execute the function **logoutCallback()** after logout.
+
+### Third-party cookies and silent token refresh
+
+OpenID connect configuration lets you specify **automaticSilentRenew** option. When it is set to `true` Luigi will try to automatically renew the token before it expires. Be aware that this mechanism requires the browser to support third-party cookies.
