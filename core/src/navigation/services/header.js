@@ -23,10 +23,10 @@ export const processHeaderSettings = component => {
 
     // Set Favicon
     if (header.favicon) {
-      const isInvalidIcoFile =
+      const isInvalidFaviconFormat =
         !header.favicon.split('?')[0].endsWith('.ico') &&
         !header.favicon.startsWith('data:image');
-      if (isInvalidIcoFile) {
+      if (isInvalidFaviconFormat) {
         console.warn(
           'Favicon is not an .ico filetype and might get displayed wrong.'
         );
