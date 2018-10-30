@@ -34,9 +34,7 @@ export const processHeaderSettings = component => {
       const link = Object.assign(document.createElement('link'), {
         type: 'image/x-icon',
         rel: 'shortcut icon',
-        [header.favicon.startsWith('data:image')
-          ? 'src'
-          : 'href']: header.favicon
+        href: header.favicon
       });
       document.getElementsByTagName('head')[0].appendChild(link);
     }
