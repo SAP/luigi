@@ -66,7 +66,7 @@ export const getPathWithoutHash = path => {
 };
 
 /**
- *  Prepend current url to redirect_uri, if it is a relative path
+ * Prepend current url to redirect_uri, if it is a relative path
  * @param {path} string full url, relative or absolute path
  */
 export const prependOrigin = path => {
@@ -78,4 +78,12 @@ export const prependOrigin = path => {
     return window.location.origin + (hasLeadingSlash ? '' : '/') + path;
   }
   return window.location.origin;
+};
+
+/**
+ * Returns the negated string value from a bool string
+ * @param {str} string 'true' or 'false'
+ */
+export const getNegatedBoolString = str => {
+  return str === 'true' ? 'false' : 'true';
 };

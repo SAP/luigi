@@ -36,36 +36,25 @@
     return paths.includes(routePath);
   };
 
-  const getModifiedHash = s => s.newURL.split('#/')[1];
-  const enableHashRouting = (component, node, config) => {
-    window.addEventListener('hashchange', event => {
+  const enableRouting = (component, node, config) => {
+    // intial route handling
+    const isHashRouting = getConfigValue('routing.useHashRouting');
+    const currentPath = (isHashRouting) ?
+      window.location.hash
+      : trimLeadingSlash(window.location.pathname);
+    Routing.handleRouteChange(currentPath, component, node, config);
+
+    // subsequential route handling
+    Routing.addRouteChangeListener((path) => {
       const pv = component.get().preservedViews;
-      if (!isValidBackRoute(pv, getModifiedHash(event))) {
+      if (!isValidBackRoute(pv, path)) {
         component.set({ preservedViews: [] });
         Routing.removeInactiveIframes(node);
       }
-      Routing.handleRouteChange(getModifiedHash(event), component, node, config);
+      Routing.handleRouteChange(path, component, node, config);
     });
+  }
 
-    Routing.handleRouteChange(window.location.hash, component, node, config);
-  };
-
-  const enablePathRouting = (component, node, config) => {
-    window.addEventListener('popstate', () => {
-      const getModifiedPathname = window.history.state.path
-        .split('/')
-        .slice(1)
-        .join('/');
-      Routing.handleRouteChange(getModifiedPathname, component, node, config);
-    });
-
-    Routing.handleRouteChange(
-      trimLeadingSlash(window.location.pathname),
-      component,
-      node,
-      config
-    );
-  };
 
   const buildPath = (component, params) => {
     let path = params.link;
@@ -232,11 +221,7 @@
         // them to prevent memory leaks
         // this.on('destroy', storeListener.cancel);
 
-        if (getConfigValue('routing.useHashRouting')) {
-          return enableHashRouting(this, node, config);
-        }
-
-        return enablePathRouting(this, node, config);
+        enableRouting(this, node, config);
       }
     },
     methods: {

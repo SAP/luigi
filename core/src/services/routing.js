@@ -405,3 +405,22 @@ export const handleRouteClick = (node, windowElem = window) => {
   const route = buildRoute(node, `/${node.pathSegment}`);
   navigateTo(route, windowElem);
 };
+
+export const getModifiedHash = s => s.newURL.split('#/')[1];
+export const getModifiedPathname = () =>
+  window.history.state.path
+    .split('/')
+    .slice(1)
+    .join('/');
+
+export const addRouteChangeListener = callback => {
+  if (getConfigValue('routing.useHashRouting')) {
+    return window.addEventListener('hashchange', event => {
+      callback(getModifiedHash(event));
+    });
+  }
+
+  return window.addEventListener('popstate', () => {
+    callback(getModifiedPathname());
+  });
+};
