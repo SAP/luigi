@@ -7,7 +7,7 @@
       </div>
     </div>
     <div class="fd-global-nav__group fd-global-nav__group--right">
-      <div class="fd-global-nav__actions">
+      <div class="fd-global-nav__top-menu">
         {#if children && pathData.length > 0}
           {#each children as node}
             {#if !node.hideFromNav}
@@ -21,15 +21,36 @@
             {/if}
           {/each}
         {/if}
+      </div>
 
-        {#if authorizationEnabled}
+      <div class="fd-global-nav__context-menu">
+        <div class="fd-popover context-switcher">
+          <div class="fd-popover__control">
+            <button class="fd-button--secondary fd-button--secondary" aria-expanded="{dropDownStates.CONTEXT_SWITCHER_POPOVER || false}"
+              aria-haspopup="true" on:click="toggleDropdownState('CONTEXT_SWITCHER_POPOVER')" on:blur="closeDropdown('CONTEXT_SWITCHER_POPOVER')">
+              Context Switcher
+              </button>
+          </div>
+          <div class="fd-popover__body" aria-hidden="{dropDownStatesNegated.CONTEXT_SWITCHER_POPOVER || true}" id="CONTEXT_SWITCHER_POPOVER">
+            <nav class="fd-menu">
+              <ul class="fd-menu__list">
+                <li><a href="#" class="fd-menu__item">Option 1</a></li>
+                <li><a href="#" class="fd-menu__item">Option 1</a></li>
+              </ul>
+            </nav>
+          </div>
+        </div>
+      </div>
+
+      {#if authorizationEnabled}
+      <div class="fd-global-nav__actions">
         <div class="fd-popover user-settings">
           <div class="fd-popover__control">
             <button class="fd-popover__control fd-button--secondary fd-button--m fd-global-nav__btn sap-icon--customer" aria-expanded="{dropDownStates.PROFILE_POPOVER || false}"
               aria-haspopup="true" on:click="toggleDropdownState('PROFILE_POPOVER')" on:blur="closeDropdown('PROFILE_POPOVER')"></button>
           </div>
           <div class="fd-popover__body" aria-hidden="{dropDownStatesNegated.PROFILE_POPOVER || true}" id="PROFILE_POPOVER">
-            <nav class="fd-menu" id="">
+            <nav class="fd-menu">
               <Authorization />
               <!-- <ul class="fd-menu__list">
                 <li><a href="#" class="fd-menu__item">Option 1</a></li>
@@ -38,8 +59,8 @@
             </nav>
           </div>
         </div>
-        {/if}
       </div>
+      {/if}
     </div>
   </nav>
 </div>
