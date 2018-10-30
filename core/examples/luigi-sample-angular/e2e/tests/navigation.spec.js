@@ -24,7 +24,7 @@ describe('Navigation', () => {
     cy.get('.fd-app__sidebar').should('not.contain', 'Project One');
     cy.get('.fd-app__sidebar').should('contain', 'Miscellaneous2');
     cy.get('.fd-app__sidebar')
-      .contains('Default Child Node Example')
+      .contains('Default Child node Example')
       .click();
 
     //default child node example
