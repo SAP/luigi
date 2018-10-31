@@ -299,7 +299,7 @@ export const handleRouteChange = async (path, component, node, config) => {
         const defaultChildNode = getDefaultChildNode(pathData);
         navigateTo(`${pathUrl ? `/${pathUrl}` : ''}/${defaultChildNode}`);
       } else {
-        window.parent.postMessage(
+        window.postMessage(
           {
             msg: 'luigi.displayAlert',
             errorMessage: 'Could not find the requested route'
@@ -311,7 +311,7 @@ export const handleRouteChange = async (path, component, node, config) => {
     }
 
     if (!containsAllSegments(pathUrl, pathData.navigationPath)) {
-      window.parent.postMessage(
+      window.postMessage(
         {
           msg: 'luigi.displayAlert',
           errorMessage:
@@ -320,7 +320,7 @@ export const handleRouteChange = async (path, component, node, config) => {
         '*'
       );
     } else {
-      window.parent.postMessage({ msg: 'luigi.hideAlert' }, '*');
+      window.postMessage({ msg: 'luigi.hideAlert' }, '*');
     }
 
     const previousCompData = component.get();
