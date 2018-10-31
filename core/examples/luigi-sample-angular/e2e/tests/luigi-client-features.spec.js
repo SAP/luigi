@@ -140,6 +140,37 @@ describe('Luigi client features', () => {
     });
   });
 
+  describe('linkManager wrong paths navigation', () => {
+    let $iframeBody;
+    beforeEach(() => {
+      cy.get('iframe').then($iframe => {
+        $iframeBody = $iframe.contents().find('body');
+        cy.goToFeaturesPage($iframeBody);
+      });
+    });
+    it('navigate to a partitialy wrong link', () => {
+      cy.wrap($iframeBody)
+        .contains('Partitialy wrong link')
+        .click();
+      cy.location().should(loc => {
+        expect(loc.hash).to.eq('#/overview/maskopatol');
+      });
+      cy.get('.fd-alert').contains(
+        'Could not map the exact target node for the requested route'
+      );
+    });
+
+    it('navigate to a totally wrong link', () => {
+      cy.wrap($iframeBody)
+        .contains('Totally wrong link')
+        .click();
+      cy.location().should(loc => {
+        expect(loc.hash).to.eq('#/maskopatol/has/a/child');
+      });
+      cy.get('.fd-alert').contains('Could not find the requested route');
+    });
+  });
+
   describe('uxManager', () => {
     it('backdrop', () => {
       cy.wait(500);
