@@ -75,3 +75,21 @@ describe('Navigation', () => {
     });
   });
 });
+
+// describe('Wrong URL navigation', () => {
+//   beforeEach(() => {
+//     cy.login('tets@email.com', 'tets');
+//   });
+
+//   it('Shows "not exact route" error', () => {
+//     cy.visit('http://localhost:4200/#/projects/pr2/maskopatol');
+
+//     cy.location().should(loc => {
+//       expect(loc.hash).to.eq('#/projects/pr2/maskopatol');
+//     });
+//     cy.get('.fd-alert').should(
+//       'contain',
+//       'Could not map the exact target node for the requested route'
+//     );
+//   });
+// });
