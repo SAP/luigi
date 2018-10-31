@@ -135,7 +135,7 @@
     const matchedPath = await Routing.matchPath(path);
     if (matchedPath !== null) {
       addPreserveView(component, data, config);
-      Routing.navigateTo(matchedPath);
+      Routing.navigateTo(path);
     }
   };
 
