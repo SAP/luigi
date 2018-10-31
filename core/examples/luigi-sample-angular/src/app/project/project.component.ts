@@ -1,4 +1,4 @@
-import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Params } from '@angular/router';
 import { Subscription } from 'rxjs';
 
@@ -13,18 +13,24 @@ import {
   templateUrl: './project.component.html',
   styleUrls: ['./project.component.scss']
 })
-export class ProjectComponent implements OnInit {
+export class ProjectComponent implements OnInit, OnDestroy {
   public projectId: string;
   public luigiClient: LuigiClient;
   public modalActive = false;
   public preservedViewCallbackContext: any;
   private lcSubscription: Subscription;
+  public pathExists: { formValue: string; result: boolean | null };
 
   public constructor(
     private activatedRoute: ActivatedRoute,
     private changeDetector: ChangeDetectorRef,
     private luigiService: LuigiContextService
-  ) {}
+  ) {
+    this.pathExists = {
+      formValue: '/projects/pr2',
+      result: null
+    };
+  }
 
   ngOnDestroy() {
     if (this.lcSubscription) {
@@ -37,7 +43,7 @@ export class ProjectComponent implements OnInit {
     this.lcSubscription = this.luigiService
       .getContext()
       .subscribe((ctx: IContextMessage) => {
-        if (ctx.contextType == 'init' || ctx.contextType == 'update') {
+        if (ctx.contextType === 'init' || ctx.contextType === 'update') {
           this.projectId = ctx.context.currentProject;
           console.info(
             'project ID as luigi param: ' + ctx.context.currentProject
@@ -89,5 +95,19 @@ export class ProjectComponent implements OnInit {
 
   toggleModal() {
     this.modalActive = !this.modalActive;
+  }
+
+  checkIfPathExists() {
+    this.luigiClient
+      .linkManager()
+      .pathExists(this.pathExists.formValue)
+      .then((pathExists: boolean) => {
+        this.pathExists.result = pathExists;
+        this.changeDetector.detectChanges();
+      });
+  }
+
+  resetPathExistsResult() {
+    this.pathExists.result = undefined;
   }
 }
