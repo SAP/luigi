@@ -85,3 +85,13 @@ export const prependOrigin = path => {
   }
   return window.location.origin;
 };
+
+/**
+ *  Wrap a value as a promise
+ * @param {value} any value to be wrapped in promise
+ */
+export const wrapAsPromise = value => {
+  return new Promise(resolve => {
+    resolve(value);
+  });
+};

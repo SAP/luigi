@@ -1,4 +1,4 @@
-import { getConfigValue, getConfigValueFromObjectAsync } from './config';
+import { LuigiConfig } from './config';
 
 const isNodeAccessPermitted = (
   nodeToCheckPermissionFor,
@@ -6,7 +6,7 @@ const isNodeAccessPermitted = (
   currentContext
 ) => {
   if (!isLoggedIn()) return false;
-  const permissionCheckerFn = getConfigValue(
+  const permissionCheckerFn = LuigiConfig.getConfigValue(
     'navigation.nodeAccessibilityResolver'
   );
   if (typeof permissionCheckerFn !== 'function') {
@@ -47,7 +47,7 @@ export const getChildren = async (node, context) => {
   if (node._childrenProvider && !node._childrenProviderUsed) {
     try {
       node.children = (
-        (await getConfigValueFromObjectAsync(
+        (await LuigiConfig.getConfigValueFromObjectAsync(
           node,
           '_childrenProvider',
           context || node.context

@@ -48,7 +48,7 @@
   import Backdrop from './Backdrop.html';
   import Authorization from './Authorization.html';
   import { handleRouteClick } from './services/routing.js';
-  import { getConfigValue, getConfigBooleanValue } from './services/config.js';
+  import { LuigiConfig } from './services/config.js';
 
   const getNegatedBoolString = str => {
     return str === 'true' ? 'false' : 'true';
@@ -76,12 +76,12 @@
   export default {
     oncreate() {
       // Authentication detection
-      const idpProviderName = getConfigValue('auth.use');
-      const idpProviderSettings = getConfigValue(`auth.${idpProviderName}`);
+      const idpProviderName = LuigiConfig.getConfigValue('auth.use');
+      const idpProviderSettings = LuigiConfig.getConfigValue(`auth.${idpProviderName}`);
 
       this.set({
         authorizationEnabled: !!idpProviderSettings,
-        hideNavComponent: getConfigBooleanValue('settings.hideNavigation')
+        hideNavComponent: LuigiConfig.getConfigBooleanValue('settings.hideNavigation')
       });
     },
     onstate({ changed, current, previous }) {
@@ -108,7 +108,7 @@
     methods: {
       handleClick: node => handleRouteClick(node),
       goTo(path) {
-        if (getConfigBooleanValue('routing.useHashRouting')) {
+        if (LuigiConfig.getConfigBooleanValue('routing.useHashRouting')) {
           window.location.hash = path;
         } else {
           window.location.pathname = path;

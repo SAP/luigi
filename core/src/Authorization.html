@@ -9,7 +9,7 @@
 </ul>
 
 <script type="text/javascript">
-  import { getConfigValueAsync, getConfigValue, getConfigValueFromObject } from './services/config.js';
+  import { LuigiConfig } from './services/config.js';
   import { isFunction, isPromise, deepMerge } from './utilities/helpers.js';
   import { oAuth2ImplicitGrant } from './providers/auth/oAuth2ImplicitGrant.js';
   import { openIdConnect } from './providers/auth/openIdConnect.js';
@@ -36,7 +36,7 @@
     };
 
     // custom provider provided via config:
-    const customIdpProvider = getConfigValueFromObject(idpProviderSettings, 'customIdpProvider');
+    const customIdpProvider = LuigiConfig.getConfigValueFromObject(idpProviderSettings, 'customIdpProvider');
     if (customIdpProvider) {
       ['login'].forEach((requiredFnName) => {
         if (!isFunction(customIdpProvider[requiredFnName])) {
@@ -52,8 +52,8 @@
 
   export default {
     oncreate() {
-      const idpProviderName = getConfigValue('auth.use');
-      const idpProviderSettings = getConfigValue(`auth.${idpProviderName}`);
+      const idpProviderName = LuigiConfig.getConfigValue('auth.use');
+      const idpProviderSettings = LuigiConfig.getConfigValue(`auth.${idpProviderName}`);
       const authorizationEnabled = !!idpProviderSettings;
       if (!authorizationEnabled) {
         return;
@@ -62,7 +62,7 @@
       const checkAuth = () => {
         const authData = getStoredAuthData();
         if (!authData || !isAuthValid()) {
-          if (getConfigValue('auth.disableAutoLogin')) {
+          if (LuigiConfig.getConfigValue('auth.disableAutoLogin')) {
             return;
           };
           this.startAuthorization();
@@ -71,7 +71,7 @@
 
         this.set({ isLoggedIn: true });
 
-        const onAuthSuccessfulFn = getConfigValue('auth.events.onAuthSuccessful');
+        const onAuthSuccessfulFn = LuigiConfig.getConfigValue('auth.events.onAuthSuccessful');
         if (onAuthSuccessfulFn && newlyAuthorized()) {
           localStorage.removeItem('luigi.newlyAuthorized');
           onAuthSuccessfulFn(authData);
@@ -79,7 +79,7 @@
 
         // TODO: Re-auth via id_token if not logged in
         // TODO: Check periodically if authorization is still valid
-        // const onAuthExpiredFn = getConfigValue('auth.events.onAuthExpired');
+        // const onAuthExpiredFn = LuigiConfig.getConfigValue('auth.events.onAuthExpired');
       };
 
 
@@ -105,14 +105,14 @@
         const authData = getStoredAuthData();
 
         const logoutCallback = () => {
-          const onLogoutFn = getConfigValue('auth.events.onLogout');
+          const onLogoutFn = LuigiConfig.getConfigValue('auth.events.onLogout');
           if (onLogoutFn) { onLogoutFn(); };
 
           this.set({ isLoggedIn: false });
           localStorage.removeItem('luigi.auth');
         };
 
-        const customLogoutFn = getConfigValue(`auth.${getConfigValue('auth.use')}.logoutFn`);
+        const customLogoutFn = LuigiConfig.getConfigValue(`auth.${LuigiConfig.getConfigValue('auth.use')}.logoutFn`);
         if (isFunction(customLogoutFn)) {
           customLogoutFn(idpProviderInstance.settings, authData, logoutCallback);
         }
