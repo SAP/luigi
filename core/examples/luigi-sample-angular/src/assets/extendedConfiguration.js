@@ -419,9 +419,16 @@ Luigi.setConfig({
         },
         {
           hideFromNav: true,
-          pathSegment: 'hidden-sample',
-          label: 'Hidden',
-          viewUrl: '/sampleapp.html#/projects/overview'
+          pathSegment: 'environments',
+          children: [
+            {
+              pathSegment: ':environmentId',
+              viewUrl: '/sampleapp.html#/environments/:environmentId',
+              context: {
+                label: ':environmentId'
+              }
+            }
+          ]
         },
         {
           pathSegment: 'forbidden-sample',
@@ -470,36 +477,44 @@ Luigi.setConfig({
       ];
     },
     // The following configuration will be used to render the context switcher component
-    contextSwitcher: [
-      {
-        id: 'environmentSwitcher',
-        options: () => {
-          return [...Array(10).keys()].map(n => ({
-            label: 'Environment ' + n, // (i.e mapping between what the user sees and what is taken to replace the dynamic part for the dynamic node)
-            pathSegmentValue: 'env' + n // will be used to replace dynamic part
-          }));
-        },
-        actions: [
-          {
-            label: '+ New Environment',
-            link: '/environments/new',
-            position: 'bottom', // top | bottom
-            clickHandler: () => {
-              // called BEFORE route change
-              return true; // route change will be done using link value (if defined)
-              // return false // route change will not be done even if link attribute is defined
-            }
+    contextSwitcher: {
+      id: 'environmentSwitcher',
+      options: () => {
+        return [...Array(10).keys()].map(n => ({
+          label: 'Environment ' + n, // (i.e mapping between what the user sees and what is taken to replace the dynamic part for the dynamic node)
+          pathValue: 'env' + n // will be used to replace dynamic part
+        }));
+      },
+      actions: [
+        {
+          label: '+ New Environment',
+          link: '/environments/new',
+          position: 'bottom', // top | bottom
+          clickHandler: () => {
+            // called BEFORE route change
+            return true; // route change will be done using link value (if defined)
+            // return false // route change will not be done even if link attribute is defined
           }
-        ],
-        parentNode: '/environments', // Can only be an absolute path
-
-        fallbackLabelResolver: id => {
-          // would resolve what do display in the context switcher (Label) in case the activated context (option) is not listed in available options
-          // hidden context case (i.e kyma-system namespace)
-          return capitalize(id);
         }
+      ],
+      parentNodePath: '/environments', // Has to be an absolute path
+      // parentNodePath: '/environments/:pathValue/overview', // Can only be an absolute path
+
+      /**
+       * fallbackLabelResolver
+       * Resolve what do display in the context switcher (Label) in case the activated
+       * context (option) is not listed in available options (eg kyma-system namespace)
+       */
+      fallbackLabelResolver: async id => {
+        // capitalize, delayed output
+        return await new Promise(resolve => {
+          setTimeout(() => {
+            resolve((id && id.replace(/\b\w/g, l => l.toUpperCase())) || id);
+          }, 100);
+        });
+        // return id.replace(/\b\w/g, l => l.toUpperCase());
       }
-    ]
+    }
   },
 
   routing: {

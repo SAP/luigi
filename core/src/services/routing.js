@@ -406,12 +406,18 @@ export const handleRouteClick = (node, windowElem = window) => {
   navigateTo(route, windowElem);
 };
 
+export const trimLeadingSlash = str => str.replace(/^\//, '');
 export const getModifiedHash = s => s.newURL.split('#/')[1];
 export const getModifiedPathname = () =>
   window.history.state.path
     .split('/')
     .slice(1)
     .join('/');
+
+export const getCurrentPath = () =>
+  getConfigValue('routing.useHashRouting')
+    ? window.location.hash.replace('#', '')
+    : trimLeadingSlash(window.location.pathname);
 
 export const addRouteChangeListener = callback => {
   if (getConfigValue('routing.useHashRouting')) {

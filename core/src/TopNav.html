@@ -23,24 +23,7 @@
         {/if}
       </div>
 
-      <div class="fd-global-nav__context-menu">
-        <div class="fd-popover context-switcher">
-          <div class="fd-popover__control">
-            <button class="fd-button--secondary fd-button--secondary" aria-expanded="{dropDownStates.CONTEXT_SWITCHER_POPOVER || false}"
-              aria-haspopup="true" on:click="toggleDropdownState('CONTEXT_SWITCHER_POPOVER')" on:blur="closeDropdown('CONTEXT_SWITCHER_POPOVER')">
-              Context Switcher
-              </button>
-          </div>
-          <div class="fd-popover__body" aria-hidden="{dropDownStatesNegated.CONTEXT_SWITCHER_POPOVER || true}" id="CONTEXT_SWITCHER_POPOVER">
-            <nav class="fd-menu">
-              <ul class="fd-menu__list">
-                <li><a href="#" class="fd-menu__item">Option 1</a></li>
-                <li><a href="#" class="fd-menu__item">Option 1</a></li>
-              </ul>
-            </nav>
-          </div>
-        </div>
-      </div>
+      <ContextSwitcher />
 
       {#if authorizationEnabled}
       <div class="fd-global-nav__actions">
@@ -67,13 +50,11 @@
 
 <script type="text/javascript">
   import Backdrop from './Backdrop.html';
+  import ContextSwitcher from './navigation/ContextSwitcher.html';
   import Authorization from './Authorization.html';
   import { handleRouteClick } from './services/routing.js';
   import { getConfigValue, getConfigBooleanValue } from './services/config.js';
-
-  const getNegatedBoolString = str => {
-    return str === 'true' ? 'false' : 'true';
-  };
+  import { getNegatedBoolString } from './utilities/helpers.js';
 
   const setTopNavData = (current, component) => {
     if (current.pathData && 0 < current.pathData.length) {
@@ -151,7 +132,8 @@
       }
     },
     components: {
-      Authorization
+      Authorization,
+      ContextSwitcher
     }
   };
 </script>

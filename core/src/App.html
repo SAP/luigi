@@ -23,7 +23,6 @@
   import { getConfigValue, getConfigValueFromObject } from './services/config.js';
   import { isFunction } from './utilities/helpers.js';
 
-  const trimLeadingSlash = str => str.replace(/^\//, '');
   const isValidBackRoute = (preservedViews, routeHash) => {
     if (preservedViews.length === 0) {
       return false;
@@ -38,10 +37,7 @@
 
   const enableRouting = (component, node, config) => {
     // intial route handling
-    const isHashRouting = getConfigValue('routing.useHashRouting');
-    const currentPath = (isHashRouting) ?
-      window.location.hash
-      : trimLeadingSlash(window.location.pathname);
+    const currentPath = Routing.getCurrentPath();
     Routing.handleRouteChange(currentPath, component, node, config);
 
     // subsequential route handling
