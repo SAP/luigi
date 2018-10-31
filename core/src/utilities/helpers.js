@@ -3,6 +3,12 @@ export const isFunction = anyParam =>
 
 export const isPromise = anyParam => anyParam && isFunction(anyParam.then);
 
+export const isIE = () => {
+  const ua = navigator.userAgent;
+  /* MSIE used to detect old browsers and Trident used to newer ones*/
+  return Boolean(ua.includes('MSIE ') || ua.includes('Trident/'));
+};
+
 /**
  * Simple object check.
  * @param item mixed

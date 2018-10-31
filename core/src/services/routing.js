@@ -8,7 +8,8 @@ import {
 import {
   getPathWithoutHash,
   getUrlWithoutHash,
-  containsAllSegments
+  containsAllSegments,
+  isIE
 } from '../utilities/helpers';
 
 const iframeNavFallbackTimeout = 2000;
@@ -416,7 +417,18 @@ export const navigateTo = (route, windowElem = window) => {
     route
   );
 
-  windowElem.dispatchEvent(new Event('popstate'));
+  // https://developer.mozilla.org/en-US/docs/Web/API/CustomEvent#Browser_compatibility
+  // https://developer.mozilla.org/en-US/docs/Web/API/Event#Browser_compatibility
+  // https://developer.mozilla.org/en-US/docs/Web/API/Event/createEvent
+  let event;
+  if (isIE()) {
+    event = document.createEvent('Event');
+    event.initEvent('popstate', true, true);
+  } else {
+    event = new CustomEvent('popstate');
+  }
+
+  windowElem.dispatchEvent(event);
 };
 
 export const handleRouteClick = (node, windowElem = window) => {
