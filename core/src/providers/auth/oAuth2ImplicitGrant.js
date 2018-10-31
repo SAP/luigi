@@ -10,6 +10,7 @@ export class oAuth2ImplicitGrant {
         scope: ''
       },
       authorizeMethod: 'GET',
+      logoutUrl: '',
       post_logout_redirect_uri: window.location.origin + '/logout.html'
     };
     const mergedSettings = deepMerge(defaultSettings, settings);
