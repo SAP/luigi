@@ -76,7 +76,7 @@ You can configure the way Luigi tackles routing in your application in the **Rou
 
 ## Context Switcher
 
-Allows to switch between a curated list of navigation elements. Adds a drop down switcher next to the profile in the top navigation bar. Usually used for switching between environments. 
+Allows to switch between a curated list of navigation elements. Adds a drop down switcher next to the profile in the top navigation bar. Typically used for switching between environments. 
 
 - **emptyLabel** specifies the default label that is shown if no context is selected.
 - **parentNodePath** specifies the base path, that is prepended to **options[].pathValue**. Must be an absolute path.
