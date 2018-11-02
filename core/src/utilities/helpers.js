@@ -87,3 +87,9 @@ export const prependOrigin = path => {
 export const getNegatedBoolString = str => {
   return str === 'true' ? 'false' : 'true';
 };
+
+/**
+ * Removes leading slash of a string
+ * @param {str} string string without leading slash
+ */
+export const trimLeadingSlash = str => str.replace(/^\//, '');

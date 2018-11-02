@@ -3,25 +3,50 @@
   <div class="fd-popover context-switcher">
     <div class="fd-popover__control">
       <button class="fd-button--secondary" aria-expanded="{dropDownStates.CONTEXT_SWITCHER_POPOVER || false}"
-        aria-haspopup="true" on:click="toggleDropdownState('CONTEXT_SWITCHER_POPOVER')" on:blur="closeDropdown('CONTEXT_SWITCHER_POPOVER')">
-        Context Switcher
-        </button>
+        aria-haspopup="true" on:click="onContextSwitcherOpen('CONTEXT_SWITCHER_POPOVER')" on:blur="closeDropdown('CONTEXT_SWITCHER_POPOVER')">
+        {#if !selectedLabel}{config.emptyLabel}{/if}
+        {#if selectedLabel}{selectedLabel}{/if}
+      </button>
     </div>
     <div class="fd-popover__body" aria-hidden="{dropDownStatesNegated.CONTEXT_SWITCHER_POPOVER || true}" id="CONTEXT_SWITCHER_POPOVER">
       <nav class="fd-menu">
+        {#if actions && actions.length}
         <ul class="fd-menu__list fd-menu__list--top">
-          <li><a class="fd-menu__item" on:click="goTo('/environment/create')">+ Environment</a></li>
+          {#each actions as node}
+          {#if node.position === 'top' || !['top', 'bottom'].includes(node.position)}
+          <li><a class="fd-menu__item" on:click="onActionClick(node)">{node.label}</a></li>
+          {/if}
+          {/each}
         </ul>
+        {/if}
+
         <ul class="fd-menu__list" id="context_menu_middle">
-        {#if options && options.length}
+        {#if options.length === 0}
+          <li><div class="fd-spinner"><div></div></div></li>
+        {/if}
+        {#if options.length}
           {#each options as node}
-          <li><a class="fd-menu__item" on:click="goTo(node.path)">{node.label}</a></li>
+          <li><a class="fd-menu__item" on:click="goTo(node.path)">
+          {#if node.label}{node.label}{/if}
+          {#if !node.label}
+            {#await getMatchingNodeName(options, config.fallbackLabelResolver, node.id)}
+            {:then label}
+              {label}
+            {/await}
+          {/if}
+          </a></li>
           {/each}
         {/if}
         </ul>
-        <ul class="fd-menu__list fd-menu__list--bottom" style="border-top: 1px solid #eee">
-          <li><a class="fd-menu__item" on:click="goTo('/environment/create')"><span class="sap-icon--log"></span> Something</a></li>
+        {#if actions && actions.length}
+        <ul class="fd-menu__list fd-menu__list--bottom">
+          {#each actions as node}
+          {#if node.position === 'bottom'}
+          <li><a class="fd-menu__item" on:click="onActionClick(node)">{node.label}</a></li>
+          {/if}
+          {/each}
         </ul>
+        {/if}
       </nav>
     </div>
   </div>
@@ -30,8 +55,8 @@
 
 <script type="text/javascript">
   import { ContextSwitcherHelpers } from './services/context-switcher.js';
-  import { getConfigValue, getConfigValueAsync, getConfigBooleanValue } from '../services/config.js';
-  import { getNegatedBoolString } from '../utilities/helpers.js';
+  import { getConfigValue, getConfigValueAsync, getConfigValueFromObjectAsync, getConfigBooleanValue } from '../services/config.js';
+  import { getNegatedBoolString, trimLeadingSlash } from '../utilities/helpers.js';
   import * as Routing from '../services/routing.js';
 
   export default {
@@ -43,19 +68,24 @@
       });
 
       if (contextSwitcherConfig) {
-        const contextSwitcherOptions = await getConfigValueAsync('navigation.contextSwitcher.options');
-        console.log('TCL: contextSwitcherConfig', contextSwitcherConfig, contextSwitcherOptions);
-        const options = await ContextSwitcherHelpers.generateSwitcherNav(contextSwitcherConfig, contextSwitcherOptions);
-        console.log('options', options);
-        this.set({ options });
+        const actions = await getConfigValueAsync('navigation.contextSwitcher.actions');
+        this.set({
+          actions,
+          fallbackLabelResolver: contextSwitcherConfig.fallbackLabelResolver
+        });
+        // options are loaded initially by default
+        if (typeof contextSwitcherConfig.lazyloadOptions === 'undefined' || contextSwitcherConfig.lazyloadOptions) {
+          await this.fetchOptions();
+        }
       }
 
-      this.setSelectedContext(Routing.getCurrentPath());
-      Routing.addRouteChangeListener((path) => this.setSelectedContext(path));
+      await this.setSelectedContext(Routing.getCurrentPath());
+      Routing.addRouteChangeListener(() => this.setSelectedContext(Routing.getCurrentPath()));
     },
     data() {
       return {
-        dropDownStates: {}
+        dropDownStates: {},
+        options: []
       };
     },
     computed: {
@@ -69,33 +99,54 @@
         return negated;
       }
     },
+    helpers: {
+      getMatchingNodeName: (options, config, id) => {
+        return ContextSwitcherHelpers.getMatchingNodeName(options, config, id);
+      }
+    },
     methods: {
-      setSelectedContext(currentPath) {
-        const parentNodePath = this.get().config.parentNodePath;
+      async fetchOptions() {
+        let options = this.get().options;
+        if (!options.length) {
+          const contextSwitcherOptions = await getConfigValueAsync('navigation.contextSwitcher.options');
+          options = await ContextSwitcherHelpers.generateSwitcherNav(this.get().config, contextSwitcherOptions);
+          this.set({options});
+        }
+      },
+      async setSelectedContext(currentPath) {
         let selectedLabel;
-        const inContextPath = parentNodePath && currentPath.indexOf(parentNodePath) !== -1;
-        if (inContextPath) {
+        const parentNodePath = this.get().config.parentNodePath;
+        const inContextBasePath = parentNodePath && currentPath.indexOf(parentNodePath) !== -1;
+        if (inContextBasePath) {
           // we are inside the context switcher base path
-          const truncatedPath = currentPath.replace(parentNodePath, '');
+          const truncatedPath = trimLeadingSlash(currentPath.replace(parentNodePath, ''));
           const selectedId = truncatedPath.split('/')[0];
-          console.log('setSelectedContext for truncated', currentPath, parentNodePath, '=', truncatedPath, 'id', selectedId);
-          selectedLabel = this.getMatchingNodeName(selectedId);
-        } else if (parentNodePath) {
-          
+          selectedLabel = await ContextSwitcherHelpers.getMatchingNodeName(this.get().options, this.get().config.fallbackLabelResolver, selectedId);
         }
         this.set({
           selectedLabel
         })
       },
-      getMatchingNodeName(id) {
-
-      }
+      async onActionClick(node) {
+        if (node.clickHandler) {
+          const result = await getConfigValueFromObjectAsync({result: node.clickHandler(node)}, 'result');
+          if (!result) {
+            // If the clickHandler returns falsy value, do nothing, else continue with linking
+            return;
+          }
+        }
+        this.goTo(node.link);
+      },
       goTo(path) {
         if (getConfigBooleanValue('routing.useHashRouting')) {
           window.location.hash = path;
         } else {
           window.location.pathname = path;
         }
+      },
+      onContextSwitcherOpen(name) {
+        this.toggleDropdownState(name);
+        this.fetchOptions();
       },
       toggleDropdownState(name) {
         const dropDownStates = this.get().dropDownStates || {};
@@ -127,6 +178,9 @@
   .fd-popover__body {
     right: 0;
   }
+  .fd-spinner {
+    margin: 20px auto;
+  }
   .fd-menu__list--top {
     border-bottom: 1px solid #eeeeef;
   }
@@ -134,7 +188,7 @@
     border-top: 1px solid #eeeeef;
   }
   #context_menu_middle {
-    max-height: 240px; // TODO: markus clarify how long this list should be (programatically or static value?)
+    max-height: 257px; // TODO: check with Franz
     overflow-y: auto;
   }
 </style>

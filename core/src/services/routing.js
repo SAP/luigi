@@ -5,7 +5,11 @@ import {
   getConfigBooleanValue,
   getConfigValueFromObject
 } from './config';
-import { getPathWithoutHash, getUrlWithoutHash } from '../utilities/helpers';
+import {
+  getPathWithoutHash,
+  getUrlWithoutHash,
+  trimLeadingSlash
+} from '../utilities/helpers';
 
 const iframeNavFallbackTimeout = 2000;
 let timeoutHandle;
@@ -406,7 +410,6 @@ export const handleRouteClick = (node, windowElem = window) => {
   navigateTo(route, windowElem);
 };
 
-export const trimLeadingSlash = str => str.replace(/^\//, '');
 export const getModifiedHash = s => s.newURL.split('#/')[1];
 export const getModifiedPathname = () =>
   window.history.state.path

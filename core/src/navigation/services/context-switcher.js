@@ -56,11 +56,18 @@ export const ContextSwitcherHelpers = {
     return path;
   },
 
+  async getMatchingNodeName(options, fallbackLabelResolver, id) {
+    return new Promise(async resolve => {
+      resolve(fallbackLabelResolver ? await fallbackLabelResolver(id) : id);
+    });
+  },
+
   generateSwitcherNav(config, rawOptions) {
     const parentNodePath = this.prepareParentNodePath(config);
     return rawOptions.map(opt => ({
       label: opt.label,
-      path: this.buildNodePath(parentNodePath, opt)
+      path: this.buildNodePath(parentNodePath, opt),
+      id: opt.pathValue
     }));
   }
 };

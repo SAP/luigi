@@ -419,14 +419,39 @@ Luigi.setConfig({
         },
         {
           hideFromNav: true,
+          pathSegment: 'create-environment',
+          viewUrl: '/sampleapp.html#/create/environment',
+          context: {
+            label: 'Create Environment'
+          }
+        },
+        {
+          hideFromNav: true,
           pathSegment: 'environments',
           children: [
             {
               pathSegment: ':environmentId',
               viewUrl: '/sampleapp.html#/environments/:environmentId',
               context: {
-                label: ':environmentId'
-              }
+                label: ':environmentId',
+                links: ['Overview']
+              },
+              children: ['Overview'].map(name => ({
+                pathSegment: name
+                  .toLowerCase()
+                  .split(' ')
+                  .join('-'),
+                label: name,
+                context: {
+                  label: name
+                },
+                viewUrl:
+                  '/sampleapp.html#/environments/:environmentId/' +
+                  name
+                    .toLowerCase()
+                    .split(' ')
+                    .join('-')
+              }))
             }
           ]
         },
@@ -479,8 +504,11 @@ Luigi.setConfig({
     // The following configuration will be used to render the context switcher component
     contextSwitcher: {
       id: 'environmentSwitcher',
+      parentNodePath: '/environments', // Has to be an absolute path
+      emptyLabel: 'Select Environment ...',
+      lazyloadOptions: false, // load options on click
       options: () => {
-        return [...Array(10).keys()].map(n => ({
+        return [...Array(10).keys()].filter(n => n !== 0).map(n => ({
           label: 'Environment ' + n, // (i.e mapping between what the user sees and what is taken to replace the dynamic part for the dynamic node)
           pathValue: 'env' + n // will be used to replace dynamic part
         }));
@@ -488,17 +516,16 @@ Luigi.setConfig({
       actions: [
         {
           label: '+ New Environment',
-          link: '/environments/new',
-          position: 'bottom', // top | bottom
-          clickHandler: () => {
+          link: '/create-environment',
+          position: 'top', // top | bottom
+          clickHandler: node => {
+            console.log('clickHandler reached', node);
             // called BEFORE route change
             return true; // route change will be done using link value (if defined)
             // return false // route change will not be done even if link attribute is defined
           }
         }
       ],
-      parentNodePath: '/environments', // Has to be an absolute path
-      // parentNodePath: '/environments/:pathValue/overview', // Can only be an absolute path
 
       /**
        * fallbackLabelResolver
@@ -516,7 +543,6 @@ Luigi.setConfig({
       }
     }
   },
-
   routing: {
     /**
      * Development:
