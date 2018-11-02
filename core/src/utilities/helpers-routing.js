@@ -1,20 +1,28 @@
 import { getConfigValue } from '../services/config';
 
-export const replaceVars = (viewUrl, params, prefix) => {
-  let processedUrl = viewUrl;
-  if (params) {
-    Object.entries(params).forEach(entry => {
-      processedUrl = processedUrl.replace(
-        new RegExp(escapeRegExp('{' + prefix + entry[0] + '}'), 'g'),
-        encodeURIComponent(entry[1])
-      );
-    });
-  }
-  processedUrl = processedUrl.replace(
-    new RegExp('\\{' + escapeRegExp(prefix) + '[^\\}]+\\}', 'g'),
-    ''
+export const buildRoute = (node, path, params) =>
+  !node.parent
+    ? path + (params ? '?' + params : '')
+    : buildRoute(node.parent, `/${node.parent.pathSegment}${path}`, params);
+
+export const getDefaultChildNode = function(pathData) {
+  const lastElement =
+    pathData.navigationPath[pathData.navigationPath.length - 1];
+
+  const pathExists = lastElement.children.find(
+    childNode => childNode.pathSegment === lastElement.defaultChildNode
   );
-  return processedUrl;
+
+  if (lastElement.defaultChildNode && pathExists) {
+    return lastElement.defaultChildNode;
+  } else {
+    return lastElement.children[0].pathSegment;
+  }
+};
+
+export const getLastNodeObject = pathData => {
+  const lastElement = [...pathData.navigationPath].pop();
+  return lastElement ? lastElement : {};
 };
 
 export const getNodeParams = params => {
@@ -42,31 +50,6 @@ export const getPathParams = nodes => {
   return params;
 };
 
-export const buildRoute = (node, path, params) =>
-  !node.parent
-    ? path + (params ? '?' + params : '')
-    : buildRoute(node.parent, `/${node.parent.pathSegment}${path}`, params);
-
-export const getLastNodeObject = pathData => {
-  const lastElement = [...pathData.navigationPath].pop();
-  return lastElement ? lastElement : {};
-};
-
-export const getDefaultChildNode = function(pathData) {
-  const lastElement =
-    pathData.navigationPath[pathData.navigationPath.length - 1];
-
-  const pathExists = lastElement.children.find(
-    childNode => childNode.pathSegment === lastElement.defaultChildNode
-  );
-
-  if (lastElement.defaultChildNode && pathExists) {
-    return lastElement.defaultChildNode;
-  } else {
-    return lastElement.children[0].pathSegment;
-  }
-};
-
 export const isExistingRoute = function(path, pathData) {
   if (!path) {
     return true;
@@ -79,10 +62,28 @@ export const isExistingRoute = function(path, pathData) {
 
   return lastElement.pathSegment === lastPathSegment;
 };
+
 const defaultContentViewParamPrefix = '~';
 const getContentViewParamPrefix = () => {
   return (
     getConfigValue('routing.contentViewParamPrefix') ||
     defaultContentViewParamPrefix
   );
+};
+
+export const replaceVars = (viewUrl, params, prefix) => {
+  let processedUrl = viewUrl;
+  if (params) {
+    Object.entries(params).forEach(entry => {
+      processedUrl = processedUrl.replace(
+        new RegExp(escapeRegExp('{' + prefix + entry[0] + '}'), 'g'),
+        encodeURIComponent(entry[1])
+      );
+    });
+  }
+  processedUrl = processedUrl.replace(
+    new RegExp('\\{' + escapeRegExp(prefix) + '[^\\}]+\\}', 'g'),
+    ''
+  );
+  return processedUrl;
 };

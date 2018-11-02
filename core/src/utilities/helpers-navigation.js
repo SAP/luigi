@@ -4,33 +4,16 @@ import {
 } from '../services/config';
 import { getNodes, groupBy, findMatchingNode } from '../services/navigation';
 
-export const getGroupedChildren = (children, current) => {
-  const nodes = getNodes(children, current.pathData);
-  return groupBy(nodes, 'category');
-};
-
-/**
- * getTruncatedChildren
- *
- * Returns an array of children without the childs below
- * a node that has keepSelectedForChildren enabled
- * @param array children
- * @returns array children
- */
-
-export const getTruncatedChildren = children => {
-  let childToKeepFound = false;
-  const res = [];
-  children.forEach(node => {
-    if (childToKeepFound) {
-      return;
+const applyContext = (context, addition, navigationContext) => {
+  if (addition) {
+    for (var p in addition) {
+      context[p] = addition[p];
     }
-    if (node.keepSelectedForChildren) {
-      childToKeepFound = true;
-    }
-    res.push(node);
-  });
-  return res;
+  }
+  if (navigationContext) {
+    context.parentNavigationContexts.unshift(navigationContext);
+  }
+  return context;
 };
 
 export const bindChildrenToParent = node => {
@@ -39,38 +22,6 @@ export const bindChildrenToParent = node => {
     node.children.forEach(child => {
       child.parent = node;
     });
-  }
-};
-
-export const getChildren = async (node, context) => {
-  if (!node) {
-    return [];
-  }
-
-  if (!node._childrenProvider) {
-    node._childrenProvider = node.children;
-  }
-
-  if (node._childrenProvider && !node._childrenProviderUsed) {
-    try {
-      node.children = (
-        (await getConfigValueFromObjectAsync(
-          node,
-          '_childrenProvider',
-          context || node.context
-        )) || []
-      ).filter(child => isNodeAccessPermitted(child, node, context));
-      bindChildrenToParent(node);
-      node._childrenProviderUsed = true;
-      return node.children;
-    } catch (err) {
-      console.error('Could not lazy-load children for node', err);
-    }
-  } else if (node.children) {
-    bindChildrenToParent(node);
-    return node.children;
-  } else {
-    return [];
   }
 };
 
@@ -118,6 +69,74 @@ export const buildNode = async (
   return result;
 };
 
+export const getChildren = async (node, context) => {
+  if (!node) {
+    return [];
+  }
+
+  if (!node._childrenProvider) {
+    node._childrenProvider = node.children;
+  }
+
+  if (node._childrenProvider && !node._childrenProviderUsed) {
+    try {
+      node.children = (
+        (await getConfigValueFromObjectAsync(
+          node,
+          '_childrenProvider',
+          context || node.context
+        )) || []
+      ).filter(child => isNodeAccessPermitted(child, node, context));
+      bindChildrenToParent(node);
+      node._childrenProviderUsed = true;
+      return node.children;
+    } catch (err) {
+      console.error('Could not lazy-load children for node', err);
+    }
+  } else if (node.children) {
+    bindChildrenToParent(node);
+    return node.children;
+  } else {
+    return [];
+  }
+};
+
+export const getGroupedChildren = (children, current) => {
+  const nodes = getNodes(children, current.pathData);
+  return groupBy(nodes, 'category');
+};
+
+/**
+ * getTruncatedChildren
+ *
+ * Returns an array of children without the childs below
+ * a node that has keepSelectedForChildren enabled
+ * @param array children
+ * @returns array children
+ */
+export const getTruncatedChildren = children => {
+  let childToKeepFound = false;
+  const res = [];
+  children.forEach(node => {
+    if (childToKeepFound) {
+      return;
+    }
+    if (node.keepSelectedForChildren) {
+      childToKeepFound = true;
+    }
+    res.push(node);
+  });
+  return res;
+};
+
+export const isLoggedIn = () => {
+  const getStoredAuthData = () =>
+    JSON.parse(localStorage.getItem('luigi.auth'));
+  const isAuthValid = () =>
+    getStoredAuthData().accessTokenExpirationDate > Number(new Date());
+  return getStoredAuthData() && isAuthValid();
+};
+
 export const isNodeAccessPermitted = (
   nodeToCheckPermissionFor,
   parentNode,
@@ -135,24 +154,4 @@ export const isNodeAccessPermitted = (
     parentNode,
     currentContext
   );
-};
-
-const applyContext = (context, addition, navigationContext) => {
-  if (addition) {
-    for (var p in addition) {
-      context[p] = addition[p];
-    }
-  }
-  if (navigationContext) {
-    context.parentNavigationContexts.unshift(navigationContext);
-  }
-  return context;
-};
-
-export const isLoggedIn = () => {
-  const getStoredAuthData = () =>
-    JSON.parse(localStorage.getItem('luigi.auth'));
-  const isAuthValid = () =>
-    getStoredAuthData().accessTokenExpirationDate > Number(new Date());
-  return getStoredAuthData() && isAuthValid();
 };

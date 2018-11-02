@@ -1,5 +1,10 @@
-import { getNavigationPath, navigateTo, navigateIframe } from './navigation';
+import { getNavigationPath, navigateIframe, navigateTo } from './navigation';
 import { getConfigValueAsync, getConfigBooleanValue } from './config';
+import {
+  parseParams,
+  getPathWithoutHash,
+  hideElementChildren
+} from '../utilities/helpers-general';
 import {
   getNodeParams,
   getPathParams,
@@ -8,43 +13,6 @@ import {
   isExistingRoute,
   buildRoute
 } from '../utilities/helpers-routing';
-import {
-  parseParams,
-  getPathWithoutHash,
-  hideElementChildren
-} from '../utilities/helpers-general';
-
-export const getActiveIframe = node => {
-  return node.firstChild;
-};
-
-export const setActiveIframeToPrevious = node => {
-  const iframesInDom = Array.from(node.children);
-  if (iframesInDom.length === 0) {
-    return;
-  } else if (iframesInDom.length === 1) {
-    iframesInDom[0].style.display = 'block';
-    return;
-  }
-  hideElementChildren(node);
-  node.removeChild(iframesInDom[0]);
-  iframesInDom[1].style.display = 'block';
-};
-
-export const removeInactiveIframes = node => {
-  const children = Array.from(node.children);
-  children.forEach((child, index) => {
-    if (index > 0) {
-      node.removeChild(child);
-    }
-  });
-};
-
-export const getNodePath = node => {
-  return node
-    ? buildRoute(node, node.pathSegment ? '/' + node.pathSegment : '')
-    : '';
-};
 
 export const concatenatePath = (basePath, relativePath) => {
   let path = getPathWithoutHash(basePath);
@@ -64,27 +32,16 @@ export const concatenatePath = (basePath, relativePath) => {
   return path;
 };
 
-export const matchPath = async path => {
-  try {
-    const pathUrl = 0 < path.length ? getPathWithoutHash(path) : path;
-    const pathData = await getNavigationPath(
-      getConfigValueAsync('navigation.nodes'),
-      pathUrl.split('?')[0]
-    );
-    if (pathData.navigationPath.length > 0) {
-      const lastNode =
-        pathData.navigationPath[pathData.navigationPath.length - 1];
-      return buildRoute(
-        lastNode,
-        '/' + (lastNode.pathSegment ? lastNode.pathSegment : ''),
-        pathUrl.split('?')[1]
-      );
-    }
-  } catch (err) {
-    console.error('Could not match path', err);
-  }
-  return null;
+export const getActiveIframe = node => {
+  return node.firstChild;
 };
+
+export const getNodePath = node => {
+  return node
+    ? buildRoute(node, node.pathSegment ? '/' + node.pathSegment : '')
+    : '';
+};
+
 export const handleRouteChange = async (path, component, node, config) => {
   try {
     const pathUrl = path && path.length ? getPathWithoutHash(path) : '';
@@ -136,6 +93,7 @@ export const handleRouteChange = async (path, component, node, config) => {
     console.info('Could not handle route change', err);
   }
 };
+
 export const handleRouteClick = (node, windowElem = window) => {
   if (node.externalLink && node.externalLink.url) {
     node.externalLink.sameWindow
@@ -146,4 +104,48 @@ export const handleRouteClick = (node, windowElem = window) => {
   }
   const route = buildRoute(node, `/${node.pathSegment}`);
   navigateTo(route, windowElem);
+};
+
+export const matchPath = async path => {
+  try {
+    const pathUrl = 0 < path.length ? getPathWithoutHash(path) : path;
+    const pathData = await getNavigationPath(
+      getConfigValueAsync('navigation.nodes'),
+      pathUrl.split('?')[0]
+    );
+    if (pathData.navigationPath.length > 0) {
+      const lastNode =
+        pathData.navigationPath[pathData.navigationPath.length - 1];
+      return buildRoute(
+        lastNode,
+        '/' + (lastNode.pathSegment ? lastNode.pathSegment : ''),
+        pathUrl.split('?')[1]
+      );
+    }
+  } catch (err) {
+    console.error('Could not match path', err);
+  }
+  return null;
+};
+
+export const removeInactiveIframes = node => {
+  const children = Array.from(node.children);
+  children.forEach((child, index) => {
+    if (index > 0) {
+      node.removeChild(child);
+    }
+  });
+};
+
+export const setActiveIframeToPrevious = node => {
+  const iframesInDom = Array.from(node.children);
+  if (iframesInDom.length === 0) {
+    return;
+  } else if (iframesInDom.length === 1) {
+    iframesInDom[0].style.display = 'block';
+    return;
+  }
+  hideElementChildren(node);
+  node.removeChild(iframesInDom[0]);
+  iframesInDom[1].style.display = 'block';
 };

@@ -1,12 +1,5 @@
 import { getConfigValue, getConfigValueFromObject } from './config';
 import {
-  buildNode,
-  getChildren,
-  getTruncatedChildren,
-  getGroupedChildren
-} from '../utilities/helpers-navigation';
-
-import {
   replaceVars,
   hasIframeIsolation,
   hideElementChildren,
@@ -14,27 +7,17 @@ import {
   isNotSameDomain,
   isIE
 } from '../utilities/helpers-general';
+import {
+  buildNode,
+  getChildren,
+  getTruncatedChildren,
+  getGroupedChildren
+} from '../utilities/helpers-navigation';
 
 let timeoutHandle;
 const contextVarPrefix = 'context.';
 const nodeParamsVarPrefix = 'nodeParams.';
 const iframeNavFallbackTimeout = 2000;
-
-export const getNavigationPath = async (rootNavProviderPromise, activePath) => {
-  const rootNode = {};
-  if (!rootNavProviderPromise) {
-    return [rootNode];
-  }
-  try {
-    const topNavNodes = await rootNavProviderPromise;
-    rootNode.children = topNavNodes;
-    await getChildren(rootNode); // keep it, mutates and filters children
-    const nodeNamesInCurrentPath = (activePath || '').split('/');
-    return buildNode(nodeNamesInCurrentPath, [rootNode], rootNode.children, {});
-  } catch (err) {
-    console.error('Failed to load top navigation nodes.', err);
-  }
-};
 
 export const findMatchingNode = (urlPathElement, nodes) => {
   let result = null;
@@ -109,6 +92,44 @@ export const findMatchingNode = (urlPathElement, nodes) => {
   return result;
 };
 
+export const getLeftNavData = async (current, componentData) => {
+  const updatedCompData = {};
+  if (current.pathData && 1 < current.pathData.length) {
+    const pathDataTruncatedChildren = getTruncatedChildren(
+      componentData.pathData
+    );
+    let lastElement = [...pathDataTruncatedChildren].pop();
+    let selectedNode;
+    if (lastElement.keepSelectedForChildren) {
+      selectedNode = lastElement;
+      pathDataTruncatedChildren.pop();
+      lastElement = [...pathDataTruncatedChildren].pop();
+    }
+
+    const children = await getChildren(lastElement, componentData.context);
+    const groupedChildren = getGroupedChildren(children, current);
+    updatedCompData.selectedNode = selectedNode || lastElement;
+    updatedCompData.children = groupedChildren;
+  }
+  return updatedCompData;
+};
+
+export const getNavigationPath = async (rootNavProviderPromise, activePath) => {
+  const rootNode = {};
+  if (!rootNavProviderPromise) {
+    return [rootNode];
+  }
+  try {
+    const topNavNodes = await rootNavProviderPromise;
+    rootNode.children = topNavNodes;
+    await getChildren(rootNode); // keep it, mutates and filters children
+    const nodeNamesInCurrentPath = (activePath || '').split('/');
+    return buildNode(nodeNamesInCurrentPath, [rootNode], rootNode.children, {});
+  } catch (err) {
+    console.error('Failed to load top navigation nodes.', err);
+  }
+};
+
 export const getNodes = (children, pathData) => {
   if (children && 0 < children.length) {
     return children;
@@ -140,63 +161,6 @@ export const groupBy = (nodes, property) => {
   });
 
   return result;
-};
-
-export const getLeftNavData = async (current, componentData) => {
-  const updatedCompData = {};
-  if (current.pathData && 1 < current.pathData.length) {
-    const pathDataTruncatedChildren = getTruncatedChildren(
-      componentData.pathData
-    );
-    let lastElement = [...pathDataTruncatedChildren].pop();
-    let selectedNode;
-    if (lastElement.keepSelectedForChildren) {
-      selectedNode = lastElement;
-      pathDataTruncatedChildren.pop();
-      lastElement = [...pathDataTruncatedChildren].pop();
-    }
-
-    const children = await getChildren(lastElement, componentData.context);
-    const groupedChildren = getGroupedChildren(children, current);
-    updatedCompData.selectedNode = selectedNode || lastElement;
-    updatedCompData.children = groupedChildren;
-  }
-  return updatedCompData;
-};
-
-/**
-  navigateTo used for navigation
-  @param route string  absolute path of the new route
-  @param options object  navi options, eg preserveView
-  @param windowElem object  defaults to window
-  @param documentElem object  defaults to document
- */
-export const navigateTo = (route, windowElem = window) => {
-  if (getConfigValue('routing.useHashRouting')) {
-    windowElem.location.hash = route;
-    return;
-  }
-
-  windowElem.history.pushState(
-    {
-      path: route
-    },
-    '',
-    route
-  );
-
-  // https://developer.mozilla.org/en-US/docs/Web/API/CustomEvent#Browser_compatibility
-  // https://developer.mozilla.org/en-US/docs/Web/API/Event#Browser_compatibility
-  // https://developer.mozilla.org/en-US/docs/Web/API/Event/createEvent
-  let event;
-  if (isIE()) {
-    event = document.createEvent('Event');
-    event.initEvent('popstate', true, true);
-  } else {
-    event = new CustomEvent('popstate');
-  }
-
-  windowElem.dispatchEvent(event);
 };
 
 export const navigateIframe = (config, component, node) => {
@@ -288,4 +252,39 @@ export const navigateIframe = (config, component, node) => {
       }
     }, iframeNavFallbackTimeout);
   }
+};
+
+/**
+  navigateTo used for navigation
+  @param route string  absolute path of the new route
+  @param options object  navi options, eg preserveView
+  @param windowElem object  defaults to window
+  @param documentElem object  defaults to document
+ */
+export const navigateTo = (route, windowElem = window) => {
+  if (getConfigValue('routing.useHashRouting')) {
+    windowElem.location.hash = route;
+    return;
+  }
+
+  windowElem.history.pushState(
+    {
+      path: route
+    },
+    '',
+    route
+  );
+
+  // https://developer.mozilla.org/en-US/docs/Web/API/CustomEvent#Browser_compatibility
+  // https://developer.mozilla.org/en-US/docs/Web/API/Event#Browser_compatibility
+  // https://developer.mozilla.org/en-US/docs/Web/API/Event/createEvent
+  let event;
+  if (isIE()) {
+    event = document.createEvent('Event');
+    event.initEvent('popstate', true, true);
+  } else {
+    event = new CustomEvent('popstate');
+  }
+
+  windowElem.dispatchEvent(event);
 };

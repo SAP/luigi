@@ -1,22 +1,3 @@
-export const isFunction = anyParam =>
-  anyParam && {}.toString.call(anyParam) === '[object Function]';
-
-export const isPromise = anyParam => anyParam && isFunction(anyParam.then);
-
-export const isIE = () => {
-  const ua = navigator.userAgent;
-  /* MSIE used to detect old browsers and Trident used to newer ones*/
-  return Boolean(ua.includes('MSIE ') || ua.includes('Trident/'));
-};
-
-/**
- * Simple object check.
- * @param item mixed
- * @returns {boolean}
- */
-export const isObject = item =>
-  item && typeof item === 'object' && !Array.isArray(item);
-
 /**
  * Deep merge two objects.
  * @param target
@@ -38,6 +19,17 @@ export const deepMerge = (target, ...sources) => {
   }
 
   return deepMerge(target, ...sources);
+};
+
+export const escapeRegExp = string => {
+  return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+};
+
+export const getPathWithoutHash = path => {
+  while (hasHash(path)) {
+    path = path.substr(1);
+  }
+  return path;
 };
 
 export const getUrlWithoutHash = url => {
@@ -64,11 +56,67 @@ export const getUrlWithoutHash = url => {
  */
 export const hasHash = path => path && path.search(/^[#\/].*$/) === 0;
 
-export const getPathWithoutHash = path => {
-  while (hasHash(path)) {
-    path = path.substr(1);
+export const hasIframeIsolation = component => {
+  const componentData = component.get();
+  return (
+    componentData.isolateView || componentData.previousNodeValues.isolateView
+  );
+};
+
+export const hideElementChildren = node => {
+  if (node.children) {
+    Array.from(node.children).forEach(child => {
+      child.style.display = 'none';
+    });
   }
-  return path;
+};
+
+export const isFunction = anyParam =>
+  anyParam && {}.toString.call(anyParam) === '[object Function]';
+
+export const isIE = () => {
+  const ua = navigator.userAgent;
+  /* MSIE used to detect old browsers and Trident used to newer ones*/
+  return Boolean(ua.includes('MSIE ') || ua.includes('Trident/'));
+};
+
+export const isNotSameDomain = (config, component) => {
+  if (config.iframe) {
+    const componentData = component.get();
+    const previousUrl = getUrlWithoutHash(
+      componentData.previousNodeValues.viewUrl
+    );
+    const nextUrl = getUrlWithoutHash(componentData.viewUrl);
+    return previousUrl != nextUrl;
+  }
+  return true;
+};
+
+/**
+ * Simple object check.
+ * @param item mixed
+ * @returns {boolean}
+ */
+export const isObject = item =>
+  item && typeof item === 'object' && !Array.isArray(item);
+
+export const isPromise = anyParam => anyParam && isFunction(anyParam.then);
+
+export const parseParams = paramsString => {
+  const result = {};
+  const viewParamString = paramsString;
+  const pairs = viewParamString ? viewParamString.split('&') : null;
+  if (pairs) {
+    pairs.forEach(pairString => {
+      const keyValue = pairString.split('=');
+      if (keyValue && keyValue.length > 0) {
+        result[decodeURIComponent(keyValue[0])] = decodeURIComponent(
+          keyValue[1]
+        );
+      }
+    });
+  }
+  return result;
 };
 
 /**
@@ -86,6 +134,12 @@ export const prependOrigin = path => {
   return window.location.origin;
 };
 
+export const removeElementChildren = node => {
+  while (node.firstChild) {
+    node.removeChild(node.firstChild);
+  }
+};
+
 export const replaceVars = (viewUrl, params, prefix) => {
   let processedUrl = viewUrl;
   if (params) {
@@ -101,58 +155,4 @@ export const replaceVars = (viewUrl, params, prefix) => {
     ''
   );
   return processedUrl;
-};
-
-export const isNotSameDomain = (config, component) => {
-  if (config.iframe) {
-    const componentData = component.get();
-    const previousUrl = getUrlWithoutHash(
-      componentData.previousNodeValues.viewUrl
-    );
-    const nextUrl = getUrlWithoutHash(componentData.viewUrl);
-    return previousUrl != nextUrl;
-  }
-  return true;
-};
-
-export const hasIframeIsolation = component => {
-  const componentData = component.get();
-  return (
-    componentData.isolateView || componentData.previousNodeValues.isolateView
-  );
-};
-
-export const removeElementChildren = node => {
-  while (node.firstChild) {
-    node.removeChild(node.firstChild);
-  }
-};
-
-export const hideElementChildren = node => {
-  if (node.children) {
-    Array.from(node.children).forEach(child => {
-      child.style.display = 'none';
-    });
-  }
-};
-
-export const escapeRegExp = string => {
-  return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-};
-
-export const parseParams = paramsString => {
-  const result = {};
-  const viewParamString = paramsString;
-  const pairs = viewParamString ? viewParamString.split('&') : null;
-  if (pairs) {
-    pairs.forEach(pairString => {
-      const keyValue = pairString.split('=');
-      if (keyValue && keyValue.length > 0) {
-        result[decodeURIComponent(keyValue[0])] = decodeURIComponent(
-          keyValue[1]
-        );
-      }
-    });
-  }
-  return result;
 };
