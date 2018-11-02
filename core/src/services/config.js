@@ -1,4 +1,6 @@
-import { isFunction, isPromise, wrapAsPromise } from '../utilities/helpers.js';
+import { getConfigValueFromObjectAsync } from '../utilities/async-helpers';
+import { getConfigValueFromObject } from '../utilities/helpers';
+
 class LuigiConfigManager {
   constructor() {
     this.configReadyTimeout = {
@@ -52,39 +54,10 @@ class LuigiConfigManager {
   }
 
   /*
-   * Gets value of the given property on the given object.
-   */
-  getConfigValueFromObject(object, property) {
-    let propIndex = 0;
-    let nextValue = object;
-    const propertyPath = property.split('.');
-    while (nextValue && propIndex < propertyPath.length) {
-      nextValue = nextValue[propertyPath[propIndex++]];
-    }
-    return nextValue;
-  }
-
-  /*
-  * Gets value of the given property on the given object.
-  * If the value is a Function it is called and the result of that call is the value.
-  * If the value is not a Promise it is wrapped to a Promise so that the returned value is definitely a Promise.
-  */
-  getConfigValueFromObjectAsync(object, property, ...parameters) {
-    let value = this.getConfigValueFromObject(object, property);
-    if (isFunction(value)) {
-      value = value.apply(this, parameters);
-      if (isPromise(value)) {
-        return value;
-      }
-    }
-    return wrapAsPromise(value);
-  }
-
-  /*
    * Gets value of the given property on Luigi config object.
    */
   getConfigValue(property) {
-    return this.getConfigValueFromObject(this.getConfig(), property);
+    return getConfigValueFromObject(this.getConfig(), property);
   }
 
   /*
@@ -92,7 +65,7 @@ class LuigiConfigManager {
    * Function return true if the property value is equal true or 'true'. Otherwise the function returns false.
    */
   getConfigBooleanValue(property) {
-    const configuredValue = this.getConfigValueFromObject(
+    const configuredValue = getConfigValueFromObject(
       this.getConfig(),
       property
     );
@@ -108,7 +81,7 @@ class LuigiConfigManager {
    * If the value is not a Promise it is wrapped to a Promise so that the returned value is definitely a Promise.
    */
   getConfigValueAsync(property, ...parameters) {
-    return this.getConfigValueFromObjectAsync(
+    return getConfigValueFromObjectAsync(
       this.getConfig(),
       property,
       parameters

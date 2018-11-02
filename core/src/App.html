@@ -21,7 +21,7 @@
   import LeftNav from './LeftNav.html';
   import * as Routing from './services/routing.js';
   import { LuigiConfig } from './services/config.js';
-  import { isFunction } from './utilities/helpers.js';
+  import { isFunction, getConfigValueFromObject } from './utilities/helpers.js';
 
   const trimLeadingSlash = str => str.replace(/^\//, '');
   const isValidBackRoute = (preservedViews, routeHash) => {
@@ -173,7 +173,7 @@
             sendContextToClient(this, config, {});
 
             const loadingIndicatorAutoHideEnabled =
-              LuigiConfig.getConfigValueFromObject(
+              getConfigValueFromObject(
                 this.get(),
                 'currentNode.loadingIndicator.hideAutomatically'
               ) !== false;

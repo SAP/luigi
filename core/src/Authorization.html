@@ -10,7 +10,7 @@
 
 <script type="text/javascript">
   import { LuigiConfig } from './services/config.js';
-  import { isFunction, isPromise, deepMerge } from './utilities/helpers.js';
+  import { isFunction, isPromise, deepMerge, getConfigValueFromObject } from './utilities/helpers.js';
   import { oAuth2ImplicitGrant } from './providers/auth/oAuth2ImplicitGrant.js';
   import { openIdConnect } from './providers/auth/openIdConnect.js';
 
@@ -36,7 +36,7 @@
     };
 
     // custom provider provided via config:
-    const customIdpProvider = LuigiConfig.getConfigValueFromObject(idpProviderSettings, 'customIdpProvider');
+    const customIdpProvider = getConfigValueFromObject(idpProviderSettings, 'customIdpProvider');
     if (customIdpProvider) {
       ['login'].forEach((requiredFnName) => {
         if (!isFunction(customIdpProvider[requiredFnName])) {

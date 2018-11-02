@@ -3,7 +3,8 @@ import { LuigiConfig } from './config';
 import {
   getPathWithoutHash,
   getUrlWithoutHash,
-  isIE
+  isIE,
+  getConfigValueFromObject
 } from '../utilities/helpers';
 
 const iframeNavFallbackTimeout = 2000;
@@ -162,7 +163,7 @@ const navigateIframe = (config, component, node) => {
 
     if (componentData.viewUrl) {
       if (
-        LuigiConfig.getConfigValueFromObject(
+        getConfigValueFromObject(
           componentData,
           'currentNode.loadingIndicator.enabled'
         ) !== false

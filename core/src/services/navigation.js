@@ -1,4 +1,5 @@
 import { LuigiConfig } from './config';
+import { getConfigValueFromObjectAsync } from '../utilities/async-helpers';
 
 const isNodeAccessPermitted = (
   nodeToCheckPermissionFor,
@@ -47,7 +48,7 @@ export const getChildren = async (node, context) => {
   if (node._childrenProvider && !node._childrenProviderUsed) {
     try {
       node.children = (
-        (await LuigiConfig.getConfigValueFromObjectAsync(
+        (await getConfigValueFromObjectAsync(
           node,
           '_childrenProvider',
           context || node.context
