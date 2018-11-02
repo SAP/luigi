@@ -34,6 +34,7 @@ export const hideElementChildren = node => {
   }
 };
 
+
 export const removeElementChildren = node => {
   while (node.firstChild) {
     node.removeChild(node.firstChild);
