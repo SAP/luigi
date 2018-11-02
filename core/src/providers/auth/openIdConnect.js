@@ -1,5 +1,5 @@
-import { deepMerge, prependOrigin } from '../../utilities/helpers.js';
-import { waitForKeyExistency } from '../../utilities/async-helpers.js';
+import { deepMerge, prependOrigin } from '../../utilities/helpers-general.js';
+import { waitForKeyExistency } from '../../utilities/helpers-async.js';
 
 export class openIdConnect {
   constructor(settings = {}) {
@@ -77,7 +77,7 @@ export class openIdConnect {
             log('signout response', response);
             resolve(response);
           })
-          .catch(function (err) {
+          .catch(function(err) {
             reject(response);
             log(err);
           });

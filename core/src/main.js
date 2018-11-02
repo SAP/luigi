@@ -1,7 +1,7 @@
 import App from './App.html';
 import { authLibraries } from './providers/auth/libraryLoaders';
 import { getConfigValue } from './services/config';
-import { waitForKeyExistency } from './utilities/async-helpers.js';
+import { waitForKeyExistency } from './utilities/helpers-async.js';
 
 let app;
 waitForKeyExistency(window.Luigi, 'config').then(

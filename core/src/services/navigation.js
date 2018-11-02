@@ -1,5 +1,10 @@
-import { buildNode } from './navigation_helpers';
 import { getConfigValue, getConfigValueFromObject } from './config';
+import {
+  buildNode,
+  getChildren,
+  getTruncatedChildren,
+  getGroupedChildren
+} from '../utilities/helpers-navigation';
 
 import {
   replaceVars,
@@ -7,8 +12,7 @@ import {
   hideElementChildren,
   removeElementChildren,
   isNotSameDomain
-} from '../utilities/helpers';
-import * as CHILDREN from './navigation_children';
+} from '../utilities/helpers-general';
 
 let timeoutHandle;
 const contextVarPrefix = 'context.';
@@ -23,7 +27,7 @@ export const getNavigationPath = async (rootNavProviderPromise, activePath) => {
   try {
     const topNavNodes = await rootNavProviderPromise;
     rootNode.children = topNavNodes;
-    await CHILDREN.getChildren(rootNode); // keep it, mutates and filters children
+    await getChildren(rootNode); // keep it, mutates and filters children
     const nodeNamesInCurrentPath = (activePath || '').split('/');
     return buildNode(nodeNamesInCurrentPath, [rootNode], rootNode.children, {});
   } catch (err) {
@@ -140,7 +144,7 @@ export const groupBy = (nodes, property) => {
 export const getLeftNavData = async (current, componentData) => {
   const updatedCompData = {};
   if (current.pathData && 1 < current.pathData.length) {
-    const pathDataTruncatedChildren = CHILDREN.getTruncatedChildren(
+    const pathDataTruncatedChildren = getTruncatedChildren(
       componentData.pathData
     );
     let lastElement = [...pathDataTruncatedChildren].pop();
@@ -151,11 +155,8 @@ export const getLeftNavData = async (current, componentData) => {
       lastElement = [...pathDataTruncatedChildren].pop();
     }
 
-    const children = await CHILDREN.getChildren(
-      lastElement,
-      componentData.context
-    );
-    const groupedChildren = CHILDREN.getGroupedChildren(children, current);
+    const children = await getChildren(lastElement, componentData.context);
+    const groupedChildren = getGroupedChildren(children, current);
     updatedCompData.selectedNode = selectedNode || lastElement;
     updatedCompData.children = groupedChildren;
   }

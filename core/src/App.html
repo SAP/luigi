@@ -24,7 +24,7 @@
   import * as Routing from './services/routing.js';
   import { navigateTo } from './services/navigation.js';
   import { getConfigValue, getConfigValueFromObject } from './services/config.js';
-  import { isFunction } from './utilities/helpers.js';
+  import { isFunction } from './utilities/helpers-general.js';
 
   const trimLeadingSlash = str => str.replace(/^\//, '');
   const isValidBackRoute = (preservedViews, routeHash) => {

@@ -1,4 +1,4 @@
-import { isFunction, isPromise } from '../utilities/helpers.js';
+import { isFunction, isPromise } from '../utilities/helpers-general.js';
 
 (function() {
   window.Luigi = {

@@ -1,15 +1,14 @@
 import { getNavigationPath, navigateTo, navigateIframe } from './navigation';
 import { getConfigValueAsync, getConfigBooleanValue } from './config';
 import {
-  getPathWithoutHash,
-  parseParams,
   getNodeParams,
   getPathParams,
   getLastNodeObject,
   getDefaultChildNode,
   isExistingRoute,
   buildRoute
-} from '../utilities/helpers';
+} from '../utilities/helpers-routing';
+import { parseParams, getPathWithoutHash } from '../utilities/helpers-general';
 
 export const getActiveIframe = node => {
   return node.firstChild;
