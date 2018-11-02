@@ -1,16 +1,18 @@
-
 <div id="app {hideNav? 'no-nav' : ''}">
-  <Backdrop>
-    <div class="fd-page iframeContainer" use:init="context"></div>
-  </Backdrop>
-  {#if showLoadingIndicator}
-  <div in:fade='{delay: 250, duration: 250}' out:fade='{duration: 250}' class="fd-page spinnerContainer" aria-hidden="false" aria-label="Loading">
-      <div class="fd-spinner"><div></div></div>
-  </div>
-  {/if}
+	<Backdrop>
+		<div class="fd-page iframeContainer" use:init="context"></div>
+	</Backdrop>
+	{#if showLoadingIndicator}
+	<div in:fade='{delay: 250, duration: 250}' out:fade='{duration: 250}' class="fd-page spinnerContainer" aria-hidden="false"
+	 aria-label="Loading">
+		<div class="fd-spinner">
+			<div></div>
+		</div>
+	</div>
+	{/if}
 
-  <TopNav pathData={navigationPath} />
-  <LeftNav pathData={navigationPath} />
+	<TopNav pathData={navigationPath} />
+	<LeftNav pathData={navigationPath} />
 </div>
 
 
@@ -20,6 +22,7 @@
   import TopNav from './TopNav.html';
   import LeftNav from './LeftNav.html';
   import * as Routing from './services/routing.js';
+  import { navigateTo } from './services/navigation.js';
   import { getConfigValue, getConfigValueFromObject } from './services/config.js';
   import { isFunction } from './utilities/helpers.js';
 
@@ -113,7 +116,7 @@
         context: component.get().context
       });
       component.set({ preservedViews: pv });
-      // Resetting iframe config to null, since Routing.navigateTo will then create a new iframe
+      // Resetting iframe config to null, since navigateTo will then create a new iframe
       // instead of using the existing instance for route.
       config.iframe = null;
     }
@@ -124,7 +127,7 @@
     const matchedPath = await Routing.matchPath(path);
     if (matchedPath !== null) {
       addPreserveView(component, data, config);
-      Routing.navigateTo(matchedPath);
+      navigateTo(matchedPath);
     }
   };
 
@@ -168,7 +171,7 @@
           builderCompatibilityMode: Boolean(window.builderCompatibilityMode)
         };
 
-        window.addEventListener('message', async (e) => {
+        window.addEventListener('message', async e => {
           if ('luigi.get-context' === e.data.msg && config.iframe) {
             sendContextToClient(this, config, {});
 
@@ -232,8 +235,9 @@
             const path = buildPath(this, data);
             const matchedPath = await Routing.matchPath(path);
 
-            let normalizedPath = ((!path.startsWith('/')) ? '/' : '') +
-              ((path.endsWith('/')) ? path.slice(0,-1) : path);
+            let normalizedPath =
+              (!path.startsWith('/') ? '/' : '') +
+              (path.endsWith('/') ? path.slice(0, -1) : path);
             const pathExists = matchedPath === normalizedPath;
             config.iframe.contentWindow.postMessage(
               {
