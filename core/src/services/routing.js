@@ -8,7 +8,11 @@ import {
   isExistingRoute,
   buildRoute
 } from '../utilities/helpers-routing';
-import { parseParams, getPathWithoutHash } from '../utilities/helpers-general';
+import {
+  parseParams,
+  getPathWithoutHash,
+  hideElementChildren
+} from '../utilities/helpers-general';
 
 export const getActiveIframe = node => {
   return node.firstChild;
@@ -36,6 +40,51 @@ export const removeInactiveIframes = node => {
   });
 };
 
+export const getNodePath = node => {
+  return node
+    ? buildRoute(node, node.pathSegment ? '/' + node.pathSegment : '')
+    : '';
+};
+
+export const concatenatePath = (basePath, relativePath) => {
+  let path = getPathWithoutHash(basePath);
+  if (!path) {
+    return relativePath;
+  }
+  if (!relativePath) {
+    return path;
+  }
+  if (path.endsWith('/')) {
+    path = path.substring(0, path.length - 1);
+  }
+  if (!relativePath.startsWith('/')) {
+    path += '/';
+  }
+  path += relativePath;
+  return path;
+};
+
+export const matchPath = async path => {
+  try {
+    const pathUrl = 0 < path.length ? getPathWithoutHash(path) : path;
+    const pathData = await getNavigationPath(
+      getConfigValueAsync('navigation.nodes'),
+      pathUrl.split('?')[0]
+    );
+    if (pathData.navigationPath.length > 0) {
+      const lastNode =
+        pathData.navigationPath[pathData.navigationPath.length - 1];
+      return buildRoute(
+        lastNode,
+        '/' + (lastNode.pathSegment ? lastNode.pathSegment : ''),
+        pathUrl.split('?')[1]
+      );
+    }
+  } catch (err) {
+    console.error('Could not match path', err);
+  }
+  return null;
+};
 export const handleRouteChange = async (path, component, node, config) => {
   try {
     const pathUrl = path && path.length ? getPathWithoutHash(path) : '';
@@ -87,53 +136,6 @@ export const handleRouteChange = async (path, component, node, config) => {
     console.info('Could not handle route change', err);
   }
 };
-
-export const getNodePath = node => {
-  return node
-    ? buildRoute(node, node.pathSegment ? '/' + node.pathSegment : '')
-    : '';
-};
-
-export const concatenatePath = (basePath, relativePath) => {
-  let path = getPathWithoutHash(basePath);
-  if (!path) {
-    return relativePath;
-  }
-  if (!relativePath) {
-    return path;
-  }
-  if (path.endsWith('/')) {
-    path = path.substring(0, path.length - 1);
-  }
-  if (!relativePath.startsWith('/')) {
-    path += '/';
-  }
-  path += relativePath;
-  return path;
-};
-
-export const matchPath = async path => {
-  try {
-    const pathUrl = 0 < path.length ? getPathWithoutHash(path) : path;
-    const pathData = await getNavigationPath(
-      getConfigValueAsync('navigation.nodes'),
-      pathUrl.split('?')[0]
-    );
-    if (pathData.navigationPath.length > 0) {
-      const lastNode =
-        pathData.navigationPath[pathData.navigationPath.length - 1];
-      return buildRoute(
-        lastNode,
-        '/' + (lastNode.pathSegment ? lastNode.pathSegment : ''),
-        pathUrl.split('?')[1]
-      );
-    }
-  } catch (err) {
-    console.error('Could not match path', err);
-  }
-  return null;
-};
-
 export const handleRouteClick = (node, windowElem = window) => {
   if (node.externalLink && node.externalLink.url) {
     node.externalLink.sameWindow

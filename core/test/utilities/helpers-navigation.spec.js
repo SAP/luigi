@@ -1,8 +1,8 @@
-import { getChildren } from '../src/services/navigation_children';
+import { getChildren } from '../../src/utilities/helpers-navigation';
 const chai = require('chai');
 const expect = chai.expect;
 
-describe('Navigation_childern', function() {
+describe('Helpers-navigation', function() {
   before(() => {
     function mockStorage() {
       return {

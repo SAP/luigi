@@ -1,11 +1,9 @@
-const rewire = require('rewire');
 const chai = require('chai');
-const expect = chai.expect;
 const assert = chai.assert;
 const sinon = require('sinon');
 const MockBrowser = require('mock-browser').mocks.MockBrowser;
-const routing = require('../src/services/routing');
-import { deepMerge } from '../src/utilities/helpers.js';
+const routing = require('../../src/services/routing');
+import { deepMerge } from '../../src/utilities/helpers-general.js';
 import { afterEach } from 'mocha';
 
 describe('Routing', () => {
@@ -185,7 +183,7 @@ describe('Routing', () => {
       let savedObj = {};
       const componentSaved = {
         set: obj => {
-          savedObj = deepMerge(savedObj, obj);
+          savedObj = deepMerge(savedObj, obj); //TODO: this test will fail if deepMerge throws any error
           componentSaved.get = () => {
             return savedObj;
           };
@@ -626,95 +624,5 @@ describe('Routing', () => {
     routing.removeInactiveIframes(node);
 
     assert.equal(node.removeChild.callCount, 2);
-  });
-
-  it('isNotSameDomain', () => {
-    const config = {
-      iframe: {
-        src: 'http://url.com/app.html!#/prevUrl'
-      }
-    };
-    component.set({
-      viewUrl: 'http://url.com/app.html!#/someUrl',
-      previousNodeValues: { viewUrl: config.iframe.src }
-    });
-    assert.isFalse(routing.isNotSameDomain(config, component));
-
-    component.set({
-      viewUrl: 'http://otherurl.de/app.html!#/someUrl',
-      previousNodeValues: { viewUrl: config.iframe.src }
-    });
-    assert.isTrue(routing.isNotSameDomain(config, component));
-  });
-
-  it('hasIframeIsolation', () => {
-    // no node is set to isolateView
-    component.set({
-      isolateView: false,
-      previousNodeValues: { isolateView: false }
-    });
-    assert.isFalse(routing.hasIframeIsolation(component));
-
-    // new node is set to isolateView
-    component.set({
-      isolateView: true,
-      previousNodeValues: { isolateView: false }
-    });
-    assert.isTrue(routing.hasIframeIsolation(component));
-
-    // current node is set to isolateView
-    component.set({
-      isolateView: false,
-      previousNodeValues: { isolateView: true }
-    });
-    assert.isTrue(routing.hasIframeIsolation(component));
-  });
-
-  describe('defaultChildNodes', () => {
-    const routing = rewire('../src/services/routing');
-    const getDefaultChildNode = routing.__get__('getDefaultChildNode');
-    const getPathData = function() {
-      return {
-        navigationPath: [
-          {
-            // DOESN'T MATTER
-          },
-          {
-            pathSegment: 'groups',
-            children: [
-              {
-                pathSegment: 'stakeholders',
-                viewUrl: '/sampleapp.html#/projects/1/users/groups/stakeholders'
-              },
-              {
-                pathSegment: 'customers',
-                viewUrl: '/sampleapp.html#/projects/1/users/groups/customers'
-              }
-            ]
-          }
-        ],
-        context: {}
-      };
-    };
-
-    it('should return first child if no defaultChildNode is set', () => {
-      let pathData = getPathData();
-
-      assert.equal(getDefaultChildNode(pathData), 'stakeholders');
-    });
-
-    it('should return child with pathSegment equal to defaultChildNode', () => {
-      let pathData = getPathData();
-      pathData.navigationPath[1].defaultChildNode = 'customers';
-
-      assert.equal(getDefaultChildNode(pathData), 'customers');
-    });
-
-    it('should return first child if given defaultChildNode does not exist', () => {
-      const pathData = getPathData();
-      pathData.navigationPath[1].defaultChildNode = 'NOSUCHPATH';
-
-      assert.equal(getDefaultChildNode(pathData), 'stakeholders');
-    });
   });
 });

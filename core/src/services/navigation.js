@@ -11,7 +11,8 @@ import {
   hasIframeIsolation,
   hideElementChildren,
   removeElementChildren,
-  isNotSameDomain
+  isNotSameDomain,
+  isIE
 } from '../utilities/helpers-general';
 
 let timeoutHandle;

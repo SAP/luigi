@@ -1,6 +1,6 @@
 const chai = require('chai');
 const assert = chai.assert;
-const config = require('../src/services/config');
+const config = require('../../src/services/config');
 
 describe('Config', () => {
   describe('getConfigBooleanValue()', () => {
