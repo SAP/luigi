@@ -73,8 +73,8 @@
           actions,
           fallbackLabelResolver: contextSwitcherConfig.fallbackLabelResolver
         });
-        // options are loaded initially by default
-        if (typeof contextSwitcherConfig.lazyloadOptions === 'undefined' || contextSwitcherConfig.lazyloadOptions) {
+        // options are loaded lazy by default
+        if (contextSwitcherConfig.lazyloadOptions === false) {
           await this.fetchOptions();
         }
       }
@@ -107,7 +107,7 @@
     methods: {
       async fetchOptions() {
         let options = this.get().options;
-        if (!options.length) {
+        if (!options.length || getConfigValue('navigation.contextSwitcher.lazyloadOptions') !== false) {
           const contextSwitcherOptions = await getConfigValueAsync('navigation.contextSwitcher.options');
           options = await ContextSwitcherHelpers.generateSwitcherNav(this.get().config, contextSwitcherOptions);
           this.set({options});

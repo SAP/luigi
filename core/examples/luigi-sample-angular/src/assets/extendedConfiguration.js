@@ -503,10 +503,9 @@ Luigi.setConfig({
     },
     // The following configuration will be used to render the context switcher component
     contextSwitcher: {
-      id: 'environmentSwitcher',
-      parentNodePath: '/environments', // Has to be an absolute path
       emptyLabel: 'Select Environment ...',
-      lazyloadOptions: false, // load options on click
+      parentNodePath: '/environments', // absolute path
+      lazyloadOptions: true, // load options on click instead on page load
       options: () => {
         return [...Array(10).keys()].filter(n => n !== 0).map(n => ({
           label: 'Environment ' + n, // (i.e mapping between what the user sees and what is taken to replace the dynamic part for the dynamic node)
@@ -517,9 +516,8 @@ Luigi.setConfig({
         {
           label: '+ New Environment',
           link: '/create-environment',
-          position: 'top', // top | bottom
+          position: 'top', // top or bottom
           clickHandler: node => {
-            console.log('clickHandler reached', node);
             // called BEFORE route change
             return true; // route change will be done using link value (if defined)
             // return false // route change will not be done even if link attribute is defined
@@ -530,16 +528,11 @@ Luigi.setConfig({
       /**
        * fallbackLabelResolver
        * Resolve what do display in the context switcher (Label) in case the activated
-       * context (option) is not listed in available options (eg kyma-system namespace)
+       * context (option) is not listed in available options (eg kyma-system namespace),
+       * or if options have not been fetched yet
        */
-      fallbackLabelResolver: async id => {
-        // capitalize, delayed output
-        return await new Promise(resolve => {
-          setTimeout(() => {
-            resolve((id && id.replace(/\b\w/g, l => l.toUpperCase())) || id);
-          }, 100);
-        });
-        // return id.replace(/\b\w/g, l => l.toUpperCase());
+      fallbackLabelResolver: id => {
+        return id.replace(/\b\w/g, l => l.toUpperCase());
       }
     }
   },
