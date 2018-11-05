@@ -163,20 +163,36 @@ export const findMatchingNode = (urlPathElement, nodes) => {
     }
 
     // Dynamic nodes
-    if (node.pathSegment && node.pathSegment.startsWith(':')) {
-      const key = node.pathSegment.slice(0);
-      node.pathParam = {
-        key: key,
-        value: urlPathElement
-      };
+    if (
+      (node.pathSegment && node.pathSegment.startsWith(':')) ||
+      (node.pathParam && node.pathParam.key)
+    ) {
+      if (node.pathParam && node.pathParam.key) {
+        node.viewUrl = node.pathParam.viewUrl;
+        node.context = node.pathParam.context
+          ? Object.assign({}, node.pathParam.context)
+          : undefined;
+        node.pathSegment = node.pathParam.pathSegment;
+      } else {
+        node.pathParam = {
+          key: node.pathSegment.slice(0),
+          pathSegment: node.pathSegment,
+          viewUrl: node.viewUrl,
+          context: node.context ? Object.assign({}, node.context) : undefined
+        };
+      }
+      node.pathParam.value = urlPathElement;
 
       // path substitutions
-      node.pathSegment = node.pathSegment.replace(key, urlPathElement);
-      node.viewUrl = node.viewUrl.replace(key, urlPathElement);
+      node.pathSegment = node.pathSegment.replace(
+        node.pathParam.key,
+        urlPathElement
+      );
+      node.viewUrl = node.viewUrl.replace(node.pathParam.key, urlPathElement);
       if (node.context) {
         Object.entries(node.context).map(entry => {
           const dynKey = entry[1];
-          if (dynKey === key) {
+          if (dynKey === node.pathParam.key) {
             node.context[entry[0]] = dynKey.replace(dynKey, urlPathElement);
           }
         });
