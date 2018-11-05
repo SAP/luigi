@@ -466,13 +466,6 @@ Luigi.setConfig({
           label: 'Settings',
           viewUrl: '/sampleapp.html#/settings'
         },
-        // {
-        //   label: 'Open Google in this tab',
-        //   externalLink: {
-        //     url: 'http://google.com',
-        //     sameWindow: true
-        //   }
-        // },
         {
           pathSegment: 'ext',
           label: 'External Page',
@@ -503,7 +496,7 @@ Luigi.setConfig({
     },
     // The following configuration will be used to render the context switcher component
     contextSwitcher: {
-      emptyLabel: 'Select Environment ...',
+      defaultLabel: 'Select Environment ...',
       parentNodePath: '/environments', // absolute path
       lazyloadOptions: true, // load options on click instead on page load
       options: () => {

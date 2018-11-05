@@ -1,10 +1,10 @@
-describe('Context Switcher', () => {
+describe('Context switcher', () => {
   beforeEach(() => {
     cy.visit('http://localhost:4200');
     cy.login('tets@email.com', 'tets');
   });
 
-  it('Clicking around the Context Switcher', () => {
+  it('Clicking around the context switcher', () => {
     // default label
     cy.get('.context-switcher')
       .contains('Select Environment ...')

@@ -41,7 +41,7 @@ export const ContextSwitcherHelpers = {
 
     let path = opt.pathValue;
     // parentNodePath contains dynamic pathSegment
-    if (parentNodePath && parentNodePath.indexOf(':') !== -1) {
+    if (parentNodePath && parentNodePath.includes(':')) {
       path = parentNodePath
         .split('/')
         .map(pp => {
@@ -57,9 +57,7 @@ export const ContextSwitcherHelpers = {
   },
 
   async getMatchingNodeName(options, fallbackLabelResolver, id) {
-    return new Promise(async resolve => {
-      resolve(fallbackLabelResolver ? await fallbackLabelResolver(id) : id);
-    });
+    return fallbackLabelResolver ? await fallbackLabelResolver(id) : id;
   },
 
   generateSwitcherNav(config, rawOptions) {

@@ -3,8 +3,8 @@
   <div class="fd-popover context-switcher">
     <div class="fd-popover__control">
       <button class="fd-button--secondary" aria-expanded="{dropDownStates.CONTEXT_SWITCHER_POPOVER || false}"
-        aria-haspopup="true" on:click="onContextSwitcherOpen('CONTEXT_SWITCHER_POPOVER')" on:blur="closeDropdown('CONTEXT_SWITCHER_POPOVER')">
-        {#if !selectedLabel}{config.emptyLabel}{/if}
+        aria-haspopup="true" on:click="toggleDropdownState('CONTEXT_SWITCHER_POPOVER')" on:blur="toggleDropdownState('CONTEXT_SWITCHER_POPOVER')">
+        {#if !selectedLabel}{config.defaultLabel}{/if}
         {#if selectedLabel}{selectedLabel}{/if}
       </button>
     </div>
@@ -21,10 +21,10 @@
         {/if}
 
         <ul class="fd-menu__list" id="context_menu_middle">
-        {#if options.length === 0}
+        {#if options && options.length === 0}
           <li><div class="fd-spinner"><div></div></div></li>
         {/if}
-        {#if options.length}
+        {#if options && options.length}
           {#each options as node}
           <li><a class="fd-menu__item" on:click="goTo(node.path)">
           {#if node.label}{node.label}{/if}
@@ -85,7 +85,12 @@
     data() {
       return {
         dropDownStates: {},
-        options: []
+        contextSwitcherEnabled: false,
+        config: {},
+        actions: [],
+        options: null,
+        fallbackLabelResolver: null,
+        selectedLabel: null
       };
     },
     computed: {
@@ -107,7 +112,7 @@
     methods: {
       async fetchOptions() {
         let options = this.get().options;
-        if (!options.length || getConfigValue('navigation.contextSwitcher.lazyloadOptions') !== false) {
+        if (!options || !options.length || this.get().config.lazyloadOptions !== false) {
           const contextSwitcherOptions = await getConfigValueAsync('navigation.contextSwitcher.options');
           options = await ContextSwitcherHelpers.generateSwitcherNav(this.get().config, contextSwitcherOptions);
           this.set({options});
@@ -116,7 +121,7 @@
       async setSelectedContext(currentPath) {
         let selectedLabel;
         const parentNodePath = this.get().config.parentNodePath;
-        const inContextBasePath = parentNodePath && currentPath.indexOf(parentNodePath) !== -1;
+        const inContextBasePath = parentNodePath && currentPath.includes(parentNodePath);
         if (inContextBasePath) {
           // we are inside the context switcher base path
           const truncatedPath = trimLeadingSlash(currentPath.replace(parentNodePath, ''));
@@ -129,9 +134,9 @@
       },
       async onActionClick(node) {
         if (node.clickHandler) {
-          const result = await getConfigValueFromObjectAsync({result: node.clickHandler(node)}, 'result');
+          const result = await node.clickHandler(node);
+          // If the clickHandler returns true, open the link
           if (!result) {
-            // If the clickHandler returns falsy value, do nothing, else continue with linking
             return;
           }
         }
@@ -144,37 +149,22 @@
           window.location.pathname = path;
         }
       },
-      onContextSwitcherOpen(name) {
-        this.toggleDropdownState(name);
-        this.fetchOptions();
-      },
       toggleDropdownState(name) {
         const dropDownStates = this.get().dropDownStates || {};
         dropDownStates[name] = getNegatedBoolString(dropDownStates[name]);
         this.set({
           dropDownStates
         });
-      },
-      closeDropdown(name) {
-        const dropDownStates = this.get().dropDownStates || {};
-        dropDownStates[name] = 'false';
-        this.set({
-          dropDownStates
-        });
+
+        if (JSON.parse(dropDownStates[name])) {
+          this.fetchOptions();
+        }
       }
     }
   };
 </script>
 
 <style type="text/scss">
-  $fd-icons-path: 'node_modules/fundamental-ui/scss/icons/';
-  @import 'node_modules/fundamental-ui/scss/icons';
-  // @import 'node_modules/fundamental-ui/scss/components/action-bar';
-  // @import 'node_modules/fundamental-ui/scss/components/global-nav';
-  // @import 'node_modules/fundamental-ui/scss/components/popover';
-  // @import 'node_modules/fundamental-ui/scss/components/button';
-  // fundamental-ui is loaded globally
-
   .fd-popover__body {
     right: 0;
   }

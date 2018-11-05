@@ -410,7 +410,6 @@ export const handleRouteClick = (node, windowElem = window) => {
   navigateTo(route, windowElem);
 };
 
-export const getModifiedHash = s => s.newURL.split('#/')[1];
 export const getModifiedPathname = () =>
   window.history.state.path
     .split('/')
@@ -419,17 +418,18 @@ export const getModifiedPathname = () =>
 
 export const getCurrentPath = () =>
   getConfigValue('routing.useHashRouting')
-    ? window.location.hash.replace('#', '')
+    ? window.location.hash.replace('#', '') // TODO: getPathWithoutHash(window.location.hash) fails in ContextSwitcher
     : trimLeadingSlash(window.location.pathname);
 
 export const addRouteChangeListener = callback => {
   if (getConfigValue('routing.useHashRouting')) {
+    const getModifiedHash = s => s.newURL.split('#/')[1];
     return window.addEventListener('hashchange', event => {
       callback(getModifiedHash(event));
     });
   }
 
   return window.addEventListener('popstate', () => {
-    callback(getModifiedPathname());
+    callback(trimLeadingSlash(getModifiedPathname()));
   });
 };

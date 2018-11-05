@@ -51,7 +51,7 @@ window.Luigi.setConfig({
       }
     ],
     contextSwitcher: {
-      emptyLabel: 'Select Environment ...',
+      defaultLabel: 'Select Environment ...',
       parentNodePath: '/environments',
       lazyloadOptions: false,
       fallbackLabelResolver: (id) => (id.toUpperCase()),
@@ -74,19 +74,19 @@ You can configure the way Luigi tackles routing in your application in the **Rou
 - **nodeAccessibilityResolver** allows you to define a permission checker function that gets executed on every node. If it returns `false`, Luigi removes the node and its children from the navigation structure.
   **nodeAccessibilityResolver** receives all values defined in the node configuration. See [angular sampleconfig.js](../core/examples/luigi-sample-angular/src/assets/extendedConfiguration.js) for the **constraints** example.
 
-## Context Switcher
+## Context switcher
 
-Allows to switch between a curated list of navigation elements. Adds a drop down switcher next to the profile in the top navigation bar. Typically used for switching between environments. 
+the context switcher is a drop-down list available in the top navigation bar. It allows you to switch between a curated list of navigation elements such as Environments.
 
-- **emptyLabel** specifies the default label that is shown if no context is selected.
-- **parentNodePath** specifies the base path, that is prepended to **options[].pathValue**. Must be an absolute path.
-- **lazyloadOptions** defines when to fetch **options**. When set to `true`, loads **options** on Context Switcher click without any caching. When set to `false`, loads **options** once on page load . Defaults to `true`. 
+- **defaultLabel** specifies the default label that is shown if no context is selected.
+- **parentNodePath** specifies the base path, that is prepended to **options[].pathValue**. It must be an absolute path.
+- **lazyloadOptions** defines when to fetch **options**. When set to `true`, loads **options** when you click the context switcher. It doesn't involve any caching. When set to `false`, loads **options** once when the page loads . The default value is `true`. 
 - **options** defines the list of context element. Context element properties are:
-  - **label** defines the context element label. If it is not defined, **pathValue** will be passed to **fallbackLabelResolver** to set its value. Defaults to **pathValue**, if **fallbackLabelResolver** is not defined.
+  - **label** defines the context element label. If not defined, the **pathValue** is passed to **fallbackLabelResolver** to set its value. The default value is **pathValue**, if **fallbackLabelResolver** is not defined.
   - **pathValue** defines the context element path that is appended to **parentNodePath**. **pathValue** is used as 
-- **actions** defines a list of additional elements that are shown on above or below the Context Switcher **options**. Each action contains the following parameters:
+- **actions** defines a list of additional elements that are shown on above or below the context switcher **options**. Each action contains the following parameters:
   - **label** defines the action element label
-  - **position** is optional. Defines the action element position. Can be `top` or `bottom`. Defaults to `top`
+  - **position** is optional. Defines the action element position. Can be `top` or `bottom`. The default value is `top.`
   - **link** is optional. Defines an absolute Link to a **node**.
   - **clickHandler** specifies a function and is executed on click and should return a boolean. If it returns `true`, **link** is opened afterwards.
 - **fallbackLabelResolver** specifies a function that is executed to fetch a context element label if **options** are not yet loaded or **label** is not defined.
