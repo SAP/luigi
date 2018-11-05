@@ -1,7 +1,7 @@
 /* This file lets you import styles that Svelte can't consume inside <style> tags, such as @font-face, @keyframe etc. */
 @font-face {
-    font-family: SAP-icons;
-    src: url('SAP-icons.woff') format("woff");
-    font-weight: 400;
-    font-style: normal
-  }
+  font-family: SAP-icons;
+  src: url('/luigi-core/fundamental-ui/SAP-icons.woff') format('woff');
+  font-weight: 400;
+  font-style: normal;
+}

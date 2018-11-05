@@ -81,10 +81,23 @@ module.exports = {
     new ExtractTextPlugin('luigi.css'),
     new CopyWebpackPlugin([
       'node_modules/oidc-client/dist/oidc-client.min.js',
-      'node_modules/fundamental-ui/dist/SAP-icons.woff',
       {
-        from: 'node_modules/fundamental-ui/dist',
+        context: 'node_modules/fundamental-ui/dist',
+        to: 'fundamental-ui',
+        from: {
+          glob: 'SAP-icons.*'
+        }
+      },
+      {
+        from: 'node_modules/fundamental-ui/dist/fundamental-ui.min.css',
         to: 'fundamental-ui'
+      },
+      {
+        context: 'node_modules/fundamental-ui/dist/',
+        to: 'fundamental-ui',
+        from: {
+          glob: 'fonts'
+        }
       }
     ])
   ],
