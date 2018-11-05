@@ -46,6 +46,7 @@
   }, {});
   var _onContextUpdatedFn;
   var _onInitFn;
+  var pathExistsPromises = {};
 
   /**
    * Adds event listener for communication with Luigi Core and starts communication
@@ -98,6 +99,12 @@
         }
 
         window.parent.postMessage({ msg: 'luigi.navigate.ok' }, '*');
+      }
+
+      if ('luigi.navigation.pathExists.answer' === e.data.msg) {
+        var data = e.data.data;
+        pathExistsPromises[data.correlationId].resolveFn(data.pathExists);
+        delete pathExistsPromises[data.correlationId];
       }
     });
 
@@ -172,7 +179,7 @@
         errorSkipNavigation: false,
         fromContext: null,
         fromClosestContext: false,
-        relativePath: false,
+        relative: false,
         link: ''
       };
 
@@ -214,9 +221,10 @@
          * LuigiClient.linkManager().fromContext('project').navigate('/settings')
          */
         fromContext: function fromContext(navigationContext) {
-          var navigationContextInParent = currentContext.context.parentNavigationContexts.includes(
-            navigationContext
-          );
+          var navigationContextInParent =
+            currentContext.context.parentNavigationContexts.indexOf(
+              navigationContext
+            ) !== -1;
           if (navigationContextInParent) {
             options.fromContext = navigationContext;
           } else {
@@ -265,6 +273,40 @@
             Object.assign(options.nodeParams, nodeParams);
           }
           return this;
+        },
+
+        /** @lends linkManager */
+        /**
+         * Checks if a path exists in the main application, i.e., if that path can be navigated to. This helper method can be used e.g. to conditionally display a DOM element like a button.
+         * @param {string} path path which existence you want to check
+         * @returns {promise} A promise that will resolve to a Boolean variable specifying if the path exists or not.
+         * @example
+         *  let pathExists;
+         *  this.luigiClient
+         *  .linkManager()
+         *  .pathExists('projects/pr2')
+         *  .then(
+         *    (pathExists) => {  }
+         *  );
+         */
+        pathExists: function pathExists(path) {
+          var currentId = Date.now();
+          pathExistsPromises[currentId] = {
+            resolveFn: function() {},
+            then: function(resolveFn) {
+              this.resolveFn = resolveFn;
+            }
+          };
+          var pathExistsMsg = {
+            msg: 'luigi.navigation.pathExists',
+            data: {
+              id: currentId,
+              link: path,
+              relative: path[0] !== '/'
+            }
+          };
+          window.parent.postMessage(pathExistsMsg, '*');
+          return pathExistsPromises[currentId];
         },
 
         /**
