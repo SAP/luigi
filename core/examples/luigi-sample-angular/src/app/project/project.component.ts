@@ -113,7 +113,7 @@ export class ProjectComponent implements OnInit, OnDestroy {
       .pathExists(this.pathExists.formValue)
       .then((pathExists: boolean) => {
         this.pathExists.result = pathExists;
-        this.changeDetector.detectChanges();
+        this.cdr.detectChanges();
       });
   }
 
