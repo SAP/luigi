@@ -3,7 +3,7 @@ const chai = require('chai');
 const expect = chai.expect;
 const assert = chai.assert;
 const sinon = require('sinon');
-const LuigiConfig = require('../src/services/config').LuigiConfig;
+import { LuigiConfig } from '../src/services/config';
 
 const sampleNavPromise = new Promise(function(resolve) {
   const lazyLoadedChildrenNodesProviderFn = () => {

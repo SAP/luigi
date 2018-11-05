@@ -1,6 +1,6 @@
 const chai = require('chai');
 const assert = chai.assert;
-const LuigiConfig = require('../src/services/config').LuigiConfig;
+import { LuigiConfig } from '../src/services/config';
 
 describe('Config', () => {
   describe('getConfigBooleanValue()', () => {

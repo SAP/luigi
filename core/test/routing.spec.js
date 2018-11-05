@@ -7,7 +7,7 @@ const MockBrowser = require('mock-browser').mocks.MockBrowser;
 const routing = require('../src/services/routing');
 import { deepMerge } from '../src/utilities/helpers.js';
 import { afterEach } from 'mocha';
-const LuigiConfig = require('../src/services/config').LuigiConfig;
+import { LuigiConfig } from '../src/services/config';
 
 describe('Routing', () => {
   let component;

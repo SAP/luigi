@@ -7,7 +7,6 @@ class LuigiConfigManager {
       valueMs: 2000,
       id: undefined
     };
-    this.config;
 
     this.configReadyCallback = function() {};
   }
@@ -22,7 +21,6 @@ class LuigiConfigManager {
   }
 
   setConfig(configInput) {
-    // console.log("Set config");
     clearTimeout(this.configReadyTimeout.id);
     this.config = configInput;
     this.configReadyCallback();
