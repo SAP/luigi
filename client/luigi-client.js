@@ -87,10 +87,13 @@
         var hashRoutingModeActive =
           e.data.viewUrl.indexOf('#') !== -1 &&
           window.location.href.indexOf('#') !== -1;
-        if (hashRoutingModeActive) {
-          window.location.hash = e.data.viewUrl.split('#')[1];
-        } else {
-          window.location.replace(e.data.viewUrl);
+
+        if (!currentContext.internal.isNavigateBack) {
+          if (hashRoutingModeActive) {
+            window.location.hash = e.data.viewUrl.split('#')[1];
+          } else {
+            window.location.replace(e.data.viewUrl);
+          }
         }
 
         // execute the context change listener if set by the microfrontend
