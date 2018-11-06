@@ -76,7 +76,7 @@ You can configure the way Luigi tackles routing in your application in the **Rou
 
 ## Context switcher
 
-the context switcher is a drop-down list available in the top navigation bar. It allows you to switch between a curated list of navigation elements such as Environments.
+The context switcher is a drop-down list available in the top navigation bar. It allows you to switch between a curated list of navigation elements such as Environments.
 
 - **defaultLabel** specifies the default label that is shown if no context is selected.
 - **parentNodePath** specifies the base path, that is prepended to **options[].pathValue**. It must be an absolute path.
@@ -85,9 +85,9 @@ the context switcher is a drop-down list available in the top navigation bar. It
   - **label** defines the context element label. If not defined, the **pathValue** is passed to **fallbackLabelResolver** to set its value. The default value is **pathValue**, if **fallbackLabelResolver** is not defined.
   - **pathValue** defines the context element path that is appended to **parentNodePath** and reflects a **pathSegment**.
 - **actions** defines a list of additional elements that are shown on above or below the context switcher **options**. Each action contains the following parameters:
-  - **label** defines the action element label
-  - **position** is optional. Defines the action element position. Can be `top` or `bottom`. The default value is `top.`
-  - **link** is optional. Defines an absolute Link to a **node**.
+  - **label** defines the action element label.
+  - **position** defines the action element position. Can be `top` or `bottom`. The default value is `top`. This parameter is optional.
+  - **link** defines an absolute Link to a **node**. This parameter is optional.
   - **clickHandler** specifies a function and is executed on click and should return a boolean. If it returns `true`, **link** is opened afterwards.
 - **fallbackLabelResolver** specifies a function that is executed to fetch a context element label if **options** are not yet loaded or **label** is not defined.
 
