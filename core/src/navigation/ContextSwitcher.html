@@ -151,7 +151,8 @@
           dropDownStates
         });
 
-        if (JSON.parse(dropDownStates[name])) {
+        const isOpened = JSON.parse(dropDownStates[name]);
+        if (isOpened) {
           this.fetchOptions();
         }
       }

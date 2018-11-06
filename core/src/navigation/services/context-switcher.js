@@ -7,11 +7,9 @@ export const ContextSwitcherHelpers = {
         'Luigi Config Error: navigation.contextSwitcher.parentNodePath must be defined as an absolute path.'
       );
     }
-    if (config.parentNodePath) {
-      // add trailing slash if it does not have a dynamic path segment
-      if (!config.parentNodePath.endsWith('/')) {
-        config.parentNodePath = `${config.parentNodePath}/`;
-      }
+    if (config.parentNodePath && !config.parentNodePath.endsWith('/')) {
+      // add trailing slash it does not exist
+      config.parentNodePath = `${config.parentNodePath}/`;
     }
     return config.parentNodePath;
   },

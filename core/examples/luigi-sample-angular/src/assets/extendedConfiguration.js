@@ -507,9 +507,13 @@ Luigi.setConfig({
       },
       actions: [
         {
+          label: '+ New Simple',
+          link: '/create-environment'
+        },
+        {
           label: '+ New Environment',
           link: '/create-environment',
-          position: 'top', // top or bottom
+          position: 'bottom', // top or bottom
           clickHandler: node => {
             // called BEFORE route change
             return true; // route change will be done using link value (if defined)

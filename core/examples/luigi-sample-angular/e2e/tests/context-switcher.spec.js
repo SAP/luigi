@@ -36,7 +36,7 @@ describe('Context switcher', () => {
     // check label
     cy.get('.context-switcher .fd-popover__control button').should(
       'contain',
-      'Env1'
+      'Environment 1'
     );
 
     // Overview
