@@ -1,4 +1,4 @@
-import { getNavigationPath } from './navigation';
+import { getNavigationPath } from '../navigation/services/navigation';
 import {
   getConfigValue,
   getConfigValueAsync,
@@ -30,8 +30,10 @@ const getDefaultChildNode = function(pathData) {
 
   if (lastElement.defaultChildNode && pathExists) {
     return lastElement.defaultChildNode;
-  } else {
+  } else if (lastElement.children && lastElement.children.length > 0) {
     return lastElement.children[0].pathSegment;
+  } else {
+    return '';
   }
 };
 
