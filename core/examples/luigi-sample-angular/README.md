@@ -6,7 +6,7 @@ This is the Angular-based sample application which runs with Luigi framework.
 
 ## Development
 
-Linking and building with [Lerna](https://lernajs.io/) is the preferred development method. This monorepo uses Lerna for project management. 
+Use  [Lerna](https://lernajs.io/) to link the dependencies and bundle scripts within the packages.
 
 To have this application running, follow these steps:
 
@@ -15,14 +15,14 @@ To have this application running, follow these steps:
     npm install -g lerna
     ```
 
-2. Install dependencies. Execute the following command in the root `luigi` folder.
+2. Install dependencies by running the following command in the root `luigi` folder.
     ```bash
-    # The `lerna bootstrap` command executes the Node Package Manager (NPM) installation and links cross-dependencies.
+    # The `lerna bootstrap` command executes the npm package manager installation and links cross-dependencies.
 
     lerna bootstrap
     ```
 
-3. Bundle the Luigi core by executing the following in the `luigi/core` folder.
+3. Bundle Luigi Core by running the following command in the `luigi/core` folder.
     ```bash
     # Lerna runs the bundle script in every package where the script exists.
 
@@ -31,7 +31,9 @@ To have this application running, follow these steps:
 
 4. Start the example application from the `luigi/core/examples/luigi-sample-angular` folder.
 
-    [`extendedConfiguration.js`](src/assets/extendedConfiguration.js) is the default configuration with a showcase of all available features. If you want to try out a much simpler example, change the configuration reference in [`index.html`](src/index.html) to [`basicConfiguration.js`](src/assets/basicConfiguration.js).
+   The  [`extendedConfiguration.js`](src/assets/extendedConfiguration.js) file contains the default configuration including all available features. If you want to try out a simpler example, change the configuration reference in the [`index.html`](src/index.html) file to [`basicConfiguration.js`](src/assets/basicConfiguration.js).
+
+   You can use hash-based routing or path-based routing in your application:
 
     - To run Luigi with hash-based routing, change the **routing.useHashrouting** configuration to `true` and run the following command:
         ```bash
@@ -43,22 +45,23 @@ To have this application running, follow these steps:
         npm run startWebpack
         ```
 
-5. Open it in your browser by going to [http://localhost:4200/](http://localhost:4200/).
+5. Go to [http://localhost:4200/](http://localhost:4200/) to start the application.
 
-6. Optional: Reflect changes in the Luigi Core code on the exemplary application.
+6. Optional: Reflect the changes introducted to the Luigi Core code in the sample application.
 
-    - You must let the Luigi core to bundle every change you apply to it. The easiest approach is to open the Luigi root folder in another tab of your terminal window and run the following command: 
+    - Allow the Luigi Core to bundle every change you apply to it. The easiest approach is to open the Luigi `root` folder in another tab of your terminal window and run the following command: 
+  
       ```bash    
       lerna run bundle-develop
       ```
-    - The Luigi Client is not bundled, so you are able to update it without bundling.
+    - The Luigi Client is not bundled, so you can update it without bundling.
     
-    - The auto-reload of your application only updates the application. Type `CMD + R` to reflect the changes of the linked Luigi Core and Luigi Client modules in the website.
+    - The auto-reload of your application updates only the application. Type `CMD + R` to reflect the changes in the linked Luigi Core and Luigi Client modules on the website.
 
 
 ## Tests
 
-To run UI tests locally, the sample application has to be running. When the application is ready:
+Run the sample application to perform the tests. When the application is ready:
 
 - Run `npm run e2e:run` to start tests in the headless browser.
 - Run `npm run e2e:open` to start tests in the interactive mode.

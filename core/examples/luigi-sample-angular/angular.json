@@ -18,7 +18,6 @@
             "polyfills": "src/polyfills.ts",
             "assets": [
               "src/assets",
-              "src/favicon.ico",
               "src/index.html",
               "src/logout.html",
               {

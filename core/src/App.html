@@ -13,12 +13,11 @@
   <LeftNav pathData={navigationPath} />
 </div>
 
-
 <script type="text/javascript">
   import Backdrop from './Backdrop.html';
   import { fade } from 'svelte-transitions';
-  import TopNav from './TopNav.html';
-  import LeftNav from './LeftNav.html';
+  import TopNav from './navigation/TopNav.html';
+  import LeftNav from './navigation/LeftNav.html';
   import * as Routing from './services/routing.js';
   import { getConfigValue, getConfigValueFromObject } from './services/config.js';
   import { isFunction } from './utilities/helpers.js';
@@ -153,7 +152,7 @@
           builderCompatibilityMode: Boolean(window.builderCompatibilityMode)
         };
 
-        window.addEventListener('message', e => {
+        window.addEventListener('message', async (e) => {
           if ('luigi.get-context' === e.data.msg && config.iframe) {
             sendContextToClient(this, config, {});
 
@@ -211,6 +210,26 @@
               console.error('goBack() not possible, no preserved views found.');
             }
           }
+
+          if ('luigi.navigation.pathExists' === e.data.msg) {
+            const data = e.data.data;
+            const path = buildPath(this, data);
+            const matchedPath = await Routing.matchPath(path);
+
+            let normalizedPath = ((!path.startsWith('/')) ? '/' : '') +
+              ((path.endsWith('/')) ? path.slice(0,-1) : path);
+            const pathExists = matchedPath === normalizedPath;
+            config.iframe.contentWindow.postMessage(
+              {
+                msg: 'luigi.navigation.pathExists.answer',
+                data: {
+                  correlationId: data.id,
+                  pathExists
+                }
+              },
+              '*'
+            );
+          }
         });
 
         // listeners are not automatically removed — cancel
@@ -223,6 +242,7 @@
     methods: {
       prepareInternalData() {
         return {
+          isNavigateBack: this.get().isNavigateBack,
           viewStackSize: this.get().preservedViews.length
         };
       }

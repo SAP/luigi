@@ -1,11 +1,9 @@
 <div class="fd-ui__header {hideNavComponent ? 'hideNavComponent' : ''}">
   <nav class="fd-global-nav">
     <div class="fd-global-nav__group fd-global-nav__group--left">
-      <div class="fd-global-nav__logo fd-has-margin-left-none"></div>
-      <div class="fd-global-nav__product-name">
-        <a on:click="goTo('/overview')">LUIGI</a>
-      </div>
+      <LogoTitle />
     </div>
+
     <div class="fd-global-nav__group fd-global-nav__group--right">
       <div class="fd-global-nav__top-menu">
         {#if children && pathData.length > 0}
@@ -49,12 +47,13 @@
 </div>
 
 <script type="text/javascript">
-  import Backdrop from './Backdrop.html';
-  import ContextSwitcher from './navigation/ContextSwitcher.html';
-  import Authorization from './Authorization.html';
-  import { handleRouteClick } from './services/routing.js';
-  import { getConfigValue, getConfigBooleanValue } from './services/config.js';
-  import { getNegatedBoolString } from './utilities/helpers.js';
+  import Backdrop from '../Backdrop.html';
+  import ContextSwitcher from './ContextSwitcher.html';
+  import LogoTitle from './LogoTitle.html';
+  import Authorization from '../Authorization.html';
+  import { handleRouteClick } from '../services/routing.js';
+  import { getConfigValue, getConfigValueAsync, getConfigBooleanValue } from '../services/config.js';
+  import { getNegatedBoolString } from '../utilities/helpers.js';
 
   const setTopNavData = (current, component) => {
     if (current.pathData && 0 < current.pathData.length) {
@@ -109,13 +108,6 @@
     },
     methods: {
       handleClick: node => handleRouteClick(node),
-      goTo(path) {
-        if (getConfigBooleanValue('routing.useHashRouting')) {
-          window.location.hash = path;
-        } else {
-          window.location.pathname = path;
-        }
-      },
       toggleDropdownState(name) {
         const dropDownStates = this.get().dropDownStates || {};
         dropDownStates[name] = getNegatedBoolString(dropDownStates[name]);
@@ -133,7 +125,8 @@
     },
     components: {
       Authorization,
-      ContextSwitcher
+      ContextSwitcher,
+      LogoTitle
     }
   };
 </script>
@@ -152,6 +145,9 @@
     border-bottom: solid 1px #dededf;
     padding: 0 10px;
   }
+  .fd-global-nav__group--left {
+    padding-left: 20px;
+  }
 
   .fd-global-nav {
     height: 100%;
@@ -167,6 +163,7 @@
   .fd-global-nav__top-menu {
     margin-right: 5px;
   }
+
   .hideNavComponent {
     display: none;
   }

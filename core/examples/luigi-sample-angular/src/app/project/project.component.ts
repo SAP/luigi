@@ -1,4 +1,4 @@
-import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Params } from '@angular/router';
 import { Subscription } from 'rxjs';
 
@@ -13,31 +13,48 @@ import {
   templateUrl: './project.component.html',
   styleUrls: ['./project.component.scss']
 })
-export class ProjectComponent implements OnInit {
+export class ProjectComponent implements OnInit, OnDestroy {
   public projectId: string;
   public luigiClient: LuigiClient;
   public modalActive = false;
   public preservedViewCallbackContext: any;
   private lcSubscription: Subscription;
+  private cudListener: string;
+  public pathExists: { formValue: string; result: boolean | null };
 
   public constructor(
     private activatedRoute: ActivatedRoute,
-    private changeDetector: ChangeDetectorRef,
+    private cdr: ChangeDetectorRef,
     private luigiService: LuigiContextService
-  ) {}
+  ) {
+    this.pathExists = {
+      formValue: '/projects/pr2',
+      result: null
+    };
+  }
 
   ngOnDestroy() {
     if (this.lcSubscription) {
       this.lcSubscription.unsubscribe();
     }
+    if (this.cudListener) {
+      const removed = this.luigiClient.removeContextUpdateListener(
+        this.cudListener
+      );
+      console.info(
+        'project: LuigiClient.removeContextUpdateListener unregistered listener:',
+        removed
+      );
+    }
   }
 
   public ngOnInit() {
-    // Centralized approach of LuigiClient.addContextUpdateListener
+    // We suggest to use a centralized approach of LuigiClient.addContextUpdateListener
+    // Take a look at ngOnInit in this component and app.component.ts where we set the listeners.
     this.lcSubscription = this.luigiService
       .getContext()
       .subscribe((ctx: IContextMessage) => {
-        if (ctx.contextType == 'init' || ctx.contextType == 'update') {
+        if (ctx.contextType === 'init' || ctx.contextType === 'update') {
           this.projectId = ctx.context.currentProject;
           console.info(
             'project ID as luigi param: ' + ctx.context.currentProject
@@ -53,8 +70,8 @@ export class ProjectComponent implements OnInit {
           // to be updated manually
           // Be sure to check for destroyed ChangeDetectorRef,
           // else you get runtime Errors
-          if (!this.changeDetector['destroyed']) {
-            this.changeDetector.detectChanges();
+          if (!this.cdr['destroyed']) {
+            this.cdr.detectChanges();
           }
         }
       });
@@ -66,28 +83,41 @@ export class ProjectComponent implements OnInit {
 
     this.luigiClient = LuigiClient;
 
-    // Only one contextListener allowed per microfrontend, better rely on centralized approach.
-    // Take a look at ngOnInit in this component and app.component.ts where we set the listeners.
+    // Decentralized approach, using LuigiClient listeners directly
     //
-    // LuigiClient.addContextUpdateListener(updatedContext => {
-    //   this.projectId = updatedContext.currentProject;
-    //   this.preservedViewCallbackContext = updatedContext.goBackContext;
-    //   console.info(
-    //     'context update: project ID as luigi param: ' +
-    //     updatedContext.currentProject,
-    //     'goBackContext?',
-    //     this.preservedViewCallbackContext
-    //   );
+    this.cudListener = LuigiClient.addContextUpdateListener(updatedContext => {
+      // this.projectId = updatedContext.currentProject;
+      // this.preservedViewCallbackContext = updatedContext.goBackContext;
+      console.info(
+        'context update static listener: project ID as luigi param: ' +
+          updatedContext.currentProject,
+        'goBackContext?',
+        this.preservedViewCallbackContext
+      );
 
-    //   // Be sure to check for destroyed ChangeDetectorRef,
-    //   // else you get runtime Errors
-    //   if (!(this.changeDetector['destroyed'])) {
-    //     this.changeDetector.detectChanges();
-    //   }
-    // });
+      // Be sure to check for destroyed ChangeDetectorRef,
+      // else you get runtime Errors
+      if (!this.cdr['destroyed']) {
+        this.cdr.detectChanges();
+      }
+    });
   }
 
   toggleModal() {
     this.modalActive = !this.modalActive;
+  }
+
+  checkIfPathExists() {
+    this.luigiClient
+      .linkManager()
+      .pathExists(this.pathExists.formValue)
+      .then((pathExists: boolean) => {
+        this.pathExists.result = pathExists;
+        this.cdr.detectChanges();
+      });
+  }
+
+  resetPathExistsResult() {
+    this.pathExists.result = undefined;
   }
 }

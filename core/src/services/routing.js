@@ -1,4 +1,4 @@
-import { getNavigationPath } from './navigation';
+import { getNavigationPath } from '../navigation/services/navigation';
 import {
   getConfigValue,
   getConfigValueAsync,
@@ -8,7 +8,8 @@ import {
 import {
   getPathWithoutHash,
   getUrlWithoutHash,
-  trimLeadingSlash
+  trimLeadingSlash,
+  isIE
 } from '../utilities/helpers';
 
 const iframeNavFallbackTimeout = 2000;
@@ -30,8 +31,10 @@ const getDefaultChildNode = function(pathData) {
 
   if (lastElement.defaultChildNode && pathExists) {
     return lastElement.defaultChildNode;
-  } else {
+  } else if (lastElement.children && lastElement.children.length > 0) {
     return lastElement.children[0].pathSegment;
+  } else {
+    return '';
   }
 };
 
@@ -395,7 +398,18 @@ export const navigateTo = (route, windowElem = window) => {
     route
   );
 
-  windowElem.dispatchEvent(new Event('popstate'));
+  // https://developer.mozilla.org/en-US/docs/Web/API/CustomEvent#Browser_compatibility
+  // https://developer.mozilla.org/en-US/docs/Web/API/Event#Browser_compatibility
+  // https://developer.mozilla.org/en-US/docs/Web/API/Event/createEvent
+  let event;
+  if (isIE()) {
+    event = document.createEvent('Event');
+    event.initEvent('popstate', true, true);
+  } else {
+    event = new CustomEvent('popstate');
+  }
+
+  windowElem.dispatchEvent(event);
 };
 
 export const handleRouteClick = (node, windowElem = window) => {

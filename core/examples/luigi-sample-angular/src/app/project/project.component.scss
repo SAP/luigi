@@ -1,6 +1,11 @@
 section {
   button {
     margin-bottom: 0.75rem;
+    &:focus {
+      border-color: #085caf;
+      color: #085caf;
+      box-shadow: 0 0 0 1px #0a6ed1;
+    }
   }
   & > * {
     line-height: 1.75em;
@@ -10,5 +15,17 @@ section {
   }
   li:not(:last-of-type) {
     padding-bottom: 20px;
+  }
+  &.link-manager {
+    input {
+      display: inline;
+      max-width: 25em;
+    }
+    button {
+      margin-bottom: 1px;
+      padding-top: 1px;
+      padding-bottom: 1px;
+      margin-left: 4px;
+    }
   }
 }
