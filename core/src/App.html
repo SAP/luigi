@@ -177,7 +177,7 @@
           builderCompatibilityMode: Boolean(window.builderCompatibilityMode)
         };
 
-        window.addEventListener('message', e => {
+        window.addEventListener('message', async (e) => {
           if ('luigi.get-context' === e.data.msg && config.iframe) {
             sendContextToClient(this, config, {});
 
@@ -238,6 +238,26 @@
 
           if ('luigi.auth.tokenIssued' === e.data.msg) {
             sendAuthDataToClient(config.iframe, e.data.authData);
+          }
+
+          if ('luigi.navigation.pathExists' === e.data.msg) {
+            const data = e.data.data;
+            const path = buildPath(this, data);
+            const matchedPath = await Routing.matchPath(path);
+
+            let normalizedPath = ((!path.startsWith('/')) ? '/' : '') +
+              ((path.endsWith('/')) ? path.slice(0,-1) : path);
+            const pathExists = matchedPath === normalizedPath;
+            config.iframe.contentWindow.postMessage(
+              {
+                msg: 'luigi.navigation.pathExists.answer',
+                data: {
+                  correlationId: data.id,
+                  pathExists
+                }
+              },
+              '*'
+            );
           }
         });
 
