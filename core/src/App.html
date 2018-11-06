@@ -261,6 +261,7 @@
     methods: {
       prepareInternalData() {
         return {
+          isNavigateBack: this.get().isNavigateBack,
           viewStackSize: this.get().preservedViews.length
         };
       }
