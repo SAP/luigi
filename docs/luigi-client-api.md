@@ -14,6 +14,14 @@ Registers a listener that is called with a context object as soon as Luigi is in
 
 -   `initFn` **[function](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Statements/function)** the function that is called once Luigi is initialized
 
+### removeInitListener
+
+Removes a init listener
+
+#### Parameters
+
+-   `id` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** the id that was returned by `addInitListener`
+
 ### addContextUpdateListener
 
 Registers a listener that is called upon any navigation change.
@@ -21,6 +29,14 @@ Registers a listener that is called upon any navigation change.
 #### Parameters
 
 -   `contextUpdatedFn` **[function](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Statements/function)** the listener function that is called every time Luigi context was changed
+
+### removeContextUpdateListener
+
+Removes a context update listener
+
+#### Parameters
+
+-   `id` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** the id that was returned by `addContextUpdateListener`
 
 ### getEventData
 
