@@ -83,7 +83,7 @@ the context switcher is a drop-down list available in the top navigation bar. It
 - **lazyloadOptions** defines when to fetch **options**. When set to `true`, loads **options** when you click the context switcher. It doesn't involve any caching. When set to `false`, loads **options** once when the page loads . The default value is `true`. 
 - **options** defines the list of context element. Context element properties are:
   - **label** defines the context element label. If not defined, the **pathValue** is passed to **fallbackLabelResolver** to set its value. The default value is **pathValue**, if **fallbackLabelResolver** is not defined.
-  - **pathValue** defines the context element path that is appended to **parentNodePath**. **pathValue** is used as 
+  - **pathValue** defines the context element path that is appended to **parentNodePath** and reflects a **pathSegment**.
 - **actions** defines a list of additional elements that are shown on above or below the context switcher **options**. Each action contains the following parameters:
   - **label** defines the action element label
   - **position** is optional. Defines the action element position. Can be `top` or `bottom`. The default value is `top.`
