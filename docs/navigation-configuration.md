@@ -218,7 +218,7 @@ The node parameters are as follows:
 - **pathSegment** specifies the partial URL of the current segment. **pathSegment** must not contain slashes.
   - A static settings example reflects `luigidomain.test/settings`.
   - A dynamic settings example, prefixed with a colon, loads on any other value. 
-- **externalLink** is an object which indicates that the node links to an external URL. If this parameter is defined, **pathSegment** is ignored. **externalLink**  has the following properties:
+- **externalLink** is an object which indicates that the node links to an external URL. If this parameter is defined, **pathSegment** is ignored. It has the following properties:
   - **sameWindow** defines if the external URL is opened in a new or current tab.
   - **url** is the external URL that the node leads to.
 - **label** contains the display name of the navigation node.
@@ -229,8 +229,8 @@ The node parameters are as follows:
 - **defaultChildNode** sets the child node that Luigi activates automatically if the current node has no **viewUrl** defined. Provide **pathSegment** of the child node you want to activate as a string.
 - **isolateView** renders the view in a new frame when you enter and leave the node. This setting overrides the same-domain frame re-usage. The **isolateView** is disabled by default.
 - **keepSelectedForChildren** focuses the navigation on its current hierarchy, omitting the display of children.
-- **loadingIndicator.enabled** shows a loading indicator when switching between micro front-ends. If you have a fast micro front-end, you can disable this feature to prevent flickering of the loading indicator. The **loadingIndicator.loadingIndicator** is enabled by default.
-- **loadingIndicator.hideAutomatically** disables the automatic hiding of the loading indicator once the micro front-end is loaded. It is only considered if the loading indicator is enabled. It does not apply if the loading indicator is activated manually with the `LuigiClient.uxManager().showLoadingIndicator()` function. If the loading indicator is enabled and automatic hiding is disabled, use `LuigiClient.uxManager().hideLoadingIndicator()` to hide it manually in your micro front-end during the startup. The **loadingIndicator.hideAutomatically** is enabled by default.
+- **loadingIndicator.enabled** shows a loading indicator when switching between micro front-ends. If you have a fast micro front-end, you can disable this feature to prevent flickering of the loading indicator. This parameter is enabled by default.
+- **loadingIndicator.hideAutomatically** disables the automatic hiding of the loading indicator once the micro front-end is loaded. It is only considered if the loading indicator is enabled. It does not apply if the loading indicator is activated manually with the `LuigiClient.uxManager().showLoadingIndicator()` function. If the loading indicator is enabled and automatic hiding is disabled, use `LuigiClient.uxManager().hideLoadingIndicator()` to hide it manually in your micro front-end during the startup. This parameter is enabled by default.
 
 
 
