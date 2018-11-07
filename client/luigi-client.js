@@ -97,7 +97,10 @@
       }
       currentContext = rawData;
     }
-
+    window.addEventListener('popstate', e => {
+      e.state &&
+        window.parent.postMessage({ msg: 'luigi.go-back-pressed' }, '*');
+    });
     window.addEventListener('message', function messageListener(e) {
       if ('luigi.init' === e.data.msg) {
         setContext(e.data);
