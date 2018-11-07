@@ -100,16 +100,17 @@ export const containsAllSegments = (sourceUrl, targetPathSegments) => {
     return false; //we can already tell segments will not match so no loop is needed
   }
 
-  mandatorySegments.forEach((segment, index) => {
-    if (
-      !targetPathSegments[index + 1] ||
-      !targetPathSegments[index + 1].pathSegment ||
-      (targetPathSegments[index + 1].pathSegment[0] !== ':' &&
-        targetPathSegments[index + 1].pathSegment !== segment)
-    ) {
-      result = false;
-    }
-  });
+  mandatorySegments.length &&
+    mandatorySegments.forEach((segment, index) => {
+      if (
+        !targetPathSegments[index + 1] ||
+        !targetPathSegments[index + 1].pathSegment ||
+        (targetPathSegments[index + 1].pathSegment[0] !== ':' &&
+          targetPathSegments[index + 1].pathSegment !== segment)
+      ) {
+        result = false;
+      }
+    });
 
   return result;
 };
