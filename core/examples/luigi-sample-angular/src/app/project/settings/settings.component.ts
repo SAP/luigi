@@ -32,7 +32,9 @@ export class SettingsComponent implements OnInit {
         Object.keys(LuigiClient.getNodeParams()).length > 0
           ? LuigiClient.getNodeParams()
           : null;
-      this.cdr.detectChanges();
+      if (!this.cdr['destroyed']) {
+        this.cdr.detectChanges();
+      }
     });
   }
 

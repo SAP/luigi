@@ -1,4 +1,4 @@
-import { getConfigValue, getConfigValueFromObjectAsync } from './config';
+import { getConfigValue, getConfigValueFromObjectAsync } from '../../services/config';
 
 const isNodeAccessPermitted = (
   nodeToCheckPermissionFor,

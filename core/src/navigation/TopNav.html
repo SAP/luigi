@@ -1,11 +1,9 @@
 <div class="fd-ui__header {hideNavComponent ? 'hideNavComponent' : ''}">
 	<nav class="fd-global-nav">
 		<div class="fd-global-nav__group fd-global-nav__group--left">
-			<div class="fd-global-nav__logo fd-has-margin-left-none"></div>
-			<div class="fd-global-nav__product-name">
-				<a on:click="goTo('/overview')">Luigi</a>
-			</div>
+			<LogoTitle />
 		</div>
+
 		<div class="fd-global-nav__group fd-global-nav__group--right">
 			<div class="fd-global-nav__actions">
 				{#if children && pathData.length > 0} {#each children as node} {#if !node.hideFromNav}
@@ -39,10 +37,14 @@
 </div>
 
 <script type="text/javascript">
-  import Backdrop from './Backdrop.html';
-  import Authorization from './Authorization.html';
-  import { handleRouteClick } from './services/routing.js';
-  import { getConfigValue, getConfigBooleanValue } from './services/config.js';
+  import LogoTitle from './LogoTitle.html';
+  import Authorization from '../Authorization.html';
+  import { handleRouteClick } from '../services/routing.js';
+  import {
+    getConfigValue,
+    getConfigValueAsync,
+    getConfigBooleanValue
+  } from '../services/config.js';
 
   const getNegatedBoolString = str => {
     return str === 'true' ? 'false' : 'true';
@@ -101,13 +103,6 @@
     },
     methods: {
       handleClick: node => handleRouteClick(node),
-      goTo(path) {
-        if (getConfigBooleanValue('routing.useHashRouting')) {
-          window.location.hash = path;
-        } else {
-          window.location.pathname = path;
-        }
-      },
       toggleDropdownState(name) {
         const dropDownStates = this.get().dropDownStates || {};
         dropDownStates[name] = getNegatedBoolString(dropDownStates[name]);
@@ -124,7 +119,8 @@
       }
     },
     components: {
-      Authorization
+      Authorization,
+      LogoTitle
     }
   };
 </script>
@@ -152,16 +148,13 @@
     border-bottom: solid 1px #dededf;
     padding: 0 10px;
   }
+  .fd-global-nav__group--left {
+    padding-left: 20px;
+  }
 
   .fd-global-nav {
     height: 100%;
     border: none;
-  }
-  .fd-global-nav__product-name {
-    padding: 20px 0 0 8px;
-    font-size: 0.85714rem;
-    line-height: 1.33333;
-    font-weight: 400;
   }
 
   .hideNavComponent {
