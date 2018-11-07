@@ -4,7 +4,7 @@ Navigation parameters allow you to specify routing configuration, set the appear
 
 ## Navigation elements
 
-The image shows the elements of the Luigi navigation: 
+The image shows the elements of Luigi navigation: 
 
 1. Top navigation, where the main navigation path is displayed.
 2. Side navigation, where the applications are defined.
@@ -94,7 +94,7 @@ The following example shows the structure of different navigation paths. If the 
 
 ### Path parameters
 
-Use the path parameter values to define the **pathSegment** in your configuration. You can either use a static value for your **pathSegment**, or add a colon to this value as in `:projectId`, to and make it act as a parameter. This tells Luigi to accept any value for this **pathSegment** of the main application URL. The value replaces the parameter when it is further processed by the application.
+Use path parameter values to define the **pathSegment** in your configuration. You can either use a static value for your **pathSegment**, or add a colon to this value as in `:projectId`, to make it act as a parameter. This tells Luigi to accept any value for this **pathSegment** of the main application URL. The value replaces the parameter when it is further processed by the application.
 
 A sample structure with a parametrized **pathSegment** is as follows:
 ```
@@ -199,7 +199,7 @@ You can use the listed parameters and functions to configure your navigation str
 
 ### Routing
 
-You can configure the way Luigi tackles routing in your application in the **Routing** section of the configuration file. In the example, you can choose the routing strategy to apply in your application as either hash or path location routing.
+You can configure the way Luigi tackles routing in your application in the **Routing** section of the configuration file. For example, you can choose the routing strategy to apply in your application as either hash or path location routing.
 
 - **useHashRouting** defines either hash-based (`url.com/#/yourpath`) or path-based (`url.com/yourpath`) routing.
 - **nodeParamPrefix** sets the prefix character when using the `LuigiClient.linkManager().withParam()` function, which provides a way to simply attach query parameters to the view URL for activities such as sorting and filtering. The URL contains the parameters to allow deep linking. If you want to use a different character prefix, define yours here. The default character is `~`.
@@ -218,6 +218,9 @@ The node parameters are as follows:
 - **pathSegment** specifies the partial URL of the current segment. **pathSegment** must not contain slashes.
   - A static settings example reflects `luigidomain.test/settings`.
   - A dynamic settings example, prefixed with a colon, loads on any other value. 
+- **externalLink** is an object which indicates that the node links to an external URL. If this parameter is defined, **pathSegment** is ignored. It has the following properties:
+  - **sameWindow** defines if the external URL is opened in a new or current tab.
+  - **url** is the external URL that the node leads to.
 - **label** contains the display name of the navigation node.
 - **hideFromNav** shows or hides a navigation node. You can still navigate to the node but it does not show up in the top or left pane.
 - **viewUrl** contains the URL or path to a view which renders when you click the navigation node. Use either a full URL or a relative path. This value may consist of variables if you have specified a **navigationContext** with a dynamic **pathSegment**. If **viewUrl** is undefined, Luigi activates the child node specified in **defaultChildNode**. When both **viewUrl** and **defaultChildNode** are undefined, Luigi opens the first child of the current node.
@@ -226,8 +229,8 @@ The node parameters are as follows:
 - **defaultChildNode** sets the child node that Luigi activates automatically if the current node has no **viewUrl** defined. Provide **pathSegment** of the child node you want to activate as a string.
 - **isolateView** renders the view in a new frame when you enter and leave the node. This setting overrides the same-domain frame re-usage. The **isolateView** is disabled by default.
 - **keepSelectedForChildren** focuses the navigation on its current hierarchy, omitting the display of children.
-- **loadingIndicator.enabled** shows a loading indicator when switching between micro front-ends. If you have a super fast micro front-end, you can disable this feature to prevent the flickering of the loading indicator. The **loadingIndicator.loadingIndicator** is enabled by default.
-- **loadingIndicator.hideAutomatically** disables the automatic hiding of the loading indicator once the micro front-end is loaded. Only considered if the loading indicator is enabled. Does not apply if the loading indicator is activated manually with the `LuigiClient.uxManager().showLoadingIndicator()` function. If the loading indicator is enabled and automatic hiding is disabled, use `LuigiClient.uxManager().hideLoadingIndicator()` to hide it manually in your micro front-end during the startup. The **loadingIndicator.hideAutomatically** is enabled by default.
+- **loadingIndicator.enabled** shows a loading indicator when switching between micro front-ends. If you have a fast micro front-end, you can disable this feature to prevent flickering of the loading indicator. This parameter is enabled by default.
+- **loadingIndicator.hideAutomatically** disables the automatic hiding of the loading indicator once the micro front-end is loaded. It is only considered if the loading indicator is enabled. It does not apply if the loading indicator is activated manually with the `LuigiClient.uxManager().showLoadingIndicator()` function. If the loading indicator is enabled and automatic hiding is disabled, use `LuigiClient.uxManager().hideLoadingIndicator()` to hide it manually in your micro front-end during the startup. This parameter is enabled by default.
 
 
 
