@@ -215,8 +215,9 @@
       return currentContext.context;
     },
     /**
-     * Returns the configuration object of the active navigation node.
-     * @returns {Object} node parameters.
+     * Returns the node parameters of the active URL.
+     * Node parameters are defined like URL query parameters but with a specific prefix allowing them to be passed to the micro front-end view.  The default prefix is **~** and it is used in the following example: `https://my.luigi.app/home/products?~sort=asc~page=3`.
+     * @returns {Object} node parameters, where the object property name is the node parameter name without the prefix, and its value is the value of the node parameter. For example `{sort: 'asc', page: 3}`.
      * @memberof lifecycle
      */
     getNodeParams: function getNodeParams() {
@@ -224,7 +225,9 @@
     },
     /**
      * Returns the dynamic path parameters of the active URL.
-     * @returns {Object} path parameters.
+     * Path parameters are defined by navigation nodes with a dynamic **pathSegment** value starting with **:** such as `productId`.
+     * All such parameters in the current navigation path (as defined by the active URL) are returned.
+     * @returns {Object} path parameters, where the object property name is the path parameter name without the prefix, and its value is the actual value of the path parameter. For example ` {productId: 1234, ...}`.
      * @memberof lifecycle
      */
     getPathParams: function getPathParams() {
@@ -250,9 +253,9 @@
       return {
         /** @lends linkManager */
         /**
-         * Navigates to the given path in the hosting Luigi app. Contains either a full absolute path or a relative path without a leading slash that uses the active route as a base. This is a classical navigation.
+         * Navigates to the given path in the hosting Luigi application. Contains either a full absolute path or a relative path without a leading slash that uses the active route as a base. This is a standard navigation.
          * @param {string} path path to be navigated to
-         * @param {string} sessionId  current Luigi sessionId
+         * @param {string} sessionId current Luigi **sessionId**
          * @param {boolean} preserveView Preserve a view by setting it to `true`. It keeps the current view opened in the background and opens the new route in a new frame. Use the {@link #goBack goBack()} function to navigate back afterwards. You can use this feature at unlimited levels. The preserved views are discarded as soon as the standard {@link #navigate navigate()} function is used in place of {@link #goBack goBack()}.
          * @example
          * LuigiClient.linkManager().navigate('/overview')
@@ -278,7 +281,7 @@
         },
 
         /**
-         * Sets the current navigation context to that of a specific parent node that has the {@link navigation-configuration.md navigationContext} field declared in its navigation configuration. This navigation context is then used by navigate function.
+         * Sets the current navigation context to that of a specific parent node that has the {@link navigation-configuration.md navigationContext} field declared in its navigation configuration. This navigation context is then used by the `navigate` function.
          * @param {Object} navigationContext
          * @returns {linkManager} link manager instance.
          * @example
@@ -303,7 +306,7 @@
         },
 
         /**
-         * Sets the current navigation context, which is then used by the navigate function. This has to be a parent navigation context, it is not possible to go to child navigation contexts.
+         * Sets the current navigation context, which is then used by the `navigate` function. This has to be a parent navigation context, it is not possible to go to child navigation contexts.
          * @returns {linkManager} link manager instance.
          * @example
          * LuigiClient.linkManager().fromClosestContext().navigate('/users/groups/stakeholders')
@@ -323,7 +326,7 @@
         },
 
         /**
-         * Sends node parameters to the route, which are then used by the navigate function. Use it optionally in combination with any of the navigation functions and receive it as part of the context object in Luigi Client.
+         * Sends node parameters to the route, which are then used by the `navigate` function. Use it optionally in combination with any of the navigation functions and receive it as part of the context object in Luigi Client.
          * @param {Object} nodeParams
          * @returns {linkManager} link manager instance.
          * @example
@@ -374,8 +377,8 @@
         },
 
         /**
-         * Checks if there are one or more preserved views. Can be used to show a back button.
-         * @returns {boolean} a boolean with the information if there is a preserved view available to which a user can return.
+         * Checks if there are one or more preserved views. Can be used to show a **back** button.
+         * @returns {boolean} indicating if there is a preserved view available to which the user can return.
          */
         hasBack: function hasBack() {
           return Boolean(currentContext.internal.viewStackSize !== 0);
