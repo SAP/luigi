@@ -1,0 +1,46 @@
+
+
+{#if hasLogo}
+  <div on:click="goTo('/')" class="fd-global-nav__logo fd-has-margin-left-none" ref:logo></div>
+{/if}
+<div class="fd-global-nav__product-name">
+  {#if title}
+  <a on:click="goTo('/')">{title}</a>
+  {/if}
+</div>
+
+<script type="text/javascript">
+  import { processHeaderSettings } from './services/header.js';
+  import { LuigiConfig } from '../services/config.js';
+
+  export default {
+    oncreate() {
+      processHeaderSettings(this);
+    },
+    methods: {
+      goTo(path) {
+        if (LuigiConfig.getConfigBooleanValue('routing.useHashRouting')) {
+          window.location.hash = path;
+        } else {
+          window.location.pathname = path;
+        }
+      }
+    }
+  };
+</script>
+
+<style type="text/scss">
+  @import 'node_modules/fundamental-ui/scss/components/global-nav';
+  .fd-global-nav__logo {
+    cursor: pointer;
+    background-image: none;
+    margin-left: 0px;
+  }
+  .fd-global-nav__product-name {
+    color: #0a6ed1;
+    height: 50px;
+    font-size: 24px;
+    line-height: 1em;
+    padding: 13px 0;
+  }
+</style>

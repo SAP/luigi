@@ -38,7 +38,9 @@ export class DynamicComponent implements OnInit, OnDestroy {
         // We can directly access our specified context values here
         this.nodeLabel = toTitleCase(ctx.context.label);
         this.links = ctx.context.links;
-        this.cdr.detectChanges();
+        if (!this.cdr['destroyed']) {
+          this.cdr.detectChanges();
+        }
       });
   }
 

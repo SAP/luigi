@@ -1,4 +1,4 @@
-import { getNavigationPath } from './navigation';
+import { getNavigationPath } from '../navigation/services/navigation';
 import { LuigiConfig } from './config';
 import {
   getPathWithoutHash,
