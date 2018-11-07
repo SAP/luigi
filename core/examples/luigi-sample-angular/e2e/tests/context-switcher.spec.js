@@ -12,7 +12,7 @@ describe('Context switcher', () => {
 
     // click an action
     cy.get('.context-switcher .fd-popover__body')
-      .contains('New Environment')
+      .contains('New Environment (bottom)')
       .click();
 
     cy.location().should(loc => {

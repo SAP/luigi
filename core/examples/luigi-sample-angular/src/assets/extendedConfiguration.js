@@ -467,6 +467,13 @@ Luigi.setConfig({
           viewUrl: '/sampleapp.html#/settings'
         },
         {
+          label: 'Open Google in this tab',
+          externalLink: {
+            url: 'http://google.com',
+            sameWindow: true
+          }
+        },
+        {
           pathSegment: 'ext',
           label: 'External Page',
           loadingIndicator: {
@@ -507,11 +514,11 @@ Luigi.setConfig({
       },
       actions: [
         {
-          label: '+ New Simple',
+          label: '+ New Environment (top)',
           link: '/create-environment'
         },
         {
-          label: '+ New Environment',
+          label: '+ New Environment (bottom)',
           link: '/create-environment',
           position: 'bottom', // top or bottom
           clickHandler: node => {
