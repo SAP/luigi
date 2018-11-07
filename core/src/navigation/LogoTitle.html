@@ -1,12 +1,10 @@
-
-
-{#if hasLogo}
-  <div on:click="goTo('/')" class="fd-global-nav__logo fd-has-margin-left-none" ref:logo></div>
+ {#if hasLogo}
+<div on:click="goTo('/')" class="fd-global-nav__logo fd-has-margin-left-none" ref:logo></div>
 {/if}
 <div class="fd-global-nav__product-name">
-  {#if title}
-  <a on:click="goTo('/')">{title}</a>
-  {/if}
+	{#if title}
+	<a on:click="goTo('/')">{title}</a>
+	{/if}
 </div>
 
 <script type="text/javascript">
@@ -37,10 +35,9 @@
     margin-left: 0px;
   }
   .fd-global-nav__product-name {
-    color: #0a6ed1;
-    height: 50px;
-    font-size: 24px;
-    line-height: 1em;
-    padding: 13px 0;
+    padding: 20px 0 0 8px;
+    font-size: 0.85714rem;
+    line-height: 1.33333;
+    font-weight: 400;
   }
 </style>
