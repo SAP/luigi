@@ -44,9 +44,33 @@
     acc[key] = {};
     return acc;
   }, {});
-  var _onContextUpdatedFn;
-  var _onInitFn;
+
   var pathExistsPromises = {};
+  var _onContextUpdatedFns = {};
+  var _onInitFns = {};
+  /**
+   * Creates a random Id
+   * @private
+   */
+  function _getRandomId() {
+    return Math.floor(Math.random() * 1e9) + '';
+  }
+
+  /**
+   * Iterates over an object and executes all top-level functions
+   * with a given payload.
+   * @private
+   */
+  function _callAllFns(objWithFns, payload) {
+    for (var id in objWithFns) {
+      if (
+        objWithFns.hasOwnProperty(id) &&
+        typeof objWithFns[id] == 'function'
+      ) {
+        objWithFns[id](payload);
+      }
+    }
+  }
 
   /**
    * Adds event listener for communication with Luigi Core and starts communication
@@ -78,25 +102,24 @@
       if ('luigi.init' === e.data.msg) {
         setContext(e.data);
         luigiInitialized = true;
-        if (_onInitFn) {
-          _onInitFn(currentContext.context);
-        }
+        _callAllFns(_onInitFns, currentContext.context);
       }
       if ('luigi.navigate' === e.data.msg) {
         setContext(e.data);
-        var hashRoutingModeActive =
-          e.data.viewUrl.indexOf('#') !== -1 &&
-          window.location.href.indexOf('#') !== -1;
-        if (hashRoutingModeActive) {
-          window.location.hash = e.data.viewUrl.split('#')[1];
-        } else {
-          window.location.replace(e.data.viewUrl);
+
+        if (!currentContext.internal.isNavigateBack) {
+          var hashRoutingModeActive =
+            e.data.viewUrl.indexOf('#') !== -1 &&
+            window.location.href.indexOf('#') !== -1;
+          if (hashRoutingModeActive) {
+            window.location.hash = e.data.viewUrl.split('#')[1];
+          } else {
+            window.location.replace(e.data.viewUrl);
+          }
         }
 
         // execute the context change listener if set by the microfrontend
-        if (_onContextUpdatedFn) {
-          _onContextUpdatedFn(currentContext.context);
-        }
+        _callAllFns(_onContextUpdatedFns, currentContext.context);
 
         window.parent.postMessage({ msg: 'luigi.navigate.ok' }, '*');
       }
@@ -124,10 +147,24 @@
      * @memberof lifecycle
      */
     addInitListener: function addInitListener(initFn) {
-      _onInitFn = initFn;
-      if (luigiInitialized && _onInitFn) {
-        _onInitFn(currentContext.context);
+      var id = _getRandomId();
+      _onInitFns[id] = initFn;
+      if (luigiInitialized) {
+        _callAllFns(_onInitFns, currentContext.context);
       }
+      return id;
+    },
+    /**
+     * Removes a init listener
+     * @param {string} id the id that was returned by `addInitListener`
+     * @memberof lifecycle
+     */
+    removeInitListener: function removeInitListener(id) {
+      if (_onInitFns[id]) {
+        _onInitFns[id] = undefined;
+        return true;
+      }
+      return false;
     },
     /**
      * Registers a listener that is called upon any navigation change.
@@ -137,10 +174,24 @@
     addContextUpdateListener: function addContextUpdateListener(
       contextUpdatedFn
     ) {
-      _onContextUpdatedFn = contextUpdatedFn;
-      if (luigiInitialized && _onContextUpdatedFn) {
-        _onContextUpdatedFn(currentContext.context);
+      var id = _getRandomId();
+      _onContextUpdatedFns[id] = contextUpdatedFn;
+      if (luigiInitialized) {
+        _callAllFns(_onContextUpdatedFns, currentContext.context);
       }
+      return id;
+    },
+    /**
+     * Removes a context update listener
+     * @param {string} id the id that was returned by `addContextUpdateListener`
+     * @memberof lifecycle
+     */
+    removeContextUpdateListener: function removeContextUpdateListener(id) {
+      if (_onContextUpdatedFns[id]) {
+        _onContextUpdatedFns[id] = undefined;
+        return true;
+      }
+      return false;
     },
     /**
      * Returns the context object. Typically it is not required as the {@link #addContextUpdateListener addContextUpdateListener()} receives the same values.

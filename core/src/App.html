@@ -21,12 +21,11 @@
 	<LeftNav pathData={navigationPath} />
 </div>
 
-
 <script type="text/javascript">
   import Backdrop from './Backdrop.html';
   import { fade } from 'svelte-transitions';
-  import TopNav from './TopNav.html';
-  import LeftNav from './LeftNav.html';
+  import TopNav from './navigation/TopNav.html';
+  import LeftNav from './navigation/LeftNav.html';
   import * as Routing from './services/routing.js';
   import { getConfigValue, getConfigValueFromObject } from './services/config.js';
   import { isFunction } from './utilities/helpers.js';
@@ -290,6 +289,7 @@
     methods: {
       prepareInternalData() {
         return {
+          isNavigateBack: this.get().isNavigateBack,
           viewStackSize: this.get().preservedViews.length
         };
       }

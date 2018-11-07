@@ -33,7 +33,9 @@ export class GroupSettingsComponent implements OnInit, OnDestroy {
           this.pathParams &&
           this.pathParams.group &&
           toTitleCase(this.pathParams.group);
-        this.cdr.detectChanges();
+        if (!this.cdr['destroyed']) {
+          this.cdr.detectChanges();
+        }
       });
   }
 

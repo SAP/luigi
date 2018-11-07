@@ -1,4 +1,4 @@
-const navigation = require('../../src/services/navigation');
+const navigation = require('../src/navigation/services/navigation');
 const chai = require('chai');
 const expect = chai.expect;
 const assert = chai.assert;
