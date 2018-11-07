@@ -431,27 +431,7 @@ Luigi.setConfig({
           children: [
             {
               pathSegment: ':environmentId',
-              viewUrl: '/sampleapp.html#/environments/:environmentId',
-              context: {
-                label: ':environmentId',
-                links: ['Overview']
-              },
-              children: ['Overview'].map(name => ({
-                pathSegment: name
-                  .toLowerCase()
-                  .split(' ')
-                  .join('-'),
-                label: name,
-                context: {
-                  label: name
-                },
-                viewUrl:
-                  '/sampleapp.html#/environments/:environmentId/' +
-                  name
-                    .toLowerCase()
-                    .split(' ')
-                    .join('-')
-              }))
+              viewUrl: '/sampleapp.html#/environments/:environmentId'
             }
           ]
         },
