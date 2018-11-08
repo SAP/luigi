@@ -53,7 +53,7 @@ export class OverviewComponent {
     },
     {
       link: '/projects/pr2',
-      text: 'Node to absolute path',
+      text: 'Node with absolute path',
       description: 'navigation node configuration to direct to an absolute path'
     }
   ];

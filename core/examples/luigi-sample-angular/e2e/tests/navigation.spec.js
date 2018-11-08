@@ -73,5 +73,34 @@ describe('Navigation', () => {
 
       cy.get('.fd-app__sidebar').should('contain', 'Keep Selected Example');
     });
+
+    it('Node with absolute path', () => {
+      cy.get('.fd-ui__header')
+        .contains('Overview')
+        .click();
+
+      cy.wait(150);
+      cy.get('iframe').then(function($element) {
+        let iframeBody, cyIframe;
+        // this gets the body of your iframe
+        iframeBody = $element.contents().find('body');
+        // wrap this body with cy so as to do cy actions inside iframe elements
+        cyIframe = cy.wrap(iframeBody);
+        //now you can forget about that you are in iframe. you can do necessary actions finding the elements inside the iframe
+        // {cyElement is the cypress object here}
+        cyIframe
+          .find('.fd-list-group__item strong')
+          .contains('Node with absolute path')
+          .click();
+      });
+
+      cy.get('.fd-app__sidebar .fd-side-nav__item')
+        .contains('Go to absolute path')
+        .click();
+
+      cy.location().should(loc => {
+        expect(loc.hash).to.eq('#/settings');
+      });
+    });
   });
 });
