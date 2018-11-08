@@ -98,7 +98,7 @@
       currentContext = rawData;
     }
     window.addEventListener('popstate', e => {
-      e.state &&
+      e.state && //there was some view "before" in the iframe so it wants to go back (locally)
         window.parent.postMessage({ msg: 'luigi.go-back-pressed' }, '*');
     });
     window.addEventListener('message', function messageListener(e) {
