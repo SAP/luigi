@@ -50,6 +50,11 @@ export class OverviewComponent {
       text: 'keepSelectedForChildren',
       description:
         'navigation node configuration to focus on a navigation menu and omit the children'
+    },
+    {
+      link: '/projects/pr2',
+      text: 'Node to absolute path',
+      description: 'navigation node configuration to direct to an absolute path'
     }
   ];
 }

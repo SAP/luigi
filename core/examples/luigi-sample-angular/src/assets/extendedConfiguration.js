@@ -171,6 +171,11 @@ var projectDetailNavProviderFn = function(context) {
         ]
       },
       {
+        absolutePath: '/settings',
+        label: 'Go to absolute path',
+        viewUrl: '/sampleapp.html#/settings'
+      },
+      {
         pathSegment: 'avengers',
         label: 'Keep Selected Example',
         viewUrl: '/sampleapp.html#/projects/' + projectId + '/dynamic/avengers',
