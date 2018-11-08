@@ -20,8 +20,8 @@ The navigation structure is a recursive tree-like data structure that defines al
 
 A navigation path is any existing path in the navigation tree. It connects the following elements together:
 
-- The **pathSegment** of the main application. The **pathSegment** is a part of the URL in the browser URL bar.
-- The **viewUrl** of a micro front-end rendered in the content area of the application.
+- The path of the main application, i.e, the path in the browser URL. The path is defined in a Luigi navigation node through one of these three parameters, listed in order of precedence: **externalLink**, **absolutePath**, and **pathSegment**.
+- The **viewUrl** of a micro front-end rendered in the content area of the main application.
 
 A sample navigation structure looks as follows:
 
@@ -34,6 +34,11 @@ A sample navigation structure looks as follows:
         label: 'Home',
         viewUrl: 'https://my.microfrontend.com/',
         children: [
+          {
+            absolutePath: '/home',
+            label: 'Go back home',
+            viewUrl: 'https://my.microfrontend.com/'
+          },
           {
             pathSegment: 'settings',
             label: 'Settings',
@@ -80,7 +85,8 @@ LuigiClient.linkManager().withParam({sort: 'asc'}).navigate('/something/sample_1
 
 ### Application path
 
-The main application path is built from **pathSegment** values in the navigation path, joined with the **/** character.
+The main application path is built from **pathSegment** values in the navigation path, joined with the **/** character. This can be overriden by using either **externalLink** or **absolutePath** values.
+
 The micro front-end view URL is the value of the **viewUrl** property of the last node in the navigation path.
 
 The following example shows the structure of different navigation paths. If the URL of the main application is `https://luigiexample.com`, then:
@@ -218,6 +224,7 @@ The node parameters are as follows:
 - **pathSegment** specifies the partial URL of the current segment. **pathSegment** must not contain slashes.
   - A static settings example reflects `luigidomain.test/settings`.
   - A dynamic settings example, prefixed with a colon, loads on any other value. 
+- **absolutePath** is a string which refers to an absolute path in the navigation structure. If this parameter is defined, **pathSegment** is ignored.
 - **externalLink** is an object which indicates that the node links to an external URL. If this parameter is defined, **pathSegment** is ignored. It has the following properties:
   - **sameWindow** defines if the external URL is opened in a new or current tab.
   - **url** is the external URL that the node leads to.
