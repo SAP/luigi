@@ -80,7 +80,10 @@ module.exports = {
   plugins: [
     new ExtractTextPlugin('luigi.css'),
     new CopyWebpackPlugin([
-      'node_modules/oidc-client/dist/oidc-client.min.js',
+      {
+        from: 'node_modules/oidc-client/dist/oidc-client.min.js',
+        to: 'auth/oidc/'
+      },
       {
         context: 'node_modules/fundamental-ui/dist',
         to: 'fundamental-ui',
