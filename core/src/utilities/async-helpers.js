@@ -1,8 +1,7 @@
 import {
   getConfigValueFromObject,
   isFunction,
-  isPromise,
-  wrapAsPromise
+  isPromise
 } from '../utilities/helpers.js';
 
 const handles = {};
@@ -46,5 +45,7 @@ export const getConfigValueFromObjectAsync = (
       return value;
     }
   }
-  return wrapAsPromise(value);
+  return new Promise(resolve => {
+    resolve(value);
+  });
 };
