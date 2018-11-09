@@ -5,7 +5,7 @@
   </Backdrop>
   {#if showLoadingIndicator}
   <div in:fade='{delay: 250, duration: 250}' out:fade='{duration: 250}' class="fd-page spinnerContainer" aria-hidden="false" aria-label="Loading">
-      <div class="fd-spinner"><div></div></div>
+    <div class="fd-spinner"><div></div></div>
   </div>
   {/if}
 
@@ -20,6 +20,7 @@
   import LeftNav from './navigation/LeftNav.html';
   import * as Routing from './services/routing.js';
   import { getConfigValue, getConfigValueFromObject } from './services/config.js';
+  import { getStoredAuthData } from './utilities/auth-helpers';
   import { isFunction } from './utilities/helpers.js';
 
   const trimLeadingSlash = str => str.replace(/^\//, '');
@@ -136,10 +137,18 @@
         ),
         nodeParams: JSON.stringify(Object.assign({}, component.get().nodeParams)),
         pathParams: JSON.stringify(Object.assign({}, component.get().pathParams)),
-        internal: JSON.stringify(component.prepareInternalData())
+        internal: JSON.stringify(component.prepareInternalData()),
+        authData: getStoredAuthData()
       },
       '*'
     );
+  };
+
+  const sendAuthDataToClient = (iframe, authData) => {
+    iframe.contentWindow.postMessage({
+      msg: 'luigi.auth.tokenIssued',
+      authData
+    }, '*');
   };
 
   export default {
@@ -212,7 +221,7 @@
                 isNavigateBack: true,
                 preservedViews: preservedViews,
                 goBackContext:
-                  e.data.goBackContext && JSON.parse(e.data.goBackContext)
+                e.data.goBackContext && JSON.parse(e.data.goBackContext)
               });
 
               // TODO: check if handleNavigation or history pop to update hash / path
@@ -224,6 +233,10 @@
             } else {
               console.error('goBack() not possible, no preserved views found.');
             }
+          }
+
+          if ('luigi.auth.tokenIssued' === e.data.msg) {
+            sendAuthDataToClient(config.iframe, e.data.authData);
           }
 
           if ('luigi.navigation.pathExists' === e.data.msg) {
