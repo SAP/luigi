@@ -1,24 +1,21 @@
 <div id="app {hideNav? 'no-nav' : ''}">
-	{#if alertMessage}
-	<div class="fd-alert fd-alert--error fd-alert--dismissible" role="alert" id="j2ALl423">
-		<button on:click="set({alertMessage:null})" class="fd-alert__close" aria-controls="j2ALl423" aria-label="Close"></button>
-		{alertMessage}
-	</div>
+  {#if alertMessage}
+    <div class="fd-alert fd-alert--error fd-alert--dismissible" role="alert" id="j2ALl423">
+      <button on:click="set({alertMessage:null})" class="fd-alert__close" aria-controls="j2ALl423" aria-label="Close"></button>
+      {alertMessage}
+    </div>
 	{/if}
-	<Backdrop>
-		<div class="fd-page iframeContainer" use:init="context" />
-	</Backdrop>
-	{#if showLoadingIndicator}
-	<div in:fade='{delay: 250, duration: 250}' out:fade='{duration: 250}' class="fd-page spinnerContainer" aria-hidden="false"
-	 aria-label="Loading">
-		<div class="fd-spinner">
-			<div></div>
-		</div>
-	</div>
-	{/if}
+  <Backdrop>
+    <div class="fd-page iframeContainer" use:init="context"></div>
+  </Backdrop>
+  {#if showLoadingIndicator}
+  <div in:fade='{delay: 250, duration: 250}' out:fade='{duration: 250}' class="fd-page spinnerContainer" aria-hidden="false" aria-label="Loading">
+    <div class="fd-spinner"><div></div></div>
+  </div>
+  {/if}
 
-	<TopNav pathData={navigationPath} />
-	<LeftNav pathData={navigationPath} />
+  <TopNav pathData={navigationPath} />
+  <LeftNav pathData={navigationPath} />
 </div>
 
 <script type="text/javascript">
@@ -28,6 +25,7 @@
   import LeftNav from './navigation/LeftNav.html';
   import * as Routing from './services/routing.js';
   import { getConfigValue, getConfigValueFromObject } from './services/config.js';
+  import { getStoredAuthData } from './utilities/auth-helpers';
   import { isFunction } from './utilities/helpers.js';
 
   const handleAlertReceived = message => {
@@ -149,10 +147,18 @@
         ),
         nodeParams: JSON.stringify(Object.assign({}, component.get().nodeParams)),
         pathParams: JSON.stringify(Object.assign({}, component.get().pathParams)),
-        internal: JSON.stringify(component.prepareInternalData())
+        internal: JSON.stringify(component.prepareInternalData()),
+        authData: getStoredAuthData()
       },
       '*'
     );
+  };
+
+  const sendAuthDataToClient = (iframe, authData) => {
+    iframe.contentWindow.postMessage({
+      msg: 'luigi.auth.tokenIssued',
+      authData
+    }, '*');
   };
 
   export default {
@@ -226,7 +232,7 @@
                 isNavigateBack: true,
                 preservedViews: preservedViews,
                 goBackContext:
-                  e.data.goBackContext && JSON.parse(e.data.goBackContext)
+                e.data.goBackContext && JSON.parse(e.data.goBackContext)
               });
 
               // TODO: check if handleNavigation or history pop to update hash / path
@@ -253,6 +259,10 @@
           if ('luigi.hideAlert' === e.data.msg) {
             this.set({ alertMessage: null });
           }
+          if ('luigi.auth.tokenIssued' === e.data.msg) {
+            sendAuthDataToClient(config.iframe, e.data.authData);
+          }
+
           if ('luigi.navigation.pathExists' === e.data.msg) {
             const data = e.data.data;
             const path = buildPath(this, data);
