@@ -314,10 +314,11 @@ export const handleRouteChange = async (path, component, node, config) => {
 
     if (!containsAllSegments(pathUrl, pathData.navigationPath)) {
       const matchedPath = await matchPath(pathUrl);
+      const pathPrefix = getConfigValue('routing.useHashRouting') ? '#' : '';
       window.history.replaceState(
         window.history.state,
         'Corrected URL',
-        '#' + matchedPath
+        pathPrefix + matchedPath
       );
       window.postMessage(
         {
