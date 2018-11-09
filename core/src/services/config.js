@@ -17,7 +17,7 @@ class LuigiConfigManager {
       // Avoid Luigi initialization if timeout reached
       this.configReadyCallback = function() {};
       this.configNotReadyCallback();
-    }, 2000);
+    }, this.configReadyTimeout.valueMs);
   }
 
   setConfig(configInput) {
