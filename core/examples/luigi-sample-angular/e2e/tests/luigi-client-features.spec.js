@@ -148,12 +148,12 @@ describe('Luigi client features', () => {
         cy.goToFeaturesPage($iframeBody);
       });
     });
-    it('navigate to a partitialy wrong link', () => {
+    it('navigate to a partly wrong link', () => {
       cy.wrap($iframeBody)
-        .contains('Partitialy wrong link')
+        .contains('Partly wrong link')
         .click();
       cy.location().should(loc => {
-        expect(loc.hash).to.eq('#/overview/maskopatol');
+        expect(loc.hash).to.eq('#/overview');
       });
       cy.get('.fd-alert').contains(
         'Could not map the exact target node for the requested route'

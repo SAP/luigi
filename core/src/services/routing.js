@@ -313,6 +313,8 @@ export const handleRouteChange = async (path, component, node, config) => {
     }
 
     if (!containsAllSegments(pathUrl, pathData.navigationPath)) {
+      const matchedPath = await matchPath(pathUrl);
+      window.history.pushState('object or string', 'Title', '#' + matchedPath);
       window.postMessage(
         {
           msg: 'luigi.displayAlert',

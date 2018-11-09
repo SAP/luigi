@@ -80,7 +80,7 @@ describe('Navigation', () => {
       cy.visit('http://localhost:4200/#/projects/pr2/maskopatol');
 
       cy.location().should(loc => {
-        expect(loc.hash).to.eq('#/projects/pr2/maskopatol');
+        expect(loc.hash).to.eq('#/projects/pr2');
       });
 
       cy.get('.fd-alert').contains(
