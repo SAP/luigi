@@ -20,7 +20,7 @@ The navigation structure is a recursive tree-like data structure that defines al
 
 A navigation path is any existing path in the navigation tree. It connects the following elements together:
 
-- The path of the main application, i.e, the path in the browser URL. The path is defined in a Luigi navigation node through one of these three parameters, listed in order of precedence: **externalLink**, **absolutePath**, and **pathSegment**.
+- The path of the main application, that is, the path in the browser URL. The path is defined in a Luigi navigation node through one of the following parameters, listed in order of precedence: **externalLink**, **absolutePath**, and **pathSegment**.
 - The **viewUrl** of a micro front-end rendered in the content area of the main application.
 
 A sample navigation structure looks as follows:
