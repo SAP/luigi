@@ -12,7 +12,7 @@ auth: {
 }
 ````
 
-## Open ID Connect configuration
+## OpenID Connect configuration
 
 The following code snippet demonstrates how to configure authorization using OpenID Connect in Luigi. 
 
@@ -36,7 +36,9 @@ auth: {
 - **scope** defines the permissions to request at login.
 - **redirect_uri** sets the URL to return to after login. The default application root is `/`.
 - **post_logout_redirect_uri** sets the URL to return after logout. The default URL is `/logout.html`.
-- **automaticSilentRenew** enables the renewal of the automatic token if it is supported by the server. The default value is `false`.
+- **automaticSilentRenew** enables the automatic silent renewal of the token if it is supported by the server. The default value is `false`. For this mechanism to work, the browser must have third-party cookies support enabled.
+- **accessTokenExpiringNotificationTime** is the number of seconds before an access token is to expire and triggers silent token refresh. The default value is 60.
+- **thirdPartyCookiesScriptLocation** is the URL to the page containing third-party cookies support check. For details, see [Third-party cookies and silent token refresh section](#Third-party-cookies-and-silent-token-refresh).
 
 ## OAuth2 Implicit Grant configuration
 
@@ -71,4 +73,16 @@ auth: {
 - **redirect_uri** contains the URL to return to after login. The default application root is `/`.
 - **response_type** defaults to the **id_token**. Any other parameter that is added to oAuthData is also added to the authorization payload.
 - **nonceFn** provides a function that returns a string in order to override the default **nonce**.
-- **logoutFn** provides a function to override **logoutUrl** functionality for a custom logout. It needs to execute the function **logoutCallback()** after logout.
+- **logoutFn** provides the function to override the **logoutUrl** functionality for a custom logout. It needs to execute the **logoutCallback()** function after logout.
+
+### Third-party cookies and silent token refresh
+
+The OpenID Connect configuration allows you to specify the **automaticSilentRenew** option. When set to `true`, Luigi attempts to automatically renew the token in the background before it expires. Be aware that this mechanism requires the browser to support [third-party cookies](https://developer.mozilla.org/en-US/docs/Web/HTTP/Cookies#Third-party_cookies).
+It is possible to detect whether the user's browser supports the mechanism by using the script in [`third-party-cookies`](https://github.com/kyma-project/luigi/tree/master/core/third-party-cookies) catalog. Deploy these files on a **different domain** than your main application and set **thirdPartyCookiesScriptLocation** to `init.html` file. During initialization, Luigi detects the cookies support and produces a warning in the console if cookies are disabled in the user's browser.                                         
+
+When Luigi fails to renew the token and then logs out the user, it adds the following query parameters to the logout page redirect URL: `?reason=tokenExpired&thirdPartyCookies=[VALUE]`. Luigi replaces the **VALUE**  with one of the following:
+- `disabled` means that third party cookies is disabled.
+- `enabled` means third party cookies are supported by the browser.
+- `not_checked` means that the script was not provided in **thirdPartyCookiesScriptLocation** or it could not be loaded.
+
+The application developer can read these parameters and set a logout page based on them.
