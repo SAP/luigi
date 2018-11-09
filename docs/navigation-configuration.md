@@ -286,7 +286,7 @@ When loading, the **viewUrl** uses the following dynamic URL parameters:
 - `sort = asc`
 
 ```
-Luigi.setConfig({
+window.Luigi.setConfig({
   routing: {
     nodeParamPrefix: '~'
   },
