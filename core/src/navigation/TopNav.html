@@ -1,13 +1,13 @@
 <div class="fd-ui__header {hideNavComponent ? 'hideNavComponent' : ''}">
-  <nav class="fd-global-nav">
-    <div class="fd-global-nav__group fd-global-nav__group--left">
-      <LogoTitle />
-    </div>
+	<nav class="fd-global-nav">
+		<div class="fd-global-nav__group fd-global-nav__group--left">
+			<LogoTitle />
+		</div>
 
-    <div class="fd-global-nav__group fd-global-nav__group--right">
-      <div class="fd-global-nav__actions">
-        {#if children && pathData.length > 0}
-          {#each children as node}
+		<div class="fd-global-nav__group fd-global-nav__group--right">
+			<div class="fd-global-nav__actions">
+        {#if children && pathData.length > 0} 
+          {#each children as node} 
             {#if !node.hideFromNav}
               <button class=" fd-button--secondary fd-button--m fd-global-nav__btn {node === selectedNode ? 'is-selected' : ''} {node.externalLink && node.externalLink.url ? 'fd-global-nav__btn--external' : ''}"
               aria-label="{node.label}" on:click=handleClick(node)>
@@ -16,37 +16,40 @@
                   <span class="sap-icon--action sap-icon--s"></span>
                 {/if}
               </button>
-            {/if}
-          {/each}
-        {/if}
-
+            {/if} 
+          {/each} 
+        {/if} 
         {#if authorizationEnabled}
-        <div class="fd-popover user-settings">
-          <div class="fd-popover__control">
-            <button class="fd-popover__control fd-button--secondary fd-button--m fd-global-nav__btn sap-icon--customer" aria-expanded="{dropDownStates.PROFILE_POPOVER || false}"
+          <div class="fd-popover user-settings">
+            <div class="fd-popover__control">
+              <button class="fd-popover__control fd-button--secondary fd-button--m fd-global-nav__btn sap-icon--customer" aria-expanded="{dropDownStates.PROFILE_POPOVER || false}"
               aria-haspopup="true" on:click="toggleDropdownState('PROFILE_POPOVER')" on:blur="closeDropdown('PROFILE_POPOVER')"></button>
+            </div>
+            <div class="fd-popover__body" aria-hidden="{dropDownStatesNegated.PROFILE_POPOVER || true}" id="PROFILE_POPOVER">
+              <nav class="fd-menu" id="">
+                <Authorization />
+                <!-- <ul class="fd-menu__list">
+                  <li><a href="#" class="fd-menu__item">Option 1</a></li>
+                  <li><a href="#" class="fd-menu__item">Option 1</a></li>
+                </ul> -->
+              </nav>
+            </div>
           </div>
-          <div class="fd-popover__body" aria-hidden="{dropDownStatesNegated.PROFILE_POPOVER || true}" id="PROFILE_POPOVER">
-            <nav class="fd-menu" id="">
-              <Authorization />
-              <!-- <ul class="fd-menu__list">
-                <li><a href="#" class="fd-menu__item">Option 1</a></li>
-                <li><a href="#" class="fd-menu__item">Option 1</a></li>
-              </ul> -->
-            </nav>
-          </div>
-        </div>
-        {/if}
-      </div>
-    </div>
-  </nav>
+				{/if}
+			</div>
+		</div>
+	</nav>
 </div>
 
 <script type="text/javascript">
   import LogoTitle from './LogoTitle.html';
   import Authorization from '../Authorization.html';
   import { handleRouteClick } from '../services/routing.js';
-  import { getConfigValue, getConfigValueAsync, getConfigBooleanValue } from '../services/config.js';
+  import {
+    getConfigValue,
+    getConfigValueAsync,
+    getConfigBooleanValue
+  } from '../services/config.js';
 
   const getNegatedBoolString = str => {
     return str === 'true' ? 'false' : 'true';

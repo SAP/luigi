@@ -22,6 +22,7 @@
   import LeftNav from './navigation/LeftNav.html';
   import * as Routing from './services/routing.js';
   import { getConfigValue, getConfigValueFromObject } from './services/config.js';
+  import { getStoredAuthData } from './utilities/auth-helpers';
   import { isFunction } from './utilities/helpers.js';
 
   const trimLeadingSlash = str => str.replace(/^\//, '');
@@ -138,7 +139,18 @@
         ),
         nodeParams: JSON.stringify(Object.assign({}, component.get().nodeParams)),
         pathParams: JSON.stringify(Object.assign({}, component.get().pathParams)),
-        internal: JSON.stringify(component.prepareInternalData())
+        internal: JSON.stringify(component.prepareInternalData()),
+        authData: getStoredAuthData()
+      },
+      '*'
+    );
+  };
+
+  const sendAuthDataToClient = (iframe, authData) => {
+    iframe.contentWindow.postMessage(
+      {
+        msg: 'luigi.auth.tokenIssued',
+        authData
       },
       '*'
     );
@@ -226,6 +238,10 @@
             } else {
               console.error('goBack() not possible, no preserved views found.');
             }
+          }
+
+          if ('luigi.auth.tokenIssued' === e.data.msg) {
+            sendAuthDataToClient(config.iframe, e.data.authData);
           }
 
           if ('luigi.navigation.pathExists' === e.data.msg) {
