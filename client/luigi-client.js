@@ -45,9 +45,11 @@
     return acc;
   }, {});
 
-  var pathExistsPromises = {};
   var _onContextUpdatedFns = {};
   var _onInitFns = {};
+  var authData = {};
+  var pathExistsPromises = {};
+
   /**
    * Creates a random Id
    * @private
@@ -98,13 +100,19 @@
       currentContext = rawData;
     }
 
+    function setAuthData(eventPayload) {
+      if (eventPayload) {
+        authData = eventPayload;
+      }
+    }
+
     window.addEventListener('message', function messageListener(e) {
       if ('luigi.init' === e.data.msg) {
         setContext(e.data);
+        setAuthData(e.data.authData);
         luigiInitialized = true;
         _callAllFns(_onInitFns, currentContext.context);
-      }
-      if ('luigi.navigate' === e.data.msg) {
+      } else if ('luigi.navigate' === e.data.msg) {
         setContext(e.data);
 
         if (!currentContext.internal.isNavigateBack) {
@@ -122,6 +130,8 @@
         _callAllFns(_onContextUpdatedFns, currentContext.context);
 
         window.parent.postMessage({ msg: 'luigi.navigate.ok' }, '*');
+      } else if ('luigi.auth.tokenIssued' === e.data.msg) {
+        setAuthData(e.data.authData);
       }
 
       if ('luigi.navigation.pathExists.answer' === e.data.msg) {
@@ -192,6 +202,9 @@
         return true;
       }
       return false;
+    },
+    getToken: function getToken() {
+      return authData.accessToken;
     },
     /**
      * Returns the context object. Typically it is not required as the {@link #addContextUpdateListener addContextUpdateListener()} receives the same values.
