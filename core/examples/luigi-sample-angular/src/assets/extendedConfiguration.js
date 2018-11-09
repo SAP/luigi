@@ -172,8 +172,7 @@ var projectDetailNavProviderFn = function(context) {
       },
       {
         absolutePath: '/settings',
-        label: 'Go to absolute path',
-        viewUrl: '/sampleapp.html#/settings'
+        label: 'Go to absolute path'
       },
       {
         pathSegment: 'avengers',

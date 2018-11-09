@@ -36,8 +36,7 @@ A sample navigation structure looks as follows:
         children: [
           {
             absolutePath: '/home',
-            label: 'Go back home',
-            viewUrl: 'https://my.microfrontend.com/'
+            label: 'Go back home'
           },
           {
             pathSegment: 'settings',
