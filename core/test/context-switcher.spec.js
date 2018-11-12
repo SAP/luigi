@@ -118,8 +118,8 @@ describe('ContextSwitcher', function() {
   });
 
   describe('getMatchingNodeName()', () => {
-    const env1 = { label: 'Env 1', pathValue: 'env1' };
-    const env2 = { label: 'Env 2', pathValue: 'env2' };
+    const env1 = { label: 'Env 1', id: 'env1' };
+    const env2 = { label: 'Env 2', id: 'env2' };
 
     it('returns undefined if node is not inside options', () => {
       const result = CSHelpers.getMatchingNodeName([env1, env2], 'env3');
@@ -156,8 +156,8 @@ describe('ContextSwitcher', function() {
     });
 
     it('returns env id', async () => {
-      const env1 = { label: 'Env 1', pathValue: 'env1' };
-      const env2 = { label: 'Env 2', pathValue: 'env2' };
+      const env1 = { label: 'Env 1', id: 'env1' };
+      const env2 = { label: 'Env 2', id: 'env2' };
       const result = await CSHelpers.getSelectedLabel(
         '/environment/env2',
         [env1, env2],
@@ -168,8 +168,8 @@ describe('ContextSwitcher', function() {
     });
 
     it('returns fallback label if inside parentNodePath', async () => {
-      const env1 = { label: 'Env 1', pathValue: 'env1' };
-      const env2 = { label: 'Env 2', pathValue: 'env2' };
+      const env1 = { label: 'Env 1', id: 'env1' };
+      const env2 = { label: 'Env 2', id: 'env2' };
       const result = await CSHelpers.getSelectedLabel(
         '/environment/env3',
         [env1, env2],

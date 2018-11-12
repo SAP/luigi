@@ -69,17 +69,21 @@
 
       if (contextSwitcherConfig) {
         const actions = await getConfigValueAsync('navigation.contextSwitcher.actions');
+        const currentPath = Routing.getCurrentPath();
+
         this.set({
           actions,
           fallbackLabelResolver: contextSwitcherConfig.fallbackLabelResolver
         });
+
         // options are loaded lazy by default
-        if (contextSwitcherConfig.lazyloadOptions === false) {
+        if (ContextSwitcherHelpers.isContextSwitcherDetailsView(currentPath, contextSwitcherConfig.parentNodePath)
+            || contextSwitcherConfig.lazyloadOptions === false) {
           await this.fetchOptions();
+          await this.setSelectedContext(currentPath);
         }
       }
 
-      await this.setSelectedContext(Routing.getCurrentPath());
       Routing.addRouteChangeListener(() => this.setSelectedContext(Routing.getCurrentPath()));
     },
     data() {
@@ -112,7 +116,7 @@
     methods: {
       async fetchOptions() {
         let options = this.get().options;
-        if (!options || !options.length || this.get().config.lazyloadOptions !== false) {
+        if (!options || !options.length) {
           const contextSwitcherOptions = await getConfigValueAsync('navigation.contextSwitcher.options');
           options = await ContextSwitcherHelpers.generateSwitcherNav(this.get().config, contextSwitcherOptions);
           this.set({options});
@@ -120,9 +124,9 @@
       },
       async setSelectedContext(currentPath) {
         const config = this.get().config;
+        const options = this.get().options;
         const parentNodePath = config.parentNodePath;
         const fallbackLabelResolver = config.fallbackLabelResolver;
-        const options = await getConfigValueFromObjectAsync(config, 'options');
         this.set({
           selectedLabel: await ContextSwitcherHelpers.getSelectedLabel(currentPath, options, parentNodePath, fallbackLabelResolver)
         })

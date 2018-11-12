@@ -7,8 +7,8 @@ export const ContextSwitcherHelpers = {
         'Luigi Config Error: navigation.contextSwitcher.parentNodePath must be defined as an absolute path.'
       );
     }
-    if (config.parentNodePath && !config.parentNodePath.endsWith('/')) {
-      return `${config.parentNodePath}/`;
+    if (config.parentNodePath) {
+      return Helpers.addTrailingSlash(config.parentNodePath);
     }
     return config.parentNodePath;
   },
@@ -23,8 +23,19 @@ export const ContextSwitcherHelpers = {
   },
 
   getMatchingNodeName(options, id) {
-    const found = options.find(o => o.pathValue === id);
+    const found = options.find(o => o.id === id);
     return found && found.label;
+  },
+
+  isContextSwitcherDetailsView(currentPath, parentNodePath) {
+    const currentPathNormalized = Helpers.addTrailingSlash(currentPath);
+    const parentNodePathNormalized = Helpers.addTrailingSlash(parentNodePath);
+
+    return (
+      parentNodePath &&
+      currentPathNormalized.includes(parentNodePathNormalized) &&
+      !currentPathNormalized.endsWith(parentNodePathNormalized)
+    );
   },
 
   async getFallbackNodeName(fallbackLabelResolver, id) {
@@ -37,30 +48,32 @@ export const ContextSwitcherHelpers = {
     parentNodePath,
     fallbackLabelResolver
   ) {
-    let selectedLabel;
-    const inContextBasePath =
-      parentNodePath &&
-      currentPath
-        .split('/')
-        .filter(s => Boolean(s))
-        .includes(Helpers.trimSlashes(parentNodePath));
-    if (inContextBasePath) {
-      // we are inside the context switcher base path
-      const truncatedPath = Helpers.trimLeadingSlash(
-        currentPath.replace(parentNodePath, '')
-      );
-      const selectedId = truncatedPath.split('/')[0];
-      selectedLabel = ContextSwitcherHelpers.getMatchingNodeName(
-        options,
-        selectedId
-      );
-      selectedLabel =
-        selectedLabel ||
-        (await ContextSwitcherHelpers.getFallbackNodeName(
-          fallbackLabelResolver,
-          selectedId
-        ));
+    if (
+      !ContextSwitcherHelpers.isContextSwitcherDetailsView(
+        currentPath,
+        parentNodePath
+      )
+    ) {
+      return;
     }
+
+    let selectedLabel;
+    // we are inside the context switcher base path
+    const truncatedPath = Helpers.trimLeadingSlash(
+      currentPath.replace(parentNodePath, '')
+    );
+    const selectedId = truncatedPath.split('/')[0];
+    selectedLabel = ContextSwitcherHelpers.getMatchingNodeName(
+      options,
+      selectedId
+    );
+    selectedLabel =
+      selectedLabel ||
+      (await ContextSwitcherHelpers.getFallbackNodeName(
+        fallbackLabelResolver,
+        selectedId
+      ));
+
     return selectedLabel;
   }
 };
