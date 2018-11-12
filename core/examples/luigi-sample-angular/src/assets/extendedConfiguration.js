@@ -430,6 +430,7 @@ Luigi.setConfig({
         {
           hideFromNav: true,
           pathSegment: 'environments',
+          viewUrl: '/sampleapp.html#/environments',
           children: [
             {
               pathSegment: ':environmentId',
