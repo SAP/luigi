@@ -40,7 +40,11 @@ export const ContextSwitcherHelpers = {
   ) {
     let selectedLabel;
     const inContextBasePath =
-      parentNodePath && currentPath.includes(parentNodePath);
+      parentNodePath &&
+      currentPath
+        .split('/')
+        .filter(s => Boolean(s))
+        .includes(parentNodePath.substring(1));
     if (inContextBasePath) {
       // we are inside the context switcher base path
       const truncatedPath = Helpers.trimLeadingSlash(

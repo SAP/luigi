@@ -135,7 +135,17 @@ describe('ContextSwitcher', function() {
   describe('getSelectedLabel()', () => {
     const parentNodePath = '/environment';
 
-    it('returns undefined if outsite current path', async () => {
+    it('returns undefined when path only partially contains parentNodePath', async () => {
+      const result = await CSHelpers.getSelectedLabel(
+        '/environmentWhatever',
+        [],
+        parentNodePath,
+        myResolverFn
+      );
+      assert.equal(result, undefined);
+    });
+
+    it('returns undefined if outside current path', async () => {
       const result = await CSHelpers.getSelectedLabel(
         '/something',
         [],
@@ -145,7 +155,7 @@ describe('ContextSwitcher', function() {
       assert.equal(result, undefined);
     });
 
-    it('returns undefined if outsite parentNodePath', async () => {
+    it('returns env id', async () => {
       const env1 = { label: 'Env 1', pathValue: 'env1' };
       const env2 = { label: 'Env 2', pathValue: 'env2' };
       const result = await CSHelpers.getSelectedLabel(
