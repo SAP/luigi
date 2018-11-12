@@ -1,21 +1,20 @@
 import * as Helpers from '../../utilities/helpers.js';
 
 export const ContextSwitcherHelpers = {
-  prepareParentNodePath(config) {
+  getPreparedParentNodePath(config) {
     if (!config.parentNodePath || !config.parentNodePath.startsWith('/')) {
       console.error(
         'Luigi Config Error: navigation.contextSwitcher.parentNodePath must be defined as an absolute path.'
       );
     }
     if (config.parentNodePath && !config.parentNodePath.endsWith('/')) {
-      // add trailing slash it does not exist
-      config.parentNodePath = `${config.parentNodePath}/`;
+      return `${config.parentNodePath}/`;
     }
     return config.parentNodePath;
   },
 
   generateSwitcherNav(config, rawOptions) {
-    const parentNodePath = this.prepareParentNodePath(config);
+    const parentNodePath = this.getPreparedParentNodePath(config);
     return rawOptions.map(opt => ({
       label: opt.label,
       path: (parentNodePath || '/') + opt.pathValue,
@@ -44,7 +43,7 @@ export const ContextSwitcherHelpers = {
       currentPath
         .split('/')
         .filter(s => Boolean(s))
-        .includes(parentNodePath.substring(1));
+        .includes(Helpers.trimSlashes(parentNodePath));
     if (inContextBasePath) {
       // we are inside the context switcher base path
       const truncatedPath = Helpers.trimLeadingSlash(

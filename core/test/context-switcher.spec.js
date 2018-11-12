@@ -27,7 +27,7 @@ describe('ContextSwitcher', function() {
     return '##' + id + '##';
   };
 
-  describe('prepareParentNodePath()', () => {
+  describe('getPreparedParentNodePath()', () => {
     let mockConfig;
     beforeEach(() => {
       mockConfig = getMockConfig();
@@ -35,32 +35,32 @@ describe('ContextSwitcher', function() {
 
     it('undefined parentNodePath', () => {
       console.error = sinon.spy();
-      CSHelpers.prepareParentNodePath({});
+      CSHelpers.getPreparedParentNodePath({});
       sinon.assert.calledOnce(console.error);
     });
 
     it('falsy relative parentNodePath', () => {
       console.error = sinon.spy();
-      CSHelpers.prepareParentNodePath({ parentNodePath: 'relative/path' });
+      CSHelpers.getPreparedParentNodePath({ parentNodePath: 'relative/path' });
       sinon.assert.calledOnce(console.error);
     });
 
     it('absolute parentNodePath adds slash', () => {
-      const result = CSHelpers.prepareParentNodePath({
+      const result = CSHelpers.getPreparedParentNodePath({
         parentNodePath: '/environment'
       });
       assert.equal(result, '/environment/');
     });
 
     it('absolute parentNodePath with slash does not add slash', () => {
-      const result = CSHelpers.prepareParentNodePath({
+      const result = CSHelpers.getPreparedParentNodePath({
         parentNodePath: '/environment/'
       });
       assert.equal(result, '/environment/');
     });
 
     it('no parentNodePath', () => {
-      const result = CSHelpers.prepareParentNodePath({
+      const result = CSHelpers.getPreparedParentNodePath({
         parentNodePath: '/environment'
       });
       assert.equal(result, '/environment/');
