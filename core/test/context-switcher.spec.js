@@ -1,7 +1,9 @@
-const CSHelpers = require('../src/navigation/services/context-switcher')
-  .ContextSwitcherHelpers;
 const assert = require('chai').assert;
 const sinon = require('sinon');
+
+const CSHelpers = require('../src/navigation/services/context-switcher')
+  .ContextSwitcherHelpers;
+const Helpers = require('../src/utilities/helpers.js');
 
 describe('ContextSwitcher', function() {
   afterEach(() => {
@@ -129,6 +131,61 @@ describe('ContextSwitcher', function() {
     it('returns matching node label', () => {
       const result = CSHelpers.getMatchingNodeName([env1, env2], 'env2');
       assert.equal(result, 'Env 2');
+    });
+  });
+
+  describe('isContextSwitcherDetailsView()', () => {
+    let currentPath;
+    let parentNodePath;
+
+    beforeEach(() => {
+      parentNodePath = '/home/projects';
+      currentPath = '/home/projects/pr1';
+      Helpers.addTrailingSlash = sinon.stub().callsFake(s => s + `/`);
+    });
+
+    it('returns false if parent node path is falsy', () => {
+      parentNodePath = undefined;
+      const actual = CSHelpers.isContextSwitcherDetailsView(
+        currentPath,
+        parentNodePath
+      );
+      assert.isFalse(actual);
+    });
+
+    it('returns false if parent node path is not included in current path', () => {
+      parentNodePath = '/home/nomatch';
+      const actual = CSHelpers.isContextSwitcherDetailsView(
+        currentPath,
+        parentNodePath
+      );
+      assert.isFalse(actual);
+    });
+
+    it('returns false if last path segment from parent node is not a full match in currentPath', () => {
+      currentPath = '/home/projectsandmore/pr1';
+      const actual = CSHelpers.isContextSwitcherDetailsView(
+        currentPath,
+        parentNodePath
+      );
+      assert.isFalse(actual);
+    });
+
+    it('returns false if current path has no content after parent node path', () => {
+      currentPath = '/home/projects';
+      const actual = CSHelpers.isContextSwitcherDetailsView(
+        currentPath,
+        parentNodePath
+      );
+      assert.isFalse(actual);
+    });
+
+    it('returns true if current path has content after parent node path', () => {
+      const actual = CSHelpers.isContextSwitcherDetailsView(
+        currentPath,
+        parentNodePath
+      );
+      assert.isTrue(actual);
     });
   });
 

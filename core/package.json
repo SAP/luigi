@@ -38,6 +38,7 @@
     "bundle": "webpack --display-error-details",
     "bundle-develop": "webpack -d --watch",
     "test": "./node_modules/mocha/bin/mocha --require babel-register --require babel-polyfill --require jsdom-global/register",
+    "test:watch": "npm run test -- --watch",
     "bundlesize": "bundlesize",
     "prepush": "npm run bundle && npm run bundlesize"
   },

@@ -31,10 +31,10 @@ export const ContextSwitcherHelpers = {
     const currentPathNormalized = Helpers.addTrailingSlash(currentPath);
     const parentNodePathNormalized = Helpers.addTrailingSlash(parentNodePath);
 
-    return (
+    return Boolean(
       parentNodePath &&
-      currentPathNormalized.includes(parentNodePathNormalized) &&
-      !currentPathNormalized.endsWith(parentNodePathNormalized)
+        currentPathNormalized.includes(parentNodePathNormalized) &&
+        !currentPathNormalized.endsWith(parentNodePathNormalized)
     );
   },
 
