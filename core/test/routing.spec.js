@@ -69,6 +69,21 @@ describe('Routing', () => {
                     viewUrl: 't2.html'
                   }
                 ]
+              },
+              {
+                pathSegment: 'categories',
+                children: [
+                  {
+                    pathSegment: ':category',
+                    viewUrl: 'cats/:category#details',
+                    children: [
+                      {
+                        pathSegment: ':sub',
+                        viewUrl: 'cats/:category/:sub'
+                      }
+                    ]
+                  }
+                ]
               }
             ],
             context: {
@@ -374,6 +389,78 @@ describe('Routing', () => {
       // then
       assert.equal(component.get().viewUrl, expectedViewUrl);
       assert.equal(iframeMock.src, expectedProcessedViewUrl);
+      assert.equal(
+        component.get().hideNav,
+        window.Luigi.config.settings.hideNavigation
+      );
+    });
+
+    it('should set component data with path param', async () => {
+      // given
+      const path = '#/projects/categories/cat1';
+      const expectedViewUrl = 'cats/cat1#details';
+      const mockBrowser = new MockBrowser();
+      const window = mockBrowser.getWindow();
+      global.window = window;
+      const document = mockBrowser.getDocument();
+      global.document = document;
+
+      const node = {
+        style: {},
+        prepend: sinon.spy()
+      };
+
+      const config = {
+        iframe: null,
+        builderCompatibilityMode: false,
+        navigateOk: null
+      };
+
+      // when
+      window.Luigi = {};
+      window.Luigi.config = sampleLuigiConfig;
+      const iframeMock = { src: null };
+      sinon.stub(document, 'createElement').callsFake(() => iframeMock);
+      await routing.handleRouteChange(path, component, node, config, window);
+
+      // then
+      assert.equal(iframeMock.src, expectedViewUrl);
+      assert.equal(
+        component.get().hideNav,
+        window.Luigi.config.settings.hideNavigation
+      );
+    });
+
+    it('should set component data with multiple path params', async () => {
+      // given
+      const path = '#/projects/categories/cat1/sub23';
+      const expectedViewUrl = 'cats/cat1/sub23';
+      const mockBrowser = new MockBrowser();
+      const window = mockBrowser.getWindow();
+      global.window = window;
+      const document = mockBrowser.getDocument();
+      global.document = document;
+
+      const node = {
+        style: {},
+        prepend: sinon.spy()
+      };
+
+      const config = {
+        iframe: null,
+        builderCompatibilityMode: false,
+        navigateOk: null
+      };
+
+      // when
+      window.Luigi = {};
+      window.Luigi.config = sampleLuigiConfig;
+      const iframeMock = { src: null };
+      sinon.stub(document, 'createElement').callsFake(() => iframeMock);
+      await routing.handleRouteChange(path, component, node, config, window);
+
+      // then
+      assert.equal(iframeMock.src, expectedViewUrl);
       assert.equal(
         component.get().hideNav,
         window.Luigi.config.settings.hideNavigation
