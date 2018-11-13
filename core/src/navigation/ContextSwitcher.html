@@ -55,20 +55,20 @@
 
 <script type="text/javascript">
   import { ContextSwitcherHelpers } from './services/context-switcher.js';
-  import { getConfigValue, getConfigValueAsync, getConfigValueFromObjectAsync, getConfigBooleanValue } from '../services/config.js';
+  import { LuigiConfig } from '../services/config.js'
   import * as Helpers from '../utilities/helpers.js';
   import * as Routing from '../services/routing.js';
 
   export default {
     async oncreate() {
-      const contextSwitcherConfig = getConfigValue('navigation.contextSwitcher');
+      const contextSwitcherConfig = LuigiConfig.getConfigValue('navigation.contextSwitcher');
       this.set({
         contextSwitcherEnabled: !!contextSwitcherConfig,
         config: contextSwitcherConfig
       });
 
       if (contextSwitcherConfig) {
-        const actions = await getConfigValueAsync('navigation.contextSwitcher.actions');
+        const actions = await LuigiConfig.getConfigValueAsync('navigation.contextSwitcher.actions');
         const currentPath = Routing.getCurrentPath();
 
         this.set({
@@ -117,7 +117,7 @@
       async fetchOptions() {
         let options = this.get().options;
         if (!options || !options.length) {
-          const contextSwitcherOptions = await getConfigValueAsync('navigation.contextSwitcher.options');
+          const contextSwitcherOptions = await LuigiConfig.getConfigValueAsync('navigation.contextSwitcher.options');
           options = await ContextSwitcherHelpers.generateSwitcherNav(this.get().config, contextSwitcherOptions);
           this.set({options});
         }
@@ -142,7 +142,7 @@
         this.goTo(node.link);
       },
       goTo(path) {
-        if (getConfigBooleanValue('routing.useHashRouting')) {
+        if (LuigiConfig.getConfigBooleanValue('routing.useHashRouting')) {
           window.location.hash = path;
         } else {
           window.location.pathname = path;

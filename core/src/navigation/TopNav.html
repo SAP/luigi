@@ -51,7 +51,7 @@
   import LogoTitle from './LogoTitle.html';
   import Authorization from '../Authorization.html';
   import { handleRouteClick } from '../services/routing.js';
-  import { getConfigValue, getConfigValueAsync, getConfigBooleanValue } from '../services/config.js';
+  import { LuigiConfig } from '../services/config.js';
   import { getNegatedBoolString } from '../utilities/helpers.js';
 
   const setTopNavData = (current, component) => {
@@ -76,12 +76,12 @@
   export default {
     oncreate() {
       // Authentication detection
-      const idpProviderName = getConfigValue('auth.use');
-      const idpProviderSettings = getConfigValue(`auth.${idpProviderName}`);
+      const idpProviderName = LuigiConfig.getConfigValue('auth.use');
+      const idpProviderSettings = LuigiConfig.getConfigValue(`auth.${idpProviderName}`);
 
       this.set({
         authorizationEnabled: !!idpProviderSettings,
-        hideNavComponent: getConfigBooleanValue('settings.hideNavigation')
+        hideNavComponent: LuigiConfig.getConfigBooleanValue('settings.hideNavigation')
       });
     },
     onstate({ changed, current, previous }) {
