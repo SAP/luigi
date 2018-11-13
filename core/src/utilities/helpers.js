@@ -102,13 +102,13 @@ export const getNegatedBoolString = str => {
 export const trimLeadingSlash = str => str.replace(/^\/+|\//, '');
 
 /**
- * Removes leading ans training slashes of a string
+ * Adds a trailing slash to a string if it has none
  * @param {str} string
- * @returns {string} string without leading or trailing slashes
+ * @returns {string} string with a trailing slash
  */
-export const addTrailingSlash = s => {
-  if (typeof s !== 'string') {
-    return s;
+export const addTrailingSlash = str => {
+  if (typeof str !== 'string') {
+    return str;
   }
   return s.replace(/\/?$/, '/');
 };
