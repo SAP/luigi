@@ -422,11 +422,16 @@ export const handleRouteClick = (node, windowElem = window) => {
   navigateTo(route, windowElem);
 };
 
-export const getModifiedPathname = () =>
-  window.history.state.path
+export const getModifiedPathname = () => {
+  if (!window.history.state) {
+    return '';
+  }
+
+  return window.history.state.path
     .split('/')
     .slice(1)
     .join('/');
+};
 
 export const getCurrentPath = () =>
   LuigiConfig.getConfigValue('routing.useHashRouting')
@@ -441,7 +446,7 @@ export const addRouteChangeListener = callback => {
     });
   }
 
-  return window.addEventListener('popstate', () => {
+  window.onpopstate = () => {
     callback(trimLeadingSlash(getModifiedPathname()));
-  });
+  };
 };
