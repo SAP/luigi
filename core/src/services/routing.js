@@ -294,6 +294,11 @@ export const handleRouteChange = async (path, component, node, config) => {
     const nodeParams = getNodeParams(params);
     const pathParams = getPathParams(pathData.navigationPath);
 
+    const redirectPrefix = getConfigValue('routing.useHashRouting') ? '#' : '';
+    const alertLinkPrefix = getConfigValue('routing.useHashRouting')
+      ? '#/'
+      : '';
+
     if (!viewUrl) {
       const routeExists = isExistingRoute(path, pathData);
 
@@ -301,10 +306,12 @@ export const handleRouteChange = async (path, component, node, config) => {
         const defaultChildNode = getDefaultChildNode(pathData);
         navigateTo(`${pathUrl ? `/${pathUrl}` : ''}/${defaultChildNode}`);
       } else {
+        window.history.replaceState(window.history.state, 'Corrected URL', '/');
         window.postMessage(
           {
             msg: 'luigi.displayAlert',
-            errorMessage: 'Could not find the requested route'
+            errorMessage: 'Could not find the requested route',
+            link: alertLinkPrefix + pathUrl
           },
           '*'
         ); //error 404
@@ -314,17 +321,18 @@ export const handleRouteChange = async (path, component, node, config) => {
 
     if (!containsAllSegments(pathUrl, pathData.navigationPath)) {
       const matchedPath = await matchPath(pathUrl);
-      const pathPrefix = getConfigValue('routing.useHashRouting') ? '#' : '';
+
       window.history.replaceState(
         window.history.state,
         'Corrected URL',
-        pathPrefix + matchedPath
+        redirectPrefix + matchedPath
       );
       window.postMessage(
         {
           msg: 'luigi.displayAlert',
           errorMessage:
-            'Could not map the exact target node for the requested route'
+            'Could not map the exact target node for the requested route ',
+          link: alertLinkPrefix + pathUrl
         },
         '*'
       );
