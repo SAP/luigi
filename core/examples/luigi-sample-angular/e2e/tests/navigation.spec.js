@@ -86,15 +86,17 @@ describe('Navigation', () => {
       cy.get('.fd-alert').contains(
         'Could not map the exact target node for the requested route'
       );
+      cy.get('.fd-alert__link').contains('#/projects/pr2/maskopatol');
     });
     it('Shows "route not found" (404) error', () => {
       cy.visit('http://localhost:4200/#/maskopatol');
 
       cy.location().should(loc => {
-        expect(loc.hash).to.eq('#/maskopatol');
+        expect(loc.hash).to.eq('');
       });
 
       cy.get('.fd-alert').contains('Could not find the requested route');
+      cy.get('.fd-alert__link').contains('#/maskopatol');
     });
   });
 });
