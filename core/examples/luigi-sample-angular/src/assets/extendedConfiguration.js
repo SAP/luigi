@@ -171,7 +171,7 @@ var projectDetailNavProviderFn = function(context) {
         ]
       },
       {
-        absolutePath: '/settings',
+        link: '/settings',
         label: 'Go to absolute path'
       },
       {

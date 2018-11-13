@@ -20,7 +20,7 @@ The navigation structure is a recursive tree-like data structure that defines al
 
 A navigation path is any existing path in the navigation tree. It connects the following elements together:
 
-- The path of the main application, that is, the path in the browser URL. The path is defined in a Luigi navigation node through one of the following parameters, listed in order of precedence: **externalLink**, **absolutePath**, and **pathSegment**.
+- The path of the main application, that is, the path in the browser URL. The path is defined in a Luigi navigation node through one of the following parameters, listed in order of precedence: **externalLink**, **link**, and **pathSegment**.
 - The **viewUrl** of a micro front-end rendered in the content area of the main application.
 
 A sample navigation structure looks as follows:
@@ -35,7 +35,7 @@ A sample navigation structure looks as follows:
         viewUrl: 'https://my.microfrontend.com/',
         children: [
           {
-            absolutePath: '/home',
+            link: '/home',
             label: 'Go back home'
           },
           {
@@ -84,7 +84,7 @@ LuigiClient.linkManager().withParam({sort: 'asc'}).navigate('/something/sample_1
 
 ### Application path
 
-The main application path is built from **pathSegment** values in the navigation path, joined with the **/** character. This can be overriden by using either **externalLink** or **absolutePath** values.
+The main application path is built from **pathSegment** values in the navigation path, joined with the **/** character. This can be overriden by using either **externalLink** or **link** values.
 
 The micro front-end view URL is the value of the **viewUrl** property of the last node in the navigation path.
 
@@ -223,8 +223,8 @@ The node parameters are as follows:
 - **pathSegment** specifies the partial URL of the current segment. **pathSegment** must not contain slashes.
   - A static settings example reflects `luigidomain.test/settings`.
   - A dynamic settings example, prefixed with a colon, loads on any other value. 
-- **absolutePath** is a string which refers to an absolute path in the navigation structure. If this parameter is defined, **pathSegment** is ignored.
- - **externalLink** is an object which indicates that the node links to an external URL. If this parameter is defined, **pathSegment** and **absolutePath** parameters are ignored. It has the following properties:
+- **link** is a string which refers to an absolute path in the navigation structure. If this parameter is defined, **pathSegment** is ignored.
+ - **externalLink** is an object which indicates that the node links to an external URL. If this parameter is defined, **pathSegment** and **link** parameters are ignored. It has the following properties:
   - **sameWindow** defines if the external URL is opened in a new or current tab.
   - **url** is the external URL that the node leads to.
 - **label** contains the display name of the navigation node.
