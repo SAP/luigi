@@ -98,7 +98,13 @@ export class oAuth2ImplicitGrant {
 
       if (tokenExpirationDate - currentDate - logoutBeforeExpirationTime < 0) {
         localStorage.removeItem('luigi.auth');
-        window.location = this.settings.logoutUrl + '?reason=tokenExpired';
+        window.location = `${
+          this.settings.logoutUrl
+        }?reason=tokenExpired&id_token_hint=${authData.idToken}&client_id=${
+          settings.oAuthData.client_id
+        }&post_logout_redirect_uri=${prependOrigin(
+          settings.post_logout_redirect_uri
+        )}`;
       }
     }, expirationCheckInterval);
   }
