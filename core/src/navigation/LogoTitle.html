@@ -9,7 +9,7 @@
 
 <script type="text/javascript">
   import { processHeaderSettings } from './services/header.js';
-  import { getConfigBooleanValue } from '../services/config.js';
+  import { LuigiConfig } from '../services/config.js';
 
   export default {
     oncreate() {
@@ -17,7 +17,7 @@
     },
     methods: {
       goTo(path) {
-        if (getConfigBooleanValue('routing.useHashRouting')) {
+        if (LuigiConfig.getConfigBooleanValue('routing.useHashRouting')) {
           window.location.hash = path;
         } else {
           window.location.pathname = path;

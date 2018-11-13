@@ -19,9 +19,9 @@
   import TopNav from './navigation/TopNav.html';
   import LeftNav from './navigation/LeftNav.html';
   import * as Routing from './services/routing.js';
-  import { getConfigValue, getConfigValueFromObject } from './services/config.js';
+  import { LuigiConfig } from './services/config.js';
+  import { isFunction, getConfigValueFromObject } from './utilities/helpers.js';
   import { getStoredAuthData } from './utilities/auth-helpers';
-  import { isFunction } from './utilities/helpers.js';
 
   const trimLeadingSlash = str => str.replace(/^\//, '');
   const isValidBackRoute = (preservedViews, routeHash) => {
@@ -263,8 +263,7 @@
         // listeners are not automatically removed — cancel
         // them to prevent memory leaks
         // this.on('destroy', storeListener.cancel);
-
-        if (getConfigValue('routing.useHashRouting')) {
+        if (LuigiConfig.getConfigValue('routing.useHashRouting')) {
           return enableHashRouting(this, node, config);
         }
 

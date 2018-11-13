@@ -6,8 +6,8 @@
 
 		<div class="fd-global-nav__group fd-global-nav__group--right">
 			<div class="fd-global-nav__actions">
-        {#if children && pathData.length > 0} 
-          {#each children as node} 
+        {#if children && pathData.length > 0}
+          {#each children as node}
             {#if !node.hideFromNav}
               <button class=" fd-button--secondary fd-button--m fd-global-nav__btn {node === selectedNode ? 'is-selected' : ''} {node.externalLink && node.externalLink.url ? 'fd-global-nav__btn--external' : ''}"
               aria-label="{node.label}" on:click=handleClick(node)>
@@ -16,9 +16,9 @@
                   <span class="sap-icon--action sap-icon--s"></span>
                 {/if}
               </button>
-            {/if} 
-          {/each} 
-        {/if} 
+            {/if}
+          {/each}
+        {/if}
         {#if authorizationEnabled}
           <div class="fd-popover user-settings">
             <div class="fd-popover__control">
@@ -45,11 +45,7 @@
   import LogoTitle from './LogoTitle.html';
   import Authorization from '../Authorization.html';
   import { handleRouteClick } from '../services/routing.js';
-  import {
-    getConfigValue,
-    getConfigValueAsync,
-    getConfigBooleanValue
-  } from '../services/config.js';
+  import { LuigiConfig } from '../services/config.js';
 
   const getNegatedBoolString = str => {
     return str === 'true' ? 'false' : 'true';
@@ -77,12 +73,12 @@
   export default {
     oncreate() {
       // Authentication detection
-      const idpProviderName = getConfigValue('auth.use');
-      const idpProviderSettings = getConfigValue(`auth.${idpProviderName}`);
+      const idpProviderName = LuigiConfig.getConfigValue('auth.use');
+      const idpProviderSettings = LuigiConfig.getConfigValue(`auth.${idpProviderName}`);
 
       this.set({
         authorizationEnabled: !!idpProviderSettings,
-        hideNavComponent: getConfigBooleanValue('settings.hideNavigation')
+        hideNavComponent: LuigiConfig.getConfigBooleanValue('settings.hideNavigation')
       });
     },
     onstate({ changed, current, previous }) {
