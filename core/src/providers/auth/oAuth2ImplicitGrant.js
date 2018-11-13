@@ -101,9 +101,9 @@ export class oAuth2ImplicitGrant {
         window.location = `${
           this.settings.logoutUrl
         }?reason=tokenExpired&id_token_hint=${authData.idToken}&client_id=${
-          settings.oAuthData.client_id
+          this.settings.oAuthData.client_id
         }&post_logout_redirect_uri=${prependOrigin(
-          settings.post_logout_redirect_uri
+          this.settings.post_logout_redirect_uri
         )}`;
       }
     }, expirationCheckInterval);
