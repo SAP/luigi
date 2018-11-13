@@ -123,17 +123,17 @@ const escapeRegExp = string => {
   return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
 };
 
-const replaceVars = (viewUrl, params, prefix, noParenthesis) => {
+const replaceVars = (viewUrl, params, prefix, parenthesis = true) => {
   let processedUrl = viewUrl;
   if (params) {
     Object.entries(params).forEach(entry => {
       processedUrl = processedUrl.replace(
         new RegExp(
           escapeRegExp(
-            (!noParenthesis ? '{' : '') +
+            (parenthesis ? '{' : '') +
               prefix +
               entry[0] +
-              (!noParenthesis ? '}' : '')
+              (parenthesis ? '}' : '')
           ),
           'g'
         ),
@@ -141,7 +141,7 @@ const replaceVars = (viewUrl, params, prefix, noParenthesis) => {
       );
     });
   }
-  if (!noParenthesis) {
+  if (parenthesis) {
     processedUrl = processedUrl.replace(
       new RegExp('\\{' + escapeRegExp(prefix) + '[^\\}]+\\}', 'g'),
       ''
@@ -155,7 +155,7 @@ const navigateIframe = (config, component, node) => {
   const componentData = component.get();
   let viewUrl = componentData.viewUrl;
   if (viewUrl) {
-    viewUrl = replaceVars(viewUrl, componentData.pathParams, ':', true);
+    viewUrl = replaceVars(viewUrl, componentData.pathParams, ':', false);
     viewUrl = replaceVars(viewUrl, componentData.context, contextVarPrefix);
     viewUrl = replaceVars(
       viewUrl,
