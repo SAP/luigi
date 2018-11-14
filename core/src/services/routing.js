@@ -292,8 +292,14 @@ export const handleRouteChange = async (path, component, node, config) => {
     const nodeParams = getNodeParams(params);
     const pathParams = getPathParams(pathData.navigationPath);
 
-    const redirectPrefix = getConfigValue('routing.useHashRouting') ? '#' : '';
-    const alertLinkPrefix = getConfigValue('routing.useHashRouting')
+    const redirectPrefix = LuigiConfig.getConfigBooleanValue(
+      'routing.useHashRouting'
+    )
+      ? '#'
+      : '';
+    const alertLinkPrefix = LuigiConfig.getConfigBooleanValue(
+      'routing.useHashRouting'
+    )
       ? '#/'
       : '';
 
