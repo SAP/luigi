@@ -1,3 +1,5 @@
+import { LocationStrategy, HashLocationStrategy } from '@angular/common';
+
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
@@ -47,7 +49,10 @@ import { DynamicComponent } from './project/dynamic/dynamic.component';
     DynamicComponent
   ],
   imports: [BrowserModule, FormsModule, AppRoutingModule],
-  providers: [LuigiContextService],
+  providers: [
+    LuigiContextService,
+    { provide: LocationStrategy, useClass: HashLocationStrategy }
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule {}
