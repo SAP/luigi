@@ -6,7 +6,10 @@ const CopyWebpackPlugin = require('copy-webpack-plugin');
 
 module.exports = {
   entry: {
-    index: ['./src/main.js']
+    index: [
+      './src/main.js',
+      './node_modules/fundamental-ui/dist/fundamental-ui.min.css'
+    ]
   },
   resolve: {
     mainFields: ['svelte', 'browser', 'module', 'main'],
@@ -65,7 +68,11 @@ module.exports = {
         test: /\.(css)$/,
         use: ExtractTextPlugin.extract({
           fallback: 'file-loader',
-          use: [{ loader: 'css-loader', options: { url: false } }]
+          use: [
+            {
+              loader: 'css-loader'
+            }
+          ]
         })
       },
       {
@@ -83,24 +90,6 @@ module.exports = {
       {
         from: 'node_modules/oidc-client/dist/oidc-client.min.js',
         to: 'auth/oidc/'
-      },
-      {
-        context: 'node_modules/fundamental-ui/dist',
-        to: 'fundamental-ui',
-        from: {
-          glob: 'SAP-icons.*'
-        }
-      },
-      {
-        from: 'node_modules/fundamental-ui/dist/fundamental-ui.min.css',
-        to: 'fundamental-ui'
-      },
-      {
-        context: 'node_modules/fundamental-ui/dist/',
-        to: 'fundamental-ui',
-        from: {
-          glob: 'fonts'
-        }
       }
     ])
   ],
