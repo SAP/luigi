@@ -45,12 +45,12 @@
   "bundlesize": [
     {
       "path": "./public/luigi.js",
-      "maxSize": "50 kB",
+      "maxSize": "100 kB",
       "compression": "none"
     },
     {
       "path": "./public/luigi.css",
-      "maxSize": "150 kB",
+      "maxSize": "300 kB",
       "compression": "none"
     }
   ],
