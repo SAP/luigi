@@ -100,8 +100,16 @@
       currentContext = rawData;
     }
     window.onpopstate = e => {
-      e.state && //there was some view "before" in the iframe so it wants to go back (locally)
-        window.parent.postMessage({ msg: 'luigi.go-back-pressed' }, '*');
+      if (e.state) {
+        //there was some view "before" in the iframe so it wants to go back (locally)
+        const currentLocation = window.location.href;
+        window.history.back();
+        window.history.replaceState(
+          window.history.state,
+          'aa',
+          currentLocation
+        ); // 'pretend' there was only one step in window.history
+      }
     };
 
     function setAuthData(eventPayload) {
