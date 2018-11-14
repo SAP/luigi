@@ -1,9 +1,9 @@
 <div id="app {hideNav? 'no-nav' : ''}">
-	{#if alertMessage}
+	{#if alert&& alert.message}
 	<div class="fd-alert fd-alert--error fd-alert--dismissible" role="alert" id="j2ALl423">
-		<button on:click="set({alertMessage:null})" class="fd-alert__close" aria-controls="j2ALl423" aria-label="Close"></button>
-		{alertMessage} {#if alertLink}
-		<a class="fd-alert__link" href={alertLink}>{alertLink}</a>
+		<button on:click="set({alert:null})" class="fd-alert__close" aria-controls="j2ALl423" aria-label="Close"></button>
+		{alert.message} {#if alert.link}
+		<a class="fd-alert__link">{alert.link}</a>
 		{/if}
 	</div>
 	{/if}
@@ -33,9 +33,6 @@
   import { isFunction, getConfigValueFromObject } from './utilities/helpers.js';
   import { getStoredAuthData } from './utilities/auth-helpers';
 
-  const handleAlertReceived = message => {
-    this.set({ alertMessage: message });
-  };
   const trimLeadingSlash = str => str.replace(/^\//, '');
   const isValidBackRoute = (preservedViews, routeHash) => {
     if (preservedViews.length === 0) {
@@ -174,7 +171,6 @@
       return {
         isNavigateBack: false,
         showLoadingIndicator: false,
-        alertMessage: null,
         preservedViews: [
           // {
           //     path: '/project/p2/settings',
@@ -254,22 +250,6 @@
             }
           }
 
-          if ('luigi.displayAlert' === e.data.msg) {
-            if (e.data.errorMessage) {
-              this.set({
-                alertMessage: e.data.errorMessage,
-                alertLink: e.data.link || undefined
-              });
-            } else {
-              console.error(
-                'Ooops, seems like the developers have misconfigured something'
-              );
-            }
-          }
-
-          if ('luigi.hideAlert' === e.data.msg) {
-            this.set({ alertMessage: null });
-          }
           if ('luigi.auth.tokenIssued' === e.data.msg) {
             sendAuthDataToClient(config.iframe, e.data.authData);
           }
@@ -415,6 +395,8 @@
     }
     .fd-alert__link {
       color: inherit;
+      cursor: default;
+      text-decoration: underline;
     }
   }
 </style>
