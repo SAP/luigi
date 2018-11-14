@@ -153,12 +153,14 @@ describe('Luigi client features', () => {
         .contains('Partly wrong link')
         .click();
       cy.location().should(loc => {
-        expect(loc.hash).to.eq('#/overview');
+        expect(loc.hash).to.eq('#/projects/pr2/miscellaneous2');
       });
       cy.get('.fd-alert').contains(
         'Could not map the exact target node for the requested route'
       );
-      cy.get('.fd-alert__link').contains('#/overview/maskopatol');
+      cy.get('.fd-alert__link').contains(
+        'projects/pr2/miscellaneous2/maskopatol'
+      );
     });
 
     it('navigate to a totally wrong link', () => {
@@ -166,10 +168,10 @@ describe('Luigi client features', () => {
         .contains('Totally wrong link')
         .click();
       cy.location().should(loc => {
-        expect(loc.hash).to.eq('');
+        expect(loc.hash).to.eq('#/overview');
       });
       cy.get('.fd-alert').contains('Could not find the requested route');
-      cy.get('.fd-alert__link').contains('#/maskopatol/has/a/child');
+      cy.get('.fd-alert__link').contains('maskopatol/has/a/child');
     });
   });
 
