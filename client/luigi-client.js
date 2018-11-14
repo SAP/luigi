@@ -106,7 +106,7 @@
         window.history.back();
         window.history.replaceState(
           window.history.state,
-          'aa',
+          'Reduce one history step',
           currentLocation
         ); // 'pretend' there was only one step in window.history
       }
