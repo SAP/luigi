@@ -3,7 +3,6 @@ const assert = chai.assert;
 import { LuigiConfig } from '../src/services/config';
 
 describe('Config', () => {
-  ś;
   describe('getConfigBooleanValue()', () => {
     it('should return correct boolean value', async () => {
       //given
