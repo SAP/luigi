@@ -114,3 +114,15 @@ export const containsAllSegments = (sourceUrl, targetPathSegments) => {
 
   return result;
 };
+/*
+ * Gets value of the given property on the given object.
+ */
+export const getConfigValueFromObject = (object, property) => {
+  let propIndex = 0;
+  let nextValue = object;
+  const propertyPath = property.split('.');
+  while (nextValue && propIndex < propertyPath.length) {
+    nextValue = nextValue[propertyPath[propIndex++]];
+  }
+  return nextValue;
+};
