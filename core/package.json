@@ -11,6 +11,7 @@
     "babel-register": "^6.26.0",
     "bundlesize": "^0.17.0",
     "chai": "^4.1.2",
+    "clean-webpack-plugin": "^1.0.0",
     "copy-webpack-plugin": "^4.5.2",
     "css-loader": "^0.28.11",
     "extract-text-webpack-plugin": "^4.0.0-beta.0",
@@ -38,18 +39,19 @@
     "bundle": "webpack --display-error-details",
     "bundle-develop": "webpack -d --watch",
     "test": "./node_modules/mocha/bin/mocha --require babel-register --require babel-polyfill --require jsdom-global/register",
+    "test:watch": "npm run test -- --watch",
     "bundlesize": "bundlesize",
     "prepush": "npm run bundle && npm run bundlesize"
   },
   "bundlesize": [
     {
       "path": "./public/luigi.js",
-      "maxSize": "50 kB",
+      "maxSize": "100 kB",
       "compression": "none"
     },
     {
       "path": "./public/luigi.css",
-      "maxSize": "150 kB",
+      "maxSize": "300 kB",
       "compression": "none"
     }
   ],

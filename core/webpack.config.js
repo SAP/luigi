@@ -3,10 +3,14 @@ const babelSettings = JSON.parse(readFileSync('.babelrc'));
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const sass = require('node-sass');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
+const CleanWebpackPlugin = require('clean-webpack-plugin');
 
 module.exports = {
   entry: {
-    index: ['./src/main.js']
+    index: [
+      './src/main.js',
+      './node_modules/fundamental-ui/dist/fundamental-ui.min.css'
+    ]
   },
   resolve: {
     mainFields: ['svelte', 'browser', 'module', 'main'],
@@ -65,7 +69,11 @@ module.exports = {
         test: /\.(css)$/,
         use: ExtractTextPlugin.extract({
           fallback: 'file-loader',
-          use: [{ loader: 'css-loader', options: { url: false } }]
+          use: [
+            {
+              loader: 'css-loader'
+            }
+          ]
         })
       },
       {
@@ -78,26 +86,23 @@ module.exports = {
     ]
   },
   plugins: [
+    new CleanWebpackPlugin(['public'], {
+      exclude: ['package.json'],
+      verbose: true
+    }),
     new ExtractTextPlugin('luigi.css'),
     new CopyWebpackPlugin([
-      'node_modules/oidc-client/dist/oidc-client.min.js',
       {
-        context: 'node_modules/fundamental-ui/dist',
-        to: 'fundamental-ui',
-        from: {
-          glob: 'SAP-icons.*'
-        }
+        from: 'node_modules/oidc-client/dist/oidc-client.min.js',
+        to: 'auth/oidc/'
       },
       {
-        from: 'node_modules/fundamental-ui/dist/fundamental-ui.min.css',
-        to: 'fundamental-ui'
+        from: 'src/auth/oauth2/callback.html',
+        to: 'auth/oauth2/callback.html'
       },
       {
-        context: 'node_modules/fundamental-ui/dist/',
-        to: 'fundamental-ui',
-        from: {
-          glob: 'fonts'
-        }
+        from: 'src/auth/oidc/silent-callback.html',
+        to: 'auth/oidc/silent-callback.html'
       }
     ])
   ],

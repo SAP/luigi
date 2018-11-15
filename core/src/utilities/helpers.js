@@ -96,6 +96,32 @@ export const getNegatedBoolString = str => {
 
 /**
  * Removes leading slash of a string
- * @param {str} string string without leading slash
+ * @param {str} string
+ * @returns {string} string without leading slash
  */
-export const trimLeadingSlash = str => str.replace(/^\//, '');
+export const trimLeadingSlash = str => str.replace(/^\/+|\//, '');
+
+/**
+ * Adds a trailing slash to a string if it has none
+ * @param {str} string
+ * @returns {string} string with a trailing slash
+ */
+export const addTrailingSlash = str => {
+  if (typeof str !== 'string') {
+    return str;
+  }
+  return str.replace(/\/?$/, '/');
+};
+
+/*
+ * Gets value of the given property on the given object.
+ */
+export const getConfigValueFromObject = (object, property) => {
+  let propIndex = 0;
+  let nextValue = object;
+  const propertyPath = property.split('.');
+  while (nextValue && propIndex < propertyPath.length) {
+    nextValue = nextValue[propertyPath[propIndex++]];
+  }
+  return nextValue;
+};

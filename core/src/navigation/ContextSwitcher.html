@@ -55,31 +55,35 @@
 
 <script type="text/javascript">
   import { ContextSwitcherHelpers } from './services/context-switcher.js';
-  import { getConfigValue, getConfigValueAsync, getConfigValueFromObjectAsync, getConfigBooleanValue } from '../services/config.js';
+  import { LuigiConfig } from '../services/config.js'
   import * as Helpers from '../utilities/helpers.js';
   import * as Routing from '../services/routing.js';
 
   export default {
     async oncreate() {
-      const contextSwitcherConfig = getConfigValue('navigation.contextSwitcher');
+      const contextSwitcherConfig = LuigiConfig.getConfigValue('navigation.contextSwitcher');
       this.set({
         contextSwitcherEnabled: !!contextSwitcherConfig,
         config: contextSwitcherConfig
       });
 
       if (contextSwitcherConfig) {
-        const actions = await getConfigValueAsync('navigation.contextSwitcher.actions');
+        const actions = await LuigiConfig.getConfigValueAsync('navigation.contextSwitcher.actions');
+        const currentPath = Routing.getCurrentPath();
+
         this.set({
           actions,
           fallbackLabelResolver: contextSwitcherConfig.fallbackLabelResolver
         });
+
         // options are loaded lazy by default
-        if (contextSwitcherConfig.lazyloadOptions === false) {
+        if (ContextSwitcherHelpers.isContextSwitcherDetailsView(currentPath, contextSwitcherConfig.parentNodePath)
+            || contextSwitcherConfig.lazyloadOptions === false) {
           await this.fetchOptions();
+          await this.setSelectedContext(currentPath);
         }
       }
 
-      await this.setSelectedContext(Routing.getCurrentPath());
       Routing.addRouteChangeListener(() => this.setSelectedContext(Routing.getCurrentPath()));
     },
     data() {
@@ -112,17 +116,17 @@
     methods: {
       async fetchOptions() {
         let options = this.get().options;
-        if (!options || !options.length || this.get().config.lazyloadOptions !== false) {
-          const contextSwitcherOptions = await getConfigValueAsync('navigation.contextSwitcher.options');
+        if (!options || !options.length) {
+          const contextSwitcherOptions = await LuigiConfig.getConfigValueAsync('navigation.contextSwitcher.options');
           options = await ContextSwitcherHelpers.generateSwitcherNav(this.get().config, contextSwitcherOptions);
           this.set({options});
         }
       },
       async setSelectedContext(currentPath) {
         const config = this.get().config;
+        const options = this.get().options;
         const parentNodePath = config.parentNodePath;
         const fallbackLabelResolver = config.fallbackLabelResolver;
-        const options = await getConfigValueFromObjectAsync(config, 'options');
         this.set({
           selectedLabel: await ContextSwitcherHelpers.getSelectedLabel(currentPath, options, parentNodePath, fallbackLabelResolver)
         })
@@ -138,7 +142,7 @@
         this.goTo(node.link);
       },
       goTo(path) {
-        if (getConfigBooleanValue('routing.useHashRouting')) {
+        if (LuigiConfig.getConfigBooleanValue('routing.useHashRouting')) {
           window.location.hash = path;
         } else {
           window.location.pathname = path;

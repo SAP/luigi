@@ -334,7 +334,7 @@ Luigi.setConfig({
     openIdConnect: {
       authority: 'https://example-authority.com',
       client_id: 'client',
-      scope: 'audience:server:client_id:client openid profile email groups',
+      scope: 'openid profile email',
       logoutUrl: 'https://example-url.com/logout'
       // optional parameters
       // redirect_uri: '',
@@ -348,7 +348,9 @@ Luigi.setConfig({
       post_logout_redirect_uri: '/logout.html',
       authorizeMethod: 'GET',
       oAuthData: {
-        client_id: 'egDuozijY5SVr0NSIowUP1dT6RVqHnlp'
+        client_id: 'egDuozijY5SVr0NSIowUP1dT6RVqHnlp',
+        redirect_uri: '/luigi-core/auth/oauth2/callback.html',
+        scope: 'openid profile email groups'
 
         // optional: redirect_uri and response_type are provided by default
         // scope: '',
@@ -428,30 +430,11 @@ Luigi.setConfig({
         {
           hideFromNav: true,
           pathSegment: 'environments',
+          viewUrl: '/sampleapp.html#/environments',
           children: [
             {
               pathSegment: ':environmentId',
-              viewUrl: '/sampleapp.html#/environments/:environmentId',
-              context: {
-                label: ':environmentId',
-                links: ['Overview']
-              },
-              children: ['Overview'].map(name => ({
-                pathSegment: name
-                  .toLowerCase()
-                  .split(' ')
-                  .join('-'),
-                label: name,
-                context: {
-                  label: name
-                },
-                viewUrl:
-                  '/sampleapp.html#/environments/:environmentId/' +
-                  name
-                    .toLowerCase()
-                    .split(' ')
-                    .join('-')
-              }))
+              viewUrl: '/sampleapp.html#/environments/:environmentId'
             }
           ]
         },
@@ -465,6 +448,13 @@ Luigi.setConfig({
           pathSegment: 'settings',
           label: 'Settings',
           viewUrl: '/sampleapp.html#/settings'
+        },
+        {
+          label: 'Open Google in this tab',
+          externalLink: {
+            url: 'http://google.com',
+            sameWindow: true
+          }
         },
         {
           pathSegment: 'ext',
@@ -507,11 +497,11 @@ Luigi.setConfig({
       },
       actions: [
         {
-          label: '+ New Simple',
+          label: '+ New Environment (top)',
           link: '/create-environment'
         },
         {
-          label: '+ New Environment',
+          label: '+ New Environment (bottom)',
           link: '/create-environment',
           position: 'bottom', // top or bottom
           clickHandler: node => {

@@ -1,10 +1,7 @@
-import {
-  getConfigValueAsync,
-  getConfigBooleanValue
-} from '../../services/config.js';
+import { LuigiConfig } from '../../services/config.js';
 
 export const processHeaderSettings = component => {
-  return getConfigValueAsync('settings.header').then(header => {
+  return LuigiConfig.getConfigValueAsync('settings.header').then(header => {
     if (!header) {
       return;
     }
@@ -18,7 +15,7 @@ export const processHeaderSettings = component => {
     const hasLogo = Boolean(header.logo);
     component.set({ hasLogo });
     if (hasLogo) {
-      component.refs.logo.style.backgroundImage = 'url(' + header.logo + ')';
+      component.refs.logo.src = header.logo;
     }
 
     // Set Favicon
