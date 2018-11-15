@@ -245,7 +245,7 @@ The node parameters are as follows:
 This code sample demonstrates a sample structure with the parameters you can use when configuring navigation for Luigi.
 
 ```
-window.Luigi.setConfig({
+Luigi.setConfig({
   routing: {
     // uses hash-based navigation if set to true
     useHashRouting: true,
