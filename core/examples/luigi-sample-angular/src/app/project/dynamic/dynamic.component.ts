@@ -35,8 +35,14 @@ export class DynamicComponent implements OnInit, OnDestroy {
           return;
         }
 
+        const pathParams = LuigiClient.getPathParams();
+        let lastPathParam;
+        for (const key in pathParams) {
+          lastPathParam = pathParams[key];
+        }
+
         // We can directly access our specified context values here
-        this.nodeLabel = toTitleCase(ctx.context.label);
+        this.nodeLabel = toTitleCase(ctx.context.label || lastPathParam);
         this.links = ctx.context.links;
         if (!this.cdr['destroyed']) {
           this.cdr.detectChanges();
