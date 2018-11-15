@@ -85,7 +85,6 @@
 </script>
 
 <style type="text/scss">
-  $left-nav-width: 320px;
   a {
     cursor: pointer;
   }
@@ -93,14 +92,11 @@
     position: fixed;
     top: 50px;
     left: 0;
-    width: $left-nav-width;
+    width: 320px;
     bottom: 0;
     background-color: white;
     color: #32363a;
     overflow-y: auto;
-    &:hover {
-      width: $left-nav-width; // Override default from fundamental-ui
-    }
   }
 
   .fd-side-nav__group {
