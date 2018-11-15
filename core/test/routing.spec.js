@@ -541,6 +541,54 @@ describe('Routing', () => {
       assert.equal(singleStateWithPath.path, expectedRoute);
       assert.equal(dispatchCallsNum + 1, expectedDispatchCallsNum);
     });
+
+    it('link with absolute path', () => {
+      // given
+      const expectedRoute = '#/projects';
+      window.location.hash = '#/some/path';
+      const inputNode = {
+        label: 'Absolute link',
+        link: '/projects'
+      };
+
+      // when
+      window.Luigi = {
+        config: {
+          routing: {
+            useHashRouting: true
+          }
+        }
+      };
+
+      routing.handleRouteClick(inputNode, window);
+
+      // then
+      assert.equal(window.location.hash, expectedRoute);
+    });
+
+    it('link with relative path', () => {
+      // given
+      const expectedRoute = '#/some/path/projects';
+      window.location.hash = '#/some/path';
+      const inputNode = {
+        label: 'Relative link',
+        link: 'projects'
+      };
+
+      // when
+      window.Luigi = {
+        config: {
+          routing: {
+            useHashRouting: true
+          }
+        }
+      };
+
+      routing.handleRouteClick(inputNode, window);
+
+      // then
+      assert.equal(window.location.hash, expectedRoute);
+    });
   });
 
   describe('setActiveIframeToPrevious', () => {

@@ -1,7 +1,4 @@
-import {
-  getConfigValueAsync,
-  getConfigBooleanValue
-} from '../../services/config.js';
+import { getConfigValueAsync } from '../../services/config.js';
 
 export const processHeaderSettings = component => {
   return getConfigValueAsync('settings.header').then(header => {

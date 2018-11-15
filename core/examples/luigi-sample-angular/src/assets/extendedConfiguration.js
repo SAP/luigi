@@ -175,6 +175,10 @@ var projectDetailNavProviderFn = function(context) {
         label: 'Go to absolute path'
       },
       {
+        link: 'dps/dps1',
+        label: 'Go to relative path'
+      },
+      {
         pathSegment: 'avengers',
         label: 'Keep Selected Example',
         viewUrl: '/sampleapp.html#/projects/' + projectId + '/dynamic/avengers',

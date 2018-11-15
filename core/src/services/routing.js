@@ -411,6 +411,14 @@ export const navigateTo = (route, windowElem = window) => {
   windowElem.dispatchEvent(event);
 };
 
+export const buildFromRelativePath = path => {
+  if (getConfigValue('routing.useHashRouting')) {
+    return window.location.hash + '/' + path;
+  } else {
+    return window.location.pathname + '/' + path;
+  }
+};
+
 export const handleRouteClick = (node, windowElem = window) => {
   if (node.externalLink && node.externalLink.url) {
     node.externalLink.sameWindow
@@ -419,7 +427,10 @@ export const handleRouteClick = (node, windowElem = window) => {
     // externalLinkUrl property is provided so there's no need to trigger routing mechanizm
     return;
   } else if (node.link) {
-    navigateTo(node.link, windowElem);
+    const link = node.link.startsWith('/')
+      ? node.link
+      : buildFromRelativePath(node.link);
+    navigateTo(link, windowElem);
     return;
   } else {
     const route = buildRoute(node, `/${node.pathSegment}`);
