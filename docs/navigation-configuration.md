@@ -299,7 +299,7 @@ The context switcher is a drop-down list available in the top navigation bar. It
   - **position** defines the action element position. Can be `top` or `bottom`. The default value is `top`. This parameter is optional.
   - **link** defines an absolute Link to a **node**. This parameter is optional.
   - **clickHandler** specifies a function and is executed on click and should return a boolean. If it returns `true`, **link** is opened afterwards.
-- **fallbackLabelResolver** specifies a function that is executed to fetch a context element label if **options** are not yet loaded or **label** is not defined.
+- **fallbackLabelResolver** specifies a function that is used to fetch the **label** for **options** that do not have a **label** defined. Additionally it fetches the dropdown label for non-existing **options**.
 
 
 ### Dynamic **viewUrl** example
