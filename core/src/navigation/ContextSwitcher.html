@@ -3,7 +3,8 @@
   <div class="fd-popover context-switcher">
     <div class="fd-popover__control">
       <button class="fd-button--secondary" aria-expanded="{dropDownStates.CONTEXT_SWITCHER_POPOVER || false}"
-        aria-haspopup="true" on:click="toggleDropdownState('CONTEXT_SWITCHER_POPOVER')" on:blur="closeDropdown('CONTEXT_SWITCHER_POPOVER')">
+        aria-haspopup="true" title="{selectedLabel ? selectedLabel : ''}"
+        on:click="toggleDropdownState('CONTEXT_SWITCHER_POPOVER')" on:blur="closeDropdown('CONTEXT_SWITCHER_POPOVER')">
         {#if !selectedLabel}{config.defaultLabel}{/if}
         {#if selectedLabel}{selectedLabel}{/if}
       </button>
@@ -26,15 +27,10 @@
         {/if}
         {#if options && options.length}
           {#each options as node}
-          <li><a class="fd-menu__item" on:click="goTo(node.path)">
-          {#if node.label}{node.label}{/if}
-          {#if !node.label}
-            {#await getFallbackNodeName(config.fallbackLabelResolver, node.id)}
+            {#await getNodeName(node.label, config.fallbackLabelResolver, node.id)}
             {:then label}
-              {label}
+              <li><a class="fd-menu__item" on:click="goTo(node.path)" title="{label}">{label}</a></li>
             {/await}
-          {/if}
-          </a></li>
           {/each}
         {/if}
         </ul>
@@ -109,7 +105,10 @@
       }
     },
     helpers: {
-      getFallbackNodeName: (config, id) => {
+      async getNodeName(label, config, id) {
+        if (label) {
+          return Promise.resolve(label);
+        }
         return ContextSwitcherHelpers.getFallbackNodeName(config, id);
       }
     },
