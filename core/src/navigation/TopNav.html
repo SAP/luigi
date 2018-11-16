@@ -1,13 +1,11 @@
 <div class="fd-ui__header {hideNavComponent ? 'hideNavComponent' : ''}">
-  <nav class="fd-global-nav">
-    <div class="fd-global-nav__group fd-global-nav__group--left">
-      <div class="fd-global-nav__logo fd-has-margin-left-none"></div>
-      <div class="fd-global-nav__product-name">
-        <a on:click="goTo('/overview')">LUIGI</a>
-      </div>
-    </div>
-    <div class="fd-global-nav__group fd-global-nav__group--right">
-      <div class="fd-global-nav__actions">
+	<nav class="fd-global-nav">
+		<div class="fd-global-nav__group fd-global-nav__group--left">
+			<LogoTitle />
+		</div>
+
+		<div class="fd-global-nav__group fd-global-nav__group--right">
+			<div class="fd-global-nav__actions">
         {#if children && pathData.length > 0}
           {#each children as node}
             {#if !node.hideFromNav}
@@ -21,34 +19,33 @@
             {/if}
           {/each}
         {/if}
-
         {#if authorizationEnabled}
-        <div class="fd-popover user-settings">
-          <div class="fd-popover__control">
-            <button class="fd-popover__control fd-button--secondary fd-button--m fd-global-nav__btn sap-icon--customer" aria-expanded="{dropDownStates.PROFILE_POPOVER || false}"
+          <div class="fd-popover user-settings">
+            <div class="fd-popover__control">
+              <button class="fd-popover__control fd-button--secondary fd-button--m fd-global-nav__btn sap-icon--customer" aria-expanded="{dropDownStates.PROFILE_POPOVER || false}"
               aria-haspopup="true" on:click="toggleDropdownState('PROFILE_POPOVER')" on:blur="closeDropdown('PROFILE_POPOVER')"></button>
+            </div>
+            <div class="fd-popover__body" aria-hidden="{dropDownStatesNegated.PROFILE_POPOVER || true}" id="PROFILE_POPOVER">
+              <nav class="fd-menu" id="">
+                <Authorization />
+                <!-- <ul class="fd-menu__list">
+                  <li><a href="#" class="fd-menu__item">Option 1</a></li>
+                  <li><a href="#" class="fd-menu__item">Option 1</a></li>
+                </ul> -->
+              </nav>
+            </div>
           </div>
-          <div class="fd-popover__body" aria-hidden="{dropDownStatesNegated.PROFILE_POPOVER || true}" id="PROFILE_POPOVER">
-            <nav class="fd-menu" id="">
-              <Authorization />
-              <!-- <ul class="fd-menu__list">
-                <li><a href="#" class="fd-menu__item">Option 1</a></li>
-                <li><a href="#" class="fd-menu__item">Option 1</a></li>
-              </ul> -->
-            </nav>
-          </div>
-        </div>
-        {/if}
-      </div>
-    </div>
-  </nav>
+				{/if}
+			</div>
+		</div>
+	</nav>
 </div>
 
 <script type="text/javascript">
-  import Backdrop from './Backdrop.html';
-  import Authorization from './Authorization.html';
-  import { handleRouteClick } from './services/routing.js';
-  import { getConfigValue, getConfigBooleanValue } from './services/config.js';
+  import LogoTitle from './LogoTitle.html';
+  import Authorization from '../Authorization.html';
+  import { handleRouteClick } from '../services/routing.js';
+  import { LuigiConfig } from '../services/config.js';
 
   const getNegatedBoolString = str => {
     return str === 'true' ? 'false' : 'true';
@@ -76,12 +73,12 @@
   export default {
     oncreate() {
       // Authentication detection
-      const idpProviderName = getConfigValue('auth.use');
-      const idpProviderSettings = getConfigValue(`auth.${idpProviderName}`);
+      const idpProviderName = LuigiConfig.getConfigValue('auth.use');
+      const idpProviderSettings = LuigiConfig.getConfigValue(`auth.${idpProviderName}`);
 
       this.set({
         authorizationEnabled: !!idpProviderSettings,
-        hideNavComponent: getConfigBooleanValue('settings.hideNavigation')
+        hideNavComponent: LuigiConfig.getConfigBooleanValue('settings.hideNavigation')
       });
     },
     onstate({ changed, current, previous }) {
@@ -107,13 +104,6 @@
     },
     methods: {
       handleClick: node => handleRouteClick(node),
-      goTo(path) {
-        if (getConfigBooleanValue('routing.useHashRouting')) {
-          window.location.hash = path;
-        } else {
-          window.location.pathname = path;
-        }
-      },
       toggleDropdownState(name) {
         const dropDownStates = this.get().dropDownStates || {};
         dropDownStates[name] = getNegatedBoolString(dropDownStates[name]);
@@ -130,7 +120,8 @@
       }
     },
     components: {
-      Authorization
+      Authorization,
+      LogoTitle
     }
   };
 </script>
@@ -158,17 +149,13 @@
     border-bottom: solid 1px #dededf;
     padding: 0 10px;
   }
+  .fd-global-nav__group--left {
+    padding-left: 20px;
+  }
 
   .fd-global-nav {
     height: 100%;
     border: none;
-  }
-  .fd-global-nav__product-name {
-    color: #0a6ed1;
-    height: 50px;
-    font-size: 24px;
-    line-height: 1em;
-    padding: 13px 0;
   }
 
   .hideNavComponent {

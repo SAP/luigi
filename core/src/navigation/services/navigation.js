@@ -1,4 +1,5 @@
-import { getConfigValue, getConfigValueFromObjectAsync } from './config';
+import { LuigiConfig } from '../../services/config';
+import { getConfigValueFromObjectAsync } from '../../utilities/async-helpers';
 
 const isNodeAccessPermitted = (
   nodeToCheckPermissionFor,
@@ -6,7 +7,7 @@ const isNodeAccessPermitted = (
   currentContext
 ) => {
   if (!isLoggedIn()) return false;
-  const permissionCheckerFn = getConfigValue(
+  const permissionCheckerFn = LuigiConfig.getConfigValue(
     'navigation.nodeAccessibilityResolver'
   );
   if (typeof permissionCheckerFn !== 'function') {

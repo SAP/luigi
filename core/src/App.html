@@ -5,7 +5,7 @@
   </Backdrop>
   {#if showLoadingIndicator}
   <div in:fade='{delay: 250, duration: 250}' out:fade='{duration: 250}' class="fd-page spinnerContainer" aria-hidden="false" aria-label="Loading">
-      <div class="fd-spinner"><div></div></div>
+    <div class="fd-spinner"><div></div></div>
   </div>
   {/if}
 
@@ -13,15 +13,15 @@
   <LeftNav pathData={navigationPath} />
 </div>
 
-
 <script type="text/javascript">
   import Backdrop from './Backdrop.html';
   import { fade } from 'svelte-transitions';
-  import TopNav from './TopNav.html';
-  import LeftNav from './LeftNav.html';
+  import TopNav from './navigation/TopNav.html';
+  import LeftNav from './navigation/LeftNav.html';
   import * as Routing from './services/routing.js';
-  import { getConfigValue, getConfigValueFromObject } from './services/config.js';
-  import { isFunction } from './utilities/helpers.js';
+  import { LuigiConfig } from './services/config.js';
+  import { isFunction, getConfigValueFromObject } from './utilities/helpers.js';
+  import { getStoredAuthData } from './utilities/auth-helpers';
 
   const trimLeadingSlash = str => str.replace(/^\//, '');
   const isValidBackRoute = (preservedViews, routeHash) => {
@@ -137,10 +137,18 @@
         ),
         nodeParams: JSON.stringify(Object.assign({}, component.get().nodeParams)),
         pathParams: JSON.stringify(Object.assign({}, component.get().pathParams)),
-        internal: JSON.stringify(component.prepareInternalData())
+        internal: JSON.stringify(component.prepareInternalData()),
+        authData: getStoredAuthData()
       },
       '*'
     );
+  };
+
+  const sendAuthDataToClient = (iframe, authData) => {
+    iframe.contentWindow.postMessage({
+      msg: 'luigi.auth.tokenIssued',
+      authData
+    }, '*');
   };
 
   export default {
@@ -213,7 +221,7 @@
                 isNavigateBack: true,
                 preservedViews: preservedViews,
                 goBackContext:
-                  e.data.goBackContext && JSON.parse(e.data.goBackContext)
+                e.data.goBackContext && JSON.parse(e.data.goBackContext)
               });
 
               // TODO: check if handleNavigation or history pop to update hash / path
@@ -225,6 +233,10 @@
             } else {
               console.error('goBack() not possible, no preserved views found.');
             }
+          }
+
+          if ('luigi.auth.tokenIssued' === e.data.msg) {
+            sendAuthDataToClient(config.iframe, e.data.authData);
           }
 
           if ('luigi.navigation.pathExists' === e.data.msg) {
@@ -251,8 +263,7 @@
         // listeners are not automatically removed — cancel
         // them to prevent memory leaks
         // this.on('destroy', storeListener.cancel);
-
-        if (getConfigValue('routing.useHashRouting')) {
+        if (LuigiConfig.getConfigValue('routing.useHashRouting')) {
           return enableHashRouting(this, node, config);
         }
 
@@ -262,6 +273,7 @@
     methods: {
       prepareInternalData() {
         return {
+          isNavigateBack: this.get().isNavigateBack,
           viewStackSize: this.get().preservedViews.length
         };
       }

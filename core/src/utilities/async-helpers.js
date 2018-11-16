@@ -1,3 +1,9 @@
+import {
+  getConfigValueFromObject,
+  isFunction,
+  isPromise
+} from '../utilities/helpers.js';
+
 const handles = {};
 
 export const keyExistencyTimeout = 2000;
@@ -19,5 +25,27 @@ export const waitForKeyExistency = (
         return reject(false);
       }
     }, keyExistencyCheckInterval);
+  });
+};
+
+/*
+* Gets value of the given property on the given object.
+* If the value is a Function it is called and the result of that call is the value.
+* If the value is not a Promise it is wrapped to a Promise so that the returned value is definitely a Promise.
+*/
+export const getConfigValueFromObjectAsync = (
+  object,
+  property,
+  ...parameters
+) => {
+  let value = getConfigValueFromObject(object, property);
+  if (isFunction(value)) {
+    value = value.apply(this, parameters);
+    if (isPromise(value)) {
+      return value;
+    }
+  }
+  return new Promise(resolve => {
+    resolve(value);
   });
 };

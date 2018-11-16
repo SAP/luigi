@@ -1,5 +1,6 @@
-import { deepMerge, prependOrigin } from '../../utilities/helpers.js';
-import { waitForKeyExistency } from '../../utilities/async-helpers.js';
+import { deepMerge, prependOrigin } from '../../utilities/helpers';
+import { waitForKeyExistency } from '../../utilities/async-helpers';
+import { thirdPartyCookiesStatus } from '../../utilities/third-party-cookies-check';
 
 export class openIdConnect {
   constructor(settings = {}) {
@@ -9,9 +10,12 @@ export class openIdConnect {
       response_type: 'id_token token',
       filterProtocolClaims: true,
       loadUserInfo: false,
-      automaticSilentRenew: false
-      // silentRequestTimeout:10000,
-      // silent_redirect_uri: '/luigi-core/auth/oidc/silent-callback.html', // not yet implemented
+      automaticSilentRenew: false,
+      accessTokenExpiringNotificationTime: 60,
+      thirdPartyCookiesScriptLocation: '',
+      logoutUrl: '',
+      silent_redirect_uri:
+        window.location.origin + '/luigi-core/auth/oidc/silent-callback.html'
     };
     const mergedSettings = deepMerge(defaultSettings, settings);
 
@@ -23,9 +27,24 @@ export class openIdConnect {
     this.settings = mergedSettings;
 
     return waitForKeyExistency(window, 'Oidc').then(res => {
-      this.client = new Oidc.OidcClient(this.settings);
-      // Oidc.Log.logger = console;
-      // Oidc.Log.level = Oidc.Log.INFO;
+      this.client = new Oidc.UserManager(this.settings);
+
+      this.client.events.addUserLoaded(authenticatedUser => {
+        const data = {
+          accessToken: authenticatedUser.access_token,
+          accessTokenExpirationDate: authenticatedUser.expires_at * 1000,
+          scope: authenticatedUser.scope,
+          idToken: authenticatedUser.id_token,
+          profile: authenticatedUser.profile
+        };
+        localStorage.setItem('luigi.auth', JSON.stringify(data));
+
+        window.postMessage(
+          { msg: 'luigi.auth.tokenIssued', authData: data },
+          '*'
+        );
+      });
+
       return Promise.all([
         this._processLoginResponse(),
         this._processLogoutResponse()
@@ -37,16 +56,10 @@ export class openIdConnect {
 
   login() {
     return waitForKeyExistency(this, 'client').then(res => {
-      return this.client
-        .createSigninRequest(this.settings)
-        .then(req => {
-          window.location = req.url;
-          return;
-        })
-        .catch(err => {
-          console.error(err);
-          return err;
-        });
+      return this.client.signinRedirect(this.settings).catch(err => {
+        console.error(err);
+        return err;
+      });
     });
   }
 
@@ -66,6 +79,41 @@ export class openIdConnect {
     // });
   }
 
+  setTokenExpirationAction() {
+    if (!this.settings.automaticSilentRenew) {
+      this.client.events.addAccessTokenExpired(() => {
+        window.location = this.settings.logoutUrl + '?reason=tokenExpired';
+      });
+    }
+
+    if (this.settings.thirdPartyCookiesScriptLocation) {
+      const iframe = document.createElement('iframe');
+      iframe.src = this.settings.thirdPartyCookiesScriptLocation;
+      iframe.style.display = 'none';
+      document.body.appendChild(iframe);
+    }
+
+    this.client.events.addSilentRenewError(e => {
+      switch (e.message) {
+        case 'interaction_required':
+        case 'login_required':
+        case 'account_selection_required':
+        case 'consent_required': // possible cause: disabled third party cookies in the browser
+          window.location.href =
+            this.settings.logoutUrl +
+            '?reason=tokenExpired&thirdPartyCookies=' +
+            thirdPartyCookiesStatus() +
+            '&error=' +
+            e.message;
+          break;
+        default:
+          console.error(e);
+          window.location.href =
+            this.settings.logoutUrl + '?reason=tokenExpired&error=' + e.message;
+      }
+    });
+  }
+
   _processLogoutResponse() {
     return new Promise((resolve, reject) => {
       // TODO: dex logout does not yet support proper logout
@@ -77,7 +125,7 @@ export class openIdConnect {
             log('signout response', response);
             resolve(response);
           })
-          .catch(function (err) {
+          .catch(function(err) {
             reject(response);
             log(err);
           });
@@ -92,32 +140,25 @@ export class openIdConnect {
         return resolve(true);
       }
 
-      window.location.hash = decodeURIComponent(window.location.hash);
       this.client
-        .processSigninResponse()
-        .then(hashParams => {
-          if (hashParams.error) {
+        .signinRedirectCallback()
+        .then(authenticatedUser => {
+          if (authenticatedUser.error) {
             return console.error(
               'Error',
-              hashParams.error,
-              hashParams.error_description,
-              hashParams
+              authenticatedUser.error,
+              authenticatedUser.error_description,
+              authenticatedUser
             );
           }
-          const data = {
-            accessToken: hashParams.access_token,
-            accessTokenExpirationDate: hashParams.expires_at * 1000,
-            scope: hashParams.scope,
-            idToken: hashParams.id_token,
-            profile: hashParams.profile
-          };
-          localStorage.setItem('luigi.auth', JSON.stringify(data));
 
           // since localStorage has no callback we need to wait couple of ms before proceeding
           // else persistence might fail.
           setTimeout(() => {
-            if (hashParams.state) {
-              window.location.href = decodeURIComponent(hashParams.state);
+            if (authenticatedUser.state) {
+              window.location.href = decodeURIComponent(
+                authenticatedUser.state
+              );
             } else {
               window.location.href = window.location.origin;
             }

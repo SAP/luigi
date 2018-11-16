@@ -1,14 +1,10 @@
-import { getNavigationPath } from './navigation';
-import {
-  getConfigValue,
-  getConfigValueAsync,
-  getConfigBooleanValue,
-  getConfigValueFromObject
-} from './config';
+import { getNavigationPath } from '../navigation/services/navigation';
+import { LuigiConfig } from './config';
 import {
   getPathWithoutHash,
   getUrlWithoutHash,
-  isIE
+  isIE,
+  getConfigValueFromObject
 } from '../utilities/helpers';
 
 const iframeNavFallbackTimeout = 2000;
@@ -111,7 +107,7 @@ export const hasIframeIsolation = component => {
 
 export const getContentViewParamPrefix = () => {
   return (
-    getConfigValue('routing.contentViewParamPrefix') ||
+    LuigiConfig.getConfigValue('routing.contentViewParamPrefix') ||
     defaultContentViewParamPrefix
   );
 };
@@ -123,20 +119,30 @@ const escapeRegExp = string => {
   return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
 };
 
-const replaceVars = (viewUrl, params, prefix) => {
+const replaceVars = (viewUrl, params, prefix, parenthesis = true) => {
   let processedUrl = viewUrl;
   if (params) {
     Object.entries(params).forEach(entry => {
       processedUrl = processedUrl.replace(
-        new RegExp(escapeRegExp('{' + prefix + entry[0] + '}'), 'g'),
+        new RegExp(
+          escapeRegExp(
+            (parenthesis ? '{' : '') +
+              prefix +
+              entry[0] +
+              (parenthesis ? '}' : '')
+          ),
+          'g'
+        ),
         encodeURIComponent(entry[1])
       );
     });
   }
-  processedUrl = processedUrl.replace(
-    new RegExp('\\{' + escapeRegExp(prefix) + '[^\\}]+\\}', 'g'),
-    ''
-  );
+  if (parenthesis) {
+    processedUrl = processedUrl.replace(
+      new RegExp('\\{' + escapeRegExp(prefix) + '[^\\}]+\\}', 'g'),
+      ''
+    );
+  }
   return processedUrl;
 };
 
@@ -145,6 +151,7 @@ const navigateIframe = (config, component, node) => {
   const componentData = component.get();
   let viewUrl = componentData.viewUrl;
   if (viewUrl) {
+    viewUrl = replaceVars(viewUrl, componentData.pathParams, ':', false);
     viewUrl = replaceVars(viewUrl, componentData.context, contextVarPrefix);
     viewUrl = replaceVars(
       viewUrl,
@@ -282,11 +289,13 @@ export const handleRouteChange = async (path, component, node, config) => {
   try {
     const pathUrl = path && path.length ? getPathWithoutHash(path) : '';
     const pathData = await getNavigationPath(
-      getConfigValueAsync('navigation.nodes'),
+      LuigiConfig.getConfigValueAsync('navigation.nodes'),
       pathUrl.split('?')[0]
     );
 
-    const hideNav = getConfigBooleanValue('settings.hideNavigation');
+    const hideNav = LuigiConfig.getConfigBooleanValue(
+      'settings.hideNavigation'
+    );
     const viewUrl = getLastNodeObject(pathData).viewUrl || '';
     const isolateView = getLastNodeObject(pathData).isolateView || false;
     const params = parseParams(pathUrl.split('?')[1]);
@@ -358,7 +367,7 @@ export const matchPath = async path => {
   try {
     const pathUrl = 0 < path.length ? getPathWithoutHash(path) : path;
     const pathData = await getNavigationPath(
-      getConfigValueAsync('navigation.nodes'),
+      LuigiConfig.getConfigValueAsync('navigation.nodes'),
       pathUrl.split('?')[0]
     );
     if (pathData.navigationPath.length > 0) {
@@ -384,7 +393,7 @@ export const matchPath = async path => {
   @param documentElem object  defaults to document
  */
 export const navigateTo = (route, windowElem = window) => {
-  if (getConfigValue('routing.useHashRouting')) {
+  if (LuigiConfig.getConfigValue('routing.useHashRouting')) {
     windowElem.location.hash = route;
     return;
   }
