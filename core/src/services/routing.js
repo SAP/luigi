@@ -421,7 +421,7 @@ export const navigateTo = (route, windowElem = window) => {
 };
 
 export const buildFromRelativePath = path => {
-  if (getConfigValue('routing.useHashRouting')) {
+  if (LuigiConfig.getConfigValue('routing.useHashRouting')) {
     return window.location.hash + '/' + path;
   } else {
     return window.location.pathname + '/' + path;
