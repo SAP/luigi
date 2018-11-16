@@ -21,7 +21,10 @@
   "husky": {
     "hooks": {
       "pre-commit": "./scripts/apply-prettier.sh && ./scripts/remove-test-prefixes.sh",
-      "pre-push": "lerna run docu:validate"
+      "pre-push": "lerna run docu:validate && npm run test"
     }
+  },
+  "scripts": {
+    "test": "cd core && npm test && npm run bundle && npm run bundlesize"
   }
 }
