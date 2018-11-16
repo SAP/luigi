@@ -3,7 +3,7 @@
   <div class="fd-popover context-switcher">
     <div class="fd-popover__control">
       <button class="fd-button--secondary" aria-expanded="{dropDownStates.CONTEXT_SWITCHER_POPOVER || false}"
-        aria-haspopup="true" on:click="toggleDropdownState('CONTEXT_SWITCHER_POPOVER')" on:blur="toggleDropdownState('CONTEXT_SWITCHER_POPOVER')">
+        aria-haspopup="true" on:click="toggleDropdownState('CONTEXT_SWITCHER_POPOVER')" on:blur="closeDropdown('CONTEXT_SWITCHER_POPOVER')">
         {#if !selectedLabel}{config.defaultLabel}{/if}
         {#if selectedLabel}{selectedLabel}{/if}
       </button>
@@ -159,6 +159,13 @@
         if (isOpened) {
           this.fetchOptions();
         }
+      },
+      closeDropdown(name) {
+        const dropDownStates = this.get().dropDownStates || {};
+        dropDownStates[name] = 'false';
+        this.set({
+          dropDownStates
+        });
       }
     }
   };
