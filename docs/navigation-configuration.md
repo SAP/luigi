@@ -227,7 +227,7 @@ The node parameters are as follows:
 - **pathSegment** specifies the partial URL of the current segment. **pathSegment** must not contain slashes.
   - A static settings example reflects `luigidomain.test/settings`.
   - A dynamic settings example, prefixed with a colon, loads on any other value. 
-- **link** is a string which refers to an absolute path in the navigation structure or a relative path to a grand child of the current path. If this parameter is defined, **pathSegment** is ignored.
+- **link** is a string which refers to an absolute path in the navigation structure or a relative path to a grandchild of the current path. If this parameter is defined, **pathSegment** is ignored.
  - **externalLink** is an object which indicates that the node links to an external URL. If this parameter is defined, **pathSegment** and **link** parameters are ignored. It has the following properties:
   - **sameWindow** defines if the external URL is opened in a new or current tab.
   - **url** is the external URL that the node leads to.
