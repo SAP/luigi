@@ -93,6 +93,8 @@ export const containsAllSegments = (sourceUrl, targetPathSegments) => {
     );
     return false;
   }
+  sourceUrl = sourceUrl.split('?')[0] || sourceUrl; //ignore GET parameters
+
   const mandatorySegments = sourceUrl.split('/');
   let result = true;
 

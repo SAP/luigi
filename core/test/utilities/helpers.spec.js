@@ -1,7 +1,5 @@
 const chai = require('chai');
-
 const assert = chai.assert;
-
 import { containsAllSegments } from '../../src/utilities/helpers';
 
 describe('Helpers()', () => {
@@ -83,6 +81,26 @@ describe('Helpers()', () => {
         containsAllSegments(tooLongSourceUrl, targetPathSegments),
         false
       );
+    });
+
+    it('should ignore GET parameters', async () => {
+      const sourceUrl = 'one/two/three?masko=patol&four=five';
+
+      const targetPathSegments = [
+        {
+          //doesn't matter, it's omitted anyway
+        },
+        {
+          pathSegment: 'one'
+        },
+        {
+          pathSegment: 'two'
+        },
+        {
+          pathSegment: 'three'
+        }
+      ];
+      assert.equal(containsAllSegments(sourceUrl, targetPathSegments), true);
     });
   });
 });
