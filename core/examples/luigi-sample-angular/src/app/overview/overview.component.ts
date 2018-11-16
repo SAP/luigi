@@ -53,8 +53,8 @@ export class OverviewComponent {
     },
     {
       link: '/projects/pr2',
-      text: 'Node with absolute path',
-      description: 'navigation node configuration to direct to an absolute path'
+      text: 'Node with link to another node',
+      description: 'navigation node configuration to redirect to another path'
     }
   ];
 }
