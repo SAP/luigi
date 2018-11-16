@@ -1,6 +1,6 @@
 const { readFileSync } = require('fs');
 const babelSettings = JSON.parse(readFileSync('.babelrc'));
-const ExtractTextPlugin = require('extract-text-webpack-plugin');
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const sass = require('node-sass');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const CleanWebpackPlugin = require('clean-webpack-plugin');
@@ -8,8 +8,8 @@ const CleanWebpackPlugin = require('clean-webpack-plugin');
 module.exports = {
   entry: {
     index: [
-      './src/main.js',
-      './node_modules/fundamental-ui/dist/fundamental-ui.min.css'
+      './node_modules/fundamental-ui/dist/fundamental-ui.min.css',
+      './src/main.js'
     ]
   },
   resolve: {
@@ -46,7 +46,7 @@ module.exports = {
                   sass.render(
                     {
                       data: content,
-                      includePaths: ['src', 'node_modules/fundamental-ui/scss'],
+                      includePaths: ['src'],
                       sourceMap: true,
                       outFile: 'x' // this is necessary, but is ignored
                     },
@@ -67,14 +67,14 @@ module.exports = {
       },
       {
         test: /\.(css)$/,
-        use: ExtractTextPlugin.extract({
-          fallback: 'file-loader',
-          use: [
-            {
-              loader: 'css-loader'
-            }
-          ]
-        })
+        use: [
+          {
+            loader: MiniCssExtractPlugin.loader
+          },
+          {
+            loader: 'css-loader'
+          }
+        ]
       },
       {
         test: /\.(png|jpg|gif|svg|eot|ttf|woff|woff2)$/,
@@ -90,7 +90,7 @@ module.exports = {
       exclude: ['package.json'],
       verbose: true
     }),
-    new ExtractTextPlugin('luigi.css'),
+    new MiniCssExtractPlugin({ filename: 'luigi.css' }),
     new CopyWebpackPlugin([
       {
         from: 'node_modules/oidc-client/dist/oidc-client.min.js',

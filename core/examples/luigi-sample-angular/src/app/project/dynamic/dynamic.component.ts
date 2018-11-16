@@ -35,11 +35,9 @@ export class DynamicComponent implements OnInit, OnDestroy {
           return;
         }
 
-        const pathParams = LuigiClient.getPathParams();
-        let lastPathParam;
-        for (const key in pathParams) {
-          lastPathParam = pathParams[key];
-        }
+        const lastPathParam = Object.values(
+          LuigiClient.getPathParams() || {}
+        ).pop();
 
         // We can directly access our specified context values here
         this.nodeLabel = toTitleCase(ctx.context.label || lastPathParam);
