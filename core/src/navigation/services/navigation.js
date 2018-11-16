@@ -1,12 +1,20 @@
-import { LuigiConfig } from '../../services/config';
-import { getConfigValueFromObjectAsync } from '../../utilities/async-helpers';
+import {
+  LuigiConfig
+} from '../../services/config';
+import {
+  getConfigValueFromObjectAsync
+} from '../../utilities/async-helpers';
 
 const isNodeAccessPermitted = (
   nodeToCheckPermissionFor,
   parentNode,
   currentContext
 ) => {
-  if (!isLoggedIn()) return false;
+  const idpProviderName = LuigiConfig.getConfigValue('auth.use');
+  const idpProviderSettings = LuigiConfig.getConfigValue(`auth.${idpProviderName}`);
+  const authorizationEnabled = !!idpProviderSettings;
+
+  if (authorizationEnabled && !isLoggedIn()) return false;
   const permissionCheckerFn = LuigiConfig.getConfigValue(
     'navigation.nodeAccessibilityResolver'
   );
@@ -170,9 +178,9 @@ export const findMatchingNode = (urlPathElement, nodes) => {
     ) {
       if (node.pathParam && node.pathParam.key) {
         node.viewUrl = node.pathParam.viewUrl;
-        node.context = node.pathParam.context
-          ? Object.assign({}, node.pathParam.context)
-          : undefined;
+        node.context = node.pathParam.context ?
+          Object.assign({}, node.pathParam.context) :
+          undefined;
         node.pathSegment = node.pathParam.pathSegment;
       } else {
         node.pathParam = {
