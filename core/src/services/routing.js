@@ -310,12 +310,12 @@ export const handleRouteChange = async (path, component, node, config) => {
         const defaultChildNode = getDefaultChildNode(pathData);
         navigateTo(`${pathUrl ? `/${pathUrl}` : ''}/${defaultChildNode}`);
       } else {
-        const alertContent = {
+        const alert = {
           message: 'Could not find the requested route',
           link: pathUrl
         };
 
-        component.set({ alert: alertContent });
+        component.set({ alert });
         navigateTo('/');
         //error 404
       }
@@ -325,12 +325,12 @@ export const handleRouteChange = async (path, component, node, config) => {
     if (!containsAllSegments(pathUrl, pathData.navigationPath)) {
       const matchedPath = await matchPath(pathUrl);
 
-      const alertContent = {
+      const alert = {
         message: 'Could not map the exact target node for the requested route',
         link: pathUrl
       };
 
-      component.set({ alert: alertContent });
+      component.set({ alert });
       navigateTo(matchedPath);
     }
 
