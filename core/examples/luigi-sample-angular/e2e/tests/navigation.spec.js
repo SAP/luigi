@@ -74,29 +74,4 @@ describe('Navigation', () => {
       cy.get('.fd-app__sidebar').should('contain', 'Keep Selected Example');
     });
   });
-
-  describe('Wrong URL handling', () => {
-    it('Shows "not exact route" error', () => {
-      cy.visit('http://localhost:4200/#/projects/pr2/maskopatol');
-
-      cy.location().should(loc => {
-        expect(loc.hash).to.eq('#/projects/pr2');
-      });
-
-      cy.get('.fd-alert').contains(
-        'Could not map the exact target node for the requested route'
-      );
-      cy.get('.fd-alert__link').contains('projects/pr2/maskopatol');
-    });
-    it('Shows "route not found" (404) error', () => {
-      cy.visit('http://localhost:4200/#/maskopatol');
-
-      cy.location().should(loc => {
-        expect(loc.hash).to.eq('#/overview');
-      });
-
-      cy.get('.fd-alert').contains('Could not find the requested route');
-      cy.get('.fd-alert__link').contains('maskopatol');
-    });
-  });
 });

@@ -156,10 +156,7 @@ describe('Luigi client features', () => {
         expect(loc.hash).to.eq('#/projects/pr2/miscellaneous2');
       });
       cy.get('.fd-alert').contains(
-        'Could not map the exact target node for the requested route'
-      );
-      cy.get('.fd-alert__link').contains(
-        'projects/pr2/miscellaneous2/maskopatol'
+        'Could not map the exact target node for the requested route projects/pr2/miscellaneous2/maskopatol'
       );
     });
 
@@ -170,8 +167,9 @@ describe('Luigi client features', () => {
       cy.location().should(loc => {
         expect(loc.hash).to.eq('#/overview');
       });
-      cy.get('.fd-alert').contains('Could not find the requested route');
-      cy.get('.fd-alert__link').contains('maskopatol/has/a/child');
+      cy.get('.fd-alert').contains(
+        'Could not find the requested route maskopatol/has/a/child'
+      );
     });
   });
 

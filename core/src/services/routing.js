@@ -315,7 +315,7 @@ export const handleRouteChange = async (path, component, node, config) => {
       const matchedPath = await matchPath(pathUrl);
 
       const alertContent = {
-        message: 'Could not map the exact target node for the requested route ',
+        message: 'Could not map the exact target node for the requested route',
         link: pathUrl
       };
 

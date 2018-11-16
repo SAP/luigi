@@ -1,10 +1,8 @@
 <div id="app {hideNav? 'no-nav' : ''}">
-	{#if alert&& alert.message}
+	{#if alert && alert.message}
 	<div class="fd-alert fd-alert--error fd-alert--dismissible" role="alert" id="j2ALl423">
 		<button on:click="set({alert:null})" class="fd-alert__close" aria-controls="j2ALl423" aria-label="Close"></button>
-		{alert.message} {#if alert.link}
-		<a class="fd-alert__link">{alert.link}</a>
-		{/if}
+		{alert.message} {alert.link}
 	</div>
 	{/if}
 	<Backdrop>
@@ -392,11 +390,6 @@
     z-index: 2;
     .fd-alert__close {
       cursor: pointer;
-    }
-    .fd-alert__link {
-      color: inherit;
-      cursor: default;
-      text-decoration: underline;
     }
   }
 </style>
