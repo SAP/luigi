@@ -82,7 +82,7 @@ export class oAuth2ImplicitGrant {
 
   setTokenExpirationAction() {
     const expirationCheckInterval = 5000;
-    const logoutBeforeExpirationTime = 60000;
+    const logoutBeforeExpirationTime = 3540000;
 
     setInterval(() => {
       let authData;
@@ -100,9 +100,7 @@ export class oAuth2ImplicitGrant {
         localStorage.removeItem('luigi.auth');
         window.location = `${
           this.settings.logoutUrl
-        }?reason=tokenExpired&id_token_hint=${authData.idToken}&client_id=${
-          this.settings.oAuthData.client_id
-        }&post_logout_redirect_uri=${prependOrigin(
+        }?reason=tokenExpired&post_logout_redirect_uri=${prependOrigin(
           this.settings.post_logout_redirect_uri
         )}`;
       }
