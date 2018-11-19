@@ -23,8 +23,5 @@
       "pre-commit": "./scripts/apply-prettier.sh && ./scripts/remove-test-prefixes.sh",
       "pre-push": "lerna run prepush"
     }
-  },
-  "scripts": {
-    "test": "cd core && npm test && npm run bundle && npm run bundlesize"
   }
 }
