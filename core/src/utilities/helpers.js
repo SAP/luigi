@@ -93,29 +93,22 @@ export const containsAllSegments = (sourceUrl, targetPathSegments) => {
     );
     return false;
   }
-  sourceUrl = sourceUrl.split('?')[0] || sourceUrl; //ignore GET parameters
 
-  const mandatorySegments = sourceUrl.split('/');
-  let result = true;
-
-  if (targetPathSegments.length !== mandatorySegments.length + 1) {
-    return false; //we can already tell segments will not match so no loop is needed
-  }
-
-  mandatorySegments.length &&
-    mandatorySegments.forEach((segment, index) => {
-      if (
-        !targetPathSegments[index + 1] ||
-        !targetPathSegments[index + 1].pathSegment ||
-        (targetPathSegments[index + 1].pathSegment[0] !== ':' &&
-          targetPathSegments[index + 1].pathSegment !== segment)
-      ) {
-        result = false;
-      }
-    });
-
-  return result;
+  const pathSegmentsUrl = targetPathSegments
+    .slice(1)
+    .map(x => x.pathSegment)
+    .join('/');
+  const mandatorySegmentsUrl = removeTrailingSlash(sourceUrl.split('?')[0]);
+  return pathSegmentsUrl === mandatorySegmentsUrl;
 };
+
+/**
+ *  Prepend current url to redirect_uri, if it is a relative path
+ * @param {str} string from which any number of trailing slashes should be removed
+ * @returns string string without any trailing slash
+ */
+export const removeTrailingSlash = str => str.replace(/\/+$/, '');
+
 /*
  * Gets value of the given property on the given object.
  */

@@ -5,7 +5,7 @@ import { containsAllSegments } from '../../src/utilities/helpers';
 describe('Helpers()', () => {
   describe('#containsAllSegments()', () => {
     it('should return true when proper data provided', async () => {
-      const sourceUrl = 'mas/ko/pa/tol';
+      const sourceUrl = 'mas/ko/pa/tol/';
       const targetPathSegments = [
         {
           //doesn't matter, it's omitted anyway
