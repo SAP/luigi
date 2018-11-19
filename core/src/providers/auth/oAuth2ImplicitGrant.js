@@ -82,7 +82,7 @@ export class oAuth2ImplicitGrant {
 
   setTokenExpirationAction() {
     const expirationCheckInterval = 5000;
-    const logoutBeforeExpirationTime = 3540000;
+    const logoutBeforeExpirationTime = 60000;
 
     setInterval(() => {
       let authData;
