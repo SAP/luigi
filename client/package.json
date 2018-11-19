@@ -9,7 +9,7 @@
     "docu:generate:new-file": "documentation build luigi-client.js -f md --markdown-toc=false -o ../docs/luigi-client-api.md",
     "docu:generate:section": "documentation readme luigi-client.js -f md --readme-file=../docs/luigi-client-api.md --section='Luigi Client API' --markdown-toc=false --quiet --github false",
     "docu:validate": "documentation lint luigi-client.js",
-    "pre-push": "npm run docu:validate"
+    "prepush": "npm run docu:validate"
   },
   "repository": {
     "type": "git",
