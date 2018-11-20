@@ -85,6 +85,16 @@ class LuigiConfigManager {
       parameters
     );
   }
+
+  /*
+   * Detects if authorization is enabled via configuration.
+   * @returns {boolean} returns true if authorization is enabled. Otherwise returns false.
+   */
+  isAuthorizationEnabled() {
+    const idpProviderName = this.getConfigValue('auth.use');
+    const idpProviderSettings = this.getConfigValue(`auth.${idpProviderName}`);
+    return !!idpProviderSettings;
+  }
 }
 const LuigiInstance = new LuigiConfigManager();
 
