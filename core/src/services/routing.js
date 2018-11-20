@@ -218,8 +218,6 @@ const navigateIframe = (config, component, node) => {
       },
       '*'
     );
-    // clear goBackContext and reset navigateBack after sending it to the client
-    component.set({ goBackContext: undefined, isNavigateBack: false });
 
     /**
      * check if luigi responded

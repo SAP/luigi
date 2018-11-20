@@ -217,7 +217,7 @@
 
           if ('luigi.navigation.open' === e.data.msg) {
             this.set({ isNavigateBack: false });
-            handleNavigation(this, e.data, config);
+            await handleNavigation(this, e.data, config);
           }
 
           if ('luigi.navigation.back' === e.data.msg) {
@@ -237,13 +237,13 @@
               });
 
               // TODO: check if handleNavigation or history pop to update hash / path
-              handleNavigation(
+              await handleNavigation(
                 this,
                 { params: { link: previousActiveIframeData.path } },
                 config
               );
+              this.set({ goBackContext: undefined, isNavigateBack: false });
             } else {
-              this.set({ isNavigateBack: false });
               console.error('goBack() not possible, no preserved views found.');
             }
           }
