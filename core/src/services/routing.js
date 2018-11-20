@@ -442,6 +442,14 @@ export const navigateTo = async (route, windowElem = window) => {
   windowElem.dispatchEvent(event);
 };
 
+export const buildFromRelativePath = path => {
+  if (LuigiConfig.getConfigValue('routing.useHashRouting')) {
+    return window.location.hash + '/' + path;
+  } else {
+    return window.location.pathname + '/' + path;
+  }
+};
+
 export const handleRouteClick = (node, windowElem = window) => {
   if (node.externalLink && node.externalLink.url) {
     node.externalLink.sameWindow
@@ -449,7 +457,14 @@ export const handleRouteClick = (node, windowElem = window) => {
       : windowElem.open(node.externalLink.url).focus();
     // externalLinkUrl property is provided so there's no need to trigger routing mechanizm
     return;
+  } else if (node.link) {
+    const link = node.link.startsWith('/')
+      ? node.link
+      : buildFromRelativePath(node.link);
+    navigateTo(link, windowElem);
+    return;
+  } else {
+    const route = buildRoute(node, `/${node.pathSegment}`);
+    navigateTo(route, windowElem);
   }
-  const route = buildRoute(node, `/${node.pathSegment}`);
-  navigateTo(route, windowElem);
 };
