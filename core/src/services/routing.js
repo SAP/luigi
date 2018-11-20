@@ -3,6 +3,7 @@ import { LuigiConfig } from './config';
 import {
   getPathWithoutHash,
   getUrlWithoutHash,
+  containsAllSegments,
   isIE,
   getConfigValueFromObject
 } from '../utilities/helpers';
@@ -308,8 +309,29 @@ export const handleRouteChange = async (path, component, node, config) => {
       if (routeExists) {
         const defaultChildNode = getDefaultChildNode(pathData);
         navigateTo(`${pathUrl ? `/${pathUrl}` : ''}/${defaultChildNode}`);
-      } // TODO else display 404 page
+      } else {
+        const alert = {
+          message: 'Could not find the requested route',
+          link: pathUrl
+        };
+
+        component.set({ alert });
+        navigateTo('/');
+        //error 404
+      }
       return;
+    }
+
+    if (!containsAllSegments(pathUrl, pathData.navigationPath)) {
+      const matchedPath = await matchPath(pathUrl);
+
+      const alert = {
+        message: 'Could not map the exact target node for the requested route',
+        link: pathUrl
+      };
+
+      component.set({ alert });
+      navigateTo(matchedPath);
     }
 
     const previousCompData = component.get();
@@ -392,7 +414,7 @@ export const matchPath = async path => {
   @param windowElem object  defaults to window
   @param documentElem object  defaults to document
  */
-export const navigateTo = (route, windowElem = window) => {
+export const navigateTo = async (route, windowElem = window) => {
   if (LuigiConfig.getConfigValue('routing.useHashRouting')) {
     windowElem.location.hash = route;
     return;

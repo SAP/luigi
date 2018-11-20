@@ -1,16 +1,24 @@
-
 <div id="app {hideNav? 'no-nav' : ''}">
-  <Backdrop>
-    <div class="fd-page iframeContainer" use:init="context"></div>
-  </Backdrop>
-  {#if showLoadingIndicator}
-  <div in:fade='{delay: 250, duration: 250}' out:fade='{duration: 250}' class="fd-page spinnerContainer" aria-hidden="false" aria-label="Loading">
-    <div class="fd-spinner"><div></div></div>
-  </div>
-  {/if}
+	{#if alert && alert.message}
+	<div class="fd-alert fd-alert--error fd-alert--dismissible" role="alert" id="j2ALl423">
+		<button on:click="set({alert:null})" class="fd-alert__close" aria-controls="j2ALl423" aria-label="Close"></button>
+		{alert.message} {alert.link}
+	</div>
+	{/if}
+	<Backdrop>
+		<div class="fd-page iframeContainer" use:init="context"></div>
+	</Backdrop>
+	{#if showLoadingIndicator}
+	<div in:fade='{delay: 250, duration: 250}' out:fade='{duration: 250}' class="fd-page spinnerContainer" aria-hidden="false"
+	 aria-label="Loading">
+		<div class="fd-spinner">
+			<div></div>
+		</div>
+	</div>
+	{/if}
 
-  <TopNav pathData={navigationPath} />
-  <LeftNav pathData={navigationPath} />
+	<TopNav pathData={navigationPath} />
+	<LeftNav pathData={navigationPath} />
 </div>
 
 <script type="text/javascript">
@@ -120,12 +128,14 @@
   };
 
   const handleNavigation = async (component, data, config) => {
-    const path = buildPath(component, data.params);
-    const matchedPath = await Routing.matchPath(path);
-    if (matchedPath !== null) {
-      addPreserveView(component, data, config);
-      Routing.navigateTo(matchedPath);
+    let path = buildPath(component, data.params);
+
+    if (path[0] !== '/') {
+      path = '/' + path; //add leading slash if necessary
     }
+
+    addPreserveView(component, data, config);
+    Routing.navigateTo(path); //navigate to the raw path. Any errors/alerts are handled later
   };
 
   const sendContextToClient = (component, config, goBackContext = {}) => {
@@ -145,10 +155,13 @@
   };
 
   const sendAuthDataToClient = (iframe, authData) => {
-    iframe.contentWindow.postMessage({
-      msg: 'luigi.auth.tokenIssued',
-      authData
-    }, '*');
+    iframe.contentWindow.postMessage(
+      {
+        msg: 'luigi.auth.tokenIssued',
+        authData
+      },
+      '*'
+    );
   };
 
   export default {
@@ -176,7 +189,7 @@
           builderCompatibilityMode: Boolean(window.builderCompatibilityMode)
         };
 
-        window.addEventListener('message', async (e) => {
+        window.addEventListener('message', async e => {
           if ('luigi.get-context' === e.data.msg && config.iframe) {
             sendContextToClient(this, config, {});
 
@@ -221,7 +234,7 @@
                 isNavigateBack: true,
                 preservedViews: preservedViews,
                 goBackContext:
-                e.data.goBackContext && JSON.parse(e.data.goBackContext)
+                  e.data.goBackContext && JSON.parse(e.data.goBackContext)
               });
 
               // TODO: check if handleNavigation or history pop to update hash / path
@@ -244,8 +257,9 @@
             const path = buildPath(this, data);
             const matchedPath = await Routing.matchPath(path);
 
-            let normalizedPath = ((!path.startsWith('/')) ? '/' : '') +
-              ((path.endsWith('/')) ? path.slice(0,-1) : path);
+            let normalizedPath =
+              (!path.startsWith('/') ? '/' : '') +
+              (path.endsWith('/') ? path.slice(0, -1) : path);
             const pathExists = matchedPath === normalizedPath;
             config.iframe.contentWindow.postMessage(
               {
@@ -290,6 +304,7 @@
 <style type="text/scss">
   @import 'node_modules/fundamental-ui/scss/layout/page';
   @import 'node_modules/fundamental-ui/scss/components/spinner';
+  @import 'node_modules/fundamental-ui/scss/components/alert';
   @import 'static.css';
 
   :global(html) {
@@ -361,6 +376,20 @@
       left: 0;
       bottom: 0;
       right: 0;
+    }
+  }
+
+  $topNavHeight: 50px;
+  $leftNavWidth: 320px;
+  .fd-alert {
+    position: absolute;
+    min-width: 20rem;
+    width: calc(100% - 2 * (#{$leftNavWidth} + 1rem));
+    top: calc(#{$topNavHeight} + 1rem);
+    left: calc(#{$leftNavWidth} + 1rem);
+    z-index: 2;
+    .fd-alert__close {
+      cursor: pointer;
     }
   }
 </style>
