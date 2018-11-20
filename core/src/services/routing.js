@@ -17,7 +17,7 @@ const getLastNodeObject = pathData => {
   return lastElement ? lastElement : {};
 };
 
-const getDefaultChildNode = function (pathData) {
+const getDefaultChildNode = function(pathData) {
   const lastElement =
     pathData.navigationPath[pathData.navigationPath.length - 1];
 
@@ -34,7 +34,7 @@ const getDefaultChildNode = function (pathData) {
   }
 };
 
-const isExistingRoute = function (path, pathData) {
+const isExistingRoute = function(path, pathData) {
   if (!path) {
     return true;
   }
@@ -128,9 +128,9 @@ const replaceVars = (viewUrl, params, prefix, parenthesis = true) => {
         new RegExp(
           escapeRegExp(
             (parenthesis ? '{' : '') +
-            prefix +
-            entry[0] +
-            (parenthesis ? '}' : '')
+              prefix +
+              entry[0] +
+              (parenthesis ? '}' : '')
           ),
           'g'
         ),
@@ -349,9 +349,9 @@ export const handleRouteChange = async (path, component, node, config) => {
       isolateView,
       previousNodeValues: previousCompData
         ? {
-          viewUrl: previousCompData.viewUrl,
-          isolateView: previousCompData.isolateView
-        }
+            viewUrl: previousCompData.viewUrl,
+            isolateView: previousCompData.isolateView
+          }
         : {}
     });
 
@@ -412,10 +412,6 @@ export const matchPath = async path => {
   @param route string  absolute path of the new route
   @param options object  navi options, eg preserveView
  */
-<<<<<<< HEAD
-=======
-
->>>>>>> aa37a1ca933214a3d6db666d066f6356cf384cc5
 export const navigateTo = async route => {
   if (LuigiConfig.getConfigValue('routing.useHashRouting')) {
     window.location.hash = route;
