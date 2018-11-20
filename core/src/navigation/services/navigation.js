@@ -6,7 +6,7 @@ const isNodeAccessPermitted = (
   parentNode,
   currentContext
 ) => {
-  if (!isLoggedIn()) return false;
+  if (LuigiConfig.isAuthorizationEnabled() && !isLoggedIn()) return false;
   const permissionCheckerFn = LuigiConfig.getConfigValue(
     'navigation.nodeAccessibilityResolver'
   );
