@@ -516,16 +516,7 @@ describe('Routing', () => {
       LuigiConfig.getConfigValue.returns(true);
 
       // when
-<<<<<<< HEAD:core/test/routing.spec.js
-      LuigiConfig.config = {
-        routing: {
-          useHashRouting: true
-        }
-      };
       routing.handleRouteClick(nodeWithParent);
-=======
-      routing.handleRouteClick(nodeWithParent, window, document);
->>>>>>> upstream/master:core/test/services/routing.spec.js
 
       // then
       assert.equal(window.location.hash, expectedRoute);
@@ -537,17 +528,7 @@ describe('Routing', () => {
       LuigiConfig.getConfigValue.returns(true);
 
       // when
-<<<<<<< HEAD:core/test/routing.spec.js
-      LuigiConfig.config = {
-        routing: {
-          useHashRouting: true
-        }
-      };
-
       routing.handleRouteClick(nodeWithoutParent);
-=======
-      routing.handleRouteClick(nodeWithoutParent, window);
->>>>>>> upstream/master:core/test/services/routing.spec.js
 
       // then
       assert.equal(window.location.hash, expectedRoute);
@@ -564,16 +545,7 @@ describe('Routing', () => {
       LuigiConfig.getConfigValue.returns(false);
 
       // when
-<<<<<<< HEAD:core/test/routing.spec.js
-      LuigiConfig.config = {
-        routing: {
-          useHashRouting: false
-        }
-      };
       routing.handleRouteClick(nodeWithParent);
-=======
-      routing.handleRouteClick(nodeWithParent, window);
->>>>>>> upstream/master:core/test/services/routing.spec.js
 
       // then
       const pushStateArgs = window.history.pushState.args[0];
@@ -594,16 +566,7 @@ describe('Routing', () => {
       LuigiConfig.getConfigValue.returns(false);
 
       // when
-<<<<<<< HEAD:core/test/routing.spec.js
-      LuigiConfig.config = {
-        routing: {
-          useHashRouting: false
-        }
-      };
       routing.handleRouteClick(nodeWithoutParent);
-=======
-      routing.handleRouteClick(nodeWithoutParent, window, document);
->>>>>>> upstream/master:core/test/services/routing.spec.js
 
       // then
       const pushStateArgs = window.history.pushState.args[0];
@@ -621,20 +584,10 @@ describe('Routing', () => {
       window.history.pushState = sinon.spy();
       window.dispatchEvent = sinon.spy();
       const dispatchCallsNum = window.dispatchEvent.callCount;
-
-      // when
-<<<<<<< HEAD:core/test/routing.spec.js
-      LuigiConfig.config = {
-        routing: {
-          useHashRouting: false
-        }
-      };
-      routing.handleRouteClick(nodeWithoutParent);
-=======
       LuigiConfig.getConfigValue.returns(false);
 
-      routing.handleRouteClick(nodeWithoutParent, window, document);
->>>>>>> upstream/master:core/test/services/routing.spec.js
+      // when
+      routing.handleRouteClick(nodeWithoutParent);
 
       // then
       const pushStateArgs = window.history.pushState.args[0];
