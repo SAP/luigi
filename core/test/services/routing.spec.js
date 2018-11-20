@@ -4,10 +4,10 @@ const expect = chai.expect;
 const assert = chai.assert;
 const sinon = require('sinon');
 const MockBrowser = require('mock-browser').mocks.MockBrowser;
-const routing = require('../src/services/routing');
-import { deepMerge } from '../src/utilities/helpers.js';
+const routing = require('../../src/services/routing');
+import { deepMerge } from '../../src/utilities/helpers.js';
 import { afterEach } from 'mocha';
-import { LuigiConfig } from '../src/services/config';
+import { LuigiConfig } from '../../src/services/config';
 
 describe('Routing', () => {
   let component;
@@ -742,7 +742,7 @@ describe('Routing', () => {
   });
 
   describe('defaultChildNodes', () => {
-    const routing = rewire('../src/services/routing');
+    const routing = rewire('../../src/services/routing');
     const getDefaultChildNode = routing.__get__('getDefaultChildNode');
     const getPathData = function() {
       return {
