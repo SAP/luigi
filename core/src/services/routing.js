@@ -96,9 +96,27 @@ export const isNotSameDomain = (config, component) => {
       componentData.previousNodeValues.viewUrl
     );
     const nextUrl = getUrlWithoutHash(componentData.viewUrl);
-    return previousUrl != nextUrl;
+    const previousUrlOrigin = getLocation(previousUrl);
+    const nextUrlOrigin = getLocation(nextUrl);
+    if (previousUrl === nextUrl) {
+      return false;
+    } else if (previousUrlOrigin === nextUrlOrigin) {
+      const previousViewGroup = componentData.previousNodeValues.viewGroup;
+      const nextViewGroup = componentData.viewGroup;
+      if (!(previousViewGroup && nextViewGroup)) {
+        return true;
+      }
+      return previousViewGroup !== nextViewGroup;
+    }
+    return true;
   }
   return true;
+};
+
+const getLocation = url => {
+  var element = document.createElement('a');
+  element.href = url;
+  return element.origin;
 };
 
 export const hasIframeIsolation = component => {
@@ -288,6 +306,14 @@ const buildRoute = (node, path, params) =>
     ? path + (params ? '?' + params : '')
     : buildRoute(node.parent, `/${node.parent.pathSegment}${path}`, params);
 
+const findViewGroup = node => {
+  if (node.viewGroup) {
+    return node.viewGroup;
+  } else if (node.parent) {
+    return findViewGroup(node.parent);
+  } else return;
+};
+
 export const handleRouteChange = async (path, component, node, config) => {
   const defaultPattern = [/access_token=/, /id_token=/];
   const patterns =
@@ -313,6 +339,7 @@ export const handleRouteChange = async (path, component, node, config) => {
     const params = parseParams(pathUrl.split('?')[1]);
     const nodeParams = getNodeParams(params);
     const pathParams = getPathParams(pathData.navigationPath);
+    const viewGroup = findViewGroup(getLastNodeObject(pathData));
 
     if (!viewUrl) {
       const routeExists = isExistingRoute(path, pathData);
@@ -358,10 +385,12 @@ export const handleRouteChange = async (path, component, node, config) => {
       nodeParams,
       pathParams,
       isolateView,
+      viewGroup,
       previousNodeValues: previousCompData
         ? {
             viewUrl: previousCompData.viewUrl,
-            isolateView: previousCompData.isolateView
+            isolateView: previousCompData.isolateView,
+            viewGroup: previousCompData.viewGroup
           }
         : {}
     });

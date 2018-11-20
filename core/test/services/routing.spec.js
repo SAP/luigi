@@ -776,6 +776,45 @@ describe('Routing', () => {
       previousNodeValues: { viewUrl: config.iframe.src }
     });
     assert.isTrue(routing.isNotSameDomain(config, component));
+
+    const noHashConfig = {
+      iframe: {
+        src: 'http://url.com/oneSite'
+      }
+    };
+
+    //nodes with path routing and same viewGroup defined
+    component.set({
+      viewUrl: 'http://url.com/SomeUrl',
+      viewGroup: 'firstSPA',
+      previousNodeValues: {
+        viewUrl: noHashConfig.iframe.src,
+        viewGroup: 'firstSPA'
+      }
+    });
+    assert.isFalse(routing.isNotSameDomain(config, component));
+
+    //nodes with path routing and different viewGroup defined
+    component.set({
+      viewUrl: 'http://url.com/someUrl',
+      viewGroup: 'firstSPA',
+      previousNodeValues: {
+        viewUrl: noHashConfig.iframe.src,
+        viewGroup: 'secondSPA'
+      }
+    });
+    assert.isTrue(routing.isNotSameDomain(config, component));
+
+    //nodes with path routing and same viewGroup defined but with different domains
+    component.set({
+      viewUrl: 'http://otherDomain.com/someUrl',
+      viewGroup: 'firstSPA',
+      previousNodeValues: {
+        viewUrl: noHashConfig.iframe.src,
+        viewGroup: 'firstSPA'
+      }
+    });
+    assert.isTrue(routing.isNotSameDomain(config, component));
   });
 
   it('hasIframeIsolation', () => {
