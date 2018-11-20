@@ -69,17 +69,14 @@ describe('ContextSwitcher', function() {
     });
   });
 
-  describe('getFallbackNodeName()', () => {
+  describe('getFallbackLabel()', () => {
     it('without fallback resolver', async () => {
-      const result = await CSHelpers.getFallbackNodeName(undefined, 'some_id');
+      const result = await CSHelpers.getFallbackLabel(undefined, 'some_id');
       assert.equal(result, 'some_id');
     });
 
     it('with fallback resolver', async () => {
-      const result = await CSHelpers.getFallbackNodeName(
-        myResolverFn,
-        'some_id'
-      );
+      const result = await CSHelpers.getFallbackLabel(myResolverFn, 'some_id');
       assert.equal(result, '##some_id##');
     });
   });
@@ -119,17 +116,17 @@ describe('ContextSwitcher', function() {
     });
   });
 
-  describe('getMatchingNodeName()', () => {
+  describe('getLabelFromOptions()', () => {
     const env1 = { label: 'Env 1', id: 'env1' };
     const env2 = { label: 'Env 2', id: 'env2' };
 
     it('returns undefined if node is not inside options', () => {
-      const result = CSHelpers.getMatchingNodeName([env1, env2], 'env3');
+      const result = CSHelpers.getLabelFromOptions([env1, env2], 'env3');
       assert.equal(result, undefined);
     });
 
     it('returns matching node label', () => {
-      const result = CSHelpers.getMatchingNodeName([env1, env2], 'env2');
+      const result = CSHelpers.getLabelFromOptions([env1, env2], 'env2');
       assert.equal(result, 'Env 2');
     });
   });

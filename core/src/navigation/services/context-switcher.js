@@ -22,7 +22,7 @@ export const ContextSwitcherHelpers = {
     }));
   },
 
-  getMatchingNodeName(options, id) {
+  getLabelFromOptions(options, id) {
     const found = options.find(o => o.id === id);
     return found && found.label;
   },
@@ -38,7 +38,7 @@ export const ContextSwitcherHelpers = {
     );
   },
 
-  async getFallbackNodeName(fallbackLabelResolver, id) {
+  async getFallbackLabel(fallbackLabelResolver, id) {
     return fallbackLabelResolver ? await fallbackLabelResolver(id) : id;
   },
 
@@ -57,23 +57,29 @@ export const ContextSwitcherHelpers = {
       return;
     }
 
-    let selectedLabel;
     // we are inside the context switcher base path
     const truncatedPath = Helpers.trimLeadingSlash(
       currentPath.replace(parentNodePath, '')
     );
     const selectedId = truncatedPath.split('/')[0];
-    selectedLabel = ContextSwitcherHelpers.getMatchingNodeName(
-      options,
-      selectedId
-    );
-    selectedLabel =
+
+    let selectedLabel;
+
+    if (options) {
+      selectedLabel = ContextSwitcherHelpers.getLabelFromOptions(
+        options,
+        selectedId
+      );
+    }
+
+    // get the label from fallback if selectedId is not
+    // in options or options not yet lazy loaded by click
+    return (
       selectedLabel ||
-      (await ContextSwitcherHelpers.getFallbackNodeName(
+      (await ContextSwitcherHelpers.getFallbackLabel(
         fallbackLabelResolver,
         selectedId
-      ));
-
-    return selectedLabel;
+      ))
+    );
   }
 };

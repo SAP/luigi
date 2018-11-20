@@ -73,9 +73,10 @@
         });
 
         // options are loaded lazy by default
-        if (ContextSwitcherHelpers.isContextSwitcherDetailsView(currentPath, contextSwitcherConfig.parentNodePath)
-            || contextSwitcherConfig.lazyloadOptions === false) {
+        if(!contextSwitcherConfig.lazyloadOptions) {
           await this.fetchOptions();
+        }
+        if (ContextSwitcherHelpers.isContextSwitcherDetailsView(currentPath, contextSwitcherConfig.parentNodePath)) {
           await this.setSelectedContext(currentPath);
         }
       }
@@ -109,7 +110,7 @@
         if (label) {
           return Promise.resolve(label);
         }
-        return ContextSwitcherHelpers.getFallbackNodeName(config, id);
+        return ContextSwitcherHelpers.getFallbackLabel(config, id);
       }
     },
     methods: {
