@@ -491,8 +491,7 @@ Luigi.setConfig({
       lazyloadOptions: true, // load options on click instead on page load
       options: () => {
         return [...Array(10).keys()].filter(n => n !== 0).map(n => ({
-          label:
-            'Environment Environment Environment Environment Environment ' + n, // (i.e mapping between what the user sees and what is taken to replace the dynamic part for the dynamic node)
+          label: 'Environment ' + n, // (i.e mapping between what the user sees and what is taken to replace the dynamic part for the dynamic node)
           pathValue: 'env' + n // will be used to replace dynamic part
         }));
       },
