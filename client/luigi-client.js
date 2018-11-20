@@ -127,6 +127,10 @@
       } else if ('luigi.navigate' === e.data.msg) {
         setContext(e.data);
 
+        console.log(
+          '​currentContext.internal.isNavigateBack',
+          currentContext.internal.isNavigateBack
+        );
         if (!currentContext.internal.isNavigateBack) {
           var hashRoutingModeActive =
             e.data.viewUrl.indexOf('#') !== -1 &&

@@ -517,7 +517,7 @@ describe('Routing', () => {
           useHashRouting: true
         }
       };
-      routing.handleRouteClick(nodeWithParent, window, document);
+      routing.handleRouteClick(nodeWithParent);
 
       // then
       assert.equal(window.location.hash, expectedRoute);
@@ -534,7 +534,7 @@ describe('Routing', () => {
         }
       };
 
-      routing.handleRouteClick(nodeWithoutParent, window);
+      routing.handleRouteClick(nodeWithoutParent);
 
       // then
       assert.equal(window.location.hash, expectedRoute);
@@ -554,7 +554,7 @@ describe('Routing', () => {
           useHashRouting: false
         }
       };
-      routing.handleRouteClick(nodeWithParent, window);
+      routing.handleRouteClick(nodeWithParent);
 
       // then
       const pushStateArgs = window.history.pushState.args[0];
@@ -578,7 +578,7 @@ describe('Routing', () => {
           useHashRouting: false
         }
       };
-      routing.handleRouteClick(nodeWithoutParent, window, document);
+      routing.handleRouteClick(nodeWithoutParent);
 
       // then
       const pushStateArgs = window.history.pushState.args[0];
@@ -603,7 +603,7 @@ describe('Routing', () => {
           useHashRouting: false
         }
       };
-      routing.handleRouteClick(nodeWithoutParent, window, document);
+      routing.handleRouteClick(nodeWithoutParent);
 
       // then
       const pushStateArgs = window.history.pushState.args[0];

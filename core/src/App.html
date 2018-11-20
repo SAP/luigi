@@ -214,7 +214,6 @@
 
           if ('luigi.navigation.back' === e.data.msg) {
             // go back: context from the view
-            this.set({ isNavigateBack: false });
             const preservedViews = this.get().preservedViews;
             if (preservedViews && preservedViews.length) {
               // remove current active iframe and data
@@ -236,6 +235,7 @@
                 config
               );
             } else {
+              this.set({ isNavigateBack: false });
               console.error('goBack() not possible, no preserved views found.');
             }
           }

@@ -217,8 +217,8 @@ const navigateIframe = (config, component, node) => {
       },
       '*'
     );
-    // clear goBackContext after sending it to the client
-    component.set({ goBackContext: undefined });
+    // clear goBackContext and reset navigateBack after sending it to the client
+    component.set({ goBackContext: undefined, isNavigateBack: false });
 
     /**
      * check if luigi responded
@@ -389,16 +389,14 @@ export const matchPath = async path => {
   navigateTo used for navigation
   @param route string  absolute path of the new route
   @param options object  navi options, eg preserveView
-  @param windowElem object  defaults to window
-  @param documentElem object  defaults to document
  */
-export const navigateTo = (route, windowElem = window) => {
+export const navigateTo = route => {
   if (LuigiConfig.getConfigValue('routing.useHashRouting')) {
-    windowElem.location.hash = route;
+    window.location.hash = route;
     return;
   }
 
-  windowElem.history.pushState(
+  window.history.pushState(
     {
       path: route
     },
@@ -417,17 +415,17 @@ export const navigateTo = (route, windowElem = window) => {
     event = new CustomEvent('popstate');
   }
 
-  windowElem.dispatchEvent(event);
+  window.dispatchEvent(event);
 };
 
-export const handleRouteClick = (node, windowElem = window) => {
+export const handleRouteClick = node => {
   if (node.externalLink && node.externalLink.url) {
     node.externalLink.sameWindow
-      ? (windowElem.location.href = node.externalLink.url)
-      : windowElem.open(node.externalLink.url).focus();
+      ? (window.location.href = node.externalLink.url)
+      : window.open(node.externalLink.url).focus();
     // externalLinkUrl property is provided so there's no need to trigger routing mechanizm
     return;
   }
   const route = buildRoute(node, `/${node.pathSegment}`);
-  navigateTo(route, windowElem);
+  navigateTo(route);
 };
