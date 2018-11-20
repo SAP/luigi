@@ -1,16 +1,18 @@
-
 <div id="app {hideNav? 'no-nav' : ''}">
-  <Backdrop>
-    <div class="fd-page iframeContainer" use:init="context"></div>
-  </Backdrop>
-  {#if showLoadingIndicator}
-  <div in:fade='{delay: 250, duration: 250}' out:fade='{duration: 250}' class="fd-page spinnerContainer" aria-hidden="false" aria-label="Loading">
-    <div class="fd-spinner"><div></div></div>
-  </div>
-  {/if}
+	<Backdrop>
+		<div class="fd-page iframeContainer" use:init="context"></div>
+	</Backdrop>
+	{#if showLoadingIndicator}
+	<div in:fade='{delay: 250, duration: 250}' out:fade='{duration: 250}' class="fd-page spinnerContainer" aria-hidden="false"
+	 aria-label="Loading">
+		<div class="fd-spinner">
+			<div></div>
+		</div>
+	</div>
+	{/if}
 
-  <TopNav pathData={navigationPath} />
-  <LeftNav pathData={navigationPath} />
+	<TopNav pathData={navigationPath} />
+	<LeftNav pathData={navigationPath} />
 </div>
 
 <script type="text/javascript">
@@ -145,10 +147,13 @@
   };
 
   const sendAuthDataToClient = (iframe, authData) => {
-    iframe.contentWindow.postMessage({
-      msg: 'luigi.auth.tokenIssued',
-      authData
-    }, '*');
+    iframe.contentWindow.postMessage(
+      {
+        msg: 'luigi.auth.tokenIssued',
+        authData
+      },
+      '*'
+    );
   };
 
   export default {
@@ -176,7 +181,7 @@
           builderCompatibilityMode: Boolean(window.builderCompatibilityMode)
         };
 
-        window.addEventListener('message', async (e) => {
+        window.addEventListener('message', async e => {
           if ('luigi.get-context' === e.data.msg && config.iframe) {
             sendContextToClient(this, config, {});
 
@@ -221,7 +226,7 @@
                 isNavigateBack: true,
                 preservedViews: preservedViews,
                 goBackContext:
-                e.data.goBackContext && JSON.parse(e.data.goBackContext)
+                  e.data.goBackContext && JSON.parse(e.data.goBackContext)
               });
 
               // TODO: check if handleNavigation or history pop to update hash / path
@@ -244,8 +249,9 @@
             const path = buildPath(this, data);
             const matchedPath = await Routing.matchPath(path);
 
-            let normalizedPath = ((!path.startsWith('/')) ? '/' : '') +
-              ((path.endsWith('/')) ? path.slice(0,-1) : path);
+            let normalizedPath =
+              (!path.startsWith('/') ? '/' : '') +
+              (path.endsWith('/') ? path.slice(0, -1) : path);
             const pathExists = matchedPath === normalizedPath;
             config.iframe.contentWindow.postMessage(
               {
