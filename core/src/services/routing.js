@@ -3,6 +3,7 @@ import { LuigiConfig } from './config';
 import {
   getPathWithoutHash,
   getUrlWithoutHash,
+  containsAllSegments,
   isIE,
   getConfigValueFromObject
 } from '../utilities/helpers';
@@ -308,8 +309,29 @@ export const handleRouteChange = async (path, component, node, config) => {
       if (routeExists) {
         const defaultChildNode = getDefaultChildNode(pathData);
         navigateTo(`${pathUrl ? `/${pathUrl}` : ''}/${defaultChildNode}`);
-      } // TODO else display 404 page
+      } else {
+        const alert = {
+          message: 'Could not find the requested route',
+          link: pathUrl
+        };
+
+        component.set({ alert });
+        navigateTo('/');
+        //error 404
+      }
       return;
+    }
+
+    if (!containsAllSegments(pathUrl, pathData.navigationPath)) {
+      const matchedPath = await matchPath(pathUrl);
+
+      const alert = {
+        message: 'Could not map the exact target node for the requested route',
+        link: pathUrl
+      };
+
+      component.set({ alert });
+      navigateTo(matchedPath);
     }
 
     const previousCompData = component.get();
@@ -390,7 +412,8 @@ export const matchPath = async path => {
   @param route string  absolute path of the new route
   @param options object  navi options, eg preserveView
  */
-export const navigateTo = route => {
+
+export const navigateTo = async route => {
   if (LuigiConfig.getConfigValue('routing.useHashRouting')) {
     window.location.hash = route;
     return;
@@ -418,6 +441,14 @@ export const navigateTo = route => {
   window.dispatchEvent(event);
 };
 
+export const buildFromRelativePath = path => {
+  if (LuigiConfig.getConfigValue('routing.useHashRouting')) {
+    return window.location.hash + '/' + path;
+  } else {
+    return window.location.pathname + '/' + path;
+  }
+};
+
 export const handleRouteClick = node => {
   if (node.externalLink && node.externalLink.url) {
     node.externalLink.sameWindow
@@ -425,6 +456,15 @@ export const handleRouteClick = node => {
       : window.open(node.externalLink.url).focus();
     // externalLinkUrl property is provided so there's no need to trigger routing mechanizm
     return;
+  } else if (node.link) {
+    const link = node.link.startsWith('/')
+      ? node.link
+      : buildFromRelativePath(node.link);
+    navigateTo(link, window);
+    return;
+  } else {
+    const route = buildRoute(node, `/${node.pathSegment}`);
+    navigateTo(route, window);
   }
   const route = buildRoute(node, `/${node.pathSegment}`);
   navigateTo(route);

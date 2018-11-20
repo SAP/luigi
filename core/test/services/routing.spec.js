@@ -4,10 +4,10 @@ const expect = chai.expect;
 const assert = chai.assert;
 const sinon = require('sinon');
 const MockBrowser = require('mock-browser').mocks.MockBrowser;
-const routing = require('../src/services/routing');
-import { deepMerge } from '../src/utilities/helpers.js';
+const routing = require('../../src/services/routing');
+import { deepMerge } from '../../src/utilities/helpers.js';
 import { afterEach } from 'mocha';
-import { LuigiConfig } from '../src/services/config';
+import { LuigiConfig } from '../../src/services/config';
 
 describe('Routing', () => {
   let component;
@@ -19,11 +19,14 @@ describe('Routing', () => {
       },
       get: () => lastObj
     };
+
+    sinon.stub(LuigiConfig, 'getConfigValue');
   });
   afterEach(() => {
     if (document.createElement.restore) {
       document.createElement.restore();
     }
+    sinon.restore();
   });
   describe('#handleRouteChange()', () => {
     const sampleLuigiConfig = {
@@ -510,13 +513,9 @@ describe('Routing', () => {
     it('should set proper location hash with parent node', () => {
       // given
       const expectedRoute = '#/projects/project-one';
+      LuigiConfig.getConfigValue.returns(true);
 
       // when
-      LuigiConfig.config = {
-        routing: {
-          useHashRouting: true
-        }
-      };
       routing.handleRouteClick(nodeWithParent);
 
       // then
@@ -526,14 +525,9 @@ describe('Routing', () => {
     it('should set proper location hash with normal node', () => {
       // given
       const expectedRoute = '#/projects';
+      LuigiConfig.getConfigValue.returns(true);
 
       // when
-      LuigiConfig.config = {
-        routing: {
-          useHashRouting: true
-        }
-      };
-
       routing.handleRouteClick(nodeWithoutParent);
 
       // then
@@ -548,12 +542,9 @@ describe('Routing', () => {
       window.history.pushState = sinon.spy();
       const pushStateCallsNum = window.history.pushState.callCount;
 
+      LuigiConfig.getConfigValue.returns(false);
+
       // when
-      LuigiConfig.config = {
-        routing: {
-          useHashRouting: false
-        }
-      };
       routing.handleRouteClick(nodeWithParent);
 
       // then
@@ -572,12 +563,8 @@ describe('Routing', () => {
       window.history.pushState = sinon.spy();
       const pushStateCallsNum = window.history.pushState.callCount;
 
-      // when
-      LuigiConfig.config = {
-        routing: {
-          useHashRouting: false
-        }
-      };
+      LuigiConfig.getConfigValue.returns(false);
+
       routing.handleRouteClick(nodeWithoutParent);
 
       // then
@@ -598,11 +585,7 @@ describe('Routing', () => {
       const dispatchCallsNum = window.dispatchEvent.callCount;
 
       // when
-      LuigiConfig.config = {
-        routing: {
-          useHashRouting: false
-        }
-      };
+      LuigiConfig.getConfigValue.returns(false);
       routing.handleRouteClick(nodeWithoutParent);
 
       // then
@@ -611,6 +594,43 @@ describe('Routing', () => {
 
       assert.equal(singleStateWithPath.path, expectedRoute);
       assert.equal(dispatchCallsNum + 1, expectedDispatchCallsNum);
+    });
+
+    it('link with absolute path', () => {
+      // given
+      const expectedRoute = '#/projects';
+      window.location.hash = '#/some/path';
+      const inputNode = {
+        label: 'Absolute link',
+        link: '/projects'
+      };
+
+      // when
+      LuigiConfig.getConfigValue.returns(true);
+
+      routing.handleRouteClick(inputNode, window);
+
+      console.log('​window.location.hash', window.location.hash);
+      // then
+      assert.equal(window.location.hash, expectedRoute);
+    });
+
+    it('link with relative path', () => {
+      // given
+      const expectedRoute = '#/some/path/projects';
+      window.location.hash = '#/some/path';
+      const inputNode = {
+        label: 'Relative link',
+        link: 'projects'
+      };
+
+      // when
+      LuigiConfig.getConfigValue.returns(true);
+
+      routing.handleRouteClick(inputNode, window);
+
+      // then
+      assert.equal(window.location.hash, expectedRoute);
     });
   });
 
@@ -742,7 +762,7 @@ describe('Routing', () => {
   });
 
   describe('defaultChildNodes', () => {
-    const routing = rewire('../src/services/routing');
+    const routing = rewire('../../src/services/routing');
     const getDefaultChildNode = routing.__get__('getDefaultChildNode');
     const getPathData = function() {
       return {
