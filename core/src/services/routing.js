@@ -218,8 +218,6 @@ const navigateIframe = (config, component, node) => {
       },
       '*'
     );
-    // clear goBackContext after sending it to the client
-    component.set({ goBackContext: undefined });
 
     /**
      * check if luigi responded
@@ -411,16 +409,14 @@ export const matchPath = async path => {
   navigateTo used for navigation
   @param route string  absolute path of the new route
   @param options object  navi options, eg preserveView
-  @param windowElem object  defaults to window
-  @param documentElem object  defaults to document
  */
-export const navigateTo = async (route, windowElem = window) => {
+export const navigateTo = async route => {
   if (LuigiConfig.getConfigValue('routing.useHashRouting')) {
-    windowElem.location.hash = route;
+    window.location.hash = route;
     return;
   }
 
-  windowElem.history.pushState(
+  window.history.pushState(
     {
       path: route
     },
@@ -439,7 +435,7 @@ export const navigateTo = async (route, windowElem = window) => {
     event = new CustomEvent('popstate');
   }
 
-  windowElem.dispatchEvent(event);
+  window.dispatchEvent(event);
 };
 
 export const buildFromRelativePath = path => {
@@ -450,21 +446,21 @@ export const buildFromRelativePath = path => {
   }
 };
 
-export const handleRouteClick = (node, windowElem = window) => {
+export const handleRouteClick = node => {
   if (node.externalLink && node.externalLink.url) {
     node.externalLink.sameWindow
-      ? (windowElem.location.href = node.externalLink.url)
-      : windowElem.open(node.externalLink.url).focus();
+      ? (window.location.href = node.externalLink.url)
+      : window.open(node.externalLink.url).focus();
     // externalLinkUrl property is provided so there's no need to trigger routing mechanizm
     return;
   } else if (node.link) {
     const link = node.link.startsWith('/')
       ? node.link
       : buildFromRelativePath(node.link);
-    navigateTo(link, windowElem);
+    navigateTo(link);
     return;
   } else {
     const route = buildRoute(node, `/${node.pathSegment}`);
-    navigateTo(route, windowElem);
+    navigateTo(route);
   }
 };

@@ -516,7 +516,7 @@ describe('Routing', () => {
       LuigiConfig.getConfigValue.returns(true);
 
       // when
-      routing.handleRouteClick(nodeWithParent, window, document);
+      routing.handleRouteClick(nodeWithParent);
 
       // then
       assert.equal(window.location.hash, expectedRoute);
@@ -528,7 +528,7 @@ describe('Routing', () => {
       LuigiConfig.getConfigValue.returns(true);
 
       // when
-      routing.handleRouteClick(nodeWithoutParent, window);
+      routing.handleRouteClick(nodeWithoutParent);
 
       // then
       assert.equal(window.location.hash, expectedRoute);
@@ -545,7 +545,7 @@ describe('Routing', () => {
       LuigiConfig.getConfigValue.returns(false);
 
       // when
-      routing.handleRouteClick(nodeWithParent, window);
+      routing.handleRouteClick(nodeWithParent);
 
       // then
       const pushStateArgs = window.history.pushState.args[0];
@@ -566,7 +566,7 @@ describe('Routing', () => {
       LuigiConfig.getConfigValue.returns(false);
 
       // when
-      routing.handleRouteClick(nodeWithoutParent, window, document);
+      routing.handleRouteClick(nodeWithoutParent);
 
       // then
       const pushStateArgs = window.history.pushState.args[0];
@@ -584,11 +584,10 @@ describe('Routing', () => {
       window.history.pushState = sinon.spy();
       window.dispatchEvent = sinon.spy();
       const dispatchCallsNum = window.dispatchEvent.callCount;
-
-      // when
       LuigiConfig.getConfigValue.returns(false);
 
-      routing.handleRouteClick(nodeWithoutParent, window, document);
+      // when
+      routing.handleRouteClick(nodeWithoutParent);
 
       // then
       const pushStateArgs = window.history.pushState.args[0];
