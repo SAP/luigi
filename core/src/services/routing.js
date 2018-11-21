@@ -3,6 +3,7 @@ import { LuigiConfig } from './config';
 import {
   getPathWithoutHash,
   getUrlWithoutHash,
+  trimLeadingSlash,
   containsAllSegments,
   isIE,
   getConfigValueFromObject
@@ -463,4 +464,33 @@ export const handleRouteClick = node => {
     const route = buildRoute(node, `/${node.pathSegment}`);
     navigateTo(route);
   }
+};
+
+export const getModifiedPathname = () => {
+  if (!window.history.state) {
+    return '';
+  }
+
+  return window.history.state.path
+    .split('/')
+    .slice(1)
+    .join('/');
+};
+
+export const getCurrentPath = () =>
+  LuigiConfig.getConfigValue('routing.useHashRouting')
+    ? window.location.hash.replace('#', '') // TODO: getPathWithoutHash(window.location.hash) fails in ContextSwitcher
+    : trimLeadingSlash(window.location.pathname);
+
+export const addRouteChangeListener = callback => {
+  if (LuigiConfig.getConfigValue('routing.useHashRouting')) {
+    const getModifiedHash = s => s.newURL.split('#/')[1];
+    return window.addEventListener('hashchange', event => {
+      callback(getModifiedHash(event));
+    });
+  }
+
+  window.onpopstate = () => {
+    callback(trimLeadingSlash(getModifiedPathname()));
+  };
 };

@@ -209,9 +209,9 @@ describe('Luigi client features', () => {
         .contains('External Page')
         .click();
 
-      cy.get('.fd-spinner').should('exist');
+      cy.get('.spinnerContainer .fd-spinner').should('exist');
 
-      cy.get('.fd-spinner').should('not.exist');
+      cy.get('.spinnerContainer .fd-spinner').should('not.exist');
 
       cy.wait(250);
       cy.get('iframe').then($iframe => {
@@ -221,10 +221,11 @@ describe('Luigi client features', () => {
         cy.wrap($iframeBody)
           .contains('Show loading indicator')
           .click();
-        cy.get('.fd-spinner').should('exist');
+
+        cy.get('.spinnerContainer .fd-spinner').should('exist');
 
         // wait for programmatic hide of loading indicator
-        cy.get('.fd-spinner').should('not.exist');
+        cy.get('.spinnerContainer .fd-spinner').should('not.exist');
       });
     });
   });

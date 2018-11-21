@@ -257,7 +257,7 @@ Luigi.setConfig({
   },
   // navigation structure and settings
   navigation: {
-    nodeAccessibilityResolver: function (nodeToCheckPermissionFor, parentNode, currentContext) {}
+    nodeAccessibilityResolver: function (nodeToCheckPermissionFor, parentNode, currentContext) {},
     nodes: [
         // STATIC navigation node
       {
@@ -279,10 +279,38 @@ Luigi.setConfig({
         },
         children: [node, node, node]
       }
-    ]
+    ],
+    contextSwitcher: {
+      defaultLabel: 'Select Environment ...',
+      parentNodePath: '/environments',
+      lazyloadOptions: false,
+      fallbackLabelResolver: (id) => (id.toUpperCase()),
+      options: [{label,pathValue}, {label,pathValue}]
+      },
+      actions: [{label,link,position,clickHandler?}]
+    }
   }
 });
 ```
+
+
+## Context switcher
+
+The context switcher is a drop-down list available in the top navigation bar. It allows you to switch between a curated list of navigation elements such as Environments.
+
+- **defaultLabel** specifies the default label that is shown if no context is selected.
+- **parentNodePath** specifies the base path, that is prepended to **options[].pathValue**. It must be an absolute path.
+- **lazyloadOptions** defines when to fetch **options**. When set to `true`, loads **options** when you click the context switcher. It doesn't involve any caching. When set to `false`, loads **options** once the page loads. The default value is `true`. 
+- **options** defines the list of context element. Context element properties are:
+  - **label** defines the context element label. If not defined, the **pathValue** is passed to **fallbackLabelResolver** to set its value. The default value is **pathValue**, if **fallbackLabelResolver** is not defined.
+  - **pathValue** defines the context element path that is appended to **parentNodePath** and reflects a **pathSegment**.
+- **actions** defines a list of additional elements that are shown on above or below the context switcher **options**. Each action contains the following parameters:
+  - **label** defines the action element label.
+  - **position** defines the action element position. Can be `top` or `bottom`. The default value is `top`. This parameter is optional.
+  - **link** defines an absolute Link to a **node**. This parameter is optional.
+  - **clickHandler** specifies a function and is executed on click and should return a boolean. If it returns `true`, **link** is opened afterwards.
+- **fallbackLabelResolver** specifies a function that is used to fetch the **label** for **options** that do not have a **label** defined. Additionally it fetches the dropdown label for non-existing **options**.
+
 
 ### Dynamic **viewUrl** example
 
