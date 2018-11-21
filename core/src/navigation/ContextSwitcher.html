@@ -79,9 +79,9 @@
         if (ContextSwitcherHelpers.isContextSwitcherDetailsView(currentPath, contextSwitcherConfig.parentNodePath)) {
           await this.setSelectedContext(currentPath);
         }
-      }
 
-      Routing.addRouteChangeListener(() => this.setSelectedContext(Routing.getCurrentPath()));
+        Routing.addRouteChangeListener(() => this.setSelectedContext(Routing.getCurrentPath()));
+      }
     },
     data() {
       return {
