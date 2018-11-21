@@ -20,8 +20,8 @@ The navigation structure is a recursive tree-like data structure that defines al
 
 A navigation path is any existing path in the navigation tree. It connects the following elements together:
 
-- The **pathSegment** of the main application. The **pathSegment** is a part of the URL in the browser URL bar.
-- The **viewUrl** of a micro front-end rendered in the content area of the application.
+- The path of the main application, that is, the path in the browser URL. The path is defined in a Luigi navigation node through one of the following parameters, listed in order of precedence: **externalLink**, **link**, and **pathSegment**.
+- The **viewUrl** of a micro front-end rendered in the content area of the main application.
 
 A sample navigation structure looks as follows:
 
@@ -34,6 +34,14 @@ A sample navigation structure looks as follows:
         label: 'Home',
         viewUrl: 'https://my.microfrontend.com/',
         children: [
+          {
+            link: '/home',
+            label: 'Go back home'
+          },
+          {
+            link: 'projects/pr2/settings',
+            label: 'Go to Project 2 Settings'
+          },
           {
             pathSegment: 'settings',
             label: 'Settings',
@@ -80,7 +88,8 @@ LuigiClient.linkManager().withParam({sort: 'asc'}).navigate('/something/sample_1
 
 ### Application path
 
-The main application path is built from **pathSegment** values in the navigation path, joined with the **/** character.
+The main application path is built from **pathSegment** values in the navigation path, joined with the **/** character. This can be overriden by using either **externalLink** or **link** values.
+
 The micro front-end view URL is the value of the **viewUrl** property of the last node in the navigation path.
 
 The following example shows the structure of different navigation paths. If the URL of the main application is `https://luigiexample.com`, then:
@@ -218,7 +227,8 @@ The node parameters are as follows:
 - **pathSegment** specifies the partial URL of the current segment. **pathSegment** must not contain slashes.
   - A static settings example reflects `luigidomain.test/settings`.
   - A dynamic settings example, prefixed with a colon, loads on any other value. 
-- **externalLink** is an object which indicates that the node links to an external URL. If this parameter is defined, **pathSegment** is ignored. It has the following properties:
+- **link** is a string which refers to an absolute path in the navigation structure or a relative path to a grandchild of the current path. If this parameter is defined, **pathSegment** is ignored.
+ - **externalLink** is an object which indicates that the node links to an external URL. If this parameter is defined, **pathSegment** and **link** parameters are ignored. It has the following properties:
   - **sameWindow** defines if the external URL is opened in a new or current tab.
   - **url** is the external URL that the node leads to.
 - **label** contains the display name of the navigation node.
@@ -239,7 +249,7 @@ The node parameters are as follows:
 This code sample demonstrates a sample structure with the parameters you can use when configuring navigation for Luigi.
 
 ```
-window.Luigi.setConfig({
+Luigi.setConfig({
   routing: {
     // uses hash-based navigation if set to true
     useHashRouting: true,
@@ -247,7 +257,7 @@ window.Luigi.setConfig({
   },
   // navigation structure and settings
   navigation: {
-    nodeAccessibilityResolver: function (nodeToCheckPermissionFor, parentNode, currentContext) {}
+    nodeAccessibilityResolver: function (nodeToCheckPermissionFor, parentNode, currentContext) {},
     nodes: [
         // STATIC navigation node
       {
@@ -269,10 +279,38 @@ window.Luigi.setConfig({
         },
         children: [node, node, node]
       }
-    ]
+    ],
+    contextSwitcher: {
+      defaultLabel: 'Select Environment ...',
+      parentNodePath: '/environments',
+      lazyloadOptions: false,
+      fallbackLabelResolver: (id) => (id.toUpperCase()),
+      options: [{label,pathValue}, {label,pathValue}]
+      },
+      actions: [{label,link,position,clickHandler?}]
+    }
   }
 });
 ```
+
+
+## Context switcher
+
+The context switcher is a drop-down list available in the top navigation bar. It allows you to switch between a curated list of navigation elements such as Environments.
+
+- **defaultLabel** specifies the default label that is shown if no context is selected.
+- **parentNodePath** specifies the base path, that is prepended to **options[].pathValue**. It must be an absolute path.
+- **lazyloadOptions** defines when to fetch **options**. When set to `true`, loads **options** when you click the context switcher. It doesn't involve any caching. When set to `false`, loads **options** once the page loads. The default value is `true`. 
+- **options** defines the list of context element. Context element properties are:
+  - **label** defines the context element label. If not defined, the **pathValue** is passed to **fallbackLabelResolver** to set its value. The default value is **pathValue**, if **fallbackLabelResolver** is not defined.
+  - **pathValue** defines the context element path that is appended to **parentNodePath** and reflects a **pathSegment**.
+- **actions** defines a list of additional elements that are shown on above or below the context switcher **options**. Each action contains the following parameters:
+  - **label** defines the action element label.
+  - **position** defines the action element position. Can be `top` or `bottom`. The default value is `top`. This parameter is optional.
+  - **link** defines an absolute Link to a **node**. This parameter is optional.
+  - **clickHandler** specifies a function and is executed on click and should return a boolean. If it returns `true`, **link** is opened afterwards.
+- **fallbackLabelResolver** specifies a function that is used to fetch the **label** for **options** that do not have a **label** defined. Additionally it fetches the dropdown label for non-existing **options**.
+
 
 ### Dynamic **viewUrl** example
 

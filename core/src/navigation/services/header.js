@@ -1,10 +1,7 @@
-import {
-  getConfigValueAsync,
-  getConfigBooleanValue
-} from '../../services/config.js';
+import { LuigiConfig } from '../../services/config.js';
 
 export const processHeaderSettings = component => {
-  return getConfigValueAsync('settings.header').then(header => {
+  return LuigiConfig.getConfigValueAsync('settings.header').then(header => {
     if (!header) {
       return;
     }

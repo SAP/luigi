@@ -56,6 +56,22 @@ const routes: Routes = [
   {
     path: 'projects/:projectId/dynamic/:dynamicValue',
     component: DynamicComponent
+  },
+  {
+    path: 'create/:dynamicValue',
+    component: DynamicComponent
+  },
+  {
+    path: 'environments',
+    component: DynamicComponent
+  },
+  {
+    path: 'environments/:dynamicValue',
+    component: DynamicComponent
+  },
+  {
+    path: 'environments/:ignoredDynamicValue/:dynamicValue',
+    component: DynamicComponent
   }
 ];
 
