@@ -79,9 +79,9 @@
         if (ContextSwitcherHelpers.isContextSwitcherDetailsView(currentPath, contextSwitcherConfig.parentNodePath)) {
           await this.setSelectedContext(currentPath);
         }
-      }
 
-      Routing.addRouteChangeListener(() => this.setSelectedContext(Routing.getCurrentPath()));
+        Routing.addRouteChangeListener(() => this.setSelectedContext(Routing.getCurrentPath()));
+      }
     },
     data() {
       return {
@@ -125,6 +125,7 @@
       async setSelectedContext(currentPath) {
         const config = this.get().config;
         const options = this.get().options;
+        debugger
         const parentNodePath = config.parentNodePath;
         const fallbackLabelResolver = config.fallbackLabelResolver;
         this.set({
