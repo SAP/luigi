@@ -4,7 +4,7 @@ Navigation parameters allow you to specify routing configuration, set the appear
 
 ## Navigation elements
 
-The image shows the elements of the Luigi navigation: 
+The image shows the elements of Luigi navigation: 
 
 1. Top navigation, where the main navigation path is displayed.
 2. Side navigation, where the applications are defined.
@@ -20,8 +20,8 @@ The navigation structure is a recursive tree-like data structure that defines al
 
 A navigation path is any existing path in the navigation tree. It connects the following elements together:
 
-- The **pathSegment** of the main application. The **pathSegment** is a part of the URL in the browser URL bar.
-- The **viewUrl** of a micro front-end rendered in the content area of the application.
+- The path of the main application, that is, the path in the browser URL. The path is defined in a Luigi navigation node through one of the following parameters, listed in order of precedence: **externalLink**, **link**, and **pathSegment**.
+- The **viewUrl** of a micro front-end rendered in the content area of the main application.
 
 A sample navigation structure looks as follows:
 
@@ -34,6 +34,14 @@ A sample navigation structure looks as follows:
         label: 'Home',
         viewUrl: 'https://my.microfrontend.com/',
         children: [
+          {
+            link: '/home',
+            label: 'Go back home'
+          },
+          {
+            link: 'projects/pr2/settings',
+            label: 'Go to Project 2 Settings'
+          },
           {
             pathSegment: 'settings',
             label: 'Settings',
@@ -80,7 +88,8 @@ LuigiClient.linkManager().withParam({sort: 'asc'}).navigate('/something/sample_1
 
 ### Application path
 
-The main application path is built from **pathSegment** values in the navigation path, joined with the **/** character.
+The main application path is built from **pathSegment** values in the navigation path, joined with the **/** character. This can be overriden by using either **externalLink** or **link** values.
+
 The micro front-end view URL is the value of the **viewUrl** property of the last node in the navigation path.
 
 The following example shows the structure of different navigation paths. If the URL of the main application is `https://luigiexample.com`, then:
@@ -94,7 +103,7 @@ The following example shows the structure of different navigation paths. If the 
 
 ### Path parameters
 
-Use the path parameter values to define the **pathSegment** in your configuration. You can either use a static value for your **pathSegment**, or add a colon to this value as in `:projectId`, to and make it act as a parameter. This tells Luigi to accept any value for this **pathSegment** of the main application URL. The value replaces the parameter when it is further processed by the application.
+Use path parameter values to define the **pathSegment** in your configuration. You can either use a static value for your **pathSegment**, or add a colon to this value as in `:projectId`, to make it act as a parameter. This tells Luigi to accept any value for this **pathSegment** of the main application URL. The value replaces the parameter when it is further processed by the application.
 
 A sample structure with a parametrized **pathSegment** is as follows:
 ```
@@ -199,7 +208,7 @@ You can use the listed parameters and functions to configure your navigation str
 
 ### Routing
 
-You can configure the way Luigi tackles routing in your application in the **Routing** section of the configuration file. In the example, you can choose the routing strategy to apply in your application as either hash or path location routing.
+You can configure the way Luigi tackles routing in your application in the **Routing** section of the configuration file. For example, you can choose the routing strategy to apply in your application as either hash or path location routing.
 
 - **useHashRouting** defines either hash-based (`url.com/#/yourpath`) or path-based (`url.com/yourpath`) routing.
 - **nodeParamPrefix** sets the prefix character when using the `LuigiClient.linkManager().withParam()` function, which provides a way to simply attach query parameters to the view URL for activities such as sorting and filtering. The URL contains the parameters to allow deep linking. If you want to use a different character prefix, define yours here. The default character is `~`.
@@ -218,6 +227,10 @@ The node parameters are as follows:
 - **pathSegment** specifies the partial URL of the current segment. **pathSegment** must not contain slashes.
   - A static settings example reflects `luigidomain.test/settings`.
   - A dynamic settings example, prefixed with a colon, loads on any other value. 
+- **link** is a string which refers to an absolute path in the navigation structure or a relative path to a grandchild of the current path. If this parameter is defined, **pathSegment** is ignored.
+ - **externalLink** is an object which indicates that the node links to an external URL. If this parameter is defined, **pathSegment** and **link** parameters are ignored. It has the following properties:
+  - **sameWindow** defines if the external URL is opened in a new or current tab.
+  - **url** is the external URL that the node leads to.
 - **label** contains the display name of the navigation node.
 - **hideFromNav** shows or hides a navigation node. You can still navigate to the node but it does not show up in the top or left pane.
 - **viewUrl** contains the URL or path to a view which renders when you click the navigation node. Use either a full URL or a relative path. This value may consist of variables if you have specified a **navigationContext** with a dynamic **pathSegment**. If **viewUrl** is undefined, Luigi activates the child node specified in **defaultChildNode**. When both **viewUrl** and **defaultChildNode** are undefined, Luigi opens the first child of the current node.
@@ -226,8 +239,8 @@ The node parameters are as follows:
 - **defaultChildNode** sets the child node that Luigi activates automatically if the current node has no **viewUrl** defined. Provide **pathSegment** of the child node you want to activate as a string.
 - **isolateView** renders the view in a new frame when you enter and leave the node. This setting overrides the same-domain frame re-usage. The **isolateView** is disabled by default.
 - **keepSelectedForChildren** focuses the navigation on its current hierarchy, omitting the display of children.
-- **loadingIndicator.enabled** shows a loading indicator when switching between micro front-ends. If you have a super fast micro front-end, you can disable this feature to prevent the flickering of the loading indicator. The **loadingIndicator.loadingIndicator** is enabled by default.
-- **loadingIndicator.hideAutomatically** disables the automatic hiding of the loading indicator once the micro front-end is loaded. Only considered if the loading indicator is enabled. Does not apply if the loading indicator is activated manually with the `LuigiClient.uxManager().showLoadingIndicator()` function. If the loading indicator is enabled and automatic hiding is disabled, use `LuigiClient.uxManager().hideLoadingIndicator()` to hide it manually in your micro front-end during the startup. The **loadingIndicator.hideAutomatically** is enabled by default.
+- **loadingIndicator.enabled** shows a loading indicator when switching between micro front-ends. If you have a fast micro front-end, you can disable this feature to prevent flickering of the loading indicator. This parameter is enabled by default.
+- **loadingIndicator.hideAutomatically** disables the automatic hiding of the loading indicator once the micro front-end is loaded. It is only considered if the loading indicator is enabled. It does not apply if the loading indicator is activated manually with the `LuigiClient.uxManager().showLoadingIndicator()` function. If the loading indicator is enabled and automatic hiding is disabled, use `LuigiClient.uxManager().hideLoadingIndicator()` to hide it manually in your micro front-end during the startup. This parameter is enabled by default.
 
 
 
@@ -236,7 +249,7 @@ The node parameters are as follows:
 This code sample demonstrates a sample structure with the parameters you can use when configuring navigation for Luigi.
 
 ```
-window.Luigi.setConfig({
+Luigi.setConfig({
   routing: {
     // uses hash-based navigation if set to true
     useHashRouting: true,
@@ -244,7 +257,7 @@ window.Luigi.setConfig({
   },
   // navigation structure and settings
   navigation: {
-    nodeAccessibilityResolver: function (nodeToCheckPermissionFor, parentNode, currentContext) {}
+    nodeAccessibilityResolver: function (nodeToCheckPermissionFor, parentNode, currentContext) {},
     nodes: [
         // STATIC navigation node
       {
@@ -266,10 +279,38 @@ window.Luigi.setConfig({
         },
         children: [node, node, node]
       }
-    ]
+    ],
+    contextSwitcher: {
+      defaultLabel: 'Select Environment ...',
+      parentNodePath: '/environments',
+      lazyloadOptions: false,
+      fallbackLabelResolver: (id) => (id.toUpperCase()),
+      options: [{label,pathValue}, {label,pathValue}]
+      },
+      actions: [{label,link,position,clickHandler?}]
+    }
   }
 });
 ```
+
+
+## Context switcher
+
+The context switcher is a drop-down list available in the top navigation bar. It allows you to switch between a curated list of navigation elements such as Environments.
+
+- **defaultLabel** specifies the default label that is shown if no context is selected.
+- **parentNodePath** specifies the base path, that is prepended to **options[].pathValue**. It must be an absolute path.
+- **lazyloadOptions** defines when to fetch **options**. When set to `true`, loads **options** when you click the context switcher. It doesn't involve any caching. When set to `false`, loads **options** once the page loads. The default value is `true`. 
+- **options** defines the list of context element. Context element properties are:
+  - **label** defines the context element label. If not defined, the **pathValue** is passed to **fallbackLabelResolver** to set its value. The default value is **pathValue**, if **fallbackLabelResolver** is not defined.
+  - **pathValue** defines the context element path that is appended to **parentNodePath** and reflects a **pathSegment**.
+- **actions** defines a list of additional elements that are shown on above or below the context switcher **options**. Each action contains the following parameters:
+  - **label** defines the action element label.
+  - **position** defines the action element position. Can be `top` or `bottom`. The default value is `top`. This parameter is optional.
+  - **link** defines an absolute Link to a **node**. This parameter is optional.
+  - **clickHandler** specifies a function and is executed on click and should return a boolean. If it returns `true`, **link** is opened afterwards.
+- **fallbackLabelResolver** specifies a function that is used to fetch the **label** for **options** that do not have a **label** defined. Additionally it fetches the dropdown label for non-existing **options**.
+
 
 ### Dynamic **viewUrl** example
 

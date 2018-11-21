@@ -171,6 +171,14 @@ var projectDetailNavProviderFn = function(context) {
         ]
       },
       {
+        link: '/settings',
+        label: 'Go to absolute path'
+      },
+      {
+        link: 'dps/dps1',
+        label: 'Go to relative path'
+      },
+      {
         pathSegment: 'avengers',
         label: 'Keep Selected Example',
         viewUrl: '/sampleapp.html#/projects/' + projectId + '/dynamic/avengers',
@@ -334,7 +342,7 @@ Luigi.setConfig({
     openIdConnect: {
       authority: 'https://example-authority.com',
       client_id: 'client',
-      scope: 'audience:server:client_id:client openid profile email groups',
+      scope: 'openid profile email',
       logoutUrl: 'https://example-url.com/logout'
       // optional parameters
       // redirect_uri: '',
@@ -348,7 +356,9 @@ Luigi.setConfig({
       post_logout_redirect_uri: '/logout.html',
       authorizeMethod: 'GET',
       oAuthData: {
-        client_id: 'egDuozijY5SVr0NSIowUP1dT6RVqHnlp'
+        client_id: 'egDuozijY5SVr0NSIowUP1dT6RVqHnlp',
+        redirect_uri: '/luigi-core/auth/oauth2/callback.html',
+        scope: 'openid profile email groups'
 
         // optional: redirect_uri and response_type are provided by default
         // scope: '',
@@ -419,9 +429,22 @@ Luigi.setConfig({
         },
         {
           hideFromNav: true,
-          pathSegment: 'hidden-sample',
-          label: 'Hidden',
-          viewUrl: '/sampleapp.html#/projects/overview'
+          pathSegment: 'create-environment',
+          viewUrl: '/sampleapp.html#/create/environment',
+          context: {
+            label: 'Create Environment'
+          }
+        },
+        {
+          hideFromNav: true,
+          pathSegment: 'environments',
+          viewUrl: '/sampleapp.html#/environments',
+          children: [
+            {
+              pathSegment: ':environmentId',
+              viewUrl: '/sampleapp.html#/environments/:environmentId'
+            }
+          ]
         },
         {
           pathSegment: 'forbidden-sample',
@@ -468,9 +491,46 @@ Luigi.setConfig({
           ]
         }
       ];
+    },
+    // The following configuration will be used to render the context switcher component
+    contextSwitcher: {
+      defaultLabel: 'Select Environment ...',
+      parentNodePath: '/environments', // absolute path
+      lazyloadOptions: true, // load options on click instead on page load
+      options: () => {
+        return [...Array(10).keys()].filter(n => n !== 0).map(n => ({
+          label: 'Environment ' + n, // (i.e mapping between what the user sees and what is taken to replace the dynamic part for the dynamic node)
+          pathValue: 'env' + n // will be used to replace dynamic part
+        }));
+      },
+      actions: [
+        {
+          label: '+ New Environment (top)',
+          link: '/create-environment'
+        },
+        {
+          label: '+ New Environment (bottom)',
+          link: '/create-environment',
+          position: 'bottom', // top or bottom
+          clickHandler: node => {
+            // called BEFORE route change
+            return true; // route change will be done using link value (if defined)
+            // return false // route change will not be done even if link attribute is defined
+          }
+        }
+      ],
+
+      /**
+       * fallbackLabelResolver
+       * Resolve what do display in the context switcher (Label) in case the activated
+       * context (option) is not listed in available options (eg kyma-system namespace),
+       * or if options have not been fetched yet
+       */
+      fallbackLabelResolver: id => {
+        return id.replace(/\b\w/g, l => l.toUpperCase());
+      }
     }
   },
-
   routing: {
     /**
      * Development:

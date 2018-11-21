@@ -80,15 +80,11 @@ describe('LogoTitle', function() {
       await headerService.processHeaderSettings(component);
 
       // then
-      assert.equal(
-        component.refs.logo.style.backgroundImage,
-        'url(' + headerSettings.logo + ')',
-        'backgroundImage logo'
-      );
       assert(
         component.set.calledOnceWith({ hasLogo: true }),
         'component set() hasLogo'
       );
+      assert.equal(component.refs.logo.src, headerSettings.logo, 'header logo');
     });
 
     it('should resolve favicon', async () => {
