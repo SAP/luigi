@@ -99,6 +99,18 @@
       }
       currentContext = rawData;
     }
+    window.onpopstate = e => {
+      if (e.state) {
+        //there was some view "before" in the iframe so it wants to go back (locally)
+        const currentLocation = window.location.href;
+        window.history.back();
+        window.history.replaceState(
+          window.history.state,
+          'Reduce one history step',
+          currentLocation
+        ); // 'pretend' there was only one step in window.history
+      }
+    };
 
     function setAuthData(eventPayload) {
       if (eventPayload) {
@@ -114,7 +126,6 @@
         _callAllFns(_onInitFns, currentContext.context);
       } else if ('luigi.navigate' === e.data.msg) {
         setContext(e.data);
-
         if (!currentContext.internal.isNavigateBack) {
           var hashRoutingModeActive =
             e.data.viewUrl.indexOf('#') !== -1 &&
