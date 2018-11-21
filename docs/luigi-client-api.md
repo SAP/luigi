@@ -134,7 +134,7 @@ Returns **[linkManager](#linkmanager)** link manager instance.
 
 ### pathExists
 
-Checks if a path exists in the main application, i.e., if that path can be navigated to. This helper method can be used e.g. to conditionally display a DOM element like a button.
+Checks if a path you can navigate to exists in the main application. You can use this helper method to perform actions such as conditional display of a DOM element like a button.
 
 #### Parameters
 
@@ -152,7 +152,7 @@ let pathExists;
  );
 ```
 
-Returns **[promise](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise)** A promise that will resolve to a Boolean variable specifying if the path exists or not.
+Returns **[promise](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise)** A promise which resolves to a Boolean variable specifying if the path exists or not.
 
 ### hasBack
 
