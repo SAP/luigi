@@ -7,6 +7,5 @@ node_modules
 
 # Lerna
 lerna-debug.log
-oidc-client.min.js
 
 .changelog
