@@ -52,10 +52,7 @@
 
   export default {
     oncreate() {
-      const idpProviderName = LuigiConfig.getConfigValue('auth.use');
-      const idpProviderSettings = LuigiConfig.getConfigValue(`auth.${idpProviderName}`);
-      const authorizationEnabled = !!idpProviderSettings;
-      if (!authorizationEnabled) {
+      if (!LuigiConfig.isAuthorizationEnabled()) {
         return;
       }
 
@@ -82,6 +79,8 @@
         }
       };
 
+      const idpProviderName = LuigiConfig.getConfigValue('auth.use');
+      const idpProviderSettings = LuigiConfig.getConfigValue(`auth.${idpProviderName}`);
       idpProviderInstance = getIdpProviderInstance(idpProviderName, idpProviderSettings);
       if (isPromise(idpProviderInstance)) {
         return idpProviderInstance.then((resolved) => {

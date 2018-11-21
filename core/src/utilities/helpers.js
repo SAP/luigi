@@ -95,13 +95,6 @@ export const getNegatedBoolString = str => {
 };
 
 /**
- * Removes leading slash of a string
- * @param {str} string
- * @returns {string} string without leading slash
- */
-export const trimLeadingSlash = str => str.replace(/^\/+|\//, '');
-
-/**
  * Adds a trailing slash to a string if it has none
  * @param {str} string
  * @returns {string} string with a trailing slash
@@ -112,6 +105,36 @@ export const addTrailingSlash = str => {
   }
   return str.replace(/\/?$/, '/');
 };
+
+export const containsAllSegments = (sourceUrl, targetPathSegments) => {
+  if (!sourceUrl || !targetPathSegments || !targetPathSegments.length) {
+    console.error(
+      'Ooops, seems like the developers have misconfigured something'
+    );
+    return false;
+  }
+
+  const pathSegmentsUrl = targetPathSegments
+    .slice(1)
+    .map(x => x.pathSegment)
+    .join('/');
+  const mandatorySegmentsUrl = removeTrailingSlash(sourceUrl.split('?')[0]);
+  return pathSegmentsUrl === mandatorySegmentsUrl;
+};
+
+/**
+ *  Prepend current url to redirect_uri, if it is a relative path
+ * @param {str} string from which any number of trailing slashes should be removed
+ * @returns string string without any trailing slash
+ */
+export const removeTrailingSlash = str => str.replace(/\/+$/, '');
+
+/**
+ * Removes leading slash of a string
+ * @param {str} string
+ * @returns {string} string without leading slash
+ */
+export const trimLeadingSlash = str => str.replace(/^\/+|\//, '');
 
 /*
  * Gets value of the given property on the given object.

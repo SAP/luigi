@@ -23,7 +23,6 @@
     "mock-browser": "^0.92.14",
     "node-sass": "^4.9.0",
     "oidc-client": "^1.5.2",
-    "pre-push": "^0.1.1",
     "rewire": "^4.0.1",
     "sinon": "^5.1.0",
     "source-map-loader": "^0.2.3",
@@ -38,10 +37,10 @@
   "scripts": {
     "bundle": "webpack --display-error-details",
     "bundle-develop": "webpack -d --watch",
-    "test": "./node_modules/mocha/bin/mocha --require babel-register --require babel-polyfill --require jsdom-global/register",
+    "test": "./node_modules/mocha/bin/mocha --require babel-register --require babel-polyfill --require jsdom-global/register --recursive test",
     "test:watch": "npm run test -- --watch",
     "bundlesize": "bundlesize",
-    "prepush": "npm run bundle && npm run bundlesize"
+    "prepush": "npm test && npm run bundle && npm run bundlesize"
   },
   "bundlesize": [
     {
