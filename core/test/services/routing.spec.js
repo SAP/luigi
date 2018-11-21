@@ -4,9 +4,10 @@ const expect = chai.expect;
 const assert = chai.assert;
 const sinon = require('sinon');
 const MockBrowser = require('mock-browser').mocks.MockBrowser;
-const routing = require('../src/services/routing');
-import { deepMerge } from '../src/utilities/helpers.js';
+const routing = require('../../src/services/routing');
+import { deepMerge } from '../../src/utilities/helpers.js';
 import { afterEach } from 'mocha';
+import { LuigiConfig } from '../../src/services/config';
 
 describe('Routing', () => {
   let component;
@@ -18,11 +19,14 @@ describe('Routing', () => {
       },
       get: () => lastObj
     };
+
+    sinon.stub(LuigiConfig, 'getConfigValue');
   });
   afterEach(() => {
     if (document.createElement.restore) {
       document.createElement.restore();
     }
+    sinon.restore();
   });
   describe('#handleRouteChange()', () => {
     const sampleLuigiConfig = {
@@ -67,6 +71,21 @@ describe('Routing', () => {
                       display: null
                     },
                     viewUrl: 't2.html'
+                  }
+                ]
+              },
+              {
+                pathSegment: 'categories',
+                children: [
+                  {
+                    pathSegment: ':category',
+                    viewUrl: 'cats/:category#details',
+                    children: [
+                      {
+                        pathSegment: ':sub',
+                        viewUrl: 'cats/:category/:sub'
+                      }
+                    ]
                   }
                 ]
               }
@@ -120,8 +139,7 @@ describe('Routing', () => {
         navigateOk: null
       };
 
-      window.Luigi = {};
-      window.Luigi.config = sampleLuigiConfig;
+      LuigiConfig.config = sampleLuigiConfig;
 
       // when
       sinon.stub(document, 'createElement').callsFake(() => ({ src: null }));
@@ -131,7 +149,7 @@ describe('Routing', () => {
       assert.equal(component.get().viewUrl, expectedViewUrl);
       assert.equal(
         component.get().hideNav,
-        window.Luigi.config.settings.hideNavigation
+        LuigiConfig.config.settings.hideNavigation
       );
       assert.equal(component.get().showLoadingIndicator, true);
     });
@@ -158,8 +176,7 @@ describe('Routing', () => {
       };
 
       // when
-      window.Luigi = {};
-      window.Luigi.config = {
+      LuigiConfig.config = {
         navigation: {
           nodes: () => [node]
         }
@@ -234,8 +251,7 @@ describe('Routing', () => {
       componentSaved.set({ preservedViews });
 
       // when
-      window.Luigi = {};
-      window.Luigi.config = sampleLuigiConfig;
+      LuigiConfig.config = sampleLuigiConfig;
       const docMock = sinon.mock(document);
       docMock
         .expects('createElement')
@@ -254,7 +270,7 @@ describe('Routing', () => {
       assert.equal(componentSaved.get().viewUrl, expectedViewUrl);
       assert.equal(
         componentSaved.get().hideNav,
-        window.Luigi.config.settings.hideNavigation
+        LuigiConfig.config.settings.hideNavigation
       );
 
       assert.equal(componentSaved.get().preservedViews.length, 1);
@@ -303,8 +319,7 @@ describe('Routing', () => {
       };
 
       // when
-      window.Luigi = {};
-      window.Luigi.config = sampleLuigiConfig;
+      LuigiConfig.config = sampleLuigiConfig;
       const iframeMock = { src: null };
       sinon.stub(document, 'createElement').callsFake(() => iframeMock);
       await routing.handleRouteChange(path, component, node, config, window);
@@ -314,7 +329,7 @@ describe('Routing', () => {
       assert.equal(iframeMock.src, expectedProcessedViewUrl);
       assert.equal(
         component.get().hideNav,
-        window.Luigi.config.settings.hideNavigation
+        LuigiConfig.config.settings.hideNavigation
       );
     });
 
@@ -365,8 +380,7 @@ describe('Routing', () => {
       };
 
       // when
-      window.Luigi = {};
-      window.Luigi.config = sampleLuigiConfig;
+      LuigiConfig.config = sampleLuigiConfig;
       const iframeMock = { src: null };
       sinon.stub(document, 'createElement').callsFake(() => iframeMock);
       await routing.handleRouteChange(path, component, node, config, window);
@@ -374,6 +388,78 @@ describe('Routing', () => {
       // then
       assert.equal(component.get().viewUrl, expectedViewUrl);
       assert.equal(iframeMock.src, expectedProcessedViewUrl);
+      assert.equal(
+        component.get().hideNav,
+        LuigiConfig.config.settings.hideNavigation
+      );
+    });
+
+    it('should set component data with path param', async () => {
+      // given
+      const path = '#/projects/categories/cat1';
+      const expectedViewUrl = 'cats/cat1#details';
+      const mockBrowser = new MockBrowser();
+      const window = mockBrowser.getWindow();
+      global.window = window;
+      const document = mockBrowser.getDocument();
+      global.document = document;
+
+      const node = {
+        style: {},
+        prepend: sinon.spy()
+      };
+
+      const config = {
+        iframe: null,
+        builderCompatibilityMode: false,
+        navigateOk: null
+      };
+
+      // when
+      window.Luigi = {};
+      window.Luigi.config = sampleLuigiConfig;
+      const iframeMock = { src: null };
+      sinon.stub(document, 'createElement').callsFake(() => iframeMock);
+      await routing.handleRouteChange(path, component, node, config, window);
+
+      // then
+      assert.equal(iframeMock.src, expectedViewUrl);
+      assert.equal(
+        component.get().hideNav,
+        window.Luigi.config.settings.hideNavigation
+      );
+    });
+
+    it('should set component data with multiple path params', async () => {
+      // given
+      const path = '#/projects/categories/cat1/sub23';
+      const expectedViewUrl = 'cats/cat1/sub23';
+      const mockBrowser = new MockBrowser();
+      const window = mockBrowser.getWindow();
+      global.window = window;
+      const document = mockBrowser.getDocument();
+      global.document = document;
+
+      const node = {
+        style: {},
+        prepend: sinon.spy()
+      };
+
+      const config = {
+        iframe: null,
+        builderCompatibilityMode: false,
+        navigateOk: null
+      };
+
+      // when
+      window.Luigi = {};
+      window.Luigi.config = sampleLuigiConfig;
+      const iframeMock = { src: null };
+      sinon.stub(document, 'createElement').callsFake(() => iframeMock);
+      await routing.handleRouteChange(path, component, node, config, window);
+
+      // then
+      assert.equal(iframeMock.src, expectedViewUrl);
       assert.equal(
         component.get().hideNav,
         window.Luigi.config.settings.hideNavigation
@@ -395,10 +481,8 @@ describe('Routing', () => {
       window.history.pushState = sinon.spy();
 
       // when
-      window.Luigi = {
-        config: sampleLuigiConfig
-      };
-      window.Luigi.config.navigation.hideNav = false;
+      LuigiConfig.config = sampleLuigiConfig;
+      LuigiConfig.config.navigation.hideNav = false;
       await routing.handleRouteChange(path, component, node, config, window);
 
       // then
@@ -429,16 +513,10 @@ describe('Routing', () => {
     it('should set proper location hash with parent node', () => {
       // given
       const expectedRoute = '#/projects/project-one';
+      LuigiConfig.getConfigValue.returns(true);
 
       // when
-      window.Luigi = {
-        config: {
-          routing: {
-            useHashRouting: true
-          }
-        }
-      };
-      routing.handleRouteClick(nodeWithParent, window, document);
+      routing.handleRouteClick(nodeWithParent);
 
       // then
       assert.equal(window.location.hash, expectedRoute);
@@ -447,17 +525,10 @@ describe('Routing', () => {
     it('should set proper location hash with normal node', () => {
       // given
       const expectedRoute = '#/projects';
+      LuigiConfig.getConfigValue.returns(true);
 
       // when
-      window.Luigi = {
-        config: {
-          routing: {
-            useHashRouting: true
-          }
-        }
-      };
-
-      routing.handleRouteClick(nodeWithoutParent, window);
+      routing.handleRouteClick(nodeWithoutParent);
 
       // then
       assert.equal(window.location.hash, expectedRoute);
@@ -471,15 +542,10 @@ describe('Routing', () => {
       window.history.pushState = sinon.spy();
       const pushStateCallsNum = window.history.pushState.callCount;
 
+      LuigiConfig.getConfigValue.returns(false);
+
       // when
-      window.Luigi = {
-        config: {
-          routing: {
-            useHashRouting: false
-          }
-        }
-      };
-      routing.handleRouteClick(nodeWithParent, window);
+      routing.handleRouteClick(nodeWithParent);
 
       // then
       const pushStateArgs = window.history.pushState.args[0];
@@ -497,15 +563,10 @@ describe('Routing', () => {
       window.history.pushState = sinon.spy();
       const pushStateCallsNum = window.history.pushState.callCount;
 
+      LuigiConfig.getConfigValue.returns(false);
+
       // when
-      window.Luigi = {
-        config: {
-          routing: {
-            useHashRouting: false
-          }
-        }
-      };
-      routing.handleRouteClick(nodeWithoutParent, window, document);
+      routing.handleRouteClick(nodeWithoutParent);
 
       // then
       const pushStateArgs = window.history.pushState.args[0];
@@ -523,16 +584,10 @@ describe('Routing', () => {
       window.history.pushState = sinon.spy();
       window.dispatchEvent = sinon.spy();
       const dispatchCallsNum = window.dispatchEvent.callCount;
+      LuigiConfig.getConfigValue.returns(false);
 
       // when
-      window.Luigi = {
-        config: {
-          routing: {
-            useHashRouting: false
-          }
-        }
-      };
-      routing.handleRouteClick(nodeWithoutParent, window, document);
+      routing.handleRouteClick(nodeWithoutParent);
 
       // then
       const pushStateArgs = window.history.pushState.args[0];
@@ -540,6 +595,43 @@ describe('Routing', () => {
 
       assert.equal(singleStateWithPath.path, expectedRoute);
       assert.equal(dispatchCallsNum + 1, expectedDispatchCallsNum);
+    });
+
+    it('link with absolute path', () => {
+      // given
+      const expectedRoute = '#/projects';
+      window.location.hash = '#/some/path';
+      const inputNode = {
+        label: 'Absolute link',
+        link: '/projects'
+      };
+
+      // when
+      LuigiConfig.getConfigValue.returns(true);
+
+      routing.handleRouteClick(inputNode, window);
+
+      console.log('​window.location.hash', window.location.hash);
+      // then
+      assert.equal(window.location.hash, expectedRoute);
+    });
+
+    it('link with relative path', () => {
+      // given
+      const expectedRoute = '#/some/path/projects';
+      window.location.hash = '#/some/path';
+      const inputNode = {
+        label: 'Relative link',
+        link: 'projects'
+      };
+
+      // when
+      LuigiConfig.getConfigValue.returns(true);
+
+      routing.handleRouteClick(inputNode, window);
+
+      // then
+      assert.equal(window.location.hash, expectedRoute);
     });
   });
 
@@ -671,7 +763,7 @@ describe('Routing', () => {
   });
 
   describe('defaultChildNodes', () => {
-    const routing = rewire('../src/services/routing');
+    const routing = rewire('../../src/services/routing');
     const getDefaultChildNode = routing.__get__('getDefaultChildNode');
     const getPathData = function() {
       return {

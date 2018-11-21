@@ -10,6 +10,7 @@ export class oAuth2ImplicitGrant {
         scope: ''
       },
       authorizeMethod: 'GET',
+      logoutUrl: '',
       post_logout_redirect_uri: window.location.origin + '/logout.html'
     };
     const mergedSettings = deepMerge(defaultSettings, settings);
@@ -79,8 +80,31 @@ export class oAuth2ImplicitGrant {
     window.location.href = logouturl;
   }
 
-  renewToken() {
-    console.error('​renewToken is not implemented yet');
+  setTokenExpirationAction() {
+    const expirationCheckInterval = 5000;
+    const logoutBeforeExpirationTime = 60000;
+
+    setInterval(() => {
+      let authData;
+      try {
+        authData = JSON.parse(localStorage.getItem('luigi.auth'));
+      } catch (e) {
+        console.warn(
+          'Error parsing authorization data. Auto-logout might not work!'
+        );
+      }
+      const tokenExpirationDate = authData.accessTokenExpirationDate;
+      const currentDate = new Date();
+
+      if (tokenExpirationDate - currentDate - logoutBeforeExpirationTime < 0) {
+        localStorage.removeItem('luigi.auth');
+        window.location = `${
+          this.settings.logoutUrl
+        }?reason=tokenExpired&post_logout_redirect_uri=${prependOrigin(
+          this.settings.post_logout_redirect_uri
+        )}`;
+      }
+    }, expirationCheckInterval);
   }
 
   _generateNonce() {

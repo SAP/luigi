@@ -1,8 +1,9 @@
-const navigation = require('../src/services/navigation');
+const navigation = require('../../src/navigation/services/navigation');
 const chai = require('chai');
 const expect = chai.expect;
 const assert = chai.assert;
 const sinon = require('sinon');
+import { LuigiConfig } from '../../src/services/config';
 
 const sampleNavPromise = new Promise(function(resolve) {
   const lazyLoadedChildrenNodesProviderFn = () => {
@@ -66,9 +67,7 @@ describe('Navigation', function() {
   });
   afterEach(() => {
     // reset
-    window.Luigi = {
-      config: {}
-    };
+    LuigiConfig.config = {};
   });
   describe('getNavigationPath()', function() {
     it('should not fail for undefined arguments', () => {
@@ -215,19 +214,17 @@ describe('Navigation', function() {
     });
     it('uses navigationPermissionChecker and returns correct amount of children', async () => {
       //given
-      window.Luigi = {
-        config: {
-          navigation: {
-            nodeAccessibilityResolver: (
-              nodeToCheckPermissionFor,
-              currentNode,
-              currentContext
-            ) => {
-              if (nodeToCheckPermissionFor.constraints) {
-                return nodeToCheckPermissionFor.constraints === 'other_scope';
-              }
-              return true;
+      LuigiConfig.config = {
+        navigation: {
+          nodeAccessibilityResolver: (
+            nodeToCheckPermissionFor,
+            currentNode,
+            currentContext
+          ) => {
+            if (nodeToCheckPermissionFor.constraints) {
+              return nodeToCheckPermissionFor.constraints === 'other_scope';
             }
+            return true;
           }
         }
       };

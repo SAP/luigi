@@ -1,29 +1,35 @@
-
 <div id="app {hideNav? 'no-nav' : ''}">
-  <Backdrop>
-    <div class="fd-page iframeContainer" use:init="context"></div>
-  </Backdrop>
-  {#if showLoadingIndicator}
-  <div in:fade='{delay: 250, duration: 250}' out:fade='{duration: 250}' class="fd-page spinnerContainer" aria-hidden="false" aria-label="Loading">
-      <div class="fd-spinner"><div></div></div>
-  </div>
-  {/if}
+	{#if alert && alert.message}
+	<div class="fd-alert fd-alert--error fd-alert--dismissible" role="alert" id="j2ALl423">
+		<button on:click="set({alert:null})" class="fd-alert__close" aria-controls="j2ALl423" aria-label="Close"></button>
+		{alert.message} {alert.link}
+	</div>
+	{/if}
+	<Backdrop>
+		<div class="fd-page iframeContainer" use:init="context"></div>
+	</Backdrop>
+	{#if showLoadingIndicator}
+	<div in:fade='{delay: 250, duration: 250}' out:fade='{duration: 250}' class="fd-page spinnerContainer" aria-hidden="false"
+	 aria-label="Loading">
+		<div class="fd-spinner">
+			<div></div>
+		</div>
+	</div>
+	{/if}
 
-  <TopNav pathData={navigationPath} />
-  <LeftNav pathData={navigationPath} />
+	<TopNav pathData={navigationPath} />
+	<LeftNav pathData={navigationPath} />
 </div>
-
 
 <script type="text/javascript">
   import Backdrop from './Backdrop.html';
   import { fade } from 'svelte-transitions';
-  import TopNav from './TopNav.html';
-  import LeftNav from './LeftNav.html';
+  import TopNav from './navigation/TopNav.html';
+  import LeftNav from './navigation/LeftNav.html';
   import * as Routing from './services/routing.js';
-  import { getConfigValue, getConfigValueFromObject } from './services/config.js';
-  import { isFunction } from './utilities/helpers.js';
+  import { getConfigValueFromObject } from './utilities/helpers.js';
+  import { getStoredAuthData } from './utilities/auth-helpers';
 
-  const trimLeadingSlash = str => str.replace(/^\//, '');
   const isValidBackRoute = (preservedViews, routeHash) => {
     if (preservedViews.length === 0) {
       return false;
@@ -36,36 +42,22 @@
     return paths.includes(routePath);
   };
 
-  const getModifiedHash = s => s.newURL.split('#/')[1];
-  const enableHashRouting = (component, node, config) => {
-    window.addEventListener('hashchange', event => {
+  const enableRouting = (component, node, config) => {
+    // intial route handling
+    const currentPath = Routing.getCurrentPath();
+    Routing.handleRouteChange(currentPath, component, node, config);
+
+    // subsequential route handling
+    Routing.addRouteChangeListener((path) => {
       const pv = component.get().preservedViews;
-      if (!isValidBackRoute(pv, getModifiedHash(event))) {
+      if (!isValidBackRoute(pv, path)) {
         component.set({ preservedViews: [] });
         Routing.removeInactiveIframes(node);
       }
-      Routing.handleRouteChange(getModifiedHash(event), component, node, config);
+      Routing.handleRouteChange(path, component, node, config);
     });
+  }
 
-    Routing.handleRouteChange(window.location.hash, component, node, config);
-  };
-
-  const enablePathRouting = (component, node, config) => {
-    window.addEventListener('popstate', () => {
-      const getModifiedPathname = window.history.state.path
-        .split('/')
-        .slice(1)
-        .join('/');
-      Routing.handleRouteChange(getModifiedPathname, component, node, config);
-    });
-
-    Routing.handleRouteChange(
-      trimLeadingSlash(window.location.pathname),
-      component,
-      node,
-      config
-    );
-  };
 
   const buildPath = (component, params) => {
     let path = params.link;
@@ -120,12 +112,14 @@
   };
 
   const handleNavigation = async (component, data, config) => {
-    const path = buildPath(component, data.params);
-    const matchedPath = await Routing.matchPath(path);
-    if (matchedPath !== null) {
-      addPreserveView(component, data, config);
-      Routing.navigateTo(matchedPath);
+    let path = buildPath(component, data.params);
+
+    if (path[0] !== '/') {
+      path = '/' + path; //add leading slash if necessary
     }
+
+    addPreserveView(component, data, config);
+    Routing.navigateTo(path); //navigate to the raw path. Any errors/alerts are handled later
   };
 
   const sendContextToClient = (component, config, goBackContext = {}) => {
@@ -137,7 +131,18 @@
         ),
         nodeParams: JSON.stringify(Object.assign({}, component.get().nodeParams)),
         pathParams: JSON.stringify(Object.assign({}, component.get().pathParams)),
-        internal: JSON.stringify(component.prepareInternalData())
+        internal: JSON.stringify(component.prepareInternalData()),
+        authData: getStoredAuthData()
+      },
+      '*'
+    );
+  };
+
+  const sendAuthDataToClient = (iframe, authData) => {
+    iframe.contentWindow.postMessage(
+      {
+        msg: 'luigi.auth.tokenIssued',
+        authData
       },
       '*'
     );
@@ -168,7 +173,7 @@
           builderCompatibilityMode: Boolean(window.builderCompatibilityMode)
         };
 
-        window.addEventListener('message', async (e) => {
+        window.addEventListener('message', async e => {
           if ('luigi.get-context' === e.data.msg && config.iframe) {
             sendContextToClient(this, config, {});
 
@@ -196,12 +201,11 @@
 
           if ('luigi.navigation.open' === e.data.msg) {
             this.set({ isNavigateBack: false });
-            handleNavigation(this, e.data, config);
+            await handleNavigation(this, e.data, config);
           }
 
           if ('luigi.navigation.back' === e.data.msg) {
             // go back: context from the view
-            this.set({ isNavigateBack: false });
             const preservedViews = this.get().preservedViews;
             if (preservedViews && preservedViews.length) {
               // remove current active iframe and data
@@ -217,14 +221,19 @@
               });
 
               // TODO: check if handleNavigation or history pop to update hash / path
-              handleNavigation(
+              await handleNavigation(
                 this,
                 { params: { link: previousActiveIframeData.path } },
                 config
               );
+              this.set({ goBackContext: undefined, isNavigateBack: false });
             } else {
               console.error('goBack() not possible, no preserved views found.');
             }
+          }
+
+          if ('luigi.auth.tokenIssued' === e.data.msg) {
+            sendAuthDataToClient(config.iframe, e.data.authData);
           }
 
           if ('luigi.navigation.pathExists' === e.data.msg) {
@@ -232,8 +241,9 @@
             const path = buildPath(this, data);
             const matchedPath = await Routing.matchPath(path);
 
-            let normalizedPath = ((!path.startsWith('/')) ? '/' : '') +
-              ((path.endsWith('/')) ? path.slice(0,-1) : path);
+            let normalizedPath =
+              (!path.startsWith('/') ? '/' : '') +
+              (path.endsWith('/') ? path.slice(0, -1) : path);
             const pathExists = matchedPath === normalizedPath;
             config.iframe.contentWindow.postMessage(
               {
@@ -252,16 +262,13 @@
         // them to prevent memory leaks
         // this.on('destroy', storeListener.cancel);
 
-        if (getConfigValue('routing.useHashRouting')) {
-          return enableHashRouting(this, node, config);
-        }
-
-        return enablePathRouting(this, node, config);
+        enableRouting(this, node, config);
       }
     },
     methods: {
       prepareInternalData() {
         return {
+          isNavigateBack: this.get().isNavigateBack,
           viewStackSize: this.get().preservedViews.length
         };
       }
@@ -276,10 +283,6 @@
 </script>
 
 <style type="text/scss">
-  @import 'node_modules/fundamental-ui/scss/layout/page';
-  @import 'node_modules/fundamental-ui/scss/components/spinner';
-  @import 'static.css';
-
   :global(html) {
     box-sizing: border-box;
     font-size: 14px;
@@ -349,6 +352,20 @@
       left: 0;
       bottom: 0;
       right: 0;
+    }
+  }
+
+  $topNavHeight: 50px;
+  $leftNavWidth: 320px;
+  .fd-alert {
+    position: absolute;
+    min-width: 20rem;
+    width: calc(100% - 2 * (#{$leftNavWidth} + 1rem));
+    top: calc(#{$topNavHeight} + 1rem);
+    left: calc(#{$leftNavWidth} + 1rem);
+    z-index: 2;
+    .fd-alert__close {
+      cursor: pointer;
     }
   }
 </style>
