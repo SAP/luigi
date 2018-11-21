@@ -355,9 +355,9 @@
 
         /** @lends linkManager */
         /**
-         * Checks if a path exists in the main application, i.e., if that path can be navigated to. This helper method can be used e.g. to conditionally display a DOM element like a button.
+         * Checks if a path you can navigate to exists in the main application. You can use this helper method to perform actions such as conditional display of a DOM element like a button.
          * @param {string} path path which existence you want to check
-         * @returns {promise} A promise that will resolve to a Boolean variable specifying if the path exists or not.
+         * @returns {promise} A promise which resolves to a Boolean variable specifying if the path exists or not.
          * @example
          *  let pathExists;
          *  this.luigiClient

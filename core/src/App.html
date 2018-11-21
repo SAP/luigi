@@ -27,11 +27,9 @@
   import TopNav from './navigation/TopNav.html';
   import LeftNav from './navigation/LeftNav.html';
   import * as Routing from './services/routing.js';
-  import { LuigiConfig } from './services/config.js';
-  import { isFunction, getConfigValueFromObject } from './utilities/helpers.js';
+  import { getConfigValueFromObject } from './utilities/helpers.js';
   import { getStoredAuthData } from './utilities/auth-helpers';
 
-  const trimLeadingSlash = str => str.replace(/^\//, '');
   const isValidBackRoute = (preservedViews, routeHash) => {
     if (preservedViews.length === 0) {
       return false;
@@ -44,36 +42,22 @@
     return paths.includes(routePath);
   };
 
-  const getModifiedHash = s => s.newURL.split('#/')[1];
-  const enableHashRouting = (component, node, config) => {
-    window.addEventListener('hashchange', event => {
+  const enableRouting = (component, node, config) => {
+    // intial route handling
+    const currentPath = Routing.getCurrentPath();
+    Routing.handleRouteChange(currentPath, component, node, config);
+
+    // subsequential route handling
+    Routing.addRouteChangeListener((path) => {
       const pv = component.get().preservedViews;
-      if (!isValidBackRoute(pv, getModifiedHash(event))) {
+      if (!isValidBackRoute(pv, path)) {
         component.set({ preservedViews: [] });
         Routing.removeInactiveIframes(node);
       }
-      Routing.handleRouteChange(getModifiedHash(event), component, node, config);
+      Routing.handleRouteChange(path, component, node, config);
     });
+  }
 
-    Routing.handleRouteChange(window.location.hash, component, node, config);
-  };
-
-  const enablePathRouting = (component, node, config) => {
-    window.addEventListener('popstate', () => {
-      const getModifiedPathname = window.history.state.path
-        .split('/')
-        .slice(1)
-        .join('/');
-      Routing.handleRouteChange(getModifiedPathname, component, node, config);
-    });
-
-    Routing.handleRouteChange(
-      trimLeadingSlash(window.location.pathname),
-      component,
-      node,
-      config
-    );
-  };
 
   const buildPath = (component, params) => {
     let path = params.link;
@@ -277,11 +261,8 @@
         // listeners are not automatically removed — cancel
         // them to prevent memory leaks
         // this.on('destroy', storeListener.cancel);
-        if (LuigiConfig.getConfigValue('routing.useHashRouting')) {
-          return enableHashRouting(this, node, config);
-        }
 
-        return enablePathRouting(this, node, config);
+        enableRouting(this, node, config);
       }
     },
     methods: {
@@ -302,11 +283,6 @@
 </script>
 
 <style type="text/scss">
-  @import 'node_modules/fundamental-ui/scss/layout/page';
-  @import 'node_modules/fundamental-ui/scss/components/spinner';
-  @import 'node_modules/fundamental-ui/scss/components/alert';
-  @import 'static.css';
-
   :global(html) {
     box-sizing: border-box;
     font-size: 14px;
