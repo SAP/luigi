@@ -419,6 +419,10 @@ export const navigateTo = async route => {
     return;
   }
 
+  if (route === '/') {
+    return;
+  }
+
   window.history.pushState(
     {
       path: route
