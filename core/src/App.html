@@ -5,6 +5,7 @@
 		{alert.message} {alert.link}
 	</div>
 	{/if}
+	<ConfirmationModal on:modalConfirm="handleModalResult(true)" on:modalDecline="handleModalResult(false)"></ConfirmationModal>
 	<Backdrop>
 		<div class="fd-page iframeContainer" use:init="context"></div>
 	</Backdrop>
@@ -26,6 +27,7 @@
   import { fade } from 'svelte-transitions';
   import TopNav from './navigation/TopNav.html';
   import LeftNav from './navigation/LeftNav.html';
+  import ConfirmationModal from './ConfirmationModal.html';
   import * as Routing from './services/routing.js';
   import { getConfigValueFromObject } from './utilities/helpers.js';
   import { getStoredAuthData } from './utilities/auth-helpers';
@@ -147,7 +149,12 @@
       '*'
     );
   };
-
+  let confirmModal, rejectModal;
+  const showModal = (title, text) =>
+    new Promise((resolve, reject) => {
+      confirmModal = resolve;
+      rejectModal = reject;
+    });
   export default {
     data() {
       return {
@@ -163,7 +170,15 @@
         ]
       };
     },
-    oncreate() {},
+    oncreate() {
+      showModal('title', 'text')
+        .then(() => {
+          console.warn('OK');
+        })
+        .catch(() => {
+          console.warn('NOT OK');
+        });
+    },
     onstate({ changed, current, previous }) {},
     actions: {
       init(node) {
@@ -255,6 +270,15 @@
               '*'
             );
           }
+          if ('luigi.set-page-dirty' === e.data.msg) {
+            this.set({
+              isDirty: e.data.dirty || false,
+              latestFormUrl: window.location.href
+            });
+            //  Routing.isDirty = e.data.dirty;
+            //window.isDirty = e.data.isDirty;
+            //e.data.dirty && console.warn('isDirty');
+          }
         });
 
         // listeners are not automatically removed — cancel
@@ -270,12 +294,17 @@
           isNavigateBack: this.get().isNavigateBack,
           viewStackSize: this.get().preservedViews.length
         };
+      },
+      handleModalResult(result) {
+        result ? confirmModal() : rejectModal();
       }
     },
+
     components: {
       Backdrop,
       TopNav,
-      LeftNav
+      LeftNav,
+      ConfirmationModal
     },
     transitions: { fade }
   };

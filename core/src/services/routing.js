@@ -1,9 +1,9 @@
 import { getNavigationPath } from '../navigation/services/navigation';
 import { LuigiConfig } from './config';
+import App from '../App.html';
 import {
   getPathWithoutHash,
   getUrlWithoutHash,
-  trimLeadingSlash,
   containsAllSegments,
   isIE,
   getConfigValueFromObject
@@ -219,8 +219,8 @@ const navigateIframe = (config, component, node) => {
       },
       '*'
     );
-    // clear goBackContext and reset navigateBack after sending it to the client
-    component.set({ goBackContext: undefined, isNavigateBack: false });
+    // clear goBackContext after sending it to the client
+    component.set({ goBackContext: undefined });
 
     /**
      * check if luigi responded
@@ -289,6 +289,12 @@ const buildRoute = (node, path, params) =>
 
 export const handleRouteChange = async (path, component, node, config) => {
   try {
+    if (component.get().isDirty) {
+      console.warn('unsavedChanges');
+      // const urlToRedirect = component.get().latestFormUrl;
+      // url && history.replaceState(window.state, url);
+      return;
+    }
     const pathUrl = path && path.length ? getPathWithoutHash(path) : '';
     const pathData = await getNavigationPath(
       LuigiConfig.getConfigValueAsync('navigation.nodes'),
@@ -317,7 +323,7 @@ export const handleRouteChange = async (path, component, node, config) => {
         };
 
         component.set({ alert });
-        navigateTo('/');
+        //navigateTo('/');
         //error 404
       }
       return;
@@ -412,14 +418,16 @@ export const matchPath = async path => {
   navigateTo used for navigation
   @param route string  absolute path of the new route
   @param options object  navi options, eg preserveView
+  @param windowElem object  defaults to window
+  @param documentElem object  defaults to document
  */
-export const navigateTo = async route => {
+export const navigateTo = async (route, windowElem = window) => {
   if (LuigiConfig.getConfigValue('routing.useHashRouting')) {
-    window.location.hash = route;
+    windowElem.location.hash = route;
     return;
   }
 
-  window.history.pushState(
+  windowElem.history.pushState(
     {
       path: route
     },
@@ -438,7 +446,7 @@ export const navigateTo = async route => {
     event = new CustomEvent('popstate');
   }
 
-  window.dispatchEvent(event);
+  windowElem.dispatchEvent(event);
 };
 
 export const buildFromRelativePath = path => {
@@ -449,50 +457,23 @@ export const buildFromRelativePath = path => {
   }
 };
 
-export const handleRouteClick = node => {
+export const handleRouteClick = (node, windowElem = window) => {
   if (node.externalLink && node.externalLink.url) {
     node.externalLink.sameWindow
-      ? (window.location.href = node.externalLink.url)
-      : window.open(node.externalLink.url).focus();
+      ? (windowElem.location.href = node.externalLink.url)
+      : windowElem.open(node.externalLink.url).focus();
     // externalLinkUrl property is provided so there's no need to trigger routing mechanizm
     return;
   } else if (node.link) {
     const link = node.link.startsWith('/')
       ? node.link
       : buildFromRelativePath(node.link);
-    navigateTo(link);
+    navigateTo(link, windowElem);
     return;
   } else {
     const route = buildRoute(node, `/${node.pathSegment}`);
-    navigateTo(route);
+    navigateTo(route, windowElem);
   }
 };
 
-export const getModifiedPathname = () => {
-  if (!window.history.state) {
-    return '';
-  }
-
-  return window.history.state.path
-    .split('/')
-    .slice(1)
-    .join('/');
-};
-
-export const getCurrentPath = () =>
-  LuigiConfig.getConfigValue('routing.useHashRouting')
-    ? window.location.hash.replace('#', '') // TODO: getPathWithoutHash(window.location.hash) fails in ContextSwitcher
-    : trimLeadingSlash(window.location.pathname);
-
-export const addRouteChangeListener = callback => {
-  if (LuigiConfig.getConfigValue('routing.useHashRouting')) {
-    const getModifiedHash = s => s.newURL.split('#/')[1];
-    return window.addEventListener('hashchange', event => {
-      callback(getModifiedHash(event));
-    });
-  }
-
-  window.onpopstate = () => {
-    callback(trimLeadingSlash(getModifiedPathname()));
-  };
-};
+export let isDirty = false;
