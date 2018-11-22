@@ -94,18 +94,6 @@ export const getNegatedBoolString = str => {
   return str === 'true' ? 'false' : 'true';
 };
 
-/**
- * Adds a trailing slash to a string if it has none
- * @param {str} string
- * @returns {string} string with a trailing slash
- */
-export const addTrailingSlash = str => {
-  if (typeof str !== 'string') {
-    return str;
-  }
-  return str.replace(/\/?$/, '/');
-};
-
 export const containsAllSegments = (sourceUrl, targetPathSegments) => {
   if (!sourceUrl || !targetPathSegments || !targetPathSegments.length) {
     console.error(
@@ -118,16 +106,23 @@ export const containsAllSegments = (sourceUrl, targetPathSegments) => {
     .slice(1)
     .map(x => x.pathSegment)
     .join('/');
-  const mandatorySegmentsUrl = removeTrailingSlash(sourceUrl.split('?')[0]);
+  const mandatorySegmentsUrl = trimTrailingSlash(sourceUrl.split('?')[0]);
   return pathSegmentsUrl === mandatorySegmentsUrl;
 };
 
+export const addLeadingSlash = str => (!str.startsWith('/') ? '/' : '') + str;
+
 /**
- *  Prepend current url to redirect_uri, if it is a relative path
- * @param {str} string from which any number of trailing slashes should be removed
- * @returns string string without any trailing slash
+ * Adds a trailing slash to a string if it has none
+ * @param {str} string
+ * @returns {string} string with a trailing slash
  */
-export const removeTrailingSlash = str => str.replace(/\/+$/, '');
+export const addTrailingSlash = str => {
+  if (typeof str !== 'string') {
+    return str;
+  }
+  return str.replace(/\/?$/, '/');
+};
 
 /**
  * Removes leading slash of a string
@@ -135,6 +130,20 @@ export const removeTrailingSlash = str => str.replace(/\/+$/, '');
  * @returns {string} string without leading slash
  */
 export const trimLeadingSlash = str => str.replace(/^\/+/g, '');
+
+/**
+ *  Prepend current url to redirect_uri, if it is a relative path
+ * @param {str} string from which any number of trailing slashes should be removed
+ * @returns string string without any trailing slash
+ */
+export const trimTrailingSlash = str => str.replace(/\/+$/, '');
+
+export const normalizePath = str => {
+  if (typeof str !== 'string') {
+    return str;
+  }
+  return addLeadingSlash(addTrailingSlash(str));
+};
 
 /*
  * Gets value of the given property on the given object.

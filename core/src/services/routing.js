@@ -497,6 +497,6 @@ export const addRouteChangeListener = callback => {
   }
 
   window.addEventListener('popstate', () => {
-    callback(trimLeadingSlash(getModifiedPathname()));
+    callback(getModifiedPathname());
   });
 };
