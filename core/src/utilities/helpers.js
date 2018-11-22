@@ -134,7 +134,7 @@ export const removeTrailingSlash = str => str.replace(/\/+$/, '');
  * @param {str} string
  * @returns {string} string without leading slash
  */
-export const trimLeadingSlash = str => str.replace(/^\/+|\//, '');
+export const trimLeadingSlash = str => str.replace(/^\/+/g, '');
 
 /*
  * Gets value of the given property on the given object.
