@@ -84,7 +84,7 @@ module.exports = {
         from: 'node_modules/oidc-client/dist/oidc-client.min.js',
         to: 'auth/oidc/'
       },
-      'node_modules/fundamental-ui/dist/SAP-icons.woff'
+      'node_modules/fiori-fundamentals/dist/SAP-icons.woff'
     ])
   ],
   mode: 'production',
