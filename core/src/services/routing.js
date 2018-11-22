@@ -419,6 +419,7 @@ export const navigateTo = async route => {
     return;
   }
 
+  // Avoid infinite loop on logout + login whith path routing
   if (route === '/') {
     return;
   }

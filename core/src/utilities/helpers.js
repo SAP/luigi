@@ -110,6 +110,11 @@ export const containsAllSegments = (sourceUrl, targetPathSegments) => {
   return pathSegmentsUrl === mandatorySegmentsUrl;
 };
 
+/**
+ * Adds a leading slash to a string if it has none
+ * @param {str} string
+ * @returns {string} string with a leading slash
+ */
 export const addLeadingSlash = str => (!str.startsWith('/') ? '/' : '') + str;
 
 /**
@@ -132,11 +137,18 @@ export const addTrailingSlash = str => {
 export const trimLeadingSlash = str => str.replace(/^\/+/g, '');
 
 /**
- *  Prepend current url to redirect_uri, if it is a relative path
+ * Prepend current url to redirect_uri, if it is a relative path
  * @param {str} string from which any number of trailing slashes should be removed
  * @returns string string without any trailing slash
  */
 export const trimTrailingSlash = str => str.replace(/\/+$/, '');
+
+/**
+ * Returns a path that starts and end with one (and only one) slash,
+ * regardless of the slashes being already present in the path given as input
+ * @param {str} string path to normalize
+ * @returns string path that starts and ends with a slash
+ */
 
 export const normalizePath = str => {
   if (typeof str !== 'string') {
