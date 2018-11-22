@@ -1,4 +1,10 @@
 <div id="app {hideNav? 'no-nav' : ''}">
+	{#if alert && alert.message}
+	<div class="fd-alert fd-alert--error fd-alert--dismissible" role="alert" id="j2ALl423">
+		<button on:click="set({alert:null})" class="fd-alert__close" aria-controls="j2ALl423" aria-label="Close"></button>
+		{alert.message} {alert.link}
+	</div>
+	{/if}
 	<Backdrop>
 		<div class="fd-page iframeContainer" use:init="context"></div>
 	</Backdrop>
@@ -21,11 +27,9 @@
   import TopNav from './navigation/TopNav.html';
   import LeftNav from './navigation/LeftNav.html';
   import * as Routing from './services/routing.js';
-  import { LuigiConfig } from './services/config.js';
-  import { isFunction, getConfigValueFromObject } from './utilities/helpers.js';
+  import { getConfigValueFromObject } from './utilities/helpers.js';
   import { getStoredAuthData } from './utilities/auth-helpers';
 
-  const trimLeadingSlash = str => str.replace(/^\//, '');
   const isValidBackRoute = (preservedViews, routeHash) => {
     if (preservedViews.length === 0) {
       return false;
@@ -38,36 +42,22 @@
     return paths.includes(routePath);
   };
 
-  const getModifiedHash = s => s.newURL.split('#/')[1];
-  const enableHashRouting = (component, node, config) => {
-    window.addEventListener('hashchange', event => {
+  const enableRouting = (component, node, config) => {
+    // intial route handling
+    const currentPath = Routing.getCurrentPath();
+    Routing.handleRouteChange(currentPath, component, node, config);
+
+    // subsequential route handling
+    Routing.addRouteChangeListener((path) => {
       const pv = component.get().preservedViews;
-      if (!isValidBackRoute(pv, getModifiedHash(event))) {
+      if (!isValidBackRoute(pv, path)) {
         component.set({ preservedViews: [] });
         Routing.removeInactiveIframes(node);
       }
-      Routing.handleRouteChange(getModifiedHash(event), component, node, config);
+      Routing.handleRouteChange(path, component, node, config);
     });
+  }
 
-    Routing.handleRouteChange(window.location.hash, component, node, config);
-  };
-
-  const enablePathRouting = (component, node, config) => {
-    window.addEventListener('popstate', () => {
-      const getModifiedPathname = window.history.state.path
-        .split('/')
-        .slice(1)
-        .join('/');
-      Routing.handleRouteChange(getModifiedPathname, component, node, config);
-    });
-
-    Routing.handleRouteChange(
-      trimLeadingSlash(window.location.pathname),
-      component,
-      node,
-      config
-    );
-  };
 
   const buildPath = (component, params) => {
     let path = params.link;
@@ -122,12 +112,14 @@
   };
 
   const handleNavigation = async (component, data, config) => {
-    const path = buildPath(component, data.params);
-    const matchedPath = await Routing.matchPath(path);
-    if (matchedPath !== null) {
-      addPreserveView(component, data, config);
-      Routing.navigateTo(matchedPath);
+    let path = buildPath(component, data.params);
+
+    if (path[0] !== '/') {
+      path = '/' + path; //add leading slash if necessary
     }
+
+    addPreserveView(component, data, config);
+    Routing.navigateTo(path); //navigate to the raw path. Any errors/alerts are handled later
   };
 
   const sendContextToClient = (component, config, goBackContext = {}) => {
@@ -214,7 +206,6 @@
 
           if ('luigi.navigation.back' === e.data.msg) {
             // go back: context from the view
-            this.set({ isNavigateBack: false });
             const preservedViews = this.get().preservedViews;
             if (preservedViews && preservedViews.length) {
               // remove current active iframe and data
@@ -269,11 +260,8 @@
         // listeners are not automatically removed — cancel
         // them to prevent memory leaks
         // this.on('destroy', storeListener.cancel);
-        if (LuigiConfig.getConfigValue('routing.useHashRouting')) {
-          return enableHashRouting(this, node, config);
-        }
 
-        return enablePathRouting(this, node, config);
+        enableRouting(this, node, config);
       }
     },
     methods: {
@@ -294,10 +282,6 @@
 </script>
 
 <style type="text/scss">
-  @import 'node_modules/fiori-fundamentals/scss/layout/page';
-  @import 'node_modules/fiori-fundamentals/scss/components/spinner';
-  @import 'static.css';
-
   :global(html) {
     box-sizing: border-box;
     font-size: 14px;
@@ -367,6 +351,20 @@
       left: 0;
       bottom: 0;
       right: 0;
+    }
+  }
+
+  $topNavHeight: 50px;
+  $leftNavWidth: 320px;
+  .fd-alert {
+    position: absolute;
+    min-width: 20rem;
+    width: calc(100% - 2 * (#{$leftNavWidth} + 1rem));
+    top: calc(#{$topNavHeight} + 1rem);
+    left: calc(#{$leftNavWidth} + 1rem);
+    z-index: 2;
+    .fd-alert__close {
+      cursor: pointer;
     }
   }
 </style>

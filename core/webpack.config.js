@@ -1,12 +1,16 @@
 const { readFileSync } = require('fs');
 const babelSettings = JSON.parse(readFileSync('.babelrc'));
-const ExtractTextPlugin = require('extract-text-webpack-plugin');
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const sass = require('node-sass');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
+const CleanWebpackPlugin = require('clean-webpack-plugin');
 
 module.exports = {
   entry: {
-    index: ['./src/main.js']
+    index: [
+      './node_modules/fundamental-ui/dist/fundamental-ui.min.css',
+      './src/main.js'
+    ]
   },
   resolve: {
     mainFields: ['svelte', 'browser', 'module', 'main'],
@@ -42,7 +46,7 @@ module.exports = {
                   sass.render(
                     {
                       data: content,
-                      includePaths: ['src', 'node_modules/fundamental-ui/scss'],
+                      includePaths: ['src'],
                       sourceMap: true,
                       outFile: 'x' // this is necessary, but is ignored
                     },
@@ -63,10 +67,14 @@ module.exports = {
       },
       {
         test: /\.(css)$/,
-        use: ExtractTextPlugin.extract({
-          fallback: 'file-loader',
-          use: [{ loader: 'css-loader', options: { url: false } }]
-        })
+        use: [
+          {
+            loader: MiniCssExtractPlugin.loader
+          },
+          {
+            loader: 'css-loader'
+          }
+        ]
       },
       {
         test: /\.(png|jpg|gif|svg|eot|ttf|woff|woff2)$/,
@@ -78,13 +86,24 @@ module.exports = {
     ]
   },
   plugins: [
-    new ExtractTextPlugin('luigi.css'),
+    new CleanWebpackPlugin(['public'], {
+      exclude: ['package.json'],
+      verbose: true
+    }),
+    new MiniCssExtractPlugin({ filename: 'luigi.css' }),
     new CopyWebpackPlugin([
       {
         from: 'node_modules/oidc-client/dist/oidc-client.min.js',
         to: 'auth/oidc/'
       },
-      'node_modules/fiori-fundamentals/dist/SAP-icons.woff'
+      {
+        from: 'src/auth/oauth2/callback.html',
+        to: 'auth/oauth2/callback.html'
+      },
+      {
+        from: 'src/auth/oidc/silent-callback.html',
+        to: 'auth/oidc/silent-callback.html'
+      }
     ])
   ],
   mode: 'production',

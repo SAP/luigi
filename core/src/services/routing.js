@@ -3,6 +3,8 @@ import { LuigiConfig } from './config';
 import {
   getPathWithoutHash,
   getUrlWithoutHash,
+  trimLeadingSlash,
+  containsAllSegments,
   isIE,
   getConfigValueFromObject
 } from '../utilities/helpers';
@@ -217,8 +219,8 @@ const navigateIframe = (config, component, node) => {
       },
       '*'
     );
-    // clear goBackContext after sending it to the client
-    component.set({ goBackContext: undefined });
+    // clear goBackContext and reset navigateBack after sending it to the client
+    component.set({ goBackContext: undefined, isNavigateBack: false });
 
     /**
      * check if luigi responded
@@ -308,8 +310,29 @@ export const handleRouteChange = async (path, component, node, config) => {
       if (routeExists) {
         const defaultChildNode = getDefaultChildNode(pathData);
         navigateTo(`${pathUrl ? `/${pathUrl}` : ''}/${defaultChildNode}`);
-      } // TODO else display 404 page
+      } else {
+        const alert = {
+          message: 'Could not find the requested route',
+          link: pathUrl
+        };
+
+        component.set({ alert });
+        navigateTo('/');
+        //error 404
+      }
       return;
+    }
+
+    if (!containsAllSegments(pathUrl, pathData.navigationPath)) {
+      const matchedPath = await matchPath(pathUrl);
+
+      const alert = {
+        message: 'Could not map the exact target node for the requested route',
+        link: pathUrl
+      };
+
+      component.set({ alert });
+      navigateTo(matchedPath);
     }
 
     const previousCompData = component.get();
@@ -389,16 +412,14 @@ export const matchPath = async path => {
   navigateTo used for navigation
   @param route string  absolute path of the new route
   @param options object  navi options, eg preserveView
-  @param windowElem object  defaults to window
-  @param documentElem object  defaults to document
  */
-export const navigateTo = (route, windowElem = window) => {
+export const navigateTo = async route => {
   if (LuigiConfig.getConfigValue('routing.useHashRouting')) {
-    windowElem.location.hash = route;
+    window.location.hash = route;
     return;
   }
 
-  windowElem.history.pushState(
+  window.history.pushState(
     {
       path: route
     },
@@ -417,17 +438,61 @@ export const navigateTo = (route, windowElem = window) => {
     event = new CustomEvent('popstate');
   }
 
-  windowElem.dispatchEvent(event);
+  window.dispatchEvent(event);
 };
 
-export const handleRouteClick = (node, windowElem = window) => {
+export const buildFromRelativePath = path => {
+  if (LuigiConfig.getConfigValue('routing.useHashRouting')) {
+    return window.location.hash + '/' + path;
+  } else {
+    return window.location.pathname + '/' + path;
+  }
+};
+
+export const handleRouteClick = node => {
   if (node.externalLink && node.externalLink.url) {
     node.externalLink.sameWindow
-      ? (windowElem.location.href = node.externalLink.url)
-      : windowElem.open(node.externalLink.url).focus();
+      ? (window.location.href = node.externalLink.url)
+      : window.open(node.externalLink.url).focus();
     // externalLinkUrl property is provided so there's no need to trigger routing mechanizm
     return;
+  } else if (node.link) {
+    const link = node.link.startsWith('/')
+      ? node.link
+      : buildFromRelativePath(node.link);
+    navigateTo(link);
+    return;
+  } else {
+    const route = buildRoute(node, `/${node.pathSegment}`);
+    navigateTo(route);
   }
-  const route = buildRoute(node, `/${node.pathSegment}`);
-  navigateTo(route, windowElem);
+};
+
+export const getModifiedPathname = () => {
+  if (!window.history.state) {
+    return '';
+  }
+
+  return window.history.state.path
+    .split('/')
+    .slice(1)
+    .join('/');
+};
+
+export const getCurrentPath = () =>
+  LuigiConfig.getConfigValue('routing.useHashRouting')
+    ? window.location.hash.replace('#', '') // TODO: getPathWithoutHash(window.location.hash) fails in ContextSwitcher
+    : trimLeadingSlash(window.location.pathname);
+
+export const addRouteChangeListener = callback => {
+  if (LuigiConfig.getConfigValue('routing.useHashRouting')) {
+    const getModifiedHash = s => s.newURL.split('#/')[1];
+    return window.addEventListener('hashchange', event => {
+      callback(getModifiedHash(event));
+    });
+  }
+
+  window.onpopstate = () => {
+    callback(trimLeadingSlash(getModifiedPathname()));
+  };
 };

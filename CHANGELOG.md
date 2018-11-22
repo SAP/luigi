@@ -24,6 +24,20 @@ The lerna-changelog tool detects changes based on PR labels and maps them to sec
   }
 -->
 
+## [v0.3.7] - 2018-10-31
+
+
+#### :rocket: Added
+* [#169](https://github.com/kyma-project/luigi/pull/169) Enable Luigi Client (microfrontend) to check whether a path exists in the main app ([@jesusreal](https://github.com/jesusreal))
+
+#### :bug: Fixed
+* [#168](https://github.com/kyma-project/luigi/pull/168) Fix bug for closest parent navigation on Luigi Client ([@jesusreal](https://github.com/jesusreal))
+
+#### :memo: Documentation
+* [#138](https://github.com/kyma-project/luigi/pull/138) Add details about navigation nodes and reading node parameters ([@bszwarc](https://github.com/bszwarc))
+* [#176](https://github.com/kyma-project/luigi/pull/176) Update and improve the content of the installation guide ([@bszwarc](https://github.com/bszwarc))
+* [#161](https://github.com/kyma-project/luigi/pull/161) Fix small docu bugs ([@jesusreal](https://github.com/jesusreal))
+
 ## [v0.3.6] - 2018-10-23
 
 #### :rocket: Added
@@ -145,3 +159,4 @@ The lerna-changelog tool detects changes based on PR labels and maps them to sec
 [client-0.3.0]: https://github.com/kyma-project/luigi/compare/v0.2.1...client-0.3.0
 [v0.3.5]: https://github.com/kyma-project/luigi/compare/core-0.3.3...v0.3.5
 [v0.3.6]: https://github.com/kyma-project/luigi/compare/v0.3.5...v0.3.6
+[v0.3.7]: https://github.com/kyma-project/luigi/compare/v0.3.6...v0.3.7

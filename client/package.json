@@ -1,6 +1,6 @@
 {
   "name": "@kyma-project/luigi-client",
-  "version": "0.3.7",
+  "version": "0.3.8",
   "description": "Javascript library supporting consumers of the Luigi framework",
   "main": "luigi-client.js",
   "scripts": {
@@ -8,7 +8,8 @@
     "docu": "npm run docu:validate && npm run docu:generate:section",
     "docu:generate:new-file": "documentation build luigi-client.js -f md --markdown-toc=false -o ../docs/luigi-client-api.md",
     "docu:generate:section": "documentation readme luigi-client.js -f md --readme-file=../docs/luigi-client-api.md --section='Luigi Client API' --markdown-toc=false --quiet --github false",
-    "docu:validate": "documentation lint luigi-client.js "
+    "docu:validate": "documentation lint luigi-client.js",
+    "prepush": "npm run docu:validate"
   },
   "repository": {
     "type": "git",

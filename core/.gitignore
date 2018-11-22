@@ -23,10 +23,12 @@ yarn-debug.log*
 yarn-error.log*
 
 .vscode/
-public/luigi.css
-public/luigi.js
-public/luigi.vendor.js
-public/SAP-icons.woff
+/public/luigi.css
+/public/luigi.js
+/public/*.woff
+/public/*.woff2
+/public/*.ttf
+/public/auth
 
 # maps
 *.map

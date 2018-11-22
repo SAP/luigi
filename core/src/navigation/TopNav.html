@@ -1,110 +1,58 @@
-<div class="fd-shellbar">
-    <div class="fd-shellbar__group fd-shellbar__group--start">                  
-      <LogoTitle />        
+<div class="fd-ui__header {hideNavComponent ? 'hideNavComponent' : ''}">
+  <nav class="fd-global-nav">
+    <div class="fd-global-nav__group fd-global-nav__group--left">
+      <LogoTitle />
     </div>
-    <div class="fd-shellbar__group fd-shellbar__group--end">
 
-      <!-- Context Switcher - Start --> 
-          <div class="fd-shellbar__title-menu">
-        <div class="fd-popover fd-popover--right">
-      <div class="fd-popover__control"><div class="fd-shellbar__title" aria-controls="0Zx6Z167" aria-haspopup="true" aria-expanded="false">Title</div></div>
-
-      <div class="fd-popover__body fd-popover__body--right"  aria-hidden="true" id="0Zx6Z167">
-      
-    <nav class="fd-menu">
-        <ul class="fd-menu__list">
-          <li><a href="#" class="fd-menu__item">Product A</a>
-        </li>
-          <li><a href="#" class="fd-menu__item">Product B</a>
-        </li>
-          <li><a href="#" class="fd-menu__item">Product C</a>
-        </li>
-          <li><a href="#" class="fd-menu__item">Product D</a>
-        </li>
-        </ul>
-    </nav>
-    </div>
-    </div>
-    </div>
-      <!-- Context Switcher - End --> 
-
-      
-      <div class="fd-shellbar__actions">
+    <div class="fd-global-nav__group fd-global-nav__group--right">
+      <div class="fd-global-nav__top-menu">
         {#if children && pathData.length > 0}
-            {#each children as node}
-              {#if !node.hideFromNav}
-              <div class="fd-shellbar__action fd-shellbar__action--hide">
-                  <button class="fd-button--m fd-button--shellheader {node === selectedNode ? 'is-selected' : ''} {node.externalLink && node.externalLink.url ? 'fd-global-nav__btn--external' : ''}" aria-controls="0AcWE812" aria-expanded="false" aria-haspopup="true" on:click=handleClick(node)>{node.label}
-                    {#if node.externalLink && node.externalLink.url}
-                      <span class="sap-icon--action sap-icon--s"></span>
-                    {/if}
-                  </button>
-                </div>
-              {/if}
-            {/each}
-         <div class="fd-shellbar__action fd-shellbar__action--collapse">
-          <div class="fd-shellbar-collapse">
-            <div class="fd-popover fd-popover--right">
-              <div class="fd-popover__control">
-                <div class="fd-shellbar-collapse--control" aria-controls="eYVEJ960" aria-expanded="false" aria-haspopup="true" role="button">
-                    
-              <button class=" fd-button--shellheader fd-button--m sap-icon--overflow" aria-controls="undefined" aria-haspopup="true" aria-expanded="false" >
-                <!-- <span class="fd-counter fd-counter--notification" aria-label="Unread count">25</span> -->
-                </button> 
-                </div>
-              </div>
-
-              <div class="fd-popover__body fd-popover__body--right"  aria-hidden="true" id="eYVEJ960">
-              
-            <nav class="fd-menu">
-                <ul class="fd-menu__list">
-                  {#each children as node}
-                    {#if !node.hideFromNav}
-                      <li><a href="#" class="fd-menu__item {node === selectedNode ? 'is-selected' : ''} {node.externalLink && node.externalLink.url ? 'fd-global-nav__btn--external' : ''}" on:click=handleClick(node)>{node.label}
-                    {#if node.externalLink && node.externalLink.url}
-                      <span class="sap-icon--action sap-icon--s"></span>
-                    {/if}</a>
-                  </li>
-                                {/if}
-            {/each}
-                </ul>
-            </nav>
-            </div>
-            </div>
-              </div>
-            </div>
-
-        {/if}
-        {#if authorizationEnabled}
-        <div class="fd-shellbar__action fd-shellbar__action--show">
-          <div class="fd-popover">
-            <div class="fd-popover__control">
-              <button class=" fd-button--shellheader sap-icon--customer" aria-expanded="{dropDownStates.PROFILE_POPOVER || false}"
-              aria-haspopup="true" on:click="toggleDropdownState('PROFILE_POPOVER')" on:blur="closeDropdown('PROFILE_POPOVER')">
+          {#each children as node}
+            {#if !node.hideFromNav}
+              <button class=" fd-button--secondary fd-button--m fd-global-nav__btn {node === selectedNode ? 'is-selected' : ''} {node.externalLink && node.externalLink.url ? 'fd-global-nav__btn--external' : ''}"
+              aria-label="{node.label}" on:click=handleClick(node)>
+                <span class="">{node.label}</span>
+                {#if node.externalLink && node.externalLink.url}
+                  <span class="sap-icon--action sap-icon--s"></span>
+                {/if}
               </button>
+            {/if}
+          {/each}
+        {/if}
+      </div>
 
-              <div class="fd-popover__body fd-popover__body--right"  aria-hidden="{dropDownStatesNegated.PROFILE_POPOVER || true}" id="PROFILE_POPOVER">
-                <nav class="fd-menu">
-                    <Authorization />
-                </nav>
-              </div>
-            </div>
+      <ContextSwitcher />
+
+      {#if authorizationEnabled}
+      <div class="fd-global-nav__actions">
+        <div class="fd-popover user-settings">
+          <div class="fd-popover__control">
+            <button class="fd-popover__control fd-button--secondary fd-button--m fd-global-nav__btn sap-icon--customer" aria-expanded="{dropDownStates.PROFILE_POPOVER || false}"
+              aria-haspopup="true" on:click="toggleDropdownState('PROFILE_POPOVER')" on:blur="closeDropdown('PROFILE_POPOVER')"></button>
+          </div>
+          <div class="fd-popover__body" aria-hidden="{dropDownStatesNegated.PROFILE_POPOVER || true}" id="PROFILE_POPOVER">
+            <nav class="fd-menu">
+              <Authorization />
+              <!-- <ul class="fd-menu__list">
+                <li><a href="#" class="fd-menu__item">Option 1</a></li>
+                <li><a href="#" class="fd-menu__item">Option 1</a></li>
+              </ul> -->
+            </nav>
           </div>
         </div>
-        {/if}
-</div>
+      </div>
+      {/if}
     </div>
+  </nav>
 </div>
 
 <script type="text/javascript">
+  import ContextSwitcher from './ContextSwitcher.html';
   import LogoTitle from './LogoTitle.html';
   import Authorization from '../Authorization.html';
   import { handleRouteClick } from '../services/routing.js';
   import { LuigiConfig } from '../services/config.js';
-
-  const getNegatedBoolString = str => {
-    return str === 'true' ? 'false' : 'true';
-  };
+  import { getNegatedBoolString } from '../utilities/helpers.js';
 
   const setTopNavData = (current, component) => {
     if (current.pathData && 0 < current.pathData.length) {
@@ -127,12 +75,8 @@
 
   export default {
     oncreate() {
-      // Authentication detection
-      const idpProviderName = LuigiConfig.getConfigValue('auth.use');
-      const idpProviderSettings = LuigiConfig.getConfigValue(`auth.${idpProviderName}`);
-
       this.set({
-        authorizationEnabled: !!idpProviderSettings,
+        authorizationEnabled: LuigiConfig.isAuthorizationEnabled(),
         hideNavComponent: LuigiConfig.getConfigBooleanValue('settings.hideNavigation')
       });
     },
@@ -176,18 +120,46 @@
     },
     components: {
       Authorization,
+      ContextSwitcher,
       LogoTitle
     }
   };
 </script>
 
 <style type="text/scss">
-  $fd-icons-path: 'node_modules/fiori-fundamentals/scss/icons/';
+  .user-settings .fd-popover__body {
+    right: 0;
+  }
+  .fd-ui__header {
+    position: fixed;
+    z-index: 1;
+    background: #ffffff;
+    width: 100%;
+    min-height: 50px;
+    height: 50px;
+    border-bottom: solid 1px #dededf;
+    padding: 0 10px;
+  }
+  .fd-global-nav__group--left {
+    padding-left: 20px;
+  }
 
-  @import 'node_modules/fiori-fundamentals/scss/icons';
-  @import 'node_modules/fiori-fundamentals/scss/components/button';
-  @import 'node_modules/fiori-fundamentals/scss/components/popover';
-  @import 'node_modules/fiori-fundamentals/scss/components/menu';
-  @import 'node_modules/fiori-fundamentals/scss/components/shellbar';
+  .fd-global-nav {
+    height: 100%;
+    border: none;
+  }
+  .fd-global-nav__product-name {
+    color: #0a6ed1;
+    height: 50px;
+    font-size: 24px;
+    line-height: 1em;
+    padding: 13px 0;
+  }
+  .fd-global-nav__top-menu {
+    margin-right: 5px;
+  }
 
+  .hideNavComponent {
+    display: none;
+  }
 </style>

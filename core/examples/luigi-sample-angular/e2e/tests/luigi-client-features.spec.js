@@ -140,6 +140,39 @@ describe('Luigi client features', () => {
     });
   });
 
+  describe('linkManager wrong paths navigation', () => {
+    let $iframeBody;
+    beforeEach(() => {
+      cy.get('iframe').then($iframe => {
+        $iframeBody = $iframe.contents().find('body');
+        cy.goToFeaturesPage($iframeBody);
+      });
+    });
+    it('navigate to a partly wrong link', () => {
+      cy.wrap($iframeBody)
+        .contains('Partly wrong link')
+        .click();
+      cy.location().should(loc => {
+        expect(loc.hash).to.eq('#/projects/pr2/miscellaneous2');
+      });
+      cy.get('.fd-alert').contains(
+        'Could not map the exact target node for the requested route projects/pr2/miscellaneous2/maskopatol'
+      );
+    });
+
+    it('navigate to a totally wrong link', () => {
+      cy.wrap($iframeBody)
+        .contains('Totally wrong link')
+        .click();
+      cy.location().should(loc => {
+        expect(loc.hash).to.eq('#/overview');
+      });
+      cy.get('.fd-alert').contains(
+        'Could not find the requested route maskopatol/has/a/child'
+      );
+    });
+  });
+
   describe('uxManager', () => {
     it('backdrop', () => {
       cy.wait(500);
@@ -176,9 +209,9 @@ describe('Luigi client features', () => {
         .contains('External Page')
         .click();
 
-      cy.get('.fd-spinner').should('exist');
+      cy.get('.spinnerContainer .fd-spinner').should('exist');
 
-      cy.get('.fd-spinner').should('not.exist');
+      cy.get('.spinnerContainer .fd-spinner').should('not.exist');
 
       cy.wait(250);
       cy.get('iframe').then($iframe => {
@@ -188,10 +221,11 @@ describe('Luigi client features', () => {
         cy.wrap($iframeBody)
           .contains('Show loading indicator')
           .click();
-        cy.get('.fd-spinner').should('exist');
+
+        cy.get('.spinnerContainer .fd-spinner').should('exist');
 
         // wait for programmatic hide of loading indicator
-        cy.get('.fd-spinner').should('not.exist');
+        cy.get('.spinnerContainer .fd-spinner').should('not.exist');
       });
     });
   });
