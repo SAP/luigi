@@ -1,6 +1,6 @@
 {#if contextSwitcherEnabled}
-<div class="fd-global-nav__context-menu">
-  <div class="fd-popover context-switcher">
+<div class="fd-shellbar__title-menu">
+  <div class="fd-popover fd-popover--right">
     <div class="fd-popover__control">
       <button class="fd-button--secondary" aria-expanded="{dropDownStates.CONTEXT_SWITCHER_POPOVER || false}"
         aria-haspopup="true" title="{selectedLabel ? selectedLabel : ''}"
@@ -9,7 +9,7 @@
         {#if selectedLabel}{selectedLabel}{/if}
       </button>
     </div>
-    <div class="fd-popover__body" aria-hidden="{dropDownStatesNegated.CONTEXT_SWITCHER_POPOVER || true}" id="CONTEXT_SWITCHER_POPOVER">
+    <div class="fd-popover__body fd-popover__body--right" aria-hidden="{dropDownStatesNegated.CONTEXT_SWITCHER_POPOVER || true}" id="CONTEXT_SWITCHER_POPOVER">
       <nav class="fd-menu">
         {#if actions && actions.length}
         <ul class="fd-menu__list fd-menu__list--top">

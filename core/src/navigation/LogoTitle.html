@@ -1,14 +1,19 @@
 {#if hasLogo}
   <div class="fd-shellbar__logo">
+    <img on:click="goTo('/')" class="fd-shellbar--brand lui-customlogo" ref:logo/>
+  </div>
+{:else}
+  <div class="fd-shellbar__logo">
     <div class="fd-shellbar--brand" aria-label="SAP" on:click="goTo('/')"></div>
   </div>
-  <!-- <img on:click="goTo('/')" class="fd-global-nav__logo fd-has-margin-left-none" ref:logo/> -->
 {/if}
-<div class="fd-shellbar__title">
-	{#if title}
-	  <a on:click="goTo('/')">{title}</a>
-	{/if}
-</div>
+
+{#if title}
+<div class="fd-shellbar__title" on:click="goTo('/')">
+  {title}
+  </div>
+{/if}
+
 
 <script type="text/javascript">
   import { processHeaderSettings } from './services/header.js';
@@ -31,5 +36,8 @@
 </script>
 
 <style type="text/scss">
-  @import 'node_modules/fiori-fundamentals/scss/components/shellbar';
+
+  .lui-customlogo{
+    background: none;
+  }
 </style>

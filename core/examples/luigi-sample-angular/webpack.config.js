@@ -415,21 +415,21 @@ module.exports = {
         },
         {
           context: 'node_modules/fiori-fundamentals/dist',
-          to: 'fundamental-ui',
+          to: 'fiori-fundamentals',
           from: {
             glob: 'fiori-fundamentals.min.css'
           }
         },
         {
           context: 'node_modules/fiori-fundamentals/dist',
-          to: 'fundamental-ui',
+          to: 'fiori-fundamentals',
           from: {
             glob: 'fonts/**'
           }
         },
         {
           context: 'node_modules/fiori-fundamentals/dist',
-          to: 'fundamental-ui',
+          to: 'fiori-fundamentals',
           from: {
             glob: 'SAP-icons.*'
           }
