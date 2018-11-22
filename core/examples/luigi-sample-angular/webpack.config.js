@@ -391,6 +391,14 @@ module.exports = {
           }
         },
         {
+          context: 'src',
+          to: '',
+          from: {
+            glob: 'logout.html',
+            dot: true
+          }
+        },
+        {
           context: 'node_modules/@kyma-project/luigi-core',
           to: './luigi-core',
           from: {
