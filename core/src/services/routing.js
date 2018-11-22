@@ -492,7 +492,7 @@ export const addRouteChangeListener = callback => {
     });
   }
 
-  window.onpopstate = () => {
+  window.addEventListener('popstate', () => {
     callback(trimLeadingSlash(getModifiedPathname()));
-  };
+  });
 };
