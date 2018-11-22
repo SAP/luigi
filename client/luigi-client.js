@@ -188,7 +188,7 @@
       return false;
     },
     /**
-     * Registers a listener that is called upon any navigation change.
+     * Registers a listener that is called with a context object upon any navigation change.
      * @param {function} contextUpdatedFn the listener function that is called every time Luigi context was changed
      * @memberof lifecycle
      */
@@ -219,7 +219,7 @@
     },
     /**
      * Returns the context object. Typically it is not required as the {@link #addContextUpdateListener addContextUpdateListener()} receives the same values.
-     * @returns {{idToken: string, sessionId: string, currentEnvironmentId: string} } node parameters.
+     * @returns {Object} current context data
      * @memberof lifecycle
      */
     getEventData: function getEventData() {
