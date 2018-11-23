@@ -427,7 +427,12 @@ export const navigateTo = async (route, windowElem = window) => {
     return;
   }
 
-  windowElem.history.pushState(
+  // Avoid infinite loop on logout + login whith path routing
+  if (route === '/') {
+    return;
+  }
+
+  window.history.pushState(
     {
       path: route
     },
@@ -476,4 +481,31 @@ export const handleRouteClick = (node, windowElem = window) => {
   }
 };
 
-export let isDirty = false;
+export const getModifiedPathname = () => {
+  if (!window.history.state) {
+    return '';
+  }
+
+  return window.history.state.path
+    .split('/')
+    .slice(1)
+    .join('/');
+};
+
+export const getCurrentPath = () =>
+  LuigiConfig.getConfigValue('routing.useHashRouting')
+    ? window.location.hash.replace('#', '') // TODO: getPathWithoutHash(window.location.hash) fails in ContextSwitcher
+    : trimLeadingSlash(window.location.pathname);
+
+export const addRouteChangeListener = callback => {
+  if (LuigiConfig.getConfigValue('routing.useHashRouting')) {
+    const getModifiedHash = s => s.newURL.split('#/')[1];
+    return window.addEventListener('hashchange', event => {
+      callback(getModifiedHash(event));
+    });
+  }
+
+  window.addEventListener('popstate', () => {
+    callback(getModifiedPathname());
+  });
+};
