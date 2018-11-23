@@ -290,9 +290,28 @@ const buildRoute = (node, path, params) =>
 export const handleRouteChange = async (path, component, node, config) => {
   try {
     if (component.get().isDirty) {
-      console.warn('unsavedChanges');
-      // const urlToRedirect = component.get().latestFormUrl;
-      // url && history.replaceState(window.state, url);
+      const newUrl = window.location.href;
+      const oldUrl = component.get().persistUrl;
+      //pretend the url hasn't been changed
+      oldUrl && history.replaceState(window.state, '', oldUrl);
+
+      component
+        .showModal('title', 'text')
+        .then(() => {
+          // YES pressed
+          component.set({ isDirty: false });
+          path &&
+            handleRouteChange(path, component, node, config) &&
+            history.replaceState(window.state, '', newUrl);
+        })
+        .catch(() => {
+          // NO pressed
+        })
+        .then(res => {
+          // FINALLY
+          component.set({ showModal: false });
+        });
+
       return;
     }
     const pathUrl = path && path.length ? getPathWithoutHash(path) : '';

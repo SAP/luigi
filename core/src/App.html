@@ -4,8 +4,9 @@
 		<button on:click="set({alert:null})" class="fd-alert__close" aria-controls="j2ALl423" aria-label="Close"></button>
 		{alert.message} {alert.link}
 	</div>
-	{/if}
+	{/if} {#if showModal}
 	<ConfirmationModal on:modalConfirm="handleModalResult(true)" on:modalDecline="handleModalResult(false)"></ConfirmationModal>
+	{/if}
 	<Backdrop>
 		<div class="fd-page iframeContainer" use:init="context"></div>
 	</Backdrop>
@@ -50,7 +51,7 @@
     Routing.handleRouteChange(currentPath, component, node, config);
 
     // subsequential route handling
-    Routing.addRouteChangeListener((path) => {
+    Routing.addRouteChangeListener(path => {
       const pv = component.get().preservedViews;
       if (!isValidBackRoute(pv, path)) {
         component.set({ preservedViews: [] });
@@ -58,8 +59,7 @@
       }
       Routing.handleRouteChange(path, component, node, config);
     });
-  }
-
+  };
 
   const buildPath = (component, params) => {
     let path = params.link;
@@ -150,11 +150,7 @@
     );
   };
   let confirmModal, rejectModal;
-  const showModal = (title, text) =>
-    new Promise((resolve, reject) => {
-      confirmModal = resolve;
-      rejectModal = reject;
-    });
+
   export default {
     data() {
       return {
@@ -167,18 +163,13 @@
           //     context: {}
           //     iframe: Element
           // }
-        ]
+        ],
+        showModal: false,
+        isDirty: false,
+        persistUrl: null
       };
     },
-    oncreate() {
-      showModal('title', 'text')
-        .then(() => {
-          console.warn('OK');
-        })
-        .catch(() => {
-          console.warn('NOT OK');
-        });
-    },
+    oncreate() {},
     onstate({ changed, current, previous }) {},
     actions: {
       init(node) {
@@ -273,11 +264,8 @@
           if ('luigi.set-page-dirty' === e.data.msg) {
             this.set({
               isDirty: e.data.dirty || false,
-              latestFormUrl: window.location.href
+              persistUrl: window.location.href
             });
-            //  Routing.isDirty = e.data.dirty;
-            //window.isDirty = e.data.isDirty;
-            //e.data.dirty && console.warn('isDirty');
           }
         });
 
@@ -297,6 +285,14 @@
       },
       handleModalResult(result) {
         result ? confirmModal() : rejectModal();
+      },
+      showModal(title, text) {
+        this.set({ showModal: true });
+
+        return new Promise((resolve, reject) => {
+          confirmModal = resolve;
+          rejectModal = reject;
+        });
       }
     },
 

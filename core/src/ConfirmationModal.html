@@ -1,0 +1,35 @@
+<div class="fd-modal">
+	<div class="fd-modal__content" role="document">
+		<div class="fd-modal__header">
+			<h1 class="fd-modal__title">Delete</h1>
+			<button class="fd-button--light fd-modal__close" aria-label="close"></button>
+		</div>
+		<div class="fd-modal__body">
+			Do you want to delete item <b>X</b>?
+		</div>
+		<footer class="fd-modal__footer">
+			<div class="fd-modal__actions">
+				<button on:click="fire('modalDecline')" class="fd-button--light">No</button>
+				<button on:click="fire('modalConfirm')" class="fd-button">Yes</button>
+			</div>
+		</footer>
+	</div>
+</div>
+
+<script type="text/javascript">
+  export default {
+    oncreate() {},
+    methods: {}
+  };
+</script>
+
+<style type="text/scss">
+  @import 'node_modules/fundamental-ui/dist/components/modal.min';
+  @import 'node_modules/fundamental-ui/dist/components/button.min';
+  .fd-modal {
+    position: absolute;
+    z-index: 2000;
+    top: 3em;
+    left: 3em;
+  }
+</style>
