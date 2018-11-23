@@ -24,6 +24,37 @@ The lerna-changelog tool detects changes based on PR labels and maps them to sec
   }
 -->
 
+## [v0.3.8] - 2018-11-23
+
+#### :rocket: Added
+* [#190](https://github.com/kyma-project/luigi/pull/190) Context Switcher in top navigation ([@maxmarkus](https://github.com/maxmarkus))
+* [#209](https://github.com/kyma-project/luigi/pull/209) Support navigation nodes that just link to other nodes ([@jesusreal](https://github.com/jesusreal))
+* [#162](https://github.com/kyma-project/luigi/pull/162) 404 support for non existing paths ([@parostatkiem](https://github.com/parostatkiem))
+* [#187](https://github.com/kyma-project/luigi/pull/187) Luigi core config refactorings ([@jesusreal](https://github.com/jesusreal))
+* [#200](https://github.com/kyma-project/luigi/pull/200) Align luigi header title with fundamental style ([@parostatkiem](https://github.com/parostatkiem))
+* [#180](https://github.com/kyma-project/luigi/pull/180) Token refresh ([@y-kkamil](https://github.com/y-kkamil))
+* [#160](https://github.com/kyma-project/luigi/pull/160) Configurable logo and title ([@maxmarkus](https://github.com/maxmarkus))
+
+#### :bug: Fixed
+* [#235](https://github.com/kyma-project/luigi/pull/235) Issues with path routing ([@jesusreal](https://github.com/jesusreal))
+* [#234](https://github.com/kyma-project/luigi/pull/234) Add logout.html to webpack config ([@kwiatekus](https://github.com/kwiatekus))
+* [#232](https://github.com/kyma-project/luigi/pull/232) Fix no context switcher error ([@pekura](https://github.com/pekura))
+* [#224](https://github.com/kyma-project/luigi/pull/224) Bugfix/preserve view contentarea ([@maxmarkus](https://github.com/maxmarkus))
+* [#222](https://github.com/kyma-project/luigi/pull/222) Login fix ([@hardl](https://github.com/hardl))
+* [#202](https://github.com/kyma-project/luigi/pull/202) Fix go-back-button bug ([@parostatkiem](https://github.com/parostatkiem))
+* [#215](https://github.com/kyma-project/luigi/pull/215) mock auth logout page fix ([@y-kkamil](https://github.com/y-kkamil))
+* [#211](https://github.com/kyma-project/luigi/pull/211) Multiple path parameters do not get replaced in view url ([@pekura](https://github.com/pekura))
+* [#212](https://github.com/kyma-project/luigi/pull/212) Fix failing unit tests ([@dariadomagala](https://github.com/dariadomagala))
+* [#206](https://github.com/kyma-project/luigi/pull/206) Center the logo ([@dariadomagala](https://github.com/dariadomagala))
+* [#196](https://github.com/kyma-project/luigi/pull/196) Fix for goBack when not using micro-frontend without routing ([@maxmarkus](https://github.com/maxmarkus))
+* [#177](https://github.com/kyma-project/luigi/pull/177) Allow multiple init and update listeners ([@maxmarkus](https://github.com/maxmarkus))
+
+#### :memo: Documentation
+* [#197](https://github.com/kyma-project/luigi/pull/197) Improve luigi-client js docs ([@kwiatekus](https://github.com/kwiatekus))
+* [#155](https://github.com/kyma-project/luigi/pull/155) Describe get path params and get node params better ([@pekura](https://github.com/pekura))
+* [#199](https://github.com/kyma-project/luigi/pull/199) Add missing line and improve wording ([@bszwarc](https://github.com/bszwarc))
+
+
 ## [v0.3.7] - 2018-10-31
 
 
@@ -160,3 +191,4 @@ The lerna-changelog tool detects changes based on PR labels and maps them to sec
 [v0.3.5]: https://github.com/kyma-project/luigi/compare/core-0.3.3...v0.3.5
 [v0.3.6]: https://github.com/kyma-project/luigi/compare/v0.3.5...v0.3.6
 [v0.3.7]: https://github.com/kyma-project/luigi/compare/v0.3.6...v0.3.7
+[v0.3.8]: https://github.com/kyma-project/luigi/compare/v0.3.7...v0.3.8
