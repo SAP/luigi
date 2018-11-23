@@ -419,6 +419,11 @@ export const navigateTo = async route => {
     return;
   }
 
+  // Avoid infinite loop on logout + login whith path routing
+  if (route === '/') {
+    return;
+  }
+
   window.history.pushState(
     {
       path: route
@@ -492,7 +497,7 @@ export const addRouteChangeListener = callback => {
     });
   }
 
-  window.onpopstate = () => {
-    callback(trimLeadingSlash(getModifiedPathname()));
-  };
+  window.addEventListener('popstate', () => {
+    callback(getModifiedPathname());
+  });
 };
