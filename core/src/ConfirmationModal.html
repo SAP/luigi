@@ -17,19 +17,20 @@
 </div>
 
 <script type="text/javascript">
-  export default {
-    oncreate() {},
-    methods: {}
-  };
+  export default {};
 </script>
 
 <style type="text/scss">
   @import 'node_modules/fundamental-ui/dist/components/modal.min';
   @import 'node_modules/fundamental-ui/dist/components/button.min';
+  $topNavHeight: 50px;
+  $leftNavWidth: 320px;
   .fd-modal {
     position: absolute;
-    z-index: 2000;
-    top: 3em;
-    left: 3em;
+    min-width: 20rem;
+    width: calc(100% - 2 * (#{$leftNavWidth} + 1rem));
+    top: calc(#{$topNavHeight} + 1rem);
+    left: calc(#{$leftNavWidth} + 1rem);
+    z-index: 2;
   }
 </style>

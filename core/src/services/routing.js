@@ -292,6 +292,7 @@ export const handleRouteChange = async (path, component, node, config) => {
     if (component.get().isDirty) {
       const newUrl = window.location.href;
       const oldUrl = component.get().persistUrl;
+
       //pretend the url hasn't been changed
       oldUrl && history.replaceState(window.state, '', oldUrl);
 
@@ -309,9 +310,8 @@ export const handleRouteChange = async (path, component, node, config) => {
         })
         .then(res => {
           // FINALLY
-          component.set({ showModal: false });
+          component.set({ displayModal: false });
         });
-
       return;
     }
     const pathUrl = path && path.length ? getPathWithoutHash(path) : '';

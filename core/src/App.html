@@ -4,10 +4,10 @@
 		<button on:click="set({alert:null})" class="fd-alert__close" aria-controls="j2ALl423" aria-label="Close"></button>
 		{alert.message} {alert.link}
 	</div>
-	{/if} {#if showModal}
+	{/if} {#if displayModal}
 	<ConfirmationModal on:modalConfirm="handleModalResult(true)" on:modalDecline="handleModalResult(false)"></ConfirmationModal>
 	{/if}
-	<Backdrop>
+	<Backdrop ref:backdrop>
 		<div class="fd-page iframeContainer" use:init="context"></div>
 	</Backdrop>
 	{#if showLoadingIndicator}
@@ -164,13 +164,17 @@
           //     iframe: Element
           // }
         ],
-        showModal: false,
+        displayModal: false,
         isDirty: false,
         persistUrl: null
       };
     },
     oncreate() {},
-    onstate({ changed, current, previous }) {},
+    onstate({ changed, current, previous }) {
+      if (changed && changed.displayModal) {
+        !current.displayModal && this.hideModal();
+      }
+    },
     actions: {
       init(node) {
         const config = {
@@ -287,12 +291,18 @@
         result ? confirmModal() : rejectModal();
       },
       showModal(title, text) {
-        this.set({ showModal: true });
-
+        this.set({ displayModal: true });
+        //const backdropComponent = this.refs.backdrop;
+        //backdropComponent && backdropComponent.set({ backdropActive: true });
         return new Promise((resolve, reject) => {
+          //send the response when one of following methods were executed
           confirmModal = resolve;
           rejectModal = reject;
         });
+      },
+      hideModal() {
+        //const backdropComponent = this.refs.backdrop;
+        // backdropComponent && backdropComponent.set({ backdropActive: false });
       }
     },
 
