@@ -188,7 +188,7 @@
       return false;
     },
     /**
-     * Registers a listener that is called with a context object upon any navigation change.
+     * Registers a listener that is called with the context object upon any navigation change.
      * @param {function} contextUpdatedFn the listener function that is called every time Luigi context was changed
      * @memberof lifecycle
      */
