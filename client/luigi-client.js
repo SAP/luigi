@@ -219,7 +219,7 @@
     },
     /**
      * Returns the context object. Typically it is not required as the {@link #addContextUpdateListener addContextUpdateListener()} receives the same values.
-     * @returns {Object} current context data
+     * @returns {Object} current context data.
      * @memberof lifecycle
      */
     getEventData: function getEventData() {
