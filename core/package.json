@@ -40,7 +40,7 @@
     "test": "./node_modules/mocha/bin/mocha --require babel-register --require babel-polyfill --require jsdom-global/register --recursive test",
     "test:watch": "npm run test -- --watch",
     "bundlesize": "bundlesize",
-    "prepush": "npm test && npm run bundle && npm run bundlesize"
+    "prepush": "npm test"
   },
   "bundlesize": [
     {
