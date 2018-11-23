@@ -39,7 +39,7 @@ The lerna-changelog tool detects changes based on PR labels and maps them to sec
 * [#235](https://github.com/kyma-project/luigi/pull/235) Issues with path routing ([@jesusreal](https://github.com/jesusreal))
 * [#234](https://github.com/kyma-project/luigi/pull/234) Add logout.html to webpack config ([@kwiatekus](https://github.com/kwiatekus))
 * [#232](https://github.com/kyma-project/luigi/pull/232) Fix no context switcher error ([@pekura](https://github.com/pekura))
-* [#224](https://github.com/kyma-project/luigi/pull/224) Bugfix/preserve view contentarea ([@maxmarkus](https://github.com/maxmarkus))
+* [#224](https://github.com/kyma-project/luigi/pull/224) Bugfix/preserve view content area ([@maxmarkus](https://github.com/maxmarkus))
 * [#222](https://github.com/kyma-project/luigi/pull/222) Login fix ([@hardl](https://github.com/hardl))
 * [#202](https://github.com/kyma-project/luigi/pull/202) Fix go-back-button bug ([@parostatkiem](https://github.com/parostatkiem))
 * [#215](https://github.com/kyma-project/luigi/pull/215) mock auth logout page fix ([@y-kkamil](https://github.com/y-kkamil))
