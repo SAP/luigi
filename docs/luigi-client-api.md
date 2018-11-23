@@ -24,7 +24,7 @@ Removes a init listener
 
 ### addContextUpdateListener
 
-Registers a listener that is called upon any navigation change.
+Registers a listener that is called with the context object upon any navigation change.
 
 #### Parameters
 
@@ -42,7 +42,7 @@ Removes a context update listener
 
 Returns the context object. Typically it is not required as the [addContextUpdateListener()](#addContextUpdateListener) receives the same values.
 
-Returns **{idToken: [string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String), sessionId: [string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String), currentEnvironmentId: [string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)}** node parameters.
+Returns **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** current context data.
 
 ### getNodeParams
 
