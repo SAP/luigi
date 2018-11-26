@@ -245,7 +245,7 @@ export const groupBy = (nodes, property) => {
       key = category;
       metaInfo = {
         label: key,
-        icon: 'sap-logo-shape'
+        icon: ''
       };
     }
     let arr = result[key];
@@ -258,7 +258,6 @@ export const groupBy = (nodes, property) => {
     }
     arr.push(node);
   });
-
   return result;
 };
 
@@ -306,6 +305,12 @@ export const getLeftNavData = async (current, componentData) => {
 
     const children = await getChildren(lastElement, componentData.context);
     const groupedChildren = getGroupedChildren(children, current);
+    updatedCompData.hasCategoriesWithIcon = false;
+    Object.values(groupedChildren).forEach(value => {
+      if (!updatedCompData.hasCategoriesWithIcon && value && value.metaInfo && value.metaInfo.icon) {
+        updatedCompData.hasCategoriesWithIcon = true;
+      }
+    });
     updatedCompData.selectedNode = selectedNode || lastElement;
     updatedCompData.children = groupedChildren;
   }
