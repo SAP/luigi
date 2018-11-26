@@ -139,6 +139,9 @@
   };
 
   const sendAuthDataToClient = (iframe, authData) => {
+    if (!iframe.contentWindow) {
+      return;
+    }
     iframe.contentWindow.postMessage(
       {
         msg: 'luigi.auth.tokenIssued',
