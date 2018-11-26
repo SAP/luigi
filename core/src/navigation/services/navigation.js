@@ -235,11 +235,26 @@ export const getNodes = (children, pathData) => {
 export const groupBy = (nodes, property) => {
   const result = {};
   nodes.forEach(node => {
-    const key = node[property];
+    let key;
+    let metaInfo;
+    const category = node[property];
+    if (category && typeof category === 'object') {
+      key = category.label;
+      metaInfo = Object.assign({}, category);
+    } else {
+      key = category;
+      metaInfo = {
+        label: key,
+        icon: 'sap-logo-shape'
+      };
+    }
     let arr = result[key];
     if (!arr) {
       arr = [];
       result[key] = arr;
+    }
+    if (!arr.metaInfo) {
+      arr.metaInfo = metaInfo;
     }
     arr.push(node);
   });

@@ -83,7 +83,7 @@ var projectDetailNavProviderFn = function(context) {
     var projectId = context.currentProject;
     var children = [
       {
-        category: 'Usermanagement',
+        category: { label: 'Usermanagement', icon: 'customer' },
         pathSegment: 'users',
         label: 'Users and Groups',
         viewUrl: '/sampleapp.html#/projects/' + projectId + '/users',
