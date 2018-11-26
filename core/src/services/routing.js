@@ -288,6 +288,12 @@ const buildRoute = (node, path, params) =>
     : buildRoute(node.parent, `/${node.parent.pathSegment}${path}`, params);
 
 export const handleRouteChange = async (path, component, node, config) => {
+  if (
+    window.location.href.indexOf('access_token') !== -1 ||
+    window.location.href.indexOf('id_token') !== -1
+  ) {
+    return;
+  }
   try {
     const pathUrl = path && path.length ? getPathWithoutHash(path) : '';
     const pathData = await getNavigationPath(

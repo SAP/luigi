@@ -123,7 +123,7 @@
         }
       },
       async setSelectedContext(currentPath) {
-        const config = this.get().config;
+        const config = this.get().config || {};
         const options = this.get().options;
         const parentNodePath = config.parentNodePath;
         const fallbackLabelResolver = config.fallbackLabelResolver;

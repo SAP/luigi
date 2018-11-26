@@ -206,12 +206,11 @@ export const findMatchingNode = (urlPathElement, nodes) => {
   return result;
 };
 
-const isLoggedIn = () => {
-  const getStoredAuthData = () =>
-    JSON.parse(localStorage.getItem('luigi.auth'));
+export const isLoggedIn = () => {
+  const storedAuthData = JSON.parse(localStorage.getItem('luigi.auth'));
   const isAuthValid = () =>
-    getStoredAuthData().accessTokenExpirationDate > Number(new Date());
-  return getStoredAuthData() && isAuthValid();
+    storedAuthData.accessTokenExpirationDate > Number(new Date());
+  return storedAuthData && isAuthValid();
 };
 
 export const getNodes = (children, pathData) => {
