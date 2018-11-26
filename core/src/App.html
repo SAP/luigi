@@ -4,8 +4,9 @@
 		<button on:click="set({alert:null})" class="fd-alert__close" aria-controls="j2ALl423" aria-label="Close"></button>
 		{alert.message} {alert.link}
 	</div>
-	{/if} {#if displayModal}
-	<ConfirmationModal on:modalConfirm="handleModalResult(true)" on:modalDecline="handleModalResult(false)"></ConfirmationModal>
+	{/if} {#if confirmationModal.isDisplayed}
+	<ConfirmationModal title={confirmationModal.title} text={confirmationModal.text} on:modalConfirm="handleModalResult(true)"
+	 on:modalDecline="handleModalResult(false)"></ConfirmationModal>
 	{/if}
 	<Backdrop ref:backdrop>
 		<div class="fd-page iframeContainer" use:init="context"></div>
@@ -164,15 +165,23 @@
           //     iframe: Element
           // }
         ],
-        displayModal: false,
+        confirmationModal: {
+          isDisplayed: false,
+          title: null,
+          text: null
+        },
         isDirty: false,
         persistUrl: null
       };
     },
     oncreate() {},
     onstate({ changed, current, previous }) {
-      if (changed && changed.displayModal) {
-        !current.displayModal && this.hideModal();
+      if (
+        changed &&
+        changed.confirmationModal &&
+        changed.confirmationModal.isDisplayed
+      ) {
+        !current.confirmationModal.isDisplayed && this.hideModal();
       }
     },
     actions: {
@@ -291,7 +300,7 @@
         result ? confirmModal() : rejectModal();
       },
       showModal(title, text) {
-        this.set({ displayModal: true });
+        this.set({ confirmationModal: { isDisplayed: true, title, text } });
         //const backdropComponent = this.refs.backdrop;
         //backdropComponent && backdropComponent.set({ backdropActive: true });
         return new Promise((resolve, reject) => {
@@ -302,7 +311,10 @@
       },
       hideModal() {
         //const backdropComponent = this.refs.backdrop;
-        // backdropComponent && backdropComponent.set({ backdropActive: false });
+        //backdropComponent && backdropComponent.set({ backdropActive: false });
+        this.set({
+          confirmationModal: { isDisplayed: false, title: null, text: null }
+        });
       }
     },
 

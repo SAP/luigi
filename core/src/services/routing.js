@@ -297,7 +297,10 @@ export const handleRouteChange = async (path, component, node, config) => {
       oldUrl && history.replaceState(window.state, '', oldUrl);
 
       component
-        .showModal('title', 'text')
+        .showModal(
+          'Unsaved changes detected',
+          'It looks like you might loose some data if you leave this page. Are you sure you want to do this?'
+        )
         .then(() => {
           // YES pressed
           component.set({ isDirty: false });
@@ -310,7 +313,7 @@ export const handleRouteChange = async (path, component, node, config) => {
         })
         .then(res => {
           // FINALLY
-          component.set({ displayModal: false });
+          component.hideModal();
         });
       return;
     }

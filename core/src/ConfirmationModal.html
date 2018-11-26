@@ -1,11 +1,11 @@
 <div class="fd-modal">
 	<div class="fd-modal__content" role="document">
 		<div class="fd-modal__header">
-			<h1 class="fd-modal__title">Delete</h1>
+			<h1 class="fd-modal__title">{title}</h1>
 			<button class="fd-button--light fd-modal__close" aria-label="close"></button>
 		</div>
 		<div class="fd-modal__body">
-			Do you want to delete item <b>X</b>?
+			{text}
 		</div>
 		<footer class="fd-modal__footer">
 			<div class="fd-modal__actions">
@@ -17,7 +17,15 @@
 </div>
 
 <script type="text/javascript">
-  export default {};
+  export default {
+    data() {
+      //fallback data in case title or text props weren't provided
+      return {
+        title: 'Confirmation',
+        text: 'Are you sure you want to do this?'
+      };
+    }
+  };
 </script>
 
 <style type="text/scss">
