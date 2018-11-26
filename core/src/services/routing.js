@@ -1,6 +1,5 @@
 import { getNavigationPath } from '../navigation/services/navigation';
 import { LuigiConfig } from './config';
-import App from '../App.html';
 import {
   getPathWithoutHash,
   getUrlWithoutHash,
@@ -289,7 +288,7 @@ const buildRoute = (node, path, params) =>
 
 export const handleRouteChange = async (path, component, node, config) => {
   try {
-    if (component.get().isDirty) {
+    if (component && component.get().isDirty) {
       const newUrl = window.location.href;
       const oldUrl = component.get().persistUrl;
 
