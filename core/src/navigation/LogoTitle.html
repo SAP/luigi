@@ -1,16 +1,21 @@
-{#if hasLogo}
-  <div class="fd-shellbar__logo">
-    <img on:click="goTo('/')" class="fd-shellbar--brand lui-customlogo" ref:logo/>
-  </div>
-{:else}
-  <div class="fd-shellbar__logo">
-    <div class="fd-shellbar--brand" aria-label="SAP" on:click="goTo('/')"></div>
-  </div>
-{/if}
+
+<div class="fd-shellbar__logo { !hasLogo ? 'fd-shellbar__logo--image-replaced' : '' } { hasLogo ? 'lui-customlogo' : ''}" aria-label="SAP">
+  {#if hasLogo}
+    <img on:click="goTo('/')" ref:logo />
+  {/if}
+</div>
 
 {#if title}
-<div class="fd-shellbar__title" on:click="goTo('/')">
-  {title}
+  <div class="fd-shellbar__product">
+    <!-- code duplication due fundamental markup --> 
+    <div class="fd-shellbar__logo fd-shellbar__logo--control fd-product-menu__logo { !hasLogo ? 'fd-shellbar__logo--image-replaced' : '' } { hasLogo ? 'lui-customlogo' : ''}" aria-label="SAP">
+        {#if hasLogo}
+          <img on:click="goTo('/')" ref:logo2/>
+        {/if}
+    </div>
+    <div class="fd-shellbar__title" on:click="goTo('/')">
+      {title}
+    </div>
   </div>
 {/if}
 
@@ -37,7 +42,8 @@
 
 <style type="text/scss">
 
-  .lui-customlogo{
-    background: none;
+    // Force height because of base64 img src
+  .lui-customlogo img{
+    height: 24px;
   }
 </style>
