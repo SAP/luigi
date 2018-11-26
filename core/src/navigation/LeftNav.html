@@ -27,7 +27,7 @@
             {#each Object.entries(children) as [key, nodes]}
                 {#if key !== 'undefined'}
                     <div class="fd-side-nav__group">
-                        <h1 class="fd-side-nav__title">{node.categoryIcon}{key}{key}</h1>
+                        <h1 class="fd-side-nav__title">{key}</h1>
                         <ul class="fd-side-nav__list">
                             {#each nodes as node}
                                 {#if !node.hideFromNav}
