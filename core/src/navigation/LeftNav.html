@@ -27,7 +27,11 @@
             {#each Object.entries(children) as [key, nodes]}
                 {#if key !== 'undefined'}
                     <div class="fd-side-nav__group">
-                        <li class="fd-side-nav__title lui-category"><span class="fd-side-nav__icon {nodes.metaInfo.icon ? 'sap-icon--' + nodes.metaInfo.icon : ''} sap-icon--l" role="presentation"></span>{key}</li>
+                        <li class="fd-side-nav__title lui-category">
+                          {#if hasCategoriesWithIcon}
+                          <span class="fd-side-nav__icon {nodes.metaInfo.icon ? 'sap-icon--' + nodes.metaInfo.icon : ''} sap-icon--m" role="presentation"></span>
+                          {/if}
+                            {key}</li>
                         <ul class="fd-side-nav__sublist">
                             {#each nodes as node}
                                 {#if !node.hideFromNav}
@@ -126,6 +130,13 @@
     line-height: 1.42857;
     font-weight: 400;
     text-transform: inherit;
+  }
+
+  .sap-icon--lui-blank{
+    &:before{
+      content: '\FFFF';
+      opacity: 0;
+    }
   }
   
 

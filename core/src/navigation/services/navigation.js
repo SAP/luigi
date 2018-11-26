@@ -245,7 +245,7 @@ export const groupBy = (nodes, property) => {
       key = category;
       metaInfo = {
         label: key,
-        icon: ''
+        icon: 'lui-blank'
       };
     }
     let arr = result[key];
@@ -307,7 +307,12 @@ export const getLeftNavData = async (current, componentData) => {
     const groupedChildren = getGroupedChildren(children, current);
     updatedCompData.hasCategoriesWithIcon = false;
     Object.values(groupedChildren).forEach(value => {
-      if (!updatedCompData.hasCategoriesWithIcon && value && value.metaInfo && value.metaInfo.icon) {
+      if (
+        !updatedCompData.hasCategoriesWithIcon &&
+        value &&
+        value.metaInfo &&
+        value.metaInfo.icon
+      ) {
         updatedCompData.hasCategoriesWithIcon = true;
       }
     });
