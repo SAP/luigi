@@ -219,6 +219,8 @@ const navigateIframe = (config, component, node) => {
       },
       '*'
     );
+    // clear goBackContext and reset navigateBack after sending it to the client
+    component.set({ goBackContext: undefined, isNavigateBack: false });
 
     /**
      * check if luigi responded
@@ -417,6 +419,11 @@ export const navigateTo = async route => {
     return;
   }
 
+  // Avoid infinite loop on logout + login whith path routing
+  if (route === '/') {
+    return;
+  }
+
   window.history.pushState(
     {
       path: route
@@ -490,7 +497,7 @@ export const addRouteChangeListener = callback => {
     });
   }
 
-  window.onpopstate = () => {
-    callback(trimLeadingSlash(getModifiedPathname()));
-  };
+  window.addEventListener('popstate', () => {
+    callback(getModifiedPathname());
+  });
 };

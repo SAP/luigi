@@ -79,9 +79,9 @@
         if (ContextSwitcherHelpers.isContextSwitcherDetailsView(currentPath, contextSwitcherConfig.parentNodePath)) {
           await this.setSelectedContext(currentPath);
         }
-      }
 
-      Routing.addRouteChangeListener(() => this.setSelectedContext(Routing.getCurrentPath()));
+        Routing.addRouteChangeListener((path) => this.setSelectedContext(path));
+      }
     },
     data() {
       return {
@@ -142,11 +142,7 @@
         this.goTo(node.link);
       },
       goTo(path) {
-        if (LuigiConfig.getConfigBooleanValue('routing.useHashRouting')) {
-          window.location.hash = path;
-        } else {
-          window.location.pathname = path;
-        }
+        Routing.navigateTo(path);
       },
       toggleDropdownState(name) {
         const dropDownStates = this.get().dropDownStates || {};
