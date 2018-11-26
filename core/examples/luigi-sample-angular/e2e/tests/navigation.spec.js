@@ -58,6 +58,7 @@ describe('Navigation', () => {
           .click();
 
         // on route change we need to refresh the contents() reference
+        cy.wait(50);
         iframeBody = $element.contents().find('body');
         // wrap this body with cy so as to do cy actions inside iframe elements
         cyIframe = cy.wrap(iframeBody);
