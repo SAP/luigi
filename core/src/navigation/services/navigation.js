@@ -189,9 +189,11 @@ export const findMatchingNode = (urlPathElement, nodes) => {
         node.pathParam.key,
         urlPathElement
       );
+
       if (node.viewUrl) {
         node.viewUrl = node.viewUrl.replace(node.pathParam.key, urlPathElement);
       }
+
       if (node.context) {
         Object.entries(node.context).map(entry => {
           const dynKey = entry[1];
