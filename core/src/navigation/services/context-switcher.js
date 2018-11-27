@@ -28,12 +28,12 @@ export const ContextSwitcherHelpers = {
   },
 
   isContextSwitcherDetailsView(currentPath, parentNodePath) {
-    const currentPathNormalized = Helpers.addTrailingSlash(currentPath);
-    const parentNodePathNormalized = Helpers.addTrailingSlash(parentNodePath);
+    const currentPathNormalized = Helpers.normalizePath(currentPath);
+    const parentNodePathNormalized = Helpers.normalizePath(parentNodePath);
 
     return Boolean(
       parentNodePath &&
-        currentPathNormalized.includes(parentNodePathNormalized) &&
+        currentPathNormalized.startsWith(parentNodePathNormalized) &&
         !currentPathNormalized.endsWith(parentNodePathNormalized)
     );
   },
@@ -48,6 +48,9 @@ export const ContextSwitcherHelpers = {
     parentNodePath,
     fallbackLabelResolver
   ) {
+    currentPath = Helpers.normalizePath(currentPath);
+    parentNodePath = Helpers.normalizePath(parentNodePath);
+
     if (
       !ContextSwitcherHelpers.isContextSwitcherDetailsView(
         currentPath,
@@ -58,10 +61,7 @@ export const ContextSwitcherHelpers = {
     }
 
     // we are inside the context switcher base path
-    const truncatedPath = Helpers.trimLeadingSlash(
-      currentPath.replace(parentNodePath, '')
-    );
-    const selectedId = truncatedPath.split('/')[0];
+    const selectedId = currentPath.replace(parentNodePath, '').split('/')[0];
 
     let selectedLabel;
 
