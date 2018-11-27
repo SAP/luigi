@@ -61,7 +61,7 @@ describe('Luigi core features', () => {
       cy.get('.fd-modal').should('not.be.visible');
 
       cy.location().should(loc => {
-        expect(loc.hash).to.eq('#/projects'); //the location is still unchanged after "No" clicked
+        expect(loc.hash).to.eq('#/projects');
       });
     });
   });
