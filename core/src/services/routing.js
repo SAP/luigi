@@ -288,13 +288,23 @@ const buildRoute = (node, path, params) =>
 
 export const handleRouteChange = async (path, component, node, config) => {
   try {
-    if (component && component.get().isDirty) {
+    if (
+      component &&
+      typeof component.get === 'function' &&
+      component.get().isDirty
+    ) {
       const newUrl = window.location.href;
       const oldUrl = component.get().persistUrl;
 
       //pretend the url hasn't been changed
       oldUrl && history.replaceState(window.state, '', oldUrl);
 
+      if (
+        typeof component.showModal !== 'function' ||
+        typeof component.hideModal !== 'function'
+      ) {
+        return; //in case provided component doesn't have this functionality
+      }
       component
         .showModal(
           'Unsaved changes detected',
