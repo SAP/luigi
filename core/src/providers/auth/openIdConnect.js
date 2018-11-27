@@ -13,7 +13,7 @@ export class openIdConnect {
       automaticSilentRenew: false,
       accessTokenExpiringNotificationTime: 60,
       thirdPartyCookiesScriptLocation: '',
-      logoutUrl: '',
+      logoutUrl: window.location.origin + '/logout.html',
       silent_redirect_uri:
         window.location.origin + '/luigi-core/auth/oidc/silent-callback.html'
     };
