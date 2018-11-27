@@ -354,7 +354,7 @@ export const handleRouteChange = async (path, component, node, config) => {
         };
 
         component.set({ alert });
-        //navigateTo('/');
+        navigateTo('/');
         //error 404
       }
       return;
