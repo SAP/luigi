@@ -131,13 +131,6 @@
     font-weight: 400;
     text-transform: inherit;
   }
-
-  .sap-icon--lui-blank{
-    &:before{
-      content: '\FFFF';
-      opacity: 0;
-    }
-  }
   
 
   // Add missing visual indicator for two senses indication of active state
@@ -154,5 +147,15 @@
       background: #0a6ed1;
       display: block;
     }  
+  }
+  
+  // Overwrite padding of icon
+  .fd-side-nav__icon{
+    padding-right: 4px;
+
+    &.sap-icon--lui-blank{
+      display: inline-block;
+      min-width: 20px;
+    }
   }
 </style>
