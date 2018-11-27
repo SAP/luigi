@@ -89,7 +89,7 @@ var projectDetailNavProviderFn = function(context) {
         viewUrl: '/sampleapp.html#/projects/' + projectId + '/users',
         children: [
           {
-            category: 'Groups',
+            category: { label: 'Groups', icon: 'group' },
             pathSegment: 'groups',
             label: 'Groups',
             viewUrl: '/sampleapp.html#/projects/' + projectId + '/users/groups',
@@ -131,7 +131,7 @@ var projectDetailNavProviderFn = function(context) {
         viewUrl: '/sampleapp.html#/projects/' + projectId + '/developers'
       },
       {
-        category: 'Settings',
+        category: { label: 'Settings', icon: 'action-settings' },
         pathSegment: 'settings',
         label: 'Project Settings',
         viewUrl: '/sampleapp.html#/projects/' + projectId + '/settings'
@@ -253,7 +253,7 @@ var projectDetailNavProviderFn = function(context) {
       },
       {
         label: 'Open Github in new tab',
-        category: 'Super useful Github links',
+        category: { label: 'Super useful Github links', icon: 'world' },
         externalLink: {
           url: 'http://github.com',
           sameWindow: false
