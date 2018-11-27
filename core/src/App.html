@@ -231,7 +231,7 @@
             }
           }
 
-          if ('luigi.auth.tokenIssued' === e.data.msg) {
+          if ('luigi.auth.tokenIssued' === e.data.msg && config.iframe) {
             sendAuthDataToClient(config.iframe, e.data.authData);
           }
 
