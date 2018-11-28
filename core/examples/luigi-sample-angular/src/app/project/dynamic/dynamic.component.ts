@@ -17,6 +17,9 @@ export class DynamicComponent implements OnInit, OnDestroy {
   public pathParams: { [key: string]: string };
   public nodeLabel: string;
   public links: string[];
+  public hasBack: boolean;
+  public nodeParams: any = null;
+  public callbackValue = 'default value';
   private lcSubscription: Subscription;
 
   constructor(
@@ -42,6 +45,14 @@ export class DynamicComponent implements OnInit, OnDestroy {
         // We can directly access our specified context values here
         this.nodeLabel = toTitleCase(ctx.context.label || lastPathParam);
         this.links = ctx.context.links;
+
+        // preserveView and node params
+        this.hasBack = LuigiClient.linkManager().hasBack();
+        this.nodeParams =
+          Object.keys(LuigiClient.getNodeParams()).length > 0
+            ? LuigiClient.getNodeParams()
+            : null;
+
         if (!this.cdr['destroyed']) {
           this.cdr.detectChanges();
         }
@@ -59,5 +70,11 @@ export class DynamicComponent implements OnInit, OnDestroy {
       .toLowerCase()
       .split(' ')
       .join('-');
+  }
+
+  public goBack() {
+    // going back with some sample callback context,
+    // that will be handed over to previous view
+    this.luigiClient.linkManager().goBack(this.callbackValue);
   }
 }
