@@ -252,6 +252,11 @@ var projectDetailNavProviderFn = function(context) {
         }))
       },
       {
+        pathSegment: 'navCollapse',
+        label: 'Collapse left navigation',
+        viewUrl: '/sampleapp.html#/projects/' + projectId + '/navCollapse'
+      },
+      {
         label: 'Open Github in new tab',
         category: { label: 'Super useful Github links', icon: 'world' },
         externalLink: {
@@ -419,7 +424,8 @@ Luigi.setConfig({
         {
           pathSegment: 'overview',
           label: 'Overview',
-          viewUrl: '/sampleapp.html#/overview'
+          viewUrl: '/sampleapp.html#/overview',
+          navCollapse: true
         },
         {
           pathSegment: 'projects',

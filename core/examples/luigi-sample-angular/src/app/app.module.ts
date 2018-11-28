@@ -23,6 +23,7 @@ import { RestrictedComponent } from './restricted/restricted.component';
 import { LuigiContextService } from './services/luigi-context.service';
 import { GroupSettingsComponent } from './project/users/groups/group-details/group-settings/group-settings.component';
 import { DynamicComponent } from './project/dynamic/dynamic.component';
+import { NavCollapseComponent } from './project/navCollapse/navCollapse.component';
 
 @NgModule({
   declarations: [
@@ -44,7 +45,8 @@ import { DynamicComponent } from './project/dynamic/dynamic.component';
     OverviewComponent,
     RestrictedComponent,
     GroupSettingsComponent,
-    DynamicComponent
+    DynamicComponent,
+    NavCollapseComponent
   ],
   imports: [BrowserModule, FormsModule, AppRoutingModule],
   providers: [LuigiContextService],
