@@ -92,7 +92,8 @@ describe('Routing', () => {
             ],
             context: {
               varA: 'tets'
-            }
+            },
+            navCollapse: true
           }
         ]
       },
@@ -492,6 +493,26 @@ describe('Routing', () => {
         sinon.match.any,
         expectedPath
       );
+    });
+
+    it("should set component's 'isNavCollapsed' property", async () => {
+      // given
+      const path = '#/projects';
+      const mockBrowser = new MockBrowser();
+      const window = mockBrowser.getWindow();
+      global.window = window;
+
+      const node = {};
+      const config = {};
+
+      // when
+      LuigiConfig.config = sampleLuigiConfig;
+
+      assert.equal(component.get().isNavCollapsed, undefined);
+
+      await routing.handleRouteChange(path, component, node, config, window);
+
+      assert.equal(component.get().isNavCollapsed, true);
     });
   });
 
