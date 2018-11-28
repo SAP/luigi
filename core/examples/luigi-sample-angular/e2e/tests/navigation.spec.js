@@ -115,5 +115,9 @@ describe('Navigation', () => {
         expect(loc.hash).to.eq('#/projects/pr2/dps/dps1');
       });
     });
+    it('asasdasdads', () => {
+      cy.visit('/#/projects/pr1/navCollapse');
+      cy.get('fd-side-nav--collapsed');
+    });
   });
 });
