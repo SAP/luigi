@@ -48,7 +48,7 @@
     Routing.handleRouteChange(currentPath, component, node, config);
 
     // subsequential route handling
-    Routing.addRouteChangeListener((path) => {
+    Routing.addRouteChangeListener(path => {
       const pv = component.get().preservedViews;
       if (!isValidBackRoute(pv, path)) {
         component.set({ preservedViews: [] });
@@ -56,8 +56,7 @@
       }
       Routing.handleRouteChange(path, component, node, config);
     });
-  }
-
+  };
 
   const buildPath = (component, params) => {
     let path = params.link;
@@ -363,6 +362,7 @@
     top: calc(#{$topNavHeight} + 1rem);
     left: calc(#{$leftNavWidth} + 1rem);
     z-index: 2;
+    overflow-wrap: break-word;
     .fd-alert__close {
       cursor: pointer;
     }
