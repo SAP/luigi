@@ -123,6 +123,10 @@
   };
 
   const sendContextToClient = (component, config, goBackContext = {}) => {
+    if (!config.iframe) {
+      console.info('iframe does not exist, not able to send context.');
+      return;
+    }
     config.iframe.contentWindow.postMessage(
       {
         msg: 'luigi.init',
@@ -139,6 +143,10 @@
   };
 
   const sendAuthDataToClient = (iframe, authData) => {
+    if (!iframe || !iframe.contentWindow) {
+      console.info('iframe does not exist, not able to send authData to client.');
+      return;
+    }
     iframe.contentWindow.postMessage(
       {
         msg: 'luigi.auth.tokenIssued',
