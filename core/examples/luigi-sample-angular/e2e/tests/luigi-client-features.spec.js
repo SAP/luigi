@@ -205,7 +205,7 @@ describe('Luigi client features', () => {
     });
 
     it('loading indicator', () => {
-      cy.get('.fd-ui__header')
+      cy.get('.fd-shellbar')
         .contains('External Page')
         .click();
 
