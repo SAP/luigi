@@ -288,10 +288,13 @@ const buildRoute = (node, path, params) =>
     : buildRoute(node.parent, `/${node.parent.pathSegment}${path}`, params);
 
 export const handleRouteChange = async (path, component, node, config) => {
-  if (
-    window.location.href.indexOf('access_token') !== -1 ||
-    window.location.href.indexOf('id_token') !== -1
-  ) {
+  const defaultPattern = [/access_token=/, /id_token=/];
+  const patterns =
+    LuigiConfig.getConfigValue('routing.skipRoutingForUrlPatterns') ||
+    defaultPattern;
+  const hasSkipMatches =
+    patterns.filter(p => window.location.href.match(p)).length !== 0;
+  if (hasSkipMatches) {
     return;
   }
   try {
