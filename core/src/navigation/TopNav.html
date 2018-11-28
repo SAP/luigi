@@ -1,49 +1,85 @@
-<div class="fd-ui__header {hideNavComponent ? 'hideNavComponent' : ''}">
-  <nav class="fd-global-nav">
-    <div class="fd-global-nav__group fd-global-nav__group--left">
-      <LogoTitle />
+<div class="fd-shellbar {hideNavComponent ? 'hideNavComponent' : ''}">
+    <div class="fd-shellbar__group fd-shellbar__group--start">                  
+      <LogoTitle />        
     </div>
+    <div class="fd-shellbar__group fd-shellbar__group--end">
 
-    <div class="fd-global-nav__group fd-global-nav__group--right">
-      <div class="fd-global-nav__top-menu">
+      
+      <div class="fd-shellbar__actions">
+        {#if !authorizationEnabled || isLoggedIn}
+          <ContextSwitcher />
+        {/if}
         {#if children && pathData.length > 0}
           {#each children as node}
             {#if !node.hideFromNav}
-              <button class=" fd-button--secondary fd-button--m fd-global-nav__btn {node === selectedNode ? 'is-selected' : ''} {node.externalLink && node.externalLink.url ? 'fd-global-nav__btn--external' : ''}"
-              aria-label="{node.label}" on:click=handleClick(node)>
-                <span class="">{node.label}</span>
-                {#if node.externalLink && node.externalLink.url}
-                  <span class="sap-icon--action sap-icon--s"></span>
-                {/if}
-              </button>
+            <div class="fd-shellbar__action fd-shellbar__action--hide">
+                <button class="fd-button--shell {node === selectedNode ? 'is-selected' : ''} {node.externalLink && node.externalLink.url ? 'fd-global-nav__btn--external' : ''}" aria-controls="0AcWE812" aria-expanded="false" aria-haspopup="true" on:click=handleClick(node)>{node.label}
+                  {#if node.externalLink && node.externalLink.url}
+                    <span class="sap-icon--action sap-icon--s"></span>
+                  {/if}
+                </button>
+              </div>
             {/if}
           {/each}
-        {/if}
-      </div>
+          <!-- Sample Markup for Notifications
+          <div class="fd-shellbar__action fd-shellbar__action--collapsible">
+            <button class=" fd-button--shell sap-icon--bell" aria-label="Notifications">
+              <span class="fd-counter fd-counter--notification" aria-label="Unread count">25</span>
+            </button>
+        </div> -->
+         <div class="fd-shellbar__action fd-shellbar__action--collapse">
+          <div class="fd-shellbar-collapse">
+            <div class="fd-popover fd-popover--right">
+              <div class="fd-popover__control">
+                <div class="fd-shellbar-collapse--control" aria-controls="eYVEJ960" aria-expanded="false" aria-haspopup="true" role="button">
+                    
+              <button class=" fd-button--shell sap-icon--overflow" aria-controls="OVERFLOW_POPOVER" aria-expanded="{dropDownStates.OVERFLOW_POPOVER || false}"
+              aria-haspopup="true" on:click="toggleDropdownState('OVERFLOW_POPOVER')" on:blur="closeDropdown('OVERFLOW_POPOVER')" >
+                <!-- <span class="fd-counter fd-counter--notification" aria-label="Unread count">25</span> -->
+                </button> 
+                </div>
+              </div>
 
-      <ContextSwitcher />
-
-      {#if authorizationEnabled}
-      <div class="fd-global-nav__actions">
-        <div class="fd-popover user-settings">
-          <div class="fd-popover__control">
-            <button class="fd-popover__control fd-button--secondary fd-button--m fd-global-nav__btn sap-icon--customer" aria-expanded="{dropDownStates.PROFILE_POPOVER || false}"
-              aria-haspopup="true" on:click="toggleDropdownState('PROFILE_POPOVER')" on:blur="closeDropdown('PROFILE_POPOVER')"></button>
-          </div>
-          <div class="fd-popover__body" aria-hidden="{dropDownStatesNegated.PROFILE_POPOVER || true}" id="PROFILE_POPOVER">
+              <div class="fd-popover__body fd-popover__body--right"  aria-hidden="{dropDownStatesNegated.OVERFLOW_POPOVER || true}" id="OVERFLOW_POPOVER">
+                
             <nav class="fd-menu">
-              <Authorization />
-              <!-- <ul class="fd-menu__list">
-                <li><a href="#" class="fd-menu__item">Option 1</a></li>
-                <li><a href="#" class="fd-menu__item">Option 1</a></li>
-              </ul> -->
+                <ul class="fd-menu__list">
+                  {#each children as node}
+                    {#if !node.hideFromNav}
+                      <li><a href="#" class="fd-menu__item {node === selectedNode ? 'is-selected' : ''} {node.externalLink && node.externalLink.url ? 'fd-global-nav__btn--external' : ''}" on:click=handleClick(node)>{node.label}
+                    {#if node.externalLink && node.externalLink.url}
+                      <span class="sap-icon--action sap-icon--s"></span>
+                    {/if}</a>
+                  </li>
+                                {/if}
+            {/each}
+                </ul>
             </nav>
+            </div>
+            </div>
+              </div>
+            </div>
+
+        {/if}
+        {#if authorizationEnabled}
+        <div class="fd-shellbar__action fd-shellbar__action--show-always">
+          <div class="fd-popover">
+            <div class="fd-popover__control">
+              <button class=" fd-button--shell sap-icon--customer" aria-expanded="{dropDownStates.PROFILE_POPOVER || false}"
+              aria-haspopup="true" on:click="toggleDropdownState('PROFILE_POPOVER')" on:blur="closeDropdown('PROFILE_POPOVER')">
+              </button>
+
+              <div class="fd-popover__body fd-popover__body--right"  aria-hidden="{dropDownStatesNegated.PROFILE_POPOVER || true}" id="PROFILE_POPOVER">
+                <nav class="fd-menu">
+                    <Authorization />
+                </nav>
+              </div>
+            </div>
           </div>
         </div>
-      </div>
-      {/if}
+        {/if}
+</div>
     </div>
-  </nav>
 </div>
 
 <script type="text/javascript">
@@ -51,6 +87,7 @@
   import LogoTitle from './LogoTitle.html';
   import Authorization from '../Authorization.html';
   import { handleRouteClick } from '../services/routing.js';
+  import * as Navigation from './services/navigation.js';
   import { LuigiConfig } from '../services/config.js';
   import { getNegatedBoolString } from '../utilities/helpers.js';
 
@@ -73,6 +110,12 @@
     }
   };
 
+  const setLoggedInState = (current, component) => {
+    component.set({
+      isLoggedIn: Navigation.isLoggedIn()
+    });
+  }
+
   export default {
     oncreate() {
       this.set({
@@ -84,10 +127,12 @@
       if (!previous || previous.pathData != current.pathData) {
         setTopNavData(current, this);
       }
+      setLoggedInState(current, this);
     },
     data() {
       return {
-        dropDownStates: {}
+        dropDownStates: {},
+        isLoggedIn: false
       };
     },
     computed: {
@@ -127,36 +172,10 @@
 </script>
 
 <style type="text/scss">
-  .user-settings .fd-popover__body {
-    right: 0;
-  }
-  .fd-ui__header {
-    position: fixed;
-    z-index: 1;
-    background: #ffffff;
-    width: 100%;
-    min-height: 50px;
-    height: 50px;
-    border-bottom: solid 1px #dededf;
-    padding: 0 10px;
-  }
-  .fd-global-nav__group--left {
-    padding-left: 20px;
-  }
-
-  .fd-global-nav {
-    height: 100%;
-    border: none;
-  }
-  .fd-global-nav__product-name {
-    color: #0a6ed1;
-    height: 50px;
-    font-size: 24px;
-    line-height: 1em;
-    padding: 13px 0;
-  }
-  .fd-global-nav__top-menu {
-    margin-right: 5px;
+  // Change display type to avoid line-breaks if screen is too narrow
+  .fd-shellbar__actions{
+    display: flex;
+    justify-content: flex-end;
   }
 
   .hideNavComponent {

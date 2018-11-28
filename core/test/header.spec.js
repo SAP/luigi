@@ -73,6 +73,11 @@ describe('LogoTitle', function() {
           style: {
             backgroundImage: null
           }
+        },
+        logo2: {
+          style: {
+            backgroundImage: null
+          }
         }
       };
 
