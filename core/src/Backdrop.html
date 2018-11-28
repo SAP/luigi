@@ -1,4 +1,4 @@
-<div class="{backdropActive ? 'fd-ui__overlay fd-overlay fd-overlay--modal ' + heightCssClass : ''}" aria-hidden="false">
+<div class="{backdropClass}" aria-hidden="false">
   <slot></slot>
 </div>
 
@@ -7,18 +7,14 @@
   export default {
     data() {
       return {
-        backdropActive: false
+        backdropActive: false,
+        backdropClass: ''
       }
     },
     oncreate() {
       const backdropDisabled = LuigiConfig.getConfigValue('settings.backdropDisabled');
       if (!backdropDisabled) {
-        if (this.options.data && this.options.data.heightCssClass) {
-          this.set({ heightCssClass: this.options.data.heightCssClass })
-        } else {
-          this.set({ heightCssClass: 'height-auto' })
-        }
-
+        this.setBackdropClass();
         window.addEventListener("message", (e) => {
           if ('luigi.add-backdrop' === e.data.msg) {
             this.set({ backdropActive: true });
@@ -29,6 +25,24 @@
         });
       }
     },
+    onstate({ changed, current, previous }) {
+      if (changed.backdropActive) {
+        this.setBackdropClass();
+      }
+    },
+    methods: {
+      setBackdropClass() {
+        const baseClasses = 'fd-ui__overlay fd-overlay fd-overlay--modal ';
+        if (!this.get().backdropActive) {
+          this.set({ backdropClass: '' });
+        } else if (this.options.data && this.options.data.heightCssClass) {
+          this.set({ backdropClass: baseClasses + this.options.data.heightCssClass });
+        } else {
+          console.log('backdropActive', this.get().backdropActive, this.get().backdropClass);
+          this.set({ backdropClass: baseClasses + 'height-auto' });
+        }
+      }
+    }
   };
 </script>
 

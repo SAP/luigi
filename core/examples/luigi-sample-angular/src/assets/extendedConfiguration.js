@@ -44,13 +44,13 @@ var getProjectPlugins = function(projectId) {
     if (projectId === 'pr2') {
       resolve([
         {
-          category: 'ExternalViews',
+          category: 'External Views',
           viewId: 'viewX',
           label: 'This is X',
           viewUrl: 'https://this.is.x/index.html'
         },
         {
-          category: 'ExternalViews',
+          category: 'External Views',
           viewId: 'viewY',
           label: 'This is Y',
           viewUrl: 'https://this.is.y/index.html'
@@ -59,13 +59,13 @@ var getProjectPlugins = function(projectId) {
     } else {
       resolve([
         {
-          category: 'ExternalViews',
+          category: 'External Views',
           viewId: 'abc',
           label: 'A B C',
           viewUrl: 'https://a.b.c/index.html'
         },
         {
-          category: 'ExternalViews',
+          category: 'External Views',
           viewId: 'def',
           label: 'D E F',
           viewUrl: 'https://d.e.f/index.html',
@@ -83,13 +83,13 @@ var projectDetailNavProviderFn = function(context) {
     var projectId = context.currentProject;
     var children = [
       {
-        category: 'Usermanagement',
+        category: { label: 'User Management', icon: 'person-placeholder' },
         pathSegment: 'users',
         label: 'Users and Groups',
         viewUrl: '/sampleapp.html#/projects/' + projectId + '/users',
         children: [
           {
-            category: 'Groups',
+            category: { label: 'Groups', icon: 'group' },
             pathSegment: 'groups',
             label: 'Groups',
             viewUrl: '/sampleapp.html#/projects/' + projectId + '/users/groups',
@@ -125,13 +125,13 @@ var projectDetailNavProviderFn = function(context) {
         ]
       },
       {
-        category: 'Usermanagement',
+        category: 'User Management',
         pathSegment: 'developers',
         label: 'Developers',
         viewUrl: '/sampleapp.html#/projects/' + projectId + '/developers'
       },
       {
-        category: 'Settings',
+        category: { label: 'Settings', icon: 'action-settings' },
         pathSegment: 'settings',
         label: 'Project Settings',
         viewUrl: '/sampleapp.html#/projects/' + projectId + '/settings'
@@ -253,7 +253,7 @@ var projectDetailNavProviderFn = function(context) {
       },
       {
         label: 'Open Github in new tab',
-        category: 'Super useful Github links',
+        category: { label: 'Super useful Github links', icon: 'world' },
         externalLink: {
           url: 'http://github.com',
           sameWindow: false
@@ -533,11 +533,25 @@ Luigi.setConfig({
   },
   routing: {
     /**
+     * useHashRouting
+     *
      * Development:
      * For hash routing, set to true and run `npm run start`
      * For path routing, set to false and run `npm run startWebpack`
      */
-    useHashRouting: true
+    useHashRouting: true,
+    /**
+     * Prefix for reflecting params in the url, which is used when navigating .withParams() function.
+     */
+    nodeParamPrefix: '~',
+    /**
+     * skipRoutingForUrlPatterns
+     * Define regex patterns that prevent the router from handling path changes.
+     * Used to exclude authentication or other callbacks.
+     *
+     * Default: /access_token=/, /id_token=/
+     */
+    skipRoutingForUrlPatterns: [/access_token=/, /id_token=/]
   },
   settings: {
     header: () => ({
