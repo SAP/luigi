@@ -1,15 +1,16 @@
 {#if contextSwitcherEnabled}
-<div class="fd-global-nav__context-menu">
-  <div class="fd-popover context-switcher">
+<div class="fd-shellbar__action fd-shellbar__action--show-always">
+<div class="fd-product-menu">
+  <div class="fd-popover fd-popover--right">
     <div class="fd-popover__control">
-      <button class="fd-button--secondary" aria-expanded="{dropDownStates.CONTEXT_SWITCHER_POPOVER || false}"
+      <button class="fd-button--shell fd-product-menu__control lui-tendant-menu__control" aria-expanded="{dropDownStates.CONTEXT_SWITCHER_POPOVER || false}"
         aria-haspopup="true" title="{selectedLabel ? selectedLabel : ''}"
         on:click="toggleDropdownState('CONTEXT_SWITCHER_POPOVER')" on:blur="closeDropdown('CONTEXT_SWITCHER_POPOVER')">
         {#if !selectedLabel}{config.defaultLabel}{/if}
         {#if selectedLabel}{selectedLabel}{/if}
       </button>
     </div>
-    <div class="fd-popover__body" aria-hidden="{dropDownStatesNegated.CONTEXT_SWITCHER_POPOVER || true}" id="CONTEXT_SWITCHER_POPOVER">
+    <div class="fd-popover__body fd-popover__body--right" aria-hidden="{dropDownStatesNegated.CONTEXT_SWITCHER_POPOVER || true}" id="CONTEXT_SWITCHER_POPOVER">
       <nav class="fd-menu">
         {#if actions && actions.length}
         <ul class="fd-menu__list fd-menu__list--top">
@@ -29,7 +30,7 @@
           {#each options as node}
             {#await getNodeName(node.label, config.fallbackLabelResolver, node.id)}
             {:then label}
-              <li><a class="fd-menu__item" on:click="goTo(node.path)" title="{label}">{label}</a></li>
+              <li><a class="fd-menu__item {node === selectedLabel ? 'is-selected' : ''}" on:click="goTo(node.path)" title="{label}">{label}</a></li>
             {/await}
           {/each}
         {/if}
@@ -46,6 +47,7 @@
       </nav>
     </div>
   </div>
+</div>
 </div>
 {/if}
 
@@ -168,6 +170,11 @@
 </script>
 
 <style type="text/scss">
+  .lui-tendant-menu__control{
+    // Overwrite color inheriting of product menu
+    color: var(--fd-color-shell-2);
+  }
+
   .fd-button--secondary, .fd-menu__item {
     max-width: 300px;
     overflow: hidden;
@@ -186,7 +193,7 @@
     border-top: 1px solid #eeeeef;
   }
   #context_menu_middle {
-    max-height: 257px; // TODO: check with Franz
+    max-height: 50vh;
     overflow-y: auto;
   }
 </style>

@@ -8,7 +8,7 @@ const CleanWebpackPlugin = require('clean-webpack-plugin');
 module.exports = {
   entry: {
     index: [
-      './node_modules/fundamental-ui/dist/fundamental-ui.min.css',
+      './node_modules/fiori-fundamentals/dist/fiori-fundamentals.min.css',
       './src/main.js'
     ]
   },
