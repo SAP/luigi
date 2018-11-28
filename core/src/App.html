@@ -39,8 +39,8 @@
     // we're only checking the previous goBack state and
     // compare it with the new route
     const routePath = routeHash.startsWith('/') ? routeHash : `/${routeHash}`;
-    const firstPreservedView = preservedViews[0];
-    const paths = [removeQueryParams(firstPreservedView.path), removeQueryParams(firstPreservedView.nextPath)];
+    const lastPreservedView = [...preservedViews].pop();
+    const paths = [removeQueryParams(lastPreservedView.path), removeQueryParams(lastPreservedView.nextPath)];
     return paths.includes(removeQueryParams(routePath));
   };
 
