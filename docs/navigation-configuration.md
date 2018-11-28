@@ -212,7 +212,7 @@ You can configure the way Luigi tackles routing in your application in the **Rou
 
 - **useHashRouting** defines either hash-based (`url.com/#/yourpath`) or path-based (`url.com/yourpath`) routing.
 - **nodeParamPrefix** sets the prefix character when using the `LuigiClient.linkManager().withParam()` function, which provides a way to simply attach query parameters to the view URL for activities such as sorting and filtering. The URL contains the parameters to allow deep linking. If you want to use a different character prefix, define yours here. The default character is `~`.
-- **skipRoutingForUrlPatterns** defines regex patterns that should be skipped by the router when listening for path changes. Used for excluding redirect_uri parameters. Default patterns are `[/access_token=/, '/id_token=/]`
+- **skipRoutingForUrlPatterns** defines regex patterns to be skipped by the router when listening for path changes. This parameter is used for excluding **redirect_uri** parameters. Default patterns are `[/access_token=/, '/id_token=/]`.
 
 ### Node navigation parameters
 
