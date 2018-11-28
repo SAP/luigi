@@ -1,10 +1,10 @@
 <div class="fd-shellbar {hideNavComponent ? 'hideNavComponent' : ''}">
-    <div class="fd-shellbar__group fd-shellbar__group--start">                  
-      <LogoTitle />        
+    <div class="fd-shellbar__group fd-shellbar__group--start">
+      <LogoTitle />
     </div>
     <div class="fd-shellbar__group fd-shellbar__group--end">
 
-      
+
       <div class="fd-shellbar__actions">
         {#if !authorizationEnabled || isLoggedIn}
           <ContextSwitcher />
@@ -32,16 +32,16 @@
             <div class="fd-popover fd-popover--right">
               <div class="fd-popover__control">
                 <div class="fd-shellbar-collapse--control" aria-controls="eYVEJ960" aria-expanded="false" aria-haspopup="true" role="button">
-                    
+
               <button class=" fd-button--shell sap-icon--overflow" aria-controls="OVERFLOW_POPOVER" aria-expanded="{dropDownStates.OVERFLOW_POPOVER || false}"
               aria-haspopup="true" on:click="toggleDropdownState('OVERFLOW_POPOVER')" on:blur="closeDropdown('OVERFLOW_POPOVER')" >
                 <!-- <span class="fd-counter fd-counter--notification" aria-label="Unread count">25</span> -->
-                </button> 
+                </button>
                 </div>
               </div>
 
               <div class="fd-popover__body fd-popover__body--right"  aria-hidden="{dropDownStatesNegated.OVERFLOW_POPOVER || true}" id="OVERFLOW_POPOVER">
-                
+
             <nav class="fd-menu">
                 <ul class="fd-menu__list">
                   {#each children as node}
@@ -87,7 +87,7 @@
   import LogoTitle from './LogoTitle.html';
   import Authorization from '../Authorization.html';
   import { handleRouteClick } from '../services/routing.js';
-  import * as Navigation from './services/navigation.js';
+  import { isLoggedIn } from './services/navigation.js';
   import { LuigiConfig } from '../services/config.js';
   import { getNegatedBoolString } from '../utilities/helpers.js';
 
@@ -112,7 +112,7 @@
 
   const setLoggedInState = (current, component) => {
     component.set({
-      isLoggedIn: Navigation.isLoggedIn()
+      isLoggedIn: isLoggedIn()
     });
   }
 
