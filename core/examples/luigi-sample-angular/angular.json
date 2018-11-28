@@ -23,17 +23,17 @@
               {
                 "glob": "fiori-fundamentals.min.css",
                 "input": "node_modules/fiori-fundamentals/dist",
-                "output": "/fundamental-ui"
+                "output": "/fiori-fundamentals"
               },
               {
                 "glob": "fonts/**",
                 "input": "node_modules/fiori-fundamentals/dist",
-                "output": "/fundamental-ui"
+                "output": "/fiori-fundamentals"
               },
               {
                 "glob": "SAP-icons.*",
                 "input": "node_modules/fiori-fundamentals/dist",
-                "output": "/fundamental-ui"
+                "output": "/fiori-fundamentals"
               },
               {
                 "glob": "**",
