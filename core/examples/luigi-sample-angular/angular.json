@@ -21,18 +21,18 @@
               "src/index.html",
               "src/logout.html",
               {
-                "glob": "fundamental-ui.min.css",
-                "input": "node_modules/fundamental-ui/dist",
+                "glob": "fiori-fundamentals.min.css",
+                "input": "node_modules/fiori-fundamentals/dist",
                 "output": "/fundamental-ui"
               },
               {
                 "glob": "fonts/**",
-                "input": "node_modules/fundamental-ui/dist",
+                "input": "node_modules/fiori-fundamentals/dist",
                 "output": "/fundamental-ui"
               },
               {
                 "glob": "SAP-icons.*",
-                "input": "node_modules/fundamental-ui/dist",
+                "input": "node_modules/fiori-fundamentals/dist",
                 "output": "/fundamental-ui"
               },
               {
@@ -48,7 +48,7 @@
             ],
             "styles": [
               "src/styles.css",
-              "node_modules/fundamental-ui/dist/fundamental-ui.min.css"
+              "node_modules/fiori-fundamentals/dist/fiori-fundamentals.min.css"
             ],
             "scripts": []
           },
