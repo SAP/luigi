@@ -12,7 +12,7 @@ Cypress.Commands.add('login', (email, password) => {
     .should('have.value', 'tets');
 
   cy.get('#login-button').click();
-  cy.get('.fd-global-nav').contains('Overview');
+  cy.get('.fd-shellbar').contains('Overview');
   cy.location().should(loc => {
     expect(loc.hash).to.eq('#/overview');
   });
@@ -30,5 +30,5 @@ Cypress.Commands.add('goToFeaturesPage', iframe => {
 });
 
 Cypress.Commands.add('goToOverviewPage', () => {
-  cy.get('.fd-global-nav__product-name').click();
+  cy.get('.fd-shellbar__product').click();
 });

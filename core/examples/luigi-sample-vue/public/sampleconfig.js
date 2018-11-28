@@ -20,13 +20,13 @@ var getProjectPlugins = function(projectId) {
     if (projectId === 'pr2') {
       resolve([
         {
-          category: 'ExternalViews',
+          category: 'External Views',
           viewId: 'viewX',
           label: 'This is X',
           viewUrl: 'https://this.is.x/index.html'
         },
         {
-          category: 'ExternalViews',
+          category: 'External Views',
           viewId: 'viewY',
           label: 'This is Y',
           viewUrl: 'https://this.is.y/index.html'
@@ -35,13 +35,13 @@ var getProjectPlugins = function(projectId) {
     } else {
       resolve([
         {
-          category: 'ExternalViews',
+          category: 'External Views',
           viewId: 'abc',
           label: 'A B C',
           viewUrl: 'https://a.b.c/index.html'
         },
         {
-          category: 'ExternalViews',
+          category: 'External Views',
           viewId: 'def',
           label: 'D E F',
           viewUrl: 'https://d.e.f/index.html',
@@ -59,7 +59,7 @@ var projectDetailNavProviderFn = function(context) {
     var projectId = context.currentProject;
     var children = [
       {
-        category: 'Usermanagement',
+        category: 'User Management',
         pathSegment: 'users',
         label: 'Users and Groups',
         viewUrl: '/sampleapp.html#/projects/' + projectId + '/users',
@@ -97,7 +97,7 @@ var projectDetailNavProviderFn = function(context) {
         ]
       },
       {
-        category: 'Usermanagement',
+        category: 'User Management',
         pathSegment: 'developers',
         label: 'Developers',
         viewUrl: '/sampleapp.html#/projects/' + projectId + '/developers'
