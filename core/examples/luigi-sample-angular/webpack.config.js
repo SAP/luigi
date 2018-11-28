@@ -27,7 +27,7 @@ const cssFiles = [
   path.join(process.cwd(), 'src/styles.css'),
   path.join(
     process.cwd(),
-    'node_modules/fundamental-ui/dist/fundamental-ui.min.css'
+    'node_modules/fiori-fundamentals/dist/fiori-fundamentals.min.css'
   )
 ];
 const hashFormat = { chunk: '', extract: '', file: '.[hash:20]', script: '' };
@@ -414,22 +414,22 @@ module.exports = {
           }
         },
         {
-          context: 'node_modules/fundamental-ui/dist',
-          to: 'fundamental-ui',
+          context: 'node_modules/fiori-fundamentals/dist',
+          to: 'fiori-fundamentals',
           from: {
-            glob: 'fundamental-ui.min.css'
+            glob: 'fiori-fundamentals.min.css'
           }
         },
         {
-          context: 'node_modules/fundamental-ui/dist',
-          to: 'fundamental-ui',
+          context: 'node_modules/fiori-fundamentals/dist',
+          to: 'fiori-fundamentals',
           from: {
             glob: 'fonts/**'
           }
         },
         {
-          context: 'node_modules/fundamental-ui/dist',
-          to: 'fundamental-ui',
+          context: 'node_modules/fiori-fundamentals/dist',
+          to: 'fiori-fundamentals',
           from: {
             glob: 'SAP-icons.*'
           }

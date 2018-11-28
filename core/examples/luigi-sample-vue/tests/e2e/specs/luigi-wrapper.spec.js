@@ -3,15 +3,15 @@
 describe('Luigi Wrapper Test', () => {
   it('check the top navigation', () => {
     cy.visit('/');
-    cy.get('.fd-global-nav').contains('span', 'Overview');
-    cy.get('.fd-global-nav').contains('span', 'Projects');
-    cy.get('.fd-global-nav').contains('span', 'External Page');
-    cy.get('.fd-global-nav').contains('span', 'Login');
+    cy.get('.fd-shellbar').contains('span', 'Overview');
+    cy.get('.fd-shellbar').contains('span', 'Projects');
+    cy.get('.fd-shellbar').contains('span', 'External Page');
+    cy.get('.fd-shellbar').contains('span', 'Login');
   });
 
   it('open the overview page', () => {
     cy.visit('/');
-    cy.get('.fd-global-nav')
+    cy.get('.fd-shellbar')
       .contains('span', 'Overview')
       .click()
       .get('.iframeContainer iframe')
@@ -24,7 +24,7 @@ describe('Luigi Wrapper Test', () => {
 
   it('backdrop check', () => {
     cy.visit('/');
-    cy.get('.fd-global-nav')
+    cy.get('.fd-shellbar')
       .contains('span', 'Overview')
       .click()
       .get('.iframeContainer iframe')

@@ -189,7 +189,11 @@ export const findMatchingNode = (urlPathElement, nodes) => {
         node.pathParam.key,
         urlPathElement
       );
-      node.viewUrl = node.viewUrl.replace(node.pathParam.key, urlPathElement);
+
+      if (node.viewUrl) {
+        node.viewUrl = node.viewUrl.replace(node.pathParam.key, urlPathElement);
+      }
+
       if (node.context) {
         Object.entries(node.context).map(entry => {
           const dynKey = entry[1];
@@ -235,15 +239,29 @@ export const getNodes = (children, pathData) => {
 export const groupBy = (nodes, property) => {
   const result = {};
   nodes.forEach(node => {
-    const key = node[property];
+    let key;
+    let metaInfo;
+    const category = node[property];
+    if (category && typeof category === 'object') {
+      key = category.label;
+      metaInfo = Object.assign({}, category);
+    } else {
+      key = category;
+      metaInfo = {
+        label: key,
+        icon: 'lui-blank'
+      };
+    }
     let arr = result[key];
     if (!arr) {
       arr = [];
       result[key] = arr;
     }
+    if (!arr.metaInfo) {
+      arr.metaInfo = metaInfo;
+    }
     arr.push(node);
   });
-
   return result;
 };
 
@@ -291,6 +309,17 @@ export const getLeftNavData = async (current, componentData) => {
 
     const children = await getChildren(lastElement, componentData.context);
     const groupedChildren = getGroupedChildren(children, current);
+    updatedCompData.hasCategoriesWithIcon = false;
+    Object.values(groupedChildren).forEach(value => {
+      if (
+        !updatedCompData.hasCategoriesWithIcon &&
+        value &&
+        value.metaInfo &&
+        value.metaInfo.icon
+      ) {
+        updatedCompData.hasCategoriesWithIcon = true;
+      }
+    });
     updatedCompData.selectedNode = selectedNode || lastElement;
     updatedCompData.children = groupedChildren;
   }

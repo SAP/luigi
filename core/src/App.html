@@ -231,7 +231,7 @@
             }
           }
 
-          if ('luigi.auth.tokenIssued' === e.data.msg) {
+          if ('luigi.auth.tokenIssued' === e.data.msg && config.iframe) {
             sendAuthDataToClient(config.iframe, e.data.authData);
           }
 
@@ -354,7 +354,7 @@
     }
   }
 
-  $topNavHeight: 50px;
+  $topNavHeight: 48px;
   $leftNavWidth: 320px;
   .fd-alert {
     position: absolute;
