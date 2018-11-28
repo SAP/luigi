@@ -4,5 +4,8 @@
   "pluginsFile": false,
   "supportFile": "e2e/support/index.js",
   "videosFolder": "e2e/videos",
-  "screenshotsFolder": "e2e/screenshots"
+  "screenshotsFolder": "e2e/screenshots",
+  "chromeWebSecurity": false,
+  "viewportWidth": 1250,
+  "viewportHeight": 790
 }
