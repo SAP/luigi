@@ -1,4 +1,4 @@
-<div id="app {hideNav? 'no-nav' : ''}">
+<div id="app" class="{hideNav? 'no-nav' : ''} {hideLeftNav? 'no-left-nav' : ''}">
 	{#if alert && alert.message}
 	<div class="fd-alert fd-alert--error fd-alert--dismissible" role="alert" id="j2ALl423">
 		<button on:click="set({alert:null})" class="fd-alert__close" aria-controls="j2ALl423" aria-label="Close"></button>
@@ -17,7 +17,7 @@
 	</div>
 	{/if}
 
-	<TopNav pathData={navigationPath} /> {#if !hideNav}
+	<TopNav pathData={navigationPath} /> {#if !(hideNav||hideLeftNav)}
 	<LeftNav pathData={navigationPath} /> {/if}
 </div>
 
@@ -172,7 +172,8 @@
           //     context: {}
           //     iframe: Element
           // }
-        ]
+        ],
+        hideLeftNav: false
       };
     },
     oncreate() {},
@@ -294,6 +295,8 @@
 </script>
 
 <style type="text/scss">
+  $topNavHeight: 50px;
+  $leftNavWidth: 320px;
   :global(html) {
     box-sizing: border-box;
     font-size: 14px;
@@ -321,8 +324,8 @@
   .iframeContainer,
   .spinnerContainer {
     position: fixed;
-    top: 50px;
-    left: 320px;
+    top: $topNavHeight;
+    left: $leftNavWidth;
     bottom: 0;
     right: 0;
     width: auto;
@@ -366,8 +369,17 @@
     }
   }
 
-  $topNavHeight: 48px;
-  $leftNavWidth: 320px;
+  .no-left-nav {
+    .iframeContainer,
+    .spinnerContainer {
+      position: fixed;
+      top: $topNavHeight;
+      left: 0;
+      bottom: 0;
+      right: 0;
+    }
+  }
+
   .fd-alert {
     position: absolute;
     min-width: 20rem;
