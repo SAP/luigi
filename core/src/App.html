@@ -34,6 +34,8 @@
   import { getConfigValueFromObject } from './utilities/helpers.js';
   import { getStoredAuthData } from './utilities/auth-helpers';
 
+  const removeQueryParams = (str) => str.split('?')[0];
+
   const isValidBackRoute = (preservedViews, routeHash) => {
     if (preservedViews.length === 0) {
       return false;
@@ -41,9 +43,9 @@
     // we're only checking the previous goBack state and
     // compare it with the new route
     const routePath = routeHash.startsWith('/') ? routeHash : `/${routeHash}`;
-    const firstPreservedView = preservedViews[0];
-    const paths = [firstPreservedView.path, firstPreservedView.nextPath];
-    return paths.includes(routePath);
+    const lastPreservedView = [...preservedViews].pop();
+    const paths = [removeQueryParams(lastPreservedView.path), removeQueryParams(lastPreservedView.nextPath)];
+    return paths.includes(removeQueryParams(routePath));
   };
 
   const enableRouting = (component, node, config) => {
@@ -418,6 +420,7 @@
     top: calc(#{$topNavHeight} + 1rem);
     left: calc(#{$leftNavWidth} + 1rem);
     z-index: 2;
+    overflow-wrap: break-word;
     .fd-alert__close {
       cursor: pointer;
     }

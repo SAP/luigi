@@ -1,6 +1,11 @@
+import {
+  LuigiContextService,
+  IContextMessage
+} from './../../services/luigi-context.service';
 import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { ActivatedRoute, Params } from '@angular/router';
 import LuigiClient from '@kyma-project/luigi-client';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-settings',
@@ -14,10 +19,13 @@ export class SettingsComponent implements OnInit {
   hasBack: boolean;
   nodeParams = null;
   callbackValue = 'default value';
+  lcSubscription: Subscription;
+  preservedViewCallbackContext: any;
 
   constructor(
     private activatedRoute: ActivatedRoute,
-    private cdr: ChangeDetectorRef
+    private cdr: ChangeDetectorRef,
+    private luigiService: LuigiContextService
   ) {}
 
   ngOnInit() {
@@ -36,6 +44,24 @@ export class SettingsComponent implements OnInit {
         this.cdr.detectChanges();
       }
     });
+
+    // We suggest to use a centralized approach of LuigiClient.addContextUpdateListener
+    // Take a look at ngOnInit in this component and app.component.ts where we set the listeners.
+    this.lcSubscription = this.luigiService
+      .getContext()
+      .subscribe((ctx: IContextMessage) => {
+        if (ctx.contextType === 'init' || ctx.contextType === 'update') {
+          this.preservedViewCallbackContext = ctx.context.goBackContext;
+
+          // Since Luigi runs outside of Zone.js, changes need
+          // to be updated manually
+          // Be sure to check for destroyed ChangeDetectorRef,
+          // else you get runtime Errors
+          if (!this.cdr['destroyed']) {
+            this.cdr.detectChanges();
+          }
+        }
+      });
   }
 
   goBack() {
