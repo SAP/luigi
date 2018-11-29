@@ -304,22 +304,14 @@ export const handleRouteChange = async (path, component, node, config) => {
       pathUrl.split('?')[0]
     );
 
-    const hideNav = LuigiConfig.getConfigBooleanValue(
-      'settings.hideNavigation'
-    );
+    const hideNav =
+      LuigiConfig.getConfigBooleanValue('settings.hideNavigation') ||
+      getLastNodeObject(pathData).navCollapse; //a Nav can be hidden by a global 'hideNavigation' setting or by Node's specific 'navCollapse' property
 
-    const {
-      navCollapse = false,
-      viewUrl = '',
-      isolateView = false
-    } = getLastNodeObject(pathData);
+    const { viewUrl = '', isolateView = false } = getLastNodeObject(pathData);
     const params = parseParams(pathUrl.split('?')[1]);
     const nodeParams = getNodeParams(params);
     const pathParams = getPathParams(pathData.navigationPath);
-
-    component &&
-      typeof component.set === 'function' &&
-      component.set({ isNavCollapsed: navCollapse });
 
     if (!viewUrl) {
       const routeExists = isExistingRoute(path, pathData);

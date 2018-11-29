@@ -17,8 +17,8 @@
 	</div>
 	{/if}
 
-	<TopNav pathData={navigationPath} />
-	<LeftNav isCollapsed={isNavCollapsed} pathData={navigationPath} />
+	<TopNav pathData={navigationPath} /> {#if !hideNav}
+	<LeftNav pathData={navigationPath} /> {/if}
 </div>
 
 <script type="text/javascript">
@@ -30,7 +30,7 @@
   import { getConfigValueFromObject } from './utilities/helpers.js';
   import { getStoredAuthData } from './utilities/auth-helpers';
 
-  const removeQueryParams = (str) => str.split('?')[0];
+  const removeQueryParams = str => str.split('?')[0];
 
   const isValidBackRoute = (preservedViews, routeHash) => {
     if (preservedViews.length === 0) {
@@ -40,7 +40,10 @@
     // compare it with the new route
     const routePath = routeHash.startsWith('/') ? routeHash : `/${routeHash}`;
     const lastPreservedView = [...preservedViews].pop();
-    const paths = [removeQueryParams(lastPreservedView.path), removeQueryParams(lastPreservedView.nextPath)];
+    const paths = [
+      removeQueryParams(lastPreservedView.path),
+      removeQueryParams(lastPreservedView.nextPath)
+    ];
     return paths.includes(removeQueryParams(routePath));
   };
 
