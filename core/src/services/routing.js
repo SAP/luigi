@@ -455,12 +455,18 @@ export const navigateTo = async route => {
   window.dispatchEvent(event);
 };
 
-export const buildFromRelativePath = path => {
-  if (LuigiConfig.getConfigValue('routing.useHashRouting')) {
-    return window.location.hash + '/' + path;
-  } else {
-    return window.location.pathname + '/' + path;
+export const buildFromRelativePath = node => {
+  let windowPath = LuigiConfig.getConfigValue('routing.useHashRouting')
+    ? window.location.hash
+    : window.location.pathname;
+  if (node.parent && node.parent.pathSegment) {
+    windowPath = windowPath.substr(
+      0,
+      windowPath.lastIndexOf(node.parent.pathSegment) +
+        node.parent.pathSegment.length
+    );
   }
+  return windowPath + '/' + node.link;
 };
 
 export const handleRouteClick = node => {
@@ -473,7 +479,7 @@ export const handleRouteClick = node => {
   } else if (node.link) {
     const link = node.link.startsWith('/')
       ? node.link
-      : buildFromRelativePath(node.link);
+      : buildFromRelativePath(node);
     navigateTo(link);
     return;
   } else {
