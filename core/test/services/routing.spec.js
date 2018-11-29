@@ -495,7 +495,7 @@ describe('Routing', () => {
       );
     });
 
-    it("should set component's 'isNavCollapsed' property", async () => {
+    it("should set component's 'hideLeftNav' property", async () => {
       // given
       const path = '#/projects';
       const mockBrowser = new MockBrowser();
@@ -508,11 +508,11 @@ describe('Routing', () => {
       // when
       LuigiConfig.config = sampleLuigiConfig;
 
-      assert.equal(component.get().isNavCollapsed, undefined);
+      assert.equal(component.get().hideLeftNav, undefined);
 
       await routing.handleRouteChange(path, component, node, config, window);
 
-      assert.equal(component.get().isNavCollapsed, true);
+      assert.equal(component.get().hideLeftNav, true);
     });
   });
 

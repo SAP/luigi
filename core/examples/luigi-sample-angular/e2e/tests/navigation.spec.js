@@ -115,9 +115,10 @@ describe('Navigation', () => {
         expect(loc.hash).to.eq('#/projects/pr2/dps/dps1');
       });
     });
-    it('asasdasdads', () => {
+    it('should hide left Nav', () => {
       cy.visit('/#/projects/pr1/navCollapse');
-      cy.get('fd-side-nav--collapsed');
+      cy.get('.no-left-nav');
+      cy.get('.fd-app__sidebar').should('not.be.visible');
     });
   });
 });
