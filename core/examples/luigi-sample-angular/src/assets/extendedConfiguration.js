@@ -254,7 +254,8 @@ var projectDetailNavProviderFn = function(context) {
       {
         pathSegment: 'navCollapse',
         label: 'Collapse left navigation',
-        viewUrl: '/sampleapp.html#/projects/' + projectId + '/navCollapse'
+        viewUrl: '/sampleapp.html#/projects/' + projectId + '/navCollapse',
+        navCollapse: true
       },
       {
         label: 'Open Github in new tab',
