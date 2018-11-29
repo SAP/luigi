@@ -17,8 +17,10 @@
 	</div>
 	{/if}
 
-	<TopNav pathData={navigationPath} /> {#if !(hideNav||hideLeftNav)}
-	<LeftNav pathData={navigationPath} /> {/if}
+	<TopNav pathData={navigationPath} /> 
+  {#if !(hideNav||hideLeftNav)}
+	  <LeftNav pathData={navigationPath} /> 
+  {/if}
 </div>
 
 <script type="text/javascript">
