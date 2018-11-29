@@ -460,6 +460,8 @@ export const buildFromRelativePath = node => {
     ? window.location.hash
     : window.location.pathname;
   if (node.parent && node.parent.pathSegment) {
+    // use only this part of the current path that refers to the parent of the node (remove additional parts refering to the sibiling)
+    // remove everything that is after the last occurance of the parents pathSegment 'parent/keepSelectedForChildren/something' -> 'parent'
     windowPath = windowPath.substr(
       0,
       windowPath.lastIndexOf(node.parent.pathSegment) +
