@@ -7,7 +7,8 @@ import {
   containsAllSegments,
   isIE,
   getConfigValueFromObject,
-  addLeadingSlash
+  addLeadingSlash,
+  normalizePath
 } from '../utilities/helpers';
 
 const iframeNavFallbackTimeout = 2000;
@@ -463,14 +464,10 @@ export const buildFromRelativePath = node => {
   if (node.parent && node.parent.pathSegment) {
     // use only this part of the current path that refers to the parent of the node (remove additional parts refering to the sibiling)
     // remove everything that is after the parents pathSegment 'parent/keepSelectedForChildren/something' -> 'parent'
-    const nodePathSegments = trimLeadingSlash(getNodePath(node.parent)).split(
-      '/'
-    );
-    const windowPathSegments = trimLeadingSlash(windowPath).split('/');
+    const nodePathSegments = normalizePath(getNodePath(node.parent)).split('/');
+    const windowPathSegments = normalizePath(windowPath).split('/');
     if (windowPathSegments.length > nodePathSegments.length) {
-      windowPath = windowPathSegments
-        .slice(0, nodePathSegments.length)
-        .join('/');
+      windowPath = nodePathSegments.join('/');
     }
   }
   return addLeadingSlash(concatenatePath(windowPath, node.link));
