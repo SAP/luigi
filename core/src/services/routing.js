@@ -4,7 +4,6 @@ import {
   getPathWithoutHash,
   getUrlWithoutHash,
   containsAllSegments,
-  trimLeadingSlash,
   isIE,
   getConfigValueFromObject,
   addLeadingSlash,
@@ -221,8 +220,8 @@ const navigateIframe = (config, component, node) => {
       },
       '*'
     );
-    // clear goBackContext after sending it to the client
-    component.set({ goBackContext: undefined });
+    // clear goBackContext and reset navigateBack after sending it to the client	    // clear goBackContext after sending it to the client
+    component.set({ goBackContext: undefined, isNavigateBack: false });
 
     /**
      * check if luigi responded
