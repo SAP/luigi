@@ -4,6 +4,7 @@ import {
   getPathWithoutHash,
   getUrlWithoutHash,
   containsAllSegments,
+  trimLeadingSlash,
   isIE,
   getConfigValueFromObject,
   addLeadingSlash
