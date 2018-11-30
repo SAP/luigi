@@ -31,9 +31,27 @@
 			<li class="fd-list-group__item clickable" *ngFor="let item of luigiCoreLinks" (click)="luigiClient.linkManager().navigate(item.link)">
 				<strong>{{item.text}}</strong> &nbsp;&ndash; {{item.description}}
 			</li>
-			<li class="fd-list-group__item clickable" (click)="sendDirtyEvent()">
-				<strong>Pretend there are unsaved changes</strong> &nbsp;&ndash; shows a confirmation modal when user wants to leave
-				the current page
+			<li class="fd-list-group__item ">		
+				<div class="fd-form__item fd-form__item--check">
+					<label class="fd-form__label" for="ImBw4551">
+						<span class="fd-toggle fd-toggle--xs fd-form__control">
+							<input type="checkbox" [(ngModel)]="isDirty" (change)="sendDirtyEvent()" id="ImBw4551">
+							<span class="fd-toggle__switch" role="presentation"></span>
+						</span>
+					
+					</label>
+				</div>
+				<span *ngIf="!isDirty">
+					<strong>There are no unsaved changes</strong>
+					&nbsp;&ndash; toggle this to be asked to confirm when you leave this page
+				</span>
+				<span *ngIf="isDirty">
+					<strong>There are unsaved changes</strong>
+					&nbsp;&ndash; a confirmation modal will appear when you navigate 
+					<a title="Navigate to /projects/pr2 as an example" (click)="luigiClient.linkManager().navigate('/projects/pr2')">
+						somewhere else
+					</a>
+				</span>
 			</li>
 		</ul>
 	</div>
