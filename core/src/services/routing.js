@@ -300,7 +300,10 @@ export const handleRouteChange = async (path, component, node, config) => {
     return;
   }
   try {
-    if (canComponentHandleModal(component) && component.get().isDirty) {
+    if (
+      canComponentHandleModal(component) &&
+      component.get().unsavedChanges.isDirty
+    ) {
       const newUrl = window.location.href;
       const oldUrl = component.get().unsavedChanges.persistUrl;
 
@@ -312,24 +315,26 @@ export const handleRouteChange = async (path, component, node, config) => {
           'Unsaved changes detected',
           'It looks like you might loose some data if you leave this page. Are you sure you want to do this?'
         )
-        .then(() => {
-          // YES pressed
-          component.set({
-            unsavedChanges: { isDirty: false, persistUrl: null }
-          });
-          path &&
-            handleRouteChange(path, component, node, config) &&
-            history.replaceState(window.state, '', newUrl);
-        })
-        .catch(() => {
-          // NO pressed
-        })
-        .then(res => {
-          // FINALLY
+        .then(
+          () => {
+            // YES pressed
+            component.set({
+              unsavedChanges: { isDirty: false, persistUrl: null }
+            });
+            path &&
+              handleRouteChange(path, component, node, config) &&
+              history.replaceState(window.state, '', newUrl);
+          },
+          () => {
+            // NO pressed
+          }
+        )
+        .finally(res => {
           component.hideModal();
         });
       return;
     }
+
     const pathUrl = path && path.length ? getPathWithoutHash(path) : '';
     const pathData = await getNavigationPath(
       LuigiConfig.getConfigValueAsync('navigation.nodes'),
