@@ -7,7 +7,8 @@ import {
   trimLeadingSlash,
   isIE,
   getConfigValueFromObject,
-  addLeadingSlash
+  addLeadingSlash,
+  canComponentHandleModal
 } from '../utilities/helpers';
 
 const iframeNavFallbackTimeout = 2000;
@@ -299,23 +300,13 @@ export const handleRouteChange = async (path, component, node, config) => {
     return;
   }
   try {
-    if (
-      component &&
-      typeof component.get === 'function' &&
-      component.get().isDirty
-    ) {
+    if (canComponentHandleModal(component) && component.get().isDirty) {
       const newUrl = window.location.href;
       const oldUrl = component.get().persistUrl;
 
       //pretend the url hasn't been changed
       oldUrl && history.replaceState(window.state, '', oldUrl);
 
-      if (
-        typeof component.showModal !== 'function' ||
-        typeof component.hideModal !== 'function'
-      ) {
-        return; //in case provided component doesn't have this functionality
-      }
       component
         .showModal(
           'Unsaved changes detected',
