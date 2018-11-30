@@ -302,7 +302,7 @@ export const handleRouteChange = async (path, component, node, config) => {
   try {
     if (canComponentHandleModal(component) && component.get().isDirty) {
       const newUrl = window.location.href;
-      const oldUrl = component.get().persistUrl;
+      const oldUrl = component.get().unsavedChanges.persistUrl;
 
       //pretend the url hasn't been changed
       oldUrl && history.replaceState(window.state, '', oldUrl);
@@ -314,7 +314,9 @@ export const handleRouteChange = async (path, component, node, config) => {
         )
         .then(() => {
           // YES pressed
-          component.set({ isDirty: false });
+          component.set({
+            unsavedChanges: { isDirty: false, persistUrl: null }
+          });
           path &&
             handleRouteChange(path, component, node, config) &&
             history.replaceState(window.state, '', newUrl);
