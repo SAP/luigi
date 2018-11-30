@@ -22,7 +22,7 @@ A navigation path is any existing path in the navigation tree. It connects the f
 
 - The path of the main application, that is, the path in the browser URL. The path is defined in a Luigi navigation node through one of the following parameters, listed in order of precedence: **externalLink**, **link**, and **pathSegment**.
 - The **viewUrl** of a micro front-end rendered in the content area of the main application.
-- If the **navCollapse** property is set to `true`, the left navigation will be hidden while user visits the particular Node.
+- If you set **navCollapse** property to `true`, the left navigation becomes hidden when you click the affected node. It is set to `false` by default.
 
 A sample navigation structure looks as follows:
 
