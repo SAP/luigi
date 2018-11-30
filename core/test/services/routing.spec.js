@@ -516,6 +516,45 @@ describe('Routing', () => {
     });
   });
 
+  describe('#buildFromRelativePath()', () => {
+    beforeEach(() => {
+      window.dispatchEvent = sinon.spy();
+    });
+
+    const nodeWithParent = {
+      link: 'child-node',
+      parent: {
+        pathSegment: 'parent-node'
+      }
+    };
+
+    it('should return proper route', () => {
+      // given
+      const expectedRoute = '/parent-node/child-node';
+      LuigiConfig.getConfigValue.returns(true);
+
+      // when
+      window.location.hash = '/parent-node';
+      const route = routing.buildFromRelativePath(nodeWithParent);
+
+      // then
+      assert.equal(route, expectedRoute);
+    });
+
+    it("should return proper route even if it's relative to a different node in the tree than the current one", () => {
+      // given
+      const expectedRoute = '/parent-node/child-node';
+      LuigiConfig.getConfigValue.returns(true);
+
+      // when
+      window.location.hash = '/parent-node/different-node';
+      const route = routing.buildFromRelativePath(nodeWithParent);
+
+      // then
+      assert.equal(route, expectedRoute);
+    });
+  });
+
   describe('#handleRouteClick()', () => {
     beforeEach(() => {
       window.dispatchEvent = sinon.spy();
