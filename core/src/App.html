@@ -8,7 +8,7 @@
 	<ConfirmationModal title={confirmationModal.title} text={confirmationModal.text} on:modalConfirm="handleModalResult(true)"
 	 on:modalDecline="handleModalResult(false)"></ConfirmationModal>
 	{/if}
-	<Backdrop ref:backdrop>
+	<Backdrop>
 		<div class="fd-page iframeContainer" use:init="context"></div>
 	</Backdrop>
 	{#if showLoadingIndicator}
@@ -34,7 +34,7 @@
   import { getConfigValueFromObject } from './utilities/helpers.js';
   import { getStoredAuthData } from './utilities/auth-helpers';
 
-  const removeQueryParams = (str) => str.split('?')[0];
+  const removeQueryParams = str => str.split('?')[0];
 
   const isValidBackRoute = (preservedViews, routeHash) => {
     if (preservedViews.length === 0) {
@@ -44,7 +44,10 @@
     // compare it with the new route
     const routePath = routeHash.startsWith('/') ? routeHash : `/${routeHash}`;
     const lastPreservedView = [...preservedViews].pop();
-    const paths = [removeQueryParams(lastPreservedView.path), removeQueryParams(lastPreservedView.nextPath)];
+    const paths = [
+      removeQueryParams(lastPreservedView.path),
+      removeQueryParams(lastPreservedView.nextPath)
+    ];
     return paths.includes(removeQueryParams(routePath));
   };
 
@@ -311,8 +314,6 @@
       },
       showModal(title, text) {
         this.set({ confirmationModal: { isDisplayed: true, title, text } });
-        //const backdropComponent = this.refs.backdrop;
-        //backdropComponent && backdropComponent.set({ backdropActive: true });
         return new Promise((resolve, reject) => {
           //send the response when one of following methods were executed
           confirmModal = resolve;
@@ -320,8 +321,6 @@
         });
       },
       hideModal() {
-        //const backdropComponent = this.refs.backdrop;
-        //backdropComponent && backdropComponent.set({ backdropActive: false });
         this.set({
           confirmationModal: { isDisplayed: false, title: null, text: null }
         });
