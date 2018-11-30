@@ -6,7 +6,8 @@ import {
   trimLeadingSlash,
   containsAllSegments,
   isIE,
-  getConfigValueFromObject
+  getConfigValueFromObject,
+  addLeadingSlash
 } from '../utilities/helpers';
 
 const iframeNavFallbackTimeout = 2000;
@@ -455,12 +456,24 @@ export const navigateTo = async route => {
   window.dispatchEvent(event);
 };
 
-export const buildFromRelativePath = path => {
-  if (LuigiConfig.getConfigValue('routing.useHashRouting')) {
-    return window.location.hash + '/' + path;
-  } else {
-    return window.location.pathname + '/' + path;
+export const buildFromRelativePath = node => {
+  let windowPath = LuigiConfig.getConfigValue('routing.useHashRouting')
+    ? getPathWithoutHash(window.location.hash)
+    : window.location.pathname;
+  if (node.parent && node.parent.pathSegment) {
+    // use only this part of the current path that refers to the parent of the node (remove additional parts refering to the sibiling)
+    // remove everything that is after the parents pathSegment 'parent/keepSelectedForChildren/something' -> 'parent'
+    const nodePathSegments = trimLeadingSlash(getNodePath(node.parent)).split(
+      '/'
+    );
+    const windowPathSegments = trimLeadingSlash(windowPath).split('/');
+    if (windowPathSegments.length > nodePathSegments.length) {
+      windowPath = windowPathSegments
+        .slice(0, nodePathSegments.length)
+        .join('/');
+    }
   }
+  return addLeadingSlash(concatenatePath(windowPath, node.link));
 };
 
 export const handleRouteClick = node => {
@@ -473,7 +486,7 @@ export const handleRouteClick = node => {
   } else if (node.link) {
     const link = node.link.startsWith('/')
       ? node.link
-      : buildFromRelativePath(node.link);
+      : buildFromRelativePath(node);
     navigateTo(link);
     return;
   } else {
