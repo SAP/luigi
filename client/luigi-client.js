@@ -127,14 +127,7 @@
       } else if ('luigi.navigate' === e.data.msg) {
         setContext(e.data);
         if (!currentContext.internal.isNavigateBack) {
-          var hashRoutingModeActive =
-            e.data.viewUrl.indexOf('#') !== -1 &&
-            window.location.href.indexOf('#') !== -1;
-          if (hashRoutingModeActive) {
-            window.location.hash = e.data.viewUrl.split('#')[1];
-          } else {
-            window.location.replace(e.data.viewUrl);
-          }
+          window.location.replace(e.data.viewUrl);
         }
 
         // execute the context change listener if set by the microfrontend

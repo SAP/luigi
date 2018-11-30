@@ -6,12 +6,12 @@ describe('Context switcher', () => {
 
   it('Clicking around the context switcher', () => {
     // default label
-    cy.get('.context-switcher')
+    cy.get('.fd-product-menu')
       .contains('Select Environment ...')
       .click();
 
     // click an action
-    cy.get('.context-switcher .fd-popover__body')
+    cy.get('.fd-product-menu .fd-popover__body')
       .contains('New Environment (bottom)')
       .click();
 
@@ -20,12 +20,12 @@ describe('Context switcher', () => {
     });
 
     // default label
-    cy.get('.context-switcher')
+    cy.get('.fd-product-menu')
       .contains('Select Environment ...')
       .click();
 
     // click an action
-    cy.get('.context-switcher .fd-popover__body')
+    cy.get('.fd-product-menu .fd-popover__body')
       .contains('Environment 1')
       .click();
 
@@ -34,7 +34,7 @@ describe('Context switcher', () => {
     });
 
     // check label
-    cy.get('.context-switcher .fd-popover__control button').should(
+    cy.get('.fd-product-menu .fd-popover__control button').should(
       'contain',
       'Environment 1'
     );
@@ -43,7 +43,7 @@ describe('Context switcher', () => {
     cy.goToOverviewPage();
 
     // check label
-    cy.get('.context-switcher .fd-popover__control button').should(
+    cy.get('.fd-product-menu .fd-popover__control button').should(
       'contain',
       'Select Environment ...'
     );

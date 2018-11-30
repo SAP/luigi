@@ -6,7 +6,7 @@ describe('Navigation', () => {
 
   it('Click around using navigation', () => {
     // projects page
-    cy.get('.fd-ui__header')
+    cy.get('.fd-shellbar')
       .contains('Projects')
       .click();
 
@@ -38,7 +38,7 @@ describe('Navigation', () => {
   describe('features', () => {
     it('keepSelectedForChildren', () => {
       // keep selected for children example
-      cy.get('.fd-ui__header')
+      cy.get('.fd-shellbar')
         .contains('Overview')
         .click();
 
@@ -77,7 +77,7 @@ describe('Navigation', () => {
 
     it('Node with link to another node', () => {
       const goToAnotherNodeFeature = () => {
-        cy.get('.fd-ui__header')
+        cy.get('.fd-shellbar')
           .contains('Overview')
           .click();
 
