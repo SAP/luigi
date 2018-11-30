@@ -169,7 +169,7 @@
       return id;
     },
     /**
-     * Removes the init listener.
+     * Removes an init listener.
      * @param {string} id the id that was returned by the `addInitListener` function
      * @memberof lifecycle
      */
@@ -196,7 +196,7 @@
       return id;
     },
     /**
-     * Removes the context update listener.
+     * Removes a context update listener.
      * @param {string} id the ID that was returned by the `addContextUpdateListener` function
      * @memberof lifecycle
      */
@@ -310,7 +310,7 @@
         },
 
         /**
-         * Sets the current navigation context which is then used by the `navigate` function. This has to be a parent navigation context, it is not possible use the child navigation contexts.
+         * Sets the current navigation context which is then used by the `navigate` function. This has to be a parent navigation context, it is not possible to use the child navigation contexts.
          * @returns {linkManager} link manager instance.
          * @example
          * LuigiClient.linkManager().fromClosestContext().navigate('/users/groups/stakeholders')
