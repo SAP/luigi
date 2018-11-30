@@ -507,26 +507,26 @@ describe('Routing', () => {
       }
     };
 
-    it('should return proper hash route', () => {
+    it('should return proper route', () => {
       // given
-      const expectedRoute = '#/parent-node/child-node';
+      const expectedRoute = '/parent-node/child-node';
       LuigiConfig.getConfigValue.returns(true);
 
       // when
-      window.location.hash = '#/parent-node';
+      window.location.hash = '/parent-node';
       const route = routing.buildFromRelativePath(nodeWithParent);
 
       // then
       assert.equal(route, expectedRoute);
     });
 
-    it("should return proper hash route even if it's relative to a different node in the tree than the current one", () => {
+    it("should return proper route even if it's relative to a different node in the tree than the current one", () => {
       // given
-      const expectedRoute = '#/parent-node/child-node';
+      const expectedRoute = '/parent-node/child-node';
       LuigiConfig.getConfigValue.returns(true);
 
       // when
-      window.location.hash = '#/parent-node/different-node';
+      window.location.hash = '/parent-node/different-node';
       const route = routing.buildFromRelativePath(nodeWithParent);
 
       // then
