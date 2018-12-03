@@ -197,7 +197,7 @@
     },
     /**
      * Removes a context update listener.
-     * @param {string} id the ID that was returned by the `addContextUpdateListener` function
+     * @param {string} id the id that was returned by the `addContextUpdateListener` function
      * @memberof lifecycle
      */
     removeContextUpdateListener: function removeContextUpdateListener(id) {
