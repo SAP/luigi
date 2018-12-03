@@ -443,6 +443,15 @@
          */
         removeBackdrop: function removeBackdrop() {
           window.parent.postMessage({ msg: 'luigi.remove-backdrop' }, '*');
+        },
+        /**
+         * Makes current page dirty or not
+         */
+        changeDirtyStatus: function changeDirtyStatus(isDirty) {
+          window.parent.postMessage(
+            { msg: 'luigi.set-page-dirty', dirty: isDirty },
+            '*'
+          );
         }
       };
     }

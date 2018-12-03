@@ -1,23 +1,24 @@
 <div id="app {hideNav? 'no-nav' : ''}">
 	{#if alert && alert.message}
-	<div class="fd-alert fd-alert--error fd-alert--dismissible" role="alert" id="j2ALl423">
-		<button on:click="set({alert:null})" class="fd-alert__close" aria-controls="j2ALl423" aria-label="Close"></button>
-		{alert.message} {alert.link}
-	</div>
-	{/if} {#if confirmationModal.isDisplayed}
-	<ConfirmationModal title={confirmationModal.title} text={confirmationModal.text} on:modalConfirm="handleModalResult(true)"
-	 on:modalDecline="handleModalResult(false)"></ConfirmationModal>
+    <div class="fd-alert fd-alert--error fd-alert--dismissible" role="alert" id="j2ALl423">
+      <button on:click="set({alert:null})" class="fd-alert__close" aria-controls="j2ALl423" aria-label="Close"></button>
+      {alert.message} {alert.link}
+    </div>
+	{/if} 
+  {#if confirmationModal.isDisplayed}
+    <ConfirmationModal title={confirmationModal.title} text={confirmationModal.text} on:modalConfirm="handleModalResult(true)"
+    on:modalDecline="handleModalResult(false)"></ConfirmationModal>
 	{/if}
 	<Backdrop>
 		<div class="fd-page iframeContainer" use:init="context"></div>
 	</Backdrop>
 	{#if showLoadingIndicator}
-	<div in:fade='{delay: 250, duration: 250}' out:fade='{duration: 250}' class="fd-page spinnerContainer" aria-hidden="false"
-	 aria-label="Loading">
-		<div class="fd-spinner">
-			<div></div>
-		</div>
-	</div>
+    <div in:fade='{delay: 250, duration: 250}' out:fade='{duration: 250}' class="fd-page spinnerContainer" aria-hidden="false"
+    aria-label="Loading">
+      <div class="fd-spinner">
+        <div></div>
+      </div>
+    </div>
 	{/if}
 
 	<TopNav pathData={navigationPath} />
@@ -320,12 +321,24 @@
       showModal(title, text) {
         return new Promise((resolve, reject) => {
           //send the response when one of following methods were executed
-          this.set({ confirmationModal: { isDisplayed: true, title, text, promise: { resolve, reject } } });
+          this.set({
+            confirmationModal: {
+              isDisplayed: true,
+              title,
+              text,
+              promise: { resolve, reject }
+            }
+          });
         });
       },
       hideModal() {
         this.set({
-          confirmationModal: { isDisplayed: false, title: null, text: null, promise: null }
+          confirmationModal: {
+            isDisplayed: false,
+            title: null,
+            text: null,
+            promise: null
+          }
         });
       }
     },

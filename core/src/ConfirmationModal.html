@@ -2,7 +2,7 @@
 	<div class="fd-modal__content" role="document">
 		<div class="fd-modal__header">
 			<h1 class="fd-modal__title">{title}</h1>
-			<button class="fd-button--light fd-modal__close" aria-label="close"></button>
+			<button class="fd-button--light fd-modal__close" on:click="fire('modalDecline')" aria-label="close"></button>
 		</div>
 		<div class="fd-modal__body">
 			{text}
