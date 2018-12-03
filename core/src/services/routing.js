@@ -312,7 +312,7 @@ export const handleRouteChange = async (path, component, node, config) => {
       component
         .showModal(
           'Unsaved changes detected',
-          'It looks like you might loose some data if you leave this page. Are you sure you want to do this?'
+          'It looks like you might lose some data if you leave this page. Are you sure you want to do this?'
         )
         .then(
           () => {
