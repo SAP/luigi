@@ -493,58 +493,6 @@ describe('Routing', () => {
         expectedPath
       );
     });
-
-    it('should not change viewUrl if component is dirty', async () => {
-      // given
-      const firstPath = '#/projects/categories/cat1';
-      const expectedViewUrl = 'cats/cat1#details';
-
-      const secondPath = '#/projects/categories/cat2';
-
-      const mockBrowser = new MockBrowser();
-      const window = mockBrowser.getWindow();
-      global.window = window;
-      const document = mockBrowser.getDocument();
-      global.document = document;
-
-      const node = {
-        style: {},
-        prepend: sinon.spy()
-      };
-
-      const config = {
-        iframe: null,
-        builderCompatibilityMode: false,
-        navigateOk: null
-      };
-
-      // when
-      window.Luigi = {};
-      window.Luigi.config = sampleLuigiConfig;
-      const iframeMock = { src: null };
-      sinon.stub(document, 'createElement').callsFake(() => iframeMock);
-      await routing.handleRouteChange(
-        firstPath,
-        component,
-        node,
-        config,
-        window
-      );
-
-      assert.equal(iframeMock.src, expectedViewUrl);
-      component.set({ isDirty: true });
-      await routing.handleRouteChange(
-        secondPath,
-        component,
-        node,
-        config,
-        window
-      );
-
-      // then
-
-      assert.equal(iframeMock.src, expectedViewUrl); //viewUrl isn't changed because it's blocked by the modal
-    });
   });
 
   describe('#buildFromRelativePath()', () => {
