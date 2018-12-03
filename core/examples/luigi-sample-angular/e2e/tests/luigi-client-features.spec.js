@@ -228,5 +228,60 @@ describe('Luigi client features', () => {
         cy.get('.spinnerContainer .fd-spinner').should('not.exist');
       });
     });
+    it("shouldn't proceed redirection when page is dirty", () => {
+      cy.get('iframe').then($iframe => {
+        const $iframeBody = $iframe.contents().find('body');
+
+        //navigate using absolute path
+        cy.wrap($iframeBody)
+          .find('[data-cy=toggle-dirty-state]')
+          .check();
+
+        cy.get('button')
+          .contains('Projects')
+          .click();
+
+        cy.get('[data-cy=confirmation-modal]').should('be.visible');
+
+        cy.location().should(loc => {
+          expect(loc.hash).to.eq('#/overview'); //the location is unchanged
+        });
+
+        cy.get('[data-cy=modal-no]').click();
+
+        cy.get('[data-cy=confirmation-modal]').should('not.be.visible');
+
+        cy.location().should(loc => {
+          expect(loc.hash).to.eq('#/overview'); //the location is still unchanged after "No" clicked
+        });
+      });
+    });
+    it('should proceed redirection when page is dirty & modal is confirmed', () => {
+      cy.get('iframe').then($iframe => {
+        const $iframeBody = $iframe.contents().find('body');
+
+        cy.wrap($iframeBody)
+          .find('[data-cy=toggle-dirty-state]')
+          .check();
+
+        cy.get('button')
+          .contains('Projects')
+          .click();
+
+        cy.get('[data-cy=confirmation-modal]').should('be.visible');
+
+        cy.location().should(loc => {
+          expect(loc.hash).to.eq('#/overview'); //the location is unchanged
+        });
+
+        cy.get('[data-cy=modal-yes]').click();
+
+        cy.get('[data-cy=confirmation-modal]').should('not.be.visible');
+
+        cy.location().should(loc => {
+          expect(loc.hash).to.eq('#/projects');
+        });
+      });
+    });
   });
 });
