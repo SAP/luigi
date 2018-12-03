@@ -23,7 +23,7 @@ import { RestrictedComponent } from './restricted/restricted.component';
 import { LuigiContextService } from './services/luigi-context.service';
 import { GroupSettingsComponent } from './project/users/groups/group-details/group-settings/group-settings.component';
 import { DynamicComponent } from './project/dynamic/dynamic.component';
-import { NavCollapseComponent } from './project/navCollapse/navCollapse.component';
+import { HideSideNavComponent } from './project/hideSideNav/hideSideNav.component';
 
 @NgModule({
   declarations: [
@@ -46,7 +46,7 @@ import { NavCollapseComponent } from './project/navCollapse/navCollapse.componen
     RestrictedComponent,
     GroupSettingsComponent,
     DynamicComponent,
-    NavCollapseComponent
+    HideSideNavComponent
   ],
   imports: [BrowserModule, FormsModule, AppRoutingModule],
   providers: [LuigiContextService],

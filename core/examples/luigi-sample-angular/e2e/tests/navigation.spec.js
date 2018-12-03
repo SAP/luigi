@@ -136,7 +136,7 @@ describe('Navigation', () => {
       });
     });
     it('should hide left Nav', () => {
-      cy.visit('/#/projects/pr1/navCollapse');
+      cy.visit('/#/projects/pr1/hideSideNav');
       cy.get('.no-side-nav').should('exist');
       cy.get('.fd-app__sidebar').should('not.be.visible');
     });

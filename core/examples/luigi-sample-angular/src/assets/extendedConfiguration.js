@@ -252,9 +252,9 @@ var projectDetailNavProviderFn = function(context) {
         }))
       },
       {
-        pathSegment: 'navCollapse',
-        label: 'Collapse left navigation',
-        viewUrl: '/sampleapp.html#/projects/' + projectId + '/navCollapse',
+        pathSegment: 'hideSideNav',
+        label: 'Hide left navigation',
+        viewUrl: '/sampleapp.html#/projects/' + projectId + '/hideSideNav',
         hideSideNav: true
       },
       {
