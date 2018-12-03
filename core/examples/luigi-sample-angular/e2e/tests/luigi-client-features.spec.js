@@ -232,7 +232,6 @@ describe('Luigi client features', () => {
       cy.get('iframe').then($iframe => {
         const $iframeBody = $iframe.contents().find('body');
 
-        //navigate using absolute path
         cy.wrap($iframeBody)
           .find('[data-cy=toggle-dirty-state]')
           .check();
