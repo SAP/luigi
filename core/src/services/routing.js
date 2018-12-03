@@ -312,7 +312,7 @@ export const handleRouteChange = async (path, component, node, config) => {
     const {
       viewUrl = '',
       isolateView = false,
-      navCollapse: hideLeftNav = false
+      hideSideNav = false
     } = getLastNodeObject(pathData);
     const params = parseParams(pathUrl.split('?')[1]);
     const nodeParams = getNodeParams(params);
@@ -352,7 +352,7 @@ export const handleRouteChange = async (path, component, node, config) => {
     const previousCompData = component.get();
     component.set({
       hideNav,
-      hideLeftNav,
+      hideSideNav,
       viewUrl,
       navigationPath: pathData.navigationPath,
       currentNode:

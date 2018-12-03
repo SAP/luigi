@@ -1,4 +1,4 @@
-<div id="app" class="{hideNav? 'no-nav' : ''} {hideLeftNav? 'no-left-nav' : ''}">
+<div id="app" class="{hideNav? 'no-nav' : ''} {hideSideNav? 'no-side-nav' : ''}">
 	{#if alert && alert.message}
 	<div class="fd-alert fd-alert--error fd-alert--dismissible" role="alert" id="j2ALl423">
 		<button on:click="set({alert:null})" class="fd-alert__close" aria-controls="j2ALl423" aria-label="Close"></button>
@@ -18,7 +18,7 @@
 	{/if}
 
 	<TopNav pathData={navigationPath} /> 
-  {#if !(hideNav||hideLeftNav)}
+  {#if !(hideNav||hideSideNav)}
 	  <LeftNav pathData={navigationPath} /> 
   {/if}
 </div>
@@ -175,7 +175,7 @@
           //     iframe: Element
           // }
         ],
-        hideLeftNav: false
+        hideSideNav: false
       };
     },
     oncreate() {},
@@ -371,7 +371,7 @@
     }
   }
 
-  .no-left-nav {
+  .no-side-nav {
     .iframeContainer,
     .spinnerContainer {
       position: fixed;

@@ -93,7 +93,7 @@ describe('Routing', () => {
             context: {
               varA: 'tets'
             },
-            navCollapse: true
+            hideSideNav: true
           }
         ]
       },
@@ -495,7 +495,7 @@ describe('Routing', () => {
       );
     });
 
-    it("should set component's 'hideLeftNav' property", async () => {
+    it("should set component's 'hideSideNav' property", async () => {
       // given
       const path = '#/projects';
       const mockBrowser = new MockBrowser();
@@ -508,11 +508,11 @@ describe('Routing', () => {
       // when
       LuigiConfig.config = sampleLuigiConfig;
 
-      assert.equal(component.get().hideLeftNav, undefined);
+      assert.equal(component.get().hideSideNav, undefined);
 
       await routing.handleRouteChange(path, component, node, config, window);
 
-      assert.equal(component.get().hideLeftNav, true);
+      assert.equal(component.get().hideSideNav, true);
     });
   });
 

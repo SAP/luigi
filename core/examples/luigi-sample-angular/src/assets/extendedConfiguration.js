@@ -255,7 +255,7 @@ var projectDetailNavProviderFn = function(context) {
         pathSegment: 'navCollapse',
         label: 'Collapse left navigation',
         viewUrl: '/sampleapp.html#/projects/' + projectId + '/navCollapse',
-        navCollapse: true
+        hideSideNav: true
       },
       {
         label: 'Open Github in new tab',
@@ -426,7 +426,7 @@ Luigi.setConfig({
           pathSegment: 'overview',
           label: 'Overview',
           viewUrl: '/sampleapp.html#/overview',
-          navCollapse: true
+          hideSideNav: true
         },
         {
           pathSegment: 'projects',
