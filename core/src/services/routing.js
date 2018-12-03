@@ -322,7 +322,7 @@ export const handleRouteChange = async (path, component, node, config) => {
             });
             path &&
               handleRouteChange(path, component, node, config) &&
-              history.replaceState(window.state, '', newUrl);
+              history.pushState(window.state, '', newUrl);
           },
           () => {
             // NO pressed
