@@ -97,6 +97,7 @@ describe('Navigation', () => {
         });
       };
 
+      //go to absolute path
       goToAnotherNodeFeature();
       cy.get('.fd-app__sidebar .fd-side-nav__item')
         .contains('Go to absolute path')
@@ -106,6 +107,7 @@ describe('Navigation', () => {
         expect(loc.hash).to.eq('#/settings');
       });
 
+      //go to relative path from the parent node
       goToAnotherNodeFeature();
       cy.get('.fd-app__sidebar .fd-side-nav__item')
         .contains('Go to relative path')
@@ -114,6 +116,29 @@ describe('Navigation', () => {
       cy.location().should(loc => {
         expect(loc.hash).to.eq('#/projects/pr2/dps/dps1');
       });
+
+      //go to relative path from node that is a sibiling
+      goToAnotherNodeFeature();
+      cy.get('.fd-app__sidebar .fd-side-nav__item')
+        .contains('Keep Selected Example')
+        .click();
+
+      cy.location().should(loc => {
+        expect(loc.hash).to.eq('#/projects/pr2/avengers');
+      });
+
+      cy.get('.fd-app__sidebar .fd-side-nav__item')
+        .contains('Go to relative path')
+        .click();
+
+      cy.location().should(loc => {
+        expect(loc.hash).to.eq('#/projects/pr2/dps/dps1');
+      });
+    });
+    it('should hide left Nav', () => {
+      cy.visit('/#/projects/pr1/hideSideNav');
+      cy.get('.no-side-nav').should('exist');
+      cy.get('.fd-app__sidebar').should('not.be.visible');
     });
   });
 });

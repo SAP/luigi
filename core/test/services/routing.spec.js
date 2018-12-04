@@ -92,7 +92,8 @@ describe('Routing', () => {
             ],
             context: {
               varA: 'tets'
-            }
+            },
+            hideSideNav: true
           }
         ]
       },
@@ -492,6 +493,65 @@ describe('Routing', () => {
         sinon.match.any,
         expectedPath
       );
+    });
+
+    it("should set component's 'hideSideNav' property", async () => {
+      // given
+      const path = '#/projects';
+      const mockBrowser = new MockBrowser();
+      const window = mockBrowser.getWindow();
+      global.window = window;
+
+      const node = {};
+      const config = {};
+
+      // when
+      LuigiConfig.config = sampleLuigiConfig;
+
+      assert.equal(component.get().hideSideNav, undefined);
+
+      await routing.handleRouteChange(path, component, node, config, window);
+
+      assert.equal(component.get().hideSideNav, true);
+    });
+  });
+
+  describe('#buildFromRelativePath()', () => {
+    beforeEach(() => {
+      window.dispatchEvent = sinon.spy();
+    });
+
+    const nodeWithParent = {
+      link: 'child-node',
+      parent: {
+        pathSegment: 'parent-node'
+      }
+    };
+
+    it('should return proper route', () => {
+      // given
+      const expectedRoute = '/parent-node/child-node';
+      LuigiConfig.getConfigValue.returns(true);
+
+      // when
+      window.location.hash = '/parent-node';
+      const route = routing.buildFromRelativePath(nodeWithParent);
+
+      // then
+      assert.equal(route, expectedRoute);
+    });
+
+    it("should return proper route even if it's relative to a different node in the tree than the current one", () => {
+      // given
+      const expectedRoute = '/parent-node/child-node';
+      LuigiConfig.getConfigValue.returns(true);
+
+      // when
+      window.location.hash = '/parent-node/different-node';
+      const route = routing.buildFromRelativePath(nodeWithParent);
+
+      // then
+      assert.equal(route, expectedRoute);
     });
   });
 
