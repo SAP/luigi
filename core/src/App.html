@@ -1,4 +1,4 @@
-<div id="app {hideNav? 'no-nav' : ''}">
+<div id="app" class="{hideNav? 'no-nav' : ''} {hideSideNav? 'no-side-nav' : ''}">
 	{#if alert && alert.message}
 	<div class="fd-alert fd-alert--error fd-alert--dismissible" role="alert" id="j2ALl423">
 		<button on:click="set({alert:null})" class="fd-alert__close" aria-controls="j2ALl423" aria-label="Close"></button>
@@ -17,8 +17,10 @@
 	</div>
 	{/if}
 
-	<TopNav pathData={navigationPath} />
-	<LeftNav pathData={navigationPath} />
+	<TopNav pathData={navigationPath} /> 
+  {#if !(hideNav||hideSideNav)}
+	  <LeftNav pathData={navigationPath} /> 
+  {/if}
 </div>
 
 <script type="text/javascript">
@@ -30,7 +32,7 @@
   import { getConfigValueFromObject } from './utilities/helpers.js';
   import { getStoredAuthData } from './utilities/auth-helpers';
 
-  const removeQueryParams = (str) => str.split('?')[0];
+  const removeQueryParams = str => str.split('?')[0];
 
   const isValidBackRoute = (preservedViews, routeHash) => {
     if (preservedViews.length === 0) {
@@ -40,7 +42,10 @@
     // compare it with the new route
     const routePath = routeHash.startsWith('/') ? routeHash : `/${routeHash}`;
     const lastPreservedView = [...preservedViews].pop();
-    const paths = [removeQueryParams(lastPreservedView.path), removeQueryParams(lastPreservedView.nextPath)];
+    const paths = [
+      removeQueryParams(lastPreservedView.path),
+      removeQueryParams(lastPreservedView.nextPath)
+    ];
     return paths.includes(removeQueryParams(routePath));
   };
 
@@ -169,7 +174,8 @@
           //     context: {}
           //     iframe: Element
           // }
-        ]
+        ],
+        hideSideNav: false
       };
     },
     oncreate() {},
@@ -291,6 +297,8 @@
 </script>
 
 <style type="text/scss">
+  $topNavHeight: 50px;
+  $leftNavWidth: 320px;
   :global(html) {
     box-sizing: border-box;
     font-size: 14px;
@@ -318,8 +326,8 @@
   .iframeContainer,
   .spinnerContainer {
     position: fixed;
-    top: 50px;
-    left: 320px;
+    top: $topNavHeight;
+    left: $leftNavWidth;
     bottom: 0;
     right: 0;
     width: auto;
@@ -363,8 +371,17 @@
     }
   }
 
-  $topNavHeight: 48px;
-  $leftNavWidth: 320px;
+  .no-side-nav {
+    .iframeContainer,
+    .spinnerContainer {
+      position: fixed;
+      top: $topNavHeight;
+      left: 0;
+      bottom: 0;
+      right: 0;
+    }
+  }
+
   .fd-alert {
     position: absolute;
     min-width: 20rem;
