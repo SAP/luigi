@@ -92,7 +92,8 @@ describe('Routing', () => {
             ],
             context: {
               varA: 'tets'
-            }
+            },
+            hideSideNav: true
           }
         ]
       },
@@ -493,6 +494,65 @@ describe('Routing', () => {
         expectedPath
       );
     });
+
+    it("should set component's 'hideSideNav' property", async () => {
+      // given
+      const path = '#/projects';
+      const mockBrowser = new MockBrowser();
+      const window = mockBrowser.getWindow();
+      global.window = window;
+
+      const node = {};
+      const config = {};
+
+      // when
+      LuigiConfig.config = sampleLuigiConfig;
+
+      assert.equal(component.get().hideSideNav, undefined);
+
+      await routing.handleRouteChange(path, component, node, config, window);
+
+      assert.equal(component.get().hideSideNav, true);
+    });
+  });
+
+  describe('#buildFromRelativePath()', () => {
+    beforeEach(() => {
+      window.dispatchEvent = sinon.spy();
+    });
+
+    const nodeWithParent = {
+      link: 'child-node',
+      parent: {
+        pathSegment: 'parent-node'
+      }
+    };
+
+    it('should return proper route', () => {
+      // given
+      const expectedRoute = '/parent-node/child-node';
+      LuigiConfig.getConfigValue.returns(true);
+
+      // when
+      window.location.hash = '/parent-node';
+      const route = routing.buildFromRelativePath(nodeWithParent);
+
+      // then
+      assert.equal(route, expectedRoute);
+    });
+
+    it("should return proper route even if it's relative to a different node in the tree than the current one", () => {
+      // given
+      const expectedRoute = '/parent-node/child-node';
+      LuigiConfig.getConfigValue.returns(true);
+
+      // when
+      window.location.hash = '/parent-node/different-node';
+      const route = routing.buildFromRelativePath(nodeWithParent);
+
+      // then
+      assert.equal(route, expectedRoute);
+    });
   });
 
   describe('#handleRouteClick()', () => {
@@ -789,24 +849,52 @@ describe('Routing', () => {
       };
     };
 
-    it('should return first child if no defaultChildNode is set', () => {
+    it('should return first child if no defaultChildNode is set', async () => {
       let pathData = getPathData();
 
-      assert.equal(getDefaultChildNode(pathData), 'stakeholders');
+      assert.equal(await getDefaultChildNode(pathData), 'stakeholders');
     });
 
-    it('should return child with pathSegment equal to defaultChildNode', () => {
+    it('should return child with pathSegment equal to defaultChildNode', async () => {
       let pathData = getPathData();
       pathData.navigationPath[1].defaultChildNode = 'customers';
 
-      assert.equal(getDefaultChildNode(pathData), 'customers');
+      assert.equal(await getDefaultChildNode(pathData), 'customers');
     });
 
-    it('should return first child if given defaultChildNode does not exist', () => {
+    it('should return first child if given defaultChildNode does not exist', async () => {
       const pathData = getPathData();
       pathData.navigationPath[1].defaultChildNode = 'NOSUCHPATH';
 
-      assert.equal(getDefaultChildNode(pathData), 'stakeholders');
+      assert.equal(await getDefaultChildNode(pathData), 'stakeholders');
+    });
+
+    it('should return first child asynchronous if no defaultChildNode is set', async () => {
+      let pathData = {
+        navigationPath: [
+          {
+            // DOESN'T MATTER
+          },
+          {
+            pathSegment: 'groups',
+            children: () =>
+              Promise.resolve([
+                {
+                  pathSegment: 'stakeholders',
+                  viewUrl:
+                    '/sampleapp.html#/projects/1/users/groups/stakeholders'
+                },
+                {
+                  pathSegment: 'customers',
+                  viewUrl: '/sampleapp.html#/projects/1/users/groups/customers'
+                }
+              ])
+          }
+        ],
+        context: {}
+      };
+
+      assert.equal(await getDefaultChildNode(pathData), 'stakeholders');
     });
   });
 });
