@@ -15,6 +15,7 @@ import { ChildNode1Component } from './project/default-child/dps1/child-node-1.c
 import { OverviewComponent } from './overview/overview.component';
 import { RestrictedComponent } from './restricted/restricted.component';
 import { DynamicComponent } from './project/dynamic/dynamic.component';
+import { HideSideNavComponent } from './project/hideSideNav/hideSideNav.component';
 
 const routes: Routes = [
   { path: 'overview', component: OverviewComponent },
@@ -44,6 +45,10 @@ const routes: Routes = [
   {
     path: 'projects/:projectId/miscellaneous2',
     component: Miscellaneous2Component
+  },
+  {
+    path: 'projects/:projectId/hideSideNav',
+    component: HideSideNavComponent
   },
   {
     path: 'projects/:projectId/dps/dps1',
