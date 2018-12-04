@@ -252,6 +252,12 @@ var projectDetailNavProviderFn = function(context) {
         }))
       },
       {
+        pathSegment: 'hideSideNav',
+        label: 'Hide left navigation',
+        viewUrl: '/sampleapp.html#/projects/' + projectId + '/hideSideNav',
+        hideSideNav: true
+      },
+      {
         label: 'Open Github in new tab',
         category: { label: 'Super useful Github links', icon: 'world' },
         externalLink: {
@@ -419,7 +425,8 @@ Luigi.setConfig({
         {
           pathSegment: 'overview',
           label: 'Overview',
-          viewUrl: '/sampleapp.html#/overview'
+          viewUrl: '/sampleapp.html#/overview',
+          hideSideNav: true
         },
         {
           pathSegment: 'projects',
@@ -533,11 +540,25 @@ Luigi.setConfig({
   },
   routing: {
     /**
+     * useHashRouting
+     *
      * Development:
      * For hash routing, set to true and run `npm run start`
      * For path routing, set to false and run `npm run startWebpack`
      */
-    useHashRouting: true
+    useHashRouting: true,
+    /**
+     * Prefix for reflecting params in the url, which is used when navigating .withParams() function.
+     */
+    nodeParamPrefix: '~',
+    /**
+     * skipRoutingForUrlPatterns
+     * Define regex patterns that prevent the router from handling path changes.
+     * Used to exclude authentication or other callbacks.
+     *
+     * Default: /access_token=/, /id_token=/
+     */
+    skipRoutingForUrlPatterns: [/access_token=/, /id_token=/]
   },
   settings: {
     header: () => ({

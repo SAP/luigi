@@ -6,7 +6,8 @@ import {
   trimLeadingSlash,
   containsAllSegments,
   isIE,
-  getConfigValueFromObject
+  getConfigValueFromObject,
+  addLeadingSlash
 } from '../utilities/helpers';
 
 const iframeNavFallbackTimeout = 2000;
@@ -288,6 +289,15 @@ const buildRoute = (node, path, params) =>
     : buildRoute(node.parent, `/${node.parent.pathSegment}${path}`, params);
 
 export const handleRouteChange = async (path, component, node, config) => {
+  const defaultPattern = [/access_token=/, /id_token=/];
+  const patterns =
+    LuigiConfig.getConfigValue('routing.skipRoutingForUrlPatterns') ||
+    defaultPattern;
+  const hasSkipMatches =
+    patterns.filter(p => window.location.href.match(p)).length !== 0;
+  if (hasSkipMatches) {
+    return;
+  }
   try {
     const pathUrl = path && path.length ? getPathWithoutHash(path) : '';
     const pathData = await getNavigationPath(
@@ -298,8 +308,12 @@ export const handleRouteChange = async (path, component, node, config) => {
     const hideNav = LuigiConfig.getConfigBooleanValue(
       'settings.hideNavigation'
     );
-    const viewUrl = getLastNodeObject(pathData).viewUrl || '';
-    const isolateView = getLastNodeObject(pathData).isolateView || false;
+
+    const {
+      viewUrl = '',
+      isolateView = false,
+      hideSideNav = false
+    } = getLastNodeObject(pathData);
     const params = parseParams(pathUrl.split('?')[1]);
     const nodeParams = getNodeParams(params);
     const pathParams = getPathParams(pathData.navigationPath);
@@ -338,6 +352,7 @@ export const handleRouteChange = async (path, component, node, config) => {
     const previousCompData = component.get();
     component.set({
       hideNav,
+      hideSideNav,
       viewUrl,
       navigationPath: pathData.navigationPath,
       currentNode:
@@ -446,12 +461,24 @@ export const navigateTo = async route => {
   window.dispatchEvent(event);
 };
 
-export const buildFromRelativePath = path => {
-  if (LuigiConfig.getConfigValue('routing.useHashRouting')) {
-    return window.location.hash + '/' + path;
-  } else {
-    return window.location.pathname + '/' + path;
+export const buildFromRelativePath = node => {
+  let windowPath = LuigiConfig.getConfigValue('routing.useHashRouting')
+    ? getPathWithoutHash(window.location.hash)
+    : window.location.pathname;
+  if (node.parent && node.parent.pathSegment) {
+    // use only this part of the current path that refers to the parent of the node (remove additional parts refering to the sibiling)
+    // remove everything that is after the parents pathSegment 'parent/keepSelectedForChildren/something' -> 'parent'
+    const nodePathSegments = trimLeadingSlash(getNodePath(node.parent)).split(
+      '/'
+    );
+    const windowPathSegments = trimLeadingSlash(windowPath).split('/');
+    if (windowPathSegments.length > nodePathSegments.length) {
+      windowPath = windowPathSegments
+        .slice(0, nodePathSegments.length)
+        .join('/');
+    }
   }
+  return addLeadingSlash(concatenatePath(windowPath, node.link));
 };
 
 export const handleRouteClick = node => {
@@ -464,7 +491,7 @@ export const handleRouteClick = node => {
   } else if (node.link) {
     const link = node.link.startsWith('/')
       ? node.link
-      : buildFromRelativePath(node.link);
+      : buildFromRelativePath(node);
     navigateTo(link);
     return;
   } else {

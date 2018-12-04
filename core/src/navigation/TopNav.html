@@ -6,7 +6,9 @@
 
       
       <div class="fd-shellbar__actions">
-        <ContextSwitcher />
+        {#if !authorizationEnabled || isLoggedIn}
+          <ContextSwitcher />
+        {/if}
         {#if children && pathData.length > 0}
           {#each children as node}
             {#if !node.hideFromNav}
@@ -39,7 +41,7 @@
               </div>
 
               <div class="fd-popover__body fd-popover__body--right"  aria-hidden="{dropDownStatesNegated.OVERFLOW_POPOVER || true}" id="OVERFLOW_POPOVER">
-              
+                
             <nav class="fd-menu">
                 <ul class="fd-menu__list">
                   {#each children as node}
@@ -85,6 +87,7 @@
   import LogoTitle from './LogoTitle.html';
   import Authorization from '../Authorization.html';
   import { handleRouteClick } from '../services/routing.js';
+  import * as Navigation from './services/navigation.js';
   import { LuigiConfig } from '../services/config.js';
   import { getNegatedBoolString } from '../utilities/helpers.js';
 
@@ -107,6 +110,12 @@
     }
   };
 
+  const setLoggedInState = (current, component) => {
+    component.set({
+      isLoggedIn: Navigation.isLoggedIn()
+    });
+  }
+
   export default {
     oncreate() {
       this.set({
@@ -118,10 +127,12 @@
       if (!previous || previous.pathData != current.pathData) {
         setTopNavData(current, this);
       }
+      setLoggedInState(current, this);
     },
     data() {
       return {
-        dropDownStates: {}
+        dropDownStates: {},
+        isLoggedIn: false
       };
     },
     computed: {
