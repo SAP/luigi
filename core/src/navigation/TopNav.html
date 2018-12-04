@@ -35,7 +35,7 @@
                 <div class="fd-shellbar-collapse--control" aria-controls="eYVEJ960" aria-expanded="false" aria-haspopup="true" role="button">
                     
               <button class=" fd-button--shell sap-icon--overflow" aria-controls="OVERFLOW_POPOVER" aria-expanded="{dropDownStates.OVERFLOW_POPOVER || false}"
-              aria-haspopup="true" on:click="toggleDropdownState('OVERFLOW_POPOVER')" on:blur="closeDropdown('OVERFLOW_POPOVER')" >
+              aria-haspopup="true" on:click="toggleDropdownState('OVERFLOW_POPOVER')" onclick="event.target.focus()" on:blur="closeDropdown('OVERFLOW_POPOVER')" >
                 <!-- <span class="fd-counter fd-counter--notification" aria-label="Unread count">25</span> -->
                 </button> 
                 </div>
@@ -47,7 +47,7 @@
                 <ul class="fd-menu__list">
                   {#each children as node}
                     {#if !node.hideFromNav}
-                      <li><a href="#" class="fd-menu__item {node === selectedNode ? 'is-selected' : ''} {node.externalLink && node.externalLink.url ? 'fd-global-nav__btn--external' : ''}" on:click=handleClick(node)>{node.label}
+                      <li><a class="fd-menu__item {node === selectedNode ? 'is-selected' : ''} {node.externalLink && node.externalLink.url ? 'fd-global-nav__btn--external' : ''}" on:click=handleClick(node)>{node.label}
                     {#if node.externalLink && node.externalLink.url}
                       <span class="sap-icon--action sap-icon--s"></span>
                     {/if}</a>
@@ -67,7 +67,7 @@
           <div class="fd-popover">
             <div class="fd-popover__control">
               <button class=" fd-button--shell sap-icon--customer" aria-expanded="{dropDownStates.PROFILE_POPOVER || false}"
-              aria-haspopup="true" on:click="toggleDropdownState('PROFILE_POPOVER')" on:blur="closeDropdown('PROFILE_POPOVER')">
+              aria-haspopup="true" on:click="toggleDropdownState('PROFILE_POPOVER')" onclick="event.target.focus()" on:blur="closeDropdown('PROFILE_POPOVER')">
               </button>
 
               <div class="fd-popover__body fd-popover__body--right"  aria-hidden="{dropDownStatesNegated.PROFILE_POPOVER || true}" id="PROFILE_POPOVER">
