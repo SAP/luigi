@@ -228,7 +228,7 @@ describe('Luigi client features', () => {
         cy.get('.spinnerContainer .fd-spinner').should('not.exist');
       });
     });
-    it("shouldn't proceed redirection when page is dirty", () => {
+    it("Unsaved changes - shouldn't proceed when 'No' was pressed in modal", () => {
       cy.get('iframe').then($iframe => {
         const $iframeBody = $iframe.contents().find('body');
 
@@ -255,7 +255,7 @@ describe('Luigi client features', () => {
         });
       });
     });
-    it('should proceed redirection when page is dirty & modal is confirmed', () => {
+    it("Unsaved changes - should proceed when 'Yes' was pressed in modal", () => {
       cy.get('iframe').then($iframe => {
         const $iframeBody = $iframe.contents().find('body');
 
@@ -278,7 +278,7 @@ describe('Luigi client features', () => {
         cy.get('[data-cy=confirmation-modal]').should('not.be.visible');
 
         cy.location().should(loc => {
-          expect(loc.hash).to.eq('#/projects');
+          expect(loc.hash).to.eq('#/projects'); //the location is changed after "Yes" clicked
         });
       });
     });
