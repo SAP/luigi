@@ -202,11 +202,3 @@ Makes current page dirty or not
 #### Parameters
 
 -   `isDirty` **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)** tells if current page/component has any unsaved changes at the moment
-
-#### Examples
-
-```javascript
-private sendDirtyEvent = () => {
-  LuigiClient.uxManager().setDirtyStatus(this.isDirty);
-};
-```

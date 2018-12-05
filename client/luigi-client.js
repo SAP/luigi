@@ -434,12 +434,7 @@
         },
         /**
          * Makes current page dirty or not
-          * @param {boolean} isDirty tells if current page/component has any unsaved changes at the moment
-      
-         * @example
-         * private sendDirtyEvent = () => {
-         *   LuigiClient.uxManager().setDirtyStatus(this.isDirty);
-         * };
+         * @param {boolean} isDirty tells if current page/component has any unsaved changes at the moment
          */
         setDirtyStatus: function setDirtyStatus(isDirty) {
           window.parent.postMessage(
