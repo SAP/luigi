@@ -787,7 +787,7 @@ describe('Routing', () => {
       }
     };
 
-    it('should return true if views have the same domain but different hash', () => {
+    it('should return true if views have the same domain and different hash', () => {
       component.set({
         viewUrl: 'http://url.com/app.html!#/someUrl',
         previousNodeValues: { viewUrl: config.iframe.src }
@@ -809,7 +809,7 @@ describe('Routing', () => {
       }
     };
 
-    it('should return true if views have the same viewGroup', () => {
+    it('should return true if views have the same domain and viewGroup', () => {
       component.set({
         viewUrl: 'http://url.com/SomeUrl',
         viewGroup: 'firstSPA',
@@ -821,7 +821,7 @@ describe('Routing', () => {
       assert.isTrue(routing.isSameViewGroup(config, component));
     });
 
-    it('should return false if views have different viewGroups', () => {
+    it('should return false if views have the same domian and different viewGroups', () => {
       component.set({
         viewUrl: 'http://url.com/someUrl',
         viewGroup: 'firstSPA',
@@ -833,7 +833,7 @@ describe('Routing', () => {
       assert.isFalse(routing.isSameViewGroup(config, component));
     });
 
-    it('should return false if views have no viewGroup defined', () => {
+    it('should return false if views have the same domain and no viewGroup defined', () => {
       component.set({
         viewUrl: 'http://url.com/someUrl',
         previousNodeValues: {
@@ -843,7 +843,7 @@ describe('Routing', () => {
       assert.isFalse(routing.isSameViewGroup(config, component));
     });
 
-    it('should return false if views have the same viewGroup but different domains', () => {
+    it('should return false if views have different domains and the same viewGroup', () => {
       component.set({
         viewUrl: 'http://otherDomain.com/someUrl',
         viewGroup: 'firstSPA',
