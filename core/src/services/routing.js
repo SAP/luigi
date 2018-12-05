@@ -329,6 +329,7 @@ export const handleRouteChange = async (path, component, node, config) => {
           },
           () => {
             // NO pressed
+            history.back(); //undo the temporary history entry
           }
         )
         .finally(res => {
