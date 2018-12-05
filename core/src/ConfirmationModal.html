@@ -24,6 +24,13 @@
         title: 'Confirmation',
         text: 'Are you sure you want to do this?'
       };
+    },
+    oncreate() {
+      try {
+        document.querySelector('[data-cy=modal-yes]').focus();
+      } catch (e) {
+        console.warn("Couldn't focus confirmation button in modal");
+      }
     }
   };
 </script>
