@@ -5,11 +5,13 @@
   "license": "Apache-2.0",
   "scripts": {
     "ng": "ng",
-    "start": "ng serve",
-    "build": "ng build",
+    "start": "(npm run startConfig &) && ng serve",
+    "build": "npm run buildConfig && ng build",
     "lint": "ng lint",
-    "startWebpack": "webpack-dev-server --port=4200",
-    "buildWebpack": "webpack",
+    "startWebpack": "(npm run startConfig &) && webpack-dev-server --port=4200",
+    "buildWebpack": "npm run buildConfig && webpack",
+    "buildConfig": "webpack --config webpack-config.config.js",
+    "startConfig": "webpack --config webpack-config.config.js --watch",
     "e2e:open": "cypress open",
     "e2e:run": "cypress run"
   },

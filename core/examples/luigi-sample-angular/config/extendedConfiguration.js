@@ -1,31 +1,7 @@
-var navigationPermissionChecker = function(
-  nodeToCheckPermissionFor,
-  parentNode,
-  currentContext
-) {
-  // depending on the current path and context returns true or false
-  // true means the current node is accessible, false the opposite
-  var mockCurrentUserGroups = ['admins'];
-  if (nodeToCheckPermissionFor.constraints) {
-    // check if user has required groups
-    return (
-      nodeToCheckPermissionFor.constraints.filter(function(c) {
-        return mockCurrentUserGroups.indexOf(c) !== -1;
-      }).length !== 0
-    );
-  }
+import { navigationPermissionChecker } from './config.helpers.js';
 
-  return true;
-};
-
-function toTitleCase(str) {
-  return str.replace(/\w\S*/g, function(txt) {
-    return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
-  });
-}
-
-var getAllProjects = function() {
-  return new Promise(function(resolve) {
+var getAllProjects = function () {
+  return new Promise(function (resolve) {
     resolve([
       {
         id: 'pr1',
@@ -39,8 +15,8 @@ var getAllProjects = function() {
   });
 };
 
-var getProjectPlugins = function(projectId) {
-  return new Promise(function(resolve) {
+var getProjectPlugins = function (projectId) {
+  return new Promise(function (resolve) {
     if (projectId === 'pr2') {
       resolve([
         {
@@ -78,8 +54,8 @@ var getProjectPlugins = function(projectId) {
   });
 };
 
-var projectDetailNavProviderFn = function(context) {
-  return new Promise(function(resolve) {
+var projectDetailNavProviderFn = function (context) {
+  return new Promise(function (resolve) {
     var projectId = context.currentProject;
     var children = [
       {
@@ -274,8 +250,8 @@ var projectDetailNavProviderFn = function(context) {
         }
       }
     ];
-    getProjectPlugins(projectId).then(function(result) {
-      result.forEach(function(plugin) {
+    getProjectPlugins(projectId).then(function (result) {
+      result.forEach(function (plugin) {
         children.push({
           category: plugin.category,
           pathSegment: plugin.viewId,
@@ -289,11 +265,11 @@ var projectDetailNavProviderFn = function(context) {
   });
 };
 
-var projectsNavProviderFn = function(context) {
-  return new Promise(function(resolve) {
-    getAllProjects().then(function(result) {
+var projectsNavProviderFn = function (context) {
+  return new Promise(function (resolve) {
+    getAllProjects().then(function (result) {
       var children = [];
-      result.forEach(function(project) {
+      result.forEach(function (project) {
         children.push({
           /**
            * navigationContext:
@@ -337,7 +313,7 @@ Luigi.setConfig({
     mockAuth: {
       authorizeUrl: `${
         window.location.origin
-      }/assets/auth-mock/login-mock.html`,
+        }/assets/auth-mock/login-mock.html`,
       logoutUrl: `${window.location.origin}/assets/auth-mock/logout-mock.html`,
       post_logout_redirect_uri: '/logout.html',
       authorizeMethod: 'GET',
@@ -403,24 +379,24 @@ Luigi.setConfig({
     },
 
     events: {
-      onLogout: function() {
+      onLogout: function () {
         console.log('onLogout');
       },
-      onAuthSuccessful: function(data) {
+      onAuthSuccessful: function (data) {
         console.log('onAuthSuccessful', data);
       },
-      onAuthExpired: function() {
+      onAuthExpired: function () {
         console.log('onAuthExpired');
       },
       // TODO: define luigi-client api for getting errors
-      onAuthError: function(err) {
+      onAuthError: function (err) {
         console.log('authErrorHandler 1', err);
       }
     }
   },
   navigation: {
     nodeAccessibilityResolver: navigationPermissionChecker,
-    nodes: function() {
+    nodes: function () {
       return [
         {
           pathSegment: 'overview',
