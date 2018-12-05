@@ -39,4 +39,10 @@
     left: calc(#{$leftNavWidth} + 1rem);
     z-index: 2;
   }
+
+  :global(.no-side-nav) {
+    .fd-modal {
+      left: calc(50% - 18rem);
+    }
+  }
 </style>
