@@ -9,6 +9,7 @@ import {
   getConfigValueFromObject,
   addLeadingSlash
 } from '../utilities/helpers';
+import { getConfigValueFromObjectAsync } from '../utilities/async-helpers';
 
 const iframeNavFallbackTimeout = 2000;
 let timeoutHandle;
@@ -19,18 +20,19 @@ const getLastNodeObject = pathData => {
   return lastElement ? lastElement : {};
 };
 
-const getDefaultChildNode = function(pathData) {
+const getDefaultChildNode = async function(pathData) {
   const lastElement =
     pathData.navigationPath[pathData.navigationPath.length - 1];
 
-  const pathExists = lastElement.children.find(
+  const children = await getConfigValueFromObjectAsync(lastElement, 'children');
+  const pathExists = children.find(
     childNode => childNode.pathSegment === lastElement.defaultChildNode
   );
 
   if (lastElement.defaultChildNode && pathExists) {
     return lastElement.defaultChildNode;
-  } else if (lastElement.children && lastElement.children.length > 0) {
-    return lastElement.children[0].pathSegment;
+  } else if (children && children.length > 0) {
+    return children[0].pathSegment;
   } else {
     return '';
   }
@@ -337,8 +339,12 @@ export const handleRouteChange = async (path, component, node, config) => {
     const hideNav = LuigiConfig.getConfigBooleanValue(
       'settings.hideNavigation'
     );
-    const viewUrl = getLastNodeObject(pathData).viewUrl || '';
-    const isolateView = getLastNodeObject(pathData).isolateView || false;
+
+    const {
+      viewUrl = '',
+      isolateView = false,
+      hideSideNav = false
+    } = getLastNodeObject(pathData);
     const params = parseParams(pathUrl.split('?')[1]);
     const nodeParams = getNodeParams(params);
     const pathParams = getPathParams(pathData.navigationPath);
@@ -348,7 +354,7 @@ export const handleRouteChange = async (path, component, node, config) => {
       const routeExists = isExistingRoute(path, pathData);
 
       if (routeExists) {
-        const defaultChildNode = getDefaultChildNode(pathData);
+        const defaultChildNode = await getDefaultChildNode(pathData);
         navigateTo(`${pathUrl ? `/${pathUrl}` : ''}/${defaultChildNode}`);
       } else {
         const alert = {
@@ -378,6 +384,7 @@ export const handleRouteChange = async (path, component, node, config) => {
     const previousCompData = component.get();
     component.set({
       hideNav,
+      hideSideNav,
       viewUrl,
       navigationPath: pathData.navigationPath,
       currentNode:
