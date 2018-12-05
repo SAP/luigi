@@ -759,23 +759,28 @@ describe('Routing', () => {
     assert.equal(node.removeChild.callCount, 2);
   });
 
-  it('isNotSameDomain', () => {
+  describe('isSameViewGroup', () => {
     const config = {
       iframe: {
         src: 'http://url.com/app.html!#/prevUrl'
       }
     };
-    component.set({
-      viewUrl: 'http://url.com/app.html!#/someUrl',
-      previousNodeValues: { viewUrl: config.iframe.src }
-    });
-    assert.isFalse(routing.isNotSameDomain(config, component));
 
-    component.set({
-      viewUrl: 'http://otherurl.de/app.html!#/someUrl',
-      previousNodeValues: { viewUrl: config.iframe.src }
+    it('should return true if views have the same domain but different hash', () => {
+      component.set({
+        viewUrl: 'http://url.com/app.html!#/someUrl',
+        previousNodeValues: { viewUrl: config.iframe.src }
+      });
+      assert.isTrue(routing.isSameViewGroup(config, component));
     });
-    assert.isTrue(routing.isNotSameDomain(config, component));
+
+    it('should return false if views have different domains', () => {
+      component.set({
+        viewUrl: 'http://otherurl.de/app.html!#/someUrl',
+        previousNodeValues: { viewUrl: config.iframe.src }
+      });
+      assert.isFalse(routing.isSameViewGroup(config, component));
+    });
 
     const noHashConfig = {
       iframe: {
@@ -783,38 +788,51 @@ describe('Routing', () => {
       }
     };
 
-    //nodes with path routing and same viewGroup defined
-    component.set({
-      viewUrl: 'http://url.com/SomeUrl',
-      viewGroup: 'firstSPA',
-      previousNodeValues: {
-        viewUrl: noHashConfig.iframe.src,
-        viewGroup: 'firstSPA'
-      }
+    it('should return true if views have the same viewGroup', () => {
+      component.set({
+        viewUrl: 'http://url.com/SomeUrl',
+        viewGroup: 'firstSPA',
+        previousNodeValues: {
+          viewUrl: noHashConfig.iframe.src,
+          viewGroup: 'firstSPA'
+        }
+      });
+      assert.isTrue(routing.isSameViewGroup(config, component));
     });
-    assert.isFalse(routing.isNotSameDomain(config, component));
 
-    //nodes with path routing and different viewGroup defined
-    component.set({
-      viewUrl: 'http://url.com/someUrl',
-      viewGroup: 'firstSPA',
-      previousNodeValues: {
-        viewUrl: noHashConfig.iframe.src,
-        viewGroup: 'secondSPA'
-      }
+    it('should return false if views have different viewGroups', () => {
+      component.set({
+        viewUrl: 'http://url.com/someUrl',
+        viewGroup: 'firstSPA',
+        previousNodeValues: {
+          viewUrl: noHashConfig.iframe.src,
+          viewGroup: 'secondSPA'
+        }
+      });
+      assert.isFalse(routing.isSameViewGroup(config, component));
     });
-    assert.isTrue(routing.isNotSameDomain(config, component));
 
-    //nodes with path routing and same viewGroup defined but with different domains
-    component.set({
-      viewUrl: 'http://otherDomain.com/someUrl',
-      viewGroup: 'firstSPA',
-      previousNodeValues: {
-        viewUrl: noHashConfig.iframe.src,
-        viewGroup: 'firstSPA'
-      }
+    it('should return false if views have no viewGroup defined', () => {
+      component.set({
+        viewUrl: 'http://url.com/someUrl',
+        previousNodeValues: {
+          viewUrl: noHashConfig.iframe.src
+        }
+      });
+      assert.isFalse(routing.isSameViewGroup(config, component));
     });
-    assert.isTrue(routing.isNotSameDomain(config, component));
+
+    it('should return false if views have the same viewGroup but different domains', () => {
+      component.set({
+        viewUrl: 'http://otherDomain.com/someUrl',
+        viewGroup: 'firstSPA',
+        previousNodeValues: {
+          viewUrl: noHashConfig.iframe.src,
+          viewGroup: 'firstSPA'
+        }
+      });
+      assert.isFalse(routing.isSameViewGroup(config, component));
+    });
   });
 
   it('hasIframeIsolation', () => {
