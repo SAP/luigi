@@ -60,6 +60,6 @@ export class OverviewComponent {
 
   private isDirty: boolean = false;
   private sendDirtyEvent = () => {
-    LuigiClient.uxManager().changeDirtyStatus(this.isDirty);
+    LuigiClient.uxManager().setDirtyStatus(this.isDirty);
   };
 }
