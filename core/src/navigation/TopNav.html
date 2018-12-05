@@ -27,6 +27,7 @@
               <span class="fd-counter fd-counter--notification" aria-label="Unread count">25</span>
             </button>
         </div> -->
+        {#if visibleNodeCount > 0}
          <div class="fd-shellbar__action fd-shellbar__action--collapse">
           <div class="fd-shellbar-collapse">
             <div class="fd-popover fd-popover--right">
@@ -34,7 +35,7 @@
                 <div class="fd-shellbar-collapse--control" aria-controls="eYVEJ960" aria-expanded="false" aria-haspopup="true" role="button">
                     
               <button class=" fd-button--shell sap-icon--overflow" aria-controls="OVERFLOW_POPOVER" aria-expanded="{dropDownStates.OVERFLOW_POPOVER || false}"
-              aria-haspopup="true" on:click="toggleDropdownState('OVERFLOW_POPOVER')" on:blur="closeDropdown('OVERFLOW_POPOVER')" >
+              aria-haspopup="true" on:click="toggleDropdownState('OVERFLOW_POPOVER')" onclick="event.target.focus()" on:blur="closeDropdown('OVERFLOW_POPOVER')" >
                 <!-- <span class="fd-counter fd-counter--notification" aria-label="Unread count">25</span> -->
                 </button> 
                 </div>
@@ -46,7 +47,7 @@
                 <ul class="fd-menu__list">
                   {#each children as node}
                     {#if !node.hideFromNav}
-                      <li><a href="#" class="fd-menu__item {node === selectedNode ? 'is-selected' : ''} {node.externalLink && node.externalLink.url ? 'fd-global-nav__btn--external' : ''}" on:click=handleClick(node)>{node.label}
+                      <li><a class="fd-menu__item {node === selectedNode ? 'is-selected' : ''} {node.externalLink && node.externalLink.url ? 'fd-global-nav__btn--external' : ''}" on:click=handleClick(node)>{node.label}
                     {#if node.externalLink && node.externalLink.url}
                       <span class="sap-icon--action sap-icon--s"></span>
                     {/if}</a>
@@ -59,14 +60,14 @@
             </div>
               </div>
             </div>
-
+        {/if}
         {/if}
         {#if authorizationEnabled}
         <div class="fd-shellbar__action fd-shellbar__action--show-always">
           <div class="fd-popover">
             <div class="fd-popover__control">
               <button class=" fd-button--shell sap-icon--customer" aria-expanded="{dropDownStates.PROFILE_POPOVER || false}"
-              aria-haspopup="true" on:click="toggleDropdownState('PROFILE_POPOVER')" on:blur="closeDropdown('PROFILE_POPOVER')">
+              aria-haspopup="true" on:click="toggleDropdownState('PROFILE_POPOVER')" onclick="event.target.focus()" on:blur="closeDropdown('PROFILE_POPOVER')">
               </button>
 
               <div class="fd-popover__body fd-popover__body--right"  aria-hidden="{dropDownStatesNegated.PROFILE_POPOVER || true}" id="PROFILE_POPOVER">
@@ -95,16 +96,21 @@
     if (current.pathData && 0 < current.pathData.length) {
       const children = current.pathData[0].children;
       let selectedNode = null;
+      let visibleNodeCount = 0;
       children.map(node => {
         current.pathData.forEach(n => {
           if (!selectedNode && n === node) {
             selectedNode = node;
           }
         });
+        if (!node.hideFromNav) {
+          visibleNodeCount++;
+        }
       });
       component.set({
         children: children,
-        selectedNode: selectedNode
+        selectedNode: selectedNode,
+        visibleNodeCount: visibleNodeCount
       });
       window.TOPNAVDATA = children;
     }
@@ -114,7 +120,7 @@
     component.set({
       isLoggedIn: Navigation.isLoggedIn()
     });
-  }
+  };
 
   export default {
     oncreate() {

@@ -195,7 +195,7 @@ const navigateIframe = (config, component, node) => {
       config.iframe = document.createElement('iframe');
       config.iframe.src = viewUrl;
 
-      node.prepend(config.iframe);
+      node.insertBefore(config.iframe, node.firstChild);
 
       if (config.builderCompatibilityMode) {
         config.iframe.addEventListener('load', () => {

@@ -77,7 +77,10 @@ export class oAuth2ImplicitGrant {
       settings.post_logout_redirect_uri
     )}`;
     logoutCallback && logoutCallback();
-    window.location.href = logouturl;
+
+    setTimeout(function() {
+      window.location.href = logouturl;
+    });
   }
 
   setTokenExpirationAction() {
