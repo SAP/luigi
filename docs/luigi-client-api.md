@@ -206,7 +206,6 @@ Makes current page dirty or not
 #### Examples
 
 ```javascript
-//this.isDirty is a local variable which is set to `true` when user types anything in watched input fields
 private sendDirtyEvent = () => {
   LuigiClient.uxManager().setDirtyStatus(this.isDirty);
 };

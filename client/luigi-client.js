@@ -449,7 +449,6 @@
           * @param {boolean} isDirty tells if current page/component has any unsaved changes at the moment
       
          * @example
-         * //this.isDirty is a local variable which is set to `true` when user types anything in watched input fields
          * private sendDirtyEvent = () => {
          *   LuigiClient.uxManager().setDirtyStatus(this.isDirty);
          * };
