@@ -1,3 +1,4 @@
 language: node_js
 #script: npm run e2eTests
+install:npm install --prefix core
 script: npm test --prefix core
