@@ -5,7 +5,7 @@
     <div class="fd-popover__control">
       <button class="fd-button--shell fd-product-menu__control lui-tendant-menu__control" aria-expanded="{dropDownStates.CONTEXT_SWITCHER_POPOVER || false}"
         aria-haspopup="true" title="{selectedLabel ? selectedLabel : ''}"
-        on:click="toggleDropdownState('CONTEXT_SWITCHER_POPOVER')" on:blur="closeDropdown('CONTEXT_SWITCHER_POPOVER')">
+        on:click="toggleDropdownState('CONTEXT_SWITCHER_POPOVER')" onclick="event.target.focus()" on:blur="closeDropdown('CONTEXT_SWITCHER_POPOVER')">
         {#if !selectedLabel}{config.defaultLabel}{/if}
         {#if selectedLabel}{selectedLabel}{/if}
       </button>
