@@ -25,6 +25,6 @@
     }
   },
   "scripts": {
-    "e2eTests" : "node tests/e2e.js"
+    "e2eTests" : "node test/e2e.js"
   }
 }
