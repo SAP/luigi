@@ -246,7 +246,7 @@ The node parameters are as follows:
 - **keepSelectedForChildren** focuses the navigation on its current hierarchy, omitting the display of children.
 - **loadingIndicator.enabled** shows a loading indicator when switching between micro front-ends. If you have a fast micro front-end, you can disable this feature to prevent flickering of the loading indicator. This parameter is enabled by default.
 - **loadingIndicator.hideAutomatically** disables the automatic hiding of the loading indicator once the micro front-end is loaded. It is only considered if the loading indicator is enabled. It does not apply if the loading indicator is activated manually with the `LuigiClient.uxManager().showLoadingIndicator()` function. If the loading indicator is enabled and automatic hiding is disabled, use `LuigiClient.uxManager().hideLoadingIndicator()` to hide it manually in your micro front-end during the startup. This parameter is enabled by default.
-- **viewGroup** defines a group of views in the same domain sharing a common security context. Use this property to manage settings such as frame reuse for better performance. **viewGroup** is used only for the views that use path routing internally.
+- **viewGroup** defines a group of views in the same domain sharing a common security context. This improves performance through reusing the frame. Use **viewGroup** only for the views that use path routing internally.
 
 
 ### Navigation configuration example
