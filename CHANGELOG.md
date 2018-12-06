@@ -24,6 +24,27 @@ The lerna-changelog tool detects changes based on PR labels and maps them to sec
   }
 -->
 
+## [v0.4.0] - 2018-12-06
+
+#### :rocket: Added
+* [#259](https://github.com/kyma-project/luigi/pull/259) Nav collapsed feature ([@parostatkiem](https://github.com/parostatkiem))
+
+#### :bug: Fixed
+* [#226](https://github.com/kyma-project/luigi/pull/226) Add check if modules are same domain ([@dariadomagala](https://github.com/dariadomagala))
+* [#266](https://github.com/kyma-project/luigi/pull/266) Fixes for browser incompatibilities ([@pekura](https://github.com/pekura))
+* [#253](https://github.com/kyma-project/luigi/pull/253) Allow async defaultChildNode ([@maxmarkus](https://github.com/maxmarkus))
+* [#261](https://github.com/kyma-project/luigi/pull/261) Fix the relative path bug ([@dariadomagala](https://github.com/dariadomagala))
+* [#250](https://github.com/kyma-project/luigi/pull/250) preserveView should allow viewUrls with query params ([@maxmarkus](https://github.com/maxmarkus))
+* [#246](https://github.com/kyma-project/luigi/pull/246) Luigi client creates extra entry in browser navigation history ([@pekura](https://github.com/pekura))
+* [#238](https://github.com/kyma-project/luigi/pull/238) viewUrl should not be mandatory in dynamic node ([@maxmarkus](https://github.com/maxmarkus))
+
+#### :memo: Documentation
+* [#262](https://github.com/kyma-project/luigi/pull/262) Add improvements to Luigi Client API comments and annotations ([@bszwarc](https://github.com/bszwarc))
+* [#251](https://github.com/kyma-project/luigi/pull/251) Improvements for dex auth ([@maxmarkus](https://github.com/maxmarkus))
+* [#241](https://github.com/kyma-project/luigi/pull/241) Include v0.3.8 in changelog ([@kwiatekus](https://github.com/kwiatekus))
+* [#240](https://github.com/kyma-project/luigi/pull/240) Improve luigi client docu and generate new ([@jesusreal](https://github.com/jesusreal))
+
+
 ## [v0.3.8] - 2018-11-23
 
 #### :rocket: Added
