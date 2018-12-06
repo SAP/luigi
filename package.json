@@ -23,5 +23,8 @@
       "pre-commit": "./scripts/apply-prettier.sh && ./scripts/remove-test-prefixes.sh",
       "pre-push": "lerna run prepush"
     }
+  },
+  "scripts": {
+    "e2eTests" : "node tests/e2e.js"
   }
 }
