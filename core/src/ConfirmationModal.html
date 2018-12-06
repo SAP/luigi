@@ -38,13 +38,13 @@
 <style type="text/scss">
   $topNavHeight: 50px;
   $leftNavWidth: 320px;
-  $width: calc(100% - 2 * (#{$leftNavWidth} + 1rem));
+  $width: calc(100vw - 2 * (#{$leftNavWidth} + 1rem));
   .fd-modal {
     position: absolute;
     min-width: 20rem;
     width: $width;
     top: calc(#{$topNavHeight} + 1rem);
-    left: calc(50% - 18rem + #{$leftNavWidth});
+    left: calc((50% - 30rem) + #{$leftNavWidth});
     z-index: 2;
   }
 
