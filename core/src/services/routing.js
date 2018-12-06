@@ -91,28 +91,31 @@ const removeElementChildren = node => {
   }
 };
 
-export const isNotSameDomain = (config, component) => {
+export const isSameViewGroup = (config, component) => {
   if (config.iframe) {
     const componentData = component.get();
     const previousUrl = getUrlWithoutHash(
       componentData.previousNodeValues.viewUrl
     );
     const nextUrl = getUrlWithoutHash(componentData.viewUrl);
+    if (previousUrl === nextUrl) {
+      return true;
+    }
     const previousUrlOrigin = getLocation(previousUrl);
     const nextUrlOrigin = getLocation(nextUrl);
-    if (previousUrl === nextUrl) {
-      return false;
-    } else if (previousUrlOrigin === nextUrlOrigin) {
+    if (previousUrlOrigin === nextUrlOrigin) {
       const previousViewGroup = componentData.previousNodeValues.viewGroup;
       const nextViewGroup = componentData.viewGroup;
-      if (!(previousViewGroup && nextViewGroup)) {
+      if (
+        previousViewGroup &&
+        nextViewGroup &&
+        previousViewGroup === nextViewGroup
+      ) {
         return true;
       }
-      return previousViewGroup !== nextViewGroup;
     }
-    return true;
   }
-  return true;
+  return false;
 };
 
 const getLocation = url => {
@@ -185,7 +188,7 @@ const navigateIframe = (config, component, node) => {
 
   if (
     !componentData.isNavigateBack &&
-    (isNotSameDomain(config, component) ||
+    (!isSameViewGroup(config, component) ||
       hasIframeIsolation(component) ||
       Boolean(config.builderCompatibilityMode))
   ) {
@@ -313,7 +316,7 @@ const findViewGroup = node => {
     return node.viewGroup;
   } else if (node.parent) {
     return findViewGroup(node.parent);
-  } else return;
+  }
 };
 
 export const handleRouteChange = async (path, component, node, config) => {
