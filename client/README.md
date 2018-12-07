@@ -31,7 +31,8 @@ Additional instructions and guidelines you can use to work with Luigi Client.
 
 
 ### Generate documentation
-Validate and generate documentation using npm
+Validate and generate documentation using npm:
+
 ```bash
 npm install
 npm run docu
