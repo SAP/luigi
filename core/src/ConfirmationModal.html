@@ -38,19 +38,21 @@
 <style type="text/scss">
   $topNavHeight: 50px;
   $leftNavWidth: 320px;
-  $width: calc(100vw - 2 * (#{$leftNavWidth} + 1rem));
+  $width: 32rem;
   .fd-modal {
     position: absolute;
-    min-width: 20rem;
+    box-sizing: border-box;
     width: $width;
+    max-width: 90vw;
     top: calc(#{$topNavHeight} + 1rem);
-    left: calc((50% - 30rem) + #{$leftNavWidth});
+    left: calc(50% + #{$leftNavWidth}/ 2 - #{$width}/ 2);
     z-index: 2;
   }
 
-  :global(.no-side-nav) {
+  :global(.no-side-nav),
+  :global(.no-nav) {
     .fd-modal {
-      left: calc(50% - 18rem);
+      left: calc(50% - #{$width}/ 2);
     }
   }
 </style>
