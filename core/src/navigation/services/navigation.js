@@ -1,24 +1,10 @@
-import { LuigiConfig } from '../../services/config';
-import { getConfigValueFromObjectAsync } from '../../utilities/helpers/async-helpers';
+import { isNodeAccessPermitted } from '../../utilities/helpers/navigation-helpers';
 
-const isNodeAccessPermitted = (
-  nodeToCheckPermissionFor,
-  parentNode,
-  currentContext
-) => {
-  if (LuigiConfig.isAuthorizationEnabled() && !isLoggedIn()) return false;
-  const permissionCheckerFn = LuigiConfig.getConfigValue(
-    'navigation.nodeAccessibilityResolver'
-  );
-  if (typeof permissionCheckerFn !== 'function') {
-    return true;
-  }
-  return permissionCheckerFn(
-    nodeToCheckPermissionFor,
-    parentNode,
-    currentContext
-  );
-};
+import {
+  applyContext,
+  getConfigValueFromObjectAsync,
+  groupBy
+} from '../../utilities/helpers/async-helpers';
 
 export const getNavigationPath = async (rootNavProviderPromise, activePath) => {
   const rootNode = {};
@@ -121,18 +107,6 @@ const buildNode = async (
   return result;
 };
 
-const applyContext = (context, addition, navigationContext) => {
-  if (addition) {
-    for (var p in addition) {
-      context[p] = addition[p];
-    }
-  }
-  if (navigationContext) {
-    context.parentNavigationContexts.unshift(navigationContext);
-  }
-  return context;
-};
-
 export const findMatchingNode = (urlPathElement, nodes) => {
   let result = null;
   const dynamicSegmentsLength = nodes.filter(
@@ -210,13 +184,6 @@ export const findMatchingNode = (urlPathElement, nodes) => {
   return result;
 };
 
-export const isLoggedIn = () => {
-  const storedAuthData = JSON.parse(localStorage.getItem('luigi.auth'));
-  const isAuthValid = () =>
-    storedAuthData.accessTokenExpirationDate > Number(new Date());
-  return storedAuthData && isAuthValid();
-};
-
 export const getNodes = (children, pathData) => {
   if (children && 0 < children.length) {
     return children;
@@ -233,35 +200,6 @@ export const getNodes = (children, pathData) => {
   }
 
   return [];
-};
-
-export const groupBy = (nodes, property) => {
-  const result = {};
-  nodes.forEach(node => {
-    let key;
-    let metaInfo;
-    const category = node[property];
-    if (category && typeof category === 'object') {
-      key = category.label;
-      metaInfo = Object.assign({}, category);
-    } else {
-      key = category;
-      metaInfo = {
-        label: key,
-        icon: 'lui-blank'
-      };
-    }
-    let arr = result[key];
-    if (!arr) {
-      arr = [];
-      result[key] = arr;
-    }
-    if (!arr.metaInfo) {
-      arr.metaInfo = metaInfo;
-    }
-    arr.push(node);
-  });
-  return result;
 };
 
 export const getGroupedChildren = (children, current) => {

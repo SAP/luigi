@@ -91,6 +91,7 @@
   import * as Navigation from './services/navigation.js';
   import { LuigiConfig } from '../services/config.js';
   import { getNegatedBoolString } from '../utilities/helpers/helpers.js';
+  import { isLoggedIn } from '../utilities/helpers/auth-helpers';
 
   const setTopNavData = (current, component) => {
     if (current.pathData && 0 < current.pathData.length) {
@@ -118,7 +119,7 @@
 
   const setLoggedInState = (current, component) => {
     component.set({
-      isLoggedIn: Navigation.isLoggedIn()
+      isLoggedIn: isLoggedIn()
     });
   };
 
