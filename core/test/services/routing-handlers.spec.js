@@ -29,7 +29,7 @@ describe('Routing-handlers', () => {
     }
     sinon.restore();
   });
-  describe('#handleRouteChange()', () => {
+  describe('handleRouteChange', () => {
     const sampleLuigiConfig = {
       navigation: {
         nodes: () => [
@@ -519,7 +519,7 @@ describe('Routing-handlers', () => {
     });
   });
 
-  describe('#handleRouteClick()', () => {
+  describe('handleRouteClick', () => {
     beforeEach(() => {
       window.dispatchEvent = sinon.spy();
     });
@@ -621,7 +621,7 @@ describe('Routing-handlers', () => {
       assert.equal(dispatchCallsNum + 1, expectedDispatchCallsNum);
     });
 
-    it('link with absolute path', () => {
+    it('should consume link with absolute path', () => {
       // given
       const expectedRoute = '#/projects';
       window.location.hash = '#/some/path';
@@ -639,7 +639,7 @@ describe('Routing-handlers', () => {
       assert.equal(window.location.hash, expectedRoute);
     });
 
-    it('link with relative path', () => {
+    it('should consume link with relative path', () => {
       // given
       const expectedRoute = '#/some/path/projects';
       window.location.hash = '#/some/path';
