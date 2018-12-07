@@ -10,8 +10,8 @@
     "lint": "ng lint",
     "startWebpack": "(npm run startConfig &) && webpack-dev-server --port=4200",
     "buildWebpack": "npm run buildConfig && webpack",
-    "buildConfig": "BABEL_ENV=production webpack --config webpack-config.config.js",
-    "startConfig": "webpack --config webpack-config.config.js --watch",
+    "buildConfig": "BABEL_ENV=production webpack --mode production --config webpack-config.config.js",
+    "startConfig": "webpack --mode development --config webpack-config.config.js --watch",
     "e2e:open": "cypress open",
     "e2e:run": "cypress run"
   },
