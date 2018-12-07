@@ -28,7 +28,7 @@ The lerna-changelog tool detects changes based on PR labels and maps them to sec
 
 #### :rocket: Added
 * [#259](https://github.com/kyma-project/luigi/pull/259) Nav collapsed feature ([@parostatkiem](https://github.com/parostatkiem))
-* [#247](https://github.com/kyma-project/luigi/pull/247) Luigi view components design upgrade ([antiheld](https://github.com/antiheld))
+* [#247](https://github.com/kyma-project/luigi/pull/247) Luigi view components design upgrade ([@antiheld](https://github.com/antiheld))
 
 #### :bug: Fixed
 * [#226](https://github.com/kyma-project/luigi/pull/226) Add check if modules are same domain ([@dariadomagala](https://github.com/dariadomagala))
