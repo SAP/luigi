@@ -29,7 +29,10 @@
   import TopNav from './navigation/TopNav.html';
   import LeftNav from './navigation/LeftNav.html';
   import * as Routing from './services/routing.js';
-  import { addRouteChangeListener } from './utilities/helpers/routing-helpers';
+  import {
+    addRouteChangeListener,
+    getContentViewParamPrefix
+  } from './utilities/helpers/routing-helpers';
   import { handleRouteChange } from './services/routing-handlers';
   import { getConfigValueFromObject } from './utilities/helpers/helpers';
   import { getStoredAuthData } from './utilities/helpers/auth-helpers';
@@ -94,7 +97,7 @@
       path += '?';
       Object.entries(params.nodeParams).forEach(entry => {
         path +=
-          encodeURIComponent(Routing.getContentViewParamPrefix() + entry[0]) +
+          encodeURIComponent(getContentViewParamPrefix() + entry[0]) +
           '=' +
           encodeURIComponent(entry[1]) +
           '&';

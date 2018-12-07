@@ -1,4 +1,9 @@
-import { navigateTo, buildFromRelativePath, navigateIframe } from './routing';
+import {
+  navigateTo,
+  buildFromRelativePath,
+  navigateIframe,
+  matchPath
+} from './routing';
 import { LuigiConfig } from '../services/config';
 import {
   getPathWithoutHash,
