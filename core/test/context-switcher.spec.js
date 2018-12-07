@@ -3,7 +3,7 @@ const sinon = require('sinon');
 
 const CSHelpers = require('../src/navigation/services/context-switcher')
   .ContextSwitcherHelpers;
-const Helpers = require('../src/utilities/helpers.js');
+const Helpers = require('../src/utilities/helpers/helpers');
 
 describe('ContextSwitcher', function() {
   afterEach(() => {
