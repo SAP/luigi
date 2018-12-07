@@ -27,7 +27,7 @@ You can see the Luigi Client in action by running the [Angular example applicati
 
 ## Usage
 
-Use additional instructions to work with Luigi Client.
+Additional instructions and guidelines you can use to work with Luigi Client.
 
 
 ### Generate documentation

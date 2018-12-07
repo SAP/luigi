@@ -2,36 +2,21 @@
 
 ## Overview
 
-Luigi is a micro front-end JavaScript framework that enables the creation of an administrative user interface which is driven by local and distributed views. Luigi enables the communication between a web application and content-views which the application contains such as routing, navigation, authorization, and user experience elements.
+Luigi is a micro front-end JavaScript framework that enables the creation of an administrative user interface driven by local and distributed views. Luigi enables the communication between a web application and content-views which the application contains such as routing, navigation, authorization, and user experience elements.
 
-Luigi consists of two components: **Luigi core** and **Luigi client**.
-
- **Luigi core** is installed in the web application while **Luigi client** is installed in the application(s) running in the content-view. Both of these components interact with one another to leverage communication between both the web application and the content-view, without compromising the security principles behind the iframe pattern.
+Luigi consists of Luigi Core and Luigi Client applications. Luigi Core works in the web application, while Luigi Client is used by the application running in the content-view to communicate with the main application. Both of these components interact with each another to leverage communication between both the web application and the content-view, without compromising the security principles behind the iframe pattern.
 
 ## Installation
 
-### Luigi core
+Follow the instructions in [this](docs/application-setup.md) document to get started with Luigi. Read [this](client/README.md) document to install the Luigi Client.
 
-Luigi core is the part of Luigi that enables navigation, security and routing. To get started with Luigi, read [this](docs/application-setup.md) document.
+View the [application examples](core/examples) to explore Luigi's features.
 
-- [Application setup](docs/application-setup.md) shows you the first steps to prepare your application for development.
-- [Navigation configuration](docs/navigation-configuration.md) shows you how to configure navigation.
-- [Authorization configuration](docs/authorization-configuration.md) shows you how to secure Luigi.
-- [General settings](docs/general-settings.md) provides you with configuration parameters.
+## Documentation
 
-### Luigi client
+For Luigi documentation, see [Luigi documentation](docs/README.md).
 
-Luigi client enables integration of Luigi in views. You can easily configure the lifecycle and links of the client, as well as customize the appearance of your navigation.
-
-- [Lifecycle](docs/luigi-client-api.md#lifecycle) gives you details on the life cycle of listeners, navigation nodes and event data.
-- [Link Manager](docs/luigi-client-api.md#linkmanager) allows you to navigate to a specific route.
-- [UX Manager](docs/luigi-client-api.md#uxmanager) helps you to manage the appearance in Luigi.
-
-See [this](https://github.com/kyma-project/luigi/blob/master/client/README.md) document to learn more about the Luigi client. 
-
-View [example applications](/core/examples).
-
-### Code formatting for contributors
+## Code formatting for contributors
 
 All projects in the repository use [Prettier](https://prettier.io) to format source code. Run the `npm install` command in the root folder to install it along with [husky](https://github.com/typicode/husky), the Git hooks manager. Both tools ensure proper codebase formatting before committing it.
 
