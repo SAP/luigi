@@ -9,6 +9,7 @@ import {
   getConfigValueFromObject,
   addLeadingSlash
 } from '../utilities/helpers';
+import { getConfigValueFromObjectAsync } from '../utilities/async-helpers';
 
 const iframeNavFallbackTimeout = 2000;
 let timeoutHandle;
@@ -19,18 +20,19 @@ const getLastNodeObject = pathData => {
   return lastElement ? lastElement : {};
 };
 
-const getDefaultChildNode = function(pathData) {
+const getDefaultChildNode = async function(pathData) {
   const lastElement =
     pathData.navigationPath[pathData.navigationPath.length - 1];
 
-  const pathExists = lastElement.children.find(
+  const children = await getConfigValueFromObjectAsync(lastElement, 'children');
+  const pathExists = children.find(
     childNode => childNode.pathSegment === lastElement.defaultChildNode
   );
 
   if (lastElement.defaultChildNode && pathExists) {
     return lastElement.defaultChildNode;
-  } else if (lastElement.children && lastElement.children.length > 0) {
-    return lastElement.children[0].pathSegment;
+  } else if (children && children.length > 0) {
+    return children[0].pathSegment;
   } else {
     return '';
   }
@@ -89,16 +91,37 @@ const removeElementChildren = node => {
   }
 };
 
-export const isNotSameDomain = (config, component) => {
+export const isSameViewGroup = (config, component) => {
   if (config.iframe) {
     const componentData = component.get();
     const previousUrl = getUrlWithoutHash(
       componentData.previousNodeValues.viewUrl
     );
     const nextUrl = getUrlWithoutHash(componentData.viewUrl);
-    return previousUrl != nextUrl;
+    if (previousUrl === nextUrl) {
+      return true;
+    }
+    const previousUrlOrigin = getLocation(previousUrl);
+    const nextUrlOrigin = getLocation(nextUrl);
+    if (previousUrlOrigin === nextUrlOrigin) {
+      const previousViewGroup = componentData.previousNodeValues.viewGroup;
+      const nextViewGroup = componentData.viewGroup;
+      if (
+        previousViewGroup &&
+        nextViewGroup &&
+        previousViewGroup === nextViewGroup
+      ) {
+        return true;
+      }
+    }
   }
-  return true;
+  return false;
+};
+
+const getLocation = url => {
+  var element = document.createElement('a');
+  element.href = url;
+  return element.origin;
 };
 
 export const hasIframeIsolation = component => {
@@ -165,7 +188,7 @@ const navigateIframe = (config, component, node) => {
 
   if (
     !componentData.isNavigateBack &&
-    (isNotSameDomain(config, component) ||
+    (!isSameViewGroup(config, component) ||
       hasIframeIsolation(component) ||
       Boolean(config.builderCompatibilityMode))
   ) {
@@ -192,7 +215,7 @@ const navigateIframe = (config, component, node) => {
       config.iframe = document.createElement('iframe');
       config.iframe.src = viewUrl;
 
-      node.prepend(config.iframe);
+      node.insertBefore(config.iframe, node.firstChild);
 
       if (config.builderCompatibilityMode) {
         config.iframe.addEventListener('load', () => {
@@ -288,6 +311,14 @@ const buildRoute = (node, path, params) =>
     ? path + (params ? '?' + params : '')
     : buildRoute(node.parent, `/${node.parent.pathSegment}${path}`, params);
 
+const findViewGroup = node => {
+  if (node.viewGroup) {
+    return node.viewGroup;
+  } else if (node.parent) {
+    return findViewGroup(node.parent);
+  }
+};
+
 export const handleRouteChange = async (path, component, node, config) => {
   const defaultPattern = [/access_token=/, /id_token=/];
   const patterns =
@@ -317,12 +348,13 @@ export const handleRouteChange = async (path, component, node, config) => {
     const params = parseParams(pathUrl.split('?')[1]);
     const nodeParams = getNodeParams(params);
     const pathParams = getPathParams(pathData.navigationPath);
+    const viewGroup = findViewGroup(getLastNodeObject(pathData));
 
     if (!viewUrl) {
       const routeExists = isExistingRoute(path, pathData);
 
       if (routeExists) {
-        const defaultChildNode = getDefaultChildNode(pathData);
+        const defaultChildNode = await getDefaultChildNode(pathData);
         navigateTo(`${pathUrl ? `/${pathUrl}` : ''}/${defaultChildNode}`);
       } else {
         const alert = {
@@ -363,10 +395,12 @@ export const handleRouteChange = async (path, component, node, config) => {
       nodeParams,
       pathParams,
       isolateView,
+      viewGroup,
       previousNodeValues: previousCompData
         ? {
             viewUrl: previousCompData.viewUrl,
-            isolateView: previousCompData.isolateView
+            isolateView: previousCompData.isolateView,
+            viewGroup: previousCompData.viewGroup
           }
         : {}
     });

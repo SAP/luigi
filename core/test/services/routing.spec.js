@@ -780,23 +780,80 @@ describe('Routing', () => {
     assert.equal(node.removeChild.callCount, 2);
   });
 
-  it('isNotSameDomain', () => {
+  describe('isSameViewGroup', () => {
     const config = {
       iframe: {
         src: 'http://url.com/app.html!#/prevUrl'
       }
     };
-    component.set({
-      viewUrl: 'http://url.com/app.html!#/someUrl',
-      previousNodeValues: { viewUrl: config.iframe.src }
-    });
-    assert.isFalse(routing.isNotSameDomain(config, component));
 
-    component.set({
-      viewUrl: 'http://otherurl.de/app.html!#/someUrl',
-      previousNodeValues: { viewUrl: config.iframe.src }
+    it('should return true if views have the same domain and different hash', () => {
+      component.set({
+        viewUrl: 'http://url.com/app.html!#/someUrl',
+        previousNodeValues: { viewUrl: config.iframe.src }
+      });
+      assert.isTrue(routing.isSameViewGroup(config, component));
     });
-    assert.isTrue(routing.isNotSameDomain(config, component));
+
+    it('should return false if views have different domains', () => {
+      component.set({
+        viewUrl: 'http://otherurl.de/app.html!#/someUrl',
+        previousNodeValues: { viewUrl: config.iframe.src }
+      });
+      assert.isFalse(routing.isSameViewGroup(config, component));
+    });
+
+    const noHashConfig = {
+      iframe: {
+        src: 'http://url.com/oneSite'
+      }
+    };
+
+    it('should return true if views have the same domain and viewGroup', () => {
+      component.set({
+        viewUrl: 'http://url.com/SomeUrl',
+        viewGroup: 'firstSPA',
+        previousNodeValues: {
+          viewUrl: noHashConfig.iframe.src,
+          viewGroup: 'firstSPA'
+        }
+      });
+      assert.isTrue(routing.isSameViewGroup(config, component));
+    });
+
+    it('should return false if views have the same domian and different viewGroups', () => {
+      component.set({
+        viewUrl: 'http://url.com/someUrl',
+        viewGroup: 'firstSPA',
+        previousNodeValues: {
+          viewUrl: noHashConfig.iframe.src,
+          viewGroup: 'secondSPA'
+        }
+      });
+      assert.isFalse(routing.isSameViewGroup(config, component));
+    });
+
+    it('should return false if views have the same domain and no viewGroup defined', () => {
+      component.set({
+        viewUrl: 'http://url.com/someUrl',
+        previousNodeValues: {
+          viewUrl: noHashConfig.iframe.src
+        }
+      });
+      assert.isFalse(routing.isSameViewGroup(config, component));
+    });
+
+    it('should return false if views have different domains and the same viewGroup', () => {
+      component.set({
+        viewUrl: 'http://otherDomain.com/someUrl',
+        viewGroup: 'firstSPA',
+        previousNodeValues: {
+          viewUrl: noHashConfig.iframe.src,
+          viewGroup: 'firstSPA'
+        }
+      });
+      assert.isFalse(routing.isSameViewGroup(config, component));
+    });
   });
 
   it('hasIframeIsolation', () => {
@@ -849,24 +906,52 @@ describe('Routing', () => {
       };
     };
 
-    it('should return first child if no defaultChildNode is set', () => {
+    it('should return first child if no defaultChildNode is set', async () => {
       let pathData = getPathData();
 
-      assert.equal(getDefaultChildNode(pathData), 'stakeholders');
+      assert.equal(await getDefaultChildNode(pathData), 'stakeholders');
     });
 
-    it('should return child with pathSegment equal to defaultChildNode', () => {
+    it('should return child with pathSegment equal to defaultChildNode', async () => {
       let pathData = getPathData();
       pathData.navigationPath[1].defaultChildNode = 'customers';
 
-      assert.equal(getDefaultChildNode(pathData), 'customers');
+      assert.equal(await getDefaultChildNode(pathData), 'customers');
     });
 
-    it('should return first child if given defaultChildNode does not exist', () => {
+    it('should return first child if given defaultChildNode does not exist', async () => {
       const pathData = getPathData();
       pathData.navigationPath[1].defaultChildNode = 'NOSUCHPATH';
 
-      assert.equal(getDefaultChildNode(pathData), 'stakeholders');
+      assert.equal(await getDefaultChildNode(pathData), 'stakeholders');
+    });
+
+    it('should return first child asynchronous if no defaultChildNode is set', async () => {
+      let pathData = {
+        navigationPath: [
+          {
+            // DOESN'T MATTER
+          },
+          {
+            pathSegment: 'groups',
+            children: () =>
+              Promise.resolve([
+                {
+                  pathSegment: 'stakeholders',
+                  viewUrl:
+                    '/sampleapp.html#/projects/1/users/groups/stakeholders'
+                },
+                {
+                  pathSegment: 'customers',
+                  viewUrl: '/sampleapp.html#/projects/1/users/groups/customers'
+                }
+              ])
+          }
+        ],
+        context: {}
+      };
+
+      assert.equal(await getDefaultChildNode(pathData), 'stakeholders');
     });
   });
 });
