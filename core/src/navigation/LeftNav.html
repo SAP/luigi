@@ -57,39 +57,40 @@
 </div>
 
 <script type="text/javascript">
-    import { getChildren, getLeftNavData } from './services/navigation.js';
-    import { handleRouteClick } from '../services/routing.js';
-    import { LuigiConfig } from '../services/config.js';
+  import { getChildren, getLeftNavData } from './services/navigation.js';
+  import { handleRouteClick } from '../services/routing-handlers';
+  import { LuigiConfig } from '../services/config.js';
 
-    const setLeftNavData = async (current, component) => {
-      const componentData = component.get();
-      const leftNavData = await getLeftNavData(current, componentData);
-      if (!leftNavData) {
-        return;
-      }
-      component.set(leftNavData);
-      window.LEFTNAVDATA = leftNavData.groupedChildren;
-    };
+  const setLeftNavData = async (current, component) => {
+    const componentData = component.get();
+    const leftNavData = await getLeftNavData(current, componentData);
+    if (!leftNavData) {
+      return;
+    }
+    component.set(leftNavData);
+    window.LEFTNAVDATA = leftNavData.groupedChildren;
+  };
 
-    export default {
-      oncreate() {
-        this.set({
-          hideNavComponent: LuigiConfig.getConfigBooleanValue('settings.hideNavigation')
-        });
-      },
-      onstate({ changed, current, previous }) {
-        if (!previous || previous.pathData != current.pathData) {
-          setLeftNavData(current, this);
-        }
-      },
-      methods: {
-        handleClick: node => handleRouteClick(node)
+  export default {
+    oncreate() {
+      this.set({
+        hideNavComponent: LuigiConfig.getConfigBooleanValue(
+          'settings.hideNavigation'
+        )
+      });
+    },
+    onstate({ changed, current, previous }) {
+      if (!previous || previous.pathData != current.pathData) {
+        setLeftNavData(current, this);
       }
-    };
+    },
+    methods: {
+      handleClick: node => handleRouteClick(node)
+    }
+  };
 </script>
 
 <style type="text/scss">
-
   a {
     cursor: pointer;
   }
@@ -118,10 +119,9 @@
     display: none;
   }
 
-  .lui-category{
+  .lui-category {
     // this should be inherited from $fd-menu-item-seperator-color
     border-top: 1px solid #eeeeef;
-    
 
     // Align style with normal nodes - should be extended from sidebar item
     padding: 10px 20px 10px 16px;
@@ -131,13 +131,12 @@
     font-weight: 400;
     text-transform: inherit;
   }
-  
 
   // Add missing visual indicator for two senses indication of active state
-  .fd-side-nav__link.is-selected{
+  .fd-side-nav__link.is-selected {
     position: relative;
 
-    &:before{
+    &:before {
       content: '';
       position: absolute;
       left: 0;
@@ -146,19 +145,18 @@
       height: 100%;
       background: #0a6ed1;
       display: block;
-    }  
+    }
   }
-  
+
   // Overwrite padding of icon
-  .fd-side-nav__icon{
+  .fd-side-nav__icon {
     padding-right: 4px;
 
-      display: inline-block;
-      min-width: 20px;
-      vertical-align: middle;
+    display: inline-block;
+    min-width: 20px;
+    vertical-align: middle;
 
-    &.sap-icon--lui-blank{
-
+    &.sap-icon--lui-blank {
     }
   }
 </style>

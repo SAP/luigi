@@ -29,6 +29,8 @@
   import TopNav from './navigation/TopNav.html';
   import LeftNav from './navigation/LeftNav.html';
   import * as Routing from './services/routing.js';
+  import { addRouteChangeListener } from './utilities/helpers/routing-helpers';
+  import { handleRouteChange } from './services/routing-handlers';
   import { getConfigValueFromObject } from './utilities/helpers/helpers';
   import { getStoredAuthData } from './utilities/helpers/auth-helpers';
 
@@ -52,16 +54,16 @@
   const enableRouting = (component, node, config) => {
     // intial route handling
     const currentPath = Routing.getCurrentPath();
-    Routing.handleRouteChange(currentPath, component, node, config);
+    handleRouteChange(currentPath, component, node, config);
 
     // subsequential route handling
-    Routing.addRouteChangeListener(path => {
+    addRouteChangeListener(path => {
       const pv = component.get().preservedViews;
       if (!isValidBackRoute(pv, path)) {
         component.set({ preservedViews: [] });
         Routing.removeInactiveIframes(node);
       }
-      Routing.handleRouteChange(path, component, node, config);
+      handleRouteChange(path, component, node, config);
     });
   };
 

@@ -1,10 +1,10 @@
-import { isNodeAccessPermitted } from '../../utilities/helpers/navigation-helpers';
-
 import {
+  isNodeAccessPermitted,
   applyContext,
-  getConfigValueFromObjectAsync,
   groupBy
-} from '../../utilities/helpers/async-helpers';
+} from '../../utilities/helpers/navigation-helpers';
+
+import { getConfigValueFromObjectAsync } from '../../utilities/helpers/async-helpers';
 
 export const getNavigationPath = async (rootNavProviderPromise, activePath) => {
   const rootNode = {};

@@ -169,3 +169,7 @@ export const getConfigValueFromObject = (object, property) => {
   }
   return nextValue;
 };
+
+export const escapeRegExp = string => {
+  return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+};
