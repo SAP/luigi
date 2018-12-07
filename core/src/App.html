@@ -29,8 +29,8 @@
   import TopNav from './navigation/TopNav.html';
   import LeftNav from './navigation/LeftNav.html';
   import * as Routing from './services/routing.js';
-  import { getConfigValueFromObject } from './utilities/helpers.js';
-  import { getStoredAuthData } from './utilities/auth-helpers';
+  import { getConfigValueFromObject } from './utilities/helpers/helpers';
+  import { getStoredAuthData } from './utilities/helpers/auth-helpers';
 
   const removeQueryParams = str => str.split('?')[0];
 
@@ -400,5 +400,4 @@
       display: inline;
     }
   }
-
 </style>

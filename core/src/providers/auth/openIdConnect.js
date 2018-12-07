@@ -1,5 +1,5 @@
-import { deepMerge, prependOrigin } from '../../utilities/helpers';
-import { waitForKeyExistency } from '../../utilities/async-helpers';
+import { deepMerge, prependOrigin } from '../../utilities/helpers/helpers';
+import { waitForKeyExistency } from '../../utilities/helpers/async-helpers';
 import { thirdPartyCookiesStatus } from '../../utilities/third-party-cookies-check';
 
 export class openIdConnect {

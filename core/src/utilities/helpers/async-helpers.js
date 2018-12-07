@@ -1,8 +1,4 @@
-import {
-  getConfigValueFromObject,
-  isFunction,
-  isPromise
-} from '../utilities/helpers.js';
+import { getConfigValueFromObject, isFunction, isPromise } from './helpers.js';
 
 const handles = {};
 

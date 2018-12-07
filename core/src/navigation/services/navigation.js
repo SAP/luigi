@@ -1,5 +1,5 @@
 import { LuigiConfig } from '../../services/config';
-import { getConfigValueFromObjectAsync } from '../../utilities/async-helpers';
+import { getConfigValueFromObjectAsync } from '../../utilities/helpers/async-helpers';
 
 const isNodeAccessPermitted = (
   nodeToCheckPermissionFor,

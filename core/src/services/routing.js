@@ -8,8 +8,8 @@ import {
   isIE,
   getConfigValueFromObject,
   addLeadingSlash
-} from '../utilities/helpers';
-import { getConfigValueFromObjectAsync } from '../utilities/async-helpers';
+} from '../utilities/helpers/helpers';
+import { getConfigValueFromObjectAsync } from '../utilities/helpers/async-helpers';
 
 const iframeNavFallbackTimeout = 2000;
 let timeoutHandle;

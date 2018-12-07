@@ -1,5 +1,5 @@
-import { getConfigValueFromObjectAsync } from '../utilities/async-helpers';
-import { getConfigValueFromObject } from '../utilities/helpers';
+import { getConfigValueFromObjectAsync } from '../utilities/helpers/async-helpers';
+import { getConfigValueFromObject } from '../utilities/helpers/helpers';
 
 class LuigiConfigManager {
   constructor() {

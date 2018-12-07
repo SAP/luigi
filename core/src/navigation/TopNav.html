@@ -90,7 +90,7 @@
   import { handleRouteClick } from '../services/routing.js';
   import * as Navigation from './services/navigation.js';
   import { LuigiConfig } from '../services/config.js';
-  import { getNegatedBoolString } from '../utilities/helpers.js';
+  import { getNegatedBoolString } from '../utilities/helpers/helpers.js';
 
   const setTopNavData = (current, component) => {
     if (current.pathData && 0 < current.pathData.length) {
@@ -126,7 +126,9 @@
     oncreate() {
       this.set({
         authorizationEnabled: LuigiConfig.isAuthorizationEnabled(),
-        hideNavComponent: LuigiConfig.getConfigBooleanValue('settings.hideNavigation')
+        hideNavComponent: LuigiConfig.getConfigBooleanValue(
+          'settings.hideNavigation'
+        )
       });
     },
     onstate({ changed, current, previous }) {
@@ -179,7 +181,7 @@
 
 <style type="text/scss">
   // Change display type to avoid line-breaks if screen is too narrow
-  .fd-shellbar__actions{
+  .fd-shellbar__actions {
     display: flex;
     justify-content: flex-end;
   }
