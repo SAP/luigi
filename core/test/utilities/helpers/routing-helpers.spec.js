@@ -3,7 +3,7 @@ const assert = chai.assert;
 
 import { getDefaultChildNode } from '../../../src/utilities/helpers/routing-helpers';
 
-describe('Routing', () => {
+describe('Routing-helpers', () => {
   describe('defaultChildNodes', () => {
     const getPathData = function() {
       return {

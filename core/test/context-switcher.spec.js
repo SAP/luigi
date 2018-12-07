@@ -5,7 +5,7 @@ const CSHelpers = require('../src/navigation/services/context-switcher')
   .ContextSwitcherHelpers;
 const Helpers = require('../src/utilities/helpers/helpers');
 
-describe('ContextSwitcher', function() {
+describe('Context-switcher', function() {
   afterEach(() => {
     sinon.restore();
     sinon.reset();

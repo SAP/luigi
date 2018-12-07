@@ -10,7 +10,7 @@ import { deepMerge } from '../../src/utilities/helpers/helpers';
 import { afterEach } from 'mocha';
 import { LuigiConfig } from '../../src/services/config';
 
-describe('Routing handlers', () => {
+describe('Routing-handlers', () => {
   let component;
   beforeEach(() => {
     let lastObj = {};

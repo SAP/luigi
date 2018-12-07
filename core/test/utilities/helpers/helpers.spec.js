@@ -1,8 +1,8 @@
 const chai = require('chai');
 const assert = chai.assert;
-import { containsAllSegments } from '../../src/utilities/helpers';
+import { containsAllSegments } from '../../../src/utilities/helpers/helpers';
 
-describe('Helpers()', () => {
+describe('Helpers', () => {
   describe('#containsAllSegments()', () => {
     it('should return true when proper data provided', async () => {
       const sourceUrl = 'mas/ko/pa/tol/';
