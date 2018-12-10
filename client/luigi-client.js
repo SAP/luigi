@@ -440,7 +440,7 @@
           window.parent.postMessage(
             {
               msg: 'luigi.limit-exceeded',
-              data: data,
+              exceededLimits: data,
               environment: env
             },
             '*'

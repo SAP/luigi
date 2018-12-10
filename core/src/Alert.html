@@ -5,13 +5,13 @@
       {alert.message} {alert.link}
     </div>
   {/if}
-  {#if alert.msg === "luigi.limit-exceeded"}
+  {#if alert.msg === "luigi.limit-exceeded" && alert.exceededLimits && alert.exceededLimits.length > 0}
     <div class="fd-alert fd-alert--error fd-alert--dismissible" role="alert" id="j2ALl423">
       <button on:click="set({alert:false})" class="fd-alert__close" aria-controls="j2ALl423" aria-label="Close"></button>
         <div>Error! The following resource quota limit has been exceeded by the given resource:</div>
-        {#each alert.data as resourceQuota}
-          {#each resourceQuota.affectedResources as affectedResource}
-            <div>- '{resourceQuota.resourceName}' by '{affectedResource}' ({resourceQuota.quotaName})</div>
+        {#each alert.exceededLimits as limit}
+          {#each limit.affectedResources as affectedResource}
+            <div>- '{limit.resourceName}' by '{affectedResource}' ({limit.quotaName})</div>
           {/each}
         {/each}
         <div>
