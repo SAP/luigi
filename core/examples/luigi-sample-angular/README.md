@@ -31,7 +31,7 @@ To have this application running, follow these steps:
 
 4. Start the example application from the `luigi/core/examples/luigi-sample-angular` folder.
 
-   The  [`extendedConfiguration.js`](config/extendedConfiguration.js) file contains the default configuration including all available features. If you want to try out a simpler example, change the configuration reference in the [`index.html`](src/index.html) file to [`basicConfiguration.js`](src/assets/basicConfiguration.js).
+   The [`extendedConfiguration.js`](config/extendedConfiguration.js) file contains the default configuration including all available features. If you want to try out a simpler example, change the configuration reference in the [`index.html`](src/index.html) file to [`basicConfiguration.bundle.js`](config/basicConfiguration.js).
 
    You can use hash-based routing or path-based routing in your application:
 

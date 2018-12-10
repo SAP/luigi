@@ -2,9 +2,12 @@ const path = require('path');
 
 module.exports = {
   target: 'web',
-  entry: './config/extendedConfiguration.js',
+  entry: {
+    basicConfiguration: './config/basicConfiguration.js',
+    extendedConfiguration: './config/extendedConfiguration.js'
+  },
   output: {
-    filename: 'extendedConfiguration.bundle.js',
+    filename: '[name].bundle.js',
     path: path.resolve(__dirname, 'src', 'assets')
   },
   module: {

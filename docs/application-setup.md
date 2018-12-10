@@ -47,8 +47,9 @@ $ npm init -y
 $ npm i -S @kyma-project/luigi-core@latest @kyma-project/luigi-client@latest fiori-fundamentals@latest
 $ mkdir -p public/assets
 $ curl https://raw.githubusercontent.com/kyma-project/Luigi/master/core/examples/luigi-sample-angular/src/index.html > public/index.html
+$ sed 's/extendedConfiguration.bundle.js/sampleconfig.js/g' public/index.html > public/index.tmp.html && mv public/index.tmp.html public/index.html
 $ curl https://raw.githubusercontent.com/kyma-project/Luigi/master/core/examples/luigi-sample-angular/src/assets/sampleexternal.html > public/assets/temp.html
-$ curl https://raw.githubusercontent.com/kyma-project/Luigi/master/core/examples/luigi-sample-angular/src/assets/basicConfiguration.js > public/assets/sampleconfig.js
+$ curl https://raw.githubusercontent.com/kyma-project/Luigi/master/core/examples/luigi-sample-angular/config/basicConfiguration.js > public/assets/sampleconfig.js
 $ cp -r node_modules/\@kyma-project/luigi-* public
 $ live-server --entry-file=index.html public
 
@@ -68,6 +69,7 @@ $ ng new my-dream-app --routing && cd my-dream-app
 $ npm i -S @kyma-project/luigi-core@latest @kyma-project/luigi-client@latest fiori-fundamentals@latest
 $ mv src/index.html src/angular.html
 $ curl https://raw.githubusercontent.com/kyma-project/Luigi/master/core/examples/luigi-sample-angular/src/index.html > src/index.html
+$ sed 's/extendedConfiguration.bundle.js/sampleconfig.js/g' src/index.html > src/index.tmp.html && mv src/index.tmp.html src/index.html
 $ curl https://raw.githubusercontent.com/kyma-project/Luigi/master/core/examples/luigi-sample-angular/src/assets/basicConfiguration.js > src/assets/sampleconfig.js
 $ sed 's/"src\/index.html"/"src\/angular.html"/g' angular.json > tmp.json && mv tmp.json angular.json
 $ sed 's/"src\/assets"/"src\/assets","src\/index.html", {"glob": "**","input": "node_modules\/@kyma-project\/luigi-core", "output": "\/luigi-core"},{"glob": "**","input": "node_modules\/@kyma-project\/luigi-client","output": "\/luigi-client"}/g' angular.json > tmp.json && mv tmp.json angular.json
@@ -93,6 +95,7 @@ $ npm init -y
 $ npm i -S @kyma-project/luigi-core@latest @kyma-project/luigi-client@latest fiori-fundamentals@latest
 $ mkdir -p public/assets
 $ curl https://raw.githubusercontent.com/kyma-project/Luigi/master/core/examples/luigi-sample-angular/src/index.html > public/index.html
+$ sed 's/extendedConfiguration.bundle.js/sampleconfig.js/g' public/index.html > public/index.tmp.html && mv public/index.tmp.html public/index.html
 $ curl https://raw.githubusercontent.com/SAP/openui5/master/src/sap.m/test/sap/m/demokit/helloworld/index.html  | sed 's/src="..\/..\/..\/..\/..\/resources\/sap-ui-core.js"/src="https:\/\/openui5.hana.ondemand.com\/resources\/sap-ui-core.js"/g' > public/ui5.html
 $ curl https://raw.githubusercontent.com/kyma-project/Luigi/master/core/examples/luigi-sample-angular/src/assets/basicConfiguration.js > public/assets/sampleconfig.js
 $ cp -r node_modules/\@kyma-project/luigi-* public
@@ -120,6 +123,7 @@ $ npm i -S @kyma-project/luigi-core@latest @kyma-project/luigi-client@latest fio
 $ mkdir -p public/assets
 $ mv public/index.html public/vue.html
 $ curl https://raw.githubusercontent.com/kyma-project/Luigi/master/core/examples/luigi-sample-angular/src/index.html > public/index.html
+$ sed 's/extendedConfiguration.bundle.js/sampleconfig.js/g' public/index.html > public/index.tmp.html && mv public/index.tmp.html public/index.html
 $ curl https://raw.githubusercontent.com/kyma-project/Luigi/master/core/examples/luigi-sample-angular/src/assets/basicConfiguration.js > public/assets/sampleconfig.js
 $ echo "const webpack=require('webpack');const CopyWebpackPlugin=require('copy-webpack-plugin');module.exports={pages:{sampleapp:{entry:'src/main.js',template:'public/vue.html',filename:'vue.html'}},lintOnSave:true,runtimeCompiler:true,outputDir:'dist',configureWebpack:{plugins:[new CopyWebpackPlugin([{context:'public',to:'index.html',from:'index.html'},{context:'node_modules/@kyma-project/luigi-core',to:'./luigi-core',from:{glob:'**',dot:true}},{context:'node_modules/@kyma-project/luigi-client',to:'./luigi-client',from:{glob:'**',dot:true}}],{ignore:['.gitkeep','**/.DS_Store','**/Thumbs.db'],debug:'warning'})]}};" > vue.config.js
 $ npm run serve
