@@ -4,7 +4,7 @@
 
 Luigi is a micro front-end JavaScript framework that enables you to create an administrative user interface driven by local and distributed views. Luigi allows a web application to communicate with the micro front-ends which the application contains. To make sure the communication runs smoothly, you can easily configure the settings such as routing, navigation, authorization, and user experience elements.
 
-Luigi consists of Luigi Core and Luigi Client applications. USeLuigi Core to build the core application, and Luigi Client to communicate with the micro front-end it hosts. Both applications interact with each other to leverage communication between the main web application and the micro front-end, without compromising the security principles behind the iframe pattern.
+Luigi consists of Luigi Core and Luigi Client applications. Use Luigi Core to build the core application, and Luigi Client to communicate with the micro front-end it hosts. Both applications interact with each other to leverage communication between the main web application and the micro front-end, without compromising the security principles behind the iframe pattern.
 
 ## Installation
 
