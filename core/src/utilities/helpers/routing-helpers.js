@@ -1,6 +1,7 @@
 import { getConfigValueFromObjectAsync } from './async-helpers';
 import { escapeRegExp, getUrlWithoutHash } from './helpers';
 import { LuigiConfig } from '../../services/config';
+import { getModifiedPathname } from '../../services/routing';
 
 export const getLastNodeObject = pathData => {
   const lastElement = [...pathData.navigationPath].pop();
