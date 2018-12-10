@@ -2,14 +2,14 @@ import { getNavigationPath } from '../navigation/services/navigation';
 import {
   hideElementChildren,
   removeElementChildren,
-  getLocation,
   replaceVars,
-  buildRoute
+  buildRoute,
+  isSameViewGroup,
+  hasIframeIsolation
 } from '../utilities/helpers/routing-helpers';
 import { LuigiConfig } from './config';
 import {
   getPathWithoutHash,
-  getUrlWithoutHash,
   trimLeadingSlash,
   isIE,
   getConfigValueFromObject,
@@ -45,40 +45,6 @@ export const removeInactiveIframes = node => {
       node.removeChild(child);
     }
   });
-};
-
-export const isSameViewGroup = (config, component) => {
-  if (config.iframe) {
-    const componentData = component.get();
-    const previousUrl = getUrlWithoutHash(
-      componentData.previousNodeValues.viewUrl
-    );
-    const nextUrl = getUrlWithoutHash(componentData.viewUrl);
-    if (previousUrl === nextUrl) {
-      return true;
-    }
-    const previousUrlOrigin = getLocation(previousUrl);
-    const nextUrlOrigin = getLocation(nextUrl);
-    if (previousUrlOrigin === nextUrlOrigin) {
-      const previousViewGroup = componentData.previousNodeValues.viewGroup;
-      const nextViewGroup = componentData.viewGroup;
-      if (
-        previousViewGroup &&
-        nextViewGroup &&
-        previousViewGroup === nextViewGroup
-      ) {
-        return true;
-      }
-    }
-  }
-  return false;
-};
-
-export const hasIframeIsolation = component => {
-  const componentData = component.get();
-  return (
-    componentData.isolateView || componentData.previousNodeValues.isolateView
-  );
 };
 
 export const navigateIframe = (config, component, node) => {

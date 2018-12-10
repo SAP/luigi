@@ -1,5 +1,5 @@
 import { getConfigValueFromObjectAsync } from './async-helpers';
-import { escapeRegExp } from './helpers';
+import { escapeRegExp, getUrlWithoutHash } from './helpers';
 import { LuigiConfig } from '../../services/config';
 
 export const getLastNodeObject = pathData => {
@@ -159,3 +159,37 @@ export const buildRoute = (node, path, params) =>
   !node.parent
     ? path + (params ? '?' + params : '')
     : buildRoute(node.parent, `/${node.parent.pathSegment}${path}`, params);
+
+export const isSameViewGroup = (config, component) => {
+  if (config.iframe) {
+    const componentData = component.get();
+    const previousUrl = getUrlWithoutHash(
+      componentData.previousNodeValues.viewUrl
+    );
+    const nextUrl = getUrlWithoutHash(componentData.viewUrl);
+    if (previousUrl === nextUrl) {
+      return true;
+    }
+    const previousUrlOrigin = getLocation(previousUrl);
+    const nextUrlOrigin = getLocation(nextUrl);
+    if (previousUrlOrigin === nextUrlOrigin) {
+      const previousViewGroup = componentData.previousNodeValues.viewGroup;
+      const nextViewGroup = componentData.viewGroup;
+      if (
+        previousViewGroup &&
+        nextViewGroup &&
+        previousViewGroup === nextViewGroup
+      ) {
+        return true;
+      }
+    }
+  }
+  return false;
+};
+
+export const hasIframeIsolation = component => {
+  const componentData = component.get();
+  return (
+    componentData.isolateView || componentData.previousNodeValues.isolateView
+  );
+};
