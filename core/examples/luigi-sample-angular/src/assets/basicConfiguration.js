@@ -28,7 +28,7 @@ Luigi.setConfig({
     /**
      * Development:
      * For hash routing, set to true and run `npm run start`
-     * For path routing, set to false and run `npm run startWebpack`
+     * For path routing, set to false and run `npm run start`
      */
     useHashRouting: true
   }
