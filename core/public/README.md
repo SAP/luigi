@@ -2,7 +2,7 @@
 
 ## Overview
 
-Luigi Core is a micro front-end framework written in Svelte. You can use Luigi Core to implement the core application, and then the Luigi Client to ensure communication between the application and micro front-ends it hosts. 
+Luigi Core is a micro front-end framework written in Svelte. You can use Luigi Core to implement the core application, and then the Luigi Client to ensure communication between the application and the micro front-end it hosts. 
 
 For details on Luigi Core, see [this](https://github.com/kyma-project/luigi/tree/master/core) document.
 
