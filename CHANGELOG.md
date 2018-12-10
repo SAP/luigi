@@ -24,6 +24,28 @@ The lerna-changelog tool detects changes based on PR labels and maps them to sec
   }
 -->
 
+## [v0.4.0] - 2018-12-06
+
+#### :rocket: Added
+* [#259](https://github.com/kyma-project/luigi/pull/259) Nav collapsed feature ([@parostatkiem](https://github.com/parostatkiem))
+* [#247](https://github.com/kyma-project/luigi/pull/247) Luigi view components design upgrade ([@antiheld](https://github.com/antiheld))
+
+#### :bug: Fixed
+* [#226](https://github.com/kyma-project/luigi/pull/226) Add check if modules are same domain ([@dariadomagala](https://github.com/dariadomagala))
+* [#266](https://github.com/kyma-project/luigi/pull/266) Fixes for browser incompatibilities ([@pekura](https://github.com/pekura))
+* [#253](https://github.com/kyma-project/luigi/pull/253) Allow async defaultChildNode ([@maxmarkus](https://github.com/maxmarkus))
+* [#261](https://github.com/kyma-project/luigi/pull/261) Fix the relative path bug ([@dariadomagala](https://github.com/dariadomagala))
+* [#250](https://github.com/kyma-project/luigi/pull/250) preserveView should allow viewUrls with query params ([@maxmarkus](https://github.com/maxmarkus))
+* [#246](https://github.com/kyma-project/luigi/pull/246) Luigi client creates extra entry in browser navigation history ([@pekura](https://github.com/pekura))
+* [#238](https://github.com/kyma-project/luigi/pull/238) viewUrl should not be mandatory in dynamic node ([@maxmarkus](https://github.com/maxmarkus))
+
+#### :memo: Documentation
+* [#262](https://github.com/kyma-project/luigi/pull/262) Add improvements to Luigi Client API comments and annotations ([@bszwarc](https://github.com/bszwarc))
+* [#251](https://github.com/kyma-project/luigi/pull/251) Improvements for dex auth ([@maxmarkus](https://github.com/maxmarkus))
+* [#241](https://github.com/kyma-project/luigi/pull/241) Include v0.3.8 in changelog ([@kwiatekus](https://github.com/kwiatekus))
+* [#240](https://github.com/kyma-project/luigi/pull/240) Improve luigi client docu and generate new ([@jesusreal](https://github.com/jesusreal))
+
+
 ## [v0.3.8] - 2018-11-23
 
 #### :rocket: Added
@@ -192,3 +214,4 @@ The lerna-changelog tool detects changes based on PR labels and maps them to sec
 [v0.3.6]: https://github.com/kyma-project/luigi/compare/v0.3.5...v0.3.6
 [v0.3.7]: https://github.com/kyma-project/luigi/compare/v0.3.6...v0.3.7
 [v0.3.8]: https://github.com/kyma-project/luigi/compare/v0.3.7...v0.3.8
+[v0.4.0]: https://github.com/kyma-project/luigi/compare/v0.3.8...v0.4.0
