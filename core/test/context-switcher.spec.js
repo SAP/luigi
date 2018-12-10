@@ -47,14 +47,14 @@ describe('Context-switcher', function() {
       sinon.assert.calledOnce(console.error);
     });
 
-    it('adds slash absolute parentNodePath ', () => {
+    it('adds slash to absolute parentNodePath', () => {
       const result = CSHelpers.getPreparedParentNodePath({
         parentNodePath: '/environment'
       });
       assert.equal(result, '/environment/');
     });
 
-    it('does not add slash to absolute parentNodePath with slash ', () => {
+    it('does not add slash to absolute parentNodePath with slash', () => {
       const result = CSHelpers.getPreparedParentNodePath({
         parentNodePath: '/environment/'
       });
