@@ -431,6 +431,20 @@
          */
         removeBackdrop: function removeBackdrop() {
           window.parent.postMessage({ msg: 'luigi.remove-backdrop' }, '*');
+        },
+
+        /**
+         * Show error message about exceeded limits.
+         */
+        showLimitExceededError: function showLimitExceededError(data, env) {
+          window.parent.postMessage(
+            {
+              msg: 'luigi.limit-exceeded',
+              data: data,
+              environment: env
+            },
+            '*'
+          );
         }
       };
     }

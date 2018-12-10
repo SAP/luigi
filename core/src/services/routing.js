@@ -358,6 +358,7 @@ export const handleRouteChange = async (path, component, node, config) => {
         navigateTo(`${pathUrl ? `/${pathUrl}` : ''}/${defaultChildNode}`);
       } else {
         const alert = {
+          msg: 'luigi.route-not-found',
           message: 'Could not find the requested route',
           link: pathUrl
         };
@@ -373,6 +374,7 @@ export const handleRouteChange = async (path, component, node, config) => {
       const matchedPath = await matchPath(pathUrl);
 
       const alert = {
+        msg: 'luigi.route-not-found',
         message: 'Could not map the exact target node for the requested route',
         link: pathUrl
       };

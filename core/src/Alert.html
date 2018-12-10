@@ -1,0 +1,63 @@
+{#if alert}
+  {#if alert.msg === "luigi.route-not-found"}
+    <div class="fd-alert fd-alert--error fd-alert--dismissible" role="alert" id="j2ALl423">
+      <button on:click="set({alert:false})" class="fd-alert__close" aria-controls="j2ALl423" aria-label="Close"></button>
+      {alert.message} {alert.link}
+    </div>
+  {/if}
+  {#if alert.msg === "luigi.limit-exceeded"}
+    <div class="fd-alert fd-alert--error fd-alert--dismissible" role="alert" id="j2ALl423">
+      <button on:click="set({alert:false})" class="fd-alert__close" aria-controls="j2ALl423" aria-label="Close"></button>
+        <div>Error! The following resource quota limit has been exceeded by the given resource:</div>
+        {#each alert.data as resourceQuota}
+          {#each resourceQuota.affectedResources as affectedResource}
+            <div>- '{resourceQuota.resourceName}' by '{affectedResource}' ({resourceQuota.quotaName})</div>
+          {/each}
+        {/each}
+        <div>
+          See <a on:click="goTo('/environments/'+alert.environment+'/resources')">Resources Configuration</a> for details.
+        </div>
+    </div>
+  {/if}
+{/if}
+<script type="text/javascript">
+  import { LuigiConfig } from './services/config.js';
+
+  export default {
+    data() {
+      return {
+        alert: false
+      }
+    },
+    oncreate() {
+    },
+    onstate({ changed, current, previous }) {
+    },
+    methods: {
+      goTo(path) {
+        if (LuigiConfig.getConfigBooleanValue('routing.useHashRouting')) {
+          window.location.hash = path;
+        } else {
+          window.location.pathname = path;
+        }
+      }
+    }
+  };
+</script>
+
+<style type="text/scss">
+  $topNavHeight: 50px;
+  $leftNavWidth: 320px;
+  .fd-alert {
+    position: absolute;
+    min-width: 20rem;
+    width: calc(100% - 2 * (#{$leftNavWidth} + 1rem));
+    top: calc(#{$topNavHeight} + 1rem);
+    left: calc(#{$leftNavWidth} + 1rem);
+    z-index: 1000;
+    overflow-wrap: break-word;
+    .fd-alert__close {
+      cursor: pointer;
+    }
+  }
+  </style>

@@ -1,10 +1,4 @@
 <div id="app" class="{hideNav? 'no-nav' : ''} {hideSideNav? 'no-side-nav' : ''}">
-	{#if alert && alert.message}
-	<div class="fd-alert fd-alert--error fd-alert--dismissible" role="alert" id="j2ALl423">
-		<button on:click="set({alert:null})" class="fd-alert__close" aria-controls="j2ALl423" aria-label="Close"></button>
-		{alert.message} {alert.link}
-	</div>
-	{/if}
 	<Backdrop>
 		<div class="fd-page iframeContainer" use:init="context"></div>
 	</Backdrop>
@@ -21,6 +15,7 @@
   {#if !(hideNav||hideSideNav)}
 	  <LeftNav pathData={navigationPath} /> 
   {/if}
+  <Alert alert={alert}/>
 </div>
 
 <script type="text/javascript">
@@ -31,6 +26,7 @@
   import * as Routing from './services/routing.js';
   import { getConfigValueFromObject } from './utilities/helpers.js';
   import { getStoredAuthData } from './utilities/auth-helpers';
+  import Alert from './Alert.html';
 
   const removeQueryParams = str => str.split('?')[0];
 
@@ -270,6 +266,10 @@
               '*'
             );
           }
+
+          if ('luigi.limit-exceeded' === e.data.msg) {
+            this.set({ alert: e.data });
+          }
         });
 
         // listeners are not automatically removed — cancel
@@ -290,7 +290,8 @@
     components: {
       Backdrop,
       TopNav,
-      LeftNav
+      LeftNav,
+      Alert
     },
     transitions: { fade }
   };
@@ -379,19 +380,6 @@
       left: 0;
       bottom: 0;
       right: 0;
-    }
-  }
-
-  .fd-alert {
-    position: absolute;
-    min-width: 20rem;
-    width: calc(100% - 2 * (#{$leftNavWidth} + 1rem));
-    top: calc(#{$topNavHeight} + 1rem);
-    left: calc(#{$leftNavWidth} + 1rem);
-    z-index: 2;
-    overflow-wrap: break-word;
-    .fd-alert__close {
-      cursor: pointer;
     }
   }
 
