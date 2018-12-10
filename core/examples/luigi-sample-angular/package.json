@@ -32,6 +32,8 @@
     "rxjs": "^6.2.0"
   },
   "devDependencies": {
+    "@angular-builders/custom-webpack": "^7.1.1",
+    "@angular-builders/dev-server": "^7.1.1",
     "@angular-devkit/build-angular": "~0.7.0",
     "@angular-devkit/core": "0.6.8",
     "@angular-devkit/schematics": "^0.6.8",
