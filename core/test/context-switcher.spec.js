@@ -29,32 +29,32 @@ describe('Context-switcher', function() {
     return '##' + id + '##';
   };
 
-  describe('getPreparedParentNodePath()', () => {
+  describe('getPreparedParentNodePath', () => {
     let mockConfig;
     beforeEach(() => {
       mockConfig = getMockConfig();
     });
 
-    it('undefined parentNodePath', () => {
+    it('throws undefined parentNodePath', () => {
       console.error = sinon.spy();
       CSHelpers.getPreparedParentNodePath({});
       sinon.assert.calledOnce(console.error);
     });
 
-    it('falsy relative parentNodePath', () => {
+    it('throws falsy relative parentNodePath', () => {
       console.error = sinon.spy();
       CSHelpers.getPreparedParentNodePath({ parentNodePath: 'relative/path' });
       sinon.assert.calledOnce(console.error);
     });
 
-    it('absolute parentNodePath adds slash', () => {
+    it('adds slash absolute parentNodePath ', () => {
       const result = CSHelpers.getPreparedParentNodePath({
         parentNodePath: '/environment'
       });
       assert.equal(result, '/environment/');
     });
 
-    it('absolute parentNodePath with slash does not add slash', () => {
+    it('does not add slash to absolute parentNodePath with slash ', () => {
       const result = CSHelpers.getPreparedParentNodePath({
         parentNodePath: '/environment/'
       });
@@ -69,20 +69,20 @@ describe('Context-switcher', function() {
     });
   });
 
-  describe('getFallbackLabel()', () => {
-    it('without fallback resolver', async () => {
+  describe('getFallbackLabel', () => {
+    it('works without fallback resolver', async () => {
       const result = await CSHelpers.getFallbackLabel(undefined, 'some_id');
       assert.equal(result, 'some_id');
     });
 
-    it('with fallback resolver', async () => {
+    it('works with fallback resolver', async () => {
       const result = await CSHelpers.getFallbackLabel(myResolverFn, 'some_id');
       assert.equal(result, '##some_id##');
     });
   });
 
-  describe('generateSwitcherNav()', () => {
-    it('composes proper values', async () => {
+  describe('generateSwitcherNav', () => {
+    it('composes proper values with ParentNodePath', async () => {
       const result = await CSHelpers.generateSwitcherNav(
         { parentNodePath: '/environment' },
         [{ label: 'Env 1', pathValue: 'env1' }]
@@ -99,7 +99,7 @@ describe('Context-switcher', function() {
       );
     });
 
-    it('composes proper values', async () => {
+    it('composes proper values without ParentNodePath', async () => {
       const result = await CSHelpers.generateSwitcherNav({}, [
         { label: 'Env 1', pathValue: 'env1' }
       ]);
@@ -116,7 +116,7 @@ describe('Context-switcher', function() {
     });
   });
 
-  describe('getLabelFromOptions()', () => {
+  describe('getLabelFromOptions', () => {
     const env1 = { label: 'Env 1', id: 'env1' };
     const env2 = { label: 'Env 2', id: 'env2' };
 
@@ -131,7 +131,7 @@ describe('Context-switcher', function() {
     });
   });
 
-  describe('isContextSwitcherDetailsView()', () => {
+  describe('isContextSwitcherDetailsView', () => {
     let currentPath;
     let parentNodePath;
 
@@ -186,7 +186,7 @@ describe('Context-switcher', function() {
     });
   });
 
-  describe('getSelectedLabel()', () => {
+  describe('getSelectedLabel', () => {
     const parentNodePath = '/environment';
 
     it('returns undefined when path only partially contains parentNodePath', async () => {

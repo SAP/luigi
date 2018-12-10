@@ -3,7 +3,7 @@ const assert = chai.assert;
 import { containsAllSegments } from '../../../src/utilities/helpers/helpers';
 
 describe('Helpers', () => {
-  describe('#containsAllSegments()', () => {
+  describe('containsAllSegments', () => {
     it('should return true when proper data provided', async () => {
       const sourceUrl = 'mas/ko/pa/tol/';
       const targetPathSegments = [
