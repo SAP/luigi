@@ -10,10 +10,6 @@ Luigi consists of Luigi Core and Luigi Client applications. Use Luigi Core to bu
 
 Follow the instructions in [this](docs/application-setup.md) document to get started with Luigi. Read [this](client/README.md) document to install the Luigi Client.
 
-### Code formatting for contributors
-
-All projects in the repository use [Prettier](https://prettier.io) to format source code. Run the `npm install` command in the root folder to install it along with [husky](https://github.com/typicode/husky), the Git hooks manager. Both tools ensure proper codebase formatting before committing it.
-
 
 ## Usage
 
@@ -27,6 +23,10 @@ For details, see [Luigi documentation](docs/README.md).
 
 
 ## Development
+
+### Code formatting for contributors
+
+All projects in the repository use [Prettier](https://prettier.io) to format source code. Run the `npm install` command in the root folder to install it along with [husky](https://github.com/typicode/husky), the Git hooks manager. Both tools ensure proper codebase formatting before committing it.
 
 ### Tests
 
