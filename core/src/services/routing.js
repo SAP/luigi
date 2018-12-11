@@ -168,7 +168,7 @@ export const matchPath = async path => {
     const pathUrl = 0 < path.length ? getPathWithoutHash(path) : path;
     const pathData = await getNavigationPath(
       LuigiConfig.getConfigValueAsync('navigation.nodes'),
-      pathUrl.split('?')[0]
+      trimTrailingSlash(pathUrl.split('?')[0])
     );
     if (pathData.navigationPath.length > 0) {
       const lastNode =
