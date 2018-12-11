@@ -13,7 +13,8 @@ import {
   trimLeadingSlash,
   isIE,
   getConfigValueFromObject,
-  addLeadingSlash
+  addLeadingSlash,
+  trimTrailingSlash
 } from '../utilities/helpers/helpers';
 
 const iframeNavFallbackTimeout = 2000;
