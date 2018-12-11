@@ -8,8 +8,6 @@
     "start": "ng serve",
     "build": "ng build",
     "lint": "ng lint",
-    "startWebpack": "webpack-dev-server --port=4200",
-    "buildWebpack": "webpack",
     "e2e:open": "cypress open",
     "e2e:run": "cypress run"
   },
