@@ -1,4 +1,7 @@
-import { deepMerge, prependOrigin } from '../../utilities/helpers/helpers.js';
+import {
+  deepMerge,
+  prependOrigin
+} from '../../utilities/helpers/generic-helpers.js';
 
 export class oAuth2ImplicitGrant {
   constructor(settings = {}) {

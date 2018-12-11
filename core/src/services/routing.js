@@ -15,7 +15,7 @@ import {
   getConfigValueFromObject,
   addLeadingSlash,
   trimTrailingSlash
-} from '../utilities/helpers/helpers';
+} from '../utilities/helpers/generic-helpers';
 
 const iframeNavFallbackTimeout = 2000;
 const contextVarPrefix = 'context.';

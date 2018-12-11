@@ -1,6 +1,6 @@
 const chai = require('chai');
 const assert = chai.assert;
-import { containsAllSegments } from '../../../src/utilities/helpers/helpers';
+import { containsAllSegments } from '../../../src/utilities/helpers/generic-helpers';
 
 describe('Helpers', () => {
   describe('containsAllSegments', () => {

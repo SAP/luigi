@@ -8,7 +8,7 @@ import { LuigiConfig } from '../services/config';
 import {
   getPathWithoutHash,
   containsAllSegments
-} from '../utilities/helpers/helpers';
+} from '../utilities/helpers/generic-helpers';
 import { getNavigationPath } from '../navigation/services/navigation';
 import {
   getNodeParams,

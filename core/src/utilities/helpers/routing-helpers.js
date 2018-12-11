@@ -1,5 +1,5 @@
 import { getConfigValueFromObjectAsync } from './async-helpers';
-import { escapeRegExp, getUrlWithoutHash } from './helpers';
+import { escapeRegExp, getUrlWithoutHash } from './generic-helpers';
 import { LuigiConfig } from '../../services/config';
 import { getModifiedPathname } from '../../services/routing';
 

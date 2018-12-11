@@ -1,4 +1,7 @@
-import { deepMerge, prependOrigin } from '../../utilities/helpers/helpers';
+import {
+  deepMerge,
+  prependOrigin
+} from '../../utilities/helpers/generic-helpers';
 import { waitForKeyExistency } from '../../utilities/helpers/async-helpers';
 import { thirdPartyCookiesStatus } from '../../utilities/third-party-cookies-check';
 

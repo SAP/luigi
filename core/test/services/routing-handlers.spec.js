@@ -6,7 +6,7 @@ import {
   handleRouteChange,
   handleRouteClick
 } from '../../src/services/routing-handlers';
-import { deepMerge } from '../../src/utilities/helpers/helpers';
+import { deepMerge } from '../../src/utilities/helpers/generic-helpers';
 import { afterEach } from 'mocha';
 import { LuigiConfig } from '../../src/services/config';
 
