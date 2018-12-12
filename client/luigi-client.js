@@ -431,6 +431,15 @@
          */
         removeBackdrop: function removeBackdrop() {
           window.parent.postMessage({ msg: 'luigi.remove-backdrop' }, '*');
+        },
+        /**
+         * Removes the backdrop.
+         */
+        refreshContextSwitcher: function refreshContextSwitcher() {
+          window.parent.postMessage(
+            { msg: 'luigi.ux.refreshContextSwitcher' },
+            '*'
+          );
         }
       };
     }
