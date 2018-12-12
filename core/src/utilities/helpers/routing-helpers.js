@@ -8,7 +8,7 @@ export const getLastNodeObject = pathData => {
   return lastElement ? lastElement : {};
 };
 
-export const getDefaultChildNode = async function(pathData) {
+export const getDefaultChildNode = async pathData => {
   const lastElement =
     pathData.navigationPath[pathData.navigationPath.length - 1];
 
@@ -26,7 +26,7 @@ export const getDefaultChildNode = async function(pathData) {
   }
 };
 
-export const isExistingRoute = function(path, pathData) {
+export const isExistingRoute = (path, pathData) => {
   if (!path) {
     return true;
   }
