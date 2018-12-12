@@ -342,10 +342,7 @@ export const handleRouteChange = async (path, component, node, config) => {
       oldUrl && history.replaceState(window.state, '', oldUrl);
 
       component
-        .showModal(
-          'Unsaved changes detected',
-          'It looks like you might lose some data if you leave this page. Are you sure you want to do this?'
-        )
+        .showUnsavedChangesModal()
         .then(
           () => {
             // YES pressed
@@ -552,19 +549,39 @@ export const buildFromRelativePath = node => {
   return addLeadingSlash(concatenatePath(windowPath, node.link));
 };
 
-export const handleRouteClick = node => {
+export const handleRouteClick = (node, component) => {
+  if (
+    canComponentHandleModal(component) &&
+    component.get().unsavedChanges.isDirty
+  ) {
+    component
+      .showUnsavedChangesModal()
+      .then(() => {
+        component.set({
+          unsavedChanges: { isDirty: false, persistUrl: null }
+        });
+        // YES pressed
+        handleLuigiCoreNavigation(node);
+      })
+      .finally(res => {
+        component.hideModal();
+      });
+  } else {
+    handleLuigiCoreNavigation(node);
+  }
+};
+
+const handleLuigiCoreNavigation = node => {
   if (node.externalLink && node.externalLink.url) {
     node.externalLink.sameWindow
       ? (window.location.href = node.externalLink.url)
       : window.open(node.externalLink.url).focus();
     // externalLinkUrl property is provided so there's no need to trigger routing mechanizm
-    return;
   } else if (node.link) {
     const link = node.link.startsWith('/')
       ? node.link
       : buildFromRelativePath(node);
     navigateTo(link);
-    return;
   } else {
     const route = buildRoute(node, `/${node.pathSegment}`);
     navigateTo(route);
