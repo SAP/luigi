@@ -1,7 +1,7 @@
 import {
   isNodeAccessPermitted,
   applyContext,
-  groupBy
+  groupNodesBy
 } from '../../utilities/helpers/navigation-helpers';
 
 import { getConfigValueFromObjectAsync } from '../../utilities/helpers/async-helpers';
@@ -204,7 +204,7 @@ export const getNodes = (children, pathData) => {
 
 export const getGroupedChildren = (children, current) => {
   const nodes = getNodes(children, current.pathData);
-  return groupBy(nodes, 'category');
+  return groupNodesBy(nodes, 'category');
 };
 
 /**

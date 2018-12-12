@@ -31,7 +31,7 @@ export const applyContext = (context, addition, navigationContext) => {
   return context;
 };
 
-export const groupBy = (nodes, property) => {
+export const groupNodesBy = (nodes, property) => {
   const result = {};
   nodes.forEach(node => {
     let key;
