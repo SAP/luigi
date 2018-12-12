@@ -433,7 +433,7 @@
           window.parent.postMessage({ msg: 'luigi.remove-backdrop' }, '*');
         },
         /**
-         * Removes the backdrop.
+         * Reloads the environment list in the Context Switcher
          */
         refreshContextSwitcher: function refreshContextSwitcher() {
           window.parent.postMessage(

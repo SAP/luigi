@@ -197,4 +197,4 @@ Removes the backdrop.
 
 ### refreshContextSwitcher
 
-Removes the backdrop.
+Reloads the environment list in the Context Switcher
