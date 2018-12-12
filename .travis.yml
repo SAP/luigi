@@ -9,6 +9,3 @@ jobs:
       script: npm test --prefix core
     - script: bash ./test/e2e.sh #node ./test/e2e.js
       name: 'Integration Tests' # names the second Tests stage job
-#    - stage: deploy
-#      name: "Deploy to GCP"
-#      script: ./deploy
