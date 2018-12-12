@@ -63,7 +63,8 @@ describe('Luigi client features', () => {
       cy.wrap($iframeBody).should('contain', 'Called with params:');
       cy.wrap($iframeBody).should('contain', '"foo": "bar"');
       cy.location().should(loc => {
-        expect(loc.pathname).to.eq('/projects/pr2/settings?~foo=bar&');
+        expect(loc.pathname).to.eq('/projects/pr2/settings');
+        expect(loc.search).to.eq('?~foo=bar&');
       });
       cy.wrap($iframeBody)
         .contains('Click here')
