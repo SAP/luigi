@@ -538,9 +538,12 @@ export const buildFromRelativePath = node => {
 
 export const handleRouteClick = (node, component) => {
   if (component.shouldShowUnsavedChangesModal()) {
-    component.showUnsavedChangesModal().then(() => {
-      handleLuigiCoreNavigation(node);
-    });
+    component.showUnsavedChangesModal().then(
+      () => {
+        handleLuigiCoreNavigation(node);
+      },
+      () => {}
+    );
   } else {
     handleLuigiCoreNavigation(node);
   }
