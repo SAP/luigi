@@ -1,16 +1,16 @@
 <ul class="fd-menu__list">
   <li>
     {#if isLoggedIn}
-      <a href="#" aria-label="Logout" on:click=logout() class="fd-menu__item">Logout</a>
+      <a aria-label="Logout" on:click=onLogoutClick() class="fd-menu__item">Logout</a>
     {:else}
-      <a href="#" aria-label="Login" on:click=startAuthorization() class="fd-menu__item">Login</a>
+      <a aria-label="Login" on:click=startAuthorization() class="fd-menu__item">Login</a>
     {/if}
   </li>
 </ul>
 
 <script type="text/javascript">
   import { LuigiConfig } from './services/config.js';
-  import { isFunction, isPromise, deepMerge, getConfigValueFromObject } from './utilities/helpers.js';
+  import { isFunction, isPromise, deepMerge, getConfigValueFromObject, canComponentHandleModal } from './utilities/helpers.js';
   import { oAuth2ImplicitGrant } from './providers/auth/oAuth2ImplicitGrant.js';
   import { openIdConnect } from './providers/auth/openIdConnect.js';
   import { getStoredAuthData } from './utilities/auth-helpers';
@@ -99,6 +99,28 @@
           }
         });
       },
+      onLogoutClick: function() {
+        if (
+          canComponentHandleModal(this.root) &&
+          this.root.get().unsavedChanges.isDirty
+        ) {
+          this.root.showUnsavedChangesModal()
+            .then(
+              () => {
+                this.root.set({
+                  unsavedChanges: { isDirty: false, persistUrl: null }
+                });
+                this.logout();
+              },
+              () => { }
+            )
+            .finally(res => {
+              this.root.hideModal();
+            });
+        } else {
+          this.logout();
+        }
+      },
       logout: function() {
         const authData = getStoredAuthData();
 
@@ -120,8 +142,8 @@
         else {
           logoutCallback();
           window.location.href = idpProviderInstance.settings.logoutUrl;
-        };
-      },
+        }
+      }
     },
     components: {},
     // store: () => store
