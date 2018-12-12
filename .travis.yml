@@ -7,7 +7,7 @@ jobs:
     - stage: 'Tests' # naming the Tests stage
       name: 'Unit Tests' # names the first Tests stage job
       script: npm test --prefix core
-    - script: node ./test/e2e.js
+    - script: ./test/e2e.sh #node ./test/e2e.js
       name: 'Integration Tests' # names the second Tests stage job
 #    - stage: deploy
 #      name: "Deploy to GCP"
