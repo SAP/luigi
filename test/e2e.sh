@@ -1,5 +1,7 @@
 #!/bin/bash
 
+pwd
+
 echo Installing lerna
 npm install -g lerna
 
