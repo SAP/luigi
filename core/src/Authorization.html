@@ -10,7 +10,7 @@
 
 <script type="text/javascript">
   import { LuigiConfig } from './services/config.js';
-  import { isFunction, isPromise, deepMerge, getConfigValueFromObject, canComponentHandleModal } from './utilities/helpers.js';
+  import { isFunction, isPromise, deepMerge, getConfigValueFromObject } from './utilities/helpers.js';
   import { oAuth2ImplicitGrant } from './providers/auth/oAuth2ImplicitGrant.js';
   import { openIdConnect } from './providers/auth/openIdConnect.js';
   import { getStoredAuthData } from './utilities/auth-helpers';
@@ -100,23 +100,12 @@
         });
       },
       onLogoutClick: function() {
-        if (
-          canComponentHandleModal(this.root) &&
-          this.root.get().unsavedChanges.isDirty
-        ) {
+        if (this.root.shouldShowUnsavedChangesModal()) {
           this.root.showUnsavedChangesModal()
             .then(
-              () => {
-                this.root.set({
-                  unsavedChanges: { isDirty: false, persistUrl: null }
-                });
-                this.logout();
-              },
+              () => { this.logout(); },
               () => { }
             )
-            .finally(res => {
-              this.root.hideModal();
-            });
         } else {
           this.logout();
         }

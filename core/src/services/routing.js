@@ -7,8 +7,7 @@ import {
   trimLeadingSlash,
   isIE,
   getConfigValueFromObject,
-  addLeadingSlash,
-  canComponentHandleModal
+  addLeadingSlash
 } from '../utilities/helpers';
 import { getConfigValueFromObjectAsync } from '../utilities/async-helpers';
 
@@ -331,36 +330,24 @@ export const handleRouteChange = async (path, component, node, config) => {
     return;
   }
   try {
-    if (
-      canComponentHandleModal(component) &&
-      component.get().unsavedChanges.isDirty
-    ) {
+    if (component.shouldShowUnsavedChangesModal()) {
       const newUrl = window.location.href;
       const oldUrl = component.get().unsavedChanges.persistUrl;
 
       //pretend the url hasn't been changed
       oldUrl && history.replaceState(window.state, '', oldUrl);
 
-      component
-        .showUnsavedChangesModal()
-        .then(
-          () => {
-            // YES pressed
-            component.set({
-              unsavedChanges: { isDirty: false, persistUrl: null }
-            });
-            path &&
-              handleRouteChange(path, component, node, config) &&
-              history.replaceState(window.state, '', newUrl);
-          },
-          () => {
-            // NO pressed
-            history.back(); //undo the temporary history entry
-          }
-        )
-        .finally(res => {
-          component.hideModal();
-        });
+      component.showUnsavedChangesModal().then(
+        () => {
+          path &&
+            handleRouteChange(path, component, node, config) &&
+            history.replaceState(window.state, '', newUrl);
+        },
+        () => {
+          // NO pressed
+          history.back(); //undo the temporary history entry
+        }
+      );
       return;
     }
 
@@ -550,22 +537,10 @@ export const buildFromRelativePath = node => {
 };
 
 export const handleRouteClick = (node, component) => {
-  if (
-    canComponentHandleModal(component) &&
-    component.get().unsavedChanges.isDirty
-  ) {
-    component
-      .showUnsavedChangesModal()
-      .then(() => {
-        component.set({
-          unsavedChanges: { isDirty: false, persistUrl: null }
-        });
-        // YES pressed
-        handleLuigiCoreNavigation(node);
-      })
-      .finally(res => {
-        component.hideModal();
-      });
+  if (component.shouldShowUnsavedChangesModal()) {
+    component.showUnsavedChangesModal().then(() => {
+      handleLuigiCoreNavigation(node);
+    });
   } else {
     handleLuigiCoreNavigation(node);
   }
