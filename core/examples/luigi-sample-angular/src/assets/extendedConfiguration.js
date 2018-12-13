@@ -87,6 +87,7 @@ var projectDetailNavProviderFn = function(context) {
         pathSegment: 'users',
         label: 'Users and Groups',
         viewUrl: '/sampleapp.html#/projects/' + projectId + '/users',
+        iconName: 'group',
         children: [
           {
             category: { label: 'Groups', icon: 'group' },
@@ -128,61 +129,72 @@ var projectDetailNavProviderFn = function(context) {
         category: 'User Management',
         pathSegment: 'developers',
         label: 'Developers',
-        viewUrl: '/sampleapp.html#/projects/' + projectId + '/developers'
+        viewUrl: '/sampleapp.html#/projects/' + projectId + '/developers',
+        iconName: 'laptop'
       },
       {
         category: { label: 'Settings', icon: 'action-settings' },
         pathSegment: 'settings',
         label: 'Project Settings',
-        viewUrl: '/sampleapp.html#/projects/' + projectId + '/settings'
+        viewUrl: '/sampleapp.html#/projects/' + projectId + '/settings',
+        iconName: 'settings'
       },
       {
         pathSegment: 'miscellaneous',
         constraints: ['unicorns'],
         label: 'Miscellaneous',
-        viewUrl: '/sampleapp.html#/projects/' + projectId + '/miscellaneous'
+        viewUrl: '/sampleapp.html#/projects/' + projectId + '/miscellaneous',
+        iconName: 'bullet-text'
       },
       {
         pathSegment: 'miscellaneous2',
         label: 'Miscellaneous2',
-        viewUrl: '/sampleapp.html#/projects/' + projectId + '/miscellaneous2'
+        viewUrl: '/sampleapp.html#/projects/' + projectId + '/miscellaneous2',
+        iconName: 'bullet-text'
       },
       {
         pathSegment: 'misc2-isolated',
         label: 'Miscellaneous2 (Isolated View)',
         isolateView: true,
-        viewUrl: '/sampleapp.html#/projects/' + projectId + '/miscellaneous2'
+        viewUrl: '/sampleapp.html#/projects/' + projectId + '/miscellaneous2',
+        iconName: 'repost'
       },
       {
         pathSegment: 'dps',
         label: 'Default Child node Example',
         defaultChildNode: 'dps2',
+        iconName: 'checklist',
         children: [
           {
             pathSegment: 'dps1',
             label: 'First Child',
-            viewUrl: '/sampleapp.html#/projects/' + projectId + '/dps/dps1'
+            viewUrl: '/sampleapp.html#/projects/' + projectId + '/dps/dps1',
+            iconName: 'physical-activity'
           },
           {
             pathSegment: 'dps2',
             label: 'Second Child',
-            viewUrl: '/sampleapp.html#/projects/' + projectId + '/dps/dps2'
+            viewUrl: '/sampleapp.html#/projects/' + projectId + '/dps/dps2',
+            iconName: 'physical-activity'
           }
         ]
       },
       {
         link: '/settings',
-        label: 'Go to absolute path'
+        label: 'Go to absolute path',
+        iconName: 'horizontal-grip'
       },
       {
         link: 'dps/dps1',
-        label: 'Go to relative path'
+        label: 'Go to relative path',
+        iconName: 'horizontal-grip'
       },
       {
         pathSegment: 'avengers',
         label: 'Keep Selected Example',
         viewUrl: '/sampleapp.html#/projects/' + projectId + '/dynamic/avengers',
         keepSelectedForChildren: true,
+        iconName: 'slim-arrow-down',
         context: {
           label: 'Avengers',
           links: [
@@ -255,7 +267,8 @@ var projectDetailNavProviderFn = function(context) {
         pathSegment: 'hideSideNav',
         label: 'Hide left navigation',
         viewUrl: '/sampleapp.html#/projects/' + projectId + '/hideSideNav',
-        hideSideNav: true
+        hideSideNav: true,
+        iconName: 'full-screen'
       },
       {
         label: 'Open Github in new tab',
@@ -263,7 +276,8 @@ var projectDetailNavProviderFn = function(context) {
         externalLink: {
           url: 'http://github.com',
           sameWindow: false
-        }
+        },
+        iconName: 'internet-browser'
       },
       {
         label: 'Open Github in this tab',
@@ -271,7 +285,8 @@ var projectDetailNavProviderFn = function(context) {
         externalLink: {
           url: 'http://github.com',
           sameWindow: true
-        }
+        },
+        iconName: 'globe'
       }
     ];
     getProjectPlugins(projectId).then(function(result) {
@@ -426,7 +441,8 @@ Luigi.setConfig({
           pathSegment: 'overview',
           label: 'Overview',
           viewUrl: '/sampleapp.html#/overview',
-          hideSideNav: true
+          hideSideNav: true,
+          iconName: 'testIcon'
         },
         {
           pathSegment: 'projects',
@@ -462,7 +478,8 @@ Luigi.setConfig({
         {
           pathSegment: 'settings',
           label: 'Settings',
-          viewUrl: '/sampleapp.html#/settings'
+          viewUrl: '/sampleapp.html#/settings',
+          iconName: 'settings'
         },
         {
           label: 'Open Google in this tab',
