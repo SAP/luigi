@@ -4,8 +4,8 @@ node_js:
 install: npm install --prefix core
 jobs:
   include:
-    - stage: 'Tests' # naming the Tests stage
-      name: 'Unit Tests' # names the first Tests stage job
+    - stage: 'Tests'
+      name: 'Unit Tests'
       script: npm test --prefix core
-    - script: bash ./test/e2e.sh #node ./test/e2e.js
-      name: 'Integration Tests' # names the second Tests stage job
+    - script: bash ./test/e2e.sh
+      name: 'Integration Tests'
