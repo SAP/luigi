@@ -144,7 +144,7 @@
         this.goTo(node.link);
       },
       goTo(path) {
-        Routing.navigateTo(path);
+        Routing.handleInsideAppNavigation(this.root, path);
       },
       toggleDropdownState(name) {
         const dropDownStates = this.get().dropDownStates || {};

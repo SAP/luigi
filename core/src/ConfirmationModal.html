@@ -1,0 +1,58 @@
+<div class="fd-modal" data-cy="confirmation-modal">
+	<div class="fd-modal__content" role="document">
+		<div class="fd-modal__header">
+			<h1 class="fd-modal__title">{title}</h1>
+			<button class="fd-button--light fd-modal__close" on:click="fire('modalDecline')" aria-label="close"></button>
+		</div>
+		<div class="fd-modal__body">
+			{text}
+		</div>
+		<footer class="fd-modal__footer">
+			<div class="fd-modal__actions">
+				<button on:click="fire('modalDecline')" data-cy="modal-no" class="fd-button--light">No</button>
+				<button on:click="fire('modalConfirm')" data-cy="modal-yes"  class="fd-button">Yes</button>
+			</div>
+		</footer>
+	</div>
+</div>
+
+<script type="text/javascript">
+  export default {
+    data() {
+      //fallback data in case title or text props weren't provided
+      return {
+        title: 'Confirmation',
+        text: 'Are you sure you want to do this?'
+      };
+    },
+    oncreate() {
+      try {
+        document.querySelector('[data-cy=modal-yes]').focus();
+      } catch (e) {
+        console.warn("Couldn't focus confirmation button in modal");
+      }
+    }
+  };
+</script>
+
+<style type="text/scss">
+  $topNavHeight: 50px;
+  $leftNavWidth: 320px;
+  $width: 32rem;
+  .fd-modal {
+    position: absolute;
+    box-sizing: border-box;
+    width: $width;
+    max-width: 90vw;
+    top: calc(#{$topNavHeight} + 1rem);
+    left: calc(50% + #{$leftNavWidth}/ 2 - #{$width}/ 2);
+    z-index: 2;
+  }
+
+  :global(.no-side-nav),
+  :global(.no-nav) {
+    .fd-modal {
+      left: calc(50% - #{$width}/ 2);
+    }
+  }
+</style>

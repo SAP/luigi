@@ -3,8 +3,8 @@ import { LuigiConfig } from './config';
 import {
   getPathWithoutHash,
   getUrlWithoutHash,
-  trimLeadingSlash,
   containsAllSegments,
+  trimLeadingSlash,
   isIE,
   getConfigValueFromObject,
   addLeadingSlash,
@@ -331,6 +331,25 @@ export const handleRouteChange = async (path, component, node, config) => {
     return;
   }
   try {
+    // just used for browser changes, like browser url manual change or browser back/forward button click
+    if (component.shouldShowUnsavedChangesModal()) {
+      const newUrl = window.location.href;
+      const oldUrl = component.get().unsavedChanges.persistUrl;
+
+      //pretend the url hasn't been changed
+      oldUrl && history.replaceState(window.state, '', oldUrl);
+
+      component.showUnsavedChangesModal().then(
+        () => {
+          path &&
+            handleRouteChange(path, component, node, config) &&
+            history.replaceState(window.state, '', newUrl);
+        },
+        () => {}
+      );
+      return;
+    }
+
     const pathUrlRaw = path && path.length ? getPathWithoutHash(path) : '';
     const pathUrl = trimTrailingSlash(pathUrlRaw.split('?')[0]);
     const pathData = await getNavigationPath(
@@ -462,7 +481,7 @@ export const matchPath = async path => {
 /**
   navigateTo used for navigation
   @param route string  absolute path of the new route
-  @param options object  navi options, eg preserveView
+
  */
 export const navigateTo = async route => {
   if (LuigiConfig.getConfigValue('routing.useHashRouting')) {
@@ -517,19 +536,38 @@ export const buildFromRelativePath = node => {
   return addLeadingSlash(concatenatePath(windowPath, node.link));
 };
 
-export const handleRouteClick = node => {
+export const handleInsideAppNavigation = (component, data, type) => {
+  const promise = new Promise(resolve => {
+    if (component.shouldShowUnsavedChangesModal()) {
+      component.showUnsavedChangesModal().then(() => {
+        resolve();
+      });
+    } else {
+      resolve();
+    }
+  }).then(
+    () => {
+      if (type === 'node') {
+        handleNavigationNodeClick(data);
+      } else {
+        navigateTo(data);
+      }
+    },
+    () => {}
+  );
+};
+
+export const handleNavigationNodeClick = node => {
   if (node.externalLink && node.externalLink.url) {
     node.externalLink.sameWindow
       ? (window.location.href = node.externalLink.url)
       : window.open(node.externalLink.url).focus();
     // externalLinkUrl property is provided so there's no need to trigger routing mechanizm
-    return;
   } else if (node.link) {
     const link = node.link.startsWith('/')
       ? node.link
       : buildFromRelativePath(node);
     navigateTo(link);
-    return;
   } else {
     const route = buildRoute(node, `/${node.pathSegment}`);
     navigateTo(route);

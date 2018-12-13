@@ -431,6 +431,16 @@
          */
         removeBackdrop: function removeBackdrop() {
           window.parent.postMessage({ msg: 'luigi.remove-backdrop' }, '*');
+        },
+        /**
+         * Makes current page dirty or not
+         * @param {boolean} isDirty tells if current page/component has any unsaved changes at the moment
+         */
+        setDirtyStatus: function setDirtyStatus(isDirty) {
+          window.parent.postMessage(
+            { msg: 'luigi.set-page-dirty', dirty: isDirty },
+            '*'
+          );
         }
       };
     }

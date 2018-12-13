@@ -1,25 +1,29 @@
 <div id="app" class="{hideNav? 'no-nav' : ''} {hideSideNav? 'no-side-nav' : ''}">
 	{#if alert && alert.message}
-	<div class="fd-alert fd-alert--error fd-alert--dismissible" role="alert" id="j2ALl423">
-		<button on:click="set({alert:null})" class="fd-alert__close" aria-controls="j2ALl423" aria-label="Close"></button>
-		{alert.message} {alert.link}
-	</div>
+    <div class="fd-alert fd-alert--error fd-alert--dismissible" role="alert" id="j2ALl423">
+      <button on:click="set({alert:null})" class="fd-alert__close" aria-controls="j2ALl423" aria-label="Close"></button>
+      {alert.message} {alert.link}
+    </div>
+	{/if}
+  {#if confirmationModal.isDisplayed}
+    <ConfirmationModal title={confirmationModal.title} text={confirmationModal.text} on:modalConfirm="handleModalResult(true)"
+    on:modalDecline="handleModalResult(false)"></ConfirmationModal>
 	{/if}
 	<Backdrop>
 		<div class="fd-page iframeContainer" use:init="context"></div>
 	</Backdrop>
 	{#if showLoadingIndicator}
-	<div in:fade='{delay: 250, duration: 250}' out:fade='{duration: 250}' class="fd-page spinnerContainer" aria-hidden="false"
-	 aria-label="Loading">
-		<div class="fd-spinner">
-			<div></div>
-		</div>
-	</div>
+    <div in:fade='{delay: 250, duration: 250}' out:fade='{duration: 250}' class="fd-page spinnerContainer" aria-hidden="false"
+    aria-label="Loading">
+      <div class="fd-spinner">
+        <div></div>
+      </div>
+    </div>
 	{/if}
 
-	<TopNav pathData={navigationPath} /> 
+	<TopNav pathData={navigationPath} on:handleClick="handleNavClick(event.node)"/>
   {#if !(hideNav||hideSideNav)}
-	  <LeftNav pathData={navigationPath} /> 
+	  <LeftNav pathData={navigationPath} on:handleClick="handleNavClick(event.node)"/>
   {/if}
 </div>
 
@@ -28,8 +32,9 @@
   import { fade } from 'svelte-transitions';
   import TopNav from './navigation/TopNav.html';
   import LeftNav from './navigation/LeftNav.html';
+  import ConfirmationModal from './ConfirmationModal.html';
   import * as Routing from './services/routing.js';
-  import { getConfigValueFromObject } from './utilities/helpers.js';
+  import { getConfigValueFromObject, canComponentHandleModal } from './utilities/helpers.js';
   import { getStoredAuthData } from './utilities/auth-helpers';
 
   const removeQueryParams = str => str.split('?')[0];
@@ -125,7 +130,7 @@
     }
 
     addPreserveView(component, data, config);
-    Routing.navigateTo(path); //navigate to the raw path. Any errors/alerts are handled later
+    Routing.handleInsideAppNavigation(component, path); //navigate to the raw path. Any errors/alerts are handled later
   };
 
   const sendContextToClient = (component, config, goBackContext = {}) => {
@@ -175,6 +180,16 @@
           //     iframe: Element
           // }
         ],
+        confirmationModal: {
+          isDisplayed: false,
+          title: null,
+          text: null,
+          promise: null
+        },
+        unsavedChanges: {
+          isDirty: false,
+          persistUrl: null
+        },
         hideSideNav: false
       };
     },
@@ -270,6 +285,14 @@
               '*'
             );
           }
+          if ('luigi.set-page-dirty' === e.data.msg) {
+            this.set({
+              unsavedChanges: {
+                isDirty: e.data.dirty || false,
+                persistUrl: window.location.href
+              }
+            });
+          }
         });
 
         // listeners are not automatically removed — cancel
@@ -285,12 +308,61 @@
           isNavigateBack: this.get().isNavigateBack,
           viewStackSize: this.get().preservedViews.length
         };
+      },
+      handleNavClick(node) {
+        Routing.handleInsideAppNavigation(this, node, 'node');
+      },
+      handleModalResult(result) {
+        const promise = this.get().confirmationModal.promise;
+        if (result) {
+          this.set({
+            unsavedChanges: { isDirty: false, persistUrl: null }
+          });
+          promise.resolve();
+        } else {
+          promise.reject();
+        }
+        this.hideModal();
+      },
+      showUnsavedChangesModal() {
+        return this.showModal(
+          'Unsaved changes detected',
+          'It looks like you might lose some data if you leave this page. Are you sure you want to do this?'
+        )
+      },
+      shouldShowUnsavedChangesModal() {
+        return canComponentHandleModal(this) && this.get().unsavedChanges.isDirty
+      },
+      showModal(title, text) {
+        return new Promise((resolve, reject) => {
+          //send the response when one of following methods were executed
+          this.set({
+            confirmationModal: {
+              isDisplayed: true,
+              title,
+              text,
+              promise: { resolve, reject }
+            }
+          });
+        });
+      },
+      hideModal() {
+        this.set({
+          confirmationModal: {
+            isDisplayed: false,
+            title: null,
+            text: null,
+            promise: null
+          }
+        });
       }
     },
+
     components: {
       Backdrop,
       TopNav,
-      LeftNav
+      LeftNav,
+      ConfirmationModal
     },
     transitions: { fade }
   };
