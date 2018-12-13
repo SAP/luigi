@@ -344,10 +344,7 @@ export const handleRouteChange = async (path, component, node, config) => {
             handleRouteChange(path, component, node, config) &&
             history.replaceState(window.state, '', newUrl);
         },
-        () => {
-          // NO pressed
-          history.back(); //undo the temporary history entry
-        }
+        () => {}
       );
       return;
     }
