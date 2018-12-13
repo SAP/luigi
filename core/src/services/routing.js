@@ -7,7 +7,8 @@ import {
   trimLeadingSlash,
   isIE,
   getConfigValueFromObject,
-  addLeadingSlash
+  addLeadingSlash,
+  trimTrailingSlash
 } from '../utilities/helpers';
 import { getConfigValueFromObjectAsync } from '../utilities/async-helpers';
 
@@ -349,10 +350,11 @@ export const handleRouteChange = async (path, component, node, config) => {
       return;
     }
 
-    const pathUrl = path && path.length ? getPathWithoutHash(path) : '';
+    const pathUrlRaw = path && path.length ? getPathWithoutHash(path) : '';
+    const pathUrl = trimTrailingSlash(pathUrlRaw.split('?')[0]);
     const pathData = await getNavigationPath(
       LuigiConfig.getConfigValueAsync('navigation.nodes'),
-      pathUrl.split('?')[0]
+      pathUrl
     );
 
     const hideNav = LuigiConfig.getConfigBooleanValue(
@@ -364,13 +366,13 @@ export const handleRouteChange = async (path, component, node, config) => {
       isolateView = false,
       hideSideNav = false
     } = getLastNodeObject(pathData);
-    const params = parseParams(pathUrl.split('?')[1]);
+    const params = parseParams(pathUrlRaw.split('?')[1]);
     const nodeParams = getNodeParams(params);
     const pathParams = getPathParams(pathData.navigationPath);
     const viewGroup = findViewGroup(getLastNodeObject(pathData));
 
     if (!viewUrl) {
-      const routeExists = isExistingRoute(path, pathData);
+      const routeExists = isExistingRoute(pathUrl, pathData);
 
       if (routeExists) {
         const defaultChildNode = await getDefaultChildNode(pathData);
@@ -378,7 +380,7 @@ export const handleRouteChange = async (path, component, node, config) => {
       } else {
         const alert = {
           message: 'Could not find the requested route',
-          link: pathUrl
+          link: pathUrlRaw
         };
 
         component.set({ alert });
@@ -389,11 +391,11 @@ export const handleRouteChange = async (path, component, node, config) => {
     }
 
     if (!containsAllSegments(pathUrl, pathData.navigationPath)) {
-      const matchedPath = await matchPath(pathUrl);
+      const matchedPath = await matchPath(pathUrlRaw);
 
       const alert = {
         message: 'Could not map the exact target node for the requested route',
-        link: pathUrl
+        link: pathUrlRaw
       };
 
       component.set({ alert });
@@ -459,7 +461,7 @@ export const matchPath = async path => {
     const pathUrl = 0 < path.length ? getPathWithoutHash(path) : path;
     const pathData = await getNavigationPath(
       LuigiConfig.getConfigValueAsync('navigation.nodes'),
-      pathUrl.split('?')[0]
+      trimTrailingSlash(pathUrl.split('?')[0])
     );
     if (pathData.navigationPath.length > 0) {
       const lastNode =

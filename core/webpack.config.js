@@ -87,7 +87,7 @@ module.exports = {
   },
   plugins: [
     new CleanWebpackPlugin(['public'], {
-      exclude: ['package.json'],
+      exclude: ['package.json', 'README.md'],
       verbose: true
     }),
     new MiniCssExtractPlugin({ filename: 'luigi.css' }),
