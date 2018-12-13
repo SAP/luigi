@@ -330,6 +330,7 @@ export const handleRouteChange = async (path, component, node, config) => {
     return;
   }
   try {
+    // just used for browser changes, like browser url manual change or browser back/forward button click
     if (component.shouldShowUnsavedChangesModal()) {
       const newUrl = window.location.href;
       const oldUrl = component.get().unsavedChanges.persistUrl;
@@ -536,20 +537,28 @@ export const buildFromRelativePath = node => {
   return addLeadingSlash(concatenatePath(windowPath, node.link));
 };
 
-export const handleRouteClick = (node, component) => {
-  if (component.shouldShowUnsavedChangesModal()) {
-    component.showUnsavedChangesModal().then(
-      () => {
-        handleLuigiCoreNavigation(node);
-      },
-      () => {}
-    );
-  } else {
-    handleLuigiCoreNavigation(node);
-  }
+export const handleInsideAppNavigation = (component, data, type) => {
+  const promise = new Promise(resolve => {
+    if (component.shouldShowUnsavedChangesModal()) {
+      component.showUnsavedChangesModal().then(() => {
+        resolve();
+      });
+    } else {
+      resolve();
+    }
+  }).then(
+    () => {
+      if (type === 'node') {
+        handleNavigationNodeClick(data);
+      } else {
+        navigateTo(data);
+      }
+    },
+    () => {}
+  );
 };
 
-const handleLuigiCoreNavigation = node => {
+export const handleNavigationNodeClick = node => {
   if (node.externalLink && node.externalLink.url) {
     node.externalLink.sameWindow
       ? (window.location.href = node.externalLink.url)

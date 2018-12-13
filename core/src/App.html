@@ -130,7 +130,7 @@
     }
 
     addPreserveView(component, data, config);
-    Routing.navigateTo(path); //navigate to the raw path. Any errors/alerts are handled later
+    Routing.handleInsideAppNavigation(component, path); //navigate to the raw path. Any errors/alerts are handled later
   };
 
   const sendContextToClient = (component, config, goBackContext = {}) => {
@@ -310,15 +310,15 @@
         };
       },
       handleNavClick(node) {
-        Routing.handleRouteClick(node, this);
+        Routing.handleInsideAppNavigation(this, node, 'node');
       },
       handleModalResult(result) {
         const promise = this.get().confirmationModal.promise;
         if (result) {
-          promise.resolve();
           this.set({
             unsavedChanges: { isDirty: false, persistUrl: null }
           });
+          promise.resolve();
         } else {
           promise.reject();
         }
