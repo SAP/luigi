@@ -122,7 +122,7 @@
     }
   };
 
-  const handleNavigation = (component, data, config) => {
+  const handleNavigation = async (component, data, config) => {
     let path = buildPath(component, data.params);
 
     if (path[0] !== '/') {
@@ -130,7 +130,6 @@
     }
 
     addPreserveView(component, data, config);
-
     Routing.navigateTo(path); //navigate to the raw path. Any errors/alerts are handled later
   };
 
@@ -317,7 +316,7 @@
       },
       handleNavClick(node) {
         this.getUnsavedChangesModalPromise().then(
-          () => { Routing.handleNavigationNodeClick(node) }
+          () => { Routing.handleRouteClick(node) }
         );
       },
       handleModalResult(result) {
@@ -332,15 +331,6 @@
         }
         this.hideModal();
       },
-      shouldShowUnsavedChangesModal() {
-        return canComponentHandleModal(this) && this.get().unsavedChanges.isDirty
-      },
-      showUnsavedChangesModal() {
-        return this.showModal(
-          'Unsaved changes detected',
-          'It looks like you might lose some data if you leave this page. Are you sure you want to do this?'
-        )
-      },
       getUnsavedChangesModalPromise() {
         return new Promise(resolve => {
           if (this.shouldShowUnsavedChangesModal()) {
@@ -352,6 +342,15 @@
             resolve();
           }
         })
+      },
+      shouldShowUnsavedChangesModal() {
+        return canComponentHandleModal(this) && this.get().unsavedChanges.isDirty
+      },
+      showUnsavedChangesModal() {
+        return this.showModal(
+          'Unsaved changes detected',
+          'It looks like you might lose some data if you leave this page. Are you sure you want to do this?'
+        )
       },
       showModal(title, text) {
         return new Promise((resolve, reject) => {

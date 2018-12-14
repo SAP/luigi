@@ -481,7 +481,6 @@ export const matchPath = async path => {
 /**
   navigateTo used for navigation
   @param route string  absolute path of the new route
-
  */
 export const navigateTo = async route => {
   if (LuigiConfig.getConfigValue('routing.useHashRouting')) {
@@ -536,7 +535,7 @@ export const buildFromRelativePath = node => {
   return addLeadingSlash(concatenatePath(windowPath, node.link));
 };
 
-export const handleNavigationNodeClick = node => {
+export const handleRouteClick = node => {
   if (node.externalLink && node.externalLink.url) {
     node.externalLink.sameWindow
       ? (window.location.href = node.externalLink.url)

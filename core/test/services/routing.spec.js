@@ -558,7 +558,7 @@ describe('Routing', () => {
     });
   });
 
-  describe('#handleNavigationNodeClick()', () => {
+  describe('#handleRouteClick()', () => {
     beforeEach(() => {
       window.dispatchEvent = sinon.spy();
     });
@@ -579,7 +579,7 @@ describe('Routing', () => {
       LuigiConfig.getConfigValue.returns(true);
 
       // when
-      routing.handleNavigationNodeClick(nodeWithParent);
+      routing.handleRouteClick(nodeWithParent);
 
       // then
       assert.equal(window.location.hash, expectedRoute);
@@ -591,7 +591,7 @@ describe('Routing', () => {
       LuigiConfig.getConfigValue.returns(true);
 
       // when
-      routing.handleNavigationNodeClick(nodeWithoutParent);
+      routing.handleRouteClick(nodeWithoutParent);
 
       // then
       assert.equal(window.location.hash, expectedRoute);
@@ -608,7 +608,7 @@ describe('Routing', () => {
       LuigiConfig.getConfigValue.returns(false);
 
       // when
-      routing.handleNavigationNodeClick(nodeWithParent);
+      routing.handleRouteClick(nodeWithParent);
 
       // then
       const pushStateArgs = window.history.pushState.args[0];
@@ -629,7 +629,7 @@ describe('Routing', () => {
       LuigiConfig.getConfigValue.returns(false);
 
       // when
-      routing.handleNavigationNodeClick(nodeWithoutParent);
+      routing.handleRouteClick(nodeWithoutParent);
 
       // then
       const pushStateArgs = window.history.pushState.args[0];
@@ -650,7 +650,7 @@ describe('Routing', () => {
       LuigiConfig.getConfigValue.returns(false);
 
       // when
-      routing.handleNavigationNodeClick(nodeWithoutParent);
+      routing.handleRouteClick(nodeWithoutParent);
 
       // then
       const pushStateArgs = window.history.pushState.args[0];
@@ -672,7 +672,7 @@ describe('Routing', () => {
       // when
       LuigiConfig.getConfigValue.returns(true);
 
-      routing.handleNavigationNodeClick(inputNode, window);
+      routing.handleRouteClick(inputNode, window);
 
       console.log('​window.location.hash', window.location.hash);
       // then
@@ -691,7 +691,7 @@ describe('Routing', () => {
       // when
       LuigiConfig.getConfigValue.returns(true);
 
-      routing.handleNavigationNodeClick(inputNode, window);
+      routing.handleRouteClick(inputNode, window);
 
       // then
       assert.equal(window.location.hash, expectedRoute);
