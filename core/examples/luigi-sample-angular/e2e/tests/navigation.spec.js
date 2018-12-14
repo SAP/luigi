@@ -19,7 +19,7 @@ describe('Navigation', () => {
 
     //project one page
     cy.location().should(loc => {
-      expect(loc.hash).to.eq('#/projects/pr1');
+      expect(loc.pathname).to.eq('/projects/pr1');
     });
     cy.get('.fd-app__sidebar').should('not.contain', 'Project One');
     cy.get('.fd-app__sidebar').should('contain', 'Miscellaneous2');
@@ -29,7 +29,7 @@ describe('Navigation', () => {
 
     //default child node example
     cy.location().should(loc => {
-      expect(loc.hash).to.eq('#/projects/pr1/dps/dps2');
+      expect(loc.pathname).to.eq('/projects/pr1/dps/dps2');
     });
     cy.get('.fd-app__sidebar').should('contain', 'First Child');
     cy.get('.fd-app__sidebar').should('contain', 'Second Child');
@@ -69,7 +69,7 @@ describe('Navigation', () => {
       });
 
       cy.location().should(loc => {
-        expect(loc.hash).to.eq('#/projects/pr1/avengers/thor');
+        expect(loc.pathname).to.eq('/projects/pr1/avengers/thor');
       });
 
       cy.get('.fd-app__sidebar').should('contain', 'Keep Selected Example');
@@ -104,7 +104,7 @@ describe('Navigation', () => {
         .click();
 
       cy.location().should(loc => {
-        expect(loc.hash).to.eq('#/settings');
+        expect(loc.pathname).to.eq('/settings');
       });
 
       //go to relative path from the parent node
@@ -114,7 +114,7 @@ describe('Navigation', () => {
         .click();
 
       cy.location().should(loc => {
-        expect(loc.hash).to.eq('#/projects/pr2/dps/dps1');
+        expect(loc.pathname).to.eq('/projects/pr2/dps/dps1');
       });
 
       //go to relative path from node that is a sibiling
@@ -124,7 +124,7 @@ describe('Navigation', () => {
         .click();
 
       cy.location().should(loc => {
-        expect(loc.hash).to.eq('#/projects/pr2/avengers');
+        expect(loc.pathname).to.eq('/projects/pr2/avengers');
       });
 
       cy.get('.fd-app__sidebar .fd-side-nav__item')
@@ -132,11 +132,12 @@ describe('Navigation', () => {
         .click();
 
       cy.location().should(loc => {
-        expect(loc.hash).to.eq('#/projects/pr2/dps/dps1');
+        expect(loc.pathname).to.eq('/projects/pr2/dps/dps1');
       });
     });
-    it('should hide left Nav', () => {
-      cy.visit('/#/projects/pr1/hideSideNav');
+
+    it('Left navigation hidden', () => {
+      cy.visit('http://localhost:4200/projects/pr1/hideSideNav');
       cy.get('.no-side-nav').should('exist');
       cy.get('.fd-app__sidebar').should('not.be.visible');
     });
