@@ -100,15 +100,9 @@
         });
       },
       onLogoutClick: function() {
-        if (this.root.shouldShowUnsavedChangesModal()) {
-          this.root.showUnsavedChangesModal()
-            .then(
-              () => { this.logout(); },
-              () => { }
-            )
-        } else {
-          this.logout();
-        }
+        this.root.getUnsavedChangesModalPromise().then(
+          () => { this.logout() }
+        )
       },
       logout: function() {
         const authData = getStoredAuthData();

@@ -144,7 +144,9 @@
         this.goTo(node.link);
       },
       goTo(path) {
-        Routing.handleInsideAppNavigation(this.root, path);
+        this.root.getUnsavedChangesModalPromise().then(
+          () => { Routing.navigateTo(path) }
+        )
       },
       toggleDropdownState(name) {
         const dropDownStates = this.get().dropDownStates || {};

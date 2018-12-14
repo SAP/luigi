@@ -536,39 +536,6 @@ export const buildFromRelativePath = node => {
   return addLeadingSlash(concatenatePath(windowPath, node.link));
 };
 
-export const handleInsideAppNavigation = (component, data, type) => {
-  const promise = new Promise(resolve => {
-    if (component.shouldShowUnsavedChangesModal()) {
-      component.showUnsavedChangesModal().then(() => {
-        resolve();
-      });
-    } else {
-      resolve();
-    }
-  }).then(
-    () => {
-      if (type === 'node') {
-        handleNavigationNodeClick(data);
-      } else if (type === 'iframe-change') {
-        setActiveIframeToPrevious(data.node);
-        const preservedViews = component.get().preservedViews;
-        preservedViews.pop();
-        // set new active iframe and preservedViews
-        data.config.iframe = getActiveIframe(data.node);
-        component.set({
-          isNavigateBack: true,
-          preservedViews,
-          goBackContext: data.goBackContext && JSON.parse(data.goBackContext)
-        });
-        navigateTo(data.path);
-      } else {
-        navigateTo(data);
-      }
-    },
-    () => {}
-  );
-};
-
 export const handleNavigationNodeClick = node => {
   if (node.externalLink && node.externalLink.url) {
     node.externalLink.sameWindow
