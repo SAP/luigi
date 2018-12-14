@@ -489,7 +489,7 @@ export const navigateTo = async route => {
   }
 
   // Avoid infinite loop on logout + login whith path routing
-  if (route === '/') {
+  if (window.location.pathname === route) {
     return;
   }
 
