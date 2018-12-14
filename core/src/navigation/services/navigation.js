@@ -1,12 +1,24 @@
-import { LuigiConfig } from '../../services/config';
-import { getConfigValueFromObjectAsync } from '../../utilities/async-helpers';
+import {
+  LuigiConfig
+} from '../../services/config';
+import {
+  getConfigValueFromObjectAsync
+} from '../../utilities/async-helpers';
 
 const isNodeAccessPermitted = (
   nodeToCheckPermissionFor,
   parentNode,
   currentContext
 ) => {
-  if (LuigiConfig.isAuthorizationEnabled() && !isLoggedIn()) return false;
+  if (LuigiConfig.isAuthorizationEnabled()) {
+    const loggedIn = isLoggedIn();
+    const a_access = nodeToCheckPermissionFor.anonymousAccess;
+
+    if (loggedIn && a_access === "exclusive" ||
+      (!loggedIn && a_access !== "exclusive" && a_access !== true)) {
+      return false;
+    }
+  }
   const permissionCheckerFn = LuigiConfig.getConfigValue(
     'navigation.nodeAccessibilityResolver'
   );
