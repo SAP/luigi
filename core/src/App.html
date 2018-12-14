@@ -28,14 +28,12 @@
   import { fade } from 'svelte-transitions';
   import TopNav from './navigation/TopNav.html';
   import LeftNav from './navigation/LeftNav.html';
-  import * as Routing from './services/routing.js';
-  import {
-    addRouteChangeListener,
-    getContentViewParamPrefix
-  } from './utilities/helpers/routing-helpers';
-  import { handleRouteChange } from './services/routing-handlers';
-  import { getConfigValueFromObject } from './utilities/helpers/generic-helpers';
-  import { getStoredAuthData } from './utilities/helpers/auth-helpers';
+  import * as Routing from './services/routing';
+  import * as Iframe from './services/iframe';
+  import * as RoutingHelpers from './utilities/helpers/routing-helpers';
+  import * as RoutingHandlers from './services/routing-handlers';
+  import * as GenericHelpers from './utilities/helpers/generic-helpers';
+  import * as AuthHelpers from './utilities/helpers/auth-helpers';
 
   const removeQueryParams = str => str.split('?')[0];
 
@@ -57,16 +55,16 @@
   const enableRouting = (component, node, config) => {
     // intial route handling
     const currentPath = Routing.getCurrentPath();
-    handleRouteChange(currentPath, component, node, config);
+    RoutingHandlers.handleRouteChange(currentPath, component, node, config);
 
     // subsequential route handling
-    addRouteChangeListener(path => {
+    RoutingHelpers.addRouteChangeListener(path => {
       const pv = component.get().preservedViews;
       if (!isValidBackRoute(pv, path)) {
         component.set({ preservedViews: [] });
-        Routing.removeInactiveIframes(node);
+        Iframe.removeInactiveIframes(node);
       }
-      handleRouteChange(path, component, node, config);
+      RoutingHandlers.handleRouteChange(path, component, node, config);
     });
   };
 
@@ -97,7 +95,9 @@
       path += '?';
       Object.entries(params.nodeParams).forEach(entry => {
         path +=
-          encodeURIComponent(getContentViewParamPrefix() + entry[0]) +
+          encodeURIComponent(
+            RoutingHelpers.getContentViewParamPrefix() + entry[0]
+          ) +
           '=' +
           encodeURIComponent(entry[1]) +
           '&';
@@ -147,7 +147,7 @@
         nodeParams: JSON.stringify(Object.assign({}, component.get().nodeParams)),
         pathParams: JSON.stringify(Object.assign({}, component.get().pathParams)),
         internal: JSON.stringify(component.prepareInternalData()),
-        authData: getStoredAuthData()
+        authData: AuthHelpers.getStoredAuthData()
       },
       '*'
     );
@@ -198,7 +198,7 @@
             sendContextToClient(this, config, {});
 
             const loadingIndicatorAutoHideEnabled =
-              getConfigValueFromObject(
+              GenericHelpers.getConfigValueFromObject(
                 this.get(),
                 'currentNode.loadingIndicator.hideAutomatically'
               ) !== false;

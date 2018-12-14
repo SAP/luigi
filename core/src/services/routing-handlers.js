@@ -1,25 +1,10 @@
-import {
-  navigateTo,
-  buildFromRelativePath,
-  navigateIframe,
-  matchPath
-} from './routing';
+import * as Routing from './routing';
+import * as Iframe from './iframe';
 import { LuigiConfig } from '../services/config';
-import {
-  getPathWithoutHash,
-  containsAllSegments
-} from '../utilities/helpers/generic-helpers';
-import { getNavigationPath } from '../navigation/services/navigation';
-import {
-  getNodeParams,
-  getPathParams,
-  findViewGroup,
-  parseParams,
-  getLastNodeObject,
-  getDefaultChildNode,
-  isExistingRoute,
-  buildRoute
-} from '../utilities/helpers/routing-helpers';
+
+import * as GenericHelpers from '../utilities/helpers/generic-helpers';
+import * as Navigation from '../navigation/services/navigation';
+import * as RoutingHelpers from '../utilities/helpers/routing-helpers';
 
 export const handleRouteChange = async (path, component, node, config) => {
   const defaultPattern = [/access_token=/, /id_token=/];
@@ -32,8 +17,9 @@ export const handleRouteChange = async (path, component, node, config) => {
     return;
   }
   try {
-    const pathUrl = path && path.length ? getPathWithoutHash(path) : '';
-    const pathData = await getNavigationPath(
+    const pathUrl =
+      path && path.length ? GenericHelpers.getPathWithoutHash(path) : '';
+    const pathData = await Navigation.getNavigationPath(
       LuigiConfig.getConfigValueAsync('navigation.nodes'),
       pathUrl.split('?')[0]
     );
@@ -46,18 +32,24 @@ export const handleRouteChange = async (path, component, node, config) => {
       viewUrl = '',
       isolateView = false,
       hideSideNav = false
-    } = getLastNodeObject(pathData);
-    const params = parseParams(pathUrl.split('?')[1]);
-    const nodeParams = getNodeParams(params);
-    const pathParams = getPathParams(pathData.navigationPath);
-    const viewGroup = findViewGroup(getLastNodeObject(pathData));
+    } = RoutingHelpers.getLastNodeObject(pathData);
+    const params = RoutingHelpers.parseParams(pathUrl.split('?')[1]);
+    const nodeParams = RoutingHelpers.getNodeParams(params);
+    const pathParams = RoutingHelpers.getPathParams(pathData.navigationPath);
+    const viewGroup = RoutingHelpers.findViewGroup(
+      RoutingHelpers.getLastNodeObject(pathData)
+    );
 
     if (!viewUrl) {
-      const routeExists = isExistingRoute(path, pathData);
+      const routeExists = RoutingHelpers.isExistingRoute(path, pathData);
 
       if (routeExists) {
-        const defaultChildNode = await getDefaultChildNode(pathData);
-        navigateTo(`${pathUrl ? `/${pathUrl}` : ''}/${defaultChildNode}`);
+        const defaultChildNode = await RoutingHelpers.getDefaultChildNode(
+          pathData
+        );
+        Routing.navigateTo(
+          `${pathUrl ? `/${pathUrl}` : ''}/${defaultChildNode}`
+        );
       } else {
         const alert = {
           message: 'Could not find the requested route',
@@ -65,14 +57,14 @@ export const handleRouteChange = async (path, component, node, config) => {
         };
 
         component.set({ alert });
-        navigateTo('/');
+        Routing.navigateTo('/');
         //error 404
       }
       return;
     }
 
-    if (!containsAllSegments(pathUrl, pathData.navigationPath)) {
-      const matchedPath = await matchPath(pathUrl);
+    if (!GenericHelpers.containsAllSegments(pathUrl, pathData.navigationPath)) {
+      const matchedPath = await Routing.matchPath(pathUrl);
 
       const alert = {
         message: 'Could not map the exact target node for the requested route',
@@ -80,7 +72,7 @@ export const handleRouteChange = async (path, component, node, config) => {
       };
 
       component.set({ alert });
-      navigateTo(matchedPath);
+      Routing.navigateTo(matchedPath);
     }
 
     const previousCompData = component.get();
@@ -107,7 +99,7 @@ export const handleRouteChange = async (path, component, node, config) => {
         : {}
     });
 
-    navigateIframe(config, component, node);
+    Iframe.navigateIframe(config, component, node);
   } catch (err) {
     console.info('Could not handle route change', err);
   }
@@ -123,11 +115,11 @@ export const handleRouteClick = node => {
   } else if (node.link) {
     const link = node.link.startsWith('/')
       ? node.link
-      : buildFromRelativePath(node);
-    navigateTo(link);
+      : Routing.buildFromRelativePath(node);
+    Routing.navigateTo(link);
     return;
   } else {
-    const route = buildRoute(node, `/${node.pathSegment}`);
-    navigateTo(route);
+    const route = RoutingHelpers.buildRoute(node, `/${node.pathSegment}`);
+    Routing.navigateTo(route);
   }
 };
