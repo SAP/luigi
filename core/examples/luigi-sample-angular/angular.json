@@ -12,7 +12,7 @@
           "builder": "@angular-builders/custom-webpack:browser",
           "options": {
             "customWebpackConfig": {
-              "path": "./webpack-extra.config.js"
+              "path": "./webpack-extend-angular.config.js"
             },
             "outputPath": "dist",
             "index": "src/sampleapp.html",
