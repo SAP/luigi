@@ -549,6 +549,18 @@ export const handleInsideAppNavigation = (component, data, type) => {
     () => {
       if (type === 'node') {
         handleNavigationNodeClick(data);
+      } else if (type === 'iframe-change') {
+        setActiveIframeToPrevious(data.node);
+        const preservedViews = component.get().preservedViews;
+        preservedViews.pop();
+        // set new active iframe and preservedViews
+        data.config.iframe = getActiveIframe(data.node);
+        component.set({
+          isNavigateBack: true,
+          preservedViews,
+          goBackContext: data.goBackContext && JSON.parse(data.goBackContext)
+        });
+        navigateTo(data.path);
       } else {
         navigateTo(data);
       }

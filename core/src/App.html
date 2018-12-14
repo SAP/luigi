@@ -122,15 +122,14 @@
     }
   };
 
-  const handleNavigation = async (component, data, config) => {
-    let path = buildPath(component, data.params);
+  const getNavigationPath = (component, params) => {
+    let path = buildPath(component, params);
 
     if (path[0] !== '/') {
       path = '/' + path; //add leading slash if necessary
     }
 
-    addPreserveView(component, data, config);
-    Routing.handleInsideAppNavigation(component, path); //navigate to the raw path. Any errors/alerts are handled later
+    return path;
   };
 
   const sendContextToClient = (component, config, goBackContext = {}) => {
@@ -231,31 +230,29 @@
 
           if ('luigi.navigation.open' === e.data.msg) {
             this.set({ isNavigateBack: false });
-            handleNavigation(this, e.data, config);
+            const path = getNavigationPath(this, e.data.params);
+            addPreserveView(this, e.data, config);
+
+            Routing.handleInsideAppNavigation(this, path); //navigate to the raw path. Any errors/alerts are handled later
           }
 
           if ('luigi.navigation.back' === e.data.msg) {
             // go back: context from the view
             const preservedViews = this.get().preservedViews;
             if (preservedViews && preservedViews.length) {
-              // remove current active iframe and data
-              Routing.setActiveIframeToPrevious(node);
-              const previousActiveIframeData = preservedViews.pop();
-              // set new active iframe and preservedViews
-              config.iframe = Routing.getActiveIframe(node);
-              this.set({
-                isNavigateBack: true,
-                preservedViews: preservedViews,
-                goBackContext:
-                  e.data.goBackContext && JSON.parse(e.data.goBackContext)
-              });
-
-              // TODO: check if handleNavigation or history pop to update hash / path
-              handleNavigation(
+              const previousActiveIframeData = preservedViews[preservedViews.length -1];
+              // TODO: check if getNavigationPath or history pop to update hash / path
+              const path = getNavigationPath(
                 this,
-                { params: { link: previousActiveIframeData.path } },
-                config
+                { link: previousActiveIframeData.path }
               );
+              const data = {
+                path,
+                node,
+                config,
+                goBackContext: e.data.goBackContext
+              }
+              Routing.handleInsideAppNavigation(this, data, 'iframe-change'); //navigate to the raw path. Any errors/alerts are handled later
             } else {
               console.error('goBack() not possible, no preserved views found.');
             }
