@@ -1,4 +1,4 @@
-# Authorization Configuration
+# Authorization configuration
 
 Luigi provides OpenID Connect and OAuth2 Implicit Grant authorization out of the box. The **use** key defines the active authorization provider and the **disableAutoLogin** key allows you to disable the automatic login flow that is provided by default.
 

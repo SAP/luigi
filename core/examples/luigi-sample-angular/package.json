@@ -8,8 +8,6 @@
     "start": "(npm run startConfig &) && ng serve",
     "build": "npm run buildConfig && ng build",
     "lint": "ng lint",
-    "startWebpack": "(npm run startConfig &) && webpack-dev-server --port=4200",
-    "buildWebpack": "npm run buildConfig && webpack",
     "buildConfig": "BABEL_ENV=production webpack --mode production --config webpack-config.config.js",
     "startConfig": "webpack --mode development --config webpack-config.config.js --watch",
     "e2e:open": "cypress open",
@@ -34,6 +32,8 @@
     "rxjs": "^6.2.0"
   },
   "devDependencies": {
+    "@angular-builders/custom-webpack": "^7.1.1",
+    "@angular-builders/dev-server": "^7.1.1",
     "@angular-devkit/build-angular": "~0.7.0",
     "@angular-devkit/core": "0.6.8",
     "@angular-devkit/schematics": "^0.6.8",
@@ -51,28 +51,10 @@
     "babel-preset-minify": "^0.5.0",
     "circular-dependency-plugin": "^4.2.1",
     "codelyzer": "^4.4.1",
-    "copy-webpack-plugin": "~4.4.1",
     "cypress": "^3.1.0",
-    "file-loader": "^1.1.5",
-    "html-webpack-plugin": "^3.0.0",
-    "less": "^3.0.0",
-    "less-loader": "^4.0.5",
-    "node-sass": "^4.0.0",
-    "postcss-import": "^11.0.0",
-    "postcss-loader": "^2.0.10",
-    "postcss-url": "^7.1.2",
-    "raw-loader": "^0.5.1",
-    "sass-loader": "^6.0.6",
-    "style-loader": "^0.19.1",
-    "stylus": "^0.54.5",
-    "stylus-loader": "^3.0.1",
     "ts-node": "~3.2.0",
     "tslint": "~5.7.0",
     "typescript": "~2.7.2",
-    "uglifyjs-webpack-plugin": "^1.1.8",
-    "url-loader": "^0.6.2",
-    "wait-on": "^2.1.0",
-    "webpack": "^4.16.0",
-    "webpack-dev-server": "^3.1.5"
+    "webpack": "^4.27.1"
   }
 }

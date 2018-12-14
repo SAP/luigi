@@ -21,8 +21,9 @@
 
 
 <script type="text/javascript">
-  import { processHeaderSettings } from './services/header.js';
   import { LuigiConfig } from '../services/config.js';
+  import { processHeaderSettings } from './services/header.js';
+  import * as Routing from '../services/routing.js';
 
   export default {
     oncreate() {
@@ -30,11 +31,7 @@
     },
     methods: {
       goTo(path) {
-        if (LuigiConfig.getConfigBooleanValue('routing.useHashRouting')) {
-          window.location.hash = path;
-        } else {
-          window.location.pathname = path;
-        }
+        Routing.navigateTo(path);
       }
     }
   };

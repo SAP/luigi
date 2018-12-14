@@ -35,14 +35,12 @@ To have this application running, follow these steps:
 
    You can use hash-based routing or path-based routing in your application:
 
-    - To run Luigi with hash-based routing, change the **routing.useHashrouting** configuration to `true` and run the following command:
+    - To run Luigi with hash-based routing, set the **routing.useHashrouting** configuration to `true`.
+    - To run Luigi with path-based routing, set the **routing.useHashrouting** configuration to `false`.
+    
+    Run the server with the following command:
         ```bash
         npm run start
-        ```
-
-    - To run Luigi with path-based routing, change the **routing.useHashrouting** configuration to `false` and run the following command:
-        ```bash
-        npm run startWebpack
         ```
 
 5. Go to [http://localhost:4200/](http://localhost:4200/) to start the application.
@@ -67,11 +65,6 @@ Run the sample application to perform the tests. When the application is ready:
 - Run `npm run e2e:open` to start tests in the interactive mode.
 <!-- ## Run server
 * Using Angular CLI (standard): `npm run start`
-
-> If you want to enable path routing instead of hash, run the app without Angular CLI.
-
-* Without Angular CLI: `npm run startWebpack`
-
 
 ## Use OpenID Connect
 
