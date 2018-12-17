@@ -31,7 +31,7 @@
   import * as Routing from './services/routing';
   import * as Iframe from './services/iframe';
   import * as RoutingHelpers from './utilities/helpers/routing-helpers';
-  import * as RoutingHandlers from './services/routing-handlers';
+
   import * as GenericHelpers from './utilities/helpers/generic-helpers';
   import * as AuthHelpers from './utilities/helpers/auth-helpers';
 
@@ -55,7 +55,7 @@
   const enableRouting = (component, node, config) => {
     // intial route handling
     const currentPath = Routing.getCurrentPath();
-    RoutingHandlers.handleRouteChange(currentPath, component, node, config);
+    Routing.handleRouteChange(currentPath, component, node, config);
 
     // subsequential route handling
     RoutingHelpers.addRouteChangeListener(path => {
@@ -64,7 +64,7 @@
         component.set({ preservedViews: [] });
         Iframe.removeInactiveIframes(node);
       }
-      RoutingHandlers.handleRouteChange(path, component, node, config);
+      Routing.handleRouteChange(path, component, node, config);
     });
   };
 

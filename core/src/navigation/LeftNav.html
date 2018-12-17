@@ -58,7 +58,7 @@
 
 <script type="text/javascript">
   import { getChildren, getLeftNavData } from './services/navigation.js';
-  import { handleRouteClick } from '../services/routing-handlers';
+  import * as Routing from '../services/routing';
   import { LuigiConfig } from '../services/config.js';
 
   const setLeftNavData = async (current, component) => {
@@ -85,7 +85,7 @@
       }
     },
     methods: {
-      handleClick: node => handleRouteClick(node)
+      handleClick: node => Routing.handleRouteClick(node)
     }
   };
 </script>

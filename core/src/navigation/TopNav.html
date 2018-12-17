@@ -87,7 +87,7 @@
   import ContextSwitcher from './ContextSwitcher.html';
   import LogoTitle from './LogoTitle.html';
   import Authorization from '../Authorization.html';
-  import { handleRouteClick } from '../services/routing-handlers';
+  import * as Routing from '../services/routing';
   import * as Navigation from './services/navigation.js';
   import { LuigiConfig } from '../services/config.js';
   import { getNegatedBoolString } from '../utilities/helpers/generic-helpers.js';
@@ -156,7 +156,7 @@
       }
     },
     methods: {
-      handleClick: node => handleRouteClick(node),
+      handleClick: node => Routing.handleRouteClick(node),
       toggleDropdownState(name) {
         const dropDownStates = this.get().dropDownStates || {};
         dropDownStates[name] = getNegatedBoolString(dropDownStates[name]);
