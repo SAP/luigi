@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { UsersoverviewComponent } from './project/users/usersoverview/usersoverview.component';
 import { MiscellaneousComponent } from './project/miscellaneous/miscellaneous.component';
-import { DevelopersComponent } from './project/developers/developers.component';
+import { LuigiClientFeaturesComponent } from './project/luigi-client-features/luigi-client-features.component';
 import { ProjectComponent } from './project/project.component';
 import { UsersComponent } from './project/users/users.component';
 import { SettingsComponent } from './project/settings/settings.component';
@@ -36,7 +36,10 @@ const routes: Routes = [
     path: 'projects/:projectId/users/groups/:groupId/settings',
     component: GroupSettingsComponent
   },
-  { path: 'projects/:projectId/developers', component: DevelopersComponent },
+  {
+    path: 'projects/:projectId/luigi-client-features',
+    component: LuigiClientFeaturesComponent
+  },
   { path: 'projects/:projectId/settings', component: SettingsComponent },
   {
     path: 'projects/:projectId/miscellaneous',

@@ -7,7 +7,7 @@ import { ProjectComponent } from './project/project.component';
 import { UsersComponent } from './project/users/users.component';
 import { AppRoutingModule } from './app-routing.module';
 import { SettingsComponent } from './project/settings/settings.component';
-import { DevelopersComponent } from './project/developers/developers.component';
+import { LuigiClientFeaturesComponent } from './project/luigi-client-features/luigi-client-features.component';
 import { MiscellaneousComponent } from './project/miscellaneous/miscellaneous.component';
 import { UsersoverviewComponent } from './project/users/usersoverview/usersoverview.component';
 import { GroupsComponent } from './project/users/groups/groups.component';
@@ -31,7 +31,7 @@ import { HideSideNavComponent } from './project/hideSideNav/hideSideNav.componen
     ProjectComponent,
     UsersComponent,
     SettingsComponent,
-    DevelopersComponent,
+    LuigiClientFeaturesComponent,
     MiscellaneousComponent,
     UsersoverviewComponent,
     GroupsComponent,

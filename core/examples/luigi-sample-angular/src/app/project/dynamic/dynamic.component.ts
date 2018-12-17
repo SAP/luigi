@@ -5,7 +5,7 @@ import {
   LuigiContextService,
   IContextMessage
 } from '../../services/luigi-context.service';
-import { toTitleCase } from '../../services/helpers';
+import { toTitleCase, slugify } from '../../services/helpers';
 
 @Component({
   selector: 'app-dynamic',
@@ -66,10 +66,7 @@ export class DynamicComponent implements OnInit, OnDestroy {
   }
 
   public slugify(str: string): string {
-    return str
-      .toLowerCase()
-      .split(' ')
-      .join('-');
+    return slugify(str);
   }
 
   public goBack() {

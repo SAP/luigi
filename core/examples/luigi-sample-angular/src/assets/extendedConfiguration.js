@@ -83,79 +83,24 @@ var projectDetailNavProviderFn = function(context) {
     var projectId = context.currentProject;
     var children = [
       {
-        category: { label: 'User Management', icon: 'person-placeholder' },
-        pathSegment: 'users',
-        label: 'Users and Groups',
-        viewUrl: '/sampleapp.html#/projects/' + projectId + '/users',
-        children: [
-          {
-            category: { label: 'Groups', icon: 'group' },
-            pathSegment: 'groups',
-            label: 'Groups',
-            viewUrl: '/sampleapp.html#/projects/' + projectId + '/users/groups',
-            children: [
-              {
-                pathSegment: ':group',
-                viewUrl:
-                  '/sampleapp.html#/projects/' +
-                  projectId +
-                  '/users/groups/:group',
-                context: {
-                  currentGroup: ':group'
-                },
-                children: [
-                  {
-                    label: 'Group Settings',
-                    pathSegment: 'settings',
-                    viewUrl:
-                      '/sampleapp.html#/projects/' +
-                      projectId +
-                      '/users/groups/:group/settings'
-                  }
-                ]
-              }
-            ]
-          },
-          {
-            pathSegment: 'usersoverview',
-            label: 'Users Overview',
-            viewUrl:
-              '/sampleapp.html#/projects/' + projectId + '/users/usersoverview'
-          }
-        ]
+        category: { label: 'Luigi Client Examples', icon: 'user-settings' },
+        pathSegment: 'ux-manager-features',
+        label: 'uxManager Examples',
+        viewUrl:
+          '/sampleapp.html#/projects/' + projectId + '/luigi-client-features'
       },
       {
-        category: 'User Management',
-        pathSegment: 'developers',
-        label: 'Developers',
-        viewUrl: '/sampleapp.html#/projects/' + projectId + '/developers'
+        category: { label: 'Luigi Client Examples', icon: 'user-settings' },
+        label: 'linkManager Examples',
+        link: '/projects/pr1'
       },
       {
-        category: { label: 'Settings', icon: 'action-settings' },
-        pathSegment: 'settings',
-        label: 'Project Settings',
-        viewUrl: '/sampleapp.html#/projects/' + projectId + '/settings'
-      },
-      {
-        pathSegment: 'miscellaneous',
-        constraints: ['unicorns'],
-        label: 'Miscellaneous',
-        viewUrl: '/sampleapp.html#/projects/' + projectId + '/miscellaneous'
-      },
-      {
-        pathSegment: 'miscellaneous2',
-        label: 'Miscellaneous2',
-        viewUrl: '/sampleapp.html#/projects/' + projectId + '/miscellaneous2'
-      },
-      {
-        pathSegment: 'misc2-isolated',
-        label: 'Miscellaneous2 (Isolated View)',
-        isolateView: true,
-        viewUrl: '/sampleapp.html#/projects/' + projectId + '/miscellaneous2'
-      },
-      {
+        category: {
+          label: 'Node Configuration Examples',
+          icon: 'developer-settings'
+        },
         pathSegment: 'dps',
-        label: 'Default Child node Example',
+        label: 'Default Child Node',
         defaultChildNode: 'dps2',
         children: [
           {
@@ -171,16 +116,22 @@ var projectDetailNavProviderFn = function(context) {
         ]
       },
       {
-        link: '/settings',
-        label: 'Go to absolute path'
+        category: {
+          label: 'Node Configuration Examples',
+          icon: 'developer-settings'
+        },
+        pathSegment: 'misc2-isolated',
+        label: 'Isolated View',
+        isolateView: true,
+        viewUrl: '/sampleapp.html#/projects/' + projectId + '/miscellaneous2'
       },
       {
-        link: 'dps/dps1',
-        label: 'Go to relative path'
-      },
-      {
+        category: {
+          label: 'Node Configuration Examples',
+          icon: 'developer-settings'
+        },
         pathSegment: 'avengers',
-        label: 'Keep Selected Example',
+        label: 'Keep Selected',
         viewUrl: '/sampleapp.html#/projects/' + projectId + '/dynamic/avengers',
         keepSelectedForChildren: true,
         context: {
@@ -252,10 +203,46 @@ var projectDetailNavProviderFn = function(context) {
         }))
       },
       {
+        category: {
+          label: 'Node Configuration Examples',
+          icon: 'developer-settings'
+        },
         pathSegment: 'hideSideNav',
-        label: 'Hide left navigation',
+        label: 'Hide Left Navigation',
         viewUrl: '/sampleapp.html#/projects/' + projectId + '/hideSideNav',
         hideSideNav: true
+      },
+      {
+        // This Node is not visible/accessible due to custom defined constraints
+        constraints: ['unicorns'],
+        label: 'Miscellaneous',
+        pathSegment: 'miscellaneous',
+        category: {
+          label: 'Node Configuration Examples',
+          icon: 'developer-settings'
+        },
+        viewUrl: '/sampleapp.html#/projects/' + projectId + '/miscellaneous'
+      },
+      {
+        category: {
+          label: 'Node Configuration Examples',
+          icon: 'developer-settings'
+        },
+        link: '/settings',
+        label: 'Go to absolute path'
+      },
+      {
+        category: {
+          label: 'Node Configuration Examples',
+          icon: 'developer-settings'
+        },
+        link: 'dps/dps1',
+        label: 'Go to relative path'
+      },
+      {
+        pathSegment: 'miscellaneous2',
+        label: 'A normal Node',
+        viewUrl: '/sampleapp.html#/projects/' + projectId + '/miscellaneous2'
       },
       {
         label: 'Open Github in new tab',
@@ -272,6 +259,48 @@ var projectDetailNavProviderFn = function(context) {
           url: 'http://github.com',
           sameWindow: true
         }
+      },
+      {
+        category: { label: 'User Management', icon: 'person-placeholder' },
+        pathSegment: 'users',
+        label: 'Users and Groups',
+        viewUrl: '/sampleapp.html#/projects/' + projectId + '/users',
+        children: [
+          {
+            category: { label: 'Groups', icon: 'group' },
+            pathSegment: 'groups',
+            label: 'Groups',
+            viewUrl: '/sampleapp.html#/projects/' + projectId + '/users/groups',
+            children: [
+              {
+                pathSegment: ':group',
+                viewUrl:
+                  '/sampleapp.html#/projects/' +
+                  projectId +
+                  '/users/groups/:group',
+                context: {
+                  currentGroup: ':group'
+                },
+                children: [
+                  {
+                    label: 'Group Settings',
+                    pathSegment: 'settings',
+                    viewUrl:
+                      '/sampleapp.html#/projects/' +
+                      projectId +
+                      '/users/groups/:group/settings'
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            pathSegment: 'usersoverview',
+            label: 'Users Overview',
+            viewUrl:
+              '/sampleapp.html#/projects/' + projectId + '/users/usersoverview'
+          }
+        ]
       }
     ];
     getProjectPlugins(projectId).then(function(result) {
@@ -505,10 +534,19 @@ Luigi.setConfig({
       parentNodePath: '/environments', // absolute path
       lazyloadOptions: true, // load options on click instead on page load
       options: () => {
-        return [...Array(10).keys()].filter(n => n !== 0).map(n => ({
+        var options = [...Array(10).keys()].filter(n => n !== 0).map(n => ({
           label: 'Environment ' + n, // (i.e mapping between what the user sees and what is taken to replace the dynamic part for the dynamic node)
           pathValue: 'env' + n // will be used to replace dynamic part
         }));
+
+        var storedOptions = sessionStorage.getItem(
+          'contextSwitcherExtraOptions'
+        );
+        if (storedOptions) {
+          options = JSON.parse(storedOptions).concat(options);
+        }
+
+        return options;
       },
       actions: [
         {

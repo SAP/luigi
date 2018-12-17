@@ -10,7 +10,7 @@ export class OverviewComponent {
   public luigiClient: LuigiClient = LuigiClient;
   public luigiClientLinks: any[] = [
     {
-      link: '/projects/pr2',
+      link: '/projects/pr1/ux-manager-features',
       text: 'uxManager()',
       description: 'backdrop methods'
     },

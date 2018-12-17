@@ -1,0 +1,45 @@
+<section class="fd-section">
+  <div class="fd-section__header">
+    <h1 class="fd-section__title">Luigi Client uxManager features</h1>
+  </div>
+  <div class="fd-panel">
+    <p>A playground for uxManager methods.</p>
+  </div>
+</section>
+
+<section class="fd-section">
+	<div class="fd-panel">
+  <p><strong>Backdrop management:</strong></p>
+    <button class="fd-button" (click)="toggleModal()">Add backdrop</button>
+    <p>
+      <app-code-snippet data="luigiClient.uxManager().addBackdrop()"></app-code-snippet>
+      <app-code-snippet data="luigiClient.uxManager().removeBackdrop()"></app-code-snippet>
+    </p>
+  </div>
+</section>
+
+<section class="fd-section">
+	<div class="fd-panel">
+    <p><strong>Refresh context switcher:</strong></p>
+    Adds the following entry as new value and triggers Context Switcher refresh. Click on the Context Switcher above to see the result before and after.
+    <input type="text" [(ngModel)]="newCsValue"/>
+    <button class="fd-button" (click)="refreshContextSwitcher()">Refresh Context Switcher</button>
+    <p>
+      <app-code-snippet data="luigiClient.uxManager().refreshContextSwitcher()"></app-code-snippet>
+    </p>
+  </div>
+</section>
+
+
+<section class="fd-section">
+  <div class="fd-panel">
+    <p><strong>Loading indicator:</strong></p>
+
+    <button class="fd-button" (click)="triggerLoadingIndicatorDemo()">Trigger loading indicator</button>  - and hide it after 3 seconds.<br />
+    
+    <p>
+      <app-code-snippet data="luigiClient.uxManager().showLoadingIndicator()"></app-code-snippet>
+      <app-code-snippet data="luigiClient.uxManager().hideLoadingIndicator()"></app-code-snippet>
+    </p>
+  </div>
+</section>
