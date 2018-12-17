@@ -1,3 +1,5 @@
+// Main methods used to display and handle the navigation.
+// Please consider adding any new methods to 'navigation-helpers' if they don't require anything from this file.
 import * as NavigationHelpers from '../../utilities/helpers/navigation-helpers';
 import * as AsyncHelpers from '../../utilities/helpers/async-helpers';
 

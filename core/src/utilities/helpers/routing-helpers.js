@@ -1,7 +1,8 @@
-import { getConfigValueFromObjectAsync } from './async-helpers';
-import { escapeRegExp, getUrlWithoutHash } from './generic-helpers';
+// Helper methods for 'routing.js' file. They don't require any method from 'routing.js` but are required by them.
+// They are also rarely used directly from outside of 'routing.js'
+import * as AsyncHelpers from './async-helpers';
 import { LuigiConfig } from '../../services/config';
-import { getModifiedPathname } from '../../services/routing';
+import * as Routing from '../../services/routing';
 
 export const getLastNodeObject = pathData => {
   const lastElement = [...pathData.navigationPath].pop();
@@ -12,7 +13,10 @@ export const getDefaultChildNode = async pathData => {
   const lastElement =
     pathData.navigationPath[pathData.navigationPath.length - 1];
 
-  const children = await getConfigValueFromObjectAsync(lastElement, 'children');
+  const children = await AsyncHelpers.getConfigValueFromObjectAsync(
+    lastElement,
+    'children'
+  );
   const pathExists = children.find(
     childNode => childNode.pathSegment === lastElement.defaultChildNode
   );
@@ -105,7 +109,7 @@ export const addRouteChangeListener = callback => {
   }
 
   window.addEventListener('popstate', () => {
-    callback(getModifiedPathname());
+    callback(Routing.getModifiedPathname());
   });
 };
 

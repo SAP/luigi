@@ -1,3 +1,4 @@
+// Helper methods for 'iframe.js' file. They don't require any method from 'ifram.js` but are required by them.
 import * as GenericHelpers from './generic-helpers';
 export const hideElementChildren = node => {
   if (node.children) {

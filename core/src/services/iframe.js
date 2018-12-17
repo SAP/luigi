@@ -1,3 +1,5 @@
+// Methods related to managing the view in the iframe.
+// Please consider adding any new methods to 'iframe-helpers' if they don't require anything from this file.
 import * as IframeHelpers from '../utilities/helpers/iframe-helpers';
 import * as GenericHelpers from '../utilities/helpers/generic-helpers';
 

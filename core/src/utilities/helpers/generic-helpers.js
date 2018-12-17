@@ -1,3 +1,5 @@
+// Standalone or partly-standalone methods that are used widely through the whole app and are synchronous.
+
 export const isFunction = anyParam =>
   anyParam && {}.toString.call(anyParam) === '[object Function]';
 

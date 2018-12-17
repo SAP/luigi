@@ -30,5 +30,7 @@ Cypress.Commands.add('goToFeaturesPage', iframe => {
 });
 
 Cypress.Commands.add('goToOverviewPage', () => {
-  cy.get('.fd-shellbar__product').click();
+  cy.get('button')
+    .contains('Overview')
+    .click();
 });
