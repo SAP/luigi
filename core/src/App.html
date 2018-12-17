@@ -34,8 +34,10 @@
   import LeftNav from './navigation/LeftNav.html';
   import ConfirmationModal from './ConfirmationModal.html';
   import * as Routing from './services/routing.js';
-  import { getConfigValueFromObject, canComponentHandleModal } from './utilities/helpers.js';
-  import { getStoredAuthData } from './utilities/auth-helpers';
+  import * as Iframe from './services/iframe';
+  import * as RoutingHelpers from './utilities/helpers/routing-helpers';
+  import * as GenericHelpers from './utilities/helpers/generic-helpers';
+  import * as AuthHelpers from './utilities/helpers/auth-helpers';
 
   const removeQueryParams = str => str.split('?')[0];
 
@@ -60,11 +62,11 @@
     Routing.handleRouteChange(currentPath, component, node, config);
 
     // subsequential route handling
-    Routing.addRouteChangeListener(path => {
+    RoutingHelpers.addRouteChangeListener(path => {
       const pv = component.get().preservedViews;
       if (!isValidBackRoute(pv, path)) {
         component.set({ preservedViews: [] });
-        Routing.removeInactiveIframes(node);
+        Iframe.removeInactiveIframes(node);
       }
       Routing.handleRouteChange(path, component, node, config);
     });
@@ -97,7 +99,9 @@
       path += '?';
       Object.entries(params.nodeParams).forEach(entry => {
         path +=
-          encodeURIComponent(Routing.getContentViewParamPrefix() + entry[0]) +
+          encodeURIComponent(
+            RoutingHelpers.getContentViewParamPrefix() + entry[0]
+          ) +
           '=' +
           encodeURIComponent(entry[1]) +
           '&';
@@ -147,7 +151,7 @@
         nodeParams: JSON.stringify(Object.assign({}, component.get().nodeParams)),
         pathParams: JSON.stringify(Object.assign({}, component.get().pathParams)),
         internal: JSON.stringify(component.prepareInternalData()),
-        authData: getStoredAuthData()
+        authData: AuthHelpers.getStoredAuthData()
       },
       '*'
     );
@@ -208,7 +212,7 @@
             sendContextToClient(this, config, {});
 
             const loadingIndicatorAutoHideEnabled =
-              getConfigValueFromObject(
+              GenericHelpers.getConfigValueFromObject(
                 this.get(),
                 'currentNode.loadingIndicator.hideAutomatically'
               ) !== false;
@@ -243,10 +247,10 @@
               this.getUnsavedChangesModalPromise().then(
                 () => {
                   // remove current active iframe and data
-                  Routing.setActiveIframeToPrevious(node);
+                  Iframe.setActiveIframeToPrevious(node);
                   const previousActiveIframeData = preservedViews.pop();
                   // set new active iframe and preservedViews
-                  config.iframe = Routing.getActiveIframe(node);
+                  config.iframe = Iframe.getActiveIframe(node);
                   this.set({
                     isNavigateBack: true,
                     preservedViews,
@@ -344,7 +348,7 @@
         })
       },
       shouldShowUnsavedChangesModal() {
-        return canComponentHandleModal(this) && this.get().unsavedChanges.isDirty
+        return GenericHelpers.canComponentHandleModal(this) && this.get().unsavedChanges.isDirty
       },
       showUnsavedChangesModal() {
         return this.showModal(
@@ -491,5 +495,4 @@
       display: inline;
     }
   }
-
 </style>

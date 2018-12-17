@@ -21,13 +21,14 @@
 
 
 <script type="text/javascript">
+  import * as Header from './services/header.js';
   import { LuigiConfig } from '../services/config.js';
   import { processHeaderSettings } from './services/header.js';
   import * as Routing from '../services/routing.js';
 
   export default {
     oncreate() {
-      processHeaderSettings(this);
+      Header.processHeaderSettings(this);
     },
     methods: {
       goTo(path) {

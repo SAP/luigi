@@ -1,3 +1,5 @@
+// Standalone or partly-standalone methods that are used widely through the whole app and are synchronous.
+
 export const isFunction = anyParam =>
   anyParam && {}.toString.call(anyParam) === '[object Function]';
 
@@ -175,3 +177,7 @@ export const canComponentHandleModal = component =>
   typeof component.get === 'function' &&
   typeof component.showModal === 'function' &&
   typeof component.hideModal === 'function';
+
+export const escapeRegExp = string => {
+  return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+};
