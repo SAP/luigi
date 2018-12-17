@@ -244,7 +244,7 @@ describe('Luigi client features', () => {
         cy.get('[data-cy=confirmation-modal]').should('be.visible');
 
         cy.location().should(loc => {
-          expect(loc.hash).to.eq('#/overview'); //the location is unchanged
+          expect(loc.pathname).to.eq('/overview'); //the location is unchanged
         });
 
         cy.get('[data-cy=modal-no]').click();
@@ -252,7 +252,7 @@ describe('Luigi client features', () => {
         cy.get('[data-cy=confirmation-modal]').should('not.be.visible');
 
         cy.location().should(loc => {
-          expect(loc.hash).to.eq('#/overview'); //the location is still unchanged after "No" clicked
+          expect(loc.pathname).to.eq('/overview'); //the location is still unchanged after "No" clicked
         });
       });
     });
@@ -271,7 +271,7 @@ describe('Luigi client features', () => {
         cy.get('[data-cy=confirmation-modal]').should('be.visible');
 
         cy.location().should(loc => {
-          expect(loc.hash).to.eq('#/overview'); //the location is unchanged
+          expect(loc.pathname).to.eq('/overview'); //the location is unchanged
         });
 
         cy.get('[data-cy=modal-yes]').click();
@@ -279,7 +279,7 @@ describe('Luigi client features', () => {
         cy.get('[data-cy=confirmation-modal]').should('not.be.visible');
 
         cy.location().should(loc => {
-          expect(loc.hash).to.eq('#/projects'); //the location is changed after "Yes" clicked
+          expect(loc.pathname).to.eq('/projects'); //the location is changed after "Yes" clicked
         });
       });
     });
