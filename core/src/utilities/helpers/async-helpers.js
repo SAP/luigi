@@ -29,7 +29,7 @@ export const waitForKeyExistency = (
 * If the value is a Function it is called and the result of that call is the value.
 * If the value is not a Promise it is wrapped to a Promise so that the returned value is definitely a Promise.
 */
-export const GenericHelpers.getConfigValueFromObjectAsync = (
+export const getConfigValueFromObjectAsync = (
   object,
   property,
   ...parameters

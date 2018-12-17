@@ -3,7 +3,7 @@ const assert = chai.assert;
 const sinon = require('sinon');
 const routing = require('../../src/services/routing');
 const MockBrowser = require('mock-browser').mocks.MockBrowser;
-import { deepMerge } from '../../src/utilities/helpers/generic-helpers';
+const GenericHelpers = require('../../src/utilities/helpers/generic-helpers');
 import { afterEach } from 'mocha';
 import { LuigiConfig } from '../../src/services/config';
 
@@ -244,7 +244,7 @@ describe('Routing', () => {
       let savedObj = {};
       const componentSaved = {
         set: obj => {
-          savedObj = deepMerge(savedObj, obj);
+          savedObj = GenericHelpers.deepMerge(savedObj, obj);
           componentSaved.get = () => {
             return savedObj;
           };

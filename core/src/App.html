@@ -229,10 +229,10 @@
             const preservedViews = this.get().preservedViews;
             if (preservedViews && preservedViews.length) {
               // remove current active iframe and data
-              Routing.setActiveIframeToPrevious(node);
+              Iframe.setActiveIframeToPrevious(node);
               const previousActiveIframeData = preservedViews.pop();
               // set new active iframe and preservedViews
-              config.iframe = Routing.getActiveIframe(node);
+              config.iframe = Iframe.getActiveIframe(node);
               this.set({
                 isNavigateBack: true,
                 preservedViews: preservedViews,
