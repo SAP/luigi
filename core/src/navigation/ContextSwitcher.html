@@ -56,7 +56,7 @@
   import { LuigiConfig } from '../services/config.js';
   import * as Helpers from '../utilities/helpers/generic-helpers.js';
   import * as Routing from '../services/routing.js';
-  import { addRouteChangeListener } from '../utilities/helpers/routing-helpers';
+  import * as RoutingHelpers from '../utilities/helpers/routing-helpers';
 
   export default {
     async oncreate() {
@@ -92,7 +92,9 @@
           await this.setSelectedContext(currentPath);
         }
 
-        addRouteChangeListener(path => this.setSelectedContext(path));
+        RoutingHelpers.addRouteChangeListener(path =>
+          this.setSelectedContext(path)
+        );
       }
     },
     data() {

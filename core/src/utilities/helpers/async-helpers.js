@@ -1,8 +1,4 @@
-import {
-  getConfigValueFromObject,
-  isFunction,
-  isPromise
-} from './generic-helpers.js';
+import * as GenericHelpers from './generic-helpers.js';
 
 const handles = {};
 
@@ -33,15 +29,15 @@ export const waitForKeyExistency = (
 * If the value is a Function it is called and the result of that call is the value.
 * If the value is not a Promise it is wrapped to a Promise so that the returned value is definitely a Promise.
 */
-export const getConfigValueFromObjectAsync = (
+export const GenericHelpers.getConfigValueFromObjectAsync = (
   object,
   property,
   ...parameters
 ) => {
-  let value = getConfigValueFromObject(object, property);
-  if (isFunction(value)) {
+  let value = GenericHelpers.getConfigValueFromObject(object, property);
+  if (GenericHelpers.isFunction(value)) {
     value = value.apply(this, parameters);
-    if (isPromise(value)) {
+    if (GenericHelpers.isPromise(value)) {
       return value;
     }
   }

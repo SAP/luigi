@@ -1,11 +1,12 @@
 import { LuigiConfig } from '../../services/config';
-import { isLoggedIn } from './auth-helpers';
+import * as AuthHelpers from './auth-helpers';
 export const isNodeAccessPermitted = (
   nodeToCheckPermissionFor,
   parentNode,
   currentContext
 ) => {
-  if (LuigiConfig.isAuthorizationEnabled() && !isLoggedIn()) return false;
+  if (LuigiConfig.isAuthorizationEnabled() && !AuthHelpers.isLoggedIn())
+    return false;
   const permissionCheckerFn = LuigiConfig.getConfigValue(
     'navigation.nodeAccessibilityResolver'
   );

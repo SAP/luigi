@@ -21,12 +21,12 @@
 
 
 <script type="text/javascript">
-  import { processHeaderSettings } from './services/header.js';
+  import * as Header from './services/header.js';
   import { LuigiConfig } from '../services/config.js';
 
   export default {
     oncreate() {
-      processHeaderSettings(this);
+      Header.processHeaderSettings(this);
     },
     methods: {
       goTo(path) {
@@ -41,9 +41,8 @@
 </script>
 
 <style type="text/scss">
-
-    // Force height because of base64 img src
-  .lui-customlogo img{
+  // Force height because of base64 img src
+  .lui-customlogo img {
     height: 24px;
   }
 </style>

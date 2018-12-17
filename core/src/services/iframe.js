@@ -1,5 +1,4 @@
 import * as IframeHelpers from '../utilities/helpers/iframe-helpers';
-
 import * as GenericHelpers from '../utilities/helpers/generic-helpers';
 
 const iframeNavFallbackTimeout = 2000;

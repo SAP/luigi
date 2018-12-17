@@ -57,13 +57,13 @@
 </div>
 
 <script type="text/javascript">
-  import { getChildren, getLeftNavData } from './services/navigation.js';
+  import * as Navigation from './services/navigation.js';
   import * as Routing from '../services/routing';
   import { LuigiConfig } from '../services/config.js';
 
   const setLeftNavData = async (current, component) => {
     const componentData = component.get();
-    const leftNavData = await getLeftNavData(current, componentData);
+    const leftNavData = await Navigation.getLeftNavData(current, componentData);
     if (!leftNavData) {
       return;
     }

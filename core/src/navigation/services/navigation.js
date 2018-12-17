@@ -1,10 +1,5 @@
-import {
-  isNodeAccessPermitted,
-  applyContext,
-  groupNodesBy
-} from '../../utilities/helpers/navigation-helpers';
-
-import { getConfigValueFromObjectAsync } from '../../utilities/helpers/async-helpers';
+import * as NavigationHelpers from '../../utilities/helpers/navigation-helpers';
+import * as AsyncHelpers from '../../utilities/helpers/async-helpers';
 
 export const getNavigationPath = async (rootNavProviderPromise, activePath) => {
   const rootNode = {};
@@ -34,12 +29,14 @@ export const getChildren = async (node, context) => {
   if (node._childrenProvider && !node._childrenProviderUsed) {
     try {
       node.children = (
-        (await getConfigValueFromObjectAsync(
+        (await AsyncHelpers.getConfigValueFromObjectAsync(
           node,
           '_childrenProvider',
           context || node.context
         )) || []
-      ).filter(child => isNodeAccessPermitted(child, node, context));
+      ).filter(child =>
+        NavigationHelpers.isNodeAccessPermitted(child, node, context)
+      );
       bindChildrenToParent(node);
       node._childrenProviderUsed = true;
       return node.children;
@@ -85,7 +82,7 @@ const buildNode = async (
     const node = findMatchingNode(urlPathElement, childrenOfCurrentNode);
     if (node) {
       nodesInCurrentPath.push(node);
-      const newContext = applyContext(
+      const newContext = NavigationHelpers.applyContext(
         context,
         node.context,
         node.navigationContext
@@ -204,7 +201,7 @@ export const getNodes = (children, pathData) => {
 
 export const getGroupedChildren = (children, current) => {
   const nodes = getNodes(children, current.pathData);
-  return groupNodesBy(nodes, 'category');
+  return NavigationHelpers.groupNodesBy(nodes, 'category');
 };
 
 /**

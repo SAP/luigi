@@ -1,8 +1,5 @@
-import {
-  deepMerge,
-  prependOrigin
-} from '../../utilities/helpers/generic-helpers';
-import { waitForKeyExistency } from '../../utilities/helpers/async-helpers';
+import * as GenericHelpers from '../../utilities/helpers/generic-helpers';
+import * as AsyncHelpers from '../../utilities/helpers/async-helpers';
 import { thirdPartyCookiesStatus } from '../../utilities/third-party-cookies-check';
 
 export class openIdConnect {
@@ -20,16 +17,16 @@ export class openIdConnect {
       silent_redirect_uri:
         window.location.origin + '/luigi-core/auth/oidc/silent-callback.html'
     };
-    const mergedSettings = deepMerge(defaultSettings, settings);
+    const mergedSettings = GenericHelpers.deepMerge(defaultSettings, settings);
 
     // Prepend current url to redirect_uri, if it is a relative path
     ['redirect_uri', 'post_logout_redirect_uri'].forEach(key => {
-      mergedSettings[key] = prependOrigin(mergedSettings[key]);
+      mergedSettings[key] = GenericHelpers.prependOrigin(mergedSettings[key]);
     });
 
     this.settings = mergedSettings;
 
-    return waitForKeyExistency(window, 'Oidc').then(res => {
+    return AsyncHelpers.waitForKeyExistency(window, 'Oidc').then(res => {
       this.client = new Oidc.UserManager(this.settings);
 
       this.client.events.addUserLoaded(authenticatedUser => {
@@ -58,7 +55,7 @@ export class openIdConnect {
   }
 
   login() {
-    return waitForKeyExistency(this, 'client').then(res => {
+    return AsyncHelpers.waitForKeyExistency(this, 'client').then(res => {
       return this.client.signinRedirect(this.settings).catch(err => {
         console.error(err);
         return err;
