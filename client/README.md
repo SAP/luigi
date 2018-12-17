@@ -27,11 +27,12 @@ You can see the Luigi Client in action by running the [Angular example applicati
 
 ## Usage
 
-Use additional instructions to work with Luigi Client.
+This section contains additional instructions and guidelines you can use to work with Luigi Client.
 
 
 ### Generate documentation
-Validate and generate documentation using npm
+Validate and generate documentation using npm:
+
 ```bash
 npm install
 npm run docu
