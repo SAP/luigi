@@ -431,6 +431,15 @@
          */
         removeBackdrop: function removeBackdrop() {
           window.parent.postMessage({ msg: 'luigi.remove-backdrop' }, '*');
+        },
+        /**
+         * Reloads the environment list in the Context Switcher.
+         */
+        refreshContextSwitcher: function refreshContextSwitcher() {
+          window.parent.postMessage(
+            { msg: 'luigi.ux.refreshContextSwitcher' },
+            '*'
+          );
         }
       };
     }
