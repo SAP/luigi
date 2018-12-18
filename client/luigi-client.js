@@ -433,7 +433,7 @@
           window.parent.postMessage({ msg: 'luigi.remove-backdrop' }, '*');
         },
         /**
-         * This method informs the main application that the current view in the iframe has unsaved changes, like for example a view with form fields which have been edited but not yet submitted.
+         * This method informs the main application that there are unsaved changes in the current view in the iframe. For example, that can be a view with form fields which were edited but not submitted.
          * @param {boolean} isDirty tells if the current page or component has any unsaved changes at the moment
          */
         setDirtyStatus: function setDirtyStatus(isDirty) {
