@@ -336,7 +336,7 @@
 
         /** @lends linkManager */
         /**
-         * Checks if the path you can navigate to exists in the main application. For example, you can use this helper method conditionally display a DOM element like a button.
+         * Checks if the path you can navigate to exists in the main application. For example, you can use this helper method conditionally to display a DOM element like a button.
          * @param {string} path path which existence you want to check
          * @returns {promise} A promise which resolves to a Boolean variable specifying whether the path exists or not.
          * @example
@@ -433,8 +433,8 @@
           window.parent.postMessage({ msg: 'luigi.remove-backdrop' }, '*');
         },
         /**
-         * Makes current page dirty or not
-         * @param {boolean} isDirty tells if current page/component has any unsaved changes at the moment
+         * This method informs the main application that the current view in the iframe has unsaved changes, like for example a view with form fields which have been edited but not yet submitted.
+         * @param {boolean} isDirty tells if the current page or component has any unsaved changes at the moment
          */
         setDirtyStatus: function setDirtyStatus(isDirty) {
           window.parent.postMessage(

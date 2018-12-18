@@ -134,7 +134,7 @@ Returns **[linkManager](#linkmanager)** link manager instance.
 
 ### pathExists
 
-Checks if the path you can navigate to exists in the main application. For example, you can use this helper method conditionally display a DOM element like a button.
+Checks if the path you can navigate to exists in the main application. For example, you can use this helper method conditionally to display a DOM element like a button.
 
 #### Parameters
 
@@ -197,8 +197,8 @@ Removes the backdrop.
 
 ### setDirtyStatus
 
-Makes current page dirty or not
+This method informs the main application that the current view in the iframe has unsaved changes, like for example a view with form fields which have been edited but not yet submitted.
 
 #### Parameters
 
--   `isDirty` **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)** tells if current page/component has any unsaved changes at the moment
+-   `isDirty` **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)** tells if the current page or component has any unsaved changes at the moment
