@@ -1,4 +1,4 @@
-import { deepMerge, prependOrigin } from '../../utilities/helpers.js';
+import * as GenericHelpers from '../../utilities/helpers/generic-helpers.js';
 
 export class oAuth2ImplicitGrant {
   constructor(settings = {}) {
@@ -13,7 +13,7 @@ export class oAuth2ImplicitGrant {
       logoutUrl: '',
       post_logout_redirect_uri: window.location.origin + '/logout.html'
     };
-    const mergedSettings = deepMerge(defaultSettings, settings);
+    const mergedSettings = GenericHelpers.deepMerge(defaultSettings, settings);
 
     this.settings = mergedSettings;
   }
@@ -40,7 +40,7 @@ export class oAuth2ImplicitGrant {
       formElem.method = settings.authorizeMethod;
       formElem.target = '_self';
 
-      settings.oAuthData.redirect_uri = prependOrigin(
+      settings.oAuthData.redirect_uri = GenericHelpers.prependOrigin(
         settings.oAuthData.redirect_uri
       );
       settings.oAuthData.state = window.location.href;
@@ -73,7 +73,7 @@ export class oAuth2ImplicitGrant {
       authData.idToken
     }&client_id=${
       settings.oAuthData.client_id
-    }&post_logout_redirect_uri=${prependOrigin(
+    }&post_logout_redirect_uri=${GenericHelpers.prependOrigin(
       settings.post_logout_redirect_uri
     )}`;
     logoutCallback && logoutCallback();
@@ -103,7 +103,7 @@ export class oAuth2ImplicitGrant {
         localStorage.removeItem('luigi.auth');
         window.location = `${
           this.settings.logoutUrl
-        }?reason=tokenExpired&post_logout_redirect_uri=${prependOrigin(
+        }?reason=tokenExpired&post_logout_redirect_uri=${GenericHelpers.prependOrigin(
           this.settings.post_logout_redirect_uri
         )}`;
       }

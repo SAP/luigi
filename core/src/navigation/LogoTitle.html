@@ -21,29 +21,26 @@
 
 
 <script type="text/javascript">
-  import { processHeaderSettings } from './services/header.js';
+  import * as Header from './services/header.js';
   import { LuigiConfig } from '../services/config.js';
+  import { processHeaderSettings } from './services/header.js';
+  import * as Routing from '../services/routing.js';
 
   export default {
     oncreate() {
-      processHeaderSettings(this);
+      Header.processHeaderSettings(this);
     },
     methods: {
       goTo(path) {
-        if (LuigiConfig.getConfigBooleanValue('routing.useHashRouting')) {
-          window.location.hash = path;
-        } else {
-          window.location.pathname = path;
-        }
+        Routing.navigateTo(path);
       }
     }
   };
 </script>
 
 <style type="text/scss">
-
-    // Force height because of base64 img src
-  .lui-customlogo img{
+  // Force height because of base64 img src
+  .lui-customlogo img {
     height: 24px;
   }
 </style>

@@ -1,5 +1,5 @@
-import { getConfigValueFromObjectAsync } from '../utilities/async-helpers';
-import { getConfigValueFromObject } from '../utilities/helpers';
+import * as AsyncHelpers from '../utilities/helpers/async-helpers';
+import * as GenericHelpers from '../utilities/helpers/generic-helpers';
 
 class LuigiConfigManager {
   constructor() {
@@ -55,7 +55,7 @@ class LuigiConfigManager {
    * Gets value of the given property on Luigi config object.
    */
   getConfigValue(property) {
-    return getConfigValueFromObject(this.getConfig(), property);
+    return GenericHelpers.getConfigValueFromObject(this.getConfig(), property);
   }
 
   /*
@@ -63,7 +63,7 @@ class LuigiConfigManager {
    * Function return true if the property value is equal true or 'true'. Otherwise the function returns false.
    */
   getConfigBooleanValue(property) {
-    const configuredValue = getConfigValueFromObject(
+    const configuredValue = GenericHelpers.getConfigValueFromObject(
       this.getConfig(),
       property
     );
@@ -79,7 +79,7 @@ class LuigiConfigManager {
    * If the value is not a Promise it is wrapped to a Promise so that the returned value is definitely a Promise.
    */
   getConfigValueAsync(property, ...parameters) {
-    return getConfigValueFromObjectAsync(
+    return AsyncHelpers.getConfigValueFromObjectAsync(
       this.getConfig(),
       property,
       parameters

@@ -2,12 +2,12 @@ const headerService = require('../src/navigation/services/header');
 const assert = require('chai').assert;
 const sinon = require('sinon');
 
-describe('LogoTitle', function() {
+describe('Header', function() {
   afterEach(() => {
     sinon.restore();
   });
 
-  describe('processHeaderSettings()', function() {
+  describe('processHeaderSettings', function() {
     let component;
     const setHeaderSettings = headerSettings => {
       window.Luigi.config = {
