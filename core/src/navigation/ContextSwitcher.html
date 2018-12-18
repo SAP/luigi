@@ -166,7 +166,9 @@
         this.goTo(node.link);
       },
       goTo(path) {
-        Routing.navigateTo(path);
+        this.root.getUnsavedChangesModalPromise().then(
+          () => { Routing.navigateTo(path) }
+        )
       },
       toggleDropdownState(name) {
         const dropDownStates = this.get().dropDownStates || {};

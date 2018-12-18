@@ -59,7 +59,6 @@ export const matchPath = async path => {
 /**
   navigateTo used for navigation
   @param route string  absolute path of the new route
-  @param options object  navi options, eg preserveView
  */
 export const navigateTo = async route => {
   if (LuigiConfig.getConfigValue('routing.useHashRouting')) {
@@ -143,11 +142,31 @@ export const handleRouteChange = async (path, component, node, config) => {
     return;
   }
   try {
-    const pathUrl =
+    // just used for browser changes, like browser url manual change or browser back/forward button click
+    if (component.shouldShowUnsavedChangesModal()) {
+      const newUrl = window.location.href;
+      const oldUrl = component.get().unsavedChanges.persistUrl;
+
+      //pretend the url hasn't been changed
+      oldUrl && history.replaceState(window.state, '', oldUrl);
+
+      component.showUnsavedChangesModal().then(
+        () => {
+          path &&
+            handleRouteChange(path, component, node, config) &&
+            history.replaceState(window.state, '', newUrl);
+        },
+        () => {}
+      );
+      return;
+    }
+
+    const pathUrlRaw =
       path && path.length ? GenericHelpers.getPathWithoutHash(path) : '';
+    const pathUrl = GenericHelpers.trimTrailingSlash(pathUrlRaw.split('?')[0]);
     const pathData = await Navigation.getNavigationPath(
       LuigiConfig.getConfigValueAsync('navigation.nodes'),
-      pathUrl.split('?')[0]
+      pathUrl
     );
 
     const hideNav = LuigiConfig.getConfigBooleanValue(
@@ -159,7 +178,7 @@ export const handleRouteChange = async (path, component, node, config) => {
       isolateView = false,
       hideSideNav = false
     } = RoutingHelpers.getLastNodeObject(pathData);
-    const params = RoutingHelpers.parseParams(pathUrl.split('?')[1]);
+    const params = RoutingHelpers.parseParams(pathUrlRaw.split('?')[1]);
     const nodeParams = RoutingHelpers.getNodeParams(params);
     const pathParams = RoutingHelpers.getPathParams(pathData.navigationPath);
     const viewGroup = RoutingHelpers.findViewGroup(
@@ -167,7 +186,7 @@ export const handleRouteChange = async (path, component, node, config) => {
     );
 
     if (!viewUrl) {
-      const routeExists = RoutingHelpers.isExistingRoute(path, pathData);
+      const routeExists = RoutingHelpers.isExistingRoute(pathUrl, pathData);
 
       if (routeExists) {
         const defaultChildNode = await RoutingHelpers.getDefaultChildNode(
@@ -177,7 +196,7 @@ export const handleRouteChange = async (path, component, node, config) => {
       } else {
         const alert = {
           message: 'Could not find the requested route',
-          link: pathUrl
+          link: pathUrlRaw
         };
 
         component.set({ alert });
@@ -188,11 +207,11 @@ export const handleRouteChange = async (path, component, node, config) => {
     }
 
     if (!GenericHelpers.containsAllSegments(pathUrl, pathData.navigationPath)) {
-      const matchedPath = await matchPath(pathUrl);
+      const matchedPath = await matchPath(pathUrlRaw);
 
       const alert = {
         message: 'Could not map the exact target node for the requested route',
-        link: pathUrl
+        link: pathUrlRaw
       };
 
       component.set({ alert });
@@ -235,13 +254,11 @@ export const handleRouteClick = node => {
       ? (window.location.href = node.externalLink.url)
       : window.open(node.externalLink.url).focus();
     // externalLinkUrl property is provided so there's no need to trigger routing mechanizm
-    return;
   } else if (node.link) {
     const link = node.link.startsWith('/')
       ? node.link
       : buildFromRelativePath(node);
     navigateTo(link);
-    return;
   } else {
     const route = RoutingHelpers.buildRoute(node, `/${node.pathSegment}`);
     navigateTo(route);

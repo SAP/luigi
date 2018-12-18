@@ -229,5 +229,59 @@ describe('Luigi client features', () => {
         cy.get('.spinnerContainer .fd-spinner').should('not.exist');
       });
     });
+    it("Unsaved changes - shouldn't proceed when 'No' was pressed in modal", () => {
+      cy.get('iframe').then($iframe => {
+        const $iframeBody = $iframe.contents().find('body');
+
+        cy.wrap($iframeBody)
+          .find('[data-cy=toggle-dirty-state]')
+          .check();
+
+        cy.get('button')
+          .contains('Projects')
+          .click();
+
+        cy.get('[data-cy=confirmation-modal]').should('be.visible');
+
+        cy.location().should(loc => {
+          expect(loc.pathname).to.eq('/overview'); //the location is unchanged
+        });
+
+        cy.get('[data-cy=modal-no]').click();
+
+        cy.get('[data-cy=confirmation-modal]').should('not.be.visible');
+
+        cy.location().should(loc => {
+          expect(loc.pathname).to.eq('/overview'); //the location is still unchanged after "No" clicked
+        });
+      });
+    });
+    it("Unsaved changes - should proceed when 'Yes' was pressed in modal", () => {
+      cy.get('iframe').then($iframe => {
+        const $iframeBody = $iframe.contents().find('body');
+
+        cy.wrap($iframeBody)
+          .find('[data-cy=toggle-dirty-state]')
+          .check();
+
+        cy.get('button')
+          .contains('Projects')
+          .click();
+
+        cy.get('[data-cy=confirmation-modal]').should('be.visible');
+
+        cy.location().should(loc => {
+          expect(loc.pathname).to.eq('/overview'); //the location is unchanged
+        });
+
+        cy.get('[data-cy=modal-yes]').click();
+
+        cy.get('[data-cy=confirmation-modal]').should('not.be.visible');
+
+        cy.location().should(loc => {
+          expect(loc.pathname).to.eq('/projects'); //the location is changed after "Yes" clicked
+        });
+      });
+    });
   });
 });

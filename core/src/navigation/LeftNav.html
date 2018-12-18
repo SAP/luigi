@@ -74,9 +74,7 @@
   export default {
     oncreate() {
       this.set({
-        hideNavComponent: LuigiConfig.getConfigBooleanValue(
-          'settings.hideNavigation'
-        )
+        hideNavComponent: LuigiConfig.getConfigBooleanValue('settings.hideNavigation')
       });
     },
     onstate({ changed, current, previous }) {
@@ -85,9 +83,11 @@
       }
     },
     methods: {
-      handleClick: node => Routing.handleRouteClick(node)
+      handleClick(node) {
+        this.fire('handleClick', { node })
+      },
     }
-  };
+  }
 </script>
 
 <style type="text/scss">

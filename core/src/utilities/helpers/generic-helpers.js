@@ -176,6 +176,12 @@ export const getConfigValueFromObject = (object, property) => {
   return nextValue;
 };
 
+export const canComponentHandleModal = component =>
+  component &&
+  typeof component.get === 'function' &&
+  typeof component.showModal === 'function' &&
+  typeof component.hideModal === 'function';
+
 export const escapeRegExp = string => {
   return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
 };
