@@ -69,7 +69,7 @@ The Link Manager allows you to navigate to another route. Use it instead of an i
 
 ### navigate
 
-Navigates to the given path in application hosted by Luigi. It contains either a full absolute path or a relative path without a leading slash that uses the active route as a base. This is the standard navigation.
+Navigates to the given path in the application hosted by Luigi. It contains either a full absolute path or a relative path without a leading slash that uses the active route as a base. This is the standard navigation.
 
 #### Parameters
 
