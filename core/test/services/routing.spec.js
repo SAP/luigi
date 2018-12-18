@@ -15,7 +15,8 @@ describe('Routing', () => {
       set: obj => {
         Object.assign(lastObj, obj);
       },
-      get: () => lastObj
+      get: () => lastObj,
+      shouldShowUnsavedChangesModal: () => false
     };
 
     sinon.stub(LuigiConfig, 'getConfigValue');
@@ -248,7 +249,8 @@ describe('Routing', () => {
           componentSaved.get = () => {
             return savedObj;
           };
-        }
+        },
+        shouldShowUnsavedChangesModal: () => false
       };
 
       const node = {
@@ -521,7 +523,9 @@ describe('Routing', () => {
       const window = mockBrowser.getWindow();
       global.window = window;
 
-      const component = {};
+      const component = {
+        shouldShowUnsavedChangesModal: () => false
+      };
       const node = {};
       const config = {};
 
