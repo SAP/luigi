@@ -22,7 +22,7 @@ describe('Navigation', () => {
       expect(loc.pathname).to.eq('/projects/pr1');
     });
     cy.get('.fd-app__sidebar').should('not.contain', 'Project One');
-    cy.get('.fd-app__sidebar').should('contain', 'A normal Node');
+    cy.get('.fd-app__sidebar').should('contain', 'uxManager Examples');
     cy.get('.fd-app__sidebar')
       .contains('Default Child Node')
       .click();

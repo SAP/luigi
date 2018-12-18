@@ -120,10 +120,14 @@ var projectDetailNavProviderFn = function(context) {
           label: 'Node Configuration Examples',
           icon: 'developer-settings'
         },
-        pathSegment: 'misc2-isolated',
+        pathSegment: 'isolated-view',
         label: 'Isolated View',
         isolateView: true,
-        viewUrl: '/sampleapp.html#/projects/' + projectId + '/miscellaneous2'
+        viewUrl:
+          '/sampleapp.html#/projects/' + projectId + '/dynamic/isolated-view',
+        context: {
+          label: 'Isolated View'
+        }
       },
       {
         category: {
@@ -238,11 +242,6 @@ var projectDetailNavProviderFn = function(context) {
         },
         link: 'dps/dps1',
         label: 'Go to relative path'
-      },
-      {
-        pathSegment: 'miscellaneous2',
-        label: 'A normal Node',
-        viewUrl: '/sampleapp.html#/projects/' + projectId + '/miscellaneous2'
       },
       {
         pathSegment: 'settings',

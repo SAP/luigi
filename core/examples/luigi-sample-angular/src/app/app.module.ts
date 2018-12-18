@@ -12,7 +12,6 @@ import { MiscellaneousComponent } from './project/miscellaneous/miscellaneous.co
 import { UsersoverviewComponent } from './project/users/usersoverview/usersoverview.component';
 import { GroupsComponent } from './project/users/groups/groups.component';
 import { GroupDetailsComponent } from './project/users/groups/group-details/group-details.component';
-import { Miscellaneous2Component } from './project/miscellaneous2/miscellaneous2.component';
 import { NavigationComponent } from './project/navigation/navigation.component';
 import { ModalComponent } from './project/modal/modal.component';
 import { CodeSnippetComponent } from './project/code-snippet/code-snippet.component';
@@ -36,7 +35,6 @@ import { HideSideNavComponent } from './project/hideSideNav/hideSideNav.componen
     UsersoverviewComponent,
     GroupsComponent,
     GroupDetailsComponent,
-    Miscellaneous2Component,
     NavigationComponent,
     ModalComponent,
     CodeSnippetComponent,

@@ -1,6 +1,6 @@
 import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import LuigiClient from '@kyma-project/luigi-client';
-import { slugify } from '../../services/helpers';
+import * as Helpers from '../../services/helpers';
 
 @Component({
   selector: 'app-luigi-client-features',
@@ -27,7 +27,9 @@ export class LuigiClientFeaturesComponent implements OnInit {
 
   public addToContextSwitcher() {
     // get currently stored values
-    let newValues = [{ label: this.newCsValue, id: slugify(this.newCsValue) }];
+    let newValues = [
+      { label: this.newCsValue, pathValue: Helpers.slugify(this.newCsValue) }
+    ];
 
     const existingValues = sessionStorage.getItem(
       'contextSwitcherExtraOptions'

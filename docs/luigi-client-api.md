@@ -197,7 +197,7 @@ Removes the backdrop.
 
 ### refreshContextSwitcher
 
-Reloads the environment list in the Context Switcher.
+Fetches the `navigation.contextSwitcher.options` configuration setting and replaces the options in the Context Switcher.
 
 ### setDirtyStatus
 
