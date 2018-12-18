@@ -39,7 +39,7 @@
 			</li>
 			<li class="fd-list-group__item">
 				<a href="javascript:void(0)" (click)="luigiClient.linkManager().fromClosestContext().withParams({foo: 'bar'}).navigate('settings')">
-					project to settings with params (foo=bar)</a>
+					closest context to settings with params (foo=bar)</a>
 				<app-code-snippet data="luigiClient.linkManager().fromClosestContext().withParams({foo: 'bar'}).navigate('settings')"></app-code-snippet>
 			</li>
 			<li class="fd-list-group__item">
@@ -94,5 +94,3 @@
 		</ul>
 	</div>
 </section>
-
-<app-modal [modalActive]="modalActive" (modalClosed)="toggleModal()"></app-modal>

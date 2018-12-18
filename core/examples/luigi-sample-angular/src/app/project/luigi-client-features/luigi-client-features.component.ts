@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import LuigiClient from '@kyma-project/luigi-client';
 import { slugify } from '../../services/helpers';
 
@@ -8,13 +8,24 @@ import { slugify } from '../../services/helpers';
   styleUrls: ['./luigi-client-features.component.scss']
 })
 export class LuigiClientFeaturesComponent implements OnInit {
+  public modalActive = false;
   public newCsValue = 'Cool New Env';
+  public csRefreshed = false;
   private loadingInstance;
-  constructor() {}
+  constructor(private cdr: ChangeDetectorRef) {}
 
   ngOnInit() {}
 
-  public refreshContextSwitcher() {
+  public toggleModal() {
+    this.modalActive = !this.modalActive;
+  }
+
+  public clearContextSwitcher() {
+    sessionStorage.removeItem('contextSwitcherExtraOptions');
+    this.refreshContextSwitcher();
+  }
+
+  public addToContextSwitcher() {
     // get currently stored values
     let newValues = [{ label: this.newCsValue, id: slugify(this.newCsValue) }];
 
@@ -29,7 +40,16 @@ export class LuigiClientFeaturesComponent implements OnInit {
       'contextSwitcherExtraOptions',
       JSON.stringify(newValues)
     );
+    this.refreshContextSwitcher();
+  }
+
+  private refreshContextSwitcher() {
+    this.csRefreshed = false;
     LuigiClient.uxManager().refreshContextSwitcher();
+    setTimeout(() => {
+      this.csRefreshed = true;
+      this.cdr.detectChanges();
+    }, 500);
   }
 
   public triggerLoadingIndicatorDemo() {

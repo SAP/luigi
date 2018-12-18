@@ -22,9 +22,9 @@ describe('Navigation', () => {
       expect(loc.pathname).to.eq('/projects/pr1');
     });
     cy.get('.fd-app__sidebar').should('not.contain', 'Project One');
-    cy.get('.fd-app__sidebar').should('contain', 'Miscellaneous2');
+    cy.get('.fd-app__sidebar').should('contain', 'A normal Node');
     cy.get('.fd-app__sidebar')
-      .contains('Default Child node Example')
+      .contains('Default Child Node')
       .click();
 
     //default child node example
@@ -72,7 +72,7 @@ describe('Navigation', () => {
         expect(loc.pathname).to.eq('/projects/pr1/avengers/thor');
       });
 
-      cy.get('.fd-app__sidebar').should('contain', 'Keep Selected Example');
+      cy.get('.fd-app__sidebar').should('contain', 'Keep Selected');
     });
 
     it('Node with link to another node', () => {
@@ -99,7 +99,7 @@ describe('Navigation', () => {
 
       //go to absolute path
       goToAnotherNodeFeature();
-      cy.get('.fd-app__sidebar .fd-side-nav__item')
+      cy.get('.fd-app__sidebar .fd-side-nav__sublink')
         .contains('Go to absolute path')
         .click();
 
@@ -109,7 +109,7 @@ describe('Navigation', () => {
 
       //go to relative path from the parent node
       goToAnotherNodeFeature();
-      cy.get('.fd-app__sidebar .fd-side-nav__item')
+      cy.get('.fd-app__sidebar .fd-side-nav__sublink')
         .contains('Go to relative path')
         .click();
 
@@ -119,15 +119,15 @@ describe('Navigation', () => {
 
       //go to relative path from node that is a sibiling
       goToAnotherNodeFeature();
-      cy.get('.fd-app__sidebar .fd-side-nav__item')
-        .contains('Keep Selected Example')
+      cy.get('.fd-app__sidebar .fd-side-nav__sublink')
+        .contains('Keep Selected')
         .click();
 
       cy.location().should(loc => {
         expect(loc.pathname).to.eq('/projects/pr2/avengers');
       });
 
-      cy.get('.fd-app__sidebar .fd-side-nav__item')
+      cy.get('.fd-app__sidebar .fd-side-nav__sublink')
         .contains('Go to relative path')
         .click();
 

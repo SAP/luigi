@@ -18,12 +18,18 @@
   </div>
 </section>
 
-<section class="fd-section">
+<section class="fd-section fd-blabla">
 	<div class="fd-panel">
     <p><strong>Refresh context switcher:</strong></p>
-    Adds the following entry as new value and triggers Context Switcher refresh. Click on the Context Switcher above to see the result before and after.
-    <input type="text" [(ngModel)]="newCsValue"/>
-    <button class="fd-button" (click)="refreshContextSwitcher()">Refresh Context Switcher</button>
+    Adds the following entry as new value and triggers Context Switcher refresh. Click on the Context Switcher above to see the result before and afterwards.
+    <input type="text" class="cy-newcsvalue" [(ngModel)]="newCsValue"/>
+    <button class="fd-button cy-cs-update" (click)="addToContextSwitcher()">Add entry and refresh Context Switcher</button>
+    &nbsp; 
+    <button class="fd-button" (click)="clearContextSwitcher()">Clear extra entries</button>
+    <div class="fd-alert fd-alert--success cy-cs-success" role="alert" *ngIf="csRefreshed">
+      <button class="fd-alert__close" (click)="csRefreshed = false" aria-label="Close"></button>
+      <span class="sap-icon--message-success"></span> Refreshed!
+    </div>
     <p>
       <app-code-snippet data="luigiClient.uxManager().refreshContextSwitcher()"></app-code-snippet>
     </p>
@@ -43,3 +49,5 @@
     </p>
   </div>
 </section>
+
+<app-modal [modalActive]="modalActive" (modalClosed)="toggleModal()"></app-modal>

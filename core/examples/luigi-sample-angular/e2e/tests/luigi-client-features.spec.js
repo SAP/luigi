@@ -10,7 +10,7 @@ describe('Luigi client features', () => {
   it('linkManager features', () => {
     cy.get('iframe').then($iframe => {
       const $iframeBody = $iframe.contents().find('body');
-      cy.goToFeaturesPage($iframeBody);
+      cy.goToLinkManagerFeaturesPage($iframeBody);
 
       //navigate using absolute path
       cy.wrap($iframeBody)
@@ -19,7 +19,8 @@ describe('Luigi client features', () => {
       cy.location().should(loc => {
         expect(loc.pathname).to.eq('/overview');
       });
-      cy.goToFeaturesPage($iframeBody);
+      cy.goToOverviewPage();
+      cy.goToLinkManagerFeaturesPage($iframeBody);
 
       //navigate using relative path
       cy.wrap($iframeBody)
@@ -29,7 +30,7 @@ describe('Luigi client features', () => {
         expect(loc.pathname).to.eq('/projects/pr2/users/groups/stakeholders');
       });
       cy.goToOverviewPage();
-      cy.goToFeaturesPage($iframeBody);
+      cy.goToLinkManagerFeaturesPage($iframeBody);
 
       //navigate using closest context
       cy.wrap($iframeBody)
@@ -39,7 +40,7 @@ describe('Luigi client features', () => {
         expect(loc.pathname).to.eq('/projects/pr2/users/groups/stakeholders');
       });
       cy.goToOverviewPage();
-      cy.goToFeaturesPage($iframeBody);
+      cy.goToLinkManagerFeaturesPage($iframeBody);
 
       //navigate using context
       cy.wrap($iframeBody)
@@ -58,7 +59,7 @@ describe('Luigi client features', () => {
 
       //navigate with params
       cy.wrap($iframeBody)
-        .contains('project to settings with params (foo=bar)')
+        .contains('closest context to settings with params (foo=bar)')
         .click();
       cy.wrap($iframeBody).should('contain', 'Called with params:');
       cy.wrap($iframeBody).should('contain', '"foo": "bar"');
@@ -90,7 +91,7 @@ describe('Luigi client features', () => {
       });
 
       //wait for the second iFrame to be loaded
-      cy.wait(500);
+      cy.wait(200);
       cy.get('iframe')
         .first()
         .then($preserveViewiFrame => {
@@ -110,7 +111,7 @@ describe('Luigi client features', () => {
         });
 
       // check if path exists
-      cy.goToFeaturesPage($iframeBody);
+      cy.goToLinkManagerFeaturesPage($iframeBody);
       [
         // non-existent relative path
         { path: 'projects/pr2/', successExpected: false },
@@ -121,7 +122,7 @@ describe('Luigi client features', () => {
         // existent absolute path without '/' at the end
         { path: '/projects/pr2', successExpected: true },
         // existent relative path
-        { path: 'developers', successExpected: true }
+        { path: 'settings', successExpected: true }
       ].map(data => {
         const msgExpected = data.successExpected
           ? `Path ${data.path} exists`
@@ -146,7 +147,7 @@ describe('Luigi client features', () => {
     beforeEach(() => {
       cy.get('iframe').then($iframe => {
         $iframeBody = $iframe.contents().find('body');
-        cy.goToFeaturesPage($iframeBody);
+        cy.goToLinkManagerFeaturesPage($iframeBody);
       });
     });
     it('navigate to a partly wrong link', () => {
@@ -154,10 +155,10 @@ describe('Luigi client features', () => {
         .contains('Partly wrong link')
         .click();
       cy.location().should(loc => {
-        expect(loc.pathname).to.eq('/projects/pr2/miscellaneous2');
+        expect(loc.pathname).to.eq('/projects/pr2/settings');
       });
       cy.get('.fd-alert').contains(
-        'Could not map the exact target node for the requested route projects/pr2/miscellaneous2/maskopatol'
+        'Could not map the exact target node for the requested route projects/pr2/settings/maskopatol'
       );
     });
 
@@ -176,10 +177,10 @@ describe('Luigi client features', () => {
 
   describe('uxManager', () => {
     it('backdrop', () => {
-      cy.wait(500);
+      cy.wait(200);
       cy.get('iframe').then($iframe => {
         const $iframeBody = $iframe.contents().find('body');
-        cy.goToFeaturesPage($iframeBody);
+        cy.goToUxManagerFeaturesPage($iframeBody);
         cy.wrap($iframeBody).should(
           'not.contain',
           'Lorem tipsum dolor sit amet'
@@ -228,6 +229,66 @@ describe('Luigi client features', () => {
         // wait for programmatic hide of loading indicator
         cy.get('.spinnerContainer .fd-spinner').should('not.exist');
       });
+    });
+
+    it('context switcher refresh', () => {
+      sessionStorage.removeItem('contextSwitcherExtraOptions');
+
+      const newEnvName = 'Sample Env';
+
+      // default label
+      cy.get('.fd-product-menu')
+        .contains('Select Environment ...')
+        .click();
+
+      // check context switcher entry
+      cy.get('.fd-product-menu .fd-popover__body').should(
+        'not.contain',
+        newEnvName
+      );
+
+      // close it
+      cy.get('.fd-product-menu')
+        .contains('Select Environment ...')
+        .click();
+
+      cy.get('iframe').then($iframe => {
+        const $iframeBody = $iframe.contents().find('body');
+        cy.goToUxManagerFeaturesPage($iframeBody);
+
+        cy.wrap($iframeBody).should('contain', 'Refresh context switcher');
+        cy.wrap($iframeBody)
+          .find('input.cy-newcsvalue')
+          .first()
+          .clear()
+          .type(newEnvName)
+          .should('have.value', newEnvName);
+
+        cy.wrap($iframeBody)
+          .find('button.cy-cs-update')
+          .first()
+          .click();
+
+        cy.wrap($iframeBody)
+          .find('.cy-cs-success')
+          .first()
+          .should('be.visible');
+      });
+
+      cy.get('.fd-product-menu')
+        .contains('Select Environment ...')
+        .click();
+
+      // check context switcher entry
+      cy.get('.fd-product-menu .fd-popover__body').should(
+        'contain',
+        newEnvName
+      );
+
+      // close again
+      cy.get('.fd-product-menu')
+        .contains('Select Environment ...')
+        .click();
     });
   });
 });

@@ -1,4 +1,22 @@
 section {
+  .fd-alert {
+    display: inline-block;
+    margin-left: 1.6rem;
+    padding: 0.5rem 3rem 0.5rem 0.5rem;
+    position: relative;
+    // max-width: 50%;
+
+    .fd-alert__close {
+      right: 0px;
+      top: 4px;
+      margin: 0.1rem;
+      width: 25px;
+      height: 25px;
+      &::before {
+        font-size: 1rem;
+      }
+    }
+  }
   button {
     margin-top: 0.75rem;
     margin-bottom: 0.75rem;

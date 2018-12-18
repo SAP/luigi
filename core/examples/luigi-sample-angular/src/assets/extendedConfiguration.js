@@ -245,6 +245,11 @@ var projectDetailNavProviderFn = function(context) {
         viewUrl: '/sampleapp.html#/projects/' + projectId + '/miscellaneous2'
       },
       {
+        pathSegment: 'settings',
+        label: 'Settings',
+        viewUrl: '/sampleapp.html#/settings'
+      },
+      {
         label: 'Open Github in new tab',
         category: { label: 'Super useful Github links', icon: 'world' },
         externalLink: {

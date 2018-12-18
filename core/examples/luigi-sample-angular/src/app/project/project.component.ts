@@ -16,7 +16,6 @@ import {
 export class ProjectComponent implements OnInit, OnDestroy {
   public projectId: string;
   public luigiClient: LuigiClient;
-  public modalActive = false;
   public preservedViewCallbackContext: any;
   private lcSubscription: Subscription;
   private cudListener: string;
@@ -101,10 +100,6 @@ export class ProjectComponent implements OnInit, OnDestroy {
         this.cdr.detectChanges();
       }
     });
-  }
-
-  toggleModal() {
-    this.modalActive = !this.modalActive;
   }
 
   checkIfPathExists() {

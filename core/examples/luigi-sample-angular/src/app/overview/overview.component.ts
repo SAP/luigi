@@ -12,7 +12,7 @@ export class OverviewComponent {
     {
       link: '/projects/pr1/ux-manager-features',
       text: 'uxManager()',
-      description: 'backdrop methods'
+      description: 'all methods'
     },
     {
       link: '/ext',
