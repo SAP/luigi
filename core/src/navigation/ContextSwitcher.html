@@ -54,8 +54,9 @@
 <script type="text/javascript">
   import { ContextSwitcherHelpers } from './services/context-switcher.js';
   import { LuigiConfig } from '../services/config.js';
-  import * as Helpers from '../utilities/helpers.js';
+  import * as GenericHelpers from '../utilities/helpers/generic-helpers.js';
   import * as Routing from '../services/routing.js';
+  import * as RoutingHelpers from '../utilities/helpers/routing-helpers';
 
   export default {
     async oncreate() {
@@ -91,7 +92,7 @@
           await this.setSelectedContext(currentPath);
         }
 
-        Routing.addRouteChangeListener(path => this.setSelectedContext(path));
+        RoutingHelpers.addRouteChangeListener(path => this.setSelectedContext(path));
         window.addEventListener(
           'message',
           this.handlePostMessageReceived.bind(this),
@@ -115,7 +116,7 @@
         const negated = {};
         for (const key in dropDownStates) {
           if (dropDownStates.hasOwnProperty(key)) {
-            negated[key] = Helpers.getNegatedBoolString(dropDownStates[key]);
+            negated[key] = GenericHelpers.getNegatedBoolString(dropDownStates[key]);
           }
         }
         return negated;
@@ -179,11 +180,13 @@
         this.goTo(node.link);
       },
       goTo(path) {
-        Routing.navigateTo(path);
+        this.root.getUnsavedChangesModalPromise().then(
+          () => { Routing.navigateTo(path) }
+        )
       },
       toggleDropdownState(name) {
         const dropDownStates = this.get().dropDownStates || {};
-        dropDownStates[name] = Helpers.getNegatedBoolString(dropDownStates[name]);
+        dropDownStates[name] = GenericHelpers.getNegatedBoolString(dropDownStates[name]);
         this.set({
           dropDownStates
         });

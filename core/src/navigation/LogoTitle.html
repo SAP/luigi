@@ -21,26 +21,32 @@
 
 
 <script type="text/javascript">
+  import * as Header from './services/header.js';
   import { LuigiConfig } from '../services/config.js';
   import { processHeaderSettings } from './services/header.js';
   import * as Routing from '../services/routing.js';
 
   export default {
     oncreate() {
-      processHeaderSettings(this);
+      Header.processHeaderSettings(this);
     },
     methods: {
       goTo(path) {
-        Routing.navigateTo(path);
+        this.root.getUnsavedChangesModalPromise().then(
+          () => { Routing.navigateTo(path) }
+        );
       }
     }
   };
 </script>
 
 <style type="text/scss">
-
-    // Force height because of base64 img src
-  .lui-customlogo img{
+  // Force height because of base64 img src
+  .lui-customlogo img {
     height: 24px;
+  }
+
+  .fd-shellbar__logo, .fd-shellbar__title {
+    cursor: pointer;
   }
 </style>

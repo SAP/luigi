@@ -1,24 +1,7 @@
-import { LuigiConfig } from '../../services/config';
-import { getConfigValueFromObjectAsync } from '../../utilities/async-helpers';
-
-const isNodeAccessPermitted = (
-  nodeToCheckPermissionFor,
-  parentNode,
-  currentContext
-) => {
-  if (LuigiConfig.isAuthorizationEnabled() && !isLoggedIn()) return false;
-  const permissionCheckerFn = LuigiConfig.getConfigValue(
-    'navigation.nodeAccessibilityResolver'
-  );
-  if (typeof permissionCheckerFn !== 'function') {
-    return true;
-  }
-  return permissionCheckerFn(
-    nodeToCheckPermissionFor,
-    parentNode,
-    currentContext
-  );
-};
+// Main methods used to display and handle the navigation.
+// Please consider adding any new methods to 'navigation-helpers' if they don't require anything from this file.
+import * as NavigationHelpers from '../../utilities/helpers/navigation-helpers';
+import * as AsyncHelpers from '../../utilities/helpers/async-helpers';
 
 export const getNavigationPath = async (rootNavProviderPromise, activePath) => {
   const rootNode = {};
@@ -48,12 +31,14 @@ export const getChildren = async (node, context) => {
   if (node._childrenProvider && !node._childrenProviderUsed) {
     try {
       node.children = (
-        (await getConfigValueFromObjectAsync(
+        (await AsyncHelpers.getConfigValueFromObjectAsync(
           node,
           '_childrenProvider',
           context || node.context
         )) || []
-      ).filter(child => isNodeAccessPermitted(child, node, context));
+      ).filter(child =>
+        NavigationHelpers.isNodeAccessPermitted(child, node, context)
+      );
       bindChildrenToParent(node);
       node._childrenProviderUsed = true;
       return node.children;
@@ -99,7 +84,7 @@ const buildNode = async (
     const node = findMatchingNode(urlPathElement, childrenOfCurrentNode);
     if (node) {
       nodesInCurrentPath.push(node);
-      const newContext = applyContext(
+      const newContext = NavigationHelpers.applyContext(
         context,
         node.context,
         node.navigationContext
@@ -119,18 +104,6 @@ const buildNode = async (
     }
   }
   return result;
-};
-
-const applyContext = (context, addition, navigationContext) => {
-  if (addition) {
-    for (var p in addition) {
-      context[p] = addition[p];
-    }
-  }
-  if (navigationContext) {
-    context.parentNavigationContexts.unshift(navigationContext);
-  }
-  return context;
 };
 
 export const findMatchingNode = (urlPathElement, nodes) => {
@@ -210,13 +183,6 @@ export const findMatchingNode = (urlPathElement, nodes) => {
   return result;
 };
 
-export const isLoggedIn = () => {
-  const storedAuthData = JSON.parse(localStorage.getItem('luigi.auth'));
-  const isAuthValid = () =>
-    storedAuthData.accessTokenExpirationDate > Number(new Date());
-  return storedAuthData && isAuthValid();
-};
-
 export const getNodes = (children, pathData) => {
   if (children && 0 < children.length) {
     return children;
@@ -235,38 +201,9 @@ export const getNodes = (children, pathData) => {
   return [];
 };
 
-export const groupBy = (nodes, property) => {
-  const result = {};
-  nodes.forEach(node => {
-    let key;
-    let metaInfo;
-    const category = node[property];
-    if (category && typeof category === 'object') {
-      key = category.label;
-      metaInfo = Object.assign({}, category);
-    } else {
-      key = category;
-      metaInfo = {
-        label: key,
-        icon: 'lui-blank'
-      };
-    }
-    let arr = result[key];
-    if (!arr) {
-      arr = [];
-      result[key] = arr;
-    }
-    if (!arr.metaInfo) {
-      arr.metaInfo = metaInfo;
-    }
-    arr.push(node);
-  });
-  return result;
-};
-
 export const getGroupedChildren = (children, current) => {
   const nodes = getNodes(children, current.pathData);
-  return groupBy(nodes, 'category');
+  return NavigationHelpers.groupNodesBy(nodes, 'category');
 };
 
 /**

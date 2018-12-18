@@ -37,9 +37,11 @@ Cypress.Commands.add('goToUxManagerFeaturesPage', iframe => {
   cy.location().should(loc => {
     expect(loc.pathname).to.eq('/projects/pr1/ux-manager-features');
   });
-  cy.wrap(iframe).should('contain', 'LuigiClient uxManager features');
+  cy.wrap(iframe).should('contain', 'Luigi Client uxManager features');
 });
 
 Cypress.Commands.add('goToOverviewPage', () => {
-  cy.get('.fd-shellbar__product').click();
+  cy.get('button')
+    .contains('Overview')
+    .click();
 });
