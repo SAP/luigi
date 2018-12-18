@@ -97,18 +97,22 @@ export const getNegatedBoolString = str => {
 };
 
 export const containsAllSegments = (sourceUrl, targetPathSegments) => {
-  if (!sourceUrl || !targetPathSegments || !targetPathSegments.length) {
+  if (
+    sourceUrl === undefined ||
+    sourceUrl === null ||
+    !targetPathSegments ||
+    !targetPathSegments.length
+  ) {
     console.error(
       'Ooops, seems like the developers have misconfigured something'
     );
     return false;
   }
-
+  const mandatorySegmentsUrl = trimTrailingSlash(sourceUrl.split('?')[0]);
   const pathSegmentsUrl = targetPathSegments
-    .slice(1)
+    .slice(mandatorySegmentsUrl ? 1 : 0)
     .map(x => x.pathSegment)
     .join('/');
-  const mandatorySegmentsUrl = trimTrailingSlash(sourceUrl.split('?')[0]);
   return pathSegmentsUrl === mandatorySegmentsUrl;
 };
 
