@@ -19,7 +19,12 @@ export const getNavigationPath = async (rootNavProviderPromise, activePath) => {
     }
     await getChildren(rootNode); // keep it, mutates and filters children
     const nodeNamesInCurrentPath = (activePath || '').split('/');
-    return buildNode(nodeNamesInCurrentPath, [rootNode], rootNode.children, {});
+    return buildNode(
+      nodeNamesInCurrentPath,
+      [rootNode],
+      rootNode.children,
+      rootNode.context || {}
+    );
   } catch (err) {
     console.error('Failed to load top navigation nodes.', err);
   }
