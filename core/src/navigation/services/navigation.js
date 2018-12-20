@@ -6,6 +6,7 @@ import * as GenericHelpers from '../../utilities/helpers/generic-helpers';
 
 export const getNavigationPath = async (rootNavProviderPromise, activePath) => {
   if (!rootNavProviderPromise) {
+    console.error('No navigation nodes provided in the configuration.');
     return [{}];
   }
   try {
@@ -13,9 +14,14 @@ export const getNavigationPath = async (rootNavProviderPromise, activePath) => {
     const topNavNodes = await rootNavProviderPromise;
     if (GenericHelpers.isObject(topNavNodes)) {
       rootNode = topNavNodes;
+      if (rootNode.pathSegment) {
+        rootNode.pathSegment = '';
+        console.warn(
+          'Root node must have an empty path segment. Provided path segment will be ignored.'
+        );
+      }
     } else {
-      rootNode = {};
-      rootNode.children = topNavNodes;
+      rootNode = { children: topNavNodes };
     }
     await getChildren(rootNode); // keep it, mutates and filters children
     const nodeNamesInCurrentPath = (activePath || '').split('/');

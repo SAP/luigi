@@ -110,10 +110,10 @@ export const containsAllSegments = (sourceUrl, targetPathSegments) => {
   }
   const mandatorySegmentsUrl = trimTrailingSlash(sourceUrl.split('?')[0]);
   const pathSegmentsUrl = targetPathSegments
-    .slice(mandatorySegmentsUrl ? 1 : 0)
+    .filter(x => x.pathSegment) // filter out root node with empty path segment
     .map(x => x.pathSegment)
     .join('/');
-  return pathSegmentsUrl === mandatorySegmentsUrl;
+  return trimTrailingSlash(pathSegmentsUrl) === mandatorySegmentsUrl;
 };
 
 /**
