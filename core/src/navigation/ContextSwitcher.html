@@ -53,20 +53,25 @@
 
 <script type="text/javascript">
   import { ContextSwitcherHelpers } from './services/context-switcher.js';
-  import { LuigiConfig } from '../services/config.js'
-  import * as Helpers from '../utilities/helpers.js';
+  import { LuigiConfig } from '../services/config.js';
+  import * as Helpers from '../utilities/helpers/generic-helpers.js';
   import * as Routing from '../services/routing.js';
+  import * as RoutingHelpers from '../utilities/helpers/routing-helpers';
 
   export default {
     async oncreate() {
-      const contextSwitcherConfig = LuigiConfig.getConfigValue('navigation.contextSwitcher');
+      const contextSwitcherConfig = LuigiConfig.getConfigValue(
+        'navigation.contextSwitcher'
+      );
       this.set({
         contextSwitcherEnabled: !!contextSwitcherConfig,
         config: contextSwitcherConfig
       });
 
       if (contextSwitcherConfig) {
-        const actions = await LuigiConfig.getConfigValueAsync('navigation.contextSwitcher.actions');
+        const actions = await LuigiConfig.getConfigValueAsync(
+          'navigation.contextSwitcher.actions'
+        );
         const currentPath = Routing.getCurrentPath();
 
         this.set({
@@ -75,14 +80,21 @@
         });
 
         // options are loaded lazy by default
-        if(!contextSwitcherConfig.lazyloadOptions) {
+        if (!contextSwitcherConfig.lazyloadOptions) {
           await this.fetchOptions();
         }
-        if (ContextSwitcherHelpers.isContextSwitcherDetailsView(currentPath, contextSwitcherConfig.parentNodePath)) {
+        if (
+          ContextSwitcherHelpers.isContextSwitcherDetailsView(
+            currentPath,
+            contextSwitcherConfig.parentNodePath
+          )
+        ) {
           await this.setSelectedContext(currentPath);
         }
 
-        Routing.addRouteChangeListener((path) => this.setSelectedContext(path));
+        RoutingHelpers.addRouteChangeListener(path =>
+          this.setSelectedContext(path)
+        );
       }
     },
     data() {
@@ -119,9 +131,14 @@
       async fetchOptions() {
         let options = this.get().options;
         if (!options || !options.length) {
-          const contextSwitcherOptions = await LuigiConfig.getConfigValueAsync('navigation.contextSwitcher.options');
-          options = await ContextSwitcherHelpers.generateSwitcherNav(this.get().config, contextSwitcherOptions);
-          this.set({options});
+          const contextSwitcherOptions = await LuigiConfig.getConfigValueAsync(
+            'navigation.contextSwitcher.options'
+          );
+          options = await ContextSwitcherHelpers.generateSwitcherNav(
+            this.get().config,
+            contextSwitcherOptions
+          );
+          this.set({ options });
         }
       },
       async setSelectedContext(currentPath) {
@@ -130,8 +147,13 @@
         const parentNodePath = config.parentNodePath;
         const fallbackLabelResolver = config.fallbackLabelResolver;
         this.set({
-          selectedLabel: await ContextSwitcherHelpers.getSelectedLabel(currentPath, options, parentNodePath, fallbackLabelResolver)
-        })
+          selectedLabel: await ContextSwitcherHelpers.getSelectedLabel(
+            currentPath,
+            options,
+            parentNodePath,
+            fallbackLabelResolver
+          )
+        });
       },
       async onActionClick(node) {
         if (node.clickHandler) {
@@ -144,7 +166,9 @@
         this.goTo(node.link);
       },
       goTo(path) {
-        Routing.navigateTo(path);
+        this.root.getUnsavedChangesModalPromise().then(
+          () => { Routing.navigateTo(path) }
+        )
       },
       toggleDropdownState(name) {
         const dropDownStates = this.get().dropDownStates || {};
@@ -170,12 +194,13 @@
 </script>
 
 <style type="text/scss">
-  .lui-tendant-menu__control{
+  .lui-tendant-menu__control {
     // Overwrite color inheriting of product menu
     color: var(--fd-color-shell-2);
   }
 
-  .fd-button--secondary, .fd-menu__item {
+  .fd-button--secondary,
+  .fd-menu__item {
     max-width: 300px;
     overflow: hidden;
     text-overflow: ellipsis;
