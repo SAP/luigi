@@ -10,8 +10,8 @@
                                 {#if node.label}
                                 <li class="fd-side-nav__item {node.externalLink && node.externalLink.url ? 'fd-side-nav__item--external' : ''}">
                                     <a class="fd-side-nav__link {node === selectedNode ? 'is-selected' : ''}" on:click=handleClick(node)>
-                                        {#if node.iconName}
-                                            <span class="fd-side-nav__icon sap-icon--{node.iconName} sap-icon--m"></span>
+                                        {#if node.icon}
+                                            <span class="fd-side-nav__icon sap-icon--{node.icon} sap-icon--m"></span>
                                         {/if}
                                         {node.label}
                                         {#if node.externalLink && node.externalLink.url}
@@ -41,8 +41,8 @@
                                 {#if node.label}
                                 <li class="fd-side-nav__subitem {node.externalLink && node.externalLink.url ? 'fd-side-nav__item--external' : ''}">
                                     <a class="fd-side-nav__sublink {node === selectedNode ? 'is-selected' : ''}" on:click=handleClick(node)>
-                                        {#if node.iconName}
-                                            <span class="fd-side-nav__icon sap-icon--{node.iconName} sap-icon--m"></span>
+                                        {#if node.icon}
+                                            <span class="fd-side-nav__icon sap-icon--{node.icon} sap-icon--m"></span>
                                         {/if}
                                         {node.label}
                                         {#if node.externalLink && node.externalLink.url}

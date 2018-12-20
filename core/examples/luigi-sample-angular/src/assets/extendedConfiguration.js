@@ -87,7 +87,7 @@ var projectDetailNavProviderFn = function(context) {
         pathSegment: 'users',
         label: 'Users and Groups',
         viewUrl: '/sampleapp.html#/projects/' + projectId + '/users',
-        iconName: 'group',
+        icon: 'group',
         children: [
           {
             category: { label: 'Groups', icon: 'group' },
@@ -130,71 +130,71 @@ var projectDetailNavProviderFn = function(context) {
         pathSegment: 'developers',
         label: 'Developers',
         viewUrl: '/sampleapp.html#/projects/' + projectId + '/developers',
-        iconName: 'laptop'
+        icon: 'laptop'
       },
       {
         category: { label: 'Settings', icon: 'action-settings' },
         pathSegment: 'settings',
         label: 'Project Settings',
         viewUrl: '/sampleapp.html#/projects/' + projectId + '/settings',
-        iconName: 'settings'
+        icon: 'settings'
       },
       {
         pathSegment: 'miscellaneous',
         constraints: ['unicorns'],
         label: 'Miscellaneous',
         viewUrl: '/sampleapp.html#/projects/' + projectId + '/miscellaneous',
-        iconName: 'bullet-text'
+        icon: 'sys-help'
       },
       {
         pathSegment: 'miscellaneous2',
         label: 'Miscellaneous2',
         viewUrl: '/sampleapp.html#/projects/' + projectId + '/miscellaneous2',
-        iconName: 'bullet-text'
+        icon: 'sys-help'
       },
       {
         pathSegment: 'misc2-isolated',
         label: 'Miscellaneous2 (Isolated View)',
         isolateView: true,
         viewUrl: '/sampleapp.html#/projects/' + projectId + '/miscellaneous2',
-        iconName: 'repost'
+        icon: 'sys-help-2'
       },
       {
         pathSegment: 'dps',
         label: 'Default Child node Example',
         defaultChildNode: 'dps2',
-        iconName: 'checklist',
+        icon: 'checklist',
         children: [
           {
             pathSegment: 'dps1',
             label: 'First Child',
             viewUrl: '/sampleapp.html#/projects/' + projectId + '/dps/dps1',
-            iconName: 'physical-activity'
+            icon: 'physical-activity'
           },
           {
             pathSegment: 'dps2',
             label: 'Second Child',
             viewUrl: '/sampleapp.html#/projects/' + projectId + '/dps/dps2',
-            iconName: 'physical-activity'
+            icon: 'physical-activity'
           }
         ]
       },
       {
         link: '/settings',
         label: 'Go to absolute path',
-        iconName: 'horizontal-grip'
+        icon: 'switch-views'
       },
       {
         link: 'dps/dps1',
         label: 'Go to relative path',
-        iconName: 'horizontal-grip'
+        icon: 'switch-views'
       },
       {
         pathSegment: 'avengers',
         label: 'Keep Selected Example',
         viewUrl: '/sampleapp.html#/projects/' + projectId + '/dynamic/avengers',
         keepSelectedForChildren: true,
-        iconName: 'slim-arrow-down',
+        icon: 'slim-arrow-down',
         context: {
           label: 'Avengers',
           links: [
@@ -268,7 +268,7 @@ var projectDetailNavProviderFn = function(context) {
         label: 'Hide left navigation',
         viewUrl: '/sampleapp.html#/projects/' + projectId + '/hideSideNav',
         hideSideNav: true,
-        iconName: 'full-screen'
+        icon: 'full-screen'
       },
       {
         label: 'Open Github in new tab',
@@ -277,7 +277,7 @@ var projectDetailNavProviderFn = function(context) {
           url: 'http://github.com',
           sameWindow: false
         },
-        iconName: 'internet-browser'
+        icon: 'internet-browser'
       },
       {
         label: 'Open Github in this tab',
@@ -286,7 +286,7 @@ var projectDetailNavProviderFn = function(context) {
           url: 'http://github.com',
           sameWindow: true
         },
-        iconName: 'globe'
+        icon: 'globe'
       }
     ];
     getProjectPlugins(projectId).then(function(result) {
@@ -442,7 +442,7 @@ Luigi.setConfig({
           label: 'Overview',
           viewUrl: '/sampleapp.html#/overview',
           hideSideNav: true,
-          iconName: 'testIcon'
+          icon: 'testIcon'
         },
         {
           pathSegment: 'projects',
@@ -479,7 +479,7 @@ Luigi.setConfig({
           pathSegment: 'settings',
           label: 'Settings',
           viewUrl: '/sampleapp.html#/settings',
-          iconName: 'settings'
+          icon: 'settings'
         },
         {
           label: 'Open Google in this tab',
