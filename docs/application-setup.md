@@ -39,21 +39,10 @@ The examples on this page demonstrate commands that perform each of the necessar
 npm install -g live-server
 ````
 
-2. Use the following commands to create a directory for your application, install Luigi, make assets available, and start your local server.
+2. Use the following installer to create a directory for your application, install Luigi, make assets available, and start your local server.
 
 ````
-mkdir my-plain-app && cd my-plain-app
-npm init -y
-npm i -save @kyma-project/luigi-core @kyma-project/luigi-client fiori-fundamentals
-mkdir -p public/assets
-curl https://raw.githubusercontent.com/kyma-project/Luigi/master/core/examples/luigi-sample-angular/src/index.html > public/index.html
-sed 's/extendedConfiguration.js/sampleconfig.js/g' public/index.html > public/index.tmp.html && mv public/index.tmp.html public/index.html
-curl https://raw.githubusercontent.com/kyma-project/Luigi/master/core/examples/luigi-sample-angular/src/assets/sampleexternal.html > public/assets/basicexternal.html
-curl https://raw.githubusercontent.com/kyma-project/Luigi/master/core/examples/luigi-sample-angular/src/luigi-config/basicConfiguration.js > public/assets/sampleconfig.js
-cp -r node_modules/\@kyma-project/luigi-* public
-cp -r node_modules/fiori-fundamentals/dist public/fiori-fundamentals
-live-server --entry-file=index.html public
-
+bash <(curl -s https://raw.githubusercontent.com/kyma-project/Luigi/master/setup-scripts/basic-no-framework.sh)
 ````
 <a name="angular6"></a>
 

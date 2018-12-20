@@ -13,8 +13,10 @@ npm i -save @kyma-project/luigi-core @kyma-project/luigi-client fiori-fundamenta
 mv src/index.html src/angular.html
 curl https://raw.githubusercontent.com/kyma-project/Luigi/master/core/examples/luigi-sample-angular/src/index.html > src/index.html
 sed 's/extendedConfiguration.js/sampleconfig.js/g' src/index.html > src/index.tmp.html && mv src/index.tmp.html src/index.html
-#curl https://raw.githubusercontent.com/kyma-project/Luigi/master/core/examples/luigi-sample-angular/src/luigi-config/basicConfiguration.js > src/assets/sampleconfig.js
-curl http://localhost:8000/core/examples/luigi-sample-angular/src/luigi-config/basicConfiguration.js > src/assets/sampleconfig.js
+
+curl https://raw.githubusercontent.com/kyma-project/Luigi/master/core/examples/luigi-sample-angular/src/luigi-config/basicConfiguration.js > src/assets/sampleconfig.js
+# curl http://localhost:8000/core/examples/luigi-sample-angular/src/luigi-config/basicConfiguration.js > src/assets/sampleconfig.js
+
 curl https://raw.githubusercontent.com/kyma-project/Luigi/master/core/examples/luigi-sample-angular/src/assets/sampleexternal.html > src/assets/basicexternal.html
 sed 's#"src/index.html"#"src/angular.html"#g' angular.json > tmp.json && mv tmp.json angular.json
 sed 's#"src/styles.css"#"src/styles.css", "node_modules/fiori-fundamentals/dist/fiori-fundamentals.min.css"#g' angular.json > tmp.json && mv tmp.json angular.json
