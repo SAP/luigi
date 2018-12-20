@@ -4,6 +4,7 @@
 /dist
 /tmp
 /out-tsc
+/src/luigi-config/transpiled/*
 
 # dependencies
 /node_modules
@@ -40,6 +41,3 @@ testem.log
 # System Files
 .DS_Store
 Thumbs.db
-
-# config
-/src/assets/devconfig.js

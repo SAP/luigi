@@ -8,7 +8,7 @@
     "start": "(npm run startConfig &) && ng serve",
     "build": "npm run buildConfig && ng build",
     "lint": "ng lint",
-    "buildConfig": "BABEL_ENV=production webpack --mode production --config webpack-config.config.js",
+    "buildConfig": "webpack --mode production --config webpack-config.config.js",
     "startConfig": "webpack --mode development --config webpack-config.config.js --watch",
     "e2e:open": "cypress open",
     "e2e:run": "cypress run"

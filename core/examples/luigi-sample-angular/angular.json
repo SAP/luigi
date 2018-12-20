@@ -21,6 +21,7 @@
             "polyfills": "src/polyfills.ts",
             "assets": [
               "src/assets",
+              "src/luigi-config/transpiled",
               "src/index.html",
               "src/logout.html",
               {

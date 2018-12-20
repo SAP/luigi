@@ -3,8 +3,8 @@ const path = require('path');
 module.exports = {
   target: 'web',
   entry: {
-    basicConfiguration: './config/basicConfiguration.js',
-    extendedConfiguration: './config/extendedConfiguration.js'
+    basicConfiguration: './src/luigi-config/basicConfiguration.js',
+    extendedConfiguration: './src/luigi-config/extendedConfiguration.js'
   },
   output: {
     filename: '[name].bundle.js',
