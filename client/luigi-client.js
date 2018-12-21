@@ -65,7 +65,7 @@
    * @returns {boolean}
    */
   function isFunction(item) {
-    return item === 'function';
+    return typeof item === 'function';
   }
 
   /**
