@@ -1,4 +1,4 @@
-<svelte:window on:click="closeDropdown('CONTEXT_SWITCHER_POPOVER')" on:blur="closeDropdown('CONTEXT_SWITCHER_POPOVER')"/>
+<svelte:window on:click="closeAllDropdowns()" on:blur="closeAllDropdowns()"/>
 
 {#if contextSwitcherEnabled}
   <div class="fd-shellbar__action fd-shellbar__action--show-always">
@@ -179,7 +179,9 @@
       },
       toggleDropdownState(name) {
         const dropDownStates = this.get().dropDownStates || {};
-        dropDownStates[name] = Helpers.getNegatedBoolString(dropDownStates[name]);
+        const dropDownState = Helpers.getNegatedBoolString(dropDownStates[name]);
+        this.closeAllDropdowns();
+        dropDownStates[name] = dropDownState;
         this.set({
           dropDownStates
         });
@@ -189,12 +191,17 @@
           this.fetchOptions();
         }
       },
-      closeDropdown(name) {
+      closeAllDropdowns() {
         const dropDownStates = this.get().dropDownStates || {};
-        dropDownStates[name] = 'false';
-        this.set({
-          dropDownStates
-        });
+        const keys = Object.keys(dropDownStates);
+        if (keys && keys.length > 0) {
+          keys.forEach(k => {
+            dropDownStates[k] = 'false';
+            this.set({
+              dropDownStates
+            });
+          });
+        }
       }
     }
   };

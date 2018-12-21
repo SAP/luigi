@@ -1,4 +1,4 @@
-<svelte:window on:click="closeDropdown('PROFILE_POPOVER')" on:blur="closeDropdown('PROFILE_POPOVER')"/>
+<svelte:window on:click="closeAllDropdowns()" on:blur="closeAllDropdowns()"/>
 
 <div class="fd-shellbar {hideNavComponent ? 'hideNavComponent' : ''}">
   <div class="fd-shellbar__group fd-shellbar__group--start">
@@ -8,7 +8,7 @@
     <div class="fd-shellbar__actions">
 
       {#if !authorizationEnabled || isLoggedIn}
-        <ContextSwitcher />
+        <ContextSwitcher {dropDownStates} bind:dropDownStates />
       {/if}
 
       {#if children && pathData.length > 0}
@@ -30,14 +30,16 @@
             <span class="fd-counter fd-counter--notification" aria-label="Unread count">25</span>
           </button>
         </div> -->
+
+        <!-- dropdown for top nav nodes on smaller screens -->
         {#if visibleNodeCount > 0}
           <div class="fd-shellbar__action fd-shellbar__action--collapse">
             <div class="fd-shellbar-collapse">
               <div class="fd-popover fd-popover--right">
-                <div class="fd-popover__control">
+                <div class="fd-popover__control" on:click="event.stopPropagation()">
                   <div class="fd-shellbar-collapse--control" aria-controls="eYVEJ960" aria-expanded="false" aria-haspopup="true" role="button">
                     <button class=" fd-button--shell sap-icon--overflow" aria-controls="OVERFLOW_POPOVER" aria-expanded="{dropDownStates.OVERFLOW_POPOVER || false}"
-                    aria-haspopup="true" on:click="toggleDropdownState('OVERFLOW_POPOVER')" onclick="event.target.focus()" on:blur="closeDropdown('OVERFLOW_POPOVER')" >
+                    aria-haspopup="true" on:click="toggleDropdownState('OVERFLOW_POPOVER')">
                       <!-- <span class="fd-counter fd-counter--notification" aria-label="Unread count">25</span> -->
                     </button>
                   </div>
@@ -166,19 +168,24 @@
       },
       toggleDropdownState(name) {
         const dropDownStates = this.get().dropDownStates || {};
-        dropDownStates[name] = GenericHelpers.getNegatedBoolString(
-          dropDownStates[name]
-        );
+        const dropDownState = GenericHelpers.getNegatedBoolString(dropDownStates[name]);
+        this.closeAllDropdowns();
+        dropDownStates[name] = dropDownState;
         this.set({
           dropDownStates
         });
       },
-      closeDropdown(name) {
+      closeAllDropdowns() {
         const dropDownStates = this.get().dropDownStates || {};
-        dropDownStates[name] = 'false';
-        this.set({
-          dropDownStates
-        });
+        const keys = Object.keys(dropDownStates);
+        if (keys && keys.length > 0) {
+          keys.forEach(k => {
+            dropDownStates[k] = 'false';
+            this.set({
+              dropDownStates
+            });
+          });
+        }
       }
     },
     components: {
