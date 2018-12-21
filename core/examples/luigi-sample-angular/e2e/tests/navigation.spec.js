@@ -35,6 +35,20 @@ describe('Navigation', () => {
     cy.get('.fd-app__sidebar').should('contain', 'Second Child');
   });
 
+  it('Icon instead of label in TopNav', () => {
+    cy.visit('http://localhost:4200/');
+    cy.get('button[title="Settings"]>.fd-top-nav__icon').should('exist');
+    cy.get('button[title="Settings"]').should('contain', '');
+  });
+
+  it('Icon instead of label in LeftNav', () => {
+    cy.visit('http://localhost:4200/projects/pr1');
+    cy.get('.fd-side-nav__sublink')
+      .contains('Project Settings')
+      .find('.fd-side-nav__icon')
+      .should('exist');
+  });
+
   describe('features', () => {
     it('keepSelectedForChildren', () => {
       // keep selected for children example

@@ -441,8 +441,7 @@ Luigi.setConfig({
           pathSegment: 'overview',
           label: 'Overview',
           viewUrl: '/sampleapp.html#/overview',
-          hideSideNav: true,
-          icon: 'testIcon'
+          hideSideNav: true
         },
         {
           pathSegment: 'projects',
@@ -483,6 +482,7 @@ Luigi.setConfig({
         },
         {
           label: 'Open Google in this tab',
+
           externalLink: {
             url: 'http://google.com',
             sameWindow: true

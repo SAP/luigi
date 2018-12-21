@@ -13,10 +13,15 @@
           {#each children as node}
             {#if !node.hideFromNav}
             <div class="fd-shellbar__action fd-shellbar__action--hide">
-                <button class="fd-button--shell {node === selectedNode ? 'is-selected' : ''} {node.externalLink && node.externalLink.url ? 'fd-global-nav__btn--external' : ''}" aria-controls="0AcWE812" aria-expanded="false" aria-haspopup="true" on:click=handleClick(node)>{node.label}
-                  {#if node.externalLink && node.externalLink.url}
-                    <span class="sap-icon--action sap-icon--s"></span>
-                  {/if}
+                <button title="{node.label}" class="fd-button--shell {node === selectedNode ? 'is-selected' : ''} {node.externalLink && node.externalLink.url ? 'fd-global-nav__btn--external' : ''}" aria-controls="0AcWE812" aria-expanded="false" aria-haspopup="true" on:click=handleClick(node)>
+                   {#if node.icon}
+                      <span class="fd-top-nav__icon sap-icon--{node.icon} sap-icon--l"></span>
+                    {:else}
+                      {node.label}
+                    {/if}
+                    {#if node.externalLink && node.externalLink.url}
+                      <span class="sap-icon--action sap-icon--s"></span>
+                    {/if}
                 </button>
               </div>
             {/if}
@@ -48,9 +53,15 @@
                   {#each children as node}
                     {#if !node.hideFromNav}
                       <li><a class="fd-menu__item {node === selectedNode ? 'is-selected' : ''} {node.externalLink && node.externalLink.url ? 'fd-global-nav__btn--external' : ''}" on:click=handleClick(node)>{node.label}
+                     {#if node.icon}
+                        <span class="fd-top-nav__icon sap-icon--{node.icon} sap-icon--m"></span>
+                      {/if}
                     {#if node.externalLink && node.externalLink.url}
                       <span class="sap-icon--action sap-icon--s"></span>
-                    {/if}</a>
+                    {/if}
+
+                    
+                    </a>
                   </li>
                                 {/if}
             {/each}
@@ -159,7 +170,7 @@
     },
     methods: {
       handleClick(node) {
-        this.fire('handleClick', { node })
+        this.fire('handleClick', { node });
       },
       toggleDropdownState(name) {
         const dropDownStates = this.get().dropDownStates || {};
@@ -193,6 +204,9 @@
     justify-content: flex-end;
   }
 
+  .fd-side-nav__icon {
+    padding-right: 0;
+  }
   .hideNavComponent {
     display: none;
   }
