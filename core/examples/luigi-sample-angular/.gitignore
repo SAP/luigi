@@ -5,6 +5,8 @@
 /tmp
 /out-tsc
 /src/luigi-config/transpiled/*
+/src/assets/basicConfiguration.*
+/src/assets/extendedConfiguration.*
 
 # dependencies
 /node_modules
