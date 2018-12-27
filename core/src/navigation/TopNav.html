@@ -8,7 +8,7 @@
     <div class="fd-shellbar__actions">
 
       {#if !authorizationEnabled || isLoggedIn}
-        <ContextSwitcher {dropDownStates} bind:dropDownStates />
+        <ContextSwitcher bind:dropDownStates on:toggleDropdownState="toggleDropdownState(event.name)"/>
       {/if}
 
       {#if children && pathData.length > 0}

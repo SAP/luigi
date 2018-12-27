@@ -176,29 +176,11 @@
         )
       },
       toggleDropdownState(name) {
+        this.fire('toggleDropdownState', {name});
         const dropDownStates = this.get().dropDownStates || {};
-        const dropDownState = Helpers.getNegatedBoolString(dropDownStates[name]);
-        this.closeAllDropdowns();
-        dropDownStates[name] = dropDownState;
-        this.set({
-          dropDownStates
-        });
-
         const isOpened = JSON.parse(dropDownStates[name]);
         if (isOpened) {
           this.fetchOptions();
-        }
-      },
-      closeAllDropdowns() {
-        const dropDownStates = this.get().dropDownStates || {};
-        const keys = Object.keys(dropDownStates);
-        if (keys && keys.length > 0) {
-          keys.forEach(k => {
-            dropDownStates[k] = 'false';
-            this.set({
-              dropDownStates
-            });
-          });
         }
       }
     }
