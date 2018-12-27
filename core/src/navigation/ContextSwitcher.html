@@ -4,15 +4,15 @@
       <div class="fd-popover fd-popover--right">
 
         <div class="fd-popover__control" on:click="event.stopPropagation()">
-          <button class="fd-button--shell fd-product-menu__control lui-tendant-menu__control" aria-expanded="{dropDownStates.CONTEXT_SWITCHER_POPOVER || false}"
+          <button class="fd-button--shell fd-product-menu__control lui-tendant-menu__control" aria-expanded="{dropDownStates.contextSwitcherPopover || false}"
             aria-haspopup="true" title="{selectedLabel ? selectedLabel : ''}"
-            on:click="toggleDropdownState('CONTEXT_SWITCHER_POPOVER')">
+            on:click="toggleDropdownState('contextSwitcherPopover')">
             {#if !selectedLabel}{config.defaultLabel}{/if}
             {#if selectedLabel}{selectedLabel}{/if}
           </button>
         </div>
 
-        <div class="fd-popover__body fd-popover__body--right" aria-hidden="{!(dropDownStates.CONTEXT_SWITCHER_POPOVER || false)}" id="CONTEXT_SWITCHER_POPOVER">
+        <div class="fd-popover__body fd-popover__body--right" aria-hidden="{!(dropDownStates.contextSwitcherPopover || false)}" id="contextSwitcherPopover">
           <nav class="fd-menu">
 
             {#if actions && actions.length}

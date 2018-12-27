@@ -38,13 +38,13 @@
               <div class="fd-popover fd-popover--right">
                 <div class="fd-popover__control" on:click="event.stopPropagation()">
                   <div class="fd-shellbar-collapse--control" aria-controls="eYVEJ960" aria-expanded="false" aria-haspopup="true" role="button">
-                    <button class=" fd-button--shell sap-icon--overflow" aria-controls="OVERFLOW_POPOVER" aria-expanded="{dropDownStates.OVERFLOW_POPOVER || false}"
-                    aria-haspopup="true" on:click="toggleDropdownState('OVERFLOW_POPOVER')">
+                    <button class=" fd-button--shell sap-icon--overflow" aria-controls="overflowPopover" aria-expanded="{dropDownStates.overflowPopover || false}"
+                    aria-haspopup="true" on:click="toggleDropdownState('overflowPopover')">
                       <!-- <span class="fd-counter fd-counter--notification" aria-label="Unread count">25</span> -->
                     </button>
                   </div>
                 </div>
-                <div class="fd-popover__body fd-popover__body--right"  aria-hidden="{!(dropDownStates.OVERFLOW_POPOVER || false)}" id="OVERFLOW_POPOVER">
+                <div class="fd-popover__body fd-popover__body--right"  aria-hidden="{!(dropDownStates.overflowPopover || false)}" id="overflowPopover">
                   <nav class="fd-menu">
                     <ul class="fd-menu__list">
                       {#each children as node}
@@ -71,10 +71,10 @@
         <div class="fd-shellbar__action fd-shellbar__action--show-always">
           <div class="fd-popover">
             <div class="fd-popover__control" on:click="event.stopPropagation()">
-              <button class=" fd-button--shell sap-icon--customer" aria-expanded="{dropDownStates.PROFILE_POPOVER || false}"
-              aria-haspopup="true" on:click="toggleDropdownState('PROFILE_POPOVER')">
+              <button class=" fd-button--shell sap-icon--customer" aria-expanded="{dropDownStates.profilePopover || false}"
+              aria-haspopup="true" on:click="toggleDropdownState('profilePopover')">
               </button>
-              <div class="fd-popover__body fd-popover__body--right" aria-hidden="{!(dropDownStates.PROFILE_POPOVER || false)}" id="PROFILE_POPOVER">
+              <div class="fd-popover__body fd-popover__body--right" aria-hidden="{!(dropDownStates.profilePopover || false)}" id="profilePopover">
                 <nav class="fd-menu">
                   <Authorization />
                 </nav>
