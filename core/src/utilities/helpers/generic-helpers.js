@@ -88,14 +88,6 @@ export const prependOrigin = path => {
   return window.location.origin;
 };
 
-/**
- * Returns the negated string value from a bool string
- * @param {str} string 'true' or 'false'
- */
-export const getNegatedBoolString = str => {
-  return str === 'true' ? 'false' : 'true';
-};
-
 export const containsAllSegments = (sourceUrl, targetPathSegments) => {
   if (
     sourceUrl === undefined ||
