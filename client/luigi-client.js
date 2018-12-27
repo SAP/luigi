@@ -94,7 +94,9 @@
       for (var index = 0; index < defaultContextKeys.length; index++) {
         var key = defaultContextKeys[index];
         try {
-          rawData[key] = JSON.parse(rawData[key]);
+          if (typeof rawData[key] === 'string') {
+            rawData[key] = JSON.parse(rawData[key]);
+          }
         } catch (e) {
           console.info(
             'unable to parse luigi context data for',
