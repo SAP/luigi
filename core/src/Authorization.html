@@ -1,11 +1,13 @@
 <ul class="fd-menu__list">
-  <li>
     {#if isLoggedIn}
-      <a aria-label="Logout" on:click=onLogoutClick() class="fd-menu__item">Logout</a>
+      <li on:click=onLogoutClick()>
+        <a aria-label="Logout" class="fd-menu__item">Logout</a>
+      </li>
     {:else}
-      <a aria-label="Login" on:click=startAuthorization() class="fd-menu__item">Login</a>
+      <li on:click=startAuthorization()>
+        <a aria-label="Login" class="fd-menu__item">Login</a>
+      </li>
     {/if}
-  </li>
 </ul>
 
 <script type="text/javascript">
