@@ -247,7 +247,7 @@ The node parameters are as follows:
 - **loadingIndicator.enabled** shows a loading indicator when switching between micro front-ends. If you have a fast micro front-end, you can disable this feature to prevent flickering of the loading indicator. This parameter is enabled by default.
 - **loadingIndicator.hideAutomatically** disables the automatic hiding of the loading indicator once the micro front-end is loaded. It is only considered if the loading indicator is enabled. It does not apply if the loading indicator is activated manually with the `LuigiClient.uxManager().showLoadingIndicator()` function. If the loading indicator is enabled and automatic hiding is disabled, use `LuigiClient.uxManager().hideLoadingIndicator()` to hide it manually in your micro front-end during the startup. This parameter is enabled by default.
 - **viewGroup** defines a group of views in the same domain sharing a common security context. This improves performance through reusing the frame. Use **viewGroup** only for the views that use path routing internally.
-- **icon** is the name if an icon from [OpenUI](https://openui5.hana.ondemand.com/1.40.10/iconExplorer.html) that will be shown next to the Node's label (side navigation) or instead of it (top navigation).
+- **icon** is the name of an icon from the [OpenUI](https://openui5.hana.ondemand.com/1.40.10/iconExplorer.html) displayed next to the Node label in the side navigation or instead of the label in the top navigation.
 
 
 ### Navigation configuration example
