@@ -192,15 +192,24 @@ export const handleRouteChange = async (path, component, node, config) => {
         const defaultChildNode = await RoutingHelpers.getDefaultChildNode(
           pathData
         );
+
         navigateTo(`${pathUrl ? `/${pathUrl}` : ''}/${defaultChildNode}`);
       } else {
-        const alert = {
-          message: 'Could not find the requested route',
-          link: pathUrlRaw
-        };
-
-        component.set({ alert });
-        navigateTo('/');
+        const custom404handler = LuigiConfig.getConfigValue(
+          'settings.handle404'
+        );
+        if (typeof custom404handler === 'function') {
+          custom404handler(pathUrlRaw);
+        } else {
+          //built-in 404 alert + redirection to root
+          const alert = {
+            message: 'Could not find the requested route',
+            link: pathUrlRaw,
+            ttl: 1 //how many redirections the alert will 'survive'
+          };
+          navigateTo('/');
+          component.set({ alert });
+        }
         //error 404
       }
       return;
@@ -211,7 +220,8 @@ export const handleRouteChange = async (path, component, node, config) => {
 
       const alert = {
         message: 'Could not map the exact target node for the requested route',
-        link: pathUrlRaw
+        link: pathUrlRaw,
+        ttl: 1 //how many redirections the alert will 'survive'
       };
 
       component.set({ alert });
