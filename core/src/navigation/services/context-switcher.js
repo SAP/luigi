@@ -1,4 +1,4 @@
-import * as Helpers from '../../utilities/helpers.js';
+import * as Helpers from '../../utilities/helpers/generic-helpers.js';
 
 export const ContextSwitcherHelpers = {
   getPreparedParentNodePath(config) {

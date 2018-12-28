@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import LuigiClient from '@kyma-project/luigi-client';
 
 @Component({
@@ -57,4 +57,9 @@ export class OverviewComponent {
       description: 'navigation node configuration to redirect to another path'
     }
   ];
+
+  private isDirty: boolean = false;
+  private sendDirtyEvent = () => {
+    LuigiClient.uxManager().setDirtyStatus(this.isDirty);
+  };
 }
