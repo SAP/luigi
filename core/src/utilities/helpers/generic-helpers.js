@@ -88,28 +88,24 @@ export const prependOrigin = path => {
   return window.location.origin;
 };
 
-/**
- * Returns the negated string value from a bool string
- * @param {str} string 'true' or 'false'
- */
-export const getNegatedBoolString = str => {
-  return str === 'true' ? 'false' : 'true';
-};
-
 export const containsAllSegments = (sourceUrl, targetPathSegments) => {
-  if (!sourceUrl || !targetPathSegments || !targetPathSegments.length) {
+  if (
+    sourceUrl === undefined ||
+    sourceUrl === null ||
+    !targetPathSegments ||
+    !targetPathSegments.length
+  ) {
     console.error(
       'Ooops, seems like the developers have misconfigured something'
     );
     return false;
   }
-
+  const mandatorySegmentsUrl = trimTrailingSlash(sourceUrl.split('?')[0]);
   const pathSegmentsUrl = targetPathSegments
-    .slice(1)
+    .filter(x => x.pathSegment) // filter out root node with empty path segment
     .map(x => x.pathSegment)
     .join('/');
-  const mandatorySegmentsUrl = trimTrailingSlash(sourceUrl.split('?')[0]);
-  return pathSegmentsUrl === mandatorySegmentsUrl;
+  return trimTrailingSlash(pathSegmentsUrl) === mandatorySegmentsUrl;
 };
 
 /**
