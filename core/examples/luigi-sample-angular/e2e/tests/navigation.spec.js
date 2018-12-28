@@ -41,7 +41,7 @@ describe('Navigation', () => {
     cy.get('button[title="Settings"]').should('contain', '');
   });
 
-  it('Icon instead of label in LeftNav', () => {
+  it('Icon with label in LeftNav', () => {
     cy.visit('http://localhost:4200/projects/pr1');
     cy.get('.fd-side-nav__sublink')
       .contains('Project Settings')
