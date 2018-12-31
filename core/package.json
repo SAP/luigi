@@ -6,6 +6,7 @@
   "devDependencies": {
     "@babel/core": "^7.2.2",
     "@babel/preset-env": "^7.2.3",
+    "@babel/register": "^7.0.0",
     "babel-loader": "^8.0.0-beta.6",
     "babel-polyfill": "^6.26.0",
     "bundlesize": "^0.17.0",
@@ -36,7 +37,7 @@
   "scripts": {
     "bundle": "webpack --display-error-details",
     "bundle-develop": "webpack -d --watch",
-    "test": "./node_modules/mocha/bin/mocha --require babel-register --require babel-polyfill --require jsdom-global/register --recursive test",
+    "test": "./node_modules/mocha/bin/mocha --require @babel/register --require babel-polyfill --require jsdom-global/register --recursive test",
     "test:watch": "npm run test -- --watch",
     "bundlesize": "npm run bundle && bundlesize",
     "prepush": "npm test"
