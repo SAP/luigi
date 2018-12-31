@@ -2,18 +2,35 @@
 // Please consider adding any new methods to 'navigation-helpers' if they don't require anything from this file.
 import * as NavigationHelpers from '../../utilities/helpers/navigation-helpers';
 import * as AsyncHelpers from '../../utilities/helpers/async-helpers';
+import * as GenericHelpers from '../../utilities/helpers/generic-helpers';
 
 export const getNavigationPath = async (rootNavProviderPromise, activePath) => {
-  const rootNode = {};
   if (!rootNavProviderPromise) {
-    return [rootNode];
+    console.error('No navigation nodes provided in the configuration.');
+    return [{}];
   }
   try {
+    let rootNode;
     const topNavNodes = await rootNavProviderPromise;
-    rootNode.children = topNavNodes;
+    if (GenericHelpers.isObject(topNavNodes)) {
+      rootNode = topNavNodes;
+      if (rootNode.pathSegment) {
+        rootNode.pathSegment = '';
+        console.warn(
+          'Root node must have an empty path segment. Provided path segment will be ignored.'
+        );
+      }
+    } else {
+      rootNode = { children: topNavNodes };
+    }
     await getChildren(rootNode); // keep it, mutates and filters children
     const nodeNamesInCurrentPath = (activePath || '').split('/');
-    return buildNode(nodeNamesInCurrentPath, [rootNode], rootNode.children, {});
+    return buildNode(
+      nodeNamesInCurrentPath,
+      [rootNode],
+      rootNode.children,
+      rootNode.context || {}
+    );
   } catch (err) {
     console.error('Failed to load top navigation nodes.', err);
   }
@@ -53,7 +70,7 @@ export const getChildren = async (node, context) => {
   }
 };
 
-export const bindChildrenToParent = node => {
+const bindChildrenToParent = node => {
   // Checking for pathSegment to exclude virtual root node
   if (node && node.pathSegment && node.children) {
     node.children.forEach(child => {
@@ -183,7 +200,7 @@ export const findMatchingNode = (urlPathElement, nodes) => {
   return result;
 };
 
-export const getNodes = (children, pathData) => {
+const getNodes = (children, pathData) => {
   if (children && 0 < children.length) {
     return children;
   }
@@ -201,7 +218,7 @@ export const getNodes = (children, pathData) => {
   return [];
 };
 
-export const getGroupedChildren = (children, current) => {
+const getGroupedChildren = (children, current) => {
   const nodes = getNodes(children, current.pathData);
   return NavigationHelpers.groupNodesBy(nodes, 'category');
 };
@@ -214,7 +231,7 @@ export const getGroupedChildren = (children, current) => {
  * @param array children
  * @returns array children
  */
-export const getTruncatedChildren = children => {
+const getTruncatedChildren = children => {
   let childToKeepFound = false;
   const res = [];
   children.forEach(node => {

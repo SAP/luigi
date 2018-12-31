@@ -59,16 +59,23 @@
   }
 
   /**
+   * Simple function check.
+   * @private
+   * @param item mixed
+   * @returns {boolean}
+   */
+  function isFunction(item) {
+    return typeof item === 'function';
+  }
+
+  /**
    * Iterates over an object and executes all top-level functions
    * with a given payload.
    * @private
    */
   function _callAllFns(objWithFns, payload) {
     for (var id in objWithFns) {
-      if (
-        objWithFns.hasOwnProperty(id) &&
-        typeof objWithFns[id] == 'function'
-      ) {
+      if (objWithFns.hasOwnProperty(id) && isFunction(objWithFns[id])) {
         objWithFns[id](payload);
       }
     }
@@ -87,7 +94,9 @@
       for (var index = 0; index < defaultContextKeys.length; index++) {
         var key = defaultContextKeys[index];
         try {
-          rawData[key] = JSON.parse(rawData[key]);
+          if (typeof rawData[key] === 'string') {
+            rawData[key] = JSON.parse(rawData[key]);
+          }
         } catch (e) {
           console.info(
             'unable to parse luigi context data for',
@@ -151,8 +160,8 @@
     addInitListener: function addInitListener(initFn) {
       var id = _getRandomId();
       _onInitFns[id] = initFn;
-      if (luigiInitialized) {
-        _callAllFns(_onInitFns, currentContext.context);
+      if (luigiInitialized && isFunction(initFn)) {
+        initFn(currentContext.context);
       }
       return id;
     },
@@ -178,8 +187,8 @@
     ) {
       var id = _getRandomId();
       _onContextUpdatedFns[id] = contextUpdatedFn;
-      if (luigiInitialized) {
-        _callAllFns(_onContextUpdatedFns, currentContext.context);
+      if (luigiInitialized && isFunction(contextUpdatedFn)) {
+        contextUpdatedFn(currentContext.context);
       }
       return id;
     },
