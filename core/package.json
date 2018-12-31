@@ -4,10 +4,10 @@
   "private": true,
   "description": "luigi-core development version, only the public folder is being published to npm as a package",
   "devDependencies": {
-    "@babel/core": "^7.2.2",
+    "@babel/core": "^7.0.0",
     "@babel/preset-env": "^7.2.3",
     "@babel/register": "^7.0.0",
-    "babel-loader": "^8.0.0-beta.6",
+    "babel-loader": "^8.0.4",
     "babel-polyfill": "^6.26.0",
     "bundlesize": "^0.17.0",
     "chai": "^4.1.2",
@@ -57,5 +57,9 @@
   "repository": {
     "type": "git",
     "url": "ssh://github.com/kyma-project/luigi.git"
+  },
+  "dependencies": {
+    "npm": "^6.5.0",
+    "test": "^0.6.0"
   }
 }
