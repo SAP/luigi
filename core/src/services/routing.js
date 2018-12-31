@@ -194,9 +194,9 @@ export const handleRouteChange = async (path, component, node, config) => {
         //normal navigation can be performed
         navigateTo(`${pathUrl ? `/${pathUrl}` : ''}/${defaultChildNode}`);
       } else {
-        if (defaultChildNode && pathData.navigationPath.length > 2) {
+        if (defaultChildNode && pathData.navigationPath.length > 1) {
           //last path segment was invalid but a default node could be in its place
-          ShowNotExactRouteError(component, pathUrlRaw, defaultChildNode);
+          showNotExactRouteError(component, pathUrlRaw, defaultChildNode);
           return;
         }
         //the path is unrecognized at all and cannot be fitted to any known one
@@ -221,7 +221,7 @@ export const handleRouteChange = async (path, component, node, config) => {
     }
 
     if (!GenericHelpers.containsAllSegments(pathUrl, pathData.navigationPath)) {
-      ShowNotExactRouteError(component, pathUrlRaw);
+      showNotExactRouteError(component, pathUrlRaw);
     }
 
     const previousCompData = component.get();
@@ -271,7 +271,7 @@ export const handleRouteClick = node => {
   }
 };
 
-const ShowNotExactRouteError = async (
+const showNotExactRouteError = async (
   component,
   pathUrlRaw,
   segmentToAdd = null
