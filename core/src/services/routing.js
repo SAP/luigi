@@ -194,7 +194,7 @@ export const handleRouteChange = async (path, component, node, config) => {
         //normal navigation can be performed
         navigateTo(`${pathUrl ? `/${pathUrl}` : ''}/${defaultChildNode}`);
       } else {
-        if (defaultChildNode) {
+        if (defaultChildNode && pathData.navigationPath.length > 2) {
           //last path segment was invalid but a default node could be in its place
           ShowNotExactRouteError(component, pathUrlRaw, defaultChildNode);
           return;
@@ -285,5 +285,9 @@ const ShowNotExactRouteError = async (
   };
 
   component.set({ alert });
-  navigateTo(segmentToAdd ? matchedPath + '/' + segmentToAdd : matchedPath);
+  navigateTo(
+    segmentToAdd
+      ? GenericHelpers.trimTrailingSlash(matchedPath) + '/' + segmentToAdd
+      : matchedPath
+  );
 };
