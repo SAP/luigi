@@ -187,14 +187,19 @@ export const handleRouteChange = async (path, component, node, config) => {
 
     if (!viewUrl) {
       const routeExists = RoutingHelpers.isExistingRoute(pathUrl, pathData);
-
+      const defaultChildNode = await RoutingHelpers.getDefaultChildNode(
+        pathData
+      );
       if (routeExists) {
-        const defaultChildNode = await RoutingHelpers.getDefaultChildNode(
-          pathData
-        );
-
+        //normal navigation can be performed
         navigateTo(`${pathUrl ? `/${pathUrl}` : ''}/${defaultChildNode}`);
       } else {
+        if (defaultChildNode) {
+          //last path segment was invalid but a default node could be in its place
+          ShowNotExactRouteError(component, pathUrlRaw, defaultChildNode);
+          return;
+        }
+        //the path is unrecognized at all and cannot be fitted to any known one
         const custom404handler = LuigiConfig.getConfigValue(
           'settings.handle404'
         );
@@ -216,16 +221,7 @@ export const handleRouteChange = async (path, component, node, config) => {
     }
 
     if (!GenericHelpers.containsAllSegments(pathUrl, pathData.navigationPath)) {
-      const matchedPath = await matchPath(pathUrlRaw);
-
-      const alert = {
-        message: 'Could not map the exact target node for the requested route',
-        link: pathUrlRaw,
-        ttl: 1 //how many redirections the alert will 'survive'
-      };
-
-      component.set({ alert });
-      navigateTo(matchedPath);
+      ShowNotExactRouteError(component, pathUrlRaw);
     }
 
     const previousCompData = component.get();
@@ -273,4 +269,21 @@ export const handleRouteClick = node => {
     const route = RoutingHelpers.buildRoute(node, `/${node.pathSegment}`);
     navigateTo(route);
   }
+};
+
+const ShowNotExactRouteError = async (
+  component,
+  pathUrlRaw,
+  segmentToAdd = null
+) => {
+  const matchedPath = await matchPath(pathUrlRaw);
+
+  const alert = {
+    message: 'Could not map the exact target node for the requested route',
+    link: pathUrlRaw,
+    ttl: 1 //how many redirections the alert will 'survive'
+  };
+
+  component.set({ alert });
+  navigateTo(segmentToAdd ? matchedPath + '/' + segmentToAdd : matchedPath);
 };
