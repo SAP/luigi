@@ -10,8 +10,7 @@ settings: {
     logo: 'path/to/image.png',
     title: 'Luigi Demo',
     favicon: 'path/to/favicon.ico'
-  },
-  handle404: this.custom404handler
+  }
 }
 ````
 **hideNavigation** disables Luigi's default out-of-the-box navigation when set to `true`. Subsequently, neither the left nor top navigation are visible in your application. You are then free to provide your own navigation UI. By default, the navigation is enabled. If you want to keep it, set the value to `false` or leave this option unconfigured.
@@ -19,4 +18,3 @@ settings: {
 **header.logo** defines the top left navigation logo. It has a fixed height of 28px.
 **header.title** defines the top left navigation title.
 **header.favicon** defines the favicon. Requires a standard favicon file with the `.ico` extension, and 16x16px or 32x32px dimensions.
-**handle404** is a function defining custom behaviour when the 404 error occured. By default it's handled by Luigi. Leave its body empty if you have an external 404 handling.
