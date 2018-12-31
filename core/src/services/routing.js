@@ -201,7 +201,7 @@ export const handleRouteChange = async (path, component, node, config) => {
         }
         //the path is unrecognized at all and cannot be fitted to any known one
         const custom404handler = LuigiConfig.getConfigValue(
-          'settings.handle404'
+          'routing.pageNotFoundHandler'
         );
         if (typeof custom404handler === 'function') {
           custom404handler(pathUrlRaw);
