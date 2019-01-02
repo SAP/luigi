@@ -1,324 +1,135 @@
-import { getNavigationPath } from '../navigation/services/navigation';
+// Methods related to the routing. They mostly end up changing the iframe view which is handled by `iframe.js` file;
+// Please consider adding any new methods to 'routing-helpers' if they don't require anything from this file.
+import * as Navigation from '../navigation/services/navigation';
+import * as RoutingHelpers from '../utilities/helpers/routing-helpers';
 import { LuigiConfig } from './config';
-import {
-  getPathWithoutHash,
-  getUrlWithoutHash,
-  containsAllSegments,
-  trimLeadingSlash,
-  isIE,
-  getConfigValueFromObject,
-  addLeadingSlash,
-  trimTrailingSlash
-} from '../utilities/helpers';
-import { getConfigValueFromObjectAsync } from '../utilities/async-helpers';
+import * as GenericHelpers from '../utilities/helpers/generic-helpers';
+import * as Iframe from './iframe';
 
-const iframeNavFallbackTimeout = 2000;
-let timeoutHandle;
-const defaultContentViewParamPrefix = '~';
-
-const getLastNodeObject = pathData => {
-  const lastElement = [...pathData.navigationPath].pop();
-  return lastElement ? lastElement : {};
+export const getNodePath = node => {
+  return node
+    ? RoutingHelpers.buildRoute(
+        node,
+        node.pathSegment ? '/' + node.pathSegment : ''
+      )
+    : '';
 };
 
-const getDefaultChildNode = async function(pathData) {
-  const lastElement =
-    pathData.navigationPath[pathData.navigationPath.length - 1];
+export const concatenatePath = (basePath, relativePath) => {
+  let path = GenericHelpers.getPathWithoutHash(basePath);
+  if (!path) {
+    return relativePath;
+  }
+  if (!relativePath) {
+    return path;
+  }
+  if (path.endsWith('/')) {
+    path = path.substring(0, path.length - 1);
+  }
+  if (!relativePath.startsWith('/')) {
+    path += '/';
+  }
+  path += relativePath;
+  return path;
+};
 
-  const children = await getConfigValueFromObjectAsync(lastElement, 'children');
-  const pathExists = children.find(
-    childNode => childNode.pathSegment === lastElement.defaultChildNode
+export const matchPath = async path => {
+  try {
+    const pathUrl =
+      0 < path.length ? GenericHelpers.getPathWithoutHash(path) : path;
+    const pathData = await Navigation.getNavigationPath(
+      LuigiConfig.getConfigValueAsync('navigation.nodes'),
+      GenericHelpers.trimTrailingSlash(pathUrl.split('?')[0])
+    );
+    if (pathData.navigationPath.length > 0) {
+      const lastNode =
+        pathData.navigationPath[pathData.navigationPath.length - 1];
+      return RoutingHelpers.buildRoute(
+        lastNode,
+        '/' + (lastNode.pathSegment ? lastNode.pathSegment : ''),
+        pathUrl.split('?')[1]
+      );
+    }
+  } catch (err) {
+    console.error('Could not match path', err);
+  }
+  return null;
+};
+
+/**
+  navigateTo used for navigation
+  @param route string  absolute path of the new route
+ */
+export const navigateTo = async route => {
+  if (LuigiConfig.getConfigValue('routing.useHashRouting')) {
+    window.location.hash = route;
+    return;
+  }
+
+  // Avoid infinite loop on logout + login whith path routing
+  if (window.location.pathname === route) {
+    return;
+  }
+
+  window.history.pushState(
+    {
+      path: route
+    },
+    '',
+    route
   );
 
-  if (lastElement.defaultChildNode && pathExists) {
-    return lastElement.defaultChildNode;
-  } else if (children && children.length > 0) {
-    return children[0].pathSegment;
+  // https://developer.mozilla.org/en-US/docs/Web/API/CustomEvent#Browser_compatibility
+  // https://developer.mozilla.org/en-US/docs/Web/API/Event#Browser_compatibility
+  // https://developer.mozilla.org/en-US/docs/Web/API/Event/createEvent
+  let event;
+  if (GenericHelpers.isIE()) {
+    event = document.createEvent('Event');
+    event.initEvent('popstate', true, true);
   } else {
+    event = new CustomEvent('popstate');
+  }
+
+  window.dispatchEvent(event);
+};
+
+export const buildFromRelativePath = node => {
+  let windowPath = LuigiConfig.getConfigValue('routing.useHashRouting')
+    ? GenericHelpers.getPathWithoutHash(window.location.hash)
+    : window.location.pathname;
+  if (node.parent && node.parent.pathSegment) {
+    // use only this part of the current path that refers to the parent of the node (remove additional parts refering to the sibiling)
+    // remove everything that is after the parents pathSegment 'parent/keepSelectedForChildren/something' -> 'parent'
+    const nodePathSegments = GenericHelpers.trimLeadingSlash(
+      getNodePath(node.parent)
+    ).split('/');
+    const windowPathSegments = GenericHelpers.trimLeadingSlash(
+      windowPath
+    ).split('/');
+    if (windowPathSegments.length > nodePathSegments.length) {
+      windowPath = windowPathSegments
+        .slice(0, nodePathSegments.length)
+        .join('/');
+    }
+  }
+  return GenericHelpers.addLeadingSlash(concatenatePath(windowPath, node.link));
+};
+
+export const getModifiedPathname = () => {
+  if (!window.history.state) {
     return '';
   }
+
+  return window.history.state.path
+    .split('/')
+    .slice(1)
+    .join('/');
 };
 
-const isExistingRoute = function(path, pathData) {
-  if (!path) {
-    return true;
-  }
-
-  const lastElement =
-    pathData.navigationPath[pathData.navigationPath.length - 1];
-  const routeSplit = path.replace(/\/$/, '').split('/');
-  const lastPathSegment = routeSplit[routeSplit.length - 1];
-
-  return lastElement.pathSegment === lastPathSegment;
-};
-
-const hideElementChildren = node => {
-  if (node.children) {
-    Array.from(node.children).forEach(child => {
-      child.style.display = 'none';
-    });
-  }
-};
-
-export const getActiveIframe = node => {
-  return node.firstChild;
-};
-
-export const setActiveIframeToPrevious = node => {
-  const iframesInDom = Array.from(node.children);
-  if (iframesInDom.length === 0) {
-    return;
-  } else if (iframesInDom.length === 1) {
-    iframesInDom[0].style.display = 'block';
-    return;
-  }
-  hideElementChildren(node);
-  node.removeChild(iframesInDom[0]);
-  iframesInDom[1].style.display = 'block';
-};
-
-export const removeInactiveIframes = node => {
-  const children = Array.from(node.children);
-  children.forEach((child, index) => {
-    if (index > 0) {
-      node.removeChild(child);
-    }
-  });
-};
-
-const removeElementChildren = node => {
-  while (node.firstChild) {
-    node.removeChild(node.firstChild);
-  }
-};
-
-export const isSameViewGroup = (config, component) => {
-  if (config.iframe) {
-    const componentData = component.get();
-    const previousUrl = getUrlWithoutHash(
-      componentData.previousNodeValues.viewUrl
-    );
-    const nextUrl = getUrlWithoutHash(componentData.viewUrl);
-    if (previousUrl === nextUrl) {
-      return true;
-    }
-    const previousUrlOrigin = getLocation(previousUrl);
-    const nextUrlOrigin = getLocation(nextUrl);
-    if (previousUrlOrigin === nextUrlOrigin) {
-      const previousViewGroup = componentData.previousNodeValues.viewGroup;
-      const nextViewGroup = componentData.viewGroup;
-      if (
-        previousViewGroup &&
-        nextViewGroup &&
-        previousViewGroup === nextViewGroup
-      ) {
-        return true;
-      }
-    }
-  }
-  return false;
-};
-
-const getLocation = url => {
-  var element = document.createElement('a');
-  element.href = url;
-  return element.origin;
-};
-
-export const hasIframeIsolation = component => {
-  const componentData = component.get();
-  return (
-    componentData.isolateView || componentData.previousNodeValues.isolateView
-  );
-};
-
-export const getContentViewParamPrefix = () => {
-  return (
-    LuigiConfig.getConfigValue('routing.contentViewParamPrefix') ||
-    defaultContentViewParamPrefix
-  );
-};
-
-const contextVarPrefix = 'context.';
-const nodeParamsVarPrefix = 'nodeParams.';
-
-const escapeRegExp = string => {
-  return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-};
-
-const replaceVars = (viewUrl, params, prefix, parenthesis = true) => {
-  let processedUrl = viewUrl;
-  if (params) {
-    Object.entries(params).forEach(entry => {
-      processedUrl = processedUrl.replace(
-        new RegExp(
-          escapeRegExp(
-            (parenthesis ? '{' : '') +
-              prefix +
-              entry[0] +
-              (parenthesis ? '}' : '')
-          ),
-          'g'
-        ),
-        encodeURIComponent(entry[1])
-      );
-    });
-  }
-  if (parenthesis) {
-    processedUrl = processedUrl.replace(
-      new RegExp('\\{' + escapeRegExp(prefix) + '[^\\}]+\\}', 'g'),
-      ''
-    );
-  }
-  return processedUrl;
-};
-
-const navigateIframe = (config, component, node) => {
-  clearTimeout(timeoutHandle);
-  const componentData = component.get();
-  let viewUrl = componentData.viewUrl;
-  if (viewUrl) {
-    viewUrl = replaceVars(viewUrl, componentData.pathParams, ':', false);
-    viewUrl = replaceVars(viewUrl, componentData.context, contextVarPrefix);
-    viewUrl = replaceVars(
-      viewUrl,
-      componentData.nodeParams,
-      nodeParamsVarPrefix
-    );
-  }
-
-  if (
-    !componentData.isNavigateBack &&
-    (!isSameViewGroup(config, component) ||
-      hasIframeIsolation(component) ||
-      Boolean(config.builderCompatibilityMode))
-  ) {
-    const componentData = component.get();
-    // preserveView, hide other frames, else remove
-    if (config.iframe === null) {
-      hideElementChildren(node);
-    } else {
-      removeElementChildren(node);
-    }
-
-    if (componentData.viewUrl) {
-      if (
-        getConfigValueFromObject(
-          componentData,
-          'currentNode.loadingIndicator.enabled'
-        ) !== false
-      ) {
-        component.set({ showLoadingIndicator: true });
-      } else {
-        component.set({ showLoadingIndicator: false });
-      }
-      config.navigateOk = undefined;
-      config.iframe = document.createElement('iframe');
-      config.iframe.src = viewUrl;
-
-      node.insertBefore(config.iframe, node.firstChild);
-
-      if (config.builderCompatibilityMode) {
-        config.iframe.addEventListener('load', () => {
-          window.postMessage({ msg: 'luigi.hide-loading-indicator' }, '*');
-          config.iframe.contentWindow.postMessage(
-            ['init', JSON.stringify(componentData.context)],
-            '*'
-          );
-        });
-      }
-    }
-  } else {
-    const goBackContext = component.get().goBackContext;
-    config.iframe.style.display = 'block';
-    config.iframe.contentWindow.postMessage(
-      {
-        msg: 'luigi.navigate',
-        viewUrl: viewUrl,
-        context: JSON.stringify(
-          Object.assign({}, componentData.context, { goBackContext })
-        ),
-        nodeParams: JSON.stringify(Object.assign({}, componentData.nodeParams)),
-        pathParams: JSON.stringify(Object.assign({}, componentData.pathParams)),
-        internal: JSON.stringify(component.prepareInternalData())
-      },
-      '*'
-    );
-    // clear goBackContext and reset navigateBack after sending it to the client
-    component.set({ goBackContext: undefined, isNavigateBack: false });
-
-    /**
-     * check if luigi responded
-     * if not, callback again to replace the iframe
-     */
-    timeoutHandle = setTimeout(() => {
-      if (config.navigateOk) {
-        config.navigateOk = undefined;
-      } else {
-        config.iframe = undefined;
-        console.info(
-          'navigate: luigi-client did not respond, using fallback by replacing iframe'
-        );
-        navigateIframe(config, component, node);
-      }
-    }, iframeNavFallbackTimeout);
-  }
-};
-
-const parseParams = paramsString => {
-  const result = {};
-  const viewParamString = paramsString;
-  const pairs = viewParamString ? viewParamString.split('&') : null;
-  if (pairs) {
-    pairs.forEach(pairString => {
-      const keyValue = pairString.split('=');
-      if (keyValue && keyValue.length > 0) {
-        result[decodeURIComponent(keyValue[0])] = decodeURIComponent(
-          keyValue[1]
-        );
-      }
-    });
-  }
-  return result;
-};
-
-const getNodeParams = params => {
-  const result = {};
-  const paramPrefix = getContentViewParamPrefix();
-  if (params) {
-    Object.entries(params).forEach(entry => {
-      if (entry[0].startsWith(paramPrefix)) {
-        const paramName = entry[0].substr(paramPrefix.length);
-        result[paramName] = entry[1];
-      }
-    });
-  }
-  return result;
-};
-
-const getPathParams = nodes => {
-  const params = {};
-  nodes
-    .filter(n => n.pathParam)
-    .map(n => n.pathParam)
-    .forEach(pp => {
-      params[pp.key.replace(':', '')] = pp.value;
-    });
-  return params;
-};
-
-const buildRoute = (node, path, params) =>
-  !node.parent
-    ? path + (params ? '?' + params : '')
-    : buildRoute(node.parent, `/${node.parent.pathSegment}${path}`, params);
-
-const findViewGroup = node => {
-  if (node.viewGroup) {
-    return node.viewGroup;
-  } else if (node.parent) {
-    return findViewGroup(node.parent);
-  }
-};
+export const getCurrentPath = () =>
+  LuigiConfig.getConfigValue('routing.useHashRouting')
+    ? window.location.hash.replace('#', '') // TODO: GenericHelpers.getPathWithoutHash(window.location.hash) fails in ContextSwitcher
+    : GenericHelpers.trimLeadingSlash(window.location.pathname);
 
 export const handleRouteChange = async (path, component, node, config) => {
   const defaultPattern = [/access_token=/, /id_token=/];
@@ -350,9 +161,10 @@ export const handleRouteChange = async (path, component, node, config) => {
       return;
     }
 
-    const pathUrlRaw = path && path.length ? getPathWithoutHash(path) : '';
-    const pathUrl = trimTrailingSlash(pathUrlRaw.split('?')[0]);
-    const pathData = await getNavigationPath(
+    const pathUrlRaw =
+      path && path.length ? GenericHelpers.getPathWithoutHash(path) : '';
+    const pathUrl = GenericHelpers.trimTrailingSlash(pathUrlRaw.split('?')[0]);
+    const pathData = await Navigation.getNavigationPath(
       LuigiConfig.getConfigValueAsync('navigation.nodes'),
       pathUrl
     );
@@ -365,17 +177,21 @@ export const handleRouteChange = async (path, component, node, config) => {
       viewUrl = '',
       isolateView = false,
       hideSideNav = false
-    } = getLastNodeObject(pathData);
-    const params = parseParams(pathUrlRaw.split('?')[1]);
-    const nodeParams = getNodeParams(params);
-    const pathParams = getPathParams(pathData.navigationPath);
-    const viewGroup = findViewGroup(getLastNodeObject(pathData));
+    } = RoutingHelpers.getLastNodeObject(pathData);
+    const params = RoutingHelpers.parseParams(pathUrlRaw.split('?')[1]);
+    const nodeParams = RoutingHelpers.getNodeParams(params);
+    const pathParams = RoutingHelpers.getPathParams(pathData.navigationPath);
+    const viewGroup = RoutingHelpers.findViewGroup(
+      RoutingHelpers.getLastNodeObject(pathData)
+    );
 
     if (!viewUrl) {
-      const routeExists = isExistingRoute(pathUrl, pathData);
+      const routeExists = RoutingHelpers.isExistingRoute(pathUrl, pathData);
 
       if (routeExists) {
-        const defaultChildNode = await getDefaultChildNode(pathData);
+        const defaultChildNode = await RoutingHelpers.getDefaultChildNode(
+          pathData
+        );
         navigateTo(`${pathUrl ? `/${pathUrl}` : ''}/${defaultChildNode}`);
       } else {
         const alert = {
@@ -390,7 +206,7 @@ export const handleRouteChange = async (path, component, node, config) => {
       return;
     }
 
-    if (!containsAllSegments(pathUrl, pathData.navigationPath)) {
+    if (!GenericHelpers.containsAllSegments(pathUrl, pathData.navigationPath)) {
       const matchedPath = await matchPath(pathUrlRaw);
 
       const alert = {
@@ -426,138 +242,13 @@ export const handleRouteChange = async (path, component, node, config) => {
         : {}
     });
 
-    navigateIframe(config, component, node);
+    Iframe.navigateIframe(config, component, node);
   } catch (err) {
     console.info('Could not handle route change', err);
   }
 };
 
-export const getNodePath = node => {
-  return node
-    ? buildRoute(node, node.pathSegment ? '/' + node.pathSegment : '')
-    : '';
-};
-
-export const concatenatePath = (basePath, relativePath) => {
-  let path = getPathWithoutHash(basePath);
-  if (!path) {
-    return relativePath;
-  }
-  if (!relativePath) {
-    return path;
-  }
-  if (path.endsWith('/')) {
-    path = path.substring(0, path.length - 1);
-  }
-  if (!relativePath.startsWith('/')) {
-    path += '/';
-  }
-  path += relativePath;
-  return path;
-};
-
-export const matchPath = async path => {
-  try {
-    const pathUrl = 0 < path.length ? getPathWithoutHash(path) : path;
-    const pathData = await getNavigationPath(
-      LuigiConfig.getConfigValueAsync('navigation.nodes'),
-      trimTrailingSlash(pathUrl.split('?')[0])
-    );
-    if (pathData.navigationPath.length > 0) {
-      const lastNode =
-        pathData.navigationPath[pathData.navigationPath.length - 1];
-      return buildRoute(
-        lastNode,
-        '/' + (lastNode.pathSegment ? lastNode.pathSegment : ''),
-        pathUrl.split('?')[1]
-      );
-    }
-  } catch (err) {
-    console.error('Could not match path', err);
-  }
-  return null;
-};
-
-/**
-  navigateTo used for navigation
-  @param route string  absolute path of the new route
-
- */
-export const navigateTo = async route => {
-  if (LuigiConfig.getConfigValue('routing.useHashRouting')) {
-    window.location.hash = route;
-    return;
-  }
-
-  // Avoid infinite loop on logout + login whith path routing
-  if (route === '/') {
-    return;
-  }
-
-  window.history.pushState(
-    {
-      path: route
-    },
-    '',
-    route
-  );
-
-  // https://developer.mozilla.org/en-US/docs/Web/API/CustomEvent#Browser_compatibility
-  // https://developer.mozilla.org/en-US/docs/Web/API/Event#Browser_compatibility
-  // https://developer.mozilla.org/en-US/docs/Web/API/Event/createEvent
-  let event;
-  if (isIE()) {
-    event = document.createEvent('Event');
-    event.initEvent('popstate', true, true);
-  } else {
-    event = new CustomEvent('popstate');
-  }
-
-  window.dispatchEvent(event);
-};
-
-export const buildFromRelativePath = node => {
-  let windowPath = LuigiConfig.getConfigValue('routing.useHashRouting')
-    ? getPathWithoutHash(window.location.hash)
-    : window.location.pathname;
-  if (node.parent && node.parent.pathSegment) {
-    // use only this part of the current path that refers to the parent of the node (remove additional parts refering to the sibiling)
-    // remove everything that is after the parents pathSegment 'parent/keepSelectedForChildren/something' -> 'parent'
-    const nodePathSegments = trimLeadingSlash(getNodePath(node.parent)).split(
-      '/'
-    );
-    const windowPathSegments = trimLeadingSlash(windowPath).split('/');
-    if (windowPathSegments.length > nodePathSegments.length) {
-      windowPath = windowPathSegments
-        .slice(0, nodePathSegments.length)
-        .join('/');
-    }
-  }
-  return addLeadingSlash(concatenatePath(windowPath, node.link));
-};
-
-export const handleInsideAppNavigation = (component, data, type) => {
-  const promise = new Promise(resolve => {
-    if (component.shouldShowUnsavedChangesModal()) {
-      component.showUnsavedChangesModal().then(() => {
-        resolve();
-      });
-    } else {
-      resolve();
-    }
-  }).then(
-    () => {
-      if (type === 'node') {
-        handleNavigationNodeClick(data);
-      } else {
-        navigateTo(data);
-      }
-    },
-    () => {}
-  );
-};
-
-export const handleNavigationNodeClick = node => {
+export const handleRouteClick = node => {
   if (node.externalLink && node.externalLink.url) {
     node.externalLink.sameWindow
       ? (window.location.href = node.externalLink.url)
@@ -569,36 +260,7 @@ export const handleNavigationNodeClick = node => {
       : buildFromRelativePath(node);
     navigateTo(link);
   } else {
-    const route = buildRoute(node, `/${node.pathSegment}`);
+    const route = RoutingHelpers.buildRoute(node, `/${node.pathSegment}`);
     navigateTo(route);
   }
-};
-
-export const getModifiedPathname = () => {
-  if (!window.history.state) {
-    return '';
-  }
-
-  return window.history.state.path
-    .split('/')
-    .slice(1)
-    .join('/');
-};
-
-export const getCurrentPath = () =>
-  LuigiConfig.getConfigValue('routing.useHashRouting')
-    ? window.location.hash.replace('#', '') // TODO: getPathWithoutHash(window.location.hash) fails in ContextSwitcher
-    : trimLeadingSlash(window.location.pathname);
-
-export const addRouteChangeListener = callback => {
-  if (LuigiConfig.getConfigValue('routing.useHashRouting')) {
-    const getModifiedHash = s => s.newURL.split('#/')[1];
-    return window.addEventListener('hashchange', event => {
-      callback(getModifiedHash(event));
-    });
-  }
-
-  window.addEventListener('popstate', () => {
-    callback(getModifiedPathname());
-  });
 };

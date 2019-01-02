@@ -1,9 +1,9 @@
 const chai = require('chai');
 const assert = chai.assert;
-import { containsAllSegments } from '../../src/utilities/helpers';
+const GenericHelpers = require('../../../src/utilities/helpers/generic-helpers');
 
-describe('Helpers()', () => {
-  describe('#containsAllSegments()', () => {
+describe('Generic-helpers', () => {
+  describe('containsAllSegments', () => {
     it('should return true when proper data provided', async () => {
       const sourceUrl = 'mas/ko/pa/tol/';
       const targetPathSegments = [
@@ -23,7 +23,10 @@ describe('Helpers()', () => {
           pathSegment: 'tol'
         }
       ];
-      assert.equal(containsAllSegments(sourceUrl, targetPathSegments), true);
+      assert.equal(
+        GenericHelpers.containsAllSegments(sourceUrl, targetPathSegments),
+        true
+      );
     });
 
     it('should return false when wrong data provided', async () => {
@@ -47,11 +50,17 @@ describe('Helpers()', () => {
         }
       ];
       assert.equal(
-        containsAllSegments(differentSourceUrl, targetPathSegments),
+        GenericHelpers.containsAllSegments(
+          differentSourceUrl,
+          targetPathSegments
+        ),
         false
       );
       assert.equal(
-        containsAllSegments(similarSourceUrl, targetPathSegments),
+        GenericHelpers.containsAllSegments(
+          similarSourceUrl,
+          targetPathSegments
+        ),
         false
       );
     });
@@ -74,11 +83,17 @@ describe('Helpers()', () => {
         }
       ];
       assert.equal(
-        containsAllSegments(tooShortSourceUrl, targetPathSegments),
+        GenericHelpers.containsAllSegments(
+          tooShortSourceUrl,
+          targetPathSegments
+        ),
         false
       );
       assert.equal(
-        containsAllSegments(tooLongSourceUrl, targetPathSegments),
+        GenericHelpers.containsAllSegments(
+          tooLongSourceUrl,
+          targetPathSegments
+        ),
         false
       );
     });
@@ -100,7 +115,10 @@ describe('Helpers()', () => {
           pathSegment: 'three'
         }
       ];
-      assert.equal(containsAllSegments(sourceUrl, targetPathSegments), true);
+      assert.equal(
+        GenericHelpers.containsAllSegments(sourceUrl, targetPathSegments),
+        true
+      );
     });
   });
 });

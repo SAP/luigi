@@ -69,7 +69,7 @@ describe('Navigation', function() {
     // reset
     LuigiConfig.config = {};
   });
-  describe('getNavigationPath()', function() {
+  describe('getNavigationPath', function() {
     it('should not fail for undefined arguments', () => {
       navigation.getNavigationPath(undefined, undefined);
     });
@@ -160,7 +160,7 @@ describe('Navigation', function() {
     });
   });
 
-  describe('getChildren()', () => {
+  describe('getChildren', () => {
     const nodeWithChildren = {
       children: [{ name: 'children1' }, { name: 'children2' }]
     };
@@ -241,7 +241,7 @@ describe('Navigation', function() {
       expect(children[0].label).to.equal('child2');
     });
   });
-  describe('findMatchingNode()', () => {
+  describe('findMatchingNode', () => {
     it('substitutes dynamic path', () => {
       // given
       const staticNode = () => ({
@@ -304,7 +304,7 @@ describe('Navigation', function() {
       sinon.reset();
     });
   });
-  describe('getLeftNavData()', () => {
+  describe('getLeftNavData', () => {
     it('returns empty object if no pathData was found (empty nav)', async () => {
       const res = await navigation.getLeftNavData({ pathData: [] });
       expect(res).to.be.empty;
