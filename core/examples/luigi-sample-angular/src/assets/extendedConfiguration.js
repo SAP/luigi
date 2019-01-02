@@ -570,9 +570,9 @@ Luigi.setConfig({
      *
      * Default: /access_token=/, /id_token=/
      */
-    skipRoutingForUrlPatterns: [/access_token=/, /id_token=/],
+    skipRoutingForUrlPatterns: [/access_token=/, /id_token=/]
 
-    pageNotFoundHandler: this.custom404handler
+    //pageNotFoundHandler: this.custom404handler
   },
   settings: {
     header: () => ({
