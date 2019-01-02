@@ -199,12 +199,14 @@ export const handleRouteChange = async (path, component, node, config) => {
           showNotExactRouteError(component, pathUrlRaw, defaultChildNode);
           return;
         }
+        //ERROR  404
         //the path is unrecognized at all and cannot be fitted to any known one
-        const custom404handler = LuigiConfig.getConfigValue(
+        const pageNotFoundHandler = LuigiConfig.getConfigValue(
           'routing.pageNotFoundHandler'
         );
-        if (typeof custom404handler === 'function') {
-          custom404handler(pathUrlRaw);
+        if (typeof pageNotFoundHandler === 'function') {
+          //custom 404 handler is provided, use it
+          pageNotFoundHandler(pathUrlRaw);
         } else {
           //built-in 404 alert + redirection to root
           const alert = {
@@ -215,7 +217,6 @@ export const handleRouteChange = async (path, component, node, config) => {
           navigateTo('/');
           component.set({ alert });
         }
-        //error 404
       }
       return;
     }
