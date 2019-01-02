@@ -1,10 +1,50 @@
 const chai = require('chai');
+const expect = chai.expect;
 const assert = chai.assert;
 import * as RoutingHelpers from '../../../src/utilities/helpers/routing-helpers';
 
 describe('Routing-helpers', () => {
+  describe('processDynamicNode', () => {
+    it('does nothing on static nodes', () => {
+      const staticNode = () => ({
+        label: 'Other',
+        pathSegment: 'other',
+        viewUrl: 'something_other'
+      });
+
+      // falsy tests
+      const resUnchanged = RoutingHelpers.processDynamicNode(staticNode(), 'avengers');
+      expect(resUnchanged).to.deep.equal(staticNode());
+    });
+    it('substitutes dynamic paths', () => {
+      // given
+      const dynamicNode = () => ({
+        pathSegment: ':group',
+        viewUrl: '/users/groups/:group',
+        context: {
+          currentGroup: ':group'
+        },
+        children: [
+          {
+            label: 'Group Settings',
+            pathSegment: 'settings',
+            viewUrl: '/users/groups/:group/settings'
+          }
+        ]
+      });
+
+      // truthy tests
+      // when
+      const resDynamicOk = RoutingHelpers.processDynamicNode(dynamicNode(), 'avengers');
+
+      // then
+      expect(resDynamicOk.pathSegment).to.equal('avengers', 'resDynamicOk.pathSegment');
+      expect(resDynamicOk.viewUrl).to.contain('/avengers', 'resDynamicOk.viewUrl');
+      expect(resDynamicOk.context.currentGroup).to.equal('avengers', 'resDynamicOk.context');
+    });
+  });
   describe('defaultChildNodes', () => {
-    const getPathData = function() {
+    const getPathData = function () {
       return {
         navigationPath: [
           {

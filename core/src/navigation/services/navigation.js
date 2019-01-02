@@ -3,6 +3,7 @@
 import * as NavigationHelpers from '../../utilities/helpers/navigation-helpers';
 import * as AsyncHelpers from '../../utilities/helpers/async-helpers';
 import * as GenericHelpers from '../../utilities/helpers/generic-helpers';
+import * as RoutingHelpers from '../../utilities/helpers/routing-helpers';
 
 export const getNavigationPath = async (rootNavProviderPromise, activePath) => {
   if (!rootNavProviderPromise) {
@@ -147,52 +148,18 @@ export const findMatchingNode = (urlPathElement, nodes) => {
     }
   }
   nodes.some(node => {
-    // Static nodes
-    if (node.pathSegment === urlPathElement) {
-      result = node;
-      return true;
-    }
-
-    // Dynamic nodes
     if (
+      // Static nodes
+      node.pathSegment === urlPathElement ||
+      // Dynamic nodes
       (node.pathSegment && node.pathSegment.startsWith(':')) ||
+      // Nodes with path parameters
       (node.pathParam && node.pathParam.key)
     ) {
-      if (node.pathParam && node.pathParam.key) {
-        node.viewUrl = node.pathParam.viewUrl;
-        node.context = node.pathParam.context
-          ? Object.assign({}, node.pathParam.context)
-          : undefined;
-        node.pathSegment = node.pathParam.pathSegment;
-      } else {
-        node.pathParam = {
-          key: node.pathSegment.slice(0),
-          pathSegment: node.pathSegment,
-          viewUrl: node.viewUrl,
-          context: node.context ? Object.assign({}, node.context) : undefined
-        };
-      }
-      node.pathParam.value = urlPathElement;
+      // TODO: left here to verify old implementation, remove later!
+      // node = RoutingHelpers.processDynamicNode(node, urlPathElement); // import from routing-helpers!
 
-      // path substitutions
-      node.pathSegment = node.pathSegment.replace(
-        node.pathParam.key,
-        urlPathElement
-      );
-
-      if (node.viewUrl) {
-        node.viewUrl = node.viewUrl.replace(node.pathParam.key, urlPathElement);
-      }
-
-      if (node.context) {
-        Object.entries(node.context).map(entry => {
-          const dynKey = entry[1];
-          if (dynKey === node.pathParam.key) {
-            node.context[entry[0]] = dynKey.replace(dynKey, urlPathElement);
-          }
-        });
-      }
-
+      // Return matching node
       result = node;
       return true;
     }

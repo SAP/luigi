@@ -41,9 +41,12 @@ export const matchPath = async path => {
       LuigiConfig.getConfigValueAsync('navigation.nodes'),
       GenericHelpers.trimTrailingSlash(pathUrl.split('?')[0])
     );
+
     if (pathData.navigationPath.length > 0) {
-      const lastNode =
-        pathData.navigationPath[pathData.navigationPath.length - 1];
+      const lastNode = RoutingHelpers.processDynamicNode(
+        pathData.navigationPath[pathData.navigationPath.length - 1],
+        RoutingHelpers.getLastPathSegment(pathUrl)
+      );
       return RoutingHelpers.buildRoute(
         lastNode,
         '/' + (lastNode.pathSegment ? lastNode.pathSegment : ''),
@@ -131,7 +134,12 @@ export const getCurrentPath = () =>
     ? window.location.hash.replace('#', '') // TODO: GenericHelpers.getPathWithoutHash(window.location.hash) fails in ContextSwitcher
     : GenericHelpers.trimLeadingSlash(window.location.pathname);
 
-export const handleRouteChange = async (path, component, node, config) => {
+export const handleRouteChange = async (
+  path,
+  component,
+  iframeElement,
+  config
+) => {
   const defaultPattern = [/access_token=/, /id_token=/];
   const patterns =
     LuigiConfig.getConfigValue('routing.skipRoutingForUrlPatterns') ||
@@ -153,7 +161,7 @@ export const handleRouteChange = async (path, component, node, config) => {
       component.showUnsavedChangesModal().then(
         () => {
           path &&
-            handleRouteChange(path, component, node, config) &&
+            handleRouteChange(path, component, iframeElement, config) &&
             history.replaceState(window.state, '', newUrl);
         },
         () => {}
@@ -164,9 +172,14 @@ export const handleRouteChange = async (path, component, node, config) => {
     const pathUrlRaw =
       path && path.length ? GenericHelpers.getPathWithoutHash(path) : '';
     const pathUrl = GenericHelpers.trimTrailingSlash(pathUrlRaw.split('?')[0]);
+    const lastPathSegment = RoutingHelpers.getLastPathSegment(pathUrl);
     const pathData = await Navigation.getNavigationPath(
       LuigiConfig.getConfigValueAsync('navigation.nodes'),
       pathUrl
+    );
+    const processedNavigationPath = RoutingHelpers.processDynamicNodes(
+      pathData.navigationPath,
+      lastPathSegment
     );
 
     const hideNav = LuigiConfig.getConfigBooleanValue(
@@ -177,10 +190,13 @@ export const handleRouteChange = async (path, component, node, config) => {
       viewUrl = '',
       isolateView = false,
       hideSideNav = false
-    } = RoutingHelpers.getLastNodeObject(pathData);
+    } = RoutingHelpers.processDynamicNode(
+      RoutingHelpers.getLastNodeObject(pathData),
+      lastPathSegment
+    );
     const params = RoutingHelpers.parseParams(pathUrlRaw.split('?')[1]);
     const nodeParams = RoutingHelpers.getNodeParams(params);
-    const pathParams = RoutingHelpers.getPathParams(pathData.navigationPath);
+    const pathParams = RoutingHelpers.getPathParams(processedNavigationPath);
     const viewGroup = RoutingHelpers.findViewGroup(
       RoutingHelpers.getLastNodeObject(pathData)
     );
@@ -206,8 +222,9 @@ export const handleRouteChange = async (path, component, node, config) => {
       return;
     }
 
-    if (!GenericHelpers.containsAllSegments(pathUrl, pathData.navigationPath)) {
+    if (!GenericHelpers.containsAllSegments(pathUrl, processedNavigationPath)) {
       const matchedPath = await matchPath(pathUrlRaw);
+      console.log('​matchedPath', matchedPath);
 
       const alert = {
         message: 'Could not map the exact target node for the requested route',
@@ -218,31 +235,44 @@ export const handleRouteChange = async (path, component, node, config) => {
       navigateTo(matchedPath);
     }
 
-    const previousCompData = component.get();
-    component.set({
-      hideNav,
-      hideSideNav,
-      viewUrl,
-      navigationPath: pathData.navigationPath,
-      currentNode:
-        pathData.navigationPath && pathData.navigationPath.length > 0
-          ? pathData.navigationPath[pathData.navigationPath.length - 1]
-          : null,
-      context: pathData.context,
-      nodeParams,
-      pathParams,
-      isolateView,
-      viewGroup,
-      previousNodeValues: previousCompData
-        ? {
-            viewUrl: previousCompData.viewUrl,
-            isolateView: previousCompData.isolateView,
-            viewGroup: previousCompData.viewGroup
-          }
-        : {}
-    });
+    const processedNodeData = RoutingHelpers.processDynamicNode(
+      {
+        hideNav,
+        hideSideNav,
+        viewUrl,
+        navigationPath: pathData.navigationPath,
+        currentNode:
+          pathData.navigationPath && pathData.navigationPath.length > 0
+            ? pathData.navigationPath[pathData.navigationPath.length - 1]
+            : null,
+        context: pathData.context,
+        nodeParams,
+        pathParams,
+        isolateView,
+        viewGroup
+      },
+      lastPathSegment
+    );
 
-    Iframe.navigateIframe(config, component, node);
+    const previousCompData = component.get();
+    component.set(
+      Object.assign({}, processedNodeData, {
+        context: Object.assign(
+          {},
+          processedNodeData.context,
+          processedNodeData.currentNode.context
+        ),
+        previousNodeValues: previousCompData
+          ? {
+              viewUrl: previousCompData.viewUrl,
+              isolateView: previousCompData.isolateView,
+              viewGroup: previousCompData.viewGroup
+            }
+          : {}
+      })
+    );
+
+    Iframe.navigateIframe(config, component, iframeElement);
   } catch (err) {
     console.info('Could not handle route change', err);
   }

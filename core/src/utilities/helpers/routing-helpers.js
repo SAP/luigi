@@ -1,12 +1,20 @@
-// Helper methods for 'routing.js' file. They don't require any method from 'routing.js` but are required by them.
+// Helper methods for 'routing.js' file. They don't require any method from 'routing.js' but are required by them.
 // They are also rarely used directly from outside of 'routing.js'
 import * as AsyncHelpers from './async-helpers';
+import * as GenericHelpers from './generic-helpers';
 import { LuigiConfig } from '../../services/config';
 import * as Routing from '../../services/routing';
 
 export const getLastNodeObject = pathData => {
   const lastElement = [...pathData.navigationPath].pop();
   return lastElement ? lastElement : {};
+};
+
+export const getLastPathSegment = pathUrl => {
+  const segments = GenericHelpers.trimTrailingSlash(
+    pathUrl.split('?')[0]
+  ).split('/');
+  return segments[segments.length - 1];
 };
 
 export const getDefaultChildNode = async pathData => {
@@ -39,8 +47,15 @@ export const isExistingRoute = (path, pathData) => {
     pathData.navigationPath[pathData.navigationPath.length - 1];
   const routeSplit = path.replace(/\/$/, '').split('/');
   const lastPathSegment = routeSplit[routeSplit.length - 1];
-
-  return lastElement.pathSegment === lastPathSegment;
+  console.log(
+    '%cTO TEST: last_startswith',
+    'color: red',
+    lastElement.pathSegment && lastElement.pathSegment.startsWith(':')
+  );
+  return (
+    (lastElement.pathSegment && lastElement.pathSegment.startsWith(':')) ||
+    lastElement.pathSegment === lastPathSegment
+  );
 };
 
 export const parseParams = paramsString => {
@@ -117,3 +132,60 @@ export const buildRoute = (node, path, params) =>
   !node.parent
     ? path + (params ? '?' + params : '')
     : buildRoute(node.parent, `/${node.parent.pathSegment}${path}`, params);
+
+export const processDynamicNode = (node, urlPathElement) => {
+  if (
+    (node.pathSegment && node.pathSegment.startsWith(':')) ||
+    (node.pathParam && node.pathParam.key)
+  ) {
+    if (node.pathParam && node.pathParam.key) {
+      node.viewUrl = node.pathParam.viewUrl;
+      node.context = node.pathParam.context
+        ? Object.assign({}, node.pathParam.context)
+        : undefined;
+      node.pathSegment = node.pathParam.pathSegment;
+    } else {
+      node.pathParam = {
+        key: node.pathSegment.slice(0),
+        pathSegment: node.pathSegment,
+        viewUrl: node.viewUrl,
+        context: node.context ? Object.assign({}, node.context) : undefined
+      };
+    }
+    node.pathParam.value = urlPathElement;
+
+    // path substitutions
+    node.pathSegment = node.pathSegment.replace(
+      node.pathParam.key,
+      urlPathElement
+    );
+
+    if (node.viewUrl) {
+      node.viewUrl = node.viewUrl.replace(node.pathParam.key, urlPathElement);
+    }
+
+    if (node.context) {
+      node.context = processContext(
+        node.context,
+        node.pathParam,
+        urlPathElement
+      );
+    }
+  }
+  return node;
+};
+
+export const processDynamicNodes = (rawNodes, urlPathElement) => {
+  return [...rawNodes].map(node => processDynamicNode(node, urlPathElement));
+};
+
+const processContext = (inputContext, pathParam, urlPathElement) => {
+  const context = Object.assign({}, inputContext);
+  Object.entries(context).map(entry => {
+    const dynKey = entry[1];
+    if (dynKey === pathParam.key) {
+      context[entry[0]] = dynKey.replace(dynKey, urlPathElement);
+    }
+  });
+  return context;
+};
