@@ -208,7 +208,7 @@
         };
         window.addEventListener('popstate', async e => {
           const alert = this.get().alert;
-          if (alert && alert.ttl !== undefined) {
+          if (alert && typeof alert.ttl == 'number') {
             if (alert.ttl === 0) {
               this.set({ alert: null });
             } else {
