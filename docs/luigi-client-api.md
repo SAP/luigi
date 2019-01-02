@@ -49,8 +49,9 @@ Returns **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/G
 Returns the node parameters of the active URL.
 Node parameters are defined like URL query parameters but with a specific prefix allowing Luigi to pass them to the micro front-end view.  The default prefix is **~** and you can use it in the following way: `https://my.luigi.app/home/products?~sort=asc~page=3`.
 
+> **NOTE:** some special characters (`<`, `>`, `"`, `'`, `/`) in node parameters are HTML-encoded.
+
 Returns **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** node parameters, where the object property name is the node parameter name without the prefix, and its value is the value of the node parameter. For example `{sort: 'asc', page: 3}`.
->**NOTE:** some special characters (`<`, `>`, `"`, `'`, `/`) in node parameters are HTML-encoded.
 
 ### getPathParams
 
@@ -58,8 +59,9 @@ Returns the dynamic path parameters of the active URL.
 Path parameters are defined by navigation nodes with a dynamic **pathSegment** value starting with **:**, such as **productId**.
 All path parameters in the current navigation path (as defined by the active URL) are returned.
 
+> **NOTE:** some special characters (`<`, `>`, `"`, `'`, `/`) in path parameters are HTML-encoded.
+
 Returns **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** path parameters, where the object property name is the path parameter name without the prefix, and its value is the actual value of the path parameter. For example `{productId: 1234, ...}`.
-**Note:** some special characters (`<`, `>`, `"`, `'`, `/`) in path parameters are HTML-encoded.
 
 ## linkManager
 
@@ -203,4 +205,4 @@ This method informs the main application that there are unsaved changes in the c
 
 #### Parameters
 
--   `isDirty` **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)** indicates if there are any unsaved changes on the current page or in the component
+-   `isDirty` **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)** tells if there are any unsaved changes on the current page or component
