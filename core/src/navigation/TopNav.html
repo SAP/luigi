@@ -19,7 +19,11 @@
                 {node.externalLink && node.externalLink.url ? 'fd-global-nav__btn--external' : ''}" 
                 aria-controls="0AcWE812" aria-expanded="false" aria-haspopup="true" on:click=handleClick(node)>
                    {#if node.icon}
-                      <span class="fd-top-nav__icon sap-icon--{node.icon} sap-icon--l"></span>
+                      {#if hasOpenUIicon(node)}
+                        <span class="sap-icon--{node.icon} sap-icon--m"></span>
+                      {:else}
+                        <img class="nav-icon" src={node.icon}/>
+                      {/if}
                     {:else}
                       {node.label}
                     {/if}
@@ -59,9 +63,12 @@
                           <li>
                             <a class="fd-menu__item {node === selectedNode ? 'is-selected' : ''} 
                             {node.externalLink && node.externalLink.url ? 'fd-global-nav__btn--external' : ''}" on:click=handleClick(node)>
-                             
                               {#if node.icon}
-                                <span class="fd-top-nav__icon sap-icon--{node.icon} sap-icon--m"></span>
+                                {#if hasOpenUIicon(node)}
+                                  <span class="sap-icon--{node.icon} sap-icon--m"></span>
+                                {:else}
+                                  <img class="nav-icon" src={node.icon}/>
+                                {/if}
                               {:else}
                                {node.label}
                               {/if}
@@ -109,6 +116,7 @@
   import { LuigiConfig } from '../services/config.js';
   import * as Routing from '../services/routing';
   import * as Navigation from './services/navigation.js';
+  import * as NavigationHelpers from '../utilities/helpers/navigation-helpers';
   import * as GenericHelpers from '../utilities/helpers/generic-helpers.js';
   import * as AuthHelpers from '../utilities/helpers/auth-helpers';
 
@@ -164,6 +172,11 @@
       };
     },
     computed: {},
+    helpers: {
+      hasOpenUIicon(node) {
+        return NavigationHelpers.isOpenUIiconName(node.icon);
+      }
+    },
     methods: {
       handleClick(node) {
         this.fire('handleClick', { node });
@@ -210,5 +223,15 @@
   }
   .hideNavComponent {
     display: none;
+  }
+
+  .nav-icon {
+    height: 100%;
+  }
+
+  .fd-popover {
+    .nav-icon {
+      height: 2em;
+    }
   }
 </style>

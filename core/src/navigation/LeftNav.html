@@ -11,7 +11,11 @@
                                 <li class="fd-side-nav__item {node.externalLink && node.externalLink.url ? 'fd-side-nav__item--external' : ''}">
                                     <a class="fd-side-nav__link {node === selectedNode ? 'is-selected' : ''}" on:click=handleClick(node)>
                                         {#if node.icon}
-                                            <span class="fd-side-nav__icon sap-icon--{node.icon} sap-icon--m"></span>
+                                          {#if hasOpenUIicon(node)}
+                                            <span class="fd-side-nav__icon sap-icon--{node.icon} sap-icon--s"></span>
+                                          {:else}
+                                            <img class="nav-icon" src={node.icon}/>
+                                          {/if}
                                         {/if}
                                         {node.label}
                                         {#if node.externalLink && node.externalLink.url}
@@ -42,7 +46,11 @@
                                 <li class="fd-side-nav__subitem {node.externalLink && node.externalLink.url ? 'fd-side-nav__item--external' : ''}">
                                     <a class="fd-side-nav__sublink {node === selectedNode ? 'is-selected' : ''}" on:click=handleClick(node)>
                                         {#if node.icon}
-                                            <span class="fd-side-nav__icon sap-icon--{node.icon} sap-icon--m"></span>
+                                          {#if hasOpenUIicon(node)}
+                                            <span class="fd-side-nav__icon sap-icon--{node.icon} sap-icon--s"></span>
+                                          {:else}
+                                            <img class="nav-icon" src={node.icon}/>
+                                          {/if}
                                         {/if}
                                         {node.label}
                                         {#if node.externalLink && node.externalLink.url}
@@ -64,6 +72,7 @@
 
 <script type="text/javascript">
   import * as Navigation from './services/navigation.js';
+  import * as NavigationHelpers from '../utilities/helpers/navigation-helpers';
   import * as Routing from '../services/routing';
   import { LuigiConfig } from '../services/config.js';
 
@@ -88,6 +97,11 @@
     onstate({ changed, current, previous }) {
       if (!previous || previous.pathData != current.pathData) {
         setLeftNavData(current, this);
+      }
+    },
+    helpers: {
+      hasOpenUIicon(node) {
+        return NavigationHelpers.isOpenUIiconName(node.icon);
       }
     },
     methods: {
@@ -159,12 +173,18 @@
   // Overwrite padding of icon
   .fd-side-nav__icon {
     padding-right: 4px;
-
     display: inline-block;
     min-width: 20px;
     vertical-align: middle;
     &.sap-icon--m::before {
       width: 1.25rem;
     }
+  }
+
+  .nav-icon {
+    padding-right: 4px;
+    max-width: 20px;
+    display: inline-block;
+    vertical-align: middle;
   }
 </style>

@@ -130,7 +130,7 @@ var projectDetailNavProviderFn = function(context) {
         pathSegment: 'developers',
         label: 'Developers',
         viewUrl: '/sampleapp.html#/projects/' + projectId + '/developers',
-        icon: 'laptop'
+        icon: '/assets/favicon-sap.ico'
       },
       {
         category: { label: 'Settings', icon: 'action-settings' },
