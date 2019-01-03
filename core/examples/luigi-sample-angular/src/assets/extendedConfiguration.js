@@ -272,7 +272,10 @@ var projectDetailNavProviderFn = function(context) {
       },
       {
         label: 'Open Github in new tab',
-        category: { label: 'Super useful Github links', icon: 'world' },
+        category: {
+          label: 'Super useful Github links',
+          icon: '/assets/github-logo.png'
+        },
         externalLink: {
           url: 'http://github.com',
           sameWindow: false

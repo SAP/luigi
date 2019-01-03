@@ -11,7 +11,7 @@
                                 <li class="fd-side-nav__item {node.externalLink && node.externalLink.url ? 'fd-side-nav__item--external' : ''}">
                                     <a class="fd-side-nav__link {node === selectedNode ? 'is-selected' : ''}" on:click=handleClick(node)>
                                         {#if node.icon}
-                                          {#if hasOpenUIicon(node)}
+                                          {#if isOpenUIiconName(node.icon)}
                                             <span class="fd-side-nav__icon sap-icon--{node.icon} sap-icon--s"></span>
                                           {:else}
                                             <img class="nav-icon" src={node.icon}/>
@@ -36,7 +36,11 @@
                     <div class="fd-side-nav__group">
                         <li class="fd-side-nav__title lui-category">
                           {#if hasCategoriesWithIcon}
-                          <span class="fd-side-nav__icon {nodes.metaInfo.icon ? 'sap-icon--' + nodes.metaInfo.icon : ''} sap-icon--m" role="presentation"></span>
+                            {#if isOpenUIiconName(nodes.metaInfo.icon)}
+                              <span class="fd-side-nav__icon {nodes.metaInfo.icon ? 'sap-icon--' + nodes.metaInfo.icon : ''} sap-icon--m" role="presentation"></span>
+                            {:else}
+                              <img class="nav-icon" src={nodes.metaInfo.icon}/>
+                            {/if}
                           {/if}
                             {key}</li>
                         <ul class="fd-side-nav__sublist">
@@ -46,7 +50,7 @@
                                 <li class="fd-side-nav__subitem {node.externalLink && node.externalLink.url ? 'fd-side-nav__item--external' : ''}">
                                     <a class="fd-side-nav__sublink {node === selectedNode ? 'is-selected' : ''}" on:click=handleClick(node)>
                                         {#if node.icon}
-                                          {#if hasOpenUIicon(node)}
+                                          {#if isOpenUIiconName(node.icon)}
                                             <span class="fd-side-nav__icon sap-icon--{node.icon} sap-icon--s"></span>
                                           {:else}
                                             <img class="nav-icon" src={node.icon}/>
@@ -100,8 +104,8 @@
       }
     },
     helpers: {
-      hasOpenUIicon(node) {
-        return NavigationHelpers.isOpenUIiconName(node.icon);
+      isOpenUIiconName(name) {
+        return NavigationHelpers.isOpenUIiconName(name);
       }
     },
     methods: {
