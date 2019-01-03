@@ -43,4 +43,4 @@ Thumbs.db
 
 # config
 /src/assets/devconfig.js
-/src/assets/generatedLuigiConfig.js
+/src/assets/generated*
