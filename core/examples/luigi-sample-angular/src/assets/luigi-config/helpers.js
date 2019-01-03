@@ -1,5 +1,5 @@
 const getProjectPlugins = projectId =>
-  new Promise(function(resolve) {
+  new Promise(resolve => {
     if (projectId === 'pr2') {
       resolve([
         {
@@ -36,14 +36,8 @@ const getProjectPlugins = projectId =>
     }
   });
 
-const toTitleCase = str =>
-  str.replace(
-    /\w\S*/g,
-    txt => txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase()
-  );
-
 const getAllProjects = () =>
-  new Promise(function(resolve) {
+  new Promise(resolve => {
     resolve([
       {
         id: 'pr1',
@@ -57,9 +51,9 @@ const getAllProjects = () =>
   });
 
 const projectDetailNavProviderFn = context =>
-  new Promise(function(resolve) {
-    var projectId = context.currentProject;
-    var children = [
+  new Promise(resolve => {
+    const projectId = context.currentProject;
+    const children = [
       {
         category: { label: 'User Management', icon: 'person-placeholder' },
         pathSegment: 'users',
@@ -252,8 +246,8 @@ const projectDetailNavProviderFn = context =>
         }
       }
     ];
-    getProjectPlugins(projectId).then(function(result) {
-      result.forEach(function(plugin) {
+    getProjectPlugins(projectId).then(result => {
+      result.forEach(plugin => {
         children.push({
           category: plugin.category,
           pathSegment: plugin.viewId,
@@ -267,10 +261,10 @@ const projectDetailNavProviderFn = context =>
   });
 
 export const projectsNavProviderFn = context =>
-  new Promise(function(resolve) {
-    getAllProjects().then(function(result) {
-      var children = [];
-      result.forEach(function(project) {
+  new Promise(resolve => {
+    getAllProjects().then(result => {
+      const children = [];
+      result.forEach(project => {
         children.push({
           /**
            * navigationContext:
@@ -296,20 +290,20 @@ export const projectsNavProviderFn = context =>
     });
   });
 
-export const navigationPermissionChecker = function(
+export const navigationPermissionChecker = (
   nodeToCheckPermissionFor,
   parentNode,
   currentContext
-) {
+) => {
   // depending on the current path and context returns true or false
   // true means the current node is accessible, false the opposite
   const mockCurrentUserGroups = ['admins'];
   if (nodeToCheckPermissionFor.constraints) {
     // check if user has required groups
     return (
-      nodeToCheckPermissionFor.constraints.filter(function(c) {
-        return mockCurrentUserGroups.indexOf(c) !== -1;
-      }).length !== 0
+      nodeToCheckPermissionFor.constraints.filter(
+        c => mockCurrentUserGroups.indexOf(c) !== -1
+      ).length !== 0
     );
   }
 
