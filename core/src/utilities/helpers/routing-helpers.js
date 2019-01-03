@@ -95,7 +95,7 @@ export const findViewGroup = node => {
 const defaultContentViewParamPrefix = '~';
 export const getContentViewParamPrefix = () => {
   return (
-    LuigiConfig.getConfigValue('routing.contentViewParamPrefix') ||
+    LuigiConfig.getConfigValue('routing.nodeParamPrefix') ||
     defaultContentViewParamPrefix
   );
 };
