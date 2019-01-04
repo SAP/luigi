@@ -58,10 +58,11 @@ export const navigateIframe = (config, component, node) => {
   }
 
   if (
-    !componentData.isNavigateBack &&
-    (!IframeHelpers.isSameViewGroup(config, component) ||
-      IframeHelpers.hasIframeIsolation(component) ||
-      Boolean(config.builderCompatibilityMode))
+    (!componentData.isNavigateBack &&
+      (!IframeHelpers.isSameViewGroup(config, component) ||
+        IframeHelpers.hasIframeIsolation(component) ||
+        Boolean(config.builderCompatibilityMode))) ||
+    (config.isolateAllViews && !(componentData.isolateView === false))
   ) {
     const componentData = component.get();
     // preserveView, hide other frames, else remove
