@@ -196,33 +196,27 @@ export const handleRouteChange = async (path, component, node, config) => {
       } else {
         if (defaultChildNode && pathData.navigationPath.length > 1) {
           //last path segment was invalid but a default node could be in its place
-          showNotExactRouteError(component, pathUrlRaw, defaultChildNode);
+          const matchedPath = await matchPath(pathUrlRaw);
+          showPageNotFoundError(
+            component,
+            GenericHelpers.trimTrailingSlash(matchedPath) +
+              '/' +
+              defaultChildNode,
+            pathUrlRaw,
+            true
+          );
           return;
         }
         //ERROR  404
         //the path is unrecognized at all and cannot be fitted to any known one
-        const pageNotFoundHandler = LuigiConfig.getConfigValue(
-          'routing.pageNotFoundHandler'
-        );
-        if (typeof pageNotFoundHandler === 'function') {
-          //custom 404 handler is provided, use it
-          pageNotFoundHandler(pathUrlRaw);
-        } else {
-          //built-in 404 alert + redirection to root
-          const alert = {
-            message: 'Could not find the requested route',
-            link: pathUrlRaw,
-            ttl: 1 //how many redirections the alert will 'survive'
-          };
-          navigateTo('/');
-          component.set({ alert });
-        }
+        showPageNotFoundError(component, '/', pathUrlRaw);
       }
       return;
     }
 
     if (!GenericHelpers.containsAllSegments(pathUrl, pathData.navigationPath)) {
-      showNotExactRouteError(component, pathUrlRaw);
+      const matchedPath = await matchPath(pathUrlRaw);
+      showPageNotFoundError(component, matchedPath, pathUrlRaw, true);
     }
 
     const previousCompData = component.get();
@@ -272,23 +266,31 @@ export const handleRouteClick = node => {
   }
 };
 
-const showNotExactRouteError = async (
+const showPageNotFoundError = async (
   component,
-  pathUrlRaw,
-  segmentToAdd = null
+  pathToRedirect,
+  notFoundPath,
+  isAnyPathMatched = false
 ) => {
-  const matchedPath = await matchPath(pathUrlRaw);
+  const pageNotFoundHandler = LuigiConfig.getConfigValue(
+    'routing.pageNotFoundHandler'
+  );
+
+  if (typeof pageNotFoundHandler === 'function') {
+    //custom 404 handler is provided, use it
+    pageNotFoundHandler(notFoundPath, isAnyPathMatched);
+    return;
+  }
 
   const alert = {
-    message: 'Could not map the exact target node for the requested route',
-    link: pathUrlRaw,
-    ttl: 1 //how many redirections the alert will 'survive'
+    message: isAnyPathMatched
+      ? 'Could not map the exact target node for the requested route'
+      : 'Could not find the requested route',
+    link: notFoundPath,
+    ttl: pathToRedirect === '/' ? 2 : 1 //how many redirections the alert will 'survive'.
+    //Redirecting to '/' causes another redirection to '/overview', that's why TTL needs to be bigger
   };
 
   component.set({ alert });
-  navigateTo(
-    segmentToAdd
-      ? GenericHelpers.trimTrailingSlash(matchedPath) + '/' + segmentToAdd
-      : matchedPath
-  );
+  navigateTo(pathToRedirect);
 };

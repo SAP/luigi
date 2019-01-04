@@ -320,7 +320,7 @@ var projectsNavProviderFn = function(context) {
   });
 };
 
-var custom404handler = function(wrongPath) {
+var customPageNotFoundHandler = function(wrongPath, wasAnyPathFitted) {
   //leave this function empty if you have an external 404 handling
   window.location.href = `/page-not-found`;
 };
@@ -572,7 +572,7 @@ Luigi.setConfig({
      */
     skipRoutingForUrlPatterns: [/access_token=/, /id_token=/]
 
-    //pageNotFoundHandler: this.custom404handler
+    // pageNotFoundHandler: this.customPageNotFoundHandler
   },
   settings: {
     header: () => ({
