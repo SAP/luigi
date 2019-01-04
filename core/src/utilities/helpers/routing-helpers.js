@@ -23,8 +23,9 @@ export const getDefaultChildNode = async pathData => {
 
   if (lastElement.defaultChildNode && pathExists) {
     return lastElement.defaultChildNode;
-  } else if (children && children.length > 0) {
-    return children[0].pathSegment;
+  } else if (children && children.length) {
+    const validChild = children.find(child => child.pathSegment);
+    return validChild ? validChild.pathSegment : '';
   } else {
     return '';
   }
