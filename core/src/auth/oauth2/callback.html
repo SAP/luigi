@@ -47,11 +47,29 @@
         idToken: hashParams['id_token']
       };
       localStorage.setItem('luigi.auth', JSON.stringify(data));
-      window.location.href = decodeURIComponent(decodeURIComponent(hashParams['state']));
+
+      var oAuthStateParam = decodeOAuthStateParam(decodeURIComponent(hashParams['state']));
+
+      if (oAuthStateParam.nonce !== sessionStorage.getItem('luigi.nonceValue')) {
+        var INVALID_NONCE_ERROR_TEXT = 'State parameter returned from the authorization endpoint does not match locally stored state. Aborting login process.';
+
+        document.getElementsByTagName('body')[0].innerHTML = INVALID_NONCE_ERROR_TEXT;
+        throw new Error(INVALID_NONCE_ERROR_TEXT);
+      }
+
+      window.location.href = oAuthStateParam.appState;
     } else {
       // else tree only applies to idtoken auths, I guess
       var errorDescription = hashParams['error_description'];
       console.error('error', errorDescription);
+    }
+  }
+
+  function decodeOAuthStateParam(oAuthStateParam) {
+    var decoded = atob(oAuthStateParam).split('_luigiNonce=');
+    return {
+      appState: decoded[0] || '',
+      nonce: decoded[1]
     }
   }
 </script>
