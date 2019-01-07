@@ -9,20 +9,21 @@
                                 {#if !node.hideFromNav}
                                 {#if node.label}
                                 <li class="fd-side-nav__item {node.externalLink && node.externalLink.url ? 'fd-side-nav__item--external' : ''}">
-                                    <a class="fd-side-nav__link {node === selectedNode ? 'is-selected' : ''} {node.icon ? 'fd-side-nav__link--icon' : ''}" on:click=handleClick(node)>
+                                    <a class="fd-side-nav__link {node === selectedNode ? 'is-selected' : ''} fd-side-nav__link--icon" on:click=handleClick(node)>
                                         {#if node.icon}
                                           {#if isOpenUIiconName(node.icon)}
-                                            <span class="fd-side-nav__icon sap-icon--{node.icon} sap-icon--s"></span>
+                                            <span class="fd-side-nav__icon sap-icon--{node.icon} sap-icon--m"></span>
                                           {:else}
                                             <img class="fd-side-nav__icon" src={node.icon}/>
                                           {/if}
+                                        {:else}
+                                          <span class="fd-side-nav__icon sap-icon--lui-blank sap-icon--m"></span>
                                         {/if}
                                         {node.label}
                                         {#if node.externalLink && node.externalLink.url}
                                             <span class="sap-icon--action sap-icon--s"></span>
                                         {/if}
                                     </a>
-
                                 </li>
                                 {/if}
                                 {/if}
@@ -48,20 +49,21 @@
                                 {#if !node.hideFromNav}
                                 {#if node.label}
                                 <li class="fd-side-nav__subitem {node.externalLink && node.externalLink.url ? 'fd-side-nav__item--external' : ''}">
-                                    <a class="fd-side-nav__sublink {node === selectedNode ? 'is-selected' : ''} {node.icon ? 'fd-side-nav__link--icon' : ''}" on:click=handleClick(node)>
+                                    <a class="fd-side-nav__sublink {node === selectedNode ? 'is-selected' : ''} fd-side-nav__link--icon" on:click=handleClick(node)>
                                         {#if node.icon}
                                           {#if isOpenUIiconName(node.icon)}
-                                            <span class="fd-side-nav__icon sap-icon--{node.icon} sap-icon--s"></span>
+                                            <span class="fd-side-nav__icon sap-icon--{node.icon} sap-icon--m"></span>
                                           {:else}
                                             <img class="fd-side-nav__icon" src={node.icon}/>
                                           {/if}
+                                        {:else}
+                                          <span class="fd-side-nav__icon sap-icon--lui-blank sap-icon--m"></span>
                                         {/if}
                                         {node.label}
                                         {#if node.externalLink && node.externalLink.url}
                                             <span class="sap-icon--action sap-icon--s"></span>
                                         {/if}
                                     </a>
-
                                 </li>
                                 {/if}
                                 {/if}
@@ -135,24 +137,24 @@
     margin-top: 20px;
   }
   .fd-side-nav__link {
-    padding-left: calc(
-      14px + 1em
-    ); /* standard 10px padding + 1em icon width + 4px icon padding */
     &.fd-side-nav__link--icon {
-      padding-left: 10px;
+      padding-left: 16px;
     }
     .sap-icon--action {
       //external-link icon
       margin-left: 0.3em;
       vertical-align: middle;
     }
+    .fd-side-nav__icon {
+      width: 1.4em;
+    }
   }
   .fd-side-nav__sublink {
-    padding-left: calc(
-      44px + 1em
-    ); /* standard 40px padding + 1em icon width + 4px icon padding */
     &.fd-side-nav__link--icon {
-      padding-left: 40px;
+      padding-left: 16px;
+    }
+    .fd-side-nav__icon {
+      width: 1.4em;
     }
   }
 
