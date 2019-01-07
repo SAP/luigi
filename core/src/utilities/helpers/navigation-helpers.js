@@ -9,7 +9,7 @@ export const isNodeAccessPermitted = (
   currentContext
 ) => {
   if (LuigiConfig.isAuthorizationEnabled()) {
-    const loggedIn = isLoggedIn();
+    const loggedIn = AuthHelpers.isLoggedIn();
     const anon = nodeToCheckPermissionFor.anonymousAccess;
 
     if (loggedIn && anon === "exclusive" ||
