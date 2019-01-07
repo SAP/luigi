@@ -1,12 +1,9 @@
-import {
-  getConfigValueFromObject,
-  isFunction,
-  isPromise
-} from '../utilities/helpers.js';
+// Standalone or partly-standalone methods that are used widely through the whole app and are asynchronous.
+import * as GenericHelpers from './generic-helpers.js';
 
 const handles = {};
 
-export const keyExistencyTimeout = 2000;
+export const keyExistencyTimeout = 20000;
 export const keyExistencyCheckInterval = 50;
 
 export const waitForKeyExistency = (
@@ -22,7 +19,10 @@ export const waitForKeyExistency = (
       }
       if (Date.now() - startTimer > timeout) {
         clearInterval(handles[name]);
-        return reject(false);
+        return reject(
+          `${name} didnt appear in object within ${keyExistencyTimeout /
+            1000} seconds.`
+        );
       }
     }, keyExistencyCheckInterval);
   });
@@ -38,10 +38,10 @@ export const getConfigValueFromObjectAsync = (
   property,
   ...parameters
 ) => {
-  let value = getConfigValueFromObject(object, property);
-  if (isFunction(value)) {
+  let value = GenericHelpers.getConfigValueFromObject(object, property);
+  if (GenericHelpers.isFunction(value)) {
     value = value.apply(this, parameters);
-    if (isPromise(value)) {
+    if (GenericHelpers.isPromise(value)) {
       return value;
     }
   }

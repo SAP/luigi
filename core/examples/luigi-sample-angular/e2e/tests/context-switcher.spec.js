@@ -16,7 +16,7 @@ describe('Context switcher', () => {
       .click();
 
     cy.location().should(loc => {
-      expect(loc.hash).to.eq('#/create-environment');
+      expect(loc.pathname).to.eq('/create-environment');
     });
 
     // default label
@@ -30,7 +30,7 @@ describe('Context switcher', () => {
       .click();
 
     cy.location().should(loc => {
-      expect(loc.hash).to.eq('#/environments/env1');
+      expect(loc.pathname).to.eq('/environments/env1');
     });
 
     // check label
