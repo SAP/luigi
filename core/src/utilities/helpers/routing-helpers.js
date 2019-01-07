@@ -38,26 +38,6 @@ export const getDefaultChildNode = async pathData => {
   }
 };
 
-export const isExistingRoute = (path, pathData) => {
-  if (!path) {
-    return true;
-  }
-
-  const lastElement =
-    pathData.navigationPath[pathData.navigationPath.length - 1];
-  const routeSplit = path.replace(/\/$/, '').split('/');
-  const lastPathSegment = routeSplit[routeSplit.length - 1];
-  console.log(
-    '%cTO TEST: last_startswith',
-    'color: red',
-    lastElement.pathSegment && lastElement.pathSegment.startsWith(':')
-  );
-  return (
-    (lastElement.pathSegment && lastElement.pathSegment.startsWith(':')) ||
-    lastElement.pathSegment === lastPathSegment
-  );
-};
-
 export const parseParams = paramsString => {
   const result = {};
   const viewParamString = paramsString;
@@ -89,6 +69,7 @@ export const getNodeParams = params => {
   return result;
 };
 
+// TODO: probably not required anymore
 export const getPathParams = nodes => {
   const params = {};
   nodes

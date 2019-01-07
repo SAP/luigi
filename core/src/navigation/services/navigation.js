@@ -3,7 +3,6 @@
 import * as NavigationHelpers from '../../utilities/helpers/navigation-helpers';
 import * as AsyncHelpers from '../../utilities/helpers/async-helpers';
 import * as GenericHelpers from '../../utilities/helpers/generic-helpers';
-import * as RoutingHelpers from '../../utilities/helpers/routing-helpers';
 
 export const getNavigationPath = async (rootNavProviderPromise, activePath) => {
   if (!rootNavProviderPromise) {
@@ -26,12 +25,17 @@ export const getNavigationPath = async (rootNavProviderPromise, activePath) => {
     }
     await getChildren(rootNode); // keep it, mutates and filters children
     const nodeNamesInCurrentPath = (activePath || '').split('/');
-    return buildNode(
-      nodeNamesInCurrentPath,
+    const navObj = await buildNode(
+      [...nodeNamesInCurrentPath], // spread operator, because buildNode is mutating this input
       [rootNode],
       rootNode.children,
       rootNode.context || {}
     );
+    navObj.isExistingRoute =
+      !activePath ||
+      nodeNamesInCurrentPath.length ==
+        navObj.navigationPath.filter(x => x.pathSegment).length;
+    return navObj;
   } catch (err) {
     console.error('Failed to load top navigation nodes.', err);
   }
@@ -84,14 +88,16 @@ const buildNode = async (
   nodeNamesInCurrentPath,
   nodesInCurrentPath,
   childrenOfCurrentNode,
-  context
+  context,
+  pathParams = {}
 ) => {
   if (!context.parentNavigationContexts) {
     context.parentNavigationContexts = [];
   }
   let result = {
     navigationPath: nodesInCurrentPath,
-    context: context
+    context: context,
+    pathParams: pathParams
   };
   if (
     nodeNamesInCurrentPath.length > 0 &&
@@ -110,11 +116,15 @@ const buildNode = async (
       try {
         let children = await getChildren(node, newContext);
 
+        if (node.pathSegment.startsWith(':')) {
+          pathParams[node.pathSegment.replace(':', '')] = urlPathElement;
+        }
         result = buildNode(
           nodeNamesInCurrentPath,
           nodesInCurrentPath,
           children,
-          newContext
+          newContext,
+          pathParams
         );
       } catch (err) {
         console.error('Error getting nodes children', err);

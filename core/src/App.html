@@ -33,7 +33,9 @@
   import TopNav from './navigation/TopNav.html';
   import LeftNav from './navigation/LeftNav.html';
   import ConfirmationModal from './ConfirmationModal.html';
+  import { LuigiConfig } from './services/config.js';
   import * as Routing from './services/routing.js';
+  import * as Navigation from './navigation/services/navigation.js'
   import * as Iframe from './services/iframe';
   import * as RoutingHelpers from './utilities/helpers/routing-helpers';
   import * as GenericHelpers from './utilities/helpers/generic-helpers';
@@ -277,18 +279,14 @@
           if ('luigi.navigation.pathExists' === e.data.msg) {
             const data = e.data.data;
             const path = buildPath(this, data);
-            const matchedPath = await Routing.matchPath(path);
+            const matched = await Routing.matchPath(path);
 
-            let normalizedPath =
-              (!path.startsWith('/') ? '/' : '') +
-              (path.endsWith('/') ? path.slice(0, -1) : path);
-            const pathExists = matchedPath === normalizedPath;
             config.iframe.contentWindow.postMessage(
               {
                 msg: 'luigi.navigation.pathExists.answer',
                 data: {
                   correlationId: data.id,
-                  pathExists
+                  pathExists: matched.pathData.isExistingRoute
                 }
               },
               '*'

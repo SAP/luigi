@@ -37,21 +37,33 @@ export const matchPath = async path => {
   try {
     const pathUrl =
       0 < path.length ? GenericHelpers.getPathWithoutHash(path) : path;
+    const trimmedPathUrl = GenericHelpers.trimTrailingSlash(
+      pathUrl.split('?')[0]
+    );
     const pathData = await Navigation.getNavigationPath(
       LuigiConfig.getConfigValueAsync('navigation.nodes'),
-      GenericHelpers.trimTrailingSlash(pathUrl.split('?')[0])
+      trimmedPathUrl
     );
 
     if (pathData.navigationPath.length > 0) {
-      const lastNode = RoutingHelpers.processDynamicNode(
-        pathData.navigationPath[pathData.navigationPath.length - 1],
-        RoutingHelpers.getLastPathSegment(pathUrl)
-      );
-      return RoutingHelpers.buildRoute(
-        lastNode,
-        '/' + (lastNode.pathSegment ? lastNode.pathSegment : ''),
-        pathUrl.split('?')[1]
-      );
+      const navPathSegments = pathData.navigationPath
+        .filter(x => x.pathSegment)
+        .map(x => x.pathSegment);
+      const pathSegments = trimmedPathUrl.split('/');
+      const matchedPath = pathSegments
+        .filter((segment, index) => {
+          return (
+            (navPathSegments[index] &&
+              navPathSegments[index].startsWith(':')) ||
+            navPathSegments[index] === segment
+          );
+        })
+        .join('/');
+
+      return {
+        pathData,
+        matchedPath
+      };
     }
   } catch (err) {
     console.error('Could not match path', err);
@@ -172,15 +184,11 @@ export const handleRouteChange = async (
     const pathUrlRaw =
       path && path.length ? GenericHelpers.getPathWithoutHash(path) : '';
     const pathUrl = GenericHelpers.trimTrailingSlash(pathUrlRaw.split('?')[0]);
-    const lastPathSegment = RoutingHelpers.getLastPathSegment(pathUrl);
     const pathData = await Navigation.getNavigationPath(
       LuigiConfig.getConfigValueAsync('navigation.nodes'),
       pathUrl
     );
-    const processedNavigationPath = RoutingHelpers.processDynamicNodes(
-      pathData.navigationPath,
-      lastPathSegment
-    );
+    const lastPathSegment = RoutingHelpers.getLastPathSegment(pathUrl);
 
     const hideNav = LuigiConfig.getConfigBooleanValue(
       'settings.hideNavigation'
@@ -196,15 +204,12 @@ export const handleRouteChange = async (
     );
     const params = RoutingHelpers.parseParams(pathUrlRaw.split('?')[1]);
     const nodeParams = RoutingHelpers.getNodeParams(params);
-    const pathParams = RoutingHelpers.getPathParams(processedNavigationPath);
     const viewGroup = RoutingHelpers.findViewGroup(
       RoutingHelpers.getLastNodeObject(pathData)
     );
 
     if (!viewUrl) {
-      const routeExists = RoutingHelpers.isExistingRoute(pathUrl, pathData);
-
-      if (routeExists) {
+      if (pathData.isExistingRoute) {
         const defaultChildNode = await RoutingHelpers.getDefaultChildNode(
           pathData
         );
@@ -222,45 +227,44 @@ export const handleRouteChange = async (
       return;
     }
 
-    if (!GenericHelpers.containsAllSegments(pathUrl, processedNavigationPath)) {
-      const matchedPath = await matchPath(pathUrlRaw);
-      console.log('​matchedPath', matchedPath);
-
+    if (!pathData.isExistingRoute) {
+      const matched = await matchPath(pathUrlRaw);
       const alert = {
         message: 'Could not map the exact target node for the requested route',
         link: pathUrlRaw
       };
 
       component.set({ alert });
-      navigateTo(matchedPath);
+      navigateTo(GenericHelpers.addLeadingSlash(matched.matchedPath));
     }
 
-    const processedNodeData = RoutingHelpers.processDynamicNode(
-      {
-        hideNav,
-        hideSideNav,
-        viewUrl,
-        navigationPath: pathData.navigationPath,
-        currentNode:
-          pathData.navigationPath && pathData.navigationPath.length > 0
-            ? pathData.navigationPath[pathData.navigationPath.length - 1]
-            : null,
-        context: pathData.context,
-        nodeParams,
-        pathParams,
-        isolateView,
-        viewGroup
-      },
-      lastPathSegment
-    );
+    const newNodeData = {
+      hideNav,
+      hideSideNav,
+      viewUrl,
+      navigationPath: pathData.navigationPath,
+      currentNode:
+        pathData.navigationPath && pathData.navigationPath.length > 0
+          ? pathData.navigationPath[pathData.navigationPath.length - 1]
+          : null,
+      context: pathData.context,
+      nodeParams,
+      pathParams: pathData.pathParams,
+      isolateView,
+      viewGroup
+    };
+
+    // MTODO: IframeHelpers.replaceVars for:
+    // substitute viewUrl modify nodeParams, pathParams, etc
+    // substitute context
 
     const previousCompData = component.get();
     component.set(
-      Object.assign({}, processedNodeData, {
+      Object.assign({}, newNodeData, {
         context: Object.assign(
           {},
-          processedNodeData.context,
-          processedNodeData.currentNode.context
+          newNodeData.context,
+          newNodeData.currentNode.context
         ),
         previousNodeValues: previousCompData
           ? {

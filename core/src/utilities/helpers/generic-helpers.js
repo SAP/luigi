@@ -88,26 +88,6 @@ export const prependOrigin = path => {
   return window.location.origin;
 };
 
-export const containsAllSegments = (sourceUrl, targetPathSegments) => {
-  if (
-    sourceUrl === undefined ||
-    sourceUrl === null ||
-    !targetPathSegments ||
-    !targetPathSegments.length
-  ) {
-    console.error(
-      'Ooops, seems like the developers have misconfigured something'
-    );
-    return false;
-  }
-  const mandatorySegmentsUrl = trimTrailingSlash(sourceUrl.split('?')[0]);
-  const pathSegmentsUrl = targetPathSegments
-    .filter(x => x.pathSegment) // filter out root node with empty path segment
-    .map(x => x.pathSegment)
-    .join('/');
-  return trimTrailingSlash(pathSegmentsUrl) === mandatorySegmentsUrl;
-};
-
 /**
  * Adds a leading slash to a string if it has none
  * @param {str} string
