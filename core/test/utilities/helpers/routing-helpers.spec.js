@@ -84,7 +84,7 @@ describe('Routing-helpers', () => {
       );
     });
 
-    it('should return first child that has pathSegment defined', async () => {
+    it('should return first child that has viewUrl defined', async () => {
       let pathData = {
         navigationPath: [
           {
@@ -94,17 +94,50 @@ describe('Routing-helpers', () => {
             pathSegment: 'myPath',
             children: [
               {
-                link: '/home',
+                pathSegment: 'home',
+
                 label: 'go back'
               },
               {
-                link: '/house',
+                pathSegment: 'maskopatol',
                 label: 'still no viewUrl'
               },
               {
                 pathSegment: 'child',
                 label: 'This should be the default child',
                 viewUrl: '/myApp.html#/default-child'
+              }
+            ]
+          }
+        ],
+        context: {}
+      };
+    });
+
+    it('should return first child that has externalLink.url defined', async () => {
+      let pathData = {
+        navigationPath: [
+          {
+            // DOESN'T MATTER
+          },
+          {
+            pathSegment: 'myPath',
+            children: [
+              {
+                pathSegment: 'home',
+
+                label: 'go back'
+              },
+              {
+                pathSegment: 'maskopatol',
+                label: 'still no viewUrl'
+              },
+              {
+                pathSegment: 'child',
+                label: 'This should be the default child',
+                externalLink: {
+                  url: 'https://google.com'
+                }
               }
             ]
           }

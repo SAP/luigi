@@ -24,8 +24,10 @@ export const getDefaultChildNode = async pathData => {
   if (lastElement.defaultChildNode && pathExists) {
     return lastElement.defaultChildNode;
   } else if (children && children.length) {
-    const validChild = children.find(child => child.pathSegment);
-    return validChild ? validChild.pathSegment : '';
+    const validChild = children.find(
+      child => child.viewUrl || (child.externalLink && child.externalLink.url)
+    );
+    return validChild && validChild.pathSegment ? validChild.pathSegment : '';
   } else {
     return '';
   }
