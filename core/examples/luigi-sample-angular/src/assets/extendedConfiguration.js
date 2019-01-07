@@ -194,7 +194,7 @@ var projectDetailNavProviderFn = function(context) {
         label: 'Keep Selected Example',
         viewUrl: '/sampleapp.html#/projects/' + projectId + '/dynamic/avengers',
         keepSelectedForChildren: true,
-        icon: 'slim-arrow-down',
+        icon: 'accept',
         context: {
           label: 'Avengers',
           links: [
