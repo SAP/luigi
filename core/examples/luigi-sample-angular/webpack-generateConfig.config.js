@@ -17,7 +17,7 @@ module.exports = {
       `
       Don't be afraid!
       This file was generated automatically and you should not modify it.
-      The documentation will tell you how to modify Luigi configuration with pleasure.
+      The documentation (located in /docs) will tell you how to modify Luigi configuration with pleasure.
       `
     )
   ],
