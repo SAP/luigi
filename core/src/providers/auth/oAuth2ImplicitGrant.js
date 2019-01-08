@@ -111,17 +111,12 @@ export class oAuth2ImplicitGrant {
   }
 
   generateNonce() {
-    let result = [];
     const validChars =
       '0123456789ABCDEFGHIJKLMNOPQRSTUVXYZabcdefghijklmnopqrstuvwxyz';
 
     const crypto = window.crypto || window.msCrypto;
-    const random = crypto.getRandomValues(new Uint8Array(20));
+    const random = Array.from(crypto.getRandomValues(new Uint8Array(20)));
 
-    for (let i = 0; i < random.length; ++i) {
-      result.push(validChars[random[i] % validChars.length]);
-    }
-
-    return result.join('');
+    return random.map(x => validChars[x % validChars.length]).join('');
   }
 }
