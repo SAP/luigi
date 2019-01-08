@@ -48,7 +48,7 @@
       };
       localStorage.setItem('luigi.auth', JSON.stringify(data));
 
-      var decoded = atob(decodeURIComponent(hashParams['state'])).split('_luigiNonce=');
+      var decodedState = atob(decodeURIComponent(hashParams['state'])).split('_luigiNonce=');
       var appState = decoded[0] || '';
       var nonce = decoded[1];
 
