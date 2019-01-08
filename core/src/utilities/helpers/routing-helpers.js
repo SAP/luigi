@@ -23,8 +23,13 @@ export const getDefaultChildNode = async pathData => {
 
   if (lastElement.defaultChildNode && pathExists) {
     return lastElement.defaultChildNode;
-  } else if (children && children.length > 0) {
-    return children[0].pathSegment;
+  } else if (children && children.length) {
+    const validChild = children.find(
+      child =>
+        child.pathSegment &&
+        (child.viewUrl || (child.externalLink && child.externalLink.url))
+    );
+    return validChild ? validChild.pathSegment : '';
   } else {
     return '';
   }
@@ -71,7 +76,7 @@ export const getNodeParams = params => {
       }
     });
   }
-  return result;
+  return sanitizeParams(result);
 };
 
 export const getPathParams = nodes => {
@@ -82,7 +87,7 @@ export const getPathParams = nodes => {
     .forEach(pp => {
       params[pp.key.replace(':', '')] = pp.value;
     });
-  return params;
+  return sanitizeParams(params);
 };
 
 export const findViewGroup = node => {
@@ -95,7 +100,7 @@ export const findViewGroup = node => {
 const defaultContentViewParamPrefix = '~';
 export const getContentViewParamPrefix = () => {
   return (
-    LuigiConfig.getConfigValue('routing.contentViewParamPrefix') ||
+    LuigiConfig.getConfigValue('routing.nodeParamPrefix') ||
     defaultContentViewParamPrefix
   );
 };
@@ -117,3 +122,19 @@ export const buildRoute = (node, path, params) =>
   !node.parent
     ? path + (params ? '?' + params : '')
     : buildRoute(node.parent, `/${node.parent.pathSegment}${path}`, params);
+
+export const sanitizeParams = paramsMap => {
+  function encodeParam(param) {
+    return String(param)
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;')
+      .replace(/'/g, '&#39;')
+      .replace(/\//g, '&sol;');
+  }
+
+  return Object.entries(paramsMap).reduce((sanitizedMap, paramPair) => {
+    sanitizedMap[encodeParam(paramPair[0])] = encodeParam(paramPair[1]);
+    return sanitizedMap;
+  }, {});
+};
