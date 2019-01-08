@@ -57,12 +57,17 @@ export const navigateIframe = (config, component, node) => {
     );
   }
 
+  const isSameDomain = IframeHelpers.isSameDomain(config, component);
+  const isSameViewGroup = IframeHelpers.isSameViewGroup(config, component);
+  const canReuseIframe = IframeHelpers.canReuseIframe(config, component);
   if (
     (!componentData.isNavigateBack &&
-      (!IframeHelpers.isSameViewGroup(config, component) ||
-        IframeHelpers.hasIframeIsolation(component) ||
+      (IframeHelpers.hasIframeIsolation(component) ||
+        !canReuseIframe ||
         Boolean(config.builderCompatibilityMode))) ||
-    (config.isolateAllViews && !(componentData.isolateView === false))
+    (config.isolateAllViews &&
+      !(componentData.isolateView === false) &&
+      !isSameViewGroup)
   ) {
     const componentData = component.get();
     // preserveView, hide other frames, else remove

@@ -202,7 +202,7 @@
     onstate({ changed, current, previous }) {},
     actions: {
       init(node) {
-        const isolateAllViews = LuigiConfig.getConfigValue('navigation.isolateViewFallback');
+        const isolateAllViews = LuigiConfig.getConfigValue('navigation.defaults.isolateView');
         const config = {
           iframe: null,
           navigateOk: null,
