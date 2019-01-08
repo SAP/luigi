@@ -62,18 +62,6 @@ export const getNodeParams = params => {
   return result;
 };
 
-// TODO: probably not required anymore
-export const getPathParams = nodes => {
-  const params = {};
-  nodes
-    .filter(n => n.pathParam)
-    .map(n => n.pathParam)
-    .forEach(pp => {
-      params[pp.key.replace(':', '')] = pp.value;
-    });
-  return params;
-};
-
 export const findViewGroup = node => {
   if (node.viewGroup) {
     return node.viewGroup;
@@ -108,78 +96,38 @@ export const buildRoute = (node, path, params) =>
     : buildRoute(node.parent, `/${node.parent.pathSegment}${path}`, params);
 
 export const processDynamicNode = (node, pathParams) => {
-  console.log('​processDynamicNode -> pathParams', pathParams);
   if (
     (node.pathSegment && node.pathSegment.startsWith(':')) ||
     (node.pathParam && node.pathParam.key)
   ) {
-    // Substitute all path params
-    let urlPathElement;
     Object.entries(pathParams).forEach(param => {
-      const key = param[0];
+      const key = ':' + param[0];
       const value = param[1];
       const segments = node.viewUrl.split('/');
 
+      // viewUrl substitutions
       node.viewUrl = segments
         .map(segment => {
           return segment.startsWith(':')
-            ? segment.replace(':' + key, value)
+            ? segment.replace(key, value)
             : segment;
         })
         .join('/');
 
-      urlPathElement = value;
-      console.log('​processDynamicNode -> param', key, value, node.viewUrl);
+      // path substitutions
+      node.pathSegment = node.pathSegment === key ? value : node.pathSegment;
+
+      // context substitutions
+      if (node.context) {
+        Object.entries(node.context).forEach(ctx => {
+          const ctxKey = ctx[0];
+          const ctxValue = ctx[1];
+          if (ctxValue === key) {
+            node.context[ctxKey] = value;
+          }
+        });
+      }
     });
-
-    if (node.pathParam && node.pathParam.key) {
-      node.viewUrl = node.pathParam.viewUrl;
-      node.context = node.pathParam.context
-        ? Object.assign({}, node.pathParam.context)
-        : undefined;
-      node.pathSegment = node.pathParam.pathSegment;
-      console.log('pathParm exists', node);
-    } else {
-      node.pathParam = {
-        key: node.pathSegment.slice(0),
-        pathSegment: node.pathSegment,
-        viewUrl: node.viewUrl,
-        context: node.context ? Object.assign({}, node.context) : undefined
-      };
-    }
-    node.pathParam.value = urlPathElement;
-
-    // path substitutions
-    node.pathSegment = node.pathSegment.replace(
-      node.pathParam.key,
-      urlPathElement
-    );
-
-    if (node.context) {
-      console.log('​node.context pre', node.context, node);
-      node.context = processContext(
-        node.context,
-        node.pathParam,
-        urlPathElement
-      );
-      console.log('​node.context pos', node.context, node);
-    }
   }
-  console.log('​processDynamicNode -> node', node);
   return node;
-};
-
-export const processDynamicNodes = (rawNodes, pathData) => {
-  return [...rawNodes].map(node => processDynamicNode(node, pathData));
-};
-
-const processContext = (inputContext, pathParam, urlPathElement) => {
-  const context = Object.assign({}, inputContext);
-  Object.entries(context).map(entry => {
-    const dynKey = entry[1];
-    if (dynKey === pathParam.key) {
-      context[entry[0]] = dynKey.replace(dynKey, urlPathElement);
-    }
-  });
-  return context;
 };

@@ -162,14 +162,9 @@ export const findMatchingNode = (urlPathElement, nodes) => {
       // Static nodes
       node.pathSegment === urlPathElement ||
       // Dynamic nodes
-      (node.pathSegment && node.pathSegment.startsWith(':')) ||
-      // Nodes with path parameters
-      (node.pathParam && node.pathParam.key)
+      (node.pathSegment && node.pathSegment.startsWith(':'))
     ) {
-      // TODO: left here to verify old implementation, remove later!
-      // node = RoutingHelpers.processDynamicNode(node, urlPathElement); // import from routing-helpers!
-
-      // Return matching node
+      // Return last matching node
       result = node;
       return true;
     }
