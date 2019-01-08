@@ -68,41 +68,37 @@ describe('Routing-helpers', () => {
     });
   });
   describe('defaultChildNodes', () => {
-    const getPathData = function() {
-      return {
-        navigationPath: [
-          {
-            // DOESN'T MATTER
-          },
-          {
-            pathSegment: 'groups',
-            children: [
-              {
-                pathSegment: 'stakeholders',
-                viewUrl: '/sampleapp.html#/projects/1/users/groups/stakeholders'
-              },
-              {
-                pathSegment: 'customers',
-                viewUrl: '/sampleapp.html#/projects/1/users/groups/customers'
-              }
-            ]
-          }
-        ],
-        context: {}
-      };
+    const mockPathData = {
+      navigationPath: [
+        {
+          // DOESN'T MATTER
+        },
+        {
+          pathSegment: 'groups',
+          children: [
+            {
+              pathSegment: 'stakeholders',
+              viewUrl: '/sampleapp.html#/projects/1/users/groups/stakeholders'
+            },
+            {
+              pathSegment: 'customers',
+              viewUrl: '/sampleapp.html#/projects/1/users/groups/customers'
+            }
+          ]
+        }
+      ],
+      context: {}
     };
 
     it('should return first child if no defaultChildNode is set', async () => {
-      let pathData = getPathData();
-
       assert.equal(
-        await RoutingHelpers.getDefaultChildNode(pathData),
+        await RoutingHelpers.getDefaultChildNode(mockPathData),
         'stakeholders'
       );
     });
 
     it('should return child with pathSegment equal to defaultChildNode', async () => {
-      let pathData = getPathData();
+      let pathData = Object.assign(mockPathData);
       pathData.navigationPath[1].defaultChildNode = 'customers';
 
       assert.equal(
@@ -112,7 +108,7 @@ describe('Routing-helpers', () => {
     });
 
     it('should return first child if given defaultChildNode does not exist', async () => {
-      const pathData = getPathData();
+      let pathData = Object.assign(mockPathData);
       pathData.navigationPath[1].defaultChildNode = 'NOSUCHPATH';
 
       assert.equal(
@@ -122,7 +118,7 @@ describe('Routing-helpers', () => {
     });
 
     it('should return first child asynchronous if no defaultChildNode is set', async () => {
-      let pathData = {
+      const pathData = {
         navigationPath: [
           {
             // DOESN'T MATTER
@@ -150,6 +146,70 @@ describe('Routing-helpers', () => {
         await RoutingHelpers.getDefaultChildNode(pathData),
         'stakeholders'
       );
+    });
+
+    it('should return first child that has viewUrl defined', async () => {
+      let pathData = {
+        navigationPath: [
+          {
+            // DOESN'T MATTER
+          },
+          {
+            pathSegment: 'myPath',
+            children: [
+              {
+                pathSegment: 'home',
+
+                label: 'go back'
+              },
+              {
+                pathSegment: 'maskopatol',
+                label: 'still no viewUrl'
+              },
+              {
+                pathSegment: 'child',
+                label: 'This should be the default child',
+                viewUrl: '/myApp.html#/default-child'
+              }
+            ]
+          }
+        ],
+        context: {}
+      };
+    });
+
+    it('should return first child that has externalLink.url defined', async () => {
+      let pathData = {
+        navigationPath: [
+          {
+            // DOESN'T MATTER
+          },
+          {
+            pathSegment: 'myPath',
+            children: [
+              {
+                pathSegment: 'home',
+
+                label: 'go back'
+              },
+              {
+                pathSegment: 'maskopatol',
+                label: 'still no viewUrl'
+              },
+              {
+                pathSegment: 'child',
+                label: 'This should be the default child',
+                externalLink: {
+                  url: 'https://google.com'
+                }
+              }
+            ]
+          }
+        ],
+        context: {}
+      };
+
+      assert.equal(await RoutingHelpers.getDefaultChildNode(pathData), 'child');
     });
   });
 });

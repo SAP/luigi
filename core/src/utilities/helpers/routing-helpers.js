@@ -24,8 +24,13 @@ export const getDefaultChildNode = async pathData => {
 
   if (lastElement.defaultChildNode && pathExists) {
     return lastElement.defaultChildNode;
-  } else if (children && children.length > 0) {
-    return children[0].pathSegment;
+  } else if (children && children.length) {
+    const validChild = children.find(
+      child =>
+        child.pathSegment &&
+        (child.viewUrl || (child.externalLink && child.externalLink.url))
+    );
+    return validChild ? validChild.pathSegment : '';
   } else {
     return '';
   }
@@ -59,7 +64,7 @@ export const getNodeParams = params => {
       }
     });
   }
-  return result;
+  return sanitizeParams(result);
 };
 
 export const findViewGroup = node => {
@@ -72,7 +77,7 @@ export const findViewGroup = node => {
 const defaultContentViewParamPrefix = '~';
 export const getContentViewParamPrefix = () => {
   return (
-    LuigiConfig.getConfigValue('routing.contentViewParamPrefix') ||
+    LuigiConfig.getConfigValue('routing.nodeParamPrefix') ||
     defaultContentViewParamPrefix
   );
 };
@@ -100,6 +105,7 @@ export const processDynamicNode = (node, pathParams) => {
     (node.pathSegment && node.pathSegment.startsWith(':')) ||
     (node.pathParam && node.pathParam.key)
   ) {
+    pathParams = sanitizeParams(pathParams);
     Object.entries(pathParams).forEach(param => {
       const key = ':' + param[0];
       const value = param[1];
@@ -119,15 +125,29 @@ export const processDynamicNode = (node, pathParams) => {
 
       // context substitutions
       if (node.context) {
-        Object.entries(node.context).forEach(ctx => {
-          const ctxKey = ctx[0];
-          const ctxValue = ctx[1];
-          if (ctxValue === key) {
-            node.context[ctxKey] = value;
+        Object.entries(node.context).forEach(ctxPair => {
+          if (ctxPair[1] === key) {
+            node.context[ctxPair[0]] = value;
           }
         });
       }
     });
   }
   return node;
+};
+
+export const sanitizeParams = paramsMap => {
+  function encodeParam(param) {
+    return String(param)
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;')
+      .replace(/'/g, '&#39;')
+      .replace(/\//g, '&sol;');
+  }
+
+  return Object.entries(paramsMap).reduce((sanitizedMap, paramPair) => {
+    sanitizedMap[encodeParam(paramPair[0])] = encodeParam(paramPair[1]);
+    return sanitizedMap;
+  }, {});
 };

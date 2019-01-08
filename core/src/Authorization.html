@@ -104,6 +104,8 @@
         return idpProviderInstance.then(resolved => {
           idpProviderInstance = resolved;
           checkAuth();
+        }).catch((err) => {
+          console.error(`Could not instantate ${idpProviderName} provider : ${err}`)
         });
       }
       checkAuth();

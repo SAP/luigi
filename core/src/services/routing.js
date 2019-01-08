@@ -144,7 +144,10 @@ export const getModifiedPathname = () => {
 export const getCurrentPath = () =>
   LuigiConfig.getConfigValue('routing.useHashRouting')
     ? window.location.hash.replace('#', '') // TODO: GenericHelpers.getPathWithoutHash(window.location.hash) fails in ContextSwitcher
-    : GenericHelpers.trimLeadingSlash(window.location.pathname);
+    : window.location.search
+      ? GenericHelpers.trimLeadingSlash(window.location.pathname) +
+        window.location.search
+      : GenericHelpers.trimLeadingSlash(window.location.pathname);
 
 export const handleRouteChange = async (
   path,
