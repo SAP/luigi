@@ -44,8 +44,8 @@
                 "output": "/luigi-core"
               },
               {
-                "glob": "luigi-client.js",
-                "input": "node_modules/@kyma-project/luigi-client",
+                "glob": "luigi-client.bundle.js",
+                "input": "node_modules/@kyma-project/luigi-client/public",
                 "output": "/luigi-client"
               }
             ],
