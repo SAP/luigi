@@ -110,7 +110,20 @@ var projectDetailNavProviderFn = function(context) {
                     viewUrl:
                       '/sampleapp.html#/projects/' +
                       projectId +
-                      '/users/groups/:group/settings'
+                      '/users/groups/:group/settings',
+                    children: [
+                      {
+                        label: 'Multi Path Params',
+                        pathSegment: ':dynamic',
+                        viewUrl:
+                          '/sampleapp.html#/projects/' +
+                          projectId +
+                          '/users/groups/:group/settings/:dynamic',
+                        context: {
+                          label: ':dynamic'
+                        }
+                      }
+                    ]
                   }
                 ]
               }

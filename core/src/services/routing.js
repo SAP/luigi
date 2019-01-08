@@ -188,7 +188,6 @@ export const handleRouteChange = async (
       LuigiConfig.getConfigValueAsync('navigation.nodes'),
       pathUrl
     );
-    const lastPathSegment = RoutingHelpers.getLastPathSegment(pathUrl);
 
     const hideNav = LuigiConfig.getConfigBooleanValue(
       'settings.hideNavigation'
@@ -200,7 +199,7 @@ export const handleRouteChange = async (
       hideSideNav = false
     } = RoutingHelpers.processDynamicNode(
       RoutingHelpers.getLastNodeObject(pathData),
-      lastPathSegment
+      pathData.pathParams
     );
     const params = RoutingHelpers.parseParams(pathUrlRaw.split('?')[1]);
     const nodeParams = RoutingHelpers.getNodeParams(params);

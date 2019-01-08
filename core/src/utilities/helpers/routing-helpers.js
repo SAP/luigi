@@ -10,13 +10,6 @@ export const getLastNodeObject = pathData => {
   return lastElement ? lastElement : {};
 };
 
-export const getLastPathSegment = pathUrl => {
-  const segments = GenericHelpers.trimTrailingSlash(
-    pathUrl.split('?')[0]
-  ).split('/');
-  return segments[segments.length - 1];
-};
-
 export const getDefaultChildNode = async pathData => {
   const lastElement =
     pathData.navigationPath[pathData.navigationPath.length - 1];
@@ -114,17 +107,38 @@ export const buildRoute = (node, path, params) =>
     ? path + (params ? '?' + params : '')
     : buildRoute(node.parent, `/${node.parent.pathSegment}${path}`, params);
 
-export const processDynamicNode = (node, urlPathElement) => {
+export const processDynamicNode = (node, pathParams) => {
+  console.log('​processDynamicNode -> pathParams', pathParams);
   if (
     (node.pathSegment && node.pathSegment.startsWith(':')) ||
     (node.pathParam && node.pathParam.key)
   ) {
+    // Substitute all path params
+    let urlPathElement;
+    Object.entries(pathParams).forEach(param => {
+      const key = param[0];
+      const value = param[1];
+      const segments = node.viewUrl.split('/');
+
+      node.viewUrl = segments
+        .map(segment => {
+          return segment.startsWith(':')
+            ? segment.replace(':' + key, value)
+            : segment;
+        })
+        .join('/');
+
+      urlPathElement = value;
+      console.log('​processDynamicNode -> param', key, value, node.viewUrl);
+    });
+
     if (node.pathParam && node.pathParam.key) {
       node.viewUrl = node.pathParam.viewUrl;
       node.context = node.pathParam.context
         ? Object.assign({}, node.pathParam.context)
         : undefined;
       node.pathSegment = node.pathParam.pathSegment;
+      console.log('pathParm exists', node);
     } else {
       node.pathParam = {
         key: node.pathSegment.slice(0),
@@ -141,23 +155,22 @@ export const processDynamicNode = (node, urlPathElement) => {
       urlPathElement
     );
 
-    if (node.viewUrl) {
-      node.viewUrl = node.viewUrl.replace(node.pathParam.key, urlPathElement);
-    }
-
     if (node.context) {
+      console.log('​node.context pre', node.context, node);
       node.context = processContext(
         node.context,
         node.pathParam,
         urlPathElement
       );
+      console.log('​node.context pos', node.context, node);
     }
   }
+  console.log('​processDynamicNode -> node', node);
   return node;
 };
 
-export const processDynamicNodes = (rawNodes, urlPathElement) => {
-  return [...rawNodes].map(node => processDynamicNode(node, urlPathElement));
+export const processDynamicNodes = (rawNodes, pathData) => {
+  return [...rawNodes].map(node => processDynamicNode(node, pathData));
 };
 
 const processContext = (inputContext, pathParam, urlPathElement) => {
