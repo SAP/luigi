@@ -13,38 +13,62 @@ describe('Routing-helpers', () => {
       });
 
       // falsy tests
-      const resUnchanged = RoutingHelpers.processDynamicNode(staticNode(), 'avengers');
+      const resUnchanged = RoutingHelpers.processDynamicNode(
+        staticNode(),
+        'avengers'
+      );
       expect(resUnchanged).to.deep.equal(staticNode());
     });
     it('substitutes dynamic paths', () => {
       // given
       const dynamicNode = () => ({
-        pathSegment: ':group',
-        viewUrl: '/users/groups/:group',
+        label: 'Nested Dynamic',
+        pathSegment: ':nested',
+        viewUrl: '/users/groups/:group/settings/:nested',
         context: {
-          currentGroup: ':group'
-        },
-        children: [
-          {
-            label: 'Group Settings',
-            pathSegment: 'settings',
-            viewUrl: '/users/groups/:group/settings'
-          }
-        ]
+          currentGroup: ':group',
+          currentNested: ':nested',
+          unchanged: 'stays'
+        }
       });
+
+      const pathParams = {
+        group: 'avengers',
+        nested: 'superpowers'
+      };
 
       // truthy tests
       // when
-      const resDynamicOk = RoutingHelpers.processDynamicNode(dynamicNode(), 'avengers');
+      const resDynamicOk = RoutingHelpers.processDynamicNode(
+        dynamicNode(),
+        pathParams
+      );
 
       // then
-      expect(resDynamicOk.pathSegment).to.equal('avengers', 'resDynamicOk.pathSegment');
-      expect(resDynamicOk.viewUrl).to.contain('/avengers', 'resDynamicOk.viewUrl');
-      expect(resDynamicOk.context.currentGroup).to.equal('avengers', 'resDynamicOk.context');
+      expect(resDynamicOk.pathSegment).to.equal(
+        'superpowers',
+        'resDynamicOk.pathSegment'
+      );
+      expect(resDynamicOk.viewUrl).to.equal(
+        '/users/groups/avengers/settings/superpowers',
+        'resDynamicOk.viewUrl'
+      );
+      expect(resDynamicOk.context.currentGroup).to.equal(
+        'avengers',
+        'resDynamicOk.context.group'
+      );
+      expect(resDynamicOk.context.currentNested).to.equal(
+        'superpowers',
+        'resDynamicOk.context.nested'
+      );
+      expect(resDynamicOk.context.unchanged).to.equal(
+        'stays',
+        'resDynamicOk.context.unchanged'
+      );
     });
   });
   describe('defaultChildNodes', () => {
-    const getPathData = function () {
+    const getPathData = function() {
       return {
         navigationPath: [
           {
