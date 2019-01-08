@@ -93,6 +93,7 @@ var projectDetailNavProviderFn = function(context) {
             category: { label: 'Groups', icon: 'group' },
             pathSegment: 'groups',
             label: 'Groups',
+            icon: 'group',
             viewUrl: '/sampleapp.html#/projects/' + projectId + '/users/groups',
             children: [
               {
@@ -108,6 +109,7 @@ var projectDetailNavProviderFn = function(context) {
                   {
                     label: 'Group Settings',
                     pathSegment: 'settings',
+                    icon: 'user-settings',
                     viewUrl:
                       '/sampleapp.html#/projects/' +
                       projectId +
@@ -120,6 +122,7 @@ var projectDetailNavProviderFn = function(context) {
           {
             pathSegment: 'usersoverview',
             label: 'Users Overview',
+            icon: 'employee',
             viewUrl:
               '/sampleapp.html#/projects/' + projectId + '/users/usersoverview'
           }
@@ -330,6 +333,7 @@ var projectsNavProviderFn = function(context) {
           context: {
             currentProject: project.id
           },
+          icon: 'folder-blank',
           children: projectDetailNavProviderFn
         });
       });
@@ -505,6 +509,7 @@ Luigi.setConfig({
               loadingIndicator: {
                 hideAutomatically: false
               },
+              icon: 'drill-up',
               viewUrl: '/assets/sampleexternal.html#one'
             },
             {
@@ -513,6 +518,7 @@ Luigi.setConfig({
               loadingIndicator: {
                 hideAutomatically: false
               },
+              icon: 'drill-down',
               viewUrl: '/assets/sampleexternal.html#two'
             }
           ]
