@@ -31,7 +31,7 @@
   "devDependencies": {
     "@angular-builders/custom-webpack": "^7.1.1",
     "@angular-builders/dev-server": "^7.1.1",
-    "@angular-devkit/build-angular": "~0.7.0",
+    "@angular-devkit/build-angular": "^0.11.4",
     "@angular-devkit/core": "0.6.8",
     "@angular-devkit/schematics": "^0.6.8",
     "@angular/cli": "^6.1.1",
@@ -47,6 +47,6 @@
     "ts-node": "~3.2.0",
     "tslint": "~5.7.0",
     "typescript": "~2.7.2",
-    "webpack": "^4.27.1"
+    "webpack": "^4.28.1"
   }
 }
