@@ -5,8 +5,8 @@ module.exports = {
   watch: true,
   mode: 'production',
   entry: {
-    extendedConfiguration: './src/assets/luigi-config/extended/main.js',
-    basicConfiguration: './src/assets/luigi-config/basic/basicConfiguration.js'
+    extendedConfiguration: './src/luigi-config/extended/main.js',
+    basicConfiguration: './src/luigi-config/basic/basicConfiguration.js'
   },
   output: {
     filename: '[name].bundle.js',
