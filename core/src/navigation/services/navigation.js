@@ -34,7 +34,7 @@ export const getNavigationPath = async (rootNavProviderPromise, activePath) => {
     );
     navObj.isExistingRoute =
       !activePath ||
-      nodeNamesInCurrentPath.length ==
+      nodeNamesInCurrentPath.length ===
         navObj.navigationPath.filter(x => x.pathSegment).length;
     return navObj;
   } catch (err) {
