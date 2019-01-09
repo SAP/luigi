@@ -61,3 +61,5 @@ export const groupNodesBy = (nodes, property) => {
   });
   return result;
 };
+
+export const isOpenUIiconName = string => /^[a-z0-9\-]+$/i.test(string);

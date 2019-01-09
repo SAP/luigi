@@ -9,13 +9,21 @@
                                 {#if !node.hideFromNav}
                                 {#if node.label}
                                 <li class="fd-side-nav__item {node.externalLink && node.externalLink.url ? 'fd-side-nav__item--external' : ''}">
-                                    <a class="fd-side-nav__link {node === selectedNode ? 'is-selected' : ''}" on:click=handleClick(node)>
+                                    <a class="fd-side-nav__link {node === selectedNode ? 'is-selected' : ''} fd-side-nav__link--icon" on:click=handleClick(node)>
+                                        {#if node.icon}
+                                          {#if isOpenUIiconName(node.icon)}
+                                            <span class="fd-side-nav__icon sap-icon--{node.icon} sap-icon--m"></span>
+                                          {:else}
+                                            <img class="fd-side-nav__icon" src={node.icon}/>
+                                          {/if}
+                                        {:else}
+                                          <span class="fd-side-nav__icon sap-icon--lui-blank sap-icon--m"></span>
+                                        {/if}
                                         {node.label}
                                         {#if node.externalLink && node.externalLink.url}
                                             <span class="sap-icon--action sap-icon--s"></span>
                                         {/if}
                                     </a>
-
                                 </li>
                                 {/if}
                                 {/if}
@@ -29,7 +37,11 @@
                     <div class="fd-side-nav__group">
                         <li class="fd-side-nav__title lui-category">
                           {#if hasCategoriesWithIcon}
-                          <span class="fd-side-nav__icon {nodes.metaInfo.icon ? 'sap-icon--' + nodes.metaInfo.icon : ''} sap-icon--m" role="presentation"></span>
+                            {#if isOpenUIiconName(nodes.metaInfo.icon)}
+                              <span class="fd-side-nav__icon {nodes.metaInfo.icon ? 'sap-icon--' + nodes.metaInfo.icon : ''} sap-icon--m" role="presentation"></span>
+                            {:else}
+                              <img class="fd-side-nav__icon" src={nodes.metaInfo.icon}/>
+                            {/if}
                           {/if}
                             {key}</li>
                         <ul class="fd-side-nav__sublist">
@@ -37,13 +49,21 @@
                                 {#if !node.hideFromNav}
                                 {#if node.label}
                                 <li class="fd-side-nav__subitem {node.externalLink && node.externalLink.url ? 'fd-side-nav__item--external' : ''}">
-                                    <a class="fd-side-nav__sublink {node === selectedNode ? 'is-selected' : ''}" on:click=handleClick(node)>
+                                    <a class="fd-side-nav__sublink {node === selectedNode ? 'is-selected' : ''} fd-side-nav__link--icon" on:click=handleClick(node)>
+                                        {#if node.icon}
+                                          {#if isOpenUIiconName(node.icon)}
+                                            <span class="fd-side-nav__icon sap-icon--{node.icon} sap-icon--m"></span>
+                                          {:else}
+                                            <img class="fd-side-nav__icon" src={node.icon}/>
+                                          {/if}
+                                        {:else}
+                                          <span class="fd-side-nav__icon sap-icon--lui-blank sap-icon--m"></span>
+                                        {/if}
                                         {node.label}
                                         {#if node.externalLink && node.externalLink.url}
                                             <span class="sap-icon--action sap-icon--s"></span>
                                         {/if}
                                     </a>
-
                                 </li>
                                 {/if}
                                 {/if}
@@ -58,6 +78,7 @@
 
 <script type="text/javascript">
   import * as Navigation from './services/navigation.js';
+  import * as NavigationHelpers from '../utilities/helpers/navigation-helpers';
   import * as Routing from '../services/routing';
   import { LuigiConfig } from '../services/config.js';
 
@@ -74,7 +95,9 @@
   export default {
     oncreate() {
       this.set({
-        hideNavComponent: LuigiConfig.getConfigBooleanValue('settings.hideNavigation')
+        hideNavComponent: LuigiConfig.getConfigBooleanValue(
+          'settings.hideNavigation'
+        )
       });
     },
     onstate({ changed, current, previous }) {
@@ -82,12 +105,17 @@
         setLeftNavData(current, this);
       }
     },
+    helpers: {
+      isOpenUIiconName(name) {
+        return NavigationHelpers.isOpenUIiconName(name);
+      }
+    },
     methods: {
       handleClick(node) {
-        this.fire('handleClick', { node })
-      },
+        this.fire('handleClick', { node });
+      }
     }
-  }
+  };
 </script>
 
 <style type="text/scss">
@@ -109,9 +137,24 @@
     margin-top: 20px;
   }
   .fd-side-nav__link {
+    &.fd-side-nav__link--icon {
+      padding-left: 16px;
+    }
     .sap-icon--action {
+      //external-link icon
       margin-left: 0.3em;
       vertical-align: middle;
+    }
+    .fd-side-nav__icon {
+      width: 1.4em;
+    }
+  }
+  .fd-side-nav__sublink {
+    &.fd-side-nav__link--icon {
+      padding-left: 16px;
+    }
+    .fd-side-nav__icon {
+      width: 1.4em;
     }
   }
 
@@ -130,6 +173,10 @@
     line-height: 1.42857;
     font-weight: 400;
     text-transform: inherit;
+
+    .fd-side-nav__icon {
+      width: 1.4em;
+    }
   }
 
   // Add missing visual indicator for two senses indication of active state
@@ -150,13 +197,14 @@
 
   // Overwrite padding of icon
   .fd-side-nav__icon {
-    padding-right: 4px;
-
+    padding-right: 2px;
     display: inline-block;
-    min-width: 20px;
+    width: 1em;
     vertical-align: middle;
+    max-height: 100%;
 
-    &.sap-icon--lui-blank {
+    &.sap-icon--m::before {
+      width: 1.25rem;
     }
   }
 </style>
