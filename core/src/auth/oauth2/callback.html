@@ -53,10 +53,8 @@
       var nonce = decodedState[1];
 
       if (nonce !== sessionStorage.getItem('luigi.nonceValue')) {
-        var INVALID_NONCE_ERROR_TEXT = 'State parameter returned from the authorization endpoint does not match locally stored state. Aborting login process.';
-
-        document.getElementsByTagName('body')[0].innerHTML = INVALID_NONCE_ERROR_TEXT;
-        throw new Error(INVALID_NONCE_ERROR_TEXT);
+        document.getElementsByTagName('body')[0].innerHTML = 'Something went wrong. Try to log in again.';
+        throw new Error('State parameter returned from the authorization endpoint does not match locally stored state. Aborting login process.');
       }
 
       window.location.href = appState;
