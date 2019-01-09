@@ -192,23 +192,8 @@ export const handleRouteChange = async (
       pathUrl
     );
 
-    const hideNav = LuigiConfig.getConfigBooleanValue(
-      'settings.hideNavigation'
-    );
-
-    const {
-      viewUrl = '',
-      isolateView = false,
-      hideSideNav = false
-    } = RoutingHelpers.processDynamicNode(
-      RoutingHelpers.getLastNodeObject(pathData),
-      pathData.pathParams
-    );
-    const params = RoutingHelpers.parseParams(pathUrlRaw.split('?')[1]);
-    const nodeParams = RoutingHelpers.getNodeParams(params);
-    const viewGroup = RoutingHelpers.findViewGroup(
-      RoutingHelpers.getLastNodeObject(pathData)
-    );
+    const lastNode = RoutingHelpers.getLastNodeObject(pathData);
+    const viewUrl = lastNode.viewUrl || '';
 
     if (!viewUrl) {
       if (pathData.isExistingRoute) {
@@ -240,34 +225,36 @@ export const handleRouteChange = async (
       navigateTo(GenericHelpers.addLeadingSlash(matched.matchedPath));
     }
 
+    const hideNav = LuigiConfig.getConfigBooleanValue(
+      'settings.hideNavigation'
+    );
+    const params = RoutingHelpers.parseParams(pathUrlRaw.split('?')[1]);
+    const nodeParams = RoutingHelpers.getNodeParams(params);
+    const viewGroup = RoutingHelpers.findViewGroup(lastNode);
+    const currentNode =
+      pathData.navigationPath && pathData.navigationPath.length > 0
+        ? pathData.navigationPath[pathData.navigationPath.length - 1]
+        : null;
+
     const newNodeData = {
       hideNav,
-      hideSideNav,
       viewUrl,
-      navigationPath: pathData.navigationPath,
-      currentNode:
-        pathData.navigationPath && pathData.navigationPath.length > 0
-          ? pathData.navigationPath[pathData.navigationPath.length - 1]
-          : null,
-      context: pathData.context,
       nodeParams,
+      viewGroup,
+      currentNode,
+      navigationPath: pathData.navigationPath,
+      context: RoutingHelpers.substituteObject(
+        Object.assign({}, pathData.context, currentNode.context),
+        pathData.pathParams
+      ),
       pathParams: pathData.pathParams,
-      isolateView,
-      viewGroup
+      hideSideNav: lastNode.hideSideNav || false,
+      isolateView: lastNode.isolateView || false
     };
-
-    // MTODO: IframeHelpers.replaceVars for:
-    // substitute viewUrl modify nodeParams, pathParams, etc
-    // substitute context
 
     const previousCompData = component.get();
     component.set(
       Object.assign({}, newNodeData, {
-        context: Object.assign(
-          {},
-          newNodeData.context,
-          newNodeData.currentNode.context
-        ),
         previousNodeValues: previousCompData
           ? {
               viewUrl: previousCompData.viewUrl,
@@ -284,7 +271,7 @@ export const handleRouteChange = async (
   }
 };
 
-export const handleRouteClick = node => {
+export const handleRouteClick = (node, componentData) => {
   if (node.externalLink && node.externalLink.url) {
     node.externalLink.sameWindow
       ? (window.location.href = node.externalLink.url)
@@ -297,6 +284,6 @@ export const handleRouteClick = node => {
     navigateTo(link);
   } else {
     const route = RoutingHelpers.buildRoute(node, `/${node.pathSegment}`);
-    navigateTo(route);
+    navigateTo(RoutingHelpers.substituteViewUrl(route, componentData));
   }
 };

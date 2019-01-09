@@ -4,69 +4,47 @@ const assert = chai.assert;
 import * as RoutingHelpers from '../../../src/utilities/helpers/routing-helpers';
 
 describe('Routing-helpers', () => {
-  describe('processDynamicNode', () => {
-    it('does nothing on static nodes', () => {
-      const staticNode = () => ({
-        label: 'Other',
-        pathSegment: 'other',
-        viewUrl: 'something_other'
-      });
-
-      // falsy tests
-      const resUnchanged = RoutingHelpers.processDynamicNode(
-        staticNode(),
-        'avengers'
-      );
-      expect(resUnchanged).to.deep.equal(staticNode());
-    });
-    it('substitutes dynamic paths', () => {
-      // given
-      const dynamicNode = () => ({
-        label: 'Nested Dynamic',
-        pathSegment: ':nested',
-        viewUrl: '/users/groups/:group/settings/:nested',
-        context: {
-          currentGroup: ':group',
-          currentNested: ':nested',
-          unchanged: 'stays'
-        }
-      });
-
-      const pathParams = {
-        group: 'avengers',
-        nested: 'superpowers'
+  describe('substituteObject', () => {
+    it('substitutes an object', () => {
+      const input = {
+        key1: 'something',
+        key2: ':group'
+      };
+      const paramMap = {
+        group: 'mygroup'
       };
 
-      // truthy tests
-      // when
-      const resDynamicOk = RoutingHelpers.processDynamicNode(
-        dynamicNode(),
-        pathParams
-      );
+      const expectedOutput = {
+        key1: 'something',
+        key2: 'mygroup'
+      };
 
-      // then
-      expect(resDynamicOk.pathSegment).to.equal(
-        'superpowers',
-        'resDynamicOk.pathSegment'
+      expect(RoutingHelpers.substituteObject(input, paramMap)).to.deep.equal(
+        expectedOutput
       );
-      expect(resDynamicOk.viewUrl).to.equal(
-        '/users/groups/avengers/settings/superpowers',
-        'resDynamicOk.viewUrl'
-      );
-      expect(resDynamicOk.context.currentGroup).to.equal(
-        'avengers',
-        'resDynamicOk.context.group'
-      );
-      expect(resDynamicOk.context.currentNested).to.equal(
-        'superpowers',
-        'resDynamicOk.context.nested'
-      );
-      expect(resDynamicOk.context.unchanged).to.equal(
-        'stays',
-        'resDynamicOk.context.unchanged'
-      );
+      expect(input.key2).to.equal(':group');
+    });
+    it('substitutes an object using custom prefix', () => {
+      const input = {
+        key1: 'something',
+        key2: '#group'
+      };
+      const paramMap = {
+        group: 'mygroup'
+      };
+
+      const expectedOutput = {
+        key1: 'something',
+        key2: 'mygroup'
+      };
+
+      expect(
+        RoutingHelpers.substituteObject(input, paramMap, '#')
+      ).to.deep.equal(expectedOutput);
+      expect(input.key2).to.equal('#group');
     });
   });
+
   describe('defaultChildNodes', () => {
     const mockPathData = {
       navigationPath: [

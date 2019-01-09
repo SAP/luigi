@@ -319,7 +319,7 @@
       },
       handleNavClick(node) {
         this.getUnsavedChangesModalPromise().then(
-          () => { Routing.handleRouteClick(node) }
+          () => { Routing.handleRouteClick(node, this.get()) }
         );
       },
       handleModalResult(result) {

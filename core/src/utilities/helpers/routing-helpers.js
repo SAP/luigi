@@ -100,54 +100,60 @@ export const buildRoute = (node, path, params) =>
     ? path + (params ? '?' + params : '')
     : buildRoute(node.parent, `/${node.parent.pathSegment}${path}`, params);
 
-export const processDynamicNode = (node, pathParams) => {
-  if (
-    (node.pathSegment && node.pathSegment.startsWith(':')) ||
-    (node.pathParam && node.pathParam.key)
-  ) {
-    pathParams = sanitizeParams(pathParams);
-    Object.entries(pathParams).forEach(param => {
-      const key = ':' + param[0];
-      const value = param[1];
-      const segments = node.viewUrl.split('/');
-
-      // viewUrl substitutions
-      node.viewUrl = segments
-        .map(segment => {
-          return segment.startsWith(':')
-            ? segment.replace(key, value)
-            : segment;
-        })
-        .join('/');
-
-      // path substitutions
-      node.pathSegment = node.pathSegment === key ? value : node.pathSegment;
-
-      // context substitutions
-      if (node.context) {
-        Object.entries(node.context).forEach(ctxPair => {
-          if (ctxPair[1] === key) {
-            node.context[ctxPair[0]] = value;
-          }
-        });
+export const substituteObject = (object, paramMap, paramPrefix = ':') => {
+  const newObject = {};
+  Object.entries(object).forEach(pair => {
+    const key = pair[0];
+    const value = pair[1];
+    let found;
+    Object.entries(paramMap).forEach(param => {
+      if (value === paramPrefix + param[0]) {
+        newObject[key] = param[1];
+        found = true;
       }
     });
-  }
-  return node;
+    if (!found) {
+      newObject[key] = value;
+    }
+  });
+  return newObject;
+};
+
+export const substituteViewUrl = (viewUrl, componentData) => {
+  const contextVarPrefix = 'context.';
+  const nodeParamsVarPrefix = 'nodeParams.';
+
+  viewUrl = GenericHelpers.replaceVars(
+    viewUrl,
+    componentData.pathParams,
+    ':',
+    false
+  );
+  viewUrl = GenericHelpers.replaceVars(
+    viewUrl,
+    componentData.context,
+    contextVarPrefix
+  );
+  viewUrl = GenericHelpers.replaceVars(
+    viewUrl,
+    componentData.nodeParams,
+    nodeParamsVarPrefix
+  );
+  return viewUrl;
+};
+
+export const sanitizeParam = param => {
+  return String(param)
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;')
+    .replace(/\//g, '&sol;');
 };
 
 export const sanitizeParams = paramsMap => {
-  function encodeParam(param) {
-    return String(param)
-      .replace(/</g, '&lt;')
-      .replace(/>/g, '&gt;')
-      .replace(/"/g, '&quot;')
-      .replace(/'/g, '&#39;')
-      .replace(/\//g, '&sol;');
-  }
-
   return Object.entries(paramsMap).reduce((sanitizedMap, paramPair) => {
-    sanitizedMap[encodeParam(paramPair[0])] = encodeParam(paramPair[1]);
+    sanitizedMap[sanitizeParam(paramPair[0])] = sanitizeParam(paramPair[1]);
     return sanitizedMap;
   }, {});
 };

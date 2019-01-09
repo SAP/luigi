@@ -3,6 +3,7 @@
 import * as NavigationHelpers from '../../utilities/helpers/navigation-helpers';
 import * as AsyncHelpers from '../../utilities/helpers/async-helpers';
 import * as GenericHelpers from '../../utilities/helpers/generic-helpers';
+import * as RoutingHelpers from '../../utilities/helpers/routing-helpers';
 
 export const getNavigationPath = async (rootNavProviderPromise, activePath) => {
   if (!rootNavProviderPromise) {
@@ -117,7 +118,9 @@ const buildNode = async (
         let children = await getChildren(node, newContext);
 
         if (node.pathSegment.startsWith(':')) {
-          pathParams[node.pathSegment.replace(':', '')] = urlPathElement;
+          pathParams[
+            node.pathSegment.replace(':', '')
+          ] = RoutingHelpers.sanitizeParam(urlPathElement);
         }
         result = buildNode(
           nodeNamesInCurrentPath,

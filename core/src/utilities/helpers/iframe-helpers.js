@@ -14,36 +14,6 @@ export const removeElementChildren = node => {
   }
 };
 
-export const replaceVars = (viewUrl, params, prefix, parenthesis = true) => {
-  let processedUrl = viewUrl;
-  if (params) {
-    Object.entries(params).forEach(entry => {
-      processedUrl = processedUrl.replace(
-        new RegExp(
-          GenericHelpers.escapeRegExp(
-            (parenthesis ? '{' : '') +
-              prefix +
-              entry[0] +
-              (parenthesis ? '}' : '')
-          ),
-          'g'
-        ),
-        encodeURIComponent(entry[1])
-      );
-    });
-  }
-  if (parenthesis) {
-    processedUrl = processedUrl.replace(
-      new RegExp(
-        '\\{' + GenericHelpers.escapeRegExp(prefix) + '[^\\}]+\\}',
-        'g'
-      ),
-      ''
-    );
-  }
-  return processedUrl;
-};
-
 export const isSameViewGroup = (config, component) => {
   if (config.iframe) {
     const componentData = component.get();

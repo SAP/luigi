@@ -107,6 +107,7 @@ var projectDetailNavProviderFn = function(context) {
                   {
                     label: 'Group Settings',
                     pathSegment: 'settings',
+                    keepSelectedForChildren: true,
                     viewUrl:
                       '/sampleapp.html#/projects/' +
                       projectId +

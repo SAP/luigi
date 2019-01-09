@@ -157,3 +157,35 @@ export const canComponentHandleModal = component =>
 export const escapeRegExp = string => {
   return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
 };
+
+export const replaceVars = (
+  inputString,
+  params,
+  prefix,
+  parenthesis = true
+) => {
+  let processedString = inputString;
+  if (params) {
+    Object.entries(params).forEach(entry => {
+      processedString = processedString.replace(
+        new RegExp(
+          escapeRegExp(
+            (parenthesis ? '{' : '') +
+              prefix +
+              entry[0] +
+              (parenthesis ? '}' : '')
+          ),
+          'g'
+        ),
+        encodeURIComponent(entry[1])
+      );
+    });
+  }
+  if (parenthesis) {
+    processedString = processedString.replace(
+      new RegExp('\\{' + escapeRegExp(prefix) + '[^\\}]+\\}', 'g'),
+      ''
+    );
+  }
+  return processedString;
+};
