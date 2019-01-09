@@ -27,7 +27,7 @@ export const getNavigationPath = async (rootNavProviderPromise, activePath) => {
     await getChildren(rootNode); // keep it, mutates and filters children
     const nodeNamesInCurrentPath = (activePath || '').split('/');
     const navObj = await buildNode(
-      [...nodeNamesInCurrentPath],
+      nodeNamesInCurrentPath,
       [rootNode],
       rootNode.children,
       rootNode.context || {}
