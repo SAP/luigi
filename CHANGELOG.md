@@ -23,6 +23,11 @@ The lerna-changelog tool detects changes based on PR labels and maps them to sec
     ...
   }
 -->
+## [v0.4.3] - 2019-01-07
+
+#### :bug: Fixed
+* [#318](https://github.com/kyma-project/luigi/pull/318) Increase timeout and improve error handling for loading oidc client library ([@kwiatekus](https://github.com/kwiatekus))
+* [#312](https://github.com/kyma-project/luigi/pull/312) Fix node params for path routing ([@dariadomagala](https://github.com/dariadomagala))
 
 ## [v0.4.1] - 2018-12-27
 
@@ -233,3 +238,4 @@ The lerna-changelog tool detects changes based on PR labels and maps them to sec
 [v0.3.8]: https://github.com/kyma-project/luigi/compare/v0.3.7...v0.3.8
 [v0.4.0]: https://github.com/kyma-project/luigi/compare/v0.3.8...v0.4.0
 [v0.4.1]: https://github.com/kyma-project/luigi/compare/v0.4.0...v0.4.1
+[v0.4.3]: https://github.com/kyma-project/luigi/compare/v0.4.2...v0.4.3

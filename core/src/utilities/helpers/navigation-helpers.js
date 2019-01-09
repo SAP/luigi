@@ -6,8 +6,17 @@ export const isNodeAccessPermitted = (
   parentNode,
   currentContext
 ) => {
-  if (LuigiConfig.isAuthorizationEnabled() && !AuthHelpers.isLoggedIn())
-    return false;
+  if (LuigiConfig.isAuthorizationEnabled()) {
+    const loggedIn = AuthHelpers.isLoggedIn();
+    const anon = nodeToCheckPermissionFor.anonymousAccess;
+
+    if (
+      (loggedIn && anon === 'exclusive') ||
+      (!loggedIn && anon !== 'exclusive' && anon !== true)
+    ) {
+      return false;
+    }
+  }
   const permissionCheckerFn = LuigiConfig.getConfigValue(
     'navigation.nodeAccessibilityResolver'
   );
@@ -61,3 +70,5 @@ export const groupNodesBy = (nodes, property) => {
   });
   return result;
 };
+
+export const isOpenUIiconName = string => /^[a-z0-9\-]+$/i.test(string);
