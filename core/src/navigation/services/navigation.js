@@ -27,7 +27,7 @@ export const getNavigationPath = async (rootNavProviderPromise, activePath) => {
     await getChildren(rootNode); // keep it, mutates and filters children
     const nodeNamesInCurrentPath = (activePath || '').split('/');
     const navObj = await buildNode(
-      [...nodeNamesInCurrentPath], // spread operator, because buildNode is mutating this input
+      [...nodeNamesInCurrentPath],
       [rootNode],
       rootNode.children,
       rootNode.context || {}
@@ -105,7 +105,7 @@ const buildNode = async (
     childrenOfCurrentNode &&
     childrenOfCurrentNode.length > 0
   ) {
-    const urlPathElement = nodeNamesInCurrentPath.splice(0, 1)[0];
+    const urlPathElement = nodeNamesInCurrentPath[0];
     const node = findMatchingNode(urlPathElement, childrenOfCurrentNode);
     if (node) {
       nodesInCurrentPath.push(node);
@@ -122,8 +122,12 @@ const buildNode = async (
             node.pathSegment.replace(':', '')
           ] = RoutingHelpers.sanitizeParam(urlPathElement);
         }
+        const newNodeNamesInCurrentPath = nodeNamesInCurrentPath.slice();
+        newNodeNamesInCurrentPath.shift();
+
         result = buildNode(
-          nodeNamesInCurrentPath,
+          newNodeNamesInCurrentPath,
+          // nodeNamesInCurrentPath,
           nodesInCurrentPath,
           children,
           newContext,
