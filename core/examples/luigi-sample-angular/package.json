@@ -4,7 +4,7 @@
   "description": "",
   "license": "Apache-2.0",
   "scripts": {
-    "build": "ng build",
+    "build": "npm run buildConfig && ng build",
     "lint": "ng lint",
     "e2e:open": "cypress open",
     "e2e:run": "cypress run",
