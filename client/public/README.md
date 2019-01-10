@@ -10,4 +10,4 @@ For details on Luigi Core, see [this](https://github.com/kyma-project/luigi/tree
 
 If you want to try Luigi out, see the [examples](https://github.com/kyma-project/luigi/tree/master/core/examples).
 
-For documentation on Luigi Core, see [Luigi documentation](https://github.com/kyma-project/luigi/tree/master/docs).
+For documentation on Luigi framework, see [Luigi documentation](https://github.com/kyma-project/luigi/tree/master/docs).
