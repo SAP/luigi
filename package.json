@@ -9,7 +9,7 @@
     "singleQuote": true,
     "overrides": [
       {
-        "files": "*.html",
+        "files": "/core/*.html",
         "options": {
           "parser": "vue"
         }
