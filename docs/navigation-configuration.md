@@ -224,7 +224,7 @@ The node navigation parameters are as follows:
 
 - **nodeAccessibilityResolver** allows you to define a permission checker function that gets executed on every node. If it returns `false`, Luigi removes the node and its children from the navigation structure.
 - **nodeAccessibilityResolver** receives all values defined in the node configuration. See [angular basicConfiguration.js](../core/examples/luigi-sample-angular/src/assets/basicConfiguration.js) for the **constraints** example.
-- **defaults.isolateView** renders all views in new frames. This setting overrides the same-domain frame re-usage. The **defaults.isolateView** is disabled by default and it can be overwritten by the **isolateView** value on a single node level.
+- **defaults.isolateView** renders all views in new frames. This setting overrides the same-domain frame reuse. The **defaults.isolateView** is disabled by default, and you can overwrite it using the **isolateView** value on a single node level.
 
 ### Node parameters
 
