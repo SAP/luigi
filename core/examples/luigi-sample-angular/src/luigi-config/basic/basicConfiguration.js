@@ -34,3 +34,8 @@ Luigi.setConfig({
     useHashRouting: true
   }
 });
+
+const someObj = { one: 1, two: 2 };
+const { one: otherObj } = someObj;
+
+const test = (a = 123, b = 321) => {};
