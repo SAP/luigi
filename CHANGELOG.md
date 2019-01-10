@@ -36,8 +36,6 @@ The lerna-changelog tool detects changes based on PR labels and maps them to sec
 
 #### :memo: Documentation
 * [#306](https://github.com/kyma-project/luigi/pull/306) Icons in navigation nodes ([@parostatkiem](https://github.com/parostatkiem))
-* [#320](https://github.com/kyma-project/luigi/pull/320) Add changelog entry for 0.4.3 release ([@kwiatekus](https://github.com/kwiatekus))
-* [#309](https://github.com/kyma-project/luigi/pull/309) Add changelog entry for 0.4.1 version ([@kwiatekus](https://github.com/kwiatekus))
 
 #### Committers: 5
 - Jan Sudczak ([@parostatkiem](https://github.com/parostatkiem))
