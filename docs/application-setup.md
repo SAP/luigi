@@ -115,7 +115,7 @@ npm install -g @vue/cli
 
 2. Use the following commands to create a directory for your application, install Luigi, make assets available, and start your local server.
 
-```shell
+````
 vue create -d my-vue-app && cd my-vue-app
 npm i -S @kyma-project/luigi-core@latest @kyma-project/luigi-client@latest fiori-fundamentals@latest
 mkdir -p public/assets
@@ -125,4 +125,4 @@ curl https://raw.githubusercontent.com/kyma-project/Luigi/master/core/examples/l
 curl https://raw.githubusercontent.com/kyma-project/Luigi/master/core/examples/luigi-sample-angular/src/assets/basicexternal.html > public/assets/basicexternal.html
 echo "const webpack=require('webpack');const CopyWebpackPlugin=require('copy-webpack-plugin');module.exports={pages:{sampleapp:{entry:'src/main.js',template:'public/vue.html',filename:'vue.html'}},lintOnSave:true,runtimeCompiler:true,outputDir:'dist',configureWebpack:{plugins:[new CopyWebpackPlugin([{context:'public',to:'index.html',from:'index.html'},{context:'node_modules/@kyma-project/luigi-core',to:'./luigi-core',from:{glob:'**',dot:true}},{context:'node_modules/@kyma-project/luigi-client',to:'./luigi-client',from:{glob:'**',dot:true}}],{ignore:['.gitkeep','**/.DS_Store','**/Thumbs.db'],debug:'warning'})]}};" > vue.config.js
 npm run serve
-```
+````
