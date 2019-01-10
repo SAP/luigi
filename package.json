@@ -6,7 +6,15 @@
     "prettier": "^1.15.3"
   },
   "prettier": {
-    "singleQuote": true
+    "singleQuote": true,
+    "overrides": [
+      {
+        "files": "*.html",
+        "options": {
+          "parser": "vue"
+        }
+      }
+    ]
   },
   "changelog": {
     "repo": "kyma-project/luigi",
