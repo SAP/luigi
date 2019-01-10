@@ -219,7 +219,7 @@ You can configure the way Luigi tackles routing in your application in the **Rou
 - **skipRoutingForUrlPatterns** defines regex patterns to be skipped by the router when listening for path changes. This parameter is used for excluding **redirect_uri** parameters. Default patterns are `[/access_token=/, '/id_token=/]`.
 - **pageNotFoundHandler** is a function defining custom behavior when the 404 (page not found) error occurs.  Luigi handles it by default. Leave its body empty if you have an external 404 handling. This function takes the following parameters: 
   - **wrongPath**(string): the path that user tried to navigate to
-  - **wasAnyPathFitted**(bool): is true if Luigi managed to fit a valid path which means _wrongPath_ was only "partly wrong". Otherwise it is false.
+  - **wasAnyPathFitted**(bool): it is true if Luigi managed to fit a valid path which means **wrongPath** was only partially wrong. Otherwise it is false.
 
 ### Node navigation parameters
 
