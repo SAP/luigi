@@ -11,7 +11,7 @@ npm init -y
 
 # add "start" command to the package.json file. This command is split into 2 lines on purpose!
 sed 's/"scripts": {/"scripts": {\
-\   "start":"webpack --entry .\/src\/luigi-config\/basic\/basicConfiguration.js -o .\/public\/assets\/sampleconfig.js --mode production\&\& live-server --entry-file=index.html public",/1' package.json > p.tmp.json && mv p.tmp.json package.json
+\   "buildConfig":"webpack --entry .\/src\/luigi-config\/basic\/basicConfiguration.js -o .\/public\/assets\/sampleconfig.js --mode production",/1' package.json > p.tmp.json && mv p.tmp.json package.json
 
 npm i -save @kyma-project/luigi-core @kyma-project/luigi-client fiori-fundamentals webpack webpack-cli @babel/core @babel/preset-env babel-loader 
 mkdir -p public/assets
@@ -27,4 +27,5 @@ sed "s|extendedConfiguration.js|sampleconfig.js|g" public/index.html > public/in
 cp -r node_modules/\@kyma-project/luigi-* public
 cp -r node_modules/fiori-fundamentals/dist public/fiori-fundamentals
 
-npm run start
+npm run buildConfig
+live-server --entry-file=index.html public
