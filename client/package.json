@@ -1,7 +1,8 @@
 {
-  "name": "@kyma-project/luigi-client",
+  "name": "luigi-client-private",
   "version": "0.4.3",
-  "description": "Javascript library supporting consumers of the Luigi framework",
+  "private": true,
+  "description": "luigi-client development version, only the public folder is being published to npm as a package",
   "main": "public/luigi-client.bundle.js",
   "scripts": {
     "bundle": "webpack --mode production",
