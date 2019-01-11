@@ -248,6 +248,7 @@ The node parameters are as follows:
 - **loadingIndicator.hideAutomatically** disables the automatic hiding of the loading indicator once the micro front-end is loaded. It is only considered if the loading indicator is enabled. It does not apply if the loading indicator is activated manually with the `LuigiClient.uxManager().showLoadingIndicator()` function. If the loading indicator is enabled and automatic hiding is disabled, use `LuigiClient.uxManager().hideLoadingIndicator()` to hide it manually in your micro front-end during the startup. This parameter is enabled by default.
 - **viewGroup** defines a group of views in the same domain sharing a common security context. This improves performance through reusing the frame. Use **viewGroup** only for the views that use path routing internally.
 - **icon** is the name of an icon from the [OpenUI](https://openui5.hana.ondemand.com/1.40.10/iconExplorer.html) or a custom link (relative or absolute) to an image displayed next to the Node label in the side navigation or instead of the label in the top navigation.
+- **anonymousAccess** defines if the node should be visible for the anonymous user. If **anonymousAccess** is set to _true_, all users will see the node, if it's set to _exclusive_, the node will be visible only for users that are not logged in. It is not propagated to the node's children and is disabled by default.
 
 
 ### Navigation configuration example
