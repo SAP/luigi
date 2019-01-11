@@ -1,6 +1,6 @@
 {
   "name": "luigi-client-private",
-  "version": "0.4.3",
+  "version": "0.4.4",
   "private": true,
   "description": "luigi-client development version, only the public folder is being published to npm as a package",
   "main": "public/luigi-client.bundle.js",
