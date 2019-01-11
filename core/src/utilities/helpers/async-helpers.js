@@ -3,7 +3,7 @@ import * as GenericHelpers from './generic-helpers.js';
 
 const handles = {};
 
-export const keyExistencyTimeout = 20000;
+export const keyExistencyTimeout = 60000;
 export const keyExistencyCheckInterval = 50;
 
 export const waitForKeyExistency = (
