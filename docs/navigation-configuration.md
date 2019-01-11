@@ -176,7 +176,7 @@ The navigation structure with the project list view using such sample node param
         pathSegment: 'home',
         label: 'Home',
         viewUrl: 'https://my.microfrontend.com/',
-        children: [The
+        children: [
           {
             pathSegment: 'projects',
             label: 'Projects',

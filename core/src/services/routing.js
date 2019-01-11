@@ -284,6 +284,6 @@ export const handleRouteClick = (node, componentData) => {
     navigateTo(link);
   } else {
     const route = RoutingHelpers.buildRoute(node, `/${node.pathSegment}`);
-    navigateTo(RoutingHelpers.substituteViewUrl(route, componentData));
+    navigateTo(GenericHelpers.replaceVars(route, componentData.pathParams, ':', false));
   }
 };
