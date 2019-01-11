@@ -23,6 +23,21 @@ The lerna-changelog tool detects changes based on PR labels and maps them to sec
     ...
   }
 -->
+
+## [v0.4.4] (2019-01-10)
+
+#### :rocket: Added
+* [#319](https://github.com/kyma-project/luigi/pull/319) Implement anonymous content feature ([@hardl](https://github.com/hardl))
+* [#306](https://github.com/kyma-project/luigi/pull/306) Icons in navigation nodes ([@parostatkiem](https://github.com/parostatkiem))
+
+#### :bug: Fixed
+* [#331](https://github.com/kyma-project/luigi/pull/331) Fix defaultChildNode mechanism for root path ([@jesusreal](https://github.com/jesusreal))
+* [#317](https://github.com/kyma-project/luigi/pull/317) Improve defaultChildNode ([@parostatkiem](https://github.com/parostatkiem))
+
+#### :memo: Documentation
+* [#306](https://github.com/kyma-project/luigi/pull/306) Icons in navigation nodes ([@parostatkiem](https://github.com/parostatkiem))
+
+
 ## [v0.4.3] - 2019-01-07
 
 #### :bug: Fixed
@@ -239,3 +254,4 @@ The lerna-changelog tool detects changes based on PR labels and maps them to sec
 [v0.4.0]: https://github.com/kyma-project/luigi/compare/v0.3.8...v0.4.0
 [v0.4.1]: https://github.com/kyma-project/luigi/compare/v0.4.0...v0.4.1
 [v0.4.3]: https://github.com/kyma-project/luigi/compare/v0.4.2...v0.4.3
+[v0.4.4]: https://github.com/kyma-project/luigi/compare/v0.4.3...v0.4.4
