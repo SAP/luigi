@@ -66,8 +66,8 @@ export const ContextSwitcherHelpers = {
     const selectedId = currentPath
       .replace(parentNodePath, '')
       .split('/')[0]
-      .split(nodeParamPrefix)[0] //ignore everythin after nodeParamPrefix
-      .split('?')[0]; //ignore everythin after '?' in case nodeParamPrefix was not used
+      .split(nodeParamPrefix)[0] //ignore everything after nodeParamPrefix
+      .split('?')[0]; //ignore everything after '?' in case nodeParamPrefix was not used
 
     let selectedLabel;
 
