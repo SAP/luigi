@@ -355,7 +355,7 @@ Luigi.setConfig({
    */
   auth: {
     use: 'mockAuth',
-    disableAutoLogin: true,
+    disableAutoLogin: false,
     mockAuth: {
       authorizeUrl: `${
         window.location.origin

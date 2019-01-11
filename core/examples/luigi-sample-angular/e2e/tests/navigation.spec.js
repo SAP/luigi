@@ -49,6 +49,16 @@ describe('Navigation', () => {
       .should('exist');
   });
 
+  it('Anonymous content', () => {
+    cy.get('.fd-shellbar')
+      .contains('Visible for all users')
+      .should('exist');
+
+    cy.get('.fd-shellbar')
+      .contains('Visible for anonymous users only')
+      .should('not.exist');
+  });
+
   describe('features', () => {
     it('keepSelectedForChildren', () => {
       // keep selected for children example
