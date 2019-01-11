@@ -24,15 +24,18 @@ export const getDefaultChildNode = async pathData => {
   if (lastElement.defaultChildNode && pathExists) {
     return lastElement.defaultChildNode;
   } else if (children && children.length) {
+    const rootPath = pathData.navigationPath.length === 1;
+    if (rootPath) return children[0].pathSegment;
+
     const validChild = children.find(
       child =>
         child.pathSegment &&
         (child.viewUrl || (child.externalLink && child.externalLink.url))
     );
-    return validChild ? validChild.pathSegment : '';
-  } else {
-    return '';
+    if (validChild) return validChild.pathSegment;
   }
+
+  return '';
 };
 
 export const isExistingRoute = (path, pathData) => {
