@@ -137,6 +137,7 @@ function luigiClientInit() {
 
 luigiClientInit();
 
+/** @namespace */
 const LuigiClient = {
   /**
    * Use the functions and parameters to define the lifecycle of listeners, navigation nodes, and Event data.
@@ -232,6 +233,7 @@ const LuigiClient = {
       - Reflect the route.
       - Keep the navigation state in Luigi.
      */
+  /** @name linkManager */
   linkManager: function linkManager() {
     var options = {
       preserveView: false,
@@ -400,6 +402,7 @@ const LuigiClient = {
   /**
    * Use the UX Manager to manage the appearance features in Luigi.
    */
+  /** @name uxManager */
   uxManager: function uxManager() {
     return {
       /** @lends uxManager */
