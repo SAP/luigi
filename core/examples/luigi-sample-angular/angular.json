@@ -45,7 +45,7 @@
               },
               {
                 "glob": "luigi-client.bundle.js",
-                "input": "node_modules/@kyma-project/luigi-client/public",
+                "input": "node_modules/@kyma-project/luigi-client",
                 "output": "/luigi-client"
               }
             ],
