@@ -148,15 +148,13 @@
         const options = this.get().options;
         const parentNodePath = config.parentNodePath;
         const fallbackLabelResolver = config.fallbackLabelResolver;
-        const nodeParamPrefix =
-          LuigiConfig.getConfigValue('routing.nodeParamPrefix') || '~';
+
         this.set({
           selectedLabel: await ContextSwitcherHelpers.getSelectedLabel(
             currentPath,
             options,
             parentNodePath,
-            fallbackLabelResolver,
-            nodeParamPrefix
+            fallbackLabelResolver
           )
         });
       },
