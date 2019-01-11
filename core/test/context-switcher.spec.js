@@ -232,5 +232,24 @@ describe('Context-switcher', function() {
       );
       assert.equal(result, '##env3##');
     });
+
+    it("returns node label without Luigi's path params", async () => {
+      const result = await CSHelpers.getSelectedLabel(
+        '/environment/env1~?mask=opatol',
+        null,
+        parentNodePath,
+        myResolverFn
+      );
+      assert.equal(result, '##env1##');
+    });
+    it('returns node label without normal path params', async () => {
+      const result = await CSHelpers.getSelectedLabel(
+        '/environment/env1?mask=opatol',
+        null,
+        parentNodePath,
+        myResolverFn
+      );
+      assert.equal(result, '##env1##');
+    });
   });
 });

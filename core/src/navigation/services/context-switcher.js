@@ -47,7 +47,8 @@ export const ContextSwitcherHelpers = {
     currentPath,
     options,
     parentNodePath,
-    fallbackLabelResolver
+    fallbackLabelResolver,
+    nodeParamPrefix = '~'
   ) {
     currentPath = Helpers.normalizePath(currentPath);
     parentNodePath = Helpers.normalizePath(parentNodePath);
@@ -62,7 +63,11 @@ export const ContextSwitcherHelpers = {
     }
 
     // we are inside the context switcher base path
-    const selectedId = currentPath.replace(parentNodePath, '').split('/')[0];
+    const selectedId = currentPath
+      .replace(parentNodePath, '')
+      .split('/')[0]
+      .split(nodeParamPrefix)[0] //ignore everythin after nodeParamPrefix
+      .split('?')[0]; //ignore everythin after '?' in case nodeParamPrefix was not used
 
     let selectedLabel;
 

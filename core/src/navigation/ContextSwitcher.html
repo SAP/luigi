@@ -148,12 +148,15 @@
         const options = this.get().options;
         const parentNodePath = config.parentNodePath;
         const fallbackLabelResolver = config.fallbackLabelResolver;
+        const nodeParamPrefix =
+          LuigiConfig.getConfigValue('routing.nodeParamPrefix') || '~';
         this.set({
           selectedLabel: await ContextSwitcherHelpers.getSelectedLabel(
             currentPath,
             options,
             parentNodePath,
-            fallbackLabelResolver
+            fallbackLabelResolver,
+            nodeParamPrefix
           )
         });
       },
@@ -168,12 +171,12 @@
         this.goTo(node.link);
       },
       goTo(path) {
-        this.root.getUnsavedChangesModalPromise().then(
-          () => { Routing.navigateTo(path) }
-        )
+        this.root.getUnsavedChangesModalPromise().then(() => {
+          Routing.navigateTo(path);
+        });
       },
       toggleDropdownState(name) {
-        this.fire('toggleDropdownState', {name});
+        this.fire('toggleDropdownState', { name });
         const dropDownStates = this.get().dropDownStates || {};
         const isOpened = JSON.parse(dropDownStates[name]);
         if (isOpened) {
