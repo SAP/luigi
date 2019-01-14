@@ -24,6 +24,43 @@ The lerna-changelog tool detects changes based on PR labels and maps them to sec
   }
 -->
 
+## [v0.4.4] (2019-01-10)
+
+#### :rocket: Added
+* [#319](https://github.com/kyma-project/luigi/pull/319) Implement anonymous content feature ([@hardl](https://github.com/hardl))
+* [#306](https://github.com/kyma-project/luigi/pull/306) Icons in navigation nodes ([@parostatkiem](https://github.com/parostatkiem))
+
+#### :bug: Fixed
+* [#331](https://github.com/kyma-project/luigi/pull/331) Fix defaultChildNode mechanism for root path ([@jesusreal](https://github.com/jesusreal))
+* [#317](https://github.com/kyma-project/luigi/pull/317) Improve defaultChildNode ([@parostatkiem](https://github.com/parostatkiem))
+
+#### :memo: Documentation
+* [#306](https://github.com/kyma-project/luigi/pull/306) Icons in navigation nodes ([@parostatkiem](https://github.com/parostatkiem))
+
+
+## [v0.4.3] - 2019-01-07
+
+#### :bug: Fixed
+* [#318](https://github.com/kyma-project/luigi/pull/318) Increase timeout and improve error handling for loading oidc client library ([@kwiatekus](https://github.com/kwiatekus))
+* [#312](https://github.com/kyma-project/luigi/pull/312) Fix node params for path routing ([@dariadomagala](https://github.com/dariadomagala))
+
+## [v0.4.1] - 2018-12-27
+
+#### :rocket: Added
+* [#252](https://github.com/kyma-project/luigi/pull/252) Unsaved changes modal ([@parostatkiem](https://github.com/parostatkiem))
+* [#288](https://github.com/kyma-project/luigi/pull/288) Add possibility to use pathRouting with angular-cli ([@maxmarkus](https://github.com/maxmarkus))
+
+#### :bug: Fixed
+* [#307](https://github.com/kyma-project/luigi/pull/307) Fix error with parsed data ([@dariadomagala](https://github.com/dariadomagala))
+* [#301](https://github.com/kyma-project/luigi/pull/301) Fix dropdowns behavior on click events ([@dariadomagala](https://github.com/dariadomagala))
+* [#305](https://github.com/kyma-project/luigi/pull/305) When adding a listener via Luigi client API, call only the listener being added ([@jesusreal](https://github.com/jesusreal))
+* [#299](https://github.com/kyma-project/luigi/pull/299) It is not possible to have a root node with empty path segment and a view ([@pekura](https://github.com/pekura))
+* [#283](https://github.com/kyma-project/luigi/pull/283) Default child node mechanism breaks if path ends with a slash ([@pekura](https://github.com/pekura))
+
+#### :memo: Documentation
+* [#277](https://github.com/kyma-project/luigi/pull/277) Improve Luigi readme files ([@bszwarc](https://github.com/bszwarc))
+* [#282](https://github.com/kyma-project/luigi/pull/282) Add short README.md file about Luigi Core ([@bszwarc](https://github.com/bszwarc))
+
 ## [v0.4.0] - 2018-12-06
 
 #### :rocket: Added
@@ -215,3 +252,6 @@ The lerna-changelog tool detects changes based on PR labels and maps them to sec
 [v0.3.7]: https://github.com/kyma-project/luigi/compare/v0.3.6...v0.3.7
 [v0.3.8]: https://github.com/kyma-project/luigi/compare/v0.3.7...v0.3.8
 [v0.4.0]: https://github.com/kyma-project/luigi/compare/v0.3.8...v0.4.0
+[v0.4.1]: https://github.com/kyma-project/luigi/compare/v0.4.0...v0.4.1
+[v0.4.3]: https://github.com/kyma-project/luigi/compare/v0.4.2...v0.4.3
+[v0.4.4]: https://github.com/kyma-project/luigi/compare/v0.4.3...v0.4.4
