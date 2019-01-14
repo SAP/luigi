@@ -178,7 +178,7 @@ export const handleRouteChange = async (path, component, node, config) => {
 
     const {
       viewUrl = '',
-      isolateView = false,
+      isolateView = undefined,
       hideSideNav = false
     } = RoutingHelpers.getLastNodeObject(pathData);
     const params = RoutingHelpers.parseParams(pathUrlRaw.split('?')[1]);

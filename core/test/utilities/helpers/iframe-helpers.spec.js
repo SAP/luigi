@@ -26,7 +26,7 @@ describe('Iframe-helpers', () => {
     sinon.restore();
   });
 
-  describe('isSameViewGroup', () => {
+  describe('canReuseIframe', () => {
     const config = {
       iframe: {
         src: 'http://url.com/app.html!#/prevUrl'
@@ -38,7 +38,7 @@ describe('Iframe-helpers', () => {
         viewUrl: 'http://url.com/app.html!#/someUrl',
         previousNodeValues: { viewUrl: config.iframe.src }
       });
-      assert.isTrue(IframeHelpers.isSameViewGroup(config, component));
+      assert.isTrue(IframeHelpers.canReuseIframe(config, component));
     });
 
     it('should return false if views have different domains', () => {
@@ -46,7 +46,7 @@ describe('Iframe-helpers', () => {
         viewUrl: 'http://otherurl.de/app.html!#/someUrl',
         previousNodeValues: { viewUrl: config.iframe.src }
       });
-      assert.isFalse(IframeHelpers.isSameViewGroup(config, component));
+      assert.isFalse(IframeHelpers.canReuseIframe(config, component));
     });
 
     const noHashConfig = {
@@ -64,7 +64,7 @@ describe('Iframe-helpers', () => {
           viewGroup: 'firstSPA'
         }
       });
-      assert.isTrue(IframeHelpers.isSameViewGroup(config, component));
+      assert.isTrue(IframeHelpers.canReuseIframe(config, component));
     });
 
     it('should return false if views have the same domian and different viewGroups', () => {
@@ -76,7 +76,7 @@ describe('Iframe-helpers', () => {
           viewGroup: 'secondSPA'
         }
       });
-      assert.isFalse(IframeHelpers.isSameViewGroup(config, component));
+      assert.isFalse(IframeHelpers.canReuseIframe(config, component));
     });
 
     it('should return false if views have the same domain and no viewGroup defined', () => {
@@ -86,7 +86,7 @@ describe('Iframe-helpers', () => {
           viewUrl: noHashConfig.iframe.src
         }
       });
-      assert.isFalse(IframeHelpers.isSameViewGroup(config, component));
+      assert.isFalse(IframeHelpers.canReuseIframe(config, component));
     });
 
     it('should return false if views have different domains and the same viewGroup', () => {
@@ -98,7 +98,7 @@ describe('Iframe-helpers', () => {
           viewGroup: 'firstSPA'
         }
       });
-      assert.isFalse(IframeHelpers.isSameViewGroup(config, component));
+      assert.isFalse(IframeHelpers.canReuseIframe(config, component));
     });
   });
 

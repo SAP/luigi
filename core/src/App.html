@@ -33,6 +33,7 @@
   import TopNav from './navigation/TopNav.html';
   import LeftNav from './navigation/LeftNav.html';
   import ConfirmationModal from './ConfirmationModal.html';
+  import { LuigiConfig } from './services/config.js';
   import * as Routing from './services/routing.js';
   import * as Iframe from './services/iframe';
   import * as RoutingHelpers from './utilities/helpers/routing-helpers';
@@ -201,10 +202,12 @@
     onstate({ changed, current, previous }) {},
     actions: {
       init(node) {
+        const isolateAllViews = LuigiConfig.getConfigValue('navigation.defaults.isolateView');
         const config = {
           iframe: null,
           navigateOk: null,
-          builderCompatibilityMode: Boolean(window.builderCompatibilityMode)
+          builderCompatibilityMode: Boolean(window.builderCompatibilityMode),
+          isolateAllViews
         };
 
         window.addEventListener('message', async e => {
