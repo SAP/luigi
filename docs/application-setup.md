@@ -43,19 +43,19 @@ npm install -g live-server
 
 ````
 $ mkdir my-plain-app && cd my-plain-app
-$ npm init -y
 $ npm i -S @kyma-project/luigi-core@latest @kyma-project/luigi-client@latest fiori-fundamentals@latest
 $ mkdir -p public/assets
-$ curl https://raw.githubusercontent.com/kyma-project/Luigi/master/core/examples/luigi-sample-angular/src/index.html > public/index.html
-$ curl https://raw.githubusercontent.com/kyma-project/Luigi/master/core/examples/luigi-sample-angular/src/assets/sampleexternal.html > public/assets/temp.html
-$ curl https://raw.githubusercontent.com/kyma-project/Luigi/master/core/examples/luigi-sample-angular/src/assets/basicConfiguration.js > public/assets/sampleconfig.js
+$ curl https://raw.githubusercontent.com/kyma-project/luigi/master/core/examples/luigi-sample-vue/public/index.html > public/index.html
+<!-- $ curl https://raw.githubusercontent.com/kyma-project/Luigi/master/core/examples/luigi-sample-angular/src/assets/sampleexternal.html > public/assets/temp.html -->
+$ curl https://raw.githubusercontent.com/kyma-project/Luigi/master/core/examples/luigi-sample-angular/src/assets/basicConfiguration.js > public/sampleconfig.js
+$ curl https://raw.githubusercontent.com/kyma-project/Luigi/master/core/examples/luigi-sample-angular/src/assets/basicexternal.html > public/assets/basicexternal.html
 $ cp -r node_modules/\@kyma-project/luigi-* public
 $ live-server --entry-file=index.html public
 
 ````
 <a name="angular6"></a>
 
-### Application setup for Angular 6 
+### Application setup for Angular 6
 
 >**NOTE:** The Angular CLI is a prerequisite for this example.
 
@@ -68,7 +68,8 @@ $ ng new my-dream-app --routing && cd my-dream-app
 $ npm i -S @kyma-project/luigi-core@latest @kyma-project/luigi-client@latest fiori-fundamentals@latest
 $ mv src/index.html src/angular.html
 $ curl https://raw.githubusercontent.com/kyma-project/Luigi/master/core/examples/luigi-sample-angular/src/index.html > src/index.html
-$ curl https://raw.githubusercontent.com/kyma-project/Luigi/master/core/examples/luigi-sample-angular/src/assets/basicConfiguration.js > src/assets/sampleconfig.js
+$ curl https://raw.githubusercontent.com/kyma-project/Luigi/master/core/examples/luigi-sample-angular/src/assets/basicConfiguration.js > src/assets/extendedConfiguration.js
+$ curl https://raw.githubusercontent.com/kyma-project/Luigi/master/core/examples/luigi-sample-angular/src/assets/basicexternal.html > src/assets/basicexternal.html
 $ sed 's/"src\/index.html"/"src\/angular.html"/g' angular.json > tmp.json && mv tmp.json angular.json
 $ sed 's/"src\/assets"/"src\/assets","src\/index.html", {"glob": "**","input": "node_modules\/@kyma-project\/luigi-core", "output": "\/luigi-core"},{"glob": "**","input": "node_modules\/@kyma-project\/luigi-client","output": "\/luigi-client"}/g' angular.json > tmp.json && mv tmp.json angular.json
 $ ng serve
@@ -96,7 +97,7 @@ $ curl https://raw.githubusercontent.com/kyma-project/luigi/master/core/examples
 $ curl https://raw.githubusercontent.com/SAP/openui5/master/src/sap.m/test/sap/m/demokit/helloworld/index.html  | sed 's/src="..\/..\/..\/..\/..\/resources\/sap-ui-core.js"/src="https:\/\/openui5.hana.ondemand.com\/resources\/sap-ui-core.js"/g' > public/ui5.html
 $ curl https://raw.githubusercontent.com/kyma-project/Luigi/master/core/examples/luigi-sample-angular/src/assets/basicConfiguration.js > public/sampleconfig.js
 $ curl https://raw.githubusercontent.com/kyma-project/Luigi/master/core/examples/luigi-sample-angular/src/assets/basicexternal.html > public/assets/basicexternal.html
-curl https://raw.githubusercontent.com/kyma-project/Luigi/master/core/examples/luigi-sample-angular/src/assets/basicexternal.html > public/assets/basicexternal.html
+$ curl https://raw.githubusercontent.com/kyma-project/Luigi/master/core/examples/luigi-sample-angular/src/assets/basicexternal.html > public/assets/basicexternal.html
 $ cp -r node_modules/\@kyma-project/luigi-* public
 $ live-server --entry-file=index.html public
 
@@ -127,14 +128,3 @@ curl https://raw.githubusercontent.com/kyma-project/Luigi/master/core/examples/l
 echo "const webpack=require('webpack');const CopyWebpackPlugin=require('copy-webpack-plugin');module.exports={pages:{sampleapp:{entry:'src/main.js',template:'public/vue.html',filename:'vue.html'}},lintOnSave:true,runtimeCompiler:true,outputDir:'dist',configureWebpack:{plugins:[new CopyWebpackPlugin([{context:'public',to:'index.html',from:'index.html'},{context:'node_modules/@kyma-project/luigi-core',to:'./luigi-core',from:{glob:'**',dot:true}},{context:'node_modules/@kyma-project/luigi-client',to:'./luigi-client',from:{glob:'**',dot:true}}],{ignore:['.gitkeep','**/.DS_Store','**/Thumbs.db'],debug:'warning'})]}};" > vue.config.js
 npm run serve
 ````
-|||
----|---
-|$|vue create -d my-vue-app && cd my-vue-app|
-|$|npm i -S @kyma-project/luigi-core@latest @kyma-project/luigi-client@latest fiori-fundamentals@latest|
-|$|mkdir -p public/assets|
-|$|mv public/index.html public/vue.html|
-|$|curl https://raw.githubusercontent.com/kyma-project/luigi/master/core/examples/luigi-sample-vue/public/index.html > public/index.html|
-|$|curl https://raw.githubusercontent.com/kyma-project/Luigi/master/core/examples/luigi-sample-angular/src/assets/basicConfiguration.js > public/sampleconfig.js|
-|$|curl https://raw.githubusercontent.com/kyma-project/Luigi/master/core/examples/luigi-sample-angular/src/assets/basicexternal.html > public/assets/basicexternal.html|
-|$|echo "const webpack=require('webpack');const CopyWebpackPlugin=require('copy-webpack-plugin');module.exports={pages:{sampleapp:{entry:'src/main.js',template:'public/vue.html',filename:'vue.html'}},lintOnSave:true,runtimeCompiler:true,outputDir:'dist',configureWebpack:{plugins:[new CopyWebpackPlugin([{context:'public',to:'index.html',from:'index.html'},{context:'node_modules/@kyma-project/luigi-core',to:'./luigi-core',from:{glob:'\*\*',dot:true}},{context:'node_modules/@kyma-project/luigi-client',to:'./luigi-client',from:{glob:'\*\*',dot:true}}],{ignore:['.gitkeep','\*\*/.DS_Store','\*\*/Thumbs.db'],debug:'warning'})]}};" > vue.config.js|
-|$|npm run serve|
