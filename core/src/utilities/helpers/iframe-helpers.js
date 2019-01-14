@@ -14,7 +14,37 @@ export const removeElementChildren = node => {
   }
 };
 
-export const isSameViewGroup = (config, component) => {
+export const replaceVars = (viewUrl, params, prefix, parenthesis = true) => {
+  let processedUrl = viewUrl;
+  if (params) {
+    Object.entries(params).forEach(entry => {
+      processedUrl = processedUrl.replace(
+        new RegExp(
+          GenericHelpers.escapeRegExp(
+            (parenthesis ? '{' : '') +
+              prefix +
+              entry[0] +
+              (parenthesis ? '}' : '')
+          ),
+          'g'
+        ),
+        encodeURIComponent(entry[1])
+      );
+    });
+  }
+  if (parenthesis) {
+    processedUrl = processedUrl.replace(
+      new RegExp(
+        '\\{' + GenericHelpers.escapeRegExp(prefix) + '[^\\}]+\\}',
+        'g'
+      ),
+      ''
+    );
+  }
+  return processedUrl;
+};
+
+export const isSameDomain = (config, component) => {
   if (config.iframe) {
     const componentData = component.get();
     const previousUrl = GenericHelpers.getUrlWithoutHash(
@@ -24,6 +54,17 @@ export const isSameViewGroup = (config, component) => {
     if (previousUrl === nextUrl) {
       return true;
     }
+  }
+  return false;
+};
+
+export const isSameViewGroup = (config, component) => {
+  if (config.iframe) {
+    const componentData = component.get();
+    const previousUrl = GenericHelpers.getUrlWithoutHash(
+      componentData.previousNodeValues.viewUrl
+    );
+    const nextUrl = GenericHelpers.getUrlWithoutHash(componentData.viewUrl);
     const previousUrlOrigin = getLocation(previousUrl);
     const nextUrlOrigin = getLocation(nextUrl);
     if (previousUrlOrigin === nextUrlOrigin) {
@@ -39,6 +80,10 @@ export const isSameViewGroup = (config, component) => {
     }
   }
   return false;
+};
+
+export const canReuseIframe = (config, component) => {
+  return isSameDomain(config, component) || isSameViewGroup(config, component);
 };
 
 export const hasIframeIsolation = component => {

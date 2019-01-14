@@ -203,12 +203,25 @@
     onstate({ changed, current, previous }) {},
     actions: {
       init(node) {
+        const isolateAllViews = LuigiConfig.getConfigValue('navigation.defaults.isolateView');
         const config = {
           iframe: null,
           navigateOk: null,
-          builderCompatibilityMode: Boolean(window.builderCompatibilityMode)
+          builderCompatibilityMode: Boolean(window.builderCompatibilityMode),
+          isolateAllViews
         };
-
+        window.addEventListener('popstate', async e => {
+          const alert = this.get().alert;
+          if (alert && typeof alert.ttl == 'number') {
+            if (alert.ttl === 0) {
+              this.set({ alert: null });
+            } else {
+              const updatedAlert = { ...alert };
+              updatedAlert.ttl--;
+              this.set({ alert: updatedAlert });
+            }
+          }
+        });
         window.addEventListener('message', async e => {
           if ('luigi.get-context' === e.data.msg && config.iframe) {
             sendContextToClient(this, config, {});
@@ -237,36 +250,34 @@
 
           if ('luigi.navigation.open' === e.data.msg) {
             this.set({ isNavigateBack: false });
-            this.getUnsavedChangesModalPromise().then(
-              () => { handleNavigation(this, e.data, config); }
-            );
+            this.getUnsavedChangesModalPromise().then(() => {
+              handleNavigation(this, e.data, config);
+            });
           }
 
           if ('luigi.navigation.back' === e.data.msg) {
             // go back: context from the view
             const preservedViews = this.get().preservedViews;
             if (preservedViews && preservedViews.length) {
-              this.getUnsavedChangesModalPromise().then(
-                () => {
-                  // remove current active iframe and data
-                  Iframe.setActiveIframeToPrevious(node);
-                  const previousActiveIframeData = preservedViews.pop();
-                  // set new active iframe and preservedViews
-                  config.iframe = Iframe.getActiveIframe(node);
-                  this.set({
-                    isNavigateBack: true,
-                    preservedViews,
-                    goBackContext:
-                      e.data.goBackContext && JSON.parse(e.data.goBackContext)
-                  });
-                  // TODO: check if getNavigationPath or history pop to update hash / path
-                  const path = handleNavigation(
-                    this,
-                    {params: { link: previousActiveIframeData.path } },
-                    config
-                  );
-                }
-              );
+              this.getUnsavedChangesModalPromise().then(() => {
+                // remove current active iframe and data
+                Iframe.setActiveIframeToPrevious(node);
+                const previousActiveIframeData = preservedViews.pop();
+                // set new active iframe and preservedViews
+                config.iframe = Iframe.getActiveIframe(node);
+                this.set({
+                  isNavigateBack: true,
+                  preservedViews,
+                  goBackContext:
+                    e.data.goBackContext && JSON.parse(e.data.goBackContext)
+                });
+                // TODO: check if getNavigationPath or history pop to update hash / path
+                const path = handleNavigation(
+                  this,
+                  { params: { link: previousActiveIframeData.path } },
+                  config
+                );
+              });
             } else {
               console.error('goBack() not possible, no preserved views found.');
             }
@@ -320,9 +331,7 @@
         };
       },
       handleNavClick(node) {
-        this.getUnsavedChangesModalPromise().then(
-          () => { Routing.handleRouteClick(node, this.get()) }
-        );
+        this.getUnsavedChangesModalPromise().then(() => { Routing.handleRouteClick(node, this.get())});
       },
       handleModalResult(result) {
         const promise = this.get().confirmationModal.promise;
@@ -340,22 +349,27 @@
         return new Promise(resolve => {
           if (this.shouldShowUnsavedChangesModal()) {
             this.showUnsavedChangesModal().then(
-              () => { resolve() },
-              () => { }
+              () => {
+                resolve();
+              },
+              () => {}
             );
           } else {
             resolve();
           }
-        })
+        });
       },
       shouldShowUnsavedChangesModal() {
-        return GenericHelpers.canComponentHandleModal(this) && this.get().unsavedChanges.isDirty
+        return (
+          GenericHelpers.canComponentHandleModal(this) &&
+          this.get().unsavedChanges.isDirty
+        );
       },
       showUnsavedChangesModal() {
         return this.showModal(
           'Unsaved changes detected',
           'It looks like you might lose some data if you leave this page. Are you sure you want to do this?'
-        )
+        );
       },
       showModal(title, text) {
         return new Promise((resolve, reject) => {

@@ -217,6 +217,9 @@ You can configure the way Luigi tackles routing in your application in the **Rou
 - **useHashRouting** defines either hash-based (`url.com/#/yourpath`) or path-based (`url.com/yourpath`) routing.
 - **nodeParamPrefix** sets the prefix character when using the `LuigiClient.linkManager().withParam()` function, which provides a way to simply attach query parameters to the view URL for activities such as sorting and filtering. The URL contains the parameters to allow deep linking. If you want to use a different character prefix, define yours here. The default character is `~`.
 - **skipRoutingForUrlPatterns** defines regex patterns to be skipped by the router when listening for path changes. This parameter is used for excluding **redirect_uri** parameters. Default patterns are `[/access_token=/, '/id_token=/]`.
+- **pageNotFoundHandler** is a function defining custom behavior when the 404 (page not found) error occurs.  Luigi handles it by default. Leave its body empty if you have an external 404 handling. This function takes the following parameters: 
+  - **wrongPath**(string): the path that user tried to navigate to
+  - **wasAnyPathFitted**(bool): it is true if Luigi managed to fit a valid path which means **wrongPath** was only partially wrong. Otherwise it is false.
 
 ### Node navigation parameters
 
@@ -224,6 +227,7 @@ The node navigation parameters are as follows:
 
 - **nodeAccessibilityResolver** allows you to define a permission checker function that gets executed on every node. If it returns `false`, Luigi removes the node and its children from the navigation structure.
 - **nodeAccessibilityResolver** receives all values defined in the node configuration. See [angular basicConfiguration.js](../core/examples/luigi-sample-angular/src/assets/basicConfiguration.js) for the **constraints** example.
+- **defaults.isolateView** renders all views in new frames. This setting overrides the same-domain frame reuse. The **defaults.isolateView** is disabled by default, and you can overwrite it using the **isolateView** value on a single node level.
 
 ### Node parameters
 
@@ -234,8 +238,8 @@ The node parameters are as follows:
   - A dynamic settings example, prefixed with a colon, loads on any other value. 
 - **link** is a string which refers to an absolute path in the navigation structure or a relative path to a grandchild of the current path. If this parameter is defined, **pathSegment** is ignored.
  - **externalLink** is an object which indicates that the node links to an external URL. If this parameter is defined, **pathSegment** and **link** parameters are ignored. It has the following properties:
-  - **sameWindow** defines if the external URL is opened in a new or current tab.
-  - **url** is the external URL that the node leads to.
+   - **sameWindow** defines if the external URL is opened in a new or current tab. The default value for this parameter is `false`.
+   - **url** is the external URL that the node leads to.
 - **label** contains the display name of the navigation node.
 - **hideFromNav** shows or hides a navigation node. You can still navigate to the node but it does not show up in the top or left pane.
 - **viewUrl** contains the URL or path to a view which renders when you click the navigation node. Use either a full URL or a relative path. This value may consist of variables if you have specified a **navigationContext** with a dynamic **pathSegment**. If **viewUrl** is undefined, Luigi activates the child node specified in **defaultChildNode**. When both **viewUrl** and **defaultChildNode** are undefined, Luigi opens the first child of the current node.
