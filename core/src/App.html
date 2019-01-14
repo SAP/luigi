@@ -115,8 +115,10 @@
     if (data.params.preserveView) {
       const pv = component.get().preservedViews;
       const nextPath = buildPath(component, data.params);
+      const pathUrlRaw = component.get().pathUrlRaw;
+      const params = pathUrlRaw.split('?')[1] ? decodeURIComponent(pathUrlRaw.split('?')[1]) : undefined;
       pv.push({
-        path: Routing.getNodePath(component.get().currentNode),
+        path: Routing.getNodePath(component.get().currentNode, params),
         nextPath: nextPath.startsWith('/') ? nextPath : '/' + nextPath,
         context: component.get().context
       });

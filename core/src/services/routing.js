@@ -6,11 +6,12 @@ import { LuigiConfig } from './config';
 import * as GenericHelpers from '../utilities/helpers/generic-helpers';
 import * as Iframe from './iframe';
 
-export const getNodePath = node => {
+export const getNodePath = (node, params) => {
   return node
     ? RoutingHelpers.buildRoute(
         node,
-        node.pathSegment ? '/' + node.pathSegment : ''
+        node.pathSegment ? '/' + node.pathSegment : '',
+        params
       )
     : '';
 };
@@ -236,6 +237,7 @@ export const handleRouteChange = async (path, component, node, config) => {
       pathParams,
       isolateView,
       viewGroup,
+      pathUrlRaw,
       previousNodeValues: previousCompData
         ? {
             viewUrl: previousCompData.viewUrl,
