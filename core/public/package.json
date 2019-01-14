@@ -1,6 +1,6 @@
 {
   "name": "@kyma-project/luigi-core",
-  "version": "0.4.5-RC1",
+  "version": "0.4.5-rc.0",
   "description": "luigi-core",
   "license": "Apache-2.0",
   "repository": {
