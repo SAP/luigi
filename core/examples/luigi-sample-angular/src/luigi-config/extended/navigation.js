@@ -48,10 +48,12 @@ class Navigation {
     {
       pathSegment: 'settings',
       label: 'Settings',
-      viewUrl: '/sampleapp.html#/settings'
+      viewUrl: '/sampleapp.html#/settings',
+      icon: 'settings'
     },
     {
       label: 'Open Google in this tab',
+
       externalLink: {
         url: 'http://google.com',
         sameWindow: true
@@ -71,6 +73,7 @@ class Navigation {
           loadingIndicator: {
             hideAutomatically: false
           },
+          icon: 'drill-up',
           viewUrl: '/assets/sampleexternal.html#one'
         },
         {
@@ -79,6 +82,7 @@ class Navigation {
           loadingIndicator: {
             hideAutomatically: false
           },
+          icon: 'drill-down',
           viewUrl: '/assets/sampleexternal.html#two'
         }
       ]

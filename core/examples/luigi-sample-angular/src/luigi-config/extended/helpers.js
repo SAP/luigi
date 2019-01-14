@@ -72,9 +72,9 @@ const projectDetailNavProviderFn = context =>
 
 export const projectsNavProviderFn = context =>
   new Promise(resolve => {
-    getAllProjects().then(result => {
-      const children = [];
-      result.forEach(project => {
+    getAllProjects().then(function(result) {
+      var children = [];
+      result.forEach(function(project) {
         children.push({
           /**
            * navigationContext:
@@ -93,6 +93,7 @@ export const projectsNavProviderFn = context =>
           context: {
             currentProject: project.id
           },
+          icon: 'folder-blank',
           children: projectDetailNavProviderFn
         });
       });

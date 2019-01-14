@@ -4,11 +4,13 @@ export const projectDetailNavStructure = projectId => [
     pathSegment: 'users',
     label: 'Users and Groups',
     viewUrl: '/sampleapp.html#/projects/' + projectId + '/users',
+    icon: 'group',
     children: [
       {
         category: { label: 'Groups', icon: 'group' },
         pathSegment: 'groups',
         label: 'Groups',
+        icon: 'group',
         viewUrl: '/sampleapp.html#/projects/' + projectId + '/users/groups',
         children: [
           {
@@ -22,6 +24,7 @@ export const projectDetailNavStructure = projectId => [
               {
                 label: 'Group Settings',
                 pathSegment: 'settings',
+                icon: 'user-settings',
                 viewUrl:
                   '/sampleapp.html#/projects/' +
                   projectId +
@@ -34,6 +37,7 @@ export const projectDetailNavStructure = projectId => [
       {
         pathSegment: 'usersoverview',
         label: 'Users Overview',
+        icon: 'employee',
         viewUrl:
           '/sampleapp.html#/projects/' + projectId + '/users/usersoverview'
       }
@@ -43,61 +47,72 @@ export const projectDetailNavStructure = projectId => [
     category: 'User Management',
     pathSegment: 'developers',
     label: 'Developers',
-    viewUrl: '/sampleapp.html#/projects/' + projectId + '/developers'
+    viewUrl: '/sampleapp.html#/projects/' + projectId + '/developers',
+    icon: '/assets/favicon-sap.ico'
   },
   {
     category: { label: 'Settings', icon: 'action-settings' },
     pathSegment: 'settings',
     label: 'Project Settings',
-    viewUrl: '/sampleapp.html#/projects/' + projectId + '/settings'
+    viewUrl: '/sampleapp.html#/projects/' + projectId + '/settings',
+    icon: 'settings'
   },
   {
     pathSegment: 'miscellaneous',
     constraints: ['unicorns'],
     label: 'Miscellaneous',
-    viewUrl: '/sampleapp.html#/projects/' + projectId + '/miscellaneous'
+    viewUrl: '/sampleapp.html#/projects/' + projectId + '/miscellaneous',
+    icon: 'sys-help'
   },
   {
     pathSegment: 'miscellaneous2',
     label: 'Miscellaneous2',
-    viewUrl: '/sampleapp.html#/projects/' + projectId + '/miscellaneous2'
+    viewUrl: '/sampleapp.html#/projects/' + projectId + '/miscellaneous2',
+    icon: 'sys-help'
   },
   {
     pathSegment: 'misc2-isolated',
     label: 'Miscellaneous2 (Isolated View)',
     isolateView: true,
-    viewUrl: '/sampleapp.html#/projects/' + projectId + '/miscellaneous2'
+    viewUrl: '/sampleapp.html#/projects/' + projectId + '/miscellaneous2',
+    icon: 'sys-help-2'
   },
   {
     pathSegment: 'dps',
     label: 'Default Child node Example',
     defaultChildNode: 'dps2',
+    icon: 'checklist',
     children: [
       {
         pathSegment: 'dps1',
         label: 'First Child',
-        viewUrl: '/sampleapp.html#/projects/' + projectId + '/dps/dps1'
+        viewUrl: '/sampleapp.html#/projects/' + projectId + '/dps/dps1',
+        icon: 'physical-activity'
       },
       {
         pathSegment: 'dps2',
         label: 'Second Child',
-        viewUrl: '/sampleapp.html#/projects/' + projectId + '/dps/dps2'
+        viewUrl: '/sampleapp.html#/projects/' + projectId + '/dps/dps2',
+        icon: 'physical-activity'
       }
     ]
   },
   {
     link: '/settings',
-    label: 'Go to absolute path'
+    label: 'Go to absolute path',
+    icon: 'switch-views'
   },
   {
     link: 'dps/dps1',
-    label: 'Go to relative path'
+    label: 'Go to relative path',
+    icon: 'switch-views'
   },
   {
     pathSegment: 'avengers',
     label: 'Keep Selected Example',
     viewUrl: '/sampleapp.html#/projects/' + projectId + '/dynamic/avengers',
     keepSelectedForChildren: true,
+    icon: 'accept',
     context: {
       label: 'Avengers',
       links: [
@@ -166,15 +181,20 @@ export const projectDetailNavStructure = projectId => [
     pathSegment: 'hideSideNav',
     label: 'Hide left navigation',
     viewUrl: '/sampleapp.html#/projects/' + projectId + '/hideSideNav',
-    hideSideNav: true
+    hideSideNav: true,
+    icon: 'full-screen'
   },
   {
     label: 'Open Github in new tab',
-    category: { label: 'Super useful Github links', icon: 'world' },
+    category: {
+      label: 'Super useful Github links',
+      icon: '/assets/github-logo.png'
+    },
     externalLink: {
       url: 'http://github.com',
       sameWindow: false
-    }
+    },
+    icon: 'internet-browser'
   },
   {
     label: 'Open Github in this tab',
@@ -182,6 +202,7 @@ export const projectDetailNavStructure = projectId => [
     externalLink: {
       url: 'http://github.com',
       sameWindow: true
-    }
+    },
+    icon: 'globe'
   }
 ];
