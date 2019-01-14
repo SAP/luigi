@@ -4,13 +4,17 @@ import * as NavigationHelpers from '../../utilities/helpers/navigation-helpers';
 import * as AsyncHelpers from '../../utilities/helpers/async-helpers';
 import * as GenericHelpers from '../../utilities/helpers/generic-helpers';
 import * as RoutingHelpers from '../../utilities/helpers/routing-helpers';
+import { LuigiConfig } from '../../services/config.js';
 
-export const getNavigationPath = async (rootNavProviderPromise, activePath) => {
-  if (!rootNavProviderPromise) {
-    console.error('No navigation nodes provided in the configuration.');
-    return [{}];
-  }
+export const getNavigationPath = async (rootNavProviderPromise, path = '') => {
   try {
+    const activePath = GenericHelpers.getTrimmedUrl(path);
+
+    if (!rootNavProviderPromise) {
+      console.error('No navigation nodes provided in the configuration.');
+      return [{}];
+    }
+
     let rootNode;
     const topNavNodes = await rootNavProviderPromise;
     if (GenericHelpers.isObject(topNavNodes)) {
@@ -25,17 +29,31 @@ export const getNavigationPath = async (rootNavProviderPromise, activePath) => {
       rootNode = { children: topNavNodes };
     }
     await getChildren(rootNode); // keep it, mutates and filters children
-    const nodeNamesInCurrentPath = (activePath || '').split('/');
+    const nodeNamesInCurrentPath = activePath.split('/');
     const navObj = await buildNode(
       nodeNamesInCurrentPath,
       [rootNode],
       rootNode.children,
       rootNode.context || {}
     );
+
+    const navPathSegments = navObj.navigationPath
+      .filter(x => x.pathSegment)
+      .map(x => x.pathSegment);
+
     navObj.isExistingRoute =
-      !activePath ||
-      nodeNamesInCurrentPath.length ===
-        navObj.navigationPath.filter(x => x.pathSegment).length;
+      !activePath || nodeNamesInCurrentPath.length === navPathSegments.length;
+
+    const pathSegments = activePath.split('/');
+    navObj.matchedPath = pathSegments
+      .filter((segment, index) => {
+        return (
+          (navPathSegments[index] && navPathSegments[index].startsWith(':')) ||
+          navPathSegments[index] === segment
+        );
+      })
+      .join('/');
+
     return navObj;
   } catch (err) {
     console.error('Failed to load top navigation nodes.', err);
@@ -122,12 +140,10 @@ const buildNode = async (
             node.pathSegment.replace(':', '')
           ] = RoutingHelpers.sanitizeParam(urlPathElement);
         }
-        const newNodeNamesInCurrentPath = nodeNamesInCurrentPath.slice();
-        newNodeNamesInCurrentPath.shift();
+        const newNodeNamesInCurrentPath = nodeNamesInCurrentPath.slice(1);
 
         result = buildNode(
           newNodeNamesInCurrentPath,
-          // nodeNamesInCurrentPath,
           nodesInCurrentPath,
           children,
           newContext,

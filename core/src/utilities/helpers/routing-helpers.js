@@ -100,23 +100,21 @@ export const buildRoute = (node, path, params) =>
     ? path + (params ? '?' + params : '')
     : buildRoute(node.parent, `/${node.parent.pathSegment}${path}`, params);
 
-export const substituteObject = (object, paramMap, paramPrefix = ':') => {
-  const newObject = {};
-  Object.entries(object).forEach(pair => {
-    const key = pair[0];
-    const value = pair[1];
-    let found;
-    Object.entries(paramMap).forEach(param => {
-      if (value === paramPrefix + param[0]) {
-        newObject[key] = param[1];
-        found = true;
-      }
-    });
-    if (!found) {
-      newObject[key] = value;
-    }
-  });
-  return newObject;
+export const substituteDynamicParamsInObject = (
+  object,
+  paramMap,
+  paramPrefix = ':'
+) => {
+  return Object.entries(object)
+    .map(([key, value]) => {
+      let foundKey = Object.keys(paramMap).find(
+        key2 => value === paramPrefix + key2
+      );
+      return [key, foundKey ? paramMap[foundKey] : value];
+    })
+    .reduce((acc, [key, value]) => {
+      return Object.assign(acc, { [key]: value });
+    }, {});
 };
 
 export const substituteViewUrl = (viewUrl, componentData) => {

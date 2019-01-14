@@ -121,6 +121,11 @@ export const trimLeadingSlash = str => str.replace(/^\/+/g, '');
  */
 export const trimTrailingSlash = str => str.replace(/\/+$/, '');
 
+export const getTrimmedUrl = path => {
+  const pathUrl = 0 < path.length ? getPathWithoutHash(path) : path;
+  return trimTrailingSlash(pathUrl.split('?')[0]);
+};
+
 /**
  * Returns a path that starts and end with one (and only one) slash,
  * regardless of the slashes being already present in the path given as input

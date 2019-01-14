@@ -4,7 +4,7 @@ const assert = chai.assert;
 import * as RoutingHelpers from '../../../src/utilities/helpers/routing-helpers';
 
 describe('Routing-helpers', () => {
-  describe('substituteObject', () => {
+  describe('substituteDynamicParamsInObject', () => {
     it('substitutes an object', () => {
       const input = {
         key1: 'something',
@@ -19,9 +19,9 @@ describe('Routing-helpers', () => {
         key2: 'mygroup'
       };
 
-      expect(RoutingHelpers.substituteObject(input, paramMap)).to.deep.equal(
-        expectedOutput
-      );
+      expect(
+        RoutingHelpers.substituteDynamicParamsInObject(input, paramMap)
+      ).to.deep.equal(expectedOutput);
       expect(input.key2).to.equal(':group');
     });
     it('substitutes an object using custom prefix', () => {
@@ -39,7 +39,7 @@ describe('Routing-helpers', () => {
       };
 
       expect(
-        RoutingHelpers.substituteObject(input, paramMap, '#')
+        RoutingHelpers.substituteDynamicParamsInObject(input, paramMap, '#')
       ).to.deep.equal(expectedOutput);
       expect(input.key2).to.equal('#group');
     });

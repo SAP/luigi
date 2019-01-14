@@ -279,14 +279,16 @@
           if ('luigi.navigation.pathExists' === e.data.msg) {
             const data = e.data.data;
             const path = buildPath(this, data);
-            const matched = await Routing.matchPath(path);
+            const pathData = await Navigation.getNavigationPath(
+              LuigiConfig.getConfigValueAsync('navigation.nodes'), path
+            );
 
             config.iframe.contentWindow.postMessage(
               {
                 msg: 'luigi.navigation.pathExists.answer',
                 data: {
                   correlationId: data.id,
-                  pathExists: matched.pathData.isExistingRoute
+                  pathExists: pathData.isExistingRoute
                 }
               },
               '*'

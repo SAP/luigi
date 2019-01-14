@@ -33,44 +33,6 @@ export const concatenatePath = (basePath, relativePath) => {
   return path;
 };
 
-export const matchPath = async path => {
-  try {
-    const pathUrl =
-      0 < path.length ? GenericHelpers.getPathWithoutHash(path) : path;
-    const trimmedPathUrl = GenericHelpers.trimTrailingSlash(
-      pathUrl.split('?')[0]
-    );
-    const pathData = await Navigation.getNavigationPath(
-      LuigiConfig.getConfigValueAsync('navigation.nodes'),
-      trimmedPathUrl
-    );
-
-    if (pathData.navigationPath.length > 0) {
-      const navPathSegments = pathData.navigationPath
-        .filter(x => x.pathSegment)
-        .map(x => x.pathSegment);
-      const pathSegments = trimmedPathUrl.split('/');
-      const matchedPath = pathSegments
-        .filter((segment, index) => {
-          return (
-            (navPathSegments[index] &&
-              navPathSegments[index].startsWith(':')) ||
-            navPathSegments[index] === segment
-          );
-        })
-        .join('/');
-
-      return {
-        pathData,
-        matchedPath
-      };
-    }
-  } catch (err) {
-    console.error('Could not match path', err);
-  }
-  return null;
-};
-
 /**
   navigateTo used for navigation
   @param route string  absolute path of the new route
@@ -186,12 +148,10 @@ export const handleRouteChange = async (
 
     const pathUrlRaw =
       path && path.length ? GenericHelpers.getPathWithoutHash(path) : '';
-    const pathUrl = GenericHelpers.trimTrailingSlash(pathUrlRaw.split('?')[0]);
     const pathData = await Navigation.getNavigationPath(
       LuigiConfig.getConfigValueAsync('navigation.nodes'),
-      pathUrl
+      path
     );
-
     const lastNode = RoutingHelpers.getLastNodeObject(pathData);
     const viewUrl = lastNode.viewUrl || '';
 
@@ -200,7 +160,10 @@ export const handleRouteChange = async (
         const defaultChildNode = await RoutingHelpers.getDefaultChildNode(
           pathData
         );
-        navigateTo(`${pathUrl ? `/${pathUrl}` : ''}/${defaultChildNode}`);
+        const trimmedPathUrl = GenericHelpers.getTrimmedUrl(path);
+        navigateTo(
+          `${trimmedPathUrl ? `/${trimmedPathUrl}` : ''}/${defaultChildNode}`
+        );
       } else {
         const alert = {
           message: 'Could not find the requested route',
@@ -215,14 +178,14 @@ export const handleRouteChange = async (
     }
 
     if (!pathData.isExistingRoute) {
-      const matched = await matchPath(pathUrlRaw);
+      const matchedPath = pathData.matchedPath;
       const alert = {
         message: 'Could not map the exact target node for the requested route',
         link: pathUrlRaw
       };
 
       component.set({ alert });
-      navigateTo(GenericHelpers.addLeadingSlash(matched.matchedPath));
+      navigateTo(GenericHelpers.addLeadingSlash(matchedPath));
     }
 
     const hideNav = LuigiConfig.getConfigBooleanValue(
@@ -243,7 +206,7 @@ export const handleRouteChange = async (
       viewGroup,
       currentNode,
       navigationPath: pathData.navigationPath,
-      context: RoutingHelpers.substituteObject(
+      context: RoutingHelpers.substituteDynamicParamsInObject(
         Object.assign({}, pathData.context, currentNode.context),
         pathData.pathParams
       ),
@@ -284,6 +247,8 @@ export const handleRouteClick = (node, componentData) => {
     navigateTo(link);
   } else {
     const route = RoutingHelpers.buildRoute(node, `/${node.pathSegment}`);
-    navigateTo(GenericHelpers.replaceVars(route, componentData.pathParams, ':', false));
+    navigateTo(
+      GenericHelpers.replaceVars(route, componentData.pathParams, ':', false)
+    );
   }
 };
