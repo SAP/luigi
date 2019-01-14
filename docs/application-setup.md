@@ -39,11 +39,42 @@ The examples on this page demonstrate commands that perform each of the necessar
 npm install -g live-server
 ````
 
-2. Use the following installer to create a directory for your application, install Luigi, make assets available, and start your local server.
+2. Use the following installer to create a directory for your application, install Luigi, make assets available, and start your local server
 
-````
+```
 bash <(curl -s https://raw.githubusercontent.com/kyma-project/Luigi/master/scripts/setup/no-framework.sh)
 ````
+or execute these commands manually to get the same result:
+```bash
+mkdir my-new-app && cd my-new-app
+
+npm init -y
+
+sed 's/"scripts": {/"scripts": {\
+\   "buildConfig":"webpack --entry .\/src\/luigi-config\/basic\/basicConfiguration.js -o .\/public\/assets\/sampleconfig.js --mode production",/1' package.json > p.tmp.json && mv p.tmp.json package.json
+
+npm i -save @kyma-project/luigi-core @kyma-project/luigi-client fiori-fundamentals webpack webpack-cli @babel/core @babel/preset-env babel-loader 
+
+mkdir -p public/assets
+
+mkdir -p src/luigi-config/basic
+
+curl https://raw.githubusercontent.com/kyma-project/Luigi/master/core/examples/luigi-sample-angular/src/index.html > public/index.html
+
+curl https://raw.githubusercontent.com/kyma-project/Luigi/master/core/examples/luigi-sample-angular/src/assets/sampleexternal.html > public/assets/basicexternal.html
+
+curl https://raw.githubusercontent.com/kyma-project/Luigi/master/core/examples/luigi-sample-angular/src/luigi-config/basic/basicConfiguration.js > src/luigi-config/basic/basicConfiguration.js
+
+sed "s|extendedConfiguration.js|sampleconfig.js|g" public/index.html > public/index.tmp.html && mv public/index.tmp.html public/index.html
+
+cp -r node_modules/\@kyma-project/luigi-* public
+
+cp -r node_modules/fiori-fundamentals/dist public/fiori-fundamentals
+
+npm run buildConfig
+
+live-server --entry-file=index.html public
+```
 <a name="angular6"></a>
 
 ### Application setup for Angular 6 
@@ -57,6 +88,42 @@ bash <(curl -s https://raw.githubusercontent.com/kyma-project/Luigi/master/scrip
 ````
 bash <(curl -s https://raw.githubusercontent.com/kyma-project/Luigi/master/scripts/setup/angular.sh)
 ````
+or execute these commands manually to get the same result:
+```bash
+ng new my-angular-app --routing && cd my-angular-app
+
+npm i 
+
+npm i -P @kyma-project/luigi-core @kyma-project/luigi-client fiori-fundamentals webpack webpack-cli @babel/core @babel/preset-env babel-loader 
+
+sed 's/"scripts": {/"scripts": {\
+\   "buildConfig":"webpack --entry .\/src\/luigi-config\/basic\/basicConfiguration.js -o .\/src\/assets\/sampleconfig.js --mode production",/1' package.json > p.tmp.json && 
+
+mv p.tmp.json package.json
+
+mkdir -p src/luigi-config/basic
+
+mv src/index.html src/angular.html
+
+curl https://raw.githubusercontent.com/kyma-project/Luigi/master/core/examples/luigi-sample-angular/src/index.html > src/index.html
+
+curl https://raw.githubusercontent.com/kyma-project/Luigi/master/core/examples/luigi-sample-angular/src/luigi-config/basic/basicConfiguration.js > src/luigi-config/basic/basicConfiguration.js
+
+curl https://raw.githubusercontent.com/kyma-project/Luigi/master/core/examples/luigi-sample-angular/src/assets/sampleexternal.html > src/assets/basicexternal.html
+
+
+sed 's/extendedConfiguration.js/sampleconfig.js/g' src/index.html > src/index.tmp.html && mv src/index.tmp.html src/index.html
+
+sed 's#"src/index.html"#"src/angular.html"#g' angular.json > tmp.json && mv tmp.json angular.json
+
+sed 's#"src/styles.css"#"src/styles.css", "node_modules/fiori-fundamentals/dist/fiori-fundamentals.min.css"#g' angular.json > tmp.json && mv tmp.json angular.json
+
+sed 's#"src/assets"#"src/assets","src/index.html","src/logout.html",{"glob": "fiori-fundamentals.min.css","input": "node_modules/fiori-fundamentals/dist","output": "/fiori-fundamentals"},{"glob": "fonts/**","input": "node_modules/fiori-fundamentals/dist","output": "/fiori-fundamentals"},{"glob": "SAP-icons.*","input": "node_modules/fiori-fundamentals/dist","output": "/fiori-fundamentals"},{"glob": "**","input": "node_modules/@kyma-project/luigi-core","output": "/luigi-core"},{"glob": "luigi-client.js","input": "node_modules/@kyma-project/luigi-client","output": "/luigi-client"}#g' angular.json > tmp.json && mv tmp.json angular.json
+
+npm run buildConfig
+
+npm run start
+```
 
 <a name="sapui5"></a>
 
