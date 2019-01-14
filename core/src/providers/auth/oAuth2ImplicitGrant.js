@@ -22,7 +22,8 @@ export class oAuth2ImplicitGrant {
     return new Promise((resolve, reject) => {
       const settings = this.settings;
       const generatedNonce =
-        (settings.nonceFn && settings.nonceFn()) || this._generateNonce();
+        (settings.nonceFn && settings.nonceFn()) || this.generateNonce();
+      sessionStorage.setItem('luigi.nonceValue', generatedNonce);
 
       const createInputElement = (name, value) => {
         const inputElem = document.createElement('input');
@@ -43,15 +44,14 @@ export class oAuth2ImplicitGrant {
       settings.oAuthData.redirect_uri = GenericHelpers.prependOrigin(
         settings.oAuthData.redirect_uri
       );
-      settings.oAuthData.state = window.location.href;
+      settings.oAuthData.state = btoa(
+        window.location.href + '_luigiNonce=' + generatedNonce
+      );
 
       for (const name in settings.oAuthData) {
         const node = createInputElement(name, settings.oAuthData[name]);
         formElem.appendChild(node.cloneNode());
       }
-
-      const node = createInputElement('nonce', generatedNonce);
-      formElem.appendChild(node.cloneNode());
 
       document.getElementsByTagName('body')[0].appendChild(formElem);
       setTimeout(() => {
@@ -110,24 +110,13 @@ export class oAuth2ImplicitGrant {
     }, expirationCheckInterval);
   }
 
-  _generateNonce() {
-    const nonceKey = 'luigiNonceCnt';
-    let cnt = parseInt(
-      encodeURIComponent(localStorage.getItem('luigiNonceCnt'))
-    );
-    if (!cnt || isNaN(cnt) || cnt >= 999999) {
-      cnt = 0;
-    }
-    localStorage.setItem('luigiNonceCnt', ++cnt);
-    const rndstr = Math.floor(Math.random() * 1e9) + '';
-    let nonce = rndstr;
-    for (var i = 0; i < 9 - rndstr.length; i++) {
-      nonce = 'X' + nonce;
-    }
-    const cntstr = cnt + '';
-    for (var i = 0; i < 6 - cntstr.length; i++) {
-      nonce = nonce + 'X';
-    }
-    return nonce + cntstr;
+  generateNonce() {
+    const validChars =
+      '0123456789ABCDEFGHIJKLMNOPQRSTUVXYZabcdefghijklmnopqrstuvwxyz';
+
+    const crypto = window.crypto || window.msCrypto;
+    const random = Array.from(crypto.getRandomValues(new Uint8Array(20)));
+
+    return random.map(x => validChars[x % validChars.length]).join('');
   }
 }
