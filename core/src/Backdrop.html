@@ -38,7 +38,6 @@
         } else if (this.options.data && this.options.data.heightCssClass) {
           this.set({ backdropClass: baseClasses + this.options.data.heightCssClass });
         } else {
-          console.log('backdropActive', this.get().backdropActive, this.get().backdropClass);
           this.set({ backdropClass: baseClasses + 'height-auto' });
         }
       }
