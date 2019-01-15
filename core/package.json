@@ -36,7 +36,7 @@
   "scripts": {
     "bundle": "webpack --display-error-details",
     "bundle-develop": "webpack -d --watch",
-    "test": "./node_modules/mocha/bin/mocha --require @babel/register --require @babel/polyfill --require jsdom-global/register --recursive test",
+    "test": "./node_modules/mocha/bin/mocha --require @babel/register --require jsdom-global/register --recursive test",
     "test:watch": "npm run test -- --watch",
     "bundlesize": "npm run bundle && bundlesize",
     "prepush": "npm test"
@@ -58,7 +58,6 @@
     "url": "ssh://github.com/kyma-project/luigi.git"
   },
   "dependencies": {
-    "@babel/polyfill": "^7.2.5",
     "npm": "^6.5.0",
     "test": "^0.6.0"
   }
