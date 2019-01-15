@@ -16,7 +16,6 @@
   ],
   "main": "luigi-client.js",
   "scripts": {
-    "install": "npm run bundle",
     "bundle": "webpack --mode production",
     "bundle-develop": "webpack --mode development --watch",
     "test": "echo \"Error: no test specified\" && exit 1",
