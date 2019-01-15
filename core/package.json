@@ -36,7 +36,7 @@
   "scripts": {
     "bundle": "webpack --display-error-details",
     "bundle-develop": "webpack -d --watch",
-    "test": "./node_modules/mocha/bin/mocha --require @babel/register --require babel-polyfill --require jsdom-global/register --recursive test",
+    "test": "./node_modules/mocha/bin/mocha --require @babel/register --require jsdom-global/register --recursive test",
     "test:watch": "npm run test -- --watch",
     "bundlesize": "npm run bundle && bundlesize",
     "prepush": "npm test"
