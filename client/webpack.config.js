@@ -5,11 +5,11 @@ module.exports = {
   },
 
   output: {
-    filename: 'luigi-client.bundle.js',
+    filename: 'luigi-client.js',
     libraryExport: 'default',
     library: 'LuigiClient',
     libraryTarget: 'umd',
-    path: path.resolve(__dirname, 'public')
+    path: path.resolve(__dirname)
   },
 
   module: {
