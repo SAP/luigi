@@ -46,13 +46,13 @@ export const applyContext = (context, addition, navigationContext) => {
 };
 
 // TODO: use one extracted generic helper function here and in routing.js
-export const getNodePath = (node) => {
+export const getNodePath = node => {
   if (node.parent) {
     return getNodePath(node.parent) + '/' + node.pathSegment;
   } else {
     return node.pathSegment;
   }
-}
+};
 
 export const groupNodesBy = (nodes, property) => {
   const result = {};
@@ -79,7 +79,9 @@ export const groupNodesBy = (nodes, property) => {
       arr.metaInfo = metaInfo;
     }
     if (!arr.metaInfo.categoryUid && key && arr.metaInfo.collapsible) {
-      arr.metaInfo.categoryUid = (node.parent ? getNodePath(node.parent) + ":" + key : key);
+      arr.metaInfo.categoryUid = node.parent
+        ? getNodePath(node.parent) + ':' + key
+        : key;
     }
     arr.push(node);
   });
@@ -97,7 +99,7 @@ export const loadExpandedCategories = () => {
     }
   }
   return expandedList;
-}
+};
 
 export const storeExpandedState = (key, value) => {
   const expandedList = loadExpandedCategories();
@@ -113,6 +115,6 @@ export const storeExpandedState = (key, value) => {
   }
   localStorage.setItem(EXP_CAT_KEY, JSON.stringify(expandedList));
   return expandedList;
-}
+};
 
 export const isOpenUIiconName = string => /^[a-z0-9\-]+$/i.test(string);
