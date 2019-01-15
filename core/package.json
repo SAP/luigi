@@ -8,7 +8,6 @@
     "@babel/preset-env": "^7.2.3",
     "@babel/register": "^7.0.0",
     "babel-loader": "^8.0.4",
-    "babel-polyfill": "^6.26.0",
     "bundlesize": "^0.17.0",
     "chai": "^4.1.2",
     "clean-webpack-plugin": "^1.0.0",
@@ -37,7 +36,7 @@
   "scripts": {
     "bundle": "webpack --display-error-details",
     "bundle-develop": "webpack -d --watch",
-    "test": "./node_modules/mocha/bin/mocha --require @babel/register --require babel-polyfill --require jsdom-global/register --recursive test",
+    "test": "./node_modules/mocha/bin/mocha --require @babel/register --require jsdom-global/register --recursive test",
     "test:watch": "npm run test -- --watch",
     "bundlesize": "npm run bundle && bundlesize",
     "prepush": "npm test"
