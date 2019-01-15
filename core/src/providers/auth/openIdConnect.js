@@ -26,7 +26,7 @@ export class openIdConnect {
 
     this.settings = mergedSettings;
 
-    return AsyncHelpers.waitForKeyExistency(window, 'Oidc').then(res => {
+    return AsyncHelpers.waitForKeyExistency(window, 'Oidc', 60000).then(res => {
       this.client = new Oidc.UserManager(this.settings);
 
       this.client.events.addUserLoaded(authenticatedUser => {
