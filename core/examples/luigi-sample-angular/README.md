@@ -38,10 +38,10 @@ To have this application running, follow these steps:
     - To run Luigi with hash-based routing, set the **routing.useHashrouting** configuration to `true`.
     - To run Luigi with path-based routing, set the **routing.useHashrouting** configuration to `false`.
     
-    Run the server with the following command:
-        ```bash
-        npm run start
-        ```
+    Run the server with the following command: 
+    ```bash
+    npm run start
+    ```
 
 5. Go to [http://localhost:4200/](http://localhost:4200/) to start the application.
 
