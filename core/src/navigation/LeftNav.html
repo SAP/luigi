@@ -77,134 +77,134 @@
 </div>
 
 <script type="text/javascript">
-  import * as Navigation from './services/navigation.js';
-  import * as NavigationHelpers from '../utilities/helpers/navigation-helpers';
-  import * as Routing from '../services/routing';
-  import { LuigiConfig } from '../services/config.js';
+import * as Navigation from './services/navigation.js';
+import * as NavigationHelpers from '../utilities/helpers/navigation-helpers';
+import * as Routing from '../services/routing';
+import { LuigiConfig } from '../services/config.js';
 
-  const setLeftNavData = async (current, component) => {
-    const componentData = component.get();
-    const leftNavData = await Navigation.getLeftNavData(current, componentData);
-    if (!leftNavData) {
-      return;
-    }
-    component.set(leftNavData);
-    window.LEFTNAVDATA = leftNavData.groupedChildren;
-  };
+const setLeftNavData = async (current, component) => {
+  const componentData = component.get();
+  const leftNavData = await Navigation.getLeftNavData(current, componentData);
+  if (!leftNavData) {
+    return;
+  }
+  component.set(leftNavData);
+  window.LEFTNAVDATA = leftNavData.groupedChildren;
+};
 
-  export default {
-    oncreate() {
-      this.set({
-        hideNavComponent: LuigiConfig.getConfigBooleanValue(
-          'settings.hideNavigation'
-        )
-      });
-    },
-    onstate({ changed, current, previous }) {
-      if (!previous || previous.pathData != current.pathData) {
-        setLeftNavData(current, this);
-      }
-    },
-    helpers: {
-      isOpenUIiconName(name) {
-        return NavigationHelpers.isOpenUIiconName(name);
-      }
-    },
-    methods: {
-      handleClick(node) {
-        this.fire('handleClick', { node });
-      }
+export default {
+  oncreate() {
+    this.set({
+      hideNavComponent: LuigiConfig.getConfigBooleanValue(
+        'settings.hideNavigation'
+      )
+    });
+  },
+  onstate({ changed, current, previous }) {
+    if (!previous || previous.pathData != current.pathData) {
+      setLeftNavData(current, this);
     }
-  };
+  },
+  helpers: {
+    isOpenUIiconName(name) {
+      return NavigationHelpers.isOpenUIiconName(name);
+    }
+  },
+  methods: {
+    handleClick(node) {
+      this.fire('handleClick', { node });
+    }
+  }
+};
 </script>
 
 <style type="text/scss">
-  a {
-    cursor: pointer;
-  }
-  .fd-app__sidebar {
-    position: fixed;
-    top: 48px;
-    left: 0;
-    width: 320px;
-    bottom: 0;
-    background-color: white;
-    color: #32363a;
-    overflow-y: auto;
-  }
+a {
+  cursor: pointer;
+}
+.fd-app__sidebar {
+  position: fixed;
+  top: 48px;
+  left: 0;
+  width: 320px;
+  bottom: 0;
+  background-color: white;
+  color: #32363a;
+  overflow-y: auto;
+}
 
-  .fd-side-nav__group {
-    margin-top: 20px;
+.fd-side-nav__group {
+  margin-top: 20px;
+}
+.fd-side-nav__link {
+  &.fd-side-nav__link--icon {
+    padding-left: 16px;
   }
-  .fd-side-nav__link {
-    &.fd-side-nav__link--icon {
-      padding-left: 16px;
-    }
-    .sap-icon--action {
-      //external-link icon
-      margin-left: 0.3em;
-      vertical-align: middle;
-    }
-    .fd-side-nav__icon {
-      width: 1.4em;
-    }
-  }
-  .fd-side-nav__sublink {
-    &.fd-side-nav__link--icon {
-      padding-left: 16px;
-    }
-    .fd-side-nav__icon {
-      width: 1.4em;
-    }
-  }
-
-  .hideNavComponent {
-    display: none;
-  }
-
-  .lui-category {
-    // this should be inherited from $fd-menu-item-seperator-color
-    border-top: 1px solid #eeeeef;
-
-    // Align style with normal nodes - should be extended from sidebar item
-    padding: 10px 20px 10px 16px;
-    display: block;
-    font-size: 1rem;
-    line-height: 1.42857;
-    font-weight: 400;
-    text-transform: inherit;
-
-    .fd-side-nav__icon {
-      width: 1.4em;
-    }
-  }
-
-  // Add missing visual indicator for two senses indication of active state
-  .fd-side-nav__link.is-selected {
-    position: relative;
-
-    &:before {
-      content: '';
-      position: absolute;
-      left: 0;
-      top: 0;
-      width: 4px;
-      height: 100%;
-      background: #0a6ed1;
-      display: block;
-    }
-  }
-
-  // Overwrite padding of icon
-  .fd-side-nav__icon {
-    padding-right: 2px;
-    display: inline-block;
-    width: 1em;
+  .sap-icon--action {
+    //external-link icon
+    margin-left: 0.3em;
     vertical-align: middle;
-    max-height: 100%;
-
-    &.sap-icon--m::before {
-      width: 1.25rem;
-    }
   }
+  .fd-side-nav__icon {
+    width: 1.4em;
+  }
+}
+.fd-side-nav__sublink {
+  &.fd-side-nav__link--icon {
+    padding-left: 16px;
+  }
+  .fd-side-nav__icon {
+    width: 1.4em;
+  }
+}
+
+.hideNavComponent {
+  display: none;
+}
+
+.lui-category {
+  // this should be inherited from $fd-menu-item-seperator-color
+  border-top: 1px solid #eeeeef;
+
+  // Align style with normal nodes - should be extended from sidebar item
+  padding: 10px 20px 10px 16px;
+  display: block;
+  font-size: 1rem;
+  line-height: 1.42857;
+  font-weight: 400;
+  text-transform: inherit;
+
+  .fd-side-nav__icon {
+    width: 1.4em;
+  }
+}
+
+// Add missing visual indicator for two senses indication of active state
+.fd-side-nav__link.is-selected {
+  position: relative;
+
+  &:before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 4px;
+    height: 100%;
+    background: #0a6ed1;
+    display: block;
+  }
+}
+
+// Overwrite padding of icon
+.fd-side-nav__icon {
+  padding-right: 2px;
+  display: inline-block;
+  width: 1em;
+  vertical-align: middle;
+  max-height: 100%;
+
+  &.sap-icon--m::before {
+    width: 1.25rem;
+  }
+}
 </style>
