@@ -149,7 +149,6 @@ export const handleRouteChange = async (
 
     const pathUrlRaw =
       path && path.length ? GenericHelpers.getPathWithoutHash(path) : '';
-    const urlParamsRaw = decodeURIComponent(pathUrlRaw.split('?')[1] || '');
     const pathData = await Navigation.getNavigationPath(
       LuigiConfig.getConfigValueAsync('navigation.nodes'),
       path
@@ -203,6 +202,7 @@ export const handleRouteChange = async (
     const params = RoutingHelpers.parseParams(pathUrlRaw.split('?')[1]);
     const nodeParams = RoutingHelpers.getNodeParams(params);
     const viewGroup = RoutingHelpers.findViewGroup(lastNode);
+    const urlParamsRaw = decodeURIComponent(pathUrlRaw.split('?')[1] || '');
     const currentNode =
       pathData.navigationPath && pathData.navigationPath.length > 0
         ? pathData.navigationPath[pathData.navigationPath.length - 1]
