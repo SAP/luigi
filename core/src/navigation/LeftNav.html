@@ -71,20 +71,20 @@
 </div>
 
 <script type="text/javascript">
-  import * as Navigation from './services/navigation.js';
-  import * as NavigationHelpers from '../utilities/helpers/navigation-helpers';
-  import * as Routing from '../services/routing';
-  import { LuigiConfig } from '../services/config.js';
+import * as Navigation from './services/navigation.js';
+import * as NavigationHelpers from '../utilities/helpers/navigation-helpers';
+import * as Routing from '../services/routing';
+import { LuigiConfig } from '../services/config.js';
 
-  const setLeftNavData = async (current, component) => {
-    const componentData = component.get();
-    const leftNavData = await Navigation.getLeftNavData(current, componentData);
-    if (!leftNavData) {
-      return;
-    }
-    component.set(leftNavData);
-    window.LEFTNAVDATA = leftNavData.groupedChildren;
-  };
+const setLeftNavData = async (current, component) => {
+  const componentData = component.get();
+  const leftNavData = await Navigation.getLeftNavData(current, componentData);
+  if (!leftNavData) {
+    return;
+  }
+  component.set(leftNavData);
+  window.LEFTNAVDATA = leftNavData.groupedChildren;
+};
 
   export default {
     oncreate() {
@@ -104,7 +104,6 @@
       isOpenUIiconName(name) {
         return NavigationHelpers.isOpenUIiconName(name);
       },
-
       isExpanded(nodes, expandedList) {
         return (
           expandedList && expandedList.indexOf(nodes.metaInfo.categoryUid) >= 0
@@ -125,22 +124,36 @@
         });
       }
     }
-  };
+  }
+};
 </script>
 
 <style type="text/scss">
-  a {
-    cursor: pointer;
+a {
+  cursor: pointer;
+}
+.fd-app__sidebar {
+  position: fixed;
+  top: 48px;
+  left: 0;
+  width: 320px;
+  bottom: 0;
+  background-color: white;
+  color: #32363a;
+  overflow-y: auto;
+}
+
+.fd-side-nav__group {
+  margin-top: 20px;
+}
+.fd-side-nav__link {
+  &.fd-side-nav__link--icon {
+    padding-left: 16px;
   }
-  .fd-app__sidebar {
-    position: fixed;
-    top: 48px;
-    left: 0;
-    width: 320px;
-    bottom: 0;
-    background-color: white;
-    color: #32363a;
-    overflow-y: auto;
+  .sap-icon--action {
+    //external-link icon
+    margin-left: 0.3em;
+    vertical-align: middle;
   }
 
   .fd-side-nav__link {
@@ -160,15 +173,17 @@
     .fd-side-nav__icon {
       width: 2em;
     }
-  }
 
-  .hideNavComponent {
-    display: none;
   }
+}
 
-  .lui-category {
-    // this should be inherited from $fd-menu-item-seperator-color
-    border-top: 1px solid #eeeeef;
+.hideNavComponent {
+  display: none;
+}
+
+.lui-category {
+  // this should be inherited from $fd-menu-item-seperator-color
+  border-top: 1px solid #eeeeef;
 
     // Align style with normal nodes - should be extended from sidebar item
     display: block;
@@ -181,33 +196,34 @@
       width: 2em;
     }
   }
+}
 
-  // Add missing visual indicator for two senses indication of active state
-  .fd-side-nav__link.is-selected {
-    position: relative;
+// Add missing visual indicator for two senses indication of active state
+.fd-side-nav__link.is-selected {
+  position: relative;
 
-    &:before {
-      content: '';
-      position: absolute;
-      left: 0;
-      top: 0;
-      width: 4px;
-      height: 100%;
-      background: #0a6ed1;
-      display: block;
-    }
+  &:before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 4px;
+    height: 100%;
+    background: #0a6ed1;
+    display: block;
   }
+}
 
-  // Overwrite padding of icon
-  .fd-side-nav__icon {
-    padding-right: 2px;
-    display: inline-block;
-    width: 1em;
-    vertical-align: middle;
-    max-height: 100%;
+// Overwrite padding of icon
+.fd-side-nav__icon {
+  padding-right: 2px;
+  display: inline-block;
+  width: 1em;
+  vertical-align: middle;
+  max-height: 100%;
 
-    &.sap-icon--m::before {
-      width: 1.25rem;
-    }
+  &.sap-icon--m::before {
+    width: 1.25rem;
   }
+}
 </style>

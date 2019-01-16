@@ -1,8 +1,50 @@
 const chai = require('chai');
+const expect = chai.expect;
 const assert = chai.assert;
 import * as RoutingHelpers from '../../../src/utilities/helpers/routing-helpers';
 
 describe('Routing-helpers', () => {
+  describe('substituteDynamicParamsInObject', () => {
+    it('substitutes an object', () => {
+      const input = {
+        key1: 'something',
+        key2: ':group'
+      };
+      const paramMap = {
+        group: 'mygroup'
+      };
+
+      const expectedOutput = {
+        key1: 'something',
+        key2: 'mygroup'
+      };
+
+      expect(
+        RoutingHelpers.substituteDynamicParamsInObject(input, paramMap)
+      ).to.deep.equal(expectedOutput);
+      expect(input.key2).to.equal(':group');
+    });
+    it('substitutes an object using custom prefix', () => {
+      const input = {
+        key1: 'something',
+        key2: '#group'
+      };
+      const paramMap = {
+        group: 'mygroup'
+      };
+
+      const expectedOutput = {
+        key1: 'something',
+        key2: 'mygroup'
+      };
+
+      expect(
+        RoutingHelpers.substituteDynamicParamsInObject(input, paramMap, '#')
+      ).to.deep.equal(expectedOutput);
+      expect(input.key2).to.equal('#group');
+    });
+  });
+
   describe('defaultChildNodes', () => {
     const mockPathData = {
       navigationPath: [
