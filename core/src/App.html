@@ -114,10 +114,10 @@
 
   const addPreserveView = (component, data, config) => {
     if (data.params.preserveView) {
-      const { preservedViews, currentNode, nodeParamsRaw, context } = component.get();
+      const { preservedViews, currentNode, urlParamsRaw, context } = component.get();
       const nextPath = buildPath(component, data.params);
       preservedViews.push({
-        path: Routing.getNodePath(currentNode, nodeParamsRaw),
+        path: Routing.getNodePath(currentNode, urlParamsRaw),
         nextPath: nextPath.startsWith('/') ? nextPath : '/' + nextPath,
         context
       });
