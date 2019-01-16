@@ -20,8 +20,7 @@ export const waitForKeyExistency = (
       if (Date.now() - startTimer > timeout) {
         clearInterval(handles[name]);
         return reject(
-          `${name} didnt appear in object within ${keyExistencyTimeout /
-            1000} seconds.`
+          `${name} did not appear in object within ${timeout / 1000} seconds.`
         );
       }
     }, keyExistencyCheckInterval);
