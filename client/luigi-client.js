@@ -445,7 +445,7 @@
         },
         /**
          * This method informs the main application that there are unsaved changes in the current view in the iframe. For example, that can be a view with form fields which were edited but not submitted.
-         * @param {boolean} isDirty tells if there are any unsaved changes on the current page or component
+         * @param {boolean} isDirty indicates if there are any unsaved changes on the current page or in the component
          */
         setDirtyStatus: function setDirtyStatus(isDirty) {
           window.parent.postMessage(
