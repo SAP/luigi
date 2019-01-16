@@ -149,9 +149,7 @@ export const handleRouteChange = async (
 
     const pathUrlRaw =
       path && path.length ? GenericHelpers.getPathWithoutHash(path) : '';
-    const nodeParamsRaw = pathUrlRaw.split('?')[1]
-      ? decodeURIComponent(pathUrlRaw.split('?')[1])
-      : undefined;
+    const nodeParamsRaw = decodeURIComponent(pathUrlRaw.split('?')[1] || '');
     const pathData = await Navigation.getNavigationPath(
       LuigiConfig.getConfigValueAsync('navigation.nodes'),
       path
