@@ -109,11 +109,25 @@ var projectDetailNavProviderFn = function(context) {
                   {
                     label: 'Group Settings',
                     pathSegment: 'settings',
+                    keepSelectedForChildren: true,
                     icon: 'user-settings',
                     viewUrl:
                       '/sampleapp.html#/projects/' +
                       projectId +
-                      '/users/groups/:group/settings'
+                      '/users/groups/:group/settings',
+                    children: [
+                      {
+                        label: 'Multi Path Params',
+                        pathSegment: ':dynamic',
+                        viewUrl:
+                          '/sampleapp.html#/projects/' +
+                          projectId +
+                          '/users/groups/:group/settings/:dynamic',
+                        context: {
+                          label: ':dynamic'
+                        }
+                      }
+                    ]
                   }
                 ]
               }
@@ -342,6 +356,11 @@ var projectsNavProviderFn = function(context) {
   });
 };
 
+var customPageNotFoundHandler = function(wrongPath, wasAnyPathFitted) {
+  //leave this function empty if you have an external 404 handling
+  window.location.href = `/page-not-found`;
+};
+
 Luigi.setConfig({
   /**
    * auth identity provider settings
@@ -522,6 +541,13 @@ Luigi.setConfig({
               viewUrl: '/assets/sampleexternal.html#two'
             }
           ]
+        },
+        {
+          pathSegment: 'page-not-found',
+          label: 'Page not found',
+          viewUrl: '/assets/404.html',
+          hideFromNav: true,
+          hideSideNav: true
         }
       ];
     },
@@ -585,6 +611,8 @@ Luigi.setConfig({
      * Default: /access_token=/, /id_token=/
      */
     skipRoutingForUrlPatterns: [/access_token=/, /id_token=/]
+
+    // pageNotFoundHandler: this.customPageNotFoundHandler
   },
   settings: {
     header: () => ({

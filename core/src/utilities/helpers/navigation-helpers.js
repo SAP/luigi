@@ -1,7 +1,5 @@
 // Helper methods for 'navigation.js' file. They don't require any method from 'navigation.js` but are required by them.
-import {
-  LuigiConfig
-} from '../../services/config';
+import { LuigiConfig } from '../../services/config';
 import * as AuthHelpers from './auth-helpers';
 export const isNodeAccessPermitted = (
   nodeToCheckPermissionFor,
@@ -12,8 +10,10 @@ export const isNodeAccessPermitted = (
     const loggedIn = AuthHelpers.isLoggedIn();
     const anon = nodeToCheckPermissionFor.anonymousAccess;
 
-    if (loggedIn && anon === "exclusive" ||
-      (!loggedIn && anon !== "exclusive" && anon !== true)) {
+    if (
+      (loggedIn && anon === 'exclusive') ||
+      (!loggedIn && anon !== 'exclusive' && anon !== true)
+    ) {
       return false;
     }
   }
