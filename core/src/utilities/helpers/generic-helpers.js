@@ -88,26 +88,6 @@ export const prependOrigin = path => {
   return window.location.origin;
 };
 
-export const containsAllSegments = (sourceUrl, targetPathSegments) => {
-  if (
-    sourceUrl === undefined ||
-    sourceUrl === null ||
-    !targetPathSegments ||
-    !targetPathSegments.length
-  ) {
-    console.error(
-      'Ooops, seems like the developers have misconfigured something'
-    );
-    return false;
-  }
-  const mandatorySegmentsUrl = trimTrailingSlash(sourceUrl.split('?')[0]);
-  const pathSegmentsUrl = targetPathSegments
-    .filter(x => x.pathSegment) // filter out root node with empty path segment
-    .map(x => x.pathSegment)
-    .join('/');
-  return trimTrailingSlash(pathSegmentsUrl) === mandatorySegmentsUrl;
-};
-
 /**
  * Adds a leading slash to a string if it has none
  * @param {str} string
@@ -140,6 +120,11 @@ export const trimLeadingSlash = str => str.replace(/^\/+/g, '');
  * @returns string string without any trailing slash
  */
 export const trimTrailingSlash = str => str.replace(/\/+$/, '');
+
+export const getTrimmedUrl = path => {
+  const pathUrl = 0 < path.length ? getPathWithoutHash(path) : path;
+  return trimTrailingSlash(pathUrl.split('?')[0]);
+};
 
 /**
  * Returns a path that starts and end with one (and only one) slash,
@@ -176,4 +161,36 @@ export const canComponentHandleModal = component =>
 
 export const escapeRegExp = string => {
   return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+};
+
+export const replaceVars = (
+  inputString,
+  params,
+  prefix,
+  parenthesis = true
+) => {
+  let processedString = inputString;
+  if (params) {
+    Object.entries(params).forEach(entry => {
+      processedString = processedString.replace(
+        new RegExp(
+          escapeRegExp(
+            (parenthesis ? '{' : '') +
+              prefix +
+              entry[0] +
+              (parenthesis ? '}' : '')
+          ),
+          'g'
+        ),
+        encodeURIComponent(entry[1])
+      );
+    });
+  }
+  if (parenthesis) {
+    processedString = processedString.replace(
+      new RegExp('\\{' + escapeRegExp(prefix) + '[^\\}]+\\}', 'g'),
+      ''
+    );
+  }
+  return processedString;
 };

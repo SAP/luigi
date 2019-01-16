@@ -35,6 +35,7 @@
   import ConfirmationModal from './ConfirmationModal.html';
   import { LuigiConfig } from './services/config.js';
   import * as Routing from './services/routing.js';
+  import * as Navigation from './navigation/services/navigation.js'
   import * as Iframe from './services/iframe';
   import * as RoutingHelpers from './utilities/helpers/routing-helpers';
   import * as GenericHelpers from './utilities/helpers/generic-helpers';
@@ -289,23 +290,22 @@
           if ('luigi.navigation.pathExists' === e.data.msg) {
             const data = e.data.data;
             const path = buildPath(this, data);
-            const matchedPath = await Routing.matchPath(path);
+            const pathData = await Navigation.getNavigationPath(
+              LuigiConfig.getConfigValueAsync('navigation.nodes'), path
+            );
 
-            let normalizedPath =
-              (!path.startsWith('/') ? '/' : '') +
-              (path.endsWith('/') ? path.slice(0, -1) : path);
-            const pathExists = matchedPath === normalizedPath;
             config.iframe.contentWindow.postMessage(
               {
                 msg: 'luigi.navigation.pathExists.answer',
                 data: {
                   correlationId: data.id,
-                  pathExists
+                  pathExists: pathData.isExistingRoute
                 }
               },
               '*'
             );
           }
+
           if ('luigi.set-page-dirty' === e.data.msg) {
             this.set({
               unsavedChanges: {
@@ -331,9 +331,7 @@
         };
       },
       handleNavClick(node) {
-        this.getUnsavedChangesModalPromise().then(() => {
-          Routing.handleRouteClick(node);
-        });
+        this.getUnsavedChangesModalPromise().then(() => { Routing.handleRouteClick(node, this.get())});
       },
       handleModalResult(result) {
         const promise = this.get().confirmationModal.promise;
