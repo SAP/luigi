@@ -107,6 +107,12 @@ if [ ! -d $LUIGI_DIR_TESTING ]; then
   echo "Creating test folder"
   git clone git@github.com:kyma-project/luigi.git $LUIGI_DIR_TESTING
 fi
+
+if [ ! -d $LUIGI_DIR_TESTING ]; then
+  echo "There was an issue cloning the repository (github permissions?)"
+  exit 3
+fi
+
 cd $LUIGI_DIR_TESTING
 echo "Checking out selected release tag $TAG"
 git reset --hard HEAD
