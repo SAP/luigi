@@ -1,25 +1,29 @@
 <div id="app" class="{hideNav? 'no-nav' : ''} {hideSideNav? 'no-side-nav' : ''}">
 	{#if alert && alert.message}
-	<div class="fd-alert fd-alert--error fd-alert--dismissible" role="alert" id="j2ALl423">
-		<button on:click="set({alert:null})" class="fd-alert__close" aria-controls="j2ALl423" aria-label="Close"></button>
-		{alert.message} {alert.link}
-	</div>
+    <div class="fd-alert fd-alert--error fd-alert--dismissible" role="alert" id="j2ALl423">
+      <button on:click="set({alert:null})" class="fd-alert__close" aria-controls="j2ALl423" aria-label="Close"></button>
+      {alert.message} {alert.link}
+    </div>
+	{/if}
+  {#if confirmationModal.isDisplayed}
+    <ConfirmationModal title={confirmationModal.title} text={confirmationModal.text} on:modalConfirm="handleModalResult(true)"
+    on:modalDecline="handleModalResult(false)"></ConfirmationModal>
 	{/if}
 	<Backdrop>
 		<div class="fd-page iframeContainer" use:init="context"></div>
 	</Backdrop>
 	{#if showLoadingIndicator}
-	<div in:fade='{delay: 250, duration: 250}' out:fade='{duration: 250}' class="fd-page spinnerContainer" aria-hidden="false"
-	 aria-label="Loading">
-		<div class="fd-spinner">
-			<div></div>
-		</div>
-	</div>
+    <div in:fade='{delay: 250, duration: 250}' out:fade='{duration: 250}' class="fd-page spinnerContainer" aria-hidden="false"
+    aria-label="Loading">
+      <div class="fd-spinner">
+        <div></div>
+      </div>
+    </div>
 	{/if}
 
-	<TopNav pathData={navigationPath} /> 
+	<TopNav pathData={navigationPath} on:handleClick="handleNavClick(event.node)"/>
   {#if !(hideNav||hideSideNav)}
-	  <LeftNav pathData={navigationPath} /> 
+	  <LeftNav pathData={navigationPath} on:handleClick="handleNavClick(event.node)"/>
   {/if}
 </div>
 
@@ -28,10 +32,12 @@
   import { fade } from 'svelte-transitions';
   import TopNav from './navigation/TopNav.html';
   import LeftNav from './navigation/LeftNav.html';
-  import * as Routing from './services/routing';
+  import ConfirmationModal from './ConfirmationModal.html';
+  import { LuigiConfig } from './services/config.js';
+  import * as Routing from './services/routing.js';
+  import * as Navigation from './navigation/services/navigation.js'
   import * as Iframe from './services/iframe';
   import * as RoutingHelpers from './utilities/helpers/routing-helpers';
-
   import * as GenericHelpers from './utilities/helpers/generic-helpers';
   import * as AuthHelpers from './utilities/helpers/auth-helpers';
 
@@ -53,7 +59,7 @@
   };
 
   const enableRouting = (component, node, config) => {
-    // intial route handling
+    // initial route handling
     const currentPath = Routing.getCurrentPath();
     Routing.handleRouteChange(currentPath, component, node, config);
 
@@ -180,6 +186,16 @@
           //     iframe: Element
           // }
         ],
+        confirmationModal: {
+          isDisplayed: false,
+          title: null,
+          text: null,
+          promise: null
+        },
+        unsavedChanges: {
+          isDirty: false,
+          persistUrl: null
+        },
         hideSideNav: false
       };
     },
@@ -187,12 +203,25 @@
     onstate({ changed, current, previous }) {},
     actions: {
       init(node) {
+        const isolateAllViews = LuigiConfig.getConfigValue('navigation.defaults.isolateView');
         const config = {
           iframe: null,
           navigateOk: null,
-          builderCompatibilityMode: Boolean(window.builderCompatibilityMode)
+          builderCompatibilityMode: Boolean(window.builderCompatibilityMode),
+          isolateAllViews
         };
-
+        window.addEventListener('popstate', async e => {
+          const alert = this.get().alert;
+          if (alert && typeof alert.ttl == 'number') {
+            if (alert.ttl === 0) {
+              this.set({ alert: null });
+            } else {
+              const updatedAlert = { ...alert };
+              updatedAlert.ttl--;
+              this.set({ alert: updatedAlert });
+            }
+          }
+        });
         window.addEventListener('message', async e => {
           if ('luigi.get-context' === e.data.msg && config.iframe) {
             sendContextToClient(this, config, {});
@@ -221,31 +250,34 @@
 
           if ('luigi.navigation.open' === e.data.msg) {
             this.set({ isNavigateBack: false });
-            handleNavigation(this, e.data, config);
+            this.getUnsavedChangesModalPromise().then(() => {
+              handleNavigation(this, e.data, config);
+            });
           }
 
           if ('luigi.navigation.back' === e.data.msg) {
             // go back: context from the view
             const preservedViews = this.get().preservedViews;
             if (preservedViews && preservedViews.length) {
-              // remove current active iframe and data
-              Iframe.setActiveIframeToPrevious(node);
-              const previousActiveIframeData = preservedViews.pop();
-              // set new active iframe and preservedViews
-              config.iframe = Iframe.getActiveIframe(node);
-              this.set({
-                isNavigateBack: true,
-                preservedViews: preservedViews,
-                goBackContext:
-                  e.data.goBackContext && JSON.parse(e.data.goBackContext)
+              this.getUnsavedChangesModalPromise().then(() => {
+                // remove current active iframe and data
+                Iframe.setActiveIframeToPrevious(node);
+                const previousActiveIframeData = preservedViews.pop();
+                // set new active iframe and preservedViews
+                config.iframe = Iframe.getActiveIframe(node);
+                this.set({
+                  isNavigateBack: true,
+                  preservedViews,
+                  goBackContext:
+                    e.data.goBackContext && JSON.parse(e.data.goBackContext)
+                });
+                // TODO: check if getNavigationPath or history pop to update hash / path
+                const path = handleNavigation(
+                  this,
+                  { params: { link: previousActiveIframeData.path } },
+                  config
+                );
               });
-
-              // TODO: check if handleNavigation or history pop to update hash / path
-              handleNavigation(
-                this,
-                { params: { link: previousActiveIframeData.path } },
-                config
-              );
             } else {
               console.error('goBack() not possible, no preserved views found.');
             }
@@ -258,22 +290,29 @@
           if ('luigi.navigation.pathExists' === e.data.msg) {
             const data = e.data.data;
             const path = buildPath(this, data);
-            const matchedPath = await Routing.matchPath(path);
+            const pathData = await Navigation.getNavigationPath(
+              LuigiConfig.getConfigValueAsync('navigation.nodes'), path
+            );
 
-            let normalizedPath =
-              (!path.startsWith('/') ? '/' : '') +
-              (path.endsWith('/') ? path.slice(0, -1) : path);
-            const pathExists = matchedPath === normalizedPath;
             config.iframe.contentWindow.postMessage(
               {
                 msg: 'luigi.navigation.pathExists.answer',
                 data: {
                   correlationId: data.id,
-                  pathExists
+                  pathExists: pathData.isExistingRoute
                 }
               },
               '*'
             );
+          }
+
+          if ('luigi.set-page-dirty' === e.data.msg) {
+            this.set({
+              unsavedChanges: {
+                isDirty: e.data.dirty || false,
+                persistUrl: window.location.href
+              }
+            });
           }
         });
 
@@ -290,12 +329,78 @@
           isNavigateBack: this.get().isNavigateBack,
           viewStackSize: this.get().preservedViews.length
         };
+      },
+      handleNavClick(node) {
+        this.getUnsavedChangesModalPromise().then(() => { Routing.handleRouteClick(node, this.get())});
+      },
+      handleModalResult(result) {
+        const promise = this.get().confirmationModal.promise;
+        if (result) {
+          this.set({
+            unsavedChanges: { isDirty: false, persistUrl: null }
+          });
+          promise.resolve();
+        } else {
+          promise.reject();
+        }
+        this.hideModal();
+      },
+      getUnsavedChangesModalPromise() {
+        return new Promise(resolve => {
+          if (this.shouldShowUnsavedChangesModal()) {
+            this.showUnsavedChangesModal().then(
+              () => {
+                resolve();
+              },
+              () => {}
+            );
+          } else {
+            resolve();
+          }
+        });
+      },
+      shouldShowUnsavedChangesModal() {
+        return (
+          GenericHelpers.canComponentHandleModal(this) &&
+          this.get().unsavedChanges.isDirty
+        );
+      },
+      showUnsavedChangesModal() {
+        return this.showModal(
+          'Unsaved changes detected',
+          'It looks like you might lose some data if you leave this page. Are you sure you want to do this?'
+        );
+      },
+      showModal(title, text) {
+        return new Promise((resolve, reject) => {
+          //send the response when one of following methods were executed
+          this.set({
+            confirmationModal: {
+              isDisplayed: true,
+              title,
+              text,
+              promise: { resolve, reject }
+            }
+          });
+        });
+      },
+      hideModal() {
+        this.set({
+          confirmationModal: {
+            isDisplayed: false,
+            title: null,
+            text: null,
+            promise: null
+          }
+        });
       }
     },
+
     components: {
       Backdrop,
       TopNav,
-      LeftNav
+      LeftNav,
+      ConfirmationModal
     },
     transitions: { fade }
   };

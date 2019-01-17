@@ -1,24 +1,21 @@
 <ul class="fd-menu__list">
-  <li>
     {#if isLoggedIn}
-      <a aria-label="Logout" on:click=logout() class="fd-menu__item">Logout</a>
+      <li on:click=onLogoutClick()>
+        <a aria-label="Logout" class="fd-menu__item">Logout</a>
+      </li>
     {:else}
-      <a aria-label="Login" on:click=startAuthorization() class="fd-menu__item">Login</a>
+      <li on:click=startAuthorization()>
+        <a aria-label="Login" class="fd-menu__item">Login</a>
+      </li>
     {/if}
-  </li>
 </ul>
 
 <script type="text/javascript">
   import { LuigiConfig } from './services/config.js';
-  import {
-    isFunction,
-    isPromise,
-    deepMerge,
-    getConfigValueFromObject
-  } from './utilities/helpers/generic-helpers.js';
+  import * as GenericHelpers from './utilities/helpers/generic-helpers.js';
+  import * as AuthHelpers from './utilities/helpers/auth-helpers';
   import { oAuth2ImplicitGrant } from './providers/auth/oAuth2ImplicitGrant.js';
   import { openIdConnect } from './providers/auth/openIdConnect.js';
-  import { getStoredAuthData } from './utilities/helpers/auth-helpers';
 
   let idpProviderInstance;
 
@@ -31,25 +28,25 @@
   const newlyAuthorized = () =>
     JSON.parse(localStorage.getItem('luigi.newlyAuthorized'));
   const isAuthValid = () =>
-    getStoredAuthData().accessTokenExpirationDate > Number(new Date());
+    AuthHelpers.getStoredAuthData().accessTokenExpirationDate > Number(new Date());
 
   const IdpProviderException = message => {
     return { message, name: 'IdpProviderException' };
   };
 
   const getIdpProviderInstance = async (idpProviderName, idpProviderSettings) => {
-    if (isFunction(standardProviders[idpProviderName])) {
+    if (GenericHelpers.isFunction(standardProviders[idpProviderName])) {
       return new standardProviders[idpProviderName](idpProviderSettings);
     }
 
     // custom provider provided via config:
-    const customIdpProvider = getConfigValueFromObject(
+    const customIdpProvider = GenericHelpers.getConfigValueFromObject(
       idpProviderSettings,
       'customIdpProvider'
     );
     if (customIdpProvider) {
       ['login'].forEach(requiredFnName => {
-        if (!isFunction(customIdpProvider[requiredFnName])) {
+        if (!GenericHelpers.isFunction(customIdpProvider[requiredFnName])) {
           throw new IdpProviderException(
             `${requiredFnName} function does not exist in custom IDP Provider ${idpProviderName}`
           );
@@ -71,7 +68,7 @@
       }
 
       const checkAuth = () => {
-        const authData = getStoredAuthData();
+        const authData = AuthHelpers.getStoredAuthData();
         if (!authData || !isAuthValid()) {
           if (LuigiConfig.getConfigValue('auth.disableAutoLogin')) {
             return;
@@ -90,7 +87,7 @@
           onAuthSuccessfulFn(authData);
         }
 
-        if (isFunction(idpProviderInstance.setTokenExpirationAction)) {
+        if (GenericHelpers.isFunction(idpProviderInstance.setTokenExpirationAction)) {
           idpProviderInstance.setTokenExpirationAction();
         }
       };
@@ -103,10 +100,12 @@
         idpProviderName,
         idpProviderSettings
       );
-      if (isPromise(idpProviderInstance)) {
+      if (GenericHelpers.isPromise(idpProviderInstance)) {
         return idpProviderInstance.then(resolved => {
           idpProviderInstance = resolved;
           checkAuth();
+        }).catch((err) => {
+          console.error(`Could not instantate ${idpProviderName} provider : ${err}`)
         });
       }
       checkAuth();
@@ -120,8 +119,13 @@
           }
         });
       },
+      onLogoutClick: function() {
+        this.root.getUnsavedChangesModalPromise().then(
+          () => { this.logout() }
+        )
+      },
       logout: function() {
-        const authData = getStoredAuthData();
+        const authData = AuthHelpers.getStoredAuthData();
 
         const logoutCallback = () => {
           const onLogoutFn = LuigiConfig.getConfigValue('auth.events.onLogout');
@@ -136,9 +140,9 @@
         const customLogoutFn = LuigiConfig.getConfigValue(
           `auth.${LuigiConfig.getConfigValue('auth.use')}.logoutFn`
         );
-        if (isFunction(customLogoutFn)) {
+        if (GenericHelpers.isFunction(customLogoutFn)) {
           customLogoutFn(idpProviderInstance.settings, authData, logoutCallback);
-        } else if (isFunction(idpProviderInstance.logout)) {
+        } else if (GenericHelpers.isFunction(idpProviderInstance.logout)) {
           idpProviderInstance.logout(authData, logoutCallback);
         } else {
           logoutCallback();

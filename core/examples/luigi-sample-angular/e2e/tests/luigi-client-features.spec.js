@@ -120,6 +120,11 @@ describe('Luigi client features', () => {
         { path: '/projects/pr2/', successExpected: true },
         // existent absolute path without '/' at the end
         { path: '/projects/pr2', successExpected: true },
+        // existent path with two dynamic pathSegments
+        {
+          path: '/projects/pr1/users/groups/avengers/settings/dynamic-two',
+          successExpected: true
+        },
         // existent relative path
         { path: 'developers', successExpected: true }
       ].map(data => {
@@ -159,6 +164,14 @@ describe('Luigi client features', () => {
       cy.get('.fd-alert').contains(
         'Could not map the exact target node for the requested route projects/pr2/miscellaneous2/maskopatol'
       );
+
+      //navigate somewhere else
+      cy.get('button')
+        .contains('Projects')
+        .click();
+
+      //alert disappears
+      cy.get('.fd-alert').should('not.exist');
     });
 
     it('navigate to a totally wrong link', () => {
@@ -171,6 +184,14 @@ describe('Luigi client features', () => {
       cy.get('.fd-alert').contains(
         'Could not find the requested route maskopatol/has/a/child'
       );
+
+      //navigate somewhere else
+      cy.get('button')
+        .contains('Projects')
+        .click();
+
+      //alert disappears
+      cy.get('.fd-alert').should('not.exist');
     });
   });
 
@@ -227,6 +248,60 @@ describe('Luigi client features', () => {
 
         // wait for programmatic hide of loading indicator
         cy.get('.spinnerContainer .fd-spinner').should('not.exist');
+      });
+    });
+    it("Unsaved changes - shouldn't proceed when 'No' was pressed in modal", () => {
+      cy.get('iframe').then($iframe => {
+        const $iframeBody = $iframe.contents().find('body');
+
+        cy.wrap($iframeBody)
+          .find('[data-cy=toggle-dirty-state]')
+          .check();
+
+        cy.get('button')
+          .contains('Projects')
+          .click();
+
+        cy.get('[data-cy=confirmation-modal]').should('be.visible');
+
+        cy.location().should(loc => {
+          expect(loc.pathname).to.eq('/overview'); //the location is unchanged
+        });
+
+        cy.get('[data-cy=modal-no]').click();
+
+        cy.get('[data-cy=confirmation-modal]').should('not.be.visible');
+
+        cy.location().should(loc => {
+          expect(loc.pathname).to.eq('/overview'); //the location is still unchanged after "No" clicked
+        });
+      });
+    });
+    it("Unsaved changes - should proceed when 'Yes' was pressed in modal", () => {
+      cy.get('iframe').then($iframe => {
+        const $iframeBody = $iframe.contents().find('body');
+
+        cy.wrap($iframeBody)
+          .find('[data-cy=toggle-dirty-state]')
+          .check();
+
+        cy.get('button')
+          .contains('Projects')
+          .click();
+
+        cy.get('[data-cy=confirmation-modal]').should('be.visible');
+
+        cy.location().should(loc => {
+          expect(loc.pathname).to.eq('/overview'); //the location is unchanged
+        });
+
+        cy.get('[data-cy=modal-yes]').click();
+
+        cy.get('[data-cy=confirmation-modal]').should('not.be.visible');
+
+        cy.location().should(loc => {
+          expect(loc.pathname).to.eq('/projects'); //the location is changed after "Yes" clicked
+        });
       });
     });
   });

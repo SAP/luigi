@@ -1,12 +1,14 @@
-
-<div class="fd-shellbar__logo { !hasLogo ? 'fd-shellbar__logo--image-replaced' : '' } { hasLogo ? 'lui-customlogo' : ''}" aria-label="SAP">
+<div
+  class="fd-shellbar__logo { !hasLogo ? 'fd-shellbar__logo--image-replaced' : '' } { hasLogo ? 'lui-customlogo' : ''}"
+  aria-label="SAP"
+>
   {#if hasLogo}
     <img on:click="goTo('/')" ref:logo />
   {/if}
 </div>
 
 {#if title}
-  <div class="fd-shellbar__product">
+<div class="fd-shellbar__product">
     <!-- code duplication due fundamental markup --> 
     <div class="fd-shellbar__logo fd-shellbar__logo--control fd-product-menu__logo { !hasLogo ? 'fd-shellbar__logo--image-replaced' : '' } { hasLogo ? 'lui-customlogo' : ''}" aria-label="SAP">
         {#if hasLogo}
@@ -19,28 +21,34 @@
   </div>
 {/if}
 
-
 <script type="text/javascript">
-  import * as Header from './services/header.js';
-  import { LuigiConfig } from '../services/config.js';
-  import { processHeaderSettings } from './services/header.js';
-  import * as Routing from '../services/routing.js';
+import * as Header from './services/header.js';
+import { LuigiConfig } from '../services/config.js';
+import { processHeaderSettings } from './services/header.js';
+import * as Routing from '../services/routing.js';
 
-  export default {
-    oncreate() {
-      Header.processHeaderSettings(this);
-    },
-    methods: {
-      goTo(path) {
+export default {
+  oncreate() {
+    Header.processHeaderSettings(this);
+  },
+  methods: {
+    goTo(path) {
+      this.root.getUnsavedChangesModalPromise().then(() => {
         Routing.navigateTo(path);
-      }
+      });
     }
-  };
+  }
+};
 </script>
 
 <style type="text/scss">
-  // Force height because of base64 img src
-  .lui-customlogo img {
-    height: 24px;
-  }
+// Force height because of base64 img src
+.lui-customlogo img {
+  height: 24px;
+}
+
+.fd-shellbar__logo,
+.fd-shellbar__title {
+  cursor: pointer;
+}
 </style>

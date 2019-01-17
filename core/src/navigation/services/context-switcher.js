@@ -62,7 +62,10 @@ export const ContextSwitcherHelpers = {
     }
 
     // we are inside the context switcher base path
-    const selectedId = currentPath.replace(parentNodePath, '').split('/')[0];
+    const selectedId = currentPath
+      .replace(parentNodePath, '')
+      .split('/')[0]
+      .split('?')[0]; //ignore everything after '?'
 
     let selectedLabel;
 

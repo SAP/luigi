@@ -89,30 +89,6 @@ export const prependOrigin = path => {
 };
 
 /**
- * Returns the negated string value from a bool string
- * @param {str} string 'true' or 'false'
- */
-export const getNegatedBoolString = str => {
-  return str === 'true' ? 'false' : 'true';
-};
-
-export const containsAllSegments = (sourceUrl, targetPathSegments) => {
-  if (!sourceUrl || !targetPathSegments || !targetPathSegments.length) {
-    console.error(
-      'Ooops, seems like the developers have misconfigured something'
-    );
-    return false;
-  }
-
-  const pathSegmentsUrl = targetPathSegments
-    .slice(1)
-    .map(x => x.pathSegment)
-    .join('/');
-  const mandatorySegmentsUrl = trimTrailingSlash(sourceUrl.split('?')[0]);
-  return pathSegmentsUrl === mandatorySegmentsUrl;
-};
-
-/**
  * Adds a leading slash to a string if it has none
  * @param {str} string
  * @returns {string} string with a leading slash
@@ -145,6 +121,11 @@ export const trimLeadingSlash = str => str.replace(/^\/+/g, '');
  */
 export const trimTrailingSlash = str => str.replace(/\/+$/, '');
 
+export const getTrimmedUrl = path => {
+  const pathUrl = 0 < path.length ? getPathWithoutHash(path) : path;
+  return trimTrailingSlash(pathUrl.split('?')[0]);
+};
+
 /**
  * Returns a path that starts and end with one (and only one) slash,
  * regardless of the slashes being already present in the path given as input
@@ -172,6 +153,44 @@ export const getConfigValueFromObject = (object, property) => {
   return nextValue;
 };
 
+export const canComponentHandleModal = component =>
+  component &&
+  typeof component.get === 'function' &&
+  typeof component.showModal === 'function' &&
+  typeof component.hideModal === 'function';
+
 export const escapeRegExp = string => {
   return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+};
+
+export const replaceVars = (
+  inputString,
+  params,
+  prefix,
+  parenthesis = true
+) => {
+  let processedString = inputString;
+  if (params) {
+    Object.entries(params).forEach(entry => {
+      processedString = processedString.replace(
+        new RegExp(
+          escapeRegExp(
+            (parenthesis ? '{' : '') +
+              prefix +
+              entry[0] +
+              (parenthesis ? '}' : '')
+          ),
+          'g'
+        ),
+        encodeURIComponent(entry[1])
+      );
+    });
+  }
+  if (parenthesis) {
+    processedString = processedString.replace(
+      new RegExp('\\{' + escapeRegExp(prefix) + '[^\\}]+\\}', 'g'),
+      ''
+    );
+  }
+  return processedString;
 };

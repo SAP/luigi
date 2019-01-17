@@ -2,10 +2,9 @@
 // Please consider adding any new methods to 'iframe-helpers' if they don't require anything from this file.
 import * as IframeHelpers from '../utilities/helpers/iframe-helpers';
 import * as GenericHelpers from '../utilities/helpers/generic-helpers';
+import * as RoutingHelpers from '../utilities/helpers/routing-helpers';
 
 const iframeNavFallbackTimeout = 2000;
-const contextVarPrefix = 'context.';
-const nodeParamsVarPrefix = 'nodeParams.';
 let timeoutHandle;
 
 export const getActiveIframe = node => {
@@ -39,29 +38,20 @@ export const navigateIframe = (config, component, node) => {
   const componentData = component.get();
   let viewUrl = componentData.viewUrl;
   if (viewUrl) {
-    viewUrl = IframeHelpers.replaceVars(
-      viewUrl,
-      componentData.pathParams,
-      ':',
-      false
-    );
-    viewUrl = IframeHelpers.replaceVars(
-      viewUrl,
-      componentData.context,
-      contextVarPrefix
-    );
-    viewUrl = IframeHelpers.replaceVars(
-      viewUrl,
-      componentData.nodeParams,
-      nodeParamsVarPrefix
-    );
+    viewUrl = RoutingHelpers.substituteViewUrl(viewUrl, componentData);
   }
 
+  const isSameDomain = IframeHelpers.isSameDomain(config, component);
+  const isSameViewGroup = IframeHelpers.isSameViewGroup(config, component);
+  const canReuseIframe = IframeHelpers.canReuseIframe(config, component);
   if (
-    !componentData.isNavigateBack &&
-    (!IframeHelpers.isSameViewGroup(config, component) ||
-      IframeHelpers.hasIframeIsolation(component) ||
-      Boolean(config.builderCompatibilityMode))
+    (!componentData.isNavigateBack &&
+      (IframeHelpers.hasIframeIsolation(component) ||
+        !canReuseIframe ||
+        Boolean(config.builderCompatibilityMode))) ||
+    (config.isolateAllViews &&
+      !(componentData.isolateView === false) &&
+      !isSameViewGroup)
   ) {
     const componentData = component.get();
     // preserveView, hide other frames, else remove

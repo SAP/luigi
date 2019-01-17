@@ -2,18 +2,59 @@
 // Please consider adding any new methods to 'navigation-helpers' if they don't require anything from this file.
 import * as NavigationHelpers from '../../utilities/helpers/navigation-helpers';
 import * as AsyncHelpers from '../../utilities/helpers/async-helpers';
+import * as GenericHelpers from '../../utilities/helpers/generic-helpers';
+import * as RoutingHelpers from '../../utilities/helpers/routing-helpers';
+import { LuigiConfig } from '../../services/config.js';
 
-export const getNavigationPath = async (rootNavProviderPromise, activePath) => {
-  const rootNode = {};
-  if (!rootNavProviderPromise) {
-    return [rootNode];
-  }
+export const getNavigationPath = async (rootNavProviderPromise, path = '') => {
   try {
+    const activePath = GenericHelpers.getTrimmedUrl(path);
+
+    if (!rootNavProviderPromise) {
+      console.error('No navigation nodes provided in the configuration.');
+      return [{}];
+    }
+
+    let rootNode;
     const topNavNodes = await rootNavProviderPromise;
-    rootNode.children = topNavNodes;
+    if (GenericHelpers.isObject(topNavNodes)) {
+      rootNode = topNavNodes;
+      if (rootNode.pathSegment) {
+        rootNode.pathSegment = '';
+        console.warn(
+          'Root node must have an empty path segment. Provided path segment will be ignored.'
+        );
+      }
+    } else {
+      rootNode = { children: topNavNodes };
+    }
     await getChildren(rootNode); // keep it, mutates and filters children
-    const nodeNamesInCurrentPath = (activePath || '').split('/');
-    return buildNode(nodeNamesInCurrentPath, [rootNode], rootNode.children, {});
+    const nodeNamesInCurrentPath = activePath.split('/');
+    const navObj = await buildNode(
+      nodeNamesInCurrentPath,
+      [rootNode],
+      rootNode.children,
+      rootNode.context || {}
+    );
+
+    const navPathSegments = navObj.navigationPath
+      .filter(x => x.pathSegment)
+      .map(x => x.pathSegment);
+
+    navObj.isExistingRoute =
+      !activePath || nodeNamesInCurrentPath.length === navPathSegments.length;
+
+    const pathSegments = activePath.split('/');
+    navObj.matchedPath = pathSegments
+      .filter((segment, index) => {
+        return (
+          (navPathSegments[index] && navPathSegments[index].startsWith(':')) ||
+          navPathSegments[index] === segment
+        );
+      })
+      .join('/');
+
+    return navObj;
   } catch (err) {
     console.error('Failed to load top navigation nodes.', err);
   }
@@ -53,7 +94,7 @@ export const getChildren = async (node, context) => {
   }
 };
 
-export const bindChildrenToParent = node => {
+const bindChildrenToParent = node => {
   // Checking for pathSegment to exclude virtual root node
   if (node && node.pathSegment && node.children) {
     node.children.forEach(child => {
@@ -66,21 +107,23 @@ const buildNode = async (
   nodeNamesInCurrentPath,
   nodesInCurrentPath,
   childrenOfCurrentNode,
-  context
+  context,
+  pathParams = {}
 ) => {
   if (!context.parentNavigationContexts) {
     context.parentNavigationContexts = [];
   }
   let result = {
     navigationPath: nodesInCurrentPath,
-    context: context
+    context: context,
+    pathParams: pathParams
   };
   if (
     nodeNamesInCurrentPath.length > 0 &&
     childrenOfCurrentNode &&
     childrenOfCurrentNode.length > 0
   ) {
-    const urlPathElement = nodeNamesInCurrentPath.splice(0, 1)[0];
+    const urlPathElement = nodeNamesInCurrentPath[0];
     const node = findMatchingNode(urlPathElement, childrenOfCurrentNode);
     if (node) {
       nodesInCurrentPath.push(node);
@@ -92,11 +135,19 @@ const buildNode = async (
       try {
         let children = await getChildren(node, newContext);
 
+        if (node.pathSegment.startsWith(':')) {
+          pathParams[
+            node.pathSegment.replace(':', '')
+          ] = RoutingHelpers.sanitizeParam(urlPathElement);
+        }
+        const newNodeNamesInCurrentPath = nodeNamesInCurrentPath.slice(1);
+
         result = buildNode(
-          nodeNamesInCurrentPath,
+          newNodeNamesInCurrentPath,
           nodesInCurrentPath,
           children,
-          newContext
+          newContext,
+          pathParams
         );
       } catch (err) {
         console.error('Error getting nodes children', err);
@@ -130,52 +181,13 @@ export const findMatchingNode = (urlPathElement, nodes) => {
     }
   }
   nodes.some(node => {
-    // Static nodes
-    if (node.pathSegment === urlPathElement) {
-      result = node;
-      return true;
-    }
-
-    // Dynamic nodes
     if (
-      (node.pathSegment && node.pathSegment.startsWith(':')) ||
-      (node.pathParam && node.pathParam.key)
+      // Static nodes
+      node.pathSegment === urlPathElement ||
+      // Dynamic nodes
+      (node.pathSegment && node.pathSegment.startsWith(':'))
     ) {
-      if (node.pathParam && node.pathParam.key) {
-        node.viewUrl = node.pathParam.viewUrl;
-        node.context = node.pathParam.context
-          ? Object.assign({}, node.pathParam.context)
-          : undefined;
-        node.pathSegment = node.pathParam.pathSegment;
-      } else {
-        node.pathParam = {
-          key: node.pathSegment.slice(0),
-          pathSegment: node.pathSegment,
-          viewUrl: node.viewUrl,
-          context: node.context ? Object.assign({}, node.context) : undefined
-        };
-      }
-      node.pathParam.value = urlPathElement;
-
-      // path substitutions
-      node.pathSegment = node.pathSegment.replace(
-        node.pathParam.key,
-        urlPathElement
-      );
-
-      if (node.viewUrl) {
-        node.viewUrl = node.viewUrl.replace(node.pathParam.key, urlPathElement);
-      }
-
-      if (node.context) {
-        Object.entries(node.context).map(entry => {
-          const dynKey = entry[1];
-          if (dynKey === node.pathParam.key) {
-            node.context[entry[0]] = dynKey.replace(dynKey, urlPathElement);
-          }
-        });
-      }
-
+      // Return last matching node
       result = node;
       return true;
     }
@@ -183,7 +195,7 @@ export const findMatchingNode = (urlPathElement, nodes) => {
   return result;
 };
 
-export const getNodes = (children, pathData) => {
+const getNodes = (children, pathData) => {
   if (children && 0 < children.length) {
     return children;
   }
@@ -201,7 +213,7 @@ export const getNodes = (children, pathData) => {
   return [];
 };
 
-export const getGroupedChildren = (children, current) => {
+const getGroupedChildren = (children, current) => {
   const nodes = getNodes(children, current.pathData);
   return NavigationHelpers.groupNodesBy(nodes, 'category');
 };
@@ -214,7 +226,7 @@ export const getGroupedChildren = (children, current) => {
  * @param array children
  * @returns array children
  */
-export const getTruncatedChildren = children => {
+const getTruncatedChildren = children => {
   let childToKeepFound = false;
   const res = [];
   children.forEach(node => {

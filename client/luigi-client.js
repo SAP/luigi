@@ -59,16 +59,23 @@
   }
 
   /**
+   * Simple function check.
+   * @private
+   * @param item mixed
+   * @returns {boolean}
+   */
+  function isFunction(item) {
+    return typeof item === 'function';
+  }
+
+  /**
    * Iterates over an object and executes all top-level functions
    * with a given payload.
    * @private
    */
   function _callAllFns(objWithFns, payload) {
     for (var id in objWithFns) {
-      if (
-        objWithFns.hasOwnProperty(id) &&
-        typeof objWithFns[id] == 'function'
-      ) {
+      if (objWithFns.hasOwnProperty(id) && isFunction(objWithFns[id])) {
         objWithFns[id](payload);
       }
     }
@@ -87,7 +94,9 @@
       for (var index = 0; index < defaultContextKeys.length; index++) {
         var key = defaultContextKeys[index];
         try {
-          rawData[key] = JSON.parse(rawData[key]);
+          if (typeof rawData[key] === 'string') {
+            rawData[key] = JSON.parse(rawData[key]);
+          }
         } catch (e) {
           console.info(
             'unable to parse luigi context data for',
@@ -151,8 +160,8 @@
     addInitListener: function addInitListener(initFn) {
       var id = _getRandomId();
       _onInitFns[id] = initFn;
-      if (luigiInitialized) {
-        _callAllFns(_onInitFns, currentContext.context);
+      if (luigiInitialized && isFunction(initFn)) {
+        initFn(currentContext.context);
       }
       return id;
     },
@@ -178,8 +187,8 @@
     ) {
       var id = _getRandomId();
       _onContextUpdatedFns[id] = contextUpdatedFn;
-      if (luigiInitialized) {
-        _callAllFns(_onContextUpdatedFns, currentContext.context);
+      if (luigiInitialized && isFunction(contextUpdatedFn)) {
+        contextUpdatedFn(currentContext.context);
       }
       return id;
     },
@@ -209,6 +218,7 @@
     /**
      * Returns the node parameters of the active URL.
      * Node parameters are defined like URL query parameters but with a specific prefix allowing Luigi to pass them to the micro front-end view.  The default prefix is **~** and you can use it in the following way: `https://my.luigi.app/home/products?~sort=asc~page=3`.
+     * >**NOTE:** some special characters (`<`, `>`, `"`, `'`, `/`) in node parameters are HTML-encoded.
      * @returns {Object} node parameters, where the object property name is the node parameter name without the prefix, and its value is the value of the node parameter. For example `{sort: 'asc', page: 3}`.
      * @memberof lifecycle
      */
@@ -219,6 +229,7 @@
      * Returns the dynamic path parameters of the active URL.
      * Path parameters are defined by navigation nodes with a dynamic **pathSegment** value starting with **:**, such as **productId**.
      * All path parameters in the current navigation path (as defined by the active URL) are returned.
+     * >**NOTE:** some special characters (`<`, `>`, `"`, `'`, `/`) in path parameters are HTML-encoded.
      * @returns {Object} path parameters, where the object property name is the path parameter name without the prefix, and its value is the actual value of the path parameter. For example ` {productId: 1234, ...}`.
      * @memberof lifecycle
      */
@@ -245,7 +256,7 @@
       return {
         /** @lends linkManager */
         /**
-         * Navigates to the given path in application hosted by Luigi. It contains either a full absolute path or a relative path without a leading slash that uses the active route as a base. This is the standard navigation.
+         * Navigates to the given path in the application hosted by Luigi. It contains either a full absolute path or a relative path without a leading slash that uses the active route as a base. This is the standard navigation.
          * @param {string} path path to be navigated to
          * @param {string} sessionId current Luigi **sessionId**
          * @param {boolean} preserveView Preserve a view by setting it to `true`. It keeps the current view opened in the background and opens the new route in a new frame. Use the {@link #goBack goBack()} function to navigate back. You can use this feature across different levels. Preserved views are discarded as soon as the standard {@link #navigate navigate()} function is used instead of {@link #goBack goBack()}.
@@ -336,7 +347,7 @@
 
         /** @lends linkManager */
         /**
-         * Checks if the path you can navigate to exists in the main application. For example, you can use this helper method conditionally display a DOM element like a button.
+         * Checks if the path you can navigate to exists in the main application. For example, you can use this helper method conditionally to display a DOM element like a button.
          * @param {string} path path which existence you want to check
          * @returns {promise} A promise which resolves to a Boolean variable specifying whether the path exists or not.
          * @example
@@ -431,6 +442,16 @@
          */
         removeBackdrop: function removeBackdrop() {
           window.parent.postMessage({ msg: 'luigi.remove-backdrop' }, '*');
+        },
+        /**
+         * This method informs the main application that there are unsaved changes in the current view in the iframe. For example, that can be a view with form fields which were edited but not submitted.
+         * @param {boolean} isDirty indicates if there are any unsaved changes on the current page or in the component
+         */
+        setDirtyStatus: function setDirtyStatus(isDirty) {
+          window.parent.postMessage(
+            { msg: 'luigi.set-page-dirty', dirty: isDirty },
+            '*'
+          );
         }
       };
     }

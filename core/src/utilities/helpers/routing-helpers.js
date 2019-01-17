@@ -1,6 +1,7 @@
-// Helper methods for 'routing.js' file. They don't require any method from 'routing.js` but are required by them.
+// Helper methods for 'routing.js' file. They don't require any method from 'routing.js' but are required by them.
 // They are also rarely used directly from outside of 'routing.js'
 import * as AsyncHelpers from './async-helpers';
+import * as GenericHelpers from './generic-helpers';
 import { LuigiConfig } from '../../services/config';
 import * as Routing from '../../services/routing';
 
@@ -23,24 +24,19 @@ export const getDefaultChildNode = async pathData => {
 
   if (lastElement.defaultChildNode && pathExists) {
     return lastElement.defaultChildNode;
-  } else if (children && children.length > 0) {
-    return children[0].pathSegment;
-  } else {
-    return '';
+  } else if (children && children.length) {
+    const rootPath = pathData.navigationPath.length === 1;
+    if (rootPath) return children[0].pathSegment;
+
+    const validChild = children.find(
+      child =>
+        child.pathSegment &&
+        (child.viewUrl || (child.externalLink && child.externalLink.url))
+    );
+    if (validChild) return validChild.pathSegment;
   }
-};
 
-export const isExistingRoute = (path, pathData) => {
-  if (!path) {
-    return true;
-  }
-
-  const lastElement =
-    pathData.navigationPath[pathData.navigationPath.length - 1];
-  const routeSplit = path.replace(/\/$/, '').split('/');
-  const lastPathSegment = routeSplit[routeSplit.length - 1];
-
-  return lastElement.pathSegment === lastPathSegment;
+  return '';
 };
 
 export const parseParams = paramsString => {
@@ -71,18 +67,7 @@ export const getNodeParams = params => {
       }
     });
   }
-  return result;
-};
-
-export const getPathParams = nodes => {
-  const params = {};
-  nodes
-    .filter(n => n.pathParam)
-    .map(n => n.pathParam)
-    .forEach(pp => {
-      params[pp.key.replace(':', '')] = pp.value;
-    });
-  return params;
+  return sanitizeParams(result);
 };
 
 export const findViewGroup = node => {
@@ -95,7 +80,7 @@ export const findViewGroup = node => {
 const defaultContentViewParamPrefix = '~';
 export const getContentViewParamPrefix = () => {
   return (
-    LuigiConfig.getConfigValue('routing.contentViewParamPrefix') ||
+    LuigiConfig.getConfigValue('routing.nodeParamPrefix') ||
     defaultContentViewParamPrefix
   );
 };
@@ -117,3 +102,59 @@ export const buildRoute = (node, path, params) =>
   !node.parent
     ? path + (params ? '?' + params : '')
     : buildRoute(node.parent, `/${node.parent.pathSegment}${path}`, params);
+
+export const substituteDynamicParamsInObject = (
+  object,
+  paramMap,
+  paramPrefix = ':'
+) => {
+  return Object.entries(object)
+    .map(([key, value]) => {
+      let foundKey = Object.keys(paramMap).find(
+        key2 => value === paramPrefix + key2
+      );
+      return [key, foundKey ? paramMap[foundKey] : value];
+    })
+    .reduce((acc, [key, value]) => {
+      return Object.assign(acc, { [key]: value });
+    }, {});
+};
+
+export const substituteViewUrl = (viewUrl, componentData) => {
+  const contextVarPrefix = 'context.';
+  const nodeParamsVarPrefix = 'nodeParams.';
+
+  viewUrl = GenericHelpers.replaceVars(
+    viewUrl,
+    componentData.pathParams,
+    ':',
+    false
+  );
+  viewUrl = GenericHelpers.replaceVars(
+    viewUrl,
+    componentData.context,
+    contextVarPrefix
+  );
+  viewUrl = GenericHelpers.replaceVars(
+    viewUrl,
+    componentData.nodeParams,
+    nodeParamsVarPrefix
+  );
+  return viewUrl;
+};
+
+export const sanitizeParam = param => {
+  return String(param)
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;')
+    .replace(/\//g, '&sol;');
+};
+
+export const sanitizeParams = paramsMap => {
+  return Object.entries(paramsMap).reduce((sanitizedMap, paramPair) => {
+    sanitizedMap[sanitizeParam(paramPair[0])] = sanitizeParam(paramPair[1]);
+    return sanitizedMap;
+  }, {});
+};
