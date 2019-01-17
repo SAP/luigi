@@ -111,7 +111,7 @@ fi
 
 if [ ! -d $LUIGI_DIR_TESTING ]; then
   echo "There was an issue cloning the repository (github permissions?)"
-  exit 3
+  exit 2
 fi
 
 cd $LUIGI_DIR_TESTING
@@ -129,7 +129,18 @@ echo "Linking current Luigi to selected version"
 rm -rf $EXAMPLE_NODE_MODULES/luigi*
 ln -s $LUIGI_DIR/core/public $EXAMPLE_NODE_MODULES/luigi-core
 ln -s $LUIGI_DIR/client $EXAMPLE_NODE_MODULES/luigi-client
-ls -lah $EXAMPLE_NODE_MODULES
+ls -la $EXAMPLE_NODE_MODULES
+ls $EXAMPLE_NODE_MODULES/luigi-core
+ls $EXAMPLE_NODE_MODULES/luigi-client
+
+if [ ! -f $EXAMPLE_NODE_MODULES/luigi-core/package.json ]; then
+  echo "There was an issue linking the luigi-core module"
+  exit 2
+fi
+if [ ! -f $EXAMPLE_NODE_MODULES/luigi-client/package.json ]; then
+  echo "There was an issue linking the luigi-client module"
+  exit 2
+fi
 
 echo "Bundling example app"
 npm run build
