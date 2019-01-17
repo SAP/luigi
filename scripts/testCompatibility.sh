@@ -25,10 +25,11 @@ function showHelp {
   echo ""
 }
 
-SCRIPT_DIR=`dirname $0`
-LUIGI_DIR="$SCRIPT_DIR/../"
+LUIGI_DIR="${PWD}"
 LUIGI_FOLDERNAME="luigi-compatibility-testing"
-LUIGI_DIR_TESTING="$LUIGI_DIR../$LUIGI_FOLDERNAME"
+LUIGI_DIR_TESTING="$LUIGI_DIR/../$LUIGI_FOLDERNAME"
+EXAMPLE_DIR="$LUIGI_DIR_TESTING/core/examples/luigi-sample-angular"
+EXAMPLE_NODE_MODULES=$EXAMPLE_DIR/node_modules/@kyma-project
 
 while [ "$#" -gt 0 ]; do
   case "$1" in
@@ -119,18 +120,16 @@ git reset --hard HEAD
 git checkout tags/$TAG
 
 echo "Installing selected Luigi example app"
-EXAMPLENG=$LUIGI_DIR_TESTING/core/examples/luigi-sample-angular
-cd $EXAMPLENG
+cd $EXAMPLE_DIR
 npm install
 
 # remove installed 
 echo "Linking current Luigi to selected version"
-NODE_MODULES_KYMA=$LUIGI_DIR_TESTING/node_modules/@kyma-project
-rm -rf $NODE_MODULES_KYMA/luigi*
-# # and symlink with current luigi version
-ln -s $LUIGI_DIR/luigi/core/public $NODE_MODULES_KYMA/luigi-core
-ln -s $LUIGI_DIR/luigi/client $NODE_MODULES_KYMA/luigi-client
-ls -lah $NODE_MODULES_KYMA
+# remove installed luigi versions and symlink with latest
+rm -rf $EXAMPLE_NODE_MODULES/luigi*
+ln -s $LUIGI_DIR/core/public $EXAMPLE_NODE_MODULES/luigi-core
+ln -s $LUIGI_DIR/client $EXAMPLE_NODE_MODULES/luigi-client
+ls -lah $EXAMPLE_NODE_MODULES
 
 echo "Bundling example app"
 npm run build
