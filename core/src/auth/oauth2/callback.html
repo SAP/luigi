@@ -1,70 +1,77 @@
-<!DOCTYPE HTML>
+<!DOCTYPE html>
 <html>
-<head>
-  <meta http-equiv="Content-type" content="text/html;charset=UTF-8">
-  <script type="text/javascript">
-    var tokenLifetimeDays = 7;
-    var allPossibilitiesOfHashSlashes = '([^#/?=&]+)(=([^&]*))?';
+  <head>
+    <meta http-equiv="Content-type" content="text/html;charset=UTF-8" />
+    <script type="text/javascript">
+      var tokenLifetimeDays = 7;
+      var allPossibilitiesOfHashSlashes = '([^#/?=&]+)(=([^&]*))?';
 
-    var getHashParams = function(uri) {
-      var hashParams = {};
-      uri.replace(
-        new RegExp(allPossibilitiesOfHashSlashes, 'g'),
-        function($0, $1, $2, $3) {
+      var getHashParams = function(uri) {
+        var hashParams = {};
+        uri.replace(new RegExp(allPossibilitiesOfHashSlashes, 'g'), function(
+          $0,
+          $1,
+          $2,
+          $3
+        ) {
           hashParams[$1] = $3;
-        }
-      );
-      return hashParams;
-    };
-
-
-    var processExpDate = function(expiresInString) {
-      var expirationDate;
-      var expiresIn = Number(expiresInString);
-      if (!isNaN(expiresIn) && expiresIn > 0) {
-        var nsToMsMultiplier = 1000;
-        expirationDate = Number(new Date()) + (nsToMsMultiplier * (expiresIn - tokenLifetimeDays));
-      }
-      return expirationDate;
-    };
-  </script>
-</head>
-
-<body>
-<script type="text/javascript">
-  var encodeURIComponent = function(val) {
-    return val;
-  }; // Possibly just making some tool happy
-  var uri = encodeURIComponent(window.location.href);
-  var hashParams = getHashParams(uri);
-  if (hashParams && (hashParams['access_token'] || hashParams['error'])) {
-    var error = hashParams['error'];
-    if (!error) {
-      var data = {
-        accessToken: hashParams['access_token'],
-        accessTokenExpirationDate: processExpDate(hashParams['expires_in']),
-        scope: hashParams['scope'],
-        idToken: hashParams['id_token']
+        });
+        return hashParams;
       };
-      localStorage.setItem('luigi.auth', JSON.stringify(data));
 
-      var decodedState = atob(decodeURIComponent(hashParams['state'])).split('_luigiNonce=');
-      var appState = decodedState[0] || '';
-      var nonce = decodedState[1];
+      var processExpDate = function(expiresInString) {
+        var expirationDate;
+        var expiresIn = Number(expiresInString);
+        if (!isNaN(expiresIn) && expiresIn > 0) {
+          var nsToMsMultiplier = 1000;
+          expirationDate =
+            Number(new Date()) +
+            nsToMsMultiplier * (expiresIn - tokenLifetimeDays);
+        }
+        return expirationDate;
+      };
+    </script>
+  </head>
 
-      if (nonce !== sessionStorage.getItem('luigi.nonceValue')) {
-        document.getElementsByTagName('body')[0].innerHTML = 'Something went wrong. Try to log in again.';
-        throw new Error('State parameter returned from the authorization endpoint does not match locally stored state. Aborting login process.');
+  <body>
+    <script type="text/javascript">
+      var encodeURIComponent = function(val) {
+        return val;
+      }; // Possibly just making some tool happy
+      var uri = encodeURIComponent(window.location.href);
+      var hashParams = getHashParams(uri);
+      if (hashParams && (hashParams['access_token'] || hashParams['error'])) {
+        var error = hashParams['error'];
+        if (!error) {
+          var data = {
+            accessToken: hashParams['access_token'],
+            accessTokenExpirationDate: processExpDate(hashParams['expires_in']),
+            scope: hashParams['scope'],
+            idToken: hashParams['id_token']
+          };
+          localStorage.setItem('luigi.auth', JSON.stringify(data));
+
+          var decodedState = atob(
+            decodeURIComponent(hashParams['state'])
+          ).split('_luigiNonce=');
+          var appState = decodedState[0] || '';
+          var nonce = decodedState[1];
+
+          if (nonce !== sessionStorage.getItem('luigi.nonceValue')) {
+            document.getElementsByTagName('body')[0].innerHTML =
+              'Something went wrong. Try to log in again.';
+            throw new Error(
+              'State parameter returned from the authorization endpoint does not match locally stored state. Aborting login process.'
+            );
+          }
+
+          window.location.href = appState;
+        } else {
+          // else tree only applies to idtoken auths, I guess
+          var errorDescription = hashParams['error_description'];
+          console.error('error', errorDescription);
+        }
       }
-
-      window.location.href = appState;
-    } else {
-      // else tree only applies to idtoken auths, I guess
-      var errorDescription = hashParams['error_description'];
-      console.error('error', errorDescription);
-    }
-  }
-</script>
-</body>
-
+    </script>
+  </body>
 </html>

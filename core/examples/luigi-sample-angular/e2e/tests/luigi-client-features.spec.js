@@ -120,6 +120,11 @@ describe('Luigi client features', () => {
         { path: '/projects/pr2/', successExpected: true },
         // existent absolute path without '/' at the end
         { path: '/projects/pr2', successExpected: true },
+        // existent path with two dynamic pathSegments
+        {
+          path: '/projects/pr1/users/groups/avengers/settings/dynamic-two',
+          successExpected: true
+        },
         // existent relative path
         { path: 'developers', successExpected: true }
       ].map(data => {

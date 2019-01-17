@@ -4,12 +4,10 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const sass = require('node-sass');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const CleanWebpackPlugin = require('clean-webpack-plugin');
-require('babel-polyfill');
 
 module.exports = {
   entry: {
     index: [
-      'babel-polyfill',
       './node_modules/fiori-fundamentals/dist/fiori-fundamentals.min.css',
       './src/main.js'
     ]
