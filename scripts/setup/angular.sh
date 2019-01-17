@@ -7,7 +7,6 @@ read -p "Luigi project folder name: " folder
 echo ""
 ng new $folder --routing && cd $folder
 
-npm i # run install again, because ng new does not install all dependencies
 npm i -P @kyma-project/luigi-core @kyma-project/luigi-client fiori-fundamentals webpack webpack-cli @babel/core @babel/preset-env babel-loader 
 sed 's/"scripts": {/"scripts": {\
 \   "buildConfig":"webpack --entry .\/src\/luigi-config\/basic\/basicConfiguration.js -o .\/src\/assets\/sampleconfig.js --mode production",/1' package.json > p.tmp.json && mv p.tmp.json package.json
