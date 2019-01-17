@@ -45,6 +45,7 @@ npm install -g live-server
 bash <(curl -s https://raw.githubusercontent.com/kyma-project/Luigi/master/scripts/setup/no-framework.sh)
 ````
 or execute these commands manually to get the same result:
+
 ```bash
 mkdir my-new-app && cd my-new-app
 
@@ -75,6 +76,7 @@ npm run buildConfig
 
 live-server --entry-file=index.html public
 ```
+
 <a name="angular6"></a>
 
 ### Application setup for Angular 6 
@@ -92,14 +94,10 @@ or execute these commands manually to get the same result:
 ```bash
 ng new my-angular-app --routing && cd my-angular-app
 
-npm i 
-
 npm i -P @kyma-project/luigi-core @kyma-project/luigi-client fiori-fundamentals webpack webpack-cli @babel/core @babel/preset-env babel-loader 
 
 sed 's/"scripts": {/"scripts": {\
-\   "buildConfig":"webpack --entry .\/src\/luigi-config\/basic\/basicConfiguration.js -o .\/src\/assets\/sampleconfig.js --mode production",/1' package.json > p.tmp.json && 
-
-mv p.tmp.json package.json
+\   "buildConfig":"webpack --entry .\/src\/luigi-config\/basic\/basicConfiguration.js -o .\/src\/assets\/sampleconfig.js --mode production",/1' package.json > p.tmp.json && mv p.tmp.json package.json
 
 mkdir -p src/luigi-config/basic
 
