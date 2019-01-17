@@ -36,6 +36,10 @@ const routes: Routes = [
     path: 'projects/:projectId/users/groups/:groupId/settings',
     component: GroupSettingsComponent
   },
+  {
+    path: 'projects/:projectId/users/groups/:groupId/settings/:dynamicValue',
+    component: DynamicComponent
+  },
   { path: 'projects/:projectId/developers', component: DevelopersComponent },
   { path: 'projects/:projectId/settings', component: SettingsComponent },
   {

@@ -41,10 +41,6 @@ export class ProjectComponent implements OnInit, OnDestroy {
       const removed = this.luigiClient.removeContextUpdateListener(
         this.cudListener
       );
-      console.info(
-        'project: LuigiClient.removeContextUpdateListener unregistered listener:',
-        removed
-      );
     }
   }
 
@@ -56,16 +52,7 @@ export class ProjectComponent implements OnInit, OnDestroy {
       .subscribe((ctx: IContextMessage) => {
         if (ctx.contextType === 'init' || ctx.contextType === 'update') {
           this.projectId = ctx.context.currentProject;
-          console.info(
-            'project ID as luigi param: ' + ctx.context.currentProject
-          );
           this.preservedViewCallbackContext = ctx.context.goBackContext;
-          console.info(
-            'context update: project ID as luigi param: ' +
-              ctx.context.currentProject,
-            'goBackContext?',
-            this.preservedViewCallbackContext
-          );
           // Since Luigi runs outside of Zone.js, changes need
           // to be updated manually
           // Be sure to check for destroyed ChangeDetectorRef,
@@ -77,7 +64,6 @@ export class ProjectComponent implements OnInit, OnDestroy {
       });
 
     this.activatedRoute.params.subscribe((params: Params) => {
-      console.info('project ID as URL param: ' + params['projectId']);
       this.projectId = params['projectId'];
     });
 
@@ -88,12 +74,6 @@ export class ProjectComponent implements OnInit, OnDestroy {
     this.cudListener = LuigiClient.addContextUpdateListener(updatedContext => {
       // this.projectId = updatedContext.currentProject;
       // this.preservedViewCallbackContext = updatedContext.goBackContext;
-      console.info(
-        'context update static listener: project ID as luigi param: ' +
-          updatedContext.currentProject,
-        'goBackContext?',
-        this.preservedViewCallbackContext
-      );
 
       // Be sure to check for destroyed ChangeDetectorRef,
       // else you get runtime Errors
