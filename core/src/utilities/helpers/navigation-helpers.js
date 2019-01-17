@@ -57,6 +57,9 @@ export const getNodePath = node => {
 export const groupNodesBy = (nodes, property) => {
   const result = {};
   nodes.forEach(node => {
+    if (node.hideFromNav) {
+      return;
+    }
     let key;
     let metaInfo;
     const category = node[property];
