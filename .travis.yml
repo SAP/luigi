@@ -2,6 +2,8 @@ language: node_js
 node_js:
   - 'node'
 install: npm install --prefix core
+notifications:
+  slack: sap-cx:Rqhls5Wltx5Evdi6firzCpXm
 jobs:
   include:
     - stage: 'Tests'
