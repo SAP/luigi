@@ -85,7 +85,7 @@ live-server --entry-file=index.html public
 
 1. If you do not have the Angular CLI installed, download and install it from [this URL](https://cli.angular.io/).
 
-2. Use the following installer to create your application, install Luigi, make assets available, and serve your application.
+2. Use the installer to create your application, install Luigi, make assets available, and serve your application:
 
 ````
 bash <(curl -s https://raw.githubusercontent.com/kyma-project/Luigi/master/scripts/setup/angular.sh)
