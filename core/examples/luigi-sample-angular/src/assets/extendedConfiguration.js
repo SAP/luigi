@@ -590,6 +590,33 @@ Luigi.setConfig({
       fallbackLabelResolver: id => {
         return id.replace(/\b\w/g, l => l.toUpperCase());
       }
+    },
+    waffl: {
+      items: [
+        {
+          icon: 'https://sap.github.io/fundamental/images/products/06.png',
+          label: 'google',
+          externalLink: {
+            url: 'https://google.com',
+            sameWindow: true
+          }
+        },
+        {
+          icon: 'https://sap.github.io/fundamental/images/products/06.png',
+          label: 'pro1',
+          link: '/projects/pr1'
+        },
+        {
+          icon: 'https://sap.github.io/fundamental/images/products/06.png',
+          label: 'pro2',
+          link: '/projects/pr2'
+        },
+        {
+          icon: 'https://sap.github.io/fundamental/images/products/06.png',
+          label: 'pro4',
+          link: '/projects/pr4'
+        }
+      ]
     }
   },
   routing: {

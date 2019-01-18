@@ -1,0 +1,62 @@
+<div
+  class="fd-product-switcher__body"
+  aria-hidden="{!(dropDownStates.wafflPopover || false)}"
+  id="wafflPopover"
+>
+  <nav on:click="toggleDropdownState('wafflPopover')">
+    <ul>
+      {#if items && items.length} {#each items as wafflitem}
+      <li on:click="onActionClick(wafflitem)">
+        <span class="fd-product-switcher__product-icon"
+          ><img src="{wafflitem.icon}"
+        /></span>
+        <span class="fd-product-switcher__product-title"
+          >{wafflitem.label}</span
+        >
+      </li>
+      {/each} {/if}
+    </ul>
+  </nav>
+</div>
+
+<script type="text/javascript">
+  import { LuigiConfig } from '../services/config.js';
+  import * as Routing from '../services/routing.js';
+  export default {
+    async oncreate() {
+      const wafflConfig = LuigiConfig.getConfigValue('navigation.waffl');
+      this.set({
+        config: wafflConfig
+      });
+
+      if (wafflConfig) {
+        const items = await LuigiConfig.getConfigValueAsync(
+          'navigation.waffl.items'
+        );
+        this.set({
+          items,
+          fallbackLabelResolver: wafflConfig.fallbackLabelResolver
+        });
+      }
+    },
+    methods: {
+      onActionClick(wafflitem) {
+        if (wafflitem.externalLink) {
+          window.open(wafflitem.externalLink.url);
+        } else {
+          Routing.navigateTo(wafflitem.link);
+        }
+      },
+      toggleDropdownState(name) {
+        this.fire('toggleDropdownState', { name });
+        const dropDownStates = this.get().dropDownStates || {};
+        const isOpened = JSON.parse(dropDownStates[name]);
+        if (isOpened) {
+          this.fetchOptions();
+        }
+      }
+    },
+    components: {}
+  };
+</script>
+<style type="text/scss"></style>
