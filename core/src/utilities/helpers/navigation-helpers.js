@@ -88,7 +88,6 @@ export const groupNodesBy = (nodes, property) => {
     }
   });
   Object.keys(result).forEach(category => {
-    debugger;
     if (result[category].length === 0) {
       delete result[category];
     }
