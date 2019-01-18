@@ -57,9 +57,6 @@ export const getNodePath = node => {
 export const groupNodesBy = (nodes, property) => {
   const result = {};
   nodes.forEach(node => {
-    if (node.hideFromNav) {
-      return;
-    }
     let key;
     let metaInfo;
     const category = node[property];
@@ -86,7 +83,14 @@ export const groupNodesBy = (nodes, property) => {
         ? getNodePath(node.parent) + ':' + key
         : key;
     }
-    arr.push(node);
+    if (!node.hideFromNav) {
+      arr.push(node);
+    }
+  });
+  Object.keys(result).forEach(category => {
+    if (result[category].length === 0) {
+      delete result[category];
+    }
   });
   return result;
 };
