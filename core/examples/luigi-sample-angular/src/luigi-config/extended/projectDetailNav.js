@@ -24,11 +24,25 @@ export const projectDetailNavStructure = projectId => [
               {
                 label: 'Group Settings',
                 pathSegment: 'settings',
+                keepSelectedForChildren: true,
                 icon: 'user-settings',
                 viewUrl:
                   '/sampleapp.html#/projects/' +
                   projectId +
-                  '/users/groups/:group/settings'
+                  '/users/groups/:group/settings',
+                children: [
+                  {
+                    label: 'Multi Path Params',
+                    pathSegment: ':dynamic',
+                    viewUrl:
+                      '/sampleapp.html#/projects/' +
+                      projectId +
+                      '/users/groups/:group/settings/:dynamic',
+                    context: {
+                      label: ':dynamic'
+                    }
+                  }
+                ]
               }
             ]
           }

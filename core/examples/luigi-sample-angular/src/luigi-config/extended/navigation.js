@@ -86,9 +86,15 @@ class Navigation {
           viewUrl: '/assets/sampleexternal.html#two'
         }
       ]
+    },
+    {
+      pathSegment: 'page-not-found',
+      label: 'Page not found',
+      viewUrl: '/assets/404.html',
+      hideFromNav: true,
+      hideSideNav: true
     }
   ];
-
   // The following configuration will be used to render the context switcher component
   contextSwitcher = {
     defaultLabel: 'Select Environment ...',
