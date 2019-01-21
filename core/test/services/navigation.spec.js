@@ -5,9 +5,9 @@ const assert = chai.assert;
 const sinon = require('sinon');
 import { LuigiConfig } from '../../src/services/config';
 
-const sampleNavPromise = new Promise(function (resolve) {
+const sampleNavPromise = new Promise(function(resolve) {
   const lazyLoadedChildrenNodesProviderFn = () => {
-    return new Promise(function (resolve) {
+    return new Promise(function(resolve) {
       resolve([
         {
           pathSegment: 'b1',
@@ -51,11 +51,11 @@ const sampleNavPromise = new Promise(function (resolve) {
   ]);
 });
 
-describe('Navigation', function () {
+describe('Navigation', function() {
   before(() => {
     function mockStorage() {
       return {
-        getItem: function (key) {
+        getItem: function(key) {
           return JSON.stringify({
             accessTokenExpirationDate: Number(new Date()) + 1
           });
@@ -69,7 +69,7 @@ describe('Navigation', function () {
     // reset
     LuigiConfig.config = {};
   });
-  describe('getNavigationPath', function () {
+  describe('getNavigationPath', function() {
     it('should not fail for undefined arguments', () => {
       navigation.getNavigationPath(undefined, undefined);
     });
@@ -274,10 +274,22 @@ describe('Navigation', function () {
       ]);
 
       // // then
-      expect(resStaticOk.pathSegment).to.equal('other', 'resStaticOk.pathSegment');
-      expect(resDynamicOk.pathSegment).to.equal(':group', 'resDynamicOk.pathSegment');
-      expect(resDynamicOk.viewUrl).to.contain('/:group', 'resDynamicOk.viewUrl');
-      expect(resDynamicOk.context.currentGroup).to.equal(':group', 'resDynamicOk.context');
+      expect(resStaticOk.pathSegment).to.equal(
+        'other',
+        'resStaticOk.pathSegment'
+      );
+      expect(resDynamicOk.pathSegment).to.equal(
+        ':group',
+        'resDynamicOk.pathSegment'
+      );
+      expect(resDynamicOk.viewUrl).to.contain(
+        '/:group',
+        'resDynamicOk.viewUrl'
+      );
+      expect(resDynamicOk.context.currentGroup).to.equal(
+        ':group',
+        'resDynamicOk.context'
+      );
 
       // falsy tests
       const resNull = navigation.findMatchingNode('avengers', [staticNode()]);
