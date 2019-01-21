@@ -6,11 +6,12 @@ import { LuigiConfig } from './config';
 import * as GenericHelpers from '../utilities/helpers/generic-helpers';
 import * as Iframe from './iframe';
 
-export const getNodePath = node => {
+export const getNodePath = (node, params) => {
   return node
     ? RoutingHelpers.buildRoute(
         node,
-        node.pathSegment ? '/' + node.pathSegment : ''
+        node.pathSegment ? '/' + node.pathSegment : '',
+        params
       )
     : '';
 };
@@ -201,6 +202,7 @@ export const handleRouteChange = async (
     const params = RoutingHelpers.parseParams(pathUrlRaw.split('?')[1]);
     const nodeParams = RoutingHelpers.getNodeParams(params);
     const viewGroup = RoutingHelpers.findViewGroup(lastNode);
+    const urlParamsRaw = decodeURIComponent(pathUrlRaw.split('?')[1] || '');
     const currentNode =
       pathData.navigationPath && pathData.navigationPath.length > 0
         ? pathData.navigationPath[pathData.navigationPath.length - 1]
@@ -211,6 +213,7 @@ export const handleRouteChange = async (
       viewUrl,
       nodeParams,
       viewGroup,
+      urlParamsRaw,
       currentNode,
       navigationPath: pathData.navigationPath,
       context: RoutingHelpers.substituteDynamicParamsInObject(
