@@ -16,13 +16,14 @@
           <div class="fd-product-switcher__body">
             <nav>
               <ul>
-                {#if products && products.length}{#each products as product}
-                <li on:click="onActionClick(product)">
+                {#if productSwitcherItems && productSwitcherItems.length} {#each
+                productSwitcherItems as productSwitcherItem}
+                <li on:click="onActionClick(productSwitcherItem)">
                   <span class="fd-product-switcher__product-icon"
-                    ><img src="{product.icon}"
+                    ><img src="{productSwitcherItem.icon}"
                   /></span>
                   <span class="fd-product-switcher__product-title"
-                    >{product.label}</span
+                    >{productSwitcherItem.label}</span
                   >
                 </li>
                 {/each} {/if}
@@ -48,20 +49,23 @@
       });
 
       if (productSwitcherConfig) {
-        const products = await LuigiConfig.getConfigValueAsync(
+        const productSwitcherItems = await LuigiConfig.getConfigValueAsync(
           'navigation.productSwitcher.items'
         );
         this.set({
-          products
+          productSwitcherItems
         });
       }
     },
     methods: {
-      onActionClick(product) {
-        if (product.externalLink) {
-          window.open(product.externalLink.url);
+      onActionClick(productSwitcherItem) {
+        if (productSwitcherItem.externalLink) {
+          window.open(
+            productSwitcherItem.externalLink.url,
+            productSwitcherItem.externalLink.sameWindow ? '_self' : '_blank'
+          );
         } else {
-          Routing.navigateTo(product.link);
+          Routing.navigateTo(productSwitcherItem.link);
         }
       },
       toggleDropdownState(name) {

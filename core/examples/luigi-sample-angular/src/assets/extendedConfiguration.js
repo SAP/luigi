@@ -599,7 +599,7 @@ Luigi.setConfig({
           label: 'hybris',
           externalLink: {
             url: 'https://www.hybris.com',
-            sameWindow: true
+            sameWindow: false
           }
         },
         {
