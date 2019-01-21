@@ -5,7 +5,7 @@ describe('ProductSwitcher', () => {
   });
 
   it('Clicking around the product switcher', () => {
-    //check if google is there
+    //check if hybris is there
     cy.get('.fd-product-switcher')
       .click()
       .contains('hybris');
