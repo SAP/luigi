@@ -596,26 +596,26 @@ Luigi.setConfig({
       items: [
         {
           icon: 'https://sap.github.io/fundamental/images/products/06.png',
-          label: 'google',
+          label: 'hybris',
           externalLink: {
-            url: 'https://google.com',
+            url: 'https://www.hybris.com',
             sameWindow: true
           }
         },
         {
           icon: 'https://sap.github.io/fundamental/images/products/06.png',
-          label: 'pro1',
+          label: 'Project 1',
           link: '/projects/pr1'
         },
         {
           icon: 'https://sap.github.io/fundamental/images/products/06.png',
-          label: 'pro2',
+          label: 'Project 2',
           link: '/projects/pr2'
         },
         {
           icon: 'https://sap.github.io/fundamental/images/products/06.png',
-          label: 'pro4',
-          link: '/projects/pr4'
+          label: 'Project 3',
+          link: '/projects/pr3'
         }
       ]
     }

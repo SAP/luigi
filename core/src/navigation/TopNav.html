@@ -121,7 +121,7 @@
         </div>
       </div>
       {/if} {#if isProductSwitcherAvailable}
-      <div class="fd-shellbar__action fd-shellbar__action--show-always">
+      <!-- <div class="fd-shellbar__action fd-shellbar__action--show-always">
         <div class="fd-popover">
           <div class="fd-popover__control" on:click="event.stopPropagation()">
             <button
@@ -135,16 +135,16 @@
               aria-hidden="{!(dropDownStates.productSwitcherPopover || false)}"
               id="productSwitcherPopover"
             >
-              <nav class="fd-menu">
-                <ProductSwitcher
-                  bind:dropDownStates
-                  on:toggleDropdownState="toggleDropdownState(event.name)"
-                />
-              </nav>
+              <nav class="fd-menu"> -->
+      <ProductSwitcher
+        bind:dropDownStates
+        on:toggleDropdownState="toggleDropdownState(event.name)"
+      />
+      <!-- </nav>
             </div>
           </div>
         </div>
-      </div>
+      </div> -->
       {/if}
     </div>
   </div>
