@@ -591,7 +591,8 @@ Luigi.setConfig({
         return id.replace(/\b\w/g, l => l.toUpperCase());
       }
     },
-    waffl: {
+    // The following configuration will be used to render a product switcher component
+    productSwitcher: {
       items: [
         {
           icon: 'https://sap.github.io/fundamental/images/products/06.png',

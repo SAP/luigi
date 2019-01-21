@@ -1,17 +1,17 @@
 <div
   class="fd-product-switcher__body"
-  aria-hidden="{!(dropDownStates.wafflPopover || false)}"
-  id="wafflPopover"
+  aria-hidden="{!(dropDownStates.productSwitcherPopover || false)}"
+  id="productSwitcherPopover"
 >
-  <nav on:click="toggleDropdownState('wafflPopover')">
+  <nav on:click="toggleDropdownState('productSwitcherPopover')">
     <ul>
-      {#if items && items.length} {#each items as wafflitem}
-      <li on:click="onActionClick(wafflitem)">
+      {#if items && items.length} {#each items as productSwitcherItem}
+      <li on:click="onActionClick(productSwitcherItem)">
         <span class="fd-product-switcher__product-icon"
-          ><img src="{wafflitem.icon}"
+          ><img src="{productSwitcherItem.icon}"
         /></span>
         <span class="fd-product-switcher__product-title"
-          >{wafflitem.label}</span
+          >{productSwitcherItem.label}</span
         >
       </li>
       {/each} {/if}
@@ -24,27 +24,29 @@
   import * as Routing from '../services/routing.js';
   export default {
     async oncreate() {
-      const wafflConfig = LuigiConfig.getConfigValue('navigation.waffl');
+      const productSwitcherConfig = LuigiConfig.getConfigValue(
+        'navigation.productSwitcher'
+      );
       this.set({
-        config: wafflConfig
+        config: productSwitcherConfig
       });
 
-      if (wafflConfig) {
+      if (productSwitcherConfig) {
         const items = await LuigiConfig.getConfigValueAsync(
-          'navigation.waffl.items'
+          'navigation.productSwitcher.items'
         );
         this.set({
           items,
-          fallbackLabelResolver: wafflConfig.fallbackLabelResolver
+          fallbackLabelResolver: productSwitcherConfig.fallbackLabelResolver
         });
       }
     },
     methods: {
-      onActionClick(wafflitem) {
-        if (wafflitem.externalLink) {
-          window.open(wafflitem.externalLink.url);
+      onActionClick(productSwitcherItem) {
+        if (productSwitcherItem.externalLink) {
+          window.open(productSwitcherItem.externalLink.url);
         } else {
-          Routing.navigateTo(wafflitem.link);
+          Routing.navigateTo(productSwitcherItem.link);
         }
       },
       toggleDropdownState(name) {

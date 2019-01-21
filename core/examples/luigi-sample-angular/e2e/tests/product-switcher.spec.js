@@ -1,4 +1,4 @@
-describe('Waffl', () => {
+describe('ProductSwitcher', () => {
   beforeEach(() => {
     cy.visit('http://localhost:4200');
     cy.login('tets@email.com', 'tets');
