@@ -1,29 +1,53 @@
-<div id="app" class="{hideNav? 'no-nav' : ''} {hideSideNav? 'no-side-nav' : ''}">
-	{#if alert && alert.message}
-    <div class="fd-alert fd-alert--error fd-alert--dismissible" role="alert" id="j2ALl423">
-      <button on:click="set({alert:null})" class="fd-alert__close" aria-controls="j2ALl423" aria-label="Close"></button>
-      {alert.message} {alert.link}
-    </div>
-	{/if}
-  {#if confirmationModal.isDisplayed}
-    <ConfirmationModal title={confirmationModal.title} text={confirmationModal.text} on:modalConfirm="handleModalResult(true)"
-    on:modalDecline="handleModalResult(false)"></ConfirmationModal>
-	{/if}
-	<Backdrop>
-		<div class="fd-page iframeContainer" use:init="context"></div>
-	</Backdrop>
-	{#if showLoadingIndicator}
-    <div in:fade='{delay: 250, duration: 250}' out:fade='{duration: 250}' class="fd-page spinnerContainer" aria-hidden="false"
-    aria-label="Loading">
-      <div class="fd-spinner">
-        <div></div>
-      </div>
-    </div>
-	{/if}
+<div
+  id="app"
+  class="{hideNav? 'no-nav' : ''} {hideSideNav? 'no-side-nav' : ''}"
+>
+  {#if alert && alert.message}
+  <div
+    class="fd-alert fd-alert--error fd-alert--dismissible"
+    role="alert"
+    id="j2ALl423"
+  >
+    <button
+      on:click="set({alert:null})"
+      class="fd-alert__close"
+      aria-controls="j2ALl423"
+      aria-label="Close"
+    ></button>
+    {alert.message} {alert.link}
+  </div>
+  {/if} {#if confirmationModal.isDisplayed}
+  <ConfirmationModal
+    title="{confirmationModal.title}"
+    text="{confirmationModal.text}"
+    on:modalConfirm="handleModalResult(true)"
+    on:modalDecline="handleModalResult(false)"
+  ></ConfirmationModal>
+  {/if}
+  <Backdrop>
+    <div class="fd-page iframeContainer" use:init="context"></div>
+  </Backdrop>
+  {#if showLoadingIndicator}
+  <div
+    in:fade="{delay: 250, duration: 250}"
+    out:fade="{duration: 250}"
+    class="fd-page spinnerContainer"
+    aria-hidden="false"
+    aria-label="Loading"
+  >
+    <div class="fd-spinner"><div></div></div>
+  </div>
+  {/if}
 
-	<TopNav pathData={navigationPath} on:handleClick="handleNavClick(event.node)"/>
+  <TopNav
+    pathData="{navigationPath}"
+    on:handleClick="handleNavClick(event.node)"
+  />
   {#if !(hideNav||hideSideNav)}
-	  <LeftNav pathData={navigationPath} on:handleClick="handleNavClick(event.node)"/>
+  <LeftNav
+    pathData="{navigationPath}"
+    on:handleClick="handleNavClick(event.node)"
+  />
   {/if}
 </div>
 
@@ -35,7 +59,7 @@
   import ConfirmationModal from './ConfirmationModal.html';
   import { LuigiConfig } from './services/config.js';
   import * as Routing from './services/routing.js';
-  import * as Navigation from './navigation/services/navigation.js'
+  import * as Navigation from './navigation/services/navigation.js';
   import * as Iframe from './services/iframe';
   import * as RoutingHelpers from './utilities/helpers/routing-helpers';
   import * as GenericHelpers from './utilities/helpers/generic-helpers';
@@ -114,14 +138,19 @@
 
   const addPreserveView = (component, data, config) => {
     if (data.params.preserveView) {
-      const pv = component.get().preservedViews;
+      const {
+        preservedViews,
+        currentNode,
+        urlParamsRaw,
+        context
+      } = component.get();
       const nextPath = buildPath(component, data.params);
-      pv.push({
-        path: Routing.getNodePath(component.get().currentNode),
+      preservedViews.push({
+        path: Routing.getNodePath(currentNode, urlParamsRaw),
         nextPath: nextPath.startsWith('/') ? nextPath : '/' + nextPath,
-        context: component.get().context
+        context
       });
-      component.set({ preservedViews: pv });
+      component.set({ preservedViews });
       // Resetting iframe config to null, since Routing.navigateTo will then create a new iframe
       // instead of using the existing instance for route.
       config.iframe = null;
@@ -150,8 +179,12 @@
         context: JSON.stringify(
           Object.assign({}, component.get().context, goBackContext)
         ),
-        nodeParams: JSON.stringify(Object.assign({}, component.get().nodeParams)),
-        pathParams: JSON.stringify(Object.assign({}, component.get().pathParams)),
+        nodeParams: JSON.stringify(
+          Object.assign({}, component.get().nodeParams)
+        ),
+        pathParams: JSON.stringify(
+          Object.assign({}, component.get().pathParams)
+        ),
         internal: JSON.stringify(component.prepareInternalData()),
         authData: AuthHelpers.getStoredAuthData()
       },
@@ -161,7 +194,9 @@
 
   const sendAuthDataToClient = (iframe, authData) => {
     if (!iframe || !iframe.contentWindow) {
-      console.info('iframe does not exist, not able to send authData to client.');
+      console.info(
+        'iframe does not exist, not able to send authData to client.'
+      );
       return;
     }
     iframe.contentWindow.postMessage(
@@ -203,7 +238,9 @@
     onstate({ changed, current, previous }) {},
     actions: {
       init(node) {
-        const isolateAllViews = LuigiConfig.getConfigValue('navigation.defaults.isolateView');
+        const isolateAllViews = LuigiConfig.getConfigValue(
+          'navigation.defaults.isolateView'
+        );
         const config = {
           iframe: null,
           navigateOk: null,
@@ -291,7 +328,8 @@
             const data = e.data.data;
             const path = buildPath(this, data);
             const pathData = await Navigation.getNavigationPath(
-              LuigiConfig.getConfigValueAsync('navigation.nodes'), path
+              LuigiConfig.getConfigValueAsync('navigation.nodes'),
+              path
             );
 
             config.iframe.contentWindow.postMessage(
@@ -331,7 +369,9 @@
         };
       },
       handleNavClick(node) {
-        this.getUnsavedChangesModalPromise().then(() => { Routing.handleRouteClick(node, this.get())});
+        this.getUnsavedChangesModalPromise().then(() => {
+          Routing.handleRouteClick(node, this.get());
+        });
       },
       handleModalResult(result) {
         const promise = this.get().confirmationModal.promise;

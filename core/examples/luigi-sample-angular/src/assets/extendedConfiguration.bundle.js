@@ -6,42 +6,42 @@
  *
  */ !(function(e) {
   var t = {};
-  function n(i) {
-    if (t[i]) return t[i].exports;
-    var o = (t[i] = { i: i, l: !1, exports: {} });
-    return e[i].call(o.exports, o, o.exports, n), (o.l = !0), o.exports;
+  function i(n) {
+    if (t[n]) return t[n].exports;
+    var o = (t[n] = { i: n, l: !1, exports: {} });
+    return e[n].call(o.exports, o, o.exports, i), (o.l = !0), o.exports;
   }
-  (n.m = e),
-    (n.c = t),
-    (n.d = function(e, t, i) {
-      n.o(e, t) || Object.defineProperty(e, t, { enumerable: !0, get: i });
+  (i.m = e),
+    (i.c = t),
+    (i.d = function(e, t, n) {
+      i.o(e, t) || Object.defineProperty(e, t, { enumerable: !0, get: n });
     }),
-    (n.r = function(e) {
+    (i.r = function(e) {
       'undefined' != typeof Symbol &&
         Symbol.toStringTag &&
         Object.defineProperty(e, Symbol.toStringTag, { value: 'Module' }),
         Object.defineProperty(e, '__esModule', { value: !0 });
     }),
-    (n.t = function(e, t) {
-      if ((1 & t && (e = n(e)), 8 & t)) return e;
+    (i.t = function(e, t) {
+      if ((1 & t && (e = i(e)), 8 & t)) return e;
       if (4 & t && 'object' == typeof e && e && e.__esModule) return e;
-      var i = Object.create(null);
+      var n = Object.create(null);
       if (
-        (n.r(i),
-        Object.defineProperty(i, 'default', { enumerable: !0, value: e }),
+        (i.r(n),
+        Object.defineProperty(n, 'default', { enumerable: !0, value: e }),
         2 & t && 'string' != typeof e)
       )
         for (var o in e)
-          n.d(
-            i,
+          i.d(
+            n,
             o,
             function(t) {
               return e[t];
             }.bind(null, o)
           );
-      return i;
+      return n;
     }),
-    (n.n = function(e) {
+    (i.n = function(e) {
       var t =
         e && e.__esModule
           ? function() {
@@ -50,39 +50,39 @@
           : function() {
               return e;
             };
-      return n.d(t, 'a', t), t;
+      return i.d(t, 'a', t), t;
     }),
-    (n.o = function(e, t) {
+    (i.o = function(e, t) {
       return Object.prototype.hasOwnProperty.call(e, t);
     }),
-    (n.p = ''),
-    n((n.s = 1));
+    (i.p = ''),
+    i((i.s = 1));
 })([
   ,
-  function(e, t, n) {
+  function(e, t, i) {
     'use strict';
-    function i(e, t, n) {
+    function n(e, t, i) {
       return (
         t in e
           ? Object.defineProperty(e, t, {
-              value: n,
+              value: i,
               enumerable: !0,
               configurable: !0,
               writable: !0
             })
-          : (e[t] = n),
+          : (e[t] = i),
         e
       );
     }
-    n.r(t);
+    i.r(t);
     var o = new function e() {
         !(function(e, t) {
           if (!(e instanceof t))
             throw new TypeError('Cannot call a class as a function');
         })(this, e),
-          i(this, 'use', 'mockAuth'),
-          i(this, 'disableAutoLogin', !1),
-          i(this, 'mockAuth', {
+          n(this, 'use', 'mockAuth'),
+          n(this, 'disableAutoLogin', !1),
+          n(this, 'mockAuth', {
             authorizeUrl: ''.concat(
               window.location.origin,
               '/assets/auth-mock/login-mock.html'
@@ -95,13 +95,13 @@
             authorizeMethod: 'GET',
             oAuthData: { client_id: 'egDuozijY5SVr0NSIowUP1dT6RVqHnlp' }
           }),
-          i(this, 'openIdConnect', {
+          n(this, 'openIdConnect', {
             authority: 'https://example-authority.com',
             client_id: 'client',
             scope: 'openid profile email',
             logoutUrl: 'https://example-url.com/logout'
           }),
-          i(this, 'oAuth2ImplicitGrant', {
+          n(this, 'oAuth2ImplicitGrant', {
             authorizeUrl: 'https://example-url.com/authorize',
             logoutUrl: 'https://example-url.com/logout',
             post_logout_redirect_uri: '/logout.html',
@@ -112,7 +112,7 @@
               scope: 'openid profile email groups'
             }
           }),
-          i(this, 'events', {
+          n(this, 'events', {
             onLogout: function() {
               console.log('onLogout');
             },
@@ -129,8 +129,8 @@
       }(),
       l = function(e) {
         return new Promise(function(t) {
-          var n = e.currentProject,
-            i = (function(e) {
+          var i = e.currentProject,
+            n = (function(e) {
               return [
                 {
                   category: {
@@ -161,11 +161,23 @@
                             {
                               label: 'Group Settings',
                               pathSegment: 'settings',
+                              keepSelectedForChildren: !0,
                               icon: 'user-settings',
                               viewUrl:
                                 '/sampleapp.html#/projects/' +
                                 e +
-                                '/users/groups/:group/settings'
+                                '/users/groups/:group/settings',
+                              children: [
+                                {
+                                  label: 'Multi Path Params',
+                                  pathSegment: ':dynamic',
+                                  viewUrl:
+                                    '/sampleapp.html#/projects/' +
+                                    e +
+                                    '/users/groups/:group/settings/:dynamic',
+                                  context: { label: ':dynamic' }
+                                }
+                              ]
                             }
                           ]
                         }
@@ -337,7 +349,7 @@
                   icon: 'globe'
                 }
               ];
-            })(n);
+            })(i);
           (function(e) {
             return new Promise(function(t) {
               t(
@@ -373,9 +385,9 @@
                     ]
               );
             });
-          })(n).then(function(e) {
+          })(i).then(function(e) {
             e.forEach(function(e) {
-              i.push({
+              n.push({
                 category: e.category,
                 pathSegment: e.viewId,
                 label: e.label,
@@ -383,11 +395,11 @@
                 context: e.context
               });
             }),
-              t(i);
+              t(n);
           });
         });
       },
-      r = function(e) {
+      a = function(e) {
         return new Promise(function(e) {
           new Promise(function(e) {
             e([
@@ -395,9 +407,9 @@
               { id: 'pr2', name: 'Project Two' }
             ]);
           }).then(function(t) {
-            var n = [];
+            var i = [];
             t.forEach(function(e) {
-              n.push({
+              i.push({
                 navigationContext: 'project',
                 pathSegment: e.id,
                 label: e.name,
@@ -407,17 +419,17 @@
                 children: l
               });
             }),
-              e(n);
+              e(i);
           });
         });
       },
-      a = function(e, t, n) {
-        var i = ['admins'];
+      r = function(e, t, i) {
+        var n = ['admins'];
         return (
           !e.constraints ||
           0 !==
             e.constraints.filter(function(e) {
-              return -1 !== i.indexOf(e);
+              return -1 !== n.indexOf(e);
             }).length
         );
       };
@@ -425,9 +437,9 @@
       return (
         (function(e) {
           if (Array.isArray(e)) {
-            for (var t = 0, n = new Array(e.length); t < e.length; t++)
-              n[t] = e[t];
-            return n;
+            for (var t = 0, i = new Array(e.length); t < e.length; t++)
+              i[t] = e[t];
+            return i;
           }
         })(e) ||
         (function(e) {
@@ -444,25 +456,25 @@
         })()
       );
     }
-    function c(e, t, n) {
+    function c(e, t, i) {
       return (
         t in e
           ? Object.defineProperty(e, t, {
-              value: n,
+              value: i,
               enumerable: !0,
               configurable: !0,
               writable: !0
             })
-          : (e[t] = n),
+          : (e[t] = i),
         e
       );
     }
-    var u = new function e(t, n) {
+    var u = new function e(t, i) {
       !(function(e, t) {
         if (!(e instanceof t))
           throw new TypeError('Cannot call a class as a function');
       })(this, e),
-        c(this, 'nodeAccessibilityResolver', a),
+        c(this, 'nodeAccessibilityResolver', r),
         c(this, 'nodes', [
           {
             pathSegment: 'overview',
@@ -474,7 +486,7 @@
             pathSegment: 'projects',
             label: 'Projects',
             viewUrl: '/sampleapp.html#/projects/overview',
-            children: r
+            children: a
           },
           {
             hideFromNav: !0,
@@ -530,6 +542,13 @@
                 viewUrl: '/assets/sampleexternal.html#two'
               }
             ]
+          },
+          {
+            pathSegment: 'page-not-found',
+            label: 'Page not found',
+            viewUrl: '/assets/404.html',
+            hideFromNav: !0,
+            hideSideNav: !0
           }
         ]),
         c(this, 'contextSwitcher', {
@@ -562,19 +581,43 @@
             });
           }
         }),
+        c(this, 'productSwitcher', {
+          items: [
+            {
+              icon: 'https://sap.github.io/fundamental/images/products/06.png',
+              label: 'hybris',
+              externalLink: { url: 'https://www.hybris.com', sameWindow: !1 }
+            },
+            {
+              icon: 'https://sap.github.io/fundamental/images/products/06.png',
+              label: 'Project 1',
+              link: '/projects/pr1'
+            },
+            {
+              icon: 'https://sap.github.io/fundamental/images/products/06.png',
+              label: 'Project 2',
+              link: '/projects/pr2'
+            },
+            {
+              icon: 'https://sap.github.io/fundamental/images/products/06.png',
+              label: 'Project 3',
+              link: '/projects/pr3'
+            }
+          ]
+        }),
         (this.navigationPermissionChecker = t),
-        (this.projectsNavProviderFn = n);
-    }(a, r);
-    function p(e, t, n) {
+        (this.projectsNavProviderFn = i);
+    }(r, a);
+    function p(e, t, i) {
       return (
         t in e
           ? Object.defineProperty(e, t, {
-              value: n,
+              value: i,
               enumerable: !0,
               configurable: !0,
               writable: !0
             })
-          : (e[t] = n),
+          : (e[t] = i),
         e
       );
     }
@@ -588,25 +631,25 @@
         p(this, 'skipRoutingForUrlPatterns', [/access_token=/, /id_token=/]);
     }();
     var g = new function e() {
+      var t, i, n;
       !(function(e, t) {
         if (!(e instanceof t))
           throw new TypeError('Cannot call a class as a function');
       })(this, e),
-        (function(e, t, n) {
-          t in e
-            ? Object.defineProperty(e, t, {
-                value: n,
-                enumerable: !0,
-                configurable: !0,
-                writable: !0
-              })
-            : (e[t] = n);
-        })(this, 'header', {
+        (n = {
           logo:
             'data:image/svg+xml;base64,PHN2ZyBpZD0iTGF5ZXJfMSIgZGF0YS1uYW1lPSJMYXllciAxIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA0MTIuMzggMjA0Ij48ZGVmcz48c3R5bGU+LmNscy0xLC5jbHMtMntmaWxsLXJ1bGU6ZXZlbm9kZH0uY2xzLTF7ZmlsbDp1cmwoI2xpbmVhci1ncmFkaWVudCl9LmNscy0ye2ZpbGw6I2ZmZn08L3N0eWxlPjxsaW5lYXJHcmFkaWVudCBpZD0ibGluZWFyLWdyYWRpZW50IiB4MT0iMjA2LjE5IiB4Mj0iMjA2LjE5IiB5Mj0iMjA0IiBncmFkaWVudFVuaXRzPSJ1c2VyU3BhY2VPblVzZSI+PHN0b3Agb2Zmc2V0PSIwIiBzdG9wLWNvbG9yPSIjMDBiOGYxIi8+PHN0b3Agb2Zmc2V0PSIuMDIiIHN0b3AtY29sb3I9IiMwMWI2ZjAiLz48c3RvcCBvZmZzZXQ9Ii4zMSIgc3RvcC1jb2xvcj0iIzBkOTBkOSIvPjxzdG9wIG9mZnNldD0iLjU4IiBzdG9wLWNvbG9yPSIjMTc3NWM4Ii8+PHN0b3Agb2Zmc2V0PSIuODIiIHN0b3AtY29sb3I9IiMxYzY1YmYiLz48c3RvcCBvZmZzZXQ9IjEiIHN0b3AtY29sb3I9IiMxZTVmYmIiLz48L2xpbmVhckdyYWRpZW50PjwvZGVmcz48dGl0bGU+U0FQX2dyYWRfUl9zY3JuX1plaWNoZW5mbMOkY2hlIDE8L3RpdGxlPjxwYXRoIGNsYXNzPSJjbHMtMSIgZD0iTTAgMjA0aDIwOC40MUw0MTIuMzggMEgwdjIwNCIvPjxwYXRoIGNsYXNzPSJjbHMtMiIgZD0iTTI0NC43MyAzOC4zNmgtNDAuNnY5Ni41MmwtMzUuNDYtOTYuNTVoLTM1LjE2bC0zMC4yNyA4MC43MkMxMDAgOTguNyA3OSA5MS42NyA2Mi40IDg2LjQgNTEuNDYgODIuODkgMzkuODUgNzcuNzIgNDAgNzJjLjA5LTQuNjggNi4yMy05IDE4LjM4LTguMzggOC4xNy40MyAxNS4zNyAxLjA5IDI5LjcxIDhsMTQuMS0yNC41NUM4OS4wNiA0MC40MiA3MSAzNi4yMSA1Ni4xNyAzNi4xOWgtLjA5Yy0xNy4yOCAwLTMxLjY4IDUuNi00MC42IDE0LjgzQTM0LjIzIDM0LjIzIDAgMCAwIDUuNzcgNzQuN0M1LjU0IDg3LjE1IDEwLjExIDk2IDE5LjcxIDEwM2M4LjEgNS45NCAxOC40NiA5Ljc5IDI3LjYgMTIuNjIgMTEuMjcgMy40OSAyMC40NyA2LjUzIDIwLjM2IDEzQTkuNTcgOS41NyAwIDAgMSA2NSAxMzVjLTIuODEgMi45LTcuMTMgNC0xMy4wOSA0LjEtMTEuNDkuMjQtMjAtMS41Ni0zMy42MS05LjU5TDUuNzcgMTU0LjQyYTkzLjc3IDkzLjc3IDAgMCAwIDQ2IDEyLjIyaDIuMTFjMTQuMjQtLjI1IDI1Ljc0LTQuMzEgMzQuOTItMTEuNzEuNTMtLjQxIDEtLjg0IDEuNDktMS4yOGwtNC4xMiAxMC44NUgxMjNsNi4xOS0xOC44MmE2Ny40NiA2Ny40NiAwIDAgMCAyMS42OCAzLjQzIDY4LjMzIDY4LjMzIDAgMCAwIDIxLjE2LTMuMjVsNiAxOC42NGg2MC4xNHYtMzloMTMuMTFjMzEuNzEgMCA1MC40Ni0xNi4xNSA1MC40Ni00My4yIDAtMzAuMTEtMTguMjItNDMuOTQtNTcuMDEtNDMuOTR6TTE1MC45MSAxMjFhMzYuOTMgMzYuOTMgMCAwIDEtMTMtMi4yOGwxMi44Ny00MC41OWguMjJsMTIuNjUgNDAuNzFhMzguNSAzOC41IDAgMCAxLTEyLjc0IDIuMTZ6bTk2LjItMjMuMzNoLTguOTRWNjQuOTFoOC45NGMxMS45MyAwIDIxLjQ0IDQgMjEuNDQgMTYuMTQgMCAxMi42LTkuNTEgMTYuNTctMjEuNDQgMTYuNTciLz48L3N2Zz4=',
           title: 'Luigi Demo',
           favicon: '/assets/favicon-sap.ico'
-        });
+        }),
+        (i = 'header') in (t = this)
+          ? Object.defineProperty(t, i, {
+              value: n,
+              enumerable: !0,
+              configurable: !0,
+              writable: !0
+            })
+          : (t[i] = n);
     }();
     Luigi.setConfig({ auth: o, navigation: u, routing: m, settings: g });
   }
