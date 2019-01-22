@@ -16,11 +16,13 @@ import { OverviewComponent } from './overview/overview.component';
 import { RestrictedComponent } from './restricted/restricted.component';
 import { DynamicComponent } from './project/dynamic/dynamic.component';
 import { HideSideNavComponent } from './project/hideSideNav/hideSideNav.component';
+import { AnonymousComponent } from './anonymous/anonymous.component';
 
 const routes: Routes = [
   { path: 'overview', component: OverviewComponent },
   { path: 'settings', component: SettingsComponent },
   { path: 'restricted', component: RestrictedComponent },
+  { path: 'anonymous', component: AnonymousComponent },
   { path: 'projects/:projectId', component: ProjectComponent },
   { path: 'projects/:projectId/users', component: UsersComponent },
   {
