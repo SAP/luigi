@@ -8,7 +8,7 @@ npm install -g concurrently
 npm install -g @angular/cli
 
 echo Bootstrap
-lerna bootstrap
+lerna bootstrap --no-ci
 
 echo Bundle
 cd core
