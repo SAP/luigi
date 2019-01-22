@@ -58,6 +58,20 @@ class Navigation {
         url: 'http://google.com',
         sameWindow: true
       }
+    }, // showing an anonymous content is possible only with auto login disabled
+    {
+      pathSegment: 'all-users',
+      label: 'Visible for all users',
+      anonymousAccess: true,
+      viewUrl: '/sampleapp.html#/anonymous',
+      hideSideNav: true
+    },
+    {
+      pathSegment: 'anonymous',
+      label: 'Visible for anonymous users only',
+      anonymousAccess: 'exclusive',
+      viewUrl: '/sampleapp.html#/anonymous?exclusive=true',
+      hideSideNav: true
     },
     {
       pathSegment: 'ext',
@@ -101,12 +115,10 @@ class Navigation {
     parentNodePath: '/environments', // absolute path
     lazyloadOptions: true, // load options on click instead on page load
     options: () =>
-      [...Array(10).keys()]
-        .filter(n => n !== 0)
-        .map(n => ({
-          label: 'Environment ' + n, // (i.e mapping between what the user sees and what is taken to replace the dynamic part for the dynamic node)
-          pathValue: 'env' + n // will be used to replace dynamic part
-        })),
+      [...Array(10).keys()].filter(n => n !== 0).map(n => ({
+        label: 'Environment ' + n, // (i.e mapping between what the user sees and what is taken to replace the dynamic part for the dynamic node)
+        pathValue: 'env' + n // will be used to replace dynamic part
+      })),
 
     actions: [
       {
