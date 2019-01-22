@@ -23,6 +23,6 @@ sleep 60
 
 echo Running tests
 npm run e2e:run
-RV=$!
+RV=$?
 kill $WS_PID
 exit $RV
