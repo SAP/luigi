@@ -54,6 +54,14 @@ export const getNodePath = node => {
   }
 };
 
+const orderNodes = nodes => {
+  nodes.sort((a, b) => {
+    const oa = a.order || 0;
+    const ob = b.order || 0;
+    return oa - ob;
+  });
+};
+
 export const groupNodesBy = (nodes, property) => {
   const result = {};
   nodes.forEach(node => {
@@ -83,7 +91,15 @@ export const groupNodesBy = (nodes, property) => {
         ? getNodePath(node.parent) + ':' + key
         : key;
     }
-    arr.push(node);
+    if (!node.hideFromNav) {
+      arr.push(node);
+    }
+  });
+  Object.keys(result).forEach(category => {
+    orderNodes(result[category]);
+    if (result[category].length === 0) {
+      delete result[category];
+    }
   });
   return result;
 };

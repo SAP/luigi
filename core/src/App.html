@@ -114,14 +114,14 @@
 
   const addPreserveView = (component, data, config) => {
     if (data.params.preserveView) {
-      const pv = component.get().preservedViews;
+      const { preservedViews, currentNode, urlParamsRaw, context } = component.get();
       const nextPath = buildPath(component, data.params);
-      pv.push({
-        path: Routing.getNodePath(component.get().currentNode),
+      preservedViews.push({
+        path: Routing.getNodePath(currentNode, urlParamsRaw),
         nextPath: nextPath.startsWith('/') ? nextPath : '/' + nextPath,
-        context: component.get().context
+        context
       });
-      component.set({ preservedViews: pv });
+      component.set({ preservedViews });
       // Resetting iframe config to null, since Routing.navigateTo will then create a new iframe
       // instead of using the existing instance for route.
       config.iframe = null;
