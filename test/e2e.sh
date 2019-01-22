@@ -5,6 +5,7 @@ pwd
 echo Installing lerna
 npm install -g lerna
 npm install -g concurrently
+npm install -g @angular/cli
 
 echo Bootstrap
 lerna bootstrap
