@@ -43,7 +43,7 @@ describe('Navigation', () => {
 
   it('Icon with label in LeftNav', () => {
     cy.visit('http://localhost:4200/projects/pr1');
-    cy.get('.fd-side-nav__sublink')
+    cy.get('.fd-side-nav__subitem')
       .contains('Project Settings')
       .find('.fd-side-nav__icon')
       .should('exist');
