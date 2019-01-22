@@ -14,6 +14,7 @@ lerna run bundle
 
 echo Starting webserver
 cd examples/luigi-sample-angular
+npm install
 npm run start &
 WS_PID=$!
 sleep 60
