@@ -11,12 +11,14 @@ The image shows the elements of Luigi navigation:
 3. Main content window, which renders the micro frontend.
  
 
-![Navigation elements](assets/navigation-structure.png)
+![Navigation layout](assets/navigation-structure.png)
 
 
 ## Navigation structure
 
 The navigation structure is a recursive tree-like data structure that defines all possible navigation paths within the application. 
+
+>**NOTE:** This document describes the navigation structure along with the options you can use to create it. For a full list of available parameters, see the [parameter reference](navigation-parameters-reference.md) document.
 
 A navigation path is any existing path in the navigation tree. It connects the following elements together:
 
@@ -74,6 +76,8 @@ A sample navigation structure looks as follows:
   }
 }
 ````
+
+
 ## Node navigation
 
 When you navigate between nodes that are located in the same domain, Luigi triggers a hash or path change. Then it sends the updated context in order not to fully reload the view for a single-page application based micro frontend. Navigation between domains triggers a full page load in order to comply with cross-domain security concepts.
