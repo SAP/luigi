@@ -13,6 +13,11 @@ describe('ProductSwitcher', () => {
     //check if internal link is there
     cy.get('.fd-product-switcher')
       .click()
-      .contains('Project 1');
+      .contains('Project 1')
+      .click();
+
+    cy.location().should(loc => {
+      expect(loc.pathname).to.eq('/projects/pr1');
+    });
   });
 });
