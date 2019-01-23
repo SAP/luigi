@@ -6,9 +6,9 @@ Navigation parameters allow you to specify routing configuration, set the appear
 
 The image shows the elements of Luigi navigation: 
 
-1. Top navigation, which displays the main navigation path.
-2. Side navigation, which displays the defined applications.
-3. Main content window, which renders the micro frontend.
+1. Top navigation which displays the main navigation path.
+2. Side navigation which displays the defined applications.
+3. Main content window which renders the micro frontend.
  
 
 ![Navigation layout](assets/navigation-structure.png)
@@ -23,9 +23,9 @@ The navigation structure is a recursive tree-like data structure that defines al
 A navigation path is any existing path in the navigation tree. It connects the following elements together:
 
 - The path of the main application, that is, the path in the browser URL. The path is defined in a Luigi navigation node through one of the following parameters, listed in order of precedence: **externalLink**, **link**, and **pathSegment**.
-- The **viewUrl** of a micro frontend rendered in the content area of the main application.
+- The **viewUrl** property of a micro frontend rendered in the content area of the main application.
 
-If you set **hideSideNav** property to `true`, the left navigation disappears when you click the affected node. It is set to `false` by default.
+If you set the **hideSideNav** property to `true`, the left navigation disappears when you click the affected node. It is set to `false` by default.
 
 A sample navigation structure looks as follows:
 
@@ -96,7 +96,7 @@ LuigiClient.linkManager().withParam({sort: 'asc'}).navigate('/something/sample_1
 
 ## Application path
 
-The main application path is built from **pathSegment** values in the navigation path, joined with the **/** character. You can override this setting by using either **externalLink** or **link** parameters.
+The main application path is built from **pathSegment** values in the navigation path, joined with the **/** character. You can override this setting using either **externalLink** or **link** parameters.
 
 The micro frontend view URL is the value of the **viewUrl** property of the last node in the navigation path.
 
