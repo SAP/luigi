@@ -43,11 +43,24 @@ describe('Navigation', () => {
 
   it('Icon with label in LeftNav', () => {
     cy.visit('http://localhost:4200/projects/pr1');
-    cy.get('.fd-side-nav__sublink')
+    cy.get('.fd-side-nav__subitem')
       .contains('Project Settings')
       .find('.fd-side-nav__icon')
       .should('exist');
   });
+
+  // Disabled, since it only works if autologin is false
+  /*
+  it('Anonymous content', () => {
+    cy.get('.fd-shellbar')
+      .contains('Visible for all users')
+      .should('exist');
+
+    cy.get('.fd-shellbar')
+      .contains('Visible for anonymous users only')
+      .should('not.exist');
+  });
+  */
 
   describe('features', () => {
     it('keepSelectedForChildren', () => {
