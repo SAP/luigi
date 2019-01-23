@@ -108,9 +108,9 @@ export const getCurrentPath = () =>
   LuigiConfig.getConfigValue('routing.useHashRouting')
     ? window.location.hash.replace('#', '') // TODO: GenericHelpers.getPathWithoutHash(window.location.hash) fails in ContextSwitcher
     : window.location.search
-    ? GenericHelpers.trimLeadingSlash(window.location.pathname) +
-      window.location.search
-    : GenericHelpers.trimLeadingSlash(window.location.pathname);
+      ? GenericHelpers.trimLeadingSlash(window.location.pathname) +
+        window.location.search
+      : GenericHelpers.trimLeadingSlash(window.location.pathname);
 
 export const handleRouteChange = async (
   path,
@@ -238,6 +238,7 @@ export const handleRouteChange = async (
       })
     );
 
+    config.navigateOk = true;
     Iframe.navigateIframe(config, component, iframeElement);
   } catch (err) {
     console.info('Could not handle route change', err);
