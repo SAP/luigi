@@ -3,17 +3,28 @@
   <div class="fd-product-switcher">
     <div class="fd-popover fd-popover--right">
       <div class="fd-popover__control" on:click="event.stopPropagation()">
-        <button class="fd-button--shell sap-icon--grid" aria-expanded="{dropDownStates.productSwitcherPopover || false}" aria-haspopup="true" on:click="toggleDropdownState('productSwitcherPopover')" ></button>
-        <div class="fd-popover__body fd-popover__body--right" aria-hidden="{!(dropDownStates.productSwitcherPopover || false)}" id="productSwitcherPopover">
+        <button
+          class="fd-button--shell sap-icon--grid"
+          aria-expanded="{dropDownStates.productSwitcherPopover || false}"
+          aria-haspopup="true"
+          on:click="toggleDropdownState('productSwitcherPopover')"
+        ></button>
+        <div
+          class="fd-popover__body fd-popover__body--right"
+          aria-hidden="{!(dropDownStates.productSwitcherPopover || false)}"
+          id="productSwitcherPopover"
+        >
           <div class="fd-product-switcher__body">
             <nav>
               <ul>
                 {#each productSwitcherItems as productSwitcherItem}
                 <li on:click="onActionClick(productSwitcherItem)">
                   <span class="fd-product-switcher__product-icon">
-                    <img src="{productSwitcherItem.icon}"/>
+                    <img src="{productSwitcherItem.icon}" />
                   </span>
-                  <span class="fd-product-switcher__product-title">{productSwitcherItem.label}</span>
+                  <span class="fd-product-switcher__product-title"
+                    >{productSwitcherItem.label}</span
+                  >
                 </li>
                 {/each}
               </ul>
@@ -25,7 +36,6 @@
   </div>
 </div>
 {/if}
-
 <script type="text/javascript">
   import { LuigiConfig } from '../services/config.js';
   import * as Routing from '../services/routing.js';
