@@ -9,27 +9,27 @@
           aria-haspopup="true"
           on:click="toggleDropdownState('productSwitcherPopover')"
         ></button>
-        <div
-          class="fd-popover__body fd-popover__body--right"
-          aria-hidden="{!(dropDownStates.productSwitcherPopover || false)}"
-          id="productSwitcherPopover"
-        >
-          <div class="fd-product-switcher__body">
-            <nav>
-              <ul>
-                {#each productSwitcherItems as productSwitcherItem}
-                <li on:click="onActionClick(productSwitcherItem)">
-                  <span class="fd-product-switcher__product-icon">
-                    <img src="{productSwitcherItem.icon}" />
-                  </span>
-                  <span class="fd-product-switcher__product-title">
-                    {productSwitcherItem.label}
-                  </span>
-                </li>
-                {/each}
-              </ul>
-            </nav>
-          </div>
+      </div>
+      <div
+        class="fd-popover__body fd-popover__body--right"
+        aria-hidden="{!(dropDownStates.productSwitcherPopover || false)}"
+        id="productSwitcherPopover"
+      >
+        <div class="fd-product-switcher__body">
+          <nav>
+            <ul>
+              {#each productSwitcherItems as productSwitcherItem}
+              <li on:click="onActionClick(productSwitcherItem)">
+                <span class="fd-product-switcher__product-icon">
+                  <img src="{productSwitcherItem.icon}" />
+                </span>
+                <span class="fd-product-switcher__product-title">
+                  {productSwitcherItem.label}
+                </span>
+              </li>
+              {/each}
+            </ul>
+          </nav>
         </div>
       </div>
     </div>
