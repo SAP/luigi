@@ -108,9 +108,9 @@ export const getCurrentPath = () =>
   LuigiConfig.getConfigValue('routing.useHashRouting')
     ? window.location.hash.replace('#', '') // TODO: GenericHelpers.getPathWithoutHash(window.location.hash) fails in ContextSwitcher
     : window.location.search
-    ? GenericHelpers.trimLeadingSlash(window.location.pathname) +
-      window.location.search
-    : GenericHelpers.trimLeadingSlash(window.location.pathname);
+      ? GenericHelpers.trimLeadingSlash(window.location.pathname) +
+        window.location.search
+      : GenericHelpers.trimLeadingSlash(window.location.pathname);
 
 export const handleRouteChange = async (
   path,
@@ -169,10 +169,9 @@ export const handleRouteChange = async (
       } else {
         if (defaultChildNode && pathData.navigationPath.length > 1) {
           //last path segment was invalid but a default node could be in its place
-          const matchedPath = await matchPath(pathUrlRaw);
           showPageNotFoundError(
             component,
-            GenericHelpers.trimTrailingSlash(matchedPath) +
+            GenericHelpers.trimTrailingSlash(pathData.matchedPath) +
               '/' +
               defaultChildNode,
             pathUrlRaw,
