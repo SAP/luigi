@@ -98,6 +98,15 @@
     });
   };
 
+  const getSubPath = (component, node) => {
+    return GenericHelpers.replaceVars(
+      Routing.getNodePath(node),
+      component.get().pathParams,
+      ':',
+      false
+    );
+  };
+
   const buildPath = (component, params) => {
     let path = params.link;
     if (params.fromClosestContext) {
@@ -105,18 +114,18 @@
       const node = [...component.get().navigationPath]
         .reverse()
         .find(n => n.navigationContext && n.navigationContext.length > 0);
-      path = Routing.concatenatePath(Routing.getNodePath(node), params.link);
+      path = Routing.concatenatePath(getSubPath(component, node), params.link);
     } else if (params.fromContext) {
       // from a given navigation context
       const navigationContext = params.fromContext;
       const node = component
         .get()
         .navigationPath.find(n => navigationContext === n.navigationContext);
-      path = Routing.concatenatePath(Routing.getNodePath(node), params.link);
+      path = Routing.concatenatePath(getSubPath(component, node), params.link);
     } else if (params.relative) {
       // relative
       path = Routing.concatenatePath(
-        Routing.getNodePath(component.get().currentNode),
+        getSubPath(component, component.get().currentNode),
         params.link
       );
     }

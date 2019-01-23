@@ -58,6 +58,20 @@ class Navigation {
         url: 'http://google.com',
         sameWindow: true
       }
+    }, // showing an anonymous content is possible only with auto login disabled
+    {
+      pathSegment: 'all-users',
+      label: 'Visible for all users',
+      anonymousAccess: true,
+      viewUrl: '/sampleapp.html#/anonymous',
+      hideSideNav: true
+    },
+    {
+      pathSegment: 'anonymous',
+      label: 'Visible for anonymous users only',
+      anonymousAccess: 'exclusive',
+      viewUrl: '/sampleapp.html#/anonymous?exclusive=true',
+      hideSideNav: true
     },
     {
       pathSegment: 'ext',

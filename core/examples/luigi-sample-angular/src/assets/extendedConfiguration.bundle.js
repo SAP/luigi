@@ -6,42 +6,42 @@
  *
  */ !(function(e) {
   var t = {};
-  function i(n) {
-    if (t[n]) return t[n].exports;
-    var o = (t[n] = { i: n, l: !1, exports: {} });
-    return e[n].call(o.exports, o, o.exports, i), (o.l = !0), o.exports;
+  function n(i) {
+    if (t[i]) return t[i].exports;
+    var o = (t[i] = { i: i, l: !1, exports: {} });
+    return e[i].call(o.exports, o, o.exports, n), (o.l = !0), o.exports;
   }
-  (i.m = e),
-    (i.c = t),
-    (i.d = function(e, t, n) {
-      i.o(e, t) || Object.defineProperty(e, t, { enumerable: !0, get: n });
+  (n.m = e),
+    (n.c = t),
+    (n.d = function(e, t, i) {
+      n.o(e, t) || Object.defineProperty(e, t, { enumerable: !0, get: i });
     }),
-    (i.r = function(e) {
+    (n.r = function(e) {
       'undefined' != typeof Symbol &&
         Symbol.toStringTag &&
         Object.defineProperty(e, Symbol.toStringTag, { value: 'Module' }),
         Object.defineProperty(e, '__esModule', { value: !0 });
     }),
-    (i.t = function(e, t) {
-      if ((1 & t && (e = i(e)), 8 & t)) return e;
+    (n.t = function(e, t) {
+      if ((1 & t && (e = n(e)), 8 & t)) return e;
       if (4 & t && 'object' == typeof e && e && e.__esModule) return e;
-      var n = Object.create(null);
+      var i = Object.create(null);
       if (
-        (i.r(n),
-        Object.defineProperty(n, 'default', { enumerable: !0, value: e }),
+        (n.r(i),
+        Object.defineProperty(i, 'default', { enumerable: !0, value: e }),
         2 & t && 'string' != typeof e)
       )
         for (var o in e)
-          i.d(
-            n,
+          n.d(
+            i,
             o,
             function(t) {
               return e[t];
             }.bind(null, o)
           );
-      return n;
+      return i;
     }),
-    (i.n = function(e) {
+    (n.n = function(e) {
       var t =
         e && e.__esModule
           ? function() {
@@ -50,39 +50,39 @@
           : function() {
               return e;
             };
-      return i.d(t, 'a', t), t;
+      return n.d(t, 'a', t), t;
     }),
-    (i.o = function(e, t) {
+    (n.o = function(e, t) {
       return Object.prototype.hasOwnProperty.call(e, t);
     }),
-    (i.p = ''),
-    i((i.s = 1));
+    (n.p = ''),
+    n((n.s = 1));
 })([
   ,
-  function(e, t, i) {
+  function(e, t, n) {
     'use strict';
-    function n(e, t, i) {
+    function i(e, t, n) {
       return (
         t in e
           ? Object.defineProperty(e, t, {
-              value: i,
+              value: n,
               enumerable: !0,
               configurable: !0,
               writable: !0
             })
-          : (e[t] = i),
+          : (e[t] = n),
         e
       );
     }
-    i.r(t);
+    n.r(t);
     var o = new function e() {
         !(function(e, t) {
           if (!(e instanceof t))
             throw new TypeError('Cannot call a class as a function');
         })(this, e),
-          n(this, 'use', 'mockAuth'),
-          n(this, 'disableAutoLogin', !1),
-          n(this, 'mockAuth', {
+          i(this, 'use', 'mockAuth'),
+          i(this, 'disableAutoLogin', !1),
+          i(this, 'mockAuth', {
             authorizeUrl: ''.concat(
               window.location.origin,
               '/assets/auth-mock/login-mock.html'
@@ -95,13 +95,13 @@
             authorizeMethod: 'GET',
             oAuthData: { client_id: 'egDuozijY5SVr0NSIowUP1dT6RVqHnlp' }
           }),
-          n(this, 'openIdConnect', {
+          i(this, 'openIdConnect', {
             authority: 'https://example-authority.com',
             client_id: 'client',
             scope: 'openid profile email',
             logoutUrl: 'https://example-url.com/logout'
           }),
-          n(this, 'oAuth2ImplicitGrant', {
+          i(this, 'oAuth2ImplicitGrant', {
             authorizeUrl: 'https://example-url.com/authorize',
             logoutUrl: 'https://example-url.com/logout',
             post_logout_redirect_uri: '/logout.html',
@@ -112,7 +112,7 @@
               scope: 'openid profile email groups'
             }
           }),
-          n(this, 'events', {
+          i(this, 'events', {
             onLogout: function() {
               console.log('onLogout');
             },
@@ -129,8 +129,8 @@
       }(),
       l = function(e) {
         return new Promise(function(t) {
-          var i = e.currentProject,
-            n = (function(e) {
+          var n = e.currentProject,
+            i = (function(e) {
               return [
                 {
                   category: {
@@ -349,7 +349,7 @@
                   icon: 'globe'
                 }
               ];
-            })(i);
+            })(n);
           (function(e) {
             return new Promise(function(t) {
               t(
@@ -385,9 +385,9 @@
                     ]
               );
             });
-          })(i).then(function(e) {
+          })(n).then(function(e) {
             e.forEach(function(e) {
-              n.push({
+              i.push({
                 category: e.category,
                 pathSegment: e.viewId,
                 label: e.label,
@@ -395,7 +395,7 @@
                 context: e.context
               });
             }),
-              t(n);
+              t(i);
           });
         });
       },
@@ -407,9 +407,9 @@
               { id: 'pr2', name: 'Project Two' }
             ]);
           }).then(function(t) {
-            var i = [];
+            var n = [];
             t.forEach(function(e) {
-              i.push({
+              n.push({
                 navigationContext: 'project',
                 pathSegment: e.id,
                 label: e.name,
@@ -419,17 +419,17 @@
                 children: l
               });
             }),
-              e(i);
+              e(n);
           });
         });
       },
-      r = function(e, t, i) {
-        var n = ['admins'];
+      r = function(e, t, n) {
+        var i = ['admins'];
         return (
           !e.constraints ||
           0 !==
             e.constraints.filter(function(e) {
-              return -1 !== n.indexOf(e);
+              return -1 !== i.indexOf(e);
             }).length
         );
       };
@@ -437,9 +437,9 @@
       return (
         (function(e) {
           if (Array.isArray(e)) {
-            for (var t = 0, i = new Array(e.length); t < e.length; t++)
-              i[t] = e[t];
-            return i;
+            for (var t = 0, n = new Array(e.length); t < e.length; t++)
+              n[t] = e[t];
+            return n;
           }
         })(e) ||
         (function(e) {
@@ -456,20 +456,20 @@
         })()
       );
     }
-    function c(e, t, i) {
+    function c(e, t, n) {
       return (
         t in e
           ? Object.defineProperty(e, t, {
-              value: i,
+              value: n,
               enumerable: !0,
               configurable: !0,
               writable: !0
             })
-          : (e[t] = i),
+          : (e[t] = n),
         e
       );
     }
-    var u = new function e(t, i) {
+    var u = new function e(t, n) {
       !(function(e, t) {
         if (!(e instanceof t))
           throw new TypeError('Cannot call a class as a function');
@@ -520,6 +520,20 @@
           {
             label: 'Open Google in this tab',
             externalLink: { url: 'http://google.com', sameWindow: !0 }
+          },
+          {
+            pathSegment: 'all-users',
+            label: 'Visible for all users',
+            anonymousAccess: !0,
+            viewUrl: '/sampleapp.html#/anonymous',
+            hideSideNav: !0
+          },
+          {
+            pathSegment: 'anonymous',
+            label: 'Visible for anonymous users only',
+            anonymousAccess: 'exclusive',
+            viewUrl: '/sampleapp.html#/anonymous?exclusive=true',
+            hideSideNav: !0
           },
           {
             pathSegment: 'ext',
@@ -606,18 +620,18 @@
           ]
         }),
         (this.navigationPermissionChecker = t),
-        (this.projectsNavProviderFn = i);
+        (this.projectsNavProviderFn = n);
     }(r, a);
-    function p(e, t, i) {
+    function p(e, t, n) {
       return (
         t in e
           ? Object.defineProperty(e, t, {
-              value: i,
+              value: n,
               enumerable: !0,
               configurable: !0,
               writable: !0
             })
-          : (e[t] = i),
+          : (e[t] = n),
         e
       );
     }
@@ -630,27 +644,27 @@
         p(this, 'nodeParamPrefix', '~'),
         p(this, 'skipRoutingForUrlPatterns', [/access_token=/, /id_token=/]);
     }();
-    var g = new function e() {
-      var t, i, n;
+    var h = new function e() {
       !(function(e, t) {
         if (!(e instanceof t))
           throw new TypeError('Cannot call a class as a function');
       })(this, e),
-        (n = {
+        (function(e, t, n) {
+          t in e
+            ? Object.defineProperty(e, t, {
+                value: n,
+                enumerable: !0,
+                configurable: !0,
+                writable: !0
+              })
+            : (e[t] = n);
+        })(this, 'header', {
           logo:
             'data:image/svg+xml;base64,PHN2ZyBpZD0iTGF5ZXJfMSIgZGF0YS1uYW1lPSJMYXllciAxIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA0MTIuMzggMjA0Ij48ZGVmcz48c3R5bGU+LmNscy0xLC5jbHMtMntmaWxsLXJ1bGU6ZXZlbm9kZH0uY2xzLTF7ZmlsbDp1cmwoI2xpbmVhci1ncmFkaWVudCl9LmNscy0ye2ZpbGw6I2ZmZn08L3N0eWxlPjxsaW5lYXJHcmFkaWVudCBpZD0ibGluZWFyLWdyYWRpZW50IiB4MT0iMjA2LjE5IiB4Mj0iMjA2LjE5IiB5Mj0iMjA0IiBncmFkaWVudFVuaXRzPSJ1c2VyU3BhY2VPblVzZSI+PHN0b3Agb2Zmc2V0PSIwIiBzdG9wLWNvbG9yPSIjMDBiOGYxIi8+PHN0b3Agb2Zmc2V0PSIuMDIiIHN0b3AtY29sb3I9IiMwMWI2ZjAiLz48c3RvcCBvZmZzZXQ9Ii4zMSIgc3RvcC1jb2xvcj0iIzBkOTBkOSIvPjxzdG9wIG9mZnNldD0iLjU4IiBzdG9wLWNvbG9yPSIjMTc3NWM4Ii8+PHN0b3Agb2Zmc2V0PSIuODIiIHN0b3AtY29sb3I9IiMxYzY1YmYiLz48c3RvcCBvZmZzZXQ9IjEiIHN0b3AtY29sb3I9IiMxZTVmYmIiLz48L2xpbmVhckdyYWRpZW50PjwvZGVmcz48dGl0bGU+U0FQX2dyYWRfUl9zY3JuX1plaWNoZW5mbMOkY2hlIDE8L3RpdGxlPjxwYXRoIGNsYXNzPSJjbHMtMSIgZD0iTTAgMjA0aDIwOC40MUw0MTIuMzggMEgwdjIwNCIvPjxwYXRoIGNsYXNzPSJjbHMtMiIgZD0iTTI0NC43MyAzOC4zNmgtNDAuNnY5Ni41MmwtMzUuNDYtOTYuNTVoLTM1LjE2bC0zMC4yNyA4MC43MkMxMDAgOTguNyA3OSA5MS42NyA2Mi40IDg2LjQgNTEuNDYgODIuODkgMzkuODUgNzcuNzIgNDAgNzJjLjA5LTQuNjggNi4yMy05IDE4LjM4LTguMzggOC4xNy40MyAxNS4zNyAxLjA5IDI5LjcxIDhsMTQuMS0yNC41NUM4OS4wNiA0MC40MiA3MSAzNi4yMSA1Ni4xNyAzNi4xOWgtLjA5Yy0xNy4yOCAwLTMxLjY4IDUuNi00MC42IDE0LjgzQTM0LjIzIDM0LjIzIDAgMCAwIDUuNzcgNzQuN0M1LjU0IDg3LjE1IDEwLjExIDk2IDE5LjcxIDEwM2M4LjEgNS45NCAxOC40NiA5Ljc5IDI3LjYgMTIuNjIgMTEuMjcgMy40OSAyMC40NyA2LjUzIDIwLjM2IDEzQTkuNTcgOS41NyAwIDAgMSA2NSAxMzVjLTIuODEgMi45LTcuMTMgNC0xMy4wOSA0LjEtMTEuNDkuMjQtMjAtMS41Ni0zMy42MS05LjU5TDUuNzcgMTU0LjQyYTkzLjc3IDkzLjc3IDAgMCAwIDQ2IDEyLjIyaDIuMTFjMTQuMjQtLjI1IDI1Ljc0LTQuMzEgMzQuOTItMTEuNzEuNTMtLjQxIDEtLjg0IDEuNDktMS4yOGwtNC4xMiAxMC44NUgxMjNsNi4xOS0xOC44MmE2Ny40NiA2Ny40NiAwIDAgMCAyMS42OCAzLjQzIDY4LjMzIDY4LjMzIDAgMCAwIDIxLjE2LTMuMjVsNiAxOC42NGg2MC4xNHYtMzloMTMuMTFjMzEuNzEgMCA1MC40Ni0xNi4xNSA1MC40Ni00My4yIDAtMzAuMTEtMTguMjItNDMuOTQtNTcuMDEtNDMuOTR6TTE1MC45MSAxMjFhMzYuOTMgMzYuOTMgMCAwIDEtMTMtMi4yOGwxMi44Ny00MC41OWguMjJsMTIuNjUgNDAuNzFhMzguNSAzOC41IDAgMCAxLTEyLjc0IDIuMTZ6bTk2LjItMjMuMzNoLTguOTRWNjQuOTFoOC45NGMxMS45MyAwIDIxLjQ0IDQgMjEuNDQgMTYuMTQgMCAxMi42LTkuNTEgMTYuNTctMjEuNDQgMTYuNTciLz48L3N2Zz4=',
           title: 'Luigi Demo',
           favicon: '/assets/favicon-sap.ico'
-        }),
-        (i = 'header') in (t = this)
-          ? Object.defineProperty(t, i, {
-              value: n,
-              enumerable: !0,
-              configurable: !0,
-              writable: !0
-            })
-          : (t[i] = n);
+        });
     }();
-    Luigi.setConfig({ auth: o, navigation: u, routing: m, settings: g });
+    Luigi.setConfig({ auth: o, navigation: u, routing: m, settings: h });
   }
 ]);
