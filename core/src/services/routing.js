@@ -194,6 +194,7 @@ export const handleRouteChange = async (
 
     if (!pathData.isExistingRoute) {
       showPageNotFoundError(component, pathData.matchedPath, pathUrlRaw, true);
+      return;
     }
 
     const hideNav = LuigiConfig.getConfigBooleanValue(
@@ -238,7 +239,6 @@ export const handleRouteChange = async (
       })
     );
 
-    config.navigateOk = true;
     Iframe.navigateIframe(config, component, iframeElement);
   } catch (err) {
     console.info('Could not handle route change', err);
