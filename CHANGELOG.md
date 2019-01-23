@@ -23,6 +23,35 @@ The lerna-changelog tool detects changes based on PR labels and maps them to sec
     ...
   }
 -->
+## [v0.4.5] (2019-01-23)
+
+#### :rocket: Added
+* [#313](https://github.com/kyma-project/luigi/pull/313) Luigi config meets es6 ([@parostatkiem](https://github.com/parostatkiem))
+* [#325](https://github.com/kyma-project/luigi/pull/325) Webpack for LuigiClient ([@parostatkiem](https://github.com/parostatkiem))
+* [#321](https://github.com/kyma-project/luigi/pull/321) Dynamic nodes prevent navigation tree mutation ([@maxmarkus](https://github.com/maxmarkus))
+* [#310](https://github.com/kyma-project/luigi/pull/310) Improve 404 handling ([@parostatkiem](https://github.com/parostatkiem))
+* [#315](https://github.com/kyma-project/luigi/pull/315) Add isolate all views setting ([@dariadomagala](https://github.com/dariadomagala))
+* [#339](https://github.com/kyma-project/luigi/pull/339) Increase oidc client loading timeout ([@kwiatekus](https://github.com/kwiatekus))
+
+#### :bug: Fixed
+* [#377](https://github.com/kyma-project/luigi/pull/377) Fix iframe top position ([@jesusreal](https://github.com/jesusreal))
+* [#378](https://github.com/kyma-project/luigi/pull/378) Fix frame reload on 404 ([@dariadomagala](https://github.com/dariadomagala))
+* [#368](https://github.com/kyma-project/luigi/pull/368) Dynamic path params not passed to children providers - fix ([@pekura](https://github.com/pekura))
+* [#362](https://github.com/kyma-project/luigi/pull/362) Relative navigation from client does not work with dynamic nodes ([@pekura](https://github.com/pekura))
+* [#349](https://github.com/kyma-project/luigi/pull/349) Fix preserve views node params ([@dariadomagala](https://github.com/dariadomagala))
+* [#361](https://github.com/kyma-project/luigi/pull/361) Empty navigation category should not be shown ([@pekura](https://github.com/pekura))
+* [#352](https://github.com/kyma-project/luigi/pull/352) Fix babel polyfill error ([@parostatkiem](https://github.com/parostatkiem))
+* [#342](https://github.com/kyma-project/luigi/pull/342) Ignore path params in context switcher label ([@parostatkiem](https://github.com/parostatkiem))
+
+#### :memo: Documentation
+* [#365](https://github.com/kyma-project/luigi/pull/365) Split documentation for navigation config ([@bszwarc](https://github.com/bszwarc))
+* [#343](https://github.com/kyma-project/luigi/pull/343) Add docs and examples for anonymous content ([@dariadomagala](https://github.com/dariadomagala))
+* [#313](https://github.com/kyma-project/luigi/pull/313) Luigi config meets es6 ([@parostatkiem](https://github.com/parostatkiem))
+* [#325](https://github.com/kyma-project/luigi/pull/325) Webpack for LuigiClient ([@parostatkiem](https://github.com/parostatkiem))
+* [#310](https://github.com/kyma-project/luigi/pull/310) Improve 404 handling ([@parostatkiem](https://github.com/parostatkiem))
+* [#315](https://github.com/kyma-project/luigi/pull/315) Add isolate all views setting ([@dariadomagala](https://github.com/dariadomagala))
+* [#344](https://github.com/kyma-project/luigi/pull/344) Fix formatting issues and add missing info ([@bszwarc](https://github.com/bszwarc))
+
 
 ## [v0.4.4] (2019-01-10)
 
@@ -255,3 +284,4 @@ The lerna-changelog tool detects changes based on PR labels and maps them to sec
 [v0.4.1]: https://github.com/kyma-project/luigi/compare/v0.4.0...v0.4.1
 [v0.4.3]: https://github.com/kyma-project/luigi/compare/v0.4.2...v0.4.3
 [v0.4.4]: https://github.com/kyma-project/luigi/compare/v0.4.3...v0.4.4
+[v0.4.5]: https://github.com/kyma-project/luigi/compare/v0.4.4...v0.4.5
