@@ -11,8 +11,7 @@ describe('ProductSwitcher', () => {
       .contains('hybris');
 
     //check if internal link is there
-    cy.get('.fd-product-switcher')
-      .click()
+    cy.get('.fd-product-switcher .fd-product-switcher__body')
       .contains('Project 1')
       .click();
 
