@@ -17,18 +17,21 @@ Object.keys(productSwitcherItems[0]).length}
         id="productSwitcherPopover"
       >
         <div class="fd-product-switcher__body">
-          <nav>
-            <ul>
-              {#each productSwitcherItems as productSwitcherItem}
+          <nav class="fd-menu">
+            <ul class="fd-menu__list">
+              {#each productSwitcherItems as productSwitcherItem} {#if
+              productSwitcherItem.icon && productSwitcherItem.label}
               <li on:click="onActionClick(productSwitcherItem)">
-                <span class="fd-product-switcher__product-icon">
-                  <img src="{productSwitcherItem.icon}" />
-                </span>
-                <span class="fd-product-switcher__product-title">
-                  {productSwitcherItem.label}
-                </span>
+                <a class="fd-menu__item">
+                  <span class="fd-product-switcher__product-icon">
+                    <img src="{productSwitcherItem.icon}" />
+                  </span>
+                  <span class="fd-product-switcher__product-title">
+                    {productSwitcherItem.label}
+                  </span>
+                </a>
               </li>
-              {/each}
+              {/if} {/each}
             </ul>
           </nav>
         </div>
@@ -76,7 +79,6 @@ Object.keys(productSwitcherItems[0]).length}
       },
       toggleDropdownState(name) {
         this.fire('toggleDropdownState', { name });
-        const dropDownStates = this.get().dropDownStates || {};
       }
     }
   };
@@ -84,5 +86,9 @@ Object.keys(productSwitcherItems[0]).length}
 <style type="text/scss">
   .fd-product-switcher__product-icon > img {
     max-height: 40px;
+  }
+  .fd-menu__item {
+    padding: 0;
+    text-align: center;
   }
 </style>
