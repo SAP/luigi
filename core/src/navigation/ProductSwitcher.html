@@ -63,18 +63,15 @@ Object.keys(productSwitcherItems[0]).length}
     },
     methods: {
       onActionClick(productSwitcherItem) {
-        if (productSwitcherItem.externalLink) {
-          window.open(
-            productSwitcherItem.externalLink.url,
-            productSwitcherItem.externalLink.sameWindow ? '_self' : '_blank'
-          );
-        } else {
-          this.goTo(productSwitcherItem.link);
-        }
-      },
-      goTo(path) {
         this.root.getUnsavedChangesModalPromise().then(() => {
-          Routing.navigateTo(path);
+          if (productSwitcherItem.externalLink) {
+            window.open(
+              productSwitcherItem.externalLink.url,
+              productSwitcherItem.externalLink.sameWindow ? '_self' : '_blank'
+            );
+          } else {
+            Routing.navigateTo(productSwitcherItem.link);
+          }
         });
       },
       toggleDropdownState(name) {
