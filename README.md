@@ -28,11 +28,11 @@ For details, see [Luigi documentation](docs/README.md).
 
 All projects in the repository use [Prettier](https://prettier.io) to format source code. Run the `npm install` command in the root folder to install it along with [husky](https://github.com/typicode/husky), the Git hooks manager. Both tools ensure proper codebase formatting before committing it.
 
-### Unit Tests
+### Unit tests
 
-To ensure that existing features still work as expected after your changes, run unit tests by running `npm run test` the [core](/core) folder.
+To ensure that existing features still work as expected after your changes, run unit tests using the `npm run test` command in the [core](/core) folder.
 
-### E2E Tests
+### E2E tests
 
 To ensure that existing features still work as expected after your changes, run UI tests from the [Angular example application](/core/examples/luigi-sample-angular). Before running the tests, start the sample application by using the `npm start` command in the application folder.
 
@@ -41,12 +41,12 @@ When the application is ready:
 - Run `npm run e2e:open` in the `core/examples/luigi-sample-angular` folder to start tests in the interactive mode.
 - Run `npm run e2e:run` in the `core/examples/luigi-sample-angular` folder to start tests in the headless browser.
 
-### Backwards Compatibility Tests
+### Backward compatibility tests
 
-To ensure that applications written for previous versions of Luigi still work after Luigi gets updated via npm. Before running the tests, start bundle Luigi by running `lerna run bundle` in the main repo folder.
+Use these tests to ensure that applications written for previous versions of Luigi still work after Luigi gets updated with npm. Before running the tests, bundle Luigi by running `lerna run bundle` in the main repository folder.
 
 Install the json command line parser with `brew install jq` which is required for the script. Can be ommited if you run it with latest on the ci.
 
-- Run `npm run test:compatibility` in the main repo folder to start regression testing, you will be prompted you select the previous version. 
-- Run `npm run test:compatibility -- --tag latest` in the main repo folder to start regression testing with the last version preselected. 
-- On the CI, run `npm run test:compatibility -- --install --tag latest` in the main repo folder to start install dependencies, bundle Luigi and run the tests with the last version preselected. 
+- Run `npm run test:compatibility` in the main repository folder to start regression testing. The system will prompt you to select the previous version. 
+- Run `npm run test:compatibility -- --tag latest` in the main repository folder to start regression testing with the last version preselected. 
+- On the CI, run `npm run test:compatibility -- --install --tag latest` in the main repository folder to install dependencies, bundle Luigi and run the tests with the last version preselected. 
