@@ -1,6 +1,6 @@
 describe('Luigi client features', () => {
   beforeEach(() => {
-    cy.visit('http://localhost:4200');
+    cy.visit('/');
     cy.login('tets', 'tets');
 
     //wait for the iFrame to be loaded
@@ -56,10 +56,8 @@ describe('Luigi client features', () => {
         .click();
       cy.wrap($iframeBody).should('contain', 'Called with params:');
       cy.wrap($iframeBody).should('contain', '"foo": "bar"');
-      cy.expectPathToBe('/projects/pr2/settings');
-      cy.location().should(loc => {
-        expect(loc.search).to.eq('?~foo=bar&');
-      });
+      cy.expectPathToBe('/projects/pr2/settings?~foo=bar&');
+
       cy.wrap($iframeBody)
         .contains('Click here')
         .click();

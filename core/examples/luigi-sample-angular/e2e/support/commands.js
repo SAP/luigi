@@ -20,9 +20,8 @@ Cypress.Commands.add('goToFeaturesPage', iframe => {
   cy.wrap(iframe)
     .contains('linkManager()')
     .click();
-  cy.location().should(loc => {
-    expect(loc.pathname).to.eq('/projects/pr2');
-  });
+  cy.expectPathToBe('/projects/pr2');
+
   cy.wrap(iframe).should('contain', 'LuigiClient uxManager methods:');
   cy.wrap(iframe).should('contain', 'LuigiClient linkManager methods:');
 });
@@ -40,8 +39,9 @@ Cypress.Commands.add('expectPathToBe', pathWithoutHash => {
       ? appWindow.Luigi.config.routing
       : false;
 
-  return cy.location().should(loc => {
-    const actualPath = useHashRouting ? loc.hash : loc.pathname;
+  // notice that location.hash DOES keep url params ('?a=b') while location.pathname does NOT
+  return cy.location().should(location => {
+    const actualPath = useHashRouting ? location.hash : location.pathname;
     const pathToCheck = useHashRouting
       ? '#' + pathWithoutHash
       : pathWithoutHash;

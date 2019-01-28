@@ -7,5 +7,6 @@
   "screenshotsFolder": "e2e/screenshots",
   "chromeWebSecurity": false,
   "viewportWidth": 1250,
-  "viewportHeight": 790
+  "viewportHeight": 790,
+  "baseUrl": "http://localhost:4200/"
 }

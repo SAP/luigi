@@ -1,6 +1,6 @@
 describe('Navigation', () => {
   beforeEach(() => {
-    cy.visit('http://localhost:4200');
+    cy.visit('/');
     cy.login('tets@email.com', 'tets');
   });
 
@@ -34,13 +34,19 @@ describe('Navigation', () => {
   });
 
   it('Icon instead of label in TopNav', () => {
-    cy.visit('http://localhost:4200/');
+    cy.visit('/');
     cy.get('button[title="Settings"]>.fd-top-nav__icon').should('exist');
     cy.get('button[title="Settings"]').should('contain', '');
   });
 
   it('Icon with label in LeftNav', () => {
-    cy.visit('http://localhost:4200/projects/pr1');
+    cy.get('.fd-shellbar')
+      .contains('Projects')
+      .click();
+    cy.get('.fd-app__sidebar .fd-side-nav__item')
+      .contains('Project One')
+      .click();
+
     cy.get('.fd-side-nav__subitem')
       .contains('Project Settings')
       .find('.fd-side-nav__icon')
@@ -152,7 +158,17 @@ describe('Navigation', () => {
     });
 
     it('Left navigation hidden', () => {
-      cy.visit('http://localhost:4200/projects/pr1/hideSideNav');
+      cy.get('.fd-shellbar')
+        .contains('Projects')
+        .click();
+      cy.get('.fd-app__sidebar .fd-side-nav__item')
+        .contains('Project One')
+        .click();
+
+      cy.get('.fd-app__sidebar')
+        .contains('Hide left navigation')
+        .click();
+
       cy.get('.no-side-nav').should('exist');
       cy.get('.fd-app__sidebar').should('not.be.visible');
     });
