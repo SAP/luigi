@@ -13,9 +13,7 @@ Cypress.Commands.add('login', (email, password) => {
 
   cy.get('#login-button').click();
   cy.get('.fd-shellbar').contains('Overview');
-  cy.location().should(loc => {
-    expect(loc.pathname).to.eq('/overview');
-  });
+  cy.expectPathToBe('/overview');
 });
 
 Cypress.Commands.add('goToFeaturesPage', iframe => {
@@ -33,4 +31,20 @@ Cypress.Commands.add('goToOverviewPage', () => {
   cy.get('button')
     .contains('Overview')
     .click();
+});
+
+Cypress.Commands.add('expectPathToBe', pathWithoutHash => {
+  const appWindow = cy.state('window');
+  const { useHashRouting } =
+    appWindow && appWindow.Luigi && appWindow.Luigi.config
+      ? appWindow.Luigi.config.routing
+      : false;
+
+  return cy.location().should(loc => {
+    const actualPath = useHashRouting ? loc.hash : loc.pathname;
+    const pathToCheck = useHashRouting
+      ? '#' + pathWithoutHash
+      : pathWithoutHash;
+    expect(actualPath).to.eq(pathToCheck);
+  });
 });

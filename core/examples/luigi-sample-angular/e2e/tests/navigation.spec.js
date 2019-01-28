@@ -18,9 +18,8 @@ describe('Navigation', () => {
       .click();
 
     //project one page
-    cy.location().should(loc => {
-      expect(loc.pathname).to.eq('/projects/pr1');
-    });
+    cy.expectPathToBe('/projects/pr1');
+
     cy.get('.fd-app__sidebar').should('not.contain', 'Project One');
     cy.get('.fd-app__sidebar').should('contain', 'Miscellaneous2');
     cy.get('.fd-app__sidebar')
@@ -28,9 +27,8 @@ describe('Navigation', () => {
       .click();
 
     //default child node example
-    cy.location().should(loc => {
-      expect(loc.pathname).to.eq('/projects/pr1/dps/dps2');
-    });
+    cy.expectPathToBe('/projects/pr1/dps/dps2');
+
     cy.get('.fd-app__sidebar').should('contain', 'First Child');
     cy.get('.fd-app__sidebar').should('contain', 'Second Child');
   });
@@ -95,9 +93,7 @@ describe('Navigation', () => {
           .click();
       });
 
-      cy.location().should(loc => {
-        expect(loc.pathname).to.eq('/projects/pr1/avengers/thor');
-      });
+      cy.expectPathToBe('/projects/pr1/avengers/thor');
 
       cy.get('.fd-app__sidebar').should('contain', 'Keep Selected Example');
     });
@@ -130,9 +126,7 @@ describe('Navigation', () => {
         .contains('Go to absolute path')
         .click();
 
-      cy.location().should(loc => {
-        expect(loc.pathname).to.eq('/settings');
-      });
+      cy.expectPathToBe('/settings');
 
       //go to relative path from the parent node
       goToAnotherNodeFeature();
@@ -140,9 +134,7 @@ describe('Navigation', () => {
         .contains('Go to relative path')
         .click();
 
-      cy.location().should(loc => {
-        expect(loc.pathname).to.eq('/projects/pr2/dps/dps1');
-      });
+      cy.expectPathToBe('/projects/pr2/dps/dps1');
 
       //go to relative path from node that is a sibiling
       goToAnotherNodeFeature();
@@ -150,17 +142,13 @@ describe('Navigation', () => {
         .contains('Keep Selected Example')
         .click();
 
-      cy.location().should(loc => {
-        expect(loc.pathname).to.eq('/projects/pr2/avengers');
-      });
+      cy.expectPathToBe('/projects/pr2/avengers');
 
       cy.get('.fd-app__sidebar .fd-side-nav__item')
         .contains('Go to relative path')
         .click();
 
-      cy.location().should(loc => {
-        expect(loc.pathname).to.eq('/projects/pr2/dps/dps1');
-      });
+      cy.expectPathToBe('/projects/pr2/dps/dps1');
     });
 
     it('Left navigation hidden', () => {

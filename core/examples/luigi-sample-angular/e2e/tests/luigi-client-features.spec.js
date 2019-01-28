@@ -16,18 +16,16 @@ describe('Luigi client features', () => {
       cy.wrap($iframeBody)
         .contains('absolute: to overview')
         .click();
-      cy.location().should(loc => {
-        expect(loc.pathname).to.eq('/overview');
-      });
+      cy.expectPathToBe('/overview');
+
       cy.goToFeaturesPage($iframeBody);
 
       //navigate using relative path
       cy.wrap($iframeBody)
         .contains('relative: to stakeholders')
         .click();
-      cy.location().should(loc => {
-        expect(loc.pathname).to.eq('/projects/pr2/users/groups/stakeholders');
-      });
+      cy.expectPathToBe('/projects/pr2/users/groups/stakeholders');
+
       cy.goToOverviewPage();
       cy.goToFeaturesPage($iframeBody);
 
@@ -35,9 +33,8 @@ describe('Luigi client features', () => {
       cy.wrap($iframeBody)
         .contains('closest parent: to stakeholders')
         .click();
-      cy.location().should(loc => {
-        expect(loc.pathname).to.eq('/projects/pr2/users/groups/stakeholders');
-      });
+      cy.expectPathToBe('/projects/pr2/users/groups/stakeholders');
+
       cy.goToOverviewPage();
       cy.goToFeaturesPage($iframeBody);
 
@@ -45,16 +42,13 @@ describe('Luigi client features', () => {
       cy.wrap($iframeBody)
         .contains('parent by name: project to settings')
         .click();
-      cy.location().should(loc => {
-        expect(loc.pathname).to.eq('/projects/pr2/settings');
-      });
+      cy.expectPathToBe('/projects/pr2/settings');
+
       cy.wrap($iframeBody).should('contain', 'Settings');
       cy.wrap($iframeBody)
         .contains('Click here')
         .click();
-      cy.location().should(loc => {
-        expect(loc.pathname).to.eq('/projects/pr2');
-      });
+      cy.expectPathToBe('/projects/pr2');
 
       //navigate with params
       cy.wrap($iframeBody)
@@ -62,32 +56,26 @@ describe('Luigi client features', () => {
         .click();
       cy.wrap($iframeBody).should('contain', 'Called with params:');
       cy.wrap($iframeBody).should('contain', '"foo": "bar"');
+      cy.expectPathToBe('/projects/pr2/settings');
       cy.location().should(loc => {
-        expect(loc.pathname).to.eq('/projects/pr2/settings');
         expect(loc.search).to.eq('?~foo=bar&');
       });
       cy.wrap($iframeBody)
         .contains('Click here')
         .click();
-      cy.location().should(loc => {
-        expect(loc.pathname).to.eq('/projects/pr2');
-      });
+      cy.expectPathToBe('/projects/pr2');
 
       //don't navigate
       cy.wrap($iframeBody)
         .contains('parent by name: with nonexisting context')
         .click();
-      cy.location().should(loc => {
-        expect(loc.pathname).to.eq('/projects/pr2');
-      });
+      cy.expectPathToBe('/projects/pr2');
 
       //navigate with preserve view functionality
       cy.wrap($iframeBody)
         .contains('with preserved view: project to global settings and back')
         .click();
-      cy.location().should(loc => {
-        expect(loc.pathname).to.eq('/settings');
-      });
+      cy.expectPathToBe('/settings');
 
       //wait for the second iFrame to be loaded
       cy.wait(500);
@@ -104,9 +92,7 @@ describe('Luigi client features', () => {
           cy.wrap($preserveViewiFrameBody)
             .find('button')
             .click();
-          cy.location().should(loc => {
-            expect(loc.pathname).to.eq('/projects/pr2');
-          });
+          cy.expectPathToBe('/projects/pr2');
         });
 
       // check if path exists
@@ -158,9 +144,8 @@ describe('Luigi client features', () => {
       cy.wrap($iframeBody)
         .contains('Partly wrong link')
         .click();
-      cy.location().should(loc => {
-        expect(loc.pathname).to.eq('/projects/pr2/miscellaneous2');
-      });
+      cy.expectPathToBe('/projects/pr2/miscellaneous2');
+
       cy.get('.fd-alert').contains(
         'Could not map the exact target node for the requested route projects/pr2/miscellaneous2/maskopatol'
       );
@@ -178,9 +163,8 @@ describe('Luigi client features', () => {
       cy.wrap($iframeBody)
         .contains('Totally wrong link')
         .click();
-      cy.location().should(loc => {
-        expect(loc.pathname).to.eq('/overview');
-      });
+      cy.expectPathToBe('/overview');
+
       cy.get('.fd-alert').contains(
         'Could not find the requested route maskopatol/has/a/child'
       );
@@ -264,17 +248,13 @@ describe('Luigi client features', () => {
 
         cy.get('[data-cy=confirmation-modal]').should('be.visible');
 
-        cy.location().should(loc => {
-          expect(loc.pathname).to.eq('/overview'); //the location is unchanged
-        });
+        cy.expectPathToBe('/overview'); //the location is unchanged
 
         cy.get('[data-cy=modal-no]').click();
 
         cy.get('[data-cy=confirmation-modal]').should('not.be.visible');
 
-        cy.location().should(loc => {
-          expect(loc.pathname).to.eq('/overview'); //the location is still unchanged after "No" clicked
-        });
+        cy.expectPathToBe('/overview'); //the location is still unchanged after "No" clicked
       });
     });
     it("Unsaved changes - should proceed when 'Yes' was pressed in modal", () => {
@@ -291,17 +271,13 @@ describe('Luigi client features', () => {
 
         cy.get('[data-cy=confirmation-modal]').should('be.visible');
 
-        cy.location().should(loc => {
-          expect(loc.pathname).to.eq('/overview'); //the location is unchanged
-        });
+        cy.expectPathToBe('/overview'); //the location is unchanged
 
         cy.get('[data-cy=modal-yes]').click();
 
         cy.get('[data-cy=confirmation-modal]').should('not.be.visible');
 
-        cy.location().should(loc => {
-          expect(loc.pathname).to.eq('/projects'); //the location is changed after "Yes" clicked
-        });
+        cy.expectPathToBe('/projects'); //the location is changed after "Yes" clicked
       });
     });
   });
