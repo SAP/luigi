@@ -40,8 +40,7 @@ export const concatenatePath = (basePath, relativePath) => {
   @param route string  absolute path of the new route
  */
 export const navigateTo = async route => {
-  const windowPath = getWindowPath();
-
+  const windowPath = GenericHelpers.trimLeadingSlash(getWindowPath());
   if (windowPath === GenericHelpers.trimLeadingSlash(route)) {
     Iframe.reloadActiveIframe();
     return;
