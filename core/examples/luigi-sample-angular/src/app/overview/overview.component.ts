@@ -10,9 +10,14 @@ export class OverviewComponent {
   public luigiClient: LuigiClient = LuigiClient;
   public luigiClientLinks: any[] = [
     {
-      link: '/projects/pr2',
+      link: '/projects/pr1',
       text: 'uxManager()',
       description: 'backdrop methods'
+    },
+    {
+      link: '/projects/pr1',
+      text: 'uxManager()',
+      description: 'confirmation modal methods'
     },
     {
       link: '/ext',

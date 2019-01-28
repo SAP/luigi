@@ -212,3 +212,13 @@ This method informs the main application that there are unsaved changes in the c
 #### Parameters
 
 -   `isDirty` **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)** indicates if there are any unsaved changes on the current page or in the component
+
+### showConfirmationModal
+
+Shows a confirmation modal.
+
+#### Parameters
+
+-   `content` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** Text for different elements in confirmation modal
+
+Returns **[promise](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise)** A promise which is resolved when accepting confirmation modal and rejected when dismissing it.

@@ -16,13 +16,14 @@
     ></button>
     {alert.message} {alert.link}
   </div>
-  {/if} {#if confirmationModal.isDisplayed}
+  {/if}
+  {#if confirmationModal.isDisplayed}
   <ConfirmationModal
-    title="{confirmationModal.title}"
-    text="{confirmationModal.text}"
+    content="{confirmationModal.content}"
     on:modalConfirm="handleModalResult(true)"
     on:modalDecline="handleModalResult(false)"
-  ></ConfirmationModal>
+  >
+  </ConfirmationModal>
   {/if}
   <Backdrop>
     <div class="fd-page iframeContainer" use:init="context"></div>
@@ -220,6 +221,7 @@
   export default {
     data() {
       return {
+        contentNode: undefined,
         isNavigateBack: false,
         showLoadingIndicator: false,
         preservedViews: [
@@ -361,6 +363,15 @@
               }
             });
           }
+
+          if ('luigi.ux.confirmation-modal-show' === e.data.msg) {
+            this.set({ contentNode: node })
+            const data = e.data.data
+            this.showModal(data.content, data.correlationId).then(
+                () => { },
+                () => { /* keep to avoid runtime errors in browser console */ }
+            );
+          }
         });
 
         // listeners are not automatically removed — cancel
@@ -383,7 +394,7 @@
         });
       },
       handleModalResult(result) {
-        const promise = this.get().confirmationModal.promise;
+        const { promise, correlationId } = this.get().confirmationModal;
         if (result) {
           this.set({
             unsavedChanges: { isDirty: false, persistUrl: null }
@@ -392,15 +403,26 @@
         } else {
           promise.reject();
         }
+        const modalOpenByLuigiClient = Boolean(correlationId);
+        if (modalOpenByLuigiClient) {
+          Iframe.getActiveIframe(this.get().contentNode).contentWindow.postMessage(
+            {
+              msg: 'luigi.ux.confirmationModal.hide',
+              data: {
+                correlationId: correlationId,
+                accepted: result
+              }
+            },
+            '*'
+          );
+        }
         this.hideModal();
       },
       getUnsavedChangesModalPromise() {
         return new Promise(resolve => {
           if (this.shouldShowUnsavedChangesModal()) {
             this.showUnsavedChangesModal().then(
-              () => {
-                resolve();
-              },
+              () => { resolve(); },
               () => {}
             );
           } else {
@@ -416,33 +438,37 @@
       },
       showUnsavedChangesModal() {
         return this.showModal(
-          'Unsaved changes detected',
-          'It looks like you might lose some data if you leave this page. Are you sure you want to do this?'
+          {
+            title: 'Unsaved changes detected',
+            text: 'It looks like you might lose some data if you leave this page. Are you sure you want to do this?',
+            btnDismiss: 'No',
+            btnAccept: 'Yes'
+          }
         );
       },
-      showModal(title, text) {
+      showModal(content, correlationId) {
         return new Promise((resolve, reject) => {
           //send the response when one of following methods were executed
           this.set({
             confirmationModal: {
               isDisplayed: true,
-              title,
-              text,
+              content,
+              correlationId,
               promise: { resolve, reject }
             }
-          });
-        });
+          })
+        })
       },
       hideModal() {
         this.set({
           confirmationModal: {
             isDisplayed: false,
-            title: null,
-            text: null,
+            content: {},
+            id: null,
             promise: null
           }
         });
-      }
+      },
     },
 
     components: {

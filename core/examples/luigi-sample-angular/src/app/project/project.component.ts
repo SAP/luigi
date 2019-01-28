@@ -87,6 +87,29 @@ export class ProjectComponent implements OnInit, OnDestroy {
     this.modalActive = !this.modalActive;
   }
 
+  showConfirmationModal() {
+    const content = {
+      title: 'Modal Header',
+      text: `Lorem tipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna
+        aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+        Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.`,
+      btnAccept: 'Cancel',
+      btnDismiss: 'Confirm'
+    };
+    const baseInfoText = 'Angular App: Confirmation modal promise';
+    this.luigiClient
+      .uxManager()
+      .showConfirmationModal(content)
+      .then(
+        () => {
+          console.info(baseInfoText, 'RESOLVED');
+        },
+        () => {
+          console.info(baseInfoText, 'REJECTED');
+        }
+      );
+  }
+
   checkIfPathExists() {
     this.luigiClient
       .linkManager()

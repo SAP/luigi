@@ -18,14 +18,23 @@ Cypress.Commands.add('login', (email, password) => {
   });
 });
 
-Cypress.Commands.add('goToFeaturesPage', iframe => {
+Cypress.Commands.add('goToUxManagerMethods', iframe => {
+  cy.wrap(iframe)
+    .contains('uxManager()')
+    .click();
+  cy.location().should(loc => {
+    expect(loc.pathname).to.eq('/projects/pr1');
+  });
+  cy.wrap(iframe).should('contain', 'LuigiClient uxManager methods:');
+});
+
+Cypress.Commands.add('goToLinkManagerMethods', iframe => {
   cy.wrap(iframe)
     .contains('linkManager()')
     .click();
   cy.location().should(loc => {
     expect(loc.pathname).to.eq('/projects/pr2');
   });
-  cy.wrap(iframe).should('contain', 'LuigiClient uxManager methods:');
   cy.wrap(iframe).should('contain', 'LuigiClient linkManager methods:');
 });
 
