@@ -1,59 +1,68 @@
 {#if contextSwitcherEnabled}
-  <div class="fd-shellbar__action fd-shellbar__action--show-always">
-    <div class="fd-product-menu">
-      <div class="fd-popover fd-popover--right">
+<div class="fd-shellbar__action fd-shellbar__action--show-always">
+  <div class="fd-product-menu">
+    <div class="fd-popover fd-popover--right">
+      <div class="fd-popover__control" on:click="event.stopPropagation()">
+        <button
+          class="fd-button--shell fd-product-menu__control lui-tendant-menu__control"
+          aria-expanded="{dropDownStates.contextSwitcherPopover || false}"
+          aria-haspopup="true"
+          title="{selectedLabel ? selectedLabel : ''}"
+          on:click="toggleDropdownState('contextSwitcherPopover')"
+        >
+          {#if !selectedLabel}{config.defaultLabel}{/if} {#if
+          selectedLabel}{selectedLabel}{/if}
+        </button>
+      </div>
 
-        <div class="fd-popover__control" on:click="event.stopPropagation()">
-          <button class="fd-button--shell fd-product-menu__control lui-tendant-menu__control" aria-expanded="{dropDownStates.contextSwitcherPopover || false}"
-            aria-haspopup="true" title="{selectedLabel ? selectedLabel : ''}"
-            on:click="toggleDropdownState('contextSwitcherPopover')">
-            {#if !selectedLabel}{config.defaultLabel}{/if}
-            {#if selectedLabel}{selectedLabel}{/if}
-          </button>
-        </div>
-
-        <div class="fd-popover__body fd-popover__body--right" aria-hidden="{!(dropDownStates.contextSwitcherPopover || false)}" id="contextSwitcherPopover">
-          <nav class="fd-menu">
-
-            {#if actions && actions.length}
-            <ul class="fd-menu__list fd-menu__list--top">
-              {#each actions as node}
-                {#if node.position === 'top' || !['top', 'bottom'].includes(node.position)}
-                  <li on:click="onActionClick(node)"><a class="fd-menu__item" >{node.label}</a></li>
-                {/if}
-              {/each}
-            </ul>
-            {/if}
-            <ul class="fd-menu__list" id="context_menu_middle">
-
+      <div
+        class="fd-popover__body fd-popover__body--right"
+        aria-hidden="{!(dropDownStates.contextSwitcherPopover || false)}"
+        id="contextSwitcherPopover"
+      >
+        <nav class="fd-menu">
+          {#if actions && actions.length}
+          <ul class="fd-menu__list fd-menu__list--top">
+            {#each actions as node} {#if node.position === 'top' || !['top',
+            'bottom'].includes(node.position)}
+            <li on:click="onActionClick(node)">
+              <a class="fd-menu__item">{node.label}</a>
+            </li>
+            {/if} {/each}
+          </ul>
+          {/if}
+          <ul class="fd-menu__list" id="context_menu_middle">
             {#if options && options.length === 0}
-              <li><div class="fd-spinner"><div></div></div></li>
-            {/if}
-            {#if options && options.length}
-              {#each options as node}
-                {#await getNodeName(node.label, config.fallbackLabelResolver, node.id)}
-                {:then label}
-                  <li on:click="goTo(node.path)"><a class="fd-menu__item {node === selectedLabel ? 'is-selected' : ''}" title="{label}">{label}</a></li>
-                {/await}
-              {/each}
-            {/if}
-            </ul>
+            <li>
+              <div class="fd-spinner"><div></div></div>
+            </li>
+            {/if} {#if options && options.length} {#each options as node}
+            {#await getNodeName(node.label, config.fallbackLabelResolver,
+            node.id)} {:then label}
+            <li on:click="goTo(node.path)">
+              <a
+                class="fd-menu__item {node === selectedLabel ? 'is-selected' : ''}"
+                title="{label}"
+                >{label}</a
+              >
+            </li>
+            {/await} {/each} {/if}
+          </ul>
 
-            {#if actions && actions.length}
-              <ul class="fd-menu__list fd-menu__list--bottom">
-                {#each actions as node}
-                  {#if node.position === 'bottom'}
-                    <li on:click="onActionClick(node)"><a class="fd-menu__item">{node.label}</a></li>
-                  {/if}
-                {/each}
-              </ul>
-            {/if}
-            
-          </nav>
-        </div>
+          {#if actions && actions.length}
+          <ul class="fd-menu__list fd-menu__list--bottom">
+            {#each actions as node} {#if node.position === 'bottom'}
+            <li on:click="onActionClick(node)">
+              <a class="fd-menu__item">{node.label}</a>
+            </li>
+            {/if} {/each}
+          </ul>
+          {/if}
+        </nav>
       </div>
     </div>
   </div>
+</div>
 {/if}
 
 <script type="text/javascript">
@@ -148,6 +157,7 @@
         const options = this.get().options;
         const parentNodePath = config.parentNodePath;
         const fallbackLabelResolver = config.fallbackLabelResolver;
+
         this.set({
           selectedLabel: await ContextSwitcherHelpers.getSelectedLabel(
             currentPath,
@@ -168,12 +178,12 @@
         this.goTo(node.link);
       },
       goTo(path) {
-        this.root.getUnsavedChangesModalPromise().then(
-          () => { Routing.navigateTo(path) }
-        )
+        this.root.getUnsavedChangesModalPromise().then(() => {
+          Routing.navigateTo(path);
+        });
       },
       toggleDropdownState(name) {
-        this.fire('toggleDropdownState', {name});
+        this.fire('toggleDropdownState', { name });
         const dropDownStates = this.get().dropDownStates || {};
         const isOpened = JSON.parse(dropDownStates[name]);
         if (isOpened) {

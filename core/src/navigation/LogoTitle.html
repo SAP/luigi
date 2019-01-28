@@ -1,24 +1,28 @@
-
-<div class="fd-shellbar__logo { !hasLogo ? 'fd-shellbar__logo--image-replaced' : '' } { hasLogo ? 'lui-customlogo' : ''}" aria-label="SAP">
+<div
+  class="fd-shellbar__logo { !hasLogo ? 'fd-shellbar__logo--image-replaced' : '' } { hasLogo ? 'lui-customlogo' : ''}"
+  aria-label="SAP"
+>
   {#if hasLogo}
-    <img on:click="goTo('/')" ref:logo />
+  <img on:click="goTo('/')" ref:logo />
   {/if}
 </div>
 
 {#if title}
-  <div class="fd-shellbar__product">
-    <!-- code duplication due fundamental markup --> 
-    <div class="fd-shellbar__logo fd-shellbar__logo--control fd-product-menu__logo { !hasLogo ? 'fd-shellbar__logo--image-replaced' : '' } { hasLogo ? 'lui-customlogo' : ''}" aria-label="SAP">
-        {#if hasLogo}
-          <img on:click="goTo('/')" ref:logo2/>
-        {/if}
-    </div>
-    <div class="fd-shellbar__title" on:click="goTo('/')">
-      {title}
-    </div>
+<div class="fd-shellbar__product">
+  <!-- code duplication due fundamental markup -->
+  <div
+    class="fd-shellbar__logo fd-shellbar__logo--control fd-product-menu__logo { !hasLogo ? 'fd-shellbar__logo--image-replaced' : '' } { hasLogo ? 'lui-customlogo' : ''}"
+    aria-label="SAP"
+  >
+    {#if hasLogo}
+    <img on:click="goTo('/')" ref:logo2 />
+    {/if}
   </div>
+  <div class="fd-shellbar__title" on:click="goTo('/')">
+    {title}
+  </div>
+</div>
 {/if}
-
 
 <script type="text/javascript">
   import * as Header from './services/header.js';
@@ -32,9 +36,9 @@
     },
     methods: {
       goTo(path) {
-        this.root.getUnsavedChangesModalPromise().then(
-          () => { Routing.navigateTo(path) }
-        );
+        this.root.getUnsavedChangesModalPromise().then(() => {
+          Routing.navigateTo(path);
+        });
       }
     }
   };
@@ -46,7 +50,8 @@
     height: 24px;
   }
 
-  .fd-shellbar__logo, .fd-shellbar__title {
+  .fd-shellbar__logo,
+  .fd-shellbar__title {
     cursor: pointer;
   }
 </style>

@@ -20,8 +20,7 @@ export const waitForKeyExistency = (
       if (Date.now() - startTimer > timeout) {
         clearInterval(handles[name]);
         return reject(
-          `${name} didnt appear in object within ${keyExistencyTimeout /
-            1000} seconds.`
+          `${name} did not appear in object within ${timeout / 1000} seconds.`
         );
       }
     }, keyExistencyCheckInterval);
@@ -29,10 +28,10 @@ export const waitForKeyExistency = (
 };
 
 /*
-* Gets value of the given property on the given object.
-* If the value is a Function it is called and the result of that call is the value.
-* If the value is not a Promise it is wrapped to a Promise so that the returned value is definitely a Promise.
-*/
+ * Gets value of the given property on the given object.
+ * If the value is a Function it is called and the result of that call is the value.
+ * If the value is not a Promise it is wrapped to a Promise so that the returned value is definitely a Promise.
+ */
 export const getConfigValueFromObjectAsync = (
   object,
   property,

@@ -9,13 +9,15 @@
       return {
         backdropActive: false,
         backdropClass: ''
-      }
+      };
     },
     oncreate() {
-      const backdropDisabled = LuigiConfig.getConfigValue('settings.backdropDisabled');
+      const backdropDisabled = LuigiConfig.getConfigValue(
+        'settings.backdropDisabled'
+      );
       if (!backdropDisabled) {
         this.setBackdropClass();
-        window.addEventListener("message", (e) => {
+        window.addEventListener('message', e => {
           if ('luigi.add-backdrop' === e.data.msg) {
             this.set({ backdropActive: true });
           }
@@ -36,9 +38,10 @@
         if (!this.get().backdropActive) {
           this.set({ backdropClass: '' });
         } else if (this.options.data && this.options.data.heightCssClass) {
-          this.set({ backdropClass: baseClasses + this.options.data.heightCssClass });
+          this.set({
+            backdropClass: baseClasses + this.options.data.heightCssClass
+          });
         } else {
-          console.log('backdropActive', this.get().backdropActive, this.get().backdropClass);
           this.set({ backdropClass: baseClasses + 'height-auto' });
         }
       }
@@ -55,4 +58,4 @@
     bottom: 0;
     right: 0;
   }
-  </style>
+</style>

@@ -63,9 +63,9 @@ describe('Context-switcher', function() {
 
     it('no parentNodePath', () => {
       const result = CSHelpers.getPreparedParentNodePath({
-        parentNodePath: '/environment'
+        parentNodePath: ''
       });
-      assert.equal(result, '/environment/');
+      assert.equal(result, '');
     });
   });
 
@@ -231,6 +231,16 @@ describe('Context-switcher', function() {
         myResolverFn
       );
       assert.equal(result, '##env3##');
+    });
+
+    it('returns node label without path params', async () => {
+      const result = await CSHelpers.getSelectedLabel(
+        '/environment/env1?mask=opatol',
+        null,
+        parentNodePath,
+        myResolverFn
+      );
+      assert.equal(result, '##env1##');
     });
   });
 });

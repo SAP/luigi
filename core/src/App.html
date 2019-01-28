@@ -1,29 +1,53 @@
-<div id="app" class="{hideNav? 'no-nav' : ''} {hideSideNav? 'no-side-nav' : ''}">
-	{#if alert && alert.message}
-    <div class="fd-alert fd-alert--error fd-alert--dismissible" role="alert" id="j2ALl423">
-      <button on:click="set({alert:null})" class="fd-alert__close" aria-controls="j2ALl423" aria-label="Close"></button>
-      {alert.message} {alert.link}
-    </div>
-	{/if}
-  {#if confirmationModal.isDisplayed}
-    <ConfirmationModal title={confirmationModal.title} text={confirmationModal.text} on:modalConfirm="handleModalResult(true)"
-    on:modalDecline="handleModalResult(false)"></ConfirmationModal>
-	{/if}
-	<Backdrop>
-		<div class="fd-page iframeContainer" use:init="context"></div>
-	</Backdrop>
-	{#if showLoadingIndicator}
-    <div in:fade='{delay: 250, duration: 250}' out:fade='{duration: 250}' class="fd-page spinnerContainer" aria-hidden="false"
-    aria-label="Loading">
-      <div class="fd-spinner">
-        <div></div>
-      </div>
-    </div>
-	{/if}
+<div
+  id="app"
+  class="{hideNav? 'no-nav' : ''} {hideSideNav? 'no-side-nav' : ''}"
+>
+  {#if alert && alert.message}
+  <div
+    class="fd-alert fd-alert--error fd-alert--dismissible"
+    role="alert"
+    id="j2ALl423"
+  >
+    <button
+      on:click="set({alert:null})"
+      class="fd-alert__close"
+      aria-controls="j2ALl423"
+      aria-label="Close"
+    ></button>
+    {alert.message} {alert.link}
+  </div>
+  {/if} {#if confirmationModal.isDisplayed}
+  <ConfirmationModal
+    title="{confirmationModal.title}"
+    text="{confirmationModal.text}"
+    on:modalConfirm="handleModalResult(true)"
+    on:modalDecline="handleModalResult(false)"
+  ></ConfirmationModal>
+  {/if}
+  <Backdrop>
+    <div class="fd-page iframeContainer" use:init="context"></div>
+  </Backdrop>
+  {#if showLoadingIndicator}
+  <div
+    in:fade="{delay: 250, duration: 250}"
+    out:fade="{duration: 250}"
+    class="fd-page spinnerContainer"
+    aria-hidden="false"
+    aria-label="Loading"
+  >
+    <div class="fd-spinner"><div></div></div>
+  </div>
+  {/if}
 
-	<TopNav pathData={navigationPath} on:handleClick="handleNavClick(event.node)"/>
+  <TopNav
+    pathData="{navigationPath}"
+    on:handleClick="handleNavClick(event.node)"
+  />
   {#if !(hideNav||hideSideNav)}
-	  <LeftNav pathData={navigationPath} on:handleClick="handleNavClick(event.node)"/>
+  <LeftNav
+    pathData="{navigationPath}"
+    on:handleClick="handleNavClick(event.node)"
+  />
   {/if}
 </div>
 
@@ -33,7 +57,9 @@
   import TopNav from './navigation/TopNav.html';
   import LeftNav from './navigation/LeftNav.html';
   import ConfirmationModal from './ConfirmationModal.html';
+  import { LuigiConfig } from './services/config.js';
   import * as Routing from './services/routing.js';
+  import * as Navigation from './navigation/services/navigation.js';
   import * as Iframe from './services/iframe';
   import * as RoutingHelpers from './utilities/helpers/routing-helpers';
   import * as GenericHelpers from './utilities/helpers/generic-helpers';
@@ -72,6 +98,15 @@
     });
   };
 
+  const getSubPath = (component, node) => {
+    return GenericHelpers.replaceVars(
+      Routing.getNodePath(node),
+      component.get().pathParams,
+      ':',
+      false
+    );
+  };
+
   const buildPath = (component, params) => {
     let path = params.link;
     if (params.fromClosestContext) {
@@ -79,18 +114,18 @@
       const node = [...component.get().navigationPath]
         .reverse()
         .find(n => n.navigationContext && n.navigationContext.length > 0);
-      path = Routing.concatenatePath(Routing.getNodePath(node), params.link);
+      path = Routing.concatenatePath(getSubPath(component, node), params.link);
     } else if (params.fromContext) {
       // from a given navigation context
       const navigationContext = params.fromContext;
       const node = component
         .get()
         .navigationPath.find(n => navigationContext === n.navigationContext);
-      path = Routing.concatenatePath(Routing.getNodePath(node), params.link);
+      path = Routing.concatenatePath(getSubPath(component, node), params.link);
     } else if (params.relative) {
       // relative
       path = Routing.concatenatePath(
-        Routing.getNodePath(component.get().currentNode),
+        getSubPath(component, component.get().currentNode),
         params.link
       );
     }
@@ -112,14 +147,19 @@
 
   const addPreserveView = (component, data, config) => {
     if (data.params.preserveView) {
-      const pv = component.get().preservedViews;
+      const {
+        preservedViews,
+        currentNode,
+        urlParamsRaw,
+        context
+      } = component.get();
       const nextPath = buildPath(component, data.params);
-      pv.push({
-        path: Routing.getNodePath(component.get().currentNode),
+      preservedViews.push({
+        path: Routing.getNodePath(currentNode, urlParamsRaw),
         nextPath: nextPath.startsWith('/') ? nextPath : '/' + nextPath,
-        context: component.get().context
+        context
       });
-      component.set({ preservedViews: pv });
+      component.set({ preservedViews });
       // Resetting iframe config to null, since Routing.navigateTo will then create a new iframe
       // instead of using the existing instance for route.
       config.iframe = null;
@@ -148,8 +188,12 @@
         context: JSON.stringify(
           Object.assign({}, component.get().context, goBackContext)
         ),
-        nodeParams: JSON.stringify(Object.assign({}, component.get().nodeParams)),
-        pathParams: JSON.stringify(Object.assign({}, component.get().pathParams)),
+        nodeParams: JSON.stringify(
+          Object.assign({}, component.get().nodeParams)
+        ),
+        pathParams: JSON.stringify(
+          Object.assign({}, component.get().pathParams)
+        ),
         internal: JSON.stringify(component.prepareInternalData()),
         authData: AuthHelpers.getStoredAuthData()
       },
@@ -159,7 +203,9 @@
 
   const sendAuthDataToClient = (iframe, authData) => {
     if (!iframe || !iframe.contentWindow) {
-      console.info('iframe does not exist, not able to send authData to client.');
+      console.info(
+        'iframe does not exist, not able to send authData to client.'
+      );
       return;
     }
     iframe.contentWindow.postMessage(
@@ -201,12 +247,27 @@
     onstate({ changed, current, previous }) {},
     actions: {
       init(node) {
+        const isolateAllViews = LuigiConfig.getConfigValue(
+          'navigation.defaults.isolateView'
+        );
         const config = {
           iframe: null,
           navigateOk: null,
-          builderCompatibilityMode: Boolean(window.builderCompatibilityMode)
+          builderCompatibilityMode: Boolean(window.builderCompatibilityMode),
+          isolateAllViews
         };
-
+        window.addEventListener('popstate', async e => {
+          const alert = this.get().alert;
+          if (alert && typeof alert.ttl == 'number') {
+            if (alert.ttl === 0) {
+              this.set({ alert: null });
+            } else {
+              const updatedAlert = { ...alert };
+              updatedAlert.ttl--;
+              this.set({ alert: updatedAlert });
+            }
+          }
+        });
         window.addEventListener('message', async e => {
           if ('luigi.get-context' === e.data.msg && config.iframe) {
             sendContextToClient(this, config, {});
@@ -235,36 +296,34 @@
 
           if ('luigi.navigation.open' === e.data.msg) {
             this.set({ isNavigateBack: false });
-            this.getUnsavedChangesModalPromise().then(
-              () => { handleNavigation(this, e.data, config); }
-            );
+            this.getUnsavedChangesModalPromise().then(() => {
+              handleNavigation(this, e.data, config);
+            });
           }
 
           if ('luigi.navigation.back' === e.data.msg) {
             // go back: context from the view
             const preservedViews = this.get().preservedViews;
             if (preservedViews && preservedViews.length) {
-              this.getUnsavedChangesModalPromise().then(
-                () => {
-                  // remove current active iframe and data
-                  Iframe.setActiveIframeToPrevious(node);
-                  const previousActiveIframeData = preservedViews.pop();
-                  // set new active iframe and preservedViews
-                  config.iframe = Iframe.getActiveIframe(node);
-                  this.set({
-                    isNavigateBack: true,
-                    preservedViews,
-                    goBackContext:
-                      e.data.goBackContext && JSON.parse(e.data.goBackContext)
-                  });
-                  // TODO: check if getNavigationPath or history pop to update hash / path
-                  const path = handleNavigation(
-                    this,
-                    {params: { link: previousActiveIframeData.path } },
-                    config
-                  );
-                }
-              );
+              this.getUnsavedChangesModalPromise().then(() => {
+                // remove current active iframe and data
+                Iframe.setActiveIframeToPrevious(node);
+                const previousActiveIframeData = preservedViews.pop();
+                // set new active iframe and preservedViews
+                config.iframe = Iframe.getActiveIframe(node);
+                this.set({
+                  isNavigateBack: true,
+                  preservedViews,
+                  goBackContext:
+                    e.data.goBackContext && JSON.parse(e.data.goBackContext)
+                });
+                // TODO: check if getNavigationPath or history pop to update hash / path
+                const path = handleNavigation(
+                  this,
+                  { params: { link: previousActiveIframeData.path } },
+                  config
+                );
+              });
             } else {
               console.error('goBack() not possible, no preserved views found.');
             }
@@ -277,23 +336,23 @@
           if ('luigi.navigation.pathExists' === e.data.msg) {
             const data = e.data.data;
             const path = buildPath(this, data);
-            const matchedPath = await Routing.matchPath(path);
+            const pathData = await Navigation.getNavigationPath(
+              LuigiConfig.getConfigValueAsync('navigation.nodes'),
+              path
+            );
 
-            let normalizedPath =
-              (!path.startsWith('/') ? '/' : '') +
-              (path.endsWith('/') ? path.slice(0, -1) : path);
-            const pathExists = matchedPath === normalizedPath;
             config.iframe.contentWindow.postMessage(
               {
                 msg: 'luigi.navigation.pathExists.answer',
                 data: {
                   correlationId: data.id,
-                  pathExists
+                  pathExists: pathData.isExistingRoute
                 }
               },
               '*'
             );
           }
+
           if ('luigi.set-page-dirty' === e.data.msg) {
             this.set({
               unsavedChanges: {
@@ -319,9 +378,9 @@
         };
       },
       handleNavClick(node) {
-        this.getUnsavedChangesModalPromise().then(
-          () => { Routing.handleRouteClick(node) }
-        );
+        this.getUnsavedChangesModalPromise().then(() => {
+          Routing.handleRouteClick(node, this.get());
+        });
       },
       handleModalResult(result) {
         const promise = this.get().confirmationModal.promise;
@@ -339,22 +398,27 @@
         return new Promise(resolve => {
           if (this.shouldShowUnsavedChangesModal()) {
             this.showUnsavedChangesModal().then(
-              () => { resolve() },
-              () => { }
+              () => {
+                resolve();
+              },
+              () => {}
             );
           } else {
             resolve();
           }
-        })
+        });
       },
       shouldShowUnsavedChangesModal() {
-        return GenericHelpers.canComponentHandleModal(this) && this.get().unsavedChanges.isDirty
+        return (
+          GenericHelpers.canComponentHandleModal(this) &&
+          this.get().unsavedChanges.isDirty
+        );
       },
       showUnsavedChangesModal() {
         return this.showModal(
           'Unsaved changes detected',
           'It looks like you might lose some data if you leave this page. Are you sure you want to do this?'
-        )
+        );
       },
       showModal(title, text) {
         return new Promise((resolve, reject) => {
@@ -392,7 +456,7 @@
 </script>
 
 <style type="text/scss">
-  $topNavHeight: 50px;
+  $topNavHeight: 48px;
   $leftNavWidth: 320px;
   :global(html) {
     box-sizing: border-box;
