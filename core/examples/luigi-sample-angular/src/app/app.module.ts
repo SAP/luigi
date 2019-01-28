@@ -24,6 +24,7 @@ import { LuigiContextService } from './services/luigi-context.service';
 import { GroupSettingsComponent } from './project/users/groups/group-details/group-settings/group-settings.component';
 import { DynamicComponent } from './project/dynamic/dynamic.component';
 import { HideSideNavComponent } from './project/hideSideNav/hideSideNav.component';
+import { AnonymousComponent } from './anonymous/anonymous.component';
 
 @NgModule({
   declarations: [
@@ -46,7 +47,8 @@ import { HideSideNavComponent } from './project/hideSideNav/hideSideNav.componen
     RestrictedComponent,
     GroupSettingsComponent,
     DynamicComponent,
-    HideSideNavComponent
+    HideSideNavComponent,
+    AnonymousComponent
   ],
   imports: [BrowserModule, FormsModule, AppRoutingModule],
   providers: [LuigiContextService],

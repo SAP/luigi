@@ -242,7 +242,7 @@ describe('Navigation', function() {
     });
   });
   describe('findMatchingNode', () => {
-    it('substitutes dynamic path', () => {
+    it('with dynamic path, does not substitute values', () => {
       // given
       const staticNode = () => ({
         label: 'Other',
@@ -274,10 +274,22 @@ describe('Navigation', function() {
       ]);
 
       // // then
-      expect(resStaticOk.pathSegment).to.equal('other');
-      expect(resDynamicOk.pathSegment).to.equal('avengers');
-      expect(resDynamicOk.viewUrl).to.contain('/avengers');
-      expect(resDynamicOk.context.currentGroup).to.equal('avengers');
+      expect(resStaticOk.pathSegment).to.equal(
+        'other',
+        'resStaticOk.pathSegment'
+      );
+      expect(resDynamicOk.pathSegment).to.equal(
+        ':group',
+        'resDynamicOk.pathSegment'
+      );
+      expect(resDynamicOk.viewUrl).to.contain(
+        '/:group',
+        'resDynamicOk.viewUrl'
+      );
+      expect(resDynamicOk.context.currentGroup).to.equal(
+        ':group',
+        'resDynamicOk.context'
+      );
 
       // falsy tests
       const resNull = navigation.findMatchingNode('avengers', [staticNode()]);
@@ -289,7 +301,7 @@ describe('Navigation', function() {
         dynamicNode()
       ]);
       expect(resStaticWarning.pathSegment).to.equal(
-        'avengers',
+        ':group',
         'static warning pathSegment: ' + resStaticWarning.pathSegment
       );
       sinon.assert.calledOnce(console.warn);
