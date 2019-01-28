@@ -63,9 +63,9 @@ describe('Context-switcher', function() {
 
     it('no parentNodePath', () => {
       const result = CSHelpers.getPreparedParentNodePath({
-        parentNodePath: '/environment'
+        parentNodePath: ''
       });
-      assert.equal(result, '/environment/');
+      assert.equal(result, '');
     });
   });
 
