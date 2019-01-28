@@ -32,19 +32,22 @@ Cypress.Commands.add('goToOverviewPage', () => {
     .click();
 });
 
-Cypress.Commands.add('expectPathToBe', pathWithoutHash => {
+export const isHashRoutingOn = () => {
   const appWindow = cy.state('window');
   const { useHashRouting } =
     appWindow && appWindow.Luigi && appWindow.Luigi.config
       ? appWindow.Luigi.config.routing
       : false;
+  return useHashRouting;
+};
 
-  // notice that location.hash DOES keep url params ('?a=b') while location.pathname does NOT
-  return cy.location().should(location => {
+Cypress.Commands.add('expectPathToBe', pathWithoutHash =>
+  cy.location().should(location => {
+    const useHashRouting = isHashRoutingOn();
     const actualPath = useHashRouting ? location.hash : location.pathname;
     const pathToCheck = useHashRouting
       ? '#' + pathWithoutHash
       : pathWithoutHash;
     expect(actualPath).to.eq(pathToCheck);
-  });
-});
+  })
+);

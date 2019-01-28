@@ -1,3 +1,4 @@
+import { isHashRoutingOn } from '../support/commands';
 describe('Luigi client features', () => {
   beforeEach(() => {
     cy.visit('/');
@@ -56,7 +57,16 @@ describe('Luigi client features', () => {
         .click();
       cy.wrap($iframeBody).should('contain', 'Called with params:');
       cy.wrap($iframeBody).should('contain', '"foo": "bar"');
-      cy.expectPathToBe('/projects/pr2/settings?~foo=bar&');
+
+      // notice that location.hash DOES keep url params ('?a=b') while location.pathname does NOT
+      if (isHashRoutingOn()) {
+        cy.expectPathToBe('/projects/pr2/settings?~foo=bar&');
+      } else {
+        cy.expectPathToBe('/projects/pr2/settings');
+        cy.location().should(loc => {
+          expect(loc.search).to.eq('?~foo=bar&');
+        });
+      }
 
       cy.wrap($iframeBody)
         .contains('Click here')
