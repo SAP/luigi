@@ -45,7 +45,7 @@ When the application is ready:
 
 Use these tests to ensure that applications written for previous versions of Luigi still work after Luigi gets updated with npm. Before running the tests, bundle Luigi by running `lerna run bundle` in the main repository folder.
 
-Install the json command line parser with `brew install jq` which is required for the script. Can be ommited if you run it with latest on the ci.
+Install [jq](https://stedolan.github.io/jq/) using the `brew install jq` command. It is required for the script to work, however, you can omit it if the command you are using to run your tests is tagged `latest`. 
 
 - Run `npm run test:compatibility` in the main repository folder to start regression testing. The system will prompt you to select the previous version. 
 - Run `npm run test:compatibility -- --tag latest` in the main repository folder to start regression testing with the last version preselected. 
