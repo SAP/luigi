@@ -36,16 +36,19 @@ export const concatenatePath = (basePath, relativePath) => {
 
 /**
   navigateTo used for navigation
+  Triggers a frame reload if we are on the same route (eg. if we click on same navigation item again)
   @param route string  absolute path of the new route
  */
 export const navigateTo = async route => {
-  if (LuigiConfig.getConfigValue('routing.useHashRouting')) {
-    window.location.hash = route;
+  const windowPath = getWindowPath();
+
+  if (windowPath === GenericHelpers.trimLeadingSlash(route)) {
+    Iframe.reloadActiveIframe();
     return;
   }
 
-  // Avoid infinite loop on logout + login whith path routing
-  if (window.location.pathname === route) {
+  if (LuigiConfig.getConfigValue('routing.useHashRouting')) {
+    window.location.hash = route;
     return;
   }
 
@@ -71,10 +74,13 @@ export const navigateTo = async route => {
   window.dispatchEvent(event);
 };
 
-export const buildFromRelativePath = node => {
-  let windowPath = LuigiConfig.getConfigValue('routing.useHashRouting')
+const getWindowPath = () =>
+  LuigiConfig.getConfigValue('routing.useHashRouting')
     ? GenericHelpers.getPathWithoutHash(window.location.hash)
     : window.location.pathname;
+
+export const buildFromRelativePath = node => {
+  let windowPath = getWindowPath();
   if (node.parent && node.parent.pathSegment) {
     // use only this part of the current path that refers to the parent of the node (remove additional parts refering to the sibiling)
     // remove everything that is after the parents pathSegment 'parent/keepSelectedForChildren/something' -> 'parent'
@@ -108,9 +114,9 @@ export const getCurrentPath = () =>
   LuigiConfig.getConfigValue('routing.useHashRouting')
     ? window.location.hash.replace('#', '') // TODO: GenericHelpers.getPathWithoutHash(window.location.hash) fails in ContextSwitcher
     : window.location.search
-      ? GenericHelpers.trimLeadingSlash(window.location.pathname) +
-        window.location.search
-      : GenericHelpers.trimLeadingSlash(window.location.pathname);
+    ? GenericHelpers.trimLeadingSlash(window.location.pathname) +
+      window.location.search
+    : GenericHelpers.trimLeadingSlash(window.location.pathname);
 
 export const handleRouteChange = async (
   path,

@@ -124,3 +124,9 @@ export const navigateIframe = (config, component, node) => {
     }, iframeNavFallbackTimeout);
   }
 };
+
+export const reloadActiveIframe = () => {
+  IframeHelpers.getVisibleIframes()
+    .pop()
+    .contentDocument.location.reload(true);
+};
