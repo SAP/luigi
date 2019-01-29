@@ -51,3 +51,18 @@ Cypress.Commands.add('expectPathToBe', pathWithoutHash =>
     expect(actualPath).to.eq(pathToCheck);
   })
 );
+
+Cypress.Commands.add('expectSearchToBe', (searchString, a) => {
+  // notice that location.hash DOES keep url params ('?a=b') while location.pathname does NOT
+  cy.location().should(locationContext => {
+    const useHashRouting = isHashRoutingOn();
+    const actualPath = useHashRouting
+      ? locationContext.hash
+      : locationContext.pathname;
+    if (useHashRouting) {
+      expect('?' + actualPath.split('?')[1]).to.eq(searchString);
+    } else {
+      expect(locationContext.search).to.eq(searchString);
+    }
+  });
+});
