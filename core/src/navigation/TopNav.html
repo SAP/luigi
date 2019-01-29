@@ -1,9 +1,7 @@
 <svelte:window on:click="closeAllDropdowns()" on:blur="closeAllDropdowns()" />
 
 <div class="fd-shellbar {hideNavComponent ? 'hideNavComponent' : ''}">
-  <div class="fd-shellbar__group fd-shellbar__group--start">
-    <LogoTitle />
-  </div>
+  <div class="fd-shellbar__group fd-shellbar__group--start"><LogoTitle /></div>
   <div class="fd-shellbar__group fd-shellbar__group--end">
     <div class="fd-shellbar__actions">
       {#if !authorizationEnabled || isLoggedIn}
@@ -28,11 +26,10 @@
             class="fd-top-nav__icon sap-icon--{node.icon} sap-icon--m"
           ></span>
           {:else}
-          <img class="fd-top-nav__icon nav-icon" src="{node.icon}" />
-          {/if} {:else} {node.label} {/if} {#if node.externalLink &&
+          <img class="fd-top-nav__icon nav-icon" src="{node.icon}" /> {/if}
+          {:else} {node.label} {/if} {#if node.externalLink &&
           node.externalLink.url}
-          <span class="sap-icon--action sap-icon--s"></span>
-          {/if}
+          <span class="sap-icon--action sap-icon--s"></span> {/if}
         </button>
       </div>
       {/if} {/each}
@@ -93,8 +90,7 @@
                       />
                       {/if} {:else} {node.label} {/if} {#if node.externalLink &&
                       node.externalLink.url}
-                      <span class="sap-icon--action sap-icon--s"></span>
-                      {/if}
+                      <span class="sap-icon--action sap-icon--s"></span> {/if}
                     </a>
                   </li>
                   {/if} {/each}
@@ -109,7 +105,7 @@
         <div class="fd-popover">
           <div class="fd-popover__control" on:click="event.stopPropagation()">
             <button
-              class=" fd-button--shell sap-icon--customer"
+              class="fd-button--shell sap-icon--customer"
               aria-expanded="{dropDownStates.profilePopover || false}"
               aria-haspopup="true"
               on:click="toggleDropdownState('profilePopover')"
@@ -119,13 +115,16 @@
               aria-hidden="{!(dropDownStates.profilePopover || false)}"
               id="profilePopover"
             >
-              <nav class="fd-menu">
-                <Authorization />
-              </nav>
+              <nav class="fd-menu"><Authorization /></nav>
             </div>
           </div>
         </div>
       </div>
+      {/if} {#if isProductSwitcherAvailable}
+      <ProductSwitcher
+        bind:dropDownStates
+        on:toggleDropdownState="toggleDropdownState(event.name)"
+      />
       {/if}
     </div>
   </div>
@@ -135,6 +134,7 @@
   import ContextSwitcher from './ContextSwitcher.html';
   import LogoTitle from './LogoTitle.html';
   import Authorization from '../Authorization.html';
+  import ProductSwitcher from './ProductSwitcher.html';
   import { LuigiConfig } from '../services/config.js';
   import * as Routing from '../services/routing';
   import * as Navigation from './services/navigation.js';
@@ -176,6 +176,9 @@
     oncreate() {
       this.set({
         authorizationEnabled: LuigiConfig.isAuthorizationEnabled(),
+        isProductSwitcherAvailable: LuigiConfig.getConfigValue(
+          'navigation.productSwitcher'
+        ),
         hideNavComponent: LuigiConfig.getConfigBooleanValue(
           'settings.hideNavigation'
         )
@@ -228,7 +231,8 @@
     components: {
       Authorization,
       ContextSwitcher,
-      LogoTitle
+      LogoTitle,
+      ProductSwitcher
     }
   };
 </script>

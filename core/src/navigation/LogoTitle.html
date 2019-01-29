@@ -2,9 +2,7 @@
   class="fd-shellbar__logo { !hasLogo ? 'fd-shellbar__logo--image-replaced' : '' } { hasLogo ? 'lui-customlogo' : ''}"
   aria-label="SAP"
 >
-  {#if hasLogo}
-  <img on:click="goTo('/')" ref:logo />
-  {/if}
+  {#if hasLogo} <img on:click="goTo('/')" ref:logo /> {/if}
 </div>
 
 {#if title}
@@ -14,13 +12,9 @@
     class="fd-shellbar__logo fd-shellbar__logo--control fd-product-menu__logo { !hasLogo ? 'fd-shellbar__logo--image-replaced' : '' } { hasLogo ? 'lui-customlogo' : ''}"
     aria-label="SAP"
   >
-    {#if hasLogo}
-    <img on:click="goTo('/')" ref:logo2 />
-    {/if}
+    {#if hasLogo} <img on:click="goTo('/')" ref:logo2 /> {/if}
   </div>
-  <div class="fd-shellbar__title" on:click="goTo('/')">
-    {title}
-  </div>
+  <div class="fd-shellbar__title" on:click="goTo('/')">{title}</div>
 </div>
 {/if}
 
