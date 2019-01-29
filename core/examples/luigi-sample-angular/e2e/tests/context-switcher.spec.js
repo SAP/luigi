@@ -1,4 +1,3 @@
-import { getPath } from '../support/index';
 describe('Context switcher', () => {
   beforeEach(() => {
     cy.visit('http://localhost:4200');
