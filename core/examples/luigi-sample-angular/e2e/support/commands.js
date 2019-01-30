@@ -21,7 +21,7 @@ Cypress.Commands.add('goToUxManagerMethods', iframe => {
     .contains('uxManager()')
     .click();
 
-  cy.expectPathToBe('/projects/pr2');
+  cy.expectPathToBe('/projects/pr1');
 
   cy.wrap(iframe).should('contain', 'LuigiClient uxManager methods:');
 });

@@ -108,7 +108,7 @@ function luigiClientInit() {
     if ('luigi.ux.confirmationModal.hide' === e.data.msg) {
       const data = e.data.data;
       const promise = promises.ux[data.correlationId];
-      data.accepted ? promise.resolveFn() : promise.rejectFn();
+      data.confirmed ? promise.resolveFn() : promise.rejectFn();
       delete promises.ux[data.correlationId];
     }
   });
@@ -438,7 +438,7 @@ const LuigiClient = {
           },
           '*'
         );
-        promises.ux[id] = {};
+        promises.ux.confirmati = {};
         promises.ux[id].promise = new Promise((resolve, reject) => {
           promises.ux[id].resolveFn = resolve;
           promises.ux[id].rejectFn = reject;

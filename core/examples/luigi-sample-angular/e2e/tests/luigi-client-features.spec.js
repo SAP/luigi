@@ -212,6 +212,38 @@ describe('Luigi client features', () => {
       });
     });
 
+    it('confirmation modal', () => {
+      cy.get('iframe').then($iframe => {
+        const $iframeBody = $iframe.contents().find('body');
+
+        cy.goToUxManagerMethods($iframeBody);
+
+        cy.get('[data-cy=luigi-confirmation-modal]').should('not.be.visible');
+
+        cy.wrap($iframeBody)
+          .find('[data-cy=show-luigi-confirmation-modal]')
+          .click();
+        cy.get('[data-cy=luigi-confirmation-modal]').should('be.visible');
+
+        cy.get('[data-cy=luigi-modal-dismiss]').click();
+        cy.get('[data-cy=luigi-confirmation-modal]').should('not.be.visible');
+        cy.wrap($iframeBody)
+          .find('[data-cy=luigi-confirmation-modal-result]')
+          .contains('Confirmation modal has been dismissed');
+
+        cy.wrap($iframeBody)
+          .find('[data-cy=show-luigi-confirmation-modal]')
+          .click();
+        cy.get('[data-cy=luigi-confirmation-modal]').should('be.visible');
+
+        cy.get('[data-cy=luigi-modal-confirm]').click();
+        cy.get('[data-cy=luigi-confirmation-modal]').should('not.be.visible');
+        cy.wrap($iframeBody)
+          .find('[data-cy=luigi-confirmation-modal-result]')
+          .contains('Confirmation modal has been confirmed');
+      });
+    });
+
     it('loading indicator', () => {
       cy.get('.fd-shellbar')
         .contains('External Page')
@@ -249,13 +281,13 @@ describe('Luigi client features', () => {
           .contains('Projects')
           .click();
 
-        cy.get('[data-cy=confirmation-modal]').should('be.visible');
+        cy.get('[data-cy=luigi-confirmation-modal]').should('be.visible');
 
         cy.expectPathToBe('/overview'); //the location is unchanged
 
-        cy.get('[data-cy=modal-no]').click();
+        cy.get('[data-cy=luigi-modal-dismiss]').click();
 
-        cy.get('[data-cy=confirmation-modal]').should('not.be.visible');
+        cy.get('[data-cy=luigi-confirmation-modal]').should('not.be.visible');
 
         cy.expectPathToBe('/overview'); //the location is still unchanged after "No" clicked
       });
@@ -273,13 +305,13 @@ describe('Luigi client features', () => {
           .contains('Projects')
           .click();
 
-        cy.get('[data-cy=confirmation-modal]').should('be.visible');
+        cy.get('[data-cy=luigi-confirmation-modal]').should('be.visible');
 
         cy.expectPathToBe('/overview'); //the location is unchanged
 
-        cy.get('[data-cy=modal-yes]').click();
+        cy.get('[data-cy=luigi-modal-confirm]').click();
 
-        cy.get('[data-cy=confirmation-modal]').should('not.be.visible');
+        cy.get('[data-cy=luigi-confirmation-modal]').should('not.be.visible');
 
         cy.expectPathToBe('/projects'); //the location is changed after "Yes" clicked
       });

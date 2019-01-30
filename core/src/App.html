@@ -21,7 +21,7 @@
   <ConfirmationModal
     content="{confirmationModal.content}"
     on:modalConfirm="handleModalResult(true)"
-    on:modalDecline="handleModalResult(false)"
+    on:modalDismiss="handleModalResult(false)"
   >
   </ConfirmationModal>
   {/if}
@@ -410,7 +410,7 @@
               msg: 'luigi.ux.confirmationModal.hide',
               data: {
                 correlationId: correlationId,
-                accepted: result
+                confirmed: result
               }
             },
             '*'
@@ -442,7 +442,7 @@
             title: 'Unsaved changes detected',
             text: 'It looks like you might lose some data if you leave this page. Are you sure you want to do this?',
             btnDismiss: 'No',
-            btnAccept: 'Yes'
+            btnConfirm: 'Yes'
           }
         );
       },

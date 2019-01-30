@@ -21,6 +21,13 @@ export class ProjectComponent implements OnInit, OnDestroy {
   private lcSubscription: Subscription;
   private cudListener: string;
   public pathExists: { formValue: string; result: boolean | null };
+  public confirmationModalResult = {
+    info: {
+      confirmed: 'Confirmation modal has been confirmed',
+      dismissed: 'Confirmation modal has been dismissed'
+    },
+    currentKey: ''
+  };
 
   public constructor(
     private activatedRoute: ActivatedRoute,
@@ -88,24 +95,24 @@ export class ProjectComponent implements OnInit, OnDestroy {
   }
 
   showConfirmationModal() {
+    this.confirmationModalResult.currentKey = '';
     const content = {
       title: 'Modal Header',
       text: `Lorem tipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna
         aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
         Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.`,
-      btnAccept: 'Cancel',
-      btnDismiss: 'Confirm'
+      btnConfirm: 'Confirm',
+      btnDismiss: 'Cancel'
     };
-    const baseInfoText = 'Angular App: Confirmation modal promise';
     this.luigiClient
       .uxManager()
       .showConfirmationModal(content)
       .then(
         () => {
-          console.info(baseInfoText, 'RESOLVED');
+          this.confirmationModalResult.currentKey = 'confirmed';
         },
         () => {
-          console.info(baseInfoText, 'REJECTED');
+          this.confirmationModalResult.currentKey = 'dismissed';
         }
       );
   }

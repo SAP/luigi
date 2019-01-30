@@ -8,21 +8,26 @@
       <p><strong>LuigiClient uxManager methods:</strong></p>
       <ul class="fd-list-group">
         <li class="fd-list-group__item">
-          <button class="fd-button" (click)="toggleModal()">Add backdrop</button>
+          <button class="fd-button" data-cy="add-backdrop" (click)="toggleModal()">
+            Add backdrop
+          </button>
           <p>
             <app-code-snippet data="luigiClient.uxManager().addBackdrop()"></app-code-snippet>
             <app-code-snippet data="luigiClient.uxManager().removeBackdrop()"></app-code-snippet>
           </p>
         </li>
         <li class="fd-list-group__item">
-          <button class="fd-button" (click)="showConfirmationModal()">Show confijjjrmation modal</button>
+          <button class="fd-button" data-cy="show-luigi-confirmation-modal" (click)="showConfirmationModal()">Show confirmation modal</button>
           <p>
-            <app-code-snippet data="luigiClient.uxManager().showConfijjjrmationModal(content)"></app-code-snippet>
+            <app-code-snippet data="luigiClient.uxManager().showConfirmationModal(content)"></app-code-snippet>
+          </p>
+          <p class="fd-has-font-style-italic" data-cy="luigi-confirmation-modal-result"
+            ngClass="{{(confirmationModalResult.currentKey === 'confirmed') ? 'fd-has-color-status-1' : 'fd-has-color-status-2'}}">
+            {{confirmationModalResult.info[confirmationModalResult.currentKey]}}
           </p>
         </li>
       </ul>
     </div>
-
   </ng-container>
 
 
