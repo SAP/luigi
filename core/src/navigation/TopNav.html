@@ -107,8 +107,7 @@
                       {:else}
                       {node.label}
                       {/if}
-                      {#if node.externalLink &&
-                      node.externalLink.url}
+                      {#if node.externalLink && node.externalLink.url}
                       <span
                         class="sap-icon--action sap-icon--s"
                       ></span>
@@ -147,7 +146,6 @@
           </div>
         </div>
       </div>
-
       {/if}
     </div>
   </div>
