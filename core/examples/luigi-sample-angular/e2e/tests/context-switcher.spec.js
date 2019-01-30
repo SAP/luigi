@@ -1,6 +1,6 @@
 describe('Context switcher', () => {
   beforeEach(() => {
-    cy.visit('http://localhost:4200');
+    cy.visit('/');
     cy.login('tets@email.com', 'tets');
   });
 

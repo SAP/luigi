@@ -438,7 +438,7 @@ const LuigiClient = {
           },
           '*'
         );
-        promises.ux.confirmati = {};
+        promises.ux[id] = {};
         promises.ux[id].promise = new Promise((resolve, reject) => {
           promises.ux[id].resolveFn = resolve;
           promises.ux[id].rejectFn = reject;
