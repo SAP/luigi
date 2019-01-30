@@ -155,6 +155,7 @@ describe('Routing', () => {
     beforeEach(() => {
       window.Luigi = { config: currentLuigiConfig };
       currentLuigiConfig = Object.assign({}, sampleLuigiConfig);
+      LuigiConfig.config = currentLuigiConfig;
       config = {
         iframe: null,
         builderCompatibilityMode: false,
