@@ -1,0 +1,91 @@
+{#if productSwitcherItems && productSwitcherItems.length &&
+Object.keys(productSwitcherItems[0]).length}
+<div class="fd-shellbar__action fd-shellbar__action--collapsible">
+  <div class="fd-product-switcher">
+    <div class="fd-popover fd-popover--right">
+      <div class="fd-popover__control" on:click="event.stopPropagation()">
+        <button
+          class="fd-button--shell sap-icon--grid"
+          aria-expanded="{dropDownStates.productSwitcherPopover || false}"
+          aria-haspopup="true"
+          on:click="toggleDropdownState('productSwitcherPopover')"
+        ></button>
+      </div>
+      <div
+        class="fd-popover__body fd-popover__body--right"
+        aria-hidden="{!(dropDownStates.productSwitcherPopover || false)}"
+        id="productSwitcherPopover"
+      >
+        <div class="fd-product-switcher__body">
+          <nav class="fd-menu">
+            <ul class="fd-menu__list">
+              {#each productSwitcherItems as productSwitcherItem} {#if
+              productSwitcherItem.icon && productSwitcherItem.label}
+              <li on:click="onActionClick(productSwitcherItem)">
+                <a class="fd-menu__item">
+                  <span class="fd-product-switcher__product-icon">
+                    <img src="{productSwitcherItem.icon}" />
+                  </span>
+                  <span class="fd-product-switcher__product-title">
+                    {productSwitcherItem.label}
+                  </span>
+                </a>
+              </li>
+              {/if} {/each}
+            </ul>
+          </nav>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{/if}
+<script type="text/javascript">
+  import { LuigiConfig } from '../services/config.js';
+  import * as Routing from '../services/routing.js';
+  export default {
+    async oncreate() {
+      const productSwitcherConfig = LuigiConfig.getConfigValue(
+        'navigation.productSwitcher'
+      );
+      this.set({
+        config: productSwitcherConfig
+      });
+
+      if (productSwitcherConfig) {
+        const productSwitcherItems = await LuigiConfig.getConfigValueAsync(
+          'navigation.productSwitcher.items'
+        );
+        this.set({
+          productSwitcherItems
+        });
+      }
+    },
+    methods: {
+      onActionClick(productSwitcherItem) {
+        this.root.getUnsavedChangesModalPromise().then(() => {
+          if (productSwitcherItem.externalLink) {
+            window.open(
+              productSwitcherItem.externalLink.url,
+              productSwitcherItem.externalLink.sameWindow ? '_self' : '_blank'
+            );
+          } else {
+            Routing.navigateTo(productSwitcherItem.link);
+          }
+        });
+      },
+      toggleDropdownState(name) {
+        this.fire('toggleDropdownState', { name });
+      }
+    }
+  };
+</script>
+<style type="text/scss">
+  .fd-product-switcher__product-icon > img {
+    max-height: 40px;
+  }
+  .fd-menu__item {
+    padding: 0;
+    text-align: center;
+  }
+</style>

@@ -15,9 +15,7 @@ describe('Context switcher', () => {
       .contains('New Environment (bottom)')
       .click();
 
-    cy.location().should(loc => {
-      expect(loc.pathname).to.eq('/create-environment');
-    });
+    cy.expectPathToBe('/create-environment');
 
     // default label
     cy.get('.fd-product-menu')
@@ -29,9 +27,7 @@ describe('Context switcher', () => {
       .contains('Environment 1')
       .click();
 
-    cy.location().should(loc => {
-      expect(loc.pathname).to.eq('/environments/env1');
-    });
+    cy.expectPathToBe('/environments/env1');
 
     // check label
     cy.get('.fd-product-menu .fd-popover__control button').should(
