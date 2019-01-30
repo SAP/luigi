@@ -10,9 +10,8 @@ var _onContextUpdatedFns = {};
 var _onInitFns = {};
 var authData = {};
 var pathExistsPromises = {};
-var pathExistsPromises = {};
 let promises = {
-  ux: {}
+  confirmationModal: {}
 };
 /**
  * Creates a random Id
@@ -107,9 +106,9 @@ function luigiClientInit() {
 
     if ('luigi.ux.confirmationModal.hide' === e.data.msg) {
       const data = e.data.data;
-      const promise = promises.ux[data.correlationId];
+      const promise = promises.confirmationModal;
       data.confirmed ? promise.resolveFn() : promise.rejectFn();
-      delete promises.ux[data.correlationId];
+      delete promises.confirmationModal;
     }
   });
 
@@ -427,23 +426,19 @@ const LuigiClient = {
        * @returns {promise} A promise which is resolved when accepting confirmation modal and rejected when dismissing it.
        */
       showConfirmationModal: function showConfirmationModal(content) {
-        const id = Date.now();
         window.parent.postMessage(
           {
             msg: 'luigi.ux.confirmation-modal-show',
-            data: {
-              content,
-              correlationId: id
-            }
+            data: { content }
           },
           '*'
         );
-        promises.ux[id] = {};
-        promises.ux[id].promise = new Promise((resolve, reject) => {
-          promises.ux[id].resolveFn = resolve;
-          promises.ux[id].rejectFn = reject;
+        promises.confirmationModal = {};
+        promises.confirmationModal.promise = new Promise((resolve, reject) => {
+          promises.confirmationModal.resolveFn = resolve;
+          promises.confirmationModal.rejectFn = reject;
         });
-        return promises.ux[id].promise;
+        return promises.confirmationModal.promise;
       }
     };
   }

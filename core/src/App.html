@@ -347,7 +347,6 @@
               {
                 msg: 'luigi.navigation.pathExists.answer',
                 data: {
-                  correlationId: data.id,
                   pathExists: pathData.isExistingRoute
                 }
               },
@@ -367,7 +366,7 @@
           if ('luigi.ux.confirmation-modal-show' === e.data.msg) {
             this.set({ contentNode: node })
             const data = e.data.data
-            this.showModal(data.content, data.correlationId).then(
+            this.showModal(data.content, true).then(
                 () => { },
                 () => { /* keep to avoid runtime errors in browser console */ }
             );
@@ -394,7 +393,7 @@
         });
       },
       handleModalResult(result) {
-        const { promise, correlationId } = this.get().confirmationModal;
+        const { promise, openFromClient } = this.get().confirmationModal;
         if (result) {
           this.set({
             unsavedChanges: { isDirty: false, persistUrl: null }
@@ -403,15 +402,11 @@
         } else {
           promise.reject();
         }
-        const modalOpenByLuigiClient = Boolean(correlationId);
-        if (modalOpenByLuigiClient) {
+        if (openFromClient) {
           Iframe.getActiveIframe(this.get().contentNode).contentWindow.postMessage(
             {
               msg: 'luigi.ux.confirmationModal.hide',
-              data: {
-                correlationId: correlationId,
-                confirmed: result
-              }
+              data: { confirmed: result }
             },
             '*'
           );
@@ -446,14 +441,14 @@
           }
         );
       },
-      showModal(content, correlationId) {
+      showModal(content, openFromClient = false) {
         return new Promise((resolve, reject) => {
           //send the response when one of following methods were executed
           this.set({
             confirmationModal: {
               isDisplayed: true,
               content,
-              correlationId,
+              openFromClient,
               promise: { resolve, reject }
             }
           })
