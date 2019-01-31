@@ -21,13 +21,7 @@ export class ProjectComponent implements OnInit, OnDestroy {
   private lcSubscription: Subscription;
   private cudListener: string;
   public pathExists: { formValue: string; result: boolean | null };
-  public confirmationModalResult = {
-    info: {
-      confirmed: 'Confirmation modal has been confirmed',
-      dismissed: 'Confirmation modal has been dismissed'
-    },
-    currentKey: ''
-  };
+  public confirmationModalResult: '' | 'confirmed' | 'dismissed';
 
   public constructor(
     private activatedRoute: ActivatedRoute,
@@ -95,7 +89,7 @@ export class ProjectComponent implements OnInit, OnDestroy {
   }
 
   showConfirmationModal() {
-    this.confirmationModalResult.currentKey = '';
+    this.confirmationModalResult = '';
     const content = {
       title: 'Modal Header - Luigi modal',
       text: `Lorem tipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna
@@ -109,10 +103,10 @@ export class ProjectComponent implements OnInit, OnDestroy {
       .showConfirmationModal(content)
       .then(
         () => {
-          this.confirmationModalResult.currentKey = 'confirmed';
+          this.confirmationModalResult = 'confirmed';
         },
         () => {
-          this.confirmationModalResult.currentKey = 'dismissed';
+          this.confirmationModalResult = 'dismissed';
         }
       );
   }

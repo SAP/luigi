@@ -22,8 +22,9 @@
             <app-code-snippet data="luigiClient.uxManager().showConfirmationModal(content)"></app-code-snippet>
           </p>
           <p class="fd-has-font-style-italic" data-cy="luigi-confirmation-modal-result"
-            ngClass="{{(confirmationModalResult.currentKey === 'confirmed') ? 'fd-has-color-status-1' : 'fd-has-color-status-2'}}">
-            {{confirmationModalResult.info[confirmationModalResult.currentKey]}}
+            ngClass="{{(confirmationModalResult === 'confirmed') ? 'fd-has-color-status-1' : 'fd-has-color-status-2'}}"
+            *ngIf="confirmationModalResult">
+            Confirmation modal has been {{ confirmationModalResult}}
           </p>
         </li>
       </ul>
