@@ -126,7 +126,9 @@ export const navigateIframe = (config, component, node) => {
 };
 
 export const reloadActiveIframe = () => {
-  IframeHelpers.getVisibleIframes()
-    .pop()
-    .contentDocument.location.reload(true);
+  const visibleIframe = IframeHelpers.getVisibleIframes().pop();
+
+  if (visibleIframe) {
+    visibleIframe.contentDocument.location.reload(true);
+  }
 };
