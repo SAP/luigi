@@ -98,3 +98,9 @@ export const getLocation = url => {
   element.href = url;
   return element.origin;
 };
+
+export const getVisibleIframes = () => {
+  return Array.prototype.slice
+    .call(document.querySelectorAll('iframe'))
+    .filter(item => item.style.display !== 'none');
+};
