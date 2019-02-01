@@ -1,54 +1,28 @@
-<div
-  id="app"
-  class="{hideNav? 'no-nav' : ''} {hideSideNav? 'no-side-nav' : ''}"
->
-  {#if alert && alert.message}
-  <div
-    class="fd-alert fd-alert--error fd-alert--dismissible"
-    role="alert"
-    id="j2ALl423"
-  >
-    <button
-      on:click="set({alert:null})"
-      class="fd-alert__close"
-      aria-controls="j2ALl423"
-      aria-label="Close"
-    ></button>
-    {alert.message} {alert.link}
-  </div>
-  {/if} {#if confirmationModal.isDisplayed}
-  <ConfirmationModal
-    title="{confirmationModal.title}"
-    text="{confirmationModal.text}"
-    on:modalConfirm="handleModalResult(true)"
-    on:modalDecline="handleModalResult(false)"
-  ></ConfirmationModal>
-  {/if}
-  <Backdrop>
-    <div class="fd-page iframeContainer" use:init="context"></div>
-  </Backdrop>
-  {#if showLoadingIndicator}
-  <div
-    in:fade="{delay: 250, duration: 250}"
-    out:fade="{duration: 250}"
-    class="fd-page spinnerContainer"
-    aria-hidden="false"
-    aria-label="Loading"
-  >
-    <div class="fd-spinner"><div></div></div>
-  </div>
-  {/if}
+<div id="app" class="{hideNav? 'no-nav' : ''} {hideSideNav||tabbedNav? 'no-side-nav' : ''} {tabbedNav? 'tabbed-nav' : ''}">
+	{#if alert && alert.message}
+	<div class="fd-alert fd-alert--error fd-alert--dismissible" role="alert" id="j2ALl423">
+		<button on:click="set({alert:null})" class="fd-alert__close" aria-controls="j2ALl423" aria-label="Close"></button>
+		{alert.message} {alert.link}
+	</div>
+	{/if} {#if confirmationModal.isDisplayed}
+	<ConfirmationModal title="{confirmationModal.title}" text="{confirmationModal.text}" on:modalConfirm="handleModalResult(true)"
+	 on:modalDecline="handleModalResult(false)"></ConfirmationModal>
+	{/if}
+	<Backdrop>
+		<div class="fd-page iframeContainer" use:init="context"></div>
+	</Backdrop>
+	{#if showLoadingIndicator}
+	<div in:fade="{delay: 250, duration: 250}" out:fade="{duration: 250}" class="fd-page spinnerContainer" aria-hidden="false"
+	 aria-label="Loading">
+		<div class="fd-spinner">
+			<div></div>
+		</div>
+	</div>
+	{/if}
 
-  <TopNav
-    pathData="{navigationPath}"
-    on:handleClick="handleNavClick(event.node)"
-  />
-  {#if !(hideNav||hideSideNav)}
-  <LeftNav
-    pathData="{navigationPath}"
-    on:handleClick="handleNavClick(event.node)"
-  />
-  {/if}
+	<TopNav pathData="{navigationPath}" on:handleClick="handleNavClick(event.node)" /> {#if !(hideNav||hideSideNav)}
+	<LeftNav pathData="{navigationPath}" on:handleClick="handleNavClick(event.node)" /> {/if} {#if !(hideNav||hideSideNav)}
+	<TabNav pathData="{navigationPath}" on:handleClick="handleNavClick(event.node)" /> {/if}
 </div>
 
 <script type="text/javascript">
@@ -56,6 +30,7 @@
   import { fade } from 'svelte-transitions';
   import TopNav from './navigation/TopNav.html';
   import LeftNav from './navigation/LeftNav.html';
+  import TabNav from './navigation/TabNav.html';
   import ConfirmationModal from './ConfirmationModal.html';
   import { LuigiConfig } from './services/config.js';
   import * as Routing from './services/routing.js';
@@ -188,12 +163,8 @@
         context: JSON.stringify(
           Object.assign({}, component.get().context, goBackContext)
         ),
-        nodeParams: JSON.stringify(
-          Object.assign({}, component.get().nodeParams)
-        ),
-        pathParams: JSON.stringify(
-          Object.assign({}, component.get().pathParams)
-        ),
+        nodeParams: JSON.stringify(Object.assign({}, component.get().nodeParams)),
+        pathParams: JSON.stringify(Object.assign({}, component.get().pathParams)),
         internal: JSON.stringify(component.prepareInternalData()),
         authData: AuthHelpers.getStoredAuthData()
       },
@@ -203,9 +174,7 @@
 
   const sendAuthDataToClient = (iframe, authData) => {
     if (!iframe || !iframe.contentWindow) {
-      console.info(
-        'iframe does not exist, not able to send authData to client.'
-      );
+      console.info('iframe does not exist, not able to send authData to client.');
       return;
     }
     iframe.contentWindow.postMessage(
@@ -531,6 +500,17 @@
   }
 
   .no-side-nav {
+    .iframeContainer,
+    .spinnerContainer {
+      position: fixed;
+      top: $topNavHeight;
+      left: 0;
+      bottom: 0;
+      right: 0;
+    }
+  }
+
+  .tabbed-nav {
     .iframeContainer,
     .spinnerContainer {
       position: fixed;
