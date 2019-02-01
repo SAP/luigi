@@ -427,7 +427,7 @@ const LuigiClient = {
        * @param {string} content.body the content of the modal body
        * @param {string} content.buttonConfirm the label for the modal confirm button
        * @param {string} content.buttonDismiss the label for the modal dismiss button
-       * @returns {promise} A promise which is resolved when accepting confirmation modal and rejected when dismissing it.
+       * @returns {promise} A promise which is resolved when accepting the confirmation modal and rejected when dismissing it.
        */
       showConfirmationModal: function showConfirmationModal(content) {
         window.parent.postMessage(
