@@ -135,7 +135,12 @@ npm run start
 npm install -g live-server
 ````
 
-2. Use the following commands to create a directory for your application, install Luigi, make assets available, and start your local server.
+2. Use the following installer to create a directory for your application, install Luigi, make assets available, and start your local server
+
+````
+bash <(curl -s https://raw.githubusercontent.com/kyma-project/Luigi/master/scripts/setup/openui5.sh)
+````
+or execute these commands manually to get the same result:
 
 ````
 $ mkdir my-ui5-app && cd my-ui5-app
@@ -163,8 +168,11 @@ $ live-server --entry-file=index.html public
 npm install -g @vue/cli
 ````
 
-2. Use the following commands to create a directory for your application, install Luigi, make assets available, and start your local server.
-
+2. Use the installer to create your application, install Luigi, make assets available, and serve your application:
+````
+bash <(curl -s https://raw.githubusercontent.com/kyma-project/Luigi/master/scripts/setup/vue.sh)
+````
+or execute these commands manually to get the same result:
 ````
 $ vue create -d my-original-vue-app && cd my-original-vue-app
 $ npm i -save @kyma-project/luigi-core @kyma-project/luigi-client fiori-fundamentals
