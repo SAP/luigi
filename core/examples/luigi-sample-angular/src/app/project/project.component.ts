@@ -22,6 +22,7 @@ export class ProjectComponent implements OnInit, OnDestroy {
   private cudListener: string;
   public pathExists: { formValue: string; result: boolean | null };
   public confirmationModalResult: '' | 'confirmed' | 'dismissed';
+  public alertDismissed: boolean;
 
   public constructor(
     private activatedRoute: ActivatedRoute,
@@ -109,6 +110,22 @@ export class ProjectComponent implements OnInit, OnDestroy {
           this.confirmationModalResult = 'dismissed';
         }
       );
+  }
+
+  showAlert() {
+    this.alertDismissed = false;
+    const settings = {
+      text: `Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+        Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.`,
+      type: 'success',
+      dismissButton: true
+    };
+    this.luigiClient
+      .uxManager()
+      .showAlert(settings)
+      .then(() => {
+        this.alertDismissed = true;
+      });
   }
 
   checkIfPathExists() {

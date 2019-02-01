@@ -284,12 +284,27 @@ const showPageNotFoundError = async (
     return;
   }
 
+  // const alert = {
+  //   body: isAnyPathMatched
+  //     ? 'Could not map the exact target node for the requested route'
+  //     : 'Could not find the requested route',
+  //   isDisplayed: true,
+  //   link: notFoundPath,
+  //   ttl: 1 //how many redirections the alert will 'survive'.
+  // };
+
   const alert = {
-    message: isAnyPathMatched
-      ? 'Could not map the exact target node for the requested route'
-      : 'Could not find the requested route',
-    link: notFoundPath,
-    ttl: 1 //how many redirections the alert will 'survive'.
+    settings: {
+      text:
+        (isAnyPathMatched
+          ? 'Could not map the exact target node for the requested route & '
+          : 'Could not find the requested route ') + notFoundPath,
+      type: 'error',
+      dismissButton: true,
+      ttl: 1 //how many redirections the alert will 'survive'.
+    },
+    openFromClient: false,
+    isDisplayed: true
   };
   component.set({ alert });
   navigateTo(GenericHelpers.addLeadingSlash(pathToRedirect));

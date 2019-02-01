@@ -110,6 +110,11 @@ function luigiClientInit() {
       data.confirmed ? promise.resolveFn() : promise.rejectFn();
       delete promises.confirmationModal;
     }
+
+    if ('luigi.ux.alert.hide' === e.data.msg) {
+      promises.alert.resolveFn();
+      delete promises.alert;
+    }
   });
 
   window.parent.postMessage({ msg: 'luigi.get-context' }, '*');
@@ -443,6 +448,29 @@ const LuigiClient = {
           promises.confirmationModal.rejectFn = reject;
         });
         return promises.confirmationModal.promise;
+      },
+
+      /**
+       * Shows an alert.
+       * @param {Object} settings the settings for the alert
+       * @param {string} settings.text this is the content of the alert
+       * @param {boolean} [settings.dismissButton=true] specifies if dismiss button should be displayed in the alert
+       * @param {('info'|'success'|'warning'|'error')} settings.type sets the type of the alert
+       * @returns {promise} A promise which is resolved when the alert is dismissed.
+       */
+      showAlert: function showAlert(settings) {
+        window.parent.postMessage(
+          {
+            msg: 'luigi.ux.alert.show',
+            data: { settings }
+          },
+          '*'
+        );
+        promises.alert = {};
+        promises.alert.promise = new Promise((resolve, reject) => {
+          promises.alert.resolveFn = resolve;
+        });
+        return promises.alert.promise;
       }
     };
   }

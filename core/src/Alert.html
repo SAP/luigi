@@ -1,0 +1,49 @@
+<div class="fd-alert fd-alert--{settings.type} {settings.dismissButton ? 'fd-alert--dismissible' : ''}"
+    role="alert" id="j2ALl423">
+  {#if settings.dismissButton}
+  <button class="fd-alert__close close-button" on:click="fire('alertDismiss')"
+      aria-label="Close" aria-controls="j2ALl423"></button>
+  {/if}
+  {settings.text}
+</div>
+
+<script type="text/javascript">
+  export default {
+    data() {
+      // fallback data in case not provided
+      return {
+        settings: {
+          text: 'I am a Luigi alert with extremely relevant information for the user',
+          type: 'info',
+          dismissButton: true,        }
+      };
+    },
+    oncreate() {
+    },
+    methods: {
+      onLinkClicked() {
+        console.log(linkClicked);
+        Router.navigateTo(this.get().settings.link.goTo);
+      }
+    }
+
+  };
+</script>
+
+<style type="text/scss">
+  $topNavHeight: 48px;
+  $leftNavWidth: 320px;
+
+  .fd-alert {
+    position: absolute;
+    min-width: 20rem;
+    width: calc(100% - 2 * (#{$leftNavWidth} + 1rem));
+    top: calc(#{$topNavHeight} + 1rem);
+    left: calc(#{$leftNavWidth} + 1rem);
+    z-index: 2;
+    overflow-wrap: break-word;
+    .fd-alert__close {
+      cursor: pointer;
+    }
+  }
+</style>

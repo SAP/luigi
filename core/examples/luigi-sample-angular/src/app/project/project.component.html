@@ -26,6 +26,15 @@
           Confirmation modal has been {{ confirmationModalResult}}
         </p>
       </li>
+      <li class="fd-list-group__item">
+        <button class="fd-button" data-cy="show-luigi-alert" (click)="showAlert()">Show Luigi alert</button>
+        <p>
+          <app-code-snippet data="luigiClient.uxManager().showAlert(settings)"></app-code-snippet>
+        </p>
+        <p *ngIf="alertDismissed" class="fd-has-font-style-italic fd-has-color-status-1" data-cy="luigi-alert-result">
+          Luigi alert has been dismissed
+        </p>
+      </li>
     </ul>
   </div>
 
