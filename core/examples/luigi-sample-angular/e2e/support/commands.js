@@ -23,17 +23,17 @@ Cypress.Commands.add('goToUxManagerMethods', iframe => {
 
   cy.expectPathToBe('/projects/pr1');
 
-  cy.wrap(iframe).should('contain', 'LuigiClient uxManager methods:');
+  cy.wrap(iframe).should('contain', 'LuigiClient uxManager methods');
 });
 
 Cypress.Commands.add('goToLinkManagerMethods', iframe => {
+  cy.wait(0);
   cy.wrap(iframe)
     .contains('linkManager()')
     .click();
 
   cy.expectPathToBe('/projects/pr2');
-
-  cy.wrap(iframe).should('contain', 'LuigiClient linkManager methods:');
+  cy.wrap(iframe).should('contain', 'LuigiClient linkManager methods');
 });
 
 Cypress.Commands.add('goToOverviewPage', () => {

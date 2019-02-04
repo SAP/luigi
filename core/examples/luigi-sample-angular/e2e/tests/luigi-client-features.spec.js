@@ -229,7 +229,7 @@ describe('Luigi client features', () => {
         cy.get('[data-cy=luigi-confirmation-modal]').should('not.be.visible');
         cy.wrap($iframeBody)
           .find('[data-cy=luigi-confirmation-modal-result]')
-          .contains('Confirmation modal has been dismissed');
+          .contains('Luigi confirmation modal has been dismissed');
 
         cy.wrap($iframeBody)
           .find('[data-cy=show-luigi-confirmation-modal]')
@@ -240,7 +240,7 @@ describe('Luigi client features', () => {
         cy.get('[data-cy=luigi-confirmation-modal]').should('not.be.visible');
         cy.wrap($iframeBody)
           .find('[data-cy=luigi-confirmation-modal-result]')
-          .contains('Confirmation modal has been confirmed');
+          .contains('Luigi confirmation modal has been confirmed');
       });
     });
 
