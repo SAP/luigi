@@ -6,18 +6,9 @@ import { afterEach } from 'mocha';
 import { LuigiConfig } from '../../src/services/config';
 
 describe('Iframe', () => {
-  let component;
   let node;
 
   beforeEach(() => {
-    let lastObj = {};
-    component = {
-      set: obj => {
-        Object.assign(lastObj, obj);
-      },
-      get: () => lastObj
-    };
-
     sinon.stub(LuigiConfig, 'getConfigValue');
 
     node = {

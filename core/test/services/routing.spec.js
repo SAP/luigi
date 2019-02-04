@@ -10,6 +10,7 @@ import { LuigiConfig } from '../../src/services/config';
 describe('Routing', () => {
   let component;
   beforeEach(() => {
+    window.dispatchEvent = sinon.spy();
     let lastObj = {};
     component = {
       set: obj => {
@@ -29,10 +30,6 @@ describe('Routing', () => {
   });
 
   describe('buildFromRelativePath', () => {
-    beforeEach(() => {
-      window.dispatchEvent = sinon.spy();
-    });
-
     const nodeWithParent = {
       link: 'child-node',
       parent: {
@@ -154,6 +151,8 @@ describe('Routing', () => {
 
     beforeEach(() => {
       window.Luigi = { config: currentLuigiConfig };
+      global.window = window;
+      global.document = document;
       currentLuigiConfig = Object.assign({}, sampleLuigiConfig);
       LuigiConfig.config = currentLuigiConfig;
       config = {
@@ -216,8 +215,6 @@ describe('Routing', () => {
       // given
       const path = '#/projects';
       const expectedViewUrl = '/aaa.html';
-      global.window = window;
-      global.document = document;
 
       let savedObj = {};
       const componentSaved = {
@@ -271,7 +268,6 @@ describe('Routing', () => {
       const path = '#/projects/a1?~param1=tets';
       const expectedViewUrl = '{context.varA1}/a1.html#p={nodeParams.param1}';
       const expectedProcessedViewUrl = 'maskopatol/a1.html#p=tets';
-      global.document = document;
 
       // when
       const iframeMock = { src: null };
@@ -297,8 +293,6 @@ describe('Routing', () => {
       const path = '#/projects/a2?~param1=tets';
       const expectedViewUrl = '{context.varA2}/a2.html#p={nodeParams.param2}';
       const expectedProcessedViewUrl = '/a2.html#p=';
-      global.window = window;
-      global.document = document;
 
       // when
       const iframeMock = { src: null };
@@ -323,8 +317,6 @@ describe('Routing', () => {
       // given
       const path = '#/projects/categories/cat1';
       const expectedViewUrl = 'cats/cat1#details';
-      global.window = window;
-      global.document = document;
 
       // when
       const iframeMock = { src: null };
@@ -348,8 +340,6 @@ describe('Routing', () => {
       // given
       const path = '#/projects/categories/cat1/sub23';
       const expectedViewUrl = 'cats/cat1/sub23';
-      global.window = window;
-      global.document = document;
 
       // when
       const iframeMock = { src: null };
@@ -373,7 +363,6 @@ describe('Routing', () => {
       // given
       const path = '#/projects/teams';
       const expectedPath = '/projects/teams/t2';
-      global.window = window;
       const component = {
         shouldShowUnsavedChangesModal: () => false
       };
@@ -396,7 +385,6 @@ describe('Routing', () => {
     it("should set component's 'hideSideNav' property", async () => {
       // given
       const path = '#/projects';
-      global.window = window;
 
       //when
       const node = { insertBefore: sinon.spy() };
@@ -411,10 +399,6 @@ describe('Routing', () => {
   });
 
   describe('handleRouteClick', () => {
-    beforeEach(() => {
-      window.dispatchEvent = sinon.spy();
-    });
-
     const nodeWithParent = {
       pathSegment: 'project-one',
       parent: {
