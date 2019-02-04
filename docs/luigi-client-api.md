@@ -225,4 +225,4 @@ Shows a confirmation modal.
     -   `content.buttonConfirm` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** the label for the modal confirm button
     -   `content.buttonDismiss` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** the label for the modal dismiss button
 
-Returns **[promise](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise)** A promise which is resolved when accepting the confirmation modal and rejected when dismissing it.
+Returns **[promise](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise)** which is resolved when accepting the confirmation modal and rejected when dismissing it.
