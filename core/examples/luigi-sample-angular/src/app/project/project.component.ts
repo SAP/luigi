@@ -122,14 +122,31 @@ export class ProjectComponent implements OnInit, OnDestroy {
   }
 
   showAlert() {
-    const { type, dismissButton, link } = this.luigiAlertForm.value;
     this.alertDismissed = false;
-    const settings = {
-      text: `Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+    const texts = {
+      withoutLink: `<b onmouseover=alert('Wufff!')>click me!</b> Ut enim ad minim veniam,
+        quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
         Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.`,
-      type,
-      dismissButton
+      withLink: `<b onmouseover=alert('Wufff!')>click me!</b>Ut enim ad minim veniam,
+        {goToHome} quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+        Duis aute irure dolor {goToOtherProject} in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.`
     };
+    const exampleLinks = {
+      goToHome: { text: 'homepage', url: '/overview' },
+      goToOtherProject: { text: 'other project', url: '/projects/pr2' }
+    };
+
+    const { type, dismissButton, link } = this.luigiAlertForm.value;
+    const textData = link ? texts.withLink : texts.withoutLink;
+    const linkData = link ? exampleLinks : undefined;
+
+    const settings = {
+      text: textData,
+      type,
+      dismissButton,
+      links: linkData
+    };
+
     this.luigiClient
       .uxManager()
       .showAlert(settings)

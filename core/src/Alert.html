@@ -2,12 +2,15 @@
     role="alert" id="j2ALl423">
   {#if settings.dismissButton}
   <button class="fd-alert__close close-button" on:click="fire('alertDismiss')"
-      aria-label="Close" aria-controls="j2ALl423"></button>
+      aria-label="  Close" aria-controls="j2ALl423"></button>
   {/if}
-  {settings.text}
+  {@html settings.text}
 </div>
 
 <script type="text/javascript">
+  import * as Routing from './services/routing.js';
+  import * as RoutingHelpers from './utilities/helpers/routing-helpers';
+
   export default {
     data() {
       // fallback data in case not provided
@@ -15,18 +18,43 @@
         settings: {
           text: 'I am a Luigi alert with extremely relevant information for the user',
           type: 'info',
-          dismissButton: true,        }
+          dismissButton: true,
+          links: undefined
+        }
       };
     },
     oncreate() {
+      const {text, links} = this.get().settings;
+      const textToDisplay = this.getTextToDisplay(text, links);
+      this.set({settings: Object.assign(this.get().settings, {text: textToDisplay})});
     },
     methods: {
-      onLinkClicked() {
-        console.log(linkClicked);
-        Router.navigateTo(this.get().settings.link.goTo);
+      addCLickListener(url, elemId) {
+        try {
+          document.getElementById(elemId).addEventListener("click",
+            (event) => {
+              Routing.navigateTo(url);
+              event.stopPropagation(event);
+            });
+        } catch (e) {
+          console.error('Error on Alert::addClickListener', e);
+        }
+      },
+      getTextToDisplay(text, links) {
+        if (!links) { return text }
+
+        let sanitizedText = RoutingHelpers.sanitizeHtml(text);
+
+        return Object.entries(links).reduce((acc, [key, content]) => {
+          const elemId = key;
+          setTimeout(() => { this.addCLickListener(content.url, elemId) }, 10);
+
+          const processedData = `<a id="${key}">${content.text}</a>`;
+          const pattern = new RegExp(`({${key}})`, "g");
+          return acc.replace(pattern, processedData);
+        }, sanitizedText);
       }
     }
-
   };
 </script>
 
@@ -42,8 +70,5 @@
     left: calc(#{$leftNavWidth} + 1rem);
     z-index: 2;
     overflow-wrap: break-word;
-    .fd-alert__close {
-      cursor: pointer;
-    }
   }
 </style>
