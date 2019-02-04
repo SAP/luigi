@@ -42,7 +42,7 @@ Cypress.Commands.add('goToOverviewPage', () => {
     .click();
 });
 
-export const isHashRoutingOn = () => {
+const isHashRoutingOn = () => {
   const appWindow = cy.state('window');
   const { useHashRouting } =
     appWindow && appWindow.Luigi && appWindow.Luigi.config

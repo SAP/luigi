@@ -1,4 +1,3 @@
-import { isHashRoutingOn } from '../support/commands';
 describe('Luigi client features', () => {
   beforeEach(() => {
     cy.visit('/');
