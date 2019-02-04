@@ -422,7 +422,7 @@ const LuigiClient = {
       },
       /**
        * Shows a confirmation modal.
-       * @param {Object} content the content of the confirmation modal
+       * @param {Object} content the content of the confirmation modal. If no value is provided for any of the fields, a default value is set for it.
        * @param {string} content.header the content of the modal header
        * @param {string} content.body the content of the modal body
        * @param {string} content.buttonConfirm the label for the modal confirm button

@@ -20,18 +20,16 @@
 
 <script type="text/javascript">
   export default {
-    data() {
-      // fallback data in case not provided
-      return {
-        content: {
-          header: 'Confirmation',
-          body: 'Are you sure you want to do this?',
-          buttonDismiss: 'No',
-          buttonConfirm: 'Yes'
-        }
-      };
-    },
     oncreate() {
+      const defaultContent = {
+        header: 'Confirmation',
+        body: 'Are you sure you want to do this?',
+        buttonDismiss: 'No',
+        buttonConfirm: 'Yes'
+      }
+
+      this.set({content: Object.assign(defaultContent, this.get().content)});
+
       try {
         document.querySelector('.confirm-button').focus();
       } catch (e) {

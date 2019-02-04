@@ -219,7 +219,7 @@ Shows a confirmation modal.
 
 #### Parameters
 
--   `content` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** the content of the confirmation modal
+-   `content` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** the content of the confirmation modal. If no value is provided for any of the fields, a default value is set for it.
     -   `content.header` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** the content of the modal header
     -   `content.body` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** the content of the modal body
     -   `content.buttonConfirm` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** the label for the modal confirm button
