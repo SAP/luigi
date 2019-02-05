@@ -6,7 +6,7 @@ read -p "Luigi project folder name: " folder
 # steps to execute line by line
 echo ""
 mkdir $folder && cd $folder
-
+npm init -y
 npm i -save @kyma-project/luigi-core @kyma-project/luigi-client fiori-fundamentals
 mkdir -p public/assets
 curl https://raw.githubusercontent.com/kyma-project/Luigi/master/core/examples/luigi-sample-angular/src/index.html > public/index.html
