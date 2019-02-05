@@ -427,18 +427,18 @@ const LuigiClient = {
       },
       /**
        * Shows a confirmation modal.
-       * @param {Object} content the content of the confirmation modal. If no value is provided for any of the fields, a default value is set for it.
-       * @param {string} content.header the content of the modal header
-       * @param {string} content.body the content of the modal body
-       * @param {string} content.buttonConfirm the label for the modal confirm button
-       * @param {string} content.buttonDismiss the label for the modal dismiss button
+       * @param {Object} settings the settings the confirmation modal. If no value is provided for any of the fields, a default value is set for it.
+       * @param {string} settings.header the content of the modal header
+       * @param {string} settings.body the content of the modal body
+       * @param {string} settings.buttonConfirm the label for the modal confirm button
+       * @param {string} settings.buttonDismiss the label for the modal dismiss button
        * @returns {promise} which is resolved when accepting the confirmation modal and rejected when dismissing it.
        */
-      showConfirmationModal: function showConfirmationModal(content) {
+      showConfirmationModal: function showConfirmationModal(settings) {
         window.parent.postMessage(
           {
             msg: 'luigi.ux.confirmation-modal-show',
-            data: { content }
+            data: { settings }
           },
           '*'
         );
@@ -453,10 +453,10 @@ const LuigiClient = {
       /**
        * Shows an alert.
        * @param {Object} settings the settings for the alert
-       * @param {string} settings.text this is the content of the alert
+       * @param {string} settings.text the content of the alert
        * @param {boolean} [settings.dismissButton=true] specifies if dismiss button should be displayed in the alert
        * @param {('info'|'success'|'warning'|'error')} settings.type sets the type of the alert
-       * @returns {promise} A promise which is resolved when the alert is dismissed.
+       * @returns {promise} which is resolved when the alert is dismissed.
        */
       showAlert: function showAlert(settings) {
         window.parent.postMessage(
@@ -467,7 +467,7 @@ const LuigiClient = {
           '*'
         );
         promises.alert = {};
-        promises.alert.promise = new Promise((resolve, reject) => {
+        promises.alert.promise = new Promise(resolve => {
           promises.alert.resolveFn = resolve;
         });
         return promises.alert.promise;

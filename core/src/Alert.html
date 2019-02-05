@@ -12,18 +12,22 @@
   import * as RoutingHelpers from './utilities/helpers/routing-helpers';
 
   export default {
-    data() {
-      // fallback data in case not provided
-      return {
-        settings: {
-          text: 'I am a Luigi alert with extremely relevant information for the user',
-          type: 'info',
-          dismissButton: true,
-          links: undefined
-        }
-      };
-    },
     oncreate() {
+      const defaultSettings = {
+        text: 'I am a Luigi alert with extremely relevant information for the user',
+        type: 'info',
+        dismissButton: true,
+        links: undefined
+      }
+
+      this.set({ settings: Object.assign(defaultSettings, this.get().settings) });
+
+      try {
+        document.querySelector('.confirm-button').focus();
+      } catch (e) {
+        console.warn("Couldn't focus confirmation button in modal");
+      }
+
       const {text, links} = this.get().settings;
       const textToDisplay = this.getTextToDisplay(text, links);
       this.set({settings: Object.assign(this.get().settings, {text: textToDisplay})});

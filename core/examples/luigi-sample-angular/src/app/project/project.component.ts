@@ -100,7 +100,7 @@ export class ProjectComponent implements OnInit, OnDestroy {
 
   showConfirmationModal() {
     this.confirmationModalResult = '';
-    const content = {
+    const settings = {
       // header: 'Modal Header - Luigi modal',
       body: `Lorem tipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna
         aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
@@ -110,7 +110,7 @@ export class ProjectComponent implements OnInit, OnDestroy {
     };
     this.luigiClient
       .uxManager()
-      .showConfirmationModal(content)
+      .showConfirmationModal(settings)
       .then(
         () => {
           this.confirmationModalResult = 'confirmed';
