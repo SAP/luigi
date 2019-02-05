@@ -10,6 +10,7 @@ import { LuigiConfig } from '../../src/services/config';
 describe('Routing', () => {
   let component;
   beforeEach(() => {
+    window.dispatchEvent = sinon.spy();
     let lastObj = {};
     component = {
       set: obj => {
@@ -29,10 +30,6 @@ describe('Routing', () => {
   });
 
   describe('buildFromRelativePath', () => {
-    beforeEach(() => {
-      window.dispatchEvent = sinon.spy();
-    });
-
     const nodeWithParent = {
       link: 'child-node',
       parent: {
@@ -111,7 +108,8 @@ describe('Routing', () => {
                     },
                     viewUrl: 't2.html'
                   }
-                ]
+                ],
+                style: {}
               },
               {
                 pathSegment: 'categories',
@@ -122,17 +120,22 @@ describe('Routing', () => {
                     children: [
                       {
                         pathSegment: ':sub',
-                        viewUrl: 'cats/:category/:sub'
+                        viewUrl: 'cats/:category/:sub',
+                        style: {}
                       }
                     ]
                   }
-                ]
+                ],
+                style: {}
               }
             ],
             context: {
               varA: 'tets'
             },
-            hideSideNav: true
+            loadingIndicator: {},
+            hideSideNav: true,
+            prepend: sinon.spy(),
+            insertBefore: sinon.spy()
           }
         ]
       },
@@ -140,52 +143,38 @@ describe('Routing', () => {
         hideNavigation: false
       }
     };
+    let currentLuigiConfig = {};
+    let config;
+    const mockBrowser = new MockBrowser();
+    const window = mockBrowser.getWindow();
+    const document = mockBrowser.getDocument();
+
+    beforeEach(() => {
+      window.Luigi = { config: currentLuigiConfig };
+      global.window = window;
+      global.document = document;
+      currentLuigiConfig = Object.assign({}, sampleLuigiConfig);
+      LuigiConfig.config = currentLuigiConfig;
+      config = {
+        iframe: null,
+        builderCompatibilityMode: false,
+        navigateOk: null
+      };
+    });
 
     it('should set component data with hash path', async () => {
       // given
       const path = '#/projects';
       const expectedViewUrl = '/aaa.html';
 
-      const node = {
-        pathSegment: '#/projects',
-        label: 'AAA',
-        viewUrl: '/aaa.html',
-        children: [
-          {
-            pathSegment: 'a1',
-            context: {
-              varA1: 'maskopatol'
-            },
-            style: {
-              display: null
-            }
-          },
-          {
-            pathSegment: 'a2',
-            style: {
-              display: null
-            }
-          }
-        ],
-        context: {
-          varA: 'tets'
-        },
-        prepend: sinon.spy(),
-        insertBefore: sinon.spy()
-      };
-
-      const config = {
-        iframe: null,
-        builderCompatibilityMode: false,
-        navigateOk: null
-      };
-
-      LuigiConfig.config = sampleLuigiConfig;
-
       // when
       sinon.stub(document, 'createElement').callsFake(() => ({ src: null }));
-
-      await routing.handleRouteChange(path, component, node, config);
+      await routing.handleRouteChange(
+        path,
+        component,
+        currentLuigiConfig.navigation.nodes()[0],
+        config
+      );
 
       // then
       assert.equal(component.get().viewUrl, expectedViewUrl);
@@ -201,31 +190,21 @@ describe('Routing', () => {
       const path = '#/projects';
       const expectedViewUrl = '/aaa.html';
 
-      const node = {
-        pathSegment: 'projects',
-        label: 'AAA',
-        viewUrl: '/aaa.html',
-        loadingIndicator: {
-          enabled: false
-        },
-        prepend: sinon.spy(),
-        insertBefore: sinon.spy()
+      // adjust some properties for this test
+      const allNodes = currentLuigiConfig.navigation.nodes();
+      allNodes[0].loadingIndicator = {
+        enabled: false
       };
-
-      const config = {
-        iframe: null,
-        builderCompatibilityMode: false,
-        navigateOk: null
-      };
+      currentLuigiConfig.navigation.nodes = () => allNodes;
 
       // when
-      LuigiConfig.config = {
-        navigation: {
-          nodes: () => [node]
-        }
-      };
       sinon.stub(document, 'createElement').callsFake(() => ({ src: null }));
-      await routing.handleRouteChange(path, component, node, config);
+      await routing.handleRouteChange(
+        path,
+        component,
+        currentLuigiConfig.navigation.nodes()[0],
+        config
+      );
 
       // then
       assert.equal(component.get().viewUrl, expectedViewUrl);
@@ -236,11 +215,6 @@ describe('Routing', () => {
       // given
       const path = '#/projects';
       const expectedViewUrl = '/aaa.html';
-      const mockBrowser = new MockBrowser();
-      const window = mockBrowser.getWindow();
-      global.window = window;
-      const document = mockBrowser.getDocument();
-      global.document = document;
 
       let savedObj = {};
       const componentSaved = {
@@ -253,39 +227,6 @@ describe('Routing', () => {
         shouldShowUnsavedChangesModal: () => false
       };
 
-      const node = {
-        pathSegment: '#/projects',
-        label: 'AAA',
-        viewUrl: '/aaa.html',
-        children: [
-          {
-            pathSegment: 'a1',
-            context: {
-              varA1: 'maskopatol'
-            },
-            style: {
-              display: null
-            }
-          },
-          {
-            pathSegment: 'a2',
-            style: {
-              display: null
-            }
-          }
-        ],
-        context: {
-          varA: 'tets'
-        },
-        prepend: sinon.spy(),
-        insertBefore: sinon.spy()
-      };
-
-      const config = {
-        iframe: null,
-        builderCompatibilityMode: false,
-        navigateOk: null
-      };
       const preservedViews = [
         {
           path: 'sample.html#!/one',
@@ -296,7 +237,6 @@ describe('Routing', () => {
       componentSaved.set({ preservedViews });
 
       // when
-      LuigiConfig.config = sampleLuigiConfig;
       const docMock = sinon.mock(document);
       docMock
         .expects('createElement')
@@ -306,7 +246,7 @@ describe('Routing', () => {
       await routing.handleRouteChange(
         path,
         componentSaved,
-        node,
+        currentLuigiConfig.navigation.nodes()[0],
         config,
         window
       );
@@ -329,46 +269,15 @@ describe('Routing', () => {
       const expectedViewUrl = '{context.varA1}/a1.html#p={nodeParams.param1}';
       const expectedProcessedViewUrl = 'maskopatol/a1.html#p=tets';
 
-      const node = {
-        pathSegment: '#/projects',
-        label: 'AAA',
-        viewUrl: '/aaa.html',
-        children: [
-          {
-            pathSegment: 'a1',
-            context: {
-              varA1: 'maskopatol'
-            },
-            style: {
-              display: null
-            },
-            viewUrl: '{context.varA1}/a1.html#p={nodeParams.param1}'
-          },
-          {
-            pathSegment: 'a2',
-            style: {
-              display: null
-            }
-          }
-        ],
-        context: {
-          varA: 'tets'
-        },
-        prepend: sinon.spy(),
-        insertBefore: sinon.spy()
-      };
-
-      const config = {
-        iframe: null,
-        builderCompatibilityMode: false,
-        navigateOk: null
-      };
-
       // when
-      LuigiConfig.config = sampleLuigiConfig;
       const iframeMock = { src: null };
       sinon.stub(document, 'createElement').callsFake(() => iframeMock);
-      await routing.handleRouteChange(path, component, node, config);
+      await routing.handleRouteChange(
+        path,
+        component,
+        currentLuigiConfig.navigation.nodes()[0],
+        config
+      );
 
       // then
       assert.equal(component.get().viewUrl, expectedViewUrl);
@@ -384,53 +293,16 @@ describe('Routing', () => {
       const path = '#/projects/a2?~param1=tets';
       const expectedViewUrl = '{context.varA2}/a2.html#p={nodeParams.param2}';
       const expectedProcessedViewUrl = '/a2.html#p=';
-      const mockBrowser = new MockBrowser();
-      const window = mockBrowser.getWindow();
-      global.window = window;
-      const document = mockBrowser.getDocument();
-      global.document = document;
-
-      const node = {
-        pathSegment: '#/projects',
-        label: 'AAA',
-        viewUrl: '/aaa.html',
-        children: [
-          {
-            pathSegment: 'a1',
-            context: {
-              varA1: 'maskopatol'
-            },
-            style: {
-              display: null
-            },
-            viewUrl: '{context.varA1}/a1.html#p={nodeParams.param1}'
-          },
-          {
-            pathSegment: 'a2',
-            style: {
-              display: null
-            },
-            viewUrl: '{context.varA2}/a1.html#p={nodeParams.param2}'
-          }
-        ],
-        context: {
-          varA: 'tets'
-        },
-        prepend: sinon.spy(),
-        insertBefore: sinon.spy()
-      };
-
-      const config = {
-        iframe: null,
-        builderCompatibilityMode: false,
-        navigateOk: null
-      };
 
       // when
-      LuigiConfig.config = sampleLuigiConfig;
       const iframeMock = { src: null };
       sinon.stub(document, 'createElement').callsFake(() => iframeMock);
-      await routing.handleRouteChange(path, component, node, config);
+      await routing.handleRouteChange(
+        path,
+        component,
+        currentLuigiConfig.navigation.nodes()[0],
+        config
+      );
 
       // then
       assert.equal(component.get().viewUrl, expectedViewUrl);
@@ -445,30 +317,16 @@ describe('Routing', () => {
       // given
       const path = '#/projects/categories/cat1';
       const expectedViewUrl = 'cats/cat1#details';
-      const mockBrowser = new MockBrowser();
-      const window = mockBrowser.getWindow();
-      global.window = window;
-      const document = mockBrowser.getDocument();
-      global.document = document;
-
-      const node = {
-        style: {},
-        prepend: sinon.spy(),
-        insertBefore: sinon.spy()
-      };
-
-      const config = {
-        iframe: null,
-        builderCompatibilityMode: false,
-        navigateOk: null
-      };
 
       // when
-      window.Luigi = {};
-      window.Luigi.config = sampleLuigiConfig;
       const iframeMock = { src: null };
       sinon.stub(document, 'createElement').callsFake(() => iframeMock);
-      await routing.handleRouteChange(path, component, node, config);
+      await routing.handleRouteChange(
+        path,
+        component,
+        currentLuigiConfig.navigation.nodes()[0],
+        config
+      );
 
       // then
       assert.equal(iframeMock.src, expectedViewUrl);
@@ -482,30 +340,16 @@ describe('Routing', () => {
       // given
       const path = '#/projects/categories/cat1/sub23';
       const expectedViewUrl = 'cats/cat1/sub23';
-      const mockBrowser = new MockBrowser();
-      const window = mockBrowser.getWindow();
-      global.window = window;
-      const document = mockBrowser.getDocument();
-      global.document = document;
-
-      const node = {
-        style: {},
-        prepend: sinon.spy(),
-        insertBefore: sinon.spy()
-      };
-
-      const config = {
-        iframe: null,
-        builderCompatibilityMode: false,
-        navigateOk: null
-      };
 
       // when
-      window.Luigi = {};
-      window.Luigi.config = sampleLuigiConfig;
       const iframeMock = { src: null };
       sinon.stub(document, 'createElement').callsFake(() => iframeMock);
-      await routing.handleRouteChange(path, component, node, config);
+      await routing.handleRouteChange(
+        path,
+        component,
+        currentLuigiConfig.navigation.nodes()[0],
+        config
+      );
 
       // then
       assert.equal(iframeMock.src, expectedViewUrl);
@@ -519,20 +363,13 @@ describe('Routing', () => {
       // given
       const path = '#/projects/teams';
       const expectedPath = '/projects/teams/t2';
-      const mockBrowser = new MockBrowser();
-      const window = mockBrowser.getWindow();
-      global.window = window;
-
       const component = {
         shouldShowUnsavedChangesModal: () => false
       };
       const node = {};
-      const config = {};
-
       window.history.pushState = sinon.spy();
 
       // when
-      LuigiConfig.config = sampleLuigiConfig;
       LuigiConfig.config.navigation.hideNav = false;
       await routing.handleRouteChange(path, component, node, config);
 
@@ -548,16 +385,11 @@ describe('Routing', () => {
     it("should set component's 'hideSideNav' property", async () => {
       // given
       const path = '#/projects';
-      const mockBrowser = new MockBrowser();
-      const window = mockBrowser.getWindow();
-      global.window = window;
 
+      //when
       const node = { insertBefore: sinon.spy() };
-      const config = {};
 
-      // when
-      LuigiConfig.config = sampleLuigiConfig;
-
+      //then
       assert.equal(component.get().hideSideNav, undefined);
 
       await routing.handleRouteChange(path, component, node, config);
@@ -567,10 +399,6 @@ describe('Routing', () => {
   });
 
   describe('handleRouteClick', () => {
-    beforeEach(() => {
-      window.dispatchEvent = sinon.spy();
-    });
-
     const nodeWithParent = {
       pathSegment: 'project-one',
       parent: {
@@ -684,7 +512,6 @@ describe('Routing', () => {
 
       // when
       LuigiConfig.getConfigValue.returns(true);
-
       routing.handleRouteClick(inputNode, mockComponentData);
 
       // then
@@ -702,7 +529,6 @@ describe('Routing', () => {
 
       // when
       LuigiConfig.getConfigValue.returns(true);
-
       routing.handleRouteClick(inputNode, mockComponentData);
 
       // then

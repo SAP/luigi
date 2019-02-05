@@ -1,6 +1,6 @@
 describe('ProductSwitcher', () => {
   beforeEach(() => {
-    cy.visit('http://localhost:4200');
+    cy.visit('/');
     cy.login('tets@email.com', 'tets');
   });
 
@@ -15,8 +15,6 @@ describe('ProductSwitcher', () => {
       .contains('Project 1')
       .click();
 
-    cy.location().should(loc => {
-      expect(loc.pathname).to.eq('/projects/pr1');
-    });
+    cy.expectPathToBe('/projects/pr1');
   });
 });

@@ -10,7 +10,9 @@ var _onContextUpdatedFns = {};
 var _onInitFns = {};
 var authData = {};
 var pathExistsPromises = {};
-
+let promises = {
+  confirmationModal: {}
+};
 /**
  * Creates a random Id
  * @private
@@ -100,6 +102,13 @@ function luigiClientInit() {
       var data = e.data.data;
       pathExistsPromises[data.correlationId].resolveFn(data.pathExists);
       delete pathExistsPromises[data.correlationId];
+    }
+
+    if ('luigi.ux.confirmationModal.hide' === e.data.msg) {
+      const data = e.data.data;
+      const promise = promises.confirmationModal;
+      data.confirmed ? promise.resolveFn() : promise.rejectFn();
+      delete promises.confirmationModal;
     }
   });
 
@@ -410,6 +419,30 @@ const LuigiClient = {
           { msg: 'luigi.set-page-dirty', dirty: isDirty },
           '*'
         );
+      },
+      /**
+       * Shows a confirmation modal.
+       * @param {Object} content the content of the confirmation modal. If no value is provided for any of the fields, a default value is set for it.
+       * @param {string} content.header the content of the modal header
+       * @param {string} content.body the content of the modal body
+       * @param {string} content.buttonConfirm the label for the modal confirm button
+       * @param {string} content.buttonDismiss the label for the modal dismiss button
+       * @returns {promise} which is resolved when accepting the confirmation modal and rejected when dismissing it.
+       */
+      showConfirmationModal: function showConfirmationModal(content) {
+        window.parent.postMessage(
+          {
+            msg: 'luigi.ux.confirmation-modal-show',
+            data: { content }
+          },
+          '*'
+        );
+        promises.confirmationModal = {};
+        promises.confirmationModal.promise = new Promise((resolve, reject) => {
+          promises.confirmationModal.resolveFn = resolve;
+          promises.confirmationModal.rejectFn = reject;
+        });
+        return promises.confirmationModal.promise;
       }
     };
   }
