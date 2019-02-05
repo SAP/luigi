@@ -234,8 +234,39 @@ Shows an alert.
 #### Parameters
 
 -   `settings` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** the settings for the alert
-    -   `settings.text` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** the content of the alert
-    -   `settings.dismissButton` **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)** specifies if dismiss button should be displayed in the alert (optional, default `true`)
+    -   `settings.text` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** the content of the alert. To add a link to the content,
+        you have to setup the link in `links` object. The key(s) in the `links` object must be used
+        in the text to reference the links, wrapped in curly braces with no spaces
     -   `settings.type` **(`"info"` \| `"success"` \| `"warning"` \| `"error"`)** sets the type of the alert
+    -   `settings.dismissButton` **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)** specifies if dismiss button should be displayed in the alert (optional, default `true`)
+    -   `settings.links` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** provides links data
+        -   `settings.links.LINK_KEY` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** object containing the data for a concrete link.  
+            Read above on how to use the key to for the link to be properly rendered in the alert message.
+            -   `settings.links.LINK_KEY.text` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** text which will replace the link identifier in the alert content
+            -   `settings.links.LINK_KEY.url` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** url to navigate when the link is clicked. Currently only internal links
+                are supported in the form of relative or absolute paths.
+
+#### Examples
+
+```javascript
+import LuigiClient from '@kyma-project/luigi-client';
+const settings = {
+ text: Ut enim ad minim veniam, {goToHome} quis nostrud exercitation ullamco {relativePath} laboris nisi ut aliquip ex ea commodo consequat.
+   Duis aute irure dolor {goToOtherProject},
+ type: 'info',
+ dismissButton: false,
+ links: {
+   goToHome: { text: 'homepage', url: '/overview' },
+   goToOtherProject: { text: 'other project', url: '/projects/pr2' },
+   relativePath: { text: 'relative hide side nav', url: 'hideSideNav' }
+ }
+}
+LuigiClient
+ .uxManager()
+ .showAlert(settings)
+ .then(() => {
+    // Logic to execute when the alert is dismissed
+});
+```
 
 Returns **[promise](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise)** which is resolved when the alert is dismissed.
