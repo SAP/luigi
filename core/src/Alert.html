@@ -1,8 +1,15 @@
-<div class="fd-alert fd-alert--{settings.type} {settings.dismissButton ? 'fd-alert--dismissible' : ''}"
-    role="alert" id="j2ALl423">
+<div
+  class="fd-alert fd-alert--{settings.type} {settings.dismissButton ? 'fd-alert--dismissible' : ''}"
+  role="alert"
+  id="j2ALl423"
+>
   {#if settings.dismissButton}
-  <button class="fd-alert__close close-button" on:click="fire('alertDismiss')"
-      aria-label="  Close" aria-controls="j2ALl423"></button>
+  <button
+    class="fd-alert__close close-button"
+    on:click="fire('alertDismiss')"
+    aria-label="  Close"
+    aria-controls="j2ALl423"
+  ></button>
   {/if}
   {@html settings.text}
 </div>
@@ -15,43 +22,53 @@
   export default {
     oncreate() {
       const defaultSettings = {
-        text: 'I am a Luigi alert with extremely relevant information for the user',
+        text:
+          'I am a Luigi alert with extremely relevant information for the user',
         type: 'info',
         dismissButton: true,
         links: undefined
-      }
+      };
 
-      this.set({ settings: Object.assign(defaultSettings, this.get().settings) });
+      this.set({
+        settings: Object.assign(defaultSettings, this.get().settings)
+      });
 
-      const {text, links} = this.get().settings;
+      const { text, links } = this.get().settings;
       const textToDisplay = this.getTextToDisplay(text, links);
-      this.set({settings: Object.assign(this.get().settings, {text: textToDisplay})});
+      this.set({
+        settings: Object.assign(this.get().settings, { text: textToDisplay })
+      });
     },
     methods: {
       addCLickListener(url, elemId) {
         try {
-          document.getElementById(elemId).addEventListener("click",
-            (event) => {
-              const currentPath = GenericHelpers.addTrailingSlash(Routing.getWindowPath())
-              const newPath = (url.startsWith('/')) ? url : (currentPath + url);
-              Routing.navigateTo(newPath);
-              event.stopPropagation(event);
-            });
+          document.getElementById(elemId).addEventListener('click', event => {
+            const currentPath = GenericHelpers.addTrailingSlash(
+              Routing.getWindowPath()
+            );
+            const newPath = url.startsWith('/') ? url : currentPath + url;
+            Routing.navigateTo(newPath);
+            event.stopPropagation(event);
+          });
         } catch (e) {
           console.error('Error on Alert::addClickListener', e);
         }
       },
       getTextToDisplay(text, links) {
-        if (!links) { return text }
-
         let sanitizedText = RoutingHelpers.sanitizeHtml(text);
+
+        if (!links) {
+          return sanitizedText;
+        }
 
         return Object.entries(links).reduce((acc, [key, content]) => {
           const elemId = key;
-          setTimeout(() => { this.addCLickListener(content.url, elemId) }, 10);
+          setTimeout(() => {
+            this.addCLickListener(content.url, elemId);
+          }, 10);
 
           const processedData = `<a id="${key}">${content.text}</a>`;
-          const pattern = new RegExp(`({${key}})`, "g");
+          const pattern = new RegExp(`({${key}})`, 'g');
           return acc.replace(pattern, processedData);
         }, sanitizedText);
       }
