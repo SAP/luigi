@@ -113,9 +113,9 @@ export const getCurrentPath = () =>
   LuigiConfig.getConfigValue('routing.useHashRouting')
     ? window.location.hash.replace('#', '') // TODO: GenericHelpers.getPathWithoutHash(window.location.hash) fails in ContextSwitcher
     : window.location.search
-      ? GenericHelpers.trimLeadingSlash(window.location.pathname) +
-        window.location.search
-      : GenericHelpers.trimLeadingSlash(window.location.pathname);
+    ? GenericHelpers.trimLeadingSlash(window.location.pathname) +
+      window.location.search
+    : GenericHelpers.trimLeadingSlash(window.location.pathname);
 
 export const handleRouteChange = async (
   path,
@@ -284,15 +284,6 @@ const showPageNotFoundError = async (
     return;
   }
 
-  // const alert = {
-  //   body: isAnyPathMatched
-  //     ? 'Could not map the exact target node for the requested route'
-  //     : 'Could not find the requested route',
-  //   isDisplayed: true,
-  //   link: notFoundPath,
-  //   ttl: 1 //how many redirections the alert will 'survive'.
-  // };
-
   const alert = {
     settings: {
       text:
@@ -300,8 +291,7 @@ const showPageNotFoundError = async (
           ? 'Could not map the exact target node for the requested route '
           : 'Could not find the requested route ') + notFoundPath,
       type: 'error',
-      dismissButton: true,
-      ttl: 1 //how many redirections the alert will 'survive'.
+      dismissButton: true
     },
     openFromClient: false,
     isDisplayed: true
