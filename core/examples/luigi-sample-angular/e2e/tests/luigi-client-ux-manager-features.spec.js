@@ -40,21 +40,21 @@ describe('Luigi client ux manger features', () => {
       });
     });
 
-    it('confirmation modal', () => {
+    it('Luigi Client generic confirmation modal', () => {
       cy.get('iframe').then($iframe => {
         const $iframeBody = $iframe.contents().find('body');
 
         cy.goToUxManagerMethods($iframeBody);
 
-        cy.get('[data-cy=luigi-alert]').should('not.be.visible');
+        cy.get('[data-cy=luigi-confirmation-modal]').should('not.be.visible');
 
         cy.wrap($iframeBody)
           .find('[data-cy=show-luigi-confirmation-modal]')
           .click();
-        cy.get('[data-cy=luigi-alert]').should('be.visible');
+        cy.get('[data-cy=luigi-confirmation-modal]').should('be.visible');
 
         cy.get('[data-cy=luigi-modal-dismiss]').click();
-        cy.get('[data-cy=luigi-alert]').should('not.be.visible');
+        cy.get('[data-cy=luigi-confirmation-modal]').should('not.be.visible');
         cy.wrap($iframeBody)
           .find('[data-cy=luigi-confirmation-modal-result]')
           .contains('Luigi confirmation modal has been dismissed');
@@ -62,10 +62,10 @@ describe('Luigi client ux manger features', () => {
         cy.wrap($iframeBody)
           .find('[data-cy=show-luigi-confirmation-modal]')
           .click();
-        cy.get('[data-cy=luigi-alert]').should('be.visible');
+        cy.get('[data-cy=luigi-confirmation-modal]').should('be.visible');
 
         cy.get('[data-cy=luigi-modal-confirm]').click();
-        cy.get('[data-cy=luigi-alert]').should('not.be.visible');
+        cy.get('[data-cy=luigi-confirmation-modal]').should('not.be.visible');
         cy.wrap($iframeBody)
           .find('[data-cy=luigi-confirmation-modal-result]')
           .contains('Luigi confirmation modal has been confirmed');
@@ -97,61 +97,64 @@ describe('Luigi client ux manger features', () => {
       });
     });
 
-    it("Unsaved changes - shouldn't proceed when 'No' was pressed in modal", () => {
-      cy.get('iframe').then($iframe => {
-        const $iframeBody = $iframe.contents().find('body');
+    describe('Unsaved changes', () => {
+      it("shouldn't proceed when 'No' was pressed in modal", () => {
+        cy.get('iframe').then($iframe => {
+          const $iframeBody = $iframe.contents().find('body');
 
-        cy.wrap($iframeBody)
-          .find('[data-cy=toggle-dirty-state]')
-          .check();
+          cy.wrap($iframeBody)
+            .find('[data-cy=toggle-dirty-state]')
+            .click();
 
-        cy.get('button')
-          .contains('Projects')
-          .click();
+          cy.get('button')
+            .contains('Projects')
+            .click();
 
-        cy.get('[data-cy=luigi-confirmation-modal]').should('be.visible');
+          cy.get('[data-cy=luigi-confirmation-modal]').should('be.visible');
 
-        cy.expectPathToBe('/overview'); //the location is unchanged
+          cy.expectPathToBe('/overview'); //the location is unchanged
 
-        cy.get('[data-cy=luigi-modal-dismiss]').click();
+          cy.get('[data-cy=luigi-modal-dismiss]').click();
 
-        cy.get('[data-cy=luigi-confirmation-modal]').should('not.be.visible');
+          cy.get('[data-cy=luigi-confirmation-modal]').should('not.be.visible');
 
-        cy.expectPathToBe('/overview'); //the location is still unchanged after "No" clicked
+          cy.expectPathToBe('/overview'); //the location is still unchanged after "No" clicked
+        });
+      });
+
+      it("should proceed when 'Yes' was pressed in modal", () => {
+        cy.get('iframe').then($iframe => {
+          const $iframeBody = $iframe.contents().find('body');
+
+          cy.wrap($iframeBody)
+            .find('[data-cy=toggle-dirty-state]')
+            .click();
+
+          cy.get('button')
+            .contains('Projects')
+            .click();
+
+          cy.get('[data-cy=luigi-confirmation-modal]').should('be.visible');
+
+          cy.expectPathToBe('/overview'); //the location is unchanged
+
+          cy.get('[data-cy=luigi-modal-confirm]').click();
+
+          cy.get('[data-cy=luigi-confirmation-modal]').should('not.be.visible');
+
+          cy.expectPathToBe('/projects'); //the location is changed after "Yes" clicked
+        });
       });
     });
 
-    it("Unsaved changes - should proceed when 'Yes' was pressed in modal", () => {
-      cy.get('iframe').then($iframe => {
-        const $iframeBody = $iframe.contents().find('body');
-
-        cy.wrap($iframeBody)
-          .find('[data-cy=toggle-dirty-state]')
-          .check();
-
-        cy.get('button')
-          .contains('Projects')
-          .click();
-
-        cy.get('[data-cy=luigi-confirmation-modal]').should('be.visible');
-
-        cy.expectPathToBe('/overview'); //the location is unchanged
-
-        cy.get('[data-cy=luigi-modal-confirm]').click();
-
-        cy.get('[data-cy=luigi-confirmation-modal]').should('not.be.visible');
-
-        cy.expectPathToBe('/projects'); //the location is changed after "Yes" clicked
-      });
-    });
-
-    describe('Generic alert', () => {
-      xit('success alert with dismiss button', () => {
-        // check success
+    describe('Luigi Client generic alert', () => {
+      it('success alert with dismiss button', () => {
         cy.get('iframe').then($iframe => {
           const $iframeBody = $iframe.contents().find('body');
 
           cy.goToUxManagerMethods($iframeBody);
+
+          cy.get('[data-cy=luigi-alert]').should('not.exist');
 
           cy.wrap($iframeBody)
             .find('[data-cy=luigi-alert-type]')
@@ -159,97 +162,126 @@ describe('Luigi client ux manger features', () => {
           cy.wrap($iframeBody)
             .find('[data-cy=luigi-alert-dismiss-button]')
             .check();
-
-          cy.get('[data-cy=luigi-alert]').should('not.be.visible');
           cy.wrap($iframeBody)
             .find('[data-cy=show-luigi-alert]')
             .click();
 
-          cy.get('[data-cy=luigi-alert]')
-            .should('be.visible')
-            .should('have.class', 'fd-alert--success');
+          cy.get('[data-cy=luigi-alert]').should(
+            'have.class',
+            'fd-alert--success'
+          );
 
           cy.get('[data-cy=luigi-alert-dismiss]').click();
-          cy.get('[data-cy=luigi-alert]').should('not.be.visible');
+          cy.get('[data-cy=luigi-alert]').should('not.exist');
           cy.wrap($iframeBody)
             .find('[data-cy=luigi-alert-result]')
             .contains('Luigi alert has been dismissed');
         });
       });
 
-      xit('info alert without dismiss button', () => {
-        // check info
-        // check no dismiss button +  refresh + check alert is gone
+      it('info alert without dismiss button', () => {
         cy.get('iframe').then($iframe => {
           const $iframeBody = $iframe.contents().find('body');
 
           cy.goToUxManagerMethods($iframeBody);
+
+          cy.get('[data-cy=luigi-alert]').should('not.exist');
 
           cy.wrap($iframeBody)
             .find('[data-cy=luigi-alert-type]')
-            .select('info')
-            .wait(5000);
+            .select('info');
+          cy.wrap($iframeBody)
+            .find('[data-cy=luigi-alert-dismiss-button]')
+            .uncheck();
+          cy.wrap($iframeBody)
+            .find('[data-cy=show-luigi-alert]')
+            .click();
 
-          // cy.get('[data-cy=luigi-alert]').should('not.be.visible');
-          // cy.wrap($iframeBody)
-          //   .find('[data-cy=show-luigi-alert]')
-          //   .click();
+          cy.get('[data-cy=luigi-alert]').should(
+            'have.class',
+            'fd-alert--info'
+          );
 
-          // cy.get('[data-cy=luigi-alert]')
-          //   .should('be.visible')
-          //   .should('have.class', 'fd-alert--info')
+          cy.get('[data-cy=luigi-alert-dismiss]').should('not.exist');
 
-          // cy.get('[data-cy=luigi-alert-dismiss]').should('exist');
+          cy.reload()
+            .get('[data-cy=luigi-alert]')
+            .should('not.exist');
         });
       });
 
-      it('warning alert with links', () => {
-        // check success
+      it('warning alert with links and unsaved changes', () => {
         cy.get('iframe').then($iframe => {
           const $iframeBody = $iframe.contents().find('body');
 
           cy.goToUxManagerMethods($iframeBody);
+
+          cy.get('[data-cy=luigi-alert]').should('not.exist');
 
           cy.wrap($iframeBody)
             .find('[data-cy=luigi-alert-type]')
             .select('warning');
           cy.wrap($iframeBody)
-            .find('[data-cy=luigi-alert-dismiss-button]')
+            .find('[data-cy=luigi-alert-links]')
             .check();
+          cy.wrap($iframeBody)
+            .find('[data-cy=show-luigi-alert]')
+            .click();
+          cy.wrap($iframeBody)
+            .find('[data-cy=toggle-dirty-state]')
+            .click();
 
-          cy.get('[data-cy=luigi-alert]').should('not.be.visible');
+          cy.get('[data-cy=luigi-alert]').should(
+            'have.class',
+            'fd-alert--warning'
+          );
+
+          cy.get('#relativePath').click();
+          cy.expectPathToBe('/projects/pr1');
+          cy.get('[data-cy=luigi-confirmation-modal]').should('be.visible');
+          cy.get('[data-cy=luigi-modal-dismiss]').click();
+          cy.expectPathToBe('/projects/pr1');
+          cy.get('#relativePath').click();
+          cy.get('[data-cy=luigi-confirmation-modal]').should('be.visible');
+          cy.get('[data-cy=luigi-modal-confirm]').click();
+          cy.expectPathToBe('/projects/pr1/hideSideNav');
+
+          cy.get('#goToOtherProject')
+            .click()
+            .expectPathToBe('/projects/pr2');
+
+          cy.get('#goToHome')
+            .click()
+            .expectPathToBe('/overview');
+        });
+      });
+
+      it('error alert without links and protected against XSS', () => {
+        cy.get('iframe').then($iframe => {
+          const $iframeBody = $iframe.contents().find('body');
+
+          cy.goToUxManagerMethods($iframeBody);
+
+          cy.get('[data-cy=luigi-alert]').should('not.exist');
+
+          cy.wrap($iframeBody)
+            .find('[data-cy=luigi-alert-type]')
+            .select('error');
+          cy.wrap($iframeBody)
+            .find('[data-cy=luigi-alert-links]')
+            .uncheck();
           cy.wrap($iframeBody)
             .find('[data-cy=show-luigi-alert]')
             .click();
 
           cy.get('[data-cy=luigi-alert]')
-            .should('be.visible')
-            .should('have.class', 'fd-alert--warning');
+            .should('have.class', 'fd-alert--error')
+            .should('contain', "<b onmouseover=alert('Wufff!')>click me!</b>");
 
-          cy.get('#relativePath')
-            .click()
-            .wait(1000);
-          cy.get('#goToOtherProject')
-            .click()
-            .wait(1000);
-          cy.get('#goToHome')
-            .click()
-            .wait(1000);
-
-          // cy.get('[data-cy=luigi-alert-dismiss]').click();
-          // cy.get('[data-cy=luigi-alert]').should('not.be.visible');
-          // cy.wrap($iframeBody)
-          //   .find('[data-cy=luigi-alert-result]')
-          //   .contains('Luigi alert has been dismissed');
+          cy.get('[data-cy=luigi-alert]')
+            .find('a')
+            .should('not.exist');
         });
-
-        // check warning
-        // click links and check location for each one
-      });
-
-      xit('error alert protected against XSS', () => {
-        // check error
-        // click links and check location for each one
       });
     });
   });

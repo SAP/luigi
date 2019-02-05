@@ -63,8 +63,8 @@ export class OverviewComponent {
     }
   ];
 
-  private isDirty: boolean = false;
-  private sendDirtyEvent = () => {
+  public isDirty = false;
+  public sendDirtyEvent = () => {
     LuigiClient.uxManager().setDirtyStatus(this.isDirty);
   };
 }

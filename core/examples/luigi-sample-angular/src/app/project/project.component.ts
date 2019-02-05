@@ -32,6 +32,7 @@ export class ProjectComponent implements OnInit, OnDestroy {
   public confirmationModalResult: '' | 'confirmed' | 'dismissed';
   public alertDismissed;
   public alertTypes = ['success', 'info', 'warning', 'error'];
+  public isDirty = false;
 
   public constructor(
     private activatedRoute: ActivatedRoute,
@@ -137,9 +138,9 @@ export class ProjectComponent implements OnInit, OnDestroy {
       relativePath: { text: 'relative hide side nav', url: 'hideSideNav' }
     };
 
-    const { type, dismissButton, link } = this.luigiAlertForm.value;
-    const textData = link ? texts.withLink : texts.withoutLink;
-    const linkData = link ? exampleLinks : undefined;
+    const { type, dismissButton, links } = this.luigiAlertForm.value;
+    const textData = links ? texts.withLink : texts.withoutLink;
+    const linkData = links ? exampleLinks : undefined;
 
     const settings = {
       text: textData,
@@ -169,4 +170,8 @@ export class ProjectComponent implements OnInit, OnDestroy {
   resetPathExistsResult() {
     this.pathExists.result = undefined;
   }
+
+  public sendDirtyEvent = () => {
+    LuigiClient.uxManager().setDirtyStatus(this.isDirty);
+  };
 }

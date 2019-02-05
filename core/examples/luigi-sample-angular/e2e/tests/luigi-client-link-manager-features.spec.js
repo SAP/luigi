@@ -155,7 +155,9 @@ describe('Luigi client features', () => {
         .click();
 
       //alert disappears
-      cy.get('.fd-alert').should('not.exist');
+      cy.get('[data-cy=luigi-alert]').should('be.visible');
+      cy.get('[data-cy=luigi-alert-dismiss]').click();
+      cy.get('[data-cy=luigi-alert]').should('not.exist');
     });
 
     it('navigate to a totally wrong link', () => {
@@ -174,7 +176,9 @@ describe('Luigi client features', () => {
         .click();
 
       //alert disappears
-      cy.get('.fd-alert').should('not.exist');
+      cy.get('[data-cy=luigi-alert]').should('be.visible');
+      cy.get('[data-cy=luigi-alert-dismiss]').click();
+      cy.get('[data-cy=luigi-alert]').should('not.exist');
     });
   });
 });
