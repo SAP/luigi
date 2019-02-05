@@ -2,13 +2,15 @@
   class="fd-alert fd-alert--{settings.type} {settings.dismissButton ? 'fd-alert--dismissible' : ''}"
   role="alert"
   id="j2ALl423"
+  data-cy="luigi-alert"
 >
   {#if settings.dismissButton}
   <button
     class="fd-alert__close close-button"
     on:click="fire('alertDismiss')"
-    aria-label="  Close"
+    aria-label="Close"
     aria-controls="j2ALl423"
+    data-cy="luigi-alert-dismiss"
   ></button>
   {/if}
   {@html settings.text}
