@@ -3,15 +3,25 @@
     <div class="fd-modal__content" role="document">
       <div class="fd-modal__header">
         <h1 class="fd-modal__title">{settings.header}</h1>
-        <button class="fd-button--light fd-modal__close" on:click="fire('modalDismiss')" aria-label="close"></button>
+        <button
+          class="fd-button--light fd-modal__close"
+          on:click="fire('modalDismiss')"
+          aria-label="close"
+        ></button>
       </div>
-      <div class="fd-modal__body">
-        {settings.body}
-      </div>
+      <div class="fd-modal__body">{settings.body}</div>
       <footer class="fd-modal__footer">
         <div class="fd-modal__actions">
-          <button on:click="fire('modalDismiss')" data-cy="luigi-modal-dismiss" class="fd-button--light">{settings.buttonDismiss}</button>
-          <button on:click="fire('modalConfirm')" data-cy="luigi-modal-confirm" class="fd-button confirm-button">{settings.buttonConfirm}</button>
+          <button
+            on:click="fire('modalDismiss')"
+            data-cy="luigi-modal-dismiss"
+            class="fd-button--light"
+          >{settings.buttonDismiss}</button>
+          <button
+            on:click="fire('modalConfirm')"
+            data-cy="luigi-modal-confirm"
+            class="fd-button confirm-button"
+          >{settings.buttonConfirm}</button>
         </div>
       </footer>
     </div>
@@ -26,9 +36,11 @@
         body: 'Are you sure you want to do this?',
         buttonDismiss: 'No',
         buttonConfirm: 'Yes'
-      }
+      };
 
-      this.set({settings: Object.assign(defaultSettings, this.get().settings)});
+      this.set({
+        settings: Object.assign(defaultSettings, this.get().settings)
+      });
 
       try {
         document.querySelector('.confirm-button').focus();
@@ -46,7 +58,7 @@
   .fd-modal {
     &__body,
     &__header {
-      word-wrap: break-word;
+      overflow-wrap: break-word;
     }
   }
 
