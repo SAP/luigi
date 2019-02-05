@@ -10,6 +10,7 @@
 <script type="text/javascript">
   import * as Routing from './services/routing.js';
   import * as RoutingHelpers from './utilities/helpers/routing-helpers';
+  import * as GenericHelpers from './utilities/helpers/generic-helpers';
 
   export default {
     oncreate() {
@@ -22,12 +23,6 @@
 
       this.set({ settings: Object.assign(defaultSettings, this.get().settings) });
 
-      try {
-        document.querySelector('.confirm-button').focus();
-      } catch (e) {
-        console.warn("Couldn't focus confirmation button in modal");
-      }
-
       const {text, links} = this.get().settings;
       const textToDisplay = this.getTextToDisplay(text, links);
       this.set({settings: Object.assign(this.get().settings, {text: textToDisplay})});
@@ -37,7 +32,9 @@
         try {
           document.getElementById(elemId).addEventListener("click",
             (event) => {
-              Routing.navigateTo(url);
+              const currentPath = GenericHelpers.addTrailingSlash(Routing.getWindowPath())
+              const newPath = (url.startsWith('/')) ? url : (currentPath + url);
+              Routing.navigateTo(newPath);
               event.stopPropagation(event);
             });
         } catch (e) {

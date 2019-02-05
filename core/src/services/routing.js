@@ -73,7 +73,7 @@ export const navigateTo = async route => {
   window.dispatchEvent(event);
 };
 
-const getWindowPath = () =>
+export const getWindowPath = () =>
   LuigiConfig.getConfigValue('routing.useHashRouting')
     ? GenericHelpers.getPathWithoutHash(window.location.hash)
     : window.location.pathname;

@@ -128,12 +128,13 @@ export class ProjectComponent implements OnInit, OnDestroy {
         quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
         Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.`,
       withLink: `<b onmouseover=alert('Wufff!')>click me!</b>Ut enim ad minim veniam,
-        {goToHome} quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+        {goToHome} quis nostrud exercitation ullamco {relativePath} laboris nisi ut aliquip ex ea commodo consequat.
         Duis aute irure dolor {goToOtherProject} in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.`
     };
     const exampleLinks = {
       goToHome: { text: 'homepage', url: '/overview' },
-      goToOtherProject: { text: 'other project', url: '/projects/pr2' }
+      goToOtherProject: { text: 'other project', url: '/projects/pr2' },
+      relativePath: { text: 'relative', url: 'hideSideNav' }
     };
 
     const { type, dismissButton, link } = this.luigiAlertForm.value;
