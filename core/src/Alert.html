@@ -19,7 +19,6 @@
 <script type="text/javascript">
   import * as Routing from './services/routing.js';
   import * as RoutingHelpers from './utilities/helpers/routing-helpers';
-  import * as GenericHelpers from './utilities/helpers/generic-helpers';
 
   export default {
     oncreate() {
@@ -45,12 +44,17 @@
       addCLickListener(url, elemId) {
         try {
           document.getElementById(elemId).addEventListener('click', event => {
-            const currentPath = GenericHelpers.addTrailingSlash(
-              Routing.getWindowPath()
-            );
-            const newPath = url.startsWith('/') ? url : currentPath + url;
-            Routing.navigateTo(newPath);
+            const isRelative = !url.startsWith('/');
             event.stopPropagation(event);
+            this.root.getUnsavedChangesModalPromise().then(() => {
+              const data = {
+                params: {
+                  link: url,
+                  relative: isRelative
+                }
+              };
+              this.root.handleNavigation(data);
+            });
           });
         } catch (e) {
           console.error('Error on Alert::addClickListener', e);

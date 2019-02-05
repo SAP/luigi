@@ -11,7 +11,6 @@
   {/if}
   {#if alert.isDisplayed}
   <Alert settings="{alert.settings}" on:alertDismiss="handleAlertDismiss()"></Alert>
-
   {/if}
   <Backdrop>
     <div class="fd-page iframeContainer" use:init="context"></div>
@@ -28,7 +27,6 @@
       <div></div>
     </div>
   </div>
-
   {/if}
   <TopNav
     pathData="{navigationPath}"
@@ -156,17 +154,6 @@
       // instead of using the existing instance for route.
       config.iframe = null;
     }
-  };
-
-  const handleNavigation = async (component, data, config) => {
-    let path = buildPath(component, data.params);
-
-    if (path[0] !== '/') {
-      path = '/' + path; //add leading slash if necessary
-    }
-
-    addPreserveView(component, data, config);
-    Routing.navigateTo(path); //navigate to the raw path. Any errors/alerts are handled later
   };
 
   const sendContextToClient = (component, config, goBackContext = {}) => {
@@ -298,7 +285,7 @@
           if ('luigi.navigation.open' === e.data.msg) {
             this.set({ isNavigateBack: false });
             this.getUnsavedChangesModalPromise().then(() => {
-              handleNavigation(this, e.data, config);
+              this.handleNavigation(e.data, config);
             });
           }
 
@@ -319,8 +306,7 @@
                     e.data.goBackContext && JSON.parse(e.data.goBackContext)
                 });
                 // TODO: check if getNavigationPath or history pop to update hash / path
-                const path = handleNavigation(
-                  this,
+                const path = this.handleNavigation(
                   { params: { link: previousActiveIframeData.path } },
                   config
                 );
@@ -394,6 +380,13 @@
       }
     },
     methods: {
+      handleNavigation(data, config) {
+        let path = buildPath(this, data.params);
+        path = GenericHelpers.addLeadingSlash(path);
+
+        addPreserveView(this, data, config);
+        Routing.navigateTo(path); //navigate to the raw path. Any errors/alerts are handled later
+      },
       prepareInternalData() {
         return {
           isNavigateBack: this.get().isNavigateBack,
