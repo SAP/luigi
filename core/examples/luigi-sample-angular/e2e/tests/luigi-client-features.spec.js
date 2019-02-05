@@ -11,7 +11,7 @@ describe('Luigi client features', () => {
   it('linkManager features', () => {
     cy.get('iframe').then($iframe => {
       const $iframeBody = $iframe.contents().find('body');
-      cy.goToFeaturesPage($iframeBody);
+      cy.goToLinkManagerMethods($iframeBody);
 
       //navigate using absolute path
       cy.wrap($iframeBody)
@@ -19,7 +19,7 @@ describe('Luigi client features', () => {
         .click();
       cy.expectPathToBe('/overview');
 
-      cy.goToFeaturesPage($iframeBody);
+      cy.goToLinkManagerMethods($iframeBody);
 
       //navigate using relative path
       cy.wrap($iframeBody)
@@ -28,7 +28,7 @@ describe('Luigi client features', () => {
       cy.expectPathToBe('/projects/pr2/users/groups/stakeholders');
 
       cy.goToOverviewPage();
-      cy.goToFeaturesPage($iframeBody);
+      cy.goToLinkManagerMethods($iframeBody);
 
       //navigate using closest context
       cy.wrap($iframeBody)
@@ -37,7 +37,7 @@ describe('Luigi client features', () => {
       cy.expectPathToBe('/projects/pr2/users/groups/stakeholders');
 
       cy.goToOverviewPage();
-      cy.goToFeaturesPage($iframeBody);
+      cy.goToLinkManagerMethods($iframeBody);
 
       //navigate using context
       cy.wrap($iframeBody)
@@ -96,7 +96,7 @@ describe('Luigi client features', () => {
         });
 
       // check if path exists
-      cy.goToFeaturesPage($iframeBody);
+      cy.goToLinkManagerMethods($iframeBody);
       [
         // non-existent relative path
         { path: 'projects/pr2/', successExpected: false },
@@ -137,7 +137,7 @@ describe('Luigi client features', () => {
     beforeEach(() => {
       cy.get('iframe').then($iframe => {
         $iframeBody = $iframe.contents().find('body');
-        cy.goToFeaturesPage($iframeBody);
+        cy.goToLinkManagerMethods($iframeBody);
       });
     });
     it('navigate to a partly wrong link', () => {
@@ -184,7 +184,7 @@ describe('Luigi client features', () => {
       cy.wait(500);
       cy.get('iframe').then($iframe => {
         const $iframeBody = $iframe.contents().find('body');
-        cy.goToFeaturesPage($iframeBody);
+        cy.goToUxManagerMethods($iframeBody);
         cy.wrap($iframeBody).should(
           'not.contain',
           'Lorem tipsum dolor sit amet'
@@ -195,18 +195,52 @@ describe('Luigi client features', () => {
         cy.wrap($iframeBody)
           .contains('Add backdrop')
           .click();
+
         cy.wrap($iframeBody).should('contain', 'Lorem tipsum dolor sit amet');
         cy.get('.fd-ui__overlay').should('exist');
-
         //close modal
         cy.wrap($iframeBody)
+          .find('.fd-modal__footer')
           .contains('Confirm')
           .click();
+
         cy.wrap($iframeBody).should(
           'not.contain',
           'Lorem tipsum dolor sit amet'
         );
         cy.get('.fd-ui__overlay').should('not.exist');
+      });
+    });
+
+    it('confirmation modal', () => {
+      cy.get('iframe').then($iframe => {
+        const $iframeBody = $iframe.contents().find('body');
+
+        cy.goToUxManagerMethods($iframeBody);
+
+        cy.get('[data-cy=luigi-confirmation-modal]').should('not.be.visible');
+
+        cy.wrap($iframeBody)
+          .find('[data-cy=show-luigi-confirmation-modal]')
+          .click();
+        cy.get('[data-cy=luigi-confirmation-modal]').should('be.visible');
+
+        cy.get('[data-cy=luigi-modal-dismiss]').click();
+        cy.get('[data-cy=luigi-confirmation-modal]').should('not.be.visible');
+        cy.wrap($iframeBody)
+          .find('[data-cy=luigi-confirmation-modal-result]')
+          .contains('Confirmation modal has been dismissed');
+
+        cy.wrap($iframeBody)
+          .find('[data-cy=show-luigi-confirmation-modal]')
+          .click();
+        cy.get('[data-cy=luigi-confirmation-modal]').should('be.visible');
+
+        cy.get('[data-cy=luigi-modal-confirm]').click();
+        cy.get('[data-cy=luigi-confirmation-modal]').should('not.be.visible');
+        cy.wrap($iframeBody)
+          .find('[data-cy=luigi-confirmation-modal-result]')
+          .contains('Confirmation modal has been confirmed');
       });
     });
 
@@ -234,6 +268,7 @@ describe('Luigi client features', () => {
         cy.get('.spinnerContainer .fd-spinner').should('not.exist');
       });
     });
+
     it("Unsaved changes - shouldn't proceed when 'No' was pressed in modal", () => {
       cy.get('iframe').then($iframe => {
         const $iframeBody = $iframe.contents().find('body');
@@ -246,17 +281,18 @@ describe('Luigi client features', () => {
           .contains('Projects')
           .click();
 
-        cy.get('[data-cy=confirmation-modal]').should('be.visible');
+        cy.get('[data-cy=luigi-confirmation-modal]').should('be.visible');
 
         cy.expectPathToBe('/overview'); //the location is unchanged
 
-        cy.get('[data-cy=modal-no]').click();
+        cy.get('[data-cy=luigi-modal-dismiss]').click();
 
-        cy.get('[data-cy=confirmation-modal]').should('not.be.visible');
+        cy.get('[data-cy=luigi-confirmation-modal]').should('not.be.visible');
 
         cy.expectPathToBe('/overview'); //the location is still unchanged after "No" clicked
       });
     });
+
     it("Unsaved changes - should proceed when 'Yes' was pressed in modal", () => {
       cy.get('iframe').then($iframe => {
         const $iframeBody = $iframe.contents().find('body');
@@ -269,13 +305,13 @@ describe('Luigi client features', () => {
           .contains('Projects')
           .click();
 
-        cy.get('[data-cy=confirmation-modal]').should('be.visible');
+        cy.get('[data-cy=luigi-confirmation-modal]').should('be.visible');
 
         cy.expectPathToBe('/overview'); //the location is unchanged
 
-        cy.get('[data-cy=modal-yes]').click();
+        cy.get('[data-cy=luigi-modal-confirm]').click();
 
-        cy.get('[data-cy=confirmation-modal]').should('not.be.visible');
+        cy.get('[data-cy=luigi-confirmation-modal]').should('not.be.visible');
 
         cy.expectPathToBe('/projects'); //the location is changed after "Yes" clicked
       });

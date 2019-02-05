@@ -1,6 +1,6 @@
 describe('Login Flow', () => {
   beforeEach(() => {
-    cy.visit('http://localhost:4200');
+    cy.visit('/');
   });
 
   it('Login', () => {
