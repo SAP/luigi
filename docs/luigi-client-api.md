@@ -239,7 +239,7 @@ Shows an alert.
         in the text to reference the links, wrapped in curly braces with no spaces
     -   `settings.type` **(`"info"` \| `"success"` \| `"warning"` \| `"error"`)** sets the type of the alert
     -   `settings.links` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** provides links data
-        -   `settings.links.LINK_KEY` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** object containing the data for a concrete link.  
+        -   `settings.links.LINK_KEY` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** object containing the data for a concrete link.  
             Read above on how to use the key to for the link to be properly rendered in the alert message.
             -   `settings.links.LINK_KEY.text` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** text which will replace the link identifier in the alert content
             -   `settings.links.LINK_KEY.url` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** url to navigate when the link is clicked. Currently only internal links
