@@ -63,23 +63,21 @@
       },
       processTextAndLinks(text, links) {
         let sanitizedText = RoutingHelpers.sanitizeHtml(text);
+        let initialValue = { sanitizedText, links: [] };
 
         if (!links) {
-          return sanitizedText;
+          return initialValue;
         }
 
-        return Object.entries(links).reduce(
-          (acc, [key, content]) => {
-            const elemId = key;
-            const processedData = `<a id="${elemId}">${content.text}</a>`;
-            const pattern = new RegExp(`({${key}})`, 'g');
-            return {
-              sanitizedText: acc.sanitizedText.replace(pattern, processedData),
-              links: acc.links.concat({ elemId, url: content.url })
-            };
-          },
-          { sanitizedText, links: [] }
-        );
+        return Object.entries(links).reduce((acc, [key, content]) => {
+          const elemId = key;
+          const processedData = `<a id="${elemId}">${content.text}</a>`;
+          const pattern = new RegExp(`({${key}})`, 'g');
+          return {
+            sanitizedText: acc.sanitizedText.replace(pattern, processedData),
+            links: acc.links.concat({ elemId, url: content.url })
+          };
+        }, initialValue);
       }
     }
   };
