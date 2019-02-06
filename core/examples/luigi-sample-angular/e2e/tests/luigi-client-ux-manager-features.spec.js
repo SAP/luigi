@@ -183,7 +183,7 @@ describe('Luigi client ux manger features', () => {
 
           cy.get('[data-cy=luigi-alert]').should(
             'have.class',
-            'fd-alert--info'
+            'fd-alert--information'
           );
         });
       });

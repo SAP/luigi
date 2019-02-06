@@ -1,5 +1,5 @@
 <div
-  class="fd-alert fd-alert--{settings.type} fd-alert--dismissible"
+  class="fd-alert fd-alert--{alertTypeMap[settings.type]} fd-alert--dismissible"
   role="alert"
   id="j2ALl423"
   data-cy="luigi-alert"
@@ -19,6 +19,16 @@
   import * as RoutingHelpers from './utilities/helpers/routing-helpers';
 
   export default {
+    data() {
+      return {
+        alertTypeMap: {
+          info: 'information',
+          success: 'success',
+          warning: 'warning',
+          error: 'error'
+        }
+      };
+    },
     oncreate() {
       const defaultSettings = {
         text:
