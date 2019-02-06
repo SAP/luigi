@@ -30,14 +30,15 @@
         links: undefined
       };
 
-      this.set({
-        settings: Object.assign(defaultSettings, this.get().settings)
-      });
-
       const { text, links } = this.get().settings;
-      const textToDisplay = this.getTextToDisplay(text, links);
+      const processedData = this.processTextAndLinks(text, links);
       this.set({
-        settings: Object.assign(this.get().settings, { text: textToDisplay })
+        settings: Object.assign(defaultSettings, this.get().settings, {
+          text: processedData.sanitizedText
+        })
+      });
+      processedData.links.forEach(l => {
+        this.addCLickListener(l.url, l.elemId);
       });
     },
     methods: {
@@ -60,23 +61,25 @@
           console.error('Error on Alert::addClickListener', e);
         }
       },
-      getTextToDisplay(text, links) {
+      processTextAndLinks(text, links) {
         let sanitizedText = RoutingHelpers.sanitizeHtml(text);
 
         if (!links) {
           return sanitizedText;
         }
 
-        return Object.entries(links).reduce((acc, [key, content]) => {
-          const elemId = key;
-          setTimeout(() => {
-            this.addCLickListener(content.url, elemId);
-          }, 10);
-
-          const processedData = `<a id="${key}">${content.text}</a>`;
-          const pattern = new RegExp(`({${key}})`, 'g');
-          return acc.replace(pattern, processedData);
-        }, sanitizedText);
+        return Object.entries(links).reduce(
+          (acc, [key, content]) => {
+            const elemId = key;
+            const processedData = `<a id="${elemId}">${content.text}</a>`;
+            const pattern = new RegExp(`({${key}})`, 'g');
+            return {
+              sanitizedText: acc.sanitizedText.replace(pattern, processedData),
+              links: acc.links.concat({ elemId, url: content.url })
+            };
+          },
+          { sanitizedText, links: [] }
+        );
       }
     }
   };
