@@ -437,7 +437,7 @@ const LuigiClient = {
       showConfirmationModal: function showConfirmationModal(settings) {
         window.parent.postMessage(
           {
-            msg: 'luigi.ux.confirmation-modal-show',
+            msg: 'luigi.ux.confirmationModal.show',
             data: { settings }
           },
           '*'

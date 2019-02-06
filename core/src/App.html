@@ -349,7 +349,7 @@
             });
           }
 
-          if ('luigi.ux.confirmation-modal-show' === e.data.msg) {
+          if ('luigi.ux.confirmationModal.show' === e.data.msg) {
             this.set({ contentNode: node });
             const data = e.data.data;
             this.showModal(data.settings, true).then(
