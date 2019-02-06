@@ -261,6 +261,25 @@ describe('Luigi client ux manger features', () => {
             .should('not.exist');
         });
       });
+
+      it('alert is not displayed if it does not have any text', () => {
+        cy.get('iframe').then($iframe => {
+          const $iframeBody = $iframe.contents().find('body');
+
+          cy.goToUxManagerMethods($iframeBody);
+
+          cy.get('[data-cy=luigi-alert]').should('not.exist');
+
+          cy.wrap($iframeBody)
+            .find('[data-cy=luigi-alert-text]')
+            .uncheck();
+          cy.wrap($iframeBody)
+            .find('[data-cy=show-luigi-alert]')
+            .click();
+
+          cy.get('[data-cy=luigi-alert]').should('not.exist');
+        });
+      });
     });
   });
 });

@@ -123,7 +123,10 @@ export class ProjectComponent implements OnInit, OnDestroy {
   }
 
   showAlert() {
-    this.alertDismissed = false;
+    const { type, links, text } = this.luigiAlertForm.value;
+
+    this.alertDismissed = text ? false : undefined;
+
     const texts = {
       withoutLink: `<b onmouseover=alert('Wufff!')>click me!</b> Ut enim ad minim veniam,
         quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
@@ -138,8 +141,7 @@ export class ProjectComponent implements OnInit, OnDestroy {
       relativePath: { text: 'relative hide side nav', url: 'hideSideNav' }
     };
 
-    const { type, links } = this.luigiAlertForm.value;
-    const textData = links ? texts.withLink : texts.withoutLink;
+    const textData = !text ? '' : links ? texts.withLink : texts.withoutLink;
     const linkData = links ? exampleLinks : undefined;
 
     const settings = {

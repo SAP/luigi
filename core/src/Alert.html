@@ -30,16 +30,6 @@
       };
     },
     oncreate() {
-      const defaultSettings = {
-        text:
-          'I am a Luigi alert with extremely relevant information for the user',
-        type: 'info',
-        links: undefined
-      };
-      this.set({
-        settings: Object.assign(defaultSettings, this.get().settings)
-      });
-
       const { text, links } = this.get().settings;
       const processedData = this.processTextAndLinks(text, links);
       this.set({

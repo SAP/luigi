@@ -76,6 +76,19 @@
               Links
             </label>
           </div>
+          <div class="fd-form__item fd-form__item--check">
+            <label class="fd-form__label">
+              <input
+                [ngModel]="true"
+                [disabled]="this.alertDismissed === false"
+                type="checkbox"
+                name="text"
+                class="fd-form__control"
+                data-cy="luigi-alert-text"
+              />
+              With text (if alert has not text it is not displayed)
+            </label>
+          </div>
         </div>
       </form>
       <button
