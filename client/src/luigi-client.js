@@ -453,16 +453,13 @@ const LuigiClient = {
       /**
        * Shows an alert.
        * @param {Object} settings the settings for the alert
-       * @param {string} settings.text the content of the alert. To add a link to the content,
-       * you have to setup the link in `links` object. The key(s) in the `links` object must be used
-       * in the text to reference the links, wrapped in curly braces with no spaces
+       * @param {string} settings.text the content of the alert. To add a link to the content, you have to setup the link in `links` object. The key(s) in the `links` object must be used in the text to reference the links, wrapped in curly braces with no spaces. If no text is specified, the alert will not be displayed 
        * @param {('info'|'success'|'warning'|'error')} settings.type sets the type of the alert
        * @param {Object} settings.links provides links data
        * @param {Object} settings.links.LINK_KEY object containing the data for a concrete link.  
        * Read above on how to use the key to for the link to be properly rendered in the alert message.
        * @param {string} settings.links.LINK_KEY.text text which will replace the link identifier in the alert content
-       * @param {string} settings.links.LINK_KEY.url url to navigate when the link is clicked. Currently only internal links
-       * are supported in the form of relative or absolute paths.
+       * @param {string} settings.links.LINK_KEY.url url to navigate when the link is clicked. Currently only internal links are supported in the form of relative or absolute paths.
        * @returns {promise} which is resolved when the alert is dismissed.
        * @example
        * import LuigiClient from '@kyma-project/luigi-client';
