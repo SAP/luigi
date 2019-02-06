@@ -290,8 +290,7 @@ const showPageNotFoundError = async (
         (isAnyPathMatched
           ? 'Could not map the exact target node for the requested route '
           : 'Could not find the requested route ') + notFoundPath,
-      type: 'error',
-      dismissButton: true
+      type: 'error'
     },
     openFromClient: false,
     isDisplayed: true

@@ -148,7 +148,7 @@ describe('Luigi client ux manger features', () => {
     });
 
     describe('Luigi Client generic alert', () => {
-      it('success alert with dismiss button', () => {
+      it('success and info alerts with dismiss button', () => {
         cy.get('iframe').then($iframe => {
           const $iframeBody = $iframe.contents().find('body');
 
@@ -176,23 +176,10 @@ describe('Luigi client ux manger features', () => {
           cy.wrap($iframeBody)
             .find('[data-cy=luigi-alert-result]')
             .contains('Luigi alert has been dismissed');
-        });
-      });
-
-      it('info alert without dismiss button', () => {
-        cy.get('iframe').then($iframe => {
-          const $iframeBody = $iframe.contents().find('body');
-
-          cy.goToUxManagerMethods($iframeBody);
-
-          cy.get('[data-cy=luigi-alert]').should('not.exist');
 
           cy.wrap($iframeBody)
             .find('[data-cy=luigi-alert-type]')
             .select('info');
-          cy.wrap($iframeBody)
-            .find('[data-cy=luigi-alert-dismiss-button]')
-            .uncheck();
           cy.wrap($iframeBody)
             .find('[data-cy=show-luigi-alert]')
             .click();
@@ -201,12 +188,6 @@ describe('Luigi client ux manger features', () => {
             'have.class',
             'fd-alert--info'
           );
-
-          cy.get('[data-cy=luigi-alert-dismiss]').should('not.exist');
-
-          cy.reload()
-            .get('[data-cy=luigi-alert]')
-            .should('not.exist');
         });
       });
 

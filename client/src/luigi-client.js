@@ -457,7 +457,6 @@ const LuigiClient = {
        * you have to setup the link in `links` object. The key(s) in the `links` object must be used
        * in the text to reference the links, wrapped in curly braces with no spaces
        * @param {('info'|'success'|'warning'|'error')} settings.type sets the type of the alert
-       * @param {boolean} [settings.dismissButton=true] specifies if dismiss button should be displayed in the alert
        * @param {Object} settings.links provides links data
        * @param {string} settings.links.LINK_KEY object containing the data for a concrete link.  
        * Read above on how to use the key to for the link to be properly rendered in the alert message.
@@ -471,7 +470,6 @@ const LuigiClient = {
        *  text: Ut enim ad minim veniam, {goToHome} quis nostrud exercitation ullamco {relativePath} laboris nisi ut aliquip ex ea commodo consequat.
        *    Duis aute irure dolor {goToOtherProject},
        *  type: 'info',
-       *  dismissButton: false,
        *  links: {
        *    goToHome: { text: 'homepage', url: '/overview' },
        *    goToOtherProject: { text: 'other project', url: '/projects/pr2' },

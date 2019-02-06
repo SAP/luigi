@@ -138,14 +138,13 @@ export class ProjectComponent implements OnInit, OnDestroy {
       relativePath: { text: 'relative hide side nav', url: 'hideSideNav' }
     };
 
-    const { type, dismissButton, links } = this.luigiAlertForm.value;
+    const { type, links } = this.luigiAlertForm.value;
     const textData = links ? texts.withLink : texts.withoutLink;
     const linkData = links ? exampleLinks : undefined;
 
     const settings = {
       text: textData,
       type,
-      dismissButton,
       links: linkData
     };
 
