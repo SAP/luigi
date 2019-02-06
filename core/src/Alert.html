@@ -49,7 +49,7 @@
       });
     },
     methods: {
-      addCLickListener(url, elemId) {
+      addClickListener(url, elemId) {
         try {
           document.getElementById(elemId).addEventListener('click', event => {
             const isRelative = !url.startsWith('/');
