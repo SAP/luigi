@@ -290,7 +290,8 @@ const showPageNotFoundError = async (
         (isAnyPathMatched
           ? 'Could not map the exact target node for the requested route '
           : 'Could not find the requested route ') + notFoundPath,
-      type: 'error'
+      type: 'error',
+      ttl: 1 //how many redirections the alert will 'survive'.
     },
     openFromClient: false,
     isDisplayed: true

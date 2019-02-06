@@ -256,6 +256,22 @@
           builderCompatibilityMode: Boolean(window.builderCompatibilityMode),
           isolateAllViews
         };
+        window.addEventListener('popstate', async e => {
+          const alert = this.get().alert;
+          if (
+            alert &&
+            !alert.openFromClient &&
+            typeof alert.settings.ttl === 'number'
+          ) {
+            if (alert.settings.ttl === 0) {
+              this.handleAlertDismiss();
+            } else {
+              const updatedAlert = { ...alert };
+              updatedAlert.settings.ttl--;
+              this.set({ alert: updatedAlert });
+            }
+          }
+        });
         window.addEventListener('message', async e => {
           if ('luigi.get-context' === e.data.msg && config.iframe) {
             sendContextToClient(this, config, {});
