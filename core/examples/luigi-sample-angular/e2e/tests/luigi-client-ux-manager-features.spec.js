@@ -160,9 +160,6 @@ describe('Luigi client ux manger features', () => {
             .find('[data-cy=luigi-alert-type]')
             .select('success');
           cy.wrap($iframeBody)
-            .find('[data-cy=luigi-alert-dismiss-button]')
-            .check();
-          cy.wrap($iframeBody)
             .find('[data-cy=show-luigi-alert]')
             .click();
 
