@@ -1,6 +1,7 @@
+import { isHashRoutingOn } from '../support/commands';
 describe('Luigi client features', () => {
   beforeEach(() => {
-    cy.visit('http://localhost:4200');
+    cy.visit('/');
     cy.login('tets', 'tets');
 
     //wait for the iFrame to be loaded
@@ -10,51 +11,45 @@ describe('Luigi client features', () => {
   it('linkManager features', () => {
     cy.get('iframe').then($iframe => {
       const $iframeBody = $iframe.contents().find('body');
-      cy.goToFeaturesPage($iframeBody);
+      cy.goToLinkManagerMethods($iframeBody);
 
       //navigate using absolute path
       cy.wrap($iframeBody)
         .contains('absolute: to overview')
         .click();
-      cy.location().should(loc => {
-        expect(loc.pathname).to.eq('/overview');
-      });
-      cy.goToFeaturesPage($iframeBody);
+      cy.expectPathToBe('/overview');
+
+      cy.goToLinkManagerMethods($iframeBody);
 
       //navigate using relative path
       cy.wrap($iframeBody)
         .contains('relative: to stakeholders')
         .click();
-      cy.location().should(loc => {
-        expect(loc.pathname).to.eq('/projects/pr2/users/groups/stakeholders');
-      });
+      cy.expectPathToBe('/projects/pr2/users/groups/stakeholders');
+
       cy.goToOverviewPage();
-      cy.goToFeaturesPage($iframeBody);
+      cy.goToLinkManagerMethods($iframeBody);
 
       //navigate using closest context
       cy.wrap($iframeBody)
         .contains('closest parent: to stakeholders')
         .click();
-      cy.location().should(loc => {
-        expect(loc.pathname).to.eq('/projects/pr2/users/groups/stakeholders');
-      });
+      cy.expectPathToBe('/projects/pr2/users/groups/stakeholders');
+
       cy.goToOverviewPage();
-      cy.goToFeaturesPage($iframeBody);
+      cy.goToLinkManagerMethods($iframeBody);
 
       //navigate using context
       cy.wrap($iframeBody)
         .contains('parent by name: project to settings')
         .click();
-      cy.location().should(loc => {
-        expect(loc.pathname).to.eq('/projects/pr2/settings');
-      });
+      cy.expectPathToBe('/projects/pr2/settings');
+
       cy.wrap($iframeBody).should('contain', 'Settings');
       cy.wrap($iframeBody)
         .contains('Click here')
         .click();
-      cy.location().should(loc => {
-        expect(loc.pathname).to.eq('/projects/pr2');
-      });
+      cy.expectPathToBe('/projects/pr2');
 
       //navigate with params
       cy.wrap($iframeBody)
@@ -62,32 +57,25 @@ describe('Luigi client features', () => {
         .click();
       cy.wrap($iframeBody).should('contain', 'Called with params:');
       cy.wrap($iframeBody).should('contain', '"foo": "bar"');
-      cy.location().should(loc => {
-        expect(loc.pathname).to.eq('/projects/pr2/settings');
-        expect(loc.search).to.eq('?~foo=bar&');
-      });
+
+      cy.expectSearchToBe('?~foo=bar&');
+
       cy.wrap($iframeBody)
         .contains('Click here')
         .click();
-      cy.location().should(loc => {
-        expect(loc.pathname).to.eq('/projects/pr2');
-      });
+      cy.expectPathToBe('/projects/pr2');
 
       //don't navigate
       cy.wrap($iframeBody)
         .contains('parent by name: with nonexisting context')
         .click();
-      cy.location().should(loc => {
-        expect(loc.pathname).to.eq('/projects/pr2');
-      });
+      cy.expectPathToBe('/projects/pr2');
 
       //navigate with preserve view functionality
       cy.wrap($iframeBody)
         .contains('with preserved view: project to global settings and back')
         .click();
-      cy.location().should(loc => {
-        expect(loc.pathname).to.eq('/settings');
-      });
+      cy.expectPathToBe('/settings');
 
       //wait for the second iFrame to be loaded
       cy.wait(500);
@@ -104,13 +92,11 @@ describe('Luigi client features', () => {
           cy.wrap($preserveViewiFrameBody)
             .find('button')
             .click();
-          cy.location().should(loc => {
-            expect(loc.pathname).to.eq('/projects/pr2');
-          });
+          cy.expectPathToBe('/projects/pr2');
         });
 
       // check if path exists
-      cy.goToFeaturesPage($iframeBody);
+      cy.goToLinkManagerMethods($iframeBody);
       [
         // non-existent relative path
         { path: 'projects/pr2/', successExpected: false },
@@ -151,16 +137,15 @@ describe('Luigi client features', () => {
     beforeEach(() => {
       cy.get('iframe').then($iframe => {
         $iframeBody = $iframe.contents().find('body');
-        cy.goToFeaturesPage($iframeBody);
+        cy.goToLinkManagerMethods($iframeBody);
       });
     });
     it('navigate to a partly wrong link', () => {
       cy.wrap($iframeBody)
         .contains('Partly wrong link')
         .click();
-      cy.location().should(loc => {
-        expect(loc.pathname).to.eq('/projects/pr2/miscellaneous2');
-      });
+      cy.expectPathToBe('/projects/pr2/miscellaneous2');
+
       cy.get('.fd-alert').contains(
         'Could not map the exact target node for the requested route projects/pr2/miscellaneous2/maskopatol'
       );
@@ -178,9 +163,8 @@ describe('Luigi client features', () => {
       cy.wrap($iframeBody)
         .contains('Totally wrong link')
         .click();
-      cy.location().should(loc => {
-        expect(loc.pathname).to.eq('/overview');
-      });
+      cy.expectPathToBe('/overview');
+
       cy.get('.fd-alert').contains(
         'Could not find the requested route maskopatol/has/a/child'
       );
@@ -200,7 +184,7 @@ describe('Luigi client features', () => {
       cy.wait(500);
       cy.get('iframe').then($iframe => {
         const $iframeBody = $iframe.contents().find('body');
-        cy.goToFeaturesPage($iframeBody);
+        cy.goToUxManagerMethods($iframeBody);
         cy.wrap($iframeBody).should(
           'not.contain',
           'Lorem tipsum dolor sit amet'
@@ -211,18 +195,52 @@ describe('Luigi client features', () => {
         cy.wrap($iframeBody)
           .contains('Add backdrop')
           .click();
+
         cy.wrap($iframeBody).should('contain', 'Lorem tipsum dolor sit amet');
         cy.get('.fd-ui__overlay').should('exist');
-
         //close modal
         cy.wrap($iframeBody)
+          .find('.fd-modal__footer')
           .contains('Confirm')
           .click();
+
         cy.wrap($iframeBody).should(
           'not.contain',
           'Lorem tipsum dolor sit amet'
         );
         cy.get('.fd-ui__overlay').should('not.exist');
+      });
+    });
+
+    it('confirmation modal', () => {
+      cy.get('iframe').then($iframe => {
+        const $iframeBody = $iframe.contents().find('body');
+
+        cy.goToUxManagerMethods($iframeBody);
+
+        cy.get('[data-cy=luigi-confirmation-modal]').should('not.be.visible');
+
+        cy.wrap($iframeBody)
+          .find('[data-cy=show-luigi-confirmation-modal]')
+          .click();
+        cy.get('[data-cy=luigi-confirmation-modal]').should('be.visible');
+
+        cy.get('[data-cy=luigi-modal-dismiss]').click();
+        cy.get('[data-cy=luigi-confirmation-modal]').should('not.be.visible');
+        cy.wrap($iframeBody)
+          .find('[data-cy=luigi-confirmation-modal-result]')
+          .contains('Confirmation modal has been dismissed');
+
+        cy.wrap($iframeBody)
+          .find('[data-cy=show-luigi-confirmation-modal]')
+          .click();
+        cy.get('[data-cy=luigi-confirmation-modal]').should('be.visible');
+
+        cy.get('[data-cy=luigi-modal-confirm]').click();
+        cy.get('[data-cy=luigi-confirmation-modal]').should('not.be.visible');
+        cy.wrap($iframeBody)
+          .find('[data-cy=luigi-confirmation-modal-result]')
+          .contains('Confirmation modal has been confirmed');
       });
     });
 
@@ -250,6 +268,7 @@ describe('Luigi client features', () => {
         cy.get('.spinnerContainer .fd-spinner').should('not.exist');
       });
     });
+
     it("Unsaved changes - shouldn't proceed when 'No' was pressed in modal", () => {
       cy.get('iframe').then($iframe => {
         const $iframeBody = $iframe.contents().find('body');
@@ -262,21 +281,18 @@ describe('Luigi client features', () => {
           .contains('Projects')
           .click();
 
-        cy.get('[data-cy=confirmation-modal]').should('be.visible');
+        cy.get('[data-cy=luigi-confirmation-modal]').should('be.visible');
 
-        cy.location().should(loc => {
-          expect(loc.pathname).to.eq('/overview'); //the location is unchanged
-        });
+        cy.expectPathToBe('/overview'); //the location is unchanged
 
-        cy.get('[data-cy=modal-no]').click();
+        cy.get('[data-cy=luigi-modal-dismiss]').click();
 
-        cy.get('[data-cy=confirmation-modal]').should('not.be.visible');
+        cy.get('[data-cy=luigi-confirmation-modal]').should('not.be.visible');
 
-        cy.location().should(loc => {
-          expect(loc.pathname).to.eq('/overview'); //the location is still unchanged after "No" clicked
-        });
+        cy.expectPathToBe('/overview'); //the location is still unchanged after "No" clicked
       });
     });
+
     it("Unsaved changes - should proceed when 'Yes' was pressed in modal", () => {
       cy.get('iframe').then($iframe => {
         const $iframeBody = $iframe.contents().find('body');
@@ -289,19 +305,15 @@ describe('Luigi client features', () => {
           .contains('Projects')
           .click();
 
-        cy.get('[data-cy=confirmation-modal]').should('be.visible');
+        cy.get('[data-cy=luigi-confirmation-modal]').should('be.visible');
 
-        cy.location().should(loc => {
-          expect(loc.pathname).to.eq('/overview'); //the location is unchanged
-        });
+        cy.expectPathToBe('/overview'); //the location is unchanged
 
-        cy.get('[data-cy=modal-yes]').click();
+        cy.get('[data-cy=luigi-modal-confirm]').click();
 
-        cy.get('[data-cy=confirmation-modal]').should('not.be.visible');
+        cy.get('[data-cy=luigi-confirmation-modal]').should('not.be.visible');
 
-        cy.location().should(loc => {
-          expect(loc.pathname).to.eq('/projects'); //the location is changed after "Yes" clicked
-        });
+        cy.expectPathToBe('/projects'); //the location is changed after "Yes" clicked
       });
     });
   });

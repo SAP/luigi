@@ -1,6 +1,6 @@
 describe('Login Flow', () => {
   beforeEach(() => {
-    cy.visit('http://localhost:4200');
+    cy.visit('/');
   });
 
   it('Login', () => {
@@ -14,9 +14,7 @@ describe('Login Flow', () => {
     cy.get('.sap-icon--customer').click();
     cy.contains('Logout').click();
     cy.get('body').should('contain', 'Logout successful');
-    cy.location().should(loc => {
-      expect(loc.pathname).to.eq('/logout.html');
-    });
+    cy.expectPathToBe('/logout.html');
 
     //login again
     cy.contains('Login again').click();

@@ -145,6 +145,34 @@ class Navigation {
      */
     fallbackLabelResolver: id => id.replace(/\b\w/g, l => l.toUpperCase())
   };
+  // The following configuration will be used to render a product switcher component
+  productSwitcher = {
+    items: [
+      {
+        icon: 'https://sap.github.io/fundamental/images/products/06.png',
+        label: 'hybris',
+        externalLink: {
+          url: 'https://www.hybris.com',
+          sameWindow: false
+        }
+      },
+      {
+        icon: 'https://sap.github.io/fundamental/images/products/06.png',
+        label: 'Project 1',
+        link: '/projects/pr1'
+      },
+      {
+        icon: 'https://sap.github.io/fundamental/images/products/06.png',
+        label: 'Project 2',
+        link: '/projects/pr2'
+      },
+      {
+        icon: 'https://sap.github.io/fundamental/images/products/06.png',
+        label: 'Project 3',
+        link: '/projects/pr3'
+      }
+    ]
+  };
 }
 
 export const navigation = new Navigation(

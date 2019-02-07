@@ -21,6 +21,7 @@ export class ProjectComponent implements OnInit, OnDestroy {
   private lcSubscription: Subscription;
   private cudListener: string;
   public pathExists: { formValue: string; result: boolean | null };
+  public confirmationModalResult: '' | 'confirmed' | 'dismissed';
 
   public constructor(
     private activatedRoute: ActivatedRoute,
@@ -85,6 +86,29 @@ export class ProjectComponent implements OnInit, OnDestroy {
 
   toggleModal() {
     this.modalActive = !this.modalActive;
+  }
+
+  showConfirmationModal() {
+    this.confirmationModalResult = '';
+    const content = {
+      // header: 'Modal Header - Luigi modal',
+      body: `Lorem tipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna
+        aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+        Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.`,
+      buttonConfirm: 'Confirm',
+      buttonDismiss: 'Cancel'
+    };
+    this.luigiClient
+      .uxManager()
+      .showConfirmationModal(content)
+      .then(
+        () => {
+          this.confirmationModalResult = 'confirmed';
+        },
+        () => {
+          this.confirmationModalResult = 'dismissed';
+        }
+      );
   }
 
   checkIfPathExists() {
