@@ -461,7 +461,7 @@ const LuigiClient = {
        * Read above on how to use the key to for the link to be properly rendered in the alert message.
        * @param {string} settings.links.LINK_KEY.text text which replaces the link identifier in the alert content
        * @param {string} settings.links.LINK_KEY.url url to navigate when the link is clicked. Currently only internal links are supported in the form of relative or absolute paths.
-       * @returns {promise} which is resolved when the alert is dismissed.
+       * @returns {promise} which is resolved when the alert is dismissed
        * @example
        * import LuigiClient from '@kyma-project/luigi-client';
        * const settings = {
