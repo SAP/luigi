@@ -15,6 +15,11 @@ export class OverviewComponent {
       description: 'backdrop, confirmation modal, alerts and more'
     },
     {
+      link: '/ext',
+      text: 'uxManager()',
+      description: 'loading indicator'
+    },
+    {
       link: '/projects/pr2',
       text: 'linkManager()',
       description: 'navigation methods'
