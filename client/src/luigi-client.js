@@ -459,7 +459,7 @@ const LuigiClient = {
        * @param {Object} settings.links.LINK_KEY object containing the data for a particular link.
      
        * Read above on how to use the key to for the link to be properly rendered in the alert message.
-       * @param {string} settings.links.LINK_KEY.text text which will replace the link identifier in the alert content
+       * @param {string} settings.links.LINK_KEY.text text which replaces the link identifier in the alert content
        * @param {string} settings.links.LINK_KEY.url url to navigate when the link is clicked. Currently only internal links are supported in the form of relative or absolute paths.
        * @returns {promise} which is resolved when the alert is dismissed.
        * @example
