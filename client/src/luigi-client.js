@@ -453,7 +453,7 @@ const LuigiClient = {
       /**
        * Shows an alert.
        * @param {Object} settings the settings for the alert
-       * @param {string} settings.text the content of the alert. To add a link to the content, you have to setup the link in `links` object. The key(s) in the `links` object must be used in the text to reference the links, wrapped in curly braces with no spaces. If no text is specified, the alert will not be displayed 
+       * @param {string} settings.text the content of the alert. To add a link to the content, you have to set up the link in the `links` object. The key(s) in the `links` object must be used in the text to reference the links, wrapped in curly brackets with no spaces. If you don't specify any text, the alert is not displayed.
        * @param {('info'|'success'|'warning'|'error')} settings.type sets the type of the alert
        * @param {Object} settings.links provides links data
        * @param {Object} settings.links.LINK_KEY object containing the data for a concrete link.  
