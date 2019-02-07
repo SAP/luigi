@@ -12,17 +12,7 @@ export class OverviewComponent {
     {
       link: '/projects/pr1',
       text: 'uxManager()',
-      description: 'backdrop methods'
-    },
-    {
-      link: '/projects/pr1',
-      text: 'uxManager()',
-      description: 'confirmation modal methods'
-    },
-    {
-      link: '/ext',
-      text: 'uxManager()',
-      description: 'loading indicator methods'
+      description: 'backdrop, confirmation modal, alerts and more'
     },
     {
       link: '/projects/pr2',
