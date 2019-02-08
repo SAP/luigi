@@ -110,6 +110,11 @@ function luigiClientInit() {
       data.confirmed ? promise.resolveFn() : promise.rejectFn();
       delete promises.confirmationModal;
     }
+
+    if ('luigi.ux.alert.hide' === e.data.msg) {
+      promises.alert.resolveFn();
+      delete promises.alert;
+    }
   });
 
   window.parent.postMessage({ msg: 'luigi.get-context' }, '*');
@@ -422,18 +427,18 @@ const LuigiClient = {
       },
       /**
        * Shows a confirmation modal.
-       * @param {Object} content the content of the confirmation modal. If no value is provided for any of the fields, a default value is set for it.
-       * @param {string} content.header the content of the modal header
-       * @param {string} content.body the content of the modal body
-       * @param {string} content.buttonConfirm the label for the modal confirm button
-       * @param {string} content.buttonDismiss the label for the modal dismiss button
+       * @param {Object} settings the settings the confirmation modal. If no value is provided for any of the fields, a default value is set for it.
+       * @param {string} settings.header the content of the modal header
+       * @param {string} settings.body the content of the modal body
+       * @param {string} settings.buttonConfirm the label for the modal confirm button
+       * @param {string} settings.buttonDismiss the label for the modal dismiss button
        * @returns {promise} which is resolved when accepting the confirmation modal and rejected when dismissing it.
        */
-      showConfirmationModal: function showConfirmationModal(content) {
+      showConfirmationModal: function showConfirmationModal(settings) {
         window.parent.postMessage(
           {
-            msg: 'luigi.ux.confirmation-modal-show',
-            data: { content }
+            msg: 'luigi.ux.confirmationModal.show',
+            data: { settings }
           },
           '*'
         );
@@ -443,6 +448,51 @@ const LuigiClient = {
           promises.confirmationModal.rejectFn = reject;
         });
         return promises.confirmationModal.promise;
+      },
+
+      /**
+       * Shows an alert.
+       * @param {Object} settings the settings for the alert
+       * @param {string} settings.text the content of the alert. To add a link to the content, you have to set up the link in the `links` object. The key(s) in the `links` object must be used in the text to reference the links, wrapped in curly brackets with no spaces. If you don't specify any text, the alert is not displayed.
+       * @param {('info'|'success'|'warning'|'error')} settings.type sets the type of the alert
+       * @param {Object} settings.links provides links data
+       * @param {Object} settings.links.LINK_KEY object containing the data for a particular link. To properly render the link in the alert message refer to the description of the **settings.text** parameter.
+       * @param {string} settings.links.LINK_KEY.text text which replaces the link identifier in the alert content
+       * @param {string} settings.links.LINK_KEY.url url to navigate when you click the link. Currently, only internal links are supported in the form of relative or absolute paths.
+       * @returns {promise} which is resolved when the alert is dismissed
+       * @example
+       * import LuigiClient from '@kyma-project/luigi-client';
+       * const settings = {
+       *  text: Ut enim ad minim veniam, {goToHome} quis nostrud exercitation ullamco {relativePath} laboris nisi ut aliquip ex ea commodo consequat.
+       *    Duis aute irure dolor {goToOtherProject},
+       *  type: 'info',
+       *  links: {
+       *    goToHome: { text: 'homepage', url: '/overview' },
+       *    goToOtherProject: { text: 'other project', url: '/projects/pr2' },
+       *    relativePath: { text: 'relative hide side nav', url: 'hideSideNav' }
+       *  }
+       * }
+       * LuigiClient
+       *  .uxManager()
+       *  .showAlert(settings)
+       *  .then(() => {
+       *     // Logic to execute when the alert is dismissed
+       * });
+
+       */
+      showAlert: function showAlert(settings) {
+        window.parent.postMessage(
+          {
+            msg: 'luigi.ux.alert.show',
+            data: { settings }
+          },
+          '*'
+        );
+        promises.alert = {};
+        promises.alert.promise = new Promise(resolve => {
+          promises.alert.resolveFn = resolve;
+        });
+        return promises.alert.promise;
       }
     };
   }

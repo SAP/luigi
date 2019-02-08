@@ -2,28 +2,15 @@
   id="app"
   class="{hideNav? 'no-nav' : ''} {hideSideNav? 'no-side-nav' : ''}"
 >
-  {#if alert && alert.message}
-  <div
-    class="fd-alert fd-alert--error fd-alert--dismissible"
-    role="alert"
-    id="j2ALl423"
-  >
-    <button
-      on:click="set({alert:null})"
-      class="fd-alert__close"
-      aria-controls="j2ALl423"
-      aria-label="Close"
-    ></button>
-    {alert.message} {alert.link}
-  </div>
-  {/if}
   {#if confirmationModal.isDisplayed}
   <ConfirmationModal
-    content="{confirmationModal.content}"
+    settings="{confirmationModal.settings}"
     on:modalConfirm="handleModalResult(true)"
     on:modalDismiss="handleModalResult(false)"
-  >
-  </ConfirmationModal>
+  ></ConfirmationModal>
+  {/if}
+  {#if alert.isDisplayed}
+  <Alert settings="{alert.settings}" on:alertDismiss="handleAlertDismiss()"></Alert>
   {/if}
   <Backdrop>
     <div class="fd-page iframeContainer" use:init="context"></div>
@@ -36,10 +23,11 @@
     aria-hidden="false"
     aria-label="Loading"
   >
-    <div class="fd-spinner"><div></div></div>
+    <div class="fd-spinner">
+      <div></div>
+    </div>
   </div>
   {/if}
-
   <TopNav
     pathData="{navigationPath}"
     on:handleClick="handleNavClick(event.node)"
@@ -58,6 +46,7 @@
   import TopNav from './navigation/TopNav.html';
   import LeftNav from './navigation/LeftNav.html';
   import ConfirmationModal from './ConfirmationModal.html';
+  import Alert from './Alert.html';
   import { LuigiConfig } from './services/config.js';
   import * as Routing from './services/routing.js';
   import * as Navigation from './navigation/services/navigation.js';
@@ -167,17 +156,6 @@
     }
   };
 
-  const handleNavigation = async (component, data, config) => {
-    let path = buildPath(component, data.params);
-
-    if (path[0] !== '/') {
-      path = '/' + path; //add leading slash if necessary
-    }
-
-    addPreserveView(component, data, config);
-    Routing.navigateTo(path); //navigate to the raw path. Any errors/alerts are handled later
-  };
-
   const sendContextToClient = (component, config, goBackContext = {}) => {
     if (!config.iframe) {
       console.info('iframe does not exist, not able to send context.');
@@ -218,32 +196,52 @@
     );
   };
 
+  const getDefaultAlertData = () => {
+    return {
+      alert: {
+        isDisplayed: false,
+        settings: {},
+        openFromClient: false,
+        promise: null
+      }
+    };
+  };
+
+  const getDefaultConfirmationModalData = () => {
+    return {
+      confirmationModal: {
+        isDisplayed: false,
+        content: {},
+        openFromClient: false,
+        promise: null
+      }
+    };
+  };
+
   export default {
     data() {
-      return {
-        contentNode: undefined,
-        isNavigateBack: false,
-        showLoadingIndicator: false,
-        preservedViews: [
-          // {
-          //     path: '/project/p2/settings',
-          //     nextPath: '/project/p2',
-          //     context: {}
-          //     iframe: Element
-          // }
-        ],
-        confirmationModal: {
-          isDisplayed: false,
-          content: {},
-          openFromClient: false,
-          promise: null
+      return Object.assign(
+        {
+          contentNode: undefined,
+          isNavigateBack: false,
+          showLoadingIndicator: false,
+          preservedViews: [
+            // {
+            //     path: '/project/p2/settings',
+            //     nextPath: '/project/p2',
+            //     context: {}
+            //     iframe: Element
+            // }
+          ],
+          unsavedChanges: {
+            isDirty: false,
+            persistUrl: null
+          },
+          hideSideNav: false
         },
-        unsavedChanges: {
-          isDirty: false,
-          persistUrl: null
-        },
-        hideSideNav: false
-      };
+        getDefaultAlertData(),
+        getDefaultConfirmationModalData()
+      );
     },
     oncreate() {},
     onstate({ changed, current, previous }) {},
@@ -260,12 +258,16 @@
         };
         window.addEventListener('popstate', async e => {
           const alert = this.get().alert;
-          if (alert && typeof alert.ttl == 'number') {
-            if (alert.ttl === 0) {
-              this.set({ alert: null });
+          if (
+            alert &&
+            !alert.openFromClient &&
+            typeof alert.settings.ttl === 'number'
+          ) {
+            if (alert.settings.ttl === 0) {
+              this.handleAlertDismiss();
             } else {
               const updatedAlert = { ...alert };
-              updatedAlert.ttl--;
+              updatedAlert.settings.ttl--;
               this.set({ alert: updatedAlert });
             }
           }
@@ -299,7 +301,7 @@
           if ('luigi.navigation.open' === e.data.msg) {
             this.set({ isNavigateBack: false });
             this.getUnsavedChangesModalPromise().then(() => {
-              handleNavigation(this, e.data, config);
+              this.handleNavigation(e.data, config);
             });
           }
 
@@ -320,8 +322,7 @@
                     e.data.goBackContext && JSON.parse(e.data.goBackContext)
                 });
                 // TODO: check if getNavigationPath or history pop to update hash / path
-                const path = handleNavigation(
-                  this,
+                const path = this.handleNavigation(
                   { params: { link: previousActiveIframeData.path } },
                   config
                 );
@@ -364,12 +365,31 @@
             });
           }
 
-          if ('luigi.ux.confirmation-modal-show' === e.data.msg) {
-            this.set({ contentNode: node })
-            const data = e.data.data
-            this.showModal(data.content, true).then(
-                () => { },
-                () => { /* keep it to avoid runtime errors in browser console */ }
+          if ('luigi.ux.confirmationModal.show' === e.data.msg) {
+            const settings = e.data.data.settings;
+            this.set({ contentNode: node });
+            this.showModal(settings, true).then(
+              () => {},
+              () => {
+                /* keep it to avoid runtime errors in browser console */
+              }
+            );
+          }
+
+          if ('luigi.ux.alert.show' === e.data.msg) {
+            const settings = e.data.data.settings;
+            if (!settings.text) {
+              console.error(
+                "Luigi Client alert: 'text' field for alert is empty or not present, therefore alert will not be displayed"
+              );
+              return;
+            }
+            this.set({ contentNode: node });
+            this.showAlert(settings, true).then(
+              () => {},
+              () => {
+                /* keep it to avoid runtime errors in browser console */
+              }
             );
           }
         });
@@ -382,6 +402,13 @@
       }
     },
     methods: {
+      handleNavigation(data, config) {
+        let path = buildPath(this, data.params);
+        path = GenericHelpers.addLeadingSlash(path);
+
+        addPreserveView(this, data, config);
+        Routing.navigateTo(path); //navigate to the raw path. Any errors/alerts are handled later
+      },
       prepareInternalData() {
         return {
           isNavigateBack: this.get().isNavigateBack,
@@ -403,8 +430,13 @@
         } else {
           promise.reject();
         }
+
+        this.set(getDefaultConfirmationModalData());
+
         if (openFromClient) {
-          Iframe.getActiveIframe(this.get().contentNode).contentWindow.postMessage(
+          Iframe.getActiveIframe(
+            this.get().contentNode
+          ).contentWindow.postMessage(
             {
               msg: 'luigi.ux.confirmationModal.hide',
               data: { confirmed: result }
@@ -412,13 +444,14 @@
             '*'
           );
         }
-        this.hideModal();
       },
       getUnsavedChangesModalPromise() {
         return new Promise(resolve => {
           if (this.shouldShowUnsavedChangesModal()) {
             this.showUnsavedChangesModal().then(
-              () => { resolve(); },
+              () => {
+                resolve();
+              },
               () => {}
             );
           } else {
@@ -433,45 +466,61 @@
         );
       },
       showUnsavedChangesModal() {
-        return this.showModal(
-          {
-            header: 'Unsaved changes detected',
-            body: 'It looks like you might lose some data if you leave this page. Are you sure you want to do this?',
-            buttonDismiss: 'No',
-            buttonConfirm: 'Yes'
-          }
-        );
+        return this.showModal({
+          header: 'Unsaved changes detected',
+          body:
+            'It looks like you might lose some data if you leave this page. Are you sure you want to do this?',
+          buttonDismiss: 'No',
+          buttonConfirm: 'Yes'
+        });
       },
-      showModal(content, openFromClient = false) {
+      showModal(settings, openFromClient = false) {
         return new Promise((resolve, reject) => {
-          //send the response when one of following methods were executed
           this.set({
             confirmationModal: {
               isDisplayed: true,
-              content,
+              settings,
               openFromClient,
               promise: { resolve, reject }
             }
-          })
-        })
-      },
-      hideModal() {
-        this.set({
-          confirmationModal: {
-            isDisplayed: false,
-            content: {},
-            openFromClient: false,
-            promise: null
-          }
+          });
         });
       },
+      showAlert(settings, openFromClient = false) {
+        return new Promise((resolve, reject) => {
+          this.set({
+            alert: {
+              isDisplayed: true,
+              settings,
+              openFromClient,
+              promise: { resolve }
+            }
+          });
+        });
+      },
+      handleAlertDismiss() {
+        const openFromClient = this.get().alert.openFromClient;
+        this.set(getDefaultAlertData());
+
+        if (openFromClient) {
+          Iframe.getActiveIframe(
+            this.get().contentNode
+          ).contentWindow.postMessage(
+            {
+              msg: 'luigi.ux.alert.hide'
+            },
+            '*'
+          );
+        }
+      }
     },
 
     components: {
       Backdrop,
       TopNav,
       LeftNav,
-      ConfirmationModal
+      ConfirmationModal,
+      Alert
     },
     transitions: { fade }
   };
@@ -560,19 +609,6 @@
       left: 0;
       bottom: 0;
       right: 0;
-    }
-  }
-
-  .fd-alert {
-    position: absolute;
-    min-width: 20rem;
-    width: calc(100% - 2 * (#{$leftNavWidth} + 1rem));
-    top: calc(#{$topNavHeight} + 1rem);
-    left: calc(#{$leftNavWidth} + 1rem);
-    z-index: 2;
-    overflow-wrap: break-word;
-    .fd-alert__close {
-      cursor: pointer;
     }
   }
 
