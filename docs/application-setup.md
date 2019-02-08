@@ -9,7 +9,7 @@ Choose the framework to build your application:
 [SAPUI5/OpenUI5](#sapui5)<br>
 [VUE.JS](#vuejs)
 
-## Intitial steps
+## Initial steps
 
 Follow these steps to build a web application based on Luigi:
 
