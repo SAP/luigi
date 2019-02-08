@@ -9,7 +9,7 @@ Choose the framework to build your application:
 [SAPUI5/OpenUI5](#sapui5)<br>
 [VUE.JS](#vuejs)
 
-## Initial steps
+## Basic application setup
 
 Follow these steps to build a web application based on Luigi:
 
@@ -135,7 +135,7 @@ npm run start
 npm install -g live-server
 ````
 
-2. Use the following installer to create a directory for your application, install Luigi, make assets available, and start your local server
+2. Use the installer to create a directory for your application, install Luigi, make assets available, and start your local server:
 
 ````
 bash <(curl -s https://raw.githubusercontent.com/kyma-project/Luigi/master/scripts/setup/openui5.sh)
