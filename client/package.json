@@ -1,6 +1,6 @@
 {
   "name": "@kyma-project/luigi-client",
-  "version": "0.4.5",
+  "version": "0.4.6",
   "description": "Javascript library supporting consumers of the Luigi framework",
   "repository": {
     "type": "git",
