@@ -384,7 +384,9 @@
               );
               return;
             }
-            this.set({ contentNode: node });
+            this.set(
+              Object.assign({ contentNode: node }, getDefaultAlertData())
+            );
             this.showAlert(settings, true).then(
               () => {},
               () => {
