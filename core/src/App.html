@@ -367,7 +367,12 @@
 
           if ('luigi.ux.confirmationModal.show' === e.data.msg) {
             const settings = e.data.data.settings;
-            this.set({ contentNode: node });
+            this.set(
+              Object.assign(
+                { contentNode: node },
+                getDefaultConfirmationModalData()
+              )
+            );
             this.showModal(settings, true).then(
               () => {},
               () => {

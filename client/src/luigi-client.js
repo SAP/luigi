@@ -112,8 +112,10 @@ function luigiClientInit() {
     if ('luigi.ux.confirmationModal.hide' === e.data.msg) {
       const data = e.data.data;
       const promise = promises.confirmationModal;
-      data.confirmed ? promise.resolveFn() : promise.rejectFn();
-      delete promises.confirmationModal;
+      if (promise) {
+        data.confirmed ? promise.resolveFn() : promise.rejectFn();
+        delete promises.confirmationModal;
+      }
     }
 
     if ('luigi.ux.alert.hide' === e.data.msg) {
