@@ -93,7 +93,12 @@ function luigiClientInit() {
       // execute the context change listener if set by the microfrontend
       _callAllFns(_onContextUpdatedFns, currentContext.context);
 
-      window.parent.postMessage({ msg: 'luigi.navigate.ok' }, '*');
+      window.parent.postMessage(
+        {
+          msg: 'luigi.navigate.ok'
+        },
+        '*'
+      );
     } else if ('luigi.auth.tokenIssued' === e.data.msg) {
       setAuthData(e.data.authData);
     }
@@ -107,17 +112,26 @@ function luigiClientInit() {
     if ('luigi.ux.confirmationModal.hide' === e.data.msg) {
       const data = e.data.data;
       const promise = promises.confirmationModal;
-      data.confirmed ? promise.resolveFn() : promise.rejectFn();
-      delete promises.confirmationModal;
+      if (promise) {
+        data.confirmed ? promise.resolveFn() : promise.rejectFn();
+        delete promises.confirmationModal;
+      }
     }
 
     if ('luigi.ux.alert.hide' === e.data.msg) {
-      promises.alert.resolveFn();
-      delete promises.alert;
+      if (promises.alert) {
+        promises.alert.resolveFn();
+        delete promises.alert;
+      }
     }
   });
 
-  window.parent.postMessage({ msg: 'luigi.get-context' }, '*');
+  window.parent.postMessage(
+    {
+      msg: 'luigi.get-context'
+    },
+    '*'
+  );
 }
 
 luigiClientInit();
@@ -395,25 +409,45 @@ const LuigiClient = {
        * Adds a backdrop with a loading indicator for the micro front-end frame. This overrides the {@link navigation-configuration.md#nodes loadingIndicator.enabled} setting.
        */
       showLoadingIndicator: function showLoadingIndicator() {
-        window.parent.postMessage({ msg: 'luigi.show-loading-indicator' }, '*');
+        window.parent.postMessage(
+          {
+            msg: 'luigi.show-loading-indicator'
+          },
+          '*'
+        );
       },
       /**
        * Removes the loading indicator. Use it after calling {@link #showLoadingIndicator showLoadingIndicator()} or to hide the indicator when you use the {@link navigation-configuration.md#nodes loadingIndicator.hideAutomatically: false} node configuration.
        */
       hideLoadingIndicator: function hideLoadingIndicator() {
-        window.parent.postMessage({ msg: 'luigi.hide-loading-indicator' }, '*');
+        window.parent.postMessage(
+          {
+            msg: 'luigi.hide-loading-indicator'
+          },
+          '*'
+        );
       },
       /**
        * Adds a backdrop to block the top and side navigation. It is based on the Fundamental UI Modal, which you can use in your micro front-end to achieve the same behavior.
        */
       addBackdrop: function addBackdrop() {
-        window.parent.postMessage({ msg: 'luigi.add-backdrop' }, '*');
+        window.parent.postMessage(
+          {
+            msg: 'luigi.add-backdrop'
+          },
+          '*'
+        );
       },
       /**
        * Removes the backdrop.
        */
       removeBackdrop: function removeBackdrop() {
-        window.parent.postMessage({ msg: 'luigi.remove-backdrop' }, '*');
+        window.parent.postMessage(
+          {
+            msg: 'luigi.remove-backdrop'
+          },
+          '*'
+        );
       },
       /**
        * This method informs the main application that there are unsaved changes in the current view in the iframe. For example, that can be a view with form fields which were edited but not submitted.
@@ -421,7 +455,10 @@ const LuigiClient = {
        */
       setDirtyStatus: function setDirtyStatus(isDirty) {
         window.parent.postMessage(
-          { msg: 'luigi.set-page-dirty', dirty: isDirty },
+          {
+            msg: 'luigi.set-page-dirty',
+            dirty: isDirty
+          },
           '*'
         );
       },
@@ -438,7 +475,9 @@ const LuigiClient = {
         window.parent.postMessage(
           {
             msg: 'luigi.ux.confirmationModal.show',
-            data: { settings }
+            data: {
+              settings
+            }
           },
           '*'
         );
@@ -484,7 +523,9 @@ const LuigiClient = {
         window.parent.postMessage(
           {
             msg: 'luigi.ux.alert.show',
-            data: { settings }
+            data: {
+              settings
+            }
           },
           '*'
         );
