@@ -2,7 +2,7 @@ const path = require('path');
 const webpack = require('webpack');
 
 module.exports = {
-  watch: true,
+  watch: false,
   mode: 'production',
   entry: {
     extendedConfiguration: './src/luigi-config/extended/main.js',
