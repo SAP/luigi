@@ -219,10 +219,48 @@ Shows a confirmation modal.
 
 #### Parameters
 
--   `content` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** the content of the confirmation modal. If no value is provided for any of the fields, a default value is set for it.
-    -   `content.header` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** the content of the modal header
-    -   `content.body` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** the content of the modal body
-    -   `content.buttonConfirm` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** the label for the modal confirm button
-    -   `content.buttonDismiss` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** the label for the modal dismiss button
+-   `settings` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** the settings the confirmation modal. If no value is provided for any of the fields, a default value is set for it.
+    -   `settings.header` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** the content of the modal header
+    -   `settings.body` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** the content of the modal body
+    -   `settings.buttonConfirm` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** the label for the modal confirm button
+    -   `settings.buttonDismiss` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** the label for the modal dismiss button
 
 Returns **[promise](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise)** which is resolved when accepting the confirmation modal and rejected when dismissing it.
+
+### showAlert
+
+Shows an alert.
+
+#### Parameters
+
+-   `settings` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** the settings for the alert
+    -   `settings.text` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** the content of the alert. To add a link to the content, you have to set up the link in the `links` object. The key(s) in the `links` object must be used in the text to reference the links, wrapped in curly brackets with no spaces. If you don't specify any text, the alert is not displayed.
+    -   `settings.type` **(`"info"` \| `"success"` \| `"warning"` \| `"error"`)** sets the type of the alert
+    -   `settings.links` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** provides links data
+        -   `settings.links.LINK_KEY` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** object containing the data for a particular link. To properly render the link in the alert message refer to the description of the **settings.text** parameter.
+            -   `settings.links.LINK_KEY.text` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** text which replaces the link identifier in the alert content
+            -   `settings.links.LINK_KEY.url` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** url to navigate when you click the link. Currently, only internal links are supported in the form of relative or absolute paths.
+
+#### Examples
+
+```javascript
+import LuigiClient from '@kyma-project/luigi-client';
+const settings = {
+ text: Ut enim ad minim veniam, {goToHome} quis nostrud exercitation ullamco {relativePath} laboris nisi ut aliquip ex ea commodo consequat.
+   Duis aute irure dolor {goToOtherProject},
+ type: 'info',
+ links: {
+   goToHome: { text: 'homepage', url: '/overview' },
+   goToOtherProject: { text: 'other project', url: '/projects/pr2' },
+   relativePath: { text: 'relative hide side nav', url: 'hideSideNav' }
+ }
+}
+LuigiClient
+ .uxManager()
+ .showAlert(settings)
+ .then(() => {
+    // Logic to execute when the alert is dismissed
+});
+```
+
+Returns **[promise](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise)** which is resolved when the alert is dismissed

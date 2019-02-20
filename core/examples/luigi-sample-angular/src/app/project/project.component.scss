@@ -16,7 +16,7 @@ section {
   li:not(:last-of-type) {
     padding-bottom: 20px;
   }
-  &.link-manager {
+  .link-manager {
     input {
       display: inline;
       max-width: 25em;

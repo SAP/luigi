@@ -2,16 +2,26 @@
   <div class="fd-modal" data-cy="luigi-confirmation-modal">
     <div class="fd-modal__content" role="document">
       <div class="fd-modal__header">
-        <h1 class="fd-modal__title">{content.header}</h1>
-        <button class="fd-button--light fd-modal__close" on:click="fire('modalDismiss')" aria-label="close"></button>
+        <h1 class="fd-modal__title">{settings.header}</h1>
+        <button
+          class="fd-button--light fd-modal__close"
+          on:click="fire('modalDismiss')"
+          aria-label="close"
+        ></button>
       </div>
-      <div class="fd-modal__body">
-        {content.body}
-      </div>
+      <div class="fd-modal__body">{settings.body}</div>
       <footer class="fd-modal__footer">
         <div class="fd-modal__actions">
-          <button on:click="fire('modalDismiss')" data-cy="luigi-modal-dismiss" class="fd-button--light">{content.buttonDismiss}</button>
-          <button on:click="fire('modalConfirm')" data-cy="luigi-modal-confirm" class="fd-button confirm-button">{content.buttonConfirm}</button>
+          <button
+            on:click="fire('modalDismiss')"
+            data-cy="luigi-modal-dismiss"
+            class="fd-button--light"
+          >{settings.buttonDismiss}</button>
+          <button
+            on:click="fire('modalConfirm')"
+            data-cy="luigi-modal-confirm"
+            class="fd-button confirm-button"
+          >{settings.buttonConfirm}</button>
         </div>
       </footer>
     </div>
@@ -21,14 +31,16 @@
 <script type="text/javascript">
   export default {
     oncreate() {
-      const defaultContent = {
+      const defaultSettings = {
         header: 'Confirmation',
         body: 'Are you sure you want to do this?',
         buttonDismiss: 'No',
         buttonConfirm: 'Yes'
-      }
+      };
 
-      this.set({content: Object.assign(defaultContent, this.get().content)});
+      this.set({
+        settings: Object.assign(defaultSettings, this.get().settings)
+      });
 
       try {
         document.querySelector('.confirm-button').focus();
@@ -46,7 +58,7 @@
   .fd-modal {
     &__body,
     &__header {
-      word-wrap: break-word;
+      overflow-wrap: break-word;
     }
   }
 

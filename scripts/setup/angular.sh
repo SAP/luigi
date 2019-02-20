@@ -22,7 +22,7 @@ curl https://raw.githubusercontent.com/kyma-project/Luigi/master/core/examples/l
 
 
 # string replacements in some files
-sed 's/extendedConfiguration.js/sampleconfig.js/g' src/index.html > src/index.tmp.html && mv src/index.tmp.html src/index.html
+sed 's/extendedConfiguration.bundle.js/sampleconfig.js/g' src/index.html > src/index.tmp.html && mv src/index.tmp.html src/index.html
 sed 's#"src/index.html"#"src/angular.html"#g' angular.json > tmp.json && mv tmp.json angular.json
 sed 's#"src/styles.css"#"src/styles.css", "node_modules/fiori-fundamentals/dist/fiori-fundamentals.min.css"#g' angular.json > tmp.json && mv tmp.json angular.json
 sed 's#"src/assets"#"src/assets","src/index.html","src/logout.html",{"glob": "fiori-fundamentals.min.css","input": "node_modules/fiori-fundamentals/dist","output": "/fiori-fundamentals"},{"glob": "fonts/**","input": "node_modules/fiori-fundamentals/dist","output": "/fiori-fundamentals"},{"glob": "SAP-icons.*","input": "node_modules/fiori-fundamentals/dist","output": "/fiori-fundamentals"},{"glob": "**","input": "node_modules/@kyma-project/luigi-core","output": "/luigi-core"},{"glob": "luigi-client.js","input": "node_modules/@kyma-project/luigi-client","output": "/luigi-client"}#g' angular.json > tmp.json && mv tmp.json angular.json

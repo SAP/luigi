@@ -12,17 +12,12 @@ export class OverviewComponent {
     {
       link: '/projects/pr1',
       text: 'uxManager()',
-      description: 'backdrop methods'
-    },
-    {
-      link: '/projects/pr1',
-      text: 'uxManager()',
-      description: 'confirmation modal methods'
+      description: 'backdrop, confirmation modal, alerts and more'
     },
     {
       link: '/ext',
       text: 'uxManager()',
-      description: 'loading indicator methods'
+      description: 'loading indicator'
     },
     {
       link: '/projects/pr2',
@@ -63,8 +58,8 @@ export class OverviewComponent {
     }
   ];
 
-  private isDirty: boolean = false;
-  private sendDirtyEvent = () => {
+  public isDirty = false;
+  public sendDirtyEvent = () => {
     LuigiClient.uxManager().setDirtyStatus(this.isDirty);
   };
 }

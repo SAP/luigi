@@ -1,124 +1,360 @@
 <section class="fd-section">
-	<div class="fd-section__header">
-		<h1 class="fd-section__title">Project {{ projectId }}</h1>
+  <div [hidden]="projectId !== 'pr1'">
+    <div class="fd-section__header">
+      <h1 class="fd-section__title">LuigiClient uxManager methods</h1>
+    </div>
+    <div class="fd-panel fd-has-margin-bottom-small">
+      <p><strong>Backdrop</strong></p>
+      <button class="fd-button" data-cy="add-backdrop" (click)="toggleModal()">
+        Add backdrop
+      </button>
+      <p>
+        <app-code-snippet
+          data="luigiClient.uxManager().addBackdrop()"
+        ></app-code-snippet>
+        <app-code-snippet
+          data="luigiClient.uxManager().removeBackdrop()"
+        ></app-code-snippet>
+      </p>
+    </div>
+    <div class="fd-panel fd-has-margin-bottom-small">
+      <p><strong>Confirmation modal</strong></p>
+      <button
+        class="fd-button"
+        data-cy="show-luigi-confirmation-modal"
+        (click)="showConfirmationModal()"
+      >
+        Show Luigi confirmation modal
+      </button>
+      <p>
+        <app-code-snippet
+          data="luigiClient.uxManager().showConfirmationModal(content)"
+        ></app-code-snippet>
+      </p>
+      <p
+        class="fd-has-font-style-italic"
+        data-cy="luigi-confirmation-modal-result"
+        ngClass="{{
+          confirmationModalResult === 'confirmed'
+            ? 'fd-has-color-status-1'
+            : 'fd-has-color-status-2'
+        }}"
+        *ngIf="confirmationModalResult"
+      >
+        Luigi confirmation modal has been {{ confirmationModalResult }}
+      </p>
+    </div>
+    <div class="fd-panel fd-has-margin-bottom-small">
+      <p><strong>Alert</strong></p>
+      <form #luigiAlertForm="ngForm">
+        <div class="fd-form__set fd-has-padding-bottom-small">
+          <div class="fd-form__item">
+            <label class="fd-form__label" for="select-1">Type</label>
+            <select
+              [ngModel]="alertTypes[0]"
+              [disabled]="this.alertDismissed === false"
+              class="fd-form__control"
+              id="select-1"
+              name="type"
+              data-cy="luigi-alert-type"
+            >
+              <option [value]="type" *ngFor="let type of alertTypes">{{
+                type
+              }}</option>
+            </select>
+          </div>
+          <div class="fd-form__item fd-form__item--check">
+            <label class="fd-form__label">
+              <input
+                [ngModel]="true"
+                [disabled]="this.alertDismissed === false"
+                type="checkbox"
+                name="links"
+                class="fd-form__control"
+                data-cy="luigi-alert-links"
+              />
+              Links
+            </label>
+          </div>
+          <div class="fd-form__item fd-form__item--check">
+            <label class="fd-form__label">
+              <input
+                [ngModel]="true"
+                [disabled]="this.alertDismissed === false"
+                type="checkbox"
+                name="text"
+                class="fd-form__control"
+                data-cy="luigi-alert-text"
+              />
+              With text (if alert has no text it is not displayed)
+            </label>
+          </div>
+        </div>
+      </form>
+      <button
+        [disabled]="this.alertDismissed === false"
+        class="fd-button"
+        data-cy="show-luigi-alert"
+        (click)="showAlert()"
+      >
+        Show Luigi alert
+      </button>
+      <p>
+        <app-code-snippet
+          data="luigiClient.uxManager().showAlert(settings)"
+        ></app-code-snippet>
+      </p>
+      <p
+        *ngIf="alertDismissed"
+        class="fd-has-font-style-italic fd-has-color-status-1"
+        data-cy="luigi-alert-result"
+      >
+        Luigi alert has been dismissed
+      </p>
+    </div>
+    <div class="fd-panel fd-has-margin-bottom-small">
+      <p>
+        <strong
+          >Combine unsaved changes feature with Luigi Client UX manager
+          methods!!</strong
+        >
+      </p>
+      <div class="fd-form__item fd-form__item--check">
+        <label class="fd-form__label" for="ImBw4551">
+          <span class="fd-toggle fd-toggle--xs fd-form__control">
+            <input
+              type="checkbox"
+              [(ngModel)]="isDirty"
+              (change)="sendDirtyEvent()"
+              id="ImBw4551"
+            />
+            <span
+              class="fd-toggle__switch"
+              role="presentation"
+              data-cy="toggle-dirty-state"
+            ></span>
+          </span>
+        </label>
+      </div>
+      <span *ngIf="!isDirty">
+        <strong>There are no unsaved changes</strong> &nbsp;&ndash; toggle this
+        to be asked for confirmation when you leave this page
+      </span>
+      <span *ngIf="isDirty">
+        <strong>There are unsaved changes</strong> &nbsp;&ndash; a confirmation
+        modal will appear when you navigate
+        <a
+          title="Navigate to /projects/pr2 as an example"
+          (click)="luigiClient.linkManager().navigate('/projects/pr2')"
+        >
+          somewhere else
+        </a>
+      </span>
+    </div>
   </div>
 
-  <div [hidden]="projectId !== 'pr1'" class="fd-panel fd-has-margin-bottom-small">
-    <p><strong>LuigiClient uxManager methods:</strong></p>
-    <ul class="fd-list-group">
-      <li class="fd-list-group__item">
-        <button class="fd-button" data-cy="add-backdrop" (click)="toggleModal()">
-          Add backdrop
-        </button>
-        <p>
-          <app-code-snippet data="luigiClient.uxManager().addBackdrop()"></app-code-snippet>
-          <app-code-snippet data="luigiClient.uxManager().removeBackdrop()"></app-code-snippet>
-        </p>
-      </li>
-      <li class="fd-list-group__item">
-        <button class="fd-button" data-cy="show-luigi-confirmation-modal" (click)="showConfirmationModal()">Show Luigi confirmation modal</button>
-        <p>
-          <app-code-snippet data="luigiClient.uxManager().showConfirmationModal(content)"></app-code-snippet>
-        </p>
-        <p class="fd-has-font-style-italic" data-cy="luigi-confirmation-modal-result"
-          ngClass="{{(confirmationModalResult === 'confirmed') ? 'fd-has-color-status-1' : 'fd-has-color-status-2'}}"
-          *ngIf="confirmationModalResult">
-          Confirmation modal has been {{ confirmationModalResult}}
-        </p>
-      </li>
-    </ul>
-  </div>
+  <div class="link-manager" [hidden]="projectId !== 'pr2'">
+    <div class="fd-section__header">
+      <h1 class="fd-section__title">LuigiClient linkManager methods</h1>
+    </div>
 
-  <div [hidden]="projectId !== 'pr2'">
     <ng-container *ngIf="preservedViewCallbackContext">
       <div class="fd-panel fd-has-margin-bottom-small">
         <div class="fd-alert" role="alert">
-          <span class="fd-status-label fd-status-label--available"></span> Context received from linkManager().goBack():<br />
+          <span class="fd-status-label fd-status-label--available"></span>
+          Context received from linkManager().goBack():<br />
           <pre>{{ preservedViewCallbackContext | json }}</pre>
         </div>
       </div>
     </ng-container>
 
-    <ng-container>
-      <div class="fd-panel link-manager fd-has-margin-bottom-small">
-        <p><strong>LuigiClient linkManager methods:</strong></p>
-        <ul class="fd-list-group">
-          <li class="fd-list-group__item">
-            <a href="javascript:void(0)" (click)="luigiClient.linkManager().navigate('/overview')">absolute: to overview</a>
-            <app-code-snippet data="luigiClient.linkManager().navigate('/overview')"></app-code-snippet>
-          </li>
-          <li class="fd-list-group__item">
-            <a href="javascript:void(0)" (click)="luigiClient.linkManager().navigate('users/groups/stakeholders')">relative:
-              to stakeholders</a>
-            <app-code-snippet data="luigiClient.linkManager().navigate('users/groups/stakeholders')"></app-code-snippet>
-          </li>
-          <li class="fd-list-group__item">
-            <a href="javascript:void(0)" (click)="luigiClient.linkManager().fromClosestContext().navigate('/users/groups/stakeholders')">
-              closest parent: to stakeholders</a>
-            <app-code-snippet data="luigiClient.linkManager().fromClosestContext().navigate('/users/groups/stakeholders')"></app-code-snippet>
-          </li>
-          <li class="fd-list-group__item">
-            <a href="javascript:void(0)" (click)="luigiClient.linkManager().fromContext('project').navigate('/settings')">
-              parent by name: project to settings</a>
-            <app-code-snippet data="luigiClient.linkManager().fromContext('project').navigate('/settings')"></app-code-snippet>
-          </li>
-          <li class="fd-list-group__item">
-            <a href="javascript:void(0)" (click)="luigiClient.linkManager().fromClosestContext().withParams({foo: 'bar'}).navigate('settings')">
-              project to settings with params (foo=bar)</a>
-            <app-code-snippet data="luigiClient.linkManager().fromClosestContext().withParams({foo: 'bar'}).navigate('settings')"></app-code-snippet>
-          </li>
-          <li class="fd-list-group__item">
-            <a href="javascript:void(0)" (click)="luigiClient.linkManager().fromContext('NONEXISTING').navigate('/settings')">
-              parent by name: with nonexisting context</a> (look at the console)
-            <app-code-snippet data="luigiClient.linkManager().fromContext('NONEXISTING').navigate('/settings')"></app-code-snippet>
-          </li>
-          <li class="fd-list-group__item">
-            <a href="javascript:void(0)" (click)="luigiClient.linkManager().navigate('/settings', null, true)">
-              with preserved view: project to global settings and back</a>
-            <app-code-snippet data="luigiClient.linkManager().navigate('/settings', null, true)"></app-code-snippet>
-          </li>
-          <li class="fd-list-group__item">
-            <a href="javascript:void(0)" (click)="luigiClient.linkManager().withParams({test: true}).navigate('/settings', null, true)">
-              extended preserved view example with params: project to global settings and back</a>
-            <app-code-snippet data="luigiClient.linkManager().withParams({test: true}).navigate('/settings', null, true)"></app-code-snippet>
-          </li>
-          <li class="fd-list-group__item check-path">
-            <span>Check if path exists</span>
-            <app-code-snippet data="luigiClient.linkManager().pathExists('{{pathExists.formValue}}')"></app-code-snippet>
-            <span>
-              <input type="text" [(ngModel)]="pathExists.formValue" (input)="resetPathExistsResult()" />
-              <button class="fd-button" (click)="checkIfPathExists()">Check</button>
-            </span>
-            <p class="check-path-result">
-              <ng-container *ngIf="pathExists.result === true">
-                Path {{pathExists.formValue}} exists!
-              </ng-container>
-              <ng-container *ngIf="pathExists.result === false">
-                Path {{pathExists.formValue}} does not exist!
-              </ng-container>
-            </p>
-          </li>
-        </ul>
-      </div>
+    <div class="fd-panel fd-has-margin-bottom-small">
+      <p><strong>Navigate</strong></p>
+      <ul class="fd-list-group">
+        <li class="fd-list-group__item">
+          <a
+            href="javascript:void(0)"
+            (click)="luigiClient.linkManager().navigate('/overview')"
+            >absolute: to overview</a
+          >
+          <app-code-snippet
+            data="luigiClient.linkManager().navigate('/overview')"
+          ></app-code-snippet>
+        </li>
+        <li class="fd-list-group__item">
+          <a
+            href="javascript:void(0)"
+            (click)="
+              luigiClient.linkManager().navigate('users/groups/stakeholders')
+            "
+            >relative: to stakeholders</a
+          >
+          <app-code-snippet
+            data="luigiClient.linkManager().navigate('users/groups/stakeholders')"
+          ></app-code-snippet>
+        </li>
+        <li class="fd-list-group__item">
+          <a
+            href="javascript:void(0)"
+            (click)="
+              luigiClient
+                .linkManager()
+                .fromClosestContext()
+                .navigate('/users/groups/stakeholders')
+            "
+          >
+            closest parent: to stakeholders</a
+          >
+          <app-code-snippet
+            data="luigiClient.linkManager().fromClosestContext().navigate('/users/groups/stakeholders')"
+          ></app-code-snippet>
+        </li>
+        <li class="fd-list-group__item">
+          <a
+            href="javascript:void(0)"
+            (click)="
+              luigiClient
+                .linkManager()
+                .fromContext('project')
+                .navigate('/settings')
+            "
+          >
+            parent by name: project to settings</a
+          >
+          <app-code-snippet
+            data="luigiClient.linkManager().fromContext('project').navigate('/settings')"
+          ></app-code-snippet>
+        </li>
+        <li class="fd-list-group__item">
+          <a
+            href="javascript:void(0)"
+            (click)="
+              luigiClient
+                .linkManager()
+                .fromClosestContext()
+                .withParams({ foo: 'bar' })
+                .navigate('settings')
+            "
+          >
+            project to settings with params (foo=bar)</a
+          >
+          <app-code-snippet
+            data="luigiClient.linkManager().fromClosestContext().withParams({foo: 'bar'}).navigate('settings')"
+          ></app-code-snippet>
+        </li>
+        <li class="fd-list-group__item">
+          <a
+            href="javascript:void(0)"
+            (click)="
+              luigiClient
+                .linkManager()
+                .fromContext('NONEXISTING')
+                .navigate('/settings')
+            "
+          >
+            parent by name: with nonexisting context</a
+          >
+          (look at the console)
+          <app-code-snippet
+            data="luigiClient.linkManager().fromContext('NONEXISTING').navigate('/settings')"
+          ></app-code-snippet>
+        </li>
+        <li class="fd-list-group__item">
+          <a
+            href="javascript:void(0)"
+            (click)="
+              luigiClient.linkManager().navigate('/settings', null, true)
+            "
+          >
+            with preserved view: project to global settings and back</a
+          >
+          <app-code-snippet
+            data="luigiClient.linkManager().navigate('/settings', null, true)"
+          ></app-code-snippet>
+        </li>
+        <li class="fd-list-group__item">
+          <a
+            href="javascript:void(0)"
+            (click)="
+              luigiClient
+                .linkManager()
+                .withParams({ test: true })
+                .navigate('/settings', null, true)
+            "
+          >
+            extended preserved view example with params: project to global
+            settings and back</a
+          >
+          <app-code-snippet
+            data="luigiClient.linkManager().withParams({test: true}).navigate('/settings', null, true)"
+          ></app-code-snippet>
+        </li>
+      </ul>
+    </div>
 
-      <div class="fd-panel fd-has-margin-bottom-small">
-        <p><strong>LuigiClient - wrong paths in linkManager.navigate():</strong></p>
-        <ul class="fd-list-group">
-          <li class="fd-list-group__item">
-            <a href="javascript:void(0)" (click)="luigiClient.linkManager().navigate('/projects/pr2/miscellaneous2/maskopatol')">Partly
-              wrong link
-            </a>
-            <app-code-snippet data="luigiClient.linkManager().navigate('/projects/pr2/miscellaneous2/maskopatol')"></app-code-snippet>
-          </li>
-          <li class="fd-list-group__item">
-            <a href="javascript:void(0)" (click)="luigiClient.linkManager().navigate('/maskopatol/has/a/child')">Totally
-              wrong link</a>
-            <app-code-snippet data="luigiClient.linkManager().navigate('/maskopatol/has/a/child')"></app-code-snippet>
-          </li>
-        </ul>
-      </div>
-    </ng-container>
+    <div class="fd-panel fd-has-margin-bottom-small check-path">
+      <p><strong>Check if path exists</strong></p>
+      <app-code-snippet
+        data="luigiClient.linkManager().pathExists('{{
+          pathExists.formValue
+        }}')"
+      ></app-code-snippet>
+      <span>
+        <input
+          type="text"
+          [(ngModel)]="pathExists.formValue"
+          (input)="resetPathExistsResult()"
+        />
+        <button class="fd-button" (click)="checkIfPathExists()">Check</button>
+      </span>
+      <p class="check-path-result">
+        <ng-container *ngIf="pathExists.result === true">
+          Path {{ pathExists.formValue }} exists!
+        </ng-container>
+        <ng-container *ngIf="pathExists.result === false">
+          Path {{ pathExists.formValue }} does not exist!
+        </ng-container>
+      </p>
+    </div>
+
+    <div class="fd-panel">
+      <p>
+        <strong>LuigiClient - wrong paths in linkManager.navigate():</strong>
+      </p>
+      <ul class="fd-list-group">
+        <li class="fd-list-group__item">
+          <a
+            href="javascript:void(0)"
+            (click)="
+              luigiClient
+                .linkManager()
+                .navigate('/projects/pr2/miscellaneous2/maskopatol')
+            "
+            >Partly wrong link
+          </a>
+          <app-code-snippet
+            data="luigiClient.linkManager().navigate('/projects/pr2/miscellaneous2/maskopatol')"
+          ></app-code-snippet>
+        </li>
+        <li class="fd-list-group__item">
+          <a
+            href="javascript:void(0)"
+            (click)="
+              luigiClient.linkManager().navigate('/maskopatol/has/a/child')
+            "
+            >Totally wrong link</a
+          >
+          <app-code-snippet
+            data="luigiClient.linkManager().navigate('/maskopatol/has/a/child')"
+          ></app-code-snippet>
+        </li>
+      </ul>
+    </div>
   </div>
 </section>
 
-<app-modal [hidden]="projectId !== 'pr1'" [modalActive]="modalActive" (modalClosed)="toggleModal()"></app-modal>
+<app-modal
+  [hidden]="projectId !== 'pr1'"
+  [modalActive]="modalActive"
+  (modalClosed)="toggleModal()"
+></app-modal>
