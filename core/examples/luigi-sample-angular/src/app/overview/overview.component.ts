@@ -10,14 +10,14 @@ export class OverviewComponent {
   public luigiClient: LuigiClient = LuigiClient;
   public luigiClientLinks: any[] = [
     {
-      link: '/projects/pr2',
+      link: '/projects/pr1',
       text: 'uxManager()',
-      description: 'backdrop methods'
+      description: 'backdrop, confirmation modal, alerts and more'
     },
     {
       link: '/ext',
       text: 'uxManager()',
-      description: 'loading indicator methods'
+      description: 'loading indicator'
     },
     {
       link: '/projects/pr2',
@@ -58,7 +58,7 @@ export class OverviewComponent {
     }
   ];
 
-  public isDirty: boolean = false;
+  public isDirty = false;
   public sendDirtyEvent = () => {
     LuigiClient.uxManager().setDirtyStatus(this.isDirty);
   };

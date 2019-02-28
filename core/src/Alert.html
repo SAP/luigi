@@ -1,0 +1,103 @@
+<div
+  class="fd-alert fd-alert--{alertTypeMap[settings.type]} fd-alert--dismissible"
+  role="alert"
+  id="j2ALl423"
+  data-cy="luigi-alert"
+>
+  <button
+    class="fd-alert__close close-button"
+    on:click="fire('alertDismiss')"
+    aria-label="Close"
+    aria-controls="j2ALl423"
+    data-cy="luigi-alert-dismiss"
+  ></button>
+  {@html settings.text}
+</div>
+
+<script type="text/javascript">
+  import * as Routing from './services/routing.js';
+  import * as RoutingHelpers from './utilities/helpers/routing-helpers';
+
+  export default {
+    data() {
+      return {
+        alertTypeMap: {
+          info: 'information',
+          success: 'success',
+          warning: 'warning',
+          error: 'error'
+        }
+      };
+    },
+    oncreate() {
+      const { text, links } = this.get().settings;
+      const processedData = this.processTextAndLinks(text, links);
+      this.set({
+        settings: Object.assign(this.get().settings, {
+          text: processedData.sanitizedText
+        })
+      });
+      processedData.links.forEach(l => {
+        this.addClickListener(l.url, l.elemId);
+      });
+    },
+    methods: {
+      addClickListener(url, elemId) {
+        try {
+          document.getElementById(elemId).addEventListener('click', event => {
+            const isRelative = !url.startsWith('/');
+            event.stopPropagation(event);
+            this.root.getUnsavedChangesModalPromise().then(() => {
+              const data = {
+                params: {
+                  link: url,
+                  relative: isRelative
+                }
+              };
+              this.root.handleNavigation(data);
+            });
+          });
+        } catch (e) {
+          console.error('Error on Alert::addClickListener', e);
+        }
+      },
+      processTextAndLinks(text, links) {
+        let sanitizedText = RoutingHelpers.sanitizeHtml(text);
+        let initialValue = { sanitizedText, links: [] };
+
+        if (!links) {
+          return initialValue;
+        }
+
+        return Object.entries(links).reduce((acc, [key, content]) => {
+          const elemId = key;
+          const processedData = `<a id="${elemId}">${content.text}</a>`;
+          const pattern = new RegExp(`({${key}})`, 'g');
+          return {
+            sanitizedText: acc.sanitizedText.replace(pattern, processedData),
+            links: acc.links.concat({ elemId, url: content.url })
+          };
+        }, initialValue);
+      }
+    }
+  };
+</script>
+
+<style type="text/scss">
+  $topNavHeight: 48px;
+  $leftNavWidth: 320px;
+
+  .fd-alert {
+    position: absolute;
+    min-width: 20rem;
+    width: calc(100% - 2 * (#{$leftNavWidth} + 1rem));
+    top: calc(#{$topNavHeight} + 1rem);
+    left: calc(#{$leftNavWidth} + 1rem);
+    z-index: 2;
+    overflow-wrap: break-word;
+
+    &--information {
+      background-color: adjust-color(#01080f, $lightness: 93%) !important;
+    }
+  }
+</style>

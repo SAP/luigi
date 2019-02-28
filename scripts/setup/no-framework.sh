@@ -22,7 +22,7 @@ curl https://raw.githubusercontent.com/kyma-project/Luigi/master/core/examples/l
 curl https://raw.githubusercontent.com/kyma-project/Luigi/master/core/examples/luigi-sample-angular/src/assets/sampleexternal.html > public/assets/basicexternal.html
 curl https://raw.githubusercontent.com/kyma-project/Luigi/master/core/examples/luigi-sample-angular/src/luigi-config/basic/basicConfiguration.js > src/luigi-config/basic/basicConfiguration.js
 
-sed "s|extendedConfiguration.js|sampleconfig.js|g" public/index.html > public/index.tmp.html && mv public/index.tmp.html public/index.html
+sed "s|extendedConfiguration.bundle.js|sampleconfig.js|g" public/index.html > public/index.tmp.html && mv public/index.tmp.html public/index.html
 
 cp -r node_modules/\@kyma-project/luigi-* public
 cp -r node_modules/fiori-fundamentals/dist public/fiori-fundamentals

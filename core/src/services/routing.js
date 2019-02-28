@@ -36,16 +36,18 @@ export const concatenatePath = (basePath, relativePath) => {
 
 /**
   navigateTo used for navigation
+  Triggers a frame reload if we are on the same route (eg. if we click on same navigation item again)
   @param route string  absolute path of the new route
  */
 export const navigateTo = async route => {
-  if (LuigiConfig.getConfigValue('routing.useHashRouting')) {
-    window.location.hash = route;
+  const windowPath = GenericHelpers.trimLeadingSlash(getWindowPath());
+  if (windowPath === GenericHelpers.trimLeadingSlash(route)) {
+    Iframe.reloadActiveIframe();
     return;
   }
 
-  // Avoid infinite loop on logout + login whith path routing
-  if (window.location.pathname === route) {
+  if (LuigiConfig.getConfigValue('routing.useHashRouting')) {
+    window.location.hash = route;
     return;
   }
 
@@ -71,10 +73,13 @@ export const navigateTo = async route => {
   window.dispatchEvent(event);
 };
 
-export const buildFromRelativePath = node => {
-  let windowPath = LuigiConfig.getConfigValue('routing.useHashRouting')
+const getWindowPath = () =>
+  LuigiConfig.getConfigValue('routing.useHashRouting')
     ? GenericHelpers.getPathWithoutHash(window.location.hash)
     : window.location.pathname;
+
+export const buildFromRelativePath = node => {
+  let windowPath = getWindowPath();
   if (node.parent && node.parent.pathSegment) {
     // use only this part of the current path that refers to the parent of the node (remove additional parts refering to the sibiling)
     // remove everything that is after the parents pathSegment 'parent/keepSelectedForChildren/something' -> 'parent'
@@ -169,10 +174,9 @@ export const handleRouteChange = async (
       } else {
         if (defaultChildNode && pathData.navigationPath.length > 1) {
           //last path segment was invalid but a default node could be in its place
-          const matchedPath = await matchPath(pathUrlRaw);
           showPageNotFoundError(
             component,
-            GenericHelpers.trimTrailingSlash(matchedPath) +
+            GenericHelpers.trimTrailingSlash(pathData.matchedPath) +
               '/' +
               defaultChildNode,
             pathUrlRaw,
@@ -194,6 +198,7 @@ export const handleRouteChange = async (
 
     if (!pathData.isExistingRoute) {
       showPageNotFoundError(component, pathData.matchedPath, pathUrlRaw, true);
+      return;
     }
 
     const hideNav = LuigiConfig.getConfigBooleanValue(
@@ -280,11 +285,16 @@ const showPageNotFoundError = async (
   }
 
   const alert = {
-    message: isAnyPathMatched
-      ? 'Could not map the exact target node for the requested route'
-      : 'Could not find the requested route',
-    link: notFoundPath,
-    ttl: 1 //how many redirections the alert will 'survive'.
+    settings: {
+      text:
+        (isAnyPathMatched
+          ? 'Could not map the exact target node for the requested route '
+          : 'Could not find the requested route ') + notFoundPath,
+      type: 'error',
+      ttl: 1 //how many redirections the alert will 'survive'.
+    },
+    openFromClient: false,
+    isDisplayed: true
   };
   component.set({ alert });
   navigateTo(GenericHelpers.addLeadingSlash(pathToRedirect));

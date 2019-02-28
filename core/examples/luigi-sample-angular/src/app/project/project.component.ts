@@ -1,4 +1,10 @@
-import { Component, OnInit, ChangeDetectorRef, OnDestroy } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  ChangeDetectorRef,
+  OnDestroy,
+  ViewChild
+} from '@angular/core';
 import { ActivatedRoute, Params } from '@angular/router';
 import { Subscription } from 'rxjs';
 
@@ -7,6 +13,7 @@ import {
   IContextMessage,
   LuigiContextService
 } from '../services/luigi-context.service';
+import { NgForm } from '@angular/forms';
 
 @Component({
   selector: 'app-project',
@@ -14,6 +21,7 @@ import {
   styleUrls: ['./project.component.scss']
 })
 export class ProjectComponent implements OnInit, OnDestroy {
+  @ViewChild('luigiAlertForm') luigiAlertForm: NgForm;
   public projectId: string;
   public luigiClient: LuigiClient;
   public modalActive = false;
@@ -21,6 +29,10 @@ export class ProjectComponent implements OnInit, OnDestroy {
   private lcSubscription: Subscription;
   private cudListener: string;
   public pathExists: { formValue: string; result: boolean | null };
+  public confirmationModalResult: '' | 'confirmed' | 'dismissed';
+  public alertDismissed;
+  public alertTypes = ['success', 'info', 'warning', 'error'];
+  public isDirty = false;
 
   public constructor(
     private activatedRoute: ActivatedRoute,
@@ -87,6 +99,65 @@ export class ProjectComponent implements OnInit, OnDestroy {
     this.modalActive = !this.modalActive;
   }
 
+  showConfirmationModal() {
+    this.confirmationModalResult = '';
+    const settings = {
+      // header: 'Modal Header - Luigi modal',
+      body: `Lorem tipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna
+        aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+        Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.`,
+      buttonConfirm: 'Confirm',
+      buttonDismiss: 'Cancel'
+    };
+    this.luigiClient
+      .uxManager()
+      .showConfirmationModal(settings)
+      .then(
+        () => {
+          this.confirmationModalResult = 'confirmed';
+        },
+        () => {
+          this.confirmationModalResult = 'dismissed';
+        }
+      );
+  }
+
+  showAlert() {
+    const { type, links, text } = this.luigiAlertForm.value;
+
+    this.alertDismissed = text ? false : undefined;
+
+    const texts = {
+      withoutLink: `<b onmouseover=alert('Wufff!')>click me!</b> Ut enim ad minim veniam,
+        quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+        Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.`,
+      withLink: `Ut enim ad minim veniam, {goToHome} quis nostrud exercitation
+        ullamco {relativePath} laboris nisi ut aliquip ex ea commodo consequat.
+        Duis aute irure dolor {goToOtherProject} in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.`
+    };
+    const exampleLinks = {
+      goToHome: { text: 'homepage', url: '/overview' },
+      goToOtherProject: { text: 'other project', url: '/projects/pr2' },
+      relativePath: { text: 'relative hide side nav', url: 'hideSideNav' }
+    };
+
+    const textData = !text ? '' : links ? texts.withLink : texts.withoutLink;
+    const linkData = links ? exampleLinks : undefined;
+
+    const settings = {
+      text: textData,
+      type,
+      links: linkData
+    };
+
+    this.luigiClient
+      .uxManager()
+      .showAlert(settings)
+      .then(() => {
+        this.alertDismissed = true;
+      });
+  }
+
   checkIfPathExists() {
     this.luigiClient
       .linkManager()
@@ -100,4 +171,8 @@ export class ProjectComponent implements OnInit, OnDestroy {
   resetPathExistsResult() {
     this.pathExists.result = undefined;
   }
+
+  public sendDirtyEvent = () => {
+    LuigiClient.uxManager().setDirtyStatus(this.isDirty);
+  };
 }

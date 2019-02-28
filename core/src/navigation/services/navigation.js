@@ -4,7 +4,6 @@ import * as NavigationHelpers from '../../utilities/helpers/navigation-helpers';
 import * as AsyncHelpers from '../../utilities/helpers/async-helpers';
 import * as GenericHelpers from '../../utilities/helpers/generic-helpers';
 import * as RoutingHelpers from '../../utilities/helpers/routing-helpers';
-import { LuigiConfig } from '../../services/config.js';
 
 export const getNavigationPath = async (rootNavProviderPromise, path = '') => {
   try {
@@ -127,21 +126,23 @@ const buildNode = async (
     const node = findMatchingNode(urlPathElement, childrenOfCurrentNode);
     if (node) {
       nodesInCurrentPath.push(node);
-      const newContext = NavigationHelpers.applyContext(
+      let newContext = NavigationHelpers.applyContext(
         context,
         node.context,
         node.navigationContext
       );
+      if (node.pathSegment.startsWith(':')) {
+        pathParams[
+          node.pathSegment.replace(':', '')
+        ] = RoutingHelpers.sanitizeParam(urlPathElement);
+      }
+      newContext = RoutingHelpers.substituteDynamicParamsInObject(
+        newContext,
+        pathParams
+      );
       try {
         let children = await getChildren(node, newContext);
-
-        if (node.pathSegment.startsWith(':')) {
-          pathParams[
-            node.pathSegment.replace(':', '')
-          ] = RoutingHelpers.sanitizeParam(urlPathElement);
-        }
         const newNodeNamesInCurrentPath = nodeNamesInCurrentPath.slice(1);
-
         result = buildNode(
           newNodeNamesInCurrentPath,
           nodesInCurrentPath,

@@ -1,28 +1,43 @@
-<div id="app" class="{hideNav? 'no-nav' : ''} {hideSideNav||tabbedNav? 'no-side-nav' : ''} {tabbedNav? 'tabbed-nav' : ''}">
-	{#if alert && alert.message}
-	<div class="fd-alert fd-alert--error fd-alert--dismissible" role="alert" id="j2ALl423">
-		<button on:click="set({alert:null})" class="fd-alert__close" aria-controls="j2ALl423" aria-label="Close"></button>
-		{alert.message} {alert.link}
-	</div>
-	{/if} {#if confirmationModal.isDisplayed}
-	<ConfirmationModal title="{confirmationModal.title}" text="{confirmationModal.text}" on:modalConfirm="handleModalResult(true)"
-	 on:modalDecline="handleModalResult(false)"></ConfirmationModal>
-	{/if}
-	<Backdrop>
-		<div class="fd-page iframeContainer" use:init="context"></div>
-	</Backdrop>
-	{#if showLoadingIndicator}
-	<div in:fade="{delay: 250, duration: 250}" out:fade="{duration: 250}" class="fd-page spinnerContainer" aria-hidden="false"
-	 aria-label="Loading">
-		<div class="fd-spinner">
-			<div></div>
-		</div>
-	</div>
-	{/if}
-
-	<TopNav pathData="{navigationPath}" on:handleClick="handleNavClick(event.node)" /> {#if !(hideNav||hideSideNav)}
-	<LeftNav pathData="{navigationPath}" on:handleClick="handleNavClick(event.node)" /> {/if} {#if !(hideNav||hideSideNav)}
-	<TabNav pathData="{navigationPath}" on:handleClick="handleNavClick(event.node)" /> {/if}
+<div
+  id="app"
+  class="{hideNav? 'no-nav' : ''} {hideSideNav? 'no-side-nav' : ''}"
+>
+  {#if confirmationModal.isDisplayed}
+  <ConfirmationModal
+    settings="{confirmationModal.settings}"
+    on:modalConfirm="handleModalResult(true)"
+    on:modalDismiss="handleModalResult(false)"
+  ></ConfirmationModal>
+  {/if}
+  {#if alert.isDisplayed}
+  <Alert settings="{alert.settings}" on:alertDismiss="handleAlertDismiss()"></Alert>
+  {/if}
+  <Backdrop>
+    <div class="fd-page iframeContainer" use:init="context"></div>
+  </Backdrop>
+  {#if showLoadingIndicator}
+  <div
+    in:fade="{delay: 250, duration: 250}"
+    out:fade="{duration: 250}"
+    class="fd-page spinnerContainer"
+    aria-hidden="false"
+    aria-label="Loading"
+  >
+    <div class="fd-spinner">
+      <div></div>
+    </div>
+  </div>
+  {/if}
+  <TopNav
+    pathData="{navigationPath}"
+    on:handleClick="handleNavClick(event.node)"
+  />
+  {#if !(hideNav||hideSideNav)}
+  <LeftNav
+    pathData="{navigationPath}"
+    on:handleClick="handleNavClick(event.node)"
+  />
+  {/if}
 </div>
 
 <script type="text/javascript">
@@ -30,8 +45,8 @@
   import { fade } from 'svelte-transitions';
   import TopNav from './navigation/TopNav.html';
   import LeftNav from './navigation/LeftNav.html';
-  import TabNav from './navigation/TabNav.html';
   import ConfirmationModal from './ConfirmationModal.html';
+  import Alert from './Alert.html';
   import { LuigiConfig } from './services/config.js';
   import * as Routing from './services/routing.js';
   import * as Navigation from './navigation/services/navigation.js';
@@ -141,17 +156,6 @@
     }
   };
 
-  const handleNavigation = async (component, data, config) => {
-    let path = buildPath(component, data.params);
-
-    if (path[0] !== '/') {
-      path = '/' + path; //add leading slash if necessary
-    }
-
-    addPreserveView(component, data, config);
-    Routing.navigateTo(path); //navigate to the raw path. Any errors/alerts are handled later
-  };
-
   const sendContextToClient = (component, config, goBackContext = {}) => {
     if (!config.iframe) {
       console.info('iframe does not exist, not able to send context.');
@@ -163,8 +167,12 @@
         context: JSON.stringify(
           Object.assign({}, component.get().context, goBackContext)
         ),
-        nodeParams: JSON.stringify(Object.assign({}, component.get().nodeParams)),
-        pathParams: JSON.stringify(Object.assign({}, component.get().pathParams)),
+        nodeParams: JSON.stringify(
+          Object.assign({}, component.get().nodeParams)
+        ),
+        pathParams: JSON.stringify(
+          Object.assign({}, component.get().pathParams)
+        ),
         internal: JSON.stringify(component.prepareInternalData()),
         authData: AuthHelpers.getStoredAuthData()
       },
@@ -174,7 +182,9 @@
 
   const sendAuthDataToClient = (iframe, authData) => {
     if (!iframe || !iframe.contentWindow) {
-      console.info('iframe does not exist, not able to send authData to client.');
+      console.info(
+        'iframe does not exist, not able to send authData to client.'
+      );
       return;
     }
     iframe.contentWindow.postMessage(
@@ -186,31 +196,52 @@
     );
   };
 
+  const getDefaultAlertData = () => {
+    return {
+      alert: {
+        isDisplayed: false,
+        settings: {},
+        openFromClient: false,
+        promise: null
+      }
+    };
+  };
+
+  const getDefaultConfirmationModalData = () => {
+    return {
+      confirmationModal: {
+        isDisplayed: false,
+        content: {},
+        openFromClient: false,
+        promise: null
+      }
+    };
+  };
+
   export default {
     data() {
-      return {
-        isNavigateBack: false,
-        showLoadingIndicator: false,
-        preservedViews: [
-          // {
-          //     path: '/project/p2/settings',
-          //     nextPath: '/project/p2',
-          //     context: {}
-          //     iframe: Element
-          // }
-        ],
-        confirmationModal: {
-          isDisplayed: false,
-          title: null,
-          text: null,
-          promise: null
+      return Object.assign(
+        {
+          contentNode: undefined,
+          isNavigateBack: false,
+          showLoadingIndicator: false,
+          preservedViews: [
+            // {
+            //     path: '/project/p2/settings',
+            //     nextPath: '/project/p2',
+            //     context: {}
+            //     iframe: Element
+            // }
+          ],
+          unsavedChanges: {
+            isDirty: false,
+            persistUrl: null
+          },
+          hideSideNav: false
         },
-        unsavedChanges: {
-          isDirty: false,
-          persistUrl: null
-        },
-        hideSideNav: false
-      };
+        getDefaultAlertData(),
+        getDefaultConfirmationModalData()
+      );
     },
     oncreate() {},
     onstate({ changed, current, previous }) {},
@@ -227,12 +258,16 @@
         };
         window.addEventListener('popstate', async e => {
           const alert = this.get().alert;
-          if (alert && typeof alert.ttl == 'number') {
-            if (alert.ttl === 0) {
-              this.set({ alert: null });
+          if (
+            alert &&
+            !alert.openFromClient &&
+            typeof alert.settings.ttl === 'number'
+          ) {
+            if (alert.settings.ttl === 0) {
+              this.handleAlertDismiss();
             } else {
               const updatedAlert = { ...alert };
-              updatedAlert.ttl--;
+              updatedAlert.settings.ttl--;
               this.set({ alert: updatedAlert });
             }
           }
@@ -266,7 +301,7 @@
           if ('luigi.navigation.open' === e.data.msg) {
             this.set({ isNavigateBack: false });
             this.getUnsavedChangesModalPromise().then(() => {
-              handleNavigation(this, e.data, config);
+              this.handleNavigation(e.data, config);
             });
           }
 
@@ -287,8 +322,7 @@
                     e.data.goBackContext && JSON.parse(e.data.goBackContext)
                 });
                 // TODO: check if getNavigationPath or history pop to update hash / path
-                const path = handleNavigation(
-                  this,
+                const path = this.handleNavigation(
                   { params: { link: previousActiveIframeData.path } },
                   config
                 );
@@ -330,6 +364,41 @@
               }
             });
           }
+
+          if ('luigi.ux.confirmationModal.show' === e.data.msg) {
+            const settings = e.data.data.settings;
+            this.set(
+              Object.assign(
+                { contentNode: node },
+                getDefaultConfirmationModalData()
+              )
+            );
+            this.showModal(settings, true).then(
+              () => {},
+              () => {
+                /* keep it to avoid runtime errors in browser console */
+              }
+            );
+          }
+
+          if ('luigi.ux.alert.show' === e.data.msg) {
+            const settings = e.data.data.settings;
+            if (!settings.text) {
+              console.error(
+                "Luigi Client alert: 'text' field for alert is empty or not present, therefore alert will not be displayed"
+              );
+              return;
+            }
+            this.set(
+              Object.assign({ contentNode: node }, getDefaultAlertData())
+            );
+            this.showAlert(settings, true).then(
+              () => {},
+              () => {
+                /* keep it to avoid runtime errors in browser console */
+              }
+            );
+          }
         });
 
         // listeners are not automatically removed — cancel
@@ -340,6 +409,13 @@
       }
     },
     methods: {
+      handleNavigation(data, config) {
+        let path = buildPath(this, data.params);
+        path = GenericHelpers.addLeadingSlash(path);
+
+        addPreserveView(this, data, config);
+        Routing.navigateTo(path); //navigate to the raw path. Any errors/alerts are handled later
+      },
       prepareInternalData() {
         return {
           isNavigateBack: this.get().isNavigateBack,
@@ -352,7 +428,7 @@
         });
       },
       handleModalResult(result) {
-        const promise = this.get().confirmationModal.promise;
+        const { promise, openFromClient } = this.get().confirmationModal;
         if (result) {
           this.set({
             unsavedChanges: { isDirty: false, persistUrl: null }
@@ -361,7 +437,20 @@
         } else {
           promise.reject();
         }
-        this.hideModal();
+
+        this.set(getDefaultConfirmationModalData());
+
+        if (openFromClient) {
+          Iframe.getActiveIframe(
+            this.get().contentNode
+          ).contentWindow.postMessage(
+            {
+              msg: 'luigi.ux.confirmationModal.hide',
+              data: { confirmed: result }
+            },
+            '*'
+          );
+        }
       },
       getUnsavedChangesModalPromise() {
         return new Promise(resolve => {
@@ -384,33 +473,52 @@
         );
       },
       showUnsavedChangesModal() {
-        return this.showModal(
-          'Unsaved changes detected',
-          'It looks like you might lose some data if you leave this page. Are you sure you want to do this?'
-        );
+        return this.showModal({
+          header: 'Unsaved changes detected',
+          body:
+            'It looks like you might lose some data if you leave this page. Are you sure you want to do this?',
+          buttonDismiss: 'No',
+          buttonConfirm: 'Yes'
+        });
       },
-      showModal(title, text) {
+      showModal(settings, openFromClient = false) {
         return new Promise((resolve, reject) => {
-          //send the response when one of following methods were executed
           this.set({
             confirmationModal: {
               isDisplayed: true,
-              title,
-              text,
+              settings,
+              openFromClient,
               promise: { resolve, reject }
             }
           });
         });
       },
-      hideModal() {
-        this.set({
-          confirmationModal: {
-            isDisplayed: false,
-            title: null,
-            text: null,
-            promise: null
-          }
+      showAlert(settings, openFromClient = false) {
+        return new Promise((resolve, reject) => {
+          this.set({
+            alert: {
+              isDisplayed: true,
+              settings,
+              openFromClient,
+              promise: { resolve }
+            }
+          });
         });
+      },
+      handleAlertDismiss() {
+        const openFromClient = this.get().alert.openFromClient;
+        this.set(getDefaultAlertData());
+
+        if (openFromClient) {
+          Iframe.getActiveIframe(
+            this.get().contentNode
+          ).contentWindow.postMessage(
+            {
+              msg: 'luigi.ux.alert.hide'
+            },
+            '*'
+          );
+        }
       }
     },
 
@@ -418,14 +526,15 @@
       Backdrop,
       TopNav,
       LeftNav,
-      ConfirmationModal
+      ConfirmationModal,
+      Alert
     },
     transitions: { fade }
   };
 </script>
 
 <style type="text/scss">
-  $topNavHeight: 50px;
+  $topNavHeight: 48px;
   $leftNavWidth: 320px;
   :global(html) {
     box-sizing: border-box;
@@ -507,30 +616,6 @@
       left: 0;
       bottom: 0;
       right: 0;
-    }
-  }
-
-  .tabbed-nav {
-    .iframeContainer,
-    .spinnerContainer {
-      position: fixed;
-      top: $topNavHeight;
-      left: 0;
-      bottom: 0;
-      right: 0;
-    }
-  }
-
-  .fd-alert {
-    position: absolute;
-    min-width: 20rem;
-    width: calc(100% - 2 * (#{$leftNavWidth} + 1rem));
-    top: calc(#{$topNavHeight} + 1rem);
-    left: calc(#{$leftNavWidth} + 1rem);
-    z-index: 2;
-    overflow-wrap: break-word;
-    .fd-alert__close {
-      cursor: pointer;
     }
   }
 
