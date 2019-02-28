@@ -1,6 +1,6 @@
 <div class="fd-app__sidebar {hideNavComponent ? 'hideNavComponent' : ''}">
   {#if children && pathData.length > 1}
-  <nav class="fd-side-nav">
+  <nav class="fd-side-nav" on:keyup="handleKey(event)">
     {#each Object.entries(children) as [key, nodes]} {#if key === 'undefined'}
     <div class="fd-side-nav__group">
       <ul class="fd-side-nav__list">
@@ -8,7 +8,7 @@
         <li
           class="fd-side-nav__item {node.externalLink && node.externalLink.url ? 'fd-side-nav__item--external' : ''}"
         >
-          <a
+          <a href="javascript:void(null)"
             class="fd-side-nav__link {node === selectedNode ? 'is-selected' : ''} fd-side-nav__link--icon"
             on:click="handleClick(node)"
           >
@@ -34,7 +34,7 @@
       <ul class="fd-side-nav__list">
         {#if nodes.metaInfo.collapsible}
         <li class="fd-side-nav__item">
-          <a
+          <a href="javascript:void(null)"
             class="fd-side-nav__link has-child"
             aria-haspopup="true"
             aria-expanded="{isExpanded(nodes, expandedCategories)}"
@@ -57,7 +57,7 @@
             <li
               class="fd-side-nav__subitem {node.externalLink && node.externalLink.url ? 'fd-side-nav__item--external' : ''}"
             >
-              <a
+              <a href="javascript:void(null)"
                 class="fd-side-nav__sublink {node === selectedNode ? 'is-selected' : ''}"
                 on:click="handleClick(node)"
               >
@@ -86,7 +86,7 @@
           <li
             class="fd-side-nav__subitem {node.externalLink && node.externalLink.url ? 'fd-side-nav__item--external' : ''}"
           >
-            <a
+            <a href="javascript:void(null)"
               class="fd-side-nav__link {node === selectedNode ? 'is-selected' : ''} fd-side-nav__link--icon"
               on:click="handleClick(node)"
             >
@@ -156,6 +156,17 @@
     methods: {
       handleClick(node) {
         this.fire('handleClick', { node });
+      },
+
+      handleKey(event) {
+        let code = event.code;
+        if(code === 'ArrowRight') {
+          let iframe = document.querySelector(".iframeContainer iframe");
+          let win = (iframe.contentWindow || (iframe.contentDocument ? iframe.contentDocument.window : null));
+          if(win) {
+            win.focus();
+          }
+        }
       },
 
       setExpandedState(nodes, value) {
