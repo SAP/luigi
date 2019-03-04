@@ -1,17 +1,10 @@
-<div
-  class="fd-alert fd-alert--{alertTypeMap[settings.type]} fd-alert--dismissible"
-  role="alert"
-  id="j2ALl423"
-  data-cy="luigi-alert"
->
-  <button
-    class="fd-alert__close close-button"
-    on:click="fire('alertDismiss')"
-    aria-label="Close"
-    aria-controls="j2ALl423"
-    data-cy="luigi-alert-dismiss"
-  ></button>
-  {@html settings.text}
+<div class="fd-shell__overlay fd-overlay fd-overlay--alert" aria-hiden="false">
+  <div class="fd-alert fd-alert--{alertTypeMap[settings.type]} fd-alert--dismissible" role="alert" id="j2ALl423"
+    data-cy="luigi-alert">
+    <button class="fd-alert__close close-button" on:click="fire('alertDismiss')" aria-label="Close"
+      aria-controls="j2ALl423" data-cy="luigi-alert-dismiss"></button>
+    {@html settings.text}
+  </div>
 </div>
 
 <script type="text/javascript">
@@ -82,22 +75,3 @@
     }
   };
 </script>
-
-<style type="text/scss">
-  $topNavHeight: 48px;
-  $leftNavWidth: 320px;
-
-  .fd-alert {
-    position: absolute;
-    min-width: 20rem;
-    width: calc(100% - 2 * (#{$leftNavWidth} + 1rem));
-    top: calc(#{$topNavHeight} + 1rem);
-    left: calc(#{$leftNavWidth} + 1rem);
-    z-index: 2;
-    overflow-wrap: break-word;
-
-    &--information {
-      background-color: adjust-color(#01080f, $lightness: 93%) !important;
-    }
-  }
-</style>
