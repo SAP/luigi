@@ -1,6 +1,6 @@
 <div
   id="app"
-  class="{hideNav? 'no-nav' : ''} {hideSideNav? 'no-side-nav' : ''}"
+  class="{hideNav? 'no-nav' : ''} {hideSideNav? 'no-side-nav' : ''} {tabNav? 'tab-nav' : ''}"
 >
   {#if confirmationModal.isDisplayed}
   <ConfirmationModal
@@ -32,8 +32,14 @@
     pathData="{navigationPath}"
     on:handleClick="handleNavClick(event.node)"
   />
-  {#if !(hideNav||hideSideNav)}
+  {#if !(hideNav||hideSideNav||tabNav)}
   <LeftNav
+    pathData="{navigationPath}"
+    on:handleClick="handleNavClick(event.node)"
+  />
+  {/if}
+  {#if (tabNav)}
+  <TabNav
     pathData="{navigationPath}"
     on:handleClick="handleNavClick(event.node)"
   />
@@ -45,6 +51,7 @@
   import { fade } from 'svelte-transitions';
   import TopNav from './navigation/TopNav.html';
   import LeftNav from './navigation/LeftNav.html';
+  import TabNav from './navigation/TabNav.html';
   import ConfirmationModal from './ConfirmationModal.html';
   import Alert from './Alert.html';
   import { LuigiConfig } from './services/config.js';
@@ -526,6 +533,7 @@
       Backdrop,
       TopNav,
       LeftNav,
+      TabNav,
       ConfirmationModal,
       Alert
     },
@@ -613,6 +621,17 @@
     .spinnerContainer {
       position: fixed;
       top: $topNavHeight;
+      left: 0;
+      bottom: 0;
+      right: 0;
+    }
+  }
+
+   .tab-nav {
+    .iframeContainer,
+    .spinnerContainer {
+      position: fixed;
+      top: $topNavHeight * 2;
       left: 0;
       bottom: 0;
       right: 0;

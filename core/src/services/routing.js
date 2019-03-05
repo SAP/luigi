@@ -213,6 +213,19 @@ export const handleRouteChange = async (
         ? pathData.navigationPath[pathData.navigationPath.length - 1]
         : null;
 
+    let tabNavInherited = false;
+    let cnode = currentNode;
+    while(cnode) {
+      if(cnode.tabNav === true) {
+        tabNavInherited = true;
+        break;
+      } else if (cnode.tabNav === false) {
+        tabNavInherited = false;
+        break;
+      }
+      cnode = cnode.parent;
+    }
+
     const newNodeData = {
       hideNav,
       viewUrl,
@@ -227,7 +240,8 @@ export const handleRouteChange = async (
       ),
       pathParams: pathData.pathParams,
       hideSideNav: lastNode.hideSideNav || false,
-      isolateView: lastNode.isolateView || false
+      isolateView: lastNode.isolateView || false,
+      tabNav: tabNavInherited
     };
 
     const previousCompData = component.get();
