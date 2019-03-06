@@ -159,12 +159,11 @@
       },
 
       handleKey(event) {
-        let code = event.code;
+        const code = event.code;
         if(code === 'ArrowRight') {
-          let iframe = document.querySelector(".iframeContainer iframe");
-          let win = (iframe.contentWindow || (iframe.contentDocument ? iframe.contentDocument.window : null));
-          if(win) {
-            win.focus();
+          const iframe = document.querySelector(".iframeContainer iframe");
+          if(iframe.contentWindow) {
+            iframe.contentWindow.focus();
           }
         }
       },
