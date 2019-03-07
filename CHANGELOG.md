@@ -23,6 +23,13 @@ The lerna-changelog tool detects changes based on PR labels and maps them to sec
     ...
   }
 -->
+## [v0.4.9] (2019-03-07)
+
+#### :bug: Fixed
+* [#412](https://github.com/kyma-project/luigi/pull/412) Focus improvements ([@hardl](https://github.com/hardl))
+* [#409](https://github.com/kyma-project/luigi/pull/409) Fix double-click selection issue ([@hardl](https://github.com/hardl))
+* [#411](https://github.com/kyma-project/luigi/pull/411) Wrap alert in an invisible overlay ([@parostatkiem](https://github.com/parostatkiem))
+
 ## v0.4.8 (2019-02-20)
 
 #### :bug: Fixed
@@ -308,3 +315,4 @@ The lerna-changelog tool detects changes based on PR labels and maps them to sec
 [v0.4.3]: https://github.com/kyma-project/luigi/compare/v0.4.2...v0.4.3
 [v0.4.4]: https://github.com/kyma-project/luigi/compare/v0.4.3...v0.4.4
 [v0.4.5]: https://github.com/kyma-project/luigi/compare/v0.4.4...v0.4.5
+[v0.4.9]: https://github.com/kyma-project/luigi/compare/v0.4.8...v0.4.9
