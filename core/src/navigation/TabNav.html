@@ -1,15 +1,44 @@
+<svelte:window on:click="closeAllDropdowns()" on:blur="closeAllDropdowns()" />
 {#if children && pathData.length > 1}
-<nav class="fd-tabs {hideNavComponent ? 'hideNavComponent' : ''}" role="tablist">
-	{#each Object.entries(children) as [key, nodes]} {#if key === 'undefined'}
-  {#each nodes as node} {#if !node.hideFromNav} {#if node.label}
-  <span class="fd-tabs__item">
-		<a class="fd-tabs__link" href="javascript:void(null)" role="tab" aria-selected="{node === selectedNode}"
-      on:click="handleClick(node)">
-			{node.label}
-		</a>
-	</span>
-  {/if} {/if} {/each}
-  {/if}{/each}
+<nav class="fd-tabs {hideNavComponent ? 'hideNavComponent' : ''}" role="tablist"
+    on:toggleDropdownState="toggleDropdownState(event.name)">
+	{#each Object.entries(children) as [key, nodes]}
+    {#if key === 'undefined'}
+      {#each nodes as node}
+        {#if !node.hideFromNav}
+          {#if node.label}
+            <span class="fd-tabs__item">
+              <a class="fd-tabs__link" href="javascript:void(null)" role="tab" aria-selected="{node === selectedNode}"
+                on:click="handleClick(node)">
+                {node.label}
+              </a>
+            </span>
+          {/if}
+        {/if}
+      {/each}
+    {:else}
+      <span class="fd-tabs__item" on:click="event.stopPropagation()">
+        <a class="fd-tabs__link has-child" aria-expanded="false" href="javascript:void(null)" role="tab" on:click="toggleDropdownState(key)">
+          <span class="label">{key}</span><span class="sap-icon--dropdown sap-icon--l"></span>
+        </a>
+        <div class="fd-popover">
+          <div class="fd-popover__body fd-popover__body--no-arrow" aria-hidden="{!dropDownStates[key]}">
+              <nav class="fd-menu" id="">
+                  <ul class="fd-menu__list">
+                    {#each nodes as node}
+                      {#if !node.hideFromNav}
+                        {#if node.label}
+                          <li><a  href="javascript:void(null)" class="fd-menu__item" on:click="handleClick(node)">{node.label}</a></li>
+                        {/if}
+                      {/if}
+                    {/each}
+                  </ul>
+              </nav>
+          </div>
+        </div>
+      </span>
+    {/if}
+  {/each}
 </nav>
 {/if}
 
@@ -26,7 +55,7 @@
       return;
     }
     component.set(leftNavData);
-    window.LEFTNAVDATA = leftNavData.groupedChildren;
+    window['LEFTNAVDATA'] = leftNavData.groupedChildren;
   };
 
   export default {
@@ -34,14 +63,18 @@
       this.set({
         hideNavComponent: LuigiConfig.getConfigBooleanValue(
           'settings.hideNavigation'
-        ),
-        expandedCategories: NavigationHelpers.loadExpandedCategories()
+        )
       });
     },
     onstate({ changed, current, previous }) {
       if (!previous || previous.pathData != current.pathData) {
         setLeftNavData(current, this);
       }
+    },
+    data() {
+      return {
+        dropDownStates: {}
+      };
     },
     helpers: {
       isOpenUIiconName(name) {
@@ -58,17 +91,33 @@
         this.fire('handleClick', { node });
       },
 
-      setExpandedState(nodes, value) {
-        this.set({
-          expandedCategories: NavigationHelpers.storeExpandedState(
-            nodes.metaInfo.categoryUid,
-            value
-          )
-        });
+      toggleDropdownState(name) {
+        let dropDownStates = {};
+        if(!this.get().dropDownStates[name]) {
+          dropDownStates[name]=true;
+        }
+        this.set({dropDownStates:dropDownStates});
+      },
+
+      closeAllDropdowns() {
+        this.set({dropDownStates:{}});
       }
     }
   };
 </script>
 
 <style type="text/scss">
+  .fd-tabs__link.has-child .label {
+    padding-right: 17px;
+  }
+
+  .fd-tabs__link.has-child .sap-icon--l {
+    position: absolute;
+    top: 0.7em;
+    right: 0;
+  }
+
+  .fd-tabs__item .fd-popover {
+    position: absolute;
+  }
 </style>
