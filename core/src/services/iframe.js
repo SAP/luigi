@@ -129,7 +129,10 @@ export const reloadActiveIframe = () => {
   const visibleIframe = IframeHelpers.getVisibleIframes().pop();
 
   if (visibleIframe) {
-    if(visibleIframe.contentDocument && visibleIframe.contentDocument.location) {
+    if (
+      visibleIframe.contentDocument &&
+      visibleIframe.contentDocument.location
+    ) {
       visibleIframe.contentDocument.location.reload(true);
     } else {
       visibleIframe.src = visibleIframe.src;
