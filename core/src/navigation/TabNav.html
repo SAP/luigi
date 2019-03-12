@@ -18,7 +18,9 @@
       {/each}
     {:else}
       <span class="fd-tabs__item" on:click="event.stopPropagation()">
-        <a class="fd-tabs__link has-child" aria-expanded="false" href="javascript:void(null)" role="tab" on:click="toggleDropdownState(key)">
+        <a class="fd-tabs__link has-child" aria-expanded="false" href="javascript:void(null)" role="tab"
+          on:click="toggleDropdownState(key)"
+          aria-selected="{selectedNode.category && (selectedNode.category === key || selectedNode.category.label === key)}">
           <span class="label">{key}</span><span class="sap-icon--dropdown sap-icon--l"></span>
         </a>
         <div class="fd-popover">
@@ -28,7 +30,8 @@
                     {#each nodes as node}
                       {#if !node.hideFromNav}
                         {#if node.label}
-                          <li><a  href="javascript:void(null)" class="fd-menu__item" on:click="handleClick(node)">{node.label}</a></li>
+                          <li><a  href="javascript:void(null)" class="fd-menu__item"
+                            on:click="handleClick(node)" aria-selected="{node === selectedNode}">{node.label}</a></li>
                         {/if}
                       {/if}
                     {/each}
@@ -88,6 +91,7 @@
     },
     methods: {
       handleClick(node) {
+        this.closeAllDropdowns();
         this.fire('handleClick', { node });
       },
 
