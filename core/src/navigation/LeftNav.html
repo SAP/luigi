@@ -1,6 +1,6 @@
 <div class="fd-app__sidebar {hideNavComponent ? 'hideNavComponent' : ''}">
   {#if children && pathData.length > 1}
-  <nav class="fd-side-nav">
+  <nav class="fd-side-nav" on:keyup="handleKey(event)">
     {#each Object.entries(children) as [key, nodes]} {#if key === 'undefined'}
     <div class="fd-side-nav__group">
       <ul class="fd-side-nav__list">
@@ -9,6 +9,7 @@
           class="fd-side-nav__item {node.externalLink && node.externalLink.url ? 'fd-side-nav__item--external' : ''}"
         >
           <a
+            href="javascript:void(null)"
             class="fd-side-nav__link {node === selectedNode ? 'is-selected' : ''} fd-side-nav__link--icon"
             on:click="handleClick(node)"
           >
@@ -16,13 +17,18 @@
             <span
               class="fd-side-nav__icon sap-icon--{node.icon} sap-icon--l"
             ></span>
-            {:else} <img class="fd-side-nav__icon" src="{node.icon}" /> {/if}
+            {:else}
+            <img class="fd-side-nav__icon" src="{node.icon}">
+            {/if}
             {:else}
             <span
               class="fd-side-nav__icon sap-icon--lui-blank sap-icon--l"
             ></span>
             {/if} {node.label} {#if node.externalLink && node.externalLink.url}
-            <span class="sap-icon--action sap-icon--s"></span> {/if}
+            <span
+              class="sap-icon--action sap-icon--s"
+            ></span>
+            {/if}
           </a>
         </li>
         {/if} {/if} {/each}
@@ -35,6 +41,7 @@
         {#if nodes.metaInfo.collapsible}
         <li class="fd-side-nav__item">
           <a
+            href="javascript:void(null)"
             class="fd-side-nav__link has-child"
             aria-haspopup="true"
             aria-expanded="{isExpanded(nodes, expandedCategories)}"
@@ -46,7 +53,11 @@
               role="presentation"
             ></span>
             {:else}
-            <img class="fd-side-nav__icon" src="{nodes.metaInfo.icon}" /> {/if}
+            <img
+              class="fd-side-nav__icon"
+              src="{nodes.metaInfo.icon}"
+            >
+            {/if}
             {key}
           </a>
           <ul
@@ -58,17 +69,20 @@
               class="fd-side-nav__subitem {node.externalLink && node.externalLink.url ? 'fd-side-nav__item--external' : ''}"
             >
               <a
+                href="javascript:void(null)"
                 class="fd-side-nav__sublink {node === selectedNode ? 'is-selected' : ''}"
                 on:click="handleClick(node)"
               >
                 {node.label} {#if node.externalLink && node.externalLink.url}
-                <span class="sap-icon--action sap-icon--s"></span> {/if}
+                <span
+                  class="sap-icon--action sap-icon--s"
+                ></span>
+                {/if}
               </a>
             </li>
             {/if} {/if} {/each}
           </ul>
         </li>
-
         {:else}
         <li class="fd-side-nav__title lui-category">
           {#if hasCategoriesWithIcon} {#if
@@ -78,7 +92,11 @@
             role="presentation"
           ></span>
           {:else}
-          <img class="fd-side-nav__icon" src="{nodes.metaInfo.icon}" /> {/if}
+          <img
+            class="fd-side-nav__icon"
+            src="{nodes.metaInfo.icon}"
+          >
+          {/if}
           {/if} {key}
         </li>
         <ul class="fd-side-nav__sublist">
@@ -87,6 +105,7 @@
             class="fd-side-nav__subitem {node.externalLink && node.externalLink.url ? 'fd-side-nav__item--external' : ''}"
           >
             <a
+              href="javascript:void(null)"
               class="fd-side-nav__link {node === selectedNode ? 'is-selected' : ''} fd-side-nav__link--icon"
               on:click="handleClick(node)"
             >
@@ -94,14 +113,19 @@
               <span
                 class="fd-side-nav__icon sap-icon--{node.icon} sap-icon--l"
               ></span>
-              {:else} <img class="fd-side-nav__icon" src="{node.icon}" /> {/if}
+              {:else}
+              <img class="fd-side-nav__icon" src="{node.icon}">
+              {/if}
               {:else}
               <span
                 class="fd-side-nav__icon sap-icon--lui-blank sap-icon--l"
               ></span>
               {/if} {node.label} {#if node.externalLink &&
               node.externalLink.url}
-              <span class="sap-icon--action sap-icon--s"></span> {/if}
+              <span
+                class="sap-icon--action sap-icon--s"
+              ></span>
+              {/if}
             </a>
           </li>
           {/if} {/if} {/each}
@@ -158,6 +182,16 @@
         this.fire('handleClick', { node });
       },
 
+      handleKey(event) {
+        const code = event.code;
+        if (code === 'ArrowRight') {
+          const iframe = document.querySelector('.iframeContainer iframe');
+          if (iframe.contentWindow) {
+            iframe.contentWindow.focus();
+          }
+        }
+      },
+
       setExpandedState(nodes, value) {
         this.set({
           expandedCategories: NavigationHelpers.storeExpandedState(
@@ -174,6 +208,11 @@
   $topNavHeight: 48px;
   a {
     cursor: pointer;
+    outline-offset: -1px;
+    user-select: none;
+    -moz-user-select: none;
+    -webkit-user-select: none;
+    -ms-user-select: none;
   }
   .fd-app__sidebar {
     position: fixed;

@@ -16,13 +16,45 @@ The lerna-changelog tool detects changes based on PR labels and maps them to sec
   "changelog": {
     "labels": {
       "breaking": ":boom: Breaking Change",
-      "enhancement": ":rocket: Enhancement",
-      "bug": ":bug: Bug Fix",
+      "enhancement": ":rocket: Added",
+      "bug": ":bug: Fixed",
       "documentation": ":memo: Documentation"
     }
     ...
   }
 -->
+## [v0.4.9] (2019-03-07)
+
+#### :bug: Fixed
+* [#412](https://github.com/kyma-project/luigi/pull/412) Focus improvements ([@hardl](https://github.com/hardl))
+* [#409](https://github.com/kyma-project/luigi/pull/409) Fix double-click selection issue ([@hardl](https://github.com/hardl))
+* [#411](https://github.com/kyma-project/luigi/pull/411) Wrap alert in an invisible overlay ([@parostatkiem](https://github.com/parostatkiem))
+
+## v0.4.8 (2019-02-20)
+
+#### :bug: Fixed
+* [#403](https://github.com/kyma-project/luigi/pull/403) fix generic alert bug ([@JohannesDoberer](https://github.com/JohannesDoberer))
+* [#333](https://github.com/kyma-project/luigi/pull/333) Fix errors when building luigi angular sample application ([@kwiatekus](https://github.com/kwiatekus))
+
+## v0.4.7 (2019-02-08)
+
+#### :rocket: Added
+* [#395](https://github.com/kyma-project/luigi/pull/395) Add generic alert ([@jesusreal](https://github.com/jesusreal))
+
+#### :bug: Fixed
+* [#394](https://github.com/kyma-project/luigi/pull/394) fix application setup issues ([@JohannesDoberer](https://github.com/JohannesDoberer))
+
+## v0.4.6 (2019-02-07)
+
+#### :rocket: Added
+* [#390](https://github.com/kyma-project/luigi/pull/390) Implement test coverage feature ([@parostatkiem](https://github.com/parostatkiem))
+* [#389](https://github.com/kyma-project/luigi/pull/389) Add generic confirmation modal ([@jesusreal](https://github.com/jesusreal))
+* [#385](https://github.com/kyma-project/luigi/pull/385) Reload microfrontend when clicking on selected node ([@maxmarkus](https://github.com/maxmarkus))
+* [#371](https://github.com/kyma-project/luigi/pull/371) add product switcher to navigation ([@JohannesDoberer](https://github.com/JohannesDoberer))
+
+#### :bug: Fixed
+* [#392](https://github.com/kyma-project/luigi/pull/392) Reload same node fails if no iframe exists ([@maxmarkus](https://github.com/maxmarkus))
+* [#380](https://github.com/kyma-project/luigi/pull/380) Fix default child and 404 error mechanism bug ([@dariadomagala](https://github.com/dariadomagala))
 ## [v0.4.5] (2019-01-23)
 
 #### :rocket: Added
@@ -52,7 +84,6 @@ The lerna-changelog tool detects changes based on PR labels and maps them to sec
 * [#315](https://github.com/kyma-project/luigi/pull/315) Add isolate all views setting ([@dariadomagala](https://github.com/dariadomagala))
 * [#344](https://github.com/kyma-project/luigi/pull/344) Fix formatting issues and add missing info ([@bszwarc](https://github.com/bszwarc))
 
-
 ## [v0.4.4] (2019-01-10)
 
 #### :rocket: Added
@@ -65,7 +96,6 @@ The lerna-changelog tool detects changes based on PR labels and maps them to sec
 
 #### :memo: Documentation
 * [#306](https://github.com/kyma-project/luigi/pull/306) Icons in navigation nodes ([@parostatkiem](https://github.com/parostatkiem))
-
 
 ## [v0.4.3] - 2019-01-07
 
@@ -285,3 +315,4 @@ The lerna-changelog tool detects changes based on PR labels and maps them to sec
 [v0.4.3]: https://github.com/kyma-project/luigi/compare/v0.4.2...v0.4.3
 [v0.4.4]: https://github.com/kyma-project/luigi/compare/v0.4.3...v0.4.4
 [v0.4.5]: https://github.com/kyma-project/luigi/compare/v0.4.4...v0.4.5
+[v0.4.9]: https://github.com/kyma-project/luigi/compare/v0.4.8...v0.4.9
