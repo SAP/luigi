@@ -2,22 +2,49 @@
   class="fd-shellbar__logo { !hasLogo ? 'fd-shellbar__logo--image-replaced' : '' } { hasLogo ? 'lui-customlogo' : ''}"
   aria-label="SAP"
 >
-  {#if hasLogo} <img on:click="goTo('/')" ref:logo /> {/if}
+  {#if hasLogo}
+  <img on:click="goTo('/')" ref:logo>
+  {/if}
 </div>
-
 {#if title}
 <div class="fd-shellbar__product">
-  <!-- code duplication due fundamental markup -->
-  <div
-    class="fd-shellbar__logo fd-shellbar__logo--control fd-product-menu__logo { !hasLogo ? 'fd-shellbar__logo--image-replaced' : '' } { hasLogo ? 'lui-customlogo' : ''}"
-    aria-label="SAP"
-  >
-    {#if hasLogo} <img on:click="goTo('/')" ref:logo2 /> {/if}
-  </div>
+  {#if !hasApps}
   <div class="fd-shellbar__title" on:click="goTo('/')">{title}</div>
+  {:else}
+  <div class="fd-popover fd-popover--right">
+    <div class="fd-popover__control">
+      <button
+        class="fd-product-menu__control"
+        aria-controls="9GLB2694"
+        aria-haspopup="true"
+        aria-expanded="false"
+      >
+        <div
+          class="fd-shellbar__title fd-product-menu__title"
+          on:click="goTo('/')"
+        >{title}</div>
+      </button>
+    </div>
+    <div
+      class="fd-popover__body fd-popover__body--right"
+      aria-hidden="false"
+      id="9GLB2694"
+    >
+      <nav class="fd-menu">
+        <ul class="fd-menu__list">
+          {#each apps as app}
+          <li>
+            <a role="button" class="fd-menu__item">{app.name}</a>
+          </li>
+          {/each}
+        </ul>
+      </nav>
+    </div>
+  </div>
+  {/if}
 </div>
-{/if}
 
+{/if}
 <script type="text/javascript">
   import * as Header from './services/header.js';
   import { LuigiConfig } from '../services/config.js';
@@ -47,5 +74,9 @@
   .fd-shellbar__logo,
   .fd-shellbar__title {
     cursor: pointer;
+  }
+
+  .fd-popover__body--right {
+    right: -10px;
   }
 </style>
