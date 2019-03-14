@@ -1,45 +1,52 @@
 {#if productSwitcherItems && productSwitcherItems.length &&
-Object.keys(productSwitcherItems[0]).length}
-<div class="fd-shellbar__action fd-shellbar__action--collapsible">
-  <div class="fd-product-switcher">
-    <div class="fd-popover fd-popover--right">
-      <div class="fd-popover__control" on:click="event.stopPropagation()">
-        <button
-          class="fd-button--shell sap-icon--grid"
-          aria-expanded="{dropDownStates.productSwitcherPopover || false}"
-          aria-haspopup="true"
-          on:click="toggleDropdownState('productSwitcherPopover')"
-        ></button>
-      </div>
-      <div
-        class="fd-popover__body fd-popover__body--right"
-        aria-hidden="{!(dropDownStates.productSwitcherPopover || false)}"
-        id="productSwitcherPopover"
-      >
-        <div class="fd-product-switcher__body">
-          <nav class="fd-menu">
-            <ul class="fd-menu__list">
-              {#each productSwitcherItems as productSwitcherItem} {#if
-              productSwitcherItem.icon && productSwitcherItem.label}
-              <li on:click="onActionClick(productSwitcherItem)">
-                <a class="fd-menu__item">
-                  <span class="fd-product-switcher__product-icon">
-                    <img src="{productSwitcherItem.icon}" />
-                  </span>
-                  <span class="fd-product-switcher__product-title">
-                    {productSwitcherItem.label}
-                  </span>
-                </a>
-              </li>
-              {/if} {/each}
-            </ul>
-          </nav>
-        </div>
-      </div>
+Object.keys(productSwitcherItems[0]).length }
+
+<div class="fd-shellbar__action ">
+    <div class="fd-product-switcher">
+          <button
+            class="fd-button--shell sap-icon--grid"
+            aria-expanded="{dropDownStates.productSwitcherPopover || false}"
+            aria-haspopup="true"
+            on:click="toggleDropdownState('productSwitcherPopover')"
+          ></button>
+        {dropDownStates.productSwitcherPopover}
+        {#if dropDownStates.productSwitcherPopover}
+          <div class="fd-modal y-fd-modal--full-screen">
+            <div class="fd-modal__content" role="document">
+                <div class="fd-modal__body">
+                  <div class="fd-product-switcher__body">
+                      <nav class="fd-menu">
+                        <ul class="fd-menu__list">
+                          {#each productSwitcherItems as productSwitcherItem}
+                            {#if productSwitcherItem.icon && productSwitcherItem.label}
+                            <li on:click="onActionClick(productSwitcherItem)">
+                              <a class="fd-menu__item">
+                                <span class="fd-product-switcher__product-icon">
+                                  <img src="{productSwitcherItem.icon}" />
+                                </span>
+                                <span class="fd-product-switcher__product-title">
+                                  {productSwitcherItem.label}
+                                </span>
+                              </a>
+                            </li>
+                            {/if} 
+                          {/each}
+                        </ul>
+                      </nav>
+                    </div>
+                  </div>
+                  <footer class="fd-modal__footer">
+                      <div class="fd-modal__actions">
+                          <button class="fd-button--light">Close</button>
+                      </div>
+                  </footer>
+              </div>
+            </div>
+          {/if}
     </div>
   </div>
-</div>
 {/if}
+
 <script type="text/javascript">
   import { LuigiConfig } from '../services/config.js';
   import * as Routing from '../services/routing.js';
@@ -87,5 +94,29 @@ Object.keys(productSwitcherItems[0]).length}
   .fd-menu__item {
     padding: 0;
     text-align: center;
+  }
+
+  .y-fd-modal{
+    &--full-screen{
+      $margin: 0px;
+      z-index:1000;
+      position:fixed;
+      box-sizing:border-box;
+      top:0;
+      left:0;
+      margin: auto auto;
+      .fd-modal__content{
+        border-radius:0;
+        width:calc(100vw - #{$margin});
+        height:calc(100vh - #{$margin});
+        margin: calc(#{$margin} / 2);
+        display: grid;
+        grid-template-rows: 1fr auto;
+      }
+
+      .fd-modal__body{
+
+      }
+    }
   }
 </style>
