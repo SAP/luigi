@@ -10,6 +10,7 @@
 <div class="fd-shellbar__product">
   {#if !hasApps}
   <div class="fd-shellbar__title" on:click="goTo('/')">{title}</div>
+  <!-- TODO Application Switcher -->
   {:else}
   <div class="fd-popover fd-popover--right">
     <div class="fd-popover__control">
@@ -32,18 +33,17 @@
     >
       <nav class="fd-menu">
         <ul class="fd-menu__list">
-          {#each apps as app}
+          <!-- {#each apps as app} -->
           <li>
-            <a role="button" class="fd-menu__item">{app.name}</a>
+            <a role="button" class="fd-menu__item">Application One</a>
           </li>
-          {/each}
+          <!-- {/each} -->
         </ul>
       </nav>
     </div>
   </div>
   {/if}
 </div>
-
 {/if}
 <script type="text/javascript">
   import * as Header from './services/header.js';
