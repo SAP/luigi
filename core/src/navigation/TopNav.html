@@ -1,4 +1,4 @@
-<svelte:window on:click="closeAllDropdowns()" on:blur="closeAllDropdowns()" />
+<svelte:window on:click="closeAllDropdowns('window click')" on:blur="closeAllDropdowns('window blur')" />
 
 <div class="fd-shellbar {hideNavComponent ? 'hideNavComponent' : ''}">
   <div class="fd-shellbar__group fd-shellbar__group--start">
@@ -110,7 +110,13 @@
                     </li>
                     {/if} 
                     {/each}
-                    
+                    {#if isProductSwitcherAvailable}
+                      <li>                         
+                        <a class="fd-menu__item" on:click="openMobileProductSwitcher(event)">            
+                          ProductSwitcher
+                        </a>
+                      </li>
+                    {/if}
                   </ul>
                 </nav>
               </div>
@@ -146,6 +152,8 @@
         <ProductSwitcher
           bind:dropDownStates
           on:toggleDropdownState="toggleDropdownState(event.name)"
+          on:setProductSwitcherToDesktop="set({isProductSwitcherMobile: false})"
+          isMobile={isProductSwitcherMobile}
         />
       {/if}
     </div>
@@ -203,10 +211,12 @@
         ),
         hideNavComponent: LuigiConfig.getConfigBooleanValue(
           'settings.hideNavigation'
-        )
+        ),
+        isProductSwitcherMobile: false
       });
     },
     onstate({ changed, current, previous }) {
+      //console.log('state changed to', current.isProductSwitcherMobile);
       if (!previous || previous.pathData != current.pathData) {
         setTopNavData(current, this);
       }
@@ -225,22 +235,41 @@
       }
     },
     methods: {
-      handleClick(node) {
+      openMobileProductSwitcher(event) {
+        console.log('openMobilePS');
+        if (event)
+          event.stopPropagation();
+        this.set({
+          isProductSwitcherMobile: true
+        })
+        console.log('this.get().isProductSwitcherMobile', this.get().isProductSwitcherMobile);
+        this.toggleDropdownState('productSwitcherPopover', true);
+
+      },
+      handleClick(node, event) {
+        //  if (event)
+        //   event.stopPropagation();
+
         this.fire('handleClick', { node });
       },
-      toggleDropdownState(name) {
+      toggleDropdownState(name, closeAllDropdowns = true) {
+
         const dropDownStates = this.get().dropDownStates || {};
         const dropDownState = !dropDownStates[name];
 
-        this.closeAllDropdowns();
+        if (closeAllDropdowns)
+          this.closeAllDropdowns('toggleDropdownState ' + name);
+
         dropDownStates[name] = dropDownState;
+        //console.log('dropdownState of ', name, ' toggled to ', dropDownState);
 
         this.set({
           dropDownStates
         });
 
       },
-      closeAllDropdowns() {
+      closeAllDropdowns(reason = "") {
+        //console.log('closeAllDropdowns by ', reason);
         const dropDownStates = this.get().dropDownStates || {};
         const keys = Object.keys(dropDownStates);
         if (keys && keys.length > 0) {

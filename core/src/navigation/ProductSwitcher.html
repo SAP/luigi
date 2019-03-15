@@ -1,49 +1,88 @@
 {#if productSwitcherItems && productSwitcherItems.length &&
 Object.keys(productSwitcherItems[0]).length }
 
-<div class="fd-shellbar__action ">
-    <div class="fd-product-switcher">
-          <button
-            class="fd-button--shell sap-icon--grid"
-            aria-expanded="{dropDownStates.productSwitcherPopover || false}"
-            aria-haspopup="true"
-            on:click="toggleDropdownState('productSwitcherPopover',event)"
-          ></button>
-        {#if dropDownStates.productSwitcherPopover}
-          <div class="fd-modal y-fd-modal--full-screen" on:click="event.stopPropagation()">
-            <div class="fd-modal__content" role="document">
-                <div class="fd-modal__body">
-                  <div class="fd-product-switcher__body">
-                      <nav class="fd-menu">
-                        <ul class="fd-menu__list">
-                          {#each productSwitcherItems as productSwitcherItem}
-                            {#if productSwitcherItem.icon && productSwitcherItem.label}
-                            <li on:click="onActionClick(productSwitcherItem)">
-                              <a class="fd-menu__item">
-                                <span class="fd-product-switcher__product-icon">
-                                  <img src="{productSwitcherItem.icon}" />
-                                </span>
-                                <span class="fd-product-switcher__product-title">
-                                  {productSwitcherItem.label}
-                                </span>
-                              </a>
-                            </li>
-                            {/if} 
-                          {/each}
-                        </ul>
-                      </nav>
-                    </div>
-                  </div>
-                  <footer class="fd-modal__footer">
-                      <div class="fd-modal__actions">
-                          <button class="fd-button--light"  on:click="toggleDropdownState('productSwitcherPopover',event)">Close</button>
-                      </div>
-                  </footer>
+
+  <!-- DESKTOP VERSION (popover): -->
+    <div class="fd-shellbar__action fd-shellbar__action--collapsible y-desktop-only">
+      <div class="fd-product-switcher">
+        <div class="fd-popover fd-popover--right">
+          <div class="fd-popover__control" on:click="event.stopPropagation()">
+            <button
+              class="fd-button--shell sap-icon--grid"
+              aria-expanded="{dropDownStates.productSwitcherPopover || false}"
+              aria-haspopup="true"
+              on:click="onDesktopOpenClick(event)"
+            ></button>
+          </div>
+            {#if !isMobile}
+              <div
+                class="fd-popover__body fd-popover__body--right"
+                aria-hidden="{!(dropDownStates.productSwitcherPopover || false)}"
+                id="productSwitcherPopover"
+              >
+                <div class="fd-product-switcher__body">
+                  <nav class="fd-menu">
+                    <ul class="fd-menu__list">
+                      {#each productSwitcherItems as productSwitcherItem} {#if
+                      productSwitcherItem.icon && productSwitcherItem.label}
+                      <li on:click="onActionClick(productSwitcherItem)">
+                        <a class="fd-menu__item">
+                          <span class="fd-product-switcher__product-icon">
+                            <img src="{productSwitcherItem.icon}" />
+                          </span>
+                          <span class="fd-product-switcher__product-title">
+                            {productSwitcherItem.label}
+                          </span>
+                        </a>
+                      </li>
+                      {/if} {/each}
+                    </ul>
+                  </nav>
+                </div>
               </div>
-            </div>
-          {/if}
+           {/if}
+        </div>
+      </div>
     </div>
-  </div>
+ 
+
+
+  <!-- MOBILE VERSION (fullscreen modal): -->
+    {#if isMobile && dropDownStates.productSwitcherPopover}
+      <section class="fd-product-switcher">
+        <div class="fd-modal y-fd-modal--full-screen" on:click="event.stopPropagation()">
+          <div class="fd-modal__content" role="document">
+              <div class="fd-modal__body">
+                <div class="fd-product-switcher__body">
+                    <nav class="fd-menu">
+                      <ul class="fd-menu__list">
+                        {#each productSwitcherItems as productSwitcherItem}
+                          {#if productSwitcherItem.icon && productSwitcherItem.label}
+                          <li on:click="onActionClick(productSwitcherItem)">
+                            <a class="fd-menu__item">
+                              <span class="fd-product-switcher__product-icon">
+                                <img src="{productSwitcherItem.icon}" />
+                              </span>
+                              <span class="fd-product-switcher__product-title">
+                                {productSwitcherItem.label}
+                              </span>
+                            </a>
+                          </li>
+                          {/if} 
+                        {/each}
+                      </ul>
+                    </nav>
+                  </div>
+                </div>
+                <footer class="fd-modal__footer">
+                    <div class="fd-modal__actions">
+                        <button class="fd-button--light"  on:click="toggleDropdownState('productSwitcherPopover',event)">Close</button>
+                    </div>
+                </footer>
+            </div>
+          </div>
+      </section>
+    {/if}
 {/if}
 
 <script type="text/javascript">
@@ -68,6 +107,13 @@ Object.keys(productSwitcherItems[0]).length }
       }
     },
     methods: {
+      onDesktopOpenClick(event) {
+        if (event)
+          event.stopPropagation();
+        this.fire('setProductSwitcherToDesktop');
+        this.toggleDropdownState('productSwitcherPopover');
+      },
+
       onActionClick(productSwitcherItem) {
         this.root.getUnsavedChangesModalPromise().then(() => {
           if (productSwitcherItem.externalLink) {
@@ -81,7 +127,9 @@ Object.keys(productSwitcherItems[0]).length }
         });
       },
       toggleDropdownState(name, event) {
-        event.stopPropagation();
+        if (event)
+          event.stopPropagation();
+
         this.fire('toggleDropdownState', { name });
       }
     }
@@ -91,14 +139,17 @@ Object.keys(productSwitcherItems[0]).length }
   .fd-product-switcher__product-icon > img {
     max-height: 40px;
   }
-  .fd-menu__item {
-    padding: 0;
-    text-align: center;
+
+  .fd-product-switcher__body{
+    .fd-menu__item {
+      padding: 0;
+      text-align: center;
+    }
   }
 
   .y-fd-modal{
     &--full-screen{
-      $margin: 0px;
+   
       z-index:1000;
       position:fixed;
       box-sizing:border-box;
@@ -106,16 +157,14 @@ Object.keys(productSwitcherItems[0]).length }
       left:0;
       margin: auto auto;
       .fd-modal__content{
+        $margin: 0px; //distance from viewport borders. Please remove the line below (border-radius) if not set to 0.
         border-radius:0;
+
         width:calc(100vw - #{$margin});
         height:calc(100vh - #{$margin});
         margin: calc(#{$margin} / 2);
         display: grid;
         grid-template-rows: 1fr auto;
-      }
-
-      .fd-modal__body{
-
       }
     }
   }
