@@ -216,7 +216,6 @@
       });
     },
     onstate({ changed, current, previous }) {
-      //console.log('state changed to', current.isProductSwitcherMobile);
       if (!previous || previous.pathData != current.pathData) {
         setTopNavData(current, this);
       }
@@ -236,40 +235,31 @@
     },
     methods: {
       openMobileProductSwitcher(event) {
-        console.log('openMobilePS');
         if (event)
           event.stopPropagation();
+
+        //ProductSwitcher should become "mobile"
         this.set({
           isProductSwitcherMobile: true
         })
-        console.log('this.get().isProductSwitcherMobile', this.get().isProductSwitcherMobile);
-        this.toggleDropdownState('productSwitcherPopover', true);
-
+        this.toggleDropdownState('productSwitcherPopover');
       },
-      handleClick(node, event) {
-        //  if (event)
-        //   event.stopPropagation();
-
+      handleClick(node) {
         this.fire('handleClick', { node });
       },
-      toggleDropdownState(name, closeAllDropdowns = true) {
-
+      toggleDropdownState(name) {
         const dropDownStates = this.get().dropDownStates || {};
         const dropDownState = !dropDownStates[name];
 
-        if (closeAllDropdowns)
-          this.closeAllDropdowns('toggleDropdownState ' + name);
+        this.closeAllDropdowns();
 
         dropDownStates[name] = dropDownState;
-        //console.log('dropdownState of ', name, ' toggled to ', dropDownState);
 
         this.set({
           dropDownStates
         });
-
       },
-      closeAllDropdowns(reason = "") {
-        //console.log('closeAllDropdowns by ', reason);
+      closeAllDropdowns() {
         const dropDownStates = this.get().dropDownStates || {};
         const keys = Object.keys(dropDownStates);
         if (keys && keys.length > 0) {

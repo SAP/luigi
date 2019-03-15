@@ -11,7 +11,7 @@ Object.keys(productSwitcherItems[0]).length }
               class="fd-button--shell sap-icon--grid"
               aria-expanded="{dropDownStates.productSwitcherPopover || false}"
               aria-haspopup="true"
-              on:click="onDesktopOpenClick(event)"
+              on:click="onDesktopOpenClick()"
             ></button>
           </div>
             {#if !isMobile}
@@ -107,9 +107,7 @@ Object.keys(productSwitcherItems[0]).length }
       }
     },
     methods: {
-      onDesktopOpenClick(event) {
-        if (event)
-          event.stopPropagation();
+      onDesktopOpenClick() {
         this.fire('setProductSwitcherToDesktop');
         this.toggleDropdownState('productSwitcherPopover');
       },
