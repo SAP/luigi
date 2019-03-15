@@ -7,11 +7,10 @@ Object.keys(productSwitcherItems[0]).length }
             class="fd-button--shell sap-icon--grid"
             aria-expanded="{dropDownStates.productSwitcherPopover || false}"
             aria-haspopup="true"
-            on:click="toggleDropdownState('productSwitcherPopover')"
+            on:click="toggleDropdownState('productSwitcherPopover',event)"
           ></button>
-        {dropDownStates.productSwitcherPopover}
         {#if dropDownStates.productSwitcherPopover}
-          <div class="fd-modal y-fd-modal--full-screen">
+          <div class="fd-modal y-fd-modal--full-screen" on:click="event.stopPropagation()">
             <div class="fd-modal__content" role="document">
                 <div class="fd-modal__body">
                   <div class="fd-product-switcher__body">
@@ -37,7 +36,7 @@ Object.keys(productSwitcherItems[0]).length }
                   </div>
                   <footer class="fd-modal__footer">
                       <div class="fd-modal__actions">
-                          <button class="fd-button--light">Close</button>
+                          <button class="fd-button--light"  on:click="toggleDropdownState('productSwitcherPopover',event)">Close</button>
                       </div>
                   </footer>
               </div>
@@ -81,7 +80,8 @@ Object.keys(productSwitcherItems[0]).length }
           }
         });
       },
-      toggleDropdownState(name) {
+      toggleDropdownState(name, event) {
+        event.stopPropagation();
         this.fire('toggleDropdownState', { name });
       }
     }

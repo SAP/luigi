@@ -230,12 +230,11 @@
       },
       toggleDropdownState(name) {
         const dropDownStates = this.get().dropDownStates || {};
-        console.warn('bef:', dropDownStates);
         const dropDownState = !dropDownStates[name];
 
         this.closeAllDropdowns();
         dropDownStates[name] = dropDownState;
-        console.warn('aft:', dropDownStates);
+
         this.set({
           dropDownStates
         });
