@@ -15,7 +15,7 @@
     "copy-webpack-plugin": "^4.5.2",
     "css-loader": "^0.28.11",
     "file-loader": "^2.0.0",
-    "fiori-fundamentals": "^1.4.1",
+    "fiori-fundamentals": "^1.4.5",
     "istanbul": "^1.1.0-alpha.1",
     "jsdom": "11.12.0",
     "jsdom-global": "3.0.2",
