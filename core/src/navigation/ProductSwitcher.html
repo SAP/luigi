@@ -12,6 +12,7 @@ Object.keys(productSwitcherItems[0]).length }
               aria-expanded="{dropDownStates.productSwitcherPopover || false}"
               aria-haspopup="true"
               on:click="onDesktopOpenClick()"
+              data-cy="desktop-product-switcher"
             ></button>
           </div>
             {#if !isMobile}
@@ -78,7 +79,9 @@ Object.keys(productSwitcherItems[0]).length }
                 </div>
                 <footer class="fd-modal__footer">
                     <div class="fd-modal__actions">
-                        <button class="fd-button"  on:click="toggleDropdownState('productSwitcherPopover',event)">Close</button>
+                        <button class="fd-button"  on:click="toggleDropdownState('productSwitcherPopover',event)" data-cy="mobile-product-switcher-close">
+                          Close
+                        </button>
                     </div>
                 </footer>
             </div>

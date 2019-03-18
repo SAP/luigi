@@ -73,6 +73,7 @@
                     aria-expanded="{dropDownStates.overflowPopover || false}"
                     aria-haspopup="true"
                     on:click="toggleDropdownState('overflowPopover')"
+                    data-cy="mobile-menu"
                   >
                     <!-- <span class="fd-counter fd-counter--notification" aria-label="Unread count">25</span> -->
                   </button>
@@ -112,8 +113,7 @@
                     {/each}
                     {#if isProductSwitcherAvailable}
                       <li>       
-                       
-                        <a class="fd-menu__item" on:click="openMobileProductSwitcher(event)">            
+                        <a class="fd-menu__item" on:click="openMobileProductSwitcher(event)"  data-cy="mobile-product-switcher">            
                            <span class="fd-top-nav__icon sap-icon--grid sap-icon--m">
                            </span>                  
                           My Products
