@@ -42,20 +42,17 @@ export declare interface UxManager {
   /**
    * Removes the loading indicator. Use it after calling {@link #showLoadingIndicator showLoadingIndicator()} or to hide the indicator when you use the {@link navigation-configuration.md#nodes loadingIndicator.hideAutomatically: false} node configuration.
    */
-
   hideLoadingIndicator: () => void;
 
   /**
    * Removes the backdrop.
    */
-
   removeBackdrop: () => void;
 
   /**
    * This method informs the main application that there are unsaved changes in the current view in the iframe. For example, that can be a view with form fields which were edited but not submitted.
    * @param {boolean} isDirty indicates if there are any unsaved changes on the current page or in the component
    */
-
   setDirtyStatus: (isDirty: boolean) => void;
 
   /**
@@ -87,7 +84,6 @@ export declare interface UxManager {
    *     // Logic to execute when the alert is dismissed
    * });
    */
-
   showAlert: (settings: ShowAlertSettings) => Promise<void>;
 
   /**
@@ -218,10 +214,12 @@ export function getNodeParams(): NodeParams;
  * @memberof lifecycle
  */
 export function getPathParams(): PathParams;
+
 /**
  * @returns {string} the authorization token
  */
 export function getToken(): string;
+
 /**
  * The Link Manager allows you to navigate to another route. Use it instead of an internal router to:
   - Route inside micro front-ends.
@@ -230,6 +228,7 @@ export function getToken(): string;
 */
 /** @name linkManager */
 export function linkManager(): LinkManager;
+
 /**
  * Removes a context update listener.
  * @param {string} id the id that was returned by the `addContextUpdateListener` function
@@ -243,6 +242,7 @@ export function removeContextUpdateListener(id: string): boolean;
  * @memberof lifecycle
  */
 export function removeInitListener(id: number): boolean;
+
 /**
  * Use the UX Manager to manage the appearance features in Luigi.
  */
