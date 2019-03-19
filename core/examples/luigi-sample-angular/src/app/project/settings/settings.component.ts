@@ -13,6 +13,7 @@ import { Subscription } from 'rxjs';
   styleUrls: ['./settings.component.css']
 })
 export class SettingsComponent implements OnInit {
+  public luigiClient = LuigiClient;
   projectId: string;
   groupId: string;
   hasBack: boolean;
@@ -33,11 +34,11 @@ export class SettingsComponent implements OnInit {
       this.groupId = params['groupId'];
     });
 
-    LuigiClient.addInitListener(init => {
-      this.hasBack = LuigiClient.linkManager().hasBack();
+    this.luigiClient.addInitListener(init => {
+      this.hasBack = this.luigiClient.linkManager().hasBack();
       this.nodeParams =
-        Object.keys(LuigiClient.getNodeParams()).length > 0
-          ? LuigiClient.getNodeParams()
+        Object.keys(this.luigiClient.getNodeParams()).length > 0
+          ? this.luigiClient.getNodeParams()
           : null;
       if (!this.cdr['destroyed']) {
         this.cdr.detectChanges();
@@ -66,6 +67,6 @@ export class SettingsComponent implements OnInit {
   goBack() {
     // going back with some sample callback context,
     // that will be handed over to previous view
-    LuigiClient.linkManager().goBack(this.callbackValue);
+    this.luigiClient.linkManager().goBack(this.callbackValue);
   }
 }

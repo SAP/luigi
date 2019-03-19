@@ -22,6 +22,7 @@ import { NgForm } from '@angular/forms';
 })
 export class ProjectComponent implements OnInit, OnDestroy {
   @ViewChild('luigiAlertForm') luigiAlertForm: NgForm;
+  public luigiClient = LuigiClient;
   public projectId: string;
   public modalActive = false;
   public preservedViewCallbackContext: any;
@@ -49,7 +50,9 @@ export class ProjectComponent implements OnInit, OnDestroy {
       this.lcSubscription.unsubscribe();
     }
     if (this.cudListener) {
-      const removed = LuigiClient.removeContextUpdateListener(this.cudListener);
+      const removed = this.luigiClient.removeContextUpdateListener(
+        this.cudListener
+      );
     }
   }
 
@@ -78,16 +81,18 @@ export class ProjectComponent implements OnInit, OnDestroy {
 
     // Decentralized approach, using LuigiClient listeners directly
     //
-    this.cudListener = LuigiClient.addContextUpdateListener(updatedContext => {
-      // this.projectId = updatedContext.currentProject;
-      // this.preservedViewCallbackContext = updatedContext.goBackContext;
+    this.cudListener = this.luigiClient.addContextUpdateListener(
+      updatedContext => {
+        // this.projectId = updatedContext.currentProject;
+        // this.preservedViewCallbackContext = updatedContext.goBackContext;
 
-      // Be sure to check for destroyed ChangeDetectorRef,
-      // else you get runtime Errors
-      if (!this.cdr['destroyed']) {
-        this.cdr.detectChanges();
+        // Be sure to check for destroyed ChangeDetectorRef,
+        // else you get runtime Errors
+        if (!this.cdr['destroyed']) {
+          this.cdr.detectChanges();
+        }
       }
-    });
+    );
   }
 
   toggleModal() {
@@ -104,7 +109,8 @@ export class ProjectComponent implements OnInit, OnDestroy {
       buttonConfirm: 'Confirm',
       buttonDismiss: 'Cancel'
     };
-    LuigiClient.uxManager()
+    this.luigiClient
+      .uxManager()
       .showConfirmationModal(settings)
       .then(
         () => {
@@ -144,7 +150,8 @@ export class ProjectComponent implements OnInit, OnDestroy {
       links: linkData
     };
 
-    LuigiClient.uxManager()
+    this.luigiClient
+      .uxManager()
       .showAlert(settings)
       .then(() => {
         this.alertDismissed = true;
@@ -152,7 +159,8 @@ export class ProjectComponent implements OnInit, OnDestroy {
   }
 
   checkIfPathExists() {
-    LuigiClient.linkManager()
+    this.luigiClient
+      .linkManager()
       .pathExists(this.pathExists.formValue)
       .then((pathExists: boolean) => {
         this.pathExists.result = pathExists;
@@ -165,6 +173,6 @@ export class ProjectComponent implements OnInit, OnDestroy {
   }
 
   public sendDirtyEvent = () => {
-    LuigiClient.uxManager().setDirtyStatus(this.isDirty);
+    this.luigiClient.uxManager().setDirtyStatus(this.isDirty);
   };
 }

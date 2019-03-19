@@ -13,6 +13,7 @@ import { toTitleCase } from '../../services/helpers';
   styleUrls: ['./dynamic.component.css']
 })
 export class DynamicComponent implements OnInit, OnDestroy {
+  public luigiClient = LuigiClient;
   public pathParams: { [key: string]: string };
   public nodeLabel: string;
   public links: string[];
@@ -38,7 +39,7 @@ export class DynamicComponent implements OnInit, OnDestroy {
         }
 
         const lastPathParam = Object.values(
-          LuigiClient.getPathParams() || {}
+          this.luigiClient.getPathParams() || {}
         ).pop();
 
         // We can directly access our specified context values here
@@ -46,10 +47,10 @@ export class DynamicComponent implements OnInit, OnDestroy {
         this.links = ctx.context.links;
 
         // preserveView and node params
-        this.hasBack = LuigiClient.linkManager().hasBack();
+        this.hasBack = this.luigiClient.linkManager().hasBack();
         this.nodeParams =
-          Object.keys(LuigiClient.getNodeParams()).length > 0
-            ? LuigiClient.getNodeParams()
+          Object.keys(this.luigiClient.getNodeParams()).length > 0
+            ? this.luigiClient.getNodeParams()
             : null;
 
         if (!this.cdr['destroyed']) {
@@ -74,6 +75,6 @@ export class DynamicComponent implements OnInit, OnDestroy {
   public goBack() {
     // going back with some sample callback context,
     // that will be handed over to previous view
-    LuigiClient.linkManager().goBack(this.callbackValue);
+    this.luigiClient.linkManager().goBack(this.callbackValue);
   }
 }
