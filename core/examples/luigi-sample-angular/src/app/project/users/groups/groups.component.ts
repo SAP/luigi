@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import LuigiClient from '@kyma-project/luigi-client';
 
 @Component({
   selector: 'app-groups',
@@ -6,6 +7,7 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./groups.component.css']
 })
 export class GroupsComponent {
+  public luigiClient = LuigiClient;
   public customValue: string = 'avengers';
   public groupLinks: any[] = [
     {
