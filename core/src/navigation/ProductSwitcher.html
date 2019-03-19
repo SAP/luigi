@@ -162,9 +162,9 @@ Object.keys(productSwitcherItems[0]).length }
       $margin: 0px; //distance from viewport borders. Please remove the line below (border-radius) if not set to 0.
       border-radius:0;
 
-      width:calc(100vw - #{$margin});
-      height:calc(100vh - #{$margin});
-      margin: calc(#{$margin} / 2);
+      width:calc(100vw - 2 * #{$margin});
+      height:calc(100vh - 2 * #{$margin});
+      margin: $margin;
       display: grid;
       grid-template-rows: 1fr auto; //no row for title by default
     }
