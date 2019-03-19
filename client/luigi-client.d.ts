@@ -184,18 +184,21 @@ export declare interface LinkManager {
 export function addContextUpdateListener(
   contextUpdatedFn: (context: Context) => void
 ): string;
+
 /**
  * Registers a listener called with the context object as soon as Luigi is instantiated. Defer your application bootstrap if you depend on authentication data coming from Luigi.
  * @param {function} initFn the function that is called once Luigi is initialized
  * @memberof lifecycle
  */
 export function addInitListener(initFn: (context: Context) => void): number;
+
 /**
  * Returns the context object. Typically it is not required as the {@link #addContextUpdateListener addContextUpdateListener()} receives the same values.
  * @returns {Object} current context data.
  * @memberof lifecycle
  */
 export function getEventData(): Context;
+
 /**
  * Returns the node parameters of the active URL.
  * Node parameters are defined like URL query parameters but with a specific prefix allowing Luigi to pass them to the micro front-end view.  The default prefix is **~** and you can use it in the following way: `https://my.luigi.app/home/products?~sort=asc~page=3`.
