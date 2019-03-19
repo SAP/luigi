@@ -23,7 +23,6 @@ import { NgForm } from '@angular/forms';
 export class ProjectComponent implements OnInit, OnDestroy {
   @ViewChild('luigiAlertForm') luigiAlertForm: NgForm;
   public projectId: string;
-  public luigiClient: LuigiClient;
   public modalActive = false;
   public preservedViewCallbackContext: any;
   private lcSubscription: Subscription;
@@ -50,9 +49,7 @@ export class ProjectComponent implements OnInit, OnDestroy {
       this.lcSubscription.unsubscribe();
     }
     if (this.cudListener) {
-      const removed = this.luigiClient.removeContextUpdateListener(
-        this.cudListener
-      );
+      const removed = LuigiClient.removeContextUpdateListener(this.cudListener);
     }
   }
 
@@ -78,8 +75,6 @@ export class ProjectComponent implements OnInit, OnDestroy {
     this.activatedRoute.params.subscribe((params: Params) => {
       this.projectId = params['projectId'];
     });
-
-    this.luigiClient = LuigiClient;
 
     // Decentralized approach, using LuigiClient listeners directly
     //
@@ -109,8 +104,7 @@ export class ProjectComponent implements OnInit, OnDestroy {
       buttonConfirm: 'Confirm',
       buttonDismiss: 'Cancel'
     };
-    this.luigiClient
-      .uxManager()
+    LuigiClient.uxManager()
       .showConfirmationModal(settings)
       .then(
         () => {
@@ -150,8 +144,7 @@ export class ProjectComponent implements OnInit, OnDestroy {
       links: linkData
     };
 
-    this.luigiClient
-      .uxManager()
+    LuigiClient.uxManager()
       .showAlert(settings)
       .then(() => {
         this.alertDismissed = true;
@@ -159,8 +152,7 @@ export class ProjectComponent implements OnInit, OnDestroy {
   }
 
   checkIfPathExists() {
-    this.luigiClient
-      .linkManager()
+    LuigiClient.linkManager()
       .pathExists(this.pathExists.formValue)
       .then((pathExists: boolean) => {
         this.pathExists.result = pathExists;

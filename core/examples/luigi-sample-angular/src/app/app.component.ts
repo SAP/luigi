@@ -11,16 +11,15 @@ import {
   encapsulation: ViewEncapsulation.None
 })
 export class AppComponent implements OnInit {
-  public luigiClient: LuigiClient = LuigiClient;
   public title: string = 'app';
 
   constructor(private luigiService: LuigiContextService) {}
 
   ngOnInit() {
-    this.luigiClient.addInitListener(context =>
+    LuigiClient.addInitListener(context =>
       this.onLuigiContext('init', context)
     );
-    this.luigiClient.addContextUpdateListener(context =>
+    LuigiClient.addContextUpdateListener(context =>
       this.onLuigiContext('update', context)
     );
   }

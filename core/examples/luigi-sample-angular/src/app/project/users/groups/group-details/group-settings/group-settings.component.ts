@@ -14,7 +14,6 @@ import { toTitleCase } from '../../../../../services/helpers';
   styleUrls: ['./group-settings.component.css']
 })
 export class GroupSettingsComponent implements OnInit, OnDestroy {
-  public luigiClient: LuigiClient = LuigiClient;
   public pathParams: { [key: string]: string };
   public groupLabel: string;
   private lcSubscription: Subscription;
@@ -28,7 +27,7 @@ export class GroupSettingsComponent implements OnInit, OnDestroy {
     this.lcSubscription = this.luigiService
       .getContext()
       .subscribe((ctx: IContextMessage) => {
-        this.pathParams = this.luigiClient.getPathParams();
+        this.pathParams = LuigiClient.getPathParams();
         this.groupLabel =
           this.pathParams &&
           this.pathParams.group &&

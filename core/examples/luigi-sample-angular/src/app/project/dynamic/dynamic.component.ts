@@ -13,7 +13,6 @@ import { toTitleCase } from '../../services/helpers';
   styleUrls: ['./dynamic.component.css']
 })
 export class DynamicComponent implements OnInit, OnDestroy {
-  public luigiClient: LuigiClient = LuigiClient;
   public pathParams: { [key: string]: string };
   public nodeLabel: string;
   public links: string[];
@@ -75,6 +74,6 @@ export class DynamicComponent implements OnInit, OnDestroy {
   public goBack() {
     // going back with some sample callback context,
     // that will be handed over to previous view
-    this.luigiClient.linkManager().goBack(this.callbackValue);
+    LuigiClient.linkManager().goBack(this.callbackValue);
   }
 }

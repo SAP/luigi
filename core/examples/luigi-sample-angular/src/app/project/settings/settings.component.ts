@@ -13,7 +13,6 @@ import { Subscription } from 'rxjs';
   styleUrls: ['./settings.component.css']
 })
 export class SettingsComponent implements OnInit {
-  luigiClient: LuigiClient;
   projectId: string;
   groupId: string;
   hasBack: boolean;
@@ -33,7 +32,7 @@ export class SettingsComponent implements OnInit {
       this.projectId = params['projectId'];
       this.groupId = params['groupId'];
     });
-    this.luigiClient = LuigiClient;
+
     LuigiClient.addInitListener(init => {
       this.hasBack = LuigiClient.linkManager().hasBack();
       this.nodeParams =
@@ -67,6 +66,6 @@ export class SettingsComponent implements OnInit {
   goBack() {
     // going back with some sample callback context,
     // that will be handed over to previous view
-    this.luigiClient.linkManager().goBack(this.callbackValue);
+    LuigiClient.linkManager().goBack(this.callbackValue);
   }
 }
