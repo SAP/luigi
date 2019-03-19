@@ -7,6 +7,7 @@ import LuigiClient from '@kyma-project/luigi-client';
   styleUrls: ['./overview.component.css']
 })
 export class OverviewComponent {
+  public luigiClient = LuigiClient;
   public luigiClientLinks: any[] = [
     {
       link: '/projects/pr1',
