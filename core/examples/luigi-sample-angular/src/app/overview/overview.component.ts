@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import LuigiClient from '@kyma-project/luigi-client';
+import { linkManager, uxManager } from '@kyma-project/luigi-client';
 
 @Component({
   selector: 'app-overview',
@@ -7,7 +7,8 @@ import LuigiClient from '@kyma-project/luigi-client';
   styleUrls: ['./overview.component.css']
 })
 export class OverviewComponent {
-  public luigiClient = LuigiClient;
+  public linkManager = linkManager;
+
   public luigiClientLinks: any[] = [
     {
       link: '/projects/pr1',
@@ -60,6 +61,6 @@ export class OverviewComponent {
 
   public isDirty = false;
   public sendDirtyEvent = () => {
-    LuigiClient.uxManager().setDirtyStatus(this.isDirty);
+    uxManager().setDirtyStatus(this.isDirty);
   };
 }

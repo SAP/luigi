@@ -1,6 +1,10 @@
 import { Component, OnInit, ChangeDetectorRef, OnDestroy } from '@angular/core';
 import { Subscription } from 'rxjs';
-import LuigiClient from '@kyma-project/luigi-client';
+import {
+  getPathParams,
+  getNodeParams,
+  linkManager
+} from '@kyma-project/luigi-client';
 import {
   LuigiContextService,
   IContextMessage
@@ -13,7 +17,7 @@ import { toTitleCase } from '../../services/helpers';
   styleUrls: ['./dynamic.component.css']
 })
 export class DynamicComponent implements OnInit, OnDestroy {
-  public luigiClient = LuigiClient;
+  public linkManager = linkManager;
   public pathParams: { [key: string]: string };
   public nodeLabel: string;
   public links: string[];
@@ -38,20 +42,16 @@ export class DynamicComponent implements OnInit, OnDestroy {
           return;
         }
 
-        const lastPathParam = Object.values(
-          this.luigiClient.getPathParams() || {}
-        ).pop();
+        const lastPathParam = Object.values(getPathParams() || {}).pop();
 
         // We can directly access our specified context values here
         this.nodeLabel = toTitleCase(ctx.context.label || lastPathParam);
         this.links = ctx.context.links;
 
         // preserveView and node params
-        this.hasBack = this.luigiClient.linkManager().hasBack();
+        this.hasBack = linkManager().hasBack();
         this.nodeParams =
-          Object.keys(this.luigiClient.getNodeParams()).length > 0
-            ? this.luigiClient.getNodeParams()
-            : null;
+          Object.keys(getNodeParams()).length > 0 ? getNodeParams() : null;
 
         if (!this.cdr['destroyed']) {
           this.cdr.detectChanges();
@@ -75,6 +75,6 @@ export class DynamicComponent implements OnInit, OnDestroy {
   public goBack() {
     // going back with some sample callback context,
     // that will be handed over to previous view
-    this.luigiClient.linkManager().goBack(this.callbackValue);
+    linkManager().goBack(this.callbackValue);
   }
 }

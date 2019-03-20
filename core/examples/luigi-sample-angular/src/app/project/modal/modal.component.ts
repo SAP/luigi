@@ -7,7 +7,7 @@ import {
   SimpleChanges
 } from '@angular/core';
 
-import LuigiClient from '@kyma-project/luigi-client';
+import { uxManager } from '@kyma-project/luigi-client';
 
 @Component({
   selector: 'app-modal',
@@ -29,11 +29,11 @@ export class ModalComponent implements OnChanges {
   }
 
   private openModal() {
-    LuigiClient.uxManager().addBackdrop();
+    uxManager().addBackdrop();
   }
 
   public onCloseModalClick() {
     this.modalClosed.emit();
-    LuigiClient.uxManager().removeBackdrop();
+    uxManager().removeBackdrop();
   }
 }
