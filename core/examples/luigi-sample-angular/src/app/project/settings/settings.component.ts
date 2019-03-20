@@ -7,7 +7,8 @@ import { ActivatedRoute, Params } from '@angular/router';
 import {
   addInitListener,
   linkManager,
-  getNodeParams
+  getNodeParams,
+  NodeParams
 } from '@kyma-project/luigi-client';
 import { Subscription } from 'rxjs';
 
@@ -21,7 +22,7 @@ export class SettingsComponent implements OnInit {
   projectId: string;
   groupId: string;
   hasBack: boolean;
-  nodeParams = null;
+  nodeParams: NodeParams = null;
   callbackValue = 'default value';
   lcSubscription: Subscription;
   preservedViewCallbackContext: any;

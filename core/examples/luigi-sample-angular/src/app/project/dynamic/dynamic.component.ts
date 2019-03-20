@@ -3,7 +3,9 @@ import { Subscription } from 'rxjs';
 import {
   getPathParams,
   getNodeParams,
-  linkManager
+  linkManager,
+  PathParams,
+  NodeParams
 } from '@kyma-project/luigi-client';
 import {
   LuigiContextService,
@@ -18,11 +20,11 @@ import { toTitleCase } from '../../services/helpers';
 })
 export class DynamicComponent implements OnInit, OnDestroy {
   public linkManager = linkManager;
-  public pathParams: { [key: string]: string };
+  public pathParams: PathParams;
   public nodeLabel: string;
   public links: string[];
   public hasBack: boolean;
-  public nodeParams: any = null;
+  public nodeParams: NodeParams = null;
   public callbackValue = 'default value';
   private lcSubscription: Subscription;
 
