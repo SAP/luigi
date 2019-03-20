@@ -1,6 +1,13 @@
 // Type definitions for Luigi Client
 
-export as namespace LuigiClientm;
+export as namespace LuigiClient;
+
+export declare interface AuthData {
+  accessToken?: string;
+  accessTokenExpirationDate?: number;
+  idToken?: string;
+  [key: string]: any;
+}
 
 export declare interface ConfirmationModalSettings {
   header?: string;
@@ -10,7 +17,8 @@ export declare interface ConfirmationModalSettings {
 }
 
 export declare interface Context {
-  context?: any;
+  authData?: AuthData;
+  context?: { parentNavigationContext?: string[] };
   internal?: any;
   nodeParams?: NodeParams;
   pathParams?: PathParams;
@@ -21,7 +29,7 @@ export declare interface NodeParams {
   [key: string]: string;
 }
 
-export declare interface ShowAlertSettings {
+export declare interface AlertSettings {
   text?: string;
   type: 'info' | 'success' | 'warning' | 'error';
   links?: {
@@ -40,14 +48,19 @@ export declare interface UxManager {
   addBackdrop: () => void;
 
   /**
-   * Removes the loading indicator. Use it after calling {@link #showLoadingIndicator showLoadingIndicator()} or to hide the indicator when you use the {@link navigation-configuration.md#nodes loadingIndicator.hideAutomatically: false} node configuration.
-   */
-  hideLoadingIndicator: () => void;
-
-  /**
    * Removes the backdrop.
    */
   removeBackdrop: () => void;
+
+  /**
+   * Adds a backdrop with a loading indicator for the micro front-end frame. This overrides the {@link navigation-configuration.md#nodes loadingIndicator.enabled} setting.
+   */
+  showLoadingIndicator: () => void;
+
+  /**
+   * Removes the loading indicator. Use it after calling {@link #showLoadingIndicator showLoadingIndicator()} or to hide the indicator when you use the {@link navigation-configuration.md#nodes loadingIndicator.hideAutomatically: false} node configuration.
+   */
+  hideLoadingIndicator: () => void;
 
   /**
    * This method informs the main application that there are unsaved changes in the current view in the iframe. For example, that can be a view with form fields which were edited but not submitted.
@@ -84,7 +97,7 @@ export declare interface UxManager {
    *     // Logic to execute when the alert is dismissed
    * });
    */
-  showAlert: (settings: ShowAlertSettings) => Promise<void>;
+  showAlert: (settings: AlertSettings) => Promise<void>;
 
   /**
    * Shows a confirmation modal.
@@ -96,11 +109,6 @@ export declare interface UxManager {
    * @returns {promise} which is resolved when accepting the confirmation modal and rejected when dismissing it.
    */
   showConfirmationModal: (settings: ConfirmationModalSettings) => Promise<void>;
-
-  /**
-   * Adds a backdrop with a loading indicator for the micro front-end frame. This overrides the {@link navigation-configuration.md#nodes loadingIndicator.enabled} setting.
-   */
-  showLoadingIndicator: () => void;
 }
 
 export declare interface LinkManager {
@@ -114,12 +122,12 @@ export declare interface LinkManager {
 
   /**
    * Sets the current navigation context to that of a specific parent node which has the {@link navigation-configuration.md navigationContext} field declared in the navigation configuration. This navigation context is then used by the `navigate` function.
-   * @param {Object} navigationContext
+   * @param {string} navigationContext
    * @returns {linkManager} link manager instance.
    * @example
    * LuigiClient.linkManager().fromContext('project').navigate('/settings')
    */
-  fromContext: (navigationContext: any) => this;
+  fromContext: (navigationContext: string) => this;
 
   /**
    * Discards the active view and navigates back to the last visited view (preserved view), if a preserved view was set before.
@@ -177,6 +185,20 @@ export declare interface LinkManager {
 }
 
 /**
+ * Registers a listener called with the context object as soon as Luigi is instantiated. Defer your application bootstrap if you depend on authentication data coming from Luigi.
+ * @param {function} initFn the function that is called once Luigi is initialized
+ * @memberof lifecycle
+ */
+export function addInitListener(initFn: (context: Context) => void): number;
+
+/**
+ * Removes an init listener.
+ * @param {string} id the id that was returned by the `addInitListener` function
+ * @memberof lifecycle
+ */
+export function removeInitListener(id: number): boolean;
+
+/**
  * Registers a listener called with the context object upon any navigation change.
  * @param {function} contextUpdatedFn the listener function called each time Luigi context changes
  * @memberof lifecycle
@@ -186,11 +208,16 @@ export function addContextUpdateListener(
 ): string;
 
 /**
- * Registers a listener called with the context object as soon as Luigi is instantiated. Defer your application bootstrap if you depend on authentication data coming from Luigi.
- * @param {function} initFn the function that is called once Luigi is initialized
+ * Removes a context update listener.
+ * @param {string} id the id that was returned by the `addContextUpdateListener` function
  * @memberof lifecycle
  */
-export function addInitListener(initFn: (context: Context) => void): number;
+export function removeContextUpdateListener(id: string): boolean;
+
+/**
+ * @returns {string} the authorization token
+ */
+export function getToken(): AuthData['accessToken'];
 
 /**
  * Returns the context object. Typically it is not required as the {@link #addContextUpdateListener addContextUpdateListener()} receives the same values.
@@ -219,11 +246,6 @@ export function getNodeParams(): NodeParams;
 export function getPathParams(): PathParams;
 
 /**
- * @returns {string} the authorization token
- */
-export function getToken(): string;
-
-/**
  * The Link Manager allows you to navigate to another route. Use it instead of an internal router to:
   - Route inside micro front-ends.
   - Reflect the route.
@@ -231,20 +253,6 @@ export function getToken(): string;
 */
 /** @name linkManager */
 export function linkManager(): LinkManager;
-
-/**
- * Removes a context update listener.
- * @param {string} id the id that was returned by the `addContextUpdateListener` function
- * @memberof lifecycle
- */
-export function removeContextUpdateListener(id: string): boolean;
-
-/**
- * Removes an init listener.
- * @param {string} id the id that was returned by the `addInitListener` function
- * @memberof lifecycle
- */
-export function removeInitListener(id: number): boolean;
 
 /**
  * Use the UX Manager to manage the appearance features in Luigi.

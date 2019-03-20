@@ -12,7 +12,6 @@
     "lib": ["es2017", "dom"],
     "module": "es2015",
     "baseUrl": "./",
-    "allowSyntheticDefaultImports": true,
-    "esModuleInterop": true
+    "allowSyntheticDefaultImports": true
   }
 }
