@@ -44,6 +44,51 @@
         Luigi confirmation modal has been {{ confirmationModalResult }}
       </p>
     </div>
+
+    <div class="fd-panel fd-has-margin-bottom-small">
+      <p><strong>Open Microfrontend in Modal</strong></p>
+      <button
+        class="fd-button"
+        data-cy="show-luigi-mf-modal"
+        (click)="openModal('projects/pr1/users', 'Users')"
+      >
+        Users
+      </button>
+      <button
+        class="fd-button"
+        data-cy="show-luigi-mf-modal"
+        (click)="openModal('projects/pr1/miscellaneous2', 'Miscellaneous2')"
+      >
+        miscellaneous2
+      </button>
+      <button
+        class="fd-button"
+        data-cy="show-luigi-mf-modal"
+        (click)="openModal('/projects/pr2/dps/dps2', 'dps2')"
+      >
+        /projects/pr2/dps/dps2
+      </button>
+      <button
+        class="fd-button"
+        data-cy="show-luigi-mf-modal"
+        (click)="openModal('/projects/pr2', 'Project 2')"
+      >
+        /projects/pr2
+      </button>
+      <button
+        class="fd-button"
+        data-cy="show-luigi-mf-modal"
+        (click)="openModal('/projects/pr2/settings', 'Settings of Project 2')"
+      >
+        /projects/pr2/settings
+      </button>
+      <p>
+        <app-code-snippet
+          data="luigiClient.linkManager().openModal('path')"
+        ></app-code-snippet>
+      </p>
+    </div>
+
     <div class="fd-panel fd-has-margin-bottom-small">
       <p><strong>Alert</strong></p>
       <form #luigiAlertForm="ngForm">
@@ -207,7 +252,8 @@
           >
           <app-code-snippet
             data="luigiClient.linkManager().fromClosestContext().navigate('/users/groups/stakeholders')"
-          ></app-code-snippet>
+          >
+          </app-code-snippet>
         </li>
         <li class="fd-list-group__item">
           <a
@@ -223,7 +269,8 @@
           >
           <app-code-snippet
             data="luigiClient.linkManager().fromContext('project').navigate('/settings')"
-          ></app-code-snippet>
+          >
+          </app-code-snippet>
         </li>
         <li class="fd-list-group__item">
           <a
@@ -240,7 +287,8 @@
           >
           <app-code-snippet
             data="luigiClient.linkManager().fromClosestContext().withParams({foo: 'bar'}).navigate('settings')"
-          ></app-code-snippet>
+          >
+          </app-code-snippet>
         </li>
         <li class="fd-list-group__item">
           <a
@@ -257,7 +305,8 @@
           (look at the console)
           <app-code-snippet
             data="luigiClient.linkManager().fromContext('NONEXISTING').navigate('/settings')"
-          ></app-code-snippet>
+          >
+          </app-code-snippet>
         </li>
         <li class="fd-list-group__item">
           <a
@@ -287,7 +336,8 @@
           >
           <app-code-snippet
             data="luigiClient.linkManager().withParams({test: true}).navigate('/settings', null, true)"
-          ></app-code-snippet>
+          >
+          </app-code-snippet>
         </li>
       </ul>
     </div>
@@ -334,7 +384,8 @@
           </a>
           <app-code-snippet
             data="luigiClient.linkManager().navigate('/projects/pr2/miscellaneous2/maskopatol')"
-          ></app-code-snippet>
+          >
+          </app-code-snippet>
         </li>
         <li class="fd-list-group__item">
           <a

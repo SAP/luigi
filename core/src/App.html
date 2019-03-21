@@ -12,6 +12,13 @@
   {#if alert.isDisplayed}
   <Alert settings="{alert.settings}" on:alertDismiss="handleAlertDismiss()"></Alert>
   {/if}
+  {#if mfModal.isDisplayed}
+  <Modal
+    modalSettings="{mfModal.modalSettings}"
+    nodepath="{mfModal.nodepath}"
+    on:close="closeModal()"
+  ></Modal>
+  {/if}
   <Backdrop>
     <div class="fd-page iframeContainer" use:init="context"></div>
   </Backdrop>
@@ -47,6 +54,7 @@
   import LeftNav from './navigation/LeftNav.html';
   import ConfirmationModal from './ConfirmationModal.html';
   import Alert from './Alert.html';
+  import Modal from './Modal.html';
   import { LuigiConfig } from './services/config.js';
   import * as Routing from './services/routing.js';
   import * as Navigation from './navigation/services/navigation.js';
@@ -218,6 +226,16 @@
     };
   };
 
+  const getDefaultMicrofrontendModalData = () => {
+    return {
+      mfModal: {
+        isDisplayed: false,
+        openFromClient: false,
+        settings: {}
+      }
+    };
+  };
+
   export default {
     data() {
       return Object.assign(
@@ -240,7 +258,8 @@
           hideSideNav: false
         },
         getDefaultAlertData(),
-        getDefaultConfirmationModalData()
+        getDefaultConfirmationModalData(),
+        getDefaultMicrofrontendModalData()
       );
     },
     oncreate() {},
@@ -399,6 +418,18 @@
               }
             );
           }
+
+          if ('luigi.navigation.openModal' === e.data.msg) {
+            const nodepath = e.data.data.nodepath;
+            const modalSettings = e.data.data.modalSettings;
+            this.set(
+              Object.assign(
+                { contentNode: node },
+                getDefaultMicrofrontendModalData()
+              )
+            );
+            this.openModal(nodepath, modalSettings, true);
+          }
         });
 
         // listeners are not automatically removed — cancel
@@ -475,8 +506,7 @@
       showUnsavedChangesModal() {
         return this.showModal({
           header: 'Unsaved changes detected',
-          body:
-            'Unsaved changes will be lost. Do you want to continue?',
+          body: 'Unsaved changes will be lost. Do you want to continue?',
           buttonDismiss: 'No',
           buttonConfirm: 'Yes'
         });
@@ -505,6 +535,22 @@
           });
         });
       },
+      openModal(nodepath, modalSettings, openFromClient = false) {
+        this.set({
+          mfModal: {
+            isDisplayed: true,
+            nodepath,
+            modalSettings
+          }
+        });
+      },
+      closeModal(val) {
+        this.set({
+          mfModal: {
+            isDisplayed: false
+          }
+        });
+      },
       handleAlertDismiss() {
         const openFromClient = this.get().alert.openFromClient;
         this.set(getDefaultAlertData());
@@ -527,7 +573,8 @@
       TopNav,
       LeftNav,
       ConfirmationModal,
-      Alert
+      Alert,
+      Modal
     },
     transitions: { fade }
   };

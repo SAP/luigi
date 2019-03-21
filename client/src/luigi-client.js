@@ -395,6 +395,25 @@ const LuigiClient = {
             '*'
           );
         }
+      },
+      /**
+       * Opens a microfrontend in a modal
+       * @param {String} nodepath
+       * @param {String} modalSettings
+       * @example
+       * LuigiClient.linkManager().openModal('projects/pr1/users', {title:'Users'});
+       */
+      openModal: function openModal(nodepath, modalSettings) {
+        window.parent.postMessage(
+          {
+            msg: 'luigi.navigation.openModal',
+            data: {
+              nodepath,
+              modalSettings
+            }
+          },
+          '*'
+        );
       }
     };
   },
@@ -488,7 +507,6 @@ const LuigiClient = {
         });
         return promises.confirmationModal.promise;
       },
-
       /**
        * Shows an alert.
        * @param {Object} settings the settings for the alert
