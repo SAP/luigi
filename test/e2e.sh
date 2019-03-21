@@ -8,7 +8,7 @@ npm install -g concurrently
 npm install -g @angular/cli
 
 echo Bootstrap
-lerna bootstrap --no-ci
+lerna bootstrap ci
 
 echo Bundle
 cd core
@@ -16,7 +16,7 @@ lerna run bundle
 
 echo Starting webserver
 cd examples/luigi-sample-angular
-lerna bootstrap
+lerna bootstrap ci
 npm run start &
 WS_PID=$!
 sleep 60
