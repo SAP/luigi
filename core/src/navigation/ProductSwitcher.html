@@ -128,8 +128,9 @@ Object.keys(productSwitcherItems[0]).length }
             Routing.navigateTo(productSwitcherItem.link);
           }
         });
+        this.toggleDropdownState('productSwitcherPopover');
       },
-      toggleDropdownState(name, event) {
+      toggleDropdownState(name, event = null) {
         if (event) event.stopPropagation();
         this.fire('toggleDropdownState', { name });
       }
