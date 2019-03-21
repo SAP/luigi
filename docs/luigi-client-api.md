@@ -103,7 +103,7 @@ Sets the current navigation context to that of a specific parent node which has 
 
 #### Parameters
 
--   `navigationContext` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** 
+-   `navigationContext` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** 
 
 #### Examples
 

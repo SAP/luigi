@@ -4,10 +4,21 @@
   </div>
 
   <div class="fd-panel">
-    <p>This is a child of a dynamic node with value: <strong>{{pathParams?.group}}</strong></p>
-  
-    <a class="clickable" (click)="luigiClient.linkManager().fromContext('project').navigate('/users/groups/' + pathParams?.group)">
-      <span class="sap-icon--navigation-left-arrow"></span> Back to {{groupLabel}}
+    <p>
+      This is a child of a dynamic node with value:
+      <strong>{{ pathParams?.group }}</strong>
+    </p>
+
+    <a
+      class="clickable"
+      (click)="
+        linkManager()
+          .fromContext('project')
+          .navigate('/users/groups/' + pathParams?.group)
+      "
+    >
+      <span class="sap-icon--navigation-left-arrow"></span> Back to
+      {{ groupLabel }}
     </a>
   </div>
 </section>

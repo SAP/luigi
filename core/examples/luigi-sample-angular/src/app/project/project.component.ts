@@ -8,7 +8,12 @@ import {
 import { ActivatedRoute, Params } from '@angular/router';
 import { Subscription } from 'rxjs';
 
-import LuigiClient from '@kyma-project/luigi-client';
+import {
+  linkManager,
+  uxManager,
+  addContextUpdateListener,
+  removeContextUpdateListener
+} from '@kyma-project/luigi-client';
 import {
   IContextMessage,
   LuigiContextService
@@ -22,8 +27,9 @@ import { NgForm } from '@angular/forms';
 })
 export class ProjectComponent implements OnInit, OnDestroy {
   @ViewChild('luigiAlertForm') luigiAlertForm: NgForm;
+  public linkManager = linkManager;
+  public uxManager = uxManager;
   public projectId: string;
-  public luigiClient: LuigiClient;
   public modalActive = false;
   public preservedViewCallbackContext: any;
   private lcSubscription: Subscription;
@@ -50,9 +56,7 @@ export class ProjectComponent implements OnInit, OnDestroy {
       this.lcSubscription.unsubscribe();
     }
     if (this.cudListener) {
-      const removed = this.luigiClient.removeContextUpdateListener(
-        this.cudListener
-      );
+      const removed = removeContextUpdateListener(this.cudListener);
     }
   }
 
@@ -79,11 +83,9 @@ export class ProjectComponent implements OnInit, OnDestroy {
       this.projectId = params['projectId'];
     });
 
-    this.luigiClient = LuigiClient;
-
     // Decentralized approach, using LuigiClient listeners directly
     //
-    this.cudListener = LuigiClient.addContextUpdateListener(updatedContext => {
+    this.cudListener = addContextUpdateListener(updatedContext => {
       // this.projectId = updatedContext.currentProject;
       // this.preservedViewCallbackContext = updatedContext.goBackContext;
 
@@ -109,8 +111,8 @@ export class ProjectComponent implements OnInit, OnDestroy {
       buttonConfirm: 'Confirm',
       buttonDismiss: 'Cancel'
     };
-    this.luigiClient
-      .uxManager()
+
+    uxManager()
       .showConfirmationModal(settings)
       .then(
         () => {
@@ -150,8 +152,7 @@ export class ProjectComponent implements OnInit, OnDestroy {
       links: linkData
     };
 
-    this.luigiClient
-      .uxManager()
+    uxManager()
       .showAlert(settings)
       .then(() => {
         this.alertDismissed = true;
@@ -159,8 +160,7 @@ export class ProjectComponent implements OnInit, OnDestroy {
   }
 
   checkIfPathExists() {
-    this.luigiClient
-      .linkManager()
+    linkManager()
       .pathExists(this.pathExists.formValue)
       .then((pathExists: boolean) => {
         this.pathExists.result = pathExists;
@@ -173,6 +173,6 @@ export class ProjectComponent implements OnInit, OnDestroy {
   }
 
   public sendDirtyEvent = () => {
-    LuigiClient.uxManager().setDirtyStatus(this.isDirty);
+    uxManager().setDirtyStatus(this.isDirty);
   };
 }
