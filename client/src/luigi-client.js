@@ -1,4 +1,3 @@
-// actual Luigi code
 var luigiInitialized = false;
 var defaultContextKeys = ['context', 'internal', 'nodeParams', 'pathParams'];
 var currentContext = defaultContextKeys.reduce(function(acc, key) {
@@ -276,7 +275,7 @@ const LuigiClient = {
 
       /**
        * Sets the current navigation context to that of a specific parent node which has the {@link navigation-configuration.md navigationContext} field declared in the navigation configuration. This navigation context is then used by the `navigate` function.
-       * @param {Object} navigationContext
+       * @param {string} navigationContext
        * @returns {linkManager} link manager instance.
        * @example
        * LuigiClient.linkManager().fromContext('project').navigate('/settings')
@@ -399,7 +398,7 @@ const LuigiClient = {
       /**
        * Opens a microfrontend in a modal
        * @param {String} nodepath
-       * @param {String} modalSettings
+       * @param {Object} modalSettings
        * @example
        * LuigiClient.linkManager().openModal('projects/pr1/users', {title:'Users'});
        */
