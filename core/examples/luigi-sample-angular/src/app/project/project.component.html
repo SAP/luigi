@@ -52,6 +52,10 @@
         (click)="openModal('/projects/pr2/settings', 'Settings of Project 2')">
         /projects/pr2/settings
       </button>
+      <button class="fd-button" data-cy="show-luigi-mf-modal"
+        (click)="openModal('/projects/pr2/settings?~test=tets', 'Settings of Project 2 with NodeParams')">
+        Settings of Project 2 with NodeParams
+      </button>
       <p>
         <app-code-snippet data="luigiClient.linkManager().openModal('path')"></app-code-snippet>
       </p>

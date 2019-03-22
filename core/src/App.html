@@ -295,7 +295,8 @@
                 ...config,
                 iframe: this.get().modalIframe,
                 context: this.get().modalIframeData.context,
-                pathParams: this.get().modalIframeData.pathParams
+                pathParams: this.get().modalIframeData.pathParams,
+                nodeParams: this.get().modalIframeData.nodeParams
               };
               sendContextToClient(this, modalConfig, {});
             }

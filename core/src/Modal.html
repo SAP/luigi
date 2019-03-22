@@ -14,15 +14,21 @@
     import * as Navigation from './navigation/services/navigation';
     import * as RoutingHelpers from './utilities/helpers/routing-helpers';
     import { LuigiConfig } from './services/config';
+    import * as GenericHelpers from './utilities/helpers/generic-helpers';
 
-    const getNode = async (component, nodepath) => {
+    const getNode = async (component, path) => {
+        const pathUrlRaw =
+            path && path.length ? GenericHelpers.getPathWithoutHash(path) : '';
         const pathData = await Navigation.getNavigationPath(
             LuigiConfig.getConfigValueAsync('navigation.nodes'),
-            nodepath
+            path
         );
+        const params = RoutingHelpers.parseParams(pathUrlRaw.split('?')[1]);
+        const nodeParams = RoutingHelpers.getNodeParams(params);
+
         const lastNode = RoutingHelpers.getLastNodeObject(pathData);
-        const iframe = createIframeModal(lastNode.viewUrl, { context: pathData.context, pathParams: pathData.pathParams });
-        component.root.set({ modalIframe: iframe, modalIframeData: pathData });
+        const iframe = createIframeModal(lastNode.viewUrl, { context: pathData.context, pathParams: pathData.pathParams, nodeParams });
+        component.root.set({ modalIframe: iframe, modalIframeData: { ...pathData, nodeParams } });
     };
     const createIframeModal = (viewUrl, componentData) => {
         if (viewUrl) {
