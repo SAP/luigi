@@ -1,53 +1,55 @@
 <div class="fd-ui__overlay fd-overlay fd-overlay--modal">
-  <!--aria-hidden="false"-->
-  <div class="fd-modal" data-cy="luigi-confirmation-modal">
-    <div class="fd-modal__content" role="document">
-      <div class="fd-modal__header">
-        <h1 class="fd-modal__title">{modalSettings.title?modalSettings.title:''}</h1>
-        <button
-          class="fd-button--light fd-modal__close"
-          on:click="fire('close')"
-          aria-label="close"
-        ></button>
-      </div>
-      <div id="iframeModalCtn"></div>
+    <!--aria-hidden="false"-->
+    <div class="fd-modal" data-cy="luigi-confirmation-modal">
+        <div class="fd-modal__content" role="document">
+            <div class="fd-modal__header">
+                <h1 class="fd-modal__title">{modalSettings.title?modalSettings.title:''}</h1>
+                <button class="fd-button--light fd-modal__close" on:click="fire('close')" aria-label="close"></button>
+            </div>
+            <div id="iframeModalCtn"></div>
+        </div>
     </div>
-  </div>
 </div>
 <script>
-  import * as Navigation from './navigation/services/navigation';
-  import * as RoutingHelpers from './utilities/helpers/routing-helpers';
-  import { LuigiConfig } from './services/config';
+    import * as Navigation from './navigation/services/navigation';
+    import * as RoutingHelpers from './utilities/helpers/routing-helpers';
+    import { LuigiConfig } from './services/config';
 
-  const getNode = async nodepath => {
-    const pathData = await Navigation.getNavigationPath(
-      LuigiConfig.getConfigValueAsync('navigation.nodes'),
-      nodepath
-    );
-    const lastNode = RoutingHelpers.getLastNodeObject(pathData);
-    createIframeModal(lastNode.viewUrl);
-  };
-  const createIframeModal = viewUrl => {
-    const iframe = document.createElement('iframe');
-    iframe.src = viewUrl;
-    iframe.width = '100%';
-    iframe.height = '400px';
-    iframe.frameBorder = '0';
-    const iframeCtn = document.getElementById('iframeModalCtn');
-    iframeCtn.appendChild(iframe);
-  };
+    const getNode = async (component, nodepath) => {
+        const pathData = await Navigation.getNavigationPath(
+            LuigiConfig.getConfigValueAsync('navigation.nodes'),
+            nodepath
+        );
+        const lastNode = RoutingHelpers.getLastNodeObject(pathData);
+        const iframe = createIframeModal(lastNode.viewUrl, { context: pathData.context, pathParams: pathData.pathParams });
+        component.root.set({ modalIframe: iframe, modalIframeData: pathData });
+    };
+    const createIframeModal = (viewUrl, componentData) => {
+        if (viewUrl) {
+            viewUrl = RoutingHelpers.substituteViewUrl(viewUrl, componentData);
+        }
+        const iframe = document.createElement('iframe');
+        iframe.src = viewUrl;
+        iframe.width = '100%';
+        iframe.height = '400px';
+        iframe.frameBorder = '0';
+        const iframeCtn = document.getElementById('iframeModalCtn');
+        iframeCtn.appendChild(iframe);
+        return iframe;
+    };
 
-  export default {
-    onupdate({ changed, current, previous }) {
-      this.set({ modalSettings: this.get().modalSettings });
-      const nodepath = this.get().nodepath;
-      const modalSettings = this.get().modalSettings;
-      getNode(nodepath);
-    }
-  };
+    export default {
+        onupdate({ changed, current, previous }) {
+            this.set({ modalSettings: this.get().modalSettings });
+            const nodepath = this.get().nodepath;
+            const modalSettings = this.get().modalSettings;
+
+            getNode(this, nodepath);
+        }
+    };
 </script>
 <style type="text/scss">
-  $topNavHeight: 50px;
+    $topNavHeight: 50px;
   $leftNavWidth: 320px;
   $width: 32rem;
   .fd-modal {

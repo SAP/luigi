@@ -170,13 +170,13 @@
       {
         msg: 'luigi.init',
         context: JSON.stringify(
-          Object.assign({}, component.get().context, goBackContext)
+          Object.assign({}, config.context || component.get().context, goBackContext)
         ),
         nodeParams: JSON.stringify(
-          Object.assign({}, component.get().nodeParams)
+          Object.assign({}, config.nodeParams || component.get().nodeParams)
         ),
         pathParams: JSON.stringify(
-          Object.assign({}, component.get().pathParams)
+          Object.assign({}, config.pathParams || component.get().pathParams)
         ),
         internal: JSON.stringify(component.prepareInternalData()),
         authData: AuthHelpers.getStoredAuthData()
@@ -289,18 +289,32 @@
           }
         });
         window.addEventListener('message', async e => {
-          if ('luigi.get-context' === e.data.msg && config.iframe) {
-            sendContextToClient(this, config, {});
+          if ('luigi.get-context' === e.data.msg) {
+            if (this.get().modalIframe && e.source === this.get().modalIframe.contentWindow) {
+              const modalConfig = {
+                ...config,
+                iframe: this.get().modalIframe,
+                context: this.get().modalIframeData.context,
+                pathParams: this.get().modalIframeData.pathParams
+              };
+              sendContextToClient(this, modalConfig, {});
+            }
 
-            const loadingIndicatorAutoHideEnabled =
-              GenericHelpers.getConfigValueFromObject(
-                this.get(),
-                'currentNode.loadingIndicator.hideAutomatically'
-              ) !== false;
-            if (loadingIndicatorAutoHideEnabled) {
-              this.set({ showLoadingIndicator: false });
+            else if (config.iframe) {
+              sendContextToClient(this, config, {});
+
+              const loadingIndicatorAutoHideEnabled =
+                GenericHelpers.getConfigValueFromObject(
+                  this.get(),
+                  'currentNode.loadingIndicator.hideAutomatically'
+                ) !== false;
+              if (loadingIndicatorAutoHideEnabled) {
+                this.set({ showLoadingIndicator: false });
+              }
             }
           }
+
+
 
           if ('luigi.show-loading-indicator' === e.data.msg) {
             this.set({ showLoadingIndicator: true });
