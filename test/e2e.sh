@@ -6,6 +6,7 @@ echo Installing lerna
 npm install -g lerna
 npm install -g concurrently
 npm install -g @angular/cli
+npm install -g cypress
 
 echo Bootstrap
 lerna bootstrap --no-ci
