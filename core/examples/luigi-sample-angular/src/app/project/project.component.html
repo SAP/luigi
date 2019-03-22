@@ -32,9 +32,6 @@
 
     <div class="fd-panel fd-has-margin-bottom-small">
       <p><strong>Open Microfrontend in Modal</strong></p>
-      <button class="fd-button" data-cy="show-luigi-mf-modal" (click)="openModal('/environments/env1', 'Env')">
-        Path Params
-      </button>
       <button class="fd-button" data-cy="show-luigi-mf-modal" (click)="openModal('projects/pr1/users', 'Users')">
         Users
       </button>
@@ -55,6 +52,9 @@
       <button class="fd-button" data-cy="show-luigi-mf-modal"
         (click)="openModal('/projects/pr2/settings?~test=tets', 'Settings of Project 2 with NodeParams')">
         Settings of Project 2 with NodeParams
+      </button>
+      <button class="fd-button" data-cy="show-luigi-mf-modal" (click)="openModal('/environments/env1', 'Env')">
+        Path Params
       </button>
       <p>
         <app-code-snippet data="luigiClient.linkManager().openModal('path')"></app-code-snippet>
