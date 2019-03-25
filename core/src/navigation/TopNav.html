@@ -46,6 +46,14 @@
           </div>
           {/if} 
         {/each}
+        {#if isProductSwitcherAvailable}
+          <ProductSwitcher
+            bind:dropDownStates
+            on:toggleDropdownState="toggleDropdownState(event.name)"
+            on:setProductSwitcherToDesktop="set({isProductSwitcherMobile: false})"
+            isMobile={false}
+          />
+        {/if}
         <!-- Sample Markup for Notifications
             <div class="fd-shellbar__action fd-shellbar__action--collapsible">
               <button class=" fd-button--shell sap-icon--bell" aria-label="Notifications">
@@ -123,6 +131,13 @@
                   </ul>
                 </nav>
               </div>
+              {#if isProductSwitcherAvailable}
+                  <ProductSwitcher
+                  bind:dropDownStates
+                  on:toggleDropdownState="toggleDropdownState(event.name)"
+                  isMobile={true}
+                />
+              {/if}
             </div>
           </div>
         </div>
@@ -151,14 +166,7 @@
           </div>
         </div>
       {/if} 
-      {#if isProductSwitcherAvailable}
-        <ProductSwitcher
-          bind:dropDownStates
-          on:toggleDropdownState="toggleDropdownState(event.name)"
-          on:setProductSwitcherToDesktop="set({isProductSwitcherMobile: false})"
-          isMobile={isProductSwitcherMobile}
-        />
-      {/if}
+    
     </div>
   </div>
 </div>
@@ -214,8 +222,7 @@
         ),
         hideNavComponent: LuigiConfig.getConfigBooleanValue(
           'settings.hideNavigation'
-        ),
-        isProductSwitcherMobile: false
+        )
       });
     },
     onstate({ changed, current, previous }) {
@@ -240,10 +247,6 @@
       openMobileProductSwitcher(event) {
         if (event) event.stopPropagation();
 
-        //ProductSwitcher should become "mobile"
-        this.set({
-          isProductSwitcherMobile: true
-        })
         this.toggleDropdownState('productSwitcherPopover');
       },
       handleClick(node) {
