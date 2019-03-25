@@ -1,45 +1,66 @@
 <section class="fd-section" *ngIf="nodeParams">
   <div class="fd-panel">
     <div class="fd-alert" role="alert">
-      <span class="fd-status-label fd-status-label--available"></span> Called with params:<br />
+      <span class="fd-status-label fd-status-label--available"></span> Called
+      with params:<br />
       <pre>{{ nodeParams | json }}</pre>
     </div>
   </div>
   <div class="fd-panel" *ngIf="hasBack">
     Advanced: node Params and preserveView active. <br />
-    <a href="javascript:void(0)" (click)="luigiClient.linkManager().withParams({foo: 'bar'}).navigate('/environments/env1', null, true)">Go to /environments/env1 with preserveView</a>
+    <a
+      href="javascript:void(0)"
+      (click)="
+        linkManager()
+          .withParams({ foo: 'bar' })
+          .navigate('/environments/env1', null, true)
+      "
+      >Go to /environments/env1 with preserveView</a
+    >
   </div>
 </section>
 
 <section class="fd-section" *ngIf="preservedViewCallbackContext">
-	<div class="fd-panel">
-		<div class="fd-alert" role="alert">
-			<span class="fd-status-label fd-status-label--available"></span> Context received from linkManager().goBack():<br />
-			<pre>{{ preservedViewCallbackContext | json }}</pre>
-		</div>
-	</div>
+  <div class="fd-panel">
+    <div class="fd-alert" role="alert">
+      <span class="fd-status-label fd-status-label--available"></span> Context
+      received from linkManager().goBack():<br />
+      <pre>{{ preservedViewCallbackContext | json }}</pre>
+    </div>
+  </div>
 </section>
 
 <section class="fd-section">
   <div class="fd-section__header">
-    <h1 *ngIf="projectId" class="fd-section__title">Settings of {{ projectId }}</h1>
+    <h1 *ngIf="projectId" class="fd-section__title">
+      Settings of {{ projectId }}
+    </h1>
     <h1 *ngIf="!projectId" class="fd-section__title">Global Settings</h1>
   </div>
 
   <div class="fd-panel">
-    LuigiClient hasBack/GoBack:<br>
+    LuigiClient hasBack/GoBack:<br />
 
     <div *ngIf="hasBack">
       <p>
-        <label>Modify goBackContext value, that you receive then via LuigiClient.addContextUpdateListener(): <br />
-        <input type="text" [(ngModel)]="callbackValue" /></label>
+        <label
+          >Modify goBackContext value, that you receive then via
+          LuigiClient.addContextUpdateListener(): <br />
+          <input type="text" [(ngModel)]="callbackValue"
+        /></label>
       </p>
       <p>
-      <button class="fd-button" (click)="goBack()">Click here</button> to go back to your preserved view.
+        <button class="fd-button" (click)="goBack()">Click here</button> to go
+        back to your preserved view.
       </p>
     </div>
     <div *ngIf="!hasBack">
-      No go back state available, <a href="javascript:void(0)" (click)="luigiClient.linkManager().navigate('/projects/pr2')">Click here</a>
+      No go back state available,
+      <a
+        href="javascript:void(0)"
+        (click)="linkManager().navigate('/projects/pr2')"
+        >Click here</a
+      >
       to go to <i>project two</i>, where you can try out hasBack functionality
     </div>
   </div>

@@ -18,7 +18,7 @@
       <li
         class="fd-list-group__item clickable"
         *ngFor="let item of luigiClientLinks"
-        (click)="luigiClient.linkManager().navigate(item.link)"
+        (click)="linkManager().navigate(item.link)"
       >
         <strong>{{ item.text }}</strong> &nbsp;&ndash; {{ item.description }}
       </li>
@@ -35,7 +35,7 @@
       <li
         class="fd-list-group__item clickable"
         *ngFor="let item of luigiCoreLinks"
-        (click)="luigiClient.linkManager().navigate(item.link)"
+        (click)="linkManager().navigate(item.link)"
       >
         <strong>{{ item.text }}</strong> &nbsp;&ndash; {{ item.description }}
       </li>
@@ -66,7 +66,7 @@
           confirmation modal will appear when you navigate
           <a
             title="Navigate to /projects/pr2 as an example"
-            (click)="luigiClient.linkManager().navigate('/projects/pr2')"
+            (click)="linkManager().navigate('/projects/pr2')"
           >
             somewhere else
           </a>

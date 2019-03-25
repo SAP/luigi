@@ -4,7 +4,12 @@ import {
 } from './../../services/luigi-context.service';
 import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { ActivatedRoute, Params } from '@angular/router';
-import LuigiClient from '@kyma-project/luigi-client';
+import {
+  addInitListener,
+  linkManager,
+  getNodeParams,
+  NodeParams
+} from '@kyma-project/luigi-client';
 import { Subscription } from 'rxjs';
 
 @Component({
@@ -13,11 +18,11 @@ import { Subscription } from 'rxjs';
   styleUrls: ['./settings.component.css']
 })
 export class SettingsComponent implements OnInit {
-  luigiClient: LuigiClient;
+  public linkManager = linkManager;
   projectId: string;
   groupId: string;
   hasBack: boolean;
-  nodeParams = null;
+  nodeParams: NodeParams = null;
   callbackValue = 'default value';
   lcSubscription: Subscription;
   preservedViewCallbackContext: any;
@@ -33,13 +38,11 @@ export class SettingsComponent implements OnInit {
       this.projectId = params['projectId'];
       this.groupId = params['groupId'];
     });
-    this.luigiClient = LuigiClient;
-    LuigiClient.addInitListener(init => {
-      this.hasBack = LuigiClient.linkManager().hasBack();
+
+    addInitListener(init => {
+      this.hasBack = linkManager().hasBack();
       this.nodeParams =
-        Object.keys(LuigiClient.getNodeParams()).length > 0
-          ? LuigiClient.getNodeParams()
-          : null;
+        Object.keys(getNodeParams()).length > 0 ? getNodeParams() : null;
       if (!this.cdr['destroyed']) {
         this.cdr.detectChanges();
       }
@@ -67,6 +70,6 @@ export class SettingsComponent implements OnInit {
   goBack() {
     // going back with some sample callback context,
     // that will be handed over to previous view
-    this.luigiClient.linkManager().goBack(this.callbackValue);
+    linkManager().goBack(this.callbackValue);
   }
 }

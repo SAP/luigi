@@ -5,7 +5,6 @@ export const processHeaderSettings = component => {
     if (!header) {
       return;
     }
-
     // Set Title and Logo
     if (header.title) {
       component.set({ title: header.title });
@@ -16,9 +15,6 @@ export const processHeaderSettings = component => {
     component.set({ hasLogo });
     if (hasLogo) {
       component.refs.logo.src = header.logo;
-      if (header.title) {
-        component.refs.logo2.src = header.logo;
-      }
     }
 
     // Set Favicon

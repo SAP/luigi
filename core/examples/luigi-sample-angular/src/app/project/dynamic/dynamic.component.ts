@@ -1,6 +1,12 @@
 import { Component, OnInit, ChangeDetectorRef, OnDestroy } from '@angular/core';
 import { Subscription } from 'rxjs';
-import LuigiClient from '@kyma-project/luigi-client';
+import {
+  getPathParams,
+  getNodeParams,
+  linkManager,
+  PathParams,
+  NodeParams
+} from '@kyma-project/luigi-client';
 import {
   LuigiContextService,
   IContextMessage
@@ -13,12 +19,12 @@ import { toTitleCase } from '../../services/helpers';
   styleUrls: ['./dynamic.component.css']
 })
 export class DynamicComponent implements OnInit, OnDestroy {
-  public luigiClient: LuigiClient = LuigiClient;
-  public pathParams: { [key: string]: string };
+  public linkManager = linkManager;
+  public pathParams: PathParams;
   public nodeLabel: string;
   public links: string[];
   public hasBack: boolean;
-  public nodeParams: any = null;
+  public nodeParams: NodeParams = null;
   public callbackValue = 'default value';
   private lcSubscription: Subscription;
 
@@ -38,20 +44,16 @@ export class DynamicComponent implements OnInit, OnDestroy {
           return;
         }
 
-        const lastPathParam = Object.values(
-          LuigiClient.getPathParams() || {}
-        ).pop();
+        const lastPathParam = Object.values(getPathParams() || {}).pop();
 
         // We can directly access our specified context values here
         this.nodeLabel = toTitleCase(ctx.context.label || lastPathParam);
         this.links = ctx.context.links;
 
         // preserveView and node params
-        this.hasBack = LuigiClient.linkManager().hasBack();
+        this.hasBack = linkManager().hasBack();
         this.nodeParams =
-          Object.keys(LuigiClient.getNodeParams()).length > 0
-            ? LuigiClient.getNodeParams()
-            : null;
+          Object.keys(getNodeParams()).length > 0 ? getNodeParams() : null;
 
         if (!this.cdr['destroyed']) {
           this.cdr.detectChanges();
@@ -75,6 +77,6 @@ export class DynamicComponent implements OnInit, OnDestroy {
   public goBack() {
     // going back with some sample callback context,
     // that will be handed over to previous view
-    this.luigiClient.linkManager().goBack(this.callbackValue);
+    linkManager().goBack(this.callbackValue);
   }
 }
