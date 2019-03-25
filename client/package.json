@@ -33,5 +33,6 @@
     "documentation": "^9.1.1",
     "webpack": "^4.28.4",
     "webpack-cli": "^3.2.1"
-  }
+  },
+  "types": "luigi-client.d.ts"
 }
