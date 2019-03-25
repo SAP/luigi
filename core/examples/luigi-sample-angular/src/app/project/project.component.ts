@@ -124,13 +124,6 @@ export class ProjectComponent implements OnInit, OnDestroy {
       );
   }
 
-  openModal(nodepath, title) {
-    const modalSettings = {
-      title: title
-    };
-    linkManager().openModal(nodepath, modalSettings);
-  }
-
   showAlert() {
     const { type, links, text } = this.luigiAlertForm.value;
 

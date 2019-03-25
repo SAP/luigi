@@ -1,4 +1,7 @@
-<div id="app" class="{hideNav? 'no-nav' : ''} {hideSideNav? 'no-side-nav' : ''}">
+<div
+  id="app"
+  class="{hideNav? 'no-nav' : ''} {hideSideNav? 'no-side-nav' : ''}"
+>
   {#if confirmationModal.isDisplayed}
   <ConfirmationModal
     settings="{confirmationModal.settings}"
@@ -170,7 +173,11 @@
       {
         msg: 'luigi.init',
         context: JSON.stringify(
-          Object.assign({}, config.context || component.get().context, goBackContext)
+          Object.assign(
+            {},
+            config.context || component.get().context,
+            goBackContext
+          )
         ),
         nodeParams: JSON.stringify(
           Object.assign({}, config.nodeParams || component.get().nodeParams)
@@ -259,8 +266,8 @@
         getDefaultMicrofrontendModalData()
       );
     },
-    oncreate() { },
-    onstate({ changed, current, previous }) { },
+    oncreate() {},
+    onstate({ changed, current, previous }) {},
     actions: {
       init(node) {
         const isolateAllViews = LuigiConfig.getConfigValue(
@@ -290,7 +297,10 @@
         });
         window.addEventListener('message', async e => {
           if ('luigi.get-context' === e.data.msg) {
-            if (this.get().modalIframe && e.source === this.get().modalIframe.contentWindow) {
+            if (
+              this.get().modalIframe &&
+              e.source === this.get().modalIframe.contentWindow
+            ) {
               const modalConfig = {
                 ...config,
                 iframe: this.get().modalIframe,
@@ -299,9 +309,7 @@
                 nodeParams: this.get().modalIframeData.nodeParams
               };
               sendContextToClient(this, modalConfig, {});
-            }
-
-            else if (config.iframe) {
+            } else if (config.iframe) {
               sendContextToClient(this, config, {});
 
               const loadingIndicatorAutoHideEnabled =
@@ -314,8 +322,6 @@
               }
             }
           }
-
-
 
           if ('luigi.show-loading-indicator' === e.data.msg) {
             this.set({ showLoadingIndicator: true });
@@ -331,10 +337,26 @@
 
           if ('luigi.navigation.open' === e.data.msg) {
             this.set({ isNavigateBack: false });
-            this.getUnsavedChangesModalPromise().then(() => {
-              this.handleNavigation(e.data, config);
-              this.closeModal();
-            });
+            if (e.data.params.modal !== undefined) {
+              let path = buildPath(this, e.data.params);
+              path = GenericHelpers.addLeadingSlash(path);
+              if (e.data.params.preserveView) {
+                e.data.params.modal['preserveView'] =
+                  e.data.params.preserveView;
+              }
+              this.set(
+                Object.assign(
+                  { contentNode: node },
+                  getDefaultMicrofrontendModalData()
+                )
+              );
+              this.openModal(path, e.data.params.modal, true);
+            } else {
+              this.getUnsavedChangesModalPromise().then(() => {
+                this.handleNavigation(e.data, config);
+                this.closeModal();
+              });
+            }
           }
 
           if ('luigi.navigation.back' === e.data.msg) {
@@ -406,7 +428,7 @@
               )
             );
             this.showModal(settings, true).then(
-              () => { },
+              () => {},
               () => {
                 /* keep it to avoid runtime errors in browser console */
               }
@@ -425,23 +447,11 @@
               Object.assign({ contentNode: node }, getDefaultAlertData())
             );
             this.showAlert(settings, true).then(
-              () => { },
+              () => {},
               () => {
                 /* keep it to avoid runtime errors in browser console */
               }
             );
-          }
-
-          if ('luigi.navigation.openModal' === e.data.msg) {
-            const nodepath = e.data.data.nodepath;
-            const modalSettings = e.data.data.modalSettings;
-            this.set(
-              Object.assign(
-                { contentNode: node },
-                getDefaultMicrofrontendModalData()
-              )
-            );
-            this.openModal(nodepath, modalSettings, true);
           }
         });
 
@@ -503,7 +513,7 @@
               () => {
                 resolve();
               },
-              () => { }
+              () => {}
             );
           } else {
             resolve();

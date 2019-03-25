@@ -48,62 +48,73 @@
       <button
         class="fd-button"
         data-cy="show-luigi-mf-modal"
-        (click)="openModal('projects/pr1/users', 'Users')"
+        (click)="
+          linkManager().navigate('/projects/pr2', null, 0, {
+            width: '80%',
+            height: '80%'
+          })
+        "
       >
-        Users
-      </button>
-      <button
-        class="fd-button"
-        data-cy="show-luigi-mf-modal"
-        (click)="openModal('projects/pr1/miscellaneous2', 'Miscellaneous2')"
-      >
-        miscellaneous2
-      </button>
-      <button
-        class="fd-button"
-        data-cy="show-luigi-mf-modal"
-        (click)="openModal('/projects/pr2/dps/dps2', 'dps2')"
-      >
-        /projects/pr2/dps/dps2
-      </button>
-      <button
-        class="fd-button"
-        data-cy="show-luigi-mf-modal"
-        (click)="openModal('/projects/pr2', 'Project 2')"
-      >
-        /projects/pr2
-      </button>
-      <button
-        class="fd-button"
-        data-cy="show-luigi-mf-modal"
-        (click)="openModal('/projects/pr2/settings', 'Settings of Project 2')"
-      >
-        /projects/pr2/settings
+        Project One
       </button>
       <button
         class="fd-button"
         data-cy="show-luigi-mf-modal"
         (click)="
-          openModal(
-            '/projects/pr2/settings?~test=tets',
-            'Settings of Project 2 with NodeParams'
-          )
+          linkManager()
+            .withParams({ tets: 'testsd' })
+            .navigate('/projects/pr2/settings', null, 0, {
+              title: 'Using NodeParams',
+              width: '400px',
+              height: '400px'
+            })
         "
       >
-        Settings of Project 2 with NodeParams
+        Settings with node params using withParams() function
       </button>
       <button
         class="fd-button"
         data-cy="show-luigi-mf-modal"
-        (click)="openModal('/environments/env1', 'Env')"
+        (click)="
+          linkManager().navigate('/environments/env1', null, 0, {
+            title: 'PathParams',
+            width: '600px',
+            height: '600px'
+          })
+        "
       >
         Path Params
       </button>
-      <p>
-        <app-code-snippet
-          data="luigiClient.linkManager().openModal('path','title of modal header')"
-        ></app-code-snippet>
-      </p>
+      <button
+        class="fd-button"
+        data-cy="show-luigi-mf-modal"
+        (click)="
+          linkManager()
+            .fromClosestContext()
+            .navigate('/users/groups/stakeholders', null, 0, {
+              title: 'Stakeholders',
+              width: '600px',
+              height: '600px'
+            })
+        "
+      >
+        fromClosestContext
+      </button>
+      <button
+        class="fd-button"
+        data-cy="show-luigi-mf-modal"
+        (click)="
+          linkManager()
+            .fromClosestContext()
+            .navigate('/settings', null, true, {
+              title: 'settings',
+              width: '600px',
+              height: '600px'
+            })
+        "
+      >
+        Settings
+      </button>
     </div>
 
     <div class="fd-panel fd-has-margin-bottom-small">

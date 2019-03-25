@@ -250,12 +250,18 @@ const LuigiClient = {
        * @param {string} path path to be navigated to
        * @param {string} sessionId current Luigi **sessionId**
        * @param {boolean} preserveView Preserve a view by setting it to `true`. It keeps the current view opened in the background and opens the new route in a new frame. Use the {@link #goBack goBack()} function to navigate back. You can use this feature across different levels. Preserved views are discarded as soon as the standard {@link #navigate navigate()} function is used instead of {@link #goBack goBack()}.
+       * @param {Object} modalSettings showing the navigated path in a modal. Settings for title, width and height of the modal
        * @example
        * LuigiClient.linkManager().navigate('/overview')
        * LuigiClient.linkManager().navigate('users/groups/stakeholders')
        * LuigiClient.linkManager().navigate('/settings', null, true) // preserve view
        */
-      navigate: function navigate(path, sessionId, preserveView) {
+      navigate: function navigate(
+        path,
+        sessionId,
+        preserveView,
+        modalSettings
+      ) {
         if (options.errorSkipNavigation) {
           options.errorSkipNavigation = false;
           return;
@@ -267,7 +273,8 @@ const LuigiClient = {
           sessionId: sessionId,
           params: Object.assign(options, {
             link: path,
-            relative: relativePath
+            relative: relativePath,
+            modal: modalSettings
           })
         };
         window.parent.postMessage(navigationOpenMsg, '*');
@@ -394,25 +401,6 @@ const LuigiClient = {
             '*'
           );
         }
-      },
-      /**
-       * Opens a microfrontend in a modal
-       * @param {String} nodepath
-       * @param {Object} modalSettings
-       * @example
-       * LuigiClient.linkManager().openModal('projects/pr1/users', {title:'Users'});
-       */
-      openModal: function openModal(nodepath, modalSettings) {
-        window.parent.postMessage(
-          {
-            msg: 'luigi.navigation.openModal',
-            data: {
-              nodepath,
-              modalSettings
-            }
-          },
-          '*'
-        );
       }
     };
   },

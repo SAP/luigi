@@ -1,67 +1,90 @@
 <div class="fd-ui__overlay fd-overlay fd-overlay--modal">
-    <!--aria-hidden="false"-->
-    <div class="fd-modal" data-cy="luigi-confirmation-modal">
-        <div class="fd-modal__content" role="document">
-            <div class="fd-modal__header">
-                <h1 class="fd-modal__title">{modalSettings.title?modalSettings.title:''}</h1>
-                <button class="fd-button--light fd-modal__close" on:click="fire('close')" aria-label="close"></button>
-            </div>
-            <div id="iframeModalCtn"></div>
-        </div>
+  <!--aria-hidden="false"-->
+  <div
+    class="fd-modal"
+    data-cy="luigi-confirmation-modal"
+    style="height:70%; width:70%;"
+  >
+    <div class="fd-modal__content" role="document" style="height:100%">
+      <div class="fd-modal__header">
+        <h1
+          class="fd-modal__title"
+        >{modalSettings.title?modalSettings.title: defaultTitle}</h1>
+        <button
+          class="fd-button--light fd-modal__close"
+          on:click="fire('close')"
+          aria-label="close"
+        ></button>
+      </div>
+      <div
+        id="iframeModalCtn"
+        style="position: relative; 
+            height: 100%;
+            width: 100%;"
+      ></div>
     </div>
+  </div>
 </div>
 <script>
-    import * as Navigation from './navigation/services/navigation';
-    import * as RoutingHelpers from './utilities/helpers/routing-helpers';
-    import { LuigiConfig } from './services/config';
-    import * as GenericHelpers from './utilities/helpers/generic-helpers';
+  import * as Navigation from './navigation/services/navigation';
+  import * as RoutingHelpers from './utilities/helpers/routing-helpers';
+  import { LuigiConfig } from './services/config';
+  import * as GenericHelpers from './utilities/helpers/generic-helpers';
 
-    const getNode = async (component, path) => {
-        const pathUrlRaw =
-            path && path.length ? GenericHelpers.getPathWithoutHash(path) : '';
-        const pathData = await Navigation.getNavigationPath(
-            LuigiConfig.getConfigValueAsync('navigation.nodes'),
-            path
-        );
-        const params = RoutingHelpers.parseParams(pathUrlRaw.split('?')[1]);
-        const nodeParams = RoutingHelpers.getNodeParams(params);
+  const getNode = async (component, path) => {
+    const pathUrlRaw =
+      path && path.length ? GenericHelpers.getPathWithoutHash(path) : '';
+    const pathData = await Navigation.getNavigationPath(
+      LuigiConfig.getConfigValueAsync('navigation.nodes'),
+      path
+    );
+    const params = RoutingHelpers.parseParams(pathUrlRaw.split('?')[1]);
+    const nodeParams = RoutingHelpers.getNodeParams(params);
+    const lastNode = RoutingHelpers.getLastNodeObject(pathData);
+    const iframe = createIframeModal(lastNode.viewUrl, {
+      context: pathData.context,
+      pathParams: pathData.pathParams,
+      nodeParams
+    });
+    component.root.set({
+      modalIframe: iframe,
+      modalIframeData: { ...pathData, nodeParams }
+    });
+  };
+  const createIframeModal = (viewUrl, componentData) => {
+    if (viewUrl) {
+      viewUrl = RoutingHelpers.substituteViewUrl(viewUrl, componentData);
+    }
+    const iframe = document.createElement('iframe');
+    iframe.src = viewUrl;
+    iframe.style.width = '100%';
+    iframe.style.height = 'calc(100% - 53px)';
+    iframe.frameBorder = '0';
+    iframe.style.position = 'absolute';
+    const iframeCtn = document.getElementById('iframeModalCtn');
+    iframeCtn.appendChild(iframe);
+    return iframe;
+  };
 
-        const lastNode = RoutingHelpers.getLastNodeObject(pathData);
-        const iframe = createIframeModal(lastNode.viewUrl, { context: pathData.context, pathParams: pathData.pathParams, nodeParams });
-        component.root.set({ modalIframe: iframe, modalIframeData: { ...pathData, nodeParams } });
-    };
-    const createIframeModal = (viewUrl, componentData) => {
-        if (viewUrl) {
-            viewUrl = RoutingHelpers.substituteViewUrl(viewUrl, componentData);
-        }
-        const iframe = document.createElement('iframe');
-        iframe.src = viewUrl;
-        iframe.width = '100%';
-        iframe.height = '400px';
-        iframe.frameBorder = '0';
-        const iframeCtn = document.getElementById('iframeModalCtn');
-        iframeCtn.appendChild(iframe);
-        return iframe;
-    };
-
-    export default {
-        onupdate({ changed, current, previous }) {
-            this.set({ modalSettings: this.get().modalSettings });
-            const nodepath = this.get().nodepath;
-            const modalSettings = this.get().modalSettings;
-
-            getNode(this, nodepath);
-        }
-    };
+  export default {
+    onupdate({ changed, current, previous }) {
+      this.set({ modalSettings: this.get().modalSettings });
+      const nodepath = this.get().nodepath;
+      const modalSettings = this.get().modalSettings;
+      const elem = document.getElementsByClassName('fd-modal');
+      elem[0].style.width = modalSettings.width;
+      elem[0].style.height = modalSettings.height;
+      getNode(this, nodepath);
+    }
+  };
 </script>
 <style type="text/scss">
-    $topNavHeight: 50px;
+  $topNavHeight: 50px;
   $leftNavWidth: 320px;
   $width: 32rem;
   .fd-modal {
     max-width: 70%;
     width: 70%;
-    height: 400px;
     &__body,
     &__header {
       overflow-wrap: break-word;
@@ -69,7 +92,9 @@
   }
 
   .iframeModalCtn {
-    height: 100%;
+    position: relative;
+    height: auto;
+    width: 100%;
   }
 
   :global(.no-side-nav),
