@@ -1,5 +1,4 @@
 <div class="fd-ui__overlay fd-overlay fd-overlay--modal">
-  <!--aria-hidden="false"-->
   <div
     class="fd-modal"
     data-cy="luigi-confirmation-modal"
@@ -7,9 +6,7 @@
   >
     <div class="fd-modal__content" role="document" style="height:100%">
       <div class="fd-modal__header">
-        <h1
-          class="fd-modal__title"
-        >{modalSettings.title?modalSettings.title: defaultTitle}</h1>
+        <h1 class="fd-modal__title">{modalSettings.title}</h1>
         <button
           class="fd-button--light fd-modal__close"
           on:click="fire('close')"
@@ -41,89 +38,38 @@
     const params = RoutingHelpers.parseParams(pathUrlRaw.split('?')[1]);
     const nodeParams = RoutingHelpers.getNodeParams(params);
     const lastNode = RoutingHelpers.getLastNodeObject(pathData);
-    return { lastNode, pathData, nodeParams };
+    const modalSettings = component.get().modalSettings;
+    if (!modalSettings.title) {
+      modalSettings.title = lastNode.label;
+    }
+    component.get().isDataPrepared = true;
+    component.set({ modalSettings, lastNode, pathData, nodeParams });
   };
 
   const getNode = async (component, path) => {
-    if (component.get().isTitleDefined) {
-      if (component.get().isDataPrepared) {
-        const {
-          nodeParams,
-          lastNode,
-          modalSettings,
-          pathData
-        } = component.get();
-        const iframe = createIframeModal(
-          lastNode.viewUrl,
-          {
-            context: pathData.context,
-            pathParams: pathData.pathParams,
-            nodeParams
-          },
-          component
-        );
-        component.root.set({
-          modalIframe: iframe,
-          modalIframeData: { ...pathData, nodeParams }
-        });
-      } else {
-        const { lastNode, pathData, nodeParams } = await prepareNodeData(
-          component,
-          path
-        );
-        const iframe = createIframeModal(
-          lastNode.viewUrl,
-          {
-            context: pathData.context,
-            pathParams: pathData.pathParams,
-            nodeParams
-          },
-          component
-        );
-        component.root.set({
-          modalIframe: iframe,
-          modalIframeData: { ...pathData, nodeParams }
-        });
-      }
+    if (component.get().isDataPrepared) {
+      const { nodeParams, lastNode, modalSettings, pathData } = component.get();
+      const iframe = createIframeModal(
+        lastNode.viewUrl,
+        {
+          context: pathData.context,
+          pathParams: pathData.pathParams,
+          nodeParams
+        },
+        component
+      );
+      component.root.set({
+        modalIframe: iframe,
+        modalIframeData: { ...pathData, nodeParams }
+      });
     } else {
-      if (component.get().isDataPrepared) {
-        const {
-          nodeParams,
-          lastNode,
-          modalSettings,
-          pathData
-        } = component.get();
-        const iframe = createIframeModal(
-          lastNode.viewUrl,
-          {
-            context: pathData.context,
-            pathParams: pathData.pathParams,
-            nodeParams
-          },
-          component
-        );
-        component.root.set({
-          modalIframe: iframe,
-          modalIframeData: { ...pathData, nodeParams }
-        });
-      } else {
-        const { lastNode, pathData, nodeParams } = await prepareNodeData(
-          component,
-          path
-        );
-        const modalSettings = component.get().modalSettings;
-        modalSettings.title = lastNode.label;
-        component.get().isDataPrepared = true;
-        component.get().isTitleDefined = true;
-        component.set({ modalSettings, lastNode, pathData, nodeParams });
-      }
+      await prepareNodeData(component, path);
     }
   };
   const createIframeModal = (viewUrl, componentData, component) => {
-    const modalSettings = component.get().modalSettings;
     const elem = document.getElementsByClassName('fd-modal');
-    elem[0].style.width = modalSettings.width;
-    elem[0].style.height = modalSettings.height;
+    elem[0].style.width = component.get().modalSettings.width;
+    elem[0].style.height = component.get().modalSettings.height;
     if (viewUrl) {
       viewUrl = RoutingHelpers.substituteViewUrl(viewUrl, componentData);
     }
@@ -140,14 +86,11 @@
 
   export default {
     onupdate({ changed, current, previous }) {
-      this.set({ modalSettings: this.get().modalSettings });
       const nodepath = this.get().nodepath;
-      this.get().isTitleDefined = this.get().modalSettings.title ? true : false;
       getNode(this, nodepath);
     },
     data() {
       return {
-        isTitleDefined: false,
         isDataPrepared: false
       };
     }
