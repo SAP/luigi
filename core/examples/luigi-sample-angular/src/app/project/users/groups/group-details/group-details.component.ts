@@ -1,6 +1,6 @@
 import { Component, OnInit, ChangeDetectorRef, OnDestroy } from '@angular/core';
 import { Subscription } from 'rxjs';
-import LuigiClient from '@kyma-project/luigi-client';
+import { getPathParams, linkManager } from '@kyma-project/luigi-client';
 
 import {
   LuigiContextService,
@@ -14,7 +14,7 @@ import { toTitleCase } from '../../../../services/helpers';
   styleUrls: ['./group-details.component.css']
 })
 export class GroupDetailsComponent implements OnInit, OnDestroy {
-  public luigiClient: LuigiClient = LuigiClient;
+  public linkManager = linkManager;
   public pathParams: { [key: string]: string };
   public groupLabel: string;
   private lcSubscription: Subscription;
@@ -32,7 +32,7 @@ export class GroupDetailsComponent implements OnInit, OnDestroy {
         this.groupLabel = toTitleCase(ctx.context.currentGroup);
 
         // Default way, if context is not specified in node configuration
-        this.pathParams = this.luigiClient.getPathParams();
+        this.pathParams = getPathParams();
         this.groupLabel =
           this.pathParams &&
           this.pathParams.group &&
