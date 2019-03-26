@@ -230,7 +230,6 @@
     <div class="fd-section__header">
       <h1 class="fd-section__title">LuigiClient linkManager methods</h1>
     </div>
-
     <ng-container *ngIf="preservedViewCallbackContext">
       <div class="fd-panel fd-has-margin-bottom-small">
         <div class="fd-alert" role="alert">
@@ -240,7 +239,6 @@
         </div>
       </div>
     </ng-container>
-
     <div class="fd-panel fd-has-margin-bottom-small">
       <p><strong>Navigate</strong></p>
       <ul class="fd-list-group">
@@ -353,6 +351,23 @@
           >
           <app-code-snippet
             data="linkManager().withParams({test: true}).navigate('/settings', null, true)"
+          >
+          </app-code-snippet>
+        </li>
+        <li class="fd-list-group__item">
+          <a
+            href="javascript:void(0)"
+            (click)="
+              linkManager()
+                .withParams({ test: true })
+                .navigate('/settings', null, true, { title: 'Preserved View' })
+            "
+          >
+            extended preserved view example with params: project to global
+            settings and back in a modal</a
+          >
+          <app-code-snippet
+            data="linkManager().withParams({test: true}).navigate('/settings', null, true, {title:'PreservedView'})"
           >
           </app-code-snippet>
         </li>

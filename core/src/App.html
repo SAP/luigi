@@ -301,12 +301,15 @@
               this.get().modalIframe &&
               e.source === this.get().modalIframe.contentWindow
             ) {
+              let ctx = this.get().modalIframeData.context;
+              ctx.modal = true;
               const modalConfig = {
                 ...config,
                 iframe: this.get().modalIframe,
-                context: this.get().modalIframeData.context,
+                context: ctx,
                 pathParams: this.get().modalIframeData.pathParams,
-                nodeParams: this.get().modalIframeData.nodeParams
+                nodeParams: this.get().modalIframeData.nodeParams,
+                model: true
               };
               sendContextToClient(this, modalConfig, {});
             } else if (config.iframe) {
@@ -360,29 +363,41 @@
           }
 
           if ('luigi.navigation.back' === e.data.msg) {
-            // go back: context from the view
-            const preservedViews = this.get().preservedViews;
-            if (preservedViews && preservedViews.length) {
-              this.getUnsavedChangesModalPromise().then(() => {
-                // remove current active iframe and data
-                Iframe.setActiveIframeToPrevious(node);
-                const previousActiveIframeData = preservedViews.pop();
-                // set new active iframe and preservedViews
-                config.iframe = Iframe.getActiveIframe(node);
-                this.set({
-                  isNavigateBack: true,
-                  preservedViews,
-                  goBackContext:
-                    e.data.goBackContext && JSON.parse(e.data.goBackContext)
-                });
-                // TODO: check if getNavigationPath or history pop to update hash / path
-                const path = this.handleNavigation(
-                  { params: { link: previousActiveIframeData.path } },
-                  config
-                );
+            if (
+              this.get().modalIframe &&
+              e.source === this.get().modalIframe.contentWindow
+            ) {
+              this.closeModal();
+              sendContextToClient(this, config, {
+                goBackContext: JSON.parse(e.data.goBackContext)
               });
             } else {
-              console.error('goBack() not possible, no preserved views found.');
+              // go back: context from the view
+              const preservedViews = this.get().preservedViews;
+              if (preservedViews && preservedViews.length) {
+                this.getUnsavedChangesModalPromise().then(() => {
+                  // remove current active iframe and data
+                  Iframe.setActiveIframeToPrevious(node);
+                  const previousActiveIframeData = preservedViews.pop();
+                  // set new active iframe and preservedViews
+                  config.iframe = Iframe.getActiveIframe(node);
+                  this.set({
+                    isNavigateBack: true,
+                    preservedViews,
+                    goBackContext:
+                      e.data.goBackContext && JSON.parse(e.data.goBackContext)
+                  });
+                  // TODO: check if getNavigationPath or history pop to update hash / path
+                  const path = this.handleNavigation(
+                    { params: { link: previousActiveIframeData.path } },
+                    config
+                  );
+                });
+              } else {
+                console.error(
+                  'goBack() not possible, no preserved views found.'
+                );
+              }
             }
           }
 

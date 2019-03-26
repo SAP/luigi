@@ -381,7 +381,11 @@ const LuigiClient = {
        * @returns {boolean} indicating if there is a preserved view you can return to.
        */
       hasBack: function hasBack() {
-        return Boolean(currentContext.internal.viewStackSize !== 0);
+        if (currentContext.context.modal) {
+          return true;
+        } else {
+          return Boolean(currentContext.internal.viewStackSize !== 0);
+        }
       },
 
       /**
