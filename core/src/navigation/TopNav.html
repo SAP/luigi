@@ -50,7 +50,6 @@
           <ProductSwitcher
             bind:dropDownStates
             on:toggleDropdownState="toggleDropdownState(event.name)"
-            on:setProductSwitcherToDesktop="set({isProductSwitcherMobile: false})"
             isMobile={false}
           />
         {/if}
@@ -126,7 +125,9 @@
                            </span>                  
                           My Products
                         </a>
+                        
                       </li>
+                      
                     {/if}
                   </ul>
                 </nav>
@@ -246,7 +247,6 @@
     methods: {
       openMobileProductSwitcher(event) {
         if (event) event.stopPropagation();
-
         this.toggleDropdownState('productSwitcherPopover');
       },
       handleClick(node) {

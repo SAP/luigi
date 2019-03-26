@@ -12,7 +12,7 @@ Object.keys(productSwitcherItems[0]).length }
                 class="fd-button--shell sap-icon--grid"
                 aria-expanded="{dropDownStates.productSwitcherPopover || false}"
                 aria-haspopup="true"
-                on:click="onDesktopOpenClick()"
+                on:click="toggleDropdownState('productSwitcherPopover')"
                 data-cy="desktop-product-switcher"
               ></button>
             </div>
@@ -111,10 +111,6 @@ Object.keys(productSwitcherItems[0]).length }
       }
     },
     methods: {
-      onDesktopOpenClick() {
-        this.toggleDropdownState('productSwitcherPopover');
-      },
-
       onActionClick(productSwitcherItem) {
         this.root.getUnsavedChangesModalPromise().then(() => {
           if (productSwitcherItem.externalLink) {
