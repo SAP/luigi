@@ -31,7 +31,7 @@
   import { LuigiConfig } from './services/config';
   import * as GenericHelpers from './utilities/helpers/generic-helpers';
 
-  const getNode = async (component, path) => {
+  const prepareNodeData = async (component, path) => {
     const pathUrlRaw =
       path && path.length ? GenericHelpers.getPathWithoutHash(path) : '';
     const pathData = await Navigation.getNavigationPath(
@@ -41,17 +41,89 @@
     const params = RoutingHelpers.parseParams(pathUrlRaw.split('?')[1]);
     const nodeParams = RoutingHelpers.getNodeParams(params);
     const lastNode = RoutingHelpers.getLastNodeObject(pathData);
-    const iframe = createIframeModal(lastNode.viewUrl, {
-      context: pathData.context,
-      pathParams: pathData.pathParams,
-      nodeParams
-    });
-    component.root.set({
-      modalIframe: iframe,
-      modalIframeData: { ...pathData, nodeParams }
-    });
+    return { lastNode, pathData, nodeParams };
   };
-  const createIframeModal = (viewUrl, componentData) => {
+
+  const getNode = async (component, path) => {
+    if (component.get().isTitleDefined) {
+      if (component.get().isDataPrepared) {
+        const {
+          nodeParams,
+          lastNode,
+          modalSettings,
+          pathData
+        } = component.get();
+        const iframe = createIframeModal(
+          lastNode.viewUrl,
+          {
+            context: pathData.context,
+            pathParams: pathData.pathParams,
+            nodeParams
+          },
+          component
+        );
+        component.root.set({
+          modalIframe: iframe,
+          modalIframeData: { ...pathData, nodeParams }
+        });
+      } else {
+        const { lastNode, pathData, nodeParams } = await prepareNodeData(
+          component,
+          path
+        );
+        const iframe = createIframeModal(
+          lastNode.viewUrl,
+          {
+            context: pathData.context,
+            pathParams: pathData.pathParams,
+            nodeParams
+          },
+          component
+        );
+        component.root.set({
+          modalIframe: iframe,
+          modalIframeData: { ...pathData, nodeParams }
+        });
+      }
+    } else {
+      if (component.get().isDataPrepared) {
+        const {
+          nodeParams,
+          lastNode,
+          modalSettings,
+          pathData
+        } = component.get();
+        const iframe = createIframeModal(
+          lastNode.viewUrl,
+          {
+            context: pathData.context,
+            pathParams: pathData.pathParams,
+            nodeParams
+          },
+          component
+        );
+        component.root.set({
+          modalIframe: iframe,
+          modalIframeData: { ...pathData, nodeParams }
+        });
+      } else {
+        const { lastNode, pathData, nodeParams } = await prepareNodeData(
+          component,
+          path
+        );
+        const modalSettings = component.get().modalSettings;
+        modalSettings.title = lastNode.label;
+        component.get().isDataPrepared = true;
+        component.get().isTitleDefined = true;
+        component.set({ modalSettings, lastNode, pathData, nodeParams });
+      }
+    }
+  };
+  const createIframeModal = (viewUrl, componentData, component) => {
+    const modalSettings = component.get().modalSettings;
+    const elem = document.getElementsByClassName('fd-modal');
+    elem[0].style.width = modalSettings.width;
+    elem[0].style.height = modalSettings.height;
     if (viewUrl) {
       viewUrl = RoutingHelpers.substituteViewUrl(viewUrl, componentData);
     }
@@ -70,11 +142,14 @@
     onupdate({ changed, current, previous }) {
       this.set({ modalSettings: this.get().modalSettings });
       const nodepath = this.get().nodepath;
-      const modalSettings = this.get().modalSettings;
-      const elem = document.getElementsByClassName('fd-modal');
-      elem[0].style.width = modalSettings.width;
-      elem[0].style.height = modalSettings.height;
+      this.get().isTitleDefined = this.get().modalSettings.title ? true : false;
       getNode(this, nodepath);
+    },
+    data() {
+      return {
+        isTitleDefined: false,
+        isDataPrepared: false
+      };
     }
   };
 </script>
@@ -83,7 +158,7 @@
   $leftNavWidth: 320px;
   $width: 32rem;
   .fd-modal {
-    max-width: 70%;
+    max-width: 80%;
     width: 70%;
     &__body,
     &__header {
