@@ -1,8 +1,8 @@
-<svelte:window on:click="closeAllDropdowns()" on:blur="closeAllDropdowns()"/>
+<svelte:window on:click="closeAllDropdowns()" on:blur="closeAllDropdowns()" />
 
 <div class="fd-shellbar {hideNavComponent ? 'hideNavComponent' : ''}">
   <div class="fd-shellbar__group fd-shellbar__group--start">
-    <LogoTitle/>
+    <LogoTitle />
   </div>
   <div class="fd-shellbar__group fd-shellbar__group--end">
     <div class="fd-shellbar__actions">
@@ -11,135 +11,163 @@
         bind:dropDownStates
         on:toggleDropdownState="toggleDropdownState(event.name)"
       />
-      {/if} {#if children && pathData.length > 0} {#each children as node} {#if
-      !node.hideFromNav}
-      <div
-        class="fd-shellbar__action fd-shellbar__action--hide fd-shellbar__action--collapsible"
-      >
-        <button
-          title="{node.label}"
-          class="fd-button--shell {node === selectedNode ? 'is-selected' : ''} {node.externalLink && node.externalLink.url ? 'fd-global-nav__btn--external' : ''}"
-          aria-controls="0AcWE812"
-          aria-expanded="false"
-          aria-haspopup="true"
-          on:click="handleClick(node)"
-        >
-          {#if node.icon} {#if hasOpenUIicon(node)}
-          <span
-            class="fd-top-nav__icon sap-icon--{node.icon} sap-icon--m"
-          ></span>
-          {:else}
-          <img
-            class="fd-top-nav__icon nav-icon"
-            src="{node.icon}"
+      {/if} 
+      {#if children && pathData.length > 0} 
+        {#each children as node} 
+          {#if !node.hideFromNav}
+          <div
+            class="fd-shellbar__action fd-shellbar__action--hide fd-shellbar__action--collapsible"
           >
-          {/if}
-          {:else} {node.label} {/if} {#if node.externalLink &&
-          node.externalLink.url}
-          <span
-            class="sap-icon--action sap-icon--s"
-          ></span>
-          {/if}
-        </button>
-      </div>
-      {/if} {/each}
-      <!-- Sample Markup for Notifications
-          <div class="fd-shellbar__action fd-shellbar__action--collapsible">
-            <button class=" fd-button--shell sap-icon--bell" aria-label="Notifications">
-              <span class="fd-counter fd-counter--notification" aria-label="Unread count">25</span>
-            </button>
-          </div> 
-      -->
-
-      <!-- dropdown for top nav nodes on smaller screens -->
-      {#if visibleNodeCount > 0}
-      <div class="fd-shellbar__action fd-shellbar__action--collapse">
-        <div class="fd-shellbar-collapse">
-          <div class="fd-popover fd-popover--right">
-            <div class="fd-popover__control" on:click="event.stopPropagation()">
-              <div
-                class="fd-shellbar-collapse--control"
-                aria-controls="eYVEJ960"
-                aria-expanded="false"
-                aria-haspopup="true"
-                role="button"
+            <button
+              title="{node.label}"
+              class="fd-button--shell {node === selectedNode ? 'is-selected' : ''} {node.externalLink && node.externalLink.url ? 'fd-global-nav__btn--external' : ''}"
+              aria-controls="0AcWE812"
+              aria-expanded="false"
+              aria-haspopup="true"
+              on:click="handleClick(node)"
+            >
+              {#if node.icon} {#if hasOpenUIicon(node)}
+              <span
+                class="fd-top-nav__icon sap-icon--{node.icon} sap-icon--m"
+              ></span>
+              {:else}
+              <img
+                class="fd-top-nav__icon nav-icon"
+                src="{node.icon}"
               >
-                <button
-                  class="fd-button--shell sap-icon--overflow"
-                  aria-controls="overflowPopover"
-                  aria-expanded="{dropDownStates.overflowPopover || false}"
+              {/if}
+              {:else} {node.label} {/if} {#if node.externalLink &&
+              node.externalLink.url}
+              <span
+                class="sap-icon--action sap-icon--s"
+              ></span>
+              {/if}
+            </button>
+          </div>
+          {/if} 
+        {/each}
+        {#if isProductSwitcherAvailable}
+          <ProductSwitcher
+            bind:dropDownStates
+            on:toggleDropdownState="toggleDropdownState(event.name)"
+            isMobile={false}
+          />
+        {/if}
+        <!-- Sample Markup for Notifications
+            <div class="fd-shellbar__action fd-shellbar__action--collapsible">
+              <button class=" fd-button--shell sap-icon--bell" aria-label="Notifications">
+                <span class="fd-counter fd-counter--notification" aria-label="Unread count">25</span>
+              </button>
+            </div> 
+        -->
+
+        <!-- dropdown for top nav nodes on smaller screens -->
+        {#if visibleNodeCount > 0}
+        <div class="fd-shellbar__action fd-shellbar__action--collapse">
+          <div class="fd-shellbar-collapse">
+            <div class="fd-popover fd-popover--right">
+              <div class="fd-popover__control" on:click="event.stopPropagation()">
+                <div
+                  class="fd-shellbar-collapse--control"
+                  aria-controls="eYVEJ960"
+                  aria-expanded="false"
                   aria-haspopup="true"
-                  on:click="toggleDropdownState('overflowPopover')"
+                  role="button"
                 >
-                  <!-- <span class="fd-counter fd-counter--notification" aria-label="Unread count">25</span> -->
-                </button>
+                  <button
+                    class="fd-button--shell sap-icon--overflow"
+                    aria-controls="overflowPopover"
+                    aria-expanded="{dropDownStates.overflowPopover || false}"
+                    aria-haspopup="true"
+                    on:click="toggleDropdownState('overflowPopover')"
+                    data-cy="mobile-menu"
+                  >
+                    <!-- <span class="fd-counter fd-counter--notification" aria-label="Unread count">25</span> -->
+                  </button>
+                </div>
+              </div>
+              <div
+                class="fd-popover__body fd-popover__body--right"
+                aria-hidden="{!(dropDownStates.overflowPopover || false)}"
+                id="overflowPopover"
+              >
+                <nav class="fd-menu">
+                  <ul class="fd-menu__list">
+                    {#each children as node} {#if !node.hideFromNav}
+                    <li>
+                      <a
+                        class="fd-menu__item {node === selectedNode ? 'is-selected' : ''} {node.externalLink && node.externalLink.url ? 'fd-global-nav__btn--external' : ''}"
+                        on:click="handleClick(node)"
+                      >
+                        {#if node.icon} {#if hasOpenUIicon(node)}
+                        <span
+                          class="fd-top-nav__icon sap-icon--{node.icon} sap-icon--m"
+                        ></span>
+                        {:else}
+                        <img
+                          class="fd-top-nav__icon nav-icon"
+                          src="{node.icon}"
+                        >
+                        {/if} {:else} {node.label} {/if} {#if node.externalLink &&
+                        node.externalLink.url}
+                        <span
+                          class="sap-icon--action sap-icon--s"
+                        ></span>
+                        {/if}
+                      </a>
+                    </li>
+                    {/if} 
+                    {/each}
+                    {#if isProductSwitcherAvailable}
+                      <li>       
+                        <a class="fd-menu__item" on:click="openMobileProductSwitcher(event)"  data-cy="mobile-product-switcher">            
+                           <span class="fd-top-nav__icon sap-icon--grid sap-icon--m">
+                           </span>                  
+                          My Products
+                        </a>
+                        
+                      </li>
+                      
+                    {/if}
+                  </ul>
+                </nav>
+              </div>
+              {#if isProductSwitcherAvailable}
+                  <ProductSwitcher
+                  bind:dropDownStates
+                  on:toggleDropdownState="toggleDropdownState(event.name)"
+                  isMobile={true}
+                />
+              {/if}
+            </div>
+          </div>
+        </div>
+        {/if} 
+      {/if} 
+      {#if authorizationEnabled}
+        <div class="fd-shellbar__action fd-shellbar__action--show-always">
+          <div class="fd-popover">
+            <div class="fd-popover__control" on:click="event.stopPropagation()">
+              <button
+                class="fd-button--shell sap-icon--customer"
+                aria-expanded="{dropDownStates.profilePopover || false}"
+                aria-haspopup="true"
+                on:click="toggleDropdownState('profilePopover')"
+              ></button>
+              <div
+                class="fd-popover__body fd-popover__body--right"
+                aria-hidden="{!(dropDownStates.profilePopover || false)}"
+                id="profilePopover"
+              >
+                <nav class="fd-menu">
+                  <Authorization/>
+                </nav>
               </div>
             </div>
-            <div
-              class="fd-popover__body fd-popover__body--right"
-              aria-hidden="{!(dropDownStates.overflowPopover || false)}"
-              id="overflowPopover"
-            >
-              <nav class="fd-menu">
-                <ul class="fd-menu__list">
-                  {#each children as node} {#if !node.hideFromNav}
-                  <li>
-                    <a
-                      class="fd-menu__item {node === selectedNode ? 'is-selected' : ''} {node.externalLink && node.externalLink.url ? 'fd-global-nav__btn--external' : ''}"
-                      on:click="handleClick(node)"
-                    >
-                      {#if node.icon} {#if hasOpenUIicon(node)}
-                      <span
-                        class="fd-top-nav__icon sap-icon--{node.icon} sap-icon--m"
-                      ></span>
-                      {:else}
-                      <img
-                        class="fd-top-nav__icon nav-icon"
-                        src="{node.icon}"
-                      >
-                      {/if} {:else} {node.label} {/if} {#if node.externalLink &&
-                      node.externalLink.url}
-                      <span
-                        class="sap-icon--action sap-icon--s"
-                      ></span>
-                      {/if}
-                    </a>
-                  </li>
-                  {/if} {/each}
-                </ul>
-              </nav>
-            </div>
           </div>
         </div>
-      </div>
-      {/if} {/if} {#if authorizationEnabled}
-      <div class="fd-shellbar__action fd-shellbar__action--show-always">
-        <div class="fd-popover">
-          <div class="fd-popover__control" on:click="event.stopPropagation()">
-            <button
-              class="fd-button--shell sap-icon--customer"
-              aria-expanded="{dropDownStates.profilePopover || false}"
-              aria-haspopup="true"
-              on:click="toggleDropdownState('profilePopover')"
-            ></button>
-            <div
-              class="fd-popover__body fd-popover__body--right"
-              aria-hidden="{!(dropDownStates.profilePopover || false)}"
-              id="profilePopover"
-            >
-              <nav class="fd-menu">
-                <Authorization/>
-              </nav>
-            </div>
-          </div>
-        </div>
-      </div>
-      {/if} {#if isProductSwitcherAvailable}
-      <ProductSwitcher
-        bind:dropDownStates
-        on:toggleDropdownState="toggleDropdownState(event.name)"
-      />
-      {/if}
+      {/if} 
+    
     </div>
   </div>
 </div>
@@ -217,14 +245,21 @@
       }
     },
     methods: {
+      openMobileProductSwitcher(event) {
+        if (event) event.stopPropagation();
+        this.toggleDropdownState('productSwitcherPopover');
+      },
       handleClick(node) {
         this.fire('handleClick', { node });
       },
       toggleDropdownState(name) {
         const dropDownStates = this.get().dropDownStates || {};
         const dropDownState = !dropDownStates[name];
+
         this.closeAllDropdowns();
+
         dropDownStates[name] = dropDownState;
+
         this.set({
           dropDownStates
         });
@@ -256,6 +291,11 @@
   .fd-shellbar__actions {
     display: flex;
     justify-content: flex-end;
+  }
+
+  // Fix for Fiori aligning everything to right inside shellbar end
+  .fd-shellbar__group--end {
+    text-align: unset;
   }
 
   .fd-side-nav__icon {
