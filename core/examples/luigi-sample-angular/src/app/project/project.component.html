@@ -44,80 +44,6 @@
     </div>
 
     <div class="fd-panel fd-has-margin-bottom-small">
-      <p><strong>Open Microfrontend in Modal</strong></p>
-      <button
-        class="fd-button"
-        data-cy="show-luigi-mf-modal"
-        (click)="
-          linkManager().navigate('/projects/pr2', null, 0, {
-            width: '80%',
-            height: '80%'
-          })
-        "
-      >
-        Project One
-      </button>
-      <button
-        class="fd-button"
-        data-cy="show-luigi-mf-modal"
-        (click)="
-          linkManager()
-            .withParams({ tets: 'testsd' })
-            .navigate('/projects/pr2/settings', null, 0, {
-              title: 'Using NodeParams',
-              width: '400px',
-              height: '400px'
-            })
-        "
-      >
-        Settings with node params using withParams() function
-      </button>
-      <button
-        class="fd-button"
-        data-cy="show-luigi-mf-modal"
-        (click)="
-          linkManager().navigate('/environments/env1', null, 0, {
-            title: 'PathParams',
-            width: '600px',
-            height: '600px'
-          })
-        "
-      >
-        Path Params
-      </button>
-      <button
-        class="fd-button"
-        data-cy="show-luigi-mf-modal"
-        (click)="
-          linkManager()
-            .fromClosestContext()
-            .navigate('/users/groups/stakeholders', null, 0, {
-              title: 'Stakeholders',
-              width: '600px',
-              height: '600px'
-            })
-        "
-      >
-        fromClosestContext
-      </button>
-      <button
-        class="fd-button"
-        data-cy="show-luigi-mf-modal"
-        (click)="
-          linkManager()
-            .fromClosestContext()
-            .navigate('/settings', null, true, {
-              title: 'settings',
-              width: '600px',
-              height: '600px'
-            })
-        "
-      >
-        Settings
-      </button>
-    </div>
-
-    <div class="fd-panel fd-has-margin-bottom-small">
       <p><strong>Alert</strong></p>
       <form #luigiAlertForm="ngForm">
         <div class="fd-form__set fd-has-padding-bottom-small">
@@ -360,14 +286,18 @@
             (click)="
               linkManager()
                 .withParams({ test: true })
-                .navigate('/settings', null, true, { title: 'Preserved View' })
+                .navigate('/settings', null, true, {
+                  title: 'Preserved View',
+                  width: '40%',
+                  height: '80%'
+                })
             "
           >
-            extended preserved view example with params: project to global
-            settings and back in a modal</a
+            extended preserved view example with params rendered in a modal:
+            project to global settings and back</a
           >
           <app-code-snippet
-            data="linkManager().withParams({test: true}).navigate('/settings', null, true, {title:'PreservedView'})"
+            data="linkManager().withParams({test: true}).navigate('/settings', null, true, {title:'PreservedView', width:'40%', height:'80%'})"
           >
           </app-code-snippet>
         </li>
