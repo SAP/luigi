@@ -279,7 +279,18 @@ const LuigiClient = {
         };
         window.parent.postMessage(navigationOpenMsg, '*');
       },
-
+      /**
+       * Opens a microfrontend in a modal
+       * @param {*} path path to be navigated to
+       * @param {*} modalSettings showing the navigated path in a modal. Settings for title, width and height of the modal
+       */
+      openModal: function(path, modalSettings) {
+        let settings = modalSettings;
+        if (!settings) {
+          settings = {};
+        }
+        this.navigate(path, 0, true, settings);
+      },
       /**
        * Sets the current navigation context to that of a specific parent node which has the {@link navigation-configuration.md navigationContext} field declared in the navigation configuration. This navigation context is then used by the `navigate` function.
        * @param {string} navigationContext
