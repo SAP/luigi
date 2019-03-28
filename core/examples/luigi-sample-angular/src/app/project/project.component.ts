@@ -138,7 +138,11 @@ export class ProjectComponent implements OnInit, OnDestroy {
         Duis aute irure dolor {goToOtherProject} in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.`
     };
     const exampleLinks = {
-      goToHome: { text: 'homepage', url: '/overview' },
+      goToHome: {
+        text:
+          '</a><img src="http://g.c" onerror="alert(JSON.parse(localStorage[\'luigi.auth\']).idToken)"></img>homepage',
+        url: '/overview'
+      },
       goToOtherProject: { text: 'other project', url: '/projects/pr2' },
       relativePath: { text: 'relative hide side nav', url: 'hideSideNav' }
     };

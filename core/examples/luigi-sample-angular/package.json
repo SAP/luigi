@@ -22,7 +22,7 @@
     "@angular/platform-browser-dynamic": "^6.1.0",
     "@angular/router": "^6.1.0",
     "@kyma-project/luigi-client": "^0.4.9",
-    "@kyma-project/luigi-core": "^0.4.9",
+    "@kyma-project/luigi-core": "/Users/i308048/repos/luigi/core/public",
     "ajv": "^6.1.1",
     "core-js": "^2.4.1",
     "fiori-fundamentals": "^1.4.1",
