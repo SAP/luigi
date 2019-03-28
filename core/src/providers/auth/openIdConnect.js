@@ -166,7 +166,7 @@ export class openIdConnect {
         })
         .catch(err => {
           console.error(err);
-          localStorage.clear();
+          localStorage.removeItem('luigi.auth');
           window.location.href = this.settings.logoutUrl + '?reason=loginError';
         });
     });
