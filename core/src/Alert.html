@@ -17,8 +17,7 @@
 </div>
 
 <script type="text/javascript">
-  import * as Routing from './services/routing.js';
-  import * as RoutingHelpers from './utilities/helpers/routing-helpers';
+  import { sanitizeHtml } from './utilities/helpers/escaping-helpers';
 
   export default {
     data() {
@@ -64,7 +63,7 @@
         }
       },
       processTextAndLinks(text, links) {
-        let sanitizedText = RoutingHelpers.sanitizeHtml(text);
+        let sanitizedText = sanitizeHtml(text);
         let initialValue = { sanitizedText, links: [] };
 
         if (!links) {
@@ -73,7 +72,8 @@
 
         return Object.entries(links).reduce((acc, [key, content]) => {
           const elemId = key;
-          const processedData = `<a id="${elemId}">${content.text}</a>`;
+          const escapedText = sanitizeHtml(content.text);
+          const processedData = `<a id="${elemId}">${escapedText}</a>`;
           const pattern = new RegExp(`({${key}})`, 'g');
           return {
             sanitizedText: acc.sanitizedText.replace(pattern, processedData),
