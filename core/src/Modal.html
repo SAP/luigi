@@ -1,5 +1,5 @@
 <div class="fd-ui__overlay fd-overlay fd-overlay--modal" style="z-index:999">
-  <div class="fd-modal" style="height:70%; width:70%;">
+  <div class="fd-modal">
     <div class="fd-modal__content" style="height:100%">
       <div class="fd-modal__header">
         <h1 class="fd-modal__title">{modalSettings.title}</h1>
@@ -35,8 +35,13 @@
     const nodeParams = RoutingHelpers.getNodeParams(params);
     const lastNode = RoutingHelpers.getLastNodeObject(pathData);
     const modalSettings = component.get().modalSettings;
+    debugger;
     if (!modalSettings.title) {
-      modalSettings.title = lastNode.label;
+      if (!lastNode.label) {
+        modalSettings.title = lastNode.parent.label;
+      } else {
+        modalSettings.title = lastNode.label;
+      }
     }
     component.get().isDataPrepared = true;
     component.set({ modalSettings, lastNode, pathData, nodeParams });
@@ -64,15 +69,29 @@
   };
   const createIframeModal = (viewUrl, componentData, component) => {
     const elem = document.getElementsByClassName('fd-modal');
-    elem[0].style.width = component.get().modalSettings.width;
-    elem[0].style.height = component.get().modalSettings.height;
+    let sizeInPercent = '80%';
+    if (component.get().modalSettings.size) {
+      if (component.get().modalSettings.size === 'l') {
+        sizeInPercent = '80%';
+      } else if (component.get().modalSettings.size === 'm') {
+        sizeInPercent = '60%';
+      } else if (component.get().modalSettings.size === 's') {
+        sizeInPercent = '40%';
+      } else {
+        component.get().modalSettings['size'] = size;
+      }
+    }
+    elem[0].setAttribute(
+      'style',
+      `width:${sizeInPercent};height:${sizeInPercent}`
+    );
     if (viewUrl) {
       viewUrl = RoutingHelpers.substituteViewUrl(viewUrl, componentData);
     }
     const iframe = document.createElement('iframe');
     iframe.src = viewUrl;
     iframe.style.width = '100%';
-    iframe.style.height = 'calc(100% - 53px)';
+    iframe.style.height = '100%';
     iframe.frameBorder = '0';
     iframe.style.position = 'absolute';
     const iframeCtn = document.getElementById('iframeModalCtn');
@@ -97,7 +116,7 @@
   $leftNavWidth: 320px;
   $width: 32rem;
   .fd-modal {
-    max-width: 80%;
+    max-width: 100%;
     width: 70%;
     &__body,
     &__header {

@@ -234,7 +234,6 @@
     return {
       mfModal: {
         isDisplayed: false,
-        openFromClient: false,
         settings: {}
       }
     };
@@ -353,7 +352,7 @@
                   getDefaultMicrofrontendModalData()
                 )
               );
-              this.openModal(path, e.data.params.modal, true);
+              this.openViewInModal(path, e.data.params.modal);
             } else {
               this.getUnsavedChangesModalPromise().then(() => {
                 this.handleNavigation(e.data, config);
@@ -596,7 +595,7 @@
           });
         });
       },
-      openModal(nodepath, modalSettings, openFromClient = false) {
+      openViewInModal(nodepath, modalSettings) {
         this.set({
           mfModal: {
             isDisplayed: true,
