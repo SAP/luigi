@@ -181,7 +181,7 @@
         <li class="fd-list-group__item">
           <a
             href="javascript:void(0)"
-            (click)="linkManager().openModal('users/groups/stakeholders')"
+            (click)="linkManager().navigate('users/groups/stakeholders')"
             >relative: to stakeholders</a
           >
           <app-code-snippet
@@ -286,7 +286,7 @@
             (click)="
               linkManager()
                 .withParams({ test: true })
-                .navigate('/settings', null, true, {
+                .openModal('/settings', {
                   title: 'Preserved View',
                   size: 'm'
                 })
@@ -296,7 +296,7 @@
             project to global settings and back</a
           >
           <app-code-snippet
-            data="linkManager().withParams({test: true}).navigate('/settings', null, true, {title:'PreservedView', size:'m'})"
+            data="linkManager().withParams({test: true}).openModal('/settings', {title:'PreservedView', size:'m'})"
           >
           </app-code-snippet>
         </li>
