@@ -281,7 +281,7 @@ const LuigiClient = {
       },
       /**
        * Opens a microfrontend in a modal
-       * @param {String} path path to be navigated to
+       * @param {string} path path to be navigated to
        * @param {Object} modalSettings settings to customize the modal title and size (s=small, m=medium, l=large)
        */
       openModal: function(path, modalSettings) {
