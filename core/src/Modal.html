@@ -31,11 +31,7 @@
     const lastNode = RoutingHelpers.getLastNodeObject(pathData);
     const modalSettings = component.get().modalSettings;
     if (!modalSettings.title) {
-      if (!lastNode.label) {
-        modalSettings.title = lastNode.parent.label;
-      } else {
-        modalSettings.title = lastNode.label;
-      }
+      modalSettings.title = lastNode.label;
     }
     component.get().isDataPrepared = true;
     component.set({ modalSettings, lastNode, pathData, nodeParams });
