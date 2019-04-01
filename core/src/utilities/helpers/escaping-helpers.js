@@ -18,3 +18,7 @@ export const sanitizeParam = param => {
     .replace(/'/g, '&#39;')
     .replace(/\//g, '&sol;');
 };
+
+export const escapeRegExp = str => {
+  return str.replace(/[\-\[\]\/\{\}\(\)\*\+\?\.\\\^\$\|]/g, '\\$&');
+};
