@@ -307,8 +307,7 @@
                 iframe: this.get().modalIframe,
                 context: ctx,
                 pathParams: this.get().modalIframeData.pathParams,
-                nodeParams: this.get().modalIframeData.nodeParams,
-                model: true
+                nodeParams: this.get().modalIframeData.nodeParams
               };
               sendContextToClient(this, modalConfig, {});
             } else if (config.iframe) {
