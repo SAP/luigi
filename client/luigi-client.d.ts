@@ -185,10 +185,10 @@ export declare interface LinkManager {
 
   /**
    * Opens a microfrontend in a modal
-   * @param {String} nodepath
-   * @param {Object} modalSettings
+   * @param {string} path path to be navigated to
+   * @param {Object} modalSettings settings to customize the modal title and size (s=small, m=medium, l=large)
    * @example
-   * LuigiClient.linkManager().openModal('projects/pr1/users', {title:'Users'});
+   * LuigiClient.linkManager().openModal('projects/pr1/users', {title:'Users', size:'m'});
    */
   openModal: (nodepath: string, modalSettings: Object) => this;
 }
