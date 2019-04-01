@@ -224,11 +224,11 @@ describe('Luigi client ux manger features', () => {
           cy.get('[data-cy=luigi-modal-confirm]').click();
           cy.expectPathToBe('/projects/pr1/hideSideNav');
 
-          cy.get('#goToOtherProject')
+          cy.get('#_luigi_alert_link_goToOtherProject')
             .click()
             .expectPathToBe('/projects/pr2');
 
-          cy.get('#goToHome')
+          cy.get('#_luigi_alert_link_goToHome')
             .click()
             .expectPathToBe('/overview');
         });
