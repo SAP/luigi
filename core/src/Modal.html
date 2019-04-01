@@ -71,6 +71,10 @@
         component.get().modalSettings['size'] = size;
       }
     }
+    if (!component.get().modalSettings.title) {
+      document.getElementsByClassName('fd-modal__title')[0].style.visibility =
+        'hidden';
+    }
     elem[0].setAttribute(
       'style',
       `width:${sizeInPercent};height:${sizeInPercent}`
