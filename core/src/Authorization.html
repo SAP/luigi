@@ -1,3 +1,5 @@
+
+{#if !isHidden}
 <ul class="fd-menu__list">
     {#if isLoggedIn}
       <li on:click=onLogoutClick()>
@@ -9,6 +11,7 @@
       </li>
     {/if}
 </ul>
+{/if}
 
 <script type="text/javascript">
   import { LuigiConfig } from './services/config.js';
