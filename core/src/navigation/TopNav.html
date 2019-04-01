@@ -1,6 +1,5 @@
 <svelte:window on:click="closeAllDropdowns()" on:blur="closeAllDropdowns()" />
-{isLoggedIn}
-{#if authorizationEnabled && isLoggedIn || !authorizationEnabled }
+{#if authorizationEnabled && (!autologinEnabled || isLoggedIn) || !authorizationEnabled }
   <div class="fd-shellbar {hideNavComponent ? 'hideNavComponent' : ''}">
     <div class="fd-shellbar__group fd-shellbar__group--start">
       <LogoTitle /> 
