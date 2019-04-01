@@ -9,12 +9,7 @@
           aria-label="close"
         ></button>
       </div>
-      <div
-        id="iframeModalCtn"
-        style="position: relative;
-            height: 100%;
-           width: 100%;"
-      ></div>
+      <div class="iframeModalCtn"></div>
     </div>
   </div>
 </div>
@@ -93,7 +88,7 @@
     iframe.style.height = '100%';
     iframe.frameBorder = '0';
     iframe.style.position = 'absolute';
-    const iframeCtn = document.getElementById('iframeModalCtn');
+    const iframeCtn = document.querySelector('.iframeModalCtn');
     iframeCtn.appendChild(iframe);
     return iframe;
   };
@@ -114,6 +109,13 @@
   $topNavHeight: 50px;
   $leftNavWidth: 320px;
   $width: 32rem;
+
+  .iframeModalCtn {
+    position: relative;
+    height: 100%;
+    width: 100%;
+  }
+
   .fd-modal {
     max-width: 100%;
     width: 70%;
