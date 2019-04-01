@@ -250,7 +250,9 @@ const LuigiClient = {
        * @param {string} path path to be navigated to
        * @param {string} sessionId current Luigi **sessionId**
        * @param {boolean} preserveView Preserve a view by setting it to `true`. It keeps the current view opened in the background and opens the new route in a new frame. Use the {@link #goBack goBack()} function to navigate back. You can use this feature across different levels. Preserved views are discarded as soon as the standard {@link #navigate navigate()} function is used instead of {@link #goBack goBack()}.
-       * @param {Object} modalSettings @param {Object} modalSettings settings to customize the modal title and size (s=small, m=medium, l=large)
+       * @param {Object} modalSettings opens a microfrontend as a modal with possibility to specify a title and size
+       * @param {string} modalSettings.title content of the modal title
+       * @param {string} modalSettings.size size of the modal (l=large 80% default, m=medium 60%, s=small 40%)
        * @example
        * LuigiClient.linkManager().navigate('/overview')
        * LuigiClient.linkManager().navigate('users/groups/stakeholders')
@@ -280,16 +282,16 @@ const LuigiClient = {
         window.parent.postMessage(navigationOpenMsg, '*');
       },
       /**
-       * Opens a microfrontend in a modal
+       * Opens a microfrontend as a modal
        * @param {string} path path to be navigated to
-       * @param {Object} modalSettings settings to customize the modal title and size (s=small, m=medium, l=large)
+       * @param {Object} modalSettings settings to customize the modal title and size
+       * @param {string} modalSettings.title content of the modal title
+       * @param {string} modalSettings.size size of the modal (l=large 80% default, m=medium 60%, s=small 40%)
+       * @example
+       * LuigiClient.linkManager().openAsModal('projects/pr1/users', {title:'Users', size:'m'});
        */
-      openModal: function(path, modalSettings) {
-        let settings = modalSettings;
-        if (!settings) {
-          settings = {};
-        }
-        this.navigate(path, 0, true, settings);
+      openAsModal: function(path, modalSettings) {
+        this.navigate(path, 0, true, modalSettings || {});
       },
       /**
        * Sets the current navigation context to that of a specific parent node which has the {@link navigation-configuration.md navigationContext} field declared in the navigation configuration. This navigation context is then used by the `navigate` function.
@@ -392,11 +394,10 @@ const LuigiClient = {
        * @returns {boolean} indicating if there is a preserved view you can return to.
        */
       hasBack: function hasBack() {
-        if (currentContext.context.modal) {
-          return true;
-        } else {
-          return Boolean(currentContext.internal.viewStackSize !== 0);
-        }
+        return (
+          !!currentContext.context.modal ||
+          currentContext.internal.viewStackSize !== 0
+        );
       },
 
       /**

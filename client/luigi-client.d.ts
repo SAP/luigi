@@ -16,6 +16,11 @@ export declare interface ConfirmationModalSettings {
   buttonDismiss?: string;
 }
 
+export declare interface ModalSettings {
+  title?: string;
+  size?: 'l' | 'm' | 's';
+}
+
 export declare interface Context {
   authData?: AuthData;
   context?: { parentNavigationContext?: string[] };
@@ -149,12 +154,20 @@ export declare interface LinkManager {
    * @param {string} path path to be navigated to
    * @param {string} sessionId current Luigi **sessionId**
    * @param {boolean} preserveView Preserve a view by setting it to `true`. It keeps the current view opened in the background and opens the new route in a new frame. Use the {@link #goBack goBack()} function to navigate back. You can use this feature across different levels. Preserved views are discarded as soon as the standard {@link #navigate navigate()} function is used instead of {@link #goBack goBack()}.
+   * @param {Object} modalSettings opens a microfrontend as a modal with possibility to specify a title and size
+   * @param {string} modalSettings.title content of the modal title
+   * @param {string} modalSettings.size size of the modal (l=large 80% default, m=medium 60%, s=small 40%)
    * @example
    * LuigiClient.linkManager().navigate('/overview')
    * LuigiClient.linkManager().navigate('users/groups/stakeholders')
    * LuigiClient.linkManager().navigate('/settings', null, true) // preserve view
    */
-  navigate: (path: string, sessionId?: string, preserveView?: boolean) => void;
+  navigate: (
+    path: string,
+    sessionId?: string,
+    preserveView?: boolean,
+    modalSettings?: ModalSettings
+  ) => void;
 
   /**
    * Checks if the path you can navigate to exists in the main application. For example, you can use this helper method conditionally to display a DOM element like a button.
@@ -184,13 +197,15 @@ export declare interface LinkManager {
   withParams: (nodeParams: NodeParams) => this;
 
   /**
-   * Opens a microfrontend in a modal
+   * Opens a microfrontend as a modal
    * @param {string} path path to be navigated to
-   * @param {Object} modalSettings settings to customize the modal title and size (s=small, m=medium, l=large)
+   * @param {Object} modalSettings settings to customize the modal title and size
+   * @param {string} modalSettings.title content of the modal title
+   * @param {string} modalSettings.size size of the modal (l=large 80% default, m=medium 60%, s=small 40%)
    * @example
-   * LuigiClient.linkManager().openModal('projects/pr1/users', {title:'Users', size:'m'});
+   * LuigiClient.linkManager().openAsModal('projects/pr1/users', {title:'Users', size:'m'});
    */
-  openModal: (nodepath: string, modalSettings: Object) => this;
+  openAsModal: (nodepath: string, modalSettings: ModalSettings) => void;
 }
 
 /**

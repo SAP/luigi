@@ -213,7 +213,7 @@
                 .navigate('/settings')
             "
           >
-            parent by name: project to settings</a
+            parent by name: project to settings asdfasdf</a
           >
           <app-code-snippet
             data="linkManager().fromContext('project').navigate('/settings')"
@@ -229,7 +229,7 @@
                 .navigate('settings')
             "
           >
-            project to settings with params (foo=bar)</a
+            project to settings with params (foo=bar)asfdasdfasdf</a
           >
           <app-code-snippet
             data="linkManager().fromClosestContext().withParams({foo: 'bar'}).navigate('settings')"
@@ -286,7 +286,7 @@
             (click)="
               linkManager()
                 .withParams({ test: true })
-                .openModal('/settings', {
+                .openAsModal('/settings', {
                   title: 'Preserved View',
                   size: 'm'
                 })
@@ -296,7 +296,7 @@
             project to global settings and back</a
           >
           <app-code-snippet
-            data="linkManager().withParams({test: true}).openModal('/settings', {title:'PreservedView', size:'m'})"
+            data="linkManager().withParams({test: true}).openAsModal('/settings', {title:'PreservedView', size:'m'})"
           >
           </app-code-snippet>
         </li>

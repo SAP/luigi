@@ -33,8 +33,13 @@
     if (!modalSettings.title) {
       modalSettings.title = lastNode.label;
     }
-    component.get().isDataPrepared = true;
-    component.set({ modalSettings, lastNode, pathData, nodeParams });
+    component.set({
+      modalSettings,
+      lastNode,
+      pathData,
+      nodeParams,
+      isDataPrepared: true
+    });
   };
 
   const getNode = async (component, path) => {
@@ -59,35 +64,26 @@
   };
   const createIframeModal = (viewUrl, componentData, component) => {
     const elem = document.getElementsByClassName('fd-modal');
-    let sizeInPercent = '80%';
+    let modalSize = '80%';
     if (component.get().modalSettings.size) {
       if (component.get().modalSettings.size === 'l') {
-        sizeInPercent = '80%';
+        modalSize = '80%';
       } else if (component.get().modalSettings.size === 'm') {
-        sizeInPercent = '60%';
+        modalSize = '60%';
       } else if (component.get().modalSettings.size === 's') {
-        sizeInPercent = '40%';
-      } else {
-        component.get().modalSettings['size'] = size;
+        modalSize = '40%';
       }
     }
     if (!component.get().modalSettings.title) {
       document.getElementsByClassName('fd-modal__title')[0].style.visibility =
         'hidden';
     }
-    elem[0].setAttribute(
-      'style',
-      `width:${sizeInPercent};height:${sizeInPercent}`
-    );
+    elem[0].setAttribute('style', `width:${modalSize};height:${modalSize}`);
     if (viewUrl) {
       viewUrl = RoutingHelpers.substituteViewUrl(viewUrl, componentData);
     }
     const iframe = document.createElement('iframe');
     iframe.src = viewUrl;
-    iframe.style.width = '100%';
-    iframe.style.height = '100%';
-    iframe.frameBorder = '0';
-    iframe.style.position = 'absolute';
     const iframeCtn = document.querySelector('.iframeModalCtn');
     iframeCtn.appendChild(iframe);
     return iframe;
@@ -114,6 +110,12 @@
     position: relative;
     height: 100%;
     width: 100%;
+  }
+  .iframeModalCtn :global(iframe) {
+    width: 100%;
+    height: 100%;
+    border: 0;
+    position: absolute;
   }
 
   .fd-modal {

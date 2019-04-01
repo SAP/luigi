@@ -24,11 +24,11 @@ export class ModalComponent implements OnChanges {
 
   public ngOnChanges(changes: SimpleChanges): void {
     if (changes.modalActive.currentValue === true) {
-      this.openModal();
+      this.openAsModal();
     }
   }
 
-  private openModal() {
+  private openAsModal() {
     uxManager().addBackdrop();
   }
 
