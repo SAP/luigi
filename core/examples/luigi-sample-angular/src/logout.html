@@ -21,25 +21,79 @@
     a.fd-button {
       color: #FFF;
     }
+    .fd-page {
+      height: 100vh;
+    }
+    .fd-page__content {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .fd-has-text-align-center {
+      text-align: center;
+    }
+    .info, .hint {
+      text-align: center;
+      margin: 0;
+    }
+    .info {
+      padding-top: 30px;
+      font-size: 36px;
+    }
+    .hint {
+      font-size: 18px;
+      color: #6f7275;
+      padding-bottom: 30px;
+    }
   </style>
-  <script type="text/javascript">
-  function login() {
-    window.location.href = window.location.origin;
-  }
-  </script>
 </head>
 <body>
-<div class="fd-container fd-container--centered">
-  <div class="fd-col--6 fd-col--shift-3">
-    <span class="sap-icon--log"></span>
-    <br />
-    Logout successful
-    <br />
-    <br />
-    <br />
-    <button class="fd-button fd-button--action-bar fd-button--l" onclick="login()">Login again</button>
+<div class="fd-ui fd-ui--fundamental">
+  <div class="fd-page">
+    <div class="fd-page__content">
+      <section class="fd-section">
+        <p class="fd-has-text-align-center">
+          <div class="info" id="headline">You have successfully logged out.</div>
+          <div class="hint" id="message">Sign in again to continue working on awesome things!</div>
+        </p>
+        <p class="fd-has-text-align-center">
+          <button class="fd-button--emphasized " onclick="login()">Re-Login</button>
+        </p>
+      </section>
+    </div>
   </div>
 </div>
 
+<script type="text/javascript">
+function login() {
+  window.location.href = window.location.origin;
+}
+
+function getUrlParameter(name) {
+  name = name.replace(/[\[]/, '\\[').replace(/[\]]/, '\\]');
+  var regex = new RegExp('[\\?&]' + name + '=([^&#]*)');
+  var results = regex.exec(location.search);
+  return results && decodeURIComponent(results[1].replace(/\+/g, ' ')) || '';
+};
+
+var reason = getUrlParameter('reason');
+var error = getUrlParameter('error');
+
+if (error) {
+  document.getElementById('message').innerText = error;
+}
+
+switch (reason) {
+  case 'tokenExpired':
+    document.getElementById('headline').innerText = 'Your session has expired.';
+    break;
+  case 'loginError':
+    document.getElementById('headline').innerText = 'Ooops, something went wrong.';
+    document.getElementById('message').innerText = 'Please try to log in again.';
+    break;
+  default:
+    break;
+}
+</script>
 </body>
 </html>
