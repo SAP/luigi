@@ -205,7 +205,7 @@ export declare interface LinkManager {
    * @example
    * LuigiClient.linkManager().openAsModal('projects/pr1/users', {title:'Users', size:'m'});
    */
-  openAsModal: (nodepath: string, modalSettings: ModalSettings) => void;
+  openAsModal: (nodepath: string, modalSettings?: ModalSettings) => void;
 }
 
 /**
