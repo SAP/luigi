@@ -42,6 +42,7 @@
         Luigi confirmation modal has been {{ confirmationModalResult }}
       </p>
     </div>
+
     <div class="fd-panel fd-has-margin-bottom-small">
       <p><strong>Alert</strong></p>
       <form #luigiAlertForm="ngForm">
@@ -155,7 +156,6 @@
     <div class="fd-section__header">
       <h1 class="fd-section__title">LuigiClient linkManager methods</h1>
     </div>
-
     <ng-container *ngIf="preservedViewCallbackContext">
       <div class="fd-panel fd-has-margin-bottom-small">
         <div class="fd-alert" role="alert">
@@ -165,7 +165,6 @@
         </div>
       </div>
     </ng-container>
-
     <div class="fd-panel fd-has-margin-bottom-small">
       <p><strong>Navigate</strong></p>
       <ul class="fd-list-group">
@@ -202,7 +201,8 @@
           >
           <app-code-snippet
             data="linkManager().fromClosestContext().navigate('/users/groups/stakeholders')"
-          ></app-code-snippet>
+          >
+          </app-code-snippet>
         </li>
         <li class="fd-list-group__item">
           <a
@@ -233,7 +233,8 @@
           >
           <app-code-snippet
             data="linkManager().fromClosestContext().withParams({foo: 'bar'}).navigate('settings')"
-          ></app-code-snippet>
+          >
+          </app-code-snippet>
         </li>
         <li class="fd-list-group__item">
           <a
@@ -276,7 +277,28 @@
           >
           <app-code-snippet
             data="linkManager().withParams({test: true}).navigate('/settings', null, true)"
-          ></app-code-snippet>
+          >
+          </app-code-snippet>
+        </li>
+        <li class="fd-list-group__item">
+          <a
+            href="javascript:void(0)"
+            (click)="
+              linkManager()
+                .withParams({ test: true })
+                .openAsModal('/settings', {
+                  title: 'Preserved View',
+                  size: 'm'
+                })
+            "
+          >
+            extended preserved view example with params rendered in a modal:
+            project to global settings and back</a
+          >
+          <app-code-snippet
+            data="linkManager().withParams({test: true}).openAsModal('/settings', {title:'PreservedView', size:'m'})"
+          >
+          </app-code-snippet>
         </li>
       </ul>
     </div>
