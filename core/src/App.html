@@ -12,6 +12,13 @@
   {#if alert.isDisplayed}
   <Alert settings="{alert.settings}" on:alertDismiss="handleAlertDismiss()"></Alert>
   {/if}
+  {#if mfModal.isDisplayed}
+  <Modal
+    modalSettings="{mfModal.modalSettings}"
+    nodepath="{mfModal.nodepath}"
+    on:close="closeModal()"
+  ></Modal>
+  {/if}
   <Backdrop>
     <div class="fd-page iframeContainer" use:init="context"></div>
   </Backdrop>
@@ -47,6 +54,7 @@
   import LeftNav from './navigation/LeftNav.html';
   import ConfirmationModal from './ConfirmationModal.html';
   import Alert from './Alert.html';
+  import Modal from './Modal.html';
   import { LuigiConfig } from './services/config.js';
   import * as Routing from './services/routing.js';
   import * as Navigation from './navigation/services/navigation.js';
@@ -165,15 +173,19 @@
       {
         msg: 'luigi.init',
         context: JSON.stringify(
-          Object.assign({}, component.get().context, goBackContext)
+          Object.assign(
+            {},
+            config.context || component.get().context,
+            goBackContext
+          )
         ),
         nodeParams: JSON.stringify(
-          Object.assign({}, component.get().nodeParams)
+          Object.assign({}, config.nodeParams || component.get().nodeParams)
         ),
         pathParams: JSON.stringify(
-          Object.assign({}, component.get().pathParams)
+          Object.assign({}, config.pathParams || component.get().pathParams)
         ),
-        internal: JSON.stringify(component.prepareInternalData()),
+        internal: JSON.stringify(component.prepareInternalData(config.modal)),
         authData: AuthHelpers.getStoredAuthData()
       },
       '*'
@@ -218,6 +230,15 @@
     };
   };
 
+  const getDefaultMicrofrontendModalData = () => {
+    return {
+      mfModal: {
+        isDisplayed: false,
+        settings: {}
+      }
+    };
+  };
+
   export default {
     data() {
       return Object.assign(
@@ -240,7 +261,8 @@
           hideSideNav: false
         },
         getDefaultAlertData(),
-        getDefaultConfirmationModalData()
+        getDefaultConfirmationModalData(),
+        getDefaultMicrofrontendModalData()
       );
     },
     oncreate() {},
@@ -273,16 +295,32 @@
           }
         });
         window.addEventListener('message', async e => {
-          if ('luigi.get-context' === e.data.msg && config.iframe) {
-            sendContextToClient(this, config, {});
+          if ('luigi.get-context' === e.data.msg) {
+            if (
+              this.get().modalIframe &&
+              e.source === this.get().modalIframe.contentWindow
+            ) {
+              let ctx = this.get().modalIframeData.context;
+              const modalConfig = {
+                ...config,
+                iframe: this.get().modalIframe,
+                context: ctx,
+                pathParams: this.get().modalIframeData.pathParams,
+                nodeParams: this.get().modalIframeData.nodeParams,
+                modal: true
+              };
+              sendContextToClient(this, modalConfig, {});
+            } else if (config.iframe) {
+              sendContextToClient(this, config, {});
 
-            const loadingIndicatorAutoHideEnabled =
-              GenericHelpers.getConfigValueFromObject(
-                this.get(),
-                'currentNode.loadingIndicator.hideAutomatically'
-              ) !== false;
-            if (loadingIndicatorAutoHideEnabled) {
-              this.set({ showLoadingIndicator: false });
+              const loadingIndicatorAutoHideEnabled =
+                GenericHelpers.getConfigValueFromObject(
+                  this.get(),
+                  'currentNode.loadingIndicator.hideAutomatically'
+                ) !== false;
+              if (loadingIndicatorAutoHideEnabled) {
+                this.set({ showLoadingIndicator: false });
+              }
             }
           }
 
@@ -300,35 +338,60 @@
 
           if ('luigi.navigation.open' === e.data.msg) {
             this.set({ isNavigateBack: false });
-            this.getUnsavedChangesModalPromise().then(() => {
-              this.handleNavigation(e.data, config);
-            });
+            if (e.data.params.modal !== undefined) {
+              let path = buildPath(this, e.data.params);
+              path = GenericHelpers.addLeadingSlash(path);
+              this.set(
+                Object.assign(
+                  { contentNode: node },
+                  getDefaultMicrofrontendModalData()
+                )
+              );
+              this.openViewInModal(path, e.data.params.modal);
+            } else {
+              this.getUnsavedChangesModalPromise().then(() => {
+                this.handleNavigation(e.data, config);
+                this.closeModal();
+              });
+            }
           }
 
           if ('luigi.navigation.back' === e.data.msg) {
-            // go back: context from the view
-            const preservedViews = this.get().preservedViews;
-            if (preservedViews && preservedViews.length) {
-              this.getUnsavedChangesModalPromise().then(() => {
-                // remove current active iframe and data
-                Iframe.setActiveIframeToPrevious(node);
-                const previousActiveIframeData = preservedViews.pop();
-                // set new active iframe and preservedViews
-                config.iframe = Iframe.getActiveIframe(node);
-                this.set({
-                  isNavigateBack: true,
-                  preservedViews,
-                  goBackContext:
-                    e.data.goBackContext && JSON.parse(e.data.goBackContext)
-                });
-                // TODO: check if getNavigationPath or history pop to update hash / path
-                const path = this.handleNavigation(
-                  { params: { link: previousActiveIframeData.path } },
-                  config
-                );
+            if (
+              this.get().modalIframe &&
+              e.source === this.get().modalIframe.contentWindow
+            ) {
+              this.closeModal();
+              sendContextToClient(this, config, {
+                goBackContext: e.data.goBackContext && JSON.parse(e.data.goBackContext)
               });
             } else {
-              console.error('goBack() not possible, no preserved views found.');
+              // go back: context from the view
+              const preservedViews = this.get().preservedViews;
+              if (preservedViews && preservedViews.length) {
+                this.getUnsavedChangesModalPromise().then(() => {
+                  // remove current active iframe and data
+                  Iframe.setActiveIframeToPrevious(node);
+                  const previousActiveIframeData = preservedViews.pop();
+                  // set new active iframe and preservedViews
+                  config.iframe = Iframe.getActiveIframe(node);
+                  this.set({
+                    isNavigateBack: true,
+                    preservedViews,
+                    goBackContext:
+                      e.data.goBackContext && JSON.parse(e.data.goBackContext)
+                  });
+                  // TODO: check if getNavigationPath or history pop to update hash / path
+                  const path = this.handleNavigation(
+                    { params: { link: previousActiveIframeData.path } },
+                    config
+                  );
+                });
+              } else {
+                console.error(
+                  'goBack() not possible, no preserved views found.'
+                );
+              }
             }
           }
 
@@ -357,12 +420,21 @@
           }
 
           if ('luigi.set-page-dirty' === e.data.msg) {
-            this.set({
-              unsavedChanges: {
-                isDirty: e.data.dirty || false,
-                persistUrl: window.location.href
-              }
-            });
+            if (!this.get().unsavedChanges.dirtySet) {
+              const dirtySet = new Set();
+              dirtySet.add(e.source);
+              this.set({
+                unsavedChanges: {
+                  dirtySet: dirtySet
+                }
+              });
+            }
+            this.get().unsavedChanges.persistUrl = window.location.href;
+            if (e.data.dirty) {
+              this.get().unsavedChanges.dirtySet.add(e.source);
+            } else {
+              this.get().unsavedChanges.dirtySet.delete(e.source);
+            }
           }
 
           if ('luigi.ux.confirmationModal.show' === e.data.msg) {
@@ -416,10 +488,11 @@
         addPreserveView(this, data, config);
         Routing.navigateTo(path); //navigate to the raw path. Any errors/alerts are handled later
       },
-      prepareInternalData() {
+      prepareInternalData(modal = false) {
         return {
           isNavigateBack: this.get().isNavigateBack,
-          viewStackSize: this.get().preservedViews.length
+          viewStackSize: this.get().preservedViews.length,
+          modal: modal
         };
       },
       handleNavClick(node) {
@@ -430,9 +503,6 @@
       handleModalResult(result) {
         const { promise, openFromClient } = this.get().confirmationModal;
         if (result) {
-          this.set({
-            unsavedChanges: { isDirty: false, persistUrl: null }
-          });
           promise.resolve();
         } else {
           promise.reject();
@@ -452,11 +522,21 @@
           );
         }
       },
-      getUnsavedChangesModalPromise() {
+      getUnsavedChangesModalPromise(source) {
         return new Promise(resolve => {
-          if (this.shouldShowUnsavedChangesModal()) {
+          if (this.shouldShowUnsavedChangesModal(source)) {
             this.showUnsavedChangesModal().then(
               () => {
+                if (
+                  this.get().unsavedChanges &&
+                  this.get().unsavedChanges.dirtySet
+                ) {
+                  if (source) {
+                    this.get().unsavedChanges.dirtySet.delete(source);
+                  } else {
+                    this.get().unsavedChanges.dirtySet.clear();
+                  }
+                }
                 resolve();
               },
               () => {}
@@ -466,11 +546,18 @@
           }
         });
       },
-      shouldShowUnsavedChangesModal() {
-        return (
+      shouldShowUnsavedChangesModal(source) {
+        if (
           GenericHelpers.canComponentHandleModal(this) &&
-          this.get().unsavedChanges.isDirty
-        );
+          this.get().unsavedChanges.dirtySet
+        ) {
+          if (source) {
+            return this.get().unsavedChanges.dirtySet.has(source);
+          } else if (this.get().unsavedChanges.dirtySet.size > 0) {
+            return true;
+          }
+        }
+        return false;
       },
       showUnsavedChangesModal() {
         return this.showModal({
@@ -504,6 +591,28 @@
           });
         });
       },
+      openViewInModal(nodepath, modalSettings) {
+        this.set({
+          mfModal: {
+            isDisplayed: true,
+            nodepath,
+            modalSettings
+          }
+        });
+      },
+      closeModal() {
+        if (this.get().modalIframe) {
+          this.getUnsavedChangesModalPromise(
+            this.get().modalIframe.contentWindow
+          ).then(() => {
+            this.set({
+              mfModal: {
+                isDisplayed: false
+              }
+            });
+          });
+        }
+      },
       handleAlertDismiss() {
         const openFromClient = this.get().alert.openFromClient;
         this.set(getDefaultAlertData());
@@ -526,7 +635,8 @@
       TopNav,
       LeftNav,
       ConfirmationModal,
-      Alert
+      Alert,
+      Modal
     },
     transitions: { fade }
   };
