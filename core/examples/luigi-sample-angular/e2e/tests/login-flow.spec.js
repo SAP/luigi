@@ -13,7 +13,11 @@ describe('Login Flow', () => {
     //logout
     cy.get('.sap-icon--customer').click();
     cy.contains('Logout').click();
-    cy.get('title').should('contain', 'Logout successful');
+    cy.get('#headline').should('contain', 'You have successfully logged out');
+    cy.get('#message').should(
+      'contain',
+      'Sign in again to continue working on awesome things!'
+    );
     cy.expectPathToBe('/logout.html');
 
     //login again
