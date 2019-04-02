@@ -252,7 +252,7 @@ const LuigiClient = {
        * @param {boolean} preserveView Preserve a view by setting it to `true`. It keeps the current view opened in the background and opens the new route in a new frame. Use the {@link #goBack goBack()} function to navigate back. You can use this feature across different levels. Preserved views are discarded as soon as the standard {@link #navigate navigate()} function is used instead of {@link #goBack goBack()}.
        * @param {Object} modalSettings opens a microfrontend as a modal with possibility to specify a title and size
        * @param {string} modalSettings.title modal title
-       * @param {string} modalSettings.size size of the modal (l=large 80% default, m=medium 60%, s=small 40%)
+       * @param {('l'|'m'|'s')} [modalSettings.size=l] size of the modal (l=large 80%, m=medium 60%, s=small 40%)
        * @example
        * LuigiClient.linkManager().navigate('/overview')
        * LuigiClient.linkManager().navigate('users/groups/stakeholders')
@@ -286,7 +286,7 @@ const LuigiClient = {
        * @param {string} path path to be navigated to
        * @param {Object} modalSettings settings to customize the modal title and size
        * @param {string} modalSettings.title modal title
-       * @param {string} modalSettings.size size of the modal (l=large 80% default, m=medium 60%, s=small 40%)
+       * @param {('l'|'m'|'s')} [modalSettings.size=l] size of the modal (l=large 80%, m=medium 60%, s=small 40%)
        * @example
        * LuigiClient.linkManager().openAsModal('projects/pr1/users', {title:'Users', size:'m'});
        */

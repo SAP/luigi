@@ -88,9 +88,9 @@ Navigates to the given path in the application hosted by Luigi. It contains eith
 -   `path` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** path to be navigated to
 -   `sessionId` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** current Luigi **sessionId**
 -   `preserveView` **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)** Preserve a view by setting it to `true`. It keeps the current view opened in the background and opens the new route in a new frame. Use the [goBack()](#goBack) function to navigate back. You can use this feature across different levels. Preserved views are discarded as soon as the standard [navigate()](#navigate) function is used instead of [goBack()](#goBack).
--   `modalSettings` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** Opens a view in a modal. Use these settings to configure the modal's title and size.
--   `modalSettings.title` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** modal title. By default, it is the node label. If there is no label, it is left empty.
--   `modalSettings.size` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** modal size (l = large 80% default, m = medium 60%, s = small 40%)
+-   `modalSettings` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** opens a microfrontend as a modal with possibility to specify a title and size
+    -   `modalSettings.title` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** modal title
+    -   `modalSettings.size` **(`"l"` \| `"m"` \| `"s"`)** size of the modal (l=large 80%, m=medium 60%, s=small 40%) (optional, default `l`)
 
 #### Examples
 
@@ -98,7 +98,23 @@ Navigates to the given path in the application hosted by Luigi. It contains eith
 LuigiClient.linkManager().navigate('/overview')
 LuigiClient.linkManager().navigate('users/groups/stakeholders')
 LuigiClient.linkManager().navigate('/settings', null, true) // preserve view
-LuigiClient.linkManager().navigate('/overview', null, true, {title:'Overview', size:'m'})
+```
+
+### openAsModal
+
+Opens a microfrontend as a modal
+
+#### Parameters
+
+-   `path` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** path to be navigated to
+-   `modalSettings` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** settings to customize the modal title and size
+    -   `modalSettings.title` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** modal title
+    -   `modalSettings.size` **(`"l"` \| `"m"` \| `"s"`)** size of the modal (l=large 80%, m=medium 60%, s=small 40%) (optional, default `l`)
+
+#### Examples
+
+```javascript
+LuigiClient.linkManager().openAsModal('projects/pr1/users', {title:'Users', size:'m'});
 ```
 
 ### fromContext
@@ -190,25 +206,6 @@ Discards the active view and navigates back to the last visited view (preserved 
 LuigiClient.linkManager().goBack({ foo: 'bar' });
 LuigiClient.linkManager().goBack(true);
 ```
-
-### openAsModal
-
-Opens a view in a modal. You can specify the modal's title and size. If you don't specify the title, it is the node label. If there is no node label, the title remains empty.  The default size of the modal is large (`l`), which means 80%. You can also use `m` (60%) and `s` (40%) to set the modal size. Optionally, use it in combination with any of the navigation functions.
-
-#### Parameters
--   `path` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** navigation path
--   `modalSettings` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** opens a view in a modal. Use these settings to configure the modal's title and size.
--   `modalSettings.title` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** modal title. By default, it is the node label. If there is no label, it is left empty.
--   `modalSettings.size` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** modal size (l = large 80% default, m = medium 60%, s = small 40%)
-
-#### Examples
-
-```javascript
-LuigiClient.linkManager().openAsModal('/projects/pr2', {title:'Project 2', size: 'm'})
-LuigiClient.linkManager.withParams({foo: "bar"}).openAsModal("path", {title:'Foo'})
-LuigiClient.linkManager.fromClosestContext().openAsModal('/users/groups/stakeholders', {size:'s'})
-```
-
 
 ## uxManager
 
