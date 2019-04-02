@@ -31,7 +31,7 @@
     const lastNode = RoutingHelpers.getLastNodeObject(pathData);
     const modalSettings = component.get().modalSettings;
     if (!modalSettings.title) {
-      modalSettings.title = lastNode.label;
+      modalSettings.title = lastNode.label ? lastNode.label : '';
     }
     component.set({
       modalSettings,
@@ -74,10 +74,7 @@
         modalSize = '40%';
       }
     }
-    if (!component.get().modalSettings.title) {
-      document.getElementsByClassName('fd-modal__title')[0].style.visibility =
-        'hidden';
-    }
+
     elem[0].setAttribute('style', `width:${modalSize};height:${modalSize}`);
     if (viewUrl) {
       viewUrl = RoutingHelpers.substituteViewUrl(viewUrl, componentData);
@@ -116,6 +113,10 @@
     height: 100%;
     border: 0;
     position: absolute;
+  }
+
+  .fd-modal__header {
+    min-height: 53px;
   }
 
   .fd-modal {
