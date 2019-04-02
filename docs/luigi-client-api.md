@@ -89,7 +89,7 @@ Navigates to the given path in the application hosted by Luigi. It contains eith
 -   `sessionId` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** current Luigi **sessionId**
 -   `preserveView` **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)** Preserve a view by setting it to `true`. It keeps the current view opened in the background and opens the new route in a new frame. Use the [goBack()](#goBack) function to navigate back. You can use this feature across different levels. Preserved views are discarded as soon as the standard [navigate()](#navigate) function is used instead of [goBack()](#goBack).
 -   `modalSettings` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** Opens a view in a modal. Settings to configure the title and size.
--   `modalSettings.title` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** modal title (default is node label or empty)
+-   `modalSettings.title` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** modal title (default is node label or empty if no label is defined)
 -   `modalSettings.size` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** modal size (l = large 80% default, m = medium 60%, s = small 40%)
 
 #### Examples
@@ -205,8 +205,8 @@ Opens a view in a modal. It is possible to specify a title and size. If nothing 
 
 ```javascript
 LuigiClient.linkManager().openAsModal('/projects/pr2', {title:'Project 2', size: 'm'})
-LuigiClient.linkManager.withParams({foo: "bar"}).openAsModa("path", {title:'Foo'})
-LuigiClient.linkManager.fromClosestContext().openModal('/users/groups/stakeholders', {size:'s'})
+LuigiClient.linkManager.withParams({foo: "bar"}).openAsModal("path", {title:'Foo'})
+LuigiClient.linkManager.fromClosestContext().openAsModal('/users/groups/stakeholders', {size:'s'})
 ```
 
 
