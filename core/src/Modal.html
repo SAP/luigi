@@ -2,7 +2,9 @@
   <div class="fd-modal">
     <div class="fd-modal__content" style="height:100%">
       <div class="fd-modal__header">
+        {#if modalSettings.title}
         <h1 class="fd-modal__title">{modalSettings.title}</h1>
+        {/if}
         <button
           class="fd-button--light fd-modal__close"
           on:click="fire('close')"
@@ -31,7 +33,7 @@
     const lastNode = RoutingHelpers.getLastNodeObject(pathData);
     const modalSettings = component.get().modalSettings;
     if (!modalSettings.title) {
-      modalSettings.title = lastNode.label ? lastNode.label : '';
+      modalSettings.title = lastNode.label;
     }
     component.set({
       modalSettings,
