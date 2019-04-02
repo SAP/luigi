@@ -395,7 +395,7 @@ const LuigiClient = {
        */
       hasBack: function hasBack() {
         return (
-          !!currentContext.context.modal ||
+          !!currentContext.internal.modal ||
           currentContext.internal.viewStackSize !== 0
         );
       },

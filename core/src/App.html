@@ -185,7 +185,7 @@
         pathParams: JSON.stringify(
           Object.assign({}, config.pathParams || component.get().pathParams)
         ),
-        internal: JSON.stringify(component.prepareInternalData()),
+        internal: JSON.stringify(component.prepareInternalData(config.modal)),
         authData: AuthHelpers.getStoredAuthData()
       },
       '*'
@@ -301,13 +301,13 @@
               e.source === this.get().modalIframe.contentWindow
             ) {
               let ctx = this.get().modalIframeData.context;
-              ctx.modal = true;
               const modalConfig = {
                 ...config,
                 iframe: this.get().modalIframe,
                 context: ctx,
                 pathParams: this.get().modalIframeData.pathParams,
-                nodeParams: this.get().modalIframeData.nodeParams
+                nodeParams: this.get().modalIframeData.nodeParams,
+                modal: true
               };
               sendContextToClient(this, modalConfig, {});
             } else if (config.iframe) {
@@ -492,10 +492,11 @@
         addPreserveView(this, data, config);
         Routing.navigateTo(path); //navigate to the raw path. Any errors/alerts are handled later
       },
-      prepareInternalData() {
+      prepareInternalData(modal = false) {
         return {
           isNavigateBack: this.get().isNavigateBack,
-          viewStackSize: this.get().preservedViews.length
+          viewStackSize: this.get().preservedViews.length,
+          modal: modal
         };
       },
       handleNavClick(node) {
