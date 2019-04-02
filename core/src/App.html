@@ -341,10 +341,6 @@
             if (e.data.params.modal !== undefined) {
               let path = buildPath(this, e.data.params);
               path = GenericHelpers.addLeadingSlash(path);
-              if (e.data.params.preserveView) {
-                e.data.params.modal['preserveView'] =
-                  e.data.params.preserveView;
-              }
               this.set(
                 Object.assign(
                   { contentNode: node },
