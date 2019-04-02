@@ -18,7 +18,7 @@ describe('Login Flow', () => {
 
     //login again
     cy.contains('Re-Login').click();
-    cy.get('h1').should('contain', 'Login to Luigi sample app');
+    cy.get('body').should('contain', 'Login to Luigi sample app');
     cy.login('tets@email.com', 'tets');
   });
 });
