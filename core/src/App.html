@@ -363,7 +363,7 @@
             ) {
               this.closeModal();
               sendContextToClient(this, config, {
-                goBackContext: JSON.parse(e.data.goBackContext)
+                goBackContext: e.data.goBackContext && JSON.parse(e.data.goBackContext)
               });
             } else {
               // go back: context from the view
@@ -425,11 +425,11 @@
               dirtySet.add(e.source);
               this.set({
                 unsavedChanges: {
-                  dirtySet: dirtySet,
-                  persistUrl: window.location.href
+                  dirtySet: dirtySet
                 }
               });
             }
+            this.get().unsavedChanges.persistUrl = window.location.href;
             if (e.data.dirty) {
               this.get().unsavedChanges.dirtySet.add(e.source);
             } else {
