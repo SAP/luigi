@@ -13,11 +13,15 @@ describe('Login Flow', () => {
     //logout
     cy.get('.sap-icon--customer').click();
     cy.contains('Logout').click();
-    cy.get('body').should('contain', 'Logout successful');
+    cy.get('#headline').should('contain', 'You have successfully logged out');
+    cy.get('#message').should(
+      'contain',
+      'Sign in again to continue working on awesome things!'
+    );
     cy.expectPathToBe('/logout.html');
 
     //login again
-    cy.contains('Login again').click();
+    cy.contains('Re-Login').click();
     cy.get('body').should('contain', 'Login to Luigi sample app');
     cy.login('tets@email.com', 'tets');
   });

@@ -1,0 +1,139 @@
+<div class="fd-ui__overlay fd-overlay fd-overlay--modal" style="z-index:999">
+  <div class="fd-modal">
+    <div class="fd-modal__content" style="height:100%">
+      <div class="fd-modal__header">
+        {#if modalSettings.title}
+        <h1 class="fd-modal__title">{modalSettings.title}</h1>
+        {/if}
+        <button
+          class="fd-button--light fd-modal__close"
+          on:click="fire('close')"
+          aria-label="close"
+        ></button>
+      </div>
+      <div class="iframeModalCtn"></div>
+    </div>
+  </div>
+</div>
+<script>
+  import * as Navigation from './navigation/services/navigation';
+  import * as RoutingHelpers from './utilities/helpers/routing-helpers';
+  import { LuigiConfig } from './services/config';
+  import * as GenericHelpers from './utilities/helpers/generic-helpers';
+
+  const prepareNodeData = async (component, path) => {
+    const pathUrlRaw =
+      path && path.length ? GenericHelpers.getPathWithoutHash(path) : '';
+    const pathData = await Navigation.getNavigationPath(
+      LuigiConfig.getConfigValueAsync('navigation.nodes'),
+      path
+    );
+    const params = RoutingHelpers.parseParams(pathUrlRaw.split('?')[1]);
+    const nodeParams = RoutingHelpers.getNodeParams(params);
+    const lastNode = RoutingHelpers.getLastNodeObject(pathData);
+    const modalSettings = component.get().modalSettings;
+    if (!modalSettings.title) {
+      modalSettings.title = lastNode.label;
+    }
+    component.set({
+      modalSettings,
+      lastNode,
+      pathData,
+      nodeParams,
+      isDataPrepared: true
+    });
+  };
+
+  const getNode = async (component, path) => {
+    if (component.get().isDataPrepared) {
+      const { nodeParams, lastNode, modalSettings, pathData } = component.get();
+      const iframe = createIframeModal(
+        lastNode.viewUrl,
+        {
+          context: pathData.context,
+          pathParams: pathData.pathParams,
+          nodeParams
+        },
+        component
+      );
+      component.root.set({
+        modalIframe: iframe,
+        modalIframeData: { ...pathData, nodeParams }
+      });
+    } else {
+      await prepareNodeData(component, path);
+    }
+  };
+  const createIframeModal = (viewUrl, componentData, component) => {
+    const elem = document.getElementsByClassName('fd-modal');
+    let modalSize = '80%';
+    if (component.get().modalSettings.size) {
+      if (component.get().modalSettings.size === 'l') {
+        modalSize = '80%';
+      } else if (component.get().modalSettings.size === 'm') {
+        modalSize = '60%';
+      } else if (component.get().modalSettings.size === 's') {
+        modalSize = '40%';
+      }
+    }
+
+    elem[0].setAttribute('style', `width:${modalSize};height:${modalSize}`);
+    if (viewUrl) {
+      viewUrl = RoutingHelpers.substituteViewUrl(viewUrl, componentData);
+    }
+    const iframe = document.createElement('iframe');
+    iframe.src = viewUrl;
+    const iframeCtn = document.querySelector('.iframeModalCtn');
+    iframeCtn.appendChild(iframe);
+    return iframe;
+  };
+
+  export default {
+    onupdate({ changed, current, previous }) {
+      const nodepath = this.get().nodepath;
+      getNode(this, nodepath);
+    },
+    data() {
+      return {
+        isDataPrepared: false
+      };
+    }
+  };
+</script>
+<style type="text/scss">
+  $topNavHeight: 50px;
+  $leftNavWidth: 320px;
+  $width: 32rem;
+
+  .iframeModalCtn {
+    position: relative;
+    height: 100%;
+    width: 100%;
+  }
+  .iframeModalCtn :global(iframe) {
+    width: 100%;
+    height: 100%;
+    border: 0;
+    position: absolute;
+  }
+
+  .fd-modal__header {
+    min-height: 53px;
+  }
+
+  .fd-modal {
+    max-width: 100%;
+    width: 80%;
+    &__body,
+    &__header {
+      overflow-wrap: break-word;
+    }
+  }
+
+  :global(.no-side-nav),
+  :global(.no-nav) {
+    .fd-modal {
+      left: calc(50% - #{$width}/ 2);
+    }
+  }
+</style>
