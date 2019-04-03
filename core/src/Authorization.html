@@ -65,6 +65,11 @@
   };
 
   export default {
+    data() {
+      return{
+        isHidden:false
+      }
+    },
     oncreate() {
       if (!LuigiConfig.isAuthorizationEnabled()) {
         return;

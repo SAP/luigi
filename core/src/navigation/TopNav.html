@@ -248,7 +248,7 @@
     },
     computed: {
       showTopNav:({authorizationEnabled,autologinEnabled,isLoggedIn})=>
-        authorizationEnabled && (!autologinEnabled || isLoggedIn) || !authorizationEnabled 
+        (authorizationEnabled && (!autologinEnabled || isLoggedIn)) || !authorizationEnabled 
     },
     helpers: {
       hasOpenUIicon(node) {
