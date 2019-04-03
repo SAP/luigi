@@ -188,7 +188,7 @@
         internal: JSON.stringify(component.prepareInternalData(config.modal)),
         authData: AuthHelpers.getStoredAuthData()
       },
-      config.iframe.contentWindow.location.domain
+      "*"
     );
   };
 
@@ -204,7 +204,7 @@
         msg: 'luigi.auth.tokenIssued',
         authData
       },
-      iframe.contentWindow.location.domain
+      "*"
     );
   };
 
@@ -417,7 +417,7 @@
                     pathExists: pathData.isExistingRoute
                   }
                 },
-                config.iframe.contentWindow.location.domain
+                "*"
               );
             }
 
@@ -522,7 +522,7 @@
               msg: 'luigi.ux.confirmationModal.hide',
               data: { confirmed: result }
             },
-            iframe.contentWindow.location.domain
+            "*"
           );
         }
       },
@@ -629,7 +629,7 @@
             {
               msg: 'luigi.ux.alert.hide'
             },
-            iframe.contentWindow.location.domain
+            "*"
           );
         }
       }
