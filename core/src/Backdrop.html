@@ -16,11 +16,14 @@
       if (!backdropDisabled) {
         this.setBackdropClass();
         window.addEventListener('message', e => {
-          if ('luigi.add-backdrop' === e.data.msg) {
-            this.set({ backdropActive: true });
-          }
-          if ('luigi.remove-backdrop' === e.data.msg) {
-            this.set({ backdropActive: false });
+          const iframe = document.querySelector('.iframeContainer iframe');
+          if (iframe.contentWindow.location === e.source.location) {
+            if ('luigi.add-backdrop' === e.data.msg) {
+              this.set({ backdropActive: true });
+            }
+            if ('luigi.remove-backdrop' === e.data.msg) {
+              this.set({ backdropActive: false });
+            }
           }
         });
       }

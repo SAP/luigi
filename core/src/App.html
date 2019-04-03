@@ -310,7 +310,7 @@
                 modal: true
               };
               sendContextToClient(this, modalConfig, {});
-            } else if (config.iframe) {
+            } else if (config.iframe && e.source === config.iframe.contentWindow) {
               sendContextToClient(this, config, {});
 
               const loadingIndicatorAutoHideEnabled =
@@ -323,153 +323,155 @@
               }
             }
           }
+          if (e.source === config.iframe.contentWindow) {
 
-          if ('luigi.show-loading-indicator' === e.data.msg) {
-            this.set({ showLoadingIndicator: true });
-          }
+            if ('luigi.show-loading-indicator' === e.data.msg) {
+              this.set({ showLoadingIndicator: true });
+            }
 
-          if ('luigi.hide-loading-indicator' === e.data.msg) {
-            this.set({ showLoadingIndicator: false });
-          }
+            if ('luigi.hide-loading-indicator' === e.data.msg) {
+              this.set({ showLoadingIndicator: false });
+            }
 
-          if ('luigi.navigate.ok' === e.data.msg) {
-            config.navigateOk = true;
-          }
+            if ('luigi.navigate.ok' === e.data.msg) {
+              config.navigateOk = true;
+            }
 
-          if ('luigi.navigation.open' === e.data.msg) {
-            this.set({ isNavigateBack: false });
-            if (e.data.params.modal !== undefined) {
-              let path = buildPath(this, e.data.params);
-              path = GenericHelpers.addLeadingSlash(path);
+            if ('luigi.navigation.open' === e.data.msg) {
+              this.set({ isNavigateBack: false });
+              if (e.data.params.modal !== undefined) {
+                let path = buildPath(this, e.data.params);
+                path = GenericHelpers.addLeadingSlash(path);
+                this.set(
+                  Object.assign(
+                    { contentNode: node },
+                    getDefaultMicrofrontendModalData()
+                  )
+                );
+                this.openViewInModal(path, e.data.params.modal);
+              } else {
+                this.getUnsavedChangesModalPromise().then(() => {
+                  this.handleNavigation(e.data, config);
+                  this.closeModal();
+                });
+              }
+            }
+
+            if ('luigi.navigation.back' === e.data.msg) {
+              if (
+                this.get().modalIframe &&
+                e.source === this.get().modalIframe.contentWindow
+              ) {
+                this.closeModal();
+                sendContextToClient(this, config, {
+                  goBackContext: e.data.goBackContext && JSON.parse(e.data.goBackContext)
+                });
+              } else {
+                // go back: context from the view
+                const preservedViews = this.get().preservedViews;
+                if (preservedViews && preservedViews.length) {
+                  this.getUnsavedChangesModalPromise().then(() => {
+                    // remove current active iframe and data
+                    Iframe.setActiveIframeToPrevious(node);
+                    const previousActiveIframeData = preservedViews.pop();
+                    // set new active iframe and preservedViews
+                    config.iframe = Iframe.getActiveIframe(node);
+                    this.set({
+                      isNavigateBack: true,
+                      preservedViews,
+                      goBackContext:
+                        e.data.goBackContext && JSON.parse(e.data.goBackContext)
+                    });
+                    // TODO: check if getNavigationPath or history pop to update hash / path
+                    const path = this.handleNavigation(
+                      { params: { link: previousActiveIframeData.path } },
+                      config
+                    );
+                  });
+                } else {
+                  console.error(
+                    'goBack() not possible, no preserved views found.'
+                  );
+                }
+              }
+            }
+
+            if ('luigi.auth.tokenIssued' === e.data.msg && config.iframe) {
+              sendAuthDataToClient(config.iframe, e.data.authData);
+            }
+
+            if ('luigi.navigation.pathExists' === e.data.msg) {
+              const data = e.data.data;
+              const path = buildPath(this, data);
+              const pathData = await Navigation.getNavigationPath(
+                LuigiConfig.getConfigValueAsync('navigation.nodes'),
+                path
+              );
+
+              config.iframe.contentWindow.postMessage(
+                {
+                  msg: 'luigi.navigation.pathExists.answer',
+                  data: {
+                    correlationId: data.id,
+                    pathExists: pathData.isExistingRoute
+                  }
+                },
+                '*'
+              );
+            }
+
+            if ('luigi.set-page-dirty' === e.data.msg) {
+              if (!this.get().unsavedChanges.dirtySet) {
+                const dirtySet = new Set();
+                dirtySet.add(e.source);
+                this.set({
+                  unsavedChanges: {
+                    dirtySet: dirtySet
+                  }
+                });
+              }
+              this.get().unsavedChanges.persistUrl = window.location.href;
+              if (e.data.dirty) {
+                this.get().unsavedChanges.dirtySet.add(e.source);
+              } else {
+                this.get().unsavedChanges.dirtySet.delete(e.source);
+              }
+            }
+
+            if ('luigi.ux.confirmationModal.show' === e.data.msg) {
+              const settings = e.data.data.settings;
               this.set(
                 Object.assign(
                   { contentNode: node },
-                  getDefaultMicrofrontendModalData()
+                  getDefaultConfirmationModalData()
                 )
               );
-              this.openViewInModal(path, e.data.params.modal);
-            } else {
-              this.getUnsavedChangesModalPromise().then(() => {
-                this.handleNavigation(e.data, config);
-                this.closeModal();
-              });
-            }
-          }
-
-          if ('luigi.navigation.back' === e.data.msg) {
-            if (
-              this.get().modalIframe &&
-              e.source === this.get().modalIframe.contentWindow
-            ) {
-              this.closeModal();
-              sendContextToClient(this, config, {
-                goBackContext: e.data.goBackContext && JSON.parse(e.data.goBackContext)
-              });
-            } else {
-              // go back: context from the view
-              const preservedViews = this.get().preservedViews;
-              if (preservedViews && preservedViews.length) {
-                this.getUnsavedChangesModalPromise().then(() => {
-                  // remove current active iframe and data
-                  Iframe.setActiveIframeToPrevious(node);
-                  const previousActiveIframeData = preservedViews.pop();
-                  // set new active iframe and preservedViews
-                  config.iframe = Iframe.getActiveIframe(node);
-                  this.set({
-                    isNavigateBack: true,
-                    preservedViews,
-                    goBackContext:
-                      e.data.goBackContext && JSON.parse(e.data.goBackContext)
-                  });
-                  // TODO: check if getNavigationPath or history pop to update hash / path
-                  const path = this.handleNavigation(
-                    { params: { link: previousActiveIframeData.path } },
-                    config
-                  );
-                });
-              } else {
-                console.error(
-                  'goBack() not possible, no preserved views found.'
-                );
-              }
-            }
-          }
-
-          if ('luigi.auth.tokenIssued' === e.data.msg && config.iframe) {
-            sendAuthDataToClient(config.iframe, e.data.authData);
-          }
-
-          if ('luigi.navigation.pathExists' === e.data.msg) {
-            const data = e.data.data;
-            const path = buildPath(this, data);
-            const pathData = await Navigation.getNavigationPath(
-              LuigiConfig.getConfigValueAsync('navigation.nodes'),
-              path
-            );
-
-            config.iframe.contentWindow.postMessage(
-              {
-                msg: 'luigi.navigation.pathExists.answer',
-                data: {
-                  correlationId: data.id,
-                  pathExists: pathData.isExistingRoute
+              this.showModal(settings, true).then(
+                () => {},
+                () => {
+                  /* keep it to avoid runtime errors in browser console */
                 }
-              },
-              '*'
-            );
-          }
-
-          if ('luigi.set-page-dirty' === e.data.msg) {
-            if (!this.get().unsavedChanges.dirtySet) {
-              const dirtySet = new Set();
-              dirtySet.add(e.source);
-              this.set({
-                unsavedChanges: {
-                  dirtySet: dirtySet
-                }
-              });
-            }
-            this.get().unsavedChanges.persistUrl = window.location.href;
-            if (e.data.dirty) {
-              this.get().unsavedChanges.dirtySet.add(e.source);
-            } else {
-              this.get().unsavedChanges.dirtySet.delete(e.source);
-            }
-          }
-
-          if ('luigi.ux.confirmationModal.show' === e.data.msg) {
-            const settings = e.data.data.settings;
-            this.set(
-              Object.assign(
-                { contentNode: node },
-                getDefaultConfirmationModalData()
-              )
-            );
-            this.showModal(settings, true).then(
-              () => {},
-              () => {
-                /* keep it to avoid runtime errors in browser console */
-              }
-            );
-          }
-
-          if ('luigi.ux.alert.show' === e.data.msg) {
-            const settings = e.data.data.settings;
-            if (!settings.text) {
-              console.error(
-                "Luigi Client alert: 'text' field for alert is empty or not present, therefore alert will not be displayed"
               );
-              return;
             }
-            this.set(
-              Object.assign({ contentNode: node }, getDefaultAlertData())
-            );
-            this.showAlert(settings, true).then(
-              () => {},
-              () => {
-                /* keep it to avoid runtime errors in browser console */
+
+            if ('luigi.ux.alert.show' === e.data.msg) {
+              const settings = e.data.data.settings;
+              if (!settings.text) {
+                console.error(
+                  "Luigi Client alert: 'text' field for alert is empty or not present, therefore alert will not be displayed"
+                );
+                return;
               }
-            );
+              this.set(
+                Object.assign({ contentNode: node }, getDefaultAlertData())
+              );
+              this.showAlert(settings, true).then(
+                () => {},
+                () => {
+                  /* keep it to avoid runtime errors in browser console */
+                }
+              );
+            }
           }
         });
 

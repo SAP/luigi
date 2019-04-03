@@ -112,10 +112,13 @@
       }
 
       window.addEventListener('message', e => {
-        if (e.data && e.data.msg === 'luigi.refresh-context-switcher') {
-          this.set({ options: null });
-          this.fetchOptions();
-        }
+        const iframe = document.querySelector('.iframeContainer iframe');
+        if (iframe.contentWindow.location === e.source.location) {
+          if (e.data && e.data.msg === 'luigi.refresh-context-switcher') {
+            this.set({ options: null });
+            this.fetchOptions();
+          }
+        };
       });
     },
     data() {
