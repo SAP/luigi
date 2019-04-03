@@ -12,7 +12,7 @@
       aria-controls="j2ALl423"
       data-cy="luigi-alert-dismiss"
     ></button>
-    {@html settings.text}
+    {@html settings.alertText}
   </div>
 </div>
 
@@ -34,12 +34,12 @@
         }
       };
     },
-    onstate() {
+    oncreate() {
       const { text, links } = this.get().settings;
       const processedData = this.processTextAndLinks(text, links);
       this.set({
         settings: Object.assign(this.get().settings, {
-          text: processedData.sanitizedText
+          alertText: processedData.sanitizedText
         })
       });
       processedData.links.forEach(l => {
