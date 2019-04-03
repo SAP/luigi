@@ -295,35 +295,36 @@
           }
         });
         window.addEventListener('message', async e => {
-          if ('luigi.get-context' === e.data.msg) {
-            if (
-              this.get().modalIframe &&
-              e.source === this.get().modalIframe.contentWindow
-            ) {
-              let ctx = this.get().modalIframeData.context;
-              const modalConfig = {
-                ...config,
-                iframe: this.get().modalIframe,
-                context: ctx,
-                pathParams: this.get().modalIframeData.pathParams,
-                nodeParams: this.get().modalIframeData.nodeParams,
-                modal: true
-              };
-              sendContextToClient(this, modalConfig, {});
-            } else if (config.iframe && e.source === config.iframe.contentWindow) {
-              sendContextToClient(this, config, {});
+          if (e.source === config.iframe.contentWindow || (this.get().modalIframe && e.source === this.get().modalIframe.contentWindow)) {
 
-              const loadingIndicatorAutoHideEnabled =
-                GenericHelpers.getConfigValueFromObject(
-                  this.get(),
-                  'currentNode.loadingIndicator.hideAutomatically'
-                ) !== false;
-              if (loadingIndicatorAutoHideEnabled) {
-                this.set({ showLoadingIndicator: false });
+            if ('luigi.get-context' === e.data.msg) {
+              if (
+                this.get().modalIframe &&
+                e.source === this.get().modalIframe.contentWindow
+              ) {
+                let ctx = this.get().modalIframeData.context;
+                const modalConfig = {
+                  ...config,
+                  iframe: this.get().modalIframe,
+                  context: ctx,
+                  pathParams: this.get().modalIframeData.pathParams,
+                  nodeParams: this.get().modalIframeData.nodeParams,
+                  modal: true
+                };
+                sendContextToClient(this, modalConfig, {});
+              } else if (config.iframe && e.source === config.iframe.contentWindow) {
+                sendContextToClient(this, config, {});
+
+                const loadingIndicatorAutoHideEnabled =
+                  GenericHelpers.getConfigValueFromObject(
+                    this.get(),
+                    'currentNode.loadingIndicator.hideAutomatically'
+                  ) !== false;
+                if (loadingIndicatorAutoHideEnabled) {
+                  this.set({ showLoadingIndicator: false });
+                }
               }
             }
-          }
-          if (e.source === config.iframe.contentWindow) {
 
             if ('luigi.show-loading-indicator' === e.data.msg) {
               this.set({ showLoadingIndicator: true });
