@@ -113,7 +113,7 @@
 
       window.addEventListener('message', e => {
         const iframe = document.querySelector('.iframeContainer iframe');
-        if (iframe.contentWindow.location === e.source.location) {
+        if (iframe.contentWindow === e.source) {
           if (e.data && e.data.msg === 'luigi.refresh-context-switcher') {
             this.set({ options: null });
             this.fetchOptions();

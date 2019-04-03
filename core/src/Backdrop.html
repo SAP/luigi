@@ -17,7 +17,7 @@
         this.setBackdropClass();
         window.addEventListener('message', e => {
           const iframe = document.querySelector('.iframeContainer iframe');
-          if (iframe.contentWindow.location === e.source.location) {
+          if (iframe.contentWindow === e.source) {
             if ('luigi.add-backdrop' === e.data.msg) {
               this.set({ backdropActive: true });
             }
