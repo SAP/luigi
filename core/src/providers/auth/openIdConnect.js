@@ -162,12 +162,12 @@ export class openIdConnect {
             } else {
               window.location.href = window.location.origin;
             }
-            // resolve(true); // not resolving in order to not interrupt window.location.href
           }, 50);
         })
         .catch(err => {
           console.error(err);
-          reject(err);
+          localStorage.removeItem('luigi.auth');
+          window.location.href = this.settings.logoutUrl + '?reason=loginError';
         });
     });
   }

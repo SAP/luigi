@@ -2,6 +2,9 @@
 
 <div class="fd-shellbar {hideNavComponent ? 'hideNavComponent' : ''}">
   <div class="fd-shellbar__group fd-shellbar__group--start">
+    {#if responsiveNavSetting==="simple" || responsiveNavSetting==="simpleMobileOnly"}
+    <span class="sap-icon--menu2 lui-burger" on:click="burgerClicked()"></span>
+    {/if}
     <LogoTitle/>
   </div>
   <div class="fd-shellbar__group fd-shellbar__group--end">
@@ -11,8 +14,10 @@
         bind:dropDownStates
         on:toggleDropdownState="toggleDropdownState(event.name)"
       />
-      {/if} {#if children && pathData.length > 0} {#each children as node} {#if
-      !node.hideFromNav}
+      {/if}
+      {#if children && pathData.length > 0}
+      {#each children as node}
+      {#if !node.hideFromNav}
       <div
         class="fd-shellbar__action fd-shellbar__action--hide fd-shellbar__action--collapsible"
       >
@@ -42,13 +47,21 @@
           {/if}
         </button>
       </div>
-      {/if} {/each}
+      {/if}
+      {/each}
+      {#if isProductSwitcherAvailable}
+      <ProductSwitcher
+        bind:dropDownStates
+        on:toggleDropdownState="toggleDropdownState(event.name)"
+        isMobile="{false}"
+      />
+      {/if}
       <!-- Sample Markup for Notifications
-          <div class="fd-shellbar__action fd-shellbar__action--collapsible">
-            <button class=" fd-button--shell sap-icon--bell" aria-label="Notifications">
-              <span class="fd-counter fd-counter--notification" aria-label="Unread count">25</span>
-            </button>
-          </div> 
+            <div class="fd-shellbar__action fd-shellbar__action--collapsible">
+              <button class=" fd-button--shell sap-icon--bell" aria-label="Notifications">
+                <span class="fd-counter fd-counter--notification" aria-label="Unread count">25</span>
+              </button>
+            </div>
       -->
 
       <!-- dropdown for top nav nodes on smaller screens -->
@@ -70,6 +83,7 @@
                   aria-expanded="{dropDownStates.overflowPopover || false}"
                   aria-haspopup="true"
                   on:click="toggleDropdownState('overflowPopover')"
+                  data-cy="mobile-menu"
                 >
                   <!-- <span class="fd-counter fd-counter--notification" aria-label="Unread count">25</span> -->
                 </button>
@@ -97,7 +111,7 @@
                         class="fd-top-nav__icon nav-icon"
                         src="{node.icon}"
                       >
-                      {/if} {:else} {node.label} {/if} {#if node.externalLink &&
+                      {/if}{/if} {node.label} {#if node.externalLink &&
                       node.externalLink.url}
                       <span
                         class="sap-icon--action sap-icon--s"
@@ -105,14 +119,36 @@
                       {/if}
                     </a>
                   </li>
-                  {/if} {/each}
+                  {/if}
+                  {/each}
+                  {#if isProductSwitcherAvailable}
+                  <li>
+                    <a
+                      class="fd-menu__item"
+                      on:click="openMobileProductSwitcher(event)"
+                      data-cy="mobile-product-switcher"
+                    >
+                      <span class="fd-top-nav__icon sap-icon--grid sap-icon--m"></span>
+                      My Products
+                    </a>
+                  </li>
+                  {/if}
                 </ul>
               </nav>
             </div>
+            {#if isProductSwitcherAvailable}
+            <ProductSwitcher
+              bind:dropDownStates
+              on:toggleDropdownState="toggleDropdownState(event.name)"
+              isMobile="{true}"
+            />
+            {/if}
           </div>
         </div>
       </div>
-      {/if} {/if} {#if authorizationEnabled}
+      {/if}
+      {/if}
+      {#if authorizationEnabled}
       <div class="fd-shellbar__action fd-shellbar__action--show-always">
         <div class="fd-popover">
           <div class="fd-popover__control" on:click="event.stopPropagation()">
@@ -134,12 +170,8 @@
           </div>
         </div>
       </div>
-      {/if} {#if isProductSwitcherAvailable}
-      <ProductSwitcher
-        bind:dropDownStates
-        on:toggleDropdownState="toggleDropdownState(event.name)"
-      />
       {/if}
+
     </div>
   </div>
 </div>
@@ -195,6 +227,9 @@
         ),
         hideNavComponent: LuigiConfig.getConfigBooleanValue(
           'settings.hideNavigation'
+        ),
+        responsiveNavSetting: LuigiConfig.getConfigValue(
+          'settings.responsiveNavigation'
         )
       });
     },
@@ -217,14 +252,21 @@
       }
     },
     methods: {
+      openMobileProductSwitcher(event) {
+        if (event) event.stopPropagation();
+        this.toggleDropdownState('productSwitcherPopover');
+      },
       handleClick(node) {
         this.fire('handleClick', { node });
       },
       toggleDropdownState(name) {
         const dropDownStates = this.get().dropDownStates || {};
         const dropDownState = !dropDownStates[name];
+
         this.closeAllDropdowns();
+
         dropDownStates[name] = dropDownState;
+
         this.set({
           dropDownStates
         });
@@ -240,6 +282,9 @@
             });
           });
         }
+      },
+      burgerClicked() {
+        document.body.classList.toggle('lui-leftNavToggle');
       }
     },
     components: {
@@ -258,6 +303,11 @@
     justify-content: flex-end;
   }
 
+  // Fix for Fiori aligning everything to right inside shellbar end
+  .fd-shellbar__group--end {
+    text-align: unset;
+  }
+
   .fd-side-nav__icon {
     padding-right: 0;
   }
@@ -273,5 +323,42 @@
     .nav-icon {
       height: 2em;
     }
+  }
+
+  .lui-burger {
+    margin-left: 8px;
+    margin-right: 16px;
+    cursor: pointer;
+  }
+
+  @media (min-width: 600px) {
+    .lui-burger {
+      margin-left: 0px;
+    }
+  }
+
+  @media (min-width: 600px) {
+    :global(.lui-mobileOnly)
+      .lui-burger {
+        display: none;
+      }
+  }
+
+  @media (min-width: 1024px) {
+    .lui-burger {
+      margin-left: -16px;
+    }
+  }
+
+  :global(.no-side-nav) {
+    .lui-burger {
+      display: none;
+    }
+  }
+
+  .fd-top-nav__icon {
+    display: inline-block;
+    vertical-align: text-top;
+    margin-right: 5px;
   }
 </style>

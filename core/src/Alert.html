@@ -1,15 +1,27 @@
 <div class="fd-shell__overlay fd-overlay fd-overlay--alert" aria-hiden="false">
-  <div class="fd-alert fd-alert--{alertTypeMap[settings.type]} fd-alert--dismissible" role="alert" id="j2ALl423"
-    data-cy="luigi-alert">
-    <button class="fd-alert__close close-button" on:click="fire('alertDismiss')" aria-label="Close"
-      aria-controls="j2ALl423" data-cy="luigi-alert-dismiss"></button>
+  <div
+    class="fd-alert fd-alert--{alertTypeMap[settings.type]} fd-alert--dismissible"
+    role="alert"
+    id="j2ALl423"
+    data-cy="luigi-alert"
+  >
+    <button
+      class="fd-alert__close close-button"
+      on:click="fire('alertDismiss')"
+      aria-label="Close"
+      aria-controls="j2ALl423"
+      data-cy="luigi-alert-dismiss"
+    ></button>
     {@html settings.text}
   </div>
 </div>
 
 <script type="text/javascript">
-  import * as Routing from './services/routing.js';
-  import * as RoutingHelpers from './utilities/helpers/routing-helpers';
+  import {
+    sanitizeHtml,
+    sanitizeParam,
+    escapeRegExp
+  } from './utilities/helpers/escaping-helpers';
 
   export default {
     data() {
@@ -55,7 +67,7 @@
         }
       },
       processTextAndLinks(text, links) {
-        let sanitizedText = RoutingHelpers.sanitizeHtml(text);
+        let sanitizedText = sanitizeHtml(text);
         let initialValue = { sanitizedText, links: [] };
 
         if (!links) {
@@ -63,9 +75,11 @@
         }
 
         return Object.entries(links).reduce((acc, [key, content]) => {
-          const elemId = key;
-          const processedData = `<a id="${elemId}">${content.text}</a>`;
-          const pattern = new RegExp(`({${key}})`, 'g');
+          const elemId = '_luigi_alert_link_' + sanitizeParam(key);
+          const escapedText = sanitizeHtml(content.text);
+          const processedData = `<a id="${elemId}">${escapedText}</a>`;
+          const keyForRegex = escapeRegExp(key);
+          const pattern = new RegExp(`({${keyForRegex}})`, 'g');
           return {
             sanitizedText: acc.sanitizedText.replace(pattern, processedData),
             links: acc.links.concat({ elemId, url: content.url })
@@ -75,3 +89,9 @@
     }
   };
 </script>
+
+<style type="text/scss">
+  .fd-overlay--alert {
+    z-index: 1100;
+  }
+</style>
