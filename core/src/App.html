@@ -32,7 +32,7 @@
     pathData="{navigationPath}"
     on:handleClick="handleNavClick(event.node)"
   />
-  {#if !(hideNav||hideSideNav)}
+  {#if !(hideNav||hideSideNav) || simpleSlideInNav}
   <LeftNav
     pathData="{navigationPath}"
     on:handleClick="handleNavClick(event.node)"
@@ -243,7 +243,16 @@
         getDefaultConfirmationModalData()
       );
     },
-    oncreate() {},
+    oncreate() {
+      const responsiveNavSetting = LuigiConfig.getConfigValue('settings.responsiveNavigation');
+      if(responsiveNavSetting === "simple") {
+        document.body.classList.add('lui-simpleSlideInNav');
+        this.set({simpleSlideInNav: true});
+      } else if(responsiveNavSetting === "simpleMobileOnly") {
+        document.body.classList.add('lui-simpleSlideInNav', 'lui-mobileOnly');
+        this.set({simpleSlideInNav: true});
+      }
+    },
     onstate({ changed, current, previous }) {},
     actions: {
       init(node) {
@@ -423,6 +432,7 @@
         };
       },
       handleNavClick(node) {
+        document.body.classList.remove('lui-leftNavToggle');
         this.getUnsavedChangesModalPromise().then(() => {
           Routing.handleRouteClick(node, this.get());
         });
@@ -617,11 +627,85 @@
       bottom: 0;
       right: 0;
     }
+
+    :global(.fd-app__sidebar) {
+      display: none;
+    }
+  }
+
+  :global(body.lui-simpleSlideInNav) {
+    :global(.fd-app__sidebar) {
+      -webkit-transition-property: width;
+      -moz-transition-property: width;
+      -o-transition-property: width;
+      transition-property: width;
+      -webkit-transition-duration: 0.1s;
+      -moz-transition-duration: 0.1s;
+      -o-transition-duration: 0.1s;
+      transition-duration: 0.1s;
+      -webkit-transition-timing-function: linear;
+      -moz-transition-timing-function: linear;
+      -o-transition-timing-function: linear;
+      transition-timing-function: linear;
+    }
+
+    .iframeContainer,
+    .spinnerContainer {
+      -webkit-transition-property: left;
+      -moz-transition-property: left;
+      -o-transition-property: left;
+      transition-property: left;
+      -webkit-transition-duration: 0.1s;
+      -moz-transition-duration: 0.1s;
+      -o-transition-duration: 0.1s;
+      transition-duration: 0.1s;
+      -webkit-transition-timing-function: linear;
+      -moz-transition-timing-function: linear;
+      -o-transition-timing-function: linear;
+      transition-timing-function: linear;
+    }
   }
 
   @media (min-width: 600px) {
     :global(.fd-shellbar__title) {
       display: inline;
+    }
+
+    :global(.fd-app__sidebar) {
+      width: $leftNavWidth;
+    }
+    :global(body.lui-simpleSlideInNav.lui-leftNavToggle) {
+      .iframeContainer,
+      .spinnerContainer {
+        left: 0;
+      }
+
+      :global(.fd-app__sidebar) {
+        width: 0px;
+      }
+    }
+  }
+
+  @media (max-width: 600px) {
+    :global(body.lui-simpleSlideInNav) {
+      .iframeContainer,
+      .spinnerContainer {
+        left: 0;
+      }
+
+      :global(.fd-app__sidebar) {
+        width: 0px;
+      }
+    }
+
+    :global(body.lui-simpleSlideInNav.lui-leftNavToggle) {
+      :global(.fd-app__sidebar) {
+        display: block;
+        width: $leftNavWidth;
+        -webkit-box-shadow: 6px 0px 9px 0px rgba(0,0,0,0.44);
+        -moz-box-shadow: 6px 0px 9px 0px rgba(0,0,0,0.44);
+        box-shadow: 6px 0px 9px 0px rgba(0,0,0,0.44);
+      }
     }
   }
 </style>
