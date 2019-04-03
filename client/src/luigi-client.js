@@ -252,7 +252,7 @@ const LuigiClient = {
        * @param {boolean} preserveView Preserve a view by setting it to `true`. It keeps the current view opened in the background and opens the new route in a new frame. Use the {@link #goBack goBack()} function to navigate back. You can use this feature across different levels. Preserved views are discarded as soon as the standard {@link #navigate navigate()} function is used instead of {@link #goBack goBack()}.
        * @param {Object} modalSettings opens a view in a modal. Use these settings to configure the modal's title and size.
        * @param {string} modalSettings.title modal title. By default, it is the node label. If there is no label, it is left empty.
-       * @param {('l'|'m'|'s')} [modalSettings.size=l] size of the modal (l=80%, m=60%, s=40%)
+       * @param {('l'|'m'|'s')} [modalSettings.size=l] size of the modal
        * @example
        * LuigiClient.linkManager().navigate('/overview')
        * LuigiClient.linkManager().navigate('users/groups/stakeholders')
@@ -286,7 +286,7 @@ const LuigiClient = {
        * @param {string} path navigation path
        * @param {Object} modalSettings opens a view in a modal. Use these settings to configure the modal's title and size.
        * @param {string} modalSettings.title modal title. By default, it is the node label. If there is no label, it is left empty.
-       * @param {('l'|'m'|'s')} [modalSettings.size=l] size of the modal (l=80%, m=60%, s=40%)
+       * @param {('l'|'m'|'s')} [modalSettings.size=l] size of the modal
        * @example
        * LuigiClient.linkManager().openAsModal('projects/pr1/users', {title:'Users', size:'m'});
        */
