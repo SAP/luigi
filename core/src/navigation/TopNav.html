@@ -1,5 +1,5 @@
 <svelte:window on:click="closeAllDropdowns()" on:blur="closeAllDropdowns()" />
-{#if authorizationEnabled && (!autologinEnabled || isLoggedIn) || !authorizationEnabled }
+{#if showTopNav}
   <div class="fd-shellbar {hideNavComponent ? 'hideNavComponent' : ''}">
     <div class="fd-shellbar__group fd-shellbar__group--start">
       <LogoTitle /> 
@@ -223,9 +223,9 @@
     oncreate() {
       this.set({
         authorizationEnabled: LuigiConfig.isAuthorizationEnabled(),
-        autologinEnabled: !(LuigiConfig.getConfigValue(
+        autologinEnabled: !Boolean(LuigiConfig.getConfigValue(
           'auth.disableAutoLogin'
-        ) || false),
+        )),
         isProductSwitcherAvailable: LuigiConfig.getConfigValue(
           'navigation.productSwitcher'
         ),
@@ -246,7 +246,10 @@
         isLoggedIn: false
       };
     },
-    computed: {},
+    computed: {
+      showTopNav:({authorizationEnabled,autologinEnabled,isLoggedIn})=>
+        authorizationEnabled && (!autologinEnabled || isLoggedIn) || !authorizationEnabled 
+    },
     helpers: {
       hasOpenUIicon(node) {
         return NavigationHelpers.isOpenUIiconName(node.icon);
