@@ -34,7 +34,7 @@
         }
       };
     },
-    oncreate() {
+    onstate() {
       const { text, links } = this.get().settings;
       const processedData = this.processTextAndLinks(text, links);
       this.set({
