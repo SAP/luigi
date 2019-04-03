@@ -214,6 +214,7 @@ export declare interface LinkManager {
  * @memberof lifecycle
  */
 export function addInitListener(initFn: (context: Context) => void): number;
+export type addInitListener = (initFn: (context: Context) => void) => number;
 
 /**
  * Removes an init listener.
@@ -221,6 +222,7 @@ export function addInitListener(initFn: (context: Context) => void): number;
  * @memberof lifecycle
  */
 export function removeInitListener(id: number): boolean;
+export type removeInitListener = (id: number) => boolean;
 
 /**
  * Registers a listener called with the context object upon any navigation change.
@@ -230,6 +232,9 @@ export function removeInitListener(id: number): boolean;
 export function addContextUpdateListener(
   contextUpdatedFn: (context: Context) => void
 ): string;
+export type addContextUpdateListener = (
+  contextUpdatedFn: (context: Context) => void
+) => string;
 
 /**
  * Removes a context update listener.
@@ -237,11 +242,13 @@ export function addContextUpdateListener(
  * @memberof lifecycle
  */
 export function removeContextUpdateListener(id: string): boolean;
+export type removeContextUpdateListener = (id: string) => boolean;
 
 /**
  * @returns {string} the authorization token
  */
 export function getToken(): AuthData['accessToken'];
+export type getToken = () => AuthData['accessToken'];
 
 /**
  * Returns the context object. Typically it is not required as the {@link #addContextUpdateListener addContextUpdateListener()} receives the same values.
@@ -249,6 +256,7 @@ export function getToken(): AuthData['accessToken'];
  * @memberof lifecycle
  */
 export function getEventData(): Context;
+export type getEventData = () => Context;
 
 /**
  * Returns the node parameters of the active URL.
@@ -258,6 +266,7 @@ export function getEventData(): Context;
  * @memberof lifecycle
  */
 export function getNodeParams(): NodeParams;
+export type getNodeParams = () => NodeParams;
 
 /**
  * Returns the dynamic path parameters of the active URL.
@@ -268,6 +277,7 @@ export function getNodeParams(): NodeParams;
  * @memberof lifecycle
  */
 export function getPathParams(): PathParams;
+export type getPathParams = () => PathParams;
 
 /**
  * The Link Manager allows you to navigate to another route. Use it instead of an internal router to:
@@ -277,9 +287,11 @@ export function getPathParams(): PathParams;
 */
 /** @name linkManager */
 export function linkManager(): LinkManager;
+export type linkManager = () => LinkManager;
 
 /**
  * Use the UX Manager to manage the appearance features in Luigi.
  */
 /** @name uxManager */
 export function uxManager(): UxManager;
+export type uxManager = () => UxManager;
