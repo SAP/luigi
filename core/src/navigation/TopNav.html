@@ -2,6 +2,9 @@
 
 <div class="fd-shellbar {hideNavComponent ? 'hideNavComponent' : ''}">
   <div class="fd-shellbar__group fd-shellbar__group--start">
+    {#if responsiveNavSetting==="simple" || responsiveNavSetting==="simpleMobileOnly"}
+    <span class="sap-icon--menu2 lui-burger" on:click="burgerClicked()"></span>
+    {/if}
     <LogoTitle/>
   </div>
   <div class="fd-shellbar__group fd-shellbar__group--end">
@@ -58,7 +61,7 @@
               <button class=" fd-button--shell sap-icon--bell" aria-label="Notifications">
                 <span class="fd-counter fd-counter--notification" aria-label="Unread count">25</span>
               </button>
-            </div> 
+            </div>
       -->
 
       <!-- dropdown for top nav nodes on smaller screens -->
@@ -167,8 +170,8 @@
           </div>
         </div>
       </div>
-
       {/if}
+
     </div>
   </div>
 </div>
@@ -224,6 +227,9 @@
         ),
         hideNavComponent: LuigiConfig.getConfigBooleanValue(
           'settings.hideNavigation'
+        ),
+        responsiveNavSetting: LuigiConfig.getConfigValue(
+          'settings.responsiveNavigation'
         )
       });
     },
@@ -276,6 +282,9 @@
             });
           });
         }
+      },
+      burgerClicked() {
+        document.body.classList.toggle('lui-leftNavToggle');
       }
     },
     components: {
@@ -313,6 +322,37 @@
   .fd-popover {
     .nav-icon {
       height: 2em;
+    }
+  }
+
+  .lui-burger {
+    margin-left: 8px;
+    margin-right: 16px;
+    cursor: pointer;
+  }
+
+  @media (min-width: 600px) {
+    .lui-burger {
+      margin-left: 0px;
+    }
+  }
+
+  @media (min-width: 600px) {
+    :global(.lui-mobileOnly)
+      .lui-burger {
+        display: none;
+      }
+  }
+
+  @media (min-width: 1024px) {
+    .lui-burger {
+      margin-left: -16px;
+    }
+  }
+
+  :global(.no-side-nav) {
+    .lui-burger {
+      display: none;
     }
   }
 
