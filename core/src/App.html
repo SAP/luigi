@@ -188,7 +188,7 @@
         internal: JSON.stringify(component.prepareInternalData(config.modal)),
         authData: AuthHelpers.getStoredAuthData()
       },
-      component.get().url
+      config.iframe.viewDomain
     );
   };
 
@@ -295,7 +295,6 @@
           }
         });
         window.addEventListener('message', async e => {
-          this.set({url: e.origin})
           const allIframes = Iframe.getAllIframes(node);
           if (allIframes.length > 0) {
             const isTheSameOrigin = (iframe) => {
@@ -303,6 +302,7 @@
             }
             const iframe = allIframes.find(isTheSameOrigin);
             if (iframe) {
+              iframe.viewDomain = e.origin;
               if ('luigi.get-context' === e.data.msg) {
                 if (
                   this.get().modalIframe &&
@@ -423,7 +423,7 @@
                       pathExists: pathData.isExistingRoute
                     }
                   },
-                  this.get().url
+                  iframe.viewDomain
                 );
               }
 
@@ -519,14 +519,15 @@
         this.set(getDefaultConfirmationModalData());
 
         if (openFromClient) {
-          Iframe.getActiveIframe(
+          const iframe = Iframe.getActiveIframe(
             this.get().contentNode
-          ).contentWindow.postMessage(
+          );
+          iframe.contentWindow.postMessage(
             {
               msg: 'luigi.ux.confirmationModal.hide',
               data: { confirmed: result }
             },
-            this.get().url
+            iframe.viewDomain
           );
         }
       },
@@ -626,13 +627,14 @@
         this.set(getDefaultAlertData());
 
         if (openFromClient) {
-          Iframe.getActiveIframe(
+          const iframe = Iframe.getActiveIframe(
             this.get().contentNode
-          ).contentWindow.postMessage(
+          );
+          iframe.contentWindow.postMessage(
             {
               msg: 'luigi.ux.alert.hide'
             },
-            this.get().url
+            iframe.viewDomain
           );
         }
       }
