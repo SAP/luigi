@@ -16,14 +16,18 @@
       if (!backdropDisabled) {
         this.setBackdropClass();
         window.addEventListener('message', e => {
-          const iframe = document.querySelector('.iframeContainer iframe');
-          if (iframe.contentWindow === e.source) {
-            if ('luigi.add-backdrop' === e.data.msg) {
-              this.set({ backdropActive: true });
-            }
-            if ('luigi.remove-backdrop' === e.data.msg) {
-              this.set({ backdropActive: false });
-            }
+          const iframes = document.querySelectorAll('.iframeContainer iframe');
+          if(iframes && iframes.length > 0) {
+            iframes.forEach(iframe => {
+              if (iframe.contentWindow === e.source) {
+                if ('luigi.add-backdrop' === e.data.msg) {
+                  this.set({ backdropActive: true });
+                }
+                if ('luigi.remove-backdrop' === e.data.msg) {
+                  this.set({ backdropActive: false });
+                }
+              }
+            })
           }
         });
       }

@@ -11,6 +11,10 @@ export const getActiveIframe = node => {
   return node.firstChild;
 };
 
+export const getAllIframes = node => {
+  return node.childNodes;
+};
+
 export const setActiveIframeToPrevious = node => {
   const iframesInDom = Array.from(node.children);
   if (iframesInDom.length === 0) {
@@ -41,7 +45,6 @@ export const navigateIframe = (config, component, node) => {
     viewUrl = RoutingHelpers.substituteViewUrl(viewUrl, componentData);
   }
 
-  const isSameDomain = IframeHelpers.isSameDomain(config, component);
   const isSameViewGroup = IframeHelpers.isSameViewGroup(config, component);
   const canReuseIframe = IframeHelpers.canReuseIframe(config, component);
   if (

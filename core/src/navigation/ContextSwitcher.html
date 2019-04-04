@@ -112,13 +112,17 @@
       }
 
       window.addEventListener('message', e => {
-        const iframe = document.querySelector('.iframeContainer iframe');
-        if (iframe.contentWindow === e.source) {
-          if (e.data && e.data.msg === 'luigi.refresh-context-switcher') {
-            this.set({ options: null });
-            this.fetchOptions();
-          }
-        };
+        const iframes = document.querySelectorAll('.iframeContainer iframe');
+        if(iframes && iframes.length > 0) {
+          iframes.forEach(iframe => {
+            if (iframe.contentWindow === e.source) {
+              if (e.data && e.data.msg === 'luigi.refresh-context-switcher') {
+                this.set({ options: null });
+                this.fetchOptions();
+              }
+            };
+          });
+        }
       });
     },
     data() {
