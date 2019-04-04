@@ -12,7 +12,7 @@
       aria-controls="j2ALl423"
       data-cy="luigi-alert-dismiss"
     ></button>
-    {@html settings.text}
+    {@html dataSanitized ? settings.text: ''}
   </div>
 </div>
 
@@ -40,7 +40,8 @@
       this.set({
         settings: Object.assign(this.get().settings, {
           text: processedData.sanitizedText
-        })
+        }),
+        dataSanitized: true
       });
       processedData.links.forEach(l => {
         this.addClickListener(l.url, l.elemId);
