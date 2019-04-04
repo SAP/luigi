@@ -239,6 +239,18 @@
     };
   };
 
+  const checkIfMessageComesFromSameDomain = async (domain) => {
+    const path = Routing.getCurrentPath();
+    const pathData = await Navigation.getNavigationPath(
+      LuigiConfig.getConfigValueAsync('navigation.nodes'),
+      path
+    );
+    const currentNavigationPath = pathData.navigationPath[pathData.navigationPath.length - 1];
+    const currentViewUrl = currentNavigationPath.viewUrl;
+    const sameDomain = currentViewUrl && (currentViewUrl.startsWith(domain) || currentViewUrl.startsWith('/'));
+    return sameDomain;
+  };
+
   export default {
     data() {
       return Object.assign(
@@ -304,14 +316,16 @@
           }
         });
         window.addEventListener('message', async e => {
+          const eventDomain = e.origin;
+          const isSameDomain = await checkIfMessageComesFromSameDomain(eventDomain);
           const allIframes = Iframe.getAllIframes(node);
-          if (allIframes.length > 0) {
-            const isTheSameOrigin = (iframe) => {
+          if (isSameDomain && allIframes.length > 0) {
+            const checkIfMessageComesFromRegisteredIframe = (iframe) => {
               return (e.source === iframe.contentWindow || (this.get().modalIframe && e.source === this.get().modalIframe.contentWindow))
             }
-            const iframe = allIframes.find(isTheSameOrigin);
+            const iframe = allIframes.find(checkIfMessageComesFromRegisteredIframe);
             if (iframe) {
-              iframe.viewDomain = e.origin;
+              iframe.viewDomain = eventDomain;
               if ('luigi.get-context' === e.data.msg) {
                 if (
                   this.get().modalIframe &&
