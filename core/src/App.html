@@ -266,13 +266,15 @@
       );
     },
     oncreate() {
-      const responsiveNavSetting = LuigiConfig.getConfigValue('settings.responsiveNavigation');
-      if(responsiveNavSetting === "simple") {
+      const responsiveNavSetting = LuigiConfig.getConfigValue(
+        'settings.responsiveNavigation'
+      );
+      if (responsiveNavSetting === 'simple') {
         document.body.classList.add('lui-simpleSlideInNav');
-        this.set({simpleSlideInNav: true});
-      } else if(responsiveNavSetting === "simpleMobileOnly") {
+        this.set({ simpleSlideInNav: true });
+      } else if (responsiveNavSetting === 'simpleMobileOnly') {
         document.body.classList.add('lui-simpleSlideInNav', 'lui-mobileOnly');
-        this.set({simpleSlideInNav: true});
+        this.set({ simpleSlideInNav: true });
       }
     },
     onstate({ changed, current, previous }) {},
@@ -372,7 +374,8 @@
             ) {
               this.closeModal();
               sendContextToClient(this, config, {
-                goBackContext: e.data.goBackContext && JSON.parse(e.data.goBackContext)
+                goBackContext:
+                  e.data.goBackContext && JSON.parse(e.data.goBackContext)
               });
             } else {
               // go back: context from the view
@@ -658,6 +661,8 @@
   :global(html) {
     box-sizing: border-box;
     font-size: 14px;
+    position: fixed;
+    width: 100%;
   }
   :global(body) {
     -webkit-font-smoothing: antialiased;
@@ -681,7 +686,7 @@
 
   .iframeContainer,
   .spinnerContainer {
-    position: fixed;
+    position: absolute;
     top: $topNavHeight;
     left: $leftNavWidth;
     bottom: 0;
@@ -691,6 +696,12 @@
     min-height: auto;
     display: block;
   }
+  .iframeContainer {
+    overflow-y: scroll;
+    overflow-x: hidden;
+    -webkit-overflow-scrolling: touch;
+  }
+
   .iframeContainer :global(iframe) {
     border: none;
     width: 100%;
@@ -811,9 +822,9 @@
       :global(.fd-app__sidebar) {
         display: block;
         width: $leftNavWidth;
-        -webkit-box-shadow: 6px 0px 9px 0px rgba(0,0,0,0.44);
-        -moz-box-shadow: 6px 0px 9px 0px rgba(0,0,0,0.44);
-        box-shadow: 6px 0px 9px 0px rgba(0,0,0,0.44);
+        -webkit-box-shadow: 6px 0px 9px 0px rgba(0, 0, 0, 0.44);
+        -moz-box-shadow: 6px 0px 9px 0px rgba(0, 0, 0, 0.44);
+        box-shadow: 6px 0px 9px 0px rgba(0, 0, 0, 0.44);
       }
     }
   }
