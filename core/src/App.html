@@ -519,10 +519,9 @@
         this.set(getDefaultConfirmationModalData());
 
         if (openFromClient) {
-          const iframe = Iframe.getActiveIframe(
+          Iframe.getActiveIframe(
             this.get().contentNode
-          )
-          iframe.contentWindow.postMessage(
+          ).contentWindow.postMessage(
             {
               msg: 'luigi.ux.confirmationModal.hide',
               data: { confirmed: result }
@@ -627,10 +626,9 @@
         this.set(getDefaultAlertData());
 
         if (openFromClient) {
-          const iframe = Iframe.getActiveIframe(
+          Iframe.getActiveIframe(
             this.get().contentNode
-          );
-          iframe.contentWindow.postMessage(
+          ).contentWindow.postMessage(
             {
               msg: 'luigi.ux.alert.hide'
             },
