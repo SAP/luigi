@@ -12,7 +12,7 @@ export const getActiveIframe = node => {
 };
 
 export const getAllIframes = node => {
-  return node.childNodes;
+  return node.children ? Array.from(node.children) : [];
 };
 
 export const setActiveIframeToPrevious = node => {
