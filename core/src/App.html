@@ -169,6 +169,7 @@
       console.info('iframe does not exist, not able to send context.');
       return;
     }
+    if(!config.iframe.trustedDomain) return;
     config.iframe.contentWindow.postMessage(
       {
         msg: 'luigi.init',
@@ -199,6 +200,7 @@
       );
       return;
     }
+    if(!iframe.trustedDomain) return;
     iframe.contentWindow.postMessage(
       {
         msg: 'luigi.auth.tokenIssued',
@@ -242,7 +244,7 @@
   const checkIfMessageComesFromSameDomain = (domain, iframe) => {
     if (iframe.luigiViewUrl) {
       const sameDomain = iframe.luigiViewUrl && (iframe.luigiViewUrl.startsWith(domain) || iframe.luigiViewUrl.startsWith('/'));
-      iframe.trustedDomain = sameDomain ? domain : false;
+      iframe.trustedDomain = sameDomain ? domain : '';
       return sameDomain;
     }
   };
@@ -430,6 +432,7 @@
             }
 
             if ('luigi.navigation.pathExists' === e.data.msg) {
+              if(!iframe.trustedDomain) return;
               const data = e.data.data;
               const path = buildPath(this, data);
               const pathData = await Navigation.getNavigationPath(
@@ -544,6 +547,7 @@
           const iframe = Iframe.getActiveIframe(
             this.get().contentNode
           );
+          if(!iframe.trustedDomain) return;
           iframe.contentWindow.postMessage(
             {
               msg: 'luigi.ux.confirmationModal.hide',
@@ -652,6 +656,7 @@
           const iframe = Iframe.getActiveIframe(
             this.get().contentNode
           );
+          if(!iframe.trustedDomain) return;
           iframe.contentWindow.postMessage(
             {
               msg: 'luigi.ux.alert.hide'
