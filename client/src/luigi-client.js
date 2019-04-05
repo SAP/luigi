@@ -487,10 +487,10 @@ const LuigiClient = {
       /**
        * Shows a confirmation modal.
        * @param {Object} settings the settings the confirmation modal. If no value is provided for any of the fields, a default value is set for it
-       * @param {string} settings.header the content of the modal header
-       * @param {string} settings.body the content of the modal body
-       * @param {string} settings.buttonConfirm the label for the modal confirm button
-       * @param {string} settings.buttonDismiss the label for the modal dismiss button
+       * @param {string} [settings.header=Confirmation] the content of the modal header
+       * @param {string} [settings.body=Are you sure you want to do this?] the content of the modal body
+       * @param {string} [settings.buttonConfirm=Yes] the label for the modal confirm button
+       * @param {string} [settings.buttonDismiss=No] the label for the modal dismiss button
        * @returns {promise} which is resolved when accepting the confirmation modal and rejected when dismissing it
        */
       showConfirmationModal: function showConfirmationModal(settings) {
