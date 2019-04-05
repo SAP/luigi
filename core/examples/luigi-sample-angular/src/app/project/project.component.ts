@@ -70,7 +70,7 @@ export class ProjectComponent implements OnInit, OnDestroy {
         type
       };
       uxManager().showAlert(settings);
-    }, 3000);
+    }, 2000);
   }
 
   public ngOnInit() {

@@ -78,6 +78,7 @@ export const navigateIframe = (config, component, node) => {
       config.navigateOk = undefined;
       config.iframe = document.createElement('iframe');
       config.iframe.src = viewUrl;
+      config.iframe.luigiViewUrl = viewUrl;
 
       node.insertBefore(config.iframe, node.firstChild);
 
@@ -94,6 +95,7 @@ export const navigateIframe = (config, component, node) => {
   } else {
     const goBackContext = component.get().goBackContext;
     config.iframe.style.display = 'block';
+    config.iframe.luigiNextViewUrl = viewUrl;
     config.iframe.contentWindow.postMessage(
       {
         msg: 'luigi.navigate',
