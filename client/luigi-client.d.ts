@@ -16,6 +16,11 @@ export declare interface ConfirmationModalSettings {
   buttonDismiss?: string;
 }
 
+export declare interface ModalSettings {
+  title?: string;
+  size?: 'l' | 'm' | 's';
+}
+
 export declare interface Context {
   authData?: AuthData;
   context?: { parentNavigationContext?: string[] };
@@ -149,12 +154,20 @@ export declare interface LinkManager {
    * @param {string} path path to be navigated to
    * @param {string} sessionId current Luigi **sessionId**
    * @param {boolean} preserveView Preserve a view by setting it to `true`. It keeps the current view opened in the background and opens the new route in a new frame. Use the {@link #goBack goBack()} function to navigate back. You can use this feature across different levels. Preserved views are discarded as soon as the standard {@link #navigate navigate()} function is used instead of {@link #goBack goBack()}.
+   * @param {Object} modalSettings opens a view in a modal. Use these settings to configure the modal's title and size.
+   * @param {string} modalSettings.title modal title. By default, it is the node label. If there is no label, it is left empty.
+   * @param {('l'|'m'|'s')} [modalSettings.size=l] size of the modal (optional, default `l`)
    * @example
    * LuigiClient.linkManager().navigate('/overview')
    * LuigiClient.linkManager().navigate('users/groups/stakeholders')
    * LuigiClient.linkManager().navigate('/settings', null, true) // preserve view
    */
-  navigate: (path: string, sessionId?: string, preserveView?: boolean) => void;
+  navigate: (
+    path: string,
+    sessionId?: string,
+    preserveView?: boolean,
+    modalSettings?: ModalSettings
+  ) => void;
 
   /**
    * Checks if the path you can navigate to exists in the main application. For example, you can use this helper method conditionally to display a DOM element like a button.
@@ -182,6 +195,17 @@ export declare interface LinkManager {
    * LuigiClient.linkManager.fromContext("currentTeam").withParams({foo: "bar"}).navigate("path")
    */
   withParams: (nodeParams: NodeParams) => this;
+
+  /**
+   * Opens a view in a modal. You can specify the modal's title and size. If you don't specify the title, it is the node label. If there is no node label, the title remains empty.  The default size of the modal is `l`, which means 80%. You can also use `m` (60%) and `s` (40%) to set the modal size. Optionally, use it in combination with any of the navigation functions.
+   * @param {string} path navigation path
+   * @param {Object} modalSettings opens a view in a modal. Use these settings to configure the modal's title and size.
+   * @param {string} modalSettings.title modal title. By default, it is the node label. If there is no label, it is left empty.
+   * @param {('l'|'m'|'s')} [modalSettings.size=l] size of the modal (optional, default `l`)
+   * @example
+   * LuigiClient.linkManager().openAsModal('projects/pr1/users', {title:'Users', size:'m'});
+   */
+  openAsModal: (nodepath: string, modalSettings?: ModalSettings) => void;
 }
 
 /**
@@ -190,6 +214,7 @@ export declare interface LinkManager {
  * @memberof lifecycle
  */
 export function addInitListener(initFn: (context: Context) => void): number;
+export type addInitListener = (initFn: (context: Context) => void) => number;
 
 /**
  * Removes an init listener.
@@ -197,6 +222,7 @@ export function addInitListener(initFn: (context: Context) => void): number;
  * @memberof lifecycle
  */
 export function removeInitListener(id: number): boolean;
+export type removeInitListener = (id: number) => boolean;
 
 /**
  * Registers a listener called with the context object upon any navigation change.
@@ -206,6 +232,9 @@ export function removeInitListener(id: number): boolean;
 export function addContextUpdateListener(
   contextUpdatedFn: (context: Context) => void
 ): string;
+export type addContextUpdateListener = (
+  contextUpdatedFn: (context: Context) => void
+) => string;
 
 /**
  * Removes a context update listener.
@@ -213,11 +242,13 @@ export function addContextUpdateListener(
  * @memberof lifecycle
  */
 export function removeContextUpdateListener(id: string): boolean;
+export type removeContextUpdateListener = (id: string) => boolean;
 
 /**
  * @returns {string} the authorization token
  */
 export function getToken(): AuthData['accessToken'];
+export type getToken = () => AuthData['accessToken'];
 
 /**
  * Returns the context object. Typically it is not required as the {@link #addContextUpdateListener addContextUpdateListener()} receives the same values.
@@ -225,6 +256,7 @@ export function getToken(): AuthData['accessToken'];
  * @memberof lifecycle
  */
 export function getEventData(): Context;
+export type getEventData = () => Context;
 
 /**
  * Returns the node parameters of the active URL.
@@ -234,6 +266,7 @@ export function getEventData(): Context;
  * @memberof lifecycle
  */
 export function getNodeParams(): NodeParams;
+export type getNodeParams = () => NodeParams;
 
 /**
  * Returns the dynamic path parameters of the active URL.
@@ -244,6 +277,7 @@ export function getNodeParams(): NodeParams;
  * @memberof lifecycle
  */
 export function getPathParams(): PathParams;
+export type getPathParams = () => PathParams;
 
 /**
  * The Link Manager allows you to navigate to another route. Use it instead of an internal router to:
@@ -253,9 +287,11 @@ export function getPathParams(): PathParams;
 */
 /** @name linkManager */
 export function linkManager(): LinkManager;
+export type linkManager = () => LinkManager;
 
 /**
  * Use the UX Manager to manage the appearance features in Luigi.
  */
 /** @name uxManager */
 export function uxManager(): UxManager;
+export type uxManager = () => UxManager;

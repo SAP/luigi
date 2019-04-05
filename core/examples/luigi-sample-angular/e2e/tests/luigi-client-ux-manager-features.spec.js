@@ -214,21 +214,21 @@ describe('Luigi client ux manger features', () => {
             'fd-alert--warning'
           );
 
-          cy.get('#relativePath').click();
+          cy.get('#_luigi_alert_link_relativePath').click();
           cy.expectPathToBe('/projects/pr1');
           cy.get('[data-cy=luigi-confirmation-modal]').should('be.visible');
           cy.get('[data-cy=luigi-modal-dismiss]').click();
           cy.expectPathToBe('/projects/pr1');
-          cy.get('#relativePath').click();
+          cy.get('#_luigi_alert_link_relativePath').click();
           cy.get('[data-cy=luigi-confirmation-modal]').should('be.visible');
           cy.get('[data-cy=luigi-modal-confirm]').click();
           cy.expectPathToBe('/projects/pr1/hideSideNav');
 
-          cy.get('#goToOtherProject')
+          cy.get('#_luigi_alert_link_goToOtherProject')
             .click()
             .expectPathToBe('/projects/pr2');
 
-          cy.get('#goToHome')
+          cy.get('#_luigi_alert_link_goToHome')
             .click()
             .expectPathToBe('/overview');
         });

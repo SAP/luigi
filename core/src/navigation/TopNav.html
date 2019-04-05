@@ -2,6 +2,9 @@
 {#if showTopNav}
   <div class="fd-shellbar {hideNavComponent ? 'hideNavComponent' : ''}">
     <div class="fd-shellbar__group fd-shellbar__group--start">
+        	{#if responsiveNavSetting==="simple" || responsiveNavSetting==="simpleMobileOnly"}
+        	  <span class="sap-icon--menu2 lui-burger" on:click="burgerClicked()"></span>
+        	{/if}
       <LogoTitle /> 
     </div>
     <div class="fd-shellbar__group fd-shellbar__group--end">
@@ -108,7 +111,7 @@
                             class="fd-top-nav__icon nav-icon"
                             src="{node.icon}"
                           >
-                          {/if} {:else} {node.label} {/if} {#if node.externalLink &&
+                          {/if} {/if} {node.label} {#if node.externalLink &&
                           node.externalLink.url}
                           <span
                             class="sap-icon--action sap-icon--s"
@@ -141,6 +144,13 @@
                 {/if}
               </div>
             </div>
+            {#if isProductSwitcherAvailable}
+            <ProductSwitcher
+              bind:dropDownStates
+              on:toggleDropdownState="toggleDropdownState(event.name)"
+              isMobile="{true}"
+            />
+            {/if}
           </div>
           {/if} 
         {/if} 
@@ -231,6 +241,9 @@
         ),
         hideNavComponent: LuigiConfig.getConfigBooleanValue(
           'settings.hideNavigation'
+        ),
+        responsiveNavSetting: LuigiConfig.getConfigValue(
+          'settings.responsiveNavigation'
         )
       });
     },
@@ -286,6 +299,9 @@
             });
           });
         }
+      },
+      burgerClicked() {
+        document.body.classList.toggle('lui-leftNavToggle');
       }
     },
     components: {
@@ -324,5 +340,42 @@
     .nav-icon {
       height: 2em;
     }
+  }
+
+  .lui-burger {
+    margin-left: 8px;
+    margin-right: 16px;
+    cursor: pointer;
+  }
+
+  @media (min-width: 600px) {
+    .lui-burger {
+      margin-left: 0px;
+    }
+  }
+
+  @media (min-width: 600px) {
+    :global(.lui-mobileOnly)
+      .lui-burger {
+        display: none;
+      }
+  }
+
+  @media (min-width: 1024px) {
+    .lui-burger {
+      margin-left: -16px;
+    }
+  }
+
+  :global(.no-side-nav) {
+    .lui-burger {
+      display: none;
+    }
+  }
+
+  .fd-top-nav__icon {
+    display: inline-block;
+    vertical-align: text-top;
+    margin-right: 5px;
   }
 </style>

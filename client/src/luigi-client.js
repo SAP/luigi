@@ -250,12 +250,20 @@ const LuigiClient = {
        * @param {string} path path to be navigated to
        * @param {string} sessionId current Luigi **sessionId**
        * @param {boolean} preserveView Preserve a view by setting it to `true`. It keeps the current view opened in the background and opens the new route in a new frame. Use the {@link #goBack goBack()} function to navigate back. You can use this feature across different levels. Preserved views are discarded as soon as the standard {@link #navigate navigate()} function is used instead of {@link #goBack goBack()}.
+       * @param {Object} modalSettings opens a view in a modal. Use these settings to configure the modal's title and size.
+       * @param {string} modalSettings.title modal title. By default, it is the node label. If there is no label, it is left empty.
+       * @param {('l'|'m'|'s')} [modalSettings.size=l] size of the modal
        * @example
        * LuigiClient.linkManager().navigate('/overview')
        * LuigiClient.linkManager().navigate('users/groups/stakeholders')
        * LuigiClient.linkManager().navigate('/settings', null, true) // preserve view
        */
-      navigate: function navigate(path, sessionId, preserveView) {
+      navigate: function navigate(
+        path,
+        sessionId,
+        preserveView,
+        modalSettings
+      ) {
         if (options.errorSkipNavigation) {
           options.errorSkipNavigation = false;
           return;
@@ -267,12 +275,24 @@ const LuigiClient = {
           sessionId: sessionId,
           params: Object.assign(options, {
             link: path,
-            relative: relativePath
+            relative: relativePath,
+            modal: modalSettings
           })
         };
         window.parent.postMessage(navigationOpenMsg, '*');
       },
-
+      /**
+       * Opens a view in a modal. You can specify the modal's title and size. If you don't specify the title, it is the node label. If there is no node label, the title remains empty.  The default size of the modal is `l`, which means 80%. You can also use `m` (60%) and `s` (40%) to set the modal size. Optionally, use it in combination with any of the navigation functions.
+       * @param {string} path navigation path
+       * @param {Object} modalSettings opens a view in a modal. Use these settings to configure the modal's title and size.
+       * @param {string} modalSettings.title modal title. By default, it is the node label. If there is no label, it is left empty.
+       * @param {('l'|'m'|'s')} [modalSettings.size=l] size of the modal
+       * @example
+       * LuigiClient.linkManager().openAsModal('projects/pr1/users', {title:'Users', size:'m'});
+       */
+      openAsModal: function(path, modalSettings) {
+        this.navigate(path, 0, true, modalSettings || {});
+      },
       /**
        * Sets the current navigation context to that of a specific parent node which has the {@link navigation-configuration.md navigationContext} field declared in the navigation configuration. This navigation context is then used by the `navigate` function.
        * @param {string} navigationContext
@@ -374,7 +394,10 @@ const LuigiClient = {
        * @returns {boolean} indicating if there is a preserved view you can return to.
        */
       hasBack: function hasBack() {
-        return Boolean(currentContext.internal.viewStackSize !== 0);
+        return (
+          !!currentContext.internal.modal ||
+          currentContext.internal.viewStackSize !== 0
+        );
       },
 
       /**
@@ -487,7 +510,6 @@ const LuigiClient = {
         });
         return promises.confirmationModal.promise;
       },
-
       /**
        * Shows an alert.
        * @param {Object} settings the settings for the alert

@@ -1,8 +1,9 @@
 // Helper methods for 'routing.js' file. They don't require any method from 'routing.js' but are required by them.
 // They are also rarely used directly from outside of 'routing.js'
+import { LuigiConfig } from '../../services/config';
+import { sanitizeParam } from './escaping-helpers';
 import * as AsyncHelpers from './async-helpers';
 import * as GenericHelpers from './generic-helpers';
-import { LuigiConfig } from '../../services/config';
 import * as Routing from '../../services/routing';
 
 export const getLastNodeObject = pathData => {
@@ -141,23 +142,6 @@ export const substituteViewUrl = (viewUrl, componentData) => {
     nodeParamsVarPrefix
   );
   return viewUrl;
-};
-
-export const sanitizeHtml = text => {
-  return text
-    .replace(/&/g, '&amp;')
-    .replace(/</g, '&lt;')
-    .replace(/>/g, '&gt;')
-    .replace(/&lt;br&gt;/g, '<br>');
-};
-
-export const sanitizeParam = param => {
-  return String(param)
-    .replace(/</g, '&lt;')
-    .replace(/>/g, '&gt;')
-    .replace(/"/g, '&quot;')
-    .replace(/'/g, '&#39;')
-    .replace(/\//g, '&sol;');
 };
 
 export const sanitizeParams = paramsMap => {
