@@ -188,7 +188,7 @@
         internal: JSON.stringify(component.prepareInternalData(config.modal)),
         authData: AuthHelpers.getStoredAuthData()
       },
-      config.iframe.viewDomain
+      config.iframe.trustedDomain
     );
   };
 
@@ -239,16 +239,17 @@
     };
   };
 
-  const checkIfMessageComesFromSameDomain = async (domain) => {
+  const checkIfMessageComesFromSameDomain = async (domain, iframe) => {
     const path = Routing.getCurrentPath();
     const pathData = await Navigation.getNavigationPath(
       LuigiConfig.getConfigValueAsync('navigation.nodes'),
       path
     );
-    const currentNavigationPath = pathData.navigationPath[pathData.navigationPath.length - 1];
-    const currentViewUrl = currentNavigationPath.viewUrl;
-    const sameDomain = currentViewUrl && (currentViewUrl.startsWith(domain) || currentViewUrl.startsWith('/'));
-    return sameDomain;
+    if (pathData && pathData.navigationPath && pathData.navigationPath[pathData.navigationPath.length - 1].viewUrl) {
+      const currentViewUrl = pathData.navigationPath[pathData.navigationPath.length - 1].viewUrl;
+      const sameDomain = currentViewUrl && (currentViewUrl.startsWith(domain) || currentViewUrl.startsWith('/'));
+      iframe.trustedDomain = domain;
+    }
   };
 
   export default {
@@ -316,16 +317,14 @@
           }
         });
         window.addEventListener('message', async e => {
-          const eventDomain = e.origin;
-          const isSameDomain = await checkIfMessageComesFromSameDomain(eventDomain);
           const allIframes = Iframe.getAllIframes(node);
-          if (isSameDomain && allIframes.length > 0) {
-            const checkIfMessageComesFromRegisteredIframe = (iframe) => {
-              return (e.source === iframe.contentWindow || (this.get().modalIframe && e.source === this.get().modalIframe.contentWindow))
-            }
-            const iframe = allIframes.find(checkIfMessageComesFromRegisteredIframe);
-            if (iframe) {
-              iframe.viewDomain = eventDomain;
+          const getTargetIframe = (iframe) => {
+            return (e.source === iframe.contentWindow || (this.get().modalIframe && e.source === this.get().modalIframe.contentWindow))
+          }
+          const iframe = allIframes.find(getTargetIframe);
+          if (iframe) {
+            await checkIfMessageComesFromSameDomain(e.origin, iframe);
+            if(iframe.trustedDomain) {
               if ('luigi.get-context' === e.data.msg) {
                 if (
                   this.get().modalIframe &&
@@ -446,7 +445,7 @@
                       pathExists: pathData.isExistingRoute
                     }
                   },
-                  iframe.viewDomain
+                  iframe.trustedDomain
                 );
               }
 
@@ -551,7 +550,7 @@
               msg: 'luigi.ux.confirmationModal.hide',
               data: { confirmed: result }
             },
-            iframe.viewDomain
+            iframe.trustedDomain
           );
         }
       },
@@ -658,7 +657,7 @@
             {
               msg: 'luigi.ux.alert.hide'
             },
-            iframe.viewDomain
+            iframe.trustedDomain
           );
         }
       }
