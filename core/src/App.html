@@ -241,9 +241,13 @@
     };
   };
 
-  const checkIfMessageComesFromSameDomain = (domain, iframe) => {
+  const checkIfUrlMatchesTheDomain = (viewUrl, domain) => {
+    return viewUrl && (viewUrl.startsWith(domain) || viewUrl.startsWith('/'));
+  }
+
+  const checkIfIframeIsSameDomain = (iframe, domain) => {
     if (iframe.luigiViewUrl) {
-      const sameDomain = iframe.luigiViewUrl && (iframe.luigiViewUrl.startsWith(domain) || iframe.luigiViewUrl.startsWith('/'));
+      const sameDomain = checkIfUrlMatchesTheDomain(iframe.luigiViewUrl, domain);
       iframe.trustedDomain = sameDomain ? domain : '';
       return sameDomain;
     }
@@ -322,13 +326,13 @@
           if (iframe && iframe.luigiViewUrl) {
 
             if ('luigi.navigate.ok' === e.data.msg) {
-              if (iframe.luigiNextViewUrl) {
+              if (iframe.luigiNextViewUrl && checkIfUrlMatchesTheDomain(iframe.luigiNextViewUrl, e.origin)) {
                 iframe.luigiViewUrl = iframe.luigiNextViewUrl
               }
               config.navigateOk = true;
             }
 
-            const sameDomain = checkIfMessageComesFromSameDomain(e.origin, iframe);
+            const sameDomain = checkIfIframeIsSameDomain(iframe, e.origin);
             if (!sameDomain) return;
 
             if ('luigi.get-context' === e.data.msg) {
