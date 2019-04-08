@@ -252,7 +252,7 @@ const LuigiClient = {
        * @param {boolean} [preserveView] preserve a view by setting it to `true`. It keeps the current view opened in the background and opens the new route in a new frame. Use the {@link #goBack goBack()} function to navigate back. You can use this feature across different levels. Preserved views are discarded as soon as the standard {@link #navigate navigate()} function is used instead of {@link #goBack goBack()}
        * @param {Object} [modalSettings] opens a view in a modal. Use these settings to configure the modal's title and size
        * @param {string} modalSettings.title modal title. By default, it is the node label. If there is no label, it is left empty
-       * @param {('l'|'m'|'s')} [modalSettings.size=l] size of the modal
+       * @param {('l'|'m'|'s')} [modalSettings.size="l"] size of the modal
        * @example
        * LuigiClient.linkManager().navigate('/overview')
        * LuigiClient.linkManager().navigate('users/groups/stakeholders')
@@ -286,7 +286,7 @@ const LuigiClient = {
        * @param {string} path navigation path
        * @param {Object} [modalSettings] opens a view in a modal. Use these settings to configure the modal's title and size
        * @param {string} modalSettings.title modal title. By default, it is the node label. If there is no label, it is left empty
-       * @param {('l'|'m'|'s')} [modalSettings.size=l] size of the modal
+       * @param {('l'|'m'|'s')} [modalSettings.size="l"] size of the modal
        * @example
        * LuigiClient.linkManager().openAsModal('projects/pr1/users', {title:'Users', size:'m'});
        */
@@ -487,10 +487,10 @@ const LuigiClient = {
       /**
        * Shows a confirmation modal.
        * @param {Object} [settings] the settings the confirmation modal. If no value is provided for any of the fields, a default value is set for it
-       * @param {string} [settings.header=Confirmation] the content of the modal header
-       * @param {string} [settings.body=Are you sure you want to do this?] the content of the modal body
-       * @param {string} [settings.buttonConfirm=Yes] the label for the modal confirm button
-       * @param {string} [settings.buttonDismiss=No] the label for the modal dismiss button
+       * @param {string} [settings.header="Confirmation"] the content of the modal header
+       * @param {string} [settings.body="Are you sure you want to do this?"] the content of the modal body
+       * @param {string} [settings.buttonConfirm="Yes"] the label for the modal confirm button
+       * @param {string} [settings.buttonDismiss="No"] the label for the modal dismiss button
        * @returns {promise} which is resolved when accepting the confirmation modal and rejected when dismissing it
        */
       showConfirmationModal: function showConfirmationModal(settings) {
