@@ -83,6 +83,7 @@
     }
     const iframe = document.createElement('iframe');
     iframe.src = viewUrl;
+    iframe.luigiViewUrl = viewUrl;
     const iframeCtn = document.querySelector('.iframeModalCtn');
     iframeCtn.appendChild(iframe);
     return iframe;
