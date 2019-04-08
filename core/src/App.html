@@ -319,7 +319,7 @@
         });
         window.addEventListener('message', async e => {
           const allIframes = Iframe.getAllIframes(node, this.get().modalIframe);
-          const isOriginWindow = (iframe) => iframe && e.source === iframe.contentWindow;
+          const isOriginWindow = (iframe) => iframe && (e.source === iframe.contentWindow || e.source === window);
           const iframe = allIframes.find(isOriginWindow);
           if (!iframe || !iframe.luigiViewUrl) return;
 
