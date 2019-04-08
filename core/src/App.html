@@ -318,13 +318,9 @@
           }
         });
         window.addEventListener('message', async e => {
-          const allIframes = Iframe.getAllIframes(node);
-          const isOriginWindow = (iframe) => e.source === iframe.contentWindow;
-          const isOriginModal = () => this.get().modalIframe && e.source === this.get().modalIframe.contentWindow;
-          const getTargetIframe = (iframe) => {
-            return (isOriginWindow(iframe) || isOriginModal())
-          }
-          const iframe = allIframes.find(getTargetIframe);
+          const allIframes = Iframe.getAllIframes(node, this.get().modalIframe);
+          const isOriginWindow = (iframe) => iframe && e.source === iframe.contentWindow;
+          const iframe = allIframes.find(isOriginWindow);
           if (!iframe || !iframe.luigiViewUrl) return;
 
           if ('luigi.navigate.ok' === e.data.msg) {
@@ -338,12 +334,12 @@
           if (!sameDomain) return;
 
           if ('luigi.get-context' === e.data.msg) {
-            if (isOriginModal()) {
+            if (isOriginWindow(this.get().modalIframe)) {
               let ctx = this.get().modalIframeData.context;
               const modalConfig = {
                 ...config,
                 iframe: this.get().modalIframe,
-                context: ctx,
+                context: ctx, 
                 pathParams: this.get().modalIframeData.pathParams,
                 nodeParams: this.get().modalIframeData.nodeParams,
                 modal: true

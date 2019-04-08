@@ -11,8 +11,10 @@ export const getActiveIframe = node => {
   return node.firstChild;
 };
 
-export const getAllIframes = node => {
-  return node.children ? Array.from(node.children) : [];
+export const getAllIframes = (node, modalIframe) => {
+  const iframes = node.children ? Array.from(node.children) : [];
+  if (modalIframe) iframes.push(modalIframe);
+  return iframes;
 };
 
 export const setActiveIframeToPrevious = node => {
