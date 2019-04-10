@@ -83,7 +83,8 @@
     }
     const iframe = document.createElement('iframe');
     iframe.src = viewUrl;
-    iframe.luigiViewUrl = viewUrl;
+    iframe.luigi = iframe.luigi || {};
+    iframe.luigi.viewUrl =  viewUrl ;
     const iframeCtn = document.querySelector('.iframeModalCtn');
     iframeCtn.appendChild(iframe);
     return iframe;

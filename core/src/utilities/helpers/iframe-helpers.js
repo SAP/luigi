@@ -122,7 +122,7 @@ export const ulrMatchesTheDomain = (viewUrl, domain) => {
 };
 
 export const iframeIsSameDomain = (iframe, domain) => {
-  const sameDomain = ulrMatchesTheDomain(iframe.luigiViewUrl, domain);
-  iframe.trustedDomain = sameDomain ? domain : '';
+  const sameDomain = ulrMatchesTheDomain(iframe.luigi.viewUrl, domain);
+  iframe.luigi.trustedDomain = sameDomain ? domain : '';
   return sameDomain;
 };

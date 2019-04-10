@@ -170,7 +170,7 @@
       console.info('iframe does not exist, not able to send context.');
       return;
     }
-    if(!config.iframe.trustedDomain) return;
+    if(!(config.iframe.luigi && config.iframe.luigi.trustedDomain)) return;
     config.iframe.contentWindow.postMessage(
       {
         msg: 'luigi.init',
@@ -190,7 +190,7 @@
         internal: JSON.stringify(component.prepareInternalData(config.modal)),
         authData: AuthHelpers.getStoredAuthData()
       },
-      config.iframe.trustedDomain
+      config.iframe.luigi.trustedDomain
     );
   };
 
@@ -201,13 +201,13 @@
       );
       return;
     }
-    if(!iframe.trustedDomain) return;
+    if(!(iframe.luigi && iframe.luigi.trustedDomain)) return;
     iframe.contentWindow.postMessage(
       {
         msg: 'luigi.auth.tokenIssued',
         authData
       },
-      iframe.trustedDomain
+      iframe.luigi.trustedDomain
     );
   };
 
@@ -310,11 +310,11 @@
           const allIframes = Iframe.getAllIframes(node, this.get().modalIframe);
           const isOriginWindow = (iframe) => iframe && (e.source === iframe.contentWindow || e.source === window);
           const iframe = allIframes.find(isOriginWindow);
-          if (!iframe || !iframe.luigiViewUrl) return;
+          if (!(iframe && iframe.luigi && iframe.luigi.viewUrl)) return;
 
           if ('luigi.navigate.ok' === e.data.msg) {
-            if (iframe.luigiNextViewUrl && iFrameHelpers.ulrMatchesTheDomain(iframe.luigiNextViewUrl, e.origin)) {
-              iframe.luigiViewUrl = iframe.luigiNextViewUrl
+            if (iframe.luigi.nextViewUrl && iFrameHelpers.ulrMatchesTheDomain(iframe.luigi.nextViewUrl, e.origin)) {
+              iframe.luigi.viewUrl = iframe.luigi.nextViewUrl
             }
             config.navigateOk = true;
           }
@@ -434,7 +434,7 @@
                   pathExists: pathData.isExistingRoute
                 }
               },
-              iframe.trustedDomain
+              iframe.luigi.trustedDomain
             );
           }
 
@@ -532,13 +532,13 @@
           const iframe = Iframe.getActiveIframe(
             this.get().contentNode
           );
-          if(!iframe.trustedDomain) return;
+          if(!(iframe.luigi && iframe.luigi.trustedDomain)) return;
           iframe.contentWindow.postMessage(
             {
               msg: 'luigi.ux.confirmationModal.hide',
               data: { confirmed: result }
             },
-            iframe.trustedDomain
+            iframe.luigi.trustedDomain
           );
         }
       },
@@ -641,12 +641,12 @@
           const iframe = Iframe.getActiveIframe(
             this.get().contentNode
           );
-          if(!iframe.trustedDomain) return;
+          if(!(iframe.luigi && iframe.luigi.trustedDomain)) return;
           iframe.contentWindow.postMessage(
             {
               msg: 'luigi.ux.alert.hide'
             },
-            iframe.trustedDomain
+            iframe.luigi.trustedDomain
           );
         }
       }
