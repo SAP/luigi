@@ -242,7 +242,11 @@
   };
 
   const checkIfUrlMatchesTheDomain = (viewUrl, domain) => {
-    return viewUrl && (viewUrl.startsWith(domain) || viewUrl.startsWith('/'));
+    if (viewUrl.startsWith('/')) {
+      return domain === window.location.origin;
+    } else {
+      return viewUrl.startsWith(domain);
+    }
   };
 
   const checkIfIframeIsSameDomain = (iframe, domain) => {
@@ -431,7 +435,6 @@
           }
 
           if ('luigi.navigation.pathExists' === e.data.msg) {
-            if(!iframe.trustedDomain) return;
             const data = e.data.data;
             const path = buildPath(this, data);
             const pathData = await Navigation.getNavigationPath(

@@ -98,6 +98,9 @@ export const navigateIframe = (config, component, node) => {
     const goBackContext = component.get().goBackContext;
     config.iframe.style.display = 'block';
     config.iframe.luigiNextViewUrl = viewUrl;
+    const trustedDomain = config.iframe.luigiViewUrl.startsWith('/')
+      ? window.location.origin
+      : new URL(config.iframe.luigiViewUrl).origin;
     config.iframe.contentWindow.postMessage(
       {
         msg: 'luigi.navigate',
@@ -109,7 +112,7 @@ export const navigateIframe = (config, component, node) => {
         pathParams: JSON.stringify(Object.assign({}, componentData.pathParams)),
         internal: JSON.stringify(component.prepareInternalData())
       },
-      '*'
+      trustedDomain
     );
     // clear goBackContext and reset navigateBack after sending it to the client
     component.set({ goBackContext: undefined, isNavigateBack: false });

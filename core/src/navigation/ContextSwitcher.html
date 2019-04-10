@@ -115,7 +115,7 @@
         const iframes = document.querySelectorAll('.iframeContainer iframe');
         if(iframes && iframes.length > 0) {
           iframes.forEach(iframe => {
-            if (iframe.contentWindow === e.source) {
+            if (iframe.contentWindow === e.source || window === e.source) {
               if (e.data && e.data.msg === 'luigi.refresh-context-switcher') {
                 this.set({ options: null });
                 this.fetchOptions();
