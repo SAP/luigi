@@ -104,3 +104,25 @@ export const getVisibleIframes = () => {
     .call(document.querySelectorAll('iframe'))
     .filter(item => item.style.display !== 'none');
 };
+
+export const getValidIframe = (event, window) => {
+  const iframes = document.querySelectorAll('.iframeContainer iframe');
+  const isOriginWindow = iframe =>
+    iframe &&
+    (event.source === iframe.contentWindow || event.source === window);
+  return Array.from(iframes).find(isOriginWindow);
+};
+
+export const ulrMatchesTheDomain = (viewUrl, domain) => {
+  if (viewUrl.startsWith('/')) {
+    return domain === window.location.origin;
+  } else {
+    return viewUrl.startsWith(domain);
+  }
+};
+
+export const iframeIsSameDomain = (iframe, domain) => {
+  const sameDomain = ulrMatchesTheDomain(iframe.luigiViewUrl, domain);
+  iframe.trustedDomain = sameDomain ? domain : '';
+  return sameDomain;
+};

@@ -2,6 +2,7 @@
 
 <script type="text/javascript">
   import { LuigiConfig } from './services/config.js';
+  import * as iFrameHelpers from './utilities/helpers/iframe-helpers.js';
   export default {
     data() {
       return {
@@ -16,18 +17,12 @@
       if (!backdropDisabled) {
         this.setBackdropClass();
         window.addEventListener('message', e => {
-          const iframes = document.querySelectorAll('.iframeContainer iframe');
-          if(iframes && iframes.length > 0) {
-            iframes.forEach(iframe => {
-              if (iframe.contentWindow === e.source || window === e.source) {
-                if ('luigi.add-backdrop' === e.data.msg) {
-                  this.set({ backdropActive: true });
-                }
-                if ('luigi.remove-backdrop' === e.data.msg) {
-                  this.set({ backdropActive: false });
-                }
-              }
-            })
+          if(!iFrameHelpers.getValidIframe(e, window)) return;
+          if ('luigi.add-backdrop' === e.data.msg) {
+            this.set({ backdropActive: true });
+          }
+          if ('luigi.remove-backdrop' === e.data.msg) {
+            this.set({ backdropActive: false });
           }
         });
       }

@@ -62,6 +62,7 @@
   import * as RoutingHelpers from './utilities/helpers/routing-helpers';
   import * as GenericHelpers from './utilities/helpers/generic-helpers';
   import * as AuthHelpers from './utilities/helpers/auth-helpers';
+  import * as iFrameHelpers from './utilities/helpers/iframe-helpers';
 
   const removeQueryParams = str => str.split('?')[0];
 
@@ -241,22 +242,6 @@
     };
   };
 
-  const checkIfUrlMatchesTheDomain = (viewUrl, domain) => {
-    if (viewUrl.startsWith('/')) {
-      return domain === window.location.origin;
-    } else {
-      return viewUrl.startsWith(domain);
-    }
-  };
-
-  const checkIfIframeIsSameDomain = (iframe, domain) => {
-    if (iframe.luigiViewUrl) {
-      const sameDomain = checkIfUrlMatchesTheDomain(iframe.luigiViewUrl, domain);
-      iframe.trustedDomain = sameDomain ? domain : '';
-      return sameDomain;
-    }
-  };
-
   export default {
     data() {
       return Object.assign(
@@ -328,14 +313,13 @@
           if (!iframe || !iframe.luigiViewUrl) return;
 
           if ('luigi.navigate.ok' === e.data.msg) {
-            if (iframe.luigiNextViewUrl && checkIfUrlMatchesTheDomain(iframe.luigiNextViewUrl, e.origin)) {
+            if (iframe.luigiNextViewUrl && iFrameHelpers.ulrMatchesTheDomain(iframe.luigiNextViewUrl, e.origin)) {
               iframe.luigiViewUrl = iframe.luigiNextViewUrl
             }
             config.navigateOk = true;
           }
 
-          const sameDomain = checkIfIframeIsSameDomain(iframe, e.origin);
-          if (!sameDomain) return;
+          if (!iFrameHelpers.iframeIsSameDomain(iframe, e.origin)) return;
 
           if ('luigi.get-context' === e.data.msg) {
             if (isOriginWindow(this.get().modalIframe)) {
