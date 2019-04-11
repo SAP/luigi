@@ -82,6 +82,10 @@ export const navigateIframe = (config, component, node) => {
       config.iframe.src = viewUrl;
       config.iframe.luigi = config.iframe.luigi || {};
       config.iframe.luigi.viewUrl = viewUrl;
+      const trustedDomain = viewUrl.startsWith('/')
+        ? window.location.origin
+        : IframeHelpers.getLocation(viewUrl).origin;
+      config.iframe.luigi.trustedDomain = trustedDomain;
 
       node.insertBefore(config.iframe, node.firstChild);
 
@@ -96,7 +100,7 @@ export const navigateIframe = (config, component, node) => {
     const goBackContext = component.get().goBackContext;
     const trustedDomain = config.iframe.luigi.viewUrl.startsWith('/')
       ? window.location.origin
-      : new URL(config.iframe.luigi.viewUrl).origin;
+      : IframeHelpers.getLocation(config.iframe.luigi.viewUrl).origin;
     config.iframe.style.display = 'block';
     config.iframe.luigi.nextViewUrl = viewUrl;
     config.iframe.luigi.trustedDomain = trustedDomain;

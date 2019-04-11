@@ -301,8 +301,8 @@
           }
         });
         window.addEventListener('message', async e => {
-          const allIframes = Iframe.getAllIframes(node, this.get().modalIframe);
-          const isOriginWindow = (iframe) => iframe && (e.source === iframe.contentWindow || e.source === window);
+          const allIframes = [...Iframe.getAllIframes(node, this.get().modalIframe), {contentWindow: window, luigi: {viewUrl: window.location.href, trustedDomain: window.location.origin}}];
+          const isOriginWindow = (iframe) => iframe && (e.source === iframe.contentWindow);
           const iframe = allIframes.find(isOriginWindow);
           if (!(iframe && iframe.luigi && iframe.luigi.viewUrl)) return;
 
