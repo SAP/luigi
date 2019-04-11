@@ -66,6 +66,20 @@ describe('Iframe', () => {
     });
   });
 
+  describe('getAllIframes', () => {
+    it('should return an array of active iframes with no modal iframe', () => {
+      const iframes = Iframe.getAllIframes(node, null);
+
+      assert.equal(iframes.length, node.children.length);
+    });
+
+    it('should return an array of active iframes including active modal iframe', () => {
+      const iframes = Iframe.getAllIframes(node, {});
+
+      assert.equal(iframes.length, node.children.length + 1);
+    });
+  });
+
   it('removeInactiveIframes', () => {
     node.removeChild = sinon.spy();
     Iframe.removeInactiveIframes(node);
