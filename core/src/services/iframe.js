@@ -3,6 +3,7 @@
 import * as IframeHelpers from '../utilities/helpers/iframe-helpers';
 import * as GenericHelpers from '../utilities/helpers/generic-helpers';
 import * as RoutingHelpers from '../utilities/helpers/routing-helpers';
+import { createIframe } from '../utilities/helpers/iframe-helpers';
 
 const iframeNavFallbackTimeout = 2000;
 let timeoutHandle;
@@ -78,12 +79,7 @@ export const navigateIframe = (config, component, node) => {
         component.set({ showLoadingIndicator: false });
       }
       config.navigateOk = undefined;
-      config.iframe = document.createElement('iframe');
-      config.iframe.src = viewUrl;
-      config.iframe.luigi = config.iframe.luigi || {};
-      config.iframe.luigi.viewUrl = viewUrl;
-      const trustedIframeDomain = IframeHelpers.getLocation(viewUrl);
-      config.iframe.luigi.trustedDomain = trustedIframeDomain;
+      config.iframe = createIframe(viewUrl);
 
       node.insertBefore(config.iframe, node.firstChild);
 
@@ -96,12 +92,8 @@ export const navigateIframe = (config, component, node) => {
     }
   } else {
     const goBackContext = component.get().goBackContext;
-    const trustedIframeDomain = IframeHelpers.getLocation(
-      config.iframe.luigi.viewUrl
-    );
     config.iframe.style.display = 'block';
     config.iframe.luigi.nextViewUrl = viewUrl;
-    config.iframe.luigi.trustedDomain = trustedIframeDomain;
     const message = {
       msg: 'luigi.navigate',
       viewUrl: viewUrl,

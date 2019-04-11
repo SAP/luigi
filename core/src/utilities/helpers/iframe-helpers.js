@@ -119,13 +119,22 @@ export const urlMatchesTheDomain = (viewUrl = '', domain) => {
   return getLocation(viewUrl) === domain;
 };
 
-export const iframeIsSameDomain = (iframe, domain) => {
-  const sameDomain = urlMatchesTheDomain(iframe.luigi.viewUrl, domain);
-  iframe.luigi.trustedDomain = sameDomain ? domain : '';
-  return sameDomain;
+export const iframeIsSameDomain = (viewUrl, domain) => {
+  return urlMatchesTheDomain(viewUrl, domain);
 };
 
 export const sendMessageToIframe = (iframe, message) => {
   if (!(iframe.luigi && iframe.luigi.trustedDomain)) return;
   iframe.contentWindow.postMessage(message, iframe.luigi.trustedDomain);
+};
+
+export const createIframe = viewUrl => {
+  const iframe = document.createElement('iframe');
+  iframe.src = viewUrl;
+  const trustedIframeDomain = getLocation(viewUrl);
+  iframe.luigi = {
+    viewUrl,
+    trustedDomain: trustedIframeDomain
+  };
+  return iframe;
 };

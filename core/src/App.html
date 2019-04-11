@@ -306,15 +306,20 @@
           const iframe = allMessagesSources.find(isMessageSource);
           if (!(iframe && iframe.luigi && iframe.luigi.viewUrl)) return;
 
-          if ('luigi.navigate.ok' === e.data.msg) {
-            if (iframe.luigi.nextViewUrl && iFrameHelpers.urlMatchesTheDomain(iframe.luigi.nextViewUrl, e.origin)) {
-              iframe.luigi.viewUrl = iframe.luigi.nextViewUrl;
-              iframe.luigi.nextViewUrl = '';
-            }
+          const navigateOkMsg = 'luigi.navigate.ok' === e.data.msg;
+          if (navigateOkMsg && !iframe.luigi.nextViewUrl) return;
+          const viewUrl = navigateOkMsg ? iframe.luigi.nextViewUrl : iframe.luigi.viewUrl;
+          console.log("viewUrl : " + viewUrl);
+          console.log("e.origin: " + e.origin);
+
+          if (!iFrameHelpers.iframeIsSameDomain(viewUrl, e.origin)) return;
+
+          if (navigateOkMsg) {
+            iframe.luigi.viewUrl = iframe.luigi.nextViewUrl;
+            iframe.luigi.nextViewUrl = '';
+            iframe.luigi.trustedDomain = iFrameHelpers.getLocation(iframe.luigi.viewUrl);
             config.navigateOk = true;
           }
-
-          if (!iFrameHelpers.iframeIsSameDomain(iframe, e.origin)) return;
 
           if ('luigi.get-context' === e.data.msg) {
             if (isMessageSource(this.get().modalIframe)) {
