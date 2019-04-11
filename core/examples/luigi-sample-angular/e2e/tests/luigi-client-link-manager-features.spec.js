@@ -76,8 +76,13 @@ describe('Luigi client features', () => {
         .click();
       cy.expectPathToBe('/settings');
 
-      //wait for the second iFrame to be loaded
+      //wait for the alert coming from an inactive iFrame to be shown and second iFrame to be loaded
       cy.wait(500);
+      cy.get('.fd-alert').should(
+        'contain',
+        'Information alert sent from an inactive iFrame'
+      );
+
       cy.get('iframe')
         .first()
         .then($preserveViewiFrame => {
