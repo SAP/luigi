@@ -309,8 +309,6 @@
           const navigateOkMsg = 'luigi.navigate.ok' === e.data.msg;
           if (navigateOkMsg && !iframe.luigi.nextViewUrl) return;
           const viewUrl = navigateOkMsg ? iframe.luigi.nextViewUrl : iframe.luigi.viewUrl;
-          console.log("viewUrl : " + viewUrl);
-          console.log("e.origin: " + e.origin);
 
           if (!iFrameHelpers.iframeIsSameDomain(viewUrl, e.origin)) return;
 
