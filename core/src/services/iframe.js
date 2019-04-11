@@ -87,11 +87,8 @@ export const navigateIframe = (config, component, node) => {
 
       if (config.builderCompatibilityMode) {
         config.iframe.addEventListener('load', () => {
-          window.postMessage({ msg: 'luigi.hide-loading-indicator' }, '*');
-          config.iframe.contentWindow.postMessage(
-            ['init', JSON.stringify(componentData.context)],
-            '*'
-          );
+          const message = ['init', JSON.stringify(componentData.context)];
+          IframeHelpers.sendPostMessage(config.iframe, message);
         });
       }
     }
