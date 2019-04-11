@@ -113,7 +113,7 @@
       }
 
       window.addEventListener('message', e => {
-        if (!iFrameHelpers.getValidMessagesSource(e, window)) return;
+        if (!iFrameHelpers.isValidMessageSource(e)) return;
         if (e.data && e.data.msg === 'luigi.refresh-context-switcher') {
           this.set({ options: null });
           this.fetchOptions();

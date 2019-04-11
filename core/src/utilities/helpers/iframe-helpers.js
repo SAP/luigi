@@ -105,20 +105,14 @@ export const getVisibleIframes = () => {
     .filter(item => item.style.display !== 'none');
 };
 
-export const getValidMessagesSource = (event, window) => {
-  const allMessagesSources = [
-    ...document.querySelectorAll('iframe'),
-    {
-      contentWindow: window,
-      luigi: {
-        viewUrl: window.location.href,
-        trustedDomain: window.location.origin
-      }
-    }
-  ];
+export const isValidMessageSource = event => {
+  const allMessagesSources = document.querySelectorAll('iframe');
   const isMessageSource = source =>
     source && event.source === source.contentWindow;
-  return Array.from(allMessagesSources).find(isMessageSource);
+  return (
+    Array.from(allMessagesSources).find(isMessageSource) ||
+    event.source === window
+  );
 };
 
 export const urlMatchesTheDomain = (viewUrl = '', domain) => {
