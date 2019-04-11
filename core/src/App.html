@@ -62,6 +62,7 @@
   import * as RoutingHelpers from './utilities/helpers/routing-helpers';
   import * as GenericHelpers from './utilities/helpers/generic-helpers';
   import * as AuthHelpers from './utilities/helpers/auth-helpers';
+  import * as iFrameHelpers from './utilities/helpers/iframe-helpers';
 
   const removeQueryParams = str => str.split('?')[0];
 
@@ -169,27 +170,25 @@
       console.info('iframe does not exist, not able to send context.');
       return;
     }
-    config.iframe.contentWindow.postMessage(
-      {
-        msg: 'luigi.init',
-        context: JSON.stringify(
-          Object.assign(
-            {},
-            config.context || component.get().context,
-            goBackContext
-          )
-        ),
-        nodeParams: JSON.stringify(
-          Object.assign({}, config.nodeParams || component.get().nodeParams)
-        ),
-        pathParams: JSON.stringify(
-          Object.assign({}, config.pathParams || component.get().pathParams)
-        ),
-        internal: JSON.stringify(component.prepareInternalData(config.modal)),
-        authData: AuthHelpers.getStoredAuthData()
-      },
-      '*'
-    );
+    const message = {
+      msg: 'luigi.init',
+      context: JSON.stringify(
+        Object.assign(
+          {},
+          config.context || component.get().context,
+          goBackContext
+        )
+      ),
+      nodeParams: JSON.stringify(
+        Object.assign({}, config.nodeParams || component.get().nodeParams)
+      ),
+      pathParams: JSON.stringify(
+        Object.assign({}, config.pathParams || component.get().pathParams)
+      ),
+      internal: JSON.stringify(component.prepareInternalData(config.modal)),
+      authData: AuthHelpers.getStoredAuthData()
+    };
+    iFrameHelpers.sendMessageToIframe(config.iframe, message);
   };
 
   const sendAuthDataToClient = (iframe, authData) => {
@@ -199,13 +198,11 @@
       );
       return;
     }
-    iframe.contentWindow.postMessage(
-      {
-        msg: 'luigi.auth.tokenIssued',
-        authData
-      },
-      '*'
-    );
+    const message = {
+      msg: 'luigi.auth.tokenIssued',
+      authData
+    };
+    iFrameHelpers.sendMessageToIframe(iframe, message);
   };
 
   const getDefaultAlertData = () => {
@@ -306,22 +303,29 @@
           }
         });
         window.addEventListener('message', async e => {
+
+          const iframe = this.getValidMessageSource(e);
+          if (!iframe) return;
+
+          if ('luigi.navigate.ok' === e.data.msg) {
+            iframe.luigi.viewUrl = iframe.luigi.nextViewUrl;
+            iframe.luigi.nextViewUrl = '';
+            config.navigateOk = true;
+          }
+
           if ('luigi.get-context' === e.data.msg) {
-            if (
-              this.get().modalIframe &&
-              e.source === this.get().modalIframe.contentWindow
-            ) {
+            if (iFrameHelpers.isMessageSource(e, this.get().modalIframe)) {
               let ctx = this.get().modalIframeData.context;
               const modalConfig = {
                 ...config,
                 iframe: this.get().modalIframe,
-                context: ctx,
+                context: ctx, 
                 pathParams: this.get().modalIframeData.pathParams,
                 nodeParams: this.get().modalIframeData.nodeParams,
                 modal: true
               };
               sendContextToClient(this, modalConfig, {});
-            } else if (config.iframe) {
+            } else {
               sendContextToClient(this, config, {});
 
               const loadingIndicatorAutoHideEnabled =
@@ -341,10 +345,6 @@
 
           if ('luigi.hide-loading-indicator' === e.data.msg) {
             this.set({ showLoadingIndicator: false });
-          }
-
-          if ('luigi.navigate.ok' === e.data.msg) {
-            config.navigateOk = true;
           }
 
           if ('luigi.navigation.open' === e.data.msg) {
@@ -368,10 +368,7 @@
           }
 
           if ('luigi.navigation.back' === e.data.msg) {
-            if (
-              this.get().modalIframe &&
-              e.source === this.get().modalIframe.contentWindow
-            ) {
+            if (iFrameHelpers.isMessageSource(e, this.get().modalIframe)) {
               this.closeModal();
               sendContextToClient(this, config, {
                 goBackContext:
@@ -407,8 +404,8 @@
             }
           }
 
-          if ('luigi.auth.tokenIssued' === e.data.msg && config.iframe) {
-            sendAuthDataToClient(config.iframe, e.data.authData);
+          if ('luigi.auth.tokenIssued' === e.data.msg && iframe) {
+            sendAuthDataToClient(iframe, e.data.authData);
           }
 
           if ('luigi.navigation.pathExists' === e.data.msg) {
@@ -418,17 +415,14 @@
               LuigiConfig.getConfigValueAsync('navigation.nodes'),
               path
             );
-
-            config.iframe.contentWindow.postMessage(
-              {
-                msg: 'luigi.navigation.pathExists.answer',
-                data: {
-                  correlationId: data.id,
-                  pathExists: pathData.isExistingRoute
-                }
-              },
-              '*'
-            );
+            const message = {
+              msg: 'luigi.navigation.pathExists.answer',
+              data: {
+                correlationId: data.id,
+                pathExists: pathData.isExistingRoute
+              }
+            };
+            iFrameHelpers.sendMessageToIframe(iframe, message);
           }
 
           if ('luigi.set-page-dirty' === e.data.msg) {
@@ -457,8 +451,7 @@
                 getDefaultConfirmationModalData()
               )
             );
-            this.showModal(settings, true).then(
-              () => {},
+            this.showModal(settings, true).catch(
               () => {
                 /* keep it to avoid runtime errors in browser console */
               }
@@ -476,8 +469,7 @@
             this.set(
               Object.assign({ contentNode: node }, getDefaultAlertData())
             );
-            this.showAlert(settings, true).then(
-              () => {},
+            this.showAlert(settings, true).catch(
               () => {
                 /* keep it to avoid runtime errors in browser console */
               }
@@ -493,6 +485,26 @@
       }
     },
     methods: {
+      getValidMessageSource(e) {
+        const allMessagesSources = [...Iframe.getAllIframes(this.get().modalIframe), {contentWindow: window, luigi: {viewUrl: window.location.href}}];
+        const iframe = allMessagesSources.find((iframe) => iFrameHelpers.isMessageSource(e, iframe));
+
+        if (!iframe || !iframe.luigi || !iframe.luigi.viewUrl) {
+          return undefined;
+        }
+
+        const navigateOkMsg = 'luigi.navigate.ok' === e.data.msg;
+        if (navigateOkMsg && !iframe.luigi.nextViewUrl) {
+          return undefined;
+        }
+
+        const viewUrl = navigateOkMsg ? iframe.luigi.nextViewUrl : iframe.luigi.viewUrl;
+        if (!iFrameHelpers.iframeIsSameDomain(viewUrl, e.origin)) {
+          return undefined;
+        }
+
+        return iframe;
+      },
       handleNavigation(data, config) {
         let path = buildPath(this, data.params);
         path = GenericHelpers.addLeadingSlash(path);
@@ -524,15 +536,14 @@
         this.set(getDefaultConfirmationModalData());
 
         if (openFromClient) {
-          Iframe.getActiveIframe(
+          const iframe = Iframe.getActiveIframe(
             this.get().contentNode
-          ).contentWindow.postMessage(
-            {
-              msg: 'luigi.ux.confirmationModal.hide',
-              data: { confirmed: result }
-            },
-            '*'
           );
+          const message = {
+            msg: 'luigi.ux.confirmationModal.hide',
+            data: { confirmed: result }
+          };
+          iFrameHelpers.sendMessageToIframe(iframe, message);
         }
       },
       getUnsavedChangesModalPromise(source) {
@@ -631,14 +642,13 @@
         this.set(getDefaultAlertData());
 
         if (openFromClient) {
-          Iframe.getActiveIframe(
+          const iframe = Iframe.getActiveIframe(
             this.get().contentNode
-          ).contentWindow.postMessage(
-            {
-              msg: 'luigi.ux.alert.hide'
-            },
-            '*'
           );
+          const message = {
+            msg: 'luigi.ux.alert.hide'
+          };
+          iFrameHelpers.sendMessageToIframe(iframe, message);
         }
       }
     },

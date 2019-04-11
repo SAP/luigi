@@ -60,6 +60,19 @@ export class ProjectComponent implements OnInit, OnDestroy {
     }
   }
 
+  navigateAndShowAlert() {
+    linkManager().navigate('/settings', null, true);
+
+    const type: any = 'info';
+    setTimeout(() => {
+      const settings = {
+        text: 'Information alert sent from an inactive iFrame',
+        type
+      };
+      uxManager().showAlert(settings);
+    }, 2000);
+  }
+
   public ngOnInit() {
     // We suggest to use a centralized approach of LuigiClient.addContextUpdateListener
     // Take a look at ngOnInit in this component and app.component.ts where we set the listeners.

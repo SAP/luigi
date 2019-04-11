@@ -81,7 +81,7 @@ describe('Routing', () => {
                 style: {
                   display: null
                 },
-                viewUrl: '{context.varA1}/a1.html#p={nodeParams.param1}'
+                viewUrl: '/{context.varA1}/a1.html#p={nodeParams.param1}'
               },
               {
                 pathSegment: 'a2',
@@ -99,14 +99,14 @@ describe('Routing', () => {
                     style: {
                       display: null
                     },
-                    viewUrl: 't1.html'
+                    viewUrl: '/t1.html'
                   },
                   {
                     pathSegment: 't2',
                     style: {
                       display: null
                     },
-                    viewUrl: 't2.html'
+                    viewUrl: '/t2.html'
                   }
                 ],
                 style: {}
@@ -116,11 +116,11 @@ describe('Routing', () => {
                 children: [
                   {
                     pathSegment: ':category',
-                    viewUrl: 'cats/:category#details',
+                    viewUrl: '/cats/:category#details',
                     children: [
                       {
                         pathSegment: ':sub',
-                        viewUrl: 'cats/:category/:sub',
+                        viewUrl: '/cats/:category/:sub',
                         style: {}
                       }
                     ]
@@ -266,8 +266,8 @@ describe('Routing', () => {
     it('should set component data with hash path and node params', async () => {
       // given
       const path = '#/projects/a1?~param1=tets';
-      const expectedViewUrl = '{context.varA1}/a1.html#p={nodeParams.param1}';
-      const expectedProcessedViewUrl = 'maskopatol/a1.html#p=tets';
+      const expectedViewUrl = '/{context.varA1}/a1.html#p={nodeParams.param1}';
+      const expectedProcessedViewUrl = '/maskopatol/a1.html#p=tets';
 
       // when
       const iframeMock = { src: null };
@@ -316,7 +316,7 @@ describe('Routing', () => {
     it('should set component data with path param', async () => {
       // given
       const path = '#/projects/categories/cat1';
-      const expectedViewUrl = 'cats/cat1#details';
+      const expectedViewUrl = '/cats/cat1#details';
 
       // when
       const iframeMock = { src: null };
@@ -339,7 +339,7 @@ describe('Routing', () => {
     it('should set component data with multiple path params', async () => {
       // given
       const path = '#/projects/categories/cat1/sub23';
-      const expectedViewUrl = 'cats/cat1/sub23';
+      const expectedViewUrl = '/cats/cat1/sub23';
 
       // when
       const iframeMock = { src: null };
