@@ -88,7 +88,7 @@ describe('Routing', () => {
                 style: {
                   display: null
                 },
-                viewUrl: '/{context.varA2}/a2.html#p={nodeParams.param2}'
+                viewUrl: '{context.varA2}/a2.html#p={nodeParams.param2}'
               },
               {
                 pathSegment: 'teams',
@@ -241,7 +241,7 @@ describe('Routing', () => {
       docMock
         .expects('createElement')
         .returns({ src: null })
-        .once();
+        .twice();
 
       await routing.handleRouteChange(
         path,
@@ -291,8 +291,8 @@ describe('Routing', () => {
     it('should set component data with hash path and clear unused context/node params', async () => {
       // given
       const path = '#/projects/a2?~param1=tets';
-      const expectedViewUrl = '/{context.varA2}/a2.html#p={nodeParams.param2}';
-      const expectedProcessedViewUrl = '//a2.html#p=';
+      const expectedViewUrl = '{context.varA2}/a2.html#p={nodeParams.param2}';
+      const expectedProcessedViewUrl = '/a2.html#p=';
 
       // when
       const iframeMock = { src: null };

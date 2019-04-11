@@ -94,7 +94,7 @@ export const hasIframeIsolation = component => {
 };
 
 export const getLocation = url => {
-  var element = document.createElement('a');
+  const element = document.createElement('a');
   element.href = url;
   return element.origin;
 };
@@ -116,11 +116,7 @@ export const isValidMessageSource = event => {
 };
 
 export const urlMatchesTheDomain = (viewUrl = '', domain) => {
-  if (viewUrl.startsWith('/')) {
-    return domain === window.location.origin;
-  } else {
-    return viewUrl.startsWith(domain);
-  }
+  return getLocation(viewUrl) === domain;
 };
 
 export const iframeIsSameDomain = (iframe, domain) => {
