@@ -126,3 +126,8 @@ export const iframeIsSameDomain = (iframe, domain) => {
   iframe.luigi.trustedDomain = sameDomain ? domain : '';
   return sameDomain;
 };
+
+export const sendPostMessage = (iframe, message) => {
+  if (!(iframe.luigi && iframe.luigi.trustedDomain)) return;
+  iframe.contentWindow.postMessage(message, iframe.luigi.trustedDomain);
+};

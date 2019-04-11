@@ -97,24 +97,23 @@ export const navigateIframe = (config, component, node) => {
     }
   } else {
     const goBackContext = component.get().goBackContext;
-    config.iframe.style.display = 'block';
-    config.iframe.luigi.nextViewUrl = viewUrl;
     const trustedDomain = config.iframe.luigi.viewUrl.startsWith('/')
       ? window.location.origin
       : new URL(config.iframe.luigi.viewUrl).origin;
-    config.iframe.contentWindow.postMessage(
-      {
-        msg: 'luigi.navigate',
-        viewUrl: viewUrl,
-        context: JSON.stringify(
-          Object.assign({}, componentData.context, { goBackContext })
-        ),
-        nodeParams: JSON.stringify(Object.assign({}, componentData.nodeParams)),
-        pathParams: JSON.stringify(Object.assign({}, componentData.pathParams)),
-        internal: JSON.stringify(component.prepareInternalData())
-      },
-      trustedDomain
-    );
+    config.iframe.style.display = 'block';
+    config.iframe.luigi.nextViewUrl = viewUrl;
+    config.iframe.luigi.trustedDomain = trustedDomain;
+    const message = {
+      msg: 'luigi.navigate',
+      viewUrl: viewUrl,
+      context: JSON.stringify(
+        Object.assign({}, componentData.context, { goBackContext })
+      ),
+      nodeParams: JSON.stringify(Object.assign({}, componentData.nodeParams)),
+      pathParams: JSON.stringify(Object.assign({}, componentData.pathParams)),
+      internal: JSON.stringify(component.prepareInternalData())
+    };
+    IframeHelpers.sendPostMessage(config.iframe, message);
     // clear goBackContext and reset navigateBack after sending it to the client
     component.set({ goBackContext: undefined, isNavigateBack: false });
 
