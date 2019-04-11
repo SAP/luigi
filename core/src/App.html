@@ -301,7 +301,7 @@
           }
         });
         window.addEventListener('message', async e => {
-          const allMessagesSources = [...Iframe.getAllIframes(node, this.get().modalIframe), {contentWindow: window, luigi: {viewUrl: window.location.href, trustedDomain: window.location.origin}}];
+          const allMessagesSources = [...Iframe.getAllIframes(node, this.get().modalIframe), {contentWindow: window, luigi: {viewUrl: window.location.href}}];
           const isMessageSource = (source) => source && (e.source === source.contentWindow);
           const iframe = allMessagesSources.find(isMessageSource);
           if (!(iframe && iframe.luigi && iframe.luigi.viewUrl)) return;
@@ -315,7 +315,6 @@
           if (navigateOkMsg) {
             iframe.luigi.viewUrl = iframe.luigi.nextViewUrl;
             iframe.luigi.nextViewUrl = '';
-            iframe.luigi.trustedDomain = iFrameHelpers.getLocation(iframe.luigi.viewUrl);
             config.navigateOk = true;
           }
 

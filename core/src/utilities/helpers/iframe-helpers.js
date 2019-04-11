@@ -124,17 +124,16 @@ export const iframeIsSameDomain = (viewUrl, domain) => {
 };
 
 export const sendMessageToIframe = (iframe, message) => {
-  if (!(iframe.luigi && iframe.luigi.trustedDomain)) return;
-  iframe.contentWindow.postMessage(message, iframe.luigi.trustedDomain);
+  if (!(iframe.luigi && iframe.luigi.viewUrl)) return;
+  const trustedIframeDomain = getLocation(iframe.luigi.viewUrl);
+  iframe.contentWindow.postMessage(message, trustedIframeDomain);
 };
 
 export const createIframe = viewUrl => {
   const iframe = document.createElement('iframe');
   iframe.src = viewUrl;
-  const trustedIframeDomain = getLocation(viewUrl);
   iframe.luigi = {
-    viewUrl,
-    trustedDomain: trustedIframeDomain
+    viewUrl
   };
   return iframe;
 };
