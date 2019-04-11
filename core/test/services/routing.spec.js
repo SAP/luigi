@@ -241,7 +241,7 @@ describe('Routing', () => {
       docMock
         .expects('createElement')
         .returns({ src: null })
-        .twice();
+        .once();
 
       await routing.handleRouteChange(
         path,

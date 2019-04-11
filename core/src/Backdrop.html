@@ -17,7 +17,7 @@
       if (!backdropDisabled) {
         this.setBackdropClass();
         window.addEventListener('message', e => {
-          if(!iFrameHelpers.isValidMessageSource(e)) return;
+          if(!this.root.getValidMessageSource(e)) return;
           if ('luigi.add-backdrop' === e.data.msg) {
             this.set({ backdropActive: true });
           }

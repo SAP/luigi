@@ -105,16 +105,6 @@ export const getVisibleIframes = () => {
     .filter(item => item.style.display !== 'none');
 };
 
-export const isValidMessageSource = event => {
-  const allMessagesSources = document.querySelectorAll('iframe');
-  const isMessageSource = source =>
-    source && event.source === source.contentWindow;
-  return (
-    Array.from(allMessagesSources).find(isMessageSource) ||
-    event.source === window
-  );
-};
-
 export const urlMatchesTheDomain = (viewUrl = '', domain) => {
   return getLocation(viewUrl) === domain;
 };
@@ -136,4 +126,8 @@ export const createIframe = viewUrl => {
     viewUrl
   };
   return iframe;
+};
+
+export const isMessageSource = (event, iframe) => {
+  return iframe && iframe.contentWindow === event.source;
 };

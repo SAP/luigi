@@ -12,8 +12,10 @@ export const getActiveIframe = node => {
   return node.firstChild;
 };
 
-export const getAllIframes = (node, modalIframe) => {
-  const iframes = node.children ? Array.from(node.children) : [];
+export const getAllIframes = modalIframe => {
+  const iframes = Array.from(
+    document.querySelectorAll('.iframeContainer iframe')
+  );
   if (modalIframe) iframes.push(modalIframe);
   return iframes;
 };

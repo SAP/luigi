@@ -68,15 +68,15 @@ describe('Iframe', () => {
 
   describe('getAllIframes', () => {
     it('should return an array of active iframes with no modal iframe', () => {
-      const iframes = Iframe.getAllIframes(node, null);
+      const iframes = Iframe.getAllIframes();
 
-      assert.equal(iframes.length, node.children.length);
+      assert.equal(iframes.length, 0);
     });
 
     it('should return an array of active iframes including active modal iframe', () => {
-      const iframes = Iframe.getAllIframes(node, {});
+      const iframes = Iframe.getAllIframes({});
 
-      assert.equal(iframes.length, node.children.length + 1);
+      assert.equal(iframes.length, 1);
     });
   });
 

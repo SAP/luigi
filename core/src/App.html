@@ -301,25 +301,18 @@
           }
         });
         window.addEventListener('message', async e => {
-          const allMessagesSources = [...Iframe.getAllIframes(node, this.get().modalIframe), {contentWindow: window, luigi: {viewUrl: window.location.href}}];
-          const isMessageSource = (source) => source && (e.source === source.contentWindow);
-          const iframe = allMessagesSources.find(isMessageSource);
-          if (!(iframe && iframe.luigi && iframe.luigi.viewUrl)) return;
 
-          const navigateOkMsg = 'luigi.navigate.ok' === e.data.msg;
-          if (navigateOkMsg && !iframe.luigi.nextViewUrl) return;
-          const viewUrl = navigateOkMsg ? iframe.luigi.nextViewUrl : iframe.luigi.viewUrl;
+          const iframe = this.getValidMessageSource(e);
+          if (!iframe) return;
 
-          if (!iFrameHelpers.iframeIsSameDomain(viewUrl, e.origin)) return;
-
-          if (navigateOkMsg) {
+          if ('luigi.navigate.ok' === e.data.msg) {
             iframe.luigi.viewUrl = iframe.luigi.nextViewUrl;
             iframe.luigi.nextViewUrl = '';
             config.navigateOk = true;
           }
 
           if ('luigi.get-context' === e.data.msg) {
-            if (isMessageSource(this.get().modalIframe)) {
+            if (iFrameHelpers.isMessageSource(e, this.get().modalIframe)) {
               let ctx = this.get().modalIframeData.context;
               const modalConfig = {
                 ...config,
@@ -373,7 +366,7 @@
           }
 
           if ('luigi.navigation.back' === e.data.msg) {
-            if (isMessageSource(this.get().modalIframe)) {
+            if (iFrameHelpers.isMessageSource(e, this.get().modalIframe)) {
               this.closeModal();
               sendContextToClient(this, config, {
                 goBackContext: e.data.goBackContext && JSON.parse(e.data.goBackContext)
@@ -489,6 +482,26 @@
       }
     },
     methods: {
+      getValidMessageSource(e) {
+        const allMessagesSources = [...Iframe.getAllIframes(this.get().modalIframe), {contentWindow: window, luigi: {viewUrl: window.location.href}}];
+        const iframe = allMessagesSources.find((iframe) => iFrameHelpers.isMessageSource(e, iframe));
+
+        if (!iframe || !iframe.luigi || !iframe.luigi.viewUrl) {
+          return undefined;
+        }
+
+        const navigateOkMsg = 'luigi.navigate.ok' === e.data.msg;
+        if (navigateOkMsg && !iframe.luigi.nextViewUrl) {
+          return undefined;
+        }
+
+        const viewUrl = navigateOkMsg ? iframe.luigi.nextViewUrl : iframe.luigi.viewUrl;
+        if (!iFrameHelpers.iframeIsSameDomain(viewUrl, e.origin)) {
+          return undefined;
+        }
+
+        return iframe;
+      },
       handleNavigation(data, config) {
         let path = buildPath(this, data.params);
         path = GenericHelpers.addLeadingSlash(path);
@@ -526,7 +539,7 @@
           const message = {
             msg: 'luigi.ux.confirmationModal.hide',
             data: { confirmed: result }
-          }
+          };
           iFrameHelpers.sendMessageToIframe(iframe, message);
         }
       },
