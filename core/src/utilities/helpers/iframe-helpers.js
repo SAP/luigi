@@ -113,7 +113,7 @@ export const getValidIframe = (event, window) => {
   return Array.from(iframes).find(isOriginWindow);
 };
 
-export const ulrMatchesTheDomain = (viewUrl, domain) => {
+export const urlMatchesTheDomain = (viewUrl = '', domain) => {
   if (viewUrl.startsWith('/')) {
     return domain === window.location.origin;
   } else {
@@ -122,7 +122,7 @@ export const ulrMatchesTheDomain = (viewUrl, domain) => {
 };
 
 export const iframeIsSameDomain = (iframe, domain) => {
-  const sameDomain = ulrMatchesTheDomain(iframe.luigi.viewUrl, domain);
+  const sameDomain = urlMatchesTheDomain(iframe.luigi.viewUrl, domain);
   iframe.luigi.trustedDomain = sameDomain ? domain : '';
   return sameDomain;
 };

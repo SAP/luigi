@@ -307,7 +307,7 @@
           if (!(iframe && iframe.luigi && iframe.luigi.viewUrl)) return;
 
           if ('luigi.navigate.ok' === e.data.msg) {
-            if (iframe.luigi.nextViewUrl && iFrameHelpers.ulrMatchesTheDomain(iframe.luigi.nextViewUrl, e.origin)) {
+            if (iframe.luigi.nextViewUrl && iFrameHelpers.urlMatchesTheDomain(iframe.luigi.nextViewUrl, e.origin)) {
               iframe.luigi.viewUrl = iframe.luigi.nextViewUrl;
               iframe.luigi.nextViewUrl = '';
             }
