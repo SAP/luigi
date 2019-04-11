@@ -92,7 +92,7 @@ export const navigateIframe = (config, component, node) => {
       if (config.builderCompatibilityMode) {
         config.iframe.addEventListener('load', () => {
           const message = ['init', JSON.stringify(componentData.context)];
-          IframeHelpers.sendPostMessage(config.iframe, message);
+          IframeHelpers.sendMessageToIframe(config.iframe, message);
         });
       }
     }
@@ -114,7 +114,7 @@ export const navigateIframe = (config, component, node) => {
       pathParams: JSON.stringify(Object.assign({}, componentData.pathParams)),
       internal: JSON.stringify(component.prepareInternalData())
     };
-    IframeHelpers.sendPostMessage(config.iframe, message);
+    IframeHelpers.sendMessageToIframe(config.iframe, message);
     // clear goBackContext and reset navigateBack after sending it to the client
     component.set({ goBackContext: undefined, isNavigateBack: false });
 

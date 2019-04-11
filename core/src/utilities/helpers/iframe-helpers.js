@@ -105,12 +105,20 @@ export const getVisibleIframes = () => {
     .filter(item => item.style.display !== 'none');
 };
 
-export const getValidIframe = (event, window) => {
-  const iframes = document.querySelectorAll('.iframeContainer iframe');
-  const isOriginWindow = iframe =>
-    iframe &&
-    (event.source === iframe.contentWindow || event.source === window);
-  return Array.from(iframes).find(isOriginWindow);
+export const getValidMessagesSource = (event, window) => {
+  const allMessagesSources = [
+    ...document.querySelectorAll('iframe'),
+    {
+      contentWindow: window,
+      luigi: {
+        viewUrl: window.location.href,
+        trustedDomain: window.location.origin
+      }
+    }
+  ];
+  const isMessageSource = source =>
+    source && event.source === source.contentWindow;
+  return Array.from(allMessagesSources).find(isMessageSource);
 };
 
 export const urlMatchesTheDomain = (viewUrl = '', domain) => {
@@ -127,7 +135,7 @@ export const iframeIsSameDomain = (iframe, domain) => {
   return sameDomain;
 };
 
-export const sendPostMessage = (iframe, message) => {
+export const sendMessageToIframe = (iframe, message) => {
   if (!(iframe.luigi && iframe.luigi.trustedDomain)) return;
   iframe.contentWindow.postMessage(message, iframe.luigi.trustedDomain);
 };
