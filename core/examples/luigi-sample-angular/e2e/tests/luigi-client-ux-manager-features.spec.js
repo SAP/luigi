@@ -172,7 +172,7 @@ describe('Luigi client ux manger features', () => {
           cy.get('[data-cy=luigi-alert]').should('not.exist');
           cy.wrap($iframeBody)
             .find('[data-cy=luigi-alert-result]')
-            .contains('Luigi alert has been dismissed');
+            .contains('has been dismissed');
 
           cy.wrap($iframeBody)
             .find('[data-cy=luigi-alert-type]')
@@ -185,6 +185,56 @@ describe('Luigi client ux manger features', () => {
             'have.class',
             'fd-alert--information'
           );
+        });
+      });
+
+      it('shows proper custom ID when manually dismissed', () => {
+        const customId = "maskopatol";
+        cy.get('iframe').then($iframe => {
+          const $iframeBody = $iframe.contents().find('body');
+
+          cy.goToUxManagerMethods($iframeBody);
+
+          cy.get('[data-cy=luigi-alert]').should('not.exist');
+
+          cy.wrap($iframeBody)
+            .find('[data-cy=luigi-alert-id]').type(customId);
+          
+          cy.wrap($iframeBody)
+            .find('[data-cy=show-luigi-alert]')
+            .click();
+          
+          cy.get('[data-cy=luigi-alert-dismiss]').click();
+          cy.get('[data-cy=luigi-alert]').should('not.exist');
+          cy.wrap($iframeBody)
+            .find('[data-cy=luigi-alert-result]')
+            .contains(`Luigi alert with id ${customId} has been dismissed`);
+
+        });
+      });
+
+      it('hides Alert after specified time', () => {
+        const closeAfter = 500;
+        cy.get('iframe').then($iframe => {
+          const $iframeBody = $iframe.contents().find('body');
+
+          cy.goToUxManagerMethods($iframeBody);
+
+          cy.get('[data-cy=luigi-alert]').should('not.exist');
+
+          cy.wrap($iframeBody)
+            .find('[data-cy=luigi-alert-close-after]').type(closeAfter);
+          
+          cy.wrap($iframeBody)
+          .find('[data-cy=show-luigi-alert]')
+            .click();
+          
+          cy.wait(closeAfter - 100); //the time may not be one-millisecond perfect so give it some 'flexibility'
+          cy.get('[data-cy=luigi-alert]').should('exist');
+
+          cy.wait(101); //desired time + 1 ms = the alert shouldn't exist anymore
+          cy.get('[data-cy=luigi-alert]').should('not.exist');
+         
         });
       });
 

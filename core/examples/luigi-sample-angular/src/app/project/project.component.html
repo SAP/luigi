@@ -66,13 +66,13 @@
               </span>
             </label>
             <input [ngModel]="" class="fd-form__control" type="text" name="id"
-              placeholder="Leave it empty to let Luigi assign a random ID" />
+              placeholder="Leave it empty to let Luigi assign a random ID" data-cy="luigi-alert-id" />
           </div>
           <div class="fd-form__item">
             <label class="fd-form__label" for="input-1">Close after (ms)
             </label>
             <input [ngModel]="" class="fd-form__control" type="text" name="closeAfter"
-              placeholder="Leave it empty to never close this Alert automatically" />
+              placeholder="Leave it empty to never close this Alert automatically" data-cy="luigi-alert-close-after" />
           </div>
         </div>
       </form>
