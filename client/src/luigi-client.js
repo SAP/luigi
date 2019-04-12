@@ -558,7 +558,6 @@ const LuigiClient = {
           '*'
         );
    
-        //TODO: allow multiple promisses for different alerts
         promises.alerts[settings.id] = {};
         promises.alerts[settings.id].promise = new Promise(resolve => {
           promises.alerts[settings.id].resolveFn = resolve;

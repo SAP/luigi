@@ -79,7 +79,6 @@
             <label class="fd-form__label">
               <input
                 [ngModel]="true"
-               
                 type="checkbox"
                 name="text"
                 class="fd-form__control"
@@ -89,8 +88,22 @@
             </label>
           </div>
           <div class="fd-form__item">
-            <label class="fd-form__label" for="input-1">Default Input:</label>
-            <input class="fd-form__control" type="text" id="input-1" placeholder="Field placeholder text">
+            <label class="fd-form__label" for="input-1">Message ID
+                <span class="fd-inline-help fd-has-float-right">
+                  <span class="fd-inline-help__content fd-inline-help__content--bottom-left">
+                    This is a string used to identify Alerts in a queue.
+                    <br>
+                    It is invisible to user and lets the developer know (via Luigi API) which Alert has been closed.
+                  </span>
+                </span>
+            </label>
+            <input 
+              [ngModel]="" 
+              class="fd-form__control" 
+              type="text" 
+              name="id"
+              placeholder="Leave it empty to let Luigi assign a random ID" 
+            />
           </div>
         </div>
       </form>

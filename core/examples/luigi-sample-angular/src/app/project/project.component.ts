@@ -138,8 +138,8 @@ export class ProjectComponent implements OnInit, OnDestroy {
   }
 
   showAlert() {
-    const { type, links, text } = this.luigiAlertForm.value;
-
+    const { type, links, text, id } = this.luigiAlertForm.value;
+  
     this.lastDismissedAlert = text ? false : undefined;
 
     const texts = {
@@ -162,7 +162,8 @@ export class ProjectComponent implements OnInit, OnDestroy {
     const settings = {
       text: textData,
       type,
-      links: linkData
+      links: linkData,
+      id: id || undefined
     };
 
     uxManager()

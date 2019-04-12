@@ -601,6 +601,19 @@
       showAlert(settings, openFromClient = false) {
         const currentAlerts = this.get().alerts;
 
+        if (
+          settings.id &&
+          currentAlerts &&
+          currentAlerts.find(a => a.settings.id === settings.id)
+        ) {
+          console.error(
+            `The alert with id '${
+              settings.id
+            }' already exists in a queue, therefore it won't be displayed `
+          );
+          return Promise.reject();
+        }
+
         return new Promise((resolve, reject) => {
           this.set({
             alerts: [
