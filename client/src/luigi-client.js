@@ -1,3 +1,4 @@
+var crypto = require("crypto");
 var luigiInitialized = false;
 var defaultContextKeys = ['context', 'internal', 'nodeParams', 'pathParams'];
 var currentContext = defaultContextKeys.reduce(function(acc, key) {
@@ -10,7 +11,8 @@ var _onInitFns = {};
 var authData = {};
 var pathExistsPromises = {};
 let promises = {
-  confirmationModal: {}
+  confirmationModal: {},
+  alerts: {}
 };
 /**
  * Creates a random Id
@@ -118,9 +120,9 @@ function luigiClientInit() {
     }
 
     if ('luigi.ux.alert.hide' === e.data.msg) {
-      if (promises.alert) {
-        promises.alert.resolveFn();
-        delete promises.alert;
+      if (e.data.id&&promises.alerts[e.data.id]) {
+        promises.alerts[e.data.id].resolveFn(e.data.id);
+        delete promises.alerts[e.data.id];
       }
     }
   });
@@ -541,6 +543,11 @@ const LuigiClient = {
 
        */
       showAlert: function showAlert(settings) {
+        if (!settings.id) {
+          //generate reandom ID if user hasn't provided any
+          settings.id = crypto.randomBytes(4).toString('hex');
+        }
+
         window.parent.postMessage(
           {
             msg: 'luigi.ux.alert.show',
@@ -550,11 +557,13 @@ const LuigiClient = {
           },
           '*'
         );
-        promises.alert = {};
-        promises.alert.promise = new Promise(resolve => {
-          promises.alert.resolveFn = resolve;
+   
+        //TODO: allow multiple promisses for different alerts
+        promises.alerts[settings.id] = {};
+        promises.alerts[settings.id].promise = new Promise(resolve => {
+          promises.alerts[settings.id].resolveFn = resolve;
         });
-        return promises.alert.promise;
+        return promises.alerts[settings.id].promise;
       }
     };
   }

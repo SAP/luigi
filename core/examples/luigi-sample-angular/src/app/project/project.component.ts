@@ -36,7 +36,7 @@ export class ProjectComponent implements OnInit, OnDestroy {
   private cudListener: string;
   public pathExists: { formValue: string; result: boolean | null };
   public confirmationModalResult: '' | 'confirmed' | 'dismissed';
-  public alertDismissed;
+  public lastDismissedAlert;
   public alertTypes = ['success', 'info', 'warning', 'error'];
   public isDirty = false;
 
@@ -140,7 +140,7 @@ export class ProjectComponent implements OnInit, OnDestroy {
   showAlert() {
     const { type, links, text } = this.luigiAlertForm.value;
 
-    this.alertDismissed = text ? false : undefined;
+    this.lastDismissedAlert = text ? false : undefined;
 
     const texts = {
       withoutLink: `<b onmouseover=alert('Wufff!')>click me!</b> Ut enim ad minim veniam,
@@ -167,8 +167,8 @@ export class ProjectComponent implements OnInit, OnDestroy {
 
     uxManager()
       .showAlert(settings)
-      .then(() => {
-        this.alertDismissed = true;
+      .then((id) => {
+        this.lastDismissedAlert = id;
       });
   }
 

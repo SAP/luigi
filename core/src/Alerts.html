@@ -14,7 +14,7 @@
       data-cy="luigi-alert-dismiss"
     ></button>
 
-    {alert.settings.id}
+    <strong>{alert.settings.id}</strong>
     {@html dataSanitized ? alert.settings.text: ''}
   </div>
   {/each}
