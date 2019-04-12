@@ -548,6 +548,11 @@ const LuigiClient = {
           settings.id = crypto.randomBytes(4).toString('hex');
         }
 
+        if (settings.closeAfter && settings.closeAfter < 100) {
+          console.warn(`Message with id='${settings.id}' has too small 'closeAfter' value. It needs to be at least 100ms.`);
+          settings.closeAfter = undefined;
+        }
+
         window.parent.postMessage(
           {
             msg: 'luigi.ux.alert.show',
