@@ -23,7 +23,41 @@ The lerna-changelog tool detects changes based on PR labels and maps them to sec
     ...
   }
 -->
-## [v0.4.9] (2019-03-07)
+## v0.4.11 (2019-04-12)
+
+#### :rocket: Added
+* [#468](https://github.com/kyma-project/luigi/pull/468) Check origin of postMessages ([@dariadomagala](https://github.com/dariadomagala))
+* [#460](https://github.com/kyma-project/luigi/pull/460) Modal mfs e2e tests ([@parostatkiem](https://github.com/parostatkiem))
+* [#451](https://github.com/kyma-project/luigi/pull/451) Prevent unlogged rendering ([@parostatkiem](https://github.com/parostatkiem))
+* [#463](https://github.com/kyma-project/luigi/pull/463) Add simple collapsible navigation option ([@hardl](https://github.com/hardl))
+* [#459](https://github.com/kyma-project/luigi/pull/459) Display labels in mobile top header menu, vertical alignment for labels ([@marynaKhromova](https://github.com/marynaKhromova))
+* [#446](https://github.com/kyma-project/luigi/pull/446) Modal mfs ([@JohannesDoberer](https://github.com/JohannesDoberer))
+* [#438](https://github.com/kyma-project/luigi/pull/438) Improve login error behavior ([@maxmarkus](https://github.com/maxmarkus))
+* [#437](https://github.com/kyma-project/luigi/pull/437) Optimize luigi.css size ([@marynaKhromova](https://github.com/marynaKhromova))
+* [#424](https://github.com/kyma-project/luigi/pull/424) Product switcher on mobile ([@parostatkiem](https://github.com/parostatkiem))
+* [#435](https://github.com/kyma-project/luigi/pull/435) Fix alert message hidden under content window ([@y-kkamil](https://github.com/y-kkamil))
+* [#425](https://github.com/kyma-project/luigi/pull/425) Add ts declaration file ([@y-kkamil](https://github.com/y-kkamil))
+* [#423](https://github.com/kyma-project/luigi/pull/423) Duplicated logos and app switcher markup ([@JohannesDoberer](https://github.com/JohannesDoberer))
+
+#### :bug: Fixed
+* [#461](https://github.com/kyma-project/luigi/pull/461) Prevent unescaped characters in the Alert component ([@y-kkamil](https://github.com/y-kkamil))
+* [#466](https://github.com/kyma-project/luigi/pull/466) Deactivate Typescript Declaration file for Luigi Client ([@jesusreal](https://github.com/jesusreal))
+* [#448](https://github.com/kyma-project/luigi/pull/448) Escape some html characters for alert component ([@y-kkamil](https://github.com/y-kkamil))
+* [#429](https://github.com/kyma-project/luigi/pull/429) Luigi client package should not contain src folder ([@jesusreal](https://github.com/jesusreal))
+* [#427](https://github.com/kyma-project/luigi/pull/427) Fix transparent background in alerts ([@dariadomagala](https://github.com/dariadomagala))
+
+#### :memo: Documentation
+* [#454](https://github.com/kyma-project/luigi/pull/454) Documentation for modal microfrontends ([@JohannesDoberer](https://github.com/JohannesDoberer))
+* [#442](https://github.com/kyma-project/luigi/pull/442) Remove Creative Commons license from the docs folder ([@klaudiagrz](https://github.com/klaudiagrz))
+* [#419](https://github.com/kyma-project/luigi/pull/419) Change the codeowners file ([@mmitoraj](https://github.com/mmitoraj))
+
+
+## v0.4.10 (2019-03-08)
+
+#### :bug: Fixed
+* [#417](https://github.com/kyma-project/luigi/pull/417) Fix node refresh ([@hardl](https://github.com/hardl))
+
+## v0.4.9 (2019-03-07)
 
 #### :bug: Fixed
 * [#412](https://github.com/kyma-project/luigi/pull/412) Focus improvements ([@hardl](https://github.com/hardl))
