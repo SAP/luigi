@@ -40,6 +40,7 @@ export declare interface AlertSettings {
   links?: {
     [key: string]: { text: string; url: string };
   };
+  id?:string
 }
 
 export declare interface PathParams {

@@ -8,12 +8,13 @@
   >
     <button
       class="fd-alert__close close-button"
-      on:click="fire('alertDismiss',)"
+      on:click="fire('alertDismiss',{id:alert.settings.id})"
       aria-label="Close"
       aria-controls="j2ALl423"
       data-cy="luigi-alert-dismiss"
     ></button>
-    {alertQueue.indexOf(alert)}
+
+    {alert.settings.id}
     {@html dataSanitized ? alert.settings.text: ''}
   </div>
   {/each}
