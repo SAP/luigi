@@ -10,35 +10,22 @@
       </button>
       <p>
         <app-code-snippet data="uxManager().addBackdrop()"></app-code-snippet>
-        <app-code-snippet
-          data="uxManager().removeBackdrop()"
-        ></app-code-snippet>
+        <app-code-snippet data="uxManager().removeBackdrop()"></app-code-snippet>
       </p>
     </div>
     <div class="fd-panel fd-has-margin-bottom-small">
       <p><strong>Confirmation modal</strong></p>
-      <button
-        class="fd-button"
-        data-cy="show-luigi-confirmation-modal"
-        (click)="showConfirmationModal()"
-      >
+      <button class="fd-button" data-cy="show-luigi-confirmation-modal" (click)="showConfirmationModal()">
         Show Luigi confirmation modal
       </button>
       <p>
-        <app-code-snippet
-          data="uxManager().showConfirmationModal(content)"
-        ></app-code-snippet>
+        <app-code-snippet data="uxManager().showConfirmationModal(content)"></app-code-snippet>
       </p>
-      <p
-        class="fd-has-font-style-italic"
-        data-cy="luigi-confirmation-modal-result"
-        ngClass="{{
+      <p class="fd-has-font-style-italic" data-cy="luigi-confirmation-modal-result" ngClass="{{
           confirmationModalResult === 'confirmed'
             ? 'fd-has-color-status-1'
             : 'fd-has-color-status-2'
-        }}"
-        *ngIf="confirmationModalResult"
-      >
+        }}" *ngIf="confirmationModalResult">
         Luigi confirmation modal has been {{ confirmationModalResult }}
       </p>
     </div>
@@ -49,117 +36,66 @@
         <div class="fd-form__set fd-has-padding-bottom-small">
           <div class="fd-form__item">
             <label class="fd-form__label" for="select-1">Type</label>
-            <select
-              [ngModel]="alertTypes[0]"
-            
-              class="fd-form__control"
-              id="select-1"
-              name="type"
-              data-cy="luigi-alert-type"
-            >
-              <option [value]="type" *ngFor="let type of alertTypes">{{
-                type
-              }}</option>
+            <select [ngModel]="alertTypes[0]" class="fd-form__control" id="select-1" name="type"
+              data-cy="luigi-alert-type">
+              <option [value]="type" *ngFor="let type of alertTypes">
+                {{ type }}</option>
             </select>
           </div>
           <div class="fd-form__item fd-form__item--check">
             <label class="fd-form__label">
-              <input
-                [ngModel]="true"
-               
-                type="checkbox"
-                name="links"
-                class="fd-form__control"
-                data-cy="luigi-alert-links"
-              />
+              <input [ngModel]="true" type="checkbox" name="links" class="fd-form__control"
+                data-cy="luigi-alert-links" />
               Links
             </label>
           </div>
           <div class="fd-form__item fd-form__item--check">
             <label class="fd-form__label">
-              <input
-                [ngModel]="true"
-                type="checkbox"
-                name="text"
-                class="fd-form__control"
-                data-cy="luigi-alert-text"
-              />
+              <input [ngModel]="true" type="checkbox" name="text" class="fd-form__control" data-cy="luigi-alert-text" />
               With text (if alert has no text it is not displayed)
             </label>
           </div>
           <div class="fd-form__item">
             <label class="fd-form__label" for="input-1">Message ID
-                <span class="fd-inline-help fd-has-float-right">
-                  <span class="fd-inline-help__content fd-inline-help__content--bottom-left">
-                    This is a string used to identify Alerts in a queue.
-                    <br>
-                    It is invisible to user and lets the developer know (via Luigi API) which Alert has been closed.
-                  </span>
+              <span class="fd-inline-help fd-has-float-right">
+                <span class="fd-inline-help__content fd-inline-help__content--bottom-left">
+                  This is a string used to identify Alerts in a queue.
+                  <br>
+                  It is invisible to user and lets the developer know (via Luigi API) which Alert has been closed.
                 </span>
+              </span>
             </label>
-            <input 
-              [ngModel]="" 
-              class="fd-form__control" 
-              type="text" 
-              name="id"
-              placeholder="Leave it empty to let Luigi assign a random ID" 
-            />
-          </div>     
+            <input [ngModel]="" class="fd-form__control" type="text" name="id"
+              placeholder="Leave it empty to let Luigi assign a random ID" />
+          </div>
           <div class="fd-form__item">
             <label class="fd-form__label" for="input-1">Close after (ms)
             </label>
-            <input 
-              [ngModel]="" 
-              class="fd-form__control" 
-              type="text" 
-              name="closeAfter"
-              placeholder="Leave it empty to never close this Alert automatically" 
-            />
+            <input [ngModel]="" class="fd-form__control" type="text" name="closeAfter"
+              placeholder="Leave it empty to never close this Alert automatically" />
           </div>
-       </div>
+        </div>
       </form>
-      <button
-      
-        class="fd-button"
-        data-cy="show-luigi-alert"
-        (click)="showAlert()"
-      >
+      <button class="fd-button" data-cy="show-luigi-alert" (click)="showAlert()">
         Show Luigi alert
       </button>
       <p>
-        <app-code-snippet
-          data="uxManager().showAlert(settings)"
-        ></app-code-snippet>
+        <app-code-snippet data="uxManager().showAlert(settings)"></app-code-snippet>
       </p>
-      <p
-        *ngIf="lastDismissedAlert"
-        class="fd-has-font-style-italic fd-has-color-status-1"
-        data-cy="luigi-alert-result"
-      >
-        Luigi alert with id {{lastDismissedAlert}} has been dismissed
+      <p *ngIf="lastDismissedAlert" class="fd-has-font-style-italic fd-has-color-status-1" data-cy="luigi-alert-result">
+        Luigi alert with id {{ lastDismissedAlert }} has been dismissed
       </p>
     </div>
     <div class="fd-panel fd-has-margin-bottom-small">
       <p>
-        <strong
-          >Combine unsaved changes feature with Luigi Client UX manager
-          methods!!</strong
-        >
+        <strong>Combine unsaved changes feature with Luigi Client UX manager
+          methods!!</strong>
       </p>
       <div class="fd-form__item fd-form__item--check">
         <label class="fd-form__label" for="ImBw4551">
           <span class="fd-toggle fd-toggle--xs fd-form__control">
-            <input
-              type="checkbox"
-              [(ngModel)]="isDirty"
-              (change)="sendDirtyEvent()"
-              id="ImBw4551"
-            />
-            <span
-              class="fd-toggle__switch"
-              role="presentation"
-              data-cy="toggle-dirty-state"
-            ></span>
+            <input type="checkbox" [(ngModel)]="isDirty" (change)="sendDirtyEvent()" id="ImBw4551" />
+            <span class="fd-toggle__switch" role="presentation" data-cy="toggle-dirty-state"></span>
           </span>
         </label>
       </div>
@@ -170,10 +106,7 @@
       <span *ngIf="isDirty">
         <strong>There are unsaved changes</strong> &nbsp;&ndash; a confirmation
         modal will appear when you navigate
-        <a
-          title="Navigate to /projects/pr2 as an example"
-          (click)="linkManager().navigate('/projects/pr2')"
-        >
+        <a title="Navigate to /projects/pr2 as an example" (click)="linkManager().navigate('/projects/pr2')">
           somewhere else
         </a>
       </span>
@@ -197,135 +130,83 @@
       <p><strong>Navigate</strong></p>
       <ul class="fd-list-group">
         <li class="fd-list-group__item">
-          <a
-            href="javascript:void(0)"
-            (click)="linkManager().navigate('/overview')"
-            >absolute: to overview</a
-          >
-          <app-code-snippet
-            data="linkManager().navigate('/overview')"
-          ></app-code-snippet>
+          <a href="javascript:void(0)" (click)="linkManager().navigate('/overview')">absolute: to overview</a>
+          <app-code-snippet data="linkManager().navigate('/overview')"></app-code-snippet>
         </li>
         <li class="fd-list-group__item">
-          <a
-            href="javascript:void(0)"
-            (click)="linkManager().navigate('users/groups/stakeholders')"
-            >relative: to stakeholders</a
-          >
-          <app-code-snippet
-            data="linkManager().navigate('users/groups/stakeholders')"
-          ></app-code-snippet>
+          <a href="javascript:void(0)" (click)="linkManager().navigate('users/groups/stakeholders')">relative: to
+            stakeholders</a>
+          <app-code-snippet data="linkManager().navigate('users/groups/stakeholders')"></app-code-snippet>
         </li>
         <li class="fd-list-group__item">
-          <a
-            href="javascript:void(0)"
-            (click)="
+          <a href="javascript:void(0)" (click)="
               linkManager()
                 .fromClosestContext()
                 .navigate('/users/groups/stakeholders')
-            "
-          >
-            closest parent: to stakeholders</a
-          >
-          <app-code-snippet
-            data="linkManager().fromClosestContext().navigate('/users/groups/stakeholders')"
-          >
+            ">
+            closest parent: to stakeholders</a>
+          <app-code-snippet data="linkManager().fromClosestContext().navigate('/users/groups/stakeholders')">
           </app-code-snippet>
         </li>
         <li class="fd-list-group__item">
-          <a
-            href="javascript:void(0)"
-            (click)="
+          <a href="javascript:void(0)" (click)="
               linkManager()
                 .fromContext('project')
                 .navigate('/settings')
-            "
-          >
-            parent by name: project to settings</a
-          >
-          <app-code-snippet
-            data="linkManager().fromContext('project').navigate('/settings')"
-          ></app-code-snippet>
+            ">
+            parent by name: project to settings</a>
+          <app-code-snippet data="linkManager().fromContext('project').navigate('/settings')"></app-code-snippet>
         </li>
         <li class="fd-list-group__item">
-          <a
-            href="javascript:void(0)"
-            (click)="
+          <a href="javascript:void(0)" (click)="
               linkManager()
                 .fromClosestContext()
                 .withParams({ foo: 'bar' })
                 .navigate('settings')
-            "
-          >
-            project to settings with params (foo=bar)</a
-          >
-          <app-code-snippet
-            data="linkManager().fromClosestContext().withParams({foo: 'bar'}).navigate('settings')"
-          >
+            ">
+            project to settings with params (foo=bar)</a>
+          <app-code-snippet data="linkManager().fromClosestContext().withParams({foo: 'bar'}).navigate('settings')">
           </app-code-snippet>
         </li>
         <li class="fd-list-group__item">
-          <a
-            href="javascript:void(0)"
-            (click)="
+          <a href="javascript:void(0)" (click)="
               linkManager()
                 .fromContext('NONEXISTING')
                 .navigate('/settings')
-            "
-          >
-            parent by name: with nonexisting context</a
-          >
+            ">
+            parent by name: with nonexisting context</a>
           (look at the console)
-          <app-code-snippet
-            data="linkManager().fromContext('NONEXISTING').navigate('/settings')"
-          ></app-code-snippet>
+          <app-code-snippet data="linkManager().fromContext('NONEXISTING').navigate('/settings')"></app-code-snippet>
         </li>
         <li class="fd-list-group__item">
-          <a
-            href="javascript:void(0)"
-            (click)="navigateAndShowAlert()"
-          >
-            with preserved view: project to global settings and back</a
-          >
-          <app-code-snippet
-            data="linkManager().navigate('/settings', null, true)"
-          ></app-code-snippet>
+          <a href="javascript:void(0)" (click)="navigateAndShowAlert()">
+            with preserved view: project to global settings and back</a>
+          <app-code-snippet data="linkManager().navigate('/settings', null, true)"></app-code-snippet>
         </li>
         <li class="fd-list-group__item">
-          <a
-            href="javascript:void(0)"
-            (click)="
+          <a href="javascript:void(0)" (click)="
               linkManager()
                 .withParams({ test: true })
                 .navigate('/settings', null, true)
-            "
-          >
+            ">
             extended preserved view example with params: project to global
-            settings and back</a
-          >
-          <app-code-snippet
-            data="linkManager().withParams({test: true}).navigate('/settings', null, true)"
-          >
+            settings and back</a>
+          <app-code-snippet data="linkManager().withParams({test: true}).navigate('/settings', null, true)">
           </app-code-snippet>
         </li>
         <li class="fd-list-group__item">
-          <a
-            href="javascript:void(0)"
-            (click)="
+          <a href="javascript:void(0)" (click)="
               linkManager()
                 .withParams({ test: true })
                 .openAsModal('/settings', {
                   title: 'Preserved View',
                   size: 'm'
                 })
-            "
-          >
+            ">
             extended preserved view example with params rendered in a modal:
-            project to global settings and back</a
-          >
+            project to global settings and back</a>
           <app-code-snippet
-            data="linkManager().withParams({test: true}).openAsModal('/settings', {title:'PreservedView', size:'m'})"
-          >
+            data="linkManager().withParams({test: true}).openAsModal('/settings', {title:'PreservedView', size:'m'})">
           </app-code-snippet>
         </li>
       </ul>
@@ -333,15 +214,9 @@
 
     <div class="fd-panel fd-has-margin-bottom-small check-path">
       <p><strong>Check if path exists</strong></p>
-      <app-code-snippet
-        data="linkManager().pathExists('{{ pathExists.formValue }}')"
-      ></app-code-snippet>
+      <app-code-snippet data="linkManager().pathExists('{{ pathExists.formValue }}')"></app-code-snippet>
       <span>
-        <input
-          type="text"
-          [(ngModel)]="pathExists.formValue"
-          (input)="resetPathExistsResult()"
-        />
+        <input type="text" [(ngModel)]="pathExists.formValue" (input)="resetPathExistsResult()" />
         <button class="fd-button" (click)="checkIfPathExists()">Check</button>
       </span>
       <p class="check-path-result">
@@ -360,34 +235,20 @@
       </p>
       <ul class="fd-list-group">
         <li class="fd-list-group__item">
-          <a
-            href="javascript:void(0)"
-            (click)="
+          <a href="javascript:void(0)" (click)="
               linkManager().navigate('/projects/pr2/miscellaneous2/maskopatol')
-            "
-            >Partly wrong link
+            ">Partly wrong link
           </a>
-          <app-code-snippet
-            data="linkManager().navigate('/projects/pr2/miscellaneous2/maskopatol')"
-          ></app-code-snippet>
+          <app-code-snippet data="linkManager().navigate('/projects/pr2/miscellaneous2/maskopatol')"></app-code-snippet>
         </li>
         <li class="fd-list-group__item">
-          <a
-            href="javascript:void(0)"
-            (click)="linkManager().navigate('/maskopatol/has/a/child')"
-            >Totally wrong link</a
-          >
-          <app-code-snippet
-            data="linkManager().navigate('/maskopatol/has/a/child')"
-          ></app-code-snippet>
+          <a href="javascript:void(0)" (click)="linkManager().navigate('/maskopatol/has/a/child')">Totally wrong
+            link</a>
+          <app-code-snippet data="linkManager().navigate('/maskopatol/has/a/child')"></app-code-snippet>
         </li>
       </ul>
     </div>
   </div>
 </section>
 
-<app-modal
-  [hidden]="projectId !== 'pr1'"
-  [modalActive]="modalActive"
-  (modalClosed)="toggleModal()"
-></app-modal>
+<app-modal [hidden]="projectId !== 'pr1'" [modalActive]="modalActive" (modalClosed)="toggleModal()"></app-modal>

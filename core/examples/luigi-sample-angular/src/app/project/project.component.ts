@@ -138,8 +138,7 @@ export class ProjectComponent implements OnInit, OnDestroy {
   }
 
   showAlert() {
-    const { type, links, text, id,closeAfter } = this.luigiAlertForm.value;
-  
+    const { type, links, text, id, closeAfter } = this.luigiAlertForm.value;
     this.lastDismissedAlert = text ? false : undefined;
 
     const texts = {
@@ -169,8 +168,8 @@ export class ProjectComponent implements OnInit, OnDestroy {
 
     uxManager()
       .showAlert(settings)
-      .then((id) => {
-        this.lastDismissedAlert = id;
+      .then(closedAlertId => {
+        this.lastDismissedAlert = closedAlertId;
       });
   }
 
@@ -189,5 +188,5 @@ export class ProjectComponent implements OnInit, OnDestroy {
 
   public sendDirtyEvent = () => {
     uxManager().setDirtyStatus(this.isDirty);
-  };
+  }
 }
