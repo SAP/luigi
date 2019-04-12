@@ -120,9 +120,10 @@ function luigiClientInit() {
     }
 
     if ('luigi.ux.alert.hide' === e.data.msg) {
-      if (e.data.id&&promises.alerts[e.data.id]) {
-        promises.alerts[e.data.id].resolveFn(e.data.id);
-        delete promises.alerts[e.data.id];
+      const { id } = e.data;
+      if (id && promises.alerts[id]) {
+        promises.alerts[id].resolveFn(id);
+        delete promises.alerts[id];
       }
     }
   });
