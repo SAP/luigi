@@ -91,7 +91,7 @@
         </div>
       </form>
       <button
-        [disabled]="this.alertDismissed === false"
+        [disabled]="false && this.alertDismissed === false"
         class="fd-button"
         data-cy="show-luigi-alert"
         (click)="showAlert()"

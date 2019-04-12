@@ -1,19 +1,22 @@
 <div class="fd-shell__overlay fd-overlay fd-overlay--alert" aria-hiden="false">
+  {#each alertQueue as alert}
   <div
-    class="fd-alert fd-alert--{alertTypeMap[settings.type]} fd-alert--dismissible"
+    class="fd-alert fd-alert--{alertTypeMap[alert.settings.type]} fd-alert--dismissible"
     role="alert"
     id="j2ALl423"
     data-cy="luigi-alert"
   >
     <button
       class="fd-alert__close close-button"
-      on:click="fire('alertDismiss')"
+      on:click="fire('alertDismiss',)"
       aria-label="Close"
       aria-controls="j2ALl423"
       data-cy="luigi-alert-dismiss"
     ></button>
-    {@html dataSanitized ? settings.text: ''}
+    {alertQueue.indexOf(alert)}
+    {@html dataSanitized ? alert.settings.text: ''}
   </div>
+  {/each}
 </div>
 
 <script type="text/javascript">
@@ -34,19 +37,34 @@
         }
       };
     },
-    oncreate() {
-      const { text, links } = this.get().settings;
-      const processedData = this.processTextAndLinks(text, links);
+    onstate({ changed, current, previous }) {
+      if (!current.alertQueue || !current.alertQueue.length) {
+        console.warn('Nothing to display');
+        return;
+      }
+
+      const processedAlerts = current.alertQueue.map(alert => {
+        const { text, links } = alert.settings;
+        const processedData = this.processTextAndLinks(text, links);
+
+        setTimeout(() => {
+          // this needs to be done after links are rendered
+          processedData.links.forEach(l => {
+            this.addClickListener(l.url, l.elemId);
+          });
+        });
+
+        return {
+          settings: { ...alert.settings, text: processedData.sanitizedText }
+        };
+      });
+
       this.set({
-        settings: Object.assign(this.get().settings, {
-          text: processedData.sanitizedText
-        }),
+        alertQueue: processedAlerts,
         dataSanitized: true
       });
-      processedData.links.forEach(l => {
-        this.addClickListener(l.url, l.elemId);
-      });
     },
+    oncreate() {},
     methods: {
       addClickListener(url, elemId) {
         try {
@@ -94,5 +112,9 @@
 <style type="text/scss">
   .fd-overlay--alert {
     z-index: 1100;
+    flex-direction: column;
+    .fd-alert:not(:first-child) {
+      margin-top: 12px;
+    }
   }
 </style>
