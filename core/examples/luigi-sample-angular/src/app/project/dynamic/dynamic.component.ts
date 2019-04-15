@@ -39,7 +39,8 @@ export class DynamicComponent implements OnInit, OnDestroy {
       .subscribe((ctx: IContextMessage) => {
         if (!ctx.context) {
           console.warn(
-            'To use this component properly, node configuration requires context.label to be defined. context.links can be defined as array of strings to generate links to children'
+            `To use this component properly, node configuration requires context.label to be defined.
+            context.links can be defined as array of strings to generate links to children`
           );
           return;
         }

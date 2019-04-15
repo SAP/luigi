@@ -14,7 +14,7 @@ import {
   encapsulation: ViewEncapsulation.None
 })
 export class AppComponent implements OnInit {
-  public title: string = 'app';
+  public title = 'app';
 
   constructor(private luigiService: LuigiContextService) {}
 
