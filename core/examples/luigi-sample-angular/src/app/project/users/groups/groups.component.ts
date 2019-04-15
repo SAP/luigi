@@ -8,7 +8,7 @@ import { linkManager } from '@kyma-project/luigi-client';
 })
 export class GroupsComponent {
   public linkManager = linkManager;
-  public customValue: string = 'avengers';
+  public customValue = 'avengers';
   public groupLinks: any[] = [
     {
       link: 'stakeholders',
