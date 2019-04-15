@@ -1,4 +1,4 @@
-<div class="fd-shell__overlay fd-overlay fd-overlay--alert" aria-hiden="false">
+<div class="fd-shell__overlay fd-overlay fd-overlay--alert" aria-hidden="false">
   {#each alertQueue as alert}
   <div
     class="fd-alert fd-alert--{alertTypeMap[alert.settings.type]} fd-alert--dismissible"
@@ -38,7 +38,7 @@
     },
     onstate({ changed, current, previous }) {
       if (!current.alertQueue || !current.alertQueue.length) {
-        console.warn('Nothing to display');
+        console.warn('There are no alerts to display');
         return;
       }
 
@@ -113,7 +113,7 @@
     z-index: 1100;
     flex-direction: column;
     .fd-alert:not(:first-child) {
-      margin-top: 12px;
+      margin-top: 8px;
     }
   }
 </style>

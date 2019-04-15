@@ -289,10 +289,10 @@
           if(!alertQueue || !alertQueue.length) return;
 
           const updatedAlerts = alertQueue.map(a=>{
-            if (a && !a.openFromClient &&  typeof a.settings.ttl === 'number') {
+            if (a && !a.openFromClient && typeof a.settings.ttl === 'number') {
               //alert has some TTL set
               if (a.settings.ttl === 0) {
-                //the TTL value dropped down to 0, remove the alert
+                //the TTL value dropped down to 0, remove this alert
                 return null;
               } else {
                 //TTL is not 0, reduce it

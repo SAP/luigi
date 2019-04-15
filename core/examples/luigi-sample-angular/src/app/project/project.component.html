@@ -56,19 +56,6 @@
             </label>
           </div>
           <div class="fd-form__item">
-            <label class="fd-form__label" for="input-1">Message ID
-              <span class="fd-inline-help fd-has-float-right">
-                <span class="fd-inline-help__content fd-inline-help__content--bottom-left">
-                  This is a string used to identify Alerts in a queue.
-                  <br>
-                  It is invisible to user and lets the developer know (via Luigi API) which Alert has been closed.
-                </span>
-              </span>
-            </label>
-            <input [ngModel]="" class="fd-form__control" type="text" name="id"
-              placeholder="Leave it empty to let Luigi assign a random ID" data-cy="luigi-alert-id" />
-          </div>
-          <div class="fd-form__item">
             <label class="fd-form__label" for="input-1">Close after (ms)
             </label>
             <input [ngModel]="" class="fd-form__control" type="text" name="closeAfter"
@@ -82,8 +69,8 @@
       <p>
         <app-code-snippet data="uxManager().showAlert(settings)"></app-code-snippet>
       </p>
-      <p *ngIf="lastDismissedAlert" class="fd-has-font-style-italic fd-has-color-status-1" data-cy="luigi-alert-result">
-        Luigi alert with id {{ lastDismissedAlert }} has been dismissed
+      <p *ngIf="alertDismissed" class="fd-has-font-style-italic fd-has-color-status-1" data-cy="luigi-alert-result">
+        Luigi alert has been dismissed
       </p>
     </div>
     <div class="fd-panel fd-has-margin-bottom-small">
