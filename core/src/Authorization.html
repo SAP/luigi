@@ -5,7 +5,7 @@
   {#if showUserInfo}
   <li>
     <a
-      aria-label="Logout"
+      aria-label="username"
       class="fd-menu__item"
     >{userInfo.name ? userInfo.name : userInfo.email}</a>
   </li>
@@ -19,7 +19,6 @@
   </li>
   {/if}
 </ul>
-
 {/if}
 <script type="text/javascript">
   import { LuigiConfig } from './services/config.js';

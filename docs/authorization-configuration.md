@@ -60,7 +60,8 @@ auth: {
     }
     // optional functions
     nonceFn: () => {},
-    logoutFn: (settings, authData, logoutCallback) => {}
+    logoutFn: (settings, authData, logoutCallback) => {},
+    userInfoFn:()=>{}
   },
   disableAutoLogin: false
 ````
@@ -74,6 +75,39 @@ auth: {
 - **response_type** defaults to the **id_token**. Any other parameter that is added to oAuthData is also added to the authorization payload.
 - **nonceFn** provides a function that returns a string in order to override the default **nonce**.
 - **logoutFn** provides the function to override the **logoutUrl** functionality for a custom logout. It needs to execute the **logoutCallback()** function after logout.
+- **userInfoFn** provides a function to get user information. It returns a promise of an user info object which contains user name and/or email to display it in the profile dropdown.
+
+
+### Custom Authentification Provider
+
+If you are using any authentification provider you also have the possibility to implement some functions that luigi can deal with.
+
+````
+export class CustomAuthentificationProvider {
+
+    login(){
+        // logic to handle the login mechanism
+        // returns a promise which contains a error message if something went wrong
+    }
+
+    logout(authData, logoutCallback){
+        // logic to handle the logout mechanism
+    }
+
+    setTokenExpirationAction(){
+    }
+
+    generateNonce(){
+        //returns a string 
+    }
+
+    userInfo(){
+        // logic to get some user information
+        // returns a promise of an userinfo object which contains user name and/or email to display it in the profile dropdown
+    }
+}
+````
+
 
 ### Third-party cookies and silent token refresh
 
