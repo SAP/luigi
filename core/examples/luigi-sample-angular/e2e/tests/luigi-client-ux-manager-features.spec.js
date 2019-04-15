@@ -238,6 +238,26 @@ describe('Luigi client ux manger features', () => {
         });
       });
 
+      it('can quque Alerts', () => {
+        const numberOfAlerts = 3;
+        cy.get('iframe').then($iframe => {
+          const $iframeBody = $iframe.contents().find('body');
+
+          cy.goToUxManagerMethods($iframeBody);
+
+          cy.get('[data-cy=luigi-alert]').should('not.exist');
+
+          for (let i = 0; i < numberOfAlerts; i++){
+            //click "Show alert" few times
+            cy.wrap($iframeBody)
+            .find('[data-cy=show-luigi-alert]')
+              .click();
+          }
+               
+         cy.get('[data-cy=luigi-alert]').should('have.length', numberOfAlerts);
+        });
+      });
+
       it('warning alert with links and unsaved changes', () => {
         cy.get('iframe').then($iframe => {
           const $iframeBody = $iframe.contents().find('body');
