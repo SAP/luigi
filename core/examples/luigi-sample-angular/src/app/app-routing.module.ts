@@ -15,7 +15,7 @@ import { ChildNode1Component } from './project/default-child/dps1/child-node-1.c
 import { OverviewComponent } from './overview/overview.component';
 import { RestrictedComponent } from './restricted/restricted.component';
 import { DynamicComponent } from './project/dynamic/dynamic.component';
-import { HideSideNavComponent } from './project/hideSideNav/hideSideNav.component';
+import { HideSideNavComponent } from './project/hide-side-nav/hide-side-nav.component';
 import { AnonymousComponent } from './anonymous/anonymous.component';
 
 const routes: Routes = [
