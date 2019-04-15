@@ -25,7 +25,8 @@ auth: {
     scope: 'audience:server:client_id:client openid profile email groups',
     redirect_uri: '',
     post_logout_redirect_uri: '/logout.html',
-    automaticSilentRenew: true
+    automaticSilentRenew: true,
+    userInfoFn:()=>{}
   },
   disableAutoLogin: false
 }
@@ -39,6 +40,7 @@ auth: {
 - **automaticSilentRenew** enables the automatic silent renewal of the token if it is supported by the server. The default value is `false`. For this mechanism to work, the browser must have third-party cookies support enabled.
 - **accessTokenExpiringNotificationTime** is the number of seconds before an access token is to expire and triggers silent token refresh. The default value is 60.
 - **thirdPartyCookiesScriptLocation** is the URL to the page containing third-party cookies support check. For details, see [Third-party cookies and silent token refresh section](#Third-party-cookies-and-silent-token-refresh).
+- **userInfoFn** provides a function to get user information. It returns a promise of an user info object which contains user name and/or email to display it in the profile dropdown.
 
 ## OAuth2 Implicit Grant configuration
 
