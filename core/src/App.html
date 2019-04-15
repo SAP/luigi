@@ -285,20 +285,25 @@
           isolateAllViews
         };
         window.addEventListener('popstate', async e => {
-          const alert = this.get().alert;
-          if (
-            alert &&
-            !alert.openFromClient &&
-            typeof alert.settings.ttl === 'number'
-          ) {
-            if (alert.settings.ttl === 0) {
-              this.handleAlertDismiss();
-            } else {
-              const updatedAlert = { ...alert };
-              updatedAlert.settings.ttl--;
-              this.set({ alert: updatedAlert });
-            }
-          }
+          const alertQueue=this.get().alerts;
+          if(!alertQueue || !alertQueue.length) return;
+
+          const updatedAlerts = alertQueue.map(a=>{
+            if (a && !a.openFromClient &&  typeof a.settings.ttl === 'number') {
+              //alert has some TTL set
+              if (a.settings.ttl === 0) {
+                //the TTL value dropped down to 0, remove the alert
+                return null;
+              } else {
+                //TTL is not 0, reduce it
+                a.settings.ttl--;
+              }
+           }
+           //return either unchanged Alert or the one with reduced TTL value
+           return a;
+          }).filter(a=>a); //remove empty alerts from array
+
+          this.set({alerts:updatedAlerts});
         });
         window.addEventListener('message', async e => {
           const iframe = this.getValidMessageSource(e);
@@ -600,7 +605,6 @@
       },
       showAlert(settings, openFromClient = false) {
         const currentAlerts = this.get().alerts;
-
         if (
           settings.id &&
           currentAlerts &&
