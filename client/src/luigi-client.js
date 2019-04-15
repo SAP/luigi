@@ -201,7 +201,7 @@ const LuigiClient = {
   },
   /**
    * Returns the context object. Typically it is not required as the {@link #addContextUpdateListener addContextUpdateListener()} receives the same values.
-   * @returns {Object} current context data.
+   * @returns {Object} current context data
    * @memberof lifecycle
    */
   getEventData: function getEventData() {
@@ -211,7 +211,7 @@ const LuigiClient = {
    * Returns the node parameters of the active URL.
    * Node parameters are defined like URL query parameters but with a specific prefix allowing Luigi to pass them to the micro front-end view.  The default prefix is **~** and you can use it in the following way: `https://my.luigi.app/home/products?~sort=asc~page=3`.
    * >**NOTE:** some special characters (`<`, `>`, `"`, `'`, `/`) in node parameters are HTML-encoded.
-   * @returns {Object} node parameters, where the object property name is the node parameter name without the prefix, and its value is the value of the node parameter. For example `{sort: 'asc', page: 3}`.
+   * @returns {Object} node parameters, where the object property name is the node parameter name without the prefix, and its value is the value of the node parameter. For example `{sort: 'asc', page: 3}`
    * @memberof lifecycle
    */
   getNodeParams: function getNodeParams() {
@@ -222,7 +222,7 @@ const LuigiClient = {
    * Path parameters are defined by navigation nodes with a dynamic **pathSegment** value starting with **:**, such as **productId**.
    * All path parameters in the current navigation path (as defined by the active URL) are returned.
    * >**NOTE:** some special characters (`<`, `>`, `"`, `'`, `/`) in path parameters are HTML-encoded.
-   * @returns {Object} path parameters, where the object property name is the path parameter name without the prefix, and its value is the actual value of the path parameter. For example ` {productId: 1234, ...}`.
+   * @returns {Object} path parameters, where the object property name is the path parameter name without the prefix, and its value is the actual value of the path parameter. For example ` {productId: 1234, ...}`
    * @memberof lifecycle
    */
   getPathParams: function getPathParams() {
@@ -251,11 +251,11 @@ const LuigiClient = {
       /**
        * Navigates to the given path in the application hosted by Luigi. It contains either a full absolute path or a relative path without a leading slash that uses the active route as a base. This is the standard navigation.
        * @param {string} path path to be navigated to
-       * @param {string} sessionId current Luigi **sessionId**
-       * @param {boolean} preserveView Preserve a view by setting it to `true`. It keeps the current view opened in the background and opens the new route in a new frame. Use the {@link #goBack goBack()} function to navigate back. You can use this feature across different levels. Preserved views are discarded as soon as the standard {@link #navigate navigate()} function is used instead of {@link #goBack goBack()}.
-       * @param {Object} modalSettings opens a view in a modal. Use these settings to configure the modal's title and size.
-       * @param {string} modalSettings.title modal title. By default, it is the node label. If there is no label, it is left empty.
-       * @param {('l'|'m'|'s')} [modalSettings.size=l] size of the modal
+       * @param {string} [sessionId] current Luigi **sessionId**
+       * @param {boolean} [preserveView] preserve a view by setting it to `true`. It keeps the current view opened in the background and opens the new route in a new frame. Use the {@link #goBack goBack()} function to navigate back. You can use this feature across different levels. Preserved views are discarded as soon as the standard {@link #navigate navigate()} function is used instead of {@link #goBack goBack()}
+       * @param {Object} [modalSettings] opens a view in a modal. Use these settings to configure the modal's title and size
+       * @param {string} modalSettings.title modal title. By default, it is the node label. If there is no label, it is left empty
+       * @param {('l'|'m'|'s')} [modalSettings.size="l"] size of the modal
        * @example
        * LuigiClient.linkManager().navigate('/overview')
        * LuigiClient.linkManager().navigate('users/groups/stakeholders')
@@ -287,9 +287,9 @@ const LuigiClient = {
       /**
        * Opens a view in a modal. You can specify the modal's title and size. If you don't specify the title, it is the node label. If there is no node label, the title remains empty.  The default size of the modal is `l`, which means 80%. You can also use `m` (60%) and `s` (40%) to set the modal size. Optionally, use it in combination with any of the navigation functions.
        * @param {string} path navigation path
-       * @param {Object} modalSettings opens a view in a modal. Use these settings to configure the modal's title and size.
-       * @param {string} modalSettings.title modal title. By default, it is the node label. If there is no label, it is left empty.
-       * @param {('l'|'m'|'s')} [modalSettings.size=l] size of the modal
+       * @param {Object} [modalSettings] opens a view in a modal. Use these settings to configure the modal's title and size
+       * @param {string} modalSettings.title modal title. By default, it is the node label. If there is no label, it is left empty
+       * @param {('l'|'m'|'s')} [modalSettings.size="l"] size of the modal
        * @example
        * LuigiClient.linkManager().openAsModal('projects/pr1/users', {title:'Users', size:'m'});
        */
@@ -299,7 +299,7 @@ const LuigiClient = {
       /**
        * Sets the current navigation context to that of a specific parent node which has the {@link navigation-configuration.md navigationContext} field declared in the navigation configuration. This navigation context is then used by the `navigate` function.
        * @param {string} navigationContext
-       * @returns {linkManager} link manager instance.
+       * @returns {linkManager} link manager instance
        * @example
        * LuigiClient.linkManager().fromContext('project').navigate('/settings')
        */
@@ -323,7 +323,7 @@ const LuigiClient = {
 
       /**
        * Sets the current navigation context which is then used by the `navigate` function. This has to be a parent navigation context, it is not possible to use the child navigation contexts.
-       * @returns {linkManager} link manager instance.
+       * @returns {linkManager} link manager instance
        * @example
        * LuigiClient.linkManager().fromClosestContext().navigate('/users/groups/stakeholders')
        */
@@ -344,7 +344,7 @@ const LuigiClient = {
       /**
        * Sends node parameters to the route. The parameters are used by the `navigate` function. Use it optionally in combination with any of the navigation functions and receive it as part of the context object in Luigi Client.
        * @param {Object} nodeParams
-       * @returns {linkManager} link manager instance.
+       * @returns {linkManager} link manager instance
        * @example
        * LuigiClient.linkManager.withParams({foo: "bar"}).navigate("path")
        *
@@ -362,7 +362,7 @@ const LuigiClient = {
       /**
        * Checks if the path you can navigate to exists in the main application. For example, you can use this helper method conditionally to display a DOM element like a button.
        * @param {string} path path which existence you want to check
-       * @returns {promise} A promise which resolves to a Boolean variable specifying whether the path exists or not.
+       * @returns {promise} a promise which resolves to a Boolean variable specifying whether the path exists or not
        * @example
        *  let pathExists;
        *  this.luigiClient
@@ -394,7 +394,7 @@ const LuigiClient = {
 
       /**
        * Checks if there is one or more preserved views. You can use it to show a **back** button.
-       * @returns {boolean} indicating if there is a preserved view you can return to.
+       * @returns {boolean} indicating if there is a preserved view you can return to
        */
       hasBack: function hasBack() {
         return (
@@ -489,12 +489,12 @@ const LuigiClient = {
       },
       /**
        * Shows a confirmation modal.
-       * @param {Object} settings the settings the confirmation modal. If no value is provided for any of the fields, a default value is set for it.
-       * @param {string} settings.header the content of the modal header
-       * @param {string} settings.body the content of the modal body
-       * @param {string} settings.buttonConfirm the label for the modal confirm button
-       * @param {string} settings.buttonDismiss the label for the modal dismiss button
-       * @returns {promise} which is resolved when accepting the confirmation modal and rejected when dismissing it.
+       * @param {Object} [settings] the settings the confirmation modal. If no value is provided for any of the fields, a default value is set for it
+       * @param {string} [settings.header="Confirmation"] the content of the modal header
+       * @param {string} [settings.body="Are you sure you want to do this?"] the content of the modal body
+       * @param {string} [settings.buttonConfirm="Yes"] the label for the modal confirm button
+       * @param {string} [settings.buttonDismiss="No"] the label for the modal dismiss button
+       * @returns {promise} which is resolved when accepting the confirmation modal and rejected when dismissing it
        */
       showConfirmationModal: function showConfirmationModal(settings) {
         window.parent.postMessage(
@@ -516,14 +516,14 @@ const LuigiClient = {
       /**
        * Shows an alert.
        * @param {Object} settings the settings for the alert
-       * @param {string} settings.text the content of the alert. To add a link to the content, you have to set up the link in the `links` object. The key(s) in the `links` object must be used in the text to reference the links, wrapped in curly brackets with no spaces. If you don't specify any text, the alert is not displayed.
-       * @param {('info'|'success'|'warning'|'error')} settings.type sets the type of the alert
-       * @param {Object} settings.links provides links data
-       * @param {Object} settings.links.LINK_KEY object containing the data for a particular link. To properly render the link in the alert message refer to the description of the **settings.text** parameter.
+       * @param {string} settings.text the content of the alert. To add a link to the content, you have to set up the link in the `links` object. The key(s) in the `links` object must be used in the text to reference the links, wrapped in curly brackets with no spaces. If you don't specify any text, the alert is not displayed
+       * @param {('info'|'success'|'warning'|'error')} [settings.type] sets the type of the alert
+       * @param {Object} [settings.links] provides links data
+       * @param {Object} settings.links.LINK_KEY object containing the data for a particular link. To properly render the link in the alert message refer to the description of the **settings.text** parameter
        * @param {string} settings.links.LINK_KEY.text text which replaces the link identifier in the alert content
        * @param {string} settings.links.LINK_KEY.url url to navigate when you click the link. Currently, only internal links are supported in the form of relative or absolute paths.
        * @param {number} settings.closeAfter (optional) time in milliseconds that tells Luigi when to close the Alert automatically. If not provided, the Alert will stay on until closed manually. It has to be greather than `100`
-       * @returns {promise} which is resolved when the alert is dismissed. It takes the alert ID as a param (you can use it in your callback)
+       * @returns {promise} which is resolved when the alert is dismissed. 
        * @example
        * import LuigiClient from '@kyma-project/luigi-client';
        * const settings = {
