@@ -20,6 +20,14 @@ class Auth {
     authorizeMethod: 'GET',
     oAuthData: {
       client_id: 'egDuozijY5SVr0NSIowUP1dT6RVqHnlp'
+    },
+    userInfoFn: () => {
+      return new Promise(resolve => {
+        resolve({
+          name: 'Luigi User',
+          email: 'luigi.user@example.com'
+        });
+      });
     }
   };
 
