@@ -138,7 +138,7 @@ export class ProjectComponent implements OnInit, OnDestroy {
   }
 
   showAlert() {
-    const { type, links, text, id, closeAfter } = this.luigiAlertForm.value;
+    const { type, links, text, closeAfter } = this.luigiAlertForm.value;
     this.alertDismissed = text ? false : undefined;
 
     const texts = {

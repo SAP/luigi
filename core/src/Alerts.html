@@ -43,7 +43,7 @@
       }
 
       const processedAlerts = current.alertQueue.map(alert => {
-        const { text, links, closeAfter, id } = alert.settings;
+        const { text, links, closeAfter } = alert.settings;
         const processedData = this.processTextAndLinks(text, links);
 
         setTimeout(() => {
