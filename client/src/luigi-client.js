@@ -549,7 +549,7 @@ const LuigiClient = {
        */
       showAlert: function showAlert(settings) {
         if (!settings.id) {
-          //generate reandom ID if user hasn't provided any
+          //generate random ID if the user hasn't provided any
           settings.id = crypto.randomBytes(4).toString('hex');
         }
 
