@@ -26,13 +26,13 @@
     "ajv": "^6.1.1",
     "core-js": "^2.4.1",
     "fiori-fundamentals": "^1.4.1",
-    "rxjs": "^6.2.0",
+    "rxjs": "6.2.0",
     "webpack-cli": "^3.2.3",
     "zone.js": "^0.8.14"
   },
   "devDependencies": {
-    "@angular-builders/custom-webpack": "^7.1.1",
-    "@angular-builders/dev-server": "^7.1.1",
+    "@angular-builders/custom-webpack": "7.1.1",
+    "@angular-builders/dev-server": "7.1.1",
     "@angular-devkit/build-angular": "~0.7.0",
     "@angular-devkit/core": "0.6.8",
     "@angular-devkit/schematics": "^0.6.8",
