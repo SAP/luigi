@@ -5,7 +5,7 @@
         	{#if responsiveNavSetting==="simple" || responsiveNavSetting==="simpleMobileOnly"}
         	  <span class="sap-icon--menu2 lui-burger" on:click="burgerClicked()"></span>
         	{/if}
-      <LogoTitle /> 
+      <LogoTitle />
     </div>
     <div class="fd-shellbar__group fd-shellbar__group--end">
       <div class="fd-shellbar__actions">
@@ -14,9 +14,9 @@
           bind:dropDownStates
           on:toggleDropdownState="toggleDropdownState(event.name)"
         />
-        {/if} 
-        {#if children && pathData.length > 0} 
-          {#each children as node} 
+        {/if}
+        {#if children && pathData.length > 0}
+          {#each children as node}
             {#if !node.hideFromNav}
             <div
               class="fd-shellbar__action fd-shellbar__action--hide fd-shellbar__action--collapsible"
@@ -47,7 +47,7 @@
                 {/if}
               </button>
             </div>
-            {/if} 
+            {/if}
           {/each}
           {#if isProductSwitcherAvailable}
             <ProductSwitcher
@@ -61,7 +61,7 @@
                 <button class=" fd-button--shell sap-icon--bell" aria-label="Notifications">
                   <span class="fd-counter fd-counter--notification" aria-label="Unread count">25</span>
                 </button>
-              </div> 
+              </div>
           -->
 
           <!-- dropdown for top nav nodes on smaller screens -->
@@ -119,18 +119,18 @@
                           {/if}
                         </a>
                       </li>
-                      {/if} 
+                      {/if}
                       {/each}
                       {#if isProductSwitcherAvailable}
-                        <li>       
-                          <a class="fd-menu__item" on:click="openMobileProductSwitcher(event)"  data-cy="mobile-product-switcher">            
+                        <li>
+                          <a class="fd-menu__item" on:click="openMobileProductSwitcher(event)"  data-cy="mobile-product-switcher">
                             <span class="fd-top-nav__icon sap-icon--grid sap-icon--m">
-                            </span>                  
+                            </span>
                             My Products
                           </a>
-                          
+
                         </li>
-                        
+
                       {/if}
                     </ul>
                   </nav>
@@ -144,10 +144,10 @@
                 {/if}
               </div>
             </div>
-           
+
           </div>
-          {/if} 
-        {/if} 
+          {/if}
+        {/if}
         {#if authorizationEnabled}
           <div class="fd-shellbar__action fd-shellbar__action--show-always">
             <div class="fd-popover">
@@ -170,8 +170,8 @@
               </div>
             </div>
           </div>
-        {/if} 
-      
+        {/if}
+
       </div>
     </div>
   </div>
@@ -255,7 +255,7 @@
     },
     computed: {
       showTopNav:({authorizationEnabled,autologinEnabled,isLoggedIn})=>
-        (authorizationEnabled && (!autologinEnabled || isLoggedIn)) || !authorizationEnabled 
+        (authorizationEnabled && (!autologinEnabled || isLoggedIn)) || !authorizationEnabled
     },
     helpers: {
       hasOpenUIicon(node) {
@@ -362,6 +362,12 @@
   }
 
   :global(.no-side-nav) {
+    .lui-burger {
+      display: none;
+    }
+  }
+
+  :global(.tab-nav) {
     .lui-burger {
       display: none;
     }
