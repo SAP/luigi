@@ -185,7 +185,7 @@ export class ProjectComponent implements OnInit, OnDestroy {
     this.pathExists.result = undefined;
   }
 
-  public sendDirtyEvent = () => {
+  public sendDirtyEvent() {
     uxManager().setDirtyStatus(this.isDirty);
   }
 }

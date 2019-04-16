@@ -36,10 +36,18 @@
         <div class="fd-form__set fd-has-padding-bottom-small">
           <div class="fd-form__item">
             <label class="fd-form__label" for="select-1">Type</label>
-            <select [ngModel]="alertTypes[0]" class="fd-form__control" id="select-1" name="type"
-              data-cy="luigi-alert-type">
+            <select
+              [ngModel]="alertTypes[0]"
+              [disabled]="this.alertDismissed === false"
+              class="fd-form__control"
+              id="select-1"
+              name="type"
+              data-cy="luigi-alert-type"
+            >
               <option [value]="type" *ngFor="let type of alertTypes">
-                {{ type }}</option>
+                {{ type }}
+              </option>
+
             </select>
           </div>
           <div class="fd-form__item fd-form__item--check">
@@ -167,8 +175,12 @@
         </li>
         <li class="fd-list-group__item">
           <a href="javascript:void(0)" (click)="navigateAndShowAlert()">
-            with preserved view: project to global settings and back</a>
-          <app-code-snippet data="linkManager().navigate('/settings', null, true)"></app-code-snippet>
+            with preserved view: project to global settings and back</a
+          >
+          <app-code-snippet
+            data="linkManager().navigate('/settings', null, true)"
+          ></app-code-snippet>
+
         </li>
         <li class="fd-list-group__item">
           <a href="javascript:void(0)" (click)="
