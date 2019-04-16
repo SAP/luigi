@@ -23,7 +23,7 @@ import { RestrictedComponent } from './restricted/restricted.component';
 import { LuigiContextService } from './services/luigi-context.service';
 import { GroupSettingsComponent } from './project/users/groups/group-details/group-settings/group-settings.component';
 import { DynamicComponent } from './project/dynamic/dynamic.component';
-import { HideSideNavComponent } from './project/hideSideNav/hideSideNav.component';
+import { HideSideNavComponent } from './project/hide-side-nav/hide-side-nav.component';
 import { AnonymousComponent } from './anonymous/anonymous.component';
 
 @NgModule({
