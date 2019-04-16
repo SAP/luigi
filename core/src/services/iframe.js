@@ -3,12 +3,21 @@
 import * as IframeHelpers from '../utilities/helpers/iframe-helpers';
 import * as GenericHelpers from '../utilities/helpers/generic-helpers';
 import * as RoutingHelpers from '../utilities/helpers/routing-helpers';
+import { createIframe } from '../utilities/helpers/iframe-helpers';
 
 const iframeNavFallbackTimeout = 2000;
 let timeoutHandle;
 
 export const getActiveIframe = node => {
   return node.firstChild;
+};
+
+export const getAllIframes = modalIframe => {
+  const iframes = Array.from(
+    document.querySelectorAll('.iframeContainer iframe')
+  );
+  if (modalIframe) iframes.push(modalIframe);
+  return iframes;
 };
 
 export const setActiveIframeToPrevious = node => {
@@ -41,7 +50,6 @@ export const navigateIframe = (config, component, node) => {
     viewUrl = RoutingHelpers.substituteViewUrl(viewUrl, componentData);
   }
 
-  const isSameDomain = IframeHelpers.isSameDomain(config, component);
   const isSameViewGroup = IframeHelpers.isSameViewGroup(config, component);
   const canReuseIframe = IframeHelpers.canReuseIframe(config, component);
   if (
@@ -73,37 +81,32 @@ export const navigateIframe = (config, component, node) => {
         component.set({ showLoadingIndicator: false });
       }
       config.navigateOk = undefined;
-      config.iframe = document.createElement('iframe');
-      config.iframe.src = viewUrl;
+      config.iframe = createIframe(viewUrl);
 
       node.insertBefore(config.iframe, node.firstChild);
 
       if (config.builderCompatibilityMode) {
         config.iframe.addEventListener('load', () => {
-          window.postMessage({ msg: 'luigi.hide-loading-indicator' }, '*');
-          config.iframe.contentWindow.postMessage(
-            ['init', JSON.stringify(componentData.context)],
-            '*'
-          );
+          const message = ['init', JSON.stringify(componentData.context)];
+          IframeHelpers.sendMessageToIframe(config.iframe, message);
         });
       }
     }
   } else {
     const goBackContext = component.get().goBackContext;
     config.iframe.style.display = 'block';
-    config.iframe.contentWindow.postMessage(
-      {
-        msg: 'luigi.navigate',
-        viewUrl: viewUrl,
-        context: JSON.stringify(
-          Object.assign({}, componentData.context, { goBackContext })
-        ),
-        nodeParams: JSON.stringify(Object.assign({}, componentData.nodeParams)),
-        pathParams: JSON.stringify(Object.assign({}, componentData.pathParams)),
-        internal: JSON.stringify(component.prepareInternalData())
-      },
-      '*'
-    );
+    config.iframe.luigi.nextViewUrl = viewUrl;
+    const message = {
+      msg: 'luigi.navigate',
+      viewUrl: viewUrl,
+      context: JSON.stringify(
+        Object.assign({}, componentData.context, { goBackContext })
+      ),
+      nodeParams: JSON.stringify(Object.assign({}, componentData.nodeParams)),
+      pathParams: JSON.stringify(Object.assign({}, componentData.pathParams)),
+      internal: JSON.stringify(component.prepareInternalData())
+    };
+    IframeHelpers.sendMessageToIframe(config.iframe, message);
     // clear goBackContext and reset navigateBack after sending it to the client
     component.set({ goBackContext: undefined, isNavigateBack: false });
 

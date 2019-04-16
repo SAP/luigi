@@ -94,7 +94,7 @@ export const hasIframeIsolation = component => {
 };
 
 export const getLocation = url => {
-  var element = document.createElement('a');
+  const element = document.createElement('a');
   element.href = url;
   return element.origin;
 };
@@ -103,4 +103,31 @@ export const getVisibleIframes = () => {
   return Array.prototype.slice
     .call(document.querySelectorAll('iframe'))
     .filter(item => item.style.display !== 'none');
+};
+
+export const urlMatchesTheDomain = (viewUrl = '', domain) => {
+  return getLocation(viewUrl) === domain;
+};
+
+export const iframeIsSameDomain = (viewUrl, domain) => {
+  return urlMatchesTheDomain(viewUrl, domain);
+};
+
+export const sendMessageToIframe = (iframe, message) => {
+  if (!(iframe.luigi && iframe.luigi.viewUrl)) return;
+  const trustedIframeDomain = getLocation(iframe.luigi.viewUrl);
+  iframe.contentWindow.postMessage(message, trustedIframeDomain);
+};
+
+export const createIframe = viewUrl => {
+  const iframe = document.createElement('iframe');
+  iframe.src = viewUrl;
+  iframe.luigi = {
+    viewUrl
+  };
+  return iframe;
+};
+
+export const isMessageSource = (event, iframe) => {
+  return iframe && iframe.contentWindow === event.source;
 };
