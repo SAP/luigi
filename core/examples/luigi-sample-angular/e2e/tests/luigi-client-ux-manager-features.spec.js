@@ -199,9 +199,11 @@ describe('Luigi client ux manger features', () => {
 
         cy.wait(101); //desired time + 1 ms = the alert shouldn't exist anymore
         cy.get('[data-cy=luigi-alert]').should('not.exist');
+
+
       });
 
-      it('can quque Alerts', () => {
+      it.only('can quque Alerts', () => {
         const numberOfAlerts = 3;
 
         cy.goToUxManagerMethods($iframeBody);
@@ -217,6 +219,13 @@ describe('Luigi client ux manger features', () => {
 
         cy.get('[data-cy=luigi-alert]').should('have.length', numberOfAlerts);
 
+
+        for (let i = 0; i < numberOfAlerts; i++) {
+          //clean up. click({multiple: true}) desn't work here.
+          cy.get('[data-cy=luigi-alert-dismiss]')
+            .first()
+            .click();
+        }
       });
 
       it('warning alert with links and unsaved changes', () => {
