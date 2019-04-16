@@ -98,18 +98,20 @@
           this.startAuthorization();
           return;
         }
-        if (GenericHelpers.isFunction(idpProviderInstance.userInfo)) {
-          idpProviderInstance.userInfo(idpProviderSettings).then(res => {
-            this.set({ isLoggedIn: true, userInfo: res });
-          });
-        } else if (
+        if (
           GenericHelpers.isFunction(idpProviderInstance.settings.userInfoFn)
         ) {
           idpProviderInstance.settings.userInfoFn().then(res => {
             this.set({ isLoggedIn: true, userInfo: res });
           });
         } else {
-          this.set({ isLoggedIn: true });
+          if (GenericHelpers.isFunction(idpProviderInstance.userInfo)) {
+            idpProviderInstance.userInfo(idpProviderSettings).then(res => {
+              this.set({ isLoggedIn: true, userInfo: res });
+            });
+          } else {
+            this.set({ isLoggedIn: true });
+          }
         }
         const onAuthSuccessfulFn = LuigiConfig.getConfigValue(
           'auth.events.onAuthSuccessful'
