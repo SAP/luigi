@@ -203,7 +203,7 @@ describe('Luigi client ux manger features', () => {
 
       });
 
-      it.only('can quque Alerts', () => {
+      it('can quque Alerts', () => {
         const numberOfAlerts = 3;
 
         cy.goToUxManagerMethods($iframeBody);
