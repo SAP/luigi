@@ -40,7 +40,7 @@ auth: {
 - **automaticSilentRenew** enables the automatic silent renewal of the token if it is supported by the server. The default value is `false`. For this mechanism to work, the browser must have third-party cookies support enabled.
 - **accessTokenExpiringNotificationTime** is the number of seconds before an access token is to expire and triggers silent token refresh. The default value is 60.
 - **thirdPartyCookiesScriptLocation** is the URL to the page containing third-party cookies support check. For details, see [Third-party cookies and silent token refresh section](#Third-party-cookies-and-silent-token-refresh).
-- **userInfoFn** provides a function to get user information. It returns a promise of an user info object which contains user name and/or email to display it in the profile dropdown.
+- **userInfoFn** provides a function to get user information. It returns a promise of a user info object which contains user name and/or email to display in the profile dropdown.
 
 ## OAuth2 Implicit Grant configuration
 
@@ -77,19 +77,19 @@ auth: {
 - **response_type** defaults to the **id_token**. Any other parameter that is added to oAuthData is also added to the authorization payload.
 - **nonceFn** provides a function that returns a string in order to override the default **nonce**.
 - **logoutFn** provides the function to override the **logoutUrl** functionality for a custom logout. It needs to execute the **logoutCallback()** function after logout.
-- **userInfoFn** provides a function to get user information. It returns a promise of an user info object which contains user name and/or email to display it in the profile dropdown.
+- **userInfoFn** provides a function to get user information. It returns a promise of a user info object which contains user name and/or email to display in the profile dropdown.
 
 
-### Custom Authentification Provider
+### Custom Authentication Provider
 
-If you are using any authentification provider you also have the possibility to implement some functions that luigi can deal with.
+If you are using any authentication provider you can also implement the following functions for Luigi.
 
 ````
-export class CustomAuthentificationProvider {
+export class CustomAuthenticationProvider {
 
     login(){
         // logic to handle the login mechanism
-        // returns a promise which contains a error message if something went wrong
+        // returns a promise which contains an error message if something went wrong
     }
 
     logout(authData, logoutCallback){
@@ -105,7 +105,7 @@ export class CustomAuthentificationProvider {
 
     userInfo(){
         // logic to get some user information
-        // returns a promise of an userinfo object which contains user name and/or email to display it in the profile dropdown
+        // returns a promise of a userinfo object which contains user name and/or email to display in the profile dropdown menu
     }
 }
 ````
