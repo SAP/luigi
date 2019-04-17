@@ -1,18 +1,25 @@
 
 {#if !isHidden}
 <ul class="fd-menu__list">
-    {#if isLoggedIn}
-      <li on:click=onLogoutClick()>
-        <a aria-label="Logout" class="fd-menu__item">Logout</a>
-      </li>
-    {:else}
-      <li on:click=startAuthorization()>
-        <a aria-label="Login" class="fd-menu__item">Login</a>
-      </li>
-    {/if}
+  {#if isLoggedIn}
+  {#if showUserInfo}
+  <li>
+    <a
+      aria-label="Username"
+      class="fd-menu__item"
+    >{userInfo.name ? userInfo.name : userInfo.email}</a>
+  </li>
+  {/if}
+  <li on:click="onLogoutClick()">
+    <a aria-label="Logout" class="fd-menu__item">Logout</a>
+  </li>
+  {:else}
+  <li on:click="startAuthorization()">
+    <a aria-label="Login" class="fd-menu__item">Login</a>
+  </li>
+  {/if}
 </ul>
 {/if}
-
 <script type="text/javascript">
   import { LuigiConfig } from './services/config.js';
   import * as GenericHelpers from './utilities/helpers/generic-helpers.js';
@@ -31,13 +38,17 @@
   const newlyAuthorized = () =>
     JSON.parse(localStorage.getItem('luigi.newlyAuthorized'));
   const isAuthValid = () =>
-    AuthHelpers.getStoredAuthData().accessTokenExpirationDate > Number(new Date());
+    AuthHelpers.getStoredAuthData().accessTokenExpirationDate >
+    Number(new Date());
 
   const IdpProviderException = message => {
     return { message, name: 'IdpProviderException' };
   };
 
-  const getIdpProviderInstance = async (idpProviderName, idpProviderSettings) => {
+  const getIdpProviderInstance = async (
+    idpProviderName,
+    idpProviderSettings
+  ) => {
     if (GenericHelpers.isFunction(standardProviders[idpProviderName])) {
       return new standardProviders[idpProviderName](idpProviderSettings);
     }
@@ -66,15 +77,18 @@
 
   export default {
     data() {
-      return{
-        isHidden:false
-      }
+      return {
+        isHidden: false
+      };
     },
     oncreate() {
       if (!LuigiConfig.isAuthorizationEnabled()) {
         return;
       }
-
+      const idpProviderName = LuigiConfig.getConfigValue('auth.use');
+      const idpProviderSettings = LuigiConfig.getConfigValue(
+        `auth.${idpProviderName}`
+      );
       const checkAuth = () => {
         const authData = AuthHelpers.getStoredAuthData();
         if (!authData || !isAuthValid()) {
@@ -84,9 +98,21 @@
           this.startAuthorization();
           return;
         }
-
-        this.set({ isLoggedIn: true });
-
+        if (
+          GenericHelpers.isFunction(idpProviderInstance.settings.userInfoFn)
+        ) {
+          idpProviderInstance.settings.userInfoFn().then(res => {
+            this.set({ isLoggedIn: true, userInfo: res });
+          });
+        } else {
+          if (GenericHelpers.isFunction(idpProviderInstance.userInfo)) {
+            idpProviderInstance.userInfo(idpProviderSettings).then(res => {
+              this.set({ isLoggedIn: true, userInfo: res });
+            });
+          } else {
+            this.set({ isLoggedIn: true });
+          }
+        }
         const onAuthSuccessfulFn = LuigiConfig.getConfigValue(
           'auth.events.onAuthSuccessful'
         );
@@ -95,26 +121,30 @@
           onAuthSuccessfulFn(authData);
         }
 
-        if (GenericHelpers.isFunction(idpProviderInstance.setTokenExpirationAction)) {
+        if (
+          GenericHelpers.isFunction(
+            idpProviderInstance.setTokenExpirationAction
+          )
+        ) {
           idpProviderInstance.setTokenExpirationAction();
         }
       };
 
-      const idpProviderName = LuigiConfig.getConfigValue('auth.use');
-      const idpProviderSettings = LuigiConfig.getConfigValue(
-        `auth.${idpProviderName}`
-      );
       idpProviderInstance = getIdpProviderInstance(
         idpProviderName,
         idpProviderSettings
       );
       if (GenericHelpers.isPromise(idpProviderInstance)) {
-        return idpProviderInstance.then(resolved => {
-          idpProviderInstance = resolved;
-          checkAuth();
-        }).catch((err) => {
-          console.error(`Could not instantate ${idpProviderName} provider : ${err}`)
-        });
+        return idpProviderInstance
+          .then(resolved => {
+            idpProviderInstance = resolved;
+            checkAuth();
+          })
+          .catch(err => {
+            console.error(
+              `Could not instantate ${idpProviderName} provider : ${err}`
+            );
+          });
       }
       checkAuth();
     },
@@ -128,9 +158,9 @@
         });
       },
       onLogoutClick: function() {
-        this.root.getUnsavedChangesModalPromise().then(
-          () => { this.logout() }
-        )
+        this.root.getUnsavedChangesModalPromise().then(() => {
+          this.logout();
+        });
       },
       logout: function() {
         const authData = AuthHelpers.getStoredAuthData();
@@ -149,7 +179,11 @@
           `auth.${LuigiConfig.getConfigValue('auth.use')}.logoutFn`
         );
         if (GenericHelpers.isFunction(customLogoutFn)) {
-          customLogoutFn(idpProviderInstance.settings, authData, logoutCallback);
+          customLogoutFn(
+            idpProviderInstance.settings,
+            authData,
+            logoutCallback
+          );
         } else if (GenericHelpers.isFunction(idpProviderInstance.logout)) {
           idpProviderInstance.logout(authData, logoutCallback);
         } else {
@@ -158,10 +192,15 @@
         }
       }
     },
+    computed: {
+      showUserInfo: ({ userInfo }) => {
+        if (userInfo !== undefined) {
+          if (userInfo.name || userInfo.email) {
+            return true;
+          }
+        }
+      }
+    },
     components: {}
   };
 </script>
-
-
-<style type="text/scss">
-</style>
