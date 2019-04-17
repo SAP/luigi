@@ -1,6 +1,7 @@
 language: node_js
 node_js:
   - 'node'
+dist: trusty
 install: npm install --prefix core
 notifications:
   slack:
@@ -12,3 +13,7 @@ jobs:
       script: npm test --prefix core
     - script: bash ./test/e2e.sh
       name: 'Integration Tests'
+addons:
+  chrome: stable
+before_install:
+  - google-chrome-stable --headless --disable-gpu --remote-debugging-port=9222 http://localhost &
