@@ -1,5 +1,6 @@
 import * as AsyncHelpers from '../utilities/helpers/async-helpers';
 import * as GenericHelpers from '../utilities/helpers/generic-helpers';
+import { auth } from './auth';
 
 class LuigiConfigManager {
   constructor() {
@@ -8,14 +9,14 @@ class LuigiConfigManager {
       id: undefined
     };
 
-    this.configReadyCallback = function() {};
+    this.configReadyCallback = function () { };
   }
 
   setConfigCallbacks(configReadyCallback) {
     this.configReadyCallback = configReadyCallback;
     this.configReadyTimeout.id = setTimeout(() => {
       // Avoid Luigi initialization if timeout reached
-      this.configReadyCallback = function() {};
+      this.configReadyCallback = function () { };
       this.configNotReadyCallback();
     }, this.configReadyTimeout.valueMs);
   }
@@ -89,16 +90,11 @@ class LuigiConfigManager {
   /*
    * Detects if authorization is enabled via configuration.
    * @returns {boolean} returns true if authorization is enabled. Otherwise returns false.
+   * @deprecated now located in Luigi.authManager instead of LuigiConfig
    */
   isAuthorizationEnabled() {
-    const idpProviderName = this.getConfigValue('auth.use');
-    const idpProviderSettings = this.getConfigValue(`auth.${idpProviderName}`);
-    return !!idpProviderSettings;
+    return auth.isAuthorizationEnabled();
   }
 }
-const LuigiInstance = new LuigiConfigManager();
 
-// Expose it window for user app to call Luigi.setConfig()
-window.Luigi = LuigiInstance;
-
-export const LuigiConfig = LuigiInstance;
+export const config = new LuigiConfigManager();

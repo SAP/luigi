@@ -5,7 +5,7 @@ const routing = require('../../src/services/routing');
 const MockBrowser = require('mock-browser').mocks.MockBrowser;
 const GenericHelpers = require('../../src/utilities/helpers/generic-helpers');
 import { afterEach } from 'mocha';
-import { LuigiConfig } from '../../src/services/config';
+import { LuigiConfig } from '../../src/core-api';
 
 describe('Routing', () => {
   let component;

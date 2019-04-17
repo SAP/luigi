@@ -100,6 +100,7 @@ export class oAuth2ImplicitGrant {
       const currentDate = new Date();
 
       if (tokenExpirationDate - currentDate - logoutBeforeExpirationTime < 0) {
+        // trigger access token expired in core api
         localStorage.removeItem('luigi.auth');
         window.location = `${
           this.settings.logoutUrl

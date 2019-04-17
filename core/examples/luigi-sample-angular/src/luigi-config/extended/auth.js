@@ -89,6 +89,9 @@ class Auth {
     onAuthSuccessful: data => {
       console.log('onAuthSuccessful', data);
     },
+    onAuthRehydrated: data => {
+      console.log('onAuthRehydrated', data);
+    },
     onAuthExpired: () => {
       console.log('onAuthExpired');
     },

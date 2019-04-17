@@ -55,7 +55,7 @@
   import ConfirmationModal from './ConfirmationModal.html';
   import Alert from './Alert.html';
   import Modal from './Modal.html';
-  import { LuigiConfig } from './services/config.js';
+  import { LuigiConfig } from './core-api';
   import * as Routing from './services/routing.js';
   import * as Navigation from './navigation/services/navigation.js';
   import * as Iframe from './services/iframe';
@@ -303,7 +303,6 @@
           }
         });
         window.addEventListener('message', async e => {
-
           const iframe = this.getValidMessageSource(e);
           if (!iframe) return;
 
@@ -319,7 +318,7 @@
               const modalConfig = {
                 ...config,
                 iframe: this.get().modalIframe,
-                context: ctx, 
+                context: ctx,
                 pathParams: this.get().modalIframeData.pathParams,
                 nodeParams: this.get().modalIframeData.nodeParams,
                 modal: true
@@ -451,11 +450,9 @@
                 getDefaultConfirmationModalData()
               )
             );
-            this.showModal(settings, true).catch(
-              () => {
-                /* keep it to avoid runtime errors in browser console */
-              }
-            );
+            this.showModal(settings, true).catch(() => {
+              /* keep it to avoid runtime errors in browser console */
+            });
           }
 
           if ('luigi.ux.alert.show' === e.data.msg) {
@@ -469,11 +466,9 @@
             this.set(
               Object.assign({ contentNode: node }, getDefaultAlertData())
             );
-            this.showAlert(settings, true).catch(
-              () => {
-                /* keep it to avoid runtime errors in browser console */
-              }
-            );
+            this.showAlert(settings, true).catch(() => {
+              /* keep it to avoid runtime errors in browser console */
+            });
           }
         });
 
@@ -486,8 +481,13 @@
     },
     methods: {
       getValidMessageSource(e) {
-        const allMessagesSources = [...Iframe.getAllIframes(this.get().modalIframe), {contentWindow: window, luigi: {viewUrl: window.location.href}}];
-        const iframe = allMessagesSources.find((iframe) => iFrameHelpers.isMessageSource(e, iframe));
+        const allMessagesSources = [
+          ...Iframe.getAllIframes(this.get().modalIframe),
+          { contentWindow: window, luigi: { viewUrl: window.location.href } }
+        ];
+        const iframe = allMessagesSources.find(iframe =>
+          iFrameHelpers.isMessageSource(e, iframe)
+        );
 
         if (!iframe || !iframe.luigi || !iframe.luigi.viewUrl) {
           return undefined;
@@ -498,7 +498,9 @@
           return undefined;
         }
 
-        const viewUrl = navigateOkMsg ? iframe.luigi.nextViewUrl : iframe.luigi.viewUrl;
+        const viewUrl = navigateOkMsg
+          ? iframe.luigi.nextViewUrl
+          : iframe.luigi.viewUrl;
         if (!iFrameHelpers.iframeIsSameDomain(viewUrl, e.origin)) {
           return undefined;
         }
@@ -536,9 +538,7 @@
         this.set(getDefaultConfirmationModalData());
 
         if (openFromClient) {
-          const iframe = Iframe.getActiveIframe(
-            this.get().contentNode
-          );
+          const iframe = Iframe.getActiveIframe(this.get().contentNode);
           const message = {
             msg: 'luigi.ux.confirmationModal.hide',
             data: { confirmed: result }
@@ -642,9 +642,7 @@
         this.set(getDefaultAlertData());
 
         if (openFromClient) {
-          const iframe = Iframe.getActiveIframe(
-            this.get().contentNode
-          );
+          const iframe = Iframe.getActiveIframe(this.get().contentNode);
           const message = {
             msg: 'luigi.ux.alert.hide'
           };
