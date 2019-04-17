@@ -150,17 +150,3 @@ export const sanitizeParams = paramsMap => {
     return sanitizedMap;
   }, {});
 };
-
-export const navigateToLink = item => {
-  if (item.externalLink && item.externalLink.url) {
-    navigateToExternalLink(item.externalLink);
-  } else {
-    Routing.navigateTo(item.link);
-  }
-};
-
-export const navigateToExternalLink = externalLink => {
-  window
-    .open(externalLink.url, externalLink.sameWindow ? '_self' : '_blank')
-    .focus();
-};
