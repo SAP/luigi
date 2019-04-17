@@ -620,7 +620,11 @@
 
         if (settings.closeAfter) {
           setTimeout(() => {
-            this.handleAlertDismiss(settings.id);
+            if(this.getAlertWithId(this.get().alerts,settings.id)) //check if alert hasn't already been closed manually
+            {
+               this.handleAlertDismiss(settings.id);
+            }
+            
           }, settings.closeAfter);
         }
 
