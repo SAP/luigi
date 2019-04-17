@@ -1,94 +1,100 @@
+
 {#if productSwitcherItems && productSwitcherItems.length &&
 Object.keys(productSwitcherItems[0]).length }
-
-
-  <!-- DESKTOP VERSION (popover): -->
-    {#if !isMobile}
-      <div class="fd-shellbar__action fd-shellbar__action--collapsible">
-        <div class="fd-product-switcher">
-          <div class="fd-popover fd-popover--right">
-            <div class="fd-popover__control" on:click="event.stopPropagation()">
-              <button
-                class="fd-button--shell sap-icon--grid"
-                aria-expanded="{dropDownStates.productSwitcherPopover || false}"
-                aria-haspopup="true"
-                on:click="toggleDropdownState('productSwitcherPopover')"
-                data-cy="desktop-product-switcher"
-              ></button>
-            </div>
-            <div
-              class="fd-popover__body fd-popover__body--right"
-              aria-hidden="{!(dropDownStates.productSwitcherPopover || false)}"
-              id="productSwitcherPopover"
-            >
-              <div class="fd-product-switcher__body">
-                <nav class="fd-menu">
-                  <ul class="fd-menu__list">
-                    {#each productSwitcherItems as productSwitcherItem} {#if
-                    productSwitcherItem.icon && productSwitcherItem.label}
-                    <li on:click="onActionClick(productSwitcherItem)">
-                      <a class="fd-menu__item">
-                        <span class="fd-product-switcher__product-icon">
-                          <img src="{productSwitcherItem.icon}" />
-                        </span>
-                        <span class="fd-product-switcher__product-title">
-                          {productSwitcherItem.label}
-                        </span>
-                      </a>
-                    </li>
-                    {/if} {/each}
-                  </ul>
-                </nav>
-              </div>
-            </div> 
-          </div>
+<!-- DESKTOP VERSION (popover): -->
+{#if !isMobile}
+<div class="fd-shellbar__action fd-shellbar__action--collapsible">
+  <div class="fd-product-switcher">
+    <div class="fd-popover fd-popover--right">
+      <div class="fd-popover__control" on:click="event.stopPropagation()">
+        <button
+          class="fd-button--shell sap-icon--grid"
+          aria-expanded="{dropDownStates.productSwitcherPopover || false}"
+          aria-haspopup="true"
+          on:click="toggleDropdownState('productSwitcherPopover')"
+          data-cy="desktop-product-switcher"
+        ></button>
+      </div>
+      <div
+        class="fd-popover__body fd-popover__body--right"
+        aria-hidden="{!(dropDownStates.productSwitcherPopover || false)}"
+        id="productSwitcherPopover"
+      >
+        <div class="fd-product-switcher__body">
+          <nav class="fd-menu">
+            <ul class="fd-menu__list">
+              {#each productSwitcherItems as productSwitcherItem} {#if
+              productSwitcherItem.icon && productSwitcherItem.label}
+              <li on:click="onActionClick(productSwitcherItem)">
+                <a class="fd-menu__item">
+                  <span class="fd-product-switcher__product-icon">
+                    <img src="{productSwitcherItem.icon}">
+                  </span>
+                  <span
+                    class="fd-product-switcher__product-title"
+                  >{productSwitcherItem.label}</span>
+                </a>
+              </li>
+              {/if} {/each}
+            </ul>
+          </nav>
         </div>
       </div>
-    {/if}
- 
+    </div>
+  </div>
+</div>
 
-
-  <!-- MOBILE VERSION (fullscreen modal): -->
-    {#if isMobile && dropDownStates.productSwitcherPopover}
-      <section class="fd-product-switcher">
-        <div class="fd-modal y-fd-modal--full-screen" on:click="event.stopPropagation()">
-          <div class="fd-modal__content" role="document">
-              <div class="fd-modal__header">
-                <h1 class="fd-modal__title">My Products</h1>
-                <!-- TODO: add proper title -->
-              </div>
-              <div class="fd-modal__body">
-                <div class="fd-product-switcher__body">
-                      <ul class="y-full-width-list">
-                        {#each productSwitcherItems as productSwitcherItem}
-                          {#if productSwitcherItem.icon && productSwitcherItem.label}
-                          <li on:click="onActionClick(productSwitcherItem)" class="y-full-width-list__item">
-                              <span class="y-full-width-list__icon" style="background-image: url({productSwitcherItem.icon})" ></span>
-                              <span class="y-full-width-list__title">
-                                {productSwitcherItem.label}
-                              </span>
-                              <span class="y-full-width-list__subtitle">
-                                <!-- Here comes the subtitle which is unknown for now -->
-                              </span>
-                          </li>
-                          {/if} 
-                        {/each}
-                      </ul>
-                  </div>
-                </div>
-                <footer class="fd-modal__footer">
-                    <div class="fd-modal__actions">
-                        <button class="fd-button"  on:click="toggleDropdownState('productSwitcherPopover',event)" data-cy="mobile-product-switcher-close">
-                          Close
-                        </button>
-                    </div>
-                </footer>
-            </div>
-          </div>
-      </section>
-    {/if}
 {/if}
+<!-- MOBILE VERSION (fullscreen modal): -->
+{#if isMobile && dropDownStates.productSwitcherPopover}
+<section class="fd-product-switcher">
+  <div
+    class="fd-modal y-fd-modal--full-screen"
+    on:click="event.stopPropagation()"
+  >
+    <div class="fd-modal__content" role="document">
+      <div class="fd-modal__header">
+        <h1 class="fd-modal__title">My Products</h1>
+        <!-- TODO: add proper title -->
+      </div>
+      <div class="fd-modal__body">
+        <div class="fd-product-switcher__body">
+          <ul class="y-full-width-list">
+            {#each productSwitcherItems as productSwitcherItem}
+            {#if productSwitcherItem.icon && productSwitcherItem.label}
+            <li
+              on:click="onActionClick(productSwitcherItem)"
+              class="y-full-width-list__item"
+            >
+              <span
+                class="y-full-width-list__icon"
+                style="background-image: url({productSwitcherItem.icon})"
+              ></span>
+              <span class="y-full-width-list__title">{productSwitcherItem.label}</span>
+              <span class="y-full-width-list__subtitle">
+                <!-- Here comes the subtitle which is unknown for now -->
+              </span>
+            </li>
+            {/if}
+            {/each}
+          </ul>
+        </div>
+      </div>
+      <footer class="fd-modal__footer">
+        <div class="fd-modal__actions">
+          <button
+            class="fd-button"
+            on:click="toggleDropdownState('productSwitcherPopover',event)"
+            data-cy="mobile-product-switcher-close"
+          >Close</button>
+        </div>
+      </footer>
+    </div>
+  </div>
+</section>
 
+{/if}
+{/if}
 <script type="text/javascript">
   import { LuigiConfig } from '../services/config.js';
   import * as Routing from '../services/routing.js';
@@ -113,14 +119,7 @@ Object.keys(productSwitcherItems[0]).length }
     methods: {
       onActionClick(productSwitcherItem) {
         this.root.getUnsavedChangesModalPromise().then(() => {
-          if (productSwitcherItem.externalLink) {
-            window.open(
-              productSwitcherItem.externalLink.url,
-              productSwitcherItem.externalLink.sameWindow ? '_self' : '_blank'
-            );
-          } else {
-            Routing.navigateTo(productSwitcherItem.link);
-          }
+          Routing.navigateToLink(productSwitcherItem);
         });
         this.toggleDropdownState('productSwitcherPopover');
       },
@@ -136,7 +135,7 @@ Object.keys(productSwitcherItems[0]).length }
     max-height: 40px;
   }
 
-  .fd-product-switcher__body{
+  .fd-product-switcher__body {
     .fd-menu__item {
       padding: 0;
       text-align: center;
@@ -144,73 +143,73 @@ Object.keys(productSwitcherItems[0]).length }
   }
 
   .y-fd-modal--full-screen {
-    z-index:1000;
-    position:fixed;
-    box-sizing:border-box;
-    top:0;
-    left:0;
+    z-index: 1000;
+    position: fixed;
+    box-sizing: border-box;
+    top: 0;
+    left: 0;
     margin: auto auto;
-    
-    .fd-modal__content{
-      $margin: 0px; //distance from viewport borders. Please remove the line below (border-radius) if not set to 0.
-      border-radius:0;
 
-      width:calc(100vw - 2 * #{$margin});
-      height:calc(100vh - 2 * #{$margin});
+    .fd-modal__content {
+      $margin: 0px; //distance from viewport borders. Please remove the line below (border-radius) if not set to 0.
+      border-radius: 0;
+
+      width: calc(100vw - 2 * #{$margin});
+      height: calc(100vh - 2 * #{$margin});
       margin: $margin;
       display: grid;
       grid-template-rows: 1fr auto; //no row for title by default
     }
 
-    .fd-modal__header{
-      padding:12px 8px;
+    .fd-modal__header {
+      padding: 12px 8px;
     }
 
-    .fd-modal__title{
+    .fd-modal__title {
       text-align: left;
-      @at-root{
-          .y-fd-modal--full-screen .fd-modal__content{
-            grid-template-rows: auto 1fr auto; //add another row to the top of the modal if __title is present
-          }
+      @at-root {
+        .y-fd-modal--full-screen .fd-modal__content {
+          grid-template-rows: auto 1fr auto; //add another row to the top of the modal if __title is present
+        }
       }
     }
-    .fd-modal__body{
+    .fd-modal__body {
       max-height: none;
       padding: 0;
     }
 
-    .fd-modal__footer{
-      box-shadow: 0 0px 6px rgba(0,0,0,0.2);
+    .fd-modal__footer {
+      box-shadow: 0 0px 6px rgba(0, 0, 0, 0.2);
     }
 
-    .fd-product-switcher__body{
-      padding:0;
+    .fd-product-switcher__body {
+      padding: 0;
     }
   }
 
-  .y-full-width-list{
+  .y-full-width-list {
     width: 100%;
     text-align: left;
     list-style: none;
 
-    &__item{
-      display:grid;
-      grid-template-columns:40px auto;
+    &__item {
+      display: grid;
+      grid-template-columns: 40px auto;
       grid-template-rows: 1fr 1fr;
       grid-gap: 2px 8px;
 
-      padding:12px 8px;
+      padding: 12px 8px;
       cursor: pointer;
 
-      &:hover{
-        background: #F5FAFF;
-          .y-full-width-list__title{
+      &:hover {
+        background: #f5faff;
+        .y-full-width-list__title {
           font-weight: bold;
         }
       }
     }
 
-    &__icon{
+    &__icon {
       vertical-align: middle;
       width: 40px;
       height: 40px;
@@ -219,12 +218,12 @@ Object.keys(productSwitcherItems[0]).length }
       background-size: cover;
     }
 
-    &__title{
+    &__title {
       color: #515559;
     }
 
-    &__subtitle{
-      color:#74777A;
+    &__subtitle {
+      color: #74777a;
     }
   }
 </style>

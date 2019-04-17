@@ -251,9 +251,7 @@ export const handleRouteChange = async (
 
 export const handleRouteClick = (node, componentData) => {
   if (node.externalLink && node.externalLink.url) {
-    node.externalLink.sameWindow
-      ? (window.location.href = node.externalLink.url)
-      : window.open(node.externalLink.url).focus();
+    navigateToExternalLink(node.externalLink);
     // externalLinkUrl property is provided so there's no need to trigger routing mechanizm
   } else if (node.link) {
     const link = node.link.startsWith('/')
@@ -298,4 +296,18 @@ const showPageNotFoundError = async (
   };
   component.set({ alert });
   navigateTo(GenericHelpers.addLeadingSlash(pathToRedirect));
+};
+
+export const navigateToLink = item => {
+  if (item.externalLink && item.externalLink.url) {
+    navigateToExternalLink(item.externalLink);
+  } else {
+    navigateTo(item.link);
+  }
+};
+
+export const navigateToExternalLink = externalLink => {
+  window
+    .open(externalLink.url, externalLink.sameWindow ? '_self' : '_blank')
+    .focus();
 };

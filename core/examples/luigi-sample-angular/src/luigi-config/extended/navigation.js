@@ -181,8 +181,35 @@ class Navigation {
       label: 'End session'
       // icon: "sys-cancel",
     },
-    items: []
+    items: [
+      {
+        icon: '',
+        label: 'hybris',
+        externalLink: {
+          url: 'https://www.hybris.com',
+          sameWindow: false
+        }
+      },
+      {
+        icon: '',
+        label: 'Project 1',
+        link: '/projects/pr1'
+      },
+      {
+        icon: '',
+        label: 'Project 2',
+        link: '/projects/pr2'
+      },
+      {
+        icon: '',
+        label: 'Project 3',
+        link: '/projects/pr3'
+      }
+    ]
   };
 }
 
-export const navigation = new Navigation(navigationPermissionChecker, projectsNavProviderFn);
+export const navigation = new Navigation(
+  navigationPermissionChecker,
+  projectsNavProviderFn
+);

@@ -12,7 +12,7 @@ describe('Login Flow', () => {
 
     //logout
     cy.get('.sap-icon--customer').click();
-    cy.contains('Logout').click();
+    cy.contains('End session').click();
     cy.get('#headline').should('contain', 'You have successfully logged out');
     cy.get('#message').should(
       'contain',
