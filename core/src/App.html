@@ -605,10 +605,17 @@
       },
       showAlert(settings, openFromClient = false) {
         const currentAlerts = this.get().alerts;
+       
+        if(!settings.id){
+          //generate the ID in case it hasn't came from an old version of LuigiClient
+          const crypto=require('crypto');
+          settings.id = crypto.randomBytes(4).toString('hex');
+        }
+
         if (
           settings.id &&
           currentAlerts &&
-          currentAlerts.find(a => a.settings.id === settings.id)
+          this.getAlertWithId(currentAlerts,settings.id)
         ) {
           console.error(
             `The alert with id '${
