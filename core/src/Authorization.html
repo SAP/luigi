@@ -3,6 +3,14 @@
 <nav class="fd-menu">
   <ul class="fd-menu__list">
     {#if isLoggedIn}
+    {#if showUserInfo}
+    <li>
+      <a
+        aria-label="Username"
+        class="fd-menu__item"
+      >{userInfo.name ? userInfo.name : userInfo.email}</a>
+    </li>
+    {/if}
     {#each profileNav.items as profileItem}
     <li on:click="onActionClick(profileItem)">
       <a class="fd-menu__item">
@@ -121,7 +129,10 @@
       if (!LuigiConfig.isAuthorizationEnabled()) {
         return;
       }
-
+      const idpProviderName = LuigiConfig.getConfigValue('auth.use');
+      const idpProviderSettings = LuigiConfig.getConfigValue(
+        `auth.${idpProviderName}`
+      );
       const checkAuth = () => {
         const authData = AuthHelpers.getStoredAuthData();
         if (!authData || !isAuthValid()) {
@@ -132,9 +143,23 @@
           return;
         }
 
-        this.set({ isLoggedIn: true });
         this.setProfileNavData();
 
+        if (
+          GenericHelpers.isFunction(idpProviderInstance.settings.userInfoFn)
+        ) {
+          idpProviderInstance.settings.userInfoFn().then(res => {
+            this.set({ isLoggedIn: true, userInfo: res });
+          });
+        } else {
+          if (GenericHelpers.isFunction(idpProviderInstance.userInfo)) {
+            idpProviderInstance.userInfo(idpProviderSettings).then(res => {
+              this.set({ isLoggedIn: true, userInfo: res });
+            });
+          } else {
+            this.set({ isLoggedIn: true });
+          }
+        }
         const onAuthSuccessfulFn = LuigiConfig.getConfigValue(
           'auth.events.onAuthSuccessful'
         );
@@ -152,10 +177,6 @@
         }
       };
 
-      const idpProviderName = LuigiConfig.getConfigValue('auth.use');
-      const idpProviderSettings = LuigiConfig.getConfigValue(
-        `auth.${idpProviderName}`
-      );
       idpProviderInstance = getIdpProviderInstance(
         idpProviderName,
         idpProviderSettings
@@ -239,6 +260,15 @@
         } else {
           logoutCallback();
           window.location.href = idpProviderInstance.settings.logoutUrl;
+        }
+      }
+    },
+    computed: {
+      showUserInfo: ({ userInfo }) => {
+        if (userInfo !== undefined) {
+          if (userInfo.name || userInfo.email) {
+            return true;
+          }
         }
       }
     }
