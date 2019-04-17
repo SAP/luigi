@@ -13,7 +13,7 @@
       aria-controls="j2ALl423"
       data-cy="luigi-alert-dismiss"
     ></button>
-    {@html dataSanitized ? alert.settings.text: ''}
+    {@html alert.dataSanitized ? alert.settings.text: ''}
   </div>
   {/each}
 </div>
@@ -54,13 +54,13 @@
         });
 
         return {
-          settings: { ...alert.settings, text: processedData.sanitizedText }
+          settings: { ...alert.settings, text: processedData.sanitizedText },
+          dataSanitized: true
         };
       });
 
       this.set({
-        alertQueue: processedAlerts,
-        dataSanitized: true
+        alertQueue: processedAlerts,       
       });
     },
     oncreate() {},
