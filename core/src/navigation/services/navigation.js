@@ -217,7 +217,7 @@ const getNodes = (children, pathData) => {
 
 const getGroupedChildren = (children, current) => {
   const nodes = getNodes(children, current.pathData);
-  return NavigationHelpers.groupNodesBy(nodes, 'category');
+  return NavigationHelpers.groupNodesBy(nodes, 'category', true);
 };
 
 /**
