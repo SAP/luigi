@@ -79,7 +79,7 @@ describe('Luigi client ux manger features', () => {
 
       cy.get('.spinnerContainer .fd-spinner').should('exist');
 
-      cy.get('.spinnerContainer .fd-spinner', { timeout: 1000 }).should('not.exist');
+      cy.get('.spinnerContainer .fd-spinner', { timeout: 3000 }).should('not.exist');
 
       cy.wait(250);
       cy.get('iframe').then($iframe => {
@@ -93,7 +93,7 @@ describe('Luigi client ux manger features', () => {
         cy.get('.spinnerContainer .fd-spinner').should('exist');
 
         // wait for programmatic hide of loading indicator
-        cy.get('.spinnerContainer .fd-spinner', { timeout: 1000 }).should('not.exist');
+        cy.get('.spinnerContainer .fd-spinner', { timeout: 3000 }).should('not.exist');
       });
     });
 
