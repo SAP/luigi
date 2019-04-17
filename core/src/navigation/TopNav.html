@@ -15,7 +15,7 @@
       {#if !authorizationEnabled || isLoggedIn}
       <ContextSwitcher
         bind:dropDownStates
-        on:toggleDropdownState="toggleDropdownState(event.name)"
+        on:toggleDropdownState="toggleDropdownState('contextSwitcherPopover')"
       />
       {/if}
       {#if children && pathData.length > 0}
@@ -57,7 +57,7 @@
       {#if isProductSwitcherAvailable}
       <ProductSwitcher
         bind:dropDownStates
-        on:toggleDropdownState="toggleDropdownState(event.name)"
+        on:toggleDropdownState="toggleDropdownState('productSwitcherPopover')"
         isMobile="{false}"
       />
       {/if}
@@ -145,7 +145,7 @@
             {#if isProductSwitcherAvailable}
             <ProductSwitcher
               bind:dropDownStates
-              on:toggleDropdownState="toggleDropdownState(event.name)"
+              on:toggleDropdownState="toggleDropdownState('productSwitcherPopover')"
               isMobile="{true}"
             />
             {/if}
@@ -171,7 +171,7 @@
               id="profilePopover"
             >
               <Authorization
-                on:toggleDropdownState="toggleDropdownState(event.name)"
+                on:toggleDropdownState="toggleDropdownState('profilePopover')"
               />
             </div>
           </div>
@@ -183,7 +183,7 @@
 </div>
 {:else}
 <Authorization
-  on:toggleDropdownState="toggleDropdownState(event.name)"
+  on:toggleDropdownState="toggleDropdownState('profilePopover')"
   isHidden="{true}"
 />
 {/if}
