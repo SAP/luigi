@@ -71,14 +71,14 @@ export class oAuth2ImplicitGrant {
     const settings = this.settings;
     const logouturl = `${settings.logoutUrl}?id_token_hint=${
       authData.idToken
-    }&client_id=${
+      }&client_id=${
       settings.oAuthData.client_id
-    }&post_logout_redirect_uri=${GenericHelpers.prependOrigin(
-      settings.post_logout_redirect_uri
-    )}`;
+      }&post_logout_redirect_uri=${GenericHelpers.prependOrigin(
+        settings.post_logout_redirect_uri
+      )}`;
     logoutCallback && logoutCallback();
 
-    setTimeout(function() {
+    setTimeout(function () {
       window.location.href = logouturl;
     });
   }
@@ -96,16 +96,16 @@ export class oAuth2ImplicitGrant {
           'Error parsing authorization data. Auto-logout might not work!'
         );
       }
-      const tokenExpirationDate = authData.accessTokenExpirationDate;
+      const tokenExpirationDate = authData.accessTokenExpirationDate || 0;
       const currentDate = new Date();
 
       if (tokenExpirationDate - currentDate - logoutBeforeExpirationTime < 0) {
         localStorage.removeItem('luigi.auth');
         window.location = `${
           this.settings.logoutUrl
-        }?reason=tokenExpired&post_logout_redirect_uri=${GenericHelpers.prependOrigin(
-          this.settings.post_logout_redirect_uri
-        )}`;
+          }?reason=tokenExpired&post_logout_redirect_uri=${GenericHelpers.prependOrigin(
+            this.settings.post_logout_redirect_uri
+          )}`;
       }
     }, expirationCheckInterval);
   }
