@@ -1,4 +1,4 @@
-var crypto = require("crypto");
+var crypto =  require("crypto");
 var luigiInitialized = false;
 var defaultContextKeys = ['context', 'internal', 'nodeParams', 'pathParams'];
 var currentContext = defaultContextKeys.reduce(function (acc, key) {
