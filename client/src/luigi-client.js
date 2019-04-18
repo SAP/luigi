@@ -1,7 +1,7 @@
-var crypto =  require("crypto");
+var crypto = require('crypto');
 var luigiInitialized = false;
 var defaultContextKeys = ['context', 'internal', 'nodeParams', 'pathParams'];
-var currentContext = defaultContextKeys.reduce(function (acc, key) {
+var currentContext = defaultContextKeys.reduce(function(acc, key) {
   acc[key] = {};
   return acc;
 }, {});
@@ -293,7 +293,7 @@ const LuigiClient = {
        * @example
        * LuigiClient.linkManager().openAsModal('projects/pr1/users', {title:'Users', size:'m'});
        */
-      openAsModal: function (path, modalSettings) {
+      openAsModal: function(path, modalSettings) {
         this.navigate(path, 0, true, modalSettings || {});
       },
       /**
@@ -314,8 +314,8 @@ const LuigiClient = {
           options.errorSkipNavigation = true;
           console.error(
             'Navigation not possible, navigationContext ' +
-            navigationContext +
-            ' not found.'
+              navigationContext +
+              ' not found.'
           );
         }
         return this;
@@ -375,8 +375,8 @@ const LuigiClient = {
       pathExists: function pathExists(path) {
         var currentId = Date.now();
         pathExistsPromises[currentId] = {
-          resolveFn: function () { },
-          then: function (resolveFn) {
+          resolveFn: function() {},
+          then: function(resolveFn) {
             this.resolveFn = resolveFn;
           }
         };
@@ -546,12 +546,15 @@ const LuigiClient = {
 
        */
       showAlert: function showAlert(settings) {
-
         //generate random ID
         settings.id = crypto.randomBytes(4).toString('hex');
 
         if (settings.closeAfter && settings.closeAfter < 100) {
-          console.warn(`Message with id='${settings.id}' has too small 'closeAfter' value. It needs to be at least 100ms.`);
+          console.warn(
+            `Message with id='${
+              settings.id
+            }' has too small 'closeAfter' value. It needs to be at least 100ms.`
+          );
           settings.closeAfter = undefined;
         }
 
