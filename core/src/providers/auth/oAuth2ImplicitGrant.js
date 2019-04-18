@@ -18,6 +18,36 @@ export class oAuth2ImplicitGrant {
     this.settings = mergedSettings;
   }
 
+  getAuthData() {
+    try {
+      return JSON.parse(localStorage.getItem('luigi.auth'));
+    } catch (e) {
+      console.warn(
+        'Error parsing authorization data. Auto-logout might not work!'
+      );
+    }
+  }
+
+  parseIdToken(token) {
+    const payload = token
+      .split('.')[1]
+      .replace(/-/g, '+')
+      .replace(/_/g, '/');
+    return JSON.parse(window.atob(payload));
+  }
+
+  userInfo() {
+    return new Promise((resolve, reject) => {
+      let authData = this.getAuthData();
+      const tokenInfo = this.parseIdToken(authData.idToken);
+      const userInfo = {
+        email: tokenInfo.email ? tokenInfo.email : '',
+        name: tokenInfo.name ? tokenInfo.name : ''
+      };
+      resolve(userInfo);
+    });
+  }
+
   login() {
     return new Promise((resolve, reject) => {
       const settings = this.settings;
@@ -88,14 +118,7 @@ export class oAuth2ImplicitGrant {
     const logoutBeforeExpirationTime = 60000;
 
     setInterval(() => {
-      let authData;
-      try {
-        authData = JSON.parse(localStorage.getItem('luigi.auth'));
-      } catch (e) {
-        console.warn(
-          'Error parsing authorization data. Auto-logout might not work!'
-        );
-      }
+      let authData = this.getAuthData();
       const tokenExpirationDate = authData.accessTokenExpirationDate;
       const currentDate = new Date();
 

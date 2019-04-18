@@ -113,7 +113,10 @@
                 class="fd-side-nav__icon sap-icon--{node.icon} sap-icon--l"
               ></span>
               {:else}
-              <img class="fd-side-nav__icon" src="{node.icon}">
+              <img
+                class="fd-side-nav__icon"
+                src="{node.icon}"
+              >
               {/if}
               {:else}
               <span
@@ -223,6 +226,9 @@
     color: #32363a;
     overflow-y: auto;
     overflow-x: hidden;
+    -moz-box-shadow: 1px 1px 2px 0 rgba(0, 0, 0, 0.05);
+    -webkit-box-shadow: 1px 1px 2px 0 rgba(0, 0, 0, 0.05);
+    box-shadow: 1px 1px 2px 0 rgba(0, 0, 0, 0.05);
   }
   .fd-side-nav__link {
     .sap-icon--action {
