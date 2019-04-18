@@ -94,7 +94,7 @@ describe('Luigi client ux manger features', () => {
         cy.get('.spinnerContainer .fd-spinner').should('exist');
         cy.wait(300); // give it some time to hide
         // wait for programmatic hide of loading indicator
-        cy.get('.spinnerContainer .fd-spinner', { timeout: 3000 }).should('not.exist');
+        cy.get('.spinnerContainer .fd-spinner').should('not.exist');
       });
     });
 
