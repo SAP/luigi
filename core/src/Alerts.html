@@ -44,7 +44,11 @@
 
       const processedAlerts = current.alertQueue.map(alert => {
         const { text, links, closeAfter } = alert.settings;
-        const processedData = this.processTextAndLinks(text, links);
+        const processedData = this.processTextAndLinks(
+          text,
+          links,
+          alert.settings.id
+        );
 
         setTimeout(() => {
           // this needs to be done after links are rendered
@@ -60,7 +64,7 @@
       });
 
       this.set({
-        alertQueue: processedAlerts,       
+        alertQueue: processedAlerts
       });
     },
     oncreate() {},
@@ -84,7 +88,7 @@
           console.error('Error on Alert::addClickListener', e);
         }
       },
-      processTextAndLinks(text, links) {
+      processTextAndLinks(text, links, uniqueID) {
         let sanitizedText = sanitizeHtml(text);
         let initialValue = { sanitizedText, links: [] };
 
@@ -93,7 +97,7 @@
         }
 
         return Object.entries(links).reduce((acc, [key, content]) => {
-          const elemId = '_luigi_alert_link_' + sanitizeParam(key);
+          const elemId = `_luigi_alert_${uniqueID}_link_${sanitizeParam(key)}`;
           const escapedText = sanitizeHtml(content.text);
           const processedData = `<a id="${elemId}">${escapedText}</a>`;
           const keyForRegex = escapeRegExp(key);
