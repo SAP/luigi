@@ -74,7 +74,7 @@ describe('Navigation', () => {
         .click();
 
       // dig into the iframe
-      cy.wait(150);
+      cy.wait(500);
       cy.get('iframe').then(function($element) {
         let iframeBody, cyIframe;
         // this gets the body of your iframe
@@ -89,7 +89,7 @@ describe('Navigation', () => {
           .click();
 
         // on route change we need to refresh the contents() reference
-        cy.wait(50);
+        cy.wait(500);
         iframeBody = $element.contents().find('body');
         // wrap this body with cy so as to do cy actions inside iframe elements
         cyIframe = cy.wrap(iframeBody);
