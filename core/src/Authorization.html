@@ -78,7 +78,8 @@
   export default {
     data() {
       return {
-        isHidden: false
+        isHidden: false,
+        picture: 'something.jpg'
       };
     },
     oncreate() {
@@ -102,7 +103,10 @@
           GenericHelpers.isFunction(idpProviderInstance.settings.userInfoFn)
         ) {
           idpProviderInstance.settings.userInfoFn().then(res => {
-            this.set({ isLoggedIn: true, userInfo: res });
+            const userInfo = res;
+            this.set({ isLoggedIn: true, userInfo });
+            debugger;
+            this.fire('userInfoUpdated', userInfo);
           });
         } else {
           if (GenericHelpers.isFunction(idpProviderInstance.userInfo)) {
@@ -193,13 +197,9 @@
       }
     },
     computed: {
-      showUserInfo: ({ userInfo }) => {
-        if (userInfo !== undefined) {
-          if (userInfo.name || userInfo.email) {
-            return true;
-          }
-        }
-      }
+      showUserInfo: ({ userInfo }) =>
+        Boolean(userInfo && (userInfo.name || userInfo.email)),
+      isUsersPicture: ({ userInfo }) => Boolean(userInfo && userInfo.picture)
     },
     components: {}
   };
