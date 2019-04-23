@@ -69,7 +69,7 @@ describe('Navigation', () => {
   describe('features', () => {
     it('keepSelectedForChildren', () => {
       // keep selected for children example
-      Cypress.currentTest.retries(2);
+      Cypress.currentTest.retries(3);
       cy.get('.fd-shellbar')
         .contains('Overview')
         .click();
