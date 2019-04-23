@@ -156,7 +156,8 @@
         <div class="fd-popover">
           <div class="fd-popover__control" on:click="event.stopPropagation()">
             <button
-              class="fd-button--shell {userInfo?'':userInfo.name}"
+              class="fd-button--shell fd-identifier fd-identifier--xs fd-identifier--circle fd-identifier--thumbnail {!userInfo.picture?'sap-icon--customer':''}"
+              style="{userInfo.picture?`background-image: url("${userInfo.picture}");`:""}"
               aria-expanded="{dropDownStates.profilePopover || false}"
               aria-haspopup="true"
               on:click="toggleDropdownState('profilePopover')"
@@ -174,14 +175,12 @@
         </div>
       </div>
       <!-- sap-icon--customer -->
-
       {/if}
     </div>
   </div>
 </div>
 {:else}
 <Authorization isHidden="{true}"/>
-
 {/if}
 <script type="text/javascript">
   import ContextSwitcher from './ContextSwitcher.html';
@@ -253,7 +252,7 @@
       return {
         dropDownStates: {},
         isLoggedIn: false,
-        picture: ''
+        userInfo: {}
       };
     },
     computed: {
@@ -302,10 +301,8 @@
         document.body.classList.toggle('lui-leftNavToggle');
       },
       userInfoUpdate(userInfo) {
-        debugger;
         if (userInfo) {
-          this.set(userInfo);
-          console.log('userInfo', userInfo);
+          this.set({ userInfo });
         }
       }
     },

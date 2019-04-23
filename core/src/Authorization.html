@@ -105,7 +105,6 @@
           idpProviderInstance.settings.userInfoFn().then(res => {
             const userInfo = res;
             this.set({ isLoggedIn: true, userInfo });
-            debugger;
             this.fire('userInfoUpdated', userInfo);
           });
         } else {
