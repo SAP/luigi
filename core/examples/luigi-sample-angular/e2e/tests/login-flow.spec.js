@@ -7,6 +7,13 @@ describe('Login Flow', () => {
     cy.login('tets@email.com', 'tets');
   });
 
+  it('Username in profile dropdown', () => {
+    cy.login('tets@email.com', 'tets');
+
+    cy.get('.sap-icon--customer').click();
+    cy.get('.fd-menu__item').should('contain', 'Luigi User');
+  });
+
   it('Logout and login again', () => {
     cy.login('tets@email.com', 'tets');
 
