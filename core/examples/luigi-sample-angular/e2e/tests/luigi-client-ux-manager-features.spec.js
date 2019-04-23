@@ -21,10 +21,7 @@ describe('Luigi client ux manger features', () => {
     it('backdrop', () => {
       cy.wait(500);
       cy.goToUxManagerMethods($iframeBody);
-      cy.wrap($iframeBody).should(
-        'not.contain',
-        'Lorem tipsum dolor sit amet'
-      );
+      cy.wrap($iframeBody).should('not.contain', 'Lorem tipsum dolor sit amet');
       cy.get('.fd-ui__overlay').should('not.exist');
 
       //open modal with backdrop
@@ -40,12 +37,8 @@ describe('Luigi client ux manger features', () => {
         .contains('Confirm')
         .click();
 
-      cy.wrap($iframeBody).should(
-        'not.contain',
-        'Lorem tipsum dolor sit amet'
-      );
+      cy.wrap($iframeBody).should('not.contain', 'Lorem tipsum dolor sit amet');
       cy.get('.fd-ui__overlay').should('not.exist');
-
     });
 
     it('Luigi Client generic confirmation modal', () => {
@@ -100,7 +93,6 @@ describe('Luigi client ux manger features', () => {
 
     describe('Unsaved changes', () => {
       it("shouldn't proceed when 'No' was pressed in modal", () => {
-
         cy.wrap($iframeBody)
           .find('[data-cy=toggle-dirty-state]')
           .click();
@@ -118,11 +110,9 @@ describe('Luigi client ux manger features', () => {
         cy.get('[data-cy=luigi-confirmation-modal]').should('not.be.visible');
 
         cy.expectPathToBe('/overview'); //the location is still unchanged after "No" clicked
-
       });
 
       it("should proceed when 'Yes' was pressed in modal", () => {
-
         cy.wrap($iframeBody)
           .find('[data-cy=toggle-dirty-state]')
           .click();
@@ -140,7 +130,6 @@ describe('Luigi client ux manger features', () => {
         cy.get('[data-cy=luigi-confirmation-modal]').should('not.be.visible');
 
         cy.expectPathToBe('/projects'); //the location is changed after "Yes" clicked
-
       });
     });
 
@@ -179,7 +168,6 @@ describe('Luigi client ux manger features', () => {
           'have.class',
           'fd-alert--information'
         );
-
       });
       it('hides Alert after specified time', () => {
         const closeAfter = 500;
@@ -188,7 +176,8 @@ describe('Luigi client ux manger features', () => {
         cy.get('[data-cy=luigi-alert]').should('not.exist');
 
         cy.wrap($iframeBody)
-          .find('[data-cy=luigi-alert-close-after]').type(closeAfter);
+          .find('[data-cy=luigi-alert-close-after]')
+          .type(closeAfter);
 
         cy.wrap($iframeBody)
           .find('[data-cy=show-luigi-alert]')
@@ -199,8 +188,6 @@ describe('Luigi client ux manger features', () => {
 
         cy.wait(101); //desired time + 1 ms = the alert shouldn't exist anymore
         cy.get('[data-cy=luigi-alert]').should('not.exist');
-
-
       });
 
       it('can quque Alerts', () => {
@@ -219,7 +206,6 @@ describe('Luigi client ux manger features', () => {
 
         cy.get('[data-cy=luigi-alert]').should('have.length', numberOfAlerts);
 
-
         for (let i = 0; i < numberOfAlerts; i++) {
           //clean up. click({multiple: true}) desn't work here.
           cy.get('[data-cy=luigi-alert-dismiss]')
@@ -229,7 +215,6 @@ describe('Luigi client ux manger features', () => {
       });
 
       it('warning alert with links and unsaved changes', () => {
-
         cy.goToUxManagerMethods($iframeBody);
 
         cy.get('[data-cy=luigi-alert]').should('not.exist');
@@ -252,28 +237,26 @@ describe('Luigi client ux manger features', () => {
           'fd-alert--warning'
         );
 
-        cy.get('#_luigi_alert_link_relativePath').click();
+        cy.get('*[id$=_link_relativePath]').click();
         cy.expectPathToBe('/projects/pr1');
         cy.get('[data-cy=luigi-confirmation-modal]').should('be.visible');
         cy.get('[data-cy=luigi-modal-dismiss]').click();
         cy.expectPathToBe('/projects/pr1');
-        cy.get('#_luigi_alert_link_relativePath').click();
+        cy.get('*[id$=_link_relativePath]').click();
         cy.get('[data-cy=luigi-confirmation-modal]').should('be.visible');
         cy.get('[data-cy=luigi-modal-confirm]').click();
         cy.expectPathToBe('/projects/pr1/hideSideNav');
 
-        cy.get('#_luigi_alert_link_goToOtherProject')
+        cy.get('*[id$=_link_goToOtherProject]')
           .click()
           .expectPathToBe('/projects/pr2');
 
-        cy.get('#_luigi_alert_link_goToHome')
+        cy.get('*[id$=_link_goToHome]')
           .click()
           .expectPathToBe('/overview');
-
       });
 
       it('error alert without links and protected against XSS', () => {
-
         cy.goToUxManagerMethods($iframeBody);
 
         cy.get('[data-cy=luigi-alert]').should('not.exist');
@@ -295,7 +278,6 @@ describe('Luigi client ux manger features', () => {
         cy.get('[data-cy=luigi-alert]')
           .find('a')
           .should('not.exist');
-
       });
 
       it('alert is not displayed if it does not have any text', () => {
@@ -311,7 +293,6 @@ describe('Luigi client ux manger features', () => {
           .click();
 
         cy.get('[data-cy=luigi-alert]').should('not.exist');
-
       });
     });
   });
