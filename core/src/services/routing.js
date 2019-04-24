@@ -5,6 +5,7 @@ import * as RoutingHelpers from '../utilities/helpers/routing-helpers';
 import { LuigiConfig } from './config';
 import * as GenericHelpers from '../utilities/helpers/generic-helpers';
 import * as Iframe from './iframe';
+import { NAVIGATION_DEFAULTS } from '../utilities/constants';
 
 export const getNodePath = (node, params) => {
   return node
@@ -307,7 +308,14 @@ export const navigateToLink = item => {
 };
 
 export const navigateToExternalLink = externalLink => {
+  const updatedExternalLink = {
+    ...NAVIGATION_DEFAULTS.externalLink,
+    ...externalLink
+  };
   window
-    .open(externalLink.url, externalLink.sameWindow ? '_self' : '_blank')
+    .open(
+      updatedExternalLink.url,
+      updatedExternalLink.sameWindow ? '_self' : '_blank'
+    )
     .focus();
 };

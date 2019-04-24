@@ -4,3 +4,9 @@ export const TOP_NAV_DEFAULTS = {
     icon: 'log'
   }
 };
+
+export const NAVIGATION_DEFAULTS = {
+  externalLink: {
+    sameWindow: false
+  }
+};

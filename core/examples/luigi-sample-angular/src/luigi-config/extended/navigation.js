@@ -182,7 +182,6 @@ class Navigation {
     },
     items: [
       {
-        icon: '',
         label: 'Luigi in Github',
         externalLink: {
           url: 'https://github.com/kyma-project/luigi',
@@ -191,11 +190,10 @@ class Navigation {
       },
       {
         icon: '',
-        label: 'Project 1',
+        label: 'Project1',
         link: '/projects/pr1'
       },
       {
-        icon: '',
         label: 'Project3',
         link: '/projects/pr3'
       }
