@@ -15,6 +15,7 @@ jobs:
     - stage: 'Tests'
       name: 'Unit Tests'
       script: npm test --prefix core
+      cache: false
     - script: bash ./test/e2e.sh
       name: 'Integration Tests'
       addons:
