@@ -17,7 +17,7 @@ cd ../../..
 pwd
 
 echo "install Lerna and do bootstrap"
-npm install lerna
+npm install -g lerna
 lerna bootstrap --ci
 
 echo Bundle
