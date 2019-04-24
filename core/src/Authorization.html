@@ -205,11 +205,10 @@
         const configProfileNav =
           LuigiConfig.getConfigValue('navigation.profile') || {};
         const profileNavData = {
-          logout: Object.assign(
-            {},
-            TOP_NAV_DEFAULTS.logout,
-            configProfileNav.logout
-          ),
+          logout: {
+            ...TOP_NAV_DEFAULTS.logout,
+            ...configProfileNav.logout
+          },
           items: configProfileNav.items || []
         };
         this.set({ profileNav: profileNavData });
