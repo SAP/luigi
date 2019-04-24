@@ -67,7 +67,7 @@
   import * as AuthHelpers from './utilities/helpers/auth-helpers';
   import { oAuth2ImplicitGrant } from './providers/auth/oAuth2ImplicitGrant.js';
   import { openIdConnect } from './providers/auth/openIdConnect.js';
-  import { topNavDefaults } from './utilities/constants';
+  import { TOP_NAV_DEFAULTS } from './utilities/constants';
   import * as NavigationHelpers from './utilities/helpers/navigation-helpers';
 
   let idpProviderInstance;
@@ -207,7 +207,7 @@
         const profileNavData = {
           logout: Object.assign(
             {},
-            topNavDefaults.logout,
+            TOP_NAV_DEFAULTS.logout,
             configProfileNav.logout
           ),
           items: configProfileNav.items || []
