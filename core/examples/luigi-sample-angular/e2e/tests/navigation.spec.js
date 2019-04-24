@@ -75,8 +75,6 @@ describe('Navigation', () => {
         .click();
 
       // dig into the iframe
-      cy.expectPathToBe('/overview');
-      cy.wait(500);
 
       cy.get('iframe').then(function($element) {
         let iframeBody, cyIframe;
@@ -92,15 +90,6 @@ describe('Navigation', () => {
       });
 
       cy.expectPathToBe('/projects/pr1/avengers');
-      cy.window().then(
-        {
-          timeout: 120000
-        },
-        win =>
-          new Cypress.Promise((resolve, reject) =>
-            win.requestIdleCallback(resolve)
-          )
-      );
 
       //the iframe is has been replaced with another one, we need to "get" it again
       cy.get('iframe').then(function($element) {
