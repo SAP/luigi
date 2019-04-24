@@ -7,7 +7,8 @@
     "build": "npm run buildConfig && ng build",
     "lint": "ng lint",
     "e2e:open": "cypress open",
-    "e2e:run": "cypress run",
+    "e2e:run": "cypress run --browser chrome -c video=false",
+    "e2e:run:electron": "cypress run",
     "buildConfig": "webpack --config webpack-generateConfig.config",
     "start": "concurrently \"npm run buildConfig -- --watch\" \"ng serve\""
   },

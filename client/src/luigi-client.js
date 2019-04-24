@@ -1,3 +1,4 @@
+var crypto = require('crypto');
 var luigiInitialized = false;
 var defaultContextKeys = ['context', 'internal', 'nodeParams', 'pathParams'];
 var currentContext = defaultContextKeys.reduce(function(acc, key) {
@@ -10,7 +11,8 @@ var _onInitFns = {};
 var authData = {};
 var pathExistsPromises = {};
 let promises = {
-  confirmationModal: {}
+  confirmationModal: {},
+  alerts: {}
 };
 /**
  * Creates a random Id
@@ -118,9 +120,10 @@ function luigiClientInit() {
     }
 
     if ('luigi.ux.alert.hide' === e.data.msg) {
-      if (promises.alert) {
-        promises.alert.resolveFn();
-        delete promises.alert;
+      const { id } = e.data;
+      if (id && promises.alerts[id]) {
+        promises.alerts[id].resolveFn(id);
+        delete promises.alerts[id];
       }
     }
   });
@@ -518,8 +521,9 @@ const LuigiClient = {
        * @param {Object} [settings.links] provides links data
        * @param {Object} settings.links.LINK_KEY object containing the data for a particular link. To properly render the link in the alert message refer to the description of the **settings.text** parameter
        * @param {string} settings.links.LINK_KEY.text text which replaces the link identifier in the alert content
-       * @param {string} settings.links.LINK_KEY.url url to navigate when you click the link. Currently, only internal links are supported in the form of relative or absolute paths
-       * @returns {promise} which is resolved when the alert is dismissed
+       * @param {string} settings.links.LINK_KEY.url url to navigate when you click the link. Currently, only internal links are supported in the form of relative or absolute paths.
+       * @param {number} settings.closeAfter (optional) time in milliseconds that tells Luigi when to close the Alert automatically. If not provided, the Alert will stay on until closed manually. It has to be greater than `100`.
+       * @returns {promise} which is resolved when the alert is dismissed. 
        * @example
        * import LuigiClient from '@kyma-project/luigi-client';
        * const settings = {
@@ -530,7 +534,8 @@ const LuigiClient = {
        *    goToHome: { text: 'homepage', url: '/overview' },
        *    goToOtherProject: { text: 'other project', url: '/projects/pr2' },
        *    relativePath: { text: 'relative hide side nav', url: 'hideSideNav' }
-       *  }
+       *  },
+       * closeAfter: 3000
        * }
        * LuigiClient
        *  .uxManager()
@@ -541,6 +546,18 @@ const LuigiClient = {
 
        */
       showAlert: function showAlert(settings) {
+        //generate random ID
+        settings.id = crypto.randomBytes(4).toString('hex');
+
+        if (settings.closeAfter && settings.closeAfter < 100) {
+          console.warn(
+            `Message with id='${
+              settings.id
+            }' has too small 'closeAfter' value. It needs to be at least 100ms.`
+          );
+          settings.closeAfter = undefined;
+        }
+
         window.parent.postMessage(
           {
             msg: 'luigi.ux.alert.show',
@@ -550,11 +567,12 @@ const LuigiClient = {
           },
           '*'
         );
-        promises.alert = {};
-        promises.alert.promise = new Promise(resolve => {
-          promises.alert.resolveFn = resolve;
+
+        promises.alerts[settings.id] = {};
+        promises.alerts[settings.id].promise = new Promise(resolve => {
+          promises.alerts[settings.id].resolveFn = resolve;
         });
-        return promises.alert.promise;
+        return promises.alerts[settings.id].promise;
       }
     };
   }
