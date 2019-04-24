@@ -1,19 +1,21 @@
-<div class="fd-shell__overlay fd-overlay fd-overlay--alert" aria-hiden="false">
+<div class="fd-shell__overlay fd-overlay fd-overlay--alert" aria-hidden="false">
+  {#each alertQueue as alert}
   <div
-    class="fd-alert fd-alert--{alertTypeMap[settings.type]} fd-alert--dismissible"
+    class="fd-alert fd-alert--{alertTypeMap[alert.settings.type]} fd-alert--dismissible"
     role="alert"
     id="j2ALl423"
     data-cy="luigi-alert"
   >
     <button
       class="fd-alert__close close-button"
-      on:click="fire('alertDismiss')"
+      on:click="fire('alertDismiss',{id: alert.settings.id})"
       aria-label="Close"
       aria-controls="j2ALl423"
       data-cy="luigi-alert-dismiss"
     ></button>
-    {@html dataSanitized ? settings.text: ''}
+    {@html alert.dataSanitized ? alert.settings.text: ''}
   </div>
+  {/each}
 </div>
 
 <script type="text/javascript">
@@ -34,19 +36,38 @@
         }
       };
     },
-    oncreate() {
-      const { text, links } = this.get().settings;
-      const processedData = this.processTextAndLinks(text, links);
-      this.set({
-        settings: Object.assign(this.get().settings, {
-          text: processedData.sanitizedText
-        }),
-        dataSanitized: true
+    onstate({ changed, current, previous }) {
+      if (!current.alertQueue || !current.alertQueue.length) {
+        console.warn('There are no alerts to display');
+        return;
+      }
+
+      const processedAlerts = current.alertQueue.map(alert => {
+        const { text, links, closeAfter } = alert.settings;
+        const processedData = this.processTextAndLinks(
+          text,
+          links,
+          alert.settings.id
+        );
+
+        setTimeout(() => {
+          // this needs to be done after links are rendered
+          processedData.links.forEach(l => {
+            this.addClickListener(l.url, l.elemId);
+          });
+        });
+
+        return {
+          settings: { ...alert.settings, text: processedData.sanitizedText },
+          dataSanitized: true
+        };
       });
-      processedData.links.forEach(l => {
-        this.addClickListener(l.url, l.elemId);
+
+      this.set({
+        alertQueue: processedAlerts
       });
     },
+    oncreate() {},
     methods: {
       addClickListener(url, elemId) {
         try {
@@ -67,7 +88,7 @@
           console.error('Error on Alert::addClickListener', e);
         }
       },
-      processTextAndLinks(text, links) {
+      processTextAndLinks(text, links, uniqueID) {
         let sanitizedText = sanitizeHtml(text);
         let initialValue = { sanitizedText, links: [] };
 
@@ -76,7 +97,7 @@
         }
 
         return Object.entries(links).reduce((acc, [key, content]) => {
-          const elemId = '_luigi_alert_link_' + sanitizeParam(key);
+          const elemId = `_luigi_alert_${uniqueID}_link_${sanitizeParam(key)}`;
           const escapedText = sanitizeHtml(content.text);
           const processedData = `<a id="${elemId}">${escapedText}</a>`;
           const keyForRegex = escapeRegExp(key);
@@ -94,5 +115,9 @@
 <style type="text/scss">
   .fd-overlay--alert {
     z-index: 1100;
+    flex-direction: column;
+    .fd-alert:not(:first-child) {
+      margin-top: 8px;
+    }
   }
 </style>
