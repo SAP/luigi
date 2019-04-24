@@ -21,7 +21,6 @@ jobs:
         directories:
           - npm: true
           - ~/.cache
-          - $(npm config get prefix)/lib/node_modules
       addons:
         chrome: stable
       before_install:

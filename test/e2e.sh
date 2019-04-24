@@ -2,17 +2,22 @@
 
 pwd
 
-echo Installing lerna
-npm install -g lerna
-npm install -g concurrently
-npm install -g @angular/cli
+cd core/examples/luigi-sample-angular
+pwd
+
+echo Installing Concurrently and @angular/cli
+npm install concurrently
+npm install @angular/cli
 
 echo Installing Cypress
-cd core/examples/luigi-sample-angular
+
 npm install -D cypress
 cd ../../..
 
-echo Bootstrap
+pwd
+
+echo "install Lerna and do bootstrap"
+npm install lerna
 lerna bootstrap --ci
 
 echo Bundle
