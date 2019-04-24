@@ -36,7 +36,7 @@ export const setActiveIframeToPrevious = node => {
 export const removeInactiveIframes = node => {
   const children = Array.from(node.children);
   children.forEach((child, index) => {
-    if (index > 0) {
+    if (child.style.display === 'none' && !child.vg) {
       node.removeChild(child);
     }
   });
@@ -50,9 +50,29 @@ export const navigateIframe = (config, component, node) => {
     viewUrl = RoutingHelpers.substituteViewUrl(viewUrl, componentData);
   }
 
+  const iframes = Array.from(
+    document.querySelectorAll('.iframeContainer iframe')
+  );
+  const sameViewGroupIframes = iframes.filter(iframe => {
+    return iframe.vg && iframe.vg === componentData.viewGroup; //TODO filter out iframes belonging to goback stack
+  });
+  let needNewIframeAnyway = false;
+  if (sameViewGroupIframes.length > 0) {
+    const targetIframe = sameViewGroupIframes[0];
+    if (targetIframe !== config.iframe) {
+      config.iframe.style.display = 'none';
+      config.iframe = targetIframe;
+      config.iframe.style.display = 'block';
+    }
+  } else if (config.iframe && config.iframe.vg) {
+    needNewIframeAnyway = true;
+  }
+
   const isSameViewGroup = IframeHelpers.isSameViewGroup(config, component);
   const canReuseIframe = IframeHelpers.canReuseIframe(config, component);
+
   if (
+    needNewIframeAnyway ||
     (!componentData.isNavigateBack &&
       (IframeHelpers.hasIframeIsolation(component) ||
         !canReuseIframe ||
@@ -82,6 +102,9 @@ export const navigateIframe = (config, component, node) => {
       }
       config.navigateOk = undefined;
       config.iframe = createIframe(viewUrl);
+      if (componentData.viewGroup) {
+        config.iframe['vg'] = componentData.viewGroup;
+      }
 
       node.insertBefore(config.iframe, node.firstChild);
 
@@ -96,6 +119,7 @@ export const navigateIframe = (config, component, node) => {
     const goBackContext = component.get().goBackContext;
     config.iframe.style.display = 'block';
     config.iframe.luigi.nextViewUrl = viewUrl;
+    config.iframe['vg'] = componentData.viewGroup;
     const message = {
       msg: 'luigi.navigate',
       viewUrl: viewUrl,
