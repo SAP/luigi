@@ -156,7 +156,10 @@
       {/if}
       <!-- closes {#if children && pathData.length > 0} -->
       {#if authorizationEnabled}
-      <div class="fd-shellbar__action fd-shellbar__action--show-always">
+      <div
+        class="fd-shellbar__action fd-shellbar__action--show-always"
+        data-cy="luigi-topnav-profile"
+      >
         <div class="fd-popover">
           <div class="fd-popover__control" on:click="event.stopPropagation()">
             <button

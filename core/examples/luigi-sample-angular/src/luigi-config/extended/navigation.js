@@ -183,9 +183,9 @@ class Navigation {
     items: [
       {
         icon: '',
-        label: 'hybris',
+        label: 'Luigi in Github',
         externalLink: {
-          url: 'https://www.hybris.com',
+          url: 'https://github.com/kyma-project/luigi',
           sameWindow: false
         }
       },
@@ -196,12 +196,7 @@ class Navigation {
       },
       {
         icon: '',
-        label: 'Project 2',
-        link: '/projects/pr2'
-      },
-      {
-        icon: '',
-        label: 'Project 3',
+        label: 'Project3',
         link: '/projects/pr3'
       }
     ]
