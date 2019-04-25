@@ -10,9 +10,14 @@ export const hideElementChildren = node => {
 
 export const removeElementChildren = node => {
   const children = [...node.children];
+  console.log('before remove', children);
   children.forEach(child => {
-    if (!child.vg) node.removeChild(child);
+    if (!child.vg) {
+      debugger;
+      node.removeChild(child);
+    }
   });
+  console.log('after remove', node.children);
 };
 
 export const replaceVars = (viewUrl, params, prefix, parenthesis = true) => {

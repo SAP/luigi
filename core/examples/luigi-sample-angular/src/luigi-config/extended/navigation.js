@@ -49,7 +49,8 @@ class Navigation {
       pathSegment: 'settings',
       label: 'Settings',
       viewUrl: '/sampleapp.html#/settings',
-      icon: 'settings'
+      icon: 'settings',
+      viewGroup: 'tets'
     },
     {
       label: 'Open Google in this tab',
@@ -115,10 +116,12 @@ class Navigation {
     parentNodePath: '/environments', // absolute path
     lazyloadOptions: true, // load options on click instead on page load
     options: () =>
-      [...Array(10).keys()].filter(n => n !== 0).map(n => ({
-        label: 'Environment ' + n, // (i.e mapping between what the user sees and what is taken to replace the dynamic part for the dynamic node)
-        pathValue: 'env' + n // will be used to replace dynamic part
-      })),
+      [...Array(10).keys()]
+        .filter(n => n !== 0)
+        .map(n => ({
+          label: 'Environment ' + n, // (i.e mapping between what the user sees and what is taken to replace the dynamic part for the dynamic node)
+          pathValue: 'env' + n // will be used to replace dynamic part
+        })),
 
     actions: [
       {

@@ -70,7 +70,6 @@ export const navigateIframe = (config, component, node) => {
 
   const isSameViewGroup = IframeHelpers.isSameViewGroup(config, component);
   const canReuseIframe = IframeHelpers.canReuseIframe(config, component);
-
   if (
     needNewIframeAnyway ||
     (!componentData.isNavigateBack &&
@@ -87,8 +86,11 @@ export const navigateIframe = (config, component, node) => {
       IframeHelpers.hideElementChildren(node);
     } else {
       IframeHelpers.removeElementChildren(node);
+      // to avoid to have to iframes display=block with to viewgroups (in initial face)
+      if (config.iframe) {
+        config.iframe.style.display = 'none';
+      }
     }
-
     if (componentData.viewUrl) {
       if (
         GenericHelpers.getConfigValueFromObject(
