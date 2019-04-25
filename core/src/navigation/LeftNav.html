@@ -139,6 +139,11 @@
     {/if} {/each}
   </nav>
   {/if}
+  {#if isFooterVisible()}
+  <div class="lui-sideNavFooter fd-has-padding-small fd-has-type-minus-1">
+    <span>Version 1.5.5</span>
+  </div>
+  {/if}
 </div>
 
 <script type="text/javascript">
@@ -178,6 +183,11 @@
         return (
           expandedList && expandedList.indexOf(nodes.metaInfo.categoryUid) >= 0
         );
+      },
+      isFooterVisible() {
+        return true;
+        // respect also 'responsiveNavigation' setting in the future.
+        // the footer should also be visible if it's' possible to collapse the Nav
       }
     },
     methods: {
@@ -290,5 +300,13 @@
     &.sap-icon--m::before {
       width: 1.25rem;
     }
+  }
+
+  .lui-sideNavFooter {
+    position: sticky;
+    bottom: 0;
+    left: 0;
+    color: var(--fd-color-text-4);
+    background-color: var(--fd-color-background-2);
   }
 </style>
