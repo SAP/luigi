@@ -8,6 +8,7 @@ class Settings {
   };
 
   responsiveNavigation = 'simpleMobileOnly'; // "simple"
+  sideNavFooterText = 'Version 1.2.3';
   // hideNavigation = true
   // backdropDisabled = true
 }
