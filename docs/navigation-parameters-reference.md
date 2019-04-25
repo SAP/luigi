@@ -139,7 +139,7 @@ The context switcher is a drop-down list available in the top navigation bar. It
 The profile section is a drop-down list available in the top navigation bar. Luigi configuration leverages the option to override the logout item content and/or add links to Luigi navigation nodes to the profile section. It just requires to add the `profile` property to the **navigation** object with any of these properties, all of them being optional:
 
 - **logout** overrides the content of the logout item.
-  - **label** overrides the text for logout item. Default is "Sign Out".
+  - **label** overrides the text for the logout item. The default value is "Sign Out".
   - **icon** overrides the icon for logout item. Default is [SAP UI5 log icon](https://sapui5.hana.ondemand.com/test-resources/sap/m/demokit/iconExplorer/webapp/index.html#/overview/SAP-icons/?tag=logout).
 - **items** array of objects, each one them being a link to a Luigi navigation node or an external url. An item can have the following parameters:
   - **label** defines the text for the link. 
