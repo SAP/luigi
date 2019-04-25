@@ -116,7 +116,7 @@ describe('Navigation', () => {
           .contains('Overview')
           .click();
 
-        cy.wait(150);
+        cy.wait(500);
         cy.get('iframe').then(function($element) {
           let iframeBody, cyIframe;
           // this gets the body of your iframe
