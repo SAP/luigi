@@ -1,7 +1,4 @@
-<div
-  id="app"
-  class="{hideNav? 'no-nav' : ''} {hideSideNav? 'no-side-nav' : ''}"
->
+<div id="app" class="{hideNav? 'no-nav' : ''} {hideSideNav? 'no-side-nav' : ''}">
   {#if confirmationModal.isDisplayed}
   <ConfirmationModal
     settings="{confirmationModal.settings}"
@@ -161,6 +158,7 @@
       component.set({ preservedViews });
       // Resetting iframe config to null, since Routing.navigateTo will then create a new iframe
       // instead of using the existing instance for route.
+      //TODO flag setzen 'pv'
       config.iframe = null;
     }
   };
@@ -274,7 +272,7 @@
         this.set({ simpleSlideInNav: true });
       }
     },
-    onstate({ changed, current, previous }) {},
+    onstate({ changed, current, previous }) { },
     actions: {
       init(node) {
         const isolateAllViews = LuigiConfig.getConfigValue(
@@ -575,7 +573,7 @@
                 }
                 resolve();
               },
-              () => {}
+              () => { }
             );
           } else {
             resolve();
@@ -631,7 +629,7 @@
         ) {
           console.error(
             `The alert with id '${
-              settings.id
+            settings.id
             }' already exists in a queue, therefore it won't be displayed `
           );
           return Promise.reject();
