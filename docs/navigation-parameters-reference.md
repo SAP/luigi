@@ -136,7 +136,7 @@ The context switcher is a drop-down list available in the top navigation bar. It
 
 ## Profile
 
-The profile section is a drop-down list available in the top navigation bar. Luigi configuration leverages the option to override the logout item content and/or add links to Luigi navigation nodes to the profile section. It just requires to add the `profile` property to the **navigation** object with any of these properties, all of them being optional:
+The profile section is a configurable drop-down list available in the top navigation bar. Within the configuration, you can override the logout item content and/or add links to Luigi navigation nodes. To do so, add the **profile** property to the **navigation** object using the following optional properties:
 
 - **logout** overrides the content of the logout item.
   - **label** overrides the text for the logout item. The default value is "Sign Out".
