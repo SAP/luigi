@@ -140,7 +140,7 @@ The profile section is a drop-down list available in the top navigation bar. Lui
 
 - **logout** overrides the content of the logout item.
   - **label** overrides the text for the logout item. The default value is "Sign Out".
-  - **icon** overrides the icon for logout item. Default is [SAP UI5 log icon](https://sapui5.hana.ondemand.com/test-resources/sap/m/demokit/iconExplorer/webapp/index.html#/overview/SAP-icons/?tag=logout).
+  - **icon** overrides the icon for the logout item. The default value is [SAP UI5 log icon](https://sapui5.hana.ondemand.com/test-resources/sap/m/demokit/iconExplorer/webapp/index.html#/overview/SAP-icons/?tag=logout).
 - **items** array of objects, each one them being a link to a Luigi navigation node or an external url. An item can have the following parameters:
   - **label** defines the text for the link. 
   - **icon** is the name of an icon from the [OpenUI](https://openui5.hana.ondemand.com/1.40.10/iconExplorer.html) or a custom link (relative or absolute) to an image displayed next to the label or instead of it.
