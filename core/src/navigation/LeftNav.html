@@ -139,9 +139,11 @@
     {/if} {/each}
   </nav>
   {/if}
-  {#if isFooterVisible()}
+  {#if isFooterVisible(footerText)}
   <div class="lui-sideNavFooter fd-has-padding-small fd-has-type-minus-1">
-    <span>Version 1.5.5</span>
+    {#if footerText}
+    <span>{footerText}</span>
+    {/if}
   </div>
   {/if}
 </div>
@@ -167,7 +169,8 @@
         hideNavComponent: LuigiConfig.getConfigBooleanValue(
           'settings.hideNavigation'
         ),
-        expandedCategories: NavigationHelpers.loadExpandedCategories()
+        expandedCategories: NavigationHelpers.loadExpandedCategories(),
+        footerText: LuigiConfig.getConfigValue('settings.sideNavFooterText')
       });
     },
     onstate({ changed, current, previous }) {
@@ -184,11 +187,12 @@
           expandedList && expandedList.indexOf(nodes.metaInfo.categoryUid) >= 0
         );
       },
-      isFooterVisible() {
-        return true;
+      isFooterVisible(footerText) {
+        return Boolean(footerText);
         // respect also 'responsiveNavigation' setting in the future.
-        // the footer should also be visible if it's' possible to collapse the Nav
-      }
+        // the footer should also be visible if it's possible to collapse the Nav
+      },
+      getFooterText() {}
     },
     methods: {
       handleClick(node) {
