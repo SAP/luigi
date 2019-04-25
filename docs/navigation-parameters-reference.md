@@ -145,6 +145,6 @@ The profile section is a drop-down list available in the top navigation bar. Lui
   - **label** defines the text for the link. 
   - **icon** is the name of an icon from the [OpenUI](https://openui5.hana.ondemand.com/1.40.10/iconExplorer.html) or a custom link (relative or absolute) to an image displayed next to the label or instead of it.
   - **link** defines an absolute link to a **node**.
-  - **externalLink** is an object which indicates that the node links to an external URL. If this parameter is defined, **link** parameter is ignored. It has the following properties:
+  - **externalLink** is an object which indicates that the node links to an external URL. If this parameter is defined, the **link** parameter is ignored. It has the following properties:
     - **sameWindow** defines if the external URL is opened in the current tab or in a new one. The default value for this parameter is `false`.
     - **url** is the external URL that the link leads to.
