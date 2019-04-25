@@ -23,7 +23,7 @@ The lerna-changelog tool detects changes based on PR labels and maps them to sec
     ...
   }
 -->
-## v0.4.11 (2019-04-12)
+## [v0.4.11] (2019-04-12)
 
 #### :rocket: Added
 * [#468](https://github.com/kyma-project/luigi/pull/468) Check origin of postMessages ([@dariadomagala](https://github.com/dariadomagala))
@@ -52,12 +52,12 @@ The lerna-changelog tool detects changes based on PR labels and maps them to sec
 * [#419](https://github.com/kyma-project/luigi/pull/419) Change the codeowners file ([@mmitoraj](https://github.com/mmitoraj))
 
 
-## v0.4.10 (2019-03-08)
+## [v0.4.10] (2019-03-08)
 
 #### :bug: Fixed
 * [#417](https://github.com/kyma-project/luigi/pull/417) Fix node refresh ([@hardl](https://github.com/hardl))
 
-## v0.4.9 (2019-03-07)
+## [v0.4.9] (2019-03-07)
 
 #### :bug: Fixed
 * [#412](https://github.com/kyma-project/luigi/pull/412) Focus improvements ([@hardl](https://github.com/hardl))
@@ -350,3 +350,5 @@ The lerna-changelog tool detects changes based on PR labels and maps them to sec
 [v0.4.4]: https://github.com/kyma-project/luigi/compare/v0.4.3...v0.4.4
 [v0.4.5]: https://github.com/kyma-project/luigi/compare/v0.4.4...v0.4.5
 [v0.4.9]: https://github.com/kyma-project/luigi/compare/v0.4.8...v0.4.9
+[v0.4.10]: https://github.com/kyma-project/luigi/compare/v0.4.9...v0.4.10
+[v0.4.11]: https://github.com/kyma-project/luigi/compare/v0.4.10...v0.4.11
