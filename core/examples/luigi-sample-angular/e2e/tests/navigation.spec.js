@@ -74,6 +74,7 @@ describe('Navigation', () => {
         .contains('Overview')
         .click();
 
+      cy.wait(500);
       // dig into the iframe
 
       cy.get('iframe').then(function($element) {
@@ -87,6 +88,7 @@ describe('Navigation', () => {
           .find('.fd-list-group__item')
           .contains('keepSelectedForChildren')
           .click();
+        cy.wait(500);
       });
 
       cy.expectPathToBe('/projects/pr1/avengers');
@@ -101,6 +103,7 @@ describe('Navigation', () => {
           .find('.fd-list-group__item')
           .contains('Thor')
           .click();
+        cy.wait(500);
       });
       cy.expectPathToBe('/projects/pr1/avengers/thor');
 
