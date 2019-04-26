@@ -190,11 +190,11 @@ class Navigation {
       },
       {
         icon: '',
-        label: 'Project1',
+        label: 'Project 1',
         link: '/projects/pr1'
       },
       {
-        label: 'Project3',
+        label: 'Project 3',
         link: '/projects/pr3'
       }
     ]

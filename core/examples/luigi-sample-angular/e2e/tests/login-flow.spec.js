@@ -10,8 +10,8 @@ describe('Login Flow', () => {
   it('Username in profile dropdown', () => {
     cy.login('tets@email.com', 'tets');
 
-    cy.get('[data-cy="luigi-topnav-profile"]').click();
-    cy.get('[data-cy="luigi-topnav-profile-username"]').should(
+    cy.get('[data-e2e="luigi-topnav-profile"]').click();
+    cy.get('[data-e2e="luigi-topnav-profile-username"]').should(
       'contain',
       'Luigi User'
     );
@@ -20,8 +20,8 @@ describe('Login Flow', () => {
   it('Link in profile dropwdown', () => {
     cy.login('tets@email.com', 'tets');
 
-    cy.get('[data-cy="luigi-topnav-profile"]').click();
-    cy.get('[data-cy="luigi-topnav-profile-item"]')
+    cy.get('[data-e2e="luigi-topnav-profile"]').click();
+    cy.get('[data-e2e="luigi-topnav-profile-item"]')
       .contains('Project 1')
       .click();
 
@@ -32,13 +32,13 @@ describe('Login Flow', () => {
     cy.login('tets@email.com', 'tets');
 
     //logout
-    cy.get('[data-cy="luigi-topnav-profile"]').click();
+    cy.get('[data-e2e="luigi-topnav-profile"]').click();
     cy.contains('End session').click();
-    cy.get('[data-cy="logout-headline"]').should(
+    cy.get('[data-e2e="logout-headline"]').should(
       'contain',
       'You have successfully logged out'
     );
-    cy.get('[data-cy="logout-message"]').should(
+    cy.get('[data-e2e="logout-message"]').should(
       'contain',
       'Sign in again to continue working on awesome things!'
     );
