@@ -86,3 +86,25 @@ When Luigi fails to renew the token and then logs out the user, it adds the foll
 - `not_checked` means that the script was not provided in **thirdPartyCookiesScriptLocation** or it could not be loaded.
 
 The application developer can read these parameters and set a logout page based on them.
+
+### Custom Auth Provider
+
+You can write your own Auth Provider that meets your requirements. 
+
+[src/providers/oAuth2ImplicitGrant.js](oAuth2ImplicitGrant.js) is be a good starting point if you are not using an external authentication library.
+After authorization on auth provider side, it redirects back to `callback.html`, which sets the auth data to localStorage for Luigi and redirects to the main page. 
+
+[src/providers/openIdConnect.js](openIdConnect.js) lazy loads an official oidc client library and can be a good starting point if you also depend on external authentication libraries.
+
+Be sure to set the following data in your Auth Provider implementation after authentication.
+```
+const data = {
+  accessToken: hashParams['access_token'],
+  accessTokenExpirationDate: hashParams['expiry_timestamp'],
+  scope: hashParams['scope'],
+  idToken: hashParams['id_token']
+};
+
+localStorage.setItem('luigi.auth', JSON.stringify(data));
+localStorage.setItem('luigi.newlyAuthorized', true);
+```

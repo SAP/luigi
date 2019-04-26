@@ -85,19 +85,18 @@ class Auth {
   events = {
     onLogout: () => {
       console.log('onLogout');
+      // return false; // prevent redirect
     },
     onAuthSuccessful: data => {
       console.log('onAuthSuccessful', data);
     },
-    onAuthRehydrated: data => {
-      console.log('onAuthRehydrated', data);
+    onAuthExpired: (_, settings) => {
+      console.log('onAuthExpired', settings);
+      // return false; // prevent redirect
     },
-    onAuthExpired: () => {
-      console.log('onAuthExpired');
-    },
-    // TODO: define luigi-client api for getting errors
-    onAuthError: err => {
-      console.log('authErrorHandler 1', err);
+    onAuthError: (err, settings) => {
+      console.log('authErrorHandler 1', err, settings);
+      // return false; // prevent redirect + authorization
     }
   };
 }

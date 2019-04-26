@@ -88,6 +88,25 @@ class LuigiConfigManager {
   }
 
   /*
+   * Executes the function of the given property on the Luigi config object.
+   * Fails if property is not a function.
+   * 
+   * If the value is a Function it is called (with the given parameters) and the result of that call is the value.
+   * If the value is not a Promise it is wrapped to a Promise so that the returned value is definitely a Promise.
+   */
+  executeConfigFnAsync(property, ...parameters) {
+    const fn = this.getConfigValue(property);
+    if (GenericHelpers.isFunction(fn) || GenericHelpers.isPromise(fn)) {
+      return AsyncHelpers.getConfigValueFromObjectAsync(
+        this.getConfig(),
+        property,
+        ...parameters
+      );
+    }
+    return Promise.reject(property + ' is not a function.');
+  }
+
+  /*
    * Detects if authorization is enabled via configuration.
    * @returns {boolean} returns true if authorization is enabled. Otherwise returns false.
    * @deprecated now located in Luigi.authManager instead of LuigiConfig

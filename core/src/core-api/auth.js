@@ -1,9 +1,9 @@
-import * as AsyncHelpers from '../utilities/helpers/async-helpers';
-import * as GenericHelpers from '../utilities/helpers/generic-helpers';
+// import * as AsyncHelpers from '../utilities/helpers/async-helpers';
+// import * as GenericHelpers from '../utilities/helpers/generic-helpers';
 import { config } from './config';
 
 class LuigiAuthManager {
-  constructor() {}
+  constructor() { }
 
   /*
    * Detects if authorization is enabled via configuration.
@@ -15,6 +15,16 @@ class LuigiAuthManager {
       `auth.${idpProviderName}`
     );
     return !!idpProviderSettings;
+  }
+
+  async handleAuthEvent(eventName, error, providerInstanceSettings, redirectUrl) {
+    const result = await config.executeConfigFnAsync('auth.events.' + eventName, error, providerInstanceSettings);
+    let redirect = result === undefined || !!result;
+    if (redirect && redirectUrl) {
+      window.location.href = redirectUrl;
+      return;
+    }
+    return redirect;
   }
 }
 

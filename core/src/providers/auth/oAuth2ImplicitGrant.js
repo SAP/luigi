@@ -1,4 +1,5 @@
 import * as GenericHelpers from '../../utilities/helpers/generic-helpers.js';
+import { LuigiAuth } from '../../core-api';
 
 export class oAuth2ImplicitGrant {
   constructor(settings = {}) {
@@ -67,18 +68,18 @@ export class oAuth2ImplicitGrant {
     });
   }
 
-  logout(authData, logoutCallback) {
+  logout(authData, authEventLogoutFn) {
     const settings = this.settings;
     const logouturl = `${settings.logoutUrl}?id_token_hint=${
       authData.idToken
-    }&client_id=${
+      }&client_id=${
       settings.oAuthData.client_id
-    }&post_logout_redirect_uri=${GenericHelpers.prependOrigin(
-      settings.post_logout_redirect_uri
-    )}`;
-    logoutCallback && logoutCallback();
+      }&post_logout_redirect_uri=${GenericHelpers.prependOrigin(
+        settings.post_logout_redirect_uri
+      )}`;
+    authEventLogoutFn && authEventLogoutFn();
 
-    setTimeout(function() {
+    setTimeout(() => {
       window.location.href = logouturl;
     });
   }
@@ -87,7 +88,7 @@ export class oAuth2ImplicitGrant {
     const expirationCheckInterval = 5000;
     const logoutBeforeExpirationTime = 60000;
 
-    setInterval(() => {
+    const expirationCheckIntervalInstance = setInterval(() => {
       let authData;
       try {
         authData = JSON.parse(localStorage.getItem('luigi.auth'));
@@ -96,17 +97,18 @@ export class oAuth2ImplicitGrant {
           'Error parsing authorization data. Auto-logout might not work!'
         );
       }
+      if (!authData) {
+        return clearInterval(expirationCheckIntervalInstance);
+      }
       const tokenExpirationDate = authData.accessTokenExpirationDate;
       const currentDate = new Date();
 
       if (tokenExpirationDate - currentDate - logoutBeforeExpirationTime < 0) {
         // trigger access token expired in core api
+        clearInterval(expirationCheckIntervalInstance);
         localStorage.removeItem('luigi.auth');
-        window.location = `${
-          this.settings.logoutUrl
-        }?reason=tokenExpired&post_logout_redirect_uri=${GenericHelpers.prependOrigin(
-          this.settings.post_logout_redirect_uri
-        )}`;
+        const redirectUrl = `${this.settings.logoutUrl}?reason=tokenExpired&post_logout_redirect_uri=${GenericHelpers.prependOrigin(this.settings.post_logout_redirect_uri)}`;
+        LuigiAuth.handleAuthEvent('onAuthExpired', undefined, this.settings, redirectUrl);
       }
     }, expirationCheckInterval);
   }
