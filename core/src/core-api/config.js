@@ -96,16 +96,11 @@ class LuigiConfigManager {
    */
   executeConfigFnAsync(property, ...parameters) {
     const fn = this.getConfigValue(property);
-    if (GenericHelpers.isFunction(fn) || GenericHelpers.isPromise(fn)) {
-      return AsyncHelpers.getConfigValueFromObjectAsync(
-        this.getConfig(),
-        property,
-        ...parameters
-      );
+    if (GenericHelpers.isFunction(fn)) {
+      return AsyncHelpers.applyFunctionPromisified(fn, parameters);
     }
     return Promise.reject(property + ' is not a function.');
   }
-
   /*
    * Detects if authorization is enabled via configuration.
    * @returns {boolean} returns true if authorization is enabled. Otherwise returns false.

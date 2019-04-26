@@ -17,8 +17,8 @@ class LuigiAuthManager {
     return !!idpProviderSettings;
   }
 
-  async handleAuthEvent(eventName, error, providerInstanceSettings, redirectUrl) {
-    const result = await config.executeConfigFnAsync('auth.events.' + eventName, error, providerInstanceSettings);
+  async handleAuthEvent(eventName, providerInstanceSettings, data, redirectUrl) {
+    const result = await config.executeConfigFnAsync('auth.events.' + eventName, providerInstanceSettings, data);
     let redirect = result === undefined || !!result;
     if (redirect && redirectUrl) {
       window.location.href = redirectUrl;

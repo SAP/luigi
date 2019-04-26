@@ -27,6 +27,20 @@ export const waitForKeyExistency = (
   });
 };
 
+export const wrapAsPromise = (value) => {
+  return new Promise(resolve => {
+    resolve(value);
+  });
+}
+
+export const applyFunctionPromisified = (value, parameters) => {
+  value = value.apply(this, parameters);
+  if (GenericHelpers.isPromise(value)) {
+    return value;
+  }
+  return wrapAsPromise(value);
+}
+
 /*
  * Gets value of the given property on the given object.
  * If the value is a Function it is called and the result of that call is the value.
@@ -39,12 +53,7 @@ export const getConfigValueFromObjectAsync = (
 ) => {
   let value = GenericHelpers.getConfigValueFromObject(object, property);
   if (GenericHelpers.isFunction(value)) {
-    value = value.apply(this, parameters);
-    if (GenericHelpers.isPromise(value)) {
-      return value;
-    }
+    return applyFunctionPromisified(value);
   }
-  return new Promise(resolve => {
-    resolve(value);
-  });
+  return wrapAsPromise(value);
 };

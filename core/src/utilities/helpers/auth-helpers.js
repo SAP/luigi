@@ -15,7 +15,7 @@ export const handleUrlAuthErrors = async (providerInstanceSettings) => {
   const reason = GenericHelpers.getUrlParameter('reason');
   const error = GenericHelpers.getUrlParameter('error');
   if (reason) { // TODO: required?  && error
-    return await LuigiAuth.handleAuthEvent('onAuthError', error, providerInstanceSettings, providerInstanceSettings.logoutUrl + '?post_logout_redirect_uri=' + providerInstanceSettings.post_logout_redirect_uri + '&reason=' + reason + '&error=' + error);
+    return await LuigiAuth.handleAuthEvent('onAuthError', providerInstanceSettings, error, providerInstanceSettings.logoutUrl + '?post_logout_redirect_uri=' + providerInstanceSettings.post_logout_redirect_uri + '&reason=' + reason + '&error=' + error);
   }
   return true;
 };

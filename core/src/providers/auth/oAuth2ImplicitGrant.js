@@ -104,11 +104,11 @@ export class oAuth2ImplicitGrant {
       const currentDate = new Date();
 
       if (tokenExpirationDate - currentDate - logoutBeforeExpirationTime < 0) {
-        // trigger access token expired in core api
         clearInterval(expirationCheckIntervalInstance);
         localStorage.removeItem('luigi.auth');
+        // TODO: check if valid (mock-auth requires it), post_logout_redirect_uri is an assumption, might not be available for all auth providers
         const redirectUrl = `${this.settings.logoutUrl}?reason=tokenExpired&post_logout_redirect_uri=${GenericHelpers.prependOrigin(this.settings.post_logout_redirect_uri)}`;
-        LuigiAuth.handleAuthEvent('onAuthExpired', undefined, this.settings, redirectUrl);
+        LuigiAuth.handleAuthEvent('onAuthExpired', this.settings, undefined, redirectUrl);
       }
     }, expirationCheckInterval);
   }

@@ -91,7 +91,7 @@
            * Continues with the standard authorization flow,
            * if `onAuthExpired` it returns undefined or truthy value.
            */
-          const startAuth = await LuigiAuth.handleAuthEvent('onAuthExpired', undefined, idpProviderSettings);
+          const startAuth = await LuigiAuth.handleAuthEvent('onAuthExpired', idpProviderSettings);
           if (startAuth) {
             this.startAuthorization();
           }
@@ -99,12 +99,12 @@
 
         this.set({ isLoggedIn: true });
 
-        const onAuthSuccessfulFn = LuigiConfig.getConfigValue(
+        const hasAuthSuccessFulFn = GenericHelpers.isFunction(LuigiConfig.getConfigValue(
           'auth.events.onAuthSuccessful'
-        );
-        if (onAuthSuccessfulFn && newlyAuthorized()) {
+        ));
+        if (hasAuthSuccessFulFn && newlyAuthorized()) {
           localStorage.removeItem('luigi.newlyAuthorized');
-          onAuthSuccessfulFn(authData);
+          await LuigiAuth.handleAuthEvent('onAuthSuccessful', idpProviderSettings, authData);
         }
 
         // TODO: possible duplicate of checkAuth 
@@ -170,7 +170,7 @@
         const authData = AuthHelpers.getStoredAuthData();
 
         const logoutCallback = async (redirectUrl) => {
-          await LuigiAuth.handleAuthEvent('onLogout', undefined, this.settings, redirectUrl);
+          await LuigiAuth.handleAuthEvent('onLogout', idpProviderInstance.settings, {msg: 'logged out'}, redirectUrl);
           this.set({ isLoggedIn: false });
           localStorage.removeItem('luigi.auth');
         };

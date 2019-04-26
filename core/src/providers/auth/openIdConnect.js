@@ -83,7 +83,7 @@ export class openIdConnect {
   setTokenExpirationAction() {
     if (!this.settings.automaticSilentRenew) {
       this.client.events.addAccessTokenExpired(() => {
-        LuigiAuth.handleAuthEvent('onAuthExpired', undefined, this.settings, this.settings.logoutUrl + '?reason=tokenExpired');
+        LuigiAuth.handleAuthEvent('onAuthExpired', this.settings, undefined, this.settings.logoutUrl + '?reason=tokenExpired');
       });
     }
 
@@ -112,12 +112,12 @@ export class openIdConnect {
           console.error(e);
           redirectUrl = this.settings.logoutUrl + '?reason=tokenExpired&error=' + e.message;
       }
-      LuigiAuth.handleAuthEvent('onAuthError', e, this.settings, redirectUrl);
+      LuigiAuth.handleAuthEvent('onAuthError', this.settings, e, redirectUrl);
     });
   }
 
   async handleAuthError(err, defaultRedirectUrl) {
-    await LuigiAuth.handleAuthEvent('onAuthError', err, this.settings, defaultRedirectUrl);
+    await LuigiAuth.handleAuthEvent('onAuthError', this.settings, err, defaultRedirectUrl);
   }
 
   _processLogoutResponse() {
@@ -173,7 +173,7 @@ export class openIdConnect {
         .catch(err => {
           console.error(err);
           localStorage.removeItem('luigi.auth');
-          LuigiAuth.handleAuthEvent('onAuthExpired', err, this.settings, this.settings.logoutUrl + '?reason=loginError')
+          LuigiAuth.handleAuthEvent('onAuthExpired', this.settings, err, this.settings.logoutUrl + '?reason=loginError')
         });
     });
   }
