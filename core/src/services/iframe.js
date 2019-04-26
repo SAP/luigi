@@ -13,9 +13,7 @@ export const getActiveIframe = node => {
   const children = [...node.children];
   let activeIframe = [];
   if (children.length > 0) {
-    activeIframe = children.filter(child =>
-      child.style.display !== "none"
-    );
+    activeIframe = children.filter(child => child.style.display !== 'none');
   }
   return activeIframe[0];
 };
@@ -29,10 +27,11 @@ export const getAllIframes = modalIframe => {
 };
 
 export const setActiveIframeToPrevious = node => {
-  const iframesInDom = Array.from(node.children);
-  if (iframesInDom.length === 0) {
+  const iframesInDom = getIframesInDom();
+  const preservedViews = getPreservedViewsInDom(iframesInDom);
+  if (preservedViews.length === 0) {
     return;
-  } else if (iframesInDom.length === 1) {
+  } else if (preservedViews.length === 1) {
     iframesInDom[0].style.display = 'block';
     return;
   }
@@ -52,10 +51,10 @@ export const removeInactiveIframes = node => {
 };
 
 function hasIsolatedView(isolateView, isSameViewGroup, isolateAllViews) {
-  return (isolateView
-    || (isolateAllViews &&
-      !(isolateView === false) &&
-      !isSameViewGroup));
+  return (
+    isolateView ||
+    (isolateAllViews && !(isolateView === false) && !isSameViewGroup)
+  );
 }
 
 function removeIframe(iframe, node) {
@@ -67,6 +66,14 @@ function removeIframe(iframe, node) {
   });
 }
 
+function getIframesInDom() {
+  return Array.from(document.querySelectorAll('.iframeContainer iframe'));
+}
+
+function getPreservedViewsInDom(iframes) {
+  return iframes.filter(iframe => iframe.pv);
+}
+
 export const navigateIframe = (config, component, node) => {
   clearTimeout(timeoutHandle);
   const componentData = component.get();
@@ -76,11 +83,29 @@ export const navigateIframe = (config, component, node) => {
   }
 
   const isSameViewGroup = IframeHelpers.isSameViewGroup(config, component);
-  const previousViewIsolated = hasIsolatedView(componentData.previousNodeValues.isolateView, isSameViewGroup, config.isolateAllViews);
-  const nextViewIsolated = hasIsolatedView(componentData.isolateView, isSameViewGroup, config.isolateAllViews);
+  const previousViewIsolated = hasIsolatedView(
+    componentData.previousNodeValues.isolateView,
+    isSameViewGroup,
+    config.isolateAllViews
+  );
+  const nextViewIsolated = hasIsolatedView(
+    componentData.isolateView,
+    isSameViewGroup,
+    config.isolateAllViews
+  );
   const canReuseIframe = IframeHelpers.canReuseIframe(config, component);
-  debugger;
   let activeIframe = getActiveIframe(node);
+
+  const iframes = getIframesInDom();
+  const goBackStack = getPreservedViewsInDom(iframes);
+  let firstInGoBackStack = undefined;
+  if (goBackStack.length > 0) {
+    firstInGoBackStack = goBackStack[0];
+    activeIframe = undefined;
+    //config.iframe = undefined;
+  }
+  //active iframe = undefined when pv da ist
+  //config.iframe = undefined
 
   // if previous view must be isolated
   if (activeIframe && previousViewIsolated) {
@@ -101,11 +126,9 @@ export const navigateIframe = (config, component, node) => {
   // if next view is not isoltaed we can pick a iframe with matching viewGroup from the pool
   let targetIframe;
   if (!nextViewIsolated && componentData.viewGroup) {
-    const iframes = Array.from(
-      document.querySelectorAll('.iframeContainer iframe')
-    );
+    const iframes = getIframesInDom();
     const sameViewGroupIframes = iframes.filter(iframe => {
-      return iframe.vg === componentData.viewGroup; //TODO filter out iframes belonging to goback stack
+      return iframe.vg === componentData.viewGroup;
     });
     if (sameViewGroupIframes.length > 0) {
       targetIframe = sameViewGroupIframes[0];
@@ -137,7 +160,8 @@ export const navigateIframe = (config, component, node) => {
   if (!config.iframe) {
     const componentData = component.get();
     // preserveView, hide other frames, else remove
-    if (config.iframe === null) {
+    if (firstInGoBackStack) {
+      //wahrscheinlich ihr noch umhängen.. pv stack von 1 auf 2
       IframeHelpers.hideElementChildren(node);
     } else {
       IframeHelpers.removeElementChildren(node);
