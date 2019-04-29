@@ -36,6 +36,7 @@ export const setActiveIframeToPrevious = node => {
   if (activeIframe) {
     node.removeChild(activeIframe);
   }
+  //unmark next preserved view as pv
   preservedViews[0].pv = undefined;
   preservedViews[0].style.display = 'block';
 };
@@ -49,29 +50,33 @@ export const removeInactiveIframes = node => {
   });
 };
 
-function hasIsolatedView(isolateView, isSameViewGroup, isolateAllViews) {
+export const hasIsolatedView = (
+  isolateView,
+  isSameViewGroup,
+  isolateAllViews
+) => {
   return (
     isolateView ||
     (isolateAllViews && !(isolateView === false) && !isSameViewGroup)
   );
-}
+};
 
-function removeIframe(iframe, node) {
+export const removeIframe = (iframe, node) => {
   const children = Array.from(node.children);
   children.forEach(child => {
     if (child === iframe) {
       node.removeChild(child);
     }
   });
-}
+};
 
-function getIframesInDom() {
+export const getIframesInDom = () => {
   return Array.from(document.querySelectorAll('.iframeContainer iframe'));
-}
+};
 
-function getPreservedViewsInDom(iframes) {
+export const getPreservedViewsInDom = iframes => {
   return iframes.filter(iframe => iframe.pv);
-}
+};
 
 export const navigateIframe = (config, component, node) => {
   clearTimeout(timeoutHandle);
@@ -160,7 +165,6 @@ export const navigateIframe = (config, component, node) => {
   }
 
   if (!config.iframe) {
-    const componentData = component.get();
     // preserveView, hide other frames, else remove
     if (pvSituation) {
       IframeHelpers.hideElementChildren(node);
@@ -180,7 +184,11 @@ export const navigateIframe = (config, component, node) => {
       }
       config.navigateOk = undefined;
       config.iframe = createIframe(viewUrl);
-      if (componentData.viewGroup && !nextViewIsolated) {
+      if (
+        componentData.viewGroup &&
+        !nextViewIsolated &&
+        componentData.cacheViewGroups
+      ) {
         config.iframe['vg'] = componentData.viewGroup;
       }
 
@@ -197,7 +205,9 @@ export const navigateIframe = (config, component, node) => {
     const goBackContext = component.get().goBackContext;
     config.iframe.style.display = 'block';
     config.iframe.luigi.nextViewUrl = viewUrl;
-    config.iframe['vg'] = componentData.viewGroup;
+    if (component.cacheViewGroups) {
+      config.iframe['vg'] = componentData.viewGroup;
+    }
     const message = {
       msg: 'luigi.navigate',
       viewUrl: viewUrl,

@@ -1,4 +1,7 @@
-<div id="app" class="{hideNav? 'no-nav' : ''} {hideSideNav? 'no-side-nav' : ''}">
+<div
+  id="app"
+  class="{hideNav? 'no-nav' : ''} {hideSideNav? 'no-side-nav' : ''}"
+>
   {#if confirmationModal.isDisplayed}
   <ConfirmationModal
     settings="{confirmationModal.settings}"
@@ -262,6 +265,11 @@
       const responsiveNavSetting = LuigiConfig.getConfigValue(
         'settings.responsiveNavigation'
       );
+      const cacheViewGroups = LuigiConfig.getConfigValue(
+        'settings.cacheViewGroups'
+      );
+      this.set({ cacheViewGroups });
+
       if (responsiveNavSetting === 'simple') {
         document.body.classList.add('lui-simpleSlideInNav');
         this.set({ simpleSlideInNav: true });
@@ -270,7 +278,7 @@
         this.set({ simpleSlideInNav: true });
       }
     },
-    onstate({ changed, current, previous }) { },
+    onstate({ changed, current, previous }) {},
     actions: {
       init(node) {
         const isolateAllViews = LuigiConfig.getConfigValue(
@@ -571,7 +579,7 @@
                 }
                 resolve();
               },
-              () => { }
+              () => {}
             );
           } else {
             resolve();
@@ -627,7 +635,7 @@
         ) {
           console.error(
             `The alert with id '${
-            settings.id
+              settings.id
             }' already exists in a queue, therefore it won't be displayed `
           );
           return Promise.reject();
