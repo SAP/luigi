@@ -156,10 +156,8 @@
         context
       });
       component.set({ preservedViews });
-      // Resetting iframe config to null, since Routing.navigateTo will then create a new iframe
-      // instead of using the existing instance for route.
-      //TODO flag setzen 'pv'
-      config.iframe = null;
+      //mark iframe with pv if there is a preserved view situation
+      config.iframe['pv'] = 'pv';
     }
   };
 

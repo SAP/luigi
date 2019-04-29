@@ -9,7 +9,6 @@ const iframeNavFallbackTimeout = 2000;
 let timeoutHandle;
 
 export const getActiveIframe = node => {
-  //TODO active ist das sichtbare => !display:none
   const children = [...node.children];
   let activeIframe = [];
   if (children.length > 0) {
@@ -31,14 +30,14 @@ export const setActiveIframeToPrevious = node => {
   const preservedViews = getPreservedViewsInDom(iframesInDom);
   if (preservedViews.length === 0) {
     return;
-  } else if (preservedViews.length === 1) {
-    iframesInDom[0].style.display = 'block';
-    return;
   }
+  const activeIframe = getActiveIframe(node);
   IframeHelpers.hideElementChildren(node);
-  //TODO first which is marked as pv second marked with pv display block
-  node.removeChild(iframesInDom[0]);
-  iframesInDom[1].style.display = 'block';
+  if (activeIframe) {
+    node.removeChild(activeIframe);
+  }
+  preservedViews[0].pv = undefined;
+  preservedViews[0].style.display = 'block';
 };
 
 export const removeInactiveIframes = node => {
@@ -81,7 +80,6 @@ export const navigateIframe = (config, component, node) => {
   if (viewUrl) {
     viewUrl = RoutingHelpers.substituteViewUrl(viewUrl, componentData);
   }
-
   const isSameViewGroup = IframeHelpers.isSameViewGroup(config, component);
   const previousViewIsolated = hasIsolatedView(
     componentData.previousNodeValues.isolateView,
@@ -99,69 +97,72 @@ export const navigateIframe = (config, component, node) => {
   const iframes = getIframesInDom();
   const goBackStack = getPreservedViewsInDom(iframes);
   let firstInGoBackStack = undefined;
+  let pvSituation = false;
   if (goBackStack.length > 0) {
-    firstInGoBackStack = goBackStack[0];
-    activeIframe = undefined;
-    //config.iframe = undefined;
-  }
-  //active iframe = undefined when pv da ist
-  //config.iframe = undefined
-
-  // if previous view must be isolated
-  if (activeIframe && previousViewIsolated) {
-    removeIframe(activeIframe, node);
-    activeIframe = undefined;
-  }
-
-  // if next view must be isolated
-  if (activeIframe && nextViewIsolated) {
-    if (activeIframe.vg) {
-      activeIframe.style.display = 'none';
-    } else {
-      removeIframe(activeIframe, node);
+    firstInGoBackStack = goBackStack.shift();
+    if (firstInGoBackStack === activeIframe) {
+      pvSituation = true;
+      activeIframe = undefined;
+      config.iframe = undefined;
     }
-    activeIframe = undefined;
   }
 
-  // if next view is not isoltaed we can pick a iframe with matching viewGroup from the pool
-  let targetIframe;
-  if (!nextViewIsolated && componentData.viewGroup) {
-    const iframes = getIframesInDom();
-    const sameViewGroupIframes = iframes.filter(iframe => {
-      return iframe.vg === componentData.viewGroup;
-    });
-    if (sameViewGroupIframes.length > 0) {
-      targetIframe = sameViewGroupIframes[0];
+  if (!pvSituation && !component.get().isNavigateBack) {
+    // if previous view must be isolated
+    if (activeIframe && previousViewIsolated) {
+      removeIframe(activeIframe, node);
+      activeIframe = undefined;
+    }
 
-      // make the targetIframe the new active iframe
-      if (activeIframe && activeIframe !== targetIframe) {
-        if (activeIframe.vg) {
-          activeIframe.style.display = 'none';
-        } else {
-          removeIframe(activeIframe, node);
-        }
+    // if next view must be isolated
+    if (activeIframe && nextViewIsolated) {
+      if (activeIframe.vg) {
+        activeIframe.style.display = 'none';
+      } else {
+        removeIframe(activeIframe, node);
       }
-      activeIframe = targetIframe;
-      activeIframe.style.display = 'block';
+      activeIframe = undefined;
     }
-  }
 
-  if (activeIframe && !targetIframe) {
-    if (activeIframe.vg) {
-      activeIframe.style.display = 'none';
-    } else if (!canReuseIframe) {
-      removeIframe(activeIframe, node);
+    // if next view is not isoltaed we can pick a iframe with matching viewGroup from the pool
+    let targetIframe;
+    if (!nextViewIsolated && componentData.viewGroup) {
+      const iframes = getIframesInDom();
+      const sameViewGroupIframes = iframes.filter(iframe => {
+        return iframe.vg === componentData.viewGroup;
+      });
+      if (sameViewGroupIframes.length > 0) {
+        targetIframe = sameViewGroupIframes[0];
+
+        // make the targetIframe the new active iframe
+        if (activeIframe && activeIframe !== targetIframe) {
+          if (activeIframe.vg) {
+            activeIframe.style.display = 'none';
+          } else {
+            removeIframe(activeIframe, node);
+          }
+        }
+        activeIframe = targetIframe;
+        activeIframe.style.display = 'block';
+      }
     }
-    activeIframe = undefined;
-  }
 
-  config.iframe = activeIframe;
+    if (activeIframe && !targetIframe) {
+      if (activeIframe.vg) {
+        activeIframe.style.display = 'none';
+      } else if (!canReuseIframe) {
+        removeIframe(activeIframe, node);
+      }
+      activeIframe = undefined;
+    }
+
+    config.iframe = activeIframe;
+  }
 
   if (!config.iframe) {
     const componentData = component.get();
     // preserveView, hide other frames, else remove
-    if (firstInGoBackStack) {
-      //wahrscheinlich ihr noch umhängen.. pv stack von 1 auf 2
+    if (pvSituation) {
       IframeHelpers.hideElementChildren(node);
     } else {
       IframeHelpers.removeElementChildren(node);
