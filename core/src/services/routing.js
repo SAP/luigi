@@ -9,10 +9,10 @@ import * as Iframe from './iframe';
 export const getNodePath = (node, params) => {
   return node
     ? RoutingHelpers.buildRoute(
-        node,
-        node.pathSegment ? '/' + node.pathSegment : '',
-        params
-      )
+      node,
+      node.pathSegment ? '/' + node.pathSegment : '',
+      params
+    )
     : '';
 };
 
@@ -113,9 +113,9 @@ export const getCurrentPath = () =>
   LuigiConfig.getConfigValue('routing.useHashRouting')
     ? window.location.hash.replace('#', '') // TODO: GenericHelpers.getPathWithoutHash(window.location.hash) fails in ContextSwitcher
     : window.location.search
-    ? GenericHelpers.trimLeadingSlash(window.location.pathname) +
+      ? GenericHelpers.trimLeadingSlash(window.location.pathname) +
       window.location.search
-    : GenericHelpers.trimLeadingSlash(window.location.pathname);
+      : GenericHelpers.trimLeadingSlash(window.location.pathname);
 
 export const handleRouteChange = async (
   path,
@@ -147,7 +147,7 @@ export const handleRouteChange = async (
             handleRouteChange(path, component, iframeElement, config) &&
             history.replaceState(window.state, '', newUrl);
         },
-        () => {}
+        () => { }
       );
       return;
     }
@@ -177,8 +177,8 @@ export const handleRouteChange = async (
           showPageNotFoundError(
             component,
             GenericHelpers.trimTrailingSlash(pathData.matchedPath) +
-              '/' +
-              defaultChildNode,
+            '/' +
+            defaultChildNode,
             pathUrlRaw,
             true
           );
@@ -235,10 +235,10 @@ export const handleRouteChange = async (
       Object.assign({}, newNodeData, {
         previousNodeValues: previousCompData
           ? {
-              viewUrl: previousCompData.viewUrl,
-              isolateView: previousCompData.isolateView,
-              viewGroup: previousCompData.viewGroup
-            }
+            viewUrl: previousCompData.viewUrl,
+            isolateView: previousCompData.isolateView,
+            viewGroup: previousCompData.viewGroup
+          }
           : {}
       })
     );
@@ -284,18 +284,15 @@ const showPageNotFoundError = async (
     return;
   }
 
-  const alert = {
-    settings: {
-      text:
-        (isAnyPathMatched
-          ? 'Could not map the exact target node for the requested route '
-          : 'Could not find the requested route ') + notFoundPath,
-      type: 'error',
-      ttl: 1 //how many redirections the alert will 'survive'.
-    },
-    openFromClient: false,
-    isDisplayed: true
+  const alertSettings =
+  {
+    text:
+      (isAnyPathMatched
+        ? 'Could not map the exact target node for the requested route '
+        : 'Could not find the requested route ') + notFoundPath,
+    type: 'error',
+    ttl: 1 //how many redirections the alert will 'survive'.
   };
-  component.set({ alert });
+  component.showAlert(alertSettings, false);
   navigateTo(GenericHelpers.addLeadingSlash(pathToRedirect));
 };
