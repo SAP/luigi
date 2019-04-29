@@ -8,6 +8,5 @@
   "chromeWebSecurity": false,
   "viewportWidth": 1250,
   "viewportHeight": 790,
-  "baseUrl": "http://localhost:4200/",
-  "numTestsKeptInMemory": 0
+  "baseUrl": "http://localhost:4200/"
 }
