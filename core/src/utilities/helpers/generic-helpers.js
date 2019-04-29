@@ -80,7 +80,7 @@ export const getPathWithoutHash = path => {
 export const getUrlParameter = (name) => {
   name = name.replace(/[\[]/, '\\[').replace(/[\]]/, '\\]');
   var regex = new RegExp('[\\?&]' + name + '=([^&#]*)');
-  var result = regex.exec(location.search);
+  var result = regex.exec(window.location.search);
   return result && decodeURIComponent(result[1].replace(/\+/g, ' ')) || '';
 };
 

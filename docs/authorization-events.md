@@ -5,7 +5,7 @@ Events are part of the **auth** configuration object and require to be functions
 
 By returning `false` value in those functions, the default behaviour can be disabled and lifecycle execution stops with the function. Be aware that this might lead to blank pages in logged out state, since most of the time there is a redirect to either a logout, login or main page.
 
-````
+```
 auth: {
   events: {
     onAuthSuccessful: (settings, authData) => {},
@@ -14,7 +14,7 @@ auth: {
     onLogout: (settings) => {}
   }
 }
-````
+```
 
 ## Events
 
