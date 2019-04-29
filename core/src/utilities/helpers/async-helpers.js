@@ -27,19 +27,27 @@ export const waitForKeyExistency = (
   });
 };
 
-export const wrapAsPromise = (value) => {
+export const wrapAsPromise = value => {
   return new Promise(resolve => {
     resolve(value);
   });
-}
+};
 
-export const applyFunctionPromisified = (value, parameters) => {
-  value = value.apply(this, parameters);
-  if (GenericHelpers.isPromise(value)) {
-    return value;
+/**
+ * Executes a function with a set of parameters
+ * and returns its value as promise
+ *
+ * @param {function} value  a function
+ * @param {array} args an array of arguments
+ * @returns {promise}
+ */
+export const applyFunctionPromisified = (fn, args) => {
+  fn = fn.apply(this, args);
+  if (GenericHelpers.isPromise(fn)) {
+    return fn;
   }
-  return wrapAsPromise(value);
-}
+  return wrapAsPromise(fn);
+};
 
 /*
  * Gets value of the given property on the given object.
