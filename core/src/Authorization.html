@@ -2,6 +2,14 @@
 {#if !isHidden}
 <ul class="fd-menu__list">
   {#if isLoggedIn}
+  {#if showUserInfo}
+  <li>
+    <a
+      aria-label="Username"
+      class="fd-menu__item"
+    >{userInfo.name ? userInfo.name : userInfo.email}</a>
+  </li>
+  {/if}
   <li on:click="onLogoutClick()">
     <a aria-label="Logout" class="fd-menu__item">Logout</a>
   </li>
@@ -53,7 +61,7 @@
     if (customIdpProvider) {
       ['login'].forEach(requiredFnName => {
         if (!GenericHelpers.isFunction(customIdpProvider[requiredFnName])) {
-          throw new IdpProviderException(
+          throw IdpProviderException(
             `${requiredFnName} function does not exist in custom IDP Provider ${idpProviderName}`
           );
         }
@@ -62,7 +70,7 @@
       return new customIdpProvider(idpProviderSettings);
     }
 
-    throw new IdpProviderException(
+    throw IdpProviderException(
       `IDP Provider ${idpProviderName} does not exist.`
     );
   };
@@ -78,7 +86,12 @@
         return;
       }
 
-      const checkAuth = async (idpProviderSettings) => {
+      const idpProviderName = LuigiConfig.getConfigValue('auth.use');
+      const idpProviderSettings = LuigiConfig.getConfigValue(
+        `auth.${idpProviderName}`
+      );
+
+      const checkAuth = async idpProviderSettings => {
         const authData = AuthHelpers.getStoredAuthData();
         if (!authData || !isAuthValid()) {
           if (LuigiConfig.getConfigValue('auth.disableAutoLogin')) {
@@ -91,26 +104,44 @@
            * Continues with the standard authorization flow,
            * if `onAuthExpired` it returns undefined or truthy value.
            */
-          const startAuth = await LuigiAuth.handleAuthEvent('onAuthExpired', idpProviderSettings);
+          const startAuth = await LuigiAuth.handleAuthEvent(
+            'onAuthExpired',
+            idpProviderSettings
+          );
           if (startAuth) {
             this.startAuthorization();
+            return;
+          }
+
+          if (
+            GenericHelpers.isFunction(idpProviderInstance.settings.userInfoFn)
+          ) {
+            idpProviderInstance.settings.userInfoFn().then(res => {
+              this.set({ isLoggedIn: true, userInfo: res });
+            });
+          } else {
+            if (GenericHelpers.isFunction(idpProviderInstance.userInfo)) {
+              idpProviderInstance.userInfo(idpProviderSettings).then(res => {
+                this.set({ isLoggedIn: true, userInfo: res });
+              });
+            } else {
+              this.set({ isLoggedIn: true });
+            }
           }
         }
 
-        this.set({ isLoggedIn: true });
-
-        const hasAuthSuccessFulFn = GenericHelpers.isFunction(LuigiConfig.getConfigValue(
-          'auth.events.onAuthSuccessful'
-        ));
+        const hasAuthSuccessFulFn = GenericHelpers.isFunction(
+          LuigiConfig.getConfigValue('auth.events.onAuthSuccessful')
+        );
         if (hasAuthSuccessFulFn && newlyAuthorized()) {
           localStorage.removeItem('luigi.newlyAuthorized');
-          await LuigiAuth.handleAuthEvent('onAuthSuccessful', idpProviderSettings, authData);
+          await LuigiAuth.handleAuthEvent(
+            'onAuthSuccessful',
+            idpProviderSettings,
+            authData
+          );
         }
 
-        // TODO: possible duplicate of checkAuth 
-        // checkAuth checks just once
-        // setTokenExpiration has interval
-        // move interval here instead of the provider?
         if (
           GenericHelpers.isFunction(
             idpProviderInstance.setTokenExpirationAction
@@ -120,17 +151,15 @@
         }
       };
 
-      const idpProviderName = LuigiConfig.getConfigValue('auth.use');
-      const idpProviderSettings = LuigiConfig.getConfigValue(
-        `auth.${idpProviderName}`
-      );
-
       /**
        * Prevent IDP Provider initialization, if an error is present
        * in the url params and onAuthError is defined in the user config
-       */ 
-      const noError = await AuthHelpers.handleUrlAuthErrors(idpProviderSettings);
-      if(!noError) {
+       */
+
+      const noError = await AuthHelpers.handleUrlAuthErrors(
+        idpProviderSettings
+      );
+      if (!noError) {
         return;
       }
 
@@ -169,8 +198,13 @@
       logout: function() {
         const authData = AuthHelpers.getStoredAuthData();
 
-        const logoutCallback = async (redirectUrl) => {
-          await LuigiAuth.handleAuthEvent('onLogout', idpProviderInstance.settings, undefined, redirectUrl);
+        const logoutCallback = async redirectUrl => {
+          await LuigiAuth.handleAuthEvent(
+            'onLogout',
+            idpProviderInstance.settings,
+            undefined,
+            redirectUrl
+          );
           this.set({ isLoggedIn: false });
           localStorage.removeItem('luigi.auth');
         };
@@ -188,6 +222,15 @@
           idpProviderInstance.logout(authData, logoutCallback);
         } else {
           logoutCallback(idpProviderInstance.settings.logoutUrl);
+        }
+      }
+    },
+    computed: {
+      showUserInfo: ({ userInfo }) => {
+        if (userInfo !== undefined) {
+          if (userInfo.name || userInfo.email) {
+            return true;
+          }
         }
       }
     },

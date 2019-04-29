@@ -6,7 +6,7 @@ const GenericHelpers = require('../../../src/utilities/helpers/generic-helpers')
 const AuthHelpers = require('../../../src/utilities/helpers/auth-helpers');
 const LuigiAuth = require('../../../src/core-api').LuigiAuth;
 
-describe.only('Auth-helpers', () => {
+describe('Auth-helpers', () => {
   let windowLocationImplementation;
   beforeEach(() => {
     windowLocationImplementation = window.location;
@@ -32,7 +32,7 @@ describe.only('Auth-helpers', () => {
       post_logout_redirect_uri: 'http://luigi.domain/logout.html',
     }
 
-    it.only('without error', async () => {
+    it('without error', async () => {
       assert.isTrue(await AuthHelpers.handleUrlAuthErrors({}));
       assert.isTrue(LuigiAuth.handleAuthEvent.notCalled);
     });

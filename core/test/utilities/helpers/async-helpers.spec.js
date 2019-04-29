@@ -4,7 +4,7 @@ const AsyncHelpers = require('../../../src/utilities/helpers/async-helpers');
 const GenericHelpers = require('../../../src/utilities/helpers/generic-helpers');
 const sinon = require('sinon');
 
-describe.only('Async-helpers', () => {
+describe('Async-helpers', () => {
   beforeEach(() => {
     // sinon.stub(LuigiConfig, 'getConfigValue');
   });

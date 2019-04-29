@@ -19,6 +19,36 @@ export class oAuth2ImplicitGrant {
     this.settings = mergedSettings;
   }
 
+  getAuthData() {
+    try {
+      return JSON.parse(localStorage.getItem('luigi.auth'));
+    } catch (e) {
+      console.warn(
+        'Error parsing authorization data. Auto-logout might not work!'
+      );
+    }
+  }
+
+  parseIdToken(token) {
+    const payload = token
+      .split('.')[1]
+      .replace(/-/g, '+')
+      .replace(/_/g, '/');
+    return JSON.parse(window.atob(payload));
+  }
+
+  userInfo() {
+    return new Promise((resolve, reject) => {
+      let authData = this.getAuthData();
+      const tokenInfo = this.parseIdToken(authData.idToken);
+      const userInfo = {
+        email: tokenInfo.email ? tokenInfo.email : '',
+        name: tokenInfo.name ? tokenInfo.name : ''
+      };
+      resolve(userInfo);
+    });
+  }
+
   login() {
     return new Promise((resolve, reject) => {
       const settings = this.settings;
@@ -72,11 +102,11 @@ export class oAuth2ImplicitGrant {
     const settings = this.settings;
     const logouturl = `${settings.logoutUrl}?id_token_hint=${
       authData.idToken
-      }&client_id=${
+    }&client_id=${
       settings.oAuthData.client_id
-      }&post_logout_redirect_uri=${GenericHelpers.prependOrigin(
-        settings.post_logout_redirect_uri
-      )}`;
+    }&post_logout_redirect_uri=${GenericHelpers.prependOrigin(
+      settings.post_logout_redirect_uri
+    )}`;
     authEventLogoutFn && authEventLogoutFn();
 
     setTimeout(() => {
@@ -89,14 +119,7 @@ export class oAuth2ImplicitGrant {
     const logoutBeforeExpirationTime = 60000;
 
     const expirationCheckIntervalInstance = setInterval(() => {
-      let authData;
-      try {
-        authData = JSON.parse(localStorage.getItem('luigi.auth'));
-      } catch (e) {
-        console.warn(
-          'Error parsing authorization data. Auto-logout might not work!'
-        );
-      }
+      let authData = this.getAuthData();
       if (!authData) {
         return clearInterval(expirationCheckIntervalInstance);
       }
@@ -107,8 +130,17 @@ export class oAuth2ImplicitGrant {
         clearInterval(expirationCheckIntervalInstance);
         localStorage.removeItem('luigi.auth');
         // TODO: check if valid (mock-auth requires it), post_logout_redirect_uri is an assumption, might not be available for all auth providers
-        const redirectUrl = `${this.settings.logoutUrl}?reason=tokenExpired&post_logout_redirect_uri=${GenericHelpers.prependOrigin(this.settings.post_logout_redirect_uri)}`;
-        LuigiAuth.handleAuthEvent('onAuthExpired', this.settings, undefined, redirectUrl);
+        const redirectUrl = `${
+          this.settings.logoutUrl
+        }?reason=tokenExpired&post_logout_redirect_uri=${GenericHelpers.prependOrigin(
+          this.settings.post_logout_redirect_uri
+        )}`;
+        LuigiAuth.handleAuthEvent(
+          'onAuthExpired',
+          this.settings,
+          undefined,
+          redirectUrl
+        );
       }
     }, expirationCheckInterval);
   }

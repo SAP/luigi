@@ -3,7 +3,7 @@ const assert = chai.assert;
 const sinon = require('sinon');
 const GenericHelpers = require('../../../src/utilities/helpers/generic-helpers');
 
-describe.only('Generic-helpers', () => {
+describe('Generic-helpers', () => {
   let windowLocationImplementation;
   before(() => {
     windowLocationImplementation = window.location;
