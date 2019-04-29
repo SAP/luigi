@@ -116,10 +116,6 @@ export class openIdConnect {
     });
   }
 
-  async handleAuthError(err, defaultRedirectUrl) {
-    await LuigiAuth.handleAuthEvent('onAuthError', this.settings, err, defaultRedirectUrl);
-  }
-
   _processLogoutResponse() {
     return new Promise((resolve, reject) => {
       // TODO: dex logout does not yet support proper logout

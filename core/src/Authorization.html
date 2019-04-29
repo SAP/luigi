@@ -170,7 +170,7 @@
         const authData = AuthHelpers.getStoredAuthData();
 
         const logoutCallback = async (redirectUrl) => {
-          await LuigiAuth.handleAuthEvent('onLogout', idpProviderInstance.settings, {msg: 'logged out'}, redirectUrl);
+          await LuigiAuth.handleAuthEvent('onLogout', idpProviderInstance.settings, undefined, redirectUrl);
           this.set({ isLoggedIn: false });
           localStorage.removeItem('luigi.auth');
         };
