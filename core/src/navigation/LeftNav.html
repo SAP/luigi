@@ -1,7 +1,7 @@
 <div class="fd-app__sidebar {hideNavComponent ? 'hideNavComponent' : ''}">
   {#if children && pathData.length > 1}
   <nav class="fd-side-nav" on:keyup="handleKey(event)">
-    {#each Object.entries(children) as [key, nodes]} {#if key === 'undefined' || key.indexOf('___') === 0}
+    {#each sortedChildrenEntries as [key, nodes]} {#if key === 'undefined' || key.indexOf('___') === 0}
     <div class="fd-side-nav__group">
       <ul class="fd-side-nav__list">
         {#each nodes as node} {#if !node.hideFromNav} {#if node.label}
@@ -152,7 +152,7 @@
       return;
     }
     component.set(leftNavData);
-    window.LEFTNAVDATA = leftNavData.groupedChildren;
+    window.LEFTNAVDATA = leftNavData.children;
   };
 
   export default {
@@ -167,6 +167,15 @@
     onstate({ changed, current, previous }) {
       if (!previous || previous.pathData != current.pathData) {
         setLeftNavData(current, this);
+      }
+    },
+    computed: {
+      sortedChildrenEntries: ({children}) => {
+        if (children) {
+          const entries = Object.entries(children);
+          entries.sort((e1, e2) => e1[1].metaInfo.order - e2[1].metaInfo.order);
+          return entries;
+        }
       }
     },
     helpers: {
