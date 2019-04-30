@@ -10,10 +10,10 @@ import { NAVIGATION_DEFAULTS } from './../utilities/luigi-config-defaults';
 export const getNodePath = (node, params) => {
   return node
     ? RoutingHelpers.buildRoute(
-      node,
-      node.pathSegment ? '/' + node.pathSegment : '',
-      params
-    )
+        node,
+        node.pathSegment ? '/' + node.pathSegment : '',
+        params
+      )
     : '';
 };
 
@@ -114,9 +114,9 @@ export const getCurrentPath = () =>
   LuigiConfig.getConfigValue('routing.useHashRouting')
     ? window.location.hash.replace('#', '') // TODO: GenericHelpers.getPathWithoutHash(window.location.hash) fails in ContextSwitcher
     : window.location.search
-      ? GenericHelpers.trimLeadingSlash(window.location.pathname) +
+    ? GenericHelpers.trimLeadingSlash(window.location.pathname) +
       window.location.search
-      : GenericHelpers.trimLeadingSlash(window.location.pathname);
+    : GenericHelpers.trimLeadingSlash(window.location.pathname);
 
 export const handleRouteChange = async (
   path,
@@ -148,7 +148,7 @@ export const handleRouteChange = async (
             handleRouteChange(path, component, iframeElement, config) &&
             history.replaceState(window.state, '', newUrl);
         },
-        () => { }
+        () => {}
       );
       return;
     }
@@ -178,8 +178,8 @@ export const handleRouteChange = async (
           showPageNotFoundError(
             component,
             GenericHelpers.trimTrailingSlash(pathData.matchedPath) +
-            '/' +
-            defaultChildNode,
+              '/' +
+              defaultChildNode,
             pathUrlRaw,
             true
           );
@@ -236,10 +236,10 @@ export const handleRouteChange = async (
       Object.assign({}, newNodeData, {
         previousNodeValues: previousCompData
           ? {
-            viewUrl: previousCompData.viewUrl,
-            isolateView: previousCompData.isolateView,
-            viewGroup: previousCompData.viewGroup
-          }
+              viewUrl: previousCompData.viewUrl,
+              isolateView: previousCompData.isolateView,
+              viewGroup: previousCompData.viewGroup
+            }
           : {}
       })
     );
@@ -283,8 +283,7 @@ const showPageNotFoundError = async (
     return;
   }
 
-  const alertSettings =
-  {
+  const alertSettings = {
     text:
       (isAnyPathMatched
         ? 'Could not map the exact target node for the requested route '

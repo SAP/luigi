@@ -11,23 +11,21 @@
     "acorn": "^6.1.1",
     "babel-loader": "^8.0.4",
     "bundlesize": "^0.17.0",
-    "chai": "^4.1.2",
+    "chai": "^4.2.0",
     "clean-webpack-plugin": "^1.0.0",
     "copy-webpack-plugin": "^4.5.2",
     "core-js": "^3.0.1",
     "css-loader": "^0.28.11",
     "file-loader": "^2.0.0",
     "fiori-fundamentals": "1.4.5",
-    "istanbul": "^1.1.0-alpha.1",
-    "jsdom": "11.12.0",
+    "jsdom": "15.0.0",
     "jsdom-global": "3.0.2",
     "mini-css-extract-plugin": "^0.4.4",
-    "mocha": "^5.2.0",
-    "mock-browser": "^0.92.14",
+    "mocha": "^6.1.4",
     "node-sass": "^4.11.0",
+    "nyc": "^14.0.0",
     "oidc-client": "^1.5.2",
-    "rewire": "^4.0.1",
-    "sinon": "^5.1.0",
+    "sinon": "^7.3.2",
     "source-map-loader": "^0.2.3",
     "style-loader": "^0.21.0",
     "svelte": "^2.8.0",
@@ -40,7 +38,7 @@
   "scripts": {
     "bundle": "webpack --display-error-details",
     "bundle-develop": "webpack -d --watch",
-    "test": "babel-node ./node_modules/istanbul/lib/cli.js cover _mocha -- --require @babel/register --require jsdom-global/register --recursive test",
+    "test": "babel-node ./node_modules/nyc/bin/nyc.js mocha -- --recursive test",
     "test:watch": "npm run test -- --watch",
     "bundlesize": "npm run bundle && bundlesize",
     "prepush": "npm test"
@@ -57,6 +55,47 @@
       "compression": "none"
     }
   ],
+  "nyc": {
+    "check-coverage": true,
+    "lines": 60,
+    "statements": 60,
+    "functions": 60,
+    "branches": 60,
+    "watermarks": {
+      "lines": [
+        60,
+        80
+      ],
+      "functions": [
+        60,
+        80
+      ],
+      "branches": [
+        60,
+        80
+      ],
+      "statements": [
+        60,
+        80
+      ]
+    },
+    "include": [
+      "src/**/*.js"
+    ],
+    "exclude": [
+      "**/*.spec.js"
+    ],
+    "require": [
+      "@babel/register",
+      "jsdom-global/register"
+    ],
+    "reporter": [
+      "lcov",
+      "text-summary"
+    ],
+    "cache": true,
+    "all": true
+  },
   "repository": {
     "type": "git",
     "url": "ssh://github.com/kyma-project/luigi.git"
