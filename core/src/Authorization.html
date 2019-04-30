@@ -104,29 +104,32 @@
            * Continues with the standard authorization flow,
            * if `onAuthExpired` it returns undefined or truthy value.
            */
-          const startAuth = await LuigiAuth.handleAuthEvent(
-            'onAuthExpired',
-            idpProviderSettings
-          );
+          let startAuth = true;
+          if (authData) {
+            startAuth = await LuigiAuth.handleAuthEvent(
+              'onAuthExpired',
+              idpProviderSettings
+            );
+          }
           if (startAuth) {
             this.startAuthorization();
-            return;
           }
+          return;
+        }
 
-          if (
-            GenericHelpers.isFunction(idpProviderInstance.settings.userInfoFn)
-          ) {
-            idpProviderInstance.settings.userInfoFn().then(res => {
+        if (
+          GenericHelpers.isFunction(idpProviderInstance.settings.userInfoFn)
+        ) {
+          idpProviderInstance.settings.userInfoFn().then(res => {
+            this.set({ isLoggedIn: true, userInfo: res });
+          });
+        } else {
+          if (GenericHelpers.isFunction(idpProviderInstance.userInfo)) {
+            idpProviderInstance.userInfo(idpProviderSettings).then(res => {
               this.set({ isLoggedIn: true, userInfo: res });
             });
           } else {
-            if (GenericHelpers.isFunction(idpProviderInstance.userInfo)) {
-              idpProviderInstance.userInfo(idpProviderSettings).then(res => {
-                this.set({ isLoggedIn: true, userInfo: res });
-              });
-            } else {
-              this.set({ isLoggedIn: true });
-            }
+            this.set({ isLoggedIn: true });
           }
         }
 
@@ -153,7 +156,8 @@
 
       /**
        * Prevent IDP Provider initialization, if an error is present
-       * in the url params and onAuthError is defined in the user config
+       * in the url params and onAuthError is defined in the user config.
+       * errors are represented by `reason` and `error` param.
        */
 
       const noError = await AuthHelpers.handleUrlAuthErrors(
