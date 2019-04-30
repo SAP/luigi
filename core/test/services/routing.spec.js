@@ -535,4 +535,26 @@ describe('Routing', () => {
       assert.equal(window.location.hash, expectedRoute);
     });
   });
+
+  describe('navigateToExternalLink()', () => {
+    it('open external link in same tab', () => {
+      const externalLink = { url: 'http://localhost', sameWindow: true };
+      sinon.stub(window, 'focus');
+      sinon.stub(window, 'open').returns(window);
+      routing.navigateToExternalLink(externalLink);
+      sinon.assert.calledOnce(window.open);
+      sinon.assert.calledWithExactly(window.open, 'http://localhost', '_self');
+      sinon.assert.calledOnce(window.focus);
+    });
+
+    it('open external link in new tab', () => {
+      const externalLink = { url: 'http://localhost', sameWindow: false };
+      sinon.stub(window, 'focus');
+      sinon.stub(window, 'open').returns(window);
+      routing.navigateToExternalLink(externalLink);
+      sinon.assert.calledOnce(window.open);
+      sinon.assert.calledWithExactly(window.open, 'http://localhost', '_blank');
+      sinon.assert.calledOnce(window.focus);
+    });
+  });
 });

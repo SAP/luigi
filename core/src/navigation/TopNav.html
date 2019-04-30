@@ -15,7 +15,7 @@
       {#if !authorizationEnabled || isLoggedIn}
       <ContextSwitcher
         bind:dropDownStates
-        on:toggleDropdownState="toggleDropdownState(event.name)"
+        on:toggleDropdownState="toggleDropdownState('contextSwitcherPopover')"
       />
       {/if}
       {#if children && pathData.length > 0}
@@ -26,7 +26,7 @@
       >
         <button
           title="{node.label}"
-          class="fd-button--shell {node === selectedNode ? 'is-selected' : ''} {node.externalLink && node.externalLink.url ? 'fd-global-nav__btn--external' : ''}"
+          class="fd-button--shell {node === selectedNode ? 'is-selected' : ''}"
           aria-controls="0AcWE812"
           aria-expanded="false"
           aria-haspopup="true"
@@ -42,8 +42,10 @@
             src="{node.icon}"
           >
           {/if}
-          {:else} {node.label} {/if} {#if node.externalLink &&
-          node.externalLink.url}
+          {:else}
+          <span>{node.label}</span>
+          {/if}
+          {#if node.externalLink && node.externalLink.url}
           <span
             class="sap-icon--action sap-icon--s"
           ></span>
@@ -55,7 +57,7 @@
       {#if isProductSwitcherAvailable}
       <ProductSwitcher
         bind:dropDownStates
-        on:toggleDropdownState="toggleDropdownState(event.name)"
+        on:toggleDropdownState="toggleDropdownState('productSwitcherPopover')"
         isMobile="{false}"
       />
       {/if}
@@ -102,7 +104,7 @@
                   {#each children as node} {#if !node.hideFromNav}
                   <li>
                     <a
-                      class="fd-menu__item {node === selectedNode ? 'is-selected' : ''} {node.externalLink && node.externalLink.url ? 'fd-global-nav__btn--external' : ''}"
+                      class="fd-menu__item {node === selectedNode ? 'is-selected' : ''}"
                       on:click="handleClick(node)"
                     >
                       {#if node.icon} {#if hasOpenUIicon(node)}
@@ -114,8 +116,9 @@
                         class="fd-top-nav__icon nav-icon"
                         src="{node.icon}"
                       >
-                      {/if} {/if} {node.label} {#if node.externalLink &&
-                      node.externalLink.url}
+                      {/if} {/if}
+                      <span>{node.label}</span>
+                      {#if node.externalLink && node.externalLink.url}
                       <span
                         class="sap-icon--action sap-icon--s"
                       ></span>
@@ -142,7 +145,7 @@
             {#if isProductSwitcherAvailable}
             <ProductSwitcher
               bind:dropDownStates
-              on:toggleDropdownState="toggleDropdownState(event.name)"
+              on:toggleDropdownState="toggleDropdownState('productSwitcherPopover')"
               isMobile="{true}"
             />
             {/if}
@@ -151,8 +154,12 @@
       </div>
       {/if}
       {/if}
+      <!-- closes {#if children && pathData.length > 0} -->
       {#if authorizationEnabled}
-      <div class="fd-shellbar__action fd-shellbar__action--show-always">
+      <div
+        class="fd-shellbar__action fd-shellbar__action--show-always"
+        data-e2e="luigi-topnav-profile"
+      >
         <div class="fd-popover">
           <div class="fd-popover__control" on:click="event.stopPropagation()">
             <button
@@ -167,9 +174,10 @@
               aria-hidden="{!(dropDownStates.profilePopover || false)}"
               id="profilePopover"
             >
-              <nav class="fd-menu">
-                <Authorization on:userInfoUpdated="userInfoUpdate(event)"/>
-              </nav>
+              <Authorization
+                on:toggleDropdownState="toggleDropdownState('profilePopover')"
+                on:userInfoUpdated="userInfoUpdate(event)"
+              />
             </div>
           </div>
         </div>
@@ -179,7 +187,11 @@
   </div>
 </div>
 {:else}
-<Authorization isHidden="{true}"/>
+<Authorization
+  on:toggleDropdownState="toggleDropdownState('profilePopover')"
+  on:userInfoUpdated="userInfoUpdate(event)"
+  isHidden="{true}"
+/>
 {/if}
 <script type="text/javascript">
   import ContextSwitcher from './ContextSwitcher.html';
@@ -406,7 +418,7 @@
 
   .fd-top-nav__icon {
     display: inline-block;
-    vertical-align: text-top;
+    vertical-align: middle;
     margin-right: 5px;
   }
 </style>

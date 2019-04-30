@@ -5,14 +5,15 @@ import * as RoutingHelpers from '../utilities/helpers/routing-helpers';
 import { LuigiConfig } from './config';
 import * as GenericHelpers from '../utilities/helpers/generic-helpers';
 import * as Iframe from './iframe';
+import { NAVIGATION_DEFAULTS } from './../utilities/luigi-config-defaults';
 
 export const getNodePath = (node, params) => {
   return node
     ? RoutingHelpers.buildRoute(
-      node,
-      node.pathSegment ? '/' + node.pathSegment : '',
-      params
-    )
+        node,
+        node.pathSegment ? '/' + node.pathSegment : '',
+        params
+      )
     : '';
 };
 
@@ -113,9 +114,9 @@ export const getCurrentPath = () =>
   LuigiConfig.getConfigValue('routing.useHashRouting')
     ? window.location.hash.replace('#', '') // TODO: GenericHelpers.getPathWithoutHash(window.location.hash) fails in ContextSwitcher
     : window.location.search
-      ? GenericHelpers.trimLeadingSlash(window.location.pathname) +
+    ? GenericHelpers.trimLeadingSlash(window.location.pathname) +
       window.location.search
-      : GenericHelpers.trimLeadingSlash(window.location.pathname);
+    : GenericHelpers.trimLeadingSlash(window.location.pathname);
 
 export const handleRouteChange = async (
   path,
@@ -147,7 +148,7 @@ export const handleRouteChange = async (
             handleRouteChange(path, component, iframeElement, config) &&
             history.replaceState(window.state, '', newUrl);
         },
-        () => { }
+        () => {}
       );
       return;
     }
@@ -177,8 +178,8 @@ export const handleRouteChange = async (
           showPageNotFoundError(
             component,
             GenericHelpers.trimTrailingSlash(pathData.matchedPath) +
-            '/' +
-            defaultChildNode,
+              '/' +
+              defaultChildNode,
             pathUrlRaw,
             true
           );
@@ -235,10 +236,10 @@ export const handleRouteChange = async (
       Object.assign({}, newNodeData, {
         previousNodeValues: previousCompData
           ? {
-            viewUrl: previousCompData.viewUrl,
-            isolateView: previousCompData.isolateView,
-            viewGroup: previousCompData.viewGroup
-          }
+              viewUrl: previousCompData.viewUrl,
+              isolateView: previousCompData.isolateView,
+              viewGroup: previousCompData.viewGroup
+            }
           : {}
       })
     );
@@ -251,9 +252,7 @@ export const handleRouteChange = async (
 
 export const handleRouteClick = (node, componentData) => {
   if (node.externalLink && node.externalLink.url) {
-    node.externalLink.sameWindow
-      ? (window.location.href = node.externalLink.url)
-      : window.open(node.externalLink.url).focus();
+    navigateToExternalLink(node.externalLink);
     // externalLinkUrl property is provided so there's no need to trigger routing mechanizm
   } else if (node.link) {
     const link = node.link.startsWith('/')
@@ -284,8 +283,7 @@ const showPageNotFoundError = async (
     return;
   }
 
-  const alertSettings =
-  {
+  const alertSettings = {
     text:
       (isAnyPathMatched
         ? 'Could not map the exact target node for the requested route '
@@ -295,4 +293,25 @@ const showPageNotFoundError = async (
   };
   component.showAlert(alertSettings, false);
   navigateTo(GenericHelpers.addLeadingSlash(pathToRedirect));
+};
+
+export const navigateToLink = item => {
+  if (item.externalLink && item.externalLink.url) {
+    navigateToExternalLink(item.externalLink);
+  } else {
+    navigateTo(item.link);
+  }
+};
+
+export const navigateToExternalLink = externalLink => {
+  const updatedExternalLink = {
+    ...NAVIGATION_DEFAULTS.externalLink,
+    ...externalLink
+  };
+  window
+    .open(
+      updatedExternalLink.url,
+      updatedExternalLink.sameWindow ? '_self' : '_blank'
+    )
+    .focus();
 };

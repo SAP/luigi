@@ -45,9 +45,29 @@ Luigi.setConfig({
       parentNodePath: '/environments',
       lazyloadOptions: false,
       fallbackLabelResolver: (id) => (id.toUpperCase()),
-      options: [{label,pathValue}, {label,pathValue}]
-      },
+      options: [{label,pathValue}, {label,pathValue}],
       actions: [{label,link,position,clickHandler?}]
+    },
+    profile: {
+      logout: {
+        label: 'End session'
+        // icon: "sys-cancel",
+      },
+      items: [
+        {
+          icon: '',
+          label: 'Luigi in Github',
+          externalLink: {
+            url: 'https://github.com/kyma-project/luigi',
+            sameWindow: false
+          }
+        },
+        {
+          icon: '',
+          label: 'Project 1',
+          link: '/projects/pr1'
+        }
+      ]
     }
   }
 });
@@ -112,4 +132,20 @@ The context switcher is a drop-down list available in the top navigation bar. It
   - **position** defines the action element position. Can be `top` or `bottom`. The default value is `top`. This parameter is optional.
   - **link** defines an absolute Link to a **node**. This parameter is optional.
   - **clickHandler** specifies a function and is executed on click and should return a boolean. If it returns `true`, **link** is opened afterwards.
-- **fallbackLabelResolver** specifies a function that is used to fetch the **label** for **options** that do not have a **label** defined. Additionally it fetches the dropdown label for non-existing **options**.
+- **fallbackLabelResolver** specifies a function used to fetch the **label** for **options** with no **label** defined. Additionally, it fetches the drop-down label for non-existing **options**.
+
+
+## Profile
+
+The profile section is a configurable drop-down list available in the top navigation bar. Within the configuration, you can override the logout item content and/or add links to Luigi navigation nodes. To do so, add the **profile** property to the **navigation** object using the following optional properties:
+
+- **logout** overrides the content of the logout item.
+  - **label** overrides the text for the logout item. The default value is "Sign Out".
+  - **icon** overrides the icon for the logout item. The default value is [SAP UI5 log icon](https://sapui5.hana.ondemand.com/test-resources/sap/m/demokit/iconExplorer/webapp/index.html#/overview/SAP-icons/?tag=logout).
+- **items** is an array of objects, each one being a link to a Luigi navigation node or an external URL. An item can have the following parameters:
+  - **label** defines the text for the link. 
+  - **icon** is the name of an icon from the [OpenUI](https://openui5.hana.ondemand.com/1.40.10/iconExplorer.html) or a custom link (relative or absolute) to an image displayed next to the label or instead of it.
+  - **link** defines an absolute link to a **node**.
+  - **externalLink** is an object which indicates that the node links to an external URL. If this parameter is defined, the **link** parameter is ignored. It has the following properties:
+    - **sameWindow** defines if the external URL is opened in the current tab or in a new one. The default value for this parameter is `false`.
+    - **url** is the external URL that the link leads to.
