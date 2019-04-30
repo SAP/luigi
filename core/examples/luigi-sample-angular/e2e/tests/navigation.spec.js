@@ -59,7 +59,9 @@ describe('Navigation', () => {
       .contains('Projects')
       .click();
 
-    cy.get('.fd-app__sidebar .lui-sideNavFooter').should('be.visible');
+    cy.get('.fd-app__sidebar .lui-sideNavFooter')
+      .contains('Version 1.2.3')
+      .should('be.visible');
   });
 
   // Disabled, since it only works if autologin is false
