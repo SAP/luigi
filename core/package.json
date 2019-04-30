@@ -88,6 +88,7 @@
       "jsdom-global/register"
     ],
     "reporter": [
+      "lcov",
       "text-summary"
     ],
     "cache": true,
