@@ -53,6 +53,15 @@ describe('Navigation', () => {
       .should('exist');
   });
 
+  it('Shows Kyma version in LeftNav', () => {
+    // projects page
+    cy.get('.fd-shellbar')
+      .contains('Projects')
+      .click();
+
+    cy.get('.fd-app__sidebar .lui-sideNavFooter').should('be.visible');
+  });
+
   // Disabled, since it only works if autologin is false
   /*
   it('Anonymous content', () => {
