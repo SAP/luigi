@@ -163,8 +163,8 @@
         <div class="fd-popover">
           <div class="fd-popover__control" on:click="event.stopPropagation()">
             <button
-              class="fd-button--shell fd-identifier--circle"
-              style="{userInfo.picture?`background-image: url('${userInfo.picture}');background-size:30px;`:''}"
+              class="fd-button--shell fd-identifier--circle {!userInfo.picture?'sap-icon--customer':''}"
+              style="{userInfo.picture?`background-image: url('${userInfo.picture}');background-size:30px;background-repeat: no-repeat;background-position: center;`:''}"
               aria-expanded="{dropDownStates.profilePopover || false}"
               aria-haspopup="true"
               on:click="toggleDropdownState('profilePopover')"
