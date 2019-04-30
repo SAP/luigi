@@ -23,6 +23,7 @@ describe('Iframe', () => {
           style: {
             display: null
           },
+          pv: 'pv',
           id: 2
         },
         {
@@ -30,6 +31,19 @@ describe('Iframe', () => {
             display: null
           },
           id: 3
+        },
+        {
+          style: {
+            display: 'none'
+          },
+          id: 4
+        },
+        {
+          style: {
+            display: 'none'
+          },
+          vg: 'tets',
+          id: 4
         }
       ],
       removeChild: child => {
@@ -38,7 +52,7 @@ describe('Iframe', () => {
             node.children.splice(i, 1);
           }
         });
-      }
+      },
     };
   });
 
@@ -50,19 +64,13 @@ describe('Iframe', () => {
   });
 
   describe('setActiveIframeToPrevious', () => {
-    it('standard', () => {
+    it('goBack with preserved view situation', () => {
+
+      sinon.stub(document, 'querySelectorAll').callsFake(() => (node.children));
       Iframe.setActiveIframeToPrevious(node);
 
-      assert.equal(node.children.length, 2);
+      assert.equal(node.children.length, 4);
       assert.equal(node.children[0].style.display, 'block');
-    });
-
-    it('goBack', () => {
-      Iframe.setActiveIframeToPrevious(node);
-
-      assert.equal(node.children.length, 2);
-      assert.equal(node.children[0].style.display, 'block');
-      assert.equal(node.children[0].id, 2);
     });
   });
 
@@ -82,8 +90,9 @@ describe('Iframe', () => {
 
   it('removeInactiveIframes', () => {
     node.removeChild = sinon.spy();
+    console.log('tets ', node.children);
     Iframe.removeInactiveIframes(node);
 
-    assert.equal(node.removeChild.callCount, 2);
+    assert.equal(node.removeChild.callCount, 1);
   });
 });
