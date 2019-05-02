@@ -40,7 +40,7 @@ auth: {
 - **automaticSilentRenew** enables the automatic silent renewal of the token if it is supported by the server. The default value is `false`. For this mechanism to work, the browser must have third-party cookies support enabled.
 - **accessTokenExpiringNotificationTime** is the number of seconds before an access token is to expire and triggers silent token refresh. The default value is 60.
 - **thirdPartyCookiesScriptLocation** is the URL to the page containing third-party cookies support check. For details, see [Third-party cookies and silent token refresh section](#Third-party-cookies-and-silent-token-refresh).
-- **userInfoFn** provides a function to get user information. It returns a promise of a **userinfo** object which contains user **name** and/or **email** to display in the profile dropdown menu. Optionally, you can set the attribute **picture** to display user's profile image in the top navigation.
+- **userInfoFn** provides a function to get user information. It returns a promise of a **userinfo** object which can contain **name**, **email** and **picture** (value is a URL to the image). **Name** or **email** are displayed in the profile drop-down menu and the user’s profile picture is displayed in the top navigation.
 
 ## OAuth2 Implicit Grant configuration
 
@@ -77,8 +77,7 @@ auth: {
 - **response_type** defaults to the **id_token**. Any other parameter that is added to oAuthData is also added to the authorization payload.
 - **nonceFn** provides a function that returns a string in order to override the default **nonce**.
 - **logoutFn** provides the function to override the **logoutUrl** functionality for a custom logout. It needs to execute the **logoutCallback()** function after logout.
-- **userInfoFn** provides a function to get user information. It returns a promise of a **userinfo** object which contains user **name** and/or **email** to display in the profile dropdown menu. Optionally, you can set the attribute **picture** to display user's profile image in the top navigation.
-
+- **userInfoFn** provides a function to get user information. It returns a promise of a **userinfo** object which can contain **name**, **email** and **picture** (value is a URL to the image). **Name** or **email** are displayed in the profile drop-down menu and the user’s profile picture is displayed in the top navigation.
 
 ### Custom Authentication Provider
 
