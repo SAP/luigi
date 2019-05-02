@@ -268,8 +268,7 @@
     },
     computed: {
       showUserInfo: ({ userInfo }) =>
-        Boolean(userInfo && (userInfo.name || userInfo.email)),
-      isUsersPicture: ({ userInfo }) => Boolean(userInfo && userInfo.picture)
+        Boolean(userInfo && (userInfo.name || userInfo.email))
     },
     components: {}
   };
