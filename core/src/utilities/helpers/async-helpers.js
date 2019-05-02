@@ -61,7 +61,7 @@ export const getConfigValueFromObjectAsync = (
 ) => {
   let value = GenericHelpers.getConfigValueFromObject(object, property);
   if (GenericHelpers.isFunction(value)) {
-    return applyFunctionPromisified(value);
+    return applyFunctionPromisified(value, parameters);
   }
   return wrapAsPromise(value);
 };
