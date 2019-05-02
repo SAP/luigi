@@ -193,7 +193,9 @@
 
   const sendAuthDataToClient = (iframe, authData) => {
     if (!iframe || !iframe.contentWindow) {
-      console.info('iframe does not exist, not able to send authData to client.');
+      console.info(
+        'iframe does not exist, not able to send authData to client.'
+      );
       return;
     }
     const message = {
@@ -285,25 +287,31 @@
           isolateAllViews
         };
         window.addEventListener('popstate', async e => {
-          const alertQueue=this.get().alerts;
-          if(!alertQueue || !alertQueue.length) return;
+          const alertQueue = this.get().alerts;
+          if (!alertQueue || !alertQueue.length) return;
 
-          const updatedAlerts = alertQueue.map(a=>{
-            if (a && !a.openFromClient && typeof a.settings.ttl === 'number') {
-              //alert has some TTL set
-              if (a.settings.ttl === 0) {
-                //the TTL value dropped down to 0, remove this alert
-                return null;
-              } else {
-                //TTL is not 0, reduce it
-                a.settings.ttl--;
+          const updatedAlerts = alertQueue
+            .map(a => {
+              if (
+                a &&
+                !a.openFromClient &&
+                typeof a.settings.ttl === 'number'
+              ) {
+                //alert has some TTL set
+                if (a.settings.ttl === 0) {
+                  //the TTL value dropped down to 0, remove this alert
+                  return null;
+                } else {
+                  //TTL is not 0, reduce it
+                  a.settings.ttl--;
+                }
               }
-           }
-           //return either unchanged Alert or the one with reduced TTL value
-           return a;
-          }).filter(a=>a); //remove empty alerts from array
+              //return either unchanged Alert or the one with reduced TTL value
+              return a;
+            })
+            .filter(a => a); //remove empty alerts from array
 
-          this.set({alerts:updatedAlerts});
+          this.set({ alerts: updatedAlerts });
         });
         window.addEventListener('message', async e => {
           const iframe = this.getValidMessageSource(e);
@@ -399,7 +407,9 @@
                   );
                 });
               } else {
-                console.error('goBack() not possible, no preserved views found.');
+                console.error(
+                  'goBack() not possible, no preserved views found.'
+                );
               }
             }
           }
@@ -465,7 +475,9 @@
               );
               return;
             }
-            this.set(Object.assign({ contentNode: node }, getDefaultAlertData()));
+            this.set(
+              Object.assign({ contentNode: node }, getDefaultAlertData())
+            );
             this.showAlert(settings, true).catch(() => {
               /* keep it to avoid runtime errors in browser console */
             });
@@ -605,17 +617,17 @@
       },
       showAlert(settings, openFromClient = false) {
         const currentAlerts = this.get().alerts;
-       
-        if(!settings.id){
+
+        if (!settings.id) {
           //generate the ID in case it hasn't came from an old version of LuigiClient
-          const crypto=require('crypto');
+          const crypto = require('crypto');
           settings.id = crypto.randomBytes(4).toString('hex');
         }
 
         if (
           settings.id &&
           currentAlerts &&
-          this.getAlertWithId(currentAlerts,settings.id)
+          this.getAlertWithId(currentAlerts, settings.id)
         ) {
           console.error(
             `The alert with id '${
@@ -627,11 +639,10 @@
 
         if (settings.closeAfter) {
           setTimeout(() => {
-            if(this.getAlertWithId(this.get().alerts,settings.id)) //check if alert hasn't already been closed manually
-            {
-               this.handleAlertDismiss(settings.id);
+            if (this.getAlertWithId(this.get().alerts, settings.id)) {
+              //check if alert hasn't already been closed manually
+              this.handleAlertDismiss(settings.id);
             }
-            
           }, settings.closeAfter);
         }
 
