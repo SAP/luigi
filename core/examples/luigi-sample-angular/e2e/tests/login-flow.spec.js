@@ -7,14 +7,38 @@ describe('Login Flow', () => {
     cy.login('tets@email.com', 'tets');
   });
 
+  it('Username in profile dropdown', () => {
+    cy.login('tets@email.com', 'tets');
+
+    cy.get('[data-e2e="luigi-topnav-profile"]').click();
+    cy.get('[data-e2e="luigi-topnav-profile-username"]').should(
+      'contain',
+      'Luigi User'
+    );
+  });
+
+  it('Link in profile dropwdown', () => {
+    cy.login('tets@email.com', 'tets');
+
+    cy.get('[data-e2e="luigi-topnav-profile"]').click();
+    cy.get('[data-e2e="luigi-topnav-profile-item"]')
+      .contains('Project 1')
+      .click();
+
+    cy.expectPathToBe('/projects/pr1');
+  });
+
   it('Logout and login again', () => {
     cy.login('tets@email.com', 'tets');
 
     //logout
-    cy.get('.sap-icon--customer').click();
-    cy.contains('Logout').click();
-    cy.get('#headline').should('contain', 'You have successfully logged out');
-    cy.get('#message').should(
+    cy.get('[data-e2e="luigi-topnav-profile"]').click();
+    cy.contains('End session').click();
+    cy.get('[data-e2e="logout-headline"]').should(
+      'contain',
+      'You have successfully logged out'
+    );
+    cy.get('[data-e2e="logout-message"]').should(
       'contain',
       'Sign in again to continue working on awesome things!'
     );
