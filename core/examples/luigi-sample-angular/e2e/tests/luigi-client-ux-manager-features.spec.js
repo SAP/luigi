@@ -70,15 +70,17 @@ describe('Luigi client ux manger features', () => {
     });
 
     it('loading indicator', () => {
+      Cypress.currentTest.retries(3);
       cy.get('.fd-shellbar')
         .contains('External Page')
         .click();
 
       cy.get('.spinnerContainer .fd-spinner').should('exist');
 
-      cy.get('.spinnerContainer .fd-spinner').should('not.exist');
+      cy.wait(250); // give it some time to hide
 
-      cy.wait(250);
+      cy.get('.spinnerContainer .fd-spinner').should('not.be.visible');
+
       cy.get('iframe').then($iframe => {
         const $iframeBody = $iframe.contents().find('body');
 
@@ -88,6 +90,9 @@ describe('Luigi client ux manger features', () => {
           .click();
 
         cy.get('.spinnerContainer .fd-spinner').should('exist');
+        cy.wait(250); // give it some time to hide
+        // wait for programmatic hide of loading indicator
+        cy.get('.spinnerContainer .fd-spinner').should('not.be.visible');
       });
     });
 

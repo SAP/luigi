@@ -1,6 +1,6 @@
 language: node_js
 node_js:
-  - 'node'
+  - '11.14' #TODO: change it to 'node' once Travis supports the newest version
 dist: trusty
 install: npm install --prefix core
 notifications:
@@ -8,12 +8,23 @@ notifications:
     secure: i7BDDfFHhQM1BvlLvLUZhh+3ZKnRp22bgHIEIuOjQZwkx1A4uynDwYGivyzBLEhlg/sjh1WSIZoJ/9rtpZn66iC+AqEDQdMx8QD8AJmeyf2rJMisdm4k9D7vEAet+nL853wzycfGNMCnO6TSY/5Rw99KAUJ8y+BJEqDswHFQpjpAzWge+a2Vy8P6iv89Yxd2yFKsfu8OQiwXrv6mQQlIAXpzyj0Ix4fClpwHEcAguqAykNGXyauUR4Qw5Ajls5CVohS/MCPk67+GU7KYSqkSPlF/eCRdKSD8dqtmtplS1JXOJQt/8NXJIe8R0+i7WaXSN2250IBQtxugrtLOu31IBfqvu0Iwa9ygB65P2CGeFGoagO7QGQXKRxVlPtsyKThY9ZrFd2rxMw9FyQri80Ec8qTDHMNfIEVwgBi6KxaMUemIq0+oD+Z4AKpyFvTE1OuFKvAt+srG9i3+tHv1A2EhtjAGu/im6Pj/KXpogJaAWq+R5UNBPgGdnJqtDtNrEa9AViUpDR8nYfRYOJxF9fQzmwIpukMk/oC0JtGvabJwBtTJi+TVDD4oBQtznDbb0BwHNXVulqsJbbDemeeVKaDScL2gVojjen9v0RFyLmvsosq9RyQymXcsAoKBpcRdREeeSel3NtvDLAVeO0N04S7dduuxUUprROqa+xF8pEa2VSQ=
 jobs:
   include:
+    #----- UNIT -----
     - stage: 'Tests'
       name: 'Unit Tests'
       script: npm test --prefix core
-    - script: bash ./test/e2e.sh
-      name: 'Integration Tests'
-addons:
-  chrome: stable
-before_install:
-  - google-chrome-stable --headless --disable-gpu --remote-debugging-port=9222 http://localhost &
+      #no cache for unit tests = more speed
+      
+    #----- INTEGRATION -----
+    - name: 'Integration Tests'
+      script: bash ./test/e2e.sh
+      cache:
+        directories:
+          - npm: true
+          - ~/.cache
+      addons:
+        chrome: stable
+      before_install:
+        - google-chrome-stable --headless --disable-gpu --remote-debugging-port=9222 http://localhost &
+      before_cache:
+        - rm -rf ~/.cache/Cypress/cy/production/browsers #it is individual for each run anyway so caching it slows down the job
+

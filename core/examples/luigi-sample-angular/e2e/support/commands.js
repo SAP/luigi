@@ -51,8 +51,8 @@ const isHashRoutingOn = () => {
   return useHashRouting;
 };
 
-Cypress.Commands.add('expectPathToBe', pathWithoutHash =>
-  cy.location().should(location => {
+Cypress.Commands.add('expectPathToBe', (pathWithoutHash, timeout = undefined) =>
+  cy.location({ timeout }).should(location => {
     const useHashRouting = isHashRoutingOn();
     const actualPath = useHashRouting ? location.hash : location.pathname;
     const pathToCheck = useHashRouting

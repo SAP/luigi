@@ -40,7 +40,7 @@ export declare interface AlertSettings {
   links?: {
     [key: string]: { text: string; url: string };
   };
-  closeAfter?: number
+  closeAfter?: number;
 }
 
 export declare interface PathParams {
