@@ -1,12 +1,16 @@
 #!/bin/bash
 
-pwd
 
-echo Installing lerna
-npm install -g lerna
+
+echo Installing Lerna, Concurrently and @angular/cli
 npm install -g concurrently
 npm install -g @angular/cli
-npm install -g cypress
+npm install -g lerna
+
+echo 'Installing Cypress in Angular Example folder'
+cd core/examples/luigi-sample-angular
+npm install -D cypress
+cd ../../..
 
 echo Bootstrap
 lerna bootstrap --ci

@@ -119,7 +119,9 @@ export class oAuth2ImplicitGrant {
 
     setInterval(() => {
       let authData = this.getAuthData();
-      const tokenExpirationDate = authData.accessTokenExpirationDate;
+      const tokenExpirationDate = authData
+        ? authData.accessTokenExpirationDate || 0
+        : 0;
       const currentDate = new Date();
 
       if (tokenExpirationDate - currentDate - logoutBeforeExpirationTime < 0) {

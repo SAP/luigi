@@ -122,7 +122,6 @@ class Navigation {
           label: 'Environment ' + n, // (i.e mapping between what the user sees and what is taken to replace the dynamic part for the dynamic node)
           pathValue: 'env' + n // will be used to replace dynamic part
         })),
-
     actions: [
       {
         label: '+ New Environment (top)',
@@ -171,6 +170,31 @@ class Navigation {
       },
       {
         icon: 'https://sap.github.io/fundamental/images/products/06.png',
+        label: 'Project 3',
+        link: '/projects/pr3'
+      }
+    ]
+  };
+
+  profile = {
+    logout: {
+      label: 'End session'
+      // icon: "sys-cancel",
+    },
+    items: [
+      {
+        label: 'Luigi in Github',
+        externalLink: {
+          url: 'https://github.com/kyma-project/luigi',
+          sameWindow: false
+        }
+      },
+      {
+        icon: '',
+        label: 'Project 1',
+        link: '/projects/pr1'
+      },
+      {
         label: 'Project 3',
         link: '/projects/pr3'
       }
