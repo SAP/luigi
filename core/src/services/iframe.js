@@ -43,7 +43,7 @@ export const setActiveIframeToPrevious = node => {
 
 export const removeInactiveIframes = node => {
   const children = Array.from(node.children);
-  children.forEach((child) => {
+  children.forEach(child => {
     if (child.style.display === 'none' && !child.vg) {
       node.removeChild(child);
     }
@@ -155,10 +155,11 @@ export const navigateIframe = (config, component, node) => {
     if (activeIframe && !targetIframe) {
       if (activeIframe.vg) {
         activeIframe.style.display = 'none';
+        activeIframe = undefined;
       } else if (!canReuseIframe) {
         removeIframe(activeIframe, node);
+        activeIframe = undefined;
       }
-      activeIframe = undefined;
     }
 
     config.iframe = activeIframe;
