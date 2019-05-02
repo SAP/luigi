@@ -318,6 +318,8 @@
       userInfoUpdate(userInfo) {
         if (userInfo) {
           this.set({ userInfo });
+        } else {
+          this.set({ userinfo: undefined });
         }
       }
     },
