@@ -2,7 +2,6 @@ const chai = require('chai');
 const assert = chai.assert;
 const sinon = require('sinon');
 const routing = require('../../src/services/routing');
-const MockBrowser = require('mock-browser').mocks.MockBrowser;
 const GenericHelpers = require('../../src/utilities/helpers/generic-helpers');
 import { afterEach } from 'mocha';
 import { LuigiConfig } from '../../src/services/config';
@@ -145,14 +144,9 @@ describe('Routing', () => {
     };
     let currentLuigiConfig = {};
     let config;
-    const mockBrowser = new MockBrowser();
-    const window = mockBrowser.getWindow();
-    const document = mockBrowser.getDocument();
 
     beforeEach(() => {
       window.Luigi = { config: currentLuigiConfig };
-      global.window = window;
-      global.document = document;
       currentLuigiConfig = Object.assign({}, sampleLuigiConfig);
       LuigiConfig.config = currentLuigiConfig;
       config = {

@@ -53,6 +53,7 @@
     "codelyzer": "^4.4.1",
     "concurrently": "^4.1.0",
     "cypress": "^3.2.0",
+    "cypress-plugin-retries": "^1.2.0",
     "ts-node": "~3.2.0",
     "tslint": "~5.7.0",
     "typescript": "~2.7.2",
