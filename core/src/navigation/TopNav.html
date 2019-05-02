@@ -163,9 +163,9 @@
         <div class="fd-user-menu">
           <div class="fd-popover">
             <div class="fd-popover__control" on:click="event.stopPropagation()">
-              <div class="fd-user-menu__control">
+              <div class="{userInfo.picture ? 'fd-user-menu__control' : '' }">
                 <button
-                  class="fd-button--shell fd-identifier fd-identifier--xs fd-identifier--circle {!userInfo.picture?'sap-icon--customer':''}"
+                  class="fd-button--shell {!userInfo.picture?'sap-icon--customer':'fd-identifier fd-identifier--xs fd-identifier--circle'}"
                   style="{userInfo.picture?`background-image: url('${userInfo.picture}');background-size:30px;background-repeat: no-repeat;background-position: center;`:''}"
                   aria-expanded="{dropDownStates.profilePopover || false}"
                   aria-haspopup="true"
@@ -363,32 +363,6 @@
     margin-left: 8px;
     margin-right: 16px;
     cursor: pointer;
-  }
-
-  .fd-identifier {
-    font-family: '72', -apple-system, BlinkMacSystemFont, Segoe UI, Roboto,
-      Helvetica Neue, Arial, sans-serif, Apple Color Emoji, Segoe UI Emoji,
-      Segoe UI Symbol;
-    display: inline-block;
-    vertical-align: middle;
-    text-align: center;
-    background-repeat: no-repeat;
-    background-size: cover;
-    background-position: 50%;
-    background-color: transparent;
-  }
-
-  .fd-identifier--xs {
-    width: 28px;
-    height: 28px;
-    max-width: 28px;
-    max-height: 28px;
-    min-width: 28px;
-    min-height: 28px;
-  }
-
-  .fd-identifier--circle {
-    border-radius: 50%;
   }
 
   @media (min-width: 600px) {
