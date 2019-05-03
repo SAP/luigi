@@ -128,11 +128,11 @@ The application developer can read these parameters and set a logout page based 
 You can write your own Auth Provider that meets your requirements. 
 
 [oAuth2ImplicitGrant.js](src/providers/oAuth2ImplicitGrant.js) is a good starting point if you don't use an external authentication library.
-After authorization on auth provider side, it redirects back to `callback.html`, which sets the auth data to localStorage for Luigi and redirects to the main page. 
+After authorization happens on the auth provider's side, it redirects to `callback.html`, which sets the auth data to **localStorage** for Luigi and redirects to the main page. 
 
-[src/providers/openIdConnect.js](openIdConnect.js) lazy loads an official oidc client library and can be a good starting point if you also depend on external authentication libraries.
+[openIdConnect.js](src/providers/openIdConnect.js) lazy loads the official `oidc-client` library and is a good starting point if you also depend on external authentication libraries.
 
-Be sure to set the following data in your Auth Provider implementation after authentication.
+Make sure to set the following data in your Auth Provider implementation after authentication.
 ```
 const data = {
   accessToken: hashParams['access_token'],
