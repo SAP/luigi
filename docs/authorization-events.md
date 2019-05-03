@@ -1,9 +1,9 @@
 # Authorization events
 
-Luigi provides life-cycle events that can be triggered by Luigi internally, or by authorization providers.
-Events are part of the **auth** configuration object and require to be functions, they can be executed asynchronous.
+Luigi provides life cycle events which it can trigger internally or by authorization providers.
+Events are part of the **auth** configuration object and have to be functions. They can be executed asynchronously.
 
-By returning `false` value in those functions, the default behaviour can be disabled and lifecycle execution stops with the function. Be aware that this might lead to blank pages in logged out state, since most of the time there is a redirect to either a logout, login or main page.
+You can disable the default behavior by making the function return `false`. As a result, the lifecycle execution stops with this function. This, however, may lead to blank pages after the user logs out since typically the page redirects to a logout, login or home page.
 
 ```
 auth: {
@@ -18,14 +18,14 @@ auth: {
 
 ## Events
 
-First parameter is always the current settings object of the currently active authorization provider, which consists of the user provider configuration and the default values of that provider.
-Second parameter is optional and are either `authData` or `error`.
+The first parameter is always the current **settings** object of the currently active authorization provider.  This object contains the user provider configuration with the default values.
+The second parameter is optional and it is either **authData** or **error**.
 
 -   `onAuthSuccessful` **[function](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Statements/function)** is executed after login with `authData` object parameter. It is not being executed after authorization rehydration from the local storage if valid authorization data was found.
 -   `onAuthError` **[function](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Statements/function)** is executed:
-    - by Luigi `reason` url parameter with optional `error` url parameter for detailed description was found on Luigi initialization. OAuth2Provider uses this approach, by redirecting from the authorization provider to `luigi.domain/?reason=someError&error=Error detail describe`.
+    - by Luigi **reason** URL parameter with optional **error** URL parameter for detailed description was found on Luigi initialization. The OAuth2Provider uses this approach by redirecting from the authorization provider to `luigi.domain/?reason=someError&error=Error detail describe`.
     - by the OIDC provider if silent access token renewal fails    
 
-    Return `false` to prevent redirect to `logoutUrl` after executing this function.
--   `onAuthExpired` **[function](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Statements/function)** is executed if token expires during runtime, or if Luigi is opened with outdated authorization data in the local storage. Return `false` to prevent redirect to `logoutUrl` after executing this function.
--   `onLogout` **[function](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Statements/function)** is executed after logging out. Return `false` to prevent redirect to `logoutUrl` after executing this function.
+    Return `false` to prevent redirecting to `logoutUrl` after executing this function.
+-   `onAuthExpired` **[function](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Statements/function)** is executed if the token expires during runtime, or if Luigi is opened with outdated authorization data in the local storage. Return `false` to prevent redirecting to `logoutUrl` after executing this function.
+-   `onLogout` **[function](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Statements/function)** is executed after the user logs out. Return `false` to prevent redirecting to `logoutUrl` after executing this function.
