@@ -316,11 +316,7 @@
         document.body.classList.toggle('lui-leftNavToggle');
       },
       userInfoUpdate(userInfo) {
-        if (userInfo) {
-          this.set({ userInfo });
-        } else {
-          delete this.get().userInfo;
-        }
+        this.set(userInfo ? { userInfo } : { userInfo: {} });
       }
     },
     components: {
