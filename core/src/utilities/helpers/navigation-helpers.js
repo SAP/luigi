@@ -64,6 +64,7 @@ const orderNodes = nodes => {
 
 export const groupNodesBy = (nodes, property, useVirtualGroups) => {
   const result = {};
+  const virtualGroupPrefix = '___';
   let groupCounter = 0;
   let virtualGroupCounter = 0;
 
@@ -77,7 +78,7 @@ export const groupNodesBy = (nodes, property, useVirtualGroups) => {
     } else {
       key = category;
       if (useVirtualGroups && !category) {
-        key = '___' + virtualGroupCounter;
+        key = virtualGroupPrefix + virtualGroupCounter;
       }
       metaInfo = {
         label: key,
