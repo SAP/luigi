@@ -62,9 +62,10 @@ const orderNodes = nodes => {
   });
 };
 
+export const virtualGroupPrefix = '___';
+
 export const groupNodesBy = (nodes, property, useVirtualGroups) => {
   const result = {};
-  const virtualGroupPrefix = '___';
   let groupCounter = 0;
   let virtualGroupCounter = 0;
 
