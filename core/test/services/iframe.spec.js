@@ -52,7 +52,7 @@ describe('Iframe', () => {
             node.children.splice(i, 1);
           }
         });
-      },
+      }
     };
   });
 
@@ -65,8 +65,7 @@ describe('Iframe', () => {
 
   describe('setActiveIframeToPrevious', () => {
     it('goBack with preserved view situation', () => {
-
-      sinon.stub(document, 'querySelectorAll').callsFake(() => (node.children));
+      sinon.stub(document, 'querySelectorAll').callsFake(() => node.children);
       Iframe.setActiveIframeToPrevious(node);
 
       assert.equal(node.children.length, 4);
@@ -90,7 +89,6 @@ describe('Iframe', () => {
 
   it('removeInactiveIframes', () => {
     node.removeChild = sinon.spy();
-    console.log('tets ', node.children);
     Iframe.removeInactiveIframes(node);
 
     assert.equal(node.removeChild.callCount, 1);

@@ -128,6 +128,7 @@ describe('Routing', () => {
                 style: {}
               }
             ],
+            removeChild: sinon.spy(),
             context: {
               varA: 'tets'
             },
