@@ -62,16 +62,14 @@ export const projectDetailNavStructure = projectId => [
     pathSegment: 'developers',
     label: 'Developers',
     viewUrl: '/sampleapp.html#/projects/' + projectId + '/developers',
-    icon: '/assets/favicon-sap.ico',
-    viewGroup: 'Pete'
+    icon: '/assets/favicon-sap.ico'
   },
   {
     category: { label: 'Settings', icon: 'action-settings' },
     pathSegment: 'settings',
     label: 'Project Settings',
     viewUrl: '/sampleapp.html#/projects/' + projectId + '/settings',
-    icon: 'settings',
-    viewGroup: 'Pete'
+    icon: 'settings'
   },
   {
     pathSegment: 'miscellaneous',
@@ -84,8 +82,7 @@ export const projectDetailNavStructure = projectId => [
     pathSegment: 'miscellaneous2',
     label: 'Miscellaneous2',
     viewUrl: '/sampleapp.html#/projects/' + projectId + '/miscellaneous2',
-    icon: 'sys-help',
-    viewGroup: 'tets'
+    icon: 'sys-help'
   },
   {
     pathSegment: 'misc2-isolated',
