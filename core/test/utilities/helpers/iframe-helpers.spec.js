@@ -39,6 +39,11 @@ describe('Iframe-helpers', () => {
       assert.equal(iframeOrigin, url);
     });
 
+    it('createIframe', () => {
+      const iframe = IframeHelpers.createIframe('http://luigi.url.com/');
+      assert.equal(iframe.src, 'http://luigi.url.com/');
+    });
+
     it('should return true if views have the same domain and different hash', () => {
       component.set({
         viewUrl: 'http://url.com/app.html!#/someUrl',
