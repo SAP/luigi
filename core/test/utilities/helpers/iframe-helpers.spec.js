@@ -44,7 +44,20 @@ describe('Iframe-helpers', () => {
       assert.equal(iframe.src, 'http://luigi.url.com/');
     });
 
+    it('isSameViewGroup', () => {
+      config.iframe.src = 'http://otherurl.de/app.html!#/someUrl';
+      config.viewGroup = 'tets';
+      component.set({
+        viewUrl: 'http://otherurl.de/app.html!#/someUrl',
+        viewGroup: 'tets',
+        previousNodeValues: { viewUrl: config.iframe.src, viewGroup: 'tets' }
+      });
+      const tets = IframeHelpers.isSameViewGroup(config, component);
+      assert.equal(tets, true);
+    });
+
     it('should return true if views have the same domain and different hash', () => {
+      config.iframe.src = 'http://url.com/app.html!#/prevUrl';
       component.set({
         viewUrl: 'http://url.com/app.html!#/someUrl',
         previousNodeValues: { viewUrl: config.iframe.src }
