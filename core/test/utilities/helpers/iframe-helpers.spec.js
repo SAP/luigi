@@ -44,6 +44,19 @@ describe('Iframe-helpers', () => {
       assert.equal(iframe.src, 'http://luigi.url.com/');
     });
 
+    it('getVisibleIframes', () => {
+      sinon
+        .stub(document, 'querySelectorAll')
+        .callsFake(() => [
+          {
+            src: 'http://url.com/app.html!#/prevUrl',
+            style: { display: 'block' }
+          }
+        ]);
+      const visibleIframes = IframeHelpers.getVisibleIframes();
+      assert.equal(visibleIframes.length, 1);
+    });
+
     it('isSameViewGroup', () => {
       config.iframe.src = 'http://otherurl.de/app.html!#/someUrl';
       config.viewGroup = 'tets';
