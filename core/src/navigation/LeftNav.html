@@ -221,6 +221,9 @@
 
 <style type="text/scss">
   $topNavHeight: 48px;
+  $footerHeight: calc(0.85714rem + (2 * 13px) + 3px);
+  /* text height + top and bottom padding + 3px to remove scrollbar */
+
   a {
     cursor: pointer;
     outline-offset: -1px;
@@ -243,50 +246,46 @@
     -webkit-box-shadow: 1px 1px 2px 0 rgba(0, 0, 0, 0.05);
     box-shadow: 1px 1px 2px 0 rgba(0, 0, 0, 0.05);
   }
-  $footerHeight: calc(0.85714rem + (2 * 16px));
-  /* text height + top and bottom padding */
 
   .fd-side-nav {
     min-height: 100%;
     margin-bottom: calc(-1 * #{$footerHeight});
-  }
 
-  .fd-side-nav::after {
-    content: '';
-    display: block;
-  }
+    &::after {
+      content: '';
+      display: block;
+      height: $footerHeight;
+    }
 
-  .lui-sideNavFooter,
-  .fd-side-nav:after {
-    height: $footerHeight;
+    &__link {
+      .sap-icon--action {
+        //external-link icon
+        margin-left: 0.3em;
+        vertical-align: middle;
+      }
+      .fd-side-nav__icon {
+        width: 2em;
+      }
+    }
+
+    &__sublink {
+      &.fd-side-nav__link--icon {
+        padding-left: 16px;
+      }
+      .fd-side-nav__icon {
+        width: 2em;
+      }
+    }
   }
 
   .lui-sideNavFooter {
     display: inline-block;
     width: 100%;
     color: var(--fd-color-text-4);
-
-    padding: 16px 22px;
+    /* height: $footerHeight; */
+    padding: 13px 22px;
   }
 
-  .fd-side-nav__link {
-    .sap-icon--action {
-      //external-link icon
-      margin-left: 0.3em;
-      vertical-align: middle;
-    }
-    .fd-side-nav__icon {
-      width: 2em;
-    }
-  }
-  .fd-side-nav__sublink {
-    &.fd-side-nav__link--icon {
-      padding-left: 16px;
-    }
-    .fd-side-nav__icon {
-      width: 2em;
-    }
-  }
   .hideNavComponent {
     display: none;
   }
