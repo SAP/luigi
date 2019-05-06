@@ -160,22 +160,28 @@
         class="fd-shellbar__action fd-shellbar__action--show-always"
         data-e2e="luigi-topnav-profile"
       >
-        <div class="fd-popover">
-          <div class="fd-popover__control" on:click="event.stopPropagation()">
-            <button
-              class="fd-button--shell sap-icon--customer"
-              aria-expanded="{dropDownStates.profilePopover || false}"
-              aria-haspopup="true"
-              on:click="toggleDropdownState('profilePopover')"
-            ></button>
-            <div
-              class="fd-popover__body fd-popover__body--right"
-              aria-hidden="{!(dropDownStates.profilePopover || false)}"
-              id="profilePopover"
-            >
-              <Authorization
-                on:toggleDropdownState="toggleDropdownState('profilePopover')"
-              />
+        <div class="fd-user-menu">
+          <div class="fd-popover">
+            <div class="fd-popover__control" on:click="event.stopPropagation()">
+              <div class="{userInfo.picture ? 'fd-user-menu__control' : '' }">
+                <button
+                  class="fd-button--shell {!userInfo.picture?'sap-icon--customer':'fd-identifier fd-identifier--xs fd-identifier--circle'}"
+                  style="{userInfo.picture?`background-image: url('${userInfo.picture}');background-size:30px;background-repeat: no-repeat;background-position: center;`:''}"
+                  aria-expanded="{dropDownStates.profilePopover || false}"
+                  aria-haspopup="true"
+                  on:click="toggleDropdownState('profilePopover')"
+                ></button>
+              </div>
+              <div
+                class="fd-popover__body fd-popover__body--right"
+                aria-hidden="{!(dropDownStates.profilePopover || false)}"
+                id="profilePopover"
+              >
+                <Authorization
+                  on:toggleDropdownState="toggleDropdownState('profilePopover')"
+                  on:userInfoUpdated="userInfoUpdate(event)"
+                />
+              </div>
             </div>
           </div>
         </div>
@@ -187,6 +193,7 @@
 {:else}
 <Authorization
   on:toggleDropdownState="toggleDropdownState('profilePopover')"
+  on:userInfoUpdated="userInfoUpdate(event)"
   isHidden="{true}"
 />
 {/if}
@@ -259,7 +266,8 @@
     data() {
       return {
         dropDownStates: {},
-        isLoggedIn: false
+        isLoggedIn: false,
+        userInfo: {}
       };
     },
     computed: {
@@ -306,6 +314,9 @@
       },
       burgerClicked() {
         document.body.classList.toggle('lui-leftNavToggle');
+      },
+      userInfoUpdate(userInfo) {
+        this.set(userInfo ? { userInfo } : { userInfo: {} });
       }
     },
     components: {
