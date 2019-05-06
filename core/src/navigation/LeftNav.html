@@ -139,12 +139,10 @@
     {/if} {/each}
   </nav>
   {/if}
-  {#if isFooterVisible(footerText)}
-  <div class="lui-sideNavFooter fd-has-padding-small fd-has-type-minus-1">
-    {#if footerText}
-    <span>{footerText}</span>
-    {/if}
-  </div>
+  {#if footerText}
+  <span
+    class="lui-sideNavFooter fd-has-type-minus-1"
+  >{footerText}</span>
   {/if}
 </div>
 
@@ -245,6 +243,32 @@
     -webkit-box-shadow: 1px 1px 2px 0 rgba(0, 0, 0, 0.05);
     box-shadow: 1px 1px 2px 0 rgba(0, 0, 0, 0.05);
   }
+  $footerHeight: calc(0.85714rem + (2 * 16px));
+  /* text height + top and bottom padding */
+
+  .fd-side-nav {
+    min-height: 100%;
+    margin-bottom: calc(-1 * #{$footerHeight});
+  }
+
+  .fd-side-nav::after {
+    content: '';
+    display: block;
+  }
+
+  .lui-sideNavFooter,
+  .fd-side-nav:after {
+    height: $footerHeight;
+  }
+
+  .lui-sideNavFooter {
+    display: inline-block;
+    width: 100%;
+    color: var(--fd-color-text-4);
+
+    padding: 16px 22px;
+  }
+
   .fd-side-nav__link {
     .sap-icon--action {
       //external-link icon
@@ -304,13 +328,5 @@
     &.sap-icon--m::before {
       width: 1.25rem;
     }
-  }
-
-  .lui-sideNavFooter {
-    position: sticky;
-    bottom: 0;
-    left: 0;
-    color: var(--fd-color-text-4);
-    background-color: var(--fd-color-background-2);
   }
 </style>
