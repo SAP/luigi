@@ -33,6 +33,12 @@ describe('Iframe-helpers', () => {
       }
     };
 
+    it('getLocation', () => {
+      const url = 'http://.luigi.url.com';
+      const iframeOrigin = IframeHelpers.getLocation(url);
+      assert.equal(iframeOrigin, url);
+    });
+
     it('should return true if views have the same domain and different hash', () => {
       component.set({
         viewUrl: 'http://url.com/app.html!#/someUrl',
