@@ -2,7 +2,6 @@ const chai = require('chai');
 const assert = chai.assert;
 const sinon = require('sinon');
 const routing = require('../../src/services/routing');
-const MockBrowser = require('mock-browser').mocks.MockBrowser;
 const GenericHelpers = require('../../src/utilities/helpers/generic-helpers');
 import { afterEach } from 'mocha';
 import { LuigiConfig } from '../../src/core-api';
@@ -145,14 +144,9 @@ describe('Routing', () => {
     };
     let currentLuigiConfig = {};
     let config;
-    const mockBrowser = new MockBrowser();
-    const window = mockBrowser.getWindow();
-    const document = mockBrowser.getDocument();
 
     beforeEach(() => {
       window.Luigi = { config: currentLuigiConfig };
-      global.window = window;
-      global.document = document;
       currentLuigiConfig = Object.assign({}, sampleLuigiConfig);
       LuigiConfig.config = currentLuigiConfig;
       config = {
@@ -533,6 +527,28 @@ describe('Routing', () => {
 
       // then
       assert.equal(window.location.hash, expectedRoute);
+    });
+  });
+
+  describe('navigateToExternalLink()', () => {
+    it('open external link in same tab', () => {
+      const externalLink = { url: 'http://localhost', sameWindow: true };
+      sinon.stub(window, 'focus');
+      sinon.stub(window, 'open').returns(window);
+      routing.navigateToExternalLink(externalLink);
+      sinon.assert.calledOnce(window.open);
+      sinon.assert.calledWithExactly(window.open, 'http://localhost', '_self');
+      sinon.assert.calledOnce(window.focus);
+    });
+
+    it('open external link in new tab', () => {
+      const externalLink = { url: 'http://localhost', sameWindow: false };
+      sinon.stub(window, 'focus');
+      sinon.stub(window, 'open').returns(window);
+      routing.navigateToExternalLink(externalLink);
+      sinon.assert.calledOnce(window.open);
+      sinon.assert.calledWithExactly(window.open, 'http://localhost', '_blank');
+      sinon.assert.calledOnce(window.focus);
     });
   });
 });

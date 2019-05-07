@@ -1,6 +1,7 @@
 //TODO: make some tests here
 const chai = require('chai');
 const assert = chai.assert;
+const sinon = require('sinon');
 import * as NavigationHelpers from '../../../src/utilities/helpers/navigation-helpers';
 
 describe('Navigation-helpers', () => {
@@ -27,5 +28,15 @@ describe('Navigation-helpers', () => {
         false
       );
     });
+  });
+
+  it('getNodePath', () => {
+    const node = {
+      parent: {
+        pathSegment: 'parent'
+      },
+      pathSegment: 'pathSegment'
+    };
+    console.log('tests ', NavigationHelpers.getNodePath(node));
   });
 });

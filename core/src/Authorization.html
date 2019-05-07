@@ -1,31 +1,76 @@
 
 {#if !isHidden}
-<ul class="fd-menu__list">
-  {#if isLoggedIn}
-  {#if showUserInfo}
-  <li>
-    <a
-      aria-label="Username"
-      class="fd-menu__item"
-    >{userInfo.name ? userInfo.name : userInfo.email}</a>
-  </li>
-  {/if}
-  <li on:click="onLogoutClick()">
-    <a aria-label="Logout" class="fd-menu__item">Logout</a>
-  </li>
-  {:else}
-  <li on:click="startAuthorization()">
-    <a aria-label="Login" class="fd-menu__item">Login</a>
-  </li>
-  {/if}
-</ul>
+<nav class="fd-menu">
+  <ul class="fd-menu__list">
+    {#if isLoggedIn}
+    {#if showUserInfo}
+    <li>
+      <span
+        aria-label="Username"
+        id="username"
+        class="fd-has-type-2"
+        data-e2e="luigi-topnav-profile-username"
+      >{userInfo.name ? userInfo.name : userInfo.email}</span>
+    </li>
+    {/if}
+    {#each profileNav.items as profileItem}
+    <li on:click="onActionClick(profileItem)">
+      <a class="fd-menu__item" data-e2e="luigi-topnav-profile-item">
+        {#if profileItem.icon}
+        {#if hasOpenUIicon(profileItem)}
+        <span
+          class="fd-top-nav__icon sap-icon--{profileItem.icon} sap-icon--m"
+        ></span>
+        {:else}
+        <img
+          class="fd-top-nav__icon nav-icon"
+          src="{profileItem.icon}"
+        >
+        {/if}
+        {/if}
+        <span>{profileItem.label}</span>
+        {#if profileItem.externalLink && profileItem.externalLink.url}
+        <span
+          class="sap-icon--action sap-icon--s"
+        ></span>
+        {/if}
+      </a>
+    </li>
+    {/each}
+    <li on:click="onLogoutClick()">
+      <a aria-label="Logout" class="fd-menu__item">
+        {#if profileNav.logout.icon}
+        {#if hasOpenUIicon(profileNav.logout)}
+        <span
+          class="fd-top-nav__icon sap-icon--{profileNav.logout.icon} sap-icon--m"
+        ></span>
+        {:else}
+        <img
+          class="fd-top-nav__icon nav-icon"
+          src="{profileNav.logout.icon}"
+        >
+        {/if}
+        {/if}
+        <span>{profileNav.logout.label}</span>
+      </a>
+    </li>
+    {:else}
+    <li on:click="startAuthorization()">
+      <a aria-label="Login" class="fd-menu__item">Login</a>
+    </li>
+    {/if}
+  </ul>
+</nav>
 {/if}
 <script type="text/javascript">
   import { LuigiAuth, LuigiConfig } from './core-api';
   import * as GenericHelpers from './utilities/helpers/generic-helpers.js';
+  import * as Routing from './services/routing';
   import * as AuthHelpers from './utilities/helpers/auth-helpers';
   import { oAuth2ImplicitGrant } from './providers/auth/oAuth2ImplicitGrant.js';
   import { openIdConnect } from './providers/auth/openIdConnect.js';
+  import { TOP_NAV_DEFAULTS } from './utilities/luigi-config-defaults';
+  import * as NavigationHelpers from './utilities/helpers/navigation-helpers';
 
   let idpProviderInstance;
 
@@ -78,7 +123,8 @@
   export default {
     data() {
       return {
-        isHidden: false
+        isHidden: false,
+        profileNav: { logout: {}, items: [] }
       };
     },
     async oncreate() {
@@ -117,11 +163,15 @@
           return;
         }
 
+        this.setProfileNavData();
+
         if (
           GenericHelpers.isFunction(idpProviderInstance.settings.userInfoFn)
         ) {
           idpProviderInstance.settings.userInfoFn().then(res => {
-            this.set({ isLoggedIn: true, userInfo: res });
+            const userInfo = res;
+            this.set({ isLoggedIn: true, userInfo });
+            this.fire('userInfoUpdated', userInfo);
           });
         } else {
           if (GenericHelpers.isFunction(idpProviderInstance.userInfo)) {
@@ -185,7 +235,24 @@
       }
       checkAuth(idpProviderSettings);
     },
+    helpers: {
+      hasOpenUIicon(node) {
+        return NavigationHelpers.isOpenUIiconName(node.icon);
+      }
+    },
     methods: {
+      setProfileNavData: function() {
+        const configProfileNav =
+          LuigiConfig.getConfigValue('navigation.profile') || {};
+        const profileNavData = {
+          logout: {
+            ...TOP_NAV_DEFAULTS.logout,
+            ...configProfileNav.logout
+          },
+          items: configProfileNav.items || []
+        };
+        this.set({ profileNav: profileNavData });
+      },
       startAuthorization: function() {
         idpProviderInstance.login().then(res => {
           localStorage.setItem('luigi.newlyAuthorized', true);
@@ -193,6 +260,12 @@
             alert(res);
           }
         });
+      },
+      onActionClick(item) {
+        this.root.getUnsavedChangesModalPromise().then(() => {
+          Routing.navigateToLink(item);
+        });
+        this.fire('toggleDropdownState');
       },
       onLogoutClick: function() {
         this.root.getUnsavedChangesModalPromise().then(() => {
@@ -230,14 +303,25 @@
       }
     },
     computed: {
-      showUserInfo: ({ userInfo }) => {
-        if (userInfo !== undefined) {
-          if (userInfo.name || userInfo.email) {
-            return true;
-          }
-        }
-      }
+      showUserInfo: ({ userInfo }) =>
+        Boolean(userInfo && (userInfo.name || userInfo.email))
     },
     components: {}
   };
 </script>
+
+<style type="text/scss">
+  .fd-top-nav__icon {
+    display: inline-block;
+    vertical-align: middle;
+    margin-right: 5px;
+  }
+  .nav-icon {
+    height: 2em;
+  }
+  #username {
+    display: block;
+    padding: 10px 24px;
+    cursor: default;
+  }
+</style>

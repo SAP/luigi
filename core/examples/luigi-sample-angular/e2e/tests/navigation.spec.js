@@ -69,12 +69,14 @@ describe('Navigation', () => {
   describe('features', () => {
     it('keepSelectedForChildren', () => {
       // keep selected for children example
+      Cypress.currentTest.retries(3);
       cy.get('.fd-shellbar')
         .contains('Overview')
         .click();
 
+      cy.wait(500);
       // dig into the iframe
-      cy.wait(150);
+
       cy.get('iframe').then(function($element) {
         let iframeBody, cyIframe;
         // this gets the body of your iframe
@@ -82,23 +84,27 @@ describe('Navigation', () => {
         // wrap this body with cy so as to do cy actions inside iframe elements
         cyIframe = cy.wrap(iframeBody);
         //now you can forget about that you are in iframe. you can do necessary actions finding the elements inside the iframe
-        // {cyElement is the cypress object here}
         cyIframe
-          .find('.fd-list-group__item strong')
+          .find('.fd-list-group__item')
           .contains('keepSelectedForChildren')
           .click();
+        cy.wait(500);
+      });
 
-        // on route change we need to refresh the contents() reference
-        cy.wait(50);
-        iframeBody = $element.contents().find('body');
+      cy.expectPathToBe('/projects/pr1/avengers');
+
+      //the iframe is has been replaced with another one, we need to "get" it again
+      cy.get('iframe').then(function($element) {
+        const iframeBody = $element.contents().find('body');
         // wrap this body with cy so as to do cy actions inside iframe elements
-        cyIframe = cy.wrap(iframeBody);
+        const cyIframe = cy.wrap(iframeBody);
+
         cyIframe
           .find('.fd-list-group__item')
           .contains('Thor')
           .click();
+        cy.wait(500);
       });
-
       cy.expectPathToBe('/projects/pr1/avengers/thor');
 
       cy.get('.fd-app__sidebar').should('contain', 'Keep Selected Example');
@@ -110,7 +116,7 @@ describe('Navigation', () => {
           .contains('Overview')
           .click();
 
-        cy.wait(150);
+        cy.wait(500);
         cy.get('iframe').then(function($element) {
           let iframeBody, cyIframe;
           // this gets the body of your iframe

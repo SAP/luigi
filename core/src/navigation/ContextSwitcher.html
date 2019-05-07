@@ -9,7 +9,7 @@
           aria-expanded="{dropDownStates.contextSwitcherPopover || false}"
           aria-haspopup="true"
           title="{selectedLabel ? selectedLabel : ''}"
-          on:click="toggleDropdownState('contextSwitcherPopover')"
+          on:click="toggleDropdownState()"
         >
           {#if !selectedLabel}{config.defaultLabel}{/if} {#if
           selectedLabel}{selectedLabel}{/if}
@@ -64,7 +64,6 @@
     </div>
   </div>
 </div>
-
 {/if}
 <script type="text/javascript">
   import { ContextSwitcherHelpers } from './services/context-switcher.js';
@@ -185,10 +184,10 @@
           Routing.navigateTo(path);
         });
       },
-      toggleDropdownState(name) {
-        this.fire('toggleDropdownState', { name });
+      toggleDropdownState() {
+        this.fire('toggleDropdownState');
         const dropDownStates = this.get().dropDownStates || {};
-        const isOpened = JSON.parse(dropDownStates[name]);
+        const isOpened = JSON.parse(dropDownStates['contextSwitcherPopover']);
         if (isOpened) {
           this.fetchOptions();
         }

@@ -8,6 +8,7 @@ describe('Luigi client features', () => {
   });
 
   it('linkManager features', () => {
+    Cypress.currentTest.retries(2);
     cy.get('iframe').then($iframe => {
       const $iframeBody = $iframe.contents().find('body');
       cy.goToLinkManagerMethods($iframeBody);
