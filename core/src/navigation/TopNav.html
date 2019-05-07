@@ -279,7 +279,7 @@
   import LogoTitle from './LogoTitle.html';
   import Authorization from '../Authorization.html';
   import ProductSwitcher from './ProductSwitcher.html';
-  import { LuigiConfig } from '../core-api';
+  import { LuigiAuth, LuigiConfig } from '../core-api';
   import * as Routing from '../services/routing';
   import * as Navigation from './services/navigation.js';
   import * as NavigationHelpers from '../utilities/helpers/navigation-helpers';
@@ -319,7 +319,7 @@
   export default {
     oncreate() {
       this.set({
-        authorizationEnabled: LuigiConfig.isAuthorizationEnabled(),
+        authorizationEnabled: LuigiAuth.isAuthorizationEnabled(),
         autologinEnabled: !Boolean(
           LuigiConfig.getConfigValue('auth.disableAutoLogin')
         ),

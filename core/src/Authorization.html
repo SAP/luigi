@@ -128,7 +128,7 @@
       };
     },
     async oncreate() {
-      if (!LuigiConfig.isAuthorizationEnabled()) {
+      if (!LuigiAuth.isAuthorizationEnabled()) {
         return;
       }
 
