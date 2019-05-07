@@ -122,12 +122,12 @@ When Luigi fails to renew the token and then logs out the user, it adds the foll
 
 The application developer can read these parameters and set a logout page based on them.
 
-### Custom Auth Provider
+### Implement a Custom Authentication Provider
 
-You can write your own Auth Provider that meets your requirements. 
+You can write your own authentication provider that meets your requirements. 
 
 [oAuth2ImplicitGrant.js](src/providers/oAuth2ImplicitGrant.js) is a good starting point if you don't use an external authentication library.
-After authorization happens on the auth provider's side, it redirects to `callback.html`, which sets the auth data to **localStorage** for Luigi and redirects to the main page. 
+After authorization is successful on the auth provider's side it redirects back to `Luigi callback.html` **redirect_uri**. The auth provider verifies the authentication data, saves it in  **localStorage** for Luigi, and redirects to the Luigi main page. 
 
 [openIdConnect.js](src/providers/openIdConnect.js) lazy loads the official `oidc-client` library and is a good starting point if you also depend on external authentication libraries.
 
