@@ -151,7 +151,9 @@
           GenericHelpers.isFunction(idpProviderInstance.settings.userInfoFn)
         ) {
           idpProviderInstance.settings.userInfoFn().then(res => {
-            this.set({ isLoggedIn: true, userInfo: res });
+            const userInfo = res;
+            this.set({ isLoggedIn: true, userInfo });
+            this.fire('userInfoUpdated', userInfo);
           });
         } else {
           if (GenericHelpers.isFunction(idpProviderInstance.userInfo)) {
@@ -265,14 +267,10 @@
       }
     },
     computed: {
-      showUserInfo: ({ userInfo }) => {
-        if (userInfo !== undefined) {
-          if (userInfo.name || userInfo.email) {
-            return true;
-          }
-        }
-      }
-    }
+      showUserInfo: ({ userInfo }) =>
+        Boolean(userInfo && (userInfo.name || userInfo.email))
+    },
+    components: {}
   };
 </script>
 
