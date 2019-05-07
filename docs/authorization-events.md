@@ -19,6 +19,8 @@ auth: {
 The first parameter is always the current **settings** object of the currently active authorization provider.  This object contains the user provider configuration with the default values.
 The second parameter is optional and it is either **authData** or **error**.
 
+You can disable the default behavior by making the function return `false`. As a result, the lifecycle execution stops with this function. This, however, may lead to blank pages after the user logs out since typically the page redirects to a logout, login or home page.
+
 ## Events
 
 -   `onAuthSuccessful` **[function](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Statements/function)** is executed after logging in with the **authData** object parameter. If valid authorization data was found in the local storage, the function is not executed.
@@ -29,5 +31,3 @@ The second parameter is optional and it is either **authData** or **error**.
     Return `false` to prevent redirecting to `logoutUrl` after executing this function.
 -   `onAuthExpired` **[function](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Statements/function)** is executed if the token expires during runtime, or if Luigi is opened with outdated authorization data in the local storage. Return `false` to prevent redirecting to `logoutUrl` after executing this function.
 -   `onLogout` **[function](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Statements/function)** is executed after the user logs out. Return `false` to prevent redirecting to `logoutUrl` after executing this function.
-
-You can disable the default behavior by making the function return `false`. As a result, the lifecycle execution stops with this function. This, however, may lead to blank pages after the user logs out since typically the page redirects to a logout, login or home page.
