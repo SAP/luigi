@@ -141,7 +141,7 @@
   {/if}
   {#if footerText}
   <span
-    class="lui-sideNavFooter fd-has-type-minus-1"
+    class="lui-side-nav__footer fd-has-type-minus-1"
   >{footerText}</span>
   {/if}
 </div>
@@ -221,7 +221,10 @@
 
 <style type="text/scss">
   $topNavHeight: 48px;
-  $footerHeight: calc(0.85714rem + (2 * 13px) + 3px);
+
+  $footerPaddingVertical: 13px;
+  $footerHeight: calc(0.85714rem + (2 * #{$footerPaddingVertical}) + 3px);
+
   /* text height + top and bottom padding + 3px to remove scrollbar */
 
   a {
@@ -278,12 +281,10 @@
     }
   }
 
-  .lui-sideNavFooter {
-    display: inline-block;
-    width: 100%;
+  .lui-side-nav__footer {
+    display: block;
     color: var(--fd-color-text-4);
-    /* height: $footerHeight; */
-    padding: 13px 22px;
+    padding: $footerPaddingVertical 20px;
   }
 
   .hideNavComponent {
