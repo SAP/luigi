@@ -3,7 +3,7 @@
 import { config } from './config';
 
 class LuigiAuthManager {
-  constructor() { }
+  constructor() {}
 
   /*
    * Detects if authorization is enabled via configuration.
@@ -17,8 +17,18 @@ class LuigiAuthManager {
     return !!idpProviderSettings;
   }
 
-  async handleAuthEvent(eventName, providerInstanceSettings, data, redirectUrl) {
-    const result = await config.executeConfigFnAsync('auth.events.' + eventName, providerInstanceSettings, data);
+  async handleAuthEvent(
+    eventName,
+    providerInstanceSettings,
+    data,
+    redirectUrl
+  ) {
+    const result = await config.executeConfigFnAsync(
+      'auth.events.' + eventName,
+      false,
+      providerInstanceSettings,
+      data
+    );
     let redirect = result === undefined || !!result;
     if (redirect && redirectUrl) {
       window.location.href = redirectUrl;
