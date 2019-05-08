@@ -62,7 +62,8 @@ export const projectDetailNavStructure = projectId => [
     pathSegment: 'developers',
     label: 'Developers',
     viewUrl: '/sampleapp.html#/projects/' + projectId + '/developers',
-    icon: '/assets/favicon-sap.ico'
+    icon: '/assets/favicon-sap.ico',
+    viewGroup: 'tets'
   },
   {
     category: { label: 'Settings', icon: 'action-settings' },

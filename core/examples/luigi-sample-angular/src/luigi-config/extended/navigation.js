@@ -200,6 +200,13 @@ class Navigation {
       }
     ]
   };
+
+  viewGroupSettings = {
+    tets: {
+      cache: true,
+      cachebreakingUrl: ''
+    }
+  };
 }
 
 export const navigation = new Navigation(
