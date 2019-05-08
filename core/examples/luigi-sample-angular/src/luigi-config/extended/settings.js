@@ -1,3 +1,5 @@
+import { version } from '../../../node_modules/@kyma-project/luigi-client/package.json';
+
 class Settings {
   header = {
     logo:
@@ -8,7 +10,7 @@ class Settings {
   };
 
   responsiveNavigation = 'simpleMobileOnly'; // "simple"
-  sideNavFooterText = 'Version 1.2.3';
+  sideNavFooterText = `Luigi Client: ${version || 'unknown'}`;
   // hideNavigation = true
   // backdropDisabled = true
 }
