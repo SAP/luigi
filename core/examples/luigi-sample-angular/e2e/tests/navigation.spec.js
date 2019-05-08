@@ -59,7 +59,7 @@ describe('Navigation', () => {
       .contains('Projects')
       .click();
 
-    cy.get('.fd-app__sidebar .lui-sideNavFooter')
+    cy.get('.fd-app__sidebar .lui-side-nav__footer')
       .contains('Version 1.2.3')
       .should('be.visible');
   });
