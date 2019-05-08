@@ -7,8 +7,17 @@ import { LuigiConfig } from '../../src/services/config';
 
 describe('Iframe', () => {
   let node;
+  let component;
 
   beforeEach(() => {
+    let lastObj = {};
+    component = {
+      set: obj => {
+        Object.assign(lastObj, obj);
+      },
+      get: () => lastObj,
+      prepareInternalData: () => {}
+    };
     sinon.stub(LuigiConfig, 'getConfigValue');
 
     node = {
@@ -17,7 +26,8 @@ describe('Iframe', () => {
           style: {
             display: null
           },
-          id: 1
+          id: 1,
+          vg: 'tets1'
         },
         {
           style: {
@@ -34,7 +44,7 @@ describe('Iframe', () => {
         },
         {
           style: {
-            display: 'none'
+            display: null
           },
           id: 4
         },
@@ -42,8 +52,7 @@ describe('Iframe', () => {
           style: {
             display: 'none'
           },
-          vg: 'tets',
-          id: 4
+          id: 5
         }
       ],
       removeChild: child => {
@@ -52,6 +61,12 @@ describe('Iframe', () => {
             node.children.splice(i, 1);
           }
         });
+      },
+      firstChild: () => {
+        node.children[0];
+      },
+      insertBefore: (iframe, child) => {
+        node.children.unshift(iframe);
       }
     };
   });
@@ -90,7 +105,69 @@ describe('Iframe', () => {
   it('removeInactiveIframes', () => {
     node.removeChild = sinon.spy();
     Iframe.removeInactiveIframes(node);
-
     assert.equal(node.removeChild.callCount, 1);
+  });
+
+  describe('create new iframe with different viewgroup and dont delete the previous one (cache)', () => {
+    it('navigate', () => {
+      sinon.stub(document, 'querySelectorAll').callsFake(() => [
+        {
+          src: 'http://url.com/app.html!#/prevUrl',
+          style: { display: 'block' },
+          vg: 'tets1'
+        }
+      ]);
+      const config = {
+        iframe: {
+          src: 'http://luigi.url.de',
+          vg: 'tets2'
+        }
+      };
+      component.set({
+        viewUrl: 'http://luigi.url.de/1',
+        viewGroup: 'tets2',
+        previousNodeValues: {
+          viewUrl: 'http://luigi.url.desdf/1'
+        }
+      });
+
+      Iframe.navigateIframe(config, component, node);
+      assert.equal(node.children.length, 2);
+    });
+  });
+
+  describe('use cached iframe with same viewgroup and change viewUrl', () => {
+    it('navigate', () => {
+      sinon.stub(document, 'querySelectorAll').callsFake(() => [
+        {
+          src: 'http://luigi.url.de',
+          vg: 'tets1',
+          luigi: {
+            nextViewUrl: 'http://luigi.url.de/2'
+          },
+          style: { display: 'block' }
+        }
+      ]);
+      const config = {
+        iframe: {
+          src: 'http://luigi.url.de',
+          vg: 'tets1',
+          luigi: {
+            nextViewUrl: 'http://luigi.url.de/2'
+          }
+        },
+        navigateOk: true
+      };
+      component.set({
+        viewUrl: 'http://luigi.url.de/1',
+        viewGroup: 'tets1',
+        previousNodeValues: {
+          viewUrl: 'http://luigi.url.de/previous'
+        }
+      });
+      assert.equal(config.iframe.luigi.nextViewUrl, 'http://luigi.url.de/2');
+      Iframe.navigateIframe(config, component, node);
+      assert.equal(config.iframe.luigi.nextViewUrl, 'http://luigi.url.de/1');
+    });
   });
 });
