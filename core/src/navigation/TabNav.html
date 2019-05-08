@@ -3,7 +3,7 @@
 <nav class="fd-tabs {hideNavComponent ? 'hideNavComponent' : ''}" role="tablist"
     on:toggleDropdownState="toggleDropdownState(event.name)">
 	{#each Object.entries(children) as [key, nodes]}
-    {#if key === 'undefined'}
+    {#if key === 'undefined' || key.indexOf(virtualGroupPrefix) === 0}
       {#each nodes as node}
         {#if !node.hideFromNav}
           {#if node.label}
@@ -76,7 +76,8 @@
     },
     data() {
       return {
-        dropDownStates: {}
+        dropDownStates: {},
+        virtualGroupPrefix: NavigationHelpers.virtualGroupPrefix
       };
     },
     helpers: {
@@ -128,5 +129,9 @@
   .fd-tabs {
     flex-wrap: nowrap;
     white-space: nowrap;
+    -moz-box-shadow: 1px 1px 2px 0 rgba(0, 0, 0, 0.05);
+    -webkit-box-shadow: 1px 1px 2px 0 rgba(0, 0, 0, 0.05);
+    box-shadow: 1px 1px 2px 0 rgba(0, 0, 0, 0.05);
+    border: none;
   }
 </style>
