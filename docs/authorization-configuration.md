@@ -131,7 +131,7 @@ After authorization is successful on the auth provider's side it redirects back 
 
 [openIdConnect.js](src/providers/openIdConnect.js) lazy loads the official `oidc-client` library and is a good starting point if you also depend on external authentication libraries.
 
-Make sure to set the following data in your Auth Provider implementation after authentication.
+Make sure to set the following data in your Authentication Provider implementation, so that it is used after successful authentication.
 ```
 const data = {
   accessToken: hashParams['access_token'],
