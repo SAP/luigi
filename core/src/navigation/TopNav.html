@@ -32,7 +32,8 @@
           aria-haspopup="true"
           on:click="handleClick(node)"
         >
-          {#if node.icon} {#if hasOpenUIicon(node)}
+          {#if node.icon}
+          {#if hasOpenUIicon(node)}
           <span
             class="fd-top-nav__icon sap-icon--{node.icon} sap-icon--m"
           ></span>
@@ -42,18 +43,22 @@
             src="{node.icon}"
           >
           {/if}
+          <!-- end hasOpenUIicon-->
           {:else}
           <span>{node.label}</span>
           {/if}
+          <!-- end node.icon -->
           {#if node.externalLink && node.externalLink.url}
           <span
             class="sap-icon--action sap-icon--s"
           ></span>
           {/if}
+          <!-- end node.externallLink.url -->
         </button>
       </div>
       {/if}
       {/each}
+      <!-- end children as node -->
       {#if isProductSwitcherAvailable}
       <ProductSwitcher
         bind:dropDownStates
@@ -61,6 +66,7 @@
         isMobile="{false}"
       />
       {/if}
+      <!-- end isProductSwitcherAvailable -->
       <!-- Sample Markup for Notifications
               <div class="fd-shellbar__action fd-shellbar__action--collapsible">
                 <button class=" fd-button--shell sap-icon--bell" aria-label="Notifications">
@@ -153,7 +159,7 @@
         </div>
       </div>
       {/if}
-      <!-- closes {#if children && pathData.length > 0} -->
+      <!-- end visibleNodeCount > 0 -->
       {#if authorizationEnabled}
       <div
         class="fd-shellbar__action fd-shellbar__action--show-always"
@@ -240,29 +246,6 @@
         </div>
       </div>
       {/if}
-      {/if}
-      {#if authorizationEnabled}
-      <div class="fd-shellbar__action fd-shellbar__action--show-always">
-        <div class="fd-popover">
-          <div class="fd-popover__control" on:click="event.stopPropagation()">
-            <button
-              class="fd-button--shell sap-icon--customer"
-              aria-expanded="{dropDownStates.profilePopover || false}"
-              aria-haspopup="true"
-              on:click="toggleDropdownState('profilePopover')"
-            ></button>
-            <div
-              class="fd-popover__body fd-popover__body--right"
-              aria-hidden="{!(dropDownStates.profilePopover || false)}"
-              id="profilePopover"
-            >
-              <nav class="fd-menu">
-                <Authorization/>
-              </nav>
-            </div>
-          </div>
-        </div>
-      </div>
       {/if}
     </div>
   </div>
