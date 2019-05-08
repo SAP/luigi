@@ -60,7 +60,7 @@ export class OverviewComponent {
   ];
 
   public isDirty = false;
-  public sendDirtyEvent = () => {
+  public sendDirtyEvent() {
     uxManager().setDirtyStatus(this.isDirty);
-  };
+  }
 }

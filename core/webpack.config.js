@@ -39,7 +39,7 @@ module.exports = {
       './node_modules/fiori-fundamentals/dist/components/global-nav.min.css',
       './node_modules/fiori-fundamentals/dist/components/side-nav.min.css',
       // './node_modules/fiori-fundamentals/dist/components/link.min.css',
-      // './node_modules/fiori-fundamentals/dist/components/identifier.min.css',
+      './node_modules/fiori-fundamentals/dist/components/identifier.min.css',
       // './node_modules/fiori-fundamentals/dist/components/mega-menu.min.css',
       './node_modules/fiori-fundamentals/dist/components/menu.min.css',
       // './node_modules/fiori-fundamentals/dist/components/button-group.min.css',
@@ -61,7 +61,7 @@ module.exports = {
       // './node_modules/fiori-fundamentals/dist/components/multi-input.min.css',
       './node_modules/fiori-fundamentals/dist/components/product-switcher.min.css',
       './node_modules/fiori-fundamentals/dist/components/shellbar.min.css',
-      // './node_modules/fiori-fundamentals/dist/components/user-menu.min.css',
+      './node_modules/fiori-fundamentals/dist/components/user-menu.min.css',
       './node_modules/fiori-fundamentals/dist/components/product-menu.min.css',
       './node_modules/fiori-fundamentals/dist/components/counter.min.css',
 

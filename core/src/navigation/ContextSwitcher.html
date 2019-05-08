@@ -1,3 +1,4 @@
+
 {#if contextSwitcherEnabled}
 <div class="fd-shellbar__action fd-shellbar__action--show-always">
   <div class="fd-product-menu">
@@ -8,7 +9,7 @@
           aria-expanded="{dropDownStates.contextSwitcherPopover || false}"
           aria-haspopup="true"
           title="{selectedLabel ? selectedLabel : ''}"
-          on:click="toggleDropdownState('contextSwitcherPopover')"
+          on:click="toggleDropdownState()"
         >
           {#if !selectedLabel}{config.defaultLabel}{/if} {#if
           selectedLabel}{selectedLabel}{/if}
@@ -34,7 +35,9 @@
           <ul class="fd-menu__list" id="context_menu_middle">
             {#if options && options.length === 0}
             <li>
-              <div class="fd-spinner"><div></div></div>
+              <div class="fd-spinner">
+                <div></div>
+              </div>
             </li>
             {/if} {#if options && options.length} {#each options as node}
             {#await getNodeName(node.label, config.fallbackLabelResolver,
@@ -43,12 +46,10 @@
               <a
                 class="fd-menu__item {node === selectedLabel ? 'is-selected' : ''}"
                 title="{label}"
-                >{label}</a
-              >
+              >{label}</a>
             </li>
             {/await} {/each} {/if}
           </ul>
-
           {#if actions && actions.length}
           <ul class="fd-menu__list fd-menu__list--bottom">
             {#each actions as node} {#if node.position === 'bottom'}
@@ -64,7 +65,6 @@
   </div>
 </div>
 {/if}
-
 <script type="text/javascript">
   import { ContextSwitcherHelpers } from './services/context-switcher.js';
   import { LuigiConfig } from '../services/config.js';
@@ -184,10 +184,10 @@
           Routing.navigateTo(path);
         });
       },
-      toggleDropdownState(name) {
-        this.fire('toggleDropdownState', { name });
+      toggleDropdownState() {
+        this.fire('toggleDropdownState');
         const dropDownStates = this.get().dropDownStates || {};
-        const isOpened = JSON.parse(dropDownStates[name]);
+        const isOpened = JSON.parse(dropDownStates['contextSwitcherPopover']);
         if (isOpened) {
           this.fetchOptions();
         }

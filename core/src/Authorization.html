@@ -1,24 +1,76 @@
 
 {#if !isHidden}
-<ul class="fd-menu__list">
+<nav class="fd-menu">
+  <ul class="fd-menu__list">
     {#if isLoggedIn}
-      <li on:click=onLogoutClick()>
-        <a aria-label="Logout" class="fd-menu__item">Logout</a>
-      </li>
-    {:else}
-      <li on:click=startAuthorization()>
-        <a aria-label="Login" class="fd-menu__item">Login</a>
-      </li>
+    {#if showUserInfo}
+    <li>
+      <span
+        aria-label="Username"
+        id="username"
+        class="fd-has-type-2"
+        data-e2e="luigi-topnav-profile-username"
+      >{userInfo.name ? userInfo.name : userInfo.email}</span>
+    </li>
     {/if}
-</ul>
+    {#each profileNav.items as profileItem}
+    <li on:click="onActionClick(profileItem)">
+      <a class="fd-menu__item" data-e2e="luigi-topnav-profile-item">
+        {#if profileItem.icon}
+        {#if hasOpenUIicon(profileItem)}
+        <span
+          class="fd-top-nav__icon sap-icon--{profileItem.icon} sap-icon--m"
+        ></span>
+        {:else}
+        <img
+          class="fd-top-nav__icon nav-icon"
+          src="{profileItem.icon}"
+        >
+        {/if}
+        {/if}
+        <span>{profileItem.label}</span>
+        {#if profileItem.externalLink && profileItem.externalLink.url}
+        <span
+          class="sap-icon--action sap-icon--s"
+        ></span>
+        {/if}
+      </a>
+    </li>
+    {/each}
+    <li on:click="onLogoutClick()">
+      <a aria-label="Logout" class="fd-menu__item">
+        {#if profileNav.logout.icon}
+        {#if hasOpenUIicon(profileNav.logout)}
+        <span
+          class="fd-top-nav__icon sap-icon--{profileNav.logout.icon} sap-icon--m"
+        ></span>
+        {:else}
+        <img
+          class="fd-top-nav__icon nav-icon"
+          src="{profileNav.logout.icon}"
+        >
+        {/if}
+        {/if}
+        <span>{profileNav.logout.label}</span>
+      </a>
+    </li>
+    {:else}
+    <li on:click="startAuthorization()">
+      <a aria-label="Login" class="fd-menu__item">Login</a>
+    </li>
+    {/if}
+  </ul>
+</nav>
 {/if}
-
 <script type="text/javascript">
   import { LuigiConfig } from './services/config.js';
   import * as GenericHelpers from './utilities/helpers/generic-helpers.js';
+  import * as Routing from './services/routing';
   import * as AuthHelpers from './utilities/helpers/auth-helpers';
   import { oAuth2ImplicitGrant } from './providers/auth/oAuth2ImplicitGrant.js';
   import { openIdConnect } from './providers/auth/openIdConnect.js';
+  import { TOP_NAV_DEFAULTS } from './utilities/luigi-config-defaults';
+  import * as NavigationHelpers from './utilities/helpers/navigation-helpers';
 
   let idpProviderInstance;
 
@@ -31,13 +83,17 @@
   const newlyAuthorized = () =>
     JSON.parse(localStorage.getItem('luigi.newlyAuthorized'));
   const isAuthValid = () =>
-    AuthHelpers.getStoredAuthData().accessTokenExpirationDate > Number(new Date());
+    AuthHelpers.getStoredAuthData().accessTokenExpirationDate >
+    Number(new Date());
 
   const IdpProviderException = message => {
     return { message, name: 'IdpProviderException' };
   };
 
-  const getIdpProviderInstance = async (idpProviderName, idpProviderSettings) => {
+  const getIdpProviderInstance = async (
+    idpProviderName,
+    idpProviderSettings
+  ) => {
     if (GenericHelpers.isFunction(standardProviders[idpProviderName])) {
       return new standardProviders[idpProviderName](idpProviderSettings);
     }
@@ -66,15 +122,19 @@
 
   export default {
     data() {
-      return{
-        isHidden:false
-      }
+      return {
+        isHidden: false,
+        profileNav: { logout: {}, items: [] }
+      };
     },
     oncreate() {
       if (!LuigiConfig.isAuthorizationEnabled()) {
         return;
       }
-
+      const idpProviderName = LuigiConfig.getConfigValue('auth.use');
+      const idpProviderSettings = LuigiConfig.getConfigValue(
+        `auth.${idpProviderName}`
+      );
       const checkAuth = () => {
         const authData = AuthHelpers.getStoredAuthData();
         if (!authData || !isAuthValid()) {
@@ -85,8 +145,25 @@
           return;
         }
 
-        this.set({ isLoggedIn: true });
+        this.setProfileNavData();
 
+        if (
+          GenericHelpers.isFunction(idpProviderInstance.settings.userInfoFn)
+        ) {
+          idpProviderInstance.settings.userInfoFn().then(res => {
+            const userInfo = res;
+            this.set({ isLoggedIn: true, userInfo });
+            this.fire('userInfoUpdated', userInfo);
+          });
+        } else {
+          if (GenericHelpers.isFunction(idpProviderInstance.userInfo)) {
+            idpProviderInstance.userInfo(idpProviderSettings).then(res => {
+              this.set({ isLoggedIn: true, userInfo: res });
+            });
+          } else {
+            this.set({ isLoggedIn: true });
+          }
+        }
         const onAuthSuccessfulFn = LuigiConfig.getConfigValue(
           'auth.events.onAuthSuccessful'
         );
@@ -95,30 +172,51 @@
           onAuthSuccessfulFn(authData);
         }
 
-        if (GenericHelpers.isFunction(idpProviderInstance.setTokenExpirationAction)) {
+        if (
+          GenericHelpers.isFunction(
+            idpProviderInstance.setTokenExpirationAction
+          )
+        ) {
           idpProviderInstance.setTokenExpirationAction();
         }
       };
 
-      const idpProviderName = LuigiConfig.getConfigValue('auth.use');
-      const idpProviderSettings = LuigiConfig.getConfigValue(
-        `auth.${idpProviderName}`
-      );
       idpProviderInstance = getIdpProviderInstance(
         idpProviderName,
         idpProviderSettings
       );
       if (GenericHelpers.isPromise(idpProviderInstance)) {
-        return idpProviderInstance.then(resolved => {
-          idpProviderInstance = resolved;
-          checkAuth();
-        }).catch((err) => {
-          console.error(`Could not instantate ${idpProviderName} provider : ${err}`)
-        });
+        return idpProviderInstance
+          .then(resolved => {
+            idpProviderInstance = resolved;
+            checkAuth();
+          })
+          .catch(err => {
+            console.error(
+              `Could not instantate ${idpProviderName} provider : ${err}`
+            );
+          });
       }
       checkAuth();
     },
+    helpers: {
+      hasOpenUIicon(node) {
+        return NavigationHelpers.isOpenUIiconName(node.icon);
+      }
+    },
     methods: {
+      setProfileNavData: function() {
+        const configProfileNav =
+          LuigiConfig.getConfigValue('navigation.profile') || {};
+        const profileNavData = {
+          logout: {
+            ...TOP_NAV_DEFAULTS.logout,
+            ...configProfileNav.logout
+          },
+          items: configProfileNav.items || []
+        };
+        this.set({ profileNav: profileNavData });
+      },
       startAuthorization: function() {
         idpProviderInstance.login().then(res => {
           localStorage.setItem('luigi.newlyAuthorized', true);
@@ -127,10 +225,16 @@
           }
         });
       },
+      onActionClick(item) {
+        this.root.getUnsavedChangesModalPromise().then(() => {
+          Routing.navigateToLink(item);
+        });
+        this.fire('toggleDropdownState');
+      },
       onLogoutClick: function() {
-        this.root.getUnsavedChangesModalPromise().then(
-          () => { this.logout() }
-        )
+        this.root.getUnsavedChangesModalPromise().then(() => {
+          this.logout();
+        });
       },
       logout: function() {
         const authData = AuthHelpers.getStoredAuthData();
@@ -149,7 +253,11 @@
           `auth.${LuigiConfig.getConfigValue('auth.use')}.logoutFn`
         );
         if (GenericHelpers.isFunction(customLogoutFn)) {
-          customLogoutFn(idpProviderInstance.settings, authData, logoutCallback);
+          customLogoutFn(
+            idpProviderInstance.settings,
+            authData,
+            logoutCallback
+          );
         } else if (GenericHelpers.isFunction(idpProviderInstance.logout)) {
           idpProviderInstance.logout(authData, logoutCallback);
         } else {
@@ -158,10 +266,26 @@
         }
       }
     },
+    computed: {
+      showUserInfo: ({ userInfo }) =>
+        Boolean(userInfo && (userInfo.name || userInfo.email))
+    },
     components: {}
   };
 </script>
 
-
 <style type="text/scss">
+  .fd-top-nav__icon {
+    display: inline-block;
+    vertical-align: middle;
+    margin-right: 5px;
+  }
+  .nav-icon {
+    height: 2em;
+  }
+  #username {
+    display: block;
+    padding: 10px 24px;
+    cursor: default;
+  }
 </style>

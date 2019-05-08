@@ -51,22 +51,20 @@
             <label class="fd-form__label" for="select-1">Type</label>
             <select
               [ngModel]="alertTypes[0]"
-              [disabled]="this.alertDismissed === false"
               class="fd-form__control"
               id="select-1"
               name="type"
               data-cy="luigi-alert-type"
             >
-              <option [value]="type" *ngFor="let type of alertTypes">{{
-                type
-              }}</option>
+              <option [value]="type" *ngFor="let type of alertTypes">
+                {{ type }}
+              </option>
             </select>
           </div>
           <div class="fd-form__item fd-form__item--check">
             <label class="fd-form__label">
               <input
                 [ngModel]="true"
-                [disabled]="this.alertDismissed === false"
                 type="checkbox"
                 name="links"
                 class="fd-form__control"
@@ -79,7 +77,6 @@
             <label class="fd-form__label">
               <input
                 [ngModel]="true"
-                [disabled]="this.alertDismissed === false"
                 type="checkbox"
                 name="text"
                 class="fd-form__control"
@@ -88,10 +85,22 @@
               With text (if alert has no text it is not displayed)
             </label>
           </div>
+          <div class="fd-form__item">
+            <label class="fd-form__label" for="input-1"
+              >Close after (ms)
+            </label>
+            <input
+              [ngModel]=""
+              class="fd-form__control"
+              type="text"
+              name="closeAfter"
+              placeholder="Leave it empty to never close this Alert automatically"
+              data-cy="luigi-alert-close-after"
+            />
+          </div>
         </div>
       </form>
       <button
-        [disabled]="this.alertDismissed === false"
         class="fd-button"
         data-cy="show-luigi-alert"
         (click)="showAlert()"
@@ -253,10 +262,7 @@
           ></app-code-snippet>
         </li>
         <li class="fd-list-group__item">
-          <a
-            href="javascript:void(0)"
-            (click)="navigateAndShowAlert()"
-          >
+          <a href="javascript:void(0)" (click)="navigateAndShowAlert()">
             with preserved view: project to global settings and back</a
           >
           <app-code-snippet
