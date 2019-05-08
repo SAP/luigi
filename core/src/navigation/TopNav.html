@@ -54,13 +54,6 @@
       </div>
       {/if}
       {/each}
-      {#if isProductSwitcherAvailable}
-      <ProductSwitcher
-        bind:dropDownStates
-        on:toggleDropdownState="toggleDropdownState('productSwitcherPopover')"
-        isMobile="{false}"
-      />
-      {/if}
       <!-- Sample Markup for Notifications
               <div class="fd-shellbar__action fd-shellbar__action--collapsible">
                 <button class=" fd-button--shell sap-icon--bell" aria-label="Notifications">
@@ -186,6 +179,13 @@
           </div>
         </div>
       </div>
+      {/if}
+      {#if isProductSwitcherAvailable}
+      <ProductSwitcher
+        bind:dropDownStates
+        on:toggleDropdownState="toggleDropdownState('productSwitcherPopover')"
+        isMobile="{false}"
+      />
       {/if}
     </div>
   </div>
