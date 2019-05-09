@@ -6,6 +6,8 @@ import { LuigiConfig } from './config';
 import * as GenericHelpers from '../utilities/helpers/generic-helpers';
 import * as Iframe from './iframe';
 import { NAVIGATION_DEFAULTS } from './../utilities/luigi-config-defaults';
+import * as IframeHelpers from '../utilities/helpers/iframe-helpers';
+import { getActiveIframe } from './iframe';
 
 export const getNodePath = (node, params) => {
   return node
@@ -43,8 +45,10 @@ export const concatenatePath = (basePath, relativePath) => {
 export const navigateTo = async route => {
   const windowPath = GenericHelpers.trimLeadingSlash(getWindowPath());
   if (windowPath === GenericHelpers.trimLeadingSlash(route)) {
-    Iframe.reloadActiveIframe();
-    return;
+    const visibleIframe = IframeHelpers.getVisibleIframes().pop();
+    if (visibleIframe) {
+      Routing.handleRouteChange(route, component, node, config);
+    }
   }
 
   if (LuigiConfig.getConfigValue('routing.useHashRouting')) {
@@ -250,7 +254,8 @@ export const handleRouteChange = async (
   }
 };
 
-export const handleRouteClick = (node, componentData) => {
+export const handleRouteClick = (node, component) => {
+  const componentData = component.get();
   if (node.externalLink && node.externalLink.url) {
     navigateToExternalLink(node.externalLink);
     // externalLinkUrl property is provided so there's no need to trigger routing mechanizm
@@ -260,10 +265,25 @@ export const handleRouteClick = (node, componentData) => {
       : buildFromRelativePath(node);
     navigateTo(link);
   } else {
-    const route = RoutingHelpers.buildRoute(node, `/${node.pathSegment}`);
-    navigateTo(
-      GenericHelpers.replaceVars(route, componentData.pathParams, ':', false)
+    let route = RoutingHelpers.buildRoute(node, `/${node.pathSegment}`);
+    route = GenericHelpers.replaceVars(
+      route,
+      componentData.pathParams,
+      ':',
+      false
     );
+
+    const windowPath = GenericHelpers.trimLeadingSlash(getWindowPath());
+    if (windowPath === GenericHelpers.trimLeadingSlash(route)) {
+      const iframeContainer = Iframe.getIframeContainer();
+      const activeIframe = Iframe.getActiveIframe(iframeContainer);
+      if (activeIframe) {
+        iframeContainer.removeChild(activeIframe);
+      }
+      window.postMessage({ msg: 'refreshRoute' }, '*');
+    } else {
+      navigateTo(route);
+    }
   }
 };
 

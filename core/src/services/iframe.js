@@ -17,6 +17,11 @@ export const getActiveIframe = node => {
   return activeIframe[0];
 };
 
+export const getIframeContainer = () => {
+  const container = Array.from(document.querySelectorAll('.iframeContainer'));
+  return container && container.length > 0 ? container[0] : undefined;
+};
+
 export const getAllIframes = modalIframe => {
   const iframes = Array.from(
     document.querySelectorAll('.iframeContainer iframe')
@@ -84,6 +89,11 @@ const getViewGroupSettings = (viewGroup, viewGroupSettings) => {
   } else {
     return {};
   }
+};
+
+const canCache = (viewGroup, viewGroupSettings) => {
+  const vgSettings = getViewGroupSettings(viewGroup, viewGroupSettings);
+  return vgSettings && vgSettings.preloadUrl;
 };
 
 export const switchActiveIframe = (
@@ -246,7 +256,11 @@ export const navigateIframe = (config, component, node) => {
       }
       config.navigateOk = undefined;
       config.iframe = createIframe(viewUrl);
-      if (componentData.viewGroup && !nextViewIsolated) {
+      if (
+        componentData.viewGroup &&
+        !nextViewIsolated &&
+        canCache(componentData.viewGroup, componentData.viewGroupSettings)
+      ) {
         config.iframe['vg'] = componentData.viewGroup;
       }
 
@@ -263,7 +277,12 @@ export const navigateIframe = (config, component, node) => {
     const goBackContext = component.get().goBackContext;
     config.iframe.style.display = 'block';
     config.iframe.luigi.nextViewUrl = viewUrl;
-    config.iframe['vg'] = componentData.viewGroup;
+    config.iframe['vg'] = canCache(
+      componentData.viewGroup,
+      componentData.viewGroupSettings
+    )
+      ? componentData.viewGroup
+      : undefined;
     const message = {
       msg: 'luigi.navigate',
       viewUrl: viewUrl,
@@ -293,20 +312,5 @@ export const navigateIframe = (config, component, node) => {
         navigateIframe(config, component, node);
       }
     }, iframeNavFallbackTimeout);
-  }
-};
-
-export const reloadActiveIframe = () => {
-  const visibleIframe = IframeHelpers.getVisibleIframes().pop();
-
-  if (visibleIframe) {
-    if (
-      visibleIframe.contentDocument &&
-      visibleIframe.contentDocument.location
-    ) {
-      visibleIframe.contentDocument.location.reload(true);
-    } else {
-      visibleIframe.src = visibleIframe.src;
-    }
   }
 };

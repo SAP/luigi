@@ -540,7 +540,7 @@
       handleNavClick(node) {
         document.body.classList.remove('lui-leftNavToggle');
         this.getUnsavedChangesModalPromise().then(() => {
-          Routing.handleRouteClick(node, this.get());
+          Routing.handleRouteClick(node, this);
         });
       },
       handleModalResult(result) {
