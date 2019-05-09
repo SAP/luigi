@@ -9,7 +9,6 @@ class Settings {
   responsiveNavigation = 'simpleMobileOnly'; // "simple"
   // hideNavigation = true
   // backdropDisabled = true
-  cacheViewGroups = true;
 }
 
 export const settings = new Settings();

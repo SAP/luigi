@@ -265,10 +265,10 @@
       const responsiveNavSetting = LuigiConfig.getConfigValue(
         'settings.responsiveNavigation'
       );
-      const cacheViewGroups = LuigiConfig.getConfigValue(
-        'settings.cacheViewGroups'
+      const viewGroupSettings = LuigiConfig.getConfigValue(
+        'navigation.viewGroupSettings'
       );
-      this.set({ cacheViewGroups });
+      this.set({ viewGroupSettings });
 
       if (responsiveNavSetting === 'simple') {
         document.body.classList.add('lui-simpleSlideInNav');
