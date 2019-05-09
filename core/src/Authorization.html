@@ -158,7 +158,9 @@
         } else {
           if (GenericHelpers.isFunction(idpProviderInstance.userInfo)) {
             idpProviderInstance.userInfo(idpProviderSettings).then(res => {
-              this.set({ isLoggedIn: true, userInfo: res });
+              const userInfo = res;
+              this.set({ isLoggedIn: true, userInfo });
+              this.fire('userInfoUpdated', userInfo);
             });
           } else {
             this.set({ isLoggedIn: true });
