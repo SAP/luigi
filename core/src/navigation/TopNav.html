@@ -56,17 +56,9 @@
           <!-- end node.externallLink.url -->
         </button>
       </div>
+
       {/if}
       {/each}
-      <!-- end children as node -->
-      {#if isProductSwitcherAvailable}
-      <ProductSwitcher
-        bind:dropDownStates
-        on:toggleDropdownState="toggleDropdownState('productSwitcherPopover')"
-        isMobile="{false}"
-      />
-      {/if}
-      <!-- end isProductSwitcherAvailable -->
       <!-- Sample Markup for Notifications
               <div class="fd-shellbar__action fd-shellbar__action--collapsible">
                 <button class=" fd-button--shell sap-icon--bell" aria-label="Notifications">
@@ -246,6 +238,12 @@
         </div>
       </div>
       {/if}
+      {#if isProductSwitcherAvailable}
+      <ProductSwitcher
+        bind:dropDownStates
+        on:toggleDropdownState="toggleDropdownState('productSwitcherPopover')"
+        isMobile="{false}"
+      />
       {/if}
     </div>
   </div>
