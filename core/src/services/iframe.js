@@ -78,6 +78,58 @@ export const getPreservedViewsInDom = iframes => {
   return iframes.filter(iframe => iframe.pv);
 };
 
+const getViewGroupSettings = (viewGroup, viewGroupSettings) => {
+  if (viewGroup && viewGroupSettings && viewGroupSettings[viewGroup]) {
+    return viewGroupSettings[viewGroup];
+  } else {
+    return {};
+  }
+};
+
+export const switchActiveIframe = (
+  container,
+  viewGroupSettings,
+  newActiveIframe,
+  removeCurrentActive
+) => {
+  const activeIframe = getActiveIframe(container);
+  if (activeIframe !== newActiveIframe) {
+    let newActiveFound = false;
+    const children = Array.from(container.children);
+    children.forEach(child => {
+      if (child === activeIframe) {
+        if (removeCurrentActive) {
+          container.removeChild(child);
+        } else {
+          child.style.display = 'none';
+          const vgSettings = getViewGroupSettings(child.vg, viewGroupSettings);
+          if (vgSettings && vgSettings.preloadUrl) {
+            const message = {
+              msg: 'luigi.navigate',
+              viewUrl: vgSettings.preloadUrl,
+              context: JSON.stringify({}),
+              nodeParams: JSON.stringify({}),
+              pathParams: JSON.stringify({}),
+              internal: JSON.stringify({})
+            };
+            IframeHelpers.sendMessageToIframe(child, message);
+          }
+        }
+      }
+      if (child === newActiveIframe) {
+        newActiveFound = true;
+      }
+    });
+    if (newActiveIframe) {
+      newActiveIframe.style.display = 'block';
+      if (!newActiveFound) {
+        container.insertBefore(newActiveIframe, container.firstChild);
+      }
+    }
+  }
+  return newActiveIframe;
+};
+
 export const navigateIframe = (config, component, node) => {
   clearTimeout(timeoutHandle);
   const componentData = component.get();
@@ -115,18 +167,22 @@ export const navigateIframe = (config, component, node) => {
   if (!pvSituation && !component.get().isNavigateBack) {
     // if previous view must be isolated
     if (activeIframe && previousViewIsolated) {
-      removeIframe(activeIframe, node);
-      activeIframe = undefined;
+      activeIframe = switchActiveIframe(
+        node,
+        componentData.viewGroupSettings,
+        undefined,
+        true
+      );
     }
 
     // if next view must be isolated
     if (activeIframe && nextViewIsolated) {
-      if (activeIframe.vg) {
-        activeIframe.style.display = 'none';
-      } else {
-        removeIframe(activeIframe, node);
-      }
-      activeIframe = undefined;
+      activeIframe = switchActiveIframe(
+        node,
+        componentData.viewGroupSettings,
+        undefined,
+        !activeIframe.vg
+      );
     }
 
     // if next view is not isoltaed we can pick a iframe with matching viewGroup from the pool
@@ -140,25 +196,30 @@ export const navigateIframe = (config, component, node) => {
         targetIframe = sameViewGroupIframes[0];
 
         // make the targetIframe the new active iframe
-        if (activeIframe && activeIframe !== targetIframe) {
-          if (activeIframe.vg) {
-            activeIframe.style.display = 'none';
-          } else {
-            removeIframe(activeIframe, node);
-          }
-        }
-        activeIframe = targetIframe;
-        activeIframe.style.display = 'block';
+        activeIframe = switchActiveIframe(
+          node,
+          componentData.viewGroupSettings,
+          targetIframe,
+          !activeIframe.vg
+        );
       }
     }
 
     if (activeIframe && !targetIframe) {
       if (activeIframe.vg) {
-        activeIframe.style.display = 'none';
-        activeIframe = undefined;
+        activeIframe = switchActiveIframe(
+          node,
+          componentData.viewGroupSettings,
+          undefined,
+          false
+        );
       } else if (!canReuseIframe) {
-        removeIframe(activeIframe, node);
-        activeIframe = undefined;
+        activeIframe = switchActiveIframe(
+          node,
+          componentData.viewGroupSettings,
+          undefined,
+          true
+        );
       }
     }
 
@@ -185,11 +246,7 @@ export const navigateIframe = (config, component, node) => {
       }
       config.navigateOk = undefined;
       config.iframe = createIframe(viewUrl);
-      if (
-        componentData.viewGroup &&
-        !nextViewIsolated &&
-        componentData.cacheViewGroups
-      ) {
+      if (componentData.viewGroup && !nextViewIsolated) {
         config.iframe['vg'] = componentData.viewGroup;
       }
 
@@ -206,9 +263,7 @@ export const navigateIframe = (config, component, node) => {
     const goBackContext = component.get().goBackContext;
     config.iframe.style.display = 'block';
     config.iframe.luigi.nextViewUrl = viewUrl;
-    if (component.cacheViewGroups) {
-      config.iframe['vg'] = componentData.viewGroup;
-    }
+    config.iframe['vg'] = componentData.viewGroup;
     const message = {
       msg: 'luigi.navigate',
       viewUrl: viewUrl,
