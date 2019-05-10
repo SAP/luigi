@@ -49,7 +49,8 @@ class Navigation {
       pathSegment: 'settings',
       label: 'Settings',
       viewUrl: '/sampleapp.html#/settings',
-      icon: 'settings'
+      icon: 'settings',
+      viewGroup: 'tets'
     },
     {
       label: 'Open Google in this tab',

@@ -4,7 +4,7 @@ import * as GenericHelpers from '../utilities/helpers/generic-helpers';
 class LuigiConfigManager {
   constructor() {
     this.configReadyTimeout = {
-      valueMs: 2000,
+      valueMs: 65000,
       id: undefined
     };
 
