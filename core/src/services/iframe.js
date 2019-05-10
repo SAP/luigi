@@ -4,6 +4,7 @@ import * as IframeHelpers from '../utilities/helpers/iframe-helpers';
 import * as GenericHelpers from '../utilities/helpers/generic-helpers';
 import * as RoutingHelpers from '../utilities/helpers/routing-helpers';
 import { createIframe } from '../utilities/helpers/iframe-helpers';
+import { LuigiConfig } from './config';
 
 const iframeNavFallbackTimeout = 2000;
 let timeoutHandle;
@@ -83,7 +84,12 @@ export const getPreservedViewsInDom = iframes => {
   return iframes.filter(iframe => iframe.pv);
 };
 
-const getViewGroupSettings = (viewGroup, viewGroupSettings) => {
+const getAllViewGroupSettings = () => {
+  return LuigiConfig.getConfigValue('navigation.viewGroupSettings');
+};
+
+const getViewGroupSettings = viewGroup => {
+  const viewGroupSettings = getAllViewGroupSettings();
   if (viewGroup && viewGroupSettings && viewGroupSettings[viewGroup]) {
     return viewGroupSettings[viewGroup];
   } else {
@@ -91,14 +97,14 @@ const getViewGroupSettings = (viewGroup, viewGroupSettings) => {
   }
 };
 
-const canCache = (viewGroup, viewGroupSettings) => {
-  const vgSettings = getViewGroupSettings(viewGroup, viewGroupSettings);
+const canCache = viewGroup => {
+  const viewGroupSettings = getAllViewGroupSettings();
+  const vgSettings = getViewGroupSettings(viewGroup);
   return vgSettings && vgSettings.preloadUrl;
 };
 
 export const switchActiveIframe = (
   container,
-  viewGroupSettings,
   newActiveIframe,
   removeCurrentActive
 ) => {
@@ -112,7 +118,7 @@ export const switchActiveIframe = (
           container.removeChild(child);
         } else {
           child.style.display = 'none';
-          const vgSettings = getViewGroupSettings(child.vg, viewGroupSettings);
+          const vgSettings = getViewGroupSettings(child.vg);
           if (vgSettings && vgSettings.preloadUrl) {
             const message = {
               msg: 'luigi.navigate',
@@ -177,22 +183,12 @@ export const navigateIframe = (config, component, node) => {
   if (!pvSituation && !component.get().isNavigateBack) {
     // if previous view must be isolated
     if (activeIframe && previousViewIsolated) {
-      activeIframe = switchActiveIframe(
-        node,
-        componentData.viewGroupSettings,
-        undefined,
-        true
-      );
+      activeIframe = switchActiveIframe(node, undefined, true);
     }
 
     // if next view must be isolated
     if (activeIframe && nextViewIsolated) {
-      activeIframe = switchActiveIframe(
-        node,
-        componentData.viewGroupSettings,
-        undefined,
-        !activeIframe.vg
-      );
+      activeIframe = switchActiveIframe(node, undefined, !activeIframe.vg);
     }
 
     // if next view is not isoltaed we can pick a iframe with matching viewGroup from the pool
@@ -206,30 +202,15 @@ export const navigateIframe = (config, component, node) => {
         targetIframe = sameViewGroupIframes[0];
 
         // make the targetIframe the new active iframe
-        activeIframe = switchActiveIframe(
-          node,
-          componentData.viewGroupSettings,
-          targetIframe,
-          !activeIframe.vg
-        );
+        activeIframe = switchActiveIframe(node, targetIframe, !activeIframe.vg);
       }
     }
 
     if (activeIframe && !targetIframe) {
       if (activeIframe.vg) {
-        activeIframe = switchActiveIframe(
-          node,
-          componentData.viewGroupSettings,
-          undefined,
-          false
-        );
+        activeIframe = switchActiveIframe(node, undefined, false);
       } else if (!canReuseIframe) {
-        activeIframe = switchActiveIframe(
-          node,
-          componentData.viewGroupSettings,
-          undefined,
-          true
-        );
+        activeIframe = switchActiveIframe(node, undefined, true);
       }
     }
 
@@ -259,7 +240,7 @@ export const navigateIframe = (config, component, node) => {
       if (
         componentData.viewGroup &&
         !nextViewIsolated &&
-        canCache(componentData.viewGroup, componentData.viewGroupSettings)
+        canCache(componentData.viewGroup)
       ) {
         config.iframe['vg'] = componentData.viewGroup;
       }
@@ -277,10 +258,7 @@ export const navigateIframe = (config, component, node) => {
     const goBackContext = component.get().goBackContext;
     config.iframe.style.display = 'block';
     config.iframe.luigi.nextViewUrl = viewUrl;
-    config.iframe['vg'] = canCache(
-      componentData.viewGroup,
-      componentData.viewGroupSettings
-    )
+    config.iframe['vg'] = canCache(componentData.viewGroup)
       ? componentData.viewGroup
       : undefined;
     const message = {
