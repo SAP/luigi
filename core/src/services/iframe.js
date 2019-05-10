@@ -190,7 +190,7 @@ export const navigateIframe = (config, component, node) => {
       activeIframe = switchActiveIframe(node, undefined, !activeIframe.vg);
     }
 
-    // if next view is not isoltaed we can pick a iframe with matching viewGroup from the pool
+    // if next view is not isolated we can pick a iframe with matching viewGroup from the pool
     let targetIframe;
     if (!nextViewIsolated && componentData.viewGroup) {
       const iframes = getIframesInDom();
