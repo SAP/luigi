@@ -18,12 +18,12 @@
       {/each}
     {:else}
       <span class="fd-tabs__item" on:click="event.stopPropagation()">
-        <a class="fd-tabs__link has-child" aria-expanded="false" href="javascript:void(null)" role="tab"
-          on:click="toggleDropdownState(key)"
-          aria-selected="{selectedNode.category && (selectedNode.category === key || selectedNode.category.label === key)}">
-          <span class="label">{key}</span><span class="sap-icon--dropdown sap-icon--l"></span>
-        </a>
         <div class="fd-popover">
+          <a class="fd-tabs__link has-child" aria-expanded="false" href="javascript:void(null)" role="tab"
+            on:click="toggleDropdownState(key)"
+            aria-selected="{selectedNode.category && (selectedNode.category === key || selectedNode.category.label === key)}">
+            <span class="label">{key}</span><span class="sap-icon--dropdown sap-icon--l"></span>
+          </a>
           <div class="fd-popover__body fd-popover__body--no-arrow" aria-hidden="{!dropDownStates[key]}">
               <nav class="fd-menu" id="">
                   <ul class="fd-menu__list">
@@ -42,6 +42,25 @@
       </span>
     {/if}
   {/each}
+  <span class="fd-tabs__item more" on:click="event.stopPropagation()">
+        <div class="fd-popover fd-popover--right">
+          <a class="fd-tabs__link fd-popover__control has-child" aria-expanded="false" href="javascript:void(null)" role="tab"
+            on:click="toggleDropdownState(key)"
+            aria-selected="{false && selectedNode.category && (selectedNode.category === key || selectedNode.category.label === key)}">
+            <span class="label">More</span><span class="sap-icon--dropdown sap-icon--l"></span>
+          </a>
+          <div class="fd-popover__body fd-popover__body--right fd-popover__body--no-arrow" aria-hidden="{!dropDownStates[key]}">
+              <nav class="fd-menu" id="">
+                  <ul class="fd-menu__list">
+
+                          <li><a  href="javascript:void(null)" class="fd-menu__item"
+                            on:click="handleClick(node)" aria-selected="true">tets</a></li>
+
+                  </ul>
+              </nav>
+          </div>
+      </div>
+    </span>
 </nav>
 {/if}
 
@@ -122,8 +141,10 @@
     right: 0;
   }
 
-  .fd-tabs__item .fd-popover {
+
+  .fd-tabs__item.more {
     position: absolute;
+    right: 0;
   }
 
   .fd-tabs {
