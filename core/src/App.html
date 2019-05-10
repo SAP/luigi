@@ -145,7 +145,7 @@
   };
 
   const addPreserveView = (component, data, config) => {
-    if (data.params.preserveView) {
+    if (data.params.preserveView || data.params.viewgroup) {
       const {
         preservedViews,
         currentNode,
@@ -159,9 +159,8 @@
         context
       });
       component.set({ preservedViews });
-      // Resetting iframe config to null, since Routing.navigateTo will then create a new iframe
-      // instead of using the existing instance for route.
-      config.iframe = null;
+      //mark iframe with pv if there is a preserved view situation
+      config.iframe['pv'] = 'pv';
     }
   };
 
@@ -536,7 +535,7 @@
       handleNavClick(node) {
         document.body.classList.remove('lui-leftNavToggle');
         this.getUnsavedChangesModalPromise().then(() => {
-          Routing.handleRouteClick(node, this.get());
+          Routing.handleRouteClick(node, this);
         });
       },
       handleModalResult(result) {
