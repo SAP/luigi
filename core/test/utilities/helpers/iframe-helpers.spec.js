@@ -33,7 +33,44 @@ describe('Iframe-helpers', () => {
       }
     };
 
+    it('getLocation', () => {
+      const url = 'http://.luigi.url.com';
+      const iframeOrigin = IframeHelpers.getLocation(url);
+      assert.equal(iframeOrigin, url);
+    });
+
+    it('createIframe', () => {
+      const iframe = IframeHelpers.createIframe('http://luigi.url.com/');
+      assert.equal(iframe.src, 'http://luigi.url.com/');
+    });
+
+    it('getVisibleIframes', () => {
+      sinon
+        .stub(document, 'querySelectorAll')
+        .callsFake(() => [
+          {
+            src: 'http://url.com/app.html!#/prevUrl',
+            style: { display: 'block' }
+          }
+        ]);
+      const visibleIframes = IframeHelpers.getVisibleIframes();
+      assert.equal(visibleIframes.length, 1);
+    });
+
+    it('isSameViewGroup', () => {
+      config.iframe.src = 'http://otherurl.de/app.html!#/someUrl';
+      config.viewGroup = 'tets';
+      component.set({
+        viewUrl: 'http://otherurl.de/app.html!#/someUrl',
+        viewGroup: 'tets',
+        previousNodeValues: { viewUrl: config.iframe.src, viewGroup: 'tets' }
+      });
+      const tets = IframeHelpers.isSameViewGroup(config, component);
+      assert.equal(tets, true);
+    });
+
     it('should return true if views have the same domain and different hash', () => {
+      config.iframe.src = 'http://url.com/app.html!#/prevUrl';
       component.set({
         viewUrl: 'http://url.com/app.html!#/someUrl',
         previousNodeValues: { viewUrl: config.iframe.src }
