@@ -45,10 +45,7 @@ export const concatenatePath = (basePath, relativePath) => {
 export const navigateTo = async route => {
   const windowPath = GenericHelpers.trimLeadingSlash(getWindowPath());
   if (windowPath === GenericHelpers.trimLeadingSlash(route)) {
-    const visibleIframe = IframeHelpers.getVisibleIframes().pop();
-    if (visibleIframe) {
-      Routing.handleRouteChange(route, component, node, config);
-    }
+    return;
   }
 
   if (LuigiConfig.getConfigValue('routing.useHashRouting')) {
