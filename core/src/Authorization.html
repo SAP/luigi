@@ -209,11 +209,13 @@
       /**
        * Prevent IDP Provider initialization, if an error is present
        * in the url params and onAuthError is defined in the user config.
-       * errors are represented by `reason` and `error` param.
+       * errors are represented by `error` and `errorDescription` param.
        */
-
+      const urlAuthError = this.get().urlAuthError || {};
       const noError = await AuthHelpers.handleUrlAuthErrors(
-        idpProviderSettings
+        idpProviderSettings,
+        urlAuthError.error,
+        urlAuthError.errorDescription
       );
       if (!noError) {
         return;

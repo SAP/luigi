@@ -93,18 +93,17 @@ class Auth {
   events = {
     onLogout: settings => {
       console.log('onLogout', settings);
-      // return false; // prevent redirect
     },
     onAuthSuccessful: (settings, authData) => {
       console.log('onAuthSuccessful', settings, authData);
     },
     onAuthExpired: settings => {
       console.log('onAuthExpired', settings);
-      // return false; // prevent redirect
+      // return false; // prevent redirect to logoutUrl
     },
     onAuthError: (settings, err) => {
       console.log('authErrorHandler 1', err, settings);
-      // return false; // prevent redirect + authorization
+      // return false; // prevent redirect to logoutUrl, but go to /
     }
   };
 }

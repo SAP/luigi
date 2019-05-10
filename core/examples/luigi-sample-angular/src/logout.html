@@ -76,14 +76,14 @@ function getUrlParameter(name) {
   return results && decodeURIComponent(results[1].replace(/\+/g, ' ')) || '';
 };
 
-var reason = getUrlParameter('reason');
 var error = getUrlParameter('error');
+var errorDescription = getUrlParameter('errorDescription');
 
-if (error) {
-  document.getElementById('message').innerText = error;
+if (errorDescription) {
+  document.getElementById('message').innerText = errorDescription;
 }
 
-switch (reason) {
+switch (error) {
   case 'tokenExpired':
     document.getElementById('headline').innerText = 'Your session has expired.';
     break;

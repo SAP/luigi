@@ -176,6 +176,7 @@
                 <Authorization
                   on:toggleDropdownState="toggleDropdownState('profilePopover')"
                   on:userInfoUpdated="userInfoUpdate(event)"
+                  {urlAuthError}
                 />
               </div>
             </div>
@@ -312,7 +313,8 @@
         ),
         responsiveNavSetting: LuigiConfig.getConfigValue(
           'settings.responsiveNavigation'
-        )
+        ),
+        urlAuthError: AuthHelpers.parseUrlAuthErrors()
       });
     },
     onstate({ changed, current, previous }) {

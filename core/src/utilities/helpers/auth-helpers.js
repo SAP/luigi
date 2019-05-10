@@ -1,5 +1,5 @@
-import { LuigiAuth } from "../../core-api";
-import * as GenericHelpers from "./generic-helpers"
+import { LuigiAuth } from '../../core-api';
+import * as GenericHelpers from './generic-helpers';
 
 export const getStoredAuthData = () =>
   JSON.parse(localStorage.getItem('luigi.auth'));
@@ -12,16 +12,42 @@ export const isLoggedIn = () => {
 };
 
 /**
- * Checks if there is a reason parameter in the url
- * and triggers onAuthError event with the found reason
- * and error parameters.
- * @param {object} providerInstanceSettings 
+ * Checks if there is a error parameter in the url
+ * and returns error and error description
  */
-export const handleUrlAuthErrors = async (providerInstanceSettings) => {
-  const reason = GenericHelpers.getUrlParameter('reason');
+export const parseUrlAuthErrors = () => {
   const error = GenericHelpers.getUrlParameter('error');
-  if (reason) {
-    return await LuigiAuth.handleAuthEvent('onAuthError', providerInstanceSettings, { reason, error }, providerInstanceSettings.logoutUrl + '?post_logout_redirect_uri=' + providerInstanceSettings.post_logout_redirect_uri + '&reason=' + reason + '&error=' + error);
+  const errorDescription = GenericHelpers.getUrlParameter('errorDescription');
+  if (error) {
+    return { error, errorDescription };
+  }
+  return;
+};
+/**
+ * Triggers onAuthError event with the found error
+ * and error parameters.
+ * @param {object} providerInstanceSettings
+ * @param {string} error
+ * @param {string} errorDescription
+ */
+export const handleUrlAuthErrors = async (
+  providerInstanceSettings,
+  error,
+  errorDescription
+) => {
+  if (error) {
+    return await LuigiAuth.handleAuthEvent(
+      'onAuthError',
+      providerInstanceSettings,
+      { error, errorDescription },
+      providerInstanceSettings.logoutUrl +
+        '?markus=test&post_logout_redirect_uri=' +
+        providerInstanceSettings.post_logout_redirect_uri +
+        '&error=' +
+        error +
+        '&errorDescription=' +
+        errorDescription
+    );
   }
   return true;
 };
