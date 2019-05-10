@@ -83,7 +83,12 @@ export class openIdConnect {
   setTokenExpirationAction() {
     if (!this.settings.automaticSilentRenew) {
       this.client.events.addAccessTokenExpired(() => {
-        LuigiAuth.handleAuthEvent('onAuthExpired', this.settings, undefined, this.settings.logoutUrl + '?reason=tokenExpired');
+        LuigiAuth.handleAuthEvent(
+          'onAuthExpired',
+          this.settings,
+          undefined,
+          this.settings.logoutUrl + '?error=tokenExpired'
+        );
       });
     }
 
@@ -103,14 +108,17 @@ export class openIdConnect {
         case 'consent_required': // possible cause: disabled third party cookies in the browser
           redirectUrl =
             this.settings.logoutUrl +
-            '?reason=tokenExpired&thirdPartyCookies=' +
+            '?error=tokenExpired&thirdPartyCookies=' +
             thirdPartyCookiesStatus() +
-            '&error=' +
+            '&errorDescription=' +
             e.message;
           break;
         default:
           console.error(e);
-          redirectUrl = this.settings.logoutUrl + '?reason=tokenExpired&error=' + e.message;
+          redirectUrl =
+            this.settings.logoutUrl +
+            '?error=tokenExpired&errorDescription=' +
+            e.message;
       }
       LuigiAuth.handleAuthEvent('onAuthError', this.settings, e, redirectUrl);
     });
@@ -127,7 +135,7 @@ export class openIdConnect {
             log('signout response', response);
             resolve(response);
           })
-          .catch(function (err) {
+          .catch(function(err) {
             reject(response);
             log(err);
           });
@@ -169,7 +177,12 @@ export class openIdConnect {
         .catch(err => {
           console.error(err);
           localStorage.removeItem('luigi.auth');
-          LuigiAuth.handleAuthEvent('onAuthExpired', this.settings, err, this.settings.logoutUrl + '?reason=loginError')
+          LuigiAuth.handleAuthEvent(
+            'onAuthExpired',
+            this.settings,
+            err,
+            this.settings.logoutUrl + '?error=loginError'
+          );
         });
     });
   }

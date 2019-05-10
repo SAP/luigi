@@ -12,7 +12,9 @@ describe('Auth-helpers', () => {
     windowLocationImplementation = window.location;
     delete window.location;
     window.location = {
-      search: function () { return ''; }
+      search: function() {
+        return '';
+      }
     };
   });
   afterEach(() => {
@@ -29,34 +31,53 @@ describe('Auth-helpers', () => {
 
     const mockProviderInstanceSettings = {
       logoutUrl: 'http://auth.luigi.domain/api/logout',
-      post_logout_redirect_uri: 'http://luigi.domain/logout.html',
-    }
+      post_logout_redirect_uri: 'http://luigi.domain/logout.html'
+    };
 
     it('without error', async () => {
       assert.isTrue(await AuthHelpers.handleUrlAuthErrors({}));
       assert.isTrue(LuigiAuth.handleAuthEvent.notCalled);
     });
 
-    it('with reason param', async () => {
-      sinon.stub(GenericHelpers, 'getUrlParameter')
-        .onFirstCall().returns('mockError')
-        .onSecondCall().returns(undefined)
+    it('with error param', async () => {
+      sinon
+        .stub(GenericHelpers, 'getUrlParameter')
+        .onFirstCall()
+        .returns('mockError')
+        .onSecondCall()
+        .returns(undefined);
 
       await AuthHelpers.handleUrlAuthErrors(mockProviderInstanceSettings);
       assert.isTrue(LuigiAuth.handleAuthEvent.calledOnce);
       GenericHelpers.getUrlParameter.reset();
     });
 
-    it('with reason and error param', async () => {
-      const reason = 'mockError';
-      const error = 'An error description';
-      sinon.stub(GenericHelpers, 'getUrlParameter')
-        .onFirstCall().returns(reason)
-        .onSecondCall().returns(error)
+    it('with error and error param', async () => {
+      const error = 'mockError';
+      const errorDescription = 'An error description';
+      sinon
+        .stub(GenericHelpers, 'getUrlParameter')
+        .onFirstCall()
+        .returns(error)
+        .onSecondCall()
+        .returns(errorDescription);
 
       await AuthHelpers.handleUrlAuthErrors(mockProviderInstanceSettings);
       assert.isTrue(LuigiAuth.handleAuthEvent.calledOnce);
-      assert.isTrue(LuigiAuth.handleAuthEvent.calledWith('onAuthError', mockProviderInstanceSettings, { reason, error }, mockProviderInstanceSettings.logoutUrl + '?post_logout_redirect_uri=' + mockProviderInstanceSettings.post_logout_redirect_uri + '&reason=' + reason + '&error=' + error));
+      assert.isTrue(
+        LuigiAuth.handleAuthEvent.calledWith(
+          'onAuthError',
+          mockProviderInstanceSettings,
+          { error, errorDescription },
+          mockProviderInstanceSettings.logoutUrl +
+            '?post_logout_redirect_uri=' +
+            mockProviderInstanceSettings.post_logout_redirect_uri +
+            '&error=' +
+            error +
+            '&errorDescription=' +
+            error
+        )
+      );
       GenericHelpers.getUrlParameter.reset();
     });
   });

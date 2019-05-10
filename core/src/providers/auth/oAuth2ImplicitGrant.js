@@ -134,7 +134,7 @@ export class oAuth2ImplicitGrant {
         // TODO: check if valid (mock-auth requires it), post_logout_redirect_uri is an assumption, might not be available for all auth providers
         const redirectUrl = `${
           this.settings.logoutUrl
-        }?reason=tokenExpired&post_logout_redirect_uri=${GenericHelpers.prependOrigin(
+        }?error=tokenExpired&post_logout_redirect_uri=${GenericHelpers.prependOrigin(
           this.settings.post_logout_redirect_uri
         )}`;
         LuigiAuth.handleAuthEvent(
