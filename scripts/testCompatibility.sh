@@ -222,12 +222,9 @@ if [ "" == "$TESTONLY" ]; then
   checkoutLuigiToTestfolder
   linkLuigi
   bundleLuigi
-  verifyAndStartWebserver
-  startE2eTestrunner
-fi # --test-only
-
-if [ "true" == "$TESTONLY" ]; then
+else
   echoe "Running bunded example and e2e tests"
-  verifyAndStartWebserver
-  startE2eTestrunner
 fi
+
+verifyAndStartWebserver
+startE2eTestrunner
