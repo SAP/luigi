@@ -274,6 +274,7 @@ export const navigateIframe = (config, component, node) => {
       }
     }
   } else {
+    component.set({ showLoadingIndicator: false });
     const goBackContext = component.get().goBackContext;
     config.iframe.style.display = 'block';
     config.iframe.luigi.nextViewUrl = viewUrl;
