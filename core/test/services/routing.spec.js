@@ -377,12 +377,12 @@ describe('Routing', () => {
       );
     });
 
-    it("should set component's 'hideSideNav' property", async () => {
+    it("should set component's 'hideSideNav' property ", async () => {
       // given
       const path = '#/projects';
-
       //when
-      const node = { insertBefore: sinon.spy() };
+      const node = { insertBefore: sinon.spy(), children: [] };
+      sinon.stub(document, 'querySelectorAll').callsFake(() => node);
 
       //then
       assert.equal(component.get().hideSideNav, undefined);
@@ -415,7 +415,7 @@ describe('Routing', () => {
       LuigiConfig.getConfigValue.returns(true);
 
       // when
-      routing.handleRouteClick(nodeWithParent, mockComponentData);
+      routing.handleRouteClick(nodeWithParent, component);
 
       // then
       assert.equal(window.location.hash, expectedRoute);
@@ -427,7 +427,7 @@ describe('Routing', () => {
       LuigiConfig.getConfigValue.returns(true);
 
       // when
-      routing.handleRouteClick(nodeWithoutParent, mockComponentData);
+      routing.handleRouteClick(nodeWithoutParent, component);
 
       // then
       assert.equal(window.location.hash, expectedRoute);
@@ -444,7 +444,7 @@ describe('Routing', () => {
       LuigiConfig.getConfigValue.returns(false);
 
       // when
-      routing.handleRouteClick(nodeWithParent, mockComponentData);
+      routing.handleRouteClick(nodeWithParent, component);
 
       // then
       const pushStateArgs = window.history.pushState.args[0];
@@ -465,7 +465,7 @@ describe('Routing', () => {
       LuigiConfig.getConfigValue.returns(false);
 
       // when
-      routing.handleRouteClick(nodeWithoutParent, mockComponentData);
+      routing.handleRouteClick(nodeWithoutParent, component);
 
       // then
       const pushStateArgs = window.history.pushState.args[0];
@@ -486,7 +486,7 @@ describe('Routing', () => {
       LuigiConfig.getConfigValue.returns(false);
 
       // when
-      routing.handleRouteClick(nodeWithoutParent, mockComponentData);
+      routing.handleRouteClick(nodeWithoutParent, component);
 
       // then
       const pushStateArgs = window.history.pushState.args[0];
@@ -507,7 +507,7 @@ describe('Routing', () => {
 
       // when
       LuigiConfig.getConfigValue.returns(true);
-      routing.handleRouteClick(inputNode, mockComponentData);
+      routing.handleRouteClick(inputNode, component);
 
       // then
       assert.equal(window.location.hash, expectedRoute);
@@ -524,7 +524,7 @@ describe('Routing', () => {
 
       // when
       LuigiConfig.getConfigValue.returns(true);
-      routing.handleRouteClick(inputNode, mockComponentData);
+      routing.handleRouteClick(inputNode, component);
 
       // then
       assert.equal(window.location.hash, expectedRoute);
