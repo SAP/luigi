@@ -98,7 +98,6 @@ const getViewGroupSettings = viewGroup => {
 };
 
 export const canCache = viewGroup => {
-  const viewGroupSettings = getAllViewGroupSettings();
   const vgSettings = getViewGroupSettings(viewGroup);
   return vgSettings && vgSettings.preloadUrl;
 };
@@ -108,12 +107,12 @@ export const switchActiveIframe = (
   newActiveIframe,
   removeCurrentActive
 ) => {
-  const activeIframe = getActiveIframe(container);
-  if (activeIframe !== newActiveIframe) {
+  const currentActiveIframe = getActiveIframe(container);
+  if (currentActiveIframe !== newActiveIframe) {
     let newActiveFound = false;
     const children = Array.from(container.children);
     children.forEach(child => {
-      if (child === activeIframe) {
+      if (child === currentActiveIframe) {
         if (removeCurrentActive) {
           container.removeChild(child);
         } else {
