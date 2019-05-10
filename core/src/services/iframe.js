@@ -97,7 +97,7 @@ const getViewGroupSettings = viewGroup => {
   }
 };
 
-const canCache = viewGroup => {
+export const canCache = viewGroup => {
   const viewGroupSettings = getAllViewGroupSettings();
   const vgSettings = getViewGroupSettings(viewGroup);
   return vgSettings && vgSettings.preloadUrl;

@@ -274,10 +274,26 @@ export const handleRouteClick = (node, component) => {
     if (windowPath === GenericHelpers.trimLeadingSlash(route)) {
       const iframeContainer = Iframe.getIframeContainer();
       const activeIframe = Iframe.getActiveIframe(iframeContainer);
-      if (activeIframe) {
-        iframeContainer.removeChild(activeIframe);
+      if (activeIframe && activeIframe.vg && Iframe.canCache(activeIframe.vg)) {
+        Iframe.switchActiveIframe(
+          Iframe.getIframeContainer(),
+          undefined,
+          false
+        );
+        setTimeout(() => {
+          Iframe.switchActiveIframe(
+            Iframe.getIframeContainer(),
+            activeIframe,
+            false
+          );
+          window.postMessage({ msg: 'refreshRoute' }, '*');
+        });
+      } else {
+        if (activeIframe) {
+          iframeContainer.removeChild(activeIframe);
+        }
+        window.postMessage({ msg: 'refreshRoute' }, '*');
       }
-      window.postMessage({ msg: 'refreshRoute' }, '*');
     } else {
       navigateTo(route);
     }
