@@ -195,7 +195,7 @@ describe('Luigi client ux manger features', () => {
         cy.get('[data-cy=luigi-alert]').should('not.exist');
       });
 
-      it('can quque Alerts', () => {
+      it('can queue Alerts', () => {
         const numberOfAlerts = 3;
 
         cy.goToUxManagerMethods($iframeBody);
