@@ -138,6 +138,11 @@
     {/if} {/each}
   </nav>
   {/if}
+  {#if footerText}
+  <span
+    class="lui-side-nav__footer fd-has-type-minus-1"
+  >{footerText}</span>
+  {/if}
 </div>
 
 <script type="text/javascript">
@@ -166,7 +171,8 @@
         hideNavComponent: LuigiConfig.getConfigBooleanValue(
           'settings.hideNavigation'
         ),
-        expandedCategories: NavigationHelpers.loadExpandedCategories()
+        expandedCategories: NavigationHelpers.loadExpandedCategories(),
+        footerText: LuigiConfig.getConfigValue('settings.sideNavFooterText')
       });
     },
     onstate({ changed, current, previous }) {
@@ -191,7 +197,13 @@
         return (
           expandedList && expandedList.indexOf(nodes.metaInfo.categoryUid) >= 0
         );
-      }
+      },
+      isFooterVisible(footerText) {
+        return Boolean(footerText);
+        // respect also 'responsiveNavigation' setting in the future.
+        // the footer should also be visible if it's possible to collapse the Nav
+      },
+      getFooterText() {}
     },
     methods: {
       handleClick(node) {
@@ -222,6 +234,11 @@
 
 <style type="text/scss">
   $topNavHeight: 48px;
+
+  $footerPaddingVertical: 13px;
+  $footerHeight: calc(16px + (2 * #{$footerPaddingVertical}));
+  /* text height + vertical padding */
+
   a {
     cursor: pointer;
     outline-offset: -1px;
@@ -244,24 +261,44 @@
     -webkit-box-shadow: 1px 1px 2px 0 rgba(0, 0, 0, 0.05);
     box-shadow: 1px 1px 2px 0 rgba(0, 0, 0, 0.05);
   }
-  .fd-side-nav__link {
-    .sap-icon--action {
-      //external-link icon
-      margin-left: 0.3em;
-      vertical-align: middle;
+
+  .fd-side-nav {
+    min-height: 100%;
+    margin-bottom: calc(-1 * #{$footerHeight});
+
+    &::after {
+      content: '';
+      display: block;
+      height: $footerHeight;
     }
-    .fd-side-nav__icon {
-      width: 2em;
+
+    &__link {
+      .sap-icon--action {
+        //external-link icon
+        margin-left: 0.3em;
+        vertical-align: middle;
+      }
+      .fd-side-nav__icon {
+        width: 2em;
+      }
+    }
+
+    &__sublink {
+      &.fd-side-nav__link--icon {
+        padding-left: 16px;
+      }
+      .fd-side-nav__icon {
+        width: 2em;
+      }
     }
   }
-  .fd-side-nav__sublink {
-    &.fd-side-nav__link--icon {
-      padding-left: 16px;
-    }
-    .fd-side-nav__icon {
-      width: 2em;
-    }
+
+  .lui-side-nav__footer {
+    display: block;
+    color: var(--fd-color-text-4);
+    padding: $footerPaddingVertical 20px;
   }
+
   .hideNavComponent {
     display: none;
   }
