@@ -4,7 +4,7 @@ import * as IframeHelpers from '../utilities/helpers/iframe-helpers';
 import * as GenericHelpers from '../utilities/helpers/generic-helpers';
 import * as RoutingHelpers from '../utilities/helpers/routing-helpers';
 import { createIframe } from '../utilities/helpers/iframe-helpers';
-import { LuigiConfig } from './config';
+import { LuigiConfig } from '../core-api';
 
 const iframeNavFallbackTimeout = 2000;
 let timeoutHandle;
