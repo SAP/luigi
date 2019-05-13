@@ -97,6 +97,12 @@ export const addRouteChangeListener = callback => {
   window.addEventListener('popstate', () => {
     callback(Routing.getModifiedPathname());
   });
+
+  window.addEventListener('message', e => {
+    if ('refreshRoute' === e.data.msg && e.origin === window.origin) {
+      callback(Routing.getModifiedPathname());
+    }
+  });
 };
 
 export const buildRoute = (node, path, params) =>

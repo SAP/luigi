@@ -7,8 +7,17 @@ import { LuigiConfig } from '../../src/core-api';
 
 describe('Iframe', () => {
   let node;
+  let component;
 
   beforeEach(() => {
+    let lastObj = {};
+    component = {
+      set: obj => {
+        Object.assign(lastObj, obj);
+      },
+      get: () => lastObj,
+      prepareInternalData: () => {}
+    };
     sinon.stub(LuigiConfig, 'getConfigValue');
 
     node = {
@@ -17,12 +26,14 @@ describe('Iframe', () => {
           style: {
             display: null
           },
-          id: 1
+          id: 1,
+          vg: 'tets1'
         },
         {
           style: {
             display: null
           },
+          pv: 'pv',
           id: 2
         },
         {
@@ -30,6 +41,18 @@ describe('Iframe', () => {
             display: null
           },
           id: 3
+        },
+        {
+          style: {
+            display: null
+          },
+          id: 4
+        },
+        {
+          style: {
+            display: 'none'
+          },
+          id: 5
         }
       ],
       removeChild: child => {
@@ -38,6 +61,12 @@ describe('Iframe', () => {
             node.children.splice(i, 1);
           }
         });
+      },
+      firstChild: () => {
+        node.children[0];
+      },
+      insertBefore: (iframe, child) => {
+        node.children.unshift(iframe);
       }
     };
   });
@@ -50,19 +79,12 @@ describe('Iframe', () => {
   });
 
   describe('setActiveIframeToPrevious', () => {
-    it('standard', () => {
+    it('goBack with preserved view situation', () => {
+      sinon.stub(document, 'querySelectorAll').callsFake(() => node.children);
       Iframe.setActiveIframeToPrevious(node);
 
-      assert.equal(node.children.length, 2);
+      assert.equal(node.children.length, 4);
       assert.equal(node.children[0].style.display, 'block');
-    });
-
-    it('goBack', () => {
-      Iframe.setActiveIframeToPrevious(node);
-
-      assert.equal(node.children.length, 2);
-      assert.equal(node.children[0].style.display, 'block');
-      assert.equal(node.children[0].id, 2);
     });
   });
 
@@ -83,7 +105,69 @@ describe('Iframe', () => {
   it('removeInactiveIframes', () => {
     node.removeChild = sinon.spy();
     Iframe.removeInactiveIframes(node);
+    assert.equal(node.removeChild.callCount, 1);
+  });
 
-    assert.equal(node.removeChild.callCount, 2);
+  describe('create new iframe with different viewgroup and dont delete the previous one (cache)', () => {
+    it('navigate', () => {
+      sinon.stub(document, 'querySelectorAll').callsFake(() => [
+        {
+          src: 'http://url.com/app.html!#/prevUrl',
+          style: { display: 'block' },
+          vg: 'tets1'
+        }
+      ]);
+      const config = {
+        iframe: {
+          src: 'http://luigi.url.de',
+          vg: 'tets2'
+        }
+      };
+      component.set({
+        viewUrl: 'http://luigi.url.de/1',
+        viewGroup: 'tets2',
+        previousNodeValues: {
+          viewUrl: 'http://luigi.url.desdf/1'
+        }
+      });
+
+      Iframe.navigateIframe(config, component, node);
+      assert.equal(node.children.length, 2);
+    });
+  });
+
+  describe('use cached iframe with same viewgroup and change viewUrl', () => {
+    it('navigate', () => {
+      sinon.stub(document, 'querySelectorAll').callsFake(() => [
+        {
+          src: 'http://luigi.url.de',
+          vg: 'tets1',
+          luigi: {
+            nextViewUrl: 'http://luigi.url.de/2'
+          },
+          style: { display: 'block' }
+        }
+      ]);
+      const config = {
+        iframe: {
+          src: 'http://luigi.url.de',
+          vg: 'tets1',
+          luigi: {
+            nextViewUrl: 'http://luigi.url.de/2'
+          }
+        },
+        navigateOk: true
+      };
+      component.set({
+        viewUrl: 'http://luigi.url.de/1',
+        viewGroup: 'tets1',
+        previousNodeValues: {
+          viewUrl: 'http://luigi.url.de/previous'
+        }
+      });
+      assert.equal(config.iframe.luigi.nextViewUrl, 'http://luigi.url.de/2');
+      Iframe.navigateIframe(config, component, node);
+      assert.equal(config.iframe.luigi.nextViewUrl, 'http://luigi.url.de/1');
+    });
   });
 });

@@ -5,7 +5,7 @@ import { auth } from './auth';
 class LuigiConfigManager {
   constructor() {
     this.configReadyTimeout = {
-      valueMs: 2000,
+      valueMs: 65000,
       id: undefined
     };
 

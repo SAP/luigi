@@ -4,12 +4,23 @@ import * as IframeHelpers from '../utilities/helpers/iframe-helpers';
 import * as GenericHelpers from '../utilities/helpers/generic-helpers';
 import * as RoutingHelpers from '../utilities/helpers/routing-helpers';
 import { createIframe } from '../utilities/helpers/iframe-helpers';
+import { LuigiConfig } from './config';
 
 const iframeNavFallbackTimeout = 2000;
 let timeoutHandle;
 
 export const getActiveIframe = node => {
-  return node.firstChild;
+  const children = [...node.children];
+  let activeIframe = [];
+  if (children.length > 0) {
+    activeIframe = children.filter(child => child.style.display !== 'none');
+  }
+  return activeIframe[0];
+};
+
+export const getIframeContainer = () => {
+  const container = Array.from(document.querySelectorAll('.iframeContainer'));
+  return container && container.length > 0 ? container[0] : undefined;
 };
 
 export const getAllIframes = modalIframe => {
@@ -21,25 +32,117 @@ export const getAllIframes = modalIframe => {
 };
 
 export const setActiveIframeToPrevious = node => {
-  const iframesInDom = Array.from(node.children);
-  if (iframesInDom.length === 0) {
-    return;
-  } else if (iframesInDom.length === 1) {
-    iframesInDom[0].style.display = 'block';
+  const iframesInDom = getIframesInDom();
+  const preservedViews = getPreservedViewsInDom(iframesInDom);
+  if (preservedViews.length === 0) {
     return;
   }
+  const activeIframe = getActiveIframe(node);
   IframeHelpers.hideElementChildren(node);
-  node.removeChild(iframesInDom[0]);
-  iframesInDom[1].style.display = 'block';
+  if (activeIframe) {
+    node.removeChild(activeIframe);
+  }
+  //unmark next preserved view as pv
+  preservedViews[0].pv = undefined;
+  preservedViews[0].style.display = 'block';
 };
 
 export const removeInactiveIframes = node => {
   const children = Array.from(node.children);
-  children.forEach((child, index) => {
-    if (index > 0) {
+  children.forEach(child => {
+    if (child.style.display === 'none' && !child.vg) {
       node.removeChild(child);
     }
   });
+};
+
+export const hasIsolatedView = (
+  isolateView,
+  isSameViewGroup,
+  isolateAllViews
+) => {
+  return (
+    isolateView ||
+    (isolateAllViews && !(isolateView === false) && !isSameViewGroup)
+  );
+};
+
+export const removeIframe = (iframe, node) => {
+  const children = Array.from(node.children);
+  children.forEach(child => {
+    if (child === iframe) {
+      node.removeChild(child);
+    }
+  });
+};
+
+export const getIframesInDom = () => {
+  return Array.from(document.querySelectorAll('.iframeContainer iframe'));
+};
+
+export const getPreservedViewsInDom = iframes => {
+  return iframes.filter(iframe => iframe.pv);
+};
+
+const getAllViewGroupSettings = () => {
+  return LuigiConfig.getConfigValue('navigation.viewGroupSettings');
+};
+
+const getViewGroupSettings = viewGroup => {
+  const viewGroupSettings = getAllViewGroupSettings();
+  if (viewGroup && viewGroupSettings && viewGroupSettings[viewGroup]) {
+    return viewGroupSettings[viewGroup];
+  } else {
+    return {};
+  }
+};
+
+export const canCache = viewGroup => {
+  const vgSettings = getViewGroupSettings(viewGroup);
+  return vgSettings && vgSettings.preloadUrl;
+};
+
+export const switchActiveIframe = (
+  container,
+  newActiveIframe,
+  removeCurrentActive
+) => {
+  const currentActiveIframe = getActiveIframe(container);
+  if (currentActiveIframe !== newActiveIframe) {
+    let newActiveFound = false;
+    const children = Array.from(container.children);
+    children.forEach(child => {
+      if (child === currentActiveIframe) {
+        if (removeCurrentActive) {
+          container.removeChild(child);
+        } else {
+          child.style.display = 'none';
+          const vgSettings = getViewGroupSettings(child.vg);
+          if (vgSettings && vgSettings.preloadUrl) {
+            const message = {
+              msg: 'luigi.navigate',
+              viewUrl: vgSettings.preloadUrl,
+              context: JSON.stringify({}),
+              nodeParams: JSON.stringify({}),
+              pathParams: JSON.stringify({}),
+              internal: JSON.stringify({})
+            };
+            IframeHelpers.sendMessageToIframe(child, message);
+          }
+        }
+      }
+      if (child === newActiveIframe) {
+        newActiveFound = true;
+      }
+    });
+    if (newActiveIframe) {
+      newActiveIframe.style.display = 'block';
+      if (!newActiveFound) {
+        container.insertBefore(newActiveIframe, container.firstChild);
+      }
+    }
+  }
+  return newActiveIframe;
 };
 
 export const navigateIframe = (config, component, node) => {
@@ -49,26 +152,77 @@ export const navigateIframe = (config, component, node) => {
   if (viewUrl) {
     viewUrl = RoutingHelpers.substituteViewUrl(viewUrl, componentData);
   }
-
   const isSameViewGroup = IframeHelpers.isSameViewGroup(config, component);
+  const previousViewIsolated = hasIsolatedView(
+    componentData.previousNodeValues.isolateView,
+    isSameViewGroup,
+    config.isolateAllViews
+  );
+  const nextViewIsolated = hasIsolatedView(
+    componentData.isolateView,
+    isSameViewGroup,
+    config.isolateAllViews
+  );
   const canReuseIframe = IframeHelpers.canReuseIframe(config, component);
-  if (
-    (!componentData.isNavigateBack &&
-      (IframeHelpers.hasIframeIsolation(component) ||
-        !canReuseIframe ||
-        Boolean(config.builderCompatibilityMode))) ||
-    (config.isolateAllViews &&
-      !(componentData.isolateView === false) &&
-      !isSameViewGroup)
-  ) {
-    const componentData = component.get();
+  let activeIframe = getActiveIframe(node);
+
+  const iframes = getIframesInDom();
+  const goBackStack = getPreservedViewsInDom(iframes);
+  let firstInGoBackStack = undefined;
+  let pvSituation = false;
+  if (goBackStack.length > 0) {
+    firstInGoBackStack = goBackStack.shift();
+    if (firstInGoBackStack === activeIframe) {
+      pvSituation = true;
+      activeIframe = undefined;
+      config.iframe = undefined;
+    }
+  }
+
+  if (!pvSituation && !component.get().isNavigateBack) {
+    // if previous view must be isolated
+    if (activeIframe && previousViewIsolated) {
+      activeIframe = switchActiveIframe(node, undefined, true);
+    }
+
+    // if next view must be isolated
+    if (activeIframe && nextViewIsolated) {
+      activeIframe = switchActiveIframe(node, undefined, !activeIframe.vg);
+    }
+
+    // if next view is not isolated we can pick a iframe with matching viewGroup from the pool
+    let targetIframe;
+    if (!nextViewIsolated && componentData.viewGroup) {
+      const iframes = getIframesInDom();
+      const sameViewGroupIframes = iframes.filter(iframe => {
+        return iframe.vg === componentData.viewGroup;
+      });
+      if (sameViewGroupIframes.length > 0) {
+        targetIframe = sameViewGroupIframes[0];
+
+        // make the targetIframe the new active iframe
+        activeIframe = switchActiveIframe(node, targetIframe, !activeIframe.vg);
+      }
+    }
+
+    if (activeIframe && !targetIframe) {
+      if (activeIframe.vg) {
+        activeIframe = switchActiveIframe(node, undefined, false);
+      } else if (!canReuseIframe) {
+        activeIframe = switchActiveIframe(node, undefined, true);
+      }
+    }
+
+    config.iframe = activeIframe;
+  }
+
+  if (!config.iframe) {
     // preserveView, hide other frames, else remove
-    if (config.iframe === null) {
+    if (pvSituation) {
       IframeHelpers.hideElementChildren(node);
     } else {
       IframeHelpers.removeElementChildren(node);
     }
-
     if (componentData.viewUrl) {
       if (
         GenericHelpers.getConfigValueFromObject(
@@ -82,6 +236,13 @@ export const navigateIframe = (config, component, node) => {
       }
       config.navigateOk = undefined;
       config.iframe = createIframe(viewUrl);
+      if (
+        componentData.viewGroup &&
+        !nextViewIsolated &&
+        canCache(componentData.viewGroup)
+      ) {
+        config.iframe['vg'] = componentData.viewGroup;
+      }
 
       node.insertBefore(config.iframe, node.firstChild);
 
@@ -93,9 +254,13 @@ export const navigateIframe = (config, component, node) => {
       }
     }
   } else {
+    component.set({ showLoadingIndicator: false });
     const goBackContext = component.get().goBackContext;
     config.iframe.style.display = 'block';
     config.iframe.luigi.nextViewUrl = viewUrl;
+    config.iframe['vg'] = canCache(componentData.viewGroup)
+      ? componentData.viewGroup
+      : undefined;
     const message = {
       msg: 'luigi.navigate',
       viewUrl: viewUrl,
@@ -125,20 +290,5 @@ export const navigateIframe = (config, component, node) => {
         navigateIframe(config, component, node);
       }
     }, iframeNavFallbackTimeout);
-  }
-};
-
-export const reloadActiveIframe = () => {
-  const visibleIframe = IframeHelpers.getVisibleIframes().pop();
-
-  if (visibleIframe) {
-    if (
-      visibleIframe.contentDocument &&
-      visibleIframe.contentDocument.location
-    ) {
-      visibleIframe.contentDocument.location.reload(true);
-    } else {
-      visibleIframe.src = visibleIframe.src;
-    }
   }
 };

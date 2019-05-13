@@ -9,9 +9,12 @@ export const hideElementChildren = node => {
 };
 
 export const removeElementChildren = node => {
-  while (node.firstChild) {
-    node.removeChild(node.firstChild);
-  }
+  const children = [...node.children];
+  children.forEach(child => {
+    if (!child.vg) {
+      node.removeChild(child);
+    }
+  });
 };
 
 export const replaceVars = (viewUrl, params, prefix, parenthesis = true) => {
@@ -22,9 +25,9 @@ export const replaceVars = (viewUrl, params, prefix, parenthesis = true) => {
         new RegExp(
           GenericHelpers.escapeRegExp(
             (parenthesis ? '{' : '') +
-              prefix +
-              entry[0] +
-              (parenthesis ? '}' : '')
+            prefix +
+            entry[0] +
+            (parenthesis ? '}' : '')
           ),
           'g'
         ),
@@ -45,6 +48,7 @@ export const replaceVars = (viewUrl, params, prefix, parenthesis = true) => {
 };
 
 export const isSameDomain = (config, component) => {
+  //TODO rename to reflect the fact that it checks for URL till hash (which is more than just domain)
   if (config.iframe) {
     const componentData = component.get();
     const previousUrl = GenericHelpers.getUrlWithoutHash(
