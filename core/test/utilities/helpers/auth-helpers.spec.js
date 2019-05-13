@@ -21,9 +21,54 @@ describe('Auth-helpers', () => {
     window.location = windowLocationImplementation;
   });
 
+  describe('parseUrlAuthErrors', () => {
+    it('returns complete error object', () => {
+      sinon
+        .stub(GenericHelpers, 'getUrlParameter')
+        .onFirstCall()
+        .returns('mockError')
+        .onSecondCall()
+        .returns('an error description');
+
+      const err = AuthHelpers.parseUrlAuthErrors();
+      assert.equal(err.error, 'mockError');
+      assert.equal(err.errorDescription, 'an error description');
+
+      GenericHelpers.getUrlParameter.restore();
+    });
+
+    it('returns only error without description', () => {
+      sinon
+        .stub(GenericHelpers, 'getUrlParameter')
+        .onFirstCall()
+        .returns('mockError')
+        .onSecondCall()
+        .returns(undefined);
+
+      const err = AuthHelpers.parseUrlAuthErrors();
+      assert.equal(err.error, 'mockError');
+      assert.equal(err.errorDescription, undefined);
+
+      GenericHelpers.getUrlParameter.restore();
+    });
+
+    it('without error', () => {
+      sinon
+        .stub(GenericHelpers, 'getUrlParameter')
+        .onFirstCall()
+        .returns(undefined)
+        .onSecondCall()
+        .returns(undefined);
+
+      assert.equal(AuthHelpers.parseUrlAuthErrors(), undefined);
+
+      GenericHelpers.getUrlParameter.restore();
+    });
+  });
+
   describe('handleUrlAuthErrors', () => {
     beforeEach(() => {
-      sinon.stub(LuigiAuth, 'handleAuthEvent');
+      sinon.spy(LuigiAuth, 'handleAuthEvent');
     });
     afterEach(() => {
       sinon.restore();
@@ -40,45 +85,37 @@ describe('Auth-helpers', () => {
     });
 
     it('with error param', async () => {
-      sinon
-        .stub(GenericHelpers, 'getUrlParameter')
-        .onFirstCall()
-        .returns('mockError')
-        .onSecondCall()
-        .returns(undefined);
-
-      await AuthHelpers.handleUrlAuthErrors(mockProviderInstanceSettings);
+      await AuthHelpers.handleUrlAuthErrors(
+        mockProviderInstanceSettings,
+        'mockError'
+      );
       assert.isTrue(LuigiAuth.handleAuthEvent.calledOnce);
-      GenericHelpers.getUrlParameter.reset();
     });
 
     it('with error and error param', async () => {
       const error = 'mockError';
       const errorDescription = 'An error description';
-      sinon
-        .stub(GenericHelpers, 'getUrlParameter')
-        .onFirstCall()
-        .returns(error)
-        .onSecondCall()
-        .returns(errorDescription);
 
-      await AuthHelpers.handleUrlAuthErrors(mockProviderInstanceSettings);
-      assert.isTrue(LuigiAuth.handleAuthEvent.calledOnce);
-      assert.isTrue(
-        LuigiAuth.handleAuthEvent.calledWith(
-          'onAuthError',
-          mockProviderInstanceSettings,
-          { error, errorDescription },
-          mockProviderInstanceSettings.logoutUrl +
-            '?post_logout_redirect_uri=' +
-            mockProviderInstanceSettings.post_logout_redirect_uri +
-            '&error=' +
-            error +
-            '&errorDescription=' +
-            error
-        )
+      await AuthHelpers.handleUrlAuthErrors(
+        mockProviderInstanceSettings,
+        error,
+        errorDescription
       );
-      GenericHelpers.getUrlParameter.reset();
+
+      assert.isTrue(LuigiAuth.handleAuthEvent.calledOnce, 'called once');
+      LuigiAuth.handleAuthEvent.calledWith(
+        'onAuthError',
+        mockProviderInstanceSettings,
+        { error, errorDescription },
+        mockProviderInstanceSettings.logoutUrl +
+          '?post_logout_redirect_uri=' +
+          mockProviderInstanceSettings.post_logout_redirect_uri +
+          '&error=' +
+          error +
+          '&errorDescription=' +
+          error,
+        'called with valid data'
+      );
     });
   });
 });

@@ -57,7 +57,7 @@
           <div class="hint" id="message" data-e2e="logout-message">Sign in again to continue working on awesome things!</div>
         </p>
         <p class="fd-has-text-align-center">
-          <button class="fd-button--emphasized " onclick="login()">Re-Login</button>
+          <button class="fd-button--emphasized" onclick="login()">Re-Login</button>
         </p>
       </section>
     </div>
@@ -74,14 +74,10 @@ function getUrlParameter(name) {
   var regex = new RegExp('[\\?&]' + name + '=([^&#]*)');
   var results = regex.exec(location.search);
   return results && decodeURIComponent(results[1].replace(/\+/g, ' ')) || '';
-};
+}
 
 var error = getUrlParameter('error');
 var errorDescription = getUrlParameter('errorDescription');
-
-if (errorDescription) {
-  document.getElementById('message').innerText = errorDescription;
-}
 
 switch (error) {
   case 'tokenExpired':
@@ -94,6 +90,11 @@ switch (error) {
   default:
     break;
 }
+
+if (errorDescription) {
+  document.getElementById('message').innerText = errorDescription;
+}
+
 </script>
 </body>
 </html>
