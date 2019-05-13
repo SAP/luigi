@@ -34,11 +34,11 @@
   "devDependencies": {
     "@angular-builders/custom-webpack": "7.1.1",
     "@angular-builders/dev-server": "7.1.1",
-    "@angular-devkit/build-angular": "~0.7.0",
+    "@angular-devkit/build-angular": "^0.13.9",
     "@angular-devkit/core": "0.6.8",
     "@angular-devkit/schematics": "^0.6.8",
     "@angular/cli": "^6.1.1",
-    "@angular/compiler-cli": "^6.1.0",
+    "@angular/compiler-cli": "^7.2.15",
     "@angular/language-service": "^6.1.0",
     "@babel/core": "^7.0.0",
     "@babel/plugin-proposal-class-properties": "^7.2.3",
@@ -56,7 +56,7 @@
     "cypress-plugin-retries": "^1.2.0",
     "ts-node": "~3.2.0",
     "tslint": "~5.7.0",
-    "typescript": "~2.7.2",
+    "typescript": "^3.2.4",
     "webpack": "^4.27.1",
     "webpack-dev-server": "^3.1.14"
   }
