@@ -25,9 +25,9 @@ export const replaceVars = (viewUrl, params, prefix, parenthesis = true) => {
         new RegExp(
           GenericHelpers.escapeRegExp(
             (parenthesis ? '{' : '') +
-            prefix +
-            entry[0] +
-            (parenthesis ? '}' : '')
+              prefix +
+              entry[0] +
+              (parenthesis ? '}' : '')
           ),
           'g'
         ),
