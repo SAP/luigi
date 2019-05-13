@@ -62,8 +62,13 @@ const orderNodes = nodes => {
   });
 };
 
-export const groupNodesBy = (nodes, property) => {
+export const virtualGroupPrefix = '___';
+
+export const groupNodesBy = (nodes, property, useVirtualGroups) => {
   const result = {};
+  let groupCounter = 0;
+  let virtualGroupCounter = 0;
+
   nodes.forEach(node => {
     let key;
     let metaInfo;
@@ -73,13 +78,27 @@ export const groupNodesBy = (nodes, property) => {
       metaInfo = Object.assign({}, category);
     } else {
       key = category;
+      if (useVirtualGroups && !category) {
+        key = virtualGroupPrefix + virtualGroupCounter;
+      }
       metaInfo = {
         label: key,
         icon: 'lui-blank'
       };
     }
+
     let arr = result[key];
     if (!arr) {
+      if (useVirtualGroups && category) {
+        virtualGroupCounter++;
+      }
+      if (
+        metaInfo.order === undefined ||
+        metaInfo.order === null ||
+        metaInfo.order === ''
+      ) {
+        metaInfo.order = key ? groupCounter++ : -1;
+      }
       arr = [];
       result[key] = arr;
     }
