@@ -19,7 +19,7 @@ auth: {
 The first parameter is always the current **settings** object of the currently active authorization provider.  This object contains the user provider configuration with the default values.
 The second parameter is optional and it is either **authData** or **error**.
 
-You can disable the default behavior by making the function return `false`. As a result, the lifecycle execution stops with this function. This, however, may lead to blank pages after the user logs out since typically the page redirects to a logout, login or home page.
+You can disable the default behavior of `onAuthExpired` and `onAuthError` by making the function return `false`. As a result, the lifecycle execution stops with this function. This, however, may lead to blank pages after the user logs out since typically the page redirects to a logout, login or home page.
 
 ## Events
 
@@ -28,6 +28,6 @@ You can disable the default behavior by making the function return `false`. As a
     - by Luigi **reason** URL parameter with optional **error** URL parameter for detailed description was found on Luigi initialization. The OAuth2Provider uses this approach by redirecting from the authorization provider to `luigi.domain/?reason=someError&error=Error detail describe`.
     - by the OIDC provider if silent access token renewal fails    
 
-    Return `false` to prevent redirecting to `logoutUrl` after executing this function.
+    Return `false` to prevent redirecting to `logoutUrl` after executing this function. It goes to the Luigi main route `/` instead.
 -   `onAuthExpired` **[function](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Statements/function)** is executed if the token expires during runtime, or if Luigi is opened with outdated authorization data in the local storage. Return `false` to prevent redirecting to `logoutUrl` after executing this function.
--   `onLogout` **[function](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Statements/function)** is executed after the user logs out. Return `false` to prevent redirecting to `logoutUrl` after executing this function.
+-   `onLogout` **[function](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Statements/function)** is executed after the user logs out.
