@@ -21,4 +21,4 @@ settings: {
 * **header.title** defines the top left navigation title.
 * **header.favicon** defines the favicon. It rquires a standard favicon file with the `.ico` extension, and 16x16px or 32x32px dimensions.
 * **responsiveNavigation** allows adding a button on the left side of the top navigation. Upon click, the button shows or hides the left navigation. The possible values are `simple` and `simpleMobileOnly`. `simple` displays the button regardless of the browser window´s size, while `simpleMobileOnly` shows the button when the width is lower than `600px`. If you don't specify any value for  **responsiveNavigation**, the button will not be displayed. The same applies when you enable **hideSideNav** for the current active navigation node. 
-* **sideNavFooterText** a string that is displayed in a sticky footer inside Side Navigation. Good place to display the version of your application.
+* **sideNavFooterText** is a string displayed in a sticky footer inside the Side Navigation. It is a good place to display the version of your application.
