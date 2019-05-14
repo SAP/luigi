@@ -45,14 +45,12 @@ describe('Iframe-helpers', () => {
     });
 
     it('getVisibleIframes', () => {
-      sinon
-        .stub(document, 'querySelectorAll')
-        .callsFake(() => [
-          {
-            src: 'http://url.com/app.html!#/prevUrl',
-            style: { display: 'block' }
-          }
-        ]);
+      sinon.stub(document, 'querySelectorAll').callsFake(() => [
+        {
+          src: 'http://url.com/app.html!#/prevUrl',
+          style: { display: 'block' }
+        }
+      ]);
       const visibleIframes = IframeHelpers.getVisibleIframes();
       assert.equal(visibleIframes.length, 1);
     });
