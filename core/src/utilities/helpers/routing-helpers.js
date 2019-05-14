@@ -1,6 +1,6 @@
 // Helper methods for 'routing.js' file. They don't require any method from 'routing.js' but are required by them.
 // They are also rarely used directly from outside of 'routing.js'
-import { LuigiConfig } from '../../services/config';
+import { LuigiConfig } from '../../core-api';
 import { sanitizeParam } from './escaping-helpers';
 import * as AsyncHelpers from './async-helpers';
 import * as GenericHelpers from './generic-helpers';

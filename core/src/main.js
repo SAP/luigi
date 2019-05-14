@@ -1,6 +1,6 @@
 import App from './App.html';
 import { authLibraries } from './providers/auth/libraryLoaders';
-import { LuigiConfig } from './services/config';
+import { LuigiConfig } from './core-api';
 
 const configReadyCallback = () => {
   const authLib = LuigiConfig.getConfigValue('auth.use');

@@ -1,4 +1,4 @@
-import { LuigiConfig } from '../../services/config.js';
+import { LuigiConfig } from '../../core-api';
 
 export const processHeaderSettings = component => {
   return LuigiConfig.getConfigValueAsync('settings.header').then(header => {

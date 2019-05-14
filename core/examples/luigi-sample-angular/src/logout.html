@@ -57,7 +57,7 @@
           <div class="hint" id="message" data-e2e="logout-message">Sign in again to continue working on awesome things!</div>
         </p>
         <p class="fd-has-text-align-center">
-          <button class="fd-button--emphasized " onclick="login()">Re-Login</button>
+          <button class="fd-button--emphasized" onclick="login()">Re-Login</button>
         </p>
       </section>
     </div>
@@ -74,16 +74,12 @@ function getUrlParameter(name) {
   var regex = new RegExp('[\\?&]' + name + '=([^&#]*)');
   var results = regex.exec(location.search);
   return results && decodeURIComponent(results[1].replace(/\+/g, ' ')) || '';
-};
-
-var reason = getUrlParameter('reason');
-var error = getUrlParameter('error');
-
-if (error) {
-  document.getElementById('message').innerText = error;
 }
 
-switch (reason) {
+var error = getUrlParameter('error');
+var errorDescription = getUrlParameter('errorDescription');
+
+switch (error) {
   case 'tokenExpired':
     document.getElementById('headline').innerText = 'Your session has expired.';
     break;
@@ -94,6 +90,11 @@ switch (reason) {
   default:
     break;
 }
+
+if (errorDescription) {
+  document.getElementById('message').innerText = errorDescription;
+}
+
 </script>
 </body>
 </html>

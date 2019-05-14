@@ -72,8 +72,18 @@
     <div class="panel">
       <h1>Login to Luigi sample app</h1>
       <form>
-        <input type="text" class="form-input" value="LuigiUsername" /><br />
-        <input type="password" class="form-input" value="LuigiPassword" /><br />
+        <input
+          type="text"
+          class="form-input"
+          value="LuigiUsername"
+          autocomplete="username"
+        /><br />
+        <input
+          type="password"
+          class="form-input"
+          value="LuigiPassword"
+          autocomplete="current-password"
+        /><br />
         <button id="login-button">Login</button>
       </form>
     </div>
