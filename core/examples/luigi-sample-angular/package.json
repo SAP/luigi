@@ -28,7 +28,6 @@
     "core-js": "^2.4.1",
     "fiori-fundamentals": "^1.4.1",
     "rxjs": "6.2.0",
-    "webpack-cli": "^3.2.3",
     "zone.js": "^0.8.14"
   },
   "devDependencies": {
@@ -58,6 +57,7 @@
     "tslint": "~5.7.0",
     "typescript": "^3.2.4",
     "webpack": "^4.27.1",
+    "webpack-cli": "^3.2.3",
     "webpack-dev-server": "^3.1.14"
   }
 }
