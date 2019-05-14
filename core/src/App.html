@@ -64,9 +64,9 @@
   import * as GenericHelpers from './utilities/helpers/generic-helpers';
   import * as AuthHelpers from './utilities/helpers/auth-helpers';
   import * as iFrameHelpers from './utilities/helpers/iframe-helpers';
+  import { CSS_BREAKPOINTS } from './utilities/constants';
 
   const removeQueryParams = str => str.split('?')[0];
-  const mobileBreakpoint = 599;
 
   const isValidBackRoute = (preservedViews, routeHash) => {
     if (preservedViews.length === 0) {
@@ -539,14 +539,13 @@
         document.body.classList.remove('lui-leftNavToggle');
       },
       handleNavClick(node) {
-        this.closeLeftNav();
         this.getUnsavedChangesModalPromise().then(() => {
+          this.closeLeftNav();
           Routing.handleRouteClick(node, this);
         });
       },
       onResize() {
-        if (window.innerWidth > mobileBreakpoint) {
-          console.log(this);
+        if (window.innerWidth >= CSS_BREAKPOINTS.desktop) {
           this.closeLeftNav();
         }
       },
@@ -741,7 +740,7 @@
 <style type="text/scss">
   $topNavHeight: 48px;
   $leftNavWidth: 320px;
-  $mobileBreakpoint: 599px;
+  $css-breakpoint--desktop: 600px;
   :global(html) {
     box-sizing: border-box;
     font-size: 14px;
@@ -840,10 +839,10 @@
 
   :global(body.lui-simpleSlideInNav) {
     :global(.fd-app__sidebar) {
-      -webkit-transition-property: width;
-      -moz-transition-property: width;
-      -o-transition-property: width;
-      transition-property: width;
+      -webkit-transition-property: left;
+      -moz-transition-property: left;
+      -o-transition-property: left;
+      transition-property: left;
       -webkit-transition-duration: 0.1s;
       -moz-transition-duration: 0.1s;
       -o-transition-duration: 0.1s;
@@ -871,7 +870,7 @@
     }
   }
 
-  @media (min-width: $mobileBreakpoint + 1) {
+  @media (min-width: $css-breakpoint--desktop) {
     :global(.fd-shellbar__title) {
       display: inline;
     }
@@ -886,12 +885,12 @@
       }
 
       :global(.fd-app__sidebar) {
-        width: 0px;
+        left: -$leftNavWidth;
       }
     }
   }
 
-  @media (max-width: $mobileBreakpoint) {
+  @media (max-width: $css-breakpoint--desktop - 1) {
     :global(body.lui-simpleSlideInNav) {
       .iframeContainer,
       .spinnerContainer {
@@ -899,7 +898,7 @@
       }
 
       :global(.fd-app__sidebar) {
-        width: 0px;
+        left: -$leftNavWidth;
       }
     }
 
@@ -907,6 +906,7 @@
       :global(.fd-app__sidebar) {
         display: block;
         width: $leftNavWidth;
+        left: 0;
         -webkit-box-shadow: 6px 0px 9px 0px rgba(0, 0, 0, 0.44);
         -moz-box-shadow: 6px 0px 9px 0px rgba(0, 0, 0, 0.44);
         box-shadow: 6px 0px 9px 0px rgba(0, 0, 0, 0.44);
