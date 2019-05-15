@@ -13,7 +13,7 @@ export const processHeaderSettings = component => {
 
     const hasLogo = Boolean(header.logo);
     component.set({ hasLogo });
-    if (hasLogo && component.refs.logo) {
+    if (hasLogo && component.refs && component.refs.logo) {
       component.refs.logo.src = header.logo;
     }
 
