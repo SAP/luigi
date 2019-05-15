@@ -18,9 +18,9 @@
 <script>
   import * as Navigation from './navigation/services/navigation';
   import * as RoutingHelpers from './utilities/helpers/routing-helpers';
-  import { LuigiConfig } from './services/config';
+  import { LuigiConfig } from './core-api';
   import * as GenericHelpers from './utilities/helpers/generic-helpers';
-  import {createIframe} from './utilities/helpers/iframe-helpers';
+  import { createIframe } from './utilities/helpers/iframe-helpers';
 
   const prepareNodeData = async (component, path) => {
     const pathUrlRaw =

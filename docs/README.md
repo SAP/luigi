@@ -9,6 +9,7 @@ Set up and configure the main application.
 * [Application setup](application-setup.md) shows you the first steps to prepare your application for development.
 * [Navigation configuration](navigation-configuration.md) shows you how to configure navigation in Luigi.
 * [Authorization configuration](authorization-configuration.md) guides you through the configuration to secure Luigi.
+* [Authorization events](authorization-events.md) guides you through the event configuration to react to Luigi authorization events.
 * [General settings](general-settings.md) provides you with additional configuration parameters for Luigi.
 
 ## Luigi Client

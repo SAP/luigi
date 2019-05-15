@@ -1,4 +1,4 @@
-<svelte:window on:click="closeAllDropdowns()" on:blur="closeAllDropdowns()"/>
+<svelte:window on:click="closeAllDropdowns()" on:blur="closeAllDropdowns()" />
 {#if showTopNav}
 <div class="fd-shellbar {hideNavComponent ? 'hideNavComponent' : ''}">
   <div class="fd-shellbar__group fd-shellbar__group--start">
@@ -32,7 +32,8 @@
           aria-haspopup="true"
           on:click="handleClick(node)"
         >
-          {#if node.icon} {#if hasOpenUIicon(node)}
+          {#if node.icon}
+          {#if hasOpenUIicon(node)}
           <span
             class="fd-top-nav__icon sap-icon--{node.icon} sap-icon--m"
           ></span>
@@ -42,14 +43,17 @@
             src="{node.icon}"
           >
           {/if}
+          <!-- end hasOpenUIicon-->
           {:else}
           <span>{node.label}</span>
           {/if}
+          <!-- end node.icon -->
           {#if node.externalLink && node.externalLink.url}
           <span
             class="sap-icon--action sap-icon--s"
           ></span>
           {/if}
+          <!-- end node.externallLink.url -->
         </button>
       </div>
       {/if}
@@ -173,6 +177,7 @@
                 <Authorization
                   on:toggleDropdownState="toggleDropdownState('profilePopover')"
                   on:userInfoUpdated="userInfoUpdate(event)"
+                  {urlAuthError}
                 />
               </div>
             </div>
@@ -195,6 +200,7 @@
   on:toggleDropdownState="toggleDropdownState('profilePopover')"
   on:userInfoUpdated="userInfoUpdate(event)"
   isHidden="{true}"
+  {urlAuthError}
 />
 {/if}
 <script type="text/javascript">
@@ -202,7 +208,7 @@
   import LogoTitle from './LogoTitle.html';
   import Authorization from '../Authorization.html';
   import ProductSwitcher from './ProductSwitcher.html';
-  import { LuigiConfig } from '../services/config.js';
+  import { LuigiAuth, LuigiConfig } from '../core-api';
   import * as Routing from '../services/routing';
   import * as Navigation from './services/navigation.js';
   import * as NavigationHelpers from '../utilities/helpers/navigation-helpers';
@@ -242,7 +248,7 @@
   export default {
     oncreate() {
       this.set({
-        authorizationEnabled: LuigiConfig.isAuthorizationEnabled(),
+        authorizationEnabled: LuigiAuth.isAuthorizationEnabled(),
         autologinEnabled: !Boolean(
           LuigiConfig.getConfigValue('auth.disableAutoLogin')
         ),
@@ -254,7 +260,8 @@
         ),
         responsiveNavSetting: LuigiConfig.getConfigValue(
           'settings.responsiveNavigation'
-        )
+        ),
+        urlAuthError: AuthHelpers.parseUrlAuthErrors()
       });
     },
     onstate({ changed, current, previous }) {
