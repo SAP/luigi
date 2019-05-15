@@ -34,6 +34,10 @@ class LuigiConfigManager {
     const errorMsg =
       'Ups.. Looks like Luigi was not configured. Please use Luigi.setConfig(config) function to configure Luigi.';
     console.error(errorMsg);
+    this.setErrorMessage(errorMsg);
+  }
+
+  setErrorMessage(errorMsg) {
     var errorTextNode = document.createTextNode(errorMsg);
     var fd_ui = document.createElement('div');
     fd_ui.setAttribute('class', 'fd-ui');
@@ -91,9 +95,7 @@ class LuigiConfigManager {
    * @returns {boolean} returns true if authorization is enabled. Otherwise returns false.
    */
   isAuthorizationEnabled() {
-    const idpProviderName = this.getConfigValue('auth.use');
-    const idpProviderSettings = this.getConfigValue(`auth.${idpProviderName}`);
-    return !!idpProviderSettings;
+    return !!this.getConfigValue('auth.use');
   }
 }
 const LuigiInstance = new LuigiConfigManager();
