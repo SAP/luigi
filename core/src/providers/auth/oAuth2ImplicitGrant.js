@@ -147,6 +147,33 @@ export class oAuth2ImplicitGrant {
     }, expirationCheckInterval);
   }
 
+  setTokenExpireSoonAction() {
+    const expirationCheckInterval = 5000;
+    const beforeTokenExpirationTime = 300000; //5 min before
+    const expirationCheckIntervalInstance = setInterval(() => {
+      let authData = this.getAuthData();
+      if (!authData) {
+        return clearInterval(expirationCheckIntervalInstance);
+      }
+      const tokenExpirationDate = authData
+        ? authData.accessTokenExpirationDate || 0
+        : 0;
+      const currentDate = new Date();
+      if (
+        tokenExpirationDate - currentDate.getTime() <
+        beforeTokenExpirationTime
+      ) {
+        LuigiAuth.handleAuthEvent(
+          'onAuthExpireSoon',
+          this.settings,
+          undefined,
+          undefined
+        );
+        clearInterval(expirationCheckIntervalInstance);
+      }
+    }, expirationCheckInterval);
+  }
+
   generateNonce() {
     const validChars =
       '0123456789ABCDEFGHIJKLMNOPQRSTUVXYZabcdefghijklmnopqrstuvwxyz';
