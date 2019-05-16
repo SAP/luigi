@@ -1,5 +1,5 @@
 import * as GenericHelpers from '../../utilities/helpers/generic-helpers.js';
-import { LuigiAuth } from '../../core-api';
+import { LuigiAuth, LuigiConfig } from '../../core-api';
 
 export class oAuth2ImplicitGrant {
   constructor(settings = {}) {
@@ -148,30 +148,36 @@ export class oAuth2ImplicitGrant {
   }
 
   setTokenExpireSoonAction() {
-    const expirationCheckInterval = 5000;
-    const beforeTokenExpirationTime = 300000; //5 min before
-    const expirationCheckIntervalInstance = setInterval(() => {
-      let authData = this.getAuthData();
-      if (!authData) {
-        return clearInterval(expirationCheckIntervalInstance);
-      }
-      const tokenExpirationDate = authData
-        ? authData.accessTokenExpirationDate || 0
-        : 0;
-      const currentDate = new Date();
-      if (
-        tokenExpirationDate - currentDate.getTime() <
-        beforeTokenExpirationTime
-      ) {
-        LuigiAuth.handleAuthEvent(
-          'onAuthExpireSoon',
-          this.settings,
-          undefined,
-          undefined
-        );
-        clearInterval(expirationCheckIntervalInstance);
-      }
-    }, expirationCheckInterval);
+    const beforeTokenExpirationTime = LuigiConfig.getConfigValue(
+      'settings.beforeTokenExpirationTime'
+    );
+    if (beforeTokenExpirationTime) {
+      const expirationCheckInterval = LuigiConfig.getConfigValue(
+        'settings.expirationCheckInterval'
+      );
+      const expirationCheckIntervalInstance = setInterval(() => {
+        let authData = this.getAuthData();
+        if (!authData) {
+          return clearInterval(expirationCheckIntervalInstance);
+        }
+        const tokenExpirationDate = authData
+          ? authData.accessTokenExpirationDate || 0
+          : 0;
+        const currentDate = new Date();
+        if (
+          tokenExpirationDate - currentDate.getTime() <
+          beforeTokenExpirationTime
+        ) {
+          LuigiAuth.handleAuthEvent(
+            'onAuthExpireSoon',
+            this.settings,
+            undefined,
+            undefined
+          );
+          clearInterval(expirationCheckIntervalInstance);
+        }
+      }, expirationCheckInterval);
+    }
   }
 
   generateNonce() {
