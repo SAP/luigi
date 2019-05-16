@@ -58,4 +58,4 @@ Install [jq](https://stedolan.github.io/jq/) using the `brew install jq` command
 ## License
 
 Copyright (c) 2019 SAP SE or an SAP affiliate company. All rights reserved.
-This file is licensed under the Apache-2.0 license except as noted otherwise in the LICENSE file (/LICENSE).
+This file is licensed under the Apache-2.0 license except as noted otherwise in the [LICENSE](/LICENSE) file.
