@@ -1,4 +1,8 @@
+[![Build Status](https://travis-ci.org/SAP/luigi.svg?branch=master)](https://travis-ci.org/SAP/luigi)
 # Luigi
+<p align="center">
+ <img src="https://raw.githubusercontent.com/sap/luigi/master/logo.png" width="235">
+</p>
 
 ## Overview
 
@@ -50,3 +54,8 @@ Install [jq](https://stedolan.github.io/jq/) using the `brew install jq` command
 - Run `npm run test:compatibility` in the main repository folder to start regression testing. The system will prompt you to select the previous version. 
 - Run `npm run test:compatibility -- --tag latest` in the main repository folder to start regression testing with the last version preselected. 
 - On the CI, run `npm run test:compatibility -- --install --tag latest` in the main repository folder to install dependencies, bundle Luigi and run the tests with the last version preselected. 
+
+## License
+
+Copyright (c) 2019 SAP SE or an SAP affiliate company. All rights reserved.
+This file is licensed under the Apache-2.0 license except as noted otherwise in the LICENSE file (/LICENSE).
