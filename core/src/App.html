@@ -545,7 +545,7 @@
         });
       },
       onResize() {
-        if (window.innerWidth >= CSS_BREAKPOINTS.desktop) {
+        if (window.innerWidth >= CSS_BREAKPOINTS.desktopMinWidth) {
           this.closeLeftNav();
         }
       },
@@ -740,7 +740,7 @@
 <style type="text/scss">
   $topNavHeight: 48px;
   $leftNavWidth: 320px;
-  $css-breakpoint--desktop: 600px;
+  $desktop-min-width: 600px;
   :global(html) {
     box-sizing: border-box;
     font-size: 14px;
@@ -870,7 +870,7 @@
     }
   }
 
-  @media (min-width: $css-breakpoint--desktop) {
+  @media (min-width: $desktop-min-width) {
     :global(.fd-shellbar__title) {
       display: inline;
     }
@@ -890,7 +890,7 @@
     }
   }
 
-  @media (max-width: $css-breakpoint--desktop - 1) {
+  @media (max-width: $desktop-min-width - 1) {
     :global(body.lui-simpleSlideInNav) {
       .iframeContainer,
       .spinnerContainer {
