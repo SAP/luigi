@@ -8,10 +8,14 @@ const configReadyCallback = () => {
     authLibraries[authLib]();
   }
 
-  new App({
+  const app = new App({
     target: document.querySelector('body'),
     data: {}
   });
+
+  Luigi.showAlert = settings => {
+    app.showAlert(settings);
+  };
 };
 
 Luigi.setConfigCallbacks(configReadyCallback);
