@@ -98,7 +98,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "ssh://github.com/kyma-project/luigi.git"
+    "url": "ssh://github.com/SAP/luigi.git"
   },
   "dependencies": {
     "npm": "^6.5.0",
