@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# We're considering this file is located in ~/Sites/kyma-project and
+# We're considering this file is located in ~/Sites/SAP and
 # luigi is in ~/Sites/SAP/luigi with the branch checked out
 # that we want to test.
 
