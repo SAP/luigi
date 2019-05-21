@@ -4,7 +4,7 @@
   "description": "Javascript library supporting consumers of the Luigi framework",
   "repository": {
     "type": "git",
-    "url": "ssh://github.com/kyma-project/luigi.git"
+    "url": "ssh://github.com/SAP/luigi.git"
   },
   "publishConfig": {
     "tag": "luigi-client"
