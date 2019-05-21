@@ -1,26 +1,26 @@
-var crypto = require('crypto');
-var luigiInitialized = false;
-var defaultContextKeys = ['context', 'internal', 'nodeParams', 'pathParams'];
-var currentContext = defaultContextKeys.reduce(function(acc, key) {
+const crypto = require('crypto');
+
+let luigiInitialized = false;
+const defaultContextKeys = ['context', 'internal', 'nodeParams', 'pathParams'];
+let currentContext = defaultContextKeys.reduce(function(acc, key) {
   acc[key] = {};
   return acc;
 }, {});
 
-var _onContextUpdatedFns = {};
-var _onInitFns = {};
-var authData = {};
-var pathExistsPromises = {};
-let promises = {
+const _onContextUpdatedFns = {};
+const _onInitFns = {};
+let authData = {};
+const pathExistsPromises = {};
+const promises = {
   confirmationModal: {},
   alerts: {}
 };
+
 /**
  * Creates a random Id
  * @private
  */
-function _getRandomId() {
-  return Math.floor(Math.random() * 1e9) + '';
-}
+const _getRandomId = () => Math.floor(Math.random() * 1e9) + '';
 
 /**
  * Simple function check.
@@ -28,33 +28,31 @@ function _getRandomId() {
  * @param item mixed
  * @returns {boolean}
  */
-function isFunction(item) {
-  return typeof item === 'function';
-}
+const isFunction = item => typeof item === 'function';
 
 /**
  * Iterates over an object and executes all top-level functions
  * with a given payload.
  * @private
  */
-function _callAllFns(objWithFns, payload) {
+const _callAllFns = (objWithFns, payload) => {
   for (var id in objWithFns) {
     if (objWithFns.hasOwnProperty(id) && isFunction(objWithFns[id])) {
       objWithFns[id](payload);
     }
   }
-}
+};
 
 /**
  * Adds event listener for communication with Luigi Core and starts communication
  * @private
  */
-function luigiClientInit() {
+const luigiClientInit = () => {
   /**
    * Save context data every time navigation to a different node happens
    * @private
    */
-  function setContext(rawData) {
+  const setContext = rawData => {
     for (var index = 0; index < defaultContextKeys.length; index++) {
       var key = defaultContextKeys[index];
       try {
@@ -71,13 +69,13 @@ function luigiClientInit() {
       }
     }
     currentContext = rawData;
-  }
+  };
 
-  function setAuthData(eventPayload) {
+  const setAuthData = eventPayload => {
     if (eventPayload) {
       authData = eventPayload;
     }
-  }
+  };
 
   window.addEventListener('message', function messageListener(e) {
     if ('luigi.init' === e.data.msg) {
@@ -134,7 +132,7 @@ function luigiClientInit() {
     },
     '*'
   );
-}
+};
 
 luigiClientInit();
 
@@ -189,24 +187,20 @@ const LuigiClient = {
    * @param {string} id the id that was returned by the `addContextUpdateListener` function
    * @memberof lifecycle
    */
-  removeContextUpdateListener: function removeContextUpdateListener(id) {
+  removeContextUpdateListener: id => {
     if (_onContextUpdatedFns[id]) {
       _onContextUpdatedFns[id] = undefined;
       return true;
     }
     return false;
   },
-  getToken: function getToken() {
-    return authData.accessToken;
-  },
+  getToken: () => authData.accessToken,
   /**
    * Returns the context object. Typically it is not required as the {@link #addContextUpdateListener addContextUpdateListener()} receives the same values.
    * @returns {Object} current context data
    * @memberof lifecycle
    */
-  getEventData: function getEventData() {
-    return currentContext.context;
-  },
+  getEventData: () => currentContext.context,
   /**
    * Returns the node parameters of the active URL.
    * Node parameters are defined like URL query parameters but with a specific prefix allowing Luigi to pass them to the micro front-end view.  The default prefix is **~** and you can use it in the following way: `https://my.luigi.app/home/products?~sort=asc~page=3`.
@@ -214,9 +208,7 @@ const LuigiClient = {
    * @returns {Object} node parameters, where the object property name is the node parameter name without the prefix, and its value is the value of the node parameter. For example `{sort: 'asc', page: 3}`
    * @memberof lifecycle
    */
-  getNodeParams: function getNodeParams() {
-    return currentContext.nodeParams;
-  },
+  getNodeParams: () => currentContext.nodeParams,
   /**
    * Returns the dynamic path parameters of the active URL.
    * Path parameters are defined by navigation nodes with a dynamic **pathSegment** value starting with **:**, such as **productId**.
@@ -225,9 +217,7 @@ const LuigiClient = {
    * @returns {Object} path parameters, where the object property name is the path parameter name without the prefix, and its value is the actual value of the path parameter. For example ` {productId: 1234, ...}`
    * @memberof lifecycle
    */
-  getPathParams: function getPathParams() {
-    return currentContext.pathParams;
-  },
+  getPathParams: () => currentContext.pathParams,
   /**
      * The Link Manager allows you to navigate to another route. Use it instead of an internal router to:
       - Route inside micro front-ends.
