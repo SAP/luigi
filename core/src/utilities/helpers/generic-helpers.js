@@ -74,6 +74,17 @@ export const getPathWithoutHash = path => {
 };
 
 /**
+ * Returns the value of a given url parameter name
+ * @param {string} name
+ */
+export const getUrlParameter = name => {
+  name = name.replace(/[\[]/, '\\[').replace(/[\]]/, '\\]');
+  var regex = new RegExp('[\\?&]' + name + '=([^&#]*)');
+  var result = regex.exec(window.location.search);
+  return (result && decodeURIComponent(result[1].replace(/\+/g, ' '))) || '';
+};
+
+/**
  * Prepend current url to redirect_uri, if it is a relative path
  * @param {path} string full url, relative or absolute path
  */

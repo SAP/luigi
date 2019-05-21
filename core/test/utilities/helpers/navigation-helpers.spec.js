@@ -37,6 +37,10 @@ describe('Navigation-helpers', () => {
       },
       pathSegment: 'pathSegment'
     };
-    console.log('tests ', NavigationHelpers.getNodePath(node));
+    assert.equal(
+      NavigationHelpers.getNodePath(node),
+      'parent/pathSegment',
+      'path should match'
+    );
   });
 });

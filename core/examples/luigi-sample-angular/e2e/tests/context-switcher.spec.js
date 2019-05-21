@@ -12,7 +12,7 @@ describe('Context switcher', () => {
 
     // click an action
     cy.get('.fd-product-menu .fd-popover__body')
-      .contains('New Environment (bottom)')
+      .contains('New Environment (top)')
       .click();
 
     cy.expectPathToBe('/create-environment');
@@ -38,10 +38,29 @@ describe('Context switcher', () => {
     // Overview
     cy.goToOverviewPage();
 
+    cy.get('[data-cy=luigi-alert]').should('not.exist');
+
     // check label
     cy.get('.fd-product-menu .fd-popover__control button').should(
       'contain',
       'Select Environment ...'
     );
+
+    cy.get('.fd-product-menu')
+      .contains('Select Environment ...')
+      .click();
+
+    // click an action
+    cy.get('.fd-product-menu .fd-popover__body')
+      .contains('New Environment (bottom)')
+      .click();
+
+    cy.get('[data-cy=luigi-alert]').should(
+      'have.class',
+      'fd-alert--information'
+    );
+
+    cy.get('[data-cy=luigi-alert-dismiss]').click();
+    cy.get('[data-cy=luigi-alert]').should('not.exist');
   });
 });

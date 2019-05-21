@@ -1,6 +1,6 @@
 import App from './App.html';
 import { authLibraries } from './providers/auth/libraryLoaders';
-import { LuigiConfig } from './services/config';
+import { LuigiConfig } from './core-api';
 
 const configReadyCallback = () => {
   const authLib = LuigiConfig.getConfigValue('auth.use');
@@ -8,10 +8,14 @@ const configReadyCallback = () => {
     authLibraries[authLib]();
   }
 
-  new App({
+  const app = new App({
     target: document.querySelector('body'),
     data: {}
   });
+
+  Luigi.showAlert = settings => {
+    app.showAlert(settings);
+  };
 };
 
 Luigi.setConfigCallbacks(configReadyCallback);

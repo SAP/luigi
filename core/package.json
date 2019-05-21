@@ -1,6 +1,6 @@
 {
   "name": "luigi-core-private",
-  "version": "0.4.12-rc.1",
+  "version": "0.4.12-rc.2",
   "private": true,
   "description": "luigi-core development version, only the public folder is being published to npm as a package",
   "devDependencies": {
@@ -33,7 +33,8 @@
     "svelte-transitions": "^1.2.0",
     "url-loader": "^1.0.1",
     "webpack": "^4.11.1",
-    "webpack-cli": "^3.0.3"
+    "webpack-cli": "^3.0.3",
+    "tar": ">=4.4.2"
   },
   "scripts": {
     "bundle": "webpack --display-error-details",
@@ -41,7 +42,7 @@
     "test": "babel-node ./node_modules/nyc/bin/nyc.js mocha -- --recursive test",
     "test:watch": "npm run test -- --watch",
     "bundlesize": "npm run bundle && bundlesize",
-    "prepush": "npm test"
+    "prepush": "../scripts/remove-test-prefixes.sh && npm test"
   },
   "bundlesize": [
     {

@@ -1,4 +1,4 @@
-import { LuigiConfig } from '../../services/config.js';
+import { LuigiConfig } from '../../core-api';
 
 export const processHeaderSettings = component => {
   return LuigiConfig.getConfigValueAsync('settings.header').then(header => {
@@ -13,7 +13,7 @@ export const processHeaderSettings = component => {
 
     const hasLogo = Boolean(header.logo);
     component.set({ hasLogo });
-    if (hasLogo && component.refs.logo) {
+    if (hasLogo && component.refs && component.refs.logo) {
       component.refs.logo.src = header.logo;
     }
 

@@ -1,4 +1,5 @@
 import * as GenericHelpers from '../../utilities/helpers/generic-helpers.js';
+import { LuigiAuth } from '../../core-api';
 
 export class oAuth2ImplicitGrant {
   constructor(settings = {}) {
@@ -97,7 +98,7 @@ export class oAuth2ImplicitGrant {
     });
   }
 
-  logout(authData, logoutCallback) {
+  logout(authData, authEventLogoutFn) {
     const settings = this.settings;
     const logouturl = `${settings.logoutUrl}?id_token_hint=${
       authData.idToken
@@ -106,9 +107,9 @@ export class oAuth2ImplicitGrant {
     }&post_logout_redirect_uri=${GenericHelpers.prependOrigin(
       settings.post_logout_redirect_uri
     )}`;
-    logoutCallback && logoutCallback();
+    authEventLogoutFn && authEventLogoutFn();
 
-    setTimeout(function() {
+    setTimeout(() => {
       window.location.href = logouturl;
     });
   }
@@ -117,20 +118,31 @@ export class oAuth2ImplicitGrant {
     const expirationCheckInterval = 5000;
     const logoutBeforeExpirationTime = 60000;
 
-    setInterval(() => {
+    const expirationCheckIntervalInstance = setInterval(() => {
       let authData = this.getAuthData();
+      if (!authData) {
+        return clearInterval(expirationCheckIntervalInstance);
+      }
       const tokenExpirationDate = authData
         ? authData.accessTokenExpirationDate || 0
         : 0;
       const currentDate = new Date();
 
       if (tokenExpirationDate - currentDate - logoutBeforeExpirationTime < 0) {
+        clearInterval(expirationCheckIntervalInstance);
         localStorage.removeItem('luigi.auth');
-        window.location = `${
+        // TODO: check if valid (mock-auth requires it), post_logout_redirect_uri is an assumption, might not be available for all auth providers
+        const redirectUrl = `${
           this.settings.logoutUrl
-        }?reason=tokenExpired&post_logout_redirect_uri=${GenericHelpers.prependOrigin(
+        }?error=tokenExpired&post_logout_redirect_uri=${GenericHelpers.prependOrigin(
           this.settings.post_logout_redirect_uri
         )}`;
+        LuigiAuth.handleAuthEvent(
+          'onAuthExpired',
+          this.settings,
+          undefined,
+          redirectUrl
+        );
       }
     }, expirationCheckInterval);
   }

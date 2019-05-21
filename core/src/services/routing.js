@@ -2,12 +2,10 @@
 // Please consider adding any new methods to 'routing-helpers' if they don't require anything from this file.
 import * as Navigation from '../navigation/services/navigation';
 import * as RoutingHelpers from '../utilities/helpers/routing-helpers';
-import { LuigiConfig } from './config';
+import { LuigiConfig } from '../core-api';
 import * as GenericHelpers from '../utilities/helpers/generic-helpers';
 import * as Iframe from './iframe';
 import { NAVIGATION_DEFAULTS } from './../utilities/luigi-config-defaults';
-import * as IframeHelpers from '../utilities/helpers/iframe-helpers';
-import { getActiveIframe } from './iframe';
 
 export const getNodePath = (node, params) => {
   return node

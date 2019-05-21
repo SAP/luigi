@@ -17,7 +17,7 @@ describe('Login Flow', () => {
     );
   });
 
-  it('Link in profile dropwdown', () => {
+  it('Link in profile dropdown', () => {
     cy.login('tets@email.com', 'tets');
 
     cy.get('[data-e2e="luigi-topnav-profile"]').click();

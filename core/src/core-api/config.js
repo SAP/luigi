@@ -1,5 +1,6 @@
 import * as AsyncHelpers from '../utilities/helpers/async-helpers';
 import * as GenericHelpers from '../utilities/helpers/generic-helpers';
+import { auth } from './auth';
 
 class LuigiConfigManager {
   constructor() {
@@ -8,14 +9,14 @@ class LuigiConfigManager {
       id: undefined
     };
 
-    this.configReadyCallback = function() {};
+    this.configReadyCallback = function () { };
   }
 
   setConfigCallbacks(configReadyCallback) {
     this.configReadyCallback = configReadyCallback;
     this.configReadyTimeout.id = setTimeout(() => {
       // Avoid Luigi initialization if timeout reached
-      this.configReadyCallback = function() {};
+      this.configReadyCallback = function () { };
       this.configNotReadyCallback();
     }, this.configReadyTimeout.valueMs);
   }
@@ -91,16 +92,35 @@ class LuigiConfigManager {
   }
 
   /*
+   * Executes the function of the given property on the Luigi config object.
+   * Fails if property is not a function.
+   *
+   * If the value is a Function it is called (with the given parameters) and the result of that call is the value.
+   * If the value is not a Promise it is wrapped to a Promise so that the returned value is definitely a Promise.
+   */
+  async executeConfigFnAsync(property, throwError = false, ...parameters) {
+    const fn = this.getConfigValue(property);
+    if (GenericHelpers.isFunction(fn)) {
+      try {
+        return await AsyncHelpers.applyFunctionPromisified(fn, parameters);
+      } catch (error) {
+        if (throwError) {
+          return Promise.reject(error);
+        }
+      }
+    }
+
+    // Promise.reject(property + ' is not a function.');
+    return Promise.resolve(undefined);
+  }
+  /*
    * Detects if authorization is enabled via configuration.
    * @returns {boolean} returns true if authorization is enabled. Otherwise returns false.
+   * @deprecated now located in Luigi.authManager instead of LuigiConfig
    */
   isAuthorizationEnabled() {
-    return !!this.getConfigValue('auth.use');
+    return auth.isAuthorizationEnabled();
   }
 }
-const LuigiInstance = new LuigiConfigManager();
 
-// Expose it window for user app to call Luigi.setConfig()
-window.Luigi = LuigiInstance;
-
-export const LuigiConfig = LuigiInstance;
+export const config = new LuigiConfigManager();
