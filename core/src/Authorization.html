@@ -233,7 +233,7 @@
           })
           .catch(err => {
             const errorMsg = `Error: ${err.message || err}`;
-            console.error(errorMsg, err);
+            console.error(errorMsg, err.message && err);
             LuigiConfig.setErrorMessage(errorMsg);
           });
       }
