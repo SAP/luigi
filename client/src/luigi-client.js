@@ -1,6 +1,6 @@
 import { LuigiClientLinkManager } from './linkManager';
 import { LuigiClientUxManager } from './uxManager';
-const linkManagerInstance = new LuigiClientLinkManager({ currentContext });
+
 const uxManagerInstance = new LuigiClientUxManager();
 
 let luigiInitialized = false;
@@ -76,7 +76,6 @@ const luigiClientInit = () => {
   };
 
   window.addEventListener('message', function messageListener(e) {
-    e.data.msg && console.log('%cevent', 'color: lime', e.data.msg);
     if ('luigi.init' === e.data.msg) {
       setContext(e.data);
       setAuthData(e.data.authData);
@@ -203,10 +202,7 @@ const LuigiClient = {
   /**
    * @private
    */
-  linkManager: () => {
-    linkManagerInstance.setCurrentContext(currentContext);
-    return linkManagerInstance;
-  },
+  linkManager: () => new LuigiClientLinkManager({ currentContext }),
   uxManager: () => uxManagerInstance
 };
 export default LuigiClient;

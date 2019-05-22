@@ -33,13 +33,6 @@ export class LuigiClientLinkManager extends LuigiClientBase {
     });
   }
 
-  /**
-   * @private
-   */
-  setCurrentContext(context) {
-    this.currentContext = context;
-  }
-
   /** @lends linkManager */
   /**
    * Navigates to the given path in the application hosted by Luigi. It contains either a full absolute path or a relative path without a leading slash that uses the active route as a base. This is the standard navigation.
