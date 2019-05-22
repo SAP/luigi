@@ -55,7 +55,6 @@ export class LuigiClientLinkManager extends LuigiClientBase {
    * LuigiClient.linkManager().navigate('/settings', null, true) // preserve view
    */
   navigate(path, sessionId, preserveView, modalSettings) {
-    console.log('this', this);
     if (this.options.errorSkipNavigation) {
       this.options.errorSkipNavigation = false;
       return;

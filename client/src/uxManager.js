@@ -9,27 +9,6 @@ export class LuigiClientUxManager extends LuigiClientBase {
   /** @private */
   constructor() {
     super();
-
-    window.addEventListener('message', e => {
-      if ('luigi.ux.confirmationModal.hide' === e.data.msg) {
-        const data = e.data.data;
-        const promise = this.getPromise('confirmationModal');
-        if (promise) {
-          data.confirmed ? promise.resolveFn() : promise.rejectFn();
-          this.setPromise('confirmationModal', undefined);
-        }
-      }
-
-      if ('luigi.ux.alert.hide' === e.data.msg) {
-        const { id } = e.data;
-        const alerts = this.getPromise('alerts');
-        if (id && alerts[id]) {
-          alerts[id].resolveFn(id);
-          delete alerts[id];
-          this.setPromise('alerts', alerts);
-        }
-      }
-    });
   }
 
   /** @lends uxManager */
@@ -110,13 +89,28 @@ export class LuigiClientUxManager extends LuigiClientBase {
       },
       '*'
     );
-    this.promises.confirmationModal = {};
-    this.promises.confirmationModal.promise = new Promise((resolve, reject) => {
-      this.promises.confirmationModal.resolveFn = resolve;
-      this.promises.confirmationModal.rejectFn = reject;
+
+    const confirmationModalPromise = {};
+    confirmationModalPromise.promise = new Promise((resolve, reject) => {
+      confirmationModalPromise.resolveFn = resolve;
+      confirmationModalPromise.rejectFn = reject;
     });
-    return this.promises.confirmationModal.promise;
+    this.setPromise('confirmationModal', confirmationModalPromise);
+    return confirmationModalPromise.promise;
   }
+
+  /**
+   * @private
+   * @param {object} modal .confirmed boolean value if ok or cancel has been pressed
+   */
+  hideConfirmationModal(modal) {
+    const promise = this.getPromise('confirmationModal');
+    if (promise) {
+      modal.confirmed ? promise.resolveFn() : promise.rejectFn();
+      this.setPromise('confirmationModal', undefined);
+    }
+  }
+
   /**
    * Shows an alert.
    * @param {Object} settings the settings for the alert
@@ -172,15 +166,24 @@ export class LuigiClientUxManager extends LuigiClientBase {
       '*'
     );
 
-    const alertPromises = this.getPromise('alerts');
+    const alertPromises = this.getPromise('alerts') || {};
     alertPromises[settings.id] = {};
     alertPromises[settings.id].promise = new Promise(resolve => {
       alertPromises[settings.id].resolveFn = resolve;
-      console.log(
-        'should it be removed then, for cleanup?',
-        this.getPromise('alerts')
-      );
     });
+    this.setPromise('alerts', alertPromises);
     return alertPromises[settings.id].promise;
+  }
+  /**
+   * @private
+   * @param {string} id alert id
+   */
+  hideAlert(id) {
+    const alerts = this.getPromise('alerts');
+    if (id && alerts[id]) {
+      alerts[id].resolveFn(id);
+      delete alerts[id];
+      this.setPromise('alerts', alerts);
+    }
   }
 }

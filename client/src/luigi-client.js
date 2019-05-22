@@ -1,5 +1,7 @@
 import { LuigiClientLinkManager } from './linkManager';
 import { LuigiClientUxManager } from './uxManager';
+const linkManagerInstance = new LuigiClientLinkManager({ currentContext });
+const uxManagerInstance = new LuigiClientUxManager();
 
 let luigiInitialized = false;
 const defaultContextKeys = ['context', 'internal', 'nodeParams', 'pathParams'];
@@ -11,7 +13,6 @@ let currentContext = defaultContextKeys.reduce(function(acc, key) {
 const _onContextUpdatedFns = {};
 const _onInitFns = {};
 let authData = {};
-const linkManager = new LuigiClientLinkManager({ currentContext });
 
 /**
  * Creates a random Id
@@ -75,6 +76,7 @@ const luigiClientInit = () => {
   };
 
   window.addEventListener('message', function messageListener(e) {
+    e.data.msg && console.log('%cevent', 'color: lime', e.data.msg);
     if ('luigi.init' === e.data.msg) {
       setContext(e.data);
       setAuthData(e.data.authData);
@@ -97,6 +99,12 @@ const luigiClientInit = () => {
       );
     } else if ('luigi.auth.tokenIssued' === e.data.msg) {
       setAuthData(e.data.authData);
+    } else if ('luigi.ux.confirmationModal.hide' === e.data.msg) {
+      console.log('hide confirmationModal', e.data.data);
+      uxManagerInstance.hideConfirmationModal(e.data.data);
+    } else if ('luigi.ux.alert.hide' === e.data.msg) {
+      console.log('hideAlert', e.data.id);
+      uxManagerInstance.hideAlert(e.data.id);
     }
   });
 
@@ -196,9 +204,9 @@ const LuigiClient = {
    * @private
    */
   linkManager: () => {
-    linkManager.setCurrentContext(currentContext);
-    return linkManager;
+    linkManagerInstance.setCurrentContext(currentContext);
+    return linkManagerInstance;
   },
-  uxManager: () => new LuigiClientUxManager()
+  uxManager: () => uxManagerInstance
 };
 export default LuigiClient;
