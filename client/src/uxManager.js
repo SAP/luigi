@@ -1,31 +1,35 @@
+import { LuigiClientBase } from './baseClass';
 import { randomBytes } from 'crypto';
 
 /**
  * Use the UX Manager to manage the appearance features in Luigi.
  */
 /** @name uxManager */
-class LuigiClientUxManager {
+export class LuigiClientUxManager extends LuigiClientBase {
   /** @private */
   constructor() {
-    this.promises = {
-      confirmationModal: {},
-      alerts: {}
-    };
-  }
+    super();
 
-  /**
-   * Returns the promises object
-   * @private
-   */
-  setPromise(name, value) {
-    this.promises[name] = value;
-  }
-  /**
-   * Sets the promises object
-   * @private
-   */
-  getPromise(name) {
-    return this.promises[name];
+    window.addEventListener('message', e => {
+      if ('luigi.ux.confirmationModal.hide' === e.data.msg) {
+        const data = e.data.data;
+        const promise = this.getPromise('confirmationModal');
+        if (promise) {
+          data.confirmed ? promise.resolveFn() : promise.rejectFn();
+          this.setPromise('confirmationModal', undefined);
+        }
+      }
+
+      if ('luigi.ux.alert.hide' === e.data.msg) {
+        const { id } = e.data;
+        const alerts = this.getPromise('alerts');
+        if (id && alerts[id]) {
+          alerts[id].resolveFn(id);
+          delete alerts[id];
+          this.setPromise('alerts', alerts);
+        }
+      }
+    });
   }
 
   /** @lends uxManager */
@@ -168,13 +172,15 @@ class LuigiClientUxManager {
       '*'
     );
 
-    this.promises.alerts[settings.id] = {};
-    this.promises.alerts[settings.id].promise = new Promise(resolve => {
-      this.promises.alerts[settings.id].resolveFn = resolve;
+    const alertPromises = this.getPromise('alerts');
+    alertPromises[settings.id] = {};
+    alertPromises[settings.id].promise = new Promise(resolve => {
+      alertPromises[settings.id].resolveFn = resolve;
+      console.log(
+        'should it be removed then, for cleanup?',
+        this.getPromise('alerts')
+      );
     });
-    return this.promises.alerts[settings.id].promise;
+    return alertPromises[settings.id].promise;
   }
 }
-
-const uxManagerInstance = new LuigiClientUxManager();
-export const uxManager = () => uxManagerInstance;
