@@ -4,8 +4,8 @@ import { randomBytes } from 'crypto';
 /**
  * Use the UX Manager to manage the appearance features in Luigi.
  */
-/** @name uxManager */
-export class LuigiClientUxManager extends LuigiClientBase {
+/** @alias uxManager */
+export class uxManager extends LuigiClientBase {
   /** @private */
   constructor() {
     super();

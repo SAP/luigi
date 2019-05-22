@@ -190,10 +190,10 @@ export declare interface LinkManager {
    * @param {Object} nodeParams
    * @returns {linkManager} link manager instance.
    * @example
-   * LuigiClient.linkManager.withParams({foo: "bar"}).navigate("path")
+   * LuigiClient.linkManager().withParams({foo: "bar"}).navigate("path")
    *
    * // Can be chained with context setting functions such as:
-   * LuigiClient.linkManager.fromContext("currentTeam").withParams({foo: "bar"}).navigate("path")
+   * LuigiClient.linkManager().fromContext("currentTeam").withParams({foo: "bar"}).navigate("path")
    */
   withParams: (nodeParams: NodeParams) => this;
 

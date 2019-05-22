@@ -1,7 +1,7 @@
-import { LuigiClientLinkManager } from './linkManager';
-import { LuigiClientUxManager } from './uxManager';
+import { linkManager } from './linkManager';
+import { uxManager } from './uxManager';
 
-const uxManagerInstance = new LuigiClientUxManager();
+const uxManagerInstance = new uxManager();
 
 let luigiInitialized = false;
 const defaultContextKeys = ['context', 'internal', 'nodeParams', 'pathParams'];
@@ -117,7 +117,7 @@ const luigiClientInit = () => {
 
 luigiClientInit();
 
-/** @namespace */
+/** @private */
 const LuigiClient = {
   /**
    * Use the functions and parameters to define the Lifecycle of listeners, navigation nodes, and Event data.
@@ -202,7 +202,7 @@ const LuigiClient = {
   /**
    * @private
    */
-  linkManager: () => new LuigiClientLinkManager({ currentContext }),
+  linkManager: () => new linkManager({ currentContext }),
   /**
    * @private
    */

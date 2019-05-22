@@ -1,5 +1,6 @@
 /**
  * @private
+ * @abstract
  */
 export class LuigiClientBase {
   /**

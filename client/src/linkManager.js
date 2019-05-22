@@ -6,8 +6,7 @@ import { LuigiClientBase } from './baseClass';
   - Reflect the route.
   - Keep the navigation state in Luigi.
   */
-/** @name linkManager */
-export class LuigiClientLinkManager extends LuigiClientBase {
+export class linkManager extends LuigiClientBase {
   /**
    * @private
    */
@@ -132,10 +131,10 @@ export class LuigiClientLinkManager extends LuigiClientBase {
    * @param {Object} nodeParams
    * @returns {linkManager} link manager instance
    * @example
-   * LuigiClient.linkManager.withParams({foo: "bar"}).navigate("path")
+   * LuigiClient.linkManager().withParams({foo: "bar"}).navigate("path")
    *
    * // Can be chained with context setting functions such as:
-   * LuigiClient.linkManager.fromContext("currentTeam").withParams({foo: "bar"}).navigate("path")
+   * LuigiClient.linkManager().fromContext("currentTeam").withParams({foo: "bar"}).navigate("path")
    */
   withParams(nodeParams) {
     if (nodeParams) {
