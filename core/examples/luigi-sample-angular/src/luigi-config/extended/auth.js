@@ -107,18 +107,10 @@ class Auth {
     },
     onAuthExpireSoon: settings => {
       console.log('onAuthExpireSoon ', settings);
-      window.postMessage(
-        {
-          msg: 'luigi.ux.alert.show',
-          data: {
-            settings: {
-              text: 'Token expires soon',
-              type: 'warning'
-            }
-          }
-        },
-        '*'
-      );
+      Luigi.showAlert({
+        text: 'Token expires soon',
+        type: 'warning'
+      });
     }
   };
 }

@@ -124,6 +124,17 @@ export class openIdConnect {
     });
   }
 
+  setTokenExpireSoonAction() {
+    this.client.events.addAccessTokenExpiring(() => {
+      LuigiAuth.handleAuthEvent(
+        'onAuthExpireSoon',
+        this.settings,
+        undefined,
+        undefined
+      );
+    });
+  }
+
   _processLogoutResponse() {
     return new Promise((resolve, reject) => {
       // TODO: dex logout does not yet support proper logout
