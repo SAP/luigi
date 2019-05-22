@@ -1,4 +1,10 @@
+/**
+ * @private
+ */
 export class LuigiClientBase {
+  /**
+   * @private
+   */
   constructor() {
     this.promises = {};
   }

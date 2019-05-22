@@ -120,13 +120,13 @@ luigiClientInit();
 /** @namespace */
 const LuigiClient = {
   /**
-   * Use the functions and parameters to define the lifecycle of listeners, navigation nodes, and Event data.
-   * @name lifecycle
+   * Use the functions and parameters to define the Lifecycle of listeners, navigation nodes, and Event data.
+   * @name Lifecycle
    */
   /**
    * Registers a listener called with the context object as soon as Luigi is instantiated. Defer your application bootstrap if you depend on authentication data coming from Luigi.
    * @param {function} initFn the function that is called once Luigi is initialized
-   * @memberof lifecycle
+   * @memberof Lifecycle
    */
   addInitListener: function addInitListener(initFn) {
     var id = _getRandomId();
@@ -139,7 +139,7 @@ const LuigiClient = {
   /**
    * Removes an init listener.
    * @param {string} id the id that was returned by the `addInitListener` function
-   * @memberof lifecycle
+   * @memberof Lifecycle
    */
   removeInitListener: function removeInitListener(id) {
     if (_onInitFns[id]) {
@@ -151,7 +151,7 @@ const LuigiClient = {
   /**
    * Registers a listener called with the context object upon any navigation change.
    * @param {function} contextUpdatedFn the listener function called each time Luigi context changes
-   * @memberof lifecycle
+   * @memberof Lifecycle
    */
   addContextUpdateListener: function addContextUpdateListener(
     contextUpdatedFn
@@ -166,7 +166,7 @@ const LuigiClient = {
   /**
    * Removes a context update listener.
    * @param {string} id the id that was returned by the `addContextUpdateListener` function
-   * @memberof lifecycle
+   * @memberof Lifecycle
    */
   removeContextUpdateListener: id => {
     if (_onContextUpdatedFns[id]) {
@@ -179,7 +179,7 @@ const LuigiClient = {
   /**
    * Returns the context object. Typically it is not required as the {@link #addContextUpdateListener addContextUpdateListener()} receives the same values.
    * @returns {Object} current context data
-   * @memberof lifecycle
+   * @memberof Lifecycle
    */
   getEventData: () => currentContext.context,
   /**
@@ -187,7 +187,7 @@ const LuigiClient = {
    * Node parameters are defined like URL query parameters but with a specific prefix allowing Luigi to pass them to the micro front-end view.  The default prefix is **~** and you can use it in the following way: `https://my.luigi.app/home/products?~sort=asc~page=3`.
    * >**NOTE:** some special characters (`<`, `>`, `"`, `'`, `/`) in node parameters are HTML-encoded.
    * @returns {Object} node parameters, where the object property name is the node parameter name without the prefix, and its value is the value of the node parameter. For example `{sort: 'asc', page: 3}`
-   * @memberof lifecycle
+   * @memberof Lifecycle
    */
   getNodeParams: () => currentContext.nodeParams,
   /**
@@ -196,13 +196,16 @@ const LuigiClient = {
    * All path parameters in the current navigation path (as defined by the active URL) are returned.
    * >**NOTE:** some special characters (`<`, `>`, `"`, `'`, `/`) in path parameters are HTML-encoded.
    * @returns {Object} path parameters, where the object property name is the path parameter name without the prefix, and its value is the actual value of the path parameter. For example ` {productId: 1234, ...}`
-   * @memberof lifecycle
+   * @memberof Lifecycle
    */
   getPathParams: () => currentContext.pathParams,
   /**
    * @private
    */
   linkManager: () => new LuigiClientLinkManager({ currentContext }),
+  /**
+   * @private
+   */
   uxManager: () => uxManagerInstance
 };
 export default LuigiClient;

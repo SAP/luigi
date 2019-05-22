@@ -1,13 +1,16 @@
 import { LuigiClientBase } from './baseClass';
 
+/**
+ * The Link Manager allows you to navigate to another route. Use it instead of an internal router to:
+  - Route inside micro front-ends.
+  - Reflect the route.
+  - Keep the navigation state in Luigi.
+  */
+/** @name linkManager */
 export class LuigiClientLinkManager extends LuigiClientBase {
   /**
-   * The Link Manager allows you to navigate to another route. Use it instead of an internal router to:
-    - Route inside micro front-ends.
-    - Reflect the route.
-    - Keep the navigation state in Luigi.
-    */
-  /** @name linkManager */
+   * @private
+   */
   constructor(values) {
     super();
     Object.assign(this, values);

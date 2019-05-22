@@ -101,7 +101,7 @@ export class LuigiClientUxManager extends LuigiClientBase {
 
   /**
    * @private
-   * @param {object} modal .confirmed boolean value if ok or cancel has been pressed
+   * @param {Object} modal confirmed boolean value if ok or cancel has been pressed
    */
   hideConfirmationModal(modal) {
     const promise = this.getPromise('confirmationModal');
