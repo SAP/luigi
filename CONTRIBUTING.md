@@ -18,7 +18,7 @@ You are welcome to contribute with your pull requests. These steps explain the c
 ## Contributor License Agreement (CLA)
 You need you to sign the CLA for your pull request to be accepted. You only need to do it once.
 
-Sign your CLA here: <https://cla-assistant.io/SAP/luigi>
+Sign your CLA [here](https://cla-assistant.io/SAP/luigi).
 
 ## Issues
 We use GitHub issues to track bugs. Please ensure your description is
