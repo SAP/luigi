@@ -22,7 +22,7 @@ Sign your CLA [here](https://cla-assistant.io/SAP/luigi).
 
 ## Issues
 We use GitHub issues to track bugs. Please ensure your description is
-clear and has sufficient instructions to reproduce the issue.
+clear and includes sufficient instructions to reproduce the issue.
 
 ## License
 By contributing to Luigi, you agree that your contributions will be licensed
