@@ -239,9 +239,9 @@
             checkAuth(idpProviderSettings);
           })
           .catch(err => {
-            console.error(
-              `Could not instantate ${idpProviderName} provider : ${err}`
-            );
+            const errorMsg = `Error: ${err.message || err}`;
+            console.error(errorMsg, err.message && err);
+            LuigiConfig.setErrorMessage(errorMsg);
           });
       }
       checkAuth(idpProviderSettings);
