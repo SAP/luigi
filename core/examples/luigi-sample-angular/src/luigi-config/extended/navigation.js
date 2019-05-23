@@ -1,4 +1,10 @@
-import { navigationPermissionChecker, projectsNavProviderFn } from './helpers';
+import {
+  navigationPermissionChecker,
+  projectsNavProviderFn,
+  addProject,
+  removeProject,
+  getProjectCount
+} from './helpers';
 
 class Navigation {
   constructor(navigationPermissionChecker, projectsNavProviderFn) {
@@ -110,19 +116,9 @@ class Navigation {
       hideSideNav: true
     }
   ];
-  // The following configuration will be used to render the context switcher component
-  contextSwitcher = {
-    defaultLabel: 'Select Environment ...',
-    parentNodePath: '/environments', // absolute path
-    lazyloadOptions: true, // load options on click instead on page load
-    options: () =>
-      [...Array(10).keys()]
-        .filter(n => n !== 0)
-        .map(n => ({
-          label: 'Environment ' + n, // (i.e mapping between what the user sees and what is taken to replace the dynamic part for the dynamic node)
-          pathValue: 'env' + n // will be used to replace dynamic part
-        })),
-    actions: [
+
+  getContextSwitcherActions = () => {
+    const actions = [
       {
         label: '+ New Environment (top)',
         link: '/create-environment'
@@ -140,8 +136,48 @@ class Navigation {
           return true; // route change will be done using link value (if defined)
           // return false // route change will not be done even if link attribute is defined
         }
+      },
+      {
+        label: '+ New Project',
+        link: '/projects',
+        position: 'bottom',
+        clickHandler: node => {
+          addProject();
+          Luigi.setConfig(Luigi.getConfig());
+          return true;
+        }
       }
-    ],
+    ];
+
+    if (getProjectCount() > 0) {
+      actions.push({
+        label: '\u2212 Remove Project',
+        link: '/projects',
+        position: 'bottom',
+        clickHandler: node => {
+          removeProject();
+          Luigi.setConfig(Luigi.getConfig());
+          return true;
+        }
+      });
+    }
+
+    return actions;
+  };
+
+  // The following configuration will be used to render the context switcher component
+  contextSwitcher = {
+    defaultLabel: 'Select Environment ...',
+    parentNodePath: '/environments', // absolute path
+    lazyloadOptions: true, // load options on click instead on page load
+    options: () =>
+      [...Array(10).keys()]
+        .filter(n => n !== 0)
+        .map(n => ({
+          label: 'Environment ' + n, // (i.e mapping between what the user sees and what is taken to replace the dynamic part for the dynamic node)
+          pathValue: 'env' + n // will be used to replace dynamic part
+        })),
+    actions: this.getContextSwitcherActions,
 
     /**
      * fallbackLabelResolver

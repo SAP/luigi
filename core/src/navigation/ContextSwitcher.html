@@ -181,7 +181,9 @@
             return;
           }
         }
-        this.goTo(node.link);
+        setTimeout(() => {
+          this.goTo(node.link);
+        });
       },
       goTo(path) {
         this.root.getUnsavedChangesModalPromise().then(() => {
