@@ -83,8 +83,10 @@
 
   const enableRouting = (component, node, config) => {
     // initial route handling
-    const currentPath = Routing.getCurrentPath();
-    Routing.handleRouteChange(currentPath, component, node, config);
+    GenericHelpers.doOnStoreChange(component.store, () => {
+      const currentPath = Routing.getCurrentPath();
+      Routing.handleRouteChange(currentPath, component, node, config);
+    });
 
     // subsequential route handling
     RoutingHelpers.addRouteChangeListener(path => {

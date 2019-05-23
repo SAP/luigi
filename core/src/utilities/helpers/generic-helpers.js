@@ -77,13 +77,12 @@ export const getPathWithoutHash = path => {
  * Returns the value of a given url parameter name
  * @param {string} name
  */
-export const getUrlParameter = (name) => {
+export const getUrlParameter = name => {
   name = name.replace(/[\[]/, '\\[').replace(/[\]]/, '\\]');
   var regex = new RegExp('[\\?&]' + name + '=([^&#]*)');
   var result = regex.exec(window.location.search);
-  return result && decodeURIComponent(result[1].replace(/\+/g, ' ')) || '';
+  return (result && decodeURIComponent(result[1].replace(/\+/g, ' '))) || '';
 };
-
 
 /**
  * Prepend current url to redirect_uri, if it is a relative path
@@ -185,9 +184,9 @@ export const replaceVars = (
         new RegExp(
           escapeRegExp(
             (parenthesis ? '{' : '') +
-            prefix +
-            entry[0] +
-            (parenthesis ? '}' : '')
+              prefix +
+              entry[0] +
+              (parenthesis ? '}' : '')
           ),
           'g'
         ),
@@ -202,4 +201,19 @@ export const replaceVars = (
     );
   }
   return processedString;
+};
+
+export const doOnStoreChange = (store, fn, events) => {
+  const evs = events || ['state'];
+  if (evs.indexOf('state') === -1) {
+    evs.push('state');
+  }
+  evs.forEach(e => {
+    store.on(e, fn);
+  });
+  fn({
+    current: store.get(),
+    changed: { config: true },
+    previous: store.get()
+  });
 };

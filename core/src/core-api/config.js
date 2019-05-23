@@ -10,6 +10,8 @@ class LuigiConfigManager {
     };
 
     this.configReadyCallback = function() {};
+
+    this.initialized = false;
   }
 
   setConfigCallbacks(configReadyCallback) {
@@ -24,7 +26,12 @@ class LuigiConfigManager {
   setConfig(configInput) {
     clearTimeout(this.configReadyTimeout.id);
     this.config = configInput;
-    this.configReadyCallback();
+    window.Luigi._store.set({ config: configInput });
+    this._configModificationTimestamp = new Date();
+    if (!this.initialized) {
+      this.initialized = true;
+      this.configReadyCallback();
+    }
   }
 
   getConfig() {
