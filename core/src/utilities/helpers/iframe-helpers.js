@@ -124,8 +124,25 @@ export const sendMessageToIframe = (iframe, message) => {
 };
 
 export const createIframe = viewUrl => {
+  const activeSandboxRules = [
+    'allow-forms', // Allows the resource to submit forms. If this keyword is not used, form submission is blocked.
+    // 'allow-modals', // Lets the resource open modal windows.
+    // 'allow-orientation-lock', // Lets the resource lock the screen orientation.
+    // 'allow-pointer-lock', // Lets the resource use the Pointer Lock API.
+    'allow-popups', // Allows popups (such as window.open(), target="_blank", or showModalDialog()). If this keyword is not used, the popup will silently fail to open.
+    'allow-popups-to-escape-sandbox', // Lets the sandboxed document open new windows without those windows inheriting the sandboxing. For example, this can safely sandbox an advertisement without forcing the same restrictions upon the page the ad links to.
+    // 'allow-presentation', // Lets the resource start a presentation session.
+    'allow-same-origin', // If this token is not used, the resource is treated as being from a special origin that always fails the same-origin policy.
+    'allow-scripts', // Lets the resource run scripts (but not create popup windows).
+    // 'allow-storage-access-by-user-activation', // Lets the resource request access to the parent's storage capabilities with the Storage Access API.
+    // 'allow-top-navigation', // Lets the resource navigate the top-level browsing context (the one named _top).
+    // 'allow-top-navigation-by-user-activation', // Lets the resource navigate the top-level browsing context, but only if initiated by a user gesture.
+    'allow-downloads-without-user-activation' // Allows for downloads to occur without a gesture from the user.
+  ];
+
   const iframe = document.createElement('iframe');
   iframe.src = viewUrl;
+  iframe.sandbox = activeSandboxRules.join(' ');
   iframe.luigi = {
     viewUrl
   };
