@@ -80,8 +80,9 @@ auth: {
 - **nonceFn** provides a function that returns a string in order to override the default **nonce**.
 - **logoutFn** provides the function to override the **logoutUrl** functionality for a custom logout. It needs to execute the **logoutCallback()** function after logout.
 - **userInfoFn** provides a function to get user information. It returns a promise of a **userinfo** object which can contain **name**, **email** and **picture** (value is a URL to the image). **Name** or **email** are displayed in the profile drop-down menu and the user’s profile picture is displayed in the top navigation.
-- **accessTokenExpiringNotificationTime** number of seconds before an access token is to expire to raise the **onAuthExpireSoon** event. Default is 300 seconds.
-- **expirationCheckInterval** number of seconds how often the check happens, when token is going to expire. Default is 5 seconds.
+- **accessTokenExpiringNotificationTime** number of seconds that pass before an access token expires and the **onAuthExpireSoon** event is fired. The default value is `300` seconds.
+- **expirationCheckInterval** the number of seconds to pass between each check if the token is about to expire. The default value is `5` seconds.
+
 
 ### Custom Authentication Provider
 
