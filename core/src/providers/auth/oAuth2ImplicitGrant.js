@@ -148,13 +148,11 @@ export class oAuth2ImplicitGrant {
   }
 
   setTokenExpireSoonAction() {
-    const beforeTokenExpirationTime = LuigiConfig.getConfigValue(
-      'settings.beforeTokenExpirationTime'
-    );
-    if (beforeTokenExpirationTime) {
-      const expirationCheckInterval = LuigiConfig.getConfigValue(
-        'settings.expirationCheckInterval'
-      );
+    const accessTokenExpiringNotificationTime =
+      this.settings.accessTokenExpiringNotificationTime * 1000;
+    if (accessTokenExpiringNotificationTime) {
+      const expirationCheckInterval =
+        this.settings.expirationCheckInterval * 1000;
       const expirationCheckIntervalInstance = setInterval(() => {
         let authData = this.getAuthData();
         if (!authData) {

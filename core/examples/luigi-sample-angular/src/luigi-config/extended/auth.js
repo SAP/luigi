@@ -21,6 +21,8 @@ class Auth {
     oAuthData: {
       client_id: 'egDuozijY5SVr0NSIowUP1dT6RVqHnlp'
     },
+    accessTokenExpiringNotificationTime: 300, //in seconds
+    expirationCheckInterval: 5,
     userInfoFn: () => {
       return new Promise(resolve => {
         resolve({

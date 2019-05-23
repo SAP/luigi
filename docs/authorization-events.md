@@ -11,7 +11,8 @@ auth: {
     onAuthSuccessful: (settings, authData) => {},
     onAuthError: (settings, err) => {}
     onAuthExpired: (settings) => {},
-    onLogout: (settings) => {}
+    onLogout: (settings) => {},
+    onAuthExpireSoon: (settings) => {}
   }
 }
 ```
@@ -31,3 +32,4 @@ You can disable the default behavior of `onAuthExpired` and `onAuthError` by mak
     Return `false` to prevent redirecting to `logoutUrl` after executing this function. It goes to the Luigi main route `/` instead.
 -   `onAuthExpired` **[function](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Statements/function)** is executed if the token expires during runtime, or if Luigi is opened with outdated authorization data in the local storage. Return `false` to prevent redirecting to `logoutUrl` after executing this function.
 -   `onLogout` **[function](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Statements/function)** is executed after the user logs out.
+- `onAuthExpireSoon`**[function](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Statements/function)** is executed before token will expire and show the user an alert that the token will expire soon.

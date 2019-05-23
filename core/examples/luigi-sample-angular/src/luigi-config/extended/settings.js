@@ -12,8 +12,6 @@ class Settings {
   sideNavFooterText = `Luigi Client: ${version || 'unknown'}`;
   // hideNavigation = true
   // backdropDisabled = true
-  beforeTokenExpirationTime = 300000; //in milliseconds
-  expirationCheckInterval = 5000;
 }
 
 export const settings = new Settings();
