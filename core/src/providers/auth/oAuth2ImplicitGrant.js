@@ -164,7 +164,7 @@ export class oAuth2ImplicitGrant {
         const currentDate = new Date();
         if (
           tokenExpirationDate - currentDate.getTime() <
-          beforeTokenExpirationTime
+          accessTokenExpiringNotificationTime
         ) {
           LuigiAuth.handleAuthEvent(
             'onAuthExpireSoon',
