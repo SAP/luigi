@@ -267,6 +267,8 @@
       const responsiveNavSetting = LuigiConfig.getConfigValue(
         'settings.responsiveNavigation'
       );
+      this.set({ responsiveNavSetting });
+      this.set({ previousBreakpoint: window.innerWidth });
       if (responsiveNavSetting === 'simple') {
         document.body.classList.add('lui-simpleSlideInNav');
         this.set({ simpleSlideInNav: true });
@@ -545,9 +547,37 @@
         });
       },
       onResize() {
-        if (window.innerWidth >= CSS_BREAKPOINTS.desktopMinWidth) {
+        const simpleDesktopToMobile = () => {
+          if (this.get().responsiveNavSetting == 'simple') {
+            if (
+              window.innerWidth < CSS_BREAKPOINTS.desktopMinWidth &&
+              this.get().previousBreakpoint >= CSS_BREAKPOINTS.desktopMinWidth
+            ) {
+              this.closeLeftNav();
+            }
+          }
+        };
+
+        const simpleIsNotSameBreakpoint = () => {
+          if (this.get().responsiveNavSetting == 'simple') {
+            if (
+              this.get().previousBreakpoint >= CSS_BREAKPOINTS.desktopMinWidth
+            ) {
+              return false;
+            }
+          }
+          return true;
+        };
+
+        if (
+          window.innerWidth >= CSS_BREAKPOINTS.desktopMinWidth &&
+          simpleIsNotSameBreakpoint()
+        ) {
           this.closeLeftNav();
         }
+
+        simpleDesktopToMobile();
+        this.get().previousBreakpoint = window.innerWidth;
       },
       handleModalResult(result) {
         const { promise, openFromClient } = this.get().confirmationModal;
