@@ -18,27 +18,6 @@ describe('Context switcher', () => {
       'contain',
       'Environment 1'
     );
-
-    // Overview
-    cy.goToOverviewPage();
-
-    cy.get('[data-cy=luigi-alert]').should('not.exist');
-
-    // check label
-    cy.get('.fd-product-menu .fd-popover__control button').should(
-      'contain',
-      'Select Environment ...'
-    );
-
-    cy.selectContextSwitcherItem('New Environment (bottom)');
-
-    cy.get('[data-cy=luigi-alert]').should(
-      'have.class',
-      'fd-alert--information'
-    );
-
-    cy.get('[data-cy=luigi-alert-dismiss]').click();
-    cy.get('[data-cy=luigi-alert]').should('not.exist');
   });
 
   it('Add and remove project with context switcher', () => {
@@ -51,6 +30,8 @@ describe('Context switcher', () => {
     cy.goToOverviewPage();
     cy.expectPathToBe('/overview');
 
+    cy.get('[data-cy=luigi-alert]').should('not.exist');
+
     // add project
 
     cy.selectContextSwitcherItem('New Project');
@@ -60,6 +41,13 @@ describe('Context switcher', () => {
     cy.get('.fd-app__sidebar').should('contain', 'Project One');
     cy.get('.fd-app__sidebar').should('contain', 'Project Two');
     cy.get('.fd-app__sidebar').should('contain', 'Project 3');
+
+    cy.get('[data-cy=luigi-alert]').should(
+      'have.class',
+      'fd-alert--information'
+    );
+
+    cy.get('[data-cy=luigi-alert]').should('contain', 'Project 3 created.');
 
     cy.goToOverviewPage();
     cy.expectPathToBe('/overview');

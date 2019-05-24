@@ -142,8 +142,13 @@ class Navigation {
         link: '/projects',
         position: 'bottom',
         clickHandler: node => {
-          addProject();
+          const p = addProject();
           Luigi.setConfig(Luigi.getConfig());
+          Luigi.showAlert({
+            text: `${p.name} created.`,
+            type: 'info',
+            closeAfter: 3000
+          });
           return true;
         }
       }
@@ -155,8 +160,13 @@ class Navigation {
         link: '/projects',
         position: 'bottom',
         clickHandler: node => {
-          removeProject();
+          const p = removeProject();
           Luigi.setConfig(Luigi.getConfig());
+          Luigi.showAlert({
+            text: `${p.name} removed.`,
+            type: 'info',
+            closeAfter: 3000
+          });
           return true;
         }
       });
