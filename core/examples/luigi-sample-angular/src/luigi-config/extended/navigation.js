@@ -130,10 +130,6 @@ class Navigation {
         position: 'bottom', // top or bottom
         clickHandler: node => {
           // called BEFORE route change
-          Luigi.showAlert({
-            text: 'New Environment option selected.',
-            type: 'info'
-          });
           return true; // route change will be done using link value (if defined)
           // return false // route change will not be done even if link attribute is defined
         }
