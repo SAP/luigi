@@ -3,7 +3,8 @@ import {
   projectsNavProviderFn,
   addProject,
   removeProject,
-  getProjectCount
+  getProjectCount,
+  projectExists
 } from './helpers';
 
 class Navigation {
@@ -197,9 +198,9 @@ class Navigation {
      */
     fallbackLabelResolver: id => id.replace(/\b\w/g, l => l.toUpperCase())
   };
-  // The following configuration will be used to render a product switcher component
-  productSwitcher = {
-    items: [
+
+  getProductSwitcherItems = () => {
+    const items = [
       {
         icon: 'https://sap.github.io/fundamental/images/products/06.png',
         label: 'hybris',
@@ -207,23 +208,61 @@ class Navigation {
           url: 'https://www.hybris.com',
           sameWindow: false
         }
-      },
-      {
+      }
+    ];
+    if (projectExists('pr1')) {
+      items.push({
         icon: 'https://sap.github.io/fundamental/images/products/06.png',
         label: 'Project 1',
         link: '/projects/pr1'
-      },
-      {
+      });
+    }
+    if (projectExists('pr2')) {
+      items.push({
         icon: 'https://sap.github.io/fundamental/images/products/06.png',
         label: 'Project 2',
         link: '/projects/pr2'
-      },
-      {
+      });
+    }
+    if (projectExists('pr3')) {
+      items.push({
         icon: 'https://sap.github.io/fundamental/images/products/06.png',
         label: 'Project 3',
         link: '/projects/pr3'
+      });
+    }
+    return items;
+  };
+
+  // The following configuration will be used to render a product switcher component
+  productSwitcher = {
+    items: this.getProductSwitcherItems
+  };
+
+  getProfileItems = () => {
+    const items = [
+      {
+        label: 'Luigi in Github',
+        externalLink: {
+          url: 'https://github.com/SAP/luigi',
+          sameWindow: false
+        }
       }
-    ]
+    ];
+    if (projectExists('pr1')) {
+      items.push({
+        icon: '',
+        label: 'Project 1',
+        link: '/projects/pr1'
+      });
+    }
+    if (projectExists('pr3')) {
+      items.push({
+        label: 'Project 3',
+        link: '/projects/pr3'
+      });
+    }
+    return items;
   };
 
   profile = {
@@ -231,24 +270,7 @@ class Navigation {
       label: 'End session'
       // icon: "sys-cancel",
     },
-    items: [
-      {
-        label: 'Luigi in Github',
-        externalLink: {
-          url: 'https://github.com/SAP/luigi',
-          sameWindow: false
-        }
-      },
-      {
-        icon: '',
-        label: 'Project 1',
-        link: '/projects/pr1'
-      },
-      {
-        label: 'Project 3',
-        link: '/projects/pr3'
-      }
-    ]
+    items: this.getProfileItems
   };
 }
 

@@ -26,6 +26,30 @@ describe('Login Flow', () => {
       .click();
 
     cy.expectPathToBe('/projects/pr1');
+
+    cy.goToOverviewPage();
+    cy.expectPathToBe('/overview');
+
+    // remove projects
+    cy.selectContextSwitcherItem('Remove Project');
+    cy.expectPathToBe('/projects');
+    cy.selectContextSwitcherItem('Remove Project');
+    cy.expectPathToBe('/projects');
+
+    cy.get('[data-e2e="luigi-topnav-profile"]').click();
+    cy.get('[data-e2e="luigi-topnav-profile-item"]').should(
+      'not.contain',
+      'Project 1'
+    );
+
+    // add project
+    cy.selectContextSwitcherItem('New Project');
+    cy.expectPathToBe('/projects');
+
+    cy.get('[data-e2e="luigi-topnav-profile-item"]').should(
+      'contain',
+      'Project 1'
+    );
   });
 
   it('Logout and login again', () => {

@@ -247,19 +247,18 @@
     methods: {
       setProfileNavData: function() {
         if (!this.get().navProfileListenerInstalled) {
-          GenericHelpers.doOnStoreChange(this.store, () => {
-           const configProfileNav =
-             LuigiConfig.getConfigValue('navigation.profile') || {};
+          GenericHelpers.doOnStoreChange(this.store, async () => {
+           const logoutItem = await LuigiConfig.getConfigValueAsync('navigation.profile.logout');
            const profileNavData = {
              logout: {
                ...TOP_NAV_DEFAULTS.logout,
-               ...configProfileNav.logout
+               ...logoutItem
              },
-             items: configProfileNav.items || []
+             items: await LuigiConfig.getConfigValueAsync('navigation.profile.items') || []
            };
            this.set({ profileNav: profileNavData });
           });
-          this.set({navProfileListenerInstalled: true});
+          this.set({ navProfileListenerInstalled: true });
         }
       },
       startAuthorization: function() {

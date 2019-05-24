@@ -73,6 +73,14 @@ export const removeProject = projectId => {
   return removedProject;
 };
 
+export const projectExists = projectId => {
+  return (
+    allProjects.filter(project => {
+      return project.id === projectId;
+    }).length > 0
+  );
+};
+
 export const getProjectCount = () => {
   return allProjects.length;
 };
