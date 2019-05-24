@@ -8,5 +8,5 @@ export const LuigiElements = elements;
 
 // Expose it window for user app to call Luigi.setConfig()
 window.Luigi = config;
-window.Luigi.auth = auth;
-window.Luigi.elements = elements;
+window.Luigi.auth = () => auth;
+window.Luigi.elements = () => elements;
