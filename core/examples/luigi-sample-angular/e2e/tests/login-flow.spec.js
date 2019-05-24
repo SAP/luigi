@@ -52,6 +52,35 @@ describe('Login Flow', () => {
     );
   });
 
+  it('Change title and logo', () => {
+    cy.login('tets@email.com', 'tets');
+
+    const testTitle = 'This is not my sandwich';
+    const testLogo =
+      'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mM0WCn/HgAD8gHpXMQ+4AAAAABJRU5ErkJggg==';
+
+    cy.get('[data-e2e="luigi-topnav-title"]').should('contain', 'Luigi Demo');
+    cy.get('[data-e2e="luigi-topnav-title"]').should(
+      'not.have.attr',
+      'src',
+      testLogo
+    );
+
+    cy.window().then(win => {
+      const config = win.Luigi.getConfig();
+      config.settings.header.title = testTitle;
+      config.settings.header.logo = testLogo;
+      win.Luigi.setConfig(config);
+
+      cy.get('[data-e2e="luigi-topnav-title"]').should('contain', testTitle);
+      cy.get('[data-e2e="luigi-topnav-logo"]').should(
+        'have.attr',
+        'src',
+        testLogo
+      );
+    });
+  });
+
   it('Logout and login again', () => {
     cy.login('tets@email.com', 'tets');
 
