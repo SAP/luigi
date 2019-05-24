@@ -246,16 +246,21 @@
     },
     methods: {
       setProfileNavData: function() {
-        const configProfileNav =
-          LuigiConfig.getConfigValue('navigation.profile') || {};
-        const profileNavData = {
-          logout: {
-            ...TOP_NAV_DEFAULTS.logout,
-            ...configProfileNav.logout
-          },
-          items: configProfileNav.items || []
-        };
-        this.set({ profileNav: profileNavData });
+        if (!this.get().navProfileListenerInstalled) {
+          GenericHelpers.doOnStoreChange(this.store, () => {
+           const configProfileNav =
+             LuigiConfig.getConfigValue('navigation.profile') || {};
+           const profileNavData = {
+             logout: {
+               ...TOP_NAV_DEFAULTS.logout,
+               ...configProfileNav.logout
+             },
+             items: configProfileNav.items || []
+           };
+           this.set({ profileNav: profileNavData });
+          });
+          this.set({navProfileListenerInstalled: true});
+        }
       },
       startAuthorization: function() {
         idpProviderInstance.login().then(res => {

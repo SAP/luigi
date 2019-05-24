@@ -55,14 +55,22 @@ export const addProject = newProject => {
       name: 'Project ' + (allProjects.length + 1)
     }
   );
+  return allProjects[allProjects.length - 1];
 };
 
 export const removeProject = projectId => {
+  let removedProject;
   if (projectId) {
-    allProjects = allProjects.filter(project => project.id !== projectId);
+    allProjects = allProjects.filter(project => {
+      if (project.id == projectId) {
+        removedProject = project;
+      }
+      return project.id !== projectId;
+    });
   } else {
-    allProjects.pop();
+    removedProject = allProjects.pop();
   }
+  return removedProject;
 };
 
 export const getProjectCount = () => {

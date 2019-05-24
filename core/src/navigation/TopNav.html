@@ -209,11 +209,9 @@
   import Authorization from '../Authorization.html';
   import ProductSwitcher from './ProductSwitcher.html';
   import { LuigiAuth, LuigiConfig } from '../core-api';
-  import * as Routing from '../services/routing';
-  import * as Navigation from './services/navigation.js';
   import * as NavigationHelpers from '../utilities/helpers/navigation-helpers';
-  import * as GenericHelpers from '../utilities/helpers/generic-helpers.js';
   import * as AuthHelpers from '../utilities/helpers/auth-helpers';
+  import { doOnStoreChange } from '../utilities/helpers/generic-helpers';
 
   const setTopNavData = (current, component) => {
     if (current.pathData && 0 < current.pathData.length) {
@@ -247,20 +245,24 @@
 
   export default {
     oncreate() {
+      doOnStoreChange(this.store, () => {
+        this.set({
+          authorizationEnabled: LuigiAuth.isAuthorizationEnabled(),
+          autologinEnabled: !Boolean(
+            LuigiConfig.getConfigValue('auth.disableAutoLogin')
+          ),
+          isProductSwitcherAvailable: LuigiConfig.getConfigValue(
+            'navigation.productSwitcher'
+          ),
+          hideNavComponent: LuigiConfig.getConfigBooleanValue(
+            'settings.hideNavigation'
+          ),
+          responsiveNavSetting: LuigiConfig.getConfigValue(
+            'settings.responsiveNavigation'
+          )
+        });
+      });
       this.set({
-        authorizationEnabled: LuigiAuth.isAuthorizationEnabled(),
-        autologinEnabled: !Boolean(
-          LuigiConfig.getConfigValue('auth.disableAutoLogin')
-        ),
-        isProductSwitcherAvailable: LuigiConfig.getConfigValue(
-          'navigation.productSwitcher'
-        ),
-        hideNavComponent: LuigiConfig.getConfigBooleanValue(
-          'settings.hideNavigation'
-        ),
-        responsiveNavSetting: LuigiConfig.getConfigValue(
-          'settings.responsiveNavigation'
-        ),
         urlAuthError: AuthHelpers.parseUrlAuthErrors()
       });
     },
