@@ -189,7 +189,7 @@ class Navigation {
       {
         label: 'Luigi in Github',
         externalLink: {
-          url: 'https://github.com/kyma-project/luigi',
+          url: 'https://github.com/SAP/luigi',
           sameWindow: false
         }
       },
