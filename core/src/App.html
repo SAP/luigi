@@ -547,36 +547,16 @@
         });
       },
       onResize() {
-        const simpleDesktopToMobile = () => {
-          if (this.get().responsiveNavSetting === 'simple') {
-            if (
-              window.innerWidth < CSS_BREAKPOINTS.desktopMinWidth &&
-              this.get().previousWindowWidth >= CSS_BREAKPOINTS.desktopMinWidth
-            ) {
-              this.closeLeftNav();
-            }
-          }
-        };
-
-        const simpleIsNotSameBreakpoint = () => {
-          if (this.get().responsiveNavSetting === 'simple') {
-            if (
-              this.get().previousWindowWidth >= CSS_BREAKPOINTS.desktopMinWidth
-            ) {
-              return false;
-            }
-          }
-          return true;
-        };
-
-        if (
+        const isMobileToDesktop =
           window.innerWidth >= CSS_BREAKPOINTS.desktopMinWidth &&
-          simpleIsNotSameBreakpoint()
-        ) {
+          this.get().previousWindowWidth < CSS_BREAKPOINTS.desktopMinWidth;
+        const isDesktopToMobile =
+          window.innerWidth < CSS_BREAKPOINTS.desktopMinWidth &&
+          this.get().previousWindowWidth >= CSS_BREAKPOINTS.desktopMinWidth;
+
+        if (isMobileToDesktop || isDesktopToMobile) {
           this.closeLeftNav();
         }
-
-        simpleDesktopToMobile();
         this.set({ previousWindowWidth: window.innerWidth });
       },
       handleModalResult(result) {
