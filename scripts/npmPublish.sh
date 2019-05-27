@@ -33,6 +33,8 @@ function setNpmToken {
 
 # Check if it can be published (github release must exist)
 NOT_YET_RELEASED=`git tag -l "v$VERSION"`
+echo "GIT TAG: $NOT_YET_RELEASED"
+git tag
 if [ "$NOT_YET_RELEASED" = "" ]; then
   echo "Tag (github release) does not exist, not going to publish $VERSION to npm"
   exit 0;
