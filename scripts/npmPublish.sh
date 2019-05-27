@@ -31,11 +31,15 @@ function setNpmToken {
   fi
 }
 
+echo "Processing $NAME"
+
+cd $BASE_DIR/../client
+NAME=$(node -p "require('./package.json').name")
+VERSION=$(node -p "require('./package.json').version")
+
 # Check if it can be published (github release must exist)
-NOT_YET_RELEASED=`git tag -l "v$VERSION"`
-echo "GIT TAG: $NOT_YET_RELEASED"
-git tag
-if [ "$NOT_YET_RELEASED" = "" ]; then
+TAGS_GREP=`git ls-remote --tags origin | grep "v$VERSION$" | wc -l`
+if [[ "$TAGS_GREP" =~ "0" ]]; then
   echo "Tag (github release) does not exist, not going to publish $VERSION to npm"
   exit 0;
 fi
@@ -43,10 +47,6 @@ fi
 
 #### LUIGI CLIENT
 cd $BASE_DIR/../client
-NAME=$(node -p "require('./package.json').name")
-VERSION=$(node -p "require('./package.json').version")
-echo "Processing $NAME"
-
 # Check if was published already
 NPM_GREP=`npm info $NAME versions | grep "'$VERSION'" | wc -l`
 if [[ "$NPM_GREP" =~ "1" ]]; then
