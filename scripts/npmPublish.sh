@@ -21,9 +21,18 @@ echoe() {
   echo ""
 }
 
-if [ "$TRAVIS" = "true" ]; then
-  # setup token when running in travis
-  echo "//registry.npmjs.org/:_authToken=${NPM_AUTH_TOKEN}" > ~/.npmrc
+function setNpmToken {
+  if [ "$TRAVIS" = "true" ]; then
+    # setup token when running in travis
+    echo "//registry.npmjs.org/:_authToken=${NPM_AUTH_TOKEN}" > ~/.npmrc
+  fi
+}
+
+# Check if it can be published (github release must exist)
+NOT_YET_RELEASED=`git tag -l "v$VERSION"`
+if [ "$NOT_YET_RELEASED" = "" ]; then
+  echo "Tag (github release) does not exist, not going to publish $VERSION to npm"
+  exit 0;
 fi
 
 
@@ -33,13 +42,6 @@ NAME=$(node -p "require('./package.json').name")
 VERSION=$(node -p "require('./package.json').version")
 echo "Processing $NAME"
 
-# Check if it can be published (github release must exist)
-NOT_YET_RELEASED=`git tag -l "v$VERSION"`
-if [ "$NOT_YET_RELEASED" = "" ]; then
-  echo "Tag (github release) does not exist, not going to publish $VERSION to npm"
-  exit 0;
-fi
-
 # Check if was published already
 NPM_GREP=`npm info $NAME versions | grep "'$VERSION'" | wc -l`
 if [[ "$NPM_GREP" =~ "1" ]]; then
@@ -47,6 +49,7 @@ if [[ "$NPM_GREP" =~ "1" ]]; then
 else
 
   echoe "Installing and bundling Luigi Client"
+  setNpmToken
   cd $BASE_DIR/../client
   npm ci
   npm run bundle
@@ -62,19 +65,11 @@ else
 fi # end NPM_GREP client
 
 
-
 #### LUIGI CORE
 cd $BASE_DIR/../core/public
 NAME=$(node -p "require('./package.json').name")
 VERSION=$(node -p "require('./package.json').version")
 echo "Processing $NAME"
-
-# Check if it can be published (github release must exist)
-NOT_YET_RELEASED=`git tag -l "v$VERSION"`
-if [ "$NOT_YET_RELEASED" = "" ]; then
-  echo "Tag (github release) does not exist, not going to publish $NAME@$VERSION to npm"
-  exit 0;
-fi
 
 # Check if was published already
 NPM_GREP=`npm info $NAME versions | grep "'$VERSION'" | wc -l`
@@ -83,6 +78,7 @@ if [[ "$NPM_GREP" =~ "1" ]]; then
 else
 
   echoe "Installing and bundling Luigi Core"
+  setNpmToken
   cd $BASE_DIR/../core
   npm ci
   npm run bundle

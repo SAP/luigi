@@ -1,5 +1,5 @@
 {
-  "name": "@kyma-project/luigi-client",
+  "name": "markus-one-client",
   "version": "0.4.12-rc.2",
   "description": "Javascript library supporting consumers of the Luigi framework",
   "repository": {
