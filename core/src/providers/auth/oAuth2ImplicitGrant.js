@@ -13,7 +13,8 @@ export class oAuth2ImplicitGrant {
       authorizeMethod: 'GET',
       logoutUrl: '',
       post_logout_redirect_uri: window.location.origin + '/logout.html',
-      accessTokenExpiringNotificationTime: 60
+      accessTokenExpiringNotificationTime: 120,
+      expirationCheckInterval: 5
     };
     const mergedSettings = GenericHelpers.deepMerge(defaultSettings, settings);
 
@@ -124,9 +125,9 @@ export class oAuth2ImplicitGrant {
       if (!authData) {
         return clearInterval(expirationCheckIntervalInstance);
       }
-      const tokenExpirationDate = authData
-        ? authData.accessTokenExpirationDate || 0
-        : 0;
+
+      const tokenExpirationDate =
+        (authData && authData.accessTokenExpirationDate) || 0;
       const currentDate = new Date();
 
       if (tokenExpirationDate - currentDate - logoutBeforeExpirationTime < 0) {

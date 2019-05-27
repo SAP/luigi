@@ -12,7 +12,7 @@ export class openIdConnect {
       filterProtocolClaims: true,
       loadUserInfo: false,
       automaticSilentRenew: false,
-      accessTokenExpiringNotificationTime: 60,
+      accessTokenExpiringNotificationTime: 120,
       thirdPartyCookiesScriptLocation: '',
       logoutUrl: window.location.origin + '/logout.html',
       silent_redirect_uri:
