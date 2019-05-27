@@ -28,3 +28,11 @@ jobs:
       before_cache:
         - rm -rf ~/.cache/Cypress/cy/production/browsers #it is individual for each run anyway so caching it slows down the job
 
+    #----- PUBLISHING -----
+    - name: 'Publish to NPM'
+      if: branch = master
+      script: bash ./scripts/npmPublish.sh
+      cache:
+        directories:
+          - npm: true
+          - ~/.cache
