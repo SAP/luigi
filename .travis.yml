@@ -9,24 +9,24 @@ notifications:
 jobs:
   include:
     #----- UNIT -----
-    - stage: 'Tests'
-      name: 'Unit Tests'
-      script: npm test --prefix core
-      #no cache for unit tests = more speed
+    # - stage: 'Tests'
+    #   name: 'Unit Tests'
+    #   script: npm test --prefix core
+    #   #no cache for unit tests = more speed
       
-    #----- INTEGRATION -----
-    - name: 'Integration Tests'
-      script: bash ./test/e2e.sh
-      cache:
-        directories:
-          - npm: true
-          - ~/.cache
-      addons:
-        chrome: stable
-      before_install:
-        - google-chrome-stable --headless --disable-gpu --remote-debugging-port=9222 http://localhost &
-      before_cache:
-        - rm -rf ~/.cache/Cypress/cy/production/browsers #it is individual for each run anyway so caching it slows down the job
+    # #----- INTEGRATION -----
+    # - name: 'Integration Tests'
+    #   script: bash ./test/e2e.sh
+    #   cache:
+    #     directories:
+    #       - npm: true
+    #       - ~/.cache
+    #   addons:
+    #     chrome: stable
+    #   before_install:
+    #     - google-chrome-stable --headless --disable-gpu --remote-debugging-port=9222 http://localhost &
+    #   before_cache:
+    #     - rm -rf ~/.cache/Cypress/cy/production/browsers #it is individual for each run anyway so caching it slows down the job
 
     #----- PUBLISHING -----
     - name: 'Publish to NPM'
