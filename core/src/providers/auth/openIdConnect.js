@@ -126,12 +126,7 @@ export class openIdConnect {
 
   setTokenExpireSoonAction() {
     this.client.events.addAccessTokenExpiring(() => {
-      LuigiAuth.handleAuthEvent(
-        'onAuthExpireSoon',
-        this.settings,
-        undefined,
-        undefined
-      );
+      LuigiAuth.handleAuthEvent('onAuthExpireSoon', this.settings);
     });
   }
 
