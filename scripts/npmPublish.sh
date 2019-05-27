@@ -29,11 +29,11 @@ function setNpmToken {
 }
 
 # Check if it can be published (github release must exist)
-NOT_YET_RELEASED=`git tag -l "v$VERSION"`
-if [ "$NOT_YET_RELEASED" = "" ]; then
-  echo "Tag (github release) does not exist, not going to publish $VERSION to npm"
-  exit 0;
-fi
+# NOT_YET_RELEASED=`git tag -l "v$VERSION"`
+# if [ "$NOT_YET_RELEASED" = "" ]; then
+#   echo "Tag (github release) does not exist, not going to publish $VERSION to npm"
+#   exit 0;
+# fi
 
 
 #### LUIGI CLIENT
@@ -45,7 +45,7 @@ echo "Processing $NAME"
 # Check if was published already
 NPM_GREP=`npm info $NAME versions | grep "'$VERSION'" | wc -l`
 if [[ "$NPM_GREP" =~ "1" ]]; then
-  echo "$VERSION already published, waiting for next release."
+  echo "$VERSION already published, skipping until next release."
 else
 
   echoe "Installing and bundling Luigi Client"
@@ -74,7 +74,7 @@ echo "Processing $NAME"
 # Check if was published already
 NPM_GREP=`npm info $NAME versions | grep "'$VERSION'" | wc -l`
 if [[ "$NPM_GREP" =~ "1" ]]; then
-  echo "$VERSION already published, waiting for next release."
+  echo "$VERSION already published, skipping until next release."
 else
 
   echoe "Installing and bundling Luigi Core"
