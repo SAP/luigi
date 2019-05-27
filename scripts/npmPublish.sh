@@ -24,13 +24,10 @@ echoe() {
 }
 
 function setNpmToken {
-    echo "setNpmToken checking"
   if [ "$TRAVIS" = "true" ]; then
     # setup token when running in travis
-    echo "setNpmToken storing token"
-    # echo '//registry.npmjs.org/:_authToken=$NPM_AUTH_KEY' > ~/.npmrc
-    echo '_authToken=$NPM_AUTH_KEY' > ~/.npmrc
-    echo 'email=$NPM_EMAIL' >> ~/.npmrc
+    echo "setNpmToken"
+    echo "//registry.npmjs.org/:_authToken=$NPM_AUTH_TOKEN" > ~/.npmrc
     npm whoami
   fi
 }
