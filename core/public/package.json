@@ -1,5 +1,5 @@
 {
-  "name": "markus-one-core",
+  "name": "@kyma-project/luigi-core",
   "version": "0.4.12-rc.2",
   "description": "luigi-core",
   "license": "Apache-2.0",
