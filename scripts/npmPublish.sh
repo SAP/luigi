@@ -1,8 +1,6 @@
 #!/bin/bash
 
 # Publishes the current version
-#
-# TODO: check if we want to publish last TAG and how we handle RC releases then
 
 BASE_DIR="$( cd "$(dirname "$0")" ; pwd -P )"
 
@@ -25,45 +23,82 @@ echoe() {
 
 if [ "$TRAVIS" = "true" ]; then
   # setup token when running in travis
-  echo "//registry.npmjs.org/:_authToken=${NPM_TOKEN_MAXMARKUS}" > ~/.npmrc
+  echo "//registry.npmjs.org/:_authToken=${NPM_AUTH_TOKEN}" > ~/.npmrc
 fi
 
 
 #### LUIGI CLIENT
-echoe "Installing and bundling Luigi Client"
 cd $BASE_DIR/../client
-npm ci
-npm run bundle
-
-echoe "Publishing Luigi Client"
-cd $BASE_DIR/../client
-npm publish --access public
-
 NAME=$(node -p "require('./package.json').name")
 VERSION=$(node -p "require('./package.json').version")
-if [[ $VERSION != *"rc."* ]]; then
-  echo "Tag $VERSION with latest"
-  npm dist-tag add $NAME@$VERSION latest
+echo "Processing $NAME"
+
+# Check if it can be published (github release must exist)
+NOT_YET_RELEASED=`git tag -l "v$VERSION"`
+if [ "$NOT_YET_RELEASED" = "" ]; then
+  echo "Tag (github release) does not exist, not going to publish $VERSION to npm"
+  exit 0;
 fi
+
+# Check if was published already
+NPM_GREP=`npm info $NAME versions | grep "'$VERSION'" | wc -l`
+if [[ "$NPM_GREP" =~ "1" ]]; then
+  echo "$VERSION already published, waiting for next release."
+else
+
+  echoe "Installing and bundling Luigi Client"
+  cd $BASE_DIR/../client
+  npm ci
+  npm run bundle
+
+  echoe "Publishing Luigi Client"
+  cd $BASE_DIR/../client
+  npm publish --access public
+  if [[ $VERSION != *"rc."* ]]; then
+    echo "Tag $VERSION with latest"
+    npm dist-tag add $NAME@$VERSION latest
+  fi
+
+fi # end NPM_GREP client
+
 
 
 #### LUIGI CORE
-echoe "Installing and bundling Luigi Core"
-cd $BASE_DIR/../core
-npm ci
-npm run bundle
-
-echoe "Publishing Luigi Core"
 cd $BASE_DIR/../core/public
-npm publish --access public
-
-cd $BASE_DIR/../core
 NAME=$(node -p "require('./package.json').name")
 VERSION=$(node -p "require('./package.json').version")
-if [[ $VERSION != *"rc."* ]]; then
-  echo "Tag $VERSION with latest"
-  npm dist-tag add $NAME@$VERSION latest
+echo "Processing $NAME"
+
+# Check if it can be published (github release must exist)
+NOT_YET_RELEASED=`git tag -l "v$VERSION"`
+if [ "$NOT_YET_RELEASED" = "" ]; then
+  echo "Tag (github release) does not exist, not going to publish $NAME@$VERSION to npm"
+  exit 0;
 fi
+
+# Check if was published already
+NPM_GREP=`npm info $NAME versions | grep "'$VERSION'" | wc -l`
+if [[ "$NPM_GREP" =~ "1" ]]; then
+  echo "$VERSION already published, waiting for next release."
+else
+
+  echoe "Installing and bundling Luigi Core"
+  cd $BASE_DIR/../core
+  npm ci
+  npm run bundle
+
+  echoe "Publishing Luigi Core"
+  cd $BASE_DIR/../core/public
+  npm publish --access public
+
+  cd $BASE_DIR/../core
+  if [[ $VERSION != *"rc."* ]]; then
+    echo "Tag $VERSION with latest"
+    npm dist-tag add $NAME@$VERSION latest
+  fi
+fi # end NPM_GREP core
+
+
 
 if [ "$TRAVIS" = "true" ]; then
   # setup token when running in travis
