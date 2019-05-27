@@ -2,6 +2,8 @@
 
 # Publishes the current version
 
+set -e # exit on errors
+
 BASE_DIR="$( cd "$(dirname "$0")" ; pwd -P )"
 
 echoe() {
@@ -26,12 +28,14 @@ function setNpmToken {
   if [ "$TRAVIS" = "true" ]; then
     # setup token when running in travis
     echo "setNpmToken storing token"
-    echo '//registry.npmjs.org/:_authToken=$NPM_AUTH_KEY' > ~/.npmrc
+    # echo '//registry.npmjs.org/:_authToken=$NPM_AUTH_KEY' > ~/.npmrc
+    echo '_authToken=$NPM_AUTH_KEY' > ~/.npmrc
+    echo 'email=$NPM_EMAIL' >> ~/.npmrc
     npm whoami
   fi
 }
 
-  
+
 echo "Processing $NAME"
 
 cd $BASE_DIR/../client
