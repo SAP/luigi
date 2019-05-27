@@ -14,7 +14,7 @@ jobs:
       script: npm test --prefix core
       #no cache for unit tests = more speed
       
-    #----- INTEGRATION -----
+    ----- INTEGRATION -----
     - name: 'Integration Tests'
       script: bash ./test/e2e.sh
       cache:
@@ -28,7 +28,7 @@ jobs:
       before_cache:
         - rm -rf ~/.cache/Cypress/cy/production/browsers #it is individual for each run anyway so caching it slows down the job
 
-    # ----- PUBLISHING -----
+    ----- NPM PUBLISH -----
     - name: 'Publish to NPM'
       if: branch = master
       script: bash ./scripts/npmPublish.sh
