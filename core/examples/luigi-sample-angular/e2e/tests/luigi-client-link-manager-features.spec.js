@@ -11,32 +11,32 @@ describe('Luigi client features', () => {
     Cypress.currentTest.retries(2);
     cy.get('iframe').then($iframe => {
       const $iframeBody = $iframe.contents().find('body');
-      // cy.goToLinkManagerMethods($iframeBody);
+      cy.goToLinkManagerMethods($iframeBody);
 
-      // //navigate using absolute path
-      // cy.wrap($iframeBody)
-      //   .contains('absolute: to overview')
-      //   .click();
-      // cy.expectPathToBe('/overview');
+      //navigate using absolute path
+      cy.wrap($iframeBody)
+        .contains('absolute: to overview')
+        .click();
+      cy.expectPathToBe('/overview');
 
-      // cy.goToLinkManagerMethods($iframeBody);
+      cy.goToLinkManagerMethods($iframeBody);
 
-      // //navigate using relative path
-      // cy.wrap($iframeBody)
-      //   .contains('relative: to stakeholders')
-      //   .click();
-      // cy.expectPathToBe('/projects/pr2/users/groups/stakeholders');
+      //navigate using relative path
+      cy.wrap($iframeBody)
+        .contains('relative: to stakeholders')
+        .click();
+      cy.expectPathToBe('/projects/pr2/users/groups/stakeholders');
 
-      // cy.goToOverviewPage();
-      // cy.goToLinkManagerMethods($iframeBody);
+      cy.goToOverviewPage();
+      cy.goToLinkManagerMethods($iframeBody);
 
-      // //navigate using closest context
-      // cy.wrap($iframeBody)
-      //   .contains('closest parent: to stakeholders')
-      //   .click();
-      // cy.expectPathToBe('/projects/pr2/users/groups/stakeholders');
+      //navigate using closest context
+      cy.wrap($iframeBody)
+        .contains('closest parent: to stakeholders')
+        .click();
+      cy.expectPathToBe('/projects/pr2/users/groups/stakeholders');
 
-      // cy.goToOverviewPage();
+      cy.goToOverviewPage();
       cy.goToLinkManagerMethods($iframeBody);
 
       //navigate using context
