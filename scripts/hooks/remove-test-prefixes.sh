@@ -35,10 +35,10 @@ while read LINE; do
     # echo "${LINE}"
     cleanFiles "${LINE}"
 done <<HERE
-$BASE_DIR/../core/test
-$BASE_DIR/../core/examples/luigi-sample-angular/e2e
-$BASE_DIR/../core/examples/luigi-sample-angular/src/app
-$BASE_DIR/../core/examples/luigi-sample-vue/tests
+$BASE_DIR/../../core/test
+$BASE_DIR/../../core/examples/luigi-sample-angular/e2e
+$BASE_DIR/../../core/examples/luigi-sample-angular/src/app
+$BASE_DIR/../../core/examples/luigi-sample-vue/tests
 HERE
 
 exit 0
