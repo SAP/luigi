@@ -3,61 +3,53 @@ import { linkManager } from './linkManager';
 import { uxManager } from './uxManager';
 
 /**
- * Create as less instances as possible, so we
- * instantiate once here and reuse.
- * @private
- */
-const uxManagerInstance = new uxManager();
-const lifecycleManagerInstance = new lifecycleManager();
-
-/**
  * @name LuigiClient
  * @private
  */
 class LuigiClient {
   addInitListener(initFn) {
-    return lifecycleManagerInstance.addInitListener(initFn);
+    return lifecycleManager.addInitListener(initFn);
   }
   removeInitListener(id) {
-    return lifecycleManagerInstance.removeInitListener(id);
+    return lifecycleManager.removeInitListener(id);
   }
   addContextUpdateListener(contextUpdatedFn) {
-    return lifecycleManagerInstance.addContextUpdateListener(contextUpdatedFn);
+    return lifecycleManager.addContextUpdateListener(contextUpdatedFn);
   }
   removeContextUpdateListener(id) {
-    return lifecycleManagerInstance.removeContextUpdateListener(id);
+    return lifecycleManager.removeContextUpdateListener(id);
   }
   getToken() {
-    return lifecycleManagerInstance.getToken();
+    return lifecycleManager.getToken();
   }
   getEventData() {
-    return lifecycleManagerInstance.getEventData();
+    return lifecycleManager.getEventData();
   }
   getNodeParams() {
-    return lifecycleManagerInstance.getNodeParams();
+    return lifecycleManager.getNodeParams();
   }
   getPathParams() {
-    return lifecycleManagerInstance.getPathParams();
+    return lifecycleManager.getPathParams();
   }
   /**
    * @private
    */
   linkManager() {
     return new linkManager({
-      currentContext: lifecycleManagerInstance.currentContext
+      currentContext: lifecycleManager.currentContext
     });
   }
   /**
    * @private
    */
   uxManager() {
-    return uxManagerInstance;
+    return uxManager;
   }
   /**
    * @private
    */
   lifecycleManager() {
-    return lifecycleManagerInstance;
+    return lifecycleManager;
   }
 }
 export default (LuigiClient = new LuigiClient());
