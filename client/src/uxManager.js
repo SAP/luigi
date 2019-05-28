@@ -9,6 +9,17 @@ export class uxManager extends LuigiClientBase {
   /** @private */
   constructor() {
     super();
+
+    window.addEventListener(
+      'message',
+      function(e) {
+        if ('luigi.ux.confirmationModal.hide' === e.data.msg) {
+          this.hideConfirmationModal(e.data.data);
+        } else if ('luigi.ux.alert.hide' === e.data.msg) {
+          this.hideAlert(e.data.id);
+        }
+      }.bind(this)
+    );
   }
 
   /** @lends uxManager */
