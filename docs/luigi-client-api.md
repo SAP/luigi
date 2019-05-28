@@ -38,6 +38,12 @@ Removes a context update listener.
 
 -   `id` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** the id that was returned by the `addContextUpdateListener` function
 
+### getToken
+
+Returns the currently valid access token.
+
+Returns **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** current access token
+
 ### getEventData
 
 Returns the context object. Typically it is not required as the [addContextUpdateListener()](#addContextUpdateListener) receives the same values.
@@ -210,88 +216,6 @@ LuigiClient.linkManager().goBack(true);
 **Extends LuigiClientBase**
 
 Use the UX Manager to manage the appearance features in Luigi.
-
-### showLoadingIndicator
-
-Adds a backdrop with a loading indicator for the micro front-end frame. This overrides the [loadingIndicator.enabled](navigation-configuration.md#nodes) setting.
-
-### hideLoadingIndicator
-
-Removes the loading indicator. Use it after calling [showLoadingIndicator()](#showLoadingIndicator) or to hide the indicator when you use the [loadingIndicator.hideAutomatically: false](navigation-configuration.md#nodes) node configuration.
-
-### addBackdrop
-
-Adds a backdrop to block the top and side navigation. It is based on the Fundamental UI Modal, which you can use in your micro front-end to achieve the same behavior.
-
-### removeBackdrop
-
-Removes the backdrop.
-
-### setDirtyStatus
-
-This method informs the main application that there are unsaved changes in the current view in the iframe. For example, that can be a view with form fields which were edited but not submitted.
-
-#### Parameters
-
--   `isDirty` **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)** indicates if there are any unsaved changes on the current page or in the component
-
-### showConfirmationModal
-
-Shows a confirmation modal.
-
-#### Parameters
-
--   `settings` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)?** the settings the confirmation modal. If no value is provided for any of the fields, a default value is set for it
-    -   `settings.header` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** the content of the modal header (optional, default `"Confirmation"`)
-    -   `settings.body` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** the content of the modal body (optional, default `"Are you sure you want to do this?"`)
-    -   `settings.buttonConfirm` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** the label for the modal confirm button (optional, default `"Yes"`)
-    -   `settings.buttonDismiss` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** the label for the modal dismiss button (optional, default `"No"`)
-
-Returns **[promise](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise)** which is resolved when accepting the confirmation modal and rejected when dismissing it
-
-### showAlert
-
-Shows an alert.
-
-#### Parameters
-
--   `settings` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** the settings for the alert
-    -   `settings.text` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** the content of the alert. To add a link to the content, you have to set up the link in the `links` object. The key(s) in the `links` object must be used in the text to reference the links, wrapped in curly brackets with no spaces. If you don't specify any text, the alert is not displayed
-    -   `settings.type` **(`"info"` \| `"success"` \| `"warning"` \| `"error"`)?** sets the type of the alert
-    -   `settings.links` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)?** provides links data
-        -   `settings.links.LINK_KEY` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** object containing the data for a particular link. To properly render the link in the alert message refer to the description of the **settings.text** parameter
-            -   `settings.links.LINK_KEY.text` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** text which replaces the link identifier in the alert content
-            -   `settings.links.LINK_KEY.url` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** url to navigate when you click the link. Currently, only internal links are supported in the form of relative or absolute paths.
-    -   `settings.closeAfter` **[number](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number)** (optional) time in milliseconds that tells Luigi when to close the Alert automatically. If not provided, the Alert will stay on until closed manually. It has to be greater than `100`.
-
-#### Examples
-
-```javascript
-import LuigiClient from '@kyma-project/luigi-client';
-const settings = {
- text: Ut enim ad minim veniam, {goToHome} quis nostrud exercitation ullamco {relativePath} laboris nisi ut aliquip ex ea commodo consequat.
-   Duis aute irure dolor {goToOtherProject},
- type: 'info',
- links: {
-   goToHome: { text: 'homepage', url: '/overview' },
-   goToOtherProject: { text: 'other project', url: '/projects/pr2' },
-   relativePath: { text: 'relative hide side nav', url: 'hideSideNav' }
- },
-closeAfter: 3000
-}
-LuigiClient
- .uxManager()
- .showAlert(settings)
- .then(() => {
-    // Logic to execute when the alert is dismissed
-});
-```
-
-Returns **[promise](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise)** which is resolved when the alert is dismissed.
-
-## uxManager
-
-**Extends LuigiClientBase**
 
 ### showLoadingIndicator
 

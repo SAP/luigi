@@ -5,7 +5,6 @@ import { getRandomId, isFunction } from './helpers';
  * Use the functions and parameters to define the Lifecycle of listeners, navigation nodes, and Event data.
  * @name Lifecycle
  */
-/** @alias lifecycleManager */
 export class lifecycleManager extends LuigiClientBase {
   /** @private */
   constructor() {
