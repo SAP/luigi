@@ -1,5 +1,5 @@
 import { LuigiClientBase } from './baseClass';
-import { getRandomId, isFunction } from './helpers';
+import { helpers } from './helpers';
 
 /**
  * Use the functions and parameters to define the Lifecycle of listeners, navigation nodes, and Event data.
@@ -34,7 +34,10 @@ class LifecycleManager extends LuigiClientBase {
      */
     const _callAllFns = (objWithFns, payload) => {
       for (let id in objWithFns) {
-        if (objWithFns.hasOwnProperty(id) && isFunction(objWithFns[id])) {
+        if (
+          objWithFns.hasOwnProperty(id) &&
+          helpers.isFunction(objWithFns[id])
+        ) {
           objWithFns[id](payload);
         }
       }
@@ -116,6 +119,7 @@ class LifecycleManager extends LuigiClientBase {
 
   /**
    * @private
+   * @memberof Lifecycle
    */
   setCurrentContext(value) {
     this.currentContext = value;
@@ -127,9 +131,9 @@ class LifecycleManager extends LuigiClientBase {
    * @memberof Lifecycle
    */
   addInitListener(initFn) {
-    var id = getRandomId();
+    var id = helpers.getRandomId();
     this._onInitFns[id] = initFn;
-    if (this.luigiInitialized && isFunction(initFn)) {
+    if (this.luigiInitialized && helpers.isFunction(initFn)) {
       initFn(this.currentContext.context);
     }
     return id;
@@ -152,9 +156,9 @@ class LifecycleManager extends LuigiClientBase {
    * @memberof Lifecycle
    */
   addContextUpdateListener(contextUpdatedFn) {
-    var id = getRandomId();
+    var id = helpers.getRandomId();
     this._onContextUpdatedFns[id] = contextUpdatedFn;
-    if (this.luigiInitialized && isFunction(contextUpdatedFn)) {
+    if (this.luigiInitialized && helpers.isFunction(contextUpdatedFn)) {
       contextUpdatedFn(this.currentContext.context);
     }
     return id;

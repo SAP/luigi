@@ -71,17 +71,11 @@ Returns **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/G
 
 ## linkManager
 
-**Extends LuigiClientBase**
-
 The Link Manager allows you to navigate to another route. Use it instead of an internal router to:
 
 -   Route inside micro front-ends.
 -   Reflect the route.
 -   Keep the navigation state in Luigi.
-
-### Parameters
-
--   `values`  
 
 ### navigate
 
@@ -212,8 +206,6 @@ LuigiClient.linkManager().goBack(true);
 ```
 
 ## uxManager
-
-**Extends LuigiClientBase**
 
 Use the UX Manager to manage the appearance features in Luigi.
 

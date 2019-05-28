@@ -1,29 +1,26 @@
 import { LuigiClientBase } from './baseClass';
 import { randomBytes } from 'crypto';
+import { helpers } from './helpers';
 
 /**
  * Use the UX Manager to manage the appearance features in Luigi.
+ * @name uxManager
  */
 class UxManager extends LuigiClientBase {
   /** @private */
   constructor() {
     super();
-
-    window.addEventListener(
-      'message',
-      function(e) {
-        if ('luigi.ux.confirmationModal.hide' === e.data.msg) {
-          this.hideConfirmationModal(e.data.data);
-        } else if ('luigi.ux.alert.hide' === e.data.msg) {
-          this.hideAlert(e.data.id);
-        }
-      }.bind(this)
-    );
+    helpers.addEventListener('luigi.ux.confirmationModal.hide', e => {
+      this.hideConfirmationModal(e.data.data);
+    });
+    helpers.addEventListener('luigi.ux.alert.hide', e => {
+      this.hideAlert(e.data.id);
+    });
   }
 
-  /** @lends uxManager */
   /**
    * Adds a backdrop with a loading indicator for the micro front-end frame. This overrides the {@link navigation-configuration.md#nodes loadingIndicator.enabled} setting.
+   * @memberof uxManager
    */
   showLoadingIndicator() {
     window.parent.postMessage(
@@ -36,6 +33,7 @@ class UxManager extends LuigiClientBase {
 
   /**
    * Removes the loading indicator. Use it after calling {@link #showLoadingIndicator showLoadingIndicator()} or to hide the indicator when you use the {@link navigation-configuration.md#nodes loadingIndicator.hideAutomatically: false} node configuration.
+   * @memberof uxManager
    */
   hideLoadingIndicator() {
     window.parent.postMessage(
@@ -47,6 +45,7 @@ class UxManager extends LuigiClientBase {
   }
   /**
    * Adds a backdrop to block the top and side navigation. It is based on the Fundamental UI Modal, which you can use in your micro front-end to achieve the same behavior.
+   * @memberof uxManager
    */
   addBackdrop() {
     window.parent.postMessage(
@@ -58,6 +57,7 @@ class UxManager extends LuigiClientBase {
   }
   /**
    * Removes the backdrop.
+   * @memberof uxManager
    */
   removeBackdrop() {
     window.parent.postMessage(
@@ -70,6 +70,7 @@ class UxManager extends LuigiClientBase {
   /**
    * This method informs the main application that there are unsaved changes in the current view in the iframe. For example, that can be a view with form fields which were edited but not submitted.
    * @param {boolean} isDirty indicates if there are any unsaved changes on the current page or in the component
+   * @memberof uxManager
    */
   setDirtyStatus(isDirty) {
     window.parent.postMessage(
@@ -82,6 +83,7 @@ class UxManager extends LuigiClientBase {
   }
   /**
    * Shows a confirmation modal.
+   * @memberof uxManager
    * @param {Object} [settings] the settings the confirmation modal. If no value is provided for any of the fields, a default value is set for it
    * @param {string} [settings.header="Confirmation"] the content of the modal header
    * @param {string} [settings.body="Are you sure you want to do this?"] the content of the modal body
@@ -111,6 +113,7 @@ class UxManager extends LuigiClientBase {
 
   /**
    * @private
+   * @memberof uxManager
    * @param {Object} modal confirmed boolean value if ok or cancel has been pressed
    */
   hideConfirmationModal(modal) {
@@ -123,6 +126,7 @@ class UxManager extends LuigiClientBase {
 
   /**
    * Shows an alert.
+   * @memberof uxManager
    * @param {Object} settings the settings for the alert
    * @param {string} settings.text the content of the alert. To add a link to the content, you have to set up the link in the `links` object. The key(s) in the `links` object must be used in the text to reference the links, wrapped in curly brackets with no spaces. If you don't specify any text, the alert is not displayed
    * @param {('info'|'success'|'warning'|'error')} [settings.type] sets the type of the alert
@@ -186,6 +190,7 @@ class UxManager extends LuigiClientBase {
   }
   /**
    * @private
+   * @memberof uxManager
    * @param {string} id alert id
    */
   hideAlert(id) {
