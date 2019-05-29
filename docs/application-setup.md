@@ -42,7 +42,7 @@ npm install -g live-server
 2. Use the following installer to create a directory for your application, install Luigi, make assets available, and start your local server
 
 ```
-bash <(curl -s https://raw.githubusercontent.com/kyma-project/Luigi/master/scripts/setup/no-framework.sh)
+bash <(curl -s https://raw.githubusercontent.com/SAP/luigi/master/scripts/setup/no-framework.sh)
 ````
 or execute these commands manually to get the same result:
 
@@ -60,11 +60,11 @@ mkdir -p public/assets
 
 mkdir -p src/luigi-config/basic
 
-curl https://raw.githubusercontent.com/kyma-project/Luigi/master/core/examples/luigi-sample-angular/src/index.html > public/index.html
+curl https://raw.githubusercontent.com/SAP/luigi/master/core/examples/luigi-sample-angular/src/index.html > public/index.html
 
-curl https://raw.githubusercontent.com/kyma-project/Luigi/master/core/examples/luigi-sample-angular/src/assets/sampleexternal.html > public/assets/basicexternal.html
+curl https://raw.githubusercontent.com/SAP/luigi/master/core/examples/luigi-sample-angular/src/assets/sampleexternal.html > public/assets/basicexternal.html
 
-curl https://raw.githubusercontent.com/kyma-project/Luigi/master/core/examples/luigi-sample-angular/src/luigi-config/basic/basicConfiguration.js > src/luigi-config/basic/basicConfiguration.js
+curl https://raw.githubusercontent.com/SAP/luigi/master/core/examples/luigi-sample-angular/src/luigi-config/basic/basicConfiguration.js > src/luigi-config/basic/basicConfiguration.js
 
 sed "s|extendedConfiguration.bundle.js|sampleconfig.js|g" public/index.html > public/index.tmp.html && mv public/index.tmp.html public/index.html
 
@@ -88,7 +88,7 @@ live-server --entry-file=index.html public
 2. Use the installer to create your application, install Luigi, make assets available, and serve your application:
 
 ````
-bash <(curl -s https://raw.githubusercontent.com/kyma-project/Luigi/master/scripts/setup/angular.sh)
+bash <(curl -s https://raw.githubusercontent.com/SAP/luigi/master/scripts/setup/angular.sh)
 ````
 or execute these commands manually to get the same result:
 ```bash
@@ -103,11 +103,11 @@ mkdir -p src/luigi-config/basic
 
 mv src/index.html src/angular.html
 
-curl https://raw.githubusercontent.com/kyma-project/Luigi/master/core/examples/luigi-sample-angular/src/index.html > src/index.html
+curl https://raw.githubusercontent.com/SAP/luigi/master/core/examples/luigi-sample-angular/src/index.html > src/index.html
 
-curl https://raw.githubusercontent.com/kyma-project/Luigi/master/core/examples/luigi-sample-angular/src/luigi-config/basic/basicConfiguration.js > src/luigi-config/basic/basicConfiguration.js
+curl https://raw.githubusercontent.com/SAP/luigi/master/core/examples/luigi-sample-angular/src/luigi-config/basic/basicConfiguration.js > src/luigi-config/basic/basicConfiguration.js
 
-curl https://raw.githubusercontent.com/kyma-project/Luigi/master/core/examples/luigi-sample-angular/src/assets/sampleexternal.html > src/assets/basicexternal.html
+curl https://raw.githubusercontent.com/SAP/luigi/master/core/examples/luigi-sample-angular/src/assets/sampleexternal.html > src/assets/basicexternal.html
 
 
 sed 's/extendedConfiguration.bundle.js/sampleconfig.js/g' src/index.html > src/index.tmp.html && mv src/index.tmp.html src/index.html
@@ -138,7 +138,7 @@ npm install -g live-server
 2. Use the installer to create a directory for your application, install Luigi, make assets available, and start your local server:
 
 ````
-bash <(curl -s https://raw.githubusercontent.com/kyma-project/Luigi/master/scripts/setup/openui5.sh)
+bash <(curl -s https://raw.githubusercontent.com/SAP/luigi/master/scripts/setup/openui5.sh)
 ````
 or execute these commands manually to get the same result:
 
@@ -147,11 +147,11 @@ $ mkdir my-ui5-app && cd my-ui5-app
 $ npm init -y
 $ npm i -save @kyma-project/luigi-core @kyma-project/luigi-client fiori-fundamentals
 $ mkdir -p public/assets
-$ curl https://raw.githubusercontent.com/kyma-project/Luigi/master/core/examples/luigi-sample-angular/src/index.html > public/index.html
+$ curl https://raw.githubusercontent.com/SAP/luigi/master/core/examples/luigi-sample-angular/src/index.html > public/index.html
 $ sed 's/extendedConfiguration.bundle.js/sampleconfig.js/g' public/index.html > public/index.tmp.html && mv public/index.tmp.html public/index.html
 $ curl https://raw.githubusercontent.com/SAP/openui5/master/src/sap.m/test/sap/m/demokit/tutorial/quickstart/01/webapp/index.html | sed 's/src="..\/..\/..\/..\/..\/..\/..\/..\/resources\/sap-ui-core.js"/src="https:\/\/openui5.hana.ondemand.com\/resources\/sap-ui-core.js"/g' > public/ui5.html
-$ curl https://raw.githubusercontent.com/kyma-project/Luigi/master/core/examples/luigi-sample-angular/src/luigi-config/basic/basicConfiguration.js > public/assets/sampleconfig.js
-$ curl https://raw.githubusercontent.com/kyma-project/Luigi/master/core/examples/luigi-sample-angular/src/assets/sampleexternal.html > public/assets/basicexternal.html
+$ curl https://raw.githubusercontent.com/SAP/luigi/master/core/examples/luigi-sample-angular/src/luigi-config/basic/basicConfiguration.js > public/assets/sampleconfig.js
+$ curl https://raw.githubusercontent.com/SAP/luigi/master/core/examples/luigi-sample-angular/src/assets/sampleexternal.html > public/assets/basicexternal.html
 $ cp -r node_modules/\@kyma-project/luigi-* public
 $ live-server --entry-file=index.html public
 ````
@@ -170,7 +170,7 @@ npm install -g @vue/cli
 
 2. Use the installer to create your application, install Luigi, make assets available, and serve your application:
 ````
-bash <(curl -s https://raw.githubusercontent.com/kyma-project/Luigi/master/scripts/setup/vue.sh)
+bash <(curl -s https://raw.githubusercontent.com/SAP/luigi/master/scripts/setup/vue.sh)
 ````
 or execute these commands manually to get the same result:
 ````
@@ -178,10 +178,10 @@ $ vue create -d my-original-vue-app && cd my-original-vue-app
 $ npm i -save @kyma-project/luigi-core @kyma-project/luigi-client fiori-fundamentals
 $ mkdir -p public/assets
 $ mv public/index.html public/vue.html
-$ curl https://raw.githubusercontent.com/kyma-project/Luigi/master/core/examples/luigi-sample-angular/src/index.html > public/index.html
+$ curl https://raw.githubusercontent.com/SAP/luigi/master/core/examples/luigi-sample-angular/src/index.html > public/index.html
 $ sed 's/extendedConfiguration.bundle.js/sampleconfig.js/g' public/index.html > public/index.tmp.html && mv public/index.tmp.html public/index.html
-$ curl https://raw.githubusercontent.com/kyma-project/Luigi/master/core/examples/luigi-sample-angular/src/luigi-config/basic/basicConfiguration.js > public/assets/sampleconfig.js
-$ curl https://raw.githubusercontent.com/kyma-project/Luigi/master/core/examples/luigi-sample-angular/src/assets/sampleexternal.html > public/assets/basicexternal.html
+$ curl https://raw.githubusercontent.com/SAP/luigi/master/core/examples/luigi-sample-angular/src/luigi-config/basic/basicConfiguration.js > public/assets/sampleconfig.js
+$ curl https://raw.githubusercontent.com/SAP/luigi/master/core/examples/luigi-sample-angular/src/assets/sampleexternal.html > public/assets/basicexternal.html
 $ echo "const webpack=require('webpack');const CopyWebpackPlugin=require('copy-webpack-plugin');module.exports={pages:{sampleapp:{entry:'src/main.js',template:'public/vue.html',filename:'vue.html'}},lintOnSave:true,runtimeCompiler:true,outputDir:'dist',configureWebpack:{plugins:[new CopyWebpackPlugin([{context:'public',to:'index.html',from:'index.html'},{context:'node_modules/@kyma-project/luigi-core',to:'./luigi-core',from:{glob:'**',dot:true}},{context:'node_modules/@kyma-project/luigi-client',to:'./luigi-client',from:{glob:'**',dot:true}}],{ignore:['.gitkeep','**/.DS_Store','**/Thumbs.db'],debug:'warning'})]}};" > vue.config.js
 $ npm run serve
 ````
