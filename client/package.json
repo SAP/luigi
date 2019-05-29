@@ -1,6 +1,6 @@
 {
   "name": "jtest-l-client",
-  "version": "0.4.1",
+  "version": "0.4.2",
   "description": "Javascript library supporting consumers of the Luigi framework",
   "repository": {
     "type": "git",
