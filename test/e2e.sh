@@ -1,5 +1,7 @@
 #!/bin/bash
 
+set -e # exit on errors
+
 echo "Installing base dependencies"
 npm ci
 
@@ -12,7 +14,7 @@ lerna run bundle
 cd core/examples/luigi-sample-angular
 
 echo "Install extra deps"
-npm install -D cypress
+npm install -D cypress concurrently
 
 echo "Starting webserver"
 npm run start &
