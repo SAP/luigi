@@ -1,7 +1,7 @@
 #!/bin/bash
 
-# We're considering this file is located in ~/Sites/kyma-project and
-# luigi is in ~/Sites/kyma-project/luigi with the branch checked out
+# We're considering this file is located in ~/Sites/SAP and
+# luigi is in ~/Sites/SAP/luigi with the branch checked out
 # that we want to test.
 
 showHelp() {
@@ -77,7 +77,7 @@ promptForTag() {
     echo "No tag provided, pick one of the last releases;"
     echo "Fetching current releases are being fetched from github."
     echo ""
-    rawReleases=`curl -s https://api.github.com/repos/kyma-project/luigi/releases`
+    rawReleases=`curl -s https://api.github.com/repos/SAP/luigi/releases`
     # rawReleases=`cat releases`
 
     count=1;
@@ -120,7 +120,7 @@ checkoutLuigiToTestfolder() {
   # check if lfolder exists, else only walk into it
   if [ ! -d $LUIGI_DIR_TESTING ]; then
     echoe "Creating test folder"
-    git clone git@github.com:kyma-project/luigi.git $LUIGI_DIR_TESTING
+    git clone git@github.com:SAP/luigi.git $LUIGI_DIR_TESTING
   fi
 
   if [ ! -d $LUIGI_DIR_TESTING ]; then
