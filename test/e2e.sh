@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 set -e # exit on errors
 
@@ -13,12 +13,15 @@ lerna run bundle
 
 cd core/examples/luigi-sample-angular
 
-echo "Install extra deps"
+echo "Install deps for example"
+lerna bootstrap --ci
 npm install -D cypress concurrently
 
 echo "Starting webserver"
 npm run start &
 WS_PID=$!
+
+# wait until example is built and running
 sleep 60
 
 echo "Running tests"
