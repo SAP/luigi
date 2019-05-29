@@ -9,13 +9,15 @@ class Helpers {
       function(evt) {
         this.listeners
           .filter(listener => listener.name == evt.data.msg)
-          .map(listener => listener.eventFn(evt));
+          .map(listener => listener.eventFn(evt, listener.listenerId));
       }.bind(this)
     );
   }
 
   /**
    * Registers a post message listener
+   * Don't forget to remove the event listener at the end of
+   * your eventFn if you do not need it anymore.
    * @private
    * @param name string event name
    * @param eventFn function callback function
@@ -24,8 +26,18 @@ class Helpers {
   addEventListener(name, eventFn) {
     this.listeners.push({
       name,
-      eventFn
+      eventFn,
+      listenerId: this.getRandomId()
     });
+  }
+
+  /**
+   * Removes a post message listener
+   * @private
+   * @param id string listenerId
+   */
+  removeEventListener(id) {
+    this.listeners = this.listeners.filter(l => l.listenerId !== id);
   }
 
   /**

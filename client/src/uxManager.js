@@ -10,12 +10,6 @@ class UxManager extends LuigiClientBase {
   /** @private */
   constructor() {
     super();
-    helpers.addEventListener('luigi.ux.confirmationModal.hide', e => {
-      this.hideConfirmationModal(e.data.data);
-    });
-    helpers.addEventListener('luigi.ux.alert.hide', e => {
-      this.hideAlert(e.data.id);
-    });
   }
 
   /**
@@ -92,6 +86,14 @@ class UxManager extends LuigiClientBase {
    * @returns {promise} which is resolved when accepting the confirmation modal and rejected when dismissing it
    */
   showConfirmationModal(settings) {
+    helpers.addEventListener(
+      'luigi.ux.confirmationModal.hide',
+      (e, listenerId) => {
+        this.hideConfirmationModal(e.data.data);
+        helpers.removeEventListener(listenerId);
+      }
+    );
+
     window.parent.postMessage(
       {
         msg: 'luigi.ux.confirmationModal.show',
@@ -158,6 +160,11 @@ class UxManager extends LuigiClientBase {
 
     */
   showAlert(settings) {
+    helpers.addEventListener('luigi.ux.alert.hide', (e, listenerId) => {
+      this.hideAlert(e.data.id);
+      helpers.removeEventListener(listenerId);
+    });
+
     //generate random ID
     settings.id = randomBytes(4).toString('hex');
 

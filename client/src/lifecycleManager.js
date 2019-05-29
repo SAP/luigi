@@ -77,35 +77,38 @@ class LifecycleManager extends LuigiClientBase {
         }
       };
 
-      window.addEventListener(
-        'message',
-        function(e) {
-          if ('luigi.init' === e.data.msg) {
-            setContext(e.data);
-            setAuthData(e.data.authData);
-            this.luigiInitialized = true;
-            _callAllFns(this._onInitFns, this.currentContext.context);
-          } else if ('luigi.navigate' === e.data.msg) {
-            setContext(e.data);
-            if (!this.currentContext.internal.isNavigateBack) {
-              window.location.replace(e.data.viewUrl);
-            }
+      helpers.addEventListener('luigi.init', e => {
+        setContext(e.data);
+        setAuthData(e.data.authData);
+        this.luigiInitialized = true;
+        _callAllFns(this._onInitFns, this.currentContext.context);
+      });
 
-            // execute the context change listener if set by the microfrontend
-            _callAllFns(this._onContextUpdatedFns, this.currentContext.context);
+      helpers.addEventListener('luigi.auth.tokenIssued', e => {
+        setAuthData(e.data.authData);
+      });
 
-            window.parent.postMessage(
-              {
-                msg: 'luigi.navigate.ok'
-              },
-              '*'
-            );
-          } else if ('luigi.auth.tokenIssued' === e.data.msg) {
-            setAuthData(e.data.authData);
-          }
-        }.bind(this)
-      );
+      helpers.addEventListener('luigi.navigate', e => {
+        setContext(e.data);
+        if (!this.currentContext.internal.isNavigateBack) {
+          window.location.replace(e.data.viewUrl);
+        }
 
+        // execute the context change listener if set by the microfrontend
+        _callAllFns(this._onContextUpdatedFns, this.currentContext.context);
+
+        window.parent.postMessage(
+          {
+            msg: 'luigi.navigate.ok'
+          },
+          '*'
+        );
+      });
+
+      /**
+       * Get context once initially
+       * @private
+       */
       window.parent.postMessage(
         {
           msg: 'luigi.get-context'
