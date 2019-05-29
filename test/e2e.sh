@@ -1,32 +1,25 @@
 #!/bin/bash
 
+echo "Installing base dependencies"
+npm ci
 
-
-echo Installing Lerna, Concurrently and @angular/cli
-npm install -g concurrently
-npm install -g @angular/cli
-npm install -g lerna
-
-echo 'Installing Cypress in Angular Example folder'
-cd core/examples/luigi-sample-angular
-npm install -D cypress
-cd ../../..
-
-echo Bootstrap
+echo "Bootstrapping Luigi"
 lerna bootstrap --ci
 
-echo Bundle
-cd core
+echo "Bundle"
 lerna run bundle
 
-echo Starting webserver
-cd examples/luigi-sample-angular
-lerna bootstrap --ci
+cd core/examples/luigi-sample-angular
+
+echo "Install extra deps"
+npm install -D cypress
+
+echo "Starting webserver"
 npm run start &
 WS_PID=$!
 sleep 60
 
-echo Running tests
+echo "Running tests"
 npm run e2e:run
 RV=$?
 kill $WS_PID
