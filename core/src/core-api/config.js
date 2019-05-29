@@ -9,14 +9,14 @@ class LuigiConfigManager {
       id: undefined
     };
 
-    this.configReadyCallback = function() {};
+    this.configReadyCallback = function () { };
   }
 
   setConfigCallbacks(configReadyCallback) {
     this.configReadyCallback = configReadyCallback;
     this.configReadyTimeout.id = setTimeout(() => {
       // Avoid Luigi initialization if timeout reached
-      this.configReadyCallback = function() {};
+      this.configReadyCallback = function () { };
       this.configNotReadyCallback();
     }, this.configReadyTimeout.valueMs);
   }
@@ -35,6 +35,10 @@ class LuigiConfigManager {
     const errorMsg =
       'Ups.. Looks like Luigi was not configured. Please use Luigi.setConfig(config) function to configure Luigi.';
     console.error(errorMsg);
+    this.setErrorMessage(errorMsg);
+  }
+
+  setErrorMessage(errorMsg) {
     var errorTextNode = document.createTextNode(errorMsg);
     var fd_ui = document.createElement('div');
     fd_ui.setAttribute('class', 'fd-ui');

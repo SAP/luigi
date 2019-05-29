@@ -10,11 +10,7 @@ class LuigiAuthManager {
    * @returns {boolean} returns true if authorization is enabled. Otherwise returns false.
    */
   isAuthorizationEnabled() {
-    const idpProviderName = config.getConfigValue('auth.use');
-    const idpProviderSettings = config.getConfigValue(
-      `auth.${idpProviderName}`
-    );
-    return !!idpProviderSettings;
+    return !!config.getConfigValue('auth.use');
   }
 
   async handleAuthEvent(
