@@ -1,5 +1,5 @@
 {
-  "name": "@jtest/l-core-private",
+  "name": "jtest-l-core-private",
   "version": "0.4.1",
   "private": true,
   "description": "luigi-core development version, only the public folder is being published to npm as a package",
