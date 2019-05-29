@@ -11,11 +11,10 @@ lerna bootstrap --ci
 echo "Bundle"
 lerna run bundle
 
-cd core/examples/luigi-sample-angular
-
 echo "Install deps for example"
-lerna bootstrap --ci
-npm install -D cypress concurrently
+cd core/examples/luigi-sample-angular
+NG_CLI_VERSION=$(node -p "require('./package.json').devDependencies['@angular/cli']")
+npm install -D cypress concurrently lerna @angular/cli@$NG_CLI_VERSION
 
 echo "Starting webserver"
 npm run start &
