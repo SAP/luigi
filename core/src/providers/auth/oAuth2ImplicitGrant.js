@@ -1,5 +1,5 @@
 import * as GenericHelpers from '../../utilities/helpers/generic-helpers.js';
-import { LuigiAuth, LuigiConfig } from '../../core-api';
+import { LuigiAuth } from '../../core-api';
 
 export class oAuth2ImplicitGrant {
   constructor(settings = {}) {
