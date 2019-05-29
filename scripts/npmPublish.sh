@@ -32,78 +32,54 @@ function setNpmToken {
   fi
 }
 
-
-echo "Processing $NAME"
-
-cd $BASE_DIR/../client
-NAME=$(node -p "require('./package.json').name")
-VERSION=$(node -p "require('./package.json').version")
-
-# Check if it can be published (github release must exist)
-TAGS_GREP=`git ls-remote --tags origin | grep "v$VERSION$" | wc -l`
-if [[ "$TAGS_GREP" =~ "0" ]]; then
-  echo "Tag (github release) does not exist, not going to publish $VERSION to npm"
-  exit 0;
-fi
-
-
-#### LUIGI CLIENT
-cd $BASE_DIR/../client
-# Check if was published already
-NPM_GREP=`npm info $NAME versions | grep "'$VERSION'" | wc -l`
-if [[ "$NPM_GREP" =~ "1" ]]; then
-  echo "$VERSION already published, skipping until next release."
-else
-
-  echoe "Installing and bundling Luigi Client"
-  setNpmToken
+function checkGithubRelease {
   cd $BASE_DIR/../client
-  npm ci
-  npm run bundle
+  NAME=$(node -p "require('./package.json').name")
+  VERSION=$(node -p "require('./package.json').version")
 
-  echoe "Publishing Luigi Client"
-  cd $BASE_DIR/../client
-  npm publish --access public
-  if [[ $VERSION != *"rc."* ]]; then
-    echo "Tag $VERSION with latest"
-    npm dist-tag add $NAME@$VERSION latest
+  # Check if it can be published (github release must exist)
+  TAGS_GREP=`git ls-remote --tags origin | grep "v$VERSION$" | wc -l`
+  if [[ "$TAGS_GREP" =~ "0" ]]; then
+    echo "Tag (github release) does not exist, not going to publish $VERSION to npm"
+    exit 0;
   fi
+}
 
-fi # end NPM_GREP client
+function publishPackage {
+  FOLDER=$1
 
+  cd $BASE_DIR/../$FOLDER
+  # Check if was published already
+  NPM_GREP=`npm info $NAME versions | grep "'$VERSION'" | wc -l`
+  if [[ "$NPM_GREP" =~ "1" ]]; then
+    echo "$NAME@$VERSION already published, skipping until next release."
+  else
 
-#### LUIGI CORE
-cd $BASE_DIR/../core/public
-NAME=$(node -p "require('./package.json').name")
-VERSION=$(node -p "require('./package.json').version")
-echo "Processing $NAME"
+    echoe "Installing ..."
+    npm ci
+    echoe "Bundling ..."
+    npm run bundle
 
-# Check if was published already
-NPM_GREP=`npm info $NAME versions | grep "'$VERSION'" | wc -l`
-if [[ "$NPM_GREP" =~ "1" ]]; then
-  echo "$VERSION already published, skipping until next release."
-else
+    echoe "Publishing ..."
+    npm publish --access public
+    if [[ $VERSION != *"rc."* ]]; then
+      echo "Tag $NAME@$VERSION with latest on npm"
+      npm dist-tag add $NAME@$VERSION latest
+    fi
 
-  echoe "Installing and bundling Luigi Core"
-  setNpmToken
-  cd $BASE_DIR/../core
-  npm ci
-  npm run bundle
+  fi # end NPM_GREP
+}
 
-  echoe "Publishing Luigi Core"
-  cd $BASE_DIR/../core/public
-  npm publish --access public
-
-  cd $BASE_DIR/../core
-  if [[ $VERSION != *"rc."* ]]; then
-    echo "Tag $VERSION with latest"
-    npm dist-tag add $NAME@$VERSION latest
+function removeNpmToken {
+  if [ "$TRAVIS" = "true" ]; then
+    # setup token when running in travis
+    echo "" > ~/.npmrc
   fi
-fi # end NPM_GREP core
+}
 
 
-
-if [ "$TRAVIS" = "true" ]; then
-  # setup token when running in travis
-  echo "" > ~/.npmrc
-fi
+checkGithubRelease
+setNpmToken
+publishPackage "core/public"
+publishPackage "client"
+removeNpmToken
