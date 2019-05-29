@@ -116,6 +116,7 @@ class LifecycleManager extends LuigiClientBase {
 
   /**
    * @private
+   * @memberof Lifecycle
    */
   setCurrentContext(value) {
     this.currentContext = value;
