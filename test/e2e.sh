@@ -8,13 +8,14 @@ npm ci
 echo "Bootstrapping Luigi"
 lerna bootstrap --ci
 
-echo "Bundle"
+echo "Bundle core and client"
 lerna run bundle
 
 echo "Install deps for example"
 cd core/examples/luigi-sample-angular
 NG_CLI_VERSION=$(node -p "require('./package.json').devDependencies['@angular/cli']")
 npm install -D cypress concurrently lerna @angular/cli@$NG_CLI_VERSION
+lerna bootstrap --ci
 
 echo "Starting webserver"
 npm run start &
