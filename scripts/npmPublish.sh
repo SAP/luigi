@@ -32,14 +32,14 @@ function setNpmToken {
   fi
 }
 
-function checkGithubRelease {
+function prepublishChecks {
   cd $BASE_DIR/../client
   NAME=$(node -p "require('./package.json').name")
   CLIENT_VERSION=$(node -p "require('./package.json').version")
   cd $BASE_DIR/../core/public
   CORE_VERSION=$(node -p "require('./package.json').version")
 
-  if [ "CORE_VERSION" != "CLIENT_VERSION" ]; then
+  if [ "$CORE_VERSION" != "$CLIENT_VERSION" ]; then
     echoe "Version mismatch between Client and Core."
     exit 1
   fi
@@ -93,7 +93,7 @@ function removeNpmToken {
 }
 
 
-checkGithubRelease
+prepublishChecks
 setNpmToken
 publishPackage "core" "core/public"
 publishPackage "client" "client"
