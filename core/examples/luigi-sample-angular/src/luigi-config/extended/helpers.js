@@ -58,27 +58,12 @@ export const addProject = newProject => {
   return allProjects[allProjects.length - 1];
 };
 
-export const removeProject = projectId => {
-  let removedProject;
-  if (projectId) {
-    allProjects = allProjects.filter(project => {
-      if (project.id == projectId) {
-        removedProject = project;
-      }
-      return project.id !== projectId;
-    });
-  } else {
-    removedProject = allProjects.pop();
-  }
-  return removedProject;
+export const removeProject = () => {
+  return allProjects.pop();
 };
 
 export const projectExists = projectId => {
-  return (
-    allProjects.filter(project => {
-      return project.id === projectId;
-    }).length > 0
-  );
+  return Boolean(allProjects.find(p => p.id === projectId));
 };
 
 export const getProjectCount = () => {
