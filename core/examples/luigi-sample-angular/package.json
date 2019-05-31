@@ -51,14 +51,14 @@
     "babel-preset-minify": "^0.5.0",
     "codelyzer": "^4.4.1",
     "concurrently": "^4.1.0",
-    "cypress": "^3.2.0",
+    "cypress": "^3.3.1",
     "cypress-plugin-retries": "^1.2.0",
+    "tar": ">=4.4.2",
     "ts-node": "~3.2.0",
     "tslint": "~5.7.0",
     "typescript": "~3.2.4",
     "webpack": "^4.27.1",
     "webpack-cli": "^3.2.3",
-    "webpack-dev-server": "^3.1.14",
-    "tar": ">=4.4.2"
+    "webpack-dev-server": "^3.1.14"
   }
 }

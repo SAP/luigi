@@ -143,3 +143,12 @@ const data = {
 localStorage.setItem('luigi.auth', JSON.stringify(data));
 localStorage.setItem('luigi.newlyAuthorized', true);
 ```
+
+Additionally, if you process authentication data during Luigi runtime (inside the custom provider, similarly to using the`openIdConnect` provider), dispatch the `luigi.auth.tokenIssued` Event to update the currently opened micro frontends with the latest authentication data. This is not required when processing authentication outside Luigi, for example when `oAuth2ImplicitGrant` provider processes the data in `callback.html` and redirects to Luigi afterward.
+
+```
+window.postMessage(
+  { msg: 'luigi.auth.tokenIssued', authData: data },
+  '*'
+);
+```

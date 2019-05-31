@@ -33,7 +33,10 @@
           const error = url.searchParams.get('error');
           const errorDescription = url.searchParams.get('errorDescription');
           if (error) {
-            redirectTo = `${redirectTo}?error=${error}&errorDescription=${errorDescription}`;
+            redirectTo = `${redirectTo}?error=${error}`;
+            if (errorDescription) {
+              redirectTo += `&errorDescription=${errorDescription}`;
+            }
           }
         } catch (error) {
           redirectTo = decodeURIComponent(
