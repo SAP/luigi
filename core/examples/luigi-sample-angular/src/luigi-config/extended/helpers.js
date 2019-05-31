@@ -70,6 +70,17 @@ const projectDetailNavProviderFn = context =>
     });
   });
 
+export const projectsCounterFn = context =>
+  new Promise(resolve => {
+    getAllProjects().then(function(result) {
+      if (result.length) {
+        resolve(result.length);
+      } else {
+        resolve(undefined);
+      }
+    });
+  });
+
 export const projectsNavProviderFn = context =>
   new Promise(resolve => {
     getAllProjects().then(function(result) {

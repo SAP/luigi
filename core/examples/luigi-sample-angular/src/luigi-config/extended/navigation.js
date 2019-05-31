@@ -1,4 +1,8 @@
-import { navigationPermissionChecker, projectsNavProviderFn } from './helpers';
+import {
+  navigationPermissionChecker,
+  projectsNavProviderFn,
+  projectsCounterFn
+} from './helpers';
 
 class Navigation {
   constructor(navigationPermissionChecker, projectsNavProviderFn) {
@@ -18,7 +22,11 @@ class Navigation {
       pathSegment: 'projects',
       label: 'Projects',
       viewUrl: '/sampleapp.html#/projects/overview',
-      children: projectsNavProviderFn
+      children: projectsNavProviderFn,
+      notificationCounter: {
+        label: 'Number of projects',
+        count: projectsCounterFn
+      }
     },
     {
       hideFromNav: true,
