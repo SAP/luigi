@@ -73,7 +73,7 @@ Returns **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/G
 
 The Link Manager allows you to navigate to another route. Use it instead of an internal router to:
 
--   Route inside micro front-ends.
+-   Provide routing inside micro front-ends.
 -   Reflect the route.
 -   Keep the navigation state in Luigi.
 
