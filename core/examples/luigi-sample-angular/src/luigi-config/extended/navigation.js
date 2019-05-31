@@ -252,6 +252,13 @@ class Navigation {
         link: '/projects/pr1'
       });
     }
+    if (projectExists('pr2')) {
+      items.push({
+        icon: '',
+        label: 'Project 2',
+        link: '/projects/pr2'
+      });
+    }
     if (projectExists('pr3')) {
       items.push({
         label: 'Project 3',
