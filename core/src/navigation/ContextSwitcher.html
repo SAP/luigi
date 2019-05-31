@@ -70,14 +70,13 @@
   import { LuigiConfig } from '../core-api';
   import * as Routing from '../services/routing.js';
   import * as RoutingHelpers from '../utilities/helpers/routing-helpers';
-  import { doOnStoreChange } from '../utilities/helpers/generic-helpers';
+  import { doOnStoreChange } from '../utilities/helpers/state-helpers';
 
   export default {
     async oncreate() {
-
       doOnStoreChange(this.store, async () => {
         const contextSwitcherConfig = LuigiConfig.getConfigValue(
-                'navigation.contextSwitcher'
+          'navigation.contextSwitcher'
         );
         const hasOpts = !!this.get().options;
         this.set({

@@ -1,4 +1,4 @@
-import { doOnStoreChange } from '../../utilities/helpers/generic-helpers';
+import { doOnStoreChange } from '../../utilities/helpers/state-helpers';
 import { LuigiConfig } from './../../core-api';
 
 export const processHeaderSettings = component => {
