@@ -1,3 +1,4 @@
+<svelte:window on:resize="onResize()"/>
 <div
   id="app"
   class="{hideNav? 'no-nav' : ''} {hideSideNav? 'no-side-nav' : ''}"
@@ -64,6 +65,7 @@
   import * as StateHelpers from './utilities/helpers/state-helpers';
   import * as AuthHelpers from './utilities/helpers/auth-helpers';
   import * as iFrameHelpers from './utilities/helpers/iframe-helpers';
+  import { CSS_BREAKPOINTS } from './utilities/constants';
 
   const removeQueryParams = str => str.split('?')[0];
 
@@ -268,6 +270,8 @@
       const responsiveNavSetting = LuigiConfig.getConfigValue(
         'settings.responsiveNavigation'
       );
+      this.set({ responsiveNavSetting });
+      this.set({ previousWindowWidth: window.innerWidth });
       if (responsiveNavSetting === 'simple') {
         document.body.classList.add('lui-simpleSlideInNav');
         this.set({ simpleSlideInNav: true });
@@ -288,6 +292,7 @@
           builderCompatibilityMode: Boolean(window.builderCompatibilityMode),
           isolateAllViews
         };
+
         window.addEventListener('popstate', async e => {
           const alertQueue = this.get().alerts;
           if (!alertQueue || !alertQueue.length) return;
@@ -535,11 +540,27 @@
           modal: modal
         };
       },
-      handleNavClick(node) {
+      closeLeftNav() {
         document.body.classList.remove('lui-leftNavToggle');
+      },
+      handleNavClick(node) {
         this.getUnsavedChangesModalPromise().then(() => {
+          this.closeLeftNav();
           Routing.handleRouteClick(node, this);
         });
+      },
+      onResize() {
+        const isMobileToDesktop =
+          window.innerWidth >= CSS_BREAKPOINTS.desktopMinWidth &&
+          this.get().previousWindowWidth < CSS_BREAKPOINTS.desktopMinWidth;
+        const isDesktopToMobile =
+          window.innerWidth < CSS_BREAKPOINTS.desktopMinWidth &&
+          this.get().previousWindowWidth >= CSS_BREAKPOINTS.desktopMinWidth;
+
+        if (isMobileToDesktop || isDesktopToMobile) {
+          this.closeLeftNav();
+        }
+        this.set({ previousWindowWidth: window.innerWidth });
       },
       handleModalResult(result) {
         const { promise, openFromClient } = this.get().confirmationModal;
@@ -732,6 +753,7 @@
 <style type="text/scss">
   $topNavHeight: 48px;
   $leftNavWidth: 320px;
+  $desktop-min-width: 600px;
   :global(html) {
     box-sizing: border-box;
     font-size: 14px;
@@ -830,10 +852,10 @@
 
   :global(body.lui-simpleSlideInNav) {
     :global(.fd-app__sidebar) {
-      -webkit-transition-property: width;
-      -moz-transition-property: width;
-      -o-transition-property: width;
-      transition-property: width;
+      -webkit-transition-property: left;
+      -moz-transition-property: left;
+      -o-transition-property: left;
+      transition-property: left;
       -webkit-transition-duration: 0.1s;
       -moz-transition-duration: 0.1s;
       -o-transition-duration: 0.1s;
@@ -861,7 +883,7 @@
     }
   }
 
-  @media (min-width: 600px) {
+  @media (min-width: $desktop-min-width) {
     :global(.fd-shellbar__title) {
       display: inline;
     }
@@ -876,12 +898,12 @@
       }
 
       :global(.fd-app__sidebar) {
-        width: 0px;
+        left: -$leftNavWidth;
       }
     }
   }
 
-  @media (max-width: 600px) {
+  @media (max-width: $desktop-min-width - 1) {
     :global(body.lui-simpleSlideInNav) {
       .iframeContainer,
       .spinnerContainer {
@@ -889,7 +911,7 @@
       }
 
       :global(.fd-app__sidebar) {
-        width: 0px;
+        left: -$leftNavWidth;
       }
     }
 
@@ -897,6 +919,7 @@
       :global(.fd-app__sidebar) {
         display: block;
         width: $leftNavWidth;
+        left: 0;
         -webkit-box-shadow: 6px 0px 9px 0px rgba(0, 0, 0, 0.44);
         -moz-box-shadow: 6px 0px 9px 0px rgba(0, 0, 0, 0.44);
         box-shadow: 6px 0px 9px 0px rgba(0, 0, 0, 0.44);
