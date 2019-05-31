@@ -28,7 +28,7 @@ function setNpmToken {
     # setup token when running in travis
     echo "setNpmToken"
     echo "//registry.npmjs.org/:_authToken=$NPM_AUTH_TOKEN" > ~/.npmrc
-    npm whoami
+    # npm whoami
   fi
 }
 
