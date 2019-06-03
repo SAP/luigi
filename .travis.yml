@@ -1,7 +1,7 @@
 language: node_js
 node_js:
   - '11.14' #TODO: change it to 'node' once Travis supports the newest version
-dist: precise
+dist: xenial
 install: npm ci --prefix core
 cache: npm
 notifications:
