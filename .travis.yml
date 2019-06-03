@@ -28,6 +28,6 @@ jobs:
 
     # ----- NPM PUBLISH -----
     - name: 'Publish to NPM'
-      if: branch IN (master, 496-npm-release-pipeline) 
+      if: branch = master
       script: bash ./scripts/npmPublish.sh
       cache: npm
