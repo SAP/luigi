@@ -640,8 +640,7 @@
 
         if (!settings.id) {
           //generate the ID in case it hasn't came from an old version of LuigiClient
-          const crypto = require('crypto');
-          settings.id = crypto.randomBytes(4).toString('hex');
+          settings.id = GenericHelpers.getRandomId();
         }
 
         if (
