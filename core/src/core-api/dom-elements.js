@@ -36,7 +36,7 @@ class LuigiElementsManager {
   /**
    * Returns the active micro frontend iframe.
    * If there is a modal, which includes the micro frontend iframe, the function returns this iframe.
-   * @returns {Object} the active microfrontend iframe DOM element.
+   * @returns {Object} the active micro frontend iframe DOM element.
    * @memberof LuigiElements
    */
   getCurrentMicrofrontendIframe() {
