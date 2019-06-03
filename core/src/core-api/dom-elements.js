@@ -24,7 +24,7 @@ class LuigiElementsManager {
 
   /**
    * Returns all micro frontend iframes including the iframe from the modal if it exists.
-   * @returns {Object} an array of all microfrontend iframes from the DOM.
+   * @returns {Object} an array of all micro frontend iframes from the DOM.
    * @memberof LuigiElements
    */
   getMicrofrontendIframes() {
