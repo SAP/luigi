@@ -18,4 +18,4 @@ const configReadyCallback = () => {
   };
 };
 
-Luigi.setConfigCallbacks(configReadyCallback);
+LuigiConfig.setConfigCallbacks(configReadyCallback);

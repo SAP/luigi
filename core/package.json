@@ -42,7 +42,8 @@
     "test": "babel-node ./node_modules/nyc/bin/nyc.js mocha -- --recursive test",
     "test:watch": "npm run test -- --watch",
     "bundlesize": "npm run bundle && bundlesize",
-    "prepush": "../scripts/hooks/remove-test-prefixes.sh && npm test"
+    "prepush": "../scripts/remove-test-prefixes.sh && npm test && npm run docu:validate",
+    "docu:validate": "documentation lint src/core-api/dom-elements.js"
   },
   "bundlesize": [
     {
@@ -102,6 +103,7 @@
     "url": "ssh://github.com/SAP/luigi.git"
   },
   "dependencies": {
+    "documentation": "^11.0.0",
     "npm": "^6.5.0",
     "test": "^0.6.0"
   }
