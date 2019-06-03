@@ -1,5 +1,5 @@
 // Helper methods that deal with character escaping.
-class CoreEscapingHelpers {
+class EscapingHelpersClass {
   sanitizeHtml(text) {
     return text
       .replace(/&/g, '&amp;')
@@ -49,4 +49,4 @@ class CoreEscapingHelpers {
   }
 }
 
-export const EscapingHelpers = new CoreEscapingHelpers();
+export const EscapingHelpers = new EscapingHelpersClass();
