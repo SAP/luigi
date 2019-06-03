@@ -19,12 +19,7 @@
 </div>
 
 <script type="text/javascript">
-  import {
-    sanitizeHtml,
-    sanitizeParam,
-    escapeRegExp,
-    processTextAndLinks
-  } from './utilities/helpers/escaping-helpers';
+  import { escapingHelpers } from './utilities/helpers/escaping-helpers';
 
   export default {
     data() {
@@ -45,7 +40,7 @@
 
       const processedAlerts = current.alertQueue.map(alert => {
         const { text, links, closeAfter } = alert.settings;
-        const processedData = processTextAndLinks(
+        const processedData = escapingHelpers.processTextAndLinks(
           text,
           links,
           alert.settings.id
