@@ -20,7 +20,6 @@
     "bundle-develop": "webpack --mode development --watch",
     "test": "echo \"Error: no test specified\" && exit 1",
     "docu": "npm run docu:validate && npm run docu:generate:section",
-    "docu:generate:new-file": "documentation build src/luigi-client.js -f md --markdown-toc=false -o ../docs/luigi-client-api.md",
     "docu:generate:section": "documentation readme src/luigi-client.js -f md --readme-file=../docs/luigi-client-api.md --section='Luigi Client API' --markdown-toc=false --quiet --github false",
     "docu:validate": "documentation lint src/luigi-client.js",
     "prepush": "npm run docu:validate"
