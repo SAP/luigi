@@ -9,14 +9,14 @@ class LuigiConfigManager {
       id: undefined
     };
 
-    this.configReadyCallback = function () { };
+    this.configReadyCallback = function() {};
   }
 
   setConfigCallbacks(configReadyCallback) {
     this.configReadyCallback = configReadyCallback;
     this.configReadyTimeout.id = setTimeout(() => {
       // Avoid Luigi initialization if timeout reached
-      this.configReadyCallback = function () { };
+      this.configReadyCallback = function() {};
       this.configNotReadyCallback();
     }, this.configReadyTimeout.valueMs);
   }
@@ -116,7 +116,7 @@ class LuigiConfigManager {
   /*
    * Detects if authorization is enabled via configuration.
    * @returns {boolean} returns true if authorization is enabled. Otherwise returns false.
-   * @deprecated now located in Luigi.authManager instead of LuigiConfig
+   * @deprecated now located in Luigi.auth() instead of LuigiConfig
    */
   isAuthorizationEnabled() {
     return auth.isAuthorizationEnabled();
