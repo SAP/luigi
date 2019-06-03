@@ -1,7 +1,7 @@
 /** @namespace */
 class LuigiElementsManager {
   /**
-   * Use the functions to get important DOM elements.
+   * Use these functions to get DOM elements.
    * @name LuigiElements
    */
   /**
