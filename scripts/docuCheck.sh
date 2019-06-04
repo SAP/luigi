@@ -22,7 +22,7 @@ echoe() {
 }
 
 installPrerequisites() {
-  DOCU_VERSION=`cat package.json | jq --raw-output ".devDependencies.documentation"`
+  DOCU_VERSION=`cat $BASE_DIR/../client/package.json | jq --raw-output ".devDependencies.documentation"`
   npm i -g documentation@$DOCU_VERSION
 }
 
