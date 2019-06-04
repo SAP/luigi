@@ -21,6 +21,10 @@ echoe() {
   echo ""
 }
 
+installPrerequisites() {
+  DOCU_VERSION=`cat package.json | jq --raw-output ".devDependencies.documentation"`
+  npm i -g documentation@$DOCU_VERSION
+}
 
 # Lint documentation and check if all docu changes have been commited.
 checkDocu() {
@@ -57,6 +61,7 @@ done <<HERE
 HERE
 }
 
+installPrerequisites
 validateAndGenerateDocumentations
 validateMdChanges
 
