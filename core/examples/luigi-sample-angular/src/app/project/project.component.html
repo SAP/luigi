@@ -368,7 +368,7 @@
 </section>
 
 <app-modal
-  [hidden]="projectId !== 'pr1'"
+  *ngIf="projectId === 'pr1'"
   [modalActive]="modalActive"
   (modalClosed)="toggleModal()"
 ></app-modal>

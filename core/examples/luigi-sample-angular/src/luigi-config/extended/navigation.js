@@ -24,7 +24,7 @@ class Navigation {
     {
       pathSegment: 'projects',
       label: 'Projects',
-      viewUrl: '/sampleapp.html#/projects/overview',
+      viewUrl: '/sampleapp.html#/projects',
       children: projectsNavProviderFn
     },
     {
