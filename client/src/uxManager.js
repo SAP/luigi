@@ -1,5 +1,5 @@
 import { LuigiClientBase } from './baseClass';
-import { randomBytes } from 'crypto';
+import { getRandomId } from './helpers';
 
 /**
  * Use the UX Manager to manage the appearance features in Luigi.
@@ -163,7 +163,7 @@ class UxManager extends LuigiClientBase {
     */
   showAlert(settings) {
     //generate random ID
-    settings.id = randomBytes(4).toString('hex');
+    settings.id = getRandomId();
 
     if (settings.closeAfter && settings.closeAfter < 100) {
       console.warn(
