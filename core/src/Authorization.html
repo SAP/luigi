@@ -205,6 +205,13 @@
         ) {
           idpProviderInstance.setTokenExpirationAction();
         }
+        if (
+          GenericHelpers.isFunction(
+            idpProviderInstance.setTokenExpireSoonAction
+          )
+        ) {
+          idpProviderInstance.setTokenExpireSoonAction();
+        }
       };
 
       /**
