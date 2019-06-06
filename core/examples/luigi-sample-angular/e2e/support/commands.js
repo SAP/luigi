@@ -42,6 +42,24 @@ Cypress.Commands.add('goToOverviewPage', () => {
     .click();
 });
 
+Cypress.Commands.add('goToProjectsPage', () => {
+  cy.get('button')
+    .contains('Projects')
+    .click();
+});
+
+Cypress.Commands.add('selectContextSwitcherItem', (item, currentLabel) => {
+  // default label
+  cy.get('.fd-product-menu')
+    .contains(currentLabel || 'Select Environment ...')
+    .click();
+
+  // click an action
+  cy.get('.fd-product-menu .fd-popover__body')
+    .contains(item)
+    .click();
+});
+
 const isHashRoutingOn = () => {
   const appWindow = cy.state('window');
   const { useHashRouting } =

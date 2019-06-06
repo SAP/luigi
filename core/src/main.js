@@ -1,6 +1,14 @@
 import App from './App.html';
 import { authLibraries } from './providers/auth/libraryLoaders';
 import { LuigiConfig } from './core-api';
+import { Store } from 'svelte/store';
+import { version } from '../package.json';
+
+const store = new Store({
+  luigiVersion: version
+});
+
+Luigi._store = store;
 
 const configReadyCallback = () => {
   const authLib = LuigiConfig.getConfigValue('auth.use');
@@ -10,12 +18,14 @@ const configReadyCallback = () => {
 
   const app = new App({
     target: document.querySelector('body'),
-    data: {}
+    store
   });
+
+  Luigi._app = app;
 
   Luigi.showAlert = settings => {
     app.showAlert(settings);
   };
 };
 
-Luigi.setConfigCallbacks(configReadyCallback);
+LuigiConfig.setConfigCallbacks(configReadyCallback);

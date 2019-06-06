@@ -96,23 +96,26 @@ Object.keys(productSwitcherItems[0]).length }
 <script type="text/javascript">
   import { LuigiConfig } from '../core-api';
   import * as Routing from '../services/routing.js';
+  import { doOnStoreChange } from '../utilities/helpers/state-helpers';
+
   export default {
     async oncreate() {
-      const productSwitcherConfig = LuigiConfig.getConfigValue(
-        'navigation.productSwitcher'
-      );
-      this.set({
-        config: productSwitcherConfig
-      });
-
-      if (productSwitcherConfig) {
-        const productSwitcherItems = await LuigiConfig.getConfigValueAsync(
-          'navigation.productSwitcher.items'
+      doOnStoreChange(this.store, async () => {
+        const productSwitcherConfig = LuigiConfig.getConfigValue(
+          'navigation.productSwitcher'
         );
         this.set({
-          productSwitcherItems
+          config: productSwitcherConfig
         });
-      }
+        if (productSwitcherConfig) {
+          const productSwitcherItems = await LuigiConfig.getConfigValueAsync(
+            'navigation.productSwitcher.items'
+          );
+          this.set({
+            productSwitcherItems
+          });
+        }
+      });
     },
     methods: {
       onActionClick(productSwitcherItem) {

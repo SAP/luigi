@@ -1,5 +1,4 @@
 import { LuigiClientBase } from './baseClass';
-import { randomBytes } from 'crypto';
 import { helpers } from './helpers';
 
 /**
@@ -166,7 +165,7 @@ class UxManager extends LuigiClientBase {
     });
 
     //generate random ID
-    settings.id = randomBytes(4).toString('hex');
+    settings.id = helpers.getRandomId();
 
     if (settings.closeAfter && settings.closeAfter < 100) {
       console.warn(

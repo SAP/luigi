@@ -3,12 +3,15 @@ import { helpers } from './helpers';
 
 /**
  * The Link Manager allows you to navigate to another route. Use it instead of an internal router to:
-  - Route inside micro front-ends.
+  - Provide routing inside micro front-ends.
   - Reflect the route.
   - Keep the navigation state in Luigi.
   * @name linkManager
   */
 export class linkManager extends LuigiClientBase {
+  /**
+   * @private
+   */
   constructor(values) {
     // @param {Object} values TODO: is it necessary at all, where is it used?
     super();

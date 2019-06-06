@@ -45,7 +45,10 @@ class Helpers {
    * @private
    */
   getRandomId() {
-    return Math.floor(Math.random() * 1e9) + '';
+    // window.msCrypto for IE 11
+    return (window.crypto || window.msCrypto).getRandomValues(
+      new Uint32Array(1)
+    )[0];
   }
 
   /**
