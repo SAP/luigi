@@ -87,7 +87,20 @@ export const getContentViewParamPrefix = () => {
 };
 
 export const addRouteChangeListener = callback => {
-  if (LuigiConfig.getConfigValue('routing.useHashRouting')) {
+  const hashRoutingActive = LuigiConfig.getConfigValue(
+    'routing.useHashRouting'
+  );
+
+  window.addEventListener('message', e => {
+    const path = hashRoutingActive
+      ? window.location.hash.split('#/')[1]
+      : Routing.getModifiedPathname();
+    if ('refreshRoute' === e.data.msg && e.origin === window.origin) {
+      callback(path);
+    }
+  });
+
+  if (hashRoutingActive) {
     const getModifiedHash = s => s.newURL.split('#/')[1];
     return window.addEventListener('hashchange', event => {
       callback(getModifiedHash(event));
@@ -96,12 +109,6 @@ export const addRouteChangeListener = callback => {
 
   window.addEventListener('popstate', () => {
     callback(Routing.getModifiedPathname());
-  });
-
-  window.addEventListener('message', e => {
-    if ('refreshRoute' === e.data.msg && e.origin === window.origin) {
-      callback(Routing.getModifiedPathname());
-    }
   });
 };
 
