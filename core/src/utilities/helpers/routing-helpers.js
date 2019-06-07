@@ -93,7 +93,7 @@ export const addRouteChangeListener = callback => {
 
   window.addEventListener('message', e => {
     const path = hashRoutingActive
-      ? window.location.hash.split('#/')[1]
+      ? Routing.getHashPath()
       : Routing.getModifiedPathname();
     if ('refreshRoute' === e.data.msg && e.origin === window.origin) {
       callback(path);
@@ -101,7 +101,7 @@ export const addRouteChangeListener = callback => {
   });
 
   if (hashRoutingActive) {
-    const getModifiedHash = s => s.newURL.split('#/')[1];
+    const getModifiedHash = s => Routing.getHashPath(s.newURL);
     return window.addEventListener('hashchange', event => {
       callback(getModifiedHash(event));
     });
