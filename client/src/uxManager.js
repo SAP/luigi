@@ -1,5 +1,5 @@
 import { LuigiClientBase } from './baseClass';
-import { getRandomId } from './helpers';
+import { helpers } from './helpers';
 
 /**
  * Use the UX Manager to manage the appearance features in Luigi.
@@ -9,17 +9,6 @@ class UxManager extends LuigiClientBase {
   /** @private */
   constructor() {
     super();
-
-    window.addEventListener(
-      'message',
-      function(e) {
-        if ('luigi.ux.confirmationModal.hide' === e.data.msg) {
-          this.hideConfirmationModal(e.data.data);
-        } else if ('luigi.ux.alert.hide' === e.data.msg) {
-          this.hideAlert(e.data.id);
-        }
-      }.bind(this)
-    );
   }
 
   /**
@@ -73,8 +62,8 @@ class UxManager extends LuigiClientBase {
   }
   /**
    * This method informs the main application that there are unsaved changes in the current view in the iframe. For example, that can be a view with form fields which were edited but not submitted.
-   * @memberof uxManager
    * @param {boolean} isDirty indicates if there are any unsaved changes on the current page or in the component
+   * @memberof uxManager
    */
   setDirtyStatus(isDirty) {
     window.parent.postMessage(
@@ -96,6 +85,14 @@ class UxManager extends LuigiClientBase {
    * @returns {promise} which is resolved when accepting the confirmation modal and rejected when dismissing it
    */
   showConfirmationModal(settings) {
+    helpers.addEventListener(
+      'luigi.ux.confirmationModal.hide',
+      (e, listenerId) => {
+        this.hideConfirmationModal(e.data.data);
+        helpers.removeEventListener(listenerId);
+      }
+    );
+
     window.parent.postMessage(
       {
         msg: 'luigi.ux.confirmationModal.show',
@@ -162,8 +159,13 @@ class UxManager extends LuigiClientBase {
 
     */
   showAlert(settings) {
+    helpers.addEventListener('luigi.ux.alert.hide', (e, listenerId) => {
+      this.hideAlert(e.data.id);
+      helpers.removeEventListener(listenerId);
+    });
+
     //generate random ID
-    settings.id = getRandomId();
+    settings.id = helpers.getRandomId();
 
     if (settings.closeAfter && settings.closeAfter < 100) {
       console.warn(

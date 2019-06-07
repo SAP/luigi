@@ -9,7 +9,11 @@
 {#if title}
 <div class="fd-shellbar__product">
   {#if !hasApps}
-  <div class="fd-shellbar__title" data-e2e="luigi-topnav-title" on:click="goTo('/')">{title}</div>
+  <div
+    class="fd-shellbar__title"
+    data-e2e="luigi-topnav-title"
+    on:click="goTo('/')"
+  >{title}</div>
   <!-- TODO Application Switcher -->
   {:else}
   <div class="fd-popover fd-popover--right">
