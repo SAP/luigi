@@ -101,9 +101,8 @@ export const addRouteChangeListener = callback => {
   });
 
   if (hashRoutingActive) {
-    const getModifiedHash = s => Routing.getHashPath(s.newURL);
     return window.addEventListener('hashchange', event => {
-      callback(getModifiedHash(event));
+      callback(Routing.getHashPath(event.newURL));
     });
   }
 
