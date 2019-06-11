@@ -92,10 +92,10 @@ export const addRouteChangeListener = callback => {
   );
 
   window.addEventListener('message', e => {
-    const path = hashRoutingActive
-      ? Routing.getHashPath()
-      : Routing.getModifiedPathname();
     if ('refreshRoute' === e.data.msg && e.origin === window.origin) {
+      const path = hashRoutingActive
+        ? Routing.getHashPath()
+        : Routing.getModifiedPathname();
       callback(path);
     }
   });
