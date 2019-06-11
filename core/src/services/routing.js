@@ -98,6 +98,8 @@ export const buildFromRelativePath = node => {
   return GenericHelpers.addLeadingSlash(concatenatePath(windowPath, node.link));
 };
 
+export const getHashPath = (url = window.location.hash) => url.split('#/')[1];
+
 export const getModifiedPathname = () => {
   if (!window.history.state) {
     return '';
