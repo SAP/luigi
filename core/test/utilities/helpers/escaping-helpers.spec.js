@@ -31,21 +31,34 @@ describe('Escaping-helpers', () => {
   });
 
   describe('processTextAndLinks', () => {
+    beforeEach(() => {
+      // added suffixes to make sure the sanitazion gets executed in the right places
+      sinon.stub(EscapingHelpers, 'sanitizeParam').callsFake(input => {
+        return input + '-sanitizeParam';
+      });
+      sinon.stub(EscapingHelpers, 'sanitizeHtml').callsFake(input => {
+        return input + '-sanitizeHtml';
+      });
+      sinon.stub(EscapingHelpers, 'escapeKeyForRegexp').callsFake(input => {
+        return input;
+      });
+    });
+
+    afterEach(() => {
+      EscapingHelpers.sanitizeParam.restore();
+      EscapingHelpers.escapeKeyForRegexp.restore();
+      EscapingHelpers.sanitizeHtml.restore();
+    });
+
     it('without links', () => {
-      const text = `This is text <img src="http://url.to.file.which/not.exist" onerror=alert(document.cookie);><IMG SRC=j&#X41vascript:alert('test2')>`;
-      const uniqueID = '1234567890';
+      const text = `This is text`;
 
       // when
-      const escapedTextAndLinks = EscapingHelpers.processTextAndLinks(
-        text,
-        undefined,
-        uniqueID
-      );
+      const escapedTextAndLinks = EscapingHelpers.processTextAndLinks(text);
 
       // then
       const expectedResult = {
-        sanitizedText:
-          'This is text &lt;img src=&quot;http://url.to.file.which/not.exist&quot; onerror=alert(document.cookie);&gt;&lt;IMG SRC=j&amp;#X41vascript:alert(&#39;test2&#39;)&gt;',
+        sanitizedText: text + '-sanitizeHtml',
         links: []
       };
 
@@ -68,17 +81,7 @@ describe('Escaping-helpers', () => {
           url: `http://github.com/SAP/luigi/pulls`
         }
       };
-      const uniqueID = '1234567890';
-
-      sinon.stub(EscapingHelpers, 'sanitizeParam').callsFake(input => {
-        return input;
-      });
-      sinon.stub(EscapingHelpers, 'escapeKeyForRegexp').callsFake(input => {
-        return input;
-      });
-      sinon.stub(EscapingHelpers, 'sanitizeHtml').callsFake(input => {
-        return input;
-      });
+      const uniqueID = 1234567890;
 
       // when
       const escapedTextAndLinks = EscapingHelpers.processTextAndLinks(
@@ -90,15 +93,15 @@ describe('Escaping-helpers', () => {
       // then
       const expectedResult = {
         sanitizedText:
-          'Hello Luigi. <a id="_luigi_alert_1234567890_link_issues">Issues</a> <a id="_luigi_alert_1234567890_link_pulls">Pulls</a>',
+          'Hello Luigi. <a id="_luigi_alert_1234567890_link_issues-sanitizeParam">Issues-sanitizeHtml</a> <a id="_luigi_alert_1234567890_link_pulls-sanitizeParam">Pulls-sanitizeHtml</a>-sanitizeHtml',
         links: [
           {
-            elemId: '_luigi_alert_1234567890_link_issues',
-            url: 'http://github.com/SAP/luigi/issues'
+            elemId: '_luigi_alert_1234567890_link_issues-sanitizeParam',
+            url: 'http://github.com/SAP/luigi/issues-sanitizeHtml'
           },
           {
-            elemId: '_luigi_alert_1234567890_link_pulls',
-            url: 'http://github.com/SAP/luigi/pulls'
+            elemId: '_luigi_alert_1234567890_link_pulls-sanitizeParam',
+            url: 'http://github.com/SAP/luigi/pulls-sanitizeHtml'
           }
         ]
       };
