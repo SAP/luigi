@@ -20,7 +20,7 @@ class EscapingHelpersClass {
       .replace(/\//g, '&sol;');
   }
 
-  escapeRegExp(str) {
+  escapeKeyForRegexp(str) {
     return str.replace(/[\-\[\]\/\{\}\(\)\*\+\?\.\\\^\$\|]/g, '\\$&');
   }
 
@@ -36,7 +36,7 @@ class EscapingHelpersClass {
       const elemId = `_luigi_alert_${uniqueID}_link_${this.sanitizeParam(key)}`;
       const escapedText = this.sanitizeHtml(content.text);
       const processedData = `<a id="${elemId}">${escapedText}</a>`;
-      const keyForRegex = this.escapeRegExp(key);
+      const keyForRegex = this.escapeKeyForRegexp(key);
       const pattern = new RegExp(`({${keyForRegex}})`, 'g');
       return {
         sanitizedText: acc.sanitizedText.replace(pattern, processedData),
