@@ -72,8 +72,8 @@ function publishPackage {
     npm run bundle
 
     echoe "Publishing $NAME@$VERSION ..."
-    cd $BASE_DIR/../$PUBLISH_FOLDER
-    npm publish --access public
+    #cd $BASE_DIR/../$PUBLISH_FOLDER
+    npm publish $BASE_DIR/../$PUBLISH_FOLDER --access public
     if [[ $VERSION != *"rc."* ]]; then
       echo "Tag $NAME@$VERSION with latest on npm"
       npm dist-tag add $NAME@$VERSION latest
