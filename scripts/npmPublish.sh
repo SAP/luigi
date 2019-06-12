@@ -61,7 +61,7 @@ function publishPackage {
   VERSION=$(node -p "require('./package.json').version")
   
   cd $BASE_DIR/../$BASE_FOLDER
-  #echoe "Running npm ci in $(pwd) ..."
+  echoe "Running npm ci in $(pwd) ..."
   npm ci
   
   # Check if was published already
