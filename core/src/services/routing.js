@@ -4,7 +4,7 @@ import { Navigation } from '../navigation/services/navigation';
 import { RoutingHelpers } from '../utilities/helpers/routing-helpers';
 import { LuigiConfig } from '../core-api';
 import { GenericHelpers } from '../utilities/helpers/generic-helpers';
-import * as Iframe from './iframe';
+import { Iframe } from './iframe';
 import { NAVIGATION_DEFAULTS } from './../utilities/luigi-config-defaults';
 
 class RoutingClass {
