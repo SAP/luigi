@@ -3,7 +3,7 @@ const assert = chai.assert;
 const sinon = require('sinon');
 import { afterEach } from 'mocha';
 
-import { IframeHelpers } from '../../../src/utilities/helpers/iframe-helpers';
+import { IframeHelpers } from '../../../src/utilities/helpers';
 import { LuigiConfig } from '../../../src/core-api';
 
 describe('Iframe-helpers', () => {

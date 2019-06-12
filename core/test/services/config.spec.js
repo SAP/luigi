@@ -3,7 +3,7 @@ const assert = chai.assert;
 const sinon = require('sinon');
 
 import { LuigiConfig } from '../../src/core-api';
-import { AsyncHelpers } from './../../src/utilities/helpers/async-helpers';
+import { AsyncHelpers } from './../../src/utilities/helpers';
 
 describe('Config', () => {
   describe('getConfigBooleanValue', () => {

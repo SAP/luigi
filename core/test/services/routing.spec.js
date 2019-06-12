@@ -4,7 +4,7 @@ const sinon = require('sinon');
 import { afterEach } from 'mocha';
 
 import { Routing } from '../../src/services/routing';
-import { GenericHelpers } from '../../src/utilities/helpers/generic-helpers';
+import { GenericHelpers } from '../../src/utilities/helpers';
 import { LuigiConfig } from '../../src/core-api';
 
 describe('Routing', () => {

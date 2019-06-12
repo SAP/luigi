@@ -1,4 +1,4 @@
-import { GenericHelpers } from '../../utilities/helpers/generic-helpers';
+import { GenericHelpers } from '../../utilities/helpers';
 import { LuigiAuth } from '../../core-api';
 
 export class oAuth2ImplicitGrant {

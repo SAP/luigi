@@ -1,4 +1,4 @@
-import { StateHelpers } from '../../utilities/helpers/state-helpers';
+import { StateHelpers } from '../../utilities/helpers';
 import { LuigiConfig } from './../../core-api';
 
 export const processHeaderSettings = component => {

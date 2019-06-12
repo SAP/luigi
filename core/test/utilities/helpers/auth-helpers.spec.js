@@ -2,8 +2,7 @@ const chai = require('chai');
 const assert = chai.assert;
 const sinon = require('sinon');
 
-import { GenericHelpers } from '../../../src/utilities/helpers/generic-helpers';
-import { AuthHelpers } from '../../../src/utilities/helpers/auth-helpers';
+import { AuthHelpers, GenericHelpers } from '../../../src/utilities/helpers';
 import { LuigiAuth } from '../../../src/core-api';
 
 describe('Auth-helpers', () => {

@@ -2,7 +2,7 @@ const assert = require('chai').assert;
 const sinon = require('sinon');
 
 import { ContextSwitcherHelpers as CSHelpers } from '../src/navigation/services/context-switcher';
-import { GenericHelpers } from '../src/utilities/helpers/generic-helpers';
+import { GenericHelpers } from '../src/utilities/helpers';
 
 describe('Context-switcher', function() {
   afterEach(() => {

@@ -1,9 +1,8 @@
 // Methods related to the routing. They mostly end up changing the iframe view which is handled by `iframe.js` file;
 // Please consider adding any new methods to 'routing-helpers' if they don't require anything from this file.
 import { Navigation } from '../navigation/services/navigation';
-import { RoutingHelpers } from '../utilities/helpers/routing-helpers';
+import { GenericHelpers, RoutingHelpers } from '../utilities/helpers';
 import { LuigiConfig } from '../core-api';
-import { GenericHelpers } from '../utilities/helpers/generic-helpers';
 import { Iframe } from './iframe';
 import { NAVIGATION_DEFAULTS } from './../utilities/luigi-config-defaults';
 

@@ -1,5 +1,5 @@
 // Standalone or partly-standalone methods that are used widely through the whole app and are asynchronous.
-import { GenericHelpers } from './generic-helpers';
+import { GenericHelpers } from './';
 
 class AsyncHelpersClass {
   constructor() {

@@ -2,8 +2,7 @@
 // They are also rarely used directly from outside of 'routing.js'
 import { LuigiConfig } from '../../core-api';
 import { sanitizeParam } from './escaping-helpers';
-import { AsyncHelpers } from './async-helpers';
-import { GenericHelpers } from './generic-helpers';
+import { AsyncHelpers, GenericHelpers } from './';
 import { Routing } from '../../services/routing';
 
 class RoutingHelpersClass {

@@ -17,10 +17,12 @@
 </div>
 <script>
   import { Navigation } from './navigation/services/navigation';
-  import { RoutingHelpers } from './utilities/helpers/routing-helpers';
+  import {
+    GenericHelpers,
+    IframeHelpers,
+    RoutingHelpers
+  } from './utilities/helpers';
   import { LuigiConfig } from './core-api';
-  import { GenericHelpers } from './utilities/helpers/generic-helpers';
-  import { IframeHelpers } from './utilities/helpers/iframe-helpers';
 
   const prepareNodeData = async (component, path) => {
     const pathUrlRaw =

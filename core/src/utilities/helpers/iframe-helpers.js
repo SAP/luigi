@@ -1,5 +1,5 @@
 // Helper methods for 'iframe.js' file. They don't require any method from 'ifram.js` but are required by them.
-import { GenericHelpers } from './generic-helpers';
+import { GenericHelpers } from './';
 
 class IframeHelpersClass {
   hideElementChildren(node) {

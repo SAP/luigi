@@ -1,4 +1,4 @@
-import { GenericHelpers } from '../../utilities/helpers/generic-helpers';
+import { GenericHelpers } from '../../utilities/helpers';
 
 export const ContextSwitcherHelpers = {
   getPreparedParentNodePath(config) {
