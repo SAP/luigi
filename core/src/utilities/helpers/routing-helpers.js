@@ -4,7 +4,7 @@ import { LuigiConfig } from '../../core-api';
 import { sanitizeParam } from './escaping-helpers';
 import { AsyncHelpers } from './async-helpers';
 import { GenericHelpers } from './generic-helpers';
-import * as Routing from '../../services/routing';
+import { Routing } from '../../services/routing';
 
 class RoutingHelpersClass {
   constructor() {
