@@ -57,15 +57,15 @@ describe('Escaping-helpers', () => {
     });
 
     it('with links', () => {
-      const text = `This is text <img src="http://url.to.file.which/not.exist" onerror=alert(document.cookie);><IMG SRC=j&#X41vascript:alert('test2')>`;
+      const text = `Hello Luigi. {issues} {pulls}`;
       const links = {
-        ok: {
-          text: 'Some Linktext',
-          url: `javascript:alert('Wufff1!')`
+        issues: {
+          text: 'Issues',
+          url: `http://github.com/SAP/luigi/issues`
         },
-        works: {
-          text: 'Linktext',
-          url: `javascript:alert('Wufff2!')`
+        pulls: {
+          text: 'Pulls',
+          url: `http://github.com/SAP/luigi/pulls`
         }
       };
       const uniqueID = '1234567890';
@@ -77,20 +77,7 @@ describe('Escaping-helpers', () => {
         return input;
       });
       sinon.stub(EscapingHelpers, 'sanitizeHtml').callsFake(input => {
-        switch (input) {
-          case text:
-            return 'This is text &lt;img src=&quot;http://url.to.file.which/not.exist&quot; onerror=alert(document.cookie);&gt;&lt;IMG SRC=j&amp;#X41vascript:alert(&#39;test2&#39;)&gt;';
-            break;
-          case links.ok.url:
-            return 'alert(&#39;Wufff1!&#39;)';
-            break;
-          case links.works.url:
-            return 'alert(&#39;Wufff2!&#39;)';
-            break;
-          default:
-            return 'WRONG';
-            break;
-        }
+        return input;
       });
 
       // when
@@ -103,15 +90,15 @@ describe('Escaping-helpers', () => {
       // then
       const expectedResult = {
         sanitizedText:
-          'This is text &lt;img src=&quot;http://url.to.file.which/not.exist&quot; onerror=alert(document.cookie);&gt;&lt;IMG SRC=j&amp;#X41vascript:alert(&#39;test2&#39;)&gt;',
+          'Hello Luigi. <a id="_luigi_alert_1234567890_link_issues">Issues</a> <a id="_luigi_alert_1234567890_link_pulls">Pulls</a>',
         links: [
           {
-            elemId: '_luigi_alert_1234567890_link_ok',
-            url: 'alert(&#39;Wufff1!&#39;)'
+            elemId: '_luigi_alert_1234567890_link_issues',
+            url: 'http://github.com/SAP/luigi/issues'
           },
           {
-            elemId: '_luigi_alert_1234567890_link_works',
-            url: 'alert(&#39;Wufff2!&#39;)'
+            elemId: '_luigi_alert_1234567890_link_pulls',
+            url: 'http://github.com/SAP/luigi/pulls'
           }
         ]
       };
