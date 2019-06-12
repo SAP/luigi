@@ -4,16 +4,33 @@ set -e # exit on errors
 
 BASE_DIR="$( cd "$(dirname "$0")" ; pwd -P )"
 
+declare -a LUIGI_FOLDERS=(
+  "client"
+  "core"
+)
+
 source $BASE_DIR/shared/bashHelpers.sh
 
 installPrerequisites() {
   echoe "Install documentation prerequisites"
   mkdir -p $BASE_DIR/tmp-docu
+
   cd $BASE_DIR/tmp-docu
   DOCU_VERSION=`cat $BASE_DIR/../client/package.json | jq --raw-output ".devDependencies.documentation"`
   # create local package json to make it cachable
   echo "{\"dependencies\": {\"documentation\": \"$DOCU_VERSION\"}}" > package.json
-  npm i
+  # npm i
+
+  # link documentation binary if it does not exist
+  NODE_BIN_FOLDER="node_modules/.bin/"
+  for FOLDER in "${LUIGI_FOLDERS[@]}"
+  do
+    if [ ! -e $BASE_DIR/../$FOLDER/$NODE_BIN_FOLDER/documentation ]; then
+      echo "Linking documentation binary for $FOLDER"
+      mkdir -p $BASE_DIR/../$FOLDER/$NODE_BIN_FOLDER
+      ln -s $BASE_DIR/tmp-docu/$NODE_BIN_FOLDER/documentation $BASE_DIR/../$FOLDER/$NODE_BIN_FOLDER/documentation
+    fi
+  done
 }
 
 # Lint documentation and check if all docu changes have been commited.
@@ -43,13 +60,11 @@ validateMdChanges() {
 }
 
 validateAndGenerateDocumentations() {
-# add all folders that are containing documentation steps
-while read LINE; do
-    checkDocu "${LINE}"
-done <<HERE
-  client
-  core
-HERE
+  # add all folders that are containing documentation steps
+  for FOLDER in "${LUIGI_FOLDERS[@]}"
+  do
+    checkDocu "${FOLDER}"
+  done
 }
 
 
