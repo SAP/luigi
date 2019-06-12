@@ -34,7 +34,8 @@
     "url-loader": "^1.0.1",
     "webpack": "^4.11.1",
     "webpack-cli": "^3.0.3",
-    "tar": ">=4.4.2"
+    "tar": ">=4.4.2",
+    "axios": ">=0.18.1"
   },
   "scripts": {
     "bundle": "webpack --display-error-details",
