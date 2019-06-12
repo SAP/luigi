@@ -96,11 +96,11 @@ Object.keys(productSwitcherItems[0]).length }
 <script type="text/javascript">
   import { LuigiConfig } from '../core-api';
   import * as Routing from '../services/routing.js';
-  import { doOnStoreChange } from '../utilities/helpers/state-helpers';
+  import { StateHelpers } from '../utilities/helpers/state-helpers';
 
   export default {
     async oncreate() {
-      doOnStoreChange(this.store, async () => {
+      StateHelpers.doOnStoreChange(this.store, async () => {
         const productSwitcherConfig = LuigiConfig.getConfigValue(
           'navigation.productSwitcher'
         );

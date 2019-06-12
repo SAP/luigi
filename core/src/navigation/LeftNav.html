@@ -149,7 +149,7 @@
   import { Navigation } from './services/navigation';
   import * as NavigationHelpers from '../utilities/helpers/navigation-helpers';
   import { LuigiConfig } from '../core-api';
-  import { doOnStoreChange } from '../utilities/helpers/state-helpers';
+  import { StateHelpers } from '../utilities/helpers/state-helpers';
 
   const setLeftNavData = async (current, component) => {
     const componentData = component.get();
@@ -175,7 +175,7 @@
         expandedCategories: NavigationHelpers.loadExpandedCategories()
       });
 
-      doOnStoreChange(this.store, () => {
+      StateHelpers.doOnStoreChange(this.store, () => {
         this.set({
           footerText: LuigiConfig.getConfigValue('settings.sideNavFooterText')
         });

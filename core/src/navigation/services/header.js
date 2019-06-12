@@ -1,8 +1,8 @@
-import { doOnStoreChange } from '../../utilities/helpers/state-helpers';
+import { StateHelpers } from '../../utilities/helpers/state-helpers';
 import { LuigiConfig } from './../../core-api';
 
 export const processHeaderSettings = component => {
-  doOnStoreChange(component.store, () => {
+  StateHelpers.doOnStoreChange(component.store, () => {
     return LuigiConfig.getConfigValueAsync('settings.header').then(header => {
       if (!header) {
         return;
