@@ -20,7 +20,7 @@
   import { RoutingHelpers } from './utilities/helpers/routing-helpers';
   import { LuigiConfig } from './core-api';
   import { GenericHelpers } from './utilities/helpers/generic-helpers';
-  import { createIframe } from './utilities/helpers/iframe-helpers';
+  import { IframeHelpers } from './utilities/helpers/iframe-helpers';
 
   const prepareNodeData = async (component, path) => {
     const pathUrlRaw =
@@ -82,7 +82,7 @@
     if (viewUrl) {
       viewUrl = RoutingHelpers.substituteViewUrl(viewUrl, componentData);
     }
-    const iframe = createIframe(viewUrl);
+    const iframe = IFrameHelpers.createIframe(viewUrl);
     const iframeCtn = document.querySelector('.iframeModalCtn');
     iframeCtn.appendChild(iframe);
     return iframe;
