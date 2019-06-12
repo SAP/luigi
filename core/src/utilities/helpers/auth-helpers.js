@@ -3,7 +3,7 @@ import * as GenericHelpers from './generic-helpers';
 
 class AuthHelpersClass {
   getStoredAuthData() {
-    JSON.parse(localStorage.getItem('luigi.auth'));
+    return JSON.parse(localStorage.getItem('luigi.auth'));
   }
 
   isLoggedIn() {
