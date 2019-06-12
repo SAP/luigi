@@ -1,4 +1,4 @@
-<svelte:window on:resize="getViewportHeight()"/>
+<svelte:window on:resize="setViewportHeightVariable()"/>
 {#if productSwitcherItems && productSwitcherItems.length &&
 Object.keys(productSwitcherItems[0]).length }
 <!-- DESKTOP VERSION (popover): -->
@@ -115,7 +115,7 @@ Object.keys(productSwitcherItems[0]).length }
             productSwitcherItems
           });
         }
-        this.getViewportHeight();
+        this.setViewportHeightVariable();
       });
     },
     methods: {
@@ -129,7 +129,7 @@ Object.keys(productSwitcherItems[0]).length }
         if (event) event.stopPropagation();
         this.fire('toggleDropdownState');
       },
-      getViewportHeight() {
+      setViewportHeightVariable() {
         // get the viewport height and multiple it by 1% to get a value for a vh unit
         let vh = window.innerHeight * 0.01;
         // set the value in the --vh custom property to the root of the document
