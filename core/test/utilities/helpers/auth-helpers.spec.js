@@ -3,7 +3,7 @@ const assert = chai.assert;
 const sinon = require('sinon');
 
 const GenericHelpers = require('../../../src/utilities/helpers/generic-helpers');
-const AuthHelpers = require('../../../src/utilities/helpers/auth-helpers');
+import { AuthHelpers } from '../../../src/utilities/helpers/auth-helpers';
 const LuigiAuth = require('../../../src/core-api').LuigiAuth;
 
 describe('Auth-helpers', () => {

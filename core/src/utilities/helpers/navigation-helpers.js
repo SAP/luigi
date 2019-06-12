@@ -1,6 +1,6 @@
 // Helper methods for 'navigation.js' file. They don't require any method from 'navigation.js` but are required by them.
 import { LuigiAuth, LuigiConfig } from '../../core-api';
-import * as AuthHelpers from './auth-helpers';
+import { AuthHelpers } from './auth-helpers';
 
 const EXP_CAT_KEY = 'luigi.preferences.navigation.expandedCategories';
 
