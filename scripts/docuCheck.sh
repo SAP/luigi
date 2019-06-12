@@ -4,26 +4,16 @@ set -e # exit on errors
 
 BASE_DIR="$( cd "$(dirname "$0")" ; pwd -P )"
 
-echoe() {
-  # find all colors here: https://stackoverflow.com/questions/5947742/how-to-change-the-output-color-of-echo-in-linux#5947802
-  # Reset
-  Color_Off='\033[0m'       # Text Reset
-
-  # Bold High Intensity
-  BIBlack='\033[1;90m'      # Black
-
-  # High Intensity backgrounds
-  On_IYellow='\033[0;103m'  # Yellow
-
-  echo ""
-  echo ""
-  echo -e "${On_IYellow}${BIBlack}${1}${Color_Off}"
-  echo ""
-}
+source $BASE_DIR/shared/bashHelpers.sh
 
 installPrerequisites() {
+  echoe "Install documentation prerequisites"
+  mkdir -p $BASE_DIR/tmp-docu
+  cd $BASE_DIR/tmp-docu
   DOCU_VERSION=`cat $BASE_DIR/../client/package.json | jq --raw-output ".devDependencies.documentation"`
-  npm i -g documentation@$DOCU_VERSION
+  # create local package json to make it cachable
+  echo "{\"dependencies\": {\"documentation\": \"$DOCU_VERSION\"}}" > package.json
+  npm i
 }
 
 # Lint documentation and check if all docu changes have been commited.
@@ -41,6 +31,7 @@ checkDocu() {
 }
 
 validateMdChanges() {
+  echoe "Validate .md changes"
   # verify that there are no changes in md files
   MD_FILE_CHANGES=`git status | grep '.md' | wc -l`
   if [[ $MD_FILE_CHANGES != *"0"* ]]; then
@@ -61,8 +52,10 @@ done <<HERE
 HERE
 }
 
+
 installPrerequisites
 validateAndGenerateDocumentations
 validateMdChanges
 
+echoe "Validation successful, documentation OK"
 exit 0

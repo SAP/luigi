@@ -12,6 +12,10 @@ jobs:
     - stage: 'Documentation'
       name: 'Check Documentation'
       script: bash ./scripts/docuCheck.sh
+      cache:
+        directories:
+          - npm: true
+          - ~/.cache-docu
 
     #----- UNIT -----
     - stage: 'Tests'
