@@ -1,15 +1,16 @@
+const sinon = require('sinon');
 const chai = require('chai');
 const assert = chai.assert;
-const AsyncHelpers = require('../../../src/utilities/helpers/async-helpers');
+
+import { AsyncHelpers } from './../../../src/utilities/helpers/async-helpers';
 const GenericHelpers = require('../../../src/utilities/helpers/generic-helpers');
-const sinon = require('sinon');
 
 describe('Async-helpers', () => {
   beforeEach(() => {
     // sinon.stub(LuigiConfig, 'getConfigValue');
   });
   afterEach(() => {
-    // sinon.restore();
+    //   sinon.restore();
   });
 
   describe('wrapAsPromise', () => {
