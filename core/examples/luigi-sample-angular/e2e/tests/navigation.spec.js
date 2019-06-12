@@ -62,6 +62,16 @@ describe('Navigation', () => {
     cy.get('.fd-app__sidebar .lui-side-nav__footer')
       .contains('Luigi Client:')
       .should('be.visible');
+
+    cy.window().then(win => {
+      const config = win.Luigi.getConfig();
+      config.settings.sideNavFooterText = 'Hello from tets.';
+      win.Luigi.setConfig(config);
+
+      cy.get('.fd-app__sidebar .lui-side-nav__footer')
+        .contains('Hello from tets.')
+        .should('be.visible');
+    });
   });
 
   // Disabled, since it only works if autologin is false

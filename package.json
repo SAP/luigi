@@ -24,7 +24,7 @@
   },
   "husky": {
     "hooks": {
-      "pre-commit": "./scripts/apply-formatters.sh && ./scripts/remove-test-prefixes.sh"
+      "pre-commit": "./scripts/hooks/apply-formatters.sh && ./scripts/hooks/remove-test-prefixes.sh"
     }
   }
 }
