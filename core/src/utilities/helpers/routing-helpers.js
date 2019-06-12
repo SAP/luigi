@@ -3,7 +3,7 @@
 import { LuigiConfig } from '../../core-api';
 import { sanitizeParam } from './escaping-helpers';
 import { AsyncHelpers } from './async-helpers';
-import * as GenericHelpers from './generic-helpers';
+import { GenericHelpers } from './generic-helpers';
 import * as Routing from '../../services/routing';
 
 export const getLastNodeObject = pathData => {

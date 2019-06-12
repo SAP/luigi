@@ -3,7 +3,7 @@ const chai = require('chai');
 const assert = chai.assert;
 
 import { AsyncHelpers } from './../../../src/utilities/helpers/async-helpers';
-const GenericHelpers = require('../../../src/utilities/helpers/generic-helpers');
+import { GenericHelpers } from '../../../src/utilities/helpers/generic-helpers';
 
 describe('Async-helpers', () => {
   beforeEach(() => {

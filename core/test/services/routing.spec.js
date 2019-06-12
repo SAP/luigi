@@ -2,7 +2,7 @@ const chai = require('chai');
 const assert = chai.assert;
 const sinon = require('sinon');
 const routing = require('../../src/services/routing');
-const GenericHelpers = require('../../src/utilities/helpers/generic-helpers');
+import { GenericHelpers } from '../../src/utilities/helpers/generic-helpers';
 import { afterEach } from 'mocha';
 import { LuigiConfig } from '../../src/core-api';
 

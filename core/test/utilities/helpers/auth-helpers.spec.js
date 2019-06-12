@@ -2,9 +2,9 @@ const chai = require('chai');
 const assert = chai.assert;
 const sinon = require('sinon');
 
-const GenericHelpers = require('../../../src/utilities/helpers/generic-helpers');
+import { GenericHelpers } from '../../../src/utilities/helpers/generic-helpers';
 import { AuthHelpers } from '../../../src/utilities/helpers/auth-helpers';
-const LuigiAuth = require('../../../src/core-api').LuigiAuth;
+import { LuigiAuth } from '../../../src/core-api';
 
 describe('Auth-helpers', () => {
   let windowLocationImplementation;

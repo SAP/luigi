@@ -1,5 +1,5 @@
 import { AsyncHelpers } from '../utilities/helpers/async-helpers';
-import * as GenericHelpers from '../utilities/helpers/generic-helpers';
+import { GenericHelpers } from '../utilities/helpers/generic-helpers';
 import { auth } from './auth';
 
 class LuigiConfigManager {

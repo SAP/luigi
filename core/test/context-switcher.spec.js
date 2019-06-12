@@ -1,9 +1,8 @@
 const assert = require('chai').assert;
 const sinon = require('sinon');
 
-const CSHelpers = require('../src/navigation/services/context-switcher')
-  .ContextSwitcherHelpers;
-const Helpers = require('../src/utilities/helpers/generic-helpers');
+import { ContextSwitcherHelpers as CSHelpers } from '../src/navigation/services/context-switcher';
+import { GenericHelpers } from '../src/utilities/helpers/generic-helpers';
 
 describe('Context-switcher', function() {
   afterEach(() => {
@@ -138,7 +137,7 @@ describe('Context-switcher', function() {
     beforeEach(() => {
       parentNodePath = '/home/projects';
       currentPath = '/home/projects/pr1';
-      Helpers.addTrailingSlash = sinon.stub().callsFake(s => s + `/`);
+      sinon.stub(GenericHelpers, 'addTrailingSlash').callsFake(s => s + `/`);
     });
 
     it('returns false if parent node path is falsy', () => {

@@ -3,7 +3,7 @@
 import { Navigation } from '../navigation/services/navigation';
 import * as RoutingHelpers from '../utilities/helpers/routing-helpers';
 import { LuigiConfig } from '../core-api';
-import * as GenericHelpers from '../utilities/helpers/generic-helpers';
+import { GenericHelpers } from '../utilities/helpers/generic-helpers';
 import * as Iframe from './iframe';
 import { NAVIGATION_DEFAULTS } from './../utilities/luigi-config-defaults';
 

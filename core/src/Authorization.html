@@ -64,11 +64,11 @@
 {/if}
 <script type="text/javascript">
   import { LuigiAuth, LuigiConfig } from './core-api';
-  import * as GenericHelpers from './utilities/helpers/generic-helpers.js';
+  import { GenericHelpers } from './utilities/helpers/generic-helpers';
   import * as Routing from './services/routing';
   import { AuthHelpers } from './utilities/helpers/auth-helpers';
   import * as StateHelpers from './utilities/helpers/state-helpers';
-  import { oAuth2ImplicitGrant } from './providers/auth/oAuth2ImplicitGrant.js';
+  import { oAuth2ImplicitGrant } from './providers/auth/oAuth2ImplicitGrant';
   import { openIdConnect } from './providers/auth/openIdConnect.js';
   import { TOP_NAV_DEFAULTS } from './utilities/luigi-config-defaults';
   import * as NavigationHelpers from './utilities/helpers/navigation-helpers';

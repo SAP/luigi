@@ -3,7 +3,7 @@
 import { sanitizeParam } from '../../utilities/helpers/escaping-helpers';
 import * as NavigationHelpers from '../../utilities/helpers/navigation-helpers';
 import { AsyncHelpers } from '../../utilities/helpers/async-helpers';
-import * as GenericHelpers from '../../utilities/helpers/generic-helpers';
+import { GenericHelpers } from '../../utilities/helpers/generic-helpers';
 import * as RoutingHelpers from '../../utilities/helpers/routing-helpers';
 import { LuigiConfig } from '../../core-api';
 

@@ -1,5 +1,5 @@
 import { LuigiAuth } from '../../core-api';
-import * as GenericHelpers from './generic-helpers';
+import { GenericHelpers } from './generic-helpers';
 
 class AuthHelpersClass {
   getStoredAuthData() {
