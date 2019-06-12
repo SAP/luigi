@@ -192,7 +192,7 @@
       internal: JSON.stringify(component.prepareInternalData(config.modal)),
       authData: AuthHelpers.getStoredAuthData()
     };
-    iFrameHelpers.sendMessageToIframe(config.iframe, message);
+    IframeHelpers.sendMessageToIframe(config.iframe, message);
   };
 
   const sendAuthDataToClient = (iframe, authData) => {
@@ -206,7 +206,7 @@
       msg: 'luigi.auth.tokenIssued',
       authData
     };
-    iFrameHelpers.sendMessageToIframe(iframe, message);
+    IframeHelpers.sendMessageToIframe(iframe, message);
   };
 
   const getDefaultAlertData = () => {
@@ -331,7 +331,7 @@
           }
 
           if ('luigi.get-context' === e.data.msg) {
-            if (iFrameHelpers.isMessageSource(e, this.get().modalIframe)) {
+            if (IframeHelpers.isMessageSource(e, this.get().modalIframe)) {
               let ctx = this.get().modalIframeData.context;
               const modalConfig = {
                 ...config,
@@ -385,7 +385,7 @@
           }
 
           if ('luigi.navigation.back' === e.data.msg) {
-            if (iFrameHelpers.isMessageSource(e, this.get().modalIframe)) {
+            if (IframeHelpers.isMessageSource(e, this.get().modalIframe)) {
               this.closeModal();
               sendContextToClient(this, config, {
                 goBackContext:
@@ -439,7 +439,7 @@
                 pathExists: pathData.isExistingRoute
               }
             };
-            iFrameHelpers.sendMessageToIframe(iframe, message);
+            IframeHelpers.sendMessageToIframe(iframe, message);
           }
 
           if ('luigi.set-page-dirty' === e.data.msg) {
@@ -505,7 +505,7 @@
           { contentWindow: window, luigi: { viewUrl: window.location.href } }
         ];
         const iframe = allMessagesSources.find(iframe =>
-          iFrameHelpers.isMessageSource(e, iframe)
+          IframeHelpers.isMessageSource(e, iframe)
         );
 
         if (!iframe || !iframe.luigi || !iframe.luigi.viewUrl) {
@@ -520,7 +520,7 @@
         const viewUrl = navigateOkMsg
           ? iframe.luigi.nextViewUrl
           : iframe.luigi.viewUrl;
-        if (!iFrameHelpers.iframeIsSameDomain(viewUrl, e.origin)) {
+        if (!IframeHelpers.iframeIsSameDomain(viewUrl, e.origin)) {
           return undefined;
         }
 
@@ -578,7 +578,7 @@
             msg: 'luigi.ux.confirmationModal.hide',
             data: { confirmed: result }
           };
-          iFrameHelpers.sendMessageToIframe(iframe, message);
+          IframeHelpers.sendMessageToIframe(iframe, message);
         }
       },
       getUnsavedChangesModalPromise(source) {
@@ -728,7 +728,7 @@
             id
             //TODO: update docu for this param
           };
-          iFrameHelpers.sendMessageToIframe(iframe, message);
+          IframeHelpers.sendMessageToIframe(iframe, message);
         }
       },
       getAlertWithId(alertQueue, id) {

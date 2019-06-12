@@ -119,7 +119,7 @@ class IframeHelpersClass {
   }
 
   iframeIsSameDomain(viewUrl, domain) {
-    return urlMatchesTheDomain(viewUrl, domain);
+    return this.urlMatchesTheDomain(viewUrl, domain);
   }
 
   sendMessageToIframe(iframe, message) {

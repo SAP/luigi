@@ -82,7 +82,7 @@
     if (viewUrl) {
       viewUrl = RoutingHelpers.substituteViewUrl(viewUrl, componentData);
     }
-    const iframe = IFrameHelpers.createIframe(viewUrl);
+    const iframe = IframeHelpers.createIframe(viewUrl);
     const iframeCtn = document.querySelector('.iframeModalCtn');
     iframeCtn.appendChild(iframe);
     return iframe;
