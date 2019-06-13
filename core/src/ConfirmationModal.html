@@ -1,3 +1,4 @@
+<svelte:window on:keydown="handleKeydown(event)"/>
 <div class="fd-ui__overlay fd-overlay fd-overlay--modal" aria-hidden="false">
   <div class="fd-modal" data-cy="luigi-confirmation-modal">
     <div class="fd-modal__content" role="document">
@@ -46,6 +47,18 @@
         document.querySelector('.confirm-button').focus();
       } catch (e) {
         console.warn("Couldn't focus confirmation button in modal");
+      }
+    },
+    methods: {
+      handleKeydown(event) {
+        switch (event.keyCode) {
+          case 27:
+            this.fire('modalDismiss');
+            break;
+          case 13:
+            this.fire('modalConfirm');
+            break;
+        }
       }
     }
   };
