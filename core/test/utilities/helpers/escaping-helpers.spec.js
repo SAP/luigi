@@ -1,8 +1,6 @@
-const chai = require('chai');
-const assert = chai.assert;
-const sinon = require('sinon');
-const EscapingHelpers = require('../../../src/utilities/helpers/escaping-helpers')
-  .EscapingHelpers;
+import { assert } from 'chai';
+import * as sinon from 'sinon';
+import { EscapingHelpers } from '../../../src/utilities/helpers/escaping-helpers';
 
 describe('Escaping-helpers', () => {
   it('sanitizeHtml', () => {
