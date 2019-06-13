@@ -51,13 +51,8 @@
     },
     methods: {
       handleKeydown(event) {
-        switch (event.keyCode) {
-          case 27:
-            this.fire('modalDismiss');
-            break;
-          case 13:
-            this.fire('modalConfirm');
-            break;
+        if (event.keyCode === 27) {
+          this.fire('modalDismiss');
         }
       }
     }
