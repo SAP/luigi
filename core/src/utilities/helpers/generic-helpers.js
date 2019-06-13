@@ -1,5 +1,17 @@
 // Standalone or partly-standalone methods that are used widely through the whole app and are synchronous.
 
+/**
+ * Creates a random Id
+ * @returns random numeric value {number}
+ * @private
+ */
+export const getRandomId = () => {
+  // window.msCrypto for IE 11
+  return (window.crypto || window.msCrypto).getRandomValues(
+    new Uint32Array(1)
+  )[0];
+};
+
 export const isFunction = anyParam =>
   anyParam && {}.toString.call(anyParam) === '[object Function]';
 

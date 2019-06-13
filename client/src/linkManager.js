@@ -1,4 +1,5 @@
 import { LuigiClientBase } from './baseClass';
+import { helpers } from './helpers';
 
 /**
  * The Link Manager allows you to navigate to another route. Use it instead of an internal router to:
@@ -12,6 +13,7 @@ export class linkManager extends LuigiClientBase {
    * @private
    */
   constructor(values) {
+    // @param {Object} values TODO: is it necessary at all, where is it used?
     super();
     Object.assign(this, values);
 
@@ -24,16 +26,6 @@ export class linkManager extends LuigiClientBase {
       relative: false,
       link: ''
     };
-
-    window.addEventListener('message', e => {
-      if ('luigi.navigation.pathExists.answer' === e.data.msg) {
-        const data = e.data.data;
-        const pathExistsPromises = this.getPromise('pathExistsPromises');
-        pathExistsPromises[data.correlationId].resolveFn(data.pathExists);
-        delete pathExistsPromises[data.correlationId];
-        this.setPromise('pathExistsPromises', pathExistsPromises);
-      }
-    });
   }
 
   /**
@@ -56,8 +48,8 @@ export class linkManager extends LuigiClientBase {
       return;
     }
     this.options.preserveView = preserveView;
-    var relativePath = path[0] !== '/';
-    var navigationOpenMsg = {
+    const relativePath = path[0] !== '/';
+    const navigationOpenMsg = {
       msg: 'luigi.navigation.open',
       sessionId: sessionId,
       params: Object.assign(this.options, {
@@ -92,7 +84,7 @@ export class linkManager extends LuigiClientBase {
    * LuigiClient.linkManager().fromContext('project').navigate('/settings')
    */
   fromContext(navigationContext) {
-    var navigationContextInParent =
+    const navigationContextInParent =
       this.currentContext.context.parentNavigationContexts.indexOf(
         navigationContext
       ) !== -1;
@@ -117,7 +109,7 @@ export class linkManager extends LuigiClientBase {
    * LuigiClient.linkManager().fromClosestContext().navigate('/users/groups/stakeholders')
    */
   fromClosestContext() {
-    var hasParentNavigationContext =
+    const hasParentNavigationContext =
       this.currentContext.context.parentNavigationContexts.length > 0;
     if (hasParentNavigationContext) {
       this.options.fromContext = null;
@@ -164,7 +156,7 @@ export class linkManager extends LuigiClientBase {
    *  );
    */
   pathExists(path) {
-    var currentId = Date.now();
+    const currentId = Date.now();
     const pathExistsPromises = this.getPromise('pathExistsPromises') || {};
     pathExistsPromises[currentId] = {
       resolveFn: function() {},
@@ -174,7 +166,22 @@ export class linkManager extends LuigiClientBase {
     };
     this.setPromise('pathExistsPromises', pathExistsPromises);
 
-    var pathExistsMsg = {
+    // register event listener, which will be cleaned up after this usage
+    helpers.addEventListener(
+      'luigi.navigation.pathExists.answer',
+      function(e, listenerId) {
+        const data = e.data.data;
+        const pathExistsPromises = this.getPromise('pathExistsPromises') || {};
+        if (pathExistsPromises[data.correlationId]) {
+          pathExistsPromises[data.correlationId].resolveFn(data.pathExists);
+          delete pathExistsPromises[data.correlationId];
+          this.setPromise('pathExistsPromises', pathExistsPromises);
+        }
+        helpers.removeEventListener(listenerId);
+      }.bind(this)
+    );
+
+    const pathExistsMsg = {
       msg: 'luigi.navigation.pathExists',
       data: {
         id: currentId,

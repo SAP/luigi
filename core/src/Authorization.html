@@ -67,6 +67,7 @@
   import * as GenericHelpers from './utilities/helpers/generic-helpers.js';
   import * as Routing from './services/routing';
   import * as AuthHelpers from './utilities/helpers/auth-helpers';
+  import * as StateHelpers from './utilities/helpers/state-helpers';
   import { oAuth2ImplicitGrant } from './providers/auth/oAuth2ImplicitGrant.js';
   import { openIdConnect } from './providers/auth/openIdConnect.js';
   import { TOP_NAV_DEFAULTS } from './utilities/luigi-config-defaults';
@@ -204,6 +205,13 @@
         ) {
           idpProviderInstance.setTokenExpirationAction();
         }
+        if (
+          GenericHelpers.isFunction(
+            idpProviderInstance.setTokenExpireSoonAction
+          )
+        ) {
+          idpProviderInstance.setTokenExpireSoonAction();
+        }
       };
 
       /**
@@ -246,16 +254,25 @@
     },
     methods: {
       setProfileNavData: function() {
-        const configProfileNav =
-          LuigiConfig.getConfigValue('navigation.profile') || {};
-        const profileNavData = {
-          logout: {
-            ...TOP_NAV_DEFAULTS.logout,
-            ...configProfileNav.logout
-          },
-          items: configProfileNav.items || []
-        };
-        this.set({ profileNav: profileNavData });
+        if (!this.get().navProfileListenerInstalled) {
+          StateHelpers.doOnStoreChange(this.store, async () => {
+            const logoutItem = await LuigiConfig.getConfigValueAsync(
+              'navigation.profile.logout'
+            );
+            const profileNavData = {
+              logout: {
+                ...TOP_NAV_DEFAULTS.logout,
+                ...logoutItem
+              },
+              items:
+                (await LuigiConfig.getConfigValueAsync(
+                  'navigation.profile.items'
+                )) || []
+            };
+            this.set({ profileNav: profileNavData });
+          });
+          this.set({ navProfileListenerInstalled: true });
+        }
       },
       startAuthorization: function() {
         idpProviderInstance.login().then(res => {

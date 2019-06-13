@@ -149,6 +149,7 @@
   import * as Navigation from './services/navigation.js';
   import * as NavigationHelpers from '../utilities/helpers/navigation-helpers';
   import { LuigiConfig } from '../core-api';
+  import { doOnStoreChange } from '../utilities/helpers/state-helpers';
 
   const setLeftNavData = async (current, component) => {
     const componentData = component.get();
@@ -171,8 +172,13 @@
         hideNavComponent: LuigiConfig.getConfigBooleanValue(
           'settings.hideNavigation'
         ),
-        expandedCategories: NavigationHelpers.loadExpandedCategories(),
-        footerText: LuigiConfig.getConfigValue('settings.sideNavFooterText')
+        expandedCategories: NavigationHelpers.loadExpandedCategories()
+      });
+
+      doOnStoreChange(this.store, () => {
+        this.set({
+          footerText: LuigiConfig.getConfigValue('settings.sideNavFooterText')
+        });
       });
     },
     onstate({ changed, current, previous }) {

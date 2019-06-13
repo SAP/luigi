@@ -1,5 +1,5 @@
 import { LuigiClientBase } from './baseClass';
-import { getRandomId, isFunction } from './helpers';
+import { helpers } from './helpers';
 
 /**
  * Use the functions and parameters to define the Lifecycle of listeners, navigation nodes, and Event data.
@@ -34,7 +34,10 @@ class LifecycleManager extends LuigiClientBase {
      */
     const _callAllFns = (objWithFns, payload) => {
       for (let id in objWithFns) {
-        if (objWithFns.hasOwnProperty(id) && isFunction(objWithFns[id])) {
+        if (
+          objWithFns.hasOwnProperty(id) &&
+          helpers.isFunction(objWithFns[id])
+        ) {
           objWithFns[id](payload);
         }
       }
@@ -74,35 +77,38 @@ class LifecycleManager extends LuigiClientBase {
         }
       };
 
-      window.addEventListener(
-        'message',
-        function(e) {
-          if ('luigi.init' === e.data.msg) {
-            setContext(e.data);
-            setAuthData(e.data.authData);
-            this.luigiInitialized = true;
-            _callAllFns(this._onInitFns, this.currentContext.context);
-          } else if ('luigi.navigate' === e.data.msg) {
-            setContext(e.data);
-            if (!this.currentContext.internal.isNavigateBack) {
-              window.location.replace(e.data.viewUrl);
-            }
+      helpers.addEventListener('luigi.init', e => {
+        setContext(e.data);
+        setAuthData(e.data.authData);
+        this.luigiInitialized = true;
+        _callAllFns(this._onInitFns, this.currentContext.context);
+      });
 
-            // execute the context change listener if set by the microfrontend
-            _callAllFns(this._onContextUpdatedFns, this.currentContext.context);
+      helpers.addEventListener('luigi.auth.tokenIssued', e => {
+        setAuthData(e.data.authData);
+      });
 
-            window.parent.postMessage(
-              {
-                msg: 'luigi.navigate.ok'
-              },
-              '*'
-            );
-          } else if ('luigi.auth.tokenIssued' === e.data.msg) {
-            setAuthData(e.data.authData);
-          }
-        }.bind(this)
-      );
+      helpers.addEventListener('luigi.navigate', e => {
+        setContext(e.data);
+        if (!this.currentContext.internal.isNavigateBack) {
+          window.location.replace(e.data.viewUrl);
+        }
 
+        // execute the context change listener if set by the microfrontend
+        _callAllFns(this._onContextUpdatedFns, this.currentContext.context);
+
+        window.parent.postMessage(
+          {
+            msg: 'luigi.navigate.ok'
+          },
+          '*'
+        );
+      });
+
+      /**
+       * Get context once initially
+       * @private
+       */
       window.parent.postMessage(
         {
           msg: 'luigi.get-context'
@@ -128,9 +134,9 @@ class LifecycleManager extends LuigiClientBase {
    * @memberof Lifecycle
    */
   addInitListener(initFn) {
-    var id = getRandomId();
+    var id = helpers.getRandomId();
     this._onInitFns[id] = initFn;
-    if (this.luigiInitialized && isFunction(initFn)) {
+    if (this.luigiInitialized && helpers.isFunction(initFn)) {
       initFn(this.currentContext.context);
     }
     return id;
@@ -153,9 +159,9 @@ class LifecycleManager extends LuigiClientBase {
    * @memberof Lifecycle
    */
   addContextUpdateListener(contextUpdatedFn) {
-    var id = getRandomId();
+    var id = helpers.getRandomId();
     this._onContextUpdatedFns[id] = contextUpdatedFn;
-    if (this.luigiInitialized && isFunction(contextUpdatedFn)) {
+    if (this.luigiInitialized && helpers.isFunction(contextUpdatedFn)) {
       contextUpdatedFn(this.currentContext.context);
     }
     return id;

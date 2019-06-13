@@ -1,10 +1,11 @@
 // Main methods used to display and handle the navigation.
 // Please consider adding any new methods to 'navigation-helpers' if they don't require anything from this file.
-import { sanitizeParam } from '../../utilities/helpers/escaping-helpers';
+import { EscapingHelpers } from '../../utilities/helpers/escaping-helpers';
 import * as NavigationHelpers from '../../utilities/helpers/navigation-helpers';
 import * as AsyncHelpers from '../../utilities/helpers/async-helpers';
 import * as GenericHelpers from '../../utilities/helpers/generic-helpers';
 import * as RoutingHelpers from '../../utilities/helpers/routing-helpers';
+import { LuigiConfig } from '../../core-api';
 
 export const getNavigationPath = async (rootNavProviderPromise, path = '') => {
   try {
@@ -69,7 +70,11 @@ export const getChildren = async (node, context) => {
     node._childrenProvider = node.children;
   }
 
-  if (node._childrenProvider && !node._childrenProviderUsed) {
+  if (
+    node._childrenProvider &&
+    (!node._childrenProviderUsed ||
+      node._childrenProviderUsed < LuigiConfig._configModificationTimestamp)
+  ) {
     try {
       node.children = (
         (await AsyncHelpers.getConfigValueFromObjectAsync(
@@ -81,7 +86,7 @@ export const getChildren = async (node, context) => {
         NavigationHelpers.isNodeAccessPermitted(child, node, context)
       );
       bindChildrenToParent(node);
-      node._childrenProviderUsed = true;
+      node._childrenProviderUsed = new Date();
       return node.children;
     } catch (err) {
       console.error('Could not lazy-load children for node', err);
@@ -133,9 +138,9 @@ const buildNode = async (
         node.navigationContext
       );
       if (node.pathSegment.startsWith(':')) {
-        pathParams[node.pathSegment.replace(':', '')] = sanitizeParam(
-          urlPathElement
-        );
+        pathParams[
+          node.pathSegment.replace(':', '')
+        ] = EscapingHelpers.sanitizeParam(urlPathElement);
       }
       newContext = RoutingHelpers.substituteDynamicParamsInObject(
         newContext,
