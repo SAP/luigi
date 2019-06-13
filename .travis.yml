@@ -10,7 +10,7 @@ notifications:
 jobs:
   include:
     #----- DOCU -----
-    - stage: 'Documentation'
+    - stage: 'Documentation & Tests'
       name: 'Check Documentation'
       script: bash ./scripts/docuCheck.sh
       cache:
@@ -19,8 +19,7 @@ jobs:
           - ~/.cache-docu
 
     #----- UNIT -----
-    - stage: 'Tests'
-      name: 'Unit Tests'
+    - name: 'Unit Tests'
       script: npm test --prefix core
       #no cache for unit tests = more speed
       
@@ -36,7 +35,8 @@ jobs:
         - rm -rf ~/.cache/Cypress/cy/production/browsers #it is individual for each run anyway so caching it slows down the job
 
     # ----- NPM PUBLISH -----
-    - name: 'Publish to NPM'
+    - stage: 'Publish'
+      name: 'Publish to NPM'
       if: branch = master
       script: bash ./scripts/npmPublish.sh
       cache: npm
