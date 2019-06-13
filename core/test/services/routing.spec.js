@@ -28,6 +28,20 @@ describe('Routing', () => {
     sinon.restore();
   });
 
+  describe('getHashPath()', () => {
+    it('returns hash path from default param', () => {
+      window.location.hash = '#/projects/pr3';
+      const actual = routing.getHashPath();
+      const expected = 'projects/pr3';
+      assert.equal(actual, expected);
+    });
+
+    it('returns hash path from provided input param', () => {
+      const actual = routing.getHashPath('my-url#/projects/pr3');
+      const expected = 'projects/pr3';
+      assert.equal(actual, expected);
+    });
+  });
   describe('buildFromRelativePath', () => {
     const nodeWithParent = {
       link: 'child-node',

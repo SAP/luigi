@@ -18,7 +18,8 @@
       "breaking": ":boom: Breaking Change",
       "enhancement": ":rocket: Added",
       "bug": ":bug: Fixed",
-      "area/documentation": ":memo: Documentation"
+      "documentation": ":memo: Documentation",
+      "internal": ":house: Internal"
     },
     "cacheDir": ".changelog"
   },

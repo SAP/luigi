@@ -2,7 +2,9 @@ language: node_js
 node_js:
   - '11.14' #TODO: change it to 'node' once Travis supports the newest version
 dist: trusty
-install: npm ci --prefix core
+install: 
+  - npm ci --prefix core
+  - npm ci --prefix client
 cache: npm
 notifications:
   slack:
@@ -39,4 +41,4 @@ jobs:
       name: 'Publish to NPM'
       if: branch = master
       script: bash ./scripts/npmPublish.sh
-      cache: npm
+      #cache: npm
