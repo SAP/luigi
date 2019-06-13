@@ -1,8 +1,8 @@
 // Main methods used to display and handle the navigation.
 // Please consider adding any new methods to 'navigation-helpers' if they don't require anything from this file.
-import { sanitizeParam } from '../../utilities/helpers/escaping-helpers';
 import {
   AsyncHelpers,
+  EscapingHelpers,
   GenericHelpers,
   NavigationHelpers,
   RoutingHelpers
@@ -142,9 +142,9 @@ class NavigationClass {
           node.navigationContext
         );
         if (node.pathSegment.startsWith(':')) {
-          pathParams[node.pathSegment.replace(':', '')] = sanitizeParam(
-            urlPathElement
-          );
+          pathParams[
+            node.pathSegment.replace(':', '')
+          ] = EscapingHelpers.sanitizeParam(urlPathElement);
         }
         newContext = RoutingHelpers.substituteDynamicParamsInObject(
           newContext,

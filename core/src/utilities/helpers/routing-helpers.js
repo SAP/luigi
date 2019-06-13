@@ -1,8 +1,7 @@
 // Helper methods for 'routing.js' file. They don't require any method from 'routing.js' but are required by them.
 // They are also rarely used directly from outside of 'routing.js'
 import { LuigiConfig } from '../../core-api';
-import { sanitizeParam } from './escaping-helpers';
-import { AsyncHelpers, GenericHelpers } from './';
+import { AsyncHelpers, EscapingHelpers, GenericHelpers } from './';
 import { Routing } from '../../services/routing';
 
 class RoutingHelpersClass {
@@ -72,7 +71,7 @@ class RoutingHelpersClass {
         }
       });
     }
-    return this.sanitizeParams(result);
+    return this.sanitizeParamsMap(result);
   }
 
   findViewGroup(node) {
@@ -161,9 +160,11 @@ class RoutingHelpersClass {
     return viewUrl;
   }
 
-  sanitizeParams(paramsMap) {
+  sanitizeParamsMap(paramsMap) {
     return Object.entries(paramsMap).reduce((sanitizedMap, paramPair) => {
-      sanitizedMap[sanitizeParam(paramPair[0])] = sanitizeParam(paramPair[1]);
+      sanitizedMap[
+        EscapingHelpers.sanitizeParam(paramPair[0])
+      ] = EscapingHelpers.sanitizeParam(paramPair[1]);
       return sanitizedMap;
     }, {});
   }
