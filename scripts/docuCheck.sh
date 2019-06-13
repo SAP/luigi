@@ -19,16 +19,16 @@ installPrerequisites() {
   DOCU_VERSION=`cat $BASE_DIR/../client/package.json | jq --raw-output ".devDependencies.documentation"`
   # create local package json to make it cachable
   echo "{\"dependencies\": {\"documentation\": \"$DOCU_VERSION\"}}" > package.json
-  # npm i
+  npm i
 
   # link documentation binary if it does not exist
   NODE_BIN_FOLDER="node_modules/.bin/"
   for FOLDER in "${LUIGI_FOLDERS[@]}"
   do
-    if [ ! -e $BASE_DIR/../$FOLDER/$NODE_BIN_FOLDER/documentation ]; then
+    if [ ! -e $BASE_DIR/../$FOLDER$NODE_BIN_FOLDER/documentation ]; then
       echo "Linking documentation binary for $FOLDER"
-      mkdir -p $BASE_DIR/../$FOLDER/$NODE_BIN_FOLDER
-      ln -s $BASE_DIR/tmp-docu/$NODE_BIN_FOLDER/documentation $BASE_DIR/../$FOLDER/$NODE_BIN_FOLDER/documentation
+      mkdir -p $BASE_DIR/../$FOLDER$NODE_BIN_FOLDER
+      ln -s $BASE_DIR/tmp-docu/$NODE_BIN_FOLDER/documentation $BASE_DIR/../$FOLDER$NODE_BIN_FOLDER/documentation
     fi
   done
 }
