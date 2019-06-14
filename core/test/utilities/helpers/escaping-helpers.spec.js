@@ -1,6 +1,6 @@
 import { assert } from 'chai';
 import * as sinon from 'sinon';
-import { EscapingHelpers } from '../../../src/utilities/helpers/escaping-helpers';
+import { EscapingHelpers } from '../../../src/utilities/helpers';
 
 describe('Escaping-helpers', () => {
   it('sanitizeHtml', () => {

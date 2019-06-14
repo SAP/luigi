@@ -1,5 +1,4 @@
-import * as GenericHelpers from '../../utilities/helpers/generic-helpers';
-import * as AsyncHelpers from '../../utilities/helpers/async-helpers';
+import { AsyncHelpers, GenericHelpers } from '../../utilities/helpers';
 import { thirdPartyCookiesStatus } from '../../utilities/third-party-cookies-check';
 import { LuigiAuth } from '../../core-api';
 

@@ -1,8 +1,9 @@
 const chai = require('chai');
 const assert = chai.assert;
 const sinon = require('sinon');
-const Iframe = require('../../src/services/iframe');
 import { afterEach } from 'mocha';
+
+import { Iframe } from '../../src/services/iframe';
 import { LuigiConfig } from '../../src/core-api';
 
 describe('Iframe', () => {
