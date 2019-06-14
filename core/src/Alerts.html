@@ -19,11 +19,7 @@
 </div>
 
 <script type="text/javascript">
-  import {
-    sanitizeHtml,
-    sanitizeParam,
-    escapeRegExp
-  } from './utilities/helpers/escaping-helpers';
+  import { EscapingHelpers } from './utilities/helpers/escaping-helpers';
 
   export default {
     data() {
@@ -44,7 +40,7 @@
 
       const processedAlerts = current.alertQueue.map(alert => {
         const { text, links, closeAfter } = alert.settings;
-        const processedData = this.processTextAndLinks(
+        const processedData = EscapingHelpers.processTextAndLinks(
           text,
           links,
           alert.settings.id
@@ -87,26 +83,6 @@
         } catch (e) {
           console.error('Error on Alert::addClickListener', e);
         }
-      },
-      processTextAndLinks(text, links, uniqueID) {
-        let sanitizedText = sanitizeHtml(text);
-        let initialValue = { sanitizedText, links: [] };
-
-        if (!links) {
-          return initialValue;
-        }
-
-        return Object.entries(links).reduce((acc, [key, content]) => {
-          const elemId = `_luigi_alert_${uniqueID}_link_${sanitizeParam(key)}`;
-          const escapedText = sanitizeHtml(content.text);
-          const processedData = `<a id="${elemId}">${escapedText}</a>`;
-          const keyForRegex = escapeRegExp(key);
-          const pattern = new RegExp(`({${keyForRegex}})`, 'g');
-          return {
-            sanitizedText: acc.sanitizedText.replace(pattern, processedData),
-            links: acc.links.concat({ elemId, url: content.url })
-          };
-        }, initialValue);
       }
     }
   };
