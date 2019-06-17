@@ -40,7 +40,7 @@ export const concatenatePath = (basePath, relativePath) => {
   Triggers a frame reload if we are on the same route (eg. if we click on same navigation item again)
   @param route string  absolute path of the new route
  */
-export const navigateTo = async route => {
+export const navigateTo = async (route, isRedirect = false) => {
   const windowPath = GenericHelpers.trimLeadingSlash(getWindowPath());
   if (windowPath === GenericHelpers.trimLeadingSlash(route)) {
     return;
@@ -72,9 +72,11 @@ export const navigateTo = async route => {
 
   window.dispatchEvent(event);
 
-  setTimeout(() => {
-    Iframe.preloadViewGroups(3);
-  });
+  if (!isRedirect) {
+    setTimeout(() => {
+      Iframe.preloadViewGroups(3);
+    });
+  }
 };
 
 const getWindowPath = () =>
@@ -175,7 +177,8 @@ export const handleRouteChange = async (
         //normal navigation can be performed
         const trimmedPathUrl = GenericHelpers.getTrimmedUrl(path);
         navigateTo(
-          `${trimmedPathUrl ? `/${trimmedPathUrl}` : ''}/${defaultChildNode}`
+          `${trimmedPathUrl ? `/${trimmedPathUrl}` : ''}/${defaultChildNode}`,
+          true
         );
       } else {
         if (defaultChildNode && pathData.navigationPath.length > 1) {
@@ -329,7 +332,7 @@ const showPageNotFoundError = async (
     ttl: 1 //how many redirections the alert will 'survive'.
   };
   component.showAlert(alertSettings, false);
-  navigateTo(GenericHelpers.addLeadingSlash(pathToRedirect));
+  navigateTo(GenericHelpers.addLeadingSlash(pathToRedirect), true);
 };
 
 export const navigateToLink = item => {
