@@ -1,4 +1,4 @@
-describe('Luigi client ux manger features', () => {
+describe('Luigi client ux manager features', () => {
   let $iframe;
   let $iframeBody;
   beforeEach(() => {
