@@ -384,7 +384,7 @@
 
 
             } else {
-              const iframe = getIframeBySource(e.source);
+              const iframe = Iframe.getIframeBySource(e.source);
               if (iframe) {
                 // set empty context to an existing but inactive iframe; this is a valid use case (viewgroup pre-loading)
                 sendContextToClient(this, {
