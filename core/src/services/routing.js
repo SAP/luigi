@@ -73,9 +73,6 @@ export const navigateTo = async (route, isRedirect = false) => {
   window.dispatchEvent(event);
 
   if (!isRedirect) {
-    setTimeout(() => {
-      Iframe.preloadViewGroups(3);
-    });
   }
 };
 

@@ -133,7 +133,7 @@ export const preloadViewGroups = (maxCount = 3, viewGroupToExclude) => {
       .forEach(entry => {
         if (counter++ < maxCount) {
           console.log(
-            '.......preloading ' + entry[0] + ' - ' + entry[1].preloadUrl
+            'preloading view group ' + entry[0] + ' - ' + entry[1].preloadUrl
           );
           const iframe = createIframe(entry[1].preloadUrl, entry[0]);
           iframe.style.display = 'none';
