@@ -1,7 +1,7 @@
 const chai = require('chai');
 const expect = chai.expect;
 const assert = chai.assert;
-import * as RoutingHelpers from '../../../src/utilities/helpers/routing-helpers';
+import { RoutingHelpers } from '../../../src/utilities/helpers';
 
 describe('Routing-helpers', () => {
   describe('substituteDynamicParamsInObject', () => {

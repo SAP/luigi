@@ -16,11 +16,13 @@
   </div>
 </div>
 <script>
-  import * as Navigation from './navigation/services/navigation';
-  import * as RoutingHelpers from './utilities/helpers/routing-helpers';
+  import { Navigation } from './navigation/services/navigation';
+  import {
+    GenericHelpers,
+    IframeHelpers,
+    RoutingHelpers
+  } from './utilities/helpers';
   import { LuigiConfig } from './core-api';
-  import * as GenericHelpers from './utilities/helpers/generic-helpers';
-  import { createIframe } from './utilities/helpers/iframe-helpers';
 
   const prepareNodeData = async (component, path) => {
     const pathUrlRaw =
@@ -82,7 +84,7 @@
     if (viewUrl) {
       viewUrl = RoutingHelpers.substituteViewUrl(viewUrl, componentData);
     }
-    const iframe = createIframe(viewUrl);
+    const iframe = IframeHelpers.createIframe(viewUrl);
     const iframeCtn = document.querySelector('.iframeModalCtn');
     iframeCtn.appendChild(iframe);
     return iframe;
