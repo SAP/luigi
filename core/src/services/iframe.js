@@ -31,6 +31,16 @@ export const getAllIframes = modalIframe => {
   return iframes;
 };
 
+export const getIframeBySource = (source, modalIframe) => {
+  if (modalIframe && modalIframe.contentWindow === source) {
+    return modalIframe;
+  }
+  const iframes = getAllIframes().filter(
+    iframe => iframe.contentWindow === source
+  );
+  return iframes.length > 0 ? iframes[0] : undefined;
+};
+
 export const setActiveIframeToPrevious = node => {
   const iframesInDom = getIframesInDom();
   const preservedViews = getPreservedViewsInDom(iframesInDom);
@@ -100,6 +110,37 @@ const getViewGroupSettings = viewGroup => {
 export const canCache = viewGroup => {
   const vgSettings = getViewGroupSettings(viewGroup);
   return vgSettings && vgSettings.preloadUrl;
+};
+
+export const preloadViewGroups = (maxCount = 3, viewGroupToExclude) => {
+  const vgSettings = getAllViewGroupSettings();
+  if (vgSettings) {
+    const iframeContainer = getIframeContainer();
+    const iframes = getAllIframes();
+    const existingVGs = iframes.map(iframe => iframe.vg).filter(vg => !!vg);
+    if (viewGroupToExclude) {
+      existingVGs.push(viewGroupToExclude);
+    }
+    let counter = 0;
+    Object.entries(vgSettings)
+      .filter(
+        entry =>
+          entry[0] &&
+          !existingVGs.includes(entry[0]) &&
+          entry[1] &&
+          entry[1].preloadUrl
+      )
+      .forEach(entry => {
+        if (counter++ < maxCount) {
+          console.log(
+            '.......preloading ' + entry[0] + ' - ' + entry[1].preloadUrl
+          );
+          const iframe = createIframe(entry[1].preloadUrl, entry[0]);
+          iframe.style.display = 'none';
+          iframeContainer.appendChild(iframe);
+        }
+      });
+  }
 };
 
 export const switchActiveIframe = (
@@ -201,7 +242,11 @@ export const navigateIframe = (config, component, node) => {
         targetIframe = sameViewGroupIframes[0];
 
         // make the targetIframe the new active iframe
-        activeIframe = switchActiveIframe(node, targetIframe, !activeIframe.vg);
+        activeIframe = switchActiveIframe(
+          node,
+          targetIframe,
+          activeIframe && !activeIframe.vg
+        );
       }
     }
 
@@ -235,14 +280,14 @@ export const navigateIframe = (config, component, node) => {
         component.set({ showLoadingIndicator: false });
       }
       config.navigateOk = undefined;
-      config.iframe = createIframe(viewUrl);
-      if (
+      config.iframe = createIframe(
+        viewUrl,
         componentData.viewGroup &&
-        !nextViewIsolated &&
-        canCache(componentData.viewGroup)
-      ) {
-        config.iframe['vg'] = componentData.viewGroup;
-      }
+          !nextViewIsolated &&
+          canCache(componentData.viewGroup)
+          ? componentData.viewGroup
+          : undefined
+      );
 
       node.insertBefore(config.iframe, node.firstChild);
 

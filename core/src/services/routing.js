@@ -71,6 +71,10 @@ export const navigateTo = async route => {
   }
 
   window.dispatchEvent(event);
+
+  setTimeout(() => {
+    Iframe.preloadViewGroups(3);
+  });
 };
 
 const getWindowPath = () =>

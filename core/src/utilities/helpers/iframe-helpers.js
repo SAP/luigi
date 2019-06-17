@@ -123,7 +123,7 @@ export const sendMessageToIframe = (iframe, message) => {
   iframe.contentWindow.postMessage(message, trustedIframeDomain);
 };
 
-export const createIframe = viewUrl => {
+export const createIframe = (viewUrl, viewGroup) => {
   const activeSandboxRules = [
     'allow-forms', // Allows the resource to submit forms. If this keyword is not used, form submission is blocked.
     // 'allow-modals', // Lets the resource open modal windows.
@@ -146,6 +146,9 @@ export const createIframe = viewUrl => {
   iframe.luigi = {
     viewUrl
   };
+  if (viewGroup) {
+    iframe.vg = viewGroup;
+  }
   return iframe;
 };
 
