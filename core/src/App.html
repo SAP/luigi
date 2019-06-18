@@ -63,7 +63,7 @@
   import {
     AuthHelpers,
     GenericHelpers,
-    IframeHelpers,
+    IFrameHelpers,
     RoutingHelpers,
     StateHelpers
   } from './utilities/helpers';
@@ -194,7 +194,7 @@
       internal: JSON.stringify(component.prepareInternalData(config.modal)),
       authData: AuthHelpers.getStoredAuthData()
     };
-    IframeHelpers.sendMessageToIframe(config.iframe, message);
+    IFrameHelpers.sendMessageToIframe(config.iframe, message);
   };
 
   const sendAuthDataToClient = (iframe, authData) => {
@@ -208,7 +208,7 @@
       msg: 'luigi.auth.tokenIssued',
       authData
     };
-    IframeHelpers.sendMessageToIframe(iframe, message);
+    IFrameHelpers.sendMessageToIframe(iframe, message);
   };
 
   const getDefaultAlertData = () => {
@@ -333,7 +333,7 @@
           }
 
           if ('luigi.get-context' === e.data.msg) {
-            if (IframeHelpers.isMessageSource(e, this.get().modalIframe)) {
+            if (IFrameHelpers.isMessageSource(e, this.get().modalIframe)) {
               let ctx = this.get().modalIframeData.context;
               const modalConfig = {
                 ...config,
@@ -387,7 +387,7 @@
           }
 
           if ('luigi.navigation.back' === e.data.msg) {
-            if (IframeHelpers.isMessageSource(e, this.get().modalIframe)) {
+            if (IFrameHelpers.isMessageSource(e, this.get().modalIframe)) {
               this.closeModal();
               sendContextToClient(this, config, {
                 goBackContext:
@@ -410,15 +410,28 @@
                       e.data.goBackContext && JSON.parse(e.data.goBackContext)
                   });
                   // TODO: check if getNavigationPath or history pop to update hash / path
-                  const path = this.handleNavigation(
+                  this.handleNavigation(
                     { params: { link: previousActiveIframeData.path } },
                     config
                   );
+                  const message = {
+                    msg: 'luigi.navigation.goBack.answer'
+                  };
+                  IFrameHelpers.sendMessageToIframe(config.iframe, message);
                 });
               } else {
-                console.error(
-                  'goBack() not possible, no preserved views found.'
-                );
+                /**
+                 * doHistoryBack
+                 * goes in history back and also sends iframe history back
+                 */
+                const message = {
+                  msg: 'luigi.navigation.goBack.answer',
+                  doHistoryBack: true
+                };
+                IFrameHelpers.sendMessageToIframe(config.iframe, message);
+                console.log('parent history back');
+                window.history.back();
+                // TODO: what to do if we are inside iframe modal?
               }
             }
           }
@@ -441,7 +454,7 @@
                 pathExists: pathData.isExistingRoute
               }
             };
-            IframeHelpers.sendMessageToIframe(iframe, message);
+            IFrameHelpers.sendMessageToIframe(iframe, message);
           }
 
           if ('luigi.set-page-dirty' === e.data.msg) {
@@ -507,7 +520,7 @@
           { contentWindow: window, luigi: { viewUrl: window.location.href } }
         ];
         const iframe = allMessagesSources.find(iframe =>
-          IframeHelpers.isMessageSource(e, iframe)
+          IFrameHelpers.isMessageSource(e, iframe)
         );
 
         if (!iframe || !iframe.luigi || !iframe.luigi.viewUrl) {
@@ -522,7 +535,7 @@
         const viewUrl = navigateOkMsg
           ? iframe.luigi.nextViewUrl
           : iframe.luigi.viewUrl;
-        if (!IframeHelpers.iframeIsSameDomain(viewUrl, e.origin)) {
+        if (!IFrameHelpers.iframeIsSameDomain(viewUrl, e.origin)) {
           return undefined;
         }
 
@@ -580,7 +593,7 @@
             msg: 'luigi.ux.confirmationModal.hide',
             data: { confirmed: result }
           };
-          IframeHelpers.sendMessageToIframe(iframe, message);
+          IFrameHelpers.sendMessageToIframe(iframe, message);
         }
       },
       getUnsavedChangesModalPromise(source) {
@@ -730,7 +743,7 @@
             id
             //TODO: update docu for this param
           };
-          IframeHelpers.sendMessageToIframe(iframe, message);
+          IFrameHelpers.sendMessageToIframe(iframe, message);
         }
       },
       getAlertWithId(alertQueue, id) {

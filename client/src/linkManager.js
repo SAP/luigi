@@ -206,7 +206,7 @@ export class linkManager extends LuigiClientBase {
   }
 
   /**
-   * Discards the active view and navigates back to the last visited view (preserved view), if a preserved view was set before.
+   * Discards the active view and navigates back to the last visited view. Works with preserved views, as well as classical browser back substitute.
    * @memberof linkManager
    * @param {any} goBackValue data that is passed in the `goBackContext` field to the last visited view
    * @example
@@ -214,14 +214,24 @@ export class linkManager extends LuigiClientBase {
    * LuigiClient.linkManager().goBack(true);
    */
   goBack(goBackValue) {
-    if (this.hasBack()) {
-      window.parent.postMessage(
-        {
-          msg: 'luigi.navigation.back',
-          goBackContext: goBackValue && JSON.stringify(goBackValue)
-        },
-        '*'
-      );
-    }
+    window.parent.postMessage(
+      {
+        msg: 'luigi.navigation.back',
+        goBackContext: goBackValue && JSON.stringify(goBackValue)
+      },
+      '*'
+    );
+    // register event listener, which will be cleaned up after this usage
+    helpers.addEventListener(
+      'luigi.navigation.goBack.answer',
+      function(e, listenerId) {
+        const data = e.data.data;
+        if (data.doHistoryBack) {
+          console.log('doHistoryBack!');
+          window.history.back();
+        }
+        helpers.removeEventListener(listenerId);
+      }.bind(this)
+    );
   }
 }
