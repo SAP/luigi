@@ -15,41 +15,39 @@ installPrerequisites() {
   # link documentation binary if it does not exist
   local NODE_BIN_FOLDER="node_modules/.bin/"
     # link documentation binary if it does not exist
-  for FOLDER in "${LUIGI_FOLDERS[@]}"
-  do
-    echoe "Install documentation prerequisites for $FOLDER"
-    local DOCU_TMP_FOLDER=$BASE_DIR/tmp-docu/$FOLDER
-    mkdir -p $DOCU_TMP_FOLDER
+  FOLDER=$1
+  echoe "Install documentation prerequisites for $FOLDER"
+  local DOCU_TMP_FOLDER=$BASE_DIR/tmp-docu/$FOLDER
+  mkdir -p $DOCU_TMP_FOLDER
 
-    cd $DOCU_TMP_FOLDER
-    local NODE_BIN_FOLDER=$BASE_DIR/../$FOLDER/node_modules/.bin
-    if ! [ -L $NODE_BIN_FOLDER/documentation ]; then
-      local DOCU_VERSION=`cat $BASE_DIR/../$FOLDER/package.json | jq --raw-output ".devDependencies.documentation"`
-      # create local package json to make it cachable
-      echo "{\"dependencies\": {\"documentation\": \"$DOCU_VERSION\"}}" > package.json
-      echo "Installing documentation dependency for $FOLDER"
-      npm i
-    
-      echo "Linking documentation binary for $FOLDER"
-      echo "$NODE_BIN_FOLDER/documentation"
-      mkdir -p $NODE_BIN_FOLDER
-      ln -s $DOCU_TMP_FOLDER/node_modules/.bin/documentation $NODE_BIN_FOLDER/documentation
-    else
-      echo "Documentation binary for $FOLDER already linked"
-    fi
-  done
+  cd $DOCU_TMP_FOLDER
+  local NODE_BIN_FOLDER=$BASE_DIR/../$FOLDER/node_modules/.bin
+  if ! [ -L $NODE_BIN_FOLDER/documentation ]; then
+    local DOCU_VERSION=`cat $BASE_DIR/../$FOLDER/package.json | jq --raw-output ".devDependencies.documentation"`
+    # create local package json to make it cachable
+    echo "{\"dependencies\": {\"documentation\": \"$DOCU_VERSION\"}}" > package.json
+    echo "Installing documentation dependency for $FOLDER"
+    npm i
+  
+    echo "Linking documentation binary for $FOLDER"
+    mkdir -p $NODE_BIN_FOLDER
+    ln -s $DOCU_TMP_FOLDER/node_modules/.bin/documentation $NODE_BIN_FOLDER/documentation
+  else
+    echo "Documentation binary for $FOLDER already linked"
+  fi
 }
 
 # Lint documentation and check if all docu changes have been commited.
-checkDocu() {
-  cd $BASE_DIR/../$1
+validateAndGenerateDocumentation() {
+  FOLDER=$1
+  cd $BASE_DIR/../$FOLDER
 
   local DOCU_STEP=`cat package.json | jq --raw-output ".scripts.docu"`
   if [[ $DOCU_STEP == *"npm"* ]]; then
-    echoe "Validating and generating documentation for $1"
+    echoe "Validating and generating documentation for $FOLDER"
     eval $DOCU_STEP
   else
-    echoe "Validating documentation for $1"
+    echoe "Validating documentation for $FOLDER"
     npm run docu:validate
   fi
 }
@@ -66,18 +64,14 @@ validateMdChanges() {
   fi
 }
 
-validateAndGenerateDocumentations() {
-  # add all folders that are containing documentation steps
-  for FOLDER in "${LUIGI_FOLDERS[@]}"
-  do
-    checkDocu "${FOLDER}"
-  done
-}
 
-
-installPrerequisites
-validateAndGenerateDocumentations
-validateMdChanges
+# add all folders that are containing documentation steps
+for FOLDER in "${LUIGI_FOLDERS[@]}"
+do
+  installPrerequisites "${FOLDER}"
+  validateAndGenerateDocumentation "${FOLDER}"
+  validateMdChanges
+done
 
 echoe "Validation successful, documentation OK"
 exit 0
