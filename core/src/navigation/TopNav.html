@@ -209,9 +209,11 @@
   import Authorization from '../Authorization.html';
   import ProductSwitcher from './ProductSwitcher.html';
   import { LuigiAuth, LuigiConfig } from '../core-api';
-  import * as NavigationHelpers from '../utilities/helpers/navigation-helpers';
-  import * as AuthHelpers from '../utilities/helpers/auth-helpers';
-  import { doOnStoreChange } from '../utilities/helpers/state-helpers';
+  import {
+    AuthHelpers,
+    NavigationHelpers,
+    StateHelpers
+  } from '../utilities/helpers';
 
   const setTopNavData = (current, component) => {
     if (current.pathData && 0 < current.pathData.length) {
@@ -245,7 +247,7 @@
 
   export default {
     oncreate() {
-      doOnStoreChange(this.store, () => {
+      StateHelpers.doOnStoreChange(this.store, () => {
         this.set({
           authorizationEnabled: LuigiAuth.isAuthorizationEnabled(),
           autologinEnabled: !Boolean(

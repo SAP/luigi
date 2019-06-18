@@ -57,14 +57,16 @@
   import Alerts from './Alerts.html';
   import Modal from './Modal.html';
   import { LuigiConfig } from './core-api';
-  import * as Routing from './services/routing.js';
-  import * as Navigation from './navigation/services/navigation.js';
-  import * as Iframe from './services/iframe';
-  import * as RoutingHelpers from './utilities/helpers/routing-helpers';
-  import * as GenericHelpers from './utilities/helpers/generic-helpers';
-  import * as StateHelpers from './utilities/helpers/state-helpers';
-  import * as AuthHelpers from './utilities/helpers/auth-helpers';
-  import * as iFrameHelpers from './utilities/helpers/iframe-helpers';
+  import { Routing } from './services/routing';
+  import { Navigation } from './navigation/services/navigation';
+  import { Iframe } from './services/iframe';
+  import {
+    AuthHelpers,
+    GenericHelpers,
+    IframeHelpers,
+    RoutingHelpers,
+    StateHelpers
+  } from './utilities/helpers';
   import { CSS_BREAKPOINTS } from './utilities/constants';
 
   const removeQueryParams = str => str.split('?')[0];
@@ -192,7 +194,7 @@
       internal: JSON.stringify(component.prepareInternalData(config.modal)),
       authData: AuthHelpers.getStoredAuthData()
     };
-    iFrameHelpers.sendMessageToIframe(config.iframe, message);
+    IframeHelpers.sendMessageToIframe(config.iframe, message);
   };
 
   const sendAuthDataToClient = (iframe, authData) => {
@@ -206,7 +208,7 @@
       msg: 'luigi.auth.tokenIssued',
       authData
     };
-    iFrameHelpers.sendMessageToIframe(iframe, message);
+    IframeHelpers.sendMessageToIframe(iframe, message);
   };
 
   const getDefaultAlertData = () => {
@@ -331,7 +333,7 @@
           }
 
           if ('luigi.get-context' === e.data.msg) {
-            if (iFrameHelpers.isMessageSource(e, this.get().modalIframe)) {
+            if (IframeHelpers.isMessageSource(e, this.get().modalIframe)) {
               let ctx = this.get().modalIframeData.context;
               const modalConfig = {
                 ...config,
@@ -385,7 +387,7 @@
           }
 
           if ('luigi.navigation.back' === e.data.msg) {
-            if (iFrameHelpers.isMessageSource(e, this.get().modalIframe)) {
+            if (IframeHelpers.isMessageSource(e, this.get().modalIframe)) {
               this.closeModal();
               sendContextToClient(this, config, {
                 goBackContext:
@@ -439,7 +441,7 @@
                 pathExists: pathData.isExistingRoute
               }
             };
-            iFrameHelpers.sendMessageToIframe(iframe, message);
+            IframeHelpers.sendMessageToIframe(iframe, message);
           }
 
           if ('luigi.set-page-dirty' === e.data.msg) {
@@ -505,7 +507,7 @@
           { contentWindow: window, luigi: { viewUrl: window.location.href } }
         ];
         const iframe = allMessagesSources.find(iframe =>
-          iFrameHelpers.isMessageSource(e, iframe)
+          IframeHelpers.isMessageSource(e, iframe)
         );
 
         if (!iframe || !iframe.luigi || !iframe.luigi.viewUrl) {
@@ -520,7 +522,7 @@
         const viewUrl = navigateOkMsg
           ? iframe.luigi.nextViewUrl
           : iframe.luigi.viewUrl;
-        if (!iFrameHelpers.iframeIsSameDomain(viewUrl, e.origin)) {
+        if (!IframeHelpers.iframeIsSameDomain(viewUrl, e.origin)) {
           return undefined;
         }
 
@@ -578,7 +580,7 @@
             msg: 'luigi.ux.confirmationModal.hide',
             data: { confirmed: result }
           };
-          iFrameHelpers.sendMessageToIframe(iframe, message);
+          IframeHelpers.sendMessageToIframe(iframe, message);
         }
       },
       getUnsavedChangesModalPromise(source) {
@@ -728,7 +730,7 @@
             id
             //TODO: update docu for this param
           };
-          iFrameHelpers.sendMessageToIframe(iframe, message);
+          IframeHelpers.sendMessageToIframe(iframe, message);
         }
       },
       getAlertWithId(alertQueue, id) {

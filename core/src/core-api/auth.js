@@ -1,5 +1,3 @@
-// import * as AsyncHelpers from '../utilities/helpers/async-helpers';
-// import * as GenericHelpers from '../utilities/helpers/generic-helpers';
 import { config } from './config';
 
 class LuigiAuthManager {

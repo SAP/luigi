@@ -66,15 +66,14 @@
 </div>
 {/if}
 <script type="text/javascript">
-  import { ContextSwitcherHelpers } from './services/context-switcher.js';
+  import { ContextSwitcherHelpers } from './services/context-switcher';
   import { LuigiConfig } from '../core-api';
-  import * as Routing from '../services/routing.js';
-  import * as RoutingHelpers from '../utilities/helpers/routing-helpers';
-  import { doOnStoreChange } from '../utilities/helpers/state-helpers';
+  import { Routing } from '../services/routing';
+  import { RoutingHelpers, StateHelpers } from '../utilities/helpers';
 
   export default {
     async oncreate() {
-      doOnStoreChange(this.store, async () => {
+      StateHelpers.doOnStoreChange(this.store, async () => {
         const contextSwitcherConfig = LuigiConfig.getConfigValue(
           'navigation.contextSwitcher'
         );
