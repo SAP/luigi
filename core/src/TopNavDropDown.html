@@ -1,0 +1,34 @@
+<nav class="fd-menu">
+  <ul class="fd-menu__list fd-menu__list--top">
+    {#if children}
+    {#each children as node}
+    <li on:click="onActionClick(node)">
+      <a class="fd-menu__item">
+        <span>{node.label}</span>
+      </a>
+    </li>
+    {/each}
+    {/if}
+  </ul>
+</nav>
+<script type="text/javascript">
+  import { Routing } from './services/routing';
+  import { Navigation } from './navigation/services/navigation';
+  export default {
+    async onupdate({ changed, current, previous }) {
+      const currentNode = this.get().node;
+      let children = this.get().children;
+      if (!children) {
+        children = await Navigation.getChildren(currentNode);
+        this.set({ children });
+      }
+    },
+    methods: {
+      onActionClick(node) {
+        this.root.getUnsavedChangesModalPromise().then(() => {
+          Routing.handleRouteClick(node, this);
+        });
+      }
+    }
+  };
+</script>

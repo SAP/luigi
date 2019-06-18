@@ -25,7 +25,28 @@ class Navigation {
       pathSegment: 'projects',
       label: 'Projects',
       viewUrl: '/sampleapp.html#/projects',
-      children: projectsNavProviderFn
+      children: projectsNavProviderFn,
+      showChildrenInDropDown: true
+    },
+    {
+      pathSegment: 'projektz',
+      label: 'projektz',
+      viewUrl: '/sampleapp.html#/projects',
+      children: [
+        {
+          label: 'Open Google in this tab',
+          externalLink: {
+            url: 'http://google.com',
+            sameWindow: true
+          }
+        },
+        {
+          icon: 'https://sap.github.io/fundamental/images/products/06.png',
+          label: 'Project 1',
+          link: '/projects/pr1'
+        }
+      ],
+      showChildrenInDropDown: true
     },
     {
       hideFromNav: true,

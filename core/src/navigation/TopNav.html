@@ -19,7 +19,34 @@
       />
       {/if}
       {#if children && pathData.length > 0}
-      {#each children as node}
+      {#each children as node ,i}
+      {#if node.showChildrenInDropDown}
+      <div class="fd-shellbar__action fd-shellbar__action--show-always">
+        <div class="fd-product-menu">
+          <div class="fd-popover fd-popover--right">
+            <div class="fd-popover__control" on:click="event.stopPropagation()">
+              <button
+                title="{node.label}"
+                class="fd-button--shell {node === selectedNode ? 'is-selected' : ''}"
+                aria-controls="dropDownPopover-{i}"
+                aria-expanded="{dropDownStates[`dropDownPopover-${i}`] || false}"
+                aria-haspopup="true"
+                on:click="toggleDropdownState(`dropDownPopover-${i}`)"
+              >
+                <span>{node.label}</span>
+              </button>
+            </div>
+            <div
+              class="fd-popover__body fd-popover__body--right"
+              aria-hidden="{!(dropDownStates[`dropDownPopover-${i}`] || false)}"
+              id="dropDownPopover-{i}"
+            >
+              <TopNavDropDown node="{node}"/>
+            </div>
+          </div>
+        </div>
+      </div>
+      {:else}
       {#if !node.hideFromNav}
       <div
         class="fd-shellbar__action fd-shellbar__action--hide fd-shellbar__action--collapsible"
@@ -56,6 +83,7 @@
           <!-- end node.externallLink.url -->
         </button>
       </div>
+      {/if}
       {/if}
       {/each}
       <!-- Sample Markup for Notifications
@@ -207,6 +235,7 @@
   import ContextSwitcher from './ContextSwitcher.html';
   import LogoTitle from './LogoTitle.html';
   import Authorization from '../Authorization.html';
+  import TopNavDropDown from '../TopNavDropDown.html';
   import ProductSwitcher from './ProductSwitcher.html';
   import { LuigiAuth, LuigiConfig } from '../core-api';
   import {
@@ -334,7 +363,8 @@
       Authorization,
       ContextSwitcher,
       LogoTitle,
-      ProductSwitcher
+      ProductSwitcher,
+      TopNavDropDown
     }
   };
 </script>
