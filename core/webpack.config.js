@@ -90,6 +90,14 @@ module.exports = {
         }
       },
       {
+        test: /\.(js)$/,
+        include: /node_modules\/svelte/,
+        use: {
+          loader: 'babel-loader',
+          query: babelSettings
+        }
+      },
+      {
         test: /\.html$/,
         exclude: /node_modules/,
         use: {
