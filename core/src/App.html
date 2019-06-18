@@ -63,7 +63,7 @@
   import {
     AuthHelpers,
     GenericHelpers,
-    IFrameHelpers,
+    IframeHelpers,
     RoutingHelpers,
     StateHelpers
   } from './utilities/helpers';
@@ -194,7 +194,7 @@
       internal: JSON.stringify(component.prepareInternalData(config.modal)),
       authData: AuthHelpers.getStoredAuthData()
     };
-    IFrameHelpers.sendMessageToIframe(config.iframe, message);
+    IframeHelpers.sendMessageToIframe(config.iframe, message);
   };
 
   const sendAuthDataToClient = (iframe, authData) => {
@@ -208,7 +208,7 @@
       msg: 'luigi.auth.tokenIssued',
       authData
     };
-    IFrameHelpers.sendMessageToIframe(iframe, message);
+    IframeHelpers.sendMessageToIframe(iframe, message);
   };
 
   const getDefaultAlertData = () => {
@@ -333,7 +333,7 @@
           }
 
           if ('luigi.get-context' === e.data.msg) {
-            if (IFrameHelpers.isMessageSource(e, this.get().modalIframe)) {
+            if (IframeHelpers.isMessageSource(e, this.get().modalIframe)) {
               let ctx = this.get().modalIframeData.context;
               const modalConfig = {
                 ...config,
@@ -387,7 +387,7 @@
           }
 
           if ('luigi.navigation.back' === e.data.msg) {
-            if (IFrameHelpers.isMessageSource(e, this.get().modalIframe)) {
+            if (IframeHelpers.isMessageSource(e, this.get().modalIframe)) {
               this.closeModal();
               sendContextToClient(this, config, {
                 goBackContext:
@@ -414,24 +414,10 @@
                     { params: { link: previousActiveIframeData.path } },
                     config
                   );
-                  const message = {
-                    msg: 'luigi.navigation.goBack.answer'
-                  };
-                  IFrameHelpers.sendMessageToIframe(config.iframe, message);
                 });
               } else {
-                /**
-                 * doHistoryBack
-                 * goes in history back and also sends iframe history back
-                 */
-                const message = {
-                  msg: 'luigi.navigation.goBack.answer',
-                  doHistoryBack: true
-                };
-                IFrameHelpers.sendMessageToIframe(config.iframe, message);
-                console.log('parent history back');
+                // TODO: does not work with default child node behavior, fixed by #216
                 window.history.back();
-                // TODO: what to do if we are inside iframe modal?
               }
             }
           }
@@ -454,7 +440,7 @@
                 pathExists: pathData.isExistingRoute
               }
             };
-            IFrameHelpers.sendMessageToIframe(iframe, message);
+            IframeHelpers.sendMessageToIframe(iframe, message);
           }
 
           if ('luigi.set-page-dirty' === e.data.msg) {
@@ -520,7 +506,7 @@
           { contentWindow: window, luigi: { viewUrl: window.location.href } }
         ];
         const iframe = allMessagesSources.find(iframe =>
-          IFrameHelpers.isMessageSource(e, iframe)
+          IframeHelpers.isMessageSource(e, iframe)
         );
 
         if (!iframe || !iframe.luigi || !iframe.luigi.viewUrl) {
@@ -535,7 +521,7 @@
         const viewUrl = navigateOkMsg
           ? iframe.luigi.nextViewUrl
           : iframe.luigi.viewUrl;
-        if (!IFrameHelpers.iframeIsSameDomain(viewUrl, e.origin)) {
+        if (!IframeHelpers.iframeIsSameDomain(viewUrl, e.origin)) {
           return undefined;
         }
 
@@ -593,7 +579,7 @@
             msg: 'luigi.ux.confirmationModal.hide',
             data: { confirmed: result }
           };
-          IFrameHelpers.sendMessageToIframe(iframe, message);
+          IframeHelpers.sendMessageToIframe(iframe, message);
         }
       },
       getUnsavedChangesModalPromise(source) {
@@ -743,7 +729,7 @@
             id
             //TODO: update docu for this param
           };
-          IFrameHelpers.sendMessageToIframe(iframe, message);
+          IframeHelpers.sendMessageToIframe(iframe, message);
         }
       },
       getAlertWithId(alertQueue, id) {

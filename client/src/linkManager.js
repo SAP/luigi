@@ -221,17 +221,5 @@ export class linkManager extends LuigiClientBase {
       },
       '*'
     );
-    // register event listener, which will be cleaned up after this usage
-    helpers.addEventListener(
-      'luigi.navigation.goBack.answer',
-      function(e, listenerId) {
-        const data = e.data.data;
-        if (data.doHistoryBack) {
-          console.log('doHistoryBack!');
-          window.history.back();
-        }
-        helpers.removeEventListener(listenerId);
-      }.bind(this)
-    );
   }
 }
