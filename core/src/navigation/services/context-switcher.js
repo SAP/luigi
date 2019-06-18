@@ -1,4 +1,4 @@
-import * as Helpers from '../../utilities/helpers/generic-helpers.js';
+import { GenericHelpers } from '../../utilities/helpers';
 
 export const ContextSwitcherHelpers = {
   getPreparedParentNodePath(config) {
@@ -8,7 +8,7 @@ export const ContextSwitcherHelpers = {
       );
     }
     if (config.parentNodePath) {
-      return Helpers.addTrailingSlash(config.parentNodePath);
+      return GenericHelpers.addTrailingSlash(config.parentNodePath);
     }
     return config.parentNodePath;
   },
@@ -28,8 +28,10 @@ export const ContextSwitcherHelpers = {
   },
 
   isContextSwitcherDetailsView(currentPath, parentNodePath) {
-    const currentPathNormalized = Helpers.normalizePath(currentPath);
-    const parentNodePathNormalized = Helpers.normalizePath(parentNodePath);
+    const currentPathNormalized = GenericHelpers.normalizePath(currentPath);
+    const parentNodePathNormalized = GenericHelpers.normalizePath(
+      parentNodePath
+    );
 
     return Boolean(
       parentNodePath &&
@@ -49,8 +51,8 @@ export const ContextSwitcherHelpers = {
     parentNodePath,
     fallbackLabelResolver
   ) {
-    currentPath = Helpers.normalizePath(currentPath);
-    parentNodePath = Helpers.normalizePath(parentNodePath);
+    currentPath = GenericHelpers.normalizePath(currentPath);
+    parentNodePath = GenericHelpers.normalizePath(parentNodePath);
 
     if (
       !ContextSwitcherHelpers.isContextSwitcherDetailsView(

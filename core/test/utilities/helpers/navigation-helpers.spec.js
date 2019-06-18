@@ -2,7 +2,7 @@
 const chai = require('chai');
 const assert = chai.assert;
 const sinon = require('sinon');
-import * as NavigationHelpers from '../../../src/utilities/helpers/navigation-helpers';
+import { NavigationHelpers } from '../../../src/utilities/helpers';
 
 describe('Navigation-helpers', () => {
   describe('isOpenUIiconName', () => {
