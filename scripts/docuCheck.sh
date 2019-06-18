@@ -13,8 +13,6 @@ source $BASE_DIR/shared/bashHelpers.sh
 
 installPrerequisites() {
   # link documentation binary if it does not exist
-  local NODE_BIN_FOLDER="node_modules/.bin/"
-    # link documentation binary if it does not exist
   FOLDER=$1
   echoe "Install documentation prerequisites for $FOLDER"
   local DOCU_TMP_FOLDER=$BASE_DIR/tmp-docu/$FOLDER
