@@ -35,7 +35,9 @@
       </ul>
     </div>
     {:else}
-    <div class="fd-side-nav__group">
+    <div
+      class="fd-side-nav__group {nodes.metaInfo && nodes.metaInfo.label === selectedCategory ? 'fd-side-nav__item--icon-selected' : ''}"
+    >
       <ul class="fd-side-nav__list">
         {#if nodes.metaInfo.collapsible}
         <li class="fd-side-nav__item">
@@ -50,11 +52,13 @@
             <span
               class="fd-side-nav__icon {'sap-icon--' + nodes.metaInfo.icon} sap-icon--l"
               role="presentation"
+              on:click="handleIconClick(nodes, this)"
             ></span>
             {:else}
             <img
               class="fd-side-nav__icon"
               src="{nodes.metaInfo.icon}"
+              on:click="handleIconClick(nodes, this)"
             >
             {/if}
             {key}
@@ -63,6 +67,9 @@
             class="fd-side-nav__sublist"
             aria-hidden="{!isExpanded(nodes, expandedCategories)}"
           >
+            <li
+              class="lui-fd-side-nav__title fd-has-type-minus-1 fd-has-color-text-4"
+            >{key}</li>
             {#each nodes as node} {#if !node.hideFromNav} {#if node.label}
             <li
               class="fd-side-nav__subitem {node.externalLink && node.externalLink.url ? 'fd-side-nav__item--external' : ''}"
@@ -89,16 +96,21 @@
           <span
             class="fd-side-nav__icon {nodes.metaInfo.icon ? 'sap-icon--' + nodes.metaInfo.icon : ''} sap-icon--l"
             role="presentation"
+            on:click="handleIconClick(nodes, this)"
           ></span>
           {:else}
           <img
             class="fd-side-nav__icon"
+            on:click="handleIconClick(nodes, this)"
             src="{nodes.metaInfo.icon}"
           >
           {/if}
           {/if} {key}
         </li>
         <ul class="fd-side-nav__sublist">
+          <li
+            class="lui-fd-side-nav__title fd-has-type-minus-1 fd-has-color-text-4"
+          >{key}</li>
           {#each nodes as node} {#if !node.hideFromNav} {#if node.label}
           <li
             class="fd-side-nav__subitem {node.externalLink && node.externalLink.url ? 'fd-side-nav__item--external' : ''}"
@@ -139,16 +151,21 @@
   </nav>
   {/if}
   {#if footerText}
-  <span
-    class="lui-side-nav__footer fd-has-type-minus-1"
-  >{footerText}</span>
+  <span class="lui-side-nav__footer">
+    <span class="lui-side-nav__footer--text fd-has-type-minus-1">{footerText}</span>
+    {#if responsiveNavSetting==="semiCollapsible"}
+    <span
+      class="lui-side-nav__footer--icon sap-icon--close-command-field"
+    ></span>
+    {/if}
+  </span>
   {/if}
 </div>
 
 <script type="text/javascript">
   import { Navigation } from './services/navigation';
   import { NavigationHelpers } from '../utilities/helpers';
-  import { LuigiConfig } from '../core-api';
+  import { LuigiConfig, LuigiElements } from '../core-api';
   import { StateHelpers } from '../utilities/helpers';
 
   const setLeftNavData = async (current, component) => {
@@ -164,7 +181,8 @@
   export default {
     data() {
       return {
-        virtualGroupPrefix: NavigationHelpers.virtualGroupPrefix
+        virtualGroupPrefix: NavigationHelpers.virtualGroupPrefix,
+        selectedCategory: null
       };
     },
     oncreate() {
@@ -172,7 +190,10 @@
         hideNavComponent: LuigiConfig.getConfigBooleanValue(
           'settings.hideNavigation'
         ),
-        expandedCategories: NavigationHelpers.loadExpandedCategories()
+        expandedCategories: NavigationHelpers.loadExpandedCategories(),
+        responsiveNavSetting: LuigiConfig.getConfigValue(
+          'settings.responsiveNavigation'
+        )
       });
 
       StateHelpers.doOnStoreChange(this.store, () => {
@@ -216,6 +237,27 @@
         this.fire('handleClick', { node });
       },
 
+      handleIconClick(nodeOrNodes, el) {
+        let selectedCategory;
+        let parent = el.closest('.fd-side-nav__group');
+        let flyout = parent.getElementsByClassName('fd-side-nav__sublist')[0];
+        let parentTopPosition = parent.offsetTop;
+        let shellbarHeight = Luigi.elements().getShellbar().offsetHeight;
+
+        flyout.style.top = parentTopPosition + shellbarHeight + 'px';
+
+        if (nodeOrNodes.metaInfo && nodeOrNodes.metaInfo.label) {
+          selectedCategory = nodeOrNodes.metaInfo.label;
+        } else {
+          selectedCategory =
+            (nodeOrNodes.category && nodeOrNodes.category.label) ||
+            nodeOrNodes.category;
+        }
+        this.set({
+          selectedCategory
+        });
+      },
+
       handleKey(event) {
         const code = event.code;
         if (code === 'ArrowRight') {
@@ -254,29 +296,24 @@
     -ms-user-select: none;
   }
   .fd-app__sidebar {
+    width: 320px;
     position: fixed;
     top: $topNavHeight;
     left: 0;
-    width: 320px;
     bottom: 0;
+    display: flex;
+    justify-content: space-between;
+    flex-direction: column;
     background-color: white;
     color: #32363a;
-    overflow-y: auto;
-    overflow-x: hidden;
     -moz-box-shadow: 1px 1px 2px 0 rgba(0, 0, 0, 0.05);
     -webkit-box-shadow: 1px 1px 2px 0 rgba(0, 0, 0, 0.05);
     box-shadow: 1px 1px 2px 0 rgba(0, 0, 0, 0.05);
   }
 
   .fd-side-nav {
-    min-height: 100%;
-    margin-bottom: calc(-1 * #{$footerHeight});
-
-    &::after {
-      content: '';
-      display: block;
-      height: $footerHeight;
-    }
+    overflow-y: auto;
+    overflow-x: hidden;
 
     &__link {
       .sap-icon--action {
@@ -300,9 +337,18 @@
   }
 
   .lui-side-nav__footer {
-    display: block;
-    color: var(--fd-color-text-4);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
     padding: $footerPaddingVertical 20px;
+
+    &--text {
+      color: var(--fd-color-text-4);
+    }
+
+    &--icon {
+      cursor: pointer;
+    }
   }
 
   .hideNavComponent {
@@ -345,6 +391,132 @@
     max-height: 100%;
     &.sap-icon--m::before {
       width: 1.25rem;
+    }
+  }
+
+  .lui-fd-side-nav__title {
+    display: none;
+  }
+
+  :global(.isCollapsed) {
+    .fd-app__sidebar {
+      width: 40px;
+      overflow: -moz-scrollbars-none;
+      -ms-overflow-style: none;
+
+      &::-webkit-scrollbar {
+        width: 0 !important;
+      }
+
+      &::-webkit-scrollbar {
+        display: none;
+      }
+
+      .fd-side-nav {
+        width: 100%;
+        min-width: auto;
+
+        .fd-side-nav__icon {
+          cursor: pointer;
+        }
+
+        .fd-side-nav__list {
+          position: relative;
+        }
+
+        .fd-side-nav__title {
+          background-color: transparent;
+          border-top: none;
+
+          &:hover {
+            background-color: var(--fd-color-neutral-1);
+          }
+        }
+
+        .fd-side-nav__title,
+        .fd-side-nav__link {
+          font-size: 16px;
+          padding: 8px 10px;
+          white-space: nowrap;
+          width: 100%;
+          overflow: hidden;
+
+          img {
+            width: 25px;
+          }
+        }
+
+        .fd-side-nav__item--icon-selected {
+          .fd-side-nav__sublist {
+            opacity: 1;
+            visibility: visible;
+          }
+        }
+      }
+
+      .fd-side-nav__sublist {
+        position: fixed;
+        left: 48px;
+        top: 0;
+        width: 180px;
+        border-radius: 4px;
+        box-shadow: 0 5px 20px 0 var(--fd-color-neutral-3),
+          0 2px 8px 0 var(--fd-color-neutral-2);
+        border: 1px solid var(--fd-color-neutral-3);
+        background: white;
+        visibility: hidden;
+        opacity: 0;
+
+        li {
+          border-top: 1px solid var(--fd-color-neutral-2);
+
+          &:first-child,
+          &:nth-child(2) {
+            border: none;
+          }
+        }
+
+        .fd-side-nav__link {
+          font-size: 14px;
+          padding: 10px 20px;
+        }
+
+        a {
+          padding-left: 20px;
+
+          .fd-side-nav__icon {
+            display: none;
+          }
+        }
+
+        .lui-fd-side-nav__title {
+          display: block;
+          padding: 14px 12px 12px;
+          text-transform: uppercase;
+        }
+
+        &:before,
+        &:after {
+          display: block;
+          position: absolute;
+          top: 12px;
+          content: '';
+          width: 13px;
+          border-style: solid;
+          border-width: 8px 6.5px;
+          border-color: transparent;
+        }
+
+        &:before {
+          left: -14px;
+          border-right-color: var(--fd-color-neutral-3);
+        }
+
+        &:after {
+          left: -13px;
+          border-right-color: white;
+        }
+      }
     }
   }
 </style>

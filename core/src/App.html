@@ -280,6 +280,8 @@
       } else if (responsiveNavSetting === 'simpleMobileOnly') {
         document.body.classList.add('lui-simpleSlideInNav', 'lui-mobileOnly');
         this.set({ simpleSlideInNav: true });
+      } else if (responsiveNavSetting === 'semiCollapsible') {
+        document.body.classList.add('lui-semiCollapsible');
       }
     },
     onstate({ changed, current, previous }) {},
@@ -925,6 +927,12 @@
         -moz-box-shadow: 6px 0px 9px 0px rgba(0, 0, 0, 0.44);
         box-shadow: 6px 0px 9px 0px rgba(0, 0, 0, 0.44);
       }
+    }
+  }
+
+  :global(.isCollapsed) {
+    .iframeContainer {
+      left: 40px;
     }
   }
 </style>
