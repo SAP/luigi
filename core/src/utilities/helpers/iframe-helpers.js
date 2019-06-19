@@ -131,7 +131,7 @@ class IframeHelpersClass {
   createIframe(viewUrl) {
     const activeSandboxRules = [
       'allow-forms', // Allows the resource to submit forms. If this keyword is not used, form submission is blocked.
-      // 'allow-modals', // Lets the resource open modal windows.
+      'allow-modals', // Lets the resource open modal windows.
       // 'allow-orientation-lock', // Lets the resource lock the screen orientation.
       // 'allow-pointer-lock', // Lets the resource use the Pointer Lock API.
       'allow-popups', // Allows popups (such as window.open(), target="_blank", or showModalDialog()). If this keyword is not used, the popup will silently fail to open.
