@@ -416,6 +416,11 @@
                   );
                 });
               } else {
+                if (e.data.goBackContext) {
+                  console.warn(
+                    `Warning: goBack() does not support goBackContext value. This is available only when using preserved views feature. Documentation: https://github.com/SAP/luigi/blob/master/docs/luigi-client-api.md#navigate`
+                  );
+                }
                 // TODO: does not work with default child node behavior, fixed by #216
                 window.history.back();
               }
