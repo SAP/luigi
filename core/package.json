@@ -44,7 +44,11 @@
     "test:watch": "npm run test -- --watch",
     "bundlesize": "npm run bundle && bundlesize",
     "prepush": "../scripts/hooks/remove-test-prefixes.sh && npm test && npm run docu:validate",
-    "docu:validate": "documentation lint src/core-api/dom-elements.js"
+    "docu": "npm run docu:validate && npm run docu:generate:config && npm run docu:generate:dom-elements && npm run docu:generate:auth",
+    "docu:validate": "documentation lint --shallow src/core-api/config.js src/core-api/elements.js src/core-api/auth.js",
+    "docu:generate:config": "documentation readme src/core-api/config.js --shallow -f md --section='Luigi.config()' --readme-file=../docs/luigi-core-api.md --markdown-toc=false --github false --quiet",
+    "docu:generate:dom-elements": "documentation readme src/core-api/dom-elements.js --shallow -f md --section='Luigi.elements()' --readme-file=../docs/luigi-core-api.md --markdown-toc=false --github false --quiet",
+    "docu:generate:auth": "documentation readme src/core-api/auth.js --shallow -f md --section='Luigi.auth()' --readme-file=../docs/luigi-core-api.md --markdown-toc=false --github false --quiet"
   },
   "bundlesize": [
     {
