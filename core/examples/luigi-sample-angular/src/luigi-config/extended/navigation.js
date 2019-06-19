@@ -78,7 +78,17 @@ class Navigation {
       label: 'Settings',
       viewUrl: '/sampleapp.html#/settings',
       icon: 'settings',
-      viewGroup: 'tets'
+      viewGroup: 'tets',
+      showChildrenInDropDown: true,
+      children: [
+        {
+          label: 'Open Google in this tab',
+          externalLink: {
+            url: 'http://google.com',
+            sameWindow: true
+          }
+        }
+      ]
     },
     {
       label: 'Open Google in this tab',

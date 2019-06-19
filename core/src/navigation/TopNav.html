@@ -20,8 +20,11 @@
       {/if}
       {#if children && pathData.length > 0}
       {#each children as node ,i}
+      {#if !node.hideFromNav}
       {#if node.showChildrenInDropDown}
-      <div class="fd-shellbar__action fd-shellbar__action--show-always">
+      <div
+        class="fd-shellbar__action fd-shellbar__action--hide fd-shellbar__action--collapsible"
+      >
         <div class="fd-product-menu">
           <div class="fd-popover fd-popover--right">
             <div class="fd-popover__control" on:click="event.stopPropagation()">
@@ -33,7 +36,27 @@
                 aria-haspopup="true"
                 on:click="toggleDropdownState(`dropDownPopover-${i}`)"
               >
+                {#if node.icon}
+                {#if hasOpenUIicon(node)}
+                <span
+                  class="fd-top-nav__icon sap-icon--{node.icon} sap-icon--m"
+                ></span>
+                {:else}
+                <img
+                  class="fd-top-nav__icon nav-icon"
+                  src="{node.icon}"
+                >
+                {/if}
+                <!-- end hasOpenUIicon-->
+                {:else}
                 <span>{node.label}</span>
+                {/if}
+                <!-- end node.icon -->
+                {#if node.externalLink && node.externalLink.url}
+                <span
+                  class="sap-icon--action sap-icon--s"
+                ></span>
+                {/if}
               </button>
             </div>
             <div
@@ -47,7 +70,6 @@
         </div>
       </div>
       {:else}
-      {#if !node.hideFromNav}
       <div
         class="fd-shellbar__action fd-shellbar__action--hide fd-shellbar__action--collapsible"
       >
