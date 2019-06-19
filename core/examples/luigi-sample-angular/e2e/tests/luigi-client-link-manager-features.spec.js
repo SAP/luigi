@@ -134,6 +134,15 @@ describe('Luigi client features', () => {
           .find(checkPathSelector + ' .check-path-result')
           .contains(msgExpected);
       });
+
+      // go back
+      cy.goToOverviewPage();
+      cy.goToLinkManagerMethods($iframeBody);
+      cy.expectPathToBe('/projects/pr2');
+      cy.wrap($iframeBody)
+        .contains('go back: single iframe')
+        .click();
+      cy.expectPathToBe('/overview');
     });
   });
 
