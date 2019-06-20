@@ -755,6 +755,11 @@
   $topNavHeight: 48px;
   $leftNavWidth: 320px;
   $desktop-min-width: 600px;
+  /* Needed only when using fiori-fundamentals-XXXX.css instead of single files */
+  :global(:root) {
+    --fd-color-text-4: #74777a;
+    --fd-color-shell-2: #d1e8ff;
+  }
   :global(html) {
     box-sizing: border-box;
     font-size: 14px;
