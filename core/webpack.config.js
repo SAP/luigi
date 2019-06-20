@@ -141,7 +141,13 @@ module.exports = {
           },
           {
             loader: 'css-loader'
-          },
+          }
+        ]
+      },
+      {
+        test: /\.(sa|sc|c)ss$/,
+        exclude: /node_modules/,
+        use: [
           {
             loader: 'postcss-loader'
           }
