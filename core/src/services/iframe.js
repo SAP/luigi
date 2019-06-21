@@ -97,7 +97,7 @@ class IframeClass {
         )
         .forEach(entry => {
           if (counter++ < maxCount) {
-            console.log(
+            console.debug(
               'preloading view group ' + entry[0] + ' - ' + entry[1].preloadUrl
             );
             const iframe = IframeHelpers.createIframe(

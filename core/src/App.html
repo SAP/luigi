@@ -264,7 +264,8 @@
             isDirty: false,
             persistUrl: null
           },
-          hideSideNav: false
+          hideSideNav: false,
+          preloadBatchSize: 1
         },
         getDefaultAlertData(),
         getDefaultConfirmationModalData(),
@@ -332,7 +333,7 @@
           if (config.iframe && IframeHelpers.isMessageSource(e, config.iframe)) {
             if (shouldPreload) {
               setTimeout(() => {
-                Iframe.preloadViewGroups(3);
+                Iframe.preloadViewGroups(this.get().preloadBatchSize);
               });
             }
             shouldPreload = true;
@@ -349,10 +350,7 @@
             iframe.luigi.nextViewUrl = '';
             config.navigateOk = true;
 
-
             preload(e);
-
-
           }
 
           if ('luigi.get-context' === e.data.msg) {
@@ -379,10 +377,7 @@
                 this.set({ showLoadingIndicator: false });
               }
 
-
               preload(e);
-
-
             } else {
               const iframe = Iframe.getIframeBySource(e.source);
               if (iframe) {
@@ -394,6 +389,15 @@
                   pathParams: {},
                   internal: {}
                 }, {});
+                const preloadTime = (new Date()).getTime() - iframe.luigi.createdAt;
+                let preloadBatchSize = 1;
+                if (preloadTime < 500) {
+                  preloadBatchSize = 3;
+                } else if (preloadTime < 1000) {
+                  preloadBatchSize = 2;
+                }
+                this.set({ preloadBatchSize });
+                console.debug('preload bat5ch size: ' + preloadBatchSize);
               }
             }
           }

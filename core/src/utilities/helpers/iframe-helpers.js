@@ -149,7 +149,8 @@ class IframeHelpersClass {
     iframe.src = viewUrl;
     iframe.sandbox = activeSandboxRules.join(' ');
     iframe.luigi = {
-      viewUrl
+      viewUrl,
+      createdAt: new Date().getTime()
     };
     if (viewGroup) {
       iframe.vg = viewGroup;
