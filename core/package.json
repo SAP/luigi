@@ -18,7 +18,7 @@
     "core-js": "^3.0.1",
     "css-loader": "^3.0.0",
     "file-loader": "^2.0.0",
-    "fiori-fundamentals": "1.4.5",
+    "fiori-fundamentals": "1.6.0",
     "jsdom": "15.0.0",
     "jsdom-global": "3.0.2",
     "mini-css-extract-plugin": "^0.4.4",
