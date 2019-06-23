@@ -82,6 +82,17 @@ class IframeClass {
     if (vgSettings) {
       const iframeContainer = this.getIframeContainer();
       const iframes = this.getAllIframes();
+      const now = new Date().getTime();
+      const preloadingIframes = iframes.filter(
+        iframe =>
+          iframe.luigi &&
+          iframe.luigi.preloading &&
+          now - iframe.luigi.createdAt < 30000
+      );
+      if (preloadingIframes.length > 0) {
+        console.debug('skipping view group preloading (busy)');
+        return;
+      }
       const existingVGs = iframes.map(iframe => iframe.vg).filter(vg => !!vg);
       if (viewGroupToExclude) {
         existingVGs.push(viewGroupToExclude);
@@ -105,6 +116,7 @@ class IframeClass {
               entry[0]
             );
             iframe.style.display = 'none';
+            iframe.luigi.preloading = true;
             iframeContainer.appendChild(iframe);
           }
         });

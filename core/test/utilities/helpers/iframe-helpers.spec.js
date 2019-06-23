@@ -43,6 +43,13 @@ describe('Iframe-helpers', () => {
     it('createIframe', () => {
       const iframe = IframeHelpers.createIframe('http://luigi.url.com/');
       assert.equal(iframe.src, 'http://luigi.url.com/');
+
+      const iframe2 = IframeHelpers.createIframe(
+        'http://luigi.url.de/',
+        'ananas'
+      );
+      assert.equal(iframe2.src, 'http://luigi.url.de/');
+      assert.equal(iframe2.vg, 'ananas');
     });
 
     it('getVisibleIframes', () => {
