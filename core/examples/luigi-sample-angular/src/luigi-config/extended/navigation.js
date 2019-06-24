@@ -26,7 +26,7 @@ class Navigation {
       label: 'Projects',
       viewUrl: '/sampleapp.html#/projects',
       children: projectsNavProviderFn,
-      showChildrenInDropDown: true
+      renderChildrenInDropDown: true
     },
     {
       pathSegment: 'projektz',
@@ -46,7 +46,7 @@ class Navigation {
           link: '/projects/pr1'
         }
       ],
-      showChildrenInDropDown: true
+      renderChildrenInDropDown: true
     },
     {
       hideFromNav: true,
@@ -79,7 +79,7 @@ class Navigation {
       viewUrl: '/sampleapp.html#/settings',
       icon: 'settings',
       viewGroup: 'tets',
-      showChildrenInDropDown: true,
+      renderChildrenInDropDown: true,
       children: [
         {
           label: 'Open Google in this tab',
