@@ -1,8 +1,3 @@
-[![Build Status](https://travis-ci.org/SAP/luigi.svg?branch=master)](https://travis-ci.org/SAP/luigi)
-# Luigi
-<p align="center">
- <img src="https://raw.githubusercontent.com/sap/luigi/master/logo.png" width="235">
-</p>
 
 ## Overview
 
@@ -25,6 +20,48 @@ View the [application examples](core/examples) to explore Luigi's features.
 
 For details, see [Luigi documentation](docs/README.md).
 
+## Browser support
+
+If you want to support additionally legacy browsers like Internet Explorer 11 in your application, you just need to update your Luigi imports as follows:
+### Luigi Core
+```html
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <link rel='stylesheet' href='core/public/luigi-legacy.css'>
+    <!-- <link rel='stylesheet' href='core/public/luigi.css'> -->
+  </head>
+  <body>
+    <script src="/luigi-core/luigi-legacy.js"></script>
+    <!-- <script src="/luigi-core/luigi.js"></script> -->
+  </body>
+</html>
+``` 
+
+### Luigi Client
+```javascript
+import {
+  linkManager,
+  uxManager
+} from '@kyma-project/luigi-client/luigi-client-legacy';
+<!-- } from '@kyma-project/luigi-client'; -->
+
+### Luigi Client
+``` 
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    ...
+    <link rel='stylesheet' href='core/public/luigi-legacy.css'>
+    ...
+  </head>
+
+  <body>
+    ...
+    <script src="core/public/luigi-legacy.js"></script>
+    ...
+  <body>
+</html>
 
 ## Development
 
