@@ -94,3 +94,15 @@ Cypress.Commands.add('expectSearchToBe', (searchString, a) => {
     }
   });
 });
+
+// this is how .trigger() is implemented
+Cypress.Commands.add(
+  'historyBack',
+  {
+    prevSubject: ['window']
+  },
+  (subject, eventName, options) => {
+    console.log('historyBack', subject, eventName, options);
+    subject.history.back();
+  }
+);
