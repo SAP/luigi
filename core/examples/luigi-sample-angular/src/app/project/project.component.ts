@@ -7,13 +7,12 @@ import {
 } from '@angular/core';
 import { ActivatedRoute, Params } from '@angular/router';
 import { Subscription } from 'rxjs';
-
 import {
   linkManager,
   uxManager,
   addContextUpdateListener,
   removeContextUpdateListener
-} from '@kyma-project/luigi-client';
+} from '@kyma-project/luigi-client/luigi-client-legacy';
 import {
   IContextMessage,
   LuigiContextService
