@@ -21,7 +21,7 @@
       {#if children && pathData.length > 0}
       {#each children as node ,i}
       {#if !node.hideFromNav}
-      {#if node.renderChildrenInDropDown}
+      {#if node.isCat}
       <div
         class="fd-shellbar__action fd-shellbar__action--hide fd-shellbar__action--collapsible"
       >
@@ -52,11 +52,6 @@
                 <span>{node.label}</span>
                 {/if}
                 <!-- end node.icon -->
-                {#if node.externalLink && node.externalLink.url}
-                <span
-                  class="sap-icon--action sap-icon--s"
-                ></span>
-                {/if}
               </button>
             </div>
             <div
@@ -268,10 +263,12 @@
 
   const setTopNavData = (current, component) => {
     if (current.pathData && 0 < current.pathData.length) {
-      const children = current.pathData[0].children;
+      const rawChildren = current.pathData[0].children;
       let selectedNode = null;
       let visibleNodeCount = 0;
-      children.map(node => {
+      let cats = {};
+      const children = [];
+      rawChildren.forEach(node => {
         current.pathData.forEach(n => {
           if (!selectedNode && n === node) {
             selectedNode = node;
@@ -279,6 +276,26 @@
         });
         if (!node.hideFromNav) {
           visibleNodeCount++;
+        }
+
+        if (node.category) {
+          const catLabel = node.category.label || node.category;
+          if (cats[catLabel]) {
+            if (!cats[catLabel].icon) {
+              cats[catLabel].icon = node.category.icon;
+            }
+          } else {
+            cats[catLabel] = {
+              isCat: true,
+              label: catLabel,
+              icon: node.category.icon,
+              children: []
+            };
+            children.push(cats[catLabel]);
+          }
+          cats[catLabel].children.push(node);
+        } else {
+          children.push(node);
         }
       });
       component.set({
@@ -348,7 +365,9 @@
         this.toggleDropdownState('productSwitcherPopover');
       },
       handleClick(node) {
-        this.fire('handleClick', { node });
+        node.viewUrl
+          ? this.fire('handleClick', { node })
+          : console.log('not support yet on mobile');
       },
       toggleDropdownState(name) {
         const dropDownStates = this.get().dropDownStates || {};

@@ -25,28 +25,7 @@ class Navigation {
       pathSegment: 'projects',
       label: 'Projects',
       viewUrl: '/sampleapp.html#/projects',
-      children: projectsNavProviderFn,
-      renderChildrenInDropDown: true
-    },
-    {
-      pathSegment: 'projektz',
-      label: 'projektz',
-      viewUrl: '/sampleapp.html#/projects',
-      children: [
-        {
-          label: 'Open Google in this tab',
-          externalLink: {
-            url: 'http://google.com',
-            sameWindow: true
-          }
-        },
-        {
-          icon: 'https://sap.github.io/fundamental/images/products/06.png',
-          label: 'Project 1',
-          link: '/projects/pr1'
-        }
-      ],
-      renderChildrenInDropDown: true
+      children: projectsNavProviderFn
     },
     {
       hideFromNav: true,
@@ -91,14 +70,15 @@ class Navigation {
       ]
     },
     {
+      category: { label: 'Misc', icon: 'lightbulb' },
       label: 'Open Google in this tab',
-
       externalLink: {
         url: 'http://google.com',
         sameWindow: true
       }
     }, // showing an anonymous content is possible only with auto login disabled
     {
+      category: 'Misc',
       pathSegment: 'all-users',
       label: 'Visible for all users',
       anonymousAccess: true,
@@ -113,6 +93,7 @@ class Navigation {
       hideSideNav: true
     },
     {
+      category: 'Misc',
       pathSegment: 'ext',
       label: 'External Page',
       loadingIndicator: {
