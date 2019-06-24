@@ -40,8 +40,12 @@
     "webpack-cli": "^3.0.3"
   },
   "scripts": {
-    "bundle": "webpack --display-error-details",
-    "bundle-develop": "webpack -d --watch",
+    "bundle": "npm run bundle-evergreen && npm run bundle-legacy",
+    "bundle-evergreen": "webpack --display-error-details",
+    "bundle-legacy": "webpack --config webpack-legacy.config.js --display-error-details",
+    "bundle-develop": "npm run bundle-develop-evergreen",
+    "bundle-develop-evergreen": "npm run bundle-evergreen -- -d --watch",
+    "bundle-develop-legacy": "npm run bundle-legacy -- -d --watch",
     "test": "babel-node ./node_modules/nyc/bin/nyc.js mocha -- --recursive test",
     "test:watch": "npm run test -- --watch",
     "bundlesize": "npm run bundle && bundlesize",
@@ -57,6 +61,16 @@
     {
       "path": "./public/luigi.css",
       "maxSize": "300 kB",
+      "compression": "none"
+    },
+    {
+      "path": "./public/luigi-legacy.js",
+      "maxSize": "100 kB",
+      "compression": "none"
+    },
+    {
+      "path": "./public/luigi-legacy.css",
+      "maxSize": "400 kB",
       "compression": "none"
     }
   ],
