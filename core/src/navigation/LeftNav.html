@@ -259,6 +259,9 @@
     },
     methods: {
       handleClick(node) {
+        if (this.get().isSemiCollapsed) {
+          this.closePopupMenu();
+        }
         this.fire('handleClick', { node });
       },
 
@@ -273,6 +276,13 @@
               (nodeOrNodes.category && nodeOrNodes.category.label) ||
               nodeOrNodes.category;
           }
+
+          // only close if same clicked
+          if (selectedCategory === this.get().selectedCategory) {
+            this.closePopupMenu();
+            return;
+          }
+
           this.set({
             selectedCategory
           });
@@ -300,6 +310,10 @@
       },
 
       setExpandedState(nodes, value) {
+        if (this.get().isSemiCollapsed) {
+          return;
+        }
+
         this.set({
           expandedCategories: NavigationHelpers.storeExpandedState(
             nodes.metaInfo.categoryUid,
@@ -308,7 +322,15 @@
         });
       },
 
+      closePopupMenu() {
+        if (this.get().selectedCategory) {
+          this.set({ selectedCategory: null });
+        }
+      },
+
       semiCollapsibleButtonClicked(el) {
+        this.closePopupMenu();
+
         el.classList.toggle('sap-icon--close-command-field');
         el.classList.toggle('sap-icon--open-command-field');
         document.body.classList.toggle('isSemiCollapsed');
