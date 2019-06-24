@@ -9,6 +9,7 @@ import { LuigiConfig } from '../../src/core-api';
 describe('Iframe', () => {
   let node;
   let component;
+  let preloadingAllowed;
 
   beforeEach(() => {
     let lastObj = {};
@@ -19,6 +20,7 @@ describe('Iframe', () => {
       get: () => lastObj,
       prepareInternalData: () => {}
     };
+    preloadingAllowed = false;
     sinon.stub(LuigiConfig, 'getConfigValue').callsFake(key => {
       if (key === 'navigation.viewGroupSettings') {
         return {
@@ -32,6 +34,8 @@ describe('Iframe', () => {
             preloadUrl: 'ananas.html'
           }
         };
+      } else if (key === 'navigation.preloadViewGroups') {
+        return preloadingAllowed ? undefined : false;
       }
     });
 
@@ -210,6 +214,12 @@ describe('Iframe', () => {
           return [...iframes];
         }
       });
+
+      Iframe.preloadViewGroups(2);
+
+      assert.equal(iframes.length, 1);
+
+      preloadingAllowed = true;
 
       Iframe.preloadViewGroups(2);
 

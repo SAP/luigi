@@ -78,6 +78,15 @@ class IframeClass {
   }
 
   preloadViewGroups(maxCount = 3, viewGroupToExclude) {
+    const preloadViewGroupsSetting = LuigiConfig.getConfigValue(
+      'navigation.preloadViewGroups'
+    );
+    if (
+      preloadViewGroupsSetting === false ||
+      preloadViewGroupsSetting === 'false'
+    ) {
+      return;
+    }
     const vgSettings = this.getAllViewGroupSettings();
     if (vgSettings) {
       const iframeContainer = this.getIframeContainer();
