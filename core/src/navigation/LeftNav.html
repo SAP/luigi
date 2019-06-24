@@ -38,6 +38,32 @@
     <div
       class="fd-side-nav__group {nodes.metaInfo && nodes.metaInfo.label === selectedCategory ? 'fd-side-nav__item--icon-selected' : ''}"
     >
+      {#if nodes.metaInfo && nodes.metaInfo.label === selectedCategory}
+      <div class="lui-flyout-sublist">
+        <h5
+          class="lui-flyout-sublist__title fd-has-type-minus-1 fd-has-color-text-4"
+        >{key}</h5>
+        <ul class="fd-side-nav__sublist">
+          {#each nodes as node} {#if !node.hideFromNav} {#if node.label}
+          <li
+            class="fd-side-nav__subitem {node.externalLink && node.externalLink.url ? 'fd-side-nav__item--external' : ''}"
+          >
+            <a
+              href="javascript:void(null)"
+              class="fd-side-nav__sublink {node === selectedNode ? 'is-selected' : ''}"
+              on:click="handleClick(node)"
+            >
+              {node.label} {#if node.externalLink && node.externalLink.url}
+              <span
+                class="sap-icon--action sap-icon--s"
+              ></span>
+              {/if}
+            </a>
+          </li>
+          {/if} {/if} {/each}
+        </ul>
+      </div>
+      {/if}
       <ul class="fd-side-nav__list">
         {#if nodes.metaInfo.collapsible}
         <li class="fd-side-nav__item">
@@ -46,11 +72,11 @@
             class="fd-side-nav__link has-child"
             aria-haspopup="true"
             aria-expanded="{isExpanded(nodes, expandedCategories)}"
-            on:click="setExpandedState(nodes, !isExpanded(nodes, expandedCategories))"
+            on:click="setExpandedState(nodes, !isExpanded(nodes, expandedCategories), this)"
           >
             {#if isOpenUIiconName(nodes.metaInfo.icon)}
             <span
-              class="fd-side-nav__icon {'sap-icon--' + nodes.metaInfo.icon} sap-icon--l"
+              class="fd-side-nav__icon {'sap-icon--' + nodes.metaInfo.icon} {responsiveNavSetting === 'semiCollapsible' && isSemiCollapsed && (nodes.metaInfo.icon === 'lui-blank' || nodes.metaInfo.icon === undefined) ? 'sap-icon--question-mark' : ''} sap-icon--l"
               role="presentation"
               on:click="handleIconClick(nodes, this)"
             ></span>
@@ -94,7 +120,7 @@
           {#if hasCategoriesWithIcon} {#if
           isOpenUIiconName(nodes.metaInfo.icon)}
           <span
-            class="fd-side-nav__icon {nodes.metaInfo.icon ? 'sap-icon--' + nodes.metaInfo.icon : ''} sap-icon--l"
+            class="fd-side-nav__icon {nodes.metaInfo.icon ? 'sap-icon--' + nodes.metaInfo.icon : ''} {responsiveNavSetting === 'semiCollapsible' && isSemiCollapsed && nodes.metaInfo.icon === 'lui-blank' ? 'sap-icon--question-mark' : ''} sap-icon--l"
             role="presentation"
             on:click="handleIconClick(nodes, this)"
           ></span>
@@ -108,9 +134,6 @@
           {/if} {key}
         </li>
         <ul class="fd-side-nav__sublist">
-          <li
-            class="lui-fd-side-nav__title fd-has-type-minus-1 fd-has-color-text-4"
-          >{key}</li>
           {#each nodes as node} {#if !node.hideFromNav} {#if node.label}
           <li
             class="fd-side-nav__subitem {node.externalLink && node.externalLink.url ? 'fd-side-nav__item--external' : ''}"
@@ -153,9 +176,10 @@
   {#if footerText}
   <span class="lui-side-nav__footer">
     <span class="lui-side-nav__footer--text fd-has-type-minus-1">{footerText}</span>
-    {#if responsiveNavSetting==="semiCollapsible"}
+    {#if responsiveNavSetting === 'semiCollapsible'}
     <span
       class="lui-side-nav__footer--icon sap-icon--close-command-field"
+      on:click="semiCollapsibleButtonClicked(this)"
     ></span>
     {/if}
   </span>
@@ -193,7 +217,8 @@
         expandedCategories: NavigationHelpers.loadExpandedCategories(),
         responsiveNavSetting: LuigiConfig.getConfigValue(
           'settings.responsiveNavigation'
-        )
+        ),
+        isSemiCollapsed: false
       });
 
       StateHelpers.doOnStoreChange(this.store, () => {
@@ -238,24 +263,30 @@
       },
 
       handleIconClick(nodeOrNodes, el) {
-        let selectedCategory;
-        let parent = el.closest('.fd-side-nav__group');
-        let flyout = parent.getElementsByClassName('fd-side-nav__sublist')[0];
-        let parentTopPosition = parent.offsetTop;
-        let shellbarHeight = Luigi.elements().getShellbar().offsetHeight;
+        if (this.get().isSemiCollapsed) {
+          let selectedCategory;
 
-        flyout.style.top = parentTopPosition + shellbarHeight + 'px';
+          if (nodeOrNodes.metaInfo && nodeOrNodes.metaInfo.label) {
+            selectedCategory = nodeOrNodes.metaInfo.label;
+          } else {
+            selectedCategory =
+              (nodeOrNodes.category && nodeOrNodes.category.label) ||
+              nodeOrNodes.category;
+          }
+          this.set({
+            selectedCategory
+          });
 
-        if (nodeOrNodes.metaInfo && nodeOrNodes.metaInfo.label) {
-          selectedCategory = nodeOrNodes.metaInfo.label;
-        } else {
-          selectedCategory =
-            (nodeOrNodes.category && nodeOrNodes.category.label) ||
-            nodeOrNodes.category;
+          //Calculate top position for flyout sublist
+          let parent = el.closest('.fd-side-nav__group');
+          let parentTopPosition = parent.offsetTop;
+          let shellbarHeight = Luigi.elements().getShellbar().offsetHeight;
+          let flyoutSublist = parent.getElementsByClassName(
+            'lui-flyout-sublist'
+          )[0];
+
+          flyoutSublist.style.top = parentTopPosition + shellbarHeight + 'px';
         }
-        this.set({
-          selectedCategory
-        });
       },
 
       handleKey(event) {
@@ -275,6 +306,26 @@
             value
           )
         });
+      },
+
+      semiCollapsibleButtonClicked(el) {
+        el.classList.toggle('sap-icon--close-command-field');
+        el.classList.toggle('sap-icon--open-command-field');
+        document.body.classList.toggle('isSemiCollapsed');
+        if (document.body.classList.contains('isSemiCollapsed')) {
+          this.set({ isSemiCollapsed: true });
+
+          document
+            .getElementsByClassName('fd-side-nav')[0]
+            .setAttribute('style', 'overflow-y:hidden;');
+          window.setTimeout(function() {
+            document
+              .getElementsByClassName('fd-side-nav')[0]
+              .setAttribute('style', 'overflow-y:auto;');
+          }, 16);
+        } else {
+          this.set({ isSemiCollapsed: false });
+        }
       }
     }
   };
@@ -340,14 +391,30 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: $footerPaddingVertical 20px;
 
     &--text {
       color: var(--fd-color-text-4);
+      white-space: nowrap;
+      width: auto;
+      padding: $footerPaddingVertical 20px;
+
+      -webkit-transition-property: all;
+      -moz-transition-property: all;
+      -o-transition-property: all;
+      transition-property: all;
+      -webkit-transition-duration: 0.1s;
+      -moz-transition-duration: 0.1s;
+      -o-transition-duration: 0.1s;
+      transition-duration: 0.1s;
+      -webkit-transition-timing-function: linear;
+      -moz-transition-timing-function: linear;
+      -o-transition-timing-function: linear;
+      transition-timing-function: linear;
     }
 
     &--icon {
       cursor: pointer;
+      padding: $footerPaddingVertical 20px;
     }
   }
 
@@ -398,23 +465,31 @@
     display: none;
   }
 
-  :global(.isCollapsed) {
+  :global(.lui-semiCollapsible) {
+    .fd-app__sidebar {
+      transition-property: width;
+      transition-duration: 0.2s;
+      transition-timing-function: linear;
+    }
+  }
+
+  :global(.isSemiCollapsed) {
     .fd-app__sidebar {
       width: 40px;
-      overflow: -moz-scrollbars-none;
-      -ms-overflow-style: none;
-
-      &::-webkit-scrollbar {
-        width: 0 !important;
-      }
-
-      &::-webkit-scrollbar {
-        display: none;
-      }
 
       .fd-side-nav {
         width: 100%;
         min-width: auto;
+        overflow: -moz-scrollbars-none;
+        -ms-overflow-style: none;
+
+        &::-webkit-scrollbar {
+          width: 0 !important;
+        }
+
+        &::-webkit-scrollbar {
+          display: none;
+        }
 
         .fd-side-nav__icon {
           cursor: pointer;
@@ -422,6 +497,10 @@
 
         .fd-side-nav__list {
           position: relative;
+
+          .fd-side-nav__subitem {
+            display: none;
+          }
         }
 
         .fd-side-nav__title {
@@ -445,78 +524,96 @@
             width: 25px;
           }
         }
+      }
+    }
 
-        .fd-side-nav__item--icon-selected {
-          .fd-side-nav__sublist {
-            opacity: 1;
-            visibility: visible;
-          }
+    .lui-side-nav {
+      &__footer {
+        &--text {
+          width: 0;
+          opacity: 0;
+          padding: 0;
+          visibility: hidden;
+        }
+
+        &--icon {
+          padding-left: 14px;
+          padding-right: 14px;
         }
       }
+    }
+  }
+  :global(.lui-flyout-sublist) {
+    position: fixed;
+    left: 48px;
+    top: 0;
+    width: 180px;
+    border-radius: 4px;
+    box-shadow: 0 5px 20px 0 var(--fd-color-neutral-3),
+      0 2px 8px 0 var(--fd-color-neutral-2);
+    border: 1px solid var(--fd-color-neutral-3);
+    background: white;
+    opacity: 0;
+    animation-name: example;
+    animation-duration: 0.5s;
+    animation-fill-mode: forwards;
 
-      .fd-side-nav__sublist {
-        position: fixed;
-        left: 48px;
-        top: 0;
-        width: 180px;
-        border-radius: 4px;
-        box-shadow: 0 5px 20px 0 var(--fd-color-neutral-3),
-          0 2px 8px 0 var(--fd-color-neutral-2);
-        border: 1px solid var(--fd-color-neutral-3);
-        background: white;
-        visibility: hidden;
+    @keyframes example {
+      0% {
         opacity: 0;
-
-        li {
-          border-top: 1px solid var(--fd-color-neutral-2);
-
-          &:first-child,
-          &:nth-child(2) {
-            border: none;
-          }
-        }
-
-        .fd-side-nav__link {
-          font-size: 14px;
-          padding: 10px 20px;
-        }
-
-        a {
-          padding-left: 20px;
-
-          .fd-side-nav__icon {
-            display: none;
-          }
-        }
-
-        .lui-fd-side-nav__title {
-          display: block;
-          padding: 14px 12px 12px;
-          text-transform: uppercase;
-        }
-
-        &:before,
-        &:after {
-          display: block;
-          position: absolute;
-          top: 12px;
-          content: '';
-          width: 13px;
-          border-style: solid;
-          border-width: 8px 6.5px;
-          border-color: transparent;
-        }
-
-        &:before {
-          left: -14px;
-          border-right-color: var(--fd-color-neutral-3);
-        }
-
-        &:after {
-          left: -13px;
-          border-right-color: white;
-        }
       }
+      100% {
+        opacity: 1;
+      }
+    }
+
+    li {
+      border-top: 1px solid var(--fd-color-neutral-2);
+
+      &:first-child {
+        border: none;
+      }
+    }
+
+    .fd-side-nav__link {
+      font-size: 14px;
+      padding: 10px 20px;
+    }
+
+    a {
+      padding-left: 20px;
+
+      .fd-side-nav__icon {
+        display: none;
+      }
+    }
+
+    &__title {
+      padding: 14px 12px 12px;
+      text-transform: uppercase;
+      margin: 0;
+    }
+
+    &:before,
+    &:after {
+      display: block;
+      position: absolute;
+      top: 12px;
+      content: '';
+      width: 13px;
+      border-style: solid;
+      border-width: 8px 6.5px;
+      border-color: transparent;
+    }
+
+    &:before {
+      left: -14px;
+      border-right-color: var(--fd-color-neutral-3);
+    }
+
+    &:after {
+      left: -13px;
+      border-right-color: white;
     }
   }
 </style>
