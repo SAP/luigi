@@ -1,3 +1,4 @@
+<svelte:window on:keydown="handleKeydown(event)"/>
 <div class="fd-ui__overlay fd-overlay fd-overlay--modal" style="z-index:999">
   <div class="fd-modal" data-e2e="modal-mf">
     <div class="fd-modal__content" style="height:100%">
@@ -99,6 +100,13 @@
       return {
         isDataPrepared: false
       };
+    },
+    methods: {
+      handleKeydown(event) {
+        if (event.keyCode === 27) {
+          this.fire('close');
+        }
+      }
     }
   };
 </script>
