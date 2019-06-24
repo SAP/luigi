@@ -13,7 +13,7 @@ source $BASE_DIR/shared/bashHelpers.sh
 
 installPrerequisites() {
   # link documentation binary if it does not exist
-  FOLDER=$1
+  local FOLDER=$1
   echoe "Install documentation prerequisites for $FOLDER"
   local DOCU_TMP_FOLDER=$BASE_DIR/tmp-docu/$FOLDER
   mkdir -p $DOCU_TMP_FOLDER
@@ -37,7 +37,7 @@ installPrerequisites() {
 
 # Lint documentation and check if all docu changes have been commited.
 validateAndGenerateDocumentation() {
-  FOLDER=$1
+  local FOLDER=$1
   cd $BASE_DIR/../$FOLDER
 
   local DOCU_STEP=`cat package.json | jq --raw-output ".scripts.docu"`
@@ -51,7 +51,8 @@ validateAndGenerateDocumentation() {
 }
 
 validateMdChanges() {
-  echoe "Validate .md changes"
+  local FOLDER=$1
+  echoe "Validate .md changes for ${FOLDER}"
   # verify that there are no changes in md files
   local MD_FILE_CHANGES=`git status | grep '.md' | wc -l`
   if [[ $MD_FILE_CHANGES != *"0"* ]]; then
@@ -59,6 +60,8 @@ validateMdChanges() {
     echo "The following files need to be commited and pushed again:"
     git status | grep '.md'
     exit 1
+  else
+    echo "Documentation up to date"
   fi
 }
 
@@ -68,7 +71,7 @@ for FOLDER in "${LUIGI_FOLDERS[@]}"
 do
   installPrerequisites "${FOLDER}"
   validateAndGenerateDocumentation "${FOLDER}"
-  validateMdChanges
+  validateMdChanges "${FOLDER}"
 done
 
 echoe "Validation successful, documentation OK"
