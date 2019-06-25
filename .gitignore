@@ -9,3 +9,6 @@ node_modules
 lerna-debug.log
 
 .changelog
+
+# temporary files and folders
+tmp-*
