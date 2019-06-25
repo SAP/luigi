@@ -36,9 +36,9 @@ class LuigiConfig {
   /**
    * Sets the configuration for Luigi initially. Can also be called at a later point in time again to update the configuration.
    * @memberof Configuration
-   * @param {Object} [configInput] the Luigi Core configuration object
+   * @param {Object} configInput the Luigi Core configuration object
    * @example
-   * Luigi.config().setConfig({
+   * Luigi.setConfig({
    *   navigation: {
    *     nodes: () => [
    *       {
@@ -70,6 +70,13 @@ class LuigiConfig {
     }
   }
 
+  /**
+   * Returns the current active configuration
+   * @returns {Object} configuration object
+   * @memberof Configuration
+   * @example
+   * Luigi.getConfig()
+   */
   getConfig() {
     return this.config;
   }
@@ -110,10 +117,10 @@ class LuigiConfig {
   /**
    * Gets value of the given property on Luigi config object. Target can be a value or a synchronous function.
    * @memberof Configuration
-   * @param {string} [property] the object traversal path
+   * @param {string} property the object traversal path
    * @example
-   * Luigi.config().getConfigValue('auth.use')
-   * Luigi.config().getConfigValue('settings.sideNavFooterText')
+   * Luigi.getConfigValue('auth.use')
+   * Luigi.getConfigValue('settings.sideNavFooterText')
    */
   getConfigValue(property) {
     return GenericHelpers.getConfigValueFromObject(this.getConfig(), property);
@@ -125,7 +132,7 @@ class LuigiConfig {
    * @memberof Configuration
    * @param {string} [property] the object traversal path
    * @example
-   * Luigi.config().getConfigBooleanValue('settings.hideNavigation')
+   * Luigi.getConfigBooleanValue('settings.hideNavigation')
    */
   getConfigBooleanValue(property) {
     const configuredValue = GenericHelpers.getConfigValueFromObject(
@@ -146,9 +153,9 @@ class LuigiConfig {
    * @param {string} [property] the object traversal path
    * @param {mixed} [parameters] optional parameters that are used if the target is a function
    * @example
-   * Luigi.config().getConfigValueAsync('navigation.nodes')
-   * Luigi.config().getConfigValueAsync('navigation.profile.items')
-   * Luigi.config().getConfigValueAsync('navigation.contextSwitcher.options')
+   * Luigi.getConfigValueAsync('navigation.nodes')
+   * Luigi.getConfigValueAsync('navigation.profile.items')
+   * Luigi.getConfigValueAsync('navigation.contextSwitcher.options')
    */
   getConfigValueAsync(property, ...parameters) {
     return AsyncHelpers.getConfigValueFromObjectAsync(
@@ -186,7 +193,7 @@ class LuigiConfig {
    * Detects if authorization is enabled via configuration.
    * @memberof Configuration
    * @returns {boolean} returns true if authorization is enabled. Otherwise returns false.
-   * @deprecated now located in Luigi.auth() instead of Luigi.config()
+   * @deprecated now located in Luigi.auth() instead of Luigi
    */
   isAuthorizationEnabled() {
     return auth.isAuthorizationEnabled();
