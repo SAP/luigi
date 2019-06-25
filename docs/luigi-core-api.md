@@ -73,7 +73,7 @@ Function return true if the property value is equal true or 'true'. Otherwise th
 
 ##### Parameters
 
--   `property` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)?** the object traversal path
+-   `property` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** the object traversal path
 
 ##### Examples
 
@@ -89,8 +89,8 @@ If the value is not a Promise it is wrapped to a Promise so that the returned va
 
 ##### Parameters
 
--   `property` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)?** the object traversal path
--   `parameters` **mixed?** optional parameters that are used if the target is a function
+-   `property` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** the object traversal path
+-   `parameters` **mixed** optional parameters that are used if the target is a function
 
 ##### Examples
 

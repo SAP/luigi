@@ -130,7 +130,7 @@ class LuigiConfig {
    * Gets boolean value of the given property on Luigi config object.
    * Function return true if the property value is equal true or 'true'. Otherwise the function returns false.
    * @memberof Configuration
-   * @param {string} [property] the object traversal path
+   * @param {string} property the object traversal path
    * @example
    * Luigi.getConfigBooleanValue('settings.hideNavigation')
    */
@@ -150,8 +150,8 @@ class LuigiConfig {
    * If the value is a Function it is called (with the given parameters) and the result of that call is the value.
    * If the value is not a Promise it is wrapped to a Promise so that the returned value is definitely a Promise.
    * @memberof Configuration
-   * @param {string} [property] the object traversal path
-   * @param {mixed} [parameters] optional parameters that are used if the target is a function
+   * @param {string} property the object traversal path
+   * @param {mixed} parameters optional parameters that are used if the target is a function
    * @example
    * Luigi.getConfigValueAsync('navigation.nodes')
    * Luigi.getConfigValueAsync('navigation.profile.items')
