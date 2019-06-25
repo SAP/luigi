@@ -1,6 +1,6 @@
 {
   "name": "@kyma-project/luigi-client",
-  "version": "0.4.12-rc.3",
+  "version": "0.4.12",
   "description": "Javascript library supporting consumers of the Luigi framework",
   "repository": {
     "type": "git",
@@ -33,6 +33,7 @@
     "documentation": "^11.0.0",
     "webpack": "^4.28.4",
     "webpack-cli": "^3.2.1",
-    "npm": "^6.5.0"
+    "npm": "^6.5.0",
+    "diff": ">=3.5.0"
   }
 }

@@ -69,6 +69,25 @@ describe('Luigi client ux manager features', () => {
         .contains('Luigi confirmation modal has been confirmed');
     });
 
+    it('Close Luigi Client generic confirmation modal by esc keypress', () => {
+      cy.goToUxManagerMethods($iframeBody);
+
+      cy.get('[data-cy=luigi-confirmation-modal]').should('not.be.visible');
+      cy.wrap($iframeBody)
+        .find('[data-cy=show-luigi-confirmation-modal]')
+        .click();
+      cy.get('[data-cy=luigi-confirmation-modal]').should('be.visible');
+
+      cy.get('[data-cy=luigi-modal-dismiss]').trigger('keydown', {
+        keyCode: 27,
+        which: 27
+      });
+      cy.get('[data-cy=luigi-confirmation-modal]').should('not.be.visible');
+      cy.wrap($iframeBody)
+        .find('[data-cy=luigi-confirmation-modal-result]')
+        .contains('Luigi confirmation modal has been dismissed');
+    });
+
     it('loading indicator', () => {
       Cypress.currentTest.retries(3);
       cy.get('.fd-shellbar')
