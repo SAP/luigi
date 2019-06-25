@@ -166,8 +166,7 @@ class UxManager extends LuigiClientBase {
 
     //generate random ID
     settings.id = helpers.getRandomId();
-
-    if (settings.closeAfter && settings.closeAfter < 100) {
+    if (settings?.closeAfter < 100) {
       console.warn(
         `Message with id='${
           settings.id
