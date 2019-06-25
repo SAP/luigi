@@ -1,11 +1,12 @@
 {
   "name": "luigi-core-private",
-  "version": "0.4.12-rc.3",
+  "version": "0.4.12",
   "private": true,
   "description": "luigi-core development version, only the public folder is being published to npm as a package",
   "dependencies": {
     "@babel/core": "^7.4.0",
     "@babel/node": "^7.2.2",
+    "@babel/plugin-proposal-optional-chaining": "^7.2.0",
     "@babel/preset-env": "^7.4.2",
     "@babel/register": "^7.0.0",
     "acorn": "^6.1.1",
