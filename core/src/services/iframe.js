@@ -77,59 +77,46 @@ class IframeClass {
     );
   }
 
-  preloadViewGroups(maxCount = 3, viewGroupToExclude) {
+  preloadViewGroups(batchSize = 3) {
     const preloadViewGroupsSetting = LuigiConfig.getConfigValue(
       'navigation.preloadViewGroups'
     );
-    if (
-      preloadViewGroupsSetting === false ||
-      preloadViewGroupsSetting === 'false'
-    ) {
+    if ([false, 'false'].includes(preloadViewGroupsSetting)) {
       return;
     }
     const vgSettings = this.getAllViewGroupSettings();
-    if (vgSettings) {
-      const iframeContainer = this.getIframeContainer();
-      const iframes = this.getAllIframes();
-      const now = new Date().getTime();
-      const preloadingIframes = iframes.filter(
-        iframe =>
-          iframe.luigi &&
-          iframe.luigi.preloading &&
-          now - iframe.luigi.createdAt < 30000
-      );
-      if (preloadingIframes.length > 0) {
-        console.debug('skipping view group preloading (busy)');
-        return;
-      }
-      const existingVGs = iframes.map(iframe => iframe.vg).filter(vg => !!vg);
-      if (viewGroupToExclude) {
-        existingVGs.push(viewGroupToExclude);
-      }
-      let counter = 0;
-      Object.entries(vgSettings)
-        .filter(
-          entry =>
-            entry[0] &&
-            !existingVGs.includes(entry[0]) &&
-            entry[1] &&
-            entry[1].preloadUrl
-        )
-        .forEach(entry => {
-          if (counter++ < maxCount) {
-            console.debug(
-              'preloading view group ' + entry[0] + ' - ' + entry[1].preloadUrl
-            );
-            const iframe = IframeHelpers.createIframe(
-              entry[1].preloadUrl,
-              entry[0]
-            );
-            iframe.style.display = 'none';
-            iframe.luigi.preloading = true;
-            iframeContainer.appendChild(iframe);
-          }
-        });
+    if (!vgSettings) {
+      return;
     }
+    const iframeContainer = this.getIframeContainer();
+    const iframes = this.getAllIframes();
+    const now = new Date().getTime();
+    const preloadingIframes = iframes.filter(
+      iframe =>
+        iframe.luigi &&
+        iframe.luigi.preloading &&
+        now - iframe.luigi.createdAt < 30000
+    );
+    if (preloadingIframes.length > 0) {
+      console.debug('skipping view group preloading (busy)');
+      return;
+    }
+    const existingVGs = iframes.map(iframe => iframe.vg).filter(Boolean);
+    Object.entries(vgSettings)
+      .filter(
+        ([name, settings]) =>
+          name && !existingVGs.includes(name) && settings && settings.preloadUrl
+      )
+      .filter((_, index) => index < batchSize)
+      .forEach(([name, settings]) => {
+        console.debug(
+          'preloading view group ' + name + ' - ' + settings.preloadUrl
+        );
+        const iframe = IframeHelpers.createIframe(settings.preloadUrl, name);
+        iframe.style.display = 'none';
+        iframe.luigi.preloading = true;
+        iframeContainer.appendChild(iframe);
+      });
   }
 
   removeIframe(iframe, node) {
@@ -303,7 +290,6 @@ class IframeClass {
         } else {
           component.set({ showLoadingIndicator: false });
         }
-        config.navigateOk = undefined;
         config.navigateOk = undefined;
         config.iframe = IframeHelpers.createIframe(
           viewUrl,
