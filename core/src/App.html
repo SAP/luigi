@@ -103,7 +103,6 @@
       }
 
       Routing.handleRouteChange(path, component, node, config);
-
     });
   };
 
@@ -327,10 +326,12 @@
           this.set({ alerts: updatedAlerts });
         });
 
-
         let shouldPreload = false;
-        const preload = (e) => {
-          if (config.iframe && IframeHelpers.isMessageSource(e, config.iframe)) {
+        const preload = e => {
+          if (
+            config.iframe &&
+            IframeHelpers.isMessageSource(e, config.iframe)
+          ) {
             if (shouldPreload) {
               setTimeout(() => {
                 Iframe.preloadViewGroups(this.get().preloadBatchSize);
@@ -340,7 +341,6 @@
           }
         };
 
-
         window.addEventListener('message', async e => {
           const iframe = this.getValidMessageSource(e);
           if (!iframe) return;
@@ -348,66 +348,69 @@
           if ('luigi.navigate.ok' === e.data.msg) {
             iframe.luigi.viewUrl = iframe.luigi.nextViewUrl;
             iframe.luigi.nextViewUrl = '';
-            iframe.luigi.preloading = false;
             config.navigateOk = true;
 
             preload(e);
           }
 
           if ('luigi.get-context' === e.data.msg) {
+            if (IframeHelpers.isMessageSource(e, this.get().modalIframe)) {
+              let ctx = this.get().modalIframeData.context;
+              const modalConfig = {
+                ...config,
+                iframe: this.get().modalIframe,
+                context: ctx,
+                pathParams: this.get().modalIframeData.pathParams,
+                nodeParams: this.get().modalIframeData.nodeParams,
+                modal: true
+              };
+              sendContextToClient(this, modalConfig, {});
+            } else if (
+              config.iframe &&
+              IframeHelpers.isMessageSource(e, config.iframe)
+            ) {
+              sendContextToClient(this, config, {});
 
-              if (IframeHelpers.isMessageSource(e, this.get().modalIframe)) {
-                let ctx = this.get().modalIframeData.context;
-                const modalConfig = {
-                  ...config,
-                  iframe: this.get().modalIframe,
-                  context: ctx,
-                  pathParams: this.get().modalIframeData.pathParams,
-                  nodeParams: this.get().modalIframeData.nodeParams,
-                  modal: true
-                };
-                sendContextToClient(this, modalConfig, {});
-              } else if (config.iframe && IframeHelpers.isMessageSource(e, config.iframe)) {
-                sendContextToClient(this, config, {});
-
-                const loadingIndicatorAutoHideEnabled =
-                  GenericHelpers.getConfigValueFromObject(
-                    this.get(),
-                    'currentNode.loadingIndicator.hideAutomatically'
-                  ) !== false;
-                if (loadingIndicatorAutoHideEnabled) {
-                  this.set({ showLoadingIndicator: false });
-                }
-
-                preload(e);
-              } else {
-                const iframe = Iframe.getIframeBySource(e.source);
-                if (iframe) {
-                  // set empty context to an existing but inactive iframe; this is a valid use case (viewgroup pre-loading)
-                  sendContextToClient(this, {
-                    iframe: iframe,
-                    context: {},
-                    nodeParams: {},
-                    pathParams: {},
-                    internal: {}
-                  }, {});
-                  const preloadTime = (new Date()).getTime() - iframe.luigi.createdAt;
-                  let preloadBatchSize = 1;
-                  if (preloadTime < 500) {
-                    preloadBatchSize = 3;
-                  } else if (preloadTime < 1000) {
-                    preloadBatchSize = 2;
-                  }
-                  this.set({ preloadBatchSize });
-                  console.debug('preload batch size: ' + preloadBatchSize);
-                }
+              const loadingIndicatorAutoHideEnabled =
+                GenericHelpers.getConfigValueFromObject(
+                  this.get(),
+                  'currentNode.loadingIndicator.hideAutomatically'
+                ) !== false;
+              if (loadingIndicatorAutoHideEnabled) {
+                this.set({ showLoadingIndicator: false });
               }
 
-              if (iframe.luigi) {
-                setTimeout(() => {
-                  iframe.luigi.preloading = false;
-                }, this.get().preloadBatchSize > 2 ? 500: 1000);
+              preload(e);
+            } else {
+              // set empty context to an existing but inactive iframe; this is a valid use case (viewgroup pre-loading)
+              sendContextToClient(
+                this,
+                {
+                  iframe: iframe,
+                  context: {},
+                  nodeParams: {},
+                  pathParams: {},
+                  internal: {}
+                },
+                {}
+              );
+              const preloadTime = new Date().getTime() - iframe.luigi.createdAt;
+              let preloadBatchSize = 1;
+              if (preloadTime < 500) {
+                preloadBatchSize = 3;
+              } else if (preloadTime < 1000) {
+                preloadBatchSize = 2;
               }
+              this.set({ preloadBatchSize });
+              console.debug('preload batch size: ' + preloadBatchSize);
+            }
+
+            setTimeout(
+              () => {
+                iframe.luigi.preloading = false;
+              },
+              this.get().preloadBatchSize > 2 ? 500 : 1000
+            );
           }
 
           if ('luigi.show-loading-indicator' === e.data.msg) {
