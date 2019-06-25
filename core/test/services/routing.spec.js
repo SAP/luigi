@@ -551,6 +551,20 @@ describe('Routing', () => {
     });
   });
 
+  describe('getModifiedPathname()', () => {
+    it('without state', () => {
+      sinon.stub(window.history, 'state').returns(null);
+      assert.equal(Routing.getModifiedPathname(), '');
+    });
+
+    it('with state path', () => {
+      sinon.stub(window.history, 'state').get(() => ({
+        path: '/this/is/some/'
+      }));
+      assert.equal(Routing.getModifiedPathname(), 'this/is/some/');
+    });
+  });
+
   describe('navigateToExternalLink()', () => {
     it('open external link in same tab', () => {
       const externalLink = { url: 'http://localhost', sameWindow: true };
@@ -570,6 +584,29 @@ describe('Routing', () => {
       sinon.assert.calledOnce(window.open);
       sinon.assert.calledWithExactly(window.open, 'http://localhost', '_blank');
       sinon.assert.calledOnce(window.focus);
+    });
+  });
+
+  describe('navigateToLink()', () => {
+    it('external link calls externalLink function', () => {
+      const item = {
+        externalLink: { url: 'http://' }
+      };
+      sinon.stub(Routing, 'navigateToExternalLink');
+      sinon.stub(Routing, 'navigateTo');
+
+      Routing.navigateToLink(item);
+
+      Routing.navigateToExternalLink.calledWithExactly(item.externalLink);
+    });
+    it('internal link calls navigateTo function', () => {
+      const item = { link: 'relative/something' };
+      sinon.stub(Routing, 'navigateToExternalLink');
+      sinon.stub(Routing, 'navigateTo');
+
+      Routing.navigateToLink(item);
+
+      Routing.navigateTo.calledWithExactly(item.link);
     });
   });
 });
