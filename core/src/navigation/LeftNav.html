@@ -287,15 +287,28 @@
             selectedCategory
           });
 
-          //Calculate top position for flyout sublist
+          //Calculate top/bottom position for flyout sublist
           let parent = el.closest('.fd-side-nav__group');
           let parentTopPosition = parent.offsetTop;
           let shellbarHeight = Luigi.elements().getShellbar().offsetHeight;
           let flyoutSublist = parent.getElementsByClassName(
             'lui-flyout-sublist'
           )[0];
+          let topScroll = el.closest('nav').scrollTop;
+          let topPosition = parentTopPosition + shellbarHeight - topScroll;
+          let bottomPosition =
+            window.innerHeight -
+            parentTopPosition -
+            parent.offsetHeight +
+            topScroll -
+            shellbarHeight;
 
-          flyoutSublist.style.top = parentTopPosition + shellbarHeight + 'px';
+          if (topPosition + flyoutSublist.offsetHeight >= window.innerHeight) {
+            flyoutSublist.style.bottom = bottomPosition + 'px';
+            flyoutSublist.className += ' has-bottom-position';
+          } else {
+            flyoutSublist.style.top = topPosition + 'px';
+          }
         }
       },
 
@@ -568,7 +581,6 @@
   :global(.lui-flyout-sublist) {
     position: fixed;
     left: 48px;
-    top: 0;
     width: 180px;
     border-radius: 4px;
     box-shadow: 0 5px 20px 0 var(--fd-color-neutral-3),
@@ -636,6 +648,14 @@
     &:after {
       left: -13px;
       border-right-color: white;
+    }
+
+    &.has-bottom-position {
+      &:before,
+      &:after {
+        top: auto;
+        bottom: 12px;
+      }
     }
   }
 </style>
