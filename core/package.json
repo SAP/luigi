@@ -1,6 +1,6 @@
 {
   "name": "luigi-core-private",
-  "version": "0.4.12-rc.3",
+  "version": "0.4.12",
   "private": true,
   "description": "luigi-core development version, only the public folder is being published to npm as a package",
   "devDependencies": {
