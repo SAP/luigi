@@ -565,6 +565,29 @@ describe('Routing', () => {
     });
   });
 
+  describe('navigateToLink()', () => {
+    beforeEach(() => {
+      sinon.stub(Routing, 'navigateToExternalLink');
+      sinon.stub(Routing, 'navigateTo');
+    });
+
+    it('calls proper function if item is an external link with url', () => {
+      const url = 'https://github.com/SAP/luigi';
+      Routing.navigateToLink({ externalLink: { url } });
+      sinon.assert.calledOnce(Routing.navigateToExternalLink);
+      sinon.assert.calledWithExactly(Routing.navigateToExternalLink, { url });
+      sinon.assert.notCalled(Routing.navigateTo);
+    });
+
+    it('calls proper function if item is NOT an external link with url', () => {
+      const link = 'https://my-app/projects';
+      Routing.navigateToLink({ link });
+      sinon.assert.notCalled(Routing.navigateToExternalLink);
+      sinon.assert.calledOnce(Routing.navigateTo);
+      sinon.assert.calledWithExactly(Routing.navigateTo, link);
+    });
+  });
+
   describe('navigateToExternalLink()', () => {
     it('open external link in same tab', () => {
       const externalLink = { url: 'http://localhost', sameWindow: true };
@@ -584,29 +607,6 @@ describe('Routing', () => {
       sinon.assert.calledOnce(window.open);
       sinon.assert.calledWithExactly(window.open, 'http://localhost', '_blank');
       sinon.assert.calledOnce(window.focus);
-    });
-  });
-
-  describe('navigateToLink()', () => {
-    it('external link calls externalLink function', () => {
-      const item = {
-        externalLink: { url: 'http://' }
-      };
-      sinon.stub(Routing, 'navigateToExternalLink');
-      sinon.stub(Routing, 'navigateTo');
-
-      Routing.navigateToLink(item);
-
-      Routing.navigateToExternalLink.calledWithExactly(item.externalLink);
-    });
-    it('internal link calls navigateTo function', () => {
-      const item = { link: 'relative/something' };
-      sinon.stub(Routing, 'navigateToExternalLink');
-      sinon.stub(Routing, 'navigateTo');
-
-      Routing.navigateToLink(item);
-
-      Routing.navigateTo.calledWithExactly(item.link);
     });
   });
 });

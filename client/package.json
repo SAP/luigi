@@ -1,6 +1,6 @@
 {
   "name": "@kyma-project/luigi-client",
-  "version": "0.4.12-rc.3",
+  "version": "0.4.12",
   "description": "Javascript library supporting consumers of the Luigi framework",
   "repository": {
     "type": "git",
@@ -21,17 +21,18 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "docu": "npm run docu:validate && npm run docu:generate:section",
     "docu:generate:section": "documentation readme src/luigi-client.js -f md --readme-file=../docs/luigi-client-api.md --section='Luigi Client API' --markdown-toc=false --quiet --github false",
-    "docu:validate": "documentation lint src/luigi-client.js",
-    "prepush": "npm run docu:validate"
+    "docu:validate": "documentation lint src/luigi-client.js"
   },
   "license": "Apache-2.0",
   "devDependencies": {
     "@babel/core": "^7.2.2",
+    "@babel/plugin-proposal-optional-chaining": "^7.2.0",
     "@babel/preset-env": "^7.2.3",
     "babel-loader": "^8.0.5",
     "documentation": "^11.0.0",
     "webpack": "^4.28.4",
     "webpack-cli": "^3.2.1",
-    "npm": "^6.5.0"
+    "npm": "^6.5.0",
+    "diff": ">=3.5.0"
   }
 }

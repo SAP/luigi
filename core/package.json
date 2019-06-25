@@ -1,11 +1,12 @@
 {
   "name": "luigi-core-private",
-  "version": "0.4.12-rc.3",
+  "version": "0.4.12",
   "private": true,
   "description": "luigi-core development version, only the public folder is being published to npm as a package",
-  "devDependencies": {
+  "dependencies": {
     "@babel/core": "^7.4.0",
     "@babel/node": "^7.2.2",
+    "@babel/plugin-proposal-optional-chaining": "^7.2.0",
     "@babel/preset-env": "^7.4.2",
     "@babel/register": "^7.0.0",
     "acorn": "^6.1.1",
@@ -35,7 +36,10 @@
     "webpack": "^4.11.1",
     "webpack-cli": "^3.0.3",
     "tar": ">=4.4.2",
-    "axios": ">=0.18.1"
+    "axios": ">=0.18.1",
+    "documentation": "^11.0.0",
+    "npm": "^6.5.0",
+    "test": "^0.6.0"
   },
   "scripts": {
     "bundle": "webpack --display-error-details",
@@ -43,7 +47,6 @@
     "test": "babel-node ./node_modules/nyc/bin/nyc.js mocha -- --recursive test",
     "test:watch": "npm run test -- --watch",
     "bundlesize": "npm run bundle && bundlesize",
-    "prepush": "../scripts/hooks/remove-test-prefixes.sh && npm test && npm run docu:validate",
     "docu:validate": "documentation lint src/core-api/dom-elements.js"
   },
   "bundlesize": [
@@ -102,10 +105,5 @@
   "repository": {
     "type": "git",
     "url": "ssh://github.com/SAP/luigi.git"
-  },
-  "dependencies": {
-    "documentation": "^11.0.0",
-    "npm": "^6.5.0",
-    "test": "^0.6.0"
   }
 }
