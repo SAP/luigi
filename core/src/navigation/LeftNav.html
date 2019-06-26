@@ -543,6 +543,7 @@
 
   :global(.lui-semiCollapsible) {
     .fd-app__sidebar {
+      position: absolute;
       overflow: hidden;
       transition-property: width;
       transition-duration: 0.3s;
@@ -571,6 +572,10 @@
             transition-property: width;
             transition-duration: 0.3s;
             transition-timing-function: linear;
+
+            .fd-side-nav__sublink {
+              white-space: nowrap;
+            }
           }
         }
       }
