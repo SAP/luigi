@@ -201,13 +201,18 @@
 </script>
 
 <style type="text/scss">
+  :root {
+    /* needed for IE11 support */
+    --fd-color-shell-2: #d1e8ff;
+  }
+
   .fd-button--shell .is-hover,
   .fd-button--shell:hover {
     background-color: transparent;
   }
 
   .lui-tendant-menu__control {
-    // Overwrite color inheriting of product menu
+    /* Overwrite color inheriting of product menu */
     color: var(--fd-color-shell-2);
   }
 
