@@ -80,8 +80,7 @@ class NavigationHelpersClass {
           key = this.virtualGroupPrefix + virtualGroupCounter;
         }
         metaInfo = {
-          label: key,
-          icon: 'lui-blank'
+          label: key
         };
       }
 
