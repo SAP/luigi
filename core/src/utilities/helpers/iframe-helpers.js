@@ -138,11 +138,11 @@ class IframeHelpersClass {
       'allow-popups-to-escape-sandbox', // Lets the sandboxed document open new windows without those windows inheriting the sandboxing. For example, this can safely sandbox an advertisement without forcing the same restrictions upon the page the ad links to.
       // 'allow-presentation', // Lets the resource start a presentation session.
       'allow-same-origin', // If this token is not used, the resource is treated as being from a special origin that always fails the same-origin policy.
-      'allow-scripts', // Lets the resource run scripts (but not create popup windows).
+      'allow-scripts' // Lets the resource run scripts (but not create popup windows).
       // 'allow-storage-access-by-user-activation', // Lets the resource request access to the parent's storage capabilities with the Storage Access API.
       // 'allow-top-navigation', // Lets the resource navigate the top-level browsing context (the one named _top).
       // 'allow-top-navigation-by-user-activation', // Lets the resource navigate the top-level browsing context, but only if initiated by a user gesture.
-      'allow-downloads-without-user-activation' // Allows for downloads to occur without a gesture from the user.
+      // 'allow-downloads-without-user-activation' // Allows for downloads to occur without a gesture from the user.
     ];
 
     const iframe = document.createElement('iframe');
