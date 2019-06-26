@@ -118,6 +118,30 @@ describe('Context-switcher', function() {
       sinon.assert.calledWith(CSHelpers.generateSwitcherNav, mockConfig, opts);
       assert.equal(result, expectedResult, 'return value');
     });
+
+    it('lazyLoad on, always fetches options', async () => {
+      mockConfig.lazyloadOptions = true;
+      const opts = ['a', 'b', 'c'];
+      const expectedResult = 'works';
+      LuigiConfig.getConfigValueAsync.returns(opts);
+      CSHelpers.generateSwitcherNav.returns(expectedResult);
+
+      const result = await CSHelpers.fetchOptions();
+      await CSHelpers.fetchOptions();
+      await CSHelpers.fetchOptions();
+
+      sinon.assert.calledWithExactly(
+        LuigiConfig.getConfigValueAsync,
+        'navigation.contextSwitcher.options'
+      );
+      sinon.assert.calledWith(CSHelpers.generateSwitcherNav, mockConfig, opts);
+      assert.equal(result, expectedResult, 'return value');
+      sinon.assert.callCount(
+        CSHelpers.generateSwitcherNav,
+        3,
+        'called N times'
+      );
+    });
   });
 
   describe('generateSwitcherNav', () => {
