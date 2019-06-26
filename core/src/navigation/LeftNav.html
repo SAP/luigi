@@ -219,7 +219,7 @@
         responsiveNavSetting: LuigiConfig.getConfigValue(
           'settings.responsiveNavigation'
         ),
-        isSemiCollapsed: document.body.classList.contains('semiCollapsed')
+        isSemiCollapsed: this.getIsSemiCollapsed()
       });
 
       StateHelpers.doOnStoreChange(this.store, () => {
@@ -236,6 +236,8 @@
       ) {
         this.setIsSemiCollapsed(true);
       }
+
+      this.setIsSemiCollapsed(this.get().isSemiCollapsed);
     },
     onstate({ changed, current, previous }) {
       if (!previous || previous.pathData != current.pathData) {
@@ -359,7 +361,9 @@
       },
 
       getIsSemiCollapsed() {
-        return this.get().isSemiCollapsed;
+        return localStorage.getItem(NavigationHelpers.COL_NAV_KEY) === 'true'
+          ? true
+          : false;
       },
 
       setIsSemiCollapsed(state) {
@@ -370,6 +374,7 @@
         }
         // initial state
         this.set({ isSemiCollapsed: state });
+        localStorage.setItem(NavigationHelpers.COL_NAV_KEY, state);
       },
 
       closePopupMenu() {

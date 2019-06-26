@@ -5,6 +5,7 @@ import { AuthHelpers } from './';
 class NavigationHelpersClass {
   constructor() {
     this.EXP_CAT_KEY = 'luigi.preferences.navigation.expandedCategories';
+    this.COL_NAV_KEY = 'luigi.preferences.navigation.collapsedNavigation';
     this.virtualGroupPrefix = '___';
   }
 
