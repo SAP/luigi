@@ -10,7 +10,6 @@ module.exports = {
   entry: {
     'luigi-legacy': [
       './node_modules/fiori-fundamentals/dist/fiori-fundamentals-ie11.min.css',
-
       './src/main.js'
     ]
   },

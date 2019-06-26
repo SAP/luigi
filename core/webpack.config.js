@@ -9,8 +9,6 @@ const commonPlugins = require('./webpack-common-plugins');
 module.exports = {
   entry: {
     luigi: [
-      // './node_modules/fiori-fundamentals/dist/fiori-fundamentals.min.css',
-
       './node_modules/fiori-fundamentals/dist/fonts.min.css',
       './node_modules/fiori-fundamentals/dist/icons.min.css',
       './node_modules/fiori-fundamentals/dist/core.min.css',

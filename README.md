@@ -32,7 +32,8 @@ If you want to support additionally legacy browsers like Internet Explorer 11 in
     <!-- <link rel='stylesheet' href='core/public/luigi.css'> -->
   </head>
   <body>
-    <script src="/luigi-core/luigi-legacy.js"></script>
+    <script type="module" src="luigi.js"></script>
+    <script nomodule src="luigi-legacy.js"></script>
     <!-- <script src="/luigi-core/luigi.js"></script> -->
   </body>
 </html>
