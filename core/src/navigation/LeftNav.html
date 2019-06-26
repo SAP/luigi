@@ -1,4 +1,9 @@
-<svelte:window on:resize="onResize()"/>
+<svelte:window
+  on:resize="onResize()"
+  on:blur="closePopupMenu()"
+  on:click="closePopupMenu()"
+  on:touchstart="closePopupMenu()"
+/>
 <div class="fd-app__sidebar {hideNavComponent ? 'hideNavComponent' : ''}">
   {#if children && pathData.length > 1}
   <nav class="fd-side-nav" on:keyup="handleKey(event)">
@@ -279,6 +284,8 @@
 
       handleIconClick(nodeOrNodes, el) {
         if (this.getIsSemiCollapsed()) {
+          event.stopPropagation();
+
           let selectedCategory;
           let sideBar = document.getElementsByClassName('fd-app__sidebar')[0];
 
