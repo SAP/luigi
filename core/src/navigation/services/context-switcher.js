@@ -90,7 +90,8 @@ export const ContextSwitcherHelpers = {
     );
   },
 
-  async fetchOptions(config, existingOptions = []) {
+  async fetchOptions(existingOptions = []) {
+    const config = LuigiConfig.getConfigValue('navigation.contextSwitcher');
     if (!config.lazyloadOptions && existingOptions.length) {
       return existingOptions;
     }

@@ -144,11 +144,8 @@
     },
     methods: {
       async fetchOptions() {
-        const config =
-          this.get().config ||
-          LuigiConfig.getConfigValue('navigation.contextSwitcher');
         const options = await ContextSwitcherHelpers.fetchOptions(
-          this.get().options || []
+          this.get().options
         );
         this.set({ options });
       },

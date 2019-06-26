@@ -87,13 +87,14 @@ describe('Context-switcher', function() {
       mockConfig = getMockConfig();
       sinon.stub(LuigiConfig, 'getConfigValueAsync');
       sinon.stub(CSHelpers, 'generateSwitcherNav');
+      sinon.stub(LuigiConfig, 'getConfigValue').returns(mockConfig);
     });
 
     it('lazyLoad off, existing options get returned', async () => {
       mockConfig.lazyloadOptions = false;
       const opts = ['a', 'b', 'c'];
 
-      const result = await CSHelpers.fetchOptions(mockConfig, opts);
+      const result = await CSHelpers.fetchOptions(opts);
       assert.equal(result, opts);
       assert.isFalse(
         LuigiConfig.getConfigValueAsync.called,
@@ -107,7 +108,8 @@ describe('Context-switcher', function() {
       const expectedResult = 'works';
       LuigiConfig.getConfigValueAsync.returns(opts);
       CSHelpers.generateSwitcherNav.returns(expectedResult);
-      const result = await CSHelpers.fetchOptions(mockConfig);
+
+      const result = await CSHelpers.fetchOptions();
 
       sinon.assert.calledWithExactly(
         LuigiConfig.getConfigValueAsync,
