@@ -23,6 +23,44 @@ The lerna-changelog tool detects changes based on PR labels and maps them to sec
     ...
   }
 -->
+## [v0.4.12] (2019-06-24)
+
+#### :rocket: Added
+* [#585](https://github.com/SAP/luigi/pull/585) 577 close modals by esc-key ([@JohannesDoberer](https://github.com/JohannesDoberer))
+* [#545](https://github.com/SAP/luigi/pull/545) On auth expire soon event ([@JohannesDoberer](https://github.com/JohannesDoberer))
+* [#569](https://github.com/SAP/luigi/pull/569) Reduce luigi client and core bundle size ([@jesusreal](https://github.com/jesusreal))
+* [#552](https://github.com/SAP/luigi/pull/552) Improve control over luigi bootstrap process ([@pekura](https://github.com/pekura))
+* [#544](https://github.com/SAP/luigi/pull/544) Extend luigi core api by methods for getting important dom elements ([@marynaKhromova](https://github.com/marynaKhromova))
+* [#501](https://github.com/SAP/luigi/pull/501) Luigi Authentication Events ([@maxmarkus](https://github.com/maxmarkus))
+* [#503](https://github.com/SAP/luigi/pull/503) Display info in bottom left corner ([@parostatkiem](https://github.com/parostatkiem))
+* [#520](https://github.com/SAP/luigi/pull/520) Cache and reuse viewgroups frame ([@JohannesDoberer](https://github.com/JohannesDoberer))
+* [#514](https://github.com/SAP/luigi/pull/514) display picture in topnav for idp flow ([@JohannesDoberer](https://github.com/JohannesDoberer))
+* [#504](https://github.com/SAP/luigi/pull/504) Add user pic to userinfo ([@JohannesDoberer](https://github.com/JohannesDoberer))
+* [#498](https://github.com/SAP/luigi/pull/498) Update unit tests dependencies for luigi core ([@jesusreal](https://github.com/jesusreal))
+* [#493](https://github.com/SAP/luigi/pull/493) Make profile dropdown extensible ([@jesusreal](https://github.com/jesusreal))
+* [#480](https://github.com/SAP/luigi/pull/480) Alert improvements ([@parostatkiem](https://github.com/parostatkiem))
+* [#484](https://github.com/SAP/luigi/pull/484) Display userinfo ([@JohannesDoberer](https://github.com/JohannesDoberer))
+* [#476](https://github.com/SAP/luigi/pull/476) remove unnecessary styles ([@marynaKhromova](https://github.com/marynaKhromova))
+
+#### :bug: Fixed
+* [#599](https://github.com/SAP/luigi/pull/599) diff vulnerability fix ([@JohannesDoberer](https://github.com/JohannesDoberer))
+* [#580](https://github.com/SAP/luigi/pull/580) axios vulnerability fix ([@JohannesDoberer](https://github.com/JohannesDoberer))
+* [#575](https://github.com/SAP/luigi/pull/575) Node refresh bug on hash routing ([@jesusreal](https://github.com/jesusreal))
+* [#566](https://github.com/SAP/luigi/pull/566) Improve e2e testrunner script ([@maxmarkus](https://github.com/maxmarkus))
+* [#561](https://github.com/SAP/luigi/pull/561) Fix e2e install ([@maxmarkus](https://github.com/maxmarkus))
+* [#558](https://github.com/SAP/luigi/pull/558) Fix bug by overwriting description only when present ([@jesusreal](https://github.com/jesusreal))
+* [#526](https://github.com/SAP/luigi/pull/526) Bug in left navigation ([@marynaKhromova](https://github.com/marynaKhromova))
+* [#528](https://github.com/SAP/luigi/pull/528) Error message for invalid auth provider ([@maxmarkus](https://github.com/maxmarkus))
+* [#530](https://github.com/SAP/luigi/pull/530) Fix dev server reload issue ([@maxmarkus](https://github.com/maxmarkus))
+* [#523](https://github.com/SAP/luigi/pull/523) 485 fix headerjs error ([@maxmarkus](https://github.com/maxmarkus))
+* [#482](https://github.com/SAP/luigi/pull/482) fix linter errors ([@maxmarkus](https://github.com/maxmarkus))
+
+#### :memo: Documentation
+* [#546](https://github.com/SAP/luigi/pull/546) Modernize luigi client ([@maxmarkus](https://github.com/maxmarkus))
+* [#544](https://github.com/SAP/luigi/pull/544) Extend luigi core api by methods for getting important dom elements ([@marynaKhromova](https://github.com/marynaKhromova))
+* [#542](https://github.com/SAP/luigi/pull/542) Documented luigi.auth.tokenIssued event ([@maxmarkus](https://github.com/maxmarkus))
+* [#531](https://github.com/SAP/luigi/pull/531) Cleanup codeowners and contributing files ([@jesusreal](https://github.com/jesusreal))
+
 ## [v0.4.11] (2019-04-12)
 
 #### :rocket: Added
@@ -352,3 +390,4 @@ The lerna-changelog tool detects changes based on PR labels and maps them to sec
 [v0.4.9]: https://github.com/SAP/luigi/compare/v0.4.8...v0.4.9
 [v0.4.10]: https://github.com/SAP/luigi/compare/v0.4.9...v0.4.10
 [v0.4.11]: https://github.com/SAP/luigi/compare/v0.4.10...v0.4.11
+[v0.4.12]: https://github.com/SAP/luigi/compare/v0.4.11...v0.4.12
