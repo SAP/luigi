@@ -12,7 +12,7 @@ import {
   uxManager,
   addContextUpdateListener,
   removeContextUpdateListener
-} from '@kyma-project/luigi-client/luigi-client-legacy';
+} from '@kyma-project/luigi-client';
 import {
   IContextMessage,
   LuigiContextService

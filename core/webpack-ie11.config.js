@@ -8,7 +8,7 @@ const commonRules = require('./webpack-common-rules');
 
 module.exports = {
   entry: {
-    'luigi-legacy': [
+    'luigi-ie11': [
       './node_modules/fiori-fundamentals/dist/fiori-fundamentals-ie11.min.css',
       './src/main.js'
     ]

@@ -22,18 +22,18 @@ For details, see [Luigi documentation](docs/README.md).
 
 ## Browser support
 
-If you want to support additionally legacy browsers like Internet Explorer 11 in your application, you just need to update your Luigi imports as follows:
+If you want to also support Internet Explorer 11 in your application, you just need to update your Luigi imports as follows:
 ### Luigi Core
 ```html
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <link rel='stylesheet' href='core/public/luigi-legacy.css'>
+    <link rel='stylesheet' href='core/public/luigi-ie11.css'>
     <!-- <link rel='stylesheet' href='core/public/luigi.css'> -->
   </head>
   <body>
     <script type="module" src="luigi.js"></script>
-    <script nomodule src="luigi-legacy.js"></script>
+    <script nomodule src="luigi-ie11.js"></script>
     <!-- <script src="/luigi-core/luigi.js"></script> -->
   </body>
 </html>
@@ -44,25 +44,9 @@ If you want to support additionally legacy browsers like Internet Explorer 11 in
 import {
   linkManager,
   uxManager
-} from '@kyma-project/luigi-client/luigi-client-legacy';
+} from '@kyma-project/luigi-client/luigi-client-ie11';
 <!-- } from '@kyma-project/luigi-client'; -->
-
-### Luigi Client
 ``` 
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    ...
-    <link rel='stylesheet' href='core/public/luigi-legacy.css'>
-    ...
-  </head>
-
-  <body>
-    ...
-    <script src="core/public/luigi-legacy.js"></script>
-    ...
-  <body>
-</html>
 
 ## Development
 

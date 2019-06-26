@@ -5,7 +5,7 @@ module.exports = {
   },
 
   output: {
-    filename: 'luigi-client-legacy.js',
+    filename: 'luigi-client-ie11.js',
     libraryExport: 'default',
     library: 'LuigiClientLegacy',
     libraryTarget: 'umd',
