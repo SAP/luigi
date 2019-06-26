@@ -538,6 +538,7 @@
 
   :global(.lui-semiCollapsible) {
     .fd-app__sidebar {
+      overflow: hidden;
       transition-property: width;
       transition-duration: 0.3s;
       transition-timing-function: linear;
@@ -557,6 +558,15 @@
         .fd-side-nav__title,
         .fd-side-nav__link {
           white-space: nowrap;
+        }
+
+        .fd-side-nav__list {
+          .fd-side-nav__sublist {
+            width: 100%;
+            transition-property: width;
+            transition-duration: 0.3s;
+            transition-timing-function: linear;
+          }
         }
       }
     }
@@ -631,7 +641,6 @@
         }
 
         .fd-side-nav__icon {
-          font-size: 16px;
           line-height: 1;
           width: auto;
 
@@ -641,8 +650,11 @@
         }
 
         .fd-side-nav__list {
-          .fd-side-nav__subitem {
-            display: none;
+          .fd-side-nav__sublist {
+            width: 40px;
+            height: 0;
+            opacity: 0;
+            visibility: hidden;
           }
         }
 
@@ -663,6 +675,7 @@
         }
 
         .fd-side-nav__text {
+          margin-left: 12px;
           opacity: 1;
           visibility: visible;
           animation-name: labelAnimation;
