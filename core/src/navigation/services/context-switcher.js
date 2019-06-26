@@ -1,4 +1,5 @@
 import { GenericHelpers } from '../../utilities/helpers';
+import { LuigiConfig } from '../../core-api';
 
 export const ContextSwitcherHelpers = {
   getPreparedParentNodePath(config) {
@@ -86,6 +87,19 @@ export const ContextSwitcherHelpers = {
         fallbackLabelResolver,
         selectedId
       ))
+    );
+  },
+
+  async fetchOptions(config, existingOptions = []) {
+    if (!config.lazyloadOptions && existingOptions.length) {
+      return existingOptions;
+    }
+    const contextSwitcherOptions = await LuigiConfig.getConfigValueAsync(
+      'navigation.contextSwitcher.options'
+    );
+    return await ContextSwitcherHelpers.generateSwitcherNav(
+      config,
+      contextSwitcherOptions
     );
   }
 };

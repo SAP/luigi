@@ -3,6 +3,7 @@ const sinon = require('sinon');
 
 import { ContextSwitcherHelpers as CSHelpers } from '../src/navigation/services/context-switcher';
 import { GenericHelpers } from '../src/utilities/helpers';
+import { LuigiConfig } from '../src/core-api';
 
 describe('Context-switcher', function() {
   afterEach(() => {
@@ -77,6 +78,43 @@ describe('Context-switcher', function() {
     it('works with fallback resolver', async () => {
       const result = await CSHelpers.getFallbackLabel(myResolverFn, 'some_id');
       assert.equal(result, '##some_id##');
+    });
+  });
+
+  describe('fetchOptions', () => {
+    let mockConfig;
+    beforeEach(() => {
+      mockConfig = getMockConfig();
+      sinon.stub(LuigiConfig, 'getConfigValueAsync');
+      sinon.stub(CSHelpers, 'generateSwitcherNav');
+    });
+
+    it('lazyLoad off, existing options get returned', async () => {
+      mockConfig.lazyloadOptions = false;
+      const opts = ['a', 'b', 'c'];
+
+      const result = await CSHelpers.fetchOptions(mockConfig, opts);
+      assert.equal(result, opts);
+      assert.isFalse(
+        LuigiConfig.getConfigValueAsync.called,
+        'getConfigValueAsync not called'
+      );
+    });
+
+    it('lazyLoad off, non-existing options fetches options', async () => {
+      mockConfig.lazyloadOptions = false;
+      const opts = ['a', 'b', 'c'];
+      const expectedResult = 'works';
+      LuigiConfig.getConfigValueAsync.returns(opts);
+      CSHelpers.generateSwitcherNav.returns(expectedResult);
+      const result = await CSHelpers.fetchOptions(mockConfig);
+
+      sinon.assert.calledWithExactly(
+        LuigiConfig.getConfigValueAsync,
+        'navigation.contextSwitcher.options'
+      );
+      sinon.assert.calledWith(CSHelpers.generateSwitcherNav, mockConfig, opts);
+      assert.equal(result, expectedResult, 'return value');
     });
   });
 

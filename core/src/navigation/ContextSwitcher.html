@@ -147,16 +147,8 @@
         const config =
           this.get().config ||
           LuigiConfig.getConfigValue('navigation.contextSwitcher');
-        let options = this.get().options || [];
-        if (!config.lazyloadOptions && options.length) {
-          return;
-        }
-        const contextSwitcherOptions = await LuigiConfig.getConfigValueAsync(
-          'navigation.contextSwitcher.options'
-        );
-        options = await ContextSwitcherHelpers.generateSwitcherNav(
-          config,
-          contextSwitcherOptions
+        const options = await ContextSwitcherHelpers.fetchOptions(
+          this.get().options || []
         );
         this.set({ options });
       },
