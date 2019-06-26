@@ -6,6 +6,7 @@
   "devDependencies": {
     "@babel/core": "^7.4.0",
     "@babel/node": "^7.2.2",
+    "@babel/plugin-proposal-optional-chaining": "^7.2.0",
     "@babel/preset-env": "^7.4.2",
     "@babel/register": "^7.0.0",
     "acorn": "^6.1.1",
@@ -43,7 +44,6 @@
     "test": "babel-node ./node_modules/nyc/bin/nyc.js mocha -- --recursive test",
     "test:watch": "npm run test -- --watch",
     "bundlesize": "npm run bundle && bundlesize",
-    "prepush": "../scripts/hooks/remove-test-prefixes.sh && npm test && npm run docu:validate",
     "docu:validate": "documentation lint src/core-api/dom-elements.js"
   },
   "bundlesize": [
