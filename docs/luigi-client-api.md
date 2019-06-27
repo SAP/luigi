@@ -196,7 +196,7 @@ Discards the active view and navigates back to the last visited view. Works with
 
 #### Parameters
 
--   `goBackValue` **any** data that is passed in the `goBackContext` field to the last visited view, when using preserved views.
+-   `goBackValue` **any** data that is passed in the **goBackContext** field to the last visited view when using preserved views.
 
 #### Examples
 

@@ -208,7 +208,7 @@ export class linkManager extends LuigiClientBase {
   /**
    * Discards the active view and navigates back to the last visited view. Works with preserved views, and also acts as the substitute of the browser **back** button. **goBackContext** is only available when using preserved views.
    * @memberof linkManager
-   * @param {any} goBackValue data that is passed in the `goBackContext` field to the last visited view, when using preserved views.
+   * @param {any} goBackValue data that is passed in the **goBackContext** field to the last visited view when using preserved views.
    * @example
    * LuigiClient.linkManager().goBack({ foo: 'bar' });
    * LuigiClient.linkManager().goBack(true);
