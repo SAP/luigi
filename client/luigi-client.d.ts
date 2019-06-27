@@ -136,7 +136,7 @@ export declare interface LinkManager {
   fromContext: (navigationContext: string) => this;
 
   /**
-   * Discards the active view and navigates back to the last visited view. Works with preserved views, as well as classical browser back substitute. `goBackContext` is only available when using preserved views.
+   * Discards the active view and navigates back to the last visited view. Works with preserved views, and also acts as the substitute of the browser **back** button. **goBackContext** is only available when using preserved views.
    * @param {any} goBackValue data that is passed in the `goBackContext` field to the last visited view, when using preserved views.
    * @example
    * LuigiClient.linkManager().goBack({ foo: 'bar' });
