@@ -1,9 +1,20 @@
+
+{#if !isMobile}
 <nav class="fd-menu">
   <ul class="fd-menu__list fd-menu__list--top">
     {#if children}
     {#each children as node}
-    <li on:click="onActionClick(node)">
+    <li on:click="onActionClick(node)" data-e2e="topnav-dropdown-item">
       <a class="fd-menu__item">
+        {#if node.icon}
+        {#if hasOpenUIicon(node)}
+        <span
+          class="fd-top-nav__icon sap-icon--{node.icon} sap-icon--m"
+        ></span>
+        {:else}
+        <img class="fd-top-nav__icon nav-icon" src="{node.icon}">
+        {/if}
+        {/if}
         <span>{node.label}</span>
       </a>
     </li>
@@ -11,9 +22,68 @@
     {/if}
   </ul>
 </nav>
+{/if}
+{#if isMobile}
+<section class="fd-product-switcher">
+  <div
+    class="fd-modal y-fd-modal--full-screen"
+    on:click="event.stopPropagation()"
+  >
+    <div class="fd-modal__content" role="document">
+      <div class="fd-action-bar">
+        <div class="fd-action-bar__back">
+          <button
+            class="fd-button--light fd-button--compact sap-icon--nav-back"
+            on:click="closeSubNav()"
+            data-cy="mobile-topnav-dropdown-close"
+          ></button>
+        </div>
+        <div class="fd-action-bar__header">
+          <h5 class="fd-action-bar__title fd-has-type-1">{node.label}</h5>
+        </div>
+      </div>
+      <div class="fd-modal__body">
+        <div class="fd-product-switcher__body">
+          <ul class="y-full-width-list">
+            {#if node.children}
+            {#each node.children as node}
+            <li
+              class="y-full-width-list__item"
+              on:click="onActionClick(node)"
+              data-cy="mobile-topnav-dropdown-item"
+            >
+              {#if node.icon} {#if hasOpenUIicon(node)}
+              <span
+                class="y-full-width-list__icon sap-icon--{node.icon} sap-icon--m"
+              ></span>
+              {:else}
+              <img
+                class="y-full-width-list__icon nav-icon"
+                src="{node.icon}"
+              >
+              {/if}
+              {:else}
+              <span
+                class="y-full-width-list__icon"
+              ></span>
+              {/if}
+              <span
+                class="y-full-width-list__title"
+              >{node.label}</span>
+            </li>
+            {/each}
+            {/if}
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+{/if}
 <script type="text/javascript">
   import { Routing } from './services/routing';
   import { Navigation } from './navigation/services/navigation';
+  import { NavigationHelpers } from './utilities/helpers';
   export default {
     async onupdate({ changed, current, previous }) {
       const currentNode = this.get().node;
@@ -28,7 +98,130 @@
         this.root.getUnsavedChangesModalPromise().then(() => {
           Routing.handleRouteClick(node, this);
         });
+        this.closeSubNav();
+      },
+      closeSubNav() {
+        this.fire('close');
+      }
+    },
+    helpers: {
+      hasOpenUIicon(node) {
+        return NavigationHelpers.isOpenUIiconName(node.icon);
       }
     }
   };
 </script>
+<style type="text/scss">
+  .fd-product-switcher__product-icon > img {
+    max-height: 40px;
+  }
+
+  .fd-product-switcher__body {
+    .fd-menu__item {
+      padding: 0;
+      text-align: center;
+    }
+  }
+
+  @media (max-width: 600px) {
+    .y-full-width-list__icon {
+      padding-left: 15px;
+    }
+
+    .y-full-width-list__item {
+      padding: 5px 5px !important;
+    }
+  }
+
+  .y-fd-modal--full-screen {
+    z-index: 1000;
+    position: fixed;
+    box-sizing: border-box;
+    top: 48px;
+    left: 0;
+    margin: auto auto;
+
+    .fd-modal__content {
+      $margin: 0px; //distance from viewport borders. Please remove the line below (border-radius) if not set to 0.
+      border-radius: 0;
+
+      width: calc(100vw - 2 * #{$margin});
+      height: 100vh; /* Fallback for browsers that do not support Custom Properties */
+      height: calc(var(--vh, 1vh) * 100);
+      margin: $margin;
+      display: grid;
+      grid-template-rows: 1fr auto; //no row for title by default
+    }
+
+    .fd-modal__header {
+      padding: 12px 8px;
+    }
+
+    .fd-modal__title {
+      text-align: left;
+      @at-root {
+        .y-fd-modal--full-screen .fd-modal__content {
+          grid-template-rows: auto 1fr auto; //add another row to the top of the modal if __title is present
+        }
+      }
+    }
+    .fd-modal__body {
+      max-height: none;
+      padding: 0;
+    }
+
+    .fd-modal__footer {
+      box-shadow: 0 0px 6px rgba(0, 0, 0, 0.2);
+    }
+
+    .fd-product-switcher__body {
+      padding: 0;
+    }
+  }
+
+  @media (min-width: 320px) {
+    .fd-action-bar__back {
+      display: block !important;
+    }
+  }
+
+  .y-full-width-list {
+    width: 100%;
+    text-align: left;
+    list-style: none;
+
+    &__item {
+      display: grid;
+      grid-template-columns: 40px auto;
+      grid-template-rows: 1fr 1fr;
+      grid-gap: 2px 8px;
+
+      padding: 12px 8px;
+      cursor: pointer;
+
+      &:hover {
+        background: #f5faff;
+        .y-full-width-list__title {
+          font-weight: bold;
+        }
+      }
+    }
+
+    &__icon {
+      vertical-align: middle;
+      width: 40px;
+      height: 40px;
+      grid-row: 1 / 3;
+      background-position: center;
+      background-size: cover;
+    }
+
+    &__title {
+      color: #515559;
+    }
+
+    &__subtitle {
+      color: #74777a;
+    }
+  }
+</style>

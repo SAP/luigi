@@ -35,6 +35,7 @@
                 aria-expanded="{dropDownStates[`dropDownPopover-${i}`] || false}"
                 aria-haspopup="true"
                 on:click="toggleDropdownState(`dropDownPopover-${i}`)"
+                data-e2e="topnav-category"
               >
                 {#if node.icon}
                 {#if hasOpenUIicon(node)}
@@ -59,7 +60,7 @@
               aria-hidden="{!(dropDownStates[`dropDownPopover-${i}`] || false)}"
               id="dropDownPopover-{i}"
             >
-              <TopNavDropDown node="{node}"/>
+              <TopNavDropDown node="{node}" isMobile="{false}"/>
             </div>
           </div>
         </div>
@@ -143,7 +144,9 @@
             >
               <nav class="fd-menu">
                 <ul class="fd-menu__list">
-                  {#each children as node} {#if !node.hideFromNav}
+                  {#each children as node,i}
+                  {#if !node.hideFromNav}
+                  {#if !node.isCat}
                   <li>
                     <a
                       class="fd-menu__item {node === selectedNode ? 'is-selected' : ''}"
@@ -167,6 +170,17 @@
                       {/if}
                     </a>
                   </li>
+                  {:else}
+                  <li>
+                    <a
+                      class="fd-menu__item"
+                      on:click="openMobileTopNavDropDown(node)"
+                      data-cy="mobile-topnav-dropdown-category"
+                    >
+                      <span>{node.label}</span>
+                    </a>
+                  </li>
+                  {/if}
                   {/if}
                   {/each}
                   {#if isProductSwitcherAvailable}
@@ -189,6 +203,13 @@
               bind:dropDownStates
               on:toggleDropdownState="toggleDropdownState('productSwitcherPopover')"
               isMobile="{true}"
+            />
+            {/if}
+            {#if openMobileDropDown}
+            <TopNavDropDown
+              node="{nodeForMobile}"
+              isMobile="{true}"
+              on:close="closeMobileTopNavDropDown()"
             />
             {/if}
           </div>
@@ -364,10 +385,14 @@
         if (event) event.stopPropagation();
         this.toggleDropdownState('productSwitcherPopover');
       },
+      openMobileTopNavDropDown(node) {
+        this.set({ openMobileDropDown: true, nodeForMobile: node });
+      },
+      closeMobileTopNavDropDown() {
+        this.set({ openMobileDropDown: false });
+      },
       handleClick(node) {
-        node.viewUrl
-          ? this.fire('handleClick', { node })
-          : console.log('not support yet on mobile');
+        this.fire('handleClick', { node });
       },
       toggleDropdownState(name) {
         const dropDownStates = this.get().dropDownStates || {};
