@@ -886,6 +886,31 @@
     }
   }
 
+  :global(.lui-semiCollapsible) {
+    .iframeContainer,
+    .spinnerContainer {
+      -webkit-transition-property: left;
+      -moz-transition-property: left;
+      -o-transition-property: left;
+      transition-property: left;
+      -webkit-transition-duration: 0.1s;
+      -moz-transition-duration: 0.1s;
+      -o-transition-duration: 0.1s;
+      transition-duration: 0.1s;
+      -webkit-transition-timing-function: linear;
+      -moz-transition-timing-function: linear;
+      -o-transition-timing-function: linear;
+      transition-timing-function: linear;
+    }
+  }
+
+  :global(.semiCollapsed) {
+    .iframeContainer,
+    .spinnerContainer {
+      left: 40px;
+    }
+  }
+
   @media (min-width: $desktop-min-width) {
     :global(.fd-shellbar__title) {
       display: inline;
@@ -934,13 +959,6 @@
       .spinnerContainer {
         left: 40px;
       }
-    }
-  }
-
-  :global(.semiCollapsed) {
-    .iframeContainer,
-    .spinnerContainer {
-      left: 40px;
     }
   }
 </style>
