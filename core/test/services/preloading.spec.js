@@ -13,6 +13,7 @@ describe('Iframe', () => {
   let clock;
   let container;
   let iframes;
+  let viewGroupSettings;
 
   beforeEach(() => {
     clock = sinon.useFakeTimers();
@@ -45,18 +46,19 @@ describe('Iframe', () => {
         iframes.push(child);
       }
     };
+    viewGroupSettings = {
+      ham: {
+        preloadUrl: 'ham.html'
+      },
+      cheese: {
+        preloadUrl: 'cheese.html'
+      },
+      ananas: {
+        preloadUrl: 'ananas.html'
+      }
+    };
     sinon.stub(Iframe, 'getAllViewGroupSettings').callsFake(() => {
-      return {
-        ham: {
-          preloadUrl: 'ham.html'
-        },
-        cheese: {
-          preloadUrl: 'cheese.html'
-        },
-        ananas: {
-          preloadUrl: 'ananas.html'
-        }
-      };
+      return viewGroupSettings;
     });
     sinon.stub(Iframe, 'getIframeContainer').callsFake(() => {
       return container;
@@ -76,6 +78,19 @@ describe('Iframe', () => {
 
   describe('preload view groups', () => {
     it('preloading disabled', () => {
+      ViewGroupPreloading.preloadViewGroups(2);
+
+      assert.equal(iframes.length, 1);
+      assert.equal(iframes[0].src, 'http://luigi.url.de');
+      assert.equal(iframes[0].luigi.viewUrl, 'http://luigi.url.de');
+      assert.equal(iframes[0].luigi.preloading, undefined);
+      assert.equal(iframes[0].style.display, 'block');
+      assert.equal(iframes[0].vg, 'tets1');
+    });
+
+    it('preloading with no view group settings', () => {
+      preloadingAllowed = true;
+      viewGroupSettings = [];
       ViewGroupPreloading.preloadViewGroups(2);
 
       assert.equal(iframes.length, 1);
@@ -148,6 +163,68 @@ describe('Iframe', () => {
       assert.equal(iframes[3].luigi.preloading, true);
       assert.equal(iframes[3].style.display, 'none');
       assert.equal(iframes[3].vg, 'ananas');
+    });
+
+    it('preloading with an iframe in preloading state ', () => {
+      preloadingAllowed = true;
+
+      iframes.push({
+        vg: 'sandwich',
+        src: 'sandwich.html',
+        luigi: {
+          viewUrl: 'sandwich.html',
+          preloading: true,
+          createdAt: new Date().getTime() - 500
+        }
+      });
+
+      ViewGroupPreloading.preloadViewGroups(2);
+
+      assert.equal(iframes.length, 2);
+      assert.equal(iframes[0].src, 'http://luigi.url.de');
+      assert.equal(iframes[0].luigi.viewUrl, 'http://luigi.url.de');
+      assert.equal(iframes[0].luigi.preloading, undefined);
+      assert.equal(iframes[0].style.display, 'block');
+      assert.equal(iframes[0].vg, 'tets1');
+      assert.equal(iframes[1].vg, 'sandwich');
+      assert.equal(iframes[1].luigi.viewUrl, 'sandwich.html');
+      assert.equal(iframes[1].src, 'sandwich.html');
+      assert.equal(iframes[1].luigi.preloading, true);
+    });
+
+    it('preloading with an iframe in preloading state but old', () => {
+      preloadingAllowed = true;
+
+      iframes.push({
+        vg: 'sandwich',
+        src: 'sandwich.html',
+        luigi: {
+          viewUrl: 'sandwich.html',
+          preloading: true,
+          createdAt: new Date().getTime() - 35000
+        }
+      });
+
+      ViewGroupPreloading.preloadViewGroups(4);
+      assert.equal(iframes[0].src, 'http://luigi.url.de');
+      assert.equal(iframes[0].luigi.viewUrl, 'http://luigi.url.de');
+      assert.equal(iframes[0].luigi.preloading, undefined);
+      assert.equal(iframes[0].style.display, 'block');
+      assert.equal(iframes[0].vg, 'tets1');
+      assert.equal(iframes[1].vg, 'sandwich');
+      assert.equal(iframes[1].luigi.viewUrl, 'sandwich.html');
+      assert.equal(iframes[1].src, 'sandwich.html');
+      assert.equal(iframes[1].luigi.preloading, true);
+      assert.equal(iframes[2].src, 'ham.html');
+      assert.equal(iframes[2].luigi.viewUrl, 'ham.html');
+      assert.equal(iframes[2].luigi.preloading, true);
+      assert.equal(iframes[2].style.display, 'none');
+      assert.equal(iframes[2].vg, 'ham');
+      assert.equal(iframes[3].src, 'cheese.html');
+      assert.equal(iframes[3].luigi.viewUrl, 'cheese.html');
+      assert.equal(iframes[3].luigi.preloading, true);
+      assert.equal(iframes[3].style.display, 'none');
+      assert.equal(iframes[3].vg, 'cheese');
     });
 
     it('loaded', () => {
