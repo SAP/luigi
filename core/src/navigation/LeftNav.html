@@ -197,6 +197,7 @@
   import { NavigationHelpers } from '../utilities/helpers';
   import { LuigiConfig, LuigiElements } from '../core-api';
   import { StateHelpers } from '../utilities/helpers';
+  import { CSS_BREAKPOINTS } from '../utilities/constants';
 
   const setLeftNavData = async (current, component) => {
     const componentData = component.get();
@@ -224,7 +225,8 @@
         responsiveNavSetting: LuigiConfig.getConfigValue(
           'settings.responsiveNavigation'
         ),
-        isSemiCollapsed: this.getIsSemiCollapsed()
+        isSemiCollapsed: this.getIsSemiCollapsed(),
+        previousWindowWidth: window.innerWidth
       });
 
       StateHelpers.doOnStoreChange(this.store, () => {
@@ -235,10 +237,7 @@
 
       // set isSemiCollapsed to true for mobile browsers
       // https://coderwall.com/p/i817wa/one-line-function-to-detect-mobile-devices-with-javascript
-      if (
-        typeof window.orientation !== 'undefined' ||
-        navigator.userAgent.indexOf('IEMobile') !== -1
-      ) {
+      if (window.innerWidth < CSS_BREAKPOINTS.desktopMinWidth) {
         this.setIsSemiCollapsed(true);
       }
 
@@ -341,6 +340,12 @@
       },
 
       onResize() {
+        const isDesktopToMobile =
+          window.innerWidth < CSS_BREAKPOINTS.desktopMinWidth &&
+          this.get().previousWindowWidth >= CSS_BREAKPOINTS.desktopMinWidth;
+        if (isDesktopToMobile) {
+          this.setIsSemiCollapsed(true);
+        }
         this.closePopupMenu();
       },
 
