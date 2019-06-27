@@ -16,8 +16,6 @@ class Navigation {
   nodeAccessibilityResolver = navigationPermissionChecker;
   nodes = [
     {
-      category: 'Misc',
-      icon: 'lightbulb',
       pathSegment: 'overview',
       label: 'Overview',
       viewUrl: '/sampleapp.html#/overview',
