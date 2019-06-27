@@ -22,7 +22,7 @@ For details, see [Luigi documentation](docs/README.md).
 
 ## Browser support
 
-If you want to also support Internet Explorer 11 in your application, you just need to update your Luigi imports as follows:
+If you want to support Internet Explorer 11 in your application, update your Luigi imports as follows:
 ### Luigi Core
 ```html
 <!DOCTYPE html>
