@@ -60,6 +60,7 @@
   import { Routing } from './services/routing';
   import { Navigation } from './navigation/services/navigation';
   import { Iframe } from './services/iframe';
+  import { ViewGroupPreloading } from './services/preloading';
   import {
     AuthHelpers,
     GenericHelpers,
@@ -68,7 +69,6 @@
     StateHelpers
   } from './utilities/helpers';
   import { CSS_BREAKPOINTS } from './utilities/constants';
-  import { getIframeBySource } from './services/iframe';
 
   const removeQueryParams = str => str.split('?')[0];
 
@@ -263,8 +263,7 @@
             isDirty: false,
             persistUrl: null
           },
-          hideSideNav: false,
-          preloadBatchSize: 1
+          hideSideNav: false
         },
         getDefaultAlertData(),
         getDefaultConfirmationModalData(),
@@ -326,16 +325,6 @@
           this.set({ alerts: updatedAlerts });
         });
 
-        let shouldPreload = false;
-        const preload = () => {
-          if (shouldPreload) {
-            setTimeout(() => {
-              Iframe.preloadViewGroups(this.get().preloadBatchSize);
-            });
-          }
-          shouldPreload = true;
-        };
-
         window.addEventListener('message', async e => {
           const iframe = this.getValidMessageSource(e);
           if (!iframe) return;
@@ -345,7 +334,7 @@
             iframe.luigi.nextViewUrl = '';
             config.navigateOk = true;
 
-            preload();
+            ViewGroupPreloading.preload();
           }
 
           if ('luigi.get-context' === e.data.msg) {
@@ -375,9 +364,9 @@
                 this.set({ showLoadingIndicator: false });
               }
 
-              preload();
+              ViewGroupPreloading.preload();
             } else if (iframe.luigi.preloading) {
-              // set empty context to an existing but inactive iframe; this is a valid use case (viewgroup pre-loading)
+              // set empty context to an existing but inactive iframe; this is a valid use case (view group pre-loading)
               sendContextToClient(
                 this,
                 {
@@ -389,23 +378,9 @@
                 },
                 {}
               );
-              const preloadTime = new Date().getTime() - iframe.luigi.createdAt;
-              let preloadBatchSize = 1;
-              if (preloadTime < 500) {
-                preloadBatchSize = 3;
-              } else if (preloadTime < 1000) {
-                preloadBatchSize = 2;
-              }
-              this.set({ preloadBatchSize });
-              console.debug('preload batch size: ' + preloadBatchSize);
             }
 
-            setTimeout(
-              () => {
-                iframe.luigi.preloading = false;
-              },
-              this.get().preloadBatchSize > 2 ? 500 : 1000
-            );
+            ViewGroupPreloading.viewGroupLoaded(iframe);
           }
 
           if ('luigi.show-loading-indicator' === e.data.msg) {

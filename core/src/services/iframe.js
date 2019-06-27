@@ -26,10 +26,7 @@ class IframeClass {
     if (modalIframe && modalIframe.contentWindow === source) {
       return modalIframe;
     }
-    const iframes = this.getAllIframes().filter(
-      iframe => iframe.contentWindow === source
-    );
-    return iframes.length > 0 ? iframes[0] : undefined;
+    return this.getAllIframes().find(iframe => iframe.contentWindow === source);
   }
 
   getIframeContainer() {
@@ -75,48 +72,6 @@ class IframeClass {
       isolateView ||
       (isolateAllViews && !(isolateView === false) && !isSameViewGroup)
     );
-  }
-
-  preloadViewGroups(batchSize = 3) {
-    const preloadViewGroupsSetting = LuigiConfig.getConfigValue(
-      'navigation.preloadViewGroups'
-    );
-    if ([false, 'false'].includes(preloadViewGroupsSetting)) {
-      return;
-    }
-    const vgSettings = this.getAllViewGroupSettings();
-    if (!vgSettings) {
-      return;
-    }
-    const iframeContainer = this.getIframeContainer();
-    const iframes = this.getAllIframes();
-    const now = new Date().getTime();
-    const preloadingIframes = iframes.filter(
-      iframe =>
-        iframe.luigi &&
-        iframe.luigi.preloading &&
-        now - iframe.luigi.createdAt < 30000
-    );
-    if (preloadingIframes.length > 0) {
-      console.debug('skipping view group preloading (busy)');
-      return;
-    }
-    const existingVGs = iframes.map(iframe => iframe.vg).filter(Boolean);
-    Object.entries(vgSettings)
-      .filter(
-        ([name, settings]) =>
-          name && !existingVGs.includes(name) && settings && settings.preloadUrl
-      )
-      .filter((_, index) => index < batchSize)
-      .forEach(([name, settings]) => {
-        console.debug(
-          'preloading view group ' + name + ' - ' + settings.preloadUrl
-        );
-        const iframe = IframeHelpers.createIframe(settings.preloadUrl, name);
-        iframe.style.display = 'none';
-        iframe.luigi.preloading = true;
-        iframeContainer.appendChild(iframe);
-      });
   }
 
   removeIframe(iframe, node) {
@@ -291,13 +246,13 @@ class IframeClass {
           component.set({ showLoadingIndicator: false });
         }
         config.navigateOk = undefined;
+        const canCache =
+          componentData.viewGroup &&
+          !nextViewIsolated &&
+          this.canCache(componentData.viewGroup);
         config.iframe = IframeHelpers.createIframe(
           viewUrl,
-          componentData.viewGroup &&
-            !nextViewIsolated &&
-            this.canCache(componentData.viewGroup)
-            ? componentData.viewGroup
-            : undefined
+          canCache ? componentData.viewGroup : undefined
         );
 
         node.insertBefore(config.iframe, node.firstChild);

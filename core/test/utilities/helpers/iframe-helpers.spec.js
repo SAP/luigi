@@ -27,6 +27,22 @@ describe('Iframe-helpers', () => {
     sinon.restore();
   });
 
+  describe('createIframe', () => {
+    it('createIframe', () => {
+      const iframe = IframeHelpers.createIframe('http://luigi.url.com/');
+      assert.equal(iframe.src, 'http://luigi.url.com/');
+    });
+
+    it('createIframe with view group', () => {
+      const iframe = IframeHelpers.createIframe(
+        'http://luigi.url.de/',
+        'ananas'
+      );
+      assert.equal(iframe.src, 'http://luigi.url.de/');
+      assert.equal(iframe.vg, 'ananas');
+    });
+  });
+
   describe('canReuseIframe', () => {
     const config = {
       iframe: {
@@ -38,18 +54,6 @@ describe('Iframe-helpers', () => {
       const url = 'http://.luigi.url.com';
       const iframeOrigin = IframeHelpers.getLocation(url);
       assert.equal(iframeOrigin, url);
-    });
-
-    it('createIframe', () => {
-      const iframe = IframeHelpers.createIframe('http://luigi.url.com/');
-      assert.equal(iframe.src, 'http://luigi.url.com/');
-
-      const iframe2 = IframeHelpers.createIframe(
-        'http://luigi.url.de/',
-        'ananas'
-      );
-      assert.equal(iframe2.src, 'http://luigi.url.de/');
-      assert.equal(iframe2.vg, 'ananas');
     });
 
     it('getVisibleIframes', () => {
