@@ -48,6 +48,8 @@ import {
 <!-- } from '@kyma-project/luigi-client'; -->
 ``` 
 
+Please note that the angular example application is not fully compatible with IE11.
+
 ## Development
 
 ### Code formatting for contributors
