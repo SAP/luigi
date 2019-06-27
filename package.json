@@ -25,8 +25,7 @@
   },
   "husky": {
     "hooks": {
-      "pre-commit": "./scripts/hooks/apply-formatters.sh && ./scripts/hooks/remove-test-prefixes.sh",
-      "pre-push": "lerna run prepush"
+      "pre-commit": "./scripts/hooks/apply-formatters.sh && ./scripts/hooks/remove-test-prefixes.sh"
     }
   }
 }
