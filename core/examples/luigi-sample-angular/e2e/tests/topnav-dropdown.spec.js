@@ -9,7 +9,7 @@ describe('TopNavDropDown', () => {
       cy.viewport('macbook-15');
     });
 
-    it('Clicking around the product switcher', () => {
+    it('Clicking around drop down in TopNav', () => {
       //check if google is there
       cy.get('[data-e2e="topnav-category"]').click();
 
