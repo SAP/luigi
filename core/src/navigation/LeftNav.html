@@ -233,11 +233,6 @@
         responsiveNavSetting: LuigiConfig.getConfigValue(
           'settings.responsiveNavigation'
         ),
-        isSemiCollapsed: !(
-          this.get().responsiveNavSetting === 'semiCollapsible'
-        )
-          ? false
-          : this.getIsSemiCollapsed(),
         previousWindowWidth: window.innerWidth
       });
 
@@ -247,13 +242,15 @@
         });
       });
 
-      // set isSemiCollapsed to true for mobile browsers
-      // https://coderwall.com/p/i817wa/one-line-function-to-detect-mobile-devices-with-javascript
+      // set isSemiCollapsed to true for mobile
       if (window.innerWidth < CSS_BREAKPOINTS.desktopMinWidth) {
         this.setIsSemiCollapsed(true);
       }
-
-      this.setIsSemiCollapsed(this.get().isSemiCollapsed);
+      const isSemiCollapsed =
+        this.get().responsiveNavSetting === 'semiCollapsible'
+          ? this.getIsSemiCollapsed()
+          : false;
+      this.setIsSemiCollapsed(isSemiCollapsed);
     },
     onstate({ changed, current, previous }) {
       if (!previous || previous.pathData != current.pathData) {
@@ -385,9 +382,7 @@
       },
 
       getIsSemiCollapsed() {
-        return localStorage.getItem(NavigationHelpers.COL_NAV_KEY) === 'true'
-          ? true
-          : false;
+        return localStorage.getItem(NavigationHelpers.COL_NAV_KEY) === 'true';
       },
 
       setIsSemiCollapsed(state) {
