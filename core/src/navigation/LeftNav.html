@@ -190,7 +190,7 @@
   {#if footerText}
   <span class="lui-side-nav__footer">
     <span class="lui-side-nav__footer--text fd-has-type-minus-1">{footerText}</span>
-    {#if responsiveNavSetting === 'semiCollapsible'}
+    {#if semiCollapsible}
     <span
       class="lui-side-nav__footer--icon {isSemiCollapsed ? 'sap-icon--open-command-field' : 'sap-icon--close-command-field'}"
       on:click="semiCollapsibleButtonClicked(this)"
@@ -225,15 +225,18 @@
       };
     },
     oncreate() {
+      const responsiveNavSetting = LuigiConfig.getConfigValue(
+        'settings.responsiveNavigation'
+      );
+      const semiCollapsible = responsiveNavSetting === 'semiCollapsible';
       this.set({
         hideNavComponent: LuigiConfig.getConfigBooleanValue(
           'settings.hideNavigation'
         ),
         expandedCategories: NavigationHelpers.loadExpandedCategories(),
-        responsiveNavSetting: LuigiConfig.getConfigValue(
-          'settings.responsiveNavigation'
-        ),
-        previousWindowWidth: window.innerWidth
+        responsiveNavSetting,
+        previousWindowWidth: window.innerWidth,
+        semiCollapsible
       });
 
       StateHelpers.doOnStoreChange(this.store, () => {
@@ -243,13 +246,15 @@
       });
 
       // set isSemiCollapsed to true for mobile
-      if (window.innerWidth < CSS_BREAKPOINTS.desktopMinWidth) {
+      if (
+        semiCollapsible &&
+        window.innerWidth < CSS_BREAKPOINTS.desktopMinWidth
+      ) {
         this.setIsSemiCollapsed(true);
       }
-      const isSemiCollapsed =
-        this.get().responsiveNavSetting === 'semiCollapsible'
-          ? this.getIsSemiCollapsed()
-          : false;
+      const isSemiCollapsed = semiCollapsible
+        ? this.getIsSemiCollapsed()
+        : false;
       this.setIsSemiCollapsed(isSemiCollapsed);
     },
     onstate({ changed, current, previous }) {
@@ -349,13 +354,15 @@
       },
 
       onResize() {
-        const isDesktopToMobile =
-          window.innerWidth < CSS_BREAKPOINTS.desktopMinWidth &&
-          this.get().previousWindowWidth >= CSS_BREAKPOINTS.desktopMinWidth;
-        if (isDesktopToMobile) {
-          this.setIsSemiCollapsed(true);
+        if (this.get().semiCollapsible) {
+          const isDesktopToMobile =
+            window.innerWidth < CSS_BREAKPOINTS.desktopMinWidth &&
+            this.get().previousWindowWidth >= CSS_BREAKPOINTS.desktopMinWidth;
+          if (isDesktopToMobile) {
+            this.setIsSemiCollapsed(true);
+          }
+          this.closePopupMenu();
         }
-        this.closePopupMenu();
       },
 
       handleKey(event) {
