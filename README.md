@@ -28,12 +28,12 @@ If you want to support Internet Explorer 11 in your application, update your Lui
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <link rel='stylesheet' href='core/public/luigi-ie11.css'>
-    <!-- <link rel='stylesheet' href='core/public/luigi.css'> -->
+    <link rel='stylesheet' href='/luigi-core/luigi-ie11.css'>
+    <!-- <link rel='stylesheet' href='/luigi-core/luigi.css'> -->
   </head>
   <body>
-    <script type="module" src="luigi.js"></script>
-    <script nomodule src="luigi-ie11.js"></script>
+    <script type="module" src="/luigi-core/luigi.js"></script>
+    <script nomodule src="/luigi-core/luigi-ie11.js"></script>
     <!-- <script src="/luigi-core/luigi.js"></script> -->
   </body>
 </html>
