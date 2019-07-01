@@ -31,7 +31,8 @@ Luigi.setConfig({
         category: {
           label: 'General',
           icon: 'general'
-        }
+        }, 
+        category: 'General'
       },
         // DYNAMIC navigation node
       {
@@ -41,8 +42,7 @@ Luigi.setConfig({
         context: {
           projectId: ':projectId'
         },
-        children: [node, node, node],
-        category: 'General'
+        children: [node, node, node]
       }
     ],
     contextSwitcher: {
