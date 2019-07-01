@@ -27,7 +27,11 @@ Luigi.setConfig({
         children: [node, node, node],
         hideFromNav: false,
         isolateView: false,
-        icon: 'settings'
+        icon: 'settings',
+        category: {
+          label: 'General',
+          icon: 'general'
+        }
       },
         // DYNAMIC navigation node
       {
@@ -37,7 +41,8 @@ Luigi.setConfig({
         context: {
           projectId: ':projectId'
         },
-        children: [node, node, node]
+        children: [node, node, node],
+        category: 'General'
       }
     ],
     contextSwitcher: {
@@ -116,6 +121,9 @@ The node parameters are as follows:
 - **viewGroup** defines a group of views in the same domain sharing a common security context. This improves performance through reusing the frame. Use **viewGroup** only for the views that use path routing internally.
 - **icon** is the name of an icon from the [OpenUI](https://openui5.hana.ondemand.com/1.40.10/iconExplorer.html) or a custom link (relative or absolute) to an image displayed next to the Node label in the side navigation or instead of the label in the top navigation.
 - **hideSideNav** if set to `true`, the left navigation disappears when you click the affected node. It is set to `false` by default.
+- **category** defines a group of views that is separated with a headline and icon. At least one of the nodes of a group should be defined as an Object with `label` and `icon` properties. For all other nodes it is valid to set **category** as string with the `label` value. 
+   - **label** is a string that represents the title of the category
+   - **icon** is the name of an icon from the [OpenUI](https://openui5.hana.ondemand.com/1.40.10/iconExplorer.html) or a custom link (relative or absolute) to an image displayed next to the Node label in the side navigation or instead of the label in the top navigation.
 
 ## Context switcher
 
