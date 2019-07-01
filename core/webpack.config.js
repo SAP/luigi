@@ -2,7 +2,7 @@ const { readFileSync } = require('fs');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const CleanWebpackPlugin = require('clean-webpack-plugin');
 
-const babelSettings = JSON.parse(readFileSync('.babelrc'));
+const babelSettings = JSON.parse(readFileSync('./../.babelrc'));
 const commonRules = require('./webpack-common-rules');
 const commonPlugins = require('./webpack-common-plugins');
 
@@ -85,15 +85,7 @@ module.exports = {
         exclude: /node_modules/,
         use: {
           loader: 'babel-loader',
-          query: babelSettings
-        }
-      },
-      {
-        test: /\.(js)$/,
-        include: /node_modules\/svelte/,
-        use: {
-          loader: 'babel-loader',
-          query: babelSettings
+          options: babelSettings
         }
       },
       commonRules.svelte,
