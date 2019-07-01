@@ -1,7 +1,7 @@
 const path = require('path');
 const { readFileSync } = require('fs');
 
-const babelSettings = JSON.parse(readFileSync('./../.babelrc'));
+const babelSettings = JSON.parse(readFileSync('./.babelrc'));
 
 module.exports = {
   entry: {
