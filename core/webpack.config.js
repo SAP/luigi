@@ -101,7 +101,6 @@ module.exports = {
     new MiniCssExtractPlugin({ filename: '[name].css' }),
     commonPlugins.copyWebpackPlugin
   ],
-  mode: 'production',
   stats: {
     warnings: false
   }
