@@ -48,16 +48,6 @@ import {
 <!-- } from '@kyma-project/luigi-client'; -->
 ``` 
 
-Apart from that, if your microfrontend is throwing errors related to Javascript polyfills, we recommend to use `luigi-client-no-polyfills` instead of the regular Luigi Client.
-
-```javascript
-import {
-  linkManager,
-  uxManager
-} from '@kyma-project/luigi-client/luigi-client-no-polyfills';
-<!-- } from '@kyma-project/luigi-client'; -->
-``` 
-
 >**NOTE**: The angular example application is not fully compatible with IE11.
 
 ## Development
