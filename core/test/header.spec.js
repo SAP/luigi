@@ -19,13 +19,17 @@ describe('Header', function() {
 
     beforeEach(() => {
       component = {
-        set: sinon.spy()
+        set: sinon.spy(),
+        store: {
+          on: (e, cb) => {},
+          get: () => {}
+        }
       };
     });
 
     it('should not fail for undefined arguments', async () => {
       window.Luigi.config = {};
-      await headerService.processHeaderSettings();
+      await headerService.processHeaderSettings(component);
     });
 
     it('should resolve title', async () => {
@@ -101,7 +105,9 @@ describe('Header', function() {
 
       sinon.stub(document, 'createElement').returns({});
       const appendChild = sinon.spy();
-      sinon.stub(document, 'getElementsByTagName').returns([{ appendChild }]);
+      sinon
+        .stub(document, 'getElementsByTagName')
+        .returns([{ appendChild, childNodes: [] }]);
 
       const expectedLink = {
         type: 'image/x-icon',

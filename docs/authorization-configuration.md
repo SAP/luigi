@@ -26,7 +26,8 @@ auth: {
     redirect_uri: '',
     post_logout_redirect_uri: '/logout.html',
     automaticSilentRenew: true,
-    userInfoFn:()=>{}
+    userInfoFn:()=>{},
+    accessTokenExpiringNotificationTime: 60
   },
   disableAutoLogin: false
 }
@@ -38,7 +39,7 @@ auth: {
 - **redirect_uri** sets the URL to return to after login. The default application root is `/`.
 - **post_logout_redirect_uri** sets the URL to return after logout. The default URL is `/logout.html`.
 - **automaticSilentRenew** enables the automatic silent renewal of the token if it is supported by the server. The default value is `false`. For this mechanism to work, the browser must have third-party cookies support enabled.
-- **accessTokenExpiringNotificationTime** is the number of seconds before an access token is to expire and triggers silent token refresh. The default value is 60.
+- **accessTokenExpiringNotificationTime** is the number of seconds before an access token is to expire and triggers silent token refresh. The default value is `60` seconds.
 - **thirdPartyCookiesScriptLocation** is the URL to the page containing third-party cookies support check. For details, see [Third-party cookies and silent token refresh section](#Third-party-cookies-and-silent-token-refresh).
 - **userInfoFn** provides a function to get user information. It returns a promise of a **userinfo** object which can contain **name**, **email** and **picture** (value is a URL to the image). **Name** or **email** are displayed in the profile drop-down menu and the user’s profile picture is displayed in the top navigation.
 
@@ -63,7 +64,9 @@ auth: {
     // optional functions
     nonceFn: () => {},
     logoutFn: (settings, authData, logoutCallback) => {},
-    userInfoFn:()=>{}
+    userInfoFn:()=>{},
+    accessTokenExpiringNotificationTime: 60,
+    expirationCheckInterval: 5
   },
   disableAutoLogin: false
 ````
@@ -78,6 +81,9 @@ auth: {
 - **nonceFn** provides a function that returns a string in order to override the default **nonce**.
 - **logoutFn** provides the function to override the **logoutUrl** functionality for a custom logout. It needs to execute the **logoutCallback()** function after logout.
 - **userInfoFn** provides a function to get user information. It returns a promise of a **userinfo** object which can contain **name**, **email** and **picture** (value is a URL to the image). **Name** or **email** are displayed in the profile drop-down menu and the user’s profile picture is displayed in the top navigation.
+- **accessTokenExpiringNotificationTime** number of seconds that pass before an access token expires and the **onAuthExpireSoon** event is fired. The default value is `60` seconds.
+- **expirationCheckInterval** the number of seconds to pass between each check if the token is about to expire. The default value is `5` seconds.
+
 
 ### Custom Authentication Provider
 
@@ -97,6 +103,8 @@ export class CustomAuthenticationProvider {
 
     setTokenExpirationAction(){
     }
+
+    setTokenExpireSoonAction() {}
 
     generateNonce(){
         //returns a string 
@@ -142,4 +150,13 @@ const data = {
 
 localStorage.setItem('luigi.auth', JSON.stringify(data));
 localStorage.setItem('luigi.newlyAuthorized', true);
+```
+
+Additionally, if you process authentication data during Luigi runtime (inside the custom provider, similarly to using the`openIdConnect` provider), dispatch the `luigi.auth.tokenIssued` Event to update the currently opened micro frontends with the latest authentication data. This is not required when processing authentication outside Luigi, for example when `oAuth2ImplicitGrant` provider processes the data in `callback.html` and redirects to Luigi afterward.
+
+```
+window.postMessage(
+  { msg: 'luigi.auth.tokenIssued', authData: data },
+  '*'
+);
 ```

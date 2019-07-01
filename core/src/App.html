@@ -1,3 +1,4 @@
+<svelte:window on:resize="onResize()"/>
 <div
   id="app"
   class="{hideNav? 'no-nav' : ''} {hideSideNav? 'no-side-nav' : ''}"
@@ -56,13 +57,17 @@
   import Alerts from './Alerts.html';
   import Modal from './Modal.html';
   import { LuigiConfig } from './core-api';
-  import * as Routing from './services/routing.js';
-  import * as Navigation from './navigation/services/navigation.js';
-  import * as Iframe from './services/iframe';
-  import * as RoutingHelpers from './utilities/helpers/routing-helpers';
-  import * as GenericHelpers from './utilities/helpers/generic-helpers';
-  import * as AuthHelpers from './utilities/helpers/auth-helpers';
-  import * as iFrameHelpers from './utilities/helpers/iframe-helpers';
+  import { Routing } from './services/routing';
+  import { Navigation } from './navigation/services/navigation';
+  import { Iframe } from './services/iframe';
+  import {
+    AuthHelpers,
+    GenericHelpers,
+    IframeHelpers,
+    RoutingHelpers,
+    StateHelpers
+  } from './utilities/helpers';
+  import { CSS_BREAKPOINTS } from './utilities/constants';
 
   const removeQueryParams = str => str.split('?')[0];
 
@@ -83,8 +88,10 @@
 
   const enableRouting = (component, node, config) => {
     // initial route handling
-    const currentPath = Routing.getCurrentPath();
-    Routing.handleRouteChange(currentPath, component, node, config);
+    StateHelpers.doOnStoreChange(component.store, () => {
+      const currentPath = Routing.getCurrentPath();
+      Routing.handleRouteChange(currentPath, component, node, config);
+    });
 
     // subsequential route handling
     RoutingHelpers.addRouteChangeListener(path => {
@@ -187,7 +194,7 @@
       internal: JSON.stringify(component.prepareInternalData(config.modal)),
       authData: AuthHelpers.getStoredAuthData()
     };
-    iFrameHelpers.sendMessageToIframe(config.iframe, message);
+    IframeHelpers.sendMessageToIframe(config.iframe, message);
   };
 
   const sendAuthDataToClient = (iframe, authData) => {
@@ -201,7 +208,7 @@
       msg: 'luigi.auth.tokenIssued',
       authData
     };
-    iFrameHelpers.sendMessageToIframe(iframe, message);
+    IframeHelpers.sendMessageToIframe(iframe, message);
   };
 
   const getDefaultAlertData = () => {
@@ -265,6 +272,8 @@
       const responsiveNavSetting = LuigiConfig.getConfigValue(
         'settings.responsiveNavigation'
       );
+      this.set({ responsiveNavSetting });
+      this.set({ previousWindowWidth: window.innerWidth });
       if (responsiveNavSetting === 'simple') {
         document.body.classList.add('lui-simpleSlideInNav');
         this.set({ simpleSlideInNav: true });
@@ -285,6 +294,7 @@
           builderCompatibilityMode: Boolean(window.builderCompatibilityMode),
           isolateAllViews
         };
+
         window.addEventListener('popstate', async e => {
           const alertQueue = this.get().alerts;
           if (!alertQueue || !alertQueue.length) return;
@@ -323,7 +333,7 @@
           }
 
           if ('luigi.get-context' === e.data.msg) {
-            if (iFrameHelpers.isMessageSource(e, this.get().modalIframe)) {
+            if (IframeHelpers.isMessageSource(e, this.get().modalIframe)) {
               let ctx = this.get().modalIframeData.context;
               const modalConfig = {
                 ...config,
@@ -377,7 +387,7 @@
           }
 
           if ('luigi.navigation.back' === e.data.msg) {
-            if (iFrameHelpers.isMessageSource(e, this.get().modalIframe)) {
+            if (IframeHelpers.isMessageSource(e, this.get().modalIframe)) {
               this.closeModal();
               sendContextToClient(this, config, {
                 goBackContext:
@@ -400,15 +410,19 @@
                       e.data.goBackContext && JSON.parse(e.data.goBackContext)
                   });
                   // TODO: check if getNavigationPath or history pop to update hash / path
-                  const path = this.handleNavigation(
+                  this.handleNavigation(
                     { params: { link: previousActiveIframeData.path } },
                     config
                   );
                 });
               } else {
-                console.error(
-                  'goBack() not possible, no preserved views found.'
-                );
+                if (e.data.goBackContext) {
+                  console.warn(
+                    `Warning: goBack() does not support goBackContext value. This is available only when using preserved views feature. Documentation: https://github.com/SAP/luigi/blob/master/docs/luigi-client-api.md#navigate`
+                  );
+                }
+                // TODO: does not work with default child node behavior, fixed by #216
+                window.history.back();
               }
             }
           }
@@ -431,7 +445,7 @@
                 pathExists: pathData.isExistingRoute
               }
             };
-            iFrameHelpers.sendMessageToIframe(iframe, message);
+            IframeHelpers.sendMessageToIframe(iframe, message);
           }
 
           if ('luigi.set-page-dirty' === e.data.msg) {
@@ -497,7 +511,7 @@
           { contentWindow: window, luigi: { viewUrl: window.location.href } }
         ];
         const iframe = allMessagesSources.find(iframe =>
-          iFrameHelpers.isMessageSource(e, iframe)
+          IframeHelpers.isMessageSource(e, iframe)
         );
 
         if (!iframe || !iframe.luigi || !iframe.luigi.viewUrl) {
@@ -512,7 +526,7 @@
         const viewUrl = navigateOkMsg
           ? iframe.luigi.nextViewUrl
           : iframe.luigi.viewUrl;
-        if (!iFrameHelpers.iframeIsSameDomain(viewUrl, e.origin)) {
+        if (!IframeHelpers.iframeIsSameDomain(viewUrl, e.origin)) {
           return undefined;
         }
 
@@ -532,11 +546,27 @@
           modal: modal
         };
       },
-      handleNavClick(node) {
+      closeLeftNav() {
         document.body.classList.remove('lui-leftNavToggle');
+      },
+      handleNavClick(node) {
         this.getUnsavedChangesModalPromise().then(() => {
+          this.closeLeftNav();
           Routing.handleRouteClick(node, this);
         });
+      },
+      onResize() {
+        const isMobileToDesktop =
+          window.innerWidth >= CSS_BREAKPOINTS.desktopMinWidth &&
+          this.get().previousWindowWidth < CSS_BREAKPOINTS.desktopMinWidth;
+        const isDesktopToMobile =
+          window.innerWidth < CSS_BREAKPOINTS.desktopMinWidth &&
+          this.get().previousWindowWidth >= CSS_BREAKPOINTS.desktopMinWidth;
+
+        if (isMobileToDesktop || isDesktopToMobile) {
+          this.closeLeftNav();
+        }
+        this.set({ previousWindowWidth: window.innerWidth });
       },
       handleModalResult(result) {
         const { promise, openFromClient } = this.get().confirmationModal;
@@ -554,7 +584,7 @@
             msg: 'luigi.ux.confirmationModal.hide',
             data: { confirmed: result }
           };
-          iFrameHelpers.sendMessageToIframe(iframe, message);
+          IframeHelpers.sendMessageToIframe(iframe, message);
         }
       },
       getUnsavedChangesModalPromise(source) {
@@ -619,8 +649,7 @@
 
         if (!settings.id) {
           //generate the ID in case it hasn't came from an old version of LuigiClient
-          const crypto = require('crypto');
-          settings.id = crypto.randomBytes(4).toString('hex');
+          settings.id = GenericHelpers.getRandomId();
         }
 
         if (
@@ -705,7 +734,7 @@
             id
             //TODO: update docu for this param
           };
-          iFrameHelpers.sendMessageToIframe(iframe, message);
+          IframeHelpers.sendMessageToIframe(iframe, message);
         }
       },
       getAlertWithId(alertQueue, id) {
@@ -729,6 +758,7 @@
 <style type="text/scss">
   $topNavHeight: 48px;
   $leftNavWidth: 320px;
+  $desktop-min-width: 600px;
   :global(html) {
     box-sizing: border-box;
     font-size: 14px;
@@ -827,10 +857,10 @@
 
   :global(body.lui-simpleSlideInNav) {
     :global(.fd-app__sidebar) {
-      -webkit-transition-property: width;
-      -moz-transition-property: width;
-      -o-transition-property: width;
-      transition-property: width;
+      -webkit-transition-property: left;
+      -moz-transition-property: left;
+      -o-transition-property: left;
+      transition-property: left;
       -webkit-transition-duration: 0.1s;
       -moz-transition-duration: 0.1s;
       -o-transition-duration: 0.1s;
@@ -858,7 +888,7 @@
     }
   }
 
-  @media (min-width: 600px) {
+  @media (min-width: $desktop-min-width) {
     :global(.fd-shellbar__title) {
       display: inline;
     }
@@ -873,12 +903,12 @@
       }
 
       :global(.fd-app__sidebar) {
-        width: 0px;
+        left: -$leftNavWidth;
       }
     }
   }
 
-  @media (max-width: 600px) {
+  @media (max-width: $desktop-min-width - 1) {
     :global(body.lui-simpleSlideInNav) {
       .iframeContainer,
       .spinnerContainer {
@@ -886,7 +916,7 @@
       }
 
       :global(.fd-app__sidebar) {
-        width: 0px;
+        left: -$leftNavWidth;
       }
     }
 
@@ -894,6 +924,7 @@
       :global(.fd-app__sidebar) {
         display: block;
         width: $leftNavWidth;
+        left: 0;
         -webkit-box-shadow: 6px 0px 9px 0px rgba(0, 0, 0, 0.44);
         -moz-box-shadow: 6px 0px 9px 0px rgba(0, 0, 0, 0.44);
         box-shadow: 6px 0px 9px 0px rgba(0, 0, 0, 0.44);

@@ -3,13 +3,17 @@
   aria-label="SAP"
 >
   {#if hasLogo}
-  <img on:click="goTo('/')" ref:logo>
+  <img data-e2e="luigi-topnav-logo" on:click="goTo('/')" ref:logo>
   {/if}
 </div>
 {#if title}
 <div class="fd-shellbar__product">
   {#if !hasApps}
-  <div class="fd-shellbar__title" on:click="goTo('/')">{title}</div>
+  <div
+    class="fd-shellbar__title"
+    data-e2e="luigi-topnav-title"
+    on:click="goTo('/')"
+  >{title}</div>
   <!-- TODO Application Switcher -->
   {:else}
   <div class="fd-popover fd-popover--right">
@@ -46,10 +50,9 @@
 </div>
 {/if}
 <script type="text/javascript">
-  import * as Header from './services/header.js';
+  import * as Header from './services/header';
   import { LuigiConfig } from '../core-api';
-  import { processHeaderSettings } from './services/header.js';
-  import * as Routing from '../services/routing.js';
+  import { Routing } from '../services/routing';
 
   export default {
     oncreate() {

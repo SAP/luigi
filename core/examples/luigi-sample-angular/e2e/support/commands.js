@@ -42,6 +42,24 @@ Cypress.Commands.add('goToOverviewPage', () => {
     .click();
 });
 
+Cypress.Commands.add('goToProjectsPage', () => {
+  cy.get('button')
+    .contains('Projects')
+    .click();
+});
+
+Cypress.Commands.add('selectContextSwitcherItem', (item, currentLabel) => {
+  // default label
+  cy.get('.fd-product-menu')
+    .contains(currentLabel || 'Select Environment ...')
+    .click();
+
+  // click an action
+  cy.get('.fd-product-menu .fd-popover__body')
+    .contains(item)
+    .click();
+});
+
 const isHashRoutingOn = () => {
   const appWindow = cy.state('window');
   const { useHashRouting } =
@@ -76,3 +94,91 @@ Cypress.Commands.add('expectSearchToBe', (searchString, a) => {
     }
   });
 });
+
+/**
+  * iframe
+  * Basically what it is doing is checking if the iframe has loaded, if
+  * the iframe has loaded it will do $iframe.contents().find("body");.
+  * If it has not loaded it will hook that same code into the load event
+  * so it will run as soon as the iframe loads.
+  *
+    usage: 
+    cy.get('iframe').iframe().then(modal => {
+        cy.wrap(modal)
+            .contains('Go back')
+            .click();
+    });
+ */
+
+Cypress.Commands.add('iframe', { prevSubject: 'element' }, $iframe => {
+  Cypress.log({
+    name: 'iframe',
+    consoleProps() {
+      return {
+        iframe: $iframe
+      };
+    }
+  });
+  return new Cypress.Promise(resolve => {
+    onIframeReady(
+      $iframe,
+      () => {
+        resolve($iframe.contents().find('body'));
+      },
+      () => {
+        $iframe.on('load', () => {
+          resolve($iframe.contents().find('body'));
+        });
+      }
+    );
+  });
+});
+
+function onIframeReady($iframe, successFn, errorFn) {
+  try {
+    const iCon = $iframe.first()[0].contentWindow,
+      bl = 'about:blank',
+      compl = 'complete';
+    const callCallback = () => {
+      try {
+        const $con = $iframe.contents();
+        if ($con.length === 0) {
+          // https://git.io/vV8yU
+          throw new Error('iframe inaccessible');
+        }
+        successFn($con);
+      } catch (e) {
+        // accessing contents failed
+        errorFn();
+      }
+    };
+    const observeOnload = () => {
+      $iframe.on('load.jqueryMark', () => {
+        try {
+          const src = $iframe.attr('src').trim(),
+            href = iCon.location.href;
+          if (href !== bl || src === bl || src === '') {
+            $iframe.off('load.jqueryMark');
+            callCallback();
+          }
+        } catch (e) {
+          errorFn();
+        }
+      });
+    };
+    if (iCon.document.readyState === compl) {
+      const src = $iframe.attr('src').trim(),
+        href = iCon.location.href;
+      if (href === bl && src !== bl && src !== '') {
+        observeOnload();
+      } else {
+        callCallback();
+      }
+    } else {
+      observeOnload();
+    }
+  } catch (e) {
+    // accessing contentWindow failed
+    errorFn();
+  }
+}

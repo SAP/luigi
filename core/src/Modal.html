@@ -1,3 +1,4 @@
+<svelte:window on:keydown="handleKeydown(event)"/>
 <div class="fd-ui__overlay fd-overlay fd-overlay--modal" style="z-index:999">
   <div class="fd-modal" data-e2e="modal-mf">
     <div class="fd-modal__content" style="height:100%">
@@ -16,11 +17,13 @@
   </div>
 </div>
 <script>
-  import * as Navigation from './navigation/services/navigation';
-  import * as RoutingHelpers from './utilities/helpers/routing-helpers';
+  import { Navigation } from './navigation/services/navigation';
+  import {
+    GenericHelpers,
+    IframeHelpers,
+    RoutingHelpers
+  } from './utilities/helpers';
   import { LuigiConfig } from './core-api';
-  import * as GenericHelpers from './utilities/helpers/generic-helpers';
-  import { createIframe } from './utilities/helpers/iframe-helpers';
 
   const prepareNodeData = async (component, path) => {
     const pathUrlRaw =
@@ -82,7 +85,7 @@
     if (viewUrl) {
       viewUrl = RoutingHelpers.substituteViewUrl(viewUrl, componentData);
     }
-    const iframe = createIframe(viewUrl);
+    const iframe = IframeHelpers.createIframe(viewUrl);
     const iframeCtn = document.querySelector('.iframeModalCtn');
     iframeCtn.appendChild(iframe);
     return iframe;
@@ -97,6 +100,13 @@
       return {
         isDataPrepared: false
       };
+    },
+    methods: {
+      handleKeydown(event) {
+        if (event.keyCode === 27) {
+          this.fire('close');
+        }
+      }
     }
   };
 </script>

@@ -20,6 +20,7 @@ import { AnonymousComponent } from './anonymous/anonymous.component';
 
 const routes: Routes = [
   { path: 'overview', component: OverviewComponent },
+  { path: 'projects', component: ProjectComponent },
   { path: 'settings', component: SettingsComponent },
   { path: 'restricted', component: RestrictedComponent },
   { path: 'anonymous', component: AnonymousComponent },

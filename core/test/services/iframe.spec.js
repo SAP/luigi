@@ -1,8 +1,9 @@
 const chai = require('chai');
 const assert = chai.assert;
 const sinon = require('sinon');
-const Iframe = require('../../src/services/iframe');
 import { afterEach } from 'mocha';
+
+import { Iframe } from '../../src/services/iframe';
 import { LuigiConfig } from '../../src/core-api';
 
 describe('Iframe', () => {
@@ -102,10 +103,41 @@ describe('Iframe', () => {
     });
   });
 
+  it('getIframeContainer', () => {
+    sinon
+      .stub(document, 'querySelectorAll')
+      .onFirstCall()
+      .returns([])
+      .onSecondCall()
+      .returns(['firstIframe', 'secondIframe']);
+
+    // first
+    assert.equal(Iframe.getIframeContainer(), undefined, 'no iframe found');
+    // second
+    assert.equal(
+      Iframe.getIframeContainer(),
+      'firstIframe',
+      'returns first iframe'
+    );
+  });
+
   it('removeInactiveIframes', () => {
     node.removeChild = sinon.spy();
     Iframe.removeInactiveIframes(node);
     assert.equal(node.removeChild.callCount, 1);
+  });
+
+  it('removeIframe', () => {
+    const testNode = {
+      children: ['one', 'two', 'three', 'four'],
+      removeChild: sinon.spy()
+    };
+    Iframe.removeIframe('two', testNode);
+    assert.equal(testNode.removeChild.callCount, 1, 'removeChild call count');
+    assert(
+      testNode.removeChild.calledWith('two'),
+      'correct node child was deleted'
+    );
   });
 
   describe('create new iframe with different viewgroup and dont delete the previous one (cache)', () => {

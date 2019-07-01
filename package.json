@@ -18,14 +18,14 @@
       "breaking": ":boom: Breaking Change",
       "enhancement": ":rocket: Added",
       "bug": ":bug: Fixed",
-      "area/documentation": ":memo: Documentation"
+      "documentation": ":memo: Documentation",
+      "internal": ":house: Internal"
     },
     "cacheDir": ".changelog"
   },
   "husky": {
     "hooks": {
-      "pre-commit": "./scripts/apply-formatters.sh && ./scripts/remove-test-prefixes.sh",
-      "pre-push": "lerna run prepush"
+      "pre-commit": "./scripts/hooks/apply-formatters.sh && ./scripts/hooks/remove-test-prefixes.sh"
     }
   }
 }

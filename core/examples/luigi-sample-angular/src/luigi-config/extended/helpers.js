@@ -37,18 +37,42 @@ const getProjectPlugins = projectId =>
     }
   });
 
+let allProjects = [
+  {
+    id: 'pr1',
+    name: 'Project One'
+  },
+  {
+    id: 'pr2',
+    name: 'Project Two'
+  }
+];
+
+export const addProject = newProject => {
+  allProjects.push(
+    newProject || {
+      id: 'pr' + (allProjects.length + 1),
+      name: 'Project ' + (allProjects.length + 1)
+    }
+  );
+  return allProjects[allProjects.length - 1];
+};
+
+export const removeProject = () => {
+  return allProjects.pop();
+};
+
+export const projectExists = projectId => {
+  return Boolean(allProjects.find(p => p.id === projectId));
+};
+
+export const getProjectCount = () => {
+  return allProjects.length;
+};
+
 const getAllProjects = () =>
   new Promise(resolve => {
-    resolve([
-      {
-        id: 'pr1',
-        name: 'Project One'
-      },
-      {
-        id: 'pr2',
-        name: 'Project Two'
-      }
-    ]);
+    resolve(allProjects);
   });
 
 const projectDetailNavProviderFn = context =>

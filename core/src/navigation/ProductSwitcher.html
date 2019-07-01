@@ -1,4 +1,4 @@
-
+<svelte:window on:resize="setViewportHeightVariable()"/>
 {#if productSwitcherItems && productSwitcherItems.length &&
 Object.keys(productSwitcherItems[0]).length }
 <!-- DESKTOP VERSION (popover): -->
@@ -95,24 +95,28 @@ Object.keys(productSwitcherItems[0]).length }
 {/if}
 <script type="text/javascript">
   import { LuigiConfig } from '../core-api';
-  import * as Routing from '../services/routing.js';
+  import { Routing } from '../services/routing';
+  import { StateHelpers } from '../utilities/helpers';
+
   export default {
     async oncreate() {
-      const productSwitcherConfig = LuigiConfig.getConfigValue(
-        'navigation.productSwitcher'
-      );
-      this.set({
-        config: productSwitcherConfig
-      });
-
-      if (productSwitcherConfig) {
-        const productSwitcherItems = await LuigiConfig.getConfigValueAsync(
-          'navigation.productSwitcher.items'
+      StateHelpers.doOnStoreChange(this.store, async () => {
+        const productSwitcherConfig = LuigiConfig.getConfigValue(
+          'navigation.productSwitcher'
         );
         this.set({
-          productSwitcherItems
+          config: productSwitcherConfig
         });
-      }
+        if (productSwitcherConfig) {
+          const productSwitcherItems = await LuigiConfig.getConfigValueAsync(
+            'navigation.productSwitcher.items'
+          );
+          this.set({
+            productSwitcherItems
+          });
+        }
+        this.setViewportHeightVariable();
+      });
     },
     methods: {
       onActionClick(productSwitcherItem) {
@@ -124,6 +128,12 @@ Object.keys(productSwitcherItems[0]).length }
       toggleDropdownState(event = null) {
         if (event) event.stopPropagation();
         this.fire('toggleDropdownState');
+      },
+      setViewportHeightVariable() {
+        // get the viewport height and multiple it by 1% to get a value for a vh unit
+        let vh = window.innerHeight * 0.01;
+        // set the value in the --vh custom property to the root of the document
+        document.documentElement.style.setProperty('--vh', `${vh}px`);
       }
     }
   };
@@ -153,7 +163,8 @@ Object.keys(productSwitcherItems[0]).length }
       border-radius: 0;
 
       width: calc(100vw - 2 * #{$margin});
-      height: calc(100vh - 2 * #{$margin});
+      height: 100vh; /* Fallback for browsers that do not support Custom Properties */
+      height: calc(var(--vh, 1vh) * 100);
       margin: $margin;
       display: grid;
       grid-template-rows: 1fr auto; //no row for title by default

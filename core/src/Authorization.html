@@ -64,13 +64,16 @@
 {/if}
 <script type="text/javascript">
   import { LuigiAuth, LuigiConfig } from './core-api';
-  import * as GenericHelpers from './utilities/helpers/generic-helpers.js';
-  import * as Routing from './services/routing';
-  import * as AuthHelpers from './utilities/helpers/auth-helpers';
-  import { oAuth2ImplicitGrant } from './providers/auth/oAuth2ImplicitGrant.js';
-  import { openIdConnect } from './providers/auth/openIdConnect.js';
+  import { Routing } from './services/routing';
+  import {
+    AuthHelpers,
+    GenericHelpers,
+    NavigationHelpers,
+    StateHelpers
+  } from './utilities/helpers';
+  import { oAuth2ImplicitGrant } from './providers/auth/oAuth2ImplicitGrant';
+  import { openIdConnect } from './providers/auth/openIdConnect';
   import { TOP_NAV_DEFAULTS } from './utilities/luigi-config-defaults';
-  import * as NavigationHelpers from './utilities/helpers/navigation-helpers';
 
   let idpProviderInstance;
 
@@ -204,6 +207,13 @@
         ) {
           idpProviderInstance.setTokenExpirationAction();
         }
+        if (
+          GenericHelpers.isFunction(
+            idpProviderInstance.setTokenExpireSoonAction
+          )
+        ) {
+          idpProviderInstance.setTokenExpireSoonAction();
+        }
       };
 
       /**
@@ -246,16 +256,25 @@
     },
     methods: {
       setProfileNavData: function() {
-        const configProfileNav =
-          LuigiConfig.getConfigValue('navigation.profile') || {};
-        const profileNavData = {
-          logout: {
-            ...TOP_NAV_DEFAULTS.logout,
-            ...configProfileNav.logout
-          },
-          items: configProfileNav.items || []
-        };
-        this.set({ profileNav: profileNavData });
+        if (!this.get().navProfileListenerInstalled) {
+          StateHelpers.doOnStoreChange(this.store, async () => {
+            const logoutItem = await LuigiConfig.getConfigValueAsync(
+              'navigation.profile.logout'
+            );
+            const profileNavData = {
+              logout: {
+                ...TOP_NAV_DEFAULTS.logout,
+                ...logoutItem
+              },
+              items:
+                (await LuigiConfig.getConfigValueAsync(
+                  'navigation.profile.items'
+                )) || []
+            };
+            this.set({ profileNav: profileNavData });
+          });
+          this.set({ navProfileListenerInstalled: true });
+        }
       },
       startAuthorization: function() {
         idpProviderInstance.login().then(res => {

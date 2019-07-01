@@ -1,5 +1,4 @@
-import * as GenericHelpers from '../../utilities/helpers/generic-helpers';
-import * as AsyncHelpers from '../../utilities/helpers/async-helpers';
+import { AsyncHelpers, GenericHelpers } from '../../utilities/helpers';
 import { thirdPartyCookiesStatus } from '../../utilities/third-party-cookies-check';
 import { LuigiAuth } from '../../core-api';
 
@@ -121,6 +120,12 @@ export class openIdConnect {
             e.message;
       }
       LuigiAuth.handleAuthEvent('onAuthError', this.settings, e, redirectUrl);
+    });
+  }
+
+  setTokenExpireSoonAction() {
+    this.client.events.addAccessTokenExpiring(() => {
+      LuigiAuth.handleAuthEvent('onAuthExpireSoon', this.settings);
     });
   }
 

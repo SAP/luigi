@@ -136,8 +136,8 @@ export declare interface LinkManager {
   fromContext: (navigationContext: string) => this;
 
   /**
-   * Discards the active view and navigates back to the last visited view (preserved view), if a preserved view was set before.
-   * @param {any} goBackValue data that is passed in the `goBackContext` field to the last visited view
+   * Discards the active view and navigates back to the last visited view. Works with preserved views, and also acts as the substitute of the browser **back** button. **goBackContext** is only available when using preserved views.
+   * @param {any} goBackValue data that is passed in the **goBackContext** field to the last visited view when using preserved views.
    * @example
    * LuigiClient.linkManager().goBack({ foo: 'bar' });
    * LuigiClient.linkManager().goBack(true);
@@ -190,10 +190,10 @@ export declare interface LinkManager {
    * @param {Object} nodeParams
    * @returns {linkManager} link manager instance.
    * @example
-   * LuigiClient.linkManager.withParams({foo: "bar"}).navigate("path")
+   * LuigiClient.linkManager().withParams({foo: "bar"}).navigate("path")
    *
    * // Can be chained with context setting functions such as:
-   * LuigiClient.linkManager.fromContext("currentTeam").withParams({foo: "bar"}).navigate("path")
+   * LuigiClient.linkManager().fromContext("currentTeam").withParams({foo: "bar"}).navigate("path")
    */
   withParams: (nodeParams: NodeParams) => this;
 
@@ -212,7 +212,7 @@ export declare interface LinkManager {
 /**
  * Registers a listener called with the context object as soon as Luigi is instantiated. Defer your application bootstrap if you depend on authentication data coming from Luigi.
  * @param {function} initFn the function that is called once Luigi is initialized
- * @memberof lifecycle
+ * @memberof Lifecycle
  */
 export function addInitListener(initFn: (context: Context) => void): number;
 export type addInitListener = (initFn: (context: Context) => void) => number;
@@ -220,7 +220,7 @@ export type addInitListener = (initFn: (context: Context) => void) => number;
 /**
  * Removes an init listener.
  * @param {string} id the id that was returned by the `addInitListener` function
- * @memberof lifecycle
+ * @memberof Lifecycle
  */
 export function removeInitListener(id: number): boolean;
 export type removeInitListener = (id: number) => boolean;
@@ -228,7 +228,7 @@ export type removeInitListener = (id: number) => boolean;
 /**
  * Registers a listener called with the context object upon any navigation change.
  * @param {function} contextUpdatedFn the listener function called each time Luigi context changes
- * @memberof lifecycle
+ * @memberof Lifecycle
  */
 export function addContextUpdateListener(
   contextUpdatedFn: (context: Context) => void
@@ -240,7 +240,7 @@ export type addContextUpdateListener = (
 /**
  * Removes a context update listener.
  * @param {string} id the id that was returned by the `addContextUpdateListener` function
- * @memberof lifecycle
+ * @memberof Lifecycle
  */
 export function removeContextUpdateListener(id: string): boolean;
 export type removeContextUpdateListener = (id: string) => boolean;
@@ -254,7 +254,7 @@ export type getToken = () => AuthData['accessToken'];
 /**
  * Returns the context object. Typically it is not required as the {@link #addContextUpdateListener addContextUpdateListener()} receives the same values.
  * @returns {Object} current context data.
- * @memberof lifecycle
+ * @memberof Lifecycle
  */
 export function getEventData(): Context;
 export type getEventData = () => Context;
@@ -264,7 +264,7 @@ export type getEventData = () => Context;
  * Node parameters are defined like URL query parameters but with a specific prefix allowing Luigi to pass them to the micro front-end view.  The default prefix is **~** and you can use it in the following way: `https://my.luigi.app/home/products?~sort=asc~page=3`.
  * >**NOTE:** some special characters (`<`, `>`, `"`, `'`, `/`) in node parameters are HTML-encoded.
  * @returns {Object} node parameters, where the object property name is the node parameter name without the prefix, and its value is the value of the node parameter. For example `{sort: 'asc', page: 3}`.
- * @memberof lifecycle
+ * @memberof Lifecycle
  */
 export function getNodeParams(): NodeParams;
 export type getNodeParams = () => NodeParams;
@@ -275,7 +275,7 @@ export type getNodeParams = () => NodeParams;
  * All path parameters in the current navigation path (as defined by the active URL) are returned.
  * >**NOTE:** some special characters (`<`, `>`, `"`, `'`, `/`) in path parameters are HTML-encoded.
  * @returns {Object} path parameters, where the object property name is the path parameter name without the prefix, and its value is the actual value of the path parameter. For example ` {productId: 1234, ...}`.
- * @memberof lifecycle
+ * @memberof Lifecycle
  */
 export function getPathParams(): PathParams;
 export type getPathParams = () => PathParams;

@@ -1,5 +1,5 @@
 <section class="fd-section">
-  <div [hidden]="projectId !== 'pr1'">
+  <div *ngIf="projectId === 'pr1'">
     <div class="fd-section__header">
       <h1 class="fd-section__title">LuigiClient uxManager methods</h1>
     </div>
@@ -161,7 +161,10 @@
     </div>
   </div>
 
-  <div class="link-manager" [hidden]="projectId !== 'pr2'">
+  <div
+    class="link-manager"
+    *ngIf="projectId && projectId !== 'pr1' && projectId.indexOf('pr') === 0"
+  >
     <div class="fd-section__header">
       <h1 class="fd-section__title">LuigiClient linkManager methods</h1>
     </div>
@@ -306,6 +309,12 @@
           >
           </app-code-snippet>
         </li>
+        <li class="fd-list-group__item">
+          <a href="javascript:void(0)" (click)="linkManager().goBack()">
+            go back: single iframe, standard history back</a
+          >
+          <app-code-snippet data="linkManager().goBack()"> </app-code-snippet>
+        </li>
       </ul>
     </div>
 
@@ -365,7 +374,7 @@
 </section>
 
 <app-modal
-  [hidden]="projectId !== 'pr1'"
+  *ngIf="projectId === 'pr1'"
   [modalActive]="modalActive"
   (modalClosed)="toggleModal()"
 ></app-modal>
