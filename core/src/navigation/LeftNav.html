@@ -233,7 +233,11 @@
         responsiveNavSetting: LuigiConfig.getConfigValue(
           'settings.responsiveNavigation'
         ),
-        isSemiCollapsed: this.getIsSemiCollapsed(),
+        isSemiCollapsed: !(
+          this.get().responsiveNavSetting === 'semiCollapsible'
+        )
+          ? false
+          : this.getIsSemiCollapsed(),
         previousWindowWidth: window.innerWidth
       });
 
