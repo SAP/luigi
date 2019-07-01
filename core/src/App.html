@@ -754,19 +754,13 @@
 </script>
 
 <style type="text/scss">
+  /*Mixins*/
+  @import 'styles/mixins';
+
   $topNavHeight: 48px;
   $leftNavWidth: 320px;
   $leftNavWidthCollapsed: 40px;
   $desktop-min-width: 600px;
-
-  /*Mixins*/
-  @mixin transition($args...) {
-    -webkit-transition: $args;
-    -moz-transition: $args;
-    -ms-transition: $args;
-    -o-transition: $args;
-    transition: $args;
-  }
 
   :global(html) {
     box-sizing: border-box;
@@ -866,34 +860,12 @@
 
   :global(body.lui-simpleSlideInNav) {
     :global(.fd-app__sidebar) {
-      -webkit-transition-property: left;
-      -moz-transition-property: left;
-      -o-transition-property: left;
-      transition-property: left;
-      -webkit-transition-duration: 0.1s;
-      -moz-transition-duration: 0.1s;
-      -o-transition-duration: 0.1s;
-      transition-duration: 0.1s;
-      -webkit-transition-timing-function: linear;
-      -moz-transition-timing-function: linear;
-      -o-transition-timing-function: linear;
-      transition-timing-function: linear;
+      @include transition(left 0.1s linear);
     }
 
     .iframeContainer,
     .spinnerContainer {
-      -webkit-transition-property: left;
-      -moz-transition-property: left;
-      -o-transition-property: left;
-      transition-property: left;
-      -webkit-transition-duration: 0.1s;
-      -moz-transition-duration: 0.1s;
-      -o-transition-duration: 0.1s;
-      transition-duration: 0.1s;
-      -webkit-transition-timing-function: linear;
-      -moz-transition-timing-function: linear;
-      -o-transition-timing-function: linear;
-      transition-timing-function: linear;
+      @include transition(left 0.1s linear);
     }
   }
 
@@ -948,9 +920,7 @@
         display: block;
         width: $leftNavWidth;
         left: 0;
-        -webkit-box-shadow: 6px 0px 9px 0px rgba(0, 0, 0, 0.44);
-        -moz-box-shadow: 6px 0px 9px 0px rgba(0, 0, 0, 0.44);
-        box-shadow: 6px 0px 9px 0px rgba(0, 0, 0, 0.44);
+        @include box-shadow(6px 0px 9px 0px rgba(0, 0, 0, 0.44));
       }
     }
 

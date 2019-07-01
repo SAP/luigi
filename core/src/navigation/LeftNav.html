@@ -428,6 +428,9 @@
 </script>
 
 <style type="text/scss">
+  /*Mixins*/
+  @import 'styles/mixins';
+
   :root {
     --fd-color-neutral-1: #fafafa;
     --fd-color-neutral-2: #eeeeef;
@@ -440,27 +443,6 @@
   $footerPaddingVertical: 13px;
   $footerHeight: calc(16px + (2 * #{$footerPaddingVertical}));
   /* text height + vertical padding */
-
-  /*Mixins*/
-  @mixin transition($args...) {
-    -webkit-transition: $args;
-    -moz-transition: $args;
-    -ms-transition: $args;
-    -o-transition: $args;
-    transition: $args;
-  }
-
-  @mixin box-shadow($shadow...) {
-    -webkit-box-shadow: $shadow;
-    -moz-box-shadow: $shadow;
-    box-shadow: $shadow;
-  }
-
-  @mixin border-radius($radius) {
-    border-radius: $radius;
-    -webkit-border-radius: $radius;
-    -moz-border-radius: $radius;
-  }
 
   a {
     cursor: pointer;
