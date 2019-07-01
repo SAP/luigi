@@ -25,5 +25,5 @@ You can set the following values:
 * `simple` displays the button regardless of the browser window´s size.
 * `simpleMobileOnly` displays the button when the width is lower than `600px`. 
 * `semiCollapsible` displays the arrow button at the bottom of the left side navigation. Upon click, the button displays the navigation or collapses it.<br>
-If you don't specify any value for  **responsiveNavigation**, the buttons will not be displayed. The same applies when you enable **hideSideNav** for the current active navigation node. 
+If you don't specify any value for  **responsiveNavigation**, the buttons remain hidden. The same applies when you enable **hideSideNav** for the current active navigation node. 
 * **sideNavFooterText** is a string displayed in a sticky footer inside the side navigation. It is a good place to display the version of your application.
