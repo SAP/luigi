@@ -1,3 +1,8 @@
+[![Build Status](https://travis-ci.org/SAP/luigi.svg?branch=master)](https://travis-ci.org/SAP/luigi)
+# Luigi
+<p align="center">
+ <img src="https://raw.githubusercontent.com/sap/luigi/master/logo.png" width="235">
+</p>
 
 ## Overview
 
