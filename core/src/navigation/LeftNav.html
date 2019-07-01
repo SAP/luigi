@@ -442,6 +442,7 @@
     --fd-color-neutral-1: #fafafa;
     --fd-color-neutral-2: #eeeeef;
     --fd-color-neutral-3: #d9d9d9;
+    --fd-color-text-2: #51555a;
     --fd-color-text-4: #74777a;
   }
 
@@ -641,6 +642,7 @@
             transform: translateY(-50%);
             font-size: 10px;
             opacity: 0;
+            color: var(--fd-color-text-2);
             animation-name: arrowAnimation;
             animation-duration: 0.2s;
             animation-fill-mode: forwards;
@@ -700,6 +702,11 @@
         }
 
         .fd-side-nav__link {
+          &:hover,
+          &.is-hover {
+            color: var(--fd-color-text-2);
+          }
+
           &.has-child {
             background-image: none;
           }
