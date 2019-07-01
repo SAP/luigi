@@ -192,11 +192,11 @@ Returns **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/
 
 ### goBack
 
-Discards the active view and navigates back to the last visited view (preserved view), if a preserved view was set before.
+Discards the active view and navigates back to the last visited view. Works with preserved views, and also acts as the substitute of the browser **back** button. **goBackContext** is only available when using preserved views.
 
 #### Parameters
 
--   `goBackValue` **any** data that is passed in the `goBackContext` field to the last visited view
+-   `goBackValue` **any** data that is passed in the **goBackContext** field to the last visited view when using preserved views.
 
 #### Examples
 
