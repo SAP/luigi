@@ -756,7 +756,18 @@
 <style type="text/scss">
   $topNavHeight: 48px;
   $leftNavWidth: 320px;
+  $leftNavWidthCollapsed: 40px;
   $desktop-min-width: 600px;
+
+  /*Mixins*/
+  @mixin transition($args...) {
+    -webkit-transition: $args;
+    -moz-transition: $args;
+    -ms-transition: $args;
+    -o-transition: $args;
+    transition: $args;
+  }
+
   :global(html) {
     box-sizing: border-box;
     font-size: 14px;
@@ -889,25 +900,14 @@
   :global(.lui-semiCollapsible) {
     .iframeContainer,
     .spinnerContainer {
-      -webkit-transition-property: left;
-      -moz-transition-property: left;
-      -o-transition-property: left;
-      transition-property: left;
-      -webkit-transition-duration: 0.1s;
-      -moz-transition-duration: 0.1s;
-      -o-transition-duration: 0.1s;
-      transition-duration: 0.1s;
-      -webkit-transition-timing-function: linear;
-      -moz-transition-timing-function: linear;
-      -o-transition-timing-function: linear;
-      transition-timing-function: linear;
+      @include transition(left 0.1s linear);
     }
   }
 
   :global(.semiCollapsed) {
     .iframeContainer,
     .spinnerContainer {
-      left: 40px;
+      left: $leftNavWidthCollapsed;
     }
   }
 
@@ -957,7 +957,7 @@
     :global(.lui-semiCollapsible) {
       .iframeContainer,
       .spinnerContainer {
-        left: 40px;
+        left: $leftNavWidthCollapsed;
       }
     }
   }

@@ -5,7 +5,7 @@
 />
 <div class="fd-app__sidebar {hideNavComponent ? 'hideNavComponent' : ''}">
   {#if children && pathData.length > 1}
-  <div class="wr">
+  <div class="lui-fd-side-nav-wrapper">
     <nav class="fd-side-nav" on:keyup="handleKey(event)">
       {#each sortedChildrenEntries as [key, nodes]} {#if key === 'undefined' || key.indexOf(virtualGroupPrefix) === 0}
       <div class="fd-side-nav__group">
@@ -49,7 +49,7 @@
       <div class="fd-side-nav__group">
         {#if nodes.metaInfo && nodes.metaInfo.label === selectedCategory}
         <div class="lui-flyout-sublist">
-          <div class="wrapper">
+          <div class="lui-flyout-sublist__wrapper">
             <h5
               class="lui-flyout-sublist__title fd-has-type-minus-1 fd-has-color-text-4"
             >{key}</h5>
@@ -437,10 +437,31 @@
   }
 
   $topNavHeight: 48px;
-
+  $leftNavWidthCollapsed: 40px;
   $footerPaddingVertical: 13px;
   $footerHeight: calc(16px + (2 * #{$footerPaddingVertical}));
   /* text height + vertical padding */
+
+  /*Mixins*/
+  @mixin transition($args...) {
+    -webkit-transition: $args;
+    -moz-transition: $args;
+    -ms-transition: $args;
+    -o-transition: $args;
+    transition: $args;
+  }
+
+  @mixin box-shadow($shadow...) {
+    -webkit-box-shadow: $shadow;
+    -moz-box-shadow: $shadow;
+    box-shadow: $shadow;
+  }
+
+  @mixin border-radius($radius) {
+    border-radius: $radius;
+    -webkit-border-radius: $radius;
+    -moz-border-radius: $radius;
+  }
 
   a {
     cursor: pointer;
@@ -461,9 +482,7 @@
     flex-direction: column;
     background-color: white;
     color: #32363a;
-    -moz-box-shadow: 1px 1px 2px 0 rgba(0, 0, 0, 0.05);
-    -webkit-box-shadow: 1px 1px 2px 0 rgba(0, 0, 0, 0.05);
-    box-shadow: 1px 1px 2px 0 rgba(0, 0, 0, 0.05);
+    @include box-shadow(1px 1px 2px 0 rgba(0, 0, 0, 0.05));
   }
 
   .fd-side-nav {
@@ -501,19 +520,7 @@
       white-space: nowrap;
       width: auto;
       padding: $footerPaddingVertical 20px;
-
-      -webkit-transition-property: all;
-      -moz-transition-property: all;
-      -o-transition-property: all;
-      transition-property: all;
-      -webkit-transition-duration: 0.1s;
-      -moz-transition-duration: 0.1s;
-      -o-transition-duration: 0.1s;
-      transition-duration: 0.1s;
-      -webkit-transition-timing-function: linear;
-      -moz-transition-timing-function: linear;
-      -o-transition-timing-function: linear;
-      transition-timing-function: linear;
+      @include transition(all 0.1s linear);
     }
 
     &--icon {
@@ -563,11 +570,9 @@
 
   :global(.lui-semiCollapsible) {
     .fd-app__sidebar {
-      transition-property: width;
-      transition-duration: 0.1s;
-      transition-timing-function: linear;
+      @include transition(width 0.1s linear);
 
-      .wr {
+      .lui-fd-side-nav-wrapper {
         height: calc(100% - 50px);
       }
 
@@ -579,10 +584,8 @@
         .fd-side-nav__item,
         .lui-collapsible-item,
         .lui-category {
-          transition-property: width;
-          transition-duration: 0.1s;
-          transition-timing-function: linear;
           width: 100%;
+          @include transition(width 0.1s linear);
         }
 
         .fd-side-nav__title,
@@ -593,9 +596,7 @@
         .fd-side-nav__list {
           .fd-side-nav__sublist {
             width: 100%;
-            transition-property: width;
-            transition-duration: 0.1s;
-            transition-timing-function: linear;
+            @include transition(width 0.1s linear);
 
             .fd-side-nav__sublink {
               white-space: nowrap;
@@ -608,15 +609,15 @@
 
   :global(.semiCollapsed) {
     .fd-app__sidebar {
-      width: 40px;
+      width: $leftNavWidthCollapsed;
 
-      .wr {
+      .lui-fd-side-nav-wrapper {
         overflow: hidden;
       }
 
       .fd-side-nav {
         min-width: auto;
-        width: (40px + 70px);
+        width: ($leftNavWidthCollapsed + 70px);
         padding-right: 70px;
         margin-right: -70px;
 
@@ -634,8 +635,8 @@
         .fd-side-nav__item,
         .lui-collapsible-item,
         .lui-category {
+          width: $leftNavWidthCollapsed;
           overflow: hidden;
-          width: 40px;
         }
 
         .lui-collapsible-item,
@@ -655,6 +656,18 @@
             animation-name: arrowAnimation;
             animation-duration: 0.2s;
             animation-fill-mode: forwards;
+
+            @-webkit-keyframes arrowAnimation {
+              0% {
+                opacity: 0;
+              }
+              90% {
+                opacity: 0;
+              }
+              100% {
+                opacity: 1;
+              }
+            }
 
             @keyframes arrowAnimation {
               0% {
@@ -705,12 +718,24 @@
         }
 
         .fd-side-nav__text {
+          width: $leftNavWidthCollapsed;
           margin-left: 12px;
           opacity: 1;
           visibility: visible;
           animation-name: labelAnimation;
           animation-duration: 0.1s;
           animation-fill-mode: forwards;
+
+          @-webkit-keyframes labelAnimation {
+            0% {
+              opacity: 1;
+              visibility: visible;
+            }
+            100% {
+              opacity: 0;
+              visibility: hidden;
+            }
+          }
 
           @keyframes labelAnimation {
             0% {
@@ -753,17 +778,37 @@
     left: 48px;
     width: 180px;
 
-    .wrapper {
+    .lui-flyout-sublist__wrapper {
       position: relative;
-      border-radius: 4px;
-      box-shadow: 0 5px 20px 0 var(--fd-color-neutral-3),
-        0 2px 8px 0 var(--fd-color-neutral-2);
+      @include border-radius(4px);
+      @include box-shadow(
+        0 5px 20px 0 var(--fd-color-neutral-3),
+        0 2px 8px 0 var(--fd-color-neutral-2)
+      );
       border: 1px solid var(--fd-color-neutral-3);
       background: white;
       opacity: 0;
       animation-name: flyoutAnimation;
       animation-duration: 0.3s;
       animation-fill-mode: forwards;
+
+      @-webkit-keyframes flyoutAnimation {
+        0% {
+          opacity: 0;
+        }
+        100% {
+          opacity: 1;
+        }
+      }
+
+      @keyframes flyoutAnimation {
+        0% {
+          opacity: 0;
+        }
+        100% {
+          opacity: 1;
+        }
+      }
 
       &:before,
       &:after {
@@ -785,15 +830,6 @@
       &:after {
         left: -13px;
         border-right-color: white;
-      }
-    }
-
-    @keyframes flyoutAnimation {
-      0% {
-        opacity: 0;
-      }
-      100% {
-        opacity: 1;
       }
     }
 
@@ -830,7 +866,7 @@
     }
 
     &.has-bottom-position {
-      .wrapper {
+      .lui-flyout-sublist__wrapper {
         &:before,
         &:after {
           top: auto;
