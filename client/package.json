@@ -16,7 +16,7 @@
   ],
   "main": "luigi-client.js",
   "scripts": {
-    "bundle": "npm run bundle-evergreen && npm run bundle-ie11 && && npm run bundle-no-polyfills",
+    "bundle": "npm run bundle-evergreen && npm run bundle-ie11 && npm run bundle-no-polyfills",
     "bundle-evergreen": "webpack --mode=production --display-error-details",
     "bundle-ie11": "webpack --mode=production --display-error-details --config webpack-ie11.config.js",
     "bundle-no-polyfills": "webpack --mode=production --display-error-details --config webpack-no-polyfills.config.js",

@@ -48,7 +48,7 @@ import {
 <!-- } from '@kyma-project/luigi-client'; -->
 ``` 
 
-Apart from that, if your mircrofrontend is throwing errors related to Javascript polyfills, we recommend to use `luigi-client-no-polyfills` instead of the regular Luigi Client, and let it use the polyfills already imported by you. `luigi-client-no-polyfills` is also compatible with Internet Explorer 11.
+Apart from that, if your microfrontend is throwing errors related to Javascript polyfills, we recommend to use `luigi-client-no-polyfills` instead of the regular Luigi Client.
 
 ```javascript
 import {
