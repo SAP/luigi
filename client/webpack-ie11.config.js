@@ -1,7 +1,7 @@
 const path = require('path');
 const { readFileSync } = require('fs');
 
-const babelSettings = JSON.parse(readFileSync('./.babelrc-ie11'));
+const babelSettings = JSON.parse(readFileSync('.babelrc-ie11'));
 
 module.exports = {
   entry: {

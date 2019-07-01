@@ -2,7 +2,7 @@ const { readFileSync } = require('fs');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const CleanWebpackPlugin = require('clean-webpack-plugin');
 
-const babelSettings = JSON.parse(readFileSync('./.babelrc'));
+const babelSettings = JSON.parse(readFileSync('.babelrc'));
 const commonPlugins = require('./webpack-common-plugins');
 const commonRules = require('./webpack-common-rules');
 
