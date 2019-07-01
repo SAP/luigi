@@ -25,43 +25,41 @@
       <div
         class="fd-shellbar__action fd-shellbar__action--hide fd-shellbar__action--collapsible"
       >
-        <div class="fd-product-menu">
-          <div class="fd-popover fd-popover--right">
-            <div class="fd-popover__control" on:click="event.stopPropagation()">
-              <button
-                title="{node.label}"
-                class="fd-button--shell {node === selectedNode ? 'is-selected' : ''}"
-                aria-controls="dropDownPopover-{i}"
-                aria-expanded="{dropDownStates[`dropDownPopover-${i}`] || false}"
-                aria-haspopup="true"
-                on:click="toggleDropdownState(`dropDownPopover-${i}`)"
-                data-e2e="topnav-category"
-              >
-                {#if node.icon}
-                {#if hasOpenUIicon(node)}
-                <span
-                  class="fd-top-nav__icon sap-icon--{node.icon} sap-icon--m"
-                ></span>
-                {:else}
-                <img
-                  class="fd-top-nav__icon nav-icon"
-                  src="{node.icon}"
-                >
-                {/if}
-                <!-- end hasOpenUIicon-->
-                {:else}
-                <span>{node.label}</span>
-                {/if}
-                <!-- end node.icon -->
-              </button>
-            </div>
-            <div
-              class="fd-popover__body fd-popover__body--right"
-              aria-hidden="{!(dropDownStates[`dropDownPopover-${i}`] || false)}"
-              id="dropDownPopover-{i}"
+        <div class="fd-popover fd-popover--right">
+          <div class="fd-popover__control" on:click="event.stopPropagation()">
+            <button
+              title="{node.label}"
+              class="fd-button--shell {node === selectedNode ? 'is-selected' : ''}"
+              aria-controls="dropDownPopover-{i}"
+              aria-expanded="{dropDownStates[`dropDownPopover-${i}`] || false}"
+              aria-haspopup="true"
+              on:click="toggleDropdownState(`dropDownPopover-${i}`)"
+              data-e2e="topnav-category"
             >
-              <TopNavDropDown node="{node}" isMobile="{false}"/>
-            </div>
+              {#if node.icon}
+              {#if hasOpenUIicon(node)}
+              <span
+                class="fd-top-nav__icon sap-icon--{node.icon} sap-icon--m"
+              ></span>
+              {:else}
+              <img
+                class="fd-top-nav__icon nav-icon"
+                src="{node.icon}"
+              >
+              {/if}
+              <!-- end hasOpenUIicon-->
+              {:else}
+              <span>{node.label}</span>
+              {/if}
+              <!-- end node.icon -->
+            </button>
+          </div>
+          <div
+            class="fd-popover__body fd-popover__body--right"
+            aria-hidden="{!(dropDownStates[`dropDownPopover-${i}`] || false)}"
+            id="dropDownPopover-{i}"
+          >
+            <TopNavDropDown node="{node}" isMobile="{false}"/>
           </div>
         </div>
       </div>
@@ -177,6 +175,16 @@
                       on:click="openMobileTopNavDropDown(node)"
                       data-cy="mobile-topnav-dropdown-category"
                     >
+                      {#if node.icon} {#if hasOpenUIicon(node)}
+                      <span
+                        class="fd-top-nav__icon sap-icon--{node.icon} sap-icon--m"
+                      ></span>
+                      {:else}
+                      <img
+                        class="fd-top-nav__icon nav-icon"
+                        src="{node.icon}"
+                      >
+                      {/if} {/if}
                       <span>{node.label}</span>
                     </a>
                   </li>
@@ -497,6 +505,14 @@
   .fd-top-nav__icon {
     display: inline-block;
     vertical-align: middle;
-    margin-right: 5px;
+  }
+
+  .fd-popover__body {
+    &.fd-popover__body--right {
+      &:before,
+      &:after {
+        right: 14px;
+      }
+    }
   }
 </style>
