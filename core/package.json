@@ -1,49 +1,55 @@
 {
   "name": "luigi-core-private",
-  "version": "0.4.12-rc.3",
+  "version": "0.4.12",
   "private": true,
   "description": "luigi-core development version, only the public folder is being published to npm as a package",
   "devDependencies": {
     "@babel/core": "^7.4.0",
     "@babel/node": "^7.2.2",
+    "@babel/plugin-proposal-optional-chaining": "^7.2.0",
     "@babel/preset-env": "^7.4.2",
     "@babel/register": "^7.0.0",
     "acorn": "^6.1.1",
+    "axios": ">=0.18.1",
     "babel-loader": "^8.0.4",
     "bundlesize": "^0.17.0",
     "chai": "^4.2.0",
     "clean-webpack-plugin": "^1.0.0",
     "copy-webpack-plugin": "^4.5.2",
     "core-js": "^3.0.1",
-    "css-loader": "^2.1.1",
+    "css-loader": "^3.0.0",
     "file-loader": "^2.0.0",
-    "fiori-fundamentals": "1.4.5",
+    "fiori-fundamentals": "1.6.0",
     "jsdom": "15.0.0",
     "jsdom-global": "3.0.2",
     "mini-css-extract-plugin": "^0.4.4",
     "mocha": "^6.1.4",
-    "node-sass": "^4.11.0",
+    "node-sass": "^4.12.0",
     "nyc": "^14.0.0",
     "oidc-client": "^1.5.2",
+    "postcss-loader": "^3.0.0",
+    "postcss-preset-env": "^6.6.0",
     "sinon": "^7.3.2",
     "source-map-loader": "^0.2.3",
-    "style-loader": "^0.21.0",
+    "style-loader": "^0.23.1",
     "svelte": "^2.8.0",
     "svelte-loader": "^2.9.1",
     "svelte-transitions": "^1.2.0",
+    "tar": ">=4.4.2",
     "url-loader": "^1.0.1",
     "webpack": "^4.11.1",
-    "webpack-cli": "^3.0.3",
-    "tar": ">=4.4.2",
-    "axios": ">=0.18.1"
+    "webpack-cli": "^3.0.3"
   },
   "scripts": {
-    "bundle": "webpack --display-error-details",
-    "bundle-develop": "webpack -d --watch",
+    "bundle": "npm run bundle-evergreen && npm run bundle-ie11",
+    "bundle-evergreen": "webpack --mode=production --display-error-details",
+    "bundle-ie11": "webpack --mode=production --display-error-details --config webpack-ie11.config.js",
+    "bundle-develop": "npm run bundle-develop-evergreen",
+    "bundle-develop-evergreen": "npm run bundle-evergreen -- -d --watch",
+    "bundle-develop-ie11": "npm run bundle-ie11 -- -d --watch",
     "test": "babel-node ./node_modules/nyc/bin/nyc.js mocha -- --recursive test",
     "test:watch": "npm run test -- --watch",
     "bundlesize": "npm run bundle && bundlesize",
-    "prepush": "../scripts/hooks/remove-test-prefixes.sh && npm test && npm run docu:validate",
     "docu:validate": "documentation lint src/core-api/dom-elements.js"
   },
   "bundlesize": [
@@ -55,6 +61,16 @@
     {
       "path": "./public/luigi.css",
       "maxSize": "300 kB",
+      "compression": "none"
+    },
+    {
+      "path": "./public/luigi-ie11.js",
+      "maxSize": "100 kB",
+      "compression": "none"
+    },
+    {
+      "path": "./public/luigi-ie11.css",
+      "maxSize": "400 kB",
       "compression": "none"
     }
   ],

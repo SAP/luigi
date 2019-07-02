@@ -452,6 +452,11 @@
   $footerHeight: calc(16px + (2 * #{$footerPaddingVertical}));
   /* text height + vertical padding */
 
+  :root {
+    /* needed for IE11 support */
+    --fd-color-text-4: #74777a;
+  }
+
   a {
     cursor: pointer;
     outline-offset: -1px;
