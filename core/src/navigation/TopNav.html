@@ -291,49 +291,15 @@
     StateHelpers
   } from '../utilities/helpers';
 
-  const setTopNavData = (current, component) => {
+  const setTopNavData = async (current, component) => {
     if (current.pathData && 0 < current.pathData.length) {
-      const rawChildren = current.pathData[0].children;
-      let selectedNode = null;
-      let visibleNodeCount = 0;
-      let cats = {};
-      const children = [];
-      rawChildren.forEach(node => {
-        current.pathData.forEach(n => {
-          if (!selectedNode && n === node) {
-            selectedNode = node;
-          }
-        });
-        if (!node.hideFromNav) {
-          visibleNodeCount++;
-        }
-
-        if (node.category) {
-          const catLabel = node.category.label || node.category;
-          if (cats[catLabel]) {
-            if (!cats[catLabel].icon) {
-              cats[catLabel].icon = node.category.icon;
-            }
-          } else {
-            cats[catLabel] = {
-              isCat: true,
-              label: catLabel,
-              icon: node.category.icon,
-              children: []
-            };
-            children.push(cats[catLabel]);
-          }
-          cats[catLabel].children.push(node);
-        } else {
-          children.push(node);
-        }
-      });
+      const tnd = await NavigationHelpers.generateTopNavNodes(current);
       component.set({
-        children: children,
-        selectedNode: selectedNode,
-        visibleNodeCount: visibleNodeCount
+        children: tnd.children,
+        selectedNode: tnd.selectedNode,
+        visibleNodeCount: tnd.visibleNodeCount
       });
-      window.TOPNAVDATA = children;
+      window.TOPNAVDATA = tnd.children;
     }
   };
 

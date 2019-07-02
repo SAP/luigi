@@ -1,3 +1,4 @@
+
 {#if node && node.badgeCounter}
 {#await node.badgeCounter.count()}
 {:then count}
@@ -5,20 +6,16 @@
   class="fd-counter fd-counter--notification"
   aria-label="{node.badgeCounter.label}"
 >{count}</span>
+
 {:catch error}
 {/await}
 {/if}
-
 <script type="text/javascript">
-  export default {
-    oncreate() {
-      console.log('created BadgeCounter', this.get());
-    }
-  };
+  export default {};
 </script>
 
 <style type="text/scss">
-.badgeCounter {
-  display: block;
-}
+  .fd-counter--notification {
+    transform: translate(-20%, -50%);
+  }
 </style>
