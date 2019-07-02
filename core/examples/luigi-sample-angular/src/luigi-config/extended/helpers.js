@@ -150,3 +150,9 @@ export const navigationPermissionChecker = (
     mockCurrentUserGroups.includes(c)
   );
 };
+
+let mockBadgeCount = 0;
+setInterval(() => {
+  mockBadgeCount++;
+}, 2500);
+export const getMockBadgeCount = () => mockBadgeCount;

@@ -19,7 +19,7 @@
       />
       {/if}
       {#if children && pathData.length > 0}
-      {#each children as node ,i}
+      {#each children as node, i}
       {#if !node.hideFromNav}
       {#if node.isCat}
       <div
@@ -166,6 +166,7 @@
                         class="sap-icon--action sap-icon--s"
                       ></span>
                       {/if}
+                      <BadgeCounter {node}/>
                     </a>
                   </li>
                   {:else}
@@ -186,6 +187,7 @@
                       >
                       {/if} {/if}
                       <span>{node.label}</span>
+                      <BadgeCounter {node}/>
                     </a>
                   </li>
                   {/if}

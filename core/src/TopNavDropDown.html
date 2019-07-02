@@ -93,8 +93,8 @@
       let children = this.get().children;
       if (!children) {
         children = await Navigation.getChildren(currentNode);
-        this.set({ children });
       }
+      this.set({ children });
     },
     methods: {
       onActionClick(node) {

@@ -5,7 +5,8 @@ import {
   addProject,
   removeProject,
   getProjectCount,
-  projectExists
+  projectExists,
+  getMockBadgeCount
 } from './helpers';
 
 class Navigation {
@@ -147,7 +148,7 @@ class Navigation {
       icon: 'ui-notifications',
       badgeCounter: {
         label: 'Number of Notifications',
-        count: () => 12
+        count: getMockBadgeCount
       }
     }
   ];
