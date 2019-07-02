@@ -31,7 +31,7 @@ Luigi.setConfig({
         category: {
           label: 'General',
           icon: 'general'
-        }, 
+        }, // OR
         category: 'General'
       },
         // DYNAMIC navigation node
