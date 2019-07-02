@@ -25,6 +25,35 @@ View the [application examples](core/examples) to explore Luigi's features.
 
 For details, see [Luigi documentation](docs/README.md).
 
+## Browser support
+
+If you want to support Internet Explorer 11 in your application, update your Luigi imports as follows:
+### Luigi Core
+```html
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <link rel='stylesheet' href='/luigi-core/luigi-ie11.css'>
+    <!-- <link rel='stylesheet' href='/luigi-core/luigi.css'> -->
+  </head>
+  <body>
+    <script type="module" src="/luigi-core/luigi.js"></script>
+    <script nomodule src="/luigi-core/luigi-ie11.js"></script>
+    <!-- <script src="/luigi-core/luigi.js"></script> -->
+  </body>
+</html>
+``` 
+
+### Luigi Client
+```javascript
+import {
+  linkManager,
+  uxManager
+} from '@kyma-project/luigi-client/luigi-client-ie11';
+<!-- } from '@kyma-project/luigi-client'; -->
+``` 
+
+>**NOTE**: The angular example application is not fully compatible with IE11.
 
 ## Development
 
