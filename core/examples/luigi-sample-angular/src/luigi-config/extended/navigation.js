@@ -60,14 +60,15 @@ class Navigation {
       viewGroup: 'tets'
     },
     {
+      category: { label: 'Misc', icon: 'lightbulb' },
       label: 'Open Google in this tab',
-
       externalLink: {
         url: 'http://google.com',
         sameWindow: true
       }
     }, // showing an anonymous content is possible only with auto login disabled
     {
+      category: 'Misc',
       pathSegment: 'all-users',
       label: 'Visible for all users',
       anonymousAccess: true,
@@ -82,6 +83,7 @@ class Navigation {
       hideSideNav: true
     },
     {
+      category: 'Misc',
       pathSegment: 'ext',
       label: 'External Page',
       loadingIndicator: {
