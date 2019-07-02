@@ -19,8 +19,51 @@
       />
       {/if}
       {#if children && pathData.length > 0}
-      {#each children as node}
+      {#each children as node ,i}
       {#if !node.hideFromNav}
+      {#if node.isCat}
+      <div
+        class="fd-shellbar__action fd-shellbar__action--hide fd-shellbar__action--collapsible"
+      >
+        <div class="fd-popover fd-popover--right">
+          <div class="fd-popover__control" on:click="event.stopPropagation()">
+            <button
+              title="{node.label}"
+              class="fd-button--shell {node === selectedNode ? 'is-selected' : ''}"
+              aria-controls="dropDownPopover-{i}"
+              aria-expanded="{dropDownStates[`dropDownPopover-${i}`] || false}"
+              aria-haspopup="true"
+              on:click="toggleDropdownState(`dropDownPopover-${i}`)"
+              data-e2e="topnav-category"
+            >
+              {#if node.icon}
+              {#if hasOpenUIicon(node)}
+              <span
+                class="fd-top-nav__icon sap-icon--{node.icon} sap-icon--m"
+              ></span>
+              {:else}
+              <img
+                class="fd-top-nav__icon nav-icon"
+                src="{node.icon}"
+              >
+              {/if}
+              <!-- end hasOpenUIicon-->
+              {:else}
+              <span>{node.label}</span>
+              {/if}
+              <!-- end node.icon -->
+            </button>
+          </div>
+          <div
+            class="fd-popover__body fd-popover__body--right"
+            aria-hidden="{!(dropDownStates[`dropDownPopover-${i}`] || false)}"
+            id="dropDownPopover-{i}"
+          >
+            <TopNavDropDown node="{node}" isMobile="{false}"/>
+          </div>
+        </div>
+      </div>
+      {:else}
       <div
         class="fd-shellbar__action fd-shellbar__action--hide fd-shellbar__action--collapsible"
       >
@@ -56,6 +99,7 @@
           <!-- end node.externallLink.url -->
         </button>
       </div>
+      {/if}
       {/if}
       {/each}
       <!-- Sample Markup for Notifications
@@ -98,7 +142,9 @@
             >
               <nav class="fd-menu">
                 <ul class="fd-menu__list">
-                  {#each children as node} {#if !node.hideFromNav}
+                  {#each children as node,i}
+                  {#if !node.hideFromNav}
+                  {#if !node.isCat}
                   <li>
                     <a
                       class="fd-menu__item {node === selectedNode ? 'is-selected' : ''}"
@@ -122,6 +168,27 @@
                       {/if}
                     </a>
                   </li>
+                  {:else}
+                  <li>
+                    <a
+                      class="fd-menu__item"
+                      on:click="openMobileTopNavDropDown(node)"
+                      data-cy="mobile-topnav-dropdown-category"
+                    >
+                      {#if node.icon} {#if hasOpenUIicon(node)}
+                      <span
+                        class="fd-top-nav__icon sap-icon--{node.icon} sap-icon--m"
+                      ></span>
+                      {:else}
+                      <img
+                        class="fd-top-nav__icon nav-icon"
+                        src="{node.icon}"
+                      >
+                      {/if} {/if}
+                      <span>{node.label}</span>
+                    </a>
+                  </li>
+                  {/if}
                   {/if}
                   {/each}
                   {#if isProductSwitcherAvailable}
@@ -144,6 +211,13 @@
               bind:dropDownStates
               on:toggleDropdownState="toggleDropdownState('productSwitcherPopover')"
               isMobile="{true}"
+            />
+            {/if}
+            {#if openMobileDropDown}
+            <TopNavDropDown
+              node="{nodeForMobile}"
+              isMobile="{true}"
+              on:close="closeMobileTopNavDropDown()"
             />
             {/if}
           </div>
@@ -207,6 +281,7 @@
   import ContextSwitcher from './ContextSwitcher.html';
   import LogoTitle from './LogoTitle.html';
   import Authorization from '../Authorization.html';
+  import TopNavDropDown from '../TopNavDropDown.html';
   import ProductSwitcher from './ProductSwitcher.html';
   import { LuigiAuth, LuigiConfig } from '../core-api';
   import {
@@ -217,10 +292,12 @@
 
   const setTopNavData = (current, component) => {
     if (current.pathData && 0 < current.pathData.length) {
-      const children = current.pathData[0].children;
+      const rawChildren = current.pathData[0].children;
       let selectedNode = null;
       let visibleNodeCount = 0;
-      children.map(node => {
+      let cats = {};
+      const children = [];
+      rawChildren.forEach(node => {
         current.pathData.forEach(n => {
           if (!selectedNode && n === node) {
             selectedNode = node;
@@ -228,6 +305,26 @@
         });
         if (!node.hideFromNav) {
           visibleNodeCount++;
+        }
+
+        if (node.category) {
+          const catLabel = node.category.label || node.category;
+          if (cats[catLabel]) {
+            if (!cats[catLabel].icon) {
+              cats[catLabel].icon = node.category.icon;
+            }
+          } else {
+            cats[catLabel] = {
+              isCat: true,
+              label: catLabel,
+              icon: node.category.icon,
+              children: []
+            };
+            children.push(cats[catLabel]);
+          }
+          cats[catLabel].children.push(node);
+        } else {
+          children.push(node);
         }
       });
       component.set({
@@ -296,6 +393,12 @@
         if (event) event.stopPropagation();
         this.toggleDropdownState('productSwitcherPopover');
       },
+      openMobileTopNavDropDown(node) {
+        this.set({ openMobileDropDown: true, nodeForMobile: node });
+      },
+      closeMobileTopNavDropDown() {
+        this.set({ openMobileDropDown: false });
+      },
       handleClick(node) {
         this.fire('handleClick', { node });
       },
@@ -334,7 +437,8 @@
       Authorization,
       ContextSwitcher,
       LogoTitle,
-      ProductSwitcher
+      ProductSwitcher,
+      TopNavDropDown
     }
   };
 </script>
@@ -401,6 +505,15 @@
   .fd-top-nav__icon {
     display: inline-block;
     vertical-align: middle;
-    margin-right: 5px;
+    min-width: 16px;
+  }
+
+  .fd-popover__body {
+    &.fd-popover__body--right {
+      &:before,
+      &:after {
+        right: 14px;
+      }
+    }
   }
 </style>

@@ -77,7 +77,7 @@
         const contextSwitcherConfig = LuigiConfig.getConfigValue(
           'navigation.contextSwitcher'
         );
-        const hasOpts = !!this.get().options;
+
         this.set({
           contextSwitcherEnabled: !!contextSwitcherConfig,
           config: contextSwitcherConfig,
@@ -96,7 +96,7 @@
           });
 
           // options are loaded lazy by default
-          if (!contextSwitcherConfig.lazyloadOptions || hasOpts) {
+          if (!contextSwitcherConfig.lazyloadOptions) {
             await this.fetchOptions();
           }
           if (
@@ -144,17 +144,10 @@
     },
     methods: {
       async fetchOptions() {
-        let options = this.get().options;
-        if (!options || !options.length) {
-          const contextSwitcherOptions = await LuigiConfig.getConfigValueAsync(
-            'navigation.contextSwitcher.options'
-          );
-          options = await ContextSwitcherHelpers.generateSwitcherNav(
-            this.get().config,
-            contextSwitcherOptions
-          );
-          this.set({ options });
-        }
+        const options = await ContextSwitcherHelpers.fetchOptions(
+          this.get().options
+        );
+        this.set({ options });
       },
       async setSelectedContext(currentPath) {
         const config = this.get().config || {};
@@ -201,8 +194,18 @@
 </script>
 
 <style type="text/scss">
+  :root {
+    /* needed for IE11 support */
+    --fd-color-shell-2: #d1e8ff;
+  }
+
+  .fd-button--shell .is-hover,
+  .fd-button--shell:hover {
+    background-color: transparent;
+  }
+
   .lui-tendant-menu__control {
-    // Overwrite color inheriting of product menu
+    /* Overwrite color inheriting of product menu */
     color: var(--fd-color-shell-2);
   }
 
