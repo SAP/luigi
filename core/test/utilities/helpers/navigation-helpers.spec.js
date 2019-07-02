@@ -7,12 +7,15 @@ import { LuigiAuth, LuigiConfig } from '../../../src/core-api';
 
 describe('Navigation-helpers', () => {
   describe('isNodeAccessPermitted', () => {
+    let permissionCheckerFn;
     beforeEach(() => {
+      permissionCheckerFn = sinon.spy();
       sinon.stub(LuigiAuth, 'isAuthorizationEnabled');
       sinon.stub(AuthHelpers, 'isLoggedIn');
       sinon.stub(LuigiConfig, 'getConfigValue');
     });
     afterEach(() => {
+      permissionCheckerFn = undefined;
       sinon.restore();
     });
 
@@ -25,7 +28,6 @@ describe('Navigation-helpers', () => {
       const checkNode = {
         anonymousAccess: true
       };
-      const permissionCheckerFn = sinon.spy();
 
       LuigiAuth.isAuthorizationEnabled.returns(true);
       AuthHelpers.isLoggedIn.returns(true);
@@ -48,7 +50,6 @@ describe('Navigation-helpers', () => {
       const checkNode = {
         anonymousAccess: 'exclusive'
       };
-      const permissionCheckerFn = sinon.spy();
 
       LuigiAuth.isAuthorizationEnabled.returns(true);
       AuthHelpers.isLoggedIn.returns(true);
@@ -57,15 +58,27 @@ describe('Navigation-helpers', () => {
       assert.isFalse(NavigationHelpers.isNodeAccessPermitted(checkNode));
     });
 
-    it('logged out, exclusive anonymousAccess', () => {
+    it('logged out, exclusive anonymousAccess, without permissionCheckerFn', () => {
       const checkNode = {
         anonymousAccess: 'exclusive'
       };
-      const permissionCheckerFn = sinon.spy();
 
       LuigiAuth.isAuthorizationEnabled.returns(true);
-      AuthHelpers.isLoggedIn.returns(true);
-      LuigiConfig.getConfigValue.returns(permissionCheckerFn);
+      AuthHelpers.isLoggedIn.returns(false);
+      LuigiConfig.getConfigValue.returns(undefined);
+
+      assert.isTrue(NavigationHelpers.isNodeAccessPermitted(checkNode));
+    });
+
+    it('logged out, exclusive anonymousAccess, with permissionCheckerFn', () => {
+      const checkNode = {
+        anonymousAccess: 'exclusive'
+      };
+      const falsyPermissionCheckerFn = sinon.stub().returns(false);
+
+      LuigiAuth.isAuthorizationEnabled.returns(true);
+      AuthHelpers.isLoggedIn.returns(false);
+      LuigiConfig.getConfigValue.returns(falsyPermissionCheckerFn);
 
       assert.isFalse(NavigationHelpers.isNodeAccessPermitted(checkNode));
     });

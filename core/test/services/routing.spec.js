@@ -458,7 +458,6 @@ describe('Routing', () => {
       window.history.pushState = sinon.spy();
       window.history.replaceState = sinon.spy();
       const pushStateCallsNum = window.history.pushState.callCount;
-      const replaceStateCallsNum = window.history.replaceState.callCount;
 
       LuigiConfig.getConfigValue.returns(false);
 
@@ -471,7 +470,7 @@ describe('Routing', () => {
 
       assert.equal(singleStateWithPath.path, expectedRoute);
       assert.equal(pushStateCallsNum + 1, expectedPushStateCallsNum);
-      assert.equal(replaceStateCallsNum, 0, 'replaceState not been called');
+      sinon.assert.notCalled(window.history.replaceState);
     });
 
     it('should call pushState with proper path (with normal node)', () => {
@@ -558,9 +557,9 @@ describe('Routing', () => {
     });
 
     it('with state path', () => {
-      sinon.stub(window.history, 'state').get(() => ({
+      sinon.stub(window.history, 'state').value({
         path: '/this/is/some/'
-      }));
+      });
       assert.equal(Routing.getModifiedPathname(), 'this/is/some/');
     });
   });
