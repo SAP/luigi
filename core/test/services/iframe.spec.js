@@ -9,6 +9,7 @@ import { LuigiConfig } from '../../src/core-api';
 describe('Iframe', () => {
   let node;
   let component;
+  let preloadingAllowed;
 
   beforeEach(() => {
     let lastObj = {};
@@ -19,7 +20,8 @@ describe('Iframe', () => {
       get: () => lastObj,
       prepareInternalData: () => {}
     };
-    sinon.stub(LuigiConfig, 'getConfigValue');
+    preloadingAllowed = false;
+    sinon.stub(LuigiConfig, 'getConfigValue').callsFake();
 
     node = {
       children: [
