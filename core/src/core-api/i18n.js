@@ -3,6 +3,7 @@ class LuigiI18NManager {
   constructor() {
     this.currentLocaleStorageKey = 'luigi.currentLocale';
     this.defaultLocale = 'en';
+    this.listeners = new Set();
   }
 
   /**
@@ -24,7 +25,35 @@ class LuigiI18NManager {
   setCurrentLocale(locale) {
     if (locale) {
       sessionStorage.setItem(this.currentLocaleStorageKey, locale);
+      this.notifyLocaleChange(locale);
     }
+  }
+
+  /**
+   * Register a listener for locale changes
+   * @param {Function} listener function called on every locale change with the new locale as argument
+   * @memberof LuigiI18N
+   */
+  addCurrentLocaleChangeListener(listener) {
+    this.listeners.add(listener);
+  }
+
+  /**
+   * De-register a listener for locale changes
+   * @param {Function} listener function previously registered for locale changes
+   * @memberof LuigiI18N
+   */
+  removeCurrentLocaleChangeListener(listener) {
+    this.listeners.delete(listener);
+  }
+
+  /**
+   * @private
+   */
+  notifyLocaleChange(locale) {
+    this.listeners.forEach(listener => {
+      listener(locale);
+    });
   }
 }
 
