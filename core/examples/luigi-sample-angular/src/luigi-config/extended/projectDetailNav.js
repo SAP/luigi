@@ -202,7 +202,6 @@ export const projectDetailNavStructure = projectId => [
     label: 'Open Github in new tab',
     category: {
       label: 'Super useful Github links',
-      collapsible: true,
       icon: '/assets/github-logo.png'
     },
     externalLink: {

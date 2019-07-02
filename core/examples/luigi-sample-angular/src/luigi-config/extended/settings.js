@@ -8,7 +8,7 @@ class Settings {
     favicon: '/assets/favicon-sap.ico'
   };
 
-  responsiveNavigation = 'semiCollapsible'; // "simple/simpleMobileOnly"
+  responsiveNavigation = 'simple'; // "simpleMobileOnly/semiCollapsible"
   sideNavFooterText = `Luigi Client: ${version || 'unknown'}`;
   // hideNavigation = true
   // backdropDisabled = true

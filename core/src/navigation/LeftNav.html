@@ -90,7 +90,7 @@
             >
               {#if isOpenUIiconName(nodes.metaInfo.icon)}
               <span
-                class="fd-side-nav__icon {'sap-icon--' + nodes.metaInfo.icon} {isSemiCollapsed ? 'sap-icon--question-mark' : ''} sap-icon--l"
+                class="fd-side-nav__icon {'sap-icon--' + nodes.metaInfo.icon} {isSemiCollapsed && !nodes.metaInfo.icon ? 'sap-icon--rhombus-milestone-2' : ''} sap-icon--l"
                 role="presentation"
               ></span>
               {:else}
@@ -132,7 +132,7 @@
             {#if hasCategoriesWithIcon} {#if
             isOpenUIiconName(nodes.metaInfo.icon)}
             <span
-              class="fd-side-nav__icon {nodes.metaInfo.icon ? 'sap-icon--' + nodes.metaInfo.icon : ''} {isSemiCollapsed ? 'sap-icon--question-mark' : ''} sap-icon--l"
+              class="fd-side-nav__icon {nodes.metaInfo.icon ? 'sap-icon--' + nodes.metaInfo.icon : ''} {isSemiCollapsed && !nodes.metaInfo.icon ? 'sap-icon--rhombus-milestone-2' : ''} sap-icon--l"
               role="presentation"
             ></span>
             {:else}
@@ -474,9 +474,16 @@
     @include box-shadow(1px 1px 2px 0 rgba(0, 0, 0, 0.05));
   }
 
+  .lui-fd-side-nav-wrapper {
+    height: calc(100% - 50px);
+  }
+
   .fd-side-nav {
+    height: 100%;
     overflow-y: auto;
     overflow-x: hidden;
+    -webkit-overflow-scrolling: touch;
+    background-color: transparent;
 
     &__link {
       .sap-icon--action {
@@ -561,15 +568,7 @@
     .fd-app__sidebar {
       @include transition(width 0.1s linear);
 
-      .lui-fd-side-nav-wrapper {
-        height: calc(100% - 50px);
-      }
-
       .fd-side-nav {
-        -webkit-overflow-scrolling: touch;
-        background-color: transparent;
-        height: 100%;
-
         .fd-side-nav__item,
         .lui-collapsible-item,
         .lui-category {
