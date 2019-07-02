@@ -65,7 +65,6 @@ class Navigation {
       viewGroup: 'tets'
     },
     {
-      category: { label: 'Misc', icon: 'lightbulb' },
       label: 'Open Google in this tab',
       externalLink: {
         url: 'http://google.com',
@@ -73,7 +72,6 @@ class Navigation {
       }
     }, // showing an anonymous content is possible only with auto login disabled
     {
-      category: 'Misc',
       pathSegment: 'all-users',
       label: 'Visible for all users',
       anonymousAccess: true,
@@ -88,7 +86,6 @@ class Navigation {
       hideSideNav: true
     },
     {
-      category: 'Misc',
       pathSegment: 'ext',
       label: 'External Page',
       loadingIndicator: {
@@ -122,6 +119,36 @@ class Navigation {
       viewUrl: '/assets/404.html',
       hideFromNav: true,
       hideSideNav: true
+    },
+    {
+      category: { label: 'Misc', icon: 'lightbulb' },
+      label: 'Errors',
+      viewUrl: '/sampleapp.html#/projects/pr1/dynamic/errors',
+      icon: 'alert',
+      badgeCounter: {
+        label: 'Number of Errors',
+        count: () => 2
+      }
+    },
+    {
+      category: 'Misc',
+      label: 'Warnings',
+      viewUrl: '/sampleapp.html#/projects/pr1/dynamic/warnings',
+      icon: 'message-warning',
+      badgeCounter: {
+        label: 'Number of Warnings',
+        count: () => 5
+      }
+    },
+    {
+      category: 'Misc',
+      label: 'Notifications',
+      viewUrl: '/sampleapp.html#/projects/pr1/dynamic/notifications',
+      icon: 'ui-notifications',
+      badgeCounter: {
+        label: 'Number of Notifications',
+        count: () => 12
+      }
     }
   ];
 

@@ -52,6 +52,7 @@
               <span>{node.label}</span>
               {/if}
               <!-- end node.icon -->
+              <!-- <BadgeCounter bind:node /> -->
             </button>
           </div>
           <div
@@ -97,17 +98,7 @@
           ></span>
           {/if}
           <!-- end node.externallLink.url -->
-          <!-- notification counter -->
-          {#if node.badgeCounter}
-          {#await node.badgeCounter.count()}
-          {:then count}
-          <span
-            class="fd-counter fd-counter--notification"
-            aria-label="{node.badgeCounter.label}"
-          >{count}</span>
-          {:catch error}
-          {/await}
-          {/if}
+          <!-- <BadgeCounter bind:node /> -->
         </button>
       </div>
       {/if}
@@ -142,7 +133,7 @@
                   on:click="toggleDropdownState('overflowPopover')"
                   data-cy="mobile-menu"
                 >
-                  <!-- <span class="fd-counter fd-counter--notification" aria-label="Unread count">25</span> -->
+                  <!-- <BadgeCounter bind:node /> -->
                 </button>
               </div>
             </div>
@@ -290,6 +281,7 @@
 {/if}
 <script type="text/javascript">
   import ContextSwitcher from './ContextSwitcher.html';
+  import BadgeCounter from './partials/BadgeCounter.html';
   import LogoTitle from './LogoTitle.html';
   import Authorization from '../Authorization.html';
   import TopNavDropDown from '../TopNavDropDown.html';
