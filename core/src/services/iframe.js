@@ -22,6 +22,13 @@ class IframeClass {
     return activeIframe[0];
   }
 
+  getIframeBySource(source, modalIframe) {
+    if (modalIframe && modalIframe.contentWindow === source) {
+      return modalIframe;
+    }
+    return this.getAllIframes().find(iframe => iframe.contentWindow === source);
+  }
+
   getIframeContainer() {
     const container = Array.from(document.querySelectorAll('.iframeContainer'));
     return container && container.length > 0 ? container[0] : undefined;
@@ -204,7 +211,7 @@ class IframeClass {
           activeIframe = this.switchActiveIframe(
             node,
             targetIframe,
-            !activeIframe.vg
+            activeIframe && !activeIframe.vg
           );
         }
       }
@@ -239,14 +246,14 @@ class IframeClass {
           component.set({ showLoadingIndicator: false });
         }
         config.navigateOk = undefined;
-        config.iframe = IframeHelpers.createIframe(viewUrl);
-        if (
+        const canCache =
           componentData.viewGroup &&
           !nextViewIsolated &&
-          this.canCache(componentData.viewGroup)
-        ) {
-          config.iframe['vg'] = componentData.viewGroup;
-        }
+          this.canCache(componentData.viewGroup);
+        config.iframe = IframeHelpers.createIframe(
+          viewUrl,
+          canCache ? componentData.viewGroup : undefined
+        );
 
         node.insertBefore(config.iframe, node.firstChild);
 
