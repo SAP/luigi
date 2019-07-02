@@ -1,5 +1,4 @@
-
-{#if node.badgeCounter}
+{#if node && node.badgeCounter}
 {#await node.badgeCounter.count()}
 {:then count}
 <span
@@ -9,19 +8,17 @@
 {:catch error}
 {/await}
 {/if}
+
 <script type="text/javascript">
   export default {
-    async oncreate() {
-      // StateHelpers.doOnStoreChange(this.store, async () => {
-      // });
-    },
-    data() {
-      return {};
+    oncreate() {
+      console.log('created BadgeCounter', this.get());
     }
-    // computed: {},
-    // helpers: {},
-    // methods: {}
   };
 </script>
 
-<style type="text/scss"></style>
+<style type="text/scss">
+.badgeCounter {
+  display: block;
+}
+</style>

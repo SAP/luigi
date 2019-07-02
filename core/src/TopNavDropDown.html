@@ -16,6 +16,7 @@
         {/if}
         {/if}
         <span>{node.label}</span>
+        <BadgeCounter {node}/>
       </a>
     </li>
     {/each}
@@ -70,6 +71,7 @@
               <span
                 class="y-full-width-list__title"
               >{node.label}</span>
+              <BadgeCounter {node}/>
             </li>
             {/each}
             {/if}
@@ -81,6 +83,7 @@
 </section>
 {/if}
 <script type="text/javascript">
+  import BadgeCounter from './navigation/BadgeCounter.html';
   import { Routing } from './services/routing';
   import { Navigation } from './navigation/services/navigation';
   import { NavigationHelpers } from './utilities/helpers';
@@ -108,6 +111,9 @@
       hasOpenUIicon(node) {
         return NavigationHelpers.isOpenUIiconName(node.icon);
       }
+    },
+    components: {
+      BadgeCounter
     }
   };
 </script>

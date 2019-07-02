@@ -52,7 +52,7 @@
               <span>{node.label}</span>
               {/if}
               <!-- end node.icon -->
-              <!-- <BadgeCounter bind:node /> -->
+              <BadgeCounter {node}/>
             </button>
           </div>
           <div
@@ -98,7 +98,7 @@
           ></span>
           {/if}
           <!-- end node.externallLink.url -->
-          <!-- <BadgeCounter bind:node /> -->
+          <BadgeCounter {node}/>
         </button>
       </div>
       {/if}
@@ -132,9 +132,7 @@
                   aria-haspopup="true"
                   on:click="toggleDropdownState('overflowPopover')"
                   data-cy="mobile-menu"
-                >
-                  <!-- <BadgeCounter bind:node /> -->
-                </button>
+                ></button>
               </div>
             </div>
             <div
@@ -281,7 +279,7 @@
 {/if}
 <script type="text/javascript">
   import ContextSwitcher from './ContextSwitcher.html';
-  import BadgeCounter from './partials/BadgeCounter.html';
+  import BadgeCounter from './BadgeCounter.html';
   import LogoTitle from './LogoTitle.html';
   import Authorization from '../Authorization.html';
   import TopNavDropDown from '../TopNavDropDown.html';
@@ -347,6 +345,7 @@
 
   export default {
     oncreate() {
+      console.log('typeof BadgeCounter', typeof BadgeCounter);
       StateHelpers.doOnStoreChange(this.store, () => {
         this.set({
           authorizationEnabled: LuigiAuth.isAuthorizationEnabled(),
@@ -441,7 +440,8 @@
       ContextSwitcher,
       LogoTitle,
       ProductSwitcher,
-      TopNavDropDown
+      TopNavDropDown,
+      BadgeCounter
     }
   };
 </script>
