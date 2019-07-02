@@ -27,7 +27,7 @@ class Navigation {
       label: 'Projects',
       viewUrl: '/sampleapp.html#/projects',
       children: projectsNavProviderFn,
-      notificationCounter: {
+      badgeCounter: {
         label: 'Number of projects',
         count: projectsCounterFn
       }

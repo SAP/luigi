@@ -98,12 +98,12 @@
           {/if}
           <!-- end node.externallLink.url -->
           <!-- notification counter -->
-          {#if node.notificationCounter}
-          {#await node.notificationCounter.count()}
+          {#if node.badgeCounter}
+          {#await node.badgeCounter.count()}
           {:then count}
           <span
             class="fd-counter fd-counter--notification"
-            aria-label="{node.notificationCounter.label}"
+            aria-label="{node.badgeCounter.label}"
           >{count}</span>
           {:catch error}
           {/await}
