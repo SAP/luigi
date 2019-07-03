@@ -578,7 +578,10 @@
         this.getUnsavedChangesModalPromise().then(() => {
           this.closeLeftNav();
           if (node.openNodeInModal) {
-            let route = RoutingHelpers.buildRoute(node, `/${node.pathSegment}`);
+            const route = RoutingHelpers.buildRoute(
+              node,
+              `/${node.pathSegment}`
+            );
             this.openViewInModal(route, node.openNodeInModal);
           } else {
             Routing.handleRouteClick(node, this);
