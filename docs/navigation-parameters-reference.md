@@ -116,9 +116,10 @@ The node parameters are as follows:
 - **viewGroup** defines a group of views in the same domain sharing a common security context. This improves performance through reusing the frame. Use **viewGroup** only for the views that use path routing internally.
 - **icon** is the name of an icon from the [OpenUI](https://openui5.hana.ondemand.com/1.40.10/iconExplorer.html) or a custom link (relative or absolute) to an image displayed next to the Node label in the side navigation or instead of the label in the top navigation.
 - **hideSideNav** if set to `true`, the left navigation disappears when you click the affected node. It is set to `false` by default.
-- **openNodeInModal** is an object which opens a view in a modal. You can specify the modal's title and size. If you don't specify the title, it is the node label. If there is no node label, the title remains empty. The default size of the modal is `l`, which means 80%. You can also use `m` (60%) and `s` (40%) to set the modal size.
+- **openNodeInModal** is an object which configures the view to be opened in a modal. You can specify the modal's title and size. If you don't specify the title, it is the node label. If there is no node label, the title remains empty. The default size of the modal is `l`, which means 80%. You can also use `m` (60%) and `s` (40%) to set the modal size.
   -   **title** modal title. By default, it is the node label. If there is no label, it is left empty
-  -   **modalSettings.size** **(`"l"` \| `"m"` \| `"s"`)** size of the modal (optional, default `"l"`)
+  -   **size** **(`"l"` \| `"m"` \| `"s"`)** size of the modal (optional, default `"l"`)
+  Optionally you can set the **openNodeInModal** property to true to use default title and size.
 
 ## Context switcher
 

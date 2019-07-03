@@ -83,10 +83,7 @@ export const projectDetailNavStructure = projectId => [
     label: 'Miscellaneous2',
     viewUrl: '/sampleapp.html#/projects/' + projectId + '/miscellaneous2',
     icon: 'sys-help',
-    openNodeInModal: {
-      title: 'Miscellaneous2',
-      size: 'm'
-    }
+    openNodeInModal: true
   },
   {
     pathSegment: 'misc2-isolated',

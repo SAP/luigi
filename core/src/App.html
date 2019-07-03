@@ -582,7 +582,13 @@
               node,
               `/${node.pathSegment}`
             );
-            this.openViewInModal(route, node.openNodeInModal);
+            if (node.openNodeInModal)
+              this.openViewInModal(
+                route,
+                typeof node.openNodeInModal === 'boolean'
+                  ? {}
+                  : node.openNodeInModal
+              );
           } else {
             Routing.handleRouteClick(node, this);
           }
