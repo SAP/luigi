@@ -105,7 +105,16 @@ class IframeHelpersClass {
   getLocation(url) {
     const element = document.createElement('a');
     element.href = url;
-    return element.origin;
+
+    if (element.origin) {
+      return element.origin;
+    } else if (element.protocol && element.host) {
+      // IE11, url contains domain
+      return `${element.protocol}//${element.host}`;
+    } else {
+      // IE11, url does not contain domain
+      return window.location.origin;
+    }
   }
 
   getVisibleIframes() {
@@ -128,7 +137,7 @@ class IframeHelpersClass {
     iframe.contentWindow.postMessage(message, trustedIframeDomain);
   }
 
-  createIframe(viewUrl) {
+  createIframe(viewUrl, viewGroup) {
     const activeSandboxRules = [
       'allow-forms', // Allows the resource to submit forms. If this keyword is not used, form submission is blocked.
       'allow-modals', // Lets the resource open modal windows.
@@ -149,8 +158,12 @@ class IframeHelpersClass {
     iframe.src = viewUrl;
     iframe.sandbox = activeSandboxRules.join(' ');
     iframe.luigi = {
-      viewUrl
+      viewUrl,
+      createdAt: new Date().getTime()
     };
+    if (viewGroup) {
+      iframe.vg = viewGroup;
+    }
     return iframe;
   }
 
