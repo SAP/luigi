@@ -77,7 +77,7 @@ class UxManager extends LuigiClientBase {
   /**
    * Shows a confirmation modal.
    * @memberof uxManager
-   * @param {Object} [settings] the settings the confirmation modal. If no value is provided for any of the fields, a default value is set for it
+   * @param {Object} settings the settings of the confirmation modal. If you don't provide any value for any of the fields, a default value is used
    * @param {string} [settings.header="Confirmation"] the content of the modal header
    * @param {string} [settings.body="Are you sure you want to do this?"] the content of the modal body
    * @param {string} [settings.buttonConfirm="Yes"] the label for the modal confirm button
@@ -130,8 +130,8 @@ class UxManager extends LuigiClientBase {
    * @memberof uxManager
    * @param {Object} settings the settings for the alert
    * @param {string} settings.text the content of the alert. To add a link to the content, you have to set up the link in the `links` object. The key(s) in the `links` object must be used in the text to reference the links, wrapped in curly brackets with no spaces. If you don't specify any text, the alert is not displayed
-   * @param {('info'|'success'|'warning'|'error')} [settings.type] sets the type of the alert
-   * @param {Object} [settings.links] provides links data
+   * @param {('info'|'success'|'warning'|'error')} settings.type sets the type of alert
+   * @param {Object} settings.links provides links data
    * @param {Object} settings.links.LINK_KEY object containing the data for a particular link. To properly render the link in the alert message refer to the description of the **settings.text** parameter
    * @param {string} settings.links.LINK_KEY.text text which replaces the link identifier in the alert content
    * @param {string} settings.links.LINK_KEY.url url to navigate when you click the link. Currently, only internal links are supported in the form of relative or absolute paths.

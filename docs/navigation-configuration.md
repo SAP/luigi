@@ -27,8 +27,7 @@ A navigation path is any existing path in the navigation tree. It connects the f
 
 If you set the **hideSideNav** property to `true`, the left navigation disappears when you click the affected node. It is set to `false` by default.
 
-If you want to group some navigation nodes and seperate these nodes into one parent node you can use the **category** property. The grouped navigation nodes are rendered in a dropdown. The **category** property should have a **label** and an **icon**.
-
+If you want to group some navigation nodes into a separate parent node, you can use the **category** property. The grouped navigation nodes are rendered in a dropdown. The **category** property needs a **label** and, optionally, an **icon**.
 
 A sample navigation structure looks as follows:
 

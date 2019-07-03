@@ -190,6 +190,27 @@
                       <BadgeCounter {node}/>
                     </a>
                   </li>
+                  {:else}
+                  <li>
+                    <a
+                      class="fd-menu__item"
+                      on:click="openMobileTopNavDropDown(node)"
+                      data-cy="mobile-topnav-dropdown-category"
+                    >
+                      {#if node.icon} {#if hasOpenUIicon(node)}
+                      <span
+                        class="fd-top-nav__icon sap-icon--{node.icon} sap-icon--m"
+                      ></span>
+                      {:else}
+                      <img
+                        class="fd-top-nav__icon nav-icon"
+                        src="{node.icon}"
+                      >
+                      {/if} {/if}
+                      <span>{node.label}</span>
+                    </a>
+                  </li>
+                  {/if}
                   {/if}
                   {/if}
                   {/each}
@@ -482,6 +503,7 @@
   .fd-top-nav__icon {
     display: inline-block;
     vertical-align: middle;
+    min-width: 16px;
   }
 
   .fd-popover__body {
