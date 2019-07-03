@@ -577,7 +577,12 @@
       handleNavClick(node) {
         this.getUnsavedChangesModalPromise().then(() => {
           this.closeLeftNav();
-          Routing.handleRouteClick(node, this);
+          if (node.openNodeInModal) {
+            let route = RoutingHelpers.buildRoute(node, `/${node.pathSegment}`);
+            this.openViewInModal(route, node.openNodeInModal);
+          } else {
+            Routing.handleRouteClick(node, this);
+          }
         });
       },
       onResize() {
