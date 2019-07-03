@@ -7,8 +7,15 @@ class EscapingHelpersClass {
       .replace(/>/g, '&gt;')
       .replace(/"/g, '&quot;')
       .replace(/'/g, '&#39;')
-      .replace(/javascript:/g, '')
-      .replace(/&lt;br&gt;/g, '<br>');
+      .replace(/javascript:/g, '');
+  }
+
+  restoreSanitizedBrs(text) {
+    return text
+      .replace(/&lt;br\/&gt;/g, '<br>')
+      .replace(/&lt;br \/&gt;/g, '<br>')
+      .replace(/&lt;br&gt;/g, '<br>')
+      .replace(/&lt;br &gt;/g, '<br>');
   }
 
   sanitizeParam(param) {
@@ -25,7 +32,7 @@ class EscapingHelpersClass {
   }
 
   processTextAndLinks(text, links, uniqueID) {
-    let sanitizedText = this.sanitizeHtml(text);
+    let sanitizedText = this.restoreSanitizedBrs(this.sanitizeHtml(text));
     let initialValue = { sanitizedText, links: [] };
 
     if (!links) {
@@ -34,7 +41,9 @@ class EscapingHelpersClass {
 
     return Object.entries(links).reduce((acc, [key, content]) => {
       const elemId = `_luigi_alert_${uniqueID}_link_${this.sanitizeParam(key)}`;
-      const escapedText = this.sanitizeHtml(content.text);
+      const escapedText = this.restoreSanitizedBrs(
+        this.sanitizeHtml(content.text)
+      );
       const processedData = `<a id="${elemId}">${escapedText}</a>`;
       const keyForRegex = this.escapeKeyForRegexp(key);
       const pattern = new RegExp(`({${keyForRegex}})`, 'g');
