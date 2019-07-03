@@ -789,7 +789,7 @@
   $topNavHeight: 48px;
   $leftNavWidth: 320px;
   $leftNavWidthCollapsed: 40px;
-  $desktop-min-width: 600px;
+  $desktopMinWidth: 600px;
 
   :global(html) {
     box-sizing: border-box;
@@ -912,7 +912,7 @@
     }
   }
 
-  @media (min-width: $desktop-min-width) {
+  @media (min-width: $desktopMinWidth) {
     :global(.fd-shellbar__title) {
       display: inline;
     }
@@ -932,7 +932,7 @@
     }
   }
 
-  @media (max-width: $desktop-min-width - 1) {
+  @media (max-width: $desktopMinWidth - 1) {
     :global(body.lui-simpleSlideInNav) {
       .iframeContainer,
       .spinnerContainer {
