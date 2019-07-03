@@ -313,7 +313,6 @@
 
   export default {
     oncreate() {
-      console.log('typeof BadgeCounter', typeof BadgeCounter);
       StateHelpers.doOnStoreChange(this.store, () => {
         this.set({
           authorizationEnabled: LuigiAuth.isAuthorizationEnabled(),
@@ -334,9 +333,16 @@
       this.set({
         urlAuthError: AuthHelpers.parseUrlAuthErrors()
       });
+
+      window.addEventListener('message', e => {
+        if ('luigi.navigation.update-badge-counters' === e.data.msg) {
+          setTopNavData(this.get().current, this);
+        }
+      });
     },
     onstate({ changed, current, previous }) {
       if (!previous || previous.pathData != current.pathData) {
+        this.set({ current });
         setTopNavData(current, this);
       }
       setLoggedInState(current, this);

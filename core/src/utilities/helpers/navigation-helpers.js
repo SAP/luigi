@@ -168,10 +168,6 @@ class NavigationHelpersClass {
           };
           children.push(cats[catLabel]);
         }
-        console.log(
-          'updated cats[catLabel]',
-          cats[catLabel].badgeCounter && cats[catLabel].badgeCounter.count()
-        );
         cats[catLabel].children.push(node);
       } else {
         children.push(node);
@@ -182,7 +178,6 @@ class NavigationHelpersClass {
       selectedNode,
       visibleNodeCount
     };
-    console.log('tnd', tnd);
     return tnd;
   }
 

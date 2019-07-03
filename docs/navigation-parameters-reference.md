@@ -116,6 +116,10 @@ The node parameters are as follows:
 - **viewGroup** defines a group of views in the same domain sharing a common security context. This improves performance through reusing the frame. Use **viewGroup** only for the views that use path routing internally.
 - **icon** is the name of an icon from the [OpenUI](https://openui5.hana.ondemand.com/1.40.10/iconExplorer.html) or a custom link (relative or absolute) to an image displayed next to the Node label in the side navigation or instead of the label in the top navigation.
 - **hideSideNav** if set to `true`, the left navigation disappears when you click the affected node. It is set to `false` by default.
+- **badgeCounter** adds a badge with a number and a label to a Node. Nodes that are part of a category will show a cumulated number of all badges in this category. **badgeCounter** is only available for top navigation items.
+  - **label** is the label of the badge
+  - **count** is a function or asynchronous function that returns a number.
+  Gets updated when clicked on the navigation. Use `Luigi.navigation().updateTopNavigation()` in Luigi Core or execute `window.parent.postMessage({msg: 'luigi.navigation.update-badge-counters'}, '*');` from within a micro-frontend to trigger a manual update.
 
 ## Context switcher
 
