@@ -16,29 +16,72 @@ Luigi.setConfig({
   // navigation structure and settings
   navigation: {
     nodeAccessibilityResolver: function (nodeToCheckPermissionFor, parentNode, currentContext) {},
-    nodes: [
-        // STATIC navigation node
-      {
-        pathSegment: 'settings',
-        label: 'Settings',
-        viewUrl: 'https://admin.mydomain.com/settings',
-        viewGroup: 'settingsGroup',
-        // optional
-        children: [node, node, node],
-        hideFromNav: false,
-        isolateView: false,
-        icon: 'settings'
+  viewGroupSettings: {
+    main: {
+      preloadUrl: 'https://my-site.com/index.html#/overview',
+    },
+    projects: {
+      preloadUrl: 'https://my-site.com/projects.html#/list',
+    },
+    envs: {
+      preloadUrl: 'https://my-site.com/environments-details.html#/details/env1',
+    }
+  },
+  nodes: [
+    // STATIC navigation node
+    {
+      pathSegment: 'settings',
+      label: 'Settings',
+      viewUrl: 'https://admin.mydomain.com/settings',
+      viewGroup: 'settingsGroup',
+      // optional
+      children: [node, node, node],
+      hideFromNav: false,
+      isolateView: false,
+      icon: 'settings'
+    },
+    // DYNAMIC navigation node
+    {
+      navigationContext: 'contextName',
+      pathSegment: ':projectId',
+      viewUrl: '/some/path/:projectId',
+      context: {
+        projectId: ':projectId'
       },
-        // DYNAMIC navigation node
-      {
-        navigationContext: 'contextName',
-        pathSegment: ':projectId',
-        viewUrl: '/some/path/:projectId',
-        context: {
-          projectId: ':projectId'
-        },
-        children: [node, node, node]
+      children: [node, node, node]
+    },
+    // View groups nodes
+    {
+      viewGroup: 'main',
+      pathSegment: 'overview',
+      label: 'Overview',
+      viewUrl: 'https://my-site.com/index.html#/overview',
+    },
+    {
+      viewGroup: 'projects',
+      pathSegment: 'projects',
+      label: 'Projects',
+      viewUrl: 'https://my-site.com/projects.html#/list',
+    },
+    {
+      viewGroup: 'envs',
+      pathSegment: 'create-environment',
+      viewUrl: 'https://my-site.com/environments.html#/create',
+      context: {
+        label: 'Create Environment'
       }
+    },
+    {
+      viewGroup: 'envs',
+      pathSegment: 'environments',
+      viewUrl: 'https://my-site.com/environments-details.html#/list',
+      children: [
+        {
+          pathSegment: 'env1',
+          viewUrl: 'https://my-site.com/environments-details.html#/details/env1'
+        }
+      ]
+    }
     ],
     contextSwitcher: {
       defaultLabel: 'Select Environment ...',
@@ -91,6 +134,10 @@ The node navigation parameters are as follows:
 - **nodeAccessibilityResolver** allows you to define a permission checker function that gets executed on every node. If it returns `false`, Luigi removes the node and its children from the navigation structure.
 - **nodeAccessibilityResolver** receives all values defined in the node configuration. See [angular basicConfiguration.js](../core/examples/luigi-sample-angular/src/assets/basicConfiguration.js) for the **constraints** example.
 - **defaults.isolateView** renders all views in new frames. This setting overrides the same-domain frame reuse. The **defaults.isolateView** is disabled by default, and you can overwrite it using the **isolateView** value on a single node level.
+- **preloadViewGroups**(bool) allows to deactivate preloading of [view groups](navigation-configuration.md#view-groups) iframes, which is enabled by default.
+- **viewGroupsSettings** is an object, containing key-object pairs, where the key is the view group name as specified in the node parameters, and the object contains key-value pairs where the key is the feature name and the value the actual setting. The following options are supported:
+  - **preloadUrl**(string): needs to be an absolute url for a node from the view group. The preloadUrl is also required for view group caching in case you need a view group iframe to be refreshed whenever you navigate back to it.
+
 
 ## Node parameters
 
@@ -110,6 +157,7 @@ The node parameters are as follows:
 - **context** sends the specified object as context to the view. Use this parameter in combination with the dynamic **pathSegment** to receive the context through the context listeners of **Luigi Client**. This is an alternative to using the dynamic value in the **viewUrl**.
 - **defaultChildNode** sets the child node that Luigi activates automatically if the current node has no **viewUrl** defined. Provide **pathSegment** of the child node you want to activate as a string.
 - **isolateView** renders the view in a new frame when you enter and leave the node. This setting overrides the same-domain frame re-usage. The **isolateView** is disabled by default.
+- **viewGroup** allows you to associate nodes to be rendered in the same iframe as long as they belong to the same origin. The value of this parameter is considered as the view group id. For further explanations please read [here](navigation-configuration.md#view-groups).
 - **keepSelectedForChildren** focuses the navigation on its current hierarchy, omitting the display of children.
 - **loadingIndicator.enabled** shows a loading indicator when switching between micro front-ends. If you have a fast micro front-end, you can disable this feature to prevent flickering of the loading indicator. This parameter is enabled by default.
 - **loadingIndicator.hideAutomatically** disables the automatic hiding of the loading indicator once the micro front-end is loaded. It is only considered if the loading indicator is enabled. It does not apply if the loading indicator is activated manually with the `LuigiClient.uxManager().showLoadingIndicator()` function. If the loading indicator is enabled and automatic hiding is disabled, use `LuigiClient.uxManager().hideLoadingIndicator()` to hide it manually in your micro front-end during the startup. This parameter is enabled by default.
@@ -149,3 +197,5 @@ The profile section is a configurable drop-down list available in the top naviga
   - **externalLink** is an object which indicates that the node links to an external URL. If this parameter is defined, the **link** parameter is ignored. It has the following properties:
     - **sameWindow** defines if the external URL is opened in the current tab or in a new one. The default value for this parameter is `false`.
     - **url** is the external URL that the link leads to.
+
+

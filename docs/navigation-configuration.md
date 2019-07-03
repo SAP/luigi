@@ -268,3 +268,15 @@ Luigi.setConfig({
     ]
   }
 });
+```
+
+## View Groups
+You can use the view groups feature to override the default iframes management policy. Imagine you have in your app the following microfrontend views: `http://mysite.com/a#e` and  `http://mysite.com/b#f`. Due to hash routing they don´t belong to the same domain, since the domain is the path until the `#` and therefore they will be rendered in different iframes by default. Nevertheless both views might have the **same origin** (in the example `mysite.com`) and belong to the **same microfrontend** and you will want to render them in the same iframe. The view groups feature makes that possible just by setting the `viewGroup` parameter in the most upper nodes, as their children nodes are automatically considered part of the same view group. 
+
+View group nodes are always rendered in their own iframe. Nodes not belonging to any view group will default to the same-origin iframe rendering policy. 
+
+The view groups feature also offers caching. Caching of view groups is provided out of the box. Everytime you navigate to another view group, either a new iframe is created or if the iframe already exists, it is reused. In both cases, the iframe you are navigating from is not destroyed, but hidden and available to be used again. If you navigate back to the first iframe, and the view in that frame should be updated (e.g. in the second iframe you just added a new entry to a table that should be displayed in the first iframe), you need to set a preload url to any view from the view group to ensure that the view is refreshed when you navigate back to it. 
+
+We offer also preloading for view groups. You just need to setup which url you want to preload, and Luigi will preload the view after some user interactions when the browser is most likely to be idle. This option is active by default, but can be deactivated via a [configuration flag](navigation-parameters-reference.md#node-parameters).
+
+For more information about how to set caching with view refresh and preloading for view groups, please read [here](navigation-parameters-reference.md#node-parameters).
