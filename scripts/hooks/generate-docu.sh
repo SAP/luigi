@@ -10,14 +10,24 @@ function check_and_generate_docu() {
   if [[ "$staged_changes" != *"0"* ]]; then
     echo "Changes in .js found. Building docu"
     lerna run docu
+    RES=$?
+    if [ "$RES" != 0 ]; then
+      echo "lerna run docu failed."
+      exit 1;
+    fi
 
     if [ -z "$staged_changes" ]; then
       echo "No docu changes found. Ok"
     else
-      echo "Staging generated md files"
       not_staged_md=$(git diff --name-only --diff-filter=ACM | grep -e ".md")
-      echo "$not_staged_md"
-      echo "$not_staged_md" | xargs git add
+      if [ ! -z "$not_staged_md" ]; then
+        echo "Staging generated md files"
+        echo "$not_staged_md"
+        echo "$not_staged_md" | xargs git add
+        exit 0
+      else
+        echo "No docu changes found. Ok"
+      fi
     fi
   fi
 }

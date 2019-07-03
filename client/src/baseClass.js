@@ -4,6 +4,7 @@
  */
 export class LuigiClientBase {
   /**
+   * change
    * @private
    */
   constructor() {
