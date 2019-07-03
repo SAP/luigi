@@ -33,7 +33,7 @@ export class linkManager extends LuigiClientBase {
    * @memberof linkManager
    * @param {string} path path to be navigated to
    * @param {string} sessionId current Luigi **sessionId**
-   * @param {boolean} preserveView preserve a view by setting it to `true`. It keeps the current view opened in the background and opens the new route in a new frame. Use the {@link #goBack goBack()} function to navigate back. You can use this feature across different levels. Preserved views are discarded as soon as the standard {@link #navigate navigate()} function is used instead of {@link #goBack goBack()}
+   * @param {boolean} preserveView preserve a view by setting it to `true`. It keeps the current view opened in the background and opens the new route in a new frame. Use the {@link #goBack goBack()} function to navigate back. You can use this feature across different levels. Preserved views are discarded as soon as you use the standard {@link #navigate navigate()} function instead of {@link #goBack goBack()}
    * @param {Object} modalSettings opens a view in a modal. Use these settings to configure the modal's title and size
    * @param {string} modalSettings.title modal title. By default, it is the node label. If there is no label, it is left empty
    * @param {('l'|'m'|'s')} [modalSettings.size="l"] size of the modal
@@ -206,22 +206,20 @@ export class linkManager extends LuigiClientBase {
   }
 
   /**
-   * Discards the active view and navigates back to the last visited view (preserved view), if a preserved view was set before.
+   * Discards the active view and navigates back to the last visited view. Works with preserved views, and also acts as the substitute of the browser **back** button. **goBackContext** is only available when using preserved views.
    * @memberof linkManager
-   * @param {any} goBackValue data that is passed in the `goBackContext` field to the last visited view
+   * @param {any} goBackValue data that is passed in the **goBackContext** field to the last visited view when using preserved views.
    * @example
    * LuigiClient.linkManager().goBack({ foo: 'bar' });
    * LuigiClient.linkManager().goBack(true);
    */
   goBack(goBackValue) {
-    if (this.hasBack()) {
-      window.parent.postMessage(
-        {
-          msg: 'luigi.navigation.back',
-          goBackContext: goBackValue && JSON.stringify(goBackValue)
-        },
-        '*'
-      );
-    }
+    window.parent.postMessage(
+      {
+        msg: 'luigi.navigation.back',
+        goBackContext: goBackValue && JSON.stringify(goBackValue)
+      },
+      '*'
+    );
   }
 }
