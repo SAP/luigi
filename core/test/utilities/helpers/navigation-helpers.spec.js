@@ -70,15 +70,13 @@ describe('Navigation-helpers', () => {
       assert.isTrue(NavigationHelpers.isNodeAccessPermitted(checkNode));
     });
 
-    it('logged out, exclusive anonymousAccess, with permissionCheckerFn', () => {
+    it('logged out, no anonymousAccess', () => {
       const checkNode = {
-        anonymousAccess: 'exclusive'
+        anonymousAccess: false
       };
-      const falsyPermissionCheckerFn = sinon.stub().returns(false);
 
       LuigiAuth.isAuthorizationEnabled.returns(true);
       AuthHelpers.isLoggedIn.returns(false);
-      LuigiConfig.getConfigValue.returns(falsyPermissionCheckerFn);
 
       assert.isFalse(NavigationHelpers.isNodeAccessPermitted(checkNode));
     });
