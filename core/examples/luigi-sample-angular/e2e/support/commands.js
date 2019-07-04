@@ -95,6 +95,17 @@ Cypress.Commands.add('expectSearchToBe', (searchString, a) => {
   });
 });
 
+Cypress.Commands.add(
+  'historyBack',
+  {
+    prevSubject: ['window']
+  },
+  (subject, eventName, options) => {
+    console.log('historyBack', subject, eventName, options);
+    subject.history.back();
+  }
+);
+
 /**
   * iframe
   * Basically what it is doing is checking if the iframe has loaded, if
