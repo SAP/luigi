@@ -22,20 +22,20 @@
       };
 
       window.onload = function() {
-        let redirectTo;
+        var redirectTo;
         try {
-          const url = new URL(window.location.href);
-          const post_logout_redirect_uri = url.searchParams.get(
+          var url = new URL(window.location.href);
+          var post_logout_redirect_uri = url.searchParams.get(
             'post_logout_redirect_uri'
           );
           redirectTo = post_logout_redirect_uri;
 
-          const error = url.searchParams.get('error');
-          const errorDescription = url.searchParams.get('errorDescription');
+          var error = url.searchParams.get('error');
+          var errorDescription = url.searchParams.get('errorDescription');
           if (error) {
-            redirectTo = `${redirectTo}?error=${error}`;
+            redirectTo = redirectTo + '?error=' + error;
             if (errorDescription) {
-              redirectTo += `&errorDescription=${errorDescription}`;
+              redirectTo += '&errorDescription=' + errorDescription;
             }
           }
         } catch (error) {
