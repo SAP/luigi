@@ -213,5 +213,37 @@ describe('Navigation', () => {
       cy.get('.no-side-nav').should('exist');
       cy.get('.fd-app__sidebar').should('not.be.visible');
     });
+
+    it('Open navigation node in a modal', () => {
+      let iframeBody;
+      // projects page
+      cy.get('.fd-shellbar')
+        .contains('Projects')
+        .click();
+
+      //projects page
+      cy.get('.fd-app__sidebar')
+        .contains('Project Two')
+        .click();
+
+      //project two page
+      cy.expectPathToBe('/projects/pr2');
+
+      cy.get('.fd-app__sidebar')
+        .contains('Miscellaneous2')
+        .click();
+
+      cy.wrap(iframeBody)
+        .get('[data-e2e=modal-mf]')
+        .should('be.visible');
+
+      cy.wrap(iframeBody)
+        .get('[data-e2e=modal-mf] [aria-label=close]')
+        .click();
+
+      cy.wrap(iframeBody)
+        .get('[data-e2e=modal-mf]')
+        .should('not.be.visible');
+    });
   });
 });
