@@ -18,13 +18,13 @@ Luigi.setConfig({
     nodeAccessibilityResolver: function (nodeToCheckPermissionFor, parentNode, currentContext) {},
   viewGroupSettings: {
     main: {
-      preloadUrl: 'https://my-site.com/index.html#/overview',
+      preloadUrl: 'https://my-site.com/index.html#/preload',
     },
     projects: {
-      preloadUrl: 'https://my-site.com/projects.html#/list',
+      preloadUrl: 'https://my-site.com/projects.html#/preloading',
     },
     envs: {
-      preloadUrl: 'https://my-site.com/environments-details.html#/details/env1',
+      preloadUrl: 'https://my-site.com/environments-details.html#/preload-view',
     }
   },
   nodes: [
@@ -55,13 +55,24 @@ Luigi.setConfig({
       viewGroup: 'main',
       pathSegment: 'overview',
       label: 'Overview',
-      viewUrl: 'https://my-site.com/index.html#/overview',
+      viewUrl: 'https://my-site.com/index.html#/overview'
+    },
+    {
+      viewGroup: 'main',
+      pathSegment: 'preload',
+      viewUrl: 'https://my-site.com/index.html#/preload'
     },
     {
       viewGroup: 'projects',
       pathSegment: 'projects',
       label: 'Projects',
       viewUrl: 'https://my-site.com/projects.html#/list',
+      children: [
+        {
+          pathSegment: 'preloading',
+          viewUrl: 'https://my-site.com/projects.html#/preloading'
+        }
+      ]
     },
     {
       viewGroup: 'envs',
@@ -76,6 +87,10 @@ Luigi.setConfig({
       pathSegment: 'environments',
       viewUrl: 'https://my-site.com/environments-details.html#/list',
       children: [
+        {
+          pathSegment: 'preload',
+          viewUrl: 'https://my-site.com/environments-details.html#/preload-view'
+        },
         {
           pathSegment: 'env1',
           viewUrl: 'https://my-site.com/environments-details.html#/details/env1'
@@ -136,8 +151,7 @@ The node navigation parameters are as follows:
 - **defaults.isolateView** renders all views in new frames. This setting overrides the same-domain frame reuse. The **defaults.isolateView** is disabled by default, and you can overwrite it using the **isolateView** value on a single node level.
 - **preloadViewGroups**(bool) allows to deactivate preloading of [view groups](navigation-configuration.md#view-groups) iframes, which is enabled by default.
 - **viewGroupsSettings** is an object, containing key-object pairs, where the key is the view group name as specified in the node parameters, and the object contains key-value pairs where the key is the feature name and the value the actual setting. The following options are supported:
-  - **preloadUrl**(string): needs to be an absolute url for a node from the view group. The preloadUrl is also required for view group caching in case you need a view group iframe to be refreshed whenever you navigate back to it.
-
+  - **preloadUrl**(string): needs to be an absolute url for a node from the view group. We recommend to use a dedicated small view, visually empty, which imports LuigiClient and is fine with getting an empty context (e.g. without an access token). The preloadUrl is also required for view group caching in case you need a view group iframe to be refreshed whenever you navigate back to it.
 
 ## Node parameters
 

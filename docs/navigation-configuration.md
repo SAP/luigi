@@ -271,7 +271,7 @@ Luigi.setConfig({
 ```
 
 ## View Groups
-You can use the view groups feature to override the default iframes management policy. Imagine you have in your app the following microfrontend views: `http://mysite.com/a#e` and  `http://mysite.com/b#f`. Due to hash routing they don´t belong to the same domain, since the domain is the path until the `#` and therefore they will be rendered in different iframes by default. Nevertheless both views might have the **same origin** (in the example `mysite.com`) and belong to the **same microfrontend** and you will want to render them in the same iframe. The view groups feature makes that possible just by setting the `viewGroup` parameter in the most upper nodes, as their children nodes are automatically considered part of the same view group. 
+You can use the view groups feature to override the default iframes management policy. Imagine you have in your app the following microfrontend views: `http://mysite.com/a#e` and  `http://mysite.com/b#f`. Due to hash routing and the fact the path until _#_ differs, they will be rendered in different iframes by default. Nevertheless both views might have the **same origin** (in the example `mysite.com`) and belong to the **same microfrontend** and you will want to render them in the same iframe. The view groups feature makes that possible just by setting the `viewGroup` parameter in the most upper nodes, as their children nodes are automatically considered part of the same view group. 
 
 View group nodes are always rendered in their own iframe. Nodes not belonging to any view group will default to the same-origin iframe rendering policy. 
 
