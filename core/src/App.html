@@ -579,7 +579,18 @@
       handleNavClick(node) {
         this.getUnsavedChangesModalPromise().then(() => {
           this.closeLeftNav();
-          Routing.handleRouteClick(node, this);
+          if (node.openNodeInModal) {
+            const route = RoutingHelpers.buildRoute(
+              node,
+              `/${node.pathSegment}`
+            );
+            this.openViewInModal(
+              route,
+              node.openNodeInModal === true ? {} : node.openNodeInModal
+            );
+          } else {
+            Routing.handleRouteClick(node, this);
+          }
         });
       },
       onResize() {
