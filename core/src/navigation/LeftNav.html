@@ -7,7 +7,7 @@
   {#if children && pathData.length > 1}
   <div class="lui-fd-side-nav-wrapper">
     <nav class="fd-side-nav" on:keyup="handleKey(event)">
-      {#each sortedChildrenEntries as [key, nodes]} {#if key === 'undefined' || key.indexOf(virtualGroupPrefix) === 0}
+      {#each sortedChildrenEntries as [key, nodes]} {#if key === 'undefined' || key.startsWith(virtualGroupPrefix)}
       <div class="fd-side-nav__group">
         <ul class="fd-side-nav__list">
           {#each nodes as node} {#if !node.hideFromNav} {#if node.label}
