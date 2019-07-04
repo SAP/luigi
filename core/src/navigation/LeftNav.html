@@ -13,6 +13,7 @@
           {#each nodes as node} {#if !node.hideFromNav} {#if node.label}
           <li
             class="fd-side-nav__item {node.externalLink && node.externalLink.url ? 'fd-side-nav__item--external' : ''}"
+            title="{isSemiCollapsed ? node.label : ''}"
           >
             <a
               href="javascript:void(null)"
@@ -80,6 +81,7 @@
           <li
             class="fd-side-nav__item lui-collapsible-item"
             on:click="handleIconClick(nodes, this)"
+            title="{isSemiCollapsed ? key : ''}"
           >
             <a
               href="javascript:void(null)"
@@ -128,6 +130,7 @@
           <li
             class="fd-side-nav__title lui-category"
             on:click="handleIconClick(nodes, this)"
+            title="{isSemiCollapsed ? key : ''}"
           >
             {#if hasCategoriesWithIcon} {#if
             isOpenUIiconName(nodes.metaInfo.icon)}
@@ -418,6 +421,7 @@
         if (!this.getIsSemiCollapsed()) {
           this.setIsSemiCollapsed(true);
 
+          //Force browser to re-render vertical scrollbar
           document
             .getElementsByClassName('fd-side-nav')[0]
             .setAttribute('style', 'overflow-y:hidden;');
@@ -425,7 +429,7 @@
             document
               .getElementsByClassName('fd-side-nav')[0]
               .setAttribute('style', 'overflow-y:auto;');
-          }, 50);
+          });
         } else {
           this.setIsSemiCollapsed(false);
         }
@@ -435,7 +439,6 @@
 </script>
 
 <style type="text/scss">
-  /*Mixins*/
   @import 'styles/mixins';
 
   :root {
