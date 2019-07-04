@@ -305,12 +305,11 @@
           let selectedCategory;
           let sideBar = document.getElementsByClassName('fd-app__sidebar')[0];
 
-          if (nodeOrNodes.metaInfo && nodeOrNodes.metaInfo.label) {
+          if (nodeOrNodes.metaInfo?.label) {
             selectedCategory = nodeOrNodes.metaInfo.label;
           } else {
             selectedCategory =
-              (nodeOrNodes.category && nodeOrNodes.category.label) ||
-              nodeOrNodes.category;
+              nodeOrNodes.category?.label || nodeOrNodes.category;
           }
 
           if (!sideBar.classList.contains('isBlocked')) {
