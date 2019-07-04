@@ -377,6 +377,7 @@ describe('Routing', () => {
         shouldShowUnsavedChangesModal: () => false
       };
       const node = {};
+      window.history.replaceState = sinon.spy();
       window.history.pushState = sinon.spy();
 
       // when
@@ -385,11 +386,12 @@ describe('Routing', () => {
 
       // then
       sinon.assert.calledWith(
-        window.history.pushState,
+        window.history.replaceState,
         sinon.match.any,
         sinon.match.any,
         expectedPath
       );
+      sinon.assert.notCalled(window.history.pushState);
     });
 
     it("should set component's 'hideSideNav' property ", async () => {
@@ -454,6 +456,7 @@ describe('Routing', () => {
       const expectedPushStateCallsNum = 1;
 
       window.history.pushState = sinon.spy();
+      window.history.replaceState = sinon.spy();
       const pushStateCallsNum = window.history.pushState.callCount;
 
       LuigiConfig.getConfigValue.returns(false);
@@ -467,6 +470,7 @@ describe('Routing', () => {
 
       assert.equal(singleStateWithPath.path, expectedRoute);
       assert.equal(pushStateCallsNum + 1, expectedPushStateCallsNum);
+      sinon.assert.notCalled(window.history.replaceState);
     });
 
     it('should call pushState with proper path (with normal node)', () => {
@@ -543,6 +547,20 @@ describe('Routing', () => {
 
       // then
       assert.equal(window.location.hash, expectedRoute);
+    });
+  });
+
+  describe('getModifiedPathname()', () => {
+    it('without state', () => {
+      sinon.stub(window.history, 'state').returns(null);
+      assert.equal(Routing.getModifiedPathname(), '');
+    });
+
+    it('with state path', () => {
+      sinon.stub(window.history, 'state').value({
+        path: '/this/is/some/'
+      });
+      assert.equal(Routing.getModifiedPathname(), 'this/is/some/');
     });
   });
 

@@ -33,6 +33,20 @@ describe('Navigation', () => {
     cy.get('.fd-app__sidebar').should('contain', 'Second Child');
   });
 
+  it('Browser back works with Default Child mechanism', () => {
+    cy.get('iframe').then($iframe => {
+      const $iframeBody = $iframe.contents().find('body');
+
+      cy.wrap($iframeBody)
+        .contains('defaultChildNode')
+        .click();
+      cy.expectPathToBe('/projects/pr1/dps/dps2');
+
+      cy.window().historyBack();
+      cy.expectPathToBe('/overview');
+    });
+  });
+
   it('Icon instead of label in TopNav', () => {
     cy.visit('/');
     cy.get('button[title="Settings"]>.fd-top-nav__icon').should('exist');
