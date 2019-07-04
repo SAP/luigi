@@ -1,16 +1,35 @@
 import { config } from './config';
 
-class LuigiAuthManager {
+/**
+ * Authorization helpers
+ * @name Authorization
+ */
+class LuigiAuth {
+  /**
+   * @private
+   * @memberof Authorization
+   */
   constructor() {}
 
-  /*
+  /**
    * Detects if authorization is enabled via configuration.
-   * @returns {boolean} returns true if authorization is enabled. Otherwise returns false.
+   * @memberof Authorization
+   * @returns {boolean} true if authorization is enabled. Otherwise returns false.
+   * @example
+   * Luigi.auth().isAuthorizationEnabled();
    */
   isAuthorizationEnabled() {
     return !!config.getConfigValue('auth.use');
   }
 
+  /**
+   * @private
+   * @memberof Authorization
+   * @param {string} eventName
+   * @param {Object} providerInstanceSettings
+   * @param {mixed} data
+   * @param {string} redirectUrl
+   */
   async handleAuthEvent(
     eventName,
     providerInstanceSettings,
@@ -32,4 +51,4 @@ class LuigiAuthManager {
   }
 }
 
-export const auth = new LuigiAuthManager();
+export const auth = new LuigiAuth();
