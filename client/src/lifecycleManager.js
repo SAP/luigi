@@ -28,22 +28,6 @@ class LifecycleManager extends LuigiClientBase {
     this.authData = {};
 
     /**
-     * Iterates over an object and executes all top-level functions
-     * with a given payload.
-     * @private
-     */
-    const _callAllFns = (objWithFns, payload) => {
-      for (let id in objWithFns) {
-        if (
-          objWithFns.hasOwnProperty(id) &&
-          helpers.isFunction(objWithFns[id])
-        ) {
-          objWithFns[id](payload);
-        }
-      }
-    };
-
-    /**
      * Adds event listener for communication with Luigi Core and starts communication
      * @private
      */
@@ -81,7 +65,7 @@ class LifecycleManager extends LuigiClientBase {
         setContext(e.data);
         setAuthData(e.data.authData);
         this.luigiInitialized = true;
-        _callAllFns(this._onInitFns, this.currentContext.context);
+        this.notifyInit();
       });
 
       helpers.addEventListener('luigi.auth.tokenIssued', e => {
@@ -95,7 +79,7 @@ class LifecycleManager extends LuigiClientBase {
         }
 
         // execute the context change listener if set by the microfrontend
-        _callAllFns(this._onContextUpdatedFns, this.currentContext.context);
+        this.notifyUpdate();
 
         window.parent.postMessage(
           {
@@ -118,6 +102,37 @@ class LifecycleManager extends LuigiClientBase {
     };
 
     luigiClientInit();
+  }
+
+  /**
+   * Iterates over an object and executes all top-level functions
+   * with a given payload.
+   * @private
+   */
+  _callAllFns(objWithFns, payload) {
+    for (let id in objWithFns) {
+      if (objWithFns.hasOwnProperty(id) && helpers.isFunction(objWithFns[id])) {
+        objWithFns[id](payload);
+      }
+    }
+  }
+
+  /**
+   * Notifies all context init listeners.
+   * @private
+   * @memberof Lifecycle
+   */
+  notifyInit() {
+    this._callAllFns(this._onInitFns, this.currentContext.context);
+  }
+
+  /**
+   * Notifies all context update listeners.
+   * @private
+   * @memberof Lifecycle
+   */
+  notifyUpdate() {
+    this._callAllFns(this._onContextUpdatedFns, this.currentContext.context);
   }
 
   /**

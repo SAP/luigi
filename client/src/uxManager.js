@@ -1,4 +1,5 @@
 import { LuigiClientBase } from './baseClass';
+import { lifecycleManager } from './lifecycleManager';
 import { helpers } from './helpers';
 
 /**
@@ -9,6 +10,13 @@ class UxManager extends LuigiClientBase {
   /** @private */
   constructor() {
     super();
+    helpers.addEventListener('luigi.current-locale-changed', e => {
+      if (e.data.currentLocale && lifecycleManager.currentContext?.internal) {
+        lifecycleManager.currentContext.internal.currentLocale =
+          e.data.currentLocale;
+        lifecycleManager.notifyUpdate();
+      }
+    });
   }
 
   /**
@@ -136,7 +144,7 @@ class UxManager extends LuigiClientBase {
    * @param {string} settings.links.LINK_KEY.text text which replaces the link identifier in the alert content
    * @param {string} settings.links.LINK_KEY.url url to navigate when you click the link. Currently, only internal links are supported in the form of relative or absolute paths.
    * @param {number} settings.closeAfter (optional) time in milliseconds that tells Luigi when to close the Alert automatically. If not provided, the Alert will stay on until closed manually. It has to be greater than `100`.
-   * @returns {promise} which is resolved when the alert is dismissed. 
+   * @returns {promise} which is resolved when the alert is dismissed.
    * @example
    * import LuigiClient from '@kyma-project/luigi-client';
    * const settings = {
@@ -204,6 +212,34 @@ class UxManager extends LuigiClientBase {
       alerts[id].resolveFn(id);
       delete alerts[id];
       this.setPromise('alerts', alerts);
+    }
+  }
+
+  /**
+   * Gets the current locale.
+   * @returns {string} current locale
+   * @memberof uxManager
+   */
+  getCurrentLocale() {
+    return lifecycleManager.currentContext?.internal?.currentLocale;
+  }
+
+  /**
+   * Sets current locale to the given one.
+   * @param {string} locale locale to be set as the current locale
+   * @memberof uxManager
+   */
+  setCurrentLocale(locale) {
+    if (locale) {
+      window.parent.postMessage(
+        {
+          msg: 'luigi.ux.set-current-locale',
+          data: {
+            currentLocale: locale
+          }
+        },
+        '*'
+      );
     }
   }
 }

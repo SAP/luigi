@@ -115,6 +115,18 @@ export declare interface UxManager {
    * @returns {promise} which is resolved when accepting the confirmation modal and rejected when dismissing it.
    */
   showConfirmationModal: (settings: ConfirmationModalSettings) => Promise<void>;
+
+  /**
+   * Gets the current locale.
+   * @returns {string} current locale
+   */
+  getCurrentLocale: () => string;
+
+  /**
+   * Sets current locale to the given one.
+   * @param {string} locale locale to be set as the current locale
+   */
+  setCurrentLocale: (locale: string) => void;
 }
 
 export declare interface LinkManager {

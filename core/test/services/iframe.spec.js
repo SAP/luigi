@@ -91,38 +91,6 @@ describe('Iframe', () => {
     });
   });
 
-  describe('getAllIframes', () => {
-    it('should return an array of active iframes with no modal iframe', () => {
-      const iframes = Iframe.getAllIframes();
-
-      assert.equal(iframes.length, 0);
-    });
-
-    it('should return an array of active iframes including active modal iframe', () => {
-      const iframes = Iframe.getAllIframes({});
-
-      assert.equal(iframes.length, 1);
-    });
-  });
-
-  it('getIframeContainer', () => {
-    sinon
-      .stub(document, 'querySelectorAll')
-      .onFirstCall()
-      .returns([])
-      .onSecondCall()
-      .returns(['firstIframe', 'secondIframe']);
-
-    // first
-    assert.equal(Iframe.getIframeContainer(), undefined, 'no iframe found');
-    // second
-    assert.equal(
-      Iframe.getIframeContainer(),
-      'firstIframe',
-      'returns first iframe'
-    );
-  });
-
   it('removeInactiveIframes', () => {
     node.removeChild = sinon.spy();
     Iframe.removeInactiveIframes(node);

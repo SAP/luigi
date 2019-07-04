@@ -117,6 +117,23 @@ class IframeHelpersClass {
     }
   }
 
+  getIframeContainer() {
+    const container = Array.from(document.querySelectorAll('.iframeContainer'));
+    return container && container.length > 0 ? container[0] : undefined;
+  }
+
+  getAllIframes(additionalIframes) {
+    const iframes = Array.from(
+      document.querySelectorAll('.iframeContainer iframe')
+    );
+    if (Array.isArray(additionalIframes)) {
+      iframes.push(...additionalIframes);
+    } else if (additionalIframes) {
+      iframes.push(additionalIframes);
+    }
+    return iframes;
+  }
+
   getVisibleIframes() {
     return Array.prototype.slice
       .call(document.querySelectorAll('iframe'))
@@ -135,6 +152,11 @@ class IframeHelpersClass {
     if (!(iframe.luigi && iframe.luigi.viewUrl)) return;
     const trustedIframeDomain = this.getLocation(iframe.luigi.viewUrl);
     iframe.contentWindow.postMessage(message, trustedIframeDomain);
+  }
+
+  broadcastMessageToAllIframes(message, additionalIframes) {
+    const allIframes = this.getAllIframes(additionalIframes);
+    allIframes.forEach(iframe => this.sendMessageToIframe(iframe, message));
   }
 
   createIframe(viewUrl, viewGroup) {
