@@ -584,9 +584,7 @@
             );
             this.openViewInModal(
               route,
-              typeof node.openNodeInModal === 'boolean'
-                ? {}
-                : node.openNodeInModal
+              node.openNodeInModal === true ? {} : node.openNodeInModal
             );
           } else {
             Routing.handleRouteClick(node, this);
