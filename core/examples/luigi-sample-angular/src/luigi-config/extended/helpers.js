@@ -154,5 +154,6 @@ export const navigationPermissionChecker = (
 let mockBadgeCount = 0;
 setInterval(() => {
   mockBadgeCount++;
+  // Luigi.navigation().updateTopNavigation(); // update top navigation with each count update
 }, 2500);
 export const getMockBadgeCount = () => mockBadgeCount;

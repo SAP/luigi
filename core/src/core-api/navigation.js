@@ -9,11 +9,12 @@ class LuigiNavigationManager {
    * Refreshes top navigation badge counters
    * Basically triggeres a re-render of the navigation.
    * @memberof LuigiNavigation
-   * @private
+   * @example
+   * Luigi.navigation().updateTopNavigation();
    */
   updateTopNavigation() {
     window.postMessage({ msg: 'luigi.navigation.update-badge-counters' }, '*');
   }
 }
 
-export const nav = new LuigiNavigationManager();
+export const navigation = new LuigiNavigationManager();
