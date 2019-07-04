@@ -8,12 +8,18 @@ describe('Escaping-helpers', () => {
     const sanitizedHtml = EscapingHelpers.sanitizeHtml(text);
     assert.equal(sanitizedHtml, '&amp;&lt;&gt;&quot;&#39;');
 
-    const text2 = `This is text <img src="http://url.to.file.which/not.exist" onerror=alert(document.cookie); onclick=javascript:alert(document.cookie)><IMG SRC=j&#X41vascript:alert('test2')>`;
+    const text2 = `This is text <img src="http://url.to.file.which/not.exist" onerror=alert(document.cookie); onclick=javascript:alert(document.cookie)><br><IMG SRC=j&#X41vascript:alert('test2')><br>`;
     const sanitizedHtml2 = EscapingHelpers.sanitizeHtml(text2);
     assert.equal(
       sanitizedHtml2,
-      'This is text &lt;img src=&quot;http://url.to.file.which/not.exist&quot; onerror=alert(document.cookie); onclick=alert(document.cookie)&gt;&lt;IMG SRC=j&amp;#X41vascript:alert(&#39;test2&#39;)&gt;'
+      'This is text &lt;img src=&quot;http://url.to.file.which/not.exist&quot; onerror=alert(document.cookie); onclick=alert(document.cookie)&gt;&lt;br&gt;&lt;IMG SRC=j&amp;#X41vascript:alert(&#39;test2&#39;)&gt;&lt;br&gt;'
     );
+  });
+
+  it('restoreSanitizedBrs', () => {
+    const text = '&lt;br&gt; &lt;br &gt; &lt;br /&gt; &lt;br/&gt;';
+    const sanitizedHtml = EscapingHelpers.restoreSanitizedBrs(text);
+    assert.equal(sanitizedHtml, '<br> <br> <br> <br>');
   });
 
   it('sanitizeParam', () => {
