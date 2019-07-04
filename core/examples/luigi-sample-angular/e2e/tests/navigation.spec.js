@@ -202,17 +202,12 @@ describe('Navigation', () => {
 
     it('Open navigation node in a modal', () => {
       let iframeBody;
-      cy.get('iframe', { timeout: 1000 }).then(ifr => {
-        iframeBody = ifr.contents().find('body');
-      });
       // projects page
       cy.get('.fd-shellbar')
         .contains('Projects')
         .click();
 
       //projects page
-      cy.get('.fd-app__sidebar').should('contain', 'Project One');
-      cy.get('.fd-app__sidebar').should('contain', 'Project Two');
       cy.get('.fd-app__sidebar')
         .contains('Project Two')
         .click();
@@ -220,7 +215,6 @@ describe('Navigation', () => {
       //project two page
       cy.expectPathToBe('/projects/pr2');
 
-      cy.get('.fd-app__sidebar').should('not.contain', 'Project Two');
       cy.get('.fd-app__sidebar')
         .contains('Miscellaneous2')
         .click();
