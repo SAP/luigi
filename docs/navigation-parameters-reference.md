@@ -123,7 +123,7 @@ The node parameters are as follows:
 - **hideSideNav** if set to `true`, the left navigation disappears when you click the affected node. It is set to `false` by default.
 - **category** defines a group of views separated with a headline and an icon. You should define at least one node in a group should as an Object with **label** and **icon** properties. For all other nodes, you can set **category** as a string with the `label` value. 
    - **label** is a string that represents the title of the category
-   - **icon** is the name of an icon, without the `sap-icon--` prefix, from the [OpenUI](https://openui5.hana.ondemand.com/1.40.10/iconExplorer.html) or a custom link (relative or absolute) to an image displayed next to the label in the side navigation or instead of the label in the top navigation. In case you accidentially define different icons in a category group, only the first one is used.
+   -  **icon** is the name of an icon, without the `sap-icon--` prefix. Its source may be [OpenUI](https://openui5.hana.ondemand.com/1.40.10/iconExplorer.html) or a custom link (relative or absolute) to an image. The icon is displayed next to the node label in the side navigation or instead of the label in the top navigation. In case you accidentally define different icons in a category group, only the first one is used.
 
 ## Context switcher
 
