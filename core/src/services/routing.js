@@ -40,7 +40,7 @@ class RoutingClass {
     Triggers a frame reload if we are on the same route (eg. if we click on same navigation item again)
     @param route string  absolute path of the new route
    */
-  async navigateTo(route) {
+  async navigateTo(route, pushState = true) {
     const windowPath = GenericHelpers.trimLeadingSlash(this.getWindowPath());
     if (windowPath === GenericHelpers.trimLeadingSlash(route)) {
       return;
@@ -51,7 +51,8 @@ class RoutingClass {
       return;
     }
 
-    window.history.pushState(
+    const method = pushState ? 'pushState' : 'replaceState';
+    window.history[method](
       {
         path: route
       },
@@ -168,11 +169,13 @@ class RoutingClass {
         const defaultChildNode = await RoutingHelpers.getDefaultChildNode(
           pathData
         );
+
         if (pathData.isExistingRoute) {
           //normal navigation can be performed
           const trimmedPathUrl = GenericHelpers.getTrimmedUrl(path);
           this.navigateTo(
-            `${trimmedPathUrl ? `/${trimmedPathUrl}` : ''}/${defaultChildNode}`
+            `${trimmedPathUrl ? `/${trimmedPathUrl}` : ''}/${defaultChildNode}`,
+            false
           );
         } else {
           if (defaultChildNode && pathData.navigationPath.length > 1) {
