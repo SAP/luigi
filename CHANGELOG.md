@@ -2,7 +2,6 @@
 
 > Note: All the versions not mentioned in the changelog file do not contain changes. 
 
-
 <!-- 
 Generate the changelog using the lerna-changelog tool. 
 Run the following command to generate changelog content for pull requests that have been merged since the time when the last git tag was created:
@@ -24,7 +23,6 @@ The lerna-changelog tool detects changes based on PR labels and maps them to sec
     ...
   }
 -->
-
 
 ## [v0.5.0] (2019-07-04)
 
