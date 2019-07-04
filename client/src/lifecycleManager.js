@@ -108,6 +108,7 @@ class LifecycleManager extends LuigiClientBase {
    * Iterates over an object and executes all top-level functions
    * with a given payload.
    * @private
+   * @memberof Lifecycle
    */
   _callAllFns(objWithFns, payload) {
     for (let id in objWithFns) {
