@@ -30,7 +30,7 @@ The lerna-changelog tool detects changes based on PR labels and maps them to sec
 * [#626](https://github.com/SAP/luigi/pull/626) Open modal from navigation node ([@JohannesDoberer](https://github.com/JohannesDoberer))
 * [#624](https://github.com/SAP/luigi/pull/624) Fiori 3 compliant left navigation collapse ([@marynaKhromova](https://github.com/marynaKhromova))
 * [#610](https://github.com/SAP/luigi/pull/610) Improve default child mechanism ([@maxmarkus](https://github.com/maxmarkus))
-* [#618](https://github.com/SAP/luigi/pull/618) Dropdown functionality for top right nav nodes ([@JohannesDoberer](https://github.com/JohannesDoberer))
+* [#618](https://github.com/SAP/luigi/pull/618) Dropdown functionality for top right navigation nodes ([@JohannesDoberer](https://github.com/JohannesDoberer))
 * [#601](https://github.com/SAP/luigi/pull/601) Add ie11 support ([@jesusreal](https://github.com/jesusreal))
 * [#600](https://github.com/SAP/luigi/pull/600) View group preloading ([@pekura](https://github.com/pekura))
 * [#595](https://github.com/SAP/luigi/pull/595) Add goBack support for normal navigation ([@maxmarkus](https://github.com/maxmarkus))
@@ -41,7 +41,6 @@ The lerna-changelog tool detects changes based on PR labels and maps them to sec
 * [#608](https://github.com/SAP/luigi/pull/608) Fix core package json merge error ([@jesusreal](https://github.com/jesusreal))
 
 #### :memo: Documentation
-* [#626](https://github.com/SAP/luigi/pull/626) Open modal from navigation node ([@JohannesDoberer](https://github.com/JohannesDoberer))
 * [#621](https://github.com/SAP/luigi/pull/621) Update the general settings docu ([@bszwarc](https://github.com/bszwarc))
 * [#602](https://github.com/SAP/luigi/pull/602) Core API docu ([@maxmarkus](https://github.com/maxmarkus))
 
