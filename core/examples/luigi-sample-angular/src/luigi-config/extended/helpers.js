@@ -155,5 +155,5 @@ let mockBadgeCount = 0;
 setInterval(() => {
   mockBadgeCount++;
   // Luigi.navigation().updateTopNavigation(); // update top navigation with each count update
-}, 2500);
+}, 5000);
 export const getMockBadgeCount = () => mockBadgeCount;
