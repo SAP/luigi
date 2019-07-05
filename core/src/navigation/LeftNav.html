@@ -3,7 +3,9 @@
   on:click="closePopupMenu()"
   on:blur="closePopupMenu()"
 />
-<div class="fd-app__sidebar {hideNavComponent ? 'hideNavComponent' : ''}">
+<div
+  class="fd-app__sidebar {hideNavComponent ? 'hideNavComponent' : ''} {footerText || semiCollapsible ? 'hasFooter' : ''}"
+>
   {#if children && pathData.length > 1}
   <div class="lui-fd-side-nav-wrapper">
     <nav class="fd-side-nav" on:keyup="handleKey(event)">
@@ -190,9 +192,11 @@
     </nav>
   </div>
   {/if}
-  {#if footerText}
+  {#if footerText || semiCollapsible}
   <span class="lui-side-nav__footer">
-    <span class="lui-side-nav__footer--text fd-has-type-minus-1">{footerText}</span>
+    <span
+      class="lui-side-nav__footer--text fd-has-type-minus-1"
+    >{footerText ? footerText : ''}</span>
     {#if semiCollapsible}
     <span
       class="lui-side-nav__footer--icon {isSemiCollapsed ? 'sap-icon--open-command-field' : 'sap-icon--close-command-field'}"
@@ -200,6 +204,7 @@
     ></span>
     {/if}
   </span>
+
   {/if}
 </div>
 
@@ -442,6 +447,7 @@
   @import 'styles/mixins';
 
   :root {
+    /* needed for IE11 support */
     --fd-color-neutral-1: #fafafa;
     --fd-color-neutral-2: #eeeeef;
     --fd-color-neutral-3: #d9d9d9;
@@ -454,11 +460,6 @@
   $footerPaddingVertical: 13px;
   $footerHeight: calc(16px + (2 * #{$footerPaddingVertical}));
   /* text height + vertical padding */
-
-  :root {
-    /* needed for IE11 support */
-    --fd-color-text-4: #74777a;
-  }
 
   a {
     cursor: pointer;
@@ -480,10 +481,16 @@
     background-color: white;
     color: #32363a;
     @include box-shadow(1px 1px 2px 0 rgba(0, 0, 0, 0.05));
-  }
 
-  .lui-fd-side-nav-wrapper {
-    height: calc(100% - 50px);
+    .lui-fd-side-nav-wrapper {
+      height: 100%;
+    }
+
+    &.hasFooter {
+      .lui-fd-side-nav-wrapper {
+        height: calc(100% - 50px);
+      }
+    }
   }
 
   .fd-side-nav {
