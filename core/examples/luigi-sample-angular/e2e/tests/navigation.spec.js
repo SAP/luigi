@@ -33,6 +33,20 @@ describe('Navigation', () => {
     cy.get('.fd-app__sidebar').should('contain', 'Second Child');
   });
 
+  it('Browser back works with Default Child mechanism', () => {
+    cy.get('iframe').then($iframe => {
+      const $iframeBody = $iframe.contents().find('body');
+
+      cy.wrap($iframeBody)
+        .contains('defaultChildNode')
+        .click();
+      cy.expectPathToBe('/projects/pr1/dps/dps2');
+
+      cy.window().historyBack();
+      cy.expectPathToBe('/overview');
+    });
+  });
+
   it('Icon instead of label in TopNav', () => {
     cy.visit('/');
     cy.get('button[title="Settings"]>.fd-top-nav__icon').should('exist');
@@ -198,6 +212,38 @@ describe('Navigation', () => {
 
       cy.get('.no-side-nav').should('exist');
       cy.get('.fd-app__sidebar').should('not.be.visible');
+    });
+
+    it('Open navigation node in a modal', () => {
+      let iframeBody;
+      // projects page
+      cy.get('.fd-shellbar')
+        .contains('Projects')
+        .click();
+
+      //projects page
+      cy.get('.fd-app__sidebar')
+        .contains('Project Two')
+        .click();
+
+      //project two page
+      cy.expectPathToBe('/projects/pr2');
+
+      cy.get('.fd-app__sidebar')
+        .contains('Miscellaneous2')
+        .click();
+
+      cy.wrap(iframeBody)
+        .get('[data-e2e=modal-mf]')
+        .should('be.visible');
+
+      cy.wrap(iframeBody)
+        .get('[data-e2e=modal-mf] [aria-label=close]')
+        .click();
+
+      cy.wrap(iframeBody)
+        .get('[data-e2e=modal-mf]')
+        .should('not.be.visible');
     });
   });
 });
