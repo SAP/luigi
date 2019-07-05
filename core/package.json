@@ -1,6 +1,6 @@
 {
   "name": "luigi-core-private",
-  "version": "0.4.12",
+  "version": "0.5.0",
   "private": true,
   "description": "luigi-core development version, only the public folder is being published to npm as a package",
   "devDependencies": {
@@ -50,7 +50,11 @@
     "test": "babel-node ./node_modules/nyc/bin/nyc.js mocha -- --recursive test",
     "test:watch": "npm run test -- --watch",
     "bundlesize": "npm run bundle && bundlesize",
-    "docu:validate": "documentation lint src/core-api/dom-elements.js"
+    "docu": "npm run docu:validate && npm run docu:generate:config && npm run docu:generate:dom-elements && npm run docu:generate:auth",
+    "docu:validate": "documentation lint --shallow src/core-api/config.js src/core-api/elements.js src/core-api/auth.js",
+    "docu:generate:config": "documentation readme src/core-api/config.js --shallow -f md --section='Luigi Config' --readme-file=../docs/luigi-core-api.md --markdown-toc=false --github false --quiet",
+    "docu:generate:dom-elements": "documentation readme src/core-api/dom-elements.js --shallow -f md --section='Luigi.elements()' --readme-file=../docs/luigi-core-api.md --markdown-toc=false --github false --quiet",
+    "docu:generate:auth": "documentation readme src/core-api/auth.js --shallow -f md --section='Luigi.auth()' --readme-file=../docs/luigi-core-api.md --markdown-toc=false --github false --quiet"
   },
   "bundlesize": [
     {

@@ -1,13 +1,15 @@
-/** @namespace */
-class LuigiElementsManager {
-  /**
-   * Use these functions to get DOM elements.
-   * @name LuigiElements
-   */
+/**
+ * Use these functions to get DOM elements.
+ * @namespace Elements
+ */
+class LuigiElements {
   /**
    * Returns the shellbar component.
    * @returns {Object} the shellbar DOM element.
-   * @memberof LuigiElements
+   * @memberof Elements
+   * @since 0.4.12
+   * @example
+   * Luigi.elements().getShellbar();
    */
   getShellbar() {
     return document.getElementsByClassName('fd-shellbar')[0];
@@ -16,7 +18,10 @@ class LuigiElementsManager {
   /**
    * Returns the shellbar actions component.
    * @returns {Object} the shellbar actions DOM element.
-   * @memberof LuigiElements
+   * @memberof Elements
+   * @since 0.4.12
+   * @example
+   * Luigi.elements().getShellbarActions();
    */
   getShellbarActions() {
     return document.getElementsByClassName('fd-shellbar__actions')[0];
@@ -25,7 +30,10 @@ class LuigiElementsManager {
   /**
    * Returns all micro frontend iframes including the iframe from the modal if it exists.
    * @returns {Object} an array of all micro frontend iframes from the DOM.
-   * @memberof LuigiElements
+   * @memberof Elements
+   * @since 0.4.12
+   * @example
+   * Luigi.elements().getMicrofrontendIframes();
    */
   getMicrofrontendIframes() {
     return [...document.querySelectorAll('.iframeContainer iframe')].concat([
@@ -37,7 +45,10 @@ class LuigiElementsManager {
    * Returns the active micro frontend iframe.
    * If there is a modal, which includes the micro frontend iframe, the function returns this iframe.
    * @returns {Object} the active micro frontend iframe DOM element.
-   * @memberof LuigiElements
+   * @memberof Elements
+   * @since 0.4.12
+   * @example
+   * Luigi.elements().getCurrentMicrofrontendIframe();
    */
   getCurrentMicrofrontendIframe() {
     let modalIframes = document.querySelectorAll('.iframeModalCtn iframe');
@@ -53,4 +64,4 @@ class LuigiElementsManager {
   }
 }
 
-export const elements = new LuigiElementsManager();
+export const elements = new LuigiElements();
