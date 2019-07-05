@@ -204,7 +204,6 @@
     ></span>
     {/if}
   </span>
-
   {/if}
 </div>
 
@@ -532,6 +531,9 @@
       width: auto;
       padding: $footerPaddingVertical 20px;
       @include transition(all 0.1s linear);
+      text-overflow: ellipsis;
+      overflow: hidden;
+      max-width: 100%;
     }
 
     &--icon {
@@ -606,6 +608,12 @@
             }
           }
         }
+      }
+    }
+
+    .lui-side-nav__footer {
+      &--text {
+        max-width: calc(100% - 50px);
       }
     }
   }
