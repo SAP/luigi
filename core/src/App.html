@@ -60,6 +60,7 @@
   import { Routing } from './services/routing';
   import { Navigation } from './navigation/services/navigation';
   import { Iframe } from './services/iframe';
+  import { ViewGroupPreloading } from './services/preloading';
   import {
     AuthHelpers,
     GenericHelpers,
@@ -100,6 +101,7 @@
         component.set({ preservedViews: [] });
         Iframe.removeInactiveIframes(node);
       }
+
       Routing.handleRouteChange(path, component, node, config);
     });
   };
@@ -280,6 +282,8 @@
       } else if (responsiveNavSetting === 'simpleMobileOnly') {
         document.body.classList.add('lui-simpleSlideInNav', 'lui-mobileOnly');
         this.set({ simpleSlideInNav: true });
+      } else if (responsiveNavSetting === 'semiCollapsible') {
+        document.body.classList.add('lui-semiCollapsible');
       }
     },
     onstate({ changed, current, previous }) {},
@@ -322,6 +326,7 @@
 
           this.set({ alerts: updatedAlerts });
         });
+
         window.addEventListener('message', async e => {
           const iframe = this.getValidMessageSource(e);
           if (!iframe) return;
@@ -330,6 +335,8 @@
             iframe.luigi.viewUrl = iframe.luigi.nextViewUrl;
             iframe.luigi.nextViewUrl = '';
             config.navigateOk = true;
+
+            ViewGroupPreloading.preload();
           }
 
           if ('luigi.get-context' === e.data.msg) {
@@ -344,7 +351,10 @@
                 modal: true
               };
               sendContextToClient(this, modalConfig, {});
-            } else {
+            } else if (
+              config.iframe &&
+              IframeHelpers.isMessageSource(e, config.iframe)
+            ) {
               sendContextToClient(this, config, {});
 
               const loadingIndicatorAutoHideEnabled =
@@ -355,7 +365,24 @@
               if (loadingIndicatorAutoHideEnabled) {
                 this.set({ showLoadingIndicator: false });
               }
+
+              ViewGroupPreloading.preload();
+            } else if (iframe.luigi.preloading) {
+              // set empty context to an existing but inactive iframe; this is a valid use case (view group pre-loading)
+              sendContextToClient(
+                this,
+                {
+                  iframe: iframe,
+                  context: {},
+                  nodeParams: {},
+                  pathParams: {},
+                  internal: {}
+                },
+                {}
+              );
             }
+
+            ViewGroupPreloading.viewGroupLoaded(iframe);
           }
 
           if ('luigi.show-loading-indicator' === e.data.msg) {
@@ -552,7 +579,18 @@
       handleNavClick(node) {
         this.getUnsavedChangesModalPromise().then(() => {
           this.closeLeftNav();
-          Routing.handleRouteClick(node, this);
+          if (node.openNodeInModal) {
+            const route = RoutingHelpers.buildRoute(
+              node,
+              `/${node.pathSegment}`
+            );
+            this.openViewInModal(
+              route,
+              node.openNodeInModal === true ? {} : node.openNodeInModal
+            );
+          } else {
+            Routing.handleRouteClick(node, this);
+          }
         });
       },
       onResize() {
@@ -756,9 +794,14 @@
 </script>
 
 <style type="text/scss">
+  /*Mixins*/
+  @import 'styles/mixins';
+
   $topNavHeight: 48px;
   $leftNavWidth: 320px;
-  $desktop-min-width: 600px;
+  $leftNavWidthCollapsed: 40px;
+  $desktopMinWidth: 600px;
+
   :global(html) {
     box-sizing: border-box;
     font-size: 14px;
@@ -857,38 +900,30 @@
 
   :global(body.lui-simpleSlideInNav) {
     :global(.fd-app__sidebar) {
-      -webkit-transition-property: left;
-      -moz-transition-property: left;
-      -o-transition-property: left;
-      transition-property: left;
-      -webkit-transition-duration: 0.1s;
-      -moz-transition-duration: 0.1s;
-      -o-transition-duration: 0.1s;
-      transition-duration: 0.1s;
-      -webkit-transition-timing-function: linear;
-      -moz-transition-timing-function: linear;
-      -o-transition-timing-function: linear;
-      transition-timing-function: linear;
+      @include transition(left 0.1s linear);
     }
 
     .iframeContainer,
     .spinnerContainer {
-      -webkit-transition-property: left;
-      -moz-transition-property: left;
-      -o-transition-property: left;
-      transition-property: left;
-      -webkit-transition-duration: 0.1s;
-      -moz-transition-duration: 0.1s;
-      -o-transition-duration: 0.1s;
-      transition-duration: 0.1s;
-      -webkit-transition-timing-function: linear;
-      -moz-transition-timing-function: linear;
-      -o-transition-timing-function: linear;
-      transition-timing-function: linear;
+      @include transition(left 0.1s linear);
     }
   }
 
-  @media (min-width: $desktop-min-width) {
+  :global(.lui-semiCollapsible) {
+    .iframeContainer,
+    .spinnerContainer {
+      @include transition(left 0.1s linear);
+    }
+  }
+
+  :global(.semiCollapsed) {
+    .iframeContainer,
+    .spinnerContainer {
+      left: $leftNavWidthCollapsed;
+    }
+  }
+
+  @media (min-width: $desktopMinWidth) {
     :global(.fd-shellbar__title) {
       display: inline;
     }
@@ -908,7 +943,7 @@
     }
   }
 
-  @media (max-width: $desktop-min-width - 1) {
+  @media (max-width: $desktopMinWidth - 1) {
     :global(body.lui-simpleSlideInNav) {
       .iframeContainer,
       .spinnerContainer {
@@ -925,9 +960,14 @@
         display: block;
         width: $leftNavWidth;
         left: 0;
-        -webkit-box-shadow: 6px 0px 9px 0px rgba(0, 0, 0, 0.44);
-        -moz-box-shadow: 6px 0px 9px 0px rgba(0, 0, 0, 0.44);
-        box-shadow: 6px 0px 9px 0px rgba(0, 0, 0, 0.44);
+        @include box-shadow(6px 0px 9px 0px rgba(0, 0, 0, 0.44));
+      }
+    }
+
+    :global(.lui-semiCollapsible) {
+      .iframeContainer,
+      .spinnerContainer {
+        left: $leftNavWidthCollapsed;
       }
     }
   }
