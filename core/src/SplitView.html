@@ -1,13 +1,16 @@
 <div class="lui-split">
   <div class="splitter" on:dragSplitViewBorder="dragged($event)">
-    <div class="expCol exp" on:click="fire('expand')">
+    {#if isCollapsed}
+    <a class="lui-collapse-btn" on:click="fire('expand')">
       <span class="sap-icon--collapse-group sap-icon--s"></span>
-    </div>
-    <div class="expCol col" on:click="fire('collapse')">
+    </a>
+    {:else}
+    <a class="lui-collapse-btn" on:click="fire('collapse')">
       <span class="sap-icon--expand-group sap-icon--s"></span>
-    </div>
+    </a>
+    {/if}
   </div>
-  {#if splitViewSettings.collapsed}
+  {#if isCollapsed}
   <h1 class="fd-splitView__title">{splitViewSettings.title}</h1>
   {:else}
   <div class="iframeSplitViewCnt"></div>
@@ -37,40 +40,53 @@
     if (!splitViewSettings.title) {
       splitViewSettings.title = lastNode.label;
     }
-    splitViewSettings.collapsed = splitViewSettings.collapsed || false;
+    const isCollapsed = splitViewSettings.isCollapsed || false;
+    console.log('3');
     component.set({
       splitViewSettings,
       lastNode,
       pathData,
       nodeParams,
+      isCollapsed,
       isDataPrepared: true
     });
-    console.log('prepared', component.get());
+    console.log('4 prepared and set', component.get().splitViewSettings);
   };
   const getNode = async (component, path) => {
     if (component.get().isDataPrepared) {
-      const {
-        nodeParams,
-        lastNode,
-        splitViewSettings,
-        pathData
-      } = component.get();
-      const iframe = createIframeSplit(
-        lastNode.viewUrl,
-        {
-          context: pathData.context,
-          pathParams: pathData.pathParams,
-          nodeParams
-        },
-        component
-      );
-      component.root.set({
-        splitViewIframe: iframe,
-        splitViewIframeData: { ...pathData, nodeParams }
-      });
+      if (!component.get().isCollapsed) {
+        console.debug('expanded, creating iframe');
+        createAndSetSplitView(component);
+      } else {
+        console.debug('collapsed, not creating iframe');
+      }
     } else {
       await prepareNodeData(component, path);
     }
+  };
+  const createAndSetSplitView = component => {
+    const {
+      nodeParams,
+      lastNode,
+      splitViewSettings,
+      pathData
+    } = component.get();
+
+    const iframe = createIframeSplit(
+      lastNode.viewUrl,
+      {
+        context: pathData.context,
+        pathParams: pathData.pathParams,
+        nodeParams
+      },
+      component
+    );
+    console.log('1');
+    component.root.set({
+      splitViewIframe: iframe,
+      splitViewIframeData: { ...pathData, nodeParams }
+    });
+    console.log('2');
   };
   const createIframeSplit = (viewUrl, componentData, component) => {
     if (viewUrl) {
@@ -85,10 +101,14 @@
     onupdate({ changed, current, previous }) {
       const nodepath = this.get().nodepath;
       getNode(this, nodepath);
+      if (changed.isCollapsed) {
+        console.log('isCollapsed', current.isCollapsed);
+      }
     },
     data() {
       return {
-        isDataPrepared: false
+        isDataPrepared: false,
+        splitViewSettings: {}
       };
     },
     methods: {
@@ -150,13 +170,21 @@
   };
 </script>
 <style type="text/scss">
-  :global(.lui-collapsed) {
-    .expCol.col {
+  /* :global(.lui-collapsed) {
+    .lui-collapse-btn.col {
       display: none;
     }
-    .expCol.exp {
+    .lui-collapse-btn.exp {
       display: block !important;
     }
+  } */
+  $collapsedSplitviewHeight: 38px;
+  .fd-splitView__title {
+    font-size: 16px;
+    line-height: $collapsedSplitviewHeight;
+    vertical-align: center;
+    padding-left: 32px;
+    background: #fff;
   }
   .lui-split {
     height: 100%;
@@ -169,7 +197,7 @@
       background: transparent;
       cursor: row-resize;
       z-index: 1;
-      .expCol {
+      .lui-collapse-btn {
         width: 25px;
         height: 25px;
         background: white;
@@ -183,12 +211,10 @@
         border: 1px solid gray;
         border-radius: 5px;
         cursor: pointer;
-        &.exp {
-          display: none;
-        }
+        visibility: hidden;
       }
       &:hover {
-        .expCol {
+        .lui-collapse-btn {
           visibility: visible;
         }
       }

@@ -32,7 +32,8 @@
       style="{getIframeSplitViewContainerTop}"
     >
       <SplitView
-        splitViewSettings="{mfSplitView.splitViewSettings}"
+        splitViewSettings="{mfSplitView.settings}"
+        isCollapsed="{mfSplitView.isCollapsed}"
         nodepath="{mfSplitView.nodepath}"
         on:close="closeSplitView()"
         on:collapse="collapseSplitView()"
@@ -85,7 +86,8 @@
     GenericHelpers,
     IframeHelpers,
     RoutingHelpers,
-    StateHelpers
+    StateHelpers,
+    SplitScreenHelpers
   } from './utilities/helpers';
   import { CSS_BREAKPOINTS } from './utilities/constants';
 
@@ -319,9 +321,9 @@
       this.set({ responsiveNavSetting });
       this.set({ previousWindowWidth: window.innerWidth });
       this.set({
-        rightContentHeight:
-          window.innerHeight - LuigiElements.getShellbar().clientHeight
+        rightContentHeight: window.innerHeight - 48 // LuigiElements.getShellbar().clientHeight not yet available
       });
+
       if (responsiveNavSetting === 'simple') {
         document.body.classList.add('lui-simpleSlideInNav');
         this.set({ simpleSlideInNav: true });
@@ -332,7 +334,11 @@
         document.body.classList.add('lui-semiCollapsible');
       }
     },
-    onstate({ changed, current, previous }) {},
+    onstate({ changed, current, previous }) {
+      if (changed.mfSplitView) {
+        console.log('mfSplitView changed', current.mfSplitView);
+      }
+    },
     actions: {
       init(node) {
         const isolateAllViews = LuigiConfig.getConfigValue(
@@ -459,12 +465,14 @@
             } else if (e.data.params.splitView !== undefined) {
               let path = buildPath(this, e.data.params);
               path = GenericHelpers.addLeadingSlash(path);
+              console.log('pm 1');
               this.set(
                 Object.assign(
                   { contentNode: node },
                   getDefaultMicrofrontendSplitViewData()
                 )
               );
+              console.log('pm 2');
               this.openViewInSplitView(path, e.data.params.splitView);
             } else {
               this.getUnsavedChangesModalPromise().then(() => {
@@ -606,9 +614,13 @@
     computed: {
       getIframeSplitViewBottom: ({ mfSplitView, rightContentHeight }) => {
         // sets .lui-split.iframeContainer style: bottom
-        if (mfSplitView.isDisplayed && mfSplitView.splitViewSettings) {
-          const percent = mfSplitView.splitViewSettings.height
-            ? mfSplitView.splitViewSettings.height
+        if (
+          mfSplitView.isDisplayed &&
+          !mfSplitView.isCollapsed &&
+          mfSplitView.settings
+        ) {
+          const percent = mfSplitView.settings.height
+            ? mfSplitView.settings.height
             : 40;
           const topHeightPx = GenericHelpers.computePxFromPercent(
             rightContentHeight,
@@ -620,9 +632,13 @@
       },
       getIframeSplitViewContainerTop: ({ mfSplitView, rightContentHeight }) => {
         // sets .iframeSplitViewContainer style: top
-        if (mfSplitView.isDisplayed && mfSplitView.splitViewSettings) {
-          const percent = mfSplitView.splitViewSettings.height
-            ? 100 - mfSplitView.splitViewSettings.height
+        if (
+          mfSplitView.isDisplayed &&
+          !mfSplitView.isCollapsed &&
+          mfSplitView.settings
+        ) {
+          const percent = mfSplitView.settings.height
+            ? 100 - mfSplitView.settings.height
             : 60;
           const topHeightPx = GenericHelpers.computePxFromPercent(
             rightContentHeight,
@@ -735,7 +751,9 @@
       },
       getUnsavedChangesModalPromise(source) {
         return new Promise(resolve => {
+          console.log('check unsaved');
           if (this.shouldShowUnsavedChangesModal(source)) {
+            console.log('show unsaved');
             this.showUnsavedChangesModal().then(
               () => {
                 if (
@@ -750,7 +768,9 @@
                 }
                 resolve();
               },
-              () => {}
+              e => {
+                console.error('E', e);
+              }
             );
           } else {
             resolve();
@@ -857,14 +877,20 @@
           });
         }
       },
-      openViewInSplitView(nodepath, splitViewSettings) {
+      openViewInSplitView(nodepath, settings) {
         this.set({
           mfSplitView: {
             isDisplayed: true,
-            isCollapsed: splitViewSettings.isCollapsed === true,
+            isCollapsed: settings.collapsed === true,
             nodepath,
-            splitViewSettings
+            settings
           }
+        });
+        console.log('open sv', this.get().mfSplitView);
+      },
+      setDeep(key, value) {
+        this.set({
+          [key]: Object.assign({}, this.get()[key], value)
         });
       },
       collapseSplitView() {
@@ -872,22 +898,27 @@
           this.getUnsavedChangesModalPromise(
             this.get().splitViewIframe.contentWindow
           ).then(() => {
-            this.set({
-              mfSplitView: {
-                isDisplayed: true,
-                isCollapsed: true
-              }
+            console.log(
+              'collapseSplitView, mfSplitView:',
+              this.get().mfSplitView
+            );
+            this.setDeep('mfSplitView', {
+              isDisplayed: true,
+              isCollapsed: true
             });
+            console.log(
+              'collapseSplitView, mfSplitView:',
+              this.get().mfSplitView
+            );
           });
         }
       },
       expandSplitView() {
         if (this.get().splitViewIframe) {
-          this.set({
-            mfSplitView: {
-              isDisplayed: true,
-              isCollapsed: false
-            }
+          console.log('expandSplitView');
+          this.setDeep('mfSplitView', {
+            isDisplayed: true,
+            isCollapsed: false
           });
         }
       },
@@ -896,10 +927,9 @@
           this.getUnsavedChangesModalPromise(
             this.get().splitViewIframe.contentWindow
           ).then(() => {
-            this.set({
-              mfSplitView: {
-                isDisplayed: false
-              }
+            console.log('closeSplitView');
+            this.setDeep('mfSplitView', {
+              isDisplayed: false
             });
           });
         }
