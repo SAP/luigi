@@ -222,6 +222,10 @@ class GenericHelpersClass {
     }
     return processedString;
   }
+
+  computePxFromPercent(fullPixels, requestedPercent) {
+    return (fullPixels / 100) * requestedPercent;
+  }
 }
 
 export const GenericHelpers = new GenericHelpersClass();

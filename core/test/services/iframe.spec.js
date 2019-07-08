@@ -99,7 +99,7 @@ describe('Iframe', () => {
     });
 
     it('should return an array of active iframes including active modal iframe', () => {
-      const iframes = Iframe.getAllIframes({});
+      const iframes = Iframe.getAllIframes([{}]);
 
       assert.equal(iframes.length, 1);
     });

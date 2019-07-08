@@ -34,11 +34,15 @@ class IframeClass {
     return container && container.length > 0 ? container[0] : undefined;
   }
 
-  getAllIframes(modalIframe) {
+  getAllIframes(iframeTypeArr) {
     const iframes = Array.from(
       document.querySelectorAll('.iframeContainer iframe')
     );
-    if (modalIframe) iframes.push(modalIframe);
+    iframeTypeArr
+      .filter(it => !it)
+      .forEach(it => {
+        iframes.push(it);
+      });
     return iframes;
   }
 
