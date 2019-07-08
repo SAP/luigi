@@ -151,7 +151,7 @@ The node navigation parameters are as follows:
 - **defaults.isolateView** renders all views in new frames. This setting overrides the same-domain frame reuse. The **defaults.isolateView** is disabled by default, and you can overwrite it using the **isolateView** value on a single node level.
 - **preloadViewGroups**(bool) allows deactivating the default preloading of [view groups](navigation-configuration.md#view-groups) iframes.
 - **viewGroupsSettings** is an object containing key-object pairs, where the key is the view group name as specified in the node parameters, and the object contains key-value pairs. In each key-value pair, the key is the feature name and the value is the actual setting. The following options are supported:
-  - **preloadUrl**(string): needs to be an absolute url for a node from the view group. We recommend to use a dedicated small view, visually empty, which imports LuigiClient and is fine with getting an empty context (e.g. without an access token). The preloadUrl is also required for view group caching in case you need a view group iframe to be refreshed whenever you navigate back to it.
+  - **preloadUrl**(string): needs to be an absolute URL for a node from the view group. It is recommended that you use a dedicated small, visually empty view, which imports Luigi Client and is fine with getting an empty context, for example, without an access token. The **preloadUrl** parameter is also required for view group caching in case you need a view group iframe to refresh whenever you navigate back to it.
 
 ## Node parameters
 
