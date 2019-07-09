@@ -287,6 +287,25 @@ class NavigationClass {
     }
     return updatedCompData;
   }
+
+  async extractDataFromPath(path) {
+    const pathData = await Navigation.getNavigationPath(
+      LuigiConfig.getConfigValueAsync('navigation.nodes'),
+      path
+    );
+    const nodeObject = RoutingHelpers.getLastNodeObject(pathData);
+    return { nodeObject, pathData };
+  }
+
+  async shouldPreventNavigation(node) {
+    if (
+      node &&
+      GenericHelpers.isFunction(node.onNodeActivation) &&
+      (await node.onNodeActivation(node)) === false
+    ) {
+      return true;
+    }
+  }
 }
 
 export const Navigation = new NavigationClass();
