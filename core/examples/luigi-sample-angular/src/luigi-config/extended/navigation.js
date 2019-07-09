@@ -22,6 +22,20 @@ class Navigation {
       hideSideNav: true
     },
     {
+      pathSegment: 'not-navigated',
+      hideFromNav: true,
+      viewUrl: '/sampleapp.html#/not-navigated',
+      onNodeActivation: node => {
+        console.log('NOT NAVIGATED NODE. node: ', node);
+        Luigi.showAlert({
+          text: `Showing an alert instead of navigating.`,
+          type: 'info',
+          closeAfter: 3000
+        });
+        return false;
+      }
+    },
+    {
       pathSegment: 'projects',
       label: 'Projects',
       viewUrl: '/sampleapp.html#/projects',
