@@ -52,7 +52,7 @@ Returns **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/G
 
 ### getContext
 
-Returns the context object. Typically it is not required as the [addContextUpdateListener()](#addContextUpdateListener) receives the same values.
+Returns the context object. It invokes the getEventData() function.
 
 Returns **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** current context data
 

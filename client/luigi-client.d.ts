@@ -260,7 +260,7 @@ export function getEventData(): Context;
 export type getEventData = () => Context;
 
 /**
- * Returns the context object. Typically it is not required as the {@link #addContextUpdateListener addContextUpdateListener()} receives the same values.
+ * Returns the context object. It invokes the getEventData() function.
  * @returns {Object} current context data.
  * @memberof Lifecycle
  */
