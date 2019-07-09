@@ -1,11 +1,11 @@
 <div class="lui-split">
   <div class="splitter" on:dragSplitViewBorder="dragged($event)">
     {#if isCollapsed}
-    <a class="lui-collapse-btn" on:click="fire('expand')">
+    <a class="lui-collapse-btn" on:click="expand()">
       <span class="sap-icon--collapse-group sap-icon--s"></span>
     </a>
     {:else}
-    <a class="lui-collapse-btn" on:click="fire('collapse')">
+    <a class="lui-collapse-btn" on:click="collapse()">
       <span class="sap-icon--expand-group sap-icon--s"></span>
     </a>
     {/if}
@@ -20,6 +20,7 @@
 <script>
   import { Navigation } from './navigation/services/navigation';
   import { LuigiConfig } from './core-api';
+  import { SplitViewSvc } from './services';
   import {
     GenericHelpers,
     IframeHelpers,
@@ -112,6 +113,13 @@
       };
     },
     methods: {
+      collapse() {
+        console.log('collapse!', this.root.get());
+        SplitViewSvc.collapseSplitView(this.root);
+      },
+      expand() {
+        SplitViewSvc.expandSplitView(this.root);
+      },
       dragged(evt) {
         console.log('evt', evt);
       }

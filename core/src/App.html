@@ -35,9 +35,6 @@
         splitViewSettings="{mfSplitView.settings}"
         isCollapsed="{mfSplitView.isCollapsed}"
         nodepath="{mfSplitView.nodepath}"
-        on:close="closeSplitView()"
-        on:collapse="collapseSplitView()"
-        on:expand="expandSplitView()"
       ></SplitView>
     </div>
     {/if}
@@ -462,6 +459,7 @@
               this.getUnsavedChangesModalPromise().then(() => {
                 this.handleNavigation(e.data, config);
                 this.closeModal();
+                this.closeSplitView();
               });
             }
           }
@@ -832,61 +830,16 @@
         }
       },
       openViewInSplitView(nodepath, settings) {
-        this.set({
-          mfSplitView: {
-            isDisplayed: true,
-            isCollapsed: settings.collapsed === true,
-            nodepath,
-            settings
-          }
-        });
-        console.log('open sv', this.get().mfSplitView);
-      },
-      setDeep(key, value) {
-        this.set({
-          [key]: Object.assign({}, this.get()[key], value)
-        });
+        SplitViewSvc.openViewInSplitView(this, nodepath, settings);
       },
       collapseSplitView() {
-        if (this.get().splitViewIframe) {
-          this.getUnsavedChangesModalPromise(
-            this.get().splitViewIframe.contentWindow
-          ).then(() => {
-            console.log(
-              'collapseSplitView, mfSplitView:',
-              this.get().mfSplitView
-            );
-            this.setDeep('mfSplitView', {
-              isDisplayed: true,
-              isCollapsed: true
-            });
-            console.log(
-              'collapseSplitView, mfSplitView:',
-              this.get().mfSplitView
-            );
-          });
-        }
+        SplitViewSvc.collapseSplitView(this);
       },
       expandSplitView() {
-        if (this.get().splitViewIframe) {
-          console.log('expandSplitView');
-          this.setDeep('mfSplitView', {
-            isDisplayed: true,
-            isCollapsed: false
-          });
-        }
+        SplitViewSvc.expandSplitView(this);
       },
       closeSplitView() {
-        if (this.get().splitViewIframe) {
-          this.getUnsavedChangesModalPromise(
-            this.get().splitViewIframe.contentWindow
-          ).then(() => {
-            console.log('closeSplitView');
-            this.setDeep('mfSplitView', {
-              isDisplayed: false
-            });
-          });
-        }
+        SplitViewSvc.closeSplitView(this);
       },
       handleAlertDismiss(id) {
         const alert = this.getAlertWithId(this.get().alerts, id);

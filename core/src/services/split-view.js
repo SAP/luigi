@@ -59,6 +59,57 @@ class SplitViewSvcClass {
     }
     return '';
   }
+
+  assignDeep(comp, key, value) {
+    comp.set({
+      [key]: Object.assign({}, comp.get()[key], value)
+    });
+  }
+
+  openViewInSplitView(comp, nodepath, settings) {
+    comp.set({
+      mfSplitView: {
+        isDisplayed: true,
+        isCollapsed: settings.collapsed === true,
+        nodepath,
+        settings
+      }
+    });
+  }
+
+  expandSplitView(comp) {
+    if (comp.get().splitViewIframe) {
+      this.assignDeep(comp, 'mfSplitView', {
+        isDisplayed: true,
+        isCollapsed: false
+      });
+    }
+  }
+
+  collapseSplitView(comp) {
+    if (comp.get().splitViewIframe) {
+      comp
+        .getUnsavedChangesModalPromise(comp.get().splitViewIframe.contentWindow)
+        .then(() => {
+          this.assignDeep(comp, 'mfSplitView', {
+            isDisplayed: true,
+            isCollapsed: true
+          });
+        });
+    }
+  }
+
+  closeSplitView(comp) {
+    if (comp.get().splitViewIframe) {
+      comp
+        .getUnsavedChangesModalPromise(comp.get().splitViewIframe.contentWindow)
+        .then(() => {
+          this.assignDeep(comp, 'mfSplitView', {
+            isDisplayed: false
+          });
+        });
+    }
+  }
 }
 
 export const SplitViewSvc = new SplitViewSvcClass();
