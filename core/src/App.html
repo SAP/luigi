@@ -77,30 +77,23 @@
   import Modal from './Modal.html';
   import SplitView from './SplitView.html';
   import { LuigiConfig, LuigiElements } from './core-api';
-  import { Routing } from './services/routing';
   import { Navigation } from './navigation/services/navigation';
-  import { Iframe } from './services/iframe';
-  import { ViewGroupPreloading } from './services/preloading';
+  import {
+    Iframe,
+    ViewGroupPreloading,
+    Routing,
+    SplitViewSvc
+  } from './services';
+
   import {
     AuthHelpers,
     GenericHelpers,
     IframeHelpers,
     RoutingHelpers,
-    StateHelpers,
-    SplitViewHelpers
+    StateHelpers
   } from './utilities/helpers';
   import { CSS_BREAKPOINTS } from './utilities/constants';
 
-  const specialIframeIframeTypes = [
-    {
-      iframeKey: 'modalIframe',
-      dataKey: 'modalIframeData'
-    },
-    {
-      iframeKey: 'splitViewIframe',
-      dataKey: 'splitViewIframeData'
-    }
-  ];
   const removeQueryParams = str => str.split('?')[0];
 
   const isValidBackRoute = (preservedViews, routeHash) => {
@@ -278,15 +271,6 @@
     };
   };
 
-  const getDefaultMicrofrontendSplitViewData = () => {
-    return {
-      mfSplitView: {
-        isDisplayed: false,
-        settings: {}
-      }
-    };
-  };
-
   export default {
     data() {
       return Object.assign(
@@ -311,7 +295,7 @@
         getDefaultAlertData(),
         getDefaultConfirmationModalData(),
         getDefaultMicrofrontendModalData(),
-        getDefaultMicrofrontendSplitViewData()
+        SplitViewSvc.getDefaultData()
       );
     },
     oncreate() {
@@ -392,7 +376,7 @@
           }
 
           if ('luigi.get-context' === e.data.msg) {
-            const specialIframeMessageSource = specialIframeIframeTypes.filter(
+            const specialIframeMessageSource = SplitViewSvc.iframeTypes.filter(
               typ => IframeHelpers.isMessageSource(e, this.get()[typ.iframeKey])
             );
             if (specialIframeMessageSource.length) {
@@ -469,7 +453,7 @@
               this.set(
                 Object.assign(
                   { contentNode: node },
-                  getDefaultMicrofrontendSplitViewData()
+                  SplitViewSvc.getDefaultData()
                 )
               );
               console.log('pm 2');
@@ -612,48 +596,19 @@
       }
     },
     computed: {
-      getIframeSplitViewBottom: ({ mfSplitView, rightContentHeight }) => {
-        // sets .lui-split.iframeContainer style: bottom
-        if (
-          mfSplitView.isDisplayed &&
-          !mfSplitView.isCollapsed &&
-          mfSplitView.settings
-        ) {
-          const percent = mfSplitView.settings.height
-            ? mfSplitView.settings.height
-            : 40;
-          const topHeightPx = GenericHelpers.computePxFromPercent(
-            rightContentHeight,
-            percent
-          );
-          return `bottom: ${topHeightPx}px`;
-        }
-        return '';
-      },
-      getIframeSplitViewContainerTop: ({ mfSplitView, rightContentHeight }) => {
-        // sets .iframeSplitViewContainer style: top
-        if (
-          mfSplitView.isDisplayed &&
-          !mfSplitView.isCollapsed &&
-          mfSplitView.settings
-        ) {
-          const percent = mfSplitView.settings.height
-            ? 100 - mfSplitView.settings.height
-            : 60;
-          const topHeightPx = GenericHelpers.computePxFromPercent(
-            rightContentHeight,
-            percent
-          );
-          return `top: ${topHeightPx}px`;
-        }
-        return '';
-      }
+      getIframeSplitViewBottom: ({ mfSplitView, rightContentHeight }) =>
+        SplitViewSvc.getIframeSplitViewBottom(mfSplitView, rightContentHeight),
+      getIframeSplitViewContainerTop: ({ mfSplitView, rightContentHeight }) =>
+        SplitViewSvc.getIframeSplitViewContainerTop(
+          mfSplitView,
+          rightContentHeight
+        )
     },
     methods: {
       getValidMessageSource(e) {
         const allMessagesSources = [
           ...Iframe.getAllIframes(
-            specialIframeIframeTypes.map(t => this.get()[t.iframeKey])
+            SplitViewSvc.iframeTypes.map(t => this.get()[t.iframeKey])
           ),
           { contentWindow: window, luigi: { viewUrl: window.location.href } }
         ];
