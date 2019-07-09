@@ -50,7 +50,7 @@ import {
   linkManager,
   uxManager
 } from '@kyma-project/luigi-client/luigi-client-ie11';
-<!-- } from '@kyma-project/luigi-client'; -->
+// } from '@kyma-project/luigi-client';
 ``` 
 
 >**NOTE**: The angular example application is not fully compatible with IE11.
