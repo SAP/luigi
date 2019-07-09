@@ -6,4 +6,4 @@ export * from './iframe-helpers';
 export * from './navigation-helpers';
 export * from './routing-helpers';
 export * from './state-helpers';
-export * from './split-screen-helpers';
+export * from './split-view-helpers';
