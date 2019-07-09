@@ -653,7 +653,7 @@
       getValidMessageSource(e) {
         const allMessagesSources = [
           ...Iframe.getAllIframes(
-            specialIframeIframeTypes.map(t => t.iframeKey)
+            specialIframeIframeTypes.map(t => this.get()[t.iframeKey])
           ),
           { contentWindow: window, luigi: { viewUrl: window.location.href } }
         ];
@@ -855,7 +855,6 @@
         });
       },
       openViewInModal(nodepath, modalSettings) {
-        console.log('openViewInModal', nodePath, modalSettings);
         this.set({
           mfModal: {
             isDisplayed: true,

@@ -39,7 +39,7 @@ class IframeClass {
       document.querySelectorAll('.iframeContainer iframe')
     );
     iframeTypeArr
-      .filter(it => !it)
+      .filter(it => !!it)
       .forEach(it => {
         iframes.push(it);
       });
