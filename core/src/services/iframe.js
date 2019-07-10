@@ -34,7 +34,7 @@ class IframeClass {
     return container && container.length > 0 ? container[0] : undefined;
   }
 
-  getAllIframes(iframeTypeArr) {
+  getAllIframes(iframeTypeArr = []) {
     const iframes = Array.from(
       document.querySelectorAll('.iframeContainer iframe')
     );
