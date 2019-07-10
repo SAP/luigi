@@ -1,0 +1,24 @@
+<section class="fd-section">
+  <div class="fd-section__header">
+    <h1 class="fd-section__title">
+      Open node with <i>onNodeActivation</i> hook
+    </h1>
+  </div>
+  <div class="fd-panel">
+    <ul class="fd-list-group">
+      <li
+        class="fd-list-group__item clickable"
+        (click)="linkManager().navigate('/on-node-activated/not-navigated')"
+      >
+        <strong>Prevent navigation</strong> &nbsp;&ndash; and shows an alert
+      </li>
+      <li
+        class="fd-list-group__item clickable"
+        (click)="linkManager().navigate('/on-node-activated/navigated')"
+      >
+        <strong>Prevent navigation conditionally</strong> &nbsp;&ndash;
+        depending on user selection in confirmation modal
+      </li>
+    </ul>
+  </div>
+</section>

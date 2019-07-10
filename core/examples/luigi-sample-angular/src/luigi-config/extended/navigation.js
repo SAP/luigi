@@ -22,18 +22,35 @@ class Navigation {
       hideSideNav: true
     },
     {
-      pathSegment: 'not-navigated',
+      pathSegment: 'on-node-activated',
       hideFromNav: true,
-      viewUrl: '/sampleapp.html#/not-navigated',
-      onNodeActivation: node => {
-        console.log('NOT NAVIGATED NODE. node: ', node);
-        Luigi.showAlert({
-          text: `Showing an alert instead of navigating.`,
-          type: 'info',
-          closeAfter: 3000
-        });
-        return false;
-      }
+      hideSideNav: true,
+      viewUrl: '/sampleapp.html#/on-node-activated',
+      children: [
+        {
+          pathSegment: 'not-navigated',
+          viewUrl: '/sampleapp.html#/on-node-activated/not-navigated',
+          onNodeActivation: node => {
+            Luigi.showAlert({
+              text: `Showing an alert instead of navigating.`,
+              type: 'info',
+              closeAfter: 3000
+            });
+            return false;
+          }
+        },
+        {
+          pathSegment: 'navigated',
+          viewUrl: '/sampleapp.html#/on-node-activated/conditionally-navigated',
+          openNodeInModal: true,
+          onNodeActivation: node => {
+            return Luigi.showConfirmationModal({}).then(
+              () => true,
+              () => false
+            );
+          }
+        }
+      ]
     },
     {
       pathSegment: 'projects',

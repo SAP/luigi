@@ -29,12 +29,6 @@ export class OverviewComponent {
 
   public luigiCoreLinks: any[] = [
     {
-      link: '/not-navigated',
-      text: 'Navigation node with node activation hook',
-      description:
-        'The navigation is not triggered when the method returns either false or a promise that resolves to false'
-    },
-    {
       link: '/projects/pr1/dps',
       text: 'defaultChildNode',
       description:
@@ -62,6 +56,12 @@ export class OverviewComponent {
       link: '/projects/pr2',
       text: 'Node with link to another node',
       description: 'navigation node configuration to redirect to another path'
+    },
+    {
+      link: '/on-node-activated',
+      text: 'Navigation node with node activation hook',
+      description:
+        'The navigation is not triggered when the method returns either false or a promise that resolves to false'
     }
   ];
 
