@@ -88,6 +88,60 @@ describe('Navigation', () => {
     });
   });
 
+  describe('Node activation hook', () => {
+    const nodeActivationPath = '/on-node-activation';
+    it('does not navigate - synchronously', () => {
+      cy.visit(nodeActivationPath);
+
+      cy.get('iframe').then(function($element) {
+        let iframeBody, cyIframe;
+        // this gets the body of your iframe
+        iframeBody = $element.contents().find('body');
+        // wrap this body with cy so as to do cy actions inside iframe elements
+        cyIframe = cy.wrap(iframeBody);
+        //now you can forget about that you are in iframe. you can do necessary actions finding the elements inside the iframe
+        cyIframe.find('[data-e2e="node-activation-no-navigation"]').click();
+
+        cy.expectPathToBe(nodeActivationPath);
+        cy.get('[data-cy="luigi-alert"]').contains(
+          'Showing an alert instead of navigating'
+        );
+      });
+    });
+
+    it('does not navigate - asynchronously', () => {
+      cy.visit(nodeActivationPath);
+
+      cy.get('iframe').then(function($element) {
+        // wrap the body of your iframe with cy so as to do cy actions inside iframe elements
+        const cyIframe = cy.wrap($element.contents().find('body'));
+        cyIframe
+          .find('[data-e2e="node-activation-conditional-navigation"]')
+          .click();
+
+        cy.get('[data-cy=luigi-modal-dismiss]').click();
+
+        cy.expectPathToBe(nodeActivationPath);
+      });
+    });
+
+    it('navigates - asynchronously', () => {
+      cy.visit(nodeActivationPath);
+
+      cy.get('iframe').then(function($element) {
+        // wrap the body of your iframe with cy so as to do cy actions inside iframe elements
+        const cyIframe = cy.wrap($element.contents().find('body'));
+        cyIframe
+          .find('[data-e2e="node-activation-conditional-navigation"]')
+          .click();
+
+        cy.get('[data-cy=luigi-modal-confirm]').click();
+
+        cy.expectPathToBe(`${nodeActivationPath}/navigated`);
+      });
+    });
+  });
+
   // Disabled, since it only works if autologin is false
   /*
   it('Anonymous content', () => {
