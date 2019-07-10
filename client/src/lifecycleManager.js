@@ -78,6 +78,7 @@ class LifecycleManager extends LuigiClientBase {
       };
 
       helpers.addEventListener('luigi.init', e => {
+        helpers.setTrustedOrigin(e.origin);
         setContext(e.data);
         setAuthData(e.data.authData);
         this.luigiInitialized = true;

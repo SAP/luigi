@@ -58,7 +58,8 @@ export class linkManager extends LuigiClientBase {
         modal: modalSettings
       })
     };
-    window.parent.postMessage(navigationOpenMsg, '*');
+
+    helpers.sendToTrustedDomain(navigationOpenMsg);
   }
 
   /**

@@ -3,6 +3,8 @@ class Helpers {
   /** @private */
   constructor() {
     this.listeners = [];
+    this.trustedDomainList = [];
+    this.origin = '';
 
     window.addEventListener(
       'message',
@@ -59,6 +61,41 @@ class Helpers {
    */
   isFunction(item) {
     return typeof item === 'function';
+  }
+
+  getTrustedOrigin() {
+    return this.origin;
+  }
+
+  setTrustedOrigin(origin) {
+    if (origin) {
+      this.origin = origin;
+    }
+  }
+
+  getTrustedDomainList() {
+    return this.trustedDomainList;
+  }
+
+  setTrustedDomainList(arr) {
+    if (arr) {
+      this.trustedDomainList = arr;
+    }
+  }
+
+  sendToTrustedDomain(msg) {
+    if (this.getTrustedDomainList().length > 0) {
+      let turstedDomain = this.getTrustedDomainList().find(element => {
+        return element === this.getTrustedOrigin();
+      });
+      if (turstedDomain) {
+        window.parent.postMessage(msg, turstedDomain);
+      } else {
+        console.error('There is no trusted domain configured.');
+      }
+    } else {
+      window.parent.postMessage(msg, this.origin || '*');
+    }
   }
 }
 
