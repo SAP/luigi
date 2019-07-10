@@ -87,6 +87,7 @@
   import { Routing } from './services/routing';
   import { Navigation } from './navigation/services/navigation';
   import { NavigationHelpers } from './utilities/helpers';
+  import { RoutingHelpers } from './utilities/helpers';
   export default {
     async onupdate({ changed, current, previous }) {
       const currentNode = this.get().node;
@@ -99,7 +100,18 @@
     methods: {
       onActionClick(node) {
         this.root.getUnsavedChangesModalPromise().then(() => {
-          Routing.handleRouteClick(node, this);
+          if (node.openNodeInModal) {
+            const route = RoutingHelpers.buildRoute(
+              node,
+              `/${node.pathSegment}`
+            );
+            this.root.openViewInModal(
+              route,
+              node.openNodeInModal === true ? {} : node.openNodeInModal
+            );
+          } else {
+            Routing.handleRouteClick(node, this);
+          }
         });
         this.closeSubNav();
       },
