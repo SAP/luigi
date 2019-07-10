@@ -1,3 +1,4 @@
+<svelte:window on:resize="onResize()"/>
 <div class="lui-split">
   <div class="splitter" on:dragSplitViewBorder="dragged($event)">
     {#if isCollapsed}
@@ -18,8 +19,7 @@
 </div>
 
 <script>
-  import { Navigation } from './navigation/services/navigation';
-  import { LuigiConfig } from './core-api';
+  import { LuigiElements } from './core-api';
   import { SplitViewSvc } from './services';
   import {
     GenericHelpers,
@@ -27,83 +27,26 @@
     RoutingHelpers
   } from './utilities/helpers';
 
-  const prepareNodeData = async (component, path) => {
-    const pathUrlRaw =
-      path && path.length ? GenericHelpers.getPathWithoutHash(path) : '';
-    const pathData = await Navigation.getNavigationPath(
-      LuigiConfig.getConfigValueAsync('navigation.nodes'),
-      path
-    );
-    const params = RoutingHelpers.parseParams(pathUrlRaw.split('?')[1]);
-    const nodeParams = RoutingHelpers.getNodeParams(params);
-    const lastNode = RoutingHelpers.getLastNodeObject(pathData);
-    const splitViewSettings = component.get().splitViewSettings;
-    if (!splitViewSettings.title) {
-      splitViewSettings.title = lastNode.label;
-    }
-    const isCollapsed = splitViewSettings.isCollapsed || false;
-    console.log('3');
-    component.set({
-      splitViewSettings,
-      lastNode,
-      pathData,
-      nodeParams,
-      isCollapsed,
-      isDataPrepared: true
-    });
-    console.log('4 prepared and set', component.get().splitViewSettings);
-  };
+  let rightContentHeight;
+
   const getNode = async (component, path) => {
     if (component.get().isDataPrepared) {
       if (!component.get().isCollapsed) {
-        console.debug('expanded, creating iframe');
-        createAndSetSplitView(component);
-      } else {
-        console.debug('collapsed, not creating iframe');
+        SplitViewSvc.createAndSetSplitView(component);
       }
     } else {
-      await prepareNodeData(component, path);
+      await SplitViewSvc.prepareSplitViewData(component, path);
     }
   };
-  const createAndSetSplitView = component => {
-    const {
-      nodeParams,
-      lastNode,
-      splitViewSettings,
-      pathData
-    } = component.get();
 
-    const iframe = createIframeSplit(
-      lastNode.viewUrl,
-      {
-        context: pathData.context,
-        pathParams: pathData.pathParams,
-        nodeParams
-      },
-      component
-    );
-    console.log('1');
-    component.root.set({
-      splitViewIframe: iframe,
-      splitViewIframeData: { ...pathData, nodeParams }
-    });
-    console.log('2');
-  };
-  const createIframeSplit = (viewUrl, componentData, component) => {
-    if (viewUrl) {
-      viewUrl = RoutingHelpers.substituteViewUrl(viewUrl, componentData);
-    }
-    const iframe = IframeHelpers.createIframe(viewUrl);
-    const iframeCtn = document.querySelector('.iframeSplitViewCnt');
-    iframeCtn.appendChild(iframe);
-    return iframe;
-  };
   export default {
+    oncreate() {
+      this.onResize();
+    },
     onupdate({ changed, current, previous }) {
-      const nodepath = this.get().nodepath;
-      getNode(this, nodepath);
+      getNode(this, this.get().nodepath);
       if (changed.isCollapsed) {
-        console.log('isCollapsed', current.isCollapsed);
+        console.log('isCollapsed has changed', current.isCollapsed);
       }
     },
     data() {
@@ -114,19 +57,23 @@
     },
     methods: {
       collapse() {
-        console.log('collapse!', this.root.get());
+        console.log('collapse!');
         SplitViewSvc.collapseSplitView(this.root);
       },
       expand() {
         SplitViewSvc.expandSplitView(this.root);
       },
       dragged(evt) {
-        console.log('evt', evt);
+        console.log('dragged: evt', evt);
+      },
+      onResize() {
+        rightContentHeight =
+          window.innerHeight - LuigiElements.getShellbar().clientHeight;
       }
     },
     events: {
       dragSplitViewBorder(node, callback) {
-        // console.log('dragSplitViewBorder', node, callback);
+        console.log('dragSplitViewBorder', node, rightContentHeight);
         // function onmousedown(event) {
         //   const timeout = setTimeout(() => callback(event), 1000);
 
@@ -144,13 +91,26 @@
         const panel = node;
         let m_pos;
 
-        function resize(e) {
+        const resize = e => {
           const dx = m_pos - e.y;
           m_pos = e.y;
-
           // panel.style.height = (parseInt(getComputedStyle(panel, '').height) + dx) + "px";
           // console.log('panel.style.height', panel.style.height);
-        }
+          console.log(dx, e.y);
+          const { top, bottom } = SplitViewSvc.splitViewValues;
+          const newHeightPx = rightContentHeight + dx;
+          // const newPercent = GenericHelpers.computeNewPercent(
+          //   oldPercent,
+          //   rightContentHeight,
+          //   newHeightPx
+          // );
+
+          if (newHeightPx !== bottom) {
+            console.log('split view has changed to', newHeightPx);
+            // SplitViewSvc.setDeep(this.root, 'mfSplitView', GenericHelpers.deepMerge(this.root.get().mfSplitView, {mfSplitView: {settings: {height: newPercent}}}));
+          }
+        };
+
         function onMouseDown(e) {
           if (e.offsetY < BORDER_SIZE) {
             m_pos = e.y;
@@ -228,6 +188,7 @@
       }
     }
     .iframeSplitViewCnt {
+      background-color: var(--fd-background-color);
       position: absolute;
       width: 100%;
       bottom: 0;

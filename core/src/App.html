@@ -91,6 +91,16 @@
   } from './utilities/helpers';
   import { CSS_BREAKPOINTS } from './utilities/constants';
 
+  const specialIframeTypes = [
+    {
+      iframeKey: 'modalIframe',
+      dataKey: 'modalIframeData'
+    },
+    {
+      iframeKey: 'splitViewIframe',
+      dataKey: 'splitViewIframeData'
+    }
+  ];
   const removeQueryParams = str => str.split('?')[0];
 
   const isValidBackRoute = (preservedViews, routeHash) => {
@@ -373,8 +383,8 @@
           }
 
           if ('luigi.get-context' === e.data.msg) {
-            const specialIframeMessageSource = SplitViewSvc.iframeTypes.filter(
-              typ => IframeHelpers.isMessageSource(e, this.get()[typ.iframeKey])
+            const specialIframeMessageSource = specialIframeTypes.filter(typ =>
+              IframeHelpers.isMessageSource(e, this.get()[typ.iframeKey])
             );
             if (specialIframeMessageSource.length) {
               specialIframeMessageSource.forEach(typ => {
@@ -446,14 +456,12 @@
             } else if (e.data.params.splitView !== undefined) {
               let path = buildPath(this, e.data.params);
               path = GenericHelpers.addLeadingSlash(path);
-              console.log('pm 1');
               this.set(
                 Object.assign(
                   { contentNode: node },
                   SplitViewSvc.getDefaultData()
                 )
               );
-              console.log('pm 2');
               this.openViewInSplitView(path, e.data.params.splitView);
             } else {
               this.getUnsavedChangesModalPromise().then(() => {
@@ -594,19 +602,16 @@
       }
     },
     computed: {
-      getIframeSplitViewBottom: ({ mfSplitView, rightContentHeight }) =>
-        SplitViewSvc.getIframeSplitViewBottom(mfSplitView, rightContentHeight),
-      getIframeSplitViewContainerTop: ({ mfSplitView, rightContentHeight }) =>
-        SplitViewSvc.getIframeSplitViewContainerTop(
-          mfSplitView,
-          rightContentHeight
-        )
+      getIframeSplitViewBottom: ({ mfSplitView }) =>
+        SplitViewSvc.getIframeSplitViewBottom(mfSplitView),
+      getIframeSplitViewContainerTop: ({ mfSplitView }) =>
+        SplitViewSvc.getIframeSplitViewContainerTop(mfSplitView)
     },
     methods: {
       getValidMessageSource(e) {
         const allMessagesSources = [
           ...Iframe.getAllIframes(
-            SplitViewSvc.iframeTypes.map(t => this.get()[t.iframeKey])
+            specialIframeTypes.map(t => this.get()[t.iframeKey])
           ),
           { contentWindow: window, luigi: { viewUrl: window.location.href } }
         ];
@@ -679,8 +684,7 @@
         }
         this.set({ previousWindowWidth: window.innerWidth });
         this.set({
-          rightContentHeight:
-            window.innerHeight - LuigiElements.getShellbar().clientHeight
+          rightContentHeight: GenericHelpers.getRightContentHeight()
         });
       },
       handleModalResult(result) {
