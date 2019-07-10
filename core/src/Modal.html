@@ -31,7 +31,7 @@
     const params = RoutingHelpers.parseParams(pathUrlRaw.split('?')[1]);
     const nodeParams = RoutingHelpers.getNodeParams(params);
 
-    const { nodeObject } = Navigation.extractDataFromPath(path);
+    const { nodeObject, pathData } = await Navigation.extractDataFromPath(path);
 
     const modalSettings = component.get().modalSettings;
     if (!modalSettings.title) {

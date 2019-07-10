@@ -727,7 +727,7 @@
         });
       },
       async openViewInModal(nodepath, modalSettings) {
-        const { nodeObject } = Navigation.extractDataFromPath(nodepath);
+        const { nodeObject } = await Navigation.extractDataFromPath(nodepath);
         if (await Navigation.shouldPreventNavigation(nodeObject)) {
           return;
         }
