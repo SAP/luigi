@@ -166,9 +166,6 @@ class RoutingClass {
       const { nodeObject, pathData } = await Navigation.extractDataFromPath(
         path
       );
-      if (await Navigation.shouldPreventNavigation(nodeObject)) {
-        return;
-      }
 
       const viewUrl = nodeObject.viewUrl || '';
 
