@@ -69,6 +69,7 @@ describe('Navigation', function() {
   afterEach(() => {
     // reset
     LuigiConfig.config = {};
+    sinon.restore();
   });
   describe('getNavigationPath', function() {
     it('should not fail for undefined arguments', () => {
@@ -314,7 +315,6 @@ describe('Navigation', function() {
       expect(resMultipleDynamicError).to.equal(null);
       sinon.assert.calledOnce(console.warn);
       sinon.assert.calledOnce(console.error);
-      sinon.reset();
     });
   });
   describe('getLeftNavData', () => {
@@ -415,11 +415,6 @@ describe('Navigation', function() {
       node = {
         onNodeActivation: nodeActivationHook
       };
-    });
-
-    afterEach(() => {
-      sinon.reset();
-      sinon.restore();
     });
 
     it('returns true when node activation hook returns false', async () => {
