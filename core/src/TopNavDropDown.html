@@ -6,17 +6,15 @@
     {#each children as node}
     <li on:click="onActionClick(node)" data-e2e="topnav-dropdown-item">
       <a class="fd-menu__item">
-        {#if node.icon}
-        {#if hasOpenUIicon(node)}
         <span
-          class="fd-top-nav__icon sap-icon--{node.icon} sap-icon--m"
-        ></span>
-        {:else}
-        <img class="fd-top-nav__icon nav-icon" src="{node.icon}">
-        {/if}
-        {/if}
+          class="fd-top-nav__icon {node.icon && hasOpenUIicon(node) ? 'sap-icon--' + node.icon + ' sap-icon--m' : '' }"
+        >
+          {#if !hasOpenUIicon(node)}
+          <img src="{node.icon}">
+          {/if}
+          <BadgeCounter {node}/>
+        </span>
         <span>{node.label}</span>
-        <BadgeCounter {node}/>
       </a>
     </li>
     {/each}
@@ -53,25 +51,15 @@
               on:click="onActionClick(node)"
               data-cy="mobile-topnav-dropdown-item"
             >
-              {#if node.icon} {#if hasOpenUIicon(node)}
               <span
-                class="y-full-width-list__icon sap-icon--{node.icon} sap-icon--m"
-              ></span>
-              {:else}
-              <img
-                class="y-full-width-list__icon nav-icon"
-                src="{node.icon}"
+                class="y-full-width-list__icon {node.icon && hasOpenUIicon(node) ? 'sap-icon--' + node.icon + ' sap-icon--m' : '' }"
               >
-              {/if}
-              {:else}
-              <span
-                class="y-full-width-list__icon"
-              ></span>
-              {/if}
-              <span
-                class="y-full-width-list__title"
-              >{node.label}</span>
-              <BadgeCounter {node}/>
+                {#if !hasOpenUIicon(node)}
+                <img src="{node.icon}">
+                {/if}
+                <BadgeCounter {node}/>
+              </span>
+              <span class="y-full-width-list__title">{node.label}</span>
             </li>
             {/each}
             {/if}
@@ -141,11 +129,14 @@
     }
   }
 
-  @media (max-width: 600px) {
-    .y-full-width-list__icon {
-      padding-left: 15px;
+  .fd-top-nav__icon {
+    img {
+      width: 16px;
+      vertical-align: top;
     }
+  }
 
+  @media (max-width: 600px) {
     .y-full-width-list__item {
       padding: 10px 5px !important;
     }
@@ -221,15 +212,6 @@
           font-weight: bold;
         }
       }
-    }
-
-    &__icon {
-      vertical-align: middle;
-      width: 40px;
-      height: 40px;
-      grid-row: 1 / 3;
-      background-position: center;
-      background-size: cover;
     }
 
     &__title {
