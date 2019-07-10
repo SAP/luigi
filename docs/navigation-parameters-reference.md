@@ -16,29 +16,92 @@ Luigi.setConfig({
   // navigation structure and settings
   navigation: {
     nodeAccessibilityResolver: function (nodeToCheckPermissionFor, parentNode, currentContext) {},
-    nodes: [
-        // STATIC navigation node
-      {
-        pathSegment: 'settings',
-        label: 'Settings',
-        viewUrl: 'https://admin.mydomain.com/settings',
-        viewGroup: 'settingsGroup',
-        // optional
-        children: [node, node, node],
-        hideFromNav: false,
-        isolateView: false,
-        icon: 'settings'
+  viewGroupSettings: {
+    main: {
+      preloadUrl: 'https://my-site.com/index.html#/preload',
+    },
+    projects: {
+      preloadUrl: 'https://my-site.com/projects.html#/preloading',
+    },
+    envs: {
+      preloadUrl: 'https://my-site.com/environments-details.html#/preload-view',
+    }
+  },
+  nodes: [
+    // STATIC navigation node
+    {
+      pathSegment: 'settings',
+      label: 'Settings',
+      viewUrl: 'https://admin.mydomain.com/settings',
+      viewGroup: 'settingsGroup',
+      // optional
+      children: [node, node, node],
+      hideFromNav: false,
+      isolateView: false,
+      icon: 'settings',
+      category: {
+        label: 'General',
+        icon: 'general'
+      }, // OR
+      category: 'General'
+    },
+    // DYNAMIC navigation node
+    {
+      navigationContext: 'contextName',
+      pathSegment: ':projectId',
+      viewUrl: '/some/path/:projectId',
+      context: {
+        projectId: ':projectId'
       },
-        // DYNAMIC navigation node
-      {
-        navigationContext: 'contextName',
-        pathSegment: ':projectId',
-        viewUrl: '/some/path/:projectId',
-        context: {
-          projectId: ':projectId'
-        },
-        children: [node, node, node]
+      children: [node, node, node]
+    },
+    // View groups nodes
+    {
+      viewGroup: 'main',
+      pathSegment: 'overview',
+      label: 'Overview',
+      viewUrl: 'https://my-site.com/index.html#/overview'
+    },
+    {
+      viewGroup: 'main',
+      pathSegment: 'preload',
+      viewUrl: 'https://my-site.com/index.html#/preload'
+    },
+    {
+      viewGroup: 'projects',
+      pathSegment: 'projects',
+      label: 'Projects',
+      viewUrl: 'https://my-site.com/projects.html#/list',
+      children: [
+        {
+          pathSegment: 'preloading',
+          viewUrl: 'https://my-site.com/projects.html#/preloading'
+        }
+      ]
+    },
+    {
+      viewGroup: 'envs',
+      pathSegment: 'create-environment',
+      viewUrl: 'https://my-site.com/environments.html#/create',
+      context: {
+        label: 'Create Environment'
       }
+    },
+    {
+      viewGroup: 'envs',
+      pathSegment: 'environments',
+      viewUrl: 'https://my-site.com/environments-details.html#/list',
+      children: [
+        {
+          pathSegment: 'preload',
+          viewUrl: 'https://my-site.com/environments-details.html#/preload-view'
+        },
+        {
+          pathSegment: 'env1',
+          viewUrl: 'https://my-site.com/environments-details.html#/details/env1'
+        }
+      ]
+    }
     ],
     contextSwitcher: {
       defaultLabel: 'Select Environment ...',
@@ -91,6 +154,9 @@ The node navigation parameters are as follows:
 - **nodeAccessibilityResolver** allows you to define a permission checker function that gets executed on every node. If it returns `false`, Luigi removes the node and its children from the navigation structure.
 - **nodeAccessibilityResolver** receives all values defined in the node configuration. See [angular basicConfiguration.js](../core/examples/luigi-sample-angular/src/assets/basicConfiguration.js) for the **constraints** example.
 - **defaults.isolateView** renders all views in new frames. This setting overrides the same-domain frame reuse. The **defaults.isolateView** is disabled by default, and you can overwrite it using the **isolateView** value on a single node level.
+- **preloadViewGroups**(bool) allows deactivating the default preloading of [view groups](navigation-configuration.md#view-groups) iframes.
+- **viewGroupsSettings** is an object containing key-object pairs, where the key is the view group name as specified in the node parameters, and the object contains key-value pairs. In each key-value pair, the key is the feature name and the value is the actual setting. The following options are supported:
+  - **preloadUrl**(string): needs to be an absolute URL for a node from the view group. It is recommended that you use a dedicated small, visually empty view, which imports Luigi Client and is fine with getting an empty context, for example, without an access token. The **preloadUrl** parameter is also required for view group caching in case you need a view group iframe to refresh whenever you navigate back to it.
 
 ## Node parameters
 
@@ -110,16 +176,21 @@ The node parameters are as follows:
 - **context** sends the specified object as context to the view. Use this parameter in combination with the dynamic **pathSegment** to receive the context through the context listeners of **Luigi Client**. This is an alternative to using the dynamic value in the **viewUrl**.
 - **defaultChildNode** sets the child node that Luigi activates automatically if the current node has no **viewUrl** defined. Provide **pathSegment** of the child node you want to activate as a string.
 - **isolateView** renders the view in a new frame when you enter and leave the node. This setting overrides the same-domain frame re-usage. The **isolateView** is disabled by default.
+- **viewGroup** allows you to associate nodes to be rendered in the same iframe, as long as they belong to the same origin. The value of this parameter is considered as the view group id. For further explanations, see [this section](navigation-configuration.md#view-groups).
 - **keepSelectedForChildren** focuses the navigation on its current hierarchy, omitting the display of children.
 - **loadingIndicator.enabled** shows a loading indicator when switching between micro front-ends. If you have a fast micro front-end, you can disable this feature to prevent flickering of the loading indicator. This parameter is enabled by default.
 - **loadingIndicator.hideAutomatically** disables the automatic hiding of the loading indicator once the micro front-end is loaded. It is only considered if the loading indicator is enabled. It does not apply if the loading indicator is activated manually with the `LuigiClient.uxManager().showLoadingIndicator()` function. If the loading indicator is enabled and automatic hiding is disabled, use `LuigiClient.uxManager().hideLoadingIndicator()` to hide it manually in your micro front-end during the startup. This parameter is enabled by default.
 - **viewGroup** defines a group of views in the same domain sharing a common security context. This improves performance through reusing the frame. Use **viewGroup** only for the views that use path routing internally.
-- **icon** is the name of an icon from the [OpenUI](https://openui5.hana.ondemand.com/1.40.10/iconExplorer.html) or a custom link (relative or absolute) to an image displayed next to the Node label in the side navigation or instead of the label in the top navigation.
+- **icon** is the name of an icon, without the `sap-icon--` prefix. Its source may be [OpenUI](https://openui5.hana.ondemand.com/1.40.10/iconExplorer.html) or a custom link (relative or absolute) to an image. The icon is displayed next to the node label in the side navigation or instead of the label in the top navigation.
 - **hideSideNav** if set to `true`, the left navigation disappears when you click the affected node. It is set to `false` by default.
 - **badgeCounter** adds a badge with a number and a label to a Node. Nodes that are part of a category will show a cumulated number of all badges in this category. **badgeCounter** is only available for top navigation items.
   - **label** is the label of the badge
   - **count** is a function or asynchronous function that returns a number.
   Gets updated when clicked on the navigation. Use `Luigi.navigation().updateTopNavigation()` in Luigi Core or execute `window.parent.postMessage({msg: 'luigi.navigation.update-badge-counters'}, '*');` from within a micro-frontend to trigger a manual update.
+- **category** defines a group of views separated with a headline and an icon. You should define at least one node in a group should as an Object with **label** and **icon** properties. For all other nodes, you can set **category** as a string with the `label` value. 
+   - **label** is a string that represents the title of the category
+   -  **icon** is the name of an icon, without the `sap-icon--` prefix. Its source may be [OpenUI](https://openui5.hana.ondemand.com/1.40.10/iconExplorer.html) or a custom link (relative or absolute) to an image. The icon is displayed next to the node label in the side navigation or instead of the label in the top navigation. In case you accidentally define different icons in a category group, only the first one is used.
+   - **collapsible** if set to `true`, category items are hidden at first. To expand them, click the main category node.
 - **openNodeInModal** configures the settings of the view which opens in a modal. You can specify the modal's title and size. If you don't specify the title, the node label is used. If there is no node label, the title remains empty. The default size of the modal is `l`, which means 80%. You can also use `m` (60%) and `s` (40%) to set the modal size.<br/> Optionally you can set the **openNodeInModal** property to `true` to use default title and size.
   -   **title** modal title. By default, it is the node label. If there is no label, it is left empty
   -   **size** **(`"l"` \| `"m"` \| `"s"`)** size of the modal (optional, default `"l"`)
@@ -156,3 +227,5 @@ The profile section is a configurable drop-down list available in the top naviga
   - **externalLink** is an object which indicates that the node links to an external URL. If this parameter is defined, the **link** parameter is ignored. It has the following properties:
     - **sameWindow** defines if the external URL is opened in the current tab or in a new one. The default value for this parameter is `false`.
     - **url** is the external URL that the link leads to.
+
+
