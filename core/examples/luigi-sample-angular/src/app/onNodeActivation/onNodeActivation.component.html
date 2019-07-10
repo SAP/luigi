@@ -8,13 +8,15 @@
     <ul class="fd-list-group">
       <li
         class="fd-list-group__item clickable"
-        (click)="linkManager().navigate('/on-node-activated/not-navigated')"
+        (click)="linkManager().navigate('/on-node-activation/not-navigated')"
+        data-e2e="node-activation-no-navigation"
       >
         <strong>Prevent navigation</strong> &nbsp;&ndash; and shows an alert
       </li>
       <li
         class="fd-list-group__item clickable"
-        (click)="linkManager().navigate('/on-node-activated/navigated')"
+        (click)="linkManager().navigate('/on-node-activation/navigated')"
+        data-e2e="node-activation-conditional-navigation"
       >
         <strong>Prevent navigation conditionally</strong> &nbsp;&ndash;
         depending on user selection in confirmation modal

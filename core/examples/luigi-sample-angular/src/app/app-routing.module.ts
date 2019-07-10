@@ -25,8 +25,8 @@ const routes: Routes = [
   { path: 'settings', component: SettingsComponent },
   { path: 'restricted', component: RestrictedComponent },
   { path: 'anonymous', component: AnonymousComponent },
-  { path: 'on-node-activated', component: OnNodeActivationComponent },
-  { path: 'on-node-activated/:usecaseId', component: AnonymousComponent },
+  { path: 'on-node-activation', component: OnNodeActivationComponent },
+  { path: 'on-node-activation/:usecaseId', component: AnonymousComponent },
   { path: 'projects/:projectId', component: ProjectComponent },
   { path: 'projects/:projectId/users', component: UsersComponent },
   {

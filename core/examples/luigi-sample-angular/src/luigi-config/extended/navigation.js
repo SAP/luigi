@@ -22,14 +22,14 @@ class Navigation {
       hideSideNav: true
     },
     {
-      pathSegment: 'on-node-activated',
+      pathSegment: 'on-node-activation',
       hideFromNav: true,
       hideSideNav: true,
-      viewUrl: '/sampleapp.html#/on-node-activated',
+      viewUrl: '/sampleapp.html#/on-node-activation',
       children: [
         {
           pathSegment: 'not-navigated',
-          viewUrl: '/sampleapp.html#/on-node-activated/not-navigated',
+          viewUrl: '/sampleapp.html#/on-node-activation/not-navigated',
           onNodeActivation: node => {
             Luigi.showAlert({
               text: `Showing an alert instead of navigating.`,
@@ -41,7 +41,8 @@ class Navigation {
         },
         {
           pathSegment: 'navigated',
-          viewUrl: '/sampleapp.html#/on-node-activated/conditionally-navigated',
+          viewUrl:
+            '/sampleapp.html#/on-node-activation/conditionally-navigated',
           openNodeInModal: true,
           onNodeActivation: node => {
             return Luigi.showConfirmationModal({}).then(
