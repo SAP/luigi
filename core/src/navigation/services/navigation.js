@@ -289,7 +289,7 @@ class NavigationClass {
   }
 
   async extractDataFromPath(path) {
-    const pathData = await Navigation.getNavigationPath(
+    const pathData = await this.getNavigationPath(
       LuigiConfig.getConfigValueAsync('navigation.nodes'),
       path
     );
@@ -305,6 +305,7 @@ class NavigationClass {
     ) {
       return true;
     }
+    return false;
   }
 }
 
