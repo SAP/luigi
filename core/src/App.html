@@ -22,7 +22,7 @@
   {/if}
   <Backdrop>
     <div
-      class="fd-page iframeContainer {mfSplitView.isDisplayed?'lui-split':''} {mfSplitView.isCollapsed?'lui-collapsed':''}"
+      class="fd-page iframeContainer {mfSplitView.isDisplayed?'lui-split-view':''} {mfSplitView.isCollapsed?'lui-collapsed':''}"
       use:init="context"
     ></div>
     {#if mfSplitView.isDisplayed}
@@ -953,7 +953,7 @@
 
   /* splitview start */
   $collapsedSplitviewHeight: 38px;
-  .lui-split.iframeContainer {
+  .lui-split-view.iframeContainer {
     bottom: 40%; /* default, overriden by computed.getIframeContainerBottom */
   }
   .lui-collapsed.iframeContainer {

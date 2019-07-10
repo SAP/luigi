@@ -1,14 +1,17 @@
 <svelte:window on:resize="onResize()"/>
-<div class="lui-split">
+<div class="lui-split-view">
   {#if isCollapsed}
-  <div class="splitter">
+  <div class="luig-splitter">
     <a class="lui-collapse-btn" on:click="expand()">
       <span class="sap-icon--collapse-group sap-icon--s"></span>
     </a>
   </div>
   <h1 class="fd-splitView__title">{splitViewSettings.title}</h1>
   {:else}
-  <div class="splitter" on:dragSplitViewBorder="dragged($event)">
+  <div
+    class="luig-splitter lui-is-draggable"
+    on:dragSplitViewBorder="dragged($event)"
+  >
     <a class="lui-collapse-btn" on:click="collapse()">
       <span class="sap-icon--expand-group sap-icon--s"></span>
     </a>
@@ -89,10 +92,7 @@
         function onMouseDown(e) {
           if (e.offsetY < dragBorderSize) {
             m_pos = e.y;
-            console.log('is inside', e.offsetY);
             document.addEventListener('mousemove', resize, false);
-          } else {
-            console.log('was outside', e.offsetY);
           }
         }
         dragElem.addEventListener('mousedown', onMouseDown, false);
@@ -107,9 +107,7 @@
 
         return {
           destroy() {
-            // node.removeEventListener('mousedown', onmousedown, false);
-            console.log('destroying on:dragSplitViewBorder');
-            node.removeEventListener('mousedown', onMouseDown, false);
+            dragElem.removeEventListener('mousedown', onMouseDown, false);
           }
         };
       }
@@ -133,9 +131,9 @@
     padding-left: 32px;
     background: #fff;
   }
-  .lui-split {
+  .lui-split-view {
     height: 100%;
-    .splitter {
+    .luig-splitter {
       position: absolute;
       width: 100%;
       top: 0;
@@ -143,8 +141,15 @@
       /* margin-top: 4px; // possibly better targeting */
       border-top: 2px solid gray;
       background: transparent;
-      cursor: row-resize;
       z-index: 1;
+      &.lui-is-draggable {
+        cursor: row-resize;
+      }
+      &:hover {
+        .lui-collapse-btn {
+          visibility: visible;
+        }
+      }
       .lui-collapse-btn {
         width: 25px;
         height: 25px;
@@ -160,11 +165,6 @@
         border-radius: 5px;
         cursor: pointer;
         visibility: hidden;
-      }
-      &:hover {
-        .lui-collapse-btn {
-          visibility: visible;
-        }
       }
     }
     .iframeSplitViewCnt {
