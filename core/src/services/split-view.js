@@ -1,5 +1,6 @@
 import { LuigiConfig } from '../core-api';
 import { Navigation } from '../navigation/services/navigation';
+import { Iframe } from '../services';
 import {
   GenericHelpers,
   IframeHelpers,
@@ -9,6 +10,11 @@ import {
 class SplitViewSvcClass {
   constructor() {
     this.splitViewValues;
+    this.storedSplitViewValues;
+  }
+
+  getSplitViewContainer() {
+    return document.getElementById('splitViewContainer');
   }
 
   getDefaultData() {
@@ -81,20 +87,16 @@ class SplitViewSvcClass {
 
   calculateInitialValues(mfSplitView, rightContentHeight) {
     if (mfSplitView.settings && rightContentHeight) {
-      const percentBottom = mfSplitView.settings.height
-        ? mfSplitView.settings.height
-        : 40;
-      const bottom = GenericHelpers.computePxFromPercent(
-        rightContentHeight,
-        percentBottom
+      const percentBottom = mfSplitView.settings.height || 40;
+      const bottom = parseInt(
+        GenericHelpers.computePxFromPercent(rightContentHeight, percentBottom)
       );
 
       const percentTop = mfSplitView.settings.height
         ? 100 - mfSplitView.settings.height
         : 60;
-      const top = GenericHelpers.computePxFromPercent(
-        rightContentHeight,
-        percentTop
+      const top = parseInt(
+        GenericHelpers.computePxFromPercent(rightContentHeight, percentTop)
       );
 
       return {
@@ -102,28 +104,6 @@ class SplitViewSvcClass {
         top
       };
     }
-  }
-  getIframeSplitViewBottom(mfSplitView, splitViewValues) {
-    // sets .lui-split.iframeContainer style: bottom
-    if (
-      mfSplitView.isDisplayed &&
-      !mfSplitView.isCollapsed &&
-      this.splitViewValues
-    ) {
-      return `bottom: ${this.splitViewValues.bottom}px`;
-    }
-    return '';
-  }
-  getIframeSplitViewContainerTop(mfSplitView) {
-    // sets .iframeSplitViewContainer style: top
-    if (
-      mfSplitView.isDisplayed &&
-      !mfSplitView.isCollapsed &&
-      this.splitViewValues
-    ) {
-      return `top: ${this.splitViewValues.top}px`;
-    }
-    return '';
   }
 
   setDeep(comp, key, value) {
@@ -143,7 +123,7 @@ class SplitViewSvcClass {
       mfSplitView,
       GenericHelpers.getRightContentHeight()
     );
-    comp.set({ mfSplitView });
+    comp.set({ mfSplitView, splitViewValues: this.splitViewValues });
   }
 
   expandSplitView(comp) {
@@ -152,6 +132,11 @@ class SplitViewSvcClass {
         isDisplayed: true,
         isCollapsed: false
       });
+      SplitViewSvc.getSplitViewContainer().style.top =
+        this.storedSplitViewValues.top + 'px';
+      Iframe.getIframeContainer().style.bottom =
+        this.storedSplitViewValues.bottom + 'px';
+      this.storedSplitViewValues = undefined;
     }
   }
 
@@ -164,6 +149,9 @@ class SplitViewSvcClass {
             isDisplayed: true,
             isCollapsed: true
           });
+          this.storedSplitViewValues = Object.assign({}, this.splitViewValues);
+          SplitViewSvc.getSplitViewContainer().style.top = '';
+          Iframe.getIframeContainer().style.bottom = '';
         });
     }
   }

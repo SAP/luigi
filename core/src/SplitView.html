@@ -1,26 +1,25 @@
 <svelte:window on:resize="onResize()"/>
 <div class="lui-split">
-  <div class="splitter" on:dragSplitViewBorder="dragged($event)">
-    {#if isCollapsed}
+  {#if isCollapsed}
+  <div class="splitter">
     <a class="lui-collapse-btn" on:click="expand()">
       <span class="sap-icon--collapse-group sap-icon--s"></span>
     </a>
-    {:else}
+  </div>
+  <h1 class="fd-splitView__title">{splitViewSettings.title}</h1>
+  {:else}
+  <div class="splitter" on:dragSplitViewBorder="dragged($event)">
     <a class="lui-collapse-btn" on:click="collapse()">
       <span class="sap-icon--expand-group sap-icon--s"></span>
     </a>
-    {/if}
   </div>
-  {#if isCollapsed}
-  <h1 class="fd-splitView__title">{splitViewSettings.title}</h1>
-  {:else}
   <div class="iframeSplitViewCnt"></div>
   {/if}
 </div>
 
 <script>
   import { LuigiElements } from './core-api';
-  import { SplitViewSvc } from './services';
+  import { Iframe, SplitViewSvc } from './services';
   import {
     GenericHelpers,
     IframeHelpers,
@@ -45,9 +44,6 @@
     },
     onupdate({ changed, current, previous }) {
       getNode(this, this.get().nodepath);
-      if (changed.isCollapsed) {
-        console.log('isCollapsed has changed', current.isCollapsed);
-      }
     },
     data() {
       return {
@@ -57,14 +53,10 @@
     },
     methods: {
       collapse() {
-        console.log('collapse!');
         SplitViewSvc.collapseSplitView(this.root);
       },
       expand() {
         SplitViewSvc.expandSplitView(this.root);
-      },
-      dragged(evt) {
-        console.log('dragged: evt', evt);
       },
       onResize() {
         rightContentHeight =
@@ -72,52 +64,38 @@
       }
     },
     events: {
-      dragSplitViewBorder(node, callback) {
-        console.log('dragSplitViewBorder', node, rightContentHeight);
-        // function onmousedown(event) {
-        //   const timeout = setTimeout(() => callback(event), 1000);
-
-        //   function cancel() {
-        //     clearTimeout(timeout);
-        //     node.removeEventListener('mouseup', cancel, false);
-        //   }
-
-        //   node.addEventListener('mouseup', cancel, false);
-        // }
-
-        // node.addEventListener('mousedown', onmousedown, false);
-
-        const BORDER_SIZE = 4;
-        const panel = node;
+      dragSplitViewBorder(dragElem) {
+        const dragBorderSize = 8;
         let m_pos;
 
         const resize = e => {
-          const dx = m_pos - e.y;
+          const diff = m_pos - e.y;
           m_pos = e.y;
-          // panel.style.height = (parseInt(getComputedStyle(panel, '').height) + dx) + "px";
-          // console.log('panel.style.height', panel.style.height);
-          console.log(dx, e.y);
-          const { top, bottom } = SplitViewSvc.splitViewValues;
-          const newHeightPx = rightContentHeight + dx;
-          // const newPercent = GenericHelpers.computeNewPercent(
-          //   oldPercent,
-          //   rightContentHeight,
-          //   newHeightPx
-          // );
+          const splitElement = SplitViewSvc.getSplitViewContainer();
+          const splitStyles = getComputedStyle(splitElement, '');
+          const splitHeight = parseInt(splitStyles.height);
+          const splitTop = parseInt(splitStyles.top);
 
-          if (newHeightPx !== bottom) {
-            console.log('split view has changed to', newHeightPx);
-            // SplitViewSvc.setDeep(this.root, 'mfSplitView', GenericHelpers.deepMerge(this.root.get().mfSplitView, {mfSplitView: {settings: {height: newPercent}}}));
-          }
+          const iframeElement = Iframe.getIframeContainer();
+          const iframeBottom = parseInt(getComputedStyle(iframeElement).bottom);
+          const top = splitTop - diff;
+          const bottom = iframeBottom + diff;
+
+          SplitViewSvc.splitViewValues = { top, bottom };
+          splitElement.style.top = `${top}px`;
+          iframeElement.style.bottom = `${bottom}px`;
         };
 
         function onMouseDown(e) {
-          if (e.offsetY < BORDER_SIZE) {
+          if (e.offsetY < dragBorderSize) {
             m_pos = e.y;
+            console.log('is inside', e.offsetY);
             document.addEventListener('mousemove', resize, false);
+          } else {
+            console.log('was outside', e.offsetY);
           }
         }
-        panel.addEventListener('mousedown', onMouseDown, false);
+        dragElem.addEventListener('mousedown', onMouseDown, false);
 
         document.addEventListener(
           'mouseup',
@@ -130,6 +108,7 @@
         return {
           destroy() {
             // node.removeEventListener('mousedown', onmousedown, false);
+            console.log('destroying on:dragSplitViewBorder');
             node.removeEventListener('mousedown', onMouseDown, false);
           }
         };
@@ -161,6 +140,7 @@
       width: 100%;
       top: 0;
       height: 8px;
+      /* margin-top: 4px; // possibly better targeting */
       border-top: 2px solid gray;
       background: transparent;
       cursor: row-resize;

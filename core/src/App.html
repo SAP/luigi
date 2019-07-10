@@ -23,13 +23,12 @@
   <Backdrop>
     <div
       class="fd-page iframeContainer {mfSplitView.isDisplayed?'lui-split':''} {mfSplitView.isCollapsed?'lui-collapsed':''}"
-      style="{getIframeSplitViewBottom}"
       use:init="context"
     ></div>
     {#if mfSplitView.isDisplayed}
     <div
+      id="splitViewContainer"
       class="splitViewContainer {mfSplitView.isCollapsed?'lui-collapsed':''}"
-      style="{getIframeSplitViewContainerTop}"
     >
       <SplitView
         splitViewSettings="{mfSplitView.settings}"
@@ -325,11 +324,7 @@
         document.body.classList.add('lui-semiCollapsible');
       }
     },
-    onstate({ changed, current, previous }) {
-      if (changed.mfSplitView) {
-        console.log('mfSplitView changed', current.mfSplitView);
-      }
-    },
+    onstate({ changed, current, previous }) {},
     actions: {
       init(node) {
         const isolateAllViews = LuigiConfig.getConfigValue(
@@ -600,12 +595,6 @@
           this.closeSplitView();
         });
       }
-    },
-    computed: {
-      getIframeSplitViewBottom: ({ mfSplitView }) =>
-        SplitViewSvc.getIframeSplitViewBottom(mfSplitView),
-      getIframeSplitViewContainerTop: ({ mfSplitView }) =>
-        SplitViewSvc.getIframeSplitViewContainerTop(mfSplitView)
     },
     methods: {
       getValidMessageSource(e) {
@@ -976,7 +965,7 @@
     bottom: 0;
     right: 0;
     left: $leftNavWidth;
-    top: 60%; /* default, overridden by computed.getIframeSplitViewContainerTop */
+    top: 60%; /* default, overridden by computed.getIframeSplitViewTop */
   }
   .lui-collapsed.splitViewContainer {
     height: $collapsedSplitviewHeight;
