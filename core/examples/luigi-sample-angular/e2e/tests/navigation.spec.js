@@ -34,9 +34,7 @@ describe('Navigation', () => {
   });
 
   it('Browser back works with Default Child mechanism', () => {
-    cy.get('iframe').then($iframe => {
-      const $iframeBody = $iframe.contents().find('body');
-
+    cy.getIframeBody().then($iframeBody => {
       cy.wrap($iframeBody)
         .contains('defaultChildNode')
         .click();
@@ -93,14 +91,10 @@ describe('Navigation', () => {
     it('does not navigate - synchronously', () => {
       cy.visit(nodeActivationPath);
 
-      cy.get('iframe').then(function($element) {
-        let iframeBody, cyIframe;
-        // this gets the body of your iframe
-        iframeBody = $element.contents().find('body');
-        // wrap this body with cy so as to do cy actions inside iframe elements
-        cyIframe = cy.wrap(iframeBody);
-        //now you can forget about that you are in iframe. you can do necessary actions finding the elements inside the iframe
-        cyIframe.find('[data-e2e="node-activation-no-navigation"]').click();
+      cy.getIframeBody().then($iframeBody => {
+        cy.wrap($iframeBody)
+          .find('[data-e2e="node-activation-no-navigation"]')
+          .click();
 
         cy.expectPathToBe(nodeActivationPath);
         cy.get('[data-cy="luigi-alert"]').contains(
@@ -112,10 +106,8 @@ describe('Navigation', () => {
     it('does not navigate - asynchronously', () => {
       cy.visit(nodeActivationPath);
 
-      cy.get('iframe').then(function($element) {
-        // wrap the body of your iframe with cy so as to do cy actions inside iframe elements
-        const cyIframe = cy.wrap($element.contents().find('body'));
-        cyIframe
+      cy.getIframeBody().then($iframeBody => {
+        cy.wrap($iframeBody)
           .find('[data-e2e="node-activation-conditional-navigation"]')
           .click();
 
@@ -128,10 +120,9 @@ describe('Navigation', () => {
     it('navigates - asynchronously', () => {
       cy.visit(nodeActivationPath);
 
-      cy.get('iframe').then(function($element) {
+      cy.getIframeBody().then($iframeBody => {
         // wrap the body of your iframe with cy so as to do cy actions inside iframe elements
-        const cyIframe = cy.wrap($element.contents().find('body'));
-        cyIframe
+        cy.wrap($iframeBody)
           .find('[data-e2e="node-activation-conditional-navigation"]')
           .click();
 
@@ -166,14 +157,8 @@ describe('Navigation', () => {
       cy.wait(500);
       // dig into the iframe
 
-      cy.get('iframe').then(function($element) {
-        let iframeBody, cyIframe;
-        // this gets the body of your iframe
-        iframeBody = $element.contents().find('body');
-        // wrap this body with cy so as to do cy actions inside iframe elements
-        cyIframe = cy.wrap(iframeBody);
-        //now you can forget about that you are in iframe. you can do necessary actions finding the elements inside the iframe
-        cyIframe
+      cy.getIframeBody().then($iframeBody => {
+        cy.wrap($iframeBody)
           .find('.fd-list-group__item')
           .contains('keepSelectedForChildren')
           .click();
@@ -183,12 +168,9 @@ describe('Navigation', () => {
       cy.expectPathToBe('/projects/pr1/avengers');
 
       //the iframe is has been replaced with another one, we need to "get" it again
-      cy.get('iframe').then(function($element) {
-        const iframeBody = $element.contents().find('body');
+      cy.getIframeBody().then($iframeBody => {
         // wrap this body with cy so as to do cy actions inside iframe elements
-        const cyIframe = cy.wrap(iframeBody);
-
-        cyIframe
+        cy.wrap($iframeBody)
           .find('.fd-list-group__item')
           .contains('Thor')
           .click();
@@ -206,15 +188,8 @@ describe('Navigation', () => {
           .click();
 
         cy.wait(500);
-        cy.get('iframe').then(function($element) {
-          let iframeBody, cyIframe;
-          // this gets the body of your iframe
-          iframeBody = $element.contents().find('body');
-          // wrap this body with cy so as to do cy actions inside iframe elements
-          cyIframe = cy.wrap(iframeBody);
-          //now you can forget about that you are in iframe. you can do necessary actions finding the elements inside the iframe
-          // {cyElement is the cypress object here}
-          cyIframe
+        cy.getIframeBody().then($iframeBody => {
+          cy.wrap($iframeBody)
             .find('.fd-list-group__item strong')
             .contains('Node with link to another node')
             .click();
