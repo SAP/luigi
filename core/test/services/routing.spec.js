@@ -431,7 +431,7 @@ describe('Routing', () => {
       await Routing.handleRouteChange(path, component, node, config);
 
       // then
-      sinon.assert.calledWith(Routing.navigateTo, expectedPath, false);
+      sinon.assert.calledWithExactly(Routing.navigateTo, expectedPath, false);
     });
 
     it("should set component's 'hideSideNav' property ", async () => {
@@ -476,7 +476,7 @@ describe('Routing', () => {
       Routing.handleRouteClick(nodeWithParent, component);
 
       // then
-      sinon.assert.calledWith(Routing.navigateTo, expectedRoute);
+      sinon.assert.calledWithExactly(Routing.navigateTo, expectedRoute);
     });
 
     it('node without parent, navigation to proper route', () => {
@@ -488,7 +488,7 @@ describe('Routing', () => {
       Routing.handleRouteClick(nodeWithoutParent, component);
 
       // then
-      sinon.assert.calledWith(Routing.navigateTo, expectedRoute);
+      sinon.assert.calledWithExactly(Routing.navigateTo, expectedRoute);
     });
 
     it('should consume link with absolute path', () => {
@@ -502,7 +502,7 @@ describe('Routing', () => {
       Routing.handleRouteClick(inputNode, component);
 
       // then
-      sinon.assert.calledWith(Routing.navigateTo, expectedRoute);
+      sinon.assert.calledWithExactly(Routing.navigateTo, expectedRoute);
     });
 
     it('should consume link with relative path', () => {
@@ -518,7 +518,7 @@ describe('Routing', () => {
 
       // then
       sinon.assert.calledOnce(Routing.buildFromRelativePath);
-      sinon.assert.calledWith(Routing.navigateTo, expectedRoute);
+      sinon.assert.calledWithExactly(Routing.navigateTo, expectedRoute);
     });
   });
 
