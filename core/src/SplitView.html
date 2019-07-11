@@ -1,21 +1,20 @@
 <svelte:window on:resize="onResize()"/>
 <div class="lui-split-view">
   {#if isCollapsed}
-  <div class="luig-splitter">
-    <a class="lui-collapse-btn" on:click="expand()">
+  <div class="splitViewSeparator isCollapsed">
+    <a class="lui-collapse-btn" on:click="expand(event)">
       <span class="sap-icon--collapse-group sap-icon--s"></span>
     </a>
   </div>
   <h1 class="fd-splitView__title">{splitViewSettings.title}</h1>
   {:else}
-  <div
-    class="luig-splitter lui-is-draggable"
-    on:dragSplitViewBorder="dragged($event)"
-  >
-    <a class="lui-collapse-btn" on:click="collapse()">
+  <div id="splitViewDraggable" on:dragSplitViewBorder="dragged(event)">
+    <div class="splitViewSeparator"></div>
+    <a class="lui-collapse-btn" on:click="collapse(event)">
       <span class="sap-icon--expand-group sap-icon--s"></span>
     </a>
   </div>
+  <div class="splitViewDraggingBackdrop"></div>
   <div class="iframeSplitViewCnt"></div>
   {/if}
 </div>
@@ -55,10 +54,12 @@
       };
     },
     methods: {
-      collapse() {
+      collapse(evt) {
+        evt.stopPropagation();
         SplitViewSvc.collapseSplitView(this.root);
       },
-      expand() {
+      expand(evt) {
+        evt.stopPropagation();
         SplitViewSvc.expandSplitView(this.root);
       },
       onResize() {
@@ -68,31 +69,41 @@
     },
     events: {
       dragSplitViewBorder(dragElem) {
+        let m_pos, top, bottom, splitElement, draggableElement;
         const dragBorderSize = 8;
-        let m_pos;
+
+        const iframeElement = Iframe.getIframeContainer();
+        console.log(
+          'SplitViewSvc.getSplitViewDragger()',
+          SplitViewSvc.getSplitViewDragger()
+        );
 
         const resize = e => {
           const diff = m_pos - e.y;
           m_pos = e.y;
-          const splitElement = SplitViewSvc.getSplitViewContainer();
+
+          if (!splitElement) {
+            splitElement = SplitViewSvc.getSplitViewContainer();
+          }
+          if (!draggableElement) {
+            draggableElement = SplitViewSvc.getSplitViewDragger();
+          }
           const splitStyles = getComputedStyle(splitElement, '');
           const splitHeight = parseInt(splitStyles.height);
           const splitTop = parseInt(splitStyles.top);
-
-          const iframeElement = Iframe.getIframeContainer();
           const iframeBottom = parseInt(getComputedStyle(iframeElement).bottom);
-          const top = splitTop - diff;
-          const bottom = iframeBottom + diff;
 
-          SplitViewSvc.splitViewValues = { top, bottom };
-          splitElement.style.top = `${top}px`;
-          iframeElement.style.bottom = `${bottom}px`;
+          top = splitTop - diff;
+          bottom = iframeBottom + diff;
+          draggableElement.style.top = `${top}px`;
         };
 
         function onMouseDown(e) {
           if (e.offsetY < dragBorderSize) {
             m_pos = e.y;
             document.addEventListener('mousemove', resize, false);
+          } else {
+            console.log('outsite offset', e.offsetY);
           }
         }
         dragElem.addEventListener('mousedown', onMouseDown, false);
@@ -100,6 +111,10 @@
         document.addEventListener(
           'mouseup',
           function() {
+            console.log('mouseup set');
+            SplitViewSvc.splitViewValues = { top, bottom };
+            splitElement.style.top = `${top}px`;
+            iframeElement.style.bottom = `${bottom}px`;
             document.removeEventListener('mousemove', resize, false);
           },
           false
@@ -115,14 +130,8 @@
   };
 </script>
 <style type="text/scss">
-  /* :global(.lui-collapsed) {
-    .lui-collapse-btn.col {
-      display: none;
-    }
-    .lui-collapse-btn.exp {
-      display: block !important;
-    }
-  } */
+  $topNavHeight: 48px;
+  $leftNavWidth: 320px;
   $collapsedSplitviewHeight: 38px;
   .fd-splitView__title {
     font-size: 16px;
@@ -131,42 +140,73 @@
     padding-left: 32px;
     background: #fff;
   }
+
+  #splitViewDraggable {
+    position: fixed;
+    bottom: 0;
+    right: 0;
+    left: $leftNavWidth;
+    top: 60%; /* default, overridden by computed.getIframeSplitViewTop */
+    height: 8px;
+    background: yellow;
+    z-index: 2;
+    cursor: row-resize;
+    &:hover {
+      /* enlarge mouse move target */
+      margin-top: -15px;
+      padding-top: 15px;
+      padding-bottom: 15px;
+
+      .lui-collapse-btn {
+        visibility: visible;
+      }
+    }
+  }
+
+  .splitViewSeparator {
+    border-top: 2px gray solid;
+  }
+
+  .lui-collapse-btn {
+    width: 25px;
+    height: 25px;
+    background: white;
+    position: absolute;
+    left: 50%;
+    z-index: 1;
+    margin-left: -12px;
+    margin-top: -12px;
+    text-align: center;
+    padding: 3px;
+    border: 1px solid gray;
+    border-radius: 5px;
+    cursor: pointer;
+    visibility: hidden;
+  }
+
+  .splitViewDraggingBackdrop {
+    position: fixed;
+    background-color: rgba(255, 255, 255, 0.5);
+    top: $topNavHeight;
+    right: 0;
+    bottom: 0;
+    left: $leftNavWidth;
+    z-index: 1;
+  }
+
   .lui-split-view {
     height: 100%;
-    .luig-splitter {
+
+    .splitViewSeparator.isCollapsed {
       position: absolute;
       width: 100%;
       top: 0;
-      height: 8px;
-      /* margin-top: 4px; // possibly better targeting */
-      border-top: 2px solid gray;
-      background: transparent;
-      z-index: 1;
-      &.lui-is-draggable {
-        cursor: row-resize;
-      }
-      &:hover {
-        .lui-collapse-btn {
-          visibility: visible;
-        }
-      }
-      .lui-collapse-btn {
-        width: 25px;
-        height: 25px;
-        background: white;
-        position: absolute;
-        left: 50%;
-        z-index: 1;
-        margin-left: -12px;
-        margin-top: -12px;
-        text-align: center;
-        padding: 3px;
-        border: 1px solid gray;
-        border-radius: 5px;
-        cursor: pointer;
-        visibility: hidden;
+
+      &:hover .lui-collapse-btn {
+        visibility: visible;
       }
     }
+
     .iframeSplitViewCnt {
       background-color: var(--fd-background-color);
       position: absolute;

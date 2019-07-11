@@ -16,6 +16,9 @@ class SplitViewSvcClass {
   getSplitViewContainer() {
     return document.getElementById('splitViewContainer');
   }
+  getSplitViewDragger() {
+    return document.getElementById('splitViewDragger');
+  }
 
   getDefaultData() {
     return {
@@ -132,6 +135,7 @@ class SplitViewSvcClass {
         isDisplayed: true,
         isCollapsed: false
       });
+
       SplitViewSvc.getSplitViewContainer().style.top =
         this.storedSplitViewValues.top + 'px';
       Iframe.getIframeContainer().style.bottom =
