@@ -94,7 +94,7 @@ class Helpers {
         console.error('There is no trusted domain configured.');
       }
     } else {
-      window.parent.postMessage(msg, this.origin || '*');
+      window.parent.postMessage(msg, this.origin); //oder window.parent.postMessage(msg, this.origin || '*')
     }
   }
 }

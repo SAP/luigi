@@ -40,8 +40,8 @@ class LuigiClient {
    */
   linkManager() {
     return new linkManager({
-      currentContext: lifecycleManager.currentContext,
-      origin: helpers.getTrustedOrigin()
+      currentContext: lifecycleManager.currentContext
+      //origin: helpers.getTrustedOrigin()
     });
   }
   /**
