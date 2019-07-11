@@ -61,10 +61,10 @@ import {
 
 For security reasons, follow the listed guidelines when you developing a microfrontend:
 
-- Mikrofrontend should be only accessible through HTTPS
+- Mikrofrontend should be only accessible through HTTPS.
 - Add Content Security Policies (CSPs).
 - Make the Access-Control-Allow-Origin HTTP header as restrictive as possible.
-- Luigi uses the following [sandbox rules for iframes](https://github.com/SAP/luigi/blob/af1deebb392dcec6490f72576e32eb5853a894bc/core/src/utilities/helpers/iframe-helpers.js#L140)
+- Luigi uses the following [sandbox rules for iframes](https://github.com/SAP/luigi/blob/af1deebb392dcec6490f72576e32eb5853a894bc/core/src/utilities/helpers/iframe-helpers.js#L140).
 
 
 ### Code formatting for contributors
