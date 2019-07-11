@@ -8,13 +8,13 @@
   </div>
   <h1 class="fd-splitView__title">{splitViewSettings.title}</h1>
   {:else}
-  <div id="splitViewDraggable" on:dragSplitViewBorder="dragged(event)">
+  <div id="splitViewDragger" on:dragSplitViewBorder="dragged(event)">
     <div class="splitViewSeparator"></div>
     <a class="lui-collapse-btn" on:click="collapse(event)">
       <span class="sap-icon--expand-group sap-icon--s"></span>
     </a>
   </div>
-  <div class="splitViewDraggingBackdrop"></div>
+  <div id="splitViewDraggerBackdrop"></div>
   <div class="iframeSplitViewCnt"></div>
   {/if}
 </div>
@@ -28,7 +28,7 @@
     RoutingHelpers
   } from './utilities/helpers';
 
-  let rightContentHeight;
+  let rightContentHeight, thresholdTop, thresholdBottom;
 
   const getNode = async (component, path) => {
     if (component.get().isDataPrepared) {
@@ -61,49 +61,49 @@
       expand(evt) {
         evt.stopPropagation();
         SplitViewSvc.expandSplitView(this.root);
+        SplitViewSvc.getSplitViewDraggerBackdrop().style.display = 'none';
       },
       onResize() {
-        rightContentHeight =
-          window.innerHeight - LuigiElements.getShellbar().clientHeight;
+        const shellbarHeight = LuigiElements.getShellbar().clientHeight;
+        rightContentHeight = window.innerHeight - shellbarHeight;
+        thresholdBottom = 30;
+        thresholdTop = shellbarHeight + 30;
       }
     },
     events: {
       dragSplitViewBorder(dragElem) {
         let m_pos, top, bottom, splitElement, draggableElement;
-        const dragBorderSize = 8;
+        const dragBorderSize = 30; // #splitViewDragger height
 
         const iframeElement = Iframe.getIframeContainer();
-        console.log(
-          'SplitViewSvc.getSplitViewDragger()',
-          SplitViewSvc.getSplitViewDragger()
-        );
 
         const resize = e => {
           const diff = m_pos - e.y;
           m_pos = e.y;
 
-          if (!splitElement) {
-            splitElement = SplitViewSvc.getSplitViewContainer();
-          }
           if (!draggableElement) {
             draggableElement = SplitViewSvc.getSplitViewDragger();
           }
-          const splitStyles = getComputedStyle(splitElement, '');
-          const splitHeight = parseInt(splitStyles.height);
-          const splitTop = parseInt(splitStyles.top);
-          const iframeBottom = parseInt(getComputedStyle(iframeElement).bottom);
+          const dragTop = parseInt(getComputedStyle(draggableElement, '').top);
+          top = dragTop - diff;
+          bottom = window.innerHeight - top;
 
-          top = splitTop - diff;
-          bottom = iframeBottom + diff;
+          if (top <= thresholdTop) {
+            top = thresholdTop;
+            bottom = window.innerHeight - thresholdTop;
+          } else if (bottom <= thresholdBottom) {
+            top = window.innerHeight - thresholdBottom;
+            bottom = thresholdBottom;
+          }
+
           draggableElement.style.top = `${top}px`;
         };
 
         function onMouseDown(e) {
           if (e.offsetY < dragBorderSize) {
             m_pos = e.y;
+            SplitViewSvc.getSplitViewDraggerBackdrop().style.display = 'block';
             document.addEventListener('mousemove', resize, false);
-          } else {
-            console.log('outsite offset', e.offsetY);
           }
         }
         dragElem.addEventListener('mousedown', onMouseDown, false);
@@ -111,10 +111,17 @@
         document.addEventListener(
           'mouseup',
           function() {
-            console.log('mouseup set');
+            if (!splitElement) {
+              splitElement = SplitViewSvc.getSplitViewContainer();
+            }
+            const draggerBackdrop = SplitViewSvc.getSplitViewDraggerBackdrop();
+            if (draggerBackdrop) {
+              draggerBackdrop.style.display = 'none';
+            }
+
             SplitViewSvc.splitViewValues = { top, bottom };
             splitElement.style.top = `${top}px`;
-            iframeElement.style.bottom = `${bottom}px`;
+            iframeElement.style.paddingBottom = `${bottom}px`;
             document.removeEventListener('mousemove', resize, false);
           },
           false
@@ -141,14 +148,13 @@
     background: #fff;
   }
 
-  #splitViewDraggable {
+  #splitViewDragger {
     position: fixed;
     bottom: 0;
     right: 0;
     left: $leftNavWidth;
     top: 60%; /* default, overridden by computed.getIframeSplitViewTop */
     height: 8px;
-    background: yellow;
     z-index: 2;
     cursor: row-resize;
     &:hover {
@@ -184,14 +190,15 @@
     visibility: hidden;
   }
 
-  .splitViewDraggingBackdrop {
+  #splitViewDraggerBackdrop {
     position: fixed;
-    background-color: rgba(255, 255, 255, 0.5);
+    background-color: rgba(255, 255, 255, 0.7);
     top: $topNavHeight;
     right: 0;
     bottom: 0;
     left: $leftNavWidth;
     z-index: 1;
+    display: none;
   }
 
   .lui-split-view {
@@ -201,6 +208,7 @@
       position: absolute;
       width: 100%;
       top: 0;
+      margin-bottom: 4px;
 
       &:hover .lui-collapse-btn {
         visibility: visible;

@@ -697,9 +697,7 @@
       },
       getUnsavedChangesModalPromise(source) {
         return new Promise(resolve => {
-          console.log('check unsaved');
           if (this.shouldShowUnsavedChangesModal(source)) {
-            console.log('show unsaved');
             this.showUnsavedChangesModal().then(
               () => {
                 if (
@@ -954,10 +952,10 @@
   /* splitview start */
   $collapsedSplitviewHeight: 38px;
   .lui-split-view.iframeContainer {
-    bottom: 40%; /* default, overriden by computed.getIframeContainerBottom */
+    padding-bottom: 40%; /* default, overriden by computed.getIframeContainerBottom */
   }
   .lui-collapsed.iframeContainer {
-    bottom: $collapsedSplitviewHeight;
+    padding-bottom: $collapsedSplitviewHeight;
   }
 
   .splitViewContainer {

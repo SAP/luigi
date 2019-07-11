@@ -19,6 +19,9 @@ class SplitViewSvcClass {
   getSplitViewDragger() {
     return document.getElementById('splitViewDragger');
   }
+  getSplitViewDraggerBackdrop() {
+    return document.getElementById('splitViewDraggerBackdrop');
+  }
 
   getDefaultData() {
     return {
@@ -136,10 +139,15 @@ class SplitViewSvcClass {
         isCollapsed: false
       });
 
-      SplitViewSvc.getSplitViewContainer().style.top =
-        this.storedSplitViewValues.top + 'px';
-      Iframe.getIframeContainer().style.bottom =
-        this.storedSplitViewValues.bottom + 'px';
+      this.getSplitViewContainer().style.top = `${
+        this.storedSplitViewValues.top
+      }px`;
+      Iframe.getIframeContainer().style.paddingBottom = `${
+        this.storedSplitViewValues.bottom
+      }px`;
+      this.getSplitViewDragger().style.top = `${
+        this.storedSplitViewValues.top
+      }px`;
       this.storedSplitViewValues = undefined;
     }
   }
@@ -155,7 +163,7 @@ class SplitViewSvcClass {
           });
           this.storedSplitViewValues = Object.assign({}, this.splitViewValues);
           SplitViewSvc.getSplitViewContainer().style.top = '';
-          Iframe.getIframeContainer().style.bottom = '';
+          Iframe.getIframeContainer().style.paddingBottom = '';
         });
     }
   }
