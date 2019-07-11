@@ -269,7 +269,6 @@ describe('Navigation', () => {
     });
 
     it('Open navigation node in a modal', () => {
-      let iframeBody;
       // projects page
       cy.get('.fd-shellbar')
         .contains('Projects')
@@ -287,17 +286,11 @@ describe('Navigation', () => {
         .contains('Miscellaneous2')
         .click();
 
-      cy.wrap(iframeBody)
-        .get('[data-e2e=modal-mf]')
-        .should('be.visible');
+      cy.get('[data-e2e=modal-mf]').should('be.visible');
 
-      cy.wrap(iframeBody)
-        .get('[data-e2e=modal-mf] [aria-label=close]')
-        .click();
+      cy.get('[data-e2e=modal-mf] [aria-label=close]').click();
 
-      cy.wrap(iframeBody)
-        .get('[data-e2e=modal-mf]')
-        .should('not.be.visible');
+      cy.get('[data-e2e=modal-mf]').should('not.be.visible');
     });
   });
 });
