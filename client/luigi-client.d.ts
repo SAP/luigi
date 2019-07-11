@@ -260,7 +260,7 @@ export function getEventData(): Context;
 export type getEventData = () => Context;
 
 /**
- * Returns the context object. It invokes the getEventData() function.
+ * Returns the context object. It is an alias function for getEventData().
  * @returns {Object} current context data.
  * @memberof Lifecycle
  */

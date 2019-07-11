@@ -197,7 +197,7 @@ class LifecycleManager extends LuigiClientBase {
     return this.currentContext.context;
   }
   /**
-   * Returns the context object. It invokes the getEventData() function.
+   * Returns the context object. It is an alias function for getEventData().
    * @returns {Object} current context data
    * @memberof Lifecycle
    */
