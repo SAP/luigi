@@ -57,14 +57,15 @@ import {
 
 ## Development
 
-### Development guidelines for microfrontend developers
+### Development guidelines for micro frontend developers
 
-For security reasons, follow the listed guidelines when you developing a microfrontend:
+For security reasons, follow these guidelines when developing a micro frontend:
 
-- Mikrofrontend should be only accessible through HTTPS.
+- Make the micro frontend accessible only through HTTPS.
 - Add Content Security Policies (CSPs).
 - Make the Access-Control-Allow-Origin HTTP header as restrictive as possible.
-- Luigi uses the following [sandbox rules for iframes](https://github.com/SAP/luigi/blob/af1deebb392dcec6490f72576e32eb5853a894bc/core/src/utilities/helpers/iframe-helpers.js#L140).
+- Follow these [sandbox rules for iframes](https://github.com/SAP/luigi/blob/af1deebb392dcec6490f72576e32eb5853a894bc/core/src/utilities/helpers/iframe-helpers.js#L140).
+
 
 
 ### Code formatting for contributors
