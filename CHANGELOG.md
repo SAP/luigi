@@ -24,6 +24,15 @@ The lerna-changelog tool detects changes based on PR labels and maps them to sec
   }
 -->
 
+## [v0.5.2] (2019-07-12)
+
+#### :rocket: Added
+* [#639](https://github.com/SAP/luigi/pull/639) Alias function for getEventData ([@JohannesDoberer](https://github.com/JohannesDoberer))
+
+#### :bug: Fixed
+* [#653](https://github.com/SAP/luigi/pull/653) Context switcher does not work when parentNodePath is root ([@pekura](https://github.com/pekura))
+* [#647](https://github.com/SAP/luigi/pull/647) Lodash vulnerability fix ([@JohannesDoberer](https://github.com/JohannesDoberer))
+
 ## [v0.5.1] (2019-07-09)
 
 #### :bug: Fixed
