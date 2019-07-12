@@ -60,6 +60,11 @@ class Navigation {
       viewGroup: 'tets'
     },
     {
+      pathSegment: 'tets',
+      label: 'Tets',
+      viewUrl: 'http://localhost:8080'
+    },
+    {
       category: { label: 'Misc', icon: 'lightbulb' },
       label: 'Open Google in this tab',
       externalLink: {

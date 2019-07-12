@@ -91,10 +91,10 @@ class Helpers {
       if (turstedDomain) {
         window.parent.postMessage(msg, turstedDomain);
       } else {
-        console.error('There is no trusted domain configured.');
+        console.warn('There is no trusted domain configured.');
       }
     } else {
-      window.parent.postMessage(msg, this.origin); //oder window.parent.postMessage(msg, this.origin || '*')
+      window.parent.postMessage(msg, this.origin); //or window.parent.postMessage(msg, this.origin || '*')
     }
   }
 }
