@@ -64,7 +64,7 @@ For security reasons, follow these guidelines when developing a micro frontend:
 - Make the micro frontend accessible only through HTTPS.
 - Add Content Security Policies (CSPs).
 - Make the Access-Control-Allow-Origin HTTP header as restrictive as possible.
-- Follow these [sandbox rules for iframes](https://github.com/SAP/luigi/blob/af1deebb392dcec6490f72576e32eb5853a894bc/core/src/utilities/helpers/iframe-helpers.js#L140).
+>**NOTE**: Luigi follows these [sandbox rules for iframes](https://github.com/SAP/luigi/blob/af1deebb392dcec6490f72576e32eb5853a894bc/core/src/utilities/helpers/iframe-helpers.js#L140).
 
 
 
