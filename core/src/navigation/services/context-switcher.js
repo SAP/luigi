@@ -33,12 +33,12 @@ export const ContextSwitcherHelpers = {
     const parentNodePathNormalized = GenericHelpers.normalizePath(
       parentNodePath
     );
-
     return Boolean(
       parentNodePath &&
         currentPathNormalized &&
         currentPathNormalized.startsWith(parentNodePathNormalized) &&
-        !currentPathNormalized.endsWith(parentNodePathNormalized)
+        (parentNodePath === '/' ||
+          !currentPathNormalized.endsWith(parentNodePathNormalized))
     );
   },
 
