@@ -34,9 +34,6 @@ export const ContextSwitcherHelpers = {
       parentNodePath
     );
 
-    console.log('p ', parentNodePathNormalized);
-    console.log('c ', currentPathNormalized);
-
     return Boolean(
       parentNodePath &&
         currentPathNormalized &&
