@@ -52,7 +52,7 @@ Returns **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/G
 
 ### getContext
 
-Returns the context object. It is an alias function for getEventData().
+Returns the context object. It is an alias function for `getEventData()`.
 
 Returns **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** current context data
 
