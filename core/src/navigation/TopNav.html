@@ -150,23 +150,20 @@
                       class="fd-menu__item {node === selectedNode ? 'is-selected' : ''}"
                       on:click="handleClick(node)"
                     >
-                      {#if node.icon} {#if hasOpenUIicon(node)}
                       <span
-                        class="fd-top-nav__icon sap-icon--{node.icon} sap-icon--m"
-                      ></span>
-                      {:else}
-                      <img
-                        class="fd-top-nav__icon nav-icon"
-                        src="{node.icon}"
+                        class="fd-top-nav__icon {node.icon && hasOpenUIicon(node) ? 'sap-icon--' + node.icon + ' sap-icon--m' : '' }"
                       >
-                      {/if} {/if}
+                        {#if !hasOpenUIicon(node)}
+                        <img src="{node.icon}">
+                        {/if}
+                        <BadgeCounter {node}/>
+                      </span>
                       <span>{node.label}</span>
                       {#if node.externalLink && node.externalLink.url}
                       <span
                         class="sap-icon--action sap-icon--s"
                       ></span>
                       {/if}
-                      <BadgeCounter {node}/>
                     </a>
                   </li>
                   {:else}
@@ -177,18 +174,15 @@
                       on:click="openMobileTopNavDropDown(node)"
                       data-cy="mobile-topnav-dropdown-category"
                     >
-                      {#if node.icon} {#if hasOpenUIicon(node)}
                       <span
-                        class="fd-top-nav__icon sap-icon--{node.icon} sap-icon--m"
-                      ></span>
-                      {:else}
-                      <img
-                        class="fd-top-nav__icon nav-icon"
-                        src="{node.icon}"
+                        class="fd-top-nav__icon {node.icon && hasOpenUIicon(node) ? 'sap-icon--' + node.icon + ' sap-icon--m' : '' }"
                       >
-                      {/if} {/if}
+                        {#if !hasOpenUIicon(node)}
+                        <img src="{node.icon}">
+                        {/if}
+                        <BadgeCounter {node}/>
+                      </span>
                       <span>{node.label}</span>
-                      <BadgeCounter {node}/>
                     </a>
                   </li>
                   <!-- {:else}
@@ -464,6 +458,13 @@
 
   .nav-icon {
     height: 100%;
+  }
+
+  .fd-top-nav__icon {
+    img {
+      width: 16px;
+      vertical-align: top;
+    }
   }
 
   .fd-popover {
