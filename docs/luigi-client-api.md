@@ -50,6 +50,12 @@ Returns the context object. Typically it is not required as the [addContextUpdat
 
 Returns **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** current context data
 
+### getContext
+
+Returns the context object. It is an alias function for getEventData().
+
+Returns **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** current context data
+
 ### getNodeParams
 
 Returns the node parameters of the active URL.

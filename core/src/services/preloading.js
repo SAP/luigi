@@ -13,7 +13,7 @@ class ViewGroupPreloadingClass {
     const preloadViewGroupsSetting = LuigiConfig.getConfigValue(
       'navigation.preloadViewGroups'
     );
-    if ([false, 'false'].includes(preloadViewGroupsSetting)) {
+    if (preloadViewGroupsSetting === false) {
       return;
     }
     const vgSettings = Iframe.getAllViewGroupSettings();
