@@ -63,39 +63,18 @@ class Helpers {
     return typeof item === 'function';
   }
 
-  getTrustedOrigin() {
+  getLuigiCoreDomain() {
     return this.origin;
   }
 
-  setTrustedOrigin(origin) {
+  setLuigiCoreDomain(origin) {
     if (origin) {
       this.origin = origin;
     }
   }
 
-  getTrustedDomainList() {
-    return this.trustedDomainList;
-  }
-
-  setTrustedDomainList(arr) {
-    if (arr) {
-      this.trustedDomainList = arr;
-    }
-  }
-
-  sendToTrustedDomain(msg) {
-    if (this.getTrustedDomainList().length > 0) {
-      let turstedDomain = this.getTrustedDomainList().find(element => {
-        return element === this.getTrustedOrigin();
-      });
-      if (turstedDomain) {
-        window.parent.postMessage(msg, turstedDomain);
-      } else {
-        console.warn('There is no trusted domain configured.');
-      }
-    } else {
-      window.parent.postMessage(msg, this.origin); //or window.parent.postMessage(msg, this.origin || '*')
-    }
+  sendPostmessageToLuigiCore(msg) {
+    window.parent.postMessage(msg, this.origin);
   }
 }
 

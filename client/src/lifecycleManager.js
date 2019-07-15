@@ -32,13 +32,15 @@ class LifecycleManager extends LuigiClientBase {
      * with a given payload.
      * @private
      */
-    const _callAllFns = (objWithFns, payload) => {
+    const _callAllFns = (objWithFns, ...names) => {
+      const payload = names[0];
+      const origin = names[1];
       for (let id in objWithFns) {
         if (
           objWithFns.hasOwnProperty(id) &&
           helpers.isFunction(objWithFns[id])
         ) {
-          objWithFns[id](payload);
+          objWithFns[id](payload, origin);
         }
       }
     };
@@ -78,11 +80,13 @@ class LifecycleManager extends LuigiClientBase {
       };
 
       helpers.addEventListener('luigi.init', e => {
-        helpers.setTrustedOrigin(e.origin);
         setContext(e.data);
         setAuthData(e.data.authData);
+        helpers.setLuigiCoreDomain(e.origin);
         this.luigiInitialized = true;
-        _callAllFns(this._onInitFns, this.currentContext.context);
+        _callAllFns(this._onInitFns, this.currentContext.context, {
+          origin: e.origin
+        });
       });
 
       helpers.addEventListener('luigi.auth.tokenIssued', e => {
@@ -94,7 +98,6 @@ class LifecycleManager extends LuigiClientBase {
         if (!this.currentContext.internal.isNavigateBack) {
           window.location.replace(e.data.viewUrl);
         }
-
         // execute the context change listener if set by the microfrontend
         _callAllFns(this._onContextUpdatedFns, this.currentContext.context);
 
@@ -138,7 +141,7 @@ class LifecycleManager extends LuigiClientBase {
     var id = helpers.getRandomId();
     this._onInitFns[id] = initFn;
     if (this.luigiInitialized && helpers.isFunction(initFn)) {
-      initFn(this.currentContext.context);
+      initFn(this.currentContext.context, helpers.getLuigiCoreDomain());
     }
     return id;
   }

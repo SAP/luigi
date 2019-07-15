@@ -59,7 +59,7 @@ export class linkManager extends LuigiClientBase {
       })
     };
 
-    helpers.sendToTrustedDomain(navigationOpenMsg);
+    helpers.sendPostMessageToLuigiCore(navigationOpenMsg);
   }
 
   /**
@@ -190,7 +190,7 @@ export class linkManager extends LuigiClientBase {
         relative: path[0] !== '/'
       }
     };
-    helpers.sendToTrustedDomain(pathExistsMsg);
+    helpers.sendPostMessageToLuigiCore(pathExistsMsg);
     return pathExistsPromises[currentId];
   }
 
@@ -215,7 +215,7 @@ export class linkManager extends LuigiClientBase {
    * LuigiClient.linkManager().goBack(true);
    */
   goBack(goBackValue) {
-    helpers.sendToTrustedDomain({
+    helpers.sendPostMessageToLuigiCore({
       msg: 'luigi.navigation.back',
       goBackContext: goBackValue && JSON.stringify(goBackValue)
     });

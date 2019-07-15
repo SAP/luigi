@@ -16,7 +16,7 @@ class UxManager extends LuigiClientBase {
    * @memberof uxManager
    */
   showLoadingIndicator() {
-    helpers.sendToTrustedDomain({ msg: 'luigi.show-loading-indicator' });
+    helpers.sendPostMessageToLuigiCore({ msg: 'luigi.show-loading-indicator' });
   }
 
   /**
@@ -24,21 +24,21 @@ class UxManager extends LuigiClientBase {
    * @memberof uxManager
    */
   hideLoadingIndicator() {
-    helpers.sendToTrustedDomain({ msg: 'luigi.hide-loading-indicator' });
+    helpers.sendPostMessageToLuigiCore({ msg: 'luigi.hide-loading-indicator' });
   }
   /**
    * Adds a backdrop to block the top and side navigation. It is based on the Fundamental UI Modal, which you can use in your micro front-end to achieve the same behavior.
    * @memberof uxManager
    */
   addBackdrop() {
-    helpers.sendToTrustedDomain({ msg: 'luigi.add-backdrop' });
+    helpers.sendPostMessageToLuigiCore({ msg: 'luigi.add-backdrop' });
   }
   /**
    * Removes the backdrop.
    * @memberof uxManager
    */
   removeBackdrop() {
-    helpers.sendToTrustedDomain({ msg: 'luigi.remove-backdrop' });
+    helpers.sendPostMessageToLuigiCore({ msg: 'luigi.remove-backdrop' });
   }
   /**
    * This method informs the main application that there are unsaved changes in the current view in the iframe. For example, that can be a view with form fields which were edited but not submitted.
@@ -46,7 +46,7 @@ class UxManager extends LuigiClientBase {
    * @memberof uxManager
    */
   setDirtyStatus(isDirty) {
-    helpers.sendToTrustedDomain({
+    helpers.sendPostMessageToLuigiCore({
       msg: 'luigi.set-page-dirty',
       dirty: isDirty
     });
@@ -69,7 +69,7 @@ class UxManager extends LuigiClientBase {
         helpers.removeEventListener(listenerId);
       }
     );
-    helpers.sendToTrustedDomain({
+    helpers.sendPostMessageToLuigiCore({
       msg: 'luigi.ux.confirmationModal.show',
       data: { settings }
     });
@@ -145,7 +145,7 @@ class UxManager extends LuigiClientBase {
       );
       settings.closeAfter = undefined;
     }
-    helpers.sendToTrustedDomain({
+    helpers.sendPostMessageToLuigiCore({
       msg: 'luigi.ux.alert.show',
       data: { settings }
     });
