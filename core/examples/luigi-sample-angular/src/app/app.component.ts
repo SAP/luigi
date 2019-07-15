@@ -19,11 +19,17 @@ export class AppComponent implements OnInit {
   constructor(private luigiService: LuigiContextService) {}
 
   ngOnInit() {
-    addInitListener(context => this.onLuigiContext('init', context));
+    addInitListener((context, origin) =>
+      this.onLuigiContext('init', context, origin)
+    );
     addContextUpdateListener(context => this.onLuigiContext('update', context));
   }
 
-  private onLuigiContext(contextType: ILuigiContextTypes, context: any): void {
+  private onLuigiContext(
+    contextType: ILuigiContextTypes,
+    context: any,
+    origin: any
+  ): void {
     this.luigiService.setContext({ contextType, context });
   }
 }

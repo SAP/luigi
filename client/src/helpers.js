@@ -73,7 +73,7 @@ class Helpers {
     }
   }
 
-  sendPostmessageToLuigiCore(msg) {
+  sendPostMessageToLuigiCore(msg) {
     window.parent.postMessage(msg, this.origin);
   }
 }
