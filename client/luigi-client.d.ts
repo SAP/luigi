@@ -21,6 +21,23 @@ export declare interface ModalSettings {
   size?: 'l' | 'm' | 's';
 }
 
+export declare interface SplitViewSettings {
+  title?: string;
+  size?: number;
+  collapsed?: boolean;
+}
+
+export declare interface SplitViewInstance {
+  collapse: () => void;
+  expand: () => void;
+  setSize: (value: number) => void;
+  on: (key: string, callback: () => void) => string;
+  exists: () => boolean;
+  size: () => number;
+  isCollapsed: () => boolean;
+  isExpanded: () => boolean;
+}
+
 export declare interface Context {
   authData?: AuthData;
   context?: { parentNavigationContext?: string[] };
@@ -207,6 +224,22 @@ export declare interface LinkManager {
    * LuigiClient.linkManager().openAsModal('projects/pr1/users', {title:'Users', size:'m'});
    */
   openAsModal: (nodepath: string, modalSettings?: ModalSettings) => void;
+
+  /**
+   * Opens a view in a splitted view. You can specify the split view's title and size. If you don't specify the title, it is the node label. If there is no node label, the title remains empty.  The default size of the split view is `l`, which means 80%. You can also use `m` (60%) and `s` (40%) to set the split view size. Optionally, use it in combination with any of the navigation functions.
+   * @memberof linkManager
+   * @param {string} path navigation path
+   * @param {Object} splitViewSettings opens a view in a split view. Use these settings to configure the split view's behaviour
+   * @param {string} splitViewSettings.title split view title. By default, it is the node label. If there is no label, it is left empty
+   * @param {number} [splitViewSettings.size=40] size of the split view in percent
+   * @param {boolean} [splitViewSettings.collapsed=false] create split view but leave it closed initially
+   * @example
+   * LuigiClient.linkManager().openAsSplitView('projects/pr1/logs', {title: 'Logs', size: 40});
+   */
+  openAsSplitView: (
+    nodepath: string,
+    splitViewSettings?: SplitViewSettings
+  ) => SplitViewInstance;
 }
 
 /**

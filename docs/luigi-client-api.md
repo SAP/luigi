@@ -91,7 +91,7 @@ Navigates to the given path in the application hosted by Luigi. It contains eith
     -   `modalSettings.size` **(`"l"` \| `"m"` \| `"s"`)** size of the modal (optional, default `"l"`)
 -   `splitViewSettings` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** opens a view in a split view. Use these settings to configure the split view's behaviour
     -   `splitViewSettings.title` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** split view title. By default, it is the node label. If there is no label, it is left empty
-    -   `splitViewSettings.height` **[number](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number)** height of the split view in percentage (optional, default `40`)
+    -   `splitViewSettings.size` **[number](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number)** size of the split view in percent (optional, default `40`)
     -   `splitViewSettings.collapsed` **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)** create split view but leave it closed initially (optional, default `false`)
 
 #### Examples
@@ -101,6 +101,8 @@ LuigiClient.linkManager().navigate('/overview')
 LuigiClient.linkManager().navigate('users/groups/stakeholders')
 LuigiClient.linkManager().navigate('/settings', null, true) // preserve view
 ```
+
+Returns **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** handle that allows functions to control the splitView: collapse, expand, setSize, onCollapse, onExpand, onResize, exists, getSize, isCollapsed
 
 ### openAsModal
 
@@ -128,13 +130,13 @@ Opens a view in a splitted view. You can specify the split view's title and size
 -   `path` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** navigation path
 -   `splitViewSettings` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** opens a view in a split view. Use these settings to configure the split view's behaviour
     -   `splitViewSettings.title` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** split view title. By default, it is the node label. If there is no label, it is left empty
-    -   `splitViewSettings.height` **[number](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number)** height of the split view in percentage (optional, default `40`)
+    -   `splitViewSettings.size` **[number](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number)** size of the split view in percent (optional, default `40`)
     -   `splitViewSettings.collapsed` **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)** create split view but leave it closed initially (optional, default `false`)
 
 #### Examples
 
 ```javascript
-LuigiClient.linkManager().openAsSplitView('projects/pr1/logs', {title: 'Logs', height: 40});
+LuigiClient.linkManager().openAsSplitView('projects/pr1/logs', {title: 'Logs', size: 40});
 ```
 
 ### fromContext
@@ -226,6 +228,16 @@ Discards the active view and navigates back to the last visited view. Works with
 LuigiClient.linkManager().goBack({ foo: 'bar' });
 LuigiClient.linkManager().goBack(true);
 ```
+
+## on
+
+Registers a listener for split view events
+
+### Parameters
+
+-   `key`  {enum} a set of predefined events: expand, collaps, resize, close
+    \*
+-   `callback`  
 
 ## uxManager
 

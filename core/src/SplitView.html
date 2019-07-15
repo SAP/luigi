@@ -20,121 +20,148 @@
 </div>
 
 <script>
-  import { LuigiElements } from './core-api';
-  import { Iframe, SplitViewSvc } from './services';
-  import {
-    GenericHelpers,
-    IframeHelpers,
-    RoutingHelpers
-  } from './utilities/helpers';
+    import { LuigiElements } from './core-api';
+    import { Iframe, SplitViewSvc } from './services';
+    import {
+      GenericHelpers,
+      IframeHelpers,
+      RoutingHelpers
+    } from './utilities/helpers';
 
-  let rightContentHeight, thresholdTop, thresholdBottom;
+    let rightContentHeight, thresholdTop, thresholdBottom;
 
-  const getNode = async (component, path) => {
-    if (component.get().isDataPrepared) {
-      if (!component.get().isCollapsed) {
-        SplitViewSvc.createAndSetSplitView(component);
-      }
-    } else {
-      await SplitViewSvc.prepareSplitViewData(component, path);
-    }
-  };
-
-  export default {
-    oncreate() {
-      this.onResize();
-    },
-    onupdate({ changed, current, previous }) {
-      getNode(this, this.get().nodepath);
-    },
-    data() {
-      return {
-        isDataPrepared: false,
-        splitViewSettings: {}
-      };
-    },
-    methods: {
-      collapse(evt) {
-        evt.stopPropagation();
-        SplitViewSvc.collapseSplitView(this.root);
-      },
-      expand(evt) {
-        evt.stopPropagation();
-        SplitViewSvc.expandSplitView(this.root);
-        SplitViewSvc.getSplitViewDraggerBackdrop().style.display = 'none';
-      },
-      onResize() {
-        const shellbarHeight = LuigiElements.getShellbar().clientHeight;
-        rightContentHeight = window.innerHeight - shellbarHeight;
-        thresholdBottom = 30;
-        thresholdTop = shellbarHeight + 30;
-      }
-    },
-    events: {
-      dragSplitViewBorder(dragElem) {
-        let m_pos, top, bottom, splitElement, draggableElement;
-        const dragBorderSize = 30; // #splitViewDragger height
-
-        const iframeElement = Iframe.getIframeContainer();
-
-        const resize = e => {
-          const diff = m_pos - e.y;
-          m_pos = e.y;
-
-          if (!draggableElement) {
-            draggableElement = SplitViewSvc.getSplitViewDragger();
-          }
-          const dragTop = parseInt(getComputedStyle(draggableElement, '').top);
-          top = dragTop - diff;
-          bottom = window.innerHeight - top;
-
-          if (top <= thresholdTop) {
-            top = thresholdTop;
-            bottom = window.innerHeight - thresholdTop;
-          } else if (bottom <= thresholdBottom) {
-            top = window.innerHeight - thresholdBottom;
-            bottom = thresholdBottom;
-          }
-
-          draggableElement.style.top = `${top}px`;
-        };
-
-        function onMouseDown(e) {
-          if (e.offsetY < dragBorderSize) {
-            m_pos = e.y;
-            SplitViewSvc.getSplitViewDraggerBackdrop().style.display = 'block';
-            document.addEventListener('mousemove', resize, false);
-          }
+    const getNode = async (component, path) => {
+      if (component.get().isDataPrepared) {
+        if (!component.get().isCollapsed) {
+          SplitViewSvc.createAndSetSplitView(component);
         }
-        dragElem.addEventListener('mousedown', onMouseDown, false);
-
-        document.addEventListener(
-          'mouseup',
-          function() {
-            if (!splitElement) {
-              splitElement = SplitViewSvc.getSplitViewContainer();
-            }
-            const draggerBackdrop = SplitViewSvc.getSplitViewDraggerBackdrop();
-            if (draggerBackdrop) {
-              draggerBackdrop.style.display = 'none';
-            }
-
-            SplitViewSvc.splitViewValues = { top, bottom };
-            splitElement.style.top = `${top}px`;
-            iframeElement.style.paddingBottom = `${bottom}px`;
-            document.removeEventListener('mousemove', resize, false);
-          },
-          false
-        );
-
-        return {
-          destroy() {
-            dragElem.removeEventListener('mousedown', onMouseDown, false);
-          }
-        };
+      } else {
+        await SplitViewSvc.prepareSplitViewData(component, path);
       }
-    }
+    };
+
+    const registerEventHandlers = async e => {
+      const iframe = IframeHelpers.getValidMessageSource(e, this.root);
+      if (!iframe) return;
+
+      // actions, like collapse, expand, setSize as well as register
+      // event handlers: onCollapse, onExpand, onResize
+      // status info like exists, getSize, isCollapsed
+      if ('luigi.navigation.splitview.collapse' === e.data.msg) {
+        console.log(e.data.msg);
+        this.collapse();
+      }
+      if ('luigi.navigation.splitview.expand' === e.data.msg) {
+        console.log(e.data.msg);
+        this.expand();
+      }
+      if ('luigi.navigation.splitview.set-size' === e.data.msg) {
+        console.log(e.data.msg, e.data);
+
+      }
+    });
   };
+
+    export default {
+      oncreate() {
+        this.onResize();
+        this.registerEventHandlers();
+      },
+      onupdate({ changed, current, previous }) {
+        getNode(this, this.get().nodepath);
+      },
+      data() {
+        return {
+          isDataPrepared: false,
+          splitViewSettings: {}
+        };
+      },
+      methods: {
+        collapse(evt) {
+          evt.stopPropagation();
+          SplitViewSvc.collapseSplitView(this.root);
+        },
+        expand(evt) {
+          evt.stopPropagation();
+          SplitViewSvc.expandSplitView(this.root);
+          SplitViewSvc.getSplitViewDraggerBackdrop().style.display = 'none';
+        },
+        onResize() {
+          const shellbarHeight = LuigiElements.getShellbar().clientHeight;
+          rightContentHeight = window.innerHeight - shellbarHeight;
+          thresholdBottom = 30;
+          thresholdTop = shellbarHeight + 30;
+        },
+        registerEventHandlers() {
+          window.addEventListener('message', registerEventHandlers);
+        }
+      },
+      events: {
+        dragSplitViewBorder(dragElem) {
+          let m_pos, top, bottom, splitElement, draggableElement;
+          const dragBorderSize = 30; // #splitViewDragger height
+
+          const iframeElement = Iframe.getIframeContainer();
+
+          const resize = e => {
+            const diff = m_pos - e.y;
+            m_pos = e.y;
+
+            if (!draggableElement) {
+              draggableElement = SplitViewSvc.getSplitViewDragger();
+            }
+            const dragTop = parseInt(getComputedStyle(draggableElement, '').top);
+            top = dragTop - diff;
+            bottom = window.innerHeight - top;
+
+            if (top <= thresholdTop) {
+              top = thresholdTop;
+              bottom = window.innerHeight - thresholdTop;
+            } else if (bottom <= thresholdBottom) {
+              top = window.innerHeight - thresholdBottom;
+              bottom = thresholdBottom;
+            }
+
+            draggableElement.style.top = `${top}px`;
+          };
+
+          function onMouseDown(e) {
+            if (e.offsetY < dragBorderSize) {
+              m_pos = e.y;
+              SplitViewSvc.getSplitViewDraggerBackdrop().style.display = 'block';
+              document.addEventListener('mousemove', resize, false);
+            }
+          }
+          dragElem.addEventListener('mousedown', onMouseDown, false);
+
+          document.addEventListener(
+            'mouseup',
+            function() {
+              if (!splitElement) {
+                splitElement = SplitViewSvc.getSplitViewContainer();
+              }
+              const draggerBackdrop = SplitViewSvc.getSplitViewDraggerBackdrop();
+              if (draggerBackdrop) {
+                draggerBackdrop.style.display = 'none';
+              }
+
+              SplitViewSvc.splitViewValues = { top, bottom };
+              splitElement.style.top = `${top}px`;
+              iframeElement.style.paddingBottom = `${bottom}px`;
+              document.removeEventListener('mousemove', resize, false);
+            },
+            false
+          );
+
+          return {
+            destroy() {
+              dragElem.removeEventListener('mousedown', onMouseDown, false);
+              window.removeEventListener('message', registerEventHandlers, false);
+            }
+          };
+        }
+      }
+    };
 </script>
 <style type="text/scss">
   $topNavHeight: 48px;

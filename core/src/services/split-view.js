@@ -93,13 +93,13 @@ class SplitViewSvcClass {
 
   calculateInitialValues(mfSplitView, rightContentHeight) {
     if (mfSplitView.settings && rightContentHeight) {
-      const percentBottom = mfSplitView.settings.height || 40;
+      const percentBottom = mfSplitView.settings.size || 40;
       const bottom = parseInt(
         GenericHelpers.computePxFromPercent(rightContentHeight, percentBottom)
       );
 
-      const percentTop = mfSplitView.settings.height
-        ? 100 - mfSplitView.settings.height
+      const percentTop = mfSplitView.settings.size
+        ? 100 - mfSplitView.settings.size
         : 60;
       const top = parseInt(
         GenericHelpers.computePxFromPercent(rightContentHeight, percentTop)
@@ -149,6 +149,7 @@ class SplitViewSvcClass {
         this.storedSplitViewValues.top
       }px`;
       this.storedSplitViewValues = undefined;
+      this.sendClientEvent('expand');
     }
   }
 
@@ -162,8 +163,9 @@ class SplitViewSvcClass {
             isCollapsed: true
           });
           this.storedSplitViewValues = Object.assign({}, this.splitViewValues);
-          SplitViewSvc.getSplitViewContainer().style.top = '';
+          this.getSplitViewContainer().style.top = '';
           Iframe.getIframeContainer().style.paddingBottom = '';
+          this.sendClientEvent('collapse');
         });
     }
   }
@@ -176,8 +178,19 @@ class SplitViewSvcClass {
           this.setDeep(comp, 'mfSplitView', {
             isDisplayed: false
           });
+          this.sendClientEvent('close');
         });
     }
+  }
+
+  sendClientEvent(name, data) {
+    window.parent.postMessage(
+      {
+        msg: `luigi-client.navigation.splitview.${name}`,
+        data
+      },
+      '*'
+    );
   }
 }
 

@@ -26,6 +26,10 @@ export class linkManager extends LuigiClientBase {
       relative: false,
       link: ''
     };
+
+    this.splitView = {
+      exists: false
+    };
   }
 
   /**
@@ -39,8 +43,9 @@ export class linkManager extends LuigiClientBase {
    * @param {('l'|'m'|'s')} [modalSettings.size="l"] size of the modal
    * @param {Object} splitViewSettings opens a view in a split view. Use these settings to configure the split view's behaviour
    * @param {string} splitViewSettings.title split view title. By default, it is the node label. If there is no label, it is left empty
-   * @param {number} [splitViewSettings.height=40] height of the split view in percentage
+   * @param {number} [splitViewSettings.size=40] size of the split view in percent
    * @param {boolean} [splitViewSettings.collapsed=false] create split view but leave it closed initially
+   * @returns {Object} handle that allows functions to control the splitView: collapse, expand, setSize, onCollapse, onExpand, onResize, exists, getSize, isCollapsed
    * @example
    * LuigiClient.linkManager().navigate('/overview')
    * LuigiClient.linkManager().navigate('users/groups/stakeholders')
@@ -92,13 +97,50 @@ export class linkManager extends LuigiClientBase {
    * @param {string} path navigation path
    * @param {Object} splitViewSettings opens a view in a split view. Use these settings to configure the split view's behaviour
    * @param {string} splitViewSettings.title split view title. By default, it is the node label. If there is no label, it is left empty
-   * @param {number} [splitViewSettings.height=40] height of the split view in percentage
+   * @param {number} [splitViewSettings.size=40] size of the split view in percent
    * @param {boolean} [splitViewSettings.collapsed=false] create split view but leave it closed initially
    * @example
-   * LuigiClient.linkManager().openAsSplitView('projects/pr1/logs', {title: 'Logs', height: 40});
+   * LuigiClient.linkManager().openAsSplitView('projects/pr1/logs', {title: 'Logs', size: 40});
    */
   openAsSplitView(path, splitViewSettings) {
     this.navigate(path, 0, true, undefined, splitViewSettings || {});
+
+    const sendSplitViewAction = (action, value) => {
+      window.parent.postMessage({
+        msg: `luigi.navigation.splitview.${action}`,
+        data: value
+      });
+    };
+
+    this.splitView.size = splitViewSettings.size;
+    helpers.addEventListener(
+      `luigi-client.navigation.splitview.resized`,
+      () => {}
+    );
+
+    return {
+      collapse: () => sendSplitViewAction('collapse'),
+      expand: () => sendSplitViewAction('expand'),
+      setSize: value => sendSplitViewAction('set-size', value),
+      /**
+       * Registers a listener for split view events
+       *
+       * @param key {enum} a set of predefined events: expand, collaps, resize, close
+       **/
+
+      on: (key, callback) => {
+        return helpers.addEventListener(
+          `luigi-client.navigation.splitview.${key}`,
+          callback
+        );
+      },
+      // TODO: check if we want to provide removeListener, alterantively as last param in the callback or do not provide it
+      // removeListener: (id) => { return helpers.removeEventListener(id); },
+      exists: () => this.splitView.exists,
+      size: () => this.splitView.size,
+      isCollapsed: () => this.splitView.isCollapsed,
+      isExpanded: () => !this.splitView.isCollapsed
+    };
   }
 
   /**

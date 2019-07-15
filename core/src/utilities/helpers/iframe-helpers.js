@@ -1,7 +1,21 @@
 // Helper methods for 'iframe.js' file. They don't require any method from 'ifram.js` but are required by them.
 import { GenericHelpers } from './';
+import { Iframe } from '../../services';
 
 class IframeHelpersClass {
+  get specialIframeTypes() {
+    return [
+      {
+        iframeKey: 'modalIframe',
+        dataKey: 'modalIframeData'
+      },
+      {
+        iframeKey: 'splitViewIframe',
+        dataKey: 'splitViewIframeData'
+      }
+    ];
+  }
+
   hideElementChildren(node) {
     if (node.children) {
       Array.from(node.children).forEach(child => {
@@ -169,6 +183,36 @@ class IframeHelpersClass {
 
   isMessageSource(event, iframe) {
     return iframe && iframe.contentWindow === event.source;
+  }
+
+  getValidMessageSource(e, component) {
+    const allMessagesSources = [
+      ...Iframe.getAllIframes(
+        this.specialIframeTypes.map(t => component.get()[t.iframeKey])
+      ),
+      { contentWindow: window, luigi: { viewUrl: window.location.href } }
+    ];
+    const iframe = allMessagesSources.find(iframe =>
+      this.isMessageSource(e, iframe)
+    );
+
+    if (!iframe || !iframe.luigi || !iframe.luigi.viewUrl) {
+      return undefined;
+    }
+
+    const navigateOkMsg = 'luigi.navigate.ok' === e.data.msg;
+    if (navigateOkMsg && !iframe.luigi.nextViewUrl) {
+      return undefined;
+    }
+
+    const viewUrl = navigateOkMsg
+      ? iframe.luigi.nextViewUrl
+      : iframe.luigi.viewUrl;
+    if (!this.iframeIsSameDomain(viewUrl, e.origin)) {
+      return undefined;
+    }
+
+    return iframe;
   }
 }
 

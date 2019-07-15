@@ -38,6 +38,7 @@ export class ProjectComponent implements OnInit, OnDestroy {
   public alertDismissed;
   public alertTypes = ['success', 'info', 'warning', 'error'];
   public isDirty = false;
+  public splitViewHandle;
 
   public constructor(
     private activatedRoute: ActivatedRoute,
@@ -186,5 +187,25 @@ export class ProjectComponent implements OnInit, OnDestroy {
 
   public sendDirtyEvent() {
     uxManager().setDirtyStatus(this.isDirty);
+  }
+
+  public openSplitView() {
+    this.splitViewHandle = linkManager()
+      .withParams({ test: 'true' })
+      .openAsSplitView('/settings', {
+        title: 'Logs',
+        size: 60,
+        collapsed: true
+      });
+
+    this.splitViewHandle.on('resize', newSize => {
+      console.log('split view got resized to', newSize);
+    });
+    this.splitViewHandle.on('expand', () => {
+      console.log('split view got expanded');
+    });
+    this.splitViewHandle.on('collapse', () => {
+      console.log('split view got collapsed');
+    });
   }
 }

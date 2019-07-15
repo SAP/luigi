@@ -310,18 +310,19 @@
           </app-code-snippet>
         </li>
         <li class="fd-list-group__item">
-          <a href="javascript:void(0)" (click)="
-                      linkManager()
-                        .withParams({test: true})
-                        .openAsSplitView('/settings', {
-                          title: 'Logs',
-                          height: 35
-                        })
-                    ">
-            open view in split view with params</a>
+          <a href="javascript:void(0)" (click)="openSplitView()">
+            open view in split view with params</a
+          >
           <app-code-snippet
-            data="linkManager().withParams({test: true}).openAsSplitView('/settings', {title:'Logs', height:35})">
+            data="linkManager().withParams({test: true}).openAsSplitView('/settings', {title:'Logs', size:35})"
+          >
           </app-code-snippet>
+          <div *ngIf="splitViewHandle">
+            Control Split View:
+            <a (click)="splitViewHandle.expand()">expand</a> |
+            <a (click)="splitViewHandle.collapse()">collapse</a> |
+            <a (click)="splitViewHandle.setSize(60)">set-size (60)</a> |
+          </div>
         </li>
         <li class="fd-list-group__item">
           <a href="javascript:void(0)" (click)="linkManager().goBack()">

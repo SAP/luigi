@@ -90,16 +90,6 @@
   } from './utilities/helpers';
   import { CSS_BREAKPOINTS } from './utilities/constants';
 
-  const specialIframeTypes = [
-    {
-      iframeKey: 'modalIframe',
-      dataKey: 'modalIframeData'
-    },
-    {
-      iframeKey: 'splitViewIframe',
-      dataKey: 'splitViewIframeData'
-    }
-  ];
   const removeQueryParams = str => str.split('?')[0];
 
   const isValidBackRoute = (preservedViews, routeHash) => {
@@ -310,9 +300,6 @@
       );
       this.set({ responsiveNavSetting });
       this.set({ previousWindowWidth: window.innerWidth });
-      this.set({
-        rightContentHeight: window.innerHeight - 48 // LuigiElements.getShellbar().clientHeight not yet available
-      });
 
       if (responsiveNavSetting === 'simple') {
         document.body.classList.add('lui-simpleSlideInNav');
@@ -324,7 +311,10 @@
         document.body.classList.add('lui-semiCollapsible');
       }
     },
-    onstate({ changed, current, previous }) {},
+    onstate({ changed, current, previous }) {
+      if (changed.mfSplitView) {
+      }
+    },
     actions: {
       init(node) {
         const isolateAllViews = LuigiConfig.getConfigValue(
@@ -366,7 +356,7 @@
         });
 
         window.addEventListener('message', async e => {
-          const iframe = this.getValidMessageSource(e);
+          const iframe = IframeHelpers.getValidMessageSource(e, this);
           if (!iframe) return;
 
           if ('luigi.navigate.ok' === e.data.msg) {
@@ -378,8 +368,8 @@
           }
 
           if ('luigi.get-context' === e.data.msg) {
-            const specialIframeMessageSource = specialIframeTypes.filter(typ =>
-              IframeHelpers.isMessageSource(e, this.get()[typ.iframeKey])
+            const specialIframeMessageSource = IframeHelpers.specialIframeTypes.filter(
+              typ => IframeHelpers.isMessageSource(e, this.get()[typ.iframeKey])
             );
             if (specialIframeMessageSource.length) {
               specialIframeMessageSource.forEach(typ => {
@@ -390,7 +380,8 @@
                   context: ctx,
                   pathParams: this.get()[typ.dataKey].pathParams,
                   nodeParams: this.get()[typ.dataKey].nodeParams,
-                  modal: true
+                  modal: typ.iframeKey.startsWith('modal'),
+                  splitView: typ.iframeKey.startsWith('splitView')
                 };
                 sendContextToClient(this, config, {});
               });
@@ -598,33 +589,7 @@
     },
     methods: {
       getValidMessageSource(e) {
-        const allMessagesSources = [
-          ...Iframe.getAllIframes(
-            specialIframeTypes.map(t => this.get()[t.iframeKey])
-          ),
-          { contentWindow: window, luigi: { viewUrl: window.location.href } }
-        ];
-        const iframe = allMessagesSources.find(iframe =>
-          IframeHelpers.isMessageSource(e, iframe)
-        );
-
-        if (!iframe || !iframe.luigi || !iframe.luigi.viewUrl) {
-          return undefined;
-        }
-
-        const navigateOkMsg = 'luigi.navigate.ok' === e.data.msg;
-        if (navigateOkMsg && !iframe.luigi.nextViewUrl) {
-          return undefined;
-        }
-
-        const viewUrl = navigateOkMsg
-          ? iframe.luigi.nextViewUrl
-          : iframe.luigi.viewUrl;
-        if (!IframeHelpers.iframeIsSameDomain(viewUrl, e.origin)) {
-          return undefined;
-        }
-
-        return iframe;
+        IframeHelpers.getValidMessageSource(e, this);
       },
       handleNavigation(data, config) {
         let path = buildPath(this, data.params);
@@ -672,9 +637,6 @@
           this.closeLeftNav();
         }
         this.set({ previousWindowWidth: window.innerWidth });
-        this.set({
-          rightContentHeight: GenericHelpers.getRightContentHeight()
-        });
       },
       handleModalResult(result) {
         const { promise, openFromClient } = this.get().confirmationModal;
