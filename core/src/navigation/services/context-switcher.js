@@ -38,7 +38,7 @@ export const ContextSwitcherHelpers = {
       parentNodePath &&
         currentPathNormalized &&
         currentPathNormalized.startsWith(parentNodePathNormalized) &&
-        !currentPathNormalized.endsWith(parentNodePathNormalized)
+        currentPathNormalized !== parentNodePathNormalized
     );
   },
 
