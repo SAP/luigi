@@ -197,6 +197,14 @@ class LifecycleManager extends LuigiClientBase {
     return this.currentContext.context;
   }
   /**
+   * Returns the context object. It is an alias function for getEventData().
+   * @returns {Object} current context data
+   * @memberof Lifecycle
+   */
+  getContext() {
+    return this.getEventData();
+  }
+  /**
    * Returns the node parameters of the active URL.
    * Node parameters are defined like URL query parameters but with a specific prefix allowing Luigi to pass them to the micro front-end view.  The default prefix is **~** and you can use it in the following way: `https://my.luigi.app/home/products?~sort=asc~page=3`.
    * >**NOTE:** some special characters (`<`, `>`, `"`, `'`, `/`) in node parameters are HTML-encoded.
