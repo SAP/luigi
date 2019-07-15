@@ -3,7 +3,6 @@ class Helpers {
   /** @private */
   constructor() {
     this.listeners = [];
-    this.trustedDomainList = [];
     this.origin = '';
 
     window.addEventListener(
