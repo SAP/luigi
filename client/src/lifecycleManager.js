@@ -65,7 +65,7 @@ class LifecycleManager extends LuigiClientBase {
         setContext(e.data);
         setAuthData(e.data.authData);
         this.luigiInitialized = true;
-        this.notifyInit();
+        this._notifyInit();
       });
 
       helpers.addEventListener('luigi.auth.tokenIssued', e => {
@@ -79,7 +79,7 @@ class LifecycleManager extends LuigiClientBase {
         }
 
         // execute the context change listener if set by the microfrontend
-        this.notifyUpdate();
+        this._notifyUpdate();
 
         window.parent.postMessage(
           {
@@ -123,7 +123,7 @@ class LifecycleManager extends LuigiClientBase {
    * @private
    * @memberof Lifecycle
    */
-  notifyInit() {
+  _notifyInit() {
     this._callAllFns(this._onInitFns, this.currentContext.context);
   }
 
@@ -132,7 +132,7 @@ class LifecycleManager extends LuigiClientBase {
    * @private
    * @memberof Lifecycle
    */
-  notifyUpdate() {
+  _notifyUpdate() {
     this._callAllFns(this._onContextUpdatedFns, this.currentContext.context);
   }
 

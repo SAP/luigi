@@ -14,7 +14,7 @@ class UxManager extends LuigiClientBase {
       if (e.data.currentLocale && lifecycleManager.currentContext?.internal) {
         lifecycleManager.currentContext.internal.currentLocale =
           e.data.currentLocale;
-        lifecycleManager.notifyUpdate();
+        lifecycleManager._notifyUpdate();
       }
     });
   }

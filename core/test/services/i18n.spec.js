@@ -30,21 +30,21 @@ describe('I18N', () => {
     });
 
     it('sets locale', () => {
-      sinon.stub(LuigiI18N, 'notifyLocaleChange');
+      sinon.stub(LuigiI18N, '_notifyLocaleChange');
       LuigiI18N.setCurrentLocale('de');
       sinon.assert.calledWithExactly(
         global.sessionStorage.setItem,
         'luigi.currentLocale',
         'de'
       );
-      sinon.assert.calledWithExactly(LuigiI18N.notifyLocaleChange, 'de');
+      sinon.assert.calledWithExactly(LuigiI18N._notifyLocaleChange, 'de');
     });
 
     it('should not set empty locale', () => {
-      sinon.stub(LuigiI18N, 'notifyLocaleChange');
+      sinon.stub(LuigiI18N, '_notifyLocaleChange');
       LuigiI18N.setCurrentLocale('');
       sinon.assert.notCalled(global.sessionStorage.setItem);
-      sinon.assert.notCalled(LuigiI18N.notifyLocaleChange);
+      sinon.assert.notCalled(LuigiI18N._notifyLocaleChange);
     });
   });
 

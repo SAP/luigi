@@ -32,7 +32,7 @@ class LuigiI18NManager {
   setCurrentLocale(locale) {
     if (locale) {
       sessionStorage.setItem(this.currentLocaleStorageKey, locale);
-      this.notifyLocaleChange(locale);
+      this._notifyLocaleChange(locale);
     }
   }
 
@@ -73,7 +73,7 @@ class LuigiI18NManager {
    * @private
    * @memberof LuigiI18N
    */
-  notifyLocaleChange(locale) {
+  _notifyLocaleChange(locale) {
     Object.getOwnPropertyNames(this.listeners).forEach(listenerId => {
       this.listeners[listenerId](locale);
     });
