@@ -1,7 +1,6 @@
 import { lifecycleManager } from './lifecycleManager';
 import { linkManager } from './linkManager';
 import { uxManager } from './uxManager';
-import { helpers } from './helpers';
 
 /**
  * @name LuigiClient
@@ -34,9 +33,6 @@ class LuigiClient {
   }
   getPathParams() {
     return lifecycleManager.getPathParams();
-  }
-  setTrustedDomainList(arr) {
-    return helpers.setTrustedDomainList(arr);
   }
   /**
    * @private
