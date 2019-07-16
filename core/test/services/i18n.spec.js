@@ -50,7 +50,7 @@ describe('I18N', () => {
 
   describe('current locale listeners', () => {
     it('does not add listener when it is not a function', () => {
-      sinon.stub(GenericHelpers, 'isFunction').callsFake(fnOrNot => false);
+      sinon.stub(GenericHelpers, 'isFunction').returns(false);
       const listenerId = LuigiI18N.addCurrentLocaleChangeListener(
         'mock-listener'
       );
@@ -63,8 +63,8 @@ describe('I18N', () => {
     });
 
     it('add listener when it is a function', () => {
-      sinon.stub(GenericHelpers, 'isFunction').callsFake(fnOrNot => true);
-      sinon.stub(GenericHelpers, 'getRandomId').callsFake(() => 123);
+      sinon.stub(GenericHelpers, 'isFunction').returns(true);
+      sinon.stub(GenericHelpers, 'getRandomId').returns(123);
       const mockListener = () => 'mock-method';
       const listenerId = LuigiI18N.addCurrentLocaleChangeListener(mockListener);
       sinon.assert.calledWithExactly(GenericHelpers.isFunction, mockListener);
@@ -75,32 +75,27 @@ describe('I18N', () => {
 
     it('remove a listener', () => {
       LuigiI18N.listeners[123] = () => {};
-      const listenerId = LuigiI18N.removeCurrentLocaleChangeListener(123);
+      LuigiI18N.removeCurrentLocaleChangeListener(123);
       assert.equal(LuigiI18N.listeners[123], undefined);
     });
 
     it('does not remove a listener when called with a wrong id', () => {
       const listener = () => {};
       LuigiI18N.listeners[123] = listener;
-      const listenerId = LuigiI18N.removeCurrentLocaleChangeListener(456);
+      LuigiI18N.removeCurrentLocaleChangeListener(456);
       assert.equal(LuigiI18N.listeners[123], listener);
     });
 
     it('should be notified by locale change', () => {
-      sinon.stub(GenericHelpers, 'isFunction').callsFake(fnOrNot => true);
-      sinon.stub(GenericHelpers, 'getRandomId').callsFake(() => 123);
-      let notified = false;
-      let newLocale = '';
-      const listener = l => {
-        notified = true;
-        newLocale = l;
+      LuigiI18N.listeners = {
+        id1: sinon.stub(),
+        id2: sinon.stub(),
+        id3: sinon.stub()
       };
-      const listenerId = LuigiI18N.addCurrentLocaleChangeListener(listener);
-      sinon.assert.calledWithExactly(GenericHelpers.isFunction, listener);
-      sinon.assert.calledWithExactly(GenericHelpers.getRandomId);
-      LuigiI18N.setCurrentLocale('pl');
-      assert.equal(notified, true);
-      assert.equal(newLocale, 'pl');
+      LuigiI18N._notifyLocaleChange('pl');
+      sinon.assert.calledWithExactly(LuigiI18N.listeners.id1, 'pl');
+      sinon.assert.calledWithExactly(LuigiI18N.listeners.id2, 'pl');
+      sinon.assert.calledWithExactly(LuigiI18N.listeners.id3, 'pl');
     });
   });
 });
