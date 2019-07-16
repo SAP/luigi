@@ -241,6 +241,8 @@ Register a listener for locale changes
 
 -   `listener` **[Function](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Statements/function)** function called on every locale change with the new locale as argument
 
+Returns **[number](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number)** listener ID associated with the given listener; use it when removing the listener
+
 **Meta**
 
 -   **since**: 0.5.3
@@ -251,7 +253,7 @@ De-register a listener for locale changes
 
 ##### Parameters
 
--   `listener` **[Function](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Statements/function)** function previously registered for locale changes
+-   `listenerId` **[number](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number)** listener ID associated with the listener to be removed, returned by addCurrentLocaleChangeListener
 
 **Meta**
 

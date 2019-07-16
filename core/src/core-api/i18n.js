@@ -1,3 +1,5 @@
+import { GenericHelpers } from '../utilities/helpers';
+
 /**
  * Localization related functions.
  * @name LuigiI18N
@@ -6,7 +8,7 @@ class LuigiI18NManager {
   constructor() {
     this.currentLocaleStorageKey = 'luigi.currentLocale';
     this.defaultLocale = 'en';
-    this.listeners = new Set();
+    this.listeners = {};
   }
 
   /**
@@ -37,21 +39,34 @@ class LuigiI18NManager {
   /**
    * Register a listener for locale changes
    * @param {Function} listener function called on every locale change with the new locale as argument
+   * @returns {number} listener ID associated with the given listener; use it when removing the listener
    * @since 0.5.3
    * @memberof LuigiI18N
    */
   addCurrentLocaleChangeListener(listener) {
-    this.listeners.add(listener);
+    if (GenericHelpers.isFunction(listener)) {
+      const listenerId = GenericHelpers.getRandomId();
+      this.listeners[listenerId] = listener;
+      return listenerId;
+    } else {
+      console.error('Provided locale change listener is not a function.');
+    }
   }
 
   /**
    * De-register a listener for locale changes
-   * @param {Function} listener function previously registered for locale changes
+   * @param {number} listenerId listener ID associated with the listener to be removed, returned by addCurrentLocaleChangeListener
    * @since 0.5.3
    * @memberof LuigiI18N
    */
-  removeCurrentLocaleChangeListener(listener) {
-    this.listeners.delete(listener);
+  removeCurrentLocaleChangeListener(listenerId) {
+    if (listenerId && this.listeners[listenerId]) {
+      delete this.listeners[listenerId];
+    } else {
+      console.error(
+        'Unable to remove locale change listener - no listener registered for given ID.'
+      );
+    }
   }
 
   /**
@@ -59,8 +74,8 @@ class LuigiI18NManager {
    * @memberof LuigiI18N
    */
   notifyLocaleChange(locale) {
-    this.listeners.forEach(listener => {
-      listener(locale);
+    Object.getOwnPropertyNames(this.listeners).forEach(listenerId => {
+      this.listeners[listenerId](locale);
     });
   }
 }
