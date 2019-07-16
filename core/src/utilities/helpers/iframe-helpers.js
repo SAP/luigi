@@ -151,6 +151,12 @@ class IframeHelpersClass {
     iframe.contentWindow.postMessage(message, trustedIframeDomain);
   }
 
+  sendMessageToVisibleIframes(message) {
+    this.getVisibleIframes().forEach(iframe =>
+      this.sendMessageToIframe(iframe, message)
+    );
+  }
+
   createIframe(viewUrl, viewGroup) {
     const activeSandboxRules = [
       'allow-forms', // Allows the resource to submit forms. If this keyword is not used, form submission is blocked.

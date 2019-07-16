@@ -2,7 +2,7 @@
 <div class="lui-split-view">
   {#if isCollapsed}
   <div class="splitViewSeparator isCollapsed">
-    <a class="lui-collapse-btn" on:click="expand(event)">
+    <a class="lui-collapse-btn" on:click:stopPropagation="expand(event)">
       <span class="sap-icon--collapse-group sap-icon--s"></span>
     </a>
   </div>
@@ -10,7 +10,7 @@
   {:else}
   <div id="splitViewDragger" on:dragSplitViewBorder="dragged(event)">
     <div class="splitViewSeparator"></div>
-    <a class="lui-collapse-btn" on:click="collapse(event)">
+    <a class="lui-collapse-btn" on:click:stopPropagation="collapse(event)">
       <span class="sap-icon--expand-group sap-icon--s"></span>
     </a>
   </div>
@@ -20,148 +20,183 @@
 </div>
 
 <script>
-    import { LuigiElements } from './core-api';
-    import { Iframe, SplitViewSvc } from './services';
-    import {
-      GenericHelpers,
-      IframeHelpers,
-      RoutingHelpers
-    } from './utilities/helpers';
+  import { LuigiElements } from './core-api';
+  import { Iframe, SplitViewSvc } from './services';
+  import {
+    GenericHelpers,
+    IframeHelpers,
+    RoutingHelpers
+  } from './utilities/helpers';
 
-    let rightContentHeight, thresholdTop, thresholdBottom;
+  let rightContentHeight, thresholdTop, thresholdBottom;
 
-    const getNode = async (component, path) => {
-      if (component.get().isDataPrepared) {
-        if (!component.get().isCollapsed) {
-          SplitViewSvc.createAndSetSplitView(component);
-        }
-      } else {
-        await SplitViewSvc.prepareSplitViewData(component, path);
+  const getNode = async (component, path) => {
+    if (component.get().isDataPrepared) {
+      if (!component.get().isCollapsed) {
+        SplitViewSvc.createAndSetSplitView(component);
       }
-    };
-
-    const registerEventHandlers = async e => {
-      const iframe = IframeHelpers.getValidMessageSource(e, this.root);
-      if (!iframe) return;
-
-      // actions, like collapse, expand, setSize as well as register
-      // event handlers: onCollapse, onExpand, onResize
-      // status info like exists, getSize, isCollapsed
-      if ('luigi.navigation.splitview.collapse' === e.data.msg) {
-        console.log(e.data.msg);
-        this.collapse();
-      }
-      if ('luigi.navigation.splitview.expand' === e.data.msg) {
-        console.log(e.data.msg);
-        this.expand();
-      }
-      if ('luigi.navigation.splitview.set-size' === e.data.msg) {
-        console.log(e.data.msg, e.data);
-
-      }
-    });
+    } else {
+      await SplitViewSvc.prepareSplitViewData(component, path);
+    }
   };
 
-    export default {
-      oncreate() {
-        this.onResize();
-        this.registerEventHandlers();
+  let top, bottom, draggableElement, iframeElement, splitElement;
+  const setElements = () => {
+    if (!splitElement) {
+      splitElement = SplitViewSvc.getSplitViewContainer();
+    }
+    if (!iframeElement) {
+      iframeElement = Iframe.getIframeContainer();
+    }
+    draggableElement = SplitViewSvc.getSplitViewDragger();
+  };
+
+  const setSplitViewSize = () => {
+    const draggerBackdrop = SplitViewSvc.getSplitViewDraggerBackdrop();
+    if (draggerBackdrop) {
+      draggerBackdrop.style.display = 'none';
+    }
+
+    setElements();
+    // setting again, to be sure its positioned when using it programmatically
+    if (draggableElement) {
+      draggableElement.style.top = `${top}px`;
+    }
+
+    SplitViewSvc.splitViewValues = { top, bottom };
+    splitElement.style.top = `${top}px`;
+    iframeElement.style.paddingBottom = `${bottom}px`;
+  };
+
+  export default {
+    oncreate() {
+      this.onResize();
+      this.registerEventHandlers(this);
+    },
+    onupdate({ changed, current, previous }) {
+      getNode(this, this.get().nodepath);
+    },
+    data() {
+      return {
+        isDataPrepared: false,
+        splitViewSettings: {}
+      };
+    },
+    methods: {
+      collapse() {
+        SplitViewSvc.collapseSplitView(this.root);
       },
-      onupdate({ changed, current, previous }) {
-        getNode(this, this.get().nodepath);
+      expand() {
+        SplitViewSvc.expandSplitView(this.root);
+        SplitViewSvc.getSplitViewDraggerBackdrop().style.display = 'none';
       },
-      data() {
-        return {
-          isDataPrepared: false,
-          splitViewSettings: {}
-        };
+      onResize() {
+        const shellbarHeight = LuigiElements.getShellbar().clientHeight;
+        rightContentHeight = window.innerHeight - shellbarHeight;
       },
-      methods: {
-        collapse(evt) {
-          evt.stopPropagation();
-          SplitViewSvc.collapseSplitView(this.root);
-        },
-        expand(evt) {
-          evt.stopPropagation();
-          SplitViewSvc.expandSplitView(this.root);
-          SplitViewSvc.getSplitViewDraggerBackdrop().style.display = 'none';
-        },
-        onResize() {
-          const shellbarHeight = LuigiElements.getShellbar().clientHeight;
-          rightContentHeight = window.innerHeight - shellbarHeight;
-          thresholdBottom = 30;
-          thresholdTop = shellbarHeight + 30;
-        },
-        registerEventHandlers() {
-          window.addEventListener('message', registerEventHandlers);
-        }
-      },
-      events: {
-        dragSplitViewBorder(dragElem) {
-          let m_pos, top, bottom, splitElement, draggableElement;
-          const dragBorderSize = 30; // #splitViewDragger height
+      registerEventHandlers() {
+        window.addEventListener('message', async e => {
+          const iframe = IframeHelpers.getValidMessageSource(e, this.root);
+          if (!iframe) return;
 
-          const iframeElement = Iframe.getIframeContainer();
+          // actions, like collapse, expand, setSize as well as register
+          // event handlers: onCollapse, onExpand, onResize
 
-          const resize = e => {
-            const diff = m_pos - e.y;
-            m_pos = e.y;
-
-            if (!draggableElement) {
-              draggableElement = SplitViewSvc.getSplitViewDragger();
-            }
-            const dragTop = parseInt(getComputedStyle(draggableElement, '').top);
-            top = dragTop - diff;
-            bottom = window.innerHeight - top;
-
-            if (top <= thresholdTop) {
-              top = thresholdTop;
-              bottom = window.innerHeight - thresholdTop;
-            } else if (bottom <= thresholdBottom) {
-              top = window.innerHeight - thresholdBottom;
-              bottom = thresholdBottom;
-            }
-
-            draggableElement.style.top = `${top}px`;
-          };
-
-          function onMouseDown(e) {
-            if (e.offsetY < dragBorderSize) {
-              m_pos = e.y;
-              SplitViewSvc.getSplitViewDraggerBackdrop().style.display = 'block';
-              document.addEventListener('mousemove', resize, false);
-            }
+          if ('luigi.navigation.splitview.close' === e.data.msg) {
+            SplitViewSvc.closeSplitView(this.root);
           }
-          dragElem.addEventListener('mousedown', onMouseDown, false);
+          if ('luigi.navigation.splitview.collapse' === e.data.msg) {
+            this.collapse();
+          }
+          if ('luigi.navigation.splitview.expand' === e.data.msg) {
+            this.expand();
+          }
+          if ('luigi.navigation.splitview.set-size' === e.data.msg) {
+            const percentTop = 100 - parseInt(e.data.data);
+            const newTop = parseInt(
+              GenericHelpers.computePxFromPercent(
+                rightContentHeight,
+                percentTop
+              )
+            );
 
-          document.addEventListener(
-            'mouseup',
-            function() {
-              if (!splitElement) {
-                splitElement = SplitViewSvc.getSplitViewContainer();
-              }
-              const draggerBackdrop = SplitViewSvc.getSplitViewDraggerBackdrop();
-              if (draggerBackdrop) {
-                draggerBackdrop.style.display = 'none';
-              }
+            const calculated = SplitViewSvc.normalizeTreshHolds(
+              newTop,
+              window.innerHeight - newTop
+            );
+            top = calculated.top;
+            bottom = calculated.bottom;
 
-              SplitViewSvc.splitViewValues = { top, bottom };
-              splitElement.style.top = `${top}px`;
-              iframeElement.style.paddingBottom = `${bottom}px`;
-              document.removeEventListener('mousemove', resize, false);
-            },
-            false
-          );
-
-          return {
-            destroy() {
-              dragElem.removeEventListener('mousedown', onMouseDown, false);
-              window.removeEventListener('message', registerEventHandlers, false);
+            // In case setSize gets called before expanding, we're setting
+            // the stored split view values
+            if (this.get().isCollapsed) {
+              SplitViewSvc.storedSplitViewValues = { top, bottom };
+              return;
             }
-          };
-        }
+            setSplitViewSize();
+          }
+        });
       }
-    };
+    },
+    events: {
+      dragSplitViewBorder(dragElem) {
+        let m_pos;
+        const dragBorderSize = 30; // #splitViewDragger height
+
+        const resize = e => {
+          const diff = m_pos - e.y;
+          m_pos = e.y;
+
+          const dragTop = parseInt(getComputedStyle(draggableElement, '').top);
+
+          const calculated = SplitViewSvc.normalizeTreshHolds(
+            dragTop - diff,
+            window.innerHeight - dragTop - diff
+          );
+          top = calculated.top;
+          bottom = calculated.bottom;
+
+          draggableElement.style.top = `${top}px`;
+        };
+
+        function onMouseDown(e) {
+          if (e.offsetY < dragBorderSize) {
+            setElements();
+            m_pos = e.y;
+            SplitViewSvc.getSplitViewDraggerBackdrop().style.display = 'block';
+            document.addEventListener('mousemove', resize, false);
+          }
+        }
+        dragElem.addEventListener('mousedown', onMouseDown, false);
+
+        function onMouseUp() {
+          if (!top || !bottom) {
+            console.log('top bottom is not defined', top, bottom);
+            return;
+          }
+          console.log('onMouseUp', top);
+
+          setSplitViewSize();
+          const newPercent = GenericHelpers.computePercentFromPx(
+            rightContentHeight,
+            bottom
+          );
+          SplitViewSvc.sendClientEvent('resize', newPercent);
+          document.removeEventListener('mousemove', resize, false);
+        }
+
+        document.removeEventListener('mouseup', onMouseUp, false);
+        document.addEventListener('mouseup', onMouseUp, false);
+
+        return {
+          destroy() {
+            dragElem.removeEventListener('mousedown', onMouseDown, false);
+            document.removeEventListener('mouseup', onMouseUp, false);
+          }
+        };
+      }
+    }
+  };
 </script>
 <style type="text/scss">
   $topNavHeight: 48px;

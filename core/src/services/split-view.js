@@ -1,4 +1,4 @@
-import { LuigiConfig } from '../core-api';
+import { LuigiConfig, LuigiElements } from '../core-api';
 import { Navigation } from '../navigation/services/navigation';
 import { Iframe } from '../services';
 import {
@@ -11,6 +11,9 @@ class SplitViewSvcClass {
   constructor() {
     this.splitViewValues;
     this.storedSplitViewValues;
+    this.shellbarHeight;
+    this.thresholdBottom;
+    this.thresholdTop;
   }
 
   getSplitViewContainer() {
@@ -68,12 +71,7 @@ class SplitViewSvcClass {
   }
 
   createAndSetSplitView(component) {
-    const {
-      nodeParams,
-      lastNode,
-      splitViewSettings,
-      pathData
-    } = component.get();
+    const { nodeParams, lastNode, pathData } = component.get();
 
     const iframe = SplitViewSvc.setSplitViewIframe(
       lastNode.viewUrl,
@@ -91,25 +89,42 @@ class SplitViewSvcClass {
     });
   }
 
-  calculateInitialValues(mfSplitView, rightContentHeight) {
-    if (mfSplitView.settings && rightContentHeight) {
-      const percentBottom = mfSplitView.settings.size || 40;
+  calculateInitialValues(size, rightContentHeight) {
+    if (rightContentHeight) {
+      const percentBottom = size || 40;
       const bottom = parseInt(
         GenericHelpers.computePxFromPercent(rightContentHeight, percentBottom)
       );
 
-      const percentTop = mfSplitView.settings.size
-        ? 100 - mfSplitView.settings.size
-        : 60;
+      const percentTop = size ? 100 - size : 60;
       const top = parseInt(
         GenericHelpers.computePxFromPercent(rightContentHeight, percentTop)
       );
 
+      console.log('calculateInitialValues', percentBottom, bottom, top);
       return {
+        percent: percentBottom,
         bottom,
         top
       };
     }
+  }
+
+  normalizeTreshHolds(top, bottom) {
+    if (!this.shellbarHeight) {
+      this.shellbarHeight = LuigiElements.getShellbar().clientHeight;
+      this.thresholdBottom = 30;
+      this.thresholdTop = this.shellbarHeight + 30;
+    }
+
+    if (top <= this.thresholdTop) {
+      top = this.thresholdTop;
+      bottom = window.innerHeight - this.thresholdTop;
+    } else if (bottom <= this.thresholdBottom) {
+      top = window.innerHeight - this.thresholdBottom;
+      bottom = this.thresholdBottom;
+    }
+    return { top, bottom };
   }
 
   setDeep(comp, key, value) {
@@ -121,19 +136,28 @@ class SplitViewSvcClass {
   openViewInSplitView(comp, nodepath, settings) {
     const mfSplitView = {
       isDisplayed: true,
-      isCollapsed: settings.collapsed === true,
+      isCollapsed: false, // settings.collapsed === true, // TODO: separate ticket
       nodepath,
       settings
     };
+
     this.splitViewValues = this.calculateInitialValues(
-      mfSplitView,
+      mfSplitView.settings && mfSplitView.settings.size,
       GenericHelpers.getRightContentHeight()
     );
+
+    this.sendClientEvent('internal', {
+      exists: true,
+      size: this.splitViewValues.percent,
+      isCollapsed: mfSplitView.isCollapsed,
+      isExpanded: !mfSplitView.isCollapsed
+    });
     comp.set({ mfSplitView, splitViewValues: this.splitViewValues });
   }
 
   expandSplitView(comp) {
     if (comp.get().splitViewIframe) {
+      this.sendClientEvent('expand');
       this.setDeep(comp, 'mfSplitView', {
         isDisplayed: true,
         isCollapsed: false
@@ -149,7 +173,6 @@ class SplitViewSvcClass {
         this.storedSplitViewValues.top
       }px`;
       this.storedSplitViewValues = undefined;
-      this.sendClientEvent('expand');
     }
   }
 
@@ -158,6 +181,7 @@ class SplitViewSvcClass {
       comp
         .getUnsavedChangesModalPromise(comp.get().splitViewIframe.contentWindow)
         .then(() => {
+          this.sendClientEvent('collapse');
           this.setDeep(comp, 'mfSplitView', {
             isDisplayed: true,
             isCollapsed: true
@@ -165,7 +189,6 @@ class SplitViewSvcClass {
           this.storedSplitViewValues = Object.assign({}, this.splitViewValues);
           this.getSplitViewContainer().style.top = '';
           Iframe.getIframeContainer().style.paddingBottom = '';
-          this.sendClientEvent('collapse');
         });
     }
   }
@@ -176,21 +199,21 @@ class SplitViewSvcClass {
         .getUnsavedChangesModalPromise(comp.get().splitViewIframe.contentWindow)
         .then(() => {
           this.setDeep(comp, 'mfSplitView', {
-            isDisplayed: false
+            isDisplayed: false,
+            isCollapsed: false
           });
+          Iframe.getIframeContainer().style.paddingBottom = '';
           this.sendClientEvent('close');
         });
     }
   }
 
   sendClientEvent(name, data) {
-    window.parent.postMessage(
-      {
-        msg: `luigi-client.navigation.splitview.${name}`,
-        data
-      },
-      '*'
-    );
+    console.log('sending event ' + name + ' to client');
+    IframeHelpers.sendMessageToVisibleIframes({
+      msg: `luigi-client.navigation.splitview.${name}`,
+      data
+    });
   }
 }
 

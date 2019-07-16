@@ -319,9 +319,9 @@
           </app-code-snippet>
           <div *ngIf="splitViewHandle">
             Control Split View:
-            <a (click)="splitViewHandle.expand()">expand</a> |
-            <a (click)="splitViewHandle.collapse()">collapse</a> |
-            <a (click)="splitViewHandle.setSize(60)">set-size (60)</a> |
+            <a *ngIf="splitViewHandle.isCollapsed()" (click)="splitViewHandle.expand()">expand</a> &nbsp;
+            <a *ngIf="splitViewHandle.isExpanded()" (click)="splitViewHandle.collapse()">collapse</a> &nbsp;
+            <a *ngIf="splitViewHandle.isExpanded()" (click)="splitViewHandle.setSize(50)">setSize(50)</a> &nbsp;
           </div>
         </li>
         <li class="fd-list-group__item">

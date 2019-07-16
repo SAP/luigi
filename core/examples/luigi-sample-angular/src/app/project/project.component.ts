@@ -39,6 +39,7 @@ export class ProjectComponent implements OnInit, OnDestroy {
   public alertTypes = ['success', 'info', 'warning', 'error'];
   public isDirty = false;
   public splitViewHandle;
+  public splitViewListeners = [];
 
   public constructor(
     private activatedRoute: ActivatedRoute,
@@ -52,11 +53,22 @@ export class ProjectComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
+    console.log('ngOnDestroy of project');
     if (this.lcSubscription) {
       this.lcSubscription.unsubscribe();
     }
     if (this.cudListener) {
       const removed = removeContextUpdateListener(this.cudListener);
+    }
+    this.unsubscribeSplitViewHandlers();
+  }
+
+  private unsubscribeSplitViewHandlers() {
+    if (this.splitViewHandle) {
+      this.splitViewListeners.forEach(id => {
+        console.log('call removing listener:', id);
+        this.splitViewHandle.removeEventListener(id);
+      });
     }
   }
 
@@ -194,18 +206,44 @@ export class ProjectComponent implements OnInit, OnDestroy {
       .withParams({ test: 'true' })
       .openAsSplitView('/settings', {
         title: 'Logs',
-        size: 60,
-        collapsed: true
+        size: 60
       });
 
-    this.splitViewHandle.on('resize', newSize => {
+    const listenerResize = this.splitViewHandle.on('resize', newSize => {
       console.log('split view got resized to', newSize);
+      if (!this.cdr['destroyed']) {
+        this.cdr.detectChanges();
+      }
     });
-    this.splitViewHandle.on('expand', () => {
-      console.log('split view got expanded');
+    const listenerExpand = this.splitViewHandle.on('expand', () => {
+      console.log(
+        'split view got expanded',
+        'size:',
+        this.splitViewHandle.getSize()
+      );
+      if (!this.cdr['destroyed']) {
+        this.cdr.detectChanges();
+      }
     });
-    this.splitViewHandle.on('collapse', () => {
+    const listenerCollapse = this.splitViewHandle.on('collapse', () => {
       console.log('split view got collapsed');
+      if (!this.cdr['destroyed']) {
+        this.cdr.detectChanges();
+      }
     });
+    const listenerClose = this.splitViewHandle.on('close', () => {
+      console.log('split view got closed');
+      this.unsubscribeSplitViewHandlers();
+      this.splitViewHandle = undefined;
+      if (!this.cdr['destroyed']) {
+        this.cdr.detectChanges();
+      }
+    });
+    this.splitViewListeners.push(
+      listenerResize,
+      listenerExpand,
+      listenerCollapse,
+      listenerClose
+    );
   }
 }

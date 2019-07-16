@@ -232,9 +232,9 @@ class GenericHelpersClass {
     return (fullPixels / 100) * requestedPercent;
   }
 
-  // computeNewPercent(oldPercent, fullPixels, partialPixels) {
-  //   return Math.floor(oldPercent * partialPixels /  fullPixels);
-  // }
+  computePercentFromPx(fullPixels, partialPixels) {
+    return Math.floor((100 * partialPixels) / fullPixels);
+  }
 }
 
 export const GenericHelpers = new GenericHelpersClass();

@@ -137,7 +137,6 @@ Opens a view in a splitted view. You can specify the split view's title and size
 -   `splitViewSettings` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** opens a view in a split view. Use these settings to configure the split view's behaviour
     -   `splitViewSettings.title` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** split view title. By default, it is the node label. If there is no label, it is left empty
     -   `splitViewSettings.size` **[number](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number)** size of the split view in percent (optional, default `40`)
-    -   `splitViewSettings.collapsed` **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)** create split view but leave it closed initially (optional, default `false`)
 
 #### Examples
 
@@ -235,15 +234,65 @@ LuigiClient.linkManager().goBack({ foo: 'bar' });
 LuigiClient.linkManager().goBack(true);
 ```
 
+## collapse
+
+Collapses the split view
+
+## expand
+
+Expands the split view
+
+## setSize
+
+Sets the height of the split view
+
+### Parameters
+
+-   `value` **[number](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number)** lower height in percent
+
 ## on
 
 Registers a listener for split view events
 
 ### Parameters
 
--   `key`  {enum} a set of predefined events: expand, collaps, resize, close
-    \*
--   `callback`  
+-   `key` **enum** a set of predefined events: expand, collaps, resize, close
+-   `callback` **[function](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Statements/function)** gets called when this event occurs
+
+Returns **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** listener id
+\*
+
+## removeEventListener
+
+Unregisters a split view listener
+
+### Parameters
+
+-   `id` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** listener id
+
+## exists
+
+Collapses the split view
+
+Returns **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)** true if a split view is loaded
+
+## getSize
+
+Reads the size of the split view
+
+Returns **[number](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number)** height in percent
+
+## isCollapsed
+
+Reads the collapse status
+
+Returns **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)** true if the split view is currently collapsed
+
+## isExpanded
+
+Reads the expand status
+
+Returns **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)** true if the split view is currently expanded
 
 ## uxManager
 
