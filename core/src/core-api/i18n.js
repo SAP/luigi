@@ -1,4 +1,7 @@
-/** @namespace */
+/**
+ * Localization related functions.
+ * @name LuigiI18N
+ */
 class LuigiI18NManager {
   constructor() {
     this.currentLocaleStorageKey = 'luigi.currentLocale';
