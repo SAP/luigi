@@ -22,8 +22,8 @@ settings: {
 * **header.favicon** defines the favicon. It rquires a standard favicon file with the `.ico` extension, and 16x16px or 32x32px dimensions.
 * **responsiveNavigation** allows customizing the navigation display settings. For example, you can define a button which shows or completely hides the left navigation, or a button which collapses the navigation to only show the icons. 
 You can set the following values:
-* `simple` displays the button on the left side of the top navigation regardless of the browser window´s size.
-* `simpleMobileOnly` displays the button on the left side of the top navigation when the browser window is narrower than `600px`. 
-* `semiCollapsible` displays the arrow button at the bottom of the left side navigation. Once you click the button, the navigation shows up or collapses.<br>
+  * `simple` displays the button on the left side of the top navigation regardless of the browser window´s size.
+  * `simpleMobileOnly` displays the button on the left side of the top navigation when the browser window is narrower than `600px`. 
+  * `semiCollapsible` displays the arrow button at the bottom of the left side navigation. Once you click the button, the navigation shows up or collapses.<br>
 If you don't specify any value for  **responsiveNavigation**, the buttons remain hidden. The same applies when you enable **hideSideNav** for the currently active navigation node. 
 * **sideNavFooterText** is a string displayed in a sticky footer inside the side navigation. It is a good place to display the version of your application.
