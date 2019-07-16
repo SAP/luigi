@@ -12,6 +12,7 @@ class LuigiI18NManager {
   /**
    * Gets the current locale.
    * @returns {string} current locale
+   * @since 0.5.3
    * @memberof LuigiI18N
    */
   getCurrentLocale() {
@@ -23,6 +24,7 @@ class LuigiI18NManager {
   /**
    * Sets current locale to the given one.
    * @param {string} locale locale to be set as the current locale
+   * @since 0.5.3
    * @memberof LuigiI18N
    */
   setCurrentLocale(locale) {
@@ -35,6 +37,7 @@ class LuigiI18NManager {
   /**
    * Register a listener for locale changes
    * @param {Function} listener function called on every locale change with the new locale as argument
+   * @since 0.5.3
    * @memberof LuigiI18N
    */
   addCurrentLocaleChangeListener(listener) {
@@ -44,6 +47,7 @@ class LuigiI18NManager {
   /**
    * De-register a listener for locale changes
    * @param {Function} listener function previously registered for locale changes
+   * @since 0.5.3
    * @memberof LuigiI18N
    */
   removeCurrentLocaleChangeListener(listener) {
@@ -52,6 +56,7 @@ class LuigiI18NManager {
 
   /**
    * @private
+   * @memberof LuigiI18N
    */
   notifyLocaleChange(locale) {
     this.listeners.forEach(listener => {
