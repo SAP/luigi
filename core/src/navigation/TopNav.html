@@ -91,12 +91,6 @@
           <span>{node.label}</span>
           {/if}
           <!-- end node.icon -->
-          {#if node.externalLink && node.externalLink.url}
-          <span
-            class="sap-icon--action sap-icon--s"
-          ></span>
-          {/if}
-          <!-- end node.externallLink.url -->
         </button>
       </div>
       {/if}
@@ -161,11 +155,6 @@
                       >
                       {/if} {/if}
                       <span>{node.label}</span>
-                      {#if node.externalLink && node.externalLink.url}
-                      <span
-                        class="sap-icon--action sap-icon--s"
-                      ></span>
-                      {/if}
                     </a>
                   </li>
                   {:else}
