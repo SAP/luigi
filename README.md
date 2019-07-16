@@ -64,7 +64,8 @@ For security reasons, follow these guidelines when developing a micro frontend:
 - Make the micro frontend accessible only through HTTPS.
 - Add Content Security Policies (CSPs).
 - Make the Access-Control-Allow-Origin HTTP header as restrictive as possible.
-- Maintain a whitelist with trusted domains and compare it with the origin of luigi core app. The origin will be passed when you call the init listener in your micro frontend. Stop further processing in case of a non-matching origin.
+- Maintain a whitelist with trusted domains and compare it with the origin of Luigi core application. The origin will be passed when you call the init listener in your micro frontend. Stop further processing if the origin does not match.
+
 
 >**NOTE**: Luigi follows these [sandbox rules for iframes](https://github.com/SAP/luigi/blob/af1deebb392dcec6490f72576e32eb5853a894bc/core/src/utilities/helpers/iframe-helpers.js#L140).
 
