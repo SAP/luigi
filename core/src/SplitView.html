@@ -28,7 +28,14 @@
     RoutingHelpers
   } from './utilities/helpers';
 
-  let rightContentHeight, thresholdTop, thresholdBottom;
+  let rightContentHeight,
+    thresholdTop,
+    thresholdBottom,
+    top,
+    bottom,
+    draggableElement,
+    iframeElement,
+    splitElement;
 
   const getNode = async (component, path) => {
     if (component.get().isDataPrepared) {
@@ -40,7 +47,6 @@
     }
   };
 
-  let top, bottom, draggableElement, iframeElement, splitElement;
   const setElements = () => {
     if (!splitElement) {
       splitElement = SplitViewSvc.getSplitViewContainer();
@@ -93,6 +99,8 @@
       onResize() {
         const shellbarHeight = LuigiElements.getShellbar().clientHeight;
         rightContentHeight = window.innerHeight - shellbarHeight;
+        thresholdBottom = 30;
+        thresholdTop = shellbarHeight + 30;
       },
       registerEventHandlers() {
         window.addEventListener('message', async e => {
@@ -113,16 +121,19 @@
           }
           if ('luigi.navigation.splitview.set-size' === e.data.msg) {
             const percentTop = 100 - parseInt(e.data.data);
-            const newTop = parseInt(
-              GenericHelpers.computePxFromPercent(
-                rightContentHeight,
-                percentTop
-              )
-            );
+            const newTop =
+              parseInt(
+                GenericHelpers.computePxFromPercent(
+                  rightContentHeight,
+                  percentTop
+                )
+              ) + LuigiElements.getShellbar().clientHeight;
 
-            const calculated = SplitViewSvc.normalizeTreshHolds(
+            const calculated = SplitViewSvc.enforceTreshHolds(
               newTop,
-              window.innerHeight - newTop
+              window.innerHeight - newTop,
+              thresholdTop,
+              thresholdBottom
             );
             top = calculated.top;
             bottom = calculated.bottom;
@@ -130,7 +141,11 @@
             // In case setSize gets called before expanding, we're setting
             // the stored split view values
             if (this.get().isCollapsed) {
-              SplitViewSvc.storedSplitViewValues = { top, bottom };
+              SplitViewSvc.storedSplitViewValues = {
+                top,
+                bottom,
+                percent: e.data.data
+              };
               return;
             }
             setSplitViewSize();
@@ -149,10 +164,20 @@
 
           const dragTop = parseInt(getComputedStyle(draggableElement, '').top);
 
-          const calculated = SplitViewSvc.normalizeTreshHolds(
-            dragTop - diff,
-            window.innerHeight - dragTop - diff
+          if (isNaN(dragTop)) {
+            // happens in collapsed state on mouse over draggable
+            return;
+          }
+
+          const newTop = dragTop - diff;
+          const newBottom = window.innerHeight - newTop;
+          const calculated = SplitViewSvc.enforceTreshHolds(
+            newTop, // dragTop - diff,
+            newBottom, // window.innerHeight - dragTop - diff,
+            thresholdTop,
+            thresholdBottom
           );
+          // console.log('values', top, calculated.top, top == calculated.top, 'xx', bottom, calculated.bottom, bottom == calculated.bottom);
           top = calculated.top;
           bottom = calculated.bottom;
 
@@ -174,7 +199,6 @@
             console.log('top bottom is not defined', top, bottom);
             return;
           }
-          console.log('onMouseUp', top);
 
           setSplitViewSize();
           const newPercent = GenericHelpers.computePercentFromPx(

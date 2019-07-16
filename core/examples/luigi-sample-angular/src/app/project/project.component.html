@@ -319,9 +319,35 @@
           </app-code-snippet>
           <div *ngIf="splitViewHandle">
             Control Split View:
-            <a *ngIf="splitViewHandle.isCollapsed()" (click)="splitViewHandle.expand()">expand</a> &nbsp;
-            <a *ngIf="splitViewHandle.isExpanded()" (click)="splitViewHandle.collapse()">collapse</a> &nbsp;
-            <a *ngIf="splitViewHandle.isExpanded()" (click)="splitViewHandle.setSize(50)">setSize(50)</a> &nbsp;
+
+            <button
+              [disabled]="!splitViewHandle.isCollapsed()"
+              (click)="splitViewHandle.expand()"
+              class="fd-button"
+            >
+              expand
+            </button>
+            <button
+              [disabled]="!splitViewHandle.isExpanded()"
+              (click)="splitViewHandle.collapse()"
+              class="fd-button"
+            >
+              collapse
+            </button>
+            <button
+              [disabled]="!splitViewHandle.isExpanded()"
+              (click)="splitViewHandle.setSize(50)"
+              class="fd-button"
+            >
+              setSize(50)
+            </button>
+            <button
+              [disabled]="!splitViewHandle.exists()"
+              (click)="splitViewHandle.close()"
+              class="fd-button"
+            >
+              close
+            </button>
           </div>
         </li>
         <li class="fd-list-group__item">

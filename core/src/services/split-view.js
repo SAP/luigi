@@ -11,9 +11,6 @@ class SplitViewSvcClass {
   constructor() {
     this.splitViewValues;
     this.storedSplitViewValues;
-    this.shellbarHeight;
-    this.thresholdBottom;
-    this.thresholdTop;
   }
 
   getSplitViewContainer() {
@@ -100,29 +97,22 @@ class SplitViewSvcClass {
       const top = parseInt(
         GenericHelpers.computePxFromPercent(rightContentHeight, percentTop)
       );
-
-      console.log('calculateInitialValues', percentBottom, bottom, top);
+      console.log('setting percentBottom', percentTop);
       return {
-        percent: percentBottom,
+        percent: percentTop,
         bottom,
         top
       };
     }
   }
 
-  normalizeTreshHolds(top, bottom) {
-    if (!this.shellbarHeight) {
-      this.shellbarHeight = LuigiElements.getShellbar().clientHeight;
-      this.thresholdBottom = 30;
-      this.thresholdTop = this.shellbarHeight + 30;
-    }
-
-    if (top <= this.thresholdTop) {
-      top = this.thresholdTop;
-      bottom = window.innerHeight - this.thresholdTop;
-    } else if (bottom <= this.thresholdBottom) {
-      top = window.innerHeight - this.thresholdBottom;
-      bottom = this.thresholdBottom;
+  enforceTreshHolds(top, bottom, thresholdTop, thresholdBottom) {
+    if (top <= thresholdTop) {
+      top = thresholdTop;
+      bottom = window.innerHeight - thresholdTop;
+    } else if (bottom <= thresholdBottom) {
+      top = window.innerHeight - thresholdBottom;
+      bottom = thresholdBottom;
     }
     return { top, bottom };
   }
@@ -157,7 +147,14 @@ class SplitViewSvcClass {
 
   expandSplitView(comp) {
     if (comp.get().splitViewIframe) {
+      this.sendClientEvent('internal', {
+        exists: true,
+        size: this.storedSplitViewValues.percent,
+        isCollapsed: false,
+        isExpanded: true
+      });
       this.sendClientEvent('expand');
+
       this.setDeep(comp, 'mfSplitView', {
         isDisplayed: true,
         isCollapsed: false
@@ -181,6 +178,17 @@ class SplitViewSvcClass {
       comp
         .getUnsavedChangesModalPromise(comp.get().splitViewIframe.contentWindow)
         .then(() => {
+          console.log(
+            'collapse',
+            this.splitViewValues,
+            this.storedSplitViewValues
+          );
+          this.sendClientEvent('internal', {
+            exists: true,
+            size: this.splitViewValues.percent,
+            isCollapsed: true,
+            isExpanded: false
+          });
           this.sendClientEvent('collapse');
           this.setDeep(comp, 'mfSplitView', {
             isDisplayed: true,
