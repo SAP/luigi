@@ -209,12 +209,11 @@ Returns **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/
 
 ### LuigiNavigation
 
-Use these functions for navigation related features
+Use these functions for navigation-related features.
 
 #### updateTopNavigation
 
-Refreshes top navigation badge counters
-Basically triggeres a re-render of the navigation.
+Refreshes top navigation badge counters by rendering the navigation again.
 
 ##### Examples
 
