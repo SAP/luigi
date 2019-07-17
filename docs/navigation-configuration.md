@@ -29,7 +29,6 @@ If you set the **hideSideNav** property to `true`, the left navigation disappear
 
 If you want to group some navigation nodes into a separate parent node, you can use the **category** property. The grouped navigation nodes are rendered in a dropdown. The **category** property needs a **label** and, optionally, an **icon**.
 
-
 A sample navigation structure looks as follows:
 
 ````

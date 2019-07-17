@@ -1,0 +1,43 @@
+
+{#if node && node.badgeCounter}
+{#await node.badgeCounter.count()}
+{:then count}
+<span
+  class="fd-counter fd-counter--notification"
+  aria-label="{node.badgeCounter.label}"
+>{count}</span>
+{:catch error}
+{/await}
+{/if}
+<script type="text/javascript">
+  export default {};
+</script>
+
+<style type="text/scss">
+  .fd-counter--notification {
+    transform: translate(-20%, -30%);
+  }
+
+  :global(.fd-shellbar__action) {
+    .fd-menu .fd-top-nav__icon,
+    .fd-product-switcher__body .y-full-width-list__icon {
+      position: relative;
+      margin-right: 8px;
+      min-width: 16px;
+      min-height: 16px;
+      display: inline-block;
+
+      .fd-counter--notification {
+        transform: none;
+        position: absolute;
+        top: -10px;
+        left: 10px;
+        border-radius: 8px;
+        font-size: 10px;
+        line-height: 6px;
+        display: block;
+        height: 14px;
+      }
+    }
+  }
+</style>

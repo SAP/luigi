@@ -63,4 +63,11 @@ export class OverviewComponent {
   public sendDirtyEvent() {
     uxManager().setDirtyStatus(this.isDirty);
   }
+
+  public updateBadgeCounters() {
+    window.parent.postMessage(
+      { msg: 'luigi.navigation.update-badge-counters' },
+      '*'
+    );
+  }
 }

@@ -121,6 +121,66 @@ class NavigationHelpersClass {
     return result;
   }
 
+  async generateTopNavNodes(current) {
+    const rawChildren = current.pathData[0].children;
+    let selectedNode = null;
+    let visibleNodeCount = 0;
+    let cats = {};
+    const children = [];
+    rawChildren.forEach(async node => {
+      current.pathData.forEach(n => {
+        if (!selectedNode && n === node) {
+          selectedNode = node;
+        }
+      });
+      if (!node.hideFromNav) {
+        visibleNodeCount++;
+      }
+
+      if (node.category) {
+        const catLabel = node.category.label || node.category;
+        const hasBadge = !!node.badgeCounter;
+        let badgeCount;
+        if (hasBadge) {
+          badgeCount = await node.badgeCounter.count();
+        }
+        if (cats[catLabel]) {
+          if (!cats[catLabel].icon) {
+            cats[catLabel].icon = node.category.icon;
+          }
+          if (hasBadge && !cats[catLabel].badgeCounter) {
+            cats[catLabel].badgeCounter = {
+              label: '',
+              count: () => badgeCount
+            };
+          } else if (hasBadge) {
+            const updatedCount =
+              cats[catLabel].badgeCounter.count() + badgeCount;
+            cats[catLabel].badgeCounter.count = () => updatedCount;
+          }
+        } else {
+          cats[catLabel] = {
+            isCat: true,
+            label: catLabel,
+            icon: node.category.icon,
+            children: [],
+            badgeCounter: hasBadge && { label: '', count: () => badgeCount }
+          };
+          children.push(cats[catLabel]);
+        }
+        cats[catLabel].children.push(node);
+      } else {
+        children.push(node);
+      }
+    });
+    const tnd = {
+      children,
+      selectedNode,
+      visibleNodeCount
+    };
+    return tnd;
+  }
+
   loadExpandedCategories() {
     let expandedList = [];
     const expString = localStorage.getItem(this.EXP_CAT_KEY);
