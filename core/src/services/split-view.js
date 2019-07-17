@@ -97,7 +97,7 @@ class SplitViewSvcClass {
       const top = parseInt(
         GenericHelpers.computePxFromPercent(rightContentHeight, percentTop)
       );
-      console.log('setting percentBottom', percentBottom + '%', bottom, top);
+
       return {
         percent: percentBottom,
         bottom,
@@ -217,7 +217,7 @@ class SplitViewSvcClass {
   }
 
   sendClientEvent(name, data) {
-    console.log('sending event ' + name + ' to client');
+    console.log(`%c${name}`, 'color: green;', 'event sent to to client', data);
     IframeHelpers.sendMessageToVisibleIframes({
       msg: `luigi-client.navigation.splitview.${name}`,
       data

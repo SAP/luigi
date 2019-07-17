@@ -1,5 +1,6 @@
 import { LuigiClientBase } from './baseClass';
 import { helpers } from './helpers';
+import { splitViewHandle } from './splitViewHandle';
 
 /**
  * The Link Manager allows you to navigate to another route. Use it instead of an internal router to:
@@ -13,7 +14,7 @@ export class linkManager extends LuigiClientBase {
    * @private
    */
   constructor(values) {
-    // @param {Object} values TODO: is it necessary at all, where is it used?
+    // @param {object} values TODO: is it necessary at all, where is it used?
     super();
     Object.assign(this, values);
 
@@ -25,13 +26,6 @@ export class linkManager extends LuigiClientBase {
       fromClosestContext: false,
       relative: false,
       link: ''
-    };
-
-    this.splitView = {
-      exists: false,
-      size: 0,
-      isCollapsed: false,
-      isExpanded: true
     };
   }
 
@@ -101,101 +95,14 @@ export class linkManager extends LuigiClientBase {
    * @param {Object} splitViewSettings opens a view in a split view. Use these settings to configure the split view's behaviour
    * @param {string} splitViewSettings.title split view title. By default, it is the node label. If there is no label, it is left empty
    * @param {number} [splitViewSettings.size=40] size of the split view in percent
+   * @returns {Object} instance of SplitView
+   * @see {@link splitView} for further documentation about the returned instance
    * @example
-   * LuigiClient.linkManager().openAsSplitView('projects/pr1/logs', {title: 'Logs', size: 40});
+   * const splitViewHandle = LuigiClient.linkManager().openAsSplitView('projects/pr1/logs', {title: 'Logs', size: 40});
    */
   openAsSplitView(path, splitViewSettings) {
     this.navigate(path, 0, true, undefined, splitViewSettings || {});
-    const sendSplitViewAction = (action, data) => {
-      window.parent.postMessage({
-        msg: `luigi.navigation.splitview.${action}`,
-        data
-      });
-    };
-
-    this.splitView.size = splitViewSettings.size;
-
-    helpers.addEventListener(
-      `luigi-client.navigation.splitview.internal`,
-      e => {
-        Object.assign(this.splitView, e.data.data);
-      }
-    );
-
-    helpers.addEventListener(`luigi-client.navigation.splitview.resize`, e => {
-      this.splitView.size = e.data.data;
-    });
-    helpers.addEventListener(
-      `luigi-client.navigation.splitview.collapse`,
-      () => {
-        this.splitView.isCollapsed = true;
-      }
-    );
-    helpers.addEventListener(`luigi-client.navigation.splitview.expand`, () => {
-      this.splitView.isCollapsed = false;
-    });
-
-    return {
-      /**
-       * Collapses the split view
-       */
-      collapse: () => sendSplitViewAction('collapse'),
-      /**
-       * Expands the split view
-       */
-      expand: () => sendSplitViewAction('expand'),
-      /**
-       * Sets the height of the split view
-       * @param {number} value lower height in percent
-       */
-      setSize: value => sendSplitViewAction('set-size', value),
-      // TODO: separate ticket
-      // setSize: value => sendSplitViewAction('set-size', value),
-      /**
-       * Registers a listener for split view events
-       *
-       * @param {enum} key a set of predefined events: expand, collaps, resize, close
-       * @param {function} callback gets called when this event occurs
-       * @returns {string} listener id
-       **/
-      on: (key, callback) => {
-        return helpers.addEventListener(
-          `luigi-client.navigation.splitview.${key}`,
-          e => callback(e.data.data)
-        );
-      },
-      /**
-       * Unregisters a split view listener
-       *
-       * @param {string} id listener id
-       */
-      removeEventListener: id => helpers.removeEventListener(id),
-      // TODO: check if we want to provide removeListener, alterantively as last param in the callback or do not provide it
-      // removeListener: (id) => { return helpers.removeEventListener(id); },
-      /**
-       * Collapses the split view
-       * @returns {boolean} true if a split view is loaded
-       */
-      exists: () => this.splitView.exists,
-      /**
-       * Reads the size of the split view
-       * @returns {number} height in percent
-       */
-      getSize: () => this.splitView.size,
-      /**
-       * Reads the collapse status
-       * @returns {boolean} true if the split view is currently collapsed
-       */
-      isCollapsed: () => this.splitView.isCollapsed,
-      /**
-       * Reads the expand status
-       * @returns {boolean} true if the split view is currently expanded
-       */
-      isExpanded: () => !this.splitView.isCollapsed,
-
-      // TODO: Close: Requires destroying of the handle
-      close: () => sendSplitViewAction('close')
-    };
+    return new splitViewHandle(splitViewSettings);
   }
 
   /**

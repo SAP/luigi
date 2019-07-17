@@ -129,6 +129,8 @@ LuigiClient.linkManager().openAsModal('projects/pr1/users', {title:'Users', size
 
 ### openAsSplitView
 
+-   **See: [splitView](#splitview) for further documentation about the returned instance**
+
 Opens a view in a splitted view. You can specify the split view's title and size. If you don't specify the title, it is the node label. If there is no node label, the title remains empty.  The default size of the split view is `l`, which means 80%. You can also use `m` (60%) and `s` (40%) to set the split view size. Optionally, use it in combination with any of the navigation functions.
 
 #### Parameters
@@ -141,8 +143,10 @@ Opens a view in a splitted view. You can specify the split view's title and size
 #### Examples
 
 ```javascript
-LuigiClient.linkManager().openAsSplitView('projects/pr1/logs', {title: 'Logs', size: 40});
+const splitViewHandle = LuigiClient.linkManager().openAsSplitView('projects/pr1/logs', {title: 'Logs', size: 40});
 ```
+
+Returns **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** instance of SplitView
 
 ### fromContext
 
@@ -234,65 +238,140 @@ LuigiClient.linkManager().goBack({ foo: 'bar' });
 LuigiClient.linkManager().goBack(true);
 ```
 
-## collapse
+## splitView
+
+The Split View 
+
+-   Actions to control the split view
+-   Event handlers
+-   Get the current state
+
+### collapse
 
 Collapses the split view
 
-## expand
+#### Examples
+
+```javascript
+splitViewHandle.collapse();
+```
+
+### expand
 
 Expands the split view
 
-## setSize
+#### Examples
+
+```javascript
+splitViewHandle.expand();
+```
+
+### setSize
 
 Sets the height of the split view
 
-### Parameters
+#### Parameters
 
 -   `value` **[number](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number)** lower height in percent
 
-## on
+#### Examples
+
+```javascript
+splitViewHandle.setSize(60);
+```
+
+### on
 
 Registers a listener for split view events
 
-### Parameters
+#### Parameters
 
--   `key` **enum** a set of predefined events: expand, collaps, resize, close
+-   `key` **enum** a set of predefined events: expand, collapse, resize, close
 -   `callback` **[function](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Statements/function)** gets called when this event occurs
 
-Returns **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** listener id
-\*
+#### Examples
 
-## removeEventListener
+```javascript
+const listenerId = splitViewHandle.on('expand', () => {});
+const listenerId = splitViewHandle.on('collapse', () => {});
+const listenerId = splitViewHandle.on('resize', () => {});
+const listenerId = splitViewHandle.on('close', () => {});
+*
+```
+
+Returns **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** listener id
+
+### removeEventListener
 
 Unregisters a split view listener
 
-### Parameters
+#### Parameters
 
 -   `id` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** listener id
 
-## exists
+#### Examples
+
+```javascript
+splitViewHandle.removeEventListener(listenerId);
+```
+
+### exists
 
 Collapses the split view
 
+#### Examples
+
+```javascript
+splitViewHandle.exists();
+```
+
 Returns **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)** true if a split view is loaded
 
-## getSize
+### getSize
 
 Reads the size of the split view
 
+#### Examples
+
+```javascript
+splitViewHandle.getSize();
+```
+
 Returns **[number](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number)** height in percent
 
-## isCollapsed
+### isCollapsed
 
 Reads the collapse status
 
+#### Examples
+
+```javascript
+splitViewHandle.isCollapsed();
+```
+
 Returns **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)** true if the split view is currently collapsed
 
-## isExpanded
+### isExpanded
 
 Reads the expand status
 
+#### Examples
+
+```javascript
+splitViewHandle.isExpanded();
+```
+
 Returns **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)** true if the split view is currently expanded
+
+### close
+
+Closes and destroys the split view
+
+#### Examples
+
+```javascript
+splitViewHandle.close();
+```
 
 ## uxManager
 

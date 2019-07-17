@@ -66,7 +66,6 @@ export class ProjectComponent implements OnInit, OnDestroy {
   private unsubscribeSplitViewHandlers() {
     if (this.splitViewHandle) {
       this.splitViewListeners.forEach(id => {
-        console.log('call removing listener:', id);
         this.splitViewHandle.removeEventListener(id);
       });
     }
