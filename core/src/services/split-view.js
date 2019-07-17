@@ -139,8 +139,7 @@ class SplitViewSvcClass {
     this.sendClientEvent('internal', {
       exists: true,
       size: this.splitViewValues.percent,
-      isCollapsed: mfSplitView.isCollapsed,
-      isExpanded: !mfSplitView.isCollapsed
+      isCollapsed: mfSplitView.isCollapsed
     });
     comp.set({ mfSplitView, splitViewValues: this.splitViewValues });
   }
@@ -150,8 +149,7 @@ class SplitViewSvcClass {
       this.sendClientEvent('internal', {
         exists: true,
         size: this.storedSplitViewValues.percent,
-        isCollapsed: false,
-        isExpanded: true
+        isCollapsed: false
       });
       this.sendClientEvent('expand');
 
@@ -177,8 +175,7 @@ class SplitViewSvcClass {
           this.sendClientEvent('internal', {
             exists: true,
             size: this.splitViewValues.percent,
-            isCollapsed: true,
-            isExpanded: false
+            isCollapsed: true
           });
           this.sendClientEvent('collapse');
           this.setDeep(comp, 'mfSplitView', {

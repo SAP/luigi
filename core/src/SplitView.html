@@ -33,6 +33,7 @@
     thresholdBottom,
     top,
     bottom,
+    percentBottom,
     draggableElement,
     iframeElement,
     splitElement;
@@ -69,7 +70,7 @@
       draggableElement.style.top = `${top}px`;
     }
 
-    SplitViewSvc.splitViewValues = { top, bottom };
+    SplitViewSvc.splitViewValues = { top, bottom, percent: percentBottom };
     splitElement.style.top = `${top}px`;
     iframeElement.style.paddingBottom = `${bottom}px`;
   };
@@ -120,7 +121,8 @@
             this.expand();
           }
           if ('luigi.navigation.splitview.set-size' === e.data.msg) {
-            const percentTop = 100 - parseInt(e.data.data);
+            percentBottom = e.data.data;
+            const percentTop = 100 - parseInt(percentBottom);
             const newTop =
               parseInt(
                 GenericHelpers.computePxFromPercent(
@@ -144,11 +146,12 @@
               SplitViewSvc.storedSplitViewValues = {
                 top,
                 bottom,
-                percent: e.data.data
+                percent: percentBottom
               };
               return;
             }
             setSplitViewSize();
+            SplitViewSvc.sendClientEvent('resize', percentBottom);
           }
         });
       }
@@ -172,12 +175,12 @@
           const newTop = dragTop - diff;
           const newBottom = window.innerHeight - newTop;
           const calculated = SplitViewSvc.enforceTreshHolds(
-            newTop, // dragTop - diff,
-            newBottom, // window.innerHeight - dragTop - diff,
+            newTop,
+            newBottom,
             thresholdTop,
             thresholdBottom
           );
-          // console.log('values', top, calculated.top, top == calculated.top, 'xx', bottom, calculated.bottom, bottom == calculated.bottom);
+
           top = calculated.top;
           bottom = calculated.bottom;
 
@@ -200,11 +203,11 @@
           }
 
           setSplitViewSize();
-          const newPercent = GenericHelpers.computePercentFromPx(
+          percent = GenericHelpers.computePercentFromPx(
             rightContentHeight,
             bottom
           );
-          SplitViewSvc.sendClientEvent('resize', newPercent);
+          SplitViewSvc.sendClientEvent('resize', percent);
           document.removeEventListener('mousemove', resize, false);
         }
 

@@ -18,8 +18,7 @@ export class splitViewHandle extends LuigiClientBase {
     this.splitView = {
       exists: true,
       size: 0,
-      isCollapsed: false,
-      isExpanded: true
+      isCollapsed: false
     };
 
     Object.assign(this, settings);
