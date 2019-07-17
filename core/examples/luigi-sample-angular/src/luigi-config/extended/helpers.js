@@ -94,6 +94,17 @@ const projectDetailNavProviderFn = context =>
     });
   });
 
+export const projectsCounterFn = context =>
+  new Promise(resolve => {
+    getAllProjects().then(function(result) {
+      if (result.length) {
+        resolve(result.length);
+      } else {
+        resolve(undefined);
+      }
+    });
+  });
+
 export const projectsNavProviderFn = context =>
   new Promise(resolve => {
     getAllProjects().then(function(result) {
@@ -139,3 +150,10 @@ export const navigationPermissionChecker = (
     mockCurrentUserGroups.includes(c)
   );
 };
+
+let mockBadgeCount = 0;
+setInterval(() => {
+  mockBadgeCount++;
+  // Luigi.navigation().updateTopNavigation(); // update top navigation with each count update
+}, 5000);
+export const getMockBadgeCount = () => mockBadgeCount;

@@ -57,6 +57,17 @@ import {
 
 ## Development
 
+### Development guidelines for micro frontend developers
+
+For security reasons, follow these guidelines when developing a micro frontend:
+
+- Make the micro frontend accessible only through HTTPS.
+- Add Content Security Policies (CSPs).
+- Make the Access-Control-Allow-Origin HTTP header as restrictive as possible.
+>**NOTE**: Luigi follows these [sandbox rules for iframes](https://github.com/SAP/luigi/blob/af1deebb392dcec6490f72576e32eb5853a894bc/core/src/utilities/helpers/iframe-helpers.js#L140).
+
+
+
 ### Code formatting for contributors
 
 All projects in the repository use [Prettier](https://prettier.io) to format source code. Run the `npm install` command in the root folder to install it along with [husky](https://github.com/typicode/husky), the Git hooks manager. Both tools ensure proper codebase formatting before committing it.

@@ -1,10 +1,12 @@
 import {
   navigationPermissionChecker,
   projectsNavProviderFn,
+  projectsCounterFn,
   addProject,
   removeProject,
   getProjectCount,
-  projectExists
+  projectExists,
+  getMockBadgeCount
 } from './helpers';
 
 class Navigation {
@@ -25,7 +27,11 @@ class Navigation {
       pathSegment: 'projects',
       label: 'Projects',
       viewUrl: '/sampleapp.html#/projects',
-      children: projectsNavProviderFn
+      children: projectsNavProviderFn,
+      badgeCounter: {
+        label: 'Number of projects',
+        count: projectsCounterFn
+      }
     },
     {
       hideFromNav: true,
@@ -60,7 +66,7 @@ class Navigation {
       viewGroup: 'tets'
     },
     {
-      category: { label: 'Misc', icon: 'lightbulb' },
+      category: { label: 'Misc', icon: 'badge' },
       label: 'Open Google in this tab',
       externalLink: {
         url: 'http://google.com',
@@ -117,6 +123,36 @@ class Navigation {
       viewUrl: '/assets/404.html',
       hideFromNav: true,
       hideSideNav: true
+    },
+    {
+      category: { label: 'Messages', icon: 'lightbulb' },
+      label: 'Errors',
+      viewUrl: '/sampleapp.html#/projects/pr1/dynamic/errors',
+      icon: 'alert',
+      badgeCounter: {
+        label: 'Number of Errors',
+        count: () => 2
+      }
+    },
+    {
+      category: 'Messages',
+      label: 'Warnings',
+      viewUrl: '/sampleapp.html#/projects/pr1/dynamic/warnings',
+      icon: 'message-warning',
+      badgeCounter: {
+        label: 'Number of Warnings',
+        count: () => 5
+      }
+    },
+    {
+      category: 'Messages',
+      label: 'Notifications',
+      viewUrl: '/sampleapp.html#/projects/pr1/dynamic/notifications',
+      icon: 'ui-notifications',
+      badgeCounter: {
+        label: 'Number of Notifications',
+        count: getMockBadgeCount
+      }
     }
   ];
 
