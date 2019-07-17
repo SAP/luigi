@@ -26,7 +26,7 @@ class SplitViewSvcClass {
   getDefaultData() {
     return {
       mfSplitView: {
-        isDisplayed: false,
+        displayed: false,
         settings: {}
       }
     };
@@ -56,13 +56,13 @@ class SplitViewSvcClass {
     if (!splitViewSettings.title) {
       splitViewSettings.title = lastNode.label;
     }
-    const isCollapsed = splitViewSettings.isCollapsed || false;
+    const collapsed = splitViewSettings.collapsed || false;
     component.set({
       splitViewSettings,
       lastNode,
       pathData,
       nodeParams,
-      isCollapsed,
+      collapsed,
       isDataPrepared: true
     });
   }
@@ -125,8 +125,8 @@ class SplitViewSvcClass {
 
   open(comp, nodepath, settings) {
     const mfSplitView = {
-      isDisplayed: true,
-      isCollapsed: false, // settings.collapsed === true, // TODO: separate ticket
+      displayed: true,
+      collapsed: false, // settings.collapsed === true, // TODO: separate ticket
       nodepath,
       settings
     };
@@ -139,7 +139,7 @@ class SplitViewSvcClass {
     this.sendClientEvent('internal', {
       exists: true,
       size: this.splitViewValues.percent,
-      isCollapsed: mfSplitView.isCollapsed
+      collapsed: mfSplitView.collapsed
     });
     comp.set({ mfSplitView, splitViewValues: this.splitViewValues });
   }
@@ -149,13 +149,13 @@ class SplitViewSvcClass {
       this.sendClientEvent('internal', {
         exists: true,
         size: this.storedSplitViewValues.percent,
-        isCollapsed: false
+        collapsed: false
       });
       this.sendClientEvent('expand');
 
       this.setDeep(comp, 'mfSplitView', {
-        isDisplayed: true,
-        isCollapsed: false
+        displayed: true,
+        collapsed: false
       });
 
       this.getContainer().style.top = `${this.storedSplitViewValues.top}px`;
@@ -175,12 +175,12 @@ class SplitViewSvcClass {
           this.sendClientEvent('internal', {
             exists: true,
             size: this.splitViewValues.percent,
-            isCollapsed: true
+            collapsed: true
           });
           this.sendClientEvent('collapse');
           this.setDeep(comp, 'mfSplitView', {
-            isDisplayed: true,
-            isCollapsed: true
+            displayed: true,
+            collapsed: true
           });
           this.storedSplitViewValues = Object.assign({}, this.splitViewValues);
           this.getContainer().style.top = '';
@@ -195,8 +195,8 @@ class SplitViewSvcClass {
         .getUnsavedChangesModalPromise(comp.get().splitViewIframe.contentWindow)
         .then(() => {
           this.setDeep(comp, 'mfSplitView', {
-            isDisplayed: false,
-            isCollapsed: false
+            displayed: false,
+            collapsed: false
           });
           Iframe.getIframeContainer().style.paddingBottom = '';
           this.sendClientEvent('close');

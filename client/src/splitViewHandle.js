@@ -18,7 +18,7 @@ export class splitViewHandle extends LuigiClientBase {
     this.splitView = {
       exists: true,
       size: 0,
-      isCollapsed: false
+      collapsed: false
     };
 
     Object.assign(this, settings);
@@ -40,13 +40,13 @@ export class splitViewHandle extends LuigiClientBase {
       helpers.addEventListener(
         `luigi-client.navigation.splitview.collapse`,
         () => {
-          this.splitView.isCollapsed = true;
+          this.splitView.collapsed = true;
         }
       ),
       helpers.addEventListener(
         `luigi-client.navigation.splitview.expand`,
         () => {
-          this.splitView.isCollapsed = false;
+          this.splitView.collapsed = false;
         }
       )
     ];
@@ -151,7 +151,7 @@ export class splitViewHandle extends LuigiClientBase {
    * splitViewHandle.isCollapsed();
    */
   isCollapsed() {
-    return this.splitView.isCollapsed;
+    return this.splitView.collapsed;
   }
   /**
    * Reads the expand status
@@ -161,7 +161,7 @@ export class splitViewHandle extends LuigiClientBase {
    * splitViewHandle.isExpanded();
    */
   isExpanded() {
-    return !this.splitView.isCollapsed;
+    return !this.splitView.collapsed;
   }
 
   /**

@@ -44,7 +44,7 @@ describe('SplitViewSvc', () => {
   it('getDefaultData', () => {
     assert.deepEqual(SplitViewSvc.getDefaultData(), {
       mfSplitView: {
-        isDisplayed: false,
+        displayed: false,
         settings: {}
       }
     });

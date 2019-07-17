@@ -1,6 +1,6 @@
 <svelte:window on:resize="onResize()"/>
 <div class="lui-split-view">
-  {#if isCollapsed}
+  {#if collapsed}
   <div class="splitViewSeparator isCollapsed">
     <a class="lui-collapse-btn" on:click:stopPropagation="expand(event)">
       <span class="sap-icon--collapse-group sap-icon--s"></span>
@@ -33,14 +33,14 @@
     thresholdBottom,
     top,
     bottom,
-    percentBottom,
+    percent,
     draggableElement,
     iframeElement,
     splitElement;
 
   const getNode = async (component, path) => {
     if (component.get().isDataPrepared) {
-      if (!component.get().isCollapsed) {
+      if (!component.get().collapsed) {
         SplitViewSvc.createAndSetView(component);
       }
     } else {
@@ -70,7 +70,7 @@
       draggableElement.style.top = `${top}px`;
     }
 
-    SplitViewSvc.splitViewValues = { top, bottom, percent: percentBottom };
+    SplitViewSvc.splitViewValues = { top, bottom, percent };
     splitElement.style.top = `${top}px`;
     iframeElement.style.paddingBottom = `${bottom}px`;
   };
@@ -121,8 +121,8 @@
             this.expand();
           }
           if ('luigi.navigation.splitview.set-size' === e.data.msg) {
-            percentBottom = e.data.data;
-            const percentTop = 100 - parseInt(percentBottom);
+            percent = parseInt(e.data.data);
+            const percentTop = 100 - percent;
             const newTop =
               parseInt(
                 GenericHelpers.computePxFromPercent(
@@ -142,16 +142,16 @@
 
             // In case setSize gets called before expanding, we're setting
             // the stored split view values
-            if (this.get().isCollapsed) {
+            if (this.get().collapsed) {
               SplitViewSvc.storedSplitViewValues = {
                 top,
                 bottom,
-                percent: percentBottom
+                percent
               };
               return;
             }
             setSplitViewSize();
-            SplitViewSvc.sendClientEvent('resize', percentBottom);
+            SplitViewSvc.sendClientEvent('resize', percent);
           }
         });
       }
