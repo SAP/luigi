@@ -11,7 +11,7 @@ describe('TopNavDropDown', () => {
 
     it('Clicking around drop down in TopNav', () => {
       //check if google is there
-      cy.get('[data-e2e="topnav-category"]').click();
+      cy.get('[data-e2e="topnav-category"][title="Misc"]').click();
 
       cy.get('[data-e2e="topnav-dropdown-item"]').contains(
         'Open Google in this tab'
@@ -34,7 +34,9 @@ describe('TopNavDropDown', () => {
       cy.get('[data-cy="mobile-menu"]').click();
 
       //open mobile topnav dropdown
-      cy.get('[data-cy="mobile-topnav-dropdown-category"]').click();
+      cy.get(
+        '[data-cy="mobile-topnav-dropdown-category"][title="Misc"]'
+      ).click();
 
       cy.get('[data-cy="mobile-topnav-dropdown-item"]')
         .contains('Visible for all users')
@@ -47,7 +49,9 @@ describe('TopNavDropDown', () => {
       cy.get('[data-cy="mobile-menu"]').click();
 
       //open mobile topnav dropdown
-      cy.get('[data-cy="mobile-topnav-dropdown-category"]').click();
+      cy.get(
+        '[data-cy="mobile-topnav-dropdown-category"][title="Misc"]'
+      ).click();
 
       //close mobile topnav dropdown
       cy.get('[data-cy="mobile-topnav-dropdown-close"]').click();

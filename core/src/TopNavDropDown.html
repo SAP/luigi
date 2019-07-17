@@ -6,15 +6,14 @@
     {#each children as node}
     <li on:click="onActionClick(node)" data-e2e="topnav-dropdown-item">
       <a class="fd-menu__item">
-        {#if node.icon}
-        {#if hasOpenUIicon(node)}
         <span
-          class="fd-top-nav__icon sap-icon--{node.icon} sap-icon--m"
-        ></span>
-        {:else}
-        <img class="fd-top-nav__icon nav-icon" src="{node.icon}">
-        {/if}
-        {/if}
+          class="fd-top-nav__icon {node.icon && hasOpenUIicon(node) ? 'sap-icon--' + node.icon + ' sap-icon--m' : '' }"
+        >
+          {#if !hasOpenUIicon(node)}
+          <img src="{node.icon}">
+          {/if}
+          <BadgeCounter {node}/>
+        </span>
         <span>{node.label}</span>
       </a>
     </li>
@@ -52,24 +51,15 @@
               on:click="onActionClick(node)"
               data-cy="mobile-topnav-dropdown-item"
             >
-              {#if node.icon} {#if hasOpenUIicon(node)}
               <span
-                class="y-full-width-list__icon sap-icon--{node.icon} sap-icon--m"
-              ></span>
-              {:else}
-              <img
-                class="y-full-width-list__icon nav-icon"
-                src="{node.icon}"
+                class="y-full-width-list__icon {node.icon && hasOpenUIicon(node) ? 'sap-icon--' + node.icon + ' sap-icon--m' : '' }"
               >
-              {/if}
-              {:else}
-              <span
-                class="y-full-width-list__icon"
-              ></span>
-              {/if}
-              <span
-                class="y-full-width-list__title"
-              >{node.label}</span>
+                {#if !hasOpenUIicon(node)}
+                <img src="{node.icon}">
+                {/if}
+                <BadgeCounter {node}/>
+              </span>
+              <span class="y-full-width-list__title">{node.label}</span>
             </li>
             {/each}
             {/if}
@@ -81,6 +71,7 @@
 </section>
 {/if}
 <script type="text/javascript">
+  import BadgeCounter from './navigation/BadgeCounter.html';
   import { Routing } from './services/routing';
   import { Navigation } from './navigation/services/navigation';
   import { NavigationHelpers } from './utilities/helpers';
@@ -91,8 +82,8 @@
       let children = this.get().children;
       if (!children) {
         children = await Navigation.getChildren(currentNode);
-        this.set({ children });
       }
+      this.set({ children });
     },
     methods: {
       onActionClick(node) {
@@ -120,6 +111,9 @@
       hasOpenUIicon(node) {
         return NavigationHelpers.isOpenUIiconName(node.icon);
       }
+    },
+    components: {
+      BadgeCounter
     }
   };
 </script>
@@ -135,11 +129,14 @@
     }
   }
 
-  @media (max-width: 600px) {
-    .y-full-width-list__icon {
-      padding-left: 15px;
+  .fd-top-nav__icon {
+    img {
+      width: 16px;
+      vertical-align: top;
     }
+  }
 
+  @media (max-width: 600px) {
     .y-full-width-list__item {
       padding: 10px 5px !important;
     }
@@ -215,15 +212,6 @@
           font-weight: bold;
         }
       }
-    }
-
-    &__icon {
-      vertical-align: middle;
-      width: 40px;
-      height: 40px;
-      grid-row: 1 / 3;
-      background-position: center;
-      background-size: cover;
     }
 
     &__title {
