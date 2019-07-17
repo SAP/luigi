@@ -87,7 +87,7 @@ describe('Navigation', () => {
   });
 
   describe('Node activation hook', () => {
-    const nodeActivationPath = '/on-node-activation';
+    const nodeActivationPath = '/projects/pr1/on-node-activation';
     it('does not navigate - synchronously', () => {
       cy.visit(nodeActivationPath);
 
@@ -103,18 +103,14 @@ describe('Navigation', () => {
       });
     });
 
-    it('does not navigate - asynchronously', () => {
+    it('does not navigate - asynchronously (from left navigation)', () => {
       cy.visit(nodeActivationPath);
 
-      cy.getIframeBody().then($iframeBody => {
-        cy.wrap($iframeBody)
-          .find('[data-e2e="node-activation-conditional-navigation"]')
-          .click();
+      cy.get('.sap-icon--question-mark').click();
 
-        cy.get('[data-cy=luigi-modal-dismiss]').click();
+      cy.get('[data-cy=luigi-modal-dismiss]').click();
 
-        cy.expectPathToBe(nodeActivationPath);
-      });
+      cy.expectPathToBe(nodeActivationPath);
     });
 
     it('navigates - asynchronously', () => {

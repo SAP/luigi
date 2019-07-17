@@ -58,7 +58,7 @@ export class OverviewComponent {
       description: 'navigation node configuration to redirect to another path'
     },
     {
-      link: '/on-node-activation',
+      link: '/projects/pr1/on-node-activation',
       text: 'Navigation node with node activation hook',
       description:
         'The navigation is not triggered when the method returns either false or a promise that resolves to false'
