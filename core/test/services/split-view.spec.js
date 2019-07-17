@@ -50,18 +50,14 @@ describe('SplitViewSvc', () => {
     });
   });
 
-  describe('setSplitViewIframe', () => {
+  describe('setIframe', () => {
     it('without viewUrl', () => {
       const frame = { frame: 1 };
       const splitFrame = { frame: 2 };
       document.querySelector.returns({ appendChild: sinon.spy() });
       IframeHelpers.createIframe.returns(splitFrame);
 
-      const res = SplitViewSvc.setSplitViewIframe(
-        null,
-        'componentData',
-        'component'
-      );
+      const res = SplitViewSvc.setIframe(null, 'componentData', 'component');
 
       sinon.assert.calledWith(IframeHelpers.createIframe, null);
       sinon.assert.notCalled(RoutingHelpers.substituteViewUrl);
@@ -75,7 +71,7 @@ describe('SplitViewSvc', () => {
       IframeHelpers.createIframe.returns(splitFrame);
       RoutingHelpers.substituteViewUrl.returns('otherUrl');
 
-      const res = SplitViewSvc.setSplitViewIframe(
+      const res = SplitViewSvc.setIframe(
         'viewUrl',
         'componentData',
         'component'

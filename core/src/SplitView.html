@@ -40,7 +40,7 @@
   const getNode = async (component, path) => {
     if (component.get().isDataPrepared) {
       if (!component.get().isCollapsed) {
-        SplitViewSvc.createAndSetSplitView(component);
+        SplitViewSvc.createAndSetView(component);
       }
     } else {
       await SplitViewSvc.prepareSplitViewData(component, path);
@@ -49,16 +49,16 @@
 
   const setElements = () => {
     if (!splitElement) {
-      splitElement = SplitViewSvc.getSplitViewContainer();
+      splitElement = SplitViewSvc.getContainer();
     }
     if (!iframeElement) {
       iframeElement = Iframe.getIframeContainer();
     }
-    draggableElement = SplitViewSvc.getSplitViewDragger();
+    draggableElement = SplitViewSvc.getDragger();
   };
 
   const setSplitViewSize = () => {
-    const draggerBackdrop = SplitViewSvc.getSplitViewDraggerBackdrop();
+    const draggerBackdrop = SplitViewSvc.getDraggerBackdrop();
     if (draggerBackdrop) {
       draggerBackdrop.style.display = 'none';
     }
@@ -90,11 +90,11 @@
     },
     methods: {
       collapse() {
-        SplitViewSvc.collapseSplitView(this.root);
+        SplitViewSvc.collapse(this.root);
       },
       expand() {
-        SplitViewSvc.expandSplitView(this.root);
-        SplitViewSvc.getSplitViewDraggerBackdrop().style.display = 'none';
+        SplitViewSvc.expand(this.root);
+        SplitViewSvc.getDraggerBackdrop().style.display = 'none';
       },
       onResize() {
         const shellbarHeight = LuigiElements.getShellbar().clientHeight;
@@ -188,7 +188,7 @@
           if (e.offsetY < dragBorderSize) {
             setElements();
             m_pos = e.y;
-            SplitViewSvc.getSplitViewDraggerBackdrop().style.display = 'block';
+            SplitViewSvc.getDraggerBackdrop().style.display = 'block';
             document.addEventListener('mousemove', resize, false);
           }
         }
@@ -196,7 +196,6 @@
 
         function onMouseUp() {
           if (!top || !bottom) {
-            console.log('top bottom is not defined', top, bottom);
             return;
           }
 

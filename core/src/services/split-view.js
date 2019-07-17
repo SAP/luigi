@@ -13,13 +13,13 @@ class SplitViewSvcClass {
     this.storedSplitViewValues;
   }
 
-  getSplitViewContainer() {
+  getContainer() {
     return document.getElementById('splitViewContainer');
   }
-  getSplitViewDragger() {
+  getDragger() {
     return document.getElementById('splitViewDragger');
   }
-  getSplitViewDraggerBackdrop() {
+  getDraggerBackdrop() {
     return document.getElementById('splitViewDraggerBackdrop');
   }
 
@@ -32,7 +32,7 @@ class SplitViewSvcClass {
     };
   }
 
-  setSplitViewIframe(viewUrl, componentData, component) {
+  setIframe(viewUrl, componentData, component) {
     if (viewUrl) {
       viewUrl = RoutingHelpers.substituteViewUrl(viewUrl, componentData);
     }
@@ -67,10 +67,10 @@ class SplitViewSvcClass {
     });
   }
 
-  createAndSetSplitView(component) {
+  createAndSetView(component) {
     const { nodeParams, lastNode, pathData } = component.get();
 
-    const iframe = SplitViewSvc.setSplitViewIframe(
+    const iframe = this.setIframe(
       lastNode.viewUrl,
       {
         context: pathData.context,
@@ -123,7 +123,7 @@ class SplitViewSvcClass {
     });
   }
 
-  openViewInSplitView(comp, nodepath, settings) {
+  open(comp, nodepath, settings) {
     const mfSplitView = {
       isDisplayed: true,
       isCollapsed: false, // settings.collapsed === true, // TODO: separate ticket
@@ -145,7 +145,7 @@ class SplitViewSvcClass {
     comp.set({ mfSplitView, splitViewValues: this.splitViewValues });
   }
 
-  expandSplitView(comp) {
+  expand(comp) {
     if (comp.get().splitViewIframe) {
       this.sendClientEvent('internal', {
         exists: true,
@@ -160,29 +160,20 @@ class SplitViewSvcClass {
         isCollapsed: false
       });
 
-      this.getSplitViewContainer().style.top = `${
-        this.storedSplitViewValues.top
-      }px`;
+      this.getContainer().style.top = `${this.storedSplitViewValues.top}px`;
       Iframe.getIframeContainer().style.paddingBottom = `${
         this.storedSplitViewValues.bottom
       }px`;
-      this.getSplitViewDragger().style.top = `${
-        this.storedSplitViewValues.top
-      }px`;
+      this.getDragger().style.top = `${this.storedSplitViewValues.top}px`;
       this.storedSplitViewValues = undefined;
     }
   }
 
-  collapseSplitView(comp) {
+  collapse(comp) {
     if (comp.get().splitViewIframe) {
       comp
         .getUnsavedChangesModalPromise(comp.get().splitViewIframe.contentWindow)
         .then(() => {
-          console.log(
-            'collapse',
-            this.splitViewValues,
-            this.storedSplitViewValues
-          );
           this.sendClientEvent('internal', {
             exists: true,
             size: this.splitViewValues.percent,
@@ -195,7 +186,7 @@ class SplitViewSvcClass {
             isCollapsed: true
           });
           this.storedSplitViewValues = Object.assign({}, this.splitViewValues);
-          this.getSplitViewContainer().style.top = '';
+          this.getContainer().style.top = '';
           Iframe.getIframeContainer().style.paddingBottom = '';
         });
     }
@@ -217,7 +208,6 @@ class SplitViewSvcClass {
   }
 
   sendClientEvent(name, data) {
-    console.log(`%c${name}`, 'color: green;', 'event sent to to client', data);
     IframeHelpers.sendMessageToVisibleIframes({
       msg: `luigi-client.navigation.splitview.${name}`,
       data

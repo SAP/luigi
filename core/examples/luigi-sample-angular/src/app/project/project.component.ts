@@ -53,7 +53,6 @@ export class ProjectComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    console.log('ngOnDestroy of project');
     if (this.lcSubscription) {
       this.lcSubscription.unsubscribe();
     }
@@ -209,13 +208,13 @@ export class ProjectComponent implements OnInit, OnDestroy {
       });
 
     const listenerResize = this.splitViewHandle.on('resize', newSize => {
-      console.log('split view got resized to', newSize);
+      console.info('split view got resized to', newSize);
       if (!this.cdr['destroyed']) {
         this.cdr.detectChanges();
       }
     });
     const listenerExpand = this.splitViewHandle.on('expand', () => {
-      console.log(
+      console.info(
         'split view got expanded',
         'size:',
         this.splitViewHandle.getSize()
@@ -225,13 +224,13 @@ export class ProjectComponent implements OnInit, OnDestroy {
       }
     });
     const listenerCollapse = this.splitViewHandle.on('collapse', () => {
-      console.log('split view got collapsed');
+      console.info('split view got collapsed');
       if (!this.cdr['destroyed']) {
         this.cdr.detectChanges();
       }
     });
     const listenerClose = this.splitViewHandle.on('close', () => {
-      console.log('split view got closed');
+      console.info('split view got closed');
       this.unsubscribeSplitViewHandlers();
       this.splitViewHandle = undefined;
       if (!this.cdr['destroyed']) {

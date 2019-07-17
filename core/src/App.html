@@ -447,7 +447,7 @@
                   SplitViewSvc.getDefaultData()
                 )
               );
-              this.openViewInSplitView(path, e.data.params.splitView);
+              this.open(path, e.data.params.splitView);
             } else {
               this.getUnsavedChangesModalPromise().then(() => {
                 this.handleNavigation(e.data, config);
@@ -781,8 +781,8 @@
           });
         }
       },
-      openViewInSplitView(nodepath, settings) {
-        SplitViewSvc.openViewInSplitView(this, nodepath, settings);
+      open(nodepath, settings) {
+        SplitViewSvc.open(this, nodepath, settings);
       },
       closeSplitView() {
         SplitViewSvc.closeSplitView(this);
