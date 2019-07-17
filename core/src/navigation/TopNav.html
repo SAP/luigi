@@ -92,12 +92,6 @@
           <span>{node.label}</span>
           {/if}
           <!-- end node.icon -->
-          {#if node.externalLink && node.externalLink.url}
-          <span
-            class="sap-icon--action sap-icon--s"
-          ></span>
-          {/if}
-          <!-- end node.externallLink.url -->
           <BadgeCounter {node}/>
         </button>
       </div>
@@ -159,11 +153,6 @@
                         <BadgeCounter {node}/>
                       </span>
                       <span>{node.label}</span>
-                      {#if node.externalLink && node.externalLink.url}
-                      <span
-                        class="sap-icon--action sap-icon--s"
-                      ></span>
-                      {/if}
                     </a>
                   </li>
                   {:else}
