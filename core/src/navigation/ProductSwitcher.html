@@ -52,9 +52,17 @@ Object.keys(productSwitcherItems[0]).length }
     on:click="event.stopPropagation()"
   >
     <div class="fd-modal__content" role="document">
-      <div class="fd-modal__header">
-        <h1 class="fd-modal__title">My Products</h1>
-        <!-- TODO: add proper title -->
+      <div class="fd-action-bar">
+        <div class="fd-action-bar__back">
+          <button
+            class="fd-button--light fd-button--compact sap-icon--nav-back"
+            on:click="toggleDropdownState(event)"
+            data-cy="mobile-product-switcher-close"
+          ></button>
+        </div>
+        <div class="fd-action-bar__header">
+          <h5 class="fd-action-bar__title fd-has-type-1">My Products</h5>
+        </div>
       </div>
       <div class="fd-modal__body">
         <div class="fd-product-switcher__body">
@@ -65,29 +73,38 @@ Object.keys(productSwitcherItems[0]).length }
               on:click="onActionClick(productSwitcherItem)"
               class="y-full-width-list__item"
             >
-              <span
+              <!-- <span
                 class="y-full-width-list__icon"
                 style="background-image: url({productSwitcherItem.icon})"
               ></span>
               <span class="y-full-width-list__title">{productSwitcherItem.label}</span>
-              <span class="y-full-width-list__subtitle">
-                <!-- Here comes the subtitle which is unknown for now -->
-              </span>
+              <span class="y-full-width-list__subtitle">-->
+              <!-- Here comes the subtitle which is unknown for now -->
+              <!--</span> -->
+              {#if productSwitcherItem.icon} {#if hasOpenUIicon(productSwitcherItem)}
+              <span
+                class="y-full-width-list__icon sap-icon--{productSwitcherItem.icon} sap-icon--m"
+              ></span>
+              {:else}
+              <img
+                class="y-full-width-list__icon nav-icon"
+                src="{productSwitcherItem.icon}"
+              >
+              {/if}
+              {:else}
+              <span
+                class="y-full-width-list__icon"
+              ></span>
+              {/if}
+              <span
+                class="y-full-width-list__title"
+              >{productSwitcherItem.label}</span>
             </li>
             {/if}
             {/each}
           </ul>
         </div>
       </div>
-      <footer class="fd-modal__footer">
-        <div class="fd-modal__actions">
-          <button
-            class="fd-button"
-            on:click="toggleDropdownState(event)"
-            data-cy="mobile-product-switcher-close"
-          >Close</button>
-        </div>
-      </footer>
     </div>
   </div>
 </section>
@@ -96,6 +113,7 @@ Object.keys(productSwitcherItems[0]).length }
 <script type="text/javascript">
   import { LuigiConfig } from '../core-api';
   import { Routing } from '../services/routing';
+  import { NavigationHelpers } from '../utilities/helpers';
   import { StateHelpers } from '../utilities/helpers';
 
   export default {
@@ -134,6 +152,11 @@ Object.keys(productSwitcherItems[0]).length }
         let vh = window.innerHeight * 0.01;
         // set the value in the --vh custom property to the root of the document
         document.documentElement.style.setProperty('--vh', `${vh}px`);
+      }
+    },
+    helpers: {
+      hasOpenUIicon(node) {
+        return NavigationHelpers.isOpenUIiconName(node.icon);
       }
     }
   };
@@ -196,14 +219,22 @@ Object.keys(productSwitcherItems[0]).length }
     }
   }
 
+  @media (min-width: 320px) {
+    .fd-action-bar__back {
+      display: block !important;
+    }
+  }
+
   .y-full-width-list {
     width: 100%;
     text-align: left;
     list-style: none;
 
     &__item {
-      display: block;
-      padding: 12px 8px;
+      display: block !important;
+      padding: 20px 8px;
+      cursor: pointer;
+      margin-left: 40px;
       cursor: pointer;
 
       &:hover {
