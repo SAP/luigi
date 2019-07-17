@@ -60,7 +60,7 @@ describe('Modal Microfrontend', () => {
 
       cy.get('[data-e2e=modal-mf]').then(modal => {
         expect(modal.attr('style')).to.contain('width:');
-        expect(modal.attr('style')).to.contain('size:');
+        expect(modal.attr('style')).to.contain('height:');
       });
     });
 

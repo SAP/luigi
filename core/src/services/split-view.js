@@ -97,9 +97,9 @@ class SplitViewSvcClass {
       const top = parseInt(
         GenericHelpers.computePxFromPercent(rightContentHeight, percentTop)
       );
-      console.log('setting percentBottom', percentTop);
+      console.log('setting percentBottom', percentBottom + '%', bottom, top);
       return {
-        percent: percentTop,
+        percent: percentBottom,
         bottom,
         top
       };
