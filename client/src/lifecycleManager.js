@@ -96,13 +96,7 @@ class LifecycleManager extends LuigiClientBase {
         }
         // execute the context change listener if set by the microfrontend
         _callAllFns(this._onContextUpdatedFns, this.currentContext.context);
-
-        window.parent.postMessage(
-          {
-            msg: 'luigi.navigate.ok'
-          },
-          '*'
-        );
+        helpers.sendPostMessageToLuigiCore({ msg: 'luigi.navigate.ok' });
       });
 
       /**
