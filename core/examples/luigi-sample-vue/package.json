@@ -30,6 +30,9 @@
     "vue-template-compiler": "^2.5.17",
     "webpack": "^4.16.1",
     "webpack-dev-server": "^3.1.14",
-    "mem": ">=4.0.0"
+    "mem": ">=4.0.0",
+    "lodash": ">=4.17.13",
+    "lodash.defaultsdeep": ">=4.6.1",
+    "lodash.mergewith": ">=4.6.2"
   }
 }
