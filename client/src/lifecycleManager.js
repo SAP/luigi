@@ -32,15 +32,13 @@ class LifecycleManager extends LuigiClientBase {
      * with a given payload and the Luigi core domain
      * @private
      */
-    const _callAllFns = (objWithFns, ...names) => {
-      const payload = names[0];
-      const origin = names[1];
+    const _callAllFns = (objWithFns, payload, luigiCoreOrigin) => {
       for (let id in objWithFns) {
         if (
           objWithFns.hasOwnProperty(id) &&
           helpers.isFunction(objWithFns[id])
         ) {
-          objWithFns[id](payload, origin);
+          objWithFns[id](payload, luigiCoreOrigin);
         }
       }
     };
