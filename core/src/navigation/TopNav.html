@@ -19,7 +19,7 @@
       />
       {/if}
       {#if children && pathData.length > 0}
-      {#each children as node ,i}
+      {#each children as node, i}
       {#if !node.hideFromNav}
       {#if node.isCat}
       <div
@@ -52,6 +52,7 @@
               <span>{node.label}</span>
               {/if}
               <!-- end node.icon -->
+              <BadgeCounter {node}/>
             </button>
           </div>
           <div
@@ -91,6 +92,7 @@
           <span>{node.label}</span>
           {/if}
           <!-- end node.icon -->
+          <BadgeCounter {node}/>
         </button>
       </div>
       {/if}
@@ -124,9 +126,7 @@
                   aria-haspopup="true"
                   on:click="toggleDropdownState('overflowPopover')"
                   data-cy="mobile-menu"
-                >
-                  <!-- <span class="fd-counter fd-counter--notification" aria-label="Unread count">25</span> -->
-                </button>
+                ></button>
               </div>
             </div>
             <div
@@ -144,22 +144,40 @@
                       class="fd-menu__item {node === selectedNode ? 'is-selected' : ''}"
                       on:click="handleClick(node)"
                     >
-                      {#if node.icon} {#if hasOpenUIicon(node)}
                       <span
-                        class="fd-top-nav__icon sap-icon--{node.icon} sap-icon--m"
-                      ></span>
-                      {:else}
-                      <img
-                        class="fd-top-nav__icon nav-icon"
-                        src="{node.icon}"
+                        class="fd-top-nav__icon {node.icon && hasOpenUIicon(node) ? 'sap-icon--' + node.icon + ' sap-icon--m' : '' }"
                       >
-                      {/if} {/if}
+                        {#if !hasOpenUIicon(node)}
+                        <img src="{node.icon}">
+                        {/if}
+                        <BadgeCounter {node}/>
+                      </span>
                       <span>{node.label}</span>
                     </a>
                   </li>
                   {:else}
                   <li>
                     <a
+                      title="{node.label}"
+                      class="fd-menu__item"
+                      on:click="openMobileTopNavDropDown(node)"
+                      data-cy="mobile-topnav-dropdown-category"
+                    >
+                      <span
+                        class="fd-top-nav__icon {node.icon && hasOpenUIicon(node) ? 'sap-icon--' + node.icon + ' sap-icon--m' : '' }"
+                      >
+                        {#if !hasOpenUIicon(node)}
+                        <img src="{node.icon}">
+                        {/if}
+                        <BadgeCounter {node}/>
+                      </span>
+                      <span>{node.label}</span>
+                    </a>
+                  </li>
+                  <!-- {:else}
+                  <li>
+                    <a
+                      title="{node.label}"
                       class="fd-menu__item"
                       on:click="openMobileTopNavDropDown(node)"
                       data-cy="mobile-topnav-dropdown-category"
@@ -176,7 +194,8 @@
                       {/if} {/if}
                       <span>{node.label}</span>
                     </a>
-                  </li>
+                  </li>-->
+                  <!-- {/if} -->
                   {/if}
                   {/if}
                   {/each}
@@ -268,6 +287,7 @@
 {/if}
 <script type="text/javascript">
   import ContextSwitcher from './ContextSwitcher.html';
+  import BadgeCounter from './BadgeCounter.html';
   import LogoTitle from './LogoTitle.html';
   import Authorization from '../Authorization.html';
   import TopNavDropDown from '../TopNavDropDown.html';
@@ -279,49 +299,15 @@
     StateHelpers
   } from '../utilities/helpers';
 
-  const setTopNavData = (current, component) => {
+  const setTopNavData = async (current, component) => {
     if (current.pathData && 0 < current.pathData.length) {
-      const rawChildren = current.pathData[0].children;
-      let selectedNode = null;
-      let visibleNodeCount = 0;
-      let cats = {};
-      const children = [];
-      rawChildren.forEach(node => {
-        current.pathData.forEach(n => {
-          if (!selectedNode && n === node) {
-            selectedNode = node;
-          }
-        });
-        if (!node.hideFromNav) {
-          visibleNodeCount++;
-        }
-
-        if (node.category) {
-          const catLabel = node.category.label || node.category;
-          if (cats[catLabel]) {
-            if (!cats[catLabel].icon) {
-              cats[catLabel].icon = node.category.icon;
-            }
-          } else {
-            cats[catLabel] = {
-              isCat: true,
-              label: catLabel,
-              icon: node.category.icon,
-              children: []
-            };
-            children.push(cats[catLabel]);
-          }
-          cats[catLabel].children.push(node);
-        } else {
-          children.push(node);
-        }
-      });
+      const tnd = await NavigationHelpers.generateTopNavNodes(current);
       component.set({
-        children: children,
-        selectedNode: selectedNode,
-        visibleNodeCount: visibleNodeCount
+        children: tnd.children,
+        selectedNode: tnd.selectedNode,
+        visibleNodeCount: tnd.visibleNodeCount
       });
-      window.TOPNAVDATA = children;
+      window.TOPNAVDATA = tnd.children;
     }
   };
 
@@ -353,9 +339,16 @@
       this.set({
         urlAuthError: AuthHelpers.parseUrlAuthErrors()
       });
+
+      window.addEventListener('message', e => {
+        if ('luigi.navigation.update-badge-counters' === e.data.msg) {
+          setTopNavData(this.get().current, this);
+        }
+      });
     },
     onstate({ changed, current, previous }) {
       if (!previous || previous.pathData != current.pathData) {
+        this.set({ current });
         setTopNavData(current, this);
       }
       setLoggedInState(current, this);
@@ -427,7 +420,8 @@
       ContextSwitcher,
       LogoTitle,
       ProductSwitcher,
-      TopNavDropDown
+      TopNavDropDown,
+      BadgeCounter
     }
   };
 </script>
@@ -453,6 +447,13 @@
 
   .nav-icon {
     height: 100%;
+  }
+
+  .fd-top-nav__icon {
+    img {
+      width: 16px;
+      vertical-align: top;
+    }
   }
 
   .fd-popover {
