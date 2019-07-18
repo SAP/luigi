@@ -96,8 +96,8 @@ export class splitViewHandle extends LuigiClientBase {
   /**
    * Registers a listener for split view events
    * @memberof splitView
-   * @param {enum} key a set of predefined events: expand, collapse, resize, close
-   * @param {function} callback gets called when this event occurs
+   * @param {('expand'|'collapse'|'resize'|'close')} name event name
+   * @param {function} callback gets called when this event gets triggered by Luigi
    * @returns {string} listener id
    * @example
    * const listenerId = splitViewHandle.on('expand', () => {});
@@ -105,9 +105,9 @@ export class splitViewHandle extends LuigiClientBase {
    * const listenerId = splitViewHandle.on('resize', () => {});
    * const listenerId = splitViewHandle.on('close', () => {});
    **/
-  on(key, callback) {
+  on(name, callback) {
     return helpers.addEventListener(
-      `luigi-client.navigation.splitview.${key}`,
+      `luigi-client.navigation.splitview.${name}`,
       e => callback(e.data.data)
     );
   }

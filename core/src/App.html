@@ -107,7 +107,7 @@
     return paths.includes(removeQueryParams(routePath));
   };
 
-  const enableRouting = (component, node, config, callback) => {
+  const enableRouting = (component, node, config) => {
     // initial route handling
     StateHelpers.doOnStoreChange(component.store, () => {
       const currentPath = Routing.getCurrentPath();
@@ -122,9 +122,9 @@
         Iframe.removeInactiveIframes(node);
       }
 
-      if (GenericHelpers.isFunction(callback)) {
-        callback();
-      }
+      this.closeModal();
+      this.closeSplitView();
+
       Routing.handleRouteChange(path, component, node, config);
     });
   };
@@ -580,10 +580,7 @@
         // them to prevent memory leaks
         // this.on('destroy', storeListener.cancel);
 
-        enableRouting(this, node, config, () => {
-          this.closeModal();
-          this.closeSplitView();
-        });
+        enableRouting(this, node, config);
       }
     },
     methods: {

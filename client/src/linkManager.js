@@ -53,9 +53,9 @@ export class linkManager extends LuigiClientBase {
       this.options.errorSkipNavigation = false;
       return;
     }
-    if ([modalSettings, splitViewSettings].filter(obj => !!obj).length > 1) {
-      console.error(
-        'modalSettings and splitViewSettings cannot be used together. Only modal will be taken into account.'
+    if (modalSettings && splitViewSettings) {
+      console.warn(
+        'modalSettings and splitViewSettings cannot be used together. Only modal setting will be taken into account.'
       );
     }
 
@@ -100,8 +100,8 @@ export class linkManager extends LuigiClientBase {
    * @example
    * const splitViewHandle = LuigiClient.linkManager().openAsSplitView('projects/pr1/logs', {title: 'Logs', size: 40});
    */
-  openAsSplitView(path, splitViewSettings) {
-    this.navigate(path, 0, true, undefined, splitViewSettings || {});
+  openAsSplitView(path, splitViewSettings = {}) {
+    this.navigate(path, 0, true, undefined, splitViewSettings);
     return new splitViewHandle(splitViewSettings);
   }
 

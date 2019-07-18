@@ -26,11 +26,14 @@ export declare interface SplitViewSettings {
   size?: number;
 }
 
+export declare const SplitViewEvents =
+  'expand' | 'collapse' | 'resize' | 'close';
+
 export declare interface SplitViewInstance {
   collapse: () => void;
   expand: () => void;
   setSize: (value: number) => void;
-  on: (key: string, callback: () => void) => string;
+  on: (key: SplitViewEvents, callback: () => void) => string;
   exists: () => boolean;
   getSize: () => number;
   isCollapsed: () => boolean;

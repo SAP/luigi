@@ -38,12 +38,8 @@ class IframeClass {
     const iframes = Array.from(
       document.querySelectorAll('.iframeContainer iframe')
     );
-    iframeTypeArr
-      .filter(it => !!it)
-      .forEach(it => {
-        iframes.push(it);
-      });
-    return iframes;
+
+    return iframes.concat(iframeTypeArr.filter(Boolean));
   }
 
   setActiveIframeToPrevious(node) {
