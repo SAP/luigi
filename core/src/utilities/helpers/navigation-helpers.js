@@ -127,7 +127,9 @@ class NavigationHelpersClass {
     let visibleNodeCount = 0;
     let cats = {};
     const children = [];
-    rawChildren.forEach(async node => {
+    let badgeCountsToSumUp = [];
+
+    for (const node of rawChildren) {
       current.pathData.forEach(n => {
         if (!selectedNode && n === node) {
           selectedNode = node;
@@ -137,13 +139,14 @@ class NavigationHelpersClass {
         visibleNodeCount++;
       }
 
+      let badgeCount;
+      const hasBadge = !!node.badgeCounter;
+      if (hasBadge) {
+        badgeCount = await node.badgeCounter.count();
+      }
+
       if (node.category) {
         const catLabel = node.category.label || node.category;
-        const hasBadge = !!node.badgeCounter;
-        let badgeCount;
-        if (hasBadge) {
-          badgeCount = await node.badgeCounter.count();
-        }
         if (cats[catLabel]) {
           if (!cats[catLabel].icon) {
             cats[catLabel].icon = node.category.icon;
@@ -154,9 +157,8 @@ class NavigationHelpersClass {
               count: () => badgeCount
             };
           } else if (hasBadge) {
-            const updatedCount =
-              cats[catLabel].badgeCounter.count() + badgeCount;
-            cats[catLabel].badgeCounter.count = () => updatedCount;
+            badgeCount = cats[catLabel].badgeCounter.count() + badgeCount;
+            cats[catLabel].badgeCounter.count = () => badgeCount;
           }
         } else {
           cats[catLabel] = {
@@ -172,12 +174,26 @@ class NavigationHelpersClass {
       } else {
         children.push(node);
       }
-    });
+
+      if (badgeCount) {
+        badgeCountsToSumUp.push(badgeCount);
+      }
+    }
     const tnd = {
       children,
       selectedNode,
       visibleNodeCount
     };
+
+    if (badgeCountsToSumUp.length) {
+      const badgeCountSum = badgeCountsToSumUp.reduce((a, b) => a + b);
+      tnd.totalBadgeNode = {
+        badgeCounter: {
+          count: () => badgeCountSum,
+          label: ''
+        }
+      };
+    }
     return tnd;
   }
 

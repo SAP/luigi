@@ -126,7 +126,9 @@
                   aria-haspopup="true"
                   on:click="toggleDropdownState('overflowPopover')"
                   data-cy="mobile-menu"
-                ></button>
+                >
+                  <BadgeCounter node="{totalBadgeNode}" special="true"/>
+                </button>
               </div>
             </div>
             <div
@@ -305,7 +307,8 @@
       component.set({
         children: tnd.children,
         selectedNode: tnd.selectedNode,
-        visibleNodeCount: tnd.visibleNodeCount
+        visibleNodeCount: tnd.visibleNodeCount,
+        totalBadgeNode: tnd.totalBadgeNode
       });
       window.TOPNAVDATA = tnd.children;
     }
