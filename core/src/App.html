@@ -122,8 +122,8 @@
         Iframe.removeInactiveIframes(node);
       }
 
-      this.closeModal();
-      this.closeSplitView();
+      component.closeModal();
+      component.closeSplitView();
 
       Routing.handleRouteChange(path, component, node, config);
     });
