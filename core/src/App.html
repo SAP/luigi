@@ -444,7 +444,7 @@
                   SplitViewSvc.getDefaultData()
                 )
               );
-              this.open(path, e.data.params.splitView);
+              this.openSplitView(path, e.data.params.splitView);
             } else {
               this.getUnsavedChangesModalPromise().then(() => {
                 this.handleNavigation(e.data, config);
@@ -773,11 +773,11 @@
           });
         }
       },
-      open(nodepath, settings) {
+      openSplitView(nodepath, settings) {
         SplitViewSvc.open(this, nodepath, settings);
       },
       closeSplitView() {
-        SplitViewSvc.closeSplitView(this);
+        SplitViewSvc.close(this);
       },
       handleAlertDismiss(id) {
         const alert = this.getAlertWithId(this.get().alerts, id);

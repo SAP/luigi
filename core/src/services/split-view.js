@@ -189,7 +189,7 @@ class SplitViewSvcClass {
     }
   }
 
-  closeSplitView(comp) {
+  close(comp) {
     if (comp.get().splitViewIframe) {
       comp
         .getUnsavedChangesModalPromise(comp.get().splitViewIframe.contentWindow)

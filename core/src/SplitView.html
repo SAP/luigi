@@ -122,7 +122,7 @@
           // event handlers: onCollapse, onExpand, onResize
 
           if ('luigi.navigation.splitview.close' === e.data.msg) {
-            SplitViewSvc.closeSplitView(this.root);
+            SplitViewSvc.close(this.root);
           }
           if ('luigi.navigation.splitview.collapse' === e.data.msg) {
             this.collapse();
@@ -161,7 +161,7 @@
               return;
             }
             setSplitViewSize();
-            SplitViewSvc.sendMessageToClients('resize.ok', percent);
+            SplitViewSvc.sendMessageToClients('resize.ok', splitStyles.percent);
           }
         });
       }
