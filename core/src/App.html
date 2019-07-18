@@ -585,7 +585,7 @@
     },
     methods: {
       getValidMessageSource(e) {
-        IframeHelpers.getValidMessageSource(e, this);
+        return IframeHelpers.getValidMessageSource(e, this);
       },
       handleNavigation(data, config) {
         let path = buildPath(this, data.params);
