@@ -50,12 +50,23 @@ import {
   linkManager,
   uxManager
 } from '@kyma-project/luigi-client/luigi-client-ie11';
-<!-- } from '@kyma-project/luigi-client'; -->
+// } from '@kyma-project/luigi-client';
 ``` 
 
 >**NOTE**: The angular example application is not fully compatible with IE11.
 
 ## Development
+
+### Development guidelines for micro frontend developers
+
+For security reasons, follow these guidelines when developing a micro frontend:
+
+- Make the micro frontend accessible only through HTTPS.
+- Add Content Security Policies (CSPs).
+- Make the Access-Control-Allow-Origin HTTP header as restrictive as possible.
+>**NOTE**: Luigi follows these [sandbox rules for iframes](https://github.com/SAP/luigi/blob/af1deebb392dcec6490f72576e32eb5853a894bc/core/src/utilities/helpers/iframe-helpers.js#L140).
+
+
 
 ### Code formatting for contributors
 

@@ -25,6 +25,9 @@ class LuigiClient {
   getEventData() {
     return lifecycleManager.getEventData();
   }
+  getContext() {
+    return lifecycleManager.getContext();
+  }
   getNodeParams() {
     return lifecycleManager.getNodeParams();
   }
