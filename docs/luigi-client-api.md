@@ -97,7 +97,7 @@ Navigates to the given path in the application hosted by Luigi. It contains eith
     -   `modalSettings.size` **(`"l"` \| `"m"` \| `"s"`)** size of the modal (optional, default `"l"`)
 -   `splitViewSettings` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** opens a view in a split view. Use these settings to configure the split view's behaviour
     -   `splitViewSettings.title` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** split view title. By default, it is the node label. If there is no label, it is left empty
-    -   `splitViewSettings.size` **[number](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number)** size of the split view in percent (optional, default `40`)
+    -   `splitViewSettings.size` **[number](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number)** height of the split view in percent (optional, default `40`)
     -   `splitViewSettings.collapsed` **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)** create split view but leave it closed initially (optional, default `false`)
 
 #### Examples
@@ -107,8 +107,6 @@ LuigiClient.linkManager().navigate('/overview')
 LuigiClient.linkManager().navigate('users/groups/stakeholders')
 LuigiClient.linkManager().navigate('/settings', null, true) // preserve view
 ```
-
-Returns **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** handle that allows functions to control the splitView: collapse, expand, setSize, onCollapse, onExpand, onResize, exists, getSize, isCollapsed
 
 ### openAsModal
 
@@ -131,14 +129,14 @@ LuigiClient.linkManager().openAsModal('projects/pr1/users', {title:'Users', size
 
 -   **See: [splitView](#splitview) for further documentation about the returned instance**
 
-Opens a view in a splitted view. You can specify the split view's title and size. If you don't specify the title, it is the node label. If there is no node label, the title remains empty.  The default size of the split view is `l`, which means 80%. You can also use `m` (60%) and `s` (40%) to set the split view size. Optionally, use it in combination with any of the navigation functions.
+Opens a view in a split view. You can specify the split view's title and size. If you don't specify the title, it is the node label. If there is no node label, the title remains empty. The default size of the split view is `40`, which means 40% height of the split view.
 
 #### Parameters
 
 -   `path` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** navigation path
 -   `splitViewSettings` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** opens a view in a split view. Use these settings to configure the split view's behaviour (optional, default `{}`)
     -   `splitViewSettings.title` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** split view title. By default, it is the node label. If there is no label, it is left empty
-    -   `splitViewSettings.size` **[number](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number)** size of the split view in percent (optional, default `40`)
+    -   `splitViewSettings.size` **[number](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number)** height of the split view in percent (optional, default `40`)
 
 #### Examples
 
@@ -146,7 +144,7 @@ Opens a view in a splitted view. You can specify the split view's title and size
 const splitViewHandle = LuigiClient.linkManager().openAsSplitView('projects/pr1/logs', {title: 'Logs', size: 40});
 ```
 
-Returns **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** instance of SplitView
+Returns **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** instance of the SplitView that allows functions to control it's behaviour and provides event listeners
 
 ### fromContext
 
@@ -317,7 +315,7 @@ splitViewHandle.removeEventListener(listenerId);
 
 ### exists
 
-Collapses the split view
+Gets the split view status
 
 #### Examples
 

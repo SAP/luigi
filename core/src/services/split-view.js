@@ -136,7 +136,7 @@ class SplitViewSvcClass {
       GenericHelpers.getRightContentHeight()
     );
 
-    this.sendClientEvent('internal', {
+    this.sendMessageToClients('internal', {
       exists: true,
       size: this.splitViewValues.percent,
       collapsed: mfSplitView.collapsed
@@ -146,12 +146,12 @@ class SplitViewSvcClass {
 
   expand(comp) {
     if (comp.get().splitViewIframe) {
-      this.sendClientEvent('internal', {
+      this.sendMessageToClients('internal', {
         exists: true,
         size: this.storedSplitViewValues.percent,
         collapsed: false
       });
-      this.sendClientEvent('expand');
+      this.sendMessageToClients('expand.ok');
 
       this.setDeep(comp, 'mfSplitView', {
         displayed: true,
@@ -172,12 +172,12 @@ class SplitViewSvcClass {
       comp
         .getUnsavedChangesModalPromise(comp.get().splitViewIframe.contentWindow)
         .then(() => {
-          this.sendClientEvent('internal', {
+          this.sendMessageToClients('internal', {
             exists: true,
             size: this.splitViewValues.percent,
             collapsed: true
           });
-          this.sendClientEvent('collapse');
+          this.sendMessageToClients('collapse.ok');
           this.setDeep(comp, 'mfSplitView', {
             displayed: true,
             collapsed: true
@@ -199,14 +199,14 @@ class SplitViewSvcClass {
             collapsed: false
           });
           Iframe.getIframeContainer().style.paddingBottom = '';
-          this.sendClientEvent('close');
+          this.sendMessageToClients('close.ok');
         });
     }
   }
 
-  sendClientEvent(name, data) {
+  sendMessageToClients(name, data) {
     IframeHelpers.sendMessageToVisibleIframes({
-      msg: `luigi-client.navigation.splitview.${name}`,
+      msg: `luigi.navigation.splitview.${name}`,
       data
     });
   }

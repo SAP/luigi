@@ -15,12 +15,7 @@ export class splitViewHandle extends LuigiClientBase {
   constructor(settings) {
     super();
 
-    this.validSplitViewEvents = [
-      'expand',
-      'collapse',
-      'resize',
-      'close'
-    ];
+    this.validSplitViewEvents = ['expand', 'collapse', 'resize', 'close'];
 
     this.splitView = {
       exists: true,
@@ -31,31 +26,19 @@ export class splitViewHandle extends LuigiClientBase {
     Object.assign(this, settings);
 
     this.splitView.listeners = [
-      helpers.addEventListener(
-        `luigi-client.navigation.splitview.internal`,
-        e => {
-          // console.log('received new internal data', e.data.data);
-          Object.assign(this.splitView, e.data.data);
-        }
-      ),
-      helpers.addEventListener(
-        `luigi-client.navigation.splitview.resize`,
-        e => {
-          this.splitView.size = e.data.data;
-        }
-      ),
-      helpers.addEventListener(
-        `luigi-client.navigation.splitview.collapse`,
-        () => {
-          this.splitView.collapsed = true;
-        }
-      ),
-      helpers.addEventListener(
-        `luigi-client.navigation.splitview.expand`,
-        () => {
-          this.splitView.collapsed = false;
-        }
-      )
+      helpers.addEventListener(`luigi.navigation.splitview.internal`, e => {
+        // console.log('received new internal data', e.data.data);
+        Object.assign(this.splitView, e.data.data);
+      }),
+      helpers.addEventListener(`luigi.navigation.splitview.resize`, e => {
+        this.splitView.size = e.data.data;
+      }),
+      helpers.addEventListener(`luigi.navigation.splitview.collapse`, () => {
+        this.splitView.collapsed = true;
+      }),
+      helpers.addEventListener(`luigi.navigation.splitview.expand`, () => {
+        this.splitView.collapsed = false;
+      })
     ];
     window.onunload = () => {
       this.splitView.listeners.forEach(id => helpers.removeEventListener(id));
@@ -113,7 +96,7 @@ export class splitViewHandle extends LuigiClientBase {
    * const listenerId = splitViewHandle.on('close', () => {});
    **/
   on(name, callback) {
-    if(!this.validSplitViewEvents.includes(name)) {
+    if (!this.validSplitViewEvents.includes(name)) {
       console.warn(name + ' is not a valid split view event');
       return false;
     }
