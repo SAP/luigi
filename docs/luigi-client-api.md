@@ -301,7 +301,7 @@ Returns **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/G
 
 ### setCurrentLocale
 
-Sets current locale to the given one.
+Sets current locale to the specified one.
 
 #### Parameters
 

@@ -123,7 +123,7 @@ export declare interface UxManager {
   getCurrentLocale: () => string;
 
   /**
-   * Sets current locale to the given one.
+   * Sets current locale to the specified one.
    * @param {string} locale locale to be set as the current locale
    */
   setCurrentLocale: (locale: string) => void;

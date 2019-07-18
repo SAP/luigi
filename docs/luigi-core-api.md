@@ -227,7 +227,7 @@ Luigi.navigation().updateTopNavigation();
 
 ### LuigiI18N
 
-Localization related functions.
+Localization-related functions.
 
 #### getCurrentLocale
 
@@ -241,7 +241,7 @@ Returns **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/G
 
 #### setCurrentLocale
 
-Sets current locale to the given one.
+Sets current locale to the specified one.
 
 ##### Parameters
 
@@ -253,7 +253,7 @@ Sets current locale to the given one.
 
 #### addCurrentLocaleChangeListener
 
-Register a listener for locale changes
+Registers a listener for locale changes.
 
 ##### Parameters
 
@@ -267,7 +267,7 @@ Returns **[number](https://developer.mozilla.org/docs/Web/JavaScript/Reference/G
 
 #### removeCurrentLocaleChangeListener
 
-De-register a listener for locale changes
+Unregisters a listener for locale changes.
 
 ##### Parameters
 

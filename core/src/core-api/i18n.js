@@ -1,7 +1,7 @@
 import { GenericHelpers } from '../utilities/helpers';
 
 /**
- * Localization related functions.
+ * Localization-related functions.
  * @name LuigiI18N
  */
 class LuigiI18NManager {
@@ -24,7 +24,7 @@ class LuigiI18NManager {
   }
 
   /**
-   * Sets current locale to the given one.
+   * Sets current locale to the specified one.
    * @param {string} locale locale to be set as the current locale
    * @since 0.5.3
    * @memberof LuigiI18N
@@ -37,7 +37,7 @@ class LuigiI18NManager {
   }
 
   /**
-   * Register a listener for locale changes
+   * Registers a listener for locale changes.
    * @param {Function} listener function called on every locale change with the new locale as argument
    * @returns {number} listener ID associated with the given listener; use it when removing the listener
    * @since 0.5.3
@@ -54,7 +54,7 @@ class LuigiI18NManager {
   }
 
   /**
-   * De-register a listener for locale changes
+   * Unregisters a listener for locale changes.
    * @param {number} listenerId listener ID associated with the listener to be removed, returned by addCurrentLocaleChangeListener
    * @since 0.5.3
    * @memberof LuigiI18N
