@@ -30,13 +30,13 @@ export class splitViewHandle extends LuigiClientBase {
         // console.log('received new internal data', e.data.data);
         Object.assign(this.splitView, e.data.data);
       }),
-      helpers.addEventListener(`luigi.navigation.splitview.resize`, e => {
+      this.on('resize', e => {
         this.splitView.size = e.data.data;
       }),
-      helpers.addEventListener(`luigi.navigation.splitview.collapse`, () => {
+      this.on('collapse', e => {
         this.splitView.collapsed = true;
       }),
-      helpers.addEventListener(`luigi.navigation.splitview.expand`, () => {
+      this.on('expand', e => {
         this.splitView.collapsed = false;
       })
     ];

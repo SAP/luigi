@@ -224,7 +224,7 @@ class GenericHelpersClass {
     return processedString;
   }
 
-  getRightContentHeight() {
+  getContentAreaHeight() {
     return window.innerHeight - LuigiElements.getShellbar().clientHeight;
   }
 

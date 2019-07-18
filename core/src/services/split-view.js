@@ -133,7 +133,7 @@ class SplitViewSvcClass {
 
     this.splitViewValues = this.calculateInitialValues(
       mfSplitView.settings && mfSplitView.settings.size,
-      GenericHelpers.getRightContentHeight()
+      GenericHelpers.getContentAreaHeight()
     );
 
     this.sendMessageToClients('internal', {

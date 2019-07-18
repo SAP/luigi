@@ -28,15 +28,21 @@
     RoutingHelpers
   } from './utilities/helpers';
 
-  let rightContentHeight,
-    thresholdTop,
-    thresholdBottom,
-    top,
-    bottom,
-    percent,
-    draggableElement,
-    iframeElement,
-    splitElement;
+  let values = {
+    rightContentHeight: null,
+    thresholdTop: null,
+    thresholdBottom: null
+  };
+  let elements = {
+    draggable: null,
+    iframe: null,
+    split: null
+  };
+  let splitStyles = {
+    top: null,
+    bottom: null,
+    percent: null
+  };
 
   const getNode = async (component, path) => {
     if (component.get().isDataPrepared) {
@@ -49,13 +55,13 @@
   };
 
   const setElements = () => {
-    if (!splitElement) {
-      splitElement = SplitViewSvc.getContainer();
+    if (!elements.split) {
+      elements.split = SplitViewSvc.getContainer();
     }
-    if (!iframeElement) {
-      iframeElement = Iframe.getIframeContainer();
+    if (!elements.iframe) {
+      elements.iframe = Iframe.getIframeContainer();
     }
-    draggableElement = SplitViewSvc.getDragger();
+    elements.draggable = SplitViewSvc.getDragger();
   };
 
   const setSplitViewSize = () => {
@@ -66,13 +72,17 @@
 
     setElements();
     // setting again, to be sure its positioned when using it programmatically
-    if (draggableElement) {
-      draggableElement.style.top = `${top}px`;
+    if (elements.draggable) {
+      elements.draggable.style.top = `${splitStyles.top}px`;
     }
 
-    SplitViewSvc.splitViewValues = { top, bottom, percent };
-    splitElement.style.top = `${top}px`;
-    iframeElement.style.paddingBottom = `${bottom}px`;
+    SplitViewSvc.splitViewValues = {
+      top: splitStyles.top,
+      bottom: splitStyles.bottom,
+      percent: splitStyles.percent
+    };
+    elements.split.style.top = `${splitStyles.top}px`;
+    elements.iframe.style.paddingBottom = `${splitStyles.bottom}px`;
   };
 
   export default {
@@ -99,9 +109,9 @@
       },
       onResize() {
         const shellbarHeight = LuigiElements.getShellbar().clientHeight;
-        rightContentHeight = window.innerHeight - shellbarHeight;
-        thresholdBottom = 30;
-        thresholdTop = shellbarHeight + 30;
+        values.rightContentHeight = window.innerHeight - shellbarHeight;
+        values.thresholdBottom = 30;
+        values.thresholdTop = shellbarHeight + 30;
       },
       registerEventHandlers() {
         window.addEventListener('message', async e => {
@@ -120,13 +130,13 @@
           if ('luigi.navigation.splitview.expand' === e.data.msg) {
             this.expand();
           }
-          percent = parseInt(e.data.data);
-          const percentTop = 100 - percent;
           if ('luigi.navigation.splitview.resize' === e.data.msg) {
+            splitStyles.percent = parseInt(e.data.data);
+            const percentTop = 100 - splitStyles.percent;
             const newTop =
               parseInt(
                 GenericHelpers.computePxFromPercent(
-                  rightContentHeight,
+                  values.rightContentHeight,
                   percentTop
                 )
               ) + LuigiElements.getShellbar().clientHeight;
@@ -134,19 +144,19 @@
             const calculated = SplitViewSvc.enforceTreshHolds(
               newTop,
               window.innerHeight - newTop,
-              thresholdTop,
-              thresholdBottom
+              values.thresholdTop,
+              values.thresholdBottom
             );
-            top = calculated.top;
-            bottom = calculated.bottom;
+            splitStyles.top = calculated.top;
+            splitStyles.bottom = calculated.bottom;
 
             // In case setSize gets called before expanding, we're setting
             // the stored split view values
             if (this.get().collapsed) {
               SplitViewSvc.storedSplitViewValues = {
-                top,
-                bottom,
-                percent
+                top: splitStyles.top,
+                bottom: splitStyles.bottom,
+                percent: splitStyles.percent
               };
               return;
             }
@@ -165,7 +175,9 @@
           const diff = m_pos - e.y;
           m_pos = e.y;
 
-          const dragTop = parseInt(getComputedStyle(draggableElement, '').top);
+          const dragTop = parseInt(
+            getComputedStyle(elements.draggable, '').top
+          );
 
           if (isNaN(dragTop)) {
             // happens in collapsed state on mouse over draggable
@@ -177,14 +189,14 @@
           const calculated = SplitViewSvc.enforceTreshHolds(
             newTop,
             newBottom,
-            thresholdTop,
-            thresholdBottom
+            values.thresholdTop,
+            values.thresholdBottom
           );
 
-          top = calculated.top;
-          bottom = calculated.bottom;
+          splitStyles.top = calculated.top;
+          splitStyles.bottom = calculated.bottom;
 
-          draggableElement.style.top = `${top}px`;
+          elements.draggable.style.top = `${top}px`;
         };
 
         function onMouseDown(e) {
@@ -198,14 +210,14 @@
         dragElem.addEventListener('mousedown', onMouseDown, false);
 
         function onMouseUp() {
-          if (!top || !bottom) {
+          if (!splitStyles.top || !splitStyles.bottom) {
             return;
           }
 
           setSplitViewSize();
-          percent = GenericHelpers.computePercentFromPx(
-            rightContentHeight,
-            bottom
+          splitStyles.percent = GenericHelpers.computePercentFromPx(
+            values.rightContentHeight,
+            splitStyles.bottom
           );
           SplitViewSvc.sendMessageToClients('resize.ok', percent);
           document.removeEventListener('mousemove', resize, false);
