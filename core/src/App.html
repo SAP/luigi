@@ -311,10 +311,7 @@
         document.body.classList.add('lui-semiCollapsible');
       }
     },
-    onstate({ changed, current, previous }) {
-      if (changed.mfSplitView) {
-      }
-    },
+    onstate({ changed, current, previous }) {},
     actions: {
       init(node) {
         const isolateAllViews = LuigiConfig.getConfigValue(
@@ -670,9 +667,7 @@
                 }
                 resolve();
               },
-              e => {
-                console.error('E', e);
-              }
+              () => {}
             );
           } else {
             resolve();

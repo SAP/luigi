@@ -15,9 +15,16 @@ export class splitViewHandle extends LuigiClientBase {
   constructor(settings) {
     super();
 
+    this.validSplitViewEvents = [
+      'expand',
+      'collapse',
+      'resize',
+      'close'
+    ];
+
     this.splitView = {
       exists: true,
-      size: 0,
+      size: 40,
       collapsed: false
     };
 
@@ -58,7 +65,7 @@ export class splitViewHandle extends LuigiClientBase {
   /*
    * @private
    */
-  sendSplitViewAction(action, data) {
+  sendMessageToCore(action, data) {
     window.parent.postMessage({
       msg: `luigi.navigation.splitview.${action}`,
       data
@@ -72,7 +79,7 @@ export class splitViewHandle extends LuigiClientBase {
    * splitViewHandle.collapse();
    */
   collapse() {
-    this.sendSplitViewAction('collapse');
+    this.sendMessageToCore('collapse');
   }
   /**
    * Expands the split view
@@ -81,7 +88,7 @@ export class splitViewHandle extends LuigiClientBase {
    * splitViewHandle.expand();
    */
   expand() {
-    this.sendSplitViewAction('expand');
+    this.sendMessageToCore('expand');
   }
   /**
    * Sets the height of the split view
@@ -91,7 +98,7 @@ export class splitViewHandle extends LuigiClientBase {
    * splitViewHandle.setSize(60);
    */
   setSize(value) {
-    this.sendSplitViewAction('set-size', value);
+    this.sendMessageToCore('resize', value);
   }
   /**
    * Registers a listener for split view events
@@ -106,8 +113,12 @@ export class splitViewHandle extends LuigiClientBase {
    * const listenerId = splitViewHandle.on('close', () => {});
    **/
   on(name, callback) {
+    if(!this.validSplitViewEvents.includes(name)) {
+      console.warn(name + ' is not a valid split view event');
+      return false;
+    }
     return helpers.addEventListener(
-      `luigi-client.navigation.splitview.${name}`,
+      `luigi.navigation.splitview.${name}.ok`,
       e => callback(e.data.data)
     );
   }
@@ -121,10 +132,9 @@ export class splitViewHandle extends LuigiClientBase {
   removeEventListener(id) {
     return helpers.removeEventListener(id);
   }
-  // TODO: check if we want to provide removeListener, alterantively as last param in the callback or do not provide it
-  // removeListener: (id) => { return helpers.removeEventListener(id); },
+
   /**
-   * Collapses the split view
+   * Gets the split view status
    * @memberof splitView
    * @returns {boolean} true if a split view is loaded
    * @example
@@ -171,6 +181,6 @@ export class splitViewHandle extends LuigiClientBase {
    * splitViewHandle.close();
    */
   close() {
-    this.sendSplitViewAction('close');
+    this.sendMessageToCore('close');
   }
 }

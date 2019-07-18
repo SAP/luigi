@@ -1,19 +1,12 @@
 describe('SplitView', () => {
   beforeEach(() => {
-    cy.visit('/');
-    cy.login('tets@email.com', 'tets');
+    cy.visit('/projects/pr2');
+    cy.login('tets@email.com', 'tets', true);
   });
 
   it('Opens a Split View and collapses and expands', () => {
     cy.get('iframe').then($iframe => {
       const $iframeBody = $iframe.contents().find('body');
-      cy.goToLinkManagerMethods($iframeBody);
-
-      //navigate using absolute path
-      cy.wrap($iframeBody)
-        .contains('linkManager()')
-        .click();
-      cy.expectPathToBe('/projects/pr2');
 
       cy.wrap($iframeBody)
         .contains('open view in split view')
@@ -48,13 +41,6 @@ describe('SplitView', () => {
     it('using Client API', () => {
       cy.get('iframe').then($iframe => {
         const $iframeBody = $iframe.contents().find('body');
-        cy.goToLinkManagerMethods($iframeBody);
-
-        //navigate using absolute path
-        cy.wrap($iframeBody)
-          .contains('linkManager()')
-          .click();
-        cy.expectPathToBe('/projects/pr2');
 
         cy.wrap($iframeBody)
           .contains('open view in split view')
@@ -68,30 +54,30 @@ describe('SplitView', () => {
         // button states, same order as buttons array
         const tests = [
           {
-            checkStates: [false, true, true, true],
-            clickAfter: 'collapse'
+            buttonsVisible: [false, true, true, true],
+            buttonToClick: 'collapse'
           },
           {
-            checkStates: [true, false, false, true],
-            clickAfter: 'expand'
+            buttonsVisible: [true, false, false, true],
+            buttonToClick: 'expand'
           },
           {
-            checkStates: [false, true, true, true],
-            clickAfter: 'setSize'
+            buttonsVisible: [false, true, true, true],
+            buttonToClick: 'setSize'
           },
           {
-            checkStates: [false, true, true, true],
-            clickAfter: 'close'
+            buttonsVisible: [false, true, true, true],
+            buttonToClick: 'close'
           }
         ];
         tests.forEach(test => {
-          checkStates.forEach((enabled, index) => {
+          buttonsVisible.forEach((enabled, index) => {
             cy.get('button')
               .contains(buttons[index])
               .should(enabled ? 'not.be.disabled' : 'be.disabled');
           });
           cy.get('button')
-            .contains(test.clickAfter)
+            .contains(test.buttonToClick)
             .click();
         });
 
@@ -99,6 +85,7 @@ describe('SplitView', () => {
         cy.get('button')
           .contains('expands')
           .should('not.exist');
+        cy.get('.iframeSplitViewCnt iframe').should('not.exist');
       });
     });
   });

@@ -120,9 +120,9 @@
           if ('luigi.navigation.splitview.expand' === e.data.msg) {
             this.expand();
           }
-          if ('luigi.navigation.splitview.set-size' === e.data.msg) {
             percent = parseInt(e.data.data);
             const percentTop = 100 - percent;
+          if ('luigi.navigation.splitview.resize' === e.data.msg) {
             const newTop =
               parseInt(
                 GenericHelpers.computePxFromPercent(
@@ -151,7 +151,7 @@
               return;
             }
             setSplitViewSize();
-            SplitViewSvc.sendClientEvent('resize', percent);
+            SplitViewSvc.sendMessageToClients('resize.ok', splitStyles.percent);
           }
         });
       }
@@ -207,7 +207,7 @@
             rightContentHeight,
             bottom
           );
-          SplitViewSvc.sendClientEvent('resize', percent);
+          SplitViewSvc.sendMessageToClients('resize.ok', splitStyles.percent);
           document.removeEventListener('mousemove', resize, false);
         }
 
