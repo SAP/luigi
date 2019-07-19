@@ -221,7 +221,6 @@ export class ProjectComponent implements OnInit, OnDestroy {
     });
     this.splitViewHandle.on('close', () => {
       console.info('split view got closed');
-      this.unsubscribeSplitViewHandlers();
       this.splitViewHandle = undefined;
       if (!this.cdr['destroyed']) {
         this.cdr.detectChanges();
