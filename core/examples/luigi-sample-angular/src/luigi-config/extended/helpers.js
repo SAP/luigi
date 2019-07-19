@@ -130,7 +130,7 @@ export const projectsNavProviderFn = context =>
           },
           icon: 'folder-blank',
           clientPermissions: {
-            allowCurrentLocaleChange: true
+            changeCurrentLocale: true
           },
           children: projectDetailNavProviderFn
         });

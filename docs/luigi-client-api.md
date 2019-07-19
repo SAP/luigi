@@ -303,7 +303,7 @@ Returns **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/G
 
 Sets current locale to the specified one.
 
-**NOTE:** this must be explicitly allowed on the navigation node level by setting `clientPermissions.allowCurrentLocaleChange` to `true`. (See [Node parameters](navigation-parameters-reference.md).)
+**NOTE:** this must be explicitly allowed on the navigation node level by setting `clientPermissions.changeCurrentLocale` to `true`. (See [Node parameters](navigation-parameters-reference.md).)
 
 #### Parameters
 

@@ -227,7 +227,7 @@ class UxManager extends LuigiClientBase {
   /**
    * Sets current locale to the specified one.
    *
-   * **NOTE:** this must be explicitly allowed on the navigation node level by setting `clientPermissions.allowCurrentLocaleChange` to `true`. (See {@link navigation-parameters-reference.md Node parameters}.)
+   * **NOTE:** this must be explicitly allowed on the navigation node level by setting `clientPermissions.changeCurrentLocale` to `true`. (See {@link navigation-parameters-reference.md Node parameters}.)
    *
    * @param {string} locale locale to be set as the current locale
    * @memberof uxManager

@@ -534,13 +534,13 @@
           }
 
           if ('luigi.ux.set-current-locale' === e.data.msg) {
-            if (iframe.luigi.clientPermissions && iframe.luigi.clientPermissions.allowCurrentLocaleChange) {
+            if (iframe.luigi.clientPermissions && iframe.luigi.clientPermissions.changeCurrentLocale) {
               const { currentLocale } = e.data.data;
               if (currentLocale) {
                 LuigiI18N.setCurrentLocale(currentLocale);
               }
             } else {
-              console.error('Current local change from client declined because client permission allowCurrentLocaleChange is not set for this view.');
+              console.error('Current local change from client declined because client permission changeCurrentLocale is not set for this view.');
             }
           }
         });
