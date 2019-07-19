@@ -52,12 +52,13 @@
     "test": "babel-node ./node_modules/nyc/bin/nyc.js mocha -- --recursive test",
     "test:watch": "npm run test -- --watch",
     "bundlesize": "npm run bundle && bundlesize",
-    "docu": "npm run docu:validate && npm run docu:generate:config && npm run docu:generate:dom-elements && npm run docu:generate:auth && npm run docu:generate:navigation",
-    "docu:validate": "documentation lint --shallow src/core-api/config.js src/core-api/elements.js src/core-api/auth.js src/core-api/navigation.js",
+    "docu": "npm run docu:validate && npm run docu:generate:config && npm run docu:generate:dom-elements && npm run docu:generate:auth && npm run docu:generate:navigation && npm run docu:generate:i18n",
+    "docu:validate": "documentation lint --shallow src/core-api/config.js src/core-api/elements.js src/core-api/auth.js src/core-api/navigation.js src/core-api/i18n.j",
     "docu:generate:config": "documentation readme src/core-api/config.js --shallow -f md --section='Luigi Config' --readme-file=../docs/luigi-core-api.md --markdown-toc=false --github false --quiet",
     "docu:generate:dom-elements": "documentation readme src/core-api/dom-elements.js --shallow -f md --section='Luigi.elements()' --readme-file=../docs/luigi-core-api.md --markdown-toc=false --github false --quiet",
     "docu:generate:auth": "documentation readme src/core-api/auth.js --shallow -f md --section='Luigi.auth()' --readme-file=../docs/luigi-core-api.md --markdown-toc=false --github false --quiet",
-    "docu:generate:navigation": "documentation readme src/core-api/navigation.js --shallow -f md --section='Luigi.navigation()' --readme-file=../docs/luigi-core-api.md --markdown-toc=false --github false --quiet"
+    "docu:generate:navigation": "documentation readme src/core-api/navigation.js --shallow -f md --section='Luigi.navigation()' --readme-file=../docs/luigi-core-api.md --markdown-toc=false --github false --quiet",
+    "docu:generate:i18n": "documentation readme src/core-api/i18n.js --shallow -f md --section='Luigi.i18n()' --readme-file=../docs/luigi-core-api.md --markdown-toc=false --github false --quiet"
   },
   "bundlesize": [
     {

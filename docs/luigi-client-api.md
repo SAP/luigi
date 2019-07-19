@@ -292,3 +292,19 @@ LuigiClient
 ```
 
 Returns **[promise](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise)** which is resolved when the alert is dismissed.
+
+### getCurrentLocale
+
+Gets the current locale.
+
+Returns **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** current locale
+
+### setCurrentLocale
+
+Sets current locale to the specified one.
+
+**NOTE:** this must be explicitly allowed on the navigation node level by setting `clientPermissions.changeCurrentLocale` to `true`. (See [Node parameters](navigation-parameters-reference.md).)
+
+#### Parameters
+
+-   `locale` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** locale to be set as the current locale
