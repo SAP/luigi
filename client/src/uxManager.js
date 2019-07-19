@@ -16,12 +16,7 @@ class UxManager extends LuigiClientBase {
    * @memberof uxManager
    */
   showLoadingIndicator() {
-    window.parent.postMessage(
-      {
-        msg: 'luigi.show-loading-indicator'
-      },
-      '*'
-    );
+    helpers.sendPostMessageToLuigiCore({ msg: 'luigi.show-loading-indicator' });
   }
 
   /**
@@ -29,36 +24,21 @@ class UxManager extends LuigiClientBase {
    * @memberof uxManager
    */
   hideLoadingIndicator() {
-    window.parent.postMessage(
-      {
-        msg: 'luigi.hide-loading-indicator'
-      },
-      '*'
-    );
+    helpers.sendPostMessageToLuigiCore({ msg: 'luigi.hide-loading-indicator' });
   }
   /**
    * Adds a backdrop to block the top and side navigation. It is based on the Fundamental UI Modal, which you can use in your micro front-end to achieve the same behavior.
    * @memberof uxManager
    */
   addBackdrop() {
-    window.parent.postMessage(
-      {
-        msg: 'luigi.add-backdrop'
-      },
-      '*'
-    );
+    helpers.sendPostMessageToLuigiCore({ msg: 'luigi.add-backdrop' });
   }
   /**
    * Removes the backdrop.
    * @memberof uxManager
    */
   removeBackdrop() {
-    window.parent.postMessage(
-      {
-        msg: 'luigi.remove-backdrop'
-      },
-      '*'
-    );
+    helpers.sendPostMessageToLuigiCore({ msg: 'luigi.remove-backdrop' });
   }
   /**
    * This method informs the main application that there are unsaved changes in the current view in the iframe. For example, that can be a view with form fields which were edited but not submitted.
@@ -66,13 +46,10 @@ class UxManager extends LuigiClientBase {
    * @memberof uxManager
    */
   setDirtyStatus(isDirty) {
-    window.parent.postMessage(
-      {
-        msg: 'luigi.set-page-dirty',
-        dirty: isDirty
-      },
-      '*'
-    );
+    helpers.sendPostMessageToLuigiCore({
+      msg: 'luigi.set-page-dirty',
+      dirty: isDirty
+    });
   }
   /**
    * Shows a confirmation modal.
@@ -92,16 +69,10 @@ class UxManager extends LuigiClientBase {
         helpers.removeEventListener(listenerId);
       }
     );
-
-    window.parent.postMessage(
-      {
-        msg: 'luigi.ux.confirmationModal.show',
-        data: {
-          settings
-        }
-      },
-      '*'
-    );
+    helpers.sendPostMessageToLuigiCore({
+      msg: 'luigi.ux.confirmationModal.show',
+      data: { settings }
+    });
 
     const confirmationModalPromise = {};
     confirmationModalPromise.promise = new Promise((resolve, reject) => {
@@ -174,16 +145,10 @@ class UxManager extends LuigiClientBase {
       );
       settings.closeAfter = undefined;
     }
-
-    window.parent.postMessage(
-      {
-        msg: 'luigi.ux.alert.show',
-        data: {
-          settings
-        }
-      },
-      '*'
-    );
+    helpers.sendPostMessageToLuigiCore({
+      msg: 'luigi.ux.alert.show',
+      data: { settings }
+    });
 
     const alertPromises = this.getPromise('alerts') || {};
     alertPromises[settings.id] = {};
