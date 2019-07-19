@@ -8,7 +8,7 @@ Use the functions and parameters to define the Lifecycle of listeners, navigatio
 
 ### addInitListener
 
-Registers a listener called with the context object and the Luigi core domain as soon as Luigi is instantiated. Defer your application bootstrap if you depend on authentication data coming from Luigi.
+Registers a listener called with the context object and the Luigi Core domain as soon as Luigi is instantiated. Defer your application bootstrap if you depend on authentication data coming from Luigi.
 
 #### Parameters
 
