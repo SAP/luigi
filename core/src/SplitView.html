@@ -178,7 +178,6 @@
           const dragTop = parseInt(
             getComputedStyle(elements.draggable, '').top
           );
-
           if (isNaN(dragTop)) {
             // happens in collapsed state on mouse over draggable
             return;
@@ -196,7 +195,7 @@
           splitStyles.top = calculated.top;
           splitStyles.bottom = calculated.bottom;
 
-          elements.draggable.style.top = `${top}px`;
+          elements.draggable.style.top = `${splitStyles.top}px`;
         };
 
         function onMouseDown(e) {
@@ -219,7 +218,7 @@
             values.rightContentHeight,
             splitStyles.bottom
           );
-          SplitViewSvc.sendMessageToClients('resize.ok', percent);
+          SplitViewSvc.sendMessageToClients('resize.ok', splitStyles.percent);
           document.removeEventListener('mousemove', resize, false);
         }
 

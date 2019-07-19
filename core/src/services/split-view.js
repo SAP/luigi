@@ -10,7 +10,6 @@ import {
 class SplitViewSvcClass {
   constructor() {
     this.splitViewValues;
-    this.storedSplitViewValues;
   }
 
   getContainer() {
@@ -148,7 +147,7 @@ class SplitViewSvcClass {
     if (comp.get().splitViewIframe) {
       this.sendMessageToClients('internal', {
         exists: true,
-        size: this.storedSplitViewValues.percent,
+        size: this.splitViewValues.percent,
         collapsed: false
       });
       this.sendMessageToClients('expand.ok');
@@ -158,12 +157,12 @@ class SplitViewSvcClass {
         collapsed: false
       });
 
-      this.getContainer().style.top = `${this.storedSplitViewValues.top}px`;
+      this.getContainer().style.top = `${this.splitViewValues.top}px`;
       Iframe.getIframeContainer().style.paddingBottom = `${
-        this.storedSplitViewValues.bottom
+        this.splitViewValues.bottom
       }px`;
-      this.getDragger().style.top = `${this.storedSplitViewValues.top}px`;
-      this.storedSplitViewValues = undefined;
+      this.getDragger().style.top = `${this.splitViewValues.top}px`;
+      this.splitViewValues = undefined;
     }
   }
 
@@ -182,7 +181,7 @@ class SplitViewSvcClass {
             displayed: true,
             collapsed: true
           });
-          this.storedSplitViewValues = Object.assign({}, this.splitViewValues);
+
           this.getContainer().style.top = '';
           Iframe.getIframeContainer().style.paddingBottom = '';
         });
