@@ -241,6 +241,8 @@
   $topNavHeight: 48px;
   $leftNavWidth: 320px;
   $collapsedSplitviewHeight: 38px;
+  $desktopMinWidth: 600px;
+
   .fd-splitView__title {
     font-size: 16px;
     line-height: $collapsedSplitviewHeight;
@@ -331,6 +333,17 @@
       height: 100%;
       border: 0;
       position: absolute;
+    }
+  }
+
+  @media (max-width: $desktopMinWidth - 1) {
+    :global(body.lui-simpleSlideInNav) {
+      :global(.fd-app__sidebar) {
+        left: -$leftNavWidth;
+      }
+      :global(#splitViewContainer, #splitViewDragger, #splitViewDraggerBackdrop) {
+        left: 0 !important;
+      }
     }
   }
 </style>
