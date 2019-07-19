@@ -162,7 +162,6 @@ class SplitViewSvcClass {
         this.splitViewValues.bottom
       }px`;
       this.getDragger().style.top = `${this.splitViewValues.top}px`;
-      this.splitViewValues = undefined;
     }
   }
 

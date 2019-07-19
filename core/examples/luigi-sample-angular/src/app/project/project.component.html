@@ -317,32 +317,32 @@
             data="linkManager().withParams({test: true}).openAsSplitView('/settings', {title:'Logs', size:25})"
           >
           </app-code-snippet>
-          <div *ngIf="splitViewHandle">
+          <div>
             Control Split View:
 
             <button
-              [disabled]="!splitViewHandle.isCollapsed()"
+              [disabled]="!splitViewHandle || !splitViewHandle.isCollapsed()"
               (click)="splitViewHandle.expand()"
               class="fd-button"
             >
               expand
             </button>
             <button
-              [disabled]="!splitViewHandle.isExpanded()"
+              [disabled]="!splitViewHandle || !splitViewHandle.isExpanded()"
               (click)="splitViewHandle.collapse()"
               class="fd-button"
             >
               collapse
             </button>
             <button
-              [disabled]="!splitViewHandle.isExpanded()"
+              [disabled]="!splitViewHandle || !splitViewHandle.isExpanded()"
               (click)="splitViewHandle.setSize(50)"
               class="fd-button"
             >
               setSize(50)
             </button>
             <button
-              [disabled]="!splitViewHandle.exists()"
+              [disabled]="!splitViewHandle || !splitViewHandle.exists()"
               (click)="splitViewHandle.close()"
               class="fd-button"
             >

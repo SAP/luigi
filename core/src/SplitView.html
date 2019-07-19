@@ -85,13 +85,67 @@
     elements.iframe.style.paddingBottom = `${splitStyles.bottom}px`;
   };
 
+  function messageHandler(e) {
+    const iframe = IframeHelpers.getValidMessageSource(e, this.root);
+    if (!iframe) return;
+
+    // actions, like collapse, expand, setSize as well as register
+    // event handlers: onCollapse, onExpand, onResize
+
+    if ('luigi.navigation.splitview.close' === e.data.msg) {
+      SplitViewSvc.close(this.root);
+    }
+    if ('luigi.navigation.splitview.collapse' === e.data.msg) {
+      this.collapse();
+    }
+    if ('luigi.navigation.splitview.expand' === e.data.msg) {
+      this.expand();
+    }
+    if ('luigi.navigation.splitview.resize' === e.data.msg) {
+      splitStyles.percent = parseInt(e.data.data);
+      const percentTop = 100 - splitStyles.percent;
+      const newTop =
+        parseInt(
+          GenericHelpers.computePxFromPercent(
+            values.rightContentHeight,
+            percentTop
+          )
+        ) + LuigiElements.getShellbar().clientHeight;
+
+      const calculated = SplitViewSvc.enforceTreshHolds(
+        newTop,
+        window.innerHeight - newTop,
+        values.thresholdTop,
+        values.thresholdBottom
+      );
+      splitStyles.top = calculated.top;
+      splitStyles.bottom = calculated.bottom;
+
+      // In case setSize gets called before expanding, we're setting
+      // the stored split view values
+      if (this.get().collapsed) {
+        SplitViewSvc.storedSplitViewValues = {
+          top: splitStyles.top,
+          bottom: splitStyles.bottom,
+          percent: splitStyles.percent
+        };
+        return;
+      }
+      setSplitViewSize();
+      SplitViewSvc.sendMessageToClients('resize.ok', splitStyles.percent);
+    }
+  }
+
   export default {
     oncreate() {
       this.onResize();
-      this.registerEventHandlers(this);
+      window.addEventListener('message', messageHandler.bind(this));
     },
     onupdate({ changed, current, previous }) {
       getNode(this, this.get().nodepath);
+    },
+    ondestroy() {
+      window.removeEventListener('message', messageHandler.bind(this));
     },
     data() {
       return {
@@ -112,58 +166,6 @@
         values.rightContentHeight = window.innerHeight - shellbarHeight;
         values.thresholdBottom = 30;
         values.thresholdTop = shellbarHeight + 30;
-      },
-      registerEventHandlers() {
-        window.addEventListener('message', async e => {
-          const iframe = IframeHelpers.getValidMessageSource(e, this.root);
-          if (!iframe) return;
-
-          // actions, like collapse, expand, setSize as well as register
-          // event handlers: onCollapse, onExpand, onResize
-
-          if ('luigi.navigation.splitview.close' === e.data.msg) {
-            SplitViewSvc.close(this.root);
-          }
-          if ('luigi.navigation.splitview.collapse' === e.data.msg) {
-            this.collapse();
-          }
-          if ('luigi.navigation.splitview.expand' === e.data.msg) {
-            this.expand();
-          }
-          if ('luigi.navigation.splitview.resize' === e.data.msg) {
-            splitStyles.percent = parseInt(e.data.data);
-            const percentTop = 100 - splitStyles.percent;
-            const newTop =
-              parseInt(
-                GenericHelpers.computePxFromPercent(
-                  values.rightContentHeight,
-                  percentTop
-                )
-              ) + LuigiElements.getShellbar().clientHeight;
-
-            const calculated = SplitViewSvc.enforceTreshHolds(
-              newTop,
-              window.innerHeight - newTop,
-              values.thresholdTop,
-              values.thresholdBottom
-            );
-            splitStyles.top = calculated.top;
-            splitStyles.bottom = calculated.bottom;
-
-            // In case setSize gets called before expanding, we're setting
-            // the stored split view values
-            if (this.get().collapsed) {
-              SplitViewSvc.storedSplitViewValues = {
-                top: splitStyles.top,
-                bottom: splitStyles.bottom,
-                percent: splitStyles.percent
-              };
-              return;
-            }
-            setSplitViewSize();
-            SplitViewSvc.sendMessageToClients('resize.ok', splitStyles.percent);
-          }
-        });
       }
     },
     events: {
