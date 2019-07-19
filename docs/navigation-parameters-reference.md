@@ -194,6 +194,7 @@ The node parameters are as follows:
 - **openNodeInModal** configures the settings of the view which opens in a modal. You can specify the modal's title and size. If you don't specify the title, the node label is used. If there is no node label, the title remains empty. The default size of the modal is `l`, which means 80%. You can also use `m` (60%) and `s` (40%) to set the modal size.<br/> Optionally you can set the **openNodeInModal** property to `true` to use default title and size.
   -   **title** modal title. By default, it is the node label. If there is no label, it is left empty
   -   **size** **(`"l"` \| `"m"` \| `"s"`)** size of the modal (optional, default `"l"`)
+- **clientPermissions.allowCurrentLocaleChange** current locale can be changed from client using the corresponding API if this is set to `true`
 
 ## Context switcher
 

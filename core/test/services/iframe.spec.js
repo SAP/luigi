@@ -130,7 +130,8 @@ describe('Iframe', () => {
         viewGroup: 'tets2',
         previousNodeValues: {
           viewUrl: 'http://luigi.url.desdf/1'
-        }
+        },
+        currentNode: {}
       });
 
       Iframe.navigateIframe(config, component, node);
@@ -165,7 +166,8 @@ describe('Iframe', () => {
         viewGroup: 'tets1',
         previousNodeValues: {
           viewUrl: 'http://luigi.url.de/previous'
-        }
+        },
+        currentNode: {}
       });
       assert.equal(config.iframe.luigi.nextViewUrl, 'http://luigi.url.de/2');
       Iframe.navigateIframe(config, component, node);

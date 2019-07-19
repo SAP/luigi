@@ -159,7 +159,7 @@ class IframeHelpersClass {
     allIframes.forEach(iframe => this.sendMessageToIframe(iframe, message));
   }
 
-  createIframe(viewUrl, viewGroup) {
+  createIframe(viewUrl, viewGroup, clientPermissions) {
     const activeSandboxRules = [
       'allow-forms', // Allows the resource to submit forms. If this keyword is not used, form submission is blocked.
       'allow-modals', // Lets the resource open modal windows.
@@ -185,6 +185,9 @@ class IframeHelpersClass {
     };
     if (viewGroup) {
       iframe.vg = viewGroup;
+    }
+    if (clientPermissions) {
+      iframe.luigi.clientPermissions = clientPermissions;
     }
     return iframe;
   }

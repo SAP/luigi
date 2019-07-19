@@ -235,9 +235,9 @@ class IframeClass {
           this.canCache(componentData.viewGroup);
         config.iframe = IframeHelpers.createIframe(
           viewUrl,
-          canCache ? componentData.viewGroup : undefined
+          canCache ? componentData.viewGroup : undefined,
+          component.get().currentNode.clientPermissions
         );
-
         node.insertBefore(config.iframe, node.firstChild);
 
         if (config.builderCompatibilityMode) {
@@ -252,6 +252,7 @@ class IframeClass {
       const goBackContext = component.get().goBackContext;
       config.iframe.style.display = 'block';
       config.iframe.luigi.nextViewUrl = viewUrl;
+      config.iframe.luigi.nextClientPermissions = component.get().currentNode.clientPermissions;
       config.iframe['vg'] = this.canCache(componentData.viewGroup)
         ? componentData.viewGroup
         : undefined;
