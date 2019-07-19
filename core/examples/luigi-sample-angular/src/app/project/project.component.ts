@@ -39,7 +39,6 @@ export class ProjectComponent implements OnInit, OnDestroy {
   public alertTypes = ['success', 'info', 'warning', 'error'];
   public isDirty = false;
   public splitViewHandle;
-  public splitViewListeners = [];
 
   public constructor(
     private activatedRoute: ActivatedRoute,
@@ -58,15 +57,6 @@ export class ProjectComponent implements OnInit, OnDestroy {
     }
     if (this.cudListener) {
       const removed = removeContextUpdateListener(this.cudListener);
-    }
-    this.unsubscribeSplitViewHandlers();
-  }
-
-  private unsubscribeSplitViewHandlers() {
-    if (this.splitViewHandle) {
-      this.splitViewListeners.forEach(id => {
-        this.splitViewHandle.removeEventListener(id);
-      });
     }
   }
 
@@ -207,13 +197,13 @@ export class ProjectComponent implements OnInit, OnDestroy {
         size: 25
       });
 
-    const listenerResize = this.splitViewHandle.on('resize', newSize => {
+    this.splitViewHandle.on('resize', newSize => {
       console.info('split view got resized to', newSize);
       if (!this.cdr['destroyed']) {
         this.cdr.detectChanges();
       }
     });
-    const listenerExpand = this.splitViewHandle.on('expand', () => {
+    this.splitViewHandle.on('expand', () => {
       console.info(
         'split view got expanded',
         'size:',
@@ -223,13 +213,13 @@ export class ProjectComponent implements OnInit, OnDestroy {
         this.cdr.detectChanges();
       }
     });
-    const listenerCollapse = this.splitViewHandle.on('collapse', () => {
+    this.splitViewHandle.on('collapse', () => {
       console.info('split view got collapsed');
       if (!this.cdr['destroyed']) {
         this.cdr.detectChanges();
       }
     });
-    const listenerClose = this.splitViewHandle.on('close', () => {
+    this.splitViewHandle.on('close', () => {
       console.info('split view got closed');
       this.unsubscribeSplitViewHandlers();
       this.splitViewHandle = undefined;
@@ -237,11 +227,5 @@ export class ProjectComponent implements OnInit, OnDestroy {
         this.cdr.detectChanges();
       }
     });
-    this.splitViewListeners.push(
-      listenerResize,
-      listenerExpand,
-      listenerCollapse,
-      listenerClose
-    );
   }
 }

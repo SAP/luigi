@@ -69,6 +69,16 @@ export class splitViewHandle extends LuigiClientBase {
   expand() {
     this.sendMessageToCore('expand');
   }
+
+  /**
+   * Closes and destroys the split view
+   * @memberof splitView
+   * @example
+   * splitViewHandle.close();
+   */
+  close() {
+    this.sendMessageToCore('close');
+  }
   /**
    * Sets the height of the split view
    * @memberof splitView
@@ -153,15 +163,5 @@ export class splitViewHandle extends LuigiClientBase {
    */
   isExpanded() {
     return !this.splitView.collapsed;
-  }
-
-  /**
-   * Closes and destroys the split view
-   * @memberof splitView
-   * @example
-   * splitViewHandle.close();
-   */
-  close() {
-    this.sendMessageToCore('close');
   }
 }

@@ -264,6 +264,16 @@ Expands the split view
 splitViewHandle.expand();
 ```
 
+### close
+
+Closes and destroys the split view
+
+#### Examples
+
+```javascript
+splitViewHandle.close();
+```
+
 ### setSize
 
 Sets the height of the split view
@@ -360,16 +370,6 @@ splitViewHandle.isExpanded();
 ```
 
 Returns **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)** true if the split view is currently expanded
-
-### close
-
-Closes and destroys the split view
-
-#### Examples
-
-```javascript
-splitViewHandle.close();
-```
 
 ## uxManager
 
