@@ -64,8 +64,9 @@ class LifecycleManager extends LuigiClientBase {
       helpers.addEventListener('luigi.init', e => {
         setContext(e.data);
         setAuthData(e.data.authData);
+        helpers.setLuigiCoreDomain(e.origin);
         this.luigiInitialized = true;
-        this._notifyInit();
+        this._notifyInit(e.origin);
       });
 
       helpers.addEventListener('luigi.auth.tokenIssued', e => {
@@ -77,16 +78,9 @@ class LifecycleManager extends LuigiClientBase {
         if (!this.currentContext.internal.isNavigateBack) {
           window.location.replace(e.data.viewUrl);
         }
-
         // execute the context change listener if set by the microfrontend
         this._notifyUpdate();
-
-        window.parent.postMessage(
-          {
-            msg: 'luigi.navigate.ok'
-          },
-          '*'
-        );
+        helpers.sendPostMessageToLuigiCore({ msg: 'luigi.navigate.ok' });
       });
 
       /**
@@ -123,8 +117,8 @@ class LifecycleManager extends LuigiClientBase {
    * @private
    * @memberof Lifecycle
    */
-  _notifyInit() {
-    this._callAllFns(this._onInitFns, this.currentContext.context);
+  _notifyInit(origin) {
+    this._callAllFns(this._onInitFns, this.currentContext.context, origin);
   }
 
   /**
@@ -145,7 +139,7 @@ class LifecycleManager extends LuigiClientBase {
   }
 
   /**
-   * Registers a listener called with the context object as soon as Luigi is instantiated. Defer your application bootstrap if you depend on authentication data coming from Luigi.
+   * Registers a listener called with the context object and the Luigi Core domain as soon as Luigi is instantiated. Defer your application bootstrap if you depend on authentication data coming from Luigi.
    * @param {function} initFn the function that is called once Luigi is initialized
    * @memberof Lifecycle
    */
@@ -153,7 +147,7 @@ class LifecycleManager extends LuigiClientBase {
     var id = helpers.getRandomId();
     this._onInitFns[id] = initFn;
     if (this.luigiInitialized && helpers.isFunction(initFn)) {
-      initFn(this.currentContext.context);
+      initFn(this.currentContext.context, helpers.getLuigiCoreDomain());
     }
     return id;
   }
