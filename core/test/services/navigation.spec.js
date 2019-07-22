@@ -3,6 +3,7 @@ const expect = chai.expect;
 const assert = chai.assert;
 const sinon = require('sinon');
 import { Navigation } from '../../src/navigation/services/navigation';
+import { RoutingHelpers, GenericHelpers } from '../../src/utilities/helpers';
 import { LuigiConfig } from '../../src/core-api';
 
 const sampleNavPromise = new Promise(function(resolve) {
@@ -68,6 +69,7 @@ describe('Navigation', function() {
   afterEach(() => {
     // reset
     LuigiConfig.config = {};
+    sinon.restore();
   });
   describe('getNavigationPath', function() {
     it('should not fail for undefined arguments', () => {
@@ -313,7 +315,6 @@ describe('Navigation', function() {
       expect(resMultipleDynamicError).to.equal(null);
       sinon.assert.calledOnce(console.warn);
       sinon.assert.calledOnce(console.error);
-      sinon.reset();
     });
   });
   describe('getLeftNavData', () => {
@@ -370,6 +371,73 @@ describe('Navigation', function() {
       // when
       const res = await Navigation.getLeftNavData(current, current);
       expect(res.selectedNode.pathSegment).to.equal('projects');
+    });
+  });
+
+  describe('extractDataFromPath', () => {
+    it('extracts the data', async () => {
+      sinon.stub(Navigation, 'getNavigationPath').returns('path-data');
+      sinon.stub(RoutingHelpers, 'getLastNodeObject').returns('node-object');
+      sinon
+        .stub(LuigiConfig, 'getConfigValueAsync')
+        .returns('navigation-nodes');
+
+      const expected = {
+        nodeObject: 'node-object',
+        pathData: 'path-data'
+      };
+      const actual = await Navigation.extractDataFromPath('path');
+
+      sinon.assert.calledWithExactly(
+        LuigiConfig.getConfigValueAsync,
+        'navigation.nodes'
+      );
+      sinon.assert.calledWithExactly(
+        Navigation.getNavigationPath,
+        'navigation-nodes',
+        'path'
+      );
+      sinon.assert.calledWithExactly(
+        RoutingHelpers.getLastNodeObject,
+        'path-data'
+      );
+      expect(actual).to.eql(expected);
+    });
+  });
+
+  describe('shouldPreventNavigation', () => {
+    let node;
+    let nodeActivationHook;
+
+    beforeEach(() => {
+      sinon.stub(GenericHelpers, 'isFunction').returns(true);
+      nodeActivationHook = sinon.stub().returns(false);
+      node = {
+        onNodeActivation: nodeActivationHook
+      };
+    });
+
+    it('returns true when node activation hook returns false', async () => {
+      const actual = await Navigation.shouldPreventNavigation(node);
+      expect(actual).to.be.true;
+    });
+
+    it('returns false when node is falsy', async () => {
+      node = undefined;
+      const actual = await Navigation.shouldPreventNavigation(node);
+      expect(actual).to.be.false;
+    });
+
+    it('returns false when node activation hook is not a function', async () => {
+      GenericHelpers.isFunction.returns(false);
+      const actual = await Navigation.shouldPreventNavigation(node);
+      expect(actual).to.be.false;
+    });
+
+    it('returns false when node activation hook does not return false', async () => {
+      nodeActivationHook.returns(undefined);
+      const actual = await Navigation.shouldPreventNavigation(node);
+      expect(actual).to.be.false;
     });
   });
 });

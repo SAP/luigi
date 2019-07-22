@@ -1,16 +1,13 @@
 describe('Luigi client ux manager features', () => {
-  let $iframe;
   let $iframeBody;
   beforeEach(() => {
     //"clear" variables to make sure they are not reused and throw error in case something goes wrong
-    $iframe = undefined;
     $iframeBody = undefined;
     cy.visit('/');
     cy.login('tets', 'tets');
 
-    cy.get('iframe').then(ifr => {
-      $iframe = ifr;
-      $iframeBody = ifr.contents().find('body');
+    cy.getIframeBody().then(result => {
+      $iframeBody = result;
     });
 
     //wait for the iFrame to be loaded
@@ -102,10 +99,8 @@ describe('Luigi client ux manager features', () => {
 
       cy.get('.spinnerContainer .fd-spinner').should('not.be.visible');
 
-      cy.get('iframe').then($iframe => {
-        const $iframeBody = $iframe.contents().find('body');
-
-        // show loading indicator
+      // show loading indicator
+      cy.getIframeBody().then($iframeBody => {
         cy.wrap($iframeBody)
           .contains('Show loading indicator')
           .click();
