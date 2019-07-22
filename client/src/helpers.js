@@ -3,6 +3,7 @@ class Helpers {
   /** @private */
   constructor() {
     this.listeners = [];
+    this.origin = '';
 
     window.addEventListener(
       'message',
@@ -61,6 +62,20 @@ class Helpers {
    */
   isFunction(item) {
     return typeof item === 'function';
+  }
+
+  getLuigiCoreDomain() {
+    return this.origin;
+  }
+
+  setLuigiCoreDomain(origin) {
+    if (origin) {
+      this.origin = origin;
+    }
+  }
+
+  sendPostMessageToLuigiCore(msg) {
+    window.parent.postMessage(msg, this.origin);
   }
 }
 

@@ -26,6 +26,7 @@ import { NgForm } from '@angular/forms';
 })
 export class ProjectComponent implements OnInit, OnDestroy {
   @ViewChild('luigiAlertForm') luigiAlertForm: NgForm;
+  @ViewChild('luigiLocalizationForm') luigiLocalizationForm: NgForm;
   public linkManager = linkManager;
   public uxManager = uxManager;
   public projectId: string;
@@ -39,6 +40,7 @@ export class ProjectComponent implements OnInit, OnDestroy {
   public alertTypes = ['success', 'info', 'warning', 'error'];
   public isDirty = false;
   public splitViewHandle;
+  public currentLocale = '';
 
   public constructor(
     private activatedRoute: ActivatedRoute,
@@ -82,6 +84,7 @@ export class ProjectComponent implements OnInit, OnDestroy {
         if (ctx.contextType === 'init' || ctx.contextType === 'update') {
           this.projectId = ctx.context.currentProject;
           this.preservedViewCallbackContext = ctx.context.goBackContext;
+          this.currentLocale = uxManager().getCurrentLocale();
           // Since Luigi runs outside of Zone.js, changes need
           // to be updated manually
           // Be sure to check for destroyed ChangeDetectorRef,
@@ -101,7 +104,8 @@ export class ProjectComponent implements OnInit, OnDestroy {
     this.cudListener = addContextUpdateListener(updatedContext => {
       // this.projectId = updatedContext.currentProject;
       // this.preservedViewCallbackContext = updatedContext.goBackContext;
-
+      this.currentLocale = uxManager().getCurrentLocale();
+      console.log('context updated', this.currentLocale, updatedContext);
       // Be sure to check for destroyed ChangeDetectorRef,
       // else you get runtime Errors
       if (!this.cdr['destroyed']) {
@@ -170,6 +174,10 @@ export class ProjectComponent implements OnInit, OnDestroy {
       .then(() => {
         this.alertDismissed = true;
       });
+  }
+
+  setCurrentLocale() {
+    uxManager().setCurrentLocale(this.luigiLocalizationForm.value.locale);
   }
 
   checkIfPathExists() {

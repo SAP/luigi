@@ -131,6 +131,11 @@ class IframeHelpersClass {
     }
   }
 
+  getIframeContainer() {
+    const container = Array.from(document.querySelectorAll('.iframeContainer'));
+    return container && container.length > 0 ? container[0] : undefined;
+  }
+
   getVisibleIframes() {
     return Array.prototype.slice
       .call(document.querySelectorAll('iframe'))
@@ -145,6 +150,18 @@ class IframeHelpersClass {
     return this.urlMatchesTheDomain(viewUrl, domain);
   }
 
+  getAllIframes(additionalIframes) {
+    const iframes = Array.from(
+      document.querySelectorAll('.iframeContainer iframe')
+    );
+    if (Array.isArray(additionalIframes)) {
+      iframes.push(...additionalIframes);
+    } else if (additionalIframes) {
+      iframes.push(additionalIframes);
+    }
+    return iframes;
+  }
+
   sendMessageToIframe(iframe, message) {
     if (!(iframe.luigi && iframe.luigi.viewUrl)) return;
     const trustedIframeDomain = this.getLocation(iframe.luigi.viewUrl);
@@ -157,7 +174,12 @@ class IframeHelpersClass {
     );
   }
 
-  createIframe(viewUrl, viewGroup) {
+  broadcastMessageToAllIframes(message, additionalIframes) {
+    const allIframes = IframeHelpers.getAllIframes(additionalIframes);
+    allIframes.forEach(iframe => this.sendMessageToIframe(iframe, message));
+  }
+
+  createIframe(viewUrl, viewGroup, clientPermissions) {
     const activeSandboxRules = [
       'allow-forms', // Allows the resource to submit forms. If this keyword is not used, form submission is blocked.
       'allow-modals', // Lets the resource open modal windows.
@@ -184,6 +206,9 @@ class IframeHelpersClass {
     if (viewGroup) {
       iframe.vg = viewGroup;
     }
+    if (clientPermissions) {
+      iframe.luigi.clientPermissions = clientPermissions;
+    }
     return iframe;
   }
 
@@ -193,8 +218,11 @@ class IframeHelpersClass {
 
   getValidMessageSource(e, component) {
     const allMessagesSources = [
-      ...Iframe.getAllIframes(
-        this.specialIframeTypes.map(t => component.get()[t.iframeKey])
+      ...IframeHelpers.getAllIframes(
+        [
+          component.get().modalIframe,
+          this.specialIframeTypes.map(t => component.get()[t.iframeKey])
+        ].filter(Boolean)
       ),
       { contentWindow: window, luigi: { viewUrl: window.location.href } }
     ];

@@ -120,6 +120,51 @@
         Luigi alert has been dismissed
       </p>
     </div>
+
+    <div class="fd-panel fd-has-margin-bottom-small">
+      <p><strong>Localization</strong></p>
+      <div
+        class="fd-has-color-status-4 fd-has-type-1 fd-has-margin-bottom-base"
+        data-cy="luigi-current-locale"
+      >
+        Current locale is: '{{ currentLocale }}'
+      </div>
+      <p class="fd-has-margin-bottom-s">
+        <app-code-snippet
+          data="uxManager().getCurrentLocale()"
+        ></app-code-snippet>
+      </p>
+      <div class="fd-container ">
+        <form #luigiLocalizationForm="ngForm" class="fd-col--3">
+          <div class="fd-form__set">
+            <div class="fd-form__item">
+              <label class="fd-form__label" for="locale">Locale </label>
+              <input
+                [ngModel]=""
+                class="fd-form__control"
+                type="text"
+                name="locale"
+                placeholder=""
+                data-cy="luigi-input-locale"
+              />
+            </div>
+          </div>
+        </form>
+      </div>
+      <button
+        class="fd-button"
+        data-cy="set-current-locale"
+        (click)="setCurrentLocale()"
+      >
+        Set Current Locale
+      </button>
+      <p>
+        <app-code-snippet
+          data="uxManager().setCurrentLocale(locale)"
+        ></app-code-snippet>
+      </p>
+    </div>
+
     <div class="fd-panel fd-has-margin-bottom-small">
       <p>
         <strong

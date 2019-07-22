@@ -70,7 +70,8 @@ export class linkManager extends LuigiClientBase {
         splitView: splitViewSettings
       })
     };
-    window.parent.postMessage(navigationOpenMsg, '*');
+
+    helpers.sendPostMessageToLuigiCore(navigationOpenMsg);
   }
 
   /**
@@ -218,7 +219,7 @@ export class linkManager extends LuigiClientBase {
         relative: path[0] !== '/'
       }
     };
-    window.parent.postMessage(pathExistsMsg, '*');
+    helpers.sendPostMessageToLuigiCore(pathExistsMsg);
     return pathExistsPromises[currentId];
   }
 
@@ -243,12 +244,9 @@ export class linkManager extends LuigiClientBase {
    * LuigiClient.linkManager().goBack(true);
    */
   goBack(goBackValue) {
-    window.parent.postMessage(
-      {
-        msg: 'luigi.navigation.back',
-        goBackContext: goBackValue && JSON.stringify(goBackValue)
-      },
-      '*'
-    );
+    helpers.sendPostMessageToLuigiCore({
+      msg: 'luigi.navigation.back',
+      goBackContext: goBackValue && JSON.stringify(goBackValue)
+    });
   }
 }
