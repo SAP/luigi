@@ -57,6 +57,7 @@
   import Alerts from './Alerts.html';
   import Modal from './Modal.html';
   import { LuigiConfig } from './core-api';
+  import { LuigiI18N } from './core-api';
   import { Routing } from './services/routing';
   import { Navigation } from './navigation/services/navigation';
   import { Iframe } from './services/iframe';
@@ -299,6 +300,14 @@
           isolateAllViews
         };
 
+        LuigiI18N.addCurrentLocaleChangeListener(locale => {
+           const message = {
+            msg: 'luigi.current-locale-changed',
+            currentLocale: locale
+          };
+          IframeHelpers.broadcastMessageToAllIframes(message);
+        });
+
         window.addEventListener('popstate', async e => {
           const alertQueue = this.get().alerts;
           if (!alertQueue || !alertQueue.length) return;
@@ -334,6 +343,8 @@
           if ('luigi.navigate.ok' === e.data.msg) {
             iframe.luigi.viewUrl = iframe.luigi.nextViewUrl;
             iframe.luigi.nextViewUrl = '';
+            iframe.luigi.clientPermissions = iframe.luigi.nextClientPermissions;
+            delete iframe.luigi.nextClientPermissions;
             config.navigateOk = true;
 
             ViewGroupPreloading.preload();
@@ -521,6 +532,17 @@
               /* keep it to avoid runtime errors in browser console */
             });
           }
+
+          if ('luigi.ux.set-current-locale' === e.data.msg) {
+            if (iframe.luigi.clientPermissions && iframe.luigi.clientPermissions.changeCurrentLocale) {
+              const { currentLocale } = e.data.data;
+              if (currentLocale) {
+                LuigiI18N.setCurrentLocale(currentLocale);
+              }
+            } else {
+              console.error('Current local change from client declined because client permission changeCurrentLocale is not set for this view.');
+            }
+          }
         });
 
         // listeners are not automatically removed — cancel
@@ -533,7 +555,7 @@
     methods: {
       getValidMessageSource(e) {
         const allMessagesSources = [
-          ...Iframe.getAllIframes(this.get().modalIframe),
+          ...IframeHelpers.getAllIframes(this.get().modalIframe),
           { contentWindow: window, luigi: { viewUrl: window.location.href } }
         ];
         const iframe = allMessagesSources.find(iframe =>
@@ -569,7 +591,8 @@
         return {
           isNavigateBack: this.get().isNavigateBack,
           viewStackSize: this.get().preservedViews.length,
-          modal: modal
+          modal: modal,
+          currentLocale: LuigiI18N.getCurrentLocale()
         };
       },
       closeLeftNav() {

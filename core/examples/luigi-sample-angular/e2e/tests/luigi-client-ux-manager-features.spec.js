@@ -316,5 +316,26 @@ describe('Luigi client ux manager features', () => {
         cy.get('[data-cy=luigi-alert]').should('not.exist');
       });
     });
+    describe('Luigi Client Localization', () => {
+      it('set localization in client', () => {
+        cy.goToUxManagerMethods($iframeBody);
+
+        cy.wrap($iframeBody)
+          .find('[data-cy=luigi-current-locale]')
+          .should('contain', "'en'");
+
+        cy.wrap($iframeBody)
+          .find('[data-cy=luigi-input-locale]')
+          .type('pl_PL');
+
+        cy.wrap($iframeBody)
+          .find('[data-cy=set-current-locale]')
+          .click();
+
+        cy.wrap($iframeBody)
+          .find('[data-cy=luigi-current-locale]')
+          .should('contain', "'pl_PL'");
+      });
+    });
   });
 });

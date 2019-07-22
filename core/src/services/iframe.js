@@ -6,6 +6,7 @@ import {
   RoutingHelpers
 } from '../utilities/helpers';
 import { LuigiConfig } from '../core-api';
+import { LuigiI18N } from '../core-api';
 
 class IframeClass {
   constructor() {
@@ -20,26 +21,6 @@ class IframeClass {
       activeIframe = children.filter(child => child.style.display !== 'none');
     }
     return activeIframe[0];
-  }
-
-  getIframeBySource(source, modalIframe) {
-    if (modalIframe && modalIframe.contentWindow === source) {
-      return modalIframe;
-    }
-    return this.getAllIframes().find(iframe => iframe.contentWindow === source);
-  }
-
-  getIframeContainer() {
-    const container = Array.from(document.querySelectorAll('.iframeContainer'));
-    return container && container.length > 0 ? container[0] : undefined;
-  }
-
-  getAllIframes(modalIframe) {
-    const iframes = Array.from(
-      document.querySelectorAll('.iframeContainer iframe')
-    );
-    if (modalIframe) iframes.push(modalIframe);
-    return iframes;
   }
 
   setActiveIframeToPrevious(node) {
@@ -128,7 +109,9 @@ class IframeClass {
                 context: JSON.stringify({}),
                 nodeParams: JSON.stringify({}),
                 pathParams: JSON.stringify({}),
-                internal: JSON.stringify({})
+                internal: JSON.stringify({
+                  currentLocale: LuigiI18N.getCurrentLocale()
+                })
               };
               IframeHelpers.sendMessageToIframe(child, message);
             }
@@ -252,9 +235,9 @@ class IframeClass {
           this.canCache(componentData.viewGroup);
         config.iframe = IframeHelpers.createIframe(
           viewUrl,
-          canCache ? componentData.viewGroup : undefined
+          canCache ? componentData.viewGroup : undefined,
+          component.get().currentNode.clientPermissions
         );
-
         node.insertBefore(config.iframe, node.firstChild);
 
         if (config.builderCompatibilityMode) {
@@ -269,6 +252,7 @@ class IframeClass {
       const goBackContext = component.get().goBackContext;
       config.iframe.style.display = 'block';
       config.iframe.luigi.nextViewUrl = viewUrl;
+      config.iframe.luigi.nextClientPermissions = component.get().currentNode.clientPermissions;
       config.iframe['vg'] = this.canCache(componentData.viewGroup)
         ? componentData.viewGroup
         : undefined;
