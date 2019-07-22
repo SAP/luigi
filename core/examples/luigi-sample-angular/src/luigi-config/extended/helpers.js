@@ -129,6 +129,9 @@ export const projectsNavProviderFn = context =>
             currentProject: project.id
           },
           icon: 'folder-blank',
+          clientPermissions: {
+            changeCurrentLocale: true
+          },
           children: projectDetailNavProviderFn
         });
       });

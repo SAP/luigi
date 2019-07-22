@@ -25,6 +25,7 @@ import { GroupSettingsComponent } from './project/users/groups/group-details/gro
 import { DynamicComponent } from './project/dynamic/dynamic.component';
 import { HideSideNavComponent } from './project/hide-side-nav/hide-side-nav.component';
 import { AnonymousComponent } from './anonymous/anonymous.component';
+import { OnNodeActivationComponent } from './onNodeActivation/onNodeActivation.component';
 
 @NgModule({
   declarations: [
@@ -48,7 +49,8 @@ import { AnonymousComponent } from './anonymous/anonymous.component';
     GroupSettingsComponent,
     DynamicComponent,
     HideSideNavComponent,
-    AnonymousComponent
+    AnonymousComponent,
+    OnNodeActivationComponent
   ],
   imports: [BrowserModule, FormsModule, AppRoutingModule],
   providers: [LuigiContextService],

@@ -1,3 +1,5 @@
+import { Iframe } from '../../../src/services/iframe';
+
 const chai = require('chai');
 const assert = chai.assert;
 const sinon = require('sinon');
@@ -170,5 +172,41 @@ describe('Iframe-helpers', () => {
       previousNodeValues: { isolateView: true }
     });
     assert.isTrue(IframeHelpers.hasIframeIsolation(component));
+  });
+
+  it('getIframeContainer', () => {
+    sinon
+      .stub(document, 'querySelectorAll')
+      .onFirstCall()
+      .returns([])
+      .onSecondCall()
+      .returns(['firstIframe', 'secondIframe']);
+
+    // first
+    assert.equal(
+      IframeHelpers.getIframeContainer(),
+      undefined,
+      'no iframe found'
+    );
+    // second
+    assert.equal(
+      IframeHelpers.getIframeContainer(),
+      'firstIframe',
+      'returns first iframe'
+    );
+  });
+
+  describe('getAllIframes', () => {
+    it('should return an array of active iframes with no modal iframe', () => {
+      const iframes = IframeHelpers.getAllIframes();
+
+      assert.equal(iframes.length, 0);
+    });
+
+    it('should return an array of active iframes including active modal iframe', () => {
+      const iframes = IframeHelpers.getAllIframes({});
+
+      assert.equal(iframes.length, 1);
+    });
   });
 });

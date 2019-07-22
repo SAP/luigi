@@ -1,16 +1,13 @@
 describe('Luigi client ux manager features', () => {
-  let $iframe;
   let $iframeBody;
   beforeEach(() => {
     //"clear" variables to make sure they are not reused and throw error in case something goes wrong
-    $iframe = undefined;
     $iframeBody = undefined;
     cy.visit('/');
     cy.login('tets', 'tets');
 
-    cy.get('iframe').then(ifr => {
-      $iframe = ifr;
-      $iframeBody = ifr.contents().find('body');
+    cy.getIframeBody().then(result => {
+      $iframeBody = result;
     });
 
     //wait for the iFrame to be loaded
@@ -102,10 +99,8 @@ describe('Luigi client ux manager features', () => {
 
       cy.get('.spinnerContainer .fd-spinner').should('not.be.visible');
 
-      cy.get('iframe').then($iframe => {
-        const $iframeBody = $iframe.contents().find('body');
-
-        // show loading indicator
+      // show loading indicator
+      cy.getIframeBody().then($iframeBody => {
         cy.wrap($iframeBody)
           .contains('Show loading indicator')
           .click();
@@ -319,6 +314,27 @@ describe('Luigi client ux manager features', () => {
           .click();
 
         cy.get('[data-cy=luigi-alert]').should('not.exist');
+      });
+    });
+    describe('Luigi Client Localization', () => {
+      it('set localization in client', () => {
+        cy.goToUxManagerMethods($iframeBody);
+
+        cy.wrap($iframeBody)
+          .find('[data-cy=luigi-current-locale]')
+          .should('contain', "'en'");
+
+        cy.wrap($iframeBody)
+          .find('[data-cy=luigi-input-locale]')
+          .type('pl_PL');
+
+        cy.wrap($iframeBody)
+          .find('[data-cy=set-current-locale]')
+          .click();
+
+        cy.wrap($iframeBody)
+          .find('[data-cy=luigi-current-locale]')
+          .should('contain', "'pl_PL'");
       });
     });
   });
