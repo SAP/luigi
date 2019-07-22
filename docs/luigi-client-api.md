@@ -98,7 +98,7 @@ Navigates to the given path in the application hosted by Luigi. It contains eith
 -   `splitViewSettings` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** opens a view in a split view. Use these settings to configure the split view's behaviour
     -   `splitViewSettings.title` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** split view title. By default, it is the node label. If there is no label, it is left empty
     -   `splitViewSettings.size` **[number](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number)** height of the split view in percent (optional, default `40`)
-    -   `splitViewSettings.collapsed` **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)** create split view but leave it closed initially (optional, default `false`)
+    -   `splitViewSettings.collapsed` **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)** creates split view but leaves it closed initially (optional, default `false`)
 
 #### Examples
 
@@ -144,7 +144,7 @@ Opens a view in a split view. You can specify the split view's title and size. I
 const splitViewHandle = LuigiClient.linkManager().openAsSplitView('projects/pr1/logs', {title: 'Logs', size: 40});
 ```
 
-Returns **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** instance of the SplitView that allows functions to control it's behaviour and provides event listeners
+Returns **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** instance of the SplitView. It provides Event listeners and you can use the available functions to control its behavior.
 
 ### fromContext
 
@@ -238,7 +238,7 @@ LuigiClient.linkManager().goBack(true);
 
 ## splitView
 
-The Split View 
+Split view 
 
 -   Actions to control the split view
 -   Event handlers
