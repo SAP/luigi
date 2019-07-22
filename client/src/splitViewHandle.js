@@ -2,7 +2,7 @@ import { LuigiClientBase } from './baseClass';
 import { helpers } from './helpers';
 
 /**
- * The Split View 
+ * Split view 
   - Actions to control the split view
   - Event handlers
   - Get the current state
