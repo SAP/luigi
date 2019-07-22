@@ -23,7 +23,8 @@ Object.keys(productSwitcherItems[0]).length }
         <div class="fd-product-switcher__body">
           <nav class="fd-menu">
             <ul class="fd-menu__list">
-              {#each productSwitcherItems as productSwitcherItem} {#if productSwitcherItem.label}
+              {#each productSwitcherItems as productSwitcherItem}
+              {#if productSwitcherItem.label}
               <li on:click="onActionClick(productSwitcherItem)">
                 <a class="fd-menu__item">
                   {#if productSwitcherItem.icon}
@@ -42,13 +43,14 @@ Object.keys(productSwitcherItems[0]).length }
                   <span
                     class="y-full-width-list__icon"
                   ></span>
+                  {/if}
                   <span
                     class="fd-product-switcher__product-title"
                   >{productSwitcherItem.label}</span>
-                  {/if}
                 </a>
               </li>
-              {/if} {/each}
+              {/if}
+              {/each}
             </ul>
           </nav>
         </div>
@@ -70,7 +72,7 @@ Object.keys(productSwitcherItems[0]).length }
           <button
             class="fd-button--light fd-button--compact sap-icon--nav-back"
             on:click="toggleDropdownState(event)"
-            data-cy="mobile-topnav-dropdown-close"
+            data-cy="mobile-product-switcher-close"
           ></button>
         </div>
         <div class="fd-action-bar__header">
