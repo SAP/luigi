@@ -65,6 +65,39 @@ export const projectDetailNavStructure = projectId => [
     icon: '/assets/favicon-sap.ico'
   },
   {
+    pathSegment: 'on-node-activation',
+    label: 'Node with node activation hook',
+    icon: 'activate',
+    viewUrl: '/sampleapp.html#/on-node-activation',
+    children: [
+      {
+        pathSegment: 'not-navigated',
+        label: 'Prevent navigation',
+        icon: 'stop',
+        viewUrl: '/sampleapp.html#/on-node-activation/not-navigated',
+        onNodeActivation: node => {
+          Luigi.showAlert({
+            text: `Showing an alert instead of navigating.`,
+            type: 'info',
+            closeAfter: 3000
+          });
+          return false;
+        }
+      },
+      {
+        pathSegment: 'navigated',
+        label: 'Prevent navigation conditionally',
+        icon: 'question-mark',
+        viewUrl: '/sampleapp.html#/on-node-activation/conditionally-navigated',
+        openNodeInModal: true,
+        onNodeActivation: node => {
+          return Luigi.showConfirmationModal({}).then(() => true, () => false);
+        }
+      }
+    ]
+  },
+
+  {
     category: { label: 'Settings', icon: 'action-settings' },
     pathSegment: 'settings',
     label: 'Project Settings',
