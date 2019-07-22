@@ -90,20 +90,20 @@
     "branches": 55,
     "watermarks": {
       "lines": [
-        60,
-        80
+        55,
+        65
       ],
       "functions": [
-        60,
-        80
+        55,
+        65
       ],
       "branches": [
-        60,
-        80
+        55,
+        65
       ],
       "statements": [
-        60,
-        80
+        55,
+        65
       ]
     },
     "include": [

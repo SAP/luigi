@@ -777,7 +777,11 @@
           });
         });
       },
-      openViewInModal(nodepath, modalSettings) {
+      async openViewInModal(nodepath, modalSettings) {
+        const { nodeObject } = await Navigation.extractDataFromPath(nodepath);
+        if (await Navigation.shouldPreventNavigation(nodeObject)) {
+          return;
+        }
         this.set({
           mfModal: {
             displayed: true,

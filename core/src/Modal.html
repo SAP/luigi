@@ -28,20 +28,18 @@
   const prepareNodeData = async (component, path) => {
     const pathUrlRaw =
       path && path.length ? GenericHelpers.getPathWithoutHash(path) : '';
-    const pathData = await Navigation.getNavigationPath(
-      LuigiConfig.getConfigValueAsync('navigation.nodes'),
-      path
-    );
     const params = RoutingHelpers.parseParams(pathUrlRaw.split('?')[1]);
     const nodeParams = RoutingHelpers.getNodeParams(params);
-    const lastNode = RoutingHelpers.getLastNodeObject(pathData);
+
+    const { nodeObject, pathData } = await Navigation.extractDataFromPath(path);
+
     const modalSettings = component.get().modalSettings;
     if (!modalSettings.title) {
-      modalSettings.title = lastNode.label;
+      modalSettings.title = nodeObject.label;
     }
     component.set({
       modalSettings,
-      lastNode,
+      nodeObject,
       pathData,
       nodeParams,
       isDataPrepared: true
@@ -50,9 +48,14 @@
 
   const getNode = async (component, path) => {
     if (component.get().isDataPrepared) {
-      const { nodeParams, lastNode, modalSettings, pathData } = component.get();
+      const {
+        nodeParams,
+        nodeObject,
+        modalSettings,
+        pathData
+      } = component.get();
       const iframe = createIframeModal(
-        lastNode.viewUrl,
+        nodeObject.viewUrl,
         {
           context: pathData.context,
           pathParams: pathData.pathParams,
@@ -89,7 +92,7 @@
     const iframe = IframeHelpers.createIframe(
       viewUrl,
       undefined,
-      component.get().lastNode.clientPermissions
+      component.get().nodeObject.clientPermissions
     );
     const iframeCtn = document.querySelector('.iframeModalCtn');
     iframeCtn.appendChild(iframe);
