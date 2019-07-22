@@ -26,13 +26,13 @@ describe('SplitView', () => {
         // https://docs.cypress.io/api/commands/hover.html#Workarounds
         // cy.get('#splitViewDragger').trigger('mouseover');
 
-        cy.get('.lui-collapse-btn').click({ force: true });
+        cy.get('.lui-collapse-btn').click();
 
         cy.get('.iframeSplitViewCnt iframe').should('not.exist');
 
         cy.get('.fd-splitView__title').should('contain', 'Logs');
 
-        cy.get('.lui-collapse-btn').click({ force: true });
+        cy.get('.lui-collapse-btn').click();
       });
 
       cy.get('.iframeSplitViewCnt iframe').should('exist');
