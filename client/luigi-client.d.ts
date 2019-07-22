@@ -115,6 +115,18 @@ export declare interface UxManager {
    * @returns {promise} which is resolved when accepting the confirmation modal and rejected when dismissing it.
    */
   showConfirmationModal: (settings: ConfirmationModalSettings) => Promise<void>;
+
+  /**
+   * Gets the current locale.
+   * @returns {string} current locale
+   */
+  getCurrentLocale: () => string;
+
+  /**
+   * Sets current locale to the specified one.
+   * @param {string} locale locale to be set as the current locale
+   */
+  setCurrentLocale: (locale: string) => void;
 }
 
 export declare interface LinkManager {
@@ -210,12 +222,16 @@ export declare interface LinkManager {
 }
 
 /**
- * Registers a listener called with the context object as soon as Luigi is instantiated. Defer your application bootstrap if you depend on authentication data coming from Luigi.
+ * Registers a listener called with the context object and the Luigi core domain as soon as Luigi is instantiated. Defer your application bootstrap if you depend on authentication data coming from Luigi.
  * @param {function} initFn the function that is called once Luigi is initialized
  * @memberof Lifecycle
  */
-export function addInitListener(initFn: (context: Context) => void): number;
-export type addInitListener = (initFn: (context: Context) => void) => number;
+export function addInitListener(
+  initFn: (context: Context, origin?: string) => void
+): number;
+export type addInitListener = (
+  initFn: (context: Context, origin?: string) => void
+) => number;
 
 /**
  * Removes an init listener.
