@@ -24,7 +24,11 @@ const configReadyCallback = () => {
   Luigi._app = app;
 
   Luigi.showAlert = settings => {
-    app.showAlert(settings);
+    return app.showAlert(settings);
+  };
+
+  Luigi.showConfirmationModal = settings => {
+    return app.showModal(settings);
   };
 };
 
