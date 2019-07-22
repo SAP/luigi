@@ -1,3 +1,5 @@
+import { IframeHelpers } from '../../src/utilities/helpers';
+
 const chai = require('chai');
 const assert = chai.assert;
 const sinon = require('sinon');
@@ -60,10 +62,10 @@ describe('Iframe', () => {
     sinon.stub(Iframe, 'getAllViewGroupSettings').callsFake(() => {
       return viewGroupSettings;
     });
-    sinon.stub(Iframe, 'getIframeContainer').callsFake(() => {
+    sinon.stub(IframeHelpers, 'getIframeContainer').callsFake(() => {
       return container;
     });
-    sinon.stub(Iframe, 'getAllIframes').callsFake(() => {
+    sinon.stub(IframeHelpers, 'getAllIframes').callsFake(() => {
       return [...iframes];
     });
   });

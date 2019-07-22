@@ -283,7 +283,7 @@ class RoutingClass {
 
       const windowPath = GenericHelpers.trimLeadingSlash(this.getWindowPath());
       if (windowPath === GenericHelpers.trimLeadingSlash(route)) {
-        const iframeContainer = Iframe.getIframeContainer();
+        const iframeContainer = IframeHelpers.getIframeContainer();
         const activeIframe = Iframe.getActiveIframe(iframeContainer);
         if (
           activeIframe &&
@@ -291,13 +291,13 @@ class RoutingClass {
           Iframe.canCache(activeIframe.vg)
         ) {
           Iframe.switchActiveIframe(
-            Iframe.getIframeContainer(),
+            IframeHelpers.getIframeContainer(),
             undefined,
             false
           );
           setTimeout(() => {
             Iframe.switchActiveIframe(
-              Iframe.getIframeContainer(),
+              IframeHelpers.getIframeContainer(),
               activeIframe,
               false
             );
