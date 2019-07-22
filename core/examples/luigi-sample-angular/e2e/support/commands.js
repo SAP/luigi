@@ -60,6 +60,20 @@ Cypress.Commands.add('selectContextSwitcherItem', (item, currentLabel) => {
     .click();
 });
 
+Cypress.Commands.add(
+  'getIframeBody',
+  (getIframeOpts = {}, index = 0, containerSelector = '.iframeContainer') => {
+    return cy
+      .get(`${containerSelector} iframe`, getIframeOpts)
+      .eq(index)
+      .then(function($element) {
+        // wrap the body of your iframe with cy so as to do cy actions inside iframe elements
+        // return cy.wrap($element.contents().find('body'));
+        return $element.contents().find('body');
+      });
+  }
+);
+
 const isHashRoutingOn = () => {
   const appWindow = cy.state('window');
   const { useHashRouting } =

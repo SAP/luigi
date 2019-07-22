@@ -1,24 +1,24 @@
 describe('Modal Microfrontend', () => {
-  let iframeBody;
+  let $iframeBody;
   beforeEach(() => {
     cy.visit('/');
     cy.login('tets', 'tets');
 
-    //wait for the iFrame to be loaded
-    cy.get('iframe', { timeout: 1000 }).then(ifr => {
-      iframeBody = ifr.contents().find('body');
+    // wait for the iFrame to be loaded
+    cy.getIframeBody({ timeout: 1000 }).then(result => {
+      $iframeBody = result;
     });
   });
 
   describe('Behaviour when used in LinkManager', () => {
     beforeEach(() => {
-      cy.goToLinkManagerMethods(iframeBody);
+      cy.goToLinkManagerMethods($iframeBody);
     });
 
     it(`doesn't change URL when opened`, () => {
       cy.expectPathToBe('/projects/pr2');
 
-      cy.wrap(iframeBody)
+      cy.wrap($iframeBody)
         .contains('rendered in a modal')
         .click();
 
@@ -26,25 +26,25 @@ describe('Modal Microfrontend', () => {
     });
 
     it(`can be closed by Close Button`, () => {
-      cy.wrap(iframeBody)
+      cy.wrap($iframeBody)
         .contains('rendered in a modal')
         .click();
 
-      cy.wrap(iframeBody)
+      cy.wrap($iframeBody)
         .get('[data-e2e=modal-mf]')
         .should('be.visible');
 
-      cy.wrap(iframeBody)
+      cy.wrap($iframeBody)
         .get('[data-e2e=modal-mf] [aria-label=close]')
         .click();
 
-      cy.wrap(iframeBody)
+      cy.wrap($iframeBody)
         .get('[data-e2e=modal-mf]')
         .should('not.be.visible');
     });
 
     it(`sets proper URL inside iframe`, () => {
-      cy.wrap(iframeBody)
+      cy.wrap($iframeBody)
         .contains('rendered in a modal')
         .click();
 
@@ -54,7 +54,7 @@ describe('Modal Microfrontend', () => {
     });
 
     it(`has the size set directly`, () => {
-      cy.wrap(iframeBody)
+      cy.wrap($iframeBody)
         .contains('rendered in a modal')
         .click();
 
@@ -65,7 +65,7 @@ describe('Modal Microfrontend', () => {
     });
 
     it(`go back closes the modal`, () => {
-      cy.wrap(iframeBody)
+      cy.wrap($iframeBody)
         .contains('rendered in a modal')
         .click();
 
