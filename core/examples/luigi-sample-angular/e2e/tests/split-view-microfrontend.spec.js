@@ -1,7 +1,8 @@
 describe('SplitView', () => {
   beforeEach(() => {
-    cy.visit('/projects/pr2');
+    cy.visit('/');
     cy.login('tets@email.com', 'tets', true);
+    cy.visit('/projects/pr2');
   });
 
   it('Opens a Split View and collapses and expands', () => {
