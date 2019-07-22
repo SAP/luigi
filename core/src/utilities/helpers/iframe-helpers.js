@@ -117,6 +117,23 @@ class IframeHelpersClass {
     }
   }
 
+  getIframeContainer() {
+    const container = Array.from(document.querySelectorAll('.iframeContainer'));
+    return container && container.length > 0 ? container[0] : undefined;
+  }
+
+  getAllIframes(additionalIframes) {
+    const iframes = Array.from(
+      document.querySelectorAll('.iframeContainer iframe')
+    );
+    if (Array.isArray(additionalIframes)) {
+      iframes.push(...additionalIframes);
+    } else if (additionalIframes) {
+      iframes.push(additionalIframes);
+    }
+    return iframes;
+  }
+
   getVisibleIframes() {
     return Array.prototype.slice
       .call(document.querySelectorAll('iframe'))
@@ -137,7 +154,12 @@ class IframeHelpersClass {
     iframe.contentWindow.postMessage(message, trustedIframeDomain);
   }
 
-  createIframe(viewUrl, viewGroup) {
+  broadcastMessageToAllIframes(message, additionalIframes) {
+    const allIframes = this.getAllIframes(additionalIframes);
+    allIframes.forEach(iframe => this.sendMessageToIframe(iframe, message));
+  }
+
+  createIframe(viewUrl, viewGroup, clientPermissions) {
     const activeSandboxRules = [
       'allow-forms', // Allows the resource to submit forms. If this keyword is not used, form submission is blocked.
       'allow-modals', // Lets the resource open modal windows.
@@ -163,6 +185,9 @@ class IframeHelpersClass {
     };
     if (viewGroup) {
       iframe.vg = viewGroup;
+    }
+    if (clientPermissions) {
+      iframe.luigi.clientPermissions = clientPermissions;
     }
     return iframe;
   }
