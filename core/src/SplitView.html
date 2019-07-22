@@ -3,7 +3,7 @@
   {#if collapsed}
   <div class="splitViewSeparator isCollapsed">
     <a class="lui-collapse-btn" on:click:stopPropagation="expand(event)">
-      <span class="sap-icon--collapse-group sap-icon--s"></span>
+      <span class="sap-icon--navigation-up-arrow sap-icon--s"></span>
     </a>
   </div>
   <h1 class="fd-splitView__title">{splitViewSettings.title}</h1>
@@ -11,7 +11,7 @@
   <div id="splitViewDragger" on:dragSplitViewBorder="dragged(event)">
     <div class="splitViewSeparator"></div>
     <a class="lui-collapse-btn" on:click:stopPropagation="collapse(event)">
-      <span class="sap-icon--expand-group sap-icon--s"></span>
+      <span class="sap-icon--navigation-down-arrow sap-icon--s"></span>
     </a>
   </div>
   <div id="splitViewDraggerBackdrop"></div>
@@ -265,10 +265,6 @@
       margin-top: -15px;
       padding-top: 15px;
       padding-bottom: 15px;
-
-      .lui-collapse-btn {
-        visibility: visible;
-      }
     }
   }
 
@@ -293,7 +289,6 @@
     border: 1px solid gray;
     border-radius: 5px;
     cursor: pointer;
-    visibility: hidden;
   }
 
   #splitViewDraggerBackdrop {
@@ -315,10 +310,6 @@
       width: 100%;
       top: 0;
       margin-bottom: 4px;
-
-      &:hover .lui-collapse-btn {
-        visibility: visible;
-      }
     }
 
     .iframeSplitViewCnt {
