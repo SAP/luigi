@@ -41,6 +41,11 @@ class RoutingClass {
     @param route string  absolute path of the new route
    */
   async navigateTo(route, pushState = true) {
+    const { nodeObject } = await Navigation.extractDataFromPath(route);
+    if (await Navigation.shouldPreventNavigation(nodeObject)) {
+      return;
+    }
+
     const windowPath = GenericHelpers.trimLeadingSlash(this.getWindowPath());
     if (windowPath === GenericHelpers.trimLeadingSlash(route)) {
       return;
@@ -158,12 +163,11 @@ class RoutingClass {
 
       const pathUrlRaw =
         path && path.length ? GenericHelpers.getPathWithoutHash(path) : '';
-      const pathData = await Navigation.getNavigationPath(
-        LuigiConfig.getConfigValueAsync('navigation.nodes'),
+      const { nodeObject, pathData } = await Navigation.extractDataFromPath(
         path
       );
-      const lastNode = RoutingHelpers.getLastNodeObject(pathData);
-      const viewUrl = lastNode.viewUrl || '';
+
+      const viewUrl = nodeObject.viewUrl || '';
 
       if (!viewUrl) {
         const defaultChildNode = await RoutingHelpers.getDefaultChildNode(
@@ -219,7 +223,7 @@ class RoutingClass {
       );
       const params = RoutingHelpers.parseParams(pathUrlRaw.split('?')[1]);
       const nodeParams = RoutingHelpers.getNodeParams(params);
-      const viewGroup = RoutingHelpers.findViewGroup(lastNode);
+      const viewGroup = RoutingHelpers.findViewGroup(nodeObject);
       const urlParamsRaw = decodeURIComponent(pathUrlRaw.split('?')[1] || '');
       const currentNode =
         pathData.navigationPath && pathData.navigationPath.length > 0
@@ -239,8 +243,8 @@ class RoutingClass {
           pathData.pathParams
         ),
         pathParams: pathData.pathParams,
-        hideSideNav: lastNode.hideSideNav || false,
-        isolateView: lastNode.isolateView || false
+        hideSideNav: nodeObject.hideSideNav || false,
+        isolateView: nodeObject.isolateView || false
       };
 
       const previousCompData = component.get();
@@ -283,7 +287,7 @@ class RoutingClass {
 
       const windowPath = GenericHelpers.trimLeadingSlash(this.getWindowPath());
       if (windowPath === GenericHelpers.trimLeadingSlash(route)) {
-        const iframeContainer = Iframe.getIframeContainer();
+        const iframeContainer = IframeHelpers.getIframeContainer();
         const activeIframe = Iframe.getActiveIframe(iframeContainer);
         if (
           activeIframe &&
@@ -291,13 +295,13 @@ class RoutingClass {
           Iframe.canCache(activeIframe.vg)
         ) {
           Iframe.switchActiveIframe(
-            Iframe.getIframeContainer(),
+            IframeHelpers.getIframeContainer(),
             undefined,
             false
           );
           setTimeout(() => {
             Iframe.switchActiveIframe(
-              Iframe.getIframeContainer(),
+              IframeHelpers.getIframeContainer(),
               activeIframe,
               false
             );
