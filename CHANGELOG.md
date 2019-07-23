@@ -24,7 +24,7 @@ The lerna-changelog tool detects changes based on PR labels and maps them to sec
   }
 -->
 
-## [0.5.3] (2019-07-23)
+## [v0.5.3] (2019-07-23)
 
 #### :rocket: Added
 * [#663](https://github.com/SAP/luigi/pull/663) Remove nav highlight for semiCollapsible collapsed category ([@maxmarkus](https://github.com/maxmarkus))
