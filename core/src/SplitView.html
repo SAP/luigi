@@ -213,6 +213,7 @@
             !splitStyles.bottom ||
             splitStyles.top == values.m_pos_prev
           ) {
+            SplitViewSvc.getDraggerBackdrop().style.display = 'none';
             return;
           }
           values.m_pos_prev = splitStyles.top;
