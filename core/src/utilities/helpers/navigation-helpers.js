@@ -157,8 +157,9 @@ class NavigationHelpersClass {
               count: () => badgeCount
             };
           } else if (hasBadge) {
-            badgeCount = cats[catLabel].badgeCounter.count() + badgeCount;
-            cats[catLabel].badgeCounter.count = () => badgeCount;
+            const updatedCount =
+              cats[catLabel].badgeCounter.count() + badgeCount;
+            cats[catLabel].badgeCounter.count = () => updatedCount;
           }
         } else {
           cats[catLabel] = {
