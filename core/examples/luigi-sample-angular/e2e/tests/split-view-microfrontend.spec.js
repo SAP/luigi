@@ -14,23 +14,15 @@ describe('SplitView', () => {
         .click();
       cy.expectPathToBe('/projects/pr2');
 
-      cy.get('.iframeSplitViewCnt iframe').then($splitIframe => {
-        const $splitIframeBody = $splitIframe.contents().find('body');
-        cy.get('.iframeSplitViewCnt iframe').should('exist');
+      cy.get('.iframeSplitViewCnt iframe').should('exist');
 
-        // cy.wrap($splitIframeBody)
-        //   .find('h1')
-        //   .first()
-        //   .should('contain', 'Global Settings');
+      cy.get('.lui-collapse-btn').click();
 
-        cy.get('.lui-collapse-btn').click();
+      cy.get('.iframeSplitViewCnt iframe').should('not.exist');
 
-        cy.get('.iframeSplitViewCnt iframe').should('not.exist');
+      cy.get('.fd-splitView__title').should('contain', 'Logs');
 
-        cy.get('.fd-splitView__title').should('contain', 'Logs');
-
-        cy.get('.lui-collapse-btn').click();
-      });
+      cy.get('.lui-collapse-btn').click();
 
       cy.get('.iframeSplitViewCnt iframe').should('exist');
     });
