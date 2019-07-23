@@ -4,8 +4,8 @@ import { helpers } from './helpers';
 /**
  * Split view 
   Allows to open a micro-frontend in a split screen in the lower part of the content area. Open it by calling `const splitViewHandle = LuigiClient.linkManager().openAsSplitView`. 
-  There can be only one split view at a certain point in time and it gets automatically closed when navigating to a different route.
-  Additionally, when you call ´handle.collapse()`, the split view gets destroyed and a new frame created upon ´handle.expand()`.
+  At a given time, you can open only one split view. It closes automatically when you navigate to a different route.
+  When you call `handle.collapse()`, the split view gets destroyed. You can create a new frame by calling `handle.expand()`.
   `openAsSplitView` returns an instance of the split view handle. The functions, actions, and event handlers listed below allow you to control and manage the split view.
   * @name splitView
   */
