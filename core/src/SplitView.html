@@ -2,15 +2,21 @@
 <div class="lui-split-view">
   {#if collapsed}
   <div class="splitViewSeparator isCollapsed">
-    <a class="lui-collapse-btn" on:click:stopPropagation="expand(event)">
+    <a
+      class="lui-collapse-btn"
+      on:click:stopPropagation:preventDefault="expand(event)"
+    >
       <span class="sap-icon--navigation-up-arrow sap-icon--s"></span>
     </a>
   </div>
   <h1 class="fd-splitView__title">{splitViewSettings.title}</h1>
   {:else}
-  <div id="splitViewDragger" on:dragSplitViewBorder="dragged(event)">
+  <div id="splitViewDragger" on:mousedown:stopPropagation="onDragStart(event)">
     <div class="splitViewSeparator"></div>
-    <a class="lui-collapse-btn" on:click:stopPropagation="collapse(event)">
+    <a
+      class="lui-collapse-btn"
+      on:click:stopPropagation:preventDefault="collapse(event)"
+    >
       <span class="sap-icon--navigation-down-arrow sap-icon--s"></span>
     </a>
   </div>
@@ -31,7 +37,8 @@
   let values = {
     rightContentHeight: null,
     thresholdTop: null,
-    thresholdBottom: null
+    thresholdBottom: null,
+    m_pos_prev: null
   };
   let elements = {
     draggable: null,
@@ -154,7 +161,8 @@
       };
     },
     methods: {
-      collapse() {
+      collapse(e) {
+        e && e.stopPropagation();
         SplitViewSvc.collapse(this.root);
       },
       expand() {
@@ -166,21 +174,19 @@
         values.rightContentHeight = window.innerHeight - shellbarHeight;
         values.thresholdBottom = 30;
         values.thresholdTop = shellbarHeight + 30;
-      }
-    },
-    events: {
-      dragSplitViewBorder(dragElem) {
-        let m_pos;
-        const dragBorderSize = 30; // #splitViewDragger height
+      },
+      onDragStart(e) {
+        let m_pos = e.y;
 
-        const resize = e => {
-          const diff = m_pos - e.y;
-          m_pos = e.y;
+        const resize = function resize(re) {
+          const diff = m_pos - re.y;
+          m_pos = re.y;
 
           const dragTop = parseInt(
             getComputedStyle(elements.draggable, '').top
           );
-          if (isNaN(dragTop)) {
+
+          if (isNaN(dragTop) || diff === 0) {
             // happens in collapsed state on mouse over draggable
             return;
           }
@@ -200,20 +206,16 @@
           elements.draggable.style.top = `${splitStyles.top}px`;
         };
 
-        function onMouseDown(e) {
-          if (e.offsetY < dragBorderSize) {
-            setElements();
-            m_pos = e.y;
-            SplitViewSvc.getDraggerBackdrop().style.display = 'block';
-            document.addEventListener('mousemove', resize, false);
-          }
-        }
-        dragElem.addEventListener('mousedown', onMouseDown, false);
-
-        function onMouseUp() {
-          if (!splitStyles.top || !splitStyles.bottom) {
+        const onMouseUp = function onMouseUp() {
+          clearListeners();
+          if (
+            !splitStyles.top ||
+            !splitStyles.bottom ||
+            splitStyles.top == values.m_pos_prev
+          ) {
             return;
           }
+          values.m_pos_prev = splitStyles.top;
 
           setSplitViewSize();
           splitStyles.percent = GenericHelpers.computePercentFromPx(
@@ -221,18 +223,21 @@
             splitStyles.bottom
           );
           SplitViewSvc.sendMessageToClients('resize.ok', splitStyles.percent);
-          document.removeEventListener('mousemove', resize, false);
-        }
-
-        document.removeEventListener('mouseup', onMouseUp, false);
-        document.addEventListener('mouseup', onMouseUp, false);
-
-        return {
-          destroy() {
-            dragElem.removeEventListener('mousedown', onMouseDown, false);
-            document.removeEventListener('mouseup', onMouseUp, false);
-          }
         };
+
+        const clearListeners = function clearListeners() {
+          document.removeEventListener('mouseup', onMouseUp);
+          document.removeEventListener('mousemove', resize);
+        };
+        const addListeners = function resetListeners() {
+          document.addEventListener('mouseup', onMouseUp);
+          document.addEventListener('mousemove', resize);
+        };
+
+        setElements();
+        clearListeners();
+        addListeners();
+        SplitViewSvc.getDraggerBackdrop().style.display = 'block';
       }
     }
   };
