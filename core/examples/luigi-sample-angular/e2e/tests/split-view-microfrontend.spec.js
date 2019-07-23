@@ -28,60 +28,56 @@ describe('SplitView', () => {
     });
   });
 
-  // it('using Client API', () => {
-  //   cy.get('iframe').then($iframe => {
-  //     const $iframeBody = $iframe.contents().find('body');
+  it('using Client API', () => {
+    cy.get('iframe').then($iframe => {
+      const $iframeBody = $iframe.contents().find('body');
 
-  //     cy.wrap($iframeBody)
-  //       .contains('open view in split view')
-  //       .click();
-  //     cy.expectPathToBe('/projects/pr2');
+      cy.wrap($iframeBody)
+        .contains('open view in split view')
+        .click();
+      cy.expectPathToBe('/projects/pr2');
 
-  //     cy.wrap($iframeBody)
-  //       .get('button')
-  //       .contains('close')
-  //       .scrollIntoView();
+      cy.splitViewButtons($iframeBody)
+        .contains('close')
+        .scrollIntoView();
 
-  //     const buttons = ['expand', 'collapse', 'setSize', 'close'];
-  //     // button states, same order as buttons array
-  //     const tests = [
-  //       {
-  //         buttonsVisible: [false, true, true, true],
-  //         buttonToClick: 'collapse'
-  //       },
-  //       {
-  //         buttonsVisible: [true, false, false, true],
-  //         buttonToClick: 'expand'
-  //       },
-  //       {
-  //         buttonsVisible: [false, true, true, true],
-  //         buttonToClick: 'setSize'
-  //       },
-  //       {
-  //         buttonsVisible: [false, true, true, true],
-  //         buttonToClick: 'close'
-  //       }
-  //     ];
-  //     tests.forEach(test => {
-  //       test.buttonsVisible.forEach((enabled, index) => {
-  //         cy.wrap($iframeBody)
-  //           .get('button')
-  //           .contains(buttons[index])
-  //           .should(enabled ? 'not.be.disabled' : 'be.disabled');
-  //       });
-  //       cy.wrap($iframeBody)
-  //         .get('button')
-  //         .contains(test.buttonToClick)
-  //         .click();
-  //     });
+      const buttons = ['expand', 'collapse', 'setSize', 'close'];
+      // button states, same order as buttons array
+      const tests = [
+        {
+          buttonsVisible: [false, true, true, true],
+          buttonToClick: 'collapse'
+        },
+        {
+          buttonsVisible: [true, false, false, true],
+          buttonToClick: 'expand'
+        },
+        {
+          buttonsVisible: [false, true, true, true],
+          buttonToClick: 'setSize'
+        },
+        {
+          buttonsVisible: [false, true, true, true],
+          buttonToClick: 'close'
+        }
+      ];
+      tests.forEach(test => {
+        test.buttonsVisible.forEach((enabled, index) => {
+          cy.splitViewButtons($iframeBody)
+            .contains(buttons[index])
+            .should(enabled ? 'not.be.disabled' : 'be.disabled');
+        });
+        cy.splitViewButtons($iframeBody)
+          .contains(test.buttonToClick)
+          .click();
+      });
 
-  //     // after close
-  //     cy.wrap($iframeBody)
-  //       .get('button')
-  //       .contains('close')
-  //       .should('be.disabled');
+      // after close
+      cy.splitViewButtons($iframeBody)
+        .contains('close')
+        .should('be.disabled');
 
-  //     cy.get('.iframeSplitViewCnt iframe').should('not.exist');
-  //   });
-  // });
+      cy.get('.iframeSplitViewCnt iframe').should('not.exist');
+    });
+  });
 });

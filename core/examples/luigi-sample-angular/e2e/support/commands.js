@@ -100,6 +100,12 @@ Cypress.Commands.add('expectPathToBe', (pathWithoutHash, timeout = undefined) =>
   })
 );
 
+Cypress.Commands.add('splitViewButtons', iframeBody => {
+  return cy
+    .wrap(iframeBody)
+    .find('[data-cy="split-view-controls"]')
+    .find('button');
+});
 Cypress.Commands.add('expectSearchToBe', (searchString, a) => {
   // notice that location.hash DOES keep url params ('?a=b') while location.pathname does NOT
   cy.location().should(locationContext => {
