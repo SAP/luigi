@@ -45,8 +45,8 @@ export class splitViewHandle extends LuigiClientBase {
   /*
    * @private
    */
-  sendMessageToCore(action, data) {
-    window.parent.postMessage({
+  sendSplitViewEvent(action, data) {
+    helpers.sendPostMessageToLuigiCore({
       msg: `luigi.navigation.splitview.${action}`,
       data
     });
@@ -59,7 +59,7 @@ export class splitViewHandle extends LuigiClientBase {
    * splitViewHandle.collapse();
    */
   collapse() {
-    this.sendMessageToCore('collapse');
+    this.sendSplitViewEvent('collapse');
   }
   /**
    * Expands the split view
@@ -68,7 +68,7 @@ export class splitViewHandle extends LuigiClientBase {
    * splitViewHandle.expand();
    */
   expand() {
-    this.sendMessageToCore('expand');
+    this.sendSplitViewEvent('expand');
   }
 
   /**
@@ -78,7 +78,7 @@ export class splitViewHandle extends LuigiClientBase {
    * splitViewHandle.close();
    */
   close() {
-    this.sendMessageToCore('close');
+    this.sendSplitViewEvent('close');
   }
   /**
    * Sets the height of the split view
@@ -88,7 +88,7 @@ export class splitViewHandle extends LuigiClientBase {
    * splitViewHandle.setSize(60);
    */
   setSize(value) {
-    this.sendMessageToCore('resize', value);
+    this.sendSplitViewEvent('resize', value);
   }
   /**
    * Registers a listener for split view events

@@ -219,10 +219,9 @@ class IframeHelpersClass {
   getValidMessageSource(e, component) {
     const allMessagesSources = [
       ...IframeHelpers.getAllIframes(
-        [
-          component.get().modalIframe,
-          this.specialIframeTypes.map(t => component.get()[t.iframeKey])
-        ].filter(Boolean)
+        this.specialIframeTypes
+          .map(t => component.get()[t.iframeKey])
+          .filter(Boolean)
       ),
       { contentWindow: window, luigi: { viewUrl: window.location.href } }
     ];

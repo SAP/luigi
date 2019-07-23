@@ -199,15 +199,12 @@ class UxManager extends LuigiClientBase {
    */
   setCurrentLocale(locale) {
     if (locale) {
-      window.parent.postMessage(
-        {
-          msg: 'luigi.ux.set-current-locale',
-          data: {
-            currentLocale: locale
-          }
-        },
-        '*'
-      );
+      helpers.sendPostMessageToLuigiCore({
+        msg: 'luigi.ux.set-current-locale',
+        data: {
+          currentLocale: locale
+        }
+      });
     }
   }
 }
