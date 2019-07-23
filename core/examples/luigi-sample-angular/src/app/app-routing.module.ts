@@ -17,6 +17,7 @@ import { RestrictedComponent } from './restricted/restricted.component';
 import { DynamicComponent } from './project/dynamic/dynamic.component';
 import { HideSideNavComponent } from './project/hide-side-nav/hide-side-nav.component';
 import { AnonymousComponent } from './anonymous/anonymous.component';
+import { OnNodeActivationComponent } from './onNodeActivation/onNodeActivation.component';
 
 const routes: Routes = [
   { path: 'overview', component: OverviewComponent },
@@ -24,6 +25,8 @@ const routes: Routes = [
   { path: 'settings', component: SettingsComponent },
   { path: 'restricted', component: RestrictedComponent },
   { path: 'anonymous', component: AnonymousComponent },
+  { path: 'on-node-activation', component: OnNodeActivationComponent },
+  { path: 'on-node-activation/:usecaseId', component: AnonymousComponent },
   { path: 'projects/:projectId', component: ProjectComponent },
   { path: 'projects/:projectId/users', component: UsersComponent },
   {
