@@ -239,13 +239,10 @@ LuigiClient.linkManager().goBack(true);
 ## splitView
 
 Split view 
-Allows to open a micro-frontend in a split screen in the lower part of the content area. Open it by calling `const splitViewHandle = LuigiClient.linkManager().openAsSplitView`. `openAsSplitView` returns an instance of the split view handle which is described below.
+Allows to open a micro-frontend in a split screen in the lower part of the content area. Open it by calling `const splitViewHandle = LuigiClient.linkManager().openAsSplitView`. 
 There can be only one split view at a certain point in time and it gets automatically closed when navigating to a different route.
 Additionally, when you call ´handle.collapse()`, the split view gets destroyed and a new frame created upon ´handle.expand()`.
-
--   Actions to control the split view
--   Event handlers
--   Get the current state
+`openAsSplitView` returns an instance of the split view handle. The functions, actions, and event handlers listed below allow you to control and manage the split view.
 
 ### collapse
 
