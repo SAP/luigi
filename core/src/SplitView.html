@@ -62,12 +62,8 @@
   };
 
   const setElements = () => {
-    if (!elements.split) {
-      elements.split = SplitViewSvc.getContainer();
-    }
-    if (!elements.iframe) {
-      elements.iframe = Iframe.getIframeContainer();
-    }
+    elements.split = SplitViewSvc.getContainer();
+    elements.iframe = Iframe.getIframeContainer();
     elements.draggable = SplitViewSvc.getDragger();
   };
 
