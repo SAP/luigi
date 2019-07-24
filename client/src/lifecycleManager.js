@@ -235,5 +235,14 @@ class LifecycleManager extends LuigiClientBase {
   getPathParams() {
     return this.currentContext.pathParams;
   }
+
+  /**
+   * Returns the current client permissions as specified on the navigation node. (See [Node parameters](navigation-parameters-reference.md).)
+   * @returns {Object} client permissions as specified on the navigation node.
+   * @memberof Lifecycle
+   */
+  getClientPermissions() {
+    return this.currentContext.internal.clientPermissions;
+  }
 }
 export const lifecycleManager = new LifecycleManager();

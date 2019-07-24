@@ -194,7 +194,9 @@
       pathParams: JSON.stringify(
         Object.assign({}, config.pathParams || component.get().pathParams)
       ),
-      internal: JSON.stringify(component.prepareInternalData(config.modal)),
+      internal: JSON.stringify(
+        component.prepareInternalData(config.modal, config)
+      ),
       authData: AuthHelpers.getStoredAuthData()
     };
     IframeHelpers.sendMessageToIframe(config.iframe, message);
@@ -301,7 +303,7 @@
         };
 
         LuigiI18N.addCurrentLocaleChangeListener(locale => {
-           const message = {
+          const message = {
             msg: 'luigi.current-locale-changed',
             currentLocale: locale
           };
@@ -534,13 +536,18 @@
           }
 
           if ('luigi.ux.set-current-locale' === e.data.msg) {
-            if (iframe.luigi.clientPermissions && iframe.luigi.clientPermissions.changeCurrentLocale) {
+            if (
+              iframe.luigi.clientPermissions &&
+              iframe.luigi.clientPermissions.changeCurrentLocale
+            ) {
               const { currentLocale } = e.data.data;
               if (currentLocale) {
                 LuigiI18N.setCurrentLocale(currentLocale);
               }
             } else {
-              console.error('Current local change from client declined because client permission changeCurrentLocale is not set for this view.');
+              console.error(
+                'Current local change from client declined because client permission changeCurrentLocale is not set for this view.'
+              );
             }
           }
         });
@@ -587,12 +594,13 @@
         addPreserveView(this, data, config);
         Routing.navigateTo(path); //navigate to the raw path. Any errors/alerts are handled later
       },
-      prepareInternalData(modal = false) {
+      prepareInternalData(modal = false, config) {
         return {
           isNavigateBack: this.get().isNavigateBack,
           viewStackSize: this.get().preservedViews.length,
           modal: modal,
-          currentLocale: LuigiI18N.getCurrentLocale()
+          currentLocale: LuigiI18N.getCurrentLocale(),
+          clientPermissions: config.iframe.luigi.clientPermissions
         };
       },
       closeLeftNav() {
