@@ -962,6 +962,9 @@
       bottom: 0;
       right: 0;
     }
+    .splitViewContainer {
+      left: 0;
+    }
   }
 
   .no-side-nav {
@@ -972,6 +975,12 @@
       left: 0;
       bottom: 0;
       right: 0;
+    }
+    .splitViewContainer {
+      left: 0;
+    }
+    :global(#splitViewDragger, #splitViewDraggerBackdrop) {
+      left: 0;
     }
 
     :global(.fd-app__sidebar) {
@@ -985,21 +994,31 @@
     }
 
     .iframeContainer,
-    .spinnerContainer {
+    .spinnerContainer,
+    .splitViewContainer,
+    :global(#splitViewDragger, #splitViewDraggerBackdrop) {
       @include transition(left 0.1s linear);
     }
   }
 
   :global(.lui-semiCollapsible) {
     .iframeContainer,
-    .spinnerContainer {
+    .spinnerContainer,
+    .splitViewContainer {
+      @include transition(left 0.1s linear);
+    }
+    :global(#splitViewDragger, #splitViewDraggerBackdrop) {
       @include transition(left 0.1s linear);
     }
   }
 
   :global(.semiCollapsed) {
     .iframeContainer,
-    .spinnerContainer {
+    .spinnerContainer,
+    .splitViewContainer {
+      left: $leftNavWidthCollapsed;
+    }
+    :global(#splitViewDragger, #splitViewDraggerBackdrop) {
       left: $leftNavWidthCollapsed;
     }
   }
@@ -1014,7 +1033,11 @@
     }
     :global(body.lui-simpleSlideInNav.lui-leftNavToggle) {
       .iframeContainer,
-      .spinnerContainer {
+      .spinnerContainer,
+      .splitViewContainer {
+        left: 0;
+      }
+      :global(#splitViewDragger, #splitViewDraggerBackdrop) {
         left: 0;
       }
 
@@ -1027,7 +1050,11 @@
   @media (max-width: $desktopMinWidth - 1) {
     :global(body.lui-simpleSlideInNav) {
       .iframeContainer,
-      .spinnerContainer {
+      .spinnerContainer,
+      .splitViewContainer {
+        left: 0;
+      }
+      :global(#splitViewDragger, #splitViewDraggerBackdrop) {
         left: 0;
       }
 
@@ -1047,7 +1074,11 @@
 
     :global(.lui-semiCollapsible) {
       .iframeContainer,
-      .spinnerContainer {
+      .spinnerContainer,
+      .splitViewContainer {
+        left: $leftNavWidthCollapsed;
+      }
+      :global(#splitViewDragger, #splitViewDraggerBackdrop) {
         left: $leftNavWidthCollapsed;
       }
     }
