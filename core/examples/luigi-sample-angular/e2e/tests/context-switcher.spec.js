@@ -96,8 +96,6 @@ describe('Context switcher', () => {
       'Remove Project'
     );
 
-    cy.wait(3000);
-
     cy.selectContextSwitcherItem('New Project');
 
     cy.expectPathToBe('/projects');
