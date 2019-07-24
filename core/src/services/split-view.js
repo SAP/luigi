@@ -10,6 +10,12 @@ import {
 class SplitViewSvcClass {
   constructor() {
     this.splitViewValues;
+    this.internalValues = {
+      rightContentHeight: null,
+      thresholdTop: null,
+      thresholdBottom: null,
+      m_pos_prev: null
+    };
   }
 
   getContainer() {
@@ -103,6 +109,32 @@ class SplitViewSvcClass {
         top
       };
     }
+  }
+
+  calculateAndSetSplitViewValues(percentTop, values) {
+    const newBottom =
+      parseInt(
+        GenericHelpers.computePxFromPercent(
+          values.rightContentHeight,
+          percentTop
+        )
+      ) + LuigiElements.getShellbar().clientHeight;
+
+    const calculated = this.enforceTreshHolds(
+      newBottom,
+      window.innerHeight - newBottom,
+      values.thresholdTop,
+      values.thresholdBottom
+    );
+
+    this.splitViewValues = {
+      bottom: calculated.bottom,
+      top: calculated.top,
+      percent: GenericHelpers.computePercentFromPx(
+        values.rightContentHeight,
+        calculated.bottom
+      )
+    };
   }
 
   enforceTreshHolds(top, bottom, thresholdTop, thresholdBottom) {

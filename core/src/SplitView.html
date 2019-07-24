@@ -34,21 +34,10 @@
     RoutingHelpers
   } from './utilities/helpers';
 
-  let values = {
-    rightContentHeight: null,
-    thresholdTop: null,
-    thresholdBottom: null,
-    m_pos_prev: null
-  };
   let elements = {
     draggable: null,
     iframe: null,
     split: null
-  };
-  let splitStyles = {
-    top: null,
-    bottom: null,
-    percent: null
   };
 
   const getNode = async (component, path) => {
@@ -61,7 +50,7 @@
     }
   };
 
-  const setElements = () => {
+  const updateElementSelectors = () => {
     elements.split = SplitViewSvc.getContainer();
     elements.iframe = Iframe.getIframeContainer();
     elements.draggable = SplitViewSvc.getDragger();
@@ -73,19 +62,16 @@
       draggerBackdrop.style.display = 'none';
     }
 
-    setElements();
+    updateElementSelectors();
     // setting again, to be sure its positioned when using it programmatically
     if (elements.draggable) {
-      elements.draggable.style.top = `${splitStyles.top}px`;
+      elements.draggable.style.top = `${SplitViewSvc.splitViewValues.top}px`;
     }
 
-    SplitViewSvc.splitViewValues = {
-      top: splitStyles.top,
-      bottom: splitStyles.bottom,
-      percent: splitStyles.percent
-    };
-    elements.split.style.top = `${splitStyles.top}px`;
-    elements.iframe.style.paddingBottom = `${splitStyles.bottom}px`;
+    elements.split.style.top = `${SplitViewSvc.splitViewValues.top}px`;
+    elements.iframe.style.paddingBottom = `${
+      SplitViewSvc.splitViewValues.bottom
+    }px`;
   };
 
   function messageHandler(e) {
@@ -105,37 +91,21 @@
       this.expand();
     }
     if ('luigi.navigation.splitview.resize' === e.data.msg) {
-      splitStyles.percent = parseInt(e.data.data);
-      const percentTop = 100 - splitStyles.percent;
-      const newTop =
-        parseInt(
-          GenericHelpers.computePxFromPercent(
-            values.rightContentHeight,
-            percentTop
-          )
-        ) + LuigiElements.getShellbar().clientHeight;
-
-      const calculated = SplitViewSvc.enforceTreshHolds(
-        newTop,
-        window.innerHeight - newTop,
-        values.thresholdTop,
-        values.thresholdBottom
+      const percentTop = 100 - parseInt(e.data.data);
+      SplitViewSvc.calculateAndSetSplitViewValues(
+        percentTop,
+        SplitViewSvc.internalValues
       );
-      splitStyles.top = calculated.top;
-      splitStyles.bottom = calculated.bottom;
 
-      // In case setSize gets called before expanding, we're setting
-      // the stored split view values
+      // In case setSize gets called before expanding
       if (this.get().collapsed) {
-        SplitViewSvc.storedSplitViewValues = {
-          top: splitStyles.top,
-          bottom: splitStyles.bottom,
-          percent: splitStyles.percent
-        };
         return;
       }
       setSplitViewSize();
-      SplitViewSvc.sendMessageToClients('resize.ok', splitStyles.percent);
+      SplitViewSvc.sendMessageToClients(
+        'resize.ok',
+        SplitViewSvc.splitViewValues.percent
+      );
     }
   }
 
@@ -146,6 +116,7 @@
     },
     onupdate({ changed, current, previous }) {
       getNode(this, this.get().nodepath);
+      setSplitViewSize();
     },
     ondestroy() {
       window.removeEventListener('message', messageHandler.bind(this));
@@ -167,9 +138,10 @@
       },
       onResize() {
         const shellbarHeight = LuigiElements.getShellbar().clientHeight;
-        values.rightContentHeight = window.innerHeight - shellbarHeight;
-        values.thresholdBottom = 30;
-        values.thresholdTop = shellbarHeight + 30;
+        SplitViewSvc.internalValues.rightContentHeight =
+          window.innerHeight - shellbarHeight;
+        SplitViewSvc.internalValues.thresholdBottom = 30;
+        SplitViewSvc.internalValues.thresholdTop = shellbarHeight + 30;
         setSplitViewSize();
       },
       onDragStart(e) {
@@ -193,34 +165,41 @@
           const calculated = SplitViewSvc.enforceTreshHolds(
             newTop,
             newBottom,
-            values.thresholdTop,
-            values.thresholdBottom
+            SplitViewSvc.internalValues.thresholdTop,
+            SplitViewSvc.internalValues.thresholdBottom
           );
 
-          splitStyles.top = calculated.top;
-          splitStyles.bottom = calculated.bottom;
+          SplitViewSvc.splitViewValues.top = calculated.top;
+          SplitViewSvc.splitViewValues.bottom = calculated.bottom;
 
-          elements.draggable.style.top = `${splitStyles.top}px`;
+          elements.draggable.style.top = `${
+            SplitViewSvc.splitViewValues.top
+          }px`;
         };
 
         const onMouseUp = function onMouseUp() {
           clearListeners();
           if (
-            !splitStyles.top ||
-            !splitStyles.bottom ||
-            splitStyles.top == values.m_pos_prev
+            !SplitViewSvc.splitViewValues.top ||
+            !SplitViewSvc.splitViewValues.bottom ||
+            SplitViewSvc.splitViewValues.top ==
+              SplitViewSvc.internalValues.m_pos_prev
           ) {
             SplitViewSvc.getDraggerBackdrop().style.display = 'none';
             return;
           }
-          values.m_pos_prev = splitStyles.top;
+          SplitViewSvc.internalValues.m_pos_prev =
+            SplitViewSvc.splitViewValues.top;
 
           setSplitViewSize();
-          splitStyles.percent = GenericHelpers.computePercentFromPx(
-            values.rightContentHeight,
-            splitStyles.bottom
+          SplitViewSvc.splitViewValues.percent = GenericHelpers.computePercentFromPx(
+            SplitViewSvc.internalValues.rightContentHeight,
+            SplitViewSvc.splitViewValues.bottom
           );
-          SplitViewSvc.sendMessageToClients('resize.ok', splitStyles.percent);
+          SplitViewSvc.sendMessageToClients(
+            'resize.ok',
+            SplitViewSvc.splitViewValues.percent
+          );
         };
 
         const clearListeners = function clearListeners() {
@@ -232,7 +211,7 @@
           document.addEventListener('mousemove', resize);
         };
 
-        setElements();
+        updateElementSelectors();
         clearListeners();
         addListeners();
         SplitViewSvc.getDraggerBackdrop().style.display = 'block';
