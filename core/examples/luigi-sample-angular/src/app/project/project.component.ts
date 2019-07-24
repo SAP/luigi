@@ -206,14 +206,14 @@ export class ProjectComponent implements OnInit, OnDestroy {
       });
 
     this.splitViewHandle.on('resize', newSize => {
-      console.info('split view got resized to', newSize);
+      console.info('on:resize: split view got resized to', newSize);
       if (!this.cdr['destroyed']) {
         this.cdr.detectChanges();
       }
     });
     this.splitViewHandle.on('expand', () => {
       console.info(
-        'split view got expanded',
+        'on:expand: split view got expanded',
         'size:',
         this.splitViewHandle.getSize()
       );
@@ -222,13 +222,13 @@ export class ProjectComponent implements OnInit, OnDestroy {
       }
     });
     this.splitViewHandle.on('collapse', () => {
-      console.info('split view got collapsed');
+      console.info('on:collapse: split view got collapsed');
       if (!this.cdr['destroyed']) {
         this.cdr.detectChanges();
       }
     });
     this.splitViewHandle.on('close', () => {
-      console.info('split view got closed');
+      console.info('on:close: split view got closed');
       this.splitViewHandle = undefined;
       if (!this.cdr['destroyed']) {
         this.cdr.detectChanges();
