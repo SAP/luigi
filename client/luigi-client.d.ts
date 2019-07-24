@@ -150,6 +150,18 @@ export declare interface UxManager {
    * @param {string} locale locale to be set as the current locale
    */
   setCurrentLocale: (locale: string) => void;
+
+  /**
+   * Checks if the current micro frontend is displayed inside a split view
+   * @returns {boolean} indicating if it is loaded inside a split view
+   */
+  isSplitView: () => boolean;
+
+  /**
+   * Checks if the current micro frontend is displayed inside a modal
+   * @returns {boolean} indicating if it is loaded inside a modal
+   */
+  isModal: () => boolean;
 }
 
 export declare interface LinkManager {

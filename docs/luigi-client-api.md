@@ -239,7 +239,7 @@ LuigiClient.linkManager().goBack(true);
 ## splitView
 
 Split view 
-Allows to open a micro-frontend in a split screen in the lower part of the content area. Open it by calling `const splitViewHandle = LuigiClient.linkManager().openAsSplitView`. 
+Allows to open a micro frontend in a split screen in the lower part of the content area. Open it by calling `const splitViewHandle = LuigiClient.linkManager().openAsSplitView`. 
 At a given time, you can open only one split view. It closes automatically when you navigate to a different route.
 When you call `handle.collapse()`, the split view gets destroyed. It recreates when you use `handle.expand()`.
 `openAsSplitView` returns an instance of the split view handle. The functions, actions, and event handlers listed below allow you to control and manage the split view.
@@ -468,3 +468,15 @@ Sets current locale to the specified one.
 #### Parameters
 
 -   `locale` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** locale to be set as the current locale
+
+### isSplitView
+
+Checks if the current micro-frontend is displayed inside a split view
+
+Returns **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)** indicating if it is loaded inside a split view
+
+### isModal
+
+Checks if the current micro-frontend is displayed inside a modal
+
+Returns **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)** indicating if it is loaded inside a modal

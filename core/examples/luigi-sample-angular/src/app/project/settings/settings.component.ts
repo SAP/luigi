@@ -8,7 +8,8 @@ import {
   addInitListener,
   linkManager,
   getNodeParams,
-  NodeParams
+  NodeParams,
+  uxManager
 } from '@kyma-project/luigi-client';
 import { Subscription } from 'rxjs';
 
@@ -55,11 +56,20 @@ export class SettingsComponent implements OnInit {
       .subscribe((ctx: IContextMessage) => {
         if (ctx.contextType === 'init' || ctx.contextType === 'update') {
           this.preservedViewCallbackContext = ctx.context.goBackContext;
-
           // Since Luigi runs outside of Zone.js, changes need
           // to be updated manually
           // Be sure to check for destroyed ChangeDetectorRef,
           // else you get runtime Errors
+          if (uxManager().isSplitView()) {
+            console.info(
+              'context.ux.isSplitView: micro frontend is running inside a split view'
+            );
+          }
+          if (uxManager().isModal()) {
+            console.info(
+              'context.ux.isModal: micro frontend is running inside a modal'
+            );
+          }
           if (!this.cdr['destroyed']) {
             this.cdr.detectChanges();
           }

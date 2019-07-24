@@ -7,11 +7,13 @@ class IframeHelpersClass {
     return [
       {
         iframeKey: 'modalIframe',
-        dataKey: 'modalIframeData'
+        dataKey: 'modalIframeData',
+        iframeConfigKey: 'modal'
       },
       {
         iframeKey: 'splitViewIframe',
-        dataKey: 'splitViewIframeData'
+        dataKey: 'splitViewIframeData',
+        iframeConfigKey: 'splitView'
       }
     ];
   }
