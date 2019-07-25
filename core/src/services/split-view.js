@@ -111,12 +111,12 @@ class SplitViewSvcClass {
     }
   }
 
-  calculateAndSetSplitViewValues(percentTop, values) {
+  calculateAndSetSplitViewValues(percentBottom, values) {
     const newBottom =
       parseInt(
         GenericHelpers.computePxFromPercent(
           values.rightContentHeight,
-          percentTop
+          100 - percentBottom
         )
       ) + LuigiElements.getShellbar().clientHeight;
 

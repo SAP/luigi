@@ -91,9 +91,9 @@
       this.expand();
     }
     if ('luigi.navigation.splitview.resize' === e.data.msg) {
-      const percentTop = 100 - parseInt(e.data.data);
+      const percentBottom = parseInt(e.data.data);
       SplitViewSvc.calculateAndSetSplitViewValues(
-        percentTop,
+        percentBottom,
         SplitViewSvc.internalValues
       );
 
@@ -142,6 +142,10 @@
           window.innerHeight - shellbarHeight;
         SplitViewSvc.internalValues.thresholdBottom = 30;
         SplitViewSvc.internalValues.thresholdTop = shellbarHeight + 30;
+        SplitViewSvc.calculateAndSetSplitViewValues(
+          SplitViewSvc.splitViewValues.percent,
+          SplitViewSvc.internalValues
+        );
         setSplitViewSize();
       },
       onDragStart(e) {
