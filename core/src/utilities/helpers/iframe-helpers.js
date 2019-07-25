@@ -1,7 +1,23 @@
 // Helper methods for 'iframe.js' file. They don't require any method from 'ifram.js` but are required by them.
 import { GenericHelpers } from './';
+import { Iframe } from '../../services';
 
 class IframeHelpersClass {
+  get specialIframeTypes() {
+    return [
+      {
+        iframeKey: 'modalIframe',
+        dataKey: 'modalIframeData',
+        iframeConfigKey: 'modal'
+      },
+      {
+        iframeKey: 'splitViewIframe',
+        dataKey: 'splitViewIframeData',
+        iframeConfigKey: 'splitView'
+      }
+    ];
+  }
+
   hideElementChildren(node) {
     if (node.children) {
       Array.from(node.children).forEach(child => {
@@ -122,18 +138,6 @@ class IframeHelpersClass {
     return container && container.length > 0 ? container[0] : undefined;
   }
 
-  getAllIframes(additionalIframes) {
-    const iframes = Array.from(
-      document.querySelectorAll('.iframeContainer iframe')
-    );
-    if (Array.isArray(additionalIframes)) {
-      iframes.push(...additionalIframes);
-    } else if (additionalIframes) {
-      iframes.push(additionalIframes);
-    }
-    return iframes;
-  }
-
   getVisibleIframes() {
     return Array.prototype.slice
       .call(document.querySelectorAll('iframe'))
@@ -148,14 +152,32 @@ class IframeHelpersClass {
     return this.urlMatchesTheDomain(viewUrl, domain);
   }
 
+  getAllIframes(additionalIframes) {
+    const iframes = Array.from(
+      document.querySelectorAll('.iframeContainer iframe')
+    );
+    if (Array.isArray(additionalIframes)) {
+      iframes.push(...additionalIframes);
+    } else if (additionalIframes) {
+      iframes.push(additionalIframes);
+    }
+    return iframes;
+  }
+
   sendMessageToIframe(iframe, message) {
     if (!(iframe.luigi && iframe.luigi.viewUrl)) return;
     const trustedIframeDomain = this.getLocation(iframe.luigi.viewUrl);
     iframe.contentWindow.postMessage(message, trustedIframeDomain);
   }
 
+  sendMessageToVisibleIframes(message) {
+    this.getVisibleIframes().forEach(iframe =>
+      this.sendMessageToIframe(iframe, message)
+    );
+  }
+
   broadcastMessageToAllIframes(message, additionalIframes) {
-    const allIframes = this.getAllIframes(additionalIframes);
+    const allIframes = IframeHelpers.getAllIframes(additionalIframes);
     allIframes.forEach(iframe => this.sendMessageToIframe(iframe, message));
   }
 
@@ -194,6 +216,38 @@ class IframeHelpersClass {
 
   isMessageSource(event, iframe) {
     return iframe && iframe.contentWindow === event.source;
+  }
+
+  getValidMessageSource(e, component) {
+    const allMessagesSources = [
+      ...IframeHelpers.getAllIframes(
+        this.specialIframeTypes
+          .map(t => component.get()[t.iframeKey])
+          .filter(Boolean)
+      ),
+      { contentWindow: window, luigi: { viewUrl: window.location.href } }
+    ];
+    const iframe = allMessagesSources.find(iframe =>
+      this.isMessageSource(e, iframe)
+    );
+
+    if (!iframe || !iframe.luigi || !iframe.luigi.viewUrl) {
+      return undefined;
+    }
+
+    const navigateOkMsg = 'luigi.navigate.ok' === e.data.msg;
+    if (navigateOkMsg && !iframe.luigi.nextViewUrl) {
+      return undefined;
+    }
+
+    const viewUrl = navigateOkMsg
+      ? iframe.luigi.nextViewUrl
+      : iframe.luigi.viewUrl;
+    if (!this.iframeIsSameDomain(viewUrl, e.origin)) {
+      return undefined;
+    }
+
+    return iframe;
   }
 }
 

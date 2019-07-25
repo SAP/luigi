@@ -199,16 +199,31 @@ class UxManager extends LuigiClientBase {
    */
   setCurrentLocale(locale) {
     if (locale) {
-      window.parent.postMessage(
-        {
-          msg: 'luigi.ux.set-current-locale',
-          data: {
-            currentLocale: locale
-          }
-        },
-        '*'
-      );
+      helpers.sendPostMessageToLuigiCore({
+        msg: 'luigi.ux.set-current-locale',
+        data: {
+          currentLocale: locale
+        }
+      });
     }
+  }
+
+  /**
+   * Checks if the current micro-frontend is displayed inside a split view
+   * @returns {boolean} indicating if it is loaded inside a split view
+   * @memberof uxManager
+   */
+  isSplitView() {
+    return lifecycleManager.currentContext?.internal?.splitView;
+  }
+
+  /**
+   * Checks if the current micro-frontend is displayed inside a modal
+   * @returns {boolean} indicating if it is loaded inside a modal
+   * @memberof uxManager
+   */
+  isModal() {
+    return lifecycleManager.currentContext?.internal?.modal;
   }
 }
 export const uxManager = new UxManager();

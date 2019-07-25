@@ -1,5 +1,6 @@
 import { LuigiClientBase } from './baseClass';
 import { helpers } from './helpers';
+import { splitViewHandle } from './splitViewHandle';
 
 /**
  * The Link Manager allows you to navigate to another route. Use it instead of an internal router to:
@@ -13,7 +14,7 @@ export class linkManager extends LuigiClientBase {
    * @private
    */
   constructor(values) {
-    // @param {Object} values TODO: is it necessary at all, where is it used?
+    // @param {object} values TODO: is it necessary at all, where is it used?
     super();
     Object.assign(this, values);
 
@@ -37,16 +38,26 @@ export class linkManager extends LuigiClientBase {
    * @param {Object} modalSettings opens a view in a modal. Use these settings to configure the modal's title and size
    * @param {string} modalSettings.title modal title. By default, it is the node label. If there is no label, it is left empty
    * @param {('l'|'m'|'s')} [modalSettings.size="l"] size of the modal
+   * @param {Object} splitViewSettings opens a view in a split view. Use these settings to configure the split view's behaviour
+   * @param {string} splitViewSettings.title split view title. By default, it is the node label. If there is no label, it is left empty
+   * @param {number} [splitViewSettings.size=40] height of the split view in percent
+   * @param {boolean} [splitViewSettings.collapsed=false] creates split view but leaves it closed initially
    * @example
    * LuigiClient.linkManager().navigate('/overview')
    * LuigiClient.linkManager().navigate('users/groups/stakeholders')
    * LuigiClient.linkManager().navigate('/settings', null, true) // preserve view
    */
-  navigate(path, sessionId, preserveView, modalSettings) {
+  navigate(path, sessionId, preserveView, modalSettings, splitViewSettings) {
     if (this.options.errorSkipNavigation) {
       this.options.errorSkipNavigation = false;
       return;
     }
+    if (modalSettings && splitViewSettings) {
+      console.warn(
+        'modalSettings and splitViewSettings cannot be used together. Only modal setting will be taken into account.'
+      );
+    }
+
     this.options.preserveView = preserveView;
     const relativePath = path[0] !== '/';
     const navigationOpenMsg = {
@@ -55,7 +66,8 @@ export class linkManager extends LuigiClientBase {
       params: Object.assign(this.options, {
         link: path,
         relative: relativePath,
-        modal: modalSettings
+        modal: modalSettings,
+        splitView: splitViewSettings
       })
     };
 
@@ -74,6 +86,23 @@ export class linkManager extends LuigiClientBase {
    */
   openAsModal(path, modalSettings) {
     this.navigate(path, 0, true, modalSettings || {});
+  }
+
+  /**
+   * Opens a view in a split view. You can specify the split view's title and size. If you don't specify the title, it is the node label. If there is no node label, the title remains empty. The default size of the split view is `40`, which means 40% height of the split view.
+   * @memberof linkManager
+   * @param {string} path navigation path
+   * @param {Object} splitViewSettings opens a view in a split view. Use these settings to configure the split view's behaviour
+   * @param {string} splitViewSettings.title split view title. By default, it is the node label. If there is no label, it is left empty
+   * @param {number} [splitViewSettings.size=40] height of the split view in percent
+   * @returns {Object} instance of the SplitView. It provides Event listeners and you can use the available functions to control its behavior.
+   * @see {@link splitView} for further documentation about the returned instance
+   * @example
+   * const splitViewHandle = LuigiClient.linkManager().openAsSplitView('projects/pr1/logs', {title: 'Logs', size: 40});
+   */
+  openAsSplitView(path, splitViewSettings = {}) {
+    this.navigate(path, 0, true, undefined, splitViewSettings);
+    return new splitViewHandle(splitViewSettings);
   }
 
   /**
