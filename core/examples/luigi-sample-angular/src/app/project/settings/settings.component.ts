@@ -62,12 +62,12 @@ export class SettingsComponent implements OnInit {
           // else you get runtime Errors
           if (uxManager().isSplitView()) {
             console.info(
-              'context.ux.isSplitView: micro frontend is running inside a split view'
+              'uxManager().isSplitView(): micro frontend is running inside a split view'
             );
           }
           if (uxManager().isModal()) {
             console.info(
-              'context.ux.isModal: micro frontend is running inside a modal'
+              'uxManager().isModal(): micro frontend is running inside a modal'
             );
           }
           if (!this.cdr['destroyed']) {
