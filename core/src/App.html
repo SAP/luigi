@@ -600,7 +600,7 @@
           viewStackSize: this.get().preservedViews.length,
           modal: modal,
           currentLocale: LuigiI18N.getCurrentLocale(),
-          clientPermissions: config.iframe.luigi.clientPermissions
+          clientPermissions: config.iframe.luigi.nextViewUrl ? config.iframe.luigi.nextClientPermissions : config.iframe.luigi.clientPermissions
         };
       },
       closeLeftNav() {
