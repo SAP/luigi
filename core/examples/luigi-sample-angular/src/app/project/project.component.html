@@ -357,6 +357,47 @@
           </app-code-snippet>
         </li>
         <li class="fd-list-group__item">
+          <a href="javascript:void(0)" (click)="openSplitView()">
+            open view in split view with params</a
+          >
+          <app-code-snippet
+            data="linkManager().withParams({test: true}).openAsSplitView('/settings', {title:'Logs', size:25})"
+          >
+          </app-code-snippet>
+          <div data-cy="split-view-controls">
+            Control Split View:
+
+            <button
+              [disabled]="!splitViewHandle || !splitViewHandle.isCollapsed()"
+              (click)="splitViewHandle.expand()"
+              class="fd-button"
+            >
+              expand
+            </button>
+            <button
+              [disabled]="!splitViewHandle || !splitViewHandle.isExpanded()"
+              (click)="splitViewHandle.collapse()"
+              class="fd-button"
+            >
+              collapse
+            </button>
+            <button
+              [disabled]="!splitViewHandle || !splitViewHandle.isExpanded()"
+              (click)="splitViewHandle.setSize(50)"
+              class="fd-button"
+            >
+              setSize(50)
+            </button>
+            <button
+              [disabled]="!splitViewHandle || !splitViewHandle.exists()"
+              (click)="splitViewHandle.close()"
+              class="fd-button"
+            >
+              close
+            </button>
+          </div>
+        </li>
+        <li class="fd-list-group__item">
           <a href="javascript:void(0)" (click)="linkManager().goBack()">
             go back: single iframe, standard history back</a
           >

@@ -40,6 +40,7 @@ export class ProjectComponent implements OnInit, OnDestroy {
   public alertDismissed;
   public alertTypes = ['success', 'info', 'warning', 'error'];
   public isDirty = false;
+  public splitViewHandle;
   public currentLocale = '';
   public canChangeLocale = false;
 
@@ -111,6 +112,7 @@ export class ProjectComponent implements OnInit, OnDestroy {
       this.currentLocale = uxManager().getCurrentLocale();
       this.canChangeLocale =
         getClientPermissions() && getClientPermissions().changeCurrentLocale;
+      console.log('context updated', this.currentLocale, updatedContext);
       // Be sure to check for destroyed ChangeDetectorRef,
       // else you get runtime Errors
       if (!this.cdr['destroyed']) {
@@ -200,5 +202,44 @@ export class ProjectComponent implements OnInit, OnDestroy {
 
   public sendDirtyEvent() {
     uxManager().setDirtyStatus(this.isDirty);
+  }
+
+  public openSplitView() {
+    this.splitViewHandle = linkManager()
+      .withParams({ test: 'true' })
+      .openAsSplitView('/settings', {
+        title: 'Logs',
+        size: 25
+      });
+
+    this.splitViewHandle.on('resize', newSize => {
+      console.info('on:resize: split view got resized to', newSize);
+      if (!this.cdr['destroyed']) {
+        this.cdr.detectChanges();
+      }
+    });
+    this.splitViewHandle.on('expand', () => {
+      console.info(
+        'on:expand: split view got expanded',
+        'size:',
+        this.splitViewHandle.getSize()
+      );
+      if (!this.cdr['destroyed']) {
+        this.cdr.detectChanges();
+      }
+    });
+    this.splitViewHandle.on('collapse', () => {
+      console.info('on:collapse: split view got collapsed');
+      if (!this.cdr['destroyed']) {
+        this.cdr.detectChanges();
+      }
+    });
+    this.splitViewHandle.on('close', () => {
+      console.info('on:close: split view got closed');
+      this.splitViewHandle = undefined;
+      if (!this.cdr['destroyed']) {
+        this.cdr.detectChanges();
+      }
+    });
   }
 }

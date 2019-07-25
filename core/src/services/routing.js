@@ -3,8 +3,8 @@
 import { Navigation } from '../navigation/services/navigation';
 import {
   GenericHelpers,
-  RoutingHelpers,
-  IframeHelpers
+  IframeHelpers,
+  RoutingHelpers
 } from '../utilities/helpers';
 import { LuigiConfig } from '../core-api';
 import { Iframe } from './iframe';

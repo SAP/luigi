@@ -23,6 +23,20 @@ class IframeClass {
     return activeIframe[0];
   }
 
+  getIframeBySource(source, modalIframe) {
+    if (modalIframe && modalIframe.contentWindow === source) {
+      return modalIframe;
+    }
+    return IframeHelpers.getAllIframes().find(
+      iframe => iframe.contentWindow === source
+    );
+  }
+
+  getIframeContainer() {
+    const container = Array.from(document.querySelectorAll('.iframeContainer'));
+    return container && container.length > 0 ? container[0] : undefined;
+  }
+
   setActiveIframeToPrevious(node) {
     const iframesInDom = this.getIframesInDom();
     const preservedViews = this.getPreservedViewsInDom(iframesInDom);

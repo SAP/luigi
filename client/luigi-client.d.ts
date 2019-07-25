@@ -21,6 +21,29 @@ export declare interface ModalSettings {
   size?: 'l' | 'm' | 's';
 }
 
+export declare interface SplitViewSettings {
+  title?: string;
+  size?: number;
+}
+
+export enum SplitViewEvents {
+  'expand',
+  'collapse',
+  'resize',
+  'close'
+}
+
+export declare interface SplitViewInstance {
+  collapse: () => void;
+  expand: () => void;
+  setSize: (value: number) => void;
+  on: (key: SplitViewEvents, callback: () => void) => string; //
+  exists: () => boolean;
+  getSize: () => number;
+  isCollapsed: () => boolean;
+  isExpanded: () => boolean;
+}
+
 export declare interface Context {
   authData?: AuthData;
   context?: { parentNavigationContext?: string[] };
@@ -131,6 +154,18 @@ export declare interface UxManager {
    * @param {string} locale locale to be set as the current locale
    */
   setCurrentLocale: (locale: string) => void;
+
+  /**
+   * Checks if the current micro frontend is displayed inside a split view
+   * @returns {boolean} indicating if it is loaded inside a split view
+   */
+  isSplitView: () => boolean;
+
+  /**
+   * Checks if the current micro frontend is displayed inside a modal
+   * @returns {boolean} indicating if it is loaded inside a modal
+   */
+  isModal: () => boolean;
 }
 
 export declare interface LinkManager {
@@ -223,6 +258,24 @@ export declare interface LinkManager {
    * LuigiClient.linkManager().openAsModal('projects/pr1/users', {title:'Users', size:'m'});
    */
   openAsModal: (nodepath: string, modalSettings?: ModalSettings) => void;
+
+  /**
+   * Opens a view in a split view. You can specify the split view's title and size. If you don't specify the title, it is the node label. If there is no node label, the title remains empty. The default size of the split view is `40`, which means 40% height of the split view.
+   * @memberof linkManager
+   * @param {string} path navigation path
+   * @param {Object} splitViewSettings opens a view in a split view. Use these settings to configure the split view's behaviour
+   * @param {string} splitViewSettings.title split view title. By default, it is the node label. If there is no label, it is left empty
+   * @param {number} [splitViewSettings.size=40] height of the split view in percent
+   * @returns {Object} instance of the SplitView. It provides event listeners and you can the functions to control its behavior
+
+   * @see {@link splitView} for further documentation about the returned instance
+   * @example
+   * const splitViewHandle = LuigiClient.linkManager().openAsSplitView('projects/pr1/logs', {title: 'Logs', size: 40});
+   */
+  openAsSplitView: (
+    path: string,
+    splitViewSettings?: SplitViewSettings
+  ) => SplitViewInstance;
 }
 
 /**

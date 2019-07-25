@@ -101,6 +101,10 @@ Navigates to the given path in the application hosted by Luigi. It contains eith
 -   `modalSettings` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** opens a view in a modal. Use these settings to configure the modal's title and size
     -   `modalSettings.title` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** modal title. By default, it is the node label. If there is no label, it is left empty
     -   `modalSettings.size` **(`"l"` \| `"m"` \| `"s"`)** size of the modal (optional, default `"l"`)
+-   `splitViewSettings` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** opens a view in a split view. Use these settings to configure the split view's behaviour
+    -   `splitViewSettings.title` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** split view title. By default, it is the node label. If there is no label, it is left empty
+    -   `splitViewSettings.size` **[number](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number)** height of the split view in percent (optional, default `40`)
+    -   `splitViewSettings.collapsed` **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)** creates split view but leaves it closed initially (optional, default `false`)
 
 #### Examples
 
@@ -126,6 +130,27 @@ Opens a view in a modal. You can specify the modal's title and size. If you don'
 ```javascript
 LuigiClient.linkManager().openAsModal('projects/pr1/users', {title:'Users', size:'m'});
 ```
+
+### openAsSplitView
+
+-   **See: [splitView](#splitview) for further documentation about the returned instance**
+
+Opens a view in a split view. You can specify the split view's title and size. If you don't specify the title, it is the node label. If there is no node label, the title remains empty. The default size of the split view is `40`, which means 40% height of the split view.
+
+#### Parameters
+
+-   `path` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** navigation path
+-   `splitViewSettings` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** opens a view in a split view. Use these settings to configure the split view's behaviour (optional, default `{}`)
+    -   `splitViewSettings.title` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** split view title. By default, it is the node label. If there is no label, it is left empty
+    -   `splitViewSettings.size` **[number](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number)** height of the split view in percent (optional, default `40`)
+
+#### Examples
+
+```javascript
+const splitViewHandle = LuigiClient.linkManager().openAsSplitView('projects/pr1/logs', {title: 'Logs', size: 40});
+```
+
+Returns **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** instance of the SplitView. It provides Event listeners and you can use the available functions to control its behavior.
 
 ### fromContext
 
@@ -216,6 +241,141 @@ Discards the active view and navigates back to the last visited view. Works with
 LuigiClient.linkManager().goBack({ foo: 'bar' });
 LuigiClient.linkManager().goBack(true);
 ```
+
+## splitView
+
+Split view 
+Allows to open a micro frontend in a split screen in the lower part of the content area. Open it by calling `const splitViewHandle = LuigiClient.linkManager().openAsSplitView`. 
+At a given time, you can open only one split view. It closes automatically when you navigate to a different route.
+When you call `handle.collapse()`, the split view gets destroyed. It recreates when you use `handle.expand()`.
+`openAsSplitView` returns an instance of the split view handle. The functions, actions, and event handlers listed below allow you to control and manage the split view.
+
+### collapse
+
+Collapses the split view
+
+#### Examples
+
+```javascript
+splitViewHandle.collapse();
+```
+
+### expand
+
+Expands the split view
+
+#### Examples
+
+```javascript
+splitViewHandle.expand();
+```
+
+### close
+
+Closes and destroys the split view
+
+#### Examples
+
+```javascript
+splitViewHandle.close();
+```
+
+### setSize
+
+Sets the height of the split view
+
+#### Parameters
+
+-   `value` **[number](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number)** lower height in percent
+
+#### Examples
+
+```javascript
+splitViewHandle.setSize(60);
+```
+
+### on
+
+Registers a listener for split view events
+
+#### Parameters
+
+-   `name` **(`"expand"` \| `"collapse"` \| `"resize"` \| `"close"`)** event name
+-   `callback` **[function](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Statements/function)** gets called when this event gets triggered by Luigi
+
+#### Examples
+
+```javascript
+const listenerId = splitViewHandle.on('expand', () => {});
+const listenerId = splitViewHandle.on('collapse', () => {});
+const listenerId = splitViewHandle.on('resize', () => {});
+const listenerId = splitViewHandle.on('close', () => {});
+*
+```
+
+Returns **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** listener id
+
+### removeEventListener
+
+Unregisters a split view listener
+
+#### Parameters
+
+-   `id` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** listener id
+
+#### Examples
+
+```javascript
+splitViewHandle.removeEventListener(listenerId);
+```
+
+### exists
+
+Gets the split view status
+
+#### Examples
+
+```javascript
+splitViewHandle.exists();
+```
+
+Returns **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)** true if a split view is loaded
+
+### getSize
+
+Reads the size of the split view
+
+#### Examples
+
+```javascript
+splitViewHandle.getSize();
+```
+
+Returns **[number](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number)** height in percent
+
+### isCollapsed
+
+Reads the collapse status
+
+#### Examples
+
+```javascript
+splitViewHandle.isCollapsed();
+```
+
+Returns **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)** true if the split view is currently collapsed
+
+### isExpanded
+
+Reads the expand status
+
+#### Examples
+
+```javascript
+splitViewHandle.isExpanded();
+```
+
+Returns **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)** true if the split view is currently expanded
 
 ## uxManager
 
@@ -314,3 +474,15 @@ Sets current locale to the specified one.
 #### Parameters
 
 -   `locale` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** locale to be set as the current locale
+
+### isSplitView
+
+Checks if the current micro-frontend is displayed inside a split view
+
+Returns **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)** indicating if it is loaded inside a split view
+
+### isModal
+
+Checks if the current micro-frontend is displayed inside a modal
+
+Returns **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)** indicating if it is loaded inside a modal
