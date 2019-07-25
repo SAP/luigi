@@ -116,7 +116,9 @@
     },
     onupdate({ changed, current, previous }) {
       getNode(this, this.get().nodepath);
+      if(changed.isDataPrepared === true) {
       setSplitViewSize();
+      }
     },
     ondestroy() {
       window.removeEventListener('message', messageHandler.bind(this));
@@ -146,7 +148,9 @@
           SplitViewSvc.splitViewValues.percent,
           SplitViewSvc.internalValues
         );
+        if(!this.get().collapsed) {
         setSplitViewSize();
+        }
       },
       onDragStart(e) {
         let m_pos = e.y;
