@@ -24,6 +24,18 @@ The lerna-changelog tool detects changes based on PR labels and maps them to sec
   }
 -->
 
+## [0.5.3] (2019-07-23)
+
+#### :rocket: Added
+* [#663](https://github.com/SAP/luigi/pull/663) Remove nav highlight for semiCollapsible collapsed category ([@maxmarkus](https://github.com/maxmarkus))
+* [#648](https://github.com/SAP/luigi/pull/648) Generic node actions ([@jesusreal](https://github.com/jesusreal))
+* [#651](https://github.com/SAP/luigi/pull/651) Post message target handling in Luigi Client ([@JohannesDoberer](https://github.com/JohannesDoberer))
+* [#562](https://github.com/SAP/luigi/pull/562) Notification badge for counters ([@maxmarkus](https://github.com/maxmarkus))
+* [#640](https://github.com/SAP/luigi/pull/640) Remove external link indicator for shellbar header nodes ([@marynaKhromova](https://github.com/marynaKhromova))
+
+#### :memo: Documentation
+* [#638](https://github.com/SAP/luigi/pull/638) Security dev guidelines for MF ([@JohannesDoberer](https://github.com/JohannesDoberer))
+
 ## [v0.5.2] (2019-07-12)
 
 #### :rocket: Added
@@ -275,7 +287,7 @@ The lerna-changelog tool detects changes based on PR labels and maps them to sec
 * [#211](https://github.com/SAP/luigi/pull/211) Multiple path parameters do not get replaced in view url ([@pekura](https://github.com/pekura))
 * [#212](https://github.com/SAP/luigi/pull/212) Fix failing unit tests ([@dariadomagala](https://github.com/dariadomagala))
 * [#206](https://github.com/SAP/luigi/pull/206) Center the logo ([@dariadomagala](https://github.com/dariadomagala))
-* [#196](https://github.com/SAP/luigi/pull/196) Fix for goBack when not using micro-frontend without routing ([@maxmarkus](https://github.com/maxmarkus))
+* [#196](https://github.com/SAP/luigi/pull/196) Fix for goBack when not using micro frontend without routing ([@maxmarkus](https://github.com/maxmarkus))
 * [#177](https://github.com/SAP/luigi/pull/177) Allow multiple init and update listeners ([@maxmarkus](https://github.com/maxmarkus))
 
 #### :memo: Documentation
@@ -430,3 +442,7 @@ The lerna-changelog tool detects changes based on PR labels and maps them to sec
 [v0.4.10]: https://github.com/SAP/luigi/compare/v0.4.9...v0.4.10
 [v0.4.11]: https://github.com/SAP/luigi/compare/v0.4.10...v0.4.11
 [v0.4.12]: https://github.com/SAP/luigi/compare/v0.4.11...v0.4.12
+[v0.5.0]: https://github.com/SAP/luigi/compare/v0.4.12...v0.5.0
+[v0.5.1]: https://github.com/SAP/luigi/compare/v0.5.0...v0.5.1
+[v0.5.2]: https://github.com/SAP/luigi/compare/v0.5.1...v0.5.2
+[v0.5.3]: https://github.com/SAP/luigi/compare/v0.5.2...v0.5.3
