@@ -91,6 +91,24 @@ describe('Iframe', () => {
     });
   });
 
+  it('getIframeContainer', () => {
+    sinon
+      .stub(document, 'querySelectorAll')
+      .onFirstCall()
+      .returns([])
+      .onSecondCall()
+      .returns(['firstIframe', 'secondIframe']);
+
+    // first
+    assert.equal(Iframe.getIframeContainer(), undefined, 'no iframe found');
+    // second
+    assert.equal(
+      Iframe.getIframeContainer(),
+      'firstIframe',
+      'returns first iframe'
+    );
+  });
+
   it('removeInactiveIframes', () => {
     node.removeChild = sinon.spy();
     Iframe.removeInactiveIframes(node);
