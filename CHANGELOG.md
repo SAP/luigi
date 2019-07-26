@@ -287,7 +287,7 @@ The lerna-changelog tool detects changes based on PR labels and maps them to sec
 * [#211](https://github.com/SAP/luigi/pull/211) Multiple path parameters do not get replaced in view url ([@pekura](https://github.com/pekura))
 * [#212](https://github.com/SAP/luigi/pull/212) Fix failing unit tests ([@dariadomagala](https://github.com/dariadomagala))
 * [#206](https://github.com/SAP/luigi/pull/206) Center the logo ([@dariadomagala](https://github.com/dariadomagala))
-* [#196](https://github.com/SAP/luigi/pull/196) Fix for goBack when not using micro-frontend without routing ([@maxmarkus](https://github.com/maxmarkus))
+* [#196](https://github.com/SAP/luigi/pull/196) Fix for goBack when not using micro frontend without routing ([@maxmarkus](https://github.com/maxmarkus))
 * [#177](https://github.com/SAP/luigi/pull/177) Allow multiple init and update listeners ([@maxmarkus](https://github.com/maxmarkus))
 
 #### :memo: Documentation
