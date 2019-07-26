@@ -1,4 +1,5 @@
 // Standalone or partly-standalone methods that are used widely through the whole app and are synchronous.
+import { LuigiElements } from '../../core-api';
 class GenericHelpersClass {
   /**
    * Creates a random Id
@@ -221,6 +222,18 @@ class GenericHelpersClass {
       );
     }
     return processedString;
+  }
+
+  getContentAreaHeight() {
+    return window.innerHeight - LuigiElements.getShellbar().clientHeight;
+  }
+
+  computePxFromPercent(fullPixels, requestedPercent) {
+    return (fullPixels / 100) * requestedPercent;
+  }
+
+  computePercentFromPx(fullPixels, partialPixels) {
+    return Math.floor((100 * partialPixels) / fullPixels);
   }
 }
 

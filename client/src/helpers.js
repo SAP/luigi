@@ -22,14 +22,16 @@ class Helpers {
    * @private
    * @param {string} name event name
    * @param {function} eventFn callback function
-   * @returns {boolean}
+   * @returns {string} listener id
    */
   addEventListener(name, eventFn) {
+    const listenerId = this.getRandomId();
     this.listeners.push({
       name,
       eventFn,
-      listenerId: this.getRandomId()
+      listenerId
     });
+    return listenerId;
   }
 
   /**
