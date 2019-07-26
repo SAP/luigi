@@ -28,6 +28,7 @@ The lerna-changelog tool detects changes based on PR labels and maps them to sec
 
 #### :rocket: Added
 * [#650](https://github.com/SAP/luigi/pull/650) Split View microfrontends ([@maxmarkus](https://github.com/maxmarkus))
+* [#664](https://github.com/SAP/luigi/pull/664) Accumulated badge counter for mobile ([@maxmarkus](https://github.com/maxmarkus))
 
 #### :bug: Fixed
 * [#665](https://github.com/SAP/luigi/pull/665) Fix custom idp provider login function check ([@maxmarkus](https://github.com/maxmarkus))
