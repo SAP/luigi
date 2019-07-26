@@ -237,8 +237,8 @@ class LifecycleManager extends LuigiClientBase {
   }
 
   /**
-   * Returns the current client permissions as specified on the navigation node. (See [Node parameters](navigation-parameters-reference.md).)
-   * @returns {Object} client permissions as specified on the navigation node.
+   * Returns the current client permissions as specified in the navigation node. For details, see [Node parameters](navigation-parameters-reference.md).
+   * @returns {Object} client permissions as specified in the navigation node.
    * @memberof Lifecycle
    */
   getClientPermissions() {

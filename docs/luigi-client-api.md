@@ -77,9 +77,9 @@ Returns **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/G
 
 ### getClientPermissions
 
-Returns the current client permissions as specified on the navigation node. (See [Node parameters](navigation-parameters-reference.md).)
+Returns the current client permissions as specified in the navigation node. For details, see [Node parameters](navigation-parameters-reference.md).
 
-Returns **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** client permissions as specified on the navigation node.
+Returns **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** client permissions as specified in the navigation node.
 
 ## linkManager
 
