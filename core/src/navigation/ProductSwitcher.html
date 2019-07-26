@@ -153,6 +153,13 @@ Object.keys(productSwitcherItems[0]).length }
   };
 </script>
 <style type="text/scss">
+  $topNavHeight: 48px;
+  $productSwitcherHeight: 64px;
+  .fd-popover__body {
+    overflow: auto;
+    max-height: calc(100vh - 50px);
+  }
+
   .fd-product-switcher {
     position: relative;
     display: block;
@@ -176,7 +183,7 @@ Object.keys(productSwitcherItems[0]).length }
     z-index: 1000;
     position: fixed;
     box-sizing: border-box;
-    top: 48px;
+    top: $topNavHeight;
     left: 0;
     margin: auto auto;
 
@@ -205,7 +212,7 @@ Object.keys(productSwitcherItems[0]).length }
       }
     }
     .fd-modal__body {
-      max-height: none;
+      max-height: calc(100vh - #{$topNavHeight} - #{$productSwitcherHeight});
       padding: 0;
     }
 
