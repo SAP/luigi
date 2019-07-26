@@ -1,4 +1,5 @@
 import { GenericHelpers } from '../../src/utilities/helpers';
+import { config } from '../../src/core-api/config';
 
 const chai = require('chai');
 const assert = chai.assert;
@@ -12,8 +13,10 @@ describe('I18N', () => {
       getItem: sinon.stub(),
       setItem: sinon.stub()
     };
+    sinon.stub(config, 'getConfig');
+    sinon.stub(config, 'setConfig');
   });
-  beforeEach(() => {
+  afterEach(() => {
     sinon.restore();
   });
 
@@ -96,6 +99,8 @@ describe('I18N', () => {
       sinon.assert.calledWithExactly(LuigiI18N.listeners.id1, 'pl');
       sinon.assert.calledWithExactly(LuigiI18N.listeners.id2, 'pl');
       sinon.assert.calledWithExactly(LuigiI18N.listeners.id3, 'pl');
+      sinon.assert.called(config.getConfig);
+      sinon.assert.called(config.setConfig);
     });
   });
 });
