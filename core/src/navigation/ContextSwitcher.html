@@ -27,7 +27,7 @@
             {#each actions as node} {#if node.position === 'top' || !['top',
             'bottom'].includes(node.position)}
             <li on:click="onActionClick(node)">
-              <a class="fd-menu__item">{node.label}</a>
+              <a class="fd-menu__item">{$getTranslation(node.label)}</a>
             </li>
             {/if} {/each}
           </ul>
@@ -54,7 +54,7 @@
           <ul class="fd-menu__list fd-menu__list--bottom">
             {#each actions as node} {#if node.position === 'bottom'}
             <li on:click="onActionClick(node)">
-              <a class="fd-menu__item">{node.label}</a>
+              <a class="fd-menu__item">{$getTranslation(node.label)}</a>
             </li>
             {/if} {/each}
           </ul>

@@ -1,4 +1,5 @@
-import { GenericHelpers } from '../utilities/helpers';
+import { config } from './config';
+import { GenericHelpers, StateHelpers } from '../utilities/helpers';
 
 /**
  * Localization-related functions.
@@ -9,6 +10,12 @@ class LuigiI18NManager {
     this.currentLocaleStorageKey = 'luigi.currentLocale';
     this.defaultLocale = 'en';
     this.listeners = {};
+  }
+
+  _init() {
+    StateHelpers.doOnStoreChange(window.Luigi._store, () => {
+      this._initCustomImplementation();
+    });
   }
 
   /**
@@ -77,6 +84,35 @@ class LuigiI18NManager {
     Object.getOwnPropertyNames(this.listeners).forEach(listenerId => {
       this.listeners[listenerId](locale);
     });
+    config.setConfig(config.getConfig());
+  }
+
+  /**
+   * @private
+   * @memberof LuigiI18N
+   */
+  _initCustomImplementation() {
+    this.translationImpl = config.getConfigValue(
+      'settings.customTranslationImplementation'
+    );
+    if (GenericHelpers.isFunction(this.translationImpl)) {
+      this.translationImpl = this.translationImpl();
+    }
+  }
+
+  /**
+   * Gets translated text for the specified key in the current locale or in the specified one.
+   * Property values for token replacement in the localization key will be taken from the specified interpolations object.
+   * @param {string} key key to be translated
+   * @param {Object} interpolations objects with properties that will be used for token replacements in the localization key
+   * @param {locale} locale optional locale to get the translation for; default is the current locale
+   */
+  getTranslation(key, interpolations, locale) {
+    if (this.translationImpl) {
+      return this.translationImpl.getTranslation(key, interpolations, locale);
+    } else {
+      return key;
+    }
   }
 }
 

@@ -15,7 +15,7 @@
           {#each nodes as node} {#if !node.hideFromNav} {#if node.label}
           <li
             class="fd-side-nav__item {node.externalLink && node.externalLink.url ? 'fd-side-nav__item--external' : ''}"
-            title="{isSemiCollapsed ? node.label : ''}"
+            title="{isSemiCollapsed ? getNodeLabel(node) : ''}"
           >
             <a
               href="javascript:void(null)"
@@ -37,7 +37,7 @@
                 class="fd-side-nav__icon sap-icon--l"
               ></span>
               {/if}
-              <span class="fd-side-nav__text">{node.label}</span>
+              <span class="fd-side-nav__text">{getNodeLabel(node)}</span>
               {#if node.externalLink && node.externalLink.url}
               <span
                 class="sap-icon--action sap-icon--s"
@@ -55,7 +55,7 @@
           <div class="lui-flyout-sublist__wrapper">
             <h5
               class="lui-flyout-sublist__title fd-has-type-minus-1 fd-has-color-text-4"
-            >{key}</h5>
+            >{$getTranslation(key)}</h5>
             <ul class="fd-side-nav__sublist">
               {#each nodes as node} {#if !node.hideFromNav} {#if node.label}
               <li
@@ -66,7 +66,7 @@
                   class="fd-side-nav__sublink {node === selectedNode ? 'is-selected' : ''}"
                   on:click="handleClick(node)"
                 >
-                  {node.label} {#if node.externalLink && node.externalLink.url}
+                  {getNodeLabel(node)} {#if node.externalLink && node.externalLink.url}
                   <span
                     class="sap-icon--action sap-icon--s"
                   ></span>
@@ -103,7 +103,7 @@
                 src="{nodes.metaInfo.icon}"
               >
               {/if}
-              <span class="fd-side-nav__text">{key}</span>
+              <span class="fd-side-nav__text">{$getTranslation(key)}</span>
             </a>
             <ul
               class="fd-side-nav__sublist"
@@ -118,7 +118,7 @@
                   class="fd-side-nav__sublink {node === selectedNode ? 'is-selected' : ''}"
                   on:click="handleClick(node)"
                 >
-                  {node.label} {#if node.externalLink && node.externalLink.url}
+                  {getNodeLabel(node)} {#if node.externalLink && node.externalLink.url}
                   <span
                     class="sap-icon--action sap-icon--s"
                   ></span>
@@ -149,7 +149,7 @@
             {/if}
             <span
               class="fd-side-nav__text"
-            >{key}</span>
+            >{$getTranslation(key)}</span>
           </li>
           <ul class="fd-side-nav__sublist">
             {#each nodes as node} {#if !node.hideFromNav} {#if node.label}
@@ -175,7 +175,7 @@
                 <span
                   class="fd-side-nav__icon sap-icon--l"
                 ></span>
-                {/if} {node.label} {#if node.externalLink &&
+                {/if} {getNodeLabel(node)} {#if node.externalLink &&
                 node.externalLink.url}
                 <span
                   class="sap-icon--action sap-icon--s"
@@ -210,7 +210,7 @@
 <script type="text/javascript">
   import { Navigation } from './services/navigation';
   import { NavigationHelpers } from '../utilities/helpers';
-  import { LuigiConfig, LuigiElements } from '../core-api';
+  import { LuigiConfig, LuigiElements, LuigiI18N } from '../core-api';
   import { StateHelpers } from '../utilities/helpers';
   import { CSS_BREAKPOINTS } from '../utilities/constants';
 
@@ -292,7 +292,10 @@
         // respect also 'responsiveNavigation' setting in the future.
         // the footer should also be visible if it's possible to collapse the Nav
       },
-      getFooterText() {}
+      getFooterText() {},
+      getNodeLabel(node) {
+        return LuigiI18N.getTranslation(node.label);
+      }
     },
     methods: {
       handleClick(node) {

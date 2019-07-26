@@ -32,7 +32,7 @@ Object.keys(productSwitcherItems[0]).length }
                   </span>
                   <span
                     class="fd-product-switcher__product-title"
-                  >{productSwitcherItem.label}</span>
+                  >{$getTranslation(productSwitcherItem.label)}</span>
                 </a>
               </li>
               {/if} {/each}
@@ -69,7 +69,7 @@ Object.keys(productSwitcherItems[0]).length }
                 class="y-full-width-list__icon"
                 style="background-image: url({productSwitcherItem.icon})"
               ></span>
-              <span class="y-full-width-list__title">{productSwitcherItem.label}</span>
+              <span class="y-full-width-list__title">{$getTranslation(productSwitcherItem.label)}</span>
               <span class="y-full-width-list__subtitle">
                 <!-- Here comes the subtitle which is unknown for now -->
               </span>
