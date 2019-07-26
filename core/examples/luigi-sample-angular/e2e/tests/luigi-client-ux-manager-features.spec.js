@@ -337,21 +337,20 @@ describe('Luigi client ux manager features', () => {
           .find('[data-cy=luigi-current-locale]')
           .should('contain', "'pl_PL'");
       });
+
       it('clientPermissions: check if set localization in client is disabled', () => {
-        cy.visit('/projects/pr1/clientPermissionsTets')
-          .get('.iframeContainer iframe')
-          .then(function($iframe) {
-            const $body = $iframe.contents().find('body');
+        cy.visit('/projects/pr1/clientPermissionsTets').getIframeBody().then(body => {
 
-            cy.wrap($body)
-              .find('[data-cy=luigi-input-locale]')
-              .should('be.disabled');
+          cy.wrap(body)
+            .find('[data-cy=luigi-input-locale]')
+            .should('be.disabled');
 
-            cy.wrap($body)
-              .find('[data-cy=set-current-locale]')
-              .should('be.disabled');
-          });
+          cy.wrap(body)
+            .find('[data-cy=set-current-locale]')
+            .should('be.disabled');
+
+        });
       });
     });
   });
-});
+
