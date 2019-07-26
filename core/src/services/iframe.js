@@ -278,7 +278,7 @@ class IframeClass {
         ),
         nodeParams: JSON.stringify(Object.assign({}, componentData.nodeParams)),
         pathParams: JSON.stringify(Object.assign({}, componentData.pathParams)),
-        internal: JSON.stringify(component.prepareInternalData(false, config))
+        internal: JSON.stringify(component.prepareInternalData(config))
       };
       IframeHelpers.sendMessageToIframe(config.iframe, message);
       // clear goBackContext and reset navigateBack after sending it to the client
