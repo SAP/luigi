@@ -24,7 +24,20 @@ The lerna-changelog tool detects changes based on PR labels and maps them to sec
   }
 -->
 
-## [v0.5.3] (2019-07-23)
+## [0.6.0-rc.0] (2019-07-26)
+
+#### :rocket: Added
+* [#650](https://github.com/SAP/luigi/pull/650) Split View microfrontends ([@maxmarkus](https://github.com/maxmarkus))
+* [#664](https://github.com/SAP/luigi/pull/664) Accumulated badge counter for mobile ([@maxmarkus](https://github.com/maxmarkus))
+
+#### :bug: Fixed
+* [#665](https://github.com/SAP/luigi/pull/665) Fix custom idp provider login function check ([@maxmarkus](https://github.com/maxmarkus))
+
+#### :memo: Documentation
+* [#668](https://github.com/SAP/luigi/pull/668) Fix broken links in docu for auth providers ([@jesusreal](https://github.com/jesusreal))
+
+
+## [0.5.3] (2019-07-23)
 
 #### :rocket: Added
 * [#663](https://github.com/SAP/luigi/pull/663) Remove nav highlight for semiCollapsible collapsed category ([@maxmarkus](https://github.com/maxmarkus))
@@ -446,3 +459,4 @@ The lerna-changelog tool detects changes based on PR labels and maps them to sec
 [v0.5.1]: https://github.com/SAP/luigi/compare/v0.5.0...v0.5.1
 [v0.5.2]: https://github.com/SAP/luigi/compare/v0.5.1...v0.5.2
 [v0.5.3]: https://github.com/SAP/luigi/compare/v0.5.2...v0.5.3
+[v0.6.0-rc.0]: https://github.com/SAP/luigi/compare/v0.5.3...v0.6.0-rc.0
