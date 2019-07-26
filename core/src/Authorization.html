@@ -102,15 +102,16 @@
       'customIdpProvider'
     );
     if (customIdpProvider) {
+      const customIdpInstance = new customIdpProvider(idpProviderSettings);
       ['login'].forEach(requiredFnName => {
-        if (!GenericHelpers.isFunction(customIdpProvider[requiredFnName])) {
+        if (!GenericHelpers.isFunction(customIdpInstance[requiredFnName])) {
           throw IdpProviderException(
             `${requiredFnName} function does not exist in custom IDP Provider ${idpProviderName}`
           );
         }
       });
 
-      return new customIdpProvider(idpProviderSettings);
+      return customIdpInstance;
     }
 
     throw IdpProviderException(
@@ -164,6 +165,7 @@
         this.setProfileNavData();
 
         if (
+          idpProviderInstance.settings &&
           GenericHelpers.isFunction(idpProviderInstance.settings.userInfoFn)
         ) {
           idpProviderInstance.settings.userInfoFn().then(res => {
