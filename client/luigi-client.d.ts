@@ -361,6 +361,11 @@ export type getNodeParams = () => NodeParams;
 export function getPathParams(): PathParams;
 export type getPathParams = () => PathParams;
 
+/**
+ * Returns the current client permissions as specified in the navigation node or an empty object. For details, see [Node parameters](navigation-parameters-reference.md).
+ * @returns {Object} client permissions as specified in the navigation node.
+ * @memberof Lifecycle
+ */
 export function getClientPermissions(): ClientPermissions;
 export type getClientPermissions = () => ClientPermissions;
 

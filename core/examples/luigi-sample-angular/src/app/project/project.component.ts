@@ -87,9 +87,7 @@ export class ProjectComponent implements OnInit, OnDestroy {
           this.projectId = ctx.context.currentProject;
           this.preservedViewCallbackContext = ctx.context.goBackContext;
           this.currentLocale = uxManager().getCurrentLocale();
-          this.canChangeLocale =
-            getClientPermissions() &&
-            getClientPermissions().changeCurrentLocale;
+          this.canChangeLocale = getClientPermissions().changeCurrentLocale;
           // Since Luigi runs outside of Zone.js, changes need
           // to be updated manually
           // Be sure to check for destroyed ChangeDetectorRef,
@@ -110,8 +108,7 @@ export class ProjectComponent implements OnInit, OnDestroy {
       // this.projectId = updatedContext.currentProject;
       // this.preservedViewCallbackContext = updatedContext.goBackContext;
       this.currentLocale = uxManager().getCurrentLocale();
-      this.canChangeLocale =
-        getClientPermissions() && getClientPermissions().changeCurrentLocale;
+      this.canChangeLocale = getClientPermissions().changeCurrentLocale;
       console.log('context updated', this.currentLocale, updatedContext);
       // Be sure to check for destroyed ChangeDetectorRef,
       // else you get runtime Errors
