@@ -75,6 +75,12 @@ All path parameters in the current navigation path (as defined by the active URL
 
 Returns **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** path parameters, where the object property name is the path parameter name without the prefix, and its value is the actual value of the path parameter. For example `{productId: 1234, ...}`
 
+### getClientPermissions
+
+Returns the current client permissions as specified in the navigation node or an empty object. For details, see [Node parameters](navigation-parameters-reference.md).
+
+Returns **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** client permissions as specified in the navigation node.
+
 ## linkManager
 
 The Link Manager allows you to navigate to another route. Use it instead of an internal router to:
