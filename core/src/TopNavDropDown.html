@@ -1,4 +1,4 @@
-
+<svelte:window on:resize="setViewportHeightVariable()"/>
 {#if !isMobile}
 <nav class="fd-menu">
   <ul class="fd-menu__list fd-menu__list--top">
@@ -77,6 +77,9 @@
   import { NavigationHelpers } from './utilities/helpers';
   import { RoutingHelpers } from './utilities/helpers';
   export default {
+    async oncreate() {
+      this.setViewportHeightVariable();
+    },
     async onupdate({ changed, current, previous }) {
       const currentNode = this.get().node;
       let children = this.get().children;
@@ -105,6 +108,12 @@
       },
       closeSubNav() {
         this.fire('close');
+      },
+      setViewportHeightVariable() {
+        // get the viewport height and multiple it by 1% to get a value for a vh unit
+        let vh = window.innerHeight * 0.01;
+        // set the value in the --vh custom property to the root of the document
+        document.documentElement.style.setProperty('--vh', `${vh}px`);
       }
     },
     helpers: {
@@ -123,6 +132,7 @@
   .fd-popover__body {
     overflow: auto;
     max-height: calc(100vh - 50px);
+    max-height: calc(var(--vh, 1vh) * 100 - 50px);
   }
   .fd-product-switcher {
     position: relative;
@@ -191,6 +201,9 @@
     }
     .fd-modal__body {
       max-height: calc(100vh - #{$topNavHeight} - #{$productSwitcherHeight});
+      max-height: calc(
+        var(--vh, 1vh) * 100 - #{$topNavHeight} - #{$productSwitcherHeight}
+      );
       padding: 0;
     }
 

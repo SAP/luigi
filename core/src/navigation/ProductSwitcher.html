@@ -158,6 +158,7 @@ Object.keys(productSwitcherItems[0]).length }
   .fd-popover__body {
     overflow: auto;
     max-height: calc(100vh - 50px);
+    max-height: calc(var(--vh, 1vh) * 100 - 50px);
   }
 
   .fd-product-switcher {
@@ -213,6 +214,9 @@ Object.keys(productSwitcherItems[0]).length }
     }
     .fd-modal__body {
       max-height: calc(100vh - #{$topNavHeight} - #{$productSwitcherHeight});
+      max-height: calc(
+        var(--vh, 1vh) * 100 - #{$topNavHeight} - #{$productSwitcherHeight}
+      );
       padding: 0;
     }
 
