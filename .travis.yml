@@ -39,6 +39,6 @@ jobs:
     # ----- NPM PUBLISH -----
     - stage: 'Publish'
       name: 'Publish to NPM'
-      if: branch = master
+      if: repo = SAP/luigi AND (branch = master OR branch ~= ^release-v)
       script: bash ./scripts/npmPublish.sh
       #cache: npm
