@@ -155,7 +155,8 @@ Object.keys(productSwitcherItems[0]).length }
 <style type="text/scss">
   $topNavHeight: 48px;
   $productSwitcherHeight: 64px;
-  .fd-popover__body {
+
+  :global(.fd-popover__body) {
     overflow: auto;
     max-height: calc(100vh - 50px);
     max-height: calc(var(--vh, 1vh) * 100 - 50px);
