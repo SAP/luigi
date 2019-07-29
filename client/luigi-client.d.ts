@@ -24,6 +24,7 @@ export declare interface ModalSettings {
 export declare interface SplitViewSettings {
   title?: string;
   size?: number;
+  collapsed?: boolean;
 }
 
 export enum SplitViewEvents {

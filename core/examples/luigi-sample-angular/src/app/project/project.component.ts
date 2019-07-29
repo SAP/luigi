@@ -202,7 +202,8 @@ export class ProjectComponent implements OnInit, OnDestroy {
       .withParams({ test: 'true' })
       .openAsSplitView('/settings', {
         title: 'Logs',
-        size: 25
+        size: 25,
+        collapsed: false
       });
 
     this.splitViewHandle.on('resize', newSize => {

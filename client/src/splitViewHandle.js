@@ -24,7 +24,7 @@ export class splitViewHandle extends LuigiClientBase {
       collapsed: false
     };
 
-    Object.assign(this, settings);
+    Object.assign(this.splitView, settings);
 
     const removeEventListeners = () => {
       this.splitView.listeners.forEach(id => helpers.removeEventListener(id));

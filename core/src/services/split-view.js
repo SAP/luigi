@@ -155,9 +155,10 @@ class SplitViewSvcClass {
   }
 
   open(comp, nodepath, settings) {
+    settings.collapsed = true;
     const mfSplitView = {
       displayed: true,
-      collapsed: false, // settings.collapsed === true, // TODO: separate ticket
+      collapsed: settings.collapsed === true, // TODO: separate ticket
       nodepath,
       settings
     };
@@ -173,10 +174,21 @@ class SplitViewSvcClass {
       collapsed: mfSplitView.collapsed
     });
     comp.set({ mfSplitView, splitViewValues: this.splitViewValues });
+
+    if(mfSplitView.collapsed) {
+      this.getContainer().style.top = '';
+      Iframe.getIframeContainer().style.paddingBottom = '';
+    }
   }
 
-  expand(comp) {
-    if (comp.get().splitViewIframe) {
+  async expand(comp) {
+    console.log('expand?')
+    if (!comp.root.get().splitViewIframe) {
+      await this.createAndSetView(comp);
+      console.log('after createAndSetView')
+    }
+    if (comp.root.get().splitViewIframe) {
+      console.log('there is a splitViewIframe');
       this.sendMessageToClients('internal', {
         exists: true,
         size: this.splitViewValues.percent,
@@ -184,7 +196,7 @@ class SplitViewSvcClass {
       });
       this.sendMessageToClients('expand.ok');
 
-      this.setDeep(comp, 'mfSplitView', {
+      this.setDeep(comp.root, 'mfSplitView', {
         displayed: true,
         collapsed: false
       });
@@ -194,6 +206,8 @@ class SplitViewSvcClass {
         this.splitViewValues.bottom
       }px`;
       this.getDragger().style.top = `${this.splitViewValues.top}px`;
+    } else {
+      console.log('there is NO splitViewIframe');
     }
   }
 

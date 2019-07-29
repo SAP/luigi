@@ -1,4 +1,4 @@
-<svelte:window on:resize="onResize()"/>
+<svelte:window on:resize="updateSizes()"/>
 <div class="lui-split-view">
   {#if collapsed}
   <div class="splitViewSeparator isCollapsed">
@@ -111,12 +111,12 @@
 
   export default {
     oncreate() {
-      this.onResize();
+      this.updateSizes();
       window.addEventListener('message', messageHandler.bind(this));
     },
     onupdate({ changed, current, previous }) {
       getNode(this, this.get().nodepath);
-      if (changed.isDataPrepared === true) {
+      if (changed.isDataPrepared === true && !this.get().collapsed) {
         setSplitViewSize();
       }
     },
@@ -134,11 +134,13 @@
         e && e.stopPropagation();
         SplitViewSvc.collapse(this.root);
       },
-      expand() {
-        SplitViewSvc.expand(this.root);
-        SplitViewSvc.getDraggerBackdrop().style.display = 'none';
+      async expand() {
+        SplitViewSvc.expand(this);
+        if(elements.draggerBackdrop) {
+          elements.draggerBackdrop.style.display = 'none';
+        }
       },
-      onResize() {
+      updateSizes() {
         const shellbarHeight = LuigiElements.getShellbar().clientHeight;
         SplitViewSvc.internalValues.rightContentHeight =
           window.innerHeight - shellbarHeight;
