@@ -156,7 +156,7 @@
       },
       onDragStart(e) {
         let m_pos = e.y;
-        let newValues;
+        let newValues = {};
 
         const resize = function resize(re) {
           const diff = m_pos - re.y;
@@ -173,13 +173,7 @@
 
           const top = dragTop - diff;
           const bottom = window.innerHeight - top;
-          const calculated = SplitViewSvc.enforceTreshHolds(
-            top,
-            bottom,
-            SplitViewSvc.internalValues
-          );
-
-          newValues = calculated;
+          newValues = SplitViewSvc.enforceTreshHolds(top, bottom);
 
           elements.draggable.style.top = `${newValues.top}px`;
         };

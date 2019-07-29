@@ -203,11 +203,11 @@ Luigi.setConfig({
       }
       // optional , will be provided by default
       // nonceFn: () => {
-      //   console.log('custom nonce function called');
+      //   console.info('custom nonce function called');
       //   return 1;
       // },
       // logoutFn: (settings, authData, logoutCallback) => {
-      //   console.log('logoutFn called');
+      //   console.info('logoutFn called');
       //   // auth example
       //   const logoutreq = `${settings.logoutUrl}?id_token_hint=${
       //     authData.idToken
@@ -218,7 +218,6 @@ Luigi.setConfig({
       //   request.open('GET', logoutreq);
       //   request.addEventListener('load', function (event) {
       //     if (request.status >= 200 && request.status < 300) {
-      //       console.log(request.responseText);
       //       logoutCallback();
       //     } else {
       //       console.warn(request.statusText, request.responseText);

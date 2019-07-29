@@ -263,11 +263,11 @@ export declare interface LinkManager {
    * @param {Object} splitViewSettings opens a view in a split view. Use these settings to configure the split view's behaviour
    * @param {string} splitViewSettings.title split view title. By default, it is the node label. If there is no label, it is left empty
    * @param {number} [splitViewSettings.size=40] height of the split view in percent
-   * @returns {Object} instance of the SplitView. It provides event listeners and you can the functions to control its behavior
-
+   * @param {boolean} [splitViewSettings.collapsed=false] opens split view in collapsed state
+   * @returns {Object} instance of the SplitView. It provides Event listeners and you can use the available functions to control its behavior.
    * @see {@link splitView} for further documentation about the returned instance
    * @example
-   * const splitViewHandle = LuigiClient.linkManager().openAsSplitView('projects/pr1/logs', {title: 'Logs', size: 40});
+   * const splitViewHandle = LuigiClient.linkManager().openAsSplitView('projects/pr1/logs', {title: 'Logs', size: 40, collapsed: true});
    */
   openAsSplitView: (
     path: string,

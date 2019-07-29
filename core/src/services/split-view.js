@@ -74,6 +74,11 @@ class SplitViewSvcClass {
 
   createAndSetView(component) {
     const { nodeParams, lastNode, pathData } = component.get();
+    this.setDeep(
+      component.root,
+      'mfSplitView',
+      Object.assign(component.root.get().mfSplitView, { collapsed: false })
+    );
 
     const iframe = this.setIframe(
       lastNode.viewUrl,
@@ -136,8 +141,8 @@ class SplitViewSvcClass {
     };
   }
 
-  enforceTreshHolds(top, bottom, internalValues) {
-    const iv = internalValues;
+  enforceTreshHolds(top, bottom) {
+    const iv = this.internalValues;
     if (top <= iv.thresholdTop) {
       top = iv.thresholdTop;
       bottom = window.innerHeight - iv.thresholdTop;
@@ -145,7 +150,7 @@ class SplitViewSvcClass {
       top = window.innerHeight - iv.thresholdBottom;
       bottom = iv.thresholdBottom;
     }
-console.log('enforceTreshHolds', iv, bottom, top);
+
     return {
       top,
       bottom,
@@ -181,41 +186,30 @@ console.log('enforceTreshHolds', iv, bottom, top);
       collapsed: mfSplitView.collapsed
     });
     comp.set({ mfSplitView, splitViewValues: this.splitViewValues });
-
-    // if(mfSplitView.collapsed) {
-    //   this.getContainer().style.top = '';
-    //   Iframe.getIframeContainer().style.paddingBottom = '';
-    // }
   }
 
   async expand(comp) {
-    console.log('splitViewIframe does not exist yet?', comp.root.get().splitViewIframe);
     if (!comp.root.get().splitViewIframe) {
       await this.createAndSetView(comp);
-      console.log('after createAndSetView')
     }
-    if (comp.root.get().splitViewIframe) {
-      console.log('there is a splitViewIframe');
-      this.sendMessageToClients('internal', {
-        exists: true,
-        size: this.splitViewValues.percent,
-        collapsed: false
-      });
-      this.sendMessageToClients('expand.ok');
 
-      this.setDeep(comp.root, 'mfSplitView', {
-        displayed: true,
-        collapsed: false
-      });
+    this.sendMessageToClients('internal', {
+      exists: true,
+      size: this.splitViewValues.percent,
+      collapsed: false
+    });
+    this.sendMessageToClients('expand.ok');
 
-      this.getContainer().style.top = `${this.splitViewValues.top}px`;
-      Iframe.getIframeContainer().style.paddingBottom = `${
-        this.splitViewValues.bottom
-      }px`;
-      this.getDragger().style.top = `${this.splitViewValues.top}px`;
-    } else {
-      console.log('expand: there is NO root.get().splitViewIframe');
-    }
+    this.setDeep(comp.root, 'mfSplitView', {
+      displayed: true,
+      collapsed: false
+    });
+
+    this.getContainer().style.top = `${this.splitViewValues.top}px`;
+    Iframe.getIframeContainer().style.paddingBottom = `${
+      this.splitViewValues.bottom
+    }px`;
+    this.getDragger().style.top = `${this.splitViewValues.top}px`;
   }
 
   collapse(comp) {
