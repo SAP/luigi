@@ -123,8 +123,7 @@ class SplitViewSvcClass {
     const calculated = this.enforceTreshHolds(
       newBottom,
       window.innerHeight - newBottom,
-      values.thresholdTop,
-      values.thresholdBottom
+      values
     );
 
     this.splitViewValues = {
@@ -137,15 +136,24 @@ class SplitViewSvcClass {
     };
   }
 
-  enforceTreshHolds(top, bottom, thresholdTop, thresholdBottom) {
-    if (top <= thresholdTop) {
-      top = thresholdTop;
-      bottom = window.innerHeight - thresholdTop;
-    } else if (bottom <= thresholdBottom) {
-      top = window.innerHeight - thresholdBottom;
-      bottom = thresholdBottom;
+  enforceTreshHolds(top, bottom, internalValues) {
+    const iv = internalValues;
+    if (top <= iv.thresholdTop) {
+      top = iv.thresholdTop;
+      bottom = window.innerHeight - iv.thresholdTop;
+    } else if (bottom <= iv.thresholdBottom) {
+      top = window.innerHeight - iv.thresholdBottom;
+      bottom = iv.thresholdBottom;
     }
-    return { top, bottom };
+console.log('enforceTreshHolds', iv, bottom, top);
+    return {
+      top,
+      bottom,
+      percent: GenericHelpers.computePercentFromPx(
+        iv.rightContentHeight,
+        bottom
+      )
+    };
   }
 
   setDeep(comp, key, value) {
@@ -155,7 +163,6 @@ class SplitViewSvcClass {
   }
 
   open(comp, nodepath, settings) {
-    settings.collapsed = true;
     const mfSplitView = {
       displayed: true,
       collapsed: settings.collapsed === true, // TODO: separate ticket
@@ -175,14 +182,14 @@ class SplitViewSvcClass {
     });
     comp.set({ mfSplitView, splitViewValues: this.splitViewValues });
 
-    if(mfSplitView.collapsed) {
-      this.getContainer().style.top = '';
-      Iframe.getIframeContainer().style.paddingBottom = '';
-    }
+    // if(mfSplitView.collapsed) {
+    //   this.getContainer().style.top = '';
+    //   Iframe.getIframeContainer().style.paddingBottom = '';
+    // }
   }
 
   async expand(comp) {
-    console.log('expand?')
+    console.log('splitViewIframe does not exist yet?', comp.root.get().splitViewIframe);
     if (!comp.root.get().splitViewIframe) {
       await this.createAndSetView(comp);
       console.log('after createAndSetView')
@@ -207,7 +214,7 @@ class SplitViewSvcClass {
       }px`;
       this.getDragger().style.top = `${this.splitViewValues.top}px`;
     } else {
-      console.log('there is NO splitViewIframe');
+      console.log('expand: there is NO root.get().splitViewIframe');
     }
   }
 
@@ -240,7 +247,7 @@ class SplitViewSvcClass {
         .then(() => {
           this.setDeep(comp, 'mfSplitView', {
             displayed: false,
-            collapsed: false
+            collapsed: comp.get().mfSplitView.collapsed
           });
           Iframe.getIframeContainer().style.paddingBottom = '';
           this.sendMessageToClients('close.ok');

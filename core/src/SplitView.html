@@ -136,7 +136,7 @@
       },
       async expand() {
         SplitViewSvc.expand(this);
-        if(elements.draggerBackdrop) {
+        if (elements.draggerBackdrop) {
           elements.draggerBackdrop.style.display = 'none';
         }
       },
@@ -156,6 +156,7 @@
       },
       onDragStart(e) {
         let m_pos = e.y;
+        let newValues;
 
         const resize = function resize(re) {
           const diff = m_pos - re.y;
@@ -170,46 +171,35 @@
             return;
           }
 
-          const newTop = dragTop - diff;
-          const newBottom = window.innerHeight - newTop;
+          const top = dragTop - diff;
+          const bottom = window.innerHeight - top;
           const calculated = SplitViewSvc.enforceTreshHolds(
-            newTop,
-            newBottom,
-            SplitViewSvc.internalValues.thresholdTop,
-            SplitViewSvc.internalValues.thresholdBottom
+            top,
+            bottom,
+            SplitViewSvc.internalValues
           );
 
-          SplitViewSvc.splitViewValues.top = calculated.top;
-          SplitViewSvc.splitViewValues.bottom = calculated.bottom;
+          newValues = calculated;
 
-          elements.draggable.style.top = `${
-            SplitViewSvc.splitViewValues.top
-          }px`;
+          elements.draggable.style.top = `${newValues.top}px`;
         };
 
         const onMouseUp = function onMouseUp() {
           clearListeners();
           if (
-            !SplitViewSvc.splitViewValues.top ||
-            !SplitViewSvc.splitViewValues.bottom ||
-            SplitViewSvc.splitViewValues.top ==
-              SplitViewSvc.internalValues.m_pos_prev
+            !newValues.top ||
+            !newValues.bottom ||
+            newValues.top == SplitViewSvc.internalValues.m_pos_prev
           ) {
             SplitViewSvc.getDraggerBackdrop().style.display = 'none';
             return;
           }
-          SplitViewSvc.internalValues.m_pos_prev =
-            SplitViewSvc.splitViewValues.top;
+          SplitViewSvc.internalValues.m_pos_prev = newValues.top;
+          SplitViewSvc.splitViewValues = newValues;
 
           setSplitViewSize();
-          SplitViewSvc.splitViewValues.percent = GenericHelpers.computePercentFromPx(
-            SplitViewSvc.internalValues.rightContentHeight,
-            SplitViewSvc.splitViewValues.bottom
-          );
-          SplitViewSvc.sendMessageToClients(
-            'resize.ok',
-            SplitViewSvc.splitViewValues.percent
-          );
+
+          SplitViewSvc.sendMessageToClients('resize.ok', newValues.percent);
         };
 
         const clearListeners = function clearListeners() {
