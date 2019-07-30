@@ -275,8 +275,8 @@ export declare interface LinkManager {
 }
 
 /**
- * Registers a listener called with the context object and the Luigi core domain as soon as Luigi is instantiated. Defer your application bootstrap if you depend on authentication data coming from Luigi.
- * @param {function} initFn the function that is called once Luigi is initialized
+ * Registers a listener called with the context object and the Luigi Core domain as soon as Luigi is instantiated. Defer your application bootstrap if you depend on authentication data coming from Luigi.
+ * @param {function} initFn the function that is called once Luigi is initialized, it gets called with
  * @memberof Lifecycle
  */
 export function addInitListener(

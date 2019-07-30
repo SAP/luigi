@@ -104,10 +104,10 @@ class LifecycleManager extends LuigiClientBase {
    * @private
    * @memberof Lifecycle
    */
-  _callAllFns(objWithFns, payload) {
+  _callAllFns(objWithFns, payload, origin) {
     for (let id in objWithFns) {
       if (objWithFns.hasOwnProperty(id) && helpers.isFunction(objWithFns[id])) {
-        objWithFns[id](payload);
+        objWithFns[id](payload, origin);
       }
     }
   }
@@ -140,7 +140,7 @@ class LifecycleManager extends LuigiClientBase {
 
   /**
    * Registers a listener called with the context object and the Luigi Core domain as soon as Luigi is instantiated. Defer your application bootstrap if you depend on authentication data coming from Luigi.
-   * @param {function} initFn the function that is called once Luigi is initialized
+   * @param {Lifecycle~initListenerCallback} initFn the function that is called once Luigi is initialized, it gets called with
    * @memberof Lifecycle
    */
   addInitListener(initFn) {
@@ -151,6 +151,12 @@ class LifecycleManager extends LuigiClientBase {
     }
     return id;
   }
+  /**
+   * Callback of the addInitListener
+   * @callback Lifecycle~initListenerCallback
+   * @param {Object} context current context data
+   * @param {string} origin luigi core origin
+   */
   /**
    * Removes an init listener.
    * @param {string} id the id that was returned by the `addInitListener` function
