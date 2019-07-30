@@ -1,4 +1,4 @@
-describe('Luigi client features', () => {
+describe('Luigi Client features', () => {
   beforeEach(() => {
     cy.visit('/');
     cy.login('tets', 'tets');

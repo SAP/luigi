@@ -1,4 +1,4 @@
-describe('Luigi client ux manager features', () => {
+describe('Luigi Client ux manager features', () => {
   let $iframeBody;
   beforeEach(() => {
     //"clear" variables to make sure they are not reused and throw error in case something goes wrong

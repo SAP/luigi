@@ -145,7 +145,7 @@ The lerna-changelog tool detects changes based on PR labels and maps them to sec
 * [#461](https://github.com/SAP/luigi/pull/461) Prevent unescaped characters in the Alert component ([@y-kkamil](https://github.com/y-kkamil))
 * [#466](https://github.com/SAP/luigi/pull/466) Deactivate Typescript Declaration file for Luigi Client ([@jesusreal](https://github.com/jesusreal))
 * [#448](https://github.com/SAP/luigi/pull/448) Escape some html characters for alert component ([@y-kkamil](https://github.com/y-kkamil))
-* [#429](https://github.com/SAP/luigi/pull/429) Luigi client package should not contain src folder ([@jesusreal](https://github.com/jesusreal))
+* [#429](https://github.com/SAP/luigi/pull/429) Luigi Client package should not contain src folder ([@jesusreal](https://github.com/jesusreal))
 * [#427](https://github.com/SAP/luigi/pull/427) Fix transparent background in alerts ([@dariadomagala](https://github.com/dariadomagala))
 
 #### :memo: Documentation
@@ -248,7 +248,7 @@ The lerna-changelog tool detects changes based on PR labels and maps them to sec
 #### :bug: Fixed
 * [#307](https://github.com/SAP/luigi/pull/307) Fix error with parsed data ([@dariadomagala](https://github.com/dariadomagala))
 * [#301](https://github.com/SAP/luigi/pull/301) Fix dropdowns behavior on click events ([@dariadomagala](https://github.com/dariadomagala))
-* [#305](https://github.com/SAP/luigi/pull/305) When adding a listener via Luigi client API, call only the listener being added ([@jesusreal](https://github.com/jesusreal))
+* [#305](https://github.com/SAP/luigi/pull/305) When adding a listener via Luigi Client API, call only the listener being added ([@jesusreal](https://github.com/jesusreal))
 * [#299](https://github.com/SAP/luigi/pull/299) It is not possible to have a root node with empty path segment and a view ([@pekura](https://github.com/pekura))
 * [#283](https://github.com/SAP/luigi/pull/283) Default child node mechanism breaks if path ends with a slash ([@pekura](https://github.com/pekura))
 
@@ -268,7 +268,7 @@ The lerna-changelog tool detects changes based on PR labels and maps them to sec
 * [#253](https://github.com/SAP/luigi/pull/253) Allow async defaultChildNode ([@maxmarkus](https://github.com/maxmarkus))
 * [#261](https://github.com/SAP/luigi/pull/261) Fix the relative path bug ([@dariadomagala](https://github.com/dariadomagala))
 * [#250](https://github.com/SAP/luigi/pull/250) preserveView should allow viewUrls with query params ([@maxmarkus](https://github.com/maxmarkus))
-* [#246](https://github.com/SAP/luigi/pull/246) Luigi client creates extra entry in browser navigation history ([@pekura](https://github.com/pekura))
+* [#246](https://github.com/SAP/luigi/pull/246) Luigi Client creates extra entry in browser navigation history ([@pekura](https://github.com/pekura))
 * [#238](https://github.com/SAP/luigi/pull/238) viewUrl should not be mandatory in dynamic node ([@maxmarkus](https://github.com/maxmarkus))
 
 #### :memo: Documentation
@@ -284,7 +284,7 @@ The lerna-changelog tool detects changes based on PR labels and maps them to sec
 * [#190](https://github.com/SAP/luigi/pull/190) Context Switcher in top navigation ([@maxmarkus](https://github.com/maxmarkus))
 * [#209](https://github.com/SAP/luigi/pull/209) Support navigation nodes that just link to other nodes ([@jesusreal](https://github.com/jesusreal))
 * [#162](https://github.com/SAP/luigi/pull/162) 404 support for non existing paths ([@parostatkiem](https://github.com/parostatkiem))
-* [#187](https://github.com/SAP/luigi/pull/187) Luigi core config refactorings ([@jesusreal](https://github.com/jesusreal))
+* [#187](https://github.com/SAP/luigi/pull/187) Luigi Core config refactorings ([@jesusreal](https://github.com/jesusreal))
 * [#200](https://github.com/SAP/luigi/pull/200) Align luigi header title with fundamental style ([@parostatkiem](https://github.com/parostatkiem))
 * [#180](https://github.com/SAP/luigi/pull/180) Token refresh ([@y-kkamil](https://github.com/y-kkamil))
 * [#160](https://github.com/SAP/luigi/pull/160) Configurable logo and title ([@maxmarkus](https://github.com/maxmarkus))
