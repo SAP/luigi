@@ -131,7 +131,26 @@ Luigi.setConfig({
           link: '/projects/pr1'
         }
       ]
-    }
+    },
+    productSwitcher: {
+      label: 'My Products',
+      icon: 'grid',
+      items: [
+        {
+          icon: '',
+          label: 'Luigi in Github',
+          externalLink: {
+            url: 'https://github.com/SAP/luigi',
+            sameWindow: false
+          }
+        },
+        {
+          icon: '',
+          label: 'Project 1',
+          link: '/projects/pr1'
+        }
+      ]
+    },
   }
 });
 ```
@@ -199,7 +218,7 @@ The node parameters are as follows:
 
 ## Context switcher
 
-The context switcher is a drop-down list available in the top navigation bar. It allows you to switch between a curated list of navigation elements such as Environments.
+The context switcher is a drop-down list available in the top navigation bar. It allows you to switch between a curated list of navigation elements such as Environments. To do so, add the **contextSwitcher** property to the **navigation** object using the following optional properties:
 
 - **defaultLabel** specifies the default label that is shown if no context is selected.
 - **parentNodePath** specifies the base path, that is prepended to **options[].pathValue**. It must be an absolute path.
