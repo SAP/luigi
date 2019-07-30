@@ -131,14 +131,7 @@ class SplitViewSvcClass {
       values
     );
 
-    this.splitViewValues = {
-      bottom: calculated.bottom,
-      top: calculated.top,
-      percent: GenericHelpers.computePercentFromPx(
-        values.rightContentHeight,
-        calculated.bottom
-      )
-    };
+    this.splitViewValues = calculated;
   }
 
   enforceTreshHolds(top, bottom) {
