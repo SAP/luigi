@@ -342,6 +342,7 @@ section.has-no-padding > .cnt {
   border: 3px solid #2deb8a;
   border-radius: 50%;
   vertical-align: middle;
+  margin-right: 10px;
 }
 .s-error .middle {
   border-radius: 15px;
