@@ -12,7 +12,7 @@ Registers a listener called with the context object and the Luigi Core domain as
 
 #### Parameters
 
--   `initFn` **[Lifecycle~initListenerCallback](#lifecycleinitlistenercallback)** the function that is called once Luigi is initialized, it gets called with
+-   `initFn` **[Lifecycle~initListenerCallback](#lifecycleinitlistenercallback)** the function that is called once Luigi is initialized, receives current context and origin as parameters.
 
 ### removeInitListener
 
