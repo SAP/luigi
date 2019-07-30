@@ -57,6 +57,10 @@ export declare interface NodeParams {
   [key: string]: string;
 }
 
+export declare interface ClientPermissions {
+  [key: string]: any;
+}
+
 export declare interface AlertSettings {
   text?: string;
   type: 'info' | 'success' | 'warning' | 'error';
@@ -356,6 +360,14 @@ export type getNodeParams = () => NodeParams;
  */
 export function getPathParams(): PathParams;
 export type getPathParams = () => PathParams;
+
+/**
+ * Returns the current client permissions as specified in the navigation node or an empty object. For details, see [Node parameters](navigation-parameters-reference.md).
+ * @returns {Object} client permissions as specified in the navigation node.
+ * @memberof Lifecycle
+ */
+export function getClientPermissions(): ClientPermissions;
+export type getClientPermissions = () => ClientPermissions;
 
 /**
  * The Link Manager allows you to navigate to another route. Use it instead of an internal router to:

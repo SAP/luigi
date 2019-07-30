@@ -10,6 +10,7 @@ import { Subscription } from 'rxjs';
 import {
   linkManager,
   uxManager,
+  getClientPermissions,
   addContextUpdateListener,
   removeContextUpdateListener
 } from '@kyma-project/luigi-client';
@@ -41,6 +42,7 @@ export class ProjectComponent implements OnInit, OnDestroy {
   public isDirty = false;
   public splitViewHandle;
   public currentLocale = '';
+  public canChangeLocale = false;
 
   public constructor(
     private activatedRoute: ActivatedRoute,
@@ -85,6 +87,7 @@ export class ProjectComponent implements OnInit, OnDestroy {
           this.projectId = ctx.context.currentProject;
           this.preservedViewCallbackContext = ctx.context.goBackContext;
           this.currentLocale = uxManager().getCurrentLocale();
+          this.canChangeLocale = getClientPermissions().changeCurrentLocale;
           // Since Luigi runs outside of Zone.js, changes need
           // to be updated manually
           // Be sure to check for destroyed ChangeDetectorRef,
@@ -105,6 +108,7 @@ export class ProjectComponent implements OnInit, OnDestroy {
       // this.projectId = updatedContext.currentProject;
       // this.preservedViewCallbackContext = updatedContext.goBackContext;
       this.currentLocale = uxManager().getCurrentLocale();
+      this.canChangeLocale = getClientPermissions().changeCurrentLocale;
       console.log('context updated', this.currentLocale, updatedContext);
       // Be sure to check for destroyed ChangeDetectorRef,
       // else you get runtime Errors

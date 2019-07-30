@@ -316,6 +316,7 @@ describe('Luigi Client ux manager features', () => {
         cy.get('[data-cy=luigi-alert]').should('not.exist');
       });
     });
+
     describe('Luigi Client Localization', () => {
       it('set localization in client', () => {
         cy.goToUxManagerMethods($iframeBody);
@@ -335,6 +336,20 @@ describe('Luigi Client ux manager features', () => {
         cy.wrap($iframeBody)
           .find('[data-cy=luigi-current-locale]')
           .should('contain', "'pl_PL'");
+      });
+
+      it('clientPermissions: check if set localization in client is disabled', () => {
+        cy.visit('/projects/pr1/clientPermissionsTets')
+          .getIframeBody()
+          .then(body => {
+            cy.wrap(body)
+              .find('[data-cy=luigi-input-locale]')
+              .should('be.disabled');
+
+            cy.wrap(body)
+              .find('[data-cy=set-current-locale]')
+              .should('be.disabled');
+          });
       });
     });
   });

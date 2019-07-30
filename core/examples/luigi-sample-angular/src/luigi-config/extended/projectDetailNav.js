@@ -65,6 +65,12 @@ export const projectDetailNavStructure = projectId => [
     icon: '/assets/favicon-sap.ico'
   },
   {
+    pathSegment: 'clientPermissionsTets',
+    label: 'ClientPermissionsTets',
+    viewUrl: '/sampleapp.html#/projects/pr1',
+    hideFromNav: true
+  },
+  {
     pathSegment: 'on-node-activation',
     label: 'Node with node activation hook',
     icon: 'activate',
