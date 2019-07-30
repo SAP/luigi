@@ -233,14 +233,14 @@ The profile section is a configurable drop-down list available in the top naviga
 
 ## Product switcher
 
-The product switcher is a popover with tiles available in the top navigation bar. It allows you to switch between a curated list of navigation elements.
+The product switcher is a popover with tiles available in the top navigation bar. It allows you to switch between a curated list of navigation elements. To do so, add the **productSwitcher** property to the **navigation** object using the following optional properties:
 
 - **label** defines the label of the product switcher. It is shown as title attribute on hover in the top navigation and as headline in the mobile popover.
 - **icon** is the name of an icon, without the `sap-icon--` prefix. Its source may be [OpenUI](https://openui5.hana.ondemand.com/1.40.10/iconExplorer.html) or a custom link (relative or absolute) to an image. The icon is displayed without label in the top navigation.
-- **items** defines the list of product switcher elements. Their properties are:
-  - **label** contains the display name of the navigation node.
-  - **icon** is the name of an icon, without the `sap-icon--` prefix. Its source may be [OpenUI](https://openui5.hana.ondemand.com/1.40.10/iconExplorer.html) or a custom link (relative or absolute) to an image. It is displayed in the center of the tile.
-  - **link** is a string which refers to an absolute path in the navigation structure or a relative path to a grandchild of the current path.
-  - **externalLink** is an object which indicates that the node links to an external URL. If this parameter is defined, **link** parameters is ignored. It has the following properties:
-    - **sameWindow** defines if the external URL is opened in a new or current tab. The default value for this parameter is `false`.
-    - **url** is the external URL that the node leads to.
+- **items** is an array of objects, each one being a link to a Luigi navigation node or an external URL. An item can have the following parameters:
+  - **label** defines the text for the link. 
+  - **icon** is the name of an icon from the [OpenUI](https://openui5.hana.ondemand.com/1.40.10/iconExplorer.html) or a custom link (relative or absolute) to an image displayed next to the label or instead of it.
+  - **link** defines an absolute link to a **node**.
+  - **externalLink** is an object which indicates that the node links to an external URL. If this parameter is defined, the **link** parameter is ignored. It has the following properties:
+    - **sameWindow** defines if the external URL is opened in the current tab or in a new one. The default value for this parameter is `false`.
+    - **url** is the external URL that the link leads to.
