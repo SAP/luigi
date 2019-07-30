@@ -1088,4 +1088,21 @@
       }
     }
   }
+
+  :global(html.luigi-app-in-custom-container) {
+    position: relative;
+
+    [luigi-app-root] {
+      position: relative;
+      width: 100%;
+    }
+
+    .no-nav,
+    .no-side-nav {
+      .iframeContainer,
+      .spinnerContainer {
+        position: absolute;
+      }
+    }
+  }
 </style>

@@ -1,8 +1,22 @@
+import { CUSTOM_LUIGI_CONTAINER } from './../utilities/constants';
+
 /**
  * Use these functions to get DOM elements.
  * @namespace Elements
  */
 class LuigiElements {
+  getLuigiContainer() {
+    return this.getCustomLuigiContainer() || this.getDefaultLuigiContainer();
+  }
+
+  getCustomLuigiContainer() {
+    return document.querySelector(CUSTOM_LUIGI_CONTAINER.cssSelector);
+  }
+
+  getDefaultLuigiContainer() {
+    return document.querySelector('body');
+  }
+
   /**
    * Returns the shellbar component.
    * @returns {Object} the shellbar DOM element.

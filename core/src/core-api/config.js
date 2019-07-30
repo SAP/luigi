@@ -1,5 +1,6 @@
 import { AsyncHelpers, GenericHelpers } from '../utilities/helpers';
 import { auth } from './auth';
+import { LuigiElements } from '.';
 
 /**
  * @name Configuration
@@ -111,7 +112,7 @@ class LuigiConfig {
     errorDiv.appendChild(errorTextNode);
 
     fd_ui.appendChild(errorDiv);
-    document.body.appendChild(fd_ui);
+    LuigiElements.getLuigiContainer().appendChild(fd_ui);
   }
 
   /**
