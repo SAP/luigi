@@ -7,13 +7,29 @@ Object.keys(productSwitcherItems[0]).length }
   <div class="fd-product-switcher">
     <div class="fd-popover fd-popover--right">
       <div class="fd-popover__control" on:click="event.stopPropagation()">
+        <!-- default: sap-icon--grid -->
+        {#if hasOpenUIicon(config)}
         <button
-          class="fd-button--shell sap-icon--grid"
+          class="fd-button--shell sap-icon--{config.icon || 'grid'}"
           aria-expanded="{dropDownStates.productSwitcherPopover || false}"
           aria-haspopup="true"
           on:click="toggleDropdownState()"
           data-cy="desktop-product-switcher"
+          title="{config.label}"
         ></button>
+        {:else}
+        <button
+          class="fd-button--shell"
+          aria-expanded="{dropDownStates.productSwitcherPopover || false}"
+          aria-haspopup="true"
+          on:click="toggleDropdownState()"
+          data-cy="desktop-product-switcher"
+          title="{config.label}"
+        >
+          <img src="{config.icon}">
+        </button>
+
+        {/if}
       </div>
       <div
         class="fd-popover__body fd-popover__body--right"
@@ -68,7 +84,7 @@ Object.keys(productSwitcherItems[0]).length }
           ></button>
         </div>
         <div class="fd-action-bar__header">
-          <h5 class="fd-action-bar__title fd-has-type-1">My Products</h5>
+          <h5 class="fd-action-bar__title fd-has-type-1">{config.label}</h5>
         </div>
       </div>
       <div class="fd-modal__body">
@@ -113,8 +129,9 @@ Object.keys(productSwitcherItems[0]).length }
         const productSwitcherConfig = LuigiConfig.getConfigValue(
           'navigation.productSwitcher'
         );
+
         this.set({
-          config: productSwitcherConfig
+          config: productSwitcherConfig || {}
         });
         if (productSwitcherConfig) {
           const productSwitcherItems = await LuigiConfig.getConfigValueAsync(

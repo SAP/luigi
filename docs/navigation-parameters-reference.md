@@ -231,3 +231,16 @@ The profile section is a configurable drop-down list available in the top naviga
     - **url** is the external URL that the link leads to.
 
 
+## Product switcher
+
+The product switcher is a popover with tiles available in the top navigation bar. It allows you to switch between a curated list of navigation elements.
+
+- **label** defines the label of the product switcher. It is shown as title attribute on hover in the top navigation and as headline in the mobile popover.
+- **icon** is the name of an icon, without the `sap-icon--` prefix. Its source may be [OpenUI](https://openui5.hana.ondemand.com/1.40.10/iconExplorer.html) or a custom link (relative or absolute) to an image. The icon is displayed without label in the top navigation.
+- **items** defines the list of product switcher elements. Their properties are:
+  - **label** contains the display name of the navigation node.
+  - **icon** is the name of an icon, without the `sap-icon--` prefix. Its source may be [OpenUI](https://openui5.hana.ondemand.com/1.40.10/iconExplorer.html) or a custom link (relative or absolute) to an image. It is displayed in the center of the tile.
+  - **link** is a string which refers to an absolute path in the navigation structure or a relative path to a grandchild of the current path.
+  - **externalLink** is an object which indicates that the node links to an external URL. If this parameter is defined, **link** parameters is ignored. It has the following properties:
+    - **sameWindow** defines if the external URL is opened in a new or current tab. The default value for this parameter is `false`.
+    - **url** is the external URL that the node leads to.
