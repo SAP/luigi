@@ -4,5 +4,6 @@ export const CSS_BREAKPOINTS = {
 
 export const CUSTOM_LUIGI_CONTAINER = {
   cssSelector: '[luigi-app-root]',
-  defaultHeight: '300px'
+  cssDefaultHeight: '300px',
+  cssDefaultWidth: '70%'
 };
