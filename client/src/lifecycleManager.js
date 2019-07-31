@@ -76,7 +76,10 @@ class LifecycleManager extends LuigiClientBase {
       helpers.addEventListener('luigi.navigate', e => {
         setContext(e.data);
         if (!this.currentContext.internal.isNavigateBack) {
-          window.location.replace(e.data.viewUrl);
+          history.replaceState(null, '', e.data.viewUrl);
+          window.dispatchEvent(
+            new PopStateEvent('popstate', { state: 'luiginavigation' })
+          );
         }
         // execute the context change listener if set by the microfrontend
         this._notifyUpdate();
