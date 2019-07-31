@@ -190,7 +190,7 @@ class SplitViewSvcClass {
   open(comp, nodepath, settings) {
     const mfSplitView = {
       displayed: true,
-      collapsed: settings.collapsed === true, // TODO: separate ticket
+      collapsed: settings.collapsed === true,
       nodepath,
       settings
     };
