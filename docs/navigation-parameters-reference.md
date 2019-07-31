@@ -252,9 +252,9 @@ The profile section is a configurable drop-down list available in the top naviga
 
 ## Product switcher
 
-The product switcher is a popover with tiles available in the top navigation bar. It allows you to switch between a curated list of navigation elements. To do so, add the **productSwitcher** property to the **navigation** object using the following optional properties:
+The product switcher is a pop-up window available in the top navigation bar. It allows you to switch between the navigation elements displayed in the pop-up. To do so, add the **productSwitcher** property to the **navigation** object using the following optional properties:
 
-- **label** defines the label of the product switcher. It is shown as title attribute on hover in the top navigation and as headline in the mobile popover.
+- **label** defines the label of the product switcher. It is displayed as a title attribute on hover in the top navigation and as a headline in the mobile pop-up.
 - **icon** is the name of an icon, without the `sap-icon--` prefix. Its source may be [OpenUI](https://openui5.hana.ondemand.com/1.40.10/iconExplorer.html) or a custom link (relative or absolute) to an image. The icon is displayed without label in the top navigation.
 - **items** is an array of objects, each one being a link to a Luigi navigation node or an external URL. An item can have the following parameters:
   - **label** defines the text for the link. 
