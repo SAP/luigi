@@ -17,7 +17,6 @@ Set up and configure the main application.
 
 ## Luigi Client
 
-
 Use the Luigi Client API documentation to learn more about the functions and parameters you can use to communicate with the core application to define lifecycle, links, and the appearance of the application.
 
 * [Lifecycle](luigi-client-api.md#lifecycle) gives you details on the lifecycle of listeners, navigation nodes, and Event data.
