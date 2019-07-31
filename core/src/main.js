@@ -1,11 +1,14 @@
 import App from './App.html';
 import { authLibraries } from './providers/auth/libraryLoaders';
-import { LuigiConfig } from './core-api';
+import { LuigiConfig, LuigiI18N } from './core-api';
 import { Store } from 'svelte/store';
 import { version } from '../package.json';
 
 const store = new Store({
-  luigiVersion: version
+  luigiVersion: version,
+  getTranslation: (key, interpolations, locale) => {
+    return LuigiI18N.getTranslation(key, interpolations, locale);
+  }
 });
 
 Luigi._store = store;
@@ -15,6 +18,8 @@ const configReadyCallback = () => {
   if (authLib && authLibraries[authLib]) {
     authLibraries[authLib]();
   }
+
+  LuigiI18N._init();
 
   const app = new App({
     target: document.querySelector('body'),

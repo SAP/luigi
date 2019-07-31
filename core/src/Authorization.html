@@ -28,7 +28,7 @@
         >
         {/if}
         {/if}
-        <span>{profileItem.label}</span>
+        <span>{$getTranslation(profileItem.label)}</span>
       </a>
     </li>
     {/each}
@@ -46,7 +46,7 @@
         >
         {/if}
         {/if}
-        <span>{profileNav.logout.label}</span>
+        <span>{$getTranslation(profileNav.logout.label)}</span>
       </a>
     </li>
     {:else}
