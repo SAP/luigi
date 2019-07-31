@@ -11,7 +11,14 @@ settings: {
     title: 'Luigi Demo',
     favicon: 'path/to/favicon.ico'
   },
-  sideNavFooterText: 'MyLovelyApp 1.0.0'
+  sideNavFooterText: 'MyLovelyApp 1.0.0',
+  customTranslationImplementation = () => {
+    return {
+      getTranslation: (key, interpolations, locale) => {
+        return translatedText;
+      }
+    };
+  }
 }
 ```` 
 
@@ -27,3 +34,4 @@ You can set the following values:
   * `semiCollapsible` displays the arrow button at the bottom of the left side navigation. Once you click the button, the navigation shows up or collapses.<br>
 If you don't specify any value for  **responsiveNavigation**, the buttons remain hidden. The same applies when you enable **hideSideNav** for the currently active navigation node. 
 * **sideNavFooterText** is a string displayed in a sticky footer inside the side navigation. It is a good place to display the version of your application.
+* `customTranslationImplementation` **[function](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Statements/function)** is executed when Luigi Application will be initialized. You can provide a custom function that Luigi Application will be translated.
