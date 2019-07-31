@@ -8,6 +8,7 @@ import { helpers } from './helpers';
   When you call `handle.collapse()`, the split view gets destroyed. It recreates when you use `handle.expand()`.
   `openAsSplitView` returns an instance of the split view handle. The functions, actions, and event handlers listed below allow you to control and manage the split view.
   * @name splitView
+  * @since 0.6.0
   */
 export class splitViewHandle extends LuigiClientBase {
   /**
@@ -55,6 +56,7 @@ export class splitViewHandle extends LuigiClientBase {
   /**
    * Collapses the split view
    * @memberof splitView
+   * @since 0.6.0
    * @example
    * splitViewHandle.collapse();
    */
@@ -64,6 +66,7 @@ export class splitViewHandle extends LuigiClientBase {
   /**
    * Expands the split view
    * @memberof splitView
+   * @since 0.6.0
    * @example
    * splitViewHandle.expand();
    */
@@ -74,6 +77,7 @@ export class splitViewHandle extends LuigiClientBase {
   /**
    * Closes and destroys the split view
    * @memberof splitView
+   * @since 0.6.0
    * @example
    * splitViewHandle.close();
    */
@@ -84,6 +88,7 @@ export class splitViewHandle extends LuigiClientBase {
    * Sets the height of the split view
    * @memberof splitView
    * @param {number} value lower height in percent
+   * @since 0.6.0
    * @example
    * splitViewHandle.setSize(60);
    */
@@ -96,6 +101,7 @@ export class splitViewHandle extends LuigiClientBase {
    * @param {('expand'|'collapse'|'resize'|'close')} name event name
    * @param {function} callback gets called when this event gets triggered by Luigi
    * @returns {string} listener id
+   * @since 0.6.0
    * @example
    * const listenerId = splitViewHandle.on('expand', () => {});
    * const listenerId = splitViewHandle.on('collapse', () => {});
@@ -118,6 +124,7 @@ export class splitViewHandle extends LuigiClientBase {
    * Unregisters a split view listener
    * @memberof splitView
    * @param {string} id listener id
+   * @since 0.6.0
    * @example
    * splitViewHandle.removeEventListener(listenerId);
    */
@@ -129,6 +136,7 @@ export class splitViewHandle extends LuigiClientBase {
    * Gets the split view status
    * @memberof splitView
    * @returns {boolean} true if a split view is loaded
+   * @since 0.6.0
    * @example
    * splitViewHandle.exists();
    */
@@ -139,6 +147,7 @@ export class splitViewHandle extends LuigiClientBase {
    * Reads the size of the split view
    * @memberof splitView
    * @returns {number} height in percent
+   * @since 0.6.0
    * @example
    * splitViewHandle.getSize();
    */
@@ -149,6 +158,7 @@ export class splitViewHandle extends LuigiClientBase {
    * Reads the collapse status
    * @memberof splitView
    * @returns {boolean} true if the split view is currently collapsed
+   * @since 0.6.0
    * @example
    * splitViewHandle.isCollapsed();
    */
@@ -159,6 +169,7 @@ export class splitViewHandle extends LuigiClientBase {
    * Reads the expand status
    * @memberof splitView
    * @returns {boolean} true if the split view is currently expanded
+   * @since 0.6.0
    * @example
    * splitViewHandle.isExpanded();
    */
