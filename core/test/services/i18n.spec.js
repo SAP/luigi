@@ -103,4 +103,32 @@ describe('I18N', () => {
       sinon.assert.called(config.setConfig);
     });
   });
+
+  describe('custom translation', () => {
+    beforeEach(() => {
+      let dict = {
+        en: {
+          tets: 'tests'
+        },
+        de: {
+          project: 'luigi'
+        }
+      };
+      LuigiI18N.translationImpl = {
+        getTranslation: (key, interpolations, locale) => {
+          if (dict[locale]) {
+            return dict[locale][key];
+          }
+        }
+      };
+    });
+
+    it('custom translation test', () => {
+      assert.equal(LuigiI18N.getTranslation('tets', null, 'en'), 'tests');
+      assert.equal(LuigiI18N.getTranslation('project', null, 'de'), 'luigi');
+
+      LuigiI18N.translationImpl = null;
+      assert.equal(LuigiI18N.getTranslation('tets'), 'tets');
+    });
+  });
 });
