@@ -236,7 +236,8 @@ class Navigation {
   getProductSwitcherItems = () => {
     const items = [
       {
-        icon: 'https://sap.github.io/fundamental/images/products/06.png',
+        icon:
+          'https://pbs.twimg.com/profile_images/1143452953858183170/QLk-HGmK_bigger.png',
         label: 'hybris',
         externalLink: {
           url: 'https://www.hybris.com',
@@ -246,21 +247,24 @@ class Navigation {
     ];
     if (projectExists('pr1')) {
       items.push({
-        icon: 'https://sap.github.io/fundamental/images/products/06.png',
+        icon:
+          'https://pbs.twimg.com/profile_images/1143452953858183170/QLk-HGmK_bigger.png',
         label: 'Project 1',
         link: '/projects/pr1'
       });
     }
     if (projectExists('pr2')) {
       items.push({
-        icon: 'https://sap.github.io/fundamental/images/products/06.png',
+        icon:
+          'https://pbs.twimg.com/profile_images/1143452953858183170/QLk-HGmK_bigger.png',
         label: 'Project 2',
         link: '/projects/pr2'
       });
     }
     if (projectExists('pr3')) {
       items.push({
-        icon: 'https://sap.github.io/fundamental/images/products/06.png',
+        icon:
+          'https://pbs.twimg.com/profile_images/1143452953858183170/QLk-HGmK_bigger.png',
         label: 'Project 3',
         link: '/projects/pr3'
       });

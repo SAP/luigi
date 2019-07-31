@@ -1,4 +1,4 @@
-
+<svelte:window on:resize="setViewportHeightVariable()"/>
 {#if !isMobile}
 <nav class="fd-menu">
   <ul class="fd-menu__list fd-menu__list--top">
@@ -77,6 +77,9 @@
   import { NavigationHelpers } from './utilities/helpers';
   import { RoutingHelpers } from './utilities/helpers';
   export default {
+    async oncreate() {
+      this.setViewportHeightVariable();
+    },
     async onupdate({ changed, current, previous }) {
       const currentNode = this.get().node;
       let children = this.get().children;
@@ -105,6 +108,12 @@
       },
       closeSubNav() {
         this.fire('close');
+      },
+      setViewportHeightVariable() {
+        // get the viewport height and multiple it by 1% to get a value for a vh unit
+        let vh = window.innerHeight * 0.01;
+        // set the value in the --vh custom property to the root of the document
+        document.documentElement.style.setProperty('--vh', `${vh}px`);
       }
     },
     helpers: {
@@ -118,6 +127,17 @@
   };
 </script>
 <style type="text/scss">
+  $topNavHeight: 48px;
+  $productSwitcherHeight: 64px;
+  .fd-popover__body {
+    overflow: auto;
+    max-height: calc(100vh - 50px);
+    max-height: calc(var(--vh, 1vh) * 100 - 50px);
+  }
+  .fd-product-switcher {
+    position: relative;
+    display: block;
+  }
   .fd-product-switcher__product-icon > img {
     max-height: 40px;
   }
@@ -136,9 +156,14 @@
     }
   }
 
-  @media (max-width: 600px) {
-    .y-full-width-list__item {
-      padding: 10px 5px !important;
+  @media (max-width: 1023px) {
+    .y-full-width-list {
+      &__icon {
+        img {
+          width: 16px;
+          vertical-align: top;
+        }
+      }
     }
   }
 
@@ -146,7 +171,7 @@
     z-index: 1000;
     position: fixed;
     box-sizing: border-box;
-    top: 0px;
+    top: $topNavHeight;
     left: 0;
     margin: auto auto;
 
@@ -175,8 +200,12 @@
       }
     }
     .fd-modal__body {
-      max-height: none;
+      max-height: calc(100vh - #{$topNavHeight} - #{$productSwitcherHeight});
+      max-height: calc(
+        var(--vh, 1vh) * 100 - #{$topNavHeight} - #{$productSwitcherHeight}
+      );
       padding: 0;
+      -webkit-overflow-scrolling: touch;
     }
 
     .fd-modal__footer {
@@ -201,9 +230,8 @@
 
     &__item {
       display: block !important;
-      padding: 20px 8px;
+      padding: 12px 15px;
       cursor: pointer;
-      margin-left: 40px;
       cursor: pointer;
 
       &:hover {

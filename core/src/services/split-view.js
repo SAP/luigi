@@ -94,6 +94,26 @@ class SplitViewSvcClass {
       splitViewIframe: iframe,
       splitViewIframeData: { ...pathData, nodeParams }
     });
+
+    this.fixIOSscroll();
+  }
+
+  // required for iOS to force repaint, else scrolling does not work
+  fixIOSscroll() {
+    const iOS =
+      !!navigator.platform && /iPad|iPhone|iPod/.test(navigator.platform);
+    if (!iOS) {
+      return;
+    }
+    const splitIframe = document.querySelector('.iframeSplitViewCnt iframe');
+    if (splitIframe) {
+      splitIframe.addEventListener('load', () => {
+        document.querySelector('.iframeSplitViewCnt').style.overflow = 'hidden';
+        setTimeout(() => {
+          document.querySelector('.iframeSplitViewCnt').style.overflow = 'auto';
+        });
+      });
+    }
   }
 
   calculateInitialValues(size, rightContentHeight) {
@@ -170,7 +190,7 @@ class SplitViewSvcClass {
   open(comp, nodepath, settings) {
     const mfSplitView = {
       displayed: true,
-      collapsed: settings.collapsed === true, // TODO: separate ticket
+      collapsed: settings.collapsed === true,
       nodepath,
       settings
     };

@@ -11,6 +11,8 @@
   </div>
   <h1 class="fd-splitView__title">{splitViewSettings.title}</h1>
   {:else}
+  <div class="iframeSplitViewCnt"></div>
+  <div id="splitViewDraggerBackdrop"></div>
   <div id="splitViewDragger" on:mousedown:stopPropagation="onDragStart(event)">
     <div class="splitViewSeparator"></div>
     <a
@@ -20,8 +22,6 @@
       <span class="sap-icon--navigation-down-arrow sap-icon--s"></span>
     </a>
   </div>
-  <div id="splitViewDraggerBackdrop"></div>
-  <div class="iframeSplitViewCnt"></div>
   {/if}
 </div>
 
@@ -235,7 +235,6 @@
     left: $leftNavWidth;
     top: 60%; /* default, overridden by computed.getIframeSplitViewTop */
     height: 8px;
-    z-index: 2;
     cursor: row-resize;
     &:hover {
       /* enlarge mouse move target */
@@ -261,7 +260,6 @@
     background: white;
     position: absolute;
     left: 50%;
-    z-index: 1;
     margin-left: -12px;
     margin-top: -11px;
     text-align: center;
@@ -290,7 +288,6 @@
     right: 0;
     bottom: 0;
     left: $leftNavWidth;
-    z-index: 1;
     display: none;
   }
 
@@ -327,7 +324,7 @@
         left: -$leftNavWidth;
       }
       :global(#splitViewContainer, #splitViewDragger, #splitViewDraggerBackdrop) {
-        left: 0 !important;
+        left: 0;
       }
     }
   }
