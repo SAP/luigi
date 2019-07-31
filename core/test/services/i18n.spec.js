@@ -6,6 +6,7 @@ const assert = chai.assert;
 const sinon = require('sinon');
 
 import { LuigiI18N } from '../../src/core-api';
+import { LuigiConfig } from '../../src/core-api';
 
 describe('I18N', () => {
   beforeEach(() => {
@@ -105,25 +106,34 @@ describe('I18N', () => {
   });
 
   describe('custom translation', () => {
+    let mockConfig;
+    let dict = {
+      en: {
+        tets: 'tests'
+      },
+      de: {
+        project: 'luigi'
+      }
+    };
+    const getMockConfig = () => ({
+      getTranslation: (key, interpolations, locale) => {
+        if (dict[locale]) {
+          return dict[locale][key];
+        }
+      }
+    });
     beforeEach(() => {
-      let dict = {
-        en: {
-          tets: 'tests'
-        },
-        de: {
-          project: 'luigi'
-        }
-      };
-      LuigiI18N.translationImpl = {
-        getTranslation: (key, interpolations, locale) => {
-          if (dict[locale]) {
-            return dict[locale][key];
-          }
-        }
-      };
+      mockConfig = getMockConfig();
+    });
+
+    it('_initCustomImplementation: get custom translation from config', () => {
+      sinon.stub(LuigiConfig, 'getConfigValue').returns(mockConfig);
+      LuigiI18N._initCustomImplementation();
+      assert.equal(LuigiI18N.translationImpl, mockConfig);
     });
 
     it('custom translation test', () => {
+      LuigiI18N.translationImpl = mockConfig;
       assert.equal(LuigiI18N.getTranslation('tets', null, 'en'), 'tests');
       assert.equal(LuigiI18N.getTranslation('project', null, 'de'), 'luigi');
 
