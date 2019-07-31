@@ -10,7 +10,7 @@ Object.keys(productSwitcherItems[0]).length }
         <!-- default: sap-icon--grid -->
         {#if hasOpenUIicon(config)}
         <button
-          class="fd-button--shell sap-icon--{config.icon || 'grid'}"
+          class="fd-button--shell sap-icon--{config.icon}"
           aria-expanded="{dropDownStates.productSwitcherPopover || false}"
           aria-haspopup="true"
           on:click="toggleDropdownState()"
@@ -28,7 +28,6 @@ Object.keys(productSwitcherItems[0]).length }
         >
           <img src="{config.icon}">
         </button>
-
         {/if}
       </div>
       <div
@@ -131,7 +130,11 @@ Object.keys(productSwitcherItems[0]).length }
         );
 
         this.set({
-          config: productSwitcherConfig || {}
+          config: Object.assign(
+            {},
+            { icon: 'grid', label: 'My Products' },
+            productSwitcherConfig
+          )
         });
         if (productSwitcherConfig) {
           const productSwitcherItems = await LuigiConfig.getConfigValueAsync(
