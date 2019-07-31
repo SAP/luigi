@@ -1,0 +1,19 @@
+// Colors
+$primary-color: #2deb8a;
+$primary-grey: #3c4553;
+$border-color: #b6bac1;
+
+// Measures
+$page-width: 1240px;
+
+// Fonts
+$main-font-family: 'Open Sans', sans-serif;
+
+// Breakpoints
+$breakpoints: (
+  'xs': 480px,
+  's': 768px,
+  'm': 1024px,
+  'l': 1240px,
+  'xl': 1680px
+);
