@@ -12,11 +12,6 @@ settings: {
     favicon: 'path/to/favicon.ico'
   },
   sideNavFooterText: 'MyLovelyApp 1.0.0'
-  luigiContainer = {
-    height: '500px'
-    width: '80vw'
-  };
-
 }
 ```` 
 
@@ -32,7 +27,3 @@ You can set the following values:
   * `semiCollapsible` displays the arrow button at the bottom of the left side navigation. Once you click the button, the navigation shows up or collapses.<br>
 If you don't specify any value for  **responsiveNavigation**, the buttons remain hidden. The same applies when you enable **hideSideNav** for the currently active navigation node. 
 * **sideNavFooterText** is a string displayed in a sticky footer inside the side navigation. It is a good place to display the version of your application.
-* **luigiContainer** allows to configure the [custom Luigi Container](./luigi-content-container.md), in case you decide to use this feature.
-You can set the following values:
-  * `width` is the CSS value for the Luigi root app container width. 
-  * `height` is the CSS value for the height of the Luigi container. Please avoid using percentage values for this field, since the container is positioned relatively to the body and the container will not be rendered as expected.
