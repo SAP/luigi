@@ -1,8 +1,40 @@
+import { CUSTOM_LUIGI_CONTAINER } from './../utilities/constants';
+
 /**
  * Use these functions to get DOM elements.
  * @namespace Elements
  */
 class LuigiElements {
+  /**
+   * Returns the container of the Luigi content.
+   * @returns {Object} the DOM element that wraps the Luigi content.
+   * @memberof Elements
+   * @since 0.6.0
+   * @example
+   * Luigi.elements().getLuigiContainer();
+   */
+  getLuigiContainer() {
+    return this.getCustomLuigiContainer() || this.getDefaultLuigiContainer();
+  }
+
+  /**
+   * Returns the custom container for the Luigi content
+   * @memberof Elements
+   * @private
+   */
+  getCustomLuigiContainer() {
+    return document.querySelector(CUSTOM_LUIGI_CONTAINER.cssSelector);
+  }
+
+  /**
+   * Returns the default container for the Luigi content
+   * @memberof Elements
+   * @private
+   */
+  getDefaultLuigiContainer() {
+    return document.querySelector('body');
+  }
+
   /**
    * Returns the shellbar component.
    * @returns {Object} the shellbar DOM element.

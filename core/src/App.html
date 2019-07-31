@@ -1091,4 +1091,20 @@
       }
     }
   }
+
+  :global(html.luigi-app-in-custom-container) {
+    position: relative;
+
+    [luigi-app-root] {
+      position: relative;
+    }
+
+    .no-nav,
+    .no-side-nav {
+      .iframeContainer,
+      .spinnerContainer {
+        position: absolute;
+      }
+    }
+  }
 </style>
