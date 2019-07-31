@@ -13,6 +13,7 @@ Set up and configure the main application.
 * [Authorization events](authorization-events.md) guides you through the event configuration to react to Luigi authorization events.
 * [General settings](general-settings.md) provides you with additional configuration parameters for Luigi.
 * [Core API](luigi-core-api.md) provides you with API features that help you enrich and use Luigi Core.
+* [Luigi app container rendering](luigi-content-container.md) explains the different possibilities to render the Luigi application in the DOM.
 
 ## Luigi Client
 
