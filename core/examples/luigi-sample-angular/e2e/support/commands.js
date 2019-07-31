@@ -33,7 +33,6 @@ Cypress.Commands.add('goToUxManagerMethods', iframe => {
 });
 
 Cypress.Commands.add('goToLinkManagerMethods', iframe => {
-  cy.wait(0);
   cy.wrap(iframe)
     .contains('linkManager()')
     .click();
