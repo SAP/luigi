@@ -16,8 +16,8 @@ const configReadyCallback = () => {
     authLibraries[authLib]();
   }
 
-  let app;
   // setTimeout needed so that luigi container is rendered when we retrieve it
+  let app;
   setTimeout(() => {
     const luigiContainer = LuigiElements.getLuigiContainer();
 
@@ -25,14 +25,6 @@ const configReadyCallback = () => {
       document
         .getElementsByTagName('html')[0]
         .classList.add('luigi-app-in-custom-container');
-      const luigiCustomContainerSettings =
-        LuigiConfig.getConfig().settings?.luigiContainer || {};
-      luigiContainer.style.height =
-        luigiCustomContainerSettings.height ||
-        CUSTOM_LUIGI_CONTAINER.cssDefaultHeight;
-      luigiContainer.style.width =
-        luigiCustomContainerSettings.width ||
-        CUSTOM_LUIGI_CONTAINER.cssDefaultWidth;
     }
 
     app = new App({
