@@ -3,7 +3,7 @@ import { authLibraries } from './providers/auth/libraryLoaders';
 import { LuigiConfig, LuigiElements } from './core-api';
 import { Store } from 'svelte/store';
 import { version } from '../package.json';
-import { CUSTOM_LUIGI_CONTAINER } from './utilities/constants';
+
 const store = new Store({
   luigiVersion: version
 });
