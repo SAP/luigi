@@ -146,6 +146,7 @@
                 name="locale"
                 placeholder=""
                 data-cy="luigi-input-locale"
+                [disabled]="!canChangeLocale"
               />
             </div>
           </div>
@@ -155,6 +156,7 @@
         class="fd-button"
         data-cy="set-current-locale"
         (click)="setCurrentLocale()"
+        [disabled]="!canChangeLocale"
       >
         Set Current Locale
       </button>
