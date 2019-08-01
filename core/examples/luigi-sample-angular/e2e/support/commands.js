@@ -33,7 +33,6 @@ Cypress.Commands.add('goToUxManagerMethods', iframe => {
 });
 
 Cypress.Commands.add('goToLinkManagerMethods', iframe => {
-  cy.wait(0);
   cy.wrap(iframe)
     .contains('linkManager()')
     .click();
@@ -71,13 +70,8 @@ Cypress.Commands.add(
   (getIframeOpts = {}, index = 0, containerSelector = '.iframeContainer') => {
     return cy
       .get(`${containerSelector} iframe`, getIframeOpts)
-      .should('be.visible')
       .eq(index)
-      .then(function($element) {
-        // wrap the body of your iframe with cy so as to do cy actions inside iframe elements
-        // return cy.wrap($element.contents().find('body'));
-        return $element.contents().find('body');
-      });
+      .iframe();
   }
 );
 

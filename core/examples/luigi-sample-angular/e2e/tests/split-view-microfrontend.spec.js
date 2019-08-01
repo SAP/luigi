@@ -6,9 +6,7 @@ describe('SplitView', () => {
   });
 
   it('Opens a Split View and collapses and expands', () => {
-    cy.get('iframe').then($iframe => {
-      const $iframeBody = $iframe.contents().find('body');
-
+    cy.getIframeBody().then($iframeBody => {
       cy.wrap($iframeBody)
         .contains('open view in split view')
         .click();
@@ -29,9 +27,7 @@ describe('SplitView', () => {
   });
 
   it('using Client API', () => {
-    cy.get('iframe').then($iframe => {
-      const $iframeBody = $iframe.contents().find('body');
-
+    cy.getIframeBody().then($iframeBody => {
       cy.wrap($iframeBody)
         .contains('open view in split view')
         .click();
