@@ -125,18 +125,9 @@ Object.keys(productSwitcherItems[0]).length }
   export default {
     async oncreate() {
       StateHelpers.doOnStoreChange(this.store, async () => {
-        const productSwitcherConfig = LuigiConfig.getConfigValue(
-          'navigation.productSwitcher'
-        );
-
-        this.set({
-          config: Object.assign(
-            {},
-            { icon: 'grid', label: 'My Products' },
-            productSwitcherConfig
-          )
-        });
-        if (productSwitcherConfig) {
+        const config = NavigationHelpers.getProductSwitcherConfig();
+        this.set({ config });
+        if (config) {
           const productSwitcherItems = await LuigiConfig.getConfigValueAsync(
             'navigation.productSwitcher.items'
           );

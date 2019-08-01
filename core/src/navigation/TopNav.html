@@ -346,8 +346,7 @@
           responsiveNavSetting: LuigiConfig.getConfigValue(
             'settings.responsiveNavigation'
           ),
-          productSwitcherConfig:
-            LuigiConfig.getConfigValue('navigation.productSwitcher') || {}
+          productSwitcherConfig: NavigationHelpers.getProductSwitcherConfig()
         });
       });
       this.set({
