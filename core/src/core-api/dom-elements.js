@@ -18,6 +18,18 @@ class LuigiElements {
   }
 
   /**
+   * Returns a boolean that indicates if Luigi is being rendered in a custom container or not.
+   * @returns {Boolean} _true_ if Luigi content is wrapped in a custom html tag, _false_ otherwise.
+   * @memberof Elements
+   * @since 0.6.0
+   * @example
+   * Luigi.elements().getLuigiContainer();
+   */
+  isCustomLuigiContainer() {
+    return Boolean(this.getLuigiContainer() === this.getCustomLuigiContainer());
+  }
+
+  /**
    * Returns the custom container for the Luigi content
    * @memberof Elements
    * @private

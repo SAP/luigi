@@ -21,7 +21,7 @@ const configReadyCallback = () => {
   setTimeout(() => {
     const luigiContainer = LuigiElements.getLuigiContainer();
 
-    if (luigiContainer === LuigiElements.getCustomLuigiContainer()) {
+    if (LuigiElements.isCustomLuigiContainer()) {
       document
         .getElementsByTagName('html')[0]
         .classList.add('luigi-app-in-custom-container');
