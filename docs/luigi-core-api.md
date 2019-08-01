@@ -134,22 +134,6 @@ Returns **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/G
 
 -   **since**: 0.6.0
 
-#### isCustomLuigiContainer
-
-Returns a boolean that indicates if Luigi is being rendered in a custom container or not.
-
-##### Examples
-
-```javascript
-Luigi.elements().isCustomLuigiContainer();
-```
-
-Returns **[Boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)** _true_ if Luigi content is wrapped in a custom html tag, _false_ otherwise.
-
-**Meta**
-
--   **since**: 0.6.0
-
 #### getShellbar
 
 Returns the shellbar component.
