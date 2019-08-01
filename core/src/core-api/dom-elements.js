@@ -23,7 +23,7 @@ class LuigiElements {
    * @memberof Elements
    * @since 0.6.0
    * @example
-   * Luigi.elements().getLuigiContainer();
+   * Luigi.elements().isCustomLuigiContainer();
    */
   isCustomLuigiContainer() {
     return Boolean(this.getLuigiContainer() === this.getCustomLuigiContainer());
