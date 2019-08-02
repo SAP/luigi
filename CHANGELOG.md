@@ -37,6 +37,12 @@ The lerna-changelog tool detects changes based on PR labels and maps them to sec
 * [#668](https://github.com/SAP/luigi/pull/668) Fix broken links in docu for auth providers ([@jesusreal](https://github.com/jesusreal))
 
 
+## [v0.5.4] (2019-07-29)
+
+#### :bug: Fixed
+* [#708](https://github.com/SAP/luigi/issues/708) Fix error on click on navigation node when node is active ([@jesusreal](https://github.com/jesusreal))
+
+
 ## [v0.5.3] (2019-07-23)
 
 #### :rocket: Added
@@ -459,4 +465,5 @@ The lerna-changelog tool detects changes based on PR labels and maps them to sec
 [v0.5.1]: https://github.com/SAP/luigi/compare/v0.5.0...v0.5.1
 [v0.5.2]: https://github.com/SAP/luigi/compare/v0.5.1...v0.5.2
 [v0.5.3]: https://github.com/SAP/luigi/compare/v0.5.2...v0.5.3
+[v0.5.4]: https://github.com/SAP/luigi/compare/v0.5.3...v0.5.4
 [v0.6.0-rc.0]: https://github.com/SAP/luigi/compare/v0.5.3...v0.6.0-rc.0
