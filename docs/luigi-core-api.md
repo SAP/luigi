@@ -116,7 +116,7 @@ Returns **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/
 
 ### Elements
 
-Use these functions to get DOM elements.
+ Use these functions to get DOM elements:
 
 #### getLuigiContainer
 
