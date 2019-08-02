@@ -7,9 +7,7 @@ describe('Clock based tests', () => {
   });
 
   it('Triggers badge count update with Core Api', () => {
-    cy.get('iframe').then($iframe => {
-      const $iframeBody = $iframe.contents().find('body');
-
+    cy.getIframeBody().then($iframeBody => {
       const initialBadgeCount = Cypress.$(
         "button[title='Messages'] .fd-counter--notification"
       ).text();
