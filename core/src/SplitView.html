@@ -178,7 +178,7 @@
 
           const top = dragTop - diff;
           const bottom = window.innerHeight - top;
-          newValues = SplitViewSvc.enforceTreshHolds(top, bottom);
+          newValues = SplitViewSvc.enforceTresholds(top, bottom);
 
           elements.draggable.style.top = `${newValues.top}px`;
         };
