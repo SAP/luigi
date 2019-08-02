@@ -120,7 +120,7 @@ Use these functions to get DOM elements.
 
 #### getLuigiContainer
 
-Returns the container of the Luigi content.
+Returns the container with the Luigi content.
 
 ##### Examples
 
