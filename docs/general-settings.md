@@ -34,4 +34,10 @@ You can set the following values:
   * `semiCollapsible` displays the arrow button at the bottom of the left side navigation. Once you click the button, the navigation shows up or collapses.<br>
 If you don't specify any value for  **responsiveNavigation**, the buttons remain hidden. The same applies when you enable **hideSideNav** for the currently active navigation node. 
 * **sideNavFooterText** is a string displayed in a sticky footer inside the side navigation. It is a good place to display the version of your application.
-* `customTranslationImplementation` **[function](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Statements/function)** is executed when Luigi Application will be initialized. You can provide a custom function that translates text for the specified key in the current locale or in the specified one.
+* `customTranslationImplementation` provides a custom localization implementation. It can be an Object or a Function returning an Object. This Object must provide the **getTranslation** Function as property:
+```` 
+    {
+        getTranslation: (key, interpolations, locale) => {
+            // should return translationn of the 'key' in the 'locale' or current locale
+    }
+````
