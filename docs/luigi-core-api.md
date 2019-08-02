@@ -296,7 +296,7 @@ Unregisters a listener for locale changes.
 #### getTranslation
 
 Gets translated text for the specified key in the current locale or in the specified one.
-Property values for token replacement in the localization key will be taken from the specified interpolations object.
+Property values for token replacement in the localization key are taken from the specified interpolations object.
 
 ##### Parameters
 
