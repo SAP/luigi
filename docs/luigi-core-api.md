@@ -302,4 +302,4 @@ Property values for token replacement in the localization key are taken from the
 
 -   `key` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** key to be translated
 -   `interpolations` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** objects with properties that will be used for token replacements in the localization key
--   `locale` **locale** optional locale to get the translation for; default is the current locale
+-   `locale` **locale** optional locale for which you can get the translation. The default is the current locale.
