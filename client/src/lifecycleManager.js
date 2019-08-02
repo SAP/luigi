@@ -158,7 +158,7 @@ class LifecycleManager extends LuigiClientBase {
    * Callback of the addInitListener
    * @callback Lifecycle~initListenerCallback
    * @param {Object} context current context data
-   * @param {string} origin luigi core origin
+   * @param {string} origin Luigi Core URL
    */
   /**
    * Removes an init listener.

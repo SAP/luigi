@@ -90,7 +90,7 @@ Type: [Function](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Sta
 ### Parameters
 
 -   `context` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** current context data
--   `origin` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** luigi core origin
+-   `origin` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** Luigi Core URL
 
 ## linkManager
 
