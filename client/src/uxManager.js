@@ -212,6 +212,7 @@ class UxManager extends LuigiClientBase {
    * Checks if the current micro-frontend is displayed inside a split view
    * @returns {boolean} indicating if it is loaded inside a split view
    * @memberof uxManager
+   * @since 0.6.0
    */
   isSplitView() {
     return lifecycleManager.currentContext?.internal?.splitView;
@@ -221,6 +222,7 @@ class UxManager extends LuigiClientBase {
    * Checks if the current micro-frontend is displayed inside a modal
    * @returns {boolean} indicating if it is loaded inside a modal
    * @memberof uxManager
+   * @since 0.6.0
    */
   isModal() {
     return lifecycleManager.currentContext?.internal?.modal;

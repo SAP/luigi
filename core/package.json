@@ -86,7 +86,7 @@
     "check-coverage": true,
     "lines": 55,
     "statements": 55,
-    "functions": 55,
+    "functions": 54,
     "branches": 55,
     "watermarks": {
       "lines": [

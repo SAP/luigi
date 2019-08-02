@@ -118,6 +118,22 @@ Returns **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/
 
 Use these functions to get DOM elements.
 
+#### getLuigiContainer
+
+Returns the container of the Luigi content.
+
+##### Examples
+
+```javascript
+Luigi.elements().getLuigiContainer();
+```
+
+Returns **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** the DOM element that wraps the Luigi content.
+
+**Meta**
+
+-   **since**: 0.6.0
+
 #### getShellbar
 
 Returns the shellbar component.
