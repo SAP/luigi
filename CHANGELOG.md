@@ -23,6 +23,21 @@ The lerna-changelog tool detects changes based on PR labels and maps them to sec
     ...
   }
 -->
+## [v0.6.0] (2019-08-02)
+
+#### :rocket: Added
+* [#705](https://github.com/SAP/luigi/pull/705) Core api for getting translation for a specified key for given locale ([@JohannesDoberer](https://github.com/JohannesDoberer))
+* [#707](https://github.com/SAP/luigi/pull/707) Add luigi bootstrap dom element option ([@jesusreal](https://github.com/jesusreal))
+* [#694](https://github.com/SAP/luigi/pull/694) smooth scrolling on mobile devices ([@JohannesDoberer](https://github.com/JohannesDoberer))
+* [#669](https://github.com/SAP/luigi/pull/669) product switcher header to fiori3 concept ([@JohannesDoberer](https://github.com/JohannesDoberer))
+* [#678](https://github.com/SAP/luigi/pull/678) Client permissions available in the client ([@JohannesDoberer](https://github.com/JohannesDoberer))
+
+#### :bug: Fixed
+* [#712](https://github.com/SAP/luigi/pull/712) Fix error on click on navigation node when node is active ([@jesusreal](https://github.com/jesusreal))
+* [#500](https://github.com/SAP/luigi/pull/500) Fix path routing ([@y-kkamil](https://github.com/y-kkamil))
+
+#### :memo: Documentation
+* [#690](https://github.com/SAP/luigi/pull/690) Open split view in collapsed state ([@maxmarkus](https://github.com/maxmarkus))
 
 ## [v0.6.0-rc.0] (2019-07-26)
 
