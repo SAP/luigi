@@ -28,7 +28,7 @@
         <div class="fd-popover fd-popover--right">
           <div class="fd-popover__control" on:click="event.stopPropagation()">
             <button
-              title="{node.label}"
+              title="{getNodeLabel(node)}"
               class="fd-button--shell {node === selectedNode ? 'is-selected' : ''}"
               aria-controls="dropDownPopover-{i}"
               aria-expanded="{dropDownStates[`dropDownPopover-${i}`] || false}"
@@ -49,7 +49,7 @@
               {/if}
               <!-- end hasOpenUIicon-->
               {:else}
-              <span>{node.label}</span>
+              <span>{getNodeLabel(node)}</span>
               {/if}
               <!-- end node.icon -->
               <BadgeCounter {node}/>
@@ -69,7 +69,7 @@
         class="fd-shellbar__action fd-shellbar__action--hide fd-shellbar__action--collapsible"
       >
         <button
-          title="{node.label}"
+          title="{getNodeLabel(node)}"
           class="fd-button--shell {node === selectedNode ? 'is-selected' : ''}"
           aria-controls="0AcWE812"
           aria-expanded="false"
@@ -89,7 +89,7 @@
           {/if}
           <!-- end hasOpenUIicon-->
           {:else}
-          <span>{node.label}</span>
+          <span>{getNodeLabel(node)}</span>
           {/if}
           <!-- end node.icon -->
           <BadgeCounter {node}/>
@@ -103,7 +103,7 @@
                 <button class=" fd-button--shell sap-icon--bell" aria-label="Notifications">
                   <span class="fd-counter fd-counter--notification" aria-label="Unread count">25</span>
                 </button>
-              </div> 
+              </div>
       -->
 
       <!-- dropdown for top nav nodes on smaller screens -->
@@ -154,13 +154,13 @@
                         {/if}
                         <BadgeCounter {node}/>
                       </span>
-                      <span>{node.label}</span>
+                      <span>{getNodeLabel(node)}</span>
                     </a>
                   </li>
                   {:else}
                   <li>
                     <a
-                      title="{node.label}"
+                      title="{getNodeLabel(node)}"
                       class="fd-menu__item"
                       on:click="openMobileTopNavDropDown(node)"
                       data-cy="mobile-topnav-dropdown-category"
@@ -173,13 +173,13 @@
                         {/if}
                         <BadgeCounter {node}/>
                       </span>
-                      <span>{node.label}</span>
+                      <span>{getNodeLabel(node)}</span>
                     </a>
                   </li>
                   <!-- {:else}
                   <li>
                     <a
-                      title="{node.label}"
+                      title="{getNodeLabel(node)}"
                       class="fd-menu__item"
                       on:click="openMobileTopNavDropDown(node)"
                       data-cy="mobile-topnav-dropdown-category"
@@ -194,7 +194,7 @@
                         src="{node.icon}"
                       >
                       {/if} {/if}
-                      <span>{node.label}</span>
+                      <span>{getNodeLabel(node)}</span>
                     </a>
                   </li>-->
                   <!-- {/if} -->
@@ -294,7 +294,7 @@
   import Authorization from '../Authorization.html';
   import TopNavDropDown from '../TopNavDropDown.html';
   import ProductSwitcher from './ProductSwitcher.html';
-  import { LuigiAuth, LuigiConfig } from '../core-api';
+  import { LuigiAuth, LuigiConfig, LuigiI18N } from '../core-api';
   import {
     AuthHelpers,
     NavigationHelpers,
@@ -371,6 +371,9 @@
     helpers: {
       hasOpenUIicon(node) {
         return NavigationHelpers.isOpenUIiconName(node.icon);
+      },
+      getNodeLabel(node) {
+        return LuigiI18N.getTranslation(node.label);
       }
     },
     methods: {
