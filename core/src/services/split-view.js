@@ -209,10 +209,6 @@ class SplitViewSvcClass {
   }
 
   async expand(comp) {
-    if (!comp.root.get().splitViewIframe) {
-      await this.createAndSetView(comp);
-    }
-
     this.sendMessageToClients('internal', {
       exists: true,
       size: this.splitViewValues.percent,
