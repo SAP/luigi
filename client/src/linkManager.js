@@ -98,6 +98,7 @@ export class linkManager extends LuigiClientBase {
    * @param {boolean} [splitViewSettings.collapsed=false] opens split view in collapsed state
    * @returns {Object} instance of the SplitView. It provides Event listeners and you can use the available functions to control its behavior.
    * @see {@link splitView} for further documentation about the returned instance
+   * @since 0.6.0
    * @example
    * const splitViewHandle = LuigiClient.linkManager().openAsSplitView('projects/pr1/logs', {title: 'Logs', size: 40, collapsed: true});
    */
