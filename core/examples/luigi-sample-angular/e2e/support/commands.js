@@ -127,7 +127,6 @@ Cypress.Commands.add(
     prevSubject: ['window']
   },
   (subject, eventName, options) => {
-    console.log('historyBack', subject, eventName, options);
     subject.history.back();
   }
 );
