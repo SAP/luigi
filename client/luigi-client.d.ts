@@ -21,6 +21,29 @@ export declare interface ModalSettings {
   size?: 'l' | 'm' | 's';
 }
 
+export declare interface SplitViewSettings {
+  title?: string;
+  size?: number;
+}
+
+export enum SplitViewEvents {
+  'expand',
+  'collapse',
+  'resize',
+  'close'
+}
+
+export declare interface SplitViewInstance {
+  collapse: () => void;
+  expand: () => void;
+  setSize: (value: number) => void;
+  on: (key: SplitViewEvents, callback: () => void) => string; //
+  exists: () => boolean;
+  getSize: () => number;
+  isCollapsed: () => boolean;
+  isExpanded: () => boolean;
+}
+
 export declare interface Context {
   authData?: AuthData;
   context?: { parentNavigationContext?: string[] };
@@ -32,6 +55,10 @@ export declare interface Context {
 
 export declare interface NodeParams {
   [key: string]: string;
+}
+
+export declare interface ClientPermissions {
+  [key: string]: any;
 }
 
 export declare interface AlertSettings {
@@ -115,6 +142,30 @@ export declare interface UxManager {
    * @returns {promise} which is resolved when accepting the confirmation modal and rejected when dismissing it.
    */
   showConfirmationModal: (settings: ConfirmationModalSettings) => Promise<void>;
+
+  /**
+   * Gets the current locale.
+   * @returns {string} current locale
+   */
+  getCurrentLocale: () => string;
+
+  /**
+   * Sets current locale to the specified one.
+   * @param {string} locale locale to be set as the current locale
+   */
+  setCurrentLocale: (locale: string) => void;
+
+  /**
+   * Checks if the current micro frontend is displayed inside a split view
+   * @returns {boolean} indicating if it is loaded inside a split view
+   */
+  isSplitView: () => boolean;
+
+  /**
+   * Checks if the current micro frontend is displayed inside a modal
+   * @returns {boolean} indicating if it is loaded inside a modal
+   */
+  isModal: () => boolean;
 }
 
 export declare interface LinkManager {
@@ -136,8 +187,8 @@ export declare interface LinkManager {
   fromContext: (navigationContext: string) => this;
 
   /**
-   * Discards the active view and navigates back to the last visited view (preserved view), if a preserved view was set before.
-   * @param {any} goBackValue data that is passed in the `goBackContext` field to the last visited view
+   * Discards the active view and navigates back to the last visited view. Works with preserved views, and also acts as the substitute of the browser **back** button. **goBackContext** is only available when using preserved views.
+   * @param {any} goBackValue data that is passed in the **goBackContext** field to the last visited view when using preserved views.
    * @example
    * LuigiClient.linkManager().goBack({ foo: 'bar' });
    * LuigiClient.linkManager().goBack(true);
@@ -190,10 +241,10 @@ export declare interface LinkManager {
    * @param {Object} nodeParams
    * @returns {linkManager} link manager instance.
    * @example
-   * LuigiClient.linkManager.withParams({foo: "bar"}).navigate("path")
+   * LuigiClient.linkManager().withParams({foo: "bar"}).navigate("path")
    *
    * // Can be chained with context setting functions such as:
-   * LuigiClient.linkManager.fromContext("currentTeam").withParams({foo: "bar"}).navigate("path")
+   * LuigiClient.linkManager().fromContext("currentTeam").withParams({foo: "bar"}).navigate("path")
    */
   withParams: (nodeParams: NodeParams) => this;
 
@@ -207,20 +258,42 @@ export declare interface LinkManager {
    * LuigiClient.linkManager().openAsModal('projects/pr1/users', {title:'Users', size:'m'});
    */
   openAsModal: (nodepath: string, modalSettings?: ModalSettings) => void;
+
+  /**
+   * Opens a view in a split view. You can specify the split view's title and size. If you don't specify the title, it is the node label. If there is no node label, the title remains empty. The default size of the split view is `40`, which means 40% height of the split view.
+   * @memberof linkManager
+   * @param {string} path navigation path
+   * @param {Object} splitViewSettings opens a view in a split view. Use these settings to configure the split view's behaviour
+   * @param {string} splitViewSettings.title split view title. By default, it is the node label. If there is no label, it is left empty
+   * @param {number} [splitViewSettings.size=40] height of the split view in percent
+   * @returns {Object} instance of the SplitView. It provides event listeners and you can the functions to control its behavior
+
+   * @see {@link splitView} for further documentation about the returned instance
+   * @example
+   * const splitViewHandle = LuigiClient.linkManager().openAsSplitView('projects/pr1/logs', {title: 'Logs', size: 40});
+   */
+  openAsSplitView: (
+    path: string,
+    splitViewSettings?: SplitViewSettings
+  ) => SplitViewInstance;
 }
 
 /**
- * Registers a listener called with the context object as soon as Luigi is instantiated. Defer your application bootstrap if you depend on authentication data coming from Luigi.
+ * Registers a listener called with the context object and the Luigi core domain as soon as Luigi is instantiated. Defer your application bootstrap if you depend on authentication data coming from Luigi.
  * @param {function} initFn the function that is called once Luigi is initialized
- * @memberof lifecycle
+ * @memberof Lifecycle
  */
-export function addInitListener(initFn: (context: Context) => void): number;
-export type addInitListener = (initFn: (context: Context) => void) => number;
+export function addInitListener(
+  initFn: (context: Context, origin?: string) => void
+): number;
+export type addInitListener = (
+  initFn: (context: Context, origin?: string) => void
+) => number;
 
 /**
  * Removes an init listener.
  * @param {string} id the id that was returned by the `addInitListener` function
- * @memberof lifecycle
+ * @memberof Lifecycle
  */
 export function removeInitListener(id: number): boolean;
 export type removeInitListener = (id: number) => boolean;
@@ -228,7 +301,7 @@ export type removeInitListener = (id: number) => boolean;
 /**
  * Registers a listener called with the context object upon any navigation change.
  * @param {function} contextUpdatedFn the listener function called each time Luigi context changes
- * @memberof lifecycle
+ * @memberof Lifecycle
  */
 export function addContextUpdateListener(
   contextUpdatedFn: (context: Context) => void
@@ -240,7 +313,7 @@ export type addContextUpdateListener = (
 /**
  * Removes a context update listener.
  * @param {string} id the id that was returned by the `addContextUpdateListener` function
- * @memberof lifecycle
+ * @memberof Lifecycle
  */
 export function removeContextUpdateListener(id: string): boolean;
 export type removeContextUpdateListener = (id: string) => boolean;
@@ -254,17 +327,25 @@ export type getToken = () => AuthData['accessToken'];
 /**
  * Returns the context object. Typically it is not required as the {@link #addContextUpdateListener addContextUpdateListener()} receives the same values.
  * @returns {Object} current context data.
- * @memberof lifecycle
+ * @memberof Lifecycle
  */
 export function getEventData(): Context;
 export type getEventData = () => Context;
+
+/**
+ * Returns the context object. It is an alias function for getEventData().
+ * @returns {Object} current context data.
+ * @memberof Lifecycle
+ */
+export function getContext(): Context;
+export type getContext = () => Context;
 
 /**
  * Returns the node parameters of the active URL.
  * Node parameters are defined like URL query parameters but with a specific prefix allowing Luigi to pass them to the micro front-end view.  The default prefix is **~** and you can use it in the following way: `https://my.luigi.app/home/products?~sort=asc~page=3`.
  * >**NOTE:** some special characters (`<`, `>`, `"`, `'`, `/`) in node parameters are HTML-encoded.
  * @returns {Object} node parameters, where the object property name is the node parameter name without the prefix, and its value is the value of the node parameter. For example `{sort: 'asc', page: 3}`.
- * @memberof lifecycle
+ * @memberof Lifecycle
  */
 export function getNodeParams(): NodeParams;
 export type getNodeParams = () => NodeParams;
@@ -275,10 +356,18 @@ export type getNodeParams = () => NodeParams;
  * All path parameters in the current navigation path (as defined by the active URL) are returned.
  * >**NOTE:** some special characters (`<`, `>`, `"`, `'`, `/`) in path parameters are HTML-encoded.
  * @returns {Object} path parameters, where the object property name is the path parameter name without the prefix, and its value is the actual value of the path parameter. For example ` {productId: 1234, ...}`.
- * @memberof lifecycle
+ * @memberof Lifecycle
  */
 export function getPathParams(): PathParams;
 export type getPathParams = () => PathParams;
+
+/**
+ * Returns the current client permissions as specified in the navigation node or an empty object. For details, see [Node parameters](navigation-parameters-reference.md).
+ * @returns {Object} client permissions as specified in the navigation node.
+ * @memberof Lifecycle
+ */
+export function getClientPermissions(): ClientPermissions;
+export type getClientPermissions = () => ClientPermissions;
 
 /**
  * The Link Manager allows you to navigate to another route. Use it instead of an internal router to:

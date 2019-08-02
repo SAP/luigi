@@ -1,5 +1,5 @@
 <section class="fd-section">
-  <div [hidden]="projectId !== 'pr1'">
+  <div *ngIf="projectId === 'pr1'">
     <div class="fd-section__header">
       <h1 class="fd-section__title">LuigiClient uxManager methods</h1>
     </div>
@@ -120,6 +120,53 @@
         Luigi alert has been dismissed
       </p>
     </div>
+
+    <div class="fd-panel fd-has-margin-bottom-small">
+      <p><strong>Localization</strong></p>
+      <div
+        class="fd-has-color-status-4 fd-has-type-1 fd-has-margin-bottom-base"
+        data-cy="luigi-current-locale"
+      >
+        Current locale is: '{{ currentLocale }}'
+      </div>
+      <p class="fd-has-margin-bottom-s">
+        <app-code-snippet
+          data="uxManager().getCurrentLocale()"
+        ></app-code-snippet>
+      </p>
+      <div class="fd-container ">
+        <form #luigiLocalizationForm="ngForm" class="fd-col--3">
+          <div class="fd-form__set">
+            <div class="fd-form__item">
+              <label class="fd-form__label" for="locale">Locale </label>
+              <input
+                [ngModel]=""
+                class="fd-form__control"
+                type="text"
+                name="locale"
+                placeholder=""
+                data-cy="luigi-input-locale"
+                [disabled]="!canChangeLocale"
+              />
+            </div>
+          </div>
+        </form>
+      </div>
+      <button
+        class="fd-button"
+        data-cy="set-current-locale"
+        (click)="setCurrentLocale()"
+        [disabled]="!canChangeLocale"
+      >
+        Set Current Locale
+      </button>
+      <p>
+        <app-code-snippet
+          data="uxManager().setCurrentLocale(locale)"
+        ></app-code-snippet>
+      </p>
+    </div>
+
     <div class="fd-panel fd-has-margin-bottom-small">
       <p>
         <strong
@@ -161,7 +208,10 @@
     </div>
   </div>
 
-  <div class="link-manager" [hidden]="projectId !== 'pr2'">
+  <div
+    class="link-manager"
+    *ngIf="projectId && projectId !== 'pr1' && projectId.indexOf('pr') === 0"
+  >
     <div class="fd-section__header">
       <h1 class="fd-section__title">LuigiClient linkManager methods</h1>
     </div>
@@ -306,6 +356,53 @@
           >
           </app-code-snippet>
         </li>
+        <li class="fd-list-group__item">
+          <a href="javascript:void(0)" (click)="openSplitView()">
+            open view in split view with params</a
+          >
+          <app-code-snippet
+            data="linkManager().withParams({test: true}).openAsSplitView('/settings', {title:'Logs', size:25})"
+          >
+          </app-code-snippet>
+          <div data-cy="split-view-controls">
+            Control Split View:
+
+            <button
+              [disabled]="!splitViewHandle || !splitViewHandle.isCollapsed()"
+              (click)="splitViewHandle.expand()"
+              class="fd-button"
+            >
+              expand
+            </button>
+            <button
+              [disabled]="!splitViewHandle || !splitViewHandle.isExpanded()"
+              (click)="splitViewHandle.collapse()"
+              class="fd-button"
+            >
+              collapse
+            </button>
+            <button
+              [disabled]="!splitViewHandle || !splitViewHandle.isExpanded()"
+              (click)="splitViewHandle.setSize(50)"
+              class="fd-button"
+            >
+              setSize(50)
+            </button>
+            <button
+              [disabled]="!splitViewHandle || !splitViewHandle.exists()"
+              (click)="splitViewHandle.close()"
+              class="fd-button"
+            >
+              close
+            </button>
+          </div>
+        </li>
+        <li class="fd-list-group__item">
+          <a href="javascript:void(0)" (click)="linkManager().goBack()">
+            go back: single iframe, standard history back</a
+          >
+          <app-code-snippet data="linkManager().goBack()"> </app-code-snippet>
+        </li>
       </ul>
     </div>
 
@@ -365,7 +462,7 @@
 </section>
 
 <app-modal
-  [hidden]="projectId !== 'pr1'"
+  *ngIf="projectId === 'pr1'"
   [modalActive]="modalActive"
   (modalClosed)="toggleModal()"
 ></app-modal>

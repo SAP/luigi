@@ -9,8 +9,7 @@ describe('Luigi client features', () => {
 
   it('linkManager features', () => {
     Cypress.currentTest.retries(2);
-    cy.get('iframe').then($iframe => {
-      const $iframeBody = $iframe.contents().find('body');
+    cy.getIframeBody().then($iframeBody => {
       cy.goToLinkManagerMethods($iframeBody);
 
       //navigate using absolute path
@@ -84,21 +83,16 @@ describe('Luigi client features', () => {
         'Information alert sent from an inactive iFrame'
       );
 
-      cy.get('iframe')
-        .first()
-        .then($preserveViewiFrame => {
-          const $preserveViewiFrameBody = $preserveViewiFrame
-            .contents()
-            .find('body');
-          cy.wrap($preserveViewiFrameBody)
-            .find('input')
-            .clear()
-            .type('tets');
-          cy.wrap($preserveViewiFrameBody)
-            .find('button')
-            .click();
-          cy.expectPathToBe('/projects/pr2');
-        });
+      cy.getIframeBody().then($iframeBody => {
+        cy.wrap($iframeBody)
+          .find('input')
+          .clear()
+          .type('tets');
+        cy.wrap($iframeBody)
+          .find('button')
+          .click();
+        cy.expectPathToBe('/projects/pr2');
+      });
 
       // check if path exists
       cy.goToLinkManagerMethods($iframeBody);
@@ -134,14 +128,23 @@ describe('Luigi client features', () => {
           .find(checkPathSelector + ' .check-path-result')
           .contains(msgExpected);
       });
+
+      // go back
+      cy.goToOverviewPage();
+      cy.goToLinkManagerMethods($iframeBody);
+      cy.expectPathToBe('/projects/pr2');
+      cy.wrap($iframeBody)
+        .contains('go back: single iframe')
+        .click();
+      cy.expectPathToBe('/overview');
     });
   });
 
   describe('linkManager wrong paths navigation', () => {
     let $iframeBody;
     beforeEach(() => {
-      cy.get('iframe').then($iframe => {
-        $iframeBody = $iframe.contents().find('body');
+      cy.getIframeBody().then(result => {
+        $iframeBody = result;
         cy.goToLinkManagerMethods($iframeBody);
       });
     });

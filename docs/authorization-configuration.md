@@ -26,7 +26,8 @@ auth: {
     redirect_uri: '',
     post_logout_redirect_uri: '/logout.html',
     automaticSilentRenew: true,
-    userInfoFn:()=>{}
+    userInfoFn:()=>{},
+    accessTokenExpiringNotificationTime: 60
   },
   disableAutoLogin: false
 }
@@ -38,7 +39,7 @@ auth: {
 - **redirect_uri** sets the URL to return to after login. The default application root is `/`.
 - **post_logout_redirect_uri** sets the URL to return after logout. The default URL is `/logout.html`.
 - **automaticSilentRenew** enables the automatic silent renewal of the token if it is supported by the server. The default value is `false`. For this mechanism to work, the browser must have third-party cookies support enabled.
-- **accessTokenExpiringNotificationTime** is the number of seconds before an access token is to expire and triggers silent token refresh. The default value is 60.
+- **accessTokenExpiringNotificationTime** is the number of seconds before an access token is to expire and triggers silent token refresh. The default value is `60` seconds.
 - **thirdPartyCookiesScriptLocation** is the URL to the page containing third-party cookies support check. For details, see [Third-party cookies and silent token refresh section](#Third-party-cookies-and-silent-token-refresh).
 - **userInfoFn** provides a function to get user information. It returns a promise of a **userinfo** object which can contain **name**, **email** and **picture** (value is a URL to the image). **Name** or **email** are displayed in the profile drop-down menu and the user’s profile picture is displayed in the top navigation.
 
@@ -63,7 +64,9 @@ auth: {
     // optional functions
     nonceFn: () => {},
     logoutFn: (settings, authData, logoutCallback) => {},
-    userInfoFn:()=>{}
+    userInfoFn:()=>{},
+    accessTokenExpiringNotificationTime: 60,
+    expirationCheckInterval: 5
   },
   disableAutoLogin: false
 ````
@@ -78,6 +81,9 @@ auth: {
 - **nonceFn** provides a function that returns a string in order to override the default **nonce**.
 - **logoutFn** provides the function to override the **logoutUrl** functionality for a custom logout. It needs to execute the **logoutCallback()** function after logout.
 - **userInfoFn** provides a function to get user information. It returns a promise of a **userinfo** object which can contain **name**, **email** and **picture** (value is a URL to the image). **Name** or **email** are displayed in the profile drop-down menu and the user’s profile picture is displayed in the top navigation.
+- **accessTokenExpiringNotificationTime** number of seconds that pass before an access token expires and the **onAuthExpireSoon** event is fired. The default value is `60` seconds.
+- **expirationCheckInterval** the number of seconds to pass between each check if the token is about to expire. The default value is `5` seconds.
+
 
 ### Custom Authentication Provider
 
@@ -98,6 +104,8 @@ export class CustomAuthenticationProvider {
     setTokenExpirationAction(){
     }
 
+    setTokenExpireSoonAction() {}
+
     generateNonce(){
         //returns a string 
     }
@@ -113,7 +121,7 @@ export class CustomAuthenticationProvider {
 ### Third-party cookies and silent token refresh
 
 The OpenID Connect configuration allows you to specify the **automaticSilentRenew** option. When set to `true`, Luigi attempts to automatically renew the token in the background before it expires. Be aware that this mechanism requires the browser to support [third-party cookies](https://developer.mozilla.org/en-US/docs/Web/HTTP/Cookies#Third-party_cookies).
-It is possible to detect whether the user's browser supports the mechanism by using the script in [`third-party-cookies`](https://github.com/kyma-project/luigi/tree/master/core/third-party-cookies) catalog. Deploy these files on a **different domain** than your main application and set **thirdPartyCookiesScriptLocation** to `init.html` file. During initialization, Luigi detects the cookies support and produces a warning in the console if cookies are disabled in the user's browser.                                         
+It is possible to detect whether the user's browser supports the mechanism by using the script in [`third-party-cookies`](https://github.com/SAP/luigi/tree/master/core/third-party-cookies) catalog. Deploy these files on a **different domain** than your main application and set **thirdPartyCookiesScriptLocation** to `init.html` file. During initialization, Luigi detects the cookies support and produces a warning in the console if cookies are disabled in the user's browser.                                         
 
 When Luigi fails to renew the token and then logs out the user, it adds the following query parameters to the logout page redirect URL: `?reason=tokenExpired&thirdPartyCookies=[VALUE]`. Luigi replaces the **VALUE**  with one of the following:
 - `disabled` means that third party cookies is disabled.
@@ -121,3 +129,34 @@ When Luigi fails to renew the token and then logs out the user, it adds the foll
 - `not_checked` means that the script was not provided in **thirdPartyCookiesScriptLocation** or it could not be loaded.
 
 The application developer can read these parameters and set a logout page based on them.
+
+### Implement a Custom Authentication Provider
+
+You can write your own authentication provider that meets your requirements. 
+
+[oAuth2ImplicitGrant.js](../core/src/providers/auth/oAuth2ImplicitGrant.js) is a good starting point if you don't use an external authentication library.
+After authorization is successful on the auth provider's side it redirects back to `Luigi callback.html` **redirect_uri**. The auth provider verifies the authentication data, saves it in  **localStorage** for Luigi, and redirects to the Luigi main page. 
+
+[openIdConnect.js](../core/src/providers/auth/openIdConnect.js) lazy loads the official `oidc-client` library and is a good starting point if you also depend on external authentication libraries.
+
+Make sure to set the following data in your Authentication Provider implementation, so that it is used after successful authentication.
+```
+const data = {
+  accessToken: hashParams['access_token'],
+  accessTokenExpirationDate: hashParams['expiry_timestamp'],
+  scope: hashParams['scope'],
+  idToken: hashParams['id_token']
+};
+
+localStorage.setItem('luigi.auth', JSON.stringify(data));
+localStorage.setItem('luigi.newlyAuthorized', true);
+```
+
+Additionally, if you process authentication data during Luigi runtime (inside the custom provider, similarly to using the`openIdConnect` provider), dispatch the `luigi.auth.tokenIssued` Event to update the currently opened micro frontends with the latest authentication data. This is not required when processing authentication outside Luigi, for example when `oAuth2ImplicitGrant` provider processes the data in `callback.html` and redirects to Luigi afterward.
+
+```
+window.postMessage(
+  { msg: 'luigi.auth.tokenIssued', authData: data },
+  '*'
+);
+```

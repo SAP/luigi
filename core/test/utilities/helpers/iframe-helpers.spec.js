@@ -1,9 +1,12 @@
+import { Iframe } from '../../../src/services/iframe';
+
 const chai = require('chai');
 const assert = chai.assert;
 const sinon = require('sinon');
-const IframeHelpers = require('../../../src/utilities/helpers/iframe-helpers');
 import { afterEach } from 'mocha';
-import { LuigiConfig } from '../../../src/services/config';
+
+import { IframeHelpers } from '../../../src/utilities/helpers';
+import { LuigiConfig } from '../../../src/core-api';
 
 describe('Iframe-helpers', () => {
   let component;
@@ -26,6 +29,22 @@ describe('Iframe-helpers', () => {
     sinon.restore();
   });
 
+  describe('createIframe', () => {
+    it('createIframe', () => {
+      const iframe = IframeHelpers.createIframe('http://luigi.url.com/');
+      assert.equal(iframe.src, 'http://luigi.url.com/');
+    });
+
+    it('createIframe with view group', () => {
+      const iframe = IframeHelpers.createIframe(
+        'http://luigi.url.de/',
+        'ananas'
+      );
+      assert.equal(iframe.src, 'http://luigi.url.de/');
+      assert.equal(iframe.vg, 'ananas');
+    });
+  });
+
   describe('canReuseIframe', () => {
     const config = {
       iframe: {
@@ -39,20 +58,13 @@ describe('Iframe-helpers', () => {
       assert.equal(iframeOrigin, url);
     });
 
-    it('createIframe', () => {
-      const iframe = IframeHelpers.createIframe('http://luigi.url.com/');
-      assert.equal(iframe.src, 'http://luigi.url.com/');
-    });
-
     it('getVisibleIframes', () => {
-      sinon
-        .stub(document, 'querySelectorAll')
-        .callsFake(() => [
-          {
-            src: 'http://url.com/app.html!#/prevUrl',
-            style: { display: 'block' }
-          }
-        ]);
+      sinon.stub(document, 'querySelectorAll').callsFake(() => [
+        {
+          src: 'http://url.com/app.html!#/prevUrl',
+          style: { display: 'block' }
+        }
+      ]);
       const visibleIframes = IframeHelpers.getVisibleIframes();
       assert.equal(visibleIframes.length, 1);
     });
@@ -160,5 +172,41 @@ describe('Iframe-helpers', () => {
       previousNodeValues: { isolateView: true }
     });
     assert.isTrue(IframeHelpers.hasIframeIsolation(component));
+  });
+
+  it('getIframeContainer', () => {
+    sinon
+      .stub(document, 'querySelectorAll')
+      .onFirstCall()
+      .returns([])
+      .onSecondCall()
+      .returns(['firstIframe', 'secondIframe']);
+
+    // first
+    assert.equal(
+      IframeHelpers.getIframeContainer(),
+      undefined,
+      'no iframe found'
+    );
+    // second
+    assert.equal(
+      IframeHelpers.getIframeContainer(),
+      'firstIframe',
+      'returns first iframe'
+    );
+  });
+
+  describe('getAllIframes', () => {
+    it('should return an array of active iframes with no modal iframe', () => {
+      const iframes = IframeHelpers.getAllIframes();
+
+      assert.equal(iframes.length, 0);
+    });
+
+    it('should return an array of active iframes including active modal iframe', () => {
+      const iframes = IframeHelpers.getAllIframes({});
+
+      assert.equal(iframes.length, 1);
+    });
   });
 });

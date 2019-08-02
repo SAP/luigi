@@ -1,15 +1,17 @@
 const chai = require('chai');
 const assert = chai.assert;
 const sinon = require('sinon');
-const routing = require('../../src/services/routing');
-const GenericHelpers = require('../../src/utilities/helpers/generic-helpers');
 import { afterEach } from 'mocha';
-import { LuigiConfig } from '../../src/services/config';
+
+import { Routing } from '../../src/services/routing';
+import { GenericHelpers } from '../../src/utilities/helpers';
+import { LuigiConfig } from '../../src/core-api';
+import { Navigation } from '../../src/navigation/services/navigation';
 
 describe('Routing', () => {
   let component;
   beforeEach(() => {
-    window.dispatchEvent = sinon.spy();
+    sinon.spy(window, 'dispatchEvent');
     let lastObj = {};
     component = {
       set: obj => {
@@ -26,6 +28,66 @@ describe('Routing', () => {
       document.createElement.restore();
     }
     sinon.restore();
+    // sinon.reset();
+  });
+
+  describe('navigateTo', () => {
+    beforeEach(() => {
+      window.history.replaceState = sinon.spy();
+      window.history.pushState = sinon.spy();
+      window.dispatchEvent = sinon.spy();
+      sinon.stub(Navigation, 'extractDataFromPath').returns({});
+      sinon.stub(Navigation, 'shouldPreventNavigation').returns(false);
+      sinon.stub(Routing, 'getWindowPath');
+      sinon.stub(GenericHelpers, 'trimLeadingSlash').returnsArg(0);
+      sinon.stub(GenericHelpers, 'isIE').returns(false);
+    });
+
+    it('with path routing, does a browser history replace', async () => {
+      // given
+      const path = '/projects/teams';
+
+      // when
+      await Routing.navigateTo(path, false);
+
+      // then
+      sinon.assert.calledWithExactly(
+        window.history.replaceState,
+        { path },
+        '',
+        path
+      );
+      sinon.assert.notCalled(window.history.pushState);
+    });
+
+    it('should dispatch an event', async () => {
+      // given
+      LuigiConfig.getConfigValue.returns(false);
+
+      // when
+      await Routing.navigateTo('/projects');
+
+      // then
+      sinon.assert.calledWithExactly(
+        window.dispatchEvent,
+        new CustomEvent('popstate')
+      );
+    });
+  });
+
+  describe('getHashPath()', () => {
+    it('returns hash path from default param', () => {
+      window.location.hash = '#/projects/pr3';
+      const actual = Routing.getHashPath();
+      const expected = 'projects/pr3';
+      assert.equal(actual, expected);
+    });
+
+    it('returns hash path from provided input param', () => {
+      const actual = Routing.getHashPath('my-url#/projects/pr3');
+      const expected = 'projects/pr3';
+      assert.equal(actual, expected);
+    });
   });
 
   describe('buildFromRelativePath', () => {
@@ -43,7 +105,7 @@ describe('Routing', () => {
 
       // when
       window.location.hash = '/parent-node';
-      const route = routing.buildFromRelativePath(nodeWithParent);
+      const route = Routing.buildFromRelativePath(nodeWithParent);
 
       // then
       assert.equal(route, expectedRoute);
@@ -56,7 +118,7 @@ describe('Routing', () => {
 
       // when
       window.location.hash = '/parent-node/different-node';
-      const route = routing.buildFromRelativePath(nodeWithParent);
+      const route = Routing.buildFromRelativePath(nodeWithParent);
 
       // then
       assert.equal(route, expectedRoute);
@@ -155,6 +217,7 @@ describe('Routing', () => {
         builderCompatibilityMode: false,
         navigateOk: null
       };
+      sinon.stub(Routing, 'navigateTo');
     });
 
     it('should set component data with hash path', async () => {
@@ -164,7 +227,7 @@ describe('Routing', () => {
 
       // when
       sinon.stub(document, 'createElement').callsFake(() => ({ src: null }));
-      await routing.handleRouteChange(
+      await Routing.handleRouteChange(
         path,
         component,
         currentLuigiConfig.navigation.nodes()[0],
@@ -194,7 +257,7 @@ describe('Routing', () => {
 
       // when
       sinon.stub(document, 'createElement').callsFake(() => ({ src: null }));
-      await routing.handleRouteChange(
+      await Routing.handleRouteChange(
         path,
         component,
         currentLuigiConfig.navigation.nodes()[0],
@@ -238,7 +301,7 @@ describe('Routing', () => {
         .returns({ src: null })
         .once();
 
-      await routing.handleRouteChange(
+      await Routing.handleRouteChange(
         path,
         componentSaved,
         currentLuigiConfig.navigation.nodes()[0],
@@ -267,7 +330,7 @@ describe('Routing', () => {
       // when
       const iframeMock = { src: null };
       sinon.stub(document, 'createElement').callsFake(() => iframeMock);
-      await routing.handleRouteChange(
+      await Routing.handleRouteChange(
         path,
         component,
         currentLuigiConfig.navigation.nodes()[0],
@@ -292,7 +355,7 @@ describe('Routing', () => {
       // when
       const iframeMock = { src: null };
       sinon.stub(document, 'createElement').callsFake(() => iframeMock);
-      await routing.handleRouteChange(
+      await Routing.handleRouteChange(
         path,
         component,
         currentLuigiConfig.navigation.nodes()[0],
@@ -316,7 +379,7 @@ describe('Routing', () => {
       // when
       const iframeMock = { src: null };
       sinon.stub(document, 'createElement').callsFake(() => iframeMock);
-      await routing.handleRouteChange(
+      await Routing.handleRouteChange(
         path,
         component,
         currentLuigiConfig.navigation.nodes()[0],
@@ -339,7 +402,7 @@ describe('Routing', () => {
       // when
       const iframeMock = { src: null };
       sinon.stub(document, 'createElement').callsFake(() => iframeMock);
-      await routing.handleRouteChange(
+      await Routing.handleRouteChange(
         path,
         component,
         currentLuigiConfig.navigation.nodes()[0],
@@ -362,19 +425,13 @@ describe('Routing', () => {
         shouldShowUnsavedChangesModal: () => false
       };
       const node = {};
-      window.history.pushState = sinon.spy();
 
       // when
       LuigiConfig.config.navigation.hideNav = false;
-      await routing.handleRouteChange(path, component, node, config);
+      await Routing.handleRouteChange(path, component, node, config);
 
       // then
-      sinon.assert.calledWith(
-        window.history.pushState,
-        sinon.match.any,
-        sinon.match.any,
-        expectedPath
-      );
+      sinon.assert.calledWithExactly(Routing.navigateTo, expectedPath, false);
     });
 
     it("should set component's 'hideSideNav' property ", async () => {
@@ -387,7 +444,7 @@ describe('Routing', () => {
       //then
       assert.equal(component.get().hideSideNav, undefined);
 
-      await routing.handleRouteChange(path, component, node, config);
+      await Routing.handleRouteChange(path, component, node, config);
 
       assert.equal(component.get().hideSideNav, true);
     });
@@ -403,131 +460,102 @@ describe('Routing', () => {
     const nodeWithoutParent = {
       pathSegment: 'projects'
     };
-    const mockComponentData = {
-      pathParams: {},
-      nodeParams: {},
-      context: {}
-    };
 
-    it('should set proper location hash with parent node', () => {
-      // given
-      const expectedRoute = '#/projects/project-one';
-      LuigiConfig.getConfigValue.returns(true);
-
-      // when
-      routing.handleRouteClick(nodeWithParent, component);
-
-      // then
-      assert.equal(window.location.hash, expectedRoute);
+    beforeEach(() => {
+      sinon.stub(Navigation, 'extractDataFromPath').returns({});
+      sinon.stub(Navigation, 'shouldPreventNavigation').returns(false);
+      sinon.stub(Routing, 'navigateTo');
     });
 
-    it('should set proper location hash with normal node', () => {
-      // given
-      const expectedRoute = '#/projects';
-      LuigiConfig.getConfigValue.returns(true);
-
-      // when
-      routing.handleRouteClick(nodeWithoutParent, component);
-
-      // then
-      assert.equal(window.location.hash, expectedRoute);
-    });
-
-    it('should call pushState with proper path (with parent node)', () => {
+    it('node with parent, navigation to proper route', () => {
       // given
       const expectedRoute = '/projects/project-one';
-      const expectedPushStateCallsNum = 1;
-
-      window.history.pushState = sinon.spy();
-      const pushStateCallsNum = window.history.pushState.callCount;
-
-      LuigiConfig.getConfigValue.returns(false);
+      LuigiConfig.getConfigValue.returns(true);
 
       // when
-      routing.handleRouteClick(nodeWithParent, component);
+      Routing.handleRouteClick(nodeWithParent, component);
 
       // then
-      const pushStateArgs = window.history.pushState.args[0];
-      const singleStateWithPath = pushStateArgs[0];
-
-      assert.equal(singleStateWithPath.path, expectedRoute);
-      assert.equal(pushStateCallsNum + 1, expectedPushStateCallsNum);
+      sinon.assert.calledWithExactly(Routing.navigateTo, expectedRoute);
     });
 
-    it('should call pushState with proper path (with normal node)', () => {
+    it('node without parent, navigation to proper route', () => {
       // given
       const expectedRoute = '/projects';
-      const expectedPushStateCallsNum = 1;
-
-      window.history.pushState = sinon.spy();
-      const pushStateCallsNum = window.history.pushState.callCount;
-
-      LuigiConfig.getConfigValue.returns(false);
+      LuigiConfig.getConfigValue.returns(true);
 
       // when
-      routing.handleRouteClick(nodeWithoutParent, component);
+      Routing.handleRouteClick(nodeWithoutParent, component);
 
       // then
-      const pushStateArgs = window.history.pushState.args[0];
-      const singleStateWithPath = pushStateArgs[0];
-
-      assert.equal(singleStateWithPath.path, expectedRoute);
-      assert.equal(pushStateCallsNum + 1, expectedPushStateCallsNum);
-    });
-
-    it('should dispatch an event', () => {
-      // given
-      const expectedRoute = '/projects';
-      const expectedDispatchCallsNum = 1;
-
-      window.history.pushState = sinon.spy();
-      window.dispatchEvent = sinon.spy();
-      const dispatchCallsNum = window.dispatchEvent.callCount;
-      LuigiConfig.getConfigValue.returns(false);
-
-      // when
-      routing.handleRouteClick(nodeWithoutParent, component);
-
-      // then
-      const pushStateArgs = window.history.pushState.args[0];
-      const singleStateWithPath = pushStateArgs[0];
-
-      assert.equal(singleStateWithPath.path, expectedRoute);
-      assert.equal(dispatchCallsNum + 1, expectedDispatchCallsNum);
+      sinon.assert.calledWithExactly(Routing.navigateTo, expectedRoute);
     });
 
     it('should consume link with absolute path', () => {
       // given
-      const expectedRoute = '#/projects';
-      window.location.hash = '#/some/path';
+      const expectedRoute = '/projects';
       const inputNode = {
-        label: 'Absolute link',
         link: '/projects'
       };
 
       // when
-      LuigiConfig.getConfigValue.returns(true);
-      routing.handleRouteClick(inputNode, component);
+      Routing.handleRouteClick(inputNode, component);
 
       // then
-      assert.equal(window.location.hash, expectedRoute);
+      sinon.assert.calledWithExactly(Routing.navigateTo, expectedRoute);
     });
 
     it('should consume link with relative path', () => {
       // given
-      const expectedRoute = '#/some/path/projects';
-      window.location.hash = '#/some/path';
+      const expectedRoute = 'path-built-from-relative';
       const inputNode = {
-        label: 'Relative link',
         link: 'projects'
       };
+      sinon.stub(Routing, 'buildFromRelativePath').returns(expectedRoute);
 
       // when
-      LuigiConfig.getConfigValue.returns(true);
-      routing.handleRouteClick(inputNode, component);
+      Routing.handleRouteClick(inputNode, component);
 
       // then
-      assert.equal(window.location.hash, expectedRoute);
+      sinon.assert.calledOnce(Routing.buildFromRelativePath);
+      sinon.assert.calledWithExactly(Routing.navigateTo, expectedRoute);
+    });
+  });
+
+  describe('getModifiedPathname()', () => {
+    it('without state', () => {
+      sinon.stub(window.history, 'state').returns(null);
+      assert.equal(Routing.getModifiedPathname(), '');
+    });
+
+    it('with state path', () => {
+      sinon.stub(window.history, 'state').value({
+        path: '/this/is/some/'
+      });
+      assert.equal(Routing.getModifiedPathname(), 'this/is/some/');
+    });
+  });
+
+  describe('navigateToLink()', () => {
+    beforeEach(() => {
+      sinon.stub(Routing, 'navigateToExternalLink');
+      sinon.stub(Routing, 'navigateTo');
+    });
+
+    it('calls proper function if item is an external link with url', () => {
+      const url = 'https://github.com/SAP/luigi';
+      Routing.navigateToLink({ externalLink: { url } });
+      sinon.assert.calledOnce(Routing.navigateToExternalLink);
+      sinon.assert.calledWithExactly(Routing.navigateToExternalLink, { url });
+      sinon.assert.notCalled(Routing.navigateTo);
+    });
+
+    it('calls proper function if item is NOT an external link with url', () => {
+      const link = 'https://my-app/projects';
+      Routing.navigateToLink({ link });
+      sinon.assert.notCalled(Routing.navigateToExternalLink);
+      sinon.assert.calledOnce(Routing.navigateTo);
+      sinon.assert.calledWithExactly(Routing.navigateTo, link);
     });
   });
 
@@ -536,7 +564,7 @@ describe('Routing', () => {
       const externalLink = { url: 'http://localhost', sameWindow: true };
       sinon.stub(window, 'focus');
       sinon.stub(window, 'open').returns(window);
-      routing.navigateToExternalLink(externalLink);
+      Routing.navigateToExternalLink(externalLink);
       sinon.assert.calledOnce(window.open);
       sinon.assert.calledWithExactly(window.open, 'http://localhost', '_self');
       sinon.assert.calledOnce(window.focus);
@@ -546,7 +574,7 @@ describe('Routing', () => {
       const externalLink = { url: 'http://localhost', sameWindow: false };
       sinon.stub(window, 'focus');
       sinon.stub(window, 'open').returns(window);
-      routing.navigateToExternalLink(externalLink);
+      Routing.navigateToExternalLink(externalLink);
       sinon.assert.calledOnce(window.open);
       sinon.assert.calledWithExactly(window.open, 'http://localhost', '_blank');
       sinon.assert.calledOnce(window.focus);

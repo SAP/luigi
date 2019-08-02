@@ -56,11 +56,24 @@ export class OverviewComponent {
       link: '/projects/pr2',
       text: 'Node with link to another node',
       description: 'navigation node configuration to redirect to another path'
+    },
+    {
+      link: '/projects/pr1/on-node-activation',
+      text: 'Navigation node with node activation hook',
+      description:
+        'The navigation is not triggered when the method returns either false or a promise that resolves to false'
     }
   ];
 
   public isDirty = false;
   public sendDirtyEvent() {
     uxManager().setDirtyStatus(this.isDirty);
+  }
+
+  public updateBadgeCounters() {
+    window.parent.postMessage(
+      { msg: 'luigi.navigation.update-badge-counters' },
+      '*'
+    );
   }
 }

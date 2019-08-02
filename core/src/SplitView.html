@@ -1,0 +1,348 @@
+<svelte:window on:resize="onResize()"/>
+<div class="lui-split-view">
+  {#if collapsed}
+  <div class="splitViewSeparator isCollapsed">
+    <a
+      class="lui-collapse-btn"
+      on:click:stopPropagation:preventDefault="expand(event)"
+    >
+      <span class="sap-icon--navigation-up-arrow sap-icon--s"></span>
+    </a>
+  </div>
+  <h1 class="fd-splitView__title">{splitViewSettings.title}</h1>
+  {:else}
+  <div id="splitViewDragger" on:mousedown:stopPropagation="onDragStart(event)">
+    <div class="splitViewSeparator"></div>
+    <a
+      class="lui-collapse-btn"
+      on:click:stopPropagation:preventDefault="collapse(event)"
+    >
+      <span class="sap-icon--navigation-down-arrow sap-icon--s"></span>
+    </a>
+  </div>
+  <div id="splitViewDraggerBackdrop"></div>
+  <div class="iframeSplitViewCnt"></div>
+  {/if}
+</div>
+
+<script>
+  import { LuigiElements } from './core-api';
+  import { Iframe, SplitViewSvc } from './services';
+  import {
+    GenericHelpers,
+    IframeHelpers,
+    RoutingHelpers
+  } from './utilities/helpers';
+
+  let elements = {
+    draggable: null,
+    iframe: null,
+    split: null
+  };
+
+  const getNode = async (component, path) => {
+    if (component.get().isDataPrepared) {
+      if (!component.get().collapsed) {
+        SplitViewSvc.createAndSetView(component);
+      }
+    } else {
+      await SplitViewSvc.prepareSplitViewData(component, path);
+    }
+  };
+
+  const updateElementSelectors = () => {
+    elements.split = SplitViewSvc.getContainer();
+    elements.iframe = Iframe.getIframeContainer();
+    elements.draggable = SplitViewSvc.getDragger();
+  };
+
+  const setSplitViewSize = () => {
+    const draggerBackdrop = SplitViewSvc.getDraggerBackdrop();
+    if (draggerBackdrop) {
+      draggerBackdrop.style.display = 'none';
+    }
+
+    updateElementSelectors();
+    // setting again, to be sure its positioned when using it programmatically
+    if (elements.draggable) {
+      elements.draggable.style.top = `${SplitViewSvc.splitViewValues.top}px`;
+    }
+
+    elements.split.style.top = `${SplitViewSvc.splitViewValues.top}px`;
+    elements.iframe.style.paddingBottom = `${
+      SplitViewSvc.splitViewValues.bottom
+    }px`;
+  };
+
+  function messageHandler(e) {
+    const iframe = IframeHelpers.getValidMessageSource(e, this.root);
+    if (!iframe) return;
+
+    // actions, like collapse, expand, setSize as well as register
+    // event handlers: onCollapse, onExpand, onResize
+
+    if ('luigi.navigation.splitview.close' === e.data.msg) {
+      SplitViewSvc.close(this.root);
+    }
+    if ('luigi.navigation.splitview.collapse' === e.data.msg) {
+      this.collapse();
+    }
+    if ('luigi.navigation.splitview.expand' === e.data.msg) {
+      this.expand();
+    }
+    if ('luigi.navigation.splitview.resize' === e.data.msg) {
+      const percentBottom = parseInt(e.data.data);
+      SplitViewSvc.calculateAndSetSplitViewValues(
+        percentBottom,
+        SplitViewSvc.internalValues
+      );
+
+      // In case setSize gets called before expanding
+      if (this.get().collapsed) {
+        return;
+      }
+      setSplitViewSize();
+      SplitViewSvc.sendMessageToClients(
+        'resize.ok',
+        SplitViewSvc.splitViewValues.percent
+      );
+    }
+  }
+
+  export default {
+    oncreate() {
+      this.onResize();
+      window.addEventListener('message', messageHandler.bind(this));
+    },
+    onupdate({ changed, current, previous }) {
+      getNode(this, this.get().nodepath);
+      if (changed.isDataPrepared === true) {
+        setSplitViewSize();
+      }
+    },
+    ondestroy() {
+      window.removeEventListener('message', messageHandler.bind(this));
+    },
+    data() {
+      return {
+        isDataPrepared: false,
+        splitViewSettings: {}
+      };
+    },
+    methods: {
+      collapse(e) {
+        e && e.stopPropagation();
+        SplitViewSvc.collapse(this.root);
+      },
+      expand() {
+        SplitViewSvc.expand(this.root);
+        SplitViewSvc.getDraggerBackdrop().style.display = 'none';
+      },
+      onResize() {
+        const shellbarHeight = LuigiElements.getShellbar().clientHeight;
+        SplitViewSvc.internalValues.rightContentHeight =
+          window.innerHeight - shellbarHeight;
+        SplitViewSvc.internalValues.thresholdBottom = 30;
+        SplitViewSvc.internalValues.thresholdTop = shellbarHeight + 30;
+        SplitViewSvc.calculateAndSetSplitViewValues(
+          SplitViewSvc.splitViewValues.percent,
+          SplitViewSvc.internalValues
+        );
+        if (!this.get().collapsed) {
+          setSplitViewSize();
+        }
+      },
+      onDragStart(e) {
+        let m_pos = e.y;
+
+        const resize = function resize(re) {
+          const diff = m_pos - re.y;
+          m_pos = re.y;
+
+          const dragTop = parseInt(
+            getComputedStyle(elements.draggable, '').top
+          );
+
+          if (isNaN(dragTop) || diff === 0) {
+            // happens in collapsed state on mouse over draggable
+            return;
+          }
+
+          const newTop = dragTop - diff;
+          const newBottom = window.innerHeight - newTop;
+          const calculated = SplitViewSvc.enforceTreshHolds(
+            newTop,
+            newBottom,
+            SplitViewSvc.internalValues.thresholdTop,
+            SplitViewSvc.internalValues.thresholdBottom
+          );
+
+          SplitViewSvc.splitViewValues.top = calculated.top;
+          SplitViewSvc.splitViewValues.bottom = calculated.bottom;
+
+          elements.draggable.style.top = `${
+            SplitViewSvc.splitViewValues.top
+          }px`;
+        };
+
+        const onMouseUp = function onMouseUp() {
+          clearListeners();
+          if (
+            !SplitViewSvc.splitViewValues.top ||
+            !SplitViewSvc.splitViewValues.bottom ||
+            SplitViewSvc.splitViewValues.top ==
+              SplitViewSvc.internalValues.m_pos_prev
+          ) {
+            SplitViewSvc.getDraggerBackdrop().style.display = 'none';
+            return;
+          }
+          SplitViewSvc.internalValues.m_pos_prev =
+            SplitViewSvc.splitViewValues.top;
+
+          setSplitViewSize();
+          SplitViewSvc.splitViewValues.percent = GenericHelpers.computePercentFromPx(
+            SplitViewSvc.internalValues.rightContentHeight,
+            SplitViewSvc.splitViewValues.bottom
+          );
+          SplitViewSvc.sendMessageToClients(
+            'resize.ok',
+            SplitViewSvc.splitViewValues.percent
+          );
+        };
+
+        const clearListeners = function clearListeners() {
+          document.removeEventListener('mouseup', onMouseUp);
+          document.removeEventListener('mousemove', resize);
+        };
+        const addListeners = function resetListeners() {
+          document.addEventListener('mouseup', onMouseUp);
+          document.addEventListener('mousemove', resize);
+        };
+
+        updateElementSelectors();
+        clearListeners();
+        addListeners();
+        SplitViewSvc.getDraggerBackdrop().style.display = 'block';
+      }
+    }
+  };
+</script>
+<style type="text/scss">
+  $topNavHeight: 48px;
+  $leftNavWidth: 320px;
+  $collapsedSplitviewHeight: 38px;
+  $desktopMinWidth: 600px;
+  $colorNeutral4: #89919a;
+
+  .fd-splitView__title {
+    font-size: 16px;
+    line-height: $collapsedSplitviewHeight;
+    vertical-align: center;
+    padding-left: 32px;
+    background: #fff;
+  }
+
+  :global(#splitViewDragger) {
+    position: fixed;
+    bottom: 0;
+    right: 0;
+    left: $leftNavWidth;
+    top: 60%; /* default, overridden by computed.getIframeSplitViewTop */
+    height: 8px;
+    z-index: 2;
+    cursor: row-resize;
+    &:hover {
+      /* enlarge mouse move target */
+      margin-top: -15px;
+      padding-top: 15px;
+      padding-bottom: 15px;
+    }
+  }
+
+  :global(.splitViewSeparator) {
+    border-top: 2px $colorNeutral4 solid;
+    &.isCollapsed {
+      padding-bottom: 15px;
+      .lui-collapse-btn {
+        padding: 0;
+      }
+    }
+  }
+
+  .lui-collapse-btn {
+    width: 36px;
+    height: 20px;
+    background: white;
+    position: absolute;
+    left: 50%;
+    z-index: 1;
+    margin-left: -12px;
+    margin-top: -11px;
+    text-align: center;
+    padding: 1px;
+    border: 1px solid $colorNeutral4;
+    border-radius: 4px;
+    cursor: pointer;
+    &:focus {
+      -webkit-box-shadow: 0 0 0 1px #fafafa;
+      box-shadow: 0 0 0 1px #fafafa;
+      -webkit-box-shadow: 0 0 0 1px var(--fd-color-action-focus);
+      box-shadow: 0 0 0 1px var(--fd-color-action-focus);
+    }
+    &:hover {
+      --fd-button-background-color: var(--fd-color-neutral-1);
+      --fd-button-color: var(--fd-color-action-1);
+      color: #0a6ed1;
+      background-color: #fafafa;
+    }
+  }
+
+  :global(#splitViewDraggerBackdrop) {
+    position: fixed;
+    background-color: rgba(255, 255, 255, 0.7);
+    top: $topNavHeight;
+    right: 0;
+    bottom: 0;
+    left: $leftNavWidth;
+    z-index: 1;
+    display: none;
+  }
+
+  .lui-split-view {
+    height: 100%;
+
+    .splitViewSeparator.isCollapsed {
+      position: absolute;
+      width: 100%;
+      top: 0;
+      margin-bottom: 4px;
+    }
+
+    .iframeSplitViewCnt {
+      background-color: var(--fd-background-color);
+      position: absolute;
+      width: 100%;
+      bottom: 0;
+      top: 2px;
+      overflow: auto;
+      -webkit-overflow-scrolling: touch;
+    }
+    .iframeSplitViewCnt :global(iframe) {
+      width: 100%;
+      height: 100%;
+      border: 0;
+      position: absolute;
+    }
+  }
+
+  @media (max-width: $desktopMinWidth - 1) {
+    :global(body.lui-simpleSlideInNav) {
+      :global(.fd-app__sidebar) {
+        left: -$leftNavWidth;
+      }
+      :global(#splitViewContainer, #splitViewDragger, #splitViewDraggerBackdrop) {
+        left: 0 !important;
+      }
+    }
+  }
+</style>

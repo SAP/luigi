@@ -68,38 +68,52 @@
       }
     </style>
   </head>
+
   <body>
     <div class="panel">
       <h1>Login to Luigi sample app</h1>
       <form>
-        <input type="text" class="form-input" value="LuigiUsername" /><br />
-        <input type="password" class="form-input" value="LuigiPassword" /><br />
+        <input
+          type="text"
+          class="form-input"
+          value="LuigiUsername"
+          autocomplete="username"
+        /><br />
+        <input
+          type="password"
+          class="form-input"
+          value="LuigiPassword"
+          autocomplete="current-password"
+        /><br />
         <button id="login-button">Login</button>
       </form>
     </div>
     <script>
       window.onload = function() {
-        const redirectUrl = decodeURIComponent(
+        var redirectUrl = decodeURIComponent(
           window.location.href.match(/redirect_uri=(.*?)(&|$)/)[1]
         );
-        const state = decodeURIComponent(
+        var state = decodeURIComponent(
           window.location.href.match(/state=(.*?)(&|$)/)[1]
         );
-        const expiresIn = 3600;
+        var expiresIn = 3600;
 
-        const goTo = `${redirectUrl}#
-      expires_in=${expiresIn}&
-      state=${state}&
-      access_token=thisisanaccesstokenthatisnotreallyneeded&
-      id_token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.
-      eyJpc3MiOiJodHRwOi8vbG9jYWxob3N0OjQyMDAiLCJzdWIiOiJtYXNrb3Bhd
-      G9sIiwiZXhwIjoxNjQzNzY0OTIwLCJhenAiOiJtYXNrb3BhdG9sIiwibm9uY2
-      UiOiJidE5rWVZzc1FldVlWNmEyR1RVZm1wWVFFelBRN3c1ZENCbU54SG54Iiw
-      iZW1haWwiOiJsdWlnaXVzZXJAa3ltYS5jeCIsIm5hbWUiOiJMdWlnaSBVc2Vy
-      In0.YUBE3tufmmNIJHwzKRXlImteuh_qDeuwGjkzN3Z0erg&
-      token_type=bearer`;
+        var goTo =
+          redirectUrl +
+          '#expires_in=' +
+          expiresIn +
+          '&state=' +
+          state +
+          '&access_token=thisisanaccesstokenthatisnotreallyneeded& \
+      id_token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9. \
+      eyJpc3MiOiJodHRwOi8vbG9jYWxob3N0OjQyMDAiLCJzdWIiOiJtYXNrb3Bhd \
+      G9sIiwiZXhwIjoxNjQzNzY0OTIwLCJhenAiOiJtYXNrb3BhdG9sIiwibm9uY2 \
+      UiOiJidE5rWVZzc1FldVlWNmEyR1RVZm1wWVFFelBRN3c1ZENCbU54SG54Iiw \
+      iZW1haWwiOiJsdWlnaXVzZXJAa3ltYS5jeCIsIm5hbWUiOiJMdWlnaSBVc2Vy \
+      In0.YUBE3tufmmNIJHwzKRXlImteuh_qDeuwGjkzN3Z0erg& \
+      token_type=bearer';
 
-        const loginButton = document.getElementById('login-button');
+        var loginButton = document.getElementById('login-button');
 
         loginButton.addEventListener('click', function(ev) {
           ev.preventDefault();

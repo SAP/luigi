@@ -16,13 +16,36 @@ describe('ProductSwitcher', () => {
         .contains('hybris');
 
       //check if internal link is there
-      cy.get(
-        '.fd-product-switcher .fd-product-switcher__body .fd-product-switcher__product-title'
-      )
+      cy.get('.fd-product-switcher__product-title')
         .contains('Project 1')
         .click();
 
       cy.expectPathToBe('/projects/pr1');
+
+      cy.get('.fd-product-switcher__product-title').should(
+        'not.contain',
+        'Project 3'
+      );
+
+      cy.goToOverviewPage();
+      cy.expectPathToBe('/overview');
+
+      // add project
+      cy.selectContextSwitcherItem('New Project');
+      cy.expectPathToBe('/projects');
+
+      cy.get('.fd-product-switcher__product-title').should(
+        'contain',
+        'Project 3'
+      );
+
+      cy.get('.fd-product-switcher').click();
+
+      cy.get('.fd-product-switcher__product-title')
+        .contains('Project 3')
+        .click();
+
+      cy.expectPathToBe('/projects/pr3');
     });
 
     it('Mobile Product Switcher is not visible', () => {

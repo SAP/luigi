@@ -1,4 +1,8 @@
 const path = require('path');
+const { readFileSync } = require('fs');
+
+const babelSettings = JSON.parse(readFileSync('.babelrc'));
+
 module.exports = {
   entry: {
     luigiClient: './src/luigi-client.js'
@@ -19,9 +23,7 @@ module.exports = {
         exclude: /node_modules/,
         use: {
           loader: 'babel-loader',
-          options: {
-            rootMode: 'root'
-          }
+          options: babelSettings
         }
       }
     ]

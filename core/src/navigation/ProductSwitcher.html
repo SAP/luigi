@@ -1,4 +1,4 @@
-
+<svelte:window on:resize="setViewportHeightVariable()"/>
 {#if productSwitcherItems && productSwitcherItems.length &&
 Object.keys(productSwitcherItems[0]).length }
 <!-- DESKTOP VERSION (popover): -->
@@ -23,19 +23,26 @@ Object.keys(productSwitcherItems[0]).length }
         <div class="fd-product-switcher__body">
           <nav class="fd-menu">
             <ul class="fd-menu__list">
-              {#each productSwitcherItems as productSwitcherItem} {#if
-              productSwitcherItem.icon && productSwitcherItem.label}
+              {#each productSwitcherItems as productSwitcherItem}
+              {#if productSwitcherItem.label}
               <li on:click="onActionClick(productSwitcherItem)">
                 <a class="fd-menu__item">
-                  <span class="fd-product-switcher__product-icon">
-                    <img src="{productSwitcherItem.icon}">
+                  <span
+                    class="fd-product-switcher__product-icon {productSwitcherItem.icon && hasOpenUIicon(productSwitcherItem) ? 'sap-icon--' + productSwitcherItem.icon + ' sap-icon--m' : '' }"
+                  >
+                    {#if !hasOpenUIicon(productSwitcherItem)}
+                    <img
+                      src="{productSwitcherItem.icon}"
+                    >
+                    {/if}
                   </span>
                   <span
                     class="fd-product-switcher__product-title"
                   >{productSwitcherItem.label}</span>
                 </a>
               </li>
-              {/if} {/each}
+              {/if}
+              {/each}
             </ul>
           </nav>
         </div>
@@ -52,67 +59,73 @@ Object.keys(productSwitcherItems[0]).length }
     on:click="event.stopPropagation()"
   >
     <div class="fd-modal__content" role="document">
-      <div class="fd-modal__header">
-        <h1 class="fd-modal__title">My Products</h1>
-        <!-- TODO: add proper title -->
+      <div class="fd-action-bar">
+        <div class="fd-action-bar__back">
+          <button
+            class="fd-button--light fd-button--compact sap-icon--nav-back"
+            on:click="toggleDropdownState(event)"
+            data-cy="mobile-product-switcher-close"
+          ></button>
+        </div>
+        <div class="fd-action-bar__header">
+          <h5 class="fd-action-bar__title fd-has-type-1">My Products</h5>
+        </div>
       </div>
       <div class="fd-modal__body">
         <div class="fd-product-switcher__body">
           <ul class="y-full-width-list">
             {#each productSwitcherItems as productSwitcherItem}
-            {#if productSwitcherItem.icon && productSwitcherItem.label}
+            {#if productSwitcherItem.label}
             <li
               on:click="onActionClick(productSwitcherItem)"
               class="y-full-width-list__item"
             >
               <span
-                class="y-full-width-list__icon"
-                style="background-image: url({productSwitcherItem.icon})"
-              ></span>
-              <span class="y-full-width-list__title">{productSwitcherItem.label}</span>
-              <span class="y-full-width-list__subtitle">
-                <!-- Here comes the subtitle which is unknown for now -->
+                class="y-full-width-list__icon {productSwitcherItem.icon && hasOpenUIicon(productSwitcherItem) ? 'sap-icon--' + productSwitcherItem.icon + ' sap-icon--m' : '' }"
+              >
+                {#if !hasOpenUIicon(productSwitcherItem)}
+                <img
+                  src="{productSwitcherItem.icon}"
+                >
+                {/if}
               </span>
+              <span class="y-full-width-list__title">{productSwitcherItem.label}</span>
             </li>
             {/if}
             {/each}
           </ul>
         </div>
       </div>
-      <footer class="fd-modal__footer">
-        <div class="fd-modal__actions">
-          <button
-            class="fd-button"
-            on:click="toggleDropdownState(event)"
-            data-cy="mobile-product-switcher-close"
-          >Close</button>
-        </div>
-      </footer>
     </div>
   </div>
 </section>
 {/if}
 {/if}
 <script type="text/javascript">
-  import { LuigiConfig } from '../services/config.js';
-  import * as Routing from '../services/routing.js';
+  import { LuigiConfig } from '../core-api';
+  import { Routing } from '../services/routing';
+  import { StateHelpers } from '../utilities/helpers';
+  import { NavigationHelpers } from '../utilities/helpers';
+
   export default {
     async oncreate() {
-      const productSwitcherConfig = LuigiConfig.getConfigValue(
-        'navigation.productSwitcher'
-      );
-      this.set({
-        config: productSwitcherConfig
-      });
-
-      if (productSwitcherConfig) {
-        const productSwitcherItems = await LuigiConfig.getConfigValueAsync(
-          'navigation.productSwitcher.items'
+      StateHelpers.doOnStoreChange(this.store, async () => {
+        const productSwitcherConfig = LuigiConfig.getConfigValue(
+          'navigation.productSwitcher'
         );
         this.set({
-          productSwitcherItems
+          config: productSwitcherConfig
         });
-      }
+        if (productSwitcherConfig) {
+          const productSwitcherItems = await LuigiConfig.getConfigValueAsync(
+            'navigation.productSwitcher.items'
+          );
+          this.set({
+            productSwitcherItems
+          });
+        }
+        this.setViewportHeightVariable();
+      });
     },
     methods: {
       onActionClick(productSwitcherItem) {
@@ -124,11 +137,35 @@ Object.keys(productSwitcherItems[0]).length }
       toggleDropdownState(event = null) {
         if (event) event.stopPropagation();
         this.fire('toggleDropdownState');
+      },
+      setViewportHeightVariable() {
+        // get the viewport height and multiple it by 1% to get a value for a vh unit
+        let vh = window.innerHeight * 0.01;
+        // set the value in the --vh custom property to the root of the document
+        document.documentElement.style.setProperty('--vh', `${vh}px`);
+      }
+    },
+    helpers: {
+      hasOpenUIicon(node) {
+        return NavigationHelpers.isOpenUIiconName(node.icon);
       }
     }
   };
 </script>
 <style type="text/scss">
+  $topNavHeight: 48px;
+  $productSwitcherHeight: 64px;
+
+  :global(.fd-popover__body) {
+    overflow: auto;
+    max-height: calc(100vh - 50px);
+    max-height: calc(var(--vh, 1vh) * 100 - 50px);
+  }
+
+  .fd-product-switcher {
+    position: relative;
+    display: block;
+  }
   .fd-product-switcher__product-icon > img {
     max-height: 40px;
   }
@@ -137,6 +174,10 @@ Object.keys(productSwitcherItems[0]).length }
     .fd-menu__item {
       padding: 0;
       text-align: center;
+
+      &:hover {
+        background-color: transparent;
+      }
     }
   }
 
@@ -144,7 +185,7 @@ Object.keys(productSwitcherItems[0]).length }
     z-index: 1000;
     position: fixed;
     box-sizing: border-box;
-    top: 0;
+    top: $topNavHeight;
     left: 0;
     margin: auto auto;
 
@@ -153,7 +194,8 @@ Object.keys(productSwitcherItems[0]).length }
       border-radius: 0;
 
       width: calc(100vw - 2 * #{$margin});
-      height: calc(100vh - 2 * #{$margin});
+      height: 100vh; /* Fallback for browsers that do not support Custom Properties */
+      height: calc(var(--vh, 1vh) * 100);
       margin: $margin;
       display: grid;
       grid-template-rows: 1fr auto; //no row for title by default
@@ -172,8 +214,12 @@ Object.keys(productSwitcherItems[0]).length }
       }
     }
     .fd-modal__body {
-      max-height: none;
+      max-height: calc(100vh - #{$topNavHeight} - #{$productSwitcherHeight});
+      max-height: calc(
+        var(--vh, 1vh) * 100 - #{$topNavHeight} - #{$productSwitcherHeight}
+      );
       padding: 0;
+      -webkit-overflow-scrolling: touch;
     }
 
     .fd-modal__footer {
@@ -185,18 +231,44 @@ Object.keys(productSwitcherItems[0]).length }
     }
   }
 
+  @media (min-width: 320px) {
+    .fd-action-bar__back {
+      display: block !important;
+    }
+  }
+
+  @media (max-width: 1023px) {
+    .y-full-width-list {
+      &__icon {
+        img {
+          width: 16px;
+          vertical-align: top;
+        }
+      }
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .fd-product-switcher {
+      &__product-icon {
+        &.sap-icon--m {
+          &:before {
+            font-size: 38px;
+          }
+        }
+      }
+    }
+  }
+
   .y-full-width-list {
     width: 100%;
     text-align: left;
     list-style: none;
 
     &__item {
-      display: grid;
-      grid-template-columns: 40px auto;
-      grid-template-rows: 1fr 1fr;
-      grid-gap: 2px 8px;
-
-      padding: 12px 8px;
+      display: block;
+      padding: 12px 15px;
+      cursor: pointer;
       cursor: pointer;
 
       &:hover {
@@ -205,15 +277,6 @@ Object.keys(productSwitcherItems[0]).length }
           font-weight: bold;
         }
       }
-    }
-
-    &__icon {
-      vertical-align: middle;
-      width: 40px;
-      height: 40px;
-      grid-row: 1 / 3;
-      background-position: center;
-      background-size: cover;
     }
 
     &__title {

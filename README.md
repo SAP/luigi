@@ -1,4 +1,8 @@
+[![Build Status](https://travis-ci.org/SAP/luigi.svg?branch=master)](https://travis-ci.org/SAP/luigi)
 # Luigi
+<p align="center">
+ <img src="https://raw.githubusercontent.com/sap/luigi/master/logo.png" width="235">
+</p>
 
 ## Overview
 
@@ -21,8 +25,51 @@ View the [application examples](core/examples) to explore Luigi's features.
 
 For details, see [Luigi documentation](docs/README.md).
 
+## Browser support
+
+If you want to support Internet Explorer 11 in your application, update your Luigi imports as follows:
+### Luigi Core
+```html
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <link rel='stylesheet' href='/luigi-core/luigi-ie11.css'>
+    <!-- <link rel='stylesheet' href='/luigi-core/luigi.css'> -->
+  </head>
+  <body>
+    <script type="module" src="/luigi-core/luigi.js"></script>
+    <script nomodule src="/luigi-core/luigi-ie11.js"></script>
+    <!-- <script src="/luigi-core/luigi.js"></script> -->
+  </body>
+</html>
+``` 
+
+### Luigi Client
+```javascript
+import {
+  linkManager,
+  uxManager
+} from '@kyma-project/luigi-client/luigi-client-ie11';
+// } from '@kyma-project/luigi-client';
+``` 
+
+>**NOTE**: The angular example application is not fully compatible with IE11.
 
 ## Development
+
+### Development guidelines for micro frontend developers
+
+For security reasons, follow these guidelines when developing a micro frontend:
+
+- Make the micro frontend accessible only through HTTPS.
+- Add Content Security Policies (CSPs).
+- Make the Access-Control-Allow-Origin HTTP header as restrictive as possible.
+- Maintain a whitelist with trusted domains and compare it with the origin of the Luigi Core application. The origin will be passed when you call the init listener in your micro frontend. Stop further processing if the origin does not match.
+
+
+>**NOTE**: Luigi follows these [sandbox rules for iframes](https://github.com/SAP/luigi/blob/af1deebb392dcec6490f72576e32eb5853a894bc/core/src/utilities/helpers/iframe-helpers.js#L140).
+
+
 
 ### Code formatting for contributors
 
@@ -50,3 +97,8 @@ Install [jq](https://stedolan.github.io/jq/) using the `brew install jq` command
 - Run `npm run test:compatibility` in the main repository folder to start regression testing. The system will prompt you to select the previous version. 
 - Run `npm run test:compatibility -- --tag latest` in the main repository folder to start regression testing with the last version preselected. 
 - On the CI, run `npm run test:compatibility -- --install --tag latest` in the main repository folder to install dependencies, bundle Luigi and run the tests with the last version preselected. 
+
+## License
+
+Copyright (c) 2019 SAP SE or an SAP affiliate company. All rights reserved.
+This file is licensed under the Apache-2.0 license except as noted otherwise in the [LICENSE](/LICENSE) file.

@@ -1,4 +1,5 @@
-import * as Helpers from '../../utilities/helpers/generic-helpers.js';
+import { GenericHelpers } from '../../utilities/helpers';
+import { LuigiConfig } from '../../core-api';
 
 export const ContextSwitcherHelpers = {
   getPreparedParentNodePath(config) {
@@ -8,7 +9,7 @@ export const ContextSwitcherHelpers = {
       );
     }
     if (config.parentNodePath) {
-      return Helpers.addTrailingSlash(config.parentNodePath);
+      return GenericHelpers.addTrailingSlash(config.parentNodePath);
     }
     return config.parentNodePath;
   },
@@ -28,14 +29,16 @@ export const ContextSwitcherHelpers = {
   },
 
   isContextSwitcherDetailsView(currentPath, parentNodePath) {
-    const currentPathNormalized = Helpers.normalizePath(currentPath);
-    const parentNodePathNormalized = Helpers.normalizePath(parentNodePath);
+    const currentPathNormalized = GenericHelpers.normalizePath(currentPath);
+    const parentNodePathNormalized = GenericHelpers.normalizePath(
+      parentNodePath
+    );
 
     return Boolean(
       parentNodePath &&
         currentPathNormalized &&
         currentPathNormalized.startsWith(parentNodePathNormalized) &&
-        !currentPathNormalized.endsWith(parentNodePathNormalized)
+        currentPathNormalized !== parentNodePathNormalized
     );
   },
 
@@ -49,8 +52,8 @@ export const ContextSwitcherHelpers = {
     parentNodePath,
     fallbackLabelResolver
   ) {
-    currentPath = Helpers.normalizePath(currentPath);
-    parentNodePath = Helpers.normalizePath(parentNodePath);
+    currentPath = GenericHelpers.normalizePath(currentPath);
+    parentNodePath = GenericHelpers.normalizePath(parentNodePath);
 
     if (
       !ContextSwitcherHelpers.isContextSwitcherDetailsView(
@@ -84,6 +87,20 @@ export const ContextSwitcherHelpers = {
         fallbackLabelResolver,
         selectedId
       ))
+    );
+  },
+
+  async fetchOptions(existingOptions = []) {
+    const config = LuigiConfig.getConfigValue('navigation.contextSwitcher');
+    if (!config.lazyloadOptions && existingOptions.length) {
+      return existingOptions;
+    }
+    const contextSwitcherOptions = await LuigiConfig.getConfigValueAsync(
+      'navigation.contextSwitcher.options'
+    );
+    return await ContextSwitcherHelpers.generateSwitcherNav(
+      config,
+      contextSwitcherOptions
     );
   }
 };

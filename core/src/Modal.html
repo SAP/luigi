@@ -1,3 +1,4 @@
+<svelte:window on:keydown="handleKeydown(event)"/>
 <div class="fd-ui__overlay fd-overlay fd-overlay--modal" style="z-index:999">
   <div class="fd-modal" data-e2e="modal-mf">
     <div class="fd-modal__content" style="height:100%">
@@ -16,29 +17,29 @@
   </div>
 </div>
 <script>
-  import * as Navigation from './navigation/services/navigation';
-  import * as RoutingHelpers from './utilities/helpers/routing-helpers';
-  import { LuigiConfig } from './services/config';
-  import * as GenericHelpers from './utilities/helpers/generic-helpers';
-  import {createIframe} from './utilities/helpers/iframe-helpers';
+  import { Navigation } from './navigation/services/navigation';
+  import {
+    GenericHelpers,
+    IframeHelpers,
+    RoutingHelpers
+  } from './utilities/helpers';
+  import { LuigiConfig } from './core-api';
 
   const prepareNodeData = async (component, path) => {
     const pathUrlRaw =
       path && path.length ? GenericHelpers.getPathWithoutHash(path) : '';
-    const pathData = await Navigation.getNavigationPath(
-      LuigiConfig.getConfigValueAsync('navigation.nodes'),
-      path
-    );
     const params = RoutingHelpers.parseParams(pathUrlRaw.split('?')[1]);
     const nodeParams = RoutingHelpers.getNodeParams(params);
-    const lastNode = RoutingHelpers.getLastNodeObject(pathData);
+
+    const { nodeObject, pathData } = await Navigation.extractDataFromPath(path);
+
     const modalSettings = component.get().modalSettings;
     if (!modalSettings.title) {
-      modalSettings.title = lastNode.label;
+      modalSettings.title = nodeObject.label;
     }
     component.set({
       modalSettings,
-      lastNode,
+      nodeObject,
       pathData,
       nodeParams,
       isDataPrepared: true
@@ -47,9 +48,14 @@
 
   const getNode = async (component, path) => {
     if (component.get().isDataPrepared) {
-      const { nodeParams, lastNode, modalSettings, pathData } = component.get();
+      const {
+        nodeParams,
+        nodeObject,
+        modalSettings,
+        pathData
+      } = component.get();
       const iframe = createIframeModal(
-        lastNode.viewUrl,
+        nodeObject.viewUrl,
         {
           context: pathData.context,
           pathParams: pathData.pathParams,
@@ -82,7 +88,12 @@
     if (viewUrl) {
       viewUrl = RoutingHelpers.substituteViewUrl(viewUrl, componentData);
     }
-    const iframe = createIframe(viewUrl);
+
+    const iframe = IframeHelpers.createIframe(
+      viewUrl,
+      undefined,
+      component.get().nodeObject.clientPermissions
+    );
     const iframeCtn = document.querySelector('.iframeModalCtn');
     iframeCtn.appendChild(iframe);
     return iframe;
@@ -97,6 +108,13 @@
       return {
         isDataPrepared: false
       };
+    },
+    methods: {
+      handleKeydown(event) {
+        if (event.keyCode === 27) {
+          this.fire('close');
+        }
+      }
     }
   };
 </script>
@@ -109,6 +127,8 @@
     position: relative;
     height: 100%;
     width: 100%;
+    overflow: auto;
+    -webkit-overflow-scrolling: touch;
   }
   .iframeModalCtn :global(iframe) {
     width: 100%;

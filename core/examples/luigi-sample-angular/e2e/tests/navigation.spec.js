@@ -33,6 +33,18 @@ describe('Navigation', () => {
     cy.get('.fd-app__sidebar').should('contain', 'Second Child');
   });
 
+  it('Browser back works with Default Child mechanism', () => {
+    cy.getIframeBody().then($iframeBody => {
+      cy.wrap($iframeBody)
+        .contains('defaultChildNode')
+        .click();
+      cy.expectPathToBe('/projects/pr1/dps/dps2');
+
+      cy.window().historyBack();
+      cy.expectPathToBe('/overview');
+    });
+  });
+
   it('Icon instead of label in TopNav', () => {
     cy.visit('/');
     cy.get('button[title="Settings"]>.fd-top-nav__icon').should('exist');
@@ -51,6 +63,70 @@ describe('Navigation', () => {
       .contains('Project Settings')
       .find('.fd-side-nav__icon')
       .should('exist');
+  });
+
+  it('Shows Kyma version in LeftNav', () => {
+    // projects page
+    cy.get('.fd-shellbar')
+      .contains('Projects')
+      .click();
+
+    cy.get('.fd-app__sidebar .lui-side-nav__footer')
+      .contains('Luigi Client:')
+      .should('be.visible');
+
+    cy.window().then(win => {
+      const config = win.Luigi.getConfig();
+      config.settings.sideNavFooterText = 'Hello from tets.';
+      win.Luigi.setConfig(config);
+
+      cy.get('.fd-app__sidebar .lui-side-nav__footer')
+        .contains('Hello from tets.')
+        .should('be.visible');
+    });
+  });
+
+  describe('Node activation hook', () => {
+    const nodeActivationPath = '/projects/pr1/on-node-activation';
+    it('does not navigate - synchronously', () => {
+      cy.visit(nodeActivationPath);
+
+      cy.getIframeBody().then($iframeBody => {
+        cy.wrap($iframeBody)
+          .find('[data-e2e="node-activation-no-navigation"]')
+          .click();
+
+        cy.expectPathToBe(nodeActivationPath);
+        cy.get('[data-cy="luigi-alert"]').contains(
+          'Showing an alert instead of navigating'
+        );
+      });
+    });
+
+    it('does not navigate - asynchronously (from left navigation)', () => {
+      cy.visit(nodeActivationPath);
+
+      cy.get('.sap-icon--question-mark').click();
+
+      cy.get('[data-cy=luigi-modal-dismiss]').click();
+
+      cy.expectPathToBe(nodeActivationPath);
+    });
+
+    it('navigates - asynchronously', () => {
+      cy.visit(nodeActivationPath);
+
+      cy.getIframeBody().then($iframeBody => {
+        // wrap the body of your iframe with cy so as to do cy actions inside iframe elements
+        cy.wrap($iframeBody)
+          .find('[data-e2e="node-activation-conditional-navigation"]')
+          .click();
+
+        cy.get('[data-cy=luigi-modal-confirm]').click();
+
+        cy.expectPathToBe(`${nodeActivationPath}/navigated`);
+      });
+    });
   });
 
   // Disabled, since it only works if autologin is false
@@ -77,14 +153,8 @@ describe('Navigation', () => {
       cy.wait(500);
       // dig into the iframe
 
-      cy.get('iframe').then(function($element) {
-        let iframeBody, cyIframe;
-        // this gets the body of your iframe
-        iframeBody = $element.contents().find('body');
-        // wrap this body with cy so as to do cy actions inside iframe elements
-        cyIframe = cy.wrap(iframeBody);
-        //now you can forget about that you are in iframe. you can do necessary actions finding the elements inside the iframe
-        cyIframe
+      cy.getIframeBody().then($iframeBody => {
+        cy.wrap($iframeBody)
           .find('.fd-list-group__item')
           .contains('keepSelectedForChildren')
           .click();
@@ -94,12 +164,9 @@ describe('Navigation', () => {
       cy.expectPathToBe('/projects/pr1/avengers');
 
       //the iframe is has been replaced with another one, we need to "get" it again
-      cy.get('iframe').then(function($element) {
-        const iframeBody = $element.contents().find('body');
+      cy.getIframeBody().then($iframeBody => {
         // wrap this body with cy so as to do cy actions inside iframe elements
-        const cyIframe = cy.wrap(iframeBody);
-
-        cyIframe
+        cy.wrap($iframeBody)
           .find('.fd-list-group__item')
           .contains('Thor')
           .click();
@@ -117,15 +184,8 @@ describe('Navigation', () => {
           .click();
 
         cy.wait(500);
-        cy.get('iframe').then(function($element) {
-          let iframeBody, cyIframe;
-          // this gets the body of your iframe
-          iframeBody = $element.contents().find('body');
-          // wrap this body with cy so as to do cy actions inside iframe elements
-          cyIframe = cy.wrap(iframeBody);
-          //now you can forget about that you are in iframe. you can do necessary actions finding the elements inside the iframe
-          // {cyElement is the cypress object here}
-          cyIframe
+        cy.getIframeBody().then($iframeBody => {
+          cy.wrap($iframeBody)
             .find('.fd-list-group__item strong')
             .contains('Node with link to another node')
             .click();
@@ -177,6 +237,31 @@ describe('Navigation', () => {
 
       cy.get('.no-side-nav').should('exist');
       cy.get('.fd-app__sidebar').should('not.be.visible');
+    });
+
+    it('Open navigation node in a modal', () => {
+      // projects page
+      cy.get('.fd-shellbar')
+        .contains('Projects')
+        .click();
+
+      //projects page
+      cy.get('.fd-app__sidebar')
+        .contains('Project Two')
+        .click();
+
+      //project two page
+      cy.expectPathToBe('/projects/pr2');
+
+      cy.get('.fd-app__sidebar')
+        .contains('Miscellaneous2')
+        .click();
+
+      cy.get('[data-e2e=modal-mf]').should('be.visible');
+
+      cy.get('[data-e2e=modal-mf] [aria-label=close]').click();
+
+      cy.get('[data-e2e=modal-mf]').should('not.be.visible');
     });
   });
 });

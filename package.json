@@ -7,7 +7,9 @@
     "husky": "^1.3.1",
     "lerna": "^3.9.0",
     "lerna-changelog": "^0.8.0",
-    "prettier": "^1.15.3"
+    "prettier": "^1.15.3",
+    "lodash": ">=4.17.13",
+    "lodash.template": ">=4.5.0"
   },
   "prettier": {
     "singleQuote": true
@@ -18,14 +20,14 @@
       "breaking": ":boom: Breaking Change",
       "enhancement": ":rocket: Added",
       "bug": ":bug: Fixed",
-      "area/documentation": ":memo: Documentation"
+      "documentation": ":memo: Documentation",
+      "internal": ":house: Internal"
     },
     "cacheDir": ".changelog"
   },
   "husky": {
     "hooks": {
-      "pre-commit": "./scripts/apply-formatters.sh && ./scripts/remove-test-prefixes.sh",
-      "pre-push": "lerna run prepush"
+      "pre-commit": "./scripts/hooks/apply-formatters.sh && ./scripts/hooks/remove-test-prefixes.sh && ./scripts/hooks/generate-docu.sh"
     }
   }
 }

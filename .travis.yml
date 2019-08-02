@@ -2,25 +2,33 @@ language: node_js
 node_js:
   - '11.14' #TODO: change it to 'node' once Travis supports the newest version
 dist: trusty
-install: npm install --prefix core
+install: 
+  - npm ci --prefix core
+  - npm ci --prefix client
+cache: npm
 notifications:
   slack:
-    secure: QwIOjeEBI7jBFtNi+emfq4vVmASXMQZsEaNebwxwN7Kwql+j5qgp9tbtfCKPeYWVjTUKzN0UdugJawNd3mQIWhL4vovVWjURxTSZnGMHWErqljiqycfA+XqfgizfsTueppry2KJk09QVf74JLliwJWQTmeJwm/lm6O/ljCYFFWUC2us6m225+Oaq3MeMhD7k1j8+kG5jRO22nN5Zzh3ZTj85+adLldUmZsvbzYYcI/sSjfMgY5Gzd9zHl5FUgdu2UWELKptDJNqS5B5b4tiou2Ah9ArcDuhiTfZrkwwCJh+8w2Rr2NPEbZbgchR9hjSUqtFTqgo3bdlHkHp9RiWAEN3J3rlJ3SvODFTp0qcwf2e4TX0GouGQY++6YHZB1GLhaxCz8H08V9d7DjljSOappyZFJHq9fQoS8znBn89rC8q2K90D7laACARFFSqluqx9TaYp7jUoqTkv60d1dD1JmDxHx3cFfWGYsWOKdUaDPfqEYr0LzH0sKsEuf2qVRnKVLqIZtMn9G2cBQc3EraiHwRcW6kqoYUzW8I1m6gr/T+ITgWIhK0voY2E28zTZTbAPoqWa1Wtrk2DVD5UyR6ebH6zv1s+Y2xzyxxkLsvZFzrXACj+oSU66sP1yUhUpTpQ+HFpakJKbOfiJP9tGpnvkah3IfpiKgisG0ARaenjStm0=
+    secure: wiOchVgoiKNUikjCeIhsuv3Y5jolFud6ercdZdO3+JigQqkmoAC95f2jKTYEdplJWyJr8JY6z0+UJNceHyr5YJx/l1wpm6Zq+3H4dq/V0yUXH1uhw2eaTzweX2vjfw0bzewEdc1CGl4kSfdyTajnbKgt+mtnrAV9lPqiXYSOOJTu5BCFomi7u2GhAz1JjBK6P4Ar2jXm+oc81nYjj40P8bZFlA7Rjm0hNN42MMkKvnD8OHztL3EwezKHXlQW7fN4eOrhPOMbT3NRU72g9Nir+lfoKJlch1zPoHXQ7DRp41uGyHV/qfvfRLzXwxftZK6kdvzMe0eI0i1aIm0R6AE0bLphB2o/klJzyQpqSiQgETTH0qJN+3px2kddGrw7Me+UNC/1zZrt1MJfWf0h6WjXTsPDJf3ajLsn8OoIeBTRZbAb9as3UWQZcknuuMf8oGUzZkrZNMWYqo3py0+qWm4wSbWXWVUCgVAIYA6oEADwq37z59HySGkyHI4gEPzxsYODfCuvO4pJX1h4vEyH7w2IigwhDAPq5G4Vdez9ZFS96p/LSCF+iH8yWMy294u8wk5ofWUutFFv0JC45LQBXu51a2TeQkalwVn4DiuxxHE6jZieREw75YFjra4jpWsyziWkzshGT75NCra6cKAbNa4T8n6Pm3ogjEPeeWAO3psgSdo=
 jobs:
   include:
-    #----- UNIT -----
-    - stage: 'Tests'
-      name: 'Unit Tests'
-      script: npm test --prefix core
-      #no cache for unit tests = more speed
-      
-    #----- INTEGRATION -----
-    - name: 'Integration Tests'
-      script: bash ./test/e2e.sh
+    #----- DOCU -----
+    - stage: 'Documentation & Tests'
+      name: 'Check Documentation'
+      script: bash ./scripts/docuCheck.sh
       cache:
         directories:
           - npm: true
-          - ~/.cache
+          - ~/.cache-docu
+
+    #----- UNIT -----
+    - name: 'Unit Tests'
+      script: npm test --prefix core
+      #no cache for unit tests = more speed
+      
+    # ----- INTEGRATION -----
+    - name: 'Integration Tests'
+      script: bash ./test/e2e.sh
+      cache: npm
       addons:
         chrome: stable
       before_install:
@@ -28,3 +36,9 @@ jobs:
       before_cache:
         - rm -rf ~/.cache/Cypress/cy/production/browsers #it is individual for each run anyway so caching it slows down the job
 
+    # ----- NPM PUBLISH -----
+    - stage: 'Publish'
+      name: 'Publish to NPM'
+      if: repo = SAP/luigi AND (branch = master OR branch ~= ^release-v)
+      script: bash ./scripts/npmPublish.sh
+      #cache: npm

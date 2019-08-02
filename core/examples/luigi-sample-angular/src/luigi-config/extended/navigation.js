@@ -1,4 +1,13 @@
-import { navigationPermissionChecker, projectsNavProviderFn } from './helpers';
+import {
+  navigationPermissionChecker,
+  projectsNavProviderFn,
+  projectsCounterFn,
+  addProject,
+  removeProject,
+  getProjectCount,
+  projectExists,
+  getMockBadgeCount
+} from './helpers';
 
 class Navigation {
   constructor(navigationPermissionChecker, projectsNavProviderFn) {
@@ -17,8 +26,12 @@ class Navigation {
     {
       pathSegment: 'projects',
       label: 'Projects',
-      viewUrl: '/sampleapp.html#/projects/overview',
-      children: projectsNavProviderFn
+      viewUrl: '/sampleapp.html#/projects',
+      children: projectsNavProviderFn,
+      badgeCounter: {
+        label: 'Number of projects',
+        count: projectsCounterFn
+      }
     },
     {
       hideFromNav: true,
@@ -53,14 +66,15 @@ class Navigation {
       viewGroup: 'tets'
     },
     {
+      category: { label: 'Misc', icon: 'badge' },
       label: 'Open Google in this tab',
-
       externalLink: {
         url: 'http://google.com',
         sameWindow: true
       }
     }, // showing an anonymous content is possible only with auto login disabled
     {
+      category: 'Misc',
       pathSegment: 'all-users',
       label: 'Visible for all users',
       anonymousAccess: true,
@@ -75,6 +89,7 @@ class Navigation {
       hideSideNav: true
     },
     {
+      category: 'Misc',
       pathSegment: 'ext',
       label: 'External Page',
       loadingIndicator: {
@@ -108,21 +123,41 @@ class Navigation {
       viewUrl: '/assets/404.html',
       hideFromNav: true,
       hideSideNav: true
+    },
+    {
+      category: { label: 'Messages', icon: 'lightbulb' },
+      label: 'Errors',
+      viewUrl: '/sampleapp.html#/projects/pr1/dynamic/errors',
+      icon: 'alert',
+      badgeCounter: {
+        label: 'Number of Errors',
+        count: () => 2
+      }
+    },
+    {
+      category: 'Messages',
+      label: 'Warnings',
+      viewUrl: '/sampleapp.html#/projects/pr1/dynamic/warnings',
+      icon: 'message-warning',
+      badgeCounter: {
+        label: 'Number of Warnings',
+        count: () => 5
+      }
+    },
+    {
+      category: 'Messages',
+      label: 'Notifications',
+      viewUrl: '/sampleapp.html#/projects/pr1/dynamic/notifications',
+      icon: 'ui-notifications',
+      badgeCounter: {
+        label: 'Number of Notifications',
+        count: getMockBadgeCount
+      }
     }
   ];
-  // The following configuration will be used to render the context switcher component
-  contextSwitcher = {
-    defaultLabel: 'Select Environment ...',
-    parentNodePath: '/environments', // absolute path
-    lazyloadOptions: true, // load options on click instead on page load
-    options: () =>
-      [...Array(10).keys()]
-        .filter(n => n !== 0)
-        .map(n => ({
-          label: 'Environment ' + n, // (i.e mapping between what the user sees and what is taken to replace the dynamic part for the dynamic node)
-          pathValue: 'env' + n // will be used to replace dynamic part
-        })),
-    actions: [
+
+  getContextSwitcherActions = () => {
+    const actions = [
       {
         label: '+ New Environment (top)',
         link: '/create-environment'
@@ -136,8 +171,58 @@ class Navigation {
           return true; // route change will be done using link value (if defined)
           // return false // route change will not be done even if link attribute is defined
         }
+      },
+      {
+        label: '+ New Project',
+        link: '/projects',
+        position: 'bottom',
+        clickHandler: node => {
+          const p = addProject();
+          Luigi.setConfig(Luigi.getConfig());
+          Luigi.showAlert({
+            text: `${p.name} created.`,
+            type: 'info',
+            closeAfter: 3000
+          });
+          return true;
+        }
       }
-    ],
+    ];
+
+    if (getProjectCount() > 0) {
+      actions.push({
+        label: '\u2212 Remove Project',
+        link: '/projects',
+        position: 'bottom',
+        clickHandler: node => {
+          const p = removeProject();
+          Luigi.setConfig(Luigi.getConfig());
+          Luigi.showAlert({
+            text: `${p.name} removed.`,
+            type: 'info',
+            closeAfter: 3000
+          });
+          return true;
+        }
+      });
+    }
+
+    return actions;
+  };
+
+  // The following configuration will be used to render the context switcher component
+  contextSwitcher = {
+    defaultLabel: 'Select Environment ...',
+    parentNodePath: '/environments', // absolute path
+    lazyloadOptions: true, // load options on click instead on page load
+    options: () =>
+      [...Array(10).keys()]
+        .filter(n => n !== 0)
+        .map(n => ({
+          label: 'Environment ' + n, // (i.e mapping between what the user sees and what is taken to replace the dynamic part for the dynamic node)
+          pathValue: 'env' + n // will be used to replace dynamic part
+        })),
+    actions: this.getContextSwitcherActions,
 
     /**
      * fallbackLabelResolver
@@ -147,33 +232,82 @@ class Navigation {
      */
     fallbackLabelResolver: id => id.replace(/\b\w/g, l => l.toUpperCase())
   };
-  // The following configuration will be used to render a product switcher component
-  productSwitcher = {
-    items: [
+
+  getProductSwitcherItems = () => {
+    const items = [
       {
-        icon: 'https://sap.github.io/fundamental/images/products/06.png',
+        icon:
+          'https://pbs.twimg.com/profile_images/1143452953858183170/QLk-HGmK_bigger.png',
         label: 'hybris',
         externalLink: {
           url: 'https://www.hybris.com',
           sameWindow: false
         }
-      },
-      {
-        icon: 'https://sap.github.io/fundamental/images/products/06.png',
+      }
+    ];
+    if (projectExists('pr1')) {
+      items.push({
+        icon:
+          'https://pbs.twimg.com/profile_images/1143452953858183170/QLk-HGmK_bigger.png',
         label: 'Project 1',
         link: '/projects/pr1'
-      },
-      {
-        icon: 'https://sap.github.io/fundamental/images/products/06.png',
+      });
+    }
+    if (projectExists('pr2')) {
+      items.push({
+        icon:
+          'https://pbs.twimg.com/profile_images/1143452953858183170/QLk-HGmK_bigger.png',
         label: 'Project 2',
         link: '/projects/pr2'
-      },
-      {
-        icon: 'https://sap.github.io/fundamental/images/products/06.png',
+      });
+    }
+    if (projectExists('pr3')) {
+      items.push({
+        icon:
+          'https://pbs.twimg.com/profile_images/1143452953858183170/QLk-HGmK_bigger.png',
         label: 'Project 3',
         link: '/projects/pr3'
+      });
+    }
+    return items;
+  };
+
+  // The following configuration will be used to render a product switcher component
+  productSwitcher = {
+    items: this.getProductSwitcherItems
+  };
+
+  getProfileItems = () => {
+    const items = [
+      {
+        label: 'Luigi in Github',
+        externalLink: {
+          url: 'https://github.com/SAP/luigi',
+          sameWindow: false
+        }
       }
-    ]
+    ];
+    if (projectExists('pr1')) {
+      items.push({
+        icon: '',
+        label: 'Project 1',
+        link: '/projects/pr1'
+      });
+    }
+    if (projectExists('pr2')) {
+      items.push({
+        icon: '',
+        label: 'Project 2',
+        link: '/projects/pr2'
+      });
+    }
+    if (projectExists('pr3')) {
+      items.push({
+        label: 'Project 3',
+        link: '/projects/pr3'
+      });
+    }
+    return items;
   };
 
   profile = {
@@ -181,24 +315,7 @@ class Navigation {
       label: 'End session'
       // icon: "sys-cancel",
     },
-    items: [
-      {
-        label: 'Luigi in Github',
-        externalLink: {
-          url: 'https://github.com/kyma-project/luigi',
-          sameWindow: false
-        }
-      },
-      {
-        icon: '',
-        label: 'Project 1',
-        link: '/projects/pr1'
-      },
-      {
-        label: 'Project 3',
-        link: '/projects/pr3'
-      }
-    ]
+    items: this.getProfileItems
   };
 }
 

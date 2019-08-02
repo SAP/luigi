@@ -37,18 +37,42 @@ const getProjectPlugins = projectId =>
     }
   });
 
+let allProjects = [
+  {
+    id: 'pr1',
+    name: 'Project One'
+  },
+  {
+    id: 'pr2',
+    name: 'Project Two'
+  }
+];
+
+export const addProject = newProject => {
+  allProjects.push(
+    newProject || {
+      id: 'pr' + (allProjects.length + 1),
+      name: 'Project ' + (allProjects.length + 1)
+    }
+  );
+  return allProjects[allProjects.length - 1];
+};
+
+export const removeProject = () => {
+  return allProjects.pop();
+};
+
+export const projectExists = projectId => {
+  return Boolean(allProjects.find(p => p.id === projectId));
+};
+
+export const getProjectCount = () => {
+  return allProjects.length;
+};
+
 const getAllProjects = () =>
   new Promise(resolve => {
-    resolve([
-      {
-        id: 'pr1',
-        name: 'Project One'
-      },
-      {
-        id: 'pr2',
-        name: 'Project Two'
-      }
-    ]);
+    resolve(allProjects);
   });
 
 const projectDetailNavProviderFn = context =>
@@ -67,6 +91,17 @@ const projectDetailNavProviderFn = context =>
         });
       });
       resolve(children);
+    });
+  });
+
+export const projectsCounterFn = context =>
+  new Promise(resolve => {
+    getAllProjects().then(function(result) {
+      if (result.length) {
+        resolve(result.length);
+      } else {
+        resolve(undefined);
+      }
     });
   });
 
@@ -94,6 +129,9 @@ export const projectsNavProviderFn = context =>
             currentProject: project.id
           },
           icon: 'folder-blank',
+          clientPermissions: {
+            changeCurrentLocale: true
+          },
           children: projectDetailNavProviderFn
         });
       });
@@ -115,3 +153,10 @@ export const navigationPermissionChecker = (
     mockCurrentUserGroups.includes(c)
   );
 };
+
+let mockBadgeCount = 0;
+setInterval(() => {
+  mockBadgeCount++;
+  // Luigi.navigation().updateTopNavigation(); // update top navigation with each count update
+}, 5000);
+export const getMockBadgeCount = () => mockBadgeCount;

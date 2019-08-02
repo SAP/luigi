@@ -1,107 +1,21 @@
-<div class="fd-app__sidebar {hideNavComponent ? 'hideNavComponent' : ''}">
+<svelte:window
+  on:resize="onResize()"
+  on:click="closePopupMenu()"
+  on:blur="closePopupMenu()"
+/>
+<div
+  class="fd-app__sidebar {hideNavComponent ? 'hideNavComponent' : ''} {footerText || semiCollapsible ? 'hasFooter' : ''}"
+>
   {#if children && pathData.length > 1}
-  <nav class="fd-side-nav" on:keyup="handleKey(event)">
-    {#each sortedChildrenEntries as [key, nodes]} {#if key === 'undefined' || key.indexOf(virtualGroupPrefix) === 0}
-    <div class="fd-side-nav__group">
-      <ul class="fd-side-nav__list">
-        {#each nodes as node} {#if !node.hideFromNav} {#if node.label}
-        <li
-          class="fd-side-nav__item {node.externalLink && node.externalLink.url ? 'fd-side-nav__item--external' : ''}"
-        >
-          <a
-            href="javascript:void(null)"
-            class="fd-side-nav__link {node === selectedNode ? 'is-selected' : ''} fd-side-nav__link--icon"
-            on:click="handleClick(node)"
-          >
-            {#if node.icon} {#if isOpenUIiconName(node.icon)}
-            <span
-              class="fd-side-nav__icon sap-icon--{node.icon} sap-icon--l"
-            ></span>
-            {:else}
-            <img class="fd-side-nav__icon" src="{node.icon}">
-            {/if}
-            {:else}
-            <span
-              class="fd-side-nav__icon sap-icon--lui-blank sap-icon--l"
-            ></span>
-            {/if} {node.label} {#if node.externalLink && node.externalLink.url}
-            <span
-              class="sap-icon--action sap-icon--s"
-            ></span>
-            {/if}
-          </a>
-        </li>
-        {/if} {/if} {/each}
-      </ul>
-    </div>
-    {:else}
-    <div class="fd-side-nav__group">
-      <ul class="fd-side-nav__list">
-        {#if nodes.metaInfo.collapsible}
-        <li class="fd-side-nav__item">
-          <a
-            href="javascript:void(null)"
-            class="fd-side-nav__link has-child"
-            aria-haspopup="true"
-            aria-expanded="{isExpanded(nodes, expandedCategories)}"
-            on:click="setExpandedState(nodes, !isExpanded(nodes, expandedCategories))"
-          >
-            {#if isOpenUIiconName(nodes.metaInfo.icon)}
-            <span
-              class="fd-side-nav__icon {'sap-icon--' + nodes.metaInfo.icon} sap-icon--l"
-              role="presentation"
-            ></span>
-            {:else}
-            <img
-              class="fd-side-nav__icon"
-              src="{nodes.metaInfo.icon}"
-            >
-            {/if}
-            {key}
-          </a>
-          <ul
-            class="fd-side-nav__sublist"
-            aria-hidden="{!isExpanded(nodes, expandedCategories)}"
-          >
-            {#each nodes as node} {#if !node.hideFromNav} {#if node.label}
-            <li
-              class="fd-side-nav__subitem {node.externalLink && node.externalLink.url ? 'fd-side-nav__item--external' : ''}"
-            >
-              <a
-                href="javascript:void(null)"
-                class="fd-side-nav__sublink {node === selectedNode ? 'is-selected' : ''}"
-                on:click="handleClick(node)"
-              >
-                {node.label} {#if node.externalLink && node.externalLink.url}
-                <span
-                  class="sap-icon--action sap-icon--s"
-                ></span>
-                {/if}
-              </a>
-            </li>
-            {/if} {/if} {/each}
-          </ul>
-        </li>
-        {:else}
-        <li class="fd-side-nav__title lui-category">
-          {#if hasCategoriesWithIcon} {#if
-          isOpenUIiconName(nodes.metaInfo.icon)}
-          <span
-            class="fd-side-nav__icon {nodes.metaInfo.icon ? 'sap-icon--' + nodes.metaInfo.icon : ''} sap-icon--l"
-            role="presentation"
-          ></span>
-          {:else}
-          <img
-            class="fd-side-nav__icon"
-            src="{nodes.metaInfo.icon}"
-          >
-          {/if}
-          {/if} {key}
-        </li>
-        <ul class="fd-side-nav__sublist">
+  <div class="lui-fd-side-nav-wrapper">
+    <nav class="fd-side-nav" on:keyup="handleKey(event)">
+      {#each sortedChildrenEntries as [key, nodes]} {#if key === 'undefined' || key.startsWith(virtualGroupPrefix)}
+      <div class="fd-side-nav__group">
+        <ul class="fd-side-nav__list">
           {#each nodes as node} {#if !node.hideFromNav} {#if node.label}
           <li
-            class="fd-side-nav__subitem {node.externalLink && node.externalLink.url ? 'fd-side-nav__item--external' : ''}"
+            class="fd-side-nav__item {node.externalLink && node.externalLink.url ? 'fd-side-nav__item--external' : ''}"
+            title="{isSemiCollapsed ? node.label : ''}"
           >
             <a
               href="javascript:void(null)"
@@ -120,10 +34,11 @@
               {/if}
               {:else}
               <span
-                class="fd-side-nav__icon sap-icon--lui-blank sap-icon--l"
+                class="fd-side-nav__icon sap-icon--l"
               ></span>
-              {/if} {node.label} {#if node.externalLink &&
-              node.externalLink.url}
+              {/if}
+              <span class="fd-side-nav__text">{node.label}</span>
+              {#if node.externalLink && node.externalLink.url}
               <span
                 class="sap-icon--action sap-icon--s"
               ></span>
@@ -132,18 +47,172 @@
           </li>
           {/if} {/if} {/each}
         </ul>
+      </div>
+      {:else}
+      <div class="fd-side-nav__group">
+        {#if nodes.metaInfo && nodes.metaInfo.label === selectedCategory}
+        <div class="lui-flyout-sublist">
+          <div class="lui-flyout-sublist__wrapper">
+            <h5
+              class="lui-flyout-sublist__title fd-has-type-minus-1 fd-has-color-text-4"
+            >{key}</h5>
+            <ul class="fd-side-nav__sublist">
+              {#each nodes as node} {#if !node.hideFromNav} {#if node.label}
+              <li
+                class="fd-side-nav__subitem {node.externalLink && node.externalLink.url ? 'fd-side-nav__item--external' : ''}"
+              >
+                <a
+                  href="javascript:void(null)"
+                  class="fd-side-nav__sublink {node === selectedNode ? 'is-selected' : ''}"
+                  on:click="handleClick(node)"
+                >
+                  {node.label} {#if node.externalLink && node.externalLink.url}
+                  <span
+                    class="sap-icon--action sap-icon--s"
+                  ></span>
+                  {/if}
+                </a>
+              </li>
+              {/if} {/if} {/each}
+            </ul>
+          </div>
+        </div>
         {/if}
-      </ul>
-    </div>
-    {/if} {/each}
-  </nav>
+        <ul class="fd-side-nav__list">
+          {#if nodes.metaInfo.collapsible}
+          <li
+            class="fd-side-nav__item lui-collapsible-item"
+            on:click="handleIconClick(nodes, this)"
+            title="{isSemiCollapsed ? key : ''}"
+          >
+            <a
+              href="javascript:void(null)"
+              class="fd-side-nav__link has-child"
+              aria-haspopup="true"
+              aria-expanded="{isExpanded(nodes, expandedCategories)}"
+              on:click="setExpandedState(nodes, !isExpanded(nodes, expandedCategories), this)"
+            >
+              {#if isOpenUIiconName(nodes.metaInfo.icon)}
+              <span
+                class="fd-side-nav__icon {'sap-icon--' + nodes.metaInfo.icon} {isSemiCollapsed && !nodes.metaInfo.icon ? 'sap-icon--rhombus-milestone-2' : ''} sap-icon--l"
+                role="presentation"
+              ></span>
+              {:else}
+              <img
+                class="fd-side-nav__icon"
+                src="{nodes.metaInfo.icon}"
+              >
+              {/if}
+              <span class="fd-side-nav__text">{key}</span>
+            </a>
+            <ul
+              class="fd-side-nav__sublist"
+              aria-hidden="{!isExpanded(nodes, expandedCategories)}"
+            >
+              {#each nodes as node} {#if !node.hideFromNav} {#if node.label}
+              <li
+                class="fd-side-nav__subitem {node.externalLink && node.externalLink.url ? 'fd-side-nav__item--external' : ''}"
+              >
+                <a
+                  href="javascript:void(null)"
+                  class="fd-side-nav__sublink {node === selectedNode ? 'is-selected' : ''}"
+                  on:click="handleClick(node)"
+                >
+                  {node.label} {#if node.externalLink && node.externalLink.url}
+                  <span
+                    class="sap-icon--action sap-icon--s"
+                  ></span>
+                  {/if}
+                </a>
+              </li>
+              {/if} {/if} {/each}
+            </ul>
+          </li>
+          {:else}
+          <li
+            class="fd-side-nav__title lui-category"
+            on:click="handleIconClick(nodes, this)"
+            title="{isSemiCollapsed ? key : ''}"
+          >
+            {#if hasCategoriesWithIcon} {#if
+            isOpenUIiconName(nodes.metaInfo.icon)}
+            <span
+              class="fd-side-nav__icon {nodes.metaInfo.icon ? 'sap-icon--' + nodes.metaInfo.icon : ''} {isSemiCollapsed && !nodes.metaInfo.icon ? 'sap-icon--rhombus-milestone-2' : ''} sap-icon--l"
+              role="presentation"
+            ></span>
+            {:else}
+            <img
+              class="fd-side-nav__icon"
+              src="{nodes.metaInfo.icon}"
+            >
+            {/if}
+            {/if}
+            <span
+              class="fd-side-nav__text"
+            >{key}</span>
+          </li>
+          <ul class="fd-side-nav__sublist">
+            {#each nodes as node} {#if !node.hideFromNav} {#if node.label}
+            <li
+              class="fd-side-nav__subitem {node.externalLink && node.externalLink.url ? 'fd-side-nav__item--external' : ''}"
+            >
+              <a
+                href="javascript:void(null)"
+                class="fd-side-nav__link {node === selectedNode ? 'is-selected' : ''} fd-side-nav__link--icon"
+                on:click="handleClick(node)"
+              >
+                {#if node.icon} {#if isOpenUIiconName(node.icon)}
+                <span
+                  class="fd-side-nav__icon sap-icon--{node.icon} sap-icon--l"
+                ></span>
+                {:else}
+                <img
+                  class="fd-side-nav__icon"
+                  src="{node.icon}"
+                >
+                {/if}
+                {:else}
+                <span
+                  class="fd-side-nav__icon sap-icon--l"
+                ></span>
+                {/if} {node.label} {#if node.externalLink &&
+                node.externalLink.url}
+                <span
+                  class="sap-icon--action sap-icon--s"
+                ></span>
+                {/if}
+              </a>
+            </li>
+            {/if} {/if} {/each}
+          </ul>
+          {/if}
+        </ul>
+      </div>
+      {/if} {/each}
+    </nav>
+  </div>
+  {/if}
+  {#if footerText || semiCollapsible}
+  <span class="lui-side-nav__footer">
+    <span
+      class="lui-side-nav__footer--text fd-has-type-minus-1"
+    >{footerText ? footerText : ''}</span>
+    {#if semiCollapsible}
+    <span
+      class="lui-side-nav__footer--icon {isSemiCollapsed ? 'sap-icon--open-command-field' : 'sap-icon--close-command-field'}"
+      on:click="semiCollapsibleButtonClicked(this)"
+    ></span>
+    {/if}
+  </span>
   {/if}
 </div>
 
 <script type="text/javascript">
-  import * as Navigation from './services/navigation.js';
-  import * as NavigationHelpers from '../utilities/helpers/navigation-helpers';
-  import { LuigiConfig } from '../services/config.js';
+  import { Navigation } from './services/navigation';
+  import { NavigationHelpers } from '../utilities/helpers';
+  import { LuigiConfig, LuigiElements } from '../core-api';
+  import { StateHelpers } from '../utilities/helpers';
+  import { CSS_BREAKPOINTS } from '../utilities/constants';
 
   const setLeftNavData = async (current, component) => {
     const componentData = component.get();
@@ -158,16 +227,42 @@
   export default {
     data() {
       return {
-        virtualGroupPrefix: NavigationHelpers.virtualGroupPrefix
+        virtualGroupPrefix: NavigationHelpers.virtualGroupPrefix,
+        selectedCategory: null
       };
     },
     oncreate() {
+      const responsiveNavSetting = LuigiConfig.getConfigValue(
+        'settings.responsiveNavigation'
+      );
+      const semiCollapsible = responsiveNavSetting === 'semiCollapsible';
       this.set({
         hideNavComponent: LuigiConfig.getConfigBooleanValue(
           'settings.hideNavigation'
         ),
-        expandedCategories: NavigationHelpers.loadExpandedCategories()
+        expandedCategories: NavigationHelpers.loadExpandedCategories(),
+        responsiveNavSetting,
+        previousWindowWidth: window.innerWidth,
+        semiCollapsible
       });
+
+      StateHelpers.doOnStoreChange(this.store, () => {
+        this.set({
+          footerText: LuigiConfig.getConfigValue('settings.sideNavFooterText')
+        });
+      });
+
+      // set isSemiCollapsed to true for mobile
+      if (
+        semiCollapsible &&
+        window.innerWidth < CSS_BREAKPOINTS.desktopMinWidth
+      ) {
+        this.setIsSemiCollapsed(true);
+      }
+      const isSemiCollapsed = semiCollapsible
+        ? this.getIsSemiCollapsed()
+        : false;
+      this.setIsSemiCollapsed(isSemiCollapsed);
     },
     onstate({ changed, current, previous }) {
       if (!previous || previous.pathData != current.pathData) {
@@ -191,11 +286,90 @@
         return (
           expandedList && expandedList.indexOf(nodes.metaInfo.categoryUid) >= 0
         );
-      }
+      },
+      isFooterVisible(footerText) {
+        return Boolean(footerText);
+        // respect also 'responsiveNavigation' setting in the future.
+        // the footer should also be visible if it's possible to collapse the Nav
+      },
+      getFooterText() {}
     },
     methods: {
       handleClick(node) {
+        if (this.getIsSemiCollapsed()) {
+          this.closePopupMenu();
+        }
         this.fire('handleClick', { node });
+      },
+
+      handleIconClick(nodeOrNodes, el) {
+        if (this.getIsSemiCollapsed()) {
+          event.stopPropagation();
+
+          let selectedCategory;
+          let sideBar = document.getElementsByClassName('fd-app__sidebar')[0];
+
+          if (nodeOrNodes.metaInfo && nodeOrNodes.metaInfo.label) {
+            selectedCategory = nodeOrNodes.metaInfo.label;
+          } else {
+            selectedCategory =
+              (nodeOrNodes.category && nodeOrNodes.category.label) ||
+              nodeOrNodes.category;
+          }
+
+          if (!sideBar.classList.contains('isBlocked')) {
+            sideBar.className += ' isBlocked';
+          }
+
+          // only close if same clicked
+          if (selectedCategory === this.get().selectedCategory) {
+            this.closePopupMenu();
+            return;
+          }
+
+          this.set({
+            selectedCategory
+          });
+
+          this.calculateFlyoutPosition(el);
+        }
+      },
+
+      calculateFlyoutPosition(el) {
+        //Calculate top/bottom position for flyout sublist
+        let parent = el.closest('.fd-side-nav__group');
+        let parentTopPosition = parent.offsetTop;
+        let shellbarHeight = LuigiElements.getShellbar().offsetHeight;
+        let flyoutSublist = parent.getElementsByClassName(
+          'lui-flyout-sublist'
+        )[0];
+        let topScroll = el.closest('nav').scrollTop;
+        let topPosition = parentTopPosition + shellbarHeight - topScroll;
+        let bottomPosition =
+          window.innerHeight -
+          parentTopPosition -
+          parent.offsetHeight +
+          topScroll -
+          shellbarHeight;
+
+        if (topPosition + flyoutSublist.offsetHeight >= window.innerHeight) {
+          flyoutSublist.style.bottom = bottomPosition + 'px';
+          flyoutSublist.className += ' has-bottom-position';
+        } else {
+          flyoutSublist.style.top = topPosition + 'px';
+        }
+      },
+
+      onResize() {
+        if (this.get().semiCollapsible) {
+          const isDesktopToMobile =
+            window.innerWidth < CSS_BREAKPOINTS.desktopMinWidth &&
+            this.get().previousWindowWidth >= CSS_BREAKPOINTS.desktopMinWidth;
+          if (isDesktopToMobile) {
+            this.setIsSemiCollapsed(true);
+          }
+          this.closePopupMenu();
+        }
       },
 
       handleKey(event) {
@@ -209,19 +383,83 @@
       },
 
       setExpandedState(nodes, value) {
+        if (this.getIsSemiCollapsed()) {
+          return;
+        }
+
         this.set({
           expandedCategories: NavigationHelpers.storeExpandedState(
             nodes.metaInfo.categoryUid,
             value
           )
         });
+      },
+
+      getIsSemiCollapsed() {
+        return localStorage.getItem(NavigationHelpers.COL_NAV_KEY) === 'true';
+      },
+
+      setIsSemiCollapsed(state) {
+        document.body.classList.remove('semiCollapsed');
+        // add if true
+        if (state) {
+          document.body.classList.add('semiCollapsed');
+        }
+        // initial state
+        this.set({ isSemiCollapsed: state });
+        localStorage.setItem(NavigationHelpers.COL_NAV_KEY, state);
+      },
+
+      closePopupMenu() {
+        if (this.get().selectedCategory) {
+          this.set({ selectedCategory: null });
+          document
+            .getElementsByClassName('fd-app__sidebar')[0]
+            .classList.remove('isBlocked');
+        }
+      },
+
+      semiCollapsibleButtonClicked(el) {
+        this.closePopupMenu();
+
+        if (!this.getIsSemiCollapsed()) {
+          this.setIsSemiCollapsed(true);
+
+          //Force browser to re-render vertical scrollbar
+          document
+            .getElementsByClassName('fd-side-nav')[0]
+            .setAttribute('style', 'overflow-y:hidden;');
+          window.setTimeout(function() {
+            document
+              .getElementsByClassName('fd-side-nav')[0]
+              .setAttribute('style', 'overflow-y:auto;');
+          });
+        } else {
+          this.setIsSemiCollapsed(false);
+        }
       }
     }
   };
 </script>
 
 <style type="text/scss">
+  @import 'styles/mixins';
+
+  :root {
+    /* needed for IE11 support */
+    --fd-color-neutral-1: #fafafa;
+    --fd-color-neutral-2: #eeeeef;
+    --fd-color-neutral-3: #d9d9d9;
+    --fd-color-text-2: #51555a;
+    --fd-color-text-4: #74777a;
+  }
+
   $topNavHeight: 48px;
+  $leftNavWidthCollapsed: 40px;
+  $footerPaddingVertical: 13px;
+  $footerHeight: calc(16px + (2 * #{$footerPaddingVertical}));
+  /* text height + vertical padding */
+
   a {
     cursor: pointer;
     outline-offset: -1px;
@@ -231,39 +469,77 @@
     -ms-user-select: none;
   }
   .fd-app__sidebar {
+    width: 320px;
     position: fixed;
     top: $topNavHeight;
     left: 0;
-    width: 320px;
     bottom: 0;
+    display: flex;
+    justify-content: space-between;
+    flex-direction: column;
     background-color: white;
     color: #32363a;
+    @include box-shadow(1px 1px 2px 0 rgba(0, 0, 0, 0.05));
+
+    .lui-fd-side-nav-wrapper {
+      height: 100%;
+    }
+
+    &.hasFooter {
+      .lui-fd-side-nav-wrapper {
+        height: calc(100% - 50px);
+      }
+    }
+  }
+
+  .fd-side-nav {
+    height: 100%;
     overflow-y: auto;
     overflow-x: hidden;
-    -moz-box-shadow: 1px 1px 2px 0 rgba(0, 0, 0, 0.05);
-    -webkit-box-shadow: 1px 1px 2px 0 rgba(0, 0, 0, 0.05);
-    box-shadow: 1px 1px 2px 0 rgba(0, 0, 0, 0.05);
+    -webkit-overflow-scrolling: touch;
+    background-color: transparent;
+
+    &__link {
+      .sap-icon--action {
+        //external-link icon
+        margin-left: 0.3em;
+        vertical-align: middle;
+      }
+      .fd-side-nav__icon {
+        width: 2em;
+      }
+    }
+
+    &__sublink {
+      &.fd-side-nav__link--icon {
+        padding-left: 16px;
+      }
+      .fd-side-nav__icon {
+        width: 2em;
+      }
+    }
   }
-  .fd-side-nav__link {
-    .sap-icon--action {
-      //external-link icon
-      margin-left: 0.3em;
-      vertical-align: middle;
+
+  .lui-side-nav__footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    &--text {
+      color: var(--fd-color-text-4);
+      white-space: nowrap;
+      width: auto;
+      padding: $footerPaddingVertical 20px;
+      @include transition(all 0.1s linear);
+      text-overflow: ellipsis;
+      overflow: hidden;
+      max-width: 100%;
     }
-    .fd-side-nav__icon {
-      width: 2em;
+
+    &--icon {
+      cursor: pointer;
+      padding: $footerPaddingVertical 20px;
     }
-  }
-  .fd-side-nav__sublink {
-    &.fd-side-nav__link--icon {
-      padding-left: 16px;
-    }
-    .fd-side-nav__icon {
-      width: 2em;
-    }
-  }
-  .hideNavComponent {
-    display: none;
   }
 
   .lui-category {
@@ -302,6 +578,322 @@
     max-height: 100%;
     &.sap-icon--m::before {
       width: 1.25rem;
+    }
+  }
+
+  :global(.lui-semiCollapsible) {
+    .fd-app__sidebar {
+      @include transition(width 0.1s linear);
+
+      .fd-side-nav {
+        .fd-side-nav__item,
+        .lui-collapsible-item,
+        .lui-category {
+          width: 100%;
+          @include transition(width 0.1s linear);
+        }
+
+        .fd-side-nav__title,
+        .fd-side-nav__link {
+          white-space: nowrap;
+        }
+
+        .fd-side-nav__list {
+          .fd-side-nav__sublist {
+            width: 100%;
+            @include transition(width 0.1s linear);
+
+            .fd-side-nav__sublink {
+              white-space: nowrap;
+            }
+          }
+        }
+      }
+    }
+
+    .lui-side-nav__footer {
+      &--text {
+        max-width: calc(100% - 50px);
+      }
+    }
+  }
+
+  :global(.semiCollapsed) {
+    .fd-app__sidebar {
+      width: $leftNavWidthCollapsed;
+
+      .lui-fd-side-nav-wrapper {
+        overflow: hidden;
+      }
+
+      .fd-side-nav {
+        min-width: auto;
+        width: ($leftNavWidthCollapsed + 70px);
+        padding-right: 70px;
+        margin-right: -70px;
+
+        .fd-side-nav__title {
+          background-color: transparent;
+          border-top: none;
+          overflow: hidden;
+          cursor: pointer;
+
+          &:hover {
+            background-color: var(--fd-color-neutral-1);
+          }
+        }
+
+        .fd-side-nav__item,
+        .lui-collapsible-item,
+        .lui-category {
+          width: $leftNavWidthCollapsed;
+          overflow: hidden;
+        }
+
+        .lui-collapsible-item,
+        .lui-category {
+          position: relative;
+
+          &:after {
+            display: block;
+            content: '\e066';
+            position: absolute;
+            top: 50%;
+            right: 4px;
+            font-family: SAP-icons;
+            transform: translateY(-50%);
+            font-size: 10px;
+            opacity: 0;
+            color: var(--fd-color-text-2);
+            animation-name: arrowAnimation;
+            animation-duration: 0.2s;
+            animation-fill-mode: forwards;
+
+            @-webkit-keyframes arrowAnimation {
+              0% {
+                opacity: 0;
+              }
+              90% {
+                opacity: 0;
+              }
+              100% {
+                opacity: 1;
+              }
+            }
+
+            @keyframes arrowAnimation {
+              0% {
+                opacity: 0;
+              }
+              90% {
+                opacity: 0;
+              }
+              100% {
+                opacity: 1;
+              }
+            }
+          }
+        }
+
+        .lui-collapsible-item .fd-side-nav__link[aria-expanded='true'] {
+          background-color: transparent;
+        }
+
+        .fd-side-nav__icon {
+          line-height: 1;
+          width: auto;
+
+          &:before {
+            font-size: 16px;
+          }
+        }
+
+        .fd-side-nav__list {
+          .fd-side-nav__sublist {
+            width: 40px;
+            height: 0;
+            opacity: 0;
+            visibility: hidden;
+          }
+        }
+
+        .fd-side-nav__title,
+        .fd-side-nav__link {
+          padding: 10px;
+          line-height: 1;
+
+          img {
+            width: 18px;
+          }
+        }
+
+        .fd-side-nav__link {
+          &:hover,
+          &.is-hover {
+            color: var(--fd-color-text-2);
+          }
+
+          &.has-child {
+            background-image: none;
+          }
+        }
+
+        .fd-side-nav__text {
+          width: $leftNavWidthCollapsed;
+          margin-left: 12px;
+          opacity: 1;
+          visibility: visible;
+          animation-name: labelAnimation;
+          animation-duration: 0.1s;
+          animation-fill-mode: forwards;
+
+          @-webkit-keyframes labelAnimation {
+            0% {
+              opacity: 1;
+              visibility: visible;
+            }
+            100% {
+              opacity: 0;
+              visibility: hidden;
+            }
+          }
+
+          @keyframes labelAnimation {
+            0% {
+              opacity: 1;
+              visibility: visible;
+            }
+            100% {
+              opacity: 0;
+              visibility: hidden;
+            }
+          }
+        }
+      }
+    }
+
+    .isBlocked {
+      .fd-side-nav {
+        overflow: hidden !important;
+      }
+    }
+
+    .lui-side-nav {
+      &__footer {
+        &--text {
+          width: 0;
+          opacity: 0;
+          padding: 0;
+          visibility: hidden;
+        }
+
+        &--icon {
+          padding-left: 14px;
+          padding-right: 14px;
+        }
+      }
+    }
+  }
+  :global(.lui-flyout-sublist) {
+    position: fixed;
+    left: 48px;
+    width: 180px;
+
+    .lui-flyout-sublist__wrapper {
+      position: relative;
+      @include border-radius(4px);
+      @include box-shadow(
+        0 5px 20px 0 var(--fd-color-neutral-3),
+        0 2px 8px 0 var(--fd-color-neutral-2)
+      );
+      border: 1px solid var(--fd-color-neutral-3);
+      background: white;
+      opacity: 0;
+      animation-name: flyoutAnimation;
+      animation-duration: 0.3s;
+      animation-fill-mode: forwards;
+
+      @-webkit-keyframes flyoutAnimation {
+        0% {
+          opacity: 0;
+        }
+        100% {
+          opacity: 1;
+        }
+      }
+
+      @keyframes flyoutAnimation {
+        0% {
+          opacity: 0;
+        }
+        100% {
+          opacity: 1;
+        }
+      }
+
+      &:before,
+      &:after {
+        display: block;
+        position: absolute;
+        top: 9px;
+        content: '';
+        width: 13px;
+        border-style: solid;
+        border-width: 8px 6.5px;
+        border-color: transparent;
+      }
+
+      &:before {
+        left: -14px;
+        border-right-color: var(--fd-color-neutral-3);
+      }
+
+      &:after {
+        left: -13px;
+        border-right-color: white;
+      }
+    }
+
+    li {
+      border-top: 1px solid var(--fd-color-neutral-2);
+
+      &:first-child {
+        border: none;
+      }
+    }
+
+    .fd-side-nav {
+      &__sublist {
+        display: block;
+        position: relative;
+        max-height: 190px;
+        overflow-y: auto;
+      }
+    }
+
+    .fd-side-nav__link {
+      font-size: 14px;
+      padding: 10px 20px;
+    }
+
+    a {
+      padding-left: 20px;
+    }
+
+    &__title {
+      padding: 11px 12px 12px;
+      text-transform: uppercase;
+      margin: 0;
+    }
+
+    &.has-bottom-position {
+      .lui-flyout-sublist__wrapper {
+        &:before,
+        &:after {
+          top: auto;
+          bottom: 9px;
+        }
+      }
     }
   }
 </style>

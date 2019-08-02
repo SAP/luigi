@@ -1,16 +1,13 @@
-describe('Luigi client ux manger features', () => {
-  let $iframe;
+describe('Luigi client ux manager features', () => {
   let $iframeBody;
   beforeEach(() => {
     //"clear" variables to make sure they are not reused and throw error in case something goes wrong
-    $iframe = undefined;
     $iframeBody = undefined;
     cy.visit('/');
     cy.login('tets', 'tets');
 
-    cy.get('iframe').then(ifr => {
-      $iframe = ifr;
-      $iframeBody = ifr.contents().find('body');
+    cy.getIframeBody().then(result => {
+      $iframeBody = result;
     });
 
     //wait for the iFrame to be loaded
@@ -69,9 +66,30 @@ describe('Luigi client ux manger features', () => {
         .contains('Luigi confirmation modal has been confirmed');
     });
 
+    it('Close Luigi Client generic confirmation modal by esc keypress', () => {
+      cy.goToUxManagerMethods($iframeBody);
+
+      cy.get('[data-cy=luigi-confirmation-modal]').should('not.be.visible');
+      cy.wrap($iframeBody)
+        .find('[data-cy=show-luigi-confirmation-modal]')
+        .click();
+      cy.get('[data-cy=luigi-confirmation-modal]').should('be.visible');
+
+      cy.get('[data-cy=luigi-modal-dismiss]').trigger('keydown', {
+        keyCode: 27,
+        which: 27
+      });
+      cy.get('[data-cy=luigi-confirmation-modal]').should('not.be.visible');
+      cy.wrap($iframeBody)
+        .find('[data-cy=luigi-confirmation-modal-result]')
+        .contains('Luigi confirmation modal has been dismissed');
+    });
+
     it('loading indicator', () => {
       Cypress.currentTest.retries(3);
-      cy.get('.fd-shellbar')
+      cy.get('[data-e2e="topnav-category"][title="Misc"]').click();
+
+      cy.get('[data-e2e="topnav-dropdown-item"]')
         .contains('External Page')
         .click();
 
@@ -81,10 +99,8 @@ describe('Luigi client ux manger features', () => {
 
       cy.get('.spinnerContainer .fd-spinner').should('not.be.visible');
 
-      cy.get('iframe').then($iframe => {
-        const $iframeBody = $iframe.contents().find('body');
-
-        // show loading indicator
+      // show loading indicator
+      cy.getIframeBody().then($iframeBody => {
         cy.wrap($iframeBody)
           .contains('Show loading indicator')
           .click();
@@ -195,7 +211,7 @@ describe('Luigi client ux manger features', () => {
         cy.get('[data-cy=luigi-alert]').should('not.exist');
       });
 
-      it('can quque Alerts', () => {
+      it('can queue Alerts', () => {
         const numberOfAlerts = 3;
 
         cy.goToUxManagerMethods($iframeBody);
@@ -298,6 +314,42 @@ describe('Luigi client ux manger features', () => {
           .click();
 
         cy.get('[data-cy=luigi-alert]').should('not.exist');
+      });
+    });
+
+    describe('Luigi Client Localization', () => {
+      it('set localization in client', () => {
+        cy.goToUxManagerMethods($iframeBody);
+
+        cy.wrap($iframeBody)
+          .find('[data-cy=luigi-current-locale]')
+          .should('contain', "'en'");
+
+        cy.wrap($iframeBody)
+          .find('[data-cy=luigi-input-locale]')
+          .type('pl_PL');
+
+        cy.wrap($iframeBody)
+          .find('[data-cy=set-current-locale]')
+          .click();
+
+        cy.wrap($iframeBody)
+          .find('[data-cy=luigi-current-locale]')
+          .should('contain', "'pl_PL'");
+      });
+
+      it('clientPermissions: check if set localization in client is disabled', () => {
+        cy.visit('/projects/pr1/clientPermissionsTets')
+          .getIframeBody()
+          .then(body => {
+            cy.wrap(body)
+              .find('[data-cy=luigi-input-locale]')
+              .should('be.disabled');
+
+            cy.wrap(body)
+              .find('[data-cy=set-current-locale]')
+              .should('be.disabled');
+          });
       });
     });
   });

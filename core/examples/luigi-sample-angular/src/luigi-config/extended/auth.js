@@ -21,6 +21,8 @@ class Auth {
     oAuthData: {
       client_id: 'egDuozijY5SVr0NSIowUP1dT6RVqHnlp'
     },
+    accessTokenExpiringNotificationTime: 60, //in seconds
+    expirationCheckInterval: 5,
     userInfoFn: () => {
       return new Promise(resolve => {
         resolve({
@@ -91,18 +93,26 @@ class Auth {
   };
 
   events = {
-    onLogout: () => {
-      console.log('onLogout');
+    onLogout: settings => {
+      console.log('onLogout', settings);
     },
-    onAuthSuccessful: data => {
-      console.log('onAuthSuccessful', data);
+    onAuthSuccessful: (settings, authData) => {
+      console.log('onAuthSuccessful', settings, authData);
     },
-    onAuthExpired: () => {
-      console.log('onAuthExpired');
+    onAuthExpired: settings => {
+      console.log('onAuthExpired', settings);
+      // return false; // prevent redirect to logoutUrl
     },
-    // TODO: define luigi-client api for getting errors
-    onAuthError: err => {
-      console.log('authErrorHandler 1', err);
+    onAuthError: (settings, err) => {
+      console.log('authErrorHandler 1', err, settings);
+      // return false; // prevent redirect to logoutUrl, but go to /
+    },
+    onAuthExpireSoon: settings => {
+      console.log('onAuthExpireSoon ', settings);
+      Luigi.showAlert({
+        text: 'Token expires soon',
+        type: 'warning'
+      });
     }
   };
 }

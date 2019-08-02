@@ -1,6 +1,6 @@
-import * as GenericHelpers from '../../utilities/helpers/generic-helpers';
-import * as AsyncHelpers from '../../utilities/helpers/async-helpers';
+import { AsyncHelpers, GenericHelpers } from '../../utilities/helpers';
 import { thirdPartyCookiesStatus } from '../../utilities/third-party-cookies-check';
+import { LuigiAuth } from '../../core-api';
 
 export class openIdConnect {
   constructor(settings = {}) {
@@ -63,8 +63,8 @@ export class openIdConnect {
     });
   }
 
-  logout(authData, callback) {
-    callback();
+  logout(authData, authOnLogoutFn) {
+    authOnLogoutFn();
     window.location.href = this.settings.logoutUrl;
     // TODO: dex logout is not yet supported
     // const signoutData = {
@@ -82,7 +82,12 @@ export class openIdConnect {
   setTokenExpirationAction() {
     if (!this.settings.automaticSilentRenew) {
       this.client.events.addAccessTokenExpired(() => {
-        window.location = this.settings.logoutUrl + '?reason=tokenExpired';
+        LuigiAuth.handleAuthEvent(
+          'onAuthExpired',
+          this.settings,
+          undefined,
+          this.settings.logoutUrl + '?error=tokenExpired'
+        );
       });
     }
 
@@ -94,23 +99,33 @@ export class openIdConnect {
     }
 
     this.client.events.addSilentRenewError(e => {
+      let redirectUrl;
       switch (e.message) {
         case 'interaction_required':
         case 'login_required':
         case 'account_selection_required':
         case 'consent_required': // possible cause: disabled third party cookies in the browser
-          window.location.href =
+          redirectUrl =
             this.settings.logoutUrl +
-            '?reason=tokenExpired&thirdPartyCookies=' +
+            '?error=tokenExpired&thirdPartyCookies=' +
             thirdPartyCookiesStatus() +
-            '&error=' +
+            '&errorDescription=' +
             e.message;
           break;
         default:
           console.error(e);
-          window.location.href =
-            this.settings.logoutUrl + '?reason=tokenExpired&error=' + e.message;
+          redirectUrl =
+            this.settings.logoutUrl +
+            '?error=tokenExpired&errorDescription=' +
+            e.message;
       }
+      LuigiAuth.handleAuthEvent('onAuthError', this.settings, e, redirectUrl);
+    });
+  }
+
+  setTokenExpireSoonAction() {
+    this.client.events.addAccessTokenExpiring(() => {
+      LuigiAuth.handleAuthEvent('onAuthExpireSoon', this.settings);
     });
   }
 
@@ -167,7 +182,12 @@ export class openIdConnect {
         .catch(err => {
           console.error(err);
           localStorage.removeItem('luigi.auth');
-          window.location.href = this.settings.logoutUrl + '?reason=loginError';
+          LuigiAuth.handleAuthEvent(
+            'onAuthExpired',
+            this.settings,
+            err,
+            this.settings.logoutUrl + '?error=loginError'
+          );
         });
     });
   }

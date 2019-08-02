@@ -1,9 +1,9 @@
 const assert = require('chai').assert;
 const sinon = require('sinon');
 
-const CSHelpers = require('../src/navigation/services/context-switcher')
-  .ContextSwitcherHelpers;
-const Helpers = require('../src/utilities/helpers/generic-helpers');
+import { ContextSwitcherHelpers as CSHelpers } from '../src/navigation/services/context-switcher';
+import { GenericHelpers } from '../src/utilities/helpers';
+import { LuigiConfig } from '../src/core-api';
 
 describe('Context-switcher', function() {
   afterEach(() => {
@@ -81,6 +81,69 @@ describe('Context-switcher', function() {
     });
   });
 
+  describe('fetchOptions', () => {
+    let mockConfig;
+    beforeEach(() => {
+      mockConfig = getMockConfig();
+      sinon.stub(LuigiConfig, 'getConfigValueAsync');
+      sinon.stub(CSHelpers, 'generateSwitcherNav');
+      sinon.stub(LuigiConfig, 'getConfigValue').returns(mockConfig);
+    });
+
+    it('lazyLoad off, existing options get returned', async () => {
+      mockConfig.lazyloadOptions = false;
+      const opts = ['a', 'b', 'c'];
+
+      const result = await CSHelpers.fetchOptions(opts);
+      assert.equal(result, opts);
+      assert.isFalse(
+        LuigiConfig.getConfigValueAsync.called,
+        'getConfigValueAsync not called'
+      );
+    });
+
+    it('lazyLoad off, non-existing options fetches options', async () => {
+      mockConfig.lazyloadOptions = false;
+      const opts = ['a', 'b', 'c'];
+      const expectedResult = 'works';
+      LuigiConfig.getConfigValueAsync.returns(opts);
+      CSHelpers.generateSwitcherNav.returns(expectedResult);
+
+      const result = await CSHelpers.fetchOptions();
+
+      sinon.assert.calledWithExactly(
+        LuigiConfig.getConfigValueAsync,
+        'navigation.contextSwitcher.options'
+      );
+      sinon.assert.calledWith(CSHelpers.generateSwitcherNav, mockConfig, opts);
+      assert.equal(result, expectedResult, 'return value');
+    });
+
+    it('lazyLoad on, always fetches options', async () => {
+      mockConfig.lazyloadOptions = true;
+      const opts = ['a', 'b', 'c'];
+      const expectedResult = 'works';
+      LuigiConfig.getConfigValueAsync.returns(opts);
+      CSHelpers.generateSwitcherNav.returns(expectedResult);
+
+      const result = await CSHelpers.fetchOptions();
+      await CSHelpers.fetchOptions();
+      await CSHelpers.fetchOptions();
+
+      sinon.assert.calledWithExactly(
+        LuigiConfig.getConfigValueAsync,
+        'navigation.contextSwitcher.options'
+      );
+      sinon.assert.calledWith(CSHelpers.generateSwitcherNav, mockConfig, opts);
+      assert.equal(result, expectedResult, 'return value');
+      sinon.assert.callCount(
+        CSHelpers.generateSwitcherNav,
+        3,
+        'called N times'
+      );
+    });
+  });
+
   describe('generateSwitcherNav', () => {
     it('composes proper values with ParentNodePath', async () => {
       const result = await CSHelpers.generateSwitcherNav(
@@ -138,7 +201,7 @@ describe('Context-switcher', function() {
     beforeEach(() => {
       parentNodePath = '/home/projects';
       currentPath = '/home/projects/pr1';
-      Helpers.addTrailingSlash = sinon.stub().callsFake(s => s + `/`);
+      sinon.stub(GenericHelpers, 'addTrailingSlash').callsFake(s => s + `/`);
     });
 
     it('returns false if parent node path is falsy', () => {

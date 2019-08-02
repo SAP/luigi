@@ -7,10 +7,10 @@ import {
 } from '@angular/core';
 import { ActivatedRoute, Params } from '@angular/router';
 import { Subscription } from 'rxjs';
-
 import {
   linkManager,
   uxManager,
+  getClientPermissions,
   addContextUpdateListener,
   removeContextUpdateListener
 } from '@kyma-project/luigi-client';
@@ -27,6 +27,7 @@ import { NgForm } from '@angular/forms';
 })
 export class ProjectComponent implements OnInit, OnDestroy {
   @ViewChild('luigiAlertForm') luigiAlertForm: NgForm;
+  @ViewChild('luigiLocalizationForm') luigiLocalizationForm: NgForm;
   public linkManager = linkManager;
   public uxManager = uxManager;
   public projectId: string;
@@ -39,6 +40,9 @@ export class ProjectComponent implements OnInit, OnDestroy {
   public alertDismissed;
   public alertTypes = ['success', 'info', 'warning', 'error'];
   public isDirty = false;
+  public splitViewHandle;
+  public currentLocale = '';
+  public canChangeLocale = false;
 
   public constructor(
     private activatedRoute: ActivatedRoute,
@@ -82,6 +86,8 @@ export class ProjectComponent implements OnInit, OnDestroy {
         if (ctx.contextType === 'init' || ctx.contextType === 'update') {
           this.projectId = ctx.context.currentProject;
           this.preservedViewCallbackContext = ctx.context.goBackContext;
+          this.currentLocale = uxManager().getCurrentLocale();
+          this.canChangeLocale = getClientPermissions().changeCurrentLocale;
           // Since Luigi runs outside of Zone.js, changes need
           // to be updated manually
           // Be sure to check for destroyed ChangeDetectorRef,
@@ -101,7 +107,9 @@ export class ProjectComponent implements OnInit, OnDestroy {
     this.cudListener = addContextUpdateListener(updatedContext => {
       // this.projectId = updatedContext.currentProject;
       // this.preservedViewCallbackContext = updatedContext.goBackContext;
-
+      this.currentLocale = uxManager().getCurrentLocale();
+      this.canChangeLocale = getClientPermissions().changeCurrentLocale;
+      console.log('context updated', this.currentLocale, updatedContext);
       // Be sure to check for destroyed ChangeDetectorRef,
       // else you get runtime Errors
       if (!this.cdr['destroyed']) {
@@ -172,6 +180,10 @@ export class ProjectComponent implements OnInit, OnDestroy {
       });
   }
 
+  setCurrentLocale() {
+    uxManager().setCurrentLocale(this.luigiLocalizationForm.value.locale);
+  }
+
   checkIfPathExists() {
     linkManager()
       .pathExists(this.pathExists.formValue)
@@ -187,5 +199,44 @@ export class ProjectComponent implements OnInit, OnDestroy {
 
   public sendDirtyEvent() {
     uxManager().setDirtyStatus(this.isDirty);
+  }
+
+  public openSplitView() {
+    this.splitViewHandle = linkManager()
+      .withParams({ test: 'true' })
+      .openAsSplitView('/settings', {
+        title: 'Logs',
+        size: 25
+      });
+
+    this.splitViewHandle.on('resize', newSize => {
+      console.info('on:resize: split view got resized to', newSize);
+      if (!this.cdr['destroyed']) {
+        this.cdr.detectChanges();
+      }
+    });
+    this.splitViewHandle.on('expand', () => {
+      console.info(
+        'on:expand: split view got expanded',
+        'size:',
+        this.splitViewHandle.getSize()
+      );
+      if (!this.cdr['destroyed']) {
+        this.cdr.detectChanges();
+      }
+    });
+    this.splitViewHandle.on('collapse', () => {
+      console.info('on:collapse: split view got collapsed');
+      if (!this.cdr['destroyed']) {
+        this.cdr.detectChanges();
+      }
+    });
+    this.splitViewHandle.on('close', () => {
+      console.info('on:close: split view got closed');
+      this.splitViewHandle = undefined;
+      if (!this.cdr['destroyed']) {
+        this.cdr.detectChanges();
+      }
+    });
   }
 }

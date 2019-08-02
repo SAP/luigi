@@ -66,51 +66,53 @@
 </div>
 {/if}
 <script type="text/javascript">
-  import { ContextSwitcherHelpers } from './services/context-switcher.js';
-  import { LuigiConfig } from '../services/config.js';
-  import * as Helpers from '../utilities/helpers/generic-helpers.js';
-  import * as Routing from '../services/routing.js';
-  import * as RoutingHelpers from '../utilities/helpers/routing-helpers';
-  import * as iFrameHelpers from '../utilities/helpers/iframe-helpers.js';
+  import { ContextSwitcherHelpers } from './services/context-switcher';
+  import { LuigiConfig } from '../core-api';
+  import { Routing } from '../services/routing';
+  import { RoutingHelpers, StateHelpers } from '../utilities/helpers';
 
   export default {
     async oncreate() {
-      const contextSwitcherConfig = LuigiConfig.getConfigValue(
-        'navigation.contextSwitcher'
-      );
-      this.set({
-        contextSwitcherEnabled: !!contextSwitcherConfig,
-        config: contextSwitcherConfig
-      });
-
-      if (contextSwitcherConfig) {
-        const actions = await LuigiConfig.getConfigValueAsync(
-          'navigation.contextSwitcher.actions'
+      StateHelpers.doOnStoreChange(this.store, async () => {
+        const contextSwitcherConfig = LuigiConfig.getConfigValue(
+          'navigation.contextSwitcher'
         );
-        const currentPath = Routing.getCurrentPath();
 
         this.set({
-          actions,
-          fallbackLabelResolver: contextSwitcherConfig.fallbackLabelResolver
+          contextSwitcherEnabled: !!contextSwitcherConfig,
+          config: contextSwitcherConfig,
+          options: undefined
         });
 
-        // options are loaded lazy by default
-        if (!contextSwitcherConfig.lazyloadOptions) {
-          await this.fetchOptions();
-        }
-        if (
-          ContextSwitcherHelpers.isContextSwitcherDetailsView(
-            currentPath,
-            contextSwitcherConfig.parentNodePath
-          )
-        ) {
-          await this.setSelectedContext(currentPath);
-        }
+        if (contextSwitcherConfig) {
+          const actions = await LuigiConfig.getConfigValueAsync(
+            'navigation.contextSwitcher.actions'
+          );
+          const currentPath = Routing.getCurrentPath();
 
-        RoutingHelpers.addRouteChangeListener(path =>
-          this.setSelectedContext(path)
-        );
-      }
+          this.set({
+            actions,
+            fallbackLabelResolver: contextSwitcherConfig.fallbackLabelResolver
+          });
+
+          // options are loaded lazy by default
+          if (!contextSwitcherConfig.lazyloadOptions) {
+            await this.fetchOptions();
+          }
+          if (
+            ContextSwitcherHelpers.isContextSwitcherDetailsView(
+              currentPath,
+              contextSwitcherConfig.parentNodePath
+            )
+          ) {
+            await this.setSelectedContext(currentPath);
+          }
+        }
+      });
+
+      RoutingHelpers.addRouteChangeListener(path =>
+        this.setSelectedContext(path)
+      );
 
       window.addEventListener('message', e => {
         if (!this.root.getValidMessageSource(e)) return;
@@ -142,17 +144,10 @@
     },
     methods: {
       async fetchOptions() {
-        let options = this.get().options;
-        if (!options || !options.length) {
-          const contextSwitcherOptions = await LuigiConfig.getConfigValueAsync(
-            'navigation.contextSwitcher.options'
-          );
-          options = await ContextSwitcherHelpers.generateSwitcherNav(
-            this.get().config,
-            contextSwitcherOptions
-          );
-          this.set({ options });
-        }
+        const options = await ContextSwitcherHelpers.fetchOptions(
+          this.get().options
+        );
+        this.set({ options });
       },
       async setSelectedContext(currentPath) {
         const config = this.get().config || {};
@@ -177,7 +172,9 @@
             return;
           }
         }
-        this.goTo(node.link);
+        setTimeout(() => {
+          this.goTo(node.link);
+        });
       },
       goTo(path) {
         this.root.getUnsavedChangesModalPromise().then(() => {
@@ -197,8 +194,18 @@
 </script>
 
 <style type="text/scss">
+  :root {
+    /* needed for IE11 support */
+    --fd-color-shell-2: #d1e8ff;
+  }
+
+  .fd-button--shell .is-hover,
+  .fd-button--shell:hover {
+    background-color: transparent;
+  }
+
   .lui-tendant-menu__control {
-    // Overwrite color inheriting of product menu
+    /* Overwrite color inheriting of product menu */
     color: var(--fd-color-shell-2);
   }
 
@@ -223,5 +230,6 @@
   #context_menu_middle {
     max-height: 50vh;
     overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
   }
 </style>

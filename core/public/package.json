@@ -1,10 +1,10 @@
 {
   "name": "@kyma-project/luigi-core",
-  "version": "0.4.12-rc.1",
+  "version": "0.6.0-rc.0",
   "description": "luigi-core",
   "license": "Apache-2.0",
   "repository": {
     "type": "git",
-    "url": "ssh://github.com/kyma-project/luigi.git"
+    "url": "ssh://github.com/SAP/luigi.git"
   }
 }

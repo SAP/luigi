@@ -1,9 +1,10 @@
-const navigation = require('../../src/navigation/services/navigation');
 const chai = require('chai');
 const expect = chai.expect;
 const assert = chai.assert;
 const sinon = require('sinon');
-import { LuigiConfig } from '../../src/services/config';
+import { Navigation } from '../../src/navigation/services/navigation';
+import { RoutingHelpers, GenericHelpers } from '../../src/utilities/helpers';
+import { LuigiConfig } from '../../src/core-api';
 
 const sampleNavPromise = new Promise(function(resolve) {
   const lazyLoadedChildrenNodesProviderFn = () => {
@@ -68,14 +69,15 @@ describe('Navigation', function() {
   afterEach(() => {
     // reset
     LuigiConfig.config = {};
+    sinon.restore();
   });
   describe('getNavigationPath', function() {
     it('should not fail for undefined arguments', () => {
-      navigation.getNavigationPath(undefined, undefined);
+      Navigation.getNavigationPath(undefined, undefined);
     });
 
     it('should resolve top level node', async () => {
-      const navPath = await navigation.getNavigationPath(sampleNavPromise);
+      const navPath = await Navigation.getNavigationPath(sampleNavPromise);
       assert.equal(navPath.navigationPath.length, 1, 'Only one root expected');
       const rootNode = navPath.navigationPath[0];
       assert.equal(
@@ -89,7 +91,7 @@ describe('Navigation', function() {
     });
 
     it('should resolve first level node', async () => {
-      const navPath = await navigation.getNavigationPath(
+      const navPath = await Navigation.getNavigationPath(
         sampleNavPromise,
         'aaa'
       );
@@ -108,7 +110,7 @@ describe('Navigation', function() {
     });
 
     it('should resolve second level node', async () => {
-      const navPath = await navigation.getNavigationPath(
+      const navPath = await Navigation.getNavigationPath(
         sampleNavPromise,
         'aaa/a1'
       );
@@ -134,7 +136,7 @@ describe('Navigation', function() {
     });
 
     it('should load lazy-loaded children nodes only on activation', async () => {
-      const navPath = await navigation.getNavigationPath(
+      const navPath = await Navigation.getNavigationPath(
         sampleNavPromise,
         'bbb'
       );
@@ -152,7 +154,7 @@ describe('Navigation', function() {
     });
 
     it('child node should overwrite existing context variable from a parent', async () => {
-      const navPath = await navigation.getNavigationPath(
+      const navPath = await Navigation.getNavigationPath(
         sampleNavPromise,
         'bbb/b1'
       );
@@ -176,37 +178,37 @@ describe('Navigation', function() {
       }
     };
     it('should not fail if arguments are undefined', async () => {
-      const children = await navigation.getChildren(undefined, undefined);
+      const children = await Navigation.getChildren(undefined, undefined);
       expect(children.length).to.equal(0);
     });
     it("should return empty array if it doesn't have children", async () => {
       const aNode = {};
-      const children = await navigation.getChildren(aNode, undefined);
+      const children = await Navigation.getChildren(aNode, undefined);
       expect(children.length).to.equal(0);
     });
     it('should return nodes children and bind them if children are provided', async () => {
-      const children = await navigation.getChildren(
+      const children = await Navigation.getChildren(
         nodeWithChildren,
         undefined
       );
       expect(children).to.equal(nodeWithChildren.children);
     });
     it('should return nodes children and bind them if children provider is provided', async () => {
-      const children = await navigation.getChildren(
+      const children = await Navigation.getChildren(
         nodeWithChildrenProvider,
         undefined
       );
       expect(children).to.equal(nodeWithChildrenProvider.children);
     });
     it('should not fail if children provider throws an error', async () => {
-      const children = await navigation.getChildren(
+      const children = await Navigation.getChildren(
         nodeWithChildrenProviderError,
         undefined
       );
       expect(children).to.be.undefined;
     });
     it('should return children using provied context and bind them', async () => {
-      const children = await navigation.getChildren(
+      const children = await Navigation.getChildren(
         nodeWithChildrenProvider,
         'context'
       );
@@ -236,7 +238,7 @@ describe('Navigation', function() {
           { label: 'child2' }
         ]
       };
-      const children = await navigation.getChildren(nodeWithChildren);
+      const children = await Navigation.getChildren(nodeWithChildren);
       expect(children.length).to.equal(1);
       expect(children[0].label).to.equal('child2');
     });
@@ -268,8 +270,8 @@ describe('Navigation', function() {
 
       // truthy tests
       // when
-      const resStaticOk = navigation.findMatchingNode('other', [staticNode()]);
-      const resDynamicOk = navigation.findMatchingNode('avengers', [
+      const resStaticOk = Navigation.findMatchingNode('other', [staticNode()]);
+      const resDynamicOk = Navigation.findMatchingNode('avengers', [
         dynamicNode()
       ]);
 
@@ -292,11 +294,11 @@ describe('Navigation', function() {
       );
 
       // falsy tests
-      const resNull = navigation.findMatchingNode('avengers', [staticNode()]);
+      const resNull = Navigation.findMatchingNode('avengers', [staticNode()]);
       expect(resNull).to.equal(null);
       sinon.assert.notCalled(console.warn);
 
-      const resStaticWarning = navigation.findMatchingNode('avengers', [
+      const resStaticWarning = Navigation.findMatchingNode('avengers', [
         staticNode(),
         dynamicNode()
       ]);
@@ -306,19 +308,18 @@ describe('Navigation', function() {
       );
       sinon.assert.calledOnce(console.warn);
 
-      const resMultipleDynamicError = navigation.findMatchingNode(
+      const resMultipleDynamicError = Navigation.findMatchingNode(
         'twoDynamic',
         [dynamicNode(), dynamicNode()]
       );
       expect(resMultipleDynamicError).to.equal(null);
       sinon.assert.calledOnce(console.warn);
       sinon.assert.calledOnce(console.error);
-      sinon.reset();
     });
   });
   describe('getLeftNavData', () => {
     it('returns empty object if no pathData was found (empty nav)', async () => {
-      const res = await navigation.getLeftNavData({ pathData: [] });
+      const res = await Navigation.getLeftNavData({ pathData: [] });
       expect(res).to.be.empty;
     });
     it('returns correct data on standard usecase', async () => {
@@ -342,7 +343,7 @@ describe('Navigation', function() {
         ]
       };
       // when
-      const res = await navigation.getLeftNavData(current, current);
+      const res = await Navigation.getLeftNavData(current, current);
       expect(res.selectedNode.pathSegment).to.equal('settings');
     });
     it('returns correct data on virtual node keepSelectedForChildren usecase', async () => {
@@ -368,8 +369,75 @@ describe('Navigation', function() {
         ]
       };
       // when
-      const res = await navigation.getLeftNavData(current, current);
+      const res = await Navigation.getLeftNavData(current, current);
       expect(res.selectedNode.pathSegment).to.equal('projects');
+    });
+  });
+
+  describe('extractDataFromPath', () => {
+    it('extracts the data', async () => {
+      sinon.stub(Navigation, 'getNavigationPath').returns('path-data');
+      sinon.stub(RoutingHelpers, 'getLastNodeObject').returns('node-object');
+      sinon
+        .stub(LuigiConfig, 'getConfigValueAsync')
+        .returns('navigation-nodes');
+
+      const expected = {
+        nodeObject: 'node-object',
+        pathData: 'path-data'
+      };
+      const actual = await Navigation.extractDataFromPath('path');
+
+      sinon.assert.calledWithExactly(
+        LuigiConfig.getConfigValueAsync,
+        'navigation.nodes'
+      );
+      sinon.assert.calledWithExactly(
+        Navigation.getNavigationPath,
+        'navigation-nodes',
+        'path'
+      );
+      sinon.assert.calledWithExactly(
+        RoutingHelpers.getLastNodeObject,
+        'path-data'
+      );
+      expect(actual).to.eql(expected);
+    });
+  });
+
+  describe('shouldPreventNavigation', () => {
+    let node;
+    let nodeActivationHook;
+
+    beforeEach(() => {
+      sinon.stub(GenericHelpers, 'isFunction').returns(true);
+      nodeActivationHook = sinon.stub().returns(false);
+      node = {
+        onNodeActivation: nodeActivationHook
+      };
+    });
+
+    it('returns true when node activation hook returns false', async () => {
+      const actual = await Navigation.shouldPreventNavigation(node);
+      expect(actual).to.be.true;
+    });
+
+    it('returns false when node is falsy', async () => {
+      node = undefined;
+      const actual = await Navigation.shouldPreventNavigation(node);
+      expect(actual).to.be.false;
+    });
+
+    it('returns false when node activation hook is not a function', async () => {
+      GenericHelpers.isFunction.returns(false);
+      const actual = await Navigation.shouldPreventNavigation(node);
+      expect(actual).to.be.false;
+    });
+
+    it('returns false when node activation hook does not return false', async () => {
+      nodeActivationHook.returns(undefined);
+      const actual = await Navigation.shouldPreventNavigation(node);
+      expect(actual).to.be.false;
     });
   });
 });

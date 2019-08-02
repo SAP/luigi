@@ -1,13 +1,15 @@
 const chai = require('chai');
 const assert = chai.assert;
 const sinon = require('sinon');
-const Iframe = require('../../src/services/iframe');
 import { afterEach } from 'mocha';
-import { LuigiConfig } from '../../src/services/config';
+
+import { Iframe } from '../../src/services/iframe';
+import { LuigiConfig } from '../../src/core-api';
 
 describe('Iframe', () => {
   let node;
   let component;
+  let preloadingAllowed;
 
   beforeEach(() => {
     let lastObj = {};
@@ -18,7 +20,8 @@ describe('Iframe', () => {
       get: () => lastObj,
       prepareInternalData: () => {}
     };
-    sinon.stub(LuigiConfig, 'getConfigValue');
+    preloadingAllowed = false;
+    sinon.stub(LuigiConfig, 'getConfigValue').callsFake();
 
     node = {
       children: [
@@ -88,24 +91,41 @@ describe('Iframe', () => {
     });
   });
 
-  describe('getAllIframes', () => {
-    it('should return an array of active iframes with no modal iframe', () => {
-      const iframes = Iframe.getAllIframes();
+  it('getIframeContainer', () => {
+    sinon
+      .stub(document, 'querySelectorAll')
+      .onFirstCall()
+      .returns([])
+      .onSecondCall()
+      .returns(['firstIframe', 'secondIframe']);
 
-      assert.equal(iframes.length, 0);
-    });
-
-    it('should return an array of active iframes including active modal iframe', () => {
-      const iframes = Iframe.getAllIframes({});
-
-      assert.equal(iframes.length, 1);
-    });
+    // first
+    assert.equal(Iframe.getIframeContainer(), undefined, 'no iframe found');
+    // second
+    assert.equal(
+      Iframe.getIframeContainer(),
+      'firstIframe',
+      'returns first iframe'
+    );
   });
 
   it('removeInactiveIframes', () => {
     node.removeChild = sinon.spy();
     Iframe.removeInactiveIframes(node);
     assert.equal(node.removeChild.callCount, 1);
+  });
+
+  it('removeIframe', () => {
+    const testNode = {
+      children: ['one', 'two', 'three', 'four'],
+      removeChild: sinon.spy()
+    };
+    Iframe.removeIframe('two', testNode);
+    assert.equal(testNode.removeChild.callCount, 1, 'removeChild call count');
+    assert(
+      testNode.removeChild.calledWith('two'),
+      'correct node child was deleted'
+    );
   });
 
   describe('create new iframe with different viewgroup and dont delete the previous one (cache)', () => {
@@ -128,7 +148,8 @@ describe('Iframe', () => {
         viewGroup: 'tets2',
         previousNodeValues: {
           viewUrl: 'http://luigi.url.desdf/1'
-        }
+        },
+        currentNode: {}
       });
 
       Iframe.navigateIframe(config, component, node);
@@ -163,7 +184,8 @@ describe('Iframe', () => {
         viewGroup: 'tets1',
         previousNodeValues: {
           viewUrl: 'http://luigi.url.de/previous'
-        }
+        },
+        currentNode: {}
       });
       assert.equal(config.iframe.luigi.nextViewUrl, 'http://luigi.url.de/2');
       Iframe.navigateIframe(config, component, node);

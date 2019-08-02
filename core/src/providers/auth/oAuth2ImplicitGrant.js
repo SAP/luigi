@@ -1,4 +1,5 @@
-import * as GenericHelpers from '../../utilities/helpers/generic-helpers.js';
+import { GenericHelpers } from '../../utilities/helpers';
+import { LuigiAuth } from '../../core-api';
 
 export class oAuth2ImplicitGrant {
   constructor(settings = {}) {
@@ -11,7 +12,9 @@ export class oAuth2ImplicitGrant {
       },
       authorizeMethod: 'GET',
       logoutUrl: '',
-      post_logout_redirect_uri: window.location.origin + '/logout.html'
+      post_logout_redirect_uri: window.location.origin + '/logout.html',
+      accessTokenExpiringNotificationTime: 60,
+      expirationCheckInterval: 5
     };
     const mergedSettings = GenericHelpers.deepMerge(defaultSettings, settings);
 
@@ -97,7 +100,7 @@ export class oAuth2ImplicitGrant {
     });
   }
 
-  logout(authData, logoutCallback) {
+  logout(authData, authEventLogoutFn) {
     const settings = this.settings;
     const logouturl = `${settings.logoutUrl}?id_token_hint=${
       authData.idToken
@@ -106,33 +109,63 @@ export class oAuth2ImplicitGrant {
     }&post_logout_redirect_uri=${GenericHelpers.prependOrigin(
       settings.post_logout_redirect_uri
     )}`;
-    logoutCallback && logoutCallback();
+    authEventLogoutFn && authEventLogoutFn();
 
-    setTimeout(function() {
+    setTimeout(() => {
       window.location.href = logouturl;
     });
   }
 
   setTokenExpirationAction() {
     const expirationCheckInterval = 5000;
-    const logoutBeforeExpirationTime = 60000;
-
-    setInterval(() => {
+    const expirationCheckIntervalInstance = setInterval(() => {
       let authData = this.getAuthData();
-      const tokenExpirationDate = authData
-        ? authData.accessTokenExpirationDate || 0
-        : 0;
-      const currentDate = new Date();
+      if (!authData) {
+        return clearInterval(expirationCheckIntervalInstance);
+      }
 
-      if (tokenExpirationDate - currentDate - logoutBeforeExpirationTime < 0) {
+      const tokenExpirationDate =
+        (authData && authData.accessTokenExpirationDate) || 0;
+      const currentDate = new Date();
+      if (tokenExpirationDate - currentDate < expirationCheckInterval) {
+        clearInterval(expirationCheckIntervalInstance);
         localStorage.removeItem('luigi.auth');
-        window.location = `${
+        // TODO: check if valid (mock-auth requires it), post_logout_redirect_uri is an assumption, might not be available for all auth providers
+        const redirectUrl = `${
           this.settings.logoutUrl
-        }?reason=tokenExpired&post_logout_redirect_uri=${GenericHelpers.prependOrigin(
+        }?error=tokenExpired&post_logout_redirect_uri=${GenericHelpers.prependOrigin(
           this.settings.post_logout_redirect_uri
         )}`;
+        LuigiAuth.handleAuthEvent(
+          'onAuthExpired',
+          this.settings,
+          undefined,
+          redirectUrl
+        );
       }
     }, expirationCheckInterval);
+  }
+
+  setTokenExpireSoonAction() {
+    const accessTokenExpiringNotificationTime =
+      this.settings.accessTokenExpiringNotificationTime * 1000;
+    const expirationCheckInterval =
+      this.settings.expirationCheckInterval * 1000;
+    let authData = this.getAuthData();
+    if (authData) {
+      const expirationCheckIntervalInstance = setInterval(() => {
+        const tokenExpirationDate =
+          (authData && authData.accessTokenExpirationDate) || 0;
+        const currentDate = new Date();
+        if (
+          tokenExpirationDate - currentDate.getTime() <
+          accessTokenExpiringNotificationTime
+        ) {
+          LuigiAuth.handleAuthEvent('onAuthExpireSoon', this.settings);
+          clearInterval(expirationCheckIntervalInstance);
+        }
+      }, expirationCheckInterval);
+    }
   }
 
   generateNonce() {
