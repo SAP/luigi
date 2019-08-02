@@ -65,11 +65,11 @@ class Auth {
 
     // optional , will be provided by default
     // nonceFn: () => {
-    //   console.log('custom nonce function called');
+    //   console.info('custom nonce function called');
     //   return 1;
     // },
     // logoutFn: (settings, authData, logoutCallback) => {
-    //   console.log('logoutFn called');
+    //   console.info('logoutFn called');
     //   // auth example
     //   var logoutreq = `${settings.logoutUrl}?id_token_hint=${
     //     authData.idToken
@@ -80,7 +80,6 @@ class Auth {
     //   request.open('GET', logoutreq);
     //   request.addEventListener('load', function (event) {
     //     if (request.status >= 200 && request.status < 300) {
-    //       console.log(request.responseText);
     //       logoutCallback();
     //     } else {
     //       console.warn(request.statusText, request.responseText);
@@ -94,21 +93,21 @@ class Auth {
 
   events = {
     onLogout: settings => {
-      console.log('onLogout', settings);
+      console.info('onLogout', settings);
     },
     onAuthSuccessful: (settings, authData) => {
-      console.log('onAuthSuccessful', settings, authData);
+      console.info('onAuthSuccessful', settings, authData);
     },
     onAuthExpired: settings => {
-      console.log('onAuthExpired', settings);
+      console.info('onAuthExpired', settings);
       // return false; // prevent redirect to logoutUrl
     },
     onAuthError: (settings, err) => {
-      console.log('authErrorHandler 1', err, settings);
+      console.info('authErrorHandler 1', err, settings);
       // return false; // prevent redirect to logoutUrl, but go to /
     },
     onAuthExpireSoon: settings => {
-      console.log('onAuthExpireSoon ', settings);
+      console.info('onAuthExpireSoon ', settings);
       Luigi.showAlert({
         text: 'Token expires soon',
         type: 'warning'
