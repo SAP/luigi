@@ -34,6 +34,9 @@ class LuigiClient {
   getPathParams() {
     return lifecycleManager.getPathParams();
   }
+  getClientPermissions() {
+    return lifecycleManager.getClientPermissions();
+  }
   /**
    * @private
    */
