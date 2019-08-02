@@ -4,8 +4,7 @@ describe('Modal Microfrontend', () => {
     cy.visit('/');
     cy.login('tets', 'tets');
 
-    // wait for the iFrame to be loaded
-    cy.getIframeBody({ timeout: 1000 }).then(result => {
+    cy.getIframeBody().then(result => {
       $iframeBody = result;
     });
   });

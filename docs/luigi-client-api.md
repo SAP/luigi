@@ -154,14 +154,19 @@ Opens a view in a split view. You can specify the split view's title and size. I
 -   `splitViewSettings` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** opens a view in a split view. Use these settings to configure the split view's behaviour (optional, default `{}`)
     -   `splitViewSettings.title` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** split view title. By default, it is the node label. If there is no label, it is left empty
     -   `splitViewSettings.size` **[number](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number)** height of the split view in percent (optional, default `40`)
+    -   `splitViewSettings.collapsed` **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)** opens split view in collapsed state (optional, default `false`)
 
 #### Examples
 
 ```javascript
-const splitViewHandle = LuigiClient.linkManager().openAsSplitView('projects/pr1/logs', {title: 'Logs', size: 40});
+const splitViewHandle = LuigiClient.linkManager().openAsSplitView('projects/pr1/logs', {title: 'Logs', size: 40, collapsed: true});
 ```
 
 Returns **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** instance of the SplitView. It provides Event listeners and you can use the available functions to control its behavior.
+
+**Meta**
+
+-   **since**: 0.6.0
 
 ### fromContext
 
@@ -261,6 +266,10 @@ At a given time, you can open only one split view. It closes automatically when 
 When you call `handle.collapse()`, the split view gets destroyed. It recreates when you use `handle.expand()`.
 `openAsSplitView` returns an instance of the split view handle. The functions, actions, and event handlers listed below allow you to control and manage the split view.
 
+**Meta**
+
+-   **since**: 0.6.0
+
 ### collapse
 
 Collapses the split view
@@ -270,6 +279,10 @@ Collapses the split view
 ```javascript
 splitViewHandle.collapse();
 ```
+
+**Meta**
+
+-   **since**: 0.6.0
 
 ### expand
 
@@ -281,6 +294,10 @@ Expands the split view
 splitViewHandle.expand();
 ```
 
+**Meta**
+
+-   **since**: 0.6.0
+
 ### close
 
 Closes and destroys the split view
@@ -290,6 +307,10 @@ Closes and destroys the split view
 ```javascript
 splitViewHandle.close();
 ```
+
+**Meta**
+
+-   **since**: 0.6.0
 
 ### setSize
 
@@ -304,6 +325,10 @@ Sets the height of the split view
 ```javascript
 splitViewHandle.setSize(60);
 ```
+
+**Meta**
+
+-   **since**: 0.6.0
 
 ### on
 
@@ -326,6 +351,10 @@ const listenerId = splitViewHandle.on('close', () => {});
 
 Returns **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** listener id
 
+**Meta**
+
+-   **since**: 0.6.0
+
 ### removeEventListener
 
 Unregisters a split view listener
@@ -340,6 +369,10 @@ Unregisters a split view listener
 splitViewHandle.removeEventListener(listenerId);
 ```
 
+**Meta**
+
+-   **since**: 0.6.0
+
 ### exists
 
 Gets the split view status
@@ -351,6 +384,10 @@ splitViewHandle.exists();
 ```
 
 Returns **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)** true if a split view is loaded
+
+**Meta**
+
+-   **since**: 0.6.0
 
 ### getSize
 
@@ -364,6 +401,10 @@ splitViewHandle.getSize();
 
 Returns **[number](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number)** height in percent
 
+**Meta**
+
+-   **since**: 0.6.0
+
 ### isCollapsed
 
 Reads the collapse status
@@ -376,6 +417,10 @@ splitViewHandle.isCollapsed();
 
 Returns **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)** true if the split view is currently collapsed
 
+**Meta**
+
+-   **since**: 0.6.0
+
 ### isExpanded
 
 Reads the expand status
@@ -387,6 +432,10 @@ splitViewHandle.isExpanded();
 ```
 
 Returns **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)** true if the split view is currently expanded
+
+**Meta**
+
+-   **since**: 0.6.0
 
 ## uxManager
 
@@ -492,8 +541,16 @@ Checks if the current micro-frontend is displayed inside a split view
 
 Returns **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)** indicating if it is loaded inside a split view
 
+**Meta**
+
+-   **since**: 0.6.0
+
 ### isModal
 
 Checks if the current micro-frontend is displayed inside a modal
 
 Returns **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)** indicating if it is loaded inside a modal
+
+**Meta**
+
+-   **since**: 0.6.0

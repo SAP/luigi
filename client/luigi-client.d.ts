@@ -24,6 +24,7 @@ export declare interface ModalSettings {
 export declare interface SplitViewSettings {
   title?: string;
   size?: number;
+  collapsed?: boolean;
 }
 
 export enum SplitViewEvents {
@@ -157,12 +158,14 @@ export declare interface UxManager {
 
   /**
    * Checks if the current micro frontend is displayed inside a split view
+   * @since 0.6.0
    * @returns {boolean} indicating if it is loaded inside a split view
    */
   isSplitView: () => boolean;
 
   /**
    * Checks if the current micro frontend is displayed inside a modal
+   * @since 0.6.0
    * @returns {boolean} indicating if it is loaded inside a modal
    */
   isModal: () => boolean;
@@ -254,6 +257,7 @@ export declare interface LinkManager {
    * @param {Object} modalSettings opens a view in a modal. Use these settings to configure the modal's title and size.
    * @param {string} modalSettings.title modal title. By default, it is the node label. If there is no label, it is left empty.
    * @param {('l'|'m'|'s')} [modalSettings.size=l] size of the modal (optional, default `l`)
+   * @since 0.4.11
    * @example
    * LuigiClient.linkManager().openAsModal('projects/pr1/users', {title:'Users', size:'m'});
    */
@@ -266,11 +270,12 @@ export declare interface LinkManager {
    * @param {Object} splitViewSettings opens a view in a split view. Use these settings to configure the split view's behaviour
    * @param {string} splitViewSettings.title split view title. By default, it is the node label. If there is no label, it is left empty
    * @param {number} [splitViewSettings.size=40] height of the split view in percent
-   * @returns {Object} instance of the SplitView. It provides event listeners and you can the functions to control its behavior
-
+   * @param {boolean} [splitViewSettings.collapsed=false] opens split view in collapsed state
+   * @returns {Object} instance of the SplitView. It provides Event listeners and you can use the available functions to control its behavior.
    * @see {@link splitView} for further documentation about the returned instance
+   * @since 0.6.0
    * @example
-   * const splitViewHandle = LuigiClient.linkManager().openAsSplitView('projects/pr1/logs', {title: 'Logs', size: 40});
+   * const splitViewHandle = LuigiClient.linkManager().openAsSplitView('projects/pr1/logs', {title: 'Logs', size: 40, collapsed: true});
    */
   openAsSplitView: (
     path: string,
