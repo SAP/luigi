@@ -53,7 +53,7 @@ Object.keys(productSwitcherItems[0]).length }
                   </span>
                   <span
                     class="fd-product-switcher__product-title"
-                  >{productSwitcherItem.label}</span>
+                  >{$getTranslation(productSwitcherItem.label)}</span>
                 </a>
               </li>
               {/if}
@@ -104,7 +104,9 @@ Object.keys(productSwitcherItems[0]).length }
                 >
                 {/if}
               </span>
-              <span class="y-full-width-list__title">{productSwitcherItem.label}</span>
+              <span
+                class="y-full-width-list__title"
+              >{$getTranslation(productSwitcherItem.label)}</span>
             </li>
             {/if}
             {/each}
