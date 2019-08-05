@@ -1,0 +1,68 @@
+.p-header {
+  > .has-border {
+    padding-top: 15px;
+    padding-bottom: 15px;
+
+    @include breakpoint(xxlarge) {
+      padding-top: 25px;
+      padding-bottom: 25px;
+      border-bottom: 1px solid $border-color;
+    }
+  }
+
+  &--home {
+    background: url('../img/header-bg.svg') no-repeat left 50% bottom 100px;
+    background-size: cover;
+  }
+
+  .logo {
+    img {
+      display: block;
+      width: 74px;
+      height: 30px;
+
+      @include breakpoint(xxlarge) {
+        width: 148px;
+        height: 60px;
+      }
+    }
+  }
+
+  .social-links {
+    display: flex;
+    flex-direction: row-reverse;
+    align-items: center;
+
+    .item {
+      margin-left: 25px;
+
+      a {
+        font-size: 24px;
+        color: white;
+        transition: color 0.3s ease;
+
+        &:hover {
+          color: $primary-color;
+        }
+      }
+    }
+  }
+
+  .s-stage {
+    padding-top: 30px;
+    padding-bottom: 50px;
+    color: $white;
+
+    .content {
+      @include breakpoint(medium down) {
+        margin-bottom: 50px;
+      }
+    }
+
+    .image {
+      padding-top: 52%;
+      background: url('../img/running_app_full.png') no-repeat 50% 0;
+      background-size: cover;
+    }
+  }
+}

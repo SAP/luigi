@@ -1,0 +1,57 @@
+.p-footer {
+  color: $white;
+
+  &--home {
+    background: url('../img/footer-bg.svg') no-repeat 41% 50%;
+    background-size: auto 100%;
+  }
+
+  .s-stage {
+    margin-bottom: 60px;
+
+    .title-2 {
+      margin-bottom: 0.5em;
+    }
+  }
+
+  .image {
+    margin-bottom: 20px;
+    padding-top: 50px;
+
+    img {
+      width: 70%;
+    }
+  }
+
+  .logo {
+    display: inline-block;
+    margin-bottom: 20px;
+
+    img {
+      width: 106px;
+      height: 42px;
+    }
+  }
+
+  .link-list {
+    margin-bottom: 20px;
+  }
+
+  .wr {
+    text-align: center;
+    font-size: 12px;
+    padding-top: 30px;
+    border-top: 1px solid $border-color;
+  }
+
+  a {
+    &:not(.btn-primary) {
+      color: $white;
+
+      &:hover,
+      &:active {
+        color: $primary-color;
+      }
+    }
+  }
+}

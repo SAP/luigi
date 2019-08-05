@@ -1,0 +1,60 @@
+.s-intro {
+  text-align: center;
+
+  margin-top: -200px;
+  padding-top: 200px !important;
+}
+
+.s-benefits {
+  padding: 50px 0;
+
+  @include breakpoint(large) {
+    padding: 100px 0;
+  }
+
+  .title-2 {
+    margin-bottom: 2em;
+  }
+}
+
+.benefits-list {
+  counter-reset: title;
+
+  .item {
+    margin-bottom: 50px;
+
+    .image {
+      position: relative;
+
+      &:after {
+        content: '';
+        display: block;
+        width: 100%;
+        border: 1px solid $powder-blue;
+        transform: rotate(3deg);
+        margin-top: 40px;
+      }
+    }
+
+    &:nth-child(2n) {
+      .image {
+        &:after {
+          transform: rotate(-3deg);
+        }
+      }
+    }
+  }
+
+  .title-3 {
+    &:before {
+      color: $primary-color;
+      counter-increment: title;
+      content: '0' counter(title) '. ';
+      font-size: 18px;
+    }
+  }
+
+  .description {
+    margin-left: 30px;
+  }
+}
