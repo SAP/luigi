@@ -11,6 +11,7 @@ class SplitViewSvcClass {
   constructor() {
     this.splitViewValues;
     this.internalValues = {
+      innerHeight: null,
       rightContentHeight: null,
       thresholdTop: null,
       thresholdBottom: null,
@@ -147,7 +148,7 @@ class SplitViewSvcClass {
 
     const calculated = this.enforceTreshHolds(
       newBottom,
-      window.innerHeight - newBottom,
+      values.innerHeight - newBottom,
       values
     );
 
@@ -165,9 +166,9 @@ class SplitViewSvcClass {
     const iv = this.internalValues;
     if (top <= iv.thresholdTop) {
       top = iv.thresholdTop;
-      bottom = window.innerHeight - iv.thresholdTop;
+      bottom = iv.innerHeight - iv.thresholdTop;
     } else if (bottom <= iv.thresholdBottom) {
-      top = window.innerHeight - iv.thresholdBottom;
+      top = iv.innerHeight - iv.thresholdBottom;
       bottom = iv.thresholdBottom;
     }
 
@@ -197,6 +198,10 @@ class SplitViewSvcClass {
 
     this.splitViewValues = this.calculateInitialValues(
       mfSplitView.settings && mfSplitView.settings.size,
+      GenericHelpers.getContentAreaHeight()
+    );
+    console.log(
+      'GenericHelpers.getContentAreaHeight()',
       GenericHelpers.getContentAreaHeight()
     );
 

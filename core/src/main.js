@@ -20,7 +20,6 @@ const configReadyCallback = () => {
   }
 
   LuigiI18N._init();
->>>>>>> upstream/master
   // setTimeout needed so that luigi container is rendered when we retrieve it
   let app;
   setTimeout(() => {

@@ -225,7 +225,10 @@ class GenericHelpersClass {
   }
 
   getContentAreaHeight() {
-    return window.innerHeight - LuigiElements.getShellbar().clientHeight;
+    return (
+      LuigiElements.getLuigiContainer().clientHeight -
+      LuigiElements.getShellbar().clientHeight
+    );
   }
 
   computePxFromPercent(fullPixels, requestedPercent) {
