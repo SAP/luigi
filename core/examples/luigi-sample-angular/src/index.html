@@ -10,7 +10,23 @@
   </head>
   <style>
     /* LUIGI CUSTOM CONTAINER FEATURE */
-    /* #my-header {
+    /* [luigi-app-root] {
+      float: left;
+      width: 70%;
+      height: 500px;
+    }
+
+    .custom {
+      padding: 20px;
+      text-align: center;
+    }
+
+    .main { 
+      position: relative;
+      overflow: hidden; 
+    }
+
+    #my-header {
       width: 100%;
       height: 200px;
       border: 1px solid;
@@ -22,12 +38,6 @@
       height: 500px;
       border: 1px solid;
       float: left;
-    }
-
-    [luigi-app-root] {
-      float: left;
-      width: 70%;
-      height: 500px;
     }
 
     #my-rightnav {
@@ -57,10 +67,11 @@
 
     <!-- LUIGI CUSTOM CONTAINER FEATURE -->
     <!-- <div class="custom" id="my-header">MY HEADER</div> 
-    <div class="custom" id="my-leftnav">MY LEFTNAV</div>
-    <div luigi-app-root></div>
-    <div class="custom" id="my-rightnav">MY RIGHTNAV</div>
-    <div style="clear: both"></div>
+    <div class="main">
+      <div class="custom" id="my-leftnav">MY LEFTNAV</div>
+      <div luigi-app-root></div>
+      <div class="custom" id="my-rightnav">MY RIGHTNAV</div>
+    </div>
     <div class="custom" id="my-footer">MY FOOTER</div> -->
   </body>
 </html>

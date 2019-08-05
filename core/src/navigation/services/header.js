@@ -1,5 +1,5 @@
 import { StateHelpers } from '../../utilities/helpers';
-import { LuigiConfig } from './../../core-api';
+import { LuigiConfig, LuigiI18N } from './../../core-api';
 
 export const processHeaderSettings = component => {
   StateHelpers.doOnStoreChange(component.store, () => {
@@ -9,8 +9,9 @@ export const processHeaderSettings = component => {
       }
       // Set Title and Logo
       if (header.title) {
-        component.set({ title: header.title });
-        document.title = header.title;
+        const title = LuigiI18N.getTranslation(header.title);
+        component.set({ title });
+        document.title = title;
       }
 
       const hasLogo = Boolean(header.logo);
