@@ -74,8 +74,9 @@ class Helpers {
     }
   }
 
-  sendPostMessageToLuigiCore(msg) {
-    window.parent.postMessage(msg, this.origin);
+  sendPostMessageToLuigiCore(msg, data = {}) {
+    const messageObject = { msg, data };
+    window.parent.postMessage(messageObject, this.origin);
   }
 }
 

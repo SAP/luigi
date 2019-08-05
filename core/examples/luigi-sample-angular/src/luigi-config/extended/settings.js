@@ -8,6 +8,18 @@ class Settings {
     favicon: '/assets/favicon-sap.ico'
   };
 
+  customEventsFromMicrofrontends = {
+    'luigi.navigation.update-badge-counters'(msg, data) {
+      Luigi.showAlert({
+        text: `Badge counters update event received. msg: "${msg}", data: ${JSON.stringify(
+          data
+        )}`,
+        type: 'success',
+        closeAfter: 3000
+      });
+    }
+  };
+
   responsiveNavigation = 'simpleMobileOnly'; // Options: simple | simpleMobileOnly | semiCollapsible
   sideNavFooterText = `Luigi Client: ${version || 'unknown'}`;
   // hideNavigation = true

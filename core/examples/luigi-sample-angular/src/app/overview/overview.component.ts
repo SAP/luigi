@@ -1,5 +1,9 @@
 import { Component } from '@angular/core';
-import { linkManager, uxManager } from '@kyma-project/luigi-client';
+import {
+  linkManager,
+  uxManager,
+  sendCustomEventToCore
+} from '@kyma-project/luigi-client';
 
 @Component({
   selector: 'app-overview',
@@ -71,9 +75,6 @@ export class OverviewComponent {
   }
 
   public updateBadgeCounters() {
-    window.parent.postMessage(
-      { msg: 'luigi.navigation.update-badge-counters' },
-      '*'
-    );
+    sendCustomEventToCore('luigi.navigation.update-badge-counters');
   }
 }

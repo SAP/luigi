@@ -37,6 +37,9 @@ class LuigiClient {
   getClientPermissions() {
     return lifecycleManager.getClientPermissions();
   }
+  sendCustomEventToCore(msg, data) {
+    return lifecycleManager.sendCustomEventToCore(msg, data);
+  }
   /**
    * @private
    */

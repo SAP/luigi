@@ -81,6 +81,22 @@ Returns the current client permissions as specified in the navigation node or an
 
 Returns **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** client permissions as specified in the navigation node.
 
+### sendCustomEventToCore
+
+Sends a custom message to the Luigi Core application.
+
+#### Parameters
+
+-   `msg` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** a string containing the message id.
+-   `data` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** an object containing data to be sent to the Luigi Core for further processing of the custom event. This object will be set as input parameter of the event handler on the Luigi Core side.
+
+#### Examples
+
+```javascript
+import LuigiClient from '@kyma-project/luigi-client';
+LuigiClient.sendCustomEventToCore('environment.created', {id: 10, production: false})
+```
+
 ## linkManager
 
 The Link Manager allows you to navigate to another route. Use it instead of an internal router to:

@@ -363,6 +363,14 @@
           const iframe = IframeHelpers.getValidMessageSource(e, this);
           if (!iframe) return;
 
+          const customEventsFromMf =
+            Luigi.getConfigValue('settings.customEventsFromMicrofrontends') ||
+            {};
+          const customEventFromMfHandler = customEventsFromMf[e.data.msg];
+          if (typeof customEventFromMfHandler === 'function') {
+            customEventFromMfHandler(e.data.msg, e.data.data);
+          }
+
           if ('luigi.navigate.ok' === e.data.msg) {
             iframe.luigi.viewUrl = iframe.luigi.nextViewUrl;
             iframe.luigi.nextViewUrl = '';

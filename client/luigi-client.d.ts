@@ -375,6 +375,18 @@ export function getClientPermissions(): ClientPermissions;
 export type getClientPermissions = () => ClientPermissions;
 
 /**
+ * Sends a custom message to the Luigi Core application.
+ * @param {string} msg a string containing the message id.
+ * @param {object} data an object containing data to be sent to the Luigi Core for further processing of the custom event. This object will be set as input parameter of the event handler on the Luigi Core side.
+ * @example
+ * import LuigiClient from '@kyma-project/luigi-client';
+ * LuigiClient.sendCustomEventToCore('environment.created', {id: 10, production: false})
+ * @memberof Lifecycle
+ */
+export function sendCustomEventToCore(msg: string, data?: object): void;
+export type sendCustomEventToCore = (msg: string, data?: object) => void;
+
+/**
  * The Link Manager allows you to navigate to another route. Use it instead of an internal router to:
   - Route inside micro front-ends.
   - Reflect the route.
