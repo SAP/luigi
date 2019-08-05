@@ -23,18 +23,30 @@ The lerna-changelog tool detects changes based on PR labels and maps them to sec
     ...
   }
 -->
-
-## [v0.6.0-rc.0] (2019-07-26)
+## [v0.6.0] (2019-08-02)
 
 #### :rocket: Added
+* [#705](https://github.com/SAP/luigi/pull/705) Core api for getting translation for a specified key for given locale ([@JohannesDoberer](https://github.com/JohannesDoberer))
+* [#707](https://github.com/SAP/luigi/pull/707) Add luigi bootstrap dom element option ([@jesusreal](https://github.com/jesusreal))
+* [#694](https://github.com/SAP/luigi/pull/694) smooth scrolling on mobile devices ([@JohannesDoberer](https://github.com/JohannesDoberer))
+* [#669](https://github.com/SAP/luigi/pull/669) product switcher header to fiori3 concept ([@JohannesDoberer](https://github.com/JohannesDoberer))
+* [#678](https://github.com/SAP/luigi/pull/678) Client permissions available in the client ([@JohannesDoberer](https://github.com/JohannesDoberer))
 * [#650](https://github.com/SAP/luigi/pull/650) Split View microfrontends ([@maxmarkus](https://github.com/maxmarkus))
 * [#664](https://github.com/SAP/luigi/pull/664) Accumulated badge counter for mobile ([@maxmarkus](https://github.com/maxmarkus))
 
 #### :bug: Fixed
+* [#712](https://github.com/SAP/luigi/pull/712) Fix error on click on navigation node when node is active ([@jesusreal](https://github.com/jesusreal))
+* [#500](https://github.com/SAP/luigi/pull/500) Fix path routing ([@y-kkamil](https://github.com/y-kkamil))
 * [#665](https://github.com/SAP/luigi/pull/665) Fix custom idp provider login function check ([@maxmarkus](https://github.com/maxmarkus))
 
 #### :memo: Documentation
+* [#690](https://github.com/SAP/luigi/pull/690) Open split view in collapsed state ([@maxmarkus](https://github.com/maxmarkus))
 * [#668](https://github.com/SAP/luigi/pull/668) Fix broken links in docu for auth providers ([@jesusreal](https://github.com/jesusreal))
+
+## [v0.5.4] (2019-07-29)
+
+#### :bug: Fixed
+* [#708](https://github.com/SAP/luigi/issues/708) Fix error on click on navigation node when node is active ([@jesusreal](https://github.com/jesusreal))
 
 
 ## [v0.5.3] (2019-07-23)
@@ -459,4 +471,5 @@ The lerna-changelog tool detects changes based on PR labels and maps them to sec
 [v0.5.1]: https://github.com/SAP/luigi/compare/v0.5.0...v0.5.1
 [v0.5.2]: https://github.com/SAP/luigi/compare/v0.5.1...v0.5.2
 [v0.5.3]: https://github.com/SAP/luigi/compare/v0.5.2...v0.5.3
-[v0.6.0-rc.0]: https://github.com/SAP/luigi/compare/v0.5.3...v0.6.0-rc.0
+[v0.5.4]: https://github.com/SAP/luigi/compare/v0.5.3...v0.5.4
+[v0.6.0]: https://github.com/SAP/luigi/compare/v0.5.4...v0.6.0
