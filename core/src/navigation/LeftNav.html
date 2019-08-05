@@ -353,17 +353,26 @@
         let topScroll = el.closest('nav').scrollTop;
         let topPosition = parentTopPosition + shellbarHeight - topScroll;
         let bottomPosition =
-          window.innerHeight -
+          containerHeight -
           parentTopPosition -
           parent.offsetHeight +
           topScroll -
           shellbarHeight;
 
-        if (topPosition + flyoutSublist.offsetHeight >= window.innerHeight) {
-          flyoutSublist.style.bottom = bottomPosition + 'px';
-          flyoutSublist.className += ' has-bottom-position';
+        if (luigiContainer === LuigiElements.getCustomLuigiContainer()) {
+          if (topPosition + flyoutSublist.offsetHeight >= containerHeight) {
+            flyoutSublist.style.bottom = bottomPosition + 'px';
+            flyoutSublist.className += ' has-bottom-position';
+          } else {
+            flyoutSublist.style.top = topPosition - shellbarHeight + 'px';
+          }
         } else {
-          flyoutSublist.style.top = topPosition + 'px';
+          if (topPosition + flyoutSublist.offsetHeight >= containerHeight) {
+            flyoutSublist.style.bottom = bottomPosition + 'px';
+            flyoutSublist.className += ' has-bottom-position';
+          } else {
+            flyoutSublist.style.top = topPosition + 'px';
+          }
         }
       },
 
@@ -503,6 +512,10 @@
       .lui-fd-side-nav-wrapper {
         height: calc(100% - 50px);
       }
+    }
+
+    .lui-flyout-sublist {
+      position: absolute;
     }
   }
 
