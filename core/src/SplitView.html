@@ -21,6 +21,7 @@
   </div>
 </div>
 {#if !collapsed}
+<div id="splitViewDraggerBackdrop"></div>
 <div id="splitViewDragger" on:mousedown:stopPropagation="onDragStart(event)">
   <div class="splitViewSeparator"></div>
   <a
@@ -30,7 +31,6 @@
     <span class="sap-icon--navigation-down-arrow sap-icon--s"></span>
   </a>
 </div>
-<div id="splitViewDraggerBackdrop"></div>
 {/if}
 <script>
   import { LuigiElements } from './core-api';
@@ -245,8 +245,10 @@
     position: absolute;
     bottom: 0;
     right: 0;
-    left: $leftNavWidth;
     top: 60%; /* default, overridden by computed.getIframeSplitViewTop */
+  }
+  :global(.splitViewContainer, #splitViewDragger, #splitViewDraggerBackdrop) {
+    left: $leftNavWidth;
   }
 
   :global(.lui-collapsed.splitViewContainer) {

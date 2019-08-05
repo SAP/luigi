@@ -945,7 +945,9 @@
       bottom: 0;
       right: 0;
     }
-    .splitViewContainer {
+    :global(.splitViewContainer),
+    :global(#splitViewDragger),
+    :global(#splitViewDraggerBackdrop) {
       left: 0;
     }
   }
@@ -959,10 +961,9 @@
       bottom: 0;
       right: 0;
     }
-    .splitViewContainer {
-      left: 0;
-    }
-    :global(#splitViewDragger, #splitViewDraggerBackdrop) {
+    :global(.splitViewContainer),
+    :global(#splitViewDragger),
+    :global(#splitViewDraggerBackdrop) {
       left: 0;
     }
 
@@ -978,31 +979,34 @@
 
     .iframeContainer,
     .spinnerContainer,
-    .splitViewContainer,
-    :global(#splitViewDragger, #splitViewDraggerBackdrop) {
+    :global(.splitViewContainer),
+    :global(#splitViewDragger),
+    :global(#splitViewDraggerBackdrop) {
       @include transition(left 0.1s linear);
     }
   }
 
   :global(.lui-semiCollapsible) {
     .iframeContainer,
-    .spinnerContainer,
-    .splitViewContainer {
+    .spinnerContainer {
       @include transition(left 0.1s linear);
     }
-    :global(#splitViewDragger, #splitViewDraggerBackdrop) {
+    :global(.splitViewContainer),
+    :global(#splitViewDragger),
+    :global(#splitViewDraggerBackdrop) {
       @include transition(left 0.1s linear);
     }
   }
 
   :global(.semiCollapsed) {
-    .iframeContainer,
-    .spinnerContainer,
-    .splitViewContainer {
+    :global(.iframeContainer, .spinnerContainer) {
       left: $leftNavWidthCollapsed;
     }
-    :global(#splitViewDragger, #splitViewDraggerBackdrop) {
+    :global(.splitViewContainer),
+    :global(#splitViewDragger),
+    :global(#splitViewDraggerBackdrop) {
       left: $leftNavWidthCollapsed;
+      color: red;
     }
   }
 
@@ -1016,11 +1020,12 @@
     }
     :global(body.lui-simpleSlideInNav.lui-leftNavToggle) {
       .iframeContainer,
-      .spinnerContainer,
-      .splitViewContainer {
+      .spinnerContainer {
         left: 0;
       }
-      :global(#splitViewDragger, #splitViewDraggerBackdrop) {
+      :global(.splitViewContainer),
+      :global(#splitViewDragger),
+      :global(#splitViewDraggerBackdrop) {
         left: 0;
       }
 
@@ -1033,11 +1038,12 @@
   @media (max-width: $desktopMinWidth - 1) {
     :global(body.lui-simpleSlideInNav) {
       .iframeContainer,
-      .spinnerContainer,
-      .splitViewContainer {
+      .spinnerContainer {
         left: 0;
       }
-      :global(#splitViewDragger, #splitViewDraggerBackdrop) {
+      :global(.splitViewContainer),
+      :global(#splitViewDragger),
+      :global(#splitViewDraggerBackdrop) {
         left: 0;
       }
 
@@ -1057,11 +1063,12 @@
 
     :global(.lui-semiCollapsible) {
       .iframeContainer,
-      .spinnerContainer,
-      .splitViewContainer {
+      .spinnerContainer {
         left: $leftNavWidthCollapsed;
       }
-      :global(#splitViewDragger, #splitViewDraggerBackdrop) {
+      :global(.splitViewContainer),
+      :global(#splitViewDragger),
+      :global(#splitViewDraggerBackdrop) {
         left: $leftNavWidthCollapsed;
       }
     }
@@ -1079,6 +1086,12 @@
     .no-side-nav {
       .iframeContainer,
       .spinnerContainer {
+        position: absolute;
+      }
+
+      :global(.splitViewContainer),
+      :global(#splitViewDragger),
+      :global(#splitViewDraggerBackdrop) {
         position: absolute;
       }
     }
