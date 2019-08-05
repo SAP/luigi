@@ -1,10 +1,12 @@
 import { GenericHelpers } from '../../src/utilities/helpers';
+import { config } from '../../src/core-api/config';
 
 const chai = require('chai');
 const assert = chai.assert;
 const sinon = require('sinon');
 
 import { LuigiI18N } from '../../src/core-api';
+import { LuigiConfig } from '../../src/core-api';
 
 describe('I18N', () => {
   beforeEach(() => {
@@ -12,8 +14,10 @@ describe('I18N', () => {
       getItem: sinon.stub(),
       setItem: sinon.stub()
     };
+    sinon.stub(config, 'getConfig');
+    sinon.stub(config, 'setConfig');
   });
-  beforeEach(() => {
+  afterEach(() => {
     sinon.restore();
   });
 
@@ -96,6 +100,45 @@ describe('I18N', () => {
       sinon.assert.calledWithExactly(LuigiI18N.listeners.id1, 'pl');
       sinon.assert.calledWithExactly(LuigiI18N.listeners.id2, 'pl');
       sinon.assert.calledWithExactly(LuigiI18N.listeners.id3, 'pl');
+      sinon.assert.called(config.getConfig);
+      sinon.assert.called(config.setConfig);
+    });
+  });
+
+  describe('custom translation', () => {
+    let mockConfig;
+    let dict = {
+      en: {
+        tets: 'tests'
+      },
+      de: {
+        project: 'luigi'
+      }
+    };
+    const getMockConfig = () => ({
+      getTranslation: (key, interpolations, locale) => {
+        if (dict[locale]) {
+          return dict[locale][key];
+        }
+      }
+    });
+    beforeEach(() => {
+      mockConfig = getMockConfig();
+    });
+
+    it('_initCustomImplementation: get custom translation from config', () => {
+      sinon.stub(LuigiConfig, 'getConfigValue').returns(mockConfig);
+      LuigiI18N._initCustomImplementation();
+      assert.equal(LuigiI18N.translationImpl, mockConfig);
+    });
+
+    it('custom translation test', () => {
+      LuigiI18N.translationImpl = mockConfig;
+      assert.equal(LuigiI18N.getTranslation('tets', null, 'en'), 'tests');
+      assert.equal(LuigiI18N.getTranslation('project', null, 'de'), 'luigi');
+
+      LuigiI18N.translationImpl = null;
+      assert.equal(LuigiI18N.getTranslation('tets'), 'tets');
     });
   });
 });

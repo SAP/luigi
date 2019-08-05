@@ -12,6 +12,13 @@ class Settings {
   sideNavFooterText = `Luigi Client: ${version || 'unknown'}`;
   // hideNavigation = true
   // backdropDisabled = true
+  /* customTranslationImplementation = () => {
+    return {
+      getTranslation: (key, interpolations, locale) => {
+        return '*' + key + '* ' + (locale || Luigi.i18n().getCurrentLocale());
+      }
+    };
+  }; */
 }
 
 export const settings = new Settings();
