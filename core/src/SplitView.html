@@ -31,7 +31,6 @@
   </a>
 </div>
 <div id="splitViewDraggerBackdrop"></div>
-
 {/if}
 <script>
   import { LuigiElements } from './core-api';
@@ -169,7 +168,6 @@
 
         const resize = function resize(re) {
           const diff = m_pos - re.y;
-          m_pos = re.y;
 
           const dragTop = parseInt(
             getComputedStyle(elements.draggable, '').top
@@ -177,13 +175,21 @@
 
           if (isNaN(dragTop) || diff === 0) {
             // happens in collapsed state on mouse over draggable
+            // or if expanded only clicked without movement
             return;
           }
 
           const top = dragTop - diff;
           const bottom = SplitViewSvc.internalValues.innerHeight - top;
-          newValues = SplitViewSvc.enforceTreshHolds(top, bottom);
+          const tresh = SplitViewSvc.enforceTreshHolds(top, bottom);
 
+          if (top < tresh.top || bottom < tresh.bottom) {
+            // if outside bounds, do nothing
+            return;
+          }
+
+          newValues = tresh;
+          m_pos = re.y;
           elements.draggable.style.top = `${newValues.top}px`;
         };
 
