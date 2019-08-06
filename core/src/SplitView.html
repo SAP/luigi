@@ -1,4 +1,4 @@
-<svelte:window on:resize="onResize()"/>
+<svelte:window on:resize="updateSizes()"/>
 <div class="lui-split-view">
   {#if collapsed}
   <div class="splitViewSeparator isCollapsed">
@@ -11,6 +11,8 @@
   </div>
   <h1 class="fd-splitView__title">{splitViewSettings.title}</h1>
   {:else}
+  <div class="iframeSplitViewCnt"></div>
+  <div id="splitViewDraggerBackdrop"></div>
   <div id="splitViewDragger" on:mousedown:stopPropagation="onDragStart(event)">
     <div class="splitViewSeparator"></div>
     <a
@@ -20,8 +22,6 @@
       <span class="sap-icon--navigation-down-arrow sap-icon--s"></span>
     </a>
   </div>
-  <div id="splitViewDraggerBackdrop"></div>
-  <div class="iframeSplitViewCnt"></div>
   {/if}
 </div>
 
@@ -74,7 +74,7 @@
     }px`;
   };
 
-  function messageHandler(e) {
+  function _messageHandler(e) {
     const iframe = IframeHelpers.getValidMessageSource(e, this.root);
     if (!iframe) return;
 
@@ -109,19 +109,24 @@
     }
   }
 
+  let messageHandler;
+
   export default {
     oncreate() {
-      this.onResize();
-      window.addEventListener('message', messageHandler.bind(this));
+      this.updateSizes();
+      // bind(this) changes the signature, required to
+      // be assigned to var in order to removeEventListener
+      messageHandler = _messageHandler.bind(this);
+      window.addEventListener('message', messageHandler);
     },
     onupdate({ changed, current, previous }) {
       getNode(this, this.get().nodepath);
-      if (changed.isDataPrepared === true) {
+      if (changed.isDataPrepared === true && !this.get().collapsed) {
         setSplitViewSize();
       }
     },
     ondestroy() {
-      window.removeEventListener('message', messageHandler.bind(this));
+      window.removeEventListener('message', messageHandler);
     },
     data() {
       return {
@@ -134,11 +139,13 @@
         e && e.stopPropagation();
         SplitViewSvc.collapse(this.root);
       },
-      expand() {
-        SplitViewSvc.expand(this.root);
-        SplitViewSvc.getDraggerBackdrop().style.display = 'none';
+      async expand() {
+        SplitViewSvc.expand(this);
+        if (elements.draggerBackdrop) {
+          elements.draggerBackdrop.style.display = 'none';
+        }
       },
-      onResize() {
+      updateSizes() {
         const shellbarHeight = LuigiElements.getShellbar().clientHeight;
         SplitViewSvc.internalValues.rightContentHeight =
           window.innerHeight - shellbarHeight;
@@ -154,6 +161,7 @@
       },
       onDragStart(e) {
         let m_pos = e.y;
+        let newValues = {};
 
         const resize = function resize(re) {
           const diff = m_pos - re.y;
@@ -168,46 +176,29 @@
             return;
           }
 
-          const newTop = dragTop - diff;
-          const newBottom = window.innerHeight - newTop;
-          const calculated = SplitViewSvc.enforceTreshHolds(
-            newTop,
-            newBottom,
-            SplitViewSvc.internalValues.thresholdTop,
-            SplitViewSvc.internalValues.thresholdBottom
-          );
+          const top = dragTop - diff;
+          const bottom = window.innerHeight - top;
 
-          SplitViewSvc.splitViewValues.top = calculated.top;
-          SplitViewSvc.splitViewValues.bottom = calculated.bottom;
-
-          elements.draggable.style.top = `${
-            SplitViewSvc.splitViewValues.top
-          }px`;
+          newValues = SplitViewSvc.enforceTresholds(top, bottom);
+          elements.draggable.style.top = `${newValues.top}px`;
         };
 
         const onMouseUp = function onMouseUp() {
           clearListeners();
           if (
-            !SplitViewSvc.splitViewValues.top ||
-            !SplitViewSvc.splitViewValues.bottom ||
-            SplitViewSvc.splitViewValues.top ==
-              SplitViewSvc.internalValues.m_pos_prev
+            !newValues.top ||
+            !newValues.bottom ||
+            newValues.top == SplitViewSvc.internalValues.m_pos_prev
           ) {
             SplitViewSvc.getDraggerBackdrop().style.display = 'none';
             return;
           }
-          SplitViewSvc.internalValues.m_pos_prev =
-            SplitViewSvc.splitViewValues.top;
+          SplitViewSvc.internalValues.m_pos_prev = newValues.top;
+          SplitViewSvc.splitViewValues = newValues;
 
           setSplitViewSize();
-          SplitViewSvc.splitViewValues.percent = GenericHelpers.computePercentFromPx(
-            SplitViewSvc.internalValues.rightContentHeight,
-            SplitViewSvc.splitViewValues.bottom
-          );
-          SplitViewSvc.sendMessageToClients(
-            'resize.ok',
-            SplitViewSvc.splitViewValues.percent
-          );
+
+          SplitViewSvc.sendMessageToClients('resize.ok', newValues.percent);
         };
 
         const clearListeners = function clearListeners() {
@@ -249,7 +240,6 @@
     left: $leftNavWidth;
     top: 60%; /* default, overridden by computed.getIframeSplitViewTop */
     height: 8px;
-    z-index: 2;
     cursor: row-resize;
     &:hover {
       /* enlarge mouse move target */
@@ -275,7 +265,6 @@
     background: white;
     position: absolute;
     left: 50%;
-    z-index: 1;
     margin-left: -12px;
     margin-top: -11px;
     text-align: center;
@@ -304,7 +293,6 @@
     right: 0;
     bottom: 0;
     left: $leftNavWidth;
-    z-index: 1;
     display: none;
   }
 
@@ -341,7 +329,7 @@
         left: -$leftNavWidth;
       }
       :global(#splitViewContainer, #splitViewDragger, #splitViewDraggerBackdrop) {
-        left: 0 !important;
+        left: 0;
       }
     }
   }

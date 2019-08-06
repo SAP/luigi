@@ -23,18 +23,30 @@ The lerna-changelog tool detects changes based on PR labels and maps them to sec
     ...
   }
 -->
-
-## [v0.6.0-rc.0] (2019-07-26)
+## [v0.6.0] (2019-08-02)
 
 #### :rocket: Added
+* [#705](https://github.com/SAP/luigi/pull/705) Core api for getting translation for a specified key for given locale ([@JohannesDoberer](https://github.com/JohannesDoberer))
+* [#707](https://github.com/SAP/luigi/pull/707) Add luigi bootstrap dom element option ([@jesusreal](https://github.com/jesusreal))
+* [#694](https://github.com/SAP/luigi/pull/694) smooth scrolling on mobile devices ([@JohannesDoberer](https://github.com/JohannesDoberer))
+* [#669](https://github.com/SAP/luigi/pull/669) product switcher header to fiori3 concept ([@JohannesDoberer](https://github.com/JohannesDoberer))
+* [#678](https://github.com/SAP/luigi/pull/678) Client permissions available in the client ([@JohannesDoberer](https://github.com/JohannesDoberer))
 * [#650](https://github.com/SAP/luigi/pull/650) Split View microfrontends ([@maxmarkus](https://github.com/maxmarkus))
 * [#664](https://github.com/SAP/luigi/pull/664) Accumulated badge counter for mobile ([@maxmarkus](https://github.com/maxmarkus))
 
 #### :bug: Fixed
+* [#712](https://github.com/SAP/luigi/pull/712) Fix error on click on navigation node when node is active ([@jesusreal](https://github.com/jesusreal))
+* [#500](https://github.com/SAP/luigi/pull/500) Fix path routing ([@y-kkamil](https://github.com/y-kkamil))
 * [#665](https://github.com/SAP/luigi/pull/665) Fix custom idp provider login function check ([@maxmarkus](https://github.com/maxmarkus))
 
 #### :memo: Documentation
+* [#690](https://github.com/SAP/luigi/pull/690) Open split view in collapsed state ([@maxmarkus](https://github.com/maxmarkus))
 * [#668](https://github.com/SAP/luigi/pull/668) Fix broken links in docu for auth providers ([@jesusreal](https://github.com/jesusreal))
+
+## [v0.5.4] (2019-07-29)
+
+#### :bug: Fixed
+* [#708](https://github.com/SAP/luigi/issues/708) Fix error on click on navigation node when node is active ([@jesusreal](https://github.com/jesusreal))
 
 
 ## [v0.5.3] (2019-07-23)
@@ -145,7 +157,7 @@ The lerna-changelog tool detects changes based on PR labels and maps them to sec
 * [#461](https://github.com/SAP/luigi/pull/461) Prevent unescaped characters in the Alert component ([@y-kkamil](https://github.com/y-kkamil))
 * [#466](https://github.com/SAP/luigi/pull/466) Deactivate Typescript Declaration file for Luigi Client ([@jesusreal](https://github.com/jesusreal))
 * [#448](https://github.com/SAP/luigi/pull/448) Escape some html characters for alert component ([@y-kkamil](https://github.com/y-kkamil))
-* [#429](https://github.com/SAP/luigi/pull/429) Luigi client package should not contain src folder ([@jesusreal](https://github.com/jesusreal))
+* [#429](https://github.com/SAP/luigi/pull/429) Luigi Client package should not contain src folder ([@jesusreal](https://github.com/jesusreal))
 * [#427](https://github.com/SAP/luigi/pull/427) Fix transparent background in alerts ([@dariadomagala](https://github.com/dariadomagala))
 
 #### :memo: Documentation
@@ -248,7 +260,7 @@ The lerna-changelog tool detects changes based on PR labels and maps them to sec
 #### :bug: Fixed
 * [#307](https://github.com/SAP/luigi/pull/307) Fix error with parsed data ([@dariadomagala](https://github.com/dariadomagala))
 * [#301](https://github.com/SAP/luigi/pull/301) Fix dropdowns behavior on click events ([@dariadomagala](https://github.com/dariadomagala))
-* [#305](https://github.com/SAP/luigi/pull/305) When adding a listener via Luigi client API, call only the listener being added ([@jesusreal](https://github.com/jesusreal))
+* [#305](https://github.com/SAP/luigi/pull/305) When adding a listener via Luigi Client API, call only the listener being added ([@jesusreal](https://github.com/jesusreal))
 * [#299](https://github.com/SAP/luigi/pull/299) It is not possible to have a root node with empty path segment and a view ([@pekura](https://github.com/pekura))
 * [#283](https://github.com/SAP/luigi/pull/283) Default child node mechanism breaks if path ends with a slash ([@pekura](https://github.com/pekura))
 
@@ -268,7 +280,7 @@ The lerna-changelog tool detects changes based on PR labels and maps them to sec
 * [#253](https://github.com/SAP/luigi/pull/253) Allow async defaultChildNode ([@maxmarkus](https://github.com/maxmarkus))
 * [#261](https://github.com/SAP/luigi/pull/261) Fix the relative path bug ([@dariadomagala](https://github.com/dariadomagala))
 * [#250](https://github.com/SAP/luigi/pull/250) preserveView should allow viewUrls with query params ([@maxmarkus](https://github.com/maxmarkus))
-* [#246](https://github.com/SAP/luigi/pull/246) Luigi client creates extra entry in browser navigation history ([@pekura](https://github.com/pekura))
+* [#246](https://github.com/SAP/luigi/pull/246) Luigi Client creates extra entry in browser navigation history ([@pekura](https://github.com/pekura))
 * [#238](https://github.com/SAP/luigi/pull/238) viewUrl should not be mandatory in dynamic node ([@maxmarkus](https://github.com/maxmarkus))
 
 #### :memo: Documentation
@@ -284,7 +296,7 @@ The lerna-changelog tool detects changes based on PR labels and maps them to sec
 * [#190](https://github.com/SAP/luigi/pull/190) Context Switcher in top navigation ([@maxmarkus](https://github.com/maxmarkus))
 * [#209](https://github.com/SAP/luigi/pull/209) Support navigation nodes that just link to other nodes ([@jesusreal](https://github.com/jesusreal))
 * [#162](https://github.com/SAP/luigi/pull/162) 404 support for non existing paths ([@parostatkiem](https://github.com/parostatkiem))
-* [#187](https://github.com/SAP/luigi/pull/187) Luigi core config refactorings ([@jesusreal](https://github.com/jesusreal))
+* [#187](https://github.com/SAP/luigi/pull/187) Luigi Core config refactorings ([@jesusreal](https://github.com/jesusreal))
 * [#200](https://github.com/SAP/luigi/pull/200) Align luigi header title with fundamental style ([@parostatkiem](https://github.com/parostatkiem))
 * [#180](https://github.com/SAP/luigi/pull/180) Token refresh ([@y-kkamil](https://github.com/y-kkamil))
 * [#160](https://github.com/SAP/luigi/pull/160) Configurable logo and title ([@maxmarkus](https://github.com/maxmarkus))
@@ -459,4 +471,5 @@ The lerna-changelog tool detects changes based on PR labels and maps them to sec
 [v0.5.1]: https://github.com/SAP/luigi/compare/v0.5.0...v0.5.1
 [v0.5.2]: https://github.com/SAP/luigi/compare/v0.5.1...v0.5.2
 [v0.5.3]: https://github.com/SAP/luigi/compare/v0.5.2...v0.5.3
-[v0.6.0-rc.0]: https://github.com/SAP/luigi/compare/v0.5.3...v0.6.0-rc.0
+[v0.5.4]: https://github.com/SAP/luigi/compare/v0.5.3...v0.5.4
+[v0.6.0]: https://github.com/SAP/luigi/compare/v0.5.4...v0.6.0

@@ -75,7 +75,7 @@ export class openIdConnect {
     //    callback();
     //   window.location = req.url;
     // }).catch(function (err) {
-    //   console.log(err);
+    //   console.error(err);
     // });
   }
 

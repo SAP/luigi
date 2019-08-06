@@ -76,7 +76,10 @@ class LifecycleManager extends LuigiClientBase {
       helpers.addEventListener('luigi.navigate', e => {
         setContext(e.data);
         if (!this.currentContext.internal.isNavigateBack) {
-          window.location.replace(e.data.viewUrl);
+          history.replaceState(null, '', e.data.viewUrl);
+          window.dispatchEvent(
+            new PopStateEvent('popstate', { state: 'luiginavigation' })
+          );
         }
         // execute the context change listener if set by the microfrontend
         this._notifyUpdate();
@@ -104,10 +107,10 @@ class LifecycleManager extends LuigiClientBase {
    * @private
    * @memberof Lifecycle
    */
-  _callAllFns(objWithFns, payload) {
+  _callAllFns(objWithFns, payload, origin) {
     for (let id in objWithFns) {
       if (objWithFns.hasOwnProperty(id) && helpers.isFunction(objWithFns[id])) {
-        objWithFns[id](payload);
+        objWithFns[id](payload, origin);
       }
     }
   }
@@ -140,7 +143,7 @@ class LifecycleManager extends LuigiClientBase {
 
   /**
    * Registers a listener called with the context object and the Luigi Core domain as soon as Luigi is instantiated. Defer your application bootstrap if you depend on authentication data coming from Luigi.
-   * @param {function} initFn the function that is called once Luigi is initialized
+   * @param {Lifecycle~initListenerCallback} initFn the function that is called once Luigi is initialized, receives current context and origin as parameters.
    * @memberof Lifecycle
    */
   addInitListener(initFn) {
@@ -151,6 +154,12 @@ class LifecycleManager extends LuigiClientBase {
     }
     return id;
   }
+  /**
+   * Callback of the addInitListener
+   * @callback Lifecycle~initListenerCallback
+   * @param {Object} context current context data
+   * @param {string} origin Luigi Core URL
+   */
   /**
    * Removes an init listener.
    * @param {string} id the id that was returned by the `addInitListener` function

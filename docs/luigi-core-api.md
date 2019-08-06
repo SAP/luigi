@@ -118,6 +118,22 @@ Returns **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/
 
 Use these functions to get DOM elements.
 
+#### getLuigiContainer
+
+Returns the container of the Luigi content.
+
+##### Examples
+
+```javascript
+Luigi.elements().getLuigiContainer();
+```
+
+Returns **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** the DOM element that wraps the Luigi content.
+
+**Meta**
+
+-   **since**: 0.6.0
+
 #### getShellbar
 
 Returns the shellbar component.
@@ -276,3 +292,14 @@ Unregisters a listener for locale changes.
 **Meta**
 
 -   **since**: 0.5.3
+
+#### getTranslation
+
+Gets translated text for the specified key in the current locale or in the specified one.
+Property values for token replacement in the localization key will be taken from the specified interpolations object.
+
+##### Parameters
+
+-   `key` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** key to be translated
+-   `interpolations` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** objects with properties that will be used for token replacements in the localization key
+-   `locale` **locale** optional locale to get the translation for; default is the current locale

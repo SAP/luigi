@@ -1,10 +1,7 @@
-describe('Luigi client features', () => {
+describe('Luigi client linkManager', () => {
   beforeEach(() => {
     cy.visit('/');
     cy.login('tets', 'tets');
-
-    //wait for the iFrame to be loaded
-    cy.wait(1000);
   });
 
   it('linkManager features', () => {

@@ -14,7 +14,7 @@
           {/if}
           <BadgeCounter {node}/>
         </span>
-        <span>{node.label}</span>
+        <span>{getNodeLabel(node)}</span>
       </a>
     </li>
     {/each}
@@ -38,7 +38,7 @@
           ></button>
         </div>
         <div class="fd-action-bar__header">
-          <h5 class="fd-action-bar__title fd-has-type-1">{node.label}</h5>
+          <h5 class="fd-action-bar__title fd-has-type-1">{getNodeLabel(node)}</h5>
         </div>
       </div>
       <div class="fd-modal__body">
@@ -59,7 +59,7 @@
                 {/if}
                 <BadgeCounter {node}/>
               </span>
-              <span class="y-full-width-list__title">{node.label}</span>
+              <span class="y-full-width-list__title">{getNodeLabel(node)}</span>
             </li>
             {/each}
             {/if}
@@ -76,6 +76,7 @@
   import { Navigation } from './navigation/services/navigation';
   import { NavigationHelpers } from './utilities/helpers';
   import { RoutingHelpers } from './utilities/helpers';
+  import { LuigiI18N } from './core-api';
   export default {
     async oncreate() {
       this.setViewportHeightVariable();
@@ -119,6 +120,9 @@
     helpers: {
       hasOpenUIicon(node) {
         return NavigationHelpers.isOpenUIiconName(node.icon);
+      },
+      getNodeLabel(node) {
+        return LuigiI18N.getTranslation(node.label);
       }
     },
     components: {
@@ -205,6 +209,7 @@
         var(--vh, 1vh) * 100 - #{$topNavHeight} - #{$productSwitcherHeight}
       );
       padding: 0;
+      -webkit-overflow-scrolling: touch;
     }
 
     .fd-modal__footer {
