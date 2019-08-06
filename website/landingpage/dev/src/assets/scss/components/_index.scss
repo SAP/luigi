@@ -1,6 +1,4 @@
 .s-intro {
-  text-align: center;
-
   margin-top: -200px;
   padding-top: 200px !important;
 }
@@ -30,7 +28,7 @@
         content: '';
         display: block;
         width: 100%;
-        border: 1px solid $powder-blue;
+        border-top: 1px solid $powder-blue;
         transform: rotate(3deg);
         margin-top: 40px;
       }
@@ -56,5 +54,14 @@
 
   .description {
     margin-left: 30px;
+  }
+}
+
+.s-adopters {
+  margin-bottom: -200px;
+  padding-bottom: 200px !important;
+
+  .clients-list {
+    margin-bottom: 40px;
   }
 }

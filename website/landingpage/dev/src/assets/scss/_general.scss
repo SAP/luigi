@@ -1,4 +1,6 @@
 body {
+  counter-reset: subTitle;
+
   @include breakpoint(large) {
     font-size: 18px;
   }
@@ -15,6 +17,35 @@ ul {
 
 .sub-title {
   margin-bottom: 1em;
+
+  &.has-number {
+    display: flex;
+    flex-wrap: nowrap;
+    align-items: center;
+
+    &.is-centered {
+      justify-content: center;
+    }
+
+    .text {
+      order: 3;
+    }
+
+    &:before {
+      counter-increment: subTitle;
+      content: '0' counter(subTitle);
+    }
+
+    &:after {
+      width: 40px;
+      padding-top: 1px;
+      border-bottom: 1px solid $secondary-color;
+      content: '';
+      margin-left: 10px;
+      margin-right: 20px;
+      order: 2;
+    }
+  }
 }
 
 .title-1 {
@@ -72,12 +103,11 @@ section {
       content: '';
       display: block;
       position: absolute;
-      margin: 0 -50px;
       top: 0;
       left: 0;
       height: 100%;
-      width: 120%;
-      transform: rotate(3deg);
+      width: 100%;
+      transform: skewY(3deg);
       background-image: linear-gradient(
         7deg,
         rgba($ice-blue, 0.6),
@@ -88,7 +118,7 @@ section {
 
     &--right-left {
       &:before {
-        transform: rotate(-3deg);
+        transform: skewY(-3deg);
       }
     }
 
