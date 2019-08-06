@@ -208,8 +208,17 @@
                       on:click="openMobileProductSwitcher(event)"
                       data-cy="mobile-product-switcher"
                     >
-                      <span class="fd-top-nav__icon sap-icon--grid sap-icon--m"></span>
-                      My Products
+                      {#if hasOpenUIicon(productSwitcherConfig) || !productSwitcherConfig.icon}
+                      <span
+                        class="fd-top-nav__icon sap-icon--{productSwitcherConfig.icon || 'grid'} sap-icon--m"
+                      ></span>
+                      {:else}
+                      <img
+                        class="fd-top-nav__icon nav-icon"
+                        src="{productSwitcherConfig.icon}"
+                      >
+                      {/if}
+                      {productSwitcherConfig.label}
                     </a>
                   </li>
                   {/if}
@@ -336,7 +345,8 @@
           ),
           responsiveNavSetting: LuigiConfig.getConfigValue(
             'settings.responsiveNavigation'
-          )
+          ),
+          productSwitcherConfig: NavigationHelpers.getProductSwitcherConfig()
         });
       });
       this.set({

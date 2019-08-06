@@ -27,7 +27,7 @@ export class splitViewHandle extends LuigiClientBase {
 
     Object.assign(this.splitView, settings);
 
-    const removeEventListeners = () => {
+    const removeSplitViewListeners = () => {
       this.splitView.listeners.forEach(id => helpers.removeEventListener(id));
     };
 
@@ -39,10 +39,8 @@ export class splitViewHandle extends LuigiClientBase {
     this.on('resize', newSize => {
       this.splitView.size = newSize;
     });
-    this.on('close', removeEventListeners);
-    window.onunload = () => removeEventListeners;
+    this.on('close', removeSplitViewListeners);
   }
-
   /*
    * @private
    */
