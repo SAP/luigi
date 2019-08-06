@@ -5,14 +5,14 @@ class Helpers {
     this.listeners = [];
     this.origin = '';
 
-    window.addEventListener(
-      'message',
-      function(evt) {
-        this.listeners
-          .filter(listener => listener.name === evt.data.msg)
-          .map(listener => listener.eventFn(evt, listener.listenerId));
-      }.bind(this)
-    );
+    const helperListener = function(evt) {
+      this.listeners
+        .filter(listener => listener.name === evt.data.msg)
+        .map(listener => listener.eventFn(evt, listener.listenerId));
+    }.bind(this);
+    window.addEventListener('message', helperListener);
+    window.onunload = () =>
+      window.removeEventListener('message', helperListener);
   }
 
   /**

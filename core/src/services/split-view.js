@@ -145,23 +145,16 @@ class SplitViewSvcClass {
         )
       ) + LuigiElements.getShellbar().clientHeight;
 
-    const calculated = this.enforceTreshHolds(
+    const calculated = this.enforceTresholds(
       newBottom,
       window.innerHeight - newBottom,
       values
     );
 
-    this.splitViewValues = {
-      bottom: calculated.bottom,
-      top: calculated.top,
-      percent: GenericHelpers.computePercentFromPx(
-        values.rightContentHeight,
-        calculated.bottom
-      )
-    };
+    this.splitViewValues = calculated;
   }
 
-  enforceTreshHolds(top, bottom) {
+  enforceTresholds(top, bottom) {
     const iv = this.internalValues;
     if (top <= iv.thresholdTop) {
       top = iv.thresholdTop;
