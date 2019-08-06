@@ -168,7 +168,7 @@ describe('SplitViewSvc', () => {
 
       GenericHelpers.computePxFromPercent.onFirstCall().returns(400); // 40% of 1000px
 
-      sinon.stub(SplitViewSvc, 'enforceTreshHolds').returns(mockCalculated);
+      sinon.stub(SplitViewSvc, 'enforceTresholds').returns(mockCalculated);
 
       SplitViewSvc.splitViewValues = {};
 
@@ -182,7 +182,7 @@ describe('SplitViewSvc', () => {
         60
       );
       const newBottom = 400 + shellbarHeight;
-      sinon.assert.calledWithExactly(SplitViewSvc.enforceTreshHolds, 430, 570, {
+      sinon.assert.calledWithExactly(SplitViewSvc.enforceTresholds, 430, 570, {
         rightContentHeight
       });
       assert.deepEqual(SplitViewSvc.splitViewValues, mockCalculated);
@@ -336,7 +336,7 @@ describe('SplitViewSvc', () => {
       });
     });
 
-    describe('enforceTreshHolds', () => {
+    describe('enforceTresholds', () => {
       beforeEach(() => {
         GenericHelpers.computePxFromPercent.returns(0);
         window.innerHeight = 400;
@@ -346,17 +346,17 @@ describe('SplitViewSvc', () => {
         };
       });
       it('with valid settings', () => {
-        const res = SplitViewSvc.enforceTreshHolds(100, 300);
+        const res = SplitViewSvc.enforceTresholds(100, 300);
         assert.equal(res.top, 100);
         assert.equal(res.bottom, 300);
       });
       it('with to low top value', () => {
-        const res = SplitViewSvc.enforceTreshHolds(10, 390);
+        const res = SplitViewSvc.enforceTresholds(10, 390);
         assert.equal(res.top, 20);
         assert.equal(res.bottom, 380);
       });
       it('with to bottom top value', () => {
-        const res = SplitViewSvc.enforceTreshHolds(395, 5);
+        const res = SplitViewSvc.enforceTresholds(395, 5);
         assert.equal(res.top, 380);
         assert.equal(res.bottom, 20);
       });
