@@ -1,11 +1,14 @@
 import App from './App.html';
 import { authLibraries } from './providers/auth/libraryLoaders';
-import { LuigiConfig } from './core-api';
+import { LuigiConfig, LuigiI18N, LuigiElements } from './core-api';
 import { Store } from 'svelte/store';
 import { version } from '../package.json';
 
 const store = new Store({
-  luigiVersion: version
+  luigiVersion: version,
+  getTranslation: (key, interpolations, locale) => {
+    return LuigiI18N.getTranslation(key, interpolations, locale);
+  }
 });
 
 Luigi._store = store;
@@ -16,12 +19,25 @@ const configReadyCallback = () => {
     authLibraries[authLib]();
   }
 
-  const app = new App({
-    target: document.querySelector('body'),
-    store
-  });
+  LuigiI18N._init();
+  // setTimeout needed so that luigi container is rendered when we retrieve it
+  let app;
+  setTimeout(() => {
+    const luigiContainer = LuigiElements.getLuigiContainer();
 
-  Luigi._app = app;
+    if (LuigiElements.isCustomLuigiContainer()) {
+      document
+        .getElementsByTagName('html')[0]
+        .classList.add('luigi-app-in-custom-container');
+    }
+
+    app = new App({
+      target: luigiContainer,
+      store
+    });
+
+    Luigi._app = app;
+  });
 
   Luigi.showAlert = settings => {
     return app.showAlert(settings);

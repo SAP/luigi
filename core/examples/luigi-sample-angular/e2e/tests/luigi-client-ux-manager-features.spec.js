@@ -9,9 +9,6 @@ describe('Luigi client ux manager features', () => {
     cy.getIframeBody().then(result => {
       $iframeBody = result;
     });
-
-    //wait for the iFrame to be loaded
-    cy.wait(1000);
   });
 
   describe('uxManager', () => {
