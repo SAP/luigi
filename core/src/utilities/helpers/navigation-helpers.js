@@ -9,6 +9,11 @@ class NavigationHelpersClass {
     this.virtualGroupPrefix = '___';
   }
 
+  getProductSwitcherConfig() {
+    const userConfig = LuigiConfig.getConfigValue('navigation.productSwitcher');
+    return Object.assign({ icon: 'grid', label: 'My Products' }, userConfig);
+  }
+
   isNodeAccessPermitted(nodeToCheckPermissionFor, parentNode, currentContext) {
     if (LuigiAuth.isAuthorizationEnabled()) {
       const loggedIn = AuthHelpers.isLoggedIn();
