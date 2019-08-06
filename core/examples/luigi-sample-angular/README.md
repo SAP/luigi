@@ -35,8 +35,8 @@ To have this application running, follow these steps:
 
    You can use hash-based routing or path-based routing in your application:
 
-    - To run Luigi with hash-based routing, set the **routing.useHashrouting** configuration to `true`.
-    - To run Luigi with path-based routing, set the **routing.useHashrouting** configuration to `false`.
+    - To run Luigi with hash-based routing, set the **routing.useHashRouting** configuration to `true`.
+    - To run Luigi with path-based routing, set the **routing.useHashRouting** configuration to `false`.
     
     Run the server with the following command: 
     ```bash

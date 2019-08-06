@@ -59,10 +59,22 @@ class GenericHelpersClass {
     return this.deepMerge(target, ...sources);
   }
 
-  getUrlWithoutHash(url) {
+  /**
+   * On Hash based routing, hash is stripped.
+   * If there is no hash found, the domain is returned instead.
+   */
+  getUrlWithoutHashOrOrigin(url) {
     if (!url) {
       return false;
     }
+
+    // Path based routing, just split by main domain
+    // Could be extended later to specify multiple domains
+    if (url.indexOf('#') === -1) {
+      // Take only http://domain.com
+      return new URL(url).origin;
+    }
+
     const urlWithoutHash = url.split('#')[0];
 
     // We assume that any URL not starting with

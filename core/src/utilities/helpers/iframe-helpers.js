@@ -65,16 +65,29 @@ class IframeHelpersClass {
     return processedUrl;
   }
 
-  isSameDomain(config, component) {
-    //TODO rename to reflect the fact that it checks for URL till hash (which is more than just domain)
+  /**
+   * Checks if it is either same url until hash (#) sign, or without hash, if its same origin domain
+   * @returns {boolean}
+   */
+  isSameOriginOrUntilHash(config, component) {
     if (config.iframe) {
       const componentData = component.get();
-      const previousUrl = GenericHelpers.getUrlWithoutHash(
+      const previousUrl = GenericHelpers.getUrlWithoutHashOrOrigin(
         componentData.previousNodeValues.viewUrl
       );
-      const nextUrl = GenericHelpers.getUrlWithoutHash(componentData.viewUrl);
+      const nextUrl = GenericHelpers.getUrlWithoutHashOrOrigin(
+        componentData.viewUrl
+      );
+      console.log(
+        'input',
+        componentData.previousNodeValues.viewUrl,
+        componentData.viewUrl,
+        'short',
+        previousUrl,
+        nextUrl
+      );
       if (previousUrl === nextUrl) {
-        return true;
+        return this.compareViewGroups(componentData);
       }
     }
     return false;
@@ -83,30 +96,37 @@ class IframeHelpersClass {
   isSameViewGroup(config, component) {
     if (config.iframe) {
       const componentData = component.get();
-      const previousUrl = GenericHelpers.getUrlWithoutHash(
+      const previousUrl = GenericHelpers.getUrlWithoutHashOrOrigin(
         componentData.previousNodeValues.viewUrl
       );
-      const nextUrl = GenericHelpers.getUrlWithoutHash(componentData.viewUrl);
+      const nextUrl = GenericHelpers.getUrlWithoutHashOrOrigin(
+        componentData.viewUrl
+      );
       const previousUrlOrigin = this.getLocation(previousUrl);
       const nextUrlOrigin = this.getLocation(nextUrl);
       if (previousUrlOrigin === nextUrlOrigin) {
-        const previousViewGroup = componentData.previousNodeValues.viewGroup;
-        const nextViewGroup = componentData.viewGroup;
-        if (
-          previousViewGroup &&
-          nextViewGroup &&
-          previousViewGroup === nextViewGroup
-        ) {
-          return true;
-        }
+        return this.compareViewGroups(componentData);
       }
+    }
+    return false;
+  }
+
+  compareViewGroups(componentData) {
+    const previousViewGroup = componentData.previousNodeValues.viewGroup;
+    const nextViewGroup = componentData.viewGroup;
+
+    const isSameViewGroup =
+      previousViewGroup && nextViewGroup && previousViewGroup === nextViewGroup;
+    const hasNoViewGroup = !previousViewGroup && !nextViewGroup;
+    if (isSameViewGroup || hasNoViewGroup) {
+      return true;
     }
     return false;
   }
 
   canReuseIframe(config, component) {
     return (
-      this.isSameDomain(config, component) ||
+      this.isSameOriginOrUntilHash(config, component) ||
       this.isSameViewGroup(config, component)
     );
   }

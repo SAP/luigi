@@ -39,10 +39,17 @@ describe('Generic-helpers', () => {
     );
   });
 
-  it('getUrlWithoutHash', () => {
-    const url = 'http://luigi.url.de/#hashsomething';
-    const withoutHash = GenericHelpers.getUrlWithoutHash(url);
-    assert.equal(withoutHash, 'http://luigi.url.de/');
+  describe('getUrlWithoutHashOrOrigin', () => {
+    it('hash based', () => {
+      const url = 'http://luigi.url.de/#hashsomething';
+      const withoutHash = GenericHelpers.getUrlWithoutHashOrOrigin(url);
+      assert.equal(withoutHash, 'http://luigi.url.de/');
+    });
+    it('path based', () => {
+      const url = 'http://luigi.url.de/foobar/some/thing?param=true';
+      const withoutHash = GenericHelpers.getUrlWithoutHashOrOrigin(url);
+      assert.equal(withoutHash, 'http://luigi.url.de');
+    });
   });
 
   it('hasHash', () => {

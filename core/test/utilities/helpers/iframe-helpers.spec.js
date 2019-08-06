@@ -116,7 +116,7 @@ describe('Iframe-helpers', () => {
       assert.isTrue(IframeHelpers.canReuseIframe(config, component));
     });
 
-    it('should return false if views have the same domian and different viewGroups', () => {
+    it('should return false if views have the same domain and different viewGroups', () => {
       component.set({
         viewUrl: 'http://url.com/someUrl',
         viewGroup: 'firstSPA',
@@ -128,14 +128,14 @@ describe('Iframe-helpers', () => {
       assert.isFalse(IframeHelpers.canReuseIframe(config, component));
     });
 
-    it('should return false if views have the same domain and no viewGroup defined', () => {
+    it('should return true if views have the same domain and no viewGroup defined', () => {
       component.set({
         viewUrl: 'http://url.com/someUrl',
         previousNodeValues: {
           viewUrl: noHashConfig.iframe.src
         }
       });
-      assert.isFalse(IframeHelpers.canReuseIframe(config, component));
+      assert.isTrue(IframeHelpers.canReuseIframe(config, component));
     });
 
     it('should return false if views have different domains and the same viewGroup', () => {
