@@ -12,7 +12,7 @@ Registers a listener called with the context object and the Luigi Core domain as
 
 #### Parameters
 
--   `initFn` **[function](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Statements/function)** the function that is called once Luigi is initialized
+-   `initFn` **[Lifecycle~initListenerCallback](#lifecycleinitlistenercallback)** the function that is called once Luigi is initialized, receives current context and origin as parameters.
 
 ### removeInitListener
 
@@ -96,6 +96,17 @@ Sends a custom message to the Luigi Core application.
 import LuigiClient from '@kyma-project/luigi-client';
 LuigiClient.sendCustomEventToCore('environment.created', {id: 10, production: false})
 ```
+
+## Lifecycle~initListenerCallback
+
+Callback of the addInitListener
+
+Type: [Function](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Statements/function)
+
+### Parameters
+
+-   `context` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** current context data
+-   `origin` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** Luigi Core URL
 
 ## linkManager
 
