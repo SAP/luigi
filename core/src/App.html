@@ -723,10 +723,10 @@
       },
       showUnsavedChangesModal() {
         return this.showModal({
-          header: 'Unsaved changes detected',
-          body: 'Unsaved changes will be lost. Do you want to continue?',
-          buttonDismiss: 'No',
-          buttonConfirm: 'Yes'
+          header: LuigiI18N.getTranslation('luigi.unsafedChangesAlert.header'),
+          body: LuigiI18N.getTranslation('luigi.unsafedChangesAlert.body'),
+          buttonDismiss: LuigiI18N.getTranslation('luigi.button.dismiss'),
+          buttonConfirm: LuigiI18N.getTranslation('luigi.button.confirm')
         });
       },
       showModal(settings, openFromClient = false) {

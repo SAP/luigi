@@ -1,6 +1,20 @@
 import { config } from './config';
 import { GenericHelpers, StateHelpers } from '../utilities/helpers';
 
+const luigi = {
+  auth2_nonce_error: 'Something went wrong. Try to log in again.',
+  configNotReadyCallback:
+    'Ups.. Looks like Luigi was not configured. Please use Luigi.setConfig(config) function to configure Luigi.',
+
+  unsafedChangesAlert: {
+    header: 'Unsaved changes detected',
+    body: 'Unsaved changes will be lost. Do you want to continue?'
+  },
+  button: {
+    dismiss: 'No',
+    confirm: 'Yes'
+  }
+};
 /**
  * Localization-related functions.
  * @name LuigiI18N
@@ -111,8 +125,24 @@ class LuigiI18NManager {
   getTranslation(key, interpolations, locale) {
     if (this.translationImpl) {
       return this.translationImpl.getTranslation(key, interpolations, locale);
+    }
+    if (key?.split('.')[0] === 'luigi') {
+      return this.findTranslation(key, luigi);
     } else {
       return key;
+    }
+  }
+
+  findTranslation(key, obj) {
+    let splitted = key.split('.');
+    if (splitted[0] === 'luigi') splitted.shift();
+    for (let i = 0; i < splitted.length; i++) {
+      let key = splitted[i];
+      if (obj.hasOwnProperty(key) && typeof obj[key] === 'object') {
+        obj = obj[key];
+      } else {
+        return obj[key];
+      }
     }
   }
 }
