@@ -23,7 +23,7 @@ To run this application, follow these steps:
     lerna bootstrap
     ```
 
-3. Bundle the Luigi core.
+3. Bundle the Luigi Core.
     ```bash
     # Lerna runs the bundle script in every package where the script exists and was referenced in the lerna.json.
 

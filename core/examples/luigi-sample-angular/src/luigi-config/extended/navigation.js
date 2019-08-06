@@ -272,8 +272,11 @@ class Navigation {
     return items;
   };
 
-  // The following configuration will be used to render a product switcher component
+  // The following configuration will be used to render a product switcher at the end of the top navigation
   productSwitcher = {
+    label: 'My Products',
+    icon: 'grid',
+    // icon: '/assets/favicon-sap.ico',
     items: this.getProductSwitcherItems
   };
 
