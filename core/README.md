@@ -2,7 +2,7 @@
 
 ## Overview
 
-Luigi core is a micro front-end framework written in Svelte. To learn how it works, read [this](examples) document.
+Luigi Core is a micro front-end framework written in Svelte. To learn how it works, read [this](examples) document.
 
 ## Usage
 
@@ -25,7 +25,7 @@ The `lerna bootstrap` command executes the Node Package Manager (NPM) installati
     lerna bootstrap
     ```
 
-3. Bundle the Luigi core.
+3. Bundle the Luigi Core.
 The `lerna run bundle` command runs the `bundle` script in every package referenced in the `lerna.json` file.
     ```bash
     lerna run bundle
