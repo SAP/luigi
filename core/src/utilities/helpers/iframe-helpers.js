@@ -78,14 +78,6 @@ class IframeHelpersClass {
       const nextUrl = GenericHelpers.getUrlWithoutHashOrOrigin(
         componentData.viewUrl
       );
-      console.log(
-        'input',
-        componentData.previousNodeValues.viewUrl,
-        componentData.viewUrl,
-        'short',
-        previousUrl,
-        nextUrl
-      );
       if (previousUrl === nextUrl) {
         return this.compareViewGroups(componentData);
       }
