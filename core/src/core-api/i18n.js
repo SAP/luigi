@@ -23,6 +23,7 @@ class LuigiI18NManager {
   constructor() {
     this.currentLocaleStorageKey = 'luigi.currentLocale';
     this.defaultLocale = 'en';
+    this.translationTable = luigi;
     this.listeners = {};
   }
 
@@ -127,12 +128,19 @@ class LuigiI18NManager {
       return this.translationImpl.getTranslation(key, interpolations, locale);
     }
     if (key?.split('.')[0] === 'luigi') {
-      return this.findTranslation(key, luigi);
-    } else {
-      return key;
-    }
+      return this.findTranslation(key, this.translationTable)
+        ? this.findTranslation(key, this.translationTable)
+        : key;
+    } else return key;
   }
 
+  /**
+   * @private
+   * Finds the translated value based on given key.
+   * @param {string} key key to be translated.
+   * @param {*} obj translation table.
+   * @memberof LuigiI18N
+   */
   findTranslation(key, obj) {
     let splitted = key.split('.');
     if (splitted[0] === 'luigi') splitted.shift();

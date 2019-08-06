@@ -107,7 +107,8 @@ describe('I18N', () => {
 
   describe('custom translation', () => {
     let mockConfig;
-    let dict = {
+    //custom config
+    let luigi = {
       en: {
         tets: 'tests'
       },
@@ -117,8 +118,8 @@ describe('I18N', () => {
     };
     const getMockConfig = () => ({
       getTranslation: (key, interpolations, locale) => {
-        if (dict[locale]) {
-          return dict[locale][key];
+        if (luigi[locale]) {
+          return luigi[locale][key];
         }
       }
     });
@@ -132,13 +133,52 @@ describe('I18N', () => {
       assert.equal(LuigiI18N.translationImpl, mockConfig);
     });
 
+    it('findTranslation test', () => {
+      sinon.stub(Object, 'hasOwnProperty').returns(true);
+      const luigi = {
+        luigiModal: {
+          header: 'Luigi status modal',
+          body: {
+            error: 'Luigi is sad!',
+            success: 'Luigi is happy!'
+          }
+        },
+        button: {
+          dismiss: 'no',
+          confirm: 'yes'
+        }
+      };
+      LuigiI18N.translationTable = luigi;
+      assert.equal(
+        LuigiI18N.findTranslation(
+          'luigi.luigiModal.body.success',
+          LuigiI18N.translationTable
+        ),
+        'Luigi is happy!'
+      );
+      assert.equal(
+        LuigiI18N.findTranslation(
+          'luigi.button.confirm',
+          LuigiI18N.translationTable
+        ),
+        'yes'
+      );
+    });
+
     it('custom translation test', () => {
       LuigiI18N.translationImpl = mockConfig;
       assert.equal(LuigiI18N.getTranslation('tets', null, 'en'), 'tests');
       assert.equal(LuigiI18N.getTranslation('project', null, 'de'), 'luigi');
 
       LuigiI18N.translationImpl = null;
+      LuigiI18N.translationTable = luigi;
       assert.equal(LuigiI18N.getTranslation('tets'), 'tets');
+      assert.equal(LuigiI18N.getTranslation('luigi.de.project'), 'luigi');
+      //not matching key
+      assert.equal(
+        LuigiI18N.getTranslation('luigi.de.project1'),
+        'luigi.de.project1'
+      );
     });
   });
 });
