@@ -114,6 +114,11 @@ describe('I18N', () => {
       },
       de: {
         project: 'luigi'
+      },
+      luigi: {
+        it: {
+          da: 'Toni'
+        }
       }
     };
     const getMockConfig = () => ({
@@ -135,20 +140,22 @@ describe('I18N', () => {
 
     it('findTranslation test', () => {
       sinon.stub(Object, 'hasOwnProperty').returns(true);
-      const luigi = {
-        luigiModal: {
-          header: 'Luigi status modal',
-          body: {
-            error: 'Luigi is sad!',
-            success: 'Luigi is happy!'
+      const translationTable = {
+        luigi: {
+          luigiModal: {
+            header: 'Luigi status modal',
+            body: {
+              error: 'Luigi is sad!',
+              success: 'Luigi is happy!'
+            }
+          },
+          button: {
+            dismiss: 'no',
+            confirm: 'yes'
           }
-        },
-        button: {
-          dismiss: 'no',
-          confirm: 'yes'
         }
       };
-      LuigiI18N.translationTable = luigi;
+      LuigiI18N.translationTable = translationTable;
       assert.equal(
         LuigiI18N.findTranslation(
           'luigi.luigiModal.body.success',
@@ -173,11 +180,11 @@ describe('I18N', () => {
       LuigiI18N.translationImpl = null;
       LuigiI18N.translationTable = luigi;
       assert.equal(LuigiI18N.getTranslation('tets'), 'tets');
-      assert.equal(LuigiI18N.getTranslation('luigi.de.project'), 'luigi');
-      //not matching key
+      assert.equal(LuigiI18N.getTranslation('luigi.it.da'), 'Toni');
+      // //not matching key
       assert.equal(
-        LuigiI18N.getTranslation('luigi.de.project1'),
-        'luigi.de.project1'
+        LuigiI18N.getTranslation('luigi.de.project'),
+        'luigi.de.project'
       );
     });
   });

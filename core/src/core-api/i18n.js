@@ -1,24 +1,11 @@
 import { config } from './config';
-import { GenericHelpers, StateHelpers } from '../utilities/helpers';
+import {
+  GenericHelpers,
+  StateHelpers,
+  EscapingHelpers
+} from '../utilities/helpers';
+import { defaultLuigiTranslationTable } from './defaultLuigiTranslationTable';
 
-const luigi = {
-  auth2_nonce_error: 'Something went wrong. Try to log in again.',
-  configNotReadyCallback:
-    'Ups.. Looks like Luigi was not configured. Please use Luigi.setConfig(config) function to configure Luigi.',
-
-  unsafedChangesAlert: {
-    header: 'Unsaved changes detected',
-    body: 'Unsaved changes will be lost. Do you want to continue?'
-  },
-  confirmationModal: {
-    header: 'Confirmation',
-    body: 'Are you sure you want to do this?'
-  },
-  button: {
-    dismiss: 'No',
-    confirm: 'Yes'
-  }
-};
 /**
  * Localization-related functions.
  * @name LuigiI18N
@@ -27,7 +14,7 @@ class LuigiI18NManager {
   constructor() {
     this.currentLocaleStorageKey = 'luigi.currentLocale';
     this.defaultLocale = 'en';
-    this.translationTable = luigi;
+    this.translationTable = defaultLuigiTranslationTable;
     this.listeners = {};
   }
 
@@ -128,14 +115,23 @@ class LuigiI18NManager {
    * @memberof LuigiI18N
    */
   getTranslation(key, interpolations, locale) {
+    if (!key) return '';
     if (this.translationImpl) {
-      return this.translationImpl.getTranslation(key, interpolations, locale);
+      const result = this.translationImpl.getTranslation(
+        key,
+        interpolations,
+        locale
+      );
+      if (result !== key) {
+        return result;
+      }
     }
-    if (key?.split('.')[0] === 'luigi') {
-      return this.findTranslation(key, this.translationTable)
-        ? this.findTranslation(key, this.translationTable)
-        : key;
-    } else return key;
+    const findTranslation = this.findTranslation(
+      key,
+      this.translationTable,
+      interpolations
+    );
+    return findTranslation ? findTranslation : key;
   }
 
   /**
@@ -145,17 +141,28 @@ class LuigiI18NManager {
    * @param {*} obj translation table.
    * @memberof LuigiI18N
    */
-  findTranslation(key, obj) {
+  findTranslation(key, obj, interpolations) {
     let splitted = key.split('.');
-    if (splitted[0] === 'luigi') splitted.shift();
     for (let i = 0; i < splitted.length; i++) {
       let key = splitted[i];
       if (obj.hasOwnProperty(key) && typeof obj[key] === 'object') {
         obj = obj[key];
       } else {
+        if (interpolations)
+          return this.findInterpolations(obj[key], interpolations);
         return obj[key];
       }
     }
+  }
+
+  findInterpolations(value, interpolations) {
+    Object.keys(interpolations).forEach(item => {
+      value = value.replace(
+        new RegExp('{' + EscapingHelpers.escapeKeyForRegexp(item) + '}', 'gi'),
+        interpolations[item]
+      );
+    });
+    return value;
   }
 }
 
