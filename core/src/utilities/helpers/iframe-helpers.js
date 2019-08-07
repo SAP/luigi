@@ -1,6 +1,6 @@
 // Helper methods for 'iframe.js' file. They don't require any method from 'ifram.js` but are required by them.
 import { GenericHelpers } from './';
-import { Iframe } from '../../services';
+import { MICROFRONTEND_TYPES } from './../constants';
 
 class IframeHelpersClass {
   get specialIframeTypes() {
@@ -148,6 +148,33 @@ class IframeHelpersClass {
     return this.getLocation(viewUrl) === domain;
   }
 
+  /*
+  [
+    {id: "id-1", selector: '.iframeContainer iframe' container: IFRAME_DO_ELEM_1, active: true, type:"main"},
+    {id: "id-2", selector: '.iframeContainer iframe' container: IFRAME_DO_ELEM_1, active: false, type:"main"},
+    {id: "id-3", selector: '.iframeModalCtn iframe' container: IFRAME_DO_ELEM_3, active: false, type:"modal"},
+    {id: "id-4", selector: '.iframeContainer iframe' container: IFRAME_DO_ELEM_4, active: false, type:"main"},
+    {id: "id-5", selector: '.iframeSplitViewCnt iframe' container: IFRAME_DO_ELEM_5, active: false, type:"split-view"},
+    {id: "id-6", selector: '.iframeContainer iframe' container: IFRAME_DO_ELEM_6, active: false, type:"main"}
+  ]*/
+  getMicrofrontendObjects() {
+    const visibleIframesIds = [...document.querySelectorAll('iframe')]
+      .filter(iframe => iframe.style.display !== 'none')
+      .map(iframe => iframe.luigi.id);
+
+    return MICROFRONTEND_TYPES.map(item => {
+      return Array.from(document.querySelectorAll(item.selector)).map(
+        container => Object.assign({ container }, item)
+      );
+    })
+      .filter(iframeTypeArray => Boolean(iframeTypeArray.length))
+      .reduce((acc, val) => acc.concat(val), []) // flatten
+      .map(mfObj => Object.assign({ id: mfObj.container.luigi.id }, mfObj))
+      .map(mfObj =>
+        Object.assign({ active: visibleIframesIds.includes(mfObj.id) }, mfObj)
+      );
+  }
+
   iframeIsSameDomain(viewUrl, domain) {
     return this.urlMatchesTheDomain(viewUrl, domain);
   }
@@ -203,7 +230,8 @@ class IframeHelpersClass {
     iframe.sandbox = activeSandboxRules.join(' ');
     iframe.luigi = {
       viewUrl,
-      createdAt: new Date().getTime()
+      createdAt: new Date().getTime(),
+      id: GenericHelpers.getRandomId()
     };
     if (viewGroup) {
       iframe.vg = viewGroup;

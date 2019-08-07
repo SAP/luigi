@@ -1,4 +1,7 @@
-import { CUSTOM_LUIGI_CONTAINER } from './../utilities/constants';
+import {
+  CUSTOM_LUIGI_CONTAINER,
+  MICROFRONTEND_TYPES
+} from './../utilities/constants';
 
 /**
  * Use these functions to get DOM elements.
