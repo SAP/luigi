@@ -264,7 +264,8 @@ class LifecycleManager extends LuigiClientBase {
    * @memberof Lifecycle
    */
   sendCustomEventToCore(msg, data) {
-    helpers.sendPostMessageToLuigiCore(msg, data);
+    const messageObject = { msg, data };
+    helpers.sendPostMessageToLuigiCore(mgsObject);
   }
 }
 export const lifecycleManager = new LifecycleManager();
