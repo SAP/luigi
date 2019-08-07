@@ -10,6 +10,10 @@ const luigi = {
     header: 'Unsaved changes detected',
     body: 'Unsaved changes will be lost. Do you want to continue?'
   },
+  confirmationModal: {
+    header: 'Confirmation',
+    body: 'Are you sure you want to do this?'
+  },
   button: {
     dismiss: 'No',
     confirm: 'Yes'
