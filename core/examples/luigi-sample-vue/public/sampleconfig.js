@@ -21,13 +21,13 @@ var getProjectPlugins = function(projectId) {
       resolve([
         {
           category: 'External Views',
-          viewId: 'viewX',
+          pathSegment: 'viewX',
           label: 'This is X',
           viewUrl: 'https://this.is.x/index.html'
         },
         {
           category: 'External Views',
-          viewId: 'viewY',
+          pathSegment: 'viewY',
           label: 'This is Y',
           viewUrl: 'https://this.is.y/index.html'
         }
@@ -36,13 +36,13 @@ var getProjectPlugins = function(projectId) {
       resolve([
         {
           category: 'External Views',
-          viewId: 'abc',
+          pathSegment: 'abc',
           label: 'A B C',
           viewUrl: 'https://a.b.c/index.html'
         },
         {
           category: 'External Views',
-          viewId: 'def',
+          pathSegment: 'def',
           label: 'D E F',
           viewUrl: 'https://d.e.f/index.html',
           context: {
@@ -123,7 +123,7 @@ var projectDetailNavProviderFn = function(context) {
       result.forEach(plugin => {
         children.push({
           category: plugin.category,
-          pathSegment: plugin.viewId,
+          pathSegment: plugin.pathSegment,
           label: plugin.label,
           viewUrl: plugin.viewUrl,
           context: plugin.context

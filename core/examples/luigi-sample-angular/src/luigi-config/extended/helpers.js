@@ -1,41 +1,17 @@
 import { projectDetailNavStructure } from './projectDetailNav';
-const getProjectPlugins = projectId =>
-  new Promise(resolve => {
-    if (projectId === 'pr2') {
-      resolve([
-        {
-          category: 'External Views',
-          viewId: 'viewX',
-          label: 'This is X',
-          viewUrl: 'https://this.is.x/index.html'
-        },
-        {
-          category: 'External Views',
-          viewId: 'viewY',
-          label: 'This is Y',
-          viewUrl: 'https://this.is.y/index.html'
-        }
-      ]);
-    } else {
-      resolve([
-        {
-          category: 'External Views',
-          viewId: 'abc',
-          label: 'A B C',
-          viewUrl: 'https://a.b.c/index.html'
-        },
-        {
-          category: 'External Views',
-          viewId: 'def',
-          label: 'D E F',
-          viewUrl: 'https://d.e.f/index.html',
-          context: {
-            aaaaa: 'hiiiiii'
-          }
-        }
-      ]);
+const getProjectPlugins = projectId => {
+  return Promise.resolve([
+    {
+      category: 'External Views',
+      pathSegment: 'luigi-project',
+      label: 'Luigi Project',
+      viewUrl: 'https://luigi-project.io',
+      loadingIndicator: {
+        enabled: false
+      }
     }
-  });
+  ]);
+};
 
 let allProjects = [
   {
@@ -81,14 +57,8 @@ const projectDetailNavProviderFn = context =>
     const children = projectDetailNavStructure(projectId);
 
     getProjectPlugins(projectId).then(result => {
-      result.forEach(plugin => {
-        children.push({
-          category: plugin.category,
-          pathSegment: plugin.viewId,
-          label: plugin.label,
-          viewUrl: plugin.viewUrl,
-          context: plugin.context
-        });
+      result.forEach(node => {
+        children.push(node);
       });
       resolve(children);
     });
