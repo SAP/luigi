@@ -32,7 +32,7 @@ done
 echo "Webserver was ready after $WAITCOUNT seconds."
 
 echo "Running tests"
-npm run e2e:run -- --record --key "$CYPRESS_KEY_LUIGI" --parallel --group 2x-chrome 
+npm run e2e:run -- --record --key "$CYPRESS_KEY_LUIGI" --parallel
 RV=$?
 kill $WS_PID
 exit $RV
