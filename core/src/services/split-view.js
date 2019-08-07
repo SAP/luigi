@@ -146,13 +146,11 @@ class SplitViewSvcClass {
         )
       ) + LuigiElements.getShellbar().clientHeight;
 
-    const calculated = this.enforceTresholds(
+    this.splitViewValues = this.enforceTresholds(
       newBottom,
       values.innerHeight - newBottom,
       values
     );
-
-    this.splitViewValues = calculated;
   }
 
   enforceTresholds(top, bottom) {
@@ -191,10 +189,6 @@ class SplitViewSvcClass {
 
     this.splitViewValues = this.calculateInitialValues(
       mfSplitView.settings && mfSplitView.settings.size,
-      GenericHelpers.getContentAreaHeight()
-    );
-    console.log(
-      'GenericHelpers.getContentAreaHeight()',
       GenericHelpers.getContentAreaHeight()
     );
 

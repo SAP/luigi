@@ -154,7 +154,7 @@
       },
       updateSizes() {
         const shellbarHeight = LuigiElements.getShellbar().clientHeight;
-        SplitViewSvc.internalValues.innerHeight = LuigiElements.getLuigiContainer().clientHeight;
+        SplitViewSvc.internalValues.innerHeight = GenericHelpers.getInnerHeight();
         SplitViewSvc.internalValues.rightContentHeight =
           SplitViewSvc.internalValues.innerHeight - shellbarHeight;
         SplitViewSvc.internalValues.thresholdBottom = 30;
