@@ -79,7 +79,7 @@ class IframeHelpersClass {
         componentData.viewUrl
       );
       if (previousUrl === nextUrl) {
-        return this.compareViewGroups(componentData);
+        return this.compareViewGroups(componentData, true);
       }
     }
     return false;
@@ -97,19 +97,24 @@ class IframeHelpersClass {
       const previousUrlOrigin = this.getLocation(previousUrl);
       const nextUrlOrigin = this.getLocation(nextUrl);
       if (previousUrlOrigin === nextUrlOrigin) {
-        return this.compareViewGroups(componentData);
+        return this.compareViewGroups(componentData, false);
       }
     }
     return false;
   }
 
-  compareViewGroups(componentData) {
+  /**
+   * checks if it has the same viewgroup
+   * @param {Object} componentData the whole component.get() object
+   * @param {boolean} [graceful=false] if graceful is true, also non defined viewGroups are treated as equal
+   */
+  compareViewGroups(componentData, graceful = false) {
     const previousViewGroup = componentData.previousNodeValues.viewGroup;
     const nextViewGroup = componentData.viewGroup;
 
     const isSameViewGroup =
       previousViewGroup && nextViewGroup && previousViewGroup === nextViewGroup;
-    const hasNoViewGroup = !previousViewGroup && !nextViewGroup;
+    const hasNoViewGroup = graceful && !previousViewGroup && !nextViewGroup;
     if (isSameViewGroup || hasNoViewGroup) {
       return true;
     }
