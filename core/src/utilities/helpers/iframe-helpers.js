@@ -157,7 +157,7 @@ class IframeHelpersClass {
     {id: "id-5", selector: '.iframeSplitViewCnt iframe' container: IFRAME_DO_ELEM_5, active: false, type:"split-view"},
     {id: "id-6", selector: '.iframeContainer iframe' container: IFRAME_DO_ELEM_6, active: false, type:"main"}
   ]*/
-  getMicrofrontendObjects() {
+  getMicrofrontends() {
     const visibleIframesIds = [...document.querySelectorAll('iframe')]
       .filter(iframe => iframe.style.display !== 'none')
       .map(iframe => iframe.luigi.id);

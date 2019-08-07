@@ -9,14 +9,27 @@ class Settings {
   };
 
   customEventsFromMicrofrontends = {
-    'luigi.navigation.update-badge-counters'(msg, data) {
+    'luigi.navigation.update-badge-counters'(event, mfObject, mfNodeObj) {
+      console.info(
+        `Core has received event ${event.data.msg} with data ${
+          event.data.data
+        } from microfrontend ${JSON.stringify(mfObject)}`
+      );
+
       Luigi.showAlert({
-        text: `Badge counters update event received. msg: "${msg}", data: ${JSON.stringify(
-          data
-        )}`,
+        text: `Badge counters update event received. msg: "${
+          event.data.msg
+        }", data: ${JSON.stringify(event.data.data)}`,
         type: 'success',
         closeAfter: 3000
       });
+      setInterval(() => {
+        const messageData = {
+          msg: 'luigi.my-custom-message-for-client',
+          data: 'here goes the data'
+        };
+        Luigi.microfrontends().sendMessage(mfObject.id, messageData);
+      }, 2000);
     }
   };
 

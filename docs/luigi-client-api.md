@@ -104,8 +104,8 @@ Sends a custom message to the Luigi Core application.
 
 #### Parameters
 
--   `msg` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** a string containing the message id.
--   `data` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** an object containing data to be sent to the Luigi Core for further processing of the custom event. This object will be set as input parameter of the event handler on the Luigi Core side.
+-   `messageData` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** an object containing data to be sent to the Luigi Core for further processing of the custom event. This object will be set as input parameter of the event handler on the Luigi Core side.
+    -   `messageData.msg` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** a string containing the message id.
 
 #### Examples
 

@@ -383,8 +383,8 @@ export type getClientPermissions = () => ClientPermissions;
  * LuigiClient.sendCustomEventToCore('environment.created', {id: 10, production: false})
  * @memberof Lifecycle
  */
-export function sendCustomEventToCore(msg: string, data?: object): void;
-export type sendCustomEventToCore = (msg: string, data?: object) => void;
+export function sendCustomEventToCore(messageData: object): void;
+export type sendCustomEventToCore = (messageData: object) => void;
 
 /**
  * The Link Manager allows you to navigate to another route. Use it instead of an internal router to:

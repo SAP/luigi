@@ -75,6 +75,6 @@ export class OverviewComponent {
   }
 
   public updateBadgeCounters() {
-    sendCustomEventToCore('luigi.navigation.update-badge-counters');
+    sendCustomEventToCore({ msg: 'luigi.navigation.update-badge-counters' });
   }
 }

@@ -366,9 +366,13 @@
           const customEventsFromMf =
             Luigi.getConfigValue('settings.customEventsFromMicrofrontends') ||
             {};
+
           const customEventFromMfHandler = customEventsFromMf[e.data.msg];
           if (typeof customEventFromMfHandler === 'function') {
-            customEventFromMfHandler(e.data.msg, e.data.data);
+            const microfrontend = IframeHelpers.getMicrofrontends().find(
+              mf => mf.id === e.source.frameElement.luigi.id
+            );
+            customEventFromMfHandler(e, microfrontend);
           }
 
           if ('luigi.navigate.ok' === e.data.msg) {

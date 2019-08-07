@@ -5,30 +5,28 @@ import { IframeHelpers } from '../utilities/helpers';
  * @name Microfrontends
  */
 class MicrofrontendsManager {
-  getMicrofrontendObjects() {
-    return IframeHelpers.getMicrofrontendObjects().map(obj => ({
+  getMicrofrontends() {
+    return IframeHelpers.getMicrofrontends().map(obj => ({
       id: obj.id,
       active: obj.active,
       type: obj.type
     }));
   }
 
-  sendMessageToAll(msg, data) {
-    const messageObj = { msg, data };
-    this.getMicrofrontendObjects
+  sendMessageToAll(messageData) {
+    IframeHelpers.getMicrofrontends()
       .map(microfrontendObj => microfrontendObj.container)
       .map(mfContainer =>
-        IframeHelpers.sendMessageToIframe(mfContainer, messageObj)
+        IframeHelpers.sendMessageToIframe(mfContainer, messageData)
       );
   }
 
-  sendMessage(microfrontendId, msg, data) {
-    const messageObj = { msg, data };
-    this.getMicrofrontendObjects
+  sendMessage(microfrontendId, messageData) {
+    IframeHelpers.getMicrofrontends()
       .filter(microfrontendObj => microfrontendObj.id === microfrontendId)
       .map(microfrontendObj => microfrontendObj.container)
       .map(mfContainer =>
-        IframeHelpers.sendMessageToIframe(mfContainer, messageObj)
+        IframeHelpers.sendMessageToIframe(mfContainer, messageData)
       );
   }
 }
