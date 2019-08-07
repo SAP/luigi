@@ -12,7 +12,7 @@ However, you can render the Luigi content in any other HTML container. It can be
 
 ### Responsive application setup
 
-You can quickly adjust the Luigi application to improve user experience on mobile devices like smartphones or tablets.
+You can quickly adjust the Luigi application to improve user experience on mobile devices, such as smartphones or tablets. Here are some examples:
 
 * Add the following line to your `index.html` file for the Luigi application to render well on a mobile device:
 
@@ -20,4 +20,4 @@ You can quickly adjust the Luigi application to improve user experience on mobil
 <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1">
 ```
 
-* Make the left navigation responsive by applying [additional settings](./general-settings.md)
+* Define and apply [additional settings](./general-settings.md) to make the left navigation responsive.
