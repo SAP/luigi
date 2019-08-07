@@ -150,18 +150,14 @@ class IframeHelpersClass {
 
   /*
   [
-    {id: "id-1", selector: '.iframeContainer iframe' container: IFRAME_DO_ELEM_1, active: true, type:"main"},
-    {id: "id-2", selector: '.iframeContainer iframe' container: IFRAME_DO_ELEM_1, active: false, type:"main"},
-    {id: "id-3", selector: '.iframeModalCtn iframe' container: IFRAME_DO_ELEM_3, active: false, type:"modal"},
-    {id: "id-4", selector: '.iframeContainer iframe' container: IFRAME_DO_ELEM_4, active: false, type:"main"},
-    {id: "id-5", selector: '.iframeSplitViewCnt iframe' container: IFRAME_DO_ELEM_5, active: false, type:"split-view"},
-    {id: "id-6", selector: '.iframeContainer iframe' container: IFRAME_DO_ELEM_6, active: false, type:"main"}
+    {id: "id-1", selector: '.iframeContainer iframe', container: IFRAME_DO_ELEM_1, active: true, type:"main"},
+    {id: "id-2", selector: '.iframeContainer iframe', container: IFRAME_DO_ELEM_1, active: false, type:"main"},
+    {id: "id-3", selector: '.iframeModalCtn iframe', container: IFRAME_DO_ELEM_3, active: false, type:"modal"},
+    {id: "id-4", selector: '.iframeContainer iframe', container: IFRAME_DO_ELEM_4, active: false, type:"main"},
+    {id: "id-5", selector: '.iframeSplitViewCnt iframe', container: IFRAME_DO_ELEM_5, active: false, type:"split-view"},
+    {id: "id-6", selector: '.iframeContainer iframe', container: IFRAME_DO_ELEM_6, active: false, type:"main"}
   ]*/
   getMicrofrontends() {
-    const visibleIframesIds = [...document.querySelectorAll('iframe')]
-      .filter(iframe => iframe.style.display !== 'none')
-      .map(iframe => iframe.luigi.id);
-
     return MICROFRONTEND_TYPES.map(item => {
       return Array.from(document.querySelectorAll(item.selector)).map(
         container => Object.assign({ container }, item)
@@ -170,9 +166,13 @@ class IframeHelpersClass {
       .filter(iframeTypeArray => Boolean(iframeTypeArray.length))
       .reduce((acc, val) => acc.concat(val), []) // flatten
       .map(mfObj => Object.assign({ id: mfObj.container.luigi.id }, mfObj))
-      .map(mfObj =>
-        Object.assign({ active: visibleIframesIds.includes(mfObj.id) }, mfObj)
-      );
+      .map(mfObj => {
+        const isMicrofrontendActive =
+          window
+            .getComputedStyle(mfObj.container, null)
+            .getPropertyValue('display') !== 'none';
+        return Object.assign({ active: isMicrofrontendActive }, mfObj);
+      });
   }
 
   iframeIsSameDomain(viewUrl, domain) {

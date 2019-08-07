@@ -111,7 +111,7 @@ Sends a custom message to the Luigi Core application.
 
 ```javascript
 import LuigiClient from '@kyma-project/luigi-client';
-LuigiClient.sendCustomEventToCore('environment.created', {id: 10, production: false})
+LuigiClient.sendCustomEventToCore({msg: 'environment.created', data: {id: 10, production: false}})
 ```
 
 ## Lifecycle~initListenerCallback

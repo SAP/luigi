@@ -284,10 +284,9 @@ class LifecycleManager extends LuigiClientBase {
    * Sends a custom message to the Luigi Core application.
    * @param {Object} messageData an object containing data to be sent to the Luigi Core for further processing of the custom event. This object will be set as input parameter of the event handler on the Luigi Core side.
    * @param {string} messageData.msg a string containing the message id.
-
    * @example
    * import LuigiClient from '@kyma-project/luigi-client';
-   * LuigiClient.sendCustomEventToCore('environment.created', {id: 10, production: false})
+   * LuigiClient.sendCustomEventToCore({msg: 'environment.created', data: {id: 10, production: false}})
    * @memberof Lifecycle
    */
   sendCustomEventToCore(messageData) {

@@ -9,7 +9,7 @@ class Settings {
   };
 
   customEventsFromMicrofrontends = {
-    'luigi.navigation.update-badge-counters'(event, mfObject, mfNodeObj) {
+    'luigi.navigation.update-badge-counters': (event, mfObject, mfNodeObj) => {
       console.info(
         `Core has received event ${event.data.msg} with data ${
           event.data.data
@@ -23,13 +23,17 @@ class Settings {
         type: 'success',
         closeAfter: 3000
       });
-      setInterval(() => {
+      setTimeout(() => {
         const messageData = {
           msg: 'luigi.my-custom-message-for-client',
           data: 'here goes the data'
         };
         Luigi.microfrontends().sendMessage(mfObject.id, messageData);
       }, 2000);
+      setInterval(() => {
+        const microfrontends = Luigi.microfrontends().getMicrofrontends();
+        console.log('DATA', JSON.stringify(microfrontends, null, 2));
+      }, 5000);
     }
   };
 
