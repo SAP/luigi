@@ -8,8 +8,10 @@
     background-size: auto 100%;
 
     @include breakpoint(large) {
-      background-position: 50% 0;
+      background-position: 56% 0;
       background-size: auto 100%;
+
+      padding-top: 12vw;
     }
   }
 
@@ -18,15 +20,6 @@
 
     .title-2 {
       margin-bottom: 0.5em;
-    }
-  }
-
-  .image {
-    margin-bottom: 20px;
-    padding-top: 50px;
-
-    img {
-      width: 70%;
     }
   }
 
@@ -68,9 +61,22 @@
     .link-list {
       margin-bottom: 20px;
     }
+
+    .image {
+      margin-bottom: 20px;
+      padding-top: 50px;
+
+      img {
+        width: 70%;
+      }
+    }
   }
 
   @include breakpoint(large) {
+    .s-stage {
+      margin-bottom: 90px;
+    }
+
     .wr {
       padding-top: 35px;
       padding-bottom: 35px;
@@ -93,6 +99,18 @@
 
     .copyright {
       margin-bottom: 0;
+    }
+
+    .image {
+      text-align: center;
+    }
+  }
+
+  @include breakpoint(xlarge) {
+    .image {
+      img {
+        max-width: 460px;
+      }
     }
   }
 
