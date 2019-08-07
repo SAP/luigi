@@ -23,6 +23,7 @@ jobs:
     #----- UNIT -----
     - name: 'Unit Tests'
       script: npm test --prefix core
+      # cache: npm
       #no cache for unit tests = more speed
       
     # ----- INTEGRATION -----
@@ -39,6 +40,6 @@ jobs:
     # ----- NPM PUBLISH -----
     - stage: 'Publish'
       name: 'Publish to NPM'
-      if: repo = SAP/luigi AND (branch = master OR branch ~= ^release-v)
+      # if: repo = SAP/luigi AND (branch = master OR branch ~= ^release-v)
       script: bash ./scripts/npmPublish.sh
       #cache: npm

@@ -46,19 +46,27 @@ function publishPackage {
   VERSION=$(node -p "require('./package.json').version")
   
   cd $BASE_DIR/../$BASE_FOLDER
-  echoe "Running npm ci in $(pwd) ..."
-  npm ci
-  
+  # travis already installed it
+#    echoe "Running npm ci in $(pwd) ..."
+#    npm ci
+
   # Check if was published already
   NPM_GREP=`npm info $NAME versions | grep "'$VERSION'" | wc -l`
   if [[ "$NPM_GREP" =~ "1" ]]; then
     echo "$NAME@$VERSION already published, skipping until next release."
   else
-
     echoe "Bundling $NAME@$VERSION ..."
     npm run bundle
 
     echoe "Publishing $NAME@$VERSION ..."
+
+echoe "==============================="
+echoe "==============================="
+echoe "==============================="
+echoe "not publishing.. emergency stop"
+echoe "==============================="
+exit 0;
+
     npm publish $BASE_DIR/../$PUBLISH_FOLDER --access public
     if [[ $VERSION != *"rc."* ]]; then
       echo "Tag $NAME@$VERSION with latest on npm"
