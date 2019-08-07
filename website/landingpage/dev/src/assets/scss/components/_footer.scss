@@ -1,9 +1,16 @@
 .p-footer {
   color: $white;
+  position: relative;
+  z-index: 2;
 
   &--home {
     background: url('../img/footer-bg.svg') no-repeat 41% 50%;
     background-size: auto 100%;
+
+    @include breakpoint(large) {
+      background-position: 50% 0;
+      background-size: cover;
+    }
   }
 
   .s-stage {

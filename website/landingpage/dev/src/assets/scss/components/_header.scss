@@ -1,18 +1,35 @@
 .p-header {
+  position: relative;
+
   > .has-border {
     padding-top: 15px;
     padding-bottom: 15px;
 
-    @include breakpoint(xxlarge) {
+    @include breakpoint(xlarge) {
       padding-top: 25px;
       padding-bottom: 25px;
       border-bottom: 1px solid $border-color;
     }
+
+    @include breakpoint(xxlarge) {
+      max-width: calc(1290px - 50px);
+    }
   }
 
   &--home {
-    background: url('../img/header-bg.svg') no-repeat left 50% bottom 100px;
+    background-image: url('../img/header-bg.svg');
+    background-repeat: no-repeat;
+    background-position: left 50% bottom 100px;
     background-size: cover;
+    z-index: 2;
+
+    @include breakpoint(large) {
+      background-position: left 50% bottom 0;
+    }
+
+    @include breakpoint(xxlarge) {
+      background-position: left 80% bottom 0;
+    }
   }
 
   .logo {
@@ -21,7 +38,7 @@
       width: 74px;
       height: 30px;
 
-      @include breakpoint(xxlarge) {
+      @include breakpoint(xlarge) {
         width: 148px;
         height: 60px;
       }
@@ -53,16 +70,59 @@
     padding-bottom: 50px;
     color: $white;
 
+    > .row {
+      align-items: center;
+    }
+
     .content {
       @include breakpoint(medium down) {
         margin-bottom: 50px;
       }
+
+      @include breakpoint(xxlarge) {
+        height: 600px;
+      }
     }
 
     .image {
-      padding-top: 52%;
-      background: url('../img/running_app_full.png') no-repeat 50% 0;
+      background-image: url('../img/running_app_full.png');
+      background-position: 50% 0;
+      background-repeat: no-repeat;
       background-size: cover;
+
+      @include breakpoint(medium down) {
+        padding-top: 52%;
+      }
+
+      @include breakpoint(large) {
+        background: none;
+      }
+    }
+
+    @include breakpoint(large) {
+      position: relative;
+      overflow: hidden;
+
+      padding-top: 55px;
+      padding-bottom: 60px;
+
+      > .row {
+        position: relative;
+
+        &:before {
+          position: absolute;
+          display: block;
+          height: 100%;
+          width: 100%;
+          top: 0;
+          left: 30%;
+          content: '';
+          background-image: url('../img/running_app_full.png');
+          background-position: 0 0;
+          background-repeat: no-repeat;
+          background-size: auto 100%;
+        }
+      }
     }
   }
 }

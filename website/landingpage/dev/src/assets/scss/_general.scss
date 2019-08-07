@@ -23,7 +23,7 @@ ul {
     flex-wrap: nowrap;
     align-items: center;
 
-    &.is-centered {
+    .is-centered & {
       justify-content: center;
     }
 
@@ -95,36 +95,41 @@ ul {
 }
 
 section {
-  &.has-gradient {
-    position: relative;
-    padding: 50px 0;
+  &.is-centered {
+    text-align: center;
+  }
+}
 
+.s-gradient {
+  position: relative;
+  z-index: 1;
+  padding: 50px 0;
+
+  &:before {
+    content: '';
+    display: block;
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    transform: skewY(3deg);
+    background-image: linear-gradient(
+      7deg,
+      rgba($ice-blue, 0.6),
+      rgba($powder-blue, 0.6)
+    );
+    z-index: -1;
+  }
+
+  &--right-left {
     &:before {
-      content: '';
-      display: block;
-      position: absolute;
-      top: 0;
-      left: 0;
-      height: 100%;
-      width: 100%;
-      transform: skewY(3deg);
-      background-image: linear-gradient(
-        7deg,
-        rgba($ice-blue, 0.6),
-        rgba($powder-blue, 0.6)
-      );
-      z-index: -1;
+      transform: skewY(-3deg);
     }
+  }
 
-    &--right-left {
-      &:before {
-        transform: skewY(-3deg);
-      }
-    }
-
-    @include breakpoint(large) {
-      padding: 100px 0;
-    }
+  @include breakpoint(large) {
+    padding: 100px 0;
   }
 }
 
