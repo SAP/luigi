@@ -2,11 +2,12 @@
   margin-top: -500px;
   padding-top: 500px;
 
-  @include breakpoint(xlarge) {
-    padding-top: calc(500px + 90px);
+  @include breakpoint(large) {
+    padding-top: calc(500px + 60px);
+  }
 
-    .row {
-    }
+  @include breakpoint(xlarge) {
+    padding-top: calc(500px + 100px);
 
     .wr {
       position: relative;
@@ -24,35 +25,6 @@
       }
     }
   }
-
-  // .wr {
-  //   position: relative;
-
-  //   &:before,
-  //   &:after {
-  //     display: block;
-  //     position: absolute;
-  //     height: 435px;
-  //     background: url('../img/Luigi_Diagramm.png') no-repeat 0 0;
-  //     background-size: auto 100%;
-  //     content: '';
-  //   }
-
-  //   &:before {
-  //     left: 0;
-  //     top: -25%;
-  //     transform: rotateY(180deg);
-  //     width: 20vw;
-  //   }
-
-  //   &:after {
-  //     right: 0;
-  //     transform: rotateY(180deg);
-  //     top: 25%;
-  //     width: 25vw;
-  //     background-position: right 0 top 0;
-  //   }
-  // }
 }
 
 .s-benefits {
@@ -110,8 +82,8 @@
 }
 
 .s-adopters {
-  margin-bottom: -500px;
-  padding-bottom: 500px !important;
+  margin-bottom: -300px;
+  padding-bottom: 300px !important;
 
   .clients-list {
     margin-bottom: 40px;

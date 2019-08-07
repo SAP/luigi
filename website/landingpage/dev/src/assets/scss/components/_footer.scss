@@ -9,7 +9,7 @@
 
     @include breakpoint(large) {
       background-position: 50% 0;
-      background-size: cover;
+      background-size: auto 100%;
     }
   }
 
@@ -32,7 +32,6 @@
 
   .logo {
     display: inline-block;
-    margin-bottom: 20px;
 
     img {
       width: 106px;
@@ -40,12 +39,7 @@
     }
   }
 
-  .link-list {
-    margin-bottom: 20px;
-  }
-
   .wr {
-    text-align: center;
     font-size: 12px;
     padding-top: 30px;
     border-top: 1px solid $border-color;
@@ -59,6 +53,52 @@
       &:active {
         color: $primary-color;
       }
+    }
+  }
+
+  @include breakpoint(medium down) {
+    .wr {
+      text-align: center;
+    }
+
+    .logo {
+      margin-bottom: 20px;
+    }
+
+    .link-list {
+      margin-bottom: 20px;
+    }
+  }
+
+  @include breakpoint(large) {
+    .wr {
+      padding-top: 35px;
+      padding-bottom: 35px;
+      font-size: 14px;
+      font-weight: 600;
+    }
+
+    .copyright {
+      text-align: right;
+    }
+
+    .left-content {
+      display: flex;
+      align-items: center;
+    }
+
+    .logo {
+      margin-right: 45px;
+    }
+
+    .copyright {
+      margin-bottom: 0;
+    }
+  }
+
+  @include breakpoint(xxlarge) {
+    .wr {
+      max-width: calc(1290px - 50px);
     }
   }
 }
