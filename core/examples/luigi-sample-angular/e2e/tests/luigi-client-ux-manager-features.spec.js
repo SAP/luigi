@@ -3,7 +3,10 @@ describe('Luigi Client ux manager features', () => {
   beforeEach(() => {
     //"clear" variables to make sure they are not reused and throw error in case something goes wrong
     $iframeBody = undefined;
-    cy.visit('/');
+    cy.visit('/', {
+      // fixes bug with localization test re-run upon save
+      onBeforeLoad: () => sessionStorage.clear()
+    });
     cy.login('tets', 'tets');
 
     cy.getIframeBody().then(result => {
