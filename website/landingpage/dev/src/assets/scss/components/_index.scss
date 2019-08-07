@@ -30,12 +30,16 @@
 .s-benefits {
   padding: 50px 0;
 
-  @include breakpoint(large) {
-    padding: 100px 0;
-  }
-
   .title-2 {
     margin-bottom: 2em;
+  }
+
+  @include breakpoint(large) {
+    padding: 100px 0;
+
+    .title-2 {
+      margin-bottom: 4em;
+    }
   }
 }
 
@@ -45,25 +49,8 @@
   .item {
     margin-bottom: 50px;
 
-    .image {
-      position: relative;
-
-      &:after {
-        content: '';
-        display: block;
-        width: 100%;
-        border-top: 1px solid $powder-blue;
-        transform: rotate(3deg);
-        margin-top: 40px;
-      }
-    }
-
-    &:nth-child(2n) {
-      .image {
-        &:after {
-          transform: rotate(-3deg);
-        }
-      }
+    .description {
+      margin-left: 30px;
     }
   }
 
@@ -76,8 +63,86 @@
     }
   }
 
-  .description {
-    margin-left: 30px;
+  @include breakpoint(medium down) {
+    .item {
+      .image {
+        position: relative;
+
+        &:after {
+          content: '';
+          display: block;
+          width: 100%;
+          border-top: 1px solid $powder-blue;
+          transform: rotate(3deg);
+          margin-top: 40px;
+        }
+      }
+
+      &:nth-child(2n) {
+        .image {
+          &:after {
+            transform: rotate(-3deg);
+          }
+        }
+      }
+    }
+  }
+
+  @include breakpoint(large) {
+    .item {
+      margin-bottom: 80px;
+
+      .description {
+        position: relative;
+
+        &:after {
+          content: '';
+          display: block;
+          width: 100%;
+          border-top: 1px solid $powder-blue;
+          transform: rotate(3deg);
+          margin-top: 70px;
+        }
+      }
+
+      &:nth-child(2n + 1) {
+        .image {
+          text-align: center;
+        }
+      }
+
+      &:nth-child(2n) {
+        .description {
+          &:after {
+            transform: rotate(-3deg);
+          }
+        }
+
+        .content {
+          order: 2;
+        }
+
+        .image {
+          order: 1;
+        }
+      }
+    }
+
+    .title-3 {
+      &:before {
+        margin-right: 10px;
+      }
+    }
+  }
+
+  @include breakpoint(xxlarge) {
+    .item {
+      margin-bottom: 150px;
+
+      .description {
+        width: 75%;
+      }
+    }
   }
 }
 

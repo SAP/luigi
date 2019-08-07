@@ -12,8 +12,8 @@
 @include foundation-typography;
 
 // Grids (choose one)
-//@include foundation-xy-grid-classes;
-@include foundation-grid;
+@include foundation-xy-grid-classes;
+//@include foundation-grid;
 @include foundation-flex-grid;
 
 // Generic components

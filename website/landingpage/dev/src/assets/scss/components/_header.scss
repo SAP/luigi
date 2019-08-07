@@ -55,6 +55,8 @@
 
       a {
         font-size: 24px;
+        line-height: 1;
+        display: block;
         color: white;
         transition: color 0.3s ease;
 
@@ -100,7 +102,7 @@
     }
 
     .image {
-      background-image: url('../img/running_app.png');
+      background-image: url('../img/running_app_2x.png');
       background-position: 50% 0;
       background-repeat: no-repeat;
       background-size: cover;
@@ -132,7 +134,7 @@
           top: 0;
           left: 45%;
           content: '';
-          background-image: url('../img/running_app_full.png');
+          background-image: url('../img/running_app_2x.png');
           background-position: 0 0;
           background-repeat: no-repeat;
           background-size: auto 100%;
@@ -143,7 +145,7 @@
     @include breakpoint(xxlarge) {
       > .row {
         &:before {
-          left: 30%;
+          left: 36%;
         }
       }
     }
