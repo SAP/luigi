@@ -25,7 +25,11 @@ WS_PID=$!
 sleep 60
 
 echo "Running tests"
-npm run e2e:run
+if [ -z "$TRAVIS_BUILD_ID" ]; then
+  echo "Not running in travis. TRAVIS_BUILD_ID is not set."
+fi
+
+npm run e2e:run -- --record --key "$CYPRESS_KEY_LUIGI" --parallel --group 2x-chrome --ci-build-id "$TRAVIS_BUILD_ID"
 RV=$?
 kill $WS_PID
 exit $RV

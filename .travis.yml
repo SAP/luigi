@@ -23,7 +23,7 @@ jobs:
     #----- UNIT -----
     - name: 'Unit Tests'
       script: npm test --prefix core
-      # cache: npm
+      cache: npm
       #no cache for unit tests = more speed
       
     # ----- INTEGRATION -----
