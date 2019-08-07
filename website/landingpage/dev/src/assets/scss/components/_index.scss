@@ -148,9 +148,26 @@
 
 .s-adopters {
   margin-bottom: -300px;
-  padding-bottom: 300px !important;
+  padding-bottom: 300px;
 
   .clients-list {
     margin-bottom: 40px;
+
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+
+    .item {
+      margin: 0 30px 30px;
+    }
+  }
+
+  .title-2 {
+    margin-bottom: 3em;
+  }
+
+  @include breakpoint(xxlarge) {
+    margin-bottom: -500px;
+    padding-bottom: calc(500px + 100px);
   }
 }
