@@ -38,6 +38,23 @@ Removes a context update listener.
 
 -   `id` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** the id that was returned by the `addContextUpdateListener` function
 
+### addCustomEventListener
+
+Registers a listener called when the microfrontend receives the specified message.
+
+#### Parameters
+
+-   `name`  
+-   `customEventFn` **[Lifecycle~customEventListenerCallback](#lifecyclecustomeventlistenercallback)** the function that is called when the microfrontend receives the corresponding event.
+
+### removeCustomEventListener
+
+Removes a custom event listener.
+
+#### Parameters
+
+-   `id` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** the id that was returned by the `addInitListener` function
+
 ### getToken
 
 Returns the currently valid access token.
@@ -107,6 +124,16 @@ Type: [Function](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Sta
 
 -   `context` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** current context data
 -   `origin` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** Luigi Core URL
+
+## Lifecycle~customEventListenerCallback
+
+Callback of the customEventListener
+
+Type: [Function](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Statements/function)
+
+### Parameters
+
+-   `event` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** event object received
 
 ## linkManager
 

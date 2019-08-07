@@ -147,13 +147,14 @@ class LifecycleManager extends LuigiClientBase {
    * @memberof Lifecycle
    */
   addInitListener(initFn) {
-    var id = helpers.getRandomId();
+    const id = helpers.getRandomId();
     this._onInitFns[id] = initFn;
     if (this.luigiInitialized && helpers.isFunction(initFn)) {
       initFn(this.currentContext.context, helpers.getLuigiCoreDomain());
     }
     return id;
   }
+
   /**
    * Callback of the addInitListener
    * @callback Lifecycle~initListenerCallback
@@ -172,19 +173,21 @@ class LifecycleManager extends LuigiClientBase {
     }
     return false;
   }
+
   /**
    * Registers a listener called with the context object upon any navigation change.
    * @param {function} contextUpdatedFn the listener function called each time Luigi context changes
    * @memberof Lifecycle
    */
   addContextUpdateListener(contextUpdatedFn) {
-    var id = helpers.getRandomId();
+    const id = helpers.getRandomId();
     this._onContextUpdatedFns[id] = contextUpdatedFn;
     if (this.luigiInitialized && helpers.isFunction(contextUpdatedFn)) {
       contextUpdatedFn(this.currentContext.context);
     }
     return id;
   }
+
   /**
    * Removes a context update listener.
    * @param {string} id the id that was returned by the `addContextUpdateListener` function
@@ -196,6 +199,29 @@ class LifecycleManager extends LuigiClientBase {
       return true;
     }
     return false;
+  }
+
+  /**
+   * Registers a listener called when the microfrontend receives the specified message.
+   * @param {Lifecycle~customEventListenerCallback} customEventFn the function that is called when the microfrontend receives the corresponding event.
+   * @memberof Lifecycle
+   */
+  addCustomEventListener(name, customEventFn) {
+    return helpers.addEventListener(name, customEventFn);
+  }
+
+  /**
+   * Callback of the customEventListener
+   * @callback Lifecycle~customEventListenerCallback
+   * @param {Object} event event object received
+   */
+  /**
+   * Removes a custom event listener.
+   * @param {string} id the id that was returned by the `addInitListener` function
+   * @memberof Lifecycle
+   */
+  removeCustomEventListener(id) {
+    return helpers.removeEventListener(id);
   }
 
   /**

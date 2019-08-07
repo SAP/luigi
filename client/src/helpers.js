@@ -40,7 +40,14 @@ class Helpers {
    * @param {string} id listenerId
    */
   removeEventListener(id) {
-    this.listeners = this.listeners.filter(l => l.listenerId !== id);
+    const listenerExists = Boolean(
+      this.listeners.find(l => l.listenerId === id)
+    );
+    if (listenerExists) {
+      this.listeners = this.listeners.filter(l => l.listenerId !== id);
+      return true;
+    }
+    return false;
   }
 
   /**
