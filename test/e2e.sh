@@ -21,15 +21,18 @@ echo "Starting webserver"
 npm run start &
 WS_PID=$!
 
-# wait until example is built and running
-sleep 60
+# # wait until example is built and running
+# sleep 60
+WAITCOUNT=0
+until $(curl --output /dev/null --silent --head --fail http://localhost:4200); do
+  printf '.'
+  sleep 5
+  WAITCOUNT=$(($WAITCOUNT + 5))
+done
+echo "Webserver was ready after $WAITCOUNT seconds."
 
 echo "Running tests"
-if [ -z "$TRAVIS_BUILD_ID" ]; then
-  echo "Not running in travis. TRAVIS_BUILD_ID is not set."
-fi
-
-npm run e2e:run -- --record --key "$CYPRESS_KEY_LUIGI" --parallel --group 2x-chrome --ci-build-id "$TRAVIS_BUILD_ID"
+npm run e2e:run -- --record --key "$CYPRESS_KEY_LUIGI" --parallel --group 2x-chrome 
 RV=$?
 kill $WS_PID
 exit $RV
