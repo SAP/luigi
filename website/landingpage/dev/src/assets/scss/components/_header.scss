@@ -28,7 +28,7 @@
     }
 
     @include breakpoint(xxlarge) {
-      background-position: left 80% bottom 0;
+      background-position: left 70% bottom 0;
     }
   }
 
@@ -79,8 +79,23 @@
         margin-bottom: 50px;
       }
 
+      @include breakpoint(large) {
+        height: 350px;
+        padding-top: 30px;
+      }
+
       @include breakpoint(xxlarge) {
-        height: 600px;
+        height: 650px;
+        padding-top: 110px;
+      }
+    }
+
+    .sub-title {
+      font-family: $extra-font-family;
+      font-weight: 500;
+
+      @include breakpoint(xxlarge) {
+        font-size: 20px;
       }
     }
 
@@ -115,12 +130,20 @@
           height: 100%;
           width: 100%;
           top: 0;
-          left: 30%;
+          left: 45%;
           content: '';
           background-image: url('../img/running_app_full.png');
           background-position: 0 0;
           background-repeat: no-repeat;
           background-size: auto 100%;
+        }
+      }
+    }
+
+    @include breakpoint(xxlarge) {
+      > .row {
+        &:before {
+          left: 30%;
         }
       }
     }

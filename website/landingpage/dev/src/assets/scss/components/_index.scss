@@ -7,36 +7,52 @@
 
     .row {
     }
-  }
 
-  .wr {
-    position: relative;
+    .wr {
+      position: relative;
 
-    &:before,
-    &:after {
-      display: block;
-      position: absolute;
-      height: 435px;
-      background: url('../img/Luigi_Diagramm.png') no-repeat 0 0;
-      background-size: auto 100%;
-      content: '';
-    }
-
-    &:before {
-      left: 0;
-      top: -25%;
-      transform: rotateY(180deg);
-      width: 20vw;
-    }
-
-    &:after {
-      right: 0;
-      transform: rotateY(180deg);
-      top: 25%;
-      width: 25vw;
-      background-position: right 0 top 0;
+      &:before {
+        position: absolute;
+        content: '';
+        top: -25%;
+        width: 100%;
+        left: 0;
+        height: 570px;
+        background: url('../img/double-diagram.png') no-repeat 50% 0;
+        background-size: auto 100%;
+        z-index: -1;
+      }
     }
   }
+
+  // .wr {
+  //   position: relative;
+
+  //   &:before,
+  //   &:after {
+  //     display: block;
+  //     position: absolute;
+  //     height: 435px;
+  //     background: url('../img/Luigi_Diagramm.png') no-repeat 0 0;
+  //     background-size: auto 100%;
+  //     content: '';
+  //   }
+
+  //   &:before {
+  //     left: 0;
+  //     top: -25%;
+  //     transform: rotateY(180deg);
+  //     width: 20vw;
+  //   }
+
+  //   &:after {
+  //     right: 0;
+  //     transform: rotateY(180deg);
+  //     top: 25%;
+  //     width: 25vw;
+  //     background-position: right 0 top 0;
+  //   }
+  // }
 }
 
 .s-benefits {

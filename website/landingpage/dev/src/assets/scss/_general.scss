@@ -55,7 +55,7 @@ ul {
   margin-bottom: 0.7em;
 
   @include breakpoint(large) {
-    font-size: 42px;
+    font-size: 35px;
   }
 
   @include breakpoint(xxlarge) {
