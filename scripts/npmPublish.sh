@@ -55,17 +55,10 @@ function publishPackage {
   if [[ "$NPM_GREP" =~ "1" ]]; then
     echo "$NAME@$VERSION already published, skipping until next release."
   else
-    echoe "Bundling $NAME@$VERSION ..."
-    npm run bundle
+    # echoe "Bundling $NAME@$VERSION ..."
+    # npm run bundle
 
     echoe "Publishing $NAME@$VERSION ..."
-
-echoe "==============================="
-echoe "==============================="
-echoe "==============================="
-echoe "not publishing.. emergency stop"
-echoe "==============================="
-exit 0;
 
     npm publish $BASE_DIR/../$PUBLISH_FOLDER --access public
     if [[ $VERSION != *"rc."* ]]; then
