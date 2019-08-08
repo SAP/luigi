@@ -15,69 +15,41 @@ jobs:
   include:
     - stage: 'Precache'
       name: 'Install and build'
+      install: skip
       script:
         - npm i # install base deps like lerna
         - lerna bootstrap --ci --ignore "*luigi-sample-vue"
         - echo 'root' && ls node_modules | wc -l && echo 'core' && ls core/node_modules | wc -l && echo 'client' && ls client/node_modules | wc -l
         - lerna run bundle --ignore "*luigi-sample-vue"
+        - du -sh
 
     #----- DOCU -----
     - stage: 'Documentation & Tests'
       name: 'Check Documentation'
+      install: skip
       script: bash ./scripts/docuCheck.sh
-      cache:
-        directories:
-          - npm: true
-          - ~/.cache-docu
 
     #----- UNIT -----
     - name: 'Unit Tests'
+      install: skip
       script: 
         - echo 'root' && ls node_modules | wc -l && echo 'core' && ls core/node_modules | wc -l && echo 'client' && ls client/node_modules | wc -l
         - npm test --prefix core
-      cache: npm
       #no cache for unit tests = more speed
       
     # ----- INTEGRATION -----
-    - name: 'Integration Tests'
+    - &integration-testing
       script:
         - echo 'root' && ls node_modules | wc -l && echo 'core' && ls core/node_modules | wc -l && echo 'client' && ls client/node_modules | wc -l
         - bash ./test/e2e.sh
-      cache: npm
       addons:
         chrome: stable
       before_install:
         - google-chrome-stable --headless --disable-gpu --remote-debugging-port=9222 http://localhost &
       before_cache:
         - rm -rf ~/.cache/Cypress/cy/production/browsers #it is individual for each run anyway so caching it slows down the job
-    - name: 'Integration Tests'
-      script: bash ./test/e2e.sh
-      cache: npm
-      addons:
-        chrome: stable
-      before_install:
-        - google-chrome-stable --headless --disable-gpu --remote-debugging-port=9222 http://localhost &
-      before_cache:
-        - rm -rf ~/.cache/Cypress/cy/production/browsers #it is individual for each run anyway so caching it slows down the job
-    - name: 'Integration Tests'
-      script: bash ./test/e2e.sh
-      cache: npm
-      addons:
-        chrome: stable
-      before_install:
-        - google-chrome-stable --headless --disable-gpu --remote-debugging-port=9222 http://localhost &
-      before_cache:
-        - rm -rf ~/.cache/Cypress/cy/production/browsers #it is individual for each run anyway so caching it slows down the job
-    - name: 'Integration Tests'
-      script: bash ./test/e2e.sh
-      cache: npm
-      addons:
-        chrome: stable
-      before_install:
-        - google-chrome-stable --headless --disable-gpu --remote-debugging-port=9222 http://localhost &
-      before_cache:
-        - rm -rf ~/.cache/Cypress/cy/production/browsers #it is individual for each run anyway so caching it slows down the job
-
+    - <<: *integration-testing
+    - <<: *integration-testing
     # ----- NPM PUBLISH -----
     - stage: 'Publish'
       name: 'Publish to NPM'
