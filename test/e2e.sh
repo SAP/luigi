@@ -31,6 +31,7 @@ until $(curl --output /dev/null --silent --head --fail http://localhost:4200); d
 done
 echo "Webserver was ready after $WAITCOUNT seconds."
 
+
 echo "Running tests"
 npm run e2e:run -- --record --key "$CYPRESS_KEY_LUIGI" --parallel
 RV=$?
