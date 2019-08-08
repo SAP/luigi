@@ -17,6 +17,8 @@ cd core/examples/luigi-sample-angular
 # npm install -D cypress concurrently lerna @angular/cli@$NG_CLI_VERSION
 # lerna bootstrap --ci --ignore "*luigi-sample-vue"
 
+./node_modules/.bin/cypress install
+
 # echo "Starting webserver"
 npm run start &
 WS_PID=$!
