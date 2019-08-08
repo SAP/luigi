@@ -152,17 +152,14 @@ section {
   transition: all 0.2s ease;
 
   &:hover,
-  &:active {
+  &:active,
+  &:focus {
     background-color: $white;
     color: $button-color;
   }
 
   @include breakpoint(large) {
     font-size: 15px;
-  }
-
-  & + section {
-    margin-top: -100px;
   }
 }
 

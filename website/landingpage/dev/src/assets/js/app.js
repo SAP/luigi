@@ -14,3 +14,7 @@ require('foundation-sites');
 //import './lib/foundation-explicit-pieces';
 
 $(document).foundation();
+
+$('#menuBtn, #closeMainNavigation').on('click', function() {
+  $('#mainNavigation').toggleClass('is-active');
+});

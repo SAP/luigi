@@ -2,12 +2,10 @@
   position: relative;
 
   > .has-border {
-    padding-top: 15px;
-    padding-bottom: 15px;
+    padding-top: 25px;
+    padding-bottom: 25px;
 
     @include breakpoint(xlarge) {
-      padding-top: 25px;
-      padding-bottom: 25px;
       border-bottom: 1px solid $border-color;
     }
 
@@ -35,8 +33,8 @@
   .logo {
     img {
       display: block;
-      width: 74px;
-      height: 30px;
+      width: 118px;
+      height: 47px;
 
       @include breakpoint(xlarge) {
         width: 148px;
@@ -45,26 +43,9 @@
     }
   }
 
-  .social-links {
+  .nav-wr {
+    justify-content: flex-end;
     display: flex;
-    flex-direction: row-reverse;
-    align-items: center;
-
-    .item {
-      margin-left: 25px;
-
-      a {
-        font-size: 24px;
-        line-height: 1;
-        display: block;
-        color: white;
-        transition: color 0.3s ease;
-
-        &:hover {
-          color: $primary-color;
-        }
-      }
-    }
   }
 
   .s-stage {
@@ -146,6 +127,124 @@
       > .row {
         &:before {
           left: 36%;
+        }
+      }
+    }
+  }
+
+  .menu-btn {
+    width: 26px;
+    height: 20px;
+    background: url('../img/burger_menu.svg') 0 0 no-repeat;
+    background-size: contain;
+    cursor: pointer;
+  }
+}
+
+.main-nav {
+  .social-links {
+    display: flex;
+    align-items: center;
+
+    .item {
+      margin-left: 25px;
+
+      &:first-child {
+        margin-left: 0;
+      }
+
+      a {
+        font-size: 24px;
+        line-height: 1;
+        display: block;
+        color: white;
+        transition: color 0.3s ease;
+
+        &:hover {
+          color: $primary-color;
+        }
+      }
+    }
+  }
+
+  @include breakpoint(large down) {
+    position: fixed;
+    left: 100vw;
+    top: 0;
+    width: 100vw;
+    height: 100vh;
+    transition: all 0.2s ease-in-out 0s;
+    padding: 50px 30px;
+    background: $secondary-color;
+    z-index: 10;
+
+    &.is-active {
+      left: 0;
+    }
+
+    .close-btn {
+      width: 26px;
+      height: 26px;
+      background: url('../img/burger_menu_close.svg') 0 0 no-repeat;
+      background-size: contain;
+      position: absolute;
+      top: 30px;
+      right: 25px;
+      cursor: pointer;
+    }
+
+    .menu {
+      margin-bottom: 30px;
+
+      .item {
+        padding: 15px 0;
+        border-bottom: 1px solid $border-color;
+
+        a {
+          color: white;
+          font-weight: 600;
+
+          &:hover,
+          &:active,
+          &:focus {
+            color: $primary-color;
+          }
+        }
+      }
+    }
+  }
+
+  @include breakpoint(xlarge) {
+    display: flex;
+    justify-content: flex-end;
+
+    .social-links {
+      margin-left: 50px;
+    }
+
+    .menu {
+      display: flex;
+
+      .item {
+        margin-left: 50px;
+
+        a {
+          display: block;
+          font-size: 18px;
+          font-weight: 600;
+          color: white;
+          padding-bottom: 39px;
+          margin-bottom: -39px;
+          border-bottom: 4px solid transparent;
+          transition: all 0.2s ease;
+
+          &:hover,
+          &:focus,
+          &:active,
+          .is-active {
+            color: white;
+            border-bottom-color: $primary-color;
+          }
         }
       }
     }

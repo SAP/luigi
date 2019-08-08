@@ -26403,6 +26403,13 @@
         //import './lib/foundation-explicit-pieces';
 
         jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).foundation();
+        jquery__WEBPACK_IMPORTED_MODULE_0___default()(
+          '#menuBtn, #closeMainNavigation'
+        ).on('click', function() {
+          jquery__WEBPACK_IMPORTED_MODULE_0___default()(
+            '#mainNavigation'
+          ).toggleClass('is-active');
+        });
 
         /***/
       },
