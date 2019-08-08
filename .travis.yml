@@ -2,9 +2,7 @@ language: node_js
 node_js:
   - '11.14' #TODO: change it to 'node' once Travis supports the newest version
 dist: trusty
-# install: 
-#   - npm ci --prefix core
-#   - npm ci --prefix client
+install: skip
 cache:
   directories:
     - $TRAVIS_BUILD_DIR
@@ -16,7 +14,6 @@ jobs:
   include:
     - stage: 'Precache'
       name: 'Install and build'
-      install: skip
       script:
         - pwd && ls $TRAVIS_BUILD_DIR
         - export CYPRESS_CACHE_FOLDER=$TRAVIS_BUILD_DIR/cypress-binary-cache
@@ -33,14 +30,12 @@ jobs:
     #----- DOCU -----
     - stage: 'Documentation & Tests'
       name: 'Check Documentation'
-      install: skip
       script: bash ./scripts/docuCheck.sh
       before_cache:
         - rm -rf ~/.npm/_logs
 
     #----- UNIT -----
     - name: 'Unit Tests'
-      install: skip
       script: 
         - echo 'core' && ls core/node_modules | wc -l && echo 'client' && ls client/node_modules | wc -l
         - npm test --prefix core
@@ -66,9 +61,9 @@ jobs:
     - <<: *integration-testing
     - <<: *integration-testing
     - <<: *integration-testing
+
     # ----- NPM PUBLISH -----
     - stage: 'Publish'
       name: 'Publish to NPM'
       # if: repo = SAP/luigi AND (branch = master OR branch ~= ^release-v)
       script: bash ./scripts/npmPublish.sh
-      #cache: npm
