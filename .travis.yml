@@ -16,12 +16,9 @@ jobs:
     - stage: 'Precache'
       name: 'Install and build'
       script:
-        - npm ci
-        - npm ci --prefix core
-        - npm ci --prefix client
-        - echo 'root' && ls node_modules && echo 'core' && ls core/node_modules && echo 'client' && ls client/node_modules
-        - rm -rf $TRAVIS_BUILD_DIR/core/examples/luigi-sample-vue
+        - npm i # install base deps like lerna
         - lerna bootstrap --ci --ignore "*luigi-sample-vue"
+        - echo 'root' && ls node_modules | wc -l && echo 'core' && ls core/node_modules | wc -l && echo 'client' && ls client/node_modules | wc -l
         - lerna run bundle --ignore "*luigi-sample-vue"
 
     #----- DOCU -----
@@ -35,13 +32,17 @@ jobs:
 
     #----- UNIT -----
     - name: 'Unit Tests'
-      script: npm test --prefix core
+      script: 
+        - echo 'root' && ls node_modules | wc -l && echo 'core' && ls core/node_modules | wc -l && echo 'client' && ls client/node_modules | wc -l
+        - npm test --prefix core
       cache: npm
       #no cache for unit tests = more speed
       
     # ----- INTEGRATION -----
     - name: 'Integration Tests'
-      script: bash ./test/e2e.sh
+      script:
+        - echo 'root' && ls node_modules | wc -l && echo 'core' && ls core/node_modules | wc -l && echo 'client' && ls client/node_modules | wc -l
+        - bash ./test/e2e.sh
       cache: npm
       addons:
         chrome: stable
