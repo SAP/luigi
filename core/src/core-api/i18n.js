@@ -4,7 +4,7 @@ import {
   StateHelpers,
   EscapingHelpers
 } from '../utilities/helpers';
-import { defaultLuigiTranslationTable } from './defaultLuigiTranslationTable';
+import { defaultLuigiTranslationTable } from '../utilities/defaultLuigiTranslationTable';
 
 /**
  * Localization-related functions.
