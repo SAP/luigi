@@ -18,6 +18,7 @@ jobs:
       name: 'Install and build'
       install: skip
       script:
+        - pwd && ls $TRAVIS_BUILD_DIR
         - npm i # install base deps like lerna
         - lerna bootstrap --ci --ignore "*luigi-sample-vue"
         - echo 'root' && ls node_modules | wc -l && echo 'core' && ls core/node_modules | wc -l && echo 'client' && ls client/node_modules | wc -l
