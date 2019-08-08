@@ -27,6 +27,9 @@ jobs:
         - du -sh
       before_cache:
         - rm -rf ~/.npm/_logs
+        - rm -rf $TRAVIS_BUILD_DIR/website
+        - rm -rf $TRAVIS_BUILD_DIR/client # its not required later, saves around 140mb
+        - rm -rf $TRAVIS_BUILD_DIR/core/examples/luigi-sample-vue
 
     #----- DOCU -----
     - stage: 'Documentation & Tests'
@@ -60,7 +63,8 @@ jobs:
       before_cache:
         before_cache:
         - rm -rf ~/.npm/_logs
-        # - rm -rf ~/.cache/Cypress/cy/production/browsers #it is individual for each run anyway so caching it slows down the job
+        - rm -rf ~/.cache/Cypress/cy/production/browsers #it is individual for each run anyway so caching it slows down the job
+    - <<: *integration-testing
     - <<: *integration-testing
     - <<: *integration-testing
     # ----- NPM PUBLISH -----
