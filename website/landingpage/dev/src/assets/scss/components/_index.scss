@@ -12,16 +12,27 @@
     .wr {
       position: relative;
 
-      &:before {
+      &:before,
+      &:after {
+        display: block;
         position: absolute;
-        content: '';
-        top: -25%;
-        width: 100%;
-        left: 0;
-        height: 570px;
-        background: url('../img/double-diagram.png') no-repeat 50% 0;
+        height: 435px;
+        background: url('../img/intro-bg.png') no-repeat 0 0;
         background-size: auto 100%;
-        z-index: -1;
+        content: '';
+      }
+
+      &:before {
+        left: 0;
+        top: -25%;
+        width: 20vw;
+        background-position: right 0 top 0;
+      }
+
+      &:after {
+        right: 0;
+        top: 25%;
+        width: 25vw;
       }
     }
   }
@@ -155,6 +166,7 @@
 
     display: flex;
     justify-content: center;
+    align-items: center;
     flex-wrap: wrap;
 
     .item {

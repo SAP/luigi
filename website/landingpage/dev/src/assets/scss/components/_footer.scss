@@ -10,8 +10,17 @@
     @include breakpoint(large) {
       background-position: 56% 0;
       background-size: auto 100%;
-
       padding-top: 12vw;
+    }
+
+    @include breakpoint(xxlarge) {
+      background-size: 170% 100%;
+      padding-top: 9vw;
+    }
+
+    @include breakpoint(huge) {
+      background-size: 150% 100%;
+      padding-top: 6vw;
     }
   }
 
