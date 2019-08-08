@@ -41,7 +41,6 @@ jobs:
         - npm test --prefix core
       before_cache:
         - rm -rf ~/.npm/_logs
-      #no cache for unit tests = more speed
       
     # ----- INTEGRATION -----
     - &integration-testing
@@ -65,5 +64,6 @@ jobs:
     # ----- NPM PUBLISH -----
     - stage: 'Publish'
       name: 'Publish to NPM'
-      # if: repo = SAP/luigi AND (branch = master OR branch ~= ^release-v)
+      # run only when merging from release-v branch to master
+      if: repo = SAP/luigi AND branch = master AND head_branch ~= ^release-v
       script: bash ./scripts/npmPublish.sh
