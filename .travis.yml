@@ -28,7 +28,6 @@ jobs:
       before_cache:
         - rm -rf ~/.npm/_logs
         - rm -rf $TRAVIS_BUILD_DIR/website
-        - rm -rf $TRAVIS_BUILD_DIR/client # its not required later, saves around 140mb
         - rm -rf $TRAVIS_BUILD_DIR/core/examples/luigi-sample-vue
 
     #----- DOCU -----
