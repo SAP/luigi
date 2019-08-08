@@ -41,4 +41,4 @@ If you don't specify any value for  **responsiveNavigation**, the buttons remain
             // should return translationn of the 'key' in the 'locale' or current locale
     }
 ````
-> **NOTE:** Luigi uses its own internal [translation](../core/src/utilities/defaultLuigiTranslationTable.js) by using **getTranlsation** Function. The key parameter must start with `luigi.your.nested.translation.object`.
+> **NOTE:** You can translate Luigi internal messages by providing tranlsation for [these keys](../core/src/utilities/defaultLuigiTranslationTable.js).
