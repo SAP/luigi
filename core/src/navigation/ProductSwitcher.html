@@ -7,13 +7,28 @@ Object.keys(productSwitcherItems[0]).length }
   <div class="fd-product-switcher">
     <div class="fd-popover fd-popover--right">
       <div class="fd-popover__control" on:click="event.stopPropagation()">
+        <!-- default: sap-icon--grid -->
+        {#if hasOpenUIicon(config)}
         <button
-          class="fd-button--shell sap-icon--grid"
+          class="fd-button--shell sap-icon--{config.icon}"
           aria-expanded="{dropDownStates.productSwitcherPopover || false}"
           aria-haspopup="true"
           on:click="toggleDropdownState()"
           data-cy="desktop-product-switcher"
+          title="{config.label}"
         ></button>
+        {:else}
+        <button
+          class="fd-button--shell"
+          aria-expanded="{dropDownStates.productSwitcherPopover || false}"
+          aria-haspopup="true"
+          on:click="toggleDropdownState()"
+          data-cy="desktop-product-switcher"
+          title="{config.label}"
+        >
+          <img src="{config.icon}">
+        </button>
+        {/if}
       </div>
       <div
         class="fd-popover__body fd-popover__body--right"
@@ -38,7 +53,7 @@ Object.keys(productSwitcherItems[0]).length }
                   </span>
                   <span
                     class="fd-product-switcher__product-title"
-                  >{productSwitcherItem.label}</span>
+                  >{$getTranslation(productSwitcherItem.label)}</span>
                 </a>
               </li>
               {/if}
@@ -68,7 +83,7 @@ Object.keys(productSwitcherItems[0]).length }
           ></button>
         </div>
         <div class="fd-action-bar__header">
-          <h5 class="fd-action-bar__title fd-has-type-1">My Products</h5>
+          <h5 class="fd-action-bar__title fd-has-type-1">{config.label}</h5>
         </div>
       </div>
       <div class="fd-modal__body">
@@ -89,7 +104,9 @@ Object.keys(productSwitcherItems[0]).length }
                 >
                 {/if}
               </span>
-              <span class="y-full-width-list__title">{productSwitcherItem.label}</span>
+              <span
+                class="y-full-width-list__title"
+              >{$getTranslation(productSwitcherItem.label)}</span>
             </li>
             {/if}
             {/each}
@@ -110,13 +127,9 @@ Object.keys(productSwitcherItems[0]).length }
   export default {
     async oncreate() {
       StateHelpers.doOnStoreChange(this.store, async () => {
-        const productSwitcherConfig = LuigiConfig.getConfigValue(
-          'navigation.productSwitcher'
-        );
-        this.set({
-          config: productSwitcherConfig
-        });
-        if (productSwitcherConfig) {
+        const config = NavigationHelpers.getProductSwitcherConfig();
+        this.set({ config });
+        if (config) {
           const productSwitcherItems = await LuigiConfig.getConfigValueAsync(
             'navigation.productSwitcher.items'
           );

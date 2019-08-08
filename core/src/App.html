@@ -1100,4 +1100,21 @@
       }
     }
   }
+
+  :global(html.luigi-app-in-custom-container) {
+    position: relative;
+
+    [luigi-app-root] {
+      position: relative;
+      overflow: hidden;
+    }
+
+    .no-nav,
+    .no-side-nav {
+      .iframeContainer,
+      .spinnerContainer {
+        position: absolute;
+      }
+    }
+  }
 </style>

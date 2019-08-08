@@ -74,6 +74,11 @@ class SplitViewSvcClass {
 
   createAndSetView(component) {
     const { nodeParams, lastNode, pathData } = component.get();
+    this.setDeep(
+      component.root,
+      'mfSplitView',
+      Object.assign(component.root.get().mfSplitView, { collapsed: false })
+    );
 
     const iframe = this.setIframe(
       lastNode.viewUrl,
@@ -89,6 +94,26 @@ class SplitViewSvcClass {
       splitViewIframe: iframe,
       splitViewIframeData: { ...pathData, nodeParams }
     });
+
+    this.fixIOSscroll();
+  }
+
+  // required for iOS to force repaint, else scrolling does not work
+  fixIOSscroll() {
+    const iOS =
+      !!navigator.platform && /iPad|iPhone|iPod/.test(navigator.platform);
+    if (!iOS) {
+      return;
+    }
+    const splitIframe = document.querySelector('.iframeSplitViewCnt iframe');
+    if (splitIframe) {
+      splitIframe.addEventListener('load', () => {
+        document.querySelector('.iframeSplitViewCnt').style.overflow = 'hidden';
+        setTimeout(() => {
+          document.querySelector('.iframeSplitViewCnt').style.overflow = 'auto';
+        });
+      });
+    }
   }
 
   calculateInitialValues(size, rightContentHeight) {
@@ -120,32 +145,33 @@ class SplitViewSvcClass {
         )
       ) + LuigiElements.getShellbar().clientHeight;
 
-    const calculated = this.enforceTreshHolds(
+    const calculated = this.enforceTresholds(
       newBottom,
       window.innerHeight - newBottom,
-      values.thresholdTop,
-      values.thresholdBottom
+      values
     );
 
-    this.splitViewValues = {
-      bottom: calculated.bottom,
-      top: calculated.top,
-      percent: GenericHelpers.computePercentFromPx(
-        values.rightContentHeight,
-        calculated.bottom
-      )
-    };
+    this.splitViewValues = calculated;
   }
 
-  enforceTreshHolds(top, bottom, thresholdTop, thresholdBottom) {
-    if (top <= thresholdTop) {
-      top = thresholdTop;
-      bottom = window.innerHeight - thresholdTop;
-    } else if (bottom <= thresholdBottom) {
-      top = window.innerHeight - thresholdBottom;
-      bottom = thresholdBottom;
+  enforceTresholds(top, bottom) {
+    const iv = this.internalValues;
+    if (top <= iv.thresholdTop) {
+      top = iv.thresholdTop;
+      bottom = window.innerHeight - iv.thresholdTop;
+    } else if (bottom <= iv.thresholdBottom) {
+      top = window.innerHeight - iv.thresholdBottom;
+      bottom = iv.thresholdBottom;
     }
-    return { top, bottom };
+
+    return {
+      top,
+      bottom,
+      percent: GenericHelpers.computePercentFromPx(
+        iv.rightContentHeight,
+        bottom
+      )
+    };
   }
 
   setDeep(comp, key, value) {
@@ -157,7 +183,7 @@ class SplitViewSvcClass {
   open(comp, nodepath, settings) {
     const mfSplitView = {
       displayed: true,
-      collapsed: false, // settings.collapsed === true, // TODO: separate ticket
+      collapsed: settings.collapsed === true,
       nodepath,
       settings
     };
@@ -175,26 +201,24 @@ class SplitViewSvcClass {
     comp.set({ mfSplitView, splitViewValues: this.splitViewValues });
   }
 
-  expand(comp) {
-    if (comp.get().splitViewIframe) {
-      this.sendMessageToClients('internal', {
-        exists: true,
-        size: this.splitViewValues.percent,
-        collapsed: false
-      });
-      this.sendMessageToClients('expand.ok');
+  async expand(comp) {
+    this.sendMessageToClients('internal', {
+      exists: true,
+      size: this.splitViewValues.percent,
+      collapsed: false
+    });
+    this.sendMessageToClients('expand.ok');
 
-      this.setDeep(comp, 'mfSplitView', {
-        displayed: true,
-        collapsed: false
-      });
+    this.setDeep(comp.root, 'mfSplitView', {
+      displayed: true,
+      collapsed: false
+    });
 
-      this.getContainer().style.top = `${this.splitViewValues.top}px`;
-      Iframe.getIframeContainer().style.paddingBottom = `${
-        this.splitViewValues.bottom
-      }px`;
-      this.getDragger().style.top = `${this.splitViewValues.top}px`;
-    }
+    this.getContainer().style.top = `${this.splitViewValues.top}px`;
+    Iframe.getIframeContainer().style.paddingBottom = `${
+      this.splitViewValues.bottom
+    }px`;
+    this.getDragger().style.top = `${this.splitViewValues.top}px`;
   }
 
   collapse(comp) {
@@ -226,7 +250,7 @@ class SplitViewSvcClass {
         .then(() => {
           this.setDeep(comp, 'mfSplitView', {
             displayed: false,
-            collapsed: false
+            collapsed: comp.get().mfSplitView.collapsed
           });
           Iframe.getIframeContainer().style.paddingBottom = '';
           this.sendMessageToClients('close.ok');

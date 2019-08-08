@@ -95,7 +95,7 @@ export class oAuth2ImplicitGrant {
       // since oauth2 is redirecting off the page
       // maybe it is possible to catch errors
       document.querySelector('form#signIn').addEventListener('load', e => {
-        console.log('load, e', e, this);
+        console.info('load, e', e, this);
       });
     });
   }
