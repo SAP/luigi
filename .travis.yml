@@ -16,12 +16,13 @@ jobs:
     - stage: 'Precache'
       name: 'Install and build'
       script:
-        - npm i -g lerna
-        - npm i --prefix core
-        - npm i --prefix client
+        - npm ci
+        - npm ci --prefix core
+        - npm ci --prefix client
+        - rm -rf $TRAVIS_BUILD_DIR/core/examples/luigi-sample-vue
         - cd $TRAVIS_BUILD_DIR/core/examples/luigi-sample-angular && npm i
-        - lerna bootstrap
-        - lerna run bundle
+        - lerna bootstrap --ci --ignore "*luigi-sample-vue"
+        - lerna run bundle --ignore "*luigi-sample-vue"
 
     #----- DOCU -----
     - stage: 'Documentation & Tests'
