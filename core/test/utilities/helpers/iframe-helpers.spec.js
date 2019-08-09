@@ -5,7 +5,7 @@ const assert = chai.assert;
 const sinon = require('sinon');
 import { afterEach } from 'mocha';
 
-import { IframeHelpers } from '../../../src/utilities/helpers';
+import { IframeHelpers, GenericHelpers } from '../../../src/utilities/helpers';
 import { LuigiConfig } from '../../../src/core-api';
 
 describe('Iframe-helpers', () => {
@@ -21,6 +21,8 @@ describe('Iframe-helpers', () => {
     };
 
     sinon.stub(LuigiConfig, 'getConfigValue');
+    sinon.stub(GenericHelpers);
+    GenericHelpers.getRandomId.returns('abc');
   });
   afterEach(() => {
     if (document.createElement.restore) {

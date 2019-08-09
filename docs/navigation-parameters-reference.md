@@ -205,7 +205,7 @@ The node parameters are as follows:
 - **badgeCounter** adds a badge with a number and a label to a node. Nodes that are part of a category show a cumulated number of all badges in this category. **badgeCounter** is only available for top navigation items.
   - **label** is the label of the badge.
   - **count** is a function or asynchronous function that returns a number.
-  Gets updated when you click the navigation. Use `Luigi.navigation().updateTopNavigation()` in Luigi Core or execute `window.parent.postMessage({msg: 'luigi.navigation.update-badge-counters'}, '*');` from within a micro frontend to trigger a manual update.
+  Gets updated when you click the navigation. Use `Luigi.navigation().updateTopNavigation()` in Luigi Core or execute `LuigiClient.sendCustomEventToCore({msg: 'luigi.navigation.update-badge-counters'});` from within a micro frontend to trigger a manual update.
 - **category** defines a group of views separated with a headline and an icon. You should define at least one node in a group should as an Object with **label** and **icon** properties. For all other nodes, you can set **category** as a string with the `label` value. 
    - **label** is a string that represents the title of the category
    -  **icon** is the name of an icon, without the `sap-icon--` prefix. Its source may be [OpenUI](https://openui5.hana.ondemand.com/1.40.10/iconExplorer.html) or a custom link (relative or absolute) to an image. The icon is displayed next to the node label in the side navigation or instead of the label in the top navigation. In case you accidentally define different icons in a category group, only the first one is used.

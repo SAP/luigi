@@ -311,3 +311,52 @@ Property values for token replacement in the localization key will be taken from
 ### Microfrontends
 
 Microfrontends-related functions.
+
+#### getMicrofrontends
+
+Returns a list of all available microfrontends
+
+##### Examples
+
+```javascript
+Luigi.microfrontends().getMicrofrontends();
+```
+
+Returns **[array](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array)** list of objects containing the id, the active state (visible, not preserved) and the type (iframe, modal, split-view)
+
+#### sendMessageToAll
+
+Sends a message to all opened microfrontends which is typically
+retrieved by LuigiClient.addCustomEventListener(msg, callback).
+
+##### Parameters
+
+-   `messageData`  
+
+##### Examples
+
+```javascript
+Luigi.microfrontends().sendMessageToAll({
+msg: 'myprefix.my-custom-message-for-client',
+data: 'here goes the data'
+});
+```
+
+#### sendMessage
+
+Sends a message to specific microfrontend identified by an id
+Use Luigi.microfrontends().getMicrofrontends() to get the iframe id.
+
+##### Parameters
+
+-   `microfrontendId`  
+-   `messageData`  
+
+##### Examples
+
+```javascript
+Luigi.microfrontends().sendMessage(microfrontend.id, {
+msg: 'myprefix.my-custom-message-for-client',
+data: 'here goes the data'
+});
+```
