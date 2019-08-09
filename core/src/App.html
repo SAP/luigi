@@ -378,7 +378,12 @@
             const microfrontend = LuigiMicrofrontends.getMicrofrontends().find(
               mf => mf.id === e.source.frameElement.luigi.id
             );
-            customEventFromMfHandler(e, microfrontend);
+
+            customEventFromMfHandler(
+              e,
+              microfrontend,
+              GenericHelpers.removeInternalProperties(iframe.luigi.currentNode)
+            );
           }
 
           if ('luigi.navigate.ok' === e.data.msg) {

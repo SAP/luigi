@@ -92,8 +92,9 @@
     const iframe = IframeHelpers.createIframe(
       viewUrl,
       undefined,
-      component.get().nodeObject.clientPermissions
+      component.get().nodeObject
     );
+
     const iframeCtn = document.querySelector('.iframeModalCtn');
     iframeCtn.appendChild(iframe);
     return iframe;

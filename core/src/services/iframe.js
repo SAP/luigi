@@ -250,7 +250,7 @@ class IframeClass {
         config.iframe = IframeHelpers.createIframe(
           viewUrl,
           canCache ? componentData.viewGroup : undefined,
-          component.get().currentNode.clientPermissions
+          component.get().currentNode
         );
         node.insertBefore(config.iframe, node.firstChild);
 

@@ -6,11 +6,15 @@ class Helpers {
     this.origin = '';
 
     const helperListener = function(evt) {
-      console.info(
-        `Client received event ${evt.data.msg} from Core, with data ${
-          evt.data.data
-        }`
-      );
+      if (!evt.data.msg) {
+        return;
+      }
+      // TODO: uncomment for easier reviewing
+      // console.log(
+      //   `Client received event ${evt.data.msg} from Core, with data ${
+      //     evt.data.data
+      //   }`, evt.data
+      // );
       this.listeners
         .filter(listener => listener.name === evt.data.msg)
         .map(listener => listener.eventFn(evt, listener.listenerId));

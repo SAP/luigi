@@ -13,7 +13,8 @@ class Settings {
       console.info(
         `Core has received event ${event.data.msg} with data ${
           event.data.data
-        } from microfrontend ${JSON.stringify(mfObject)}`
+        } from microfrontend ${JSON.stringify(mfObject)}. Node information:`,
+        mfNodeObj
       );
 
       Luigi.showAlert({
@@ -30,10 +31,11 @@ class Settings {
         };
         Luigi.microfrontends().sendMessage(mfObject.id, messageData);
       }, 2000);
-      setInterval(() => {
-        const microfrontends = Luigi.microfrontends().getMicrofrontends();
-        console.log('DATA', JSON.stringify(microfrontends, null, 2));
-      }, 5000);
+      // TODO: uncomment for reviewing
+      // setInterval(() => {
+      //   const microfrontends = Luigi.microfrontends().getMicrofrontends();
+      //   console.log('microfrontends', JSON.stringify(microfrontends, null, 2));
+      // }, 5000);
     }
   };
 
