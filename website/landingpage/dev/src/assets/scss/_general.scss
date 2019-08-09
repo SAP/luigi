@@ -1,0 +1,172 @@
+body {
+  counter-reset: subTitle;
+
+  @include breakpoint(large) {
+    font-size: 18px;
+  }
+}
+
+ul {
+  margin: 0;
+  list-style: none;
+
+  li {
+    padding: 0;
+  }
+}
+
+.sub-title {
+  margin-bottom: 1em;
+
+  &.has-number {
+    display: flex;
+    flex-wrap: nowrap;
+    align-items: center;
+
+    .is-centered & {
+      justify-content: center;
+    }
+
+    .text {
+      order: 3;
+    }
+
+    &:before {
+      counter-increment: subTitle;
+      content: '0' counter(subTitle);
+    }
+
+    &:after {
+      width: 40px;
+      padding-top: 1px;
+      border-bottom: 1px solid $secondary-color;
+      content: '';
+      margin-left: 10px;
+      margin-right: 20px;
+      order: 2;
+    }
+  }
+}
+
+.title-1 {
+  font-size: 31px;
+  line-height: 1.16;
+  font-weight: 600;
+  margin-bottom: 0.7em;
+
+  @include breakpoint(large) {
+    font-size: 35px;
+  }
+
+  @include breakpoint(xxlarge) {
+    font-size: 52px;
+  }
+}
+
+.title-2 {
+  font-size: 24px;
+  font-weight: 600;
+  line-height: 1.25;
+  margin-bottom: 1em;
+
+  @include breakpoint(large) {
+    font-size: 30px;
+  }
+
+  @include breakpoint(xxlarge) {
+    font-size: 34px;
+  }
+}
+
+.title-3 {
+  font-size: 24px;
+  font-weight: 600;
+  line-height: 1.58;
+  margin-bottom: 0.5em;
+
+  @include breakpoint(large) {
+    font-size: 26px;
+  }
+
+  @include breakpoint(xxlarge) {
+    font-size: 28px;
+    line-height: 1.36;
+  }
+}
+
+section {
+  &.is-centered {
+    text-align: center;
+  }
+}
+
+.s-gradient {
+  position: relative;
+  z-index: 1;
+  padding: 50px 0;
+
+  &:before {
+    content: '';
+    display: block;
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    transform: skewY(3deg);
+    background-image: linear-gradient(
+      7deg,
+      rgba($ice-blue, 0.6),
+      rgba($powder-blue, 0.6)
+    );
+    z-index: -1;
+  }
+
+  &--right-left {
+    &:before {
+      transform: skewY(-3deg);
+    }
+  }
+
+  @include breakpoint(large) {
+    padding: 60px 0;
+  }
+
+  @include breakpoint(xxlarge) {
+    padding: 150px 0;
+  }
+}
+
+.btn-primary {
+  display: inline-block;
+  padding: 16px 32px;
+  border: 2px solid $primary-color;
+  border-radius: 8px;
+  box-shadow: 0 8px 24px -17px #000101;
+  background-color: $primary-color;
+  font-size: 14px;
+  font-weight: 600;
+  font-family: $body-font-family;
+  color: $button-color;
+  cursor: pointer;
+  transition: all 0.2s ease;
+
+  &:hover,
+  &:active,
+  &:focus {
+    background-color: $white;
+    color: $button-color;
+  }
+
+  @include breakpoint(large) {
+    font-size: 15px;
+  }
+}
+
+a {
+  transition: color 0.2s ease;
+}
+
+p {
+  margin-bottom: 2em;
+}
