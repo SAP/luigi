@@ -40,23 +40,23 @@ function prepublishChecks {
 function publishPackage {
   BASE_FOLDER=$1
   PUBLISH_FOLDER=$2
-  
+
   cd $BASE_DIR/../$PUBLISH_FOLDER
   NAME=$(node -p "require('./package.json').name")
   VERSION=$(node -p "require('./package.json').version")
-  
+
   cd $BASE_DIR/../$BASE_FOLDER
   # travis already installed it
-#    echoe "Running npm ci in $(pwd) ..."
-#    npm ci
+    echoe "Running npm ci in $(pwd) ..."
+    npm ci
 
   # Check if was published already
   NPM_GREP=`npm info $NAME versions | grep "'$VERSION'" | wc -l`
   if [[ "$NPM_GREP" =~ "1" ]]; then
     echo "$NAME@$VERSION already published, skipping until next release."
   else
-    # echoe "Bundling $NAME@$VERSION ..."
-    # npm run bundle
+    echoe "Bundling $NAME@$VERSION ..."
+    npm run bundle
 
     echoe "Publishing $NAME@$VERSION ..."
 
@@ -64,7 +64,7 @@ function publishPackage {
     if [[ $VERSION != *"rc."* ]]; then
       echo "Tag $NAME@$VERSION with latest on npm"
       npm dist-tag add $NAME@$VERSION latest
-    else 
+    else
       echo "Release candidate $NAME@$VERSION NOT tagged as latest"
     fi
 
