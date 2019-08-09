@@ -344,26 +344,33 @@
 
       calculateFlyoutPosition(el) {
         //Calculate top/bottom position for flyout sublist
-        let parent = el.closest('.fd-side-nav__group');
-        let parentTopPosition = parent.offsetTop;
-        let shellbarHeight = LuigiElements.getShellbar().offsetHeight;
-        let flyoutSublist = parent.getElementsByClassName(
+        const parent = el.closest('.fd-side-nav__group');
+        const parentTopPosition = parent.offsetTop;
+        const shellbarHeight = LuigiElements.getShellbar().offsetHeight;
+        let containerHeight;
+        if (LuigiElements.isCustomLuigiContainer()) {
+          containerHeight = LuigiElements.getCustomLuigiContainer()
+            .clientHeight;
+        } else {
+          containerHeight = window.innerHeight;
+        }
+        const flyoutSublist = parent.getElementsByClassName(
           'lui-flyout-sublist'
         )[0];
-        let topScroll = el.closest('nav').scrollTop;
-        let topPosition = parentTopPosition + shellbarHeight - topScroll;
-        let bottomPosition =
-          window.innerHeight -
+        const topScroll = el.closest('nav').scrollTop;
+        const topPosition = parentTopPosition + shellbarHeight - topScroll;
+        const bottomPosition =
+          containerHeight -
           parentTopPosition -
           parent.offsetHeight +
           topScroll -
           shellbarHeight;
 
-        if (topPosition + flyoutSublist.offsetHeight >= window.innerHeight) {
+        if (topPosition + flyoutSublist.offsetHeight >= containerHeight) {
           flyoutSublist.style.bottom = bottomPosition + 'px';
           flyoutSublist.className += ' has-bottom-position';
         } else {
-          flyoutSublist.style.top = topPosition + 'px';
+          flyoutSublist.style.top = topPosition - shellbarHeight + 'px';
         }
       },
 
@@ -503,6 +510,10 @@
       .lui-fd-side-nav-wrapper {
         height: calc(100% - 50px);
       }
+    }
+
+    .lui-flyout-sublist {
+      position: absolute;
     }
   }
 
