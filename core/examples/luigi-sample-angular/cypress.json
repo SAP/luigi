@@ -8,5 +8,6 @@
   "chromeWebSecurity": false,
   "viewportWidth": 1250,
   "viewportHeight": 790,
-  "baseUrl": "http://localhost:4200/"
+  "baseUrl": "http://localhost:4200/",
+  "projectId": "czq7qc"
 }
