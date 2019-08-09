@@ -1,0 +1,252 @@
+.p-header {
+  position: relative;
+
+  > .has-border {
+    padding-top: 25px;
+    padding-bottom: 25px;
+
+    @include breakpoint(xlarge) {
+      border-bottom: 1px solid $border-color;
+    }
+
+    @include breakpoint(xxlarge) {
+      max-width: calc(1290px - 50px);
+    }
+  }
+
+  &--home {
+    background-image: url('../img/header-bg.svg');
+    background-repeat: no-repeat;
+    background-position: left 50% bottom 100px;
+    background-size: cover;
+    z-index: 2;
+
+    @include breakpoint(large) {
+      background-position: left 50% bottom 0;
+    }
+
+    @include breakpoint(xxlarge) {
+      background-position: left 70% bottom 0;
+    }
+  }
+
+  .logo {
+    img {
+      display: block;
+      width: 118px;
+      height: 47px;
+
+      @include breakpoint(xlarge) {
+        width: 148px;
+        height: 60px;
+      }
+    }
+  }
+
+  .nav-wr {
+    justify-content: flex-end;
+    display: flex;
+  }
+
+  .s-stage {
+    padding-top: 30px;
+    padding-bottom: 50px;
+    color: $white;
+
+    > .row {
+      align-items: center;
+    }
+
+    .content {
+      @include breakpoint(medium down) {
+        margin-bottom: 50px;
+      }
+
+      @include breakpoint(large) {
+        height: 350px;
+        padding-top: 30px;
+      }
+
+      @include breakpoint(xxlarge) {
+        height: 650px;
+        padding-top: 110px;
+      }
+    }
+
+    .sub-title {
+      font-family: $extra-font-family;
+      font-weight: 500;
+
+      @include breakpoint(xxlarge) {
+        font-size: 20px;
+      }
+    }
+
+    .image {
+      background-image: url('../img/running_app_2x.png');
+      background-position: 50% 0;
+      background-repeat: no-repeat;
+      background-size: cover;
+
+      @include breakpoint(medium down) {
+        padding-top: 52%;
+      }
+
+      @include breakpoint(large) {
+        background: none;
+      }
+    }
+
+    @include breakpoint(large) {
+      position: relative;
+      overflow: hidden;
+
+      padding-top: 55px;
+      padding-bottom: 60px;
+
+      > .row {
+        position: relative;
+
+        &:before {
+          position: absolute;
+          display: block;
+          height: 100%;
+          width: 100%;
+          top: 0;
+          left: 45%;
+          content: '';
+          background-image: url('../img/running_app_2x.png');
+          background-position: 0 0;
+          background-repeat: no-repeat;
+          background-size: auto 100%;
+        }
+      }
+    }
+
+    @include breakpoint(xxlarge) {
+      > .row {
+        &:before {
+          left: 36%;
+        }
+      }
+    }
+  }
+
+  .menu-btn {
+    width: 26px;
+    height: 20px;
+    background: url('../img/burger_menu.svg') 0 0 no-repeat;
+    background-size: contain;
+    cursor: pointer;
+  }
+}
+
+.main-nav {
+  .social-links {
+    display: flex;
+    align-items: center;
+
+    .item {
+      margin-left: 25px;
+
+      &:first-child {
+        margin-left: 0;
+      }
+
+      a {
+        font-size: 24px;
+        line-height: 1;
+        display: block;
+        color: white;
+        transition: color 0.3s ease;
+
+        &:hover {
+          color: $primary-color;
+        }
+      }
+    }
+  }
+
+  @include breakpoint(large down) {
+    position: fixed;
+    left: 100vw;
+    top: 0;
+    width: 100vw;
+    height: 100vh;
+    transition: all 0.2s ease-in-out 0s;
+    padding: 50px 30px;
+    background: $secondary-color;
+    z-index: 10;
+
+    &.is-active {
+      left: 0;
+    }
+
+    .close-btn {
+      width: 26px;
+      height: 26px;
+      background: url('../img/burger_menu_close.svg') 0 0 no-repeat;
+      background-size: contain;
+      position: absolute;
+      top: 30px;
+      right: 25px;
+      cursor: pointer;
+    }
+
+    .menu {
+      margin-bottom: 30px;
+
+      .item {
+        padding: 15px 0;
+        border-bottom: 1px solid $border-color;
+
+        a {
+          color: white;
+          font-weight: 600;
+
+          &:hover,
+          &:active,
+          &:focus {
+            color: $primary-color;
+          }
+        }
+      }
+    }
+  }
+
+  @include breakpoint(xlarge) {
+    display: flex;
+    justify-content: flex-end;
+
+    .social-links {
+      margin-left: 50px;
+    }
+
+    .menu {
+      display: flex;
+
+      .item {
+        margin-left: 50px;
+
+        a {
+          display: block;
+          font-size: 18px;
+          font-weight: 600;
+          color: white;
+          padding-bottom: 39px;
+          margin-bottom: -39px;
+          border-bottom: 4px solid transparent;
+          transition: all 0.2s ease;
+
+          &:hover,
+          &:focus,
+          &:active,
+          .is-active {
+            color: white;
+            border-bottom-color: $primary-color;
+          }
+        }
+      }
+    }
+  }
+}

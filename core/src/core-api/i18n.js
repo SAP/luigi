@@ -1,5 +1,10 @@
 import { config } from './config';
-import { GenericHelpers, StateHelpers } from '../utilities/helpers';
+import {
+  GenericHelpers,
+  StateHelpers,
+  EscapingHelpers
+} from '../utilities/helpers';
+import { defaultLuigiTranslationTable } from '../utilities/defaultLuigiTranslationTable';
 
 /**
  * Localization-related functions.
@@ -9,6 +14,7 @@ class LuigiI18NManager {
   constructor() {
     this.currentLocaleStorageKey = 'luigi.currentLocale';
     this.defaultLocale = 'en';
+    this.translationTable = defaultLuigiTranslationTable;
     this.listeners = {};
   }
 
@@ -109,11 +115,54 @@ class LuigiI18NManager {
    * @memberof LuigiI18N
    */
   getTranslation(key, interpolations, locale) {
+    if (!key) return '';
     if (this.translationImpl) {
-      return this.translationImpl.getTranslation(key, interpolations, locale);
-    } else {
-      return key;
+      const result = this.translationImpl.getTranslation(
+        key,
+        interpolations,
+        locale
+      );
+      if (result !== key) {
+        return result;
+      }
     }
+    const findTranslation = this.findTranslation(
+      key,
+      this.translationTable,
+      interpolations
+    );
+    return findTranslation ? findTranslation : key;
+  }
+
+  /**
+   * @private
+   * Finds the translated value based on given key.
+   * @param {string} key key to be translated.
+   * @param {*} obj translation table.
+   * @memberof LuigiI18N
+   */
+  findTranslation(key, obj, interpolations) {
+    let splitted = key.split('.');
+    for (let i = 0; i < splitted.length; i++) {
+      let key = splitted[i];
+      if (obj.hasOwnProperty(key) && typeof obj[key] === 'object') {
+        obj = obj[key];
+      } else {
+        if (interpolations)
+          return this.findInterpolations(obj[key], interpolations);
+        return obj[key];
+      }
+    }
+  }
+
+  findInterpolations(value, interpolations) {
+    Object.keys(interpolations).forEach(item => {
+      value = value.replace(
+        new RegExp('{' + EscapingHelpers.escapeKeyForRegexp(item) + '}', 'gi'),
+        interpolations[item]
+      );
+    });
+    return value;
   }
 }
 

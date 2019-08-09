@@ -11,7 +11,7 @@
           title="{selectedLabel ? selectedLabel : ''}"
           on:click="toggleDropdownState()"
         >
-          {#if !selectedLabel}{config.defaultLabel}{/if} {#if
+          {#if !selectedLabel}{$getTranslation(config.defaultLabel)}{/if} {#if
           selectedLabel}{selectedLabel}{/if}
         </button>
       </div>
