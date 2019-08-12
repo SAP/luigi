@@ -36,12 +36,12 @@ jobs:
 
     #----- UNIT -----
     - name: 'Unit Tests'
-      script: 
+      script:
         - echo 'core' && ls core/node_modules | wc -l && echo 'client' && ls client/node_modules | wc -l
         - npm test --prefix core
       before_cache:
         - rm -rf ~/.npm/_logs
-      
+
     # ----- INTEGRATION -----
     - &integration-testing
       name: 'Integration Testing'
@@ -65,5 +65,5 @@ jobs:
     - stage: 'Publish'
       name: 'Publish to NPM'
       # run only when merging from release-v branch to master
-      if: repo = SAP/luigi AND branch = master AND head_branch ~= ^release-v
+      if: repo = SAP/luigi AND (branch = master OR branch ~= ^release-v)
       script: bash ./scripts/npmPublish.sh
