@@ -236,8 +236,8 @@ class RoutingClass {
 
       let tabNavInherited = false;
       let cnode = currentNode;
-      while(cnode) {
-        if(cnode.tabNav === true) {
+      while (cnode) {
+        if (cnode.tabNav === true) {
           tabNavInherited = true;
           break;
         } else if (cnode.tabNav === false) {
@@ -277,6 +277,24 @@ class RoutingClass {
             : {}
         })
       );
+
+      let iContainer = document.getElementsByClassName('iframeContainer')[0];
+      if (iContainer) {
+        if (tabNavInherited) {
+          //document.body.classList.add('lui-simpleSlideInNav');
+          iContainer.classList.add(
+            'iframeContainerTabNav',
+            'iframeContainerNoNav'
+          );
+        } else {
+          if (iContainer.classList.contains('iframeContainerTabNav')) {
+            iContainer.classList.remove('iframeContainerTabNav');
+          }
+          if (iContainer.classList.contains('iframeContainerNoNav')) {
+            iContainer.classList.remove('iframeContainerNoNav');
+          }
+        }
+      }
 
       Iframe.navigateIframe(config, component, iframeElement);
     } catch (err) {
