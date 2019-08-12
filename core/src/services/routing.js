@@ -6,7 +6,7 @@ import {
   RoutingHelpers,
   IframeHelpers
 } from '../utilities/helpers';
-import { LuigiConfig } from '../core-api';
+import { LuigiConfig, LuigiI18N } from '../core-api';
 import { Iframe } from './iframe';
 import { NAVIGATION_DEFAULTS } from './../utilities/luigi-config-defaults';
 
@@ -354,10 +354,12 @@ class RoutingClass {
     }
 
     const alertSettings = {
-      text:
-        (isAnyPathMatched
-          ? 'Could not map the exact target node for the requested route '
-          : 'Could not find the requested route ') + notFoundPath,
+      text: LuigiI18N.getTranslation(
+        isAnyPathMatched
+          ? 'luigi.notExactTargetNode'
+          : 'luigi.requestedRouteNotFound',
+        { route: notFoundPath }
+      ),
       type: 'error',
       ttl: 1 //how many redirections the alert will 'survive'.
     };

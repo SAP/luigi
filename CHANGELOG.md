@@ -23,6 +23,19 @@ The lerna-changelog tool detects changes based on PR labels and maps them to sec
     ...
   }
 -->
+## [v0.6.1] (2019-08-09)
+
+#### :rocket: Added
+* [#725](https://github.com/SAP/luigi/pull/725) I18n luigi internal texts and messages translatable ([@JohannesDoberer](https://github.com/JohannesDoberer))
+* [#703](https://github.com/SAP/luigi/pull/703) Product Switcher documentation and configurable label and icon ([@maxmarkus](https://github.com/maxmarkus))
+
+#### :bug: Fixed
+* [#741](https://github.com/SAP/luigi/pull/741) Dynamic node and link/external link nodes as siblings ([@pekura](https://github.com/pekura))
+
+#### :memo: Documentation
+* [#697](https://github.com/SAP/luigi/pull/697) Callback documentation for LuigiClient.addInitListener ([@maxmarkus](https://github.com/maxmarkus))
+* [#703](https://github.com/SAP/luigi/pull/703) Product Switcher documentation and configurable label and icon ([@maxmarkus](https://github.com/maxmarkus))
+
 ## [v0.6.0] (2019-08-02)
 
 #### :rocket: Added
@@ -473,3 +486,4 @@ The lerna-changelog tool detects changes based on PR labels and maps them to sec
 [v0.5.3]: https://github.com/SAP/luigi/compare/v0.5.2...v0.5.3
 [v0.5.4]: https://github.com/SAP/luigi/compare/v0.5.3...v0.5.4
 [v0.6.0]: https://github.com/SAP/luigi/compare/v0.5.4...v0.6.0
+[v0.6.1]: https://github.com/SAP/luigi/compare/v0.6.0...v0.6.1
