@@ -73,7 +73,9 @@ class IframeHelpersClass {
         componentData.previousNodeValues.viewUrl
       );
       const nextUrl = GenericHelpers.getUrlWithoutHash(componentData.viewUrl);
-      if (previousUrl === nextUrl) {
+      const previousViewGroup = componentData.previousNodeValues.viewGroup;
+      const nextViewGroup = componentData.viewGroup;
+      if (previousUrl === nextUrl && !previousViewGroup && !nextViewGroup) {
         return true;
       }
     }

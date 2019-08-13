@@ -93,10 +93,16 @@ describe('Iframe-helpers', () => {
     });
 
     it('should return false if views have different domains', () => {
+      const prevUrl = 'http://otherurl.de/app.html';
+      const nextUrl = 'http://nexturl.de/app.html';
       component.set({
-        viewUrl: 'http://otherurl.de/app.html!#/someUrl',
-        previousNodeValues: { viewUrl: config.iframe.src }
+        viewUrl: 'nextUrl',
+        previousNodeValues: { viewUrl: 'prevUrl' }
       });
+      GenericHelpers.getUrlWithoutHash.resetHistory();
+      GenericHelpers.getUrlWithoutHash.withArgs('prevUrl').returns(prevUrl);
+      GenericHelpers.getUrlWithoutHash.withArgs('nextUrl').returns(nextUrl);
+
       assert.isFalse(IframeHelpers.canReuseIframe(config, component));
     });
 
@@ -119,6 +125,10 @@ describe('Iframe-helpers', () => {
     });
 
     it('should return false if views have the same domian and different viewGroups', () => {
+      const nextUrl = 'http://nexturl.de/app.html';
+      GenericHelpers.getUrlWithoutHash.resetHistory();
+      GenericHelpers.getUrlWithoutHash.returns(nextUrl);
+
       component.set({
         viewUrl: 'http://url.com/someUrl',
         viewGroup: 'firstSPA',
@@ -127,25 +137,22 @@ describe('Iframe-helpers', () => {
           viewGroup: 'secondSPA'
         }
       });
-      assert.isFalse(IframeHelpers.canReuseIframe(config, component));
-    });
 
-    it('should return false if views have the same domain and no viewGroup defined', () => {
-      component.set({
-        viewUrl: 'http://url.com/someUrl',
-        previousNodeValues: {
-          viewUrl: noHashConfig.iframe.src
-        }
-      });
       assert.isFalse(IframeHelpers.canReuseIframe(config, component));
     });
 
     it('should return false if views have different domains and the same viewGroup', () => {
+      const prevUrl = 'http://otherurl.de/app.html';
+      const nextUrl = 'http://nexturl.de/app.html';
+
+      GenericHelpers.getUrlWithoutHash.resetHistory();
+      GenericHelpers.getUrlWithoutHash.withArgs('prevUrl').returns(prevUrl);
+      GenericHelpers.getUrlWithoutHash.withArgs('nextUrl').returns(nextUrl);
       component.set({
-        viewUrl: 'http://otherDomain.com/someUrl',
+        viewUrl: 'nextUrl',
         viewGroup: 'firstSPA',
         previousNodeValues: {
-          viewUrl: noHashConfig.iframe.src,
+          viewUrl: 'prevUrl',
           viewGroup: 'firstSPA'
         }
       });
