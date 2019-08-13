@@ -10,6 +10,7 @@ import { LuigiConfig } from '../../../src/core-api';
 
 describe('Iframe-helpers', () => {
   let component;
+  let customSandboxRules = ['allow-scripts', 'rules1', 'rules2'];
 
   beforeEach(() => {
     let lastObj = {};
@@ -19,8 +20,9 @@ describe('Iframe-helpers', () => {
       },
       get: () => lastObj
     };
-
-    sinon.stub(LuigiConfig, 'getConfigValue');
+    sinon
+      .stub(LuigiConfig, 'getConfigValue')
+      .callsFake(() => customSandboxRules);
   });
   afterEach(() => {
     if (document.createElement.restore) {
@@ -42,6 +44,14 @@ describe('Iframe-helpers', () => {
       );
       assert.equal(iframe.src, 'http://luigi.url.de/');
       assert.equal(iframe.vg, 'ananas');
+    });
+
+    it('createIframe with cutomrules', () => {
+      const iframe = IframeHelpers.createIframe('http://luigi.url.com/');
+      assert.equal(
+        iframe.sandbox,
+        'allow-forms allow-modals allow-popups allow-popups-to-escape-sandbox allow-same-origin allow-scripts rules1 rules2'
+      );
     });
   });
 

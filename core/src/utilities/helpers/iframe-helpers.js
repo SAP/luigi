@@ -1,6 +1,7 @@
-// Helper methods for 'iframe.js' file. They don't require any method from 'ifram.js` but are required by them.
+// Helper methods for 'iframe.js' file. They don't require any method from 'iframe.js` but are required by them.
 import { GenericHelpers } from './';
 import { Iframe } from '../../services';
+import { LuigiConfig } from '../../core-api';
 
 class IframeHelpersClass {
   get specialIframeTypes() {
@@ -182,7 +183,7 @@ class IframeHelpersClass {
   }
 
   createIframe(viewUrl, viewGroup, clientPermissions) {
-    const activeSandboxRules = [
+    const luigiDefaultSandboxRules = [
       'allow-forms', // Allows the resource to submit forms. If this keyword is not used, form submission is blocked.
       'allow-modals', // Lets the resource open modal windows.
       // 'allow-orientation-lock', // Lets the resource lock the screen orientation.
@@ -197,6 +198,12 @@ class IframeHelpersClass {
       // 'allow-top-navigation-by-user-activation', // Lets the resource navigate the top-level browsing context, but only if initiated by a user gesture.
       // 'allow-downloads-without-user-activation' // Allows for downloads to occur without a gesture from the user.
     ];
+    const customSandboxRules = LuigiConfig.getConfigValue(
+      'settings.customSandboxRules'
+    );
+    let activeSandboxRules = customSandboxRules
+      ? [...new Set([...luigiDefaultSandboxRules, ...customSandboxRules])]
+      : luigiDefaultSandboxRules;
 
     const iframe = document.createElement('iframe');
     iframe.src = viewUrl;
