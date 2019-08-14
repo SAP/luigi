@@ -8,7 +8,9 @@ const sinon = require('sinon');
 import { LuigiI18N } from '../../src/core-api';
 import { LuigiConfig } from '../../src/core-api';
 
-describe('I18N', () => {
+describe('I18N', function() {
+  this.retries(5);
+
   beforeEach(() => {
     global['sessionStorage'] = {
       getItem: sinon.stub(),
