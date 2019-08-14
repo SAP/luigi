@@ -20,9 +20,7 @@ describe('Iframe-helpers', () => {
       },
       get: () => lastObj
     };
-    sinon
-      .stub(LuigiConfig, 'getConfigValue')
-      .callsFake(() => customSandboxRules);
+    sinon.stub(LuigiConfig, 'getConfigValue').returns(customSandboxRules);
   });
   afterEach(() => {
     if (document.createElement.restore) {
