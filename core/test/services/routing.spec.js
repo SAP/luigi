@@ -9,7 +9,7 @@ import { LuigiConfig } from '../../src/core-api';
 import { Navigation } from '../../src/navigation/services/navigation';
 
 describe('Routing', function() {
-  this.retries(5);
+  this.retries(2);
 
   let component;
   beforeEach(() => {

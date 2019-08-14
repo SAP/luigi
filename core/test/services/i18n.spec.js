@@ -9,7 +9,7 @@ import { LuigiI18N } from '../../src/core-api';
 import { LuigiConfig } from '../../src/core-api';
 
 describe('I18N', function() {
-  this.retries(5);
+  this.retries(2);
 
   beforeEach(() => {
     global['sessionStorage'] = {

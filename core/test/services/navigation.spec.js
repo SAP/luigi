@@ -53,7 +53,7 @@ const sampleNavPromise = new Promise(function(resolve) {
 });
 
 describe('Navigation', function() {
-  this.retries(5);
+  this.retries(2);
 
   before(() => {
     function mockStorage() {

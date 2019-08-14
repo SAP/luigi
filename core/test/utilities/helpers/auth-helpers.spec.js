@@ -6,7 +6,7 @@ import { AuthHelpers, GenericHelpers } from '../../../src/utilities/helpers';
 import { LuigiAuth } from '../../../src/core-api';
 
 describe('Auth-helpers', function() {
-  this.retries(5);
+  this.retries(2);
 
   let windowLocationImplementation;
   beforeEach(() => {
