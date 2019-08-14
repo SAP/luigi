@@ -22,6 +22,7 @@ describe('Routing', () => {
     };
 
     sinon.stub(LuigiConfig, 'getConfigValue');
+    sinon.stub(GenericHelpers, 'getRandomId').returns('123');
   });
   afterEach(() => {
     if (document.createElement.restore) {

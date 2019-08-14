@@ -218,4 +218,42 @@ describe('Iframe-helpers', () => {
       assert.equal(iframes.length, 1);
     });
   });
+  describe('getMicrofrontends', () => {
+    it('gets list of visible mfs', () => {
+      const mockContainer = id => ({
+        luigi: { id }
+      });
+      sinon
+        .stub(document, 'querySelectorAll')
+        .withArgs('.iframeContainer iframe') // 'main'
+        .returns([mockContainer('main_1'), mockContainer('main_2')])
+        .withArgs('.iframeSplitViewCnt iframe') // 'split-view'
+        .returns([mockContainer('split_1')])
+        .withArgs('.iframeModalCtn iframe') // 'modal'
+        .returns([mockContainer('modal')]);
+
+      sinon.stub(window, 'getComputedStyle').callsFake(container => {
+        return {
+          getPropertyValue: () => {
+            if (container.luigi.id === 'main_2') {
+              // second container is not active
+              return 'none';
+            }
+            return 'block';
+          }
+        };
+      });
+
+      const iframes = IframeHelpers.getMicrofrontends();
+      assert.equal(iframes.length, 4, 'total iframes');
+      assert.equal(iframes.filter(i => i.active).length, 3, 'active iframes');
+
+      const expectedKeys = ['active', 'id', 'container', 'type', 'selector'];
+      assert.deepEqual(
+        Object.keys(iframes[0]),
+        expectedKeys,
+        'contains all required keys'
+      );
+    });
+  });
 });
