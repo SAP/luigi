@@ -35,7 +35,7 @@ echo "Webserver was ready after $WAITCOUNT seconds."
 
 
 echo "Running tests"
-npm run e2e:run -- --record --parallel
+npm run e2e:run -- --record --parallel --key "$CYPRESS_RECORD_KEY"
 RV=$?
 kill $WS_PID
 exit $RV
