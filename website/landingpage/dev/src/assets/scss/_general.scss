@@ -3,6 +3,7 @@ body {
 
   &.has-dark-bg {
     background: $secondary-color;
+    color: white;
   }
 
   @include breakpoint(large) {
