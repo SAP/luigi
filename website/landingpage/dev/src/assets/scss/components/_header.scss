@@ -30,6 +30,10 @@
     }
   }
 
+  &--error-page {
+    background: $secondary-color;
+  }
+
   .logo {
     img {
       display: block;
