@@ -4,7 +4,7 @@
   z-index: 2;
 
   &--home {
-    background: url('../img/footer-bg.svg') no-repeat 41% 50%;
+    background: url('../img/footer_bg.svg') no-repeat 41% 50%;
     background-size: auto 100%;
 
     @include breakpoint(large) {
