@@ -6,12 +6,12 @@
   width: 80%;
   max-width: 400px;
 
-  @media only screen and (max-width: 1290px) and (max-height: 580px) {
+  @media only screen and (max-width: 1023px) and (max-height: 580px) {
     top: 90px;
     transform: translate(-50%);
   }
 
-  @media only screen and (min-width: 1290px) and (max-height: 800px) {
+  @media only screen and (min-width: 1024px) and (max-height: 800px) {
     top: 160px;
     transform: translate(-50%);
   }
@@ -147,7 +147,7 @@
           top: 0;
           width: 22px;
           height: 30px;
-          background: url('../img/hand-pointer.svg') 0 0 no-repeat;
+          background: url('../img/hand_pointer.svg') 0 0 no-repeat;
           background-size: contain;
           opacity: 0;
           transition: all 0.2s ease-in;
