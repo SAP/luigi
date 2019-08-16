@@ -5,8 +5,7 @@ dist: trusty
 install: skip
 cache:
   directories:
-    - $TRAVIS_BUILD_DIR/client/luigi-client.js
-    - $TRAVIS_BUILD_DIR/client/node_modules
+    - $TRAVIS_BUILD_DIR/client/
     - $TRAVIS_BUILD_DIR/core/public
     - $TRAVIS_BUILD_DIR/core/node_modules
     - $TRAVIS_BUILD_DIR/core/examples/luigi-example-angular/node_modules
