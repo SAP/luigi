@@ -1,3 +1,4 @@
+Cypress.env('RETRIES', 2);
 describe('Luigi client linkManager', () => {
   beforeEach(() => {
     cy.visit('/');

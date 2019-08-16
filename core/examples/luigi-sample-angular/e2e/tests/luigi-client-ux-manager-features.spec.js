@@ -1,3 +1,4 @@
+Cypress.env('RETRIES', 2);
 describe('Luigi Client ux manager features', () => {
   let $iframeBody;
   beforeEach(() => {

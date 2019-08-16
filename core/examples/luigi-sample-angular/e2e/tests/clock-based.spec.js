@@ -1,3 +1,4 @@
+Cypress.env('RETRIES', 2);
 describe('Clock based tests', () => {
   beforeEach(() => {
     cy.clock(null, ['setInterval']);
