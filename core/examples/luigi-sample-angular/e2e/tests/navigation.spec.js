@@ -78,7 +78,7 @@ describe('Navigation', () => {
     cy.window().then(win => {
       const config = win.Luigi.getConfig();
       config.settings.sideNavFooterText = 'Hello from tets.';
-      win.Luigi.setConfig(config);
+      win.Luigi.configChanged('settings.footer');
 
       cy.get('.fd-app__sidebar .lui-side-nav__footer')
         .contains('Hello from tets.')

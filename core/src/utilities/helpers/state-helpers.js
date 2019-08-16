@@ -1,11 +1,36 @@
 class StateHelpersClass {
-  doOnStoreChange(store, fn, events = []) {
-    const evs = events;
-    if (evs.indexOf('state') === -1) {
-      evs.push('state');
+  optimizeScope(scope) {
+    let last = '';
+    const result = [];
+    [...scope].sort().forEach(s => {
+      if (s && !result.includes(s)) {
+        if (!last || s.indexOf(last) !== 0) {
+          result.push(s);
+        }
+      }
+      last = s;
+    });
+    if (result.length === 0) {
+      result.push('state');
     }
+    return result;
+  }
+
+  expandScope(scope) {
+    const result = ['state'];
+    scope.forEach(s => {
+      let subs = '';
+      s.split('.').forEach(spart => {
+        subs = subs + (subs ? '.' : '') + spart;
+        result.push(subs);
+      });
+    });
+    return [...new Set(result)];
+  }
+
+  doOnStoreChange(store, fn, scope = []) {
     // register listener for store event(s)
-    evs.forEach(e => {
+    this.expandScope(scope).forEach(e => {
       store.on(e, fn);
     });
     // and call the listener once specifically, immediately:

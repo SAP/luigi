@@ -110,9 +110,10 @@
   const enableRouting = (component, node, config) => {
     // initial route handling
     StateHelpers.doOnStoreChange(component.store, () => {
+      LuigiConfig._configModificationTimestamp = new Date();
       const currentPath = Routing.getCurrentPath();
       Routing.handleRouteChange(currentPath, component, node, config);
-    });
+    }, ['navigation.nodes']);
 
     // subsequential route handling
     RoutingHelpers.addRouteChangeListener(path => {

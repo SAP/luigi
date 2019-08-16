@@ -51,6 +51,26 @@ Luigi.getConfig()
 
 Returns **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** configuration object
 
+#### configChanged
+
+Tells Luigi that the configuration has been changed. Luigi will update the application or parts of it based on the specified scope.
+
+##### Parameters
+
+-   `scope` **...[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** one or more scope selectors specifying what parts of the configuration were changed. If no scope selector is provided the whole configuration is considered changed.<p>
+    These scope selectors are supported:
+    <p>
+    <ul>
+      <li><code>navigation</code>: the navigation part of the configuration was changed. This includes navigation modes, the context switcher, the product switcher and the profile menu.</li>
+      <li><code>navigation.nodes</code>: navigation nodes were changed.</li>
+      <li><code>navigation.contextSwitcher</code>: context switcher related data were changed.</li>
+      <li><code>navigation.productSwitcher</code>: product switcher related data were changed.</li>
+      <li><code>navigation.profile</code>: profile menu was changed.</li>
+      <li><code>settings</code>: settings were changed.</li>
+      <li><code>settings.header</code>: header settings (title, icon) were changed.</li>
+      <li><code>settings.footer</code>: left navigation footer settings were changed.</li>
+    </ul>
+
 #### getConfigValue
 
 Gets value of the given property on Luigi config object. Target can be a value or a synchronous function.
