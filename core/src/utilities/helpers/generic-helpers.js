@@ -224,8 +224,14 @@ class GenericHelpersClass {
     return processedString;
   }
 
+  getInnerHeight() {
+    return LuigiElements.isCustomLuigiContainer()
+      ? LuigiElements.getLuigiContainer().clientHeight
+      : window.innerHeight;
+  }
+
   getContentAreaHeight() {
-    return window.innerHeight - LuigiElements.getShellbar().clientHeight;
+    return this.getInnerHeight() - LuigiElements.getShellbar().clientHeight;
   }
 
   computePxFromPercent(fullPixels, requestedPercent) {
