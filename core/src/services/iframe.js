@@ -5,8 +5,7 @@ import {
   IframeHelpers,
   RoutingHelpers
 } from '../utilities/helpers';
-import { LuigiConfig } from '../core-api';
-import { LuigiI18N } from '../core-api';
+import { LuigiConfig, LuigiI18N } from '../core-api';
 
 class IframeClass {
   constructor() {
