@@ -5,7 +5,9 @@ const sinon = require('sinon');
 import { AuthHelpers, GenericHelpers } from '../../../src/utilities/helpers';
 import { LuigiAuth } from '../../../src/core-api';
 
-describe('Auth-helpers', () => {
+describe('Auth-helpers', function() {
+  this.retries(2);
+
   let windowLocationImplementation;
   beforeEach(() => {
     windowLocationImplementation = window.location;
