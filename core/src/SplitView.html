@@ -1,30 +1,37 @@
 <svelte:window on:resize="updateSizes()"/>
-<div class="lui-split-view">
-  {#if collapsed}
-  <div class="splitViewSeparator isCollapsed">
-    <a
-      class="lui-collapse-btn"
-      on:click:stopPropagation:preventDefault="expand(event)"
-    >
-      <span class="sap-icon--navigation-up-arrow sap-icon--s"></span>
-    </a>
-  </div>
-  <h1 class="fd-splitView__title">{splitViewSettings.title}</h1>
-  {:else}
-  <div class="iframeSplitViewCnt"></div>
-  <div id="splitViewDraggerBackdrop"></div>
-  <div id="splitViewDragger" on:mousedown:stopPropagation="onDragStart(event)">
-    <div class="splitViewSeparator"></div>
-    <a
-      class="lui-collapse-btn"
-      on:click:stopPropagation:preventDefault="collapse(event)"
-    >
-      <span class="sap-icon--navigation-down-arrow sap-icon--s"></span>
-    </a>
-  </div>
-  {/if}
-</div>
 
+<div
+  id="splitViewContainer"
+  class="splitViewContainer {collapsed?'lui-collapsed':''}"
+>
+  <div class="lui-split-view">
+    {#if collapsed}
+    <div class="splitViewSeparator isCollapsed">
+      <a
+        class="lui-collapse-btn"
+        on:click:stopPropagation:preventDefault="expand(event)"
+      >
+        <span class="sap-icon--navigation-up-arrow sap-icon--s"></span>
+      </a>
+    </div>
+    <h1 class="fd-splitView__title">{splitViewSettings.title}</h1>
+    {:else}
+    <div class="iframeSplitViewCnt"></div>
+    {/if}
+  </div>
+</div>
+{#if !collapsed}
+<div id="splitViewDraggerBackdrop"></div>
+<div id="splitViewDragger" on:mousedown:stopPropagation="onDragStart(event)">
+  <div class="splitViewSeparator"></div>
+  <a
+    class="lui-collapse-btn"
+    on:click:stopPropagation:preventDefault="collapse(event)"
+  >
+    <span class="sap-icon--navigation-down-arrow sap-icon--s"></span>
+  </a>
+</div>
+{/if}
 <script>
   import { LuigiElements } from './core-api';
   import { Iframe, SplitViewSvc } from './services';
@@ -147,8 +154,9 @@
       },
       updateSizes() {
         const shellbarHeight = LuigiElements.getShellbar().clientHeight;
+        SplitViewSvc.internalValues.innerHeight = GenericHelpers.getInnerHeight();
         SplitViewSvc.internalValues.rightContentHeight =
-          window.innerHeight - shellbarHeight;
+          SplitViewSvc.internalValues.innerHeight - shellbarHeight;
         SplitViewSvc.internalValues.thresholdBottom = 30;
         SplitViewSvc.internalValues.thresholdTop = shellbarHeight + 30;
         SplitViewSvc.calculateAndSetSplitViewValues(
@@ -165,7 +173,6 @@
 
         const resize = function resize(re) {
           const diff = m_pos - re.y;
-          m_pos = re.y;
 
           const dragTop = parseInt(
             getComputedStyle(elements.draggable, '').top
@@ -173,13 +180,21 @@
 
           if (isNaN(dragTop) || diff === 0) {
             // happens in collapsed state on mouse over draggable
+            // or if expanded only clicked without movement
             return;
           }
 
           const top = dragTop - diff;
-          const bottom = window.innerHeight - top;
+          const bottom = SplitViewSvc.internalValues.innerHeight - top;
+          const tresh = SplitViewSvc.enforceTresholds(top, bottom);
 
-          newValues = SplitViewSvc.enforceTresholds(top, bottom);
+          if (top < tresh.top || bottom < tresh.bottom) {
+            // if outside bounds, do nothing
+            return;
+          }
+
+          newValues = tresh;
+          m_pos = re.y;
           elements.draggable.style.top = `${newValues.top}px`;
         };
 
@@ -225,6 +240,27 @@
   $desktopMinWidth: 600px;
   $colorNeutral4: #89919a;
 
+  /* splitview start */
+  $collapsedSplitviewHeight: 38px;
+  :global(.lui-collapsed.iframeContainer) {
+    padding-bottom: $collapsedSplitviewHeight;
+  }
+
+  :global(.splitViewContainer) {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    top: 60%; /* default, overridden by computed.getIframeSplitViewTop */
+  }
+  :global(.splitViewContainer, #splitViewDragger, #splitViewDraggerBackdrop) {
+    left: $leftNavWidth;
+  }
+
+  :global(.lui-collapsed.splitViewContainer) {
+    height: $collapsedSplitviewHeight;
+    top: auto;
+  }
+
   .fd-splitView__title {
     font-size: 16px;
     line-height: $collapsedSplitviewHeight;
@@ -234,7 +270,7 @@
   }
 
   :global(#splitViewDragger) {
-    position: fixed;
+    position: absolute;
     bottom: 0;
     right: 0;
     left: $leftNavWidth;
@@ -287,7 +323,7 @@
   }
 
   :global(#splitViewDraggerBackdrop) {
-    position: fixed;
+    position: absolute;
     background-color: rgba(255, 255, 255, 0.7);
     top: $topNavHeight;
     right: 0;
@@ -298,6 +334,7 @@
 
   .lui-split-view {
     height: 100%;
+    position: relative;
 
     .splitViewSeparator.isCollapsed {
       position: absolute;

@@ -54,12 +54,11 @@ jobs:
       before_install:
         - google-chrome-stable --headless --disable-gpu --remote-debugging-port=9222 http://localhost &
       before_cache:
-        before_cache:
         - rm -rf ~/.npm/_logs
         - rm -rf ~/.cache/Cypress/cy/production/browsers #it is individual for each run anyway so caching it slows down the job
     - <<: *integration-testing
-    - <<: *integration-testing
-    - <<: *integration-testing
+    # - <<: *integration-testing
+    # - <<: *integration-testing
 
     # ----- NPM PUBLISH -----
     - stage: 'Publish'
