@@ -1,6 +1,11 @@
 body {
   counter-reset: subTitle;
 
+  &.has-dark-bg {
+    background: $secondary-color;
+    color: white;
+  }
+
   @include breakpoint(large) {
     font-size: 18px;
   }

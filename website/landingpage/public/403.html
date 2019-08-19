@@ -1,42 +1,68 @@
 <!DOCTYPE html>
-<html lang="en-us">
+<html class="no-js" lang="en">
   <head>
+    <base href="/">
     <meta charset="utf-8" />
     <meta name="description" content="" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <link rel="icon" type="image/png" sizes="32x32" href="/favicon.png" />
+    <meta http-equiv="x-ua-compatible" content="ie=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="32x32"
+      href="assets/img/favicon.png"
+    />
 
-    <link rel="stylesheet" href="/styles/styles.css" />
+    <link rel="stylesheet" href="assets/css/app.css" />
     <title>Luigi</title>
   </head>
-  <body class="p-dark">
-    <header class="p-header">
-      <div class="cnt">
-        <div class="left">
+  <body class="has-dark-bg">
+    
+    <header class="p-header p-header--error-page">
+      <div class="row has-border xxlarge-collapse align-middle">
+        <div class="column small-6 large-3">
           <a class="logo" href="/">
-            <img src="/images/logo.svg" alt="Luigi" />
+            <img src="assets/img/logo.svg" alt="Luigi" />
           </a>
         </div>
-        <div class="right">
-          <ul class="social-links">
-            <li class="item">
-              <a
-                href="https://github.com/SAP/luigi"
-                target="_blank"
-                class="icon-github-icon"
-              ></a>
-            </li>
-            <li class="item">
-              <a
-                href="https://twitter.com/luigiprojectio"
-                target="_blank"
-                class="icon-twitter-icon"
-              ></a>
-            </li>
-          </ul>
+        <div class="column small-6 large-9 nav-wr">
+          <button id="menuBtn" class="menu-btn hide-for-xlarge"></button>
+          <nav id="mainNavigation" class="main-nav">
+            <button
+              id="closeMainNavigation"
+              class="close-btn hide-for-xlarge"
+            ></button>
+            <ul class="menu">
+              <li class="item">
+                <a
+                  href="https://github.com/SAP/luigi/blob/master/docs/README.md"
+                  target="_blank"
+                  >Documentation</a
+                >
+              </li>
+            </ul>
+            <ul class="social-links">
+              <li class="item">
+                <a
+                  href="https://twitter.com/luigiprojectio"
+                  target="_blank"
+                  class="icon-twitter-icon"
+                ></a>
+              </li>
+              <li class="item">
+                <a
+                  href="https://github.com/SAP/luigi"
+                  target="_blank"
+                  class="icon-github-icon"
+                ></a>
+              </li>
+            </ul>
+          </nav>
         </div>
       </div>
     </header>
+    
+    
     <section class="s-error has-no-padding">
       <div class="cnt">
         <div class="top">
@@ -48,8 +74,8 @@
         </div>
         <div class="middle">
           <div class="wr">
-            Forbidden<br />
-            403
+             Forbidden<br />
+            403  
           </div>
         </div>
         <div class="bottom">
@@ -71,7 +97,8 @@
         </div>
       </div>
     </section>
+    
 
-    <script src="/scripts/main.js"></script>
+    <script src="assets/js/app.js"></script>
   </body>
 </html>
