@@ -61,7 +61,7 @@ Tells Luigi that the configuration has been changed. Luigi will update the appli
     These scope selectors are supported:
     <p>
     <ul>
-      <li><code>navigation</code>: the navigation part of the configuration was changed. This includes navigation modes, the context switcher, the product switcher and the profile menu.</li>
+      <li><code>navigation</code>: the navigation part of the configuration was changed. This includes navigation nodes, the context switcher, the product switcher and the profile menu.</li>
       <li><code>navigation.nodes</code>: navigation nodes were changed.</li>
       <li><code>navigation.contextSwitcher</code>: context switcher related data were changed.</li>
       <li><code>navigation.productSwitcher</code>: product switcher related data were changed.</li>

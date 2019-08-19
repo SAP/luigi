@@ -6,9 +6,9 @@ class StateHelpersClass {
       if (s && !result.includes(s)) {
         if (!last || s.indexOf(last) !== 0) {
           result.push(s);
+          last = s;
         }
       }
-      last = s;
     });
     if (result.length === 0) {
       result.push('state');
