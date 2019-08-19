@@ -33,6 +33,28 @@ describe('Navigation', () => {
     cy.get('.fd-app__sidebar').should('contain', 'Second Child');
   });
 
+  it('Check if active node is selected', () => {
+    cy.get('.fd-shellbar')
+      .contains('Projects')
+      .click();
+
+    cy.get('.fd-shellbar')
+      .contains('Projects')
+      .should('have.class', 'is-selected');
+
+    cy.get('.fd-app__sidebar')
+      .contains('Project One')
+      .click();
+
+    cy.get('.fd-side-nav__subitem')
+      .contains('Project Settings')
+      .click();
+
+    cy.get('.fd-side-nav__subitem')
+      .contains('Project Settings')
+      .should('have.class', 'is-selected');
+  });
+
   it('Browser back works with Default Child mechanism', () => {
     cy.getIframeBody().then($iframeBody => {
       cy.wrap($iframeBody)
