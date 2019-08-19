@@ -15,7 +15,7 @@
   }
 
   &--home {
-    background-image: url('../img/header-bg.svg');
+    background-image: url('../img/header_bg.svg');
     background-repeat: no-repeat;
     background-position: left 50% bottom 100px;
     background-size: cover;
@@ -28,6 +28,10 @@
     @include breakpoint(xxlarge) {
       background-position: left 70% bottom 0;
     }
+  }
+
+  &--error-page {
+    background: $secondary-color;
   }
 
   .logo {

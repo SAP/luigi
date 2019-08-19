@@ -35,7 +35,11 @@ echo "Webserver was ready after $WAITCOUNT seconds."
 
 
 echo "Running tests"
-npm run e2e:run -- --record --parallel
+if [ "$USE_CYPRESS_DASHBOARD" == "true" ]; then
+  npm run e2e:run -- --record --parallel
+else
+  npm run e2e:run
+fi
 RV=$?
 kill $WS_PID
 exit $RV

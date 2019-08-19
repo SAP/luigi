@@ -14,7 +14,7 @@ Set up and configure the main application.
 * [General settings](general-settings.md) provides you with additional configuration parameters for Luigi.
 * [Core API](luigi-core-api.md) provides you with API features that help you enrich and use Luigi Core.
 * [Luigi UI features](luigi-ux-features.md) provides different possibilities of customizing some of the Luigi UI components.
- 
+
 
 ## Luigi Client
 
