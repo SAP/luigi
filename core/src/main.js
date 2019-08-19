@@ -23,8 +23,6 @@ const configReadyCallback = () => {
   // setTimeout needed so that luigi container is rendered when we retrieve it
   let app;
   setTimeout(() => {
-    const luigiContainer = LuigiElements.getLuigiContainer();
-
     if (LuigiElements.isCustomLuigiContainer()) {
       document
         .getElementsByTagName('html')[0]
@@ -32,7 +30,7 @@ const configReadyCallback = () => {
     }
 
     app = new App({
-      target: luigiContainer,
+      target: LuigiElements.getLuigiContainer(),
       store
     });
 
