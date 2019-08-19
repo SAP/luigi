@@ -8,7 +8,9 @@ import { GenericHelpers } from '../../src/utilities/helpers';
 import { LuigiConfig } from '../../src/core-api';
 import { Navigation } from '../../src/navigation/services/navigation';
 
-describe('Routing', () => {
+describe('Routing', function() {
+  this.retries(2);
+
   let component;
   beforeEach(() => {
     sinon.spy(window, 'dispatchEvent');
