@@ -16,7 +16,7 @@ describe('Clock based tests', () => {
         initialBadgeCount
       );
 
-      cy.tick(11000);
+      cy.tick(11e3);
 
       cy.wrap($iframeBody)
         .contains('Update Header Navigation')
