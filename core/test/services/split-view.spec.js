@@ -154,14 +154,17 @@ describe('SplitViewSvc', () => {
 
     it('calculateAndSetSplitViewValues', () => {
       // given
+      const mockValues = {
+        innerHeight: 1000,
+        rightContentHeight: 970
+      };
       const mockCalculated = {
         top: 600,
         bottom: 400,
         percent: 40
       };
-      window.innerHeight = 1000;
+
       const shellbarHeight = 30;
-      const rightContentHeight = 970;
       LuigiElements.getShellbar.returns({
         clientHeight: shellbarHeight
       });
@@ -173,18 +176,22 @@ describe('SplitViewSvc', () => {
       SplitViewSvc.splitViewValues = {};
 
       // then
-      SplitViewSvc.calculateAndSetSplitViewValues(40, { rightContentHeight });
+      SplitViewSvc.calculateAndSetSplitViewValues(40, mockValues);
 
       // when
       sinon.assert.calledWithExactly(
         GenericHelpers.computePxFromPercent,
-        rightContentHeight,
+        mockValues.rightContentHeight,
         60
       );
-      const newBottom = 400 + shellbarHeight;
-      sinon.assert.calledWithExactly(SplitViewSvc.enforceTresholds, 430, 570, {
-        rightContentHeight
-      });
+      const newBottom = 430; // mockCalculated.bottom + shellbarHeight;
+      const newTop = 570; // values.innerHeight - newBottom
+      sinon.assert.calledWithExactly(
+        SplitViewSvc.enforceTresholds,
+        newBottom,
+        newTop,
+        mockValues
+      );
       assert.deepEqual(SplitViewSvc.splitViewValues, mockCalculated);
     });
 
@@ -339,10 +346,10 @@ describe('SplitViewSvc', () => {
     describe('enforceTresholds', () => {
       beforeEach(() => {
         GenericHelpers.computePxFromPercent.returns(0);
-        window.innerHeight = 400;
         SplitViewSvc.internalValues = {
           thresholdTop: 20,
-          thresholdBottom: 20
+          thresholdBottom: 20,
+          innerHeight: 400
         };
       });
       it('with valid settings', () => {
