@@ -1,7 +1,9 @@
-Cypress.env('RETRIES', 2);
+Cypress.env('RETRIES', 1);
 describe('Login Flow', () => {
   beforeEach(() => {
-    cy.visit('/');
+    cy.visit('/', {
+      onBeforeLoad: () => cy.clearLocalStorage()
+    });
   });
 
   it('Login', () => {
@@ -107,8 +109,7 @@ describe('Login Flow', () => {
 
 describe('TopNavDropDown', () => {
   beforeEach(() => {
-    cy.visit('/');
-    cy.login('tets@email.com', 'tets');
+    cy.visitLoggedIn('/');
   });
   context('Desktop', () => {
     beforeEach(() => {

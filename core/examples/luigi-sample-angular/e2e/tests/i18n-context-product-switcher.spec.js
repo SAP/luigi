@@ -1,8 +1,8 @@
-Cypress.env('RETRIES', 2);
+Cypress.env('RETRIES', 1);
+
 describe('Context switcher', () => {
   beforeEach(() => {
-    cy.visit('/');
-    cy.login('tets@email.com', 'tets');
+    cy.visitLoggedIn('/');
   });
 
   it('Clicking around the context switcher', () => {
@@ -116,8 +116,7 @@ describe('Context switcher', () => {
 
 describe('ProductSwitcher', () => {
   beforeEach(() => {
-    cy.visit('/');
-    cy.login('tets@email.com', 'tets');
+    cy.visitLoggedIn('/');
   });
   context('Desktop', () => {
     beforeEach(() => {
@@ -212,8 +211,7 @@ describe('ProductSwitcher', () => {
 
 describe('I18n', () => {
   beforeEach(() => {
-    cy.visit('/');
-    cy.login('tets@email.com', 'tets');
+    cy.visitLoggedIn('/');
   });
 
   it('custom translation test', () => {

@@ -1,11 +1,10 @@
-Cypress.env('RETRIES', 2);
+Cypress.env('RETRIES', 1);
 describe('Luigi Client ux manager features', () => {
   let $iframeBody;
   beforeEach(() => {
     //"clear" variables to make sure they are not reused and throw error in case something goes wrong
     $iframeBody = undefined;
-    cy.visit('/');
-    cy.login('tets', 'tets');
+    cy.visitLoggedIn('/');
 
     cy.getIframeBody().then(result => {
       $iframeBody = result;

@@ -1,9 +1,8 @@
-Cypress.env('RETRIES', 2);
+Cypress.env('RETRIES', 1);
 describe('Modal Microfrontend', () => {
   let $iframeBody;
   beforeEach(() => {
-    cy.visit('/');
-    cy.login('tets', 'tets');
+    cy.visitLoggedIn('/');
 
     cy.getIframeBody().then(result => {
       $iframeBody = result;
@@ -84,9 +83,7 @@ describe('Modal Microfrontend', () => {
 
 describe('SplitView Microfrontend', () => {
   beforeEach(() => {
-    cy.visit('/');
-    cy.login('tets@email.com', 'tets', true);
-    cy.visit('/projects/pr2');
+    cy.visitLoggedIn('/projects/pr2');
   });
 
   it('Opens a Split View and collapses and expands', () => {

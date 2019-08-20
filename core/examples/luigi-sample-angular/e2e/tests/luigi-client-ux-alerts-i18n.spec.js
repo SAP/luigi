@@ -1,11 +1,10 @@
-Cypress.env('RETRIES', 2);
+Cypress.env('RETRIES', 1);
 describe('Luigi Client UX Alerts + Localization', () => {
   let $iframeBody;
   beforeEach(() => {
     //"clear" variables to make sure they are not reused and throw error in case something goes wrong
     $iframeBody = undefined;
-    cy.visit('/');
-    cy.login('tets', 'tets');
+    cy.visitLoggedIn('/');
 
     cy.getIframeBody().then(result => {
       $iframeBody = result;
@@ -191,7 +190,7 @@ describe('Luigi Client UX Alerts + Localization', () => {
     });
 
     it('clientPermissions: check if set localization in client is disabled', () => {
-      cy.visit('/projects/pr1/clientPermissionsTets')
+      cy.visitLoggedIn('/projects/pr1/clientPermissionsTets')
         .getIframeBody()
         .then(body => {
           cy.wrap(body)
