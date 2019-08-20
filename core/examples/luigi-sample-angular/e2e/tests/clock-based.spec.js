@@ -23,7 +23,6 @@ describe('Clock based tests', () => {
         .scrollIntoView()
         .click();
 
-      // cy.wait(100);
       cy.get("button[title='Messages'] .fd-counter--notification").should(
         'not.contain',
         initialBadgeCount

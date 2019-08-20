@@ -356,10 +356,6 @@
       window.addEventListener('message', e => {
         if ('luigi.navigation.update-badge-counters' === e.data.msg) {
           setTopNavData(this.get().current, this);
-          console.log(
-            'topNavData was updated',
-            this.get().totalBadgeNode.badgeCounter.count()
-          );
         }
       });
     },
