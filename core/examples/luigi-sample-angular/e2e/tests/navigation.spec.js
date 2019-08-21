@@ -1,7 +1,11 @@
 describe('Navigation', () => {
+  let $iframeBody;
   beforeEach(() => {
     cy.visit('/');
     cy.login('tets@email.com', 'tets');
+    cy.getIframeBody().then(result => {
+      $iframeBody = result;
+    });
   });
 
   it('Click around using navigation', () => {
@@ -53,6 +57,41 @@ describe('Navigation', () => {
     cy.get('.fd-side-nav__subitem')
       .contains('Project Settings')
       .should('have.class', 'is-selected');
+  });
+
+  it('Check if active node reloads page', () => {
+    cy.get('.fd-shellbar')
+      .contains('Projects')
+      .click();
+    cy.get('.fd-app__sidebar')
+      .contains('Project One')
+      .click();
+    cy.get('.fd-app__sidebar')
+      .contains('Developers')
+      .click();
+    cy.getIframeBody().then($iframeBody => {
+      cy.wrap($iframeBody).should('contain', 'Developers content');
+      cy.wrap($iframeBody)
+        .find('[title="visitors: 1"]')
+        .should('exist');
+      cy.get('.fd-app__sidebar')
+        .contains('Project Settings')
+        .click();
+      cy.get('.fd-app__sidebar')
+        .contains('Developers')
+        .click();
+      cy.wrap($iframeBody)
+        .find('[title="visitors: 2"]')
+        .should('exist');
+      cy.get('.fd-app__sidebar')
+        .contains('Developers')
+        .click();
+      cy.getIframeBody().then($iframeBody2 => {
+        cy.wrap($iframeBody2)
+          .find('[title="visitors: 1"]')
+          .should('exist');
+      });
+    });
   });
 
   it('Browser back works with Default Child mechanism', () => {
