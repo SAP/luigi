@@ -40,6 +40,12 @@ class LuigiClient {
   sendCustomEventToCore(msg, data) {
     return lifecycleManager.sendCustomEventToCore(msg, data);
   }
+  addCustomEventListener(msg, data) {
+    return lifecycleManager.addCustomEventListener(msg, data);
+  }
+  removeCustomEventListener(id) {
+    return lifecycleManager.removeCustomEventListener(id, data);
+  }
   /**
    * @private
    */

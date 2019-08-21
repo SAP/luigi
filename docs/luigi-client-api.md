@@ -44,7 +44,7 @@ Registers a listener called when the microfrontend receives the specified messag
 
 #### Parameters
 
--   `name`  
+-   `name` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** the event name
 -   `customEventFn` **[Lifecycle~customEventListenerCallback](#lifecyclecustomeventlistenercallback)** the function that is called when the microfrontend receives the corresponding event.
 
 ### removeCustomEventListener
@@ -133,7 +133,10 @@ Type: [Function](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Sta
 
 ### Parameters
 
--   `event` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** event object received
+-   `event` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** custom event object
+    -   `event.msg` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** event name
+    -   `event.data` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** event payload
+-   `id` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** custom event listener id to be used for unsubscription
 
 ## linkManager
 

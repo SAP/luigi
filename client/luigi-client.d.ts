@@ -324,6 +324,37 @@ export function removeContextUpdateListener(id: string): boolean;
 export type removeContextUpdateListener = (id: string) => boolean;
 
 /**
+ * Registers a listener called when the microfrontend receives the specified message.
+ * @param {string} name the event name
+ * @param {Lifecycle~customEventListenerCallback} customEventFn the function that is called when the microfrontend receives the corresponding event.
+ * @memberof Lifecycle
+ */
+export function addCustomEventListener(
+  name: string,
+  customEventFn: (event: Object, id: string) => void
+): string;
+export type addCustomEventListener = (
+  name: string,
+  customEventFn: (event: Object, id: string) => void
+) => string;
+
+/**
+ * Callback of the customEventListener
+ * @callback Lifecycle~customEventListenerCallback
+ * @param {Object} event custom event object
+ * @param {string} event.msg event name
+ * @param {string} event.data event payload
+ * @param {string} id custom event listener id to be used for unsubscription
+ */
+/**
+ * Removes a custom event listener.
+ * @param {string} id the id that was returned by the `addInitListener` function
+ * @memberof Lifecycle
+ */
+export function removeCustomEventListener(id: string): boolean;
+export type removeCustomEventListener = (id: string) => boolean;
+
+/**
  * @returns {string} the authorization token
  */
 export function getToken(): AuthData['accessToken'];

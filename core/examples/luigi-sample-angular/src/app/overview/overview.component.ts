@@ -1,8 +1,9 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import {
   linkManager,
   uxManager,
-  sendCustomEventToCore
+  sendCustomEventToCore,
+  addCustomEventListener
 } from '@kyma-project/luigi-client';
 
 @Component({
@@ -10,7 +11,7 @@ import {
   templateUrl: './overview.component.html',
   styleUrls: ['./overview.component.css']
 })
-export class OverviewComponent {
+export class OverviewComponent implements OnInit {
   public linkManager = linkManager;
 
   public luigiClientLinks: any[] = [
@@ -70,6 +71,16 @@ export class OverviewComponent {
   ];
 
   public isDirty = false;
+
+  ngOnInit() {
+    addCustomEventListener(
+      'luigi.my-custom-message-for-client',
+      (customEvent, id) => {
+        // console.log('Received Custom Event', customEvent, id);
+      }
+    );
+  }
+
   public sendDirtyEvent() {
     uxManager().setDirtyStatus(this.isDirty);
   }

@@ -203,17 +203,23 @@ class LifecycleManager extends LuigiClientBase {
 
   /**
    * Registers a listener called when the microfrontend receives the specified message.
+   * @param {string} name the event name
    * @param {Lifecycle~customEventListenerCallback} customEventFn the function that is called when the microfrontend receives the corresponding event.
    * @memberof Lifecycle
    */
   addCustomEventListener(name, customEventFn) {
-    return helpers.addEventListener(name, customEventFn);
+    return helpers.addEventListener(name, (evt, id) => {
+      return customEventFn(evt.data, id);
+    });
   }
 
   /**
    * Callback of the customEventListener
    * @callback Lifecycle~customEventListenerCallback
-   * @param {Object} event event object received
+   * @param {Object} event custom event object
+   * @param {string} event.msg event name
+   * @param {string} event.data event payload
+   * @param {string} id custom event listener id to be used for unsubscription
    */
   /**
    * Removes a custom event listener.
