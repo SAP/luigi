@@ -11,6 +11,7 @@ class SplitViewSvcClass {
   constructor() {
     this.splitViewValues;
     this.internalValues = {
+      innerHeight: null,
       rightContentHeight: null,
       thresholdTop: null,
       thresholdBottom: null,
@@ -150,22 +151,20 @@ class SplitViewSvcClass {
         )
       ) + LuigiElements.getShellbar().clientHeight;
 
-    const calculated = this.enforceTresholds(
+    this.splitViewValues = this.enforceTresholds(
       newBottom,
-      window.innerHeight - newBottom,
+      values.innerHeight - newBottom,
       values
     );
-
-    this.splitViewValues = calculated;
   }
 
   enforceTresholds(top, bottom) {
     const iv = this.internalValues;
     if (top <= iv.thresholdTop) {
       top = iv.thresholdTop;
-      bottom = window.innerHeight - iv.thresholdTop;
+      bottom = iv.innerHeight - iv.thresholdTop;
     } else if (bottom <= iv.thresholdBottom) {
-      top = window.innerHeight - iv.thresholdBottom;
+      top = iv.innerHeight - iv.thresholdBottom;
       bottom = iv.thresholdBottom;
     }
 

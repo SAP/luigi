@@ -1,6 +1,6 @@
 import { AsyncHelpers, GenericHelpers } from '../utilities/helpers';
 import { auth } from './auth';
-import { LuigiElements } from '.';
+import { LuigiElements, LuigiI18N } from '.';
 
 /**
  * @name Configuration
@@ -87,8 +87,7 @@ class LuigiConfig {
    * @memberof Configuration
    */
   configNotReadyCallback() {
-    const errorMsg =
-      'Ups.. Looks like Luigi was not configured. Please use Luigi.setConfig(config) function to configure Luigi.';
+    const errorMsg = LuigiI18N.getTranslation('luigi.configNotReadyCallback');
     console.error(errorMsg);
     this.setErrorMessage(errorMsg);
   }

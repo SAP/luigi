@@ -170,10 +170,11 @@ class NavigationClass {
 
   findMatchingNode(urlPathElement, nodes) {
     let result = null;
+    const segmentsLength = nodes.filter(n => !!n.pathSegment).length;
     const dynamicSegmentsLength = nodes.filter(
       n => n.pathSegment && n.pathSegment.startsWith(':')
     ).length;
-    if (nodes.length > 1) {
+    if (segmentsLength > 1) {
       if (dynamicSegmentsLength === 1) {
         console.warn(
           'Invalid node setup detected. \nStatic and dynamic nodes cannot be used together on the same level. Static node gets cleaned up. \nRemove the static node from the configuration to resolve this warning. \nAffected pathSegment:',
@@ -181,7 +182,9 @@ class NavigationClass {
           'Children:',
           nodes
         );
-        nodes = nodes.filter(n => n.pathSegment.startsWith(':'));
+        nodes = nodes.filter(
+          n => n.pathSegment && n.pathSegment.startsWith(':')
+        );
       }
       if (dynamicSegmentsLength > 1) {
         console.error(
