@@ -38,6 +38,8 @@ jobs:
     - name: 'Unit Tests'
       script:
         - echo 'core' && ls core/node_modules | wc -l && echo 'client' && ls client/node_modules | wc -l
+        - cat /home/travis/build/SAP/luigi/core/test/utilities/helpers/state-helpers.spec.js
+        - cat /home/travis/build/SAP/luigi/core/src/utilities/helpers/state-helpers.js
         - npm test --prefix core
       before_cache:
         - rm -rf ~/.npm/_logs
