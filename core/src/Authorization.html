@@ -269,7 +269,7 @@
                 )) || []
             };
             this.set({ profileNav: profileNavData });
-          });
+          }, ['navigation.profile']);
           this.set({ navProfileListenerInstalled: true });
         }
       },

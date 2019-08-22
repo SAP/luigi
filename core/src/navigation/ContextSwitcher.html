@@ -74,6 +74,7 @@
   export default {
     async oncreate() {
       StateHelpers.doOnStoreChange(this.store, async () => {
+        LuigiConfig._configModificationTimestamp = new Date();
         const contextSwitcherConfig = LuigiConfig.getConfigValue(
           'navigation.contextSwitcher'
         );
@@ -108,7 +109,7 @@
             await this.setSelectedContext(currentPath);
           }
         }
-      });
+      }, ['navigation.contextSwitcher']);
 
       RoutingHelpers.addRouteChangeListener(path =>
         this.setSelectedContext(path)
@@ -178,6 +179,7 @@
       },
       goTo(path) {
         this.root.getUnsavedChangesModalPromise().then(() => {
+          LuigiConfig._configModificationTimestamp = new Date();
           Routing.navigateTo(path);
         });
       },
