@@ -348,7 +348,7 @@
           ),
           productSwitcherConfig: NavigationHelpers.getProductSwitcherConfig()
         });
-      });
+      }, ['navigation']);
       this.set({
         urlAuthError: AuthHelpers.parseUrlAuthErrors()
       });
