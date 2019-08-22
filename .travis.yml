@@ -15,7 +15,7 @@ jobs:
     - stage: 'Precache'
       name: 'Install and build'
       script:
-        - cat /home/travis/build/SAP/luigi/core/src/utilities/helpers/state-helpers.js
+        - find $TRAVIS_BUILD_DIR
         - pwd && ls $TRAVIS_BUILD_DIR
         - export CYPRESS_CACHE_FOLDER=$TRAVIS_BUILD_DIR/cypress-binary-cache
         - npm i -g lerna
