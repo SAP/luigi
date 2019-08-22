@@ -16,6 +16,7 @@ jobs:
       name: 'Install and build'
       script:
         - find $TRAVIS_BUILD_DIR
+        - cat $TRAVIS_BUILD_DIR/SAP/luigi/core/src/utilities/helpers/state-helpers.js
         - pwd && ls $TRAVIS_BUILD_DIR
         - export CYPRESS_CACHE_FOLDER=$TRAVIS_BUILD_DIR/cypress-binary-cache
         - npm i -g lerna
