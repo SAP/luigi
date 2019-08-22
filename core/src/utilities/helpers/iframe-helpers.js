@@ -1,6 +1,8 @@
-// Helper methods for 'iframe.js' file. They don't require any method from 'ifram.js` but are required by them.
+// Helper methods for 'iframe.js' file. They don't require any method from 'iframe.js` but are required by them.
 import { GenericHelpers } from './';
 import { MICROFRONTEND_TYPES } from './../constants';
+import { Iframe } from '../../services';
+import { LuigiConfig } from '../../core-api';
 
 class IframeHelpersClass {
   get specialIframeTypes() {
@@ -226,6 +228,12 @@ class IframeHelpersClass {
       // 'allow-top-navigation-by-user-activation', // Lets the resource navigate the top-level browsing context, but only if initiated by a user gesture.
       // 'allow-downloads-without-user-activation' // Allows for downloads to occur without a gesture from the user.
     ];
+    const customSandboxRules = LuigiConfig.getConfigValue(
+      'settings.customSandboxRules'
+    );
+    let activeSandboxRules = customSandboxRules
+      ? [...new Set([...luigiDefaultSandboxRules, ...customSandboxRules])]
+      : luigiDefaultSandboxRules;
 
     const iframe = document.createElement('iframe');
     iframe.src = viewUrl;
