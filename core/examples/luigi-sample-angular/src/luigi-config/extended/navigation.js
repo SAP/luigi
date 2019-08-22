@@ -178,7 +178,7 @@ class Navigation {
         position: 'bottom',
         clickHandler: node => {
           const p = addProject();
-          Luigi.setConfig(Luigi.getConfig());
+          Luigi.configChanged('navigation');
           Luigi.showAlert({
             text: `${p.name} created.`,
             type: 'info',
@@ -196,7 +196,7 @@ class Navigation {
         position: 'bottom',
         clickHandler: node => {
           const p = removeProject();
-          Luigi.setConfig(Luigi.getConfig());
+          Luigi.configChanged('navigation');
           Luigi.showAlert({
             text: `${p.name} removed.`,
             type: 'info',

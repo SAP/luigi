@@ -73,7 +73,7 @@ describe('Login Flow', () => {
       const config = win.Luigi.getConfig();
       config.settings.header.title = testTitle;
       config.settings.header.logo = testLogo;
-      win.Luigi.setConfig(config);
+      win.Luigi.configChanged('settings.header');
 
       cy.get('[data-e2e="luigi-topnav-title"]').should('contain', testTitle);
       cy.get('[data-e2e="luigi-topnav-logo"]').should(

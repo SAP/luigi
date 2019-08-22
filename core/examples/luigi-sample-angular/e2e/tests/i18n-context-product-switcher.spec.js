@@ -209,7 +209,7 @@ describe('ProductSwitcher', () => {
   });
 });
 
-describe('I18n', () => {
+describe('I18N', () => {
   beforeEach(() => {
     cy.visitLoggedIn('/');
   });
@@ -246,7 +246,7 @@ describe('I18n', () => {
         }
       };
       config.settings = mySettings;
-      win.Luigi.setConfig(config);
+      win.Luigi.configChanged();
     });
     cy.get('.fd-app__sidebar').should('contain', '*Developers* en');
 
