@@ -34,10 +34,18 @@ done
 echo "Webserver was ready after $WAITCOUNT seconds."
 
 
-echo "Running tests"
+
 if [ "$USE_CYPRESS_DASHBOARD" == "true" ]; then
-  npm run e2e:run -- --record --parallel
+  if [ [ "$TRAVIS_PULL_REQUEST" == "false" ] && [ "$CIRCLE_PR_REPONAME" == "" ] ]; then
+    echo "Running tests in parallel with recording"
+    npm run e2e:run -- --record --parallel
+  else
+    # Cypress Dashboad does not support PR recording
+    echo "Running tests in parallel without recording"
+    npm run e2e:run -- --parallel
+  fi
 else
+  echo "Running tests without parallelization"
   npm run e2e:run
 fi
 RV=$?
