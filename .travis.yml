@@ -21,6 +21,8 @@ jobs:
         - lerna bootstrap --ci --ignore "*luigi-sample-vue"
         - echo 'core' && ls core/node_modules | wc -l && echo 'client' && ls client/node_modules | wc -l
         - lerna run bundle --ignore "*luigi-sample-vue"
+        - cat /home/travis/build/SAP/luigi/core/test/utilities/helpers/state-helpers.spec.js
+        - cat /home/travis/build/SAP/luigi/core/src/utilities/helpers/state-helpers.js
         - du -sh
       before_cache:
         - rm -rf ~/.npm/_logs
