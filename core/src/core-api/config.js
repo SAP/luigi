@@ -88,7 +88,7 @@ class LuigiConfig {
 
   /**
    * Tells Luigi that the configuration has been changed. Luigi will update the application or parts of it based on the specified scope.
-   * @param {...string} scope one or more scope selectors specifying what parts of the configuration were changed. If no scope selector is provided the whole configuration is considered changed.
+   * @param {...string} scope one or more scope selectors specifying what parts of the configuration were changed. If no scope selector is provided, the whole configuration is considered changed.
    * <p>
    * The supported scope selectors are:
    * <p>
