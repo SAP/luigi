@@ -65,9 +65,6 @@ validateMdChanges() {
   fi
 }
 
-echoe "git status"
-git status
-
 # add all folders that are containing documentation steps
 for FOLDER in "${LUIGI_FOLDERS[@]}"
 do
