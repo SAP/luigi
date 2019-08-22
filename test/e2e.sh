@@ -41,8 +41,8 @@ if [ "$USE_CYPRESS_DASHBOARD" == "true" ]; then
     npm run e2e:run -- --record --parallel
   else
     # Cypress Dashboad does not support PR recording
-    echo "Running tests in parallel without recording"
-    npm run e2e:run -- --parallel
+    echo "Running tests without parallelization"
+    npm run e2e:run
   fi
 else
   echo "Running tests without parallelization"

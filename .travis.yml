@@ -66,9 +66,11 @@ jobs:
         - rm -rf ~/.npm/_logs
         - rm -rf ~/.npm/_cacache
         - rm -rf ~/.cache/Cypress/cy/production/browsers #it is individual for each run anyway so caching it slows down the job
-    - <<: *integration-testing
-    # - <<: *integration-testing
-    # - <<: *integration-testing
+      # disabled until either dashboard supports parallel pr builds or
+      # we switch to circleci with parallelism
+      # - <<: *integration-testing
+      # - <<: *integration-testing
+      # - <<: *integration-testing
 
     # ----- NPM PUBLISH -----
     - stage: 'Publish'
