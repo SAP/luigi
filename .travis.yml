@@ -17,66 +17,66 @@ notifications:
     secure: wiOchVgoiKNUikjCeIhsuv3Y5jolFud6ercdZdO3+JigQqkmoAC95f2jKTYEdplJWyJr8JY6z0+UJNceHyr5YJx/l1wpm6Zq+3H4dq/V0yUXH1uhw2eaTzweX2vjfw0bzewEdc1CGl4kSfdyTajnbKgt+mtnrAV9lPqiXYSOOJTu5BCFomi7u2GhAz1JjBK6P4Ar2jXm+oc81nYjj40P8bZFlA7Rjm0hNN42MMkKvnD8OHztL3EwezKHXlQW7fN4eOrhPOMbT3NRU72g9Nir+lfoKJlch1zPoHXQ7DRp41uGyHV/qfvfRLzXwxftZK6kdvzMe0eI0i1aIm0R6AE0bLphB2o/klJzyQpqSiQgETTH0qJN+3px2kddGrw7Me+UNC/1zZrt1MJfWf0h6WjXTsPDJf3ajLsn8OoIeBTRZbAb9as3UWQZcknuuMf8oGUzZkrZNMWYqo3py0+qWm4wSbWXWVUCgVAIYA6oEADwq37z59HySGkyHI4gEPzxsYODfCuvO4pJX1h4vEyH7w2IigwhDAPq5G4Vdez9ZFS96p/LSCF+iH8yWMy294u8wk5ofWUutFFv0JC45LQBXu51a2TeQkalwVn4DiuxxHE6jZieREw75YFjra4jpWsyziWkzshGT75NCra6cKAbNa4T8n6Pm3ogjEPeeWAO3psgSdo=
 jobs:
   include:
-    - stage: 'Precache'
-      name: 'Install and build'
-      script:
-        - pwd && ls $TRAVIS_BUILD_DIR
-        - export CYPRESS_CACHE_FOLDER=$TRAVIS_BUILD_DIR/cypress-binary-cache
-        - npm i -g lerna
-        - lerna bootstrap --ci --ignore "*luigi-sample-vue"
-        - echo 'core' && ls core/node_modules | wc -l && echo 'client' && ls client/node_modules | wc -l
-        - lerna run bundle --ignore "*luigi-sample-vue"
-        - du -sh
-      before_cache:
-        - rm -rf ~/.npm/_logs
-        - rm -rf ~/.npm/_cacache
-        - rm -rf $TRAVIS_BUILD_DIR/website
-        - rm -rf $TRAVIS_BUILD_DIR/core/examples/luigi-sample-vue
+    # - stage: 'Precache'
+    #   name: 'Install and build'
+    #   script:
+    #     - pwd && ls $TRAVIS_BUILD_DIR
+    #     - export CYPRESS_CACHE_FOLDER=$TRAVIS_BUILD_DIR/cypress-binary-cache
+    #     - npm i -g lerna
+    #     - lerna bootstrap --ci --ignore "*luigi-sample-vue"
+    #     - echo 'core' && ls core/node_modules | wc -l && echo 'client' && ls client/node_modules | wc -l
+    #     - lerna run bundle --ignore "*luigi-sample-vue"
+    #     - du -sh
+    #   before_cache:
+    #     - rm -rf ~/.npm/_logs
+    #     - rm -rf ~/.npm/_cacache
+    #     - rm -rf $TRAVIS_BUILD_DIR/website
+    #     - rm -rf $TRAVIS_BUILD_DIR/core/examples/luigi-sample-vue
 
-    #----- DOCU -----
-    - stage: 'Documentation & Tests'
-      name: 'Check Documentation'
-      script: bash ./scripts/docuCheck.sh
-      before_cache:
-        - rm -rf ~/.npm/_logs
-        - rm -rf ~/.npm/_cacache
+    # #----- DOCU -----
+    # - stage: 'Documentation & Tests'
+    #   name: 'Check Documentation'
+    #   script: bash ./scripts/docuCheck.sh
+    #   before_cache:
+    #     - rm -rf ~/.npm/_logs
+    #     - rm -rf ~/.npm/_cacache
       
 
-    #----- UNIT -----
-    - name: 'Unit Tests'
-      script:
-        - echo 'core' && ls core/node_modules | wc -l && echo 'client' && ls client/node_modules | wc -l
-        - npm test --prefix core
-      before_cache:
-        - rm -rf ~/.npm/_logs
-        - rm -rf ~/.npm/_cacache
+    # #----- UNIT -----
+    # - name: 'Unit Tests'
+    #   script:
+    #     - echo 'core' && ls core/node_modules | wc -l && echo 'client' && ls client/node_modules | wc -l
+    #     - npm test --prefix core
+    #   before_cache:
+    #     - rm -rf ~/.npm/_logs
+    #     - rm -rf ~/.npm/_cacache
 
-    # ----- INTEGRATION -----
-    - &integration-testing
-      name: 'Integration Testing'
-      script:
-        - export CYPRESS_CACHE_FOLDER=$TRAVIS_BUILD_DIR/cypress-binary-cache
-        - ls && echo 'core' && ls core/node_modules | wc -l && echo 'client' && ls client/node_modules | wc -l
-        - bash ./test/e2e.sh
-      addons:
-        chrome: stable
-      before_install:
-        - google-chrome-stable --headless --disable-gpu --remote-debugging-port=9222 http://localhost &
-      before_cache:
-        - rm -rf ~/.npm/_logs
-        - rm -rf ~/.npm/_cacache
-        - rm -rf ~/.cache/Cypress/cy/production/browsers #it is individual for each run anyway so caching it slows down the job
-      # disabled until either dashboard supports parallel pr builds or
-      # we switch to circleci with parallelism
-      # - <<: *integration-testing
-      # - <<: *integration-testing
-      # - <<: *integration-testing
+    # # ----- INTEGRATION -----
+    # - &integration-testing
+    #   name: 'Integration Testing'
+    #   script:
+    #     - export CYPRESS_CACHE_FOLDER=$TRAVIS_BUILD_DIR/cypress-binary-cache
+    #     - ls && echo 'core' && ls core/node_modules | wc -l && echo 'client' && ls client/node_modules | wc -l
+    #     - bash ./test/e2e.sh
+    #   addons:
+    #     chrome: stable
+    #   before_install:
+    #     - google-chrome-stable --headless --disable-gpu --remote-debugging-port=9222 http://localhost &
+    #   before_cache:
+    #     - rm -rf ~/.npm/_logs
+    #     - rm -rf ~/.npm/_cacache
+    #     - rm -rf ~/.cache/Cypress/cy/production/browsers #it is individual for each run anyway so caching it slows down the job
+    #   # disabled until either dashboard supports parallel pr builds or
+    #   # we switch to circleci with parallelism
+    #   # - <<: *integration-testing
+    #   # - <<: *integration-testing
+    #   # - <<: *integration-testing
 
     # ----- NPM PUBLISH -----
     - stage: 'Publish'
       name: 'Publish to NPM'
       # run only when merging from release-v branch to master
-      if: repo = SAP/luigi AND (branch = master OR branch ~= ^release-v)
+      if: repo = SAP/luigi AND $TRAVIS_PULL_REQUEST_BRANCH ~= ^release-v
       script: bash ./scripts/npmPublish.sh
       before_cache:
         - rm -rf ~/.npm/_logs
