@@ -1,11 +1,7 @@
 describe('Navigation', () => {
-  let $iframeBody;
   beforeEach(() => {
     cy.visit('/');
     cy.login('tets@email.com', 'tets');
-    cy.getIframeBody().then(result => {
-      $iframeBody = result;
-    });
   });
 
   it('Click around using navigation', () => {
