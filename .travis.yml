@@ -75,7 +75,7 @@ jobs:
     - stage: 'Publish'
       name: 'Publish to NPM'
       # run only when merging from release-v branch to master
-      if: repo = SAP/luigi AND head_branch ~= ^release-v
+      if: repo = SAP/luigi AND head_branch ~= ^714
       script: bash ./scripts/npmPublish.sh
       before_cache:
         - rm -rf ~/.npm/_logs
