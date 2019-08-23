@@ -1,7 +1,7 @@
+Cypress.env('RETRIES', 1);
 describe('Luigi client linkManager', () => {
   beforeEach(() => {
-    cy.visit('/');
-    cy.login('tets', 'tets');
+    cy.visitLoggedIn('/');
   });
 
   it('linkManager features', () => {

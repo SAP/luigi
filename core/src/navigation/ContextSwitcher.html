@@ -73,43 +73,47 @@
 
   export default {
     async oncreate() {
-      StateHelpers.doOnStoreChange(this.store, async () => {
-        LuigiConfig._configModificationTimestamp = new Date();
-        const contextSwitcherConfig = LuigiConfig.getConfigValue(
-          'navigation.contextSwitcher'
-        );
-
-        this.set({
-          contextSwitcherEnabled: !!contextSwitcherConfig,
-          config: contextSwitcherConfig,
-          options: undefined
-        });
-
-        if (contextSwitcherConfig) {
-          const actions = await LuigiConfig.getConfigValueAsync(
-            'navigation.contextSwitcher.actions'
+      StateHelpers.doOnStoreChange(
+        this.store,
+        async () => {
+          LuigiConfig._configModificationTimestamp = new Date();
+          const contextSwitcherConfig = LuigiConfig.getConfigValue(
+            'navigation.contextSwitcher'
           );
-          const currentPath = Routing.getCurrentPath();
 
           this.set({
-            actions,
-            fallbackLabelResolver: contextSwitcherConfig.fallbackLabelResolver
+            contextSwitcherEnabled: !!contextSwitcherConfig,
+            config: contextSwitcherConfig,
+            options: undefined
           });
 
-          // options are loaded lazy by default
-          if (!contextSwitcherConfig.lazyloadOptions) {
-            await this.fetchOptions();
+          if (contextSwitcherConfig) {
+            const actions = await LuigiConfig.getConfigValueAsync(
+              'navigation.contextSwitcher.actions'
+            );
+            const currentPath = Routing.getCurrentPath();
+
+            this.set({
+              actions,
+              fallbackLabelResolver: contextSwitcherConfig.fallbackLabelResolver
+            });
+
+            // options are loaded lazy by default
+            if (!contextSwitcherConfig.lazyloadOptions) {
+              await this.fetchOptions();
+            }
+            if (
+              ContextSwitcherHelpers.isContextSwitcherDetailsView(
+                currentPath,
+                contextSwitcherConfig.parentNodePath
+              )
+            ) {
+              await this.setSelectedContext(currentPath);
+            }
           }
-          if (
-            ContextSwitcherHelpers.isContextSwitcherDetailsView(
-              currentPath,
-              contextSwitcherConfig.parentNodePath
-            )
-          ) {
-            await this.setSelectedContext(currentPath);
-          }
-        }
-      }, ['navigation.contextSwitcher']);
+        },
+        ['navigation.contextSwitcher']
+      );
 
       RoutingHelpers.addRouteChangeListener(path =>
         this.setSelectedContext(path)

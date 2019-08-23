@@ -1,9 +1,8 @@
+Cypress.env('RETRIES', 1);
 describe('Clock based tests', () => {
   beforeEach(() => {
     cy.clock(null, ['setInterval']);
-    cy.visit('/');
-    cy.tick(3000);
-    cy.login('tets@email.com', 'tets');
+    cy.visitLoggedIn('/');
   });
 
   it('Triggers badge count update with Core Api', () => {
@@ -17,13 +16,12 @@ describe('Clock based tests', () => {
         initialBadgeCount
       );
 
-      cy.tick(10000);
+      cy.tick(11e3);
 
       cy.wrap($iframeBody)
         .contains('Update Header Navigation')
+        .scrollIntoView()
         .click();
-
-      cy.log('clicked updateHeaderNavigation');
 
       cy.get("button[title='Messages'] .fd-counter--notification").should(
         'not.contain',
