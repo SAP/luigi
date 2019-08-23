@@ -21,15 +21,11 @@ jobs:
     - stage: 'Precache'
       name: 'Install and build'
       script:
-        # - find $TRAVIS_BUILD_DIR
-        - cat $TRAVIS_BUILD_DIR/core/src/utilities/helpers/state-helpers.js
-        - pwd && ls $TRAVIS_BUILD_DIR
         - export CYPRESS_CACHE_FOLDER=$TRAVIS_BUILD_DIR/cypress-binary-cache
         - npm i -g lerna
         - lerna bootstrap --ci --ignore "*luigi-sample-vue"
         - echo 'core' && ls core/node_modules | wc -l && echo 'client' && ls client/node_modules | wc -l
         - lerna run bundle --ignore "*luigi-sample-vue"
-        - cat $TRAVIS_BUILD_DIR/core/src/utilities/helpers/state-helpers.js
         - du -sh
       before_cache:
         - rm -rf ~/.npm/_logs
@@ -47,7 +43,6 @@ jobs:
     - name: 'Unit Tests'
       script:
         - echo 'core' && ls core/node_modules | wc -l && echo 'client' && ls client/node_modules | wc -l
-        - cat $TRAVIS_BUILD_DIR/core/src/utilities/helpers/state-helpers.js
         - npm test --prefix core
       before_cache:
         - rm -rf ~/.npm/_logs
