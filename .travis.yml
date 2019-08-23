@@ -5,7 +5,13 @@ dist: trusty
 install: skip
 cache:
   directories:
-    - $TRAVIS_BUILD_DIR
+    - $TRAVIS_BUILD_DIR/node_modules
+    - $TRAVIS_BUILD_DIR/client
+    - $TRAVIS_BUILD_DIR/client/node_modules
+    - $TRAVIS_BUILD_DIR/core/public
+    - $TRAVIS_BUILD_DIR/core/node_modules
+    - $TRAVIS_BUILD_DIR/core/examples/luigi-sample-angular/node_modules
+    - $TRAVIS_BUILD_DIR/cypress-binary-cache
     - $HOME/.cache/Cypress
 notifications:
   slack:
@@ -15,7 +21,6 @@ jobs:
     - stage: 'Precache'
       name: 'Install and build'
       script:
-        - pwd && ls $TRAVIS_BUILD_DIR
         - export CYPRESS_CACHE_FOLDER=$TRAVIS_BUILD_DIR/cypress-binary-cache
         - npm i -g lerna
         - lerna bootstrap --ci --ignore "*luigi-sample-vue"

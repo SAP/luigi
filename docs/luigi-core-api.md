@@ -57,8 +57,8 @@ Tells Luigi that the configuration has been changed. Luigi will update the appli
 
 ##### Parameters
 
--   `scope` **...[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** one or more scope selectors specifying what parts of the configuration were changed. If no scope selector is provided the whole configuration is considered changed.<p>
-    These scope selectors are supported:
+-   `scope` **...[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** one or more scope selectors specifying what parts of the configuration were changed. If no scope selector is provided, the whole configuration is considered changed.<p>
+    The supported scope selectors are:
     <p>
     <ul>
       <li><code>navigation</code>: the navigation part of the configuration was changed. This includes navigation nodes, the context switcher, the product switcher and the profile menu.</li>
