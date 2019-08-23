@@ -4,7 +4,11 @@
   <ul class="fd-menu__list fd-menu__list--top">
     {#if children}
     {#each children as node}
-    <li on:click="onActionClick(node)" data-e2e="topnav-dropdown-item">
+    <li
+      on:click="onActionClick(node)"
+      data-e2e="topnav-dropdown-item"
+      data-testid="{ node.testId ? node.testId : prepareForTests(node.pathSegment, node.label)}"
+    >
       <a class="fd-menu__item">
         <span
           class="fd-top-nav__icon {node.icon && hasOpenUIicon(node) ? 'sap-icon--' + node.icon + ' sap-icon--m' : '' }"
@@ -50,6 +54,7 @@
               class="y-full-width-list__item"
               on:click="onActionClick(node)"
               data-cy="mobile-topnav-dropdown-item"
+              data-testid="{ node.testId ? node.testId : prepareForTests(node.pathSegment, node.label)}"
             >
               <span
                 class="y-full-width-list__icon {node.icon && hasOpenUIicon(node) ? 'sap-icon--' + node.icon + ' sap-icon--m' : '' }"
@@ -123,6 +128,22 @@
       },
       getNodeLabel(node) {
         return LuigiI18N.getTranslation(node.label);
+      },
+      prepareForTests(...parts) {
+        let result = '';
+        parts.forEach(p => {
+          if (p) {
+            result +=
+              (result ? '-' : '') +
+              encodeURIComponent(
+                p
+                  .toLowerCase()
+                  .split(' ')
+                  .join('')
+              );
+          }
+        });
+        return result;
       }
     },
     components: {
