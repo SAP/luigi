@@ -38,59 +38,37 @@ describe('Navigation', () => {
   });
 
   it('Check if active node is selected', () => {
-    cy.get('.fd-shellbar')
-      .contains('Projects')
-      .click();
-
+    cy.visit('/projects');
     cy.get('.fd-shellbar')
       .contains('Projects')
       .should('have.class', 'is-selected');
 
-    cy.get('.fd-app__sidebar')
-      .contains('Project One')
-      .click();
-
+    cy.visit('projects/pr1');
     cy.get('.fd-side-nav__subitem')
       .contains('Project Settings')
-      .click();
-
-    cy.get('.fd-side-nav__subitem')
-      .contains('Project Settings')
+      .click()
       .should('have.class', 'is-selected');
   });
 
   it('Check if active node reloads page', () => {
-    cy.get('.fd-shellbar')
-      .contains('Projects')
-      .click();
-    cy.get('.fd-app__sidebar')
-      .contains('Project One')
-      .click();
-    cy.get('.fd-app__sidebar')
-      .contains('Developers')
-      .click();
+    cy.visit('/projects/pr1/developers');
     cy.getIframeBody().then($iframeBody => {
-      cy.wrap($iframeBody).should('contain', 'Developers content');
       cy.wrap($iframeBody)
-        .find('[title="visitors: 1"]')
-        .should('exist');
+        .should('contain', 'Developers content')
+        .find('[title="visitors: 1"]');
       cy.get('.fd-app__sidebar')
         .contains('Project Settings')
         .click();
       cy.get('.fd-app__sidebar')
         .contains('Developers')
         .click();
-      cy.wrap($iframeBody)
-        .find('[title="visitors: 2"]')
-        .should('exist');
-      cy.get('.fd-app__sidebar')
-        .contains('Developers')
-        .click();
-      cy.getIframeBody().then($iframeBody2 => {
-        cy.wrap($iframeBody2)
-          .find('[title="visitors: 1"]')
-          .should('exist');
-      });
+      cy.wrap($iframeBody).find('[title="visitors: 2"]');
+    });
+    cy.get('.fd-app__sidebar')
+      .contains('Developers')
+      .click();
+    cy.getIframeBody().then($iframeBody => {
+      cy.wrap($iframeBody).find('[title="visitors: 1"]');
     });
   });
 
