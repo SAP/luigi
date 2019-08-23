@@ -8,34 +8,41 @@ class Settings {
     favicon: '/assets/favicon-sap.ico'
   };
 
-  customEventsFromMicrofrontends = {
-    'luigi.navigation.update-badge-counters': (event, mfObject, mfNodeObj) => {
+  customMessagesListeners = {
+    'luigi.navigation.update-badge-counters': (
+      customMessage,
+      mfObject,
+      mfNodeObj
+    ) => {
       console.info(
-        `Core has received event ${event.data.msg} with data ${
-          event.data.data
-        } from microfrontend ${JSON.stringify(mfObject)}. Node information:`,
-        mfNodeObj
+        `Core has received custom message: ${JSON.stringify(
+          customMessage
+        )} from microfrontend ${JSON.stringify(
+          mfObject
+        )}. Node information: ${JSON.stringify(mfNodeObj)}`
       );
 
       Luigi.showAlert({
-        text: `Badge counters update event received. msg: "${
-          event.data.msg
-        }", data: ${JSON.stringify(event.data.data)}`,
+        text: `Badge counters update message received: ${JSON.stringify(
+          customMessage
+        )}`,
         type: 'success',
         closeAfter: 3000
       });
+
       setTimeout(() => {
-        const messageData = {
-          msg: 'luigi.my-custom-message-for-client',
-          data: 'here goes the data'
+        const newCustomMessage = {
+          id: 'luigi.my-custom-message-for-client',
+          description: 'here goes the message description'
         };
-        Luigi.microfrontends().sendMessage(mfObject.id, messageData);
+        Luigi.microfrontends().sendCustomMessage(mfObject.id, newCustomMessage);
       }, 2000);
-      // TODO: uncomment for reviewing
-      // setInterval(() => {
-      //   const microfrontends = Luigi.microfrontends().getMicrofrontends();
-      //   console.log('microfrontends', JSON.stringify(microfrontends, null, 2));
-      // }, 5000);
+
+      // TODO: remove or comment before merging, use only for reviewing purposes
+      setInterval(() => {
+        const microfrontends = Luigi.microfrontends().getMicrofrontends();
+        console.log('microfrontends', JSON.stringify(microfrontends));
+      }, 5000);
     }
   };
 

@@ -9,19 +9,41 @@ class Helpers {
       if (!evt.data.msg) {
         return;
       }
-      // TODO: uncomment for easier reviewing
-      // console.log(
-      //   `Client received event ${evt.data.msg} from Core, with data ${
-      //     evt.data.data
-      //   }`, evt.data
-      // );
-      this.listeners
-        .filter(listener => listener.name === evt.data.msg)
-        .map(listener => listener.eventFn(evt, listener.listenerId));
+      // TODO: remove or comment before merging, use only for reviewing purposes
+      console.log(
+        `Client received event ${evt.data.msg} from Core, with data ${
+          evt.data.data
+        }`,
+        evt.data
+      );
+      if (evt.data.msg === 'custom') {
+        const message = this.convertCustomMessageInternalToUser(evt.data);
+        this.listeners
+          .filter(listener => listener.name === message.id)
+          .map(listener => listener.eventFn(message, listener.listenerId));
+      } else {
+        this.listeners
+          .filter(listener => listener.name === evt.data.msg)
+          .map(listener => listener.eventFn(evt, listener.listenerId));
+      }
     }.bind(this);
+
     window.addEventListener('message', helperListener);
     window.onunload = () =>
       window.removeEventListener('message', helperListener);
+  }
+
+  /** @private */
+  convertCustomMessageInternalToUser(internalMessage) {
+    return internalMessage.data;
+  }
+
+  /** @private */
+  convertCustomMessageUserToInternal(message) {
+    return {
+      msg: 'custom',
+      data: message
+    };
   }
 
   /**

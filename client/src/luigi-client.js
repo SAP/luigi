@@ -37,14 +37,14 @@ class LuigiClient {
   getClientPermissions() {
     return lifecycleManager.getClientPermissions();
   }
-  sendCustomEventToCore(msg, data) {
-    return lifecycleManager.sendCustomEventToCore(msg, data);
+  sendCustomMessage(message) {
+    return lifecycleManager.sendCustomMessage(message);
   }
-  addCustomEventListener(msg, data) {
-    return lifecycleManager.addCustomEventListener(msg, data);
+  addCustomMessageListener(messageId, listener) {
+    return lifecycleManager.addCustomMessageListener(messageId, listener);
   }
-  removeCustomEventListener(id) {
-    return lifecycleManager.removeCustomEventListener(id, data);
+  removeCustomMessageListener(listenerId) {
+    return lifecycleManager.removeCustomMessageListener(listenerId);
   }
   /**
    * @private

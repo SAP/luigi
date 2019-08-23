@@ -75,6 +75,7 @@
   } from './core-api';
   import { Navigation } from './navigation/services/navigation';
   import {
+    MessagesListeners,
     Iframe,
     ViewGroupPreloading,
     Routing,
@@ -368,22 +369,27 @@
           const iframe = IframeHelpers.getValidMessageSource(e, this);
           if (!iframe) return;
 
-          const customEventsFromMf =
-            LuigiConfig.getConfigValue(
-              'settings.customEventsFromMicrofrontends'
-            ) || {};
-          const customEventFromMfHandler = customEventsFromMf[e.data.msg];
-          if (typeof customEventFromMfHandler === 'function') {
-            // TODO: retrieve mfNodeObj and call event handler with that parameter as well
-            const microfrontend = LuigiMicrofrontends.getMicrofrontends().find(
-              mf => mf.id === e.source.frameElement.luigi.id
+          if ('custom' === e.data.msg) {
+            const customMessagesListeners =
+              LuigiConfig.getConfigValue('settings.customMessagesListeners') ||
+              {};
+            const message = MessagesListeners.convertCustomMessageInternalToUser(
+              e.data
             );
+            const customMessageListener = customMessagesListeners[message.id];
+            if (typeof customMessageListener === 'function') {
+              const microfrontend = LuigiMicrofrontends.getMicrofrontends().find(
+                mf => mf.id === e.source.frameElement.luigi.id
+              );
 
-            customEventFromMfHandler(
-              e,
-              microfrontend,
-              GenericHelpers.removeInternalProperties(iframe.luigi.currentNode)
-            );
+              customMessageListener(
+                message,
+                microfrontend,
+                GenericHelpers.removeInternalProperties(
+                  iframe.luigi.currentNode
+                )
+              );
+            }
           }
 
           if ('luigi.navigate.ok' === e.data.msg) {

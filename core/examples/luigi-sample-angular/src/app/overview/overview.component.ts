@@ -2,8 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import {
   linkManager,
   uxManager,
-  sendCustomEventToCore,
-  addCustomEventListener
+  sendCustomMessage,
+  addCustomMessageListener
 } from '@kyma-project/luigi-client';
 
 @Component({
@@ -73,10 +73,11 @@ export class OverviewComponent implements OnInit {
   public isDirty = false;
 
   ngOnInit() {
-    addCustomEventListener(
+    addCustomMessageListener(
       'luigi.my-custom-message-for-client',
-      (customEvent, id) => {
-        // console.log('Received Custom Event', customEvent, id);
+      (customMessage, listenerId) => {
+        // TODO: remove or comment before merging, use only for reviewing purposes
+        console.log('Received Custom Message', customMessage, listenerId);
       }
     );
   }
@@ -86,6 +87,6 @@ export class OverviewComponent implements OnInit {
   }
 
   public updateBadgeCounters() {
-    sendCustomEventToCore({ msg: 'luigi.navigation.update-badge-counters' });
+    sendCustomMessage({ id: 'luigi.navigation.update-badge-counters' });
   }
 }

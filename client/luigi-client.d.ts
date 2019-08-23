@@ -324,35 +324,35 @@ export function removeContextUpdateListener(id: string): boolean;
 export type removeContextUpdateListener = (id: string) => boolean;
 
 /**
- * Registers a listener called when the microfrontend receives the specified message.
- * @param {string} name the event name
- * @param {Lifecycle~customEventListenerCallback} customEventFn the function that is called when the microfrontend receives the corresponding event.
+ * Registers a listener called when the microfrontend receives the specified custom message.
+ * @param {string} customMessageId the custom message id
+ * @param {Lifecycle~customMessageListenerCallback} customMessageListener the function that is called when the microfrontend receives the corresponding event.
  * @memberof Lifecycle
  */
-export function addCustomEventListener(
-  name: string,
-  customEventFn: (event: Object, id: string) => void
+export function addCustomMessageListener(
+  customMessageId: string,
+  customMessageListener: (customMessage: Object, listenerId: string) => void
 ): string;
-export type addCustomEventListener = (
-  name: string,
-  customEventFn: (event: Object, id: string) => void
+export type addCustomMessageListener = (
+  customMessageId: string,
+  customMessageListener: (customMessage: Object, listenerId: string) => void
 ) => string;
 
 /**
- * Callback of the customEventListener
- * @callback Lifecycle~customEventListenerCallback
- * @param {Object} event custom event object
- * @param {string} event.msg event name
- * @param {string} event.data event payload
- * @param {string} id custom event listener id to be used for unsubscription
+ * Callback of the customMessageListener
+ * @callback Lifecycle~customMessageListenerCallback
+ * @param {Object} customMessage custom message object
+ * @param {string} customMessage.id message id
+ * @param {mixed} customMessage.MY_DATA_FIELD any other message data field
+ * @param {string} listenerId custom message listener id to be used for unsubscription
  */
 /**
- * Removes a custom event listener.
- * @param {string} id the id that was returned by the `addInitListener` function
+ * Removes a custom message listener.
+ * @param {string} listenerId the id that was returned by the `addInitListener` function
  * @memberof Lifecycle
  */
-export function removeCustomEventListener(id: string): boolean;
-export type removeCustomEventListener = (id: string) => boolean;
+export function removeCustomMessageListener(id: string): boolean;
+export type removeCustomMessageListener = (id: string) => boolean;
 
 /**
  * @returns {string} the authorization token
@@ -407,15 +407,16 @@ export type getClientPermissions = () => ClientPermissions;
 
 /**
  * Sends a custom message to the Luigi Core application.
- * @param {Object} messageData an object containing data to be sent to the Luigi Core for further processing of the custom event. This object will be set as input parameter of the event handler on the Luigi Core side.
- * @param {string} messageData.msg a string containing the message id.
+ * @param {Object} message an object containing data to be sent to the Luigi Core for further processing of the custom event. This object will be set as input parameter of the event handler on the Luigi Core side.
+ * @param {string} message.id a string containing the message id.
+ * @param {mixed} message.YOUR_DATA_FIELD
  * @example
  * import LuigiClient from '@kyma-project/luigi-client';
- * LuigiClient.sendCustomEventToCore({msg: 'environment.created', data: {id: 10, production: false}})
+ * LuigiClient.sendCustomMessage({id: 'environment.created', production: false})
  * @memberof Lifecycle
  */
-export function sendCustomEventToCore(messageData: object): void;
-export type sendCustomEventToCore = (messageData: object) => void;
+export function sendCustomMessage(message: object): void;
+export type sendCustomMessage = (message: object) => void;
 
 /**
  * The Link Manager allows you to navigate to another route. Use it instead of an internal router to:

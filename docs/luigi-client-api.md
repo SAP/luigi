@@ -38,18 +38,18 @@ Removes a context update listener.
 
 -   `id` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** the id that was returned by the `addContextUpdateListener` function
 
-### addCustomEventListener
+### addCustomMessageListener
 
-Registers a listener called when the microfrontend receives the specified message.
+Registers a listener called when the microfrontend receives the specified custom message.
 
 #### Parameters
 
--   `name` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** the event name
--   `customEventFn` **[Lifecycle~customEventListenerCallback](#lifecyclecustomeventlistenercallback)** the function that is called when the microfrontend receives the corresponding event.
+-   `customMessageId` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** the custom message id
+-   `customMessageListener` **[Lifecycle~customMessageListenerCallback](#lifecyclecustommessagelistenercallback)** the function that is called when the microfrontend receives the corresponding event.
 
-### removeCustomEventListener
+### removeCustomMessageListener
 
-Removes a custom event listener.
+Removes a custom message listener.
 
 #### Parameters
 
@@ -98,20 +98,21 @@ Returns the current client permissions as specified in the navigation node or an
 
 Returns **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** client permissions as specified in the navigation node.
 
-### sendCustomEventToCore
+### sendCustomMessage
 
 Sends a custom message to the Luigi Core application.
 
 #### Parameters
 
--   `messageData` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** an object containing data to be sent to the Luigi Core for further processing of the custom event. This object will be set as input parameter of the event handler on the Luigi Core side.
-    -   `messageData.msg` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** a string containing the message id.
+-   `message` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** an object containing data to be sent to the Luigi Core for further processing. This object will be set as input parameter of the custom message listener on the Luigi Core side.
+    -   `message.id` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** a string containing the message id.
+    -   `message.YOUR_DATA_FIELD` **mixed** 
 
 #### Examples
 
 ```javascript
 import LuigiClient from '@kyma-project/luigi-client';
-LuigiClient.sendCustomEventToCore({msg: 'environment.created', data: {id: 10, production: false}})
+LuigiClient.sendCustomMessage({id: 'environment.created', production: false})
 ```
 
 ## Lifecycle~initListenerCallback
@@ -125,18 +126,18 @@ Type: [Function](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Sta
 -   `context` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** current context data
 -   `origin` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** Luigi Core URL
 
-## Lifecycle~customEventListenerCallback
+## Lifecycle~customMessageListenerCallback
 
-Callback of the customEventListener
+Callback of the customMessageListener
 
 Type: [Function](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Statements/function)
 
 ### Parameters
 
--   `event` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** custom event object
-    -   `event.msg` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** event name
-    -   `event.data` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** event payload
--   `id` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** custom event listener id to be used for unsubscription
+-   `customMessage` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** custom message object
+    -   `customMessage.id` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** message id
+    -   `customMessage.MY_DATA_FIELD` **mixed** any other message data field
+-   `listenerId` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** custom message listener id to be used for unsubscription
 
 ## linkManager
 

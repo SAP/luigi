@@ -202,31 +202,34 @@ class LifecycleManager extends LuigiClientBase {
   }
 
   /**
-   * Registers a listener called when the microfrontend receives the specified message.
-   * @param {string} name the event name
-   * @param {Lifecycle~customEventListenerCallback} customEventFn the function that is called when the microfrontend receives the corresponding event.
+   * Registers a listener called when the microfrontend receives the specified custom message.
+   * @param {string} customMessageId the custom message id
+   * @param {Lifecycle~customMessageListenerCallback} customMessageListener the function that is called when the microfrontend receives the corresponding event.
    * @memberof Lifecycle
    */
-  addCustomEventListener(name, customEventFn) {
-    return helpers.addEventListener(name, (evt, id) => {
-      return customEventFn(evt.data, id);
-    });
+  addCustomMessageListener(customMessageId, customMessageListener) {
+    return helpers.addEventListener(
+      customMessageId,
+      (customMessage, listenerId) => {
+        return customMessageListener(customMessage, listenerId);
+      }
+    );
   }
 
   /**
-   * Callback of the customEventListener
-   * @callback Lifecycle~customEventListenerCallback
-   * @param {Object} event custom event object
-   * @param {string} event.msg event name
-   * @param {string} event.data event payload
-   * @param {string} id custom event listener id to be used for unsubscription
+   * Callback of the customMessageListener
+   * @callback Lifecycle~customMessageListenerCallback
+   * @param {Object} customMessage custom message object
+   * @param {string} customMessage.id message id
+   * @param {mixed} customMessage.MY_DATA_FIELD any other message data field
+   * @param {string} listenerId custom message listener id to be used for unsubscription
    */
   /**
-   * Removes a custom event listener.
+   * Removes a custom message listener.
    * @param {string} id the id that was returned by the `addInitListener` function
    * @memberof Lifecycle
    */
-  removeCustomEventListener(id) {
+  removeCustomMessageListener(id) {
     return helpers.removeEventListener(id);
   }
 
@@ -288,15 +291,19 @@ class LifecycleManager extends LuigiClientBase {
 
   /**
    * Sends a custom message to the Luigi Core application.
-   * @param {Object} messageData an object containing data to be sent to the Luigi Core for further processing of the custom event. This object will be set as input parameter of the event handler on the Luigi Core side.
-   * @param {string} messageData.msg a string containing the message id.
+   * @param {Object} message an object containing data to be sent to the Luigi Core for further processing. This object will be set as input parameter of the custom message listener on the Luigi Core side.
+   * @param {string} message.id a string containing the message id.
+   * @param {mixed} message.YOUR_DATA_FIELD
    * @example
    * import LuigiClient from '@kyma-project/luigi-client';
-   * LuigiClient.sendCustomEventToCore({msg: 'environment.created', data: {id: 10, production: false}})
+   * LuigiClient.sendCustomMessage({id: 'environment.created', production: false})
    * @memberof Lifecycle
    */
-  sendCustomEventToCore(messageData) {
-    helpers.sendPostMessageToLuigiCore(messageData);
+  sendCustomMessage(message) {
+    const customMessageInternal = helpers.convertCustomMessageUserToInternal(
+      message
+    );
+    helpers.sendPostMessageToLuigiCore(customMessageInternal);
   }
 }
 export const lifecycleManager = new LifecycleManager();

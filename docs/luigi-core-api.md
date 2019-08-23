@@ -344,25 +344,27 @@ Luigi.microfrontends().getMicrofrontends();
 
 Returns **[array](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array)** list of objects containing the id, the active state (visible, not preserved) and the type (iframe, modal, split-view)
 
-#### sendMessageToAll
+#### sendCustomMessageToAll
 
-Sends a message to all opened microfrontends which is typically
-retrieved by LuigiClient.addCustomEventListener(msg, callback).
+Sends a custom message to all opened microfrontends
 
 ##### Parameters
 
--   `messageData`  
+-   `message` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** an object containing data to be sent to the micro frontend for further processing. This object will be set as input parameter of the custom message listener on the micro frontend side.
+    -   `message.id` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** the id of the message
+    -   `message.YOUR_DATA_FIELD` **mixed** 
 
 ##### Examples
 
 ```javascript
-Luigi.microfrontends().sendMessageToAll({
-msg: 'myprefix.my-custom-message-for-client',
-data: 'here goes the data'
+Luigi.microfrontends().sendCustomMessageToAll({
+id: 'myprefix.my-custom-message-for-client',
+dataField1: 'here goes some data'
+moreData: 'here goes some more'
 });
 ```
 
-#### sendMessage
+#### sendCustomMessage
 
 Sends a message to specific microfrontend identified by an id
 Use Luigi.microfrontends().getMicrofrontends() to get the iframe id.
@@ -370,13 +372,16 @@ Use Luigi.microfrontends().getMicrofrontends() to get the iframe id.
 ##### Parameters
 
 -   `microfrontendId`  
--   `messageData`  
+-   `message` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** an object containing data to be sent to the micro frontend for further processing. This object will be set as input parameter of the custom message listener on the micro frontend side.
+    -   `message.id` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** the id of the message
+    -   `message.YOUR_DATA_FIELD` **mixed** 
 
 ##### Examples
 
 ```javascript
-Luigi.microfrontends().sendMessage(microfrontend.id, {
-msg: 'myprefix.my-custom-message-for-client',
-data: 'here goes the data'
+Luigi.microfrontends().sendCustomMessage(microfrontend.id, {
+id: 'myprefix.my-custom-message-for-client',
+dataField1: 'here goes some data'
+moreData: 'here goes some more'
 });
 ```

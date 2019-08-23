@@ -1,4 +1,5 @@
 import { IframeHelpers } from '../utilities/helpers';
+import { MessagesListeners } from '../services/messages-listeners';
 
 /**
  * Microfrontends-related functions.
@@ -21,43 +22,52 @@ class MicrofrontendsManager {
   }
 
   /**
-   * Sends a message to all opened microfrontends which is typically
-   * retrieved by LuigiClient.addCustomEventListener(msg, callback).
-   * @param {string} messageData.msg the name of the message 
-   * @param {mixed} messageData.data
+   * Sends a custom message to all opened microfrontends
+   * @param {Object} message an object containing data to be sent to the micro frontend for further processing. This object will be set as input parameter of the custom message listener on the micro frontend side.
+   * @param {string} message.id the id of the message 
+   * @param {mixed} message.YOUR_DATA_FIELD
    * @example
-    Luigi.microfrontends().sendMessageToAll({
-      msg: 'myprefix.my-custom-message-for-client',
-      data: 'here goes the data'
+    Luigi.microfrontends().sendCustomMessageToAll({
+      id: 'myprefix.my-custom-message-for-client',
+      dataField1: 'here goes some data'
+      moreData: 'here goes some more'
     });
    * @memberof Microfrontends
    */
-  sendMessageToAll(messageData) {
+  sendCustomMessageToAll(message) {
+    const internalMessage = MessagesListeners.convertCustomMessageUserToInternal(
+      message
+    );
     IframeHelpers.getMicrofrontends()
       .map(microfrontendObj => microfrontendObj.container)
       .map(mfContainer =>
-        IframeHelpers.sendMessageToIframe(mfContainer, messageData)
+        IframeHelpers.sendMessageToIframe(mfContainer, internalMessage)
       );
   }
 
   /**
    * Sends a message to specific microfrontend identified by an id
    * Use Luigi.microfrontends().getMicrofrontends() to get the iframe id.
-   * @param {string} messageData.msg the name of the message 
-   * @param {mixed} messageData.data
+   * @param {Object} message an object containing data to be sent to the micro frontend for further processing. This object will be set as input parameter of the custom message listener on the micro frontend side.
+   * @param {string} message.id the id of the message
+   * @param {mixed} message.YOUR_DATA_FIELD
    * @example
-    Luigi.microfrontends().sendMessage(microfrontend.id, {
-      msg: 'myprefix.my-custom-message-for-client',
-      data: 'here goes the data'
+    Luigi.microfrontends().sendCustomMessage(microfrontend.id, {
+      id: 'myprefix.my-custom-message-for-client',
+      dataField1: 'here goes some data'
+      moreData: 'here goes some more'
     });
    * @memberof Microfrontends
    */
-  sendMessage(microfrontendId, messageData) {
+  sendCustomMessage(microfrontendId, message) {
+    const internalMessage = MessagesListeners.convertCustomMessageUserToInternal(
+      message
+    );
     IframeHelpers.getMicrofrontends()
       .filter(microfrontendObj => microfrontendObj.id === microfrontendId)
       .map(microfrontendObj => microfrontendObj.container)
       .map(mfContainer =>
-        IframeHelpers.sendMessageToIframe(mfContainer, messageData)
+        IframeHelpers.sendMessageToIframe(mfContainer, internalMessage)
       );
   }
 }
