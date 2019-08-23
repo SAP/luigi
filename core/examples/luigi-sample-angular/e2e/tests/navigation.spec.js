@@ -33,6 +33,16 @@ describe('Navigation', () => {
     cy.get('.fd-app__sidebar').should('contain', 'Second Child');
   });
 
+  it('Find configured testid on navigation node', () => {
+    cy.visit('/projects/pr1/settings');
+    cy.get('a[data-testid="myTestId"]').should('exist');
+  });
+
+  it('Set default testid on navigation node', () => {
+    cy.visit('/projects/pr1/developers');
+    cy.get('a[data-testid="developers-developers"]').should('exist');
+  });
+
   it('Browser back works with Default Child mechanism', () => {
     cy.getIframeBody().then($iframeBody => {
       cy.wrap($iframeBody)
