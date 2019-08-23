@@ -19,9 +19,13 @@ class LuigiI18NManager {
   }
 
   _init() {
-    StateHelpers.doOnStoreChange(window.Luigi._store, () => {
-      this._initCustomImplementation();
-    });
+    StateHelpers.doOnStoreChange(
+      window.Luigi._store,
+      () => {
+        this._initCustomImplementation();
+      },
+      ['settings']
+    );
   }
 
   /**
@@ -90,7 +94,7 @@ class LuigiI18NManager {
     Object.getOwnPropertyNames(this.listeners).forEach(listenerId => {
       this.listeners[listenerId](locale);
     });
-    config.setConfig(config.getConfig());
+    config.configChanged();
   }
 
   /**
