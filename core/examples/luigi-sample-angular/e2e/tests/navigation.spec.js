@@ -1,7 +1,7 @@
+Cypress.env('RETRIES', 1);
 describe('Navigation', () => {
   beforeEach(() => {
-    cy.visit('/');
-    cy.login('tets@email.com', 'tets');
+    cy.visitLoggedIn('/');
   });
 
   it('Click around using navigation', () => {
@@ -46,7 +46,6 @@ describe('Navigation', () => {
   });
 
   it('Icon instead of label in TopNav', () => {
-    cy.visit('/');
     cy.get('button[title="Settings"]>.fd-top-nav__icon').should('exist');
     cy.get('button[title="Settings"]').should('contain', '');
   });
@@ -78,7 +77,7 @@ describe('Navigation', () => {
     cy.window().then(win => {
       const config = win.Luigi.getConfig();
       config.settings.sideNavFooterText = 'Hello from tets.';
-      win.Luigi.setConfig(config);
+      win.Luigi.configChanged('settings.footer');
 
       cy.get('.fd-app__sidebar .lui-side-nav__footer')
         .contains('Hello from tets.')
@@ -89,7 +88,7 @@ describe('Navigation', () => {
   describe('Node activation hook', () => {
     const nodeActivationPath = '/projects/pr1/on-node-activation';
     it('does not navigate - synchronously', () => {
-      cy.visit(nodeActivationPath);
+      cy.visitLoggedIn(nodeActivationPath);
 
       cy.getIframeBody().then($iframeBody => {
         cy.wrap($iframeBody)
@@ -104,7 +103,7 @@ describe('Navigation', () => {
     });
 
     it('does not navigate - asynchronously (from left navigation)', () => {
-      cy.visit(nodeActivationPath);
+      cy.visitLoggedIn(nodeActivationPath);
 
       cy.get('.sap-icon--question-mark').click();
 
@@ -114,7 +113,7 @@ describe('Navigation', () => {
     });
 
     it('navigates - asynchronously', () => {
-      cy.visit(nodeActivationPath);
+      cy.visitLoggedIn(nodeActivationPath);
 
       cy.getIframeBody().then($iframeBody => {
         // wrap the body of your iframe with cy so as to do cy actions inside iframe elements
