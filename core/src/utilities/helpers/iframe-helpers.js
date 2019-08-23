@@ -213,7 +213,7 @@ class IframeHelpersClass {
   }
 
   createIframe(viewUrl, viewGroup, currentNode) {
-    const activeSandboxRules = [
+    const luigiDefaultSandboxRules = [
       'allow-forms', // Allows the resource to submit forms. If this keyword is not used, form submission is blocked.
       'allow-modals', // Lets the resource open modal windows.
       // 'allow-orientation-lock', // Lets the resource lock the screen orientation.
@@ -231,7 +231,7 @@ class IframeHelpersClass {
     const customSandboxRules = LuigiConfig.getConfigValue(
       'settings.customSandboxRules'
     );
-    let activeSandboxRules = customSandboxRules
+    const activeSandboxRules = customSandboxRules
       ? [...new Set([...luigiDefaultSandboxRules, ...customSandboxRules])]
       : luigiDefaultSandboxRules;
 
