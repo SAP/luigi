@@ -19,60 +19,57 @@ notifications:
 jobs:
   include:
     - stage: 'Precache'
-      # name: 'Install and build'
-      name: 'Dummy step'
       script:
-        - pwd && ls $TRAVIS_BUILD_DIR
-    #     - export CYPRESS_CACHE_FOLDER=$TRAVIS_BUILD_DIR/cypress-binary-cache
-    #     - npm i -g lerna
-    #     - lerna bootstrap --ci --ignore "*luigi-sample-vue"
-    #     - echo 'core' && ls core/node_modules | wc -l && echo 'client' && ls client/node_modules | wc -l
-    #     - lerna run bundle --ignore "*luigi-sample-vue"
-    #     - du -sh
-    #   before_cache:
-    #     - rm -rf ~/.npm/_logs
-    #     - rm -rf ~/.npm/_cacache
-    #     - rm -rf $TRAVIS_BUILD_DIR/website
-    #     - rm -rf $TRAVIS_BUILD_DIR/core/examples/luigi-sample-vue
+        - export CYPRESS_CACHE_FOLDER=$TRAVIS_BUILD_DIR/cypress-binary-cache
+        - npm i -g lerna
+        - lerna bootstrap --ci --ignore "*luigi-sample-vue"
+        - echo 'core' && ls core/node_modules | wc -l && echo 'client' && ls client/node_modules | wc -l
+        - lerna run bundle --ignore "*luigi-sample-vue"
+        - du -sh
+      before_cache:
+        - rm -rf ~/.npm/_logs
+        - rm -rf ~/.npm/_cacache
+        - rm -rf $TRAVIS_BUILD_DIR/website
+        - rm -rf $TRAVIS_BUILD_DIR/core/examples/luigi-sample-vue
 
-    # #----- DOCU -----
-    # - stage: 'Documentation & Tests'
-    #   name: 'Check Documentation'
-    #   script: bash ./scripts/docuCheck.sh
-    #   before_cache:
-    #     - rm -rf ~/.npm/_logs
-    #     - rm -rf ~/.npm/_cacache
+    #----- DOCU -----
+    - stage: 'Documentation & Tests'
+      name: 'Check Documentation'
+      script: bash ./scripts/docuCheck.sh
+      before_cache:
+        - rm -rf ~/.npm/_logs
+        - rm -rf ~/.npm/_cacache
       
 
-    # #----- UNIT -----
-    # - name: 'Unit Tests'
-    #   script:
-    #     - echo 'core' && ls core/node_modules | wc -l && echo 'client' && ls client/node_modules | wc -l
-    #     - npm test --prefix core
-    #   before_cache:
-    #     - rm -rf ~/.npm/_logs
-    #     - rm -rf ~/.npm/_cacache
+    #----- UNIT -----
+    - name: 'Unit Tests'
+      script:
+        - echo 'core' && ls core/node_modules | wc -l && echo 'client' && ls client/node_modules | wc -l
+        - npm test --prefix core
+      before_cache:
+        - rm -rf ~/.npm/_logs
+        - rm -rf ~/.npm/_cacache
 
-    # # ----- INTEGRATION -----
-    # - &integration-testing
-    #   name: 'Integration Testing'
-    #   script:
-    #     - export CYPRESS_CACHE_FOLDER=$TRAVIS_BUILD_DIR/cypress-binary-cache
-    #     - ls && echo 'core' && ls core/node_modules | wc -l && echo 'client' && ls client/node_modules | wc -l
-    #     - bash ./test/e2e.sh
-    #   addons:
-    #     chrome: stable
-    #   before_install:
-    #     - google-chrome-stable --headless --disable-gpu --remote-debugging-port=9222 http://localhost &
-    #   before_cache:
-    #     - rm -rf ~/.npm/_logs
-    #     - rm -rf ~/.npm/_cacache
-    #     - rm -rf ~/.cache/Cypress/cy/production/browsers #it is individual for each run anyway so caching it slows down the job
-    #   # disabled until either dashboard supports parallel pr builds or
-    #   # we switch to circleci with parallelism
-    #   # - <<: *integration-testing
-    #   # - <<: *integration-testing
-    #   # - <<: *integration-testing
+    # ----- INTEGRATION -----
+    - &integration-testing
+      name: 'Integration Testing'
+      script:
+        - export CYPRESS_CACHE_FOLDER=$TRAVIS_BUILD_DIR/cypress-binary-cache
+        - ls && echo 'core' && ls core/node_modules | wc -l && echo 'client' && ls client/node_modules | wc -l
+        - bash ./test/e2e.sh
+      addons:
+        chrome: stable
+      before_install:
+        - google-chrome-stable --headless --disable-gpu --remote-debugging-port=9222 http://localhost &
+      before_cache:
+        - rm -rf ~/.npm/_logs
+        - rm -rf ~/.npm/_cacache
+        - rm -rf ~/.cache/Cypress/cy/production/browsers #it is individual for each run anyway so caching it slows down the job
+      # disabled until either dashboard supports parallel pr builds or
+      # we switch to circleci with parallelism
+      # - <<: *integration-testing
+      # - <<: *integration-testing
+      # - <<: *integration-testing
 
     # ----- NPM PUBLISH -----
     - stage: 'Publish'
