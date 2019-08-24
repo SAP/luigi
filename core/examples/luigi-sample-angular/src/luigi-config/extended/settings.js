@@ -9,11 +9,7 @@ class Settings {
   };
 
   customMessagesListeners = {
-    'luigi.navigation.update-badge-counters': (
-      customMessage,
-      mfObject,
-      mfNodeObj
-    ) => {
+    'luigi.my-custom-message': (customMessage, mfObject, mfNodeObj) => {
       console.info(
         `Core has received custom message: ${JSON.stringify(
           customMessage

@@ -14,21 +14,35 @@ import {
 export class OverviewComponent implements OnInit {
   public linkManager = linkManager;
 
-  public luigiClientLinks: any[] = [
+  public luigiClientItems: any[] = [
     {
-      link: '/projects/pr1',
+      clickHandler: () => {
+        this.linkManager().navigate('/projects/pr1');
+      },
       text: 'uxManager()',
       description: 'backdrop, confirmation modal, alerts and more'
     },
     {
-      link: '/ext',
+      clickHandler: () => {
+        this.linkManager().navigate('/ext');
+      },
       text: 'uxManager()',
       description: 'loading indicator'
     },
     {
-      link: '/projects/pr2',
+      clickHandler: () => {
+        this.linkManager().navigate('/projects/pr2');
+      },
       text: 'linkManager()',
       description: 'navigation methods'
+    },
+    {
+      clickHandler: () => {
+        this.sendCustomMessageToCore();
+      },
+      text: 'sendCustomMessage()',
+      description:
+        'send a custom message that will execute some logic on the Luigi Core app if that app is properly configured for that'
     }
   ];
 
@@ -87,6 +101,13 @@ export class OverviewComponent implements OnInit {
   }
 
   public updateBadgeCounters() {
-    sendCustomMessage({ id: 'luigi.navigation.update-badge-counters' });
+    window.parent.postMessage(
+      { msg: 'luigi.navigation.update-badge-counters' },
+      '*'
+    );
+  }
+
+  public sendCustomMessageToCore() {
+    sendCustomMessage({ id: 'luigi.my-custom-message' });
   }
 }

@@ -33,12 +33,10 @@ class Helpers {
       window.removeEventListener('message', helperListener);
   }
 
-  /** @private */
   convertCustomMessageInternalToUser(internalMessage) {
     return internalMessage.data;
   }
 
-  /** @private */
   convertCustomMessageUserToInternal(message) {
     return {
       msg: 'custom',
