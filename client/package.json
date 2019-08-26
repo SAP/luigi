@@ -1,7 +1,8 @@
 {
-  "name": "@kyma-project/luigi-client",
+  "name": "luigi-client-private",
   "version": "0.6.1",
-  "description": "Javascript library supporting consumers of the Luigi framework",
+  "private": true,
+  "description": "luigi-client development version, only the public folder is being published to npm as a package",
   "repository": {
     "type": "git",
     "url": "ssh://github.com/SAP/luigi.git"

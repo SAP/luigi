@@ -83,5 +83,5 @@ function removeNpmToken {
 prepublishChecks
 setNpmToken
 publishPackage "core" "core/public"
-publishPackage "client" "client"
+publishPackage "client" "client/public"
 removeNpmToken
