@@ -69,7 +69,7 @@ class LifecycleManager extends LuigiClientBase {
         this._notifyInit(e.origin);
       });
 
-      helpers.addEventListener('luigi.auth.tokenIssued', e => {
+      helpers.addEventListener('luigi-client.auth.tokenIssued', e => {
         setAuthData(e.data.authData);
       });
 
