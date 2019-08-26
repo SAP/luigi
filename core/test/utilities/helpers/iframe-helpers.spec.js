@@ -227,7 +227,7 @@ describe('Iframe-helpers', () => {
       assert.equal(iframes.length, 1);
     });
   });
-  describe('getMicrofrontends', () => {
+  describe('getMicrofrontendsInDom', () => {
     it('gets list of visible mfs', () => {
       const mockContainer = id => ({
         luigi: { id }
@@ -253,11 +253,11 @@ describe('Iframe-helpers', () => {
         };
       });
 
-      const iframes = IframeHelpers.getMicrofrontends();
+      const iframes = IframeHelpers.getMicrofrontendsInDom();
       assert.equal(iframes.length, 4, 'total iframes');
       assert.equal(iframes.filter(i => i.active).length, 3, 'active iframes');
 
-      const expectedKeys = ['active', 'id', 'container', 'type', 'selector'];
+      const expectedKeys = ['active', 'id', 'container', 'type'];
       assert.deepEqual(
         Object.keys(iframes[0]),
         expectedKeys,

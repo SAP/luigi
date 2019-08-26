@@ -154,18 +154,19 @@ class IframeHelpersClass {
 
   /*
   [
-    {id: "id-1", selector: '.iframeContainer iframe', container: IFRAME_DO_ELEM_1, active: true, type:"main"},
-    {id: "id-2", selector: '.iframeContainer iframe', container: IFRAME_DO_ELEM_1, active: false, type:"main"},
-    {id: "id-3", selector: '.iframeModalCtn iframe', container: IFRAME_DO_ELEM_3, active: false, type:"modal"},
-    {id: "id-4", selector: '.iframeContainer iframe', container: IFRAME_DO_ELEM_4, active: false, type:"main"},
-    {id: "id-5", selector: '.iframeSplitViewCnt iframe', container: IFRAME_DO_ELEM_5, active: false, type:"split-view"},
-    {id: "id-6", selector: '.iframeContainer iframe', container: IFRAME_DO_ELEM_6, active: false, type:"main"}
+    {id: "id-1", container: IFRAME_DO_ELEM_1, active: true, type:"main"},
+    {id: "id-2", container: IFRAME_DO_ELEM_1, active: false, type:"main"},
+    {id: "id-3", container: IFRAME_DO_ELEM_3, active: false, type:"modal"},
+    {id: "id-4", container: IFRAME_DO_ELEM_4, active: false, type:"main"},
+    {id: "id-5", container: IFRAME_DO_ELEM_5, active: false, type:"split-view"},
+    {id: "id-6", container: IFRAME_DO_ELEM_6, active: false, type:"main"}
   ]*/
-  getMicrofrontends() {
-    return MICROFRONTEND_TYPES.map(item => {
-      return Array.from(document.querySelectorAll(item.selector)).map(
-        container => Object.assign({ container }, item)
-      );
+  getMicrofrontendsInDom() {
+    return MICROFRONTEND_TYPES.map(({ type, selector }) => {
+      return Array.from(document.querySelectorAll(selector)).map(container => ({
+        container,
+        type
+      }));
     })
       .filter(iframeTypeArray => Boolean(iframeTypeArray.length))
       .reduce((acc, val) => acc.concat(val), []) // flatten

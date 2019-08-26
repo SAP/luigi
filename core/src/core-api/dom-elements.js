@@ -1,7 +1,6 @@
-import {
-  CUSTOM_LUIGI_CONTAINER,
-  MICROFRONTEND_TYPES
-} from './../utilities/constants';
+import { CUSTOM_LUIGI_CONTAINER } from './../utilities/constants';
+
+import { IframeHelpers } from './../utilities/helpers';
 
 /**
  * Use these functions to get DOM elements.
@@ -10,7 +9,7 @@ import {
 class LuigiElements {
   /**
    * Returns the container of the Luigi content.
-   * @returns {Object} the DOM element that wraps the Luigi content.
+   * @returns {HTMLElement} the DOM element that wraps the Luigi content.
    * @memberof Elements
    * @since 0.6.0
    * @example
@@ -53,7 +52,7 @@ class LuigiElements {
 
   /**
    * Returns the shellbar component.
-   * @returns {Object} the shellbar DOM element.
+   * @returns {HTMLElement} the shellbar DOM element.
    * @memberof Elements
    * @since 0.4.12
    * @example
@@ -65,7 +64,7 @@ class LuigiElements {
 
   /**
    * Returns the shellbar actions component.
-   * @returns {Object} the shellbar actions DOM element.
+   * @returns {HTMLElement} the shellbar actions DOM element.
    * @memberof Elements
    * @since 0.4.12
    * @example
@@ -76,8 +75,19 @@ class LuigiElements {
   }
 
   /**
+   * Returns a list of all available microfrontends
+   * @returns {{id: string, active: boolean, container: HTMLElement, type: ('main'|'split-view'|'modal')}[]} list of objects defining all micro frontends from the DOM
+   * @example
+   * Luigi.elements().getMicrofrontends();
+   * @memberof Elements
+   */
+  getMicrofrontends() {
+    return IframeHelpers.getMicrofrontendsInDom();
+  }
+
+  /**
    * Returns all micro frontend iframes including the iframe from the modal if it exists.
-   * @returns {Object} an array of all micro frontend iframes from the DOM.
+   * @returns {HTMLElement[]} an array of all micro frontend iframes from the DOM.
    * @memberof Elements
    * @since 0.4.12
    * @example
@@ -92,7 +102,7 @@ class LuigiElements {
   /**
    * Returns the active micro frontend iframe.
    * If there is a modal, which includes the micro frontend iframe, the function returns this iframe.
-   * @returns {Object} the active micro frontend iframe DOM element.
+   * @returns {HTMLElement} the active micro frontend iframe DOM element.
    * @memberof Elements
    * @since 0.4.12
    * @example

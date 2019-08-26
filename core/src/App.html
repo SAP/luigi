@@ -67,12 +67,7 @@
   import Alerts from './Alerts.html';
   import Modal from './Modal.html';
   import SplitView from './SplitView.html';
-  import {
-    LuigiI18N,
-    LuigiConfig,
-    LuigiElements,
-    LuigiMicrofrontends
-  } from './core-api';
+  import { LuigiI18N, LuigiConfig, LuigiElements } from './core-api';
   import { Navigation } from './navigation/services/navigation';
   import {
     MessagesListeners,
@@ -378,7 +373,7 @@
             );
             const customMessageListener = customMessagesListeners[message.id];
             if (typeof customMessageListener === 'function') {
-              const microfrontend = LuigiMicrofrontends.getMicrofrontends().find(
+              const microfrontend = LuigiElements.getMicrofrontends().find(
                 mf => mf.id === e.source.frameElement.luigi.id
               );
 
