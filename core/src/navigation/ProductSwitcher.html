@@ -126,19 +126,23 @@ Object.keys(productSwitcherItems[0]).length }
 
   export default {
     async oncreate() {
-      StateHelpers.doOnStoreChange(this.store, async () => {
-        const config = NavigationHelpers.getProductSwitcherConfig();
-        this.set({ config });
-        if (config) {
-          const productSwitcherItems = await LuigiConfig.getConfigValueAsync(
-            'navigation.productSwitcher.items'
-          );
-          this.set({
-            productSwitcherItems
-          });
-        }
-        this.setViewportHeightVariable();
-      });
+      StateHelpers.doOnStoreChange(
+        this.store,
+        async () => {
+          const config = NavigationHelpers.getProductSwitcherConfig();
+          this.set({ config });
+          if (config) {
+            const productSwitcherItems = await LuigiConfig.getConfigValueAsync(
+              'navigation.productSwitcher.items'
+            );
+            this.set({
+              productSwitcherItems
+            });
+          }
+          this.setViewportHeightVariable();
+        },
+        ['navigation.productSwitcher']
+      );
     },
     methods: {
       onActionClick(productSwitcherItem) {
