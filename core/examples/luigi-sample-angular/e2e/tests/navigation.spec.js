@@ -40,7 +40,7 @@ describe('Navigation', () => {
 
   it('Set default testid on navigation node', () => {
     cy.visit('/projects/pr1/developers');
-    cy.get('a[data-testid="developers-developers"]').should('exist');
+    cy.get('a[data-testid="developers_developers"]').should('exist');
   });
 
   it('Browser back works with Default Child mechanism', () => {
