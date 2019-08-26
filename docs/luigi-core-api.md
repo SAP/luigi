@@ -110,7 +110,7 @@ If the value is not a Promise it is wrapped to a Promise so that the returned va
 ##### Parameters
 
 -   `property` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** the object traversal path
--   `parameters` **mixed** optional parameters that are used if the target is a function
+-   `parameters` **any** optional parameters that are used if the target is a function
 
 ##### Examples
 
@@ -352,7 +352,7 @@ Sends a custom message to all opened microfrontends
 
 -   `message` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** an object containing data to be sent to the micro frontend for further processing. This object will be set as input parameter of the custom message listener on the micro frontend side.
     -   `message.id` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** the id of the message
-    -   `message.MY_DATA_FIELD` **mixed** any other message data field
+    -   `message.MY_DATA_FIELD` **any** any other message data field
 
 ##### Examples
 
@@ -374,7 +374,7 @@ Use Luigi.elements().getMicrofrontends() to get the iframe id.
 -   `microfrontendId`  
 -   `message` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** an object containing data to be sent to the micro frontend for further processing. This object will be set as input parameter of the custom message listener on the micro frontend side.
     -   `message.id` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** the id of the message
-    -   `message.MY_DATA_FIELD` **mixed** any other message data field
+    -   `message.MY_DATA_FIELD` **any** any other message data field
 -   `number` **microfrontendId** the id of the micro frontend.
 
 ##### Examples

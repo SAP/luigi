@@ -27,7 +27,7 @@ class LuigiAuth {
    * @memberof Authorization
    * @param {string} eventName
    * @param {Object} providerInstanceSettings
-   * @param {mixed} data
+   * @param {*} data
    * @param {string} redirectUrl
    */
   async handleAuthEvent(

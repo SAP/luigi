@@ -179,7 +179,7 @@ class LuigiConfig {
    * If the value is not a Promise it is wrapped to a Promise so that the returned value is definitely a Promise.
    * @memberof Configuration
    * @param {string} property the object traversal path
-   * @param {mixed} parameters optional parameters that are used if the target is a function
+   * @param {*} parameters optional parameters that are used if the target is a function
    * @example
    * Luigi.getConfigValueAsync('navigation.nodes')
    * Luigi.getConfigValueAsync('navigation.profile.items')

@@ -10,7 +10,7 @@ class CustomMessagesManager {
    * Sends a custom message to all opened microfrontends
    * @param {Object} message an object containing data to be sent to the micro frontend for further processing. This object will be set as input parameter of the custom message listener on the micro frontend side.
    * @param {string} message.id the id of the message 
-   * @param {mixed} message.MY_DATA_FIELD any other message data field
+   * @param {*} message.MY_DATA_FIELD any other message data field
    * @example
     Luigi.customMessages().sendToAll({
         id: 'myprefix.my-custom-message-for-client',
@@ -36,7 +36,7 @@ class CustomMessagesManager {
    * @param {microfrontendId} number the id of the micro frontend.
    * @param {Object} message an object containing data to be sent to the micro frontend for further processing. This object will be set as input parameter of the custom message listener on the micro frontend side.
    * @param {string} message.id the id of the message
-   * @param {mixed} message.MY_DATA_FIELD any other message data field
+   * @param {*} message.MY_DATA_FIELD any other message data field
    * @example
     Luigi.customMessages().send(microfrontend.id, {
         id: 'myprefix.my-custom-message-for-client',

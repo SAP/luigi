@@ -221,7 +221,7 @@ class LifecycleManager extends LuigiClientBase {
    * @callback Lifecycle~customMessageListenerCallback
    * @param {Object} customMessage custom message object
    * @param {string} customMessage.id message id
-   * @param {mixed} customMessage.MY_DATA_FIELD any other message data field
+   * @param {*} customMessage.MY_DATA_FIELD any other message data field
    * @param {string} listenerId custom message listener id to be used for unsubscription
    */
   /**
@@ -293,7 +293,7 @@ class LifecycleManager extends LuigiClientBase {
    * Sends a custom message to the Luigi Core application.
    * @param {Object} message an object containing data to be sent to the Luigi Core for further processing. This object will be set as input parameter of the custom message listener on the Luigi Core side.
    * @param {string} message.id a string containing the message id.
-   * @param {mixed} message.MY_DATA_FIELD any other message data field
+   * @param {*} message.MY_DATA_FIELD any other message data field
    * @example
    * import LuigiClient from '@kyma-project/luigi-client';
    * LuigiClient.sendCustomMessage({id: 'environment.created', production: false})

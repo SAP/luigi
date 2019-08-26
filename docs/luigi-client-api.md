@@ -106,7 +106,7 @@ Sends a custom message to the Luigi Core application.
 
 -   `message` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** an object containing data to be sent to the Luigi Core for further processing. This object will be set as input parameter of the custom message listener on the Luigi Core side.
     -   `message.id` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** a string containing the message id.
-    -   `message.MY_DATA_FIELD` **mixed** any other message data field
+    -   `message.MY_DATA_FIELD` **any** any other message data field
 
 #### Examples
 
@@ -136,7 +136,7 @@ Type: [Function](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Sta
 
 -   `customMessage` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** custom message object
     -   `customMessage.id` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** message id
-    -   `customMessage.MY_DATA_FIELD` **mixed** any other message data field
+    -   `customMessage.MY_DATA_FIELD` **any** any other message data field
 -   `listenerId` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** custom message listener id to be used for unsubscription
 
 ## linkManager
