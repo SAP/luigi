@@ -101,13 +101,10 @@ export class OverviewComponent implements OnInit {
   }
 
   public updateBadgeCounters() {
-    window.parent.postMessage(
-      { msg: 'luigi.navigation.update-badge-counters' },
-      '*'
-    );
+    sendCustomMessage({ id: 'my-custom-message.update-top-nav' });
   }
 
   public sendCustomMessageToCore() {
-    sendCustomMessage({ id: 'luigi.my-custom-message' });
+    sendCustomMessage({ id: 'my-custom-message.test-example' });
   }
 }

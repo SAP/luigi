@@ -9,7 +9,10 @@ class Settings {
   };
 
   customMessagesListeners = {
-    'luigi.my-custom-message': (customMessage, mfObject, mfNodeObj) => {
+    'my-custom-message.update-top-nav': () => {
+      Luigi.navigation().updateTopNavigation();
+    },
+    'my-custom-message.test-example': (customMessage, mfObject, mfNodeObj) => {
       console.info(
         `Core has received custom message: ${JSON.stringify(
           customMessage
