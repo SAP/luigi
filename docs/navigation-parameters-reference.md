@@ -119,10 +119,12 @@ Luigi.setConfig({
       logout: {
         label: 'End session'
         // icon: "sys-cancel",
+        testId: 'myTestId',
       },
       items: [
         {
           icon: '',
+          testId: 'myTestId',
           label: 'Luigi in Github',
           externalLink: {
             url: 'https://github.com/SAP/luigi',
@@ -250,9 +252,11 @@ The profile section is a configurable drop-down list available in the top naviga
 
 - **logout** overrides the content of the logout item.
   - **label** overrides the text for the logout item. The default value is "Sign Out".
+  - **testId** is a string where you can define your own custom `testId`. If nothing is specified it is node's label, but written as one word and lower case. (e.g. `label`).
   - **icon** overrides the icon for the logout item. The default value is [SAP UI5 log icon](https://sapui5.hana.ondemand.com/test-resources/sap/m/demokit/iconExplorer/webapp/index.html#/overview/SAP-icons/?tag=logout).
 - **items** is an array of objects, each one being a link to a Luigi navigation node or an external URL. An item can have the following parameters:
-  - **label** defines the text for the link. 
+  - **label** defines the text for the link.
+  - **testId** is a string where you can define your own custom `testId`. If nothing is specified it is node's label, but written as one word and lower case. (e.g. `label`).
   - **icon** is the name of an icon from the [OpenUI](https://openui5.hana.ondemand.com/1.40.10/iconExplorer.html) or a custom link (relative or absolute) to an image displayed next to the label or instead of it.
   - **link** defines an absolute link to a **node**.
   - **externalLink** is an object which indicates that the node links to an external URL. If this parameter is defined, the **link** parameter is ignored. It has the following properties:
