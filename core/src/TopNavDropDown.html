@@ -7,7 +7,7 @@
     <li
       on:click="onActionClick(node)"
       data-e2e="topnav-dropdown-item"
-      data-testid="{ node.testId ? node.testId : prepareForTests(node.pathSegment, node.label)}"
+      data-testid="{getTestId(node)}"
     >
       <a class="fd-menu__item">
         <span
@@ -54,7 +54,7 @@
               class="y-full-width-list__item"
               on:click="onActionClick(node)"
               data-cy="mobile-topnav-dropdown-item"
-              data-testid="{ node.testId ? node.testId : prepareForTests(node.pathSegment, node.label)}"
+              data-testid="{getTestId(node)}"
             >
               <span
                 class="y-full-width-list__icon {node.icon && hasOpenUIicon(node) ? 'sap-icon--' + node.icon + ' sap-icon--m' : '' }"
@@ -129,21 +129,10 @@
       getNodeLabel(node) {
         return LuigiI18N.getTranslation(node.label);
       },
-      prepareForTests(...parts) {
-        let result = '';
-        parts.forEach(p => {
-          if (p) {
-            result +=
-              (result ? '-' : '') +
-              encodeURIComponent(
-                p
-                  .toLowerCase()
-                  .split(' ')
-                  .join('')
-              );
-          }
-        });
-        return result;
+      getTestId(node) {
+        return node.testId
+          ? node.testId
+          : NavigationHelpers.prepareForTests(node.pathSegment, node.label);
       }
     },
     components: {

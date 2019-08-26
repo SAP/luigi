@@ -16,7 +16,7 @@ Object.keys(productSwitcherItems[0]).length }
           on:click="toggleDropdownState()"
           data-cy="desktop-product-switcher"
           title="{config.label}"
-          data-testid="{ config.testId ? config.testId : prepareForTests(config.label)}"
+          data-testid="{getTestId(config)}"
         ></button>
         {:else}
         <button
@@ -26,7 +26,7 @@ Object.keys(productSwitcherItems[0]).length }
           on:click="toggleDropdownState()"
           data-cy="desktop-product-switcher"
           title="{config.label}"
-          data-testid="{ config.testId ? config.testId : prepareForTests(config.label)}"
+          data-testid="{getTestId(config)}"
         >
           <img src="{config.icon}">
         </button>
@@ -44,7 +44,7 @@ Object.keys(productSwitcherItems[0]).length }
               {#if productSwitcherItem.label}
               <li
                 on:click="onActionClick(productSwitcherItem)"
-                data-testid="{ productSwitcherItem.testId ? productSwitcherItem.testId : prepareForTests(productSwitcherItem.label)}"
+                data-testid="{getTestId(productSwitcherItem)}"
               >
                 <a class="fd-menu__item">
                   <span
@@ -99,7 +99,7 @@ Object.keys(productSwitcherItems[0]).length }
             <li
               on:click="onActionClick(productSwitcherItem)"
               class="y-full-width-list__item"
-              data-testid="{ productSwitcherItem.testId ? productSwitcherItem.testId : prepareForTests(productSwitcherItem.label)}"
+              data-testid="{getTestId(productSwitcherItem)}"
             >
               <span
                 class="y-full-width-list__icon {productSwitcherItem.icon && hasOpenUIicon(productSwitcherItem) ? 'sap-icon--' + productSwitcherItem.icon + ' sap-icon--m' : '' }"
@@ -172,21 +172,10 @@ Object.keys(productSwitcherItems[0]).length }
       hasOpenUIicon(node) {
         return NavigationHelpers.isOpenUIiconName(node.icon);
       },
-      prepareForTests(...parts) {
-        let result = '';
-        parts.forEach(p => {
-          if (p) {
-            result +=
-              (result ? '-' : '') +
-              encodeURIComponent(
-                p
-                  .toLowerCase()
-                  .split(' ')
-                  .join('')
-              );
-          }
-        });
-        return result;
+      getTestId(node) {
+        return node.testId
+          ? node.testId
+          : NavigationHelpers.prepareForTests(node.label);
       }
     }
   };

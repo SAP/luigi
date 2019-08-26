@@ -22,7 +22,7 @@
               href="javascript:void(null)"
               class="fd-side-nav__link {node === selectedNode ? 'is-selected' : ''} fd-side-nav__link--icon"
               on:click="handleClick(node)"
-              data-testid="{ node.testId ? node.testId : prepareForTests(node.pathSegment, node.label)}"
+              data-testid="{getTestId(node)}"
             >
               {#if node.icon} {#if isOpenUIiconName(node.icon)}
               <span
@@ -69,7 +69,7 @@
                   href="javascript:void(null)"
                   class="fd-side-nav__sublink {node === selectedNode ? 'is-selected' : ''}"
                   on:click="handleClick(node)"
-                  data-testid="{ node.testId ? node.testId : prepareForTests(node.pathSegment, node.label)}"
+                  data-testid="{getTestId(node)}"
                 >
                   {getNodeLabel(node)} {#if node.externalLink && node.externalLink.url}
                   <span
@@ -89,7 +89,7 @@
             class="fd-side-nav__item lui-collapsible-item"
             on:click="handleIconClick(nodes, this)"
             title="{isSemiCollapsed ? key : ''}"
-            data-testid="{ nodes.metaInfo.testId ? nodes.metaInfo.testId : prepareForTests(key || nodes.metaInfo.label)}"
+            data-testid="{getTestIdForCat(nodes.metaInfo, key)}"
           >
             <a
               href="javascript:void(null)"
@@ -125,7 +125,7 @@
                   href="javascript:void(null)"
                   class="fd-side-nav__sublink {node === selectedNode ? 'is-selected' : ''}"
                   on:click="handleClick(node)"
-                  data-testid="{ node.testId ? node.testId : prepareForTests(node.pathSegment, node.label)}"
+                  data-testid="{getTestId(node)}"
                 >
                   {getNodeLabel(node)} {#if node.externalLink && node.externalLink.url}
                   <span
@@ -142,7 +142,7 @@
             class="fd-side-nav__title lui-category"
             on:click="handleIconClick(nodes, this)"
             title="{isSemiCollapsed ? key : ''}"
-            data-testid="{ nodes.metaInfo.testId ? nodes.metaInfo.testId : prepareForTests(key || nodes.metaInfo.label)}"
+            data-testid="{getTestIdForCat(nodes.metaInfo, key)}"
           >
             {#if hasCategoriesWithIcon} {#if
             isOpenUIiconName(nodes.metaInfo.icon)}
@@ -170,7 +170,7 @@
                 href="javascript:void(null)"
                 class="fd-side-nav__link {node === selectedNode ? 'is-selected' : ''} fd-side-nav__link--icon"
                 on:click="handleClick(node)"
-                data-testid="{ node.testId ? node.testId : prepareForTests(node.pathSegment, node.label)}"
+                data-testid="{getTestId(node)}"
               >
                 {#if node.icon} {#if isOpenUIiconName(node.icon)}
                 <span
@@ -311,21 +311,15 @@
       getNodeLabel(node) {
         return LuigiI18N.getTranslation(node.label);
       },
-      prepareForTests(...parts) {
-        let result = '';
-        parts.forEach(p => {
-          if (p) {
-            result +=
-              (result ? '-' : '') +
-              encodeURIComponent(
-                p
-                  .toLowerCase()
-                  .split(' ')
-                  .join('')
-              );
-          }
-        });
-        return result;
+      getTestId(node) {
+        return node.testId
+          ? node.testId
+          : NavigationHelpers.prepareForTests(node.pathSegment, node.label);
+      },
+      getTestIdForCat(metaInfo, key) {
+        return metaInfo && metaInfo.testId
+          ? metaInfo.testId
+          : NavigationHelpers.prepareForTests(key || metaInfo.label);
       }
     },
     methods: {

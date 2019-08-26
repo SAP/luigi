@@ -26,10 +26,7 @@
           <ul class="fd-menu__list fd-menu__list--top">
             {#each actions as node} {#if node.position === 'top' || !['top',
             'bottom'].includes(node.position)}
-            <li
-              on:click="onActionClick(node)"
-              data-testid="{ node.testId ? node.testId : prepareForTests(node.pathSegment, node.label)}"
-            >
+            <li on:click="onActionClick(node)" data-testid="{getTestId(node)}">
               <a class="fd-menu__item">{$getTranslation(node.label)}</a>
             </li>
             {/if} {/each}
@@ -45,10 +42,7 @@
             {/if} {#if options && options.length} {#each options as node}
             {#await getNodeName(node.label, config.fallbackLabelResolver,
             node.id)} {:then label}
-            <li
-              on:click="goTo(node.path)"
-              data-testid="{ node.testId ? node.testId : prepareForTests(node.pathSegment, node.label)}"
-            >
+            <li on:click="goTo(node.path)" data-testid="{getTestId(node)}">
               <a
                 class="fd-menu__item {node === selectedLabel ? 'is-selected' : ''}"
                 title="{label}"
@@ -59,10 +53,7 @@
           {#if actions && actions.length}
           <ul class="fd-menu__list fd-menu__list--bottom">
             {#each actions as node} {#if node.position === 'bottom'}
-            <li
-              on:click="onActionClick(node)"
-              data-testid="{ node.testId ? node.testId : prepareForTests(node.pathSegment, node.label)}"
-            >
+            <li on:click="onActionClick(node)" data-testid="{getTestId(node)}">
               <a class="fd-menu__item">{$getTranslation(node.label)}</a>
             </li>
             {/if} {/each}
@@ -78,7 +69,11 @@
   import { ContextSwitcherHelpers } from './services/context-switcher';
   import { LuigiConfig } from '../core-api';
   import { Routing } from '../services/routing';
-  import { RoutingHelpers, StateHelpers } from '../utilities/helpers';
+  import {
+    RoutingHelpers,
+    StateHelpers,
+    NavigationHelpers
+  } from '../utilities/helpers';
 
   export default {
     async oncreate() {
@@ -155,21 +150,10 @@
         }
         return ContextSwitcherHelpers.getFallbackLabel(config, id);
       },
-      prepareForTests(...parts) {
-        let result = '';
-        parts.forEach(p => {
-          if (p) {
-            result +=
-              (result ? '-' : '') +
-              encodeURIComponent(
-                p
-                  .toLowerCase()
-                  .split(' ')
-                  .join('')
-              );
-          }
-        });
-        return result;
+      getTestId(node) {
+        return node.testId
+          ? node.testId
+          : NavigationHelpers.prepareForTests(node.pathSegment, node.label);
       }
     },
     methods: {
