@@ -250,11 +250,15 @@
         semiCollapsible
       });
 
-      StateHelpers.doOnStoreChange(this.store, () => {
-        this.set({
-          footerText: LuigiConfig.getConfigValue('settings.sideNavFooterText')
-        });
-      }, ['settings.footer']);
+      StateHelpers.doOnStoreChange(
+        this.store,
+        () => {
+          this.set({
+            footerText: LuigiConfig.getConfigValue('settings.sideNavFooterText')
+          });
+        },
+        ['settings.footer']
+      );
 
       // set isSemiCollapsed to true for mobile
       if (
