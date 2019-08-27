@@ -75,7 +75,7 @@ class LuigiElements {
   }
 
   /**
-   * Returns a list of all available microfrontends
+   * Returns a list of all available micro frontends.
    * @returns {{id: string, active: boolean, container: HTMLElement, type: ('main'|'split-view'|'modal')}[]} list of objects defining all micro frontends from the DOM
    * @example
    * Luigi.elements().getMicrofrontends();

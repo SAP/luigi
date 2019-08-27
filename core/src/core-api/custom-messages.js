@@ -2,13 +2,13 @@ import { IframeHelpers } from '../utilities/helpers';
 import { MessagesListeners } from '../services/messages-listeners';
 
 /**
- * Custom messages related functions.
+ * Functions related to custom messages.
  * @name CustomMessages
  */
 class CustomMessagesManager {
   /**
-   * Sends a custom message to all opened microfrontends
-   * @param {Object} message an object containing data to be sent to the micro frontend for further processing. This object will be set as input parameter of the custom message listener on the micro frontend side.
+   * Sends a custom message to all opened micro frontends.
+   * @param {Object} message an object containing data to be sent to the micro frontend to process it further. This object is set as an input parameter of the custom message listener on the micro frontend side.
    * @param {string} message.id the id of the message 
    * @param {*} message.MY_DATA_FIELD any other message data field
    * @example
@@ -31,10 +31,10 @@ class CustomMessagesManager {
   }
 
   /**
-   * Sends a message to specific microfrontend identified by an id
+   * Sends a message to specific micro frontend identified with an id.
    * Use Luigi.elements().getMicrofrontends() to get the iframe id.
-   * @param {microfrontendId} number the id of the micro frontend.
-   * @param {Object} message an object containing data to be sent to the micro frontend for further processing. This object will be set as input parameter of the custom message listener on the micro frontend side.
+   * @param {microfrontendId} number the id of the micro frontend
+   * @param {Object} message an object containing data to be sent to the micro frontend to process it further. This object is set as an input parameter of the custom message listener on the micro frontend side.
    * @param {string} message.id the id of the message
    * @param {*} message.MY_DATA_FIELD any other message data field
    * @example

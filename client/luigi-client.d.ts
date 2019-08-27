@@ -324,9 +324,9 @@ export function removeContextUpdateListener(id: string): boolean;
 export type removeContextUpdateListener = (id: string) => boolean;
 
 /**
- * Registers a listener called when the microfrontend receives the specified custom message.
+ * Registers a listener called when the micro frontend receives a custom message.
  * @param {string} customMessageId the custom message id
- * @param {Lifecycle~customMessageListenerCallback} customMessageListener the function that is called when the microfrontend receives the corresponding event.
+ * @param {Lifecycle~customMessageListenerCallback} customMessageListener the function that is called when the micro frontend receives the corresponding event.
  * @memberof Lifecycle
  */
 export function addCustomMessageListener(
@@ -344,7 +344,7 @@ export type addCustomMessageListener = (
  * @param {Object} customMessage custom message object
  * @param {string} customMessage.id message id
  * @param {*} customMessage.MY_DATA_FIELD any other message data field
- * @param {string} listenerId custom message listener id to be used for unsubscription
+ * @param {string} listenerId custom message listener id to be used for unsubscribing
  */
 /**
  * Removes a custom message listener.
@@ -407,8 +407,8 @@ export type getClientPermissions = () => ClientPermissions;
 
 /**
  * Sends a custom message to the Luigi Core application.
- * @param {Object} message an object containing data to be sent to the Luigi Core for further processing of the custom event. This object will be set as input parameter of the event handler on the Luigi Core side.
- * @param {string} message.id a string containing the message id.
+ * @param {Object} message an object containing data to be sent to the Luigi Core to further process the custom event. This object is set as an input parameter of the event handler on the Luigi Core side.
+ * @param {string} message.id a string containing the message id
  * @param {*} message.MY_DATA_FIELD any other message data field
  * @example
  * import LuigiClient from '@kyma-project/luigi-client';

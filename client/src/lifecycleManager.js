@@ -202,9 +202,9 @@ class LifecycleManager extends LuigiClientBase {
   }
 
   /**
-   * Registers a listener called when the microfrontend receives the specified custom message.
+   * Registers a listener called when the micro frontend receives a custom message.
    * @param {string} customMessageId the custom message id
-   * @param {Lifecycle~customMessageListenerCallback} customMessageListener the function that is called when the microfrontend receives the corresponding event.
+   * @param {Lifecycle~customMessageListenerCallback} customMessageListener the function that is called when the micro frontend receives the corresponding event.
    * @memberof Lifecycle
    */
   addCustomMessageListener(customMessageId, customMessageListener) {
@@ -291,8 +291,8 @@ class LifecycleManager extends LuigiClientBase {
 
   /**
    * Sends a custom message to the Luigi Core application.
-   * @param {Object} message an object containing data to be sent to the Luigi Core for further processing. This object will be set as input parameter of the custom message listener on the Luigi Core side.
-   * @param {string} message.id a string containing the message id.
+   * @param {Object} message an object containing data to be sent to the Luigi Core to process it further. This object is set as an input parameter of the custom message listener on the Luigi Core side.
+   * @param {string} message.id a string containing the message id
    * @param {*} message.MY_DATA_FIELD any other message data field
    * @example
    * import LuigiClient from '@kyma-project/luigi-client';
