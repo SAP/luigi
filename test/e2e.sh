@@ -17,10 +17,12 @@ cd core/examples/luigi-sample-angular
 # npm install -D cypress concurrently lerna @angular/cli@$NG_CLI_VERSION
 # lerna bootstrap --ci --ignore "*luigi-sample-vue"
 
-./node_modules/cypress/bin/cypress install
+npm i cypress@^3.4.1 cypress-plugin-retries
+# ./node_modules/cypress/bin/cypress install
 
-# echo "Starting webserver"
-npm run start &
+echo "Starting webserver"
+# npm run start &
+sirv start dist --cors --port 4200 &
 WS_PID=$!
 
 # # wait until example is built and running
@@ -33,21 +35,22 @@ until $(curl --output /dev/null --silent --head --fail http://localhost:4200); d
 done
 echo "Webserver was ready after $WAITCOUNT seconds."
 
+# docker run -it --network="host" -v $PWD:/e2e -w /e2e cypress/included:3.4.1 --browser chrome -c video=false
+npm run e2e:run
 
-
-if [ "$USE_CYPRESS_DASHBOARD" == "true" ]; then
-  if [ [ "$TRAVIS_PULL_REQUEST" == "false" ] && [ "$CIRCLE_PR_REPONAME" == "" ] ]; then
-    echo "Running tests in parallel with recording"
-    npm run e2e:run -- --record --parallel
-  else
-    # Cypress Dashboad does not support PR recording
-    echo "Running tests without parallelization"
-    npm run e2e:run
-  fi
-else
-  echo "Running tests without parallelization"
-  npm run e2e:run
-fi
+# if [ "$USE_CYPRESS_DASHBOARD" == "true" ]; then
+#   if [ [ "$TRAVIS_PULL_REQUEST" == "false" ] && [ "$CIRCLE_PR_REPONAME" == "" ] ]; then
+#     echo "Running tests in parallel with recording"
+#     npm run e2e:run -- --record --parallel
+#   else
+#     # Cypress Dashboad does not support PR recording
+#     echo "Running tests without parallelization"
+#     npm run e2e:run
+#   fi
+# else
+#   echo "Running tests without parallelization"
+  # npm run e2e:run
+# fi
 RV=$?
 kill $WS_PID
 exit $RV
