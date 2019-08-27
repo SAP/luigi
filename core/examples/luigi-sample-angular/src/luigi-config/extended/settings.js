@@ -22,9 +22,7 @@ class Settings {
       );
 
       Luigi.showAlert({
-        text: `Badge counters update message received: ${JSON.stringify(
-          customMessage
-        )}`,
+        text: `Custom message received: ${JSON.stringify(customMessage)}`,
         type: 'success',
         closeAfter: 3000
       });
