@@ -47,16 +47,16 @@ function publishPackage {
 
   cd $BASE_DIR/../$BASE_FOLDER
   # travis already installed it
-    echoe "Running npm ci in $(pwd) ..."
-    npm ci
+    # echoe "Running npm ci in $(pwd) ..."
+    # npm ci
 
   # Check if was published already
   NPM_GREP=`npm info $NAME versions | grep "'$VERSION'" | wc -l`
   if [[ "$NPM_GREP" =~ "1" ]]; then
     echo "$NAME@$VERSION already published, skipping until next release."
   else
-    echoe "Bundling $NAME@$VERSION ..."
-    npm run bundle
+    # echoe "Bundling $NAME@$VERSION ..."
+    # npm run bundle
 
     echoe "Publishing $NAME@$VERSION ..."
 

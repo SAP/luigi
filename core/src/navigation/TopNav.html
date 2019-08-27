@@ -331,24 +331,28 @@
 
   export default {
     oncreate() {
-      StateHelpers.doOnStoreChange(this.store, () => {
-        this.set({
-          authorizationEnabled: LuigiAuth.isAuthorizationEnabled(),
-          autologinEnabled: !Boolean(
-            LuigiConfig.getConfigValue('auth.disableAutoLogin')
-          ),
-          isProductSwitcherAvailable: LuigiConfig.getConfigValue(
-            'navigation.productSwitcher'
-          ),
-          hideNavComponent: LuigiConfig.getConfigBooleanValue(
-            'settings.hideNavigation'
-          ),
-          responsiveNavSetting: LuigiConfig.getConfigValue(
-            'settings.responsiveNavigation'
-          ),
-          productSwitcherConfig: NavigationHelpers.getProductSwitcherConfig()
-        });
-      });
+      StateHelpers.doOnStoreChange(
+        this.store,
+        () => {
+          this.set({
+            authorizationEnabled: LuigiAuth.isAuthorizationEnabled(),
+            autologinEnabled: !Boolean(
+              LuigiConfig.getConfigValue('auth.disableAutoLogin')
+            ),
+            isProductSwitcherAvailable: LuigiConfig.getConfigValue(
+              'navigation.productSwitcher'
+            ),
+            hideNavComponent: LuigiConfig.getConfigBooleanValue(
+              'settings.hideNavigation'
+            ),
+            responsiveNavSetting: LuigiConfig.getConfigValue(
+              'settings.responsiveNavigation'
+            ),
+            productSwitcherConfig: NavigationHelpers.getProductSwitcherConfig()
+          });
+        },
+        ['navigation']
+      );
       this.set({
         urlAuthError: AuthHelpers.parseUrlAuthErrors()
       });

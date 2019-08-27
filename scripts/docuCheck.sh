@@ -65,7 +65,6 @@ validateMdChanges() {
   fi
 }
 
-
 # add all folders that are containing documentation steps
 for FOLDER in "${LUIGI_FOLDERS[@]}"
 do
