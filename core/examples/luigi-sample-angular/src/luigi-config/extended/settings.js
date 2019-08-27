@@ -34,12 +34,6 @@ class Settings {
         };
         Luigi.customMessage().send(mfObject.id, newCustomMessage);
       }, 2000);
-
-      // TODO: remove or comment before merging, use only for reviewing purposes
-      setInterval(() => {
-        const microfrontends = Luigi.elements().getMicrofrontends();
-        console.log('microfrontends', JSON.stringify(microfrontends));
-      }, 5000);
     }
   };
 

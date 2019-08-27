@@ -9,13 +9,6 @@ class Helpers {
       if (!evt.data.msg) {
         return;
       }
-      // TODO: remove or comment before merging, use only for reviewing purposes
-      console.log(
-        `Client received event ${evt.data.msg} from Core, with data ${
-          evt.data.data
-        }`,
-        evt.data
-      );
       if (evt.data.msg === 'custom') {
         const message = this.convertCustomMessageInternalToUser(evt.data);
         this.listeners

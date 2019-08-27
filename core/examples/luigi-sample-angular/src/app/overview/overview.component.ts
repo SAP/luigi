@@ -90,8 +90,7 @@ export class OverviewComponent implements OnInit {
     addCustomMessageListener(
       'luigi.my-custom-message-for-client',
       (customMessage, listenerId) => {
-        // TODO: remove or comment before merging, use only for reviewing purposes
-        console.log('Received Custom Message', customMessage, listenerId);
+        console.info('Received Custom Message', customMessage, listenerId);
       }
     );
   }
