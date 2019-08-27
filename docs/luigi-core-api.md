@@ -188,7 +188,7 @@ Returns **[HTMLElement](https://developer.mozilla.org/docs/Web/HTML/Element)** t
 
 #### getMicrofrontends
 
-Returns a list of all available microfrontends
+Returns a list of all available micro frontends.
 
 ##### Examples
 
@@ -342,15 +342,15 @@ Property values for token replacement in the localization key will be taken from
 
 ### CustomMessages
 
-Custom messages related functions.
+Functions related to custom messages.
 
 #### sendToAll
 
-Sends a custom message to all opened microfrontends
+Sends a custom message to all opened micro frontends.
 
 ##### Parameters
 
--   `message` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** an object containing data to be sent to the micro frontend for further processing. This object will be set as input parameter of the custom message listener on the micro frontend side.
+-   `message` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** an object containing data to be sent to the micro frontend to process it further. This object is set as an input parameter of the custom message listener on the micro frontend side.
     -   `message.id` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** the id of the message
     -   `message.MY_DATA_FIELD` **any** any other message data field
 
@@ -366,16 +366,16 @@ moreData: 'here goes some more'
 
 #### send
 
-Sends a message to specific microfrontend identified by an id
+Sends a message to specific micro frontend identified with an id.
 Use Luigi.elements().getMicrofrontends() to get the iframe id.
 
 ##### Parameters
 
 -   `microfrontendId`  
--   `message` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** an object containing data to be sent to the micro frontend for further processing. This object will be set as input parameter of the custom message listener on the micro frontend side.
+-   `message` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** an object containing data to be sent to the micro frontend to process it further. This object is set as an input parameter of the custom message listener on the micro frontend side.
     -   `message.id` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** the id of the message
     -   `message.MY_DATA_FIELD` **any** any other message data field
--   `number` **microfrontendId** the id of the micro frontend.
+-   `number` **microfrontendId** the id of the micro frontend
 
 ##### Examples
 

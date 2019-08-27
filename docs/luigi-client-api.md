@@ -40,12 +40,12 @@ Removes a context update listener.
 
 ### addCustomMessageListener
 
-Registers a listener called when the microfrontend receives the specified custom message.
+Registers a listener called when the micro frontend receives a custom message.
 
 #### Parameters
 
 -   `customMessageId` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** the custom message id
--   `customMessageListener` **[Lifecycle~customMessageListenerCallback](#lifecyclecustommessagelistenercallback)** the function that is called when the microfrontend receives the corresponding event.
+-   `customMessageListener` **[Lifecycle~customMessageListenerCallback](#lifecyclecustommessagelistenercallback)** the function that is called when the micro frontend receives the corresponding event.
 
 ### removeCustomMessageListener
 
@@ -104,8 +104,8 @@ Sends a custom message to the Luigi Core application.
 
 #### Parameters
 
--   `message` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** an object containing data to be sent to the Luigi Core for further processing. This object will be set as input parameter of the custom message listener on the Luigi Core side.
-    -   `message.id` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** a string containing the message id.
+-   `message` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** an object containing data to be sent to the Luigi Core to process it further. This object is set as an input parameter of the custom message listener on the Luigi Core side.
+    -   `message.id` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** a string containing the message id
     -   `message.MY_DATA_FIELD` **any** any other message data field
 
 #### Examples
