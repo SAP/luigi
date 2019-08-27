@@ -26,7 +26,7 @@ jobs:
         - lerna bootstrap --ci --ignore "*luigi-sample-vue"
         - echo 'core' && ls core/node_modules | wc -l && echo 'client' && ls client/node_modules | wc -l
         - lerna run bundle --ignore "*luigi-sample-vue"
-        - lerna run build
+        - lerna run build --ignore "*luigi-sample-vue"
         - npm test --prefix core
         - du -sh
       before_cache:
