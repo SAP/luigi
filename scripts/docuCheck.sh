@@ -51,8 +51,6 @@ validateAndGenerateDocumentation() {
 }
 
 validateMdChanges() {
-  local FOLDER=$1
-  echoe "Validate .md changes for ${FOLDER}"
   # verify that there are no changes in md files, exclude styleguide from being checked
   local MD_FILE_CHANGES=`git status | grep '.md' | grep -v 'styleguide' | wc -l`
   if [[ $MD_FILE_CHANGES != *"0"* ]]; then
@@ -66,12 +64,13 @@ validateMdChanges() {
 }
 
 # add all folders that are containing documentation steps
-for FOLDER in "${LUIGI_FOLDERS[@]}"
-do
-  installPrerequisites "${FOLDER}"
-  validateAndGenerateDocumentation "${FOLDER}"
-  validateMdChanges "${FOLDER}"
-done
+# for FOLDER in "${LUIGI_FOLDERS[@]}"
+# do
+#   installPrerequisites "${FOLDER}"
+#   validateAndGenerateDocumentation "${FOLDER}"
+# done
+npm run docu:validate
+validateMdChanges
 
 echoe "Validation successful, documentation OK"
 exit 0
