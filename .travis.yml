@@ -5,7 +5,13 @@ dist: trusty
 install: skip
 cache:
   directories:
-    - $TRAVIS_BUILD_DIR
+    - $TRAVIS_BUILD_DIR/node_modules
+    - $TRAVIS_BUILD_DIR/client
+    - $TRAVIS_BUILD_DIR/client/node_modules
+    - $TRAVIS_BUILD_DIR/core/public
+    - $TRAVIS_BUILD_DIR/core/node_modules
+    - $TRAVIS_BUILD_DIR/core/examples/luigi-sample-angular/node_modules
+    - $TRAVIS_BUILD_DIR/cypress-binary-cache
     - $HOME/.cache/Cypress
 notifications:
   slack:
@@ -13,9 +19,7 @@ notifications:
 jobs:
   include:
     - stage: 'Precache'
-      name: 'Install and build'
       script:
-        - pwd && ls $TRAVIS_BUILD_DIR
         - export CYPRESS_CACHE_FOLDER=$TRAVIS_BUILD_DIR/cypress-binary-cache
         - npm i -g lerna
         - lerna bootstrap --ci --ignore "*luigi-sample-vue"
@@ -24,6 +28,7 @@ jobs:
         - du -sh
       before_cache:
         - rm -rf ~/.npm/_logs
+        - rm -rf ~/.npm/_cacache
         - rm -rf $TRAVIS_BUILD_DIR/website
         - rm -rf $TRAVIS_BUILD_DIR/core/examples/luigi-sample-vue
 
@@ -33,7 +38,8 @@ jobs:
       script: bash ./scripts/docuCheck.sh
       before_cache:
         - rm -rf ~/.npm/_logs
-
+        - rm -rf ~/.npm/_cacache
+      
     #----- UNIT -----
     - name: 'Unit Tests'
       script:
@@ -41,6 +47,7 @@ jobs:
         - npm test --prefix core
       before_cache:
         - rm -rf ~/.npm/_logs
+        - rm -rf ~/.npm/_cacache
 
     # ----- INTEGRATION -----
     - &integration-testing
@@ -55,14 +62,21 @@ jobs:
         - google-chrome-stable --headless --disable-gpu --remote-debugging-port=9222 http://localhost &
       before_cache:
         - rm -rf ~/.npm/_logs
+        - rm -rf ~/.npm/_cacache
         - rm -rf ~/.cache/Cypress/cy/production/browsers #it is individual for each run anyway so caching it slows down the job
-    - <<: *integration-testing
-    # - <<: *integration-testing
-    # - <<: *integration-testing
+      # disabled until either dashboard supports parallel pr builds or
+      # we switch to circleci with parallelism
+      # - <<: *integration-testing
+      # - <<: *integration-testing
+      # - <<: *integration-testing
 
     # ----- NPM PUBLISH -----
     - stage: 'Publish'
       name: 'Publish to NPM'
       # run only when merging from release-v branch to master
+      # if: repo = SAP/luigi AND head_branch ~= ^release-v
       if: repo = SAP/luigi AND (branch = master OR branch ~= ^release-v)
       script: bash ./scripts/npmPublish.sh
+      before_cache:
+        - rm -rf ~/.npm/_logs
+        - rm -rf ~/.npm/_cacache

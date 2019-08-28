@@ -14,6 +14,23 @@ class NavigationHelpersClass {
     return Object.assign({ icon: 'grid', label: 'My Products' }, userConfig);
   }
 
+  prepareForTests(...parts) {
+    let result = '';
+    parts.forEach(p => {
+      if (p) {
+        result +=
+          (result ? '_' : '') +
+          encodeURIComponent(
+            p
+              .toLowerCase()
+              .split(' ')
+              .join('')
+          );
+      }
+    });
+    return result;
+  }
+
   isNodeAccessPermitted(nodeToCheckPermissionFor, parentNode, currentContext) {
     if (LuigiAuth.isAuthorizationEnabled()) {
       const loggedIn = AuthHelpers.isLoggedIn();
