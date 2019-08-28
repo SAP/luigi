@@ -35,22 +35,14 @@ until $(curl --output /dev/null --silent --head --fail http://localhost:4200); d
 done
 echo "Webserver was ready after $WAITCOUNT seconds."
 
-# docker run -it --network="host" -v $PWD:/e2e -w /e2e cypress/included:3.4.1 --browser chrome -c video=false
-npm run e2e:run
 
-# if [ "$USE_CYPRESS_DASHBOARD" == "true" ]; then
-#   if [ [ "$TRAVIS_PULL_REQUEST" == "false" ] && [ "$CIRCLE_PR_REPONAME" == "" ] ]; then
-#     echo "Running tests in parallel with recording"
-#     npm run e2e:run -- --record --parallel
-#   else
-#     # Cypress Dashboad does not support PR recording
-#     echo "Running tests without parallelization"
-#     npm run e2e:run
-#   fi
-# else
-#   echo "Running tests without parallelization"
-  # npm run e2e:run
-# fi
+if [ "$USE_CYPRESS_DASHBOARD" == "true" ]; then
+  echo "Running tests in parallel with recording"
+  npm run e2e:run -- --record --parallel --key 8c693a90-b747-48af-b3dc-2bab84927657
+else
+  echo "Running tests without parallelization"
+  npm run e2e:run
+fi
 RV=$?
 kill $WS_PID
 exit $RV
