@@ -1,27 +1,21 @@
 #!/usr/bin/env bash
-
 set -e # exit on errors
+BASE_DIR="$( cd "$(dirname "$0")" ; pwd -P )"
+# We assume, Angular example is ran with `npm run build`
+# and root dependencies are installed
+# npm i -g cypress@^3.4.1 cypress-plugin-retries sirv-cli
+NG_EXAMPLE="$BASE_DIR/../core/examples/luigi-sample-angular"
+NG_MODULES="$NG_EXAMPLE/node_modules"
+if [[ ! -L $NG_MODULES ]] && [[ ! -d $NG_MODULES ]]; then
+  echo "Creating symlink for example node_modules";
+  ln -s "$BASE_DIR/../node_modules" $NG_MODULES
+fi
 
-# echo "Installing base dependencies"
-# npm ci
+cd $NG_EXAMPLE
 
-# echo "Bootstrapping Luigi"
-# lerna bootstrap --ci --ignore "*luigi-sample-vue"
-
-# echo "Bundle core and client"
-# lerna run bundle --ignore "*luigi-sample-vue"
-
-# echo "Install deps for example"
-cd core/examples/luigi-sample-angular
-# NG_CLI_VERSION=$(node -p "require('./package.json').devDependencies['@angular/cli']")
-# npm install -D cypress concurrently lerna @angular/cli@$NG_CLI_VERSION
-# lerna bootstrap --ci --ignore "*luigi-sample-vue"
-
-npm i -g cypress@^3.4.1 cypress-plugin-retries sirv-cli
 # ./node_modules/cypress/bin/cypress install
 
 echo "Starting webserver"
-# npm run start &
 sirv start dist --cors --port 4200 &
 WS_PID=$!
 
