@@ -38,7 +38,9 @@ jobs:
     #----- DOCU -----
     - stage: 'Documentation & Tests'
       name: 'Check Documentation'
-      script: bash ./scripts/docuCheck.sh
+      script:
+        - npm i
+        - bash ./scripts/docuCheck.sh
       before_cache:
         - rm -rf ~/.npm/_logs
         - rm -rf ~/.npm/_cacache
@@ -57,6 +59,8 @@ jobs:
       name: 'Integration Testing'
       script:
         - export CYPRESS_CACHE_FOLDER=$TRAVIS_BUILD_DIR/cypress-binary-cache
+        # - npm i -g cypress cypress-plugin-retries sirv-cli
+        - npm i
         - bash ./test/e2e.sh
       addons:
         chrome: stable
