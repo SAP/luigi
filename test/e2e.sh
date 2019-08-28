@@ -16,7 +16,7 @@ cd $NG_EXAMPLE
 # ./node_modules/cypress/bin/cypress install
 
 echo "Starting webserver"
-sirv start dist --cors --port 4200 &
+sirv start dist --single --cors --port 4200 &
 WS_PID=$!
 
 # # wait until example is built and running
