@@ -358,9 +358,9 @@ Sends a custom message to all opened micro frontends.
 
 ```javascript
 Luigi.customMessages().sendToAll({
-id: 'myprefix.my-custom-message-for-client',
-dataField1: 'here goes some data'
-moreData: 'here goes some more'
+    id: 'myprefix.my-custom-message-for-client',
+    dataField1: 'here goes some data',
+    moreData: 'here goes some more'
 });
 ```
 
@@ -381,8 +381,8 @@ Use Luigi.elements().getMicrofrontends() to get the iframe id.
 
 ```javascript
 Luigi.customMessages().send(microfrontend.id, {
-id: 'myprefix.my-custom-message-for-client',
-dataField1: 'here goes some data'
-moreData: 'here goes some more'
+    id: 'myprefix.my-custom-message-for-client',
+    dataField1: 'here goes some data',
+    moreData: 'here goes some more'
 });
 ```

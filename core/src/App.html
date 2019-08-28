@@ -366,8 +366,9 @@
 
           if ('custom' === e.data.msg) {
             const customMessagesListeners =
-              LuigiConfig.getConfigValue('settings.customMessagesListeners') ||
-              {};
+              LuigiConfig.getConfigValue(
+                'communication.customMessagesListeners'
+              ) || {};
             const message = MessagesListeners.convertCustomMessageInternalToUser(
               e.data
             );
