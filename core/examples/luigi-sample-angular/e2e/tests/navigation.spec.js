@@ -43,6 +43,41 @@ describe('Navigation', () => {
     cy.get('a[data-testid="developers_developers"]').should('exist');
   });
 
+  it('Check if active node is selected', () => {
+    cy.visit('/projects');
+    cy.get('.fd-shellbar')
+      .contains('Projects')
+      .should('have.class', 'is-selected');
+
+    cy.visit('projects/pr1');
+    cy.get('.fd-side-nav__subitem')
+      .contains('Project Settings')
+      .click()
+      .should('have.class', 'is-selected');
+  });
+
+  it('Check if active node reloads page', () => {
+    cy.visit('/projects/pr1/developers');
+    cy.getIframeBody().then($iframeBody => {
+      cy.wrap($iframeBody)
+        .should('contain', 'Developers content')
+        .find('[title="visitors: 1"]');
+      cy.get('.fd-app__sidebar')
+        .contains('Project Settings')
+        .click();
+      cy.get('.fd-app__sidebar')
+        .contains('Developers')
+        .click();
+      cy.wrap($iframeBody).find('[title="visitors: 2"]');
+    });
+    cy.get('.fd-app__sidebar')
+      .contains('Developers')
+      .click();
+    cy.getIframeBody().then($iframeBody => {
+      cy.wrap($iframeBody).find('[title="visitors: 1"]');
+    });
+  });
+
   it('Browser back works with Default Child mechanism', () => {
     cy.getIframeBody().then($iframeBody => {
       cy.wrap($iframeBody)
