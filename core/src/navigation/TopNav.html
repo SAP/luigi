@@ -35,6 +35,7 @@
               aria-haspopup="true"
               on:click="toggleDropdownState(`dropDownPopover-${i}`)"
               data-e2e="topnav-category"
+              data-testid="{getTestId(node)}"
             >
               {#if node.icon}
               {#if hasOpenUIicon(node)}
@@ -75,6 +76,7 @@
           aria-expanded="false"
           aria-haspopup="true"
           on:click="handleClick(node)"
+          data-testid="{getTestId(node)}"
         >
           {#if node.icon}
           {#if hasOpenUIicon(node)}
@@ -145,6 +147,7 @@
                     <a
                       class="fd-menu__item {node === selectedNode ? 'is-selected' : ''}"
                       on:click="handleClick(node)"
+                      data-testid="{getTestId(node)}"
                     >
                       <span
                         class="fd-top-nav__icon {node.icon && hasOpenUIicon(node) ? 'sap-icon--' + node.icon + ' sap-icon--m' : '' }"
@@ -388,6 +391,11 @@
       },
       getNodeLabel(node) {
         return LuigiI18N.getTranslation(node.label);
+      },
+      getTestId(node) {
+        return node.testId
+          ? node.testId
+          : NavigationHelpers.prepareForTests(node.pathSegment, node.label);
       }
     },
     methods: {

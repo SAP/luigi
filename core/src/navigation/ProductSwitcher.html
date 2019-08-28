@@ -16,6 +16,7 @@ Object.keys(productSwitcherItems[0]).length }
           on:click="toggleDropdownState()"
           data-cy="desktop-product-switcher"
           title="{config.label}"
+          data-testid="{getTestId(config)}"
         ></button>
         {:else}
         <button
@@ -25,6 +26,7 @@ Object.keys(productSwitcherItems[0]).length }
           on:click="toggleDropdownState()"
           data-cy="desktop-product-switcher"
           title="{config.label}"
+          data-testid="{getTestId(config)}"
         >
           <img src="{config.icon}">
         </button>
@@ -40,7 +42,10 @@ Object.keys(productSwitcherItems[0]).length }
             <ul class="fd-menu__list">
               {#each productSwitcherItems as productSwitcherItem}
               {#if productSwitcherItem.label}
-              <li on:click="onActionClick(productSwitcherItem)">
+              <li
+                on:click="onActionClick(productSwitcherItem)"
+                data-testid="{getTestId(productSwitcherItem)}"
+              >
                 <a class="fd-menu__item">
                   <span
                     class="fd-product-switcher__product-icon {productSwitcherItem.icon && hasOpenUIicon(productSwitcherItem) ? 'sap-icon--' + productSwitcherItem.icon + ' sap-icon--m' : '' }"
@@ -94,6 +99,7 @@ Object.keys(productSwitcherItems[0]).length }
             <li
               on:click="onActionClick(productSwitcherItem)"
               class="y-full-width-list__item"
+              data-testid="{getTestId(productSwitcherItem)}"
             >
               <span
                 class="y-full-width-list__icon {productSwitcherItem.icon && hasOpenUIicon(productSwitcherItem) ? 'sap-icon--' + productSwitcherItem.icon + ' sap-icon--m' : '' }"
@@ -165,6 +171,11 @@ Object.keys(productSwitcherItems[0]).length }
     helpers: {
       hasOpenUIicon(node) {
         return NavigationHelpers.isOpenUIiconName(node.icon);
+      },
+      getTestId(node) {
+        return node.testId
+          ? node.testId
+          : NavigationHelpers.prepareForTests(node.label);
       }
     }
   };
