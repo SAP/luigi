@@ -2,7 +2,6 @@ language: node_js
 node_js:
   - '11.14' #TODO: change it to 'node' once Travis supports the newest version
 dist: trusty
-install: skip
 cache:
   directories:
     - $TRAVIS_BUILD_DIR/node_modules
@@ -39,7 +38,6 @@ jobs:
     - stage: 'Documentation & Tests'
       name: 'Check Documentation'
       script:
-        - npm i
         - bash ./scripts/docuCheck.sh
       before_cache:
         - rm -rf ~/.npm/_logs
@@ -60,7 +58,6 @@ jobs:
       script:
         - export CYPRESS_CACHE_FOLDER=$TRAVIS_BUILD_DIR/cypress-binary-cache
         # - npm i -g cypress cypress-plugin-retries sirv-cli
-        - npm i
         - bash ./test/e2e.sh
       addons:
         chrome: stable
