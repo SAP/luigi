@@ -33,6 +33,16 @@ describe('Navigation', () => {
     cy.get('.fd-app__sidebar').should('contain', 'Second Child');
   });
 
+  it('Find configured testid on navigation node', () => {
+    cy.visit('/projects/pr1/settings');
+    cy.get('a[data-testid="myTestId"]').should('exist');
+  });
+
+  it('Set default testid on navigation node', () => {
+    cy.visit('/projects/pr1/developers');
+    cy.get('a[data-testid="developers_developers"]').should('exist');
+  });
+
   it('Check if active node is selected', () => {
     cy.visit('/projects');
     cy.get('.fd-shellbar')
