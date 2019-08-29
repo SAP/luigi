@@ -18,8 +18,7 @@ function setNpmToken {
 }
 
 function prepublishChecks {
-  cd $BASE_DIR/../client
-  NAME=$(node -p "require('./package.json').name")
+  cd $BASE_DIR/../client/public
   CLIENT_VERSION=$(node -p "require('./package.json').version")
   cd $BASE_DIR/../core/public
   CORE_VERSION=$(node -p "require('./package.json').version")
@@ -83,5 +82,5 @@ function removeNpmToken {
 prepublishChecks
 setNpmToken
 publishPackage "core" "core/public"
-publishPackage "client" "client"
+publishPackage "client" "client/public"
 removeNpmToken

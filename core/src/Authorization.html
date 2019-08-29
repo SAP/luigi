@@ -14,7 +14,10 @@
     </li>
     {/if}
     {#each profileNav.items as profileItem}
-    <li on:click="onActionClick(profileItem)">
+    <li
+      on:click="onActionClick(profileItem)"
+      data-testid="{getTestId(profileItem)}"
+    >
       <a class="fd-menu__item" data-e2e="luigi-topnav-profile-item">
         {#if profileItem.icon}
         {#if hasOpenUIicon(profileItem)}
@@ -32,7 +35,7 @@
       </a>
     </li>
     {/each}
-    <li on:click="onLogoutClick()">
+    <li on:click="onLogoutClick()" data-testid="{getTestId(profileNav.logout)}">
       <a aria-label="Logout" class="fd-menu__item">
         {#if profileNav.logout.icon}
         {#if hasOpenUIicon(profileNav.logout)}
@@ -249,6 +252,11 @@
     helpers: {
       hasOpenUIicon(node) {
         return NavigationHelpers.isOpenUIiconName(node.icon);
+      },
+      getTestId(profileItem) {
+        return profileItem.testId
+          ? profileItem.testId
+          : NavigationHelpers.prepareForTests(profileItem.label);
       }
     },
     methods: {

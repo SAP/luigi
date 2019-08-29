@@ -38,6 +38,23 @@ Removes a context update listener.
 
 -   `id` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** the id that was returned by the `addContextUpdateListener` function
 
+### addCustomMessageListener
+
+Registers a listener called when the micro frontend receives a custom message.
+
+#### Parameters
+
+-   `customMessageId` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** the custom message id
+-   `customMessageListener` **[Lifecycle~customMessageListenerCallback](#lifecyclecustommessagelistenercallback)** the function that is called when the micro frontend receives the corresponding event.
+
+### removeCustomMessageListener
+
+Removes a custom message listener.
+
+#### Parameters
+
+-   `id` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** the id that was returned by the `addInitListener` function
+
 ### getToken
 
 Returns the currently valid access token.
@@ -81,6 +98,23 @@ Returns the current client permissions as specified in the navigation node or an
 
 Returns **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** client permissions as specified in the navigation node.
 
+### sendCustomMessage
+
+Sends a custom message to the Luigi Core application.
+
+#### Parameters
+
+-   `message` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** an object containing data to be sent to the Luigi Core to process it further. This object is set as an input parameter of the custom message listener on the Luigi Core side.
+    -   `message.id` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** a string containing the message id
+    -   `message.MY_DATA_FIELD` **any** any other message data field
+
+#### Examples
+
+```javascript
+import LuigiClient from '@kyma-project/luigi-client';
+LuigiClient.sendCustomMessage({id: 'environment.created', production: false})
+```
+
 ## Lifecycle~initListenerCallback
 
 Callback of the addInitListener
@@ -91,6 +125,19 @@ Type: [Function](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Sta
 
 -   `context` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** current context data
 -   `origin` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** Luigi Core URL
+
+## Lifecycle~customMessageListenerCallback
+
+Callback of the customMessageListener
+
+Type: [Function](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Statements/function)
+
+### Parameters
+
+-   `customMessage` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** custom message object
+    -   `customMessage.id` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** message id
+    -   `customMessage.MY_DATA_FIELD` **any** any other message data field
+-   `listenerId` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** custom message listener id to be used for unsubscription
 
 ## linkManager
 
