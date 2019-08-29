@@ -23,16 +23,6 @@ class Communication {
           id: 'luigi.my-custom-message-for-client',
           description: 'here goes the message description'
         };
-        cons a = {
-          communication: {
-            customMessagesListeners: {
-              'my-custom-message.update-top-nav': () => {
-                Luigi.navigation().updateTopNavigation();
-              }
-            }
-          }
-
-        }
         Luigi.customMessage().send(mfObject.id, newCustomMessage);
       }, 2000);
     }
