@@ -503,3 +503,4 @@ The lerna-changelog tool detects changes based on PR labels and maps them to sec
 [v0.5.4]: https://github.com/SAP/luigi/compare/v0.5.3...v0.5.4
 [v0.6.0]: https://github.com/SAP/luigi/compare/v0.5.4...v0.6.0
 [v0.6.1]: https://github.com/SAP/luigi/compare/v0.6.0...v0.6.1
+[v0.6.2]: https://github.com/SAP/luigi/compare/v0.6.2...v0.6.2
