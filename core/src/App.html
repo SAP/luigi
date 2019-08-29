@@ -222,18 +222,12 @@
     IframeHelpers.sendMessageToIframe(config.iframe, message);
   };
 
-  const sendAuthDataToClient = (iframe, authData) => {
-    if (!iframe || !iframe.contentWindow) {
-      console.info(
-        'iframe does not exist, not able to send authData to client.'
-      );
-      return;
-    }
+  const sendAuthDataToClient = authData => {
     const message = {
       msg: 'luigi.auth.tokenIssued',
       authData
     };
-    IframeHelpers.sendMessageToIframe(iframe, message);
+    IframeHelpers.broadcastMessageToAllIframes(message);
   };
 
   const getDefaultAlertData = () => {
@@ -512,8 +506,8 @@
             }
           }
 
-          if ('luigi.auth.tokenIssued' === e.data.msg && iframe) {
-            sendAuthDataToClient(iframe, e.data.authData);
+          if ('luigi.auth.tokenIssued' === e.data.msg) {
+            sendAuthDataToClient(e.data.authData);
           }
 
           if ('luigi.navigation.pathExists' === e.data.msg) {
