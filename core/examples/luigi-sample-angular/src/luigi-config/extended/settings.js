@@ -8,7 +8,7 @@ class Settings {
     favicon: '/assets/favicon-sap.ico'
   };
   loadingSpinner = {
-    delayHideUntilMfReady: true
+    delayHideUntilAfterInit: true
   };
   responsiveNavigation = 'simpleMobileOnly'; // Options: simple | simpleMobileOnly | semiCollapsible
   sideNavFooterText = `Luigi Client: ${version || 'unknown'}`;

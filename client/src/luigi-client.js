@@ -37,8 +37,8 @@ class LuigiClient {
   getClientPermissions() {
     return lifecycleManager.getClientPermissions();
   }
-  afterInitDone() {
-    return lifecycleManager.afterInitDone();
+  afterInit() {
+    return lifecycleManager.afterInit();
   }
   /**
    * @private

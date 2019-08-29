@@ -348,11 +348,11 @@ export type getContext = () => Context;
 /**
  * Hides the app loading spinner
  * works in combination with Luigi configuration
- * settings.loadingSpinner.delayHideUntilMfReady
+ * settings.loadingSpinner.delayHideUntilAfterInit
  * @memberof Lifecycle
  */
-export function afterInitDone(): void;
-export type afterInitDone = () => void;
+export function afterInit(): void;
+export type afterInit = () => void;
 
 /**
  * Returns the node parameters of the active URL.

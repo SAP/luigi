@@ -2,7 +2,7 @@ import { Component, ViewEncapsulation, OnInit } from '@angular/core';
 import {
   addInitListener,
   addContextUpdateListener,
-  afterInitDone
+  afterInit
 } from '@kyma-project/luigi-client';
 import {
   LuigiContextService,
@@ -28,7 +28,7 @@ export class AppComponent implements OnInit {
     this.luigiService.setContext({ contextType, context });
     if (contextType == 'init') {
       setTimeout(() => {
-        afterInitDone();
+        afterInit();
       }, 1000);
     }
   }

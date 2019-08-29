@@ -93,14 +93,11 @@ class LuigiConfig {
   initDelayedAppLoadingSpinner() {
     if (
       this.getConfigBooleanValue(
-        'settings.loadingSpinner.delayHideUntilMfReady'
+        'settings.loadingSpinner.delayHideUntilAfterInit'
       )
     ) {
       const loadedListener = e => {
         if ('luigi.hide-app-spinner' === e.data.msg) {
-          console.log(
-            'luigi.hide-app-spinner received, hiding loading spinner'
-          );
           this.removeAppLoadingSpinner();
           window.addEventListener('message', loadedListener);
         }

@@ -21,3 +21,35 @@ You can quickly adjust the Luigi application to improve user experience on mobil
 ```
 
 * Define and apply [responsiveNavigation](./general-settings.md) settings to make the left navigation responsive.
+
+### App loading spinner
+
+To show a loading spinner before Luigi Core or your first micro frontend is ready, add the following code to your index.html body or inside your `luigi-app-root` container.
+
+```html
+<div id="appLoadingSpinner">
+  <div class="fd-spinner">
+    <div></div>
+  </div>
+</div>
+```
+
+By default, the loading spinner is removed after `Luigi.setConfig({})` has been executed. 
+
+Alternatively, to keep the loading spinner until the first micro frontend is usable, follow the following steps:
+
+1. Set loading spinner delayHideUntilAfterInit to true
+
+```json
+{
+  ...
+  settings: {
+    loadingSpinner: {
+      delayHideUntilAfterInit: true
+    }
+  }
+  ...
+}
+```
+
+2. Call `Luigi.afterInit()` in your micro frontend once it has finished loading. This command triggers the removal of the loading spinner.

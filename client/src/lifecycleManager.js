@@ -257,10 +257,10 @@ class LifecycleManager extends LuigiClientBase {
   /**
    * Hides the app loading spinner
    * works in combination with Luigi configuration
-   * settings.loadingSpinner.delayHideUntilMfReady
+   * settings.loadingSpinner.delayHideUntilAfterInit
    * @memberof Lifecycle
    */
-  afterInitDone() {
+  afterInit() {
     helpers.sendPostMessageToLuigiCore({ msg: 'luigi.hide-app-spinner' });
   }
 }
