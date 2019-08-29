@@ -49,15 +49,7 @@ jobs:
         - rm -rf ~/.npm/_logs
         - rm -rf ~/.npm/_cacache
 
-    #----- WhiteSource -----
-    - name: 'WhiteSource check'
-      if: env($WHITESOURCE_APIKEY) IS present
-      script:
-         - npm i -g whitesource
-         - bash ./scripts/whiteSource.sh
-      cache: npm
-      before_cache:
-        - rm -rf ~/.npm/_logs
+   
 
     # ----- INTEGRATION -----
     - &integration-testing
