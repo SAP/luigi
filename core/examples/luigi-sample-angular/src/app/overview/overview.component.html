@@ -17,10 +17,12 @@
     <ul class="fd-list-group">
       <li
         class="fd-list-group__item clickable"
-        *ngFor="let item of luigiClientLinks"
-        (click)="linkManager().navigate(item.link)"
+        *ngFor="let item of luigiClientItems"
+        (click)="item.clickHandler()"
       >
-        <strong>{{ item.text }}</strong> &nbsp;&ndash; {{ item.description }}
+        <span
+          ><strong>{{ item.text }}</strong></span
+        >&nbsp;&ndash;&nbsp;<span>{{ item.description }}</span>
       </li>
     </ul>
   </div>
