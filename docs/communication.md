@@ -7,7 +7,8 @@ Luigi Core and Luigi Client can exchange custom messages in both directions.
 ### Luigi Client to Luigi Core
 
 For Luigi Client to send messages to Luigi Core, use the [*sendCustomMessage*](luigi-client-api.md#sendCustomMessage) method from Client API.
-For Luigi Core, you need to set something similar to the following on the root level of your Luigi configuration object:
+
+For Luigi Core to process custom messages, define a configuration similar to the following at the root level of your Luigi configuration object:
 
 ```javascript
 {
@@ -22,7 +23,7 @@ For Luigi Core, you need to set something similar to the following on the root l
   ...
 }
 ```
-where the `'my-custom-message.update-top-nav` key is the message id, and the value is the listener function for the custom message. The listener receives the following input parameters:
+where the `my-custom-message.update-top-nav` key is the message id, and the value is the listener function for the custom message. The listener receives the following input parameters:
 - **customMessage** the [*message*](luigi-client-api.md#sendCustomMessage) sent by Luigi Client.
 - **microfrontend** a micro frontend object as specified [here](luigi-core-api.md#getMicrofrontends).
 - **navigation node** a [navigation node object](navigation-parameters-reference.md#Node-parameters).
