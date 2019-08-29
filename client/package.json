@@ -7,7 +7,6 @@
     "type": "git",
     "url": "ssh://github.com/SAP/luigi.git"
   },
-  "main": "luigi-client.js",
   "scripts": {
     "bundle": "npm run bundle-evergreen && npm run bundle-ie11",
     "bundle-evergreen": "webpack --mode=production --display-error-details",
