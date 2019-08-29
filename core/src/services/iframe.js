@@ -15,21 +15,7 @@ class IframeClass {
 
   getActiveIframe(node) {
     const children = [...node.children];
-    let activeIframe = [];
-    if (children.length > 0) {
-      activeIframe = children.filter(child => child.style.display !== 'none');
-    }
-    return activeIframe[0];
-  }
-
-  getIframeBySource(source, modalIframe) {
-    // jtest: split view is missing
-    if (modalIframe && modalIframe.contentWindow === source) {
-      return modalIframe;
-    }
-    return IframeHelpers.getAllIframes().find(
-      iframe => iframe.contentWindow === source
-    );
+    return children.find(child => child.style.display !== 'none');
   }
 
   setActiveIframeToPrevious(node) {

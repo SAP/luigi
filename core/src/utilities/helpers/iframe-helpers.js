@@ -114,13 +114,6 @@ class IframeHelpersClass {
     );
   }
 
-  hasIframeIsolation(component) {
-    const componentData = component.get();
-    return (
-      componentData.isolateView || componentData.previousNodeValues.isolateView
-    );
-  }
-
   getLocation(url) {
     const element = document.createElement('a');
     element.href = url;
@@ -187,16 +180,6 @@ class IframeHelpersClass {
     return this.getIframesWithType('modal');
   }
 
-  getAllIframes(additionalIframes) {
-    const iframes = this.getMainIframes();
-    if (Array.isArray(additionalIframes)) {
-      iframes.push(...additionalIframes);
-    } else if (additionalIframes) {
-      iframes.push(additionalIframes);
-    }
-    return iframes;
-  }
-
   getVisibleIframes() {
     return this.getMicrofrontendsInDom()
       .filter(mfObj => mfObj.active)
@@ -215,10 +198,10 @@ class IframeHelpersClass {
     );
   }
 
-  broadcastMessageToAllIframes(message, additionalIframes) {
-    // jtest: split view and modal missing
-    const allIframes = IframeHelpers.getAllIframes(additionalIframes);
-    allIframes.forEach(iframe => this.sendMessageToIframe(iframe, message));
+  broadcastMessageToAllIframes(message) {
+    IframeHelpers.getMicrofrontendIframes().forEach(iframe =>
+      this.sendMessageToIframe(iframe, message)
+    );
   }
 
   createIframe(viewUrl, viewGroup, currentNode) {
@@ -266,14 +249,9 @@ class IframeHelpersClass {
     return iframe && iframe.contentWindow === event.source;
   }
 
-  getValidMessageSource(e, component) {
+  getValidMessageSource(e) {
     const allMessagesSources = [
-      // jtest: just get all
-      ...IframeHelpers.getAllIframes(
-        this.specialIframeTypes
-          .map(t => component.get()[t.iframeKey])
-          .filter(Boolean)
-      ),
+      ...IframeHelpers.getMicrofrontendIframes(),
       { contentWindow: window, luigi: { viewUrl: window.location.href } }
     ];
     const iframe = allMessagesSources.find(iframe =>

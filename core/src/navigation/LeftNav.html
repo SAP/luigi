@@ -302,12 +302,6 @@
           expandedList && expandedList.indexOf(nodes.metaInfo.categoryUid) >= 0
         );
       },
-      isFooterVisible(footerText) {
-        return Boolean(footerText);
-        // respect also 'responsiveNavigation' setting in the future.
-        // the footer should also be visible if it's possible to collapse the Nav
-      },
-      getFooterText() {},
       getNodeLabel(node) {
         return LuigiI18N.getTranslation(node.label);
       },

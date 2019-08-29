@@ -169,29 +169,6 @@ describe('Iframe-helpers', () => {
     });
   });
 
-  it('hasIframeIsolation', () => {
-    // no node is set to isolateView
-    component.set({
-      isolateView: false,
-      previousNodeValues: { isolateView: false }
-    });
-    assert.isFalse(IframeHelpers.hasIframeIsolation(component));
-
-    // new node is set to isolateView
-    component.set({
-      isolateView: true,
-      previousNodeValues: { isolateView: false }
-    });
-    assert.isTrue(IframeHelpers.hasIframeIsolation(component));
-
-    // current node is set to isolateView
-    component.set({
-      isolateView: false,
-      previousNodeValues: { isolateView: true }
-    });
-    assert.isTrue(IframeHelpers.hasIframeIsolation(component));
-  });
-
   it('getIframeContainer', () => {
     sinon
       .stub(document, 'querySelectorAll')

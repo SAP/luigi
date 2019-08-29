@@ -82,8 +82,7 @@
   };
 
   function _messageHandler(e) {
-    const iframe = IframeHelpers.getValidMessageSource(e, this.root);
-    if (!iframe) return;
+    if (!IframeHelpers.getValidMessageSource(e)) return;
 
     // actions, like collapse, expand, setSize as well as register
     // event handlers: onCollapse, onExpand, onResize
