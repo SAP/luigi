@@ -1,20 +1,12 @@
 {
-  "name": "@kyma-project/luigi-client",
+  "name": "luigi-client-private",
   "version": "0.6.1",
-  "description": "Javascript library supporting consumers of the Luigi framework",
+  "private": true,
+  "description": "luigi-client development version, only the public folder is being published to npm as a package",
   "repository": {
     "type": "git",
     "url": "ssh://github.com/SAP/luigi.git"
   },
-  "publishConfig": {
-    "tag": "luigi-client"
-  },
-  "keywords": [
-    "luigi",
-    "UI",
-    "extensibility"
-  ],
-  "main": "luigi-client.js",
   "scripts": {
     "bundle": "npm run bundle-evergreen && npm run bundle-ie11",
     "bundle-evergreen": "webpack --mode=production --display-error-details",
