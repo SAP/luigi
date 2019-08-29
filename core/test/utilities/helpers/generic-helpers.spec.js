@@ -63,4 +63,18 @@ describe('Generic-helpers', () => {
   it('trimLeadingSlash', () => {
     assert.equal(GenericHelpers.trimLeadingSlash('/luigi'), 'luigi');
   });
+
+  it('removeInternalProperties', () => {
+    const input = {
+      some: true,
+      value: true,
+      _internal: true,
+      _somefn: () => true
+    };
+    const expected = {
+      some: true,
+      value: true
+    };
+    assert.deepEqual(GenericHelpers.removeInternalProperties(input), expected);
+  });
 });

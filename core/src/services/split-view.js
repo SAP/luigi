@@ -42,7 +42,11 @@ class SplitViewSvcClass {
     if (viewUrl) {
       viewUrl = RoutingHelpers.substituteViewUrl(viewUrl, componentData);
     }
-    const iframe = IframeHelpers.createIframe(viewUrl);
+    const iframe = IframeHelpers.createIframe(
+      viewUrl,
+      undefined,
+      component.get().currentNode
+    );
     const iframeCtn = document.querySelector('.iframeSplitViewCnt');
     iframeCtn.appendChild(iframe);
     return iframe;
@@ -100,6 +104,7 @@ class SplitViewSvcClass {
   }
 
   // required for iOS to force repaint, else scrolling does not work
+  /* istanbul ignore next */
   fixIOSscroll() {
     const iOS =
       !!navigator.platform && /iPad|iPhone|iPod/.test(navigator.platform);
