@@ -55,9 +55,9 @@ jobs:
       script:
          - npm i -g whitesource
          - bash ./scripts/whiteSource.sh
+      cache: npm
       before_cache:
         - rm -rf ~/.npm/_logs
-        - rm -rf ~/.npm/_cacache
 
     # ----- INTEGRATION -----
     - &integration-testing
