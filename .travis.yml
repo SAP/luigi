@@ -49,6 +49,17 @@ jobs:
         - rm -rf ~/.npm/_logs
         - rm -rf ~/.npm/_cacache
 
+    #----- WhiteSource -----
+    - name: 'WhiteSource check'
+      if: env($WHITESOURCE_APIKEY) IS present
+      script:
+         - echo $(printf '{"apiKey": "%s","userKey": "%s","productName": "%s","devDep": "false","forceUpdate": "true","checkPolicies": true}' "$WHITESOURCE_APIKEY" "$WHITESOURCE_USER_TOKEN" "$WHITESOURCE_PRODUCT_TOKEN" ) > whitesource.config.json
+         - npm i -g whitesource
+         - whitesource run
+      before_cache:
+        - rm -rf ~/.npm/_logs
+        - rm -rf ~/.npm/_cacache
+
     # ----- INTEGRATION -----
     - &integration-testing
       name: 'Integration Testing'
