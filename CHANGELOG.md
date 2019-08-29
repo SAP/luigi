@@ -28,7 +28,7 @@ The lerna-changelog tool detects changes based on PR labels and maps them to sec
 #### :rocket: Added
 * [#746](https://github.com/SAP/luigi/pull/746) Custom events for core client communication ([@maxmarkus](https://github.com/maxmarkus))
 * [#756](https://github.com/SAP/luigi/pull/756) Add test attribute to navigation nodes ([@JohannesDoberer](https://github.com/JohannesDoberer))
-* [#752](https://github.com/SAP/luigi/pull/752) Mechanism for partial luigi config update ([@pekura](https://github.com/pekura))
+* [#752](https://github.com/SAP/luigi/pull/752) Mechanism for partial Luigi config update ([@pekura](https://github.com/pekura))
 * [#745](https://github.com/SAP/luigi/pull/745) Extend iframe sandbox rules ([@JohannesDoberer](https://github.com/JohannesDoberer))
 
 #### :bug: Fixed
@@ -501,4 +501,4 @@ The lerna-changelog tool detects changes based on PR labels and maps them to sec
 [v0.5.4]: https://github.com/SAP/luigi/compare/v0.5.3...v0.5.4
 [v0.6.0]: https://github.com/SAP/luigi/compare/v0.5.4...v0.6.0
 [v0.6.1]: https://github.com/SAP/luigi/compare/v0.6.0...v0.6.1
-[v0.6.2]: https://github.com/SAP/luigi/compare/v0.6.2...v0.6.2
+[v0.6.2]: https://github.com/SAP/luigi/compare/v0.6.1...v0.6.2
