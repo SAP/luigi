@@ -22,7 +22,7 @@ jobs:
     #----- WhiteSource -----
     - stage: superquick
       name: 'WhiteSource Check'
-      if: env(WHITESOURCE_APIKEY) IS NOT null
+      if: env(WHITESOURCE_APIKEY) IS present
       script:
          - npm i -g whitesource
          - bash ./scripts/whiteSource.sh
