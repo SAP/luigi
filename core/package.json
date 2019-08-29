@@ -130,6 +130,7 @@
   "dependencies": {
     "documentation": "^11.0.0",
     "npm": "^6.5.0",
-    "test": "^0.6.0"
+    "test": "^0.6.0",
+    "diff": ">=3.5.0"
   }
 }
