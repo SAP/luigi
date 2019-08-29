@@ -25,4 +25,4 @@ Use the Luigi Client API documentation to learn more about the functions and par
 * [UX Manager](luigi-client-api.md#uxmanager) helps you to manage the appearance features in Luigi, such as the behavior of backdrop or loading indictors.
 
 ## Common
-* [Communication](communication.md) describes how to configure communication-related features.
+* [Communication](communication.md) describes how to configure features related to communication between Luigi Core and Client.
