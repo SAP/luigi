@@ -32,4 +32,4 @@ where the `my-custom-message.update-top-nav` key is the message id, and the valu
 
 For Luigi Core to send messages, use the [*customMessages*](luigi-core-api.md#customMessages) section from Core API. You can send a custom message to all rendered micro frontends, or to a specific one. For the latter, use the Core API [*elements*](luigi-core-api.md#elements) methods to retrieve micro frontends and select the one you want to send the custom message to.
 
-For Luigi Client, you can add and remove message listeners as described [here](luigi-client-api.md#addCustomMessageListener).
+For Luigi Client to process the message, add and remove message listeners as described [here](luigi-client-api.md#addCustomMessageListener).
