@@ -3,8 +3,7 @@ import {
   GenericHelpers,
   StateHelpers
 } from '../utilities/helpers';
-import { auth } from './auth';
-import { LuigiElements, LuigiI18N } from '.';
+import { LuigiAuth, LuigiElements, LuigiI18N } from '.';
 
 /**
  * @name Configuration
@@ -15,13 +14,13 @@ class LuigiConfig {
    * @memberof Configuration
    */
   constructor() {
+    this.appLoadingSpinnerSpinner;
     this.configReadyTimeout = {
       valueMs: 65000,
       id: undefined
     };
 
     this.configReadyCallback = function() {};
-
     this.initialized = false;
   }
 
@@ -71,6 +70,7 @@ class LuigiConfig {
     this._configModificationTimestamp = new Date();
     if (!this.initialized) {
       this.initialized = true;
+      this.initDelayedAppLoadingSpinner();
       this.configReadyCallback();
     }
   }
@@ -84,6 +84,45 @@ class LuigiConfig {
    */
   getConfig() {
     return this.config;
+  }
+
+  /**
+   * @private
+   * @memberof Configuration
+   */
+  initDelayedAppLoadingSpinner() {
+    if (
+      this.getConfigBooleanValue(
+        'settings.loadingSpinner.delayHideUntilMfReady'
+      )
+    ) {
+      const loadedListener = e => {
+        if ('luigi.hide-app-spinner' === e.data.msg) {
+          console.log(
+            'luigi.hide-app-spinner received, hiding loading spinner'
+          );
+          this.removeAppLoadingSpinner();
+          window.addEventListener('message', loadedListener);
+        }
+      };
+      window.addEventListener('message', loadedListener);
+    } else {
+      this.removeAppLoadingSpinner();
+    }
+  }
+
+  /**
+   * @private
+   * @memberof Configuration
+   */
+  removeAppLoadingSpinner() {
+    const appLoadingSpinner = document.getElementById('appLoadingSpinner');
+    if (appLoadingSpinner) {
+      appLoadingSpinner.classList.add('hidden');
+      setTimeout(() => {
+        appLoadingSpinner.parentNode.removeChild(appLoadingSpinner);
+      }, 500);
+    }
   }
 
   /**
@@ -115,6 +154,7 @@ class LuigiConfig {
    * @memberof Configuration
    */
   configNotReadyCallback() {
+    this.removeAppLoadingSpinner();
     const errorMsg = LuigiI18N.getTranslation('luigi.configNotReadyCallback');
     console.error(errorMsg);
     this.setErrorMessage(errorMsg);
@@ -224,7 +264,7 @@ class LuigiConfig {
    * @deprecated now located in Luigi.auth() instead of Luigi
    */
   isAuthorizationEnabled() {
-    return auth.isAuthorizationEnabled();
+    return LuigiAuth.isAuthorizationEnabled();
   }
 }
 

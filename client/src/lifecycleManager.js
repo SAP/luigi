@@ -253,5 +253,15 @@ class LifecycleManager extends LuigiClientBase {
   getClientPermissions() {
     return this.currentContext.internal.clientPermissions || {};
   }
+
+  /**
+   * Hides the app loading spinner
+   * works in combination with Luigi configuration
+   * settings.loadingSpinner.delayHideUntilMfReady
+   * @memberof Lifecycle
+   */
+  afterInitDone() {
+    helpers.sendPostMessageToLuigiCore({ msg: 'luigi.hide-app-spinner' });
+  }
 }
 export const lifecycleManager = new LifecycleManager();

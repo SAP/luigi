@@ -896,6 +896,21 @@
   :global(a) {
     cursor: pointer;
   }
+  :global(#appLoadingSpinner) {
+    z-index: 10;
+    background-color: var(--fd-background-color);
+    padding-top: 30vh;
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+  }
+  :global(#appLoadingSpinner.hidden) {
+    visibility: hidden;
+    opacity: 0;
+    @include transition(visibility 0s 0.3s, opacity 0.3s linear);
+  }
 
   .iframeContainer,
   .spinnerContainer {
@@ -909,6 +924,7 @@
     min-height: auto;
     display: block;
   }
+
   .iframeContainer {
     overflow: auto;
     -webkit-overflow-scrolling: touch;

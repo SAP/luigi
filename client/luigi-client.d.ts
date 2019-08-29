@@ -346,6 +346,15 @@ export function getContext(): Context;
 export type getContext = () => Context;
 
 /**
+ * Hides the app loading spinner
+ * works in combination with Luigi configuration
+ * settings.loadingSpinner.delayHideUntilMfReady
+ * @memberof Lifecycle
+ */
+export function afterInitDone(): void;
+export type afterInitDone = () => void;
+
+/**
  * Returns the node parameters of the active URL.
  * Node parameters are defined like URL query parameters but with a specific prefix allowing Luigi to pass them to the micro front-end view.  The default prefix is **~** and you can use it in the following way: `https://my.luigi.app/home/products?~sort=asc~page=3`.
  * >**NOTE:** some special characters (`<`, `>`, `"`, `'`, `/`) in node parameters are HTML-encoded.

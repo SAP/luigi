@@ -81,6 +81,12 @@ Returns the current client permissions as specified in the navigation node or an
 
 Returns **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** client permissions as specified in the navigation node.
 
+### afterInitDone
+
+Hides the app loading spinner
+works in combination with Luigi configuration
+settings.loadingSpinner.delayHideUntilMfReady
+
 ## Lifecycle~initListenerCallback
 
 Callback of the addInitListener
