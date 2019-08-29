@@ -13,7 +13,7 @@ module.exports = {
     libraryExport: 'default',
     library: 'LuigiClient',
     libraryTarget: 'umd',
-    path: path.resolve(__dirname)
+    path: path.join(path.resolve(__dirname), 'public')
   },
 
   module: {
