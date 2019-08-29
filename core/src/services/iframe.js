@@ -31,13 +31,8 @@ class IframeClass {
     );
   }
 
-  getIframeContainer() {
-    const container = Array.from(document.querySelectorAll('.iframeContainer'));
-    return container && container.length > 0 ? container[0] : undefined;
-  }
-
   setActiveIframeToPrevious(node) {
-    const iframesInDom = this.getIframesInDom();
+    const iframesInDom = IframeHelpers.getIframesInDom();
     const preservedViews = this.getPreservedViewsInDom(iframesInDom);
     if (preservedViews.length === 0) {
       return;
@@ -75,10 +70,6 @@ class IframeClass {
         node.removeChild(child);
       }
     });
-  }
-
-  getIframesInDom() {
-    return Array.from(document.querySelectorAll('.iframeContainer iframe'));
   }
 
   getPreservedViewsInDom(iframes) {
@@ -165,7 +156,7 @@ class IframeClass {
     const canReuseIframe = IframeHelpers.canReuseIframe(config, component);
     let activeIframe = this.getActiveIframe(node);
 
-    const iframes = this.getIframesInDom();
+    const iframes = IframeHelpers.getIframesInDom();
     const goBackStack = this.getPreservedViewsInDom(iframes);
     let firstInGoBackStack = undefined;
     let pvSituation = false;
@@ -196,7 +187,7 @@ class IframeClass {
       // if next view is not isolated we can pick a iframe with matching viewGroup from the pool
       let targetIframe;
       if (!nextViewIsolated && componentData.viewGroup) {
-        const iframes = this.getIframesInDom();
+        const iframes = IframeHelpers.getIframesInDom();
         const sameViewGroupIframes = iframes.filter(iframe => {
           return iframe.vg === componentData.viewGroup;
         });

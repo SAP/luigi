@@ -137,19 +137,12 @@ class IframeHelpersClass {
     }
   }
 
-  getIframeContainer() {
-    const container = Array.from(document.querySelectorAll('.iframeContainer'));
-    return container && container.length > 0 ? container[0] : undefined;
-  }
-
-  getVisibleIframes() {
-    return Array.prototype.slice
-      .call(document.querySelectorAll('iframe'))
-      .filter(item => item.style.display !== 'none');
-  }
-
   urlMatchesTheDomain(viewUrl = '', domain) {
     return this.getLocation(viewUrl) === domain;
+  }
+
+  iframeIsSameDomain(viewUrl, domain) {
+    return this.urlMatchesTheDomain(viewUrl, domain);
   }
 
   /*
@@ -180,8 +173,19 @@ class IframeHelpersClass {
       });
   }
 
-  iframeIsSameDomain(viewUrl, domain) {
-    return this.urlMatchesTheDomain(viewUrl, domain);
+  getIframeContainer() {
+    const container = Array.from(document.querySelectorAll('.iframeContainer'));
+    return container && container.length > 0 ? container[0] : undefined;
+  }
+
+  getVisibleIframes() {
+    return Array.prototype.slice
+      .call(document.querySelectorAll('iframe'))
+      .filter(item => item.style.display !== 'none');
+  }
+
+  getIframesInDom() {
+    return Array.from(document.querySelectorAll('.iframeContainer iframe'));
   }
 
   getAllIframes(additionalIframes) {
