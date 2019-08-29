@@ -1,7 +1,6 @@
 // Helper methods for 'iframe.js' file. They don't require any method from 'iframe.js` but are required by them.
 import { GenericHelpers } from './';
 import { MICROFRONTEND_TYPES } from './../constants';
-import { Iframe } from '../../services';
 import { LuigiConfig } from '../../core-api';
 
 class IframeHelpersClass {
@@ -145,6 +144,11 @@ class IframeHelpersClass {
     return this.urlMatchesTheDomain(viewUrl, domain);
   }
 
+  getIframeContainer() {
+    const container = Array.from(document.querySelectorAll('.iframeContainer'));
+    return container.length > 0 ? container[0] : undefined;
+  }
+
   /*
   [
     {id: "id-1", container: IFRAME_DO_ELEM_1, active: true, type:"main"},
@@ -157,47 +161,46 @@ class IframeHelpersClass {
   getMicrofrontendsInDom() {
     return MICROFRONTEND_TYPES.map(({ type, selector }) => {
       return Array.from(document.querySelectorAll(selector)).map(container => ({
+        id: container.luigi.id,
         container,
+        active: GenericHelpers.isElementVisible(container),
         type
       }));
-    })
-      .filter(iframeTypeArray => Boolean(iframeTypeArray.length))
-      .reduce((acc, val) => acc.concat(val), []) // flatten
-      .map(mfObj => Object.assign({ id: mfObj.container.luigi.id }, mfObj))
-      .map(mfObj => {
-        const isMicrofrontendActive =
-          window
-            .getComputedStyle(mfObj.container, null)
-            .getPropertyValue('display') !== 'none';
-        return Object.assign({ active: isMicrofrontendActive }, mfObj);
-      });
+    }).reduce((acc, val) => acc.concat(val), []); // flatten
   }
 
-  getIframeContainer() {
-    const container = Array.from(document.querySelectorAll('.iframeContainer'));
-    return container && container.length > 0 ? container[0] : undefined;
+  getMicrofrontendIframes() {
+    return this.getMicrofrontendsInDom().map(mfObj => mfObj.container);
   }
 
-  getVisibleIframes() {
-    return Array.prototype.slice
-      .call(document.querySelectorAll('iframe'))
-      .filter(item => item.style.display !== 'none');
+  getIframesWithType(type) {
+    return this.getMicrofrontendsInDom()
+      .filter(mfObj => mfObj.type === type)
+      .map(mfObj => mfObj.container);
   }
 
-  getIframesInDom() {
-    return Array.from(document.querySelectorAll('.iframeContainer iframe'));
+  getMainIframes() {
+    return this.getIframesWithType('main');
+  }
+
+  getModalIframes() {
+    return this.getIframesWithType('modal');
   }
 
   getAllIframes(additionalIframes) {
-    const iframes = Array.from(
-      document.querySelectorAll('.iframeContainer iframe')
-    );
+    const iframes = this.getMainIframes();
     if (Array.isArray(additionalIframes)) {
       iframes.push(...additionalIframes);
     } else if (additionalIframes) {
       iframes.push(additionalIframes);
     }
     return iframes;
+  }
+
+  getVisibleIframes() {
+    return this.getMicrofrontendsInDom()
+      .filter(mfObj => mfObj.active)
+      .map(mfObj => mfObj.container);
   }
 
   sendMessageToIframe(iframe, message) {
@@ -213,6 +216,7 @@ class IframeHelpersClass {
   }
 
   broadcastMessageToAllIframes(message, additionalIframes) {
+    // jtest: split view and modal missing
     const allIframes = IframeHelpers.getAllIframes(additionalIframes);
     allIframes.forEach(iframe => this.sendMessageToIframe(iframe, message));
   }
@@ -264,6 +268,7 @@ class IframeHelpersClass {
 
   getValidMessageSource(e, component) {
     const allMessagesSources = [
+      // jtest: just get all
       ...IframeHelpers.getAllIframes(
         this.specialIframeTypes
           .map(t => component.get()[t.iframeKey])

@@ -34,7 +34,7 @@
 {/if}
 <script>
   import { LuigiElements } from './core-api';
-  import { Iframe, SplitViewSvc } from './services';
+  import { SplitViewSvc } from './services';
   import {
     GenericHelpers,
     IframeHelpers,
@@ -59,7 +59,7 @@
 
   const updateElementSelectors = () => {
     elements.split = SplitViewSvc.getContainer();
-    elements.iframe = Iframe.getIframeContainer();
+    elements.iframe = IframeHelpers.getIframeContainer();
     elements.draggable = SplitViewSvc.getDragger();
   };
 

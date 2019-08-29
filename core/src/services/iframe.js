@@ -23,6 +23,7 @@ class IframeClass {
   }
 
   getIframeBySource(source, modalIframe) {
+    // jtest: split view is missing
     if (modalIframe && modalIframe.contentWindow === source) {
       return modalIframe;
     }
@@ -32,7 +33,7 @@ class IframeClass {
   }
 
   setActiveIframeToPrevious(node) {
-    const iframesInDom = IframeHelpers.getIframesInDom();
+    const iframesInDom = IframeHelpers.getMainIframes();
     const preservedViews = this.getPreservedViewsInDom(iframesInDom);
     if (preservedViews.length === 0) {
       return;
@@ -156,7 +157,7 @@ class IframeClass {
     const canReuseIframe = IframeHelpers.canReuseIframe(config, component);
     let activeIframe = this.getActiveIframe(node);
 
-    const iframes = IframeHelpers.getIframesInDom();
+    const iframes = IframeHelpers.getMainIframes();
     const goBackStack = this.getPreservedViewsInDom(iframes);
     let firstInGoBackStack = undefined;
     let pvSituation = false;
@@ -187,7 +188,7 @@ class IframeClass {
       // if next view is not isolated we can pick a iframe with matching viewGroup from the pool
       let targetIframe;
       if (!nextViewIsolated && componentData.viewGroup) {
-        const iframes = IframeHelpers.getIframesInDom();
+        const iframes = IframeHelpers.getMainIframes();
         const sameViewGroupIframes = iframes.filter(iframe => {
           return iframe.vg === componentData.viewGroup;
         });

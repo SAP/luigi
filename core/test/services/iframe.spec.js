@@ -4,7 +4,11 @@ const sinon = require('sinon');
 import { afterEach } from 'mocha';
 
 import { Iframe } from '../../src/services/iframe';
-import { GenericHelpers, RoutingHelpers } from '../../src/utilities/helpers';
+import {
+  GenericHelpers,
+  RoutingHelpers,
+  IframeHelpers
+} from '../../src/utilities/helpers';
 import { LuigiConfig } from '../../src/core-api';
 
 describe('Iframe', () => {
@@ -87,7 +91,9 @@ describe('Iframe', () => {
 
   describe('setActiveIframeToPrevious', () => {
     it('goBack with preserved view situation', () => {
-      sinon.stub(document, 'querySelectorAll').callsFake(() => node.children);
+      sinon
+        .stub(IframeHelpers, 'getMainIframes')
+        .callsFake(() => node.children);
       Iframe.setActiveIframeToPrevious(node);
 
       assert.equal(node.children.length, 4);
@@ -116,7 +122,7 @@ describe('Iframe', () => {
 
   describe('create new iframe with different viewgroup and dont delete the previous one (cache)', () => {
     it('navigate', () => {
-      sinon.stub(document, 'querySelectorAll').callsFake(() => [
+      sinon.stub(IframeHelpers, 'getMainIframes').callsFake(() => [
         {
           src: 'http://url.com/app.html!#/prevUrl',
           style: { display: 'block' },
@@ -145,7 +151,7 @@ describe('Iframe', () => {
 
   describe('use cached iframe with same viewgroup and change viewUrl', () => {
     it('navigate', () => {
-      sinon.stub(document, 'querySelectorAll').callsFake(() => [
+      sinon.stub(IframeHelpers, 'getMainIframes').callsFake(() => [
         {
           src: 'http://luigi.url.de',
           vg: 'tets1',

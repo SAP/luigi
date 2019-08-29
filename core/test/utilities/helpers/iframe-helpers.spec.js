@@ -1,5 +1,3 @@
-import { Iframe } from '../../../src/services/iframe';
-
 const chai = require('chai');
 const assert = chai.assert;
 const sinon = require('sinon');
@@ -70,14 +68,16 @@ describe('Iframe-helpers', () => {
     });
 
     it('getVisibleIframes', () => {
-      sinon.stub(document, 'querySelectorAll').callsFake(() => [
+      sinon.stub(IframeHelpers, 'getMicrofrontendsInDom').callsFake(() => [
         {
-          src: 'http://url.com/app.html!#/prevUrl',
-          style: { display: 'block' }
+          id: 1223,
+          active: true,
+          container: 'mock-html-element',
+          type: 'main'
         }
       ]);
       const visibleIframes = IframeHelpers.getVisibleIframes();
-      assert.equal(visibleIframes.length, 1);
+      assert.deepEqual(visibleIframes, ['mock-html-element']);
     });
 
     it('isSameViewGroup', () => {
@@ -214,19 +214,6 @@ describe('Iframe-helpers', () => {
     );
   });
 
-  describe('getAllIframes', () => {
-    it('should return an array of active iframes with no modal iframe', () => {
-      const iframes = IframeHelpers.getAllIframes();
-
-      assert.equal(iframes.length, 0);
-    });
-
-    it('should return an array of active iframes including active modal iframe', () => {
-      const iframes = IframeHelpers.getAllIframes({});
-
-      assert.equal(iframes.length, 1);
-    });
-  });
   describe('getMicrofrontendsInDom', () => {
     it('gets list of visible mfs', () => {
       const mockContainer = id => ({
@@ -241,23 +228,16 @@ describe('Iframe-helpers', () => {
         .withArgs('.iframeModalCtn iframe') // 'modal'
         .returns([mockContainer('modal')]);
 
-      sinon.stub(window, 'getComputedStyle').callsFake(container => {
-        return {
-          getPropertyValue: () => {
-            if (container.luigi.id === 'main_2') {
-              // second container is not active
-              return 'none';
-            }
-            return 'block';
-          }
-        };
+      GenericHelpers.isElementVisible.callsFake(container => {
+        // second container is not active
+        return container.luigi.id !== 'main_2';
       });
 
       const iframes = IframeHelpers.getMicrofrontendsInDom();
       assert.equal(iframes.length, 4, 'total iframes');
       assert.equal(iframes.filter(i => i.active).length, 3, 'active iframes');
 
-      const expectedKeys = ['active', 'id', 'container', 'type'];
+      const expectedKeys = ['id', 'container', 'active', 'type'];
       assert.deepEqual(
         Object.keys(iframes[0]),
         expectedKeys,
