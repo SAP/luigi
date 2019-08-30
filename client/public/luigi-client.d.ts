@@ -377,9 +377,7 @@ export function getContext(): Context;
 export type getContext = () => Context;
 
 /**
- * Hides the app loading spinner
- * works in combination with Luigi configuration
- * settings.loadingSpinner.delayHideUntilAfterInit
+ * Hides the app loading spinner. This function works only in combination with the Luigi configuration `settings.loadingSpinner.delayHideUntilAfterInit`. Read more about the (app loading spinner)[luigi-ux-features.md].
  * @memberof Lifecycle
  */
 export function afterInit(): void;
