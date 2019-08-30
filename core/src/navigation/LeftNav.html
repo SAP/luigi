@@ -220,7 +220,7 @@
 
 <script type="text/javascript">
   import { Navigation } from './services/navigation';
-  import { NavigationHelpers } from '../utilities/helpers';
+  import { IframeHelpers, NavigationHelpers } from '../utilities/helpers';
   import { LuigiConfig, LuigiElements, LuigiI18N } from '../core-api';
   import { StateHelpers } from '../utilities/helpers';
   import { CSS_BREAKPOINTS } from '../utilities/constants';
@@ -404,8 +404,8 @@
       handleKey(event) {
         const code = event.code;
         if (code === 'ArrowRight') {
-          const iframe = document.querySelector('.iframeContainer iframe');
-          if (iframe.contentWindow) {
+          const iframe = IframeHelpers.getCurrentMicrofrontendIframe();
+          if (iframe && iframe.contentWindow) {
             iframe.contentWindow.focus();
           }
         }
