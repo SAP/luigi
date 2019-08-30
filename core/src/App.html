@@ -70,6 +70,7 @@
   import { LuigiI18N, LuigiConfig, LuigiElements } from './core-api';
   import { Navigation } from './navigation/services/navigation';
   import {
+    MessagesListeners,
     Iframe,
     ViewGroupPreloading,
     Routing,
@@ -356,6 +357,30 @@
         window.addEventListener('message', async e => {
           const iframe = IframeHelpers.getValidMessageSource(e, this);
           if (!iframe) return;
+
+          if ('custom' === e.data.msg) {
+            const customMessagesListeners =
+              LuigiConfig.getConfigValue(
+                'communication.customMessagesListeners'
+              ) || {};
+            const message = MessagesListeners.convertCustomMessageInternalToUser(
+              e.data
+            );
+            const customMessageListener = customMessagesListeners[message.id];
+            if (typeof customMessageListener === 'function') {
+              const microfrontend = LuigiElements.getMicrofrontends().find(
+                mf => mf.id === e.source.frameElement.luigi.id
+              );
+
+              customMessageListener(
+                message,
+                microfrontend,
+                GenericHelpers.removeInternalProperties(
+                  iframe.luigi.currentNode
+                )
+              );
+            }
+          }
 
           if ('luigi.navigate.ok' === e.data.msg) {
             iframe.luigi.viewUrl = iframe.luigi.nextViewUrl;
