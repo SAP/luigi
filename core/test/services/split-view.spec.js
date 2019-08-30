@@ -27,7 +27,8 @@ describe('SplitViewSvc', () => {
       prepareInternalData: () => {}
     };
 
-    sinon.stub(component);
+    sinon.stub(component, 'set').callThrough();
+    sinon.stub(component, 'get').callThrough();
     sinon.stub(LuigiConfig);
     sinon.stub(LuigiElements);
     sinon.stub(RoutingHelpers);
@@ -92,7 +93,7 @@ describe('SplitViewSvc', () => {
       document.querySelector.returns({ appendChild: sinon.spy() });
       IframeHelpers.createIframe.returns(splitFrame);
 
-      const res = SplitViewSvc.setIframe(null, 'componentData', 'component');
+      const res = SplitViewSvc.setIframe(null, 'componentData', component);
 
       sinon.assert.calledWith(IframeHelpers.createIframe, null);
       sinon.assert.notCalled(RoutingHelpers.substituteViewUrl);
@@ -106,11 +107,7 @@ describe('SplitViewSvc', () => {
       IframeHelpers.createIframe.returns(splitFrame);
       RoutingHelpers.substituteViewUrl.returns('otherUrl');
 
-      const res = SplitViewSvc.setIframe(
-        'viewUrl',
-        'componentData',
-        'component'
-      );
+      const res = SplitViewSvc.setIframe('viewUrl', 'componentData', component);
 
       sinon.assert.calledWith(
         RoutingHelpers.substituteViewUrl,
@@ -227,7 +224,8 @@ describe('SplitViewSvc', () => {
         const splitViewSettings = {
           collapsed: true
         };
-        component.get.returns({ splitViewSettings });
+        component.get.restore();
+        sinon.stub(component, 'get').returns({ splitViewSettings });
         const testPath = 'http:/#!' + pathUrlRaw;
         setMockReturns();
 
@@ -270,7 +268,8 @@ describe('SplitViewSvc', () => {
           collapsed: true,
           title: 'other title'
         };
-        component.get.returns({ splitViewSettings });
+        component.get.restore();
+        sinon.stub(component, 'get').returns({ splitViewSettings });
         const testPath = 'http:/#!' + pathUrlRaw;
         setMockReturns();
 
@@ -309,7 +308,8 @@ describe('SplitViewSvc', () => {
       it('without specific splitviewsettings', async () => {
         // given
         const splitViewSettings = {};
-        component.get.returns({ splitViewSettings });
+        component.get.restore();
+        sinon.stub(component, 'get').returns({ splitViewSettings });
         const testPath = 'http:/#!' + pathUrlRaw;
         setMockReturns();
 

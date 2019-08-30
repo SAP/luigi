@@ -1,5 +1,6 @@
 // Helper methods for 'iframe.js' file. They don't require any method from 'iframe.js` but are required by them.
 import { GenericHelpers } from './';
+import { MICROFRONTEND_TYPES } from './../constants';
 import { Iframe } from '../../services';
 import { LuigiConfig } from '../../core-api';
 
@@ -74,7 +75,9 @@ class IframeHelpersClass {
         componentData.previousNodeValues.viewUrl
       );
       const nextUrl = GenericHelpers.getUrlWithoutHash(componentData.viewUrl);
-      if (previousUrl === nextUrl) {
+      const previousViewGroup = componentData.previousNodeValues.viewGroup;
+      const nextViewGroup = componentData.viewGroup;
+      if (previousUrl === nextUrl && !previousViewGroup && !nextViewGroup) {
         return true;
       }
     }
@@ -149,6 +152,34 @@ class IframeHelpersClass {
     return this.getLocation(viewUrl) === domain;
   }
 
+  /*
+  [
+    {id: "id-1", container: IFRAME_DO_ELEM_1, active: true, type:"main"},
+    {id: "id-2", container: IFRAME_DO_ELEM_1, active: false, type:"main"},
+    {id: "id-3", container: IFRAME_DO_ELEM_3, active: false, type:"modal"},
+    {id: "id-4", container: IFRAME_DO_ELEM_4, active: false, type:"main"},
+    {id: "id-5", container: IFRAME_DO_ELEM_5, active: false, type:"split-view"},
+    {id: "id-6", container: IFRAME_DO_ELEM_6, active: false, type:"main"}
+  ]*/
+  getMicrofrontendsInDom() {
+    return MICROFRONTEND_TYPES.map(({ type, selector }) => {
+      return Array.from(document.querySelectorAll(selector)).map(container => ({
+        container,
+        type
+      }));
+    })
+      .filter(iframeTypeArray => Boolean(iframeTypeArray.length))
+      .reduce((acc, val) => acc.concat(val), []) // flatten
+      .map(mfObj => Object.assign({ id: mfObj.container.luigi.id }, mfObj))
+      .map(mfObj => {
+        const isMicrofrontendActive =
+          window
+            .getComputedStyle(mfObj.container, null)
+            .getPropertyValue('display') !== 'none';
+        return Object.assign({ active: isMicrofrontendActive }, mfObj);
+      });
+  }
+
   iframeIsSameDomain(viewUrl, domain) {
     return this.urlMatchesTheDomain(viewUrl, domain);
   }
@@ -182,7 +213,7 @@ class IframeHelpersClass {
     allIframes.forEach(iframe => this.sendMessageToIframe(iframe, message));
   }
 
-  createIframe(viewUrl, viewGroup, clientPermissions) {
+  createIframe(viewUrl, viewGroup, currentNode) {
     const luigiDefaultSandboxRules = [
       'allow-forms', // Allows the resource to submit forms. If this keyword is not used, form submission is blocked.
       'allow-modals', // Lets the resource open modal windows.
@@ -201,7 +232,7 @@ class IframeHelpersClass {
     const customSandboxRules = LuigiConfig.getConfigValue(
       'settings.customSandboxRules'
     );
-    let activeSandboxRules = customSandboxRules
+    const activeSandboxRules = customSandboxRules
       ? [...new Set([...luigiDefaultSandboxRules, ...customSandboxRules])]
       : luigiDefaultSandboxRules;
 
@@ -210,13 +241,15 @@ class IframeHelpersClass {
     iframe.sandbox = activeSandboxRules.join(' ');
     iframe.luigi = {
       viewUrl,
-      createdAt: new Date().getTime()
+      currentNode,
+      createdAt: new Date().getTime(),
+      id: GenericHelpers.getRandomId()
     };
     if (viewGroup) {
       iframe.vg = viewGroup;
     }
-    if (clientPermissions) {
-      iframe.luigi.clientPermissions = clientPermissions;
+    if (currentNode && currentNode.clientPermissions) {
+      iframe.luigi.clientPermissions = currentNode.clientPermissions;
     }
     return iframe;
   }

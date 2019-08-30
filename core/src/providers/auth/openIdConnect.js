@@ -1,3 +1,4 @@
+/* istanbul ignore file */
 import { AsyncHelpers, GenericHelpers } from '../../utilities/helpers';
 import { thirdPartyCookiesStatus } from '../../utilities/third-party-cookies-check';
 import { LuigiAuth } from '../../core-api';

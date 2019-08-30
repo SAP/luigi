@@ -38,6 +38,23 @@ Removes a context update listener.
 
 -   `id` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** the id that was returned by the `addContextUpdateListener` function
 
+### addCustomMessageListener
+
+Registers a listener called when the micro frontend receives a custom message.
+
+#### Parameters
+
+-   `customMessageId` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** the custom message id
+-   `customMessageListener` **[Lifecycle~customMessageListenerCallback](#lifecyclecustommessagelistenercallback)** the function that is called when the micro frontend receives the corresponding event.
+
+### removeCustomMessageListener
+
+Removes a custom message listener.
+
+#### Parameters
+
+-   `id` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** the id that was returned by the `addInitListener` function
+
 ### getToken
 
 Returns the currently valid access token.
@@ -87,6 +104,23 @@ Hides the app loading spinner
 works in combination with Luigi configuration
 settings.loadingSpinner.delayHideUntilAfterInit
 
+### sendCustomMessage
+
+Sends a custom message to the Luigi Core application.
+
+#### Parameters
+
+-   `message` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** an object containing data to be sent to the Luigi Core to process it further. This object is set as an input parameter of the custom message listener on the Luigi Core side.
+    -   `message.id` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** a string containing the message id
+    -   `message.MY_DATA_FIELD` **any** any other message data field
+
+#### Examples
+
+```javascript
+import LuigiClient from '@kyma-project/luigi-client';
+LuigiClient.sendCustomMessage({id: 'environment.created', production: false})
+```
+
 ## Lifecycle~initListenerCallback
 
 Callback of the addInitListener
@@ -97,6 +131,527 @@ Type: [Function](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Sta
 
 -   `context` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** current context data
 -   `origin` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** Luigi Core URL
+
+## Lifecycle~customMessageListenerCallback
+
+Callback of the customMessageListener
+
+Type: [Function](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Statements/function)
+
+### Parameters
+
+-   `customMessage` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** custom message object
+    -   `customMessage.id` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** message id
+    -   `customMessage.MY_DATA_FIELD` **any** any other message data field
+-   `listenerId` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** custom message listener id to be used for unsubscription
+
+## linkManager
+
+The Link Manager allows you to navigate to another route. Use it instead of an internal router to:
+
+-   Provide routing inside micro front-ends.
+-   Reflect the route.
+-   Keep the navigation state in Luigi.
+
+### navigate
+
+Navigates to the given path in the application hosted by Luigi. It contains either a full absolute path or a relative path without a leading slash that uses the active route as a base. This is the standard navigation.
+
+#### Parameters
+
+-   `path` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** path to be navigated to
+-   `sessionId` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** current Luigi **sessionId**
+-   `preserveView` **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)** preserve a view by setting it to `true`. It keeps the current view opened in the background and opens the new route in a new frame. Use the [goBack()](#goBack) function to navigate back. You can use this feature across different levels. Preserved views are discarded as soon as you use the standard [navigate()](#navigate) function instead of [goBack()](#goBack)
+-   `modalSettings` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** opens a view in a modal. Use these settings to configure the modal's title and size
+    -   `modalSettings.title` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** modal title. By default, it is the node label. If there is no label, it is left empty
+    -   `modalSettings.size` **(`"l"` \| `"m"` \| `"s"`)** size of the modal (optional, default `"l"`)
+-   `splitViewSettings` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** opens a view in a split view. Use these settings to configure the split view's behaviour
+    -   `splitViewSettings.title` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** split view title. By default, it is the node label. If there is no label, it is left empty
+    -   `splitViewSettings.size` **[number](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number)** height of the split view in percent (optional, default `40`)
+    -   `splitViewSettings.collapsed` **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)** creates split view but leaves it closed initially (optional, default `false`)
+
+#### Examples
+
+```javascript
+LuigiClient.linkManager().navigate('/overview')
+LuigiClient.linkManager().navigate('users/groups/stakeholders')
+LuigiClient.linkManager().navigate('/settings', null, true) // preserve view
+```
+
+### openAsModal
+
+Opens a view in a modal. You can specify the modal's title and size. If you don't specify the title, it is the node label. If there is no node label, the title remains empty.  The default size of the modal is `l`, which means 80%. You can also use `m` (60%) and `s` (40%) to set the modal size. Optionally, use it in combination with any of the navigation functions.
+
+#### Parameters
+
+-   `path` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** navigation path
+-   `modalSettings` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)?** opens a view in a modal. Use these settings to configure the modal's title and size
+    -   `modalSettings.title` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** modal title. By default, it is the node label. If there is no label, it is left empty
+    -   `modalSettings.size` **(`"l"` \| `"m"` \| `"s"`)** size of the modal (optional, default `"l"`)
+
+#### Examples
+
+```javascript
+LuigiClient.linkManager().openAsModal('projects/pr1/users', {title:'Users', size:'m'});
+```
+
+### openAsSplitView
+
+-   **See: [splitView](#splitview) for further documentation about the returned instance**
+
+Opens a view in a split view. You can specify the split view's title and size. If you don't specify the title, it is the node label. If there is no node label, the title remains empty. The default size of the split view is `40`, which means 40% height of the split view.
+
+#### Parameters
+
+-   `path` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** navigation path
+-   `splitViewSettings` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** opens a view in a split view. Use these settings to configure the split view's behaviour (optional, default `{}`)
+    -   `splitViewSettings.title` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** split view title. By default, it is the node label. If there is no label, it is left empty
+    -   `splitViewSettings.size` **[number](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number)** height of the split view in percent (optional, default `40`)
+    -   `splitViewSettings.collapsed` **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)** opens split view in collapsed state (optional, default `false`)
+
+#### Examples
+
+```javascript
+const splitViewHandle = LuigiClient.linkManager().openAsSplitView('projects/pr1/logs', {title: 'Logs', size: 40, collapsed: true});
+```
+
+Returns **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** instance of the SplitView. It provides Event listeners and you can use the available functions to control its behavior.
+
+**Meta**
+
+-   **since**: 0.6.0
+
+### fromContext
+
+Sets the current navigation context to that of a specific parent node which has the [navigationContext](navigation-configuration.md) field declared in the navigation configuration. This navigation context is then used by the `navigate` function.
+
+#### Parameters
+
+-   `navigationContext` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** 
+
+#### Examples
+
+```javascript
+LuigiClient.linkManager().fromContext('project').navigate('/settings')
+```
+
+Returns **[linkManager](#linkmanager)** link manager instance
+
+### fromClosestContext
+
+Sets the current navigation context which is then used by the `navigate` function. This has to be a parent navigation context, it is not possible to use the child navigation contexts.
+
+#### Examples
+
+```javascript
+LuigiClient.linkManager().fromClosestContext().navigate('/users/groups/stakeholders')
+```
+
+Returns **[linkManager](#linkmanager)** link manager instance
+
+### withParams
+
+Sends node parameters to the route. The parameters are used by the `navigate` function. Use it optionally in combination with any of the navigation functions and receive it as part of the context object in Luigi Client.
+
+#### Parameters
+
+-   `nodeParams` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** 
+
+#### Examples
+
+```javascript
+LuigiClient.linkManager().withParams({foo: "bar"}).navigate("path")
+
+// Can be chained with context setting functions such as:
+LuigiClient.linkManager().fromContext("currentTeam").withParams({foo: "bar"}).navigate("path")
+```
+
+Returns **[linkManager](#linkmanager)** link manager instance
+
+### pathExists
+
+Checks if the path you can navigate to exists in the main application. For example, you can use this helper method conditionally to display a DOM element like a button.
+
+#### Parameters
+
+-   `path` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** path which existence you want to check
+
+#### Examples
+
+```javascript
+let pathExists;
+ LuigiClient
+ .linkManager()
+ .pathExists('projects/pr2')
+ .then(
+   (pathExists) => {  }
+ );
+```
+
+Returns **[promise](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise)** a promise which resolves to a Boolean variable specifying whether the path exists or not
+
+### hasBack
+
+Checks if there is one or more preserved views. You can use it to show a **back** button.
+
+Returns **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)** indicating if there is a preserved view you can return to
+
+### goBack
+
+Discards the active view and navigates back to the last visited view. Works with preserved views, and also acts as the substitute of the browser **back** button. **goBackContext** is only available when using preserved views.
+
+#### Parameters
+
+-   `goBackValue` **any** data that is passed in the **goBackContext** field to the last visited view when using preserved views.
+
+#### Examples
+
+```javascript
+LuigiClient.linkManager().goBack({ foo: 'bar' });
+LuigiClient.linkManager().goBack(true);
+```
+
+## splitView
+
+Split view 
+Allows to open a micro frontend in a split screen in the lower part of the content area. Open it by calling `const splitViewHandle = LuigiClient.linkManager().openAsSplitView`. 
+At a given time, you can open only one split view. It closes automatically when you navigate to a different route.
+When you call `handle.collapse()`, the split view gets destroyed. It recreates when you use `handle.expand()`.
+`openAsSplitView` returns an instance of the split view handle. The functions, actions, and event handlers listed below allow you to control and manage the split view.
+
+**Meta**
+
+-   **since**: 0.6.0
+
+### collapse
+
+Collapses the split view
+
+#### Examples
+
+```javascript
+splitViewHandle.collapse();
+```
+
+**Meta**
+
+-   **since**: 0.6.0
+
+### expand
+
+Expands the split view
+
+#### Examples
+
+```javascript
+splitViewHandle.expand();
+```
+
+**Meta**
+
+-   **since**: 0.6.0
+
+### close
+
+Closes and destroys the split view
+
+#### Examples
+
+```javascript
+splitViewHandle.close();
+```
+
+**Meta**
+
+-   **since**: 0.6.0
+
+### setSize
+
+Sets the height of the split view
+
+#### Parameters
+
+-   `value` **[number](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number)** lower height in percent
+
+#### Examples
+
+```javascript
+splitViewHandle.setSize(60);
+```
+
+**Meta**
+
+-   **since**: 0.6.0
+
+### on
+
+Registers a listener for split view events
+
+#### Parameters
+
+-   `name` **(`"expand"` \| `"collapse"` \| `"resize"` \| `"close"`)** event name
+-   `callback` **[function](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Statements/function)** gets called when this event gets triggered by Luigi
+
+#### Examples
+
+```javascript
+const listenerId = splitViewHandle.on('expand', () => {});
+const listenerId = splitViewHandle.on('collapse', () => {});
+const listenerId = splitViewHandle.on('resize', () => {});
+const listenerId = splitViewHandle.on('close', () => {});
+*
+```
+
+Returns **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** listener id
+
+**Meta**
+
+-   **since**: 0.6.0
+
+### removeEventListener
+
+Unregisters a split view listener
+
+#### Parameters
+
+-   `id` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** listener id
+
+#### Examples
+
+```javascript
+splitViewHandle.removeEventListener(listenerId);
+```
+
+**Meta**
+
+-   **since**: 0.6.0
+
+### exists
+
+Gets the split view status
+
+#### Examples
+
+```javascript
+splitViewHandle.exists();
+```
+
+Returns **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)** true if a split view is loaded
+
+**Meta**
+
+-   **since**: 0.6.0
+
+### getSize
+
+Reads the size of the split view
+
+#### Examples
+
+```javascript
+splitViewHandle.getSize();
+```
+
+Returns **[number](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number)** height in percent
+
+**Meta**
+
+-   **since**: 0.6.0
+
+### isCollapsed
+
+Reads the collapse status
+
+#### Examples
+
+```javascript
+splitViewHandle.isCollapsed();
+```
+
+Returns **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)** true if the split view is currently collapsed
+
+**Meta**
+
+-   **since**: 0.6.0
+
+### isExpanded
+
+Reads the expand status
+
+#### Examples
+
+```javascript
+splitViewHandle.isExpanded();
+```
+
+Returns **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)** true if the split view is currently expanded
+
+**Meta**
+
+-   **since**: 0.6.0
+
+## uxManager
+
+Use the UX Manager to manage the appearance features in Luigi.
+
+### showLoadingIndicator
+
+Adds a backdrop with a loading indicator for the micro front-end frame. This overrides the [loadingIndicator.enabled](navigation-configuration.md#nodes) setting.
+
+### hideLoadingIndicator
+
+Removes the loading indicator. Use it after calling [showLoadingIndicator()](#showLoadingIndicator) or to hide the indicator when you use the [loadingIndicator.hideAutomatically: false](navigation-configuration.md#nodes) node configuration.
+
+### addBackdrop
+
+Adds a backdrop to block the top and side navigation. It is based on the Fundamental UI Modal, which you can use in your micro front-end to achieve the same behavior.
+
+### removeBackdrop
+
+Removes the backdrop.
+
+### setDirtyStatus
+
+This method informs the main application that there are unsaved changes in the current view in the iframe. For example, that can be a view with form fields which were edited but not submitted.
+
+#### Parameters
+
+-   `isDirty` **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)** indicates if there are any unsaved changes on the current page or in the component
+
+### showConfirmationModal
+
+Shows a confirmation modal.
+
+#### Parameters
+
+-   `settings` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** the settings of the confirmation modal. If you don't provide any value for any of the fields, a default value is used
+    -   `settings.header` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** the content of the modal header (optional, default `"Confirmation"`)
+    -   `settings.body` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** the content of the modal body (optional, default `"Are you sure you want to do this?"`)
+    -   `settings.buttonConfirm` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** the label for the modal confirm button (optional, default `"Yes"`)
+    -   `settings.buttonDismiss` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** the label for the modal dismiss button (optional, default `"No"`)
+
+Returns **[promise](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise)** which is resolved when accepting the confirmation modal and rejected when dismissing it
+
+### showAlert
+
+Shows an alert.
+
+#### Parameters
+
+-   `settings` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** the settings for the alert
+    -   `settings.text` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** the content of the alert. To add a link to the content, you have to set up the link in the `links` object. The key(s) in the `links` object must be used in the text to reference the links, wrapped in curly brackets with no spaces. If you don't specify any text, the alert is not displayed
+    -   `settings.type` **(`"info"` \| `"success"` \| `"warning"` \| `"error"`)** sets the type of alert
+    -   `settings.links` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** provides links data
+        -   `settings.links.LINK_KEY` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** object containing the data for a particular link. To properly render the link in the alert message refer to the description of the **settings.text** parameter
+            -   `settings.links.LINK_KEY.text` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** text which replaces the link identifier in the alert content
+            -   `settings.links.LINK_KEY.url` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** url to navigate when you click the link. Currently, only internal links are supported in the form of relative or absolute paths.
+    -   `settings.closeAfter` **[number](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number)** (optional) time in milliseconds that tells Luigi when to close the Alert automatically. If not provided, the Alert will stay on until closed manually. It has to be greater than `100`.
+
+#### Examples
+
+```javascript
+import LuigiClient from '@kyma-project/luigi-client';
+const settings = {
+ text: Ut enim ad minim veniam, {goToHome} quis nostrud exercitation ullamco {relativePath} laboris nisi ut aliquip ex ea commodo consequat.
+   Duis aute irure dolor {goToOtherProject},
+ type: 'info',
+ links: {
+   goToHome: { text: 'homepage', url: '/overview' },
+   goToOtherProject: { text: 'other project', url: '/projects/pr2' },
+   relativePath: { text: 'relative hide side nav', url: 'hideSideNav' }
+ },
+closeAfter: 3000
+}
+LuigiClient
+ .uxManager()
+ .showAlert(settings)
+ .then(() => {
+    // Logic to execute when the alert is dismissed
+});
+```
+
+Returns **[promise](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise)** which is resolved when the alert is dismissed.
+
+### getCurrentLocale
+
+Gets the current locale.
+
+Returns **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** current locale
+
+### setCurrentLocale
+
+Sets current locale to the specified one.
+
+**NOTE:** this must be explicitly allowed on the navigation node level by setting `clientPermissions.changeCurrentLocale` to `true`. (See [Node parameters](navigation-parameters-reference.md).)
+
+#### Parameters
+
+-   `locale` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** locale to be set as the current locale
+
+### isSplitView
+
+Checks if the current micro-frontend is displayed inside a split view
+
+Returns **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)** indicating if it is loaded inside a split view
+
+**Meta**
+
+-   **since**: 0.6.0
+
+### isModal
+
+Checks if the current micro-frontend is displayed inside a modal
+
+Returns **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)** indicating if it is loaded inside a modal
+
+**Meta**
+
+-   **since**: 0.6.0
+
+# settings.loadingSpinner.delayHideUntilAfterInit
+
+### sendCustomMessage
+
+Sends a custom message to the Luigi Core application.
+
+#### Parameters
+
+-   `message` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** an object containing data to be sent to the Luigi Core to process it further. This object is set as an input parameter of the custom message listener on the Luigi Core side.
+    -   `message.id` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** a string containing the message id
+    -   `message.MY_DATA_FIELD` **any** any other message data field
+
+#### Examples
+
+```javascript
+import LuigiClient from '@kyma-project/luigi-client';
+LuigiClient.sendCustomMessage({id: 'environment.created', production: false})
+```
+
+> > > > > > > upstream/master
+
+## Lifecycle~initListenerCallback
+
+Callback of the addInitListener
+
+Type: [Function](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Statements/function)
+
+### Parameters
+
+-   `context` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** current context data
+-   `origin` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** Luigi Core URL
+
+## Lifecycle~customMessageListenerCallback
+
+Callback of the customMessageListener
+
+Type: [Function](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Statements/function)
+
+### Parameters
+
+-   `customMessage` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** custom message object
+    -   `customMessage.id` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** message id
+    -   `customMessage.MY_DATA_FIELD` **any** any other message data field
+-   `listenerId` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** custom message listener id to be used for unsubscription
 
 ## linkManager
 

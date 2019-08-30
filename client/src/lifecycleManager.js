@@ -147,13 +147,14 @@ class LifecycleManager extends LuigiClientBase {
    * @memberof Lifecycle
    */
   addInitListener(initFn) {
-    var id = helpers.getRandomId();
+    const id = helpers.getRandomId();
     this._onInitFns[id] = initFn;
     if (this.luigiInitialized && helpers.isFunction(initFn)) {
       initFn(this.currentContext.context, helpers.getLuigiCoreDomain());
     }
     return id;
   }
+
   /**
    * Callback of the addInitListener
    * @callback Lifecycle~initListenerCallback
@@ -172,19 +173,21 @@ class LifecycleManager extends LuigiClientBase {
     }
     return false;
   }
+
   /**
    * Registers a listener called with the context object upon any navigation change.
    * @param {function} contextUpdatedFn the listener function called each time Luigi context changes
    * @memberof Lifecycle
    */
   addContextUpdateListener(contextUpdatedFn) {
-    var id = helpers.getRandomId();
+    const id = helpers.getRandomId();
     this._onContextUpdatedFns[id] = contextUpdatedFn;
     if (this.luigiInitialized && helpers.isFunction(contextUpdatedFn)) {
       contextUpdatedFn(this.currentContext.context);
     }
     return id;
   }
+
   /**
    * Removes a context update listener.
    * @param {string} id the id that was returned by the `addContextUpdateListener` function
@@ -196,6 +199,38 @@ class LifecycleManager extends LuigiClientBase {
       return true;
     }
     return false;
+  }
+
+  /**
+   * Registers a listener called when the micro frontend receives a custom message.
+   * @param {string} customMessageId the custom message id
+   * @param {Lifecycle~customMessageListenerCallback} customMessageListener the function that is called when the micro frontend receives the corresponding event.
+   * @memberof Lifecycle
+   */
+  addCustomMessageListener(customMessageId, customMessageListener) {
+    return helpers.addEventListener(
+      customMessageId,
+      (customMessage, listenerId) => {
+        return customMessageListener(customMessage, listenerId);
+      }
+    );
+  }
+
+  /**
+   * Callback of the customMessageListener
+   * @callback Lifecycle~customMessageListenerCallback
+   * @param {Object} customMessage custom message object
+   * @param {string} customMessage.id message id
+   * @param {*} customMessage.MY_DATA_FIELD any other message data field
+   * @param {string} listenerId custom message listener id to be used for unsubscription
+   */
+  /**
+   * Removes a custom message listener.
+   * @param {string} id the id that was returned by the `addInitListener` function
+   * @memberof Lifecycle
+   */
+  removeCustomMessageListener(id) {
+    return helpers.removeEventListener(id);
   }
 
   /**
@@ -262,6 +297,23 @@ class LifecycleManager extends LuigiClientBase {
    */
   afterInit() {
     helpers.sendPostMessageToLuigiCore({ msg: 'luigi.hide-app-spinner' });
+  }
+
+  /**
+   * Sends a custom message to the Luigi Core application.
+   * @param {Object} message an object containing data to be sent to the Luigi Core to process it further. This object is set as an input parameter of the custom message listener on the Luigi Core side.
+   * @param {string} message.id a string containing the message id
+   * @param {*} message.MY_DATA_FIELD any other message data field
+   * @example
+   * import LuigiClient from '@kyma-project/luigi-client';
+   * LuigiClient.sendCustomMessage({id: 'environment.created', production: false})
+   * @memberof Lifecycle
+   */
+  sendCustomMessage(message) {
+    const customMessageInternal = helpers.convertCustomMessageUserToInternal(
+      message
+    );
+    helpers.sendPostMessageToLuigiCore(customMessageInternal);
   }
 }
 export const lifecycleManager = new LifecycleManager();

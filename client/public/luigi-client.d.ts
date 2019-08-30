@@ -324,6 +324,37 @@ export function removeContextUpdateListener(id: string): boolean;
 export type removeContextUpdateListener = (id: string) => boolean;
 
 /**
+ * Registers a listener called when the micro frontend receives a custom message.
+ * @param {string} customMessageId the custom message id
+ * @param {Lifecycle~customMessageListenerCallback} customMessageListener the function that is called when the micro frontend receives the corresponding event.
+ * @memberof Lifecycle
+ */
+export function addCustomMessageListener(
+  customMessageId: string,
+  customMessageListener: (customMessage: Object, listenerId: string) => void
+): string;
+export type addCustomMessageListener = (
+  customMessageId: string,
+  customMessageListener: (customMessage: Object, listenerId: string) => void
+) => string;
+
+/**
+ * Callback of the customMessageListener
+ * @callback Lifecycle~customMessageListenerCallback
+ * @param {Object} customMessage custom message object
+ * @param {string} customMessage.id message id
+ * @param {*} customMessage.MY_DATA_FIELD any other message data field
+ * @param {string} listenerId custom message listener id to be used for unsubscribing
+ */
+/**
+ * Removes a custom message listener.
+ * @param {string} listenerId the id that was returned by the `addInitListener` function
+ * @memberof Lifecycle
+ */
+export function removeCustomMessageListener(id: string): boolean;
+export type removeCustomMessageListener = (id: string) => boolean;
+
+/**
  * @returns {string} the authorization token
  */
 export function getToken(): AuthData['accessToken'];
@@ -382,6 +413,19 @@ export type getPathParams = () => PathParams;
  */
 export function getClientPermissions(): ClientPermissions;
 export type getClientPermissions = () => ClientPermissions;
+
+/**
+ * Sends a custom message to the Luigi Core application.
+ * @param {Object} message an object containing data to be sent to the Luigi Core to further process the custom event. This object is set as an input parameter of the event handler on the Luigi Core side.
+ * @param {string} message.id a string containing the message id
+ * @param {*} message.MY_DATA_FIELD any other message data field
+ * @example
+ * import LuigiClient from '@kyma-project/luigi-client';
+ * LuigiClient.sendCustomMessage({id: 'environment.created', production: false})
+ * @memberof Lifecycle
+ */
+export function sendCustomMessage(message: object): void;
+export type sendCustomMessage = (message: object) => void;
 
 /**
  * The Link Manager allows you to navigate to another route. Use it instead of an internal router to:

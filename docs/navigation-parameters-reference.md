@@ -39,8 +39,10 @@ Luigi.setConfig({
       hideFromNav: false,
       isolateView: false,
       icon: 'settings',
+      testId: 'myTestId'
       category: {
         label: 'General',
+        testId: 'myTestId',
         icon: 'general'
       }, // OR
       category: 'General'
@@ -49,6 +51,7 @@ Luigi.setConfig({
     {
       navigationContext: 'contextName',
       pathSegment: ':projectId',
+      testId: 'myTestId',
       viewUrl: '/some/path/:projectId',
       context: {
         projectId: ':projectId'
@@ -105,6 +108,7 @@ Luigi.setConfig({
     ],
     contextSwitcher: {
       defaultLabel: 'Select Environment ...',
+      testId: 'myTestId',
       parentNodePath: '/environments',
       lazyloadOptions: false,
       fallbackLabelResolver: (id) => (id.toUpperCase()),
@@ -115,10 +119,12 @@ Luigi.setConfig({
       logout: {
         label: 'End session'
         // icon: "sys-cancel",
+        testId: 'myTestId',
       },
       items: [
         {
           icon: '',
+          testId: 'myTestId',
           label: 'Luigi in Github',
           externalLink: {
             url: 'https://github.com/SAP/luigi',
@@ -134,11 +140,13 @@ Luigi.setConfig({
     },
     productSwitcher: {
       label: 'My Products',
+      testId: 'myTestId',
       icon: 'grid',
       items: [
         {
           icon: '',
           label: 'Luigi in Github',
+          testId: 'myTestId',
           externalLink: {
             url: 'https://github.com/SAP/luigi',
             sameWindow: false
@@ -147,6 +155,7 @@ Luigi.setConfig({
         {
           icon: '',
           label: 'Project 1',
+          testId: 'myTestId',
           link: '/projects/pr1'
         }
       ]
@@ -189,6 +198,7 @@ The node parameters are as follows:
    - **sameWindow** defines if the external URL is opened in a new or current tab. The default value for this parameter is `false`.
    - **url** is the external URL that the node leads to.
 - **label** contains the display name of the navigation node.
+- **testId** is a string where you can define your own custom `testId`. If there is nothing specified, it is a combination of the node's pathsegment followed by a dash (if pathsegment exists) and the label written as one word and lower case (e.g. `pathsegment_label` or `label`).
 - **hideFromNav** shows or hides a navigation node. You can still navigate to the node but it does not show up in the top or left pane.
 - **viewUrl** contains the URL or path to a view which renders when you click the navigation node. Use either a full URL or a relative path. This value may consist of variables if you have specified a **navigationContext** with a dynamic **pathSegment**. If **viewUrl** is undefined, Luigi activates the child node specified in **defaultChildNode**. When both **viewUrl** and **defaultChildNode** are undefined, Luigi opens the first child of the current node.
 - **navigationContext** contains a named node that is mainly for use in combination with a dynamic **pathSegment** to start navigation from a dynamic node using ` LuigiClient.linkManager().fromContext('contextname')`.
@@ -205,11 +215,12 @@ The node parameters are as follows:
 - **badgeCounter** adds a badge with a number and a label to a node. Nodes that are part of a category show a cumulated number of all badges in this category. **badgeCounter** is only available for top navigation items.
   - **label** is the label of the badge.
   - **count** is a function or asynchronous function that returns a number.
-  Gets updated when you click the navigation. Use `Luigi.navigation().updateTopNavigation()` in Luigi Core or execute `window.parent.postMessage({msg: 'luigi.navigation.update-badge-counters'}, '*');` from within a micro frontend to trigger a manual update.
+  Gets updated when you click the navigation. Use `Luigi.navigation().updateTopNavigation()` in Luigi Core or trigger it in Luigi Client by using the custom message feature.
 - **category** defines a group of views separated with a headline and an icon. You should define at least one node in a group should as an Object with **label** and **icon** properties. For all other nodes, you can set **category** as a string with the `label` value. 
    - **label** is a string that represents the title of the category
-   -  **icon** is the name of an icon, without the `sap-icon--` prefix. Its source may be [OpenUI](https://openui5.hana.ondemand.com/1.40.10/iconExplorer.html) or a custom link (relative or absolute) to an image. The icon is displayed next to the node label in the side navigation or instead of the label in the top navigation. In case you accidentally define different icons in a category group, only the first one is used.
+   - **icon** is the name of an icon, without the `sap-icon--` prefix. Its source may be [OpenUI](https://openui5.hana.ondemand.com/1.40.10/iconExplorer.html) or a custom link (relative or absolute) to an image. The icon is displayed next to the node label in the side navigation or instead of the label in the top navigation. In case you accidentally define different icons in a category group, only the first one is used.
    - **collapsible** if set to `true`, category items are hidden at first. To expand them, click the main category node.
+   - **testId** is a string where you can define your own custom `testId`. If nothing is specified, it is the node's label written as one word and lower case (e.g. `label`).
 - **openNodeInModal** configures the settings of the view which opens in a modal. You can specify the modal's title and size. If you don't specify the title, the node label is used. If there is no node label, the title remains empty. The default size of the modal is `l`, which means 80%. You can also use `m` (60%) and `s` (40%) to set the modal size.<br/> Optionally you can set the **openNodeInModal** property to `true` to use default title and size.
   -   **title** modal title. By default, it is the node label. If there is no label, it is left empty
   -   **size** **(`"l"` \| `"m"` \| `"s"`)** size of the modal (optional, default `"l"`)
@@ -228,6 +239,7 @@ The context switcher is a drop-down list available in the top navigation bar. It
   - **pathValue** defines the context element path that is appended to **parentNodePath** and reflects a **pathSegment**.
 - **actions** defines a list of additional elements that are shown on above or below the context switcher **options**. Each action contains the following parameters:
   - **label** defines the action element label.
+  - **testId** is a string where you can define your own custom `testId`. If nothing is specified, it is the node's label written as one word and lower case (e.g. `label`).
   - **position** defines the action element position. Can be `top` or `bottom`. The default value is `top`. This parameter is optional.
   - **link** defines an absolute Link to a **node**. This parameter is optional.
   - **clickHandler** specifies a function and is executed on click and should return a boolean. If it returns `true`, **link** is opened afterwards.
@@ -240,9 +252,11 @@ The profile section is a configurable drop-down list available in the top naviga
 
 - **logout** overrides the content of the logout item.
   - **label** overrides the text for the logout item. The default value is "Sign Out".
+  - **testId** is a string where you can define your own custom `testId`. If nothing is specified, it is the node's label written as one word and lower case (e.g. `label`).
   - **icon** overrides the icon for the logout item. The default value is [SAP UI5 log icon](https://sapui5.hana.ondemand.com/test-resources/sap/m/demokit/iconExplorer/webapp/index.html#/overview/SAP-icons/?tag=logout).
 - **items** is an array of objects, each one being a link to a Luigi navigation node or an external URL. An item can have the following parameters:
-  - **label** defines the text for the link. 
+  - **label** defines the text for the link.
+  - **testId** is a string where you can define your own custom `testId`. If nothing is specified, it is the node's label written as one word and lower case (e.g. `label`).
   - **icon** is the name of an icon from the [OpenUI](https://openui5.hana.ondemand.com/1.40.10/iconExplorer.html) or a custom link (relative or absolute) to an image displayed next to the label or instead of it.
   - **link** defines an absolute link to a **node**.
   - **externalLink** is an object which indicates that the node links to an external URL. If this parameter is defined, the **link** parameter is ignored. It has the following properties:
@@ -255,9 +269,11 @@ The profile section is a configurable drop-down list available in the top naviga
 The product switcher is a pop-up window available in the top navigation bar. It allows you to switch between the navigation elements displayed in the pop-up. To do so, add the **productSwitcher** property to the **navigation** object using the following optional properties:
 
 - **label** defines the label of the product switcher. It is displayed as a title attribute on hover in the top navigation and as a headline in the mobile pop-up.
+- **testId** is a string where you can define your own custom `testId`. If nothing is specified, it is the node's label written as one word and lower case (e.g. `label`).
 - **icon** is the name of an icon, without the `sap-icon--` prefix. Its source may be [OpenUI](https://openui5.hana.ondemand.com/1.40.10/iconExplorer.html) or a custom link (relative or absolute) to an image. The icon is displayed without label in the top navigation.
 - **items** is an array of objects, each one being a link to a Luigi navigation node or an external URL. An item can have the following parameters:
   - **label** defines the text for the link. 
+  - **testId** is a string where you can define your own custom `testId`. If nothing is specified, it is the node's label written as one word and lower case (e.g. `label`).
   - **icon** is the name of an icon from the [OpenUI](https://openui5.hana.ondemand.com/1.40.10/iconExplorer.html) or a custom link (relative or absolute) to an image displayed next to the label or instead of it.
   - **link** defines an absolute link to a **node**.
   - **externalLink** is an object which indicates that the node links to an external URL. If this parameter is defined, the **link** parameter is ignored. It has the following properties:

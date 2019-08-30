@@ -1,3 +1,4 @@
+/* istanbul ignore file */
 import { GenericHelpers } from '../../utilities/helpers';
 import { LuigiAuth } from '../../core-api';
 
