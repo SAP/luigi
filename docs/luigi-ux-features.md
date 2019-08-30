@@ -40,7 +40,7 @@ Alternatively, to keep the loading spinner until the first micro frontend is usa
 
 1. Set loading spinner delayHideUntilAfterInit to true
 
-```json
+```javascript
 {
   ...
   settings: {
