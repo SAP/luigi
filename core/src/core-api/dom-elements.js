@@ -1,5 +1,5 @@
 import { CUSTOM_LUIGI_CONTAINER } from './../utilities/constants';
-import { IframeHelpers, GenericHelpers } from './../utilities/helpers';
+import { IframeHelpers } from './../utilities/helpers';
 
 /**
  * Use these functions to get DOM elements.
@@ -106,12 +106,7 @@ class LuigiElements {
    * Luigi.elements().getCurrentMicrofrontendIframe();
    */
   getCurrentMicrofrontendIframe() {
-    const modalIframes = IframeHelpers.getModalIframes();
-    const mainIframes = IframeHelpers.getMainIframes().filter(
-      GenericHelpers.isElementVisible
-    );
-
-    return modalIframes[0] || mainIframes[0] || null;
+    return IframeHelpers.getCurrentMicrofrontendIframe();
   }
 }
 

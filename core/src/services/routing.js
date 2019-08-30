@@ -292,7 +292,6 @@ class RoutingClass {
       const windowPath = GenericHelpers.trimLeadingSlash(this.getWindowPath());
       if (windowPath === GenericHelpers.trimLeadingSlash(route)) {
         const iframeContainer = IframeHelpers.getIframeContainer();
-        console.log('iframeContainer: ', iframeContainer);
         const activeIframe = Iframe.getActiveIframe(iframeContainer);
         if (
           activeIframe &&

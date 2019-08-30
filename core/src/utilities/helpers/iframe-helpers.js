@@ -166,6 +166,15 @@ class IframeHelpersClass {
     return this.getMicrofrontendsInDom().map(mfObj => mfObj.container);
   }
 
+  getCurrentMicrofrontendIframe() {
+    const modalIframes = this.getModalIframes();
+    const mainIframes = this.getMainIframes().filter(
+      GenericHelpers.isElementVisible
+    );
+
+    return modalIframes[0] || mainIframes[0] || null;
+  }
+
   getIframesWithType(type) {
     return this.getMicrofrontendsInDom()
       .filter(mfObj => mfObj.type === type)
