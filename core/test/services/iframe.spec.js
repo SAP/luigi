@@ -14,7 +14,6 @@ import { LuigiConfig } from '../../src/core-api';
 describe('Iframe', () => {
   let node;
   let component;
-  let preloadingAllowed;
 
   beforeEach(() => {
     let lastObj = {};
@@ -25,44 +24,39 @@ describe('Iframe', () => {
       get: () => lastObj,
       prepareInternalData: () => {}
     };
-    preloadingAllowed = false;
     sinon.stub(LuigiConfig, 'getConfigValue').callsFake();
     sinon.stub(GenericHelpers);
     GenericHelpers.getRandomId.returns('abc');
     sinon.stub(RoutingHelpers, 'substituteViewUrl');
+    GenericHelpers.isElementVisible.callsFake(element => element.visible);
 
     node = {
       children: [
         {
-          style: {
-            display: null
-          },
+          style: {},
+          visible: true,
           id: 1,
           vg: 'tets1'
         },
         {
-          style: {
-            display: null
-          },
+          style: {},
+          visible: true,
           pv: 'pv',
           id: 2
         },
         {
-          style: {
-            display: null
-          },
+          style: {},
+          visible: true,
           id: 3
         },
         {
-          style: {
-            display: null
-          },
+          style: {},
+          visible: false,
           id: 4
         },
         {
-          style: {
-            display: 'none'
-          },
+          style: {},
+          visible: true,
           id: 5
         }
       ],
@@ -104,7 +98,12 @@ describe('Iframe', () => {
   it('removeInactiveIframes', () => {
     node.removeChild = sinon.spy();
     Iframe.removeInactiveIframes(node);
-    assert.equal(node.removeChild.callCount, 1);
+    sinon.assert.calledOnce(node.removeChild);
+    sinon.assert.calledWithExactly(node.removeChild, {
+      id: 4,
+      style: {},
+      visible: false
+    });
   });
 
   it('removeIframe', () => {
