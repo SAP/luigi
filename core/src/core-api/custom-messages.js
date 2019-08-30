@@ -23,7 +23,7 @@ class CustomMessagesManager {
     const internalMessage = MessagesListeners.convertCustomMessageUserToInternal(
       message
     );
-    IframeHelpers.getMicrofrontends()
+    IframeHelpers.getMicrofrontendsInDom()
       .map(microfrontendObj => microfrontendObj.container)
       .map(mfContainer =>
         IframeHelpers.sendMessageToIframe(mfContainer, internalMessage)
