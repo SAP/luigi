@@ -15,7 +15,7 @@ class IframeClass {
 
   getActiveIframe(node) {
     const children = [...node.children];
-    return children.find(child => child.style.display !== 'none');
+    return children.find(GenericHelpers.isElementVisible);
   }
 
   setActiveIframeToPrevious(node) {
@@ -37,7 +37,7 @@ class IframeClass {
   removeInactiveIframes(node) {
     const children = Array.from(node.children);
     children.forEach(child => {
-      if (child.style.display === 'none' && !child.vg) {
+      if (!GenericHelpers.isElementVisible(child) && !child.vg) {
         node.removeChild(child);
       }
     });
