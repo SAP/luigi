@@ -290,14 +290,6 @@ class LifecycleManager extends LuigiClientBase {
   }
 
   /**
-   * Hides the app loading spinner. This function works only in combination with the Luigi configuration `settings.loadingSpinner.delayHideUntilAfterInit`. Read more about the (app loading spinner)[luigi-ux-features.md].
-   * @memberof Lifecycle
-   */
-  afterInit() {
-    helpers.sendPostMessageToLuigiCore({ msg: 'luigi.hide-app-spinner' });
-  }
-
-  /**
    * Sends a custom message to the Luigi Core application.
    * @param {Object} message an object containing data to be sent to the Luigi Core to process it further. This object is set as an input parameter of the custom message listener on the Luigi Core side.
    * @param {string} message.id a string containing the message id

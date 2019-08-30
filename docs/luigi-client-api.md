@@ -98,10 +98,6 @@ Returns the current client permissions as specified in the navigation node or an
 
 Returns **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** client permissions as specified in the navigation node.
 
-### afterInit
-
-Hides the app loading spinner. This function works only in combination with the Luigi configuration `settings.loadingSpinner.delayHideUntilAfterInit`. Read more about the (app loading spinner)[luigi-ux-features.md].
-
 ### sendCustomMessage
 
 Sends a custom message to the Luigi Core application.

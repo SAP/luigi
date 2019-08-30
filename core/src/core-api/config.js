@@ -92,27 +92,19 @@ class LuigiConfig {
    */
   initDelayedAppLoadingSpinner() {
     if (
-      this.getConfigBooleanValue(
+      !this.getConfigBooleanValue(
         'settings.loadingSpinner.delayHideUntilAfterInit'
       )
     ) {
-      const loadedListener = e => {
-        if ('luigi.hide-app-spinner' === e.data.msg) {
-          this.removeAppLoadingSpinner();
-          window.addEventListener('message', loadedListener);
-        }
-      };
-      window.addEventListener('message', loadedListener);
-    } else {
-      this.removeAppLoadingSpinner();
+      this.afterInit();
     }
   }
 
   /**
-   * @private
+   * Hides the app loading spinner. This function works only in combination with the Luigi configuration `settings.loadingSpinner.delayHideUntilAfterInit`. Read more about the [app loading spinner](luigi-ux-features.md#app-loading-spinner).
    * @memberof Configuration
    */
-  removeAppLoadingSpinner() {
+  afterInit() {
     const appLoadingSpinner = document.getElementById('appLoadingSpinner');
     if (appLoadingSpinner) {
       appLoadingSpinner.classList.add('hidden');
@@ -151,7 +143,7 @@ class LuigiConfig {
    * @memberof Configuration
    */
   configNotReadyCallback() {
-    this.removeAppLoadingSpinner();
+    this.afterInit();
     const errorMsg = LuigiI18N.getTranslation('luigi.configNotReadyCallback');
     console.error(errorMsg);
     this.setErrorMessage(errorMsg);

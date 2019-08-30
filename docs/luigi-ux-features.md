@@ -52,4 +52,4 @@ Alternatively, to keep the loading spinner until the first micro frontend is usa
 }
 ```
 
-2. Call `Luigi.afterInit()` in your micro frontend once it has finished loading. This command triggers the removal of the loading spinner.
+2. Call `Luigi.afterInit()` in the Luigi Core once your initial micro frontend has finished loading. This command triggers the removal of the loading spinner.

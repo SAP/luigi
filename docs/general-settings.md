@@ -2,7 +2,7 @@
 
 The configuration file contains a section called **Settings** in which you can configure additional Luigi options.
 
-````
+```
 settings: {
   hideNavigation: false
   backdropDisabled : false,
@@ -24,7 +24,7 @@ settings: {
     delayHideUntilAfterInit: true
   }
 }
-```` 
+```
 
 * **hideNavigation** disables Luigi's default out-of-the-box navigation when set to `true`. As a result, neither the left nor top navigation is visible in your application, and you can implement your own navigation UI. By default, the parameter is set to `false`, which means the navigation is enabled.
 * **backdropDisabled** prevents the backdrop layer from covering the top and left navigation when showing modal windows. By default, the backdrop is set to `true`.
@@ -39,13 +39,13 @@ You can set the following values:
 If you don't specify any value for  **responsiveNavigation**, the buttons remain hidden. The same applies when you enable **hideSideNav** for the currently active navigation node. 
 * **sideNavFooterText** is a string displayed in a sticky footer inside the side navigation. It is a good place to display the version of your application.
 * **customTranslationImplementation** provides a custom localization implementation. It can be an Object or a Function returning an Object. This Object must provide the **getTranslation** Function as property:
-```` 
+```
 {
   getTranslation: (key, interpolations, locale) => {
     // should return translation of the 'key' in the 'locale' or current locale
   }
 }
-````
+```
 > **NOTE:** You can translate Luigi internal messages by providing translation for [these keys](../core/src/utilities/defaultLuigiTranslationTable.js).
 * **customSandboxRules** is an array of custom rules for the content in the iframe. You can extend the [Luigi default sandbox rules](https://github.com/SAP/luigi/blob/af1deebb392dcec6490f72576e32eb5853a894bc/core/src/utilities/helpers/iframe-helpers.js#L140) by adding further rules.
 * **loadingSpinner.delayHideUntilAfterInit** delays hiding of the app loading spinner. Take a look at the [App loading spinner](luigi-ux-features.md) section on how to use this feature.
