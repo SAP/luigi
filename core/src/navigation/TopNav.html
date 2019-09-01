@@ -125,7 +125,7 @@
                   aria-expanded="{dropDownStates.overflowPopover || false}"
                   aria-haspopup="true"
                   on:click="toggleDropdownState('overflowPopover')"
-                  data-cy="mobile-menu"
+                  data-testid="mobile-menu"
                 >
                   <BadgeCounter node="{totalBadgeNode}" special="true"/>
                 </button>
@@ -163,7 +163,7 @@
                       title="{getNodeLabel(node)}"
                       class="fd-menu__item"
                       on:click="openMobileTopNavDropDown(node)"
-                      data-cy="mobile-topnav-dropdown-category"
+                      data-testid="mobile-topnav-dropdown-category"
                     >
                       <span
                         class="fd-top-nav__icon {node.icon && hasOpenUIicon(node) ? 'sap-icon--' + node.icon + ' sap-icon--m' : '' }"
@@ -182,7 +182,7 @@
                       title="{getNodeLabel(node)}"
                       class="fd-menu__item"
                       on:click="openMobileTopNavDropDown(node)"
-                      data-cy="mobile-topnav-dropdown-category"
+                      data-testid="mobile-topnav-dropdown-category"
                     >
                       {#if node.icon} {#if hasOpenUIicon(node)}
                       <span
@@ -206,7 +206,7 @@
                     <a
                       class="fd-menu__item"
                       on:click="openMobileProductSwitcher(event)"
-                      data-cy="mobile-product-switcher"
+                      data-testid="mobile-product-switcher"
                     >
                       {#if hasOpenUIicon(productSwitcherConfig) || !productSwitcherConfig.icon}
                       <span

@@ -98,7 +98,7 @@ Cypress.Commands.add('expectPathToBe', (pathWithoutHash, timeout = undefined) =>
 Cypress.Commands.add('splitViewButtons', iframeBody => {
   return cy
     .wrap(iframeBody)
-    .find('[data-cy="split-view-controls"]')
+    .find('[data-testid="split-view-controls"]')
     .find('button');
 });
 Cypress.Commands.add('expectSearchToBe', (searchString, a) => {

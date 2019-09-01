@@ -97,7 +97,7 @@ describe('Navigation', () => {
           .click();
 
         cy.expectPathToBe(nodeActivationPath);
-        cy.get('[data-cy="luigi-alert"]').contains(
+        cy.get('[data-testid="luigi-alert"]').contains(
           'Showing an alert instead of navigating'
         );
       });
@@ -108,7 +108,7 @@ describe('Navigation', () => {
 
       cy.get('.sap-icon--question-mark').click();
 
-      cy.get('[data-cy=luigi-modal-dismiss]').click();
+      cy.get('[data-testid=luigi-modal-dismiss]').click();
 
       cy.expectPathToBe(nodeActivationPath);
     });
@@ -122,7 +122,7 @@ describe('Navigation', () => {
           .find('[data-e2e="node-activation-conditional-navigation"]')
           .click();
 
-        cy.get('[data-cy=luigi-modal-confirm]').click();
+        cy.get('[data-testid=luigi-modal-confirm]').click();
 
         cy.expectPathToBe(`${nodeActivationPath}/navigated`);
       });

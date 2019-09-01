@@ -34,7 +34,7 @@
           <button
             class="fd-button--light fd-button--compact sap-icon--nav-back"
             on:click="closeSubNav()"
-            data-cy="mobile-topnav-dropdown-close"
+            data-testid="mobile-topnav-dropdown-close"
           ></button>
         </div>
         <div class="fd-action-bar__header">
@@ -49,7 +49,7 @@
             <li
               class="y-full-width-list__item"
               on:click="onActionClick(node)"
-              data-cy="mobile-topnav-dropdown-item"
+              data-testid="mobile-topnav-dropdown-item"
             >
               <span
                 class="y-full-width-list__icon {node.icon && hasOpenUIicon(node) ? 'sap-icon--' + node.icon + ' sap-icon--m' : '' }"

@@ -49,7 +49,7 @@ describe('ProductSwitcher', () => {
     });
 
     it('Mobile Product Switcher is not visible', () => {
-      cy.get('[data-cy="mobile-product-switcher"]').should('not.be.visible');
+      cy.get('[data-testid="mobile-product-switcher"]').should('not.be.visible');
     });
   });
 
@@ -59,14 +59,14 @@ describe('ProductSwitcher', () => {
     });
 
     it('Desktop Product Switcher is not visible', () => {
-      cy.get('[data-cy="desktop-product-switcher"]').should('not.be.visible');
+      cy.get('[data-testid="desktop-product-switcher"]').should('not.be.visible');
     });
 
     it('Should be able to select product', () => {
-      cy.get('[data-cy="mobile-menu"]').click();
+      cy.get('[data-testid="mobile-menu"]').click();
 
       //open mobile product switcher
-      cy.get('[data-cy="mobile-product-switcher"]').click();
+      cy.get('[data-testid="mobile-product-switcher"]').click();
 
       //check if internal link is there
       cy.get('.y-full-width-list__title')
@@ -77,13 +77,13 @@ describe('ProductSwitcher', () => {
     });
 
     it('Should be able to close', () => {
-      cy.get('[data-cy="mobile-menu"]').click();
+      cy.get('[data-testid="mobile-menu"]').click();
 
       //open mobile product switcher
-      cy.get('[data-cy="mobile-product-switcher"]').click();
+      cy.get('[data-testid="mobile-product-switcher"]').click();
 
       //close mobile product switcher
-      cy.get('[data-cy="mobile-product-switcher-close"]').click();
+      cy.get('[data-testid="mobile-product-switcher-close"]').click();
 
       //no product switcher is visible
       cy.get('.fd-product-switcher').should('not.be.visible');
