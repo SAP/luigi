@@ -34,7 +34,7 @@
               aria-expanded="{dropDownStates[`dropDownPopover-${i}`] || false}"
               aria-haspopup="true"
               on:click="toggleDropdownState(`dropDownPopover-${i}`)"
-              data-e2e="topnav-category"
+              data-testid="topnav-category"
             >
               {#if node.icon}
               {#if hasOpenUIicon(node)}
@@ -248,7 +248,7 @@
       {#if authorizationEnabled}
       <div
         class="fd-shellbar__action fd-shellbar__action--show-always"
-        data-e2e="luigi-topnav-profile"
+        data-testid="luigi-topnav-profile"
       >
         <div class="fd-user-menu">
           <div class="fd-popover">

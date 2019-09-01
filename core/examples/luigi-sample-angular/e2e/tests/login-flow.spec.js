@@ -10,8 +10,8 @@ describe('Login Flow', () => {
   it('Username in profile dropdown', () => {
     cy.login('tets@email.com', 'tets');
 
-    cy.get('[data-e2e="luigi-topnav-profile"]').click();
-    cy.get('[data-e2e="luigi-topnav-profile-username"]').should(
+    cy.get('[data-testid="luigi-topnav-profile"]').click();
+    cy.get('[data-testid="luigi-topnav-profile-username"]').should(
       'contain',
       'Luigi User'
     );
@@ -20,8 +20,8 @@ describe('Login Flow', () => {
   it('Link in profile dropdown', () => {
     cy.login('tets@email.com', 'tets');
 
-    cy.get('[data-e2e="luigi-topnav-profile"]').click();
-    cy.get('[data-e2e="luigi-topnav-profile-item"]')
+    cy.get('[data-testid="luigi-topnav-profile"]').click();
+    cy.get('[data-testid="luigi-topnav-profile-item"]')
       .contains('Project 1')
       .click();
 
@@ -36,8 +36,8 @@ describe('Login Flow', () => {
     cy.selectContextSwitcherItem('Remove Project');
     cy.expectPathToBe('/projects');
 
-    cy.get('[data-e2e="luigi-topnav-profile"]').click();
-    cy.get('[data-e2e="luigi-topnav-profile-item"]').should(
+    cy.get('[data-testid="luigi-topnav-profile"]').click();
+    cy.get('[data-testid="luigi-topnav-profile-item"]').should(
       'not.contain',
       'Project 1'
     );
@@ -46,7 +46,7 @@ describe('Login Flow', () => {
     cy.selectContextSwitcherItem('New Project');
     cy.expectPathToBe('/projects');
 
-    cy.get('[data-e2e="luigi-topnav-profile-item"]').should(
+    cy.get('[data-testid="luigi-topnav-profile-item"]').should(
       'contain',
       'Project 1'
     );
@@ -59,8 +59,8 @@ describe('Login Flow', () => {
     const testLogo =
       'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mM0WCn/HgAD8gHpXMQ+4AAAAABJRU5ErkJggg==';
 
-    cy.get('[data-e2e="luigi-topnav-title"]').should('contain', 'Luigi Demo');
-    cy.get('[data-e2e="luigi-topnav-title"]').should(
+    cy.get('[data-testid="luigi-topnav-title"]').should('contain', 'Luigi Demo');
+    cy.get('[data-testid="luigi-topnav-title"]').should(
       'not.have.attr',
       'src',
       testLogo
@@ -72,8 +72,8 @@ describe('Login Flow', () => {
       config.settings.header.logo = testLogo;
       win.Luigi.setConfig(config);
 
-      cy.get('[data-e2e="luigi-topnav-title"]').should('contain', testTitle);
-      cy.get('[data-e2e="luigi-topnav-logo"]').should(
+      cy.get('[data-testid="luigi-topnav-title"]').should('contain', testTitle);
+      cy.get('[data-testid="luigi-topnav-logo"]').should(
         'have.attr',
         'src',
         testLogo
@@ -85,13 +85,13 @@ describe('Login Flow', () => {
     cy.login('tets@email.com', 'tets');
 
     //logout
-    cy.get('[data-e2e="luigi-topnav-profile"]').click();
+    cy.get('[data-testid="luigi-topnav-profile"]').click();
     cy.contains('End session').click();
-    cy.get('[data-e2e="logout-headline"]').should(
+    cy.get('[data-testid="logout-headline"]').should(
       'contain',
       'You have successfully logged out'
     );
-    cy.get('[data-e2e="logout-message"]').should(
+    cy.get('[data-testid="logout-message"]').should(
       'contain',
       'Sign in again to continue working on awesome things!'
     );

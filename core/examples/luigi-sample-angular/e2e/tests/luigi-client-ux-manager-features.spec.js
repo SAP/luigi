@@ -84,9 +84,9 @@ describe('Luigi Client ux manager features', () => {
 
     it('loading indicator', () => {
       Cypress.currentTest.retries(3);
-      cy.get('[data-e2e="topnav-category"][title="Misc"]').click();
+      cy.get('[data-testid="topnav-category"][title="Misc"]').click();
 
-      cy.get('[data-e2e="topnav-dropdown-item"]')
+      cy.get('[data-testid="topnav-dropdown-item"]')
         .contains('External Page')
         .click();
 

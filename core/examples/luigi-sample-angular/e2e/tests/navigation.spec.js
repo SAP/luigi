@@ -93,7 +93,7 @@ describe('Navigation', () => {
 
       cy.getIframeBody().then($iframeBody => {
         cy.wrap($iframeBody)
-          .find('[data-e2e="node-activation-no-navigation"]')
+          .find('[data-testid="node-activation-no-navigation"]')
           .click();
 
         cy.expectPathToBe(nodeActivationPath);
@@ -119,7 +119,7 @@ describe('Navigation', () => {
       cy.getIframeBody().then($iframeBody => {
         // wrap the body of your iframe with cy so as to do cy actions inside iframe elements
         cy.wrap($iframeBody)
-          .find('[data-e2e="node-activation-conditional-navigation"]')
+          .find('[data-testid="node-activation-conditional-navigation"]')
           .click();
 
         cy.get('[data-testid=luigi-modal-confirm]').click();
@@ -257,11 +257,11 @@ describe('Navigation', () => {
         .contains('Miscellaneous2')
         .click();
 
-      cy.get('[data-e2e=modal-mf]').should('be.visible');
+      cy.get('[data-testid=modal-mf]').should('be.visible');
 
-      cy.get('[data-e2e=modal-mf] [aria-label=close]').click();
+      cy.get('[data-testid=modal-mf] [aria-label=close]').click();
 
-      cy.get('[data-e2e=modal-mf]').should('not.be.visible');
+      cy.get('[data-testid=modal-mf]').should('not.be.visible');
     });
   });
 });

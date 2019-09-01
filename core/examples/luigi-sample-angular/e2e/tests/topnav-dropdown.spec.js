@@ -11,13 +11,13 @@ describe('TopNavDropDown', () => {
 
     it('Clicking around drop down in TopNav', () => {
       //check if google is there
-      cy.get('[data-e2e="topnav-category"][title="Misc"]').click();
+      cy.get('[data-testid="topnav-category"][title="Misc"]').click();
 
-      cy.get('[data-e2e="topnav-dropdown-item"]').contains(
+      cy.get('[data-testid="topnav-dropdown-item"]').contains(
         'Open Google in this tab'
       );
 
-      cy.get('[data-e2e="topnav-dropdown-item"]')
+      cy.get('[data-testid="topnav-dropdown-item"]')
         .contains('Visible for all users')
         .click();
 
