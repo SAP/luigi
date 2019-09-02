@@ -14,6 +14,7 @@ class LuigiConfig {
    * @memberof Configuration
    */
   constructor() {
+    this.appLoadingSpinnerSpinner;
     this.configReadyTimeout = {
       valueMs: 65000,
       id: undefined
@@ -69,7 +70,7 @@ class LuigiConfig {
     this._configModificationTimestamp = new Date();
     if (!this.initialized) {
       this.initialized = true;
-      this.afterInit();
+      this.initDelayedAppLoadingSpinner();
       this.configReadyCallback();
     }
   }
@@ -89,24 +90,27 @@ class LuigiConfig {
    * @private
    * @memberof Configuration
    */
+  initDelayedAppLoadingSpinner() {
+    if (
+      !this.getConfigBooleanValue(
+        'settings.loadingSpinner.delayHideUntilAfterInit'
+      )
+    ) {
+      this.afterInit();
+    }
+  }
 
   /**
    * Hides the app loading spinner. This function works only in combination with the Luigi configuration `settings.loadingSpinner.delayHideUntilAfterInit`. Read more about the [app loading spinner](luigi-ux-features.md#app-loading-spinner).
    * @memberof Configuration
    */
   afterInit() {
-    const delayHideUntilAfterInit = this.getConfigBooleanValue(
-      'settings.loadingSpinner.delayHideUntilAfterInit'
-    );
-
-    if (!delayHideUntilAfterInit) {
-      const appLoadingSpinner = document.getElementById('appLoadingSpinner');
-      if (appLoadingSpinner) {
-        appLoadingSpinner.classList.add('hidden');
-        setTimeout(() => {
-          appLoadingSpinner.parentNode.removeChild(appLoadingSpinner);
-        }, 500);
-      }
+    const appLoadingSpinner = document.getElementById('appLoadingSpinner');
+    if (appLoadingSpinner) {
+      appLoadingSpinner.classList.add('hidden');
+      setTimeout(() => {
+        appLoadingSpinner.parentNode.removeChild(appLoadingSpinner);
+      }, 500);
     }
   }
 

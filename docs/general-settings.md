@@ -19,7 +19,7 @@ settings: {
       }
     };
   },
-  customSandboxRules: ['allow-downloads-without-user-activation'],
+  customSandboxRules=['allow-downloads-without-user-activation'],
   loadingSpinner: {
     delayHideUntilAfterInit: true
   }
