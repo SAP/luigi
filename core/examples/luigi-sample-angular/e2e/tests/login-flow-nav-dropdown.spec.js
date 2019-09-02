@@ -119,7 +119,7 @@ describe('TopNavDropDown', () => {
 
     it('Clicking around drop down in TopNav', () => {
       //check if google is there
-      cy.get('[data-e2e="topnav-category"][title="Misc"]').click();
+      cy.get('[data-testid="misc"]').click();
 
       cy.get('[data-e2e="topnav-dropdown-item"]').contains(
         'Open Google in this tab'

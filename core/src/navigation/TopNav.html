@@ -34,7 +34,6 @@
               aria-expanded="{dropDownStates[`dropDownPopover-${i}`] || false}"
               aria-haspopup="true"
               on:click="toggleDropdownState(`dropDownPopover-${i}`)"
-              data-e2e="topnav-category"
               data-testid="{getTestId(node)}"
             >
               {#if node.icon}
