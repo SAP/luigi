@@ -320,6 +320,25 @@ class Navigation {
     },
     items: this.getProfileItems
   };
+
+  hasAppSwitcher = true;
+
+  appSwitcher = {
+    items: [
+      {
+        label: 'App 1',
+        link: '/projects/pr1'
+      },
+      {
+        label: 'App 2',
+        link: '/projects/pr2'
+      },
+      {
+        label: 'App 3',
+        link: '/overview'
+      }
+    ]
+  };
 }
 
 export const navigation = new Navigation(

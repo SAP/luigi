@@ -16,32 +16,35 @@
   >{title}</div>
   <!-- TODO Application Switcher -->
   {:else}
-  <div class="fd-popover fd-popover--right">
-    <div class="fd-popover__control">
+  <div class="fd-popover fd-popover--left">
+    <div class="fd-popover__control" on:click="event.stopPropagation()">
       <button
         class="fd-product-menu__control"
-        aria-controls="9GLB2694"
         aria-haspopup="true"
-        aria-expanded="false"
+        aria-expanded="{dropDownStates.appSwitcherPopover || false}"
+        on:click="toggleDropdownState('appSwitcherPopover')"
+        data-cy="app-switcher"
       >
         <div
           class="fd-shellbar__title fd-product-menu__title"
-          on:click="goTo('/')"
-        >{title}</div>
+         >{selectedItemLabel || title}</div>
       </button>
     </div>
     <div
       class="fd-popover__body fd-popover__body--right"
-      aria-hidden="false"
-      id="9GLB2694"
+      aria-hidden="{!(dropDownStates.appSwitcherPopover || false)}"
+      id="appSwitcherPopover"
     >
       <nav class="fd-menu">
         <ul class="fd-menu__list">
-          <!-- {#each apps as app} -->
-          <li>
-            <a role="button" class="fd-menu__item">Application One</a>
-          </li>
-          <!-- {/each} -->
+        {#if appSwitcherItems && appSwitcherItems.length > 0}
+          {#each appSwitcherItems as item}
+            <li>
+              <a role="button" class="fd-menu__item" on:click="goTo(item.link)">{item.label}
+              </a>
+            </li>
+          {/each}
+        {/if}
         </ul>
       </nav>
     </div>
@@ -53,16 +56,63 @@
   import * as Header from './services/header';
   import { LuigiConfig } from '../core-api';
   import { Routing } from '../services/routing';
+  import { GenericHelpers } from '../utilities/helpers';
 
   export default {
     oncreate() {
       Header.processHeaderSettings(this);
+    },
+    onstate({ changed, current, previous }) {
+      if (!previous || previous.pathData != current.pathData) {
+        if (LuigiConfig.getConfigValue('navigation.appSwitcher')) {
+          this.set({appSwitcherItems: LuigiConfig.getConfigValue('navigation.appSwitcher').items});
+        }
+      }
+      this.set({hasApps: this.get().appSwitcherItems && this.get().appSwitcherItems.length > 0});
+    },
+    data() {
+      return {
+        dropDownStates: {},
+      }
     },
     methods: {
       goTo(path) {
         this.root.getUnsavedChangesModalPromise().then(() => {
           Routing.navigateTo(path);
         });
+      },
+      handleClick(node) {
+        this.fire('handleClick', { node });
+        this.toggleDropdownState('appSwitcherPopover');
+      },
+      toggleDropdownState(name, event = null) {
+        if (event) event.stopPropagation();
+        this.fire('toggleDropdownState', { name });
+      }
+    },
+    computed: {
+      selectedItemLabel: ({appSwitcherItems, pathData}) => {
+        if (!appSwitcherItems || !pathData) {
+          return "";
+        }
+        let selectedItem;
+        appSwitcherItems.some(item => {
+          let match = true;
+          GenericHelpers.trimTrailingSlash(GenericHelpers.trimLeadingSlash(item.link)).split('/').forEach((pathSegment, index) => {
+            if (match) {
+              if (index + 1 >= pathData.length) {
+                match = false;
+              } else if (!pathData[index + 1].pathSegment || (pathSegment !== pathData[index + 1].pathSegment && !pathData[index + 1].pathSegment.startsWith(':'))) {
+                match = false;
+              }
+            }
+          });
+          if (match) {
+            selectedItem = item;
+          }
+          return match;
+        });
+        return (selectedItem && selectedItem.label) ? selectedItem.label : '';
       }
     }
   };
