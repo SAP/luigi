@@ -1,6 +1,9 @@
+Cypress.env('RETRIES', 1);
 describe('Login Flow', () => {
   beforeEach(() => {
-    cy.visit('/');
+    cy.visit('/', {
+      onBeforeLoad: () => cy.clearLocalStorage()
+    });
   });
 
   it('Login', () => {
@@ -70,7 +73,7 @@ describe('Login Flow', () => {
       const config = win.Luigi.getConfig();
       config.settings.header.title = testTitle;
       config.settings.header.logo = testLogo;
-      win.Luigi.setConfig(config);
+      win.Luigi.configChanged('settings.header');
 
       cy.get('[data-testid="luigi-topnav-title"]').should('contain', testTitle);
       cy.get('[data-testid="luigi-topnav-logo"]').should(
@@ -101,5 +104,71 @@ describe('Login Flow', () => {
     cy.contains('Re-Login').click();
     cy.get('body').should('contain', 'Login to Luigi sample app');
     cy.login('tets@email.com', 'tets');
+  });
+});
+
+describe('TopNavDropDown', () => {
+  beforeEach(() => {
+    cy.visitLoggedIn('/');
+  });
+  context('Desktop', () => {
+    beforeEach(() => {
+      // run these tests as if in a desktop
+      cy.viewport('macbook-15');
+    });
+
+    it('Clicking around drop down in TopNav', () => {
+      //check if google is there
+      cy.get('[data-e2e="topnav-category"][title="Misc"]').click();
+
+      cy.get('[data-e2e="topnav-dropdown-item"]').contains(
+        'Open Google in this tab'
+      );
+
+      cy.get('[data-e2e="topnav-dropdown-item"]')
+        .contains('Visible for all users')
+        .click();
+
+      cy.expectPathToBe('/all-users');
+    });
+  });
+
+  context('Mobile', () => {
+    beforeEach(() => {
+      cy.viewport('iphone-6');
+    });
+
+    it('Should be able to select product', () => {
+      cy.get('[data-cy="mobile-menu"]').click();
+
+      //open mobile topnav dropdown
+      cy.get(
+        '[data-cy="mobile-topnav-dropdown-category"][title="Misc"]'
+      ).click();
+
+      cy.get('[data-cy="mobile-topnav-dropdown-item"]')
+        .contains('Visible for all users')
+        .click();
+
+      cy.expectPathToBe('/all-users');
+    });
+
+    it('Should be able to close', () => {
+      cy.get('[data-cy="mobile-menu"]').click();
+
+      //open mobile topnav dropdown
+      cy.get(
+        '[data-cy="mobile-topnav-dropdown-category"][title="Misc"]'
+      ).click();
+
+      //close mobile topnav dropdown
+      cy.get('[data-cy="mobile-topnav-dropdown-close"]').click();
+
+      //no mobile topnav dropdown is visible
+      cy.get('.fd-product-switcher').should('not.be.visible');
+
+      //the path wasn't changed
+      cy.expectPathToBe('/overview');
+    });
   });
 });

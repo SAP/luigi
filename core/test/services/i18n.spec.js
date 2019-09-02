@@ -16,8 +16,7 @@ describe('I18N', function() {
       getItem: sinon.stub(),
       setItem: sinon.stub()
     };
-    sinon.stub(config, 'getConfig');
-    sinon.stub(config, 'setConfig');
+    sinon.stub(config, 'configChanged');
   });
   afterEach(() => {
     sinon.restore();
@@ -102,8 +101,7 @@ describe('I18N', function() {
       sinon.assert.calledWithExactly(LuigiI18N.listeners.id1, 'pl');
       sinon.assert.calledWithExactly(LuigiI18N.listeners.id2, 'pl');
       sinon.assert.calledWithExactly(LuigiI18N.listeners.id3, 'pl');
-      sinon.assert.called(config.getConfig);
-      sinon.assert.called(config.setConfig);
+      sinon.assert.called(config.configChanged);
     });
   });
 

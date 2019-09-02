@@ -4,6 +4,7 @@ const sinon = require('sinon');
 import { afterEach } from 'mocha';
 
 import { Iframe } from '../../src/services/iframe';
+import { GenericHelpers, RoutingHelpers } from '../../src/utilities/helpers';
 import { LuigiConfig } from '../../src/core-api';
 
 describe('Iframe', () => {
@@ -22,6 +23,9 @@ describe('Iframe', () => {
     };
     preloadingAllowed = false;
     sinon.stub(LuigiConfig, 'getConfigValue').callsFake();
+    sinon.stub(GenericHelpers);
+    GenericHelpers.getRandomId.returns('abc');
+    sinon.stub(RoutingHelpers, 'substituteViewUrl');
 
     node = {
       children: [
@@ -187,9 +191,11 @@ describe('Iframe', () => {
         },
         currentNode: {}
       });
+      RoutingHelpers.substituteViewUrl.returns('http://luigi.url.de/1m');
+
       assert.equal(config.iframe.luigi.nextViewUrl, 'http://luigi.url.de/2');
       Iframe.navigateIframe(config, component, node);
-      assert.equal(config.iframe.luigi.nextViewUrl, 'http://luigi.url.de/1');
+      assert.equal(config.iframe.luigi.nextViewUrl, 'http://luigi.url.de/1m');
     });
   });
 });

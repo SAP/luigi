@@ -1,7 +1,7 @@
+Cypress.env('RETRIES', 1);
 describe('Navigation', () => {
   beforeEach(() => {
-    cy.visit('/');
-    cy.login('tets@email.com', 'tets');
+    cy.visitLoggedIn('/');
   });
 
   it('Click around using navigation', () => {
@@ -33,6 +33,51 @@ describe('Navigation', () => {
     cy.get('.fd-app__sidebar').should('contain', 'Second Child');
   });
 
+  it('Find configured testid on navigation node', () => {
+    cy.visit('/projects/pr1/settings');
+    cy.get('a[data-testid="myTestId"]').should('exist');
+  });
+
+  it('Set default testid on navigation node', () => {
+    cy.visit('/projects/pr1/developers');
+    cy.get('a[data-testid="developers_developers"]').should('exist');
+  });
+
+  it('Check if active node is selected', () => {
+    cy.visit('/projects');
+    cy.get('.fd-shellbar')
+      .contains('Projects')
+      .should('have.class', 'is-selected');
+
+    cy.visit('projects/pr1');
+    cy.get('.fd-side-nav__subitem')
+      .contains('Project Settings')
+      .click()
+      .should('have.class', 'is-selected');
+  });
+
+  it('Check if active node reloads page', () => {
+    cy.visit('/projects/pr1/developers');
+    cy.getIframeBody().then($iframeBody => {
+      cy.wrap($iframeBody)
+        .should('contain', 'Developers content')
+        .find('[title="visitors: 1"]');
+      cy.get('.fd-app__sidebar')
+        .contains('Project Settings')
+        .click();
+      cy.get('.fd-app__sidebar')
+        .contains('Developers')
+        .click();
+      cy.wrap($iframeBody).find('[title="visitors: 2"]');
+    });
+    cy.get('.fd-app__sidebar')
+      .contains('Developers')
+      .click();
+    cy.getIframeBody().then($iframeBody => {
+      cy.wrap($iframeBody).find('[title="visitors: 1"]');
+    });
+  });
+
   it('Browser back works with Default Child mechanism', () => {
     cy.getIframeBody().then($iframeBody => {
       cy.wrap($iframeBody)
@@ -46,7 +91,6 @@ describe('Navigation', () => {
   });
 
   it('Icon instead of label in TopNav', () => {
-    cy.visit('/');
     cy.get('button[title="Settings"]>.fd-top-nav__icon').should('exist');
     cy.get('button[title="Settings"]').should('contain', '');
   });
@@ -78,7 +122,7 @@ describe('Navigation', () => {
     cy.window().then(win => {
       const config = win.Luigi.getConfig();
       config.settings.sideNavFooterText = 'Hello from tets.';
-      win.Luigi.setConfig(config);
+      win.Luigi.configChanged('settings.footer');
 
       cy.get('.fd-app__sidebar .lui-side-nav__footer')
         .contains('Hello from tets.')
@@ -89,7 +133,7 @@ describe('Navigation', () => {
   describe('Node activation hook', () => {
     const nodeActivationPath = '/projects/pr1/on-node-activation';
     it('does not navigate - synchronously', () => {
-      cy.visit(nodeActivationPath);
+      cy.visitLoggedIn(nodeActivationPath);
 
       cy.getIframeBody().then($iframeBody => {
         cy.wrap($iframeBody)
@@ -104,7 +148,7 @@ describe('Navigation', () => {
     });
 
     it('does not navigate - asynchronously (from left navigation)', () => {
-      cy.visit(nodeActivationPath);
+      cy.visitLoggedIn(nodeActivationPath);
 
       cy.get('.sap-icon--question-mark').click();
 
@@ -114,7 +158,7 @@ describe('Navigation', () => {
     });
 
     it('navigates - asynchronously', () => {
-      cy.visit(nodeActivationPath);
+      cy.visitLoggedIn(nodeActivationPath);
 
       cy.getIframeBody().then($iframeBody => {
         // wrap the body of your iframe with cy so as to do cy actions inside iframe elements

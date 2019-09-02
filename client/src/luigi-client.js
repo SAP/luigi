@@ -37,6 +37,15 @@ class LuigiClient {
   getClientPermissions() {
     return lifecycleManager.getClientPermissions();
   }
+  sendCustomMessage(message) {
+    return lifecycleManager.sendCustomMessage(message);
+  }
+  addCustomMessageListener(messageId, listener) {
+    return lifecycleManager.addCustomMessageListener(messageId, listener);
+  }
+  removeCustomMessageListener(listenerId) {
+    return lifecycleManager.removeCustomMessageListener(listenerId);
+  }
   /**
    * @private
    */

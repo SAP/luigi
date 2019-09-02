@@ -2,6 +2,7 @@
   "lerna": "2.11.0",
   "packages": [
     "client",
+    "client/public",
     "core",
     "core/public",
     "core/examples/luigi-sample-angular",
