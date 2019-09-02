@@ -13,7 +13,7 @@
     class="fd-shellbar__title"
     data-e2e="luigi-topnav-title"
     on:click="goTo('/')"
-  >{title}</div>
+  >{$getTranslation(title)}</div>
   <!-- TODO Application Switcher -->
   {:else}
   <div class="fd-popover fd-popover--left">
@@ -27,11 +27,11 @@
       >
         <div
           class="fd-shellbar__title fd-product-menu__title"
-         >{selectedItemLabel || title}</div>
+         >{$getTranslation(title)}</div>
       </button>
     </div>
     <div
-      class="fd-popover__body fd-popover__body--right"
+      class="fd-popover__body fd-popover__body--left"
       aria-hidden="{!(dropDownStates.appSwitcherPopover || false)}"
       id="appSwitcherPopover"
     >
@@ -40,7 +40,7 @@
         {#if appSwitcherItems && appSwitcherItems.length > 0}
           {#each appSwitcherItems as item}
             <li>
-              <a role="button" class="fd-menu__item" on:click="goTo(item.link)">{item.label}
+              <a role="button" class="fd-menu__item" on:click="goTo(item.link)" data-testid="{getTestId(item)}">{$getTranslation(item.label)}
               </a>
             </li>
           {/each}
@@ -54,9 +54,8 @@
 {/if}
 <script type="text/javascript">
   import * as Header from './services/header';
-  import { LuigiConfig } from '../core-api';
   import { Routing } from '../services/routing';
-  import { GenericHelpers } from '../utilities/helpers';
+  import { NavigationHelpers } from '../utilities/helpers';
 
   export default {
     oncreate() {
@@ -64,11 +63,8 @@
     },
     onstate({ changed, current, previous }) {
       if (!previous || previous.pathData != current.pathData) {
-        if (LuigiConfig.getConfigValue('navigation.appSwitcher')) {
-          this.set({appSwitcherItems: LuigiConfig.getConfigValue('navigation.appSwitcher').items});
-        }
+        Header.updateTitle(this);
       }
-      this.set({hasApps: this.get().appSwitcherItems && this.get().appSwitcherItems.length > 0});
     },
     data() {
       return {
@@ -90,29 +86,11 @@
         this.fire('toggleDropdownState', { name });
       }
     },
-    computed: {
-      selectedItemLabel: ({appSwitcherItems, pathData}) => {
-        if (!appSwitcherItems || !pathData) {
-          return "";
-        }
-        let selectedItem;
-        appSwitcherItems.some(item => {
-          let match = true;
-          GenericHelpers.trimTrailingSlash(GenericHelpers.trimLeadingSlash(item.link)).split('/').forEach((pathSegment, index) => {
-            if (match) {
-              if (index + 1 >= pathData.length) {
-                match = false;
-              } else if (!pathData[index + 1].pathSegment || (pathSegment !== pathData[index + 1].pathSegment && !pathData[index + 1].pathSegment.startsWith(':'))) {
-                match = false;
-              }
-            }
-          });
-          if (match) {
-            selectedItem = item;
-          }
-          return match;
-        });
-        return (selectedItem && selectedItem.label) ? selectedItem.label : '';
+    helpers: {
+      getTestId(item) {
+        return item.testId
+          ? item.testId
+          : NavigationHelpers.prepareForTests(item.label);
       }
     }
   };

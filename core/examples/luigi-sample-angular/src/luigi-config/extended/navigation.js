@@ -326,15 +326,15 @@ class Navigation {
   appSwitcher = {
     items: [
       {
-        label: 'App 1',
+        label: 'Application One',
         link: '/projects/pr1'
       },
       {
-        label: 'App 2',
+        label: 'Application Two',
         link: '/projects/pr2'
       },
       {
-        label: 'App 3',
+        label: 'Application Three',
         link: '/overview'
       }
     ]
