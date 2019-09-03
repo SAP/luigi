@@ -2,7 +2,7 @@
 
 The configuration file contains a section called **Settings** in which you can configure additional Luigi options.
 
-```
+```javascript
 settings: {
   hideNavigation: false
   backdropDisabled : false,
@@ -39,7 +39,7 @@ You can set the following values:
 If you don't specify any value for  **responsiveNavigation**, the buttons remain hidden. The same applies when you enable **hideSideNav** for the currently active navigation node. 
 * **sideNavFooterText** is a string displayed in a sticky footer inside the side navigation. It is a good place to display the version of your application.
 * **customTranslationImplementation** provides a custom localization implementation. It can be an Object or a Function returning an Object. This Object must provide the **getTranslation** Function as property:
-```
+```javascript
 {
   getTranslation: (key, interpolations, locale) => {
     // should return translation of the 'key' in the 'locale' or current locale
