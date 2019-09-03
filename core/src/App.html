@@ -355,7 +355,7 @@
         });
 
         window.addEventListener('message', async e => {
-          const iframe = IframeHelpers.getValidMessageSource(e, this);
+          const iframe = IframeHelpers.getValidMessageSource(e);
           if (!iframe) return;
 
           if ('custom' === e.data.msg) {
@@ -625,9 +625,6 @@
       }
     },
     methods: {
-      getValidMessageSource(e) {
-        return IframeHelpers.getValidMessageSource(e, this);
-      },
       handleNavigation(data, config) {
         let path = buildPath(this, data.params);
         path = GenericHelpers.addLeadingSlash(path);
