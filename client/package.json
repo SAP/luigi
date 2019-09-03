@@ -24,7 +24,7 @@
   "bundlesize": [
     {
       "path": "./public/luigi-client.js",
-      "maxSize": "50 kB",
+      "maxSize": "10 kB",
       "compression": "none"
     },
     {
