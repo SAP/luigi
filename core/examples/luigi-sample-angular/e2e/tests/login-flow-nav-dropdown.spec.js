@@ -121,11 +121,11 @@ describe('TopNavDropDown', () => {
       //check if google is there
       cy.get('[data-testid="misc"]').click();
 
-      cy.get('[data-e2e="topnav-dropdown-item"]').contains(
+      cy.get('[data-testid="opengoogleinthistab"]').contains(
         'Open Google in this tab'
       );
 
-      cy.get('[data-e2e="topnav-dropdown-item"]')
+      cy.get('[data-testid="all-users_visibleforallusers"]')
         .contains('Visible for all users')
         .click();
 
@@ -139,14 +139,14 @@ describe('TopNavDropDown', () => {
     });
 
     it('Should be able to select product', () => {
-      cy.get('[data-cy="mobile-menu"]').click();
+      cy.get('[data-testid="mobile-menu"]').click();
 
       //open mobile topnav dropdown
       cy.get(
-        '[data-cy="mobile-topnav-dropdown-category"][title="Misc"]'
+        '[data-testid="mobile-topnav-dropdown-category"][title="Misc"]'
       ).click();
 
-      cy.get('[data-cy="mobile-topnav-dropdown-item"]')
+      cy.get('[data-e2e="mobile-topnav-dropdown-item"]')
         .contains('Visible for all users')
         .click();
 
@@ -154,15 +154,15 @@ describe('TopNavDropDown', () => {
     });
 
     it('Should be able to close', () => {
-      cy.get('[data-cy="mobile-menu"]').click();
+      cy.get('[data-testid="mobile-menu"]').click();
 
       //open mobile topnav dropdown
       cy.get(
-        '[data-cy="mobile-topnav-dropdown-category"][title="Misc"]'
+        '[data-testid="mobile-topnav-dropdown-category"][title="Misc"]'
       ).click();
 
       //close mobile topnav dropdown
-      cy.get('[data-cy="mobile-topnav-dropdown-close"]').click();
+      cy.get('[data-testid="mobile-topnav-dropdown-close"]').click();
 
       //no mobile topnav dropdown is visible
       cy.get('.fd-product-switcher').should('not.be.visible');

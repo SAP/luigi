@@ -86,7 +86,7 @@ describe('Luigi Client ux manager features', () => {
       Cypress.currentTest.retries(3);
       cy.get('[data-testid="misc"]').click();
 
-      cy.get('[data-e2e="topnav-dropdown-item"]')
+      cy.get('[data-testid="ext_externalpage"]')
         .contains('External Page')
         .click();
 

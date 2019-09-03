@@ -6,7 +6,6 @@
     {#each children as node}
     <li
       on:click="onActionClick(node)"
-      data-e2e="topnav-dropdown-item"
       data-testid="{getTestId(node)}"
     >
       <a class="fd-menu__item">
