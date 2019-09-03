@@ -36,7 +36,7 @@
     >
       <nav class="fd-menu">
         <ul class="fd-menu__list">
-          {#if showRootLink && pathData && pathData.length > 1}
+          {#if showMainAppEntry && selectedItem}
             <li>
               <a role="button" class="fd-menu__item" on:click="goToRoot()" data-testid="{getTestId(defaultTitle)}">{$getTranslation(defaultTitle)}
               </a>

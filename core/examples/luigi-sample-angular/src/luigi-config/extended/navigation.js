@@ -322,7 +322,7 @@ class Navigation {
   };
 
   appSwitcher = {
-    showRootLink: true,
+    showMainAppEntry: true,
     items: [
       {
         title: 'Application One',
@@ -336,7 +336,7 @@ class Navigation {
       },
       {
         title: 'Application Three',
-        link: '/overview',
+        link: '/environments',
         subTitle: 'the third app'
       },
       {
