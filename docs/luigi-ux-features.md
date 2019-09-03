@@ -24,7 +24,7 @@ You can quickly adjust the Luigi application to improve user experience on mobil
 
 ### App loading spinner
 
-To show a loading spinner before Luigi Core or your first micro frontend is ready, add the following code to your index.html body or inside your `luigi-app-root` container.
+To show a loading spinner before Luigi Core or your first micro frontend is ready, add the following code to your index.html body or inside your [`luigi-app-root`](#rendering-of-luigi-application-in-the-dom) container.
 
 ```html
 <div id="appLoadingSpinner">
@@ -40,7 +40,7 @@ Alternatively, to keep the loading spinner until the first micro frontend is usa
 
 1. Set loading spinner delayHideUntilAfterInit to true
 
-```json
+```javascript
 {
   ...
   settings: {
@@ -52,4 +52,4 @@ Alternatively, to keep the loading spinner until the first micro frontend is usa
 }
 ```
 
-2. Call `Luigi.afterInit()` in the Luigi Core once your initial micro frontend has finished loading. This command triggers the removal of the loading spinner.
+2. Call [`Luigi.afterInit()`](./luigi-core-api.md#afterInit) in the Luigi Core once your initial micro frontend has finished loading to remove the loading spinner. You can for example use the [custom messages](./communication.md#custom-messages) feature for the micro frontend using Luigi Client to communicate the Core when this function should be executed.

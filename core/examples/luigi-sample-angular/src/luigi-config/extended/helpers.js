@@ -161,7 +161,7 @@ setInterval(() => {
 }, 5000);
 export const getMockBadgeCount = () => mockBadgeCount;
 
-// fallback in case some micro frontend did not include our 'my-microfrontend-is-ready' custom event
+// fallback in case delayHideUntilAfterInit is set to true and some micro frontend did not send 'my-microfrontend-is-ready' custom message
 setTimeout(() => {
   Luigi.afterInit();
 }, 3000);
