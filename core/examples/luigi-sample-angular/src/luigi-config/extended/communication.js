@@ -23,7 +23,7 @@ class Communication {
           id: 'luigi.my-custom-message-for-client',
           description: 'here goes the message description'
         };
-        Luigi.customMessage().send(mfObject.id, newCustomMessage);
+        Luigi.customMessages().send(mfObject.id, newCustomMessage);
       }, 2000);
     },
     'my-microfrontend-is-ready': () => {
