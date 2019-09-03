@@ -14,7 +14,6 @@ class LuigiConfig {
    * @memberof Configuration
    */
   constructor() {
-    this.appLoadingSpinnerSpinner;
     this.configReadyTimeout = {
       valueMs: 65000,
       id: undefined
@@ -70,7 +69,12 @@ class LuigiConfig {
     this._configModificationTimestamp = new Date();
     if (!this.initialized) {
       this.initialized = true;
-      this.initDelayedAppLoadingSpinner();
+      const shouldRunAfterInit = !this.getConfigBooleanValue(
+        'settings.loadingSpinner.delayHideUntilAfterInit'
+      );
+      if (shouldRunAfterInit) {
+        this.afterInit();
+      }
       this.configReadyCallback();
     }
   }
@@ -84,20 +88,6 @@ class LuigiConfig {
    */
   getConfig() {
     return this.config;
-  }
-
-  /**
-   * @private
-   * @memberof Configuration
-   */
-  initDelayedAppLoadingSpinner() {
-    if (
-      !this.getConfigBooleanValue(
-        'settings.loadingSpinner.delayHideUntilAfterInit'
-      )
-    ) {
-      this.afterInit();
-    }
   }
 
   /**
