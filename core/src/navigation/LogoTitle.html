@@ -36,7 +36,13 @@
     >
       <nav class="fd-menu">
         <ul class="fd-menu__list">
-        {#if appSwitcherItems && appSwitcherItems.length > 0}
+          {#if showRootLink && pathData && pathData.length > 1}
+            <li>
+              <a role="button" class="fd-menu__item" on:click="goToRoot()" data-testid="{getTestId(defaultTitle)}">{$getTranslation(defaultTitle)}
+              </a>
+            </li>
+          {/if}
+          {#if appSwitcherItems && appSwitcherItems.length > 0}
           {#each appSwitcherItems as item}
             {#if item !== selectedItem && hasValidLink(item, pathParams)}
             <li>
@@ -45,7 +51,7 @@
             </li>
             {/if}
           {/each}
-        {/if}
+          {/if}
         </ul>
       </nav>
     </div>
@@ -81,6 +87,11 @@
       goTo(path) {
         this.root.getUnsavedChangesModalPromise().then(() => {
           Routing.navigateTo(RoutingHelpers.applyPathParams(path, this.get().pathParams));
+        });
+      },
+      goToRoot() {
+        this.root.getUnsavedChangesModalPromise().then(() => {
+          Routing.navigateTo('/');
         });
       },
       handleClick(node) {

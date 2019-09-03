@@ -8,11 +8,13 @@ export const processHeaderSettings = component => {
       const appSwitcher = LuigiConfig.getConfigValue('navigation.appSwitcher');
       if (appSwitcher) {
         component.set({ appSwitcherItems: appSwitcher.items });
+        component.set({ showRootLink: appSwitcher.showRootLink });
       }
       component.set({
         hasApps:
-          component.get().appSwitcherItems &&
-          component.get().appSwitcherItems.length > 0
+          component.get().showRootLink ||
+          (component.get().appSwitcherItems &&
+            component.get().appSwitcherItems.length > 0)
       });
       return LuigiConfig.getConfigValueAsync('settings.header').then(header => {
         if (!header) {
