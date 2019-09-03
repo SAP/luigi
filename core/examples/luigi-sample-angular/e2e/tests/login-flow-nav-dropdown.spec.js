@@ -143,7 +143,7 @@ describe('TopNavDropDown', () => {
 
       //open mobile topnav dropdown
       cy.get(
-        '[data-testid="mobile-topnav-dropdown-category"][title="Misc"]'
+        '[data-e2e="mobile-topnav-dropdown-category"][title="Misc"]'
       ).click();
 
       cy.get('[data-e2e="mobile-topnav-dropdown-item"]')
@@ -158,7 +158,7 @@ describe('TopNavDropDown', () => {
 
       //open mobile topnav dropdown
       cy.get(
-        '[data-testid="mobile-topnav-dropdown-category"][title="Misc"]'
+        '[data-e2e="mobile-topnav-dropdown-category"][title="Misc"]'
       ).click();
 
       //close mobile topnav dropdown
