@@ -321,21 +321,27 @@ class Navigation {
     items: this.getProfileItems
   };
 
-  hasAppSwitcher = true;
-
   appSwitcher = {
+    showRootLink: true,
     items: [
       {
-        label: 'Application One',
+        title: 'Application One',
+        subTitle: 'the first app',
         link: '/projects/pr1'
       },
       {
-        label: 'Application Two',
-        link: '/projects/pr2'
+        title: 'Application Two',
+        link: '/projects/pr2',
+        subTitle: 'the second app'
       },
       {
-        label: 'Application Three',
-        link: '/overview'
+        title: 'Application Three',
+        link: '/overview',
+        subTitle: 'the third app'
+      },
+      {
+        title: 'Application Four',
+        link: '/projects/pr2/users/groups/:group'
       }
     ]
   };

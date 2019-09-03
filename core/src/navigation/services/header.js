@@ -20,7 +20,8 @@ export const processHeaderSettings = component => {
         }
         // Set Title and Logo
         if (header.title) {
-          component.set({ defaultTitle: header.title });
+          component.set({ defaultTitle: header.title || '' });
+          component.set({ defaultSubTitle: header.subTitle || '' });
           updateTitle(component);
         }
 
@@ -59,40 +60,65 @@ export const processHeaderSettings = component => {
   );
 };
 
+const segmentMatches = (linkSegment, pathSegment, pathParams) => {
+  if (linkSegment === pathSegment) {
+    return true;
+  }
+  if (
+    pathSegment.startsWith(':') &&
+    pathParams &&
+    pathParams[pathSegment.substr(1)] === linkSegment
+  ) {
+    return true;
+  }
+  return false;
+};
+
 export const updateTitle = component => {
   const appSwitcherItems = component.get().appSwitcherItems;
   const pathData = component.get().pathData;
+  const pathParams = component.get().pathParams;
   let selectedItem;
   if (appSwitcherItems && pathData) {
-    appSwitcherItems.some(item => {
-      let match = true;
-      GenericHelpers.trimTrailingSlash(
-        GenericHelpers.trimLeadingSlash(item.link)
-      )
-        .split('/')
-        .forEach((pathSegment, index) => {
-          if (match) {
-            if (index + 1 >= pathData.length) {
-              match = false;
-            } else if (
-              !pathData[index + 1].pathSegment ||
-              (pathSegment !== pathData[index + 1].pathSegment &&
-                !pathData[index + 1].pathSegment.startsWith(':'))
-            ) {
-              match = false;
+    [...appSwitcherItems]
+      .sort((el1, el2) => (el2.link || '').localeCompare(el1.link || ''))
+      .some(item => {
+        let match = true;
+        GenericHelpers.trimTrailingSlash(
+          GenericHelpers.trimLeadingSlash(item.link)
+        )
+          .split('/')
+          .forEach((pathSegment, index) => {
+            if (match) {
+              if (index + 1 >= pathData.length) {
+                match = false;
+              } else if (
+                !pathData[index + 1].pathSegment ||
+                !segmentMatches(
+                  pathSegment,
+                  pathData[index + 1].pathSegment,
+                  pathParams
+                )
+              ) {
+                match = false;
+              }
             }
-          }
-        });
-      if (match) {
-        selectedItem = item;
-      }
-      return match;
-    });
+          });
+        if (match) {
+          selectedItem = item;
+        }
+        return match;
+      });
   }
+  component.set({ selectedItem });
   const title =
-    selectedItem && selectedItem.label
-      ? selectedItem.label
+    selectedItem && selectedItem.title
+      ? selectedItem.title
       : component.get().defaultTitle;
   component.set({ title });
   document.title = LuigiI18N.getTranslation(title);
+  const subTitle = selectedItem
+    ? selectedItem.subTitle || ''
+    : component.get().defaultSubTitle;
+  component.set({ subTitle });
 };
