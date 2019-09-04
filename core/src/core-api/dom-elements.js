@@ -80,6 +80,7 @@ class LuigiElements {
    * @example
    * Luigi.elements().getMicrofrontends();
    * @memberof Elements
+   * @since 0.6.2
    */
   getMicrofrontends() {
     return IframeHelpers.getMicrofrontendsInDom();

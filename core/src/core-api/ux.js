@@ -1,13 +1,14 @@
 import { APP_LOADING_INDICATOR } from './../utilities/constants';
 
 /**
- * Use these functions to get DOM elements.
- * @namespace Elements
+ * Functions to use Luigi Core UX features.
+ * @namespace UX
  */
 class LuigiUX {
   /**
    * Hides the app loading indicator.
-   * @memberof Configuration
+   * @memberof UX
+   * @since 0.6.3
    */
   hideAppLoadingIndicator() {
     const appLoadingIndicator = document.querySelector(
