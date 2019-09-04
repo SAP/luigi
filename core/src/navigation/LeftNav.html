@@ -220,7 +220,7 @@
 
 <script type="text/javascript">
   import { Navigation } from './services/navigation';
-  import { NavigationHelpers } from '../utilities/helpers';
+  import { IframeHelpers, NavigationHelpers } from '../utilities/helpers';
   import { LuigiConfig, LuigiElements, LuigiI18N } from '../core-api';
   import { StateHelpers } from '../utilities/helpers';
   import { CSS_BREAKPOINTS } from '../utilities/constants';
@@ -302,12 +302,6 @@
           expandedList && expandedList.indexOf(nodes.metaInfo.categoryUid) >= 0
         );
       },
-      isFooterVisible(footerText) {
-        return Boolean(footerText);
-        // respect also 'responsiveNavigation' setting in the future.
-        // the footer should also be visible if it's possible to collapse the Nav
-      },
-      getFooterText() {},
       getNodeLabel(node) {
         return LuigiI18N.getTranslation(node.label);
       },
@@ -410,8 +404,8 @@
       handleKey(event) {
         const code = event.code;
         if (code === 'ArrowRight') {
-          const iframe = document.querySelector('.iframeContainer iframe');
-          if (iframe.contentWindow) {
+          const iframe = IframeHelpers.getCurrentMicrofrontendIframe();
+          if (iframe && iframe.contentWindow) {
             iframe.contentWindow.focus();
           }
         }

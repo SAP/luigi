@@ -70,6 +70,7 @@
   import { LuigiConfig } from '../core-api';
   import { Routing } from '../services/routing';
   import {
+    IframeHelpers,
     RoutingHelpers,
     StateHelpers,
     NavigationHelpers
@@ -124,7 +125,7 @@
       );
 
       window.addEventListener('message', e => {
-        if (!this.root.getValidMessageSource(e)) return;
+        if (!IframeHelpers.getValidMessageSource(e)) return;
         if (e.data && e.data.msg === 'luigi.refresh-context-switcher') {
           this.set({ options: null });
           this.fetchOptions();

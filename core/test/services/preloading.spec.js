@@ -66,7 +66,7 @@ describe('Iframe', () => {
     sinon.stub(IframeHelpers, 'getIframeContainer').callsFake(() => {
       return container;
     });
-    sinon.stub(IframeHelpers, 'getAllIframes').callsFake(() => {
+    sinon.stub(IframeHelpers, 'getMainIframes').callsFake(() => {
       return [...iframes];
     });
   });

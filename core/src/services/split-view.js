@@ -1,6 +1,5 @@
 import { LuigiConfig, LuigiElements } from '../core-api';
 import { Navigation } from '../navigation/services/navigation';
-import { Iframe } from '../services';
 import {
   GenericHelpers,
   IframeHelpers,
@@ -219,9 +218,7 @@ class SplitViewSvcClass {
     });
 
     this.getContainer().style.top = `${this.splitViewValues.top}px`;
-    Iframe.getIframeContainer().style.paddingBottom = `${
-      this.splitViewValues.bottom
-    }px`;
+    IframeHelpers.getIframeContainer().style.paddingBottom = `${this.splitViewValues.bottom}px`;
     this.getDragger().style.top = `${this.splitViewValues.top}px`;
   }
 
@@ -242,7 +239,7 @@ class SplitViewSvcClass {
           });
 
           this.getContainer().style.top = '';
-          Iframe.getIframeContainer().style.paddingBottom = '';
+          IframeHelpers.getIframeContainer().style.paddingBottom = '';
         });
     }
   }
@@ -256,7 +253,7 @@ class SplitViewSvcClass {
             displayed: false,
             collapsed: comp.get().mfSplitView.collapsed
           });
-          Iframe.getIframeContainer().style.paddingBottom = '';
+          IframeHelpers.getIframeContainer().style.paddingBottom = '';
           this.sendMessageToClients('close.ok');
         });
     }
