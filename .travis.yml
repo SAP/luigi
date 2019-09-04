@@ -5,7 +5,7 @@ dist: trusty
 cache:
   directories:
     - $TRAVIS_BUILD_DIR/client/public
-    - $TRAVIS_BUILD_DIR/core/public
+    # - $TRAVIS_BUILD_DIR/core/public
     - $TRAVIS_BUILD_DIR/core/examples/luigi-sample-angular/dist
     - $TRAVIS_BUILD_DIR/cypress-binary-cache
     - $HOME/.cache/Cypress
