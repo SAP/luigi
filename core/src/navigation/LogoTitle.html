@@ -3,7 +3,7 @@
   aria-label="SAP"
 >
   {#if hasLogo}
-  <img data-e2e="luigi-topnav-logo" on:click="goTo('/')" ref:logo>
+  <img data-testid="luigi-topnav-logo" on:click="goTo('/')" ref:logo>
   {/if}
 </div>
 {#if title}
@@ -11,7 +11,7 @@
   {#if !hasApps}
   <div
     class="fd-shellbar__title"
-    data-e2e="luigi-topnav-title"
+    data-testid="luigi-topnav-title"
     on:click="goTo('/')"
   >{title}</div>
   <!-- TODO Application Switcher -->
