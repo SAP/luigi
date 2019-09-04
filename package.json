@@ -15,7 +15,7 @@
     "docu:core:generate:navigation": "documentation readme core/src/core-api/navigation.js --shallow -f md --section='Luigi.navigation()' --readme-file=./docs/luigi-core-api.md --markdown-toc=false --github false --quiet",
     "docu:core:generate:i18n": "documentation readme core/src/core-api/i18n.js --shallow -f md --section='Luigi.i18n()' --readme-file=./docs/luigi-core-api.md --markdown-toc=false --github false --quiet",
     "docu:core:generate:custom-messages": "documentation readme core/src/core-api/custom-messages.js --shallow -f md --section='Luigi.customMessages()' --readme-file=./docs/luigi-core-api.md --markdown-toc=false --github false --quiet",
-    "docu:core:generate:ux": "documentation readme src/core-api/ux.js --shallow -f md --section='Luigi.ux()' --readme-file=../docs/luigi-core-api.md --markdown-toc=false --github false --quiet"
+    "docu:core:generate:ux": "documentation readme core/src/core-api/ux.js --shallow -f md --section='Luigi.ux()' --readme-file=./docs/luigi-core-api.md --markdown-toc=false --github false --quiet"
   },
   "devDependencies": {
     "@starptech/prettyhtml": "^0.8.16",
