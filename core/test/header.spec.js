@@ -18,13 +18,18 @@ describe('Header', function() {
     };
 
     beforeEach(() => {
+      let componentData = {};
       component = {
-        set: sinon.spy(),
+        get: () => componentData,
+        set: o => {
+          componentData = { ...componentData, ...o };
+        },
         store: {
           on: (e, cb) => {},
           get: () => {}
         }
       };
+      sinon.spy(component, 'set');
     });
 
     it('should not fail for undefined arguments', async () => {
@@ -90,7 +95,7 @@ describe('Header', function() {
 
       // then
       assert(
-        component.set.calledOnceWith({ hasLogo: true }),
+        component.set.calledWith({ hasLogo: true }),
         'component set() hasLogo'
       );
       assert.equal(component.refs.logo.src, headerSettings.logo, 'header logo');
