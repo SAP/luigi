@@ -1,7 +1,6 @@
 // Helper methods for 'iframe.js' file. They don't require any method from 'iframe.js` but are required by them.
 import { GenericHelpers } from './';
 import { MICROFRONTEND_TYPES } from './../constants';
-import { Iframe } from '../../services';
 import { LuigiConfig } from '../../core-api';
 
 class IframeHelpersClass {
@@ -115,13 +114,6 @@ class IframeHelpersClass {
     );
   }
 
-  hasIframeIsolation(component) {
-    const componentData = component.get();
-    return (
-      componentData.isolateView || componentData.previousNodeValues.isolateView
-    );
-  }
-
   getLocation(url) {
     const element = document.createElement('a');
     element.href = url;
@@ -137,19 +129,17 @@ class IframeHelpersClass {
     }
   }
 
-  getIframeContainer() {
-    const container = Array.from(document.querySelectorAll('.iframeContainer'));
-    return container && container.length > 0 ? container[0] : undefined;
-  }
-
-  getVisibleIframes() {
-    return Array.prototype.slice
-      .call(document.querySelectorAll('iframe'))
-      .filter(item => item.style.display !== 'none');
-  }
-
   urlMatchesTheDomain(viewUrl = '', domain) {
     return this.getLocation(viewUrl) === domain;
+  }
+
+  iframeIsSameDomain(viewUrl, domain) {
+    return this.urlMatchesTheDomain(viewUrl, domain);
+  }
+
+  getIframeContainer() {
+    const container = Array.from(document.querySelectorAll('.iframeContainer'));
+    return container.length > 0 ? container[0] : undefined;
   }
 
   /*
@@ -164,36 +154,45 @@ class IframeHelpersClass {
   getMicrofrontendsInDom() {
     return MICROFRONTEND_TYPES.map(({ type, selector }) => {
       return Array.from(document.querySelectorAll(selector)).map(container => ({
+        id: container.luigi.id,
         container,
+        active: GenericHelpers.isElementVisible(container),
         type
       }));
-    })
-      .filter(iframeTypeArray => Boolean(iframeTypeArray.length))
-      .reduce((acc, val) => acc.concat(val), []) // flatten
-      .map(mfObj => Object.assign({ id: mfObj.container.luigi.id }, mfObj))
-      .map(mfObj => {
-        const isMicrofrontendActive =
-          window
-            .getComputedStyle(mfObj.container, null)
-            .getPropertyValue('display') !== 'none';
-        return Object.assign({ active: isMicrofrontendActive }, mfObj);
-      });
+    }).reduce((acc, val) => acc.concat(val), []); // flatten
   }
 
-  iframeIsSameDomain(viewUrl, domain) {
-    return this.urlMatchesTheDomain(viewUrl, domain);
+  getMicrofrontendIframes() {
+    return this.getMicrofrontendsInDom().map(mfObj => mfObj.container);
   }
 
-  getAllIframes(additionalIframes) {
-    const iframes = Array.from(
-      document.querySelectorAll('.iframeContainer iframe')
+  getCurrentMicrofrontendIframe() {
+    const modalIframes = this.getModalIframes();
+    const mainIframes = this.getMainIframes().filter(
+      GenericHelpers.isElementVisible
     );
-    if (Array.isArray(additionalIframes)) {
-      iframes.push(...additionalIframes);
-    } else if (additionalIframes) {
-      iframes.push(additionalIframes);
-    }
-    return iframes;
+
+    return modalIframes[0] || mainIframes[0] || null;
+  }
+
+  getIframesWithType(type) {
+    return this.getMicrofrontendsInDom()
+      .filter(mfObj => mfObj.type === type)
+      .map(mfObj => mfObj.container);
+  }
+
+  getMainIframes() {
+    return this.getIframesWithType('main');
+  }
+
+  getModalIframes() {
+    return this.getIframesWithType('modal');
+  }
+
+  getVisibleIframes() {
+    return this.getMicrofrontendsInDom()
+      .filter(mfObj => mfObj.active)
+      .map(mfObj => mfObj.container);
   }
 
   sendMessageToIframe(iframe, message) {
@@ -208,9 +207,10 @@ class IframeHelpersClass {
     );
   }
 
-  broadcastMessageToAllIframes(message, additionalIframes) {
-    const allIframes = IframeHelpers.getAllIframes(additionalIframes);
-    allIframes.forEach(iframe => this.sendMessageToIframe(iframe, message));
+  broadcastMessageToAllIframes(message) {
+    IframeHelpers.getMicrofrontendIframes().forEach(iframe =>
+      this.sendMessageToIframe(iframe, message)
+    );
   }
 
   createIframe(viewUrl, viewGroup, currentNode) {
@@ -258,13 +258,9 @@ class IframeHelpersClass {
     return iframe && iframe.contentWindow === event.source;
   }
 
-  getValidMessageSource(e, component) {
+  getValidMessageSource(e) {
     const allMessagesSources = [
-      ...IframeHelpers.getAllIframes(
-        this.specialIframeTypes
-          .map(t => component.get()[t.iframeKey])
-          .filter(Boolean)
-      ),
+      ...IframeHelpers.getMicrofrontendIframes(),
       { contentWindow: window, luigi: { viewUrl: window.location.href } }
     ];
     const iframe = allMessagesSources.find(iframe =>

@@ -381,7 +381,7 @@ Use Luigi.elements().getMicrofrontends() to get the iframe id.
 
 -   `microfrontendId` **[number](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number)** the id of the micro frontend
 -   `message` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** an object containing data to be sent to the micro frontend to process it further. This object is set as an input parameter of the custom message listener on the micro frontend side.
-    -   `message.id` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** the id of the message
+    -   `message.id` **[number](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number)** the id of the message
     -   `message.MY_DATA_FIELD` **any** any other message data field
 
 ##### Examples
