@@ -24,7 +24,7 @@ You can quickly adjust the Luigi application to improve user experience on mobil
 
 ### App loading indicator
 
-To show a loading indicator before Luigi Core or your first micro frontend is ready, add the following code to your index.html body or inside your [`luigi-app-root`](#rendering-of-luigi-application-in-the-dom) container.
+To show a loading indicator before Luigi Core or your first micro frontend is ready, add a container with the `luigi-app-loading-indicator` attribute to your _index.html_ body or inside your [`luigi-app-root`](#rendering-of-luigi-application-in-the-dom) container.
 
 ```html
 <div luigi-app-loading-indicator>
@@ -38,18 +38,18 @@ By default, the loading indicator is removed after `Luigi.setConfig({})` has bee
 
 Alternatively, to keep the loading indicator until the first micro frontend is usable, follow the following steps:
 
-1. Set app loading indicator `autoHideEnabled` to true
+1. Set app loading indicator `autoHideEnabled` to `false`
 
 ```javascript
 {
   ...
   settings: {
     appLoadingIndicator: {
-      delayHideUntilAfterInit: true
+      autoHideEnabled: false
     }
   }
   ...
 }
 ```
 
-2. Call [`Luigi.afterInit()`](./luigi-core-api.md#afterInit) in the Luigi Core once your initial micro frontend has finished loading to remove the loading indicator. You can for example use the [custom messages](./communication.md#custom-messages) feature for the micro frontend using Luigi Client to communicate the Core when this function should be executed.
+2. Call [`Luigi.ux().hideAppLoadingIndicator()`](./luigi-core-api.md#hideAppLoadingIndicator) in the Luigi Core once your initial micro frontend has finished loading to remove the loading indicator. You can for example use the [custom messages](./communication.md#custom-messages) feature for the micro frontend using Luigi Client to communicate the Core when this function should be executed.
