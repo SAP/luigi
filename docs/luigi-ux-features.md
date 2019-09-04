@@ -22,29 +22,29 @@ You can quickly adjust the Luigi application to improve user experience on mobil
 
 * Define and apply [responsiveNavigation](./general-settings.md) settings to make the left navigation responsive.
 
-### App loading spinner
+### App loading indicator
 
-To show a loading spinner before Luigi Core or your first micro frontend is ready, add the following code to your index.html body or inside your [`luigi-app-root`](#rendering-of-luigi-application-in-the-dom) container.
+To show a loading indicator before Luigi Core or your first micro frontend is ready, add the following code to your index.html body or inside your [`luigi-app-root`](#rendering-of-luigi-application-in-the-dom) container.
 
 ```html
-<div id="appLoadingSpinner">
+<div luigi-app-loading-indicator>
   <div class="fd-spinner">
     <div></div>
   </div>
 </div>
 ```
 
-By default, the loading spinner is removed after `Luigi.setConfig({})` has been executed. 
+By default, the loading indicator is removed after `Luigi.setConfig({})` has been executed. 
 
-Alternatively, to keep the loading spinner until the first micro frontend is usable, follow the following steps:
+Alternatively, to keep the loading indicator until the first micro frontend is usable, follow the following steps:
 
-1. Set loading spinner delayHideUntilAfterInit to true
+1. Set app loading indicator `autoHideEnabled` to true
 
 ```javascript
 {
   ...
   settings: {
-    loadingSpinner: {
+    appLoadingIndicator: {
       delayHideUntilAfterInit: true
     }
   }
@@ -52,4 +52,4 @@ Alternatively, to keep the loading spinner until the first micro frontend is usa
 }
 ```
 
-2. Call [`Luigi.afterInit()`](./luigi-core-api.md#afterInit) in the Luigi Core once your initial micro frontend has finished loading to remove the loading spinner. You can for example use the [custom messages](./communication.md#custom-messages) feature for the micro frontend using Luigi Client to communicate the Core when this function should be executed.
+2. Call [`Luigi.afterInit()`](./luigi-core-api.md#afterInit) in the Luigi Core once your initial micro frontend has finished loading to remove the loading indicator. You can for example use the [custom messages](./communication.md#custom-messages) feature for the micro frontend using Luigi Client to communicate the Core when this function should be executed.

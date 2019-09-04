@@ -915,7 +915,7 @@
   :global(a) {
     cursor: pointer;
   }
-  :global(#appLoadingSpinner) {
+  :global([luigi-app-loading-indicator]) {
     z-index: 10;
     background-color: var(--fd-background-color);
     padding-top: 30vh;
@@ -925,7 +925,7 @@
     bottom: 0;
     left: 0;
   }
-  :global(#appLoadingSpinner.hidden) {
+  :global([luigi-app-loading-indicator].hidden) {
     visibility: hidden;
     opacity: 0;
     @include transition(visibility 0s 0.3s, opacity 0.3s linear);

@@ -51,10 +51,6 @@ Luigi.getConfig()
 
 Returns **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** configuration object
 
-#### afterInit
-
-Hides the app loading spinner. This function works only in combination with the Luigi configuration `settings.loadingSpinner.delayHideUntilAfterInit`. Read more about the [app loading spinner](luigi-ux-features.md#app-loading-spinner).
-
 #### configChanged
 
 Tells Luigi that the configuration has been changed. Luigi will update the application or parts of it based on the specified scope.

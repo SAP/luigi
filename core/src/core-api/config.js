@@ -4,7 +4,7 @@ import {
   StateHelpers
 } from '../utilities/helpers';
 import { LuigiAuth, LuigiElements, LuigiI18N } from '.';
-
+import { LifecycleHooks } from '../services';
 /**
  * @name Configuration
  */
@@ -62,19 +62,15 @@ class LuigiConfig {
    *   }
    * })
    */
-  setConfig(configInput) {
+  async setConfig(configInput) {
     clearTimeout(this.configReadyTimeout.id);
     this.config = configInput;
     window.Luigi._store.set({ config: configInput });
     this._configModificationTimestamp = new Date();
     if (!this.initialized) {
       this.initialized = true;
-      const shouldRunAfterInit = !this.getConfigBooleanValue(
-        'settings.loadingSpinner.delayHideUntilAfterInit'
-      );
-      if (shouldRunAfterInit) {
-        this.afterInit();
-      }
+      LifecycleHooks.luigiAfterInit();
+      await this.executeConfigFnAsync('lifecycleHooks.luigiAfterInit');
       this.configReadyCallback();
     }
   }
@@ -88,20 +84,6 @@ class LuigiConfig {
    */
   getConfig() {
     return this.config;
-  }
-
-  /**
-   * Hides the app loading spinner. This function works only in combination with the Luigi configuration `settings.loadingSpinner.delayHideUntilAfterInit`. Read more about the [app loading spinner](luigi-ux-features.md#app-loading-spinner).
-   * @memberof Configuration
-   */
-  afterInit() {
-    const appLoadingSpinner = document.getElementById('appLoadingSpinner');
-    if (appLoadingSpinner) {
-      appLoadingSpinner.classList.add('hidden');
-      setTimeout(() => {
-        appLoadingSpinner.parentNode.removeChild(appLoadingSpinner);
-      }, 500);
-    }
   }
 
   /**
@@ -133,7 +115,6 @@ class LuigiConfig {
    * @memberof Configuration
    */
   configNotReadyCallback() {
-    this.afterInit();
     const errorMsg = LuigiI18N.getTranslation('luigi.configNotReadyCallback');
     console.error(errorMsg);
     this.setErrorMessage(errorMsg);

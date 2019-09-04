@@ -160,8 +160,3 @@ setInterval(() => {
   // Luigi.navigation().updateTopNavigation(); // update top navigation with each count update
 }, 5000);
 export const getMockBadgeCount = () => mockBadgeCount;
-
-// fallback in case delayHideUntilAfterInit is set to true and some micro frontend did not send 'my-microfrontend-is-ready' custom message
-setTimeout(() => {
-  Luigi.afterInit();
-}, 3000);
