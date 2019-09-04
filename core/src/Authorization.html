@@ -9,7 +9,7 @@
         aria-label="Username"
         id="username"
         class="fd-has-type-2"
-        data-e2e="luigi-topnav-profile-username"
+        data-testid="luigi-topnav-profile-username"
       >{userInfo.name ? userInfo.name : userInfo.email}</span>
     </li>
     {/if}
@@ -18,7 +18,7 @@
       on:click="onActionClick(profileItem)"
       data-testid="{getTestId(profileItem)}"
     >
-      <a class="fd-menu__item" data-e2e="luigi-topnav-profile-item">
+      <a class="fd-menu__item" data-testid="luigi-topnav-profile-item">
         {#if profileItem.icon}
         {#if hasOpenUIicon(profileItem)}
         <span
