@@ -14,7 +14,6 @@ Object.keys(productSwitcherItems[0]).length }
           aria-expanded="{dropDownStates.productSwitcherPopover || false}"
           aria-haspopup="true"
           on:click="toggleDropdownState()"
-          data-cy="desktop-product-switcher"
           title="{config.label}"
           data-testid="{getTestId(config)}"
         ></button>
@@ -24,7 +23,6 @@ Object.keys(productSwitcherItems[0]).length }
           aria-expanded="{dropDownStates.productSwitcherPopover || false}"
           aria-haspopup="true"
           on:click="toggleDropdownState()"
-          data-cy="desktop-product-switcher"
           title="{config.label}"
           data-testid="{getTestId(config)}"
         >
@@ -84,7 +82,7 @@ Object.keys(productSwitcherItems[0]).length }
           <button
             class="fd-button--light fd-button--compact sap-icon--nav-back"
             on:click="toggleDropdownState(event)"
-            data-cy="mobile-product-switcher-close"
+            data-testid="mobile-product-switcher-close"
           ></button>
         </div>
         <div class="fd-action-bar__header">
