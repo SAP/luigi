@@ -34,7 +34,8 @@ jobs:
     - stage: 'Documentation & Tests'
       name: 'Check Documentation'
       script:
-        - bash ./scripts/docuCheck.sh
+        - cd $TRAVIS_BUILD_DIR/scripts && npm ci
+        - cd $TRAVIS_BUILD_DIR && bash ./scripts/docuCheck.sh
       before_cache:
         - rm -rf ~/.npm/_logs
         - rm -rf ~/.npm/_cacache
