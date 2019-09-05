@@ -19,7 +19,8 @@ export const ContextSwitcherHelpers = {
     return rawOptions.map(opt => ({
       label: opt.label,
       path: (parentNodePath || '/') + opt.pathValue,
-      id: opt.pathValue
+      id: opt.pathValue,
+      testId: opt.testId
     }));
   },
 
