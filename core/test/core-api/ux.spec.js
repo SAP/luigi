@@ -35,11 +35,10 @@ describe('Core API - UX', function() {
       // given
       document.querySelector.returns(null);
 
-      // when
-      LuigiUX.hideAppLoadingIndicator();
-      clock.tick(1e3);
-
-      // then, it should just not fail
+      expect(() => {
+        LuigiUX.hideAppLoadingIndicator();
+        clock.tick(1e3);
+      }).not.to.throw();
     });
 
     it('with app loading indicator', () => {
