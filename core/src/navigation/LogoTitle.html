@@ -22,11 +22,11 @@
         aria-haspopup="true"
         aria-expanded="{dropDownStates.appSwitcherPopover || false}"
         on:click="toggleDropdownState('appSwitcherPopover')"
-        data-cy="app-switcher"
+        data-testid="app-switcher"
       >
         <div
           class="fd-shellbar__title fd-product-menu__title"
-          data-e2e="luigi-topnav-title"
+          data-testid="luigi-topnav-title"
          >{$getTranslation(title)}</div>
       </button>
     </div>
@@ -108,7 +108,7 @@
       getTestId(item) {
         return item.testId
           ? item.testId
-          : NavigationHelpers.prepareForTests(item.title);
+          : NavigationHelpers.prepareForTests(item.title || item);
       },
       hasValidLink(item, pathParams) {
         if (item.link) {

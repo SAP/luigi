@@ -338,10 +338,6 @@ class Navigation {
         title: 'Application Three',
         link: '/environments',
         subTitle: 'the third app'
-      },
-      {
-        title: 'Application Four',
-        link: '/projects/pr2/users/groups/:group'
       }
     ]
   };
