@@ -1,7 +1,5 @@
 const defaultLuigiInternalTranslationTable = {
   luigi: {
-    configNotReadyCallback:
-      'Ups.. Looks like Luigi was not configured. Please use Luigi.setConfig(config) function to configure Luigi.',
     unsavedChangesAlert: {
       header: 'Unsaved changes detected',
       body: 'Unsaved changes will be lost. Do you want to continue?'

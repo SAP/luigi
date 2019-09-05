@@ -5,7 +5,7 @@
     </div>
     <div class="fd-panel fd-has-margin-bottom-small">
       <p><strong>Backdrop</strong></p>
-      <button class="fd-button" data-cy="add-backdrop" (click)="toggleModal()">
+      <button class="fd-button" data-testid="add-backdrop" (click)="toggleModal()">
         Add backdrop
       </button>
       <p>
@@ -19,7 +19,7 @@
       <p><strong>Confirmation modal</strong></p>
       <button
         class="fd-button"
-        data-cy="show-luigi-confirmation-modal"
+        data-testid="show-luigi-confirmation-modal"
         (click)="showConfirmationModal()"
       >
         Show Luigi confirmation modal
@@ -31,7 +31,7 @@
       </p>
       <p
         class="fd-has-font-style-italic"
-        data-cy="luigi-confirmation-modal-result"
+        data-testid="luigi-confirmation-modal-result"
         ngClass="{{
           confirmationModalResult === 'confirmed'
             ? 'fd-has-color-status-1'
@@ -54,7 +54,7 @@
               class="fd-form__control"
               id="select-1"
               name="type"
-              data-cy="luigi-alert-type"
+              data-testid="luigi-alert-type"
             >
               <option [value]="type" *ngFor="let type of alertTypes">
                 {{ type }}
@@ -68,7 +68,7 @@
                 type="checkbox"
                 name="links"
                 class="fd-form__control"
-                data-cy="luigi-alert-links"
+                data-testid="luigi-alert-links"
               />
               Links
             </label>
@@ -80,7 +80,7 @@
                 type="checkbox"
                 name="text"
                 class="fd-form__control"
-                data-cy="luigi-alert-text"
+                data-testid="luigi-alert-text"
               />
               With text (if alert has no text it is not displayed)
             </label>
@@ -95,14 +95,14 @@
               type="text"
               name="closeAfter"
               placeholder="Leave it empty to never close this Alert automatically"
-              data-cy="luigi-alert-close-after"
+              data-testid="luigi-alert-close-after"
             />
           </div>
         </div>
       </form>
       <button
         class="fd-button"
-        data-cy="show-luigi-alert"
+        data-testid="show-luigi-alert"
         (click)="showAlert()"
       >
         Show Luigi alert
@@ -115,7 +115,7 @@
       <p
         *ngIf="alertDismissed"
         class="fd-has-font-style-italic fd-has-color-status-1"
-        data-cy="luigi-alert-result"
+        data-testid="luigi-alert-result"
       >
         Luigi alert has been dismissed
       </p>
@@ -125,7 +125,7 @@
       <p><strong>Localization</strong></p>
       <div
         class="fd-has-color-status-4 fd-has-type-1 fd-has-margin-bottom-base"
-        data-cy="luigi-current-locale"
+        data-testid="luigi-current-locale"
       >
         Current locale is: '{{ currentLocale }}'
       </div>
@@ -145,7 +145,7 @@
                 type="text"
                 name="locale"
                 placeholder=""
-                data-cy="luigi-input-locale"
+                data-testid="luigi-input-locale"
                 [disabled]="!canChangeLocale"
               />
             </div>
@@ -154,7 +154,7 @@
       </div>
       <button
         class="fd-button"
-        data-cy="set-current-locale"
+        data-testid="set-current-locale"
         (click)="setCurrentLocale()"
         [disabled]="!canChangeLocale"
       >
@@ -186,7 +186,7 @@
             <span
               class="fd-toggle__switch"
               role="presentation"
-              data-cy="toggle-dirty-state"
+              data-testid="toggle-dirty-state"
             ></span>
           </span>
         </label>
@@ -364,7 +364,7 @@
             data="linkManager().withParams({test: true}).openAsSplitView('/settings', {title:'Logs', size:25})"
           >
           </app-code-snippet>
-          <div data-cy="split-view-controls">
+          <div data-testid="split-view-controls">
             Control Split View:
 
             <button

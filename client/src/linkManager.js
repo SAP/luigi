@@ -4,7 +4,7 @@ import { splitViewHandle } from './splitViewHandle';
 
 /**
  * The Link Manager allows you to navigate to another route. Use it instead of an internal router to:
-  - Provide routing inside micro front-ends.
+  - Provide routing inside micro frontends.
   - Reflect the route.
   - Keep the navigation state in Luigi.
   * @name linkManager
