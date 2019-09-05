@@ -6,7 +6,10 @@ class LuigiLifecycleHooks {
       'settings.appLoadingIndicator.autoHideEnabled'
     );
     if (shouldHideAppLoadingIndicator) {
-      LuigiUX.hideAppLoadingIndicator();
+      // Settimeout needed, otherwise app loading indicator might not present yet and when displayed will not be hidden
+      setTimeout(() => {
+        LuigiUX.hideAppLoadingIndicator();
+      }, 0);
     }
   }
 }
