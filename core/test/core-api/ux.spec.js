@@ -1,5 +1,6 @@
 const chai = require('chai');
 const assert = chai.assert;
+const expect = chai.expect;
 const sinon = require('sinon');
 import { afterEach } from 'mocha';
 
