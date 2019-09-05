@@ -52,7 +52,7 @@ source $BASE_DIR/shared/bashHelpers.sh
 
 validateMdChanges() {
   # verify that there are no changes in md files, exclude styleguide from being checked
-  local MD_FILE_CHANGES=`git status | grep '.md' | grep -v 'styleguide' | wc -l`
+  local MD_FILE_CHANGES=`git status | grep '-api.md' | grep -v 'styleguide' | wc -l`
   if [[ $MD_FILE_CHANGES != *"0"* ]]; then
     echoe "Unsaved documentation changes found"
     echo "The following files need to be commited and pushed again:"
