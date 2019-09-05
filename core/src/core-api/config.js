@@ -15,11 +15,6 @@ class LuigiConfig {
    * @memberof Configuration
    */
   constructor() {
-    this.configReadyTimeout = {
-      valueMs: 65000,
-      id: undefined
-    };
-
     this.configReadyCallback = function() {};
 
     this.initialized = false;
@@ -31,11 +26,6 @@ class LuigiConfig {
    */
   setConfigCallbacks(configReadyCallback) {
     this.configReadyCallback = configReadyCallback;
-    this.configReadyTimeout.id = setTimeout(() => {
-      // Avoid Luigi initialization if timeout reached
-      this.configReadyCallback = function() {};
-      this.configNotReadyCallback();
-    }, this.configReadyTimeout.valueMs);
   }
 
   /**
@@ -65,7 +55,6 @@ class LuigiConfig {
    * })
    */
   setConfig(configInput) {
-    clearTimeout(this.configReadyTimeout.id);
     this.config = configInput;
     window.Luigi._store.set({ config: configInput });
     this._configModificationTimestamp = new Date();
@@ -108,16 +97,6 @@ class LuigiConfig {
     StateHelpers.optimizeScope(scope).forEach(s => {
       window.Luigi._store.fire(s, { current: window.Luigi._store.get() });
     });
-  }
-
-  /**
-   * @private
-   * @memberof Configuration
-   */
-  configNotReadyCallback() {
-    const errorMsg = LuigiI18N.getTranslation('luigi.configNotReadyCallback');
-    console.error(errorMsg);
-    this.setErrorMessage(errorMsg);
   }
 
   /**
