@@ -8,7 +8,7 @@ class LuigiUX {
   /**
    * Hides the app loading indicator.
    * @memberof UX
-   * @since 0.6.3
+   * @since 0.6.4
    */
   hideAppLoadingIndicator() {
     const appLoadingIndicator = document.querySelector(

@@ -412,4 +412,4 @@ Hides the app loading indicator.
 
 **Meta**
 
--   **since**: 0.6.3
+-   **since**: 0.6.4
