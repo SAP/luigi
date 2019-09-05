@@ -32,7 +32,6 @@ describe('Core API - UX', function() {
 
   describe('hideAppLoadingIndicator', () => {
     it('without indicator', () => {
-      // given
       document.querySelector.returns(null);
 
       expect(() => {
