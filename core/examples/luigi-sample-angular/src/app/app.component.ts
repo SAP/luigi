@@ -27,7 +27,7 @@ export class AppComponent implements OnInit {
   private onLuigiContext(contextType: ILuigiContextTypes, context: any): void {
     this.luigiService.setContext({ contextType, context });
     if (contextType === 'init') {
-      sendCustomMessage({ id: 'my-microfrontend-is-ready' });
+      sendCustomMessage({ id: 'my-micro-frontend-is-ready' });
     }
   }
 }

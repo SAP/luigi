@@ -4,13 +4,16 @@ const sinon = require('sinon');
 import { afterEach } from 'mocha';
 
 import { Iframe } from '../../src/services/iframe';
-import { GenericHelpers, RoutingHelpers } from '../../src/utilities/helpers';
+import {
+  GenericHelpers,
+  RoutingHelpers,
+  IframeHelpers
+} from '../../src/utilities/helpers';
 import { LuigiConfig } from '../../src/core-api';
 
 describe('Iframe', () => {
   let node;
   let component;
-  let preloadingAllowed;
 
   beforeEach(() => {
     let lastObj = {};
@@ -21,44 +24,39 @@ describe('Iframe', () => {
       get: () => lastObj,
       prepareInternalData: () => {}
     };
-    preloadingAllowed = false;
     sinon.stub(LuigiConfig, 'getConfigValue').callsFake();
     sinon.stub(GenericHelpers);
     GenericHelpers.getRandomId.returns('abc');
     sinon.stub(RoutingHelpers, 'substituteViewUrl');
+    GenericHelpers.isElementVisible.callsFake(element => element.visible);
 
     node = {
       children: [
         {
-          style: {
-            display: null
-          },
+          style: {},
+          visible: true,
           id: 1,
           vg: 'tets1'
         },
         {
-          style: {
-            display: null
-          },
+          style: {},
+          visible: true,
           pv: 'pv',
           id: 2
         },
         {
-          style: {
-            display: null
-          },
+          style: {},
+          visible: true,
           id: 3
         },
         {
-          style: {
-            display: null
-          },
+          style: {},
+          visible: false,
           id: 4
         },
         {
-          style: {
-            display: 'none'
-          },
+          style: {},
+          visible: true,
           id: 5
         }
       ],
@@ -87,7 +85,9 @@ describe('Iframe', () => {
 
   describe('setActiveIframeToPrevious', () => {
     it('goBack with preserved view situation', () => {
-      sinon.stub(document, 'querySelectorAll').callsFake(() => node.children);
+      sinon
+        .stub(IframeHelpers, 'getMainIframes')
+        .callsFake(() => node.children);
       Iframe.setActiveIframeToPrevious(node);
 
       assert.equal(node.children.length, 4);
@@ -95,28 +95,15 @@ describe('Iframe', () => {
     });
   });
 
-  it('getIframeContainer', () => {
-    sinon
-      .stub(document, 'querySelectorAll')
-      .onFirstCall()
-      .returns([])
-      .onSecondCall()
-      .returns(['firstIframe', 'secondIframe']);
-
-    // first
-    assert.equal(Iframe.getIframeContainer(), undefined, 'no iframe found');
-    // second
-    assert.equal(
-      Iframe.getIframeContainer(),
-      'firstIframe',
-      'returns first iframe'
-    );
-  });
-
   it('removeInactiveIframes', () => {
     node.removeChild = sinon.spy();
     Iframe.removeInactiveIframes(node);
-    assert.equal(node.removeChild.callCount, 1);
+    sinon.assert.calledOnce(node.removeChild);
+    sinon.assert.calledWithExactly(node.removeChild, {
+      id: 4,
+      style: {},
+      visible: false
+    });
   });
 
   it('removeIframe', () => {
@@ -134,7 +121,7 @@ describe('Iframe', () => {
 
   describe('create new iframe with different viewgroup and dont delete the previous one (cache)', () => {
     it('navigate', () => {
-      sinon.stub(document, 'querySelectorAll').callsFake(() => [
+      sinon.stub(IframeHelpers, 'getMainIframes').callsFake(() => [
         {
           src: 'http://url.com/app.html!#/prevUrl',
           style: { display: 'block' },
@@ -163,7 +150,7 @@ describe('Iframe', () => {
 
   describe('use cached iframe with same viewgroup and change viewUrl', () => {
     it('navigate', () => {
-      sinon.stub(document, 'querySelectorAll').callsFake(() => [
+      sinon.stub(IframeHelpers, 'getMainIframes').callsFake(() => [
         {
           src: 'http://luigi.url.de',
           vg: 'tets1',

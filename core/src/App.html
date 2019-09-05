@@ -355,7 +355,7 @@
         });
 
         window.addEventListener('message', async e => {
-          const iframe = IframeHelpers.getValidMessageSource(e, this);
+          const iframe = IframeHelpers.getValidMessageSource(e);
           if (!iframe) return;
 
           if ('custom' === e.data.msg) {
@@ -625,9 +625,6 @@
       }
     },
     methods: {
-      getValidMessageSource(e) {
-        return IframeHelpers.getValidMessageSource(e, this);
-      },
       handleNavigation(data, config) {
         let path = buildPath(this, data.params);
         path = GenericHelpers.addLeadingSlash(path);
@@ -915,7 +912,7 @@
   :global(a) {
     cursor: pointer;
   }
-  :global(#appLoadingSpinner) {
+  :global([luigi-app-loading-indicator]) {
     z-index: 10;
     background-color: var(--fd-background-color);
     padding-top: 30vh;
@@ -925,7 +922,7 @@
     bottom: 0;
     left: 0;
   }
-  :global(#appLoadingSpinner.hidden) {
+  :global([luigi-app-loading-indicator].hidden) {
     visibility: hidden;
     opacity: 0;
     @include transition(visibility 0s 0.3s, opacity 0.3s linear);

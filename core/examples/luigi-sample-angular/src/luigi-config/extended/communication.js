@@ -23,15 +23,11 @@ class Communication {
           id: 'luigi.my-custom-message-for-client',
           description: 'here goes the message description'
         };
-        Luigi.customMessage().send(mfObject.id, newCustomMessage);
+        Luigi.customMessages().send(mfObject.id, newCustomMessage);
       }, 2000);
     },
-    'my-microfrontend-is-ready': () => {
-      // A fallback for this event is in helpers.js to avoid
-      // ever-lasting spinner in case the page was opened on external page
-      // without Luigi, or 'my-microfrontend-is-ready' event wasn't sent.
-      // Read more about afterInit: https://github.com/SAP/luigi/blob/master/docs/luigi-ux-features.md#app-loading-spinner
-      Luigi.afterInit();
+    'my-micro-frontend-is-ready': () => {
+      Luigi.ux().hideAppLoadingIndicator();
     }
   };
 }

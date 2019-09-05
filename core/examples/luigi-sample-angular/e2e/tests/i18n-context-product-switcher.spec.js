@@ -31,7 +31,7 @@ describe('Context switcher', () => {
     cy.goToOverviewPage();
     cy.expectPathToBe('/overview');
 
-    cy.get('[data-cy=luigi-alert]').should('not.exist');
+    cy.get('[data-testid=luigi-alert]').should('not.exist');
 
     // add project
 
@@ -43,12 +43,12 @@ describe('Context switcher', () => {
     cy.get('.fd-app__sidebar').should('contain', 'Project Two');
     cy.get('.fd-app__sidebar').should('contain', 'Project 3');
 
-    cy.get('[data-cy=luigi-alert]').should(
+    cy.get('[data-testid=luigi-alert]').should(
       'have.class',
       'fd-alert--information'
     );
 
-    cy.get('[data-cy=luigi-alert]').should('contain', 'Project 3 created.');
+    cy.get('[data-testid=luigi-alert]').should('contain', 'Project 3 created.');
 
     cy.goToOverviewPage();
     cy.expectPathToBe('/overview');
@@ -164,7 +164,7 @@ describe('ProductSwitcher', () => {
     });
 
     it('Mobile Product Switcher is not visible', () => {
-      cy.get('[data-cy="mobile-product-switcher"]').should('not.be.visible');
+      cy.get('[data-testid="mobile-product-switcher"]').should('not.be.visible');
     });
   });
 
@@ -174,14 +174,14 @@ describe('ProductSwitcher', () => {
     });
 
     it('Desktop Product Switcher is not visible', () => {
-      cy.get('[data-cy="desktop-product-switcher"]').should('not.be.visible');
+      cy.get('[data-testid="myproducts"]').should('not.be.visible');
     });
 
     it('Should be able to select product', () => {
-      cy.get('[data-cy="mobile-menu"]').click();
+      cy.get('[data-testid="mobile-menu"]').click();
 
       //open mobile product switcher
-      cy.get('[data-cy="mobile-product-switcher"]').click();
+      cy.get('[data-testid="mobile-product-switcher"]').click();
 
       //check if internal link is there
       cy.get('.y-full-width-list__title')
@@ -192,13 +192,13 @@ describe('ProductSwitcher', () => {
     });
 
     it('Should be able to close', () => {
-      cy.get('[data-cy="mobile-menu"]').click();
+      cy.get('[data-testid="mobile-menu"]').click();
 
       //open mobile product switcher
-      cy.get('[data-cy="mobile-product-switcher"]').click();
+      cy.get('[data-testid="mobile-product-switcher"]').click();
 
       //close mobile product switcher
-      cy.get('[data-cy="mobile-product-switcher-close"]').click();
+      cy.get('[data-testid="mobile-product-switcher-close"]').click();
 
       //no product switcher is visible
       cy.get('.fd-product-switcher').should('not.be.visible');
