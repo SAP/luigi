@@ -77,7 +77,7 @@ export declare interface PathParams {
 
 export declare interface UxManager {
   /**
-   * Adds a backdrop to block the top and side navigation. It is based on the Fundamental UI Modal, which you can use in your micro front-end to achieve the same behavior.
+   * Adds a backdrop to block the top and side navigation. It is based on the Fundamental UI Modal, which you can use in your micro frontend to achieve the same behavior.
    */
   addBackdrop: () => void;
 
@@ -87,7 +87,7 @@ export declare interface UxManager {
   removeBackdrop: () => void;
 
   /**
-   * Adds a backdrop with a loading indicator for the micro front-end frame. This overrides the {@link navigation-configuration.md#nodes loadingIndicator.enabled} setting.
+   * Adds a backdrop with a loading indicator for the micro frontend frame. This overrides the {@link navigation-configuration.md#nodes loadingIndicator.enabled} setting.
    */
   showLoadingIndicator: () => void;
 
@@ -378,7 +378,7 @@ export type getContext = () => Context;
 
 /**
  * Returns the node parameters of the active URL.
- * Node parameters are defined like URL query parameters but with a specific prefix allowing Luigi to pass them to the micro front-end view.  The default prefix is **~** and you can use it in the following way: `https://my.luigi.app/home/products?~sort=asc~page=3`.
+ * Node parameters are defined like URL query parameters but with a specific prefix allowing Luigi to pass them to the micro frontend view.  The default prefix is **~** and you can use it in the following way: `https://my.luigi.app/home/products?~sort=asc~page=3`.
  * >**NOTE:** some special characters (`<`, `>`, `"`, `'`, `/`) in node parameters are HTML-encoded.
  * @returns {Object} node parameters, where the object property name is the node parameter name without the prefix, and its value is the value of the node parameter. For example `{sort: 'asc', page: 3}`.
  * @memberof Lifecycle
@@ -420,7 +420,7 @@ export type sendCustomMessage = (message: object) => void;
 
 /**
  * The Link Manager allows you to navigate to another route. Use it instead of an internal router to:
-  - Route inside micro front-ends.
+  - Route inside micro frontends.
   - Reflect the route.
   - Keep the navigation state in Luigi.
 */
