@@ -17,6 +17,7 @@
     "docu:core:generate:custom-messages": "documentation readme ../core/src/core-api/custom-messages.js --shallow -f md --section='Luigi.customMessages()' --readme-file=../docs/luigi-core-api.md --markdown-toc=false --github false --quiet"
   },
   "devDependencies": {
-    "documentation": "^11.0.0"
+    "documentation": "^11.0.0",
+    "diff": ">=3.5.0"
   }
 }
