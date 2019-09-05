@@ -4,10 +4,7 @@
   <ul class="fd-menu__list fd-menu__list--top">
     {#if children}
     {#each children as node}
-    <li
-      on:click="onActionClick(node)"
-      data-testid="{getTestId(node)}"
-    >
+    <li on:click="onActionClick(node)" data-testid="{getTestId(node)}">
       <a class="fd-menu__item">
         <span
           class="fd-top-nav__icon {node.icon && hasOpenUIicon(node) ? 'sap-icon--' + node.icon + ' sap-icon--m' : '' }"
@@ -26,53 +23,14 @@
 </nav>
 {/if}
 {#if isMobile}
-<section class="fd-product-switcher">
-  <div
-    class="fd-modal y-fd-modal--full-screen"
-    on:click="event.stopPropagation()"
-  >
-    <div class="fd-modal__content" role="document">
-      <div class="fd-action-bar">
-        <div class="fd-action-bar__back">
-          <button
-            class="fd-button--light fd-button--compact sap-icon--nav-back"
-            on:click="closeSubNav()"
-            data-testid="mobile-topnav-dropdown-close"
-          ></button>
-        </div>
-        <div class="fd-action-bar__header">
-          <h5 class="fd-action-bar__title fd-has-type-1">{getNodeLabel(node)}</h5>
-        </div>
-      </div>
-      <div class="fd-modal__body">
-        <div class="fd-product-switcher__body">
-          <ul class="y-full-width-list">
-            {#if node.children}
-            {#each node.children as node}
-            <li
-              class="y-full-width-list__item"
-              on:click="onActionClick(node)"
-              data-e2e="mobile-topnav-dropdown-item"
-              data-testid="{getTestId(node)}"
-            >
-              <span
-                class="y-full-width-list__icon {node.icon && hasOpenUIicon(node) ? 'sap-icon--' + node.icon + ' sap-icon--m' : '' }"
-              >
-                {#if !hasOpenUIicon(node)}
-                <img src="{node.icon}">
-                {/if}
-                <BadgeCounter {node}/>
-              </span>
-              <span class="y-full-width-list__title">{getNodeLabel(node)}</span>
-            </li>
-            {/each}
-            {/if}
-          </ul>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
+<MobileTopNav
+  on:click="closeSubNav()"
+  on:listClick="onActionClick(event)"
+  nodes="{node.children}"
+  label="{getNodeLabel(node)}"
+  {hasOpenUIicon}
+  {getTestId}
+/>
 {/if}
 <script type="text/javascript">
   import BadgeCounter from './navigation/BadgeCounter.html';
@@ -81,6 +39,7 @@
   import { NavigationHelpers } from './utilities/helpers';
   import { RoutingHelpers } from './utilities/helpers';
   import { LuigiI18N } from './core-api';
+  import MobileTopNav from './navigation/MobileTopNavDropDown.html';
   export default {
     async oncreate() {
       this.setViewportHeightVariable();
@@ -135,6 +94,7 @@
       }
     },
     components: {
+      MobileTopNav,
       BadgeCounter
     }
   };

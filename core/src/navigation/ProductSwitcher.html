@@ -71,55 +71,14 @@ Object.keys(productSwitcherItems[0]).length }
 {/if}
 <!-- MOBILE VERSION (fullscreen modal): -->
 {#if isMobile && dropDownStates.productSwitcherPopover}
-<section class="fd-product-switcher">
-  <div
-    class="fd-modal y-fd-modal--full-screen"
-    on:click="event.stopPropagation()"
-  >
-    <div class="fd-modal__content" role="document">
-      <div class="fd-action-bar">
-        <div class="fd-action-bar__back">
-          <button
-            class="fd-button--light fd-button--compact sap-icon--nav-back"
-            on:click="toggleDropdownState(event)"
-            data-testid="mobile-product-switcher-close"
-          ></button>
-        </div>
-        <div class="fd-action-bar__header">
-          <h5 class="fd-action-bar__title fd-has-type-1">{config.label}</h5>
-        </div>
-      </div>
-      <div class="fd-modal__body">
-        <div class="fd-product-switcher__body">
-          <ul class="y-full-width-list">
-            {#each productSwitcherItems as productSwitcherItem}
-            {#if productSwitcherItem.label}
-            <li
-              on:click="onActionClick(productSwitcherItem)"
-              class="y-full-width-list__item"
-              data-testid="{getTestId(productSwitcherItem)}"
-            >
-              <span
-                class="y-full-width-list__icon {productSwitcherItem.icon && hasOpenUIicon(productSwitcherItem) ? 'sap-icon--' + productSwitcherItem.icon + ' sap-icon--m' : '' }"
-              >
-                {#if !hasOpenUIicon(productSwitcherItem)}
-                <img
-                  src="{productSwitcherItem.icon}"
-                >
-                {/if}
-              </span>
-              <span
-                class="y-full-width-list__title"
-              >{$getTranslation(productSwitcherItem.label)}</span>
-            </li>
-            {/if}
-            {/each}
-          </ul>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
+<MobileTopNav
+  on:click="toggleDropdownState()"
+  on:listClick="onActionClick(event)"
+  nodes="{productSwitcherItems}"
+  label="{config.label}"
+  {hasOpenUIicon}
+  {getTestId}
+/>
 {/if}
 {/if}
 <script type="text/javascript">
@@ -127,6 +86,7 @@ Object.keys(productSwitcherItems[0]).length }
   import { Routing } from '../services/routing';
   import { StateHelpers } from '../utilities/helpers';
   import { NavigationHelpers } from '../utilities/helpers';
+  import MobileTopNav from './MobileTopNavDropDown.html';
 
   export default {
     async oncreate() {
@@ -175,6 +135,9 @@ Object.keys(productSwitcherItems[0]).length }
           ? node.testId
           : NavigationHelpers.prepareForTests(node.label);
       }
+    },
+    components: {
+      MobileTopNav
     }
   };
 </script>
