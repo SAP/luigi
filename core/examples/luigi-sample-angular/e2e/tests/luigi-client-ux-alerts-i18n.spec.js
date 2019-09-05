@@ -15,31 +15,31 @@ describe('Luigi Client UX Alerts + Localization', () => {
     it('success and info alerts with dismiss button', () => {
       cy.goToUxManagerMethods($iframeBody);
 
-      cy.get('[data-cy=luigi-alert]').should('not.exist');
+      cy.get('[data-testid=luigi-alert]').should('not.exist');
 
       cy.wrap($iframeBody)
-        .find('[data-cy=luigi-alert-type]')
+        .find('[data-testid=luigi-alert-type]')
         .select('success');
       cy.wrap($iframeBody)
-        .find('[data-cy=show-luigi-alert]')
+        .find('[data-testid=show-luigi-alert]')
         .click();
 
-      cy.get('[data-cy=luigi-alert]').should('have.class', 'fd-alert--success');
+      cy.get('[data-testid=luigi-alert]').should('have.class', 'fd-alert--success');
 
-      cy.get('[data-cy=luigi-alert-dismiss]').click();
-      cy.get('[data-cy=luigi-alert]').should('not.exist');
+      cy.get('[data-testid=luigi-alert-dismiss]').click();
+      cy.get('[data-testid=luigi-alert]').should('not.exist');
       cy.wrap($iframeBody)
-        .find('[data-cy=luigi-alert-result]')
+        .find('[data-testid=luigi-alert-result]')
         .contains('has been dismissed');
 
       cy.wrap($iframeBody)
-        .find('[data-cy=luigi-alert-type]')
+        .find('[data-testid=luigi-alert-type]')
         .select('info');
       cy.wrap($iframeBody)
-        .find('[data-cy=show-luigi-alert]')
+        .find('[data-testid=show-luigi-alert]')
         .click();
 
-      cy.get('[data-cy=luigi-alert]').should(
+      cy.get('[data-testid=luigi-alert]').should(
         'have.class',
         'fd-alert--information'
       );
@@ -48,21 +48,21 @@ describe('Luigi Client UX Alerts + Localization', () => {
       const closeAfter = 500;
       cy.goToUxManagerMethods($iframeBody);
 
-      cy.get('[data-cy=luigi-alert]').should('not.exist');
+      cy.get('[data-testid=luigi-alert]').should('not.exist');
 
       cy.wrap($iframeBody)
-        .find('[data-cy=luigi-alert-close-after]')
+        .find('[data-testid=luigi-alert-close-after]')
         .type(closeAfter);
 
       cy.wrap($iframeBody)
-        .find('[data-cy=show-luigi-alert]')
+        .find('[data-testid=show-luigi-alert]')
         .click();
 
       cy.wait(closeAfter - 100); //the time may not be one-millisecond perfect so give it some 'flexibility'
-      cy.get('[data-cy=luigi-alert]').should('exist');
+      cy.get('[data-testid=luigi-alert]').should('exist');
 
       cy.wait(101); //desired time + 1 ms = the alert shouldn't exist anymore
-      cy.get('[data-cy=luigi-alert]').should('not.exist');
+      cy.get('[data-testid=luigi-alert]').should('not.exist');
     });
 
     it('can queue Alerts', () => {
@@ -70,20 +70,20 @@ describe('Luigi Client UX Alerts + Localization', () => {
 
       cy.goToUxManagerMethods($iframeBody);
 
-      cy.get('[data-cy=luigi-alert]').should('not.exist');
+      cy.get('[data-testid=luigi-alert]').should('not.exist');
 
       for (let i = 0; i < numberOfAlerts; i++) {
         //click "Show alert" few times
         cy.wrap($iframeBody)
-          .find('[data-cy=show-luigi-alert]')
+          .find('[data-testid=show-luigi-alert]')
           .click();
       }
 
-      cy.get('[data-cy=luigi-alert]').should('have.length', numberOfAlerts);
+      cy.get('[data-testid=luigi-alert]').should('have.length', numberOfAlerts);
 
       for (let i = 0; i < numberOfAlerts; i++) {
         //clean up. click({multiple: true}) desn't work here.
-        cy.get('[data-cy=luigi-alert-dismiss]')
+        cy.get('[data-testid=luigi-alert-dismiss]')
           .first()
           .click();
       }
@@ -92,31 +92,31 @@ describe('Luigi Client UX Alerts + Localization', () => {
     it('warning alert with links and unsaved changes', () => {
       cy.goToUxManagerMethods($iframeBody);
 
-      cy.get('[data-cy=luigi-alert]').should('not.exist');
+      cy.get('[data-testid=luigi-alert]').should('not.exist');
 
       cy.wrap($iframeBody)
-        .find('[data-cy=luigi-alert-type]')
+        .find('[data-testid=luigi-alert-type]')
         .select('warning');
       cy.wrap($iframeBody)
-        .find('[data-cy=luigi-alert-links]')
+        .find('[data-testid=luigi-alert-links]')
         .check();
       cy.wrap($iframeBody)
-        .find('[data-cy=show-luigi-alert]')
+        .find('[data-testid=show-luigi-alert]')
         .click();
       cy.wrap($iframeBody)
-        .find('[data-cy=toggle-dirty-state]')
+        .find('[data-testid=toggle-dirty-state]')
         .click();
 
-      cy.get('[data-cy=luigi-alert]').should('have.class', 'fd-alert--warning');
+      cy.get('[data-testid=luigi-alert]').should('have.class', 'fd-alert--warning');
 
       cy.get('*[id$=_link_relativePath]').click();
       cy.expectPathToBe('/projects/pr1');
-      cy.get('[data-cy=luigi-confirmation-modal]').should('be.visible');
-      cy.get('[data-cy=luigi-modal-dismiss]').click();
+      cy.get('[data-testid=luigi-confirmation-modal]').should('be.visible');
+      cy.get('[data-testid=luigi-modal-dismiss]').click();
       cy.expectPathToBe('/projects/pr1');
       cy.get('*[id$=_link_relativePath]').click();
-      cy.get('[data-cy=luigi-confirmation-modal]').should('be.visible');
-      cy.get('[data-cy=luigi-modal-confirm]').click();
+      cy.get('[data-testid=luigi-confirmation-modal]').should('be.visible');
+      cy.get('[data-testid=luigi-modal-confirm]').click();
       cy.expectPathToBe('/projects/pr1/hideSideNav');
 
       cy.get('*[id$=_link_goToOtherProject]')
@@ -131,23 +131,23 @@ describe('Luigi Client UX Alerts + Localization', () => {
     it('error alert without links and protected against XSS', () => {
       cy.goToUxManagerMethods($iframeBody);
 
-      cy.get('[data-cy=luigi-alert]').should('not.exist');
+      cy.get('[data-testid=luigi-alert]').should('not.exist');
 
       cy.wrap($iframeBody)
-        .find('[data-cy=luigi-alert-type]')
+        .find('[data-testid=luigi-alert-type]')
         .select('error');
       cy.wrap($iframeBody)
-        .find('[data-cy=luigi-alert-links]')
+        .find('[data-testid=luigi-alert-links]')
         .uncheck();
       cy.wrap($iframeBody)
-        .find('[data-cy=show-luigi-alert]')
+        .find('[data-testid=show-luigi-alert]')
         .click();
 
-      cy.get('[data-cy=luigi-alert]')
+      cy.get('[data-testid=luigi-alert]')
         .should('have.class', 'fd-alert--error')
         .should('contain', "<b onmouseover=alert('Wufff!')>click me!</b>");
 
-      cy.get('[data-cy=luigi-alert]')
+      cy.get('[data-testid=luigi-alert]')
         .find('a')
         .should('not.exist');
     });
@@ -155,16 +155,16 @@ describe('Luigi Client UX Alerts + Localization', () => {
     it('alert is not displayed if it does not have any text', () => {
       cy.goToUxManagerMethods($iframeBody);
 
-      cy.get('[data-cy=luigi-alert]').should('not.exist');
+      cy.get('[data-testid=luigi-alert]').should('not.exist');
 
       cy.wrap($iframeBody)
-        .find('[data-cy=luigi-alert-text]')
+        .find('[data-testid=luigi-alert-text]')
         .uncheck();
       cy.wrap($iframeBody)
-        .find('[data-cy=show-luigi-alert]')
+        .find('[data-testid=show-luigi-alert]')
         .click();
 
-      cy.get('[data-cy=luigi-alert]').should('not.exist');
+      cy.get('[data-testid=luigi-alert]').should('not.exist');
     });
   });
 
@@ -173,19 +173,19 @@ describe('Luigi Client UX Alerts + Localization', () => {
       cy.goToUxManagerMethods($iframeBody);
 
       cy.wrap($iframeBody)
-        .find('[data-cy=luigi-current-locale]')
+        .find('[data-testid=luigi-current-locale]')
         .should('contain', "'en'");
 
       cy.wrap($iframeBody)
-        .find('[data-cy=luigi-input-locale]')
+        .find('[data-testid=luigi-input-locale]')
         .type('pl_PL');
 
       cy.wrap($iframeBody)
-        .find('[data-cy=set-current-locale]')
+        .find('[data-testid=set-current-locale]')
         .click();
 
       cy.wrap($iframeBody)
-        .find('[data-cy=luigi-current-locale]')
+        .find('[data-testid=luigi-current-locale]')
         .should('contain', "'pl_PL'");
     });
 
@@ -194,11 +194,11 @@ describe('Luigi Client UX Alerts + Localization', () => {
         .getIframeBody()
         .then(body => {
           cy.wrap(body)
-            .find('[data-cy=luigi-input-locale]')
+            .find('[data-testid=luigi-input-locale]')
             .should('be.disabled');
 
           cy.wrap(body)
-            .find('[data-cy=set-current-locale]')
+            .find('[data-testid=set-current-locale]')
             .should('be.disabled');
         });
     });

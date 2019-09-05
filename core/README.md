@@ -2,7 +2,7 @@
 
 ## Overview
 
-Luigi Core is a micro front-end framework written in Svelte. To learn how it works, read [this](examples) document.
+Luigi Core is a micro frontend framework written in Svelte. To learn how it works, read [this](examples) document.
 
 ## Usage
 

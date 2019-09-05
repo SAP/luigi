@@ -20,7 +20,7 @@ class UxManager extends LuigiClientBase {
   }
 
   /**
-   * Adds a backdrop with a loading indicator for the micro front-end frame. This overrides the {@link navigation-configuration.md#nodes loadingIndicator.enabled} setting.
+   * Adds a backdrop with a loading indicator for the micro frontend frame. This overrides the {@link navigation-configuration.md#nodes loadingIndicator.enabled} setting.
    * @memberof uxManager
    */
   showLoadingIndicator() {
@@ -35,7 +35,7 @@ class UxManager extends LuigiClientBase {
     helpers.sendPostMessageToLuigiCore({ msg: 'luigi.hide-loading-indicator' });
   }
   /**
-   * Adds a backdrop to block the top and side navigation. It is based on the Fundamental UI Modal, which you can use in your micro front-end to achieve the same behavior.
+   * Adds a backdrop to block the top and side navigation. It is based on the Fundamental UI Modal, which you can use in your micro frontend to achieve the same behavior.
    * @memberof uxManager
    */
   addBackdrop() {
@@ -209,7 +209,7 @@ class UxManager extends LuigiClientBase {
   }
 
   /**
-   * Checks if the current micro-frontend is displayed inside a split view
+   * Checks if the current micro frontend is displayed inside a split view
    * @returns {boolean} indicating if it is loaded inside a split view
    * @memberof uxManager
    * @since 0.6.0
@@ -219,7 +219,7 @@ class UxManager extends LuigiClientBase {
   }
 
   /**
-   * Checks if the current micro-frontend is displayed inside a modal
+   * Checks if the current micro frontend is displayed inside a modal
    * @returns {boolean} indicating if it is loaded inside a modal
    * @memberof uxManager
    * @since 0.6.0
