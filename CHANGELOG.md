@@ -23,6 +23,15 @@ The lerna-changelog tool detects changes based on PR labels and maps them to sec
     ...
   }
 -->
+## [v0.6.3] (2019-09-05)
+
+#### :rocket: Added
+* [#792](https://github.com/SAP/luigi/pull/792) Avoid Luigi not configured alert ([@JohannesDoberer](https://github.com/JohannesDoberer))
+* [#790](https://github.com/SAP/luigi/pull/790) Replace UI tests attributes ([@zarkosimic](https://github.com/zarkosimic))
+
+#### :memo: Documentation
+* [#794](https://github.com/SAP/luigi/pull/794) Change spelling to "micro frontend" ([@alexandra-simeonova](https://github.com/alexandra-simeonova))
+
 ## [v0.6.2] (2019-08-29)
 
 #### :rocket: Added
@@ -502,3 +511,4 @@ The lerna-changelog tool detects changes based on PR labels and maps them to sec
 [v0.6.0]: https://github.com/SAP/luigi/compare/v0.5.4...v0.6.0
 [v0.6.1]: https://github.com/SAP/luigi/compare/v0.6.0...v0.6.1
 [v0.6.2]: https://github.com/SAP/luigi/compare/v0.6.1...v0.6.2
+[v0.6.3]: https://github.com/SAP/luigi/compare/v0.6.2...v0.6.3
