@@ -9,7 +9,7 @@
           <button
             class="fd-button--light fd-button--compact sap-icon--nav-back"
             on:click
-            data-testid="mobile-product-switcher-close"
+            data-testid="mobile-topnav-close"
           ></button>
         </div>
         <div class="fd-action-bar__header">
@@ -22,8 +22,9 @@
             {#if nodes}
             {#each nodes as node}
             <li
-              on:click="onActionClick(node)"
               class="y-full-width-list__item"
+              on:click="onActionClick(node)"
+              data-e2e="mobile-topnav-item"
               data-testid="{getTestId(node)}"
             >
               <span
@@ -34,9 +35,7 @@
                 {/if}
                 <BadgeCounter {node}/>
               </span>
-              <span
-                class="y-full-width-list__title"
-              >{$getTranslation(node.label)}</span>
+              <span class="y-full-width-list__title">{getNodeLabel(node)}</span>
             </li>
             {/each}
             {/if}
@@ -48,7 +47,6 @@
 </section>
 <script type="text/javascript">
   import BadgeCounter from './BadgeCounter.html';
-  console.log('Component loaded! 10 : ');
   export default {
     methods: {
       onActionClick(value) {

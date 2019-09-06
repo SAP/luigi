@@ -62,7 +62,10 @@ describe('Login Flow', () => {
     const testLogo =
       'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mM0WCn/HgAD8gHpXMQ+4AAAAABJRU5ErkJggg==';
 
-    cy.get('[data-testid="luigi-topnav-title"]').should('contain', 'Luigi Demo');
+    cy.get('[data-testid="luigi-topnav-title"]').should(
+      'contain',
+      'Luigi Demo'
+    );
     cy.get('[data-testid="luigi-topnav-title"]').should(
       'not.have.attr',
       'src',
@@ -146,7 +149,7 @@ describe('TopNavDropDown', () => {
         '[data-e2e="mobile-topnav-dropdown-category"][title="Misc"]'
       ).click();
 
-      cy.get('[data-e2e="mobile-topnav-dropdown-item"]')
+      cy.get('[data-e2e="mobile-topnav-item"]')
         .contains('Visible for all users')
         .click();
 
@@ -162,7 +165,7 @@ describe('TopNavDropDown', () => {
       ).click();
 
       //close mobile topnav dropdown
-      cy.get('[data-testid="mobile-topnav-dropdown-close"]').click();
+      cy.get('[data-testid="mobile-topnav-close"]').click();
 
       //no mobile topnav dropdown is visible
       cy.get('.fd-product-switcher').should('not.be.visible');

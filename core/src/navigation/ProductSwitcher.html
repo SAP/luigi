@@ -56,7 +56,7 @@ Object.keys(productSwitcherItems[0]).length }
                   </span>
                   <span
                     class="fd-product-switcher__product-title"
-                  >{$getTranslation(productSwitcherItem.label)}</span>
+                  >{getNodeLabel(productSwitcherItem)}</span>
                 </a>
               </li>
               {/if}
@@ -77,12 +77,13 @@ Object.keys(productSwitcherItems[0]).length }
   nodes="{productSwitcherItems}"
   label="{config.label}"
   {hasOpenUIicon}
+  {getNodeLabel}
   {getTestId}
 />
 {/if}
 {/if}
 <script type="text/javascript">
-  import { LuigiConfig } from '../core-api';
+  import { LuigiConfig, LuigiI18N } from '../core-api';
   import { Routing } from '../services/routing';
   import { StateHelpers } from '../utilities/helpers';
   import { NavigationHelpers } from '../utilities/helpers';
@@ -129,6 +130,9 @@ Object.keys(productSwitcherItems[0]).length }
     helpers: {
       hasOpenUIicon(node) {
         return NavigationHelpers.isOpenUIiconName(node.icon);
+      },
+      getNodeLabel(node) {
+        return LuigiI18N.getTranslation(node.label);
       },
       getTestId(node) {
         return node.testId

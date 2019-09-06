@@ -164,7 +164,9 @@ describe('ProductSwitcher', () => {
     });
 
     it('Mobile Product Switcher is not visible', () => {
-      cy.get('[data-testid="mobile-product-switcher"]').should('not.be.visible');
+      cy.get('[data-testid="mobile-product-switcher"]').should(
+        'not.be.visible'
+      );
     });
   });
 
@@ -198,7 +200,7 @@ describe('ProductSwitcher', () => {
       cy.get('[data-testid="mobile-product-switcher"]').click();
 
       //close mobile product switcher
-      cy.get('[data-testid="mobile-product-switcher-close"]').click();
+      cy.get('[data-testid="mobile-topnav-close"]').click();
 
       //no product switcher is visible
       cy.get('.fd-product-switcher').should('not.be.visible');
