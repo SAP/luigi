@@ -253,7 +253,7 @@
       {/if}
       {/if}
       <!-- closes {#if children && pathData.length > 0} -->
-      {#if authorizationEnabled}
+      {#if authorizationEnabled || profileItemsAvailable}
       <div
         class="fd-shellbar__action fd-shellbar__action--show-always"
         data-testid="luigi-topnav-profile"
@@ -344,6 +344,9 @@
         () => {
           this.set({
             authorizationEnabled: LuigiAuth.isAuthorizationEnabled(),
+            profileItemsAvailable: LuigiConfig.getConfigValue(
+              'navigation.profile.items'
+            ),
             autologinEnabled: !Boolean(
               LuigiConfig.getConfigValue('auth.disableAutoLogin')
             ),
