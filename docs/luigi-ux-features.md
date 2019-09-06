@@ -38,7 +38,7 @@ By default, the loading indicator is removed after `Luigi.setConfig({})` has bee
 
 Alternatively, to keep the loading indicator until the first micro frontend is usable, follow the following steps:
 
-1. Set app loading indicator `hideAutomatically` to `false`
+1. Set the app loading indicator parameter `hideAutomatically` to `false`
 
 ```javascript
 {
