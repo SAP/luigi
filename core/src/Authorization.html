@@ -13,6 +13,7 @@
       >{userInfo.name ? userInfo.name : userInfo.email}</span>
     </li>
     {/if}
+    {/if}
     {#each profileNav.items as profileItem}
     <li
       on:click="onActionClick(profileItem)"
@@ -35,6 +36,7 @@
       </a>
     </li>
     {/each}
+    {#if isAuthorizationEnabled}
     <li on:click="onLogoutClick()" data-testid="{getTestId(profileNav.logout)}">
       <a aria-label="Logout" class="fd-menu__item">
         {#if profileNav.logout.icon}
@@ -52,10 +54,11 @@
         <span>{$getTranslation(profileNav.logout.label)}</span>
       </a>
     </li>
-    {:else}
+    {#if !isLoggedIn}
     <li on:click="startAuthorization()">
       <a aria-label="Login" class="fd-menu__item">Login</a>
     </li>
+    {/if}
     {/if}
   </ul>
 </nav>
@@ -131,9 +134,12 @@
     },
     async oncreate() {
       if (!LuigiAuth.isAuthorizationEnabled()) {
+        this.set({ isAuthorizationEnabled: false });
+        this.setProfileNavData();
         return;
+      } else {
+        this.set({ isAuthorizationEnabled: true });
       }
-
       const idpProviderName = LuigiConfig.getConfigValue('auth.use');
       const idpProviderSettings = LuigiConfig.getConfigValue(
         `auth.${idpProviderName}`
@@ -269,15 +275,17 @@
                 'navigation.profile.logout'
               );
               const profileNavData = {
-                logout: {
-                  ...TOP_NAV_DEFAULTS.logout,
-                  ...logoutItem
-                },
                 items:
                   (await LuigiConfig.getConfigValueAsync(
                     'navigation.profile.items'
                   )) || []
               };
+              if (this.get().isAuthorizationEnabled) {
+                profileNavData['logout'] = {
+                  ...TOP_NAV_DEFAULTS.logout,
+                  ...logoutItem
+                };
+              }
               this.set({ profileNav: profileNavData });
             },
             ['navigation.profile']
