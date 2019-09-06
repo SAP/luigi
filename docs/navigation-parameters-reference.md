@@ -287,4 +287,4 @@ The app switcher is a drop-down list available in the top navigation bar. It all
 - **items** defines the list of apps. App element properties are:
   - **title** defines the app title. This is shown in the app switcher drop-down as well as the title in the header of the Luigi application if a user is in the context of the app. 
   - **subTitle** defines the app sub-title. This is shown as the sub-title in the header of the Luigi application if a user is in the context of the app. 
-  - **link** defines the link to the app. This is a link within the Luigi application that defines the root of the app. It is used to switch to the app if the drop-down entry is selected as well as to determine if user is in a scope of an app to render the corresponding title and sub-title in the header of the Luigi application. 
+  - **link** is a link within the Luigi application that defines the root of the app. It is used to switch to the app if the drop-down entry is selected. It is also used to determine if a user is within the app's scope, so that the corresponding title and sub-title can be rendered in the header. 
