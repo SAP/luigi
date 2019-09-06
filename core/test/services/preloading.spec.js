@@ -1,11 +1,10 @@
-import { IframeHelpers } from '../../src/utilities/helpers';
-
 const chai = require('chai');
 const assert = chai.assert;
 const sinon = require('sinon');
 import { afterEach } from 'mocha';
 
 import { Iframe } from '../../src/services/iframe';
+import { IframeHelpers, GenericHelpers } from '../../src/utilities/helpers';
 import { ViewGroupPreloading } from '../../src/services/preloading';
 import { LuigiConfig } from '../../src/core-api';
 
@@ -28,6 +27,8 @@ describe('Iframe', () => {
       prepareInternalData: () => {}
     };
     preloadingAllowed = false;
+    sinon.stub(GenericHelpers);
+    GenericHelpers.getRandomId.returns('abc');
     sinon.stub(LuigiConfig, 'getConfigValue').callsFake(key => {
       if (key === 'navigation.preloadViewGroups') {
         return preloadingAllowed ? undefined : false;
@@ -65,7 +66,7 @@ describe('Iframe', () => {
     sinon.stub(IframeHelpers, 'getIframeContainer').callsFake(() => {
       return container;
     });
-    sinon.stub(IframeHelpers, 'getAllIframes').callsFake(() => {
+    sinon.stub(IframeHelpers, 'getMainIframes').callsFake(() => {
       return [...iframes];
     });
   });

@@ -1,4 +1,8 @@
-import { AsyncHelpers, GenericHelpers } from '../utilities/helpers';
+import {
+  AsyncHelpers,
+  GenericHelpers,
+  StateHelpers
+} from '../utilities/helpers';
 import { auth } from './auth';
 import { LuigiElements, LuigiI18N } from '.';
 
@@ -11,11 +15,6 @@ class LuigiConfig {
    * @memberof Configuration
    */
   constructor() {
-    this.configReadyTimeout = {
-      valueMs: 65000,
-      id: undefined
-    };
-
     this.configReadyCallback = function() {};
 
     this.initialized = false;
@@ -27,11 +26,6 @@ class LuigiConfig {
    */
   setConfigCallbacks(configReadyCallback) {
     this.configReadyCallback = configReadyCallback;
-    this.configReadyTimeout.id = setTimeout(() => {
-      // Avoid Luigi initialization if timeout reached
-      this.configReadyCallback = function() {};
-      this.configNotReadyCallback();
-    }, this.configReadyTimeout.valueMs);
   }
 
   /**
@@ -61,7 +55,6 @@ class LuigiConfig {
    * })
    */
   setConfig(configInput) {
-    clearTimeout(this.configReadyTimeout.id);
     this.config = configInput;
     window.Luigi._store.set({ config: configInput });
     this._configModificationTimestamp = new Date();
@@ -83,13 +76,27 @@ class LuigiConfig {
   }
 
   /**
-   * @private
+   * Tells Luigi that the configuration has been changed. Luigi will update the application or parts of it based on the specified scope.
+   * @param {...string} scope one or more scope selectors specifying what parts of the configuration were changed. If no scope selector is provided, the whole configuration is considered changed.
+   * <p>
+   * The supported scope selectors are:
+   * <p>
+   * <ul>
+   *   <li><code>navigation</code>: the navigation part of the configuration was changed. This includes navigation nodes, the context switcher, the product switcher and the profile menu.</li>
+   *   <li><code>navigation.nodes</code>: navigation nodes were changed.</li>
+   *   <li><code>navigation.contextSwitcher</code>: context switcher related data were changed.</li>
+   *   <li><code>navigation.productSwitcher</code>: product switcher related data were changed.</li>
+   *   <li><code>navigation.profile</code>: profile menu was changed.</li>
+   *   <li><code>settings</code>: settings were changed.</li>
+   *   <li><code>settings.header</code>: header settings (title, icon) were changed.</li>
+   *   <li><code>settings.footer</code>: left navigation footer settings were changed.</li>
+   * </ul>
    * @memberof Configuration
    */
-  configNotReadyCallback() {
-    const errorMsg = LuigiI18N.getTranslation('luigi.configNotReadyCallback');
-    console.error(errorMsg);
-    this.setErrorMessage(errorMsg);
+  configChanged(...scope) {
+    StateHelpers.optimizeScope(scope).forEach(s => {
+      window.Luigi._store.fire(s, { current: window.Luigi._store.get() });
+    });
   }
 
   /**
@@ -151,7 +158,7 @@ class LuigiConfig {
    * If the value is not a Promise it is wrapped to a Promise so that the returned value is definitely a Promise.
    * @memberof Configuration
    * @param {string} property the object traversal path
-   * @param {mixed} parameters optional parameters that are used if the target is a function
+   * @param {*} parameters optional parameters that are used if the target is a function
    * @example
    * Luigi.getConfigValueAsync('navigation.nodes')
    * Luigi.getConfigValueAsync('navigation.profile.items')

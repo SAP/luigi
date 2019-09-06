@@ -108,7 +108,8 @@ export const projectDetailNavStructure = projectId => [
     pathSegment: 'settings',
     label: 'Project Settings',
     viewUrl: '/sampleapp.html#/projects/' + projectId + '/settings',
-    icon: 'settings'
+    icon: 'settings',
+    testId: 'myTestId'
   },
   {
     pathSegment: 'miscellaneous',

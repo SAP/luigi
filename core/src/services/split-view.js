@@ -1,6 +1,5 @@
 import { LuigiConfig, LuigiElements } from '../core-api';
 import { Navigation } from '../navigation/services/navigation';
-import { Iframe } from '../services';
 import {
   GenericHelpers,
   IframeHelpers,
@@ -11,6 +10,7 @@ class SplitViewSvcClass {
   constructor() {
     this.splitViewValues;
     this.internalValues = {
+      innerHeight: null,
       rightContentHeight: null,
       thresholdTop: null,
       thresholdBottom: null,
@@ -41,7 +41,11 @@ class SplitViewSvcClass {
     if (viewUrl) {
       viewUrl = RoutingHelpers.substituteViewUrl(viewUrl, componentData);
     }
-    const iframe = IframeHelpers.createIframe(viewUrl);
+    const iframe = IframeHelpers.createIframe(
+      viewUrl,
+      undefined,
+      component.get().currentNode
+    );
     const iframeCtn = document.querySelector('.iframeSplitViewCnt');
     iframeCtn.appendChild(iframe);
     return iframe;
@@ -99,6 +103,7 @@ class SplitViewSvcClass {
   }
 
   // required for iOS to force repaint, else scrolling does not work
+  /* istanbul ignore next */
   fixIOSscroll() {
     const iOS =
       !!navigator.platform && /iPad|iPhone|iPod/.test(navigator.platform);
@@ -145,22 +150,20 @@ class SplitViewSvcClass {
         )
       ) + LuigiElements.getShellbar().clientHeight;
 
-    const calculated = this.enforceTresholds(
+    this.splitViewValues = this.enforceTresholds(
       newBottom,
-      window.innerHeight - newBottom,
+      values.innerHeight - newBottom,
       values
     );
-
-    this.splitViewValues = calculated;
   }
 
   enforceTresholds(top, bottom) {
     const iv = this.internalValues;
     if (top <= iv.thresholdTop) {
       top = iv.thresholdTop;
-      bottom = window.innerHeight - iv.thresholdTop;
+      bottom = iv.innerHeight - iv.thresholdTop;
     } else if (bottom <= iv.thresholdBottom) {
-      top = window.innerHeight - iv.thresholdBottom;
+      top = iv.innerHeight - iv.thresholdBottom;
       bottom = iv.thresholdBottom;
     }
 
@@ -215,7 +218,7 @@ class SplitViewSvcClass {
     });
 
     this.getContainer().style.top = `${this.splitViewValues.top}px`;
-    Iframe.getIframeContainer().style.paddingBottom = `${
+    IframeHelpers.getIframeContainer().style.paddingBottom = `${
       this.splitViewValues.bottom
     }px`;
     this.getDragger().style.top = `${this.splitViewValues.top}px`;
@@ -238,7 +241,7 @@ class SplitViewSvcClass {
           });
 
           this.getContainer().style.top = '';
-          Iframe.getIframeContainer().style.paddingBottom = '';
+          IframeHelpers.getIframeContainer().style.paddingBottom = '';
         });
     }
   }
@@ -252,7 +255,7 @@ class SplitViewSvcClass {
             displayed: false,
             collapsed: comp.get().mfSplitView.collapsed
           });
-          Iframe.getIframeContainer().style.paddingBottom = '';
+          IframeHelpers.getIframeContainer().style.paddingBottom = '';
           this.sendMessageToClients('close.ok');
         });
     }

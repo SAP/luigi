@@ -18,7 +18,9 @@ settings: {
         return translatedText;
       }
     };
-  }
+  },
+  customSandboxRules=['allow-downloads-without-user-activation']
+
 }
 ```` 
 
@@ -42,3 +44,4 @@ If you don't specify any value for  **responsiveNavigation**, the buttons remain
     }
 ````
 > **NOTE:** You can translate Luigi internal messages by providing translation for [these keys](../core/src/utilities/defaultLuigiTranslationTable.js).
+* **customSandboxRules** is an array of custom rules for the content in the iframe. You can extend the [Luigi default sandbox rules](https://github.com/SAP/luigi/blob/af1deebb392dcec6490f72576e32eb5853a894bc/core/src/utilities/helpers/iframe-helpers.js#L140) by adding further rules.

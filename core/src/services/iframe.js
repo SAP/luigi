@@ -5,8 +5,7 @@ import {
   IframeHelpers,
   RoutingHelpers
 } from '../utilities/helpers';
-import { LuigiConfig } from '../core-api';
-import { LuigiI18N } from '../core-api';
+import { LuigiConfig, LuigiI18N } from '../core-api';
 
 class IframeClass {
   constructor() {
@@ -16,29 +15,11 @@ class IframeClass {
 
   getActiveIframe(node) {
     const children = [...node.children];
-    let activeIframe = [];
-    if (children.length > 0) {
-      activeIframe = children.filter(child => child.style.display !== 'none');
-    }
-    return activeIframe[0];
-  }
-
-  getIframeBySource(source, modalIframe) {
-    if (modalIframe && modalIframe.contentWindow === source) {
-      return modalIframe;
-    }
-    return IframeHelpers.getAllIframes().find(
-      iframe => iframe.contentWindow === source
-    );
-  }
-
-  getIframeContainer() {
-    const container = Array.from(document.querySelectorAll('.iframeContainer'));
-    return container && container.length > 0 ? container[0] : undefined;
+    return children.find(GenericHelpers.isElementVisible);
   }
 
   setActiveIframeToPrevious(node) {
-    const iframesInDom = this.getIframesInDom();
+    const iframesInDom = IframeHelpers.getMainIframes();
     const preservedViews = this.getPreservedViewsInDom(iframesInDom);
     if (preservedViews.length === 0) {
       return;
@@ -56,7 +37,7 @@ class IframeClass {
   removeInactiveIframes(node) {
     const children = Array.from(node.children);
     children.forEach(child => {
-      if (child.style.display === 'none' && !child.vg) {
+      if (!GenericHelpers.isElementVisible(child) && !child.vg) {
         node.removeChild(child);
       }
     });
@@ -76,10 +57,6 @@ class IframeClass {
         node.removeChild(child);
       }
     });
-  }
-
-  getIframesInDom() {
-    return Array.from(document.querySelectorAll('.iframeContainer iframe'));
   }
 
   getPreservedViewsInDom(iframes) {
@@ -166,7 +143,7 @@ class IframeClass {
     const canReuseIframe = IframeHelpers.canReuseIframe(config, component);
     let activeIframe = this.getActiveIframe(node);
 
-    const iframes = this.getIframesInDom();
+    const iframes = IframeHelpers.getMainIframes();
     const goBackStack = this.getPreservedViewsInDom(iframes);
     let firstInGoBackStack = undefined;
     let pvSituation = false;
@@ -197,7 +174,7 @@ class IframeClass {
       // if next view is not isolated we can pick a iframe with matching viewGroup from the pool
       let targetIframe;
       if (!nextViewIsolated && componentData.viewGroup) {
-        const iframes = this.getIframesInDom();
+        const iframes = IframeHelpers.getMainIframes();
         const sameViewGroupIframes = iframes.filter(iframe => {
           return iframe.vg === componentData.viewGroup;
         });
@@ -250,7 +227,7 @@ class IframeClass {
         config.iframe = IframeHelpers.createIframe(
           viewUrl,
           canCache ? componentData.viewGroup : undefined,
-          component.get().currentNode.clientPermissions
+          component.get().currentNode
         );
         node.insertBefore(config.iframe, node.firstChild);
 

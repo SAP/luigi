@@ -8,14 +8,15 @@ const sinon = require('sinon');
 import { LuigiI18N } from '../../src/core-api';
 import { LuigiConfig } from '../../src/core-api';
 
-describe('I18N', () => {
+describe('I18N', function() {
+  this.retries(2);
+
   beforeEach(() => {
     global['sessionStorage'] = {
       getItem: sinon.stub(),
       setItem: sinon.stub()
     };
-    sinon.stub(config, 'getConfig');
-    sinon.stub(config, 'setConfig');
+    sinon.stub(config, 'configChanged');
   });
   afterEach(() => {
     sinon.restore();
@@ -100,8 +101,7 @@ describe('I18N', () => {
       sinon.assert.calledWithExactly(LuigiI18N.listeners.id1, 'pl');
       sinon.assert.calledWithExactly(LuigiI18N.listeners.id2, 'pl');
       sinon.assert.calledWithExactly(LuigiI18N.listeners.id3, 'pl');
-      sinon.assert.called(config.getConfig);
-      sinon.assert.called(config.setConfig);
+      sinon.assert.called(config.configChanged);
     });
   });
 

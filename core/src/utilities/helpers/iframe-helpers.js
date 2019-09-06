@@ -1,6 +1,7 @@
-// Helper methods for 'iframe.js' file. They don't require any method from 'ifram.js` but are required by them.
+// Helper methods for 'iframe.js' file. They don't require any method from 'iframe.js` but are required by them.
 import { GenericHelpers } from './';
-import { Iframe } from '../../services';
+import { MICROFRONTEND_TYPES } from './../constants';
+import { LuigiConfig } from '../../core-api';
 
 class IframeHelpersClass {
   get specialIframeTypes() {
@@ -73,7 +74,9 @@ class IframeHelpersClass {
         componentData.previousNodeValues.viewUrl
       );
       const nextUrl = GenericHelpers.getUrlWithoutHash(componentData.viewUrl);
-      if (previousUrl === nextUrl) {
+      const previousViewGroup = componentData.previousNodeValues.viewGroup;
+      const nextViewGroup = componentData.viewGroup;
+      if (previousUrl === nextUrl && !previousViewGroup && !nextViewGroup) {
         return true;
       }
     }
@@ -111,13 +114,6 @@ class IframeHelpersClass {
     );
   }
 
-  hasIframeIsolation(component) {
-    const componentData = component.get();
-    return (
-      componentData.isolateView || componentData.previousNodeValues.isolateView
-    );
-  }
-
   getLocation(url) {
     const element = document.createElement('a');
     element.href = url;
@@ -133,17 +129,6 @@ class IframeHelpersClass {
     }
   }
 
-  getIframeContainer() {
-    const container = Array.from(document.querySelectorAll('.iframeContainer'));
-    return container && container.length > 0 ? container[0] : undefined;
-  }
-
-  getVisibleIframes() {
-    return Array.prototype.slice
-      .call(document.querySelectorAll('iframe'))
-      .filter(item => item.style.display !== 'none');
-  }
-
   urlMatchesTheDomain(viewUrl = '', domain) {
     return this.getLocation(viewUrl) === domain;
   }
@@ -152,16 +137,62 @@ class IframeHelpersClass {
     return this.urlMatchesTheDomain(viewUrl, domain);
   }
 
-  getAllIframes(additionalIframes) {
-    const iframes = Array.from(
-      document.querySelectorAll('.iframeContainer iframe')
+  getIframeContainer() {
+    const container = Array.from(document.querySelectorAll('.iframeContainer'));
+    return container.length > 0 ? container[0] : undefined;
+  }
+
+  /*
+  [
+    {id: "id-1", container: IFRAME_DO_ELEM_1, active: true, type:"main"},
+    {id: "id-2", container: IFRAME_DO_ELEM_1, active: false, type:"main"},
+    {id: "id-3", container: IFRAME_DO_ELEM_3, active: false, type:"modal"},
+    {id: "id-4", container: IFRAME_DO_ELEM_4, active: false, type:"main"},
+    {id: "id-5", container: IFRAME_DO_ELEM_5, active: false, type:"split-view"},
+    {id: "id-6", container: IFRAME_DO_ELEM_6, active: false, type:"main"}
+  ]*/
+  getMicrofrontendsInDom() {
+    return MICROFRONTEND_TYPES.map(({ type, selector }) => {
+      return Array.from(document.querySelectorAll(selector)).map(container => ({
+        id: container.luigi.id,
+        container,
+        active: GenericHelpers.isElementVisible(container),
+        type
+      }));
+    }).reduce((acc, val) => acc.concat(val), []); // flatten
+  }
+
+  getMicrofrontendIframes() {
+    return this.getMicrofrontendsInDom().map(mfObj => mfObj.container);
+  }
+
+  getCurrentMicrofrontendIframe() {
+    const modalIframes = this.getModalIframes();
+    const mainIframes = this.getMainIframes().filter(
+      GenericHelpers.isElementVisible
     );
-    if (Array.isArray(additionalIframes)) {
-      iframes.push(...additionalIframes);
-    } else if (additionalIframes) {
-      iframes.push(additionalIframes);
-    }
-    return iframes;
+
+    return modalIframes[0] || mainIframes[0] || null;
+  }
+
+  getIframesWithType(type) {
+    return this.getMicrofrontendsInDom()
+      .filter(mfObj => mfObj.type === type)
+      .map(mfObj => mfObj.container);
+  }
+
+  getMainIframes() {
+    return this.getIframesWithType('main');
+  }
+
+  getModalIframes() {
+    return this.getIframesWithType('modal');
+  }
+
+  getVisibleIframes() {
+    return this.getMicrofrontendsInDom()
+      .filter(mfObj => mfObj.active)
+      .map(mfObj => mfObj.container);
   }
 
   sendMessageToIframe(iframe, message) {
@@ -176,13 +207,14 @@ class IframeHelpersClass {
     );
   }
 
-  broadcastMessageToAllIframes(message, additionalIframes) {
-    const allIframes = IframeHelpers.getAllIframes(additionalIframes);
-    allIframes.forEach(iframe => this.sendMessageToIframe(iframe, message));
+  broadcastMessageToAllIframes(message) {
+    IframeHelpers.getMicrofrontendIframes().forEach(iframe =>
+      this.sendMessageToIframe(iframe, message)
+    );
   }
 
-  createIframe(viewUrl, viewGroup, clientPermissions) {
-    const activeSandboxRules = [
+  createIframe(viewUrl, viewGroup, currentNode) {
+    const luigiDefaultSandboxRules = [
       'allow-forms', // Allows the resource to submit forms. If this keyword is not used, form submission is blocked.
       'allow-modals', // Lets the resource open modal windows.
       // 'allow-orientation-lock', // Lets the resource lock the screen orientation.
@@ -197,19 +229,27 @@ class IframeHelpersClass {
       // 'allow-top-navigation-by-user-activation', // Lets the resource navigate the top-level browsing context, but only if initiated by a user gesture.
       // 'allow-downloads-without-user-activation' // Allows for downloads to occur without a gesture from the user.
     ];
+    const customSandboxRules = LuigiConfig.getConfigValue(
+      'settings.customSandboxRules'
+    );
+    const activeSandboxRules = customSandboxRules
+      ? [...new Set([...luigiDefaultSandboxRules, ...customSandboxRules])]
+      : luigiDefaultSandboxRules;
 
     const iframe = document.createElement('iframe');
     iframe.src = viewUrl;
     iframe.sandbox = activeSandboxRules.join(' ');
     iframe.luigi = {
       viewUrl,
-      createdAt: new Date().getTime()
+      currentNode,
+      createdAt: new Date().getTime(),
+      id: GenericHelpers.getRandomId()
     };
     if (viewGroup) {
       iframe.vg = viewGroup;
     }
-    if (clientPermissions) {
-      iframe.luigi.clientPermissions = clientPermissions;
+    if (currentNode && currentNode.clientPermissions) {
+      iframe.luigi.clientPermissions = currentNode.clientPermissions;
     }
     return iframe;
   }
@@ -218,13 +258,9 @@ class IframeHelpersClass {
     return iframe && iframe.contentWindow === event.source;
   }
 
-  getValidMessageSource(e, component) {
+  getValidMessageSource(e) {
     const allMessagesSources = [
-      ...IframeHelpers.getAllIframes(
-        this.specialIframeTypes
-          .map(t => component.get()[t.iframeKey])
-          .filter(Boolean)
-      ),
+      ...IframeHelpers.getMicrofrontendIframes(),
       { contentWindow: window, luigi: { viewUrl: window.location.href } }
     ];
     const iframe = allMessagesSources.find(iframe =>

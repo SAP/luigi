@@ -1,3 +1,18 @@
+Cypress.Commands.add('visitLoggedIn', (path = '/') => {
+  cy.visit(path, {
+    onBeforeLoad: win => {
+      const newTime = Date.now() + 6e4;
+      const newLuigiAuth = {
+        accessToken: 'thisisanaccesstokenthatisnotreallyneeded',
+        accessTokenExpirationDate: newTime,
+        idToken:
+          'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJodHRwOi8vbG9jYWxob3N0OjQyMDAiLCJzdWIiOiJtYXNrb3BhdG9sIiwiZXhwIjoxNjQzNzY0OTIwLCJhenAiOiJtYXNrb3BhdG9sIiwibm9uY2UiOiJidE5rWVZzc1FldVlWNmEyR1RVZm1wWVFFelBRN3c1ZENCbU54SG54IiwiZW1haWwiOiJsdWlnaXVzZXJAa3ltYS5jeCIsIm5hbWUiOiJMdWlnaSBVc2VyIn0.YUBE3tufmmNIJHwzKRXlImteuh_qDeuwGjkzN3Z0erg'
+      };
+      win.localStorage.setItem('luigi.auth', JSON.stringify(newLuigiAuth));
+    }
+  });
+});
+
 Cypress.Commands.add(
   'login',
   (email, password, skipReturnPathCheck = false) => {
@@ -98,7 +113,7 @@ Cypress.Commands.add('expectPathToBe', (pathWithoutHash, timeout = undefined) =>
 Cypress.Commands.add('splitViewButtons', iframeBody => {
   return cy
     .wrap(iframeBody)
-    .find('[data-cy="split-view-controls"]')
+    .find('[data-testid="split-view-controls"]')
     .find('button');
 });
 Cypress.Commands.add('expectSearchToBe', (searchString, a) => {

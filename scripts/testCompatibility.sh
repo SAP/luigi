@@ -20,6 +20,8 @@ showHelp() {
   echo "npm run test:compatibility -- --tag latest"
   echo "npm run test:compatibility -- --tag v4.4.0 --install"
   echo ""
+  echo "npm run test:compatibility -- --test-only"
+  echo ""
   echo ""
   echo "--tag latest"
   echo "Run with latest tag to specify the latest released version to test"
@@ -45,7 +47,7 @@ source $BASE_DIR/shared/bashHelpers.sh
 killWebServer() {
   # the [] is a workaround to prevent ps showing up itself
   # https://unix.stackexchange.com/questions/74185/how-can-i-prevent-grep-from-showing-up-in-ps-results
-  SPAPID=`ps -A -ww | grep '[w]s --port 4200' | tr -s ' ' |  cut -d ' ' -f 1`
+  SPAPID=`ps -A -ww | grep '[p]ort 4200' | tr -s ' ' |  cut -d ' ' -f 1`
   if [ ! -z "$SPAPID" ]; then
     echoe "Cleanup: Stopping SPA webserver"
     kill -9 $SPAPID
@@ -130,7 +132,7 @@ linkLuigi() {
   # remove installed luigi versions and symlink with latest
   rm -rf $EXAMPLE_NODE_MODULES/luigi*
   ln -s $LUIGI_DIR/core/public $EXAMPLE_NODE_MODULES/luigi-core
-  ln -s $LUIGI_DIR/client $EXAMPLE_NODE_MODULES/luigi-client
+  ln -s $LUIGI_DIR/client/public $EXAMPLE_NODE_MODULES/luigi-client
   ls -la $EXAMPLE_NODE_MODULES
   ls $EXAMPLE_NODE_MODULES/luigi-core
   ls $EXAMPLE_NODE_MODULES/luigi-client
@@ -152,17 +154,17 @@ bundleLuigi() {
 }
 
 verifyAndStartWebserver() {
-  WS=`command -v ws`
+  WS=`command -v sirv`
   if [ ! -x $WS ] || [ "$WS" == "" ] ; then
     echoe "Installing webserver"
-    npm i -g local-web-server
+    npm i -g sirv-cli
   fi
 
   killWebServer
 
   echoe "Run webserver"
   cd $EXAMPLE_DIR
-  (cd dist && ws --port 4200 --spa index.html &)
+  (sirv start dist --port 4200 --single --quiet &)
 }
 
 startE2eTestrunner() {

@@ -51,6 +51,26 @@ Luigi.getConfig()
 
 Returns **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** configuration object
 
+#### configChanged
+
+Tells Luigi that the configuration has been changed. Luigi will update the application or parts of it based on the specified scope.
+
+##### Parameters
+
+-   `scope` **...[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** one or more scope selectors specifying what parts of the configuration were changed. If no scope selector is provided, the whole configuration is considered changed.<p>
+    The supported scope selectors are:
+    <p>
+    <ul>
+      <li><code>navigation</code>: the navigation part of the configuration was changed. This includes navigation nodes, the context switcher, the product switcher and the profile menu.</li>
+      <li><code>navigation.nodes</code>: navigation nodes were changed.</li>
+      <li><code>navigation.contextSwitcher</code>: context switcher related data were changed.</li>
+      <li><code>navigation.productSwitcher</code>: product switcher related data were changed.</li>
+      <li><code>navigation.profile</code>: profile menu was changed.</li>
+      <li><code>settings</code>: settings were changed.</li>
+      <li><code>settings.header</code>: header settings (title, icon) were changed.</li>
+      <li><code>settings.footer</code>: left navigation footer settings were changed.</li>
+    </ul>
+
 #### getConfigValue
 
 Gets value of the given property on Luigi config object. Target can be a value or a synchronous function.
@@ -90,7 +110,7 @@ If the value is not a Promise it is wrapped to a Promise so that the returned va
 ##### Parameters
 
 -   `property` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** the object traversal path
--   `parameters` **mixed** optional parameters that are used if the target is a function
+-   `parameters` **any** optional parameters that are used if the target is a function
 
 ##### Examples
 
@@ -128,7 +148,7 @@ Returns the container of the Luigi content.
 Luigi.elements().getLuigiContainer();
 ```
 
-Returns **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** the DOM element that wraps the Luigi content.
+Returns **[HTMLElement](https://developer.mozilla.org/docs/Web/HTML/Element)** the DOM element that wraps the Luigi content.
 
 **Meta**
 
@@ -144,7 +164,7 @@ Returns the shellbar component.
 Luigi.elements().getShellbar();
 ```
 
-Returns **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** the shellbar DOM element.
+Returns **[HTMLElement](https://developer.mozilla.org/docs/Web/HTML/Element)** the shellbar DOM element.
 
 **Meta**
 
@@ -160,11 +180,23 @@ Returns the shellbar actions component.
 Luigi.elements().getShellbarActions();
 ```
 
-Returns **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** the shellbar actions DOM element.
+Returns **[HTMLElement](https://developer.mozilla.org/docs/Web/HTML/Element)** the shellbar actions DOM element.
 
 **Meta**
 
 -   **since**: 0.4.12
+
+#### getMicrofrontends
+
+Returns a list of all available micro frontends.
+
+##### Examples
+
+```javascript
+Luigi.elements().getMicrofrontends();
+```
+
+Returns **[Array](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array)&lt;{id: [string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String), active: [boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean), container: [HTMLElement](https://developer.mozilla.org/docs/Web/HTML/Element), type: (`"main"` \| `"split-view"` \| `"modal"`)}>** list of objects defining all micro frontends from the DOM
 
 #### getMicrofrontendIframes
 
@@ -176,7 +208,7 @@ Returns all micro frontend iframes including the iframe from the modal if it exi
 Luigi.elements().getMicrofrontendIframes();
 ```
 
-Returns **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** an array of all micro frontend iframes from the DOM.
+Returns **[Array](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array)&lt;[HTMLElement](https://developer.mozilla.org/docs/Web/HTML/Element)>** an array of all micro frontend iframes from the DOM.
 
 **Meta**
 
@@ -193,7 +225,7 @@ If there is a modal, which includes the micro frontend iframe, the function retu
 Luigi.elements().getCurrentMicrofrontendIframe();
 ```
 
-Returns **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** the active micro frontend iframe DOM element.
+Returns **[HTMLElement](https://developer.mozilla.org/docs/Web/HTML/Element)** the active micro frontend iframe DOM element.
 
 **Meta**
 
@@ -303,3 +335,53 @@ Property values for token replacement in the localization key will be taken from
 -   `key` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** key to be translated
 -   `interpolations` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** objects with properties that will be used for token replacements in the localization key
 -   `locale` **locale** optional locale to get the translation for; default is the current locale
+
+## Luigi.customMessages()
+
+<!-- Generated by documentation.js. Update this documentation by updating the source code. -->
+
+### CustomMessages
+
+Functions related to custom messages.
+
+#### sendToAll
+
+Sends a custom message to all opened micro frontends.
+
+##### Parameters
+
+-   `message` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** an object containing data to be sent to the micro frontend to process it further. This object is set as an input parameter of the custom message listener on the micro frontend side.
+    -   `message.id` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** the id of the message
+    -   `message.MY_DATA_FIELD` **any** any other message data field
+
+##### Examples
+
+```javascript
+Luigi.customMessages().sendToAll({
+    id: 'myprefix.my-custom-message-for-client',
+    dataField1: 'here goes some data',
+    moreData: 'here goes some more'
+});
+```
+
+#### send
+
+Sends a message to specific micro frontend identified with an id.
+Use Luigi.elements().getMicrofrontends() to get the iframe id.
+
+##### Parameters
+
+-   `microfrontendId` **[number](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number)** the id of the micro frontend
+-   `message` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** an object containing data to be sent to the micro frontend to process it further. This object is set as an input parameter of the custom message listener on the micro frontend side.
+    -   `message.id` **[number](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number)** the id of the message
+    -   `message.MY_DATA_FIELD` **any** any other message data field
+
+##### Examples
+
+```javascript
+Luigi.customMessages().send(microfrontend.id, {
+    id: 'myprefix.my-custom-message-for-client',
+    dataField1: 'here goes some data',
+    moreData: 'here goes some more'
+});
+```

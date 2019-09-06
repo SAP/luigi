@@ -8,7 +8,9 @@ import { GenericHelpers } from '../../src/utilities/helpers';
 import { LuigiConfig } from '../../src/core-api';
 import { Navigation } from '../../src/navigation/services/navigation';
 
-describe('Routing', () => {
+describe('Routing', function() {
+  this.retries(2);
+
   let component;
   beforeEach(() => {
     sinon.spy(window, 'dispatchEvent');
@@ -22,6 +24,7 @@ describe('Routing', () => {
     };
 
     sinon.stub(LuigiConfig, 'getConfigValue');
+    sinon.stub(GenericHelpers, 'getRandomId').returns('123');
   });
   afterEach(() => {
     if (document.createElement.restore) {
@@ -126,89 +129,89 @@ describe('Routing', () => {
   });
 
   describe('handleRouteChange', () => {
-    const sampleLuigiConfig = {
-      navigation: {
-        nodes: () => [
-          {
-            pathSegment: 'projects',
-            label: 'AAA',
-            viewUrl: '/aaa.html',
-            children: [
-              {
-                pathSegment: 'a1',
-                context: {
-                  varA1: 'maskopatol'
-                },
-                style: {
-                  display: null
-                },
-                viewUrl: '/{context.varA1}/a1.html#p={nodeParams.param1}'
-              },
-              {
-                pathSegment: 'a2',
-                style: {
-                  display: null
-                },
-                viewUrl: '{context.varA2}/a2.html#p={nodeParams.param2}'
-              },
-              {
-                pathSegment: 'teams',
-                defaultChildNode: 't2',
-                children: [
-                  {
-                    pathSegment: 't1',
-                    style: {
-                      display: null
-                    },
-                    viewUrl: '/t1.html'
-                  },
-                  {
-                    pathSegment: 't2',
-                    style: {
-                      display: null
-                    },
-                    viewUrl: '/t2.html'
-                  }
-                ],
-                style: {}
-              },
-              {
-                pathSegment: 'categories',
-                children: [
-                  {
-                    pathSegment: ':category',
-                    viewUrl: '/cats/:category#details',
-                    children: [
-                      {
-                        pathSegment: ':sub',
-                        viewUrl: '/cats/:category/:sub',
-                        style: {}
-                      }
-                    ]
-                  }
-                ],
-                style: {}
-              }
-            ],
-            removeChild: sinon.spy(),
-            context: {
-              varA: 'tets'
-            },
-            loadingIndicator: {},
-            hideSideNav: true,
-            prepend: sinon.spy(),
-            insertBefore: sinon.spy()
-          }
-        ]
-      },
-      settings: {
-        hideNavigation: false
-      }
-    };
     let currentLuigiConfig = {};
     let config;
 
     beforeEach(() => {
+      const sampleLuigiConfig = {
+        navigation: {
+          nodes: () => [
+            {
+              pathSegment: 'projects',
+              label: 'AAA',
+              viewUrl: '/aaa.html',
+              children: [
+                {
+                  pathSegment: 'a1',
+                  context: {
+                    varA1: 'maskopatol'
+                  },
+                  style: {
+                    display: null
+                  },
+                  viewUrl: '/{context.varA1}/a1.html#p={nodeParams.param1}'
+                },
+                {
+                  pathSegment: 'a2',
+                  style: {
+                    display: null
+                  },
+                  viewUrl: '{context.varA2}/a2.html#p={nodeParams.param2}'
+                },
+                {
+                  pathSegment: 'teams',
+                  defaultChildNode: 't2',
+                  children: [
+                    {
+                      pathSegment: 't1',
+                      style: {
+                        display: null
+                      },
+                      viewUrl: '/t1.html'
+                    },
+                    {
+                      pathSegment: 't2',
+                      style: {
+                        display: null
+                      },
+                      viewUrl: '/t2.html'
+                    }
+                  ],
+                  style: {}
+                },
+                {
+                  pathSegment: 'categories',
+                  children: [
+                    {
+                      pathSegment: ':category',
+                      viewUrl: '/cats/:category#details',
+                      children: [
+                        {
+                          pathSegment: ':sub',
+                          viewUrl: '/cats/:category/:sub',
+                          style: {}
+                        }
+                      ]
+                    }
+                  ],
+                  style: {}
+                }
+              ],
+              removeChild: sinon.spy(),
+              context: {
+                varA: 'tets'
+              },
+              loadingIndicator: {},
+              hideSideNav: true,
+              prepend: sinon.spy(),
+              insertBefore: sinon.spy()
+            }
+          ]
+        },
+        settings: {
+          hideNavigation: false
+        }
+      };
       window.Luigi = { config: currentLuigiConfig };
       currentLuigiConfig = Object.assign({}, sampleLuigiConfig);
       LuigiConfig.config = currentLuigiConfig;
@@ -218,6 +221,9 @@ describe('Routing', () => {
         navigateOk: null
       };
       sinon.stub(Routing, 'navigateTo');
+      sinon
+        .stub(GenericHelpers, 'isElementVisible')
+        .callsFake(element => element);
     });
 
     it('should set component data with hash path', async () => {

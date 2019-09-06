@@ -26,16 +26,11 @@
       use:init="context"
     ></div>
     {#if mfSplitView.displayed}
-    <div
-      id="splitViewContainer"
-      class="splitViewContainer {mfSplitView.collapsed?'lui-collapsed':''}"
-    >
-      <SplitView
-        splitViewSettings="{mfSplitView.settings}"
-        collapsed="{mfSplitView.collapsed}"
-        nodepath="{mfSplitView.nodepath}"
-      ></SplitView>
-    </div>
+    <SplitView
+      splitViewSettings="{mfSplitView.settings}"
+      collapsed="{mfSplitView.collapsed}"
+      nodepath="{mfSplitView.nodepath}"
+    ></SplitView>
     {/if}
   </Backdrop>
   {#if showLoadingIndicator}
@@ -82,6 +77,7 @@
   import { LuigiI18N, LuigiConfig, LuigiElements } from './core-api';
   import { Navigation } from './navigation/services/navigation';
   import {
+    MessagesListeners,
     Iframe,
     ViewGroupPreloading,
     Routing,
@@ -116,10 +112,15 @@
 
   const enableRouting = (component, node, config) => {
     // initial route handling
-    StateHelpers.doOnStoreChange(component.store, () => {
-      const currentPath = Routing.getCurrentPath();
-      Routing.handleRouteChange(currentPath, component, node, config);
-    });
+    StateHelpers.doOnStoreChange(
+      component.store,
+      () => {
+        LuigiConfig._configModificationTimestamp = new Date();
+        const currentPath = Routing.getCurrentPath();
+        Routing.handleRouteChange(currentPath, component, node, config);
+      },
+      ['navigation.nodes']
+    );
 
     // subsequential route handling
     RoutingHelpers.addRouteChangeListener(path => {
@@ -229,18 +230,12 @@
     IframeHelpers.sendMessageToIframe(config.iframe, message);
   };
 
-  const sendAuthDataToClient = (iframe, authData) => {
-    if (!iframe || !iframe.contentWindow) {
-      console.info(
-        'iframe does not exist, not able to send authData to client.'
-      );
-      return;
-    }
+  const sendAuthDataToClient = authData => {
     const message = {
       msg: 'luigi.auth.tokenIssued',
       authData
     };
-    IframeHelpers.sendMessageToIframe(iframe, message);
+    IframeHelpers.broadcastMessageToAllIframes(message);
   };
 
   const getDefaultAlertData = () => {
@@ -367,8 +362,32 @@
         });
 
         window.addEventListener('message', async e => {
-          const iframe = IframeHelpers.getValidMessageSource(e, this);
+          const iframe = IframeHelpers.getValidMessageSource(e);
           if (!iframe) return;
+
+          if ('custom' === e.data.msg) {
+            const customMessagesListeners =
+              LuigiConfig.getConfigValue(
+                'communication.customMessagesListeners'
+              ) || {};
+            const message = MessagesListeners.convertCustomMessageInternalToUser(
+              e.data
+            );
+            const customMessageListener = customMessagesListeners[message.id];
+            if (typeof customMessageListener === 'function') {
+              const microfrontend = LuigiElements.getMicrofrontends().find(
+                mf => mf.id === e.source.frameElement.luigi.id
+              );
+
+              customMessageListener(
+                message,
+                microfrontend,
+                GenericHelpers.removeInternalProperties(
+                  iframe.luigi.currentNode
+                )
+              );
+            }
+          }
 
           if ('luigi.navigate.ok' === e.data.msg) {
             iframe.luigi.viewUrl = iframe.luigi.nextViewUrl;
@@ -519,8 +538,8 @@
             }
           }
 
-          if ('luigi.auth.tokenIssued' === e.data.msg && iframe) {
-            sendAuthDataToClient(iframe, e.data.authData);
+          if ('luigi.auth.tokenIssued' === e.data.msg) {
+            sendAuthDataToClient(e.data.authData);
           }
 
           if ('luigi.navigation.pathExists' === e.data.msg) {
@@ -613,9 +632,6 @@
       }
     },
     methods: {
-      getValidMessageSource(e) {
-        return IframeHelpers.getValidMessageSource(e, this);
-      },
       handleNavigation(data, config) {
         let path = buildPath(this, data.params);
         path = GenericHelpers.addLeadingSlash(path);
@@ -947,26 +963,6 @@
     top: calc(#{$topNavHeight} + #{$topNavHeight});
   }
 
-  /* splitview start */
-  $collapsedSplitviewHeight: 38px;
-  .lui-collapsed.iframeContainer {
-    padding-bottom: $collapsedSplitviewHeight;
-  }
-
-  .splitViewContainer {
-    position: absolute;
-    bottom: 0;
-    right: 0;
-    left: $leftNavWidth;
-    top: 60%; /* default, overridden by computed.getIframeSplitViewTop */
-  }
-  .lui-collapsed.splitViewContainer {
-    height: $collapsedSplitviewHeight;
-    top: auto;
-  }
-
-  /* splitview end */
-
   .spinnerContainer {
     background: rgba(243, 244, 245, 0.8);
     display: flex;
@@ -983,7 +979,9 @@
       bottom: 0;
       right: 0;
     }
-    .splitViewContainer {
+    :global(.splitViewContainer),
+    :global(#splitViewDragger),
+    :global(#splitViewDraggerBackdrop) {
       left: 0;
     }
   }
@@ -997,10 +995,9 @@
       bottom: 0;
       right: 0;
     }
-    .splitViewContainer {
-      left: 0;
-    }
-    :global(#splitViewDragger, #splitViewDraggerBackdrop) {
+    :global(.splitViewContainer),
+    :global(#splitViewDragger),
+    :global(#splitViewDraggerBackdrop) {
       left: 0;
     }
 
@@ -1016,30 +1013,32 @@
 
     .iframeContainer,
     .spinnerContainer,
-    .splitViewContainer,
-    :global(#splitViewDragger, #splitViewDraggerBackdrop) {
+    :global(.splitViewContainer),
+    :global(#splitViewDragger),
+    :global(#splitViewDraggerBackdrop) {
       @include transition(left 0.1s linear);
     }
   }
 
   :global(.lui-semiCollapsible) {
     .iframeContainer,
-    .spinnerContainer,
-    .splitViewContainer {
+    .spinnerContainer {
       @include transition(left 0.1s linear);
     }
-    :global(#splitViewDragger, #splitViewDraggerBackdrop) {
+    :global(.splitViewContainer),
+    :global(#splitViewDragger),
+    :global(#splitViewDraggerBackdrop) {
       @include transition(left 0.1s linear);
     }
   }
 
   :global(.semiCollapsed) {
-    .iframeContainer,
-    .spinnerContainer,
-    .splitViewContainer {
+    :global(.iframeContainer, .spinnerContainer) {
       left: $leftNavWidthCollapsed;
     }
-    :global(#splitViewDragger, #splitViewDraggerBackdrop) {
+    :global(.splitViewContainer),
+    :global(#splitViewDragger),
+    :global(#splitViewDraggerBackdrop) {
       left: $leftNavWidthCollapsed;
     }
   }
@@ -1054,11 +1053,12 @@
     }
     :global(body.lui-simpleSlideInNav.lui-leftNavToggle) {
       .iframeContainer,
-      .spinnerContainer,
-      .splitViewContainer {
+      .spinnerContainer {
         left: 0;
       }
-      :global(#splitViewDragger, #splitViewDraggerBackdrop) {
+      :global(.splitViewContainer),
+      :global(#splitViewDragger),
+      :global(#splitViewDraggerBackdrop) {
         left: 0;
       }
 
@@ -1071,11 +1071,12 @@
   @media (max-width: $desktopMinWidth - 1) {
     :global(body.lui-simpleSlideInNav) {
       .iframeContainer,
-      .spinnerContainer,
-      .splitViewContainer {
+      .spinnerContainer {
         left: 0;
       }
-      :global(#splitViewDragger, #splitViewDraggerBackdrop) {
+      :global(.splitViewContainer),
+      :global(#splitViewDragger),
+      :global(#splitViewDraggerBackdrop) {
         left: 0;
       }
 
@@ -1095,11 +1096,12 @@
 
     :global(.lui-semiCollapsible) {
       .iframeContainer,
-      .spinnerContainer,
-      .splitViewContainer {
+      .spinnerContainer {
         left: $leftNavWidthCollapsed;
       }
-      :global(#splitViewDragger, #splitViewDraggerBackdrop) {
+      :global(.splitViewContainer),
+      :global(#splitViewDragger),
+      :global(#splitViewDraggerBackdrop) {
         left: $leftNavWidthCollapsed;
       }
     }
@@ -1117,6 +1119,12 @@
     .no-side-nav {
       .iframeContainer,
       .spinnerContainer {
+        position: absolute;
+      }
+
+      :global(.splitViewContainer),
+      :global(#splitViewDragger),
+      :global(#splitViewDraggerBackdrop) {
         position: absolute;
       }
     }
