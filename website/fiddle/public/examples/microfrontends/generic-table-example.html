@@ -1,0 +1,84 @@
+
+<!doctype html>
+<html lang="en-us">
+<head>
+    <meta charset="utf-8">
+    <meta name="description" content="">
+    <title>Table</title>
+    <link rel="stylesheet" href="https://unpkg.com/fiori-fundamentals@1.7.0/dist/fiori-fundamentals.min.css">
+    <script src="https://unpkg.com/@kyma-project/luigi-client/luigi-client.js"></script>
+</head>
+<body>
+<div>
+    <div class="fd-page">
+	<header class="fd-page__header">
+    <div class="fd-action-bar">
+        <div class="fd-action-bar__header">
+          <h3 class="fd-action-bar__title" id="title">
+              
+          </h3>
+          <p class="fd-action-bar__description" id="description"></p>
+        </div>
+        
+    </div>
+</header>
+
+	<div class="fd-page__content">
+    <section class="fd-section">
+        <div class="fd-panel">
+            <div class="fd-panel__header">
+                <h3 class="fd-panel__title">
+                    Items
+                </h3>
+            </div>
+            
+            <div class="fd-panel__body fd-panel__body--bleed">
+                <table class="fd-table">
+                    <thead>
+                        <tr id="headerRow">
+                            <th>Column Header</th>
+                            <th>Column Header</th>
+                            <th>Column Header</th>
+                            <th>Column Header</th>
+                        </tr>
+                    </thead>
+                    <tbody id="table">
+                        <tr>
+                            <td>user.name@email.com</td>
+                            <td>First Name</td>
+                            <td>Last Name</td>
+                            <td>01/26/17</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="fd-panel__footer">
+            </div>
+        </div>
+    </section>
+</div>
+</div>
+
+</div>
+
+
+<script type="text/javascript">
+(function() {
+
+    let createHeader = () => {
+
+    };
+
+    let createRow = () => {
+
+    };
+
+    LuigiClient.addInitListener((context) => {
+        console.log(context);
+        document.getElementById("title").textContent = context.title;
+        document.getElementById("description").textContent = context.description;
+    });
+})();
+</script>
+</body>
+</html>
