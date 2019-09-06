@@ -36,7 +36,7 @@ To show a loading indicator before Luigi Core or your first micro frontend is re
 
 By default, the loading indicator is removed after `Luigi.setConfig({})` has been executed. 
 
-Alternatively, to keep the loading indicator until the first micro frontend is usable, follow the following steps:
+Alternatively, to keep the loading indicator until the first micro frontend is usable, follow these steps:
 
 1. Set the app loading indicator parameter `hideAutomatically` to `false`
 
