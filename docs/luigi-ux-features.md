@@ -51,5 +51,4 @@ Alternatively, to keep the loading indicator until the first micro frontend is u
   ...
 }
 ```
-
-2. Call [`Luigi.ux().hideAppLoadingIndicator()`](./luigi-core-api.md#hideAppLoadingIndicator) in the Luigi Core once your initial micro frontend has finished loading to remove the loading indicator. You can for example use the [custom messages](./communication.md#custom-messages) feature for the micro frontend using Luigi Client to communicate the Core when this function should be executed.
+2. Call [`Luigi.ux().hideAppLoadingIndicator()`](./luigi-core-api.md#hideAppLoadingIndicator) in the Luigi Core once your initial micro frontend has finished loading to remove the loading indicator. You can, for example, use the [custom messages](./communication.md#custom-messages) feature to allow the Luigi Client micro frontend to communicate with the Core when this function should be executed.
