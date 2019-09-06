@@ -4,7 +4,10 @@
   <ul class="fd-menu__list fd-menu__list--top">
     {#if children}
     {#each children as node}
-    <li on:click="onActionClick(node)" data-e2e="topnav-dropdown-item">
+    <li
+      on:click="onActionClick(node)"
+      data-testid="{getTestId(node)}"
+    >
       <a class="fd-menu__item">
         <span
           class="fd-top-nav__icon {node.icon && hasOpenUIicon(node) ? 'sap-icon--' + node.icon + ' sap-icon--m' : '' }"
@@ -34,7 +37,7 @@
           <button
             class="fd-button--light fd-button--compact sap-icon--nav-back"
             on:click="closeSubNav()"
-            data-cy="mobile-topnav-dropdown-close"
+            data-testid="mobile-topnav-dropdown-close"
           ></button>
         </div>
         <div class="fd-action-bar__header">
@@ -49,7 +52,8 @@
             <li
               class="y-full-width-list__item"
               on:click="onActionClick(node)"
-              data-cy="mobile-topnav-dropdown-item"
+              data-e2e="mobile-topnav-dropdown-item"
+              data-testid="{getTestId(node)}"
             >
               <span
                 class="y-full-width-list__icon {node.icon && hasOpenUIicon(node) ? 'sap-icon--' + node.icon + ' sap-icon--m' : '' }"
@@ -123,6 +127,11 @@
       },
       getNodeLabel(node) {
         return LuigiI18N.getTranslation(node.label);
+      },
+      getTestId(node) {
+        return node.testId
+          ? node.testId
+          : NavigationHelpers.prepareForTests(node.pathSegment, node.label);
       }
     },
     components: {

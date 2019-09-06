@@ -33,6 +33,16 @@ describe('Navigation', () => {
     cy.get('.fd-app__sidebar').should('contain', 'Second Child');
   });
 
+  it('Find configured testid on navigation node', () => {
+    cy.visit('/projects/pr1/settings');
+    cy.get('a[data-testid="myTestId"]').should('exist');
+  });
+
+  it('Set default testid on navigation node', () => {
+    cy.visit('/projects/pr1/developers');
+    cy.get('a[data-testid="developers_developers"]').should('exist');
+  });
+
   it('Check if active node is selected', () => {
     cy.visit('/projects');
     cy.get('.fd-shellbar')
@@ -127,11 +137,11 @@ describe('Navigation', () => {
 
       cy.getIframeBody().then($iframeBody => {
         cy.wrap($iframeBody)
-          .find('[data-e2e="node-activation-no-navigation"]')
+          .find('[data-testid="node-activation-no-navigation"]')
           .click();
 
         cy.expectPathToBe(nodeActivationPath);
-        cy.get('[data-cy="luigi-alert"]').contains(
+        cy.get('[data-testid="luigi-alert"]').contains(
           'Showing an alert instead of navigating'
         );
       });
@@ -142,7 +152,7 @@ describe('Navigation', () => {
 
       cy.get('.sap-icon--question-mark').click();
 
-      cy.get('[data-cy=luigi-modal-dismiss]').click();
+      cy.get('[data-testid=luigi-modal-dismiss]').click();
 
       cy.expectPathToBe(nodeActivationPath);
     });
@@ -153,10 +163,10 @@ describe('Navigation', () => {
       cy.getIframeBody().then($iframeBody => {
         // wrap the body of your iframe with cy so as to do cy actions inside iframe elements
         cy.wrap($iframeBody)
-          .find('[data-e2e="node-activation-conditional-navigation"]')
+          .find('[data-testid="node-activation-conditional-navigation"]')
           .click();
 
-        cy.get('[data-cy=luigi-modal-confirm]').click();
+        cy.get('[data-testid=luigi-modal-confirm]').click();
 
         cy.expectPathToBe(`${nodeActivationPath}/navigated`);
       });
@@ -291,11 +301,11 @@ describe('Navigation', () => {
         .contains('Miscellaneous2')
         .click();
 
-      cy.get('[data-e2e=modal-mf]').should('be.visible');
+      cy.get('[data-testid=modal-mf]').should('be.visible');
 
-      cy.get('[data-e2e=modal-mf] [aria-label=close]').click();
+      cy.get('[data-testid=modal-mf] [aria-label=close]').click();
 
-      cy.get('[data-e2e=modal-mf]').should('not.be.visible');
+      cy.get('[data-testid=modal-mf]').should('not.be.visible');
     });
   });
 });

@@ -14,8 +14,8 @@ Object.keys(productSwitcherItems[0]).length }
           aria-expanded="{dropDownStates.productSwitcherPopover || false}"
           aria-haspopup="true"
           on:click="toggleDropdownState()"
-          data-cy="desktop-product-switcher"
           title="{config.label}"
+          data-testid="{getTestId(config)}"
         ></button>
         {:else}
         <button
@@ -23,8 +23,8 @@ Object.keys(productSwitcherItems[0]).length }
           aria-expanded="{dropDownStates.productSwitcherPopover || false}"
           aria-haspopup="true"
           on:click="toggleDropdownState()"
-          data-cy="desktop-product-switcher"
           title="{config.label}"
+          data-testid="{getTestId(config)}"
         >
           <img src="{config.icon}">
         </button>
@@ -40,7 +40,10 @@ Object.keys(productSwitcherItems[0]).length }
             <ul class="fd-menu__list">
               {#each productSwitcherItems as productSwitcherItem}
               {#if productSwitcherItem.label}
-              <li on:click="onActionClick(productSwitcherItem)">
+              <li
+                on:click="onActionClick(productSwitcherItem)"
+                data-testid="{getTestId(productSwitcherItem)}"
+              >
                 <a class="fd-menu__item">
                   <span
                     class="fd-product-switcher__product-icon {productSwitcherItem.icon && hasOpenUIicon(productSwitcherItem) ? 'sap-icon--' + productSwitcherItem.icon + ' sap-icon--m' : '' }"
@@ -79,7 +82,7 @@ Object.keys(productSwitcherItems[0]).length }
           <button
             class="fd-button--light fd-button--compact sap-icon--nav-back"
             on:click="toggleDropdownState(event)"
-            data-cy="mobile-product-switcher-close"
+            data-testid="mobile-product-switcher-close"
           ></button>
         </div>
         <div class="fd-action-bar__header">
@@ -94,6 +97,7 @@ Object.keys(productSwitcherItems[0]).length }
             <li
               on:click="onActionClick(productSwitcherItem)"
               class="y-full-width-list__item"
+              data-testid="{getTestId(productSwitcherItem)}"
             >
               <span
                 class="y-full-width-list__icon {productSwitcherItem.icon && hasOpenUIicon(productSwitcherItem) ? 'sap-icon--' + productSwitcherItem.icon + ' sap-icon--m' : '' }"
@@ -165,6 +169,11 @@ Object.keys(productSwitcherItems[0]).length }
     helpers: {
       hasOpenUIicon(node) {
         return NavigationHelpers.isOpenUIiconName(node.icon);
+      },
+      getTestId(node) {
+        return node.testId
+          ? node.testId
+          : NavigationHelpers.prepareForTests(node.label);
       }
     }
   };

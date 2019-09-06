@@ -1,11 +1,9 @@
-import { Iframe } from '../../../src/services/iframe';
-
 const chai = require('chai');
 const assert = chai.assert;
 const sinon = require('sinon');
 import { afterEach } from 'mocha';
 
-import { IframeHelpers } from '../../../src/utilities/helpers';
+import { IframeHelpers, GenericHelpers } from '../../../src/utilities/helpers';
 import { LuigiConfig } from '../../../src/core-api';
 
 describe('Iframe-helpers', () => {
@@ -20,6 +18,9 @@ describe('Iframe-helpers', () => {
       },
       get: () => lastObj
     };
+
+    sinon.stub(GenericHelpers);
+    GenericHelpers.getRandomId.returns('abc');
     sinon.stub(LuigiConfig, 'getConfigValue').returns(customSandboxRules);
   });
   afterEach(() => {
@@ -67,14 +68,16 @@ describe('Iframe-helpers', () => {
     });
 
     it('getVisibleIframes', () => {
-      sinon.stub(document, 'querySelectorAll').callsFake(() => [
+      sinon.stub(IframeHelpers, 'getMicrofrontendsInDom').callsFake(() => [
         {
-          src: 'http://url.com/app.html!#/prevUrl',
-          style: { display: 'block' }
+          id: 1223,
+          active: true,
+          container: 'mock-html-element',
+          type: 'main'
         }
       ]);
       const visibleIframes = IframeHelpers.getVisibleIframes();
-      assert.equal(visibleIframes.length, 1);
+      assert.deepEqual(visibleIframes, ['mock-html-element']);
     });
 
     it('isSameViewGroup', () => {
@@ -99,10 +102,16 @@ describe('Iframe-helpers', () => {
     });
 
     it('should return false if views have different domains', () => {
+      const prevUrl = 'http://otherurl.de/app.html';
+      const nextUrl = 'http://nexturl.de/app.html';
       component.set({
-        viewUrl: 'http://otherurl.de/app.html!#/someUrl',
-        previousNodeValues: { viewUrl: config.iframe.src }
+        viewUrl: 'nextUrl',
+        previousNodeValues: { viewUrl: 'prevUrl' }
       });
+      GenericHelpers.getUrlWithoutHash.resetHistory();
+      GenericHelpers.getUrlWithoutHash.withArgs('prevUrl').returns(prevUrl);
+      GenericHelpers.getUrlWithoutHash.withArgs('nextUrl').returns(nextUrl);
+
       assert.isFalse(IframeHelpers.canReuseIframe(config, component));
     });
 
@@ -125,6 +134,10 @@ describe('Iframe-helpers', () => {
     });
 
     it('should return false if views have the same domian and different viewGroups', () => {
+      const nextUrl = 'http://nexturl.de/app.html';
+      GenericHelpers.getUrlWithoutHash.resetHistory();
+      GenericHelpers.getUrlWithoutHash.returns(nextUrl);
+
       component.set({
         viewUrl: 'http://url.com/someUrl',
         viewGroup: 'firstSPA',
@@ -133,53 +146,27 @@ describe('Iframe-helpers', () => {
           viewGroup: 'secondSPA'
         }
       });
-      assert.isFalse(IframeHelpers.canReuseIframe(config, component));
-    });
 
-    it('should return false if views have the same domain and no viewGroup defined', () => {
-      component.set({
-        viewUrl: 'http://url.com/someUrl',
-        previousNodeValues: {
-          viewUrl: noHashConfig.iframe.src
-        }
-      });
       assert.isFalse(IframeHelpers.canReuseIframe(config, component));
     });
 
     it('should return false if views have different domains and the same viewGroup', () => {
+      const prevUrl = 'http://otherurl.de/app.html';
+      const nextUrl = 'http://nexturl.de/app.html';
+
+      GenericHelpers.getUrlWithoutHash.resetHistory();
+      GenericHelpers.getUrlWithoutHash.withArgs('prevUrl').returns(prevUrl);
+      GenericHelpers.getUrlWithoutHash.withArgs('nextUrl').returns(nextUrl);
       component.set({
-        viewUrl: 'http://otherDomain.com/someUrl',
+        viewUrl: 'nextUrl',
         viewGroup: 'firstSPA',
         previousNodeValues: {
-          viewUrl: noHashConfig.iframe.src,
+          viewUrl: 'prevUrl',
           viewGroup: 'firstSPA'
         }
       });
       assert.isFalse(IframeHelpers.canReuseIframe(config, component));
     });
-  });
-
-  it('hasIframeIsolation', () => {
-    // no node is set to isolateView
-    component.set({
-      isolateView: false,
-      previousNodeValues: { isolateView: false }
-    });
-    assert.isFalse(IframeHelpers.hasIframeIsolation(component));
-
-    // new node is set to isolateView
-    component.set({
-      isolateView: true,
-      previousNodeValues: { isolateView: false }
-    });
-    assert.isTrue(IframeHelpers.hasIframeIsolation(component));
-
-    // current node is set to isolateView
-    component.set({
-      isolateView: false,
-      previousNodeValues: { isolateView: true }
-    });
-    assert.isTrue(IframeHelpers.hasIframeIsolation(component));
   });
 
   it('getIframeContainer', () => {
@@ -204,17 +191,35 @@ describe('Iframe-helpers', () => {
     );
   });
 
-  describe('getAllIframes', () => {
-    it('should return an array of active iframes with no modal iframe', () => {
-      const iframes = IframeHelpers.getAllIframes();
+  describe('getMicrofrontendsInDom', () => {
+    it('gets list of visible mfs', () => {
+      const mockContainer = id => ({
+        luigi: { id }
+      });
+      sinon
+        .stub(document, 'querySelectorAll')
+        .withArgs('.iframeContainer iframe') // 'main'
+        .returns([mockContainer('main_1'), mockContainer('main_2')])
+        .withArgs('.iframeSplitViewCnt iframe') // 'split-view'
+        .returns([mockContainer('split_1')])
+        .withArgs('.iframeModalCtn iframe') // 'modal'
+        .returns([mockContainer('modal')]);
 
-      assert.equal(iframes.length, 0);
-    });
+      GenericHelpers.isElementVisible.callsFake(container => {
+        // second container is not active
+        return container.luigi.id !== 'main_2';
+      });
 
-    it('should return an array of active iframes including active modal iframe', () => {
-      const iframes = IframeHelpers.getAllIframes({});
+      const iframes = IframeHelpers.getMicrofrontendsInDom();
+      assert.equal(iframes.length, 4, 'total iframes');
+      assert.equal(iframes.filter(i => i.active).length, 3, 'active iframes');
 
-      assert.equal(iframes.length, 1);
+      const expectedKeys = ['id', 'container', 'active', 'type'];
+      assert.deepEqual(
+        Object.keys(iframes[0]),
+        expectedKeys,
+        'contains all required keys'
+      );
     });
   });
 });

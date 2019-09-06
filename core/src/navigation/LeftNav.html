@@ -9,7 +9,8 @@
   {#if children && pathData.length > 1}
   <div class="lui-fd-side-nav-wrapper">
     <nav class="fd-side-nav" on:keyup="handleKey(event)">
-      {#each sortedChildrenEntries as [key, nodes]} {#if key === 'undefined' || key.startsWith(virtualGroupPrefix)}
+      {#each sortedChildrenEntries as [key, nodes]}
+      {#if key === 'undefined' || key.startsWith(virtualGroupPrefix)}
       <div class="fd-side-nav__group">
         <ul class="fd-side-nav__list">
           {#each nodes as node} {#if !node.hideFromNav} {#if node.label}
@@ -21,6 +22,7 @@
               href="javascript:void(null)"
               class="fd-side-nav__link {node === selectedNode ? 'is-selected' : ''} fd-side-nav__link--icon"
               on:click="handleClick(node)"
+              data-testid="{getTestId(node)}"
             >
               {#if node.icon} {#if isOpenUIiconName(node.icon)}
               <span
@@ -67,6 +69,7 @@
                   href="javascript:void(null)"
                   class="fd-side-nav__sublink {node === selectedNode ? 'is-selected' : ''}"
                   on:click="handleClick(node)"
+                  data-testid="{getTestId(node)}"
                 >
                   {getNodeLabel(node)} {#if node.externalLink && node.externalLink.url}
                   <span
@@ -86,6 +89,7 @@
             class="fd-side-nav__item lui-collapsible-item"
             on:click="handleIconClick(nodes, this)"
             title="{isSemiCollapsed ? key : ''}"
+            data-testid="{getTestIdForCat(nodes.metaInfo, key)}"
           >
             <a
               href="javascript:void(null)"
@@ -121,6 +125,7 @@
                   href="javascript:void(null)"
                   class="fd-side-nav__sublink {node === selectedNode ? 'is-selected' : ''}"
                   on:click="handleClick(node)"
+                  data-testid="{getTestId(node)}"
                 >
                   {getNodeLabel(node)} {#if node.externalLink && node.externalLink.url}
                   <span
@@ -137,6 +142,7 @@
             class="fd-side-nav__title lui-category"
             on:click="handleIconClick(nodes, this)"
             title="{isSemiCollapsed ? key : ''}"
+            data-testid="{getTestIdForCat(nodes.metaInfo, key)}"
           >
             {#if hasCategoriesWithIcon} {#if
             isOpenUIiconName(nodes.metaInfo.icon)}
@@ -164,6 +170,7 @@
                 href="javascript:void(null)"
                 class="fd-side-nav__link {node === selectedNode ? 'is-selected' : ''} fd-side-nav__link--icon"
                 on:click="handleClick(node)"
+                data-testid="{getTestId(node)}"
               >
                 {#if node.icon} {#if isOpenUIiconName(node.icon)}
                 <span
@@ -213,7 +220,7 @@
 
 <script type="text/javascript">
   import { Navigation } from './services/navigation';
-  import { NavigationHelpers } from '../utilities/helpers';
+  import { IframeHelpers, NavigationHelpers } from '../utilities/helpers';
   import { LuigiConfig, LuigiElements, LuigiI18N } from '../core-api';
   import { StateHelpers } from '../utilities/helpers';
   import { CSS_BREAKPOINTS } from '../utilities/constants';
@@ -295,14 +302,18 @@
           expandedList && expandedList.indexOf(nodes.metaInfo.categoryUid) >= 0
         );
       },
-      isFooterVisible(footerText) {
-        return Boolean(footerText);
-        // respect also 'responsiveNavigation' setting in the future.
-        // the footer should also be visible if it's possible to collapse the Nav
-      },
-      getFooterText() {},
       getNodeLabel(node) {
         return LuigiI18N.getTranslation(node.label);
+      },
+      getTestId(node) {
+        return node.testId
+          ? node.testId
+          : NavigationHelpers.prepareForTests(node.pathSegment, node.label);
+      },
+      getTestIdForCat(metaInfo, key) {
+        return metaInfo && metaInfo.testId
+          ? metaInfo.testId
+          : NavigationHelpers.prepareForTests(key || metaInfo.label);
       }
     },
     methods: {
@@ -393,8 +404,8 @@
       handleKey(event) {
         const code = event.code;
         if (code === 'ArrowRight') {
-          const iframe = document.querySelector('.iframeContainer iframe');
-          if (iframe.contentWindow) {
+          const iframe = IframeHelpers.getCurrentMicrofrontendIframe();
+          if (iframe && iframe.contentWindow) {
             iframe.contentWindow.focus();
           }
         }

@@ -241,6 +241,22 @@ class GenericHelpersClass {
   computePercentFromPx(fullPixels, partialPixels) {
     return Math.floor((100 * partialPixels) / fullPixels);
   }
+
+  isElementVisible(element) {
+    const cssDisplayValue = window
+      .getComputedStyle(element, null)
+      .getPropertyValue('display');
+    return cssDisplayValue !== 'none';
+  }
+
+  removeInternalProperties(input) {
+    return Object.keys(input)
+      .filter(key => !key.startsWith('_'))
+      .reduce((obj, key) => {
+        obj[key] = input[key];
+        return obj;
+      }, {});
+  }
 }
 
 export const GenericHelpers = new GenericHelpersClass();

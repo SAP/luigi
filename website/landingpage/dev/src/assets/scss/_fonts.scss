@@ -42,8 +42,11 @@
 }
 
 .icon-github-icon:before {
-  content: '\63';
+  content: "\61";
 }
 .icon-twitter-icon:before {
-  content: '\61';
+  content: "\62";
+}
+.icon-slack-icon:before {
+  content: "\63";
 }

@@ -132,7 +132,7 @@ linkLuigi() {
   # remove installed luigi versions and symlink with latest
   rm -rf $EXAMPLE_NODE_MODULES/luigi*
   ln -s $LUIGI_DIR/core/public $EXAMPLE_NODE_MODULES/luigi-core
-  ln -s $LUIGI_DIR/client $EXAMPLE_NODE_MODULES/luigi-client
+  ln -s $LUIGI_DIR/client/public $EXAMPLE_NODE_MODULES/luigi-client
   ls -la $EXAMPLE_NODE_MODULES
   ls $EXAMPLE_NODE_MODULES/luigi-core
   ls $EXAMPLE_NODE_MODULES/luigi-client
