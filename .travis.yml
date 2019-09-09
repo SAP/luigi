@@ -14,21 +14,6 @@ notifications:
     secure: wiOchVgoiKNUikjCeIhsuv3Y5jolFud6ercdZdO3+JigQqkmoAC95f2jKTYEdplJWyJr8JY6z0+UJNceHyr5YJx/l1wpm6Zq+3H4dq/V0yUXH1uhw2eaTzweX2vjfw0bzewEdc1CGl4kSfdyTajnbKgt+mtnrAV9lPqiXYSOOJTu5BCFomi7u2GhAz1JjBK6P4Ar2jXm+oc81nYjj40P8bZFlA7Rjm0hNN42MMkKvnD8OHztL3EwezKHXlQW7fN4eOrhPOMbT3NRU72g9Nir+lfoKJlch1zPoHXQ7DRp41uGyHV/qfvfRLzXwxftZK6kdvzMe0eI0i1aIm0R6AE0bLphB2o/klJzyQpqSiQgETTH0qJN+3px2kddGrw7Me+UNC/1zZrt1MJfWf0h6WjXTsPDJf3ajLsn8OoIeBTRZbAb9as3UWQZcknuuMf8oGUzZkrZNMWYqo3py0+qWm4wSbWXWVUCgVAIYA6oEADwq37z59HySGkyHI4gEPzxsYODfCuvO4pJX1h4vEyH7w2IigwhDAPq5G4Vdez9ZFS96p/LSCF+iH8yWMy294u8wk5ofWUutFFv0JC45LQBXu51a2TeQkalwVn4DiuxxHE6jZieREw75YFjra4jpWsyziWkzshGT75NCra6cKAbNa4T8n6Pm3ogjEPeeWAO3psgSdo=
 jobs:
   include:
-    #----- WhiteSource -----
-    - stage: superquick
-      name: 'WhiteSource Check'
-      
-      script:
-        - 'if [ -z "${WHITESOURCE_APIKEY}" ]; then
-            echo "WHITESOURCE_APIKEY is unset or set to the empty string";
-          else
-            npm i -g whitesource;
-            bash ./scripts/whiteSource.sh;
-          fi'
-      cache: npm
-      before_cache:
-        - rm -rf ~/.npm/_logs
-
     - stage: 'Precache & Unit Tests'
       script:
         - export CYPRESS_CACHE_FOLDER=$TRAVIS_BUILD_DIR/cypress-binary-cache
@@ -90,9 +75,11 @@ jobs:
       # if: repo = SAP/luigi AND head_branch ~= ^release-v
       if: repo = SAP/luigi AND (branch = master OR branch ~= ^release-v)
       script:
-        - 'if [ ! ${WHITESOURCE_APIKEY} = "" ]; then
-            npm i -g whitesource
-            bash ./scripts/whiteSource.sh
+        - 'if [ -z "${WHITESOURCE_APIKEY}" ]; then
+            echo "WHITESOURCE_APIKEY is unset or set to the empty string";
+          else
+            npm i -g whitesource;
+            bash ./scripts/whiteSource.sh;
           fi'
         - bash ./scripts/npmPublish.sh
       before_cache:
