@@ -19,12 +19,11 @@ jobs:
       name: 'WhiteSource Check'
       
       script:
-        - echo ${WHITESOURCE_APIKEY}
-        - 'if [ ! ${WHITESOURCE_APIKEY} = "" ]; then
+        - 'if [ -z "${WHITESOURCE_APIKEY}" ]; then
+            echo "WHITESOURCE_APIKEY is unset or set to the empty string"
+          else
             npm i -g whitesource
             bash ./scripts/whiteSource.sh
-          else
-           echo "Whitesource APIKey are not defined"
           fi'
       cache: npm
       before_cache:
