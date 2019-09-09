@@ -255,7 +255,7 @@ The profile section is a configurable drop-down list available in the top naviga
   - **label** overrides the text for the logout item. The default value is "Sign Out".
   - **testId** is a string where you can define your own custom `testId`. If nothing is specified, it is the node's label written as one word and lower case (e.g. `label`).
   - **icon** overrides the icon for the logout item. The default value is [SAP UI5 log icon](https://sapui5.hana.ondemand.com/test-resources/sap/m/demokit/iconExplorer/webapp/index.html#/overview/SAP-icons/?tag=logout).
-  - **customLogoutFn** defines a funtion to implemnt an own logout functionality. We only recommend to implement this function if no IDP Provider is configured. If an IDP Provider with a corresponding logout function is defined, the customLogoutFn on profile will ignored.
+  - **customLogoutFn** defines a funtion to implemnt an own logout functionality. We only recommend to implement this function if no IDP is configured. If an IDP with a corresponding [logout function](https://github.com/SAP/luigi/blob/master/docs/authorization-configuration.md) is defined , the customLogoutFn on profile will be ignored.
 - **items** is an array of objects, each one being a link to a Luigi navigation node or an external URL. An item can have the following parameters:
   - **label** defines the text for the link.
   - **testId** is a string where you can define your own custom `testId`. If nothing is specified, it is the node's label written as one word and lower case (e.g. `label`).
