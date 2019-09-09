@@ -19,6 +19,7 @@ jobs:
       name: 'WhiteSource Check'
       
       script:
+        - echo ${WHITESOURCE_APIKEY}
         - 'if [ ! ${WHITESOURCE_APIKEY} = "" ]; then
             npm i -g whitesource
             bash ./scripts/whiteSource.sh
