@@ -1,6 +1,6 @@
 <svelte:window on:keydown="handleKeydown(event)"/>
 <div class="fd-ui__overlay fd-overlay fd-overlay--modal" aria-hidden="false">
-  <div class="fd-modal" data-cy="luigi-confirmation-modal">
+  <div class="fd-modal" data-testid="luigi-confirmation-modal">
     <div class="fd-modal__content" role="document">
       <div class="fd-modal__header">
         <h1 class="fd-modal__title">{settings.header}</h1>
@@ -15,12 +15,12 @@
         <div class="fd-modal__actions">
           <button
             on:click="fire('modalDismiss')"
-            data-cy="luigi-modal-dismiss"
+            data-testid="luigi-modal-dismiss"
             class="fd-button--light"
           >{settings.buttonDismiss}</button>
           <button
             on:click="fire('modalConfirm')"
-            data-cy="luigi-modal-confirm"
+            data-testid="luigi-modal-confirm"
             class="fd-button confirm-button"
           >{settings.buttonConfirm}</button>
         </div>

@@ -21,7 +21,7 @@ class ViewGroupPreloadingClass {
       return;
     }
     const iframeContainer = IframeHelpers.getIframeContainer();
-    const iframes = IframeHelpers.getAllIframes();
+    const iframes = IframeHelpers.getMainIframes();
     const now = new Date().getTime();
     const preloadingIframes = iframes.filter(
       iframe =>

@@ -34,7 +34,6 @@
               aria-expanded="{dropDownStates[`dropDownPopover-${i}`] || false}"
               aria-haspopup="true"
               on:click="toggleDropdownState(`dropDownPopover-${i}`)"
-              data-e2e="topnav-category"
               data-testid="{getTestId(node)}"
             >
               {#if node.icon}
@@ -127,7 +126,7 @@
                   aria-expanded="{dropDownStates.overflowPopover || false}"
                   aria-haspopup="true"
                   on:click="toggleDropdownState('overflowPopover')"
-                  data-cy="mobile-menu"
+                  data-testid="mobile-menu"
                 >
                   <BadgeCounter node="{totalBadgeNode}" special="true"/>
                 </button>
@@ -166,7 +165,7 @@
                       title="{getNodeLabel(node)}"
                       class="fd-menu__item"
                       on:click="openMobileTopNavDropDown(node)"
-                      data-cy="mobile-topnav-dropdown-category"
+                      data-e2e="mobile-topnav-dropdown-category"
                     >
                       <span
                         class="fd-top-nav__icon {node.icon && hasOpenUIicon(node) ? 'sap-icon--' + node.icon + ' sap-icon--m' : '' }"
@@ -185,7 +184,7 @@
                       title="{getNodeLabel(node)}"
                       class="fd-menu__item"
                       on:click="openMobileTopNavDropDown(node)"
-                      data-cy="mobile-topnav-dropdown-category"
+                      data-testid="mobile-topnav-dropdown-category"
                     >
                       {#if node.icon} {#if hasOpenUIicon(node)}
                       <span
@@ -209,7 +208,7 @@
                     <a
                       class="fd-menu__item"
                       on:click="openMobileProductSwitcher(event)"
-                      data-cy="mobile-product-switcher"
+                      data-testid="mobile-product-switcher"
                     >
                       {#if hasOpenUIicon(productSwitcherConfig) || !productSwitcherConfig.icon}
                       <span
@@ -248,10 +247,10 @@
       {/if}
       {/if}
       <!-- closes {#if children && pathData.length > 0} -->
-      {#if authorizationEnabled}
+      {#if authorizationEnabled || profileItemsAvailable}
       <div
         class="fd-shellbar__action fd-shellbar__action--show-always"
-        data-e2e="luigi-topnav-profile"
+        data-testid="luigi-topnav-profile"
       >
         <div class="fd-user-menu">
           <div class="fd-popover">
@@ -339,6 +338,9 @@
         () => {
           this.set({
             authorizationEnabled: LuigiAuth.isAuthorizationEnabled(),
+            profileItemsAvailable: LuigiConfig.getConfigValue(
+              'navigation.profile.items'
+            ),
             autologinEnabled: !Boolean(
               LuigiConfig.getConfigValue('auth.disableAutoLogin')
             ),

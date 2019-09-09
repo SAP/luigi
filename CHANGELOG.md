@@ -23,6 +23,15 @@ The lerna-changelog tool detects changes based on PR labels and maps them to sec
     ...
   }
 -->
+## [v0.6.3] (2019-09-05)
+
+#### :rocket: Added
+* [#792](https://github.com/SAP/luigi/pull/792) Avoid Luigi not configured alert ([@JohannesDoberer](https://github.com/JohannesDoberer))
+* [#790](https://github.com/SAP/luigi/pull/790) Replace UI tests attributes ([@zarkosimic](https://github.com/zarkosimic))
+
+#### :memo: Documentation
+* [#794](https://github.com/SAP/luigi/pull/794) Change spelling to "micro frontend" ([@alexandra-simeonova](https://github.com/alexandra-simeonova))
+
 ## [v0.6.2] (2019-08-29)
 
 #### :rocket: Added
@@ -58,7 +67,7 @@ The lerna-changelog tool detects changes based on PR labels and maps them to sec
 * [#694](https://github.com/SAP/luigi/pull/694) smooth scrolling on mobile devices ([@JohannesDoberer](https://github.com/JohannesDoberer))
 * [#669](https://github.com/SAP/luigi/pull/669) product switcher header to fiori3 concept ([@JohannesDoberer](https://github.com/JohannesDoberer))
 * [#678](https://github.com/SAP/luigi/pull/678) Client permissions available in the client ([@JohannesDoberer](https://github.com/JohannesDoberer))
-* [#650](https://github.com/SAP/luigi/pull/650) Split View microfrontends ([@maxmarkus](https://github.com/maxmarkus))
+* [#650](https://github.com/SAP/luigi/pull/650) Split View micro frontends ([@maxmarkus](https://github.com/maxmarkus))
 * [#664](https://github.com/SAP/luigi/pull/664) Accumulated badge counter for mobile ([@maxmarkus](https://github.com/maxmarkus))
 
 #### :bug: Fixed
@@ -188,7 +197,7 @@ The lerna-changelog tool detects changes based on PR labels and maps them to sec
 * [#427](https://github.com/SAP/luigi/pull/427) Fix transparent background in alerts ([@dariadomagala](https://github.com/dariadomagala))
 
 #### :memo: Documentation
-* [#454](https://github.com/SAP/luigi/pull/454) Documentation for modal microfrontends ([@JohannesDoberer](https://github.com/JohannesDoberer))
+* [#454](https://github.com/SAP/luigi/pull/454) Documentation for modal micro frontends ([@JohannesDoberer](https://github.com/JohannesDoberer))
 * [#442](https://github.com/SAP/luigi/pull/442) Remove Creative Commons license from the docs folder ([@klaudiagrz](https://github.com/klaudiagrz))
 * [#419](https://github.com/SAP/luigi/pull/419) Change the codeowners file ([@mmitoraj](https://github.com/mmitoraj))
 
@@ -224,7 +233,7 @@ The lerna-changelog tool detects changes based on PR labels and maps them to sec
 #### :rocket: Added
 * [#390](https://github.com/SAP/luigi/pull/390) Implement test coverage feature ([@parostatkiem](https://github.com/parostatkiem))
 * [#389](https://github.com/SAP/luigi/pull/389) Add generic confirmation modal ([@jesusreal](https://github.com/jesusreal))
-* [#385](https://github.com/SAP/luigi/pull/385) Reload microfrontend when clicking on selected node ([@maxmarkus](https://github.com/maxmarkus))
+* [#385](https://github.com/SAP/luigi/pull/385) Reload micro frontend when clicking on selected node ([@maxmarkus](https://github.com/maxmarkus))
 * [#371](https://github.com/SAP/luigi/pull/371) add product switcher to navigation ([@JohannesDoberer](https://github.com/JohannesDoberer))
 
 #### :bug: Fixed
@@ -352,7 +361,7 @@ The lerna-changelog tool detects changes based on PR labels and maps them to sec
 
 
 #### :rocket: Added
-* [#169](https://github.com/SAP/luigi/pull/169) Enable Luigi Client (microfrontend) to check whether a path exists in the main app ([@jesusreal](https://github.com/jesusreal))
+* [#169](https://github.com/SAP/luigi/pull/169) Enable Luigi Client (micro frontend) to check whether a path exists in the main app ([@jesusreal](https://github.com/jesusreal))
 
 #### :bug: Fixed
 * [#168](https://github.com/SAP/luigi/pull/168) Fix bug for closest parent navigation on Luigi Client ([@jesusreal](https://github.com/jesusreal))
@@ -502,3 +511,4 @@ The lerna-changelog tool detects changes based on PR labels and maps them to sec
 [v0.6.0]: https://github.com/SAP/luigi/compare/v0.5.4...v0.6.0
 [v0.6.1]: https://github.com/SAP/luigi/compare/v0.6.0...v0.6.1
 [v0.6.2]: https://github.com/SAP/luigi/compare/v0.6.1...v0.6.2
+[v0.6.3]: https://github.com/SAP/luigi/compare/v0.6.2...v0.6.3

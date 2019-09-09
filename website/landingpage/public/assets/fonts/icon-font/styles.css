@@ -1,18 +1,19 @@
 @charset "UTF-8";
 
 @font-face {
-  font-family: 'untitled-font-1';
-  src: url('fonts/untitled-font-1.eot');
-  src: url('fonts/untitled-font-1.eot?#iefix') format('embedded-opentype'),
-    url('fonts/untitled-font-1.woff') format('woff'),
-    url('fonts/untitled-font-1.ttf') format('truetype'),
-    url('fonts/untitled-font-1.svg#untitled-font-1') format('svg');
+  font-family: "icon-font";
+  src:url("fonts/icon-font.eot");
+  src:url("fonts/icon-font.eot?#iefix") format("embedded-opentype"),
+    url("fonts/icon-font.woff") format("woff"),
+    url("fonts/icon-font.ttf") format("truetype"),
+    url("fonts/icon-font.svg#icon-font") format("svg");
   font-weight: normal;
   font-style: normal;
+
 }
 
 [data-icon]:before {
-  font-family: 'untitled-font-1' !important;
+  font-family: "icon-font" !important;
   content: attr(data-icon);
   font-style: normal !important;
   font-weight: normal !important;
@@ -24,9 +25,9 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
-[class^='icon-']:before,
-[class*=' icon-']:before {
-  font-family: 'untitled-font-1' !important;
+[class^="icon-"]:before,
+[class*=" icon-"]:before {
+  font-family: "icon-font" !important;
   font-style: normal !important;
   font-weight: normal !important;
   font-variant: normal !important;
@@ -38,8 +39,11 @@
 }
 
 .icon-github-icon:before {
-  content: '\63';
+  content: "\61";
 }
 .icon-twitter-icon:before {
-  content: '\61';
+  content: "\62";
+}
+.icon-slack-icon:before {
+  content: "\63";
 }
