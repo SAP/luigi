@@ -22,10 +22,14 @@ jobs:
     #----- WhiteSource -----
     - stage: superquick
       name: 'WhiteSource Check'
-      if: env(WHITESOURCE_APIKEY) IS present
+      
       script:
-         - npm i -g whitesource
-         - bash ./scripts/whiteSource.sh
+        - 'if [ ! ${WHITESOURCE_APIKEY} = "" ]; then
+            npm i -g whitesource
+            bash ./scripts/whiteSource.sh
+          else
+           echo "Whitesource APIKey are not defined"
+          fi'
       cache: npm
       before_cache:
         - rm -rf ~/.npm/_logs
@@ -89,8 +93,10 @@ jobs:
       # if: repo = SAP/luigi AND head_branch ~= ^release-v
       if: repo = SAP/luigi AND (branch = master OR branch ~= ^release-v)
       script:
-        - npm i -g whitesource
-        - bash ./scripts/whiteSource.sh
+        - 'if [ ! ${WHITESOURCE_APIKEY} = "" ]; then
+            npm i -g whitesource
+            bash ./scripts/whiteSource.sh
+          fi'
         - bash ./scripts/npmPublish.sh
       before_cache:
         - rm -rf ~/.npm/_logs
