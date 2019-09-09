@@ -60,20 +60,11 @@
 </script>
 <style type="text/scss">
   $topNavHeight: 48px;
-  $productSwitcherHeight: 64px;
-
-  :global(.fd-popover__body) {
-    overflow: auto;
-    max-height: calc(100vh - 50px);
-    max-height: calc(var(--vh, 1vh) * 100 - 50px);
-  }
+  $mobileTopNavHeight: 64px;
 
   .fd-product-switcher {
     position: relative;
     display: block;
-  }
-  .fd-product-switcher__product-icon > img {
-    max-height: 40px;
   }
 
   .fd-product-switcher__body {
@@ -107,10 +98,6 @@
       grid-template-rows: 1fr auto; //no row for title by default
     }
 
-    .fd-modal__header {
-      padding: 12px 8px;
-    }
-
     .fd-modal__title {
       text-align: left;
       @at-root {
@@ -119,17 +106,14 @@
         }
       }
     }
+
     .fd-modal__body {
-      max-height: calc(100vh - #{$topNavHeight} - #{$productSwitcherHeight});
+      max-height: calc(100vh - #{$topNavHeight} - #{$mobileTopNavHeight});
       max-height: calc(
-        var(--vh, 1vh) * 100 - #{$topNavHeight} - #{$productSwitcherHeight}
+        var(--vh, 1vh) * 100 - #{$topNavHeight} - #{$mobileTopNavHeight}
       );
       padding: 0;
       -webkit-overflow-scrolling: touch;
-    }
-
-    .fd-modal__footer {
-      box-shadow: 0 0px 6px rgba(0, 0, 0, 0.2);
     }
 
     .fd-product-switcher__body {
