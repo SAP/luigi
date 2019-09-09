@@ -36,7 +36,7 @@
       </a>
     </li>
     {/each}
-    {#if isAuthorizationEnabled}
+    {#if isAuthorizationEnabled || isCustomLogoutDefined}
     <li on:click="onLogoutClick()" data-testid="{getTestId(profileNav.logout)}">
       <a aria-label="Logout" class="fd-menu__item">
         {#if profileNav.logout.icon}
@@ -54,7 +54,7 @@
         <span>{$getTranslation(profileNav.logout.label)}</span>
       </a>
     </li>
-    {#if !isLoggedIn}
+    {#if !isLoggedIn && !isCustomLogoutDefined}
     <li on:click="startAuthorization()">
       <a aria-label="Login" class="fd-menu__item">Login</a>
     </li>
@@ -280,11 +280,15 @@
                     'navigation.profile.items'
                   )) || []
               };
-              if (this.get().isAuthorizationEnabled) {
-                profileNavData['logout'] = {
-                  ...TOP_NAV_DEFAULTS.logout,
-                  ...logoutItem
-                };
+              profileNavData['logout'] = {
+                ...TOP_NAV_DEFAULTS.logout,
+                ...logoutItem
+              };
+              if (
+                logoutItem.customLogoutFn &&
+                GenericHelpers.isFunction(logoutItem.customLogoutFn)
+              ) {
+                this.set({ isCustomLogoutDefined: true });
               }
               this.set({ profileNav: profileNavData });
             },
@@ -309,12 +313,15 @@
       },
       onLogoutClick: function() {
         this.root.getUnsavedChangesModalPromise().then(() => {
-          this.logout();
+          if (this.get().isAuthorizationEnabled) {
+            this.logout();
+          } else if (this.get().isCustomLogoutDefined) {
+            this.get().profileNav.logout.customLogoutFn();
+          }
         });
       },
       logout: function() {
         const authData = AuthHelpers.getStoredAuthData();
-
         const logoutCallback = async redirectUrl => {
           await LuigiAuth.handleAuthEvent(
             'onLogout',
@@ -325,7 +332,6 @@
           this.set({ isLoggedIn: false });
           localStorage.removeItem('luigi.auth');
         };
-
         const customLogoutFn = LuigiConfig.getConfigValue(
           `auth.${LuigiConfig.getConfigValue('auth.use')}.logoutFn`
         );
@@ -337,6 +343,8 @@
           );
         } else if (GenericHelpers.isFunction(idpProviderInstance.logout)) {
           idpProviderInstance.logout(authData, logoutCallback);
+        } else if (this.get().isCustomLogoutDefined) {
+          this.get().profileNav.logout.customLogoutFn();
         } else {
           logoutCallback(idpProviderInstance.settings.logoutUrl);
         }
