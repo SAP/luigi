@@ -27,7 +27,7 @@ Once you have configured Luigi Core, you can look at the Luigi Client API docume
 
 ## Examples
 
-Follow the Luigi [application examples](core/examples) for an in-depth look at Luigi capabilities. 
+Follow the Luigi [application examples](../core/examples/README.md) for an in-depth look at Luigi capabilities. 
 
 ## Development guidelines
 
