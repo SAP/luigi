@@ -31,3 +31,6 @@ PATHS:
   # Paths to JavaScript entry points for webpack to bundle modules
   entries:
     - "src/assets/js/app.js"
+  # Paths to root assets
+  rootAssets:
+    - "src/root-assets/*"
