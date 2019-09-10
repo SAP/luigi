@@ -5,6 +5,7 @@ set -e # exit on errors
 BASE_DIR="$( cd "$(dirname "$0")" ; pwd -P )"
 
 declare -a FOLDERS=("client" "core" "website/landingpage/dev")
+declare -a EXIT_CODES=()
 
 ## now loop through the above array
 for i in "${FOLDERS[@]}"
@@ -35,15 +36,20 @@ do
   # Exit code -5 is equivalent to code 251 (-5 mod 256 = 251)
 
   whitesource run
+  
 
   RV=$?
+  EXIT_CODES+=($RV)
   echo "Exit code: $RV"
 
-  if [ $RV == 254 ]; then 
-    echo "Policy Violation";
-    exit $RV
-  fi
+done
 
+for i in "${EXIT_CODES[@]}"
+do
+  if [ $i == 254 ]; then 
+    echo "Policy Violation"
+    exit $i
+  fi
 done
 
 exit 0
