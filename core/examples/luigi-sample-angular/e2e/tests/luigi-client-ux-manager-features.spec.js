@@ -16,7 +16,7 @@ describe('Luigi Client ux manager features', () => {
       cy.wait(500);
       cy.goToUxManagerMethods($iframeBody);
       cy.wrap($iframeBody).should('not.contain', 'Lorem tipsum dolor sit amet');
-      cy.get('.fd-ui__overlay').should('not.exist');
+      cy.get('.lui-backdrop').should('not.exist');
 
       //open modal with backdrop
       cy.wrap($iframeBody)
@@ -24,7 +24,7 @@ describe('Luigi Client ux manager features', () => {
         .click();
 
       cy.wrap($iframeBody).should('contain', 'Lorem tipsum dolor sit amet');
-      cy.get('.fd-ui__overlay').should('exist');
+      cy.get('.lui-backdrop').should('exist');
       //close modal
       cy.wrap($iframeBody)
         .find('.fd-modal__footer')
@@ -32,7 +32,7 @@ describe('Luigi Client ux manager features', () => {
         .click();
 
       cy.wrap($iframeBody).should('not.contain', 'Lorem tipsum dolor sit amet');
-      cy.get('.fd-ui__overlay').should('not.exist');
+      cy.get('.lui-backdrop').should('not.exist');
     });
 
     it('Luigi Client generic confirmation modal', () => {
@@ -125,7 +125,9 @@ describe('Luigi Client ux manager features', () => {
 
         cy.get('[data-testid=luigi-modal-dismiss]').click();
 
-        cy.get('[data-testid=luigi-confirmation-modal]').should('not.be.visible');
+        cy.get('[data-testid=luigi-confirmation-modal]').should(
+          'not.be.visible'
+        );
 
         cy.expectPathToBe('/overview'); //the location is still unchanged after "No" clicked
       });
@@ -145,7 +147,9 @@ describe('Luigi Client ux manager features', () => {
 
         cy.get('[data-testid=luigi-modal-confirm]').click();
 
-        cy.get('[data-testid=luigi-confirmation-modal]').should('not.be.visible');
+        cy.get('[data-testid=luigi-confirmation-modal]').should(
+          'not.be.visible'
+        );
 
         cy.expectPathToBe('/projects'); //the location is changed after "Yes" clicked
       });
