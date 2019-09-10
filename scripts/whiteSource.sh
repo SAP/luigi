@@ -6,36 +6,19 @@ BASE_DIR="$( cd "$(dirname "$0")" ; pwd -P )"
 
 declare -a FOLDERS=("client" "core" "website/landingpage/dev")
 
-## now loop through the above array
-for i in "${FOLDERS[@]}"
-do
-  cd $BASE_DIR/../$i
+# Project tokens for client, core and landingpage
+declare -a PROJECT_TOKENS=("a63fd5aaaa2343199327aac6d3e2b5346e930927d66441bf92111f111ecfc8ad"
+                           "dd9b33e88b684129b325ef1c3510f52712f26167f06c432ab84fd4452cd353d9"
+                           "0bc00859083a4cf98e1246c91cabc56a4623fb69f1f24cdd8ca10f9f0d3dfbb4"
+                          )
 
-  echo $(printf '{"apiKey": "%s","userKey": "%s","productName": "%s","devDep": "false","forceUpdate": true,"checkPolicies": true}' "$WHITESOURCE_APIKEY" "$WHITESOURCE_USER_TOKEN" "$WHITESOURCE_PRODUCT_TOKEN" ) > $BASE_DIR/../$i/whitesource.config.json
+for ((i=0;i<${#FOLDERS[@]};++i)); do
+  cd $BASE_DIR/../${FOLDERS[i]}
 
-  # WHITE SOURCE
-  # Exit Code
-  # Starting version 1.1.1 and later, the following exit codes are displayed upon scan completion:
-
-  # SUCCESS: 0,
-  # ERROR: -1,
-  # POLICY_VIOLATION: -2,
-  # CLIENT_FAILURE: -3,
-  # CONNECTION_FAILURE: -4,
-  # SERVER_FAILURE: -5
-
-  # Exit Codes in Bash
-  # The exit codes WhiteSource returns in the Bash command language should be treated as 'x' modulo 256: 
-
-  # Exit code 0 is equivalent to code 0 (0 mod 256 = 0)
-  # Exit code -1 is equivalent to code 255 (-1 mod 256 = 255)
-  # Exit code -2 is equivalent to code 254 (-2 mod 256 = 254)
-  # Exit code -3 is equivalent to code 253 (-3 mod 256 = 253)
-  # Exit code -4 is equivalent to code 252 (-4 mod 256 = 252)
-  # Exit code -5 is equivalent to code 251 (-5 mod 256 = 251)
+  echo $(printf '{"apiKey": "%s","userKey": "%s","productName": "%s", "projectToken": "%s", "devDep": "false","forceUpdate": true,"checkPolicies": true}' "$WHITESOURCE_APIKEY" "$WHITESOURCE_USER_TOKEN" "$WHITESOURCE_PRODUCT_TOKEN" "${PROJECT_TOKENS[i]}" ) > $BASE_DIR/../${FOLDERS[i]}/whitesource.config.json
 
   whitesource run
-  
+
   RV=$?
   echo "Exit code: $RV"
 
