@@ -29,6 +29,6 @@ Once you have configured Luigi Core, you can look at the Luigi Client API docume
 
 Follow the Luigi [application examples](core/examples) for an in-depth look at Luigi capabilities. 
 
-## Development Guidelines
+## Development guidelines
 
 Read the [development and code formatting guidelines](https://github.com/SAP/luigi#development) if you are interested in contributing.
