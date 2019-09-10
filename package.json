@@ -1,6 +1,4 @@
 {
-  "name": "luigi-private",
-  "version": "0.6.2",
   "scripts": {
     "test:compatibility": "./scripts/testCompatibility.sh"
   },
