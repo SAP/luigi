@@ -73,7 +73,7 @@ jobs:
       name: 'Publish to NPM'
       # run only when merging from release-v branch to master
       # if: repo = SAP/luigi AND head_branch ~= ^release-v
-      if: repo = SAP/luigi AND (branch = master OR branch ~= ^release-v OR branch = 706-whitesource-integration)
+      if: repo = SAP/luigi AND (branch = master OR branch ~= ^release-v)
       script:
         - 'if [ ! -z "${WHITESOURCE_APIKEY}" ]; then
             npm i -g whitesource;
