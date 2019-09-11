@@ -36,7 +36,7 @@
       </a>
     </li>
     {/each}
-    {#if isAuthorizationEnabled || isCustomLogoutDefined}
+    {#if isAuthorizationEnabled || isProfileLogoutItem}
     <li on:click="onLogoutClick()" data-testid="{getTestId(profileNav.logout)}">
       <a aria-label="Logout" class="fd-menu__item">
         {#if profileNav.logout.icon}
@@ -54,7 +54,7 @@
         <span>{$getTranslation(profileNav.logout.label)}</span>
       </a>
     </li>
-    {#if !isLoggedIn && !isCustomLogoutDefined}
+    {#if !isLoggedIn && !isProfileLogoutItem}
     <li on:click="startAuthorization()">
       <a aria-label="Login" class="fd-menu__item">Login</a>
     </li>
@@ -284,11 +284,15 @@
                 ...TOP_NAV_DEFAULTS.logout,
                 ...logoutItem
               };
-              if (
-                logoutItem.customLogoutFn &&
-                GenericHelpers.isFunction(logoutItem.customLogoutFn)
-              ) {
-                this.set({ isCustomLogoutDefined: true });
+              if (logoutItem) {
+                this.set({ isProfileLogoutItem: true });
+                const profileLogoutfn = logoutItem.customLogoutFn;
+                if (
+                  profileLogoutfn &&
+                  GenericHelpers.isFunction(profileLogoutfn)
+                ) {
+                  this.set({ profileLogoutfnDefinded: true });
+                }
               }
               this.set({ profileNav: profileNavData });
             },
@@ -315,8 +319,13 @@
         this.root.getUnsavedChangesModalPromise().then(() => {
           if (this.get().isAuthorizationEnabled) {
             this.logout();
-          } else if (this.get().isCustomLogoutDefined) {
+          } else if (
+            this.get().isProfileLogoutItem &&
+            this.get().profileLogoutfnDefinded
+          ) {
             this.get().profileNav.logout.customLogoutFn();
+          } else {
+            console.info('No IDP logout or customLogoutFn is defined.');
           }
         });
       },
@@ -343,7 +352,10 @@
           );
         } else if (GenericHelpers.isFunction(idpProviderInstance.logout)) {
           idpProviderInstance.logout(authData, logoutCallback);
-        } else if (this.get().isCustomLogoutDefined) {
+        } else if (
+          this.get().isProfileLogoutItem &&
+          this.get().profileLogoutfnDefinded
+        ) {
           this.get().profileNav.logout.customLogoutFn();
         } else {
           logoutCallback(idpProviderInstance.settings.logoutUrl);
