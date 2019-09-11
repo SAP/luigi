@@ -284,8 +284,9 @@
                 ...TOP_NAV_DEFAULTS.logout,
                 ...logoutItem
               };
+              this.set({ isProfileLogoutItem: !!logoutItem });
+              this.set({ profileLogoutfnDefinded: false });
               if (logoutItem) {
-                this.set({ isProfileLogoutItem: true });
                 const profileLogoutfn = logoutItem.customLogoutFn;
                 if (
                   profileLogoutfn &&
@@ -325,7 +326,7 @@
           ) {
             this.get().profileNav.logout.customLogoutFn();
           } else {
-            console.info('No IDP logout or customLogoutFn is defined.');
+            console.error('No IDP logout or customLogoutFn is defined.');
           }
         });
       },
