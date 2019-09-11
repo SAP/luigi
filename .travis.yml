@@ -20,6 +20,7 @@ jobs:
         - npm i -g lerna
         - lerna bootstrap --ci --ignore "*luigi-sample-vue" || travis_terminate 1
         - lerna run bundle --ignore "*luigi-sample-vue" || travis_terminate 1
+        - lerna run bundlesizeOnly --ignore "*luigi-sample-vue" || travis_terminate 1
         - lerna run build --ignore "*luigi-sample-vue" || travis_terminate 1
         - npm test --prefix core || travis_terminate 1
         - du -sh
