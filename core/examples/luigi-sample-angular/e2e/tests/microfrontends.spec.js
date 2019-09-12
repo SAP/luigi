@@ -146,7 +146,7 @@ describe('SplitView Microfrontend', () => {
         });
         cy.splitViewButtons($iframeBody)
           .contains(test.buttonToClick)
-          .click({ force: true });
+          .click();
       });
 
       // after close
