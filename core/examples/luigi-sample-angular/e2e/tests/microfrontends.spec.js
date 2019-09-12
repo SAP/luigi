@@ -86,6 +86,27 @@ describe('SplitView Microfrontend', () => {
     cy.visitLoggedIn('/projects/pr2');
   });
 
+  it('Opens a Split View and collapses and expands', () => {
+    cy.getIframeBody().then($iframeBody => {
+      cy.wrap($iframeBody)
+        .contains('open view in split view')
+        .click();
+      cy.expectPathToBe('/projects/pr2');
+
+      cy.get('.iframeSplitViewCnt iframe').should('exist');
+
+      cy.get('.lui-collapse-btn').click();
+
+      cy.get('.iframeSplitViewCnt iframe').should('not.exist');
+
+      cy.get('.fd-splitView__title').should('contain', 'Logs');
+
+      cy.get('.lui-collapse-btn').click();
+
+      cy.get('.iframeSplitViewCnt iframe').should('exist');
+    });
+  });
+
   it('using Client API', () => {
     cy.getIframeBody().then($iframeBody => {
       cy.wrap($iframeBody)
@@ -125,7 +146,7 @@ describe('SplitView Microfrontend', () => {
         });
         cy.splitViewButtons($iframeBody)
           .contains(test.buttonToClick)
-          .click();
+          .click({ force: true });
       });
 
       // after close
@@ -134,27 +155,6 @@ describe('SplitView Microfrontend', () => {
         .should('be.disabled');
 
       cy.get('.iframeSplitViewCnt iframe').should('not.exist');
-    });
-  });
-
-  it('Opens a Split View and collapses and expands', () => {
-    cy.getIframeBody().then($iframeBody => {
-      cy.wrap($iframeBody)
-        .contains('open view in split view')
-        .click();
-      cy.expectPathToBe('/projects/pr2');
-
-      cy.get('.iframeSplitViewCnt iframe').should('exist');
-
-      cy.get('.lui-collapse-btn').click();
-
-      cy.get('.iframeSplitViewCnt iframe').should('not.exist');
-
-      cy.get('.fd-splitView__title').should('contain', 'Logs');
-
-      cy.get('.lui-collapse-btn').click();
-
-      cy.get('.iframeSplitViewCnt iframe').should('exist');
     });
   });
 });
