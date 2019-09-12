@@ -172,7 +172,7 @@ You can configure the way Luigi tackles routing in your application in the **Rou
 - **useHashRouting** defines either hash-based (`url.com/#/yourpath`) or path-based (`url.com/yourpath`) routing.
 - **nodeParamPrefix** sets the prefix character when using the `LuigiClient.linkManager().withParam()` function, which provides a way to simply attach query parameters to the view URL for activities such as sorting and filtering. The URL contains the parameters to allow deep linking. If you want to use a different character prefix, define yours here. The default character is `~`.
 - **skipRoutingForUrlPatterns** defines regex patterns to be skipped by the router when listening for path changes. This parameter is used for excluding **redirect_uri** parameters. Default patterns are `[/access_token=/, '/id_token=/]`.
-- **pageNotFoundHandler** is a function defining custom behavior when the 404 (page not found) error occurs.  Luigi handles it by default. Leave its body empty if you have an external 404 handling. This function takes the following parameters: 
+- **pageNotFoundHandler** is a function defining custom behavior when the 404 (page not found) error occurs.  Luigi handles it by default. Leave its body empty if you have an external 404 handling. You can return an Object with `redirectTo` property if you want Luigi to redirect to a specific navigation path after execution. This function takes the following parameters: 
   - **wrongPath**(string): the path that user tried to navigate to
   - **wasAnyPathFitted**(bool): it is true if Luigi managed to fit a valid path which means **wrongPath** was only partially wrong. Otherwise it is false.
 
@@ -245,6 +245,7 @@ The context switcher is a drop-down list available in the top navigation bar. It
   - **link** defines an absolute Link to a **node**. This parameter is optional.
   - **clickHandler** specifies a function and is executed on click and should return a boolean. If it returns `true`, **link** is opened afterwards.
 - **fallbackLabelResolver** specifies a function used to fetch the **label** for **options** with no **label** defined. Additionally, it fetches the drop-down label for non-existing **options**.
+- **preserveSubPathOnSwitch** if set to `true`, the sub-path will be preserved on context switch
 
 
 ## Profile
