@@ -161,4 +161,18 @@ describe('Routing-helpers', () => {
       );
     });
   });
+
+  describe('applyPathParams', () => {
+    it('empty path should not fail', () => {
+      expect(RoutingHelpers.applyPathParams('', {})).to.equal('');
+    });
+    it('replace two parameters', () => {
+      expect(
+        RoutingHelpers.applyPathParams('/projects/:project/details/:entry', {
+          project: 'pr1',
+          entry: 'e23'
+        })
+      ).to.equal('/projects/pr1/details/e23');
+    });
+  });
 });

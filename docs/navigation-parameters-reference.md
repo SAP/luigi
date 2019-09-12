@@ -279,3 +279,12 @@ The product switcher is a pop-up window available in the top navigation bar. It 
   - **externalLink** is an object which indicates that the node links to an external URL. If this parameter is defined, the **link** parameter is ignored. It has the following properties:
     - **sameWindow** defines if the external URL is opened in the current tab or in a new one. The default value for this parameter is `false`.
     - **url** is the external URL that the link leads to.
+
+## App switcher
+
+The app switcher is a drop-down list available in the top navigation bar. It allows you to switch between the navigation elements displayed in the drop-down. To do so, add the **appSwitcher** property to the **navigation** object using the following optional properties:
+- **showMainAppEntry** includes the link to the root of the Luigi application in the drop-down using the **title** specified in the **settings/header** section of the configuration as a label.
+- **items** defines the list of apps. App element properties are:
+  - **title** defines the app title. This is shown in the app switcher drop-down as well as the title in the header of the Luigi application if a user is in the context of the app. 
+  - **subTitle** defines the app sub-title. This is shown as the sub-title in the header of the Luigi application if a user is in the context of the app. 
+  - **link** is a link within the Luigi application that defines the root of the app. It is used to switch to the app if the drop-down entry is selected. It is also used to determine if a user is within the app's scope, so that the corresponding title and sub-title can be rendered in the header. 

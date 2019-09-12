@@ -62,7 +62,10 @@ describe('Login Flow', () => {
     const testLogo =
       'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mM0WCn/HgAD8gHpXMQ+4AAAAABJRU5ErkJggg==';
 
-    cy.get('[data-testid="luigi-topnav-title"]').should('contain', 'Luigi Demo');
+    cy.get('[data-testid="luigi-topnav-title"]').should(
+      'contain',
+      'Luigi Demo'
+    );
     cy.get('[data-testid="luigi-topnav-title"]').should(
       'not.have.attr',
       'src',
