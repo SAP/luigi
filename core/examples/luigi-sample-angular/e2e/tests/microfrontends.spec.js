@@ -113,7 +113,7 @@ describe('SplitView Microfrontend', () => {
         .contains('open view in split view')
         .click();
       cy.expectPathToBe('/projects/pr2');
-      
+
       cy.splitViewButtons($iframeBody)
         .contains('close')
         .scrollIntoView();
