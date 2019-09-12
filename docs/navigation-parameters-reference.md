@@ -245,7 +245,7 @@ The context switcher is a drop-down list available in the top navigation bar. It
   - **link** defines an absolute Link to a **node**. This parameter is optional.
   - **clickHandler** specifies a function and is executed on click and should return a boolean. If it returns `true`, **link** is opened afterwards.
 - **fallbackLabelResolver** specifies a function used to fetch the **label** for **options** with no **label** defined. Additionally, it fetches the drop-down label for non-existing **options**.
-- **preserveSubPathOnSwitch** if set to `true`, the sub-path will be preserved on context switch
+- **preserveSubPathOnSwitch** if set to `true`, the sub-path will be preserved on context switch.
 
 
 ## Profile
