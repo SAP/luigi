@@ -1,19 +1,30 @@
-import { StateHelpers } from '../../utilities/helpers';
+import { StateHelpers, GenericHelpers } from '../../utilities/helpers';
 import { LuigiConfig, LuigiI18N } from './../../core-api';
 
 export const processHeaderSettings = component => {
   StateHelpers.doOnStoreChange(
     component.store,
     () => {
+      const appSwitcher = LuigiConfig.getConfigValue('navigation.appSwitcher');
+      if (appSwitcher) {
+        component.set({ appSwitcherItems: appSwitcher.items });
+        component.set({ showMainAppEntry: appSwitcher.showMainAppEntry });
+      }
+      component.set({
+        hasApps:
+          component.get().showMainAppEntry ||
+          (component.get().appSwitcherItems &&
+            component.get().appSwitcherItems.length > 0)
+      });
       return LuigiConfig.getConfigValueAsync('settings.header').then(header => {
         if (!header) {
           return;
         }
         // Set Title and Logo
         if (header.title) {
-          const title = LuigiI18N.getTranslation(header.title);
-          component.set({ title });
-          document.title = title;
+          component.set({ defaultTitle: header.title || '' });
+          component.set({ defaultSubTitle: header.subTitle || '' });
+          updateTitle(component);
         }
 
         const hasLogo = Boolean(header.logo);
@@ -49,4 +60,67 @@ export const processHeaderSettings = component => {
     },
     ['settings.header']
   );
+};
+
+const segmentMatches = (linkSegment, pathSegment, pathParams) => {
+  if (linkSegment === pathSegment) {
+    return true;
+  }
+  if (
+    pathSegment.startsWith(':') &&
+    pathParams &&
+    pathParams[pathSegment.substr(1)] === linkSegment
+  ) {
+    return true;
+  }
+  return false;
+};
+
+export const updateTitle = component => {
+  const appSwitcherItems = component.get().appSwitcherItems;
+  const pathData = component.get().pathData;
+  const pathParams = component.get().pathParams;
+  let selectedItem;
+  if (appSwitcherItems && pathData) {
+    [...appSwitcherItems]
+      .sort((el1, el2) => (el2.link || '').localeCompare(el1.link || ''))
+      .some(item => {
+        let match = true;
+        GenericHelpers.trimTrailingSlash(
+          GenericHelpers.trimLeadingSlash(item.link)
+        )
+          .split('/')
+          .forEach((pathSegment, index) => {
+            if (match) {
+              if (index + 1 >= pathData.length) {
+                match = false;
+              } else if (
+                !pathData[index + 1].pathSegment ||
+                !segmentMatches(
+                  pathSegment,
+                  pathData[index + 1].pathSegment,
+                  pathParams
+                )
+              ) {
+                match = false;
+              }
+            }
+          });
+        if (match) {
+          selectedItem = item;
+        }
+        return match;
+      });
+  }
+  component.set({ selectedItem });
+  const title =
+    selectedItem && selectedItem.title
+      ? selectedItem.title
+      : component.get().defaultTitle;
+  component.set({ title });
+  document.title = LuigiI18N.getTranslation(title);
+  const subTitle = selectedItem
+    ? selectedItem.subTitle || ''
+    : component.get().defaultSubTitle;
+  component.set({ subTitle });
 };
