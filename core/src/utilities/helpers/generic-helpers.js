@@ -250,12 +250,16 @@ class GenericHelpersClass {
   }
 
   removeInternalProperties(input) {
-    return Object.keys(input)
-      .filter(key => !key.startsWith('_'))
-      .reduce((obj, key) => {
-        obj[key] = input[key];
-        return obj;
-      }, {});
+    return (
+      (input &&
+        Object.keys(input)
+          .filter(key => !key.startsWith('_'))
+          .reduce((obj, key) => {
+            obj[key] = input[key];
+            return obj;
+          }, {})) ||
+      input
+    );
   }
 }
 
