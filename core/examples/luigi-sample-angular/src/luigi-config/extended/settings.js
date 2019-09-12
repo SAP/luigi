@@ -8,7 +8,9 @@ class Settings {
     subTitle: version || 'unknown',
     favicon: '/assets/favicon-sap.ico'
   };
-
+  appLoadingIndicator = {
+    hideAutomatically: false
+  };
   responsiveNavigation = 'simpleMobileOnly'; // Options: simple | simpleMobileOnly | semiCollapsible
   sideNavFooterText = `Luigi Client: ${version || 'unknown'}`;
   // hideNavigation = true
