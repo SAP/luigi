@@ -125,7 +125,9 @@ describe('Luigi Client ux manager features', () => {
 
         cy.get('[data-testid=luigi-modal-dismiss]').click();
 
-        cy.get('[data-testid=luigi-confirmation-modal]').should('not.be.visible');
+        cy.get('[data-testid=luigi-confirmation-modal]').should(
+          'not.be.visible'
+        );
 
         cy.expectPathToBe('/overview'); //the location is still unchanged after "No" clicked
       });
@@ -145,7 +147,9 @@ describe('Luigi Client ux manager features', () => {
 
         cy.get('[data-testid=luigi-modal-confirm]').click();
 
-        cy.get('[data-testid=luigi-confirmation-modal]').should('not.be.visible');
+        cy.get('[data-testid=luigi-confirmation-modal]').should(
+          'not.be.visible'
+        );
 
         cy.expectPathToBe('/projects'); //the location is changed after "Yes" clicked
       });

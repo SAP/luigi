@@ -16,6 +16,7 @@ Set up and configure your main Luigi application by following these guides.
 * [Authorization configuration](authorization-configuration.md) guides you through the configuration to secure Luigi.
 * [Authorization events](authorization-events.md) guides you through the event configuration to react to Luigi authorization events.
 * [General settings](general-settings.md) provides you with additional configuration parameters for Luigi.
+* [Luigi lifecycle hooks](lifecycle-hooks.md) allows you to execute custom logic on any of the Luigi lifecycle steps.
 * [Core API](luigi-core-api.md) provides you with API features that help you enrich and use Luigi Core.
 * [Luigi UI features](luigi-ux-features.md) provides different customization options for some of the Luigi UI components.
 
