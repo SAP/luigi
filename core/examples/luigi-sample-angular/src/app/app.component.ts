@@ -1,7 +1,8 @@
 import { Component, ViewEncapsulation, OnInit } from '@angular/core';
 import {
   addInitListener,
-  addContextUpdateListener
+  addContextUpdateListener,
+  sendCustomMessage
 } from '@kyma-project/luigi-client';
 import {
   LuigiContextService,
@@ -25,5 +26,8 @@ export class AppComponent implements OnInit {
 
   private onLuigiContext(contextType: ILuigiContextTypes, context: any): void {
     this.luigiService.setContext({ contextType, context });
+    if (contextType === 'init') {
+      sendCustomMessage({ id: 'my-micro-frontend-is-ready' });
+    }
   }
 }

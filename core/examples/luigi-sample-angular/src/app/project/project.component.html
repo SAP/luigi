@@ -5,7 +5,11 @@
     </div>
     <div class="fd-panel fd-has-margin-bottom-small">
       <p><strong>Backdrop</strong></p>
-      <button class="fd-button" data-testid="add-backdrop" (click)="toggleModal()">
+      <button
+        class="fd-button"
+        data-testid="add-backdrop"
+        (click)="toggleModal()"
+      >
         Add backdrop
       </button>
       <p>
@@ -383,10 +387,10 @@
             </button>
             <button
               [disabled]="!splitViewHandle || !splitViewHandle.isExpanded()"
-              (click)="splitViewHandle.setSize(50)"
+              (click)="splitViewHandle.setSize(15)"
               class="fd-button"
             >
-              setSize(50)
+              setSize(15)
             </button>
             <button
               [disabled]="!splitViewHandle || !splitViewHandle.exists()"

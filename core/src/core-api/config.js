@@ -3,9 +3,8 @@ import {
   GenericHelpers,
   StateHelpers
 } from '../utilities/helpers';
-import { auth } from './auth';
-import { LuigiElements, LuigiI18N } from '.';
-
+import { LuigiAuth, LuigiElements, LuigiI18N } from '.';
+import { LifecycleHooks } from '../services';
 /**
  * @name Configuration
  */
@@ -16,7 +15,6 @@ class LuigiConfig {
    */
   constructor() {
     this.configReadyCallback = function() {};
-
     this.initialized = false;
   }
 
@@ -54,12 +52,14 @@ class LuigiConfig {
    *   }
    * })
    */
-  setConfig(configInput) {
+  async setConfig(configInput) {
     this.config = configInput;
     window.Luigi._store.set({ config: configInput });
     this._configModificationTimestamp = new Date();
     if (!this.initialized) {
       this.initialized = true;
+      LifecycleHooks.luigiAfterInit();
+      await this.executeConfigFnAsync('lifecycleHooks.luigiAfterInit');
       this.configReadyCallback();
     }
   }
@@ -203,7 +203,7 @@ class LuigiConfig {
    * @deprecated now located in Luigi.auth() instead of Luigi
    */
   isAuthorizationEnabled() {
-    return auth.isAuthorizationEnabled();
+    return LuigiAuth.isAuthorizationEnabled();
   }
 }
 

@@ -18,6 +18,7 @@ class CustomMessagesManager {
    *     moreData: 'here goes some more'
    * });
    * @memberof CustomMessages
+   * @since 0.6.2
    */
   sendToAll(message) {
     const internalMessage = MessagesListeners.convertCustomMessageUserToInternal(
@@ -44,6 +45,7 @@ class CustomMessagesManager {
    *     moreData: 'here goes some more'
    * });
    * @memberof CustomMessages
+   * @since 0.6.2
    */
   send(microfrontendId, message) {
     const internalMessage = MessagesListeners.convertCustomMessageUserToInternal(
