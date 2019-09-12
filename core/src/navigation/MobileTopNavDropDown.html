@@ -1,50 +1,46 @@
-<section class="fd-product-switcher">
-  <div
-    class="fd-modal y-fd-modal--full-screen"
-    on:click="event.stopPropagation()"
-  >
-    <div class="fd-modal__content" role="document">
-      <div class="fd-action-bar">
-        <div class="fd-action-bar__back">
-          <button
-            class="fd-button--light fd-button--compact sap-icon--nav-back"
-            on:click
-            data-testid="mobile-topnav-close"
-          ></button>
-        </div>
-        <div class="fd-action-bar__header">
-          <h5 class="fd-action-bar__title fd-has-type-1">{label}</h5>
-        </div>
+<div
+  class="fd-modal y-fd-modal--full-screen"
+  on:click="event.stopPropagation()"
+>
+  <div class="fd-modal__content" role="document">
+    <div class="fd-action-bar">
+      <div class="fd-action-bar__back">
+        <button
+          class="fd-button--light fd-button--compact sap-icon--nav-back"
+          on:click
+          data-testid="mobile-topnav-close"
+        ></button>
       </div>
-      <div class="fd-modal__body">
-        <div class="fd-product-switcher__body">
-          <ul class="y-full-width-list">
-            {#if nodes}
-            {#each nodes as node}
-            <li
-              class="y-full-width-list__item"
-              on:click="onActionClick(node)"
-              data-e2e="mobile-topnav-item"
-              data-testid="{getTestId(node)}"
-            >
-              <span
-                class="y-full-width-list__icon {node.icon && hasOpenUIicon(node) ? 'sap-icon--' + node.icon + ' sap-icon--m' : '' }"
-              >
-                {#if !hasOpenUIicon(node)}
-                <img src="{node.icon}">
-                {/if}
-                <BadgeCounter {node}/>
-              </span>
-              <span class="y-full-width-list__title">{getNodeLabel(node)}</span>
-            </li>
-            {/each}
-            {/if}
-          </ul>
-        </div>
+      <div class="fd-action-bar__header">
+        <h5 class="fd-action-bar__title fd-has-type-1">{label}</h5>
       </div>
     </div>
+    <div class="fd-modal__body">
+      <ul class="y-full-width-list">
+        {#if nodes}
+        {#each nodes as node}
+        <li
+          class="y-full-width-list__item"
+          on:click="onActionClick(node)"
+          data-e2e="mobile-topnav-item"
+          data-testid="{getTestId(node)}"
+        >
+          <span
+            class="y-full-width-list__icon {node.icon && hasOpenUIicon(node) ? 'sap-icon--' + node.icon + ' sap-icon--m' : '' }"
+          >
+            {#if !hasOpenUIicon(node)}
+            <img src="{node.icon}">
+            {/if}
+            <BadgeCounter {node}/>
+          </span>
+          <span class="y-full-width-list__title">{getNodeLabel(node)}</span>
+        </li>
+        {/each}
+        {/if}
+      </ul>
+    </div>
   </div>
-</section>
+</div>
 <script type="text/javascript">
   import BadgeCounter from './BadgeCounter.html';
   export default {
@@ -61,22 +57,6 @@
 <style type="text/scss">
   $topNavHeight: 48px;
   $mobileTopNavHeight: 64px;
-
-  .fd-product-switcher {
-    position: relative;
-    display: block;
-  }
-
-  .fd-product-switcher__body {
-    .fd-menu__item {
-      padding: 0;
-      text-align: center;
-
-      &:hover {
-        background-color: transparent;
-      }
-    }
-  }
 
   .y-fd-modal--full-screen {
     z-index: 1000;
@@ -115,10 +95,6 @@
       padding: 0;
       -webkit-overflow-scrolling: touch;
     }
-
-    .fd-product-switcher__body {
-      padding: 0;
-    }
   }
 
   @media (min-width: 320px) {
@@ -133,18 +109,6 @@
         img {
           width: 16px;
           vertical-align: top;
-        }
-      }
-    }
-  }
-
-  @media (min-width: 1024px) {
-    .fd-product-switcher {
-      &__product-icon {
-        &.sap-icon--m {
-          &:before {
-            font-size: 38px;
-          }
         }
       }
     }
