@@ -71,6 +71,16 @@ class RoutingHelpersClass {
     return this.sanitizeParamsMap(result);
   }
 
+  applyPathParams(path, pathParams) {
+    let result = path;
+    if (pathParams) {
+      Object.entries(pathParams).forEach(([param, value]) => {
+        result = result.replace(new RegExp(':' + param, 'g'), value);
+      });
+    }
+    return result;
+  }
+
   findViewGroup(node) {
     if (node.viewGroup) {
       return node.viewGroup;

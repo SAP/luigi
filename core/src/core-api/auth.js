@@ -1,4 +1,4 @@
-import { config } from './config';
+import { LuigiConfig } from './';
 
 /**
  * Authorization helpers
@@ -19,7 +19,7 @@ class LuigiAuth {
    * Luigi.auth().isAuthorizationEnabled();
    */
   isAuthorizationEnabled() {
-    return !!config.getConfigValue('auth.use');
+    return !!LuigiConfig.getConfigValue('auth.use');
   }
 
   /**
@@ -36,7 +36,7 @@ class LuigiAuth {
     data,
     redirectUrl
   ) {
-    const result = await config.executeConfigFnAsync(
+    const result = await LuigiConfig.executeConfigFnAsync(
       'auth.events.' + eventName,
       false,
       providerInstanceSettings,

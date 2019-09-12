@@ -17,14 +17,23 @@ describe('Header', function() {
       };
     };
 
+    const addToConfig = addition => {
+      window.Luigi.config = { ...window.Luigi.config, ...addition };
+    };
+
     beforeEach(() => {
+      let componentData = {};
       component = {
-        set: sinon.spy(),
+        get: () => componentData,
+        set: o => {
+          componentData = { ...componentData, ...o };
+        },
         store: {
           on: (e, cb) => {},
           get: () => {}
         }
       };
+      sinon.spy(component, 'set');
     });
 
     it('should not fail for undefined arguments', async () => {
@@ -32,10 +41,11 @@ describe('Header', function() {
       await headerService.processHeaderSettings(component);
     });
 
-    it('should resolve title', async () => {
+    it('should resolve title and subtitle', async () => {
       // given
       const headerSettings = {
-        title: 'Luigi Demo'
+        title: 'Luigi Demo',
+        subTitle: 'good stuff'
       };
       setHeaderSettings(headerSettings);
 
@@ -49,6 +59,18 @@ describe('Header', function() {
       assert(
         component.set.calledWith({ title: headerSettings.title }),
         'component set() title'
+      );
+      assert(
+        component.set.calledWith({ defaultTitle: headerSettings.title }),
+        'component set() defaultTitle'
+      );
+      assert(
+        component.set.calledWith({ subTitle: headerSettings.subTitle }),
+        'component set() subTitle'
+      );
+      assert(
+        component.set.calledWith({ defaultSubTitle: headerSettings.subTitle }),
+        'component set() defaultSubTitle'
       );
     });
 
@@ -90,7 +112,7 @@ describe('Header', function() {
 
       // then
       assert(
-        component.set.calledOnceWith({ hasLogo: true }),
+        component.set.calledWith({ hasLogo: true }),
         'component set() hasLogo'
       );
       assert.equal(component.refs.logo.src, headerSettings.logo, 'header logo');
@@ -128,6 +150,124 @@ describe('Header', function() {
         'document.getElementsByTagName() call'
       );
       assert(appendChild.calledOnceWith(expectedLink), 'appendChild() call');
+    });
+
+    it('should have no app switcher if no apps configured', async () => {
+      setHeaderSettings({});
+
+      // when
+      await headerService.processHeaderSettings(component);
+
+      // then
+      assert(
+        component.set.calledWith({ hasApps: undefined }),
+        'component set() hasApps false'
+      );
+    });
+
+    it('should have app switcher if showMainAppEntry is true', async () => {
+      setHeaderSettings({});
+      addToConfig({
+        navigation: {
+          appSwitcher: {
+            showMainAppEntry: true
+          }
+        }
+      });
+
+      // when
+      await headerService.processHeaderSettings(component);
+
+      // then
+      assert(
+        component.set.calledWith({ hasApps: true }),
+        'component set() hasApps true'
+      );
+      assert(
+        component.set.calledWith({ showMainAppEntry: true }),
+        'component set() showMainAppEntry true'
+      );
+    });
+
+    it('should have app switcher if apps are configured', async () => {
+      const items = [
+        {
+          title: 'app1',
+          subTitle: 'application one',
+          link: '/apps/app1'
+        },
+        {
+          title: 'app2',
+          subTitle: 'application two',
+          link: '/apps/app2'
+        }
+      ];
+      setHeaderSettings({});
+      addToConfig({
+        navigation: {
+          appSwitcher: {
+            items
+          }
+        }
+      });
+
+      // when
+      await headerService.processHeaderSettings(component);
+
+      // then
+      assert(
+        component.set.calledWith({ hasApps: true }),
+        'component set() hasApps true'
+      );
+      assert(
+        component.set.calledWith({ showMainAppEntry: undefined }),
+        'component set() showMainAppEntry false'
+      );
+      assert(
+        component.set.calledWith({ appSwitcherItems: items }),
+        'component set() appSwitcherItems item'
+      );
+    });
+
+    it('should have app switcher if apps and are showMainAppEntry are configured', async () => {
+      const items = [
+        {
+          title: 'app1',
+          subTitle: 'application one',
+          link: '/apps/app1'
+        },
+        {
+          title: 'app2',
+          subTitle: 'application two',
+          link: '/apps/app2'
+        }
+      ];
+      setHeaderSettings({});
+      addToConfig({
+        navigation: {
+          appSwitcher: {
+            showMainAppEntry: true,
+            items
+          }
+        }
+      });
+
+      // when
+      await headerService.processHeaderSettings(component);
+
+      // then
+      assert(
+        component.set.calledWith({ hasApps: true }),
+        'component set() hasApps true'
+      );
+      assert(
+        component.set.calledWith({ showMainAppEntry: true }),
+        'component set() showMainAppEntry true'
+      );
+      assert(
+        component.set.calledWith({ appSwitcherItems: items }),
+        'component set() appSwitcherItems item'
+      );
     });
   });
 });
