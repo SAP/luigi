@@ -47,6 +47,10 @@ Registers a listener called when the micro frontend receives a custom message.
 -   `customMessageId` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** the custom message id
 -   `customMessageListener` **[Lifecycle~customMessageListenerCallback](#lifecyclecustommessagelistenercallback)** the function that is called when the micro frontend receives the corresponding event.
 
+**Meta**
+
+-   **since**: 0.6.2
+
 ### removeCustomMessageListener
 
 Removes a custom message listener.
@@ -54,6 +58,10 @@ Removes a custom message listener.
 #### Parameters
 
 -   `id` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** the id that was returned by the `addInitListener` function
+
+**Meta**
+
+-   **since**: 0.6.2
 
 ### getToken
 
@@ -114,6 +122,10 @@ Sends a custom message to the Luigi Core application.
 import LuigiClient from '@kyma-project/luigi-client';
 LuigiClient.sendCustomMessage({id: 'environment.created', production: false})
 ```
+
+**Meta**
+
+-   **since**: 0.6.2
 
 ## Lifecycle~initListenerCallback
 
