@@ -146,12 +146,6 @@ Object.keys(productSwitcherItems[0]).length }
   };
 </script>
 <style type="text/scss">
-  .fd-popover__body {
-    overflow: auto;
-    max-height: calc(100vh - 50px);
-    max-height: calc(var(--vh, 1vh) * 100 - 50px);
-  }
-
   .fd-product-switcher {
     position: relative;
     display: block;
@@ -161,6 +155,10 @@ Object.keys(productSwitcherItems[0]).length }
   }
 
   .fd-product-switcher__body {
+    overflow: auto;
+    max-height: calc(100vh - 50px);
+    max-height: calc(var(--vh, 1vh) * 100 - 50px);
+
     .fd-menu__item {
       padding: 0;
       text-align: center;
