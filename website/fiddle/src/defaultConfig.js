@@ -1,4 +1,4 @@
-let defaultConfigString = `Luigi.setConfig({
+let defaultConfig = `Luigi.setConfig({
     navigation: { 
             nodes: [{ 
                 pathSegment: 'home', 
@@ -79,59 +79,6 @@ let defaultConfigString = `Luigi.setConfig({
                     content: 'for pages needing more space or wanting to handle navigation internally'  
                 }
             },{ 
-                pathSegment: 'tabbed', 
-                label: 'Tabbed Navigation Example',
-                icon: 'internet-browser',
-                tabNav: true,
-                children: [
-                    { 
-                        pathSegment: 'home', 
-                        label: 'Home',
-                        loadingIndicator: {
-                            enabled: false
-                        },
-                        viewUrl: '/examples/microfrontends/multipurpose.html',                    
-                        context: {
-                            title: 'Tab-style navigation',
-                            content: 'if you only have a few nav items...'  
-                        }
-                    },{ 
-                        pathSegment: 'empty', 
-                        label: 'Empty Page',
-                        loadingIndicator: {
-                            enabled: false
-                        },
-                        viewUrl: '/examples/microfrontends/fundamental/empty-demo-page.html'
-                    },{ 
-                        pathSegment: 'table', 
-                        label: 'Table', 
-                        category: {
-                            label: 'Table',
-                            collapsible: true
-                        },
-                        loadingIndicator: {
-                            enabled: false
-                        },
-                        viewUrl: '/examples/microfrontends/fundamental/table-demo-page.html'
-                    },{ 
-                        pathSegment: 'tree', 
-                        category: 'Tree & Tiles',
-                        label: 'Tree', 
-                        loadingIndicator: {
-                            enabled: false
-                        },
-                        viewUrl: '/examples/microfrontends/fundamental/tree-demo-page.html'
-                    },{ 
-                        pathSegment: 'tiles', 
-                        label: 'Tiles', 
-                        category: 'Tree & Tiles',
-                        loadingIndicator: {
-                            enabled: false
-                        },
-                        viewUrl: '/examples/microfrontends/fundamental/tiles-demo-page.html'
-                    }
-                ]
-            },{ 
                 pathSegment: 'help', 
                 label: 'Help',
                 icon: 'sys-help',
@@ -184,8 +131,8 @@ let defaultConfigString = `Luigi.setConfig({
         auth: {
             use: 'mockAuth',
             mockAuth: {
-                authorizeUrl: 'https://idpmock-a748bf19e.dispatcher.hana.ondemand.com/public/implicit.html',
-                logoutUrl: 'https://idpmock-a748bf19e.dispatcher.hana.ondemand.com/public/logout.html',
+                authorizeUrl: '/auth/idpmock/implicit.html',
+                logoutUrl: '/auth/idpmock/logout.html',
                 post_logout_redirect_uri: '/auth/logout.html',
                 authorizeMethod: 'GET',
                 oAuthData: {
@@ -206,60 +153,6 @@ let defaultConfigString = `Luigi.setConfig({
         } 
     });    
 `;
-
-let configString = defaultConfigString;
-
-window.onload = function () {
-    window.editor = ace.edit("editor");
-    editor.session.setMode("ace/mode/javascript");
-};
-
-function reloadConfig() {
-    let customConfig = localStorage.getItem("fiddle");
-
-    try {
-        if (!customConfig) {
-            localStorage.setItem("fiddle", defaultConfigString);
-            customConfig = defaultConfigString;
-        }
-        eval(customConfig);
-        configString = customConfig;
-    } catch (e) {
-        console.error(e);
-        localStorage.removeItem("fiddle");
-        eval(defaultConfigString);
-        configString = defaultConfigString;
-    }
-}
-
-function saveConfig() {
-    localStorage.setItem("fiddle", window.editor.getValue());
-    window.location.href = "/";
-}
-
-function closeConfig() {
-    document.body.classList.remove("editorVisible");
-}
-
-function resetConfig() {
-    window.editor.setValue(defaultConfigString);
-    window.editor.clearSelection();
-}
-
-function clearConfig() {
-    window.editor.setValue("");
-    window.editor.clearSelection();
-}
-
-function openConfig() {
-    window.editor.setValue(configString);
-    window.editor.clearSelection();
-    document.body.classList.add("editorVisible");
-}
-
-function hide() {
-    document.body.classList.remove("show-bar");
-}
+export default defaultConfig;
 
 
-reloadConfig();

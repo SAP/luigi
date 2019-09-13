@@ -1,62 +1,18 @@
-<!DOCTYPE html>
-<html lang="en">
-
+<!doctype html>
+<html>
 <head>
-	<title>Luigi Fiddle</title>
-	<link rel="icon" href="./img/luigi.ico?" type="image/x-icon">
-	<link rel='stylesheet' href='https://cdn.jsdelivr.net/npm/@kyma-project/luigi-core@0.6.2/luigi.css'>
-	<meta charset="utf-8">
-	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, viewport-fit=cover">
-	<meta name="description" content="">
+	<meta charset='utf8'>
+	<meta name='viewport' content='width=device-width'>
 
-	<link rel='stylesheet' href='./styles.css'>
+	<title>Luigi Fiddle</title>
+
+	<link rel='icon' type='image/png' href='img/luigi.ico'>
+	<link href="/vendor/luigi-core/luigi.css" rel="stylesheet">
+	<script src='/vendor/ace/src-min/ace.js'></script>
+	<script src='/vendor/ace/src-min/mode-javascript.js'></script>
 </head>
 
 <body class="show-bar">
-	<noscript>You need to enable JavaScript to run this app.</noscript>
-	<script src="https://cdn.jsdelivr.net/npm/@kyma-project/luigi-core@0.6.2/luigi.js">
-	</script>
-	<script src="./config.js"> </script>
-	<script src="https://pagecdn.io/lib/ace/1.4.5/ace.js" integrity="sha256-5Xkhn3k/1rbXB+Q/DX/2RuAtaB4dRRyQvMs83prFjpM=" crossorigin="anonymous"></script>
-	<div class="editor_container fd-shell__overlay fd-overlay fd-overlay--modal">
-		<div class="fd-modal" role="dialog" style="width:80%; max-width:80%;">
-			<div class="fd-modal__content" role="document">
-				<header class="fd-modal__header">
-					<h1 class="fd-modal__title">Luigi Config</h1>
-					<button class="fd-button--light fd-modal__close" onclick="closeConfig()"></button>
-				</header>
-				<div class="fd-modal__body_nostyle">
-					<div id="editor"></div>
-				</div>
-				<footer class="fd-modal__footer">
-					<div class="fd-modal__actions">
-						<button class="fd-button--light" onclick="clearConfig()">Clear</button>
-						<button class="fd-button--light" onclick="resetConfig()">Reset</button>
-						<button class="fd-button" onclick="saveConfig()">Apply</button>
-						<button class="fd-button--light" onclick="closeConfig()">Cancel</button>
-					</div>
-				</footer>
-			</div>
-		</div>
-	</div>
-
-	<div class="fiddle-toolbar">
-		<div class="fd-action-bar">
-			<div class="fd-action-bar__header">
-				<img src="./img/luigi.png"> powered by Luigi v0.6.2
-				<span>
-					<a class="fd-link" href="https://www.sap.com/about/legal/privacy.html" target="_blank">Privacy Policy</a>
-        	<a class="fd-link" href="https://www.sap.com/about/legal/impressum.html" target="_blank">Legal</a>
-				</span>
-			</div>
-			<div class="fd-action-bar__actions">
-				<button class="fd-button--standard" onclick="openConfig()">Modify Config</button>
-				<button class="fd-button--standard" onclick="hide()">Hide</button>
-			</div>
-		</div>
-	</div>
+	<script src='bundle.js'></script>
 </body>
-
 </html>
-
