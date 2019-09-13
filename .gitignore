@@ -12,3 +12,6 @@ lerna-debug.log
 
 # temporary files and folders
 tmp-*
+
+# WhiteSource
+whitesource.config.json
