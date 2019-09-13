@@ -53,11 +53,19 @@ class LuigiUX {
    *  .then(() => {
    *     // Logic to execute when the alert is dismissed
    * });
-
-    */
+   */
 
   showAlert(settings) {
     return Luigi.showAlert(settings);
+  }
+
+  /**
+   * @private
+   * @memberof UX
+   * @param {string} id alert id
+   */
+  hideAlert(id) {
+    return Luigi.hideAlert(id);
   }
 
   /**
