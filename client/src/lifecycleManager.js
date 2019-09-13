@@ -206,6 +206,7 @@ class LifecycleManager extends LuigiClientBase {
    * @param {string} customMessageId the custom message id
    * @param {Lifecycle~customMessageListenerCallback} customMessageListener the function that is called when the micro frontend receives the corresponding event.
    * @memberof Lifecycle
+   * @since 0.6.2
    */
   addCustomMessageListener(customMessageId, customMessageListener) {
     return helpers.addEventListener(
@@ -228,6 +229,7 @@ class LifecycleManager extends LuigiClientBase {
    * Removes a custom message listener.
    * @param {string} id the id that was returned by the `addInitListener` function
    * @memberof Lifecycle
+   * @since 0.6.2
    */
   removeCustomMessageListener(id) {
     return helpers.removeEventListener(id);
@@ -298,6 +300,7 @@ class LifecycleManager extends LuigiClientBase {
    * import LuigiClient from '@kyma-project/luigi-client';
    * LuigiClient.sendCustomMessage({id: 'environment.created', production: false})
    * @memberof Lifecycle
+   * @since 0.6.2
    */
   sendCustomMessage(message) {
     const customMessageInternal = helpers.convertCustomMessageUserToInternal(

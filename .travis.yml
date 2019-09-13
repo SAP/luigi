@@ -18,11 +18,11 @@ jobs:
       script:
         - export CYPRESS_CACHE_FOLDER=$TRAVIS_BUILD_DIR/cypress-binary-cache
         - npm i -g lerna
-        - lerna bootstrap --ci --ignore "*luigi-sample-vue"
-        - echo 'core' && ls core/node_modules | wc -l && echo 'client' && ls client/node_modules | wc -l
-        - lerna run bundle --ignore "*luigi-sample-vue"
-        - lerna run build --ignore "*luigi-sample-vue"
-        - npm test --prefix core
+        - lerna bootstrap --ci --ignore "*luigi-sample-vue" || travis_terminate 1
+        - lerna run bundle --ignore "*luigi-sample-vue" || travis_terminate 1
+        - lerna run bundlesizeOnly --ignore "*luigi-sample-vue" || travis_terminate 1
+        - lerna run build --ignore "*luigi-sample-vue" || travis_terminate 1
+        - npm test --prefix core || travis_terminate 1
         - du -sh
       before_cache:
         - rm -rf ~/.npm/_logs
