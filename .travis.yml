@@ -87,10 +87,6 @@ jobs:
       # if: repo = SAP/luigi AND head_branch ~= ^release-v
       if: repo = SAP/luigi AND (branch = master OR branch ~= ^release-v)
       script:
-        - 'if [ ! -z "${WHITESOURCE_APIKEY}" ]; then
-            npm i -g whitesource;
-            bash ./scripts/whiteSource.sh;
-          fi'
         - bash ./scripts/npmPublish.sh
       before_cache:
         - rm -rf ~/.npm/_logs
