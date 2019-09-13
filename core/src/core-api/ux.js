@@ -74,6 +74,15 @@ class LuigiUX {
   showConfirmationModal(settings) {
     return Luigi.showConfirmationModal(settings);
   }
+
+  /**
+   * @private
+   * @memberof UX
+   * @param {Object} modal confirmed boolean value if ok or cancel has been pressed
+   */
+  hideConfirmationModal(modal) {
+    return Luigi.hideConfirmationModal(modal);
+  }
 }
 
 export const ux = new LuigiUX();
