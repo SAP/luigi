@@ -5,7 +5,7 @@ import { afterEach } from 'mocha';
 
 import { Routing } from '../../src/services/routing';
 import { GenericHelpers } from '../../src/utilities/helpers';
-import { LuigiConfig } from '../../src/core-api';
+import { LuigiConfig, LuigiI18N } from '../../src/core-api';
 import { Navigation } from '../../src/navigation/services/navigation';
 
 describe('Routing', function() {
@@ -129,89 +129,89 @@ describe('Routing', function() {
   });
 
   describe('handleRouteChange', () => {
-    const sampleLuigiConfig = {
-      navigation: {
-        nodes: () => [
-          {
-            pathSegment: 'projects',
-            label: 'AAA',
-            viewUrl: '/aaa.html',
-            children: [
-              {
-                pathSegment: 'a1',
-                context: {
-                  varA1: 'maskopatol'
-                },
-                style: {
-                  display: null
-                },
-                viewUrl: '/{context.varA1}/a1.html#p={nodeParams.param1}'
-              },
-              {
-                pathSegment: 'a2',
-                style: {
-                  display: null
-                },
-                viewUrl: '{context.varA2}/a2.html#p={nodeParams.param2}'
-              },
-              {
-                pathSegment: 'teams',
-                defaultChildNode: 't2',
-                children: [
-                  {
-                    pathSegment: 't1',
-                    style: {
-                      display: null
-                    },
-                    viewUrl: '/t1.html'
-                  },
-                  {
-                    pathSegment: 't2',
-                    style: {
-                      display: null
-                    },
-                    viewUrl: '/t2.html'
-                  }
-                ],
-                style: {}
-              },
-              {
-                pathSegment: 'categories',
-                children: [
-                  {
-                    pathSegment: ':category',
-                    viewUrl: '/cats/:category#details',
-                    children: [
-                      {
-                        pathSegment: ':sub',
-                        viewUrl: '/cats/:category/:sub',
-                        style: {}
-                      }
-                    ]
-                  }
-                ],
-                style: {}
-              }
-            ],
-            removeChild: sinon.spy(),
-            context: {
-              varA: 'tets'
-            },
-            loadingIndicator: {},
-            hideSideNav: true,
-            prepend: sinon.spy(),
-            insertBefore: sinon.spy()
-          }
-        ]
-      },
-      settings: {
-        hideNavigation: false
-      }
-    };
     let currentLuigiConfig = {};
     let config;
 
     beforeEach(() => {
+      const sampleLuigiConfig = {
+        navigation: {
+          nodes: () => [
+            {
+              pathSegment: 'projects',
+              label: 'AAA',
+              viewUrl: '/aaa.html',
+              children: [
+                {
+                  pathSegment: 'a1',
+                  context: {
+                    varA1: 'maskopatol'
+                  },
+                  style: {
+                    display: null
+                  },
+                  viewUrl: '/{context.varA1}/a1.html#p={nodeParams.param1}'
+                },
+                {
+                  pathSegment: 'a2',
+                  style: {
+                    display: null
+                  },
+                  viewUrl: '{context.varA2}/a2.html#p={nodeParams.param2}'
+                },
+                {
+                  pathSegment: 'teams',
+                  defaultChildNode: 't2',
+                  children: [
+                    {
+                      pathSegment: 't1',
+                      style: {
+                        display: null
+                      },
+                      viewUrl: '/t1.html'
+                    },
+                    {
+                      pathSegment: 't2',
+                      style: {
+                        display: null
+                      },
+                      viewUrl: '/t2.html'
+                    }
+                  ],
+                  style: {}
+                },
+                {
+                  pathSegment: 'categories',
+                  children: [
+                    {
+                      pathSegment: ':category',
+                      viewUrl: '/cats/:category#details',
+                      children: [
+                        {
+                          pathSegment: ':sub',
+                          viewUrl: '/cats/:category/:sub',
+                          style: {}
+                        }
+                      ]
+                    }
+                  ],
+                  style: {}
+                }
+              ],
+              removeChild: sinon.spy(),
+              context: {
+                varA: 'tets'
+              },
+              loadingIndicator: {},
+              hideSideNav: true,
+              prepend: sinon.spy(),
+              insertBefore: sinon.spy()
+            }
+          ]
+        },
+        settings: {
+          hideNavigation: false
+        }
+      };
       window.Luigi = { config: currentLuigiConfig };
       currentLuigiConfig = Object.assign({}, sampleLuigiConfig);
       LuigiConfig.config = currentLuigiConfig;
@@ -221,6 +221,9 @@ describe('Routing', function() {
         navigateOk: null
       };
       sinon.stub(Routing, 'navigateTo');
+      sinon
+        .stub(GenericHelpers, 'isElementVisible')
+        .callsFake(element => element);
     });
 
     it('should set component data with hash path', async () => {
@@ -581,6 +584,43 @@ describe('Routing', function() {
       sinon.assert.calledOnce(window.open);
       sinon.assert.calledWithExactly(window.open, 'http://localhost', '_blank');
       sinon.assert.calledOnce(window.focus);
+    });
+  });
+
+  describe('showPageNotFoundError()', () => {
+    let component = {
+      showAlert: () => {}
+    };
+    let pathToRedirect = '/go/here';
+    let pathToRedirect2 = '/go/there';
+    let notFoundPath = '/this/does/not/exist';
+    beforeEach(() => {
+      sinon.stub(Routing, 'navigateTo');
+      sinon.stub(LuigiI18N, 'getTranslation');
+      sinon.stub(component, 'showAlert');
+    });
+
+    it('navigate to redirect path', () => {
+      LuigiConfig.getConfigValue.returns(null);
+
+      Routing.showPageNotFoundError(component, pathToRedirect, notFoundPath);
+
+      sinon.assert.calledWithExactly(Routing.navigateTo, pathToRedirect);
+    });
+
+    it('navigate to path specified by custom handler', () => {
+      let custom = {
+        handler: () => {
+          return {
+            redirectTo: pathToRedirect2
+          };
+        }
+      };
+      LuigiConfig.getConfigValue.returns(custom.handler);
+
+      Routing.showPageNotFoundError(component, pathToRedirect, notFoundPath);
+
+      sinon.assert.calledWithExactly(Routing.navigateTo, pathToRedirect2);
     });
   });
 });

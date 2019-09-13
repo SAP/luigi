@@ -48,6 +48,7 @@
   {/if}
   <TopNav
     pathData="{navigationPath}"
+    pathParams="{pathParams}"
     on:handleClick="handleNavClick(event.node)"
   />
   {#if !(hideNav||hideSideNav)}
@@ -355,7 +356,7 @@
         });
 
         window.addEventListener('message', async e => {
-          const iframe = IframeHelpers.getValidMessageSource(e, this);
+          const iframe = IframeHelpers.getValidMessageSource(e);
           if (!iframe) return;
 
           if ('custom' === e.data.msg) {
@@ -625,9 +626,6 @@
       }
     },
     methods: {
-      getValidMessageSource(e) {
-        return IframeHelpers.getValidMessageSource(e, this);
-      },
       handleNavigation(data, config) {
         let path = buildPath(this, data.params);
         path = GenericHelpers.addLeadingSlash(path);
@@ -915,6 +913,21 @@
   :global(a) {
     cursor: pointer;
   }
+  :global([luigi-app-loading-indicator]) {
+    z-index: 10;
+    background-color: var(--fd-background-color);
+    padding-top: 30vh;
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+  }
+  :global([luigi-app-loading-indicator].hidden) {
+    visibility: hidden;
+    opacity: 0;
+    @include transition(visibility 0s 0.3s, opacity 0.3s linear);
+  }
 
   .iframeContainer,
   .spinnerContainer {
@@ -928,6 +941,7 @@
     min-height: auto;
     display: block;
   }
+
   .iframeContainer {
     overflow: auto;
     -webkit-overflow-scrolling: touch;

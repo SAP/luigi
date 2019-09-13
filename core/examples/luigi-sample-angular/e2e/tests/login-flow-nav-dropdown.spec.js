@@ -13,8 +13,8 @@ describe('Login Flow', () => {
   it('Username in profile dropdown', () => {
     cy.login('tets@email.com', 'tets');
 
-    cy.get('[data-e2e="luigi-topnav-profile"]').click();
-    cy.get('[data-e2e="luigi-topnav-profile-username"]').should(
+    cy.get('[data-testid="luigi-topnav-profile"]').click();
+    cy.get('[data-testid="luigi-topnav-profile-username"]').should(
       'contain',
       'Luigi User'
     );
@@ -23,8 +23,8 @@ describe('Login Flow', () => {
   it('Link in profile dropdown', () => {
     cy.login('tets@email.com', 'tets');
 
-    cy.get('[data-e2e="luigi-topnav-profile"]').click();
-    cy.get('[data-e2e="luigi-topnav-profile-item"]')
+    cy.get('[data-testid="luigi-topnav-profile"]').click();
+    cy.get('[data-testid="luigi-topnav-profile-item"]')
       .contains('Project 1')
       .click();
 
@@ -39,8 +39,8 @@ describe('Login Flow', () => {
     cy.selectContextSwitcherItem('Remove Project');
     cy.expectPathToBe('/projects');
 
-    cy.get('[data-e2e="luigi-topnav-profile"]').click();
-    cy.get('[data-e2e="luigi-topnav-profile-item"]').should(
+    cy.get('[data-testid="luigi-topnav-profile"]').click();
+    cy.get('[data-testid="luigi-topnav-profile-item"]').should(
       'not.contain',
       'Project 1'
     );
@@ -49,7 +49,7 @@ describe('Login Flow', () => {
     cy.selectContextSwitcherItem('New Project');
     cy.expectPathToBe('/projects');
 
-    cy.get('[data-e2e="luigi-topnav-profile-item"]').should(
+    cy.get('[data-testid="luigi-topnav-profile-item"]').should(
       'contain',
       'Project 1'
     );
@@ -62,8 +62,11 @@ describe('Login Flow', () => {
     const testLogo =
       'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mM0WCn/HgAD8gHpXMQ+4AAAAABJRU5ErkJggg==';
 
-    cy.get('[data-e2e="luigi-topnav-title"]').should('contain', 'Luigi Demo');
-    cy.get('[data-e2e="luigi-topnav-title"]').should(
+    cy.get('[data-testid="luigi-topnav-title"]').should(
+      'contain',
+      'Luigi Demo'
+    );
+    cy.get('[data-testid="luigi-topnav-title"]').should(
       'not.have.attr',
       'src',
       testLogo
@@ -75,8 +78,8 @@ describe('Login Flow', () => {
       config.settings.header.logo = testLogo;
       win.Luigi.configChanged('settings.header');
 
-      cy.get('[data-e2e="luigi-topnav-title"]').should('contain', testTitle);
-      cy.get('[data-e2e="luigi-topnav-logo"]').should(
+      cy.get('[data-testid="luigi-topnav-title"]').should('contain', testTitle);
+      cy.get('[data-testid="luigi-topnav-logo"]').should(
         'have.attr',
         'src',
         testLogo
@@ -88,13 +91,13 @@ describe('Login Flow', () => {
     cy.login('tets@email.com', 'tets');
 
     //logout
-    cy.get('[data-e2e="luigi-topnav-profile"]').click();
+    cy.get('[data-testid="luigi-topnav-profile"]').click();
     cy.contains('End session').click();
-    cy.get('[data-e2e="logout-headline"]').should(
+    cy.get('[data-testid="logout-headline"]').should(
       'contain',
       'You have successfully logged out'
     );
-    cy.get('[data-e2e="logout-message"]').should(
+    cy.get('[data-testid="logout-message"]').should(
       'contain',
       'Sign in again to continue working on awesome things!'
     );
@@ -119,13 +122,13 @@ describe('TopNavDropDown', () => {
 
     it('Clicking around drop down in TopNav', () => {
       //check if google is there
-      cy.get('[data-e2e="topnav-category"][title="Misc"]').click();
+      cy.get('[data-testid="misc"]').click();
 
-      cy.get('[data-e2e="topnav-dropdown-item"]').contains(
+      cy.get('[data-testid="opengoogleinthistab"]').contains(
         'Open Google in this tab'
       );
 
-      cy.get('[data-e2e="topnav-dropdown-item"]')
+      cy.get('[data-testid="all-users_visibleforallusers"]')
         .contains('Visible for all users')
         .click();
 
@@ -139,14 +142,14 @@ describe('TopNavDropDown', () => {
     });
 
     it('Should be able to select product', () => {
-      cy.get('[data-cy="mobile-menu"]').click();
+      cy.get('[data-testid="mobile-menu"]').click();
 
       //open mobile topnav dropdown
       cy.get(
-        '[data-cy="mobile-topnav-dropdown-category"][title="Misc"]'
+        '[data-e2e="mobile-topnav-dropdown-category"][title="Misc"]'
       ).click();
 
-      cy.get('[data-cy="mobile-topnav-dropdown-item"]')
+      cy.get('[data-e2e="mobile-topnav-dropdown-item"]')
         .contains('Visible for all users')
         .click();
 
@@ -154,15 +157,15 @@ describe('TopNavDropDown', () => {
     });
 
     it('Should be able to close', () => {
-      cy.get('[data-cy="mobile-menu"]').click();
+      cy.get('[data-testid="mobile-menu"]').click();
 
       //open mobile topnav dropdown
       cy.get(
-        '[data-cy="mobile-topnav-dropdown-category"][title="Misc"]'
+        '[data-e2e="mobile-topnav-dropdown-category"][title="Misc"]'
       ).click();
 
       //close mobile topnav dropdown
-      cy.get('[data-cy="mobile-topnav-dropdown-close"]').click();
+      cy.get('[data-testid="mobile-topnav-dropdown-close"]').click();
 
       //no mobile topnav dropdown is visible
       cy.get('.fd-product-switcher').should('not.be.visible');

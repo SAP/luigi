@@ -30,15 +30,15 @@ describe('Modal Microfrontend', () => {
         .click();
 
       cy.wrap($iframeBody)
-        .get('[data-e2e=modal-mf]')
+        .get('[data-testid=modal-mf]')
         .should('be.visible');
 
       cy.wrap($iframeBody)
-        .get('[data-e2e=modal-mf] [aria-label=close]')
+        .get('[data-testid=modal-mf] [aria-label=close]')
         .click();
 
       cy.wrap($iframeBody)
-        .get('[data-e2e=modal-mf]')
+        .get('[data-testid=modal-mf]')
         .should('not.be.visible');
     });
 
@@ -47,7 +47,7 @@ describe('Modal Microfrontend', () => {
         .contains('rendered in a modal')
         .click();
 
-      cy.get('[data-e2e=modal-mf] iframe').then(ifr => {
+      cy.get('[data-testid=modal-mf] iframe').then(ifr => {
         expect(ifr.attr('src')).to.equal('/sampleapp.html#/settings');
       });
     });
@@ -57,7 +57,7 @@ describe('Modal Microfrontend', () => {
         .contains('rendered in a modal')
         .click();
 
-      cy.get('[data-e2e=modal-mf]').then(modal => {
+      cy.get('[data-testid=modal-mf]').then(modal => {
         expect(modal.attr('style')).to.contain('width:');
         expect(modal.attr('style')).to.contain('height:');
       });
@@ -68,7 +68,7 @@ describe('Modal Microfrontend', () => {
         .contains('rendered in a modal')
         .click();
 
-      cy.get('[data-e2e=modal-mf] iframe')
+      cy.get('[data-testid=modal-mf] iframe')
         .iframe()
         .then(modal => {
           cy.wrap(modal)
@@ -146,6 +146,7 @@ describe('SplitView Microfrontend', () => {
         });
         cy.splitViewButtons($iframeBody)
           .contains(test.buttonToClick)
+          .should('be.visible')
           .click();
       });
 

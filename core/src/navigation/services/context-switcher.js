@@ -1,4 +1,5 @@
 import { GenericHelpers } from '../../utilities/helpers';
+import { Routing } from '../../services/routing';
 import { LuigiConfig } from '../../core-api';
 
 export const ContextSwitcherHelpers = {
@@ -19,8 +20,30 @@ export const ContextSwitcherHelpers = {
     return rawOptions.map(opt => ({
       label: opt.label,
       path: (parentNodePath || '/') + opt.pathValue,
-      id: opt.pathValue
+      id: opt.pathValue,
+      testId: opt.testId
     }));
+  },
+
+  getNodePathFromCurrentPath(option, selectedOption) {
+    const currentPath = GenericHelpers.addLeadingSlash(
+      Routing.getCurrentPath()
+    );
+    const selectedPath = GenericHelpers.addLeadingSlash(selectedOption.path);
+    if (currentPath.startsWith(selectedPath)) {
+      return (
+        option.path +
+        GenericHelpers.addLeadingSlash(
+          currentPath.substring(selectedPath.length)
+        )
+      );
+    } else {
+      return option.path;
+    }
+  },
+
+  getOptionById(options, id) {
+    return options.find(o => o.id === id);
   },
 
   getLabelFromOptions(options, id) {
@@ -46,38 +69,54 @@ export const ContextSwitcherHelpers = {
     return fallbackLabelResolver ? await fallbackLabelResolver(id) : id;
   },
 
-  async getSelectedLabel(
-    currentPath,
-    options,
-    parentNodePath,
-    fallbackLabelResolver
-  ) {
+  getSelectedId(currentPath, options, parentNodePath) {
     currentPath = GenericHelpers.normalizePath(currentPath);
     parentNodePath = GenericHelpers.normalizePath(parentNodePath);
-
     if (
       !ContextSwitcherHelpers.isContextSwitcherDetailsView(
         currentPath,
         parentNodePath
       )
     ) {
-      return;
+      return undefined;
     }
 
     // we are inside the context switcher base path
-    const selectedId = currentPath
+    return currentPath
       .replace(parentNodePath, '')
       .split('/')[0]
       .split('?')[0]; //ignore everything after '?'
+  },
 
-    let selectedLabel;
-
-    if (options) {
-      selectedLabel = ContextSwitcherHelpers.getLabelFromOptions(
+  async getSelectedOption(currentPath, options, parentNodePath) {
+    let selectedOption;
+    const selectedId = this.getSelectedId(currentPath, options, parentNodePath);
+    if (selectedId && options) {
+      selectedOption = ContextSwitcherHelpers.getOptionById(
         options,
         selectedId
       );
     }
+    return selectedOption;
+  },
+
+  async getSelectedLabel(
+    currentPath,
+    options,
+    parentNodePath,
+    fallbackLabelResolver
+  ) {
+    const selectedId = this.getSelectedId(currentPath, options, parentNodePath);
+    if (!selectedId) {
+      return;
+    }
+
+    let selectedOption = await this.getSelectedOption(
+      currentPath,
+      options,
+      parentNodePath
+    );
+    let selectedLabel = selectedOption ? selectedOption.label : undefined;
 
     // get the label from fallback if selectedId is not
     // in options or options not yet lazy loaded by click

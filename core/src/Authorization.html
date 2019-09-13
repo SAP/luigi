@@ -9,16 +9,17 @@
         aria-label="Username"
         id="username"
         class="fd-has-type-2"
-        data-e2e="luigi-topnav-profile-username"
+        data-testid="luigi-topnav-profile-username"
       >{userInfo.name ? userInfo.name : userInfo.email}</span>
     </li>
+    {/if}
     {/if}
     {#each profileNav.items as profileItem}
     <li
       on:click="onActionClick(profileItem)"
       data-testid="{getTestId(profileItem)}"
     >
-      <a class="fd-menu__item" data-e2e="luigi-topnav-profile-item">
+      <a class="fd-menu__item" data-testid="luigi-topnav-profile-item">
         {#if profileItem.icon}
         {#if hasOpenUIicon(profileItem)}
         <span
@@ -35,6 +36,7 @@
       </a>
     </li>
     {/each}
+    {#if isAuthorizationEnabled || isProfileLogoutItem}
     <li on:click="onLogoutClick()" data-testid="{getTestId(profileNav.logout)}">
       <a aria-label="Logout" class="fd-menu__item">
         {#if profileNav.logout.icon}
@@ -52,10 +54,11 @@
         <span>{$getTranslation(profileNav.logout.label)}</span>
       </a>
     </li>
-    {:else}
+    {#if !isLoggedIn && !isProfileLogoutItem}
     <li on:click="startAuthorization()">
       <a aria-label="Login" class="fd-menu__item">Login</a>
     </li>
+    {/if}
     {/if}
   </ul>
 </nav>
@@ -131,9 +134,12 @@
     },
     async oncreate() {
       if (!LuigiAuth.isAuthorizationEnabled()) {
+        this.set({ isAuthorizationEnabled: false });
+        this.setProfileNavData();
         return;
+      } else {
+        this.set({ isAuthorizationEnabled: true });
       }
-
       const idpProviderName = LuigiConfig.getConfigValue('auth.use');
       const idpProviderSettings = LuigiConfig.getConfigValue(
         `auth.${idpProviderName}`
@@ -269,15 +275,26 @@
                 'navigation.profile.logout'
               );
               const profileNavData = {
-                logout: {
-                  ...TOP_NAV_DEFAULTS.logout,
-                  ...logoutItem
-                },
                 items:
                   (await LuigiConfig.getConfigValueAsync(
                     'navigation.profile.items'
                   )) || []
               };
+              profileNavData['logout'] = {
+                ...TOP_NAV_DEFAULTS.logout,
+                ...logoutItem
+              };
+              this.set({ isProfileLogoutItem: !!logoutItem });
+              this.set({ profileLogoutfnDefinded: false });
+              if (logoutItem) {
+                const profileLogoutfn = logoutItem.customLogoutFn;
+                if (
+                  profileLogoutfn &&
+                  GenericHelpers.isFunction(profileLogoutfn)
+                ) {
+                  this.set({ profileLogoutfnDefinded: true });
+                }
+              }
               this.set({ profileNav: profileNavData });
             },
             ['navigation.profile']
@@ -301,12 +318,20 @@
       },
       onLogoutClick: function() {
         this.root.getUnsavedChangesModalPromise().then(() => {
-          this.logout();
+          if (this.get().isAuthorizationEnabled) {
+            this.logout();
+          } else if (
+            this.get().isProfileLogoutItem &&
+            this.get().profileLogoutfnDefinded
+          ) {
+            this.get().profileNav.logout.customLogoutFn();
+          } else {
+            console.error('No IDP logout or customLogoutFn is defined.');
+          }
         });
       },
       logout: function() {
         const authData = AuthHelpers.getStoredAuthData();
-
         const logoutCallback = async redirectUrl => {
           await LuigiAuth.handleAuthEvent(
             'onLogout',
@@ -317,7 +342,6 @@
           this.set({ isLoggedIn: false });
           localStorage.removeItem('luigi.auth');
         };
-
         const customLogoutFn = LuigiConfig.getConfigValue(
           `auth.${LuigiConfig.getConfigValue('auth.use')}.logoutFn`
         );
@@ -329,6 +353,11 @@
           );
         } else if (GenericHelpers.isFunction(idpProviderInstance.logout)) {
           idpProviderInstance.logout(authData, logoutCallback);
+        } else if (
+          this.get().isProfileLogoutItem &&
+          this.get().profileLogoutfnDefinded
+        ) {
+          this.get().profileNav.logout.customLogoutFn();
         } else {
           logoutCallback(idpProviderInstance.settings.logoutUrl);
         }

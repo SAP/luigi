@@ -4,14 +4,14 @@
     class="fd-alert fd-alert--{alertTypeMap[alert.settings.type]} fd-alert--dismissible"
     role="alert"
     id="j2ALl423"
-    data-cy="luigi-alert"
+    data-testid="luigi-alert"
   >
     <button
       class="fd-alert__close close-button"
       on:click="fire('alertDismiss',{id: alert.settings.id})"
       aria-label="Close"
       aria-controls="j2ALl423"
-      data-cy="luigi-alert-dismiss"
+      data-testid="luigi-alert-dismiss"
     ></button>
     {@html alert.dataSanitized ? alert.settings.text: ''}
   </div>
