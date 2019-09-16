@@ -23,6 +23,18 @@ The lerna-changelog tool detects changes based on PR labels and maps them to sec
     ...
   }
 -->
+## [v0.6.4] (2019-09-13)
+
+#### :rocket: Added
+* [#825](https://github.com/SAP/luigi/pull/825) Context switcher should (optionally) not shorten the navigation path on context change ([@pekura](https://github.com/pekura))
+* [#812](https://github.com/SAP/luigi/pull/812) custom logout action in profile section ([@JohannesDoberer](https://github.com/JohannesDoberer))
+* [#787](https://github.com/SAP/luigi/pull/787) luigiAfterInit lifecycle hook + app loading indicator  ([@maxmarkus](https://github.com/maxmarkus))
+* [#803](https://github.com/SAP/luigi/pull/803) Title dropdown feature for switching applications ([@pekura](https://github.com/pekura))
+* [#791](https://github.com/SAP/luigi/pull/791) user menu without authorization ([@JohannesDoberer](https://github.com/JohannesDoberer))
+
+#### :bug: Fixed
+* [#821](https://github.com/SAP/luigi/pull/821) Rework backdrop for luigi-app-root bootstrap mode ([@zarkosimic](https://github.com/zarkosimic))
+
 ## [v0.6.3] (2019-09-05)
 
 #### :rocket: Added
@@ -512,3 +524,4 @@ The lerna-changelog tool detects changes based on PR labels and maps them to sec
 [v0.6.1]: https://github.com/SAP/luigi/compare/v0.6.0...v0.6.1
 [v0.6.2]: https://github.com/SAP/luigi/compare/v0.6.1...v0.6.2
 [v0.6.3]: https://github.com/SAP/luigi/compare/v0.6.2...v0.6.3
+[v0.6.4]: https://github.com/SAP/luigi/compare/v0.6.3...v0.6.4
