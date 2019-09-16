@@ -95,7 +95,9 @@
 
   .editor_container {
     visibility: hidden;
-    z-index: -1;
+	z-index: -1;
+	width: 100%;
+	height: 100%;
   }
 
   :global(.editorVisible) .editor_container {
