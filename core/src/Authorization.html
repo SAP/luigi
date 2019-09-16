@@ -2,7 +2,6 @@
 {#if !isHidden}
 <nav class="fd-menu">
   <ul class="fd-menu__list">
-    {#if isLoggedIn}
     {#if showUserInfo}
     <li>
       <span
@@ -12,7 +11,6 @@
         data-testid="luigi-topnav-profile-username"
       >{userInfo.name ? userInfo.name : userInfo.email}</span>
     </li>
-    {/if}
     {/if}
     {#each profileNav.items as profileItem}
     <li
@@ -136,6 +134,7 @@
       if (!LuigiAuth.isAuthorizationEnabled()) {
         this.set({ isAuthorizationEnabled: false });
         this.setProfileNavData();
+        this.setProfileUserData();
         return;
       } else {
         this.set({ isAuthorizationEnabled: true });
@@ -191,6 +190,7 @@
             });
           } else {
             this.set({ isLoggedIn: true });
+            this.setProfileUserData();
           }
         }
 
@@ -300,6 +300,14 @@
             ['navigation.profile']
           );
           this.set({ navProfileListenerInstalled: true });
+        }
+      },
+      setProfileUserData: async function() {
+        const userInfo = await LuigiConfig.getConfigValueAsync(
+          'navigation.profile.staticUserInfoFn'
+        );
+        if (userInfo) {
+          this.set({ userInfo });
         }
       },
       startAuthorization: function() {
