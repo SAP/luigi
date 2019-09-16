@@ -52,10 +52,11 @@ class LuigiUX {
    *  .showAlert(settings)
    *  .then(() => {
    *     // Logic to execute when the alert is dismissed
-   * });
+   *  });
    */
 
   showAlert(settings) {
+    console.log('Works!');
     return Luigi.showAlert(settings);
   }
 
@@ -63,6 +64,11 @@ class LuigiUX {
    * @private
    * @memberof UX
    * @param {string} id alert id
+   * @since 0.6.4
+   * @example
+   * Luigi
+   *  .ux()
+   *  .hideAlert(id);
    */
   hideAlert(id) {
     return Luigi.hideAlert(id);
@@ -77,6 +83,20 @@ class LuigiUX {
    * @param {string} [settings.buttonConfirm="Yes"] the label for the modal confirm button
    * @param {string} [settings.buttonDismiss="No"] the label for the modal dismiss button
    * @returns {promise} which is resolved when accepting the confirmation modal and rejected when dismissing it
+   * @since 0.6.4
+   * @example
+   * const settings = {
+   *  header: "Confirmation",
+   *  body: "Are you sure you want to do this?",
+   *  buttonConfirm: "Yes",
+   *  buttonDismiss: "No"
+   * }
+   * Luigi
+   *  .ux()
+   *  .showConfirmationModal(settings)
+   *  .then(() => {
+   *     // Logic to execute when the alert is dismissed
+   *  });
    */
 
   showConfirmationModal(settings) {

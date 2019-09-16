@@ -36,7 +36,7 @@ const configReadyCallback = () => {
 
     Luigi._app = app;
   });
-
+  console.log('TEST : ' + Luigi.ux().showAlert());
   Luigi.showAlert = settings => {
     return app.showAlert(settings);
   };
