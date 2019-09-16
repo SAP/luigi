@@ -33,7 +33,7 @@ There are three main elements to Luigi:
 
 Find the `basicConfiguration.js` file in your luigi-config folder. You can configure the navigation by editing this file. 
 
-You will notice that the file consists of a tree-like structure of **navigation nodes**. The outer nodes represent the top navigation, while their children represent the side navigation. The nodes have some basic properties (called **navigation parameters**) such as labels, links, views, and (optionally) children.
+You will notice that the file consists of a tree-like structure of **navigation nodes**. The first level nodes represent the top navigation, while their children represent the side navigation. The nodes have some basic properties (called **navigation parameters**) such as labels, links, views, and (optionally) children.
 
 Here is an example of a simple navigation structure: 
 
@@ -80,7 +80,7 @@ navigation: {
 In the "First steps" example, you saw some basic navigation parameters:
 
 ### pathSegment
-This is the path in the browser URL. The main application path is built from values in the navigation path, joined with the **/** character. For example, if the value of this parameter is `home`, the path will be `yourwebsite.com/home`. You can override this setting by using one of the following instead of **pathSegment**: 
+This is used to build the path in the browser URL. The main application path is built from values in the navigation path, joined with the **/** character. For example, if the value of a node's **pathSegment** is `home`, the path for that node will be `yourwebsite.com/home`. You can override this setting by using one of the following instead of **pathSegment**: 
 * **link** - define a specific internal path. Note that a valid path must always start from the **root node**. For example, if your root node is `home`, and you want to navigate to the `projects` directory:
 	- `link: '/home/projects'` is correct
 	- `link: '/projects'`is not correct, since `/projects` is not the root node 
@@ -95,7 +95,15 @@ The URL of the micro frontend which will be displayed in the main content area o
 You may use these parameters if you want to group related navigation nodes:
 
 ### category 
-Simply add the **category** property to the navigation nodes you want to group, and they will be rendered in a dropdown. You should define at least one node in a group with **label** and **icon** properties. For all other nodes, you can set category as a string with the label value. The **collapsible** property is optional and defines whether the dropdown is expanded by default or not. 
+You can add the **category** property to navigation nodes you want to group. The resulting structure will be different depending on whether you want to group top or side navigation nodes. In both cases, you should define at least one node in a group with **label** and **icon** properties. For all other nodes, you can set **category** as a string with the label value. 
+
+**Top navigation:**
+Top navigation nodes in the same category will be rendered as a dropdown. 
+
+**Side navigation:**
+Side navigation nodes will be grouped under a header with the category name. They can be configured to be `collapsible` or not. 
+
+This is an example of what a node with a category including a label and icon looks like:
 
 ```javascript
 {
@@ -109,13 +117,27 @@ Simply add the **category** property to the navigation nodes you want to group, 
 ...
  ```
 
+ All subsequent nodes will only need to be defined using the category label like so: 
+
+ ```javascript
+{
+  category: Links,
+  externalLink: {
+    url: 'http://www.luigi-project.io',
+    sameWindow: false
+  },
+  label: 'Click here to visit the Luigi homepage',
+}, 
+...
+ ```
+
 ### viewGroup
 
-Imagine your application hosts two micro frontend views: `http://mysite.com/a#e` and  `http://mysite.com/b#f`. Due to hash routing and a different path up to `#`, they are, by default, rendered in different iframes. However, as they both have the **same origin**, such as`mysite.com`, and belong to the **same micro frontend** you want to render them in the same iframe. To achieve that, use the view groups feature. Define the **viewGroup** parameter for top navigation nodes. The children nodes will automatically be considered as part of the same view group. 
+Imagine your application hosts two micro frontend views: `http://mysite.com/a#e` and  `http://mysite.com/b#f`. Due to hash routing and a different path up to `#`, they are, by default, rendered in different iframes. However, as they both have the **same origin**, such as`mysite.com`, and belong to the **same micro frontend** you want to render them in the same iframe. To achieve that, use the view groups feature. Define the **viewGroup** parameter for any navigation node. The children nodes will automatically be considered as part of the same view group. 
 
 Nodes belonging to the same view group are always rendered in their own view group iframe. Nodes not belonging to any view group follow the same-origin iframe rendering policy. 
 
-The view groups feature also offers out-of-the-box caching. Each time you navigate to another view group, either a new iframe is created or it is reused if already exists. In both cases, the iframe you are navigating from becomes hidden and is available for you to use again. If you navigate back to the first iframe and it should be updated with new data, such when a new entry was added in the second iframe and you want to display it in a table in the first iframe, you must define a **preloadUrl** parameter for a given view in the view group to ensure that the view is refreshed when you navigate back to it. 
+The view groups feature also offers out-of-the-box caching. Each time you navigate to another view group, either a new iframe is created or it is reused if already exists. In both cases, the iframe you are navigating from becomes hidden and is available for you to use again. If you navigate back to the first iframe and it should be updated with new data, such when a new entry was added in the second iframe and you want to display it in a table in the first iframe, you must define a **preloadUrl** parameter for the view group under navigation.viewGroupSettings.
 
 You can also preload view groups. You just need to define which URL you want to preload, and Luigi will preload the view after some user interactions when the browser is most likely to be idle. This option is active by default, but you can deactivate it with a [configuration flag](navigation-parameters-reference.md#node-parameters).
 
@@ -146,7 +168,7 @@ navigation: {
                 pathSegment: ':userId',
                 label: 'User Profile',
                 // E.g. if userId is 'JohnSmith'
-                // the main application URL will be https://yourwebsite.com/users/:JohnSmith
+                // the main application URL will be https://yourwebsite.com/users/JohnSmith
               }
             ]
           }
