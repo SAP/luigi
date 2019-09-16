@@ -18,12 +18,11 @@ jobs:
       script:
         - export CYPRESS_CACHE_FOLDER=$TRAVIS_BUILD_DIR/cypress-binary-cache
         - npm i -g lerna
-        - lerna bootstrap --ci --ignore "*luigi-sample-vue"
-        - echo 'core' && ls core/node_modules | wc -l && echo 'client' && ls client/node_modules | wc -l
-        - lerna run bundle --ignore "*luigi-sample-vue"
-        - lerna run bundlesizeOnly --ignore "*luigi-sample-vue"
-        - lerna run build --ignore "*luigi-sample-vue"
-        - npm test --prefix core
+        - lerna bootstrap --ci --ignore "*luigi-sample-vue" || travis_terminate 1
+        - lerna run bundle --ignore "*luigi-sample-vue" || travis_terminate 1
+        - lerna run bundlesizeOnly --ignore "*luigi-sample-vue" || travis_terminate 1
+        - lerna run build --ignore "*luigi-sample-vue" || travis_terminate 1
+        - npm test --prefix core || travis_terminate 1
         - du -sh
       before_cache:
         - rm -rf ~/.npm/_logs
@@ -37,6 +36,20 @@ jobs:
       script:
         - cd $TRAVIS_BUILD_DIR/scripts && npm ci
         - cd $TRAVIS_BUILD_DIR && bash ./scripts/docuCheck.sh
+      before_cache:
+        - rm -rf ~/.npm/_logs
+        - rm -rf ~/.npm/_cacache
+
+    #----- WHITESOURCE -----
+    - name: 'Whitesource check'
+      if: repo = SAP/luigi AND (branch = master)
+      script:
+        - 'if [ ! -z "${WHITESOURCE_APIKEY}" ]; then
+            npm --prefix ./website/landingpage/dev install ./website/landingpage/dev;
+            lerna bootstrap --ci --ignore "*luigi-sample-vue";
+            npm i -g whitesource;
+            bash ./scripts/whiteSource.sh;
+          fi'
       before_cache:
         - rm -rf ~/.npm/_logs
         - rm -rf ~/.npm/_cacache
@@ -75,7 +88,8 @@ jobs:
       # run only when merging from release-v branch to master
       # if: repo = SAP/luigi AND head_branch ~= ^release-v
       if: repo = SAP/luigi AND (branch = master OR branch ~= ^release-v)
-      script: bash ./scripts/npmPublish.sh
+      script:
+        - bash ./scripts/npmPublish.sh
       before_cache:
         - rm -rf ~/.npm/_logs
         - rm -rf ~/.npm/_cacache

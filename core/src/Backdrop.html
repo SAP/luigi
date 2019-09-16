@@ -36,7 +36,7 @@
     },
     methods: {
       setBackdropClass() {
-        const baseClasses = 'fd-ui__overlay fd-overlay fd-overlay--modal ';
+        const baseClasses = 'lui-backdrop ';
         if (!this.get().backdropActive) {
           this.set({ backdropClass: '' });
         } else if (this.options.data && this.options.data.heightCssClass) {
@@ -52,12 +52,13 @@
 </script>
 
 <style type="text/scss">
-  /* Due to approach use (splitted backdrop) we need to override styles fd styles */
-  .fd-overlay {
-    position: fixed;
+  .lui-backdrop {
+    background-color: rgba(74, 80, 92, 0.3);
+    position: absolute;
     left: 0;
     top: 0;
     bottom: 0;
     right: 0;
+    z-index: 1;
   }
 </style>

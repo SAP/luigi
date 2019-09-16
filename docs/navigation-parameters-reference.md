@@ -120,6 +120,7 @@ Luigi.setConfig({
         label: 'End session'
         // icon: "sys-cancel",
         testId: 'myTestId',
+        customLogoutFn: myLogoutFn
       },
       items: [
         {
@@ -171,7 +172,7 @@ You can configure the way Luigi tackles routing in your application in the **Rou
 - **useHashRouting** defines either hash-based (`url.com/#/yourpath`) or path-based (`url.com/yourpath`) routing.
 - **nodeParamPrefix** sets the prefix character when using the `LuigiClient.linkManager().withParam()` function, which provides a way to simply attach query parameters to the view URL for activities such as sorting and filtering. The URL contains the parameters to allow deep linking. If you want to use a different character prefix, define yours here. The default character is `~`.
 - **skipRoutingForUrlPatterns** defines regex patterns to be skipped by the router when listening for path changes. This parameter is used for excluding **redirect_uri** parameters. Default patterns are `[/access_token=/, '/id_token=/]`.
-- **pageNotFoundHandler** is a function defining custom behavior when the 404 (page not found) error occurs.  Luigi handles it by default. Leave its body empty if you have an external 404 handling. This function takes the following parameters: 
+- **pageNotFoundHandler** is a function defining custom behavior when the 404 (page not found) error occurs.  Luigi handles it by default. Leave its body empty if you have an external 404 handling. You can return an Object with `redirectTo` property if you want Luigi to redirect to a specific navigation path after execution. This function takes the following parameters: 
   - **wrongPath**(string): the path that user tried to navigate to
   - **wasAnyPathFitted**(bool): it is true if Luigi managed to fit a valid path which means **wrongPath** was only partially wrong. Otherwise it is false.
 
@@ -244,6 +245,7 @@ The context switcher is a drop-down list available in the top navigation bar. It
   - **link** defines an absolute Link to a **node**. This parameter is optional.
   - **clickHandler** specifies a function and is executed on click and should return a boolean. If it returns `true`, **link** is opened afterwards.
 - **fallbackLabelResolver** specifies a function used to fetch the **label** for **options** with no **label** defined. Additionally, it fetches the drop-down label for non-existing **options**.
+- **preserveSubPathOnSwitch** if set to `true`, the sub-path will be preserved on context switch.
 
 
 ## Profile
@@ -254,6 +256,7 @@ The profile section is a configurable drop-down list available in the top naviga
   - **label** overrides the text for the logout item. The default value is "Sign Out".
   - **testId** is a string where you can define your own custom `testId`. If nothing is specified, it is the node's label written as one word and lower case (e.g. `label`).
   - **icon** overrides the icon for the logout item. The default value is [SAP UI5 log icon](https://sapui5.hana.ondemand.com/test-resources/sap/m/demokit/iconExplorer/webapp/index.html#/overview/SAP-icons/?tag=logout).
+  - **customLogoutFn** defines a function to implement your own logout functionality. It is recommended to only use this function if no IDP is configured. If an IDP with a corresponding [logout function](https://github.com/SAP/luigi/blob/master/docs/authorization-configuration.md) is defined , the customLogoutFn on profile will be ignored.
 - **items** is an array of objects, each one being a link to a Luigi navigation node or an external URL. An item can have the following parameters:
   - **label** defines the text for the link.
   - **testId** is a string where you can define your own custom `testId`. If nothing is specified, it is the node's label written as one word and lower case (e.g. `label`).
@@ -279,3 +282,12 @@ The product switcher is a pop-up window available in the top navigation bar. It 
   - **externalLink** is an object which indicates that the node links to an external URL. If this parameter is defined, the **link** parameter is ignored. It has the following properties:
     - **sameWindow** defines if the external URL is opened in the current tab or in a new one. The default value for this parameter is `false`.
     - **url** is the external URL that the link leads to.
+
+## App switcher
+
+The app switcher is a drop-down list available in the top navigation bar. It allows you to switch between the navigation elements displayed in the drop-down. To do so, add the **appSwitcher** property to the **navigation** object using the following optional properties:
+- **showMainAppEntry** includes the link to the root of the Luigi application in the drop-down using the **title** specified in the **settings/header** section of the configuration as a label.
+- **items** defines the list of apps. App element properties are:
+  - **title** defines the app title. This is shown in the app switcher drop-down as well as the title in the header of the Luigi application if a user is in the context of the app. 
+  - **subTitle** defines the app sub-title. This is shown as the sub-title in the header of the Luigi application if a user is in the context of the app. 
+  - **link** is a link within the Luigi application that defines the root of the app. It is used to switch to the app if the drop-down entry is selected. It is also used to determine if a user is within the app's scope, so that the corresponding title and sub-title can be rendered in the header. 
