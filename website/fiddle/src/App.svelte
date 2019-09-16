@@ -105,7 +105,7 @@
 
   #editor {
     width: 100%;
-    height: calc(100vh - 200px);
+    height: calc(100vh - 300px);
   }
 
   .fd-action-bar__header {
