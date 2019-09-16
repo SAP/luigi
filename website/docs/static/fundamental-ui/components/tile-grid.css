@@ -1,0 +1,80 @@
+/*!
+ * Fundamentals v1.7.1
+ * Copyright (c) 2019 SAP SE or an SAP affiliate company.
+ * Licensed under Apache License 2.0 (https://github.com/SAP/Fundamental/blob/master/LICENSE)
+ */
+/*!
+.fd-tile-grid+(--2col | --4col | --5col | --6col)
+*/
+.fd-tile-grid {
+  --fd-tile-grid-border-color: var(--fd-color-neutral-2);
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-wrap: wrap;
+  flex-wrap: wrap;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  position: relative
+}
+.fd-tile-grid > * {
+  margin-bottom: 0;
+  border-radius: 0!important;
+  position: relative;
+  border-style: solid;
+  border-color: var(--fd-tile-grid-border-color);
+  border-width: 0 1px 1px 0;
+  min-width: calc(100% / 2);
+  width: auto;
+  -webkit-box-flex: 1;
+  -ms-flex: 1;
+  flex: 1
+}
+@media (min-width:320px) {
+  .fd-tile-grid {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-orient: horizontal;
+    -webkit-box-direction: normal;
+    -ms-flex-direction: row;
+    flex-direction: row;
+    -ms-flex-wrap: wrap;
+    flex-wrap: wrap;
+    display: grid;
+    grid-template-columns: repeat(3,1fr);
+    grid-gap: 0
+  }
+  .fd-tile-grid--2col {
+    grid-template-columns: repeat(2,1fr)
+  }
+  .fd-tile-grid--2col > * {
+    min-width: calc(100% / 2)
+  }
+  .fd-tile-grid--3col {
+    grid-template-columns: repeat(3,1fr)
+  }
+  .fd-tile-grid--3col > * {
+    min-width: calc(100% / 3)
+  }
+  .fd-tile-grid--4col {
+    grid-template-columns: repeat(4,1fr)
+  }
+  .fd-tile-grid--4col > * {
+    min-width: calc(100% / 4)
+  }
+  .fd-tile-grid--5col {
+    grid-template-columns: repeat(5,1fr)
+  }
+  .fd-tile-grid--5col > * {
+    min-width: calc(100% / 5)
+  }
+  .fd-tile-grid--6col {
+    grid-template-columns: repeat(6,1fr)
+  }
+  .fd-tile-grid--6col > * {
+    min-width: calc(100% / 6)
+  }
+}

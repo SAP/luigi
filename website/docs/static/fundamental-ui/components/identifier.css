@@ -1,0 +1,161 @@
+/*!
+ * Fundamentals v1.7.1
+ * Copyright (c) 2019 SAP SE or an SAP affiliate company.
+ * Licensed under Apache License 2.0 (https://github.com/SAP/Fundamental/blob/master/LICENSE)
+ */
+/*!
+.fd-identifier+((--circle), (--thumbnail), (--xxs|--xs|--s|--m|--l|--xl|--xxl))
+*/
+[class*=fd-identifier] {
+  --fd-identifier-color: var(--fd-color-text-5);
+  --fd-identifier-background-color: var(--fd-color-status-4);
+  font-size: 14px;
+  line-height: 1.42857;
+  color: var(--fd-color-text-1);
+  font-family: '72',-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica Neue,Arial,sans-serif,Apple Color Emoji,Segoe UI Emoji,Segoe UI Symbol;
+  display: inline-block;
+  vertical-align: middle;
+  text-align: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: 50%;
+  border-radius: 4px;
+  background-color: var(--fd-identifier-background-color);
+  color: var(--fd-identifier-color)
+}
+.fd-identifier--xxs {
+  width: 20px;
+  height: 20px;
+  max-width: 20px;
+  max-height: 20px;
+  min-width: 20px;
+  min-height: 20px;
+  font-size: .85714rem;
+  line-height: 1.33333;
+  font-weight: 400;
+  font-weight: 400;
+  font-stretch: condensed;
+  line-height: 20px
+}
+.fd-identifier--xxs::before {
+  font-size: .85714rem;
+  line-height: 1;
+  line-height: 20px
+}
+.fd-identifier--xs {
+  width: 28px;
+  height: 28px;
+  max-width: 28px;
+  max-height: 28px;
+  min-width: 28px;
+  min-height: 28px;
+  font-size: .85714rem;
+  line-height: 1.33333;
+  font-weight: 400;
+  font-weight: 400;
+  font-stretch: condensed;
+  line-height: 28px
+}
+.fd-identifier--xs::before {
+  font-size: .85714rem;
+  line-height: 1;
+  line-height: 28px
+}
+.fd-identifier--s {
+  width: 32px;
+  height: 32px;
+  max-width: 32px;
+  max-height: 32px;
+  min-width: 32px;
+  min-height: 32px;
+  font-size: .85714rem;
+  line-height: 1.33333;
+  font-weight: 400;
+  font-weight: 400;
+  font-stretch: condensed;
+  line-height: 32px
+}
+.fd-identifier--s::before {
+  font-size: 1.14286rem;
+  line-height: 1;
+  line-height: 32px
+}
+.fd-identifier--m {
+  width: 48px;
+  height: 48px;
+  max-width: 48px;
+  max-height: 48px;
+  min-width: 48px;
+  min-height: 48px;
+  font-size: 1rem;
+  line-height: 1.42857;
+  font-weight: 400;
+  line-height: 48px
+}
+.fd-identifier--m::before {
+  font-size: 1.42857rem;
+  line-height: 1;
+  line-height: 48px
+}
+.fd-identifier--l {
+  width: 64px;
+  height: 64px;
+  max-width: 64px;
+  max-height: 64px;
+  min-width: 64px;
+  min-height: 64px;
+  font-size: 1.28571rem;
+  line-height: 1.33333;
+  font-weight: 400;
+  line-height: 64px
+}
+.fd-identifier--l::before {
+  font-size: 1.71429rem;
+  line-height: 1;
+  line-height: 64px
+}
+.fd-identifier--xl {
+  width: 80px;
+  height: 80px;
+  max-width: 80px;
+  max-height: 80px;
+  min-width: 80px;
+  min-height: 80px;
+  font-size: 1.28571rem;
+  line-height: 1.33333;
+  font-weight: 400;
+  line-height: 80px
+}
+.fd-identifier--xl::before {
+  font-size: 1.71429rem;
+  line-height: 1;
+  line-height: 80px
+}
+.fd-identifier--xxl {
+  width: 112px;
+  height: 112px;
+  max-width: 112px;
+  max-height: 112px;
+  min-width: 112px;
+  min-height: 112px;
+  font-size: 1.28571rem;
+  line-height: 1.33333;
+  font-weight: 400;
+  line-height: 112px
+}
+.fd-identifier--xxl::before {
+  font-size: 1.71429rem;
+  line-height: 1;
+  line-height: 112px
+}
+.fd-identifier--circle {
+  border-radius: 50%
+}
+.fd-identifier--thumbnail {
+  text-indent: -200%;
+  overflow: hidden
+}
+.fd-identifier--transparent {
+  --fd-identifier-color: var(--fd-color-text-1);
+  --fd-identifier-background-color: transparent
+}

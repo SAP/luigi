@@ -1,0 +1,5 @@
+/*!
+ * Fundamentals v1.7.1
+ * Copyright (c) 2019 SAP SE or an SAP affiliate company.
+ * Licensed under Apache License 2.0 (https://github.com/SAP/Fundamental/blob/master/LICENSE)
+ */.fd-counter{--fd-counter-color:var(--fd-color-text-5);--fd-counter-background-color:var(--fd-color-status-4);border-radius:4px;color:var(--fd-counter-color);background-color:var(--fd-counter-background-color);font-size:.78571em;line-height:1;display:inline-block;text-align:center;padding:4px}.fd-counter--notification{--fd-counter-background-color:var(--fd-color-status-3);position:absolute;-webkit-transform:translate(-40%,-50%);transform:translate(-40%,-50%)}.fd-counter--notification[dir=rtl],[dir=rtl] .fd-counter--notification{-webkit-transform:translate(40%,-50%);transform:translate(40%,-50%)}

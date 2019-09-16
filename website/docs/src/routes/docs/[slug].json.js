@@ -1,0 +1,33 @@
+import { getParsedDocs } from './_parser';
+
+const lookup = new Map();
+getParsedDocs().then(raw => {
+  const docs = JSON.parse(raw);
+  // console.log('docs', Object.keys(docs[0]));
+	docs.forEach(doc => {
+		console.log('lookup', doc.shortName);
+		lookup.set(doc.shortName, JSON.stringify(doc));
+	});
+})
+
+export function get(req, res, next) {
+	// the `slug` parameter is available because
+	// this file is called [slug].json.js
+	const { slug } = req.params;
+
+	if (lookup.has(slug)) {
+		res.writeHead(200, {
+			'Content-Type': 'application/json'
+		});
+
+		res.end(lookup.get(slug));
+	} else {
+		res.writeHead(404, {
+			'Content-Type': 'application/json'
+		});
+
+		res.end(JSON.stringify({
+			message: `Not found`
+		}));
+	}
+}

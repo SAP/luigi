@@ -1,0 +1,38 @@
+/*!
+ * Fundamentals v1.7.1
+ * Copyright (c) 2019 SAP SE or an SAP affiliate company.
+ * Licensed under Apache License 2.0 (https://github.com/SAP/Fundamental/blob/master/LICENSE)
+ */
+/*!
+.fd-link
+*/
+.fd-link {
+  color: var(--fd-color-action-1);
+  border-bottom-style: solid;
+  border-bottom-width: 1px;
+  border-bottom-color: var(--fd-color-action-1)
+}
+.fd-link .is-hover,
+.fd-link:hover {
+  color: var(--fd-color-action-hover);
+  border-bottom-color: var(--fd-color-action-hover)
+}
+.fd-link:visited {
+  color: var(--fd-color-action-visited);
+  border-bottom-color: var(--fd-color-action-visited)
+}
+.fd-link.is-active,
+.fd-link.is-pressed,
+.fd-link.is-selected,
+.fd-link:active,
+.fd-link[aria-pressed=true],
+.fd-link[aria-selected=true] {
+  color: var(--fd-color-action-selected);
+  border-bottom-color: var(--fd-color-action-selected)
+}
+.fd-link.is-disabled,
+.fd-link:disabled,
+.fd-link[aria-disabled=true] {
+  color: var(--fd-color-action-disabled);
+  border-bottom-color: var(--fd-color-action-disabled)
+}

@@ -1,0 +1,47 @@
+/*!
+ * Fundamentals v1.7.1
+ * Copyright (c) 2019 SAP SE or an SAP affiliate company.
+ * Licensed under Apache License 2.0 (https://github.com/SAP/Fundamental/blob/master/LICENSE)
+ */
+/*!
+.fd-product-switcher
+*/
+.fd-product-switcher {
+  position: relative;
+  display: inline-block
+}
+.fd-product-switcher__body {
+  padding: 20px 10px 0 10px;
+  color: initial
+}
+.fd-product-switcher__body > nav > ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  overflow: hidden;
+  width: 450px
+}
+.fd-product-switcher__body > nav > ul > li {
+  float: left;
+  width: 150px;
+  text-align: center;
+  padding: 0 5px;
+  margin: 0 0 30px 0
+}
+.fd-product-switcher__body > nav > ul > li[dir=rtl],
+[dir=rtl] .fd-product-switcher__body > nav > ul > li {
+  float: right
+}
+.fd-product-switcher__product-icon {
+  display: block;
+  height: 40px;
+  margin: 0 0 10px 0
+}
+.fd-product-switcher__product-icon > img {
+  display: block;
+  max-width: 140px;
+  margin: 0 auto
+}
+.fd-product-switcher__product-title {
+  display: block
+}

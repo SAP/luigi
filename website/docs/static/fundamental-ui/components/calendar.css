@@ -1,0 +1,206 @@
+/*!
+ * Fundamentals v1.7.1
+ * Copyright (c) 2019 SAP SE or an SAP affiliate company.
+ * Licensed under Apache License 2.0 (https://github.com/SAP/Fundamental/blob/master/LICENSE)
+ */
+/*!
+.fd-calendar+()
+    .fd-calendar__header
+      .fd-calendar__navigation
+        .fd-calendar__action
+    .fd-calendar__content
+      .fd-calendar__dates(+[aria-hidden])
+      .fd-calendar__months(+[aria-hidden])
+      .fd-calendar__years(+[aria-hidden])
+        .fd-calendar__table
+        .fd-calendar__list
+          .fd-calendar__item(+[--other-month,--current,--disabled,--blocked],[is-selected,is-selected-range, is-selected-range-first,is-selected-range-last])
+            .fd-calendar__text
+*/
+.fd-calendar .fd-calendar__column-header,
+.fd-calendar .fd-calendar__item {
+  --fd-calendar-item-color: var(--fd-color-action-selected);
+  --fd-calendar-item-background-color: var(--fd-color-background-2);
+  font-size: .85714rem;
+  line-height: 1.33333;
+  font-weight: 400;
+  color: var(--fd-calendar-item-color);
+  background-color: var(--fd-calendar-item-background-color);
+  height: 36px;
+  min-width: 36px;
+  padding: 0;
+  margin: 0;
+  text-align: center;
+  border-radius: 4px;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  justify-content: center
+}
+.fd-calendar .fd-calendar__column-header:hover,
+.fd-calendar .fd-calendar__item:hover {
+  cursor: pointer;
+  --fd-calendar-item-background-color: var(--fd-color-neutral-1)
+}
+.fd-calendar .fd-calendar__item--other-month {
+  --fd-calendar-item-color: var(--fd-color-text-1);
+  opacity: .4
+}
+.fd-calendar .fd-calendar__item--disabled,
+.fd-calendar .fd-calendar__item.is-disabled,
+.fd-calendar .fd-calendar__item[aria-disabled=true] {
+  --fd-calendar-item-color: var(--fd-color-action-disabled)
+}
+.fd-calendar .fd-calendar__item--disabled:hover,
+.fd-calendar .fd-calendar__item.is-disabled:hover,
+.fd-calendar .fd-calendar__item:hover[aria-disabled=true] {
+  cursor: not-allowed;
+  --fd-calendar-item-background-color: var(--fd-color-background-2)
+}
+.fd-calendar .fd-calendar__item--current {
+  position: relative;
+  --fd-calendar-item-color: var(--fd-color-action-selected)
+}
+.fd-calendar .fd-calendar__item--current::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  height: 36px;
+  border-style: solid;
+  border-width: 2px;
+  border-color: var(--fd-color-action);
+  border-radius: 4px
+}
+.fd-calendar .fd-calendar__item--blocked,
+.fd-calendar .fd-calendar__item.is-blocked {
+  text-decoration: line-through;
+  --fd-calendar-item-color: var(--fd-color-text-1)
+}
+.fd-calendar .fd-calendar__item--blocked:hover,
+.fd-calendar .fd-calendar__item.is-blocked:hover {
+  cursor: not-allowed;
+  background-color: #fff
+}
+.fd-calendar .fd-calendar__item.is-selected {
+  --fd-calendar-item-background-color: var(--fd-color-action-selected);
+  --fd-calendar-item-color: var(--fd-color-text-5)
+}
+.fd-calendar .fd-calendar__item.is-selected-range {
+  --fd-calendar-item-background-color: var(--fd-color-background-selected);
+  border-radius: 0
+}
+.fd-calendar .fd-calendar__item.is-selected-range-first {
+  border-radius: 4px 0 0 4px
+}
+.fd-calendar .fd-calendar__item.is-selected-range-last {
+  border-radius: 0 4px 4px 0
+}
+.fd-calendar .fd-calendar__dates[aria-hidden=true],
+.fd-calendar .fd-calendar__months[aria-hidden=true],
+.fd-calendar .fd-calendar__years[aria-hidden=true],
+.fd-calendar .is-hidden.fd-calendar__dates,
+.fd-calendar .is-hidden.fd-calendar__months,
+.fd-calendar .is-hidden.fd-calendar__years {
+  display: none
+}
+.fd-calendar {
+  font-size: 14px;
+  line-height: 1.42857;
+  color: var(--fd-color-text-1);
+  font-family: '72',-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica Neue,Arial,sans-serif,Apple Color Emoji,Segoe UI Emoji,Segoe UI Symbol;
+  width: 252px
+}
+.fd-calendar .fd-calendar__months {
+  display: grid
+}
+.fd-calendar .fd-calendar__years {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-wrap: wrap;
+  flex-wrap: wrap;
+  display: grid
+}
+.fd-calendar .fd-calendar__header {
+  -webkit-box-shadow: inset 0 -1px 0 0 var(--fd-color-neutral-2);
+  box-shadow: inset 0 -1px 0 0 var(--fd-color-neutral-2);
+  height: 52px;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center
+}
+.fd-calendar .fd-calendar__action [class*=sap-icon][dir=rtl],
+[dir=rtl] .fd-calendar .fd-calendar__action [class*=sap-icon] {
+  -webkit-transform: scaleX(-1);
+  transform: scaleX(-1)
+}
+.fd-calendar .fd-calendar__content {
+  padding: 12px 0
+}
+.fd-calendar .fd-calendar__navigation {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+  -webkit-box-pack: justify;
+  -ms-flex-pack: justify;
+  justify-content: space-between;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center
+}
+.fd-calendar .fd-calendar__table {
+  display: table;
+  border-collapse: collapse
+}
+.fd-calendar .fd-calendar__table .fd-calendar__item {
+  display: table-cell
+}
+.fd-calendar .fd-calendar__group {
+  display: table-row-group
+}
+.fd-calendar .fd-calendar__row {
+  display: table-row
+}
+.fd-calendar .fd-calendar__column-header {
+  display: table-cell;
+  vertical-align: middle
+}
+.fd-calendar .fd-calendar__column-header:hover {
+  cursor: default;
+  --fd-calendar-item-background-color: var(--fd-color-background-2)
+}
+.fd-calendar .fd-calendar__list {
+  width: 100%;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-wrap: wrap;
+  flex-wrap: wrap;
+  display: grid;
+  grid-template-columns: repeat(4,1fr);
+  padding-left: 0;
+  padding-right: 0
+}
+.fd-calendar .fd-calendar__list > * {
+  min-width: 25%
+}
+.fd-calendar .fd-calendar__day-of-week {
+  font-size: .85714rem;
+  line-height: 1.33333;
+  font-weight: 400;
+  color: var(--fd-color-text-1)
+}

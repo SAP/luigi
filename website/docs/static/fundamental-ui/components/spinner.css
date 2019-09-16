@@ -1,0 +1,128 @@
+/*!
+ * Fundamentals v1.7.1
+ * Copyright (c) 2019 SAP SE or an SAP affiliate company.
+ * Licensed under Apache License 2.0 (https://github.com/SAP/Fundamental/blob/master/LICENSE)
+ */
+/*!
+.fd-spinner+(.is-hidden|[aria-hidden=true])
+
+///////////////////////////////////////////////////////////////////////////////
+/// .fd-spinner has been depricated in favor of .fd-loading-spinner
+///////////////////////////////////////////////////////////////////////////////
+
+
+Inspired by line scale spinner from Load Awesome v1.1.0 (http://github.danielcardoso.net/load-awesome/)
+* Copyright 2015 Daniel Cardoso <@DanielCardoso>
+* Licensed under MIT
+*/
+.fd-spinner {
+  --fd-spinner-background-color: var(--fd-color-action-1);
+  font-size: 14px;
+  line-height: 1.42857;
+  color: var(--fd-color-text-1);
+  font-family: '72',-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica Neue,Arial,sans-serif,Apple Color Emoji,Segoe UI Emoji,Segoe UI Symbol;
+  position: relative;
+  width: 29px;
+  height: 40px;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+  -ms-flex-pack: justify;
+  justify-content: space-between;
+  margin: 0 auto
+}
+.fd-spinner.is-hidden,
+.fd-spinner[aria-hidden=true] {
+  display: none
+}
+.is-busy,
+[aria-busy=true] {
+  position: relative;
+  min-height: 40px
+}
+.is-busy::before,
+[aria-busy=true]::before {
+  position: absolute;
+  background-color: var(--fd-color-background-1);
+  opacity: .95;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 1;
+  content: ""
+}
+.is-busy .fd-spinner,
+[aria-busy=true] .fd-spinner {
+  position: absolute;
+  z-index: 2;
+  left: calc(50% - 29px/2);
+  top: calc(50% - 40px/2)
+}
+.fd-spinner::after,
+.fd-spinner::before {
+  content: "";
+  position: relative;
+  width: 5px;
+  height: 100%;
+  background-color: var(--fd-spinner-background-color)
+}
+.fd-spinner::before {
+  -webkit-animation: line-scale 1s infinite ease;
+  animation: line-scale 1s infinite ease;
+  -webkit-animation-delay: -1s;
+  animation-delay: -1s
+}
+.fd-spinner div::after,
+.fd-spinner div::before {
+  content: "";
+  position: absolute;
+  width: 5px;
+  height: 100%;
+  background-color: var(--fd-spinner-background-color)
+}
+.fd-spinner div::before {
+  left: 8px;
+  -webkit-animation: line-scale 1s infinite ease;
+  animation: line-scale 1s infinite ease;
+  -webkit-animation-delay: -.9s;
+  animation-delay: -.9s
+}
+.fd-spinner div::after {
+  right: 8px;
+  -webkit-animation: line-scale 1s infinite ease;
+  animation: line-scale 1s infinite ease;
+  -webkit-animation-delay: -.8s;
+  animation-delay: -.8s
+}
+.fd-spinner::after {
+  -webkit-animation: line-scale 1s infinite ease;
+  animation: line-scale 1s infinite ease;
+  -webkit-animation-delay: -.7s;
+  animation-delay: -.7s
+}
+@-webkit-keyframes line-scale {
+  0%,
+  100%,
+  40% {
+    -webkit-transform: scaleY(.4);
+    transform: scaleY(.4)
+  }
+  80% {
+    -webkit-transform: scaleY(1);
+    transform: scaleY(1)
+  }
+}
+@keyframes line-scale {
+  0%,
+  100%,
+  40% {
+    -webkit-transform: scaleY(.4);
+    transform: scaleY(.4)
+  }
+  80% {
+    -webkit-transform: scaleY(1);
+    transform: scaleY(1)
+  }
+}
