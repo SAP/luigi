@@ -367,7 +367,10 @@ class RoutingClass {
 
     if (typeof pageNotFoundHandler === 'function') {
       //custom 404 handler is provided, use it
-      pageNotFoundHandler(notFoundPath, isAnyPathMatched);
+      const result = pageNotFoundHandler(notFoundPath, isAnyPathMatched);
+      if (result && result.redirectTo) {
+        this.navigateTo(result.redirectTo);
+      }
       return;
     }
 
