@@ -1,6 +1,6 @@
 {
   "name": "luigi-core-private",
-  "version": "0.6.3",
+  "version": "0.6.4",
   "private": true,
   "description": "luigi-core development version, only the public folder is being published to npm as a package",
   "devDependencies": {
@@ -51,27 +51,28 @@
     "bundle-develop-ie11": "npm run bundle-ie11 -- -d --watch",
     "test": "babel-node ./node_modules/nyc/bin/nyc.js mocha -- --recursive test",
     "test:watch": "npm run test -- --watch",
-    "bundlesize": "npm run bundle && bundlesize"
+    "bundlesize": "npm run bundle && bundlesize",
+    "bundlesizeOnly": "bundlesize"
   },
   "bundlesize": [
     {
       "path": "./public/luigi.js",
-      "maxSize": "100 kB",
+      "maxSize": "350 kB",
       "compression": "none"
     },
     {
       "path": "./public/luigi.css",
-      "maxSize": "300 kB",
+      "maxSize": "450 kB",
       "compression": "none"
     },
     {
       "path": "./public/luigi-ie11.js",
-      "maxSize": "100 kB",
+      "maxSize": "350 kB",
       "compression": "none"
     },
     {
       "path": "./public/luigi-ie11.css",
-      "maxSize": "400 kB",
+      "maxSize": "500 kB",
       "compression": "none"
     }
   ],

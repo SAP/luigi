@@ -8,7 +8,13 @@
       on:click="burgerClicked()"
     ></span>
     {/if}
-    <LogoTitle/>
+    <LogoTitle
+      pathData="{pathData}"
+      pathParams="{pathParams}"
+      bind:dropDownStates
+      on:toggleDropdownState="toggleDropdownState(event.name)"
+      on:handleClick="handleClick(event.node)"
+    />
   </div>
   <div class="fd-shellbar__group fd-shellbar__group--end">
     <div class="fd-shellbar__actions">
@@ -339,7 +345,7 @@
           this.set({
             authorizationEnabled: LuigiAuth.isAuthorizationEnabled(),
             profileItemsAvailable: LuigiConfig.getConfigValue(
-              'navigation.profile.items'
+              'navigation.profile'
             ),
             autologinEnabled: !Boolean(
               LuigiConfig.getConfigValue('auth.disableAutoLogin')

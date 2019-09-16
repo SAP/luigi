@@ -25,6 +25,9 @@ class Communication {
         };
         Luigi.customMessages().send(mfObject.id, newCustomMessage);
       }, 2000);
+    },
+    'my-micro-frontend-is-ready': () => {
+      Luigi.ux().hideAppLoadingIndicator();
     }
   };
 }

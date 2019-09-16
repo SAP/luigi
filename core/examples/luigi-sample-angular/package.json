@@ -10,7 +10,7 @@
     "e2e:run": "cypress run --browser chrome -c video=false",
     "e2e:run:electron": "cypress run",
     "buildConfig": "webpack --config webpack-generateConfig.config",
-    "start": "concurrently \"npm run buildConfig -- --watch\" \"ng serve\""
+    "start": "concurrently \"npm run buildConfig -- --watch\" \"ng serve --host 0.0.0.0\""
   },
   "dependencies": {
     "@angular/animations": "^6.1.0",
@@ -22,8 +22,8 @@
     "@angular/platform-browser": "^6.1.0",
     "@angular/platform-browser-dynamic": "^6.1.0",
     "@angular/router": "^6.1.0",
-    "@kyma-project/luigi-client": "0.6.3",
-    "@kyma-project/luigi-core": "0.6.3",
+    "@kyma-project/luigi-client": "0.6.4",
+    "@kyma-project/luigi-core": "0.6.4",
     "ajv": "^6.1.1",
     "core-js": "^2.4.1",
     "fiori-fundamentals": "^1.4.1",

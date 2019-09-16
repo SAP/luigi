@@ -112,6 +112,49 @@ describe('Context switcher', () => {
 
     cy.expectPathToBe('/projects');
   });
+
+  it('Preserve sub path on switch', () => {
+    cy.window().then(win => {
+      const config = win.Luigi.getConfig();
+      config.navigation.contextSwitcher.preserveSubPathOnSwitch = true;
+      const environmentsNode = config.navigation.nodes.find(
+        element => element.pathSegment === 'environments'
+      );
+      environmentsNode.hideFromNav = false;
+      const environmentNode = environmentsNode.children[0];
+      environmentNode.children = [
+        {
+          pathSegment: 'tets1',
+          label: 'Tets 1',
+          viewUrl: '/sampleapp.html#/environments/:environmentId'
+        },
+        {
+          pathSegment: 'tets2',
+          label: 'Tets 2',
+          viewUrl: '/sampleapp.html#/environments/:environmentId'
+        }
+      ];
+      win.Luigi.configChanged('navigation');
+
+      cy.selectContextSwitcherItem('Environment 1');
+
+      cy.expectPathToBe('/environments/env1');
+
+      cy.get('.fd-app__sidebar')
+        .contains('Tets 2')
+        .click();
+
+      cy.expectPathToBe('/environments/env1/tets2');
+
+      cy.selectContextSwitcherItem('Environment 3', 'Environment 1');
+
+      cy.expectPathToBe('/environments/env3/tets2');
+
+      cy.getIframeBody().then($iframeBody => {
+        cy.wrap($iframeBody).should('contain', 'Env3 content.');
+      });
+    });
+  });
 });
 
 describe('ProductSwitcher', () => {
@@ -164,7 +207,9 @@ describe('ProductSwitcher', () => {
     });
 
     it('Mobile Product Switcher is not visible', () => {
-      cy.get('[data-testid="mobile-product-switcher"]').should('not.be.visible');
+      cy.get('[data-testid="mobile-product-switcher"]').should(
+        'not.be.visible'
+      );
     });
   });
 
@@ -205,6 +250,81 @@ describe('ProductSwitcher', () => {
 
       //the path wasn't changed
       cy.expectPathToBe('/overview');
+    });
+  });
+});
+
+describe('AppSwitcher', () => {
+  beforeEach(() => {
+    cy.visitLoggedIn('/');
+  });
+  it('Clicking around the app switcher', () => {
+    cy.window().then(win => {
+      const config = win.Luigi.getConfig();
+
+      // check initial title and subtitle
+      cy.get('[data-testid="luigi-topnav-title"]').should(
+        'contain',
+        config.settings.header.title
+      );
+      cy.get('.fd-shellbar__subtitle').should(
+        'contain',
+        config.settings.header.subTitle
+      );
+      // check available dropdown items
+      cy.get('[data-testid="app-switcher"]').click();
+      cy.get('[data-testid="applicationtwo"]').should('exist');
+      cy.get('[data-testid="applicationthree"]').should('exist');
+      cy.get('[data-testid="applicationone"]').should('exist');
+      cy.get(
+        '[data-testid="' +
+          config.settings.header.title
+            .split(' ')
+            .join('')
+            .toLowerCase() +
+          '"]'
+      ).should('not.exist');
+
+      // use app switcher to go to app 2
+      cy.get('[data-testid="app-switcher"]').click();
+
+      cy.get('[data-testid="applicationtwo"]')
+        .contains('Application Two')
+        .click();
+
+      // check that we landed in project 2
+      cy.expectPathToBe('/projects/pr2');
+
+      // check the title and subtlitle
+      cy.get('[data-testid="luigi-topnav-title"]').should(
+        'contain',
+        'Application Two'
+      );
+      cy.get('.fd-shellbar__subtitle').should('contain', 'the second app');
+
+      // navigate to project 1 using plain navigation
+      cy.visit('/projects/pr1/developers');
+
+      // check if app switcher got updated
+      cy.get('[data-testid="luigi-topnav-title"]').should(
+        'contain',
+        'Application One'
+      );
+      cy.get('.fd-shellbar__subtitle').should('contain', 'the first app');
+
+      // check available dropdown items
+      cy.get('[data-testid="app-switcher"]').click();
+      cy.get(
+        '[data-testid="' +
+          config.settings.header.title
+            .split(' ')
+            .join('')
+            .toLowerCase() +
+          '"]'
+      ).should('exist');
+      cy.get('[data-testid="applicationtwo"]').should('exist');
+      cy.get('[data-testid="applicationthree"]').should('exist');
+      cy.get('[data-testid="applicationone"]').should('not.exist');
     });
   });
 });

@@ -4,6 +4,7 @@ const sinon = require('sinon');
 import { ContextSwitcherHelpers as CSHelpers } from '../src/navigation/services/context-switcher';
 import { GenericHelpers } from '../src/utilities/helpers';
 import { LuigiConfig } from '../src/core-api';
+import { Routing } from '../src/services/routing';
 
 describe('Context-switcher', function() {
   afterEach(() => {
@@ -304,6 +305,38 @@ describe('Context-switcher', function() {
         myResolverFn
       );
       assert.equal(result, '##env1##');
+    });
+  });
+
+  describe('getNodePathFromCurrentPath', () => {
+    it('returns option path if current path does not fit', () => {
+      sinon.stub(Routing, 'getCurrentPath').callsFake(s => {
+        return '/projects/pr1';
+      });
+      const result = CSHelpers.getNodePathFromCurrentPath(
+        {
+          path: '/environments/env3'
+        },
+        {
+          path: '/environments/env1'
+        }
+      );
+      assert.equal(result, '/environments/env3');
+    });
+
+    it('returns correctly adapted path', () => {
+      sinon.stub(Routing, 'getCurrentPath').callsFake(s => {
+        return '/environments/env1/details/and/more';
+      });
+      const result = CSHelpers.getNodePathFromCurrentPath(
+        {
+          path: '/environments/env3/details'
+        },
+        {
+          path: '/environments/env1/details'
+        }
+      );
+      assert.equal(result, '/environments/env3/details/and/more');
     });
   });
 });
