@@ -56,6 +56,11 @@
 		document.body.classList.remove("show-bar");
 	}
 
+	function clearAll() {
+		localStorage.clear();
+		sessionStorage.clear();
+	}
+
 	onMount(async () => {
 		window.editor = ace.edit("editor");
 		editor.session.setMode("ace/mode/javascript");
@@ -100,7 +105,7 @@
 
   #editor {
     width: 100%;
-    height: 60vh;
+    height: calc(100vh - 200px);
   }
 
   .fd-action-bar__header {
@@ -141,6 +146,13 @@
     background-color: white;
     color: #2deb8a;
   }
+
+  @media (max-width: 600px) {
+    .lui-version {
+		display: none;
+	}
+  }
+ 
 </style>
 
 <div class="editor_container fd-shell__overlay fd-overlay fd-overlay--modal">
@@ -168,7 +180,7 @@
 <div class="fiddle-toolbar">
 	<div class="fd-action-bar">
 		<div class="fd-action-bar__header">
-			<img alt="" src="./img/luigi.png"> powered by Luigi v{luigiVersion}
+			<img alt="" src="./img/luigi.png"> <span class="lui-version"> powered by Luigi v{luigiVersion}</span>
 			<span>
 				<a class="fd-link" href="https://www.sap.com/about/legal/privacy.html" target="_blank">Privacy Policy</a>
 		<a class="fd-link" href="https://www.sap.com/about/legal/impressum.html" target="_blank">Legal</a>
