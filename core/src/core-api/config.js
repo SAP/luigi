@@ -54,7 +54,9 @@ class LuigiConfig {
    */
   async setConfig(configInput) {
     this.config = configInput;
-    window.Luigi._store.set({ config: configInput });
+    window.Luigi._store.update(() => {
+      return { config: configInput };
+    });
     this._configModificationTimestamp = new Date();
     if (!this.initialized) {
       this.initialized = true;

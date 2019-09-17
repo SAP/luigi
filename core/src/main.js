@@ -1,15 +1,21 @@
-import App from './App.html';
+import Tets from './Tets.svelte';
 import { authLibraries } from './providers/auth/libraryLoaders';
 import { LuigiConfig, LuigiI18N, LuigiElements } from './core-api';
-import { Store } from 'svelte/store';
+import { writable, readable } from 'svelte/store';
 import { version } from '../package.json';
 
-const store = new Store({
+export const store = writable({});
+export const getTranslation = readable((key, interpolations, locale) => {
+  return LuigiI18N.getTranslation(key, interpolations, locale);
+});
+/*
+  new Store({
   luigiVersion: version,
   getTranslation: (key, interpolations, locale) => {
     return LuigiI18N.getTranslation(key, interpolations, locale);
   }
 });
+*/
 
 Luigi._store = store;
 
@@ -29,12 +35,14 @@ const configReadyCallback = () => {
         .classList.add('luigi-app-in-custom-container');
     }
 
-    app = new App({
+    const app = new Tets({
       target: LuigiElements.getLuigiContainer(),
-      store
+      props: {
+        // assuming App.svelte contains something like
+        // `export let answer`:
+        answer: 42
+      }
     });
-
-    Luigi._app = app;
   });
 
   Luigi.showAlert = settings => {

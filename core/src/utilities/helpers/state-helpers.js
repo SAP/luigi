@@ -31,14 +31,14 @@ class StateHelpersClass {
   doOnStoreChange(store, fn, scope = []) {
     // register listener for store event(s)
     this.expandScope(scope).forEach(e => {
-      store.on(e, fn);
+      store.subscribe(fn);
     });
     // and call the listener once specifically, immediately:
-    fn({
-      current: store.get(),
+    /*fn({
+      current: store,
       changed: { config: true },
-      previous: store.get()
-    });
+      previous: store
+    });*/
   }
 }
 

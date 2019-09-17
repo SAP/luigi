@@ -3,8 +3,8 @@ const sass = require('node-sass');
 
 module.exports = {
   svelte: {
-    test: /\.html$/,
-    exclude: /node_modules/,
+    test: /\.svelte$/,
+    // exclude: /node_modules/,
     use: {
       loader: 'svelte-loader',
       options: {

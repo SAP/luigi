@@ -1,4 +1,5 @@
 const { readFileSync } = require('fs');
+const path = require('path');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const CleanWebpackPlugin = require('clean-webpack-plugin');
 
@@ -70,8 +71,11 @@ module.exports = {
     ]
   },
   resolve: {
+    alias: {
+      svelte: path.resolve('node_modules', 'svelte')
+    },
     mainFields: ['svelte', 'browser', 'module', 'main'],
-    extensions: ['.js', '.html']
+    extensions: ['.mjs', '.js', '.svelte']
   },
   output: {
     path: __dirname + '/public',
@@ -81,7 +85,7 @@ module.exports = {
   module: {
     rules: [
       {
-        test: /\.(html|js)$/,
+        test: /\.(svelte|js)$/,
         exclude: /node_modules/,
         use: {
           loader: 'babel-loader',

@@ -337,8 +337,8 @@ Property values for token replacement in the localization key will be taken from
 ##### Parameters
 
 -   `key` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** key to be translated
--   `interpolations` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** objects with properties that will be used for token replacements in the localization key
--   `locale` **locale** optional locale to get the translation for; default is the current locale
+-   `interpolations` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** objects with properties that will be used for token replacements in the localization key (optional, default `undefined`)
+-   `locale` **locale** optional locale to get the translation for; default is the current locale (optional, default `undefined`)
 
 ## Luigi.customMessages()
 

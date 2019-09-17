@@ -1,0 +1,116 @@
+<script>
+  import { beforeUpdate, createEventDispatcher, onMount, getContext } from 'svelte';
+
+  // [svelte-upgrade suggestion]
+  // manually refactor all references to __this
+  const __this = {};
+
+  const dispatch = createEventDispatcher();
+
+  import { EscapingHelpers } from './utilities/helpers';
+
+  export let alertQueue;
+  export let alertTypeMap = {
+    info: 'information',
+    success: 'success',
+    warning: 'warning',
+    error: 'error'
+  };
+  const getUnsavedChangesModalPromise = getContext('getUnsavedChangesModalPromise');
+
+  // [svelte-upgrade warning]
+  // beforeUpdate and afterUpdate handlers behave
+  // differently to their v2 counterparts
+  beforeUpdate(() => {
+    if (!alertQueue || !alertQueue.length) {
+      console.warn('There are no alerts to display');
+      return;
+    }
+
+    if (alertQueue.processed) {
+      return;
+    }
+
+    const processedAlerts = alertQueue.map(alert => {
+      const { text, links, closeAfter } = alert.settings;
+      const processedData = EscapingHelpers.processTextAndLinks(
+        text,
+        links,
+        alert.settings.id
+      );
+
+      setTimeout(() => {
+        // this needs to be done after links are rendered
+        processedData.links.forEach(l => {
+          addClickListener(l.url, l.elemId);
+        });
+      });
+
+      return {
+        settings: { ...alert.settings, text: processedData.sanitizedText },
+        dataSanitized: true
+      };
+    });
+    processedAlerts.processed = true;
+
+    alertQueue = processedAlerts;
+  });
+
+  onMount(() => {
+
+  });
+
+  // [svelte-upgrade suggestion]
+  // review these functions and remove unnecessary 'export' keywords
+  export function addClickListener(url, elemId) {
+    try {
+      document.getElementById(elemId).addEventListener('click', event => {
+        const isRelative = !url.startsWith('/');
+        event.stopPropagation();
+        getUnsavedChangesModalPromise().then(() => {
+          console.log("yiiiihaaaaaaaaa");
+          const data = {
+            params: {
+              link: url,
+              relative: isRelative
+            }
+          };
+          //TODO __this.root.handleNavigation(data);
+        });
+      });
+    } catch (e) {
+      console.error('Error on Alert::addClickListener', e);
+    }
+  }
+</script>
+
+<div class="fd-shell__overlay fd-overlay fd-overlay--alert" aria-hidden="false">
+  {#each alertQueue as al}
+  <div
+    class="fd-alert fd-alert--{alertTypeMap[al.settings.type]} fd-alert--dismissible"
+    role="alert"
+    id="j2ALl423"
+    data-testid="luigi-alert"
+  >
+    <button
+      class="fd-alert__close close-button"
+      on:click="{() => dispatch('alertDismiss',{id: al.settings.id})}"
+      aria-label="Close"
+      aria-controls="j2ALl423"
+      data-testid="luigi-alert-dismiss"
+    ></button>
+    {@html al.dataSanitized ? al.settings.text: ''}
+  </div>
+  {/each}
+</div>
+
+<style type="text/scss">
+  .fd-overlay--alert {
+    position: absolute;
+    z-index: 1100;
+    flex-direction: column;
+    .fd-alert:not(:first-child) {
+      margin-top: 8px;
+    }
+  }
+</style>
