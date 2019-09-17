@@ -42,6 +42,7 @@
   let isNavigateBack = false;
   let goBackContext;
   let navigationPath;
+  let contentNode;
   let preservedViews = [
      // {
      //     path: '/project/p2/settings',

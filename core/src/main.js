@@ -1,4 +1,4 @@
-import Tets from './Tets.svelte';
+import App from './App.svelte';
 import { authLibraries } from './providers/auth/libraryLoaders';
 import { LuigiConfig, LuigiI18N, LuigiElements } from './core-api';
 import { writable, readable } from 'svelte/store';
@@ -35,7 +35,7 @@ const configReadyCallback = () => {
         .classList.add('luigi-app-in-custom-container');
     }
 
-    const app = new Tets({
+    const app = new App({
       target: LuigiElements.getLuigiContainer(),
       props: {
         store
