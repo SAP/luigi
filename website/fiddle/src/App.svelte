@@ -117,6 +117,11 @@
     height: calc(100vh - 300px);
   }
 
+  #editorTA {
+	  font-family: monospace;
+	  padding: 0;
+  }
+
   .fd-action-bar__header {
     overflow: visible;
     padding-left: 5px;
