@@ -30,6 +30,17 @@
     }
   }
 
+  function pasteFromClipboard() {
+	  if(navigator.clipboard) {
+		navigator.clipboard.readText().then(clipText => {
+			window.editor.setValue(clipText);
+			window.editor.clearSelection();
+		}).catch(err => {
+			console.error('Failed to read clipboard contents: ', err);
+		});
+	  }
+  }
+
   function saveConfig() {
     localStorage.setItem('fiddle', window.editor.getValue());
     window.location.href = '/';
@@ -179,7 +190,7 @@
       </div>
       <footer class="fd-modal__footer">
         <div class="fd-modal__actions">
-          <button class="fd-button--light" on:click={clearConfig}>Clear</button>
+          <button class="fd-button--light" on:click={pasteFromClipboard}>Paste</button>
           <button class="fd-button--light" on:click={resetConfig}>Reset</button>
           <button class="fd-button" on:click={saveConfig}>Apply</button>
           <button class="fd-button--light" on:click={closeConfig}>
