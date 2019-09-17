@@ -58,9 +58,10 @@ class LuigiConfig {
     this._configModificationTimestamp = new Date();
     if (!this.initialized) {
       this.initialized = true;
-      LifecycleHooks.luigiAfterInit();
-      await this.executeConfigFnAsync('lifecycleHooks.luigiAfterInit');
-      this.configReadyCallback();
+      this.configReadyCallback().then(async () => {
+        LifecycleHooks.luigiAfterInit();
+        await this.executeConfigFnAsync('lifecycleHooks.luigiAfterInit');
+      });
     }
   }
 

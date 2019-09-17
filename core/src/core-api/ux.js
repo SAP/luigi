@@ -56,7 +56,6 @@ class LuigiUX {
    */
 
   showAlert(settings) {
-    console.log('Works!');
     return Luigi.showAlert(settings);
   }
 
