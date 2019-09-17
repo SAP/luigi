@@ -308,6 +308,7 @@
         );
         if (userInfo) {
           this.set({ userInfo });
+          this.fire('userInfoUpdated', userInfo);
         }
       },
       startAuthorization: function() {

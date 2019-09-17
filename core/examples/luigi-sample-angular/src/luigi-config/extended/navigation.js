@@ -323,7 +323,8 @@ class Navigation {
       return new Promise(resolve => {
         resolve({
           name: 'Luigi Static User',
-          email: 'other.luigi.user@example.com'
+          email: 'other.luigi.user@example.com',
+          picture: '/assets/github-logo.png'
         });
       });
     }
