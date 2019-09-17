@@ -1,11 +1,6 @@
-import {
-  projectsNavProviderFn,
-} from './helpers';
-
-const baseUrl = 'http://localhost:3000';
+const baseUrl = 'http://localhost:4001';
 
 class Navigation {
-
   nodes = [
     {
       pathSegment: 'docs',

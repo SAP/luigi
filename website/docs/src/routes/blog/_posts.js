@@ -41,7 +41,7 @@ const posts = [
 			</code></pre>
 
 			<h2>Step two</h2>
-			<p>Go to <a href='http://localhost:3000'>localhost:3000</a>. Open <code>my-app</code> in your editor. Edit the files in the <code>src/routes</code> directory or add new ones.</p>
+			<p>Go to <a href='http://localhost:4000'>localhost:4000</a>. Open <code>my-app</code> in your editor. Edit the files in the <code>src/routes</code> directory or add new ones.</p>
 
 			<h2>Step three</h2>
 			<p>...</p>

@@ -58,8 +58,11 @@
 	<title>{post.shortName}</title>
 </svelte:head>
 
-<!-- <h1>{post.shortName}</h1> -->
-
-<div class='content'>
+<section class="fd-section content">
+	<!-- <div class="fd-section__header">
+		<h1 class="fd-section__title">LuigiClient uxManager methods</h1>
+	</div> -->
+	<div class="fd-panel fd-has-margin-bottom-small">
 	{@html post.contents}
-</div>
+	</div>
+</section>

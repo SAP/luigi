@@ -1,22 +1,22 @@
 <script>
-	import Nav from '../components/Nav.svelte';
-
 	export let segment;
 </script>
 
 <style>
-	main {
+	/* main {
 		position: relative;
 		max-width: 56em;
 		background-color: white;
 		padding: 2em;
 		margin: 0 auto;
 		box-sizing: border-box;
-	}
+	} */
 </style>
 
-<Nav {segment}/>
+<!-- <Nav {segment}/> -->
 
-<main>
-	<slot></slot>
+<main class="fd-ui fd-ui--fundamental">
+		<div class="fd-page">
+		<slot></slot>
+		</div>
 </main>

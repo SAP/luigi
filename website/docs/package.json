@@ -4,9 +4,9 @@
   "version": "0.0.1",
   "scripts": {
     "start": "run-p dev:*",
-    "dev:sapper": "sapper dev",
+    "dev:sapper": "PORT=4001 sapper dev",
     "dev:config": "npm run build:config -- --watch",
-    "dev:luigi": "sirv static --single --dev --cors --port 5001",
+    "dev:luigi": "sirv static --single --dev --cors --port 4000",
     "build:sapper": "NODE_ENV=production sapper build",
     "build:config": "webpack --config webpack-generateConfig.config",
     "export:sapper": "sapper export",
