@@ -40,7 +40,7 @@
 	</div>
 
 	<script>
-		LuigiClient.addInitListener(function(context) {
+		LuigiClient.addContextUpdateListener(function(context) {
 			if(context.title) {
 				document.getElementById("title").innerHTML = context.title;
 			}
