@@ -40,7 +40,7 @@
 	</div>
 
 	<script>
-		LuigiClient.addContextUpdateListener(function(context) {
+		function updateFn(context) {
 			if(context.title) {
 				document.getElementById("title").innerHTML = context.title;
 			}
@@ -52,7 +52,9 @@
 				document.getElementById("imgCnt").innerHTML = "<img src='"+context.imgUrl+"' style='"+iwidth+"; margin-top: "+(context.imgTopMargin?'5':'')+"0px'>";
 			}
 			document.getElementById("textCnt").classList.add("visible");
-		});
+		}
+		LuigiClient.addInitListener(updateFn);
+		LuigiClient.addContextUpdateListener(updateFn);
 	</script>
 
 </body>
