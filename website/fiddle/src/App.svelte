@@ -30,19 +30,13 @@
     }
   }
 
-  function pasteFromClipboard() {
-	  if(navigator.clipboard) {
-		navigator.clipboard.readText().then(clipText => {
-			window.editor.setValue(clipText);
-			window.editor.clearSelection();
-		}).catch(err => {
-			console.error('Failed to read clipboard contents: ', err);
-		});
-	  }
-  }
-
   function saveConfig() {
     localStorage.setItem('fiddle', window.editor.getValue());
+    window.location.href = '/';
+  }
+
+  function saveConfigTA() {
+    localStorage.setItem('fiddle', window.editorTA.value);
     window.location.href = '/';
   }
 
@@ -51,17 +45,14 @@
   }
 
   function resetConfig() {
-    window.editor.setValue(defaultConfigString);
+	window.editor.setValue(defaultConfigString);
+    window.editorTA.textContent = defaultConfigString;
     window.editor.clearSelection();
   }
 
-  function clearConfig() {
-    window.editor.setValue('');
-    window.editor.clearSelection();
-  }
-
-  function openConfig() {
-    window.editor.setValue(configString);
+   function openConfig() {
+	window.editor.setValue(configString);
+	window.editorTA.textContent = configString;
     window.editor.clearSelection();
     document.body.classList.add('editorVisible');
   }
@@ -77,7 +68,8 @@
   }
 
   onMount(async () => {
-    window.editor = ace.edit('editor');
+	window.editor = ace.edit('editor');
+	window.editorTA = document.getElementById('editorTA');
     editor.session.setMode('ace/mode/javascript');
     reloadConfig();
   });
@@ -120,7 +112,7 @@
     z-index: 2;
   }
 
-  #editor {
+  #editor, #editorTA {
     width: 100%;
     height: calc(100vh - 300px);
   }
@@ -186,16 +178,15 @@
           on:click={closeConfig} />
       </header>
       <div class="fd-modal__body_nostyle">
-        <div id="editor" />
+        <div id="editor" class="lui-mobile-hide"/>
+		<textarea id="editorTA" class="lui-mobile-show"/>
       </div>
       <footer class="fd-modal__footer">
         <div class="fd-modal__actions">
-          <button class="fd-button--light" on:click={pasteFromClipboard}>Paste</button>
           <button class="fd-button--light" on:click={resetConfig}>Reset</button>
-          <button class="fd-button" on:click={saveConfig}>Apply</button>
-          <button class="fd-button--light" on:click={closeConfig}>
-            Cancel
-          </button>
+          <button class="fd-button lui-mobile-hide" on:click={saveConfig}>Apply</button>
+          <button class="fd-button lui-mobile-show" on:click={saveConfigTA}>Apply</button>
+          <button class="fd-button--light" on:click={closeConfig}>Cancel</button>
         </div>
       </footer>
     </div>
