@@ -16,10 +16,6 @@ module.exports = {
   plugins: [
     new CopyWebpackPlugin([
       {
-        from: 'src/extendedConfiguration.bundle.js',
-        to: '.'
-      },
-      {
         from: 'src/index.html',
         to: '.'
       },

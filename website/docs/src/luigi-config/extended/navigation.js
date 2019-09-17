@@ -8,20 +8,25 @@ class Navigation {
 
   nodes = [
     {
-      pathSegment: 'overview',
+      pathSegment: 'docs',
       label: 'Overview',
-      viewUrl: baseUrl + '/overview',
-      hideSideNav: true,
-      hideFromNav: true,
-      children: [{
-        navigationContext: 'docs',
-        pathSegment: ':doc',
-        viewUrl: baseUrl + '/users/:doc',
-        context: {
-          doc: ':doc'
-        },
-        hideSideNav: true
-      }]
+      viewUrl: baseUrl + '/docs',
+      // hideSideNav: true,
+      // hideFromNav: true,
+      children: [
+          'luigi-client-api',
+          'luigi-core-api',
+        ].map((name) => ({
+          label: name,
+          pathSegment: name,
+          navigationContext: 'doc',
+          keepSelectedForChildren: true,
+          viewUrl: `${baseUrl}/docs/${name}`,
+          context: {
+            doc: name
+          }
+        })
+      )
     },
     // {
     //   pathSegment: 'users',

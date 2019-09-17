@@ -7,10 +7,11 @@
 	<meta name='theme-color' content='#333333'>
 
 	%sapper.base%
-
+	
+	<link rel="stylesheet" href="/fundamental-ui/fiori-fundamentals.min.css" />
 	<link rel='stylesheet' href='global.css'>
-	<link rel='manifest' href='manifest.json'>
-	<link rel='icon' type='image/png' href='favicon.png'>
+	<!-- <link rel='manifest' href='manifest.json'> -->
+	<!-- <link rel='icon' type='image/png' href='favicon.png'> -->
 
 	<!-- Sapper generates a <style> tag containing critical CSS
 	     for the current page. CSS for the rest of the app is
@@ -22,11 +23,11 @@
 	%sapper.head%
 </head>
 <body>
-
-	<link rel="stylesheet" href="/fundamental-ui/fiori-fundamentals.min.css" />
 	<!-- The application will be rendered inside this element,
-	     because `src/client.js` references it -->
-	<div id='sapper'>%sapper.html%</div>
+			 because `src/client.js` references it -->
+	<div class="fd-ui fd-ui--fundamental" id="sapper">
+		<div class="fd-page">%sapper.html%</div>
+	</div>
 
 	<!-- Sapper creates a <script> tag containing `src/client.js`
 	     and anything else it needs to hydrate the app and
