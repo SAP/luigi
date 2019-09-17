@@ -4,10 +4,7 @@
   <ul class="fd-menu__list fd-menu__list--top">
     {#if children}
     {#each children as node}
-    <li
-      on:click="onActionClick(node)"
-      data-testid="{getTestId(node)}"
-    >
+    <li on:click="onActionClick(node)" data-testid="{getTestId(node)}">
       <a class="fd-menu__item">
         <span
           class="fd-top-nav__icon {node.icon && hasOpenUIicon(node) ? 'sap-icon--' + node.icon + ' sap-icon--m' : '' }"
@@ -26,53 +23,15 @@
 </nav>
 {/if}
 {#if isMobile}
-<section class="fd-product-switcher">
-  <div
-    class="fd-modal y-fd-modal--full-screen"
-    on:click="event.stopPropagation()"
-  >
-    <div class="fd-modal__content" role="document">
-      <div class="fd-action-bar">
-        <div class="fd-action-bar__back">
-          <button
-            class="fd-button--light fd-button--compact sap-icon--nav-back"
-            on:click="closeSubNav()"
-            data-testid="mobile-topnav-dropdown-close"
-          ></button>
-        </div>
-        <div class="fd-action-bar__header">
-          <h5 class="fd-action-bar__title fd-has-type-1">{getNodeLabel(node)}</h5>
-        </div>
-      </div>
-      <div class="fd-modal__body">
-        <div class="fd-product-switcher__body">
-          <ul class="y-full-width-list">
-            {#if node.children}
-            {#each node.children as node}
-            <li
-              class="y-full-width-list__item"
-              on:click="onActionClick(node)"
-              data-e2e="mobile-topnav-dropdown-item"
-              data-testid="{getTestId(node)}"
-            >
-              <span
-                class="y-full-width-list__icon {node.icon && hasOpenUIicon(node) ? 'sap-icon--' + node.icon + ' sap-icon--m' : '' }"
-              >
-                {#if !hasOpenUIicon(node)}
-                <img src="{node.icon}">
-                {/if}
-                <BadgeCounter {node}/>
-              </span>
-              <span class="y-full-width-list__title">{getNodeLabel(node)}</span>
-            </li>
-            {/each}
-            {/if}
-          </ul>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
+<MobileTopNav
+  on:click="closeSubNav()"
+  on:listClick="onActionClick(event)"
+  nodes="{node.children}"
+  label="{getNodeLabel(node)}"
+  {hasOpenUIicon}
+  {getNodeLabel}
+  {getTestId}
+/>
 {/if}
 <script type="text/javascript">
   import BadgeCounter from './navigation/BadgeCounter.html';
@@ -81,6 +40,7 @@
   import { NavigationHelpers } from './utilities/helpers';
   import { RoutingHelpers } from './utilities/helpers';
   import { LuigiI18N } from './core-api';
+  import MobileTopNav from './navigation/MobileTopNavDropDown.html';
   export default {
     async oncreate() {
       this.setViewportHeightVariable();
@@ -135,132 +95,16 @@
       }
     },
     components: {
+      MobileTopNav,
       BadgeCounter
     }
   };
 </script>
 <style type="text/scss">
-  $topNavHeight: 48px;
-  $productSwitcherHeight: 64px;
-  .fd-popover__body {
-    overflow: auto;
-    max-height: calc(100vh - 50px);
-    max-height: calc(var(--vh, 1vh) * 100 - 50px);
-  }
-  .fd-product-switcher {
-    position: relative;
-    display: block;
-  }
-  .fd-product-switcher__product-icon > img {
-    max-height: 40px;
-  }
-
-  .fd-product-switcher__body {
-    .fd-menu__item {
-      padding: 0;
-      text-align: center;
-    }
-  }
-
   .fd-top-nav__icon {
     img {
       width: 16px;
       vertical-align: top;
-    }
-  }
-
-  @media (max-width: 1023px) {
-    .y-full-width-list {
-      &__icon {
-        img {
-          width: 16px;
-          vertical-align: top;
-        }
-      }
-    }
-  }
-
-  .y-fd-modal--full-screen {
-    z-index: 1000;
-    position: fixed;
-    box-sizing: border-box;
-    top: $topNavHeight;
-    left: 0;
-    margin: auto auto;
-
-    .fd-modal__content {
-      $margin: 0px; //distance from viewport borders. Please remove the line below (border-radius) if not set to 0.
-      border-radius: 0;
-
-      width: calc(100vw - 2 * #{$margin});
-      height: 100vh; /* Fallback for browsers that do not support Custom Properties */
-      height: calc(var(--vh, 1vh) * 100);
-      margin: $margin;
-      display: grid;
-      grid-template-rows: 1fr auto; //no row for title by default
-    }
-
-    .fd-modal__header {
-      padding: 12px 8px;
-    }
-
-    .fd-modal__title {
-      text-align: left;
-      @at-root {
-        .y-fd-modal--full-screen .fd-modal__content {
-          grid-template-rows: auto 1fr auto; //add another row to the top of the modal if __title is present
-        }
-      }
-    }
-    .fd-modal__body {
-      max-height: calc(100vh - #{$topNavHeight} - #{$productSwitcherHeight});
-      max-height: calc(
-        var(--vh, 1vh) * 100 - #{$topNavHeight} - #{$productSwitcherHeight}
-      );
-      padding: 0;
-      -webkit-overflow-scrolling: touch;
-    }
-
-    .fd-modal__footer {
-      box-shadow: 0 0px 6px rgba(0, 0, 0, 0.2);
-    }
-
-    .fd-product-switcher__body {
-      padding: 0;
-    }
-  }
-
-  @media (min-width: 320px) {
-    .fd-action-bar__back {
-      display: block !important;
-    }
-  }
-
-  .y-full-width-list {
-    width: 100%;
-    text-align: left;
-    list-style: none;
-
-    &__item {
-      display: block !important;
-      padding: 12px 15px;
-      cursor: pointer;
-      cursor: pointer;
-
-      &:hover {
-        background: #f5faff;
-        .y-full-width-list__title {
-          font-weight: bold;
-        }
-      }
-    }
-
-    &__title {
-      color: #515559;
-    }
-
-    &__subtitle {
-      color: #74777a;
     }
   }
 </style>
