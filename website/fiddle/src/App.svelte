@@ -13,18 +13,25 @@
   }
 
   function reloadConfig() {
-    let customConfig = localStorage.getItem('fiddle');
+	let customConfig = sessionStorage.getItem('fiddle');
+	let customConfigPreviousSession = localStorage.getItem('fiddle');
+	if(!customConfig && customConfigPreviousSession) {
+		if (confirm('We found a fiddle from a previous session. Do you want to restore it?')) {
+			customConfig = customConfigPreviousSession;
+        	sessionStorage.setItem('fiddle', customConfig);
+		}
+	}
 
     try {
       if (!customConfig) {
-        localStorage.setItem('fiddle', defaultConfigString);
+        sessionStorage.setItem('fiddle', defaultConfigString);
         customConfig = defaultConfigString;
       }
       exec(customConfig);
       configString = customConfig;
     } catch (e) {
       console.error(e);
-      localStorage.removeItem('fiddle');
+      sessionStorage.removeItem('fiddle');
       exec(defaultConfigString);
       configString = defaultConfigString;
     }
@@ -32,11 +39,13 @@
 
   function saveConfig() {
     localStorage.setItem('fiddle', window.editor.getValue());
+    sessionStorage.setItem('fiddle', window.editor.getValue());
     window.location.href = '/';
   }
 
   function saveConfigTA() {
     localStorage.setItem('fiddle', window.editorTA.value);
+    sessionStorage.setItem('fiddle', window.editorTA.value);
     window.location.href = '/';
   }
 
