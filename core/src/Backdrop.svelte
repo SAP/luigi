@@ -1,0 +1,65 @@
+<script>
+  import { beforeUpdate, onMount } from 'svelte';
+  import { LuigiConfig } from './core-api';
+  import { IframeHelpers } from './utilities/helpers';
+
+  export let backdropClass = '';
+  export let backdropActive = false;
+  let options =  {};
+
+  const setBackdropClass = () => {
+    const baseClasses = 'lui-backdrop ';
+    if (!backdropActive) {
+      backdropClass = '';
+    } else if (options.data && options.data.heightCssClass) {
+      backdropClass = baseClasses + options.data.heightCssClass;
+    } else {
+      backdropClass = baseClasses + 'height-auto';
+    }
+  };
+
+  onMount(() => {
+    const backdropDisabled = LuigiConfig.getConfigValue(
+      'settings.backdropDisabled'
+    );
+    if (!backdropDisabled) {
+      setBackdropClass();
+      window.addEventListener('message', e => {
+        if (!IframeHelpers.getValidMessageSource(e)) return;
+        if ('luigi.add-backdrop' === e.data.msg) {
+          backdropActive = true;
+        }
+        if ('luigi.remove-backdrop' === e.data.msg) {
+          backdropActive = false;
+        }
+      });
+    }
+  });
+
+  // [svelte-upgrade warning]
+  // beforeUpdate and afterUpdate handlers behave
+  // differently to their v2 counterparts
+  beforeUpdate(() => {
+    if (backdropActive) {
+      setBackdropClass();
+    }
+  });
+
+
+</script>
+
+<div class="{backdropClass}" aria-hidden="false">
+  <slot></slot>
+</div>
+
+<style type="text/scss">
+  .lui-backdrop {
+    background-color: rgba(74, 80, 92, 0.3);
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    z-index: 1;
+  }
+</style>

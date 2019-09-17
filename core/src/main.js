@@ -38,9 +38,7 @@ const configReadyCallback = () => {
     const app = new Tets({
       target: LuigiElements.getLuigiContainer(),
       props: {
-        // assuming App.svelte contains something like
-        // `export let answer`:
-        answer: 42
+        store
       }
     });
   });

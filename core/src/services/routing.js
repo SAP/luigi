@@ -136,6 +136,7 @@ class RoutingClass {
   }
 
   async handleRouteChange(path, component, iframeElement, config) {
+    debugger;
     const defaultPattern = [/access_token=/, /id_token=/];
     const patterns =
       LuigiConfig.getConfigValue('routing.skipRoutingForUrlPatterns') ||

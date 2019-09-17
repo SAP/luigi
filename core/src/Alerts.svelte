@@ -17,7 +17,7 @@
     error: 'error'
   };
   const getUnsavedChangesModalPromise = getContext('getUnsavedChangesModalPromise');
-
+  const handleNavigation = getContext('handleNavigation');
   // [svelte-upgrade warning]
   // beforeUpdate and afterUpdate handlers behave
   // differently to their v2 counterparts
@@ -75,7 +75,7 @@
               relative: isRelative
             }
           };
-          //TODO __this.root.handleNavigation(data);
+          handleNavigation(data);
         });
       });
     } catch (e) {

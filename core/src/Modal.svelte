@@ -1,0 +1,159 @@
+<script>
+  import { afterUpdate, createEventDispatcher, setContext } from 'svelte';
+
+  const dispatch = createEventDispatcher();
+
+  import { Navigation } from './navigation/services/navigation';
+  import {
+    GenericHelpers,
+    IframeHelpers,
+    RoutingHelpers
+  } from './utilities/helpers';
+  import { LuigiConfig } from './core-api';
+
+  export let modalSettings;
+  export let isDataPrepared = false;
+  export let nodepath;
+  let nodeObject;
+  let pathData;
+  let nodeParams;
+
+  const prepareNodeData = async (path) => {
+    const pathUrlRaw =
+      path && path.length ? GenericHelpers.getPathWithoutHash(path) : '';
+    const params = RoutingHelpers.parseParams(pathUrlRaw.split('?')[1]);
+    nodeParams = RoutingHelpers.getNodeParams(params);
+    const dataFromPath = await Navigation.extractDataFromPath(path);
+    nodeObject = dataFromPath.nodeObject;
+    pathData = dataFromPath.pathData;
+    if (!modalSettings.title) {
+      modalSettings.title = nodeObject.label;
+    }
+
+    isDataPrepared = true;
+  };
+
+  const getNode = async (path) => {
+    if (isDataPrepared) {
+      const iframe = createIframeModal(
+        nodeObject.viewUrl,
+        {
+          context: pathData.context,
+          pathParams: pathData.pathParams,
+          nodeParams
+        }
+      );
+      setContext('modalIframe', iframe);
+      setContext('modalIframeData', { ...pathData, nodeParams });
+    } else {
+      await prepareNodeData(path);
+    }
+  };
+  const createIframeModal = (viewUrl, componentData) => {
+    const elem = document.getElementsByClassName('fd-modal');
+    let modalSize = '80%';
+    if (modalSettings.size) {
+      if (modalSettings.size === 'l') {
+        modalSize = '80%';
+      } else if (modalSettings.size === 'm') {
+        modalSize = '60%';
+      } else if (modalSettings.size === 's') {
+        modalSize = '40%';
+      }
+    }
+
+    elem[0].setAttribute('style', `width:${modalSize};height:${modalSize}`);
+    if (viewUrl) {
+      viewUrl = RoutingHelpers.substituteViewUrl(viewUrl, componentData);
+    }
+
+    const iframe = IframeHelpers.createIframe(
+      viewUrl,
+      undefined,
+      nodeObject
+    );
+
+    const iframeCtn = document.querySelector('.iframeModalCtn');
+    iframeCtn.appendChild(iframe);
+    return iframe;
+  };
+
+
+  // [svelte-upgrade warning]
+  // beforeUpdate and afterUpdate handlers behave
+  // differently to their v2 counterparts
+  afterUpdate(() => {
+    getNode(nodepath);
+  });
+
+  // [svelte-upgrade suggestion]
+  // review these functions and remove unnecessary 'export' keywords
+  export function handleKeydown(event) {
+    if (event.keyCode === 27) {
+      dispatch('close');
+    }
+  }
+</script>
+
+<svelte:window on:keydown="{handleKeydown}"/>
+<div class="fd-ui__overlay fd-overlay fd-overlay--modal" style="z-index:999">
+  <div class="fd-modal" data-testid="modal-mf">
+    <div class="fd-modal__content" style="height:100%">
+      <div class="fd-modal__header">
+        {#if modalSettings.title}
+        <h1 class="fd-modal__title">{modalSettings.title}</h1>
+        {/if}
+        <button
+          class="fd-button--light fd-modal__close"
+          on:click="{() => dispatch('close')}"
+          aria-label="close"
+        ></button>
+      </div>
+      <div class="iframeModalCtn"></div>
+    </div>
+  </div>
+</div>
+
+<style type="text/scss">
+  $topNavHeight: 50px;
+  $leftNavWidth: 320px;
+  $width: 32rem;
+
+  .iframeModalCtn {
+    position: relative;
+    height: 100%;
+    width: 100%;
+    overflow: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+  .iframeModalCtn :global(iframe) {
+    width: 100%;
+    height: 100%;
+    border: 0;
+    position: absolute;
+  }
+
+  .fd-modal__header {
+    min-height: 53px;
+  }
+
+  .fd-overlay--modal {
+    left: 0;
+  }
+
+  .fd-modal {
+    max-width: 100%;
+    width: 80%;
+    &__body,
+    &__header {
+      overflow-wrap: break-word;
+    }
+  }
+
+  :global(.no-side-nav),
+  :global(.no-nav) {
+    .fd-modal {
+      left: calc(50% - #{$width}/ 2);
+    }
+  }
+</style>
