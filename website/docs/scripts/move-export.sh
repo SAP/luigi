@@ -14,7 +14,7 @@ mkdir -p $LUIGI_DIR
 mv $EXPORT_DIR/luigi/* $LUIGI_DIR
 
 mkdir -p $LUIGI_DIR/docu-microfrontend
-mv $EXPORT_DIR $LUIGI_DIR/docu-microfrontend
+mv $EXPORT_DIR/* $LUIGI_DIR/docu-microfrontend
 
 echo ""
 echoe "Documentation was exported to $LUIGI_DIR"
