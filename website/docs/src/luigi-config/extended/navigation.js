@@ -1,4 +1,11 @@
-const baseUrl = 'http://localhost:4001';
+const isBrowser = typeof window !== 'undefined';
+const envs = (isBrowser ? window.__ENV__ : process.env) || {};
+let baseUrl;
+if (envs.NODE_ENV == 'production') {
+  baseUrl = '/documentation';
+} else {
+  baseUrl = 'http://localhost:4001';
+}
 
 class Navigation {
   nodes = [
