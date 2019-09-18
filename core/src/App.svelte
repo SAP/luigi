@@ -3,6 +3,8 @@
   import ConfirmationModal from './ConfirmationModal.svelte';
   import Modal from './Modal.svelte';
   import Backdrop from './Backdrop.svelte';
+  import LeftNav from './navigation/LeftNav.svelte';
+  import TopNav from './navigation/TopNav.svelte';
   import { afterUpdate, onMount, getContext, setContext } from 'svelte';
   import { fade } from 'svelte/transition';
   import { CSS_BREAKPOINTS } from './utilities/constants';
@@ -15,6 +17,7 @@
   import { MessagesListeners } from './services/messages-listeners';
 
   export let store;
+  export let getTranslation;
 
 	let name = 'tets';
 	let showLoadingIndicator = false;
@@ -107,6 +110,8 @@
     IframeHelpers.broadcastMessageToAllIframes(message);
   };
 
+  //// NAVIGATION
+
   const addPreserveView = (data, config) => {
     if (data.params.preserveView || data.params.viewgroup) {
       const nextPath = buildPath(data.params);
@@ -145,67 +150,70 @@
     return paths.includes(removeQueryParams(routePath));
   };
 
-  const enableRouting = (node, config) => {
-    const component = {
-      get: () => { return {
-          unsavedChanges,
-          hideNav,
-          viewUrl,
-          nodeParams,
-          viewGroup,
-          urlParamsRaw,
-          currentNode,
-          navigationPath,
-          context,
-          pathParams,
-          hideSideNav,
-          isolateView,
-          previousNodeValues,
-        }
-      },
-      set: (obj) => {
-        if (obj) {
-          Object.getOwnPropertyNames(obj).forEach(prop => {
-            if (prop === 'hideNav') {
-              hideNav = obj.hideNav;
-            } else if (prop === 'viewUrl') {
-              viewUrl = obj.viewUrl;
-            } else if (prop === 'nodeParams') {
-              nodeParams = obj.nodeParams;
-            } else if (prop === 'viewGroup') {
-              viewGroup = obj.viewGroup;
-            } else if (prop === 'urlParamsRaw') {
-              urlParamsRaw = obj.urlParamsRaw;
-            } else if (prop === 'currentNode') {
-              currentNode = obj.currentNode;
-            } else if (prop === 'navigationPath') {
-              navigationPath = obj.navigationPath;
-            } else if (prop === 'context') {
-              context = obj.context;
-            } else if (prop === 'pathParams') {
-              pathParams = obj.pathParams;
-            } else if (prop === 'hideSideNav') {
-              hideSideNav = obj.hideSideNav;
-            } else if (prop === 'isolateView') {
-              isolateView = obj.isolateView;
-            } else if (prop === 'previousNodeValues') {
-              previousNodeValues = obj.previousNodeValues;
-            }
-          });
-        }
-      },
-      shouldShowUnsavedChangesModal,
-      showAlert,
-      prepareInternalData
-    };
+  //TODO refactor
+  const getComponentWrapper = () => {
+    return {
+       get: () => { return {
+           unsavedChanges,
+           hideNav,
+           viewUrl,
+           nodeParams,
+           viewGroup,
+           urlParamsRaw,
+           currentNode,
+           navigationPath,
+           context,
+           pathParams,
+           hideSideNav,
+           isolateView,
+           previousNodeValues,
+         }
+       },
+       set: (obj) => {
+         if (obj) {
+           Object.getOwnPropertyNames(obj).forEach(prop => {
+             if (prop === 'hideNav') {
+               hideNav = obj.hideNav;
+             } else if (prop === 'viewUrl') {
+               viewUrl = obj.viewUrl;
+             } else if (prop === 'nodeParams') {
+               nodeParams = obj.nodeParams;
+             } else if (prop === 'viewGroup') {
+               viewGroup = obj.viewGroup;
+             } else if (prop === 'urlParamsRaw') {
+               urlParamsRaw = obj.urlParamsRaw;
+             } else if (prop === 'currentNode') {
+               currentNode = obj.currentNode;
+             } else if (prop === 'navigationPath') {
+               navigationPath = obj.navigationPath;
+             } else if (prop === 'context') {
+               context = obj.context;
+             } else if (prop === 'pathParams') {
+               pathParams = obj.pathParams;
+             } else if (prop === 'hideSideNav') {
+               hideSideNav = obj.hideSideNav;
+             } else if (prop === 'isolateView') {
+               isolateView = obj.isolateView;
+             } else if (prop === 'previousNodeValues') {
+               previousNodeValues = obj.previousNodeValues;
+             }
+           });
+         }
+       },
+       shouldShowUnsavedChangesModal,
+       showAlert,
+       prepareInternalData
+     };
+  };
 
+  const enableRouting = (node, config) => {
     // initial route handling
     StateHelpers.doOnStoreChange(
       store,
       () => {
         LuigiConfig._configModificationTimestamp = new Date();
         const currentPath = Routing.getCurrentPath();
-        Routing.handleRouteChange(currentPath, component, node, config);
+        Routing.handleRouteChange(currentPath, getComponentWrapper(), node, config);
       },
       ['navigation.nodes']
     );
@@ -221,7 +229,7 @@
       closeModal();
       closeSplitView();
 
-      Routing.handleRouteChange(path, component, node, config);
+      Routing.handleRouteChange(path, getComponentWrapper(), node, config);
     });
   };
 
@@ -270,6 +278,25 @@
     return path;
   };
 
+  const handleNavClick = (event) => {
+    const node = event.detail.node;
+    getUnsavedChangesModalPromise().then(() => {
+      closeLeftNav();
+      if (node.openNodeInModal) {
+        const route = RoutingHelpers.buildRoute(
+          node,
+          `/${node.pathSegment}`
+        );
+        openViewInModal(
+          route,
+          node.openNodeInModal === true ? {} : node.openNodeInModal
+        );
+      } else {
+        Routing.handleRouteClick(node, getComponentWrapper());
+      }
+    });
+  };
+
   setContext('handleNavigation', handleNavigation);
 
   const openSplitView = (nodepath, settings) => {
@@ -308,7 +335,7 @@
 
 	let alerts =
   	 [
-  	  {
+ /* 	  {
   	    settings: {
   	      text: `Ut enim ad minim veniam, {goToHome} quis nostrud exercitation
             ullamco {relativePath} laboris nisi ut aliquip ex ea commodo consequat.
@@ -321,7 +348,7 @@
   	      type: 'warning',
   	      id: '123456',
   	    }
-  	  }
+  	  } */
   	];
 
   const getAlertWithId = (alertQueue, id) => {
@@ -329,7 +356,7 @@
     return alertQueue.filter(alert => alert.settings.id === id)[0];
   };
 
-  let showAlert = (settings, openFromClient = false) => {
+  export const showAlert = (settings, openFromClient = false) => {
     const currentAlerts = alerts;
 
     if (!settings.id) {
@@ -416,7 +443,7 @@
 
   resetConfirmationModalData();
 
-  const showModal = (settings, openFromClient = false) => {
+  export const showModal = (settings, openFromClient = false) => {
     return new Promise((resolve, reject) => {
       confirmationModal = {
         displayed: true,
@@ -543,8 +570,6 @@
   };
 
   function init(node) {
-    console.log("INIT: ", node);
-
     const isolateAllViews = LuigiConfig.getConfigValue(
       'navigation.defaults.isolateView'
     );
@@ -847,6 +872,9 @@
 
   }
 
+  setContext('store', store);
+  setContext('getTranslation', getTranslation);
+
   onMount(() => {
 
     setTimeout(() => {
@@ -867,9 +895,6 @@
   id="app"
   class="{hideNav? 'no-nav' : ''} {hideSideNav? 'no-side-nav' : ''}"
 >
-
-  <h1>Hello {name}!</h1>
-
   {#if confirmationModal.displayed}
     <ConfirmationModal
       settings="{confirmationModal.settings}"
@@ -877,11 +902,9 @@
       on:modalDismiss="{() => handleModalResult(false)}"
     ></ConfirmationModal>
   {/if}
-
   {#if alerts && alerts.length}
     <Alerts alertQueue="{alerts}" on:alertDismiss="{handleAlertDismiss}"></Alerts>
   {/if}
-
   {#if mfModal.displayed}
     <Modal
       modalSettings="{mfModal.modalSettings}"
@@ -889,7 +912,6 @@
       on:close="{closeModal}"
     ></Modal>
   {/if}
-
   <Backdrop>
     <div
       class="fd-page iframeContainer {mfSplitView.displayed?'lui-split-view':''} {mfSplitView.collapsed?'lui-collapsed':''}"
@@ -903,7 +925,6 @@
     ></SplitView>
     {/if} -->
   </Backdrop>
-
   {#if showLoadingIndicator}
     <div
       in:fade="{{delay: 250, duration: 250}}"
@@ -917,5 +938,271 @@
       </div>
     </div>
   {/if}
-
+  <TopNav
+    pathData="{navigationPath}"
+    pathParams="{pathParams}"
+    on:handleClick="{handleNavClick}"
+  />
+  {#if !(hideNav||hideSideNav)}
+    <LeftNav
+      pathData="{navigationPath}"
+      on:handleClick="{handleNavClick}"
+    />
+  {/if}
 </div>
+
+<style type="text/scss">
+  /*Mixins*/
+  @import 'styles/mixins';
+
+  $topNavHeight: 48px;
+  $leftNavWidth: 320px;
+  $leftNavWidthCollapsed: 40px;
+  $desktopMinWidth: 600px;
+
+  :global(html) {
+    box-sizing: border-box;
+    font-size: 14px;
+    position: fixed;
+    width: 100%;
+  }
+  :global(body) {
+    -webkit-font-smoothing: antialiased;
+    margin: 0;
+    line-height: 1.42857;
+  }
+  :global(*) {
+    box-sizing: inherit;
+  }
+  :global(*:before),
+  :global(*:after) {
+    box-sizing: inherit;
+  }
+  div :global(div) {
+    font-family: '72', sans-serif;
+  }
+
+  :global(a) {
+    cursor: pointer;
+  }
+  :global([luigi-app-loading-indicator]) {
+    z-index: 10;
+    background-color: var(--fd-background-color);
+    padding-top: 30vh;
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+  }
+  :global([luigi-app-loading-indicator].hidden) {
+    visibility: hidden;
+    opacity: 0;
+    @include transition(visibility 0s 0.3s, opacity 0.3s linear);
+  }
+
+  .iframeContainer,
+  .spinnerContainer {
+    position: absolute;
+    top: $topNavHeight;
+    left: $leftNavWidth;
+    bottom: 0;
+    right: 0;
+    width: auto;
+    min-width: auto;
+    min-height: auto;
+    display: block;
+  }
+
+  .iframeContainer {
+    overflow: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .iframeContainer :global(iframe) {
+    border: none;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    margin-bottom: -5px;
+  }
+  .iframeContainerNoNav {
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+  }
+  .iframeContainerNoNav :global(iframe) {
+    border: none;
+    width: 100%;
+    height: 100%;
+  }
+
+  .spinnerContainer {
+    background: rgba(243, 244, 245, 0.8);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .no-nav {
+    .iframeContainer,
+    .spinnerContainer {
+      position: fixed;
+      top: 0;
+      left: 0;
+      bottom: 0;
+      right: 0;
+    }
+    :global(.splitViewContainer),
+    :global(#splitViewDragger),
+    :global(#splitViewDraggerBackdrop) {
+      left: 0;
+    }
+  }
+
+  .no-side-nav {
+    .iframeContainer,
+    .spinnerContainer {
+      position: fixed;
+      top: $topNavHeight;
+      left: 0;
+      bottom: 0;
+      right: 0;
+    }
+    :global(.splitViewContainer),
+    :global(#splitViewDragger),
+    :global(#splitViewDraggerBackdrop) {
+      left: 0;
+    }
+
+    :global(.fd-app__sidebar) {
+      display: none;
+    }
+  }
+
+  :global(body.lui-simpleSlideInNav) {
+    :global(.fd-app__sidebar) {
+      @include transition(left 0.1s linear);
+    }
+
+    .iframeContainer,
+    .spinnerContainer,
+    :global(.splitViewContainer),
+    :global(#splitViewDragger),
+    :global(#splitViewDraggerBackdrop) {
+      @include transition(left 0.1s linear);
+    }
+  }
+
+  :global(.lui-semiCollapsible) {
+    .iframeContainer,
+    .spinnerContainer {
+      @include transition(left 0.1s linear);
+    }
+    :global(.splitViewContainer),
+    :global(#splitViewDragger),
+    :global(#splitViewDraggerBackdrop) {
+      @include transition(left 0.1s linear);
+    }
+  }
+
+  :global(.semiCollapsed) {
+    :global(.iframeContainer, .spinnerContainer) {
+      left: $leftNavWidthCollapsed;
+    }
+    :global(.splitViewContainer),
+    :global(#splitViewDragger),
+    :global(#splitViewDraggerBackdrop) {
+      left: $leftNavWidthCollapsed;
+    }
+  }
+
+  @media (min-width: $desktopMinWidth) {
+    :global(.fd-shellbar__title) {
+      display: inline;
+    }
+
+    :global(.fd-app__sidebar) {
+      width: $leftNavWidth;
+    }
+    :global(body.lui-simpleSlideInNav.lui-leftNavToggle) {
+      .iframeContainer,
+      .spinnerContainer {
+        left: 0;
+      }
+      :global(.splitViewContainer),
+      :global(#splitViewDragger),
+      :global(#splitViewDraggerBackdrop) {
+        left: 0;
+      }
+
+      :global(.fd-app__sidebar) {
+        left: -$leftNavWidth;
+      }
+    }
+  }
+
+  @media (max-width: $desktopMinWidth - 1) {
+    :global(body.lui-simpleSlideInNav) {
+      .iframeContainer,
+      .spinnerContainer {
+        left: 0;
+      }
+      :global(.splitViewContainer),
+      :global(#splitViewDragger),
+      :global(#splitViewDraggerBackdrop) {
+        left: 0;
+      }
+
+      :global(.fd-app__sidebar) {
+        left: -$leftNavWidth;
+      }
+    }
+
+    :global(body.lui-simpleSlideInNav.lui-leftNavToggle) {
+      :global(.fd-app__sidebar) {
+        display: block;
+        width: $leftNavWidth;
+        left: 0;
+        @include box-shadow(6px 0px 9px 0px rgba(0, 0, 0, 0.44));
+      }
+    }
+
+    :global(.lui-semiCollapsible) {
+      .iframeContainer,
+      .spinnerContainer {
+        left: $leftNavWidthCollapsed;
+      }
+      :global(.splitViewContainer),
+      :global(#splitViewDragger),
+      :global(#splitViewDraggerBackdrop) {
+        left: $leftNavWidthCollapsed;
+      }
+    }
+  }
+
+  :global(html.luigi-app-in-custom-container) {
+    position: relative;
+
+    [luigi-app-root] {
+      position: relative;
+      overflow: hidden;
+    }
+
+    .no-nav,
+    .no-side-nav {
+      .iframeContainer,
+      .spinnerContainer {
+        position: absolute;
+      }
+
+      :global(.splitViewContainer),
+      :global(#splitViewDragger),
+      :global(#splitViewDraggerBackdrop) {
+        position: absolute;
+      }
+    }
+  }
+</style>

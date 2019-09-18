@@ -10,14 +10,11 @@ class StateHelpersClass {
         }
       }
     });
-    if (result.length === 0) {
-      result.push('state');
-    }
     return result;
   }
 
   expandScope(scope) {
-    const result = ['state'];
+    const result = [];
     scope.forEach(s => {
       let subs = '';
       s.split('.').forEach(spart => {
@@ -29,16 +26,10 @@ class StateHelpersClass {
   }
 
   doOnStoreChange(store, fn, scope = []) {
-    // register listener for store event(s)
+    store.subscribe(fn);
     this.expandScope(scope).forEach(e => {
-      store.subscribe(fn);
+      store.subscribeToScope(fn, scope);
     });
-    // and call the listener once specifically, immediately:
-    /*fn({
-      current: store,
-      changed: { config: true },
-      previous: store
-    });*/
   }
 }
 
