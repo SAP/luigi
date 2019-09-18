@@ -3,7 +3,6 @@ import { getParsedDocs } from './_parser';
 const lookup = new Map();
 getParsedDocs().then(raw => {
   const docs = JSON.parse(raw);
-  // console.log('docs', Object.keys(docs[0]));
 	docs.forEach(doc => {
 		console.log('lookup', doc.shortName);
 		lookup.set(doc.shortName, JSON.stringify(doc));

@@ -5,6 +5,6 @@ yarn-error.log
 /cypress/screenshots/
 /__sapper__/
 extendedConfiguration.bundle.js
-/static/luigi/fiori-fundamentals
-/static/luigi/luigi-core
-/static/luigi-client
+fundamental-ui
+luigi-core
+luigi-client
