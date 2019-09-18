@@ -21,7 +21,7 @@
       closeBtn.appendChild(document.createTextNode("Close"));
       closeBtn.setAttribute("onclick", 'if(localStorage) { localStorage.setItem("cookiesAccepted","true"); } '+
                 'document.getElementById("ext-cookiebar").remove();');
-      closeBtn.setAttribute("style", "background-color: #2deb8a; padding: 5px; margin-left: 20px; border-radius: 5px; cursor: pointer;");
+      closeBtn.setAttribute("style", "background-color: #2deb8a; padding: 5px; margin-left: 20px; border-radius: 5px; cursor: pointer; border-style: none;");
       cookiebar.appendChild(closeBtn);
 
       document.body.appendChild(cookiebar);
