@@ -10,7 +10,7 @@ module.exports = {
   },
   output: {
     filename: '[name].bundle.js',
-    path: path.resolve(__dirname, 'static/')
+    path: path.resolve(__dirname, 'static/luigi/')
   },
   plugins: [
     new CopyWebpackPlugin([
@@ -24,11 +24,11 @@ module.exports = {
       },   
       {
         "from": "node_modules/@kyma-project/luigi-client",
-        "to": "luigi-client"
+        "to": "../luigi-client"
       },
       {
         "from": "node_modules/fiori-fundamentals/dist",
-        "to": "fundamental-ui"
+        "to": "../fundamental-ui"
       }
     ]),
     new webpack.BannerPlugin(

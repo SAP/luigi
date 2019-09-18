@@ -2,7 +2,7 @@ const isBrowser = typeof window !== 'undefined';
 const envs = (isBrowser ? window.__ENV__ : process.env) || {};
 let baseUrl;
 if (envs.NODE_ENV == 'production') {
-  baseUrl = '/documentation';
+  baseUrl = '/docu-microfrontend';
 } else {
   baseUrl = 'http://localhost:4001';
 }
@@ -13,48 +13,16 @@ class Navigation {
       pathSegment: 'docs',
       label: 'Overview',
       viewUrl: baseUrl + '/docs',
-      // hideSideNav: true,
-      // hideFromNav: true,
-      children: [
-          'luigi-client-api',
-          'luigi-core-api',
-        ].map((name) => ({
-          label: name,
-          pathSegment: name,
-          navigationContext: 'doc',
-          keepSelectedForChildren: true,
-          viewUrl: `${baseUrl}/docs/${name}`,
-          context: {
-            doc: name
-          }
+      children: fetch(baseUrl + '/navigation-children.json')
+        .then(function(response) {
+          return response.json();
         })
-      )
-    },
-    // {
-    //   pathSegment: 'users',
-    //   label: 'Users',
-    //   viewUrl: baseUrl + '/users',
-    //   hideSideNav: true,
-    //   children: [{
-    //     navigationContext: 'user',
-    //     pathSegment: ':userId',
-    //     viewUrl: baseUrl + '/users/:userId',
-    //     context: {
-    //       userId: ':userId'
-    //     },
-    //     hideSideNav: true
-    //   }]
-    // },
-    // {
-    //   pathSegment: 'blog',
-    //   label: 'Blog',
-    //   viewUrl: baseUrl + '/blog',
-    //   children: ['First', 'Second', 'Third'].map((m) => ({
-    //     label: m,
-    //     pathSegment: m.toLowerCase(),
-    //     viewUrl: `${baseUrl}/blog/${m.toLowerCase()}`
-    //   }))
-    // }
+        .map((child) => {
+          console.log('child', JSON.stringify(child));
+          child.viewUrl = child.viewUrl.replace('__BASE_URL__', baseUrl);
+          return child;
+        })
+    }
   ];
 
   // getContextSwitcherActions = () => {

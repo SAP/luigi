@@ -9,7 +9,10 @@
       "request": "launch",
       "name": "Sapper cli.js",
       "program": "${workspaceFolder}/node_modules/sapper/dist/cli.js",
-      "args": ["dev"]
+      "args": ["dev"],
+      "env": {
+        "PORT": "4001"
+      }
     }
   ]
 }

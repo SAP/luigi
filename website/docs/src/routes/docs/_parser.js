@@ -1,9 +1,3 @@
-// implementation 1, remark with combined, non-flexible remark-html
-// import * as remark from 'remark';
-// import * as guide from 'remark-preset-lint-markdown-style-guide';
-// import * as html from 'remark-html';
-
-// implementation 2, unified plugin for more flexibility
 import unified from 'unified';
 import markdown from 'remark-parse';
 import remark2rehype from 'remark-rehype';
@@ -12,8 +6,7 @@ import format from 'rehype-format';
 import html from 'rehype-stringify';
 // import highlight from 'rehype-highlight'
 import section from '@agentofuser/rehype-section';
-
-import { readdirSync, readFileSync } from 'fs';
+import { readdirSync, readFileSync, writeFileSync } from 'fs';
 
 let parsedDocs;
 export function getParsedDocs() {
@@ -30,18 +23,12 @@ function setParsedDocs() {
   const dir = './src/docs';
   const parsingArr = [];
   readdirSync(dir)
+    .filter(name => name !== 'README.md')
     .filter(name => name.endsWith('.md'))
-    .filter(name => name.indexOf('api') !== -1)
     .map(name => {
       const mdContent = readFileSync(dir + '/' + name);
 
       parsingArr.push(new Promise((resolve) => {
-        // implementation 1 
-        // remark()
-        //   .use(guide)
-        //   .use(html)
-
-        // implementation 2
         unified()
           .use(markdown)
           .use(remark2rehype)
@@ -49,7 +36,6 @@ function setParsedDocs() {
           .use(format)
           // .use(highlight)
           .use(section)
-          // .use(customExamplesPlugin)
           .use(html)
           .process(String(mdContent), function (err, file) {
             // console.error(report(err || file))
@@ -64,5 +50,24 @@ function setParsedDocs() {
       )
     });
   
-  return Promise.all(parsingArr);
+  return Promise.all(parsingArr)
+    .then((files) => {
+      // write Luigi navigation tree for our config
+      const navChildren = files
+        .map((fileObj) => (fileObj.shortName))
+        .map((name) => ({
+          label: name,
+          pathSegment: name,
+          navigationContext: 'doc',
+          keepSelectedForChildren: true,
+          viewUrl: `__BASE_URL__/docs/${name}`,
+          context: {
+            doc: name
+          }
+        }));
+      writeFileSync('./static/navigation-children.json', JSON.stringify(navChildren, null, 2));
+
+      // return for sapper
+      return Promise.resolve(files);
+    });
 }
