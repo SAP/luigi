@@ -46,6 +46,7 @@ jobs:
       script:
         - 'if [ ! -z "${WHITESOURCE_APIKEY}" ]; then
             npm --prefix ./website/landingpage/dev install ./website/landingpage/dev;
+            npm --prefix ./website/fiddle install ./website/fiddle;
             lerna bootstrap --ci --ignore "*luigi-sample-vue";
             npm i -g whitesource;
             bash ./scripts/whiteSource.sh;
