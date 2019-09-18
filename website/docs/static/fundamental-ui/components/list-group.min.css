@@ -1,5 +1,0 @@
-/*!
- * Fundamentals v1.7.1
- * Copyright (c) 2019 SAP SE or an SAP affiliate company.
- * Licensed under Apache License 2.0 (https://github.com/SAP/Fundamental/blob/master/LICENSE)
- */.fd-list-group{--fd-list-group-background-color:transparent;font-size:14px;line-height:1.42857;color:var(--fd-color-text-1);font-family:'72',-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica Neue,Arial,sans-serif,Apple Color Emoji,Segoe UI Emoji,Segoe UI Symbol;margin-left:0}.fd-list-group__item{list-style:none;padding:10px 16px;display:-webkit-box;display:-ms-flexbox;display:flex;position:relative;background-color:var(--fd-list-group-background-color);-webkit-transition:background-color 125ms ease-in;transition:background-color 125ms ease-in}.fd-list-group__item:hover{--fd-list-group-background-color:var(--fd-color-background-hover)}.fd-list-group__action{-webkit-box-flex:1;-ms-flex:1;flex:1;text-align:right;position:relative;display:inline-block;max-height:40px;padding-top:0;top:-10px;margin-bottom:-20px;right:-16px}

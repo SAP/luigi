@@ -19,10 +19,9 @@
 	<title>Documentation</title>
 </svelte:head>
 
-<h1>Recent docs</h1>
+<h1>All docs</h1>
 
 	{#each docs as doc}
-    
 		<!-- we're using the non-standard `rel=prefetch` attribute to
 				tell Sapper to load the data for the page as soon as
 				the user hovers over the link or taps it, instead of

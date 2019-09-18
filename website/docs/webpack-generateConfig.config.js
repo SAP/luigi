@@ -1,6 +1,5 @@
 const path = require('path');
 const webpack = require('webpack');
-const commonPlugins = require('./webpack-common-plugins');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 
 module.exports = {
@@ -11,7 +10,7 @@ module.exports = {
   },
   output: {
     filename: '[name].bundle.js',
-    path: path.resolve(__dirname, 'static')
+    path: path.resolve(__dirname, 'static/luigi')
   },
   plugins: [
     new CopyWebpackPlugin([

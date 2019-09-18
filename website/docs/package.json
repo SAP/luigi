@@ -5,11 +5,13 @@
   "scripts": {
     "start": "run-p dev:*",
     "dev:sapper": "PORT=4001 sapper dev",
+    "debug:sapper": "PORT=4001 node --inspect node_modules/sapper/dist/cli.js dev",
     "dev:config": "npm run build:config -- --watch",
-    "dev:luigi": "sirv static --single --dev --cors --port 4000",
+    "dev:luigi": "sirv static/luigi --single --dev --cors --port 4000",
     "build:sapper": "NODE_ENV=production sapper build",
     "build:config": "webpack --config webpack-generateConfig.config",
-    "export:sapper": "sapper export",
+    "export:sapper": "NODE_ENV=production sapper export",
+    "export": "npm run export:sapper",
     "test": "run-p --race dev cy:run",
     "cy:run": "cypress run",
     "cy:open": "cypress open"

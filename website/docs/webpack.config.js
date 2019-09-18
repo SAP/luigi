@@ -35,7 +35,7 @@ module.exports = {
 						}
 					}
 				},
-				// commonRules.babel,
+				commonRules.babel,
 				// commonRules.svelte,
 				commonRules.css,
 				commonRules.urls
@@ -83,7 +83,7 @@ module.exports = {
 						}
 					}
 				},
-				// commonRules.babel,
+				commonRules.babel,
 				// commonRules.svelte,
 				commonRules.css,
 				commonRules.urls
