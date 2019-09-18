@@ -1,9 +1,9 @@
 <script>
   import { createEventDispatcher, onMount } from 'svelte';
+  import { LuigiI18N } from './core-api';
 
   const dispatch = createEventDispatcher();
 
-  import { LuigiI18N } from './core-api';
   export let settings;
 
   onMount(() => {

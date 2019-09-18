@@ -1,4 +1,5 @@
 <script>
+  import LogoTitle from './LogoTitle.svelte';
   import { beforeUpdate, createEventDispatcher, onMount, getContext } from 'svelte';
   import { LuigiAuth, LuigiConfig, LuigiI18N } from '../core-api';
   import {
@@ -98,10 +99,7 @@
       : NavigationHelpers.prepareForTests(node.pathSegment, node.label);
   }
 
-  // [svelte-upgrade suggestion]
-  // review these functions and remove unnecessary 'export' keywords
-  export function openMobileProductSwitcher(event) {
-    if (event) event.stopPropagation();
+  export function openMobileProductSwitcher() {
     toggleDropdownState('productSwitcherPopover');
   }
 
@@ -118,7 +116,8 @@
     dispatch('handleClick', { node });
   }
 
-  export function toggleDropdownState(name) {
+  export function toggleDropdownState(event) {
+    const name = event.detail.name;
     const ddStates = dropDownStates || {};
     const dropDownState = !ddStates[name];
 
@@ -160,7 +159,13 @@
       on:click="{burgerClicked}"
     ></span>
     {/if}
-
+    <LogoTitle
+      pathData="{pathData}"
+      pathParams="{pathParams}"
+      bind:dropDownStates
+      on:toggleDropdownState="{toggleDropdownState}"
+      on:handleClick="{handleClick}"
+    />
   </div>
   <div class="fd-shellbar__group fd-shellbar__group--end">
     <div class="fd-shellbar__actions">
@@ -354,7 +359,7 @@
                   <li>
                     <a
                       class="fd-menu__item"
-                      on:click="{openMobileProductSwitcher}"
+                      on:click|stopPropagation="{openMobileProductSwitcher}"
                       data-testid="mobile-product-switcher"
                     >
                       {#if hasOpenUIicon(productSwitcherConfig) || !productSwitcherConfig.icon}

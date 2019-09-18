@@ -1,0 +1,208 @@
+<script>
+  import { beforeUpdate, createEventDispatcher, onMount, getContext } from 'svelte';
+  import * as Header from './services/header';
+  import { Routing } from '../services/routing';
+  import { NavigationHelpers, RoutingHelpers } from '../utilities/helpers';
+
+  const dispatch = createEventDispatcher();
+
+  export let logo;
+  export let hasLogo;
+  export let title;
+  export let hasApps;
+  export let dropDownStates = {};
+  export let showMainAppEntry;
+  export let selectedItem;
+  export let defaultTitle;
+  export let appSwitcherItems;
+  export let pathParams;
+  export let subTitle;
+  export let defaultSubTitle;
+  export let pathData;
+  let previousPathData;
+  let getUnsavedChangesModalPromise = getContext('getUnsavedChangesModalPromise');
+  let getTranslation = getContext('getTranslation');
+  let store = getContext('store');
+
+  //TODO refactor
+  const getComponentWrapper = () => {
+      return {
+         get: () => { return {
+             pathData,
+             pathParams,
+             appSwitcherItems,
+             selectedItem,
+             defaultTitle,
+             title,
+             subTitle,
+             defaultSubTitle,
+             showMainAppEntry,
+             hasApps,
+             hasLogo,
+             logo
+           }
+         },
+         set: (obj) => {
+           if (obj) {
+             Object.getOwnPropertyNames(obj).forEach(prop => {
+               if (prop === 'pathData') {
+                 pathData = obj.pathData;
+               } else if (prop === 'appSwitcherItems') {
+                 appSwitcherItems = obj.appSwitcherItems;
+               } else if (prop === 'pathParams') {
+                 pathParams = obj.pathParams;
+               } else if (prop === 'selectedItem') {
+                 selectedItem = obj.selectedItem;
+               } else if (prop === 'title') {
+                 title = obj.title;
+               } else if (prop === 'defaultSubTitle') {
+                 defaultSubTitle = obj.defaultSubTitle;
+               } else if (prop === 'subTitle') {
+                 subTitle = obj.subTitle;
+               } else if (prop === 'defaultTitle') {
+                 defaultTitle = obj.defaultTitle;
+               } else if (prop === 'subTitle') {
+                 subTitle = obj.subTitle;
+               } else if (prop === 'showMainAppEntry') {
+                 showMainAppEntry = obj.showMainAppEntry;
+               } else if (prop === 'hasApps') {
+                 hasApps = obj.hasApps;
+               } else if (prop === 'hasLogo') {
+                 hasLogo = obj.hasLogo;
+               }
+             });
+           }
+         },
+         store
+       };
+    };
+
+  onMount(() => {
+    Header.processHeaderSettings(getComponentWrapper());
+  });
+
+  beforeUpdate(() => {
+    if (!previousPathData || previousPathData != pathData) {
+      Header.updateTitle(getComponentWrapper());
+      pathData = previousPathData;
+    }
+  });
+
+  export function goTo(path) {
+    getUnsavedChangesModalPromise().then(() => {
+      Routing.navigateTo(RoutingHelpers.applyPathParams(path, pathParams));
+    });
+  }
+
+  export function goToRoot() {
+    getUnsavedChangesModalPromise().then(() => {
+      Routing.navigateTo('/');
+    });
+  }
+
+  export function handleClick(node) {
+    dispatch('handleClick', { node });
+    toggleDropdownState('appSwitcherPopover');
+  }
+
+  export function toggleDropdownState(name, event = null) {
+    if (event) event.stopPropagation();
+    dispatch('toggleDropdownState', { name });
+  }
+
+  function getTestId(item) {
+    return item.testId
+      ? item.testId
+      : NavigationHelpers.prepareForTests(item.title || item);
+  }
+
+  function hasValidLink(item, pathParams) {
+    if (item.link) {
+      const concreteLink = RoutingHelpers.applyPathParams(item.link, pathParams);
+      if (concreteLink.indexOf(':') !== 0 && concreteLink.indexOf('/:') === -1) {
+        return true;
+      }
+    }
+    return false;
+  }
+</script>
+
+<div
+  class="fd-shellbar__logo { !hasLogo ? 'fd-shellbar__logo--image-replaced' : '' } { hasLogo ? 'lui-customlogo' : ''}"
+  aria-label="SAP"
+>
+  {#if hasLogo}
+  <img data-testid="luigi-topnav-logo" on:click="{() => goTo('/')}" bind:this={logo}>
+  {/if}
+</div>
+{#if title}
+<div class="fd-shellbar__product">
+  {#if !hasApps}
+  <div
+    class="fd-shellbar__title"
+    data-testid="luigi-topnav-title"
+    on:click="{() => goTo('/')}"
+  >{$getTranslation(title)}</div>
+  {:else}
+  <div class="fd-popover fd-popover--left">
+    <div class="fd-popover__control" on:click="{event => event.stopPropagation()}">
+      <button
+        class="fd-product-menu__control"
+        aria-haspopup="true"
+        aria-expanded="{dropDownStates.appSwitcherPopover || false}"
+        on:click="{() => toggleDropdownState('appSwitcherPopover')}"
+        data-testid="app-switcher"
+      >
+        <div
+          class="fd-shellbar__title fd-product-menu__title"
+          data-testid="luigi-topnav-title"
+         >{$getTranslation(title)}</div>
+      </button>
+    </div>
+    <div
+      class="fd-popover__body fd-popover__body--left"
+      aria-hidden="{!(dropDownStates.appSwitcherPopover || false)}"
+      id="appSwitcherPopover"
+    >
+      <nav class="fd-menu">
+        <ul class="fd-menu__list">
+          {#if showMainAppEntry && selectedItem}
+            <li>
+              <a role="button" class="fd-menu__item" on:click="{goToRoot}" data-testid="{getTestId(defaultTitle)}">{$getTranslation(defaultTitle)}
+              </a>
+            </li>
+          {/if}
+          {#if appSwitcherItems && appSwitcherItems.length > 0}
+          {#each appSwitcherItems as item}
+            {#if item !== selectedItem && hasValidLink(item, pathParams)}
+            <li>
+              <a role="button" class="fd-menu__item" on:click="{() => goTo(item.link)}" data-testid="{getTestId(item)}">{$getTranslation(item.title)}
+              </a>
+            </li>
+            {/if}
+          {/each}
+          {/if}
+        </ul>
+      </nav>
+    </div>
+  </div>
+  {/if}
+</div>
+{#if subTitle}
+<div class="fd-shellbar__subtitle">
+  {$getTranslation(subTitle)}
+</div>
+{/if}
+{/if}
+
+<style type="text/scss">
+  // Force height because of base64 img src
+  .lui-customlogo img {
+    height: 24px;
+  }
+
+  .fd-shellbar__logo,
+  .fd-shellbar__title {
+    cursor: pointer;
+  }
+</style>
