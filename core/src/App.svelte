@@ -3,9 +3,10 @@
   import ConfirmationModal from './ConfirmationModal.svelte';
   import Modal from './Modal.svelte';
   import Backdrop from './Backdrop.svelte';
+  import SplitView from './SplitView.svelte';
   import LeftNav from './navigation/LeftNav.svelte';
   import TopNav from './navigation/TopNav.svelte';
-  import { afterUpdate, onMount, setContext } from 'svelte';
+  import { afterUpdate, onMount, setContext, createEventDispatcher } from 'svelte';
   import { fade } from 'svelte/transition';
   import { CSS_BREAKPOINTS } from './utilities/constants';
   import { GenericHelpers, StateHelpers, RoutingHelpers, IframeHelpers, AuthHelpers } from './utilities/helpers'
@@ -13,8 +14,11 @@
   import { Navigation } from './navigation/services/navigation';
   import { Routing } from './services/routing';
   import { Iframe } from './services/iframe';
+  import { SplitViewSvc } from './services/split-view';
   import { ViewGroupPreloading } from './services/preloading';
   import { MessagesListeners } from './services/messages-listeners';
+
+  const dispatch = createEventDispatcher();
 
   export let store;
   export let getTranslation;
@@ -25,6 +29,7 @@
   let mfSplitView = {
     displayed: false
   };
+  let splitViewValues;
 
   /// MFs
   let modalIframe;
@@ -150,6 +155,31 @@
     return paths.includes(removeQueryParams(routePath));
   };
 
+  const getUnsavedChangesModalPromise = (source) => {
+    return new Promise(resolve => {
+      if (shouldShowUnsavedChangesModal(source)) {
+        showUnsavedChangesModal().then(
+          () => {
+            if (
+              unsavedChanges &&
+              unsavedChanges.dirtySet
+            ) {
+              if (source) {
+                unsavedChanges.dirtySet.delete(source);
+              } else {
+                unsavedChanges.dirtySet.clear();
+              }
+            }
+            resolve();
+          },
+          () => {}
+        );
+      } else {
+        resolve();
+      }
+    });
+  };
+
   //TODO refactor
   const getComponentWrapper = () => {
     return {
@@ -167,6 +197,9 @@
            hideSideNav,
            isolateView,
            previousNodeValues,
+           mfSplitView,
+           splitViewValues,
+           splitViewIframe
          }
        },
        set: (obj) => {
@@ -196,13 +229,21 @@
                isolateView = obj.isolateView;
              } else if (prop === 'previousNodeValues') {
                previousNodeValues = obj.previousNodeValues;
+             } else if (prop === 'mfSplitView') {
+               mfSplitView = obj.mfSplitView;
+             } else if (prop === 'splitViewValues') {
+               splitViewValues = obj.splitViewValues;
+             } else if (prop === 'splitViewIframe') {
+               splitViewIframe = obj.splitViewIframe;
              }
            });
          }
        },
        shouldShowUnsavedChangesModal,
+       getUnsavedChangesModalPromise,
        showAlert,
-       prepareInternalData
+       prepareInternalData,
+       dispatch
      };
   };
 
@@ -299,12 +340,29 @@
 
   setContext('handleNavigation', handleNavigation);
 
+  //// SPLIT VIEW
+
   const openSplitView = (nodepath, settings) => {
-    //TODO SplitViewSvc.open(this, nodepath, settings);
+    SplitViewSvc.open(getComponentWrapper(), nodepath, settings);
   };
 
   const closeSplitView = () => {
-    //TODO SplitViewSvc.close(this);
+    SplitViewSvc.close(getComponentWrapper());
+  };
+
+  const splitViewIframeCreated = event => {
+     splitViewIframe = event.detail.splitViewIframe;
+     splitViewIframeData = event.detail.splitViewIframeData;
+     $: mfSplitView.collapsed = event.detail.collapsed;
+  };
+
+  const splitViewStatusChanged = event => {
+    $: if (event.detail.displayed !== undefined) {
+      mfSplitView.displayed = event.detail.displayed;
+    }
+    $: if (event.detail.collapsed !== undefined) {
+      mfSplitView.collapsed = event.detail.collapsed;
+    }
   };
 
 	/// RESIZING
@@ -500,31 +558,6 @@
       body: LuigiI18N.getTranslation('luigi.unsavedChangesAlert.body'),
       buttonDismiss: LuigiI18N.getTranslation('luigi.button.dismiss'),
       buttonConfirm: LuigiI18N.getTranslation('luigi.button.confirm')
-    });
-  };
-
-  const getUnsavedChangesModalPromise = (source) => {
-    return new Promise(resolve => {
-      if (shouldShowUnsavedChangesModal(source)) {
-        showUnsavedChangesModal().then(
-          () => {
-            if (
-              unsavedChanges &&
-              unsavedChanges.dirtySet
-            ) {
-              if (source) {
-                unsavedChanges.dirtySet.delete(source);
-              } else {
-                unsavedChanges.dirtySet.clear();
-              }
-            }
-            resolve();
-          },
-          () => {}
-        );
-      } else {
-        resolve();
-      }
     });
   };
 
@@ -923,13 +956,15 @@
       class="fd-page iframeContainer {mfSplitView.displayed?'lui-split-view':''} {mfSplitView.collapsed?'lui-collapsed':''}"
       use:init
     ></div>
-    <!-- TODO {#if mfSplitView.displayed}
+    {#if mfSplitView.displayed}
     <SplitView
       splitViewSettings="{mfSplitView.settings}"
       collapsed="{mfSplitView.collapsed}"
       nodepath="{mfSplitView.nodepath}"
+      on:iframeCreated="{splitViewIframeCreated}"
+      on:statusChanged="{splitViewStatusChanged}"
     ></SplitView>
-    {/if} -->
+    {/if}
   </Backdrop>
   {#if showLoadingIndicator}
     <div
