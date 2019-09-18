@@ -27,8 +27,8 @@ class StateHelpersClass {
 
   doOnStoreChange(store, fn, scope = []) {
     store.subscribe(fn);
-    this.expandScope(scope).forEach(e => {
-      store.subscribeToScope(fn, scope);
+    this.expandScope(scope).forEach(s => {
+      store.subscribeToScope(fn, s);
     });
   }
 }

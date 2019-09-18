@@ -3,6 +3,7 @@
   import BadgeCounter from './BadgeCounter.svelte';
   import Authorization from '../Authorization.svelte';
   import TopNavDropDown from '../TopNavDropDown.svelte';
+  import ContextSwitcher from './ContextSwitcher.svelte';
   import { beforeUpdate, createEventDispatcher, onMount, getContext } from 'svelte';
   import { LuigiAuth, LuigiConfig, LuigiI18N } from '../core-api';
   import {
@@ -181,7 +182,10 @@
   <div class="fd-shellbar__group fd-shellbar__group--end">
     <div class="fd-shellbar__actions">
       {#if !authorizationEnabled || isLoggedIn}
-
+      <ContextSwitcher
+        bind:dropDownStates
+        on:toggleDropdownState="{() => toggleDropdownState('contextSwitcherPopover')}"
+      />
       {/if}
       {#if children && pathData.length > 0}
       {#each children as node, i}

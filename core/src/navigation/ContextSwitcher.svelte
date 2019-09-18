@@ -1,0 +1,280 @@
+<script>
+  import { createEventDispatcher, onMount, getContext } from 'svelte';
+  import { ContextSwitcherHelpers } from './services/context-switcher';
+  import { LuigiConfig } from '../core-api';
+  import { Routing } from '../services/routing';
+  import {
+    IframeHelpers,
+    RoutingHelpers,
+    StateHelpers,
+    NavigationHelpers
+  } from '../utilities/helpers';
+
+  const dispatch = createEventDispatcher();
+
+  export let contextSwitcherEnabled = false;
+  export let dropDownStates = {};
+  export let selectedLabel = null;
+  export let config = {};
+  export let actions = [];
+  export let options = null;
+  export let selectedOption;
+  export let fallbackLabelResolver = null;
+  let preserveSubPathOnSwitch;
+  let getUnsavedChangesModalPromise = getContext('getUnsavedChangesModalPromise');
+  let store = getContext('store');
+  let getTranslation = getContext('getTranslation');
+
+  onMount(async () => {
+    StateHelpers.doOnStoreChange(
+      store,
+      async () => {
+        LuigiConfig._configModificationTimestamp = new Date();
+        const contextSwitcherConfig = LuigiConfig.getConfigValue(
+          'navigation.contextSwitcher'
+        );
+
+        contextSwitcherEnabled = !!contextSwitcherConfig;
+        config = contextSwitcherConfig;
+        options = undefined;
+
+        if (contextSwitcherConfig) {
+          actions = await LuigiConfig.getConfigValueAsync(
+            'navigation.contextSwitcher.actions'
+          );
+          const currentPath = Routing.getCurrentPath();
+
+          fallbackLabelResolver = contextSwitcherConfig.fallbackLabelResolver;
+
+          // options are loaded lazy by default
+          if (!contextSwitcherConfig.lazyloadOptions) {
+            await fetchOptions();
+          }
+          if (
+            ContextSwitcherHelpers.isContextSwitcherDetailsView(
+              currentPath,
+              contextSwitcherConfig.parentNodePath
+            )
+          ) {
+            await setSelectedContext(currentPath);
+          }
+        }
+      },
+      ['navigation.contextSwitcher']
+    );
+
+    RoutingHelpers.addRouteChangeListener(path =>
+      setSelectedContext(path)
+    );
+
+    window.addEventListener('message', e => {
+      if (!IframeHelpers.getValidMessageSource(e)) return;
+      if (e.data && e.data.msg === 'luigi.refresh-context-switcher') {
+        options = null;
+        fetchOptions();
+      }
+    });
+  });
+
+  function getNodeName(label, config, id) {
+    if (label) {
+      return Promise.resolve(label);
+    }
+    return ContextSwitcherHelpers.getFallbackLabel(config, id);
+  }
+
+  function getTestId(node) {
+    return node.testId
+      ? node.testId
+      : NavigationHelpers.prepareForTests(node.pathSegment, node.label);
+  }
+
+  // [svelte-upgrade suggestion]
+  // review these functions and remove unnecessary 'export' keywords
+  export async function fetchOptions() {
+    options = await ContextSwitcherHelpers.fetchOptions(
+      options
+    );
+    const conf = config || {};
+    const parentNodePath = conf.parentNodePath;
+    const fallbackLabelResolver = conf.fallbackLabelResolver;
+    const currentPath = Routing.getCurrentPath();
+    selectedOption = await ContextSwitcherHelpers.getSelectedOption(
+      currentPath,
+      options,
+      parentNodePath
+    );
+    selectedLabel = await ContextSwitcherHelpers.getSelectedLabel(
+      currentPath,
+      options,
+      parentNodePath,
+      fallbackLabelResolver
+    );
+    preserveSubPathOnSwitch = conf.preserveSubPathOnSwitch;
+  }
+
+  export async function setSelectedContext(currentPath) {
+    const conf = config || {};
+    const parentNodePath = conf.parentNodePath;
+    const fallbackLabelResolver = conf.fallbackLabelResolver;
+    selectedOption = await ContextSwitcherHelpers.getSelectedOption(
+      currentPath,
+      options,
+      parentNodePath
+    );
+    selectedLabel = await ContextSwitcherHelpers.getSelectedLabel(
+      currentPath,
+      options,
+      parentNodePath,
+      fallbackLabelResolver
+    );
+  }
+
+  export async function onActionClick(node) {
+    if (node.clickHandler) {
+      const result = await node.clickHandler(node);
+      // If the clickHandler returns true, open the link
+      if (!result) {
+        return;
+      }
+    }
+    setTimeout(() => {
+      goToPath(node.link);
+    });
+  }
+
+  export function goToPath(path) {
+    getUnsavedChangesModalPromise().then(() => {
+      LuigiConfig._configModificationTimestamp = new Date();
+      Routing.navigateTo(path);
+    });
+  }
+
+  export function goToOption(option, selectedOption) {
+    getUnsavedChangesModalPromise().then(() => {
+      LuigiConfig._configModificationTimestamp = new Date();
+      if (preserveSubPathOnSwitch && selectedOption) {
+        Routing.navigateTo(ContextSwitcherHelpers.getNodePathFromCurrentPath(option, selectedOption))
+      } else {
+        Routing.navigateTo(option.path);
+      }
+    });
+  }
+
+  export function toggleDropdownState() {
+    dispatch('toggleDropdownState');
+    const ddStates = dropDownStates || {};
+    const isOpened = JSON.parse(ddStates['contextSwitcherPopover']);
+    if (isOpened) {
+      fetchOptions();
+    }
+  }
+</script>
+
+{#if contextSwitcherEnabled}
+<div class="fd-shellbar__action fd-shellbar__action--show-always">
+  <div class="fd-product-menu">
+    <div class="fd-popover fd-popover--right">
+      <div class="fd-popover__control" on:click|stopPropagation="{() => {}}">
+        <button
+          class="fd-button--shell fd-product-menu__control lui-tendant-menu__control"
+          aria-expanded="{dropDownStates.contextSwitcherPopover || false}"
+          aria-haspopup="true"
+          title="{selectedLabel ? selectedLabel : ''}"
+          on:click="{toggleDropdownState}"
+        >
+          {#if !selectedLabel}{$getTranslation(config.defaultLabel)}{/if} {#if
+          selectedLabel}{selectedLabel}{/if}
+        </button>
+      </div>
+
+      <div
+        class="fd-popover__body fd-popover__body--right"
+        aria-hidden="{!(dropDownStates.contextSwitcherPopover || false)}"
+        id="contextSwitcherPopover"
+      >
+        <nav class="fd-menu">
+          {#if actions && actions.length}
+          <ul class="fd-menu__list fd-menu__list--top">
+            {#each actions as node} {#if node.position === 'top' || !['top',
+            'bottom'].includes(node.position)}
+            <li on:click="{() => onActionClick(node)}" data-testid="{getTestId(node)}">
+              <a class="fd-menu__item">{$getTranslation(node.label)}</a>
+            </li>
+            {/if} {/each}
+          </ul>
+          {/if}
+          <ul class="fd-menu__list" id="context_menu_middle">
+            {#if options && options.length === 0}
+            <li>
+              <div class="fd-spinner">
+                <div></div>
+              </div>
+            </li>
+            {/if} {#if options && options.length} {#each options as node}
+            {#await getNodeName(node.label, config.fallbackLabelResolver,
+            node.id)} {:then label}
+            <li on:click="{() => goToOption(node, selectedOption)}" data-testid="{getTestId(node)}">
+              <a
+                class="fd-menu__item {node === selectedLabel ? 'is-selected' : ''}"
+                title="{label}"
+              >{label}</a>
+            </li>
+            {/await} {/each} {/if}
+          </ul>
+          {#if actions && actions.length}
+          <ul class="fd-menu__list fd-menu__list--bottom">
+            {#each actions as node} {#if node.position === 'bottom'}
+            <li on:click="{() => onActionClick(node)}" data-testid="{getTestId(node)}">
+              <a class="fd-menu__item">{$getTranslation(node.label)}</a>
+            </li>
+            {/if} {/each}
+          </ul>
+          {/if}
+        </nav>
+      </div>
+    </div>
+  </div>
+</div>
+{/if}
+
+<style type="text/scss">
+  :root {
+    /* needed for IE11 support */
+    --fd-color-shell-2: #d1e8ff;
+  }
+
+  .fd-button--shell .is-hover,
+  .fd-button--shell:hover {
+    background-color: transparent;
+  }
+
+  .lui-tendant-menu__control {
+    /* Overwrite color inheriting of product menu */
+    color: var(--fd-color-shell-2);
+  }
+
+  .fd-button--secondary,
+  .fd-menu__item {
+    max-width: 300px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .fd-popover__body {
+    right: 0;
+  }
+  .fd-spinner {
+    margin: 20px auto;
+  }
+  .fd-menu__list--top {
+    border-bottom: 1px solid #eeeeef;
+  }
+  .fd-menu__list--bottom {
+    border-top: 1px solid #eeeeef;
+  }
+  #context_menu_middle {
+    max-height: 50vh;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+</style>
