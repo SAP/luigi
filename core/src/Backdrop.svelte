@@ -5,6 +5,7 @@
 
   export let backdropClass = '';
   export let backdropActive = false;
+  let wasBackdropActive = false;
   let options =  {};
 
   const setBackdropClass = () => {
@@ -40,7 +41,8 @@
   // beforeUpdate and afterUpdate handlers behave
   // differently to their v2 counterparts
   beforeUpdate(() => {
-    if (backdropActive) {
+    if (backdropActive !== wasBackdropActive) {
+      wasBackdropActive = backdropActive;
       setBackdropClass();
     }
   });

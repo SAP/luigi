@@ -23,7 +23,6 @@
   export let store;
   export let getTranslation;
 
-	let name = 'tets';
 	let showLoadingIndicator = false;
 
   let mfSplitView = {
@@ -199,7 +198,8 @@
            previousNodeValues,
            mfSplitView,
            splitViewValues,
-           splitViewIframe
+           splitViewIframe,
+           showLoadingIndicator
          }
        },
        set: (obj) => {
@@ -235,6 +235,8 @@
                splitViewValues = obj.splitViewValues;
              } else if (prop === 'splitViewIframe') {
                splitViewIframe = obj.splitViewIframe;
+             } else if (prop === 'showLoadingIndicator') {
+               showLoadingIndicator = obj.showLoadingIndicator;
              }
            });
          }
@@ -472,9 +474,9 @@
     const openFromClient = alert.openFromClient;
 
     alerts = alerts.filter(a => a.settings.id !== id);
-    /*TODO
+
     if (openFromClient) {
-      const iframe = Iframe.getActiveIframe(this.get().contentNode);
+      const iframe = Iframe.getActiveIframe(contentNode);
       const message = {
         msg: 'luigi.ux.alert.hide',
         id
@@ -482,7 +484,6 @@
       };
       IframeHelpers.sendMessageToIframe(iframe, message);
     }
-    */
  };
 
 	const handleAlertDismissExternal = (event) => {
@@ -526,16 +527,14 @@
       promise.reject();
     }
 
-    /* TODO
     if (openFromClient) {
-      const iframe = Iframe.getActiveIframe(this.get().contentNode);
+      const iframe = Iframe.getActiveIframe(contentNode);
       const message = {
         msg: 'luigi.ux.confirmationModal.hide',
         data: { confirmed: result }
       };
       IframeHelpers.sendMessageToIframe(iframe, message);
     }
-    */
   };
 
   const shouldShowUnsavedChangesModal = (source) => {
@@ -722,9 +721,8 @@
           IframeHelpers.isMessageSource(e, config.iframe)
         ) {
           sendContextToClient(config, {});
-
           const loadingIndicatorAutoHideEnabled =
-             !currentNode || !currentNode.loadingIndicator || !currentNode.loadingIndicator.hideAutomatically !== false;
+             !currentNode || !currentNode.loadingIndicator || currentNode.loadingIndicator.hideAutomatically !== false;
           if (loadingIndicatorAutoHideEnabled) {
             showLoadingIndicator = false;
           }

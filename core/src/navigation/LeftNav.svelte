@@ -146,9 +146,6 @@
 
   export function handleIconClick(nodeOrNodes, el) {
     if (getIsSemiCollapsed()) {
-      //TODO
-      event.stopPropagation();
-
       let selectedCat;
       let sideBar = document.getElementsByClassName('fd-app__sidebar')[0];
 
@@ -375,7 +372,7 @@
           {#if nodes.metaInfo.collapsible}
           <li
             class="fd-side-nav__item lui-collapsible-item"
-            on:click="{() => handleIconClick(nodes, this)}"
+            on:click|stopPropagation="{() => handleIconClick(nodes, this)}"
             title="{isSemiCollapsed ? key : ''}"
             data-testid="{getTestIdForCat(nodes.metaInfo, key)}"
           >
@@ -428,7 +425,7 @@
           {:else}
           <li
             class="fd-side-nav__title lui-category"
-            on:click="{() => handleIconClick(nodes, this)}"
+            on:click|stopPropagation="{() => handleIconClick(nodes, this)}"
             title="{isSemiCollapsed ? key : ''}"
             data-testid="{getTestIdForCat(nodes.metaInfo, key)}"
           >

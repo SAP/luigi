@@ -4,6 +4,7 @@
   import Authorization from '../Authorization.svelte';
   import TopNavDropDown from '../TopNavDropDown.svelte';
   import ContextSwitcher from './ContextSwitcher.svelte';
+  import ProductSwitcher from './ProductSwitcher.svelte';
   import { beforeUpdate, createEventDispatcher, onMount, getContext } from 'svelte';
   import { LuigiAuth, LuigiConfig, LuigiI18N } from '../core-api';
   import {
@@ -396,6 +397,13 @@
                 </ul>
               </nav>
             </div>
+            {#if isProductSwitcherAvailable}
+            <ProductSwitcher
+              bind:dropDownStates
+              on:toggleDropdownState="{() => toggleDropdownState('productSwitcherPopover')}"
+              isMobile="{true}"
+            />
+            {/if}
             {#if openMobileDropDown}
             <TopNavDropDown
               node="{nodeForMobile}"
@@ -442,7 +450,13 @@
         </div>
       </div>
       {/if}
-
+      {#if isProductSwitcherAvailable}
+      <ProductSwitcher
+        bind:dropDownStates
+        on:toggleDropdownState="{() => toggleDropdownState('productSwitcherPopover')}"
+        isMobile="{false}"
+      />
+      {/if}
     </div>
   </div>
 </div>
