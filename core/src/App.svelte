@@ -5,7 +5,7 @@
   import Backdrop from './Backdrop.svelte';
   import LeftNav from './navigation/LeftNav.svelte';
   import TopNav from './navigation/TopNav.svelte';
-  import { afterUpdate, onMount, getContext, setContext } from 'svelte';
+  import { afterUpdate, onMount, setContext } from 'svelte';
   import { fade } from 'svelte/transition';
   import { CSS_BREAKPOINTS } from './utilities/constants';
   import { GenericHelpers, StateHelpers, RoutingHelpers, IframeHelpers, AuthHelpers } from './utilities/helpers'
@@ -540,10 +540,6 @@
 
   resetMicrofrontendModalData();
 
-  const getModalIframe = () => {
-    return getContext('modalIframe');
-  };
-
   const openViewInModal = async (nodepath, modalSettings) => {
     const { nodeObject } = await Navigation.extractDataFromPath(nodepath);
     if (await Navigation.shouldPreventNavigation(nodeObject)) {
@@ -556,8 +552,12 @@
     }
   };
 
+  const modalIframeCreated = event => {
+     modalIframe = event.detail.modalIframe;
+     modalIframeData = event.detail.modalIframeData;
+  };
+
   const closeModal = () => {
-    const modalIframe = getModalIframe();
     if (modalIframe) {
       getUnsavedChangesModalPromise(
         modalIframe.contentWindow
@@ -668,7 +668,7 @@
         if (specialIframeMessageSource.length) {
           specialIframeMessageSource.forEach(typ => {
             let ctx = specialIframeProps[typ.dataKey].context;
-            const config = {
+            const conf = {
               ...config,
               iframe: specialIframeProps[typ.iframeKey],
               context: ctx,
@@ -677,7 +677,7 @@
               modal: typ.iframeKey.startsWith('modal'),
               splitView: typ.iframeKey.startsWith('splitView')
             };
-            sendContextToClient(config, {});
+            sendContextToClient(conf, {});
           });
         } else if (
           config.iframe &&
@@ -910,6 +910,7 @@
       modalSettings="{mfModal.modalSettings}"
       nodepath="{mfModal.nodepath}"
       on:close="{closeModal}"
+      on:iframeCreated="{modalIframeCreated}"
     ></Modal>
   {/if}
   <Backdrop>

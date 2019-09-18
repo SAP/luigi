@@ -1,5 +1,5 @@
 <script>
-  import { afterUpdate, createEventDispatcher, setContext } from 'svelte';
+  import { afterUpdate, createEventDispatcher } from 'svelte';
 
   const dispatch = createEventDispatcher();
 
@@ -43,8 +43,10 @@
           nodeParams
         }
       );
-      setContext('modalIframe', iframe);
-      setContext('modalIframeData', { ...pathData, nodeParams });
+      dispatch('iframeCreated', {
+        modalIframe: iframe,
+        modalIframeData: { ...pathData, nodeParams }
+      });
     } else {
       await prepareNodeData(path);
     }

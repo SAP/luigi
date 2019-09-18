@@ -1,5 +1,6 @@
 <script>
   import LogoTitle from './LogoTitle.svelte';
+  import BadgeCounter from './BadgeCounter.svelte';
   import { beforeUpdate, createEventDispatcher, onMount, getContext } from 'svelte';
   import { LuigiAuth, LuigiConfig, LuigiI18N } from '../core-api';
   import {
@@ -204,7 +205,7 @@
               <span>{getNodeLabel(node)}</span>
               {/if}
               <!-- end node.icon -->
-
+              <BadgeCounter {node}/>
             </button>
           </div>
           <div
@@ -245,7 +246,7 @@
           <span>{getNodeLabel(node)}</span>
           {/if}
           <!-- end node.icon -->
-
+          <BadgeCounter {node}/>
         </button>
       </div>
       {/if}
@@ -280,7 +281,7 @@
                   on:click="{() => toggleDropdownState('overflowPopover')}"
                   data-testid="mobile-menu"
                 >
-
+                  <BadgeCounter node="{totalBadgeNode}" special="true"/>
                 </button>
               </div>
             </div>
@@ -306,7 +307,7 @@
                         {#if !hasOpenUIicon(node)}
                         <img src="{node.icon}">
                         {/if}
-
+                        <BadgeCounter {node}/>
                       </span>
                       <span>{getNodeLabel(node)}</span>
                     </a>
@@ -325,7 +326,7 @@
                         {#if !hasOpenUIicon(node)}
                         <img src="{node.icon}">
                         {/if}
-
+                        <BadgeCounter {node}/>
                       </span>
                       <span>{getNodeLabel(node)}</span>
                     </a>
