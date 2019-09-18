@@ -84,7 +84,7 @@
   beforeUpdate(() => {
     if (!previousPathData || previousPathData != pathData) {
       Header.updateTitle(getComponentWrapper());
-      pathData = previousPathData;
+      previousPathData = pathData;
     }
   });
 

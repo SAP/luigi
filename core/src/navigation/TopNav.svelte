@@ -1,6 +1,7 @@
 <script>
   import LogoTitle from './LogoTitle.svelte';
   import BadgeCounter from './BadgeCounter.svelte';
+  import Authorization from '../Authorization.svelte';
   import { beforeUpdate, createEventDispatcher, onMount, getContext } from 'svelte';
   import { LuigiAuth, LuigiConfig, LuigiI18N } from '../core-api';
   import {
@@ -46,7 +47,7 @@
   };
 
   const setLoggedInState = () => {
-      isLoggedIn = AuthHelpers.isLoggedIn();
+    isLoggedIn = AuthHelpers.isLoggedIn();
   };
 
   onMount(() => {
@@ -117,8 +118,11 @@
     dispatch('handleClick', { node });
   }
 
-  export function toggleDropdownState(event) {
-    const name = event.detail.name;
+  export function handleClickExternal(event) {
+    handleClick(event.detail.node);
+  }
+
+  export function toggleDropdownState(name) {
     const ddStates = dropDownStates || {};
     const dropDownState = !ddStates[name];
 
@@ -128,6 +132,10 @@
     ddStates[name] = dropDownState;
 
     dropDownStates = ddStates;
+  }
+
+  export function toggleDropdownStateExternal(event) {
+    toggleDropdownState(event.detail.name);
   }
 
   export function closeAllDropdowns() {
@@ -145,7 +153,8 @@
     document.body.classList.toggle('lui-leftNavToggle');
   }
 
-  export function userInfoUpdate(uInfo) {
+  export function userInfoUpdate(event) {
+    const uInfo = event.detail;
     userInfo = uInfo ? uInfo : {};
   }
 </script>
@@ -164,13 +173,15 @@
       pathData="{pathData}"
       pathParams="{pathParams}"
       bind:dropDownStates
-      on:toggleDropdownState="{toggleDropdownState}"
-      on:handleClick="{handleClick}"
+      on:toggleDropdownState="{toggleDropdownStateExternal}"
+      on:handleClick="{handleClickExternal}"
     />
   </div>
   <div class="fd-shellbar__group fd-shellbar__group--end">
     <div class="fd-shellbar__actions">
+      {#if !authorizationEnabled || isLoggedIn}
 
+      {/if}
       {#if children && pathData.length > 0}
       {#each children as node, i}
       {#if !node.hideFromNav}
@@ -409,7 +420,11 @@
                 aria-hidden="{!(dropDownStates.profilePopover || false)}"
                 id="profilePopover"
               >
-
+                <Authorization
+                  on:toggleDropdownState="{() => toggleDropdownState('profilePopover')}"
+                  on:userInfoUpdated="{userInfoUpdate}"
+                  {urlAuthError}
+                />
               </div>
             </div>
           </div>
@@ -421,7 +436,12 @@
   </div>
 </div>
 {:else}
-
+<Authorization
+  on:toggleDropdownState="{() => toggleDropdownState('profilePopover')}"
+  on:userInfoUpdated="{userInfoUpdate}"
+  isHidden="{true}"
+  {urlAuthError}
+/>
 {/if}
 
 <style type="text/scss">

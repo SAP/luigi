@@ -1,0 +1,397 @@
+<script>
+  import { createEventDispatcher, onMount, getContext } from 'svelte';
+  import { LuigiAuth, LuigiConfig } from './core-api';
+  import { Routing } from './services/routing';
+  import {
+    AuthHelpers,
+    GenericHelpers,
+    NavigationHelpers,
+    StateHelpers
+  } from './utilities/helpers';
+  import { oAuth2ImplicitGrant } from './providers/auth/oAuth2ImplicitGrant';
+  import { openIdConnect } from './providers/auth/openIdConnect';
+  import { TOP_NAV_DEFAULTS } from './utilities/luigi-config-defaults';
+
+  const dispatch = createEventDispatcher();
+
+  let idpProviderInstance;
+  const standardProviders = {
+    mockAuth: oAuth2ImplicitGrant,
+    oAuth2ImplicitGrant,
+    openIdConnect
+  };
+  export let userInfo;
+  export let isHidden = false;
+  export let isLoggedIn;
+  export let profileNav = { logout: {}, items: [] };
+  export let isAuthorizationEnabled;
+  export let isProfileLogoutItem;
+  let urlAuthError;
+  let navProfileListenerInstalled;
+  let profileLogoutfnDefinded;
+  let store = getContext('store');
+  let getTranslation = getContext('getTranslation');
+  let getUnsavedChangesModalPromise = getContext('getUnsavedChangesModalPromise');
+
+  const newlyAuthorized = () =>
+    JSON.parse(localStorage.getItem('luigi.newlyAuthorized'));
+  const isAuthValid = () =>
+    AuthHelpers.getStoredAuthData().accessTokenExpirationDate >
+    Number(new Date());
+
+  const IdpProviderException = message => {
+    return { message, name: 'IdpProviderException' };
+  };
+
+  const getIdpProviderInstance = async (
+    idpProviderName,
+    idpProviderSettings
+  ) => {
+    if (GenericHelpers.isFunction(standardProviders[idpProviderName])) {
+      return new standardProviders[idpProviderName](idpProviderSettings);
+    }
+
+    // custom provider provided via config:
+    const customIdpProvider = GenericHelpers.getConfigValueFromObject(
+      idpProviderSettings,
+      'customIdpProvider'
+    );
+    if (customIdpProvider) {
+      const customIdpInstance = new customIdpProvider(idpProviderSettings);
+      ['login'].forEach(requiredFnName => {
+        if (!GenericHelpers.isFunction(customIdpInstance[requiredFnName])) {
+          throw IdpProviderException(
+            `${requiredFnName} function does not exist in custom IDP Provider ${idpProviderName}`
+          );
+        }
+      });
+
+      return customIdpInstance;
+    }
+
+    throw IdpProviderException(
+      `IDP Provider ${idpProviderName} does not exist.`
+    );
+  };
+
+  onMount(async () => {
+    if (!LuigiAuth.isAuthorizationEnabled()) {
+      isAuthorizationEnabled = false;
+      setProfileNavData();
+      return;
+    } else {
+      isAuthorizationEnabled = true;
+    }
+    const idpProviderName = LuigiConfig.getConfigValue('auth.use');
+    const idpProviderSettings = LuigiConfig.getConfigValue(
+      `auth.${idpProviderName}`
+    );
+
+    const checkAuth = async idpProviderSettings => {
+      const authData = AuthHelpers.getStoredAuthData();
+      if (!authData || !isAuthValid()) {
+        if (LuigiConfig.getConfigValue('auth.disableAutoLogin')) {
+          return;
+        }
+
+        /**
+         * onAuthExpired
+         * If onAuthExpired exists, it will be evaluated.
+         * Continues with the standard authorization flow,
+         * if `onAuthExpired` it returns undefined or truthy value.
+         */
+        let startAuth = true;
+        if (authData) {
+          startAuth = await LuigiAuth.handleAuthEvent(
+            'onAuthExpired',
+            idpProviderSettings
+          );
+        }
+        if (startAuth) {
+          startAuthorization();
+        }
+        return;
+      }
+
+      setProfileNavData();
+
+      if (
+        idpProviderInstance.settings &&
+        GenericHelpers.isFunction(idpProviderInstance.settings.userInfoFn)
+      ) {
+        idpProviderInstance.settings.userInfoFn().then(res => {
+          userInfo = res;
+          isLoggedIn = true;
+          dispatch('userInfoUpdated', userInfo);
+        });
+      } else {
+        if (GenericHelpers.isFunction(idpProviderInstance.userInfo)) {
+          idpProviderInstance.userInfo(idpProviderSettings).then(res => {
+            userInfo = res;
+            isLoggedIn = true;
+            dispatch('userInfoUpdated', userInfo);
+          });
+        } else {
+          isLoggedIn = true;
+        }
+      }
+
+      const hasAuthSuccessFulFn = GenericHelpers.isFunction(
+        LuigiConfig.getConfigValue('auth.events.onAuthSuccessful')
+      );
+      if (hasAuthSuccessFulFn && newlyAuthorized()) {
+        localStorage.removeItem('luigi.newlyAuthorized');
+        await LuigiAuth.handleAuthEvent(
+          'onAuthSuccessful',
+          idpProviderSettings,
+          authData
+        );
+      }
+
+      if (
+        GenericHelpers.isFunction(
+          idpProviderInstance.setTokenExpirationAction
+        )
+      ) {
+        idpProviderInstance.setTokenExpirationAction();
+      }
+      if (
+        GenericHelpers.isFunction(
+          idpProviderInstance.setTokenExpireSoonAction
+        )
+      ) {
+        idpProviderInstance.setTokenExpireSoonAction();
+      }
+    };
+
+    /**
+     * Prevent IDP Provider initialization, if an error is present
+     * in the url params and onAuthError is defined in the user config.
+     * errors are represented by `error` and `errorDescription` param.
+     */
+    const uaError = urlAuthError || {};
+    const noError = await AuthHelpers.handleUrlAuthErrors(
+      idpProviderSettings,
+      uaError.error,
+      uaError.errorDescription
+    );
+    if (!noError) {
+      return;
+    }
+
+    idpProviderInstance = getIdpProviderInstance(
+      idpProviderName,
+      idpProviderSettings
+    );
+    if (GenericHelpers.isPromise(idpProviderInstance)) {
+      return idpProviderInstance
+        .then(resolved => {
+          idpProviderInstance = resolved;
+          checkAuth(idpProviderSettings);
+        })
+        .catch(err => {
+          const errorMsg = `Error: ${err.message || err}`;
+          console.error(errorMsg, err.message && err);
+          LuigiConfig.setErrorMessage(errorMsg);
+        });
+    }
+    checkAuth(idpProviderSettings);
+  });
+
+  function hasOpenUIicon(node) {
+    return NavigationHelpers.isOpenUIiconName(node.icon);
+  }
+
+  function getTestId(profileItem) {
+    return profileItem.testId
+      ? profileItem.testId
+      : NavigationHelpers.prepareForTests(profileItem.label);
+  }
+
+  // [svelte-upgrade suggestion]
+  // review these functions and remove unnecessary 'export' keywords
+  export function setProfileNavData() {
+    if (!navProfileListenerInstalled) {
+      StateHelpers.doOnStoreChange(
+        store,
+        async () => {
+          const logoutItem = await LuigiConfig.getConfigValueAsync(
+            'navigation.profile.logout'
+          );
+          const profileNavData = {
+            items:
+              (await LuigiConfig.getConfigValueAsync(
+                'navigation.profile.items'
+              )) || []
+          };
+          profileNavData['logout'] = {
+            ...TOP_NAV_DEFAULTS.logout,
+            ...logoutItem
+          };
+          isProfileLogoutItem = !!logoutItem;
+          profileLogoutfnDefinded = false;
+          if (logoutItem) {
+            const profileLogoutfn = logoutItem.customLogoutFn;
+            if (
+              profileLogoutfn &&
+              GenericHelpers.isFunction(profileLogoutfn)
+            ) {
+              profileLogoutfnDefinded = true;
+            }
+          }
+          profileNav = profileNavData;
+        },
+        ['navigation.profile']
+      );
+      navProfileListenerInstalled = true;
+    }
+  }
+
+  export function startAuthorization() {
+    idpProviderInstance.login().then(res => {
+      localStorage.setItem('luigi.newlyAuthorized', true);
+      if (res) {
+        alert(res);
+      }
+    });
+  }
+
+  export function onActionClick(item) {
+    getUnsavedChangesModalPromise().then(() => {
+      Routing.navigateToLink(item);
+    });
+    dispatch('toggleDropdownState');
+  }
+
+  export function onLogoutClick() {
+    getUnsavedChangesModalPromise().then(() => {
+      if (isAuthorizationEnabled) {
+        logout();
+      } else if (
+        isProfileLogoutItem &&
+        profileLogoutfnDefinded
+      ) {
+        profileNav.logout.customLogoutFn();
+      } else {
+        console.error('No IDP logout or customLogoutFn is defined.');
+      }
+    });
+  }
+
+  export function logout() {
+    const authData = AuthHelpers.getStoredAuthData();
+    const logoutCallback = async redirectUrl => {
+      await LuigiAuth.handleAuthEvent(
+        'onLogout',
+        idpProviderInstance.settings,
+        undefined,
+        redirectUrl
+      );
+      isLoggedIn = false;
+      localStorage.removeItem('luigi.auth');
+    };
+    const customLogoutFn = LuigiConfig.getConfigValue(
+      `auth.${LuigiConfig.getConfigValue('auth.use')}.logoutFn`
+    );
+    if (GenericHelpers.isFunction(customLogoutFn)) {
+      customLogoutFn(
+        idpProviderInstance.settings,
+        authData,
+        logoutCallback
+      );
+    } else if (GenericHelpers.isFunction(idpProviderInstance.logout)) {
+      idpProviderInstance.logout(authData, logoutCallback);
+    } else if (
+      isProfileLogoutItem &&
+      profileLogoutfnDefinded
+    ) {
+      profileNav.logout.customLogoutFn();
+    } else {
+      logoutCallback(idpProviderInstance.settings.logoutUrl);
+    }
+  }
+
+  export let showUserInfo;
+  $: showUserInfo = Boolean(userInfo && (userInfo.name || userInfo.email));
+</script>
+
+{#if !isHidden}
+<nav class="fd-menu">
+  <ul class="fd-menu__list">
+    {#if isLoggedIn}
+    {#if showUserInfo}
+    <li>
+      <span
+        aria-label="Username"
+        id="username"
+        class="fd-has-type-2"
+        data-testid="luigi-topnav-profile-username"
+      >{userInfo.name ? userInfo.name : userInfo.email}</span>
+    </li>
+    {/if}
+    {/if}
+    {#each profileNav.items as profileItem}
+    <li
+      on:click="{() => onActionClick(profileItem)}"
+      data-testid="{getTestId(profileItem)}"
+    >
+      <a class="fd-menu__item" data-testid="luigi-topnav-profile-item">
+        {#if profileItem.icon}
+        {#if hasOpenUIicon(profileItem)}
+        <span
+          class="fd-top-nav__icon sap-icon--{profileItem.icon} sap-icon--m"
+        ></span>
+        {:else}
+        <img
+          class="fd-top-nav__icon nav-icon"
+          src="{profileItem.icon}"
+        >
+        {/if}
+        {/if}
+        <span>{$getTranslation(profileItem.label)}</span>
+      </a>
+    </li>
+    {/each}
+    {#if isAuthorizationEnabled || isProfileLogoutItem}
+    <li on:click="{onLogoutClick}" data-testid="{getTestId(profileNav.logout)}">
+      <a aria-label="Logout" class="fd-menu__item">
+        {#if profileNav.logout.icon}
+        {#if hasOpenUIicon(profileNav.logout)}
+        <span
+          class="fd-top-nav__icon sap-icon--{profileNav.logout.icon} sap-icon--m"
+        ></span>
+        {:else}
+        <img
+          class="fd-top-nav__icon nav-icon"
+          src="{profileNav.logout.icon}"
+        >
+        {/if}
+        {/if}
+        <span>{$getTranslation(profileNav.logout.label)}</span>
+      </a>
+    </li>
+    {#if !isLoggedIn && !isProfileLogoutItem}
+    <li on:click="{startAuthorization}">
+      <a aria-label="Login" class="fd-menu__item">Login</a>
+    </li>
+    {/if}
+    {/if}
+  </ul>
+</nav>
+{/if}
+
+<style type="text/scss">
+  .fd-top-nav__icon {
+    display: inline-block;
+    vertical-align: middle;
+    margin-right: 5px;
+  }
+  .nav-icon {
+    height: 2em;
+  }
+  #username {
+    display: block;
+    padding: 10px 24px;
+    cursor: default;
+  }
+</style>

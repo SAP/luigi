@@ -9,7 +9,7 @@ class Auth {
    *  - customIdpProvider (if you provide a class to Luigi.config.auth.customIdpProvider)
    *
    */
-  // use = 'mockAuth';
+  use = 'mockAuth';
 
   disableAutoLogin = false;
 
