@@ -68,6 +68,20 @@ class UxManager extends LuigiClientBase {
    * @param {string} [settings.buttonConfirm="Yes"] the label for the modal confirm button
    * @param {string} [settings.buttonDismiss="No"] the label for the modal dismiss button
    * @returns {promise} which is resolved when accepting the confirmation modal and rejected when dismissing it
+   * @example
+   * import LuigiClient from '@kyma-project/luigi-client';
+   * const settings = {
+   *  header: "Confirmation",
+   *  body: "Are you sure you want to do this?",
+   *  buttonConfirm: "Yes",
+   *  buttonDismiss: "No"
+   * }
+   * LuigiClient
+   *  .uxManager()
+   *  .showConfirmationModal(settings)
+   *  .then(() => {
+   *     // Logic to execute when the confirmation modal is dismissed
+   *  });
    */
   showConfirmationModal(settings) {
     helpers.addEventListener(
@@ -119,24 +133,22 @@ class UxManager extends LuigiClientBase {
    * @example
    * import LuigiClient from '@kyma-project/luigi-client';
    * const settings = {
-   *  text: Ut enim ad minim veniam, {goToHome} quis nostrud exercitation ullamco {relativePath} laboris nisi ut aliquip ex ea commodo consequat.
-   *    Duis aute irure dolor {goToOtherProject},
+   *  text: "Ut enim ad minim veniam, {goToHome} quis nostrud exercitation ullamco {relativePath}. Duis aute irure dolor {goToOtherProject}",
    *  type: 'info',
    *  links: {
    *    goToHome: { text: 'homepage', url: '/overview' },
    *    goToOtherProject: { text: 'other project', url: '/projects/pr2' },
    *    relativePath: { text: 'relative hide side nav', url: 'hideSideNav' }
    *  },
-   * closeAfter: 3000
+   *  closeAfter: 3000
    * }
    * LuigiClient
    *  .uxManager()
    *  .showAlert(settings)
    *  .then(() => {
    *     // Logic to execute when the alert is dismissed
-   * });
-
-    */
+   *  });
+   */
   showAlert(settings) {
     helpers.addEventListener('luigi.ux.alert.hide', (e, listenerId) => {
       this.hideAlert(e.data.id);

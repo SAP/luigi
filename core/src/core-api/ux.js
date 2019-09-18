@@ -37,15 +37,14 @@ class LuigiUX {
    * @since 0.6.4
    * @example
    * const settings = {
-   *  text: Ut enim ad minim veniam, {goToHome} quis nostrud exercitation ullamco {relativePath} laboris nisi ut aliquip ex ea commodo consequat.
-   *    Duis aute irure dolor {goToOtherProject},
+   *  text: "Ut enim ad minim veniam, {goToHome} quis nostrud exercitation ullamco {relativePath}. Duis aute irure dolor {goToOtherProject}",
    *  type: 'info',
    *  links: {
    *    goToHome: { text: 'homepage', url: '/overview' },
    *    goToOtherProject: { text: 'other project', url: '/projects/pr2' },
    *    relativePath: { text: 'relative hide side nav', url: 'hideSideNav' }
    *  },
-   * closeAfter: 3000
+   *  closeAfter: 3000
    * }
    * Luigi
    *  .ux()
@@ -86,7 +85,7 @@ class LuigiUX {
    *  .ux()
    *  .showConfirmationModal(settings)
    *  .then(() => {
-   *     // Logic to execute when the alert is dismissed
+   *     // Logic to execute when the confirmation modal is dismissed
    *  });
    */
 
