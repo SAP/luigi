@@ -127,8 +127,12 @@ class Navigation {
     {
       category: { label: 'Messages', icon: 'lightbulb' },
       label: 'Errors',
+      pathSegment: 'errors',
       viewUrl: '/sampleapp.html#/projects/pr1/dynamic/errors',
       icon: 'alert',
+      context: {
+        label: 'Errors'
+      },
       badgeCounter: {
         label: 'Number of Errors',
         count: () => 2
@@ -137,8 +141,12 @@ class Navigation {
     {
       category: 'Messages',
       label: 'Warnings',
+      pathSegment: 'warnings',
       viewUrl: '/sampleapp.html#/projects/pr1/dynamic/warnings',
       icon: 'message-warning',
+      context: {
+        label: 'Warnings'
+      },
       badgeCounter: {
         label: 'Number of Warnings',
         count: () => 5
@@ -147,8 +155,12 @@ class Navigation {
     {
       category: 'Messages',
       label: 'Notifications',
+      pathSegment: 'notifications',
       viewUrl: '/sampleapp.html#/projects/pr1/dynamic/notifications',
       icon: 'ui-notifications',
+      context: {
+        label: 'Notifications'
+      },
       badgeCounter: {
         label: 'Number of Notifications',
         count: getMockBadgeCount

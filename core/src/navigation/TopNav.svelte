@@ -2,6 +2,7 @@
   import LogoTitle from './LogoTitle.svelte';
   import BadgeCounter from './BadgeCounter.svelte';
   import Authorization from '../Authorization.svelte';
+  import TopNavDropDown from '../TopNavDropDown.svelte';
   import { beforeUpdate, createEventDispatcher, onMount, getContext } from 'svelte';
   import { LuigiAuth, LuigiConfig, LuigiI18N } from '../core-api';
   import {
@@ -224,7 +225,7 @@
             aria-hidden="{!(dropDownStates[`dropDownPopover-${i}`] || false)}"
             id="dropDownPopover-{i}"
           >
-
+            <TopNavDropDown node="{node}" isMobile="{false}"/>
           </div>
         </div>
       </div>
@@ -391,7 +392,13 @@
                 </ul>
               </nav>
             </div>
-
+            {#if openMobileDropDown}
+            <TopNavDropDown
+              node="{nodeForMobile}"
+              isMobile="{true}"
+              on:close="{closeMobileTopNavDropDown}"
+            />
+            {/if}
           </div>
         </div>
       </div>

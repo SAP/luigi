@@ -1,0 +1,142 @@
+<script>
+  import BadgeCounter from './navigation/BadgeCounter.svelte';
+  import MobileTopNav from './navigation/MobileTopNavDropDown.svelte';
+  import { afterUpdate, createEventDispatcher, onMount, getContext } from 'svelte';
+  import { Routing } from './services/routing';
+  import { Navigation } from './navigation/services/navigation';
+  import { NavigationHelpers } from './utilities/helpers';
+  import { RoutingHelpers } from './utilities/helpers';
+  import { LuigiI18N } from './core-api';
+
+  const dispatch = createEventDispatcher();
+
+  export let isMobile;
+  export let children;
+  export let node;
+  let pathParams;
+  let getUnsavedChangesModalPromise = getContext('getUnsavedChangesModalPromise');
+  let openViewInModal = getContext('openViewInModal');
+
+  //TODO refactor
+    const getComponentWrapper = () => {
+      return {
+         get: () => { return {
+             pathParams
+           }
+         },
+         set: (obj) => {
+           if (obj) {
+
+           }
+         }
+       };
+    };
+
+
+  onMount(async () => {
+    setViewportHeightVariable();
+  });
+
+  // [svelte-upgrade warning]
+  // beforeUpdate and afterUpdate handlers behave
+  // differently to their v2 counterparts
+  afterUpdate(async () => {
+    if (!children) {
+      children = await Navigation.getChildren(node);
+    }
+  });
+
+  // [svelte-upgrade suggestion]
+  // review these functions and remove unnecessary 'export' keywords
+  export function onActionClick(node) {
+    getUnsavedChangesModalPromise().then(() => {
+      if (node.openNodeInModal) {
+        const route = RoutingHelpers.buildRoute(
+          node,
+          `/${node.pathSegment}`
+        );
+        openViewInModal(
+          route,
+          node.openNodeInModal === true ? {} : node.openNodeInModal
+        );
+      } else {
+        Routing.handleRouteClick(node, getComponentWrapper());
+      }
+    });
+    closeSubNav();
+  }
+
+  export function onActionClickExternal(event) {
+    onActionClick(event.detail);
+  }
+
+  export function closeSubNav() {
+    dispatch('close');
+  }
+
+  export function setViewportHeightVariable() {
+    // get the viewport height and multiple it by 1% to get a value for a vh unit
+    let vh = window.innerHeight * 0.01;
+    // set the value in the --vh custom property to the root of the document
+    document.documentElement.style.setProperty('--vh', `${vh}px`);
+  }
+
+  function hasOpenUIicon(node) {
+    return NavigationHelpers.isOpenUIiconName(node.icon);
+  }
+
+  function getNodeLabel(node) {
+    return LuigiI18N.getTranslation(node.label);
+  }
+
+  function getTestId(node) {
+    return node.testId
+      ? node.testId
+      : NavigationHelpers.prepareForTests(node.pathSegment, node.label);
+  }
+</script>
+
+<svelte:window on:resize="{setViewportHeightVariable}"/>
+{#if !isMobile}
+<nav class="fd-menu">
+  <ul class="fd-menu__list fd-menu__list--top">
+    {#if children}
+    {#each children as node}
+    <li on:click="{() => onActionClick(node)}" data-testid="{getTestId(node)}">
+      <a class="fd-menu__item">
+        <span
+          class="fd-top-nav__icon {node.icon && hasOpenUIicon(node) ? 'sap-icon--' + node.icon + ' sap-icon--m' : '' }"
+        >
+          {#if !hasOpenUIicon(node)}
+          <img src="{node.icon}">
+          {/if}
+          <BadgeCounter {node}/>
+        </span>
+        <span>{getNodeLabel(node)}</span>
+      </a>
+    </li>
+    {/each}
+    {/if}
+  </ul>
+</nav>
+{/if}
+{#if isMobile}
+<MobileTopNav
+  on:click="{closeSubNav}"
+  on:listClick="{onActionClickExternal}"
+  nodes="{node.children}"
+  label="{getNodeLabel(node)}"
+  {hasOpenUIicon}
+  {getNodeLabel}
+  {getTestId}
+/>
+{/if}
+
+<style type="text/scss">
+  .fd-top-nav__icon {
+    img {
+      width: 16px;
+      vertical-align: top;
+    }
+  }
+</style>

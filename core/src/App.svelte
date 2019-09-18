@@ -399,8 +399,7 @@
     });
   };
 
-	const handleAlertDismiss = (event) => {
-	  const id = event.detail.id;
+	const handleAlertDismiss = (id) => {
     const alert = getAlertWithId(alerts, id);
 
     if (!alert) {
@@ -427,6 +426,10 @@
     }
     */
  };
+
+	const handleAlertDismissExternal = (event) => {
+	  handleAlertDismiss(event.detail.id);
+	};
 
  //// CONFIRMATION MODAL
 
@@ -568,6 +571,8 @@
       });
     }
   };
+
+  setContext('openViewInModal', openViewInModal);
 
   function init(node) {
     const isolateAllViews = LuigiConfig.getConfigValue(
@@ -903,7 +908,7 @@
     ></ConfirmationModal>
   {/if}
   {#if alerts && alerts.length}
-    <Alerts alertQueue="{alerts}" on:alertDismiss="{handleAlertDismiss}"></Alerts>
+    <Alerts alertQueue="{alerts}" on:alertDismiss="{handleAlertDismissExternal}"></Alerts>
   {/if}
   {#if mfModal.displayed}
     <Modal
