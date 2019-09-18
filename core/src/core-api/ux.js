@@ -1,5 +1,5 @@
 import { APP_LOADING_INDICATOR } from './../utilities/constants';
-
+import { GenericHelpers } from '../utilities/helpers';
 /**
  * Functions to use Luigi Core UX features.
  * @namespace UX
@@ -56,7 +56,13 @@ class LuigiUX {
    */
 
   showAlert(settings) {
-    return Luigi.showAlert(settings);
+    if (GenericHelpers.isFunction(Luigi.showAlert)) {
+      return Luigi.showAlert(settings);
+    } else {
+      console.error(
+        'Luigi.ux().showAlert() is only available inside your configuration, after the configuration was initialized with Luigi.setConfig().'
+      );
+    }
   }
 
   /**
@@ -99,7 +105,13 @@ class LuigiUX {
    */
 
   showConfirmationModal(settings) {
-    return Luigi.showConfirmationModal(settings);
+    if (GenericHelpers.isFunction(Luigi.showConfirmationModal)) {
+      return Luigi.showConfirmationModal(settings);
+    } else {
+      console.error(
+        'Luigi.ux().showConfirmationModal() is only available inside your configuration, after the configuration was initialized with Luigi.setConfig().'
+      );
+    }
   }
 
   /**
