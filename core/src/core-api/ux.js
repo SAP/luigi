@@ -66,20 +66,6 @@ class LuigiUX {
   }
 
   /**
-   * @private
-   * @memberof UX
-   * @param {string} id alert id
-   * @since 0.6.4
-   * @example
-   * Luigi
-   *  .ux()
-   *  .hideAlert(id);
-   */
-  hideAlert(id) {
-    return Luigi.hideAlert(id);
-  }
-
-  /**
    * Shows a confirmation modal.
    * @memberof UX
    * @param {Object} settings the settings of the confirmation modal. If you don't provide any value for any of the fields, a default value is used
@@ -112,15 +98,6 @@ class LuigiUX {
         'Luigi.ux().showConfirmationModal() is only available inside your configuration, after the configuration was initialized with Luigi.setConfig().'
       );
     }
-  }
-
-  /**
-   * @private
-   * @memberof UX
-   * @param {Object} modal confirmed boolean value if ok or cancel has been pressed
-   */
-  hideConfirmationModal(modal) {
-    return Luigi.hideConfirmationModal(modal);
   }
 }
 
