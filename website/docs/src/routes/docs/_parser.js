@@ -65,7 +65,7 @@ function setParsedDocs() {
             doc: name
           }
         }));
-      writeFileSync('./static/navigation-children.json', JSON.stringify(navChildren, null, 2));
+      writeFileSync('./static/luigi/navigation-children.json', JSON.stringify(navChildren, null, 2));
 
       // return for sapper
       return Promise.resolve(files);

@@ -15,12 +15,8 @@ module.exports = {
   plugins: [
     new CopyWebpackPlugin([
       {
-        from: 'src/index.html',
-        to: 'luigi/'
-      },
-      {
         "from": "node_modules/@kyma-project/luigi-core",
-        "to": "luigi/luigi-core"
+        "to": "luigi-core"
       },   
       {
         "from": "node_modules/@kyma-project/luigi-client",

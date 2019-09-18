@@ -7,21 +7,29 @@ if (envs.NODE_ENV == 'production') {
   baseUrl = 'http://localhost:4001';
 }
 
+const getDocuItems = () => {
+  return fetch('/navigation-children.json')
+        .then(function(response) {
+          return response.json();
+        })
+        .then(function(json) {
+          return json.map((child) => {
+            console.log('child', JSON.stringify(child));
+            child.viewUrl = child.viewUrl.replace('__BASE_URL__', baseUrl);
+            return child;
+          });
+        }).catch(function(err) {
+          console.error(`Error: ${err}`);
+        })
+}
+
 class Navigation {
   nodes = [
     {
       pathSegment: 'docs',
       label: 'Overview',
       viewUrl: baseUrl + '/docs',
-      children: fetch(baseUrl + '/navigation-children.json')
-        .then(function(response) {
-          return response.json();
-        })
-        .map((child) => {
-          console.log('child', JSON.stringify(child));
-          child.viewUrl = child.viewUrl.replace('__BASE_URL__', baseUrl);
-          return child;
-        })
+      children: getDocuItems()
     }
   ];
 
