@@ -281,7 +281,6 @@
   };
 
   onMount(() => {
-
     responsiveNavSetting = LuigiConfig.getConfigValue(
       'settings.responsiveNavigation'
     );
@@ -311,9 +310,6 @@
     setIsSemiCollapsed(isSemiCollapsed);
   });
 
-  // [svelte-upgrade warning]
-  // beforeUpdate and afterUpdate handlers behave
-  // differently to their v2 counterparts
   beforeUpdate(() => {
     if (!previousPathData || previousPathData != pathData) {
       setLeftNavData();

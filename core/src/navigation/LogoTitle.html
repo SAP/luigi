@@ -16,12 +16,12 @@
   >{$getTranslation(title)}</div>
   {:else}
   <div class="fd-popover fd-popover--left">
-    <div class="fd-popover__control" on:click="{event => event.stopPropagation()}">
+    <div class="fd-popover__control" on:click|stopPropagation="{() => {}}">
       <button
         class="fd-product-menu__control"
         aria-haspopup="true"
         aria-expanded="{dropDownStates.appSwitcherPopover || false}"
-        on:click="{() => toggleDropdownState('appSwitcherPopover')}"
+        on:click|stopPropagation="{() => toggleDropdownState('appSwitcherPopover')}"
         data-testid="app-switcher"
       >
         <div
@@ -173,8 +173,7 @@
     toggleDropdownState('appSwitcherPopover');
   }
 
-  export function toggleDropdownState(name, event = null) {
-    if (event) event.stopPropagation();
+  export function toggleDropdownState(name) {
     dispatch('toggleDropdownState', { name });
   }
 

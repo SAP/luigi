@@ -32,7 +32,7 @@
         class="fd-shellbar__action fd-shellbar__action--hide fd-shellbar__action--collapsible"
       >
         <div class="fd-popover fd-popover--right">
-          <div class="fd-popover__control" on:click="{event => event.stopPropagation()}">
+          <div class="fd-popover__control" on:click|stopPropagation="{() => {}}">
             <button
               title="{getNodeLabel(node)}"
               class="fd-button--shell {node === selectedNode ? 'is-selected' : ''}"
@@ -118,7 +118,7 @@
       <div class="fd-shellbar__action fd-shellbar__action--collapse">
         <div class="fd-shellbar-collapse">
           <div class="fd-popover fd-popover--right">
-            <div class="fd-popover__control" on:click="{event => event.stopPropagation()}">
+            <div class="fd-popover__control" on:click|stopPropagation="{() => {}}">
               <div
                 class="fd-shellbar-collapse--control"
                 aria-controls="eYVEJ960"
@@ -260,7 +260,7 @@
       >
         <div class="fd-user-menu">
           <div class="fd-popover">
-            <div class="fd-popover__control" on:click="{event => event.stopPropagation()}">
+            <div class="fd-popover__control" on:click|stopPropagation="{() => {}}">
               <div class="{userInfo.picture ? 'fd-user-menu__control' : '' }">
                 <button
                   class="fd-button--shell {!userInfo.picture?'sap-icon--customer':'fd-identifier fd-identifier--xs fd-identifier--circle'}"
@@ -383,9 +383,6 @@
     });
   });
 
-  // [svelte-upgrade warning]
-  // beforeUpdate and afterUpdate handlers behave
-  // differently to their v2 counterparts
   beforeUpdate(() => {
     if (!previousPathData || previousPathData != pathData) {
       setTopNavData();

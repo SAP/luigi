@@ -21,10 +21,6 @@
 <script>
   import { beforeUpdate, createEventDispatcher, onMount, getContext } from 'svelte';
 
-  // [svelte-upgrade suggestion]
-  // manually refactor all references to __this
-  const __this = {};
-
   const dispatch = createEventDispatcher();
 
   import { EscapingHelpers } from './utilities/helpers';
@@ -38,9 +34,7 @@
   };
   const getUnsavedChangesModalPromise = getContext('getUnsavedChangesModalPromise');
   const handleNavigation = getContext('handleNavigation');
-  // [svelte-upgrade warning]
-  // beforeUpdate and afterUpdate handlers behave
-  // differently to their v2 counterparts
+
   beforeUpdate(() => {
     if (!alertQueue || !alertQueue.length) {
       console.warn('There are no alerts to display');
@@ -88,7 +82,6 @@
         const isRelative = !url.startsWith('/');
         event.stopPropagation();
         getUnsavedChangesModalPromise().then(() => {
-          console.log("yiiiihaaaaaaaaa");
           const data = {
             params: {
               link: url,

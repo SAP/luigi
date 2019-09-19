@@ -6,7 +6,7 @@ Object.keys(productSwitcherItems[0]).length }
 <div class="fd-shellbar__action fd-shellbar__action--collapsible">
   <div class="fd-product-switcher">
     <div class="fd-popover fd-popover--right">
-      <div class="fd-popover__control" on:click="{event => event.stopPropagation()}">
+      <div class="fd-popover__control" on:click|stopPropagation="{() => {}}">
         <!-- default: sap-icon--grid -->
         {#if hasOpenUIicon(config)}
         <button
