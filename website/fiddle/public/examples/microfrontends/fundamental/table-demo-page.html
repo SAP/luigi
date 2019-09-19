@@ -1,0 +1,300 @@
+
+<!doctype html>
+<html lang="en-us">
+<head>
+    <meta charset="utf-8">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="keywords" content=" table demo page">
+    <title>Table Starter Page | SAP Fundamentals</title>
+    <link href="/vendor/fiori-fundamentals/dist/fiori-fundamentals.min.css" rel="stylesheet">
+	<script src="/vendor/luigi-client/luigi-client.js"></script>
+</head>
+<body>
+<div>
+    <div class="fd-page">
+	<header class="fd-page__header">
+    <div class="fd-action-bar">
+        <div class="fd-action-bar__header">
+          <h3 class="fd-action-bar__title">
+              Table
+          </h3>
+          <p class="fd-action-bar__description">Optional page intro lorem ipsum dolor</p>
+        </div>
+        
+        <div class="fd-action-bar__actions">
+            <button class="fd-button sap-icon--add">Add New Item</button>
+        </div>
+        
+    </div>
+</header>
+
+	<div class="fd-page__content">
+    <section class="fd-section">
+        <div class="fd-panel">
+            <div class="fd-panel__header">
+                <h3 class="fd-panel__title">
+                    Items (1180)
+                </h3>
+                <div class="fd-panel__actions">
+                    <div class="fd-dropdown">
+                        <div class="fd-popover">
+                            <div class="fd-popover__control">
+                                <button class="fd-button--standard fd-button--compact sap-icon--sort" aria-label="Newest" aria-expanded="false" aria-controls="tf5QS710" aria-haspopup="true">Newest</button>
+                            </div>
+                            <div class="fd-popover__body fd-popover__body--right fd-popover__body--no-arrow" aria-hidden="true" id="tf5QS710">
+                                <nav class="fd-menu">
+                                    <ul class="fd-menu__list">
+                                        <li><a href="#" class="fd-menu__item">Option 1</a></li>
+                                        <li><a href="#" class="fd-menu__item">Option 2</a></li>
+                                        <li><a href="#" class="fd-menu__item">Option 3</a></li>
+                                    </ul>
+                                </nav>
+                            </div>
+                        </div>
+                    </div>
+                    <button class="fd-button--standard fd-button--compact sap-icon--filter" aria-controls="yQUnd326" aria-haspopup="true" aria-expanded="false" aria-label="Filter">Filter</button>
+                    <div class="fd-button-group" role="group" aria-label="Show as">
+                        <button class="fd-button fd-button--compact sap-icon--grid"></button>
+                        <button class=" fd-button fd-button--compact sap-icon--list" aria-pressed="true"></button>
+                    </div>
+                </div>
+            </div>
+            <div class="fd-panel__filters" aria-hidden="true" id="yQUnd326">
+                <div class="fd-dropdown fd-dropdown--s">
+                    <div class="fd-popover">
+                        <div class="fd-popover__control">
+                            <button class="fd-dropdown__control fd-button--standard fd-button--compact" aria-label="Color" aria-expanded="false" aria-controls="CVXoG110" aria-haspopup="true">Color</button>
+                        </div>
+                        <div class="fd-popover__body fd-popover__body--right fd-popover__body--no-arrow" aria-hidden="true" id="CVXoG110">
+                            <nav class="fd-menu">
+                                <ul class="fd-menu__list">
+                                    <li><a href="#" class="fd-menu__item">Option 1</a></li>
+                                    <li><a href="#" class="fd-menu__item">Option 2</a></li>
+                                    <li><a href="#" class="fd-menu__item">Option 3</a></li>
+                                </ul>
+                            </nav>
+                        </div>
+                    </div>
+                </div>
+                <div class="fd-dropdown fd-dropdown--s">
+                    <div class="fd-popover">
+                        <div class="fd-popover__control">
+                            <button class="fd-dropdown__control fd-button--standard fd-button--compact" aria-label="Size" aria-expanded="false" aria-controls="p7mxb212" aria-haspopup="true">Size</button>
+                        </div>
+                        <div class="fd-popover__body fd-popover__body--right fd-popover__body--no-arrow" aria-hidden="true" id="p7mxb212">
+                            <nav class="fd-menu">
+                                <ul class="fd-menu__list">
+                                    <li><a href="#" class="fd-menu__item">Option 1</a></li>
+                                    <li><a href="#" class="fd-menu__item">Option 2</a></li>
+                                    <li><a href="#" class="fd-menu__item">Option 3</a></li>
+                                </ul>
+                            </nav>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="fd-panel__filters" aria-hidden="false"><span class="fd-token" role="button">Bibendum</span>
+                <span class="fd-token" role="button">Bibendum</span>
+                <span class="fd-token" role="button">Bibendum</span>
+                <span class="fd-token" role="button">Bibendum</span>
+                <span class="fd-token" role="button">Bibendum</span>
+                <button class="fd-button--light fd-button--compact">Clear All</button>
+            </div>
+            <div class="fd-panel__body fd-panel__body--bleed">
+                <table class="fd-table">
+                    <thead>
+                        <tr>
+                            <th></th>
+                            <th>Column Header</th>
+                            <th>Column Header</th>
+                            <th>Column Header</th>
+                            <th>Column Header</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr aria-selected="true">
+                            <td><input type="checkbox" checked="" /></td>
+                            <td><a class="fd-has-font-weight-semi">user.name@email.com</a></td>
+                            <td>First Name</td>
+                            <td>Last Name</td>
+                            <td>01/26/17</td>
+                        </tr>
+                        <tr>
+                            <td><input type="checkbox" /></td>
+                            <td><a class="fd-has-font-weight-semi">user.name@email.com</a></td>
+                            <td>First Name</td>
+                            <td>Last Name</td>
+                            <td>01/26/17</td>
+                        </tr>
+                        <tr>
+                            <td><input type="checkbox" /></td>
+                            <td><a class="fd-has-font-weight-semi">user.name@email.com</a></td>
+                            <td>First Name</td>
+                            <td>Last Name</td>
+                            <td>01/26/17</td>
+                        </tr>
+                        <tr>
+                            <td><input type="checkbox" /></td>
+                            <td><a class="fd-has-font-weight-semi">user.name@email.com</a></td>
+                            <td>First Name</td>
+                            <td>Last Name</td>
+                            <td>01/26/17</td>
+                        </tr>
+                        <tr>
+                            <td><input type="checkbox" /></td>
+                            <td><a class="fd-has-font-weight-semi">user.name@email.com</a></td>
+                            <td>First Name</td>
+                            <td>Last Name</td>
+                            <td>01/26/17</td>
+                        </tr>
+                        <tr>
+                            <td><input type="checkbox" /></td>
+                            <td><a class="fd-has-font-weight-semi">user.name@email.com</a></td>
+                            <td>First Name</td>
+                            <td>Last Name</td>
+                            <td>01/26/17</td>
+                        </tr>
+                        <tr>
+                            <td><input type="checkbox" /></td>
+                            <td><a class="fd-has-font-weight-semi">user.name@email.com</a></td>
+                            <td>First Name</td>
+                            <td>Last Name</td>
+                            <td>01/26/17</td>
+                        </tr>
+                        <tr>
+                            <td><input type="checkbox" /></td>
+                            <td><a class="fd-has-font-weight-semi">user.name@email.com</a></td>
+                            <td>First Name</td>
+                            <td>Last Name</td>
+                            <td>01/26/17</td>
+                        </tr>
+                        <tr>
+                            <td><input type="checkbox" /></td>
+                            <td><a class="fd-has-font-weight-semi">user.name@email.com</a></td>
+                            <td>First Name</td>
+                            <td>Last Name</td>
+                            <td>01/26/17</td>
+                        </tr>
+                        <tr>
+                            <td><input type="checkbox" /></td>
+                            <td><a class="fd-has-font-weight-semi">user.name@email.com</a></td>
+                            <td>First Name</td>
+                            <td>Last Name</td>
+                            <td>01/26/17</td>
+                        </tr>
+                        <tr>
+                            <td><input type="checkbox" /></td>
+                            <td><a class="fd-has-font-weight-semi">user.name@email.com</a></td>
+                            <td>First Name</td>
+                            <td>Last Name</td>
+                            <td>01/26/17</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="fd-panel__footer">
+                <div class="fd-pagination">
+                    <span class="fd-pagination__total">1180 items</span>
+                    <nav class="fd-pagination__nav">
+                        <a href="#" class="fd-pagination__link fd-pagination__link--previous" aria-label="Previous" aria-disabled="false"></a>
+                        <a href="#" class="fd-pagination__link">1</a>
+                        <span class="fd-pagination__link fd-pagination__link--more" role="presentation"></span>
+                        <a href="#" class="fd-pagination__link">24</a>
+                        <a href="#" class="fd-pagination__link" aria-selected="true">25</a>
+                        <a href="#" class="fd-pagination__link">26</a>
+                        <span class="fd-pagination__link fd-pagination__link--more" role="presentation"></span>
+                        <a href="#" class="fd-pagination__link">59</a>
+                        <a href="#" class="fd-pagination__link fd-pagination__link--next" aria-label="Next" aria-disabled="false"></a>
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+</div>
+
+</div>
+
+
+<script type="text/javascript">
+(function() {
+
+    //dropdown
+    var els = document.querySelectorAll("[aria-controls]");
+    for (var i = 0; i < els.length; i++) {
+        var el = els[i];
+        el.addEventListener('click', function(e) {
+            var targetId = this.getAttribute("aria-controls");
+            var target = document.getElementById(targetId);
+            //alert
+            var isAlert = this.parentElement.getAttribute("role") === "alert";
+            if (isAlert) {
+                //remove or hide if we want some animation
+                // target.setAttribute("aria-hidden", true);
+                target.remove();
+                return;
+            }
+            //dropdown
+            var isDropdown = this.getAttribute("aria-haspopup") === "true";
+            if (isDropdown) {
+                //trigger
+                var isExpanded = this.getAttribute("aria-expanded") === "true";
+                this.setAttribute("aria-expanded", !isExpanded);
+                //target
+                var targetIsHidden = target.getAttribute("aria-hidden") == "true";
+                target.setAttribute("aria-hidden", isExpanded);
+                return;
+            }
+            //tree
+            var isTree = target.getAttribute("role") === "tree";
+            var isTreeItem = target.getAttribute("role") === "treeitem";
+            function setPressed(el, bool) {
+                el.setAttribute("aria-pressed", bool);
+                if (bool) {
+                    el.classList.add('is-pressed');
+                } else {
+                    el.classList.remove('is-pressed');
+                }
+            }
+            function setExpanded(el, bool) {
+                el.setAttribute("aria-expanded", bool);
+                //get group
+                var group = el.querySelector("[role=group]");
+                group.setAttribute("aria-hidden", !bool);
+                if (!bool) {
+                    group.classList.add('is-hidden');
+                } else {
+                    group.classList.remove('is-hidden');
+                }
+            }
+            var isPressed;
+            //handle the primary trigger
+            if(isTree || isTreeItem) {
+                isPressed = this.getAttribute("aria-pressed") === "true";
+                setPressed(this, !isPressed);
+            }
+            //toggle a single treeitem
+            if(isTreeItem) {
+                setExpanded(target, !isPressed);
+            }
+            //toggle all treeitems
+            if(isTree) {
+                //all triggers
+                var controls = target.querySelectorAll("[aria-controls]");
+                for (var i = 0; i < controls.length; i++) {
+                    var control = controls[i];
+                    setPressed(control, !isPressed);
+                    targetId = control.getAttribute("aria-controls");
+                    target = document.getElementById(targetId);
+                    setExpanded(target, !isPressed);
+                }
+            }
+        })
+    }
+})();
+</script>
+</body>
+</html>
