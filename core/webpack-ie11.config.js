@@ -19,7 +19,7 @@ module.exports = {
       svelte: path.resolve('node_modules', 'svelte')
     },
     mainFields: ['svelte', 'browser', 'module', 'main'],
-    extensions: ['.mjs', '.js', '.svelte']
+    extensions: ['.mjs', '.js', '.svelte', '.html']
   },
   output: {
     path: __dirname + '/public',

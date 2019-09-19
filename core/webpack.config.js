@@ -75,7 +75,7 @@ module.exports = {
       svelte: path.resolve('node_modules', 'svelte')
     },
     mainFields: ['svelte', 'browser', 'module', 'main'],
-    extensions: ['.mjs', '.js', '.svelte']
+    extensions: ['.mjs', '.js', '.svelte', ',html']
   },
   output: {
     path: __dirname + '/public',
@@ -85,7 +85,7 @@ module.exports = {
   module: {
     rules: [
       {
-        test: /\.(svelte|js)$/,
+        test: /\.(svelte|html|js)$/,
         exclude: /node_modules/,
         use: {
           loader: 'babel-loader',

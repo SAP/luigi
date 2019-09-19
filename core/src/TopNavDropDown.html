@@ -1,6 +1,42 @@
+<svelte:window on:resize="{setViewportHeightVariable}"/>
+{#if !isMobile}
+<nav class="fd-menu">
+  <ul class="fd-menu__list fd-menu__list--top">
+    {#if children}
+    {#each children as node}
+    <li on:click="{() => onActionClick(node)}" data-testid="{getTestId(node)}">
+      <a class="fd-menu__item">
+        <span
+          class="fd-top-nav__icon {node.icon && hasOpenUIicon(node) ? 'sap-icon--' + node.icon + ' sap-icon--m' : '' }"
+        >
+          {#if !hasOpenUIicon(node)}
+          <img src="{node.icon}">
+          {/if}
+          <BadgeCounter {node}/>
+        </span>
+        <span>{getNodeLabel(node)}</span>
+      </a>
+    </li>
+    {/each}
+    {/if}
+  </ul>
+</nav>
+{/if}
+{#if isMobile}
+<MobileTopNav
+  on:click="{closeSubNav}"
+  on:listClick="{onActionClickExternal}"
+  nodes="{node.children}"
+  label="{getNodeLabel(node)}"
+  {hasOpenUIicon}
+  {getNodeLabel}
+  {getTestId}
+/>
+{/if}
+
 <script>
-  import BadgeCounter from './navigation/BadgeCounter.svelte';
-  import MobileTopNav from './navigation/MobileTopNavDropDown.svelte';
+  import BadgeCounter from './navigation/BadgeCounter.html';
+  import MobileTopNav from './navigation/MobileTopNavDropDown.html';
   import { afterUpdate, createEventDispatcher, onMount, getContext } from 'svelte';
   import { Routing } from './services/routing';
   import { Navigation } from './navigation/services/navigation';
@@ -18,19 +54,19 @@
   let openViewInModal = getContext('openViewInModal');
 
   //TODO refactor
-    const getComponentWrapper = () => {
-      return {
-         get: () => { return {
-             pathParams
-           }
-         },
-         set: (obj) => {
-           if (obj) {
+  const getComponentWrapper = () => {
+    return {
+      get: () => { return {
+        pathParams
+      }
+      },
+      set: (obj) => {
+        if (obj) {
 
-           }
-         }
-       };
+        }
+      }
     };
+  };
 
 
   onMount(async () => {
@@ -95,42 +131,6 @@
       : NavigationHelpers.prepareForTests(node.pathSegment, node.label);
   }
 </script>
-
-<svelte:window on:resize="{setViewportHeightVariable}"/>
-{#if !isMobile}
-<nav class="fd-menu">
-  <ul class="fd-menu__list fd-menu__list--top">
-    {#if children}
-    {#each children as node}
-    <li on:click="{() => onActionClick(node)}" data-testid="{getTestId(node)}">
-      <a class="fd-menu__item">
-        <span
-          class="fd-top-nav__icon {node.icon && hasOpenUIicon(node) ? 'sap-icon--' + node.icon + ' sap-icon--m' : '' }"
-        >
-          {#if !hasOpenUIicon(node)}
-          <img src="{node.icon}">
-          {/if}
-          <BadgeCounter {node}/>
-        </span>
-        <span>{getNodeLabel(node)}</span>
-      </a>
-    </li>
-    {/each}
-    {/if}
-  </ul>
-</nav>
-{/if}
-{#if isMobile}
-<MobileTopNav
-  on:click="{closeSubNav}"
-  on:listClick="{onActionClickExternal}"
-  nodes="{node.children}"
-  label="{getNodeLabel(node)}"
-  {hasOpenUIicon}
-  {getNodeLabel}
-  {getTestId}
-/>
-{/if}
 
 <style type="text/scss">
   .fd-top-nav__icon {

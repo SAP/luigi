@@ -1,3 +1,37 @@
+<svelte:window on:resize="{updateSizes}"/>
+<div
+  id="splitViewContainer"
+  class="splitViewContainer {collapsed?'lui-collapsed':''}"
+>
+  <div class="lui-split-view">
+    {#if collapsed}
+    <div class="splitViewSeparator isCollapsed">
+      <a
+        class="lui-collapse-btn"
+        on:click|stopPropagation|preventDefault="{expand}"
+      >
+        <span class="sap-icon--navigation-up-arrow sap-icon--s"></span>
+      </a>
+    </div>
+    <h1 class="fd-splitView__title">{splitViewSettings.title}</h1>
+    {:else}
+    <div class="iframeSplitViewCnt"></div>
+    {/if}
+  </div>
+</div>
+{#if !collapsed}
+<div id="splitViewDraggerBackdrop"></div>
+<div id="splitViewDragger" on:mousedown|stopPropagation="{onDragStart}">
+  <div class="splitViewSeparator"></div>
+  <a
+    class="lui-collapse-btn"
+    on:click|stopPropagation|preventDefault="{collapse}"
+  >
+    <span class="sap-icon--navigation-down-arrow sap-icon--s"></span>
+  </a>
+</div>
+{/if}
+
 <script>
   import { afterUpdate, onDestroy, onMount, createEventDispatcher, getContext } from 'svelte';
   import { LuigiElements } from './core-api';
@@ -31,46 +65,46 @@
   //TODO refactor
   const getComponentWrapper = () => {
     return {
-       get: () => { return {
-           collapsed,
-           splitViewSettings,
-           isDataPrepared,
-           lastNode,
-           pathData,
-           nodeParams,
-           currentNode,
-           splitViewIframe,
-           splitViewIframeData
-         }
-       },
-       set: (obj) => {
-         if (obj) {
-           Object.getOwnPropertyNames(obj).forEach(prop => {
-             if (prop === 'splitViewSettings') {
-               splitViewSettings = obj.splitViewSettings;
-             } else if (prop === 'lastNode') {
-               lastNode = obj.lastNode;
-             } else if (prop === 'pathData') {
-               pathData = obj.pathData;
-             } else if (prop === 'nodeParams') {
-               nodeParams = obj.nodeParams;
-             } else if (prop === 'collapsed') {
-               collapsed = obj.collapsed;
-             } else if (prop === 'isDataPrepared') {
-               isDataPrepared = obj.isDataPrepared;
-             } else if (prop === 'currentNode') {
-               currentNode = obj.currentNode;
-             } else if (prop === 'splitViewIframe') {
-               splitViewIframe = obj.splitViewIframe;
-             } else if (prop === 'splitViewIframeData') {
-               splitViewIframeData = obj.splitViewIframeData;
-             }
-           });
-         }
-       },
-       dispatch,
-       getUnsavedChangesModalPromise
-     };
+      get: () => { return {
+        collapsed,
+        splitViewSettings,
+        isDataPrepared,
+        lastNode,
+        pathData,
+        nodeParams,
+        currentNode,
+        splitViewIframe,
+        splitViewIframeData
+      }
+      },
+      set: (obj) => {
+        if (obj) {
+          Object.getOwnPropertyNames(obj).forEach(prop => {
+            if (prop === 'splitViewSettings') {
+              splitViewSettings = obj.splitViewSettings;
+            } else if (prop === 'lastNode') {
+              lastNode = obj.lastNode;
+            } else if (prop === 'pathData') {
+              pathData = obj.pathData;
+            } else if (prop === 'nodeParams') {
+              nodeParams = obj.nodeParams;
+            } else if (prop === 'collapsed') {
+              collapsed = obj.collapsed;
+            } else if (prop === 'isDataPrepared') {
+              isDataPrepared = obj.isDataPrepared;
+            } else if (prop === 'currentNode') {
+              currentNode = obj.currentNode;
+            } else if (prop === 'splitViewIframe') {
+              splitViewIframe = obj.splitViewIframe;
+            } else if (prop === 'splitViewIframeData') {
+              splitViewIframeData = obj.splitViewIframeData;
+            }
+          });
+        }
+      },
+      dispatch,
+      getUnsavedChangesModalPromise
+    };
   };
 
   const getNode = async () => {
@@ -256,40 +290,6 @@
     SplitViewSvc.getDraggerBackdrop().style.display = 'block';
   }
 </script>
-
-<svelte:window on:resize="{updateSizes}"/>
-<div
-  id="splitViewContainer"
-  class="splitViewContainer {collapsed?'lui-collapsed':''}"
->
-  <div class="lui-split-view">
-    {#if collapsed}
-    <div class="splitViewSeparator isCollapsed">
-      <a
-        class="lui-collapse-btn"
-        on:click|stopPropagation|preventDefault="{expand}"
-      >
-        <span class="sap-icon--navigation-up-arrow sap-icon--s"></span>
-      </a>
-    </div>
-    <h1 class="fd-splitView__title">{splitViewSettings.title}</h1>
-    {:else}
-    <div class="iframeSplitViewCnt"></div>
-    {/if}
-  </div>
-</div>
-{#if !collapsed}
-<div id="splitViewDraggerBackdrop"></div>
-<div id="splitViewDragger" on:mousedown|stopPropagation="{onDragStart}">
-  <div class="splitViewSeparator"></div>
-  <a
-    class="lui-collapse-btn"
-    on:click|stopPropagation|preventDefault="{collapse}"
-  >
-    <span class="sap-icon--navigation-down-arrow sap-icon--s"></span>
-  </a>
-</div>
-{/if}
 
 <style type="text/scss">
   $topNavHeight: 48px;

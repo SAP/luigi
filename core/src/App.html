@@ -1,11 +1,75 @@
+<svelte:window on:resize="{onResize}"/>
+<div
+  id="app"
+  class="{hideNav? 'no-nav' : ''} {hideSideNav? 'no-side-nav' : ''}"
+>
+  {#if confirmationModal.displayed}
+    <ConfirmationModal
+      settings="{confirmationModal.settings}"
+      on:modalConfirm="{() => handleModalResult(true)}"
+      on:modalDismiss="{() => handleModalResult(false)}"
+    ></ConfirmationModal>
+  {/if}
+  {#if alerts && alerts.length}
+    <Alerts alertQueue="{alerts}" on:alertDismiss="{handleAlertDismissExternal}"></Alerts>
+  {/if}
+  {#if mfModal.displayed}
+    <Modal
+      modalSettings="{mfModal.modalSettings}"
+      nodepath="{mfModal.nodepath}"
+      on:close="{closeModal}"
+      on:iframeCreated="{modalIframeCreated}"
+    ></Modal>
+  {/if}
+  <Backdrop>
+    <div
+      class="fd-page iframeContainer {mfSplitView.displayed?'lui-split-view':''} {mfSplitView.collapsed?'lui-collapsed':''}"
+      use:init
+    ></div>
+    {#if mfSplitView.displayed}
+    <SplitView
+      splitViewSettings="{mfSplitView.settings}"
+      collapsed="{mfSplitView.collapsed}"
+      nodepath="{mfSplitView.nodepath}"
+      on:iframeCreated="{splitViewIframeCreated}"
+      on:statusChanged="{splitViewStatusChanged}"
+    ></SplitView>
+    {/if}
+  </Backdrop>
+  {#if showLoadingIndicator}
+    <div
+      in:fade="{{delay: 250, duration: 250}}"
+      out:fade="{{duration: 250}}"
+      class="fd-page spinnerContainer"
+      aria-hidden="false"
+      aria-label="Loading"
+    >
+      <div class="fd-spinner">
+        <div></div>
+      </div>
+    </div>
+  {/if}
+  <TopNav
+    pathData="{navigationPath}"
+    pathParams="{pathParams}"
+    on:handleClick="{handleNavClick}"
+  />
+  {#if !(hideNav||hideSideNav)}
+    <LeftNav
+      pathData="{navigationPath}"
+      on:handleClick="{handleNavClick}"
+    />
+  {/if}
+</div>
+
 <script>
-  import Alerts from './Alerts.svelte';
-  import ConfirmationModal from './ConfirmationModal.svelte';
-  import Modal from './Modal.svelte';
-  import Backdrop from './Backdrop.svelte';
-  import SplitView from './SplitView.svelte';
-  import LeftNav from './navigation/LeftNav.svelte';
-  import TopNav from './navigation/TopNav.svelte';
+  import Alerts from './Alerts.html';
+  import ConfirmationModal from './ConfirmationModal.html';
+  import Modal from './Modal.html';
+  import Backdrop from './Backdrop.html';
+  import SplitView from './SplitView.html';
+  import LeftNav from './navigation/LeftNav.html';
+  import TopNav from './navigation/TopNav.html';
   import { afterUpdate, onMount, setContext, createEventDispatcher } from 'svelte';
   import { fade } from 'svelte/transition';
   import { CSS_BREAKPOINTS } from './utilities/constants';
@@ -23,7 +87,7 @@
   export let store;
   export let getTranslation;
 
-	let showLoadingIndicator = false;
+  let showLoadingIndicator = false;
 
   let mfSplitView = {
     displayed: false
@@ -51,13 +115,13 @@
   let navigationPath;
   let contentNode;
   let preservedViews = [
-     // {
-     //     path: '/project/p2/settings',
-     //     nextPath: '/project/p2',
-     //     context: {}
-     //     iframe: Element
-     // }
-   ];
+    // {
+    //     path: '/project/p2/settings',
+    //     nextPath: '/project/p2',
+    //     context: {}
+    //     iframe: Element
+    // }
+  ];
   let unsavedChanges = {
     isDirty: false,
     persistUrl: null
@@ -182,71 +246,71 @@
   //TODO refactor
   const getComponentWrapper = () => {
     return {
-       get: () => { return {
-           unsavedChanges,
-           hideNav,
-           viewUrl,
-           nodeParams,
-           viewGroup,
-           urlParamsRaw,
-           currentNode,
-           navigationPath,
-           context,
-           pathParams,
-           hideSideNav,
-           isolateView,
-           previousNodeValues,
-           mfSplitView,
-           splitViewValues,
-           splitViewIframe,
-           showLoadingIndicator
-         }
-       },
-       set: (obj) => {
-         if (obj) {
-           Object.getOwnPropertyNames(obj).forEach(prop => {
-             if (prop === 'hideNav') {
-               hideNav = obj.hideNav;
-             } else if (prop === 'viewUrl') {
-               viewUrl = obj.viewUrl;
-             } else if (prop === 'nodeParams') {
-               nodeParams = obj.nodeParams;
-             } else if (prop === 'viewGroup') {
-               viewGroup = obj.viewGroup;
-             } else if (prop === 'urlParamsRaw') {
-               urlParamsRaw = obj.urlParamsRaw;
-             } else if (prop === 'currentNode') {
-               currentNode = obj.currentNode;
-             } else if (prop === 'navigationPath') {
-               navigationPath = obj.navigationPath;
-             } else if (prop === 'context') {
-               context = obj.context;
-             } else if (prop === 'pathParams') {
-               pathParams = obj.pathParams;
-             } else if (prop === 'hideSideNav') {
-               hideSideNav = obj.hideSideNav;
-             } else if (prop === 'isolateView') {
-               isolateView = obj.isolateView;
-             } else if (prop === 'previousNodeValues') {
-               previousNodeValues = obj.previousNodeValues;
-             } else if (prop === 'mfSplitView') {
-               mfSplitView = obj.mfSplitView;
-             } else if (prop === 'splitViewValues') {
-               splitViewValues = obj.splitViewValues;
-             } else if (prop === 'splitViewIframe') {
-               splitViewIframe = obj.splitViewIframe;
-             } else if (prop === 'showLoadingIndicator') {
-               showLoadingIndicator = obj.showLoadingIndicator;
-             }
-           });
-         }
-       },
-       shouldShowUnsavedChangesModal,
-       getUnsavedChangesModalPromise,
-       showAlert,
-       prepareInternalData,
-       dispatch
-     };
+      get: () => { return {
+        unsavedChanges,
+        hideNav,
+        viewUrl,
+        nodeParams,
+        viewGroup,
+        urlParamsRaw,
+        currentNode,
+        navigationPath,
+        context,
+        pathParams,
+        hideSideNav,
+        isolateView,
+        previousNodeValues,
+        mfSplitView,
+        splitViewValues,
+        splitViewIframe,
+        showLoadingIndicator
+      }
+      },
+      set: (obj) => {
+        if (obj) {
+          Object.getOwnPropertyNames(obj).forEach(prop => {
+            if (prop === 'hideNav') {
+              hideNav = obj.hideNav;
+            } else if (prop === 'viewUrl') {
+              viewUrl = obj.viewUrl;
+            } else if (prop === 'nodeParams') {
+              nodeParams = obj.nodeParams;
+            } else if (prop === 'viewGroup') {
+              viewGroup = obj.viewGroup;
+            } else if (prop === 'urlParamsRaw') {
+              urlParamsRaw = obj.urlParamsRaw;
+            } else if (prop === 'currentNode') {
+              currentNode = obj.currentNode;
+            } else if (prop === 'navigationPath') {
+              navigationPath = obj.navigationPath;
+            } else if (prop === 'context') {
+              context = obj.context;
+            } else if (prop === 'pathParams') {
+              pathParams = obj.pathParams;
+            } else if (prop === 'hideSideNav') {
+              hideSideNav = obj.hideSideNav;
+            } else if (prop === 'isolateView') {
+              isolateView = obj.isolateView;
+            } else if (prop === 'previousNodeValues') {
+              previousNodeValues = obj.previousNodeValues;
+            } else if (prop === 'mfSplitView') {
+              mfSplitView = obj.mfSplitView;
+            } else if (prop === 'splitViewValues') {
+              splitViewValues = obj.splitViewValues;
+            } else if (prop === 'splitViewIframe') {
+              splitViewIframe = obj.splitViewIframe;
+            } else if (prop === 'showLoadingIndicator') {
+              showLoadingIndicator = obj.showLoadingIndicator;
+            }
+          });
+        }
+      },
+      shouldShowUnsavedChangesModal,
+      getUnsavedChangesModalPromise,
+      showAlert,
+      prepareInternalData,
+      dispatch
+    };
   };
 
   const enableRouting = (node, config) => {
@@ -353,9 +417,9 @@
   };
 
   const splitViewIframeCreated = event => {
-     splitViewIframe = event.detail.splitViewIframe;
-     splitViewIframeData = event.detail.splitViewIframeData;
-     $: mfSplitView.collapsed = event.detail.collapsed;
+    splitViewIframe = event.detail.splitViewIframe;
+    splitViewIframeData = event.detail.splitViewIframeData;
+    $: mfSplitView.collapsed = event.detail.collapsed;
   };
 
   const splitViewStatusChanged = event => {
@@ -367,17 +431,17 @@
     }
   };
 
-	/// RESIZING
+  /// RESIZING
 
-	let hideNav;
-	let hideSideNav;
-	let previousWindowWidth;
+  let hideNav;
+  let hideSideNav;
+  let previousWindowWidth;
 
   const closeLeftNav = () => {
     document.body.classList.remove('lui-leftNavToggle');
   };
 
-	const onResize = () => {
+  const onResize = () => {
     const isMobileToDesktop =
       window.innerWidth >= CSS_BREAKPOINTS.desktopMinWidth &&
       previousWindowWidth < CSS_BREAKPOINTS.desktopMinWidth;
@@ -391,25 +455,25 @@
     previousWindowWidth = window.innerWidth;
   };
 
-	//// ALERTS
+  //// ALERTS
 
-	let alerts =
-  	 [
- /* 	  {
-  	    settings: {
-  	      text: `Ut enim ad minim veniam, {goToHome} quis nostrud exercitation
-            ullamco {relativePath} laboris nisi ut aliquip ex ea commodo consequat.
-            Duis aute irure dolor {goToOtherProject} in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur!?`,
-          links: {
-            goToHome: { text: 'homepage', url: '/overview' },
-            goToOtherProject: { text: 'other project', url: '/projects/pr2' },
-            relativePath: { text: 'relative hide side nav', url: 'hideSideNav' }
-          },
-  	      type: 'warning',
-  	      id: '123456',
-  	    }
-  	  } */
-  	];
+  let alerts =
+    [
+      /* 	  {
+             settings: {
+               text: `Ut enim ad minim veniam, {goToHome} quis nostrud exercitation
+                 ullamco {relativePath} laboris nisi ut aliquip ex ea commodo consequat.
+                 Duis aute irure dolor {goToOtherProject} in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur!?`,
+               links: {
+                 goToHome: { text: 'homepage', url: '/overview' },
+                 goToOtherProject: { text: 'other project', url: '/projects/pr2' },
+                 relativePath: { text: 'relative hide side nav', url: 'hideSideNav' }
+               },
+               type: 'warning',
+               id: '123456',
+             }
+           } */
+    ];
 
   const getAlertWithId = (alertQueue, id) => {
     if (!alertQueue || !alertQueue.length) return;
@@ -459,7 +523,7 @@
     });
   };
 
-	const handleAlertDismiss = (id) => {
+  const handleAlertDismiss = (id) => {
     const alert = getAlertWithId(alerts, id);
 
     if (!alert) {
@@ -484,13 +548,13 @@
       };
       IframeHelpers.sendMessageToIframe(iframe, message);
     }
- };
+  };
 
-	const handleAlertDismissExternal = (event) => {
-	  handleAlertDismiss(event.detail.id);
-	};
+  const handleAlertDismissExternal = (event) => {
+    handleAlertDismiss(event.detail.id);
+  };
 
- //// CONFIRMATION MODAL
+  //// CONFIRMATION MODAL
 
   let confirmationModal;
 
@@ -549,7 +613,7 @@
       }
     }
     return false;
- };
+  };
 
   const showUnsavedChangesModal = () => {
     return showModal({
@@ -588,8 +652,8 @@
   };
 
   const modalIframeCreated = event => {
-     modalIframe = event.detail.modalIframe;
-     modalIframeData = event.detail.modalIframeData;
+    modalIframe = event.detail.modalIframe;
+    modalIframeData = event.detail.modalIframeData;
   };
 
   const closeModal = () => {
@@ -722,7 +786,7 @@
         ) {
           sendContextToClient(config, {});
           const loadingIndicatorAutoHideEnabled =
-             !currentNode || !currentNode.loadingIndicator || currentNode.loadingIndicator.hideAutomatically !== false;
+            !currentNode || !currentNode.loadingIndicator || currentNode.loadingIndicator.hideAutomatically !== false;
           if (loadingIndicatorAutoHideEnabled) {
             showLoadingIndicator = false;
           }
@@ -803,7 +867,7 @@
               isNavigateBack = true;
               preservedViews = preservedViews;
               goBackContext =
-                  e.data.goBackContext && JSON.parse(e.data.goBackContext);
+                e.data.goBackContext && JSON.parse(e.data.goBackContext);
               // TODO: check if getNavigationPath or history pop to update hash / path
               handleNavigation(
                 { params: { link: previousActiveIframeData.path } },
@@ -914,8 +978,8 @@
   onMount(() => {
 
     setTimeout(() => {
-       // openViewInModal('/anonymous', {});
-       // showUnsavedChangesModal();
+      // openViewInModal('/anonymous', {});
+      // showUnsavedChangesModal();
     }, 2000);
 
   });
@@ -925,70 +989,6 @@
   });
 
 </script>
-
-<svelte:window on:resize="{onResize}"/>
-<div
-  id="app"
-  class="{hideNav? 'no-nav' : ''} {hideSideNav? 'no-side-nav' : ''}"
->
-  {#if confirmationModal.displayed}
-    <ConfirmationModal
-      settings="{confirmationModal.settings}"
-      on:modalConfirm="{() => handleModalResult(true)}"
-      on:modalDismiss="{() => handleModalResult(false)}"
-    ></ConfirmationModal>
-  {/if}
-  {#if alerts && alerts.length}
-    <Alerts alertQueue="{alerts}" on:alertDismiss="{handleAlertDismissExternal}"></Alerts>
-  {/if}
-  {#if mfModal.displayed}
-    <Modal
-      modalSettings="{mfModal.modalSettings}"
-      nodepath="{mfModal.nodepath}"
-      on:close="{closeModal}"
-      on:iframeCreated="{modalIframeCreated}"
-    ></Modal>
-  {/if}
-  <Backdrop>
-    <div
-      class="fd-page iframeContainer {mfSplitView.displayed?'lui-split-view':''} {mfSplitView.collapsed?'lui-collapsed':''}"
-      use:init
-    ></div>
-    {#if mfSplitView.displayed}
-    <SplitView
-      splitViewSettings="{mfSplitView.settings}"
-      collapsed="{mfSplitView.collapsed}"
-      nodepath="{mfSplitView.nodepath}"
-      on:iframeCreated="{splitViewIframeCreated}"
-      on:statusChanged="{splitViewStatusChanged}"
-    ></SplitView>
-    {/if}
-  </Backdrop>
-  {#if showLoadingIndicator}
-    <div
-      in:fade="{{delay: 250, duration: 250}}"
-      out:fade="{{duration: 250}}"
-      class="fd-page spinnerContainer"
-      aria-hidden="false"
-      aria-label="Loading"
-    >
-      <div class="fd-spinner">
-        <div></div>
-      </div>
-    </div>
-  {/if}
-  <TopNav
-    pathData="{navigationPath}"
-    pathParams="{pathParams}"
-    on:handleClick="{handleNavClick}"
-  />
-  {#if !(hideNav||hideSideNav)}
-    <LeftNav
-      pathData="{navigationPath}"
-      on:handleClick="{handleNavClick}"
-    />
-  {/if}
-</div>
 
 <style type="text/scss">
   /*Mixins*/

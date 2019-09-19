@@ -1,22 +1,3 @@
-<script>
-  import BadgeCounter from './BadgeCounter.svelte';
-  import { createEventDispatcher } from 'svelte';
-
-  const dispatch = createEventDispatcher();
-
-  export let label;
-  export let nodes;
-  export let getTestId;
-  export let hasOpenUIicon;
-  export let getNodeLabel;
-
-  // [svelte-upgrade suggestion]
-  // review these functions and remove unnecessary 'export' keywords
-  export function onActionClick(value) {
-    dispatch('listClick', value);
-  }
-</script>
-
 <div
   class="fd-modal y-fd-modal--full-screen"
   on:click|stopPropagation="{()=>{}}"
@@ -60,6 +41,25 @@
     </div>
   </div>
 </div>
+
+<script>
+  import BadgeCounter from './BadgeCounter.html';
+  import { createEventDispatcher } from 'svelte';
+
+  const dispatch = createEventDispatcher();
+
+  export let label;
+  export let nodes;
+  export let getTestId;
+  export let hasOpenUIicon;
+  export let getNodeLabel;
+
+  // [svelte-upgrade suggestion]
+  // review these functions and remove unnecessary 'export' keywords
+  export function onActionClick(value) {
+    dispatch('listClick', value);
+  }
+</script>
 
 <style type="text/scss">
   $topNavHeight: 48px;

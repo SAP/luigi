@@ -1,4 +1,4 @@
-import App from './App.svelte';
+import App from './App.html';
 import { authLibraries } from './providers/auth/libraryLoaders';
 import { LuigiConfig, LuigiI18N, LuigiElements } from './core-api';
 import { writable, readable } from 'svelte/store';

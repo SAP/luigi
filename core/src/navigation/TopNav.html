@@ -1,167 +1,3 @@
-<script>
-  import LogoTitle from './LogoTitle.svelte';
-  import BadgeCounter from './BadgeCounter.svelte';
-  import Authorization from '../Authorization.svelte';
-  import TopNavDropDown from '../TopNavDropDown.svelte';
-  import ContextSwitcher from './ContextSwitcher.svelte';
-  import ProductSwitcher from './ProductSwitcher.svelte';
-  import { beforeUpdate, createEventDispatcher, onMount, getContext } from 'svelte';
-  import { LuigiAuth, LuigiConfig, LuigiI18N } from '../core-api';
-  import {
-    AuthHelpers,
-    NavigationHelpers,
-    StateHelpers
-  } from '../utilities/helpers';
-
-  const dispatch = createEventDispatcher();
-
-  export let authorizationEnabled;
-  export let autologinEnabled;
-  export let isLoggedIn = false;
-  export let hideNavComponent;
-  export let responsiveNavSetting;
-  export let pathData;
-  let previousPathData;
-  export let pathParams;
-  export let dropDownStates = {};
-  export let children;
-  export let selectedNode;
-  export let visibleNodeCount;
-  export let totalBadgeNode;
-  export let isProductSwitcherAvailable;
-  export let productSwitcherConfig;
-  export let openMobileDropDown;
-  export let nodeForMobile;
-  export let profileItemsAvailable;
-  export let userInfo = {};
-  export let urlAuthError;
-  let store = getContext('store');
-
-  const setTopNavData = async () => {
-    if (pathData && 0 < pathData.length) {
-      const tnd = await NavigationHelpers.generateTopNavNodes(pathData);
-      children = tnd.children;
-      selectedNode = tnd.selectedNode;
-      visibleNodeCount = tnd.visibleNodeCount;
-      totalBadgeNode = tnd.totalBadgeNode;
-      window.TOPNAVDATA = tnd.children;
-      previousPathData = pathData;
-    }
-  };
-
-  const setLoggedInState = () => {
-    isLoggedIn = AuthHelpers.isLoggedIn();
-  };
-
-  onMount(() => {
-    StateHelpers.doOnStoreChange(
-      store,
-      () => {
-        authorizationEnabled = LuigiAuth.isAuthorizationEnabled();
-        profileItemsAvailable = LuigiConfig.getConfigValue('navigation.profile');
-        autologinEnabled = !Boolean(LuigiConfig.getConfigValue('auth.disableAutoLogin'));
-        isProductSwitcherAvailable = LuigiConfig.getConfigValue('navigation.productSwitcher');
-        hideNavComponent = LuigiConfig.getConfigBooleanValue('settings.hideNavigation');
-        responsiveNavSetting = LuigiConfig.getConfigValue('settings.responsiveNavigation');
-        productSwitcherConfig = NavigationHelpers.getProductSwitcherConfig();
-      },
-      ['navigation']
-    );
-    urlAuthError = AuthHelpers.parseUrlAuthErrors();
-
-    window.addEventListener('message', e => {
-      if ('luigi.navigation.update-badge-counters' === e.data.msg) {
-        setTopNavData();
-      }
-    });
-  });
-
-  // [svelte-upgrade warning]
-  // beforeUpdate and afterUpdate handlers behave
-  // differently to their v2 counterparts
-  beforeUpdate(() => {
-    if (!previousPathData || previousPathData != pathData) {
-      setTopNavData();
-    }
-    setLoggedInState();
-  });
-
-  export let showTopNav;
-  $: showTopNav = (authorizationEnabled && (!autologinEnabled || isLoggedIn)) ||
-        !authorizationEnabled;
-
-  function hasOpenUIicon(node) {
-    return NavigationHelpers.isOpenUIiconName(node.icon);
-  }
-
-  function getNodeLabel(node) {
-    return LuigiI18N.getTranslation(node.label);
-  }
-
-  function getTestId(node) {
-    return node.testId
-      ? node.testId
-      : NavigationHelpers.prepareForTests(node.pathSegment, node.label);
-  }
-
-  export function openMobileProductSwitcher() {
-    toggleDropdownState('productSwitcherPopover');
-  }
-
-  export function openMobileTopNavDropDown(node) {
-    openMobileDropDown = true;
-    nodeForMobile = node;
-  }
-
-  export function closeMobileTopNavDropDown() {
-    openMobileDropDown = false;
-  }
-
-  export function handleClick(node) {
-    dispatch('handleClick', { node });
-  }
-
-  export function handleClickExternal(event) {
-    handleClick(event.detail.node);
-  }
-
-  export function toggleDropdownState(name) {
-    const ddStates = dropDownStates || {};
-    const dropDownState = !ddStates[name];
-
-    closeAllDropdowns();
-    closeMobileTopNavDropDown();
-
-    ddStates[name] = dropDownState;
-
-    dropDownStates = ddStates;
-  }
-
-  export function toggleDropdownStateExternal(event) {
-    toggleDropdownState(event.detail.name);
-  }
-
-  export function closeAllDropdowns() {
-    const ddStates = dropDownStates || {};
-    const keys = Object.keys(ddStates);
-    if (keys && keys.length > 0) {
-      keys.forEach(k => {
-        ddStates[k] = false;
-        dropDownStates = ddStates;
-      });
-    }
-  }
-
-  export function burgerClicked() {
-    document.body.classList.toggle('lui-leftNavToggle');
-  }
-
-  export function userInfoUpdate(event) {
-    const uInfo = event.detail;
-    userInfo = uInfo ? uInfo : {};
-  }
-</script>
-
 <svelte:window on:click="{closeAllDropdowns}" on:blur="{closeAllDropdowns}"/>
 {#if showTopNav}
 <div class="fd-shellbar {hideNavComponent ? 'hideNavComponent' : ''}">
@@ -468,6 +304,170 @@
   {urlAuthError}
 />
 {/if}
+
+<script>
+  import LogoTitle from './LogoTitle.html';
+  import BadgeCounter from './BadgeCounter.html';
+  import Authorization from '../Authorization.html';
+  import TopNavDropDown from '../TopNavDropDown.html';
+  import ContextSwitcher from './ContextSwitcher.html';
+  import ProductSwitcher from './ProductSwitcher.html';
+  import { beforeUpdate, createEventDispatcher, onMount, getContext } from 'svelte';
+  import { LuigiAuth, LuigiConfig, LuigiI18N } from '../core-api';
+  import {
+    AuthHelpers,
+    NavigationHelpers,
+    StateHelpers
+  } from '../utilities/helpers';
+
+  const dispatch = createEventDispatcher();
+
+  export let authorizationEnabled;
+  export let autologinEnabled;
+  export let isLoggedIn = false;
+  export let hideNavComponent;
+  export let responsiveNavSetting;
+  export let pathData;
+  let previousPathData;
+  export let pathParams;
+  export let dropDownStates = {};
+  export let children;
+  export let selectedNode;
+  export let visibleNodeCount;
+  export let totalBadgeNode;
+  export let isProductSwitcherAvailable;
+  export let productSwitcherConfig;
+  export let openMobileDropDown;
+  export let nodeForMobile;
+  export let profileItemsAvailable;
+  export let userInfo = {};
+  export let urlAuthError;
+  let store = getContext('store');
+
+  const setTopNavData = async () => {
+    if (pathData && 0 < pathData.length) {
+      const tnd = await NavigationHelpers.generateTopNavNodes(pathData);
+      children = tnd.children;
+      selectedNode = tnd.selectedNode;
+      visibleNodeCount = tnd.visibleNodeCount;
+      totalBadgeNode = tnd.totalBadgeNode;
+      window.TOPNAVDATA = tnd.children;
+      previousPathData = pathData;
+    }
+  };
+
+  const setLoggedInState = () => {
+    isLoggedIn = AuthHelpers.isLoggedIn();
+  };
+
+  onMount(() => {
+    StateHelpers.doOnStoreChange(
+      store,
+      () => {
+        authorizationEnabled = LuigiAuth.isAuthorizationEnabled();
+        profileItemsAvailable = LuigiConfig.getConfigValue('navigation.profile');
+        autologinEnabled = !Boolean(LuigiConfig.getConfigValue('auth.disableAutoLogin'));
+        isProductSwitcherAvailable = LuigiConfig.getConfigValue('navigation.productSwitcher');
+        hideNavComponent = LuigiConfig.getConfigBooleanValue('settings.hideNavigation');
+        responsiveNavSetting = LuigiConfig.getConfigValue('settings.responsiveNavigation');
+        productSwitcherConfig = NavigationHelpers.getProductSwitcherConfig();
+      },
+      ['navigation']
+    );
+    urlAuthError = AuthHelpers.parseUrlAuthErrors();
+
+    window.addEventListener('message', e => {
+      if ('luigi.navigation.update-badge-counters' === e.data.msg) {
+        setTopNavData();
+      }
+    });
+  });
+
+  // [svelte-upgrade warning]
+  // beforeUpdate and afterUpdate handlers behave
+  // differently to their v2 counterparts
+  beforeUpdate(() => {
+    if (!previousPathData || previousPathData != pathData) {
+      setTopNavData();
+    }
+    setLoggedInState();
+  });
+
+  export let showTopNav;
+  $: showTopNav = (authorizationEnabled && (!autologinEnabled || isLoggedIn)) ||
+    !authorizationEnabled;
+
+  function hasOpenUIicon(node) {
+    return NavigationHelpers.isOpenUIiconName(node.icon);
+  }
+
+  function getNodeLabel(node) {
+    return LuigiI18N.getTranslation(node.label);
+  }
+
+  function getTestId(node) {
+    return node.testId
+      ? node.testId
+      : NavigationHelpers.prepareForTests(node.pathSegment, node.label);
+  }
+
+  export function openMobileProductSwitcher() {
+    toggleDropdownState('productSwitcherPopover');
+  }
+
+  export function openMobileTopNavDropDown(node) {
+    openMobileDropDown = true;
+    nodeForMobile = node;
+  }
+
+  export function closeMobileTopNavDropDown() {
+    openMobileDropDown = false;
+  }
+
+  export function handleClick(node) {
+    dispatch('handleClick', { node });
+  }
+
+  export function handleClickExternal(event) {
+    handleClick(event.detail.node);
+  }
+
+  export function toggleDropdownState(name) {
+    const ddStates = dropDownStates || {};
+    const dropDownState = !ddStates[name];
+
+    closeAllDropdowns();
+    closeMobileTopNavDropDown();
+
+    ddStates[name] = dropDownState;
+
+    dropDownStates = ddStates;
+  }
+
+  export function toggleDropdownStateExternal(event) {
+    toggleDropdownState(event.detail.name);
+  }
+
+  export function closeAllDropdowns() {
+    const ddStates = dropDownStates || {};
+    const keys = Object.keys(ddStates);
+    if (keys && keys.length > 0) {
+      keys.forEach(k => {
+        ddStates[k] = false;
+        dropDownStates = ddStates;
+      });
+    }
+  }
+
+  export function burgerClicked() {
+    document.body.classList.toggle('lui-leftNavToggle');
+  }
+
+  export function userInfoUpdate(event) {
+    const uInfo = event.detail;
+    userInfo = uInfo ? uInfo : {};
+  }
+</script>
 
 <style type="text/scss">
   // Change display type to avoid line-breaks if screen is too narrow

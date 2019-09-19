@@ -1,3 +1,34 @@
+<svelte:window on:keydown="{handleKeydown}"/>
+<div class="fd-ui__overlay fd-overlay fd-overlay--modal" aria-hidden="false">
+  <div class="fd-modal" data-testid="luigi-confirmation-modal">
+    <div class="fd-modal__content" role="document">
+      <div class="fd-modal__header">
+        <h1 class="fd-modal__title">{settings.header}</h1>
+        <button
+          class="fd-button--light fd-modal__close"
+          on:click="{() => dispatch('modalDismiss')}"
+          aria-label="close"
+        ></button>
+      </div>
+      <div class="fd-modal__body">{settings.body}</div>
+      <footer class="fd-modal__footer">
+        <div class="fd-modal__actions">
+          <button
+            on:click="{() => dispatch('modalDismiss')}"
+            data-testid="luigi-modal-dismiss"
+            class="fd-button--light"
+          >{settings.buttonDismiss}</button>
+          <button
+            on:click="{() => dispatch('modalConfirm')}"
+            data-testid="luigi-modal-confirm"
+            class="fd-button confirm-button"
+          >{settings.buttonConfirm}</button>
+        </div>
+      </footer>
+    </div>
+  </div>
+</div>
+
 <script>
   import { createEventDispatcher, onMount } from 'svelte';
   import { LuigiI18N } from './core-api';
@@ -31,37 +62,6 @@
     }
   }
 </script>
-
-<svelte:window on:keydown="{handleKeydown}"/>
-<div class="fd-ui__overlay fd-overlay fd-overlay--modal" aria-hidden="false">
-  <div class="fd-modal" data-testid="luigi-confirmation-modal">
-    <div class="fd-modal__content" role="document">
-      <div class="fd-modal__header">
-        <h1 class="fd-modal__title">{settings.header}</h1>
-        <button
-          class="fd-button--light fd-modal__close"
-          on:click="{() => dispatch('modalDismiss')}"
-          aria-label="close"
-        ></button>
-      </div>
-      <div class="fd-modal__body">{settings.body}</div>
-      <footer class="fd-modal__footer">
-        <div class="fd-modal__actions">
-          <button
-            on:click="{() => dispatch('modalDismiss')}"
-            data-testid="luigi-modal-dismiss"
-            class="fd-button--light"
-          >{settings.buttonDismiss}</button>
-          <button
-            on:click="{() => dispatch('modalConfirm')}"
-            data-testid="luigi-modal-confirm"
-            class="fd-button confirm-button"
-          >{settings.buttonConfirm}</button>
-        </div>
-      </footer>
-    </div>
-  </div>
-</div>
 
 <style type="text/scss">
   $topNavHeight: 50px;

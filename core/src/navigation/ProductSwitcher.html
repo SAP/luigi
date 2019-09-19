@@ -1,75 +1,3 @@
-<script>
-  import MobileTopNav from './MobileTopNavDropDown.svelte';
-  import { createEventDispatcher, onMount, getContext } from 'svelte';
-  import { LuigiConfig, LuigiI18N } from '../core-api';
-  import { Routing } from '../services/routing';
-  import { StateHelpers } from '../utilities/helpers';
-  import { NavigationHelpers } from '../utilities/helpers';
-
-  const dispatch = createEventDispatcher();
-
-  export let productSwitcherItems;
-  export let isMobile;
-  export let config;
-  export let dropDownStates;
-  let store = getContext('store');
-  let getUnsavedChangesModalPromise = getContext('getUnsavedChangesModalPromise');
-
-  onMount(async () => {
-    StateHelpers.doOnStoreChange(
-      store,
-      async () => {
-        config = NavigationHelpers.getProductSwitcherConfig();
-        if (config) {
-          productSwitcherItems = await LuigiConfig.getConfigValueAsync(
-            'navigation.productSwitcher.items'
-          );
-        }
-        setViewportHeightVariable();
-      },
-      ['navigation.productSwitcher']
-    );
-  });
-
-  // [svelte-upgrade suggestion]
-  // review these functions and remove unnecessary 'export' keywords
-  export function onActionClick(productSwitcherItem) {
-    getUnsavedChangesModalPromise().then(() => {
-      Routing.navigateToLink(productSwitcherItem);
-    });
-    toggleDropdownState();
-  }
-
-  export function onActionClickExternal(event) {
-    onActionClick(event.detail);
-  }
-
-  export function toggleDropdownState() {
-    dispatch('toggleDropdownState');
-  }
-
-  export function setViewportHeightVariable() {
-    // get the viewport height and multiple it by 1% to get a value for a vh unit
-    let vh = window.innerHeight * 0.01;
-    // set the value in the --vh custom property to the root of the document
-    document.documentElement.style.setProperty('--vh', `${vh}px`);
-  }
-
-  function hasOpenUIicon(node) {
-    return NavigationHelpers.isOpenUIiconName(node.icon);
-  }
-
-  function getNodeLabel(node) {
-    return LuigiI18N.getTranslation(node.label);
-  }
-
-  function getTestId(node) {
-    return node.testId
-      ? node.testId
-      : NavigationHelpers.prepareForTests(node.label);
-  }
-</script>
-
 <svelte:window on:resize="{setViewportHeightVariable}"/>
 {#if productSwitcherItems && productSwitcherItems.length &&
 Object.keys(productSwitcherItems[0]).length }
@@ -154,6 +82,78 @@ Object.keys(productSwitcherItems[0]).length }
 />
 {/if}
 {/if}
+
+<script>
+  import MobileTopNav from './MobileTopNavDropDown.html';
+  import { createEventDispatcher, onMount, getContext } from 'svelte';
+  import { LuigiConfig, LuigiI18N } from '../core-api';
+  import { Routing } from '../services/routing';
+  import { StateHelpers } from '../utilities/helpers';
+  import { NavigationHelpers } from '../utilities/helpers';
+
+  const dispatch = createEventDispatcher();
+
+  export let productSwitcherItems;
+  export let isMobile;
+  export let config;
+  export let dropDownStates;
+  let store = getContext('store');
+  let getUnsavedChangesModalPromise = getContext('getUnsavedChangesModalPromise');
+
+  onMount(async () => {
+    StateHelpers.doOnStoreChange(
+      store,
+      async () => {
+        config = NavigationHelpers.getProductSwitcherConfig();
+        if (config) {
+          productSwitcherItems = await LuigiConfig.getConfigValueAsync(
+            'navigation.productSwitcher.items'
+          );
+        }
+        setViewportHeightVariable();
+      },
+      ['navigation.productSwitcher']
+    );
+  });
+
+  // [svelte-upgrade suggestion]
+  // review these functions and remove unnecessary 'export' keywords
+  export function onActionClick(productSwitcherItem) {
+    getUnsavedChangesModalPromise().then(() => {
+      Routing.navigateToLink(productSwitcherItem);
+    });
+    toggleDropdownState();
+  }
+
+  export function onActionClickExternal(event) {
+    onActionClick(event.detail);
+  }
+
+  export function toggleDropdownState() {
+    dispatch('toggleDropdownState');
+  }
+
+  export function setViewportHeightVariable() {
+    // get the viewport height and multiple it by 1% to get a value for a vh unit
+    let vh = window.innerHeight * 0.01;
+    // set the value in the --vh custom property to the root of the document
+    document.documentElement.style.setProperty('--vh', `${vh}px`);
+  }
+
+  function hasOpenUIicon(node) {
+    return NavigationHelpers.isOpenUIiconName(node.icon);
+  }
+
+  function getNodeLabel(node) {
+    return LuigiI18N.getTranslation(node.label);
+  }
+
+  function getTestId(node) {
+    return node.testId
+      ? node.testId
+      : NavigationHelpers.prepareForTests(node.label);
+  }
+</script>
 
 <style type="text/scss">
   .fd-product-switcher {

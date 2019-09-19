@@ -1,3 +1,23 @@
+<div class="fd-shell__overlay fd-overlay fd-overlay--alert" aria-hidden="false">
+  {#each alertQueue as al}
+  <div
+    class="fd-alert fd-alert--{alertTypeMap[al.settings.type]} fd-alert--dismissible"
+    role="alert"
+    id="j2ALl423"
+    data-testid="luigi-alert"
+  >
+    <button
+      class="fd-alert__close close-button"
+      on:click="{() => dispatch('alertDismiss',{id: al.settings.id})}"
+      aria-label="Close"
+      aria-controls="j2ALl423"
+      data-testid="luigi-alert-dismiss"
+    ></button>
+    {@html al.dataSanitized ? al.settings.text: ''}
+  </div>
+  {/each}
+</div>
+
 <script>
   import { beforeUpdate, createEventDispatcher, onMount, getContext } from 'svelte';
 
@@ -83,26 +103,6 @@
     }
   }
 </script>
-
-<div class="fd-shell__overlay fd-overlay fd-overlay--alert" aria-hidden="false">
-  {#each alertQueue as al}
-  <div
-    class="fd-alert fd-alert--{alertTypeMap[al.settings.type]} fd-alert--dismissible"
-    role="alert"
-    id="j2ALl423"
-    data-testid="luigi-alert"
-  >
-    <button
-      class="fd-alert__close close-button"
-      on:click="{() => dispatch('alertDismiss',{id: al.settings.id})}"
-      aria-label="Close"
-      aria-controls="j2ALl423"
-      data-testid="luigi-alert-dismiss"
-    ></button>
-    {@html al.dataSanitized ? al.settings.text: ''}
-  </div>
-  {/each}
-</div>
 
 <style type="text/scss">
   .fd-overlay--alert {

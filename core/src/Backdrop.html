@@ -1,3 +1,7 @@
+<div class="{backdropClass}" aria-hidden="false">
+  <slot></slot>
+</div>
+
 <script>
   import { beforeUpdate, onMount } from 'svelte';
   import { LuigiConfig } from './core-api';
@@ -47,12 +51,7 @@
     }
   });
 
-
 </script>
-
-<div class="{backdropClass}" aria-hidden="false">
-  <slot></slot>
-</div>
 
 <style type="text/scss">
   .lui-backdrop {

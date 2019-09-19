@@ -1,7 +1,3 @@
-<script>
-  export let node;
-</script>
-
 {#if node && node.badgeCounter}
 {#await node.badgeCounter.count()}
 {:then count}
@@ -14,6 +10,10 @@
 {:catch error}
 {/await}
 {/if}
+
+<script>
+  export let node;
+</script>
 
 <style type="text/scss">
   .fd-counter--notification {

@@ -1,3 +1,68 @@
+{#if !isHidden}
+<nav class="fd-menu">
+  <ul class="fd-menu__list">
+    {#if isLoggedIn}
+    {#if showUserInfo}
+    <li>
+      <span
+        aria-label="Username"
+        id="username"
+        class="fd-has-type-2"
+        data-testid="luigi-topnav-profile-username"
+      >{userInfo.name ? userInfo.name : userInfo.email}</span>
+    </li>
+    {/if}
+    {/if}
+    {#each profileNav.items as profileItem}
+    <li
+      on:click="{() => onActionClick(profileItem)}"
+      data-testid="{getTestId(profileItem)}"
+    >
+      <a class="fd-menu__item" data-testid="luigi-topnav-profile-item">
+        {#if profileItem.icon}
+        {#if hasOpenUIicon(profileItem)}
+        <span
+          class="fd-top-nav__icon sap-icon--{profileItem.icon} sap-icon--m"
+        ></span>
+        {:else}
+        <img
+          class="fd-top-nav__icon nav-icon"
+          src="{profileItem.icon}"
+        >
+        {/if}
+        {/if}
+        <span>{$getTranslation(profileItem.label)}</span>
+      </a>
+    </li>
+    {/each}
+    {#if isAuthorizationEnabled || isProfileLogoutItem}
+    <li on:click="{onLogoutClick}" data-testid="{getTestId(profileNav.logout)}">
+      <a aria-label="Logout" class="fd-menu__item">
+        {#if profileNav.logout.icon}
+        {#if hasOpenUIicon(profileNav.logout)}
+        <span
+          class="fd-top-nav__icon sap-icon--{profileNav.logout.icon} sap-icon--m"
+        ></span>
+        {:else}
+        <img
+          class="fd-top-nav__icon nav-icon"
+          src="{profileNav.logout.icon}"
+        >
+        {/if}
+        {/if}
+        <span>{$getTranslation(profileNav.logout.label)}</span>
+      </a>
+    </li>
+    {#if !isLoggedIn && !isProfileLogoutItem}
+    <li on:click="{startAuthorization}">
+      <a aria-label="Login" class="fd-menu__item">Login</a>
+    </li>
+    {/if}
+    {/if}
+  </ul>
+</nav>
+{/if}
+
 <script>
   import { createEventDispatcher, onMount, getContext } from 'svelte';
   import { LuigiAuth, LuigiConfig } from './core-api';
@@ -314,71 +379,6 @@
   export let showUserInfo;
   $: showUserInfo = Boolean(userInfo && (userInfo.name || userInfo.email));
 </script>
-
-{#if !isHidden}
-<nav class="fd-menu">
-  <ul class="fd-menu__list">
-    {#if isLoggedIn}
-    {#if showUserInfo}
-    <li>
-      <span
-        aria-label="Username"
-        id="username"
-        class="fd-has-type-2"
-        data-testid="luigi-topnav-profile-username"
-      >{userInfo.name ? userInfo.name : userInfo.email}</span>
-    </li>
-    {/if}
-    {/if}
-    {#each profileNav.items as profileItem}
-    <li
-      on:click="{() => onActionClick(profileItem)}"
-      data-testid="{getTestId(profileItem)}"
-    >
-      <a class="fd-menu__item" data-testid="luigi-topnav-profile-item">
-        {#if profileItem.icon}
-        {#if hasOpenUIicon(profileItem)}
-        <span
-          class="fd-top-nav__icon sap-icon--{profileItem.icon} sap-icon--m"
-        ></span>
-        {:else}
-        <img
-          class="fd-top-nav__icon nav-icon"
-          src="{profileItem.icon}"
-        >
-        {/if}
-        {/if}
-        <span>{$getTranslation(profileItem.label)}</span>
-      </a>
-    </li>
-    {/each}
-    {#if isAuthorizationEnabled || isProfileLogoutItem}
-    <li on:click="{onLogoutClick}" data-testid="{getTestId(profileNav.logout)}">
-      <a aria-label="Logout" class="fd-menu__item">
-        {#if profileNav.logout.icon}
-        {#if hasOpenUIicon(profileNav.logout)}
-        <span
-          class="fd-top-nav__icon sap-icon--{profileNav.logout.icon} sap-icon--m"
-        ></span>
-        {:else}
-        <img
-          class="fd-top-nav__icon nav-icon"
-          src="{profileNav.logout.icon}"
-        >
-        {/if}
-        {/if}
-        <span>{$getTranslation(profileNav.logout.label)}</span>
-      </a>
-    </li>
-    {#if !isLoggedIn && !isProfileLogoutItem}
-    <li on:click="{startAuthorization}">
-      <a aria-label="Login" class="fd-menu__item">Login</a>
-    </li>
-    {/if}
-    {/if}
-  </ul>
-</nav>
-{/if}
 
 <style type="text/scss">
   .fd-top-nav__icon {
