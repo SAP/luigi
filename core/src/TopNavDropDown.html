@@ -37,7 +37,7 @@
 <script>
   import BadgeCounter from './navigation/BadgeCounter.html';
   import MobileTopNav from './navigation/MobileTopNavDropDown.html';
-  import { afterUpdate, createEventDispatcher, onMount, getContext } from 'svelte';
+  import { beforeUpdate, createEventDispatcher, onMount, getContext } from 'svelte';
   import { Routing } from './services/routing';
   import { Navigation } from './navigation/services/navigation';
   import { NavigationHelpers } from './utilities/helpers';
@@ -72,13 +72,12 @@
     setViewportHeightVariable();
   });
 
-  // [svelte-upgrade warning]
-  // beforeUpdate and afterUpdate handlers behave
-  // differently to their v2 counterparts
-  afterUpdate(async () => {
+  beforeUpdate(async () => {
     if (!children) {
       children = await Navigation.getChildren(node);
     }
+    //force refresh of badge counters
+    children = children;
   });
 
   // [svelte-upgrade suggestion]
