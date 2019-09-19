@@ -126,7 +126,9 @@
     isDirty: false,
     persistUrl: null
   };
-
+  let simpleSlideInNav;
+  let responsiveNavSetting;
+  
   const prepareInternalData = (config) => {
     const internalData = {
       isNavigateBack: isNavigateBack,
@@ -976,12 +978,19 @@
   setContext('getTranslation', getTranslation);
 
   onMount(() => {
-
-    setTimeout(() => {
-      // openViewInModal('/anonymous', {});
-      // showUnsavedChangesModal();
-    }, 2000);
-
+    responsiveNavSetting = LuigiConfig.getConfigValue(
+      'settings.responsiveNavigation'
+    );
+    previousWindowWidth = window.innerWidth;
+    if (responsiveNavSetting === 'simple') {
+      document.body.classList.add('lui-simpleSlideInNav');
+      simpleSlideInNav = true;
+    } else if (responsiveNavSetting === 'simpleMobileOnly') {
+      document.body.classList.add('lui-simpleSlideInNav', 'lui-mobileOnly');
+      simpleSlideInNav = true;
+    } else if (responsiveNavSetting === 'semiCollapsible') {
+      document.body.classList.add('lui-semiCollapsible');
+    }
   });
 
   afterUpdate(() => {
