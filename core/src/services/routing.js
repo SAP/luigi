@@ -246,7 +246,6 @@ class RoutingClass {
         }
         cnode = cnode.parent;
       }
-
       const newNodeData = {
         hideNav,
         viewUrl,
@@ -282,16 +281,10 @@ class RoutingClass {
       if (iContainer) {
         if (tabNavInherited) {
           //document.body.classList.add('lui-simpleSlideInNav');
-          iContainer.classList.add(
-            'iframeContainerTabNav',
-            'iframeContainerNoNav'
-          );
+          iContainer.classList.add('iframeContainerTabNav');
         } else {
           if (iContainer.classList.contains('iframeContainerTabNav')) {
             iContainer.classList.remove('iframeContainerTabNav');
-          }
-          if (iContainer.classList.contains('iframeContainerNoNav')) {
-            iContainer.classList.remove('iframeContainerNoNav');
           }
         }
       }

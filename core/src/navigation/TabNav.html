@@ -1,7 +1,7 @@
 <svelte:window on:click="closeAllDropdowns()" on:blur="closeAllDropdowns()"/>
 {#if children && pathData.length > 1}
 <nav
-  class="fd-tabs {hideNavComponent ? 'hideNavComponent' : ''}"
+  class="fd-tabs {hideNavComponent ? 'fd-tabs-fullscreen' : ''} {tabsfullscreen?'fd-tabs-fullscreen':''}"
   role="tablist"
   on:toggleDropdownState="toggleDropdownState(event.name)"
 >
@@ -36,7 +36,7 @@
         href="javascript:void(null)"
         role="tab"
         on:click="toggleDropdownState(key)"
-        aria-selected="{selectedNode.category && (selectedNode.category === key || selectedNode.category.label === key)}"
+        aria-selected="{selectedNode && selectedNode.category && (selectedNode.category === key || selectedNode.category.label === key)}"
       >
         <span class="label">{key}</span>
         <span class="sap-icon--dropdown sap-icon--l"></span>
@@ -104,7 +104,6 @@
     </div>
   </span>
 </nav>
-
 {/if}
 <script type="text/javascript">
   import { Navigation } from './services/navigation';
@@ -113,7 +112,7 @@
 
   const setLeftNavData = async (current, component) => {
     const componentData = component.get();
-    const leftNavData = await Navigation.getLeftNavData(current, componentData);
+    const leftNavData = await Navigation.getTabNavData(current, componentData);
     if (!leftNavData) {
       return;
     }
@@ -131,6 +130,12 @@
     },
     onstate({ changed, current, previous }) {
       if (!previous || previous.pathData != current.pathData) {
+        let lastNode = [...current.pathData].pop();
+        if (lastNode.hideSideNav) {
+          this.set({ tabsfullscreen: true });
+        } else {
+          this.set({ tabsfullscreen: false });
+        }
         setLeftNavData(current, this);
       }
     },
@@ -187,6 +192,10 @@
     right: 0;
   }
 
+  .fd-tabs-fullscreen {
+    left: 0 !important;
+  }
+
   .fd-tabs {
     flex-wrap: nowrap;
     white-space: nowrap;
@@ -194,5 +203,8 @@
     -webkit-box-shadow: 1px 1px 2px 0 rgba(0, 0, 0, 0.05);
     box-shadow: 1px 1px 2px 0 rgba(0, 0, 0, 0.05);
     border: none;
+    position: fixed;
+    width: 100%;
+    left: 320px;
   }
 </style>

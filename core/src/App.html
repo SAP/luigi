@@ -1,7 +1,7 @@
 <svelte:window on:resize="onResize()"/>
 <div
   id="app"
-  class="{hideNav? 'no-nav' : ''} {hideSideNav? 'no-side-nav' : ''} {tabNav? 'tab-nav' : ''}"
+  class="{(hideNav && tabNav)?'no-topnav-but-tapnav':(hideNav? 'no-nav' : '')} {tabNav? 'tab-nav' : ''} {(hideSideNav && tabNav)? 'no-side-nav-but-tab-nav' : (hideSideNav?'no-side-nav':'')}"
 >
   {#if confirmationModal.displayed}
   <ConfirmationModal
@@ -51,7 +51,7 @@
     pathParams="{pathParams}"
     on:handleClick="handleNavClick(event.node)"
   />
-  {#if !(hideNav||hideSideNav||tabNav)}
+  {#if !(hideNav||hideSideNav)}
   <LeftNav
     pathData="{navigationPath}"
     on:handleClick="handleNavClick(event.node)"
@@ -980,11 +980,31 @@
     top: calc(#{$topNavHeight} + #{$topNavHeight});
   }
 
+  .tab-nav {
+    top: calc(#{$topNavHeight} + #{$topNavHeight});
+  }
+
   .spinnerContainer {
     background: rgba(243, 244, 245, 0.8);
     display: flex;
     align-items: center;
     justify-content: center;
+  }
+
+  .no-topnav-but-tapnav {
+    .iframeContainer,
+    .spinnerContainer {
+      position: fixed;
+      top: $topNavHeight;
+      left: 0;
+      bottom: 0;
+      right: 0;
+    }
+    :global(.splitViewContainer),
+    :global(#splitViewDragger),
+    :global(#splitViewDraggerBackdrop) {
+      left: 0;
+    }
   }
 
   .no-nav {
@@ -1000,6 +1020,26 @@
     :global(#splitViewDragger),
     :global(#splitViewDraggerBackdrop) {
       left: 0;
+    }
+  }
+
+  .no-side-nav-but-tab-nav {
+    .iframeContainer,
+    .spinnerContainer {
+      position: fixed;
+      top: calc(#{$topNavHeight} + #{$topNavHeight});
+      left: 0;
+      bottom: 0;
+      right: 0;
+    }
+    :global(.splitViewContainer),
+    :global(#splitViewDragger),
+    :global(#splitViewDraggerBackdrop) {
+      left: 0;
+    }
+
+    :global(.fd-app__sidebar) {
+      display: none;
     }
   }
 

@@ -247,7 +247,7 @@ class NavigationClass {
       if (childToKeepFound) {
         return;
       }
-      if (node.keepSelectedForChildren) {
+      if (node.keepSelectedForChildren || node.tabNav) {
         childToKeepFound = true;
       }
       res.push(node);
@@ -263,12 +263,47 @@ class NavigationClass {
       );
       let lastElement = [...pathDataTruncatedChildren].pop();
       let selectedNode;
+      //let isTabNav = pathDataTruncatedChildren.find(elem => { return elem.tabNav });
+      if (lastElement.keepSelectedForChildren || lastElement.tabNav) {
+        selectedNode = lastElement;
+        pathDataTruncatedChildren.pop();
+        lastElement = [...pathDataTruncatedChildren].pop();
+      }
+      const children = await this.getChildren(
+        lastElement,
+        componentData.context
+      );
+      const groupedChildren = this.getGroupedChildren(children, current);
+      updatedCompData.hasCategoriesWithIcon = false;
+      Object.values(groupedChildren).forEach(value => {
+        if (
+          !updatedCompData.hasCategoriesWithIcon &&
+          value &&
+          value.metaInfo &&
+          value.metaInfo.icon
+        ) {
+          updatedCompData.hasCategoriesWithIcon = true;
+        }
+      });
+      updatedCompData.selectedNode = selectedNode || lastElement;
+      updatedCompData.children = groupedChildren;
+    }
+    return updatedCompData;
+  }
+
+  async getTabNavData(current, componentData) {
+    const updatedCompData = {};
+    if (current.pathData && 1 < current.pathData.length) {
+      const pathDataTruncatedChildren = this.getTruncatedChildren(
+        componentData.pathData
+      );
+      let lastElement = [...pathDataTruncatedChildren].pop();
+      let selectedNode;
       if (lastElement.keepSelectedForChildren) {
         selectedNode = lastElement;
         pathDataTruncatedChildren.pop();
         lastElement = [...pathDataTruncatedChildren].pop();
       }
-
       const children = await this.getChildren(
         lastElement,
         componentData.context
