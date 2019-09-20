@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<title></title>	
+	<meta charset="utf-8">
+	<link href="/vendor/fiori-fundamentals/dist/fiori-fundamentals.min.css" rel="stylesheet">
+	<script src="/vendor/luigi-client/luigi-client.js"></script>
+	<style>
+		html, body {
+			position: relative;
+		}
+
+		#imgCnt img {
+			width: 100%;
+		}
+
+		#imgCnt {
+			text-align: center;
+		}
+
+		#textCnt {
+			padding: 30px; 
+			text-align: center; 
+			font-family: '72', sans-serif;
+			visibility: hidden;
+		}
+
+		#textCnt.visible {
+			visibility: visible;
+		}
+	</style>
+</head>
+
+<body style="-webkit-font-smoothing: antialiased; color: #515559;">
+	<div id="imgCnt"></div>
+	<div id="textCnt">
+		<h1 id="title">Multi purpose demo page</h1>
+		<p id="content">Some content</p>
+	</div>
+
+	<script>
+		function updateFn(context) {
+			if(context.title) {
+				document.getElementById("title").innerHTML = context.title;
+			}
+			if(context.content) {
+				document.getElementById("content").innerHTML = context.content;
+			}
+			if(context.imgUrl) {
+				var iwidth = !isNaN(context.imgWidth) ? "width: " + context.imgWidth + "px" : "";
+				document.getElementById("imgCnt").innerHTML = "<img src='"+context.imgUrl+"' style='"+iwidth+"; margin-top: "+(context.imgTopMargin?'5':'')+"0px'>";
+			}
+			document.getElementById("textCnt").classList.add("visible");
+		}
+		LuigiClient.addInitListener(updateFn);
+		LuigiClient.addContextUpdateListener(updateFn);
+	</script>
+
+</body>
+
+</html>
