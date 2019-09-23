@@ -77,7 +77,7 @@ navigation: {
 
 >**NOTE:** For a full list of available parameters, see the [parameter reference](navigation-parameters-reference.md) document.
 
-In the "First steps" example, you saw some basic navigation parameters:
+The [first steps](#first-steps) example provides some basic navigation parameters:
 
 ### pathSegment
 This is used to build the path in the browser URL. The main application path is built from values in the navigation path, joined with the **/** character. For example, if the value of a node's **pathSegment** is `home`, the path for that node will be `yourwebsite.com/home`. You can override this setting by using one of the following instead of **pathSegment**: 
