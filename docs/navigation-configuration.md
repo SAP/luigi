@@ -182,7 +182,7 @@ navigation: {
 
 ### viewUrl variables
 
-You have three options to add a variable to **viewUrl**: 
+You have the following options to add a variable to **viewUrl**: 
 - Place the parameter anywhere in the **viewUrl** value. For example, if the main application URL is `https://yourwebsite.com/home/users/JohnSmith`, then the **viewUrl** of the micro frontend in the content area can be `https://microfrontend.com/users/details.html#id=JohnSmith`. 
 - Use the [Luigi Client API](luigi-client-api.md) to access the node parameter values from the micro frontend. Use the `LuigiClient.getPathParams()` function. 
 For example, to get the value of the `userId` parameter, use `LuigiClient.getPathParams().userId`. 
