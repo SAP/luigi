@@ -200,7 +200,7 @@ For example, to get the value of the `userId` parameter, use `LuigiClient.getPat
   ...
 ```
 
-In all three cases, the parameter is automatically replaced by the real value.
+In all these cases, the parameter is automatically replaced by the real value.
 
 ### Node variables
 
