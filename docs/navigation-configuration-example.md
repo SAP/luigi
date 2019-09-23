@@ -1,0 +1,163 @@
+# Navigation configuration example
+
+This example represents a sample Luigi navigation configuration including the many of the parameters described in the [navigation parameters reference](navigation-parameters-reference.md). 
+
+```javascript
+Luigi.setConfig({
+  routing: {
+    // uses hash-based navigation if set to true
+    useHashRouting: true,
+    nodeParamPrefix: '~',
+    skipRoutingForUrlPatterns: [/access_token=/, /id_token=/]
+  },
+  // navigation structure and settings
+  navigation: {
+    nodeAccessibilityResolver: function (nodeToCheckPermissionFor, parentNode, currentContext) {},
+  viewGroupSettings: {
+    main: {
+      preloadUrl: 'https://my-site.com/index.html#/preload',
+    },
+    projects: {
+      preloadUrl: 'https://my-site.com/projects.html#/preloading',
+    },
+    envs: {
+      preloadUrl: 'https://my-site.com/environments-details.html#/preload-view',
+    }
+  },
+  nodes: [
+    // STATIC navigation node
+    {
+      pathSegment: 'settings',
+      label: 'Settings',
+      viewUrl: 'https://admin.mydomain.com/settings',
+      viewGroup: 'settingsGroup',
+      // optional
+      children: [node, node, node],
+      hideFromNav: false,
+      isolateView: false,
+      icon: 'settings',
+      testId: 'myTestId'
+      category: {
+        label: 'General',
+        testId: 'myTestId',
+        icon: 'general'
+      }, // OR
+      category: 'General'
+    },
+    // DYNAMIC navigation node
+    {
+      navigationContext: 'contextName',
+      pathSegment: ':projectId',
+      testId: 'myTestId',
+      viewUrl: '/some/path/:projectId',
+      context: {
+        projectId: ':projectId'
+      },
+      children: [node, node, node]
+    },
+    // View groups nodes
+    {
+      viewGroup: 'main',
+      pathSegment: 'overview',
+      label: 'Overview',
+      viewUrl: 'https://my-site.com/index.html#/overview'
+    },
+    {
+      viewGroup: 'main',
+      pathSegment: 'preload',
+      viewUrl: 'https://my-site.com/index.html#/preload'
+    },
+    {
+      viewGroup: 'projects',
+      pathSegment: 'projects',
+      label: 'Projects',
+      viewUrl: 'https://my-site.com/projects.html#/list',
+      children: [
+        {
+          pathSegment: 'preloading',
+          viewUrl: 'https://my-site.com/projects.html#/preloading'
+        }
+      ]
+    },
+    {
+      viewGroup: 'envs',
+      pathSegment: 'create-environment',
+      viewUrl: 'https://my-site.com/environments.html#/create',
+      context: {
+        label: 'Create Environment'
+      }
+    },
+    {
+      viewGroup: 'envs',
+      pathSegment: 'environments',
+      viewUrl: 'https://my-site.com/environments-details.html#/list',
+      children: [
+        {
+          pathSegment: 'preload',
+          viewUrl: 'https://my-site.com/environments-details.html#/preload-view'
+        },
+        {
+          pathSegment: 'env1',
+          viewUrl: 'https://my-site.com/environments-details.html#/details/env1'
+        }
+      ]
+    }
+    ],
+    contextSwitcher: {
+      defaultLabel: 'Select Environment ...',
+      testId: 'myTestId',
+      parentNodePath: '/environments',
+      lazyloadOptions: false,
+      fallbackLabelResolver: (id) => (id.toUpperCase()),
+      options: [{label,pathValue}, {label,pathValue}],
+      actions: [{label,link,position,clickHandler?}]
+    },
+    profile: {
+      logout: {
+        label: 'End session'
+        // icon: "sys-cancel",
+        testId: 'myTestId',
+        customLogoutFn: myLogoutFn
+      },
+      items: [
+        {
+          icon: '',
+          testId: 'myTestId',
+          label: 'Luigi in Github',
+          externalLink: {
+            url: 'https://github.com/SAP/luigi',
+            sameWindow: false
+          }
+        },
+        {
+          icon: '',
+          label: 'Project 1',
+          link: '/projects/pr1'
+        }
+      ]
+    },
+    productSwitcher: {
+      label: 'My Products',
+      testId: 'myTestId',
+      icon: 'grid',
+      items: [
+        {
+          icon: '',
+          label: 'Luigi in Github',
+          testId: 'myTestId',
+          externalLink: {
+            url: 'https://github.com/SAP/luigi',
+            sameWindow: false
+          }
+        },
+        {
+          icon: '',
+          label: 'Project 1',
+          testId: 'myTestId',
+          link: '/projects/pr1'
+        }
+      ]
+    },
+  }
+});
+```
