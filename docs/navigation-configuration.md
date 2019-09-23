@@ -26,7 +26,7 @@ There are three main elements to Luigi:
 3. Main content window which renders the micro frontend.
  
 
-![Navigation layout](https://github.com/SAP/luigi/blob/master/docs/assets/navigation-structure.png)
+![Navigation layout](assets/navigation-structure.png)
 
 
 ## First steps
@@ -37,7 +37,7 @@ The file consists of a tree-like structure of **navigation nodes**. The first le
 
 Here is an example of a simple navigation structure: 
 
-````javascript 
+```javascript 
 navigation: {
   nodes: [
     {
@@ -71,7 +71,7 @@ navigation: {
       viewUrl: 'https://2ndmicrofronted.com',
       children: [
 ...
-````
+```
 
 ## Basic navigation parameters
 
@@ -97,11 +97,10 @@ You may use these parameters if you want to group related navigation nodes:
 ### category 
 You can add the **category** property to navigation nodes you want to group. The resulting structure will be different depending on whether you want to group top or side navigation nodes. In both cases, you should define at least one node in a group with **label** and **icon** properties. For all other nodes, you can set **category** as a string with the label value. 
 
-**Top navigation:**
-Top navigation nodes in the same category will be rendered as a dropdown. 
-
-**Side navigation:**
-Side navigation nodes will be grouped under a header with the category name. You can configure them to be **collapsible** or not. 
+* Top navigation:
+top navigation nodes in the same category will be rendered as a dropdown. 
+* Side navigation:
+side navigation nodes will be grouped under a header with the category name. You can configure them to be **collapsible** or not. 
 
 This is an example of what a node with a category including a label and icon looks like:
 
@@ -115,11 +114,11 @@ This is an example of what a node with a category including a label and icon loo
   label: 'Click here to visit Google.com',
 }, 
 ...
- ```
+```
 
 To define all subsequent nodes, use the category label:
 
- ```javascript
+```javascript
 {
   category: Links,
   externalLink: {
@@ -129,7 +128,7 @@ To define all subsequent nodes, use the category label:
   label: 'Click here to visit the Luigi homepage',
 }, 
 ...
- ```
+```
 
 ### viewGroup
 
@@ -151,7 +150,7 @@ Instead of a static value for your **pathSegment**, you can add a colon to this 
 
 This example shows you a defined `userId` path variable: 
 
-````javascript
+```javascript
 navigation: {
     nodes: [
       {
@@ -178,15 +177,15 @@ navigation: {
   }
 }
 ...
-````
+```
 
 ### viewUrl variables
 
 You have the following options to add a variable to **viewUrl**: 
-- Place the parameter anywhere in the **viewUrl** value. For example, if the main application URL is `https://yourwebsite.com/home/users/JohnSmith`, then the **viewUrl** of the micro frontend in the content area can be `https://microfrontend.com/users/details.html#id=JohnSmith`. 
-- Use the [Luigi Client API](luigi-client-api.md) to access the node parameter values from the micro frontend. Use the `LuigiClient.getPathParams()` function. 
-For example, to get the value of the `userId` parameter, use `LuigiClient.getPathParams().userId`. 
-- Add a parameter to the context part of your configuration:
+- Place the variable anywhere in the **viewUrl** value. For example, if the main application URL is `https://yourwebsite.com/home/users/JohnSmith`, then the **viewUrl** of the micro frontend in the content area can be `https://microfrontend.com/users/details.html#id=JohnSmith`. 
+- Use the [Luigi Client API](luigi-client-api.md) to access the node variable values from the micro frontend. Use the `LuigiClient.getPathParams()` function. 
+For example, to get the value of the `userId` variable, use `LuigiClient.getPathParams().userId`. 
+- Add a variable to the context part of your configuration:
 
 ```javascript
 {
@@ -200,7 +199,7 @@ For example, to get the value of the `userId` parameter, use `LuigiClient.getPat
   ...
 ```
 
-In all these cases, the parameter is automatically replaced by the real value.
+In all these cases, the variable is automatically replaced by the real value.
 
 ### Node variables
 
@@ -214,7 +213,7 @@ A sample **viewUrl** `https://yourwebsite.com/home/users/allUsers?~sorting=asc&~
 
 Using node variables in the previous example results in:
 
-````javascript
+```javascript
 navigation: {
     nodes: [
       {
@@ -240,7 +239,7 @@ navigation: {
   }
 } 
 ...
-````
+```
 
  Use the following options to work with node parameters:
 
