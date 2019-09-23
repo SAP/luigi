@@ -117,7 +117,7 @@ This is an example of what a node with a category including a label and icon loo
 ...
  ```
 
- All subsequent nodes will only need to be defined using the category label like so: 
+To define all subsequent nodes, use the category label:
 
  ```javascript
 {
