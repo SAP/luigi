@@ -1,8 +1,13 @@
-<svelte:window on:click="closeAllDropdowns()" on:blur="closeAllDropdowns()"/>
+<svelte:window
+  on:click="closeAllDropdowns()"
+  on:blur="closeAllDropdowns()"
+  on:resize="onResize()"
+/>
 {#if children && pathData.length > 1}
 <nav
   class="fd-tabs {hideNavComponent ? 'fd-tabs-fullscreen' : ''} {tabsfullscreen?'fd-tabs-fullscreen':''}"
   role="tablist"
+  id="tabsContainer"
   on:toggleDropdownState="toggleDropdownState(event.name)"
 >
   {#each Object.entries(children) as [key, nodes]}
@@ -26,7 +31,7 @@
   {/each}
   {:else}
   <span
-    class="fd-tabs__item"
+    class="fd-tabs__item {manipulateKey(key)}"
     on:click="event.stopPropagation()"
   >
     <div class="fd-popover">
@@ -89,16 +94,37 @@
         aria-hidden="{!dropDownStates[key]}"
       >
         <nav class="fd-menu" id>
-          <ul class="fd-menu__list">
-            <li>
-              <a
-                href="javascript:void(null)"
-                class="fd-menu__item"
-                on:click="handleClick(node)"
-                aria-selected="true"
-              >tets</a>
-            </li>
-          </ul>
+          <!-- <ul class="fd-menu__list"> -->
+          {#each Object.entries(children) as [key, nodes]}
+          {#if key === 'undefined' || key.indexOf(virtualGroupPrefix) === 0}
+          {#each nodes as node}
+          {#if node.displayInMoreBtn}
+          <li>
+            <a
+              href="javascript:void(null)"
+              class="fd-menu__item"
+              on:click="handleClick(node)"
+              aria-selected="true"
+            >{node.label}</a>
+          </li>
+          {/if}
+          {/each}
+          {:else}
+          {#each nodes as node}
+          {#if node.displayInMoreBtn}
+          <li>
+            <a
+              href="javascript:void(null)"
+              class="fd-menu__item"
+              on:click="handleClick(node)"
+              aria-selected="true"
+            >{key}</a>
+          </li>
+          {/if}
+          {/each}
+          {/if}
+          {/each}
+          <!-- </ul> -->
         </nav>
       </div>
     </div>
@@ -110,14 +136,86 @@
   import { NavigationHelpers, StateHelpers } from '../utilities/helpers';
   import { LuigiConfig } from '../core-api';
 
-  const setLeftNavData = async (current, component) => {
+  const setTabNavData = async (current, component) => {
     const componentData = component.get();
-    const leftNavData = await Navigation.getTabNavData(current, componentData);
-    if (!leftNavData) {
+    const tabNavData = await Navigation.getTabNavData(current, componentData);
+    if (!tabNavData) {
       return;
     }
-    component.set(leftNavData);
-    window['LEFTNAVDATA'] = leftNavData.groupedChildren;
+    component.set(tabNavData);
+    calcTabsContainer(component);
+    window['LEFTNAVDATA'] = tabNavData.groupedChildren;
+  };
+
+  const calcTabsContainer = component => {
+    let tabsContainer = document.getElementById('tabsContainer');
+    let tabsContainerTotalWidth;
+    let tabsContainerDisplayWidth;
+    let tabsContainerOffsetWidth;
+    let totalTabsSize = 0;
+    let notDisplayedElements = [];
+    let moreItem;
+    let moreItemWidth;
+    if (tabsContainer) {
+      //clientWidth, offsetWidth, scrollWidth
+      tabsContainerTotalWidth = tabsContainer.scrollWidth;
+      tabsContainerDisplayWidth = tabsContainer.clientWidth;
+      tabsContainerOffsetWidth = tabsContainer.offsetWidth;
+      let tabs = tabsContainer.children;
+      moreItem = tabs[tabs.length - 1];
+      moreItemWidth = moreItem.scrollWidth;
+      let nodesInMore = component.get().children;
+      tabs.forEach(element => {
+        totalTabsSize += element.scrollWidth;
+        if (
+          totalTabsSize > tabsContainerOffsetWidth - moreItemWidth - 320 &&
+          element !== moreItem
+        ) {
+          element.classList.add('hide_element');
+          for (let [key, nodes] of Object.entries(nodesInMore)) {
+            nodes.forEach(node => {
+              if (
+                key !== 'undefined' &&
+                key.indexOf(NavigationHelpers.virtualGroupPrefix) !== 0
+              ) {
+                if (
+                  element.classList.contains(
+                    key
+                      .split(' ')
+                      .join('')
+                      .toLowerCase()
+                  ) &&
+                  element.classList.contains('hide_element')
+                ) {
+                  node['displayInMoreBtn'] = true;
+                }
+              } else if (element.innerText === node.label) {
+                node['displayInMoreBtn'] = true;
+              }
+            });
+          }
+        } else {
+          element.classList.remove('hide_element');
+          for (let [key, nodes] of Object.entries(nodesInMore)) {
+            nodes.forEach(node => {
+              if (
+                key !== 'undefined' &&
+                key.indexOf(NavigationHelpers.virtualGroupPrefix) !== 0
+              ) {
+                element.classList.forEach(elem => {
+                  if (elem === 'tabnav' + key) {
+                    node['displayInMoreBtn'] = false;
+                  }
+                });
+              } else if (element.innerText === node.label) {
+                node['displayInMoreBtn'] = false;
+              }
+            });
+          }
+        }
+      });
+      component.set({ children: nodesInMore });
+    }
   };
 
   export default {
@@ -136,7 +234,7 @@
         } else {
           this.set({ tabsfullscreen: false });
         }
-        setLeftNavData(current, this);
+        setTabNavData(current, this);
       }
     },
     data() {
@@ -153,6 +251,12 @@
         return (
           expandedList && expandedList.indexOf(nodes.metaInfo.categoryUid) >= 0
         );
+      },
+      manipulateKey(key) {
+        return key
+          .split(' ')
+          .join('')
+          .toLowerCase();
       }
     },
     methods: {
@@ -168,9 +272,11 @@
         }
         this.set({ dropDownStates: dropDownStates });
       },
-
       closeAllDropdowns() {
         this.set({ dropDownStates: {} });
+      },
+      onResize() {
+        calcTabsContainer(this);
       }
     }
   };
@@ -181,6 +287,10 @@
     padding-right: 17px;
   }
 
+  :global(.hide_element) {
+    display: none;
+  }
+
   .fd-tabs__link.has-child .sap-icon--l {
     position: absolute;
     top: 0.7em;
@@ -188,7 +298,7 @@
   }
 
   .fd-tabs__item.more {
-    position: absolute;
+    /* position: absolute; */
     right: 0;
   }
 
