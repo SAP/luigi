@@ -101,7 +101,7 @@ You can add the **category** property to navigation nodes you want to group. The
 Top navigation nodes in the same category will be rendered as a dropdown. 
 
 **Side navigation:**
-Side navigation nodes will be grouped under a header with the category name. They can be configured to be `collapsible` or not. 
+Side navigation nodes will be grouped under a header with the category name. You can configure them to be **collapsible** or not. 
 
 This is an example of what a node with a category including a label and icon looks like:
 
