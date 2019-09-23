@@ -149,7 +149,7 @@ In Luigi, you can make a navigation path dynamically changeable according to you
 ### pathSegment variables
 Instead of a static value for your **pathSegment**, you can add a colon to this value to make it act as a variable. For example, you can use `:userId`. This tells Luigi to accept any value for this **pathSegment**. 
 
-In this example, a `userId`path variable is defined: 
+This example shows you a defined `userId` path variable: 
 
 ````javascript
 navigation: {
