@@ -147,7 +147,7 @@ For more information on setting caching with view refreshing and preloading for 
 In Luigi, you can make a navigation path dynamically changeable according to your needs. This is accomplished by defining variables within the **pathSegement** or **viewUrl** navigation paths. 
 
 ### pathSegment variables
-Instead of a static value for your **pathSegment**, you can add a colon to this value to make it act as a variable, for example `:userId`. This tells Luigi to accept any value for this **pathSegment**. 
+Instead of a static value for your **pathSegment**, you can add a colon to this value to make it act as a variable. For example, you can use `:userId`. This tells Luigi to accept any value for this **pathSegment**. 
 
 In this example, a `userId`path variable is defined: 
 
