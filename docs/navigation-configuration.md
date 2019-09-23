@@ -7,7 +7,7 @@ Read these guides to get started with configuring your navigation:
 * [Basic navigation parameters](#basic-navigation-parameters)
 * [Grouping navigation nodes](#grouping-navigation-nodes)
   * [category](#category)
-  * [viewGroup](#viewGroup)
+  * [viewGroup](#viewgroup)
 * [Creating a dynamic path](#creating-a-dynamic-path)
   * [pathSegment variables](#pathsegment-variables)
   * [viewUrl variables](#viewurl-variables)
