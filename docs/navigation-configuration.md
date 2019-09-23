@@ -33,7 +33,7 @@ There are three main elements to Luigi:
 
 Find the `basicConfiguration.js` file in your `luigi-config` folder. You can configure the navigation by editing this file. 
 
-You will notice that the file consists of a tree-like structure of **navigation nodes**. The first level nodes represent the top navigation, while their children represent the side navigation. The nodes have some basic properties (called **navigation parameters**) such as labels, links, views, and (optionally) children.
+The file consists of a tree-like structure of **navigation nodes**. The first level nodes represent the top navigation, while their children represent the side navigation. The nodes have some basic properties, such as labels, links, views, and (optionally) children. These properties are called **navigation parameters**.
 
 Here is an example of a simple navigation structure: 
 
