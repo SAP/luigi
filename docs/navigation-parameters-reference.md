@@ -1,19 +1,30 @@
-# Navigation parameters reference
+# Navigation properties reference
 
+<<<<<<< HEAD
 > NOTE: To see the navigation parameters in use, check out the [navigation configuration example](navigation-configuration-example.md).
+=======
+> NOTE: To see the navigation properties in use, check out the [navigation configuration example](navigation-configuration-example.md).
+>>>>>>> Changed terminology
 
-You can use parameters and functions in this reference to configure your Luigi navigation structure.
+You can use properties and functions in this reference to configure your Luigi navigation structure.
 
+<<<<<<< HEAD
 * [Routing parameters](#routing-parameters)
 * [Navigation parameters](#navigation-parameters)
 * [Node parameters](#node-parameters)
 * [Profile](#profile)
+=======
+* [Routing properties](#routing-properties)
+* [Navigation properties](#navigation-properties)
+* [Node properties](#node-properties)
+* [Profile](#profile)
+>>>>>>> Changed terminology
 * [Context switcher](#context-switcher)
 * [Product switcher](#product-switcher)
 * [App switcher](#app-switcher)
 
 
-## Routing parameters
+## Routing properties
 You can configure the way Luigi tackles routing in your application in the `routing:` section of the configuration file. For example, you can choose the routing strategy to apply in your application as either hash or path location routing.
 
 ### useHashRouting
@@ -24,24 +35,24 @@ You can configure the way Luigi tackles routing in your application in the `rout
 ### nodeParamPrefix
 - **type**: ? string
 - **required**: ?
-- **description**: sets the prefix character when using the `LuigiClient.linkManager().withParam()` function, which provides a way to simply attach query parameters to the view URL for activities such as sorting and filtering. The URL contains the parameters to allow deep linking. If you want to use a different character prefix, define yours here. The default character is `~`.
+- **description**: sets the prefix character when using the `LuigiClient.linkManager().withParam()` function, which provides a way to simply attach query properties to the view URL for activities such as sorting and filtering. The URL contains the properties to allow deep linking. If you want to use a different character prefix, define yours here. The default character is `~`.
 
 ### skipRoutingForUrlPatterns
 - **type**: string
 - **required**: ?
-- **description**: defines regex patterns to be skipped by the router when listening for path changes. This parameter is used for excluding **redirect_uri** parameters. Default patterns are `[/access_token=/, '/id_token=/]`.
+- **description**: defines regex patterns to be skipped by the router when listening for path changes. This property is used for excluding **redirect_uri** properties. Default patterns are `[/access_token=/, '/id_token=/]`.
 
 ### pageNotFoundHandler
 - **type**: function
 - **required**: ?
 - **description**: defines custom behavior when the 404 (page not found) error occurs.  Luigi handles it by default. Leave its body empty if you have an external 404 handling. You can return an Object with `redirectTo` property if you want Luigi to redirect to a specific navigation path after execution.|
-- **properties**:
+- **attributes**:
   - **wrongPath** (string): the path that user tried navigating to
   - **wasAnyPathFitted** (bool): it is true if Luigi managed to fit a valid path which means **wrongPath** was only partially wrong. Otherwise it is false.
 
 
-## Navigation parameters
-The node navigation parameters enable you to configure global navigation settings under the `navigation:` section in the configuration file.
+## Navigation properties
+The node navigation properties enable you to configure global navigation settings under the `navigation:` section in the configuration file.
 
 ### nodeAccessibilityResolver
 - **type**: ?
@@ -61,13 +72,13 @@ The node navigation parameters enable you to configure global navigation setting
 ### viewGroupsSettings
 - **type**: object
 - **required**: ?
-- **description**: contains key-object pairs, where the key is the view group name as specified in the node parameters, and the object contains key-value pairs. In each key-value pair, the key is the feature name and the value is the actual setting. The following options are supported:
-- **properties**:
-  - **preloadUrl**(string): needs to be an absolute URL for a node from the view group. It is recommended that you use a dedicated small, visually empty view, which imports Luigi Client and is fine with getting an empty context, for example, without an access token. The **preloadUrl** parameter is also required for view group caching in case you need a view group iframe to refresh whenever you navigate back to it.
+- **description**: contains key-object pairs, where the key is the view group name as specified in the node properties, and the object contains key-value pairs. In each key-value pair, the key is the feature name and the value is the actual setting. The following options are supported:
+- **attributes**:
+  - **preloadUrl**(string): needs to be an absolute URL for a node from the view group. It is recommended that you use a dedicated small, visually empty view, which imports Luigi Client and is fine with getting an empty context, for example, without an access token. The **preloadUrl** property is also required for view group caching in case you need a view group iframe to refresh whenever you navigate back to it.
 
 
-## Node parameters
-Node parameters are all the parameters that can be added to an individual navigation node in the `nodes:` section of the Luigi configuration file.
+## Node properties
+Node properties are all the properties that can be added to an individual navigation node in the `nodes:` section of the Luigi configuration file.
 
 ### pathSegment
 - **type**: string
@@ -80,14 +91,14 @@ Node parameters are all the parameters that can be added to an individual naviga
 ### link
 - **type**: string
 - **required**: no
-- **description**: refers to an absolute path in the navigation structure or a relative path to a grandchild of the current path. If this parameter is defined, **pathSegment** is ignored.
+- **description**: refers to an absolute path in the navigation structure or a relative path to a grandchild of the current path. If this property is defined, **pathSegment** is ignored.
 
 ### externalLink
 - **type**: object
 - **required**: no
-- **description**: indicates that the node links to an external URL. If this parameter is defined, **pathSegment** and **link** parameters are ignored.
-- **properties**:
-  - **sameWindow** defines if the external URL is opened in a new or current tab. The default value for this parameter is `false`.
+- **description**: indicates that the node links to an external URL. If this property is defined, **pathSegment** and **link** properties are ignored.
+- **attributes**:
+  - **sameWindow** defines if the external URL is opened in a new or current tab. The default value for this property is `false`.
   - **url** is the external URL that the node leads to.
 
 ### label
@@ -118,7 +129,7 @@ Node parameters are all the parameters that can be added to an individual naviga
 ### context
 - **type**: ?
 - **required**: ?
-- **description**: sends the specified object as context to the view. Use this parameter in combination with the dynamic **pathSegment** to receive the context through the context listeners of **Luigi Client**. This is an alternative to using the dynamic value in the **viewUrl**.
+- **description**: sends the specified object as context to the view. Use this property in combination with the dynamic **pathSegment** to receive the context through the context listeners of **Luigi Client**. This is an alternative to using the dynamic value in the **viewUrl**.
 
 ### defaultChildNode
 - **type**: ?
@@ -133,7 +144,7 @@ Node parameters are all the parameters that can be added to an individual naviga
 ### viewGroup
 - **type**: ?
 - **required**: ?
-- **description**: allows you to associate nodes to be rendered in the same iframe, as long as they belong to the same origin. The value of this parameter is considered as the view group id. For further explanations, see [this section](navigation-configuration.md#view-groups).
+- **description**: allows you to associate nodes to be rendered in the same iframe, as long as they belong to the same origin. The value of this property is considered as the view group id. For further explanations, see [this section](navigation-configuration.md#view-groups).
 
 ### keepSelectedForChildren
 - **type**: ?
@@ -143,7 +154,7 @@ Node parameters are all the parameters that can be added to an individual naviga
 ### loadingIndicator.enabled
 - **type**: ? boolean
 - **required**: ?
-- **description**: shows a loading indicator when switching between micro frontends. If you have a fast micro frontend, you can disable this feature to prevent flickering of the loading indicator. This parameter is enabled by default.
+- **description**: shows a loading indicator when switching between micro frontends. If you have a fast micro frontend, you can disable this feature to prevent flickering of the loading indicator. This property is enabled by default.
 - **example**:
 ```javascript
 loadingIndicator: {
@@ -153,7 +164,7 @@ loadingIndicator: {
 ### loadingIndicator.hideAutomatically
 - **type**: ? boolean
 - **required**: ?
-- **description**: disables the automatic hiding of the loading indicator once the micro frontend is loaded. It is only considered if the loading indicator is enabled. It does not apply if the loading indicator is activated manually with the `LuigiClient.uxManager().showLoadingIndicator()` function. If the loading indicator is enabled and automatic hiding is disabled, use `LuigiClient.uxManager().hideLoadingIndicator()` to hide it manually in your micro frontend during the startup. This parameter is enabled by default.
+- **description**: disables the automatic hiding of the loading indicator once the micro frontend is loaded. It is only considered if the loading indicator is enabled. It does not apply if the loading indicator is activated manually with the `LuigiClient.uxManager().showLoadingIndicator()` function. If the loading indicator is enabled and automatic hiding is disabled, use `LuigiClient.uxManager().hideLoadingIndicator()` to hide it manually in your micro frontend during the startup. This property is enabled by default.
 - **example**:
 ```javascript
 loadingIndicator: {
@@ -174,7 +185,7 @@ loadingIndicator: {
 - **type**: ? string
 - **required**: ?
 - **description**: adds a badge with a number and a label to a node. Nodes that are part of a category show a cumulated number of all badges in this category. **badgeCounter** is only available for top navigation items.
-- **properties**:
+- **attributes**:
   - **label** is the label of the badge.
   - **count** is a function or asynchronous function that returns a number.
   Gets updated when you click the navigation. Use `Luigi.navigation().updateTopNavigation()` in Luigi Core or trigger it in Luigi Client by using the custom message feature.
@@ -182,8 +193,8 @@ loadingIndicator: {
 ### category
 - **type**: string
 - **required**: no
-- **description**: defines a group of views separated with a headline and an icon. You should define at least one node in a group should as an Object with **label** and **icon** properties. For all other nodes, you can set **category** as a string with the `label` value.
-- **properties**:
+- **description**: defines a group of views separated with a headline and an icon. You should define at least one node in a group should as an Object with **label** and **icon** attributes. For all other nodes, you can set **category** as a string with the `label` value.
+- **attributes**:
   - **label** is a string that represents the title of the category
   - **icon** is the name of an icon, without the `sap-icon--` prefix. Its source may be [OpenUI](https://openui5.hana.ondemand.com/1.40.10/iconExplorer.html) or a custom link (relative or absolute) to an image. The icon is displayed next to the node label in the side navigation or instead of the label in the top navigation. In case you accidentally define different icons in a category group, only the first one is used.
   - **collapsible** if set to `true`, category items are hidden at first. To expand them, click the main category node.
@@ -193,14 +204,14 @@ loadingIndicator: {
 - **type**: ?
 - **required**: ?
 - **description**: adds a badge with a number and a label to a node. Nodes that are part of a category show a cumulated number of all badges in this category. **badgeCounter** is only available for top navigation items.
-- **properties**:
+- **attributes**:
   - **title** modal title. By default, it is the node label. If there is no label, it is left empty
   - **size** **(`"l"` \| `"m"` \| `"s"`)** size of the modal (optional, default `"l"`)
 
 ### onNodeActivation
 - **type**: function
 - **required**: no
-- **description**: executed when a request to navigate to the node occurs. As an input parameter, the function receives the node object as described in the configuration. This function can return results synchronously or asynchronously. If the function returns boolean `false`, the navigation is not triggered, otherwise, navigation renders as usual.
+- **description**: executed when a request to navigate to the node occurs. As an input property, the function receives the node object as described in the configuration. This function can return results synchronously or asynchronously. If the function returns boolean `false`, the navigation is not triggered, otherwise, navigation renders as usual.
 
 ### clientPermissions.changeCurrentLocale
 - **type**: ? boolean
@@ -237,7 +248,7 @@ The context switcher is a drop-down list available in the top navigation bar. It
 - **type**: ?
 - **required**: ?
 - **description**: defines the list of context element.
-- **properties**:
+- **attributes**:
   - **label** defines the context element label. If not defined, the **pathValue** is passed to **fallbackLabelResolver** to set its value. The default value is **pathValue**, if **fallbackLabelResolver** is not defined.
   - **pathValue** defines the context element path that is appended to **parentNodePath** and reflects a **pathSegment**.
 
@@ -245,11 +256,11 @@ The context switcher is a drop-down list available in the top navigation bar. It
 - **type**: ?
 - **required**: ?
 - **description**: defines a list of additional elements that are shown on above or below the context switcher **options**.
-- **properties**:
+- **attributes**:
   - **label** defines the action element label.
   - **testId** is a string where you can define your own custom `testId`. If nothing is specified, it is the node's label written as one word and lower case (e.g. `label`).
-  - **position** defines the action element position. Can be `top` or `bottom`. The default value is `top`. This parameter is optional.
-  - **link** defines an absolute Link to a **node**. This parameter is optional.
+  - **position** defines the action element position. Can be `top` or `bottom`. The default value is `top`. This property is optional.
+  - **link** defines an absolute Link to a **node**. This property is optional.
   - **clickHandler** specifies a function and is executed on click and should return a boolean. If it returns `true`, **link** is opened afterwards.
 
 ### fallbackLabelResolver
@@ -271,7 +282,7 @@ The profile section is a configurable drop-down list available in the top naviga
 - **type**: ?
 - **required**: ?
 - **description**: defines a list of additional elements that are shown on above or below the context switcher **options**.
-- **properties**:
+- **attributes**:
   - **label** overrides the text for the logout item. The default value is "Sign Out".
   - **testId** is a string where you can define your own custom `testId`. If nothing is specified, it is the node's label written as one word and lower case (e.g. `label`).
   - **icon** overrides the icon for the logout item. The default value is [SAP UI5 log icon](https://sapui5.hana.ondemand.com/test-resources/sap/m/demokit/iconExplorer/webapp/index.html#/overview/SAP-icons/?tag=logout).
@@ -281,13 +292,13 @@ The profile section is a configurable drop-down list available in the top naviga
 - **type**: ?
 - **required**: ?
 - **description**: an array of objects, each one being a link to a Luigi navigation node or an external URL.
-- **properties**:
+- **attributes**:
   - **label** defines the text for the link.
   - **testId** is a string where you can define your own custom `testId`. If nothing is specified, it is the node's label written as one word and lower case (e.g. `label`).
   - **icon** is the name of an icon from the [OpenUI](https://openui5.hana.ondemand.com/1.40.10/iconExplorer.html) or a custom link (relative or absolute) to an image displayed next to the label or instead of it.
   - **link** defines an absolute link to a **node**.
-  - **externalLink** is an object which indicates that the node links to an external URL. If this parameter is defined, the **link** parameter is ignored. It has the following properties:
-    - **sameWindow** defines if the external URL is opened in the current tab or in a new one. The default value for this parameter is `false`.
+  - **externalLink** is an object which indicates that the node links to an external URL. If this property is defined, the **link** property is ignored. It has the following attributes:
+    - **sameWindow** defines if the external URL is opened in the current tab or in a new one. The default value for this property is `false`.
     - **url** is the external URL that the link leads to.
 - **staticUserInfoFn** is a function that is used to retrieve a user's name and email to simulate a login. It can be used when authorization is disabled and also gets called if the defined IDP provider does not have `settings.userInfoFn` defined or does not provide a `userInfo` function internally. It can be asynchronous and should return an object with `name`, `email` and `picture` properties.
 >**NOTE:** Neither authorization nor profile property are configured if the profile section in the top navigation bar is not visible.
@@ -314,14 +325,14 @@ The product switcher is a pop-up window available in the top navigation bar. It 
 ### items
 - **type**: array
 - **required**: ?
-- **description**: is an array of objects, each one being a link to a Luigi navigation node or an external URL. An item can have several parameters.
-- **properties**:
+- **description**: an array of objects, each one being a link to a Luigi navigation node or an external URL. An item can have several attributes.
+- **attributes**:
   - **label** defines the text for the link.
   - **testId** is a string where you can define your own custom `testId`. If nothing is specified, it is the node's label written as one word and lower case (e.g. `label`).
   - **icon** is the name of an icon from the [OpenUI](https://openui5.hana.ondemand.com/1.40.10/iconExplorer.html) or a custom link (relative or absolute) to an image displayed next to the label or instead of it.
   - **link** defines an absolute link to a **node**.
-  - **externalLink** is an object which indicates that the node links to an external URL. If this parameter is defined, the **link** parameter is ignored. It has the following properties:
-    - **sameWindow** defines if the external URL is opened in the current tab or in a new one. The default value for this parameter is `false`.
+  - **externalLink** is an object which indicates that the node links to an external URL. If this property is defined, the **link** property is ignored. It has the following attributes:
+    - **sameWindow** defines if the external URL is opened in the current tab or in a new one. The default value for this property is `false`.
     - **url** is the external URL that the link leads to.
 
 ## App switcher
@@ -336,8 +347,8 @@ The app switcher is a drop-down list available in the top navigation bar. It all
 ### items
 - **type**: ?
 - **required**: ?
-- **description**: defines the list of apps. App element properties are described below.
-- **properties**:
+- **description**: defines the list of apps. App element attributes are described below.
+- **attributes**:
   - **title** defines the app title. This is shown in the app switcher drop-down as well as the title in the header of the Luigi application if a user is in the context of the app.
   - **subTitle** defines the app sub-title. This is shown as the sub-title in the header of the Luigi application if a user is in the context of the app.
   - **link** is a link within the Luigi application that defines the root of the app. It is used to switch to the app if the drop-down entry is selected. It is also used to determine if a user is within the app's scope, so that the corresponding title and sub-title can be rendered in the header.
