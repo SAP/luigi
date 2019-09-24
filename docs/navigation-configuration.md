@@ -21,8 +21,8 @@ If you are already familiar with the basics, take a look at:
 
 There are three main elements to Luigi: 
 
-1. Top navigation which displays the main navigation path.
-2. Side navigation which displays the defined applications.
+1. Top navigation which displays the main navigation path. Context, product, app, and profile [switchers](navigation-parameters-reference.md/#context-switcher) can also be displayed there. 
+2. Side navigation which displays the defined applications. Side navigation can optionally include all levels of navigation as well as collapsible dropdowns and other nested structures.
 3. Main content window which renders the micro frontend.
  
 
