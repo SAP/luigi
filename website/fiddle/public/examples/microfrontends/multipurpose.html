@@ -55,6 +55,12 @@
 		}
 		LuigiClient.addInitListener(updateFn);
 		LuigiClient.addContextUpdateListener(updateFn);
+		
+		// fallback visibility if no initlistener called for 3 seconds
+		setTimeout(function() {
+			document.getElementById("textCnt").classList.add("visible");
+		}, 3000);
+		
 	</script>
 
 </body>
