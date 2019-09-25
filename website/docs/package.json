@@ -21,7 +21,8 @@
     "@kyma-project/luigi-client": "^0.6.0",
     "@kyma-project/luigi-core": "^0.6.0",
     "compression": "^1.7.1",
-    "polka": "next"
+    "polka": "next",
+    "sirv-cli": "^0.4.4"
   },
   "devDependencies": {
     "@agentofuser/rehype-section": "^1.0.5",
