@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<title>Luigi Mock Identity Provider</title>
+</head>
+
+<body>
+	Logging out...
+	<script>
+		window.onload = function() {
+    const redirectTo = decodeURIComponent(
+      window.location.href.match(/post_logout_redirect_uri=(.*?)(&|$)/)[1]
+    );
+    window.location.href = redirectTo;
+  };
+	</script>
+</body>
+
+</html>
