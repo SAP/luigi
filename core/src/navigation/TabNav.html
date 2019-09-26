@@ -10,125 +10,119 @@
   id="tabsContainer"
   on:toggleDropdownState="toggleDropdownState(event.name)"
 >
-  {#each Object.entries(children) as [key, nodes]}
-  {#if key === 'undefined' || key.indexOf(virtualGroupPrefix) === 0}
-  {#each nodes as node}
-  {#if !node.hideFromNav}
-  {#if node.label}
-  <span
-    class="fd-tabs__item"
-  >
-    <a
-      class="fd-tabs__link"
-      href="javascript:void(null)"
-      role="tab"
-      aria-selected="{node === selectedNode}"
-      on:click="handleClick(node)"
-    >{node.label}</a>
-  </span>
-  {/if}
-  {/if}
-  {/each}
-  {:else}
-  <span
-    class="fd-tabs__item {manipulateKey(key)}"
-    on:click="event.stopPropagation()"
-  >
-    <div class="fd-popover">
-      <a
-        class="fd-tabs__link has-child"
-        aria-expanded="false"
-        href="javascript:void(null)"
-        role="tab"
-        on:click="toggleDropdownState(key)"
-        aria-selected="{selectedNode && selectedNode.category && (selectedNode.category === key || selectedNode.category.label === key)}"
+  <div class="tabsContainerWrapper">
+    <div class="tabsContainer" id="luigiinternaltabscontainer">
+      {#each Object.entries(children) as [key, nodes], index}
+      {#if key === 'undefined' || key.indexOf(virtualGroupPrefix) === 0}
+      {#each nodes as node, index2}
+      {#if !node.hideFromNav}
+      {#if node.label}
+      <span
+        class="fd-tabs__item"
+        uid="{index}-{index2}"
       >
-        <span class="label">{key}</span>
-        <span class="sap-icon--dropdown sap-icon--l"></span>
-      </a>
-      <div
-        class="fd-popover__body fd-popover__body--no-arrow"
-        aria-hidden="{!dropDownStates[key]}"
+        <a
+          class="fd-tabs__link"
+          href="javascript:void(null)"
+          role="tab"
+          aria-selected="{node === selectedNode}"
+          on:click="handleClick(node)"
+        >{node.label}</a>
+      </span>
+      {/if}
+      {/if}
+      {/each}
+      {:else}
+      <span
+        class="fd-tabs__item"
+        uid="{index}-0"
+        on:click="event.stopPropagation()"
       >
-        <nav class="fd-menu" id>
-          <ul class="fd-menu__list">
-            {#each nodes as node}
-            {#if !node.hideFromNav}
-            {#if node.label}
-            <li>
+        <div class="fd-popover">
+          <a
+            class="fd-tabs__link has-child"
+            aria-expanded="false"
+            href="javascript:void(null)"
+            role="tab"
+            on:click="toggleDropdownState(key)"
+            aria-selected="{selectedNode && selectedNode.category && (selectedNode.category === key || selectedNode.category.label === key)}"
+          >
+            <span class="label">{key}</span>
+            <span class="sap-icon--dropdown sap-icon--l"></span>
+          </a>
+          <div
+            class="fd-popover__body fd-popover__body--no-arrow"
+            aria-hidden="{!dropDownStates[key]}"
+          >
+            <nav class="fd-menu">
+              <ul class="fd-menu__list">
+                {#each nodes as node}
+                {#if !node.hideFromNav}
+                {#if node.label}
+                <li>
+                  <a
+                    href="javascript:void(null)"
+                    class="fd-menu__item"
+                    on:click="handleClick(node)"
+                    aria-selected="{node === selectedNode}"
+                  >{node.label}</a>
+                </li>
+                {/if}
+                {/if}
+                {/each}
+              </ul>
+            </nav>
+          </div>
+        </div>
+      </span>
+      {/if}
+      {/each}
+    </div>
+  </div>
+
+  <div id="luigiinternaltabmorebtn">
+    <span class="fd-tabs__item more" on:click="event.stopPropagation()">
+      <div class="fd-popover fd-popover--right">
+        <a
+          class="fd-tabs__link fd-popover__control has-child"
+          aria-expanded="false"
+          href="javascript:void(null)"
+          role="tab"
+          on:click="toggleDropdownState(key)"
+          aria-selected="{false && selectedNode.category && (selectedNode.category === key || selectedNode.category.label === key)}"
+        >
+          <span class="label">More</span>
+          <span class="sap-icon--dropdown sap-icon--l"></span>
+        </a>
+        <!-- {!dropDownStates[key]} -->
+        <div
+          class="fd-popover__body fd-popover__body--right fd-popover__body--no-arrow"
+          aria-hidden="{!dropDownStates[key]}"
+        >
+          <nav class="fd-menu">
+            {#each Object.entries(children) as [key, nodes], index}
+            {#if key === 'undefined' || key.indexOf(virtualGroupPrefix) === 0}
+            {#each nodes as node, index2}
+            <li uid="{index}-{index2}">
               <a
                 href="javascript:void(null)"
                 class="fd-menu__item"
                 on:click="handleClick(node)"
-                aria-selected="{node === selectedNode}"
+                aria-selected="true"
               >{node.label}</a>
             </li>
-            {/if}
+            {/each}
+            {:else}
+            <li uid="{index}-0">
+              <span class="fd-menu__item">{key}</span>
+            </li>
             {/if}
             {/each}
-          </ul>
-        </nav>
+          </nav>
+        </div>
       </div>
-    </div>
-  </span>
-  {/if}
-  {/each}
-  <span
-    class="fd-tabs__item more"
-    on:click="event.stopPropagation()"
-  >
-    <div class="fd-popover fd-popover--right">
-      <a
-        class="fd-tabs__link fd-popover__control has-child"
-        aria-expanded="false"
-        href="javascript:void(null)"
-        role="tab"
-        on:click="toggleDropdownState(key)"
-        aria-selected="{false && selectedNode.category && (selectedNode.category === key || selectedNode.category.label === key)}"
-      >
-        <span class="label">More</span>
-        <span class="sap-icon--dropdown sap-icon--l"></span>
-      </a>
-      <div
-        class="fd-popover__body fd-popover__body--right fd-popover__body--no-arrow"
-        aria-hidden="{!dropDownStates[key]}"
-      >
-        <nav class="fd-menu" id>
-          <!-- <ul class="fd-menu__list"> -->
-          {#each Object.entries(children) as [key, nodes]}
-          {#if key === 'undefined' || key.indexOf(virtualGroupPrefix) === 0}
-          {#each nodes as node}
-          {#if node.displayInMoreBtn}
-          <li>
-            <a
-              href="javascript:void(null)"
-              class="fd-menu__item"
-              on:click="handleClick(node)"
-              aria-selected="true"
-            >{node.label}</a>
-          </li>
-          {/if}
-          {/each}
-          {:else}
-          {#each nodes as node}
-          {#if node.displayInMoreBtn}
-          <li>
-            <a
-              href="javascript:void(null)"
-              class="fd-menu__item"
-              on:click="handleClick(node)"
-              aria-selected="true"
-            >{key}</a>
-          </li>
-          {/if}
-          {/each}
-          {/if}
-          {/each}
-          <!-- </ul> -->
-        </nav>
-      </div>
-    </div>
-  </span>
+    </span>
+  </div>
 </nav>
 {/if}
 <script type="text/javascript">
@@ -148,73 +142,31 @@
   };
 
   const calcTabsContainer = component => {
-    let tabsContainer = document.getElementById('tabsContainer');
+    let tabsContainer = document.getElementById('luigiinternaltabscontainer');
+    let morebtn = document.getElementById('luigiinternaltabmorebtn');
     let tabsContainerTotalWidth;
     let tabsContainerDisplayWidth;
     let tabsContainerOffsetWidth;
     let totalTabsSize = 0;
-    let notDisplayedElements = [];
-    let moreItem;
-    let moreItemWidth;
     if (tabsContainer) {
-      //clientWidth, offsetWidth, scrollWidth
       tabsContainerTotalWidth = tabsContainer.scrollWidth;
       tabsContainerDisplayWidth = tabsContainer.clientWidth;
       tabsContainerOffsetWidth = tabsContainer.offsetWidth;
       let tabs = tabsContainer.children;
-      moreItem = tabs[tabs.length - 1];
-      moreItemWidth = moreItem.scrollWidth;
-      let nodesInMore = component.get().children;
       tabs.forEach(element => {
         totalTabsSize += element.scrollWidth;
-        if (
-          totalTabsSize > tabsContainerOffsetWidth - moreItemWidth - 320 &&
-          element !== moreItem
-        ) {
+        let uid = element.getAttribute('uid');
+        if (totalTabsSize >= tabsContainerOffsetWidth) {
           element.classList.add('hide_element');
-          for (let [key, nodes] of Object.entries(nodesInMore)) {
-            nodes.forEach(node => {
-              if (
-                key !== 'undefined' &&
-                key.indexOf(NavigationHelpers.virtualGroupPrefix) !== 0
-              ) {
-                if (
-                  element.classList.contains(
-                    key
-                      .split(' ')
-                      .join('')
-                      .toLowerCase()
-                  ) &&
-                  element.classList.contains('hide_element')
-                ) {
-                  node['displayInMoreBtn'] = true;
-                }
-              } else if (element.innerText === node.label) {
-                node['displayInMoreBtn'] = true;
-              }
-            });
-          }
+          document
+            .querySelector('li[uid="' + uid + '"]')
+            .classList.remove('hide_element');
         } else {
-          element.classList.remove('hide_element');
-          for (let [key, nodes] of Object.entries(nodesInMore)) {
-            nodes.forEach(node => {
-              if (
-                key !== 'undefined' &&
-                key.indexOf(NavigationHelpers.virtualGroupPrefix) !== 0
-              ) {
-                element.classList.forEach(elem => {
-                  if (elem === 'tabnav' + key) {
-                    node['displayInMoreBtn'] = false;
-                  }
-                });
-              } else if (element.innerText === node.label) {
-                node['displayInMoreBtn'] = false;
-              }
-            });
-          }
+          document
+            .querySelector('li[uid="' + uid + '"]')
+            .classList.add('hide_element');
         }
       });
-      component.set({ children: nodesInMore });
     }
   };
 
@@ -251,12 +203,6 @@
         return (
           expandedList && expandedList.indexOf(nodes.metaInfo.categoryUid) >= 0
         );
-      },
-      manipulateKey(key) {
-        return key
-          .split(' ')
-          .join('')
-          .toLowerCase();
       }
     },
     methods: {
@@ -264,7 +210,6 @@
         this.closeAllDropdowns();
         this.fire('handleClick', { node });
       },
-
       toggleDropdownState(name) {
         let dropDownStates = {};
         if (!this.get().dropDownStates[name]) {
@@ -276,6 +221,13 @@
         this.set({ dropDownStates: {} });
       },
       onResize() {
+        let tabsContainer = document.getElementById(
+          'luigiinternaltabscontainer'
+        );
+        let tabs = tabsContainer.children;
+        tabs.forEach(element => {
+          element.classList.remove('hide_element');
+        });
         calcTabsContainer(this);
       }
     }
@@ -287,8 +239,16 @@
     padding-right: 17px;
   }
 
+  .tabsContainer {
+    width: 100%;
+  }
+
   :global(.hide_element) {
     display: none;
+  }
+
+  .hide_element {
+    display: none !important;
   }
 
   .fd-tabs__link.has-child .sap-icon--l {
@@ -298,8 +258,18 @@
   }
 
   .fd-tabs__item.more {
-    /* position: absolute; */
-    right: 0;
+    background: #fff;
+  }
+
+  .fd-tabs__item {
+    white-space: nowrap;
+    display: inline-block;
+  }
+
+  .tabsContainerWrapper {
+    flex-grow: 1;
+    flex-basis: auto;
+    flex-shrink: 1;
   }
 
   .fd-tabs-fullscreen {
@@ -308,13 +278,13 @@
 
   .fd-tabs {
     flex-wrap: nowrap;
-    white-space: nowrap;
+    align-items: stretch;
     -moz-box-shadow: 1px 1px 2px 0 rgba(0, 0, 0, 0.05);
     -webkit-box-shadow: 1px 1px 2px 0 rgba(0, 0, 0, 0.05);
     box-shadow: 1px 1px 2px 0 rgba(0, 0, 0, 0.05);
     border: none;
-    position: fixed;
-    width: 100%;
+    position: absolute;
+    width: calc(100vw - 320px);
     left: 320px;
   }
 </style>
