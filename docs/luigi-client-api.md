@@ -536,6 +536,24 @@ Shows a confirmation modal.
     -   `settings.buttonConfirm` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** the label for the modal confirm button (optional, default `"Yes"`)
     -   `settings.buttonDismiss` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** the label for the modal dismiss button (optional, default `"No"`)
 
+#### Examples
+
+```javascript
+import LuigiClient from '@kyma-project/luigi-client';
+const settings = {
+ header: "Confirmation",
+ body: "Are you sure you want to do this?",
+ buttonConfirm: "Yes",
+ buttonDismiss: "No"
+}
+LuigiClient
+ .uxManager()
+ .showConfirmationModal(settings)
+ .then(() => {
+    // Logic to execute when the confirmation modal is dismissed
+ });
+```
+
 Returns **[promise](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise)** which is resolved when accepting the confirmation modal and rejected when dismissing it
 
 ### showAlert
@@ -558,22 +576,21 @@ Shows an alert.
 ```javascript
 import LuigiClient from '@kyma-project/luigi-client';
 const settings = {
- text: Ut enim ad minim veniam, {goToHome} quis nostrud exercitation ullamco {relativePath} laboris nisi ut aliquip ex ea commodo consequat.
-   Duis aute irure dolor {goToOtherProject},
+ text: "Ut enim ad minim veniam, {goToHome} quis nostrud exercitation ullamco {relativePath}. Duis aute irure dolor {goToOtherProject}",
  type: 'info',
  links: {
    goToHome: { text: 'homepage', url: '/overview' },
    goToOtherProject: { text: 'other project', url: '/projects/pr2' },
    relativePath: { text: 'relative hide side nav', url: 'hideSideNav' }
  },
-closeAfter: 3000
+ closeAfter: 3000
 }
 LuigiClient
  .uxManager()
  .showAlert(settings)
  .then(() => {
     // Logic to execute when the alert is dismissed
-});
+ });
 ```
 
 Returns **[promise](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise)** which is resolved when the alert is dismissed.
