@@ -86,7 +86,6 @@ const projectDetailNavProviderFn = context =>
           category: plugin.category,
           pathSegment: plugin.viewId,
           label: plugin.label,
-          tabNav: true,
           viewUrl: plugin.viewUrl,
           context: plugin.context
         });
@@ -129,7 +128,6 @@ export const projectsNavProviderFn = context =>
           context: {
             currentProject: project.id
           },
-          tabNav: true,
           icon: 'folder-blank',
           clientPermissions: {
             changeCurrentLocale: true
