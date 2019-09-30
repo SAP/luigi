@@ -161,8 +161,6 @@
       return;
     }
     component.set(tabNavData);
-    console.log('selectedNodeForTabNav ', componentData.selectedNodeForTabNav);
-    console.log('componentData ', componentData);
     calcTabsContainer(component);
     window['LEFTNAVDATA'] = tabNavData.groupedChildren;
   };
@@ -324,5 +322,11 @@
     position: absolute;
     width: calc(100vw - 320px);
     left: 320px;
+  }
+  @media (max-width: 599px) {
+    .fd-tabs {
+      width: calc(100vw);
+      left: 0;
+    }
   }
 </style>

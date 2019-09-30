@@ -293,7 +293,7 @@ class NavigationClass {
   async getTabNavData(current, componentData) {
     const updatedCompData = {};
     if (current.pathData && 1 < current.pathData.length) {
-      let selectedNodeForTabNav = current.pathData.pop();
+      let selectedNodeForTabNav = current.pathData[current.pathData.length - 1];
       const pathDataTruncatedChildren = this.getTruncatedChildren(
         componentData.pathData
       );
