@@ -13,6 +13,7 @@ class Settings {
   };
   responsiveNavigation = 'simpleMobileOnly'; // Options: simple | simpleMobileOnly | semiCollapsible
   sideNavFooterText = `Luigi Client: ${version || 'unknown'}`;
+  // allowRules = ['microphone'];
   // hideNavigation = true
   // backdropDisabled = true
   /* customTranslationImplementation = () => {

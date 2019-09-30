@@ -5,6 +5,7 @@
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 
 module.exports = {
+  chainWebpack: config => config.resolve.symlinks(false),
   pages: {
     sampleapp: {
       entry: 'src/main.js',
