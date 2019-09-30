@@ -27,8 +27,6 @@
           role="tab"
           aria-selected="{node === selectedNodeForTabNav}"
           on:click="handleClick(node)"
-          tets="_{selectedNodeForTabNav}"
-          tets2="{node}"
         >{node.label}</a>
       </span>
       {/if}
@@ -96,7 +94,6 @@
           <span class="label">More</span>
           <span class="sap-icon--dropdown sap-icon--l"></span>
         </a>
-        <!-- {!dropDownStates[key]} -->
         <div
           class="fd-popover__body fd-popover__body--right fd-popover__body--no-arrow"
           aria-hidden="{!isMoreBtnExpanded}"
@@ -119,14 +116,12 @@
               <a
                 class="fd-side-nav__link has-child"
                 href="javascript:void(null)"
-                aria-controls="mM3Zf660"
                 aria-haspopup="true"
+                aria-expanded="{dropDownStates[key+index]}"
                 on:click="toggleDropdownState(key+index)"
-                testid="toggleDropdownState(key+index)"
               >{key}</a>
               <ul
                 class="fd-side-nav__sublist"
-                id="mM3Zf660"
                 aria-hidden="{!dropDownStates[key+index]}"
               >
                 {#each nodes as node}
@@ -135,6 +130,7 @@
                     class="fd-side-nav__sublink"
                     href="javascript:void(null)"
                     on:click="handleClick(node)"
+                    aria-selected="{node===selectedNodeForTabNav}"
                   >{node.label}</a>
                 </li>
                 {/each}
@@ -258,9 +254,6 @@
       onResize() {
         clearTapNav();
         calcTabsContainer(this);
-      },
-      handleIconClick(nodeOrNodes, el) {
-        console.log('tets');
       },
       toggleMoreBtn() {
         this.set({ isMoreBtnExpanded: !this.get().isMoreBtnExpanded });
