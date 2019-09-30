@@ -263,7 +263,6 @@ class NavigationClass {
       );
       let lastElement = [...pathDataTruncatedChildren].pop();
       let selectedNode;
-      //let isTabNav = pathDataTruncatedChildren.find(elem => { return elem.tabNav });
       if (lastElement.keepSelectedForChildren || lastElement.tabNav) {
         selectedNode = lastElement;
         pathDataTruncatedChildren.pop();
@@ -294,6 +293,7 @@ class NavigationClass {
   async getTabNavData(current, componentData) {
     const updatedCompData = {};
     if (current.pathData && 1 < current.pathData.length) {
+      let selectedNodeForTabNav = current.pathData.pop();
       const pathDataTruncatedChildren = this.getTruncatedChildren(
         componentData.pathData
       );
@@ -321,6 +321,7 @@ class NavigationClass {
         }
       });
       updatedCompData.selectedNode = selectedNode || lastElement;
+      updatedCompData.selectedNodeForTabNav = selectedNodeForTabNav;
       updatedCompData.children = groupedChildren;
     }
     return updatedCompData;

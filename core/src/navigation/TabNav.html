@@ -25,8 +25,10 @@
           class="fd-tabs__link"
           href="javascript:void(null)"
           role="tab"
-          aria-selected="{node === selectedNode}"
+          aria-selected="{node === selectedNodeForTabNav}"
           on:click="handleClick(node)"
+          tets="_{selectedNodeForTabNav}"
+          tets2="{node}"
         >{node.label}</a>
       </span>
       {/if}
@@ -64,7 +66,7 @@
                     href="javascript:void(null)"
                     class="fd-menu__item"
                     on:click="handleClick(node)"
-                    aria-selected="{node === selectedNode}"
+                    aria-selected="{node === selectedNodeForTabNav}"
                   >{node.label}</a>
                 </li>
                 {/if}
@@ -88,7 +90,7 @@
           aria-expanded="false"
           href="javascript:void(null)"
           role="tab"
-          on:click="toggleDropdownState(key)"
+          on:click="toggleMoreBtn()"
           aria-selected="{false && selectedNode.category && (selectedNode.category === key || selectedNode.category.label === key)}"
         >
           <span class="label">More</span>
@@ -97,7 +99,7 @@
         <!-- {!dropDownStates[key]} -->
         <div
           class="fd-popover__body fd-popover__body--right fd-popover__body--no-arrow"
-          aria-hidden="{!dropDownStates[key]}"
+          aria-hidden="{!isMoreBtnExpanded}"
         >
           <nav class="fd-menu">
             {#each Object.entries(children) as [key, nodes], index}
@@ -108,13 +110,35 @@
                 href="javascript:void(null)"
                 class="fd-menu__item"
                 on:click="handleClick(node)"
-                aria-selected="true"
+                aria-selected="{node===selectedNodeForTabNav}"
               >{node.label}</a>
             </li>
             {/each}
             {:else}
-            <li uid="{index}-0">
-              <span class="fd-menu__item">{key}</span>
+            <li class="fd-side-nav__item" uid="{index}-0">
+              <a
+                class="fd-side-nav__link has-child"
+                href="javascript:void(null)"
+                aria-controls="mM3Zf660"
+                aria-haspopup="true"
+                on:click="toggleDropdownState(key+index)"
+                testid="toggleDropdownState(key+index)"
+              >{key}</a>
+              <ul
+                class="fd-side-nav__sublist"
+                id="mM3Zf660"
+                aria-hidden="{!dropDownStates[key+index]}"
+              >
+                {#each nodes as node}
+                <li class="fd-side-nav__subitem">
+                  <a
+                    class="fd-side-nav__sublink"
+                    href="javascript:void(null)"
+                    on:click="handleClick(node)"
+                  >{node.label}</a>
+                </li>
+                {/each}
+              </ul>
             </li>
             {/if}
             {/each}
@@ -137,11 +161,14 @@
       return;
     }
     component.set(tabNavData);
+    console.log('selectedNodeForTabNav ', componentData.selectedNodeForTabNav);
+    console.log('componentData ', componentData);
     calcTabsContainer(component);
     window['LEFTNAVDATA'] = tabNavData.groupedChildren;
   };
 
   const calcTabsContainer = component => {
+    clearTapNav();
     let tabsContainer = document.getElementById('luigiinternaltabscontainer');
     let morebtn = document.getElementById('luigiinternaltabmorebtn');
     let tabsContainerTotalWidth;
@@ -154,7 +181,7 @@
       tabsContainerOffsetWidth = tabsContainer.offsetWidth;
       let tabs = tabsContainer.children;
       tabs.forEach(element => {
-        totalTabsSize += element.scrollWidth;
+        totalTabsSize += element.offsetWidth;
         let uid = element.getAttribute('uid');
         if (totalTabsSize >= tabsContainerOffsetWidth) {
           element.classList.add('hide_element');
@@ -168,6 +195,14 @@
         }
       });
     }
+  };
+
+  const clearTapNav = () => {
+    let tabsContainer = document.getElementById('luigiinternaltabscontainer');
+    let tabs = tabsContainer.children;
+    tabs.forEach(element => {
+      element.classList.remove('hide_element');
+    });
   };
 
   export default {
@@ -192,6 +227,7 @@
     data() {
       return {
         dropDownStates: {},
+        isMoreBtnExpanded: false,
         virtualGroupPrefix: NavigationHelpers.virtualGroupPrefix
       };
     },
@@ -219,16 +255,17 @@
       },
       closeAllDropdowns() {
         this.set({ dropDownStates: {} });
+        this.set({ isMoreBtnExpanded: false });
       },
       onResize() {
-        let tabsContainer = document.getElementById(
-          'luigiinternaltabscontainer'
-        );
-        let tabs = tabsContainer.children;
-        tabs.forEach(element => {
-          element.classList.remove('hide_element');
-        });
+        clearTapNav();
         calcTabsContainer(this);
+      },
+      handleIconClick(nodeOrNodes, el) {
+        console.log('tets');
+      },
+      toggleMoreBtn() {
+        this.set({ isMoreBtnExpanded: !this.get().isMoreBtnExpanded });
       }
     }
   };
@@ -274,6 +311,7 @@
 
   .fd-tabs-fullscreen {
     left: 0 !important;
+    width: 100% !important;
   }
 
   .fd-tabs {
