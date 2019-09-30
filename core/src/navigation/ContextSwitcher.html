@@ -42,7 +42,10 @@
             {/if} {#if options && options.length} {#each options as node}
             {#await getNodeName(node.label, config.fallbackLabelResolver,
             node.id)} {:then label}
-            <li on:click="goToOption(node, selectedOption)" data-testid="{getTestId(node)}">
+            <li
+              on:click="goToOption(node, selectedOption)"
+              data-testid="{getTestId(node)}"
+            >
               <a
                 class="fd-menu__item {node === selectedLabel ? 'is-selected' : ''}"
                 title="{label}"
@@ -224,7 +227,12 @@
         this.root.getUnsavedChangesModalPromise().then(() => {
           LuigiConfig._configModificationTimestamp = new Date();
           if (this.get().preserveSubPathOnSwitch && selectedOption) {
-            Routing.navigateTo(ContextSwitcherHelpers.getNodePathFromCurrentPath(option, selectedOption))
+            Routing.navigateTo(
+              ContextSwitcherHelpers.getNodePathFromCurrentPath(
+                option,
+                selectedOption
+              )
+            );
           } else {
             Routing.navigateTo(option.path);
           }
