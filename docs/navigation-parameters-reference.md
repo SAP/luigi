@@ -1,24 +1,13 @@
 # Navigation properties reference
 
-<<<<<<< HEAD
-> NOTE: To see the navigation parameters in use, check out the [navigation configuration example](navigation-configuration-example.md).
-=======
 > NOTE: To see the navigation properties in use, check out the [navigation configuration example](navigation-configuration-example.md).
->>>>>>> Changed terminology
 
 You can use properties and functions in this reference to configure your Luigi navigation structure.
 
-<<<<<<< HEAD
-* [Routing parameters](#routing-parameters)
-* [Navigation parameters](#navigation-parameters)
-* [Node parameters](#node-parameters)
-* [Profile](#profile)
-=======
 * [Routing properties](#routing-properties)
 * [Navigation properties](#navigation-properties)
 * [Node properties](#node-properties)
 * [Profile](#profile)
->>>>>>> Changed terminology
 * [Context switcher](#context-switcher)
 * [Product switcher](#product-switcher)
 * [App switcher](#app-switcher)
@@ -86,7 +75,7 @@ Node properties are all the properties that can be added to an individual naviga
 - **description**: specifies the partial URL of the current segment. **pathSegment** must not contain slashes.
 - **examples**:
   - A static pathSegment of value `settings` results in `yourwebsite.com/settings`.
-  - A dynamic pathSegment is prefixed with a colon and can load any value. Find out more about dynamic paths in Luigi [here]().
+  - A dynamic pathSegment is prefixed with a colon and can load any value. Find out more about dynamic paths in Luigi [here](navigation-configuration.md#creating-a-dynamic-path).
 
 ### link
 - **type**: string
