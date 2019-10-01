@@ -10,6 +10,8 @@ Luigi is a micro frontend JavaScript framework that enables you to create an adm
 
 Luigi consists of Luigi Core and Luigi Client libraries. They interact with each other to leverage communication between the core application and the micro frontend, without compromising the security principles behind the iframe pattern.
 
+Go to the [Luigi project website](https://luigi-project.io/) to learn more about the product.
+
 ## Installation
 
 Follow the instructions in [this](docs/application-setup.md) document to get started with Luigi. Read [this](client/README.md) document to install the Luigi Client.
