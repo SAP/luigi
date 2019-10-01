@@ -1,5 +1,7 @@
 # Communication
 
+>NOTE: For testing and learning purposes, you can use the [Luigi Fiddle page](https://fiddle.luigi-project.io) where you can configure a sample Luigi application.
+
 ## Custom messages
 
 Luigi Core and Luigi Client can exchange custom messages in both directions.

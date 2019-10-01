@@ -1,5 +1,7 @@
 # Authorization configuration
 
+>NOTE: For testing and learning purposes, you can use the [Luigi Fiddle page](https://fiddle.luigi-project.io) where you can configure a sample Luigi application.
+
 Luigi provides OpenID Connect and OAuth2 Implicit Grant authorization out of the box. The **use** key defines the active authorization provider and the **disableAutoLogin** key allows you to disable the automatic login flow that is provided by default.
 
 ````
