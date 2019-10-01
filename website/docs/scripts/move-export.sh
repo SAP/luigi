@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -e # exit on errors
 BASE_DIR="$( cd "$(dirname "$0")" ; pwd -P )"
-source $BASE_DIR/../../../scripts/shared/bashHelpers.sh
+# source $BASE_DIR/../../../scripts/shared/bashHelpers.sh
 
 EXPORT_DIR=$BASE_DIR/../__sapper__/export
 LUIGI_DIR=$BASE_DIR/../public
@@ -17,10 +17,10 @@ mkdir -p $LUIGI_DIR/docu-microfrontend
 mv $EXPORT_DIR/* $LUIGI_DIR/docu-microfrontend
 
 echo ""
-echoe "Documentation was exported to $LUIGI_DIR"
+echo "Documentation was exported to $LUIGI_DIR"
 
 if [ "$1" = "--serve" ]; then
   npm run export:serve
 else
-  echoe "Run: sirv public --single --dev --cors --port 4000"
+  echo "Run: sirv public --single --dev --cors --port 4000"
 fi
