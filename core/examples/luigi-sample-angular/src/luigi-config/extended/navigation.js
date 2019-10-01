@@ -318,7 +318,16 @@ class Navigation {
       label: 'End session'
       // icon: "sys-cancel",
     },
-    items: this.getProfileItems
+    items: this.getProfileItems,
+    staticUserInfoFn: () => {
+      return new Promise(resolve => {
+        resolve({
+          name: 'Luigi Static User',
+          email: 'other.luigi.user@example.com',
+          picture: '/assets/github-logo.png'
+        });
+      });
+    }
   };
 
   appSwitcher = {

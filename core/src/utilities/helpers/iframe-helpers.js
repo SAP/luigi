@@ -232,12 +232,16 @@ class IframeHelpersClass {
     const customSandboxRules = LuigiConfig.getConfigValue(
       'settings.customSandboxRules'
     );
+    const allowRules = LuigiConfig.getConfigValue('settings.allowRules');
     const activeSandboxRules = customSandboxRules
       ? [...new Set([...luigiDefaultSandboxRules, ...customSandboxRules])]
       : luigiDefaultSandboxRules;
 
     const iframe = document.createElement('iframe');
     iframe.src = viewUrl;
+    if (allowRules) {
+      iframe.allow = allowRules.join(' ');
+    }
     iframe.sandbox = activeSandboxRules.join(' ');
     iframe.luigi = {
       viewUrl,
