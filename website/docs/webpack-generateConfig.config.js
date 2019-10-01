@@ -25,6 +25,10 @@ module.exports = {
       {
         "from": "node_modules/fiori-fundamentals/dist",
         "to": "../fundamental-ui"
+      },
+      {
+        "from": "src/docs/assets",
+        "to": "../assets"
       }
     ]),
     new webpack.BannerPlugin(
