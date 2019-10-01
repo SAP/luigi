@@ -9,6 +9,7 @@ import { LuigiConfig } from '../../../src/core-api';
 describe('Iframe-helpers', () => {
   let component;
   let customSandboxRules = ['allow-scripts', 'rules1', 'rules2'];
+  let allowRules = ['microphone', 'geolocation'];
 
   beforeEach(() => {
     let lastObj = {};
@@ -21,7 +22,6 @@ describe('Iframe-helpers', () => {
 
     sinon.stub(GenericHelpers);
     GenericHelpers.getRandomId.returns('abc');
-    sinon.stub(LuigiConfig, 'getConfigValue').returns(customSandboxRules);
   });
   afterEach(() => {
     if (document.createElement.restore) {
@@ -45,12 +45,19 @@ describe('Iframe-helpers', () => {
       assert.equal(iframe.vg, 'ananas');
     });
 
-    it('createIframe with cutomrules', () => {
+    it('createIframe with customrules', () => {
+      sinon.stub(LuigiConfig, 'getConfigValue').returns(customSandboxRules);
       const iframe = IframeHelpers.createIframe('http://luigi.url.com/');
       assert.equal(
         iframe.sandbox,
         'allow-forms allow-modals allow-popups allow-popups-to-escape-sandbox allow-same-origin allow-scripts rules1 rules2'
       );
+    });
+
+    it('createIframe with allowrules', () => {
+      sinon.stub(LuigiConfig, 'getConfigValue').returns(allowRules);
+      const iframe = IframeHelpers.createIframe('http://luigi.url.com/');
+      assert.equal(iframe.allow, 'microphone geolocation');
     });
   });
 
