@@ -52,7 +52,7 @@ navigation: {
           children: [
             {
               link: '/TopNav1/internalLink',
-              label: 'This takes you to your.website.com/TopNav1/internalLink',
+              label: 'This takes you to [YOUR.WEBSITE]/TopNav1/internalLink',
             },
             {
               externalLink: {
@@ -80,7 +80,7 @@ navigation: {
 The [first steps](#first-steps) example provides some basic navigation parameters:
 
 ### pathSegment
-This is used to build the path in the browser URL. The main application path is built from values in the navigation path, joined with the **/** character. For example, if the value of a node's **pathSegment** is `home`, the path for that node would be `your.website.com/home`. You can override this setting by using one of the following instead of **pathSegment**: 
+This is used to build the path in the browser URL. The main application path is built from values in the navigation path, joined with the **/** character. For example, if the value of a node's **pathSegment** is `home`, the path for that node would be `[YOUR.WEBSITE]/home`. You can override this setting by using one of the following instead of **pathSegment**: 
 * **link** - define a specific internal path. Note that a valid path must always start from the **root node**. For example, if your root node is `home`, and you want to navigate to the `projects` directory:
 	- `link: '/home/projects'` is correct
 	- `link: '/projects'`is not correct, since `/projects` is not the root node 
@@ -167,7 +167,7 @@ navigation: {
                 pathSegment: ':userId',
                 label: 'User Profile',
                 // E.g. if userId is 'JohnSmith'
-                // the main application URL will be https://your.website.com/users/JohnSmith
+                // the main application URL will be https://[YOUR.WEBSITE]/users/JohnSmith
               }
             ]
           }
@@ -182,7 +182,7 @@ navigation: {
 ### viewUrl parameters
 
 You have the following options to add a parameter to **viewUrl**: 
-- Place the parameter anywhere in the **viewUrl** value. For example, if the main application URL is `https://your.website.com/home/users/JohnSmith`, then the **viewUrl** of the micro frontend in the content area can be `https://example.com/users/details.html#id=JohnSmith`. 
+- Place the parameter anywhere in the **viewUrl** value. For example, if the main application URL is `https://[YOUR.WEBSITE]/home/users/JohnSmith`, then the **viewUrl** of the micro frontend in the content area can be `https://example.com/users/details.html#id=JohnSmith`. 
 - Use the [Luigi Client API](luigi-client-api.md) to access the node parameter values from the micro frontend. Use the `LuigiClient.getPathParams()` function. 
 For example, to get the value of the `userId` parameter, use `LuigiClient.getPathParams().userId`. 
 - Add a parameter to the context part of your configuration:
@@ -209,7 +209,7 @@ You can specify them in the main application URL, similarly to URL query paramet
 
 All parameters without the prefix are not passed to the micro frontend and are consumed by the main application. 
 
-A sample **viewUrl** `https://your.website.com/home/users/allUsers?~sorting=asc&~page=2` supports sorting and paging by introducing the **sort** and **page** node parameters.
+A sample **viewUrl** `https://[YOUR.WEBSITE]/home/users/allUsers?~sorting=asc&~page=2` supports sorting and paging by introducing the **sort** and **page** node parameters.
 
 Using node parameters in the previous example results in:
 
@@ -243,14 +243,14 @@ navigation: {
 
  Use the following options to work with node parameters:
 
-Build the **viewUrl** by placing parameters anywhere in the **viewUrl** value using the following syntax: `nodeParams.{node param name}`. For example, if the main application URL is `https://your.website.com/home/projects/?~sorting=asc&~page=2` then the **viewUrl** of a micro frontend is `https://example.com/projects/list.html#pagenr=2;sort=asc`.
+Build the **viewUrl** by placing parameters anywhere in the **viewUrl** value using the following syntax: `nodeParams.{node param name}`. For example, if the main application URL is `https://[YOUR.WEBSITE]/home/projects/?~sorting=asc&~page=2` then the **viewUrl** of a micro frontend is `https://example.com/projects/list.html#pagenr=2;sort=asc`.
 
 
 ### Dynamic viewUrl
 
 You can use both node parameters and path parameters to build a dynamic **viewUrl**.
 
-For example, if the web application URL is `https://your.website.com/something/sample_1/products?~sort=asc`, the micro frontend loads using a different URL, such as `https://example.com/project/sample_1/products?sort=asc`.
+For example, if the web application URL is `https://[YOUR.WEBSITE]something/sample_1/products?~sort=asc`, the micro frontend loads using a different URL, such as `https://example.com/project/sample_1/products?sort=asc`.
 
 When loading, the **viewUrl** uses the following dynamic URL parameters:
 
