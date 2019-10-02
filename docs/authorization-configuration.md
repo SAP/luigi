@@ -107,12 +107,13 @@ export class CustomAuthenticationProvider {
     setTokenExpireSoonAction() {}
 
     generateNonce(){
-        //returns a string 
+        // returns a string
     }
 
     userInfo(){
         // logic to get some user information
-        // returns a promise of a userinfo object which contains a user name and/or email to display in the profile dropdown menu
+        // returns a promise of a userinfo object which contains an object with `name`, `email` and `picture` properties to display in the profile dropdown menu
+        return { name, email, picture };
     }
 }
 ````
