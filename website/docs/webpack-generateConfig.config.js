@@ -29,6 +29,14 @@ module.exports = {
       {
         "from": "src/docs/assets",
         "to": "../assets"
+      },
+      {
+        "from": "node_modules/@kyma-project/luigi-core/luigi.css",
+        "to": ""
+      },
+      {
+        "from": "node_modules/@kyma-project/luigi-core/luigi.js",
+        "to": ""
       }
     ]),
     new webpack.BannerPlugin(
