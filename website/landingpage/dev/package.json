@@ -13,7 +13,7 @@
     "foundation-sites": "^6.5.1",
     "jquery": "^3.2.1",
     "motion-ui": "^2.0.3",
-    "what-input": "^5.2.3"
+    "what-input": "^5.2.4"
   },
   "devDependencies": {
     "@babel/core": "^7.1.2",
