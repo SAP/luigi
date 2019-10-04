@@ -33,12 +33,12 @@ You can build an application in Luigi without a framework, or use different fram
 Follow these steps to create a global user interface and host a full web application in Luigi:
 
 1. [Set up a Luigi Core application](https://github.com/SAP/luigi/blob/master/docs/application-setup.md).
-2. [Read the Luigi Core documentation](https://github.com/SAP/luigi/blob/master/docs/README.md#luigi-core).
+2. Configure the application. To do so, use the [Luigi Core documentation](https://github.com/SAP/luigi/blob/master/docs/README.md#luigi-core).
 
 
 ### Luigi Client
 
-To develop micro frontends and connect them to an already existing Luigi Core app:
+Follow these steps to develop micro frontends and connect them to an already existing Luigi Core app:
 
 1. [Install Luigi Client](https://github.com/SAP/luigi/tree/master/client#luigi-client).
-2. [Read the Luigi Client documentation](https://github.com/SAP/luigi/tree/master/docs#luigi-client).
+2. Use the functions and parameters provided by the Luigi Client API. You can find them in the [Luigi Client documentation](https://github.com/SAP/luigi/tree/master/docs#luigi-client).
