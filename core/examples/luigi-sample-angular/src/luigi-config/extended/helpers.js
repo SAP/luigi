@@ -135,6 +135,22 @@ export const projectsNavProviderFn = context =>
           children: projectDetailNavProviderFn
         });
       });
+      let tabNavExample = {
+        navigationContext: 'project',
+        pathSegment: 'tabNav',
+        label: 'Horizontal Navigation Example',
+        viewUrl: '/sampleapp.html#/projects/pr2',
+        context: {
+          currentProject: 'pr2'
+        },
+        icon: 'folder-blank',
+        clientPermissions: {
+          changeCurrentLocale: true
+        },
+        tabNav: true,
+        children: projectDetailNavProviderFn
+      };
+      children.push(tabNavExample);
       resolve(children);
     });
   });

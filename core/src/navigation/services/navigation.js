@@ -289,23 +289,27 @@ class NavigationClass {
     }
     return updatedCompData;
   }
+  getTruncatedChildrenForTabNav(children) {
+    const res = [];
+    for (let i = 0; i < children.length - 1; i++) {
+      res.push(children[i]);
+      if (children[i].tabNav) {
+        res.push(children[i + 1]);
+        break;
+      }
+    }
+    return res;
+  }
 
   async getTabNavData(current, componentData) {
     const updatedCompData = {};
     if (current.pathData && 1 < current.pathData.length) {
-      let selectedNodeForTabNav = current.pathData[current.pathData.length - 1];
-      const pathDataTruncatedChildren = this.getTruncatedChildren(
+      const pathDataTruncatedChildren = this.getTruncatedChildrenForTabNav(
         componentData.pathData
       );
-      let lastElement = [...pathDataTruncatedChildren].pop();
-      let selectedNode;
-      if (lastElement.keepSelectedForChildren) {
-        selectedNode = lastElement;
-        pathDataTruncatedChildren.pop();
-        lastElement = [...pathDataTruncatedChildren].pop();
-      }
+      let selectedNode = [...pathDataTruncatedChildren].pop();
       const children = await this.getChildren(
-        lastElement,
+        selectedNode.parent,
         componentData.context
       );
       const groupedChildren = this.getGroupedChildren(children, current);
@@ -320,8 +324,8 @@ class NavigationClass {
           updatedCompData.hasCategoriesWithIcon = true;
         }
       });
-      updatedCompData.selectedNode = selectedNode || lastElement;
-      updatedCompData.selectedNodeForTabNav = selectedNodeForTabNav;
+      updatedCompData.selectedNode = selectedNode;
+      updatedCompData.selectedNodeForTabNav = selectedNode;
       updatedCompData.children = groupedChildren;
     }
     return updatedCompData;
