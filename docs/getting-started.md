@@ -12,7 +12,7 @@ Micro frontends are small frontend web applications implemented on one global us
 
 * **break up big, monolithic UIs**: decompose your frontend into smaller chunks and make it more manageable, all while maintaining consistent user experience.
 * **give individual teams autonomy**: every team in your project can develop their own end-to-end application which exists on the same core app. This gives teams full autonomy over release dates and updates, while also reducing code dependencies.
-* **extend functionality**: integrate external micro frontends to utilize functions from a 3rd party.
+* **extend functionality**: integrate external micro frontends to utilize functions provided by third-party sources.
 * **scale**: add new features with ease without having to rely on only one UI team.
 * **make your website fast and resilient**: even if a micro frontend underperforms, the main user interface is not affected.
 * **be technology agnostic**: each micro frontend can be developed using a separate framework without having to synchronize everything with the main application. This enables you to quickly react to trends and adopt new technologies.
