@@ -30,7 +30,7 @@ You can build an application in Luigi without a framework, or use different fram
 
 ### Luigi Core
 
-To create a global user interface and host a full web application in Luigi:
+Follow these steps to create a global user interface and host a full web application in Luigi:
 
 1. [Set up a Luigi Core application](https://github.com/SAP/luigi/blob/master/docs/application-setup.md).
 2. [Read the Luigi Core documentation](https://github.com/SAP/luigi/blob/master/docs/README.md#luigi-core).
