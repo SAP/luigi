@@ -5,7 +5,7 @@ if (envs.NODE_ENV == 'production') {
   baseUrl = '/docu-microfrontend';
 } else {
   // baseUrl = 'http://localhost:4001';
-  baseUrl = window.location.origin;
+  baseUrl = location.protocol + '//' + location.hostname + ':4001';
 }
 console.log("baseUrl : ", baseUrl);
 
