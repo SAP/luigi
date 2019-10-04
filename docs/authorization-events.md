@@ -1,5 +1,7 @@
 # Authorization events
 
+>**NOTE:** For learning and testing purposes, use the [Luigi Fiddle](https://fiddle.luigi-project.io) page where you can configure a sample Luigi application.
+
 Luigi provides life cycle events which it can trigger internally or by authorization providers.
 Events are part of the **auth** configuration object and have to be functions. They can be executed asynchronously.
 
