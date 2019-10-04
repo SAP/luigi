@@ -8,7 +8,7 @@ Luigi is an open source JavaScript framework for micro frontends. It enables you
 
 ## What are micro frontends? 
 
-Micro frontends are small frontend web applications that are implemented on one global user interface. They allow you to:
+Micro frontends are small frontend web applications implemented on one global user interface. They allow you to:
 
 * **break up big, monolithic UIs**: decompose your frontend into smaller chucks and make it more manageable, all while maintaining a consistent user experience.
 * **give individual teams autonomy**: every team in your project can develop their own end-to-end application which exists on the same core app. This gives teams full autonomy over release dates and updates, while also reducing code dependencies.
