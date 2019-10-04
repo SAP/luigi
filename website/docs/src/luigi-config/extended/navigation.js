@@ -4,8 +4,10 @@ let baseUrl;
 if (envs.NODE_ENV == 'production') {
   baseUrl = '/docu-microfrontend';
 } else {
-  baseUrl = 'http://localhost:4001';
+  // baseUrl = 'http://localhost:4001';
+  baseUrl = window.location.origin;
 }
+console.log("baseUrl : ", baseUrl);
 
 const getDocuItems = () => {
   return fetch('/navigation-children.json')
