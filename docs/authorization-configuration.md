@@ -20,7 +20,7 @@ The following code snippet demonstrates how to configure authorization using Ope
 auth: {
   use: 'openIdConnect',
   openIdConnect: {
-    authority: 'https://example-authority.com',
+    authority: 'https://example.com',
     client_id: 'client',
     scope: 'audience:server:client_id:client openid profile email groups',
     redirect_uri: '',
@@ -51,8 +51,8 @@ The following code snippet demonstrates how to configure authorization using OAu
 auth: {
   use: 'oAuth2ImplicitGrant',
   oAuth2ImplicitGrant: {
-    authorizeUrl: 'https://example-url.com/authorize',
-    logoutUrl: 'https://example-url.com/logout',
+    authorizeUrl: 'https://example.com/authorize',
+    logoutUrl: 'https://example.com/logout',
     oAuthData: {
       client_id: 'egDuozijY5SVr0NSIowUP1dT6RVqHnlp'
       scope: '',
