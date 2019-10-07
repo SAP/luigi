@@ -1,4 +1,5 @@
 import { projectDetailNavStructure } from './projectDetailNav';
+import { projectDetailTabNavStructure } from './projectDetailTabNav';
 const getProjectPlugins = projectId =>
   new Promise(resolve => {
     if (projectId === 'pr2') {
@@ -45,6 +46,10 @@ let allProjects = [
   {
     id: 'pr2',
     name: 'Project Two'
+  },
+  {
+    id: 'tabNav',
+    name: 'Horizontal Navigation Example'
   }
 ];
 
@@ -132,25 +137,13 @@ export const projectsNavProviderFn = context =>
           clientPermissions: {
             changeCurrentLocale: true
           },
-          children: projectDetailNavProviderFn
+          children:
+            project.id === 'tabNav'
+              ? projectDetailTabNavStructure
+              : projectDetailNavProviderFn,
+          tabNav: project.id === 'tabNav' ? true : false
         });
       });
-      let tabNavExample = {
-        navigationContext: 'project',
-        pathSegment: 'tabNav',
-        label: 'Horizontal Navigation Example',
-        viewUrl: '/sampleapp.html#/projects/pr2',
-        context: {
-          currentProject: 'pr2'
-        },
-        icon: 'folder-blank',
-        clientPermissions: {
-          changeCurrentLocale: true
-        },
-        tabNav: true,
-        children: projectDetailNavProviderFn
-      };
-      children.push(tabNavExample);
       resolve(children);
     });
   });

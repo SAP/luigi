@@ -337,13 +337,13 @@ describe('Navigation', () => {
         .click();
 
       cy.get('.fd-menu')
-        .contains('External Views')
+        .contains('Default Child node Example')
         .click();
 
       cy.get('.fd-side-nav__subitem')
-        .contains('This is X')
+        .contains('First Child')
         .click();
-      cy.expectPathToBe('/projects/tabNav/viewX');
+      cy.expectPathToBe('/projects/tabNav/dps1');
     });
   });
 });
