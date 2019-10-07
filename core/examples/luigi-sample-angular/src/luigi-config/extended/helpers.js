@@ -83,7 +83,10 @@ const getAllProjects = () =>
 const projectDetailNavProviderFn = context =>
   new Promise(resolve => {
     const projectId = context.currentProject;
-    const children = projectDetailNavStructure(projectId);
+    const children =
+      projectId === 'tabNav'
+        ? projectDetailTabNavStructure(projectId)
+        : projectDetailNavStructure(projectId);
 
     getProjectPlugins(projectId).then(result => {
       result.forEach(plugin => {
@@ -137,11 +140,9 @@ export const projectsNavProviderFn = context =>
           clientPermissions: {
             changeCurrentLocale: true
           },
-          children:
-            project.id === 'tabNav'
-              ? projectDetailTabNavStructure
-              : projectDetailNavProviderFn,
-          tabNav: project.id === 'tabNav' ? true : false
+          children: projectDetailNavProviderFn,
+          tabNav: project.id === 'tabNav' ? true : false,
+          hideSideNav: project.id === 'tabNav' ? true : false
         });
       });
       resolve(children);

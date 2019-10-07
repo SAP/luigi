@@ -227,7 +227,7 @@ The node parameters are as follows:
   -   **size** **(`"l"` \| `"m"` \| `"s"`)** size of the modal (optional, default `"l"`)
 - **onNodeActivation** is an optional function executed when a request to navigate to the node occurs. As an input parameter, the function receives the node object as described in the configuration. This function can return results synchronously or asynchronously. If the function returns boolean `false`, the navigation is not triggered, otherwise, navigation renders as usual.
 - **clientPermissions.changeCurrentLocale** current locale can be changed from client using the corresponding API if this is set to `true`
-- **tabNav** is a boolean which renders the children of the node as a horizontal navigation bar.
+- **tabNav** is a boolean which renders the children of the node as a horizontal navigation bar. Sub-children are not supported. When you categorize nodes you will get a drop-down menu in the horizontal navigation.
 
 ## Context switcher
 

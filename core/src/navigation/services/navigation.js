@@ -289,12 +289,15 @@ class NavigationClass {
     }
     return updatedCompData;
   }
+
   getTruncatedChildrenForTabNav(children) {
     const res = [];
-    for (let i = 0; i < children.length - 1; i++) {
+    for (let i = 0; i < children.length; i++) {
       res.push(children[i]);
       if (children[i].tabNav) {
-        res.push(children[i + 1]);
+        if (i < children.length - 1) {
+          res.push(children[i + 1]);
+        }
         break;
       }
     }
@@ -309,7 +312,7 @@ class NavigationClass {
       );
       let selectedNode = [...pathDataTruncatedChildren].pop();
       const children = await this.getChildren(
-        selectedNode.parent,
+        selectedNode.tabNav ? selectedNode : selectedNode.parent,
         componentData.context
       );
       const groupedChildren = this.getGroupedChildren(children, current);
