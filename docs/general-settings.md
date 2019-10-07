@@ -1,5 +1,7 @@
 # General settings
 
+>**NOTE:** For learning and testing purposes, use the [Luigi Fiddle](https://fiddle.luigi-project.io) page where you can configure a sample Luigi application.
+
 The configuration file contains a section called **Settings** in which you can configure additional Luigi options.
 
 ```javascript
