@@ -6,7 +6,7 @@ This is the Angular-based sample application which runs with Luigi framework.
 
 ## Development
 
-Use  [Lerna](https://lernajs.io/) to link the dependencies and bundle scripts within the packages.
+Use  [Lerna](https://lerna.js.org) to link the dependencies and bundle scripts within the packages.
 
 To have this application running, follow these steps:
 
