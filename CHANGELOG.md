@@ -23,6 +23,26 @@ The lerna-changelog tool detects changes based on PR labels and maps them to sec
     ...
   }
 -->
+## [v0.6.5] (2019-10-07)
+
+#### :rocket: Added
+* [#832](https://github.com/SAP/luigi/pull/832) Set userinfo without auth, new navigation.profile.staticUserInfoFn ([@maxmarkus](https://github.com/maxmarkus))
+* [#845](https://github.com/SAP/luigi/pull/845) Extend iframe with "allow" attribute ([@zarkosimic](https://github.com/zarkosimic))
+* [#840](https://github.com/SAP/luigi/pull/840) Move show alert and show confirmation modal to new core api ux section ([@zarkosimic](https://github.com/zarkosimic))
+* [#846](https://github.com/SAP/luigi/pull/846) default icon for left nav item when it's collapsed ([@marynaKhromova](https://github.com/marynaKhromova))
+* [#830](https://github.com/SAP/luigi/pull/830) SEO optimisation ([@marynaKhromova](https://github.com/marynaKhromova))
+
+#### :bug: Fixed
+* [#834](https://github.com/SAP/luigi/pull/834) Vue app auth error ([@JohannesDoberer](https://github.com/JohannesDoberer))
+
+#### :memo: Documentation
+* [#864](https://github.com/SAP/luigi/pull/864) fixed links to Lerna ([@alexandra-simeonova](https://github.com/alexandra-simeonova))
+* [#862](https://github.com/SAP/luigi/pull/862) Fiddle links in docs ([@alexandra-simeonova](https://github.com/alexandra-simeonova))
+* [#857](https://github.com/SAP/luigi/pull/857) Clean up example links in docs ([@alexandra-simeonova](https://github.com/alexandra-simeonova))
+* [#826](https://github.com/SAP/luigi/pull/826) Improve navigation-configuration.md ([@alexandra-simeonova](https://github.com/alexandra-simeonova))
+* [#840](https://github.com/SAP/luigi/pull/840) Move show alert and show confirmation modal to new core api ux section ([@zarkosimic](https://github.com/zarkosimic))
+* [#813](https://github.com/SAP/luigi/pull/813) Improve Luigi docs readme file ([@alexandra-simeonova](https://github.com/alexandra-simeonova))
+
 ## [v0.6.4] (2019-09-13)
 
 #### :rocket: Added
@@ -525,3 +545,4 @@ The lerna-changelog tool detects changes based on PR labels and maps them to sec
 [v0.6.2]: https://github.com/SAP/luigi/compare/v0.6.1...v0.6.2
 [v0.6.3]: https://github.com/SAP/luigi/compare/v0.6.2...v0.6.3
 [v0.6.4]: https://github.com/SAP/luigi/compare/v0.6.3...v0.6.4
+[v0.6.5]: https://github.com/SAP/luigi/compare/v0.6.4...v0.6.5
