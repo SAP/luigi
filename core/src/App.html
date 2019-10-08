@@ -1,7 +1,7 @@
 <svelte:window on:resize="onResize()"/>
 <div
   id="app"
-  class="{(hideNav && tabNav)?'no-topnav-but-tapnav':(hideNav? 'no-nav' : '')} {tabNav? 'tab-nav' : ''} {(hideSideNav && tabNav)? 'no-side-nav-but-tab-nav' : (hideSideNav?'no-side-nav':'')}"
+  class="{(hideNav && tabNav)?'no-topnav-but-tapnav':(hideNav? 'no-nav' : 'tets1')} {tabNav? 'tab-nav' : 'tets2'} {(hideSideNav && tabNav)? 'no-side-nav-but-tab-nav' : (hideSideNav?'no-side-nav':'tets3')}"
 >
   {#if confirmationModal.displayed}
   <ConfirmationModal
