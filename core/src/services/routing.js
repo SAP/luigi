@@ -246,6 +246,26 @@ class RoutingClass {
         }
         cnode = cnode.parent;
       }
+
+      let cNode2 = currentNode;
+      let hideSideNavInherited = false;
+      while (cNode2) {
+        if (cNode2.hideSideNav === true && !tabNavInherited) {
+          hideSideNavInherited = true;
+          break;
+        }
+        if (tabNavInherited && cNode2.hideSideNav === true) {
+          hideSideNavInherited = true;
+          break;
+        } else if (cNode2.parent) {
+          if (tabNavInherited && cNode2.parent.hideSideNav === true) {
+            hideSideNavInherited = true;
+            break;
+          }
+        }
+        cNode2 = cNode2.parent;
+      }
+
       const newNodeData = {
         hideNav,
         viewUrl,
@@ -259,7 +279,7 @@ class RoutingClass {
           pathData.pathParams
         ),
         pathParams: pathData.pathParams,
-        hideSideNav: nodeObject.hideSideNav || false,
+        hideSideNav: hideSideNavInherited || false,
         isolateView: nodeObject.isolateView || false,
         tabNav: tabNavInherited
       };

@@ -154,10 +154,18 @@
 
   const setTabNavData = async (current, component) => {
     const componentData = component.get();
+    let lastNode = [...current.pathData].pop();
     const tabNavData = await Navigation.getTabNavData(current, componentData);
     if (!tabNavData) {
       return;
     }
+    let tabsfullscreen =
+      lastNode.hideSideNav ||
+      lastNode.parent.hideSideNav ||
+      tabNavData.selectedNodeForTabNav.hideSideNav
+        ? true
+        : false;
+    component.set({ tabsfullscreen: tabsfullscreen });
     component.set(tabNavData);
     calcTabsContainer(component);
     window['LEFTNAVDATA'] = tabNavData.groupedChildren;
@@ -228,7 +236,7 @@
     onstate({ changed, current, previous }) {
       if (!previous || previous.pathData != current.pathData) {
         let lastNode = [...current.pathData].pop();
-        if (lastNode.hideSideNav) {
+        if (lastNode.hideSideNav || lastNode.parent.hideSideNav) {
           this.set({ tabsfullscreen: true });
         } else {
           this.set({ tabsfullscreen: false });

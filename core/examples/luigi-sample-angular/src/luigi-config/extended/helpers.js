@@ -141,8 +141,8 @@ export const projectsNavProviderFn = context =>
             changeCurrentLocale: true
           },
           children: projectDetailNavProviderFn,
-          tabNav: project.id === 'tabNav' ? true : false,
-          hideSideNav: project.id === 'tabNav' ? true : false
+          tabNav: project.id === 'tabNav' ? true : false
+          // hideSideNav: project.id === 'tabNav' ? true : false
         });
       });
       resolve(children);

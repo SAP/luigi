@@ -290,6 +290,11 @@ class NavigationClass {
     return updatedCompData;
   }
 
+  /**
+   * Returns an array of the navigation path segments.
+   * After tabNav is found on a node, the children of this node will added to the array.
+   * @param {*} children
+   */
   getTruncatedChildrenForTabNav(children) {
     const res = [];
     for (let i = 0; i < children.length; i++) {
@@ -313,6 +318,8 @@ class NavigationClass {
       let selectedNode = [...pathDataTruncatedChildren].pop();
       const children = await this.getChildren(
         selectedNode.tabNav ? selectedNode : selectedNode.parent,
+        (selectedNode['hideSideNav'] =
+          selectedNode.hideSideNav || selectedNode.parent.hideSideNav),
         componentData.context
       );
       const groupedChildren = this.getGroupedChildren(children, current);
