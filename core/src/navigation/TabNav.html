@@ -159,14 +159,15 @@
     if (!tabNavData) {
       return;
     }
+    debugger;
     let tabsfullscreen =
-      lastNode.hideSideNav ||
-      lastNode.parent.hideSideNav ||
-      tabNavData.selectedNodeForTabNav.hideSideNav
-        ? true
-        : false;
-    component.set({ tabsfullscreen: tabsfullscreen });
-    component.set(tabNavData);
+      lastNode.hideSideNav !== false &&
+      (lastNode.hideSideNav ||
+        lastNode.parent.hideSideNav ||
+        tabNavData.selectedNodeForTabNav.hideSideNav ||
+        (tabNavData.selectedNodeForTabNav.parent &&
+          tabNavData.selectedNodeForTabNav.parent.hideSideNav));
+    component.set({ ...tabNavData, tabsfullscreen });
     calcTabsContainer(component);
     window['LEFTNAVDATA'] = tabNavData.groupedChildren;
   };
@@ -235,12 +236,6 @@
     },
     onstate({ changed, current, previous }) {
       if (!previous || previous.pathData != current.pathData) {
-        let lastNode = [...current.pathData].pop();
-        if (lastNode.hideSideNav || lastNode.parent.hideSideNav) {
-          this.set({ tabsfullscreen: true });
-        } else {
-          this.set({ tabsfullscreen: false });
-        }
         setTabNavData(current, this);
       }
     },

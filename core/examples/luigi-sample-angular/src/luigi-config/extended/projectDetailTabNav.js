@@ -9,7 +9,6 @@ export const projectDetailTabNavStructure = projectId => [
   {
     category: 'User Management',
     pathSegment: 'developers',
-    hideSideNav: true,
     label: 'Developers',
     viewUrl: '/sampleapp.html#/projects/' + projectId + '/developers',
     icon: '/assets/favicon-sap.ico'

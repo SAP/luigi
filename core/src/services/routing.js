@@ -248,20 +248,15 @@ class RoutingClass {
       }
 
       let cNode2 = currentNode;
-      let hideSideNavInherited = false;
+      let hideSideNavInherited = nodeObject.hideSideNav;
       while (cNode2) {
-        if (cNode2.hideSideNav === true && !tabNavInherited) {
+        if (cNode2.tabNav && cNode2.hideSideNav === true) {
           hideSideNavInherited = true;
           break;
         }
-        if (tabNavInherited && cNode2.hideSideNav === true) {
-          hideSideNavInherited = true;
+        if (cNode2.hideSideNav === false) {
+          hideSideNavInherited = false;
           break;
-        } else if (cNode2.parent) {
-          if (tabNavInherited && cNode2.parent.hideSideNav === true) {
-            hideSideNavInherited = true;
-            break;
-          }
         }
         cNode2 = cNode2.parent;
       }

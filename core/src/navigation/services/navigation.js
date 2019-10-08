@@ -318,8 +318,6 @@ class NavigationClass {
       let selectedNode = [...pathDataTruncatedChildren].pop();
       const children = await this.getChildren(
         selectedNode.tabNav ? selectedNode : selectedNode.parent,
-        (selectedNode['hideSideNav'] =
-          selectedNode.hideSideNav || selectedNode.parent.hideSideNav),
         componentData.context
       );
       const groupedChildren = this.getGroupedChildren(children, current);
