@@ -1,6 +1,7 @@
 import unified from 'unified';
 import markdown from 'remark-parse';
 import remark2rehype from 'remark-rehype';
+import raw from 'rehype-raw';
 import doc from 'rehype-document';
 import format from 'rehype-format';
 import html from 'rehype-stringify';
@@ -31,7 +32,8 @@ function setParsedDocs() {
       parsingArr.push(new Promise((resolve) => {
         unified()
           .use(markdown)
-          .use(remark2rehype)
+          .use(remark2rehype, {allowDangerousHTML: true})
+          .use(raw)
           .use(doc)
           .use(format)
           // .use(highlight)
