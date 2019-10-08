@@ -1,4 +1,8 @@
-<svelte:window on:click="closeAllDropdowns()" on:blur="closeAllDropdowns()"/>
+<svelte:window
+  on:click="closeAllDropdowns()"
+  on:blur="closeAllDropdowns()"
+  on:resize="onResize()"
+/>
 {#if showTopNav}
 <div class="fd-shellbar {hideNavComponent ? 'hideNavComponent' : ''}">
   <div class="fd-shellbar__group fd-shellbar__group--start">
@@ -433,6 +437,11 @@
           dropDownStates
         });
       },
+      // onResize() {
+      //   if ((document.getElementsByClassName('lui-burger').length > 0 && document.getElementsByClassName('fd-tabs').length > 0) && !document.body.classList.contains('lui-leftNavToggle')) {
+      //     document.getElementsByClassName('fd-tabs')[0].style.left = '320px';
+      //   }
+      // },
       closeAllDropdowns() {
         const dropDownStates = this.get().dropDownStates || {};
         const keys = Object.keys(dropDownStates);
@@ -447,6 +456,14 @@
       },
       burgerClicked() {
         document.body.classList.toggle('lui-leftNavToggle');
+        if (
+          document.body.classList.contains('lui-leftNavToggle') &&
+          document.getElementsByClassName('fd-tabs').length > 0
+        ) {
+          document.getElementsByClassName('fd-tabs')[0].style.left = '320px';
+        } else if (document.getElementsByClassName('fd-tabs').length > 0) {
+          document.getElementsByClassName('fd-tabs')[0].style.left = '0';
+        }
       },
       userInfoUpdate(userInfo) {
         this.set(userInfo ? { userInfo } : { userInfo: {} });
