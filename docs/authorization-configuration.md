@@ -107,7 +107,7 @@ auth: {
 - **expirationCheckInterval** the number of seconds to pass between each check if the token is about to expire. The default value is `5` seconds.
 
 
-## Custom authorization provider
+## Another authorization provider
 
 If you are using another authorization provider you can also implement the following functions for Luigi.
 
