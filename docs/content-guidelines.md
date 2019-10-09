@@ -105,8 +105,8 @@ To add an example to Luigi, use the same structure as the [existing examples](ht
 
 This section contains terminology frequently used in the Luigi documentation.
 
-* Luigi Core - the main application and the settings used to configure it.
-* Luigi Client - the micro frontend within Luigi Core and the API used to connect the two.
-* Parameters - the parameters that can be added to create a dynamic path.
-* Properties - the properties that can be used to configure Luigi in the `basicConfiguration.js` file.
-* Attributes - the "sub properties" of properties. E.g. the **category** property can have **label**, **icon**, and **collapsible** as attributes. This term derives from the [definition](https://en.wikipedia.org/wiki/Attribute_%28computing%29) of "attribute" as "a property of a property".
+* **Luigi Core** - the main application and the settings used to configure it.
+* **Luigi Client** - the micro frontend within Luigi Core and the API used to connect the two.
+* **Parameters** - the parameters that can be added to create a dynamic path.
+* **Properties** - the properties that can be used to configure Luigi in the `basicConfiguration.js` file.
+* **Attributes** - the "sub properties" of properties. E.g. the **category** property can have **label**, **icon**, and **collapsible** as attributes. This term derives from the definition of "attribute" in computing as "a property of a property".
