@@ -176,8 +176,9 @@ Luigi.setConfig({
    *  - customIdpProvider (if you provide a class to Luigi.config.auth.customIdpProvider)
    *
    */
+
   auth: {
-    use: 'openIdConnect',
+    use: 'oAuth2ImplicitGrant',
     openIdConnect: {
       authority: 'https://example-authority.com',
       client_id: 'client',
@@ -189,18 +190,30 @@ Luigi.setConfig({
       loadUserInfo: false
     },
     oAuth2ImplicitGrant: {
-      authorizeUrl: 'https://example-url.com/authorize',
-      logoutUrl: 'https://example-url.com/logout',
+      authorizeUrl: `${window.location.origin}/auth/auth-mock/login-mock.html`,
+      logoutUrl: `${window.location.origin}/auth/auth-mock/logout-mock.html`,
+      post_logout_redirect_uri: '/logout.html',
+      authorizeMethod: 'GET',
       oAuthData: {
         client_id: 'egDuozijY5SVr0NSIowUP1dT6RVqHnlp'
-
         // optional: redirect_uri and response_type are provided by default
         // scope: '',
         // redirect_uri: '/luigi-core/auth/oauth2/callback.html'
         // response_type: 'id_token token',
 
         // all specified values inside oAuthData will be added to the oauth call, i.e display="popup",
+      },
+      accessTokenExpiringNotificationTime: 60, //in seconds
+      expirationCheckInterval: 5,
+      userInfoFn: () => {
+        return new Promise(resolve => {
+          resolve({
+            name: 'Luigi User',
+            email: 'luigi.user@example.com'
+          });
+        });
       }
+      // }
       // optional , will be provided by default
       // nonceFn: () => {
       //   console.info('custom nonce function called');

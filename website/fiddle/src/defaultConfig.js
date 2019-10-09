@@ -85,7 +85,7 @@ let defaultConfig = `Luigi.setConfig({
                 viewUrl: '/examples/microfrontends/multipurpose.html',
                 context: {
                     title: 'Help Section',
-                    content: 'Find some usefule links on the left'  
+                    content: 'Find some useful links on the left'  
                 },
                 children: [{
                     label: 'Back',

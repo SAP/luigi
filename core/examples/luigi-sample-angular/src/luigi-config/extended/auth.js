@@ -28,6 +28,7 @@ class Auth {
         resolve({
           name: 'Luigi User',
           email: 'luigi.user@example.com'
+          // picture: '/assets/github-logo.png'
         });
       });
     }
