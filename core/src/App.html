@@ -92,7 +92,7 @@
     RoutingHelpers,
     StateHelpers
   } from './utilities/helpers';
-  import { CSS_BREAKPOINTS } from './utilities/constants';
+  import { CSS_BREAKPOINTS, CSS_UTILITIES } from './utilities/constants';
 
   const removeQueryParams = str => str.split('?')[0];
 
@@ -685,6 +685,13 @@
           this.get().previousWindowWidth >= CSS_BREAKPOINTS.desktopMinWidth;
 
         if (isMobileToDesktop || isDesktopToMobile) {
+          if (document.getElementsByClassName('fd-tabs').length > 0) {
+            if (isDesktopToMobile)
+              document.getElementsByClassName('fd-tabs')[0].style.left = '0';
+            if (isMobileToDesktop)
+              document.getElementsByClassName('fd-tabs')[0].style.left =
+                CSS_UTILITIES.leftNavWidth;
+          }
           this.closeLeftNav();
         }
         this.set({ previousWindowWidth: window.innerWidth });

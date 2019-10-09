@@ -1,8 +1,4 @@
-<svelte:window
-  on:click="closeAllDropdowns()"
-  on:blur="closeAllDropdowns()"
-  on:resize="onResize()"
-/>
+<svelte:window on:click="closeAllDropdowns()" on:blur="closeAllDropdowns()"/>
 {#if showTopNav}
 <div class="fd-shellbar {hideNavComponent ? 'hideNavComponent' : ''}">
   <div class="fd-shellbar__group fd-shellbar__group--start">
@@ -321,6 +317,7 @@
     NavigationHelpers,
     StateHelpers
   } from '../utilities/helpers';
+  import { CSS_UTILITIES } from '../utilities/constants';
 
   const setTopNavData = async (current, component) => {
     if (current.pathData && 0 < current.pathData.length) {
@@ -437,11 +434,6 @@
           dropDownStates
         });
       },
-      // onResize() {
-      //   if ((document.getElementsByClassName('lui-burger').length > 0 && document.getElementsByClassName('fd-tabs').length > 0) && !document.body.classList.contains('lui-leftNavToggle')) {
-      //     document.getElementsByClassName('fd-tabs')[0].style.left = '320px';
-      //   }
-      // },
       closeAllDropdowns() {
         const dropDownStates = this.get().dropDownStates || {};
         const keys = Object.keys(dropDownStates);
@@ -460,7 +452,8 @@
           document.body.classList.contains('lui-leftNavToggle') &&
           document.getElementsByClassName('fd-tabs').length > 0
         ) {
-          document.getElementsByClassName('fd-tabs')[0].style.left = '320px';
+          document.getElementsByClassName('fd-tabs')[0].style.left =
+            CSS_UTILITIES.leftNavWidth;
         } else if (document.getElementsByClassName('fd-tabs').length > 0) {
           document.getElementsByClassName('fd-tabs')[0].style.left = '0';
         }

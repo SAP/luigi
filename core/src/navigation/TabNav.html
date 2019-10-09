@@ -291,6 +291,7 @@
 </script>
 
 <style type="text/scss">
+  $leftNavWidth: 320px;
   .fd-tabs__link.has-child .label {
     padding-right: 17px;
   }
@@ -357,7 +358,7 @@
     border: none;
     position: absolute;
     width: calc(100vw - 320px);
-    left: 320px;
+    left: $leftNavWidth;
   }
   @media (max-width: 599px) {
     .fd-tabs {
