@@ -3,8 +3,8 @@ export const CSS_BREAKPOINTS = {
 };
 
 export const CSS_UTILITIES = {
-  leftNavWidth='320px'
-}
+  leftNavWidth: '320px'
+};
 
 export const MICROFRONTEND_TYPES = [
   { type: 'main', selector: '.iframeContainer iframe' },
