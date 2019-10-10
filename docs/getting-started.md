@@ -19,7 +19,7 @@ Micro frontends are small frontend web applications implemented on one global us
 
 This diagram illustrates the structure of Luigi:
 
-![Overview diagram](assets/luigi-overview-diagram.png)
+![Overview diagram](assets/luigi-overview-diagram.jpg)
 
 ## Prerequisites
 
