@@ -60,7 +60,7 @@ To detect whether the user's browser supports the mechanism, use the script in t
 
 When Luigi fails to renew the token and then logs the user out, it adds the following query parameters to the logout page redirect URL: `?reason=tokenExpired&thirdPartyCookies=[VALUE]`. Luigi replaces the **VALUE**  with one of the following:
 - `disabled` means that third party cookies are disabled.
-- `enabled` means third party cookies are supported by the browser.
+- `enabled` means that the browser supports third party cookies.
 - `not_checked` means that the script was not provided in **thirdPartyCookiesScriptLocation** or it could not be loaded.
 
 Use these parameters to set a logout page.
