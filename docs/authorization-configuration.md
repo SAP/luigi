@@ -14,16 +14,16 @@ auth: {
 }
 ```
 
-You have the following authorization options:
+You have several authorization options:
 * [OpenID Connect](#openid-connect-configuration)
   * [Third-party cookies and silent token refresh](#third-party-cookies-and-silent-token-refresh)
 * [OAuth2 Implicit Grant](#oauth2-implicit-grant-configuration)
-* [Another authorization provider](#another-authorization-provider)
+* [Custom authorization provider](#custom-authorization-provider)
 * [Create your own authorization provider](#implement-a-custom-authorization-provider)
 
 ## OpenID Connect configuration
 
-The following code snippet demonstrates how to configure authorization using OpenID Connect in Luigi. 
+This code snippet demonstrates how to configure authorization using OpenID Connect in Luigi.
 
 ```javascript
 auth: {
@@ -56,9 +56,9 @@ auth: {
 
 The OpenID Connect configuration allows you to specify the **automaticSilentRenew** option. When set to `true`, Luigi attempts to automatically renew the token in the background before it expires. Be aware that this mechanism requires the browser to support [third-party cookies](https://developer.mozilla.org/en-US/docs/Web/HTTP/Cookies#Third-party_cookies).
 
-To detect whether the user's browser supports the mechanism, use the script in the [`third-party-cookies`](https://github.com/SAP/luigi/tree/master/core/third-party-cookies) catalog. Deploy these files on a domain different from your main application's and set **thirdPartyCookiesScriptLocation** to the `init.html` file. During initialization, Luigi detects the cookies support and produces a warning in the console if cookies are disabled in the user's browser.                                      
+To detect whether the user's browser supports the mechanism, use the script in the [`third-party-cookies`](https://github.com/SAP/luigi/tree/master/core/third-party-cookies) catalog. Deploy these files on a domain different from your main application's and set **thirdPartyCookiesScriptLocation** to the `init.html` file. During initialization, Luigi detects the cookies support and produces a warning in the console if cookies are disabled in the user's browser.
 
-When Luigi fails to renew the token and then logs the user out, it adds the following query parameters to the logout page redirect URL: `?reason=tokenExpired&thirdPartyCookies=[VALUE]`. Luigi replaces the **VALUE**  with one of the following:
+When Luigi fails to renew the token and then logs the user out, it adds the `?reason=tokenExpired&thirdPartyCookies=[VALUE]` query parameters to the logout page redirect URL. Luigi replaces **[VALUE]**  with one of these options:
 - `disabled` means that third party cookies are disabled.
 - `enabled` means that the browser supports third party cookies.
 - `not_checked` means that the script was not provided in **thirdPartyCookiesScriptLocation** or it could not be loaded.
@@ -67,7 +67,7 @@ Use these parameters to set a logout page.
 
 ## OAuth2 Implicit Grant configuration
 
-The following code snippet demonstrates how to configure authorization using OAuth2 Implicit Grant in Luigi. 
+This code snippet demonstrates how to configure authorization using OAuth2 Implicit Grant in Luigi.
 
 ```javascript
 auth: {
@@ -107,9 +107,9 @@ auth: {
 - **expirationCheckInterval** the number of seconds to pass between each check if the token is about to expire. The default value is `5` seconds.
 
 
-## Another authorization provider
+## Custom authorization provider
 
-If you are using another authorization provider you can also implement the following functions for Luigi.
+If you are using another authorization provider, you can also implement the functions below for Luigi.
 
 ```javascript
 export class CustomAuthenticationProvider {
@@ -142,15 +142,15 @@ export class CustomAuthenticationProvider {
 
 ## Implement a custom authorization provider
 
-You can write your own authorization provider that meets your requirements. 
+You can write your own authorization provider that meets your requirements.
 
 [oAuth2ImplicitGrant.js](../core/src/providers/auth/oAuth2ImplicitGrant.js) is a good starting point if you don't use an external authorization library.
 
-After authorization is successful on the authorization provider's side, it redirects back to `Luigi callback.html` **redirect_uri**. The provider verifies the authorization data, saves it in  **localStorage** for Luigi, and redirects to the Luigi main page. 
+After authorization is successful on the authorization provider's side, it redirects back to `Luigi callback.html` **redirect_uri**. The provider verifies the authorization data, saves it in  **localStorage** for Luigi, and redirects to the Luigi main page.
 
 [openIdConnect.js](../core/src/providers/auth/openIdConnect.js) lazy loads the official `oidc-client` library and is a good starting point if you also depend on external authorization libraries.
 
-Make sure to set the following data in your authorization provider implementation, so that it is used after successful authorization:
+Make sure to set this data in your authorization provider implementation, so that it is used after successful authorization:
 
 ```javascript
 const data = {
