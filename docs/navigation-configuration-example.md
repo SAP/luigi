@@ -36,7 +36,7 @@ Luigi.setConfig({
       hideFromNav: false,
       isolateView: false,
       icon: 'settings',
-      testId: 'myTestId'
+      testId: 'myTestId',
       category: {
         label: 'General',
         testId: 'myTestId',
@@ -110,11 +110,11 @@ Luigi.setConfig({
       lazyloadOptions: false,
       fallbackLabelResolver: (id) => (id.toUpperCase()),
       options: [{label,pathValue}, {label,pathValue}],
-      actions: [{label,link,position,clickHandler?}]
+      actions: [{label,link,position,clickHandler}]
     },
     profile: {
       logout: {
-        label: 'End session'
+        label: 'End session',
         // icon: "sys-cancel",
         testId: 'myTestId',
         customLogoutFn: myLogoutFn
@@ -157,7 +157,7 @@ Luigi.setConfig({
           link: '/projects/pr1'
         }
       ]
-    },
+    }
   }
 });
 ```
