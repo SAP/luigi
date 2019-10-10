@@ -63,7 +63,7 @@ When Luigi fails to renew the token and then logs the user out, it adds the foll
 - `enabled` means third party cookies are supported by the browser.
 - `not_checked` means that the script was not provided in **thirdPartyCookiesScriptLocation** or it could not be loaded.
 
-The application developer can read these parameters and set a logout page based on them.
+Use these parameters to set a logout page.
 
 ## OAuth2 Implicit Grant configuration
 
