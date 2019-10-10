@@ -321,12 +321,6 @@
         if (this.getIsSemiCollapsed()) {
           this.closePopupMenu();
         }
-        if (
-          document.body.classList.contains('lui-leftNavToggle') &&
-          document.getElementsByClassName('fd-tabs').length > 0
-        ) {
-          document.getElementsByClassName('fd-tabs')[0].style.left = '0';
-        }
         this.fire('handleClick', { node });
       },
 
@@ -523,6 +517,7 @@
     background-color: white;
     color: #32363a;
     @include box-shadow(1px 1px 2px 0 rgba(0, 0, 0, 0.05));
+    z-index: 2;
 
     .lui-fd-side-nav-wrapper {
       height: 100%;
