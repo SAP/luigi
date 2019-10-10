@@ -123,7 +123,7 @@ Luigi.setConfig({
         {
           icon: '',
           testId: 'myTestId',
-          label: 'Luigi in Github',
+          label: 'Luigi landing page',
           externalLink: {
             url: 'https://luigi-project.io/',
             sameWindow: false
@@ -143,7 +143,7 @@ Luigi.setConfig({
       items: [
         {
           icon: '',
-          label: 'Luigi in Github',
+          label: 'Luigi landing page',
           testId: 'myTestId',
           externalLink: {
             url: 'https://luigi-project.io/',
