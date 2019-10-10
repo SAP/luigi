@@ -1,6 +1,6 @@
 # Navigation configuration example
 
-This example represents a sample Luigi navigation configuration including the many of the parameters described in the [navigation parameters reference](navigation-parameters-reference.md). 
+This example represents a sample Luigi navigation configuration including the many of the parameters described in the [navigation parameters reference](navigation-parameters-reference.md).
 
 ```javascript
 Luigi.setConfig({
@@ -15,13 +15,13 @@ Luigi.setConfig({
     nodeAccessibilityResolver: function (nodeToCheckPermissionFor, parentNode, currentContext) {},
   viewGroupSettings: {
     main: {
-      preloadUrl: 'https://my-site.com/index.html#/preload',
+      preloadUrl: 'https://example.com/index.html#/preload',
     },
     projects: {
-      preloadUrl: 'https://my-site.com/projects.html#/preloading',
+      preloadUrl: 'https://example.com/projects.html#/preloading',
     },
     envs: {
-      preloadUrl: 'https://my-site.com/environments-details.html#/preload-view',
+      preloadUrl: 'https://example.com/environments-details.html#/preload-view',
     }
   },
   nodes: [
@@ -29,7 +29,7 @@ Luigi.setConfig({
     {
       pathSegment: 'settings',
       label: 'Settings',
-      viewUrl: 'https://admin.mydomain.com/settings',
+      viewUrl: 'https://example.com/settings',
       viewGroup: 'settingsGroup',
       // optional
       children: [node, node, node],
@@ -60,29 +60,29 @@ Luigi.setConfig({
       viewGroup: 'main',
       pathSegment: 'overview',
       label: 'Overview',
-      viewUrl: 'https://my-site.com/index.html#/overview'
+      viewUrl: 'https://example.com/index.html#/overview'
     },
     {
       viewGroup: 'main',
       pathSegment: 'preload',
-      viewUrl: 'https://my-site.com/index.html#/preload'
+      viewUrl: 'https://example.com/index.html#/preload'
     },
     {
       viewGroup: 'projects',
       pathSegment: 'projects',
       label: 'Projects',
-      viewUrl: 'https://my-site.com/projects.html#/list',
+      viewUrl: 'https://example.com/projects.html#/list',
       children: [
         {
           pathSegment: 'preloading',
-          viewUrl: 'https://my-site.com/projects.html#/preloading'
+          viewUrl: 'https://example.com/projects.html#/preloading'
         }
       ]
     },
     {
       viewGroup: 'envs',
       pathSegment: 'create-environment',
-      viewUrl: 'https://my-site.com/environments.html#/create',
+      viewUrl: 'https://example.com/environments.html#/create',
       context: {
         label: 'Create Environment'
       }
@@ -90,15 +90,15 @@ Luigi.setConfig({
     {
       viewGroup: 'envs',
       pathSegment: 'environments',
-      viewUrl: 'https://my-site.com/environments-details.html#/list',
+      viewUrl: 'https://example.com/environments-details.html#/list',
       children: [
         {
           pathSegment: 'preload',
-          viewUrl: 'https://my-site.com/environments-details.html#/preload-view'
+          viewUrl: 'https://example.com/environments-details.html#/preload-view'
         },
         {
           pathSegment: 'env1',
-          viewUrl: 'https://my-site.com/environments-details.html#/details/env1'
+          viewUrl: 'https://example.com/environments-details.html#/details/env1'
         }
       ]
     }
@@ -125,7 +125,7 @@ Luigi.setConfig({
           testId: 'myTestId',
           label: 'Luigi in Github',
           externalLink: {
-            url: 'https://github.com/SAP/luigi',
+            url: 'https://luigi-project.io/',
             sameWindow: false
           }
         },
@@ -146,7 +146,7 @@ Luigi.setConfig({
           label: 'Luigi in Github',
           testId: 'myTestId',
           externalLink: {
-            url: 'https://github.com/SAP/luigi',
+            url: 'https://luigi-project.io/',
             sameWindow: false
           }
         },
