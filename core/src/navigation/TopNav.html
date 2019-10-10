@@ -447,6 +447,9 @@
       },
       burgerClicked() {
         document.body.classList.toggle('lui-leftNavToggle');
+        if (document.getElementsByClassName('fd-tabs').length > 0) {
+          this.root.set({ reclac: true });
+        }
       },
       userInfoUpdate(userInfo) {
         this.set(userInfo ? { userInfo } : { userInfo: {} });

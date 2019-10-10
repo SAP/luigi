@@ -237,6 +237,10 @@
       if (!previous || previous.pathData != current.pathData) {
         setTabNavData(current, this);
       }
+      if (this.root.get().reclac) {
+        setTabNavData(current, this);
+        this.root.set({ reclac: false });
+      }
     },
     data() {
       return {
