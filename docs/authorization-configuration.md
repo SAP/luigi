@@ -109,7 +109,7 @@ auth: {
 
 ## Custom authorization provider
 
-If you are using another authorization provider, you can also implement the functions below for Luigi.
+If you use a custom authorization provider, you can also implement these functions for Luigi.
 
 ```javascript
 export class CustomAuthenticationProvider {
