@@ -21,7 +21,7 @@ You can configure the way Luigi tackles routing in your application in the `rout
 - **description**: defines either hash-based (`url.com/#/yourpath`) or path-based (`url.com/yourpath`) routing.
 
 ### nodeParamPrefix
-- **type**: ?
+- **type**: string
 - **description**: sets the prefix character when using the `LuigiClient.linkManager().withParam()` function, which provides a way to simply attach query properties to the view URL for activities such as sorting and filtering. The URL contains the properties to allow deep linking. If you want to use a different character prefix, define yours here. The default character is `~`.
 
 ### skipRoutingForUrlPatterns
