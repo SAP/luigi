@@ -174,7 +174,7 @@ loadingIndicator: {
 - **description**: executed when a request to navigate to the node occurs. As an input property, the function receives the node object as described in the configuration. This function can return results synchronously or asynchronously. If the function returns boolean `false`, the navigation is not triggered, otherwise, navigation renders as usual.
 
 ### clientPermissions.changeCurrentLocale
-- **type**: ? boolean
+- **type**: boolean
 - **description**: current locale can be changed from client using the corresponding API if this is set to `true`
 - **example**: ?
 ```javascript
