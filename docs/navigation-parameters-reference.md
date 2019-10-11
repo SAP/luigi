@@ -100,7 +100,7 @@ Node properties are all the properties that can be added to an individual naviga
 - **description**: contains a named node that is mainly for use in combination with a dynamic **pathSegment** to start navigation from a dynamic node using ` LuigiClient.linkManager().fromContext('contextname')`.
 
 ### context
-- **type**: ?
+- **type**: object
 - **description**: sends the specified object as context to the view. Use this property in combination with the dynamic **pathSegment** to receive the context through the context listeners of **Luigi Client**. This is an alternative to using the dynamic value in the **viewUrl**.
 
 ### defaultChildNode
