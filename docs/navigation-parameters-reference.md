@@ -138,7 +138,7 @@ loadingIndicator: {
 }
 ```
 ### icon
-- **type**: ? string
+- **type**: string
 - **description**: the name of an icon, without the `sap-icon--` prefix. Its source may be [OpenUI](https://openui5.hana.ondemand.com/1.40.10/iconExplorer.html) or a custom link (relative or absolute) to an image. The icon is displayed next to the node label in the side navigation or instead of the label in the top navigation.
 
 ### hideSideNav
