@@ -120,7 +120,7 @@ Node properties are all the properties that can be added to an individual naviga
 - **description**: focuses the navigation on its current hierarchy, omitting the display of children.
 
 ### loadingIndicator.enabled
-- **type**: ? boolean
+- **type**: boolean
 - **description**: shows a loading indicator when switching between micro frontends. If you have a fast micro frontend, you can disable this feature to prevent flickering of the loading indicator. This property is enabled by default.
 - **example**:
 ```javascript
