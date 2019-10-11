@@ -252,7 +252,7 @@ The profile section is a configurable drop-down list available in the top naviga
     - **url** is the external URL that the link leads to.
 
 ### staticUserInfoFn
-- **type**: ? function
+- **type**: function
 - **description**: a function that is used to retrieve a user's name and email to simulate a login. It can be used when authorization is disabled and also gets called if the defined IDP provider does not have `settings.userInfoFn` defined or does not provide a `userInfo` function internally. It can be asynchronous and should return an object with `name`, `email` and `picture` properties.
 
 >**NOTE:** Neither authorization nor profile property are configured if the profile section in the top navigation bar is not visible.
