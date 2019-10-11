@@ -290,7 +290,7 @@ The product switcher is a pop-up window available in the top navigation bar. It 
 The app switcher is a drop-down list available in the top navigation bar. It allows you to switch between the navigation elements displayed in the drop-down. To do so, add the **appSwitcher** property to the **navigation** object using the following optional properties:
 
 ### showMainAppEntry
-- **type**: array
+- **type**: boolean
 - **description**: includes the link to the root of the Luigi application in the drop-down using the **title** specified in the **settings/header** section of the configuration as a label.
 
 ### items
