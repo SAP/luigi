@@ -450,7 +450,9 @@
 
       semiCollapsibleButtonClicked(el) {
         this.closePopupMenu();
-
+        if (document.getElementsByClassName('fd-tabs').length > 0) {
+          this.fire('resizeTabNav', {});
+        }
         if (!this.getIsSemiCollapsed()) {
           this.setIsSemiCollapsed(true);
 
