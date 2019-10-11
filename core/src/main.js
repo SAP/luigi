@@ -38,37 +38,41 @@ export const getTranslation = readable((key, interpolations, locale) => {
 Luigi._store = store;
 
 const configReadyCallback = () => {
-  const authLib = LuigiConfig.getConfigValue('auth.use');
-  if (authLib && authLibraries[authLib]) {
-    authLibraries[authLib]();
-  }
-
-  LuigiI18N._init();
-  // setTimeout needed so that luigi container is rendered when we retrieve it
-  let app;
-  setTimeout(() => {
-    if (LuigiElements.isCustomLuigiContainer()) {
-      document
-        .getElementsByTagName('html')[0]
-        .classList.add('luigi-app-in-custom-container');
+  return new Promise(resolve => {
+    const authLib = LuigiConfig.getConfigValue('auth.use');
+    if (authLib && authLibraries[authLib]) {
+      authLibraries[authLib]();
     }
 
-    app = new App({
-      target: LuigiElements.getLuigiContainer(),
-      props: {
-        store,
-        getTranslation
+    LuigiI18N._init();
+    // setTimeout needed so that luigi container is rendered when we retrieve it
+    let app;
+    setTimeout(() => {
+      if (LuigiElements.isCustomLuigiContainer()) {
+        document
+          .getElementsByTagName('html')[0]
+          .classList.add('luigi-app-in-custom-container');
       }
+
+      app = new App({
+        target: LuigiElements.getLuigiContainer(),
+        props: {
+          store,
+          getTranslation
+        }
+      });
+
+      Luigi.showAlert = settings => {
+        return app.$$.ctx.showAlert(settings);
+      };
+
+      Luigi.showConfirmationModal = settings => {
+        return app.$$.ctx.showModal(settings);
+      };
+
+      resolve();
     });
   });
-
-  Luigi.showAlert = settings => {
-    return app.$$.ctx.showAlert(settings);
-  };
-
-  Luigi.showConfirmationModal = settings => {
-    return app.$$.ctx.showModal(settings);
-  };
 };
 
 LuigiConfig.setConfigCallbacks(configReadyCallback);

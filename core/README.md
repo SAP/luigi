@@ -10,7 +10,7 @@ Read the subsections to learn how to use the project.
 
 ### Link and build with Lerna
 
-Linking and building with [Lerna](https://lernajs.io/) is the preferred development method. This monorepo uses Lerna for project management. 
+Linking and building with [Lerna](https://lerna.js.org) is the preferred development method. This monorepo uses Lerna for project management. 
 
 Follow these steps:
 

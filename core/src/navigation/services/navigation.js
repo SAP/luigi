@@ -77,25 +77,30 @@ class NavigationClass {
     if (
       node._childrenProvider &&
       (!node._childrenProviderUsed ||
-        node._childrenProviderUsed < LuigiConfig._configModificationTimestamp)
+        !LuigiConfig._configModificationTimestamp ||
+        node._childrenProviderUsed <
+          new Date(LuigiConfig._configModificationTimestamp.getTime() + 250))
     ) {
+      node._childrenProviderUsed = new Date();
       try {
-        node.children = (
+        node._children =
           (await AsyncHelpers.getConfigValueFromObjectAsync(
             node,
             '_childrenProvider',
             context || node.context
-          )) || []
-        ).filter(child =>
+          )) || [];
+        node.children = node._children.filter(child =>
           NavigationHelpers.isNodeAccessPermitted(child, node, context)
         );
         this.bindChildrenToParent(node);
-        node._childrenProviderUsed = new Date();
         return node.children;
       } catch (err) {
         console.error('Could not lazy-load children for node', err);
       }
-    } else if (node.children) {
+    } else if (node._children) {
+      node.children = node._children.filter(child =>
+        NavigationHelpers.isNodeAccessPermitted(child, node, context)
+      );
       this.bindChildrenToParent(node);
       return node.children;
     } else {
