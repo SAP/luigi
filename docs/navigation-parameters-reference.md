@@ -146,7 +146,7 @@ loadingIndicator: {
 - **description**: if set to `true`, the left navigation disappears when you click the affected node. It is set to `false` by default.
 
 ### badgeCounter
-- **type**: ? string
+- **type**: object
 - **description**: adds a badge with a number and a label to a node. Nodes that are part of a category show a cumulated number of all badges in this category. **badgeCounter** is only available for top navigation items.
 - **attributes**:
   - **label** is the label of the badge.
