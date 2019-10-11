@@ -108,7 +108,7 @@ Node properties are all the properties that can be added to an individual naviga
 - **description**: sets the child node that Luigi activates automatically if the current node has no **viewUrl** defined. Provide **pathSegment** of the child node you want to activate as a string.
 
 ### isolateView
-- **type**: ?
+- **type**: boolean
 - **description**: renders the view in a new frame when you enter and leave the node. This setting overrides the same-domain frame re-usage. The **isolateView** is disabled by default.
 
 ### viewGroup
