@@ -2,6 +2,15 @@
 
 This page contains instructions on how to create documentation for Luigi. It explain how to format documentation and provides a [glossary](#glossary) of Luigi terms.
 
+## Structure
+
+Luigi documentation is divided into four main sections:
+
+1. Basics - getting started with Luigi and Luigi architecture
+2. Luigi Core - how-to guides and reference materials about Luigi Core
+3. Luigi Client - how-to guides and reference materials about Luigi Client
+4. Examples - practical examples which can be installed by users and which cover both Core and Client topics
+
 ## Audience
 
 The audience of this documentation consists mainly of developers interested in implementing a micro frontend UI solution. It is assumed the reader already has basic knowledge of web development. Do not explain general concepts unrelated to Luigi except if they are instrumental for working with the feature you're describing.
@@ -33,14 +42,14 @@ Lists are very useful for breaking up text and providing instructions.
 
 - Use bullet points (created with * or -) for lists involving general explanations.
 - Use numbered lists only for step-by-step instructions.
- 
-### Tables 
+
+### Tables
 
 Use tables when content needs comparison or to organize small bits of information. Keep in mind that in Markdown it is not possible to break up the content of a table cell into separate lines or bullet points, therefore tables are not useful when they contain long sentences or lists.
 
 You can find an example of a table in the [Styles](#styles) section of this document.
 
-### Code snippets 
+### Code snippets
 
 Code snippets must be surrounded with the Markdown code block tag and the programming language should be specified. Make sure to indent code correctly using your text editor (2 space indentation is the default).
 
@@ -101,7 +110,7 @@ To add an example to Luigi, use the same structure as the [existing examples](ht
 - Create a **development** section and explain how to install and run the example.
 - End with a **tests** section explaining how to ensure the example was configured correctly.
 
-## Glossary 
+## Glossary
 
 This section contains terminology frequently used in the Luigi documentation.
 
