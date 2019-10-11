@@ -112,7 +112,7 @@ Node properties are all the properties that can be added to an individual naviga
 - **description**: renders the view in a new frame when you enter and leave the node. This setting overrides the same-domain frame re-usage. The **isolateView** is disabled by default.
 
 ### viewGroup
-- **type**: ?
+- **type**: string
 - **description**: allows you to associate nodes to be rendered in the same iframe, as long as they belong to the same origin. The value of this property is considered as the view group id. For further explanations, see [this section](navigation-configuration.md#view-groups).
 
 ### keepSelectedForChildren
