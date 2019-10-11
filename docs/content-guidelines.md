@@ -6,11 +6,33 @@ This page contains instructions on how to create documentation for Luigi. It exp
 
 Luigi documentation is divided into five main sections:
 
-1. Basics - getting started with Luigi and Luigi architecture
+1. Basics - an overview of Luigi
+- Getting started
+- Architecture
 2. Luigi Core - how-to guides and reference materials about Luigi Core
+- Installation
+- Configuration
+  - Navigation
+    - Basic
+    - Advanced
+  - Routing
+  - Authorization
+  - General settings
+  - Context switcher
+  - Profile
+  - Product switcher
+  - App switcher
+- Lifecycle hooks
+- UI features
+- API
 3. Luigi Client - how-to guides and reference materials about Luigi Client
-4. Advanced - custom messages
+- Installation
+- API
+4. Advanced - features for advanced users
+- Custom messages
 5. Examples - practical examples which can be installed by users and which cover both Core and Client topics
+- Angular
+- Vue
 
 ## Audience
 
