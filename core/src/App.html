@@ -1,8 +1,5 @@
 <svelte:window on:resize="onResize()"/>
-<div
-  id="app"
-  class="{hideNav? 'no-nav' : ''} {tabNav? 'tab-nav' : ''} {hideSideNav? 'no-side-nav':''}"
->
+<div id="app" class="{hideNav? 'no-nav' : ''} {hideSideNav? 'no-side-nav':''}">
   {#if confirmationModal.displayed}
   <ConfirmationModal
     settings="{confirmationModal.settings}"
@@ -59,7 +56,7 @@
     on:resizeTabNav="onResizeTabNav()"
   />
   {/if}
-  {#if (tabNav)}
+  {#if (tabNav && !hideNav)}
   <TabNav
     pathData="{navigationPath}"
     on:handleClick="handleNavClick(event.node)"
@@ -1043,8 +1040,7 @@
       left: 0;
     }
 
-    :global(.fd-app__sidebar),
-    :global(#tabsContainer) {
+    :global(.fd-app__sidebar) {
       display: none;
     }
   }
