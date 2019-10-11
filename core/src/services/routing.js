@@ -272,7 +272,7 @@ class RoutingClass {
 
   handleRouteClick(node, component) {
     const componentData = component.get();
-    if (node.externalLink?.url) {
+    if (node.externalLink && node.externalLink.url) {
       this.navigateToExternalLink(node.externalLink);
       // externalLinkUrl property is provided so there's no need to trigger routing mechanizm
     } else if (node.link) {
@@ -357,7 +357,7 @@ class RoutingClass {
   }
 
   navigateToLink(item) {
-    if (item.externalLink?.url) {
+    if (item.externalLink && item.externalLink.url) {
       this.navigateToExternalLink(item.externalLink);
     } else {
       this.navigateTo(item.link);
