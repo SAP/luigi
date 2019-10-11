@@ -163,7 +163,7 @@ loadingIndicator: {
   - **testId** is a string where you can define your own custom `testId`. If nothing is specified, it is the node's label written as one word and lower case (e.g. `label`).
 
 ### openNodeInModal
-- **type**: ?
+- **type**: boolean or object
 - **description**: adds a badge with a number and a label to a node. Nodes that are part of a category show a cumulated number of all badges in this category. **badgeCounter** is only available for top navigation items.
 - **attributes**:
   - **title** modal title. By default, it is the node label. If there is no label, it is left empty
