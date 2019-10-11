@@ -40,7 +40,7 @@ You can configure the way Luigi tackles routing in your application in the `rout
 The node navigation properties enable you to configure global navigation settings under the `navigation:` section in the configuration file.
 
 ### nodeAccessibilityResolver
-- **type**: ?
+- **type**: any
 - **description**: receives all values defined in the node configuration. It allows you to define a permission checker function that gets executed on every node. If it returns `false`, Luigi removes the node and its children from the navigation structure. See [angular navigation.js](../core/examples/luigi-sample-angular/src/luigi-config/extended/navigation.js) for an example.
 
 ### defaults.isolateView
