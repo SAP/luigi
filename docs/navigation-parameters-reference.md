@@ -180,7 +180,7 @@ loadingIndicator: {
 ```javascript
   clientPermissions: {
     changeCurrentLocale: true
-}
+  }
 ```
 
 ## Context switcher
