@@ -197,7 +197,7 @@ The context switcher is a drop-down list available in the top navigation bar. It
 - **description**: specifies the base path, that is prepended to **options[].pathValue**. It must be an absolute path.
 
 ### lazyloadOptions
-- **type**: ? boolean
+- **type**: boolean
 - **description**: defines when to fetch **options**. When set to `true`, loads **options** when you click the context switcher. It doesn't involve any caching. When set to `false`, loads **options** once the page loads. The default value is `true`.
 
 ### options
