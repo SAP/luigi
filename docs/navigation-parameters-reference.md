@@ -116,7 +116,7 @@ Node properties are all the properties that can be added to an individual naviga
 - **description**: allows you to associate nodes to be rendered in the same iframe, as long as they belong to the same origin. The value of this property is considered as the view group id. For further explanations, see [this section](navigation-configuration.md#view-groups).
 
 ### keepSelectedForChildren
-- **type**: ?
+- **type**: boolean
 - **description**: focuses the navigation on its current hierarchy, omitting the display of children.
 
 ### loadingIndicator.enabled
