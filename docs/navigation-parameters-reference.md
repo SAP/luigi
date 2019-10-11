@@ -104,7 +104,7 @@ Node properties are all the properties that can be added to an individual naviga
 - **description**: sends the specified object as context to the view. Use this property in combination with the dynamic **pathSegment** to receive the context through the context listeners of **Luigi Client**. This is an alternative to using the dynamic value in the **viewUrl**.
 
 ### defaultChildNode
-- **type**: ?
+- **type**: string
 - **description**: sets the child node that Luigi activates automatically if the current node has no **viewUrl** defined. Provide **pathSegment** of the child node you want to activate as a string.
 
 ### isolateView
