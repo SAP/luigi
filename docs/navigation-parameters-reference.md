@@ -222,7 +222,7 @@ The context switcher is a drop-down list available in the top navigation bar. It
 - **description**: specifies a function used to fetch the **label** for **options** with no **label** defined. Additionally, it fetches the drop-down label for non-existing **options**.
 
 ### preserveSubPathOnSwitch
-- **type**: ?
+- **type**: boolean
 - **description**: if set to `true`, the sub-path will be preserved on context switch.
 
 
