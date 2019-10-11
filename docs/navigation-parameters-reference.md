@@ -25,7 +25,7 @@ You can configure the way Luigi tackles routing in your application in the `rout
 - **description**: sets the prefix character when using the `LuigiClient.linkManager().withParam()` function, which provides a way to simply attach query properties to the view URL for activities such as sorting and filtering. The URL contains the properties to allow deep linking. If you want to use a different character prefix, define yours here. The default character is `~`.
 
 ### skipRoutingForUrlPatterns
-- **type**: string
+- **type**: RegExp[]
 - **description**: defines regex patterns to be skipped by the router when listening for path changes. This property is used for excluding **redirect_uri** properties. Default patterns are `[/access_token=/, '/id_token=/]`.
 
 ### pageNotFoundHandler
