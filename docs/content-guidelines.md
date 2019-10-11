@@ -4,12 +4,13 @@ This page contains instructions on how to create documentation for Luigi. It exp
 
 ## Structure
 
-Luigi documentation is divided into four main sections:
+Luigi documentation is divided into five main sections:
 
 1. Basics - getting started with Luigi and Luigi architecture
 2. Luigi Core - how-to guides and reference materials about Luigi Core
 3. Luigi Client - how-to guides and reference materials about Luigi Client
-4. Examples - practical examples which can be installed by users and which cover both Core and Client topics
+4. Advanced - custom messages
+5. Examples - practical examples which can be installed by users and which cover both Core and Client topics
 
 ## Audience
 
