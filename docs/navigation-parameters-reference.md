@@ -129,7 +129,7 @@ loadingIndicator: {
 }
 ```
 ### loadingIndicator.hideAutomatically
-- **type**: ? boolean
+- **type**: boolean
 - **description**: disables the automatic hiding of the loading indicator once the micro frontend is loaded. It is only considered if the loading indicator is enabled. It does not apply if the loading indicator is activated manually with the `LuigiClient.uxManager().showLoadingIndicator()` function. If the loading indicator is enabled and automatic hiding is disabled, use `LuigiClient.uxManager().hideLoadingIndicator()` to hide it manually in your micro frontend during the startup. This property is enabled by default.
 - **example**:
 ```javascript
