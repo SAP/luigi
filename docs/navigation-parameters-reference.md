@@ -29,7 +29,7 @@ You can configure the way Luigi tackles routing in your application in the `rout
 - **description**: defines regex patterns to be skipped by the router when listening for path changes. This property is used for excluding **redirect_uri** properties. Default patterns are `[/access_token=/, '/id_token=/]`.
 
 ### pageNotFoundHandler
-- **type**: function
+- **type**: any
 - **description**: defines custom behavior when the 404 (page not found) error occurs.  Luigi handles it by default. Leave its body empty if you have an external 404 handling. You can return an Object with `redirectTo` property if you want Luigi to redirect to a specific navigation path after execution.|
 - **attributes**:
   - **wrongPath** (string): the path that user tried navigating to
