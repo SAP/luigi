@@ -208,7 +208,7 @@ The context switcher is a drop-down list available in the top navigation bar. It
   - **pathValue** defines the context element path that is appended to **parentNodePath** and reflects a **pathSegment**.
 
 ### actions
-- **type**: ?
+- **type**: array
 - **description**: defines a list of additional elements that are shown on above or below the context switcher **options**.
 - **attributes**:
   - **label** defines the action element label.
