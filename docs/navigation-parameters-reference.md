@@ -218,7 +218,7 @@ The context switcher is a drop-down list available in the top navigation bar. It
   - **clickHandler** specifies a function and is executed on click and should return a boolean. If it returns `true`, **link** is opened afterwards.
 
 ### fallbackLabelResolver
-- **type**: ?
+- **type**: any
 - **description**: specifies a function used to fetch the **label** for **options** with no **label** defined. Additionally, it fetches the drop-down label for non-existing **options**.
 
 ### preserveSubPathOnSwitch
