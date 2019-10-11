@@ -294,7 +294,7 @@ The app switcher is a drop-down list available in the top navigation bar. It all
 - **description**: includes the link to the root of the Luigi application in the drop-down using the **title** specified in the **settings/header** section of the configuration as a label.
 
 ### items
-- **type**: ?
+- **type**: array
 - **description**: defines the list of apps. App element attributes are described below.
 - **attributes**:
   - **title** defines the app title. This is shown in the app switcher drop-down as well as the title in the header of the Luigi application if a user is in the context of the app.
