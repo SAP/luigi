@@ -162,7 +162,7 @@ loadingIndicator: {
   - **collapsible** if set to `true`, category items are hidden at first. To expand them, click the main category node.
   - **testId** is a string where you can define your own custom `testId`. If nothing is specified, it is the node's label written as one word and lower case (e.g. `label`).
 
-### opeNodeInModal
+### openNodeInModal
 - **type**: ?
 - **description**: adds a badge with a number and a label to a node. Nodes that are part of a category show a cumulated number of all badges in this category. **badgeCounter** is only available for top navigation items.
 - **attributes**:
