@@ -50,6 +50,7 @@
     pathData="{navigationPath}"
     pathParams="{pathParams}"
     on:handleClick="handleNavClick(event.node)"
+    on:resizeTabNav="onResizeTabNav()"
   />
   {#if !(hideNav||hideSideNav)}
   <LeftNav
@@ -61,6 +62,7 @@
   <TabNav
     pathData="{navigationPath}"
     on:handleClick="handleNavClick(event.node)"
+    resizeTabNavToggle="{resizeTabNavToggle}"
   />
   {/if}
 </div>
@@ -675,6 +677,9 @@
             Routing.handleRouteClick(node, this);
           }
         });
+      },
+      onResizeTabNav() {
+        this.set({ resizeTabNavToggle: !this.get().resizeTabNavToggle });
       },
       onResize() {
         const isMobileToDesktop =

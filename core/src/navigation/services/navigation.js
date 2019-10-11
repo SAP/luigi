@@ -73,21 +73,21 @@ class NavigationClass {
     if (!node._childrenProvider) {
       node._childrenProvider = node.children;
     }
-
     if (
       node._childrenProvider &&
-      (!node._childrenProviderUsed || !LuigiConfig._configModificationTimestamp ||
-        node._childrenProviderUsed < new Date(LuigiConfig._configModificationTimestamp.getTime() + 250))
+      (!node._childrenProviderUsed ||
+        !LuigiConfig._configModificationTimestamp ||
+        node._childrenProviderUsed <
+          new Date(LuigiConfig._configModificationTimestamp.getTime()))
     ) {
       node._childrenProviderUsed = new Date();
       try {
-        node._children = (
+        node._children =
           (await AsyncHelpers.getConfigValueFromObjectAsync(
             node,
             '_childrenProvider',
             context || node.context
-          )) || []
-        );
+          )) || [];
         node.children = node._children.filter(child =>
           NavigationHelpers.isNodeAccessPermitted(child, node, context)
         );
