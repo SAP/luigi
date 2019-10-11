@@ -133,6 +133,18 @@ section {
     }
   }
 
+  .main-content & {
+    &:last-child {
+      margin-bottom: -300px;
+      padding-bottom: 300px;
+
+      @include breakpoint(xxlarge) {
+        margin-bottom: -500px;
+        padding-bottom: calc(500px + 100px);
+      }
+    }
+  }
+
   @include breakpoint(large) {
     padding: 60px 0;
   }
@@ -174,4 +186,14 @@ a {
 
 p {
   margin-bottom: 2em;
+}
+
+.main-content {
+  > section {
+    padding: 50px 0;
+  
+    @include breakpoint(large) {
+      padding: 100px 0;
+    }
+  }
 }

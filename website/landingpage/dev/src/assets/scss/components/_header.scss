@@ -1,5 +1,6 @@
 .p-header {
   position: relative;
+  padding-bottom: 150px;
 
   > .has-border {
     padding-top: 25px;
@@ -14,12 +15,18 @@
     }
   }
 
+  background-image: url('../img/default_header_bg.svg');
+  background-repeat: no-repeat;
+  background-position: 50% 100%;
+  background-size: cover;
+  z-index: 2;
+
   &--home {
+    padding-bottom: 0;
     background-image: url('../img/header_bg.svg');
     background-repeat: no-repeat;
     background-position: left 50% bottom 100px;
     background-size: cover;
-    z-index: 2;
 
     @include breakpoint(large) {
       background-position: left 50% bottom 0;

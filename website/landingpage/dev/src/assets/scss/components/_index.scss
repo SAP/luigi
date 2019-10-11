@@ -158,8 +158,6 @@
 }
 
 .s-adopters {
-  margin-bottom: -300px;
-  padding-bottom: 300px;
 
   .clients-list {
     margin-bottom: 40px;
@@ -176,10 +174,5 @@
 
   .title-2 {
     margin-bottom: 3em;
-  }
-
-  @include breakpoint(xxlarge) {
-    margin-bottom: -500px;
-    padding-bottom: calc(500px + 100px);
   }
 }
