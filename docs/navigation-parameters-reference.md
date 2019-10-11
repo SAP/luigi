@@ -92,7 +92,7 @@ Node properties are all the properties that can be added to an individual naviga
 - **description**: shows or hides a navigation node. You can still navigate to the node but it does not show up in the top or left pane.
 
 ### viewUrl
-- **type**: ?
+- **type**: string
 - **description**: contains the URL or path to a view which renders when you click the navigation node. Use either a full URL or a relative path. This value may consist of variables if you have specified a **navigationContext** with a dynamic **pathSegment**. If **viewUrl** is undefined, Luigi activates the child node specified in **defaultChildNode**. When both **viewUrl** and **defaultChildNode** are undefined, Luigi opens the first child of the current node.
 
 ### navigationContext
