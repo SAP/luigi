@@ -88,7 +88,7 @@ Node properties are all the properties that can be added to an individual naviga
 - **description**: allows you define your own custom `testId`. If there is nothing specified, it is a combination of the node's pathSegment followed by a dash (if pathSegment exists) and the label written as one word and lower case (e.g. `pathsegment_label` or `label`).
 
 ### hideFromNav
-- **type**: ?
+- **type**: boolean
 - **description**: shows or hides a navigation node. You can still navigate to the node but it does not show up in the top or left pane.
 
 ### viewUrl
