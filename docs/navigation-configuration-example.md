@@ -13,95 +13,95 @@ Luigi.setConfig({
   // navigation structure and settings
   navigation: {
     nodeAccessibilityResolver: function (nodeToCheckPermissionFor, parentNode, currentContext) {},
-  viewGroupSettings: {
-    main: {
-      preloadUrl: 'https://example.com/index.html#/preload',
-    },
-    projects: {
-      preloadUrl: 'https://example.com/projects.html#/preloading',
-    },
-    envs: {
-      preloadUrl: 'https://example.com/environments-details.html#/preload-view',
-    }
-  },
-  nodes: [
-    // STATIC navigation node
-    {
-      pathSegment: 'settings',
-      label: 'Settings',
-      viewUrl: 'https://example.com/settings',
-      viewGroup: 'settingsGroup',
-      // optional
-      children: [node, node, node],
-      hideFromNav: false,
-      isolateView: false,
-      icon: 'settings',
-      testId: 'myTestId',
-      category: {
-        label: 'General',
-        testId: 'myTestId',
-        icon: 'general'
-      }, // OR
-      category: 'General'
-    },
-    // DYNAMIC navigation node
-    {
-      navigationContext: 'contextName',
-      pathSegment: ':projectId',
-      testId: 'myTestId',
-      viewUrl: '/some/path/:projectId',
-      context: {
-        projectId: ':projectId'
+    viewGroupSettings: {
+      main: {
+        preloadUrl: 'https://example.com/index.html#/preload',
       },
-      children: [node, node, node]
-    },
-    // View groups nodes
-    {
-      viewGroup: 'main',
-      pathSegment: 'overview',
-      label: 'Overview',
-      viewUrl: 'https://example.com/index.html#/overview'
-    },
-    {
-      viewGroup: 'main',
-      pathSegment: 'preload',
-      viewUrl: 'https://example.com/index.html#/preload'
-    },
-    {
-      viewGroup: 'projects',
-      pathSegment: 'projects',
-      label: 'Projects',
-      viewUrl: 'https://example.com/projects.html#/list',
-      children: [
-        {
-          pathSegment: 'preloading',
-          viewUrl: 'https://example.com/projects.html#/preloading'
-        }
-      ]
-    },
-    {
-      viewGroup: 'envs',
-      pathSegment: 'create-environment',
-      viewUrl: 'https://example.com/environments.html#/create',
-      context: {
-        label: 'Create Environment'
+      projects: {
+        preloadUrl: 'https://example.com/projects.html#/preloading',
+      },
+      envs: {
+        preloadUrl: 'https://example.com/environments-details.html#/preload-view',
       }
     },
-    {
-      viewGroup: 'envs',
-      pathSegment: 'environments',
-      viewUrl: 'https://example.com/environments-details.html#/list',
-      children: [
-        {
-          pathSegment: 'preload',
-          viewUrl: 'https://example.com/environments-details.html#/preload-view'
+    nodes: [
+      // STATIC navigation node
+      {
+        pathSegment: 'settings',
+        label: 'Settings',
+        viewUrl: 'https://example.com/settings',
+        viewGroup: 'settingsGroup',
+        // optional
+        children: [node, node, node],
+        hideFromNav: false,
+        isolateView: false,
+        icon: 'settings',
+        testId: 'myTestId',
+        category: {
+          label: 'General',
+          testId: 'myTestId',
+          icon: 'general'
+        }, // OR
+        category: 'General'
+      },
+      // DYNAMIC navigation node
+      {
+        navigationContext: 'contextName',
+        pathSegment: ':projectId',
+        testId: 'myTestId',
+        viewUrl: '/some/path/:projectId',
+        context: {
+          projectId: ':projectId'
         },
-        {
-          pathSegment: 'env1',
-          viewUrl: 'https://example.com/environments-details.html#/details/env1'
+        children: [node, node, node]
+      },
+      // View groups nodes
+      {
+        viewGroup: 'main',
+        pathSegment: 'overview',
+        label: 'Overview',
+        viewUrl: 'https://example.com/index.html#/overview'
+      },
+      {
+        viewGroup: 'main',
+        pathSegment: 'preload',
+        viewUrl: 'https://example.com/index.html#/preload'
+      },
+      {
+        viewGroup: 'projects',
+        pathSegment: 'projects',
+        label: 'Projects',
+        viewUrl: 'https://example.com/projects.html#/list',
+        children: [
+          {
+            pathSegment: 'preloading',
+            viewUrl: 'https://example.com/projects.html#/preloading'
+          }
+        ]
+      },
+      {
+        viewGroup: 'envs',
+        pathSegment: 'create-environment',
+        viewUrl: 'https://example.com/environments.html#/create',
+        context: {
+          label: 'Create Environment'
         }
-      ]
-    }
+      },
+      {
+        viewGroup: 'envs',
+        pathSegment: 'environments',
+        viewUrl: 'https://example.com/environments-details.html#/list',
+        children: [
+          {
+            pathSegment: 'preload',
+            viewUrl: 'https://example.com/environments-details.html#/preload-view'
+          },
+          {
+            pathSegment: 'env1',
+            viewUrl: 'https://example.com/environments-details.html#/details/env1'
+          }
+        ]
+      }
     ],
     contextSwitcher: {
       defaultLabel: 'Select Environment ...',
