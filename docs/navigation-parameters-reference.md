@@ -201,7 +201,7 @@ The context switcher is a drop-down list available in the top navigation bar. It
 - **description**: defines when to fetch **options**. When set to `true`, loads **options** when you click the context switcher. It doesn't involve any caching. When set to `false`, loads **options** once the page loads. The default value is `true`.
 
 ### options
-- **type**: ?
+- **type**: array
 - **description**: defines the list of context element.
 - **attributes**:
   - **label** defines the context element label. If not defined, the **pathValue** is passed to **fallbackLabelResolver** to set its value. The default value is **pathValue**, if **fallbackLabelResolver** is not defined.
