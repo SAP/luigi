@@ -176,9 +176,8 @@ loadingIndicator: {
 ### clientPermissions.changeCurrentLocale
 - **type**: boolean
 - **description**: current locale can be changed from client using the corresponding API if this is set to `true`
-- **example**: ?
+- **example**:
 ```javascript
-{
   clientPermissions: {
     changeCurrentLocale: true
 }
