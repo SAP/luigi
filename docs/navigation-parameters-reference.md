@@ -240,7 +240,7 @@ The profile section is a configurable drop-down list available in the top naviga
   - **customLogoutFn** defines a function to implement your own logout functionality. It is recommended to only use this function if no IDP is configured. If an IDP with a corresponding [logout function](authorization-configuration.md) is defined , the customLogoutFn on profile will be ignored.
 
 ### items
-- **type**: ?
+- **type**: array
 - **description**: an array of objects, each one being a link to a Luigi navigation node or an external URL.
 - **attributes**:
   - **label** defines the text for the link.
