@@ -193,7 +193,7 @@ The context switcher is a drop-down list available in the top navigation bar. It
 - **description**: specifies the default label that is shown if no context is selected.
 
 ### parentNodePath
-- **type**: ?
+- **type**: string
 - **description**: specifies the base path, that is prepended to **options[].pathValue**. It must be an absolute path.
 
 ### lazyloadOptions
