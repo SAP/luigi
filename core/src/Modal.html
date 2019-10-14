@@ -1,4 +1,4 @@
-<svelte:window on:keydown="handleKeydown(event)"/>
+<svelte:window on:keydown="{handleKeydown}"/>
 <div class="fd-ui__overlay fd-overlay fd-overlay--modal" style="z-index:999">
   <div class="fd-modal" data-testid="modal-mf">
     <div class="fd-modal__content" style="height:100%">
@@ -8,7 +8,7 @@
         {/if}
         <button
           class="fd-button--light fd-modal__close"
-          on:click="fire('close')"
+          on:click="{() => dispatch('close')}"
           aria-label="close"
         ></button>
       </div>
@@ -16,7 +16,12 @@
     </div>
   </div>
 </div>
+
 <script>
+  import { afterUpdate, createEventDispatcher } from 'svelte';
+
+  const dispatch = createEventDispatcher();
+
   import { Navigation } from './navigation/services/navigation';
   import {
     GenericHelpers,
@@ -25,61 +30,55 @@
   } from './utilities/helpers';
   import { LuigiConfig } from './core-api';
 
-  const prepareNodeData = async (component, path) => {
+  export let modalSettings;
+  export let isDataPrepared = false;
+  export let nodepath;
+  let nodeObject;
+  let pathData;
+  let nodeParams;
+
+  const prepareNodeData = async (path) => {
     const pathUrlRaw =
       path && path.length ? GenericHelpers.getPathWithoutHash(path) : '';
     const params = RoutingHelpers.parseParams(pathUrlRaw.split('?')[1]);
-    const nodeParams = RoutingHelpers.getNodeParams(params);
-
-    const { nodeObject, pathData } = await Navigation.extractDataFromPath(path);
-
-    const modalSettings = component.get().modalSettings;
+    nodeParams = RoutingHelpers.getNodeParams(params);
+    const dataFromPath = await Navigation.extractDataFromPath(path);
+    nodeObject = dataFromPath.nodeObject;
+    pathData = dataFromPath.pathData;
     if (!modalSettings.title) {
       modalSettings.title = nodeObject.label;
     }
-    component.set({
-      modalSettings,
-      nodeObject,
-      pathData,
-      nodeParams,
-      isDataPrepared: true
-    });
+
+    isDataPrepared = true;
   };
 
-  const getNode = async (component, path) => {
-    if (component.get().isDataPrepared) {
-      const {
-        nodeParams,
-        nodeObject,
-        modalSettings,
-        pathData
-      } = component.get();
+  const getNode = async (path) => {
+    if (isDataPrepared) {
       const iframe = createIframeModal(
         nodeObject.viewUrl,
         {
           context: pathData.context,
           pathParams: pathData.pathParams,
           nodeParams
-        },
-        component
+        }
       );
-      component.root.set({
+      dispatch('iframeCreated', {
         modalIframe: iframe,
         modalIframeData: { ...pathData, nodeParams }
       });
     } else {
-      await prepareNodeData(component, path);
+      await prepareNodeData(path);
     }
   };
-  const createIframeModal = (viewUrl, componentData, component) => {
+  const createIframeModal = (viewUrl, componentData) => {
     const elem = document.getElementsByClassName('fd-modal');
     let modalSize = '80%';
-    if (component.get().modalSettings.size) {
-      if (component.get().modalSettings.size === 'l') {
+    if (modalSettings.size) {
+      if (modalSettings.size === 'l') {
         modalSize = '80%';
-      } else if (component.get().modalSettings.size === 'm') {
+      } else if (modalSettings.size === 'm') {
         modalSize = '60%';
-      } else if (component.get().modalSettings.size === 's') {
+      } else if (modalSettings.size === 's') {
         modalSize = '40%';
       }
     }
@@ -92,7 +91,7 @@
     const iframe = IframeHelpers.createIframe(
       viewUrl,
       undefined,
-      component.get().nodeObject
+      nodeObject
     );
 
     const iframeCtn = document.querySelector('.iframeModalCtn');
@@ -100,25 +99,23 @@
     return iframe;
   };
 
-  export default {
-    onupdate({ changed, current, previous }) {
-      const nodepath = this.get().nodepath;
-      getNode(this, nodepath);
-    },
-    data() {
-      return {
-        isDataPrepared: false
-      };
-    },
-    methods: {
-      handleKeydown(event) {
-        if (event.keyCode === 27) {
-          this.fire('close');
-        }
-      }
+
+  // [svelte-upgrade warning]
+  // beforeUpdate and afterUpdate handlers behave
+  // differently to their v2 counterparts
+  afterUpdate(() => {
+    getNode(nodepath);
+  });
+
+  // [svelte-upgrade suggestion]
+  // review these functions and remove unnecessary 'export' keywords
+  export function handleKeydown(event) {
+    if (event.keyCode === 27) {
+      dispatch('close');
     }
-  };
+  }
 </script>
+
 <style type="text/scss">
   $topNavHeight: 50px;
   $leftNavWidth: 320px;
