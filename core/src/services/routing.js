@@ -234,6 +234,33 @@ class RoutingClass {
           ? pathData.navigationPath[pathData.navigationPath.length - 1]
           : null;
 
+      let tabNavInherited = false;
+      let cnode = currentNode;
+      while (cnode) {
+        if (cnode.tabNav === true) {
+          tabNavInherited = true;
+          break;
+        } else if (cnode.tabNav === false) {
+          tabNavInherited = false;
+          break;
+        }
+        cnode = cnode.parent;
+      }
+
+      let cNode2 = currentNode;
+      let hideSideNavInherited = nodeObject.hideSideNav;
+      while (cNode2) {
+        if (cNode2.tabNav && cNode2.hideSideNav === true) {
+          hideSideNavInherited = true;
+          break;
+        }
+        if (cNode2.hideSideNav === false) {
+          hideSideNavInherited = false;
+          break;
+        }
+        cNode2 = cNode2.parent;
+      }
+
       const newNodeData = {
         hideNav,
         viewUrl,
@@ -247,8 +274,9 @@ class RoutingClass {
           pathData.pathParams
         ),
         pathParams: pathData.pathParams,
-        hideSideNav: nodeObject.hideSideNav || false,
-        isolateView: nodeObject.isolateView || false
+        hideSideNav: hideSideNavInherited || false,
+        isolateView: nodeObject.isolateView || false,
+        tabNav: tabNavInherited
       };
 
       const previousCompData = component.get();
@@ -263,6 +291,18 @@ class RoutingClass {
             : {}
         })
       );
+
+      let iContainer = document.getElementsByClassName('iframeContainer')[0];
+      if (iContainer) {
+        if (tabNavInherited) {
+          //document.body.classList.add('lui-simpleSlideInNav');
+          iContainer.classList.add('iframeContainerTabNav');
+        } else {
+          if (iContainer.classList.contains('iframeContainerTabNav')) {
+            iContainer.classList.remove('iframeContainerTabNav');
+          }
+        }
+      }
 
       Iframe.navigateIframe(config, component, iframeElement);
     } catch (err) {

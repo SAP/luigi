@@ -281,6 +281,14 @@ class Navigation {
         link: '/projects/pr3'
       });
     }
+    if (projectExists('pr4')) {
+      items.push({
+        icon:
+          'https://pbs.twimg.com/profile_images/1143452953858183170/QLk-HGmK_bigger.png',
+        label: 'Project 4',
+        link: '/projects/pr4'
+      });
+    }
     return items;
   };
 

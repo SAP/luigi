@@ -458,6 +458,9 @@
 
   export function burgerClicked() {
     document.body.classList.toggle('lui-leftNavToggle');
+    if (document.getElementsByClassName('fd-tabs').length > 0) {
+      dispatch('resizeTabNav', {});
+    }
   }
 
   export function userInfoUpdate(event) {

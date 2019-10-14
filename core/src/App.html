@@ -1,8 +1,5 @@
 <svelte:window on:resize="{onResize}"/>
-<div
-  id="app"
-  class="{hideNav? 'no-nav' : ''} {hideSideNav? 'no-side-nav' : ''}"
->
+<div id="app" class="{hideNav? 'no-nav' : ''} {hideSideNav? 'no-side-nav':''}">
   {#if confirmationModal.displayed}
     <ConfirmationModal
       settings="{confirmationModal.settings}"
@@ -53,16 +50,25 @@
     pathData="{navigationPath}"
     pathParams="{pathParams}"
     on:handleClick="{handleNavClick}"
+    on:resizeTabNav="{onResizeTabNav}"
   />
   {#if !(hideNav||hideSideNav)}
     <LeftNav
       pathData="{navigationPath}"
       on:handleClick="{handleNavClick}"
+      on:resizeTabNav="{onResizeTabNav}"
     />
+  {/if}
+  {#if (tabNav && !hideNav)}
+  <TabNav
+    pathData="{navigationPath}"
+    on:handleClick="{handleNavClick}"
+    resizeTabNavToggle="{resizeTabNavToggle}"
+  />
   {/if}
 </div>
 
-<script>
+<script type="text/javascript">
   import Alerts from './Alerts.html';
   import ConfirmationModal from './ConfirmationModal.html';
   import Modal from './Modal.html';
@@ -70,6 +76,7 @@
   import SplitView from './SplitView.html';
   import LeftNav from './navigation/LeftNav.html';
   import TopNav from './navigation/TopNav.html';
+  import TabNav from './navigation/TabNav.html';
   import { afterUpdate, onMount, setContext, createEventDispatcher } from 'svelte';
   import { fade } from 'svelte/transition';
   import { CSS_BREAKPOINTS } from './utilities/constants';
@@ -121,6 +128,8 @@
   };
   let simpleSlideInNav;
   let responsiveNavSetting;
+  let tabNav;
+  let resizeTabNavToggle = false;
 
   const prepareInternalData = (config) => {
     const internalData = {
@@ -258,7 +267,8 @@
         mfSplitView,
         splitViewValues,
         splitViewIframe,
-        showLoadingIndicator
+        showLoadingIndicator,
+        tabNav
       }
       },
       set: (obj) => {
@@ -296,6 +306,8 @@
               splitViewIframe = obj.splitViewIframe;
             } else if (prop === 'showLoadingIndicator') {
               showLoadingIndicator = obj.showLoadingIndicator;
+            } else if (prop === 'tabNav') {
+              tabNav = obj.tabNav;
             }
           });
         }
@@ -397,6 +409,10 @@
         Routing.handleRouteClick(node, getComponentWrapper());
       }
     });
+  };
+
+  const onResizeTabNav = () => {
+    resizeTabNavToggle = !resizeTabNavToggle;
   };
 
   setContext('handleNavigation', handleNavigation);
@@ -973,7 +989,6 @@
   afterUpdate(() => {
 
   });
-
 </script>
 
 <style type="text/scss">
@@ -981,6 +996,7 @@
   @import 'styles/mixins';
 
   $topNavHeight: 48px;
+  $topNavHeightTab: 51px;
   $leftNavWidth: 320px;
   $leftNavWidthCollapsed: 40px;
   $desktopMinWidth: 600px;
@@ -1064,6 +1080,10 @@
     height: 100%;
   }
 
+  .iframeContainerTabNav {
+    top: calc(#{$topNavHeight} + #{$topNavHeightTab});
+  }
+
   .spinnerContainer {
     background: rgba(243, 244, 245, 0.8);
     display: flex;
@@ -1090,11 +1110,7 @@
   .no-side-nav {
     .iframeContainer,
     .spinnerContainer {
-      position: fixed;
-      top: $topNavHeight;
       left: 0;
-      bottom: 0;
-      right: 0;
     }
     :global(.splitViewContainer),
     :global(#splitViewDragger),
@@ -1134,12 +1150,14 @@
   }
 
   :global(.semiCollapsed) {
-    :global(.iframeContainer, .spinnerContainer) {
+    :global(.iframeContainer),
+    :global(.spinnerContainer) {
       left: $leftNavWidthCollapsed;
     }
     :global(.splitViewContainer),
     :global(#splitViewDragger),
-    :global(#splitViewDraggerBackdrop) {
+    :global(#splitViewDraggerBackdrop),
+    :global(#tabsContainer) {
       left: $leftNavWidthCollapsed;
     }
   }
@@ -1159,7 +1177,8 @@
       }
       :global(.splitViewContainer),
       :global(#splitViewDragger),
-      :global(#splitViewDraggerBackdrop) {
+      :global(#splitViewDraggerBackdrop),
+      :global(#tabsContainer) {
         left: 0;
       }
 
@@ -1202,7 +1221,8 @@
       }
       :global(.splitViewContainer),
       :global(#splitViewDragger),
-      :global(#splitViewDraggerBackdrop) {
+      :global(#splitViewDraggerBackdrop),
+      :global(#tabsContainer) {
         left: $leftNavWidthCollapsed;
       }
     }

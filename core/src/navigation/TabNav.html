@@ -1,0 +1,413 @@
+<svelte:window
+  on:click="{closeAllDropdowns}"
+  on:blur="{closeAllDropdowns}"
+  on:resize="{onResize}"
+/>
+{#if children && pathData.length > 1}
+<nav
+  class="fd-tabs {hideNavComponent ? 'fd-tabs-fullscreen' : ''} {tabsfullscreen?'fd-tabs-fullscreen':''}"
+  role="tablist"
+  id="tabsContainer"
+  on:toggleDropdownState="{event => toggleDropdownState(event.name)}"
+>
+  <div class="tabsContainerWrapper">
+    <div class="tabsContainer luigi__internaltabscontainer">
+      {#each Object.entries(children) as [key, nodes], index}
+      {#if key === 'undefined' || key.indexOf(virtualGroupPrefix) === 0}
+      {#each nodes as node, index2}
+      {#if !node.hideFromNav}
+      {#if node.label}
+      <span
+        class="fd-tabs__item"
+        uid="{index}-{index2}"
+        isSelected="{node === selectedNodeForTabNav}"
+      >
+        <a
+          class="fd-tabs__link"
+          href="javascript:void(null)"
+          role="tab"
+          aria-selected="{node === selectedNodeForTabNav}"
+          on:click="{() => handleClick(node)}"
+        >{node.label}</a>
+      </span>
+      {/if}
+      {/if}
+      {/each}
+      {:else}
+      <span
+        class="fd-tabs__item"
+        uid="{index}-0"
+        on:click="{event => event.stopPropagation()}"
+        isSelected="{isSelectedCat(key,selectedNodeForTabNav)}"
+      >
+        <div class="fd-popover">
+          <a
+            class="fd-tabs__link has-child"
+            aria-expanded="false"
+            href="javascript:void(null)"
+            role="tab"
+            on:click="{() => toggleDropdownState(key)}"
+            aria-selected="{isSelectedCat(key,selectedNodeForTabNav)}"
+          >
+            <span class="label">{key}</span>
+            <span class="sap-icon--dropdown sap-icon--l"></span>
+          </a>
+          <div
+            class="fd-popover__body fd-popover__body--no-arrow"
+            aria-hidden="{!dropDownStates[key]}"
+          >
+            <nav class="fd-menu">
+              <ul class="fd-menu__list">
+                {#each nodes as node}
+                {#if !node.hideFromNav}
+                {#if node.label}
+                <li>
+                  <a
+                    href="javascript:void(null)"
+                    class="fd-menu__item"
+                    on:click="{() => handleClick(node)}"
+                    aria-selected="{node === selectedNodeForTabNav}"
+                  >{node.label}</a>
+                </li>
+                {/if}
+                {/if}
+                {/each}
+              </ul>
+            </nav>
+          </div>
+        </div>
+      </span>
+      {/if}
+      {/each}
+    </div>
+  </div>
+
+  <div class="luigi__internaltabmorebtn">
+    <span class="fd-tabs__item" on:click="{event => event.stopPropagation()}">
+      <div class="fd-popover fd-popover--right">
+        <a
+          class="fd-tabs__link fd-popover__control has-child luigi__more"
+          aria-expanded="false"
+          href="javascript:void(null)"
+          role="tab"
+          on:click="{toggleMoreBtn}"
+        >
+          <span class="label">More</span>
+          <span class="sap-icon--dropdown sap-icon--l"></span>
+        </a>
+        <div
+          class="fd-popover__body fd-popover__body--right fd-popover__body--no-arrow"
+          aria-hidden="{!isMoreBtnExpanded}"
+        >
+          <div class="fd-menu">
+            {#each Object.entries(children) as [key, nodes], index}
+            {#if key === 'undefined' || key.indexOf(virtualGroupPrefix) === 0}
+            {#each nodes as node, index2}
+            <li class="fd-side-nav__item" uid="{index}-{index2}">
+              <a
+                href="javascript:void(null)"
+                class="fd-menu__item"
+                on:click="{() => handleClick(node)}"
+                aria-selected="{node===selectedNodeForTabNav}"
+              >{node.label}</a>
+            </li>
+            {/each}
+            {:else}
+            <li class="fd-side-nav__item" uid="{index}-0">
+              <a
+                class="fd-side-nav__link has-child"
+                href="javascript:void(null)"
+                aria-haspopup="true"
+                aria-expanded="{dropDownStates[key+index]}"
+                aria-selected="{isSelectedCat(key,selectedNodeForTabNav)}"
+                on:click="{() => toggleDropdownState(key+index)}"
+              >{key}</a>
+              <ul
+                class="fd-side-nav__sublist"
+                aria-hidden="{!dropDownStates[key+index]}"
+              >
+                {#each nodes as node}
+                <li class="fd-side-nav__subitem">
+                  <a
+                    class="fd-side-nav__sublink"
+                    href="javascript:void(null)"
+                    on:click="{() => handleClick(node)}"
+                    aria-selected="{node===selectedNodeForTabNav}"
+                  >{node.label}</a>
+                </li>
+                {/each}
+              </ul>
+            </li>
+            {/if}
+            {/each}
+          </div>
+        </div>
+      </div>
+    </span>
+  </div>
+</nav>
+{/if}
+
+<script>
+  import { beforeUpdate, createEventDispatcher, onMount } from 'svelte';
+  import { Navigation } from './services/navigation';
+  import { NavigationHelpers } from '../utilities/helpers';
+  import { LuigiConfig } from '../core-api';
+
+  export let children;
+  export let pathData;
+  let previousPathData;
+  export let hideNavComponent;
+  export let tabsfullscreen;
+  export let virtualGroupPrefix = NavigationHelpers.virtualGroupPrefix;
+  let selectedNode;
+  export let selectedNodeForTabNav;
+  export let dropDownStates = {};
+  export let isMoreBtnExpanded = false;
+  export let resizeTabNavToggle;
+  let previousResizeTabNavToggle;
+
+  //TODO refactor
+  const __this = {
+    get: () => ({ children, pathData, hideNavComponent, tabsfullscreen, virtualGroupPrefix, selectedNode, selectedNodeForTabNav, dropDownStates, isMoreBtnExpanded }),
+    set: (obj) => {
+      if (obj) {
+        Object.getOwnPropertyNames(obj).forEach(prop => {
+          if (prop === 'pathData') {
+            pathData = obj.pathData;
+          } else if (prop === 'context') {
+            context = obj.context;
+          } else if (prop === 'children') {
+            children = obj.children;
+          } else if (prop === 'selectedNode') {
+            selectedNode = obj.selectedNode;
+          } else if (prop === 'selectedNodeForTabNav') {
+            selectedNodeForTabNav = obj.selectedNodeForTabNav;
+          }
+        });
+      }
+    }
+  };
+
+  const dispatch = createEventDispatcher();
+
+  const setTabNavData = async () => {
+    const componentData = __this.get();
+    let lastNode = [...pathData].pop();
+    const tabNavData = await Navigation.getTabNavData({...componentData}, componentData);
+    if (!tabNavData) {
+      return;
+    }
+    __this.set({ ...tabNavData });
+    previousPathData = pathData;
+    tabsfullscreen =
+      lastNode.hideSideNav !== false &&
+      (lastNode.hideSideNav ||
+        (lastNode.parent && lastNode.parent.hideSideNav) ||
+        tabNavData.selectedNodeForTabNav.hideSideNav ||
+        (tabNavData.selectedNodeForTabNav.parent &&
+          tabNavData.selectedNodeForTabNav.parent.hideSideNav));
+    window['LEFTNAVDATA'] = tabNavData.groupedChildren;
+    setTimeout(calcTabsContainer);
+  };
+
+  const calcTabsContainer = () => {
+    clearTapNav();
+    let tabsContainer = document.getElementsByClassName(
+      'luigi__internaltabscontainer'
+    )[0];
+    let morebtn = document.getElementsByClassName(
+      'luigi__internaltabmorebtn'
+    )[0];
+    let moreLink = document.getElementsByClassName('luigi__more')[0];
+    let moreBtnSelected = false;
+    let tabsContainerOffsetWidth;
+    let totalTabsSize = 0;
+    let hasMoreBtnElements = false;
+    let componentData = __this.get();
+    let current = componentData.pathData[componentData.pathData.length - 1];
+    moreLink.setAttribute('aria-selected', 'false');
+    if (tabsContainer) {
+      tabsContainerOffsetWidth = tabsContainer.offsetWidth;
+      let tabs = tabsContainer.children;
+      tabs.forEach(element => {
+        totalTabsSize += element.offsetWidth;
+        let uid = element.getAttribute('uid');
+        if (totalTabsSize >= tabsContainerOffsetWidth) {
+          element.classList.add('hide_element');
+          if (element.getAttribute('isSelected') === 'true') {
+            moreLink.setAttribute('aria-selected', 'true');
+          }
+          document
+            .querySelector('li[uid="' + uid + '"]')
+            .classList.remove('hide_element');
+          hasMoreBtnElements = true;
+        } else {
+          document
+            .querySelector('li[uid="' + uid + '"]')
+            .classList.add('hide_element');
+        }
+      });
+      !hasMoreBtnElements
+        ? morebtn.classList.add('hide_element')
+        : morebtn.classList.remove('hide_element');
+    }
+  };
+
+  const clearTapNav = () => {
+    let tabsContainer = document.getElementsByClassName(
+      'luigi__internaltabscontainer'
+    )[0];
+    let moreLink = document.getElementsByClassName('luigi__more')[0];
+    let tabs = tabsContainer.children;
+    tabs.forEach(element => {
+      element.classList.remove('hide_element');
+    });
+  };
+
+  onMount(() => {
+    hideNavComponent = LuigiConfig.getConfigBooleanValue(
+        'settings.hideNavigation'
+      );
+  });
+
+  // [svelte-upgrade warning]
+  // beforeUpdate and afterUpdate handlers behave
+  // differently to their v2 counterparts
+  beforeUpdate(() => {
+    if (!previousPathData || previousPathData != pathData) {
+      setTabNavData();
+    }
+    if (
+      previousResizeTabNavToggle === undefined
+      || previousResizeTabNavToggle !== resizeTabNavToggle
+    ) {
+      previousResizeTabNavToggle = resizeTabNavToggle;
+      setTabNavData();
+    }
+  });
+
+  function isOpenUIiconName(name) {
+    return NavigationHelpers.isOpenUIiconName(name);
+  }
+
+  function isExpanded(nodes, expandedList) {
+    return (
+      expandedList && expandedList.indexOf(nodes.metaInfo.categoryUid) >= 0
+    );
+  }
+
+  function isSelectedCat(key, selectedNodeForTabNav) {
+    return (
+      selectedNodeForTabNav &&
+      selectedNodeForTabNav.category &&
+      (selectedNodeForTabNav.category === key ||
+        selectedNodeForTabNav.category.label === key)
+    );
+  }
+
+  // [svelte-upgrade suggestion]
+  // review these functions and remove unnecessary 'export' keywords
+  export function handleClick(node) {
+    closeAllDropdowns();
+    dispatch('handleClick', { node });
+  }
+
+  export function toggleDropdownState(name) {
+    let ddnStates = {};
+    if (!dropDownStates[name]) {
+      ddnStates[name] = true;
+    }
+    dropDownStates = ddnStates;
+  }
+
+  export function closeAllDropdowns() {
+    dropDownStates = {};
+    isMoreBtnExpanded = false;
+  }
+
+  export function onResize() {
+    clearTapNav();
+    calcTabsContainer();
+  }
+  export function toggleMoreBtn() {
+    isMoreBtnExpanded = !isMoreBtnExpanded;
+  }
+</script>
+
+<style type="text/scss">
+  $leftNavWidth: 320px;
+  .fd-tabs__link.has-child .label {
+    padding-right: 17px;
+  }
+
+  .tabsContainer {
+    width: 100%;
+  }
+
+  :global(.hide_element) {
+    display: none;
+  }
+
+  .hide_element {
+    display: none !important;
+  }
+
+  .fd-tabs__link.has-child .sap-icon--l {
+    position: absolute;
+    top: 0.7em;
+    right: 0;
+  }
+
+  .fd-side-nav__link.has-child {
+    padding-right: 40px;
+    background-position: right 15px center;
+  }
+
+  .fd-tabs__item.more {
+    background: #fff;
+  }
+
+  .fd-tabs__item {
+    white-space: nowrap;
+    display: inline-block;
+  }
+
+  .tabsContainerWrapper {
+    flex-grow: 1;
+    flex-basis: auto;
+    flex-shrink: 1;
+  }
+
+  .fd-tabs-fullscreen {
+    left: 0 !important;
+    width: 100% !important;
+  }
+
+  .luigi__internaltabmorebtn {
+    .fd-menu {
+      max-height: calc(100vh - 110px);
+      overflow-y: scroll !important;
+      .fd-side-nav__item:not(:last-child) {
+        border-bottom: 1px solid #eeeeef;
+      }
+    }
+  }
+
+  .fd-tabs {
+    flex-wrap: nowrap;
+    align-items: stretch;
+    -moz-box-shadow: 1px 1px 2px 0 rgba(0, 0, 0, 0.05);
+    -webkit-box-shadow: 1px 1px 2px 0 rgba(0, 0, 0, 0.05);
+    box-shadow: 1px 1px 2px 0 rgba(0, 0, 0, 0.05);
+    border: none;
+    position: absolute;
+    right: 0;
+    left: $leftNavWidth;
+  }
+  @media (max-width: 599px) {
+    .fd-tabs {
+      left: 0;
+    }
+  }
+</style>

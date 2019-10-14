@@ -73,13 +73,12 @@ class NavigationClass {
     if (!node._childrenProvider) {
       node._childrenProvider = node.children;
     }
-
     if (
       node._childrenProvider &&
       (!node._childrenProviderUsed ||
         !LuigiConfig._configModificationTimestamp ||
         node._childrenProviderUsed <
-          new Date(LuigiConfig._configModificationTimestamp.getTime() + 250))
+          new Date(LuigiConfig._configModificationTimestamp.getTime()))
     ) {
       node._childrenProviderUsed = new Date();
       try {
@@ -252,7 +251,7 @@ class NavigationClass {
       if (childToKeepFound) {
         return;
       }
-      if (node.keepSelectedForChildren) {
+      if (node.keepSelectedForChildren || node.tabNav) {
         childToKeepFound = true;
       }
       res.push(node);
@@ -268,12 +267,11 @@ class NavigationClass {
       );
       let lastElement = [...pathDataTruncatedChildren].pop();
       let selectedNode;
-      if (lastElement.keepSelectedForChildren) {
+      if (lastElement.keepSelectedForChildren || lastElement.tabNav) {
         selectedNode = lastElement;
         pathDataTruncatedChildren.pop();
         lastElement = [...pathDataTruncatedChildren].pop();
       }
-
       const children = await this.getChildren(
         lastElement,
         componentData.context
@@ -291,6 +289,44 @@ class NavigationClass {
         }
       });
       updatedCompData.selectedNode = selectedNode || lastElement;
+      updatedCompData.children = groupedChildren;
+    }
+    return updatedCompData;
+  }
+
+  /**
+   * Returns an array of the navigation path segments.
+   * After tabNav is found on a node, the children of this node will added to the array.
+   * @param {*} children
+   */
+  getTruncatedChildrenForTabNav(children) {
+    const res = [];
+    for (let i = 0; i < children.length; i++) {
+      res.push(children[i]);
+      if (children[i].tabNav) {
+        if (i < children.length - 1) {
+          res.push(children[i + 1]);
+        }
+        break;
+      }
+    }
+    return res;
+  }
+
+  async getTabNavData(current, componentData) {
+    const updatedCompData = {};
+    if (current.pathData && 1 < current.pathData.length) {
+      const pathDataTruncatedChildren = this.getTruncatedChildrenForTabNav(
+        componentData.pathData
+      );
+      let selectedNode = [...pathDataTruncatedChildren].pop();
+      const children = await this.getChildren(
+        selectedNode.tabNav ? selectedNode : selectedNode.parent,
+        componentData.context
+      );
+      const groupedChildren = this.getGroupedChildren(children, current);
+      updatedCompData.selectedNode = selectedNode;
+      updatedCompData.selectedNodeForTabNav = selectedNode;
       updatedCompData.children = groupedChildren;
     }
     return updatedCompData;
