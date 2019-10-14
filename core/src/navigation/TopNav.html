@@ -1,19 +1,19 @@
-<svelte:window on:click="closeAllDropdowns()" on:blur="closeAllDropdowns()"/>
+<svelte:window on:click="{closeAllDropdowns}" on:blur="{closeAllDropdowns}"/>
 {#if showTopNav}
 <div class="fd-shellbar {hideNavComponent ? 'hideNavComponent' : ''}">
   <div class="fd-shellbar__group fd-shellbar__group--start">
     {#if responsiveNavSetting==="simple" || responsiveNavSetting==="simpleMobileOnly"}
     <span
       class="sap-icon--menu2 lui-burger"
-      on:click="burgerClicked()"
+      on:click="{burgerClicked}"
     ></span>
     {/if}
     <LogoTitle
       pathData="{pathData}"
       pathParams="{pathParams}"
       bind:dropDownStates
-      on:toggleDropdownState="toggleDropdownState(event.name)"
-      on:handleClick="handleClick(event.node)"
+      on:toggleDropdownState="{toggleDropdownStateExternal}"
+      on:handleClick="{handleClickExternal}"
     />
   </div>
   <div class="fd-shellbar__group fd-shellbar__group--end">
@@ -21,7 +21,7 @@
       {#if !authorizationEnabled || isLoggedIn}
       <ContextSwitcher
         bind:dropDownStates
-        on:toggleDropdownState="toggleDropdownState('contextSwitcherPopover')"
+        on:toggleDropdownState="{() => toggleDropdownState('contextSwitcherPopover')}"
       />
       {/if}
       {#if children && pathData.length > 0}
@@ -32,14 +32,14 @@
         class="fd-shellbar__action fd-shellbar__action--hide fd-shellbar__action--collapsible"
       >
         <div class="fd-popover fd-popover--right">
-          <div class="fd-popover__control" on:click="event.stopPropagation()">
+          <div class="fd-popover__control" on:click|stopPropagation="{() => {}}">
             <button
               title="{getNodeLabel(node)}"
               class="fd-button--shell {node === selectedNode ? 'is-selected' : ''}"
               aria-controls="dropDownPopover-{i}"
               aria-expanded="{dropDownStates[`dropDownPopover-${i}`] || false}"
               aria-haspopup="true"
-              on:click="toggleDropdownState(`dropDownPopover-${i}`)"
+              on:click="{() => toggleDropdownState(`dropDownPopover-${i}`)}"
               data-testid="{getTestId(node)}"
             >
               {#if node.icon}
@@ -80,7 +80,7 @@
           aria-controls="0AcWE812"
           aria-expanded="false"
           aria-haspopup="true"
-          on:click="handleClick(node)"
+          on:click="{() => handleClick(node)}"
           data-testid="{getTestId(node)}"
         >
           {#if node.icon}
@@ -118,7 +118,7 @@
       <div class="fd-shellbar__action fd-shellbar__action--collapse">
         <div class="fd-shellbar-collapse">
           <div class="fd-popover fd-popover--right">
-            <div class="fd-popover__control" on:click="event.stopPropagation()">
+            <div class="fd-popover__control" on:click|stopPropagation="{() => {}}">
               <div
                 class="fd-shellbar-collapse--control"
                 aria-controls="eYVEJ960"
@@ -131,7 +131,7 @@
                   aria-controls="overflowPopover"
                   aria-expanded="{dropDownStates.overflowPopover || false}"
                   aria-haspopup="true"
-                  on:click="toggleDropdownState('overflowPopover')"
+                  on:click="{() => toggleDropdownState('overflowPopover')}"
                   data-testid="mobile-menu"
                 >
                   <BadgeCounter node="{totalBadgeNode}" special="true"/>
@@ -151,7 +151,7 @@
                   <li>
                     <a
                       class="fd-menu__item {node === selectedNode ? 'is-selected' : ''}"
-                      on:click="handleClick(node)"
+                      on:click="{() => handleClick(node)}"
                       data-testid="{getTestId(node)}"
                     >
                       <span
@@ -170,7 +170,7 @@
                     <a
                       title="{getNodeLabel(node)}"
                       class="fd-menu__item"
-                      on:click="openMobileTopNavDropDown(node)"
+                      on:click="{() => openMobileTopNavDropDown(node)}"
                       data-e2e="mobile-topnav-dropdown-category"
                     >
                       <span
@@ -213,7 +213,7 @@
                   <li>
                     <a
                       class="fd-menu__item"
-                      on:click="openMobileProductSwitcher(event)"
+                      on:click|stopPropagation="{openMobileProductSwitcher}"
                       data-testid="mobile-product-switcher"
                     >
                       {#if hasOpenUIicon(productSwitcherConfig) || !productSwitcherConfig.icon}
@@ -236,7 +236,7 @@
             {#if isProductSwitcherAvailable}
             <ProductSwitcher
               bind:dropDownStates
-              on:toggleDropdownState="toggleDropdownState('productSwitcherPopover')"
+              on:toggleDropdownState="{() => toggleDropdownState('productSwitcherPopover')}"
               isMobile="{true}"
             />
             {/if}
@@ -244,7 +244,7 @@
             <TopNavDropDown
               node="{nodeForMobile}"
               isMobile="{true}"
-              on:close="closeMobileTopNavDropDown()"
+              on:close="{closeMobileTopNavDropDown}"
             />
             {/if}
           </div>
@@ -260,14 +260,14 @@
       >
         <div class="fd-user-menu">
           <div class="fd-popover">
-            <div class="fd-popover__control" on:click="event.stopPropagation()">
+            <div class="fd-popover__control" on:click|stopPropagation="{() => {}}">
               <div class="{userInfo.picture ? 'fd-user-menu__control' : '' }">
                 <button
                   class="fd-button--shell {!userInfo.picture?'sap-icon--customer':'fd-identifier fd-identifier--xs fd-identifier--circle'}"
                   style="{userInfo.picture?`background-image: url('${userInfo.picture}');background-size:30px;background-repeat: no-repeat;background-position: center;`:''}"
                   aria-expanded="{dropDownStates.profilePopover || false}"
                   aria-haspopup="true"
-                  on:click="toggleDropdownState('profilePopover')"
+                  on:click="{() => toggleDropdownState('profilePopover')}"
                 ></button>
               </div>
               <div
@@ -276,8 +276,8 @@
                 id="profilePopover"
               >
                 <Authorization
-                  on:toggleDropdownState="toggleDropdownState('profilePopover')"
-                  on:userInfoUpdated="userInfoUpdate(event)"
+                  on:toggleDropdownState="{() => toggleDropdownState('profilePopover')}"
+                  on:userInfoUpdated="{userInfoUpdate}"
                   {urlAuthError}
                 />
               </div>
@@ -289,7 +289,7 @@
       {#if isProductSwitcherAvailable}
       <ProductSwitcher
         bind:dropDownStates
-        on:toggleDropdownState="toggleDropdownState('productSwitcherPopover')"
+        on:toggleDropdownState="{() => toggleDropdownState('productSwitcherPopover')}"
         isMobile="{false}"
       />
       {/if}
@@ -298,19 +298,21 @@
 </div>
 {:else}
 <Authorization
-  on:toggleDropdownState="toggleDropdownState('profilePopover')"
-  on:userInfoUpdated="userInfoUpdate(event)"
+  on:toggleDropdownState="{() => toggleDropdownState('profilePopover')}"
+  on:userInfoUpdated="{userInfoUpdate}"
   isHidden="{true}"
   {urlAuthError}
 />
 {/if}
-<script type="text/javascript">
-  import ContextSwitcher from './ContextSwitcher.html';
-  import BadgeCounter from './BadgeCounter.html';
+
+<script>
   import LogoTitle from './LogoTitle.html';
+  import BadgeCounter from './BadgeCounter.html';
   import Authorization from '../Authorization.html';
   import TopNavDropDown from '../TopNavDropDown.html';
+  import ContextSwitcher from './ContextSwitcher.html';
   import ProductSwitcher from './ProductSwitcher.html';
+  import { beforeUpdate, createEventDispatcher, onMount, getContext } from 'svelte';
   import { LuigiAuth, LuigiConfig, LuigiI18N } from '../core-api';
   import {
     AuthHelpers,
@@ -318,152 +320,153 @@
     StateHelpers
   } from '../utilities/helpers';
 
-  const setTopNavData = async (current, component) => {
-    if (current.pathData && 0 < current.pathData.length) {
-      const tnd = await NavigationHelpers.generateTopNavNodes(current);
-      component.set({
-        children: tnd.children,
-        selectedNode: tnd.selectedNode,
-        visibleNodeCount: tnd.visibleNodeCount,
-        totalBadgeNode: tnd.totalBadgeNode
-      });
+  const dispatch = createEventDispatcher();
+
+  export let authorizationEnabled;
+  export let autologinEnabled;
+  export let isLoggedIn = false;
+  export let hideNavComponent;
+  export let responsiveNavSetting;
+  export let pathData;
+  let previousPathData;
+  export let pathParams;
+  export let dropDownStates = {};
+  export let children;
+  export let selectedNode;
+  export let visibleNodeCount;
+  export let totalBadgeNode;
+  export let isProductSwitcherAvailable;
+  export let productSwitcherConfig;
+  export let openMobileDropDown;
+  export let nodeForMobile;
+  export let profileItemsAvailable;
+  export let userInfo = {};
+  export let urlAuthError;
+  let store = getContext('store');
+
+  const setTopNavData = async () => {
+    if (pathData && 0 < pathData.length) {
+      const tnd = await NavigationHelpers.generateTopNavNodes(pathData);
+      children = tnd.children;
+      selectedNode = tnd.selectedNode;
+      visibleNodeCount = tnd.visibleNodeCount;
+      totalBadgeNode = tnd.totalBadgeNode;
       window.TOPNAVDATA = tnd.children;
+      previousPathData = pathData;
     }
   };
 
-  const setLoggedInState = (current, component) => {
-    component.set({
-      isLoggedIn: AuthHelpers.isLoggedIn()
+  const setLoggedInState = () => {
+    isLoggedIn = AuthHelpers.isLoggedIn();
+  };
+
+  onMount(() => {
+    StateHelpers.doOnStoreChange(
+      store,
+      () => {
+        authorizationEnabled = LuigiAuth.isAuthorizationEnabled();
+        profileItemsAvailable = LuigiConfig.getConfigValue('navigation.profile');
+        autologinEnabled = !Boolean(LuigiConfig.getConfigValue('auth.disableAutoLogin'));
+        isProductSwitcherAvailable = LuigiConfig.getConfigValue('navigation.productSwitcher');
+        hideNavComponent = LuigiConfig.getConfigBooleanValue('settings.hideNavigation');
+        responsiveNavSetting = LuigiConfig.getConfigValue('settings.responsiveNavigation');
+        productSwitcherConfig = NavigationHelpers.getProductSwitcherConfig();
+      },
+      ['navigation']
+    );
+    urlAuthError = AuthHelpers.parseUrlAuthErrors();
+
+    window.addEventListener('message', e => {
+      if ('luigi.navigation.update-badge-counters' === e.data.msg) {
+        setTopNavData();
+      }
     });
-  };
+  });
 
-  export default {
-    oncreate() {
-      StateHelpers.doOnStoreChange(
-        this.store,
-        () => {
-          this.set({
-            authorizationEnabled: LuigiAuth.isAuthorizationEnabled(),
-            profileItemsAvailable: LuigiConfig.getConfigValue(
-              'navigation.profile'
-            ),
-            autologinEnabled: !Boolean(
-              LuigiConfig.getConfigValue('auth.disableAutoLogin')
-            ),
-            isProductSwitcherAvailable: LuigiConfig.getConfigValue(
-              'navigation.productSwitcher'
-            ),
-            hideNavComponent: LuigiConfig.getConfigBooleanValue(
-              'settings.hideNavigation'
-            ),
-            responsiveNavSetting: LuigiConfig.getConfigValue(
-              'settings.responsiveNavigation'
-            ),
-            productSwitcherConfig: NavigationHelpers.getProductSwitcherConfig()
-          });
-        },
-        ['navigation']
-      );
-      this.set({
-        urlAuthError: AuthHelpers.parseUrlAuthErrors()
-      });
-
-      window.addEventListener('message', e => {
-        if ('luigi.navigation.update-badge-counters' === e.data.msg) {
-          setTopNavData(this.get().current, this);
-        }
-      });
-    },
-    onstate({ changed, current, previous }) {
-      if (!previous || previous.pathData != current.pathData) {
-        this.set({ current });
-        setTopNavData(current, this);
-      }
-      setLoggedInState(current, this);
-    },
-    data() {
-      return {
-        dropDownStates: {},
-        isLoggedIn: false,
-        userInfo: {}
-      };
-    },
-    computed: {
-      showTopNav: ({ authorizationEnabled, autologinEnabled, isLoggedIn }) =>
-        (authorizationEnabled && (!autologinEnabled || isLoggedIn)) ||
-        !authorizationEnabled
-    },
-    helpers: {
-      hasOpenUIicon(node) {
-        return NavigationHelpers.isOpenUIiconName(node.icon);
-      },
-      getNodeLabel(node) {
-        return LuigiI18N.getTranslation(node.label);
-      },
-      getTestId(node) {
-        return node.testId
-          ? node.testId
-          : NavigationHelpers.prepareForTests(node.pathSegment, node.label);
-      }
-    },
-    methods: {
-      openMobileProductSwitcher(event) {
-        if (event) event.stopPropagation();
-        this.toggleDropdownState('productSwitcherPopover');
-      },
-      openMobileTopNavDropDown(node) {
-        this.set({ openMobileDropDown: true, nodeForMobile: node });
-      },
-      closeMobileTopNavDropDown() {
-        this.set({ openMobileDropDown: false });
-      },
-      handleClick(node) {
-        this.fire('handleClick', { node });
-      },
-      toggleDropdownState(name) {
-        const dropDownStates = this.get().dropDownStates || {};
-        const dropDownState = !dropDownStates[name];
-
-        this.closeAllDropdowns();
-        this.closeMobileTopNavDropDown();
-
-        dropDownStates[name] = dropDownState;
-
-        this.set({
-          dropDownStates
-        });
-      },
-      closeAllDropdowns() {
-        const dropDownStates = this.get().dropDownStates || {};
-        const keys = Object.keys(dropDownStates);
-        if (keys && keys.length > 0) {
-          keys.forEach(k => {
-            dropDownStates[k] = false;
-            this.set({
-              dropDownStates
-            });
-          });
-        }
-      },
-      burgerClicked() {
-        document.body.classList.toggle('lui-leftNavToggle');
-        if (document.getElementsByClassName('fd-tabs').length > 0) {
-          this.fire('resizeTabNav', {});
-        }
-      },
-      userInfoUpdate(userInfo) {
-        this.set(userInfo ? { userInfo } : { userInfo: {} });
-      }
-    },
-    components: {
-      Authorization,
-      ContextSwitcher,
-      LogoTitle,
-      ProductSwitcher,
-      TopNavDropDown,
-      BadgeCounter
+  beforeUpdate(() => {
+    if (!previousPathData || previousPathData != pathData) {
+      setTopNavData();
     }
-  };
+    setLoggedInState();
+  });
+
+  export let showTopNav;
+  $: showTopNav = (authorizationEnabled && (!autologinEnabled || isLoggedIn)) ||
+    !authorizationEnabled;
+
+  function hasOpenUIicon(node) {
+    return NavigationHelpers.isOpenUIiconName(node.icon);
+  }
+
+  function getNodeLabel(node) {
+    return LuigiI18N.getTranslation(node.label);
+  }
+
+  function getTestId(node) {
+    return node.testId
+      ? node.testId
+      : NavigationHelpers.prepareForTests(node.pathSegment, node.label);
+  }
+
+  export function openMobileProductSwitcher() {
+    toggleDropdownState('productSwitcherPopover');
+  }
+
+  export function openMobileTopNavDropDown(node) {
+    openMobileDropDown = true;
+    nodeForMobile = node;
+  }
+
+  export function closeMobileTopNavDropDown() {
+    openMobileDropDown = false;
+  }
+
+  export function handleClick(node) {
+    dispatch('handleClick', { node });
+  }
+
+  export function handleClickExternal(event) {
+    handleClick(event.detail.node);
+  }
+
+  export function toggleDropdownState(name) {
+    const ddStates = dropDownStates || {};
+    const dropDownState = !ddStates[name];
+
+    closeAllDropdowns();
+    closeMobileTopNavDropDown();
+
+    ddStates[name] = dropDownState;
+
+    dropDownStates = ddStates;
+  }
+
+  export function toggleDropdownStateExternal(event) {
+    toggleDropdownState(event.detail.name);
+  }
+
+  export function closeAllDropdowns() {
+    const ddStates = dropDownStates || {};
+    const keys = Object.keys(ddStates);
+    if (keys && keys.length > 0) {
+      keys.forEach(k => {
+        ddStates[k] = false;
+        dropDownStates = ddStates;
+      });
+    }
+  }
+
+  export function burgerClicked() {
+    document.body.classList.toggle('lui-leftNavToggle');
+    if (document.getElementsByClassName('fd-tabs').length > 0) {
+      dispatch('resizeTabNav', {});
+    }
+  }
+
+  export function userInfoUpdate(event) {
+    const uInfo = event.detail;
+    userInfo = uInfo ? uInfo : {};
+  }
 </script>
 
 <style type="text/scss">

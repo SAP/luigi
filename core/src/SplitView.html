@@ -1,5 +1,4 @@
-<svelte:window on:resize="updateSizes()"/>
-
+<svelte:window on:resize="{updateSizes}"/>
 <div
   id="splitViewContainer"
   class="splitViewContainer {collapsed?'lui-collapsed':''}"
@@ -9,7 +8,7 @@
     <div class="splitViewSeparator isCollapsed">
       <a
         class="lui-collapse-btn"
-        on:click:stopPropagation:preventDefault="expand(event)"
+        on:click|stopPropagation|preventDefault="{expand}"
       >
         <span class="sap-icon--navigation-up-arrow sap-icon--s"></span>
       </a>
@@ -22,38 +21,99 @@
 </div>
 {#if !collapsed}
 <div id="splitViewDraggerBackdrop"></div>
-<div id="splitViewDragger" on:mousedown:stopPropagation="onDragStart(event)">
+<div id="splitViewDragger" on:mousedown|stopPropagation="{onDragStart}">
   <div class="splitViewSeparator"></div>
   <a
     class="lui-collapse-btn"
-    on:click:stopPropagation:preventDefault="collapse(event)"
+    on:click|stopPropagation|preventDefault="{collapse}"
   >
     <span class="sap-icon--navigation-down-arrow sap-icon--s"></span>
   </a>
 </div>
 {/if}
+
 <script>
+  import { afterUpdate, onDestroy, onMount, createEventDispatcher, getContext } from 'svelte';
   import { LuigiElements } from './core-api';
   import { SplitViewSvc } from './services';
   import {
     GenericHelpers,
-    IframeHelpers,
-    RoutingHelpers
+    IframeHelpers
   } from './utilities/helpers';
+
+  const dispatch = createEventDispatcher();
 
   let elements = {
     draggable: null,
     iframe: null,
     split: null
   };
+  let lastNode;
+  let pathData;
+  let nodeParams;
+  let currentNode;
+  let messageHandler;
+  let splitViewIframe;
+  let splitViewIframeData;
+  export let nodepath;
+  export let collapsed;
+  export let splitViewSettings = {};
+  export let isDataPrepared = false;
+  let wasDataPrepared = false;
+  let getUnsavedChangesModalPromise = getContext('getUnsavedChangesModalPromise');
 
-  const getNode = async (component, path) => {
-    if (component.get().isDataPrepared) {
-      if (!component.get().collapsed) {
-        SplitViewSvc.createAndSetView(component);
+  //TODO refactor
+  const getComponentWrapper = () => {
+    return {
+      get: () => { return {
+        collapsed,
+        splitViewSettings,
+        isDataPrepared,
+        lastNode,
+        pathData,
+        nodeParams,
+        currentNode,
+        splitViewIframe,
+        splitViewIframeData
+      }
+      },
+      set: (obj) => {
+        if (obj) {
+          Object.getOwnPropertyNames(obj).forEach(prop => {
+            if (prop === 'splitViewSettings') {
+              splitViewSettings = obj.splitViewSettings;
+            } else if (prop === 'lastNode') {
+              lastNode = obj.lastNode;
+            } else if (prop === 'pathData') {
+              pathData = obj.pathData;
+            } else if (prop === 'nodeParams') {
+              nodeParams = obj.nodeParams;
+            } else if (prop === 'collapsed') {
+              collapsed = obj.collapsed;
+            } else if (prop === 'isDataPrepared') {
+              isDataPrepared = obj.isDataPrepared;
+            } else if (prop === 'currentNode') {
+              currentNode = obj.currentNode;
+            } else if (prop === 'splitViewIframe') {
+              splitViewIframe = obj.splitViewIframe;
+            } else if (prop === 'splitViewIframeData') {
+              splitViewIframeData = obj.splitViewIframeData;
+            }
+          });
+        }
+      },
+      dispatch,
+      getUnsavedChangesModalPromise
+    };
+  };
+
+  const getNode = async () => {
+    if (isDataPrepared) {
+      if (!collapsed) {
+        SplitViewSvc.createAndSetView(getComponentWrapper());
       }
     } else {
-      await SplitViewSvc.prepareSplitViewData(component, path);
+      await SplitViewSvc.prepareSplitViewData(getComponentWrapper(), nodepath);
     }
   };
 
@@ -88,13 +148,13 @@
     // event handlers: onCollapse, onExpand, onResize
 
     if ('luigi.navigation.splitview.close' === e.data.msg) {
-      SplitViewSvc.close(this.root);
+      SplitViewSvc.close(getComponentWrapper());
     }
     if ('luigi.navigation.splitview.collapse' === e.data.msg) {
-      this.collapse();
+      collapse();
     }
     if ('luigi.navigation.splitview.expand' === e.data.msg) {
-      this.expand();
+      expand();
     }
     if ('luigi.navigation.splitview.resize' === e.data.msg) {
       const percentBottom = parseInt(e.data.data);
@@ -104,7 +164,7 @@
       );
 
       // In case setSize gets called before expanding
-      if (this.get().collapsed) {
+      if (collapsed) {
         return;
       }
       setSplitViewSize();
@@ -115,123 +175,122 @@
     }
   }
 
-  let messageHandler;
+  onMount(() => {
+    updateSizes();
+    // bind(this) changes the signature, required to
+    // be assigned to var in order to removeEventListener
+    messageHandler = _messageHandler.bind(this);
+    window.addEventListener('message', messageHandler);
+  });
 
-  export default {
-    oncreate() {
-      this.updateSizes();
-      // bind(this) changes the signature, required to
-      // be assigned to var in order to removeEventListener
-      messageHandler = _messageHandler.bind(this);
-      window.addEventListener('message', messageHandler);
-    },
-    onupdate({ changed, current, previous }) {
-      getNode(this, this.get().nodepath);
-      if (changed.isDataPrepared === true && !this.get().collapsed) {
-        setSplitViewSize();
-      }
-    },
-    ondestroy() {
-      window.removeEventListener('message', messageHandler);
-    },
-    data() {
-      return {
-        isDataPrepared: false,
-        splitViewSettings: {}
-      };
-    },
-    methods: {
-      collapse(e) {
-        e && e.stopPropagation();
-        SplitViewSvc.collapse(this.root);
-      },
-      async expand() {
-        SplitViewSvc.expand(this);
-        if (elements.draggerBackdrop) {
-          elements.draggerBackdrop.style.display = 'none';
-        }
-      },
-      updateSizes() {
-        const shellbarHeight = LuigiElements.getShellbar().clientHeight;
-        SplitViewSvc.internalValues.innerHeight = GenericHelpers.getInnerHeight();
-        SplitViewSvc.internalValues.rightContentHeight =
-          SplitViewSvc.internalValues.innerHeight - shellbarHeight;
-        SplitViewSvc.internalValues.thresholdBottom = 30;
-        SplitViewSvc.internalValues.thresholdTop = shellbarHeight + 30;
-        SplitViewSvc.calculateAndSetSplitViewValues(
-          SplitViewSvc.splitViewValues.percent,
-          SplitViewSvc.internalValues
-        );
-        if (!this.get().collapsed) {
-          setSplitViewSize();
-        }
-      },
-      onDragStart(e) {
-        let m_pos = e.y;
-        let newValues = {};
-
-        const resize = function resize(re) {
-          const diff = m_pos - re.y;
-
-          const dragTop = parseInt(
-            getComputedStyle(elements.draggable, '').top
-          );
-
-          if (isNaN(dragTop) || diff === 0) {
-            // happens in collapsed state on mouse over draggable
-            // or if expanded only clicked without movement
-            return;
-          }
-
-          const top = dragTop - diff;
-          const bottom = SplitViewSvc.internalValues.innerHeight - top;
-          const tresh = SplitViewSvc.enforceTresholds(top, bottom);
-
-          if (top < tresh.top || bottom < tresh.bottom) {
-            // if outside bounds, do nothing
-            return;
-          }
-
-          newValues = tresh;
-          m_pos = re.y;
-          elements.draggable.style.top = `${newValues.top}px`;
-        };
-
-        const onMouseUp = function onMouseUp() {
-          clearListeners();
-          if (
-            !newValues.top ||
-            !newValues.bottom ||
-            newValues.top == SplitViewSvc.internalValues.m_pos_prev
-          ) {
-            SplitViewSvc.getDraggerBackdrop().style.display = 'none';
-            return;
-          }
-          SplitViewSvc.internalValues.m_pos_prev = newValues.top;
-          SplitViewSvc.splitViewValues = newValues;
-
-          setSplitViewSize();
-
-          SplitViewSvc.sendMessageToClients('resize.ok', newValues.percent);
-        };
-
-        const clearListeners = function clearListeners() {
-          document.removeEventListener('mouseup', onMouseUp);
-          document.removeEventListener('mousemove', resize);
-        };
-        const addListeners = function resetListeners() {
-          document.addEventListener('mouseup', onMouseUp);
-          document.addEventListener('mousemove', resize);
-        };
-
-        updateElementSelectors();
-        clearListeners();
-        addListeners();
-        SplitViewSvc.getDraggerBackdrop().style.display = 'block';
-      }
+  // [svelte-upgrade warning]
+  // beforeUpdate and afterUpdate handlers behave
+  // differently to their v2 counterparts
+  afterUpdate(() => {
+    getNode();
+    if (wasDataPrepared !== isDataPrepared && !collapsed) {
+      wasDataPrepared = isDataPrepared;
+      setSplitViewSize();
     }
-  };
+  });
+
+  onDestroy(() => {
+    window.removeEventListener('message', messageHandler);
+  });
+
+  // [svelte-upgrade suggestion]
+  // review these functions and remove unnecessary 'export' keywords
+  export function collapse() {
+    SplitViewSvc.collapse(getComponentWrapper());
+  }
+
+  export async function expand() {
+    await SplitViewSvc.expand(getComponentWrapper());
+    if (elements.draggerBackdrop) {
+      elements.draggerBackdrop.style.display = 'none';
+    }
+  }
+  export function updateSizes() {
+    const shellbarHeight = LuigiElements.getShellbar().clientHeight;
+    SplitViewSvc.internalValues.innerHeight = GenericHelpers.getInnerHeight();
+    SplitViewSvc.internalValues.rightContentHeight =
+      SplitViewSvc.internalValues.innerHeight - shellbarHeight;
+    SplitViewSvc.internalValues.thresholdBottom = 30;
+    SplitViewSvc.internalValues.thresholdTop = shellbarHeight + 30;
+    SplitViewSvc.calculateAndSetSplitViewValues(
+      SplitViewSvc.splitViewValues.percent,
+      SplitViewSvc.internalValues
+    );
+    if (!collapsed) {
+      setSplitViewSize();
+    }
+  }
+
+  export function onDragStart(e) {
+    let m_pos = e.y;
+    let newValues = {};
+
+    const resize = function resize(re) {
+      const diff = m_pos - re.y;
+
+      const dragTop = parseInt(
+        getComputedStyle(elements.draggable, '').top
+      );
+
+      if (isNaN(dragTop) || diff === 0) {
+        // happens in collapsed state on mouse over draggable
+        // or if expanded only clicked without movement
+        return;
+      }
+
+      const top = dragTop - diff;
+      const bottom = SplitViewSvc.internalValues.innerHeight - top;
+      const tresh = SplitViewSvc.enforceTresholds(top, bottom);
+
+      if (top < tresh.top || bottom < tresh.bottom) {
+        // if outside bounds, do nothing
+        return;
+      }
+
+      newValues = tresh;
+      m_pos = re.y;
+      elements.draggable.style.top = `${newValues.top}px`;
+    };
+
+    const onMouseUp = function onMouseUp() {
+      clearListeners();
+      if (
+        !newValues.top ||
+        !newValues.bottom ||
+        newValues.top == SplitViewSvc.internalValues.m_pos_prev
+      ) {
+        SplitViewSvc.getDraggerBackdrop().style.display = 'none';
+        return;
+      }
+      SplitViewSvc.internalValues.m_pos_prev = newValues.top;
+      SplitViewSvc.splitViewValues = newValues;
+
+      setSplitViewSize();
+
+      SplitViewSvc.sendMessageToClients('resize.ok', newValues.percent);
+    };
+
+    const clearListeners = function clearListeners() {
+      document.removeEventListener('mouseup', onMouseUp);
+      document.removeEventListener('mousemove', resize);
+    };
+    const addListeners = function resetListeners() {
+      document.addEventListener('mouseup', onMouseUp);
+      document.addEventListener('mousemove', resize);
+    };
+
+    updateElementSelectors();
+    clearListeners();
+    addListeners();
+    SplitViewSvc.getDraggerBackdrop().style.display = 'block';
+  }
 </script>
+
 <style type="text/scss">
   $topNavHeight: 48px;
   $leftNavWidth: 320px;

@@ -1,14 +1,14 @@
 <svelte:window
-  on:click="closeAllDropdowns()"
-  on:blur="closeAllDropdowns()"
-  on:resize="onResize()"
+  on:click="{closeAllDropdowns}"
+  on:blur="{closeAllDropdowns}"
+  on:resize="{onResize}"
 />
 {#if children && pathData.length > 1}
 <nav
   class="fd-tabs {tabsfullscreen?'fd-tabs-fullscreen':''}"
   role="tablist"
   id="tabsContainer"
-  on:toggleDropdownState="toggleDropdownState(event.name)"
+  on:toggleDropdownState="{event => toggleDropdownState(event.name)}"
 >
   <div class="tabsContainerWrapper">
     <div class="tabsContainer luigi__internaltabscontainer">
@@ -27,7 +27,7 @@
           href="javascript:void(null)"
           role="tab"
           aria-selected="{node === selectedNodeForTabNav}"
-          on:click="handleClick(node)"
+          on:click="{() => handleClick(node)}"
         >{node.label}</a>
       </span>
       {/if}
@@ -37,7 +37,7 @@
       <span
         class="fd-tabs__item"
         uid="{index}-0"
-        on:click="event.stopPropagation()"
+        on:click="{event => event.stopPropagation()}"
         isSelected="{isSelectedCat(key,selectedNodeForTabNav)}"
       >
         <div class="fd-popover">
@@ -46,7 +46,7 @@
             aria-expanded="false"
             href="javascript:void(null)"
             role="tab"
-            on:click="toggleDropdownState(key)"
+            on:click="{() => toggleDropdownState(key)}"
             aria-selected="{isSelectedCat(key,selectedNodeForTabNav)}"
           >
             <span class="label">{key}</span>
@@ -65,7 +65,7 @@
                   <a
                     href="javascript:void(null)"
                     class="fd-menu__item"
-                    on:click="handleClick(node)"
+                    on:click="{() => handleClick(node)}"
                     aria-selected="{node === selectedNodeForTabNav}"
                   >{node.label}</a>
                 </li>
@@ -83,14 +83,14 @@
   </div>
 
   <div class="luigi__internaltabmorebtn">
-    <span class="fd-tabs__item" on:click="event.stopPropagation()">
+    <span class="fd-tabs__item" on:click="{event => event.stopPropagation()}">
       <div class="fd-popover fd-popover--right">
         <a
           class="fd-tabs__link fd-popover__control has-child luigi__more"
           aria-expanded="false"
           href="javascript:void(null)"
           role="tab"
-          on:click="toggleMoreBtn()"
+          on:click="{toggleMoreBtn}"
         >
           <span class="label">More</span>
           <span class="sap-icon--dropdown sap-icon--l"></span>
@@ -107,7 +107,7 @@
               <a
                 href="javascript:void(null)"
                 class="fd-menu__item"
-                on:click="handleClick(node)"
+                on:click="{() => handleClick(node)}"
                 aria-selected="{node===selectedNodeForTabNav}"
               >{node.label}</a>
             </li>
@@ -120,7 +120,7 @@
                 aria-haspopup="true"
                 aria-expanded="{dropDownStates[key+index]}"
                 aria-selected="{isSelectedCat(key,selectedNodeForTabNav)}"
-                on:click="toggleDropdownState(key+index)"
+                on:click="{() => toggleDropdownState(key+index)}"
               >{key}</a>
               <ul
                 class="fd-side-nav__sublist"
@@ -131,7 +131,7 @@
                   <a
                     class="fd-side-nav__sublink"
                     href="javascript:void(null)"
-                    on:click="handleClick(node)"
+                    on:click="{() => handleClick(node)}"
                     aria-selected="{node===selectedNodeForTabNav}"
                   >{node.label}</a>
                 </li>
@@ -147,31 +147,71 @@
   </div>
 </nav>
 {/if}
-<script type="text/javascript">
+
+<script>
+  import { beforeUpdate, createEventDispatcher, onMount } from 'svelte';
   import { Navigation } from './services/navigation';
-  import { NavigationHelpers, StateHelpers } from '../utilities/helpers';
+  import { NavigationHelpers } from '../utilities/helpers';
   import { LuigiConfig } from '../core-api';
 
-  const setTabNavData = async (current, component) => {
-    const componentData = component.get();
-    let lastNode = [...current.pathData].pop();
-    const tabNavData = await Navigation.getTabNavData(current, componentData);
+  export let children;
+  export let pathData;
+  let previousPathData;
+  export let hideNavComponent;
+  export let tabsfullscreen;
+  export let virtualGroupPrefix = NavigationHelpers.virtualGroupPrefix;
+  let selectedNode;
+  export let selectedNodeForTabNav;
+  export let dropDownStates = {};
+  export let isMoreBtnExpanded = false;
+  export let resizeTabNavToggle;
+  let previousResizeTabNavToggle;
+
+  //TODO refactor
+  const __this = {
+    get: () => ({ children, pathData, hideNavComponent, tabsfullscreen, virtualGroupPrefix, selectedNode, selectedNodeForTabNav, dropDownStates, isMoreBtnExpanded }),
+    set: (obj) => {
+      if (obj) {
+        Object.getOwnPropertyNames(obj).forEach(prop => {
+          if (prop === 'pathData') {
+            pathData = obj.pathData;
+          } else if (prop === 'context') {
+            context = obj.context;
+          } else if (prop === 'children') {
+            children = obj.children;
+          } else if (prop === 'selectedNode') {
+            selectedNode = obj.selectedNode;
+          } else if (prop === 'selectedNodeForTabNav') {
+            selectedNodeForTabNav = obj.selectedNodeForTabNav;
+          }
+        });
+      }
+    }
+  };
+
+  const dispatch = createEventDispatcher();
+
+  const setTabNavData = async () => {
+    const componentData = __this.get();
+    let lastNode = [...pathData].pop();
+    const tabNavData = await Navigation.getTabNavData({...componentData}, componentData);
     if (!tabNavData) {
       return;
     }
-    let tabsfullscreen =
+    __this.set({ ...tabNavData });
+    previousPathData = pathData;
+    tabsfullscreen =
       lastNode.hideSideNav !== false &&
       (lastNode.hideSideNav ||
-        lastNode.parent.hideSideNav ||
+        (lastNode.parent && lastNode.parent.hideSideNav) ||
         tabNavData.selectedNodeForTabNav.hideSideNav ||
         (tabNavData.selectedNodeForTabNav.parent &&
           tabNavData.selectedNodeForTabNav.parent.hideSideNav));
-    component.set({ ...tabNavData, tabsfullscreen });
-    calcTabsContainer(component);
     window['LEFTNAVDATA'] = tabNavData.groupedChildren;
+    setTimeout(calcTabsContainer);
   };
 
-  const calcTabsContainer = component => {
+  const calcTabsContainer = () => {
     clearTapNav();
     let tabsContainer = document.getElementsByClassName(
       'luigi__internaltabscontainer'
@@ -184,7 +224,7 @@
     let tabsContainerOffsetWidth;
     let totalTabsSize = 0;
     let hasMoreBtnElements = false;
-    let componentData = component.get();
+    let componentData = __this.get();
     let current = componentData.pathData[componentData.pathData.length - 1];
     moreLink.setAttribute('aria-selected', 'false');
     if (tabsContainer) {
@@ -225,75 +265,74 @@
     });
   };
 
-  export default {
-    oncreate() {
-      this.set({
-        hideNavComponent: LuigiConfig.getConfigBooleanValue(
-          'settings.hideNavigation'
-        )
-      });
-    },
-    onstate({ changed, current, previous }) {
-      if (!previous || previous.pathData != current.pathData) {
-        setTabNavData(current, this);
-      }
-      if (
-        previous &&
-        previous.resizeTabNavToggle !== current.resizeTabNavToggle
-      ) {
-        setTabNavData(current, this);
-      }
-    },
-    data() {
-      return {
-        dropDownStates: {},
-        isMoreBtnExpanded: false,
-        virtualGroupPrefix: NavigationHelpers.virtualGroupPrefix
-      };
-    },
-    helpers: {
-      isOpenUIiconName(name) {
-        return NavigationHelpers.isOpenUIiconName(name);
-      },
-      isExpanded(nodes, expandedList) {
-        return (
-          expandedList && expandedList.indexOf(nodes.metaInfo.categoryUid) >= 0
-        );
-      },
-      isSelectedCat(key, selectedNodeForTabNav) {
-        return (
-          selectedNodeForTabNav &&
-          selectedNodeForTabNav.category &&
-          (selectedNodeForTabNav.category === key ||
-            selectedNodeForTabNav.category.label === key)
-        );
-      }
-    },
-    methods: {
-      handleClick(node) {
-        this.closeAllDropdowns();
-        this.fire('handleClick', { node });
-      },
-      toggleDropdownState(name) {
-        let dropDownStates = {};
-        if (!this.get().dropDownStates[name]) {
-          dropDownStates[name] = true;
-        }
-        this.set({ dropDownStates: dropDownStates });
-      },
-      closeAllDropdowns() {
-        this.set({ dropDownStates: {} });
-        this.set({ isMoreBtnExpanded: false });
-      },
-      onResize() {
-        clearTapNav();
-        calcTabsContainer(this);
-      },
-      toggleMoreBtn() {
-        this.set({ isMoreBtnExpanded: !this.get().isMoreBtnExpanded });
-      }
+  onMount(() => {
+    hideNavComponent = LuigiConfig.getConfigBooleanValue(
+        'settings.hideNavigation'
+      );
+  });
+
+  // [svelte-upgrade warning]
+  // beforeUpdate and afterUpdate handlers behave
+  // differently to their v2 counterparts
+  beforeUpdate(() => {
+    if (!previousPathData || previousPathData != pathData) {
+      setTabNavData();
     }
-  };
+    if (
+      previousResizeTabNavToggle === undefined
+      || previousResizeTabNavToggle !== resizeTabNavToggle
+    ) {
+      previousResizeTabNavToggle = resizeTabNavToggle;
+      setTabNavData();
+    }
+  });
+
+  function isOpenUIiconName(name) {
+    return NavigationHelpers.isOpenUIiconName(name);
+  }
+
+  function isExpanded(nodes, expandedList) {
+    return (
+      expandedList && expandedList.indexOf(nodes.metaInfo.categoryUid) >= 0
+    );
+  }
+
+  function isSelectedCat(key, selectedNodeForTabNav) {
+    return (
+      selectedNodeForTabNav &&
+      selectedNodeForTabNav.category &&
+      (selectedNodeForTabNav.category === key ||
+        selectedNodeForTabNav.category.label === key)
+    );
+  }
+
+  // [svelte-upgrade suggestion]
+  // review these functions and remove unnecessary 'export' keywords
+  export function handleClick(node) {
+    closeAllDropdowns();
+    dispatch('handleClick', { node });
+  }
+
+  export function toggleDropdownState(name) {
+    let ddnStates = {};
+    if (!dropDownStates[name]) {
+      ddnStates[name] = true;
+    }
+    dropDownStates = ddnStates;
+  }
+
+  export function closeAllDropdowns() {
+    dropDownStates = {};
+    isMoreBtnExpanded = false;
+  }
+
+  export function onResize() {
+    clearTapNav();
+    calcTabsContainer();
+  }
+  export function toggleMoreBtn() {
+    isMoreBtnExpanded = !isMoreBtnExpanded;
+  }
 </script>
 
 <style type="text/scss">

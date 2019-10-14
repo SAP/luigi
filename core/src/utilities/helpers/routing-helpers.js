@@ -28,11 +28,13 @@ class RoutingHelpersClass {
 
     if (lastElement.defaultChildNode && pathExists) {
       return lastElement.defaultChildNode;
-    } else if (children?.length) {
+    } else if (children && children.length) {
       const rootPath = pathData.navigationPath.length === 1;
       if (rootPath) return children[0].pathSegment;
       const validChild = children.find(
-        child => child.pathSegment && (child.viewUrl || child.externalLink?.url)
+        child =>
+          child.pathSegment &&
+          (child.viewUrl || (child.externalLink && child.externalLink.url))
       );
       if (validChild) return validChild.pathSegment;
     }

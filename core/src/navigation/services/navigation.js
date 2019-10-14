@@ -325,17 +325,6 @@ class NavigationClass {
         componentData.context
       );
       const groupedChildren = this.getGroupedChildren(children, current);
-      updatedCompData.hasCategoriesWithIcon = false;
-      Object.values(groupedChildren).forEach(value => {
-        if (
-          !updatedCompData.hasCategoriesWithIcon &&
-          value &&
-          value.metaInfo &&
-          value.metaInfo.icon
-        ) {
-          updatedCompData.hasCategoriesWithIcon = true;
-        }
-      });
       updatedCompData.selectedNode = selectedNode;
       updatedCompData.selectedNodeForTabNav = selectedNode;
       updatedCompData.children = groupedChildren;
