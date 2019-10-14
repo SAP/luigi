@@ -5,7 +5,7 @@
 />
 {#if children && pathData.length > 1}
 <nav
-  class="fd-tabs {hideNavComponent ? 'fd-tabs-fullscreen' : ''} {tabsfullscreen?'fd-tabs-fullscreen':''}"
+  class="fd-tabs {tabsfullscreen?'fd-tabs-fullscreen':''}"
   role="tablist"
   id="tabsContainer"
   on:toggleDropdownState="toggleDropdownState(event.name)"
@@ -297,6 +297,9 @@
 </script>
 
 <style type="text/scss">
+  /*Mixins*/
+  @import 'styles/mixins';
+
   $leftNavWidth: 320px;
   .fd-tabs__link.has-child .label {
     padding-right: 17px;
@@ -325,10 +328,6 @@
     background-position: right 15px center;
   }
 
-  .fd-tabs__item.more {
-    background: #fff;
-  }
-
   .fd-tabs__item {
     white-space: nowrap;
     display: inline-block;
@@ -338,11 +337,6 @@
     flex-grow: 1;
     flex-basis: auto;
     flex-shrink: 1;
-  }
-
-  .fd-tabs-fullscreen {
-    left: 0 !important;
-    width: 100% !important;
   }
 
   .luigi__internaltabmorebtn {
@@ -358,14 +352,13 @@
   .fd-tabs {
     flex-wrap: nowrap;
     align-items: stretch;
-    -moz-box-shadow: 1px 1px 2px 0 rgba(0, 0, 0, 0.05);
-    -webkit-box-shadow: 1px 1px 2px 0 rgba(0, 0, 0, 0.05);
-    box-shadow: 1px 1px 2px 0 rgba(0, 0, 0, 0.05);
+    @include box-shadow(1px 1px 2px 0 rgba(0, 0, 0, 0.05));
     border: none;
     position: absolute;
     right: 0;
     left: $leftNavWidth;
   }
+
   @media (max-width: 599px) {
     .fd-tabs {
       left: 0;
