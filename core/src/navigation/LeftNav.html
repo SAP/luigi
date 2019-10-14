@@ -450,7 +450,9 @@
 
       semiCollapsibleButtonClicked(el) {
         this.closePopupMenu();
-
+        if (document.getElementsByClassName('fd-tabs').length > 0) {
+          this.fire('resizeTabNav', {});
+        }
         if (!this.getIsSemiCollapsed()) {
           this.setIsSemiCollapsed(true);
 
@@ -487,6 +489,7 @@
   $leftNavWidthCollapsed: 40px;
   $footerPaddingVertical: 13px;
   $footerHeight: calc(16px + (2 * #{$footerPaddingVertical}));
+  $leftNavWidth: 320px;
   /* text height + vertical padding */
 
   a {
@@ -505,7 +508,7 @@
   }
 
   .fd-app__sidebar {
-    width: 320px;
+    width: $leftNavWidth;
     position: fixed;
     top: $topNavHeight;
     left: 0;
@@ -516,6 +519,7 @@
     background-color: white;
     color: #32363a;
     @include box-shadow(1px 1px 2px 0 rgba(0, 0, 0, 0.05));
+    z-index: 2;
 
     .lui-fd-side-nav-wrapper {
       height: 100%;

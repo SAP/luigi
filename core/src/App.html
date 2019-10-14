@@ -1,8 +1,5 @@
 <svelte:window on:resize="onResize()"/>
-<div
-  id="app"
-  class="{hideNav? 'no-nav' : ''} {hideSideNav? 'no-side-nav' : ''}"
->
+<div id="app" class="{hideNav? 'no-nav' : ''} {hideSideNav? 'no-side-nav':''}">
   {#if confirmationModal.displayed}
   <ConfirmationModal
     settings="{confirmationModal.settings}"
@@ -50,11 +47,20 @@
     pathData="{navigationPath}"
     pathParams="{pathParams}"
     on:handleClick="handleNavClick(event.node)"
+    on:resizeTabNav="onResizeTabNav()"
   />
   {#if !(hideNav||hideSideNav)}
   <LeftNav
     pathData="{navigationPath}"
     on:handleClick="handleNavClick(event.node)"
+    on:resizeTabNav="onResizeTabNav()"
+  />
+  {/if}
+  {#if (tabNav && !hideNav)}
+  <TabNav
+    pathData="{navigationPath}"
+    on:handleClick="handleNavClick(event.node)"
+    resizeTabNavToggle="{resizeTabNavToggle}"
   />
   {/if}
 </div>
@@ -64,6 +70,7 @@
   import { fade } from 'svelte-transitions';
   import TopNav from './navigation/TopNav.html';
   import LeftNav from './navigation/LeftNav.html';
+  import TabNav from './navigation/TabNav.html';
   import ConfirmationModal from './ConfirmationModal.html';
   import Alerts from './Alerts.html';
   import Modal from './Modal.html';
@@ -669,6 +676,9 @@
           }
         });
       },
+      onResizeTabNav() {
+        this.set({ resizeTabNavToggle: !this.get().resizeTabNavToggle });
+      },
       onResize() {
         const isMobileToDesktop =
           window.innerWidth >= CSS_BREAKPOINTS.desktopMinWidth &&
@@ -870,6 +880,7 @@
       Backdrop,
       TopNav,
       LeftNav,
+      TabNav,
       ConfirmationModal,
       Alerts,
       Modal,
@@ -884,6 +895,7 @@
   @import 'styles/mixins';
 
   $topNavHeight: 48px;
+  $topNavHeightTab: 51px;
   $leftNavWidth: 320px;
   $leftNavWidthCollapsed: 40px;
   $desktopMinWidth: 600px;
@@ -967,6 +979,10 @@
     height: 100%;
   }
 
+  .iframeContainerTabNav {
+    top: calc(#{$topNavHeight} + #{$topNavHeightTab});
+  }
+
   .spinnerContainer {
     background: rgba(243, 244, 245, 0.8);
     display: flex;
@@ -993,15 +1009,12 @@
   .no-side-nav {
     .iframeContainer,
     .spinnerContainer {
-      position: fixed;
-      top: $topNavHeight;
       left: 0;
-      bottom: 0;
-      right: 0;
     }
     :global(.splitViewContainer),
     :global(#splitViewDragger),
-    :global(#splitViewDraggerBackdrop) {
+    :global(#splitViewDraggerBackdrop),
+    :global(#tabsContainer) {
       left: 0;
     }
 
@@ -1037,12 +1050,14 @@
   }
 
   :global(.semiCollapsed) {
-    :global(.iframeContainer, .spinnerContainer) {
+    :global(.iframeContainer),
+    :global(.spinnerContainer) {
       left: $leftNavWidthCollapsed;
     }
     :global(.splitViewContainer),
     :global(#splitViewDragger),
-    :global(#splitViewDraggerBackdrop) {
+    :global(#splitViewDraggerBackdrop),
+    :global(#tabsContainer) {
       left: $leftNavWidthCollapsed;
     }
   }
@@ -1062,7 +1077,8 @@
       }
       :global(.splitViewContainer),
       :global(#splitViewDragger),
-      :global(#splitViewDraggerBackdrop) {
+      :global(#splitViewDraggerBackdrop),
+      :global(#tabsContainer) {
         left: 0;
       }
 
@@ -1105,7 +1121,8 @@
       }
       :global(.splitViewContainer),
       :global(#splitViewDragger),
-      :global(#splitViewDraggerBackdrop) {
+      :global(#splitViewDraggerBackdrop),
+      :global(#tabsContainer) {
         left: $leftNavWidthCollapsed;
       }
     }

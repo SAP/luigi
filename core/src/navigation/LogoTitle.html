@@ -3,7 +3,11 @@
   aria-label="SAP"
 >
   {#if hasLogo}
-  <img data-testid="luigi-topnav-logo" on:click="goTo('/')" ref:logo>
+  <img
+    data-testid="luigi-topnav-logo"
+    on:click="goTo('/')"
+    ref:logo
+  >
   {/if}
 </div>
 {#if title}

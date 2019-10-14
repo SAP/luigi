@@ -26,7 +26,7 @@ module.exports = {
       // './node_modules/fiori-fundamentals/dist/components/label.min.css',
       // './node_modules/fiori-fundamentals/dist/components/pagination.min.css',
       // './node_modules/fiori-fundamentals/dist/components/table.min.css',
-      // './node_modules/fiori-fundamentals/dist/components/tabs.min.css',
+      './node_modules/fiori-fundamentals/dist/components/tabs.min.css',
       './node_modules/fiori-fundamentals/dist/components/modal.min.css',
       // './node_modules/fiori-fundamentals/dist/components/tree.min.css',
       './node_modules/fiori-fundamentals/dist/components/list-group.min.css',
