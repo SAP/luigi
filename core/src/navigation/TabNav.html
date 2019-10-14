@@ -229,7 +229,7 @@
     moreLink.setAttribute('aria-selected', 'false');
     if (tabsContainer) {
       tabsContainerOffsetWidth = tabsContainer.offsetWidth;
-      let tabs = tabsContainer.children;
+      let tabs = [...tabsContainer.children];
       tabs.forEach(element => {
         totalTabsSize += element.offsetWidth;
         let uid = element.getAttribute('uid');
@@ -259,7 +259,7 @@
       'luigi__internaltabscontainer'
     )[0];
     let moreLink = document.getElementsByClassName('luigi__more')[0];
-    let tabs = tabsContainer.children;
+    let tabs = [...tabsContainer.children];
     tabs.forEach(element => {
       element.classList.remove('hide_element');
     });
