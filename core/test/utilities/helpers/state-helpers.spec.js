@@ -5,39 +5,29 @@ describe('State-helpers', () => {
   describe('expand scope', () => {
     it('expand scope with no scope', () => {
       const expanded = StateHelpers.expandScope([]);
-      assert.deepEqual(expanded, ['state']);
-    });
-
-    it('expand scope with state scope', () => {
-      const expanded = StateHelpers.expandScope(['state']);
-      assert.deepEqual(expanded, ['state']);
+      assert.deepEqual(expanded, []);
     });
 
     it('expand scope with simple scopes', () => {
       const expanded = StateHelpers.expandScope(['a', 'b']);
-      assert.deepEqual(expanded, ['state', 'a', 'b']);
+      assert.deepEqual(expanded, ['a', 'b']);
     });
 
     it('expand scope with distinct scopes', () => {
       const expanded = StateHelpers.expandScope(['a.x', 'b.y', 'z']);
-      assert.deepEqual(expanded, ['state', 'a', 'a.x', 'b', 'b.y', 'z']);
+      assert.deepEqual(expanded, ['a', 'a.x', 'b', 'b.y', 'z']);
     });
 
     it('expand scope with related scopes', () => {
       const expanded = StateHelpers.expandScope(['a.x', 'a.y', 'z']);
-      assert.deepEqual(expanded, ['state', 'a', 'a.x', 'a.y', 'z']);
+      assert.deepEqual(expanded, ['a', 'a.x', 'a.y', 'z']);
     });
   });
 
   describe('optimize scope', () => {
     it('optimize scope with no scope', () => {
       const expanded = StateHelpers.optimizeScope([]);
-      assert.deepEqual(expanded, ['state']);
-    });
-
-    it('optimize scope with state scope', () => {
-      const expanded = StateHelpers.optimizeScope(['state']);
-      assert.deepEqual(expanded, ['state']);
+      assert.deepEqual(expanded, []);
     });
 
     it('optimize scope with simple scope', () => {

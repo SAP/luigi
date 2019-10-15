@@ -54,7 +54,9 @@ class LuigiConfig {
    */
   async setConfig(configInput) {
     this.config = configInput;
-    window.Luigi._store.set({ config: configInput });
+    window.Luigi._store.update(() => {
+      return { config: configInput };
+    });
     this._configModificationTimestamp = new Date();
     if (!this.initialized) {
       this.initialized = true;
@@ -95,9 +97,14 @@ class LuigiConfig {
    * @memberof Configuration
    */
   configChanged(...scope) {
-    StateHelpers.optimizeScope(scope).forEach(s => {
-      window.Luigi._store.fire(s, { current: window.Luigi._store.get() });
-    });
+    const optimizedScope = StateHelpers.optimizeScope(scope);
+    if (optimizedScope.length > 0) {
+      optimizedScope.forEach(s => {
+        window.Luigi._store.fire(s, { current: window.Luigi._store });
+      });
+    } else {
+      window.Luigi._store.update(config => config);
+    }
   }
 
   /**

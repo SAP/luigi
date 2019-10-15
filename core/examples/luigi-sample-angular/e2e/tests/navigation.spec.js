@@ -308,4 +308,42 @@ describe('Navigation', () => {
       cy.get('[data-testid=modal-mf]').should('not.be.visible');
     });
   });
+  describe('Horizontal Navigation', () => {
+    it('Open horizontal navigation', () => {
+      cy.get('.fd-shellbar')
+        .contains('Projects')
+        .click();
+
+      cy.get('.fd-app__sidebar')
+        .contains('Horizontal Navigation Example')
+        .click();
+
+      cy.expectPathToBe('/projects/tabNav');
+
+      cy.get('.fd-tabs')
+        .contains('Node with node activation hook')
+        .click();
+      cy.expectPathToBe('/projects/tabNav/on-node-activation');
+
+      cy.get('.fd-tabs')
+        .contains('Settings')
+        .click();
+      cy.get('.fd-menu__item')
+        .contains('Project Settings')
+        .click();
+
+      cy.get('.fd-tabs')
+        .contains('More')
+        .click();
+
+      cy.get('.fd-menu')
+        .contains('Default Child node Example')
+        .click();
+
+      cy.get('.fd-side-nav__subitem')
+        .contains('First Child')
+        .click();
+      cy.expectPathToBe('/projects/tabNav/dps1');
+    });
+  });
 });
