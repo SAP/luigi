@@ -143,8 +143,8 @@ class NavigationHelpersClass {
     return result;
   }
 
-  async generateTopNavNodes(current) {
-    const rawChildren = current.pathData[0].children;
+  async generateTopNavNodes(pathData) {
+    const rawChildren = pathData[0].children;
     let selectedNode = null;
     let visibleNodeCount = 0;
     let cats = {};
@@ -152,7 +152,7 @@ class NavigationHelpersClass {
     let badgeCountsToSumUp = [];
 
     for (const node of rawChildren) {
-      current.pathData.forEach(n => {
+      pathData.forEach(n => {
         if (!selectedNode && n === node) {
           selectedNode = node;
         }

@@ -1,4 +1,4 @@
-<svelte:window on:keydown="handleKeydown(event)"/>
+<svelte:window on:keydown="{handleKeydown}"/>
 <div class="fd-ui__overlay fd-overlay fd-overlay--modal" aria-hidden="false">
   <div class="fd-modal" data-testid="luigi-confirmation-modal">
     <div class="fd-modal__content" role="document">
@@ -6,7 +6,7 @@
         <h1 class="fd-modal__title">{settings.header}</h1>
         <button
           class="fd-button--light fd-modal__close"
-          on:click="fire('modalDismiss')"
+          on:click="{() => dispatch('modalDismiss')}"
           aria-label="close"
         ></button>
       </div>
@@ -14,12 +14,12 @@
       <footer class="fd-modal__footer">
         <div class="fd-modal__actions">
           <button
-            on:click="fire('modalDismiss')"
+            on:click="{() => dispatch('modalDismiss')}"
             data-testid="luigi-modal-dismiss"
             class="fd-button--light"
           >{settings.buttonDismiss}</button>
           <button
-            on:click="fire('modalConfirm')"
+            on:click="{() => dispatch('modalConfirm')}"
             data-testid="luigi-modal-confirm"
             class="fd-button confirm-button"
           >{settings.buttonConfirm}</button>
@@ -29,35 +29,38 @@
   </div>
 </div>
 
-<script type="text/javascript">
+<script>
+  import { createEventDispatcher, onMount } from 'svelte';
   import { LuigiI18N } from './core-api';
-  export default {
-    oncreate() {
-      const defaultSettings = {
-        header: LuigiI18N.getTranslation('luigi.confirmationModal.header'),
-        body: LuigiI18N.getTranslation('luigi.confirmationModal.body'),
-        buttonDismiss: LuigiI18N.getTranslation('luigi.button.dismiss'),
-        buttonConfirm: LuigiI18N.getTranslation('luigi.button.confirm')
-      };
 
-      this.set({
-        settings: Object.assign(defaultSettings, this.get().settings)
-      });
+  const dispatch = createEventDispatcher();
 
-      try {
-        document.querySelector('.confirm-button').focus();
-      } catch (e) {
-        console.warn("Couldn't focus confirmation button in modal");
-      }
-    },
-    methods: {
-      handleKeydown(event) {
-        if (event.keyCode === 27) {
-          this.fire('modalDismiss');
-        }
-      }
+  export let settings;
+
+  onMount(() => {
+    const defaultSettings = {
+      header: LuigiI18N.getTranslation('luigi.confirmationModal.header'),
+      body: LuigiI18N.getTranslation('luigi.confirmationModal.body'),
+      buttonDismiss: LuigiI18N.getTranslation('luigi.button.dismiss'),
+      buttonConfirm: LuigiI18N.getTranslation('luigi.button.confirm')
+    };
+
+    settings = Object.assign(defaultSettings, settings);
+
+    try {
+      document.querySelector('.confirm-button').focus();
+    } catch (e) {
+      console.warn("Couldn't focus confirmation button in modal");
     }
-  };
+  });
+
+  // [svelte-upgrade suggestion]
+  // review these functions and remove unnecessary 'export' keywords
+  export function handleKeydown(event) {
+    if (event.keyCode === 27) {
+      dispatch('modalDismiss');
+    }
+  }
 </script>
 
 <style type="text/scss">

@@ -1,15 +1,14 @@
-
 {#if contextSwitcherEnabled}
 <div class="fd-shellbar__action fd-shellbar__action--show-always">
   <div class="fd-product-menu">
     <div class="fd-popover fd-popover--right">
-      <div class="fd-popover__control" on:click="event.stopPropagation()">
+      <div class="fd-popover__control" on:click|stopPropagation="{() => {}}">
         <button
           class="fd-button--shell fd-product-menu__control lui-tendant-menu__control"
           aria-expanded="{dropDownStates.contextSwitcherPopover || false}"
           aria-haspopup="true"
           title="{selectedLabel ? selectedLabel : ''}"
-          on:click="toggleDropdownState()"
+          on:click="{toggleDropdownState}"
         >
           {#if !selectedLabel}{$getTranslation(config.defaultLabel)}{/if} {#if
           selectedLabel}{selectedLabel}{/if}
@@ -26,7 +25,7 @@
           <ul class="fd-menu__list fd-menu__list--top">
             {#each actions as node} {#if node.position === 'top' || !['top',
             'bottom'].includes(node.position)}
-            <li on:click="onActionClick(node)" data-testid="{getTestId(node)}">
+            <li on:click="{() => onActionClick(node)}" data-testid="{getTestId(node)}">
               <a class="fd-menu__item">{$getTranslation(node.label)}</a>
             </li>
             {/if} {/each}
@@ -42,10 +41,7 @@
             {/if} {#if options && options.length} {#each options as node}
             {#await getNodeName(node.label, config.fallbackLabelResolver,
             node.id)} {:then label}
-            <li
-              on:click="goToOption(node, selectedOption)"
-              data-testid="{getTestId(node)}"
-            >
+            <li on:click="{() => goToOption(node, selectedOption)}" data-testid="{getTestId(node)}">
               <a
                 class="fd-menu__item {node === selectedLabel ? 'is-selected' : ''}"
                 title="{label}"
@@ -56,7 +52,7 @@
           {#if actions && actions.length}
           <ul class="fd-menu__list fd-menu__list--bottom">
             {#each actions as node} {#if node.position === 'bottom'}
-            <li on:click="onActionClick(node)" data-testid="{getTestId(node)}">
+            <li on:click="{() => onActionClick(node)}" data-testid="{getTestId(node)}">
               <a class="fd-menu__item">{$getTranslation(node.label)}</a>
             </li>
             {/if} {/each}
@@ -68,7 +64,9 @@
   </div>
 </div>
 {/if}
-<script type="text/javascript">
+
+<script>
+  import { createEventDispatcher, onMount, getContext } from 'svelte';
   import { ContextSwitcherHelpers } from './services/context-switcher';
   import { LuigiConfig } from '../core-api';
   import { Routing } from '../services/routing';
@@ -79,175 +77,165 @@
     NavigationHelpers
   } from '../utilities/helpers';
 
-  export default {
-    async oncreate() {
-      StateHelpers.doOnStoreChange(
-        this.store,
-        async () => {
-          LuigiConfig._configModificationTimestamp = new Date();
-          const contextSwitcherConfig = LuigiConfig.getConfigValue(
-            'navigation.contextSwitcher'
-          );
+  const dispatch = createEventDispatcher();
 
-          this.set({
-            contextSwitcherEnabled: !!contextSwitcherConfig,
-            config: contextSwitcherConfig,
-            options: undefined
-          });
+  export let contextSwitcherEnabled = false;
+  export let dropDownStates = {};
+  export let selectedLabel = null;
+  export let config = {};
+  export let actions = [];
+  export let options = null;
+  export let selectedOption;
+  export let fallbackLabelResolver = null;
+  let preserveSubPathOnSwitch;
+  let getUnsavedChangesModalPromise = getContext('getUnsavedChangesModalPromise');
+  let store = getContext('store');
+  let getTranslation = getContext('getTranslation');
 
-          if (contextSwitcherConfig) {
-            const actions = await LuigiConfig.getConfigValueAsync(
-              'navigation.contextSwitcher.actions'
-            );
-            const currentPath = Routing.getCurrentPath();
-
-            this.set({
-              actions,
-              fallbackLabelResolver: contextSwitcherConfig.fallbackLabelResolver
-            });
-
-            // options are loaded lazy by default
-            if (!contextSwitcherConfig.lazyloadOptions) {
-              await this.fetchOptions();
-            }
-            if (
-              ContextSwitcherHelpers.isContextSwitcherDetailsView(
-                currentPath,
-                contextSwitcherConfig.parentNodePath
-              )
-            ) {
-              await this.setSelectedContext(currentPath);
-            }
-          }
-        },
-        ['navigation.contextSwitcher']
-      );
-
-      RoutingHelpers.addRouteChangeListener(path =>
-        this.setSelectedContext(path)
-      );
-
-      window.addEventListener('message', e => {
-        if (!IframeHelpers.getValidMessageSource(e)) return;
-        if (e.data && e.data.msg === 'luigi.refresh-context-switcher') {
-          this.set({ options: null });
-          this.fetchOptions();
-        }
-      });
-    },
-    data() {
-      return {
-        dropDownStates: {},
-        contextSwitcherEnabled: false,
-        config: {},
-        actions: [],
-        options: null,
-        fallbackLabelResolver: null,
-        selectedLabel: null
-      };
-    },
-    computed: {},
-    helpers: {
-      async getNodeName(label, config, id) {
-        if (label) {
-          return Promise.resolve(label);
-        }
-        return ContextSwitcherHelpers.getFallbackLabel(config, id);
-      },
-      getTestId(node) {
-        return node.testId
-          ? node.testId
-          : NavigationHelpers.prepareForTests(node.pathSegment, node.label);
-      }
-    },
-    methods: {
-      async fetchOptions() {
-        const options = await ContextSwitcherHelpers.fetchOptions(
-          this.get().options
+  onMount(async () => {
+    StateHelpers.doOnStoreChange(
+      store,
+      async () => {
+        LuigiConfig._configModificationTimestamp = new Date();
+        const contextSwitcherConfig = LuigiConfig.getConfigValue(
+          'navigation.contextSwitcher'
         );
-        const config = this.get().config || {};
-        const parentNodePath = config.parentNodePath;
-        const fallbackLabelResolver = config.fallbackLabelResolver;
-        const currentPath = Routing.getCurrentPath();
-        this.set({
-          options,
-          selectedOption: await ContextSwitcherHelpers.getSelectedOption(
-            currentPath,
-            options,
-            parentNodePath
-          ),
-          selectedLabel: await ContextSwitcherHelpers.getSelectedLabel(
-            currentPath,
-            options,
-            parentNodePath,
-            fallbackLabelResolver
-          ),
-          preserveSubPathOnSwitch: config.preserveSubPathOnSwitch
-        });
-      },
-      async setSelectedContext(currentPath) {
-        const config = this.get().config || {};
-        const options = this.get().options;
-        const parentNodePath = config.parentNodePath;
-        const fallbackLabelResolver = config.fallbackLabelResolver;
 
-        this.set({
-          selectedOption: await ContextSwitcherHelpers.getSelectedOption(
-            currentPath,
-            options,
-            parentNodePath
-          ),
-          selectedLabel: await ContextSwitcherHelpers.getSelectedLabel(
-            currentPath,
-            options,
-            parentNodePath,
-            fallbackLabelResolver
-          )
-        });
-      },
-      async onActionClick(node) {
-        if (node.clickHandler) {
-          const result = await node.clickHandler(node);
-          // If the clickHandler returns true, open the link
-          if (!result) {
-            return;
+        contextSwitcherEnabled = !!contextSwitcherConfig;
+        config = contextSwitcherConfig;
+        options = undefined;
+
+        if (contextSwitcherConfig) {
+          actions = await LuigiConfig.getConfigValueAsync(
+            'navigation.contextSwitcher.actions'
+          );
+          const currentPath = Routing.getCurrentPath();
+
+          fallbackLabelResolver = contextSwitcherConfig.fallbackLabelResolver;
+
+          // options are loaded lazy by default
+          if (!contextSwitcherConfig.lazyloadOptions) {
+            await fetchOptions();
+          }
+          if (
+            ContextSwitcherHelpers.isContextSwitcherDetailsView(
+              currentPath,
+              contextSwitcherConfig.parentNodePath
+            )
+          ) {
+            await setSelectedContext(currentPath);
           }
         }
-        setTimeout(() => {
-          this.goToPath(node.link);
-        });
       },
-      goToPath(path) {
-        this.root.getUnsavedChangesModalPromise().then(() => {
-          LuigiConfig._configModificationTimestamp = new Date();
-          Routing.navigateTo(path);
-        });
-      },
-      goToOption(option, selectedOption) {
-        this.root.getUnsavedChangesModalPromise().then(() => {
-          LuigiConfig._configModificationTimestamp = new Date();
-          if (this.get().preserveSubPathOnSwitch && selectedOption) {
-            Routing.navigateTo(
-              ContextSwitcherHelpers.getNodePathFromCurrentPath(
-                option,
-                selectedOption
-              )
-            );
-          } else {
-            Routing.navigateTo(option.path);
-          }
-        });
-      },
-      toggleDropdownState() {
-        this.fire('toggleDropdownState');
-        const dropDownStates = this.get().dropDownStates || {};
-        const isOpened = JSON.parse(dropDownStates['contextSwitcherPopover']);
-        if (isOpened) {
-          this.fetchOptions();
-        }
+      ['navigation.contextSwitcher']
+    );
+
+    RoutingHelpers.addRouteChangeListener(path =>
+      setSelectedContext(path)
+    );
+
+    window.addEventListener('message', e => {
+      if (!IframeHelpers.getValidMessageSource(e)) return;
+      if (e.data && e.data.msg === 'luigi.refresh-context-switcher') {
+        options = null;
+        fetchOptions();
+      }
+    });
+  });
+
+  function getNodeName(label, config, id) {
+    if (label) {
+      return Promise.resolve(label);
+    }
+    return ContextSwitcherHelpers.getFallbackLabel(config, id);
+  }
+
+  function getTestId(node) {
+    return node.testId
+      ? node.testId
+      : NavigationHelpers.prepareForTests(node.pathSegment, node.label);
+  }
+
+  // [svelte-upgrade suggestion]
+  // review these functions and remove unnecessary 'export' keywords
+  export async function fetchOptions() {
+    options = await ContextSwitcherHelpers.fetchOptions(
+      options
+    );
+    const conf = config || {};
+    const parentNodePath = conf.parentNodePath;
+    const fallbackLabelResolver = conf.fallbackLabelResolver;
+    const currentPath = Routing.getCurrentPath();
+    selectedOption = await ContextSwitcherHelpers.getSelectedOption(
+      currentPath,
+      options,
+      parentNodePath
+    );
+    selectedLabel = await ContextSwitcherHelpers.getSelectedLabel(
+      currentPath,
+      options,
+      parentNodePath,
+      fallbackLabelResolver
+    );
+    preserveSubPathOnSwitch = conf.preserveSubPathOnSwitch;
+  }
+
+  export async function setSelectedContext(currentPath) {
+    const conf = config || {};
+    const parentNodePath = conf.parentNodePath;
+    const fallbackLabelResolver = conf.fallbackLabelResolver;
+    selectedOption = await ContextSwitcherHelpers.getSelectedOption(
+      currentPath,
+      options,
+      parentNodePath
+    );
+    selectedLabel = await ContextSwitcherHelpers.getSelectedLabel(
+      currentPath,
+      options,
+      parentNodePath,
+      fallbackLabelResolver
+    );
+  }
+
+  export async function onActionClick(node) {
+    if (node.clickHandler) {
+      const result = await node.clickHandler(node);
+      // If the clickHandler returns true, open the link
+      if (!result) {
+        return;
       }
     }
-  };
+    setTimeout(() => {
+      goToPath(node.link);
+    });
+  }
+
+  export function goToPath(path) {
+    getUnsavedChangesModalPromise().then(() => {
+      LuigiConfig._configModificationTimestamp = new Date();
+      Routing.navigateTo(path);
+    });
+  }
+
+  export function goToOption(option, selectedOption) {
+    getUnsavedChangesModalPromise().then(() => {
+      LuigiConfig._configModificationTimestamp = new Date();
+      if (preserveSubPathOnSwitch && selectedOption) {
+        Routing.navigateTo(ContextSwitcherHelpers.getNodePathFromCurrentPath(option, selectedOption))
+      } else {
+        Routing.navigateTo(option.path);
+      }
+    });
+  }
+
+  export function toggleDropdownState() {
+    dispatch('toggleDropdownState');
+    const ddStates = dropDownStates || {};
+    const isOpened = JSON.parse(ddStates['contextSwitcherPopover']);
+    if (isOpened) {
+      fetchOptions();
+    }
+  }
 </script>
 
 <style type="text/scss">
