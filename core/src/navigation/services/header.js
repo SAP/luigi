@@ -29,9 +29,11 @@ export const processHeaderSettings = component => {
 
         const hasLogo = Boolean(header.logo);
         component.set({ hasLogo });
-        if (hasLogo && component.refs && component.refs.logo) {
-          component.refs.logo.src = header.logo;
-        }
+        setTimeout(() => {
+          if (hasLogo && component.get().logo) {
+            component.get().logo.src = header.logo;
+          }
+        });
 
         // Set Favicon
         if (header.favicon) {

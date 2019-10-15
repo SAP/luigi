@@ -118,7 +118,7 @@ class LuigiI18NManager {
    * @param {locale} locale optional locale to get the translation for; default is the current locale
    * @memberof LuigiI18N
    */
-  getTranslation(key, interpolations, locale) {
+  getTranslation(key, interpolations = undefined, locale = undefined) {
     if (!key) return '';
     if (this.translationImpl) {
       const result = this.translationImpl.getTranslation(

@@ -91,49 +91,53 @@ describe('Luigi client linkManager', () => {
         cy.expectPathToBe('/projects/pr2');
       });
 
-      // check if path exists
-      cy.goToLinkManagerMethods($iframeBody);
-      [
-        // non-existent relative path
-        { path: 'projects/pr2/', successExpected: false },
-        // non-existent absolute path
-        { path: '/developers', successExpected: false },
-        // existent absolute path with '/' at the end
-        { path: '/projects/pr2/', successExpected: true },
-        // existent absolute path without '/' at the end
-        { path: '/projects/pr2', successExpected: true },
-        // existent path with two dynamic pathSegments
-        {
-          path: '/projects/pr1/users/groups/avengers/settings/dynamic-two',
-          successExpected: true
-        },
-        // existent relative path
-        { path: 'developers', successExpected: true }
-      ].map(data => {
-        const msgExpected = data.successExpected
-          ? `Path ${data.path} exists`
-          : `Path ${data.path} does not exist`;
-        const checkPathSelector = '.link-manager .check-path';
-        cy.wrap($iframeBody)
-          .find(checkPathSelector + ' input')
-          .clear()
-          .type(data.path);
-        cy.wrap($iframeBody)
-          .find(checkPathSelector + ' button')
-          .click();
-        cy.wrap($iframeBody)
-          .find(checkPathSelector + ' .check-path-result')
-          .contains(msgExpected);
-      });
+      cy.visitLoggedIn('/');
 
-      // go back
-      cy.goToOverviewPage();
-      cy.goToLinkManagerMethods($iframeBody);
-      cy.expectPathToBe('/projects/pr2');
-      cy.wrap($iframeBody)
-        .contains('go back: single iframe')
-        .click();
-      cy.expectPathToBe('/overview');
+      cy.getIframeBody().then($iframeBody => {
+        // check if path exists
+        cy.goToLinkManagerMethods($iframeBody);
+        [
+          // non-existent relative path
+          { path: 'projects/pr2/', successExpected: false },
+          // non-existent absolute path
+          { path: '/developers', successExpected: false },
+          // existent absolute path with '/' at the end
+          { path: '/projects/pr2/', successExpected: true },
+          // existent absolute path without '/' at the end
+          { path: '/projects/pr2', successExpected: true },
+          // existent path with two dynamic pathSegments
+          {
+            path: '/projects/pr1/users/groups/avengers/settings/dynamic-two',
+            successExpected: true
+          },
+          // existent relative path
+          { path: 'developers', successExpected: true }
+        ].map(data => {
+          const msgExpected = data.successExpected
+            ? `Path ${data.path} exists`
+            : `Path ${data.path} does not exist`;
+          const checkPathSelector = '.link-manager .check-path';
+          cy.wrap($iframeBody)
+            .find(checkPathSelector + ' input')
+            .clear()
+            .type(data.path);
+          cy.wrap($iframeBody)
+            .find(checkPathSelector + ' button')
+            .click();
+          cy.wrap($iframeBody)
+            .find(checkPathSelector + ' .check-path-result')
+            .contains(msgExpected);
+        });
+
+        // go back
+        cy.goToOverviewPage();
+        cy.goToLinkManagerMethods($iframeBody);
+        cy.expectPathToBe('/projects/pr2');
+        cy.wrap($iframeBody)
+          .contains('go back: single iframe')
+          .click();
+        cy.expectPathToBe('/overview');
+      });
     });
   });
 

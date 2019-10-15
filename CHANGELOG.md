@@ -23,6 +23,11 @@ The lerna-changelog tool detects changes based on PR labels and maps them to sec
     ...
   }
 -->
+## [v0.6.6] (2019-10-09)
+
+#### :rocket: Fixed
+* [#876](https://github.com/SAP/luigi/pull/876) nodeAccessibilityResolver sometimes not re-applied on context switch ([@pekura](https://github.com/pekura))
+
 ## [v0.6.5] (2019-10-07)
 
 #### :rocket: Added
@@ -546,3 +551,4 @@ The lerna-changelog tool detects changes based on PR labels and maps them to sec
 [v0.6.3]: https://github.com/SAP/luigi/compare/v0.6.2...v0.6.3
 [v0.6.4]: https://github.com/SAP/luigi/compare/v0.6.3...v0.6.4
 [v0.6.5]: https://github.com/SAP/luigi/compare/v0.6.4...v0.6.5
+[v0.6.6]: https://github.com/SAP/luigi/compare/v0.6.5...v0.6.6
