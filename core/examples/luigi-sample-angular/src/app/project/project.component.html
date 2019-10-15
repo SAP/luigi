@@ -463,6 +463,14 @@
       </ul>
     </div>
   </div>
+  <div *ngIf="projectId && projectId === 'tabNav'">
+    <div class="fd-section__header">
+      <h1 class="fd-section__title">Horizontal navigation</h1>
+    </div>
+    <div class="fd-panel" title="visitors: {{ visitors }}">
+      Horizontal navigation content
+    </div>
+  </div>
 </section>
 
 <app-modal
