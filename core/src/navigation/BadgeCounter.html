@@ -1,4 +1,3 @@
-
 {#if node && node.badgeCounter}
 {#await node.badgeCounter.count()}
 {:then count}
@@ -11,8 +10,9 @@
 {:catch error}
 {/await}
 {/if}
-<script type="text/javascript">
-  export default {};
+
+<script>
+  export let node;
 </script>
 
 <style type="text/scss">
@@ -22,7 +22,7 @@
 
   :global(.fd-shellbar__action) {
     .fd-menu .fd-top-nav__icon,
-    .fd-product-switcher__body .y-full-width-list__icon {
+    .y-full-width-list__icon {
       position: relative;
       margin-right: 8px;
       min-width: 16px;

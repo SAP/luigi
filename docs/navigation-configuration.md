@@ -1,242 +1,265 @@
 # Navigation configuration
 
-Navigation parameters allow you to specify routing configuration, set the appearance of navigation, and define navigation structure.
+Read these guides to get started with configuring your navigation:
+
+* [Navigation elements](#navigation-elements) 
+* [First steps](#first-steps)
+* [Basic navigation parameters](#basic-navigation-parameters)
+* [Grouping navigation nodes](#grouping-navigation-nodes)
+  * [category](#category)
+  * [viewGroup](#viewgroup)
+* [Creating a dynamic path](#creating-a-dynamic-path)
+  * [pathSegment parameters](#pathsegment-parameters)
+  * [viewUrl parameters](#viewurl-parameters)
+  * [Node parameters](#node-parameters)
+  * [Dynamic viewUrl](#dynamic-viewurl)
+
+If you are already familiar with the basics, take a look at:
+* [Full reference list of navigation parameters](navigation-parameters-reference.md)
 
 ## Navigation elements
 
-The image shows the elements of Luigi navigation: 
+There are three main elements to Luigi: 
 
-1. Top navigation which displays the main navigation path.
-2. Side navigation which displays the defined applications.
+1. Top navigation which displays the main navigation path. Context, product, app, and profile [switchers](navigation-parameters-reference.md/#context-switcher) can also be displayed here. 
+2. Side navigation which displays the child nodes of the root navigation node. It can include structures like collapsible dropdowns and menus. 
 3. Main content window which renders the micro frontend.
  
 
 ![Navigation layout](assets/navigation-structure.png)
 
 
-## Navigation structure
+## First steps
 
-The navigation structure is a recursive tree-like data structure that defines all possible navigation paths within the application. 
+Go to the `basicConfiguration.js` file in your `luigi-config` folder. You can configure the navigation by editing this file. 
 
->**NOTE:** This document describes the navigation structure along with the options you can use to create it. For a full list of available parameters, see the [parameter reference](navigation-parameters-reference.md) document.
+To experiment with navigation options, you can also use the [Luigi Fiddle](https://fiddle.luigi-project.io) page where you can configure a sample Luigi application.
 
-A navigation path is any existing path in the navigation tree. It connects the following elements together:
+The configuration file consists of a tree-like structure of **navigation nodes**. The first level nodes represent the top navigation, while their children represent the side navigation. The nodes have some basic properties, such as labels, links, views, and (optionally) children. These properties are called **navigation parameters**.
 
-- The path of the main application, that is, the path in the browser URL. The path is defined in a Luigi navigation node through one of the following parameters, listed in order of precedence: **externalLink**, **link**, and **pathSegment**.
-- The **viewUrl** property of a micro frontend rendered in the content area of the main application.
+Here is an example of a simple navigation structure: 
 
-If you set the **hideSideNav** property to `true`, the left navigation disappears when you click the affected node. It is set to `false` by default.
+```javascript 
+navigation: {
+  nodes: [
+    {
+      pathSegment: 'TopNav1',
+      label: 'Top Navigation Element One',
+      viewUrl: 'https://example.com',
+      children: [
+        {
+          pathSegment: 'SideNav1',
+          label: 'Side Navigation Element One',
+          viewUrl: 'https://example.com/projects/list.html',
+          children: [
+            {
+              link: '/TopNav1/internalLink',
+              label: 'This takes you to [YOUR.WEBSITE]/TopNav1/internalLink',
+            },
+            {
+              externalLink: {
+                url: 'http://www.luigi-project.io',
+                sameWindow: false
+              },
+              label: 'This takes you to an external page',
+            },
+          ]
+        },
+      ]
+    },
+    {
+      pathSegment: 'TopNav2',
+      label: 'Top Navigation Element Two',
+      viewUrl: 'https://example.org',
+      children: [
+...
+```
 
-If you want to group some navigation nodes into a separate parent node, you can use the **category** property. The grouped navigation nodes are rendered in a dropdown. The **category** property needs a **label** and, optionally, an **icon**.
+## Basic navigation parameters
 
-A sample navigation structure looks as follows:
+>**NOTE:** For a full list of available parameters, see the [parameter reference](navigation-parameters-reference.md) document.
 
-````
+The [first steps](#first-steps) example provides some basic navigation parameters:
+
+### pathSegment
+This is used to build the path in the browser URL. The main application path is built from values in the navigation path, joined with the **/** character. For example, if the value of a node's **pathSegment** is `home`, the path for that node would be `[YOUR.WEBSITE]/home`. You can override this setting by using one of the following instead of **pathSegment**: 
+* **link** - define a specific internal path. Note that a valid path must always start from the **root node**. For example, if your root node is `home`, and you want to navigate to the `projects` directory:
+	- `link: '/home/projects'` is correct
+	- `link: '/projects'`is not correct, since `/projects` is not the root node 
+* **externalLink** - takes you to an external website. You must define the **url** of the website and whether it should be opened in a new window (`sameWindow: false`) or the same window (`sameWindow: true`).
+### label
+The name of the node which will be visible on your page.
+### viewUrl
+The URL of the micro frontend which will be displayed in the main content area of your page. 
+
+## Grouping navigation nodes
+
+You may use these parameters if you want to group related navigation nodes:
+
+### category 
+You can add the **category** property to navigation nodes you want to group. The resulting structure will be different depending on whether you want to group top or side navigation nodes. In both cases, you should define at least one node in a group with **label** and **icon** properties. For all other nodes, you can set **category** as a string with the label value. 
+
+* Top navigation:
+top navigation nodes in the same category will be rendered as a dropdown. 
+* Side navigation:
+side navigation nodes will be grouped under a header with the category name. You can configure them to be **collapsible** or not. 
+
+This is an example of what a node with a category including a label and icon looks like:
+
+```javascript
 {
-  navigation: {
+  category: { label: 'Links', icon: 'myIcon', collapsible: true },
+  externalLink: {
+    url: 'http://www.luigi-project.io',
+    sameWindow: false
+  },
+  label: 'Click here to visit the Luigi homepage',
+}, 
+...
+```
+
+To define all subsequent nodes, use the category label:
+
+```javascript
+{
+  category: Links,
+  externalLink: {
+    url: 'http://www.luigi-project.io',
+    sameWindow: false
+  },
+  label: 'Click here to visit the Luigi homepage',
+}, 
+...
+```
+
+### viewGroup
+
+Imagine your application hosts two micro frontend views: `http://example.com/a#e` and  `http://example.com/b#f`. Due to hash routing and a different path up to `#`, they are, by default, rendered in different iframes. However, as they both have the **same origin**, such as`example.com`, and belong to the **same micro frontend** you want to render them in the same iframe. To achieve that, use the view groups feature. Define the **viewGroup** parameter for any navigation node. The children nodes will automatically be considered as part of the same view group. 
+
+Nodes belonging to the same view group are always rendered in their own view group iframe. Nodes not belonging to any view group follow the same-origin iframe rendering policy. 
+
+The view groups feature also offers out-of-the-box caching. Each time you navigate to another view group, either a new iframe is created or it is reused if already exists. In both cases, the iframe you are navigating from becomes hidden and is available for you to use again. If you navigate back to the first iframe and it should be updated with new data, such when a new entry was added in the second iframe and you want to display it in a table in the first iframe, you must define a **preloadUrl** parameter for the view group under **navigation.viewGroupSettings**.
+
+You can also preload view groups. You just need to define which URL you want to preload, and Luigi will preload the view after some user interactions when the browser is most likely to be idle. This option is active by default, but you can deactivate it with a [configuration flag](navigation-parameters-reference.md#node-parameters).
+
+For more information on setting caching with view refreshing and preloading for view groups, read [this document](navigation-parameters-reference.md#node-parameters).
+
+## Creating a dynamic path
+In Luigi, you can make a navigation path dynamically changeable according to your needs. This is accomplished by defining parameters within the **pathSegement** or **viewUrl** navigation paths. 
+
+### pathSegment parameters
+Instead of a static value for your **pathSegment**, you can add a colon to this value to make it act as a parameter. For example, you can use `:userId`. This tells Luigi to accept any value for this **pathSegment**. 
+
+This example shows you a defined `userId` path parameter: 
+
+```javascript
+navigation: {
     nodes: [
       {
         pathSegment: 'home',
         label: 'Home',
-        viewUrl: 'https://my.microfrontend.com/',
+        viewUrl: 'https://example.com/',
         children: [
           {
-            link: '/home',
-            label: 'Go back home'
-          },
-          {
-            link: 'projects/pr2/settings',
-            label: 'Go to Project 2 Settings'
-          },
-          {
-            pathSegment: 'settings',
-            label: 'Settings',
-            viewUrl: 'https://my.microfrontend.com/general/settings.html'
-          },
-          {
-            pathSegment: 'projects',
-            label: 'Projects',
-            viewGroup: 'projectsGroup',
-            viewUrl: 'https://my.microfrontend.com/projects/list.html',
+            pathSegment: 'users',
+            label: 'User List',
+            viewUrl: 'https://example.com/users/list.html',
             children: [
               {
-                pathSegment: 'pr1',
-                label: 'Project one',
-                viewUrl: 'https://my.microfrontend.com/projects/details.html#id=pr1',
-                hideSideNav: true
-              },
-              {
-                pathSegment: 'pr2',
-                label: 'Project two',
-                viewUrl: 'https://my.microfrontend.com/projects/details.html#id=pr2'
+                pathSegment: ':userId',
+                label: 'User Profile',
+                // E.g. if userId is 'JohnSmith'
+                // the main application URL will be https://[YOUR.WEBSITE]/users/JohnSmith
               }
             ]
-          },
-          {
-            category: {label:'Misc', icon:'miscellaneous'},
-            pathSegment: 'miscellaneous',
-            label: 'Miscellaneous',
-            viewUrl: 'https://my.microfrontend.com/general/miscellaneous.html'
-          },
-          {
-            category:'Misc',
-            pathSegment: 'miscellaneous2',
-            label: 'Miscellaneous2',
-            viewUrl: 'https://my.microfrontend.com/general/miscellaneous2.html'
           }
         ]
       }
     ]
   }
 }
-````
-
-
-## Node navigation
-
-When you navigate between nodes that are located in the same domain, Luigi triggers a hash or path change. Then it sends the updated context in order not to fully reload the view for a single-page application based micro frontend. Navigation between domains triggers a full page load in order to comply with cross-domain security concepts.
-
-If you start navigating from a child node level, navigate to the specific product route using the [Luigi Client API](luigi-client-api.md) as shown in the example:
-
-````
-LuigiClient.linkManager().fromContext('project').withParam({sort: 'asc'}).navigate('/products');
-````
-
-You can also navigate directly from any other node:
-
-````
-LuigiClient.linkManager().withParam({sort: 'asc'}).navigate('/something/sample_1/products');
-````
-
-## Application path
-
-The main application path is built from **pathSegment** values in the navigation path, joined with the **/** character. You can override this setting using either **externalLink** or **link** parameters.
-
-The micro frontend view URL is the value of the **viewUrl** property of the last node in the navigation path.
-
-The following example shows the structure of different navigation paths. If the URL of the main application is `https://luigiexample.com`, then:
-
-- `https://luigiexample.com/home/projects/pr1` reflects the `home/projects/pr1` navigation path. It is a valid navigation path as it exists in the defined navigation tree structure. The micro frontend view URL rendered in the content area is `https://my.microfrontend.com/projects/details.html#id=pr1`.
-
-- `https://luigiexample.com/home/maskopatol` defines an invalid `home/maskopatol` navigation path.
-
-- `https://luigiexample.com/projects/pr1` defines the `projects/pr1` navigation path. It is not a valid navigation path, since a valid navigation path always starts from the root.
-
-
-## Path parameters
-
-Use path parameter values to define the **pathSegment** in your configuration. You can either use a static value for your **pathSegment**, or add a colon to this value as in `:projectId`, to make it act as a parameter. This tells Luigi to accept any value for this **pathSegment** of the main application URL. The value replaces the parameter when it is further processed by the application.
-
-A sample structure with a parametrized **pathSegment** is as follows:
-```
-{
-  navigation: {
-    nodes: [
-      {
-        pathSegment: 'home',
-        label: 'Home',
-        viewUrl: 'https://my.microfrontend.com/',
-        children: [
-          {
-            pathSegment: 'projects',
-            label: 'Projects',
-            viewUrl: 'https://my.microfrontend.com/projects/list.html',
-            children: [
-              {
-                pathSegment: ':projectId',
-                label: 'Project Details',
-                viewUrl: 'https://my.microfrontend.com/projects/details.html#id=:projectId;'
-              }            
-			]
-          }
-        ]
-      }
-    ]
-  }
-}
-
+...
 ```
 
- Use the following options to work with path parameters:
+### viewUrl parameters
 
-- Add the parameters to the **viewUrl** by placing them anywhere in the **viewUrl** value. For example, if the main application URL is `https://luigiexample.com/home/projects/pr23`, then the **viewUrl** of the micro frontend in the content area is `https://my.microfrontend.com/projects/details.html#id=pr23`. 
+You have the following options to add a parameter to **viewUrl**: 
+- Place the parameter anywhere in the **viewUrl** value. For example, if the main application URL is `https://[YOUR.WEBSITE]/home/users/JohnSmith`, then the **viewUrl** of the micro frontend in the content area can be `https://example.com/users/details.html#id=JohnSmith`. 
 - Use the [Luigi Client API](luigi-client-api.md) to access the node parameter values from the micro frontend. Use the `LuigiClient.getPathParams()` function. 
-For example, to get the value of the sample project parameter, use `LuigiClient.getPathParams().projectId`. 
+For example, to get the value of the `userId` parameter, use `LuigiClient.getPathParams().userId`. 
 - Add a parameter to the context part of your configuration:
-  ```
-  {
-    pathSegment: ':projectId',
-    label: 'Project Details',
-    viewUrl: 'https://my.microfrontend.com/projects/details.html#id=:projectId;',
-    context: {
-    	project: ':projectId'
-    }
-  } 
-  ```
-In all cases, the parameter is automatically replaced by the real value.
 
+```javascript
+{
+  pathSegment: ':userId',
+  label: 'User Profile',
+  viewUrl: 'https://example.com/users/details.html#id=:userId;',
+  context: {
+    user: ':userId'
+  }
+} 
+  ...
+```
 
-## Node parameters
+In all these cases, the parameter is automatically replaced by the real value.
+
+### Node parameters
 
 You can use node parameters to build the **viewUrl** and pass them to the micro frontend specified in the navigation node selected in the navigation path. 
+
 You can specify them in the main application URL, similarly to URL query parameters with a specific prefix. The prefix is `~` by default, but you can reconfigure it using the global **nodeParamPrefix** setting. 
 
 All parameters without the prefix are not passed to the micro frontend and are consumed by the main application. 
 
-A sample **viewUrl** `https://luigiexample.com/home/projects/pr23?~sorting=asc&~page=2` supports sorting and paging by introducing the **sort** and **page** node parameters.
+A sample **viewUrl** `https://[YOUR.WEBSITE]/home/users/allUsers?~sorting=asc&~page=2` supports sorting and paging by introducing the **sort** and **page** node parameters.
 
-The navigation structure with the project list view using such sample node parameters looks as follows:
+Using node parameters in the previous example results in:
 
-````
-{
-  navigation: {
+```javascript
+navigation: {
     nodes: [
       {
         pathSegment: 'home',
         label: 'Home',
-        viewUrl: 'https://my.microfrontend.com/',
+        viewUrl: 'https://example.com/',
         children: [
           {
-            pathSegment: 'projects',
-            label: 'Projects',
-            viewGroup: 'projectsGroup',
-            viewUrl: 'https://my.microfrontend.com/projects/list.html#pagenr={nodeParams.page};sort={nodeParams.sorting}',
+            pathSegment: 'users',
+            label: 'User List',
+            viewUrl: 'https://example.com/users/list.html#pagenr={nodeParams.page};sort={nodeParams.sorting}',
             children: [
               {
-                pathSegment: ':projectId',
-                label: 'Project Details',
-                viewUrl: 'https://my.microfrontend.com/projects/details.html#id=:projectId;'
-              }            
-			]
+                pathSegment: ':userId',
+                label: 'User Profile',
+                viewUrl: 'https://example.com/projects/details.html#id=:userId;'
+              }
+            ]
           }
         ]
       }
     ]
   }
 } 
-
-````
+...
+```
 
  Use the following options to work with node parameters:
 
-- Build the **viewUrl** by placing them anywhere in the **viewUrl** value using the following syntax: `nodeParams.{node param name}`. For example, if the main application URL is `https://luigiexample.com/home/projects/?~sorting=asc&~page=2` then the **viewUrl** of a micro frontend is `https://my.microfrontend.com/projects/list.html#pagenr=2;sort=asc`.
-
-- Use the [Luigi Client API](luigi-client-api.md) to access the node parameter values from within the micro frontend. Use the `LuigiClient.getNodeParams()` function. 
-For example, to get the value of the sorting parameter, use `LuigiClient.getNodeParams().sorting`. 
+Build the **viewUrl** by placing parameters anywhere in the **viewUrl** value using the following syntax: `nodeParams.{node param name}`. For example, if the main application URL is `https://[YOUR.WEBSITE]/home/projects/?~sorting=asc&~page=2` then the **viewUrl** of a micro frontend is `https://example.com/projects/list.html#pagenr=2;sort=asc`.
 
 
-## Dynamic viewUrl
+### Dynamic viewUrl
 
-Use the node parameters and path parameters to build a dynamic **viewUrl**.
+You can use both node parameters and path parameters to build a dynamic **viewUrl**.
 
-In this example, the web application URL is `https://Luigi.corp/something/sample_1/products?~sort=asc`. The micro frontend loads using a different URL, such as `https://admin.my.test/project/sample_1/products?sort=asc`.
+For example, if the web application URL is `https://[YOUR.WEBSITE]/something/sample_1/products?~sort=asc`, the micro frontend loads using a different URL, such as `https://example.com/project/sample_1/products?sort=asc`.
 
 When loading, the **viewUrl** uses the following dynamic URL parameters:
 
 - `:projectId = sample_1`
 - `sort = asc`
 
-```
+```javascript 
 Luigi.setConfig({
   routing: {
     nodeParamPrefix: '~'
@@ -246,12 +269,12 @@ Luigi.setConfig({
       {
         pathSegment: 'something',
         label: 'Something',
-        viewUrl: 'https://admin.my.test/project',
+        viewUrl: 'https://example.com/project',
         children: [{
           navigationContext: 'project',
           pathSegment: ':projectId',
-          viewUrl: 'https://admin.my.test/project/:projectId',
-          // Optional, you can always call LuigiClient.getPathParams() to get the parameters
+          viewUrl: 'https://example.com/project/:projectId',
+          // Optionally, you can always call LuigiClient.getPathParams() to get the parameters
           // context: {
           //  currentProject: ':projectId'
           // },
@@ -259,24 +282,12 @@ Luigi.setConfig({
             {
               pathSegment: 'products',
               label: 'Products',
-              viewUrl: 'https://admin.my.test/project/:projectId/products'
+              viewUrl: 'https://example.com/project/:projectId/products'
             }
           ]
-        }
+        }]
       }
     ]
   }
 });
 ```
-
-## View groups
-
-The view groups feature allows you to override the default iframes management policy. Imagine your application hosts two micro frontend views: `http://mysite.com/a#e` and  `http://mysite.com/b#f`. Due to hash routing and a different path up to `#`, they are, by default, rendered in different iframes. However, as they both have the **same origin**, such as`mysite.com`, and belong to the **same micro frontend** you want to render them in the same iframe. To achieve that, use the view groups feature. Define the **viewGroup** parameter for top navigation nodes. The children nodes will automatically be considered as part of the same view group. 
-
-Nodes belonging to the same view group are always rendered in their own view group iframe. Nodes not belonging to any view group follow the same-origin iframe rendering policy. 
-
-The view groups feature also offers out-of-the-box caching. Each time you navigate to another view group, either a new iframe is created or it is reused if already exists. In both cases, the iframe you are navigating from becomes hidden and is available for you to use again. If you navigate back to the first iframe and it should be updated with new data, such when a new entry was added in the second iframe and you want to display it in a table in the first iframe, you must define a **preloadUrl** parameter for a given view in the view group to ensure that the view is refreshed when you navigate back to it. 
-
-You can also preload view groups. You just need to define which URL you want to preload, and Luigi will preload the view after some user interactions when the browser is most likely to be idle. This option is active by default, but you can deactivate it with a [configuration flag](navigation-parameters-reference.md#node-parameters).
-
-For more information on setting caching with view refreshing and preloading for view groups, read [this document](navigation-parameters-reference.md#node-parameters).

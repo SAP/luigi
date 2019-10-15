@@ -18,13 +18,13 @@ Luigi.setConfig({
     nodeAccessibilityResolver: function (nodeToCheckPermissionFor, parentNode, currentContext) {},
   viewGroupSettings: {
     main: {
-      preloadUrl: 'https://my-site.com/index.html#/preload',
+      preloadUrl: 'https://example.com/index.html#/preload',
     },
     projects: {
-      preloadUrl: 'https://my-site.com/projects.html#/preloading',
+      preloadUrl: 'https://example.com/projects.html#/preloading',
     },
     envs: {
-      preloadUrl: 'https://my-site.com/environments-details.html#/preload-view',
+      preloadUrl: 'https://example.com/environments-details.html#/preload-view',
     }
   },
   nodes: [
@@ -32,7 +32,7 @@ Luigi.setConfig({
     {
       pathSegment: 'settings',
       label: 'Settings',
-      viewUrl: 'https://admin.mydomain.com/settings',
+      viewUrl: 'https://example.com/settings',
       viewGroup: 'settingsGroup',
       // optional
       children: [node, node, node],
@@ -63,29 +63,29 @@ Luigi.setConfig({
       viewGroup: 'main',
       pathSegment: 'overview',
       label: 'Overview',
-      viewUrl: 'https://my-site.com/index.html#/overview'
+      viewUrl: 'https://example.com/index.html#/overview'
     },
     {
       viewGroup: 'main',
       pathSegment: 'preload',
-      viewUrl: 'https://my-site.com/index.html#/preload'
+      viewUrl: 'https://example.com/index.html#/preload'
     },
     {
       viewGroup: 'projects',
       pathSegment: 'projects',
       label: 'Projects',
-      viewUrl: 'https://my-site.com/projects.html#/list',
+      viewUrl: 'https://example.com/projects.html#/list',
       children: [
         {
           pathSegment: 'preloading',
-          viewUrl: 'https://my-site.com/projects.html#/preloading'
+          viewUrl: 'https://example.com/projects.html#/preloading'
         }
       ]
     },
     {
       viewGroup: 'envs',
       pathSegment: 'create-environment',
-      viewUrl: 'https://my-site.com/environments.html#/create',
+      viewUrl: 'https://example.com/environments.html#/create',
       context: {
         label: 'Create Environment'
       }
@@ -93,15 +93,15 @@ Luigi.setConfig({
     {
       viewGroup: 'envs',
       pathSegment: 'environments',
-      viewUrl: 'https://my-site.com/environments-details.html#/list',
+      viewUrl: 'https://example.com/environments-details.html#/list',
       children: [
         {
           pathSegment: 'preload',
-          viewUrl: 'https://my-site.com/environments-details.html#/preload-view'
+          viewUrl: 'https://example.com/environments-details.html#/preload-view'
         },
         {
           pathSegment: 'env1',
-          viewUrl: 'https://my-site.com/environments-details.html#/details/env1'
+          viewUrl: 'https://example.com/environments-details.html#/details/env1'
         }
       ]
     }
@@ -128,7 +128,7 @@ Luigi.setConfig({
           testId: 'myTestId',
           label: 'Luigi in Github',
           externalLink: {
-            url: 'https://github.com/SAP/luigi',
+            url: 'https://luigi-project.io/',
             sameWindow: false
           }
         },
@@ -149,7 +149,7 @@ Luigi.setConfig({
           label: 'Luigi in Github',
           testId: 'myTestId',
           externalLink: {
-            url: 'https://github.com/SAP/luigi',
+            url: 'https://luigi-project.io/',
             sameWindow: false
           }
         },
@@ -227,6 +227,7 @@ The node parameters are as follows:
   -   **size** **(`"l"` \| `"m"` \| `"s"`)** size of the modal (optional, default `"l"`)
 - **onNodeActivation** is an optional function executed when a request to navigate to the node occurs. As an input parameter, the function receives the node object as described in the configuration. This function can return results synchronously or asynchronously. If the function returns boolean `false`, the navigation is not triggered, otherwise, navigation renders as usual.
 - **clientPermissions.changeCurrentLocale** current locale can be changed from client using the corresponding API if this is set to `true`
+- **tabNav** is a boolean which renders the children of the node as a horizontal navigation bar. Sub-children are not supported. When you categorize nodes you will get a drop-down menu in the horizontal navigation.
 
 ## Context switcher
 
@@ -265,6 +266,7 @@ The profile section is a configurable drop-down list available in the top naviga
   - **externalLink** is an object which indicates that the node links to an external URL. If this parameter is defined, the **link** parameter is ignored. It has the following properties:
     - **sameWindow** defines if the external URL is opened in the current tab or in a new one. The default value for this parameter is `false`.
     - **url** is the external URL that the link leads to.
+- **staticUserInfoFn** is a function that is used to retrieve a user's name and email to simulate a login. It can be used when authorization is disabled and also gets called if the defined IDP provider does not have `settings.userInfoFn` defined or does not provide a `userInfo` function internally. It can be asynchronous and should return an object with `name`, `email` and `picture` properties.
 >**NOTE:** Neither authorization nor profile property are configured if the profile section in the top navigation bar is not visible.
 
 ## Product switcher

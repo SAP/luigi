@@ -39,6 +39,21 @@ jobs:
       before_cache:
         - rm -rf ~/.npm/_logs
         - rm -rf ~/.npm/_cacache
+
+    #----- WHITESOURCE -----
+    - name: 'Whitesource check'
+      if: repo = SAP/luigi AND (branch = master)
+      script:
+        - 'if [ ! -z "${WHITESOURCE_APIKEY}" ]; then
+            npm --prefix ./website/landingpage/dev install ./website/landingpage/dev;
+            npm --prefix ./website/fiddle install ./website/fiddle;
+            lerna bootstrap --ci --ignore "*luigi-sample-vue";
+            npm i -g whitesource;
+            bash ./scripts/whiteSource.sh;
+          fi'
+      before_cache:
+        - rm -rf ~/.npm/_logs
+        - rm -rf ~/.npm/_cacache
       
     #----- UNIT -----
     # - name: 'Unit Tests'
@@ -74,7 +89,8 @@ jobs:
       # run only when merging from release-v branch to master
       # if: repo = SAP/luigi AND head_branch ~= ^release-v
       if: repo = SAP/luigi AND (branch = master OR branch ~= ^release-v)
-      script: bash ./scripts/npmPublish.sh
+      script:
+        - bash ./scripts/npmPublish.sh
       before_cache:
         - rm -rf ~/.npm/_logs
         - rm -rf ~/.npm/_cacache

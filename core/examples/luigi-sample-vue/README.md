@@ -6,7 +6,7 @@ This is the Vue.JS-based sample application which runs with Luigi framework.
 
 ## Development
 
-Linking and building with [Lerna](https://lernajs.io/) is the preferred development method. This monorepo uses Lerna for project management. 
+Linking and building with [Lerna](https://lerna.js.org) is the preferred development method. This monorepo uses Lerna for project management. 
 
 To run this application, follow these steps:
 

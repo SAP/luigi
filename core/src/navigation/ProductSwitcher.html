@@ -1,4 +1,4 @@
-<svelte:window on:resize="setViewportHeightVariable()"/>
+<svelte:window on:resize="{setViewportHeightVariable}"/>
 {#if productSwitcherItems && productSwitcherItems.length &&
 Object.keys(productSwitcherItems[0]).length }
 <!-- DESKTOP VERSION (popover): -->
@@ -6,14 +6,14 @@ Object.keys(productSwitcherItems[0]).length }
 <div class="fd-shellbar__action fd-shellbar__action--collapsible">
   <div class="fd-product-switcher">
     <div class="fd-popover fd-popover--right">
-      <div class="fd-popover__control" on:click="event.stopPropagation()">
+      <div class="fd-popover__control" on:click|stopPropagation="{() => {}}">
         <!-- default: sap-icon--grid -->
         {#if hasOpenUIicon(config)}
         <button
           class="fd-button--shell sap-icon--{config.icon}"
           aria-expanded="{dropDownStates.productSwitcherPopover || false}"
           aria-haspopup="true"
-          on:click="toggleDropdownState()"
+          on:click|stopPropagation="{toggleDropdownState}"
           title="{config.label}"
           data-testid="{getTestId(config)}"
         ></button>
@@ -22,7 +22,7 @@ Object.keys(productSwitcherItems[0]).length }
           class="fd-button--shell"
           aria-expanded="{dropDownStates.productSwitcherPopover || false}"
           aria-haspopup="true"
-          on:click="toggleDropdownState()"
+          on:click|stopPropagation="{toggleDropdownState}"
           title="{config.label}"
           data-testid="{getTestId(config)}"
         >
@@ -41,7 +41,7 @@ Object.keys(productSwitcherItems[0]).length }
               {#each productSwitcherItems as productSwitcherItem}
               {#if productSwitcherItem.label}
               <li
-                on:click="onActionClick(productSwitcherItem)"
+                on:click="{() => onActionClick(productSwitcherItem)}"
                 data-testid="{getTestId(productSwitcherItem)}"
               >
                 <a class="fd-menu__item">
@@ -56,7 +56,7 @@ Object.keys(productSwitcherItems[0]).length }
                   </span>
                   <span
                     class="fd-product-switcher__product-title"
-                  >{$getTranslation(productSwitcherItem.label)}</span>
+                  >{getNodeLabel(productSwitcherItem)}</span>
                 </a>
               </li>
               {/if}
@@ -71,123 +71,91 @@ Object.keys(productSwitcherItems[0]).length }
 {/if}
 <!-- MOBILE VERSION (fullscreen modal): -->
 {#if isMobile && dropDownStates.productSwitcherPopover}
-<section class="fd-product-switcher">
-  <div
-    class="fd-modal y-fd-modal--full-screen"
-    on:click="event.stopPropagation()"
-  >
-    <div class="fd-modal__content" role="document">
-      <div class="fd-action-bar">
-        <div class="fd-action-bar__back">
-          <button
-            class="fd-button--light fd-button--compact sap-icon--nav-back"
-            on:click="toggleDropdownState(event)"
-            data-testid="mobile-product-switcher-close"
-          ></button>
-        </div>
-        <div class="fd-action-bar__header">
-          <h5 class="fd-action-bar__title fd-has-type-1">{config.label}</h5>
-        </div>
-      </div>
-      <div class="fd-modal__body">
-        <div class="fd-product-switcher__body">
-          <ul class="y-full-width-list">
-            {#each productSwitcherItems as productSwitcherItem}
-            {#if productSwitcherItem.label}
-            <li
-              on:click="onActionClick(productSwitcherItem)"
-              class="y-full-width-list__item"
-              data-testid="{getTestId(productSwitcherItem)}"
-            >
-              <span
-                class="y-full-width-list__icon {productSwitcherItem.icon && hasOpenUIicon(productSwitcherItem) ? 'sap-icon--' + productSwitcherItem.icon + ' sap-icon--m' : '' }"
-              >
-                {#if !hasOpenUIicon(productSwitcherItem)}
-                <img
-                  src="{productSwitcherItem.icon}"
-                >
-                {/if}
-              </span>
-              <span
-                class="y-full-width-list__title"
-              >{$getTranslation(productSwitcherItem.label)}</span>
-            </li>
-            {/if}
-            {/each}
-          </ul>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
+<MobileTopNav
+  on:click="{toggleDropdownState}"
+  on:listClick="{onActionClickExternal}"
+  nodes="{productSwitcherItems}"
+  label="{config.label}"
+  {hasOpenUIicon}
+  {getNodeLabel}
+  {getTestId}
+/>
 {/if}
 {/if}
-<script type="text/javascript">
-  import { LuigiConfig } from '../core-api';
+
+<script>
+  import MobileTopNav from './MobileTopNavDropDown.html';
+  import { createEventDispatcher, onMount, getContext } from 'svelte';
+  import { LuigiConfig, LuigiI18N } from '../core-api';
   import { Routing } from '../services/routing';
   import { StateHelpers } from '../utilities/helpers';
   import { NavigationHelpers } from '../utilities/helpers';
 
-  export default {
-    async oncreate() {
-      StateHelpers.doOnStoreChange(
-        this.store,
-        async () => {
-          const config = NavigationHelpers.getProductSwitcherConfig();
-          this.set({ config });
-          if (config) {
-            const productSwitcherItems = await LuigiConfig.getConfigValueAsync(
-              'navigation.productSwitcher.items'
-            );
-            this.set({
-              productSwitcherItems
-            });
-          }
-          this.setViewportHeightVariable();
-        },
-        ['navigation.productSwitcher']
-      );
-    },
-    methods: {
-      onActionClick(productSwitcherItem) {
-        this.root.getUnsavedChangesModalPromise().then(() => {
-          Routing.navigateToLink(productSwitcherItem);
-        });
-        this.toggleDropdownState();
-      },
-      toggleDropdownState(event = null) {
-        if (event) event.stopPropagation();
-        this.fire('toggleDropdownState');
-      },
-      setViewportHeightVariable() {
-        // get the viewport height and multiple it by 1% to get a value for a vh unit
-        let vh = window.innerHeight * 0.01;
-        // set the value in the --vh custom property to the root of the document
-        document.documentElement.style.setProperty('--vh', `${vh}px`);
-      }
-    },
-    helpers: {
-      hasOpenUIicon(node) {
-        return NavigationHelpers.isOpenUIiconName(node.icon);
-      },
-      getTestId(node) {
-        return node.testId
-          ? node.testId
-          : NavigationHelpers.prepareForTests(node.label);
-      }
-    }
-  };
-</script>
-<style type="text/scss">
-  $topNavHeight: 48px;
-  $productSwitcherHeight: 64px;
+  const dispatch = createEventDispatcher();
 
-  :global(.fd-popover__body) {
-    overflow: auto;
-    max-height: calc(100vh - 50px);
-    max-height: calc(var(--vh, 1vh) * 100 - 50px);
+  export let productSwitcherItems;
+  export let isMobile;
+  export let config;
+  export let dropDownStates;
+  let store = getContext('store');
+  let getUnsavedChangesModalPromise = getContext('getUnsavedChangesModalPromise');
+
+  onMount(async () => {
+    StateHelpers.doOnStoreChange(
+      store,
+      async () => {
+        config = NavigationHelpers.getProductSwitcherConfig();
+        if (config) {
+          productSwitcherItems = await LuigiConfig.getConfigValueAsync(
+            'navigation.productSwitcher.items'
+          );
+        }
+        setViewportHeightVariable();
+      },
+      ['navigation.productSwitcher']
+    );
+  });
+
+  // [svelte-upgrade suggestion]
+  // review these functions and remove unnecessary 'export' keywords
+  export function onActionClick(productSwitcherItem) {
+    getUnsavedChangesModalPromise().then(() => {
+      Routing.navigateToLink(productSwitcherItem);
+    });
+    toggleDropdownState();
   }
 
+  export function onActionClickExternal(event) {
+    onActionClick(event.detail);
+  }
+
+  export function toggleDropdownState() {
+    dispatch('toggleDropdownState');
+  }
+
+  export function setViewportHeightVariable() {
+    // get the viewport height and multiple it by 1% to get a value for a vh unit
+    let vh = window.innerHeight * 0.01;
+    // set the value in the --vh custom property to the root of the document
+    document.documentElement.style.setProperty('--vh', `${vh}px`);
+  }
+
+  function hasOpenUIicon(node) {
+    return NavigationHelpers.isOpenUIiconName(node.icon);
+  }
+
+  function getNodeLabel(node) {
+    return LuigiI18N.getTranslation(node.label);
+  }
+
+  function getTestId(node) {
+    return node.testId
+      ? node.testId
+      : NavigationHelpers.prepareForTests(node.label);
+  }
+</script>
+
+<style type="text/scss">
   .fd-product-switcher {
     position: relative;
     display: block;
@@ -197,79 +165,16 @@ Object.keys(productSwitcherItems[0]).length }
   }
 
   .fd-product-switcher__body {
+    overflow: auto;
+    max-height: calc(100vh - 50px);
+    max-height: calc(var(--vh, 1vh) * 100 - 50px);
+
     .fd-menu__item {
       padding: 0;
       text-align: center;
 
       &:hover {
         background-color: transparent;
-      }
-    }
-  }
-
-  .y-fd-modal--full-screen {
-    z-index: 1000;
-    position: fixed;
-    box-sizing: border-box;
-    top: $topNavHeight;
-    left: 0;
-    margin: auto auto;
-
-    .fd-modal__content {
-      $margin: 0px; //distance from viewport borders. Please remove the line below (border-radius) if not set to 0.
-      border-radius: 0;
-
-      width: calc(100vw - 2 * #{$margin});
-      height: 100vh; /* Fallback for browsers that do not support Custom Properties */
-      height: calc(var(--vh, 1vh) * 100);
-      margin: $margin;
-      display: grid;
-      grid-template-rows: 1fr auto; //no row for title by default
-    }
-
-    .fd-modal__header {
-      padding: 12px 8px;
-    }
-
-    .fd-modal__title {
-      text-align: left;
-      @at-root {
-        .y-fd-modal--full-screen .fd-modal__content {
-          grid-template-rows: auto 1fr auto; //add another row to the top of the modal if __title is present
-        }
-      }
-    }
-    .fd-modal__body {
-      max-height: calc(100vh - #{$topNavHeight} - #{$productSwitcherHeight});
-      max-height: calc(
-        var(--vh, 1vh) * 100 - #{$topNavHeight} - #{$productSwitcherHeight}
-      );
-      padding: 0;
-      -webkit-overflow-scrolling: touch;
-    }
-
-    .fd-modal__footer {
-      box-shadow: 0 0px 6px rgba(0, 0, 0, 0.2);
-    }
-
-    .fd-product-switcher__body {
-      padding: 0;
-    }
-  }
-
-  @media (min-width: 320px) {
-    .fd-action-bar__back {
-      display: block !important;
-    }
-  }
-
-  @media (max-width: 1023px) {
-    .y-full-width-list {
-      &__icon {
-        img {
-          width: 16px;
-          vertical-align: top;
-        }
       }
     }
   }
@@ -283,34 +188,6 @@ Object.keys(productSwitcherItems[0]).length }
           }
         }
       }
-    }
-  }
-
-  .y-full-width-list {
-    width: 100%;
-    text-align: left;
-    list-style: none;
-
-    &__item {
-      display: block;
-      padding: 12px 15px;
-      cursor: pointer;
-      cursor: pointer;
-
-      &:hover {
-        background: #f5faff;
-        .y-full-width-list__title {
-          font-weight: bold;
-        }
-      }
-    }
-
-    &__title {
-      color: #515559;
-    }
-
-    &__subtitle {
-      color: #74777a;
     }
   }
 </style>

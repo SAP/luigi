@@ -1,7 +1,7 @@
 {
-  "name": "foundation-zurb-template",
+  "name": "luigi-landingpage",
   "version": "1.0.0",
-  "description": "Official ZURB Template for Foundation for Sites.",
+  "description": "Luigi landingpage template",
   "main": "gulpfile.babel.js",
   "scripts": {
     "start": "gulp",
@@ -13,7 +13,7 @@
     "foundation-sites": "^6.5.1",
     "jquery": "^3.2.1",
     "motion-ui": "^2.0.3",
-    "what-input": "^5.1.2"
+    "what-input": "^5.2.6"
   },
   "devDependencies": {
     "@babel/core": "^7.1.2",

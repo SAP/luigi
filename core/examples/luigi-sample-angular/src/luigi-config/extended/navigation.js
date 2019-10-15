@@ -127,8 +127,12 @@ class Navigation {
     {
       category: { label: 'Messages', icon: 'lightbulb' },
       label: 'Errors',
+      pathSegment: 'errors',
       viewUrl: '/sampleapp.html#/projects/pr1/dynamic/errors',
       icon: 'alert',
+      context: {
+        label: 'Errors'
+      },
       badgeCounter: {
         label: 'Number of Errors',
         count: () => 2
@@ -137,8 +141,12 @@ class Navigation {
     {
       category: 'Messages',
       label: 'Warnings',
+      pathSegment: 'warnings',
       viewUrl: '/sampleapp.html#/projects/pr1/dynamic/warnings',
       icon: 'message-warning',
+      context: {
+        label: 'Warnings'
+      },
       badgeCounter: {
         label: 'Number of Warnings',
         count: () => 5
@@ -147,8 +155,12 @@ class Navigation {
     {
       category: 'Messages',
       label: 'Notifications',
+      pathSegment: 'notifications',
       viewUrl: '/sampleapp.html#/projects/pr1/dynamic/notifications',
       icon: 'ui-notifications',
+      context: {
+        label: 'Notifications'
+      },
       badgeCounter: {
         label: 'Number of Notifications',
         count: getMockBadgeCount
@@ -269,6 +281,14 @@ class Navigation {
         link: '/projects/pr3'
       });
     }
+    if (projectExists('pr4')) {
+      items.push({
+        icon:
+          'https://pbs.twimg.com/profile_images/1143452953858183170/QLk-HGmK_bigger.png',
+        label: 'Project 4',
+        link: '/projects/pr4'
+      });
+    }
     return items;
   };
 
@@ -318,7 +338,16 @@ class Navigation {
       label: 'End session'
       // icon: "sys-cancel",
     },
-    items: this.getProfileItems
+    items: this.getProfileItems,
+    staticUserInfoFn: () => {
+      return new Promise(resolve => {
+        resolve({
+          name: 'Luigi Static User',
+          email: 'other.luigi.user@example.com',
+          picture: '/assets/github-logo.png'
+        });
+      });
+    }
   };
 
   appSwitcher = {

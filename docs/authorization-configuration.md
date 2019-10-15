@@ -1,5 +1,7 @@
 # Authorization configuration
 
+>**NOTE:** For learning and testing purposes, use the [Luigi Fiddle](https://fiddle.luigi-project.io) page where you can configure a sample Luigi application.
+
 Luigi provides OpenID Connect and OAuth2 Implicit Grant authorization out of the box. The **use** key defines the active authorization provider and the **disableAutoLogin** key allows you to disable the automatic login flow that is provided by default.
 
 ````
@@ -20,7 +22,7 @@ The following code snippet demonstrates how to configure authorization using Ope
 auth: {
   use: 'openIdConnect',
   openIdConnect: {
-    authority: 'https://example-authority.com',
+    authority: 'https://example.com',
     client_id: 'client',
     scope: 'audience:server:client_id:client openid profile email groups',
     redirect_uri: '',
@@ -51,8 +53,8 @@ The following code snippet demonstrates how to configure authorization using OAu
 auth: {
   use: 'oAuth2ImplicitGrant',
   oAuth2ImplicitGrant: {
-    authorizeUrl: 'https://example-url.com/authorize',
-    logoutUrl: 'https://example-url.com/logout',
+    authorizeUrl: 'https://example.com/authorize',
+    logoutUrl: 'https://example.com/logout',
     oAuthData: {
       client_id: 'egDuozijY5SVr0NSIowUP1dT6RVqHnlp'
       scope: '',
@@ -107,12 +109,13 @@ export class CustomAuthenticationProvider {
     setTokenExpireSoonAction() {}
 
     generateNonce(){
-        //returns a string 
+        // returns a string
     }
 
     userInfo(){
         // logic to get some user information
-        // returns a promise of a userinfo object which contains a user name and/or email to display in the profile dropdown menu
+        // returns a promise of a userinfo object which contains an object with `name`, `email` and `picture` properties to display in the profile dropdown menu
+        return { name, email, picture };
     }
 }
 ````

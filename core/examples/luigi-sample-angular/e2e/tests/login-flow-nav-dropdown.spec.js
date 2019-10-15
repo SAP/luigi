@@ -38,7 +38,8 @@ describe('Login Flow', () => {
     cy.expectPathToBe('/projects');
     cy.selectContextSwitcherItem('Remove Project');
     cy.expectPathToBe('/projects');
-
+    cy.selectContextSwitcherItem('Remove Project');
+    cy.expectPathToBe('/projects');
     cy.get('[data-testid="luigi-topnav-profile"]').click();
     cy.get('[data-testid="luigi-topnav-profile-item"]').should(
       'not.contain',
@@ -149,7 +150,7 @@ describe('TopNavDropDown', () => {
         '[data-e2e="mobile-topnav-dropdown-category"][title="Misc"]'
       ).click();
 
-      cy.get('[data-e2e="mobile-topnav-dropdown-item"]')
+      cy.get('[data-e2e="mobile-topnav-item"]')
         .contains('Visible for all users')
         .click();
 
@@ -165,7 +166,7 @@ describe('TopNavDropDown', () => {
       ).click();
 
       //close mobile topnav dropdown
-      cy.get('[data-testid="mobile-topnav-dropdown-close"]').click();
+      cy.get('[data-testid="mobile-topnav-close"]').click();
 
       //no mobile topnav dropdown is visible
       cy.get('.fd-product-switcher').should('not.be.visible');
