@@ -44,7 +44,8 @@ class SplitViewSvcClass {
     const iframe = IframeHelpers.createIframe(
       viewUrl,
       undefined,
-      component.get().currentNode
+      component.get().currentNode,
+      'split-view'
     );
     const iframeCtn = document.querySelector('.iframeSplitViewCnt');
     iframeCtn.appendChild(iframe);

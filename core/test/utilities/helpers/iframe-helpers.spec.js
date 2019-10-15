@@ -22,6 +22,7 @@ describe('Iframe-helpers', () => {
 
     sinon.stub(GenericHelpers);
     GenericHelpers.getRandomId.returns('abc');
+    GenericHelpers.isFunction.callThrough();
   });
   afterEach(() => {
     if (document.createElement.restore) {
@@ -58,6 +59,22 @@ describe('Iframe-helpers', () => {
       sinon.stub(LuigiConfig, 'getConfigValue').returns(allowRules);
       const iframe = IframeHelpers.createIframe('http://luigi.url.com/');
       assert.equal(iframe.allow, 'microphone geolocation');
+    });
+
+    it('createIframe with interceptor', () => {
+      const icf = () => {};
+      const interceptor = sinon.spy(icf);
+      sinon
+        .stub(LuigiConfig, 'getConfigValue')
+        .withArgs('settings.iframeCreationInterceptor')
+        .returns(interceptor);
+      const iframe = IframeHelpers.createIframe(
+        'http://luigi.url.com/',
+        'vg1',
+        null,
+        'main'
+      );
+      assert(interceptor.calledWith(iframe, 'vg1', 'main'));
     });
   });
 
