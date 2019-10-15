@@ -1,13 +1,6 @@
 .s-intro {
-  margin-top: -500px;
-  padding-top: 500px;
-
-  @include breakpoint(large) {
-    padding-top: calc(500px + 60px);
-  }
 
   @include breakpoint(xlarge) {
-    padding-top: calc(500px + 100px);
 
     .wr {
       position: relative;
@@ -170,9 +163,5 @@
     .item {
       margin: 0 30px 30px;
     }
-  }
-
-  .title-2 {
-    margin-bottom: 3em;
   }
 }

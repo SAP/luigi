@@ -1,0 +1,27 @@
+.features-list {
+
+  li {
+    margin-bottom: 70px;
+  }
+
+  img {
+    height: 70px;
+    margin-bottom: 40px;
+  }
+
+  .title-3 {
+    position: relative;
+    width: 65%;
+
+    &:before {
+      position: absolute;
+      top: 17px;
+      left: -20px;
+      content: '';
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: $primary-color;
+    }
+  }
+}

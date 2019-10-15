@@ -74,6 +74,10 @@ ul {
   line-height: 1.25;
   margin-bottom: 1em;
 
+  &.has-big-margin {
+    margin-bottom: 3em;
+  }
+
   @include breakpoint(large) {
     font-size: 30px;
   }
@@ -99,7 +103,8 @@ ul {
   }
 }
 
-section {
+section,
+.row {
   &.is-centered {
     text-align: center;
   }
@@ -194,6 +199,20 @@ p {
   
     @include breakpoint(large) {
       padding: 100px 0;
+    }
+
+    &.s-intro {
+      margin-top: -500px;
+      padding-top: 500px;
+
+      @include breakpoint(large) {
+        padding-top: calc(500px + 60px);
+      }
+
+      @include breakpoint(xlarge) {
+        padding-top: calc(500px + 100px);
+
+      }
     }
   }
 }

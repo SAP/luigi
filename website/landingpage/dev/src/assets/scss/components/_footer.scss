@@ -1,10 +1,11 @@
 .p-footer {
   color: $white;
   position: relative;
+  background: url('../img/footer_bg.svg') no-repeat 41% 50%;
   z-index: 2;
 
-  &--home {
-    background: url('../img/footer_bg.svg') no-repeat 41% 50%;
+  //&--home {
+    
     background-size: auto 100%;
 
     @include breakpoint(large) {
@@ -22,7 +23,7 @@
       background-size: 150% 100%;
       padding-top: 6vw;
     }
-  }
+  //}
 
   .s-stage {
     margin-bottom: 60px;
