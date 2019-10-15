@@ -140,12 +140,27 @@ section,
 
   .main-content & {
     &:last-child {
-      margin-bottom: -300px;
-      padding-bottom: 300px;
+      margin-bottom: -100px;
+      padding-bottom: calc(100px + 50px);
+
+      @include breakpoint(large) {
+        margin-bottom: -150px;
+        padding-bottom: calc(150px + 50px);
+      }
 
       @include breakpoint(xxlarge) {
-        margin-bottom: -500px;
-        padding-bottom: calc(500px + 100px);
+        margin-bottom: -200px;
+        padding-bottom: calc(200px + 100px);
+      }
+
+      &.has-big-bottom-margin {
+        margin-bottom: -300px;
+        padding-bottom: 300px;
+
+        @include breakpoint(xxlarge) {
+          margin-bottom: -500px;
+          padding-bottom: calc(500px + 100px);
+        }
       }
     }
   }
@@ -191,6 +206,43 @@ a {
 
 p {
   margin-bottom: 2em;
+}
+
+.list-type-1 {
+
+  font-size: 15px;
+  line-height: 1.2em;
+  font-weight: 600;
+
+
+  li {
+    margin-bottom: 15px;
+
+    a {
+      display: inline-block;
+      position: relative;
+      color: $body-font-color;
+      padding-right: 25px;
+
+      &:after {
+        position: absolute;
+        top: 2px;
+        right: 0;
+        content: '';
+        width: 6px;
+        height: 6px;
+        border-radius: 50%;
+        width: 16px;
+        height: 16px;
+        background: url('../img/link-arrow.svg') no-repeat 50% 50%;
+        background-size: auto;
+      }
+
+      &:hover {
+        color: $primary-color;
+      }
+    }
+  }
 }
 
 .main-content {

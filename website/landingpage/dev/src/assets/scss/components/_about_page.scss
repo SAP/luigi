@@ -4,6 +4,15 @@
     margin-bottom: 70px;
   }
 
+  .wr {
+
+    margin: 0 5%;
+
+    @include breakpoint(xxlarge) {
+      margin: 0 15%;
+    }
+  }
+
   img {
     height: 70px;
     margin-bottom: 40px;
@@ -11,7 +20,6 @@
 
   .title-3 {
     position: relative;
-    width: 65%;
 
     &:before {
       position: absolute;
@@ -24,4 +32,22 @@
       background: $primary-color;
     }
   }
+
+  .description {
+    margin-bottom: 0;
+  }
+}
+
+.content-wrapper {
+  p {
+    &:last-child {
+      margin-bottom: 0;
+    }
+  }
+}
+
+.sticky-navigation {
+  border-top: 1px solid $powder-blue;
+  border-bottom: 1px solid $powder-blue;
+  padding: 25px 0;
 }

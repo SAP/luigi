@@ -1,11 +1,30 @@
 .p-footer {
   color: $white;
   position: relative;
-  background: url('../img/footer_bg.svg') no-repeat 41% 50%;
+  background: url('../img/default_footer_bg.svg') no-repeat 30% 100%;
+  background-size: auto 100%;
+  padding-top: 70px;
   z-index: 2;
 
-  //&--home {
+  @include breakpoint(large) {
+    background-position: 60% 100%;
+    background-size: auto 100%;
+    padding-top: 12vw;
+  }
+
+  @include breakpoint(xxlarge) {
+    background-size: 130% 100%;
+  }
+
+  @include breakpoint(huge) {
+    background-position: 30% 100%;
+    background-size: 130% 100%;
+    padding-top: 9vw;
+  }
+
+  &--home {
     
+    background: url('../img/footer_bg.svg') no-repeat 41% 50%;
     background-size: auto 100%;
 
     @include breakpoint(large) {
@@ -23,7 +42,7 @@
       background-size: 150% 100%;
       padding-top: 6vw;
     }
-  //}
+  }
 
   .s-stage {
     margin-bottom: 60px;
