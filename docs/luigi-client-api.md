@@ -502,11 +502,11 @@ Use the UX Manager to manage the appearance features in Luigi.
 
 ### showLoadingIndicator
 
-Adds a backdrop with a loading indicator for the micro frontend frame. This overrides the [loadingIndicator.enabled](navigation-configuration.md#nodes) setting.
+Adds a backdrop with a loading indicator for the micro frontend frame. This overrides the [loadingIndicator.enabled](navigation-parameters-reference.md#node-parameters) setting.
 
 ### hideLoadingIndicator
 
-Removes the loading indicator. Use it after calling [showLoadingIndicator()](#showLoadingIndicator) or to hide the indicator when you use the [loadingIndicator.hideAutomatically: false](navigation-configuration.md#nodes) node configuration.
+Removes the loading indicator. Use it after calling [showLoadingIndicator()](#showLoadingIndicator) or to hide the indicator when you use the [loadingIndicator.hideAutomatically: false](navigation-parameters-reference.md#node-parameters) node configuration.
 
 ### addBackdrop
 
