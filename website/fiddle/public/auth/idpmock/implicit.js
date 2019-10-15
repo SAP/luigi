@@ -1,4 +1,5 @@
 window.onload = function () {
+    const loginButton = document.getElementById('login-button');
     const redirectUrl = decodeURIComponent(window.location.href.match(/redirect_uri=(.*?)(&|$)/)[1]);
     if(redirectUrl.indexOf('https://fiddle.luigi-project.io/') == 0) {        
         const state = decodeURIComponent(window.location.href.match(/state=(.*?)(&|$)/)[1]);
@@ -12,7 +13,7 @@ window.onload = function () {
           nAiOiJtYXNrb3BhdG9sIiwibm9uY2UiOiJidE5rWVZzc1FldVlWNmEyR1RVZm1wWVFFelBRN3c1ZENCbU54SG54IiwiZW
           1haWwiOiJsdWlnaXVzZXJAa3ltYS5jeCJ9.80GanA3z-Rl67VQAb-lvMNpDZKcVI32CQZIoM9imF5w&
           token_type=bearer`;
-        const loginButton = document.getElementById('login-button');
+        
         loginButton.addEventListener('click', function (ev) {
             ev.preventDefault();
             window.location = removeIndent(goTo);
