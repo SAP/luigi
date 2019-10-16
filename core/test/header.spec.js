@@ -3,7 +3,10 @@ const assert = require('chai').assert;
 const sinon = require('sinon');
 
 describe('Header', function() {
+  let clock;
+
   afterEach(() => {
+    clock.restore();
     sinon.restore();
   });
 
@@ -22,6 +25,7 @@ describe('Header', function() {
     };
 
     beforeEach(() => {
+      clock = sinon.useFakeTimers();
       let componentData = {};
       component = {
         get: () => componentData,
@@ -30,7 +34,9 @@ describe('Header', function() {
         },
         store: {
           on: (e, cb) => {},
-          get: () => {}
+          get: () => {},
+          subscribe: fn => fn(),
+          subscribeToScope: () => {}
         }
       };
       sinon.spy(component, 'set');
@@ -94,7 +100,7 @@ describe('Header', function() {
       };
       setHeaderSettings(headerSettings);
 
-      component.refs = {
+      component.set({
         logo: {
           style: {
             backgroundImage: null
@@ -105,17 +111,23 @@ describe('Header', function() {
             backgroundImage: null
           }
         }
-      };
+      });
 
       // when
       await headerService.processHeaderSettings(component);
+
+      clock.tick(100);
 
       // then
       assert(
         component.set.calledWith({ hasLogo: true }),
         'component set() hasLogo'
       );
-      assert.equal(component.refs.logo.src, headerSettings.logo, 'header logo');
+      assert.equal(
+        component.get().logo.src,
+        headerSettings.logo,
+        'header logo'
+      );
     });
 
     it('should resolve favicon', async () => {

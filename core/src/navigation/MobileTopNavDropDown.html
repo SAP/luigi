@@ -1,6 +1,6 @@
 <div
   class="fd-modal y-fd-modal--full-screen"
-  on:click="event.stopPropagation()"
+  on:click|stopPropagation="{()=>{}}"
 >
   <div class="fd-modal__content" role="document">
     <div class="fd-action-bar">
@@ -21,7 +21,7 @@
         {#each nodes as node}
         <li
           class="y-full-width-list__item"
-          on:click="onActionClick(node)"
+          on:click="{() => onActionClick(node)}"
           data-e2e="mobile-topnav-item"
           data-testid="{getTestId(node)}"
         >
@@ -41,19 +41,26 @@
     </div>
   </div>
 </div>
-<script type="text/javascript">
+
+<script>
   import BadgeCounter from './BadgeCounter.html';
-  export default {
-    methods: {
-      onActionClick(value) {
-        this.fire('listClick', value);
-      }
-    },
-    components: {
-      BadgeCounter
-    }
-  };
+  import { createEventDispatcher } from 'svelte';
+
+  const dispatch = createEventDispatcher();
+
+  export let label;
+  export let nodes;
+  export let getTestId;
+  export let hasOpenUIicon;
+  export let getNodeLabel;
+
+  // [svelte-upgrade suggestion]
+  // review these functions and remove unnecessary 'export' keywords
+  export function onActionClick(value) {
+    dispatch('listClick', value);
+  }
 </script>
+
 <style type="text/scss">
   $topNavHeight: 48px;
   $mobileTopNavHeight: 64px;
