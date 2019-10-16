@@ -13,6 +13,6 @@ window.onload = function () {
 
     loginButton.addEventListener('click', function (ev) {
         ev.preventDefault();
-        window.location.replace(goTo);
+        window.location.replace(goTo.replace(/\s\s+/g, ''));
     });
 };
