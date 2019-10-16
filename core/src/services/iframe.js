@@ -81,6 +81,19 @@ class IframeClass {
     return vgSettings && vgSettings.preloadUrl;
   }
 
+  notifyInactiveIframe(iframe) {
+    const message = {
+      msg: 'luigi-client.inactive-microfrontend',
+      context: JSON.stringify({}),
+      nodeParams: JSON.stringify({}),
+      pathParams: JSON.stringify({}),
+      internal: JSON.stringify({
+        currentLocale: LuigiI18N.getCurrentLocale()
+      })
+    };
+    IframeHelpers.sendMessageToIframe(iframe, message);
+  }
+
   switchActiveIframe(container, newActiveIframe, removeCurrentActive) {
     const currentActiveIframe = this.getActiveIframe(container);
     if (currentActiveIframe !== newActiveIframe) {
@@ -105,6 +118,9 @@ class IframeClass {
                 })
               };
               IframeHelpers.sendMessageToIframe(child, message);
+            } else {
+              // notify viewgrouped iframe without preloadUrl
+              this.notifyInactiveIframe(child);
             }
           }
         }
@@ -229,6 +245,10 @@ class IframeClass {
           canCache ? componentData.viewGroup : undefined,
           component.get().currentNode
         );
+
+        if (node.firstChild) {
+          this.notifyInactiveIframe(node.firstChild);
+        }
         node.insertBefore(config.iframe, node.firstChild);
 
         if (config.builderCompatibilityMode) {
