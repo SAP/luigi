@@ -15,6 +15,12 @@ class Navigation {
     this.projectsNavProviderFn = projectsNavProviderFn;
   }
 
+  preloadViewGroups = true;
+  viewGroupSettings = {
+    tets: {
+      preloadUrl: '/sampleapp.html#/preload'
+    }
+  };
   nodeAccessibilityResolver = navigationPermissionChecker;
   nodes = [
     {
