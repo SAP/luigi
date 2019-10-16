@@ -5,13 +5,13 @@
 />
 {#if children && pathData.length > 1}
 <nav
-  class="fd-tabs {tabsfullscreen?'fd-tabs-fullscreen':''}"
+  class="fd-tabs"
   role="tablist"
   id="tabsContainer"
   on:toggleDropdownState="{event => toggleDropdownState(event.name)}"
 >
   <div class="tabsContainerWrapper">
-    <div class="tabsContainer luigi__internaltabscontainer">
+    <div class="tabsContainer luigi-tabsContainer">
       {#each Object.entries(children) as [key, nodes], index}
       {#if key === 'undefined' || key.indexOf(virtualGroupPrefix) === 0}
       {#each nodes as node, index2}
@@ -82,7 +82,7 @@
     </div>
   </div>
 
-  <div class="luigi__internaltabmorebtn">
+  <div class="luigi-tabsMoreButton">
     <span class="fd-tabs__item" on:click="{event => event.stopPropagation()}">
       <div class="fd-popover fd-popover--right">
         <a
@@ -146,8 +146,8 @@
     </span>
   </div>
 </nav>
-{/if}
 
+{/if}
 <script>
   import { beforeUpdate, createEventDispatcher, onMount } from 'svelte';
   import { Navigation } from './services/navigation';
@@ -158,7 +158,6 @@
   export let pathData;
   let previousPathData;
   export let hideNavComponent;
-  export let tabsfullscreen;
   export let virtualGroupPrefix = NavigationHelpers.virtualGroupPrefix;
   let selectedNode;
   export let selectedNodeForTabNav;
@@ -169,8 +168,17 @@
 
   //TODO refactor
   const __this = {
-    get: () => ({ children, pathData, hideNavComponent, tabsfullscreen, virtualGroupPrefix, selectedNode, selectedNodeForTabNav, dropDownStates, isMoreBtnExpanded }),
-    set: (obj) => {
+    get: () => ({
+      children,
+      pathData,
+      hideNavComponent,
+      virtualGroupPrefix,
+      selectedNode,
+      selectedNodeForTabNav,
+      dropDownStates,
+      isMoreBtnExpanded
+    }),
+    set: obj => {
       if (obj) {
         Object.getOwnPropertyNames(obj).forEach(prop => {
           if (prop === 'pathData') {
@@ -194,19 +202,15 @@
   const setTabNavData = async () => {
     const componentData = __this.get();
     let lastNode = [...pathData].pop();
-    const tabNavData = await Navigation.getTabNavData({...componentData}, componentData);
+    const tabNavData = await Navigation.getTabNavData(
+      { ...componentData },
+      componentData
+    );
     if (!tabNavData) {
       return;
     }
     __this.set({ ...tabNavData });
     previousPathData = pathData;
-    tabsfullscreen =
-      lastNode.hideSideNav !== false &&
-      (lastNode.hideSideNav ||
-        (lastNode.parent && lastNode.parent.hideSideNav) ||
-        tabNavData.selectedNodeForTabNav.hideSideNav ||
-        (tabNavData.selectedNodeForTabNav.parent &&
-          tabNavData.selectedNodeForTabNav.parent.hideSideNav));
     window['LEFTNAVDATA'] = tabNavData.groupedChildren;
     setTimeout(calcTabsContainer);
   };
@@ -214,11 +218,9 @@
   const calcTabsContainer = () => {
     clearTapNav();
     let tabsContainer = document.getElementsByClassName(
-      'luigi__internaltabscontainer'
+      'luigi-tabsContainer'
     )[0];
-    let morebtn = document.getElementsByClassName(
-      'luigi__internaltabmorebtn'
-    )[0];
+    let morebtn = document.getElementsByClassName('luigi-tabsMoreButton')[0];
     let moreLink = document.getElementsByClassName('luigi__more')[0];
     let moreBtnSelected = false;
     let tabsContainerOffsetWidth;
@@ -256,7 +258,7 @@
 
   const clearTapNav = () => {
     let tabsContainer = document.getElementsByClassName(
-      'luigi__internaltabscontainer'
+      'luigi-tabsContainer'
     )[0];
     let moreLink = document.getElementsByClassName('luigi__more')[0];
     let tabs = [...tabsContainer.children];
@@ -267,8 +269,8 @@
 
   onMount(() => {
     hideNavComponent = LuigiConfig.getConfigBooleanValue(
-        'settings.hideNavigation'
-      );
+      'settings.hideNavigation'
+    );
   });
 
   // [svelte-upgrade warning]
@@ -279,8 +281,8 @@
       setTabNavData();
     }
     if (
-      previousResizeTabNavToggle === undefined
-      || previousResizeTabNavToggle !== resizeTabNavToggle
+      previousResizeTabNavToggle === undefined ||
+      previousResizeTabNavToggle !== resizeTabNavToggle
     ) {
       previousResizeTabNavToggle = resizeTabNavToggle;
       setTabNavData();
@@ -340,36 +342,9 @@
   @import 'styles/mixins';
 
   $leftNavWidth: 320px;
-  .fd-tabs__link.has-child .label {
-    padding-right: 17px;
-  }
 
   .tabsContainer {
     width: 100%;
-  }
-
-  :global(.hide_element) {
-    display: none;
-  }
-
-  .hide_element {
-    display: none !important;
-  }
-
-  .fd-tabs__link.has-child .sap-icon--l {
-    position: absolute;
-    top: 0.7em;
-    right: 0;
-  }
-
-  .fd-side-nav__link.has-child {
-    padding-right: 40px;
-    background-position: right 15px center;
-  }
-
-  .fd-tabs__item {
-    white-space: nowrap;
-    display: inline-block;
   }
 
   .tabsContainerWrapper {
@@ -378,7 +353,7 @@
     flex-shrink: 1;
   }
 
-  .luigi__internaltabmorebtn {
+  .luigi-tabsMoreButton {
     .fd-menu {
       max-height: calc(100vh - 110px);
       overflow-y: scroll !important;
@@ -396,11 +371,37 @@
     position: absolute;
     right: 0;
     left: $leftNavWidth;
-  }
 
-  @media (max-width: 599px) {
-    .fd-tabs {
+    @media (max-width: 599px) {
       left: 0;
     }
+
+    &__item {
+      white-space: nowrap;
+      display: inline-block;
+
+      :global(&.hide_element) {
+        display: none;
+      }
+    }
+
+    &__link {
+      &.has-child {
+        .label {
+          padding-right: 17px;
+        }
+
+        .sap-icon--l {
+          position: absolute;
+          top: 0.7em;
+          right: 0;
+        }
+      }
+    }
+  }
+
+  .fd-side-nav__link.has-child {
+    padding-right: 40px;
+    background-position: right 15px center;
   }
 </style>
