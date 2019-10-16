@@ -51,3 +51,21 @@
   border-bottom: 1px solid $powder-blue;
   padding: 25px 0;
 }
+
+.s-get-ready {
+
+  position: relative;
+
+  &:after {
+    display: block;
+    position: absolute;
+    top: -80px;
+    left: 50%;
+    margin-left: -120px;
+    content: '';
+    width: 240px;
+    height: 160px;
+    background: url(../img/luigi_diagramm.png) no-repeat 50% 50%;
+    background-size: contain;
+  }
+}

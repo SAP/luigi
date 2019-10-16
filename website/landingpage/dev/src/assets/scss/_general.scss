@@ -251,6 +251,10 @@ p {
   
     @include breakpoint(large) {
       padding: 100px 0;
+
+      &.has-big-padding {
+        padding: 150px 0;
+      }
     }
 
     &.s-intro {
