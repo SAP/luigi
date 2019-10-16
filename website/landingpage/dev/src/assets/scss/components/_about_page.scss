@@ -67,5 +67,9 @@
     height: 160px;
     background: url(../img/luigi_diagramm.png) no-repeat 50% 50%;
     background-size: contain;
+
+    @include breakpoint(medium down) {
+      display: none;
+    }
   }
 }
