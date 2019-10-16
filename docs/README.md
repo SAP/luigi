@@ -2,7 +2,7 @@
 
 The aim of this documentation is to provide step-by-step instructions for Luigi as well as to provide a comprehensive reference of all the features you can use.
 
-If you are new to Luigi, go to the [Getting started guide](#getting-started-guide.md) to learn more about its structure and key functions.
+If you are new to Luigi, go to the [Getting started guide](#getting-started.md) to learn more about its structure and key functions.
 
 ## Luigi Core
 
