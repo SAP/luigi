@@ -20,7 +20,7 @@ class UxManager extends LuigiClientBase {
   }
 
   /**
-   * Adds a backdrop with a loading indicator for the micro frontend frame. This overrides the {@link navigation-configuration.md#nodes loadingIndicator.enabled} setting.
+   * Adds a backdrop with a loading indicator for the micro frontend frame. This overrides the {@link navigation-parameters-reference.md#node-parameters loadingIndicator.enabled} setting.
    * @memberof uxManager
    */
   showLoadingIndicator() {
@@ -28,7 +28,7 @@ class UxManager extends LuigiClientBase {
   }
 
   /**
-   * Removes the loading indicator. Use it after calling {@link #showLoadingIndicator showLoadingIndicator()} or to hide the indicator when you use the {@link navigation-configuration.md#nodes loadingIndicator.hideAutomatically: false} node configuration.
+   * Removes the loading indicator. Use it after calling {@link #showLoadingIndicator showLoadingIndicator()} or to hide the indicator when you use the {@link navigation-parameters-reference.md#node-parameters loadingIndicator.hideAutomatically: false} node configuration.
    * @memberof uxManager
    */
   hideLoadingIndicator() {
