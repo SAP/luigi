@@ -41,14 +41,14 @@ describe('Context switcher', () => {
 
     cy.get('.fd-app__sidebar').should('contain', 'Project One');
     cy.get('.fd-app__sidebar').should('contain', 'Project Two');
-    cy.get('.fd-app__sidebar').should('contain', 'Project 3');
+    cy.get('.fd-app__sidebar').should('contain', 'Project 4');
 
     cy.get('[data-testid=luigi-alert]').should(
       'have.class',
       'fd-alert--information'
     );
 
-    cy.get('[data-testid=luigi-alert]').should('contain', 'Project 3 created.');
+    cy.get('[data-testid=luigi-alert]').should('contain', 'Project 4 created.');
 
     cy.goToOverviewPage();
     cy.expectPathToBe('/overview');
@@ -64,6 +64,10 @@ describe('Context switcher', () => {
     cy.get('.fd-app__sidebar').should('not.contain', 'Project 3');
 
     // remove all projects
+
+    cy.selectContextSwitcherItem('Remove Project');
+
+    cy.expectPathToBe('/projects');
 
     cy.selectContextSwitcherItem('Remove Project');
 
@@ -194,16 +198,16 @@ describe('ProductSwitcher', () => {
 
       cy.get('.fd-product-switcher__product-title').should(
         'contain',
-        'Project 3'
+        'Project 4'
       );
 
       cy.get('.fd-product-switcher').click();
 
       cy.get('.fd-product-switcher__product-title')
-        .contains('Project 3')
+        .contains('Project 4')
         .click();
 
-      cy.expectPathToBe('/projects/pr3');
+      cy.expectPathToBe('/projects/pr4');
     });
 
     it('Mobile Product Switcher is not visible', () => {
