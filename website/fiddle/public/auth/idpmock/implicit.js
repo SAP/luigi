@@ -1,9 +1,10 @@
 window.onload = function () {
     const loginButton = document.getElementById('login-button');
     const expiresIn = 3600;
+    const state = decodeURIComponent(window.location.href.match(/state=(.*?)(&|$)/)[1]);
     const goTo = `/auth/callback.html#
       expires_in=${expiresIn}&
-      state=somestate&
+      state=${state}&
       access_token=thisisanaccesstokenthatisnotreallyneeded&
       id_token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.
       eyJpc3MiOiJodHRwOi8vbG9jYWxob3N0OjQyMDAiLCJzdWIiOiJtYXNrb3BhdG9sIiwiZXhwIjoxNjQzNzY0OTIwLCJhe
