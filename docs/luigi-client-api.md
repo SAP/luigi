@@ -38,6 +38,22 @@ Removes a context update listener.
 
 -   `id` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** the id that was returned by the `addContextUpdateListener` function
 
+### addInactiveListener
+
+Registers a listener called upon microfrontend inactivity. Usually happens when micro frontends get moved to the background when using preserve view, loading new view groups or using preload.
+
+#### Parameters
+
+-   `inactiveFn` **[function](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Statements/function)** the listener function called each time the micro frontend turns into an inactive state
+
+### removeInactiveListener
+
+Removes a listener for inactive micro frontends.
+
+#### Parameters
+
+-   `id` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** the id that was returned by the `addInactiveListener` function
+
 ### addCustomMessageListener
 
 Registers a listener called when the micro frontend receives a custom message.
