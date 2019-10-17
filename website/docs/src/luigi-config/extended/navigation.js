@@ -1,13 +1,13 @@
-const isBrowser = typeof window !== 'undefined';
-const envs = (isBrowser ? window.__ENV__ : process.env) || {};
+// const isBrowser = typeof window !== 'undefined';
+// const envs = (isBrowser ? window.__ENV__ : process.env) || {};
 let baseUrl;
-if (envs.NODE_ENV == 'production') {
-  baseUrl = '/docu-microfrontend';
-} else {
-  // baseUrl = 'http://localhost:4001';
+if (location.port == '4000') {
   baseUrl = location.protocol + '//' + location.hostname + ':4001';
+} else {
+  baseUrl = '/docu-microfrontend';
 }
 console.log("baseUrl : ", baseUrl);
+console.log("port : ", location.port);
 
 const getDocuItems = () => {
   return fetch('/navigation-children.json')

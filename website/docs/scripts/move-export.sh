@@ -22,5 +22,5 @@ echo "Documentation was exported to $LUIGI_DIR"
 if [ "$1" = "--serve" ]; then
   npm run export:serve
 else
-  echo "Run: sirv public --single --dev --cors --port 4000"
+  echo "Run: npm run export:serve"
 fi

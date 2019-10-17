@@ -4,7 +4,7 @@
 yarn-error.log
 /cypress/screenshots/
 /__sapper__/
-extendedConfiguration.bundle2.js
+extendedConfiguration.bundle.js
 fundamental-ui
 luigi-core
 luigi-client
