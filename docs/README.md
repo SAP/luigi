@@ -38,3 +38,7 @@ Follow the Luigi [application examples](../core/examples/README.md) for an in-de
 ## Development 
 
 Read the [development and code formatting guidelines](https://github.com/SAP/luigi#development) if you are interested in contributing.
+
+## Get Start 
+
+Read the [GetStart](https://github.com/SAP/luigi/blob/master/docs/getting-started.md) for undestand how to use Luigi.
