@@ -10,7 +10,7 @@
     "debug:sapper": "PORT=4001 node --inspect node_modules/sapper/dist/cli.js dev",
     "build:sapper": "NODE_ENV=production sapper build",
     "build:config": "webpack --config webpack-generateConfig.config",
-    "export:sapper": "NODE_ENV=production sapper export && sh ./scripts/move-export.sh",
+    "export:sapper": "NODE_ENV=production sapper export --basepath /docu-microfrontend && sh ./scripts/move-export.sh",
     "export:serve": "sirv public --single --dev --cors --port 5000",
     "export": "npm run export:sapper",
     "test": "run-p --race dev cy:run",
