@@ -10,7 +10,7 @@
 
 Luigi consists of Luigi Core application and Luigi Client libraries. They establish secure communication between the core application and the micro frontend using postMessage API.
 
-Read the [Getting started guide](docs/getting-started.md) to learn more about what micro frontends are, what the structure of Luigi is, and what other key functions Luigi can perform.
+Read the [Getting started guide](docs/getting-started.md) to learn more about micro frontends and the structure of Luigi.
 
 ## Installation
 
