@@ -1,8 +1,8 @@
 window.onload = function () {
-    const redirectUrl = decodeURIComponent(window.location.href.match(/redirect_uri=(.*?)(&|$)/)[1]);
-    const state = decodeURIComponent(window.location.href.match(/state=(.*?)(&|$)/)[1]);
+    const loginButton = document.getElementById('login-button');
     const expiresIn = 3600;
-    const goTo = `${redirectUrl}#
+    const state = encodeURIComponent(new URLSearchParams(window.location.search).get("state"));
+    const goTo = `/auth/callback.html#
       expires_in=${expiresIn}&
       state=${state}&
       access_token=thisisanaccesstokenthatisnotreallyneeded&
@@ -11,13 +11,9 @@ window.onload = function () {
       nAiOiJtYXNrb3BhdG9sIiwibm9uY2UiOiJidE5rWVZzc1FldVlWNmEyR1RVZm1wWVFFelBRN3c1ZENCbU54SG54IiwiZW
       1haWwiOiJsdWlnaXVzZXJAa3ltYS5jeCJ9.80GanA3z-Rl67VQAb-lvMNpDZKcVI32CQZIoM9imF5w&
       token_type=bearer`;
-    const loginButton = document.getElementById('login-button');
+
     loginButton.addEventListener('click', function (ev) {
         ev.preventDefault();
-        window.location = removeIndent(goTo);
+        window.location.replace(goTo.replace(/\s\s+/g, ''));
     });
-
-    function removeIndent(goToString) {
-        return goToString.replace(/\s\s+/g, '');
-    }
 };
