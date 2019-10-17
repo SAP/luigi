@@ -106,20 +106,20 @@ class IframeClass {
           } else {
             child.style.display = 'none';
             const vgSettings = this.getViewGroupSettings(child.vg);
-            if (vgSettings && vgSettings.preloadUrl) {
-              const message = {
-                msg: 'luigi.navigate',
-                viewUrl: vgSettings.preloadUrl,
-                context: JSON.stringify({}),
-                nodeParams: JSON.stringify({}),
-                pathParams: JSON.stringify({}),
-                internal: JSON.stringify({
-                  currentLocale: LuigiI18N.getCurrentLocale()
-                })
-              };
-              IframeHelpers.sendMessageToIframe(child, message);
-            } else {
-              // notify viewgrouped iframe without preloadUrl
+            if (vgSettings) {
+              if (vgSettings.preloadUrl) {
+                const message = {
+                  msg: 'luigi.navigate',
+                  viewUrl: vgSettings.preloadUrl,
+                  context: JSON.stringify({}),
+                  nodeParams: JSON.stringify({}),
+                  pathParams: JSON.stringify({}),
+                  internal: JSON.stringify({
+                    currentLocale: LuigiI18N.getCurrentLocale()
+                  })
+                };
+                IframeHelpers.sendMessageToIframe(child, message);
+              }
               this.notifyInactiveIframe(child);
             }
           }
