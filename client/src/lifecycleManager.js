@@ -216,8 +216,12 @@ class LifecycleManager extends LuigiClientBase {
   }
 
   /**
-   * Registers a listener called upon microfrontend inactivity. Usually happens when micro frontends get moved to the background when using preserve view, loading new view groups or using preload.
-   * @param {function} inactiveFn the listener function called each time the micro frontend turns into an inactive state
+   * Registers a listener called upon microfrontend inactivity. This happens when a another micro frontend gets shown while keeping the old one cached.
+   * Gets called when:
+   * - navigating with **preserveView**
+   * - navigating from or to a **viewGroup**
+   * Does not get called when navigating normally, or when `openAsModal` or `openAsSplitView` are used.
+   * @param {function} inactiveFn the listener function called each time a micro frontend turns into an inactive state
    * @memberof Lifecycle
    */
   addInactiveListener(inactiveFn) {
