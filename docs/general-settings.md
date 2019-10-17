@@ -54,5 +54,5 @@ If you don't specify any value for  **responsiveNavigation**, the buttons remain
 This function is called with these parameters: 
   * `iframe` the iframe DOM element, not yet added to the DOM tree but all attributes are set already
   * `viewGroup` the view group associated with this iframe, if any
-  * `microFrontendType` which is 'main', 'modal' or 'split-view' depending on where it is going to be rendered
+  * `microFrontendType`, which is `main`, `modal` or `split-view` depending on where it is going to be rendered.
 * **appLoadingIndicator.hideAutomatically** allows you to disable automatic hiding of the app loading indicator, which is enabled by default in case the app loading indicator is being used. Take a look at the [App loading indicator](luigi-ux-features.md#app-loading-indicator) section on how to use this feature.
