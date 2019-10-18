@@ -57,6 +57,8 @@ This function is called with these parameters:
   * `viewGroup` is the view group associated with this iframe, if applicable.
   * `navigationNode` is the navigation node associated with this iframe. NOTE: the interceptor is called only once per iframe creation. If two or more navigation nodes share the same iframe (because they belong to the same view group) the interceptor is called with the first navigated node only. 
   * `microFrontendType`, which is `main`, `modal` or `split-view` depending on where it is going to be rendered.
+  
+For example, to allow 'fullscreen' for non-modal iframes:
 ```javascript
 {
   // for example, allow 'fullscreen' for non-modal iframes:
