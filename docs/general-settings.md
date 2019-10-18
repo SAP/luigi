@@ -61,7 +61,6 @@ This function is called with these parameters:
 For example, to allow 'fullscreen' for non-modal iframes:
 ```javascript
 {
-  // for example, allow 'fullscreen' for non-modal iframes:
   iframeCreationInterceptor: (iframe, viewGroup, navigationNode, microFrontendType) => {
     if (microFrontendType !== 'modal')
       iframe.allowFullscreen = true;
