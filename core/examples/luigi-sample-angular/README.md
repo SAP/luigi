@@ -4,6 +4,8 @@
 
 This is the Angular-based sample application which runs with Luigi framework.
 
+>**NOTE:** The authorization flow in this application is a mock implementation for local development. **DO NOT USE IN PRODUCTION!**
+
 ## Development
 
 Use  [Lerna](https://lerna.js.org) to link the dependencies and bundle scripts within the packages.
@@ -45,7 +47,7 @@ To have this application running, follow these steps:
 
 5. Go to [http://localhost:4200/](http://localhost:4200/) to start the application.
 
-6. Optional: Reflect the changes introducted to the Luigi Core code in the sample application.
+6. Optional: Reflect the changes introduced to the Luigi Core code in the sample application.
 
     - Allow the Luigi Core to bundle every change you apply to it. The easiest approach is to open the Luigi `root` folder in another tab of your terminal window and run the following command: 
   
