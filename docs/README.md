@@ -24,7 +24,7 @@ Luigi Client enables you to connect micro frontends or views to the main Luigi C
 
 * [Lifecycle](luigi-client-api.md#lifecycle) gives you details on the lifecycle of listeners, navigation nodes, and Event data.
 * [Link Manager](luigi-client-api.md#linkmanager) allows you to navigate to a specific route.
-* [UX Manager](luigi-client-api.md#uxmanager) helps you manage the appearance features in Luigi, such as the behavior of backdrop or loading indictors.
+* [UX Manager](luigi-client-api.md#uxmanager) helps you manage the appearance features in Luigi, such as the behaviour of backdrop or loading indicators.
 
 ## Core/Client communication
 * [Communication](communication.md) describes how to configure features related to communication between Luigi Core and Client.
