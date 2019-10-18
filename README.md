@@ -14,7 +14,7 @@ Read the [Getting started guide](docs/getting-started.md) to learn more about mi
 
 ## Installation
 
-Follow the instructions in [this](docs/application-setup.md) document to get started with Luigi. Read [this](client/README.md) document to install the Luigi Client.
+Follow the instructions in [this](docs/application-setup.md) document to install Luigi Core. Read [this](client/README.md) document to install the Luigi Client.
 
 
 ## Usage
