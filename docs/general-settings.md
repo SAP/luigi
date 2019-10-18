@@ -56,5 +56,14 @@ This function is called with these parameters:
   * `iframe` is the iframe DOM element. It is not yet added to the DOM tree, but all attributes are already set.
   * `viewGroup` is the view group associated with this iframe, if any.
   * `microFrontendType`, which is `main`, `modal` or `split-view` depending on where it is going to be rendered.
+```javascript
+{
+  // for example, allow 'fullscreen' for non-modal iframes:
+  iframeCreationInterceptor: (iframe, viewGroup, microFrontendType) => {
+    if (microFrontendType !== 'modal')
+      iframe.allowFullscreen = true;
+  }
+}
+```
 * **allowRules** is an array of rules for the content in the iframe, managed by the HTML **allow** attribute. You can use one or more rules by adding them to the array, for example `allowRules: ['microphone', 'camera']`. Be aware that this mechanism requires the browser to support [Feature Policy](https://developer.mozilla.org/en-US/docs/Web/HTTP/Feature_Policy).
 * **appLoadingIndicator.hideAutomatically** allows you to disable automatic hiding of the app loading indicator, which is enabled by default in case the app loading indicator is being used. Take a look at the [App loading indicator](luigi-ux-features.md#app-loading-indicator) section on how to use this feature.
