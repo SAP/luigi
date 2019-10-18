@@ -260,7 +260,7 @@ class IframeHelpersClass {
     );
     if (GenericHelpers.isFunction(iframeInterceptor)) {
       try {
-        iframeInterceptor(iframe, viewGroup, microFrontendType);
+        iframeInterceptor(iframe, viewGroup, currentNode, microFrontendType);
       } catch (err) {
         console.error('Error applying iframe creation interceptor: ', err);
       }

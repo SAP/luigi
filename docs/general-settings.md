@@ -54,12 +54,13 @@ If you don't specify any value for  **responsiveNavigation**, the buttons remain
 * **iframeCreationInterceptor** is a function called on iframe creation. It gives you full control over the created iframe DOM element. You can modify it to your needs just before it is added to the DOM tree. 
 This function is called with these parameters: 
   * `iframe` is the iframe DOM element. It is not yet added to the DOM tree, but all attributes are already set.
-  * `viewGroup` is the view group associated with this iframe, if any.
+  * `viewGroup` is the view group associated with this iframe, if applicable.
+  * `navigationNode` is the navigation node associated with this iframe. NOTE: the interceptor is called only once per iframe creation. If two or more navigation nodes share the same iframe (because they belong to the same view group) the interceptor is called with the first navigated node only. 
   * `microFrontendType`, which is `main`, `modal` or `split-view` depending on where it is going to be rendered.
 ```javascript
 {
   // for example, allow 'fullscreen' for non-modal iframes:
-  iframeCreationInterceptor: (iframe, viewGroup, microFrontendType) => {
+  iframeCreationInterceptor: (iframe, viewGroup, navigationNode, microFrontendType) => {
     if (microFrontendType !== 'modal')
       iframe.allowFullscreen = true;
   }

@@ -68,13 +68,16 @@ describe('Iframe-helpers', () => {
         .stub(LuigiConfig, 'getConfigValue')
         .withArgs('settings.iframeCreationInterceptor')
         .returns(interceptor);
+      const node = {
+        pathSegment: 'tets'
+      };
       const iframe = IframeHelpers.createIframe(
         'http://luigi.url.com/',
         'vg1',
-        null,
+        node,
         'main'
       );
-      assert(interceptor.calledWith(iframe, 'vg1', 'main'));
+      assert(interceptor.calledWith(iframe, 'vg1', node, 'main'));
     });
   });
 

@@ -168,6 +168,7 @@ describe('iframeCreationInterceptor test', () => {
       config.settings.iframeCreationInterceptor = (
         iframe,
         viewGroup,
+        navigationNode,
         microFrontendType
       ) => {
         const style = 'border: 3px dashed ';

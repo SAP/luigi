@@ -11,10 +11,10 @@ class Settings {
   appLoadingIndicator = {
     hideAutomatically: false
   };
-  //iframeCreationInterceptor = (iframe, viewGroup, microFrontendType) => {};
   responsiveNavigation = 'simpleMobileOnly'; // Options: simple | simpleMobileOnly | semiCollapsible
   sideNavFooterText = `Luigi Client: ${version || 'unknown'}`;
   // allowRules = ['microphone'];
+  // iframeCreationInterceptor = (iframe, viewGroup, navigationNode, microFrontendType) => { };
   // hideNavigation = true
   // backdropDisabled = true
   /* customTranslationImplementation = () => {
