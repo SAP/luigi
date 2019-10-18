@@ -51,8 +51,7 @@
         scope: hashParams['scope'],
         idToken: hashParams['id_token']
       };
-
-      // TODO:
+      
       var aKey = getStorageKey();
       localStorage.setItem(aKey, JSON.stringify(data));
       localStorage.setItem('luigi.newlyAuthorized', true);
