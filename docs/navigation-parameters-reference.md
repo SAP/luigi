@@ -18,11 +18,11 @@ You can configure the way Luigi tackles routing in your application in the `rout
 
 ### useHashRouting
 - **type**: boolean
-- **description**: defines either hash-based (`url.com/#/yourpath`) or path-based (`url.com/yourpath`) routing.
+- **description**: defines either hash-based (`example.com/#/yourpath`) or path-based (`example.com/yourpath`) routing.
 
 ### nodeParamPrefix
 - **type**: string
-- **description**: sets the prefix character when using the `LuigiClient.linkManager().withParam()` function, which provides a way to simply attach query properties to the view URL for activities such as sorting and filtering. The URL contains the properties to allow deep linking. If you want to use a different character prefix, define yours here. The default character is `~`.
+- **description**: sets the prefix character when using the `LuigiClient.linkManager().withParam()` function, which provides a simple way to attach query parameters to a view URL for activities such as sorting and filtering. The default character is `~`, but you may also define a custom one. Only this prefix can pass query parameters to micro frontends. A different prefix has to be used to pass parameters to the Luigi app itself in order to avoid potential conflicts between the two.
 
 ### skipRoutingForUrlPatterns
 - **type**: RegExp[]
@@ -55,7 +55,7 @@ The node navigation properties enable you to configure global navigation setting
 - **type**: object
 - **description**: contains key-object pairs, where the key is the view group name as specified in the node properties, and the object contains key-value pairs. In each key-value pair, the key is the feature name and the value is the actual setting. The following options are supported:
 - **attributes**:
-  - **preloadUrl**(string): needs to be an absolute URL for a node from the view group. It is recommended that you use a dedicated small, visually empty view, which imports Luigi Client and is fine with getting an empty context, for example, without an access token. The **preloadUrl** property is also required for view group caching in case you need a view group iframe to refresh whenever you navigate back to it.
+  - **preloadUrl**(string): needs to be an absolute URL of a micro frontend belonging to a view group. It may not be an URL of a node. It is recommended that you use a dedicated small, visually empty view, which imports Luigi Client and is fine with getting an empty context, for example, without an access token. The **preloadUrl** property is also required for view group caching in case you need a view group iframe to refresh whenever you navigate back to it.
 
 
 ## Node properties
@@ -65,7 +65,7 @@ Node properties are all the properties that can be added to an individual naviga
 - **type**: string
 - **description**: specifies the partial URL of the current segment. **pathSegment** must not contain slashes.
 - **examples**:
-  - A static pathSegment of value `settings` results in `yourwebsite.com/settings`.
+  - A static pathSegment of value `settings` results in `example.com/settings`.
   - A dynamic pathSegment is prefixed with a colon and can load any value. Find out more about dynamic paths in Luigi [here](navigation-configuration.md#creating-a-dynamic-path).
 
 ### link
@@ -93,7 +93,11 @@ Node properties are all the properties that can be added to an individual naviga
 
 ### viewUrl
 - **type**: string
-- **description**: contains the URL or path to a view which renders when you click the navigation node. Use either a full URL or a relative path. This value may consist of variables if you have specified a **navigationContext** with a dynamic **pathSegment**. If **viewUrl** is undefined, Luigi activates the child node specified in **defaultChildNode**. When both **viewUrl** and **defaultChildNode** are undefined, Luigi opens the first child of the current node.
+- **description**: contains the URL or path to a view which renders when you click the navigation node. Use either a full URL or a relative path. If **viewUrl** is undefined, Luigi activates the child node specified in **defaultChildNode**. When both **viewUrl** and **defaultChildNode** are undefined, Luigi opens the first child of the current node. **viewUrl** can contain variables from:
+* dynamic path segments
+* node parameters
+* contexts
+
 
 ### navigationContext
 - **type**: string
@@ -130,11 +134,11 @@ loadingIndicator: {
 ```
 ### loadingIndicator.hideAutomatically
 - **type**: boolean
-- **description**: disables the automatic hiding of the loading indicator once the micro frontend is loaded. It is only considered if the loading indicator is enabled. It does not apply if the loading indicator is activated manually with the `LuigiClient.uxManager().showLoadingIndicator()` function. If the loading indicator is enabled and automatic hiding is disabled, use `LuigiClient.uxManager().hideLoadingIndicator()` to hide it manually in your micro frontend during the startup. This property is enabled by default.
+- **description**: if set to `false`, it disables the automatic hiding of the loading indicator once the micro frontend is loaded. It is only considered if the loading indicator is enabled. It does not apply if the loading indicator is activated manually with the `LuigiClient.uxManager().showLoadingIndicator()` function. If the loading indicator is enabled and automatic hiding is disabled, use `LuigiClient.uxManager().hideLoadingIndicator()` to hide it manually in your micro frontend during the startup. This property is enabled by default.
 - **example**:
 ```javascript
 loadingIndicator: {
-  hideAutomatically: true
+  hideAutomatically: false
 }
 ```
 ### icon
@@ -164,10 +168,10 @@ loadingIndicator: {
 
 ### openNodeInModal
 - **type**: boolean or object
-- **description**: adds a badge with a number and a label to a node. Nodes that are part of a category show a cumulated number of all badges in this category. **badgeCounter** is only available for top navigation items.
+- **description**:  configures the settings of a view which opens in a modal. You can set the openNodeInModal property to true to use the default modal title and size, or you can specify them using these attributes:
 - **attributes**:
-  - **title** modal title. By default, it is the node label. If there is no label, it is left empty
-  - **size** **(`"l"` \| `"m"` \| `"s"`)** size of the modal (optional, default `"l"`)
+  - **title** is the modal title. By default, it is the node label. If there is no label, it is left empty.
+  - **size** **(`"l"` \| `"m"` \| `"s"`)** specifies the size of the modal. The default size is **`"l"`**, which means 80%. You can also use **`"m"`** (60%) and **`"s"`** (40%) to set the modal size.
 
 ### onNodeActivation
 - **type**: function
