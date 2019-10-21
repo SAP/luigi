@@ -14,6 +14,7 @@ class Settings {
   responsiveNavigation = 'simpleMobileOnly'; // Options: simple | simpleMobileOnly | semiCollapsible
   sideNavFooterText = `Luigi Client: ${version || 'unknown'}`;
   // allowRules = ['microphone'];
+  // iframeCreationInterceptor = (iframe, viewGroup, navigationNode, microFrontendType) => { };
   // hideNavigation = true
   // backdropDisabled = true
   /* customTranslationImplementation = () => {
