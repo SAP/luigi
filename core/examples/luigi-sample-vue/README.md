@@ -4,6 +4,8 @@
 
 This is the Vue.JS-based sample application which runs with Luigi framework.
 
+>**NOTE:** The authorization flow in this application is a mock implementation for local development. **DO NOT USE IN PRODUCTION!**
+
 ## Development
 
 Linking and building with [Lerna](https://lerna.js.org) is the preferred development method. This monorepo uses Lerna for project management. 
