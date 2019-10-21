@@ -35,6 +35,9 @@
 
   <body>
     <script type="text/javascript">
+      var getStorageKey = function() {
+        return 'luigi.auth';
+      };
       var encodeURIComponent = function(val) {
         return val;
       };
@@ -49,7 +52,8 @@
             scope: hashParams['scope'],
             idToken: hashParams['id_token']
           };
-          localStorage.setItem('luigi.auth', JSON.stringify(data));
+          var aKey = getStorageKey();
+          localStorage.setItem(aKey, JSON.stringify(data));
 
           var decodedState = atob(
             decodeURIComponent(hashParams['state'])
