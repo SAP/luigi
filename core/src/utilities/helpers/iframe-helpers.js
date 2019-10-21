@@ -221,7 +221,7 @@ class IframeHelpersClass {
     );
   }
 
-  createIframe(viewUrl, viewGroup, currentNode) {
+  createIframe(viewUrl, viewGroup, currentNode, microFrontendType) {
     const luigiDefaultSandboxRules = [
       'allow-forms', // Allows the resource to submit forms. If this keyword is not used, form submission is blocked.
       'allow-modals', // Lets the resource open modal windows.
@@ -262,6 +262,16 @@ class IframeHelpersClass {
     }
     if (currentNode && currentNode.clientPermissions) {
       iframe.luigi.clientPermissions = currentNode.clientPermissions;
+    }
+    const iframeInterceptor = LuigiConfig.getConfigValue(
+      'settings.iframeCreationInterceptor'
+    );
+    if (GenericHelpers.isFunction(iframeInterceptor)) {
+      try {
+        iframeInterceptor(iframe, viewGroup, currentNode, microFrontendType);
+      } catch (err) {
+        console.error('Error applying iframe creation interceptor: ', err);
+      }
     }
     return iframe;
   }
