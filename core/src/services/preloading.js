@@ -42,7 +42,12 @@ class ViewGroupPreloadingClass {
         console.debug(
           'preloading view group ' + name + ' - ' + settings.preloadUrl
         );
-        const iframe = IframeHelpers.createIframe(settings.preloadUrl, name);
+        const iframe = IframeHelpers.createIframe(
+          settings.preloadUrl,
+          name,
+          null,
+          'main'
+        );
         iframe.style.display = 'none';
         iframe.luigi.preloading = true;
         iframeContainer.appendChild(iframe);
