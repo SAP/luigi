@@ -198,7 +198,15 @@ class IframeHelpersClass {
   sendMessageToIframe(iframe, message) {
     if (!(iframe.luigi && iframe.luigi.viewUrl)) return;
     const trustedIframeDomain = this.getLocation(iframe.luigi.viewUrl);
-    iframe.contentWindow.postMessage(message, trustedIframeDomain);
+    console.warn(
+      'sendMessageToIframe',
+      iframe.luigi.viewUrl,
+      trustedIframeDomain,
+      message.msg
+    );
+    if (trustedIframeDomain !== '') {
+      iframe.contentWindow.postMessage(message, trustedIframeDomain);
+    }
   }
 
   sendMessageToVisibleIframes(message) {

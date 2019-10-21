@@ -59,8 +59,3 @@ import { OnNodeActivationComponent } from './onNodeActivation/onNodeActivation.c
   bootstrap: [AppComponent]
 })
 export class AppModule {}
-
-import { addInactiveListener } from '@kyma-project/luigi-client';
-const inactiveListener = addInactiveListener(() => {
-  console.debug('inactiveListener: micro frontend is now in the background');
-});

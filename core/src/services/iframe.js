@@ -120,6 +120,7 @@ class IframeClass {
                 };
                 IframeHelpers.sendMessageToIframe(child, message);
               }
+              console.log('notifyInactiveIframe, switchActiveIframe');
               this.notifyInactiveIframe(child);
             }
           }
@@ -220,6 +221,7 @@ class IframeClass {
     if (!config.iframe) {
       // preserveView, hide other frames, else remove
       if (pvSituation) {
+        this.notifyInactiveIframe(node.firstChild);
         IframeHelpers.hideElementChildren(node);
       } else {
         IframeHelpers.removeElementChildren(node);
@@ -246,9 +248,6 @@ class IframeClass {
           component.get().currentNode
         );
 
-        if (node.firstChild) {
-          this.notifyInactiveIframe(node.firstChild);
-        }
         node.insertBefore(config.iframe, node.firstChild);
 
         if (config.builderCompatibilityMode) {
