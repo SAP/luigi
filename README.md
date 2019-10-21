@@ -6,15 +6,15 @@
 
 ## Overview
 
-Luigi is a micro frontend JavaScript framework that enables you to create an administrative user interface driven by local and distributed views. Luigi allows a web application to communicate with the micro frontends which the application contains. To make sure the communication runs smoothly, you can easily configure the settings such as routing, navigation, authorization, and user experience elements.
+[Luigi](https://luigi-project.io) is a micro frontend JavaScript framework that enables you to create an administrative user interface driven by local and distributed views. Luigi allows a web application to communicate with the micro frontends which the application contains. To make sure the communication runs smoothly, you can easily configure the settings such as routing, navigation, authorization, and user experience elements.
 
-Luigi consists of Luigi Core and Luigi Client libraries. They interact with each other to leverage communication between the core application and the micro frontend, without compromising the security principles behind the iframe pattern.
+Luigi consists of Luigi Core application and Luigi Client libraries. They establish secure communication between the core application and the micro frontend using postMessage API.
 
-Go to the [Luigi project website](https://luigi-project.io/) to learn more about the product.
+Read the [Getting started guide](docs/getting-started.md) to learn more about micro frontends and the structure of Luigi.
 
 ## Installation
 
-Follow the instructions in [this](docs/application-setup.md) document to get started with Luigi. Read [this](client/README.md) document to install the Luigi Client.
+Follow the instructions in [this](docs/application-setup.md) document to install Luigi Core. Read [this](client/README.md) document to install the Luigi Client.
 
 
 ## Usage
@@ -22,6 +22,8 @@ Follow the instructions in [this](docs/application-setup.md) document to get sta
 ### Examples
 
 View the [application examples](core/examples) to explore Luigi's features.
+
+Go to the [Luigi Fiddle](https://fiddle.luigi-project.io) site to see Luigi in action and configure a sample application.
 
 ### Documentation
 
@@ -44,7 +46,7 @@ If you want to support Internet Explorer 11 in your application, update your Lui
     <!-- <script src="/luigi-core/luigi.js"></script> -->
   </body>
 </html>
-``` 
+```
 
 ### Luigi Client
 ```javascript
@@ -53,7 +55,7 @@ import {
   uxManager
 } from '@kyma-project/luigi-client/luigi-client-ie11';
 // } from '@kyma-project/luigi-client';
-``` 
+```
 
 >**NOTE**: The angular example application is not fully compatible with IE11.
 
@@ -94,11 +96,11 @@ When the application is ready:
 
 Use these tests to ensure that applications written for previous versions of Luigi still work after Luigi gets updated with npm. Before running the tests, bundle Luigi by running `lerna run bundle` in the main repository folder.
 
-Install [jq](https://stedolan.github.io/jq/) using the `brew install jq` command. It is required for the script to work, however, you can omit it if the command you are using to run your tests is tagged `latest`. 
+Install [jq](https://stedolan.github.io/jq/) using the `brew install jq` command. It is required for the script to work, however, you can omit it if the command you are using to run your tests is tagged `latest`.
 
-- Run `npm run test:compatibility` in the main repository folder to start regression testing. The system will prompt you to select the previous version. 
-- Run `npm run test:compatibility -- --tag latest` in the main repository folder to start regression testing with the last version preselected. 
-- On the CI, run `npm run test:compatibility -- --install --tag latest` in the main repository folder to install dependencies, bundle Luigi and run the tests with the last version preselected. 
+- Run `npm run test:compatibility` in the main repository folder to start regression testing. The system will prompt you to select the previous version.
+- Run `npm run test:compatibility -- --tag latest` in the main repository folder to start regression testing with the last version preselected.
+- On the CI, run `npm run test:compatibility -- --install --tag latest` in the main repository folder to install dependencies, bundle Luigi and run the tests with the last version preselected.
 
 ## License
 
