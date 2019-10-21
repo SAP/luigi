@@ -1,7 +1,7 @@
 /* istanbul ignore file */
 import { AsyncHelpers, GenericHelpers } from '../../utilities/helpers';
 import { thirdPartyCookiesStatus } from '../../utilities/third-party-cookies-check';
-import { LuigiAuth } from '../../core-api';
+import { LuigiAuth, LuigiConfig } from '../../core-api';
 
 export class openIdConnect {
   constructor(settings = {}) {
@@ -30,19 +30,20 @@ export class openIdConnect {
     return AsyncHelpers.waitForKeyExistency(window, 'Oidc', 60000).then(res => {
       this.client = new Oidc.UserManager(this.settings);
 
-      this.client.events.addUserLoaded(authenticatedUser => {
+      this.client.events.addUserLoaded(payload => {
         const data = {
-          accessToken: authenticatedUser.access_token,
-          accessTokenExpirationDate: authenticatedUser.expires_at * 1000,
-          scope: authenticatedUser.scope,
-          idToken: authenticatedUser.id_token,
-          profile: authenticatedUser.profile
+          accessToken: payload.access_token,
+          accessTokenExpirationDate: payload.expires_at * 1000,
+          scope: payload.scope,
+          idToken: payload.id_token,
+          profile: payload.profile
         };
-        localStorage.setItem('luigi.auth', JSON.stringify(data));
+        const aKey = this._getStorageKey();
+        localStorage.setItem(aKey, JSON.stringify(data));
 
         window.postMessage(
           { msg: 'luigi.auth.tokenIssued', authData: data },
-          '*'
+          window.location.origin
         );
       });
 
@@ -128,6 +129,10 @@ export class openIdConnect {
     this.client.events.addAccessTokenExpiring(() => {
       LuigiAuth.handleAuthEvent('onAuthExpireSoon', this.settings);
     });
+  }
+
+  _getStorageKey() {
+    return 'luigi.auth';
   }
 
   _processLogoutResponse() {
