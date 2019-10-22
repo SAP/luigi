@@ -160,6 +160,7 @@ const data = {
   idToken: hashParams['id_token']
 };
 
+// depending on your auth.storage setting, use localStorage (default), sessionStorage
 localStorage.setItem('luigi.auth', JSON.stringify(data));
 localStorage.setItem('luigi.newlyAuthorized', true);
 ```

@@ -1,6 +1,7 @@
 /* istanbul ignore file */
 import { GenericHelpers } from '../../utilities/helpers';
 import { LuigiAuth } from '../../core-api';
+import { AuthStorageSvc } from '../../services';
 
 export class oAuth2ImplicitGrant {
   constructor(settings = {}) {
@@ -23,13 +24,7 @@ export class oAuth2ImplicitGrant {
   }
 
   getAuthData() {
-    try {
-      return JSON.parse(localStorage.getItem('luigi.auth'));
-    } catch (e) {
-      console.warn(
-        'Error parsing authorization data. Auto-logout might not work!'
-      );
-    }
+    return AuthStorageSvc.getAuth();
   }
 
   parseIdToken(token) {
@@ -75,9 +70,7 @@ export class oAuth2ImplicitGrant {
       formElem.method = settings.authorizeMethod;
       formElem.target = '_self';
 
-      settings.oAuthData.redirect_uri = GenericHelpers.prependOrigin(
-        settings.oAuthData.redirect_uri
-      );
+      settings.oAuthData.redirect_uri = `${GenericHelpers.prependOrigin(settings.oAuthData.redirect_uri)}?storageType=${AuthStorageSvc.storageType()}`;
       settings.oAuthData.state = btoa(
         window.location.href + '_luigiNonce=' + generatedNonce
       );
@@ -130,7 +123,7 @@ export class oAuth2ImplicitGrant {
       const currentDate = new Date();
       if (tokenExpirationDate - currentDate < expirationCheckInterval) {
         clearInterval(expirationCheckIntervalInstance);
-        localStorage.removeItem('luigi.auth');
+        AuthStorageSvc.removeAuth();
         // TODO: check if valid (mock-auth requires it), post_logout_redirect_uri is an assumption, might not be available for all auth providers
         const redirectUrl = `${
           this.settings.logoutUrl

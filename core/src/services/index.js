@@ -4,3 +4,4 @@ export * from './preloading';
 export * from './routing';
 export * from './split-view';
 export * from './lifecycle-hooks';
+export * from './auth-storage';

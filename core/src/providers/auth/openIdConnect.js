@@ -2,6 +2,7 @@
 import { AsyncHelpers, GenericHelpers } from '../../utilities/helpers';
 import { thirdPartyCookiesStatus } from '../../utilities/third-party-cookies-check';
 import { LuigiAuth, LuigiConfig } from '../../core-api';
+import { AuthStorageSvc } from '../../services';
 
 export class openIdConnect {
   constructor(settings = {}) {
@@ -38,8 +39,7 @@ export class openIdConnect {
           idToken: payload.id_token,
           profile: payload.profile
         };
-        const aKey = this._getStorageKey();
-        localStorage.setItem(aKey, JSON.stringify(data));
+        AuthStorageSvc.setAuth(data);
 
         window.postMessage(
           { msg: 'luigi.auth.tokenIssued', authData: data },
@@ -131,10 +131,6 @@ export class openIdConnect {
     });
   }
 
-  _getStorageKey() {
-    return 'luigi.auth';
-  }
-
   _processLogoutResponse() {
     return new Promise((resolve, reject) => {
       // TODO: dex logout does not yet support proper logout
@@ -142,7 +138,7 @@ export class openIdConnect {
         this.client
           .processSignoutResponse()
           .then(response => {
-            localStorage.removeItem('luigi.auth');
+            AuthStorageSvc.removeAuth();
             log('signout response', response);
             resolve(response);
           })
@@ -173,7 +169,7 @@ export class openIdConnect {
             );
           }
 
-          // since localStorage has no callback we need to wait couple of ms before proceeding
+          // since auth storages have no callback we need to wait couple of ms before proceeding
           // else persistence might fail.
           setTimeout(() => {
             if (authenticatedUser.state) {
@@ -187,7 +183,7 @@ export class openIdConnect {
         })
         .catch(err => {
           console.error(err);
-          localStorage.removeItem('luigi.auth');
+          AuthStorageSvc.removeAuth();
           LuigiAuth.handleAuthEvent(
             'onAuthExpired',
             this.settings,

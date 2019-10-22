@@ -1,3 +1,4 @@
+
 {#if !isHidden}
 <nav class="fd-menu">
   <ul class="fd-menu__list">
@@ -59,18 +60,18 @@
     {/if}
   </ul>
 </nav>
-{/if}
 
+{/if}
 <script>
   import { createEventDispatcher, onMount, getContext } from 'svelte';
   import { LuigiAuth, LuigiConfig } from './core-api';
-  import { Routing } from './services/routing';
   import {
     AuthHelpers,
     GenericHelpers,
     NavigationHelpers,
     StateHelpers
   } from './utilities/helpers';
+  import { AuthStorageSvc, Routing } from './services';
   import { oAuth2ImplicitGrant } from './providers/auth/oAuth2ImplicitGrant';
   import { openIdConnect } from './providers/auth/openIdConnect';
   import { TOP_NAV_DEFAULTS } from './utilities/luigi-config-defaults';
@@ -94,7 +95,9 @@
   let profileLogoutfnDefinded;
   let store = getContext('store');
   let getTranslation = getContext('getTranslation');
-  let getUnsavedChangesModalPromise = getContext('getUnsavedChangesModalPromise');
+  let getUnsavedChangesModalPromise = getContext(
+    'getUnsavedChangesModalPromise'
+  );
 
   const newlyAuthorized = () =>
     JSON.parse(localStorage.getItem('luigi.newlyAuthorized'));
@@ -214,16 +217,12 @@
       }
 
       if (
-        GenericHelpers.isFunction(
-          idpProviderInstance.setTokenExpirationAction
-        )
+        GenericHelpers.isFunction(idpProviderInstance.setTokenExpirationAction)
       ) {
         idpProviderInstance.setTokenExpirationAction();
       }
       if (
-        GenericHelpers.isFunction(
-          idpProviderInstance.setTokenExpireSoonAction
-        )
+        GenericHelpers.isFunction(idpProviderInstance.setTokenExpireSoonAction)
       ) {
         idpProviderInstance.setTokenExpireSoonAction();
       }
@@ -297,10 +296,7 @@
           profileLogoutfnDefinded = false;
           if (logoutItem) {
             const profileLogoutfn = logoutItem.customLogoutFn;
-            if (
-              profileLogoutfn &&
-              GenericHelpers.isFunction(profileLogoutfn)
-            ) {
+            if (profileLogoutfn && GenericHelpers.isFunction(profileLogoutfn)) {
               profileLogoutfnDefinded = true;
             }
           }
@@ -342,10 +338,7 @@
     getUnsavedChangesModalPromise().then(() => {
       if (isAuthorizationEnabled) {
         logout();
-      } else if (
-        isProfileLogoutItem &&
-        profileLogoutfnDefinded
-      ) {
+      } else if (isProfileLogoutItem && profileLogoutfnDefinded) {
         profileNav.logout.customLogoutFn();
       } else {
         console.error('No IDP logout or customLogoutFn is defined.');
@@ -363,23 +356,16 @@
         redirectUrl
       );
       isLoggedIn = false;
-      localStorage.removeItem('luigi.auth');
+      AuthStorageSvc.removeAuth();
     };
     const customLogoutFn = LuigiConfig.getConfigValue(
       `auth.${LuigiConfig.getConfigValue('auth.use')}.logoutFn`
     );
     if (GenericHelpers.isFunction(customLogoutFn)) {
-      customLogoutFn(
-        idpProviderInstance.settings,
-        authData,
-        logoutCallback
-      );
+      customLogoutFn(idpProviderInstance.settings, authData, logoutCallback);
     } else if (GenericHelpers.isFunction(idpProviderInstance.logout)) {
       idpProviderInstance.logout(authData, logoutCallback);
-    } else if (
-      isProfileLogoutItem &&
-      profileLogoutfnDefinded
-    ) {
+    } else if (isProfileLogoutItem && profileLogoutfnDefinded) {
       profileNav.logout.customLogoutFn();
     } else {
       logoutCallback(idpProviderInstance.settings.logoutUrl);
