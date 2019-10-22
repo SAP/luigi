@@ -246,6 +246,7 @@ Authorization helpers
 #### isAuthorizationEnabled
 
 Detects if authorization is enabled via configuration.
+Read more about [custom authorization providers](authorization-configuration.md).
 
 ##### Examples
 
@@ -254,6 +255,47 @@ Luigi.auth().isAuthorizationEnabled();
 ```
 
 Returns **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)** true if authorization is enabled. Otherwise returns false.
+
+### AuthorizationStore
+
+Authorization Storage helpers, to be used in your custom authorization provider.
+Read more about [custom authorization providers]\(authorization-configuration.md#Implement a custom authorization provider).
+
+#### storageKey
+
+Retrieves the key name that is used to store the auth data.
+
+##### Examples
+
+```javascript
+Luigi.auth().store.storageKey
+```
+
+Returns **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** name of the store key
+
+#### storageType
+
+Retrieves the storage type that is used to store the auth data.
+
+##### Examples
+
+```javascript
+Luigi.auth().store.storageType
+```
+
+Returns **(`"localStorage"` \| `"sessionStorage"` \| `"none"`)** storage type
+
+#### authData
+
+Retrieves the current auth object.
+
+##### Examples
+
+```javascript
+Luigi.auth().store.authData
+```
+
+Returns **any** auth data
 
 ## Luigi.navigation()
 

@@ -1,6 +1,6 @@
 import { LuigiConfig } from '../core-api';
 
-class AuthStorageSvcClass {
+class AuthStoreSvcClass {
   constructor() {
     this._defaultStorage = 'localStorage';
     this._authKey = 'luigi.auth';
@@ -19,16 +19,20 @@ class AuthStorageSvcClass {
     return this._storageType;
   }
 
-  getAuth() {
-    return this._getStore(this.storageKey) {
+  get authData() {
+    return this._getStore(this.storageKey);
   }
 
-  setAuth(values) {
-    this._setStore(this.storageKey, values) {
+  get isNewlyAuthorized() {
+    return !!this._getStore(this._newlyAuthorizedKey);
   }
 
-  isNewlyAuthorized() {
-    this._getStore(this._newlyAuthorizedKey);
+  setAuthData(values) {
+    this._setStore(this.storageKey, values);
+  }
+
+  removeAuthData() {
+    this._setStore(this.storageType, undefined);
   }
 
   setNewlyAuthorized() {
@@ -37,10 +41,6 @@ class AuthStorageSvcClass {
 
   removeNewlyAuthorized() {
     this._setStore(this._newlyAuthorizedKey, undefined);
-  }
-
-  removeAuth() {
-    this._setStore(this.storageType, undefined);
   }
 
   _setStore(key, data) {
@@ -84,4 +84,4 @@ class AuthStorageSvcClass {
   }
 }
 
-export const AuthStorageSvc = new AuthStorageSvcClass();
+export const AuthStoreSvc = new AuthStoreSvcClass();

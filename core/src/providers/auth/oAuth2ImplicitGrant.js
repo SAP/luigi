@@ -1,7 +1,7 @@
 /* istanbul ignore file */
 import { GenericHelpers } from '../../utilities/helpers';
 import { LuigiAuth } from '../../core-api';
-import { AuthStorageSvc } from '../../services';
+import { AuthStoreSvc } from '../../services';
 
 export class oAuth2ImplicitGrant {
   constructor(settings = {}) {
@@ -24,7 +24,7 @@ export class oAuth2ImplicitGrant {
   }
 
   getAuthData() {
-    return AuthStorageSvc.getAuth();
+    return AuthStoreSvc.authData;
   }
 
   parseIdToken(token) {
@@ -72,7 +72,7 @@ export class oAuth2ImplicitGrant {
 
       settings.oAuthData.redirect_uri = `${GenericHelpers.prependOrigin(
         settings.oAuthData.redirect_uri
-      )}?storageType=${AuthStorageSvc.storageType}`;
+      )}?storageType=${AuthStoreSvc.storageType}`;
       settings.oAuthData.state = btoa(
         window.location.href + '_luigiNonce=' + generatedNonce
       );
@@ -125,7 +125,7 @@ export class oAuth2ImplicitGrant {
       const currentDate = new Date();
       if (tokenExpirationDate - currentDate < expirationCheckInterval) {
         clearInterval(expirationCheckIntervalInstance);
-        AuthStorageSvc.removeAuth();
+        AuthStoreSvc.removeAuthData();
         // TODO: check if valid (mock-auth requires it), post_logout_redirect_uri is an assumption, might not be available for all auth providers
         const redirectUrl = `${
           this.settings.logoutUrl

@@ -1,10 +1,10 @@
-import { AuthStorageSvc } from '../../services';
+import { AuthStoreSvc } from '../../services';
 import { LuigiAuth } from '../../core-api';
 import { GenericHelpers } from './';
 
 class AuthHelpersClass {
   getStoredAuthData() {
-    return AuthStorageSvc.getAuth();
+    return AuthStoreSvc.authData;
   }
 
   isLoggedIn() {

@@ -2,7 +2,7 @@
 import { AsyncHelpers, GenericHelpers } from '../../utilities/helpers';
 import { thirdPartyCookiesStatus } from '../../utilities/third-party-cookies-check';
 import { LuigiAuth, LuigiConfig } from '../../core-api';
-import { AuthStorageSvc } from '../../services';
+import { AuthStoreSvc } from '../../services';
 
 export class openIdConnect {
   constructor(settings = {}) {
@@ -39,7 +39,7 @@ export class openIdConnect {
           idToken: payload.id_token,
           profile: payload.profile
         };
-        AuthStorageSvc.setAuth(data);
+        AuthStoreSvc.setAuthData(data);
 
         window.postMessage(
           { msg: 'luigi.auth.tokenIssued', authData: data },
@@ -138,7 +138,7 @@ export class openIdConnect {
         this.client
           .processSignoutResponse()
           .then(response => {
-            AuthStorageSvc.removeAuth();
+            AuthStoreSvc.removeAuthData();
             log('signout response', response);
             resolve(response);
           })
@@ -183,7 +183,7 @@ export class openIdConnect {
         })
         .catch(err => {
           console.error(err);
-          AuthStorageSvc.removeAuth();
+          AuthStoreSvc.removeAuthData();
           LuigiAuth.handleAuthEvent(
             'onAuthExpired',
             this.settings,
