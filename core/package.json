@@ -44,8 +44,7 @@
     "webpack": "^4.40.2",
     "webpack-cli": "^3.3.9",
     "lodash": ">=4.17.13",
-    "lodash.template": ">=4.5.0",
-    "mem": ">=4.0.0"
+    "lodash.template": ">=4.5.0"
   },
   "scripts": {
     "bundle": "npm run bundle-evergreen && npm run bundle-ie11",
