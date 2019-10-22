@@ -22,6 +22,7 @@ settings: {
     };
   },
   customSandboxRules: ['allow-downloads-without-user-activation'],
+  allowRules: ['microphone'],
   appLoadingIndicator: {
     hideAutomatically: true
   }
@@ -50,4 +51,21 @@ If you don't specify any value for  **responsiveNavigation**, the buttons remain
 ```
 > **NOTE:** You can translate Luigi internal messages by providing translation for [these keys](../core/src/utilities/defaultLuigiTranslationTable.js).
 * **customSandboxRules** is an array of custom rules for the content in the iframe. You can extend the [Luigi default sandbox rules](https://github.com/SAP/luigi/blob/af1deebb392dcec6490f72576e32eb5853a894bc/core/src/utilities/helpers/iframe-helpers.js#L140) by adding further rules.
+* **iframeCreationInterceptor** is a function called on iframe creation. It gives you full control over the created iframe DOM element. You can modify it to your needs just before it is added to the DOM tree. 
+This function is called with these parameters: 
+  * `iframe` is the iframe DOM element. It is not yet added to the DOM tree, but all attributes are already set.
+  * `viewGroup` is the view group associated with this iframe, if applicable.
+  * `navigationNode` is the navigation node associated with this iframe. NOTE: the interceptor is called only once per iframe creation. If two or more navigation nodes share the same iframe (because they belong to the same view group) the interceptor is called with the first navigated node only. 
+  * `microFrontendType`, which is `main`, `modal` or `split-view` depending on where it is going to be rendered.
+  
+For example, to allow 'fullscreen' for non-modal iframes:
+```javascript
+{
+  iframeCreationInterceptor: (iframe, viewGroup, navigationNode, microFrontendType) => {
+    if (microFrontendType !== 'modal')
+      iframe.allowFullscreen = true;
+  }
+}
+```
+* **allowRules** is an array of rules for the content in the iframe, managed by the HTML **allow** attribute. You can use one or more rules by adding them to the array, for example `allowRules: ['microphone', 'camera']`. Be aware that this mechanism requires the browser to support [Feature Policy](https://developer.mozilla.org/en-US/docs/Web/HTTP/Feature_Policy).
 * **appLoadingIndicator.hideAutomatically** allows you to disable automatic hiding of the app loading indicator, which is enabled by default in case the app loading indicator is being used. Take a look at the [App loading indicator](luigi-ux-features.md#app-loading-indicator) section on how to use this feature.
