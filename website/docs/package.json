@@ -19,10 +19,7 @@
   },
   "dependencies": {
     "@kyma-project/luigi-client": "^0.6.0",
-    "@kyma-project/luigi-core": "^0.6.0",
-    "compression": "^1.7.1",
-    "polka": "next",
-    "sirv-cli": "0.4.4"
+    "@kyma-project/luigi-core": "^0.6.0"
   },
   "devDependencies": {
     "@agentofuser/rehype-section": "^1.0.5",
@@ -57,12 +54,14 @@
     "remark-rehype": "^5.0.0",
     "remark-toc": "^6.0.0",
     "sapper": "^0.27.0",
-    "sirv": "^0.4.0",
     "svelte": "^3.0.0",
     "svelte-loader": "^2.9.0",
     "unified": "^8.3.2",
     "vfile-reporter": "^6.0.0",
     "webpack": "^4.7.0",
-    "webpack-cli": "^3.0.3"
+    "webpack-cli": "^3.0.3",
+    "compression": "^1.7.1",
+    "polka": "next",
+    "sirv-cli": "0.4.4"
   }
 }

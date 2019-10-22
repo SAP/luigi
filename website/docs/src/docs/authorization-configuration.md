@@ -134,7 +134,7 @@ The application developer can read these parameters and set a logout page based 
 
 You can write your own authentication provider that meets your requirements. 
 
-[oAuth2ImplicitGrant.js](../core/src/providers/auth/oAuth2ImplicitGrant.js) is a good starting point if you don't use an external authentication library.
+[oAuth2ImplicitGrant.js](https://github.com/SAP/luigi/blob/master/core/src/providers/auth/oAuth2ImplicitGrant.js) is a good starting point if you don't use an external authentication library.
 After authorization is successful on the auth provider's side it redirects back to `Luigi callback.html` **redirect_uri**. The auth provider verifies the authentication data, saves it in  **localStorage** for Luigi, and redirects to the Luigi main page. 
 
 [openIdConnect.js](../core/src/providers/auth/openIdConnect.js) lazy loads the official `oidc-client` library and is a good starting point if you also depend on external authentication libraries.
