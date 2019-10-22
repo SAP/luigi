@@ -19,7 +19,8 @@
   },
   "dependencies": {
     "@kyma-project/luigi-client": "^0.6.0",
-    "@kyma-project/luigi-core": "^0.6.0"
+    "@kyma-project/luigi-core": "^0.6.0",
+    "polka": "next"
   },
   "devDependencies": {
     "@agentofuser/rehype-section": "^1.0.5",
@@ -61,7 +62,6 @@
     "webpack": "^4.7.0",
     "webpack-cli": "^3.0.3",
     "compression": "^1.7.1",
-    "polka": "next",
     "sirv-cli": "0.4.4"
   }
 }
