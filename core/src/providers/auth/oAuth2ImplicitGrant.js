@@ -70,7 +70,9 @@ export class oAuth2ImplicitGrant {
       formElem.method = settings.authorizeMethod;
       formElem.target = '_self';
 
-      settings.oAuthData.redirect_uri = `${GenericHelpers.prependOrigin(settings.oAuthData.redirect_uri)}?storageType=${AuthStorageSvc.storageType()}`;
+      settings.oAuthData.redirect_uri = `${GenericHelpers.prependOrigin(
+        settings.oAuthData.redirect_uri
+      )}?storageType=${AuthStorageSvc.storageType}`;
       settings.oAuthData.state = btoa(
         window.location.href + '_luigiNonce=' + generatedNonce
       );

@@ -60,7 +60,6 @@
     {/if}
   </ul>
 </nav>
-
 {/if}
 <script>
   import { createEventDispatcher, onMount, getContext } from 'svelte';
@@ -99,8 +98,6 @@
     'getUnsavedChangesModalPromise'
   );
 
-  const newlyAuthorized = () =>
-    JSON.parse(localStorage.getItem('luigi.newlyAuthorized'));
   const isAuthValid = () =>
     AuthHelpers.getStoredAuthData().accessTokenExpirationDate >
     Number(new Date());
@@ -207,8 +204,8 @@
       const hasAuthSuccessFulFn = GenericHelpers.isFunction(
         LuigiConfig.getConfigValue('auth.events.onAuthSuccessful')
       );
-      if (hasAuthSuccessFulFn && newlyAuthorized()) {
-        localStorage.removeItem('luigi.newlyAuthorized');
+      if (hasAuthSuccessFulFn && AuthStorageSvc.isNewlyAuthorized()) {
+        AuthStorageSvc.removeNewlyAuthorized();
         await LuigiAuth.handleAuthEvent(
           'onAuthSuccessful',
           idpProviderSettings,
@@ -320,7 +317,7 @@
 
   export function startAuthorization() {
     idpProviderInstance.login().then(res => {
-      localStorage.setItem('luigi.newlyAuthorized', true);
+      AuthStorageSvc.setNewlyAuthorized();
       if (res) {
         alert(res);
       }

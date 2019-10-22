@@ -3,15 +3,16 @@ import { LuigiConfig } from '../core-api';
 class AuthStorageSvcClass {
   constructor() {
     this._defaultStorage = 'localStorage';
-    this._storageKey = 'luigi.auth';
+    this._authKey = 'luigi.auth';
+    this._newlyAuthorizedKey = 'luigi.newlyAuthorized';
     this._invalidStorageMsg = 'Configuration Error: Invalid auth.storage value defined. Must be one of localStorage, sessionStorage or none.'
   }
 
-  storageKey() {
-    return this._storageKey;
+  get storageKey() {
+    return this._authKey;
   }
 
-  storageType() {
+  get storageType() {
     if (!this._storageType) {
       this._storageType = LuigiConfig.getConfigValue('auth.storage') || this._defaultStorage;
     }
@@ -19,14 +20,58 @@ class AuthStorageSvcClass {
   }
 
   getAuth() {
+    return this._getStore(this.storageKey) {
+  }
+
+  setAuth(values) {
+    this._setStore(this.storageKey, values) {
+  }
+
+  isNewlyAuthorized() {
+    this._getStore(this._newlyAuthorizedKey);
+  }
+
+  setNewlyAuthorized() {
+    this._setStore(this._newlyAuthorizedKey, true);
+  }
+
+  removeNewlyAuthorized() {
+    this._setStore(this._newlyAuthorizedKey, undefined);
+  }
+
+  removeAuth() {
+    this._setStore(this.storageType, undefined);
+  }
+
+  _setStore(key, data) {
+    switch (this.storageType) {
+      case 'localStorage':
+      case 'sessionStorage':
+        if (data !== undefined) {
+          window[this.storageType].setItem(key, JSON.stringify(data));
+        } else {
+          window[this.storageType].removeItem(key);
+        }
+        break;
+
+      case 'none':
+        this[key] = data;
+        break;
+
+      default:
+        console.error(this._invalidStorageMsg);
+    }
+  }
+
+  _getStore(key) {
     try {
-      switch (this.storageType()) {
+      switch (this.storageType) {
         case 'localStorage':
         case 'sessionStorage':
-          return JSON.parse(window[this.storageType()].getItem(this.storageKey()));
+          return JSON.parse(window[this.storageType].getItem(key));
 
         case 'none':
-          return this._authValues;
+          return this[key];
 
         default:
           console.error(this._invalidStorageMsg);
@@ -35,38 +80,6 @@ class AuthStorageSvcClass {
       console.warn(
         'Error parsing authorization data. Auto-logout might not work!'
       );
-    }
-  }
-
-  setAuth(values) {
-    switch (this.storageType()) {
-      case 'localStorage':
-      case 'sessionStorage':
-        window[this.storageType()].setItem(this.storageKey(), JSON.stringify(values));
-        break;
-
-      case 'none':
-        this._authValues = values;
-        break;
-
-      default:
-        console.error(this._invalidStorageMsg);
-    }
-  }
-
-  removeAuth() {
-    switch (this.storageType()) {
-      case 'localStorage':
-      case 'sessionStorage':
-        window[this.storageType()].removeItem(this.storageKey());
-        break;
-
-      case 'none':
-        this._authValues = null;
-        break;
-
-      default:
-        console.error(this._invalidStorageMsg);
     }
   }
 }
