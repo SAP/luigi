@@ -220,6 +220,7 @@ class LifecycleManager extends LuigiClientBase {
    * Gets called when:
    * - navigating with **preserveView**
    * - navigating from or to a **viewGroup**
+   *
    * Does not get called when navigating normally, or when `openAsModal` or `openAsSplitView` are used.
    * @param {function} inactiveFn the listener function called each time a micro frontend turns into an inactive state
    * @memberof Lifecycle
