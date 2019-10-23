@@ -14,7 +14,8 @@ auth: {
     onAuthError: (settings, err) => {}
     onAuthExpired: (settings) => {},
     onLogout: (settings) => {},
-    onAuthExpireSoon: (settings) => {}
+    onAuthExpireSoon: (settings) => {},
+    onAuthConfigError: (settings, err) => {}
   }
 }
 ```
@@ -36,3 +37,4 @@ You can disable the default behavior of `onAuthExpired` and `onAuthError` by mak
 -   `onLogout` **[function](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Statements/function)** is executed after the user logs out.
 - `onAuthExpireSoon` **[function](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Statements/function)** is executed before the token expires. For OAuth2 and OIDC you can set the **accessTokenExpiringNotificationTime** to specify the number of seconds required to pass before the event is fired. The default value is `60` seconds.
     - by using oAuth2ImplicitGrant you can specify **expirationCheckInterval** which is the number of seconds to pass between each check if the token is about to expire. The default value is `5` seconds.
+- `onAuthConfigError` **[function](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Statements/function)** is executed if an auth provider is wrong configured and as a result not available.
