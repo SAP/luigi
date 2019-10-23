@@ -10,11 +10,15 @@ Development:
 
 `npm run start`
 
+Open [http://localhost:4000](http://localhost:4000), micro frontend is hosted on port 4001 and defined dynamically in configuration and sapper serve.
+
 Production build:
 
 `npm run export`
 
 `npm run export:serve`
+
+Open [http://localhost:5000](http://localhost:5000), it is exported to `public` folder and the micro frontend is stored in subfolder `docu-microfrontend`.
 
 ## How it works
 
