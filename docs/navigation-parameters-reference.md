@@ -1,6 +1,6 @@
 # Navigation properties reference
 
-> NOTE: To see the navigation properties in use, check out the [navigation configuration example](navigation-configuration-example.md) or configure a test application in the [Luigi fiddle](https://fiddle.luigi-project.io).
+> NOTE: To see the navigation properties in use, check out the [navigation configuration example](navigation-configuration-example.md) or configure a test application in the [Luigi Fiddle](https://fiddle.luigi-project.io).
 
 You can use properties and functions in this reference to configure your Luigi navigation structure.
 
