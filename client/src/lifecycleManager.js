@@ -216,7 +216,7 @@ class LifecycleManager extends LuigiClientBase {
   }
 
   /**
-   * Registers a listener called upon microfrontend inactivity. This happens when a another micro frontend gets shown while keeping the old one cached.
+   * Registers a listener called upon micro frontend inactivity. This happens when a new micro frontend gets shown while keeping the old one cached.
    * Gets called when:
    * - navigating with **preserveView**
    * - navigating from or to a **viewGroup**
