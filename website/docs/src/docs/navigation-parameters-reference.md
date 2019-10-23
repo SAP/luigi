@@ -180,7 +180,7 @@ You can configure the way Luigi tackles routing in your application in the **Rou
 The node navigation parameters are as follows:
 
 - **nodeAccessibilityResolver** receives all values defined in the node configuration. It allows you to define a permission checker function that gets executed on every node. If it returns `false`, Luigi removes the node and its children from the navigation structure.
-See [angular navigation.js](../core/examples/luigi-sample-angular/src/luigi-config/extended/navigation.js) for an example.
+See [angular navigation.js](https://github.com/SAP/luigi/blob/master/core/examples/luigi-sample-angular/src/luigi-config/extended/navigation.js) for an example.
 - **defaults.isolateView** renders all views in new frames. This setting overrides the same-domain frame reuse. The **defaults.isolateView** is disabled by default, and you can overwrite it using the **isolateView** value on a single node level.
 - **preloadViewGroups**(bool) allows deactivating the default preloading of [view groups](navigation-configuration.md#view-groups) iframes.
 - **viewGroupsSettings** is an object containing key-object pairs, where the key is the view group name as specified in the node parameters, and the object contains key-value pairs. In each key-value pair, the key is the feature name and the value is the actual setting. The following options are supported:

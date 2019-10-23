@@ -5,9 +5,15 @@ import * as sapper from '@sapper/server';
 
 const { PORT, NODE_ENV } = process.env;
 const dev = NODE_ENV === 'development';
-
-polka() // You can also use Express
+let basePath;
+if (PORT == '4001') {
+	basePath = '/';
+} else {
+	basePath = '/docu-microfrontend';
+}
+polka()
 	.use(
+		basePath,
 		compression({ threshold: 0 }),
 		sirv('static', { dev }),
 		sapper.middleware()

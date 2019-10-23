@@ -3,7 +3,7 @@ set -e # exit on errors
 BASE_DIR="$( cd "$(dirname "$0")" ; pwd -P )"
 # source $BASE_DIR/../../../scripts/shared/bashHelpers.sh
 
-EXPORT_DIR=$BASE_DIR/../__sapper__/export
+EXPORT_DIR=$BASE_DIR/../__sapper__/export/docu-microfrontend
 LUIGI_DIR=$BASE_DIR/../public
 
 if [ -d $LUIGI_DIR ]; then

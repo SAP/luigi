@@ -44,7 +44,8 @@ class SplitViewSvcClass {
     const iframe = IframeHelpers.createIframe(
       viewUrl,
       undefined,
-      component.get().currentNode
+      component.get().lastNode,
+      'split-view'
     );
     const iframeCtn = document.querySelector('.iframeSplitViewCnt');
     iframeCtn.appendChild(iframe);
@@ -205,6 +206,7 @@ class SplitViewSvcClass {
         .then(() => {
           if (comp.get().mfSplitView) {
             comp.get().mfSplitView.displayed = false;
+            comp.get().mfSplitView.collapsed = false;
             comp.set({ mfSplitView: comp.get().mfSplitView });
           }
           comp.dispatch('statusChanged', {
@@ -230,9 +232,7 @@ class SplitViewSvcClass {
     });
 
     this.getContainer().style.top = `${this.splitViewValues.top}px`;
-    IframeHelpers.getIframeContainer().style.paddingBottom = `${
-      this.splitViewValues.bottom
-    }px`;
+    IframeHelpers.getIframeContainer().style.paddingBottom = `${this.splitViewValues.bottom}px`;
     setTimeout(() => {
       this.getDragger().style.top = `${this.splitViewValues.top}px`;
     });

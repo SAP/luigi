@@ -6,7 +6,6 @@
 		const data = await res.json();
 
 		if (res.status === 200) {
-      console.log('data', Object.keys(data));
 			return { post: data };
 		} else {
 			this.error(res.status, data.message);

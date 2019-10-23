@@ -159,3 +159,65 @@ describe('SplitView Microfrontend', () => {
     });
   });
 });
+
+describe('iframeCreationInterceptor test', () => {
+  beforeEach(() => {
+    cy.visitLoggedIn('/projects/pr2');
+    cy.window().then(win => {
+      const config = win.Luigi.getConfig();
+      config.settings.iframeCreationInterceptor = (
+        iframe,
+        viewGroup,
+        navigationNode,
+        microFrontendType
+      ) => {
+        const style = 'border: 3px dashed ';
+        switch (microFrontendType) {
+          case 'main':
+            console.log(microFrontendType);
+            iframe.style.cssText = style + ' green';
+            break;
+          case 'split-view':
+            console.log(microFrontendType);
+            iframe.style.cssText = style + ' red';
+            break;
+          case 'modal':
+            console.log(microFrontendType);
+            iframe.style.cssText = style + ' blue';
+            break;
+        }
+      };
+      win.Luigi.configChanged('settings.header');
+    });
+  });
+
+  it(`main iframe intercepted`, () => {
+    cy.get('iframe').should('have.attr', 'style', 'border: 3px dashed green;');
+  });
+
+  it(`split-view iframe intercepted`, () => {
+    cy.getIframeBody().then($iframeBody => {
+      cy.wrap($iframeBody)
+        .contains('open view in split view')
+        .click();
+      cy.get('#splitViewContainer iframe').should(
+        'have.attr',
+        'style',
+        'border: 3px dashed red;'
+      );
+    });
+  });
+
+  it(`modal iframe intercepted`, () => {
+    cy.getIframeBody().then($iframeBody => {
+      cy.wrap($iframeBody)
+        .contains('rendered in a modal')
+        .click();
+      cy.get('[data-testid=modal-mf] iframe').should(
+        'have.attr',
+        'style',
+        'border: 3px dashed blue;'
+      );
+    });
+  });
+});

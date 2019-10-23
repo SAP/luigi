@@ -1,13 +1,9 @@
-// const isBrowser = typeof window !== 'undefined';
-// const envs = (isBrowser ? window.__ENV__ : process.env) || {};
 let baseUrl;
 if (location.port == '4000') {
   baseUrl = location.protocol + '//' + location.hostname + ':4001';
 } else {
   baseUrl = '/docu-microfrontend';
 }
-console.log("baseUrl : ", baseUrl);
-console.log("port : ", location.port);
 
 const getDocuItems = () => {
   return fetch('/navigation-children.json')
@@ -16,7 +12,6 @@ const getDocuItems = () => {
         })
         .then(function(json) {
           return json.map((child) => {
-            console.log('child', JSON.stringify(child));
             child.viewUrl = child.viewUrl.replace('__BASE_URL__', baseUrl);
             return child;
           });
