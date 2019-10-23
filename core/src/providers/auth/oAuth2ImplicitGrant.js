@@ -24,7 +24,7 @@ export class oAuth2ImplicitGrant {
   }
 
   getAuthData() {
-    return AuthStoreSvc.authData;
+    return AuthStoreSvc.getAuthData();
   }
 
   parseIdToken(token) {
@@ -72,7 +72,7 @@ export class oAuth2ImplicitGrant {
 
       settings.oAuthData.redirect_uri = `${GenericHelpers.prependOrigin(
         settings.oAuthData.redirect_uri
-      )}?storageType=${AuthStoreSvc.storageType}`;
+      )}?storageType=${AuthStoreSvc.getStorageType()}`;
       settings.oAuthData.state = btoa(
         window.location.href + '_luigiNonce=' + generatedNonce
       );

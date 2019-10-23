@@ -4,7 +4,7 @@ import { GenericHelpers } from './';
 
 class AuthHelpersClass {
   getStoredAuthData() {
-    return AuthStoreSvc.authData;
+    return AuthStoreSvc.getAuthData();
   }
 
   isLoggedIn() {

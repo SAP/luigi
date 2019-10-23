@@ -29,7 +29,7 @@ class LuigiAuth {
    * @memberof Authorization
    * @param {string} eventName
    * @param {Object} providerInstanceSettings
-   * @param {*} data
+   * @param {AuthData} data
    * @param {string} redirectUrl
    */
   async handleAuthEvent(
@@ -56,35 +56,57 @@ class LuigiAuth {
    * Read more about [custom authorization providers](authorization-configuration.md#Implement a custom authorization provider).
    * @name AuthorizationStore
    */
+
+  /**
+   * Authorization object that is stored in auth store and used within Luigi. It is then available in [LuigiClient.addInitListener](luigi-client-api.md#addInitListener) and can also be used in the Core configuration.
+   * @typedef {Object} AuthData
+   * @property {string} accessToken - access token value
+   * @property {string} accessTokenExpirationDate - timestamp value
+   * @property {string} scope - scope, can be empty if it is not required
+   * @property {string} idToken - id token, used for renewing authentication
+   */
   get store() {
     return {
       /**
        * Retrieves the key name that is used to store the auth data.
        * @memberof AuthorizationStore
        * @returns {string} name of the store key
-       * @example Luigi.auth().store.storageKey
+       * @example Luigi.auth().store.getStorageKey()
        */
-      storageKey: AuthStoreSvc.storageKey,
+      getStorageKey: () => AuthStoreSvc.getStorageKey(),
       /**
        * Retrieves the storage type that is used to store the auth data.
        * @memberof AuthorizationStore
        * @returns {('localStorage'|'sessionStorage'|'none')} storage type
-       * @example Luigi.auth().store.storageType
+       * @example Luigi.auth().store.getStorageType()
        */
-      storageType: AuthStoreSvc.storageType,
+      getStorageType: () => AuthStoreSvc.getStorageType(),
       /**
        * Retrieves the current auth object.
        * @memberof AuthorizationStore
-       * @returns {*} auth data
-       * @example Luigi.auth().store.authData
+       * @returns {AuthData} the current auth data object
+       * @example Luigi.auth().store.getAuthData()
        */
-      authData: AuthStoreSvc.authData,
-
-      setAuthData: values => AuthStoreSvc.setAuthData(values),
+      getAuthData: () => AuthStoreSvc.getAuthData(),
+      /**
+       * Sets autorization data
+       * @memberof AuthorizationStore
+       * @param {AuthData} data new auth data object
+       * @example Luigi.auth().store.setAuthData(data)
+       */
+      setAuthData: data => AuthStoreSvc.setAuthData(data),
+      /**
+       * Clears autorization data from store
+       * @memberof AuthorizationStore
+       * @example Luigi.auth().store.removeAuthData()
+       */
       removeAuthData: () => AuthStoreSvc.removeAuthData(),
-      isNewlyAuthorized: AuthStoreSvc.isNewlyAuthorized,
-      setNewlyAuthorized: () => AuthStoreSvc.setNewlyAuthorized(),
-      removeNewlyAuthorized: () => AuthStoreSvc.removeNewlyAuthorized()
+      /**
+       * Defines a new authorization session. Must be triggered after initial `setAuthData()` in order to trigger **onAuthSuccessful** event after login.
+       * @memberof AuthorizationStore
+       * @example Luigi.auth().store.setNewlyAuthorized()
+       */
+      setNewlyAuthorized: () => AuthStoreSvc.setNewlyAuthorized()
     };
   }
 }
