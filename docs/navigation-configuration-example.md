@@ -1,6 +1,6 @@
 # Navigation configuration example
 
-This example represents a sample Luigi navigation configuration including the many of the parameters described in the [navigation parameters reference](navigation-parameters-reference.md).
+This example represents a sample Luigi navigation configuration including the many of the properties described in the [navigation properties reference](navigation-parameters-reference.md).
 
 ```javascript
 Luigi.setConfig({
