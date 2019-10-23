@@ -214,6 +214,7 @@ class SplitViewSvcClass {
         .then(() => {
           if (comp.get().mfSplitView) {
             comp.get().mfSplitView.displayed = false;
+            comp.get().mfSplitView.collapsed = false;
             comp.set({ mfSplitView: comp.get().mfSplitView });
           }
           comp.dispatch('statusChanged', {
