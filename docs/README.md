@@ -21,15 +21,15 @@ To configure Luigi Core:
 The configuration file can include several different sections, which are outlined in the guides below:
 
 * [Navigation (basic)](navigation-configuration.md) shows you how to configure basic top and side navigation, links, and categories.
-* [Navigation (advanced)](navigation-parameters-reference.md) explains how to include elements such as modals and contexts, create a dynamically changeable path, hide the loading indicator, and more. 
-* [Routing](routing.md) enables you to define routing options your application.
+* [Navigation (advanced)](navigation-parameters-reference.md) explains how to create a dynamically changeable path, reuse micro frontends with the same origin, and more. 
+* [Routing](navigation-parameters-reference.md#routing) enables you to define routing options your application.
 * [Authorization](authorization-configuration.md) shows you how to make your Luigi application secure.
     * [Authorization events](authorization-events.md) guides you through the event configuration to react to Luigi authorization events.
-* [General settings](general-settings.md) provides you with additional configuration options for Luigi, including fully customizing the micro frontend, defining a header, and making your application responsive.
-* [Profile](profile.md) shows you how to create a user profile structure in the top navigation.
-* [Context switcher](context-switcher.md) shows you how to create a drop-down for contexts in the top navigation.
-* [Product switcher](product-switcher.md) shows you how to create an additional menu in the top navigation which can include larger icons for products.
-* [App switcher](app-swticher.md) explains how to configure a drop-down to switch between applications.
+* [General settings](general-settings.md) provides you with additional configuration options for Luigi, including fully customizing a micro frontend, defining a header, and making your application responsive.
+* [Profile](navigation-parameters-reference.md#profile) shows you how to create a user profile structure in the top navigation.
+* [Context switcher](navigation-parameters-reference.md#context-switcher) shows you how to create a drop-down for contexts in the top navigation.
+* [Product switcher](navigation-parameters-reference.md#product-switcher) shows you how to create an additional menu in the top navigation which can include larger icons for products.
+* [App switcher](navigation-parameters-reference.md#app-switcher) explains how to configure a drop-down to switch between applications.
 * [Lifecycle hooks](lifecycle-hooks.md) allows you to execute custom logic on any of the Luigi lifecycle steps.
 
 The following guides outline Luigi Core API features and additional UI options that exist outside the configuration file.
