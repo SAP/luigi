@@ -18,6 +18,9 @@ mv $EXPORT_DIR/luigi/* $LUIGI_DIR
 mkdir -p $LUIGI_DIR/docu-microfrontend
 mv $EXPORT_DIR/* $LUIGI_DIR/docu-microfrontend
 
+# copy redirects file for netlify
+cp $LUIGI_DIR/../src/_redirects $LUIGI_DIR/
+
 echo ""
 echo "Documentation was exported to $LUIGI_DIR"
 
