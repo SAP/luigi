@@ -1,10 +1,10 @@
 # Authorization configuration
 
->**NOTE:** For learning and testing purposes, use the [Luigi Fiddle](https://fiddle.luigi-project.io) page where you can configure a sample Luigi application.
+To configure authorization in Luigi, go to the `auth:` section of your project's `basicConfiguration.js` file. To see how authorization works, you can also go to the [Luigi Fiddle](https://fiddle.luigi-project.io) site and configure a sample application.
 
 Luigi provides OpenID Connect and OAuth2 Implicit Grant authorization out of the box. The **use** key defines the active authorization provider and the **disableAutoLogin** key allows you to disable the automatic login flow that is provided by default.
 
-````
+```javascript
 auth: {
   use: 'openIdConnect',
   openIdConnect: {
@@ -12,13 +12,20 @@ auth: {
   },
   disableAutoLogin: true
 }
-````
+```
+
+You have several authorization options:
+* [OpenID Connect](#openid-connect-configuration)
+  * [Third-party cookies and silent token refresh](#third-party-cookies-and-silent-token-refresh)
+* [OAuth2 Implicit Grant](#oauth2-implicit-grant-configuration)
+* [Custom authorization provider](#custom-authorization-provider)
+* [Create your own authorization provider](#implement-a-custom-authorization-provider)
 
 ## OpenID Connect configuration
 
-The following code snippet demonstrates how to configure authorization using OpenID Connect in Luigi. 
+This code snippet demonstrates how to configure authorization using OpenID Connect in Luigi.
 
-````
+```javascript
 auth: {
   use: 'openIdConnect',
   openIdConnect: {
@@ -33,7 +40,7 @@ auth: {
   },
   disableAutoLogin: false
 }
-````
+```
 
 - **authority** contains the OpenID Connect server address used to authenticate.
 - **client_id** contains your app client ID.
@@ -41,15 +48,28 @@ auth: {
 - **redirect_uri** sets the URL to return to after login. The default application root is `/`.
 - **post_logout_redirect_uri** sets the URL to return after logout. The default URL is `/logout.html`.
 - **automaticSilentRenew** enables the automatic silent renewal of the token if it is supported by the server. The default value is `false`. For this mechanism to work, the browser must have third-party cookies support enabled.
-- **accessTokenExpiringNotificationTime** is the number of seconds before an access token is to expire and triggers silent token refresh. The default value is `60` seconds.
+- **accessTokenExpiringNotificationTime** is the number of seconds before an access token expires and triggers silent token refresh. The default value is `60` seconds.
 - **thirdPartyCookiesScriptLocation** is the URL to the page containing third-party cookies support check. For details, see [Third-party cookies and silent token refresh section](#Third-party-cookies-and-silent-token-refresh).
 - **userInfoFn** provides a function to get user information. It returns a promise of a **userinfo** object which can contain **name**, **email** and **picture** (value is a URL to the image). **Name** or **email** are displayed in the profile drop-down menu and the user’s profile picture is displayed in the top navigation.
 
+### Third-party cookies and silent token refresh
+
+The OpenID Connect configuration allows you to specify the **automaticSilentRenew** option. When set to `true`, Luigi attempts to automatically renew the token in the background before it expires. Be aware that this mechanism requires the browser to support [third-party cookies](https://developer.mozilla.org/en-US/docs/Web/HTTP/Cookies#Third-party_cookies).
+
+To detect whether the user's browser supports the mechanism, use the script in the [`third-party-cookies`](https://github.com/SAP/luigi/tree/master/core/third-party-cookies) catalog. Deploy these files on a domain different from your main application's and set **thirdPartyCookiesScriptLocation** to the `init.html` file. During initialization, Luigi detects the cookies support and produces a warning in the console if cookies are disabled in the user's browser.
+
+When Luigi fails to renew the token and then logs the user out, it adds the `?reason=tokenExpired&thirdPartyCookies=[VALUE]` query parameters to the logout page redirect URL. Luigi replaces **[VALUE]**  with one of these options:
+- `disabled` means that third party cookies are disabled.
+- `enabled` means that the browser supports third party cookies.
+- `not_checked` means that the script was not provided in **thirdPartyCookiesScriptLocation** or it could not be loaded.
+
+Use these parameters to set a logout page.
+
 ## OAuth2 Implicit Grant configuration
 
-The following code snippet demonstrates how to configure authorization using OAuth2 Implicit Grant in Luigi. 
+This code snippet demonstrates how to configure authorization using OAuth2 Implicit Grant in Luigi.
 
-````
+```javascript
 auth: {
   use: 'oAuth2ImplicitGrant',
   oAuth2ImplicitGrant: {
@@ -71,7 +91,7 @@ auth: {
     expirationCheckInterval: 5
   },
   disableAutoLogin: false
-````
+```
 
 - **authorizeUrl** contains the URL or address of the OAuth2 authorization server.
 - **logoutUrl** contains the endpoint to terminate the authorization session.
@@ -87,11 +107,11 @@ auth: {
 - **expirationCheckInterval** the number of seconds to pass between each check if the token is about to expire. The default value is `5` seconds.
 
 
-### Custom Authentication Provider
+## Custom authorization provider
 
-If you are using any authentication provider you can also implement the following functions for Luigi.
+If you use a custom authorization provider, you can also implement these functions for Luigi:
 
-````
+```javascript
 export class CustomAuthenticationProvider {
 
     login(){
@@ -118,32 +138,21 @@ export class CustomAuthenticationProvider {
         return { name, email, picture };
     }
 }
-````
-
-
-### Third-party cookies and silent token refresh
-
-The OpenID Connect configuration allows you to specify the **automaticSilentRenew** option. When set to `true`, Luigi attempts to automatically renew the token in the background before it expires. Be aware that this mechanism requires the browser to support [third-party cookies](https://developer.mozilla.org/en-US/docs/Web/HTTP/Cookies#Third-party_cookies).
-It is possible to detect whether the user's browser supports the mechanism by using the script in [`third-party-cookies`](https://github.com/SAP/luigi/tree/master/core/third-party-cookies) catalog. Deploy these files on a **different domain** than your main application and set **thirdPartyCookiesScriptLocation** to `init.html` file. During initialization, Luigi detects the cookies support and produces a warning in the console if cookies are disabled in the user's browser.                                         
-
-When Luigi fails to renew the token and then logs out the user, it adds the following query parameters to the logout page redirect URL: `?reason=tokenExpired&thirdPartyCookies=[VALUE]`. Luigi replaces the **VALUE**  with one of the following:
-- `disabled` means that third party cookies is disabled.
-- `enabled` means third party cookies are supported by the browser.
-- `not_checked` means that the script was not provided in **thirdPartyCookiesScriptLocation** or it could not be loaded.
-
-The application developer can read these parameters and set a logout page based on them.
-
-### Implement a Custom Authentication Provider
-
-You can write your own authentication provider that meets your requirements. 
-
-[oAuth2ImplicitGrant.js](../core/src/providers/auth/oAuth2ImplicitGrant.js) is a good starting point if you don't use an external authentication library.
-After authorization is successful on the auth provider's side it redirects back to `Luigi callback.html` **redirect_uri**. The auth provider verifies the authentication data, saves it in  **localStorage** for Luigi, and redirects to the Luigi main page. 
-
-[openIdConnect.js](../core/src/providers/auth/openIdConnect.js) lazy loads the official `oidc-client` library and is a good starting point if you also depend on external authentication libraries.
-
-Make sure to set the following data in your Authentication Provider implementation, so that it is used after successful authentication.
 ```
+
+## Implement a custom authorization provider
+
+You can write your own authorization provider that meets your requirements.
+
+[oAuth2ImplicitGrant.js](../core/src/providers/auth/oAuth2ImplicitGrant.js) is a good starting point if you don't use an external authorization library.
+
+After authorization is successful on the authorization provider's side, it redirects back to `Luigi callback.html` **redirect_uri**. The provider verifies the authorization data, saves it in  **localStorage** for Luigi, and redirects to the Luigi main page.
+
+[openIdConnect.js](../core/src/providers/auth/openIdConnect.js) lazy loads the official `oidc-client` library and is a good starting point if you also depend on external authorization libraries.
+
+Make sure to set this data in your authorization provider implementation, so that it is used after successful authorization:
+
+```javascript
 const data = {
   accessToken: hashParams['access_token'],
   accessTokenExpirationDate: hashParams['expiry_timestamp'],
@@ -155,9 +164,9 @@ localStorage.setItem('luigi.auth', JSON.stringify(data));
 localStorage.setItem('luigi.newlyAuthorized', true);
 ```
 
-Additionally, if you process authentication data during Luigi runtime (inside the custom provider, similarly to using the`openIdConnect` provider), dispatch the `luigi.auth.tokenIssued` Event to update the currently opened micro frontends with the latest authentication data. This is not required when processing authentication outside Luigi, for example when `oAuth2ImplicitGrant` provider processes the data in `callback.html` and redirects to Luigi afterward.
+Additionally, if you process authorization data during Luigi runtime (inside the custom provider, similarly to using the`openIdConnect` provider), dispatch the `luigi.auth.tokenIssued` Event to update the currently opened micro frontends with the latest authorization data. This is not required when processing authorization outside Luigi, for example when `oAuth2ImplicitGrant` provider processes the data in `callback.html` and redirects to Luigi afterward.
 
-```
+```javascript
 window.postMessage(
   { msg: 'luigi.auth.tokenIssued', authData: data },
   '*'

@@ -1,4 +1,5 @@
 import { projectDetailNavStructure } from './projectDetailNav';
+import { projectDetailTabNavStructure } from './projectDetailTabNav';
 const getProjectPlugins = projectId =>
   new Promise(resolve => {
     if (projectId === 'pr2') {
@@ -45,6 +46,10 @@ let allProjects = [
   {
     id: 'pr2',
     name: 'Project Two'
+  },
+  {
+    id: 'tabNav',
+    name: 'Horizontal Navigation Example'
   }
 ];
 
@@ -78,7 +83,10 @@ const getAllProjects = () =>
 const projectDetailNavProviderFn = context =>
   new Promise(resolve => {
     const projectId = context.currentProject;
-    const children = projectDetailNavStructure(projectId);
+    const children =
+      projectId === 'tabNav'
+        ? projectDetailTabNavStructure(projectId)
+        : projectDetailNavStructure(projectId);
 
     getProjectPlugins(projectId).then(result => {
       result.forEach(plugin => {
@@ -132,7 +140,9 @@ export const projectsNavProviderFn = context =>
           clientPermissions: {
             changeCurrentLocale: true
           },
-          children: projectDetailNavProviderFn
+          children: projectDetailNavProviderFn,
+          tabNav: project.id === 'tabNav' ? true : false
+          // hideSideNav: project.id === 'tabNav' ? true : false
         });
       });
       resolve(children);

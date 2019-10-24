@@ -44,7 +44,8 @@ class SplitViewSvcClass {
     const iframe = IframeHelpers.createIframe(
       viewUrl,
       undefined,
-      component.get().currentNode
+      component.get().lastNode,
+      'split-view'
     );
     const iframeCtn = document.querySelector('.iframeSplitViewCnt');
     iframeCtn.appendChild(iframe);
@@ -78,11 +79,6 @@ class SplitViewSvcClass {
 
   createAndSetView(component) {
     const { nodeParams, lastNode, pathData } = component.get();
-    this.setDeep(
-      component.root,
-      'mfSplitView',
-      Object.assign(component.root.get().mfSplitView, { collapsed: false })
-    );
 
     const iframe = this.setIframe(
       lastNode.viewUrl,
@@ -94,9 +90,14 @@ class SplitViewSvcClass {
       component
     );
 
-    component.root.set({
+    const iframeInfo = {
       splitViewIframe: iframe,
       splitViewIframeData: { ...pathData, nodeParams }
+    };
+    component.set(iframeInfo);
+    component.dispatch('iframeCreated', {
+      ...iframeInfo,
+      ...{ collapsed: false }
     });
 
     this.fixIOSscroll();
@@ -177,12 +178,6 @@ class SplitViewSvcClass {
     };
   }
 
-  setDeep(comp, key, value) {
-    comp.set({
-      [key]: Object.assign({}, comp.get()[key], value)
-    });
-  }
-
   open(comp, nodepath, settings) {
     const mfSplitView = {
       displayed: true,
@@ -204,6 +199,25 @@ class SplitViewSvcClass {
     comp.set({ mfSplitView, splitViewValues: this.splitViewValues });
   }
 
+  close(comp) {
+    if (comp.get().splitViewIframe) {
+      comp
+        .getUnsavedChangesModalPromise(comp.get().splitViewIframe.contentWindow)
+        .then(() => {
+          if (comp.get().mfSplitView) {
+            comp.get().mfSplitView.displayed = false;
+            comp.get().mfSplitView.collapsed = false;
+            comp.set({ mfSplitView: comp.get().mfSplitView });
+          }
+          comp.dispatch('statusChanged', {
+            displayed: false
+          });
+          IframeHelpers.getIframeContainer().style.paddingBottom = '';
+          SplitViewSvc.sendMessageToClients('close.ok');
+        });
+    }
+  }
+
   async expand(comp) {
     this.sendMessageToClients('internal', {
       exists: true,
@@ -212,16 +226,16 @@ class SplitViewSvcClass {
     });
     this.sendMessageToClients('expand.ok');
 
-    this.setDeep(comp.root, 'mfSplitView', {
+    comp.dispatch('statusChanged', {
       displayed: true,
       collapsed: false
     });
 
     this.getContainer().style.top = `${this.splitViewValues.top}px`;
-    IframeHelpers.getIframeContainer().style.paddingBottom = `${
-      this.splitViewValues.bottom
-    }px`;
-    this.getDragger().style.top = `${this.splitViewValues.top}px`;
+    IframeHelpers.getIframeContainer().style.paddingBottom = `${this.splitViewValues.bottom}px`;
+    setTimeout(() => {
+      this.getDragger().style.top = `${this.splitViewValues.top}px`;
+    });
   }
 
   collapse(comp) {
@@ -235,28 +249,12 @@ class SplitViewSvcClass {
             collapsed: true
           });
           this.sendMessageToClients('collapse.ok');
-          this.setDeep(comp, 'mfSplitView', {
+          comp.dispatch('statusChanged', {
             displayed: true,
             collapsed: true
           });
-
           this.getContainer().style.top = '';
           IframeHelpers.getIframeContainer().style.paddingBottom = '';
-        });
-    }
-  }
-
-  close(comp) {
-    if (comp.get().splitViewIframe) {
-      comp
-        .getUnsavedChangesModalPromise(comp.get().splitViewIframe.contentWindow)
-        .then(() => {
-          this.setDeep(comp, 'mfSplitView', {
-            displayed: false,
-            collapsed: comp.get().mfSplitView.collapsed
-          });
-          IframeHelpers.getIframeContainer().style.paddingBottom = '';
-          this.sendMessageToClients('close.ok');
         });
     }
   }

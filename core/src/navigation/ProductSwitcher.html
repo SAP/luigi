@@ -1,4 +1,4 @@
-<svelte:window on:resize="setViewportHeightVariable()"/>
+<svelte:window on:resize="{setViewportHeightVariable}"/>
 {#if productSwitcherItems && productSwitcherItems.length &&
 Object.keys(productSwitcherItems[0]).length }
 <!-- DESKTOP VERSION (popover): -->
@@ -6,14 +6,14 @@ Object.keys(productSwitcherItems[0]).length }
 <div class="fd-shellbar__action fd-shellbar__action--collapsible">
   <div class="fd-product-switcher">
     <div class="fd-popover fd-popover--right">
-      <div class="fd-popover__control" on:click="event.stopPropagation()">
+      <div class="fd-popover__control" on:click|stopPropagation="{() => {}}">
         <!-- default: sap-icon--grid -->
         {#if hasOpenUIicon(config)}
         <button
           class="fd-button--shell sap-icon--{config.icon}"
           aria-expanded="{dropDownStates.productSwitcherPopover || false}"
           aria-haspopup="true"
-          on:click="toggleDropdownState()"
+          on:click|stopPropagation="{toggleDropdownState}"
           title="{config.label}"
           data-testid="{getTestId(config)}"
         ></button>
@@ -22,7 +22,7 @@ Object.keys(productSwitcherItems[0]).length }
           class="fd-button--shell"
           aria-expanded="{dropDownStates.productSwitcherPopover || false}"
           aria-haspopup="true"
-          on:click="toggleDropdownState()"
+          on:click|stopPropagation="{toggleDropdownState}"
           title="{config.label}"
           data-testid="{getTestId(config)}"
         >
@@ -41,7 +41,7 @@ Object.keys(productSwitcherItems[0]).length }
               {#each productSwitcherItems as productSwitcherItem}
               {#if productSwitcherItem.label}
               <li
-                on:click="onActionClick(productSwitcherItem)"
+                on:click="{() => onActionClick(productSwitcherItem)}"
                 data-testid="{getTestId(productSwitcherItem)}"
               >
                 <a class="fd-menu__item">
@@ -72,8 +72,8 @@ Object.keys(productSwitcherItems[0]).length }
 <!-- MOBILE VERSION (fullscreen modal): -->
 {#if isMobile && dropDownStates.productSwitcherPopover}
 <MobileTopNav
-  on:click="toggleDropdownState()"
-  on:listClick="onActionClick(event)"
+  on:click="{toggleDropdownState}"
+  on:listClick="{onActionClickExternal}"
   nodes="{productSwitcherItems}"
   label="{config.label}"
   {hasOpenUIicon}
@@ -82,69 +82,79 @@ Object.keys(productSwitcherItems[0]).length }
 />
 {/if}
 {/if}
-<script type="text/javascript">
+
+<script>
+  import MobileTopNav from './MobileTopNavDropDown.html';
+  import { createEventDispatcher, onMount, getContext } from 'svelte';
   import { LuigiConfig, LuigiI18N } from '../core-api';
   import { Routing } from '../services/routing';
   import { StateHelpers } from '../utilities/helpers';
   import { NavigationHelpers } from '../utilities/helpers';
-  import MobileTopNav from './MobileTopNavDropDown.html';
 
-  export default {
-    async oncreate() {
-      StateHelpers.doOnStoreChange(
-        this.store,
-        async () => {
-          const config = NavigationHelpers.getProductSwitcherConfig();
-          this.set({ config });
-          if (config) {
-            const productSwitcherItems = await LuigiConfig.getConfigValueAsync(
-              'navigation.productSwitcher.items'
-            );
-            this.set({
-              productSwitcherItems
-            });
-          }
-          this.setViewportHeightVariable();
-        },
-        ['navigation.productSwitcher']
-      );
-    },
-    methods: {
-      onActionClick(productSwitcherItem) {
-        this.root.getUnsavedChangesModalPromise().then(() => {
-          Routing.navigateToLink(productSwitcherItem);
-        });
-        this.toggleDropdownState();
+  const dispatch = createEventDispatcher();
+
+  export let productSwitcherItems;
+  export let isMobile;
+  export let config;
+  export let dropDownStates;
+  let store = getContext('store');
+  let getUnsavedChangesModalPromise = getContext('getUnsavedChangesModalPromise');
+
+  onMount(async () => {
+    StateHelpers.doOnStoreChange(
+      store,
+      async () => {
+        config = NavigationHelpers.getProductSwitcherConfig();
+        if (config) {
+          productSwitcherItems = await LuigiConfig.getConfigValueAsync(
+            'navigation.productSwitcher.items'
+          );
+        }
+        setViewportHeightVariable();
       },
-      toggleDropdownState(event = null) {
-        if (event) event.stopPropagation();
-        this.fire('toggleDropdownState');
-      },
-      setViewportHeightVariable() {
-        // get the viewport height and multiple it by 1% to get a value for a vh unit
-        let vh = window.innerHeight * 0.01;
-        // set the value in the --vh custom property to the root of the document
-        document.documentElement.style.setProperty('--vh', `${vh}px`);
-      }
-    },
-    helpers: {
-      hasOpenUIicon(node) {
-        return NavigationHelpers.isOpenUIiconName(node.icon);
-      },
-      getNodeLabel(node) {
-        return LuigiI18N.getTranslation(node.label);
-      },
-      getTestId(node) {
-        return node.testId
-          ? node.testId
-          : NavigationHelpers.prepareForTests(node.label);
-      }
-    },
-    components: {
-      MobileTopNav
-    }
-  };
+      ['navigation.productSwitcher']
+    );
+  });
+
+  // [svelte-upgrade suggestion]
+  // review these functions and remove unnecessary 'export' keywords
+  export function onActionClick(productSwitcherItem) {
+    getUnsavedChangesModalPromise().then(() => {
+      Routing.navigateToLink(productSwitcherItem);
+    });
+    toggleDropdownState();
+  }
+
+  export function onActionClickExternal(event) {
+    onActionClick(event.detail);
+  }
+
+  export function toggleDropdownState() {
+    dispatch('toggleDropdownState');
+  }
+
+  export function setViewportHeightVariable() {
+    // get the viewport height and multiple it by 1% to get a value for a vh unit
+    let vh = window.innerHeight * 0.01;
+    // set the value in the --vh custom property to the root of the document
+    document.documentElement.style.setProperty('--vh', `${vh}px`);
+  }
+
+  function hasOpenUIicon(node) {
+    return NavigationHelpers.isOpenUIiconName(node.icon);
+  }
+
+  function getNodeLabel(node) {
+    return LuigiI18N.getTranslation(node.label);
+  }
+
+  function getTestId(node) {
+    return node.testId
+      ? node.testId
+      : NavigationHelpers.prepareForTests(node.label);
+  }
 </script>
+
 <style type="text/scss">
   .fd-product-switcher {
     position: relative;
