@@ -13,8 +13,6 @@
 	} */
 </style>
 
-<!-- <Nav {segment}/> -->
-
 <main class="fd-ui fd-ui--fundamental">
 		<div class="fd-page">
 		<slot></slot>

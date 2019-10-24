@@ -1,46 +1,25 @@
 <style>
-	h1, figure, p {
-		text-align: center;
-		margin: 0 auto;
-	}
-
-	h1 {
-		font-size: 2.8em;
-		text-transform: uppercase;
-		font-weight: 700;
-		margin: 0 0 0.5em 0;
-	}
-
 	figure {
-		margin: 0 0 1em 0;
+		margin: 1em auto;
 	}
 
 	img {
 		width: 100%;
-		max-width: 400px;
-		margin: 0 0 1em 0;
+		max-width: 200px;
+		margin: 0 auto;
 	}
 
 	p {
-		margin: 1em auto;
-	}
-
-	@media (min-width: 480px) {
-		h1 {
-			font-size: 4em;
-		}
+		margin: 1.2em auto;
 	}
 </style>
 
 <svelte:head>
-	<title>Sapper project template</title>
+	<title>Luigi Documentation</title>
 </svelte:head>
 
-<h1>Great success!</h1>
-
 <figure>
-	<img alt='Borat' src='great-success.png'>
-	<figcaption>HIGH FIVE!</figcaption>
+	<img alt='Borat' src='https://raw.githubusercontent.com/sap/luigi/master/logo.png'>
 </figure>
 
-<p><strong><a href="docs">Read all Documentation now</a></strong></p>
+<p><strong><a href="docs">Show documentation subpages</a></strong></p>
