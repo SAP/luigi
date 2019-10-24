@@ -9,29 +9,37 @@ import { AuthStoreSvc } from '../../src/services';
 
 describe('AuthStore', () => {
   // this.retries(1);
-  describe('Store fns', () => {
+  beforeEach(() => {
+    sinon.stub(AuthStoreSvc, '_setStore');
+    sinon.stub(AuthStoreSvc, '_getStore');
+  });
+  afterEach(() => {
+    sinon.restore();
+  });
+  describe('Internal fns', () => {
     let storeReturnValue = null;
     before(() => {
-      function mockStorage() {
-        return {
-          getItem: function(key) {
-            return JSON.stringify(storeReturnValue);
-          }
-        };
-      }
-
-      global['localStorage'] = mockStorage();
-      global['sessionStorage'] = mockStorage();
+      // function mockStorage() {
+      //   return {
+      //     getItem: function(key) {
+      //       return JSON.stringify(storeReturnValue);
+      //     }
+      //   };
+      // }
+      // global['localStorage'] = mockStorage();
+      // global['sessionStorage'] = mockStorage();
     });
     beforeEach(() => {
-      global['sessionStorage'] = {
-        getItem: sinon.stub(),
-        setItem: sinon.stub()
-      };
-      global['localStorage'] = {
-        getItem: sinon.stub(),
-        setItem: sinon.stub()
-      };
+      AuthStoreSvc._setStore.restore();
+      AuthStoreSvc._getStore.restore();
+      // global['sessionStorage'] = {
+      //   getItem: sinon.stub(),
+      //   setItem: sinon.stub()
+      // };
+      // global['localStorage'] = {
+      //   getItem: sinon.stub(),
+      //   setItem: sinon.stub()
+      // };
       sinon.stub(AuthStoreSvc, 'getStorageType').returns('localStorage');
     });
     afterEach(() => {
@@ -56,24 +64,22 @@ describe('AuthStore', () => {
       xit('sessionStorage: stores a value in sessionStorage', () => {
         // ERROR opaque origins
       });
-      it('none: stores a value in the service', () => {
+      it('none: stores a value in memory', () => {
         const mockKey = 'mock.auth';
         const mockData = 'something';
         AuthStoreSvc.getStorageType.returns('none');
 
-        // ERROR opaque origins
         AuthStoreSvc._setStore(mockKey, mockData);
 
         sinon.assert.notCalled(global.localStorage.setItem);
         assert.equal(AuthStoreSvc[mockKey], mockData);
       });
       it('invalid: shows console.error on wrong setting', () => {
-        sinon.stub(console, 'error');
+        console.error.resetHistory();
         const mockKey = 'mock.auth';
         const mockData = 'something';
         AuthStoreSvc.getStorageType.returns('invalid');
 
-        // ERROR opaque origins
         AuthStoreSvc._setStore(mockKey, mockData);
 
         sinon.assert.calledOnce(console.error);
@@ -93,7 +99,6 @@ describe('AuthStore', () => {
         const mockData = 'something';
         AuthStoreSvc[mockKey] = mockData;
 
-        // ERROR opaque origins
         const result = AuthStoreSvc._getStore(mockKey);
 
         sinon.assert.notCalled(global.localStorage.getItem);
@@ -101,11 +106,10 @@ describe('AuthStore', () => {
         assert.equal(result, mockData);
       });
       it('invalid: shows console.error on wrong setting', () => {
-        sinon.stub(console, 'error');
+        console.error.resetHistory();
         const mockKey = 'mock.auth';
         AuthStoreSvc.getStorageType.returns('invalid');
 
-        // ERROR opaque origins
         AuthStoreSvc._getStore(mockKey);
 
         sinon.assert.calledOnce(console.error);
@@ -114,13 +118,6 @@ describe('AuthStore', () => {
   });
 
   describe('Methods', () => {
-    beforeEach(() => {
-      sinon.stub(AuthStoreSvc, '_setStore');
-      sinon.stub(AuthStoreSvc, '_getStore');
-    });
-    afterEach(() => {
-      sinon.restore();
-    });
     describe('getStorageKey', () => {
       it('retrieves the internal key', () => {
         assert.equal(AuthStoreSvc.getStorageKey(), 'luigi.auth');
@@ -149,6 +146,7 @@ describe('AuthStore', () => {
     });
     describe('storageKey and -type based methods', () => {
       beforeEach(() => {
+        // sinon.stub(AuthStoreSvc, '_setStore'); // WHY does it not work if this is defined here
         sinon.stub(AuthStoreSvc, 'getStorageKey').returns('luigi.auth');
         sinon.stub(AuthStoreSvc, 'getStorageType').returns('localStorage');
       });
@@ -166,41 +164,79 @@ describe('AuthStore', () => {
           sinon.assert.calledWithExactly(AuthStoreSvc._getStore, mockKey);
         });
       });
-      describe('setAuthData', () => {});
-      describe('removeAuthData', () => {});
-      describe('isNewlyAuthorized', () => {});
-      describe('setNewlyAuthorized', () => {});
-      describe('removeNewlyAuthorized', () => {});
+      describe('setAuthData', () => {
+        sinon.stub(AuthStoreSvc, '_setStore'); // WHY definition required?
+        const mockData = { key: 'something' };
+
+        AuthStoreSvc.setAuthData(mockData);
+
+        sinon.assert.calledWithExactly(
+          AuthStoreSvc._setStore,
+          'luigi.auth',
+          mockData
+        );
+        sinon.restore();
+      });
+      describe('removeAuthData', () => {
+        sinon.stub(AuthStoreSvc, '_setStore'); // WHY definition required?
+
+        AuthStoreSvc.removeAuthData();
+
+        sinon.assert.calledWithExactly(
+          AuthStoreSvc._setStore,
+          'luigi.auth',
+          undefined
+        );
+        sinon.restore();
+      });
+      describe('isNewlyAuthorized', () => {
+        it('gets boolean false from undefined store', () => {
+          AuthStoreSvc._getStore.returns(undefined);
+
+          const result = AuthStoreSvc.isNewlyAuthorized();
+
+          sinon.assert.alwaysCalledWithExactly(
+            AuthStoreSvc._getStore,
+            'luigi.newlyAuthorized'
+          );
+          assert.isFalse(result);
+        });
+        it('gets true from defined value', () => {
+          AuthStoreSvc._getStore.returns(true);
+
+          const result = AuthStoreSvc.isNewlyAuthorized();
+
+          sinon.assert.alwaysCalledWithExactly(
+            AuthStoreSvc._getStore,
+            'luigi.newlyAuthorized'
+          );
+          assert.isTrue(result);
+        });
+      });
+      describe('setNewlyAuthorized', () => {
+        sinon.stub(AuthStoreSvc, '_setStore'); // WHY definition required?
+
+        AuthStoreSvc.setNewlyAuthorized();
+
+        sinon.assert.alwaysCalledWithExactly(
+          AuthStoreSvc._setStore,
+          'luigi.newlyAuthorized',
+          true
+        );
+        sinon.restore();
+      });
+      describe('removeNewlyAuthorized', () => {
+        sinon.stub(AuthStoreSvc, '_setStore'); // WHY definition required?
+
+        AuthStoreSvc.removeNewlyAuthorized();
+
+        sinon.assert.alwaysCalledWithExactly(
+          AuthStoreSvc._setStore,
+          'luigi.newlyAuthorized',
+          undefined
+        );
+        sinon.restore();
+      });
     });
   });
-  // describe('current locale', () => {
-  //   it('should return default locale', () => {
-  //     const locale = LuigiI18N.getCurrentLocale();
-  //     assert.equal(locale, 'en');
-  //   });
-
-  //   it('should return previously set locale', () => {
-  //     global.sessionStorage.getItem.returns('mock-locale');
-  //     const locale = LuigiI18N.getCurrentLocale();
-  //     assert.equal(locale, 'mock-locale');
-  //   });
-
-  //   it('sets locale', () => {
-  //     sinon.stub(LuigiI18N, '_notifyLocaleChange');
-  //     LuigiI18N.setCurrentLocale('de');
-  //     sinon.assert.calledWithExactly(
-  //       global.sessionStorage.setItem,
-  //       'luigi.currentLocale',
-  //       'de'
-  //     );
-  //     sinon.assert.calledWithExactly(LuigiI18N._notifyLocaleChange, 'de');
-  //   });
-
-  //   it('should not set empty locale', () => {
-  //     sinon.stub(LuigiI18N, '_notifyLocaleChange');
-  //     LuigiI18N.setCurrentLocale('');
-  //     sinon.assert.notCalled(global.sessionStorage.setItem);
-  //     sinon.assert.notCalled(LuigiI18N._notifyLocaleChange);
-  //   });
-  // });
 });
