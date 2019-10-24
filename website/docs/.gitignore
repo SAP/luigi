@@ -8,3 +8,4 @@ extendedConfiguration.bundle.js
 fundamental-ui
 luigi-core
 luigi-client
+public/*
