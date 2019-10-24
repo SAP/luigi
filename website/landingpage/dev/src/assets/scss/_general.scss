@@ -74,6 +74,10 @@ ul {
   line-height: 1.25;
   margin-bottom: 1em;
 
+  &.has-big-margin {
+    margin-bottom: 3em;
+  }
+
   @include breakpoint(large) {
     font-size: 30px;
   }
@@ -99,7 +103,8 @@ ul {
   }
 }
 
-section {
+section,
+.row {
   &.is-centered {
     text-align: center;
   }
@@ -130,6 +135,33 @@ section {
   &--right-left {
     &:before {
       transform: skewY(-3deg);
+    }
+  }
+
+  .main-content & {
+    &:last-child {
+      margin-bottom: -100px;
+      padding-bottom: calc(100px + 50px);
+
+      @include breakpoint(large) {
+        margin-bottom: -150px;
+        padding-bottom: calc(150px + 50px);
+      }
+
+      @include breakpoint(xxlarge) {
+        margin-bottom: -200px;
+        padding-bottom: calc(200px + 100px);
+      }
+
+      &.has-big-bottom-margin {
+        margin-bottom: -300px;
+        padding-bottom: 300px;
+
+        @include breakpoint(xxlarge) {
+          margin-bottom: -500px;
+          padding-bottom: calc(500px + 100px);
+        }
+      }
     }
   }
 
@@ -174,4 +206,69 @@ a {
 
 p {
   margin-bottom: 2em;
+}
+
+.list-type-1 {
+
+  font-size: 15px;
+  line-height: 1.2em;
+  font-weight: 600;
+
+
+  li {
+    margin-bottom: 15px;
+
+    a {
+      display: inline-block;
+      position: relative;
+      color: $body-font-color;
+      padding-right: 25px;
+
+      &:after {
+        position: absolute;
+        top: 2px;
+        right: 0;
+        content: '';
+        width: 6px;
+        height: 6px;
+        border-radius: 50%;
+        width: 16px;
+        height: 16px;
+        background: url('../img/link-arrow.svg') no-repeat 50% 50%;
+        background-size: auto;
+      }
+
+      &:hover {
+        color: $primary-color;
+      }
+    }
+  }
+}
+
+.main-content {
+  > section {
+    padding: 50px 0;
+  
+    @include breakpoint(large) {
+      padding: 100px 0;
+
+      &.has-big-padding {
+        padding: 150px 0;
+      }
+    }
+
+    &.s-intro {
+      margin-top: -500px;
+      padding-top: 500px;
+
+      @include breakpoint(large) {
+        padding-top: calc(500px + 60px);
+      }
+
+      @include breakpoint(xlarge) {
+        padding-top: calc(500px + 100px);
+
+      }
+    }
+  }
 }
