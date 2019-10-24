@@ -9,3 +9,4 @@ fundamental-ui
 luigi-core
 luigi-client
 public/*
+static/assets
