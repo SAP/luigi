@@ -170,7 +170,7 @@ loadingIndicator: {
 
 ### openNodeInModal
 - **type**: boolean or object
-- **description**:  configures the settings of a view which opens in a modal. You can set the **openNodeInModal** property to `true` to use the default modal title and size, or you can specify them using these attributes:
+- **description**:  configures the settings of a view which opens in a modal. You can set the **openNodeInModal** parameter to `true` to use the default modal title and size, or you can specify them using these attributes:
 - **attributes**:
   - **title** is the modal title. By default, it is the node label. If there is no label, it is left empty.
   - **size** specifies the size of the modal. The default size is `l`, which means 80% of the main window size. You can also use `m` (60%) and `s` (40%) to set the modal size.
@@ -267,7 +267,7 @@ The profile section is a configurable drop-down list available in the top naviga
 
 ### staticUserInfoFn
 - **type**: function
-- **description**: used to retrieve a user's name and email to simulate logging in. It can be used when authorization is disabled and also gets called if the defined IDP provider does not have **settings.userInfoFn** defined or does not provide a `userInfo` function internally. It can be asynchronous and should return an object with **name**, **email** and **picture** properties.
+- **description**: used to retrieve a user's name and email to simulate logging in. It can be used when authorization is disabled and also gets called if the defined IDP provider does not have **settings.userInfoFn** defined or does not provide a `userInfo` function internally. It can be asynchronous and should return an object with **name**, **email** and **picture** parameters.
 
 >**NOTE:** Neither authorization nor profile parameter are configured if the profile section in the top navigation bar is not visible.
 
