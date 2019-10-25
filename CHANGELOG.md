@@ -23,6 +23,15 @@ The lerna-changelog tool detects changes based on PR labels and maps them to sec
     ...
   }
 -->
+## [v0.7.1] (2019-10-25)
+
+#### :rocket: Added
+* [#920](https://github.com/SAP/luigi/pull/920) Invalid auth provider error handling ([@JohannesDoberer](https://github.com/JohannesDoberer))
+
+#### :bug: Fixed
+* [#931](https://github.com/SAP/luigi/pull/931) The goBack context is not delivered to preserved view ([@pekura](https://github.com/pekura))
+* [#916](https://github.com/SAP/luigi/pull/916) Backdrop not covering split-view micro frontend ([@pekura](https://github.com/pekura))
+
 ## [v0.7.0] (2019-10-22)
 
 #### :rocket: Added
@@ -572,3 +581,4 @@ The lerna-changelog tool detects changes based on PR labels and maps them to sec
 [v0.6.5]: https://github.com/SAP/luigi/compare/v0.6.4...v0.6.5
 [v0.6.6]: https://github.com/SAP/luigi/compare/v0.6.5...v0.6.6
 [v0.7.0]: https://github.com/SAP/luigi/compare/v0.6.6...v0.7.0
+[v0.7.1]: https://github.com/SAP/luigi/compare/v0.7.0...v0.7.1
