@@ -1,18 +1,20 @@
-<header class="p-header p-header--home">
+<header class="p-header {{#ifpage 'index'}}p-header--home{{/ifpage}}">
   {{> global-nav}}
 
-  <section class="s-stage">
-    <div class="row">
-      <div class="column small-12 large-7 xlarge-6 content">
-        <h1 class="title-1">The Enterprise-Ready Micro Frontend Framework</h1>
-        <a
-          class="btn-primary"
-          href="https://github.com/SAP/luigi/blob/master/docs/application-setup.md"
-          target="_blank"
-          >GET STARTED</a
-        >
+  {{#ifpage 'index'}}
+    <section class="s-stage">
+      <div class="row">
+        <div class="column small-12 large-7 xlarge-6 content">
+          <h1 class="title-1">The Enterprise-Ready Micro Frontend Framework</h1>
+          <a
+            class="btn-primary"
+            href="https://github.com/SAP/luigi/blob/master/docs/application-setup.md"
+            target="_blank"
+            >GET STARTED</a
+          >
+        </div>
+        <div class="column small-12 large-6 image"></div>
       </div>
-      <div class="column small-12 large-6 image"></div>
-    </div>
-  </section>
+    </section>
+  {{/ifpage}}
 </header>
