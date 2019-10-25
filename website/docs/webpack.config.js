@@ -14,8 +14,6 @@ const dev = mode === 'development';
 const alias = { svelte: path.resolve('node_modules', 'svelte') };
 const extensions = ['.mjs', '.js', '.json', '.svelte', '.html'];
 const mainFields = ['svelte', 'module', 'browser', 'main'];
-// console.log('entry', config.client.entry());
-console.log('output', config.client.output());
 
 module.exports = {
 	client: {

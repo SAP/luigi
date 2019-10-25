@@ -63,17 +63,14 @@ module.exports = {
     test: /\.(sa|sc|c)ss$/,
     use: [
       /**
-					 * MiniCssExtractPlugin doesn't support HMR.
-					 * For developing, use 'style-loader' instead.
-					 * */
-					prod ? MiniCssExtractPlugin.loader : 'style-loader',
-					'css-loader'
-      // {
-      //   loader: MiniCssExtractPlugin.loader
-      // },
-      // {
-      //   loader: 'css-loader'
-      // }
+        * MiniCssExtractPlugin doesn't support HMR.
+        * For developing, use 'style-loader' instead.
+        * */
+      prod ? MiniCssExtractPlugin.loader : 'style-loader',
+      // Translates CSS into CommonJS
+      'css-loader',
+      // Compiles Sass to CSS
+      'sass-loader'
     ]
   },
   urls: {
