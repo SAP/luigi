@@ -22,7 +22,9 @@
     <div
       class="fd-page iframeContainer {mfSplitView.displayed?'lui-split-view':''} {mfSplitView.collapsed?'lui-collapsed':''}"
       use:init
-    ></div>
+    >
+      <Backdrop area="main"></Backdrop>
+    </div>
     {#if mfSplitView.displayed}
     <SplitView
       splitViewSettings="{mfSplitView.settings}"
@@ -314,6 +316,7 @@
       },
       shouldShowUnsavedChangesModal,
       getUnsavedChangesModalPromise,
+      showUnsavedChangesModal,
       showAlert,
       prepareInternalData,
       dispatch

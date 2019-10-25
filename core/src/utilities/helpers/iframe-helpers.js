@@ -22,7 +22,9 @@ class IframeHelpersClass {
   hideElementChildren(node) {
     if (node.children) {
       Array.from(node.children).forEach(child => {
-        child.style.display = 'none';
+        if (child.tagName === 'IFRAME') {
+          child.style.display = 'none';
+        }
       });
     }
   }
@@ -30,7 +32,7 @@ class IframeHelpersClass {
   removeElementChildren(node) {
     const children = [...node.children];
     children.forEach(child => {
-      if (!child.vg) {
+      if (!child.vg && child.tagName === 'IFRAME') {
         node.removeChild(child);
       }
     });

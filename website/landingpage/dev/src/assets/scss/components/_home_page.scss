@@ -1,13 +1,6 @@
 .s-intro {
-  margin-top: -500px;
-  padding-top: 500px;
-
-  @include breakpoint(large) {
-    padding-top: calc(500px + 60px);
-  }
 
   @include breakpoint(xlarge) {
-    padding-top: calc(500px + 100px);
 
     .wr {
       position: relative;
@@ -158,8 +151,6 @@
 }
 
 .s-adopters {
-  margin-bottom: -300px;
-  padding-bottom: 300px;
 
   .clients-list {
     margin-bottom: 40px;
@@ -172,14 +163,5 @@
     .item {
       margin: 0 30px 30px;
     }
-  }
-
-  .title-2 {
-    margin-bottom: 3em;
-  }
-
-  @include breakpoint(xxlarge) {
-    margin-bottom: -500px;
-    padding-bottom: calc(500px + 100px);
   }
 }
