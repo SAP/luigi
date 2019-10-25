@@ -12,27 +12,22 @@ Luigi Core enables you to create a web application with an easily configurable a
 
 ### Configuration
 
-To configure Luigi Core:
-1. Locate the `luigi-config` folder in your project.
-2. Edit the `basicConfiguration.js` file according to your needs.
+> **TIP:** The [Luigi Fiddle](fiddle.luigi-project.io) allows you to configure a very simple application and get a feel for the process.
 
-> **TIP:** You can find an example of a full configuration file [here](navigation-configuration-example.md) or experiment with one in the [Luigi Fiddle](fiddle.luigi-project.io)
+To configure your Luigi application, simply edit the files in the `luigi-config` folder of your project.
 
-The configuration file can include several different sections, which are outlined in the guides below:
+Luigi configuration is divided into several sections, which are outlined in the guides below:
 
-* [Navigation (basic)](navigation-configuration.md) shows you how to configure basic top and side navigation, links, and categories.
-* [Navigation (advanced)](navigation-parameters-reference.md) explains how to create a dynamically changeable path, reuse micro frontends with the same origin, and more. 
+* Navigation
+    * [Basic navigation](navigation-configuration.md) shows you how to configure basic top and side navigation, links, and categories.
+    * [Advanced navigation](navigation-parameters-reference.md) explains how to create a dynamically changeable path, reuse micro frontends with the same origin, and configure additional navigation elements. 
 * [Routing](navigation-parameters-reference.md#routing) enables you to define routing options your application.
-* [Authorization](authorization-configuration.md) shows you how to make your Luigi application secure.
+* [Authorization](authorization-configuration.md) allows you to configure login and security features for your application.
     * [Authorization events](authorization-events.md) guides you through the event configuration to react to Luigi authorization events.
-* [General settings](general-settings.md) provides you with additional configuration options for Luigi, including fully customizing a micro frontend, defining a header, and making your application responsive.
-* [Profile](navigation-parameters-reference.md#profile) shows you how to create a user profile structure in the top navigation.
-* [Context switcher](navigation-parameters-reference.md#context-switcher) shows you how to create a drop-down for contexts in the top navigation.
-* [Product switcher](navigation-parameters-reference.md#product-switcher) shows you how to create an additional menu in the top navigation which can include larger icons for products.
-* [App switcher](navigation-parameters-reference.md#app-switcher) explains how to configure a drop-down to switch between applications.
+* [General settings](general-settings.md) outlines additional configuration options for Luigi, such as fully customizing a micro frontend, defining a header, and making your application responsive.
 * [Lifecycle hooks](lifecycle-hooks.md) allows you to execute custom logic on any of the Luigi lifecycle steps.
 
-The following guides outline Luigi Core API features and additional UI options that exist outside the configuration file.
+The following guides outline Luigi Core API features and additional UI options that exist outside the configuration files:
 
 * [Core API](luigi-core-api.md) provides you with API features that help you enrich and use Luigi Core.
 * [Luigi UI features](luigi-ux-features.md) provides different customization options for some of the Luigi UI components.
