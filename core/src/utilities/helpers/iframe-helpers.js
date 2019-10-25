@@ -200,12 +200,6 @@ class IframeHelpersClass {
   sendMessageToIframe(iframe, message) {
     if (!(iframe.luigi && iframe.luigi.viewUrl)) return;
     const trustedIframeDomain = this.getLocation(iframe.luigi.viewUrl);
-    console.warn(
-      'sendMessageToIframe',
-      iframe.luigi.viewUrl,
-      trustedIframeDomain,
-      message.msg
-    );
     if (trustedIframeDomain !== '') {
       iframe.contentWindow.postMessage(message, trustedIframeDomain);
     }

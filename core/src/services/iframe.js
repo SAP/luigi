@@ -87,7 +87,7 @@ class IframeClass {
     return vgSettings && vgSettings.preloadUrl;
   }
 
-  notifyInactiveIframe(iframe) {
+  notifyInactiveIframes() {
     const message = {
       msg: 'luigi-client.inactive-microfrontend',
       context: JSON.stringify({}),
@@ -97,7 +97,7 @@ class IframeClass {
         currentLocale: LuigiI18N.getCurrentLocale()
       })
     };
-    IframeHelpers.sendMessageToIframe(iframe, message);
+    IframeHelpers.sendMessageToVisibleIframes(message);
   }
 
   switchActiveIframe(container, newActiveIframe, removeCurrentActive) {
@@ -110,24 +110,26 @@ class IframeClass {
           if (removeCurrentActive) {
             container.removeChild(child);
           } else {
-            child.style.display = 'none';
             const vgSettings = this.getViewGroupSettings(child.vg);
             if (vgSettings) {
-              if (vgSettings.preloadUrl) {
-                const message = {
-                  msg: 'luigi.navigate',
-                  viewUrl: vgSettings.preloadUrl,
-                  context: JSON.stringify({}),
-                  nodeParams: JSON.stringify({}),
-                  pathParams: JSON.stringify({}),
-                  internal: JSON.stringify({
-                    currentLocale: LuigiI18N.getCurrentLocale()
-                  })
-                };
-                IframeHelpers.sendMessageToIframe(child, message);
-              }
-              console.log('notifyInactiveIframe, switchActiveIframe');
-              this.notifyInactiveIframe(child);
+              this.notifyInactiveIframes();
+            }
+
+            // set non only after inactive message, else it will not get detected.
+            child.style.display = 'none';
+
+            if (vgSettings.preloadUrl) {
+              const message = {
+                msg: 'luigi.navigate',
+                viewUrl: vgSettings.preloadUrl,
+                context: JSON.stringify({}),
+                nodeParams: JSON.stringify({}),
+                pathParams: JSON.stringify({}),
+                internal: JSON.stringify({
+                  currentLocale: LuigiI18N.getCurrentLocale()
+                })
+              };
+              IframeHelpers.sendMessageToIframe(child, message);
             }
           }
         }
@@ -227,7 +229,7 @@ class IframeClass {
     if (!config.iframe) {
       // preserveView, hide other frames, else remove
       if (pvSituation) {
-        this.notifyInactiveIframe(node.firstChild);
+        this.notifyInactiveIframes();
         IframeHelpers.hideElementChildren(node);
       } else {
         IframeHelpers.removeElementChildren(node);
