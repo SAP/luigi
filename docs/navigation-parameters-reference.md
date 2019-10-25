@@ -1,6 +1,6 @@
 # Navigation properties reference
 
-> NOTE: To see the navigation properties in use, check out the [navigation configuration example](navigation-configuration-example.md) or configure a test application in the [Luigi Fiddle](https://fiddle.luigi-project.io).
+>**NOTE:** To see the navigation properties in use, see the [navigation configuration example](navigation-configuration-example.md) or configure a test application in the [Luigi Fiddle](https://fiddle.luigi-project.io).
 
 You can use properties and functions in this reference to configure your Luigi navigation structure.
 
@@ -26,18 +26,18 @@ You can configure the way Luigi tackles routing in your application in the `rout
 
 ### skipRoutingForUrlPatterns
 - **type**: RegExp[]
-- **description**: defines regex patterns to be skipped by the router when listening for path changes. This property is used for excluding **redirect_uri** properties. Default patterns are `[/access_token=/, '/id_token=/]`.
+- **description**: defines regex patterns the router will skip when listening for path changes. This property is used for excluding **redirect_uri** properties. Default patterns are `[/access_token=/, '/id_token=/]`.
 
 ### pageNotFoundHandler
 - **type**: any
 - **description**: defines custom behavior when the 404 (page not found) error occurs.  Luigi handles it by default. Leave its body empty if you have an external 404 handling. You can return an Object with `redirectTo` property if you want Luigi to redirect to a specific navigation path after execution.|
 - **attributes**:
-  - **wrongPath** (string): the path that user tried navigating to
+  - **wrongPath** (string): the path that the user tried navigating to.
   - **wasAnyPathFitted** (bool): it is true if Luigi managed to fit a valid path which means **wrongPath** was only partially wrong. Otherwise it is false.
 
 
 ## Navigation properties
-The node navigation properties enable you to configure global navigation settings under the `navigation:` section in the configuration file.
+The node navigation properties allow you to configure global navigation settings under the `navigation:` section in the configuration file.
 
 ### nodeAccessibilityResolver
 - **type**: any
@@ -55,18 +55,18 @@ The node navigation properties enable you to configure global navigation setting
 - **type**: object
 - **description**: contains key-object pairs, where the key is the view group name as specified in the node properties, and the object contains key-value pairs. In each key-value pair, the key is the feature name and the value is the actual setting. The following options are supported:
 - **attributes**:
-  - **preloadUrl**(string): needs to be an absolute URL of a micro frontend belonging to a view group. It may not be an URL of a node. It is recommended that you use a dedicated small, visually empty view, which imports Luigi Client and is fine with getting an empty context, for example, without an access token. The **preloadUrl** property is also required for view group caching in case you need a view group iframe to refresh whenever you navigate back to it.
+  - **preloadUrl**(string): needs to be an absolute URL of a micro frontend belonging to a view group. It cannot be an URL of a node. It is recommended that you use a dedicated small, visually empty view, which imports Luigi Client and is fine with getting an empty context, for example, without an access token. The **preloadUrl** property is also required for view group caching in case you need a view group iframe to refresh whenever you navigate back to it.
 
 
 ## Node properties
-Node properties are all the properties that can be added to an individual navigation node in the `nodes:` section of the Luigi configuration file.
+Node properties are all the properties that you can add to an individual navigation node in the `nodes:` section of the Luigi configuration file.
 
 ### pathSegment
 - **type**: string
 - **description**: specifies the partial URL of the current segment. **pathSegment** must not contain slashes.
 - **examples**:
-  - A static pathSegment of value `settings` results in `example.com/settings`.
-  - A dynamic pathSegment is prefixed with a colon and can load any value. Find out more about dynamic paths in Luigi [here](navigation-configuration.md#creating-a-dynamic-path).
+  - A static **pathSegment** of value `settings` results in `example.com/settings`.
+  - A dynamic **pathSegment** is prefixed with a colon and can load any value. Find out more about dynamic paths in Luigi [here](navigation-configuration.md#creating-a-dynamic-path).
 
 ### link
 - **type**: string
@@ -76,7 +76,7 @@ Node properties are all the properties that can be added to an individual naviga
 - **type**: object
 - **description**: indicates that the node links to an external URL. If this property is defined, **pathSegment** and **link** properties are ignored.
 - **attributes**:
-  - **sameWindow** defines if the external URL is opened in a new or current tab. The default value for this property is `false`.
+  - **sameWindow** defines if the external URL opens in a new or current tab. The default value for this property is `false`.
   - **url** is the external URL that the node leads to.
 
 ### label
@@ -85,7 +85,7 @@ Node properties are all the properties that can be added to an individual naviga
 
 ### testId
 - **type**: string
-- **description**: allows you define your own custom `testId`. If there is nothing specified, it is a combination of the node's pathSegment followed by a dash (if pathSegment exists) and the label written as one word and lower case (e.g. `pathsegment_label` or `label`).
+- **description**: allows you to define your own custom **testId**. If you do not specify it, it is a combination of the node's **pathSegment** followed by an underscore and the label, written as one word in lower case. If the **pathSegment** does not exist, the **testId** includes the label only. This way, you can have `pathsegment_label` or `label`.
 
 ### hideFromNav
 - **type**: boolean
@@ -161,14 +161,14 @@ loadingIndicator: {
 - **type**: string or object
 - **description**: defines a group of views separated with a headline and an icon. You should define at least one node in a group should as an Object with **label** and **icon** attributes. For all other nodes, you can set **category** as a string with the `label` value.
 - **attributes**:
-  - **label** is a string that represents the title of the category
+  - **label** is a string that represents the title of the category.
   - **icon** is the name of an icon, without the `sap-icon--` prefix. Its source may be [OpenUI](https://openui5.hana.ondemand.com/1.40.10/iconExplorer.html) or a custom link (relative or absolute) to an image. The icon is displayed next to the node label in the side navigation or instead of the label in the top navigation. In case you accidentally define different icons in a category group, only the first one is used.
   - **collapsible** if set to `true`, category items are hidden at first. To expand them, click the main category node.
-  - **testId** is a string where you can define your own custom `testId`. If nothing is specified, it is the node's label written as one word and lower case (e.g. `label`).
+  - **testId** is a string where you can define your own custom `testId`. If nothing is specified, it is the node's label written as one word in lower case, for example`label`.
 
 ### openNodeInModal
 - **type**: boolean or object
-- **description**:  configures the settings of a view which opens in a modal. You can set the openNodeInModal property to true to use the default modal title and size, or you can specify them using these attributes:
+- **description**:  configures the settings of a view which opens in a modal. You can set the **openNodeInModal** property to `true` to use the default modal title and size, or you can specify them using these attributes:
 - **attributes**:
   - **title** is the modal title. By default, it is the node label. If there is no label, it is left empty.
   - **size** **(`"l"` \| `"m"` \| `"s"`)** specifies the size of the modal. The default size is **`"l"`**, which means 80%. You can also use **`"m"`** (60%) and **`"s"`** (40%) to set the modal size.
@@ -189,7 +189,7 @@ loadingIndicator: {
 
 ### tabNav
 - **type**: boolean
-- **description**: tabNav renders the children of the node as a horizontal navigation bar. Sub-children are not supported. When you categorize nodes you will get a drop-down menu in the horizontal navigation.
+- **description**: renders the children of the node as a horizontal navigation bar. Sub-children are not supported. When you categorize nodes you will get a drop-down menu in the horizontal navigation.
 
 ## Context switcher
 
@@ -230,7 +230,7 @@ The context switcher is a drop-down list available in the top navigation bar. It
 
 ### preserveSubPathOnSwitch
 - **type**: boolean
-- **description**: if set to `true`, the sub-path will be preserved on context switch.
+- **description**: if set to `true`, the sub-path is preserved on context switch.
 
 
 ## Profile
@@ -244,7 +244,7 @@ The profile section is a configurable drop-down list available in the top naviga
   - **label** overrides the text for the logout item. The default value is "Sign Out".
   - **testId** is a string where you can define your own custom `testId`. If nothing is specified, it is the node's label written as one word and lower case (e.g. `label`).
   - **icon** overrides the icon for the logout item. The default value is [SAP UI5 log icon](https://sapui5.hana.ondemand.com/test-resources/sap/m/demokit/iconExplorer/webapp/index.html#/overview/SAP-icons/?tag=logout).
-  - **customLogoutFn** defines a function to implement your own logout functionality. It is recommended to only use this function if no IDP is configured. If an IDP with a corresponding [logout function](authorization-configuration.md) is defined , the customLogoutFn on profile will be ignored.
+  - **customLogoutFn** defines a function to implement your own logout functionality. Use this function only if no IDP is configured. If you define IDP with a corresponding [logout function](authorization-configuration.md), the **customLogoutFn** set for a profile is ignored.
 
 ### items
 - **type**: array
@@ -260,7 +260,7 @@ The profile section is a configurable drop-down list available in the top naviga
 
 ### staticUserInfoFn
 - **type**: function
-- **description**: a function that is used to retrieve a user's name and email to simulate a login. It can be used when authorization is disabled and also gets called if the defined IDP provider does not have `settings.userInfoFn` defined or does not provide a `userInfo` function internally. It can be asynchronous and should return an object with `name`, `email` and `picture` properties.
+- **description**: used to retrieve a user's name and email to simulate logging in. It can be used when authorization is disabled and also gets called if the defined IDP provider does not have **settings.userInfoFn** defined or does not provide a `userInfo` function internally. It can be asynchronous and should return an object with **name**, **email** and **picture** properties.
 
 >**NOTE:** Neither authorization nor profile property are configured if the profile section in the top navigation bar is not visible.
 
