@@ -5,10 +5,10 @@ This document shows you how to configure the following Luigi features:
 * [View groups](#view-groups)
 * [Create a dynamically changeable path](#creating-a-dynamic-path)
 * [Contexts](#contexts)
-* [Profile](navigation-parameters-reference.md#profile) shows you how to create a user profile structure in the top navigation.
-* [Context switcher](navigation-parameters-reference.md#context-switcher) shows you how to create a drop-down for contexts in the top navigation.
-* [Product switcher](navigation-parameters-reference.md#product-switcher) describes how to create an additional menu in the top navigation with include larger icons for products.
-* [App switcher](navigation-parameters-reference.md#app-switcher) explains how to configure a drop-down to switch between applications.
+* [Profile](navigation-parameters-reference.md#profile) 
+* [Context switcher](navigation-parameters-reference.md#context-switcher) 
+* [Product switcher](navigation-parameters-reference.md#product-switcher) 
+* [App switcher](navigation-parameters-reference.md#app-switcher) 
 * [Additional options](#additional-options)
 
 

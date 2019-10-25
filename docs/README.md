@@ -1,6 +1,6 @@
 # Luigi Documentation
 
-The aim of this documentation is to provide step-by-step instructions for Luigi as well as to provide a comprehensive reference of all the features you can use.
+The aim of this documentation is to provide step-by-step instructions for Luigi as well as to provide a comprehensive reference of all the features you can use.
 
 If you are new to Luigi, read the [Getting started guide](getting-started.md) to learn more about its structure and key functions.
 
@@ -18,13 +18,12 @@ To configure your Luigi application, simply edit the files in the `luigi-config`
 
 Luigi configuration is divided into several sections, which are outlined in the guides below:
 
-* Navigation
-    * [Basic navigation](navigation-configuration.md) shows you how to configure basic top and side navigation, links, and categories.
-    * [Advanced navigation](navigation-parameters-reference.md) explains how to create a dynamically changeable path, reuse micro frontends with the same origin, and configure additional navigation elements. 
-* [Routing](navigation-parameters-reference.md#routing) enables you to define routing options your application.
+* [Navigation (basic)](navigation-configuration.md) shows you how to configure basic top and side navigation, links, and categories.
+* [Navigation (advanced)](navigation-advanced.md) explains how to create a dynamic path, reuse micro frontends with the same origin, and configure additional navigation elements. 
+* [Routing](navigation-parameters-reference.md#routing) shows you how to define routing options for your application.
 * [Authorization](authorization-configuration.md) allows you to configure login and security features for your application.
     * [Authorization events](authorization-events.md) guides you through the event configuration to react to Luigi authorization events.
-* [General settings](general-settings.md) outlines additional configuration options for Luigi, such as fully customizing a micro frontend, defining a header, and making your application responsive.
+* [General settings](general-settings.md) outlines features such as fully customizing a micro frontend, defining a header, and making your application responsive.
 * [Lifecycle hooks](lifecycle-hooks.md) allows you to execute custom logic on any of the Luigi lifecycle steps.
 
 The following guides outline Luigi Core API features and additional UI options that exist outside the configuration files:
