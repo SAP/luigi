@@ -14,51 +14,6 @@ module.exports = {
       options: JSON.parse(readFileSync('.babelrc'))
     }
   },
-  // {
-  // 	test: /\.svelte$/,
-  // 	use: {
-  // 		loader: 'svelte-loader',
-  // 		options: {
-  // 			emitCss: true,
-  // 			hotReload: true
-  // 		}
-  // 	}
-  // },
-
-  svelte: {
-    test: /\.(html|svelte)$/,
-    // exclude: /node_modules/,
-    use: {
-      loader: 'svelte-loader',
-      options: {
-        emitCss: true,
-        hotReload: true,
-        preprocess: {
-          style: ({ content, attributes }) => {
-            if (attributes.type !== 'text/scss') return;
-            return new Promise((fulfil, reject) => {
-              sass.render(
-                {
-                  data: content,
-                  includePaths: ['src'],
-                  sourceMap: true,
-                  outFile: 'x' // this is necessary, but is ignored
-                },
-                (err, result) => {
-                  if (err) return reject(err);
-
-                  fulfil({
-                    code: result.css.toString(),
-                    map: result.map.toString()
-                  });
-                }
-              );
-            });
-          }
-        }
-      }
-    }
-  },
   css: {
     test: /\.(sa|sc|c)ss$/,
     use: [
@@ -68,9 +23,19 @@ module.exports = {
         * */
       prod ? MiniCssExtractPlugin.loader : 'style-loader',
       // Translates CSS into CommonJS
-      'css-loader',
+      {
+        loader: 'css-loader',
+        options: {
+          sourceMap: true,
+        },
+      },
       // Compiles Sass to CSS
-      'sass-loader'
+      {
+        loader: 'sass-loader',
+        options: {
+          sourceMap: true,
+        },
+      },
     ]
   },
   urls: {

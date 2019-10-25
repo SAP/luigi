@@ -3,6 +3,11 @@ const path = require('path');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 // const CleanWebpackPlugin = require('clean-webpack-plugin');
+const sveltePreprocess = require('svelte-preprocess');
+
+const preprocess = sveltePreprocess({
+  // postcss: true,
+});
 
 const config = require('sapper/config/webpack.js');
 const pkg = require('./package.json');
@@ -29,12 +34,12 @@ module.exports = {
 						options: {
 							dev,
 							hydratable: true,
-							hotReload: false // pending https://github.com/sveltejs/svelte/issues/2377
+							hotReload: false, // pending https://github.com/sveltejs/svelte/issues/2377
+							preprocess
 						}
 					}
 				},
 				commonRules.babel,
-				// commonRules.svelte,
 				commonRules.css,
 				commonRules.urls
 			]
@@ -76,12 +81,12 @@ module.exports = {
 						options: {
 							css: false,
 							generate: 'ssr',
-							dev
+							dev,
+							preprocess
 						}
 					}
 				},
 				commonRules.babel,
-				// commonRules.svelte,
 				commonRules.css,
 				commonRules.urls
 			]
