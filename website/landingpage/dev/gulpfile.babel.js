@@ -154,7 +154,12 @@ function images() {
 function server(done) {
   browser.init(
     {
-      server: PATHS.dist,
+      server: {
+          baseDir: PATHS.dist,
+          serveStaticOptions: {
+              extensions: ['html']
+          }
+      },
       port: PORT
     },
     done
