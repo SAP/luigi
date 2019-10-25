@@ -60,7 +60,6 @@
     {/if}
   </ul>
 </nav>
-
 {/if}
 <script>
   import { createEventDispatcher, onMount, getContext } from 'svelte';
@@ -135,15 +134,14 @@
       return customIdpInstance;
     }
 
-    const onAuthErrorFn = GenericHelpers.isFunction(
+    const onAuthConfigError = GenericHelpers.isFunction(
       LuigiConfig.getConfigValue('auth.events.onAuthConfigError')
     );
-    if (onAuthErrorFn) {
-      await LuigiAuth.handleAuthEvent(
-        'onAuthConfigError',
-        {},
-        { idpProviderName: idpProviderName, type: 'IdpProviderException' }
-      );
+    if (onAuthConfigError) {
+      await LuigiAuth.handleAuthEvent('onAuthConfigError', {
+        idpProviderName: idpProviderName,
+        type: 'IdpProviderException'
+      });
     } else {
       throw IdpProviderException(
         `IDP Provider ${idpProviderName} does not exist.`

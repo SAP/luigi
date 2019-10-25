@@ -114,7 +114,7 @@ class Auth {
         type: 'warning'
       });
     },
-    onAuthConfigError: (settings, err) => {
+    onAuthConfigError: err => {
       console.error(`IDP Provider ${err.idpProviderName} does not exist`);
       Luigi.showAlert({
         text: `IDP Provider ${err.idpProviderName} does not exist`,
