@@ -5,6 +5,10 @@ This document shows you how to configure the following Luigi features:
 * [View groups](#view-groups)
 * [Create a dynamically changeable path](#creating-a-dynamic-path)
 * [Contexts](#contexts)
+* [Profile](navigation-parameters-reference.md#profile) shows you how to create a user profile structure in the top navigation.
+* [Context switcher](navigation-parameters-reference.md#context-switcher) shows you how to create a drop-down for contexts in the top navigation.
+* [Product switcher](navigation-parameters-reference.md#product-switcher) describes how to create an additional menu in the top navigation with include larger icons for products.
+* [App switcher](navigation-parameters-reference.md#app-switcher) explains how to configure a drop-down to switch between applications.
 * [Additional options](#additional-options)
 
 
@@ -43,9 +47,9 @@ Further options related to view groups can be configured using the parameters li
 
 ## Create a dynamically changeable path
 
-In Luigi, you can make a navigation path dynamically changeable according to your needs. This is accomplished by defining parameters within the **pathSegement** or **viewUrl** navigation paths.
+In Luigi, you can make a navigation path dynamically changeable according to your needs. This is accomplished by defining dynamic parameters within the **pathSegement** or **viewUrl** navigation paths.
 
-### Path parameters
+### Dynamic path parameters
 Instead of a static value for your **pathSegment**, you can add a colon to this value to make it act as a parameter. This tells Luigi to accept any value for this **pathSegment**.
 
 In this example, a sample path parameter called `:userId` is defined:
@@ -79,7 +83,7 @@ navigation: {
 ...
 ```
 
-### viewUrl parameters
+### Dynamic viewUrl parameters
 
 You have the following options to add a parameter to **viewUrl**:
 - Place the parameter anywhere in the **viewUrl** value. For example, if the main application URL is `https://[YOUR.WEBSITE]/home/users/JohnSmith`, then the **viewUrl** of the micro frontend in the content area can be `https://example.com/users/details.html#id=JohnSmith`.
@@ -101,9 +105,9 @@ For example, to get the value of the `userId` parameter, use `LuigiClient.getPat
 
 In all these cases, the parameter is automatically replaced by the real value.
 
-### Node parameters
+### Dynamic Node parameters
 
-You can use node parameters to build the **viewUrl** and pass them to the micro frontend specified in the navigation node selected in the navigation path.
+You can use dynamic node parameters to build the **viewUrl** and pass them to the micro frontend specified in the navigation node selected in the navigation path.
 
 You can specify them in the main application URL, similarly to URL query parameters with a specific prefix. The prefix is `~` by default, but you can reconfigure it using the global **nodeParamPrefix** setting.
 
@@ -111,7 +115,7 @@ All parameters without the prefix are not passed to the micro frontend and are c
 
 A sample **viewUrl** `https://[YOUR.WEBSITE]/home/users/allUsers?~sorting=asc&~page=2` supports sorting and paging by introducing the **sort** and **page** node parameters.
 
-Using node parameters in the previous example results in:
+Using dynamic node parameters in the previous example results in:
 
 ```javascript
 navigation: {
@@ -148,7 +152,7 @@ Build the **viewUrl** by placing parameters anywhere in the **viewUrl** value us
 
 ### Dynamic viewUrl
 
-You can use both node parameters and path parameters to build a dynamic **viewUrl**.
+You can use both dynamic node parameters and path parameters to build a **viewUrl**.
 
 For example, if the web application URL is `https://[YOUR.WEBSITE]/something/sample_1/products?~sort=asc`, the micro frontend loads using a different URL, such as `https://example.com/project/sample_1/products?sort=asc`.
 
@@ -204,7 +208,7 @@ You can create a context by adding these parameters to your node:
 - **type**: object
 - **description**: sends the specified object as context to the view. Use this property in combination with the dynamic **pathSegment** to receive the context through the context listeners of **Luigi Client**. This is an alternative to using the dynamic value in the **viewUrl**.
 
-This is an example of a dynamic navigation node including a context:
+Here is an example of a dynamic navigation node including a context:
 
 ```javascript
 ...
@@ -218,6 +222,104 @@ This is an example of a dynamic navigation node including a context:
         },
         children: [node, node, node]
       }
+```
+
+## Profile
+
+![Profile](assets/profile.png)
+
+The profile is a drop down-list in the top navigation tat allows you to override the logout item content (if authorization is configured) and/or add links to Luigi navigation nodes.
+
+You can configure a profile element in the top navigation by adding the `profile` property to the navigation object in the configuration file. Find all the parameters which can be used to configure a profile [here](navigation-parameters-reference.md#profile).
+
+Example:
+
+```javascript
+  profile: {
+      logout: {
+        label: 'End session'
+        icon: "sys-cancel",
+        customLogoutFn: myLogoutFn
+      },
+```
+
+
+## Context switcher
+
+![Context switcher](assets/context-switcher.png)
+
+The context switcher is a drop-down element in the top navigation. It allows you to switch between a curated list of navigation elements such as Environments. To do so, add the contextSwitcher property to the navigation object. Find all the parameters you can use to configure it [here](navigation-parameters-reference.md#context-switcher).
+
+ Example:
+
+```javascript
+contextSwitcher: {
+      defaultLabel: 'Select Environment ...',
+      testId: 'myTestId',
+      parentNodePath: '/environments',
+      lazyloadOptions: false,
+      fallbackLabelResolver: (id) => (id.toUpperCase()),
+      options: [{label,pathValue}, {label,pathValue}],
+      actions: [{label,link,position,clickHandler?}]
+    },
+```
+
+## Product switcher
+
+![Product switcher](assets/product-switcher.png)
+
+The product switcher is window in top the navigation which allows you to switch between navigation elements displayed there. To add it to your application, include the **productSwitcher** property in your **navigation** object. You may also add any of the parameters listed [here](navigation-parameters-reference.md#product-switcher).
+
+Example:
+```javascript
+productSwitcher: {
+      label: 'My Products',
+      testId: 'myTestId',
+      icon: 'grid',
+      items: [
+        {
+          icon: '',
+          label: 'Luigi in Github',
+          testId: 'myTestId',
+          externalLink: {
+            url: 'https://luigi-project.io/',
+            sameWindow: false
+          }
+        },
+        {
+          icon: '',
+          label: 'Project 1',
+          testId: 'myTestId',
+          link: '/projects/pr1'
+        }
+      ]
+    },
+```
+
+## App switcher
+
+![Product switcher](assets/app-switcher.png)
+
+The app switcher is a drop-down in top the navigation which allows you to switch between applications. To use it, add the **addSwitcher** property in your **navigation** object. You may also add any of the parameters listed [here](navigation-parameters-reference.md#product-switcher).
+
+Example:
+
+```javascript
+appSwitcher = {
+    showMainAppEntry: true,
+    items: [
+      {
+        title: 'Application One',
+        subTitle: 'the first app',
+        link: '/projects/pr1'
+      },
+      {
+        title: 'Application Two',
+        link: '/projects/pr2',
+        subTitle: 'the second app'
+      },
+    ]
+  };
 ```
 
 ## Additional options
