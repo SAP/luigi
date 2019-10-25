@@ -24,6 +24,14 @@ class SplitViewSvcClass {
   getDragger() {
     return document.getElementById('splitViewDragger');
   }
+  getDraggerButton() {
+    return document.querySelector('#splitViewDragger>.lui-collapse-btn');
+  }
+  getCollapsedDraggerButton() {
+    return document.querySelector(
+      '#splitViewDraggerCollapsed>.lui-collapse-btn'
+    );
+  }
   getDraggerBackdrop() {
     return document.getElementById('splitViewDraggerBackdrop');
   }
