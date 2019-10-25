@@ -36,28 +36,33 @@ describe('Iframe', () => {
           style: {},
           visible: true,
           id: 1,
-          vg: 'tets1'
+          vg: 'tets1',
+          tagName: 'IFRAME'
         },
         {
           style: {},
           visible: true,
           pv: 'pv',
-          id: 2
+          id: 2,
+          tagName: 'IFRAME'
         },
         {
           style: {},
           visible: true,
-          id: 3
+          id: 3,
+          tagName: 'IFRAME'
         },
         {
           style: {},
           visible: false,
-          id: 4
+          id: 4,
+          tagName: 'IFRAME'
         },
         {
           style: {},
           visible: true,
-          id: 5
+          id: 5,
+          tagName: 'IFRAME'
         }
       ],
       removeChild: child => {
@@ -102,7 +107,8 @@ describe('Iframe', () => {
     sinon.assert.calledWithExactly(node.removeChild, {
       id: 4,
       style: {},
-      visible: false
+      visible: false,
+      tagName: 'IFRAME'
     });
   });
 
