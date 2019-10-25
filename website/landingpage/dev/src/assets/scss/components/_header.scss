@@ -1,13 +1,10 @@
 .p-header {
   position: relative;
+  background-color: $secondary-color;
 
   > .has-border {
     padding-top: 25px;
     padding-bottom: 25px;
-
-    @include breakpoint(xlarge) {
-      border-bottom: 1px solid $border-color;
-    }
 
     @include breakpoint(xxlarge) {
       max-width: calc(1290px - 50px);
@@ -15,6 +12,8 @@
   }
 
   &--home {
+    padding-bottom: 0;
+    background-color: transparent;
     background-image: url('../img/header_bg.svg');
     background-repeat: no-repeat;
     background-position: left 50% bottom 100px;
@@ -23,6 +22,14 @@
 
     @include breakpoint(large) {
       background-position: left 50% bottom 0;
+    }
+
+
+
+    @include breakpoint(xlarge) {
+      > .has-border {
+        border-bottom: 1px solid $border-color;
+      }
     }
 
     @include breakpoint(xxlarge) {
@@ -151,6 +158,7 @@
     align-items: center;
 
     .item {
+      min-width: 26px;
       margin-left: 25px;
 
       &:first-child {
@@ -210,7 +218,8 @@
 
           &:hover,
           &:active,
-          &:focus {
+          &:focus,
+          &.is-active {
             color: $primary-color;
           }
         }
@@ -245,7 +254,7 @@
           &:hover,
           &:focus,
           &:active,
-          .is-active {
+          &.is-active {
             color: white;
             border-bottom-color: $primary-color;
           }
