@@ -15,7 +15,7 @@ class Navigation {
     this.projectsNavProviderFn = projectsNavProviderFn;
   }
 
-  preloadViewGroups = true;
+  preloadViewGroups = false;
   viewGroupSettings = {
     tets: {
       preloadUrl: '/sampleapp.html#/preload'
