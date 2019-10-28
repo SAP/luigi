@@ -23,6 +23,34 @@ The lerna-changelog tool detects changes based on PR labels and maps them to sec
     ...
   }
 -->
+## [v0.7.1] (2019-10-25)
+
+#### :rocket: Added
+* [#920](https://github.com/SAP/luigi/pull/920) Invalid auth provider error handling ([@JohannesDoberer](https://github.com/JohannesDoberer))
+
+#### :bug: Fixed
+* [#931](https://github.com/SAP/luigi/pull/931) The goBack context is not delivered to preserved view ([@pekura](https://github.com/pekura))
+* [#916](https://github.com/SAP/luigi/pull/916) Backdrop not covering split-view micro frontend ([@pekura](https://github.com/pekura))
+
+## [v0.7.0] (2019-10-22)
+
+#### :rocket: Added
+* [#843](https://github.com/SAP/luigi/pull/843) Svelte 3 migration ([@pekura](https://github.com/pekura))
+* [#871](https://github.com/SAP/luigi/pull/871) Tab-style navigation ([@JohannesDoberer](https://github.com/JohannesDoberer))
+* [#900](https://github.com/SAP/luigi/pull/900) TabNav component refactoring ([@marynaKhromova](https://github.com/marynaKhromova))
+* [#894](https://github.com/SAP/luigi/pull/894) Add hook at micro frontend container creation ([@pekura](https://github.com/pekura))
+
+#### :rocket: Fixed
+* [#917](https://github.com/SAP/luigi/pull/917) Split view container doesn't hide ([@pekura](https://github.com/pekura))
+
+#### :memo: Documentation
+* [#898](https://github.com/SAP/luigi/pull/898) Added links to getting started guide ([@alexandra-simeonova](https://github.com/alexandra-simeonova))
+* [#869](https://github.com/SAP/luigi/pull/869) Fixed api links ([@alexandra-simeonova](https://github.com/alexandra-simeonova))
+* [#881](https://github.com/SAP/luigi/pull/881) Add and describe "allowRules" in the general settings ([@zarkosimic](https://github.com/zarkosimic))
+* [#867](https://github.com/SAP/luigi/pull/867) Improve Luigi readme ([@alexandra-simeonova](https://github.com/alexandra-simeonova))
+* [#866](https://github.com/SAP/luigi/pull/866) Improve authorization configuration ([@alexandra-simeonova](https://github.com/alexandra-simeonova))
+* [#836](https://github.com/SAP/luigi/pull/836) Create getting started guide ([@alexandra-simeonova](https://github.com/alexandra-simeonova))
+
 ## [v0.6.6] (2019-10-09)
 
 #### :rocket: Fixed
@@ -552,3 +580,5 @@ The lerna-changelog tool detects changes based on PR labels and maps them to sec
 [v0.6.4]: https://github.com/SAP/luigi/compare/v0.6.3...v0.6.4
 [v0.6.5]: https://github.com/SAP/luigi/compare/v0.6.4...v0.6.5
 [v0.6.6]: https://github.com/SAP/luigi/compare/v0.6.5...v0.6.6
+[v0.7.0]: https://github.com/SAP/luigi/compare/v0.6.6...v0.7.0
+[v0.7.1]: https://github.com/SAP/luigi/compare/v0.7.0...v0.7.1

@@ -22,7 +22,9 @@
     <div
       class="fd-page iframeContainer {mfSplitView.displayed?'lui-split-view':''} {mfSplitView.collapsed?'lui-collapsed':''}"
       use:init
-    ></div>
+    >
+      <Backdrop area="main"></Backdrop>
+    </div>
     {#if mfSplitView.displayed}
     <SplitView
       splitViewSettings="{mfSplitView.settings}"
@@ -268,7 +270,9 @@
         splitViewValues,
         splitViewIframe,
         showLoadingIndicator,
-        tabNav
+        tabNav,
+        isNavigateBack,
+        goBackContext
       }
       },
       set: (obj) => {
@@ -308,12 +312,17 @@
               showLoadingIndicator = obj.showLoadingIndicator;
             } else if (prop === 'tabNav') {
               tabNav = obj.tabNav;
+            } else if (prop === 'isNavigateBack') {
+              isNavigateBack = obj.isNavigateBack;
+            } else if (prop === 'goBackContext') {
+              goBackContext = obj.goBackContext;
             }
           });
         }
       },
       shouldShowUnsavedChangesModal,
       getUnsavedChangesModalPromise,
+      showUnsavedChangesModal,
       showAlert,
       prepareInternalData,
       dispatch

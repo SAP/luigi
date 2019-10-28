@@ -1,16 +1,19 @@
-<div class="{backdropClass}" aria-hidden="false">
+<div class="{backdropClass}" aria-hidden="false" style="{area === 'main' ? 'z-index: 0;' : ''}">
   <slot></slot>
 </div>
 
 <script>
-  import { beforeUpdate, onMount } from 'svelte';
+  import { beforeUpdate, onMount, createEventDispatcher } from 'svelte';
   import { LuigiConfig } from './core-api';
   import { IframeHelpers } from './utilities/helpers';
+
+  const dispatch = createEventDispatcher();
 
   export let backdropClass = '';
   export let backdropActive = false;
   let wasBackdropActive = false;
   let options =  {};
+  export let area;
 
   const setBackdropClass = () => {
     const baseClasses = 'lui-backdrop ';
@@ -23,6 +26,23 @@
     }
   };
 
+  const isValidForArea = (e) => {
+    if (!area) {
+      return true;
+    }
+    const allMessagesSources = [
+      ...IframeHelpers.getMicrofrontendsInDom(),
+      { contentWindow: window, luigi: { viewUrl: window.location.href } }
+    ];
+    const microfrontend = allMessagesSources.find(mf =>
+      mf.container && mf.container.contentWindow === e.source
+    );
+    if (microfrontend && area === microfrontend.type) {
+      return false;
+    }
+    return true;
+  };
+
   onMount(() => {
     const backdropDisabled = LuigiConfig.getConfigValue(
       'settings.backdropDisabled'
@@ -32,10 +52,16 @@
       window.addEventListener('message', e => {
         if (!IframeHelpers.getValidMessageSource(e)) return;
         if ('luigi.add-backdrop' === e.data.msg) {
-          backdropActive = true;
+          if (isValidForArea(e)) {
+            backdropActive = true;
+          } else {
+            backdropActive = false;
+          }
+          dispatch('stateChanged', {backdropActive: true});
         }
         if ('luigi.remove-backdrop' === e.data.msg) {
           backdropActive = false;
+          dispatch('stateChanged', {backdropActive: false});
         }
       });
     }
@@ -61,6 +87,6 @@
     top: 0;
     bottom: 0;
     right: 0;
-    z-index: 1;
+    z-index: 2;
   }
 </style>

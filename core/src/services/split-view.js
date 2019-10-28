@@ -24,6 +24,14 @@ class SplitViewSvcClass {
   getDragger() {
     return document.getElementById('splitViewDragger');
   }
+  getDraggerButton() {
+    return document.querySelector('#splitViewDragger>.lui-collapse-btn');
+  }
+  getCollapsedDraggerButton() {
+    return document.querySelector(
+      '#splitViewDraggerCollapsed>.lui-collapse-btn'
+    );
+  }
   getDraggerBackdrop() {
     return document.getElementById('splitViewDraggerBackdrop');
   }
@@ -206,6 +214,7 @@ class SplitViewSvcClass {
         .then(() => {
           if (comp.get().mfSplitView) {
             comp.get().mfSplitView.displayed = false;
+            comp.get().mfSplitView.collapsed = false;
             comp.set({ mfSplitView: comp.get().mfSplitView });
           }
           comp.dispatch('statusChanged', {

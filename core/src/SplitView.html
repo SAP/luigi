@@ -3,9 +3,11 @@
   id="splitViewContainer"
   class="splitViewContainer {collapsed?'lui-collapsed':''}"
 >
+  <Backdrop area="split-view" on:stateChanged="{backdropStateChanged}">
+  </Backdrop>
   <div class="lui-split-view">
     {#if collapsed}
-    <div class="splitViewSeparator isCollapsed">
+    <div  id="splitViewDraggerCollapsed" class="splitViewSeparator isCollapsed">
       <a
         class="lui-collapse-btn"
         on:click|stopPropagation|preventDefault="{expand}"
@@ -33,6 +35,7 @@
 {/if}
 
 <script>
+  import Backdrop from './Backdrop.html';
   import { afterUpdate, onDestroy, onMount, createEventDispatcher, getContext } from 'svelte';
   import { LuigiElements } from './core-api';
   import { SplitViewSvc } from './services';
@@ -289,6 +292,19 @@
     addListeners();
     SplitViewSvc.getDraggerBackdrop().style.display = 'block';
   }
+
+  const setDraggerVisibility = (visible) => {
+    let dragger = SplitViewSvc.getDraggerButton();
+    if (dragger)
+      dragger.style.display = (visible ? 'block' : 'none');
+    dragger = SplitViewSvc.getCollapsedDraggerButton();
+    if (dragger)
+      dragger.style.display = (visible ? 'block' : 'none');
+  };
+
+  const backdropStateChanged = (event) => {
+    setDraggerVisibility(!event.detail || event.detail.backdropActive !== true);
+  }
 </script>
 
 <style type="text/scss">
@@ -300,7 +316,7 @@
 
   /* splitview start */
   $collapsedSplitviewHeight: 38px;
-  :global(.lui-collapsed.iframeContainer) {
+  :global(.lui-collapsed.iframeContainer.lui-split-view) {
     padding-bottom: $collapsedSplitviewHeight;
   }
 
