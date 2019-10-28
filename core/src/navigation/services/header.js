@@ -33,9 +33,9 @@ export const processHeaderSettings = component => {
           if (hasLogo && component.get().logo) {
             component.get().logo.src = header.logo;
 
-            if (header.altText) {
-              component.get().logo.alt = header.altText;
-            }
+            header.altText
+              ? (component.get().logo.alt = header.altText)
+              : (component.get().logo.alt = '');
           }
         });
 
