@@ -29,5 +29,5 @@ To run this application, follow these steps:
 npm run build
 ```
 
-The build compiles and minifies the source files for production usage.
+The build compiles and minimizes the source files for production usage.
 The build generates a `dist` folder which you can serve using a web server.
