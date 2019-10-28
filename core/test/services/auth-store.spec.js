@@ -17,34 +17,21 @@ describe('AuthStore', () => {
     sinon.restore();
   });
   describe('Internal fns', () => {
-    let storeReturnValue = null;
-    before(() => {
-      // function mockStorage() {
-      //   return {
-      //     getItem: function(key) {
-      //       return JSON.stringify(storeReturnValue);
-      //     }
-      //   };
-      // }
-      // global['localStorage'] = mockStorage();
-      // global['sessionStorage'] = mockStorage();
-    });
     beforeEach(() => {
       AuthStoreSvc._setStore.restore();
       AuthStoreSvc._getStore.restore();
-      // global['sessionStorage'] = {
-      //   getItem: sinon.stub(),
-      //   setItem: sinon.stub()
-      // };
-      // global['localStorage'] = {
-      //   getItem: sinon.stub(),
-      //   setItem: sinon.stub()
-      // };
+      global['sessionStorage'] = {
+        getItem: sinon.stub(),
+        setItem: sinon.stub()
+      };
+      global['localStorage'] = {
+        getItem: sinon.stub(),
+        setItem: sinon.stub()
+      };
       sinon.stub(AuthStoreSvc, 'getStorageType').returns('localStorage');
     });
     afterEach(() => {
       sinon.restore();
-      storeReturnValue = null;
     });
 
     describe('_setStore', () => {
