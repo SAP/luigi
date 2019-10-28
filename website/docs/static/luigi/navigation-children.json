@@ -50,6 +50,16 @@
     }
   },
   {
+    "label": "getting-started",
+    "pathSegment": "getting-started",
+    "navigationContext": "doc",
+    "keepSelectedForChildren": true,
+    "viewUrl": "__BASE_URL__/docs/getting-started",
+    "context": {
+      "doc": "getting-started"
+    }
+  },
+  {
     "label": "lifecycle-hooks",
     "pathSegment": "lifecycle-hooks",
     "navigationContext": "doc",

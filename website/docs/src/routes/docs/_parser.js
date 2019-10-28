@@ -8,6 +8,7 @@ import html from 'rehype-stringify';
 // import highlight from 'rehype-highlight'
 import section from '@agentofuser/rehype-section';
 import { readdirSync, readFileSync, writeFileSync } from 'fs';
+import path from 'path';
 
 let parsedDocs;
 export function getParsedDocs() {
@@ -21,7 +22,7 @@ export function getParsedDocs() {
 }
 
 function setParsedDocs() {
-  const dir = './src/docs';
+  const dir = './../../docs';
   const parsingArr = [];
   readdirSync(dir)
     .filter(name => name !== 'README.md')
