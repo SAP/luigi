@@ -20,7 +20,7 @@ To run this application, follow these steps:
     npm run serve
     ```
     
-5. Open it in your browser by going to [http://localhost:8080/](http://localhost:8080/).
+3. Open it in your browser by going to [http://localhost:8080/](http://localhost:8080/).
 
 
 ### Build
