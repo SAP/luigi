@@ -15,7 +15,7 @@ To run this application, follow these steps:
     npm install
     ```
 
-4. Start the example application.
+2. Start the example application.
     ```bash
     npm run serve
     ```
