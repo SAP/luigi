@@ -41,6 +41,7 @@ Luigi.setConfig({
     header: {
       title: 'Luigi Vue App',
       logo: '/logo.png'
-    }
+    },
+    responsiveNavigation: 'simpleMobileOnly'
   }
 });
