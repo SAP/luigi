@@ -15,12 +15,12 @@ To run this application, follow these steps:
     npm install
     ```
 
-4. Start the example application.
+2. Start the example application.
     ```bash
     npm run serve
     ```
     
-5. Open it in your browser by going to [http://localhost:8080/](http://localhost:8080/).
+3. Open it in your browser by going to [http://localhost:8080/](http://localhost:8080/).
 
 
 ### Build
@@ -29,5 +29,5 @@ To run this application, follow these steps:
 npm run build
 ```
 
-The build compiles and minifies the source files for production usage.
+The build compiles and minimizes the source files for production usage.
 The build generates a `dist` folder which you can serve using a web server.
