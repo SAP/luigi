@@ -24,6 +24,14 @@ class SplitViewSvcClass {
   getDragger() {
     return document.getElementById('splitViewDragger');
   }
+  getDraggerButton() {
+    return document.querySelector('#splitViewDragger>.lui-collapse-btn');
+  }
+  getCollapsedDraggerButton() {
+    return document.querySelector(
+      '#splitViewDraggerCollapsed>.lui-collapse-btn'
+    );
+  }
   getDraggerBackdrop() {
     return document.getElementById('splitViewDraggerBackdrop');
   }
@@ -232,7 +240,9 @@ class SplitViewSvcClass {
     });
 
     this.getContainer().style.top = `${this.splitViewValues.top}px`;
-    IframeHelpers.getIframeContainer().style.paddingBottom = `${this.splitViewValues.bottom}px`;
+    IframeHelpers.getIframeContainer().style.paddingBottom = `${
+      this.splitViewValues.bottom
+    }px`;
     setTimeout(() => {
       this.getDragger().style.top = `${this.splitViewValues.top}px`;
     });

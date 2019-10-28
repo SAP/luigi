@@ -132,9 +132,19 @@
       return customIdpInstance;
     }
 
-    throw IdpProviderException(
-      `IDP Provider ${idpProviderName} does not exist.`
+    const onAuthConfigError = GenericHelpers.isFunction(
+      LuigiConfig.getConfigValue('auth.events.onAuthConfigError')
     );
+    if (onAuthConfigError) {
+      await LuigiAuth.handleAuthEvent('onAuthConfigError', {
+        idpProviderName: idpProviderName,
+        type: 'IdpProviderException'
+      });
+    } else {
+      throw IdpProviderException(
+        `IDP Provider ${idpProviderName} does not exist.`
+      );
+    }
   };
 
   onMount(async () => {
@@ -316,12 +326,14 @@
   }
 
   export function startAuthorization() {
-    idpProviderInstance.login().then(res => {
-      AuthStoreSvc.setNewlyAuthorized();
-      if (res) {
-        alert(res);
-      }
-    });
+    if (idpProviderInstance) {
+      idpProviderInstance.login().then(res => {
+        AuthStoreSvc.setNewlyAuthorized();
+        if (res) {
+          alert(res);
+        }
+      });
+    }
   }
 
   export function onActionClick(item) {

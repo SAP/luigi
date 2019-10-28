@@ -3,9 +3,10 @@
   id="splitViewContainer"
   class="splitViewContainer {collapsed?'lui-collapsed':''}"
 >
+  <Backdrop area="split-view" on:stateChanged="{backdropStateChanged}"></Backdrop>
   <div class="lui-split-view">
     {#if collapsed}
-    <div class="splitViewSeparator isCollapsed">
+    <div id="splitViewDraggerCollapsed" class="splitViewSeparator isCollapsed">
       <a
         class="lui-collapse-btn"
         on:click|stopPropagation|preventDefault="{expand}"
@@ -30,16 +31,20 @@
     <span class="sap-icon--navigation-down-arrow sap-icon--s"></span>
   </a>
 </div>
-{/if}
 
+{/if}
 <script>
-  import { afterUpdate, onDestroy, onMount, createEventDispatcher, getContext } from 'svelte';
+  import Backdrop from './Backdrop.html';
+  import {
+    afterUpdate,
+    onDestroy,
+    onMount,
+    createEventDispatcher,
+    getContext
+  } from 'svelte';
   import { LuigiElements } from './core-api';
   import { SplitViewSvc } from './services';
-  import {
-    GenericHelpers,
-    IframeHelpers
-  } from './utilities/helpers';
+  import { GenericHelpers, IframeHelpers } from './utilities/helpers';
 
   const dispatch = createEventDispatcher();
 
@@ -60,24 +65,27 @@
   export let splitViewSettings = {};
   export let isDataPrepared = false;
   let wasDataPrepared = false;
-  let getUnsavedChangesModalPromise = getContext('getUnsavedChangesModalPromise');
+  let getUnsavedChangesModalPromise = getContext(
+    'getUnsavedChangesModalPromise'
+  );
 
   //TODO refactor
   const getComponentWrapper = () => {
     return {
-      get: () => { return {
-        collapsed,
-        splitViewSettings,
-        isDataPrepared,
-        lastNode,
-        pathData,
-        nodeParams,
-        currentNode,
-        splitViewIframe,
-        splitViewIframeData
-      }
+      get: () => {
+        return {
+          collapsed,
+          splitViewSettings,
+          isDataPrepared,
+          lastNode,
+          pathData,
+          nodeParams,
+          currentNode,
+          splitViewIframe,
+          splitViewIframeData
+        };
       },
-      set: (obj) => {
+      set: obj => {
         if (obj) {
           Object.getOwnPropertyNames(obj).forEach(prop => {
             if (prop === 'splitViewSettings') {
@@ -233,9 +241,7 @@
     const resize = function resize(re) {
       const diff = m_pos - re.y;
 
-      const dragTop = parseInt(
-        getComputedStyle(elements.draggable, '').top
-      );
+      const dragTop = parseInt(getComputedStyle(elements.draggable, '').top);
 
       if (isNaN(dragTop) || diff === 0) {
         // happens in collapsed state on mouse over draggable
@@ -289,6 +295,17 @@
     addListeners();
     SplitViewSvc.getDraggerBackdrop().style.display = 'block';
   }
+
+  const setDraggerVisibility = visible => {
+    let dragger = SplitViewSvc.getDraggerButton();
+    if (dragger) dragger.style.display = visible ? 'block' : 'none';
+    dragger = SplitViewSvc.getCollapsedDraggerButton();
+    if (dragger) dragger.style.display = visible ? 'block' : 'none';
+  };
+
+  const backdropStateChanged = event => {
+    setDraggerVisibility(!event.detail || event.detail.backdropActive !== true);
+  };
 </script>
 
 <style type="text/scss">
