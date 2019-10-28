@@ -6,7 +6,7 @@ Based on Sapper with Svelte3, Webpack
 
 Development:
 
-`npm run install`
+`npm install`
 
 `npm run start`
 
