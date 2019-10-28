@@ -120,6 +120,9 @@ export class ProjectComponent implements OnInit, OnDestroy {
 
   toggleModal() {
     this.modalActive = !this.modalActive;
+    if (!this.cdr['destroyed']) {
+      this.cdr.detectChanges();
+    }
   }
 
   showConfirmationModal() {
