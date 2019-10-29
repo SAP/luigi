@@ -11,6 +11,7 @@
 		margin: 0 auto;
 		box-sizing: border-box;
 	} */
+
 	.fd-ui {
 		.fd-page {
 			// background: green;

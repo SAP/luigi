@@ -31,7 +31,7 @@ module.exports = {
         "to": "../fundamental-ui"
       },
       {
-        "from": "src/docs/assets",
+        "from": "../../docs/assets",
         "to": "../assets"
       }
     ]),

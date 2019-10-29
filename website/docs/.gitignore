@@ -10,4 +10,4 @@ luigi-core
 luigi-client
 public/*
 static/assets
-static/luigi/coreStyles*
+*coreStyles*

@@ -21,7 +21,7 @@ export function getParsedDocs() {
 }
 
 function setParsedDocs() {
-  const dir = './src/docs';
+  const dir = './../../docs';
   const parsingArr = [];
   readdirSync(dir)
     .filter(name => name !== 'README.md')
