@@ -7,7 +7,7 @@
     "core",
     "core/public",
     "core/examples/luigi-sample-angular",
-    "core/examples/luigi-sample-vue"
+    "core/examples/luigi-example-vue"
   ],
   "version": "0.0.0"
 }

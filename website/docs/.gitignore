@@ -1,0 +1,12 @@
+.DS_Store
+/node_modules/
+/src/node_modules/@sapper/
+yarn-error.log
+/cypress/screenshots/
+/__sapper__/
+extendedConfiguration.bundle.js
+fundamental-ui
+luigi-core
+luigi-client
+public/*
+static/assets
