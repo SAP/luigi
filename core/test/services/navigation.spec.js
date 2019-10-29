@@ -375,6 +375,37 @@ describe('Navigation', function() {
       expect(res.selectedNode.pathSegment).to.equal('projects');
     });
   });
+  describe('getTabNavData', () => {
+    it('returns empty object if no pathData was found (empty nav)', async () => {
+      const res = await Navigation.getTabNavData({ pathData: [] });
+      expect(res).to.be.empty;
+    });
+    it('returns correct data on standard usecase', async () => {
+      // given
+      const current = {
+        pathData: [
+          {
+            children: [{ pathSegment: 'overview' }, { pathSegment: 'projects' }]
+          },
+          {
+            pathSegment: 'projects',
+            tabNav: true,
+            children: [
+              {
+                pathSegment: 'settings'
+              }
+            ]
+          },
+          {
+            pathSegment: 'settings'
+          }
+        ]
+      };
+      // when
+      const res = await Navigation.getTabNavData(current, current);
+      expect(res.selectedNode.pathSegment).to.equal('settings');
+    });
+  });
 
   describe('extractDataFromPath', () => {
     it('extracts the data', async () => {
