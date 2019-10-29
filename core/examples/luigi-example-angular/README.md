@@ -1,0 +1,23 @@
+# Sample Luigi application written in Angular
+
+## Overview
+
+This is the Angular-based sample application which runs with Luigi framework.
+
+## Development
+
+Use  [Lerna](https://lerna.js.org) to link the dependencies and bundle scripts within the packages.
+
+To have this application running, follow these steps:
+
+1. Install dependencies.
+    ```bash
+    npm install
+    ```
+
+2. Run the server with the following command: 
+    ```bash
+    npm run start
+    ```
+
+3. Go to [http://localhost:4200/](http://localhost:4200/) to start the application.
