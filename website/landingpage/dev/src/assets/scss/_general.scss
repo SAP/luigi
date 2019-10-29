@@ -124,11 +124,7 @@ section,
     height: 100%;
     width: 100%;
     transform: skewY(3deg);
-    background-image: linear-gradient(
-      7deg,
-      rgba($ice-blue, 0.6),
-      rgba($powder-blue, 0.6)
-    );
+    background-color: $ice-blue;
     z-index: -1;
   }
 
