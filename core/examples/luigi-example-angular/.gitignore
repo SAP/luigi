@@ -27,7 +27,6 @@
 # misc
 /.sass-cache
 /connect.lock
-/coverage
 /libpeerconnection.log
 npm-debug.log
 testem.log
@@ -37,7 +36,3 @@ testem.log
 # System Files
 .DS_Store
 Thumbs.db
-
-# config
-/src/assets/devconfig.js
-/src/assets/*.bundle.js
