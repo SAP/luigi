@@ -8,4 +8,4 @@ This repository contains sample applications showing the Luigi framework capabil
 
 See the particular subfolders for the installation instructions:
 * [Angular example application](/core/examples/luigi-sample-angular)
-* [Vue example application](/core/examples/luigi-sample-vue)
+* [Vue example application](/core/examples/luigi-example-vue)

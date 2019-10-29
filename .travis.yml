@@ -18,17 +18,17 @@ jobs:
       script:
         - export CYPRESS_CACHE_FOLDER=$TRAVIS_BUILD_DIR/cypress-binary-cache
         - npm i -g lerna
-        - lerna bootstrap --ci --ignore "*luigi-sample-vue" || travis_terminate 1
-        - lerna run bundle --ignore "*luigi-sample-vue" || travis_terminate 1
-        - lerna run bundlesizeOnly --ignore "*luigi-sample-vue" || travis_terminate 1
-        - lerna run build --ignore "*luigi-sample-vue" || travis_terminate 1
+        - lerna bootstrap --ci --ignore "*luigi-example-vue" || travis_terminate 1
+        - lerna run bundle --ignore "*luigi-example-vue" || travis_terminate 1
+        - lerna run bundlesizeOnly --ignore "*luigi-example-vue" || travis_terminate 1
+        - lerna run build --ignore "*luigi-example-vue" || travis_terminate 1
         - npm test --prefix core || travis_terminate 1
         - du -sh
       before_cache:
         - rm -rf ~/.npm/_logs
         - rm -rf ~/.npm/_cacache
         - rm -rf $TRAVIS_BUILD_DIR/website
-        - rm -rf $TRAVIS_BUILD_DIR/core/examples/luigi-sample-vue
+        - rm -rf $TRAVIS_BUILD_DIR/core/examples/luigi-example-vue
 
     #----- DOCU -----
     - stage: 'Documentation & Tests'
@@ -47,14 +47,14 @@ jobs:
         - 'if [ ! -z "${WHITESOURCE_APIKEY}" ]; then
             npm --prefix ./website/landingpage/dev install ./website/landingpage/dev;
             npm --prefix ./website/fiddle install ./website/fiddle;
-            lerna bootstrap --ci --ignore "*luigi-sample-vue";
+            lerna bootstrap --ci --ignore "*luigi-example-vue";
             npm i -g whitesource;
             bash ./scripts/whiteSource.sh;
           fi'
       before_cache:
         - rm -rf ~/.npm/_logs
         - rm -rf ~/.npm/_cacache
-      
+
     #----- UNIT -----
     # - name: 'Unit Tests'
     #   script:
