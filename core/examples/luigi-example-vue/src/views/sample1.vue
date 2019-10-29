@@ -2,10 +2,10 @@
   <div>
     <section class="fd-section">
       <div class="fd-section__header">
-        <h1 class="fd-section__title">Stakeholders</h1>
+        <h1 class="fd-section__title">Sample 1</h1>
       </div>
       <div class="fd-panel">
-        Stakeholders content.
+        Luigi ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua.
       </div>
     </section>
   </div>
@@ -13,10 +13,9 @@
 
 <script>
   export default {
-    name: "stakeholders"
+    name: "sample1"
   }
 </script>
 
 <style scoped>
-
 </style>
