@@ -405,6 +405,17 @@ describe('Navigation', function() {
       const res = await Navigation.getTabNavData(current, current);
       expect(res.selectedNode.pathSegment).to.equal('settings');
     });
+    it('getTruncatedChildrenForTabNav', () => {
+      const children = [
+        { 1: '1' },
+        { 2: '2' },
+        { 3: '3', tabNav: true },
+        { 4: '4' },
+        { 5: '5' }
+      ];
+      const res = Navigation.getTruncatedChildrenForTabNav(children);
+      expect(res.length).to.equal(4);
+    });
   });
 
   describe('extractDataFromPath', () => {
