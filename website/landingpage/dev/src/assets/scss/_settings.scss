@@ -112,7 +112,8 @@ $breakpoints: (
   large: 768px,
   xlarge: 1024px,
   xxlarge: 1290px,
-  huge: 1680px
+  huge: 1680px,
+  xhuge: 2100px
 );
 $print-breakpoint: large;
 $breakpoint-classes: (small medium large xlarge xxlarge huge);

@@ -1,7 +1,7 @@
 .p-footer {
   color: $white;
   position: relative;
-  background: url('../img/default_footer_bg.svg') no-repeat 30% 100%;
+  background: $ice-blue url('../img/default_footer_bg.svg') no-repeat 30% 100%;
   background-size: auto 100%;
   padding-top: 70px;
   z-index: 2;
@@ -17,9 +17,14 @@
   }
 
   @include breakpoint(huge) {
-    background-position: 30% 100%;
-    background-size: 190% 100%;
+    background-image: url('../img/default_footer_bg_huge.svg');
+    background-position: 0 0;
+    background-size: 100% auto;
     padding-top: 9vw;
+  }
+
+  @include breakpoint(xhuge) {
+    background-size: 140% auto;
   }
 
   &--home {
@@ -39,7 +44,7 @@
     }
 
     @include breakpoint(huge) {
-      background-size: 150% 100%;
+      background-size: 170% auto;
       padding-top: 6vw;
     }
   }
