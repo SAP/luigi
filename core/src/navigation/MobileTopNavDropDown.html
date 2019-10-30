@@ -29,7 +29,10 @@
             class="y-full-width-list__icon {node.icon && hasOpenUIicon(node) ? 'sap-icon--' + node.icon + ' sap-icon--m' : '' }"
           >
             {#if !hasOpenUIicon(node)}
-            <img src="{node.icon}">
+            <img
+              src="{node.icon}"
+              alt="{node.altText ? node.altText : ''}"
+            >
             {/if}
             <BadgeCounter {node}/>
           </span>
