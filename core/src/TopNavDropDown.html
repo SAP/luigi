@@ -10,7 +10,10 @@
           class="fd-top-nav__icon {node.icon && hasOpenUIicon(node) ? 'sap-icon--' + node.icon + ' sap-icon--m' : '' }"
         >
           {#if !hasOpenUIicon(node)}
-          <img src="{node.icon}">
+          <img
+            src="{node.icon}"
+            alt="{node.altText ? node.altText: ''}"
+          >
           {/if}
           <BadgeCounter {node}/>
         </span>
@@ -32,12 +35,17 @@
   {getNodeLabel}
   {getTestId}
 />
-{/if}
 
+{/if}
 <script>
   import BadgeCounter from './navigation/BadgeCounter.html';
   import MobileTopNav from './navigation/MobileTopNavDropDown.html';
-  import { beforeUpdate, createEventDispatcher, onMount, getContext } from 'svelte';
+  import {
+    beforeUpdate,
+    createEventDispatcher,
+    onMount,
+    getContext
+  } from 'svelte';
   import { Routing } from './services/routing';
   import { Navigation } from './navigation/services/navigation';
   import { NavigationHelpers } from './utilities/helpers';
@@ -50,19 +58,21 @@
   export let children;
   export let node;
   let pathParams;
-  let getUnsavedChangesModalPromise = getContext('getUnsavedChangesModalPromise');
+  let getUnsavedChangesModalPromise = getContext(
+    'getUnsavedChangesModalPromise'
+  );
   let openViewInModal = getContext('openViewInModal');
 
   //TODO refactor
   const getComponentWrapper = () => {
     return {
-      get: () => { return {
-        pathParams
-      }
+      get: () => {
+        return {
+          pathParams
+        };
       },
-      set: (obj) => {
+      set: obj => {
         if (obj) {
-
         }
       }
     };
@@ -85,10 +95,7 @@
   export function onActionClick(node) {
     getUnsavedChangesModalPromise().then(() => {
       if (node.openNodeInModal) {
-        const route = RoutingHelpers.buildRoute(
-          node,
-          `/${node.pathSegment}`
-        );
+        const route = RoutingHelpers.buildRoute(node, `/${node.pathSegment}`);
         openViewInModal(
           route,
           node.openNodeInModal === true ? {} : node.openNodeInModal

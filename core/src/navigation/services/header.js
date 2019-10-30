@@ -32,6 +32,10 @@ export const processHeaderSettings = component => {
         setTimeout(() => {
           if (hasLogo && component.get().logo) {
             component.get().logo.src = header.logo;
+
+            if (header.altText) {
+              component.get().logo.alt = header.altText;
+            }
           }
         });
 
