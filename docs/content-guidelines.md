@@ -18,11 +18,7 @@ Luigi documentation is divided into five main sections:
   - Routing
   - Authorization
   - General settings
-  - Context switcher
-  - Profile
-  - Product switcher
-  - App switcher
-- Lifecycle hooks
+  - Lifecycle hooks
 - UI features
 - API
 3. Luigi Client - how-to guides and reference materials about Luigi Client
