@@ -26,7 +26,7 @@ Object.keys(productSwitcherItems[0]).length }
           title="{config.label}"
           data-testid="{getTestId(config)}"
         >
-          <img src="{config.icon}">
+          <img src="{config.icon}" alt="{config.altText ? config.altText : ''}">
         </button>
         {/if}
       </div>
@@ -51,6 +51,7 @@ Object.keys(productSwitcherItems[0]).length }
                     {#if !hasOpenUIicon(productSwitcherItem)}
                     <img
                       src="{productSwitcherItem.icon}"
+                      alt="{productSwitcherItem.altText ? productSwitcherItem.altText : ''}"
                     >
                     {/if}
                   </span>
@@ -80,9 +81,9 @@ Object.keys(productSwitcherItems[0]).length }
   {getNodeLabel}
   {getTestId}
 />
-{/if}
-{/if}
 
+{/if}
+{/if}
 <script>
   import MobileTopNav from './MobileTopNavDropDown.html';
   import { createEventDispatcher, onMount, getContext } from 'svelte';
@@ -98,7 +99,9 @@ Object.keys(productSwitcherItems[0]).length }
   export let config;
   export let dropDownStates;
   let store = getContext('store');
-  let getUnsavedChangesModalPromise = getContext('getUnsavedChangesModalPromise');
+  let getUnsavedChangesModalPromise = getContext(
+    'getUnsavedChangesModalPromise'
+  );
 
   onMount(async () => {
     StateHelpers.doOnStoreChange(
@@ -159,6 +162,12 @@ Object.keys(productSwitcherItems[0]).length }
   .fd-product-switcher {
     position: relative;
     display: block;
+
+    .fd-button--shell {
+      img {
+        max-height: 100%;
+      }
+    }
   }
   .fd-product-switcher__product-icon > img {
     max-height: 40px;
