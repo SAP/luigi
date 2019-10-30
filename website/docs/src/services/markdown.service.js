@@ -6,7 +6,6 @@ import doc from 'rehype-document';
 import format from 'rehype-format';
 import html from 'rehype-stringify';
 import slug from 'rehype-slug';
-import addClasses from 'rehype-add-classes';
 
 import luigiLinkParser from '../unified-plugins/rehype-luigi-linkparser';
 
@@ -22,13 +21,6 @@ class MarkdownService {
         .use(remark2rehype)
         // .use(remark2rehype, {allowDangerousHTML: true})
         // .use(raw)
-        .use(addClasses, {
-            pre: 'hljs',
-            'h1,h2,h3': 'fd-title',
-            h1: 'fd-title-11',
-            h2: 'fd-title-h2',
-            a: 'fd-link'
-        })
         .use(luigiLinkParser)
         .use(section)
         // .use(highlight)
