@@ -13,12 +13,12 @@
 
   &--home {
     padding-bottom: 0;
-    background-color: transparent;
+    background-color: $ice-blue;
     background-image: url('../img/header_bg.svg');
     background-repeat: no-repeat;
     background-position: left 50% bottom 100px;
     background-size: cover;
-    z-index: 2;
+    z-index: 3;
 
     @include breakpoint(large) {
       background-position: left 50% bottom 0;
