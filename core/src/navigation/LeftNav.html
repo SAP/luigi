@@ -32,6 +32,7 @@
               <img
                 class="fd-side-nav__icon"
                 src="{node.icon}"
+                alt="{node.altText ? node.altText : ''}"
               >
               {/if}
               {:else}
@@ -107,6 +108,7 @@
               <img
                 class="fd-side-nav__icon"
                 src="{nodes.metaInfo.icon}"
+                alt="{nodes.metaInfo.altText ? nodes.metaInfo.altText : ''}"
               >
               {/if}
               <span
@@ -154,6 +156,7 @@
             <img
               class="fd-side-nav__icon"
               src="{nodes.metaInfo.icon}"
+              alt="{nodes.metaInfo.altText ? nodes.metaInfo.altText : ''}"
             >
             {/if}
             {/if}
@@ -180,6 +183,7 @@
                 <img
                   class="fd-side-nav__icon"
                   src="{node.icon}"
+                  alt="{node.altText ? node.altText : ''}"
                 >
                 {/if}
                 {:else}
@@ -219,12 +223,29 @@
 </div>
 
 <script>
-  import { beforeUpdate, createEventDispatcher, onMount, getContext } from 'svelte';
+  import {
+    beforeUpdate,
+    createEventDispatcher,
+    onMount,
+    getContext
+  } from 'svelte';
 
   //TODO refactor
   const __this = {
-    get: () => ({ children, hideNavComponent, footerText, semiCollapsible, pathData, virtualGroupPrefix, isSemiCollapsed, selectedNode, selectedCategory, expandedCategories, hasCategoriesWithIcon }),
-    set: (obj) => {
+    get: () => ({
+      children,
+      hideNavComponent,
+      footerText,
+      semiCollapsible,
+      pathData,
+      virtualGroupPrefix,
+      isSemiCollapsed,
+      selectedNode,
+      selectedCategory,
+      expandedCategories,
+      hasCategoriesWithIcon
+    }),
+    set: obj => {
       if (obj) {
         Object.getOwnPropertyNames(obj).forEach(prop => {
           if (prop === 'pathData') {
@@ -271,7 +292,10 @@
 
   const setLeftNavData = async () => {
     const componentData = __this.get();
-    const leftNavData = await Navigation.getLeftNavData({...componentData}, componentData);
+    const leftNavData = await Navigation.getLeftNavData(
+      { ...componentData },
+      componentData
+    );
     if (!leftNavData) {
       return;
     }
@@ -285,7 +309,9 @@
       'settings.responsiveNavigation'
     );
     semiCollapsible = responsiveNavSetting === 'semiCollapsible';
-    hideNavComponent = LuigiConfig.getConfigBooleanValue('settings.hideNavigation');
+    hideNavComponent = LuigiConfig.getConfigBooleanValue(
+      'settings.hideNavigation'
+    );
     expandedCategories = NavigationHelpers.loadExpandedCategories();
     previousWindowWidth = window.innerWidth;
 
@@ -304,9 +330,7 @@
     ) {
       setIsSemiCollapsed(true);
     }
-    const isSemiCollapsed = semiCollapsible
-      ? getIsSemiCollapsed()
-      : false;
+    const isSemiCollapsed = semiCollapsible ? getIsSemiCollapsed() : false;
     setIsSemiCollapsed(isSemiCollapsed);
   });
 
@@ -396,8 +420,7 @@
     const shellbarHeight = LuigiElements.getShellbar().offsetHeight;
     let containerHeight;
     if (LuigiElements.isCustomLuigiContainer()) {
-      containerHeight = LuigiElements.getCustomLuigiContainer()
-        .clientHeight;
+      containerHeight = LuigiElements.getCustomLuigiContainer().clientHeight;
     } else {
       containerHeight = window.innerHeight;
     }
