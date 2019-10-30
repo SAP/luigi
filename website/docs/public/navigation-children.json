@@ -1,0 +1,112 @@
+[
+  {
+    "label": "application-setup",
+    "pathSegment": "application-setup",
+    "navigationContext": "doc",
+    "keepSelectedForChildren": true,
+    "viewUrl": "__BASE_URL__/docs/application-setup",
+    "context": {
+      "doc": "application-setup"
+    }
+  },
+  {
+    "label": "authorization-configuration",
+    "pathSegment": "authorization-configuration",
+    "navigationContext": "doc",
+    "keepSelectedForChildren": true,
+    "viewUrl": "__BASE_URL__/docs/authorization-configuration",
+    "context": {
+      "doc": "authorization-configuration"
+    }
+  },
+  {
+    "label": "authorization-events",
+    "pathSegment": "authorization-events",
+    "navigationContext": "doc",
+    "keepSelectedForChildren": true,
+    "viewUrl": "__BASE_URL__/docs/authorization-events",
+    "context": {
+      "doc": "authorization-events"
+    }
+  },
+  {
+    "label": "communication",
+    "pathSegment": "communication",
+    "navigationContext": "doc",
+    "keepSelectedForChildren": true,
+    "viewUrl": "__BASE_URL__/docs/communication",
+    "context": {
+      "doc": "communication"
+    }
+  },
+  {
+    "label": "general-settings",
+    "pathSegment": "general-settings",
+    "navigationContext": "doc",
+    "keepSelectedForChildren": true,
+    "viewUrl": "__BASE_URL__/docs/general-settings",
+    "context": {
+      "doc": "general-settings"
+    }
+  },
+  {
+    "label": "lifecycle-hooks",
+    "pathSegment": "lifecycle-hooks",
+    "navigationContext": "doc",
+    "keepSelectedForChildren": true,
+    "viewUrl": "__BASE_URL__/docs/lifecycle-hooks",
+    "context": {
+      "doc": "lifecycle-hooks"
+    }
+  },
+  {
+    "label": "luigi-client-api",
+    "pathSegment": "luigi-client-api",
+    "navigationContext": "doc",
+    "keepSelectedForChildren": true,
+    "viewUrl": "__BASE_URL__/docs/luigi-client-api",
+    "context": {
+      "doc": "luigi-client-api"
+    }
+  },
+  {
+    "label": "luigi-core-api",
+    "pathSegment": "luigi-core-api",
+    "navigationContext": "doc",
+    "keepSelectedForChildren": true,
+    "viewUrl": "__BASE_URL__/docs/luigi-core-api",
+    "context": {
+      "doc": "luigi-core-api"
+    }
+  },
+  {
+    "label": "luigi-ux-features",
+    "pathSegment": "luigi-ux-features",
+    "navigationContext": "doc",
+    "keepSelectedForChildren": true,
+    "viewUrl": "__BASE_URL__/docs/luigi-ux-features",
+    "context": {
+      "doc": "luigi-ux-features"
+    }
+  },
+  {
+    "label": "navigation-configuration",
+    "pathSegment": "navigation-configuration",
+    "navigationContext": "doc",
+    "keepSelectedForChildren": true,
+    "viewUrl": "__BASE_URL__/docs/navigation-configuration",
+    "context": {
+      "doc": "navigation-configuration"
+    }
+  },
+  {
+    "label": "navigation-parameters-reference",
+    "pathSegment": "navigation-parameters-reference",
+    "navigationContext": "doc",
+    "keepSelectedForChildren": true,
+    "viewUrl": "__BASE_URL__/docs/navigation-parameters-reference",
+    "context": {
+      "doc": "navigation-parameters-reference"
+    }
+  }
+]

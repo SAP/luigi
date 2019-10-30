@@ -1,0 +1,50 @@
+<!doctype html>
+<html>
+<head>
+	<meta charset='utf-8'>
+	<meta name="viewport"
+		content="width=device-width, user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1" />
+	<meta name='theme-color' content='#333333'>
+	
+	%sapper.base%
+
+	<link rel='stylesheet' href='global.css'>
+	<!-- <link rel='manifest' href='manifest.json'> -->
+	<!-- <link rel='icon' type='image/png' href='favicon.png'> -->
+
+	<!-- Sapper generates a <style> tag containing critical CSS
+	     for the current page. CSS for the rest of the app is
+	     lazily loaded when it precaches secondary pages -->
+	%sapper.styles%
+
+	<!-- This contains the contents of the <svelte:head> component, if
+	     the current page has one -->
+	%sapper.head%
+	
+</head>
+<body>
+	<!-- The application will be rendered inside this element,
+		 because `src/client.js` references it -->
+	<div id="sapper">%sapper.html%</div>
+
+	<!-- Sapper creates a <script> tag containing `src/client.js`
+	     and anything else it needs to hydrate the app and
+		 initialise the router -->
+	%sapper.scripts%
+	<script type="text/javascript">
+		let link = document.createElement("link");
+		link.rel = "stylesheet";
+		let script = document.createElement("script");
+		script.type = "text/javascript";
+		if (location.port == '4001') {
+			link.href = "/fundamental-ui/fiori-fundamentals.min.css";
+			script.src = "/luigi-client/luigi-client.js";
+		} else {
+			link.href = "/docu-microfrontend/fundamental-ui/fiori-fundamentals.min.css";
+			script.src = "/docu-microfrontend/luigi-client/luigi-client.js";
+		}
+		document.getElementsByTagName("head")[0].appendChild(link);
+		document.getElementsByTagName("body")[0].appendChild(script);
+	</script>
+</body>
+</html>
