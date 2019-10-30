@@ -210,7 +210,7 @@
 <div class="fiddle-toolbar">
   <div class="fd-action-bar">
     <div class="fd-action-bar__header">
-      <img alt="" src="./img/luigi.png" />
+      <img alt="Luigi" src="./img/luigi.png" />
       <span class="lui-mobile-hide">powered by Luigi v{luigiVersion}</span>
       <span>
         <a
