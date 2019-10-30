@@ -96,8 +96,8 @@ Depending on the type of content, you should use different types of text, for ex
 
 |     Type           |      Font          |    Example    |
 |--------------------|:------------------:|---------------|
-| Properties         |      **bold**     | **viewGroup** |
-| Parameters         |      `code`        | `{userId}`    |
+| Parameters         |      **bold**     | **viewGroup** |
+| Dynamic parameters         |      `code`        | `{userId}`    |
 | Folders and paths  |      `code`        | the file `basicConfiguration.js` inside `assets/luigi-config`|
 | Code snippets      |      `code`        | See [this section](#code-snippets) |
 | Functions          |      **bold**     | **showLoadingIndicator()** |
@@ -135,6 +135,6 @@ This section contains terminology frequently used in the Luigi documentation.
 
 * **Luigi Core** - the main application and the settings used to configure it.
 * **Luigi Client** - the micro frontend within Luigi Core and the API used to connect the two.
-* **Parameters** - the parameters that can be added to create a dynamic path.
-* **Properties** - the properties that can be used to configure Luigi in the `basicConfiguration.js` file.
+* **Parameters** - the properties that can be used to configure Luigi in the Luigi configuration file.
+* **Dynamic parameters** - the parameters that can be added to create a dynamically changeable path.
 * **Attributes** - the "sub properties" of properties. E.g. the **category** property can have **label**, **icon**, and **collapsible** as attributes. This term derives from the definition of "attribute" in computing as "a property of a property".
