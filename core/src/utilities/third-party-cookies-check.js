@@ -1,3 +1,4 @@
+/* istanbul ignore file */
 let status = 'not_checked';
 
 window.addEventListener(
