@@ -14,16 +14,6 @@ module.exports = {
       options: JSON.parse(readFileSync('.babelrc'))
     }
   },
-  // {
-  // 	test: /\.svelte$/,
-  // 	use: {
-  // 		loader: 'svelte-loader',
-  // 		options: {
-  // 			emitCss: true,
-  // 			hotReload: true
-  // 		}
-  // 	}
-  // },
 
   svelte: {
     test: /\.(html|svelte)$/,
@@ -59,21 +49,29 @@ module.exports = {
       }
     }
   },
+
   css: {
     test: /\.(sa|sc|c)ss$/,
     use: [
       /**
-					 * MiniCssExtractPlugin doesn't support HMR.
-					 * For developing, use 'style-loader' instead.
-					 * */
-					prod ? MiniCssExtractPlugin.loader : 'style-loader',
-					'css-loader'
-      // {
-      //   loader: MiniCssExtractPlugin.loader
-      // },
-      // {
-      //   loader: 'css-loader'
-      // }
+        * MiniCssExtractPlugin doesn't support HMR.
+        * For developing, use 'style-loader' instead.
+        * */
+      prod ? MiniCssExtractPlugin.loader : 'style-loader',
+      // Translates CSS into CommonJS
+      {
+        loader: 'css-loader',
+        options: {
+          sourceMap: true,
+        },
+      },
+      // Compiles Sass to CSS
+      {
+        loader: 'sass-loader',
+        options: {
+          sourceMap: true,
+        },
+      },
     ]
   },
   urls: {
