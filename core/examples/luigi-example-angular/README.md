@@ -1,4 +1,4 @@
-# Sample Luigi application written in Angular
+# Luigi example application written in Angular
 
 ## Overview
 
