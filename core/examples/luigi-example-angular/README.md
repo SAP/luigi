@@ -2,7 +2,7 @@
 
 ## Overview
 
-This is the Angular-based sample application which runs with Luigi framework.
+This is an Angular-based example application which runs with the Luigi framework.
 
 ## Development
 
