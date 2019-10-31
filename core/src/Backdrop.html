@@ -1,4 +1,8 @@
-<div class="{backdropClass}" aria-hidden="false" style="{area === 'main' ? 'z-index: 0;' : ''}">
+<div
+  class="{backdropClass}"
+  aria-hidden="false"
+  style="{area === 'main' ? 'z-index: 0;' : ''}"
+>
   <slot></slot>
 </div>
 
@@ -12,7 +16,7 @@
   export let backdropClass = '';
   export let backdropActive = false;
   let wasBackdropActive = false;
-  let options =  {};
+  let options = {};
   export let area;
 
   const setBackdropClass = () => {
@@ -26,7 +30,7 @@
     }
   };
 
-  const isValidForArea = (e) => {
+  const isValidForArea = e => {
     if (!area) {
       return true;
     }
@@ -34,8 +38,8 @@
       ...IframeHelpers.getMicrofrontendsInDom(),
       { contentWindow: window, luigi: { viewUrl: window.location.href } }
     ];
-    const microfrontend = allMessagesSources.find(mf =>
-      mf.container && mf.container.contentWindow === e.source
+    const microfrontend = allMessagesSources.find(
+      mf => mf.container && mf.container.contentWindow === e.source
     );
     if (microfrontend && area === microfrontend.type) {
       return false;
@@ -57,11 +61,11 @@
           } else {
             backdropActive = false;
           }
-          dispatch('stateChanged', {backdropActive: true});
+          dispatch('stateChanged', { backdropActive: true });
         }
         if ('luigi.remove-backdrop' === e.data.msg) {
           backdropActive = false;
-          dispatch('stateChanged', {backdropActive: false});
+          dispatch('stateChanged', { backdropActive: false });
         }
       });
     }
@@ -76,7 +80,6 @@
       setBackdropClass();
     }
   });
-
 </script>
 
 <style type="text/scss">
