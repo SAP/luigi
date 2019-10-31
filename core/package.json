@@ -1,6 +1,6 @@
 {
   "name": "luigi-core-private",
-  "version": "0.7.0",
+  "version": "0.7.1",
   "private": true,
   "description": "luigi-core development version, only the public folder is being published to npm as a package",
   "devDependencies": {
@@ -61,7 +61,7 @@
   "bundlesize": [
     {
       "path": "./public/luigi.js",
-      "maxSize": "400 kB",
+      "maxSize": "450 kB",
       "compression": "none"
     },
     {
