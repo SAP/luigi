@@ -2,7 +2,7 @@
 	export let segment;
 </script>
 
-<style>
+<style type="text/scss">
 	/* main {
 		position: relative;
 		max-width: 56em;
@@ -11,6 +11,12 @@
 		margin: 0 auto;
 		box-sizing: border-box;
 	} */
+
+	.fd-ui {
+		.fd-page {
+			// background: green;
+		}
+	}
 </style>
 
 <main class="fd-ui fd-ui--fundamental">

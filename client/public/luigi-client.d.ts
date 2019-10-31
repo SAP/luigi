@@ -324,6 +324,22 @@ export function removeContextUpdateListener(id: string): boolean;
 export type removeContextUpdateListener = (id: string) => boolean;
 
 /**
+ * Registers a listener called upon microfrontend inactivity. Usually happens when micro frontends get moved to the background when using preserve view, loading new view groups or using preload.
+ * @param {function} inactiveFn the listener function called each time the micro frontend turns into an inactive state
+ * @memberof Lifecycle
+ */
+export function addInactiveListener(inactiveFn: () => void): string;
+export type addInactiveListener = (inactiveFn: () => void) => string;
+
+/**
+ * Removes a listener for inactive micro frontends.
+ * @param {string} id the id that was returned by the `addInactiveListener` function
+ * @memberof Lifecycle
+ */
+export function removeInactiveListener(id: string): boolean;
+export type removeInactiveListener = (id: string) => boolean;
+
+/**
  * Registers a listener called when the micro frontend receives a custom message.
  * @param {string} customMessageId the custom message id
  * @param {Lifecycle~customMessageListenerCallback} customMessageListener the function that is called when the micro frontend receives the corresponding event.
