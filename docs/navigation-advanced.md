@@ -300,7 +300,7 @@ productSwitcher: {
 
 <img src="https://github.com/SAP/luigi/blob/c70658fcb78c48012303a4e59012d5d158ca46b3/docs/assets/app-switcher.png" width="407">
 
-The app switcher is a drop-down in top the navigation which allows you to switch between applications. To use it, add the **addSwitcher** property in your **navigation** object. You may also add any of the parameters listed [here](navigation-parameters-reference.md#product-switcher).
+The app switcher is a drop-down in top the navigation which allows you to switch between applications. To use it, add the **appSwitcher** property in your **navigation** object. You may also add any of the parameters listed [here](navigation-parameters-reference.md#app-switcher).
 
 Example:
 
