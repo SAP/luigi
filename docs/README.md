@@ -10,7 +10,7 @@ Luigi Core enables you to create a web application with an easily configurable a
 
 ### Configuration
 
-> **TIP:** The [Luigi Fiddle](fiddle.luigi-project.io) allows you to configure a very simple application and get a feel for the process.
+> **TIP:** The [Luigi Fiddle](https://fiddle.luigi-project.io) allows you to configure a very simple application and get a feel for the process.
 
 To configure your Luigi application, simply edit the files in the `luigi-config` folder of your project. Luigi configuration is divided into several sections, which are outlined in the guides below:
 
@@ -31,7 +31,7 @@ The following guides outline Luigi Core API features and additional UI o
 
 Luigi Client enables you to connect micro frontends to an already existing Luigi Core application.
 
-[Installation](client/readme.md) shows you how to install the Luigi Client.
+[Installation](../client/readme.md) shows you how to install the Luigi Client.
 
 Read the Luigi Client API documentation to learn more about the functions and parameters you can use to communicate with the core application:
 

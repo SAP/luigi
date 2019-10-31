@@ -3,7 +3,7 @@
 This document shows you how to configure the following Luigi features:
 
 * [View groups](#view-groups)
-* [Create a dynamically changeable path](#creating-a-dynamic-path)
+* [Create a dynamically changeable path](#create-a-dynamic-path)
 * [Contexts](#contexts)
 * [Profile](navigation-parameters-reference.md#profile) 
 * [Context switcher](navigation-parameters-reference.md#context-switcher) 
@@ -45,7 +45,7 @@ Further options related to view groups can be configured using the parameters li
 - **type**: boolean
 - **description**: renders all views in new frames. This setting overrides the same-domain frame reuse. The **defaults.isolateView** is disabled by default, and you can overwrite it using the **isolateView** value on a single node level.
 
-## Create a dynamically changeable path
+## Create a dynamic path
 
 In Luigi, you can make a navigation path dynamically changeable according to your needs. This is accomplished by defining dynamic parameters within the **pathSegement** or **viewUrl** navigation paths.
 
@@ -226,7 +226,7 @@ Here is an example of a dynamic navigation node including a context:
 
 ## Profile
 
-<img src="https://github.com/SAP/luigi/blob/master/docs/assets/profile.png" width="628">
+<img src="https://github.com/SAP/luigi/blob/c70658fcb78c48012303a4e59012d5d158ca46b3/docs/assets/profile.png" width="628">
 
 The profile is a drop down-list in the top navigation tat allows you to override the logout item content (if authorization is configured) and/or add links to Luigi navigation nodes.
 
@@ -246,7 +246,7 @@ Example:
 
 ## Context switcher
 
-<img src="https://github.com/SAP/luigi/blob/master/docs/assets/context-switcher.png" width="628">
+<img src="https://github.com/SAP/luigi/blob/c70658fcb78c48012303a4e59012d5d158ca46b3/docs/assets/context-switcher.png" width="628">
 
 The context switcher is a drop-down element in the top navigation. It allows you to switch between a curated list of navigation elements such as Environments. To do so, add the contextSwitcher property to the navigation object. Find all the parameters you can use to configure it [here](navigation-parameters-reference.md#context-switcher).
 
@@ -266,7 +266,7 @@ contextSwitcher: {
 
 ## Product switcher
 
-<img src="https://github.com/SAP/luigi/blob/master/docs/assets/product-switcher.png" width="704">
+<img src="https://github.com/SAP/luigi/blob/c70658fcb78c48012303a4e59012d5d158ca46b3/docs/assets/product-switcher.png" width="704">
 
 The product switcher is window in top the navigation which allows you to switch between navigation elements displayed there. To add it to your application, include the **productSwitcher** property in your **navigation** object. You may also add any of the parameters listed [here](navigation-parameters-reference.md#product-switcher).
 
@@ -298,7 +298,7 @@ productSwitcher: {
 
 ## App switcher
 
-<img src="https://github.com/SAP/luigi/blob/master/docs/assets/app-switcher.png" width="407">
+<img src="https://github.com/SAP/luigi/blob/c70658fcb78c48012303a4e59012d5d158ca46b3/docs/assets/app-switcher.png" width="407">
 
 The app switcher is a drop-down in top the navigation which allows you to switch between applications. To use it, add the **addSwitcher** property in your **navigation** object. You may also add any of the parameters listed [here](navigation-parameters-reference.md#product-switcher).
 
@@ -324,7 +324,7 @@ appSwitcher = {
 
 ## Additional options
 
-For more options and parameters which you can use to configure navigation in Luigi, read the [full parameter reference](navigation-parameter-reference.md). Some of the topics you can find there include:
+For more options and parameters which you can use to configure navigation in Luigi, read the [full parameter reference](navigation-parameters-reference.md). Some of the topics you can find there include:
 
 * Enabling and disabling the [loading indicator](navigation-parameters-reference.md#loadingindicatorenabled)
 * Hiding [navigation nodes](navigation-parameters-reference.md#hidefromnav) or [side navigation](navigation-parameters-reference.md#hidesidenav)
