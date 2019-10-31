@@ -6,9 +6,9 @@ This document shows you how to configure the following Luigi features:
 * [Create a dynamically changeable path](#create-a-dynamic-path)
 * [Contexts](#contexts)
 * [Profile](#profile) 
-* [Context switcher](#context-switcher) 
-* [Product switcher](d#product-switcher) 
-* [App switcher](#app-switcher) 
+* [Context switcher](#contextswitcher) 
+* [Product switcher](d#productswitcher) 
+* [App switcher](#appswitcher) 
 * [Additional options](#additional-options)
 
 
