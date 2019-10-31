@@ -1,15 +1,14 @@
-# Hello Luigi
+# Lorem ipsum dolor
 
-A standard file with some links, but not any special features
+Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum.
 
-Choose the framework to build your application:
+[Loreim ipsum](#noframework) <br>
+[Ipsum Dolor](#angular6)<br>
 
-[Application setup without a framework](#noframework) <br>
-[Angular 6](#angular6)<br>
+Lorem ipsum dolor sit amet:
 
-Follow these steps to build a web application based on Luigi:
-
-1. Add Luigi npm packages to your project dependencies. 
+1. At vero eos et accusam et justo duo dolores et ea rebum.
+2. At vero eos et accusam et justo duo dolores et ea rebum.
 
 ````
 npm install --save @kyma-project/luigi-core
