@@ -22,7 +22,7 @@ Open [http://localhost:5000](http://localhost:5000), it is exported to `public` 
 
 ## Developing markdown parser plugins
 
-Markdown are transformed into html using unified/remark2rehype, which has a already an ecosystem of plugins (npm packages are prefixed with rehype-). In order to quickly develop new plugins, a small script executes only the `src/services/markdown.service.js` file with a small markdown dataset defined in `scripts/markdown.unified-preview.js`. The referenced md files are located in `scripts/mocks`.
+Markdown are transformed into html using unified/remark2rehype, which has already an ecosystem of plugins (npm packages are prefixed with rehype-). In order to quickly develop new plugins, a small script executes only the `src/services/markdown.service.js` file with a small markdown dataset defined in `scripts/markdown.unified-preview.js`. The referenced md files are located in `scripts/mocks`.
 
 Single run: `npm run mock:develop-plugins`
 
