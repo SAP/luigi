@@ -1,12 +1,4 @@
-import unified from 'unified';
-import markdown from 'remark-parse';
-import remark2rehype from 'remark-rehype';
-import raw from 'rehype-raw';
-import doc from 'rehype-document';
-import format from 'rehype-format';
-import html from 'rehype-stringify';
-// import highlight from 'rehype-highlight'
-import section from '@agentofuser/rehype-section';
+import { MarkdownSvc } from '../../services/markdown.service';
 import { readdirSync, readFileSync, writeFileSync } from 'fs';
 
 let parsedDocs;
@@ -28,28 +20,16 @@ function setParsedDocs() {
     .filter(name => name.endsWith('.md'))
     .map(name => {
       const mdContent = readFileSync(dir + '/' + name);
-
       parsingArr.push(new Promise((resolve) => {
-        unified()
-          .use(markdown)
-          .use(remark2rehype, {allowDangerousHTML: true})
-          .use(raw)
-          .use(doc)
-          .use(format)
-          // .use(highlight)
-          .use(section)
-          .use(html)
-          .process(String(mdContent), function (err, file) {
-            // console.error(report(err || file))
-            resolve({
-              name,
-              shortName: name.replace('.md', ''),
-              // file,
-              contents: file.contents
-            });
-          })
+        MarkdownSvc.process(mdContent).then((contents) => {
+          resolve({
+            name,
+            shortName: name.replace('.md', ''),
+            // file,
+            contents
+          });
         })
-      )
+      }));
     });
   
   return Promise.all(parsingArr)
