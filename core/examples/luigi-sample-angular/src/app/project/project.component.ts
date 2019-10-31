@@ -60,7 +60,7 @@ export class ProjectComponent implements OnInit, OnDestroy {
       this.lcSubscription.unsubscribe();
     }
     if (this.cudListener) {
-      const removed = removeContextUpdateListener(this.cudListener);
+      removeContextUpdateListener(this.cudListener);
     }
   }
 
