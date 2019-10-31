@@ -1,6 +1,5 @@
 import { MarkdownSvc } from '../../services/markdown.service';
 import { readdirSync, readFileSync, writeFileSync } from 'fs';
-import path from 'path';
 
 let parsedDocs;
 export function getParsedDocs() {
