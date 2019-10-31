@@ -5,10 +5,10 @@ This document shows you how to configure the following Luigi features:
 * [View groups](#view-groups)
 * [Create a dynamically changeable path](#create-a-dynamic-path)
 * [Contexts](#contexts)
-* [Profile](navigation-parameters-reference.md#profile) 
-* [Context switcher](navigation-parameters-reference.md#context-switcher) 
-* [Product switcher](navigation-parameters-reference.md#product-switcher) 
-* [App switcher](navigation-parameters-reference.md#app-switcher) 
+* [Profile](#profile) 
+* [Context switcher](#context-switcher) 
+* [Product switcher](d#product-switcher) 
+* [App switcher](#app-switcher) 
 * [Additional options](#additional-options)
 
 
