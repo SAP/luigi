@@ -205,4 +205,21 @@ describe('Routing-helpers', () => {
       expect(RoutingHelpers.getLastNodeObject(mockPathData)).to.deep.equal({});
     });
   });
+
+  describe('parseParams', () => {
+    let mockParams;
+
+    it('return pairs of params', () => {
+      mockParams = 'test=true&foo=bar';
+      assert.deepEqual(RoutingHelpers.parseParams(mockParams), {
+        test: 'true',
+        foo: 'bar'
+      });
+    });
+
+    it('should not fail on empty params', () => {
+      mockParams = '';
+      expect(RoutingHelpers.parseParams(mockParams)).to.deep.equal({});
+    });
+  });
 });
