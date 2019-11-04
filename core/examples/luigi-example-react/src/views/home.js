@@ -1,25 +1,40 @@
 import React, { Component } from 'react';
 import '../../node_modules/fiori-fundamentals/dist/fiori-fundamentals.css';
-import LuigiClient from '@kyma-project/luigi-client';
+import {
+  addInitListener,
+  addContextUpdateListener,
+  removeContextUpdateListener,
+  removeInitListener
+} from '@kyma-project/luigi-client';
 
 export default class Home extends Component {
   constructor(props) {
     super(props);
-    let luigiClient = LuigiClient;
     this.state = {
       message: ''
     };
-    luigiClient.addInitListener(initialContext => {
+    this.initListener = null;
+    this.contextUpdateListener = null;
+  }
+
+  componentDidMount() {
+    this.initListener = addInitListener(initialContext => {
       this.setState({
         message: 'Luigi Client initialized.'
       });
     });
-    luigiClient.addContextUpdateListener(updatedContext => {
+    this.contextUpdateListener = addContextUpdateListener(updatedContext => {
       this.setState({
         message: 'Luigi Client updated.'
       });
     });
   }
+
+  componentWillUnmount() {
+    removeContextUpdateListener(this.contextUpdateListener);
+    removeInitListener(this.initListener);
+  }
+
   render() {
     return (
       <div>
