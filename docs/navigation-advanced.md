@@ -206,7 +206,7 @@ You can create a context by adding these parameters to your node:
 
 ### context
 - **type**: object
-- **description**: sends the specified object as context to the view. Use this property in combination with the dynamic **pathSegment** to receive the context through the context listeners of **Luigi Client**. This is an alternative to using the dynamic value in the **viewUrl**.
+- **description**: sends the specified object as context to the view. Use this property in combination with the dynamic **pathSegment** to receive the context through the context listeners of Luigi Client. This is an alternative to using the dynamic value in the **viewUrl**.
 
 Here is an example of a dynamic navigation node including a context:
 
