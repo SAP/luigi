@@ -248,7 +248,7 @@ Example:
 
 <img src="https://github.com/SAP/luigi/blob/c70658fcb78c48012303a4e59012d5d158ca46b3/docs/assets/context-switcher.png" width="628">
 
-The context switcher is a drop-down element in the top navigation. It allows you to switch between a curated list of navigation elements such as Environments. To do so, add the contextSwitcher property to the navigation object. Find all the parameters you can use to configure it [here](navigation-parameters-reference.md#context-switcher).
+The context switcher is a drop-down element in the top navigation. It allows you to switch between a curated list of navigation elements such as Environments. To do so, add the **contextSwitcher** property to the navigation object. Find all the parameters you can use to configure it [here](navigation-parameters-reference.md#context-switcher).
 
  Example:
 
