@@ -3,7 +3,7 @@
 This document shows you how to configure the following Luigi features:
 
 * [View groups](#view-groups)
-* [Create a dynamically changeable path](#create-a-dynamic-path)
+* [Dynamically changeable paths](#dynamically-changeable-paths)
 * [Contexts](#contexts)
 * [Profile](#profile) 
 * [Context switcher](#contextswitcher) 
@@ -14,12 +14,9 @@ This document shows you how to configure the following Luigi features:
 
 ## View groups
 
-View groups are a way to reuse micro frontends (i.e. views) in Luigi.
+View groups are a way to reuse micro frontends (views) in Luigi.
 
-Imagine your application hosts two micro frontend views: `http://example.com/a#e` and  `http://example.com/b#f`. Due to hash routing and a different path up to `#`, they are, by default, rendered in different iframes. However, as they both have the **same origin**, such as `example.com`, you want to render them in the same iframe. To achieve that:
-
-1. Define the **viewGroup** parameter for any navigation node.
-2. Children of that node will automatically be considered part of the same view group.
+Imagine your application hosts two micro frontend views: `http://example.com/a#e` and  `http://example.com/b#f`. Due to hash routing and a different path up to `#`, they are, by default, rendered in different iframes. However, as they both have the **same origin**, such as `example.com`, you want to render them in the same iframe. To achieve that, define the **viewGroup** parameter for any navigation node. Children of that node will automatically be considered part of the same view group.
 
 Nodes belonging to the same view group are always rendered in their own view group iframe. Nodes not belonging to any view group follow the same-origin iframe rendering policy.
 
@@ -45,7 +42,7 @@ Further options related to view groups can be configured using the parameters li
 - **type**: boolean
 - **description**: renders all views in new frames. This setting overrides the same-domain frame reuse. The **defaults.isolateView** is disabled by default, and you can overwrite it using the **isolateView** value on a single node level.
 
-## Create a dynamic path
+## Dynamically changeable paths
 
 In Luigi, you can make a navigation path dynamically changeable according to your needs. This is accomplished by defining dynamic parameters within the **pathSegement** or **viewUrl** navigation paths.
 
