@@ -230,7 +230,7 @@ Here is an example of a dynamic navigation node including a context:
 
 The profile is a drop-down list in the top navigation that allows you to override the logout item content if authorization is already configured. You can also add links to Luigi navigation nodes.
 
-You can configure a profile element in the top navigation by adding the `profile` property to the navigation object in the configuration file. Find all the parameters which can be used to configure a profile [here](navigation-parameters-reference.md#profile).
+You can configure the profile element in the top navigation by adding the **profile** property to the navigation object in the configuration file. Find all the parameters which you can use to configure a profile [here](navigation-parameters-reference.md#profile).
 
 Example:
 
