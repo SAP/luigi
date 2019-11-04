@@ -175,4 +175,34 @@ describe('Routing-helpers', () => {
       ).to.equal('/projects/pr1/details/e23');
     });
   });
+
+  describe('getLastNodeObject', () => {
+    let mockPathData;
+
+    it('return last node of navigationPath', () => {
+      mockPathData = {
+        navigationPath: [
+          {
+            pathSegment: 'project1'
+          },
+          {
+            pathSegment: 'project2'
+          },
+          {
+            pathSegment: 'project3'
+          }
+        ]
+      };
+      assert.deepEqual(RoutingHelpers.getLastNodeObject(mockPathData), {
+        pathSegment: 'project3'
+      });
+    });
+
+    it('should not fail on empty navigationPath', () => {
+      mockPathData = {
+        navigationPath: []
+      };
+      expect(RoutingHelpers.getLastNodeObject(mockPathData)).to.deep.equal({});
+    });
+  });
 });
