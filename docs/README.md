@@ -1,6 +1,6 @@
 # Luigi Documentation
 
-If you are new to Luigi, read the [Getting started guide](getting-started.md) to learn more about its structure and key functions.
+If you are new to Luigi, read the [Getting started guide](getting-started.md) to learn more about its structure and key features.
 
 ## Luigi Core
 
