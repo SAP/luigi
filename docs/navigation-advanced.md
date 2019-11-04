@@ -88,7 +88,7 @@ navigation: {
 You have the following options to add a parameter to **viewUrl**:
 - Place the parameter anywhere in the **viewUrl** value. For example, if the main application URL is `https://[YOUR.WEBSITE]/home/users/JohnSmith`, then the **viewUrl** of the micro frontend in the content area can be `https://example.com/users/details.html#id=JohnSmith`.
 - Use the [Luigi Client API](luigi-client-api.md) to access the node parameter values from the micro frontend. Use the `LuigiClient.getPathParams()` function.
-For example, to get the value of the `userId` parameter, use `LuigiClient.getPathParams().userId`.
+For example, to get the value of the **userId** parameter, use `LuigiClient.getPathParams().userId`.
 - Add a parameter to the context part of your configuration:
 
 ```javascript
