@@ -202,7 +202,7 @@ You can create a context by adding these parameters to your node:
 
 ### navigationContext
 - **type**: string
-- **description**: contains a named node that is mainly for use in combination with a dynamic **pathSegment** to start navigation from a dynamic node using ` LuigiClient.linkManager().fromContext('contextname')`.
+- **description**: contains a named node that is mainly for use in combination with a dynamic **pathSegment** to start navigation from a dynamic node using `LuigiClient.linkManager().fromContext('contextname')`.
 
 ### context
 - **type**: object
