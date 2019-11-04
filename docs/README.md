@@ -35,7 +35,7 @@ Luigi Client enables you to connect micro frontends to an already exist
 
 Read the Luigi Client API documentation to learn more about the functions and parameters you can use to communicate with the core application:
 
-* [Lifecycle](luigi-client-api.md#lifecycle) - details on the lifecycle of listeners, navigation nodes, and Event data.
+* [Lifecycle](luigi-client-api.md#lifecycle) - manage the lifecycle of listeners, navigation nodes, and event data.
 * [Link Manager](luigi-client-api.md#linkmanager) - navigate to a specific route.
 * [UX Manager](luigi-client-api.md#uxmanager) - manage appearance options such as the behavior of backdrop or loading indicators.
 
