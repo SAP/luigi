@@ -18,7 +18,7 @@ To configure your Luigi application, simply edit the files in the `luigi-config`
 * [Navigation (advanced)](navigation-advanced.md) - create a dynamic path, reuse micro frontends with the same origin, and configure additional navigation elements. 
 * [Routing](navigation-parameters-reference.md#routing) - define routing options for your application.
 * [Authorization](authorization-configuration.md) - configure login and security features for your application.
-    * [Authorization events](authorization-events.md) - event configuration used to react to Luigi authorization events.
+    * [Authorization events](authorization-events.md) - define event configuration used to react to Luigi authorization events.
 * [General settings](general-settings.md) - fully customize a micro frontend, define a header, make your application responsive, and more.
 * [Lifecycle hooks](lifecycle-hooks.md) - execute custom logic on any of the Luigi lifecycle steps.
 
