@@ -85,7 +85,7 @@ navigation: {
 You have the following options to add a parameter to **viewUrl**:
 - Place the parameter anywhere in the **viewUrl** value. For example, if the main application URL is `https://[YOUR.WEBSITE]/home/users/JohnSmith`, then the **viewUrl** of the micro frontend in the content area can be `https://example.com/users/details.html#id=JohnSmith`.
 - Use the [Luigi Client API](luigi-client-api.md) to access the node parameter values from the micro frontend. Use the `LuigiClient.getPathParams()` function.
-For example, to get the value of the `userId` parameter, use `LuigiClient.getPathParams().userId`.
+For example, to get the value of the **userId** parameter, use `LuigiClient.getPathParams().userId`.
 - Add a parameter to the context part of your configuration:
 
 ```javascript
@@ -199,11 +199,11 @@ You can create a context by adding these parameters to your node:
 
 ### navigationContext
 - **type**: string
-- **description**: contains a named node that is mainly for use in combination with a dynamic **pathSegment** to start navigation from a dynamic node using ` LuigiClient.linkManager().fromContext('contextname')`.
+- **description**: contains a named node that is mainly for use in combination with a dynamic **pathSegment** to start navigation from a dynamic node using `LuigiClient.linkManager().fromContext('contextname')`.
 
 ### context
 - **type**: object
-- **description**: sends the specified object as context to the view. Use this property in combination with the dynamic **pathSegment** to receive the context through the context listeners of **Luigi Client**. This is an alternative to using the dynamic value in the **viewUrl**.
+- **description**: sends the specified object as context to the view. Use this property in combination with the dynamic **pathSegment** to receive the context through the context listeners of Luigi Client. This is an alternative to using the dynamic value in the **viewUrl**.
 
 Here is an example of a dynamic navigation node including a context:
 
@@ -225,9 +225,9 @@ Here is an example of a dynamic navigation node including a context:
 
 <img src="https://github.com/SAP/luigi/blob/c70658fcb78c48012303a4e59012d5d158ca46b3/docs/assets/profile.png" width="628">
 
-The profile is a drop down-list in the top navigation tat allows you to override the logout item content (if authorization is configured) and/or add links to Luigi navigation nodes.
+The profile is a drop-down list in the top navigation that allows you to override the logout item content if authorization is already configured. You can also add links to Luigi navigation nodes.
 
-You can configure a profile element in the top navigation by adding the `profile` property to the navigation object in the configuration file. Find all the parameters which can be used to configure a profile [here](navigation-parameters-reference.md#profile).
+You can configure the profile element in the top navigation by adding the **profile** property to the navigation object in the configuration file. Find all the parameters which you can use to configure a profile [here](navigation-parameters-reference.md#profile).
 
 Example:
 
@@ -245,7 +245,7 @@ Example:
 
 <img src="https://github.com/SAP/luigi/blob/c70658fcb78c48012303a4e59012d5d158ca46b3/docs/assets/context-switcher.png" width="628">
 
-The context switcher is a drop-down element in the top navigation. It allows you to switch between a curated list of navigation elements such as Environments. To do so, add the contextSwitcher property to the navigation object. Find all the parameters you can use to configure it [here](navigation-parameters-reference.md#context-switcher).
+The context switcher is a drop-down element in the top navigation. It allows you to switch between a curated list of navigation elements such as Environments. To do so, add the **contextSwitcher** property to the navigation object. Find all the parameters you can use to configure it [here](navigation-parameters-reference.md#context-switcher).
 
  Example:
 
