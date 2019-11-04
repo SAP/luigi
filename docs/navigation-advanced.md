@@ -228,7 +228,7 @@ Here is an example of a dynamic navigation node including a context:
 
 <img src="https://github.com/SAP/luigi/blob/c70658fcb78c48012303a4e59012d5d158ca46b3/docs/assets/profile.png" width="628">
 
-The profile is a drop down-list in the top navigation tat allows you to override the logout item content (if authorization is configured) and/or add links to Luigi navigation nodes.
+The profile is a drop-down list in the top navigation that allows you to override the logout item content if authorization is already configured. You can also add links to Luigi navigation nodes.
 
 You can configure a profile element in the top navigation by adding the `profile` property to the navigation object in the configuration file. Find all the parameters which can be used to configure a profile [here](navigation-parameters-reference.md#profile).
 
