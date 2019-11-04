@@ -25,7 +25,7 @@ Nodes belonging to the same view group are always rendered in their own view gro
 
 The view groups feature also offers out-of-the-box caching. Each time you navigate to another view group, either a new iframe is created or it is reused if already exists. In both cases, the iframe you are navigating from becomes hidden and is available for you to use again. If you navigate back to the first iframe and it should be updated with new data, such when a new entry was added in the second iframe and you want to display it in a table in the first iframe, you must define a **preloadUrl** parameter for the view group under **navigation.viewGroupSettings**.
 
-You can also preload view groups. You just need to define which URL you want to preload, and Luigi will preload the view after some user interactions when the browser is most likely to be idle. This option is active by default, but you can deactivate it with the **preloadViewGroups** [configuration flag](navigation-parameters-reference.md#preloadviewgroups).
+You can also preload view groups. You just need to define which URL you want to preload, and Luigi will preload the view after some user interactions when the browser is most likely to be idle. This option is active by default, but you can deactivate it with the [**preloadViewGroups**](navigation-parameters-reference.md#preloadviewgroups) configuration flag.
 
 For more information on setting caching with view refreshing and preloading for view groups, read [this document](navigation-parameters-reference.md#node-parameters).
 
