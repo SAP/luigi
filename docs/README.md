@@ -44,7 +44,7 @@ Read the Luigi Client API documentation to learn more about the functions and pa
 
 ## Examples
 
-Follow the Luigi [application examples](../core/examples/README.md) for an in-depth look at Luigi capabilities.
+Check the Luigi [application examples](../core/examples/README.md) for an in-depth look at Luigi capabilities.
 
 ## Development
 
