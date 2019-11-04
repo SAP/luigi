@@ -308,7 +308,7 @@ describe('Navigation', () => {
       cy.get('[data-testid=modal-mf]').should('not.be.visible');
     });
   });
-  describe('Horizontal Navigation', () => {
+  describe('Horizontal Tab Navigation', () => {
     context('Desktop', () => {
       it('Open horizontal navigation', () => {
         cy.get('.fd-shellbar')
@@ -332,6 +332,7 @@ describe('Navigation', () => {
         cy.get('.fd-menu__item')
           .contains('Project Settings')
           .click();
+        cy.expectPathToBe('/projects/tabNav/settings');
 
         cy.get('.fd-tabs')
           .contains('More')
@@ -383,8 +384,12 @@ describe('Navigation', () => {
       it('recalc of tab nav by using resizing', () => {
         cy.visit('/projects/tabNav');
         cy.get('.luigi-tabsContainer').within(() => {
-          cy.get('.fd-tabs__item').contains('User Management');
-          cy.get('.fd-tabs__item').contains('Node with node activation hook');
+          cy.get('.fd-tabs__item')
+            .contains('User Management')
+            .should('visible');
+          cy.get('.fd-tabs__item')
+            .contains('Node with node activation hook')
+            .should('not.visible');
           cy.get('.fd-tabs__item')
             .contains('Settings')
             .should('not.visible');
@@ -422,7 +427,7 @@ describe('Navigation', () => {
           cy.get('.fd-tabs__item')
             .contains('Miscellaneous 2')
             .should('not.visible');
-          cy.get('.sap-icon--close-command-field').click();
+          cy.get('[data-testid="semiCollapsibleButton"]').click();
           cy.wait(1000);
           cy.get('.fd-tabs__item')
             .contains('Miscellaneous2')
