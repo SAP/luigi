@@ -4,7 +4,7 @@ If you are new to Luigi, read the [Getting started guide](getting-started
 
 ## Luigi Core
 
-Luigi Core enables you to create a web application with an easily configurable and consistent user interface.
+Luigi Core enables you to create web applications with an easily configurable and consistent user interface.
 
 [Installation](application-setup.md) shows you the first steps to prepare your application for development.
 
