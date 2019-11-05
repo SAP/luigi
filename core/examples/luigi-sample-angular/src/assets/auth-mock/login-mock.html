@@ -92,13 +92,14 @@
       /**
        * NOTE: this is a mock implementation for local development. DO NOT USE IN PRODUCTION!
        */
+
       window.onload = function() {
+        let url = new URL(window.location);
+        debugger;
         var redirectUrl = decodeURIComponent(
-          window.location.href.match(/redirect_uri=(.*?)(&|$)/)[1]
+          url.href.match(/redirect_uri=(.*?)(&|$)/)[1]
         );
-        var state = decodeURIComponent(
-          window.location.href.match(/state=(.*?)(&|$)/)[1]
-        );
+        var state = decodeURIComponent(url.href.match(/state=(.*?)(&|$)/)[1]);
         var expiresIn = 3600;
 
         var goTo =
