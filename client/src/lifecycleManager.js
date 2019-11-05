@@ -24,6 +24,7 @@ class LifecycleManager extends LuigiClientBase {
     );
 
     this._onContextUpdatedFns = {};
+    this._onInactiveFns = {};
     this._onInitFns = {};
     this.authData = {};
 
@@ -67,6 +68,10 @@ class LifecycleManager extends LuigiClientBase {
         helpers.setLuigiCoreDomain(e.origin);
         this.luigiInitialized = true;
         this._notifyInit(e.origin);
+      });
+
+      helpers.addEventListener('luigi-client.inactive-microfrontend', e => {
+        this._notifyInactive(e.origin);
       });
 
       helpers.addEventListener('luigi.auth.tokenIssued', e => {
@@ -134,6 +139,15 @@ class LifecycleManager extends LuigiClientBase {
   }
 
   /**
+   * Notifies all inactive listeners.
+   * @private
+   * @memberof Lifecycle
+   */
+  _notifyInactive() {
+    this._callAllFns(this._onInactiveFns);
+  }
+
+  /**
    * @private
    * @memberof Lifecycle
    */
@@ -196,6 +210,35 @@ class LifecycleManager extends LuigiClientBase {
   removeContextUpdateListener(id) {
     if (this._onContextUpdatedFns[id]) {
       this._onContextUpdatedFns[id] = undefined;
+      return true;
+    }
+    return false;
+  }
+
+  /**
+   * Registers a listener called upon micro frontend inactivity. This happens when a new micro frontend gets shown while keeping the old one cached.
+   * Gets called when:
+   * - navigating with **preserveView**
+   * - navigating from or to a **viewGroup**
+   *
+   * Does not get called when navigating normally, or when `openAsModal` or `openAsSplitView` are used.
+   * @param {function} inactiveFn the listener function called each time a micro frontend turns into an inactive state
+   * @memberof Lifecycle
+   */
+  addInactiveListener(inactiveFn) {
+    const id = helpers.getRandomId();
+    this._onInactiveFns[id] = inactiveFn;
+    return id;
+  }
+
+  /**
+   * Removes a listener for inactive micro frontends.
+   * @param {string} id the id that was returned by the `addInactiveListener` function
+   * @memberof Lifecycle
+   */
+  removeInactiveListener(id) {
+    if (this._onInactiveFns[id]) {
+      this._onInactiveFns[id] = undefined;
       return true;
     }
     return false;

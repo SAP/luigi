@@ -3,6 +3,7 @@ import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 
 import { AppComponent } from './app.component';
+import { PreloadComponent } from './preload/preload.component';
 import { ProjectComponent } from './project/project.component';
 import { UsersComponent } from './project/users/users.component';
 import { AppRoutingModule } from './app-routing.module';
@@ -30,6 +31,7 @@ import { OnNodeActivationComponent } from './onNodeActivation/onNodeActivation.c
 @NgModule({
   declarations: [
     AppComponent,
+    PreloadComponent,
     ProjectComponent,
     UsersComponent,
     SettingsComponent,

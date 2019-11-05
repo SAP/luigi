@@ -60,7 +60,7 @@ export class ProjectComponent implements OnInit, OnDestroy {
       this.lcSubscription.unsubscribe();
     }
     if (this.cudListener) {
-      const removed = removeContextUpdateListener(this.cudListener);
+      removeContextUpdateListener(this.cudListener);
     }
   }
 
@@ -120,6 +120,9 @@ export class ProjectComponent implements OnInit, OnDestroy {
 
   toggleModal() {
     this.modalActive = !this.modalActive;
+    if (!this.cdr['destroyed']) {
+      this.cdr.detectChanges();
+    }
   }
 
   showConfirmationModal() {
