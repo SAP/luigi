@@ -1,109 +1,111 @@
 <!doctype html>
 <html>
+
 <head>
   <meta http-equiv="Content-type" content="text/html;charset=UTF-8">
   <script type="text/javascript">
-  var tokenLifetimeDays = 7;
+    var tokenLifetimeDays = 7;
 
-  /**
-   * get query parameter from url
-   * defaults to use location.href
-   * examples:
-   * // query string: ?foo=lorem&bar=&baz
-   * var foo = getParameterByName('foo'); // "lorem"
-   * var bar = getParameterByName('bar'); // "" (present with empty value)
-   * var baz = getParameterByName('baz'); // "" (present with no value)
-   * var qux = getParameterByName('qux'); // null (absent)
-   */
-  var getParameterByName = function(name, url) {
-    if (!url) url = encodeURIComponent(window.location.href);
-    name = name.replace(/[\[\]]/g, '\\$&');
-    var regex = new RegExp('[?&]' + name + '(=([^&#]*)|&|#|$)'),
-      results = regex.exec(url);
-    if (!results) return null;
-    if (!results[2]) return '';
-    return decodeURIComponent(results[2].replace(/\+/g, ' '));
-  };
+    /**
+     * get query parameter from url
+     * defaults to use location.href
+     * examples:
+     * // query string: ?foo=lorem&bar=&baz
+     * var foo = getParameterByName('foo'); // "lorem"
+     * var bar = getParameterByName('bar'); // "" (present with empty value)
+     * var baz = getParameterByName('baz'); // "" (present with no value)
+     * var qux = getParameterByName('qux'); // null (absent)
+     */
+    var getParameterByName = function (name, url) {
+      if (!url) url = encodeURIComponent(window.location.href);
+      name = name.replace(/[\[\]]/g, '\\$&');
+      var regex = new RegExp('[?&]' + name + '(=([^&#]*)|&|#|$)'),
+        results = regex.exec(url);
+      if (!results) return null;
+      if (!results[2]) return '';
+      return decodeURIComponent(results[2].replace(/\+/g, ' '));
+    };
 
-  var setAuthData = function(data) {
-    var storageType = getParameterByName('storageType') || 'localStorage';
-    switch (storageType) {
-      case 'localStorage':
-      case 'sessionStorage':
-        window[storageType].setItem('luigi.auth', JSON.stringify(data));
-        window[storageType].setItem('luigi.newlyAuthorized', true);
-        break;
-      default:
-        console.error(
-          'Configuration Error: Invalid auth.storage setting. Must be either localStorage or sessionStorage to be used with OAuth2 Provider.'
-        );
-    }
-  };
+    var setAuthData = function (data) {
+      var storageType = getParameterByName('storageType') || 'localStorage';
+      switch (storageType) {
+        case 'localStorage':
+        case 'sessionStorage':
+          window[storageType].setItem('luigi.auth', JSON.stringify(data));
+          window[storageType].setItem('luigi.newlyAuthorized', true);
+          break;
+        default:
+          console.error(
+            'Configuration Error: Invalid auth.storage setting. Must be either localStorage or sessionStorage to be used with OAuth2 Provider.'
+          );
+      }
+    };
 
-  var getHashParams = function() {
-    var hash = window.location.hash.substr(1);
-    return hash.split('&').reduce(function(result, item) {
-      var parts = item.split('=');
-      result[parts[0]] = parts[1];
-      return result;
-    }, {});
-  };
+    var getHashParams = function () {
+      var hash = var hash = new URL(window.location).hash.substr(1);
+      return hash.split('&').reduce(function (result, item) {
+        var parts = item.split('=');
+        result[parts[0]] = parts[1];
+        return result;
+      }, {});
+    };
 
-  var processExpDate = function(expiresInString) {
-    var expirationDate;
-    var expiresIn = Number(expiresInString);
-    if (!isNaN(expiresIn) && expiresIn > 0) {
-      var nsToMsMultiplier = 1000;
-      expirationDate =
-        Number(new Date()) + nsToMsMultiplier * (expiresIn - tokenLifetimeDays);
-    }
-    return expirationDate;
-  };
+    var processExpDate = function (expiresInString) {
+      var expirationDate;
+      var expiresIn = Number(expiresInString);
+      if (!isNaN(expiresIn) && expiresIn > 0) {
+        var nsToMsMultiplier = 1000;
+        expirationDate =
+          Number(new Date()) + nsToMsMultiplier * (expiresIn - tokenLifetimeDays);
+      }
+      return expirationDate;
+    };
   </script>
 </head>
 
 <body>
   <script type="text/javascript">
-  var encodeURIComponent = function(val) {
-    return val;
-  }; // Possibly just making some tool happy
-  var uri = encodeURIComponent(window.location.href);
-  var hashParams = getHashParams(uri);
-  if (hashParams && (hashParams['access_token'] || hashParams['error'])) {
-    var error = hashParams['error'];
-    if (!error) {
-      var data = {
-        accessToken: hashParams['access_token'],
-        accessTokenExpirationDate: processExpDate(hashParams['expires_in']),
-        scope: hashParams['scope'],
-        idToken: hashParams['id_token']
-      };
+    var encodeURIComponent = function (val) {
+      return val;
+    }; // Possibly just making some tool happy
+    var uri = encodeURIComponent(window.location.href);
+    var hashParams = getHashParams(uri);
+    if (hashParams && (hashParams['access_token'] || hashParams['error'])) {
+      var error = hashParams['error'];
+      if (!error) {
+        var data = {
+          accessToken: hashParams['access_token'],
+          accessTokenExpirationDate: processExpDate(hashParams['expires_in']),
+          scope: hashParams['scope'],
+          idToken: hashParams['id_token']
+        };
 
-      setAuthData(data);
+        setAuthData(data);
 
-      var decodedState = atob(decodeURIComponent(hashParams['state'])).split(
-        '_luigiNonce='
-      );
-      var appState = decodedState[0] || '';
-      var nonce = decodedState[1];
-
-      if (nonce !== sessionStorage.getItem('luigi.nonceValue')) {
-        document.getElementsByTagName('body')[0].innerHTML =
-          'Something went wrong. Try to log in again.';
-        throw new Error(
-          'State parameter returned from the authorization endpoint does not match locally stored state. Aborting login process.'
+        var decodedState = atob(decodeURIComponent(hashParams['state'])).split(
+          '_luigiNonce='
         );
-      }
+        var appState = decodedState[0] || '';
+        var nonce = decodedState[1];
 
-      window.location.href = appState;
-    } else {
-      // else tree only applies to idtoken auths, I guess
-      var errorDescription = hashParams['error_description'];
-      console.error('error', errorDescription);
-      window.location.href =
-        '/?error=' + error + '&errorDescription=' + errorDescription;
+        if (nonce !== sessionStorage.getItem('luigi.nonceValue')) {
+          document.getElementsByTagName('body')[0].innerHTML =
+            'Something went wrong. Try to log in again.';
+          throw new Error(
+            'State parameter returned from the authorization endpoint does not match locally stored state. Aborting login process.'
+          );
+        }
+
+        window.location.href = appState;
+      } else {
+        // else tree only applies to idtoken auths, I guess
+        var errorDescription = hashParams['error_description'];
+        console.error('error', errorDescription);
+        window.location.href =
+          '/?error=' + error + '&errorDescription=' + errorDescription;
+      }
     }
-  }
   </script>
 </body>
+
 </html>
