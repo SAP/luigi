@@ -41,7 +41,8 @@
   };
 
   var getHashParams = function() {
-    var hash = window.location.hash.substr(1);
+    debugger;
+    var hash = new URL(window.location).hash.substr(1);
     return hash.split('&').reduce(function(result, item) {
       var parts = item.split('=');
       result[parts[0]] = parts[1];
