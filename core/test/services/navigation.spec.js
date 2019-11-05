@@ -375,6 +375,48 @@ describe('Navigation', function() {
       expect(res.selectedNode.pathSegment).to.equal('projects');
     });
   });
+  describe('getTabNavData', () => {
+    it('returns empty object if no pathData was found (empty nav)', async () => {
+      const res = await Navigation.getTabNavData({ pathData: [] });
+      expect(res).to.be.empty;
+    });
+    it('returns correct data on standard usecase', async () => {
+      // given
+      const current = {
+        pathData: [
+          {
+            children: [{ pathSegment: 'overview' }, { pathSegment: 'projects' }]
+          },
+          {
+            pathSegment: 'projects',
+            tabNav: true,
+            children: [
+              {
+                pathSegment: 'settings'
+              }
+            ]
+          },
+          {
+            pathSegment: 'settings'
+          }
+        ]
+      };
+      // when
+      const res = await Navigation.getTabNavData(current, current);
+      expect(res.selectedNode.pathSegment).to.equal('settings');
+    });
+    it('getTruncatedChildrenForTabNav', () => {
+      const children = [
+        { 1: '1' },
+        { 2: '2' },
+        { 3: '3', tabNav: true },
+        { 4: '4' },
+        { 5: '5' }
+      ];
+      const res = Navigation.getTruncatedChildrenForTabNav(children);
+      expect(res.length).to.equal(4);
+    });
+  });
 
   describe('extractDataFromPath', () => {
     it('extracts the data', async () => {
