@@ -5,11 +5,9 @@ if (location.port == '4000') {
   baseUrl = '/docu-microfrontend';
 }
 const getDocuItems = () => {
-  return fetch('/navigation-children.json')
-    .then((response) => {
-      response.setHeader("Strict-Transport-Security", "max-age=31536000; includeSubDomains; preload");
-      const json = response.json();
-      return json;
+  return fetch('/navigation-children.json', {})
+    .then((res) => {
+      return res.json();
     })
     .then(function (json) {
       return json.map((child) => {

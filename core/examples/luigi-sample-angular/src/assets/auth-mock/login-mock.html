@@ -94,11 +94,12 @@
        */
 
       window.onload = function() {
-        let url = new URL(window.location);
         var redirectUrl = decodeURIComponent(
-          url.href.match(/redirect_uri=(.*?)(&|$)/)[1]
+          window.location.href.match(/redirect_uri=(.*?)(&|$)/)[1]
         );
-        var state = decodeURIComponent(url.href.match(/state=(.*?)(&|$)/)[1]);
+        var state = decodeURIComponent(
+          window.location.href.match(/state=(.*?)(&|$)/)[1]
+        );
         var expiresIn = 3600;
 
         var goTo =
