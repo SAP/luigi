@@ -222,4 +222,65 @@ describe('Routing-helpers', () => {
       expect(RoutingHelpers.parseParams(mockParams)).to.deep.equal({});
     });
   });
+
+  describe('findViewGroup', () => {
+    const noViewGroupInNode = {
+      link: 'child-node',
+      parent: {
+        pathSegment: 'parent-node'
+      }
+    };
+
+    const viewGroupInNode = {
+      link: 'child-node',
+      viewGroup: 'tets 1',
+      parent: {
+        pathSegment: 'parent-node'
+      }
+    };
+
+    const viewGroupInNodeParent = {
+      link: 'child-node',
+      parent: {
+        pathSegment: 'parent-node',
+        viewGroup: 'tets 1-1'
+      }
+    };
+
+    const viewGroupInParentOfNodeParent = {
+      link: 'child-node',
+      parent: {
+        pathSegment: 'parent-node',
+        parent: {
+          pathSegment: 'parent-parent-node',
+          viewGroup: 'tets 1-1-1'
+        }
+      }
+    };
+
+    it('return viewGroup from node', () => {
+      assert.deepEqual(RoutingHelpers.findViewGroup(viewGroupInNode), 'tets 1');
+    });
+
+    it('return viewGroup from node.parent', () => {
+      assert.deepEqual(
+        RoutingHelpers.findViewGroup(viewGroupInNodeParent),
+        'tets 1-1'
+      );
+    });
+
+    it('return viewGroup from parent at node.parent', () => {
+      assert.deepEqual(
+        RoutingHelpers.findViewGroup(viewGroupInParentOfNodeParent),
+        'tets 1-1-1'
+      );
+    });
+
+    it('return undefined if viewGroup is not inside node', () => {
+      assert.deepEqual(
+        RoutingHelpers.findViewGroup(noViewGroupInNode),
+        undefined
+      );
+    });
+  });
 });
