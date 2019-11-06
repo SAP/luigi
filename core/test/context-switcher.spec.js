@@ -180,6 +180,21 @@ describe('Context-switcher', function() {
     });
   });
 
+  describe('getOptionById', () => {
+    const env1 = { label: 'Env 1', id: '1' };
+    const env2 = { label: 'Env 2', id: '2' };
+
+    it('returns undefined if node is not inside options', () => {
+      const result = CSHelpers.getOptionById([env1, env2], '3');
+      assert.equal(result, undefined);
+    });
+
+    it('returns matching node', () => {
+      const result = CSHelpers.getOptionById([env1, env2], '2');
+      assert.deepEqual(result, { label: 'Env 2', id: '2' });
+    });
+  });
+
   describe('getLabelFromOptions', () => {
     const env1 = { label: 'Env 1', id: 'env1' };
     const env2 = { label: 'Env 2', id: 'env2' };
