@@ -42,7 +42,7 @@
     };
 
     var getHashParams = function () {
-      var hash = var hash = new URL(window.location).hash.substr(1);
+      var hash = new URL(window.location).hash.substr(1);
       return hash.split('&').reduce(function (result, item) {
         var parts = item.split('=');
         result[parts[0]] = parts[1];
