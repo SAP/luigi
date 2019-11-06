@@ -6,7 +6,11 @@ if (location.port == '4000') {
 }
 const getDocuItems = () => {
   return fetch('/navigation-children.json')
-    .then((response) => response.json())
+    .then((response) => {
+      response.setHeader("Strict-Transport-Security", "max-age=31536000; includeSubDomains; preload");
+      const json = response.json();
+      return json;
+    })
     .then(function (json) {
       return json.map((child) => {
         child.viewUrl = child.viewUrl.replace('__BASE_URL__', baseUrl);
