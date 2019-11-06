@@ -2,7 +2,7 @@ import { getParsedDocs } from './_parser';
 
 const lookup = new Map();
 getParsedDocs().then(raw => {
-  const docs = JSON.parse(raw);
+	const docs = JSON.parse(raw);
 	docs.forEach(doc => {
 		console.log('lookup', doc.shortName);
 		lookup.set(doc.shortName, JSON.stringify(doc));
@@ -16,13 +16,15 @@ export function get(req, res, next) {
 
 	if (lookup.has(slug)) {
 		res.writeHead(200, {
-			'Content-Type': 'application/json'
+			'Content-Type': 'application/json',
+			"Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload"
 		});
 
 		res.end(lookup.get(slug));
 	} else {
 		res.writeHead(404, {
-			'Content-Type': 'application/json'
+			'Content-Type': 'application/json',
+			"Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload"
 		});
 
 		res.end(JSON.stringify({
