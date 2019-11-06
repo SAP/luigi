@@ -6,7 +6,6 @@ Read these guides to get started with configuring your navigation:
 * [First steps](#first-steps)
 * [Basic navigation parameters](#basic-navigation-parameters)
 * [Grouping navigation nodes](#grouping-navigation-nodes)
-  * [category](#category)
 
 If you are already familiar with the basics, take a look at:
 * [Advanced navigation configuration](navigation-advanced.md)
