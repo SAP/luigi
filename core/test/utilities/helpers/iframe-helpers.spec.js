@@ -247,6 +247,11 @@ describe('Iframe-helpers', () => {
         expectedKeys,
         'contains all required keys'
       );
+
+      const mainIframes = IframeHelpers.getMainIframes('main');
+      assert.equal(mainIframes.length, 2);
+      const modalIframes = IframeHelpers.getModalIframes('modal');
+      assert.equal(modalIframes.length, 1);
     });
   });
 });
