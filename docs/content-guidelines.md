@@ -5,9 +5,12 @@ This page contains instructions on how to create documentation for Luigi. It exp
 ## Structure
 
 **Basics**
+
 - Getting started
 - Architecture
+
 **Luigi Core**
+
 - Installation
 - Basic navigation
 - Advanced navigation
@@ -17,14 +20,21 @@ This page contains instructions on how to create documentation for Luigi. It exp
 - Lifecycle hooks
 - UI features
 - API
+
 **Luigi Client**
+
 - Installation
 - API
+
 **Advanced**
+
 - Custom messages
+
 **Examples**
+
 - Angular
 - Vue
+- React
 
 ## Audience
 
