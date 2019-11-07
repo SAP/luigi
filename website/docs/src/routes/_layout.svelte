@@ -62,18 +62,33 @@
 		}
 
 		h1 {
-			font-size: 35px;
-			line-height: 40px;
+			font-size: 25px;
+			line-height: 30px;
+
+			@media screen and (min-width: (1024px - $side-nav-width)) {
+				font-size: 35px;
+				line-height: 40px;
+			}
 		}
 
 		h2 {
-			font-size: 28px;
-			line-height: 30px;
+			font-size: 20px;
+			line-height: 22px;
+
+			@media screen and (min-width: (1024px - $side-nav-width)) {
+				font-size: 28px;
+				line-height: 30px;
+			}
 		}
 
 		h3 {
 			font-size: 18px;
-			line-height: 28px;
+			line-height: 20px;
+
+			@media screen and (min-width: (1024px - $side-nav-width)) {
+				font-size: 18px;
+				line-height: 28px;
+			}
 		}
 
 		ul {
@@ -145,6 +160,8 @@
 				white-space: pre;
 				overflow-wrap: normal;
 				background: none;
+				border-radius: 0;
+				padding: 0;
 			}
 		}
 

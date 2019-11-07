@@ -87,7 +87,7 @@ $border-color: #b6bac1;
 $height-shellbar: 110px;
 $height-shellbar-mobile: 95px;
 
-$side-nav-width: 320px;
+$side-nav-width: 260px;
 
 .luigi-documentation {
 
@@ -225,6 +225,8 @@ $side-nav-width: 320px;
     }
   }
 
+  
+
   .fd-app__sidebar {
     box-shadow: none;
     background-color: #fafbfc;
@@ -269,6 +271,7 @@ $side-nav-width: 320px;
       border-radius: 50%;
       box-shadow: rgba(137, 165, 199, 0.42) 0px 1px 26px 0px;
       cursor: pointer;
+      margin: 0;
 
       &:before {
         content: "\e1c0";
@@ -278,12 +281,24 @@ $side-nav-width: 320px;
 
     &.lui-leftNavToggle {
       .lui-burger {
-        left: calc(#{$side-nav-width} + 20px);
+        left: calc(#{$side-nav-width} + 10px);
 
         &:before {
           transform: rotateZ(-180deg);
         }
       }
+    }
+
+    .fd-app__sidebar {
+      width: $side-nav-width;
+    }
+  
+    &.lui-simpleSlideInNav.lui-leftNavToggle .fd-app__sidebar {
+      width: $side-nav-width;
+    }
+  
+    &.lui-simpleSlideInNav .fd-app__sidebar {
+      left: -$side-nav-width;
     }
   }
 
