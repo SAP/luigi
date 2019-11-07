@@ -11,10 +11,10 @@ This page contains instructions on how to create documentation for Luigi. It exp
 
 **Luigi Core**
 
-- [Installation](../core/readme.md)
+- [Installation](application-setup.md)
 - [Basic navigation](navigation-configuration.md)
-- [Advanced navigation](advanced-navigation.md)
-- [Routing](navigation-parameters-reference.md#routing-parameters)
+- [Advanced navigation](navigation-advanced.md)
+- [Routing](https://github.com/SAP/luigi/blob/master/docs/navigation-parameters-reference.md#routing-parameters)
 - [Authorization](authorization-configuration.md)
 - [Authorization events](authorization-events.md)
 - [General settings](general-settings.md)
@@ -24,7 +24,7 @@ This page contains instructions on how to create documentation for Luigi. It exp
 
 **Luigi Client**
 
-- [Installation](../client/readme.md)
+- [Installation](https://github.com/SAP/luigi/tree/master/client#luigi-client)
 - [API](luigi-client-api.md)
 
 **Advanced**
@@ -33,9 +33,9 @@ This page contains instructions on how to create documentation for Luigi. It exp
 
 **Examples**
 
-- [Angular](../core/examples/luigi-example-angular)
-- [Vue](../core/examples/luigi-example-vue)
-- [React](../core/examples/luigi-example-react)
+- [Angular](https://github.com/SAP/luigi/tree/master/core/examples/luigi-example-angular)
+- [Vue](https://github.com/SAP/luigi/tree/master/core/examples/luigi-example-vue)
+- [React](https://github.com/SAP/luigi/tree/master/core/examples/luigi-example-react)
 
 ## Audience
 
