@@ -13,7 +13,7 @@ This page contains instructions on how to create documentation for Luigi. It exp
 
 - [Installation](application-setup.md)
 - [Basic navigation](navigation-configuration.md)
-- [Advanced navigation](navigation-advanced.md)
+- [Advanced navigation](https://github.com/SAP/luigi/blob/master/docs/navigation-advanced.md)
 - [Routing](https://github.com/SAP/luigi/blob/master/docs/navigation-parameters-reference.md#routing-parameters)
 - [Authorization](authorization-configuration.md)
 - [Authorization events](authorization-events.md)
