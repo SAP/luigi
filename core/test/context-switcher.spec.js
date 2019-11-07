@@ -265,6 +265,77 @@ describe('Context-switcher', function() {
     });
   });
 
+  describe('getSelectedId', () => {
+    let currentPath;
+    let parentNodePath;
+    const env1 = { label: 'Env 1', id: '1' };
+    const env2 = { label: 'Env 2', id: '2' };
+
+    beforeEach(() => {
+      parentNodePath = '/home/projects';
+      currentPath = '/home/projects/pr1';
+    });
+
+    it('returns undefined if parent node path is not defined', () => {
+      parentNodePath = undefined;
+      const selectedId = CSHelpers.getSelectedId(
+        currentPath,
+        [env1, env2],
+        parentNodePath
+      );
+      assert.isUndefined(selectedId);
+    });
+
+    it('returns undefined if parent node path is not included in current path', () => {
+      parentNodePath = '/home/nomatch';
+      const selectedId = CSHelpers.getSelectedId(
+        currentPath,
+        [env1, env2],
+        parentNodePath
+      );
+      assert.isUndefined(selectedId);
+    });
+
+    it('returns undefined if last path segment from parent node is not a full match in currentPath', () => {
+      currentPath = '/home/projectsandmore/pr1';
+      const selectedId = CSHelpers.getSelectedId(
+        currentPath,
+        [env1, env2],
+        parentNodePath
+      );
+      assert.isUndefined(selectedId);
+    });
+
+    it('returns undefined if current path has no content after parent node path', () => {
+      currentPath = '/home/projects';
+      const selectedId = CSHelpers.getSelectedId(
+        currentPath,
+        [env1, env2],
+        parentNodePath
+      );
+      assert.isUndefined(selectedId);
+    });
+
+    it('returns id if current path has id after parent node path', () => {
+      const selectedId = CSHelpers.getSelectedId(
+        currentPath,
+        [env1, env2],
+        parentNodePath
+      );
+      assert.equal(selectedId, 'pr1');
+    });
+
+    it('returns id even if current path has params after id', () => {
+      currentPath = '/home/projects/pr1?foo=bar&test=false';
+      const selectedId = CSHelpers.getSelectedId(
+        currentPath,
+        [env1, env2],
+        parentNodePath
+      );
+      assert.equal(selectedId, 'pr1');
+    });
+  });
+
   describe('getSelectedLabel', () => {
     const parentNodePath = '/environment';
 
