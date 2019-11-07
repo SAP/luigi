@@ -336,6 +336,77 @@ describe('Context-switcher', function() {
     });
   });
 
+  describe('getSelectedOption', () => {
+    let currentPath;
+    let parentNodePath;
+    const env1 = { label: 'Env 1', id: 'pr1' };
+    const env2 = { label: 'Env 2', id: 'pr2' };
+
+    beforeEach(() => {
+      parentNodePath = '/home/projects';
+      currentPath = '/home/projects/pr1';
+    });
+
+    it('returns undefined if parent node path is not defined', async () => {
+      parentNodePath = undefined;
+      const selectedOption = await CSHelpers.getSelectedOption(
+        currentPath,
+        [env1, env2],
+        parentNodePath
+      );
+      assert.isUndefined(selectedOption);
+    });
+
+    it('returns undefined if parent node path is not included in current path', async () => {
+      parentNodePath = '/home/nomatch';
+      const selectedOption = await CSHelpers.getSelectedOption(
+        currentPath,
+        [env1, env2],
+        parentNodePath
+      );
+      assert.isUndefined(selectedOption);
+    });
+
+    it('returns undefined if last path segment from parent node is not a full match in currentPath', async () => {
+      currentPath = '/home/projectsandmore/pr1';
+      const selectedOption = await CSHelpers.getSelectedOption(
+        currentPath,
+        [env1, env2],
+        parentNodePath
+      );
+      assert.isUndefined(selectedOption);
+    });
+
+    it('returns undefined if current path has no content after parent node path', async () => {
+      currentPath = '/home/projects';
+      const selectedOption = await CSHelpers.getSelectedOption(
+        currentPath,
+        [env1, env2],
+        parentNodePath
+      );
+      assert.isUndefined(selectedOption);
+    });
+
+    it('returns option if current path has id after parent node path', async () => {
+      const selectedOption = await CSHelpers.getSelectedOption(
+        currentPath,
+        [env1, env2],
+        parentNodePath
+      );
+      assert.deepEqual(selectedOption, { label: 'Env 1', id: 'pr1' });
+    });
+
+    it('returns option even if current path has params after id', async () => {
+      currentPath = '/home/projects/pr1?foo=bar&test=false';
+      const selectedOption = await CSHelpers.getSelectedOption(
+        currentPath,
+        [env1, env2],
+        parentNodePath
+      );
+      assert.deepEqual(selectedOption, { label: 'Env 1', id: 'pr1' });
+    });
+  });
+
   describe('getSelectedLabel', () => {
     const parentNodePath = '/environment';
 
