@@ -1,14 +1,14 @@
 
 import { getParsedDocs } from './_parser';
 
-export function get(req, res) {
-  res.setHeader('Strict-Transport-Security', 'max-age=31536000; includeSubDomains; preload');
-  res.writeHead(200, {
-    'Content-Type': 'application/json'
+export function get(req, response) {
+  response.setHeader('Strict-Transport-Security', 'max-age=31536000; includeSubDomains; preload');
+  response.writeHead(200, {
+    'Content-Type': 'application/json',
+    'Strict-Transport-Security': 'max-age=31536000; includeSubDomains; preload'
   });
-  // , { "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload" }
 
   getParsedDocs().then((contents) => {
-    res.end(contents);
+    response.end(contents);
   });
 }
