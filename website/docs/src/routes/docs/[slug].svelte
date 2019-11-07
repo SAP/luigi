@@ -2,7 +2,7 @@
 	export async function preload({ params, query }) {
 		// the `slug` parameter is available because
 		// this file is called [slug].svelte
-		const res = await this.fetch(`docs/${params.slug}.json`, {"Strict-Transport-Security": "max-age=31536000"});
+		const res = await this.fetch(`docs/${params.slug}.json`, {"Strict-Transport-Security": "max-age=31536000;includeSubDomains; preload"});
 		const data = await res.json();
 
 		if (res.status === 200) {
