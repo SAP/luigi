@@ -6,7 +6,7 @@ export function get(req, res) {
     "Strict-Transport-Security": "max-age=31536000",
     'Content-Type': 'application/json'
   }
-  // response.setHeader("Strict-Transport-Security", "max-age=31536000");
+  response.setHeader("Strict-Transport-Security", "max-age=31536000");
   res.writeHead(200, header);
 
   getParsedDocs().then((contents) => {
