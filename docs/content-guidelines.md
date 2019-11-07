@@ -6,35 +6,36 @@ This page contains instructions on how to create documentation for Luigi. It exp
 
 **Basics**
 
-- Getting started
+- [Getting started](getting-started.md)
 - Architecture
 
 **Luigi Core**
 
-- Installation
-- Basic navigation
-- Advanced navigation
-- Routing
-- Authorization
-- General settings
-- Lifecycle hooks
-- UI features
-- API
+- [Installation](../core/readme.md)
+- [Basic navigation](navigation-configuration.md)
+- [Advanced navigation](advanced-navigation.md)
+- [Routing](navigation-parameters-reference.md#routing-parameters)
+- [Authorization](authorization-configuration.md)
+- [Authorization events](authorization-events.md)
+- [General settings](general-settings.md)
+- [Lifecycle hooks](lifecycle-hooks.md)
+- [UI features](luigi-ux-features.md)
+- [API](luigi-core-api.md)
 
 **Luigi Client**
 
-- Installation
-- API
+- [Installation](../client/readme.md)
+- [API](luigi-client-api.md)
 
 **Advanced**
 
-- Custom messages
+- [Custom messages](communication.md)
 
 **Examples**
 
-- Angular
-- Vue
-- React
+- [Angular](../core/examples/luigi-example-angular)
+- [Vue](../core/examples/luigi-example-vue)
+- [React](../core/examples/luigi-example-react)
 
 ## Audience
 
