@@ -1,6 +1,6 @@
 <script context="module">
 	export function preload({ params, query }) {
-		return this.fetch(`docs.json`).then(r => r.json()).then(docs => {
+		return this.fetch(`docs.json`,{"Strict-Transport-Security": "max-age=31536000;includeSubDomains; preload"}).then(r => r.json()).then(docs => {
 			return { docs };
 		});
 	}
