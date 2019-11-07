@@ -18,7 +18,9 @@ polka()
 		compression({ threshold: 0 }),
 		sirv('static', { dev }),
 		hsts({
-			maxAge: 31536000
+			maxAge: 31536000,
+			includeSubDomains,
+			preload
 		}),
 		sapper.middleware()
 	)
