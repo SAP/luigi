@@ -2,6 +2,7 @@ import sirv from 'sirv';
 import polka from 'polka';
 import compression from 'compression';
 import * as sapper from '@sapper/server';
+import hsts from 'hsts';
 
 const { PORT, NODE_ENV } = process.env;
 const dev = NODE_ENV === 'development';
@@ -16,6 +17,9 @@ polka()
 		basePath,
 		compression({ threshold: 0 }),
 		sirv('static', { dev }),
+		hsts({
+			maxAge: 31536000
+		}),
 		sapper.middleware()
 	)
 	.listen(PORT, err => {

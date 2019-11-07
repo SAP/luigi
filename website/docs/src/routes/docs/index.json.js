@@ -9,7 +9,6 @@ export function get(req, response) {
   });
 
   getParsedDocs().then((contents) => {
-    // console.log('response', response.getHeader('Strict-Transport-Security'));
     response.end(contents);
   });
 }
