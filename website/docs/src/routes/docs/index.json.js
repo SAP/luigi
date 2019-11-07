@@ -10,7 +10,7 @@ export function get(req, res) {
   res.writeHead(200, header);
 
   getParsedDocs().then((contents) => {
-    //res.setHeader("Strict-Transport-Security", "max-age=31536000; includeSubDomains; preload");
+    res.setHeader("Strict-Transport-Security", "max-age=31536000; includeSubDomains; preload");
     //console.log('res ', res.getHeader('Strict-Transport-Security'));
     res.end(contents);
   });
