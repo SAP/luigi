@@ -144,7 +144,8 @@ $side-nav-width: 320px;
         border-radius: 0;
         transform: none;
         background-color: $secondary-color;
-        padding: 0 30px;
+        margin-top: -10px;
+        padding: 10px 30px;
 
         &[aria-hidden='false'] {
           left: 0;
@@ -254,17 +255,34 @@ $side-nav-width: 320px;
 
   @media screen and (max-width: 599px) {
     .lui-burger {
+      width: 50px;
+      height: 50px;
+      text-align: center;
       position: fixed;
       bottom: 20px;
       left: 20px;
       color: black;
       z-index: 20;
       transition: left 0.1s linear;
+      background-color: white;
+      padding: 15px;
+      border-radius: 50%;
+      box-shadow: rgba(137, 165, 199, 0.42) 0px 1px 26px 0px;
+      cursor: pointer;
+
+      &:before {
+        content: "\e1c0";
+        transition: transform 0.4s ease;
+      }
     }
 
     &.lui-leftNavToggle {
       .lui-burger {
         left: calc(#{$side-nav-width} + 20px);
+
+        &:before {
+          transform: rotateZ(-180deg);
+        }
       }
     }
   }
@@ -323,8 +341,50 @@ $side-nav-width: 320px;
     content: "\61";
   }
 
+  .fd-side-nav__subitem {
+    padding: 10px 0;
+  }
+
+  .fd-side-nav__link,
+  .fd-side-nav__sublink {
+    font-size: 15px;
+    padding: 1px 10px;
+    border-left: 2px solid transparent;
+
+    &:hover,
+    &.is-selected {
+      border-color: $primary-color;
+      color: $secondary-color;
+      background: none;
+      font-weight: 400;
+
+      &:before {
+        display: none;
+      }
+    }
+  }
+
+  .fd-side-nav__link .fd-side-nav__icon {
+    display: none;
+  }
+
+  .lui-category {
+    text-transform: uppercase;
+    border: none;
+    font-size: 12px;
+    padding: 8px 0;
+  }
+
+  .fd-side-nav {
+    padding: 30px;
+
+    @media screen and (min-width: 1024px) {
+      padding: 93px 40px 0;
+    }
+  }
+
   .fd-side-nav__group {
-    padding: 95px 10px;
+    margin-bottom: 10px;
   }
 }
 

@@ -7,7 +7,7 @@ class Settings {
   };
 
   responsiveNavigation = 'simpleMobileOnly'; // Options: simple | simpleMobileOnly | semiCollapsible
-  // sideNavFooterText = `Luigi Version: ${version || 'unknown'}`;
+  sideNavFooterText = 'Copyright 2019.';
   // hideNavigation = true
   // backdropDisabled = true
 }

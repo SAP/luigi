@@ -23,6 +23,12 @@ const getDocuItems = () => {
 class Navigation {
   nodes = [
     {
+      pathSegment: 'docs',
+      label: 'Documentation',
+      viewUrl: baseUrl + '/docs',
+      children: getDocuItems()
+    },
+    {
       label: 'About Luigi',
       externalLink: {
         url: 'https://luigi-project.io/about',
@@ -30,32 +36,23 @@ class Navigation {
       }
     },
     {
-      pathSegment: 'docs',
-      label: 'Documentation',
-      viewUrl: baseUrl + '/docs',
-      children: getDocuItems()
-    },
-    {
       label: 'Twitter',
       externalLink: {
-        url: 'https://twitter.com/luigiprojectio',
-        sameWindow: false
+        url: 'https://twitter.com/luigiprojectio'
       },
       icon: 'twitter'
     },
     {
       label: 'Slack',
       externalLink: {
-        url: 'https://slack.luigi-project.io',
-        sameWindow: false
+        url: 'https://slack.luigi-project.io'
       },
       icon: 'slack'
     },
     {
       label: 'Github',
       externalLink: {
-        url: 'https://github.com/SAP/luigi',
-        sameWindow: false
+        url: 'https://github.com/SAP/luigi'
       },
       icon: 'github'
     }
