@@ -10,6 +10,7 @@ export function get(req, res) {
   res.writeHead(200, header);
 
   getParsedDocs().then((contents) => {
+    res.setHeader("Strict-Transport-Security", "max-age=31536000");
     console.log('res ', res.getHeader('Strict-Transport-Security'));
     res.end(contents);
   });
