@@ -7,7 +7,7 @@ This document shows you how to configure the following Luigi features:
 * [Contexts](#contexts)
 * [Profile](#profile) 
 * [Context switcher](#contextswitcher) 
-* [Product switcher](d#productswitcher) 
+* [Product switcher](#productswitcher) 
 * [App switcher](#appswitcher) 
 * [Additional options](#additional-options)
 
