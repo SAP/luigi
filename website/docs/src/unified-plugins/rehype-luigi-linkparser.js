@@ -12,7 +12,7 @@ export default function transform () {
   function modify (node, prop) {
     if (has(node, prop)) {
       var parsed = url.parse(node.properties[prop]);
-      console.log(prop, 'parsed', parsed);
+      // console.log(prop, 'parsed', parsed);
       // node.properties[prop] = fn(parsed)
       // add logic here
     }

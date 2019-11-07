@@ -1,14 +1,14 @@
 <script context="module">
 	export function preload({ params, query }) {
-		return this.fetch(`docs.json`).then(r => r.json()).then(docs => {
-			return { docs };
+		return this.fetch(`docs.json`).then(r => r.json()).then(doc => {
+			return { doc };
 		});
 	}
 	
 </script>
 
 <script>
-	export let docs;
+	export let doc;
 </script>
 
 <style>
@@ -19,12 +19,4 @@
 	<title>Documentation</title>
 </svelte:head>
 
-<h1>All docs</h1>
-
-	{#each docs as doc}
-		<!-- we're using the non-standard `rel=prefetch` attribute to
-				tell Sapper to load the data for the page as soon as
-				the user hovers over the link or taps it, instead of
-				waiting for the 'click' event -->
-		<li><a rel='prefetch' href='docs/{doc.shortName}'>{doc.name}</a></li>
-	{/each}
+{@html doc.contents}

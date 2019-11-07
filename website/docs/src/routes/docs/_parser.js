@@ -11,6 +11,16 @@ export function getParsedDocs() {
     return Promise.resolve(JSON.stringify(parsedDocs));
   });
 }
+let parsedReadMeDoc;
+export function getParsedReadMeDoc() {
+  if (parsedReadMeDoc) {
+    return Promise.resolve(JSON.stringify(parsedReadMeDoc));
+  }
+  return setParsedReadMeDoc().then((doc) => {
+    parsedReadMeDoc = doc;
+    return Promise.resolve(JSON.stringify(parsedReadMeDoc));
+  });
+}
 
 function setParsedDocs() {
   const dir = './../../docs';
@@ -51,5 +61,29 @@ function setParsedDocs() {
 
       // return for sapper
       return Promise.resolve(files);
+    });
+}
+
+function setParsedReadMeDoc() {
+  const dir = './../../docs';
+  let parsingArr;
+  readdirSync(dir)
+    .find(name => {
+      if(name == 'README.md') {
+        const mdContent = readFileSync(dir + '/' + name);
+        parsingArr = new Promise((resolve) => {
+          MarkdownSvc.process(mdContent).then((contents) => {
+            resolve({
+              contents
+            });
+          })
+        });
+      }
+    });
+    
+  return parsingArr
+    .then((file) => {
+      // return for sapper
+      return file;
     });
 }
