@@ -6,7 +6,7 @@ if (location.port == '4000') {
 }
 
 const getDocuItems = () => {
-  return fetch('/navigation-children.json')
+  return fetch('/navigation-children2.json')
         .then(function(response) {
           return response.json();
         })
@@ -30,6 +30,7 @@ class Navigation {
     },
     {
       label: 'About Luigi',
+      defaultChildNode: 'docs',
       externalLink: {
         url: 'https://luigi-project.io/about',
         sameWindow: true
@@ -56,6 +57,12 @@ class Navigation {
       },
       icon: 'github'
     }
+    // {
+    //   pathSegment: 'docs',
+    //   label: 'Overview',
+    //   viewUrl: baseUrl + '/docs',
+    //   children: getDocuItems()
+    // }
   ];
 
   // getContextSwitcherActions = () => {
