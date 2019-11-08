@@ -71,7 +71,6 @@
     "unified": "^8.3.2",
     "vfile-reporter": "^6.0.0",
     "webpack": "^4.7.0",
-    "webpack-cli": "^3.0.3",
-    "helmet": "3.21.2"
+    "webpack-cli": "^3.0.3"
   }
 }
