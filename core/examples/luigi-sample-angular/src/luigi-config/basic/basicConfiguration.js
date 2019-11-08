@@ -32,5 +32,10 @@ Luigi.setConfig({
      * For hash routing, set to true
      */
     useHashRouting: true
+  },
+  settings: {
+    appLoadingIndicator: {
+      hideAutomatically: true
+    }
   }
 });
