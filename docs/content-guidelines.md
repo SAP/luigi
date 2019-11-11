@@ -24,7 +24,7 @@ This page contains instructions on how to create documentation for Luigi. It exp
 
 **Luigi Client**
 
-- [Installation](https://github.com/SAP/luigi/tree/master/client#luigi-client)
+- [Installation](luigi-client-setup.md)
 - [API](luigi-client-api.md)
 
 **Advanced**
