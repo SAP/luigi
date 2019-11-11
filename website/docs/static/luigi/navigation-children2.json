@@ -1,0 +1,247 @@
+[
+  
+
+  {
+    "label": "Getting started",
+    "pathSegment": "getting-started",
+    "navigationContext": "doc",
+    "keepSelectedForChildren": true,
+    "viewUrl": "__BASE_URL__/docs/getting-started",
+    "context": {
+      "doc": "getting-started"
+    },
+    "category": {
+      "label": "Basics"
+    }
+  },
+  {
+    "label": "Architecture",
+    "pathSegment": "",
+    "navigationContext": "doc",
+    "keepSelectedForChildren": true,
+    "viewUrl": "__BASE_URL__/docs/",
+    "context": {
+      "doc": ""
+    },
+    "category": {
+      "label": "Basics"
+    }
+  },
+  {
+    "label": "Installation",
+    "pathSegment": "application-setup",
+    "navigationContext": "doc",
+    "keepSelectedForChildren": true,
+    "viewUrl": "__BASE_URL__/docs/application-setup",
+    "context": {
+      "doc": "application-setup"
+    },
+    "category": {
+      "label": "Luigi Core"
+    }
+  },
+  {
+    "label": "Basic navigation",
+    "pathSegment": "navigation-configuration",
+    "navigationContext": "doc",
+    "keepSelectedForChildren": true,
+    "viewUrl": "__BASE_URL__/docs/navigation-configuration",
+    "context": {
+      "doc": "navigation-configuration"
+    },
+    "category": {
+      "label": "Luigi Core"
+    }
+  },
+  {
+    "label": "Advanced navigation",
+    "pathSegment": "navigation-advanced",
+    "navigationContext": "doc",
+    "keepSelectedForChildren": true,
+    "viewUrl": "__BASE_URL__/docs/navigation-advanced",
+    "context": {
+      "doc": "navigation-advanced"
+    },
+    "category": {
+      "label": "Luigi Core"
+    }
+  },
+  {
+    "label": "Routing",
+    "pathSegment": "navigation-parameters-reference",
+    "navigationContext": "doc",
+    "keepSelectedForChildren": true,
+    "viewUrl": "__BASE_URL__/docs/navigation-parameters-reference",
+    "context": {
+      "doc": "navigation-parameters-reference"
+    },
+    "category": {
+      "label": "Luigi Core"
+    }
+  },
+  {
+    "label": "Authorization",
+    "pathSegment": "authorization-configuration",
+    "navigationContext": "doc",
+    "keepSelectedForChildren": true,
+    "viewUrl": "__BASE_URL__/docs/authorization-configuration",
+    "context": {
+      "doc": "authorization-configuration"
+    },
+    "category": {
+      "label": "Luigi Core"
+    }
+  },
+  {
+    "label": "Authorization events",
+    "pathSegment": "authorization-events",
+    "navigationContext": "doc",
+    "keepSelectedForChildren": true,
+    "viewUrl": "__BASE_URL__/docs/authorization-events",
+    "context": {
+      "doc": "authorization-events"
+    },
+    "category": {
+      "label": "Luigi Core"
+    }
+  },
+  {
+    "label": "General settings",
+    "pathSegment": "general-settings",
+    "navigationContext": "doc",
+    "keepSelectedForChildren": true,
+    "viewUrl": "__BASE_URL__/docs/general-settings",
+    "context": {
+      "doc": "general-settings"
+    },
+    "category": {
+      "label": "Luigi Core"
+    }
+  },
+  {
+    "label": "Lifecycle hooks",
+    "pathSegment": "lifecycle-hooks",
+    "navigationContext": "doc",
+    "keepSelectedForChildren": true,
+    "viewUrl": "__BASE_URL__/docs/lifecycle-hooks",
+    "context": {
+      "doc": "lifecycle-hooks"
+    },
+    "category": {
+      "label": "Luigi Core"
+    }
+  },
+  {
+    "label": "UI features",
+    "pathSegment": "luigi-ux-features",
+    "navigationContext": "doc",
+    "keepSelectedForChildren": true,
+    "viewUrl": "__BASE_URL__/docs/luigi-ux-features",
+    "context": {
+      "doc": "luigi-ux-features"
+    },
+    "category": {
+      "label": "Luigi Core"
+    }
+  },
+  {
+    "label": "API",
+    "pathSegment": "luigi-core-api",
+    "navigationContext": "doc",
+    "keepSelectedForChildren": true,
+    "viewUrl": "__BASE_URL__/docs/luigi-core-api",
+    "context": {
+      "doc": "luigi-core-api"
+    },
+    "category": {
+      "label": "Luigi Core"
+    }
+  },
+  {
+    "label": "Installation",
+    "pathSegment": "",
+    "navigationContext": "doc",
+    "keepSelectedForChildren": true,
+    "viewUrl": "__BASE_URL__/docs/",
+    "context": {
+      "doc": ""
+    },
+    "category": {
+      "label": "Luigi Client"
+    }
+  },
+  {
+    "label": "API",
+    "pathSegment": "luigi-client-api",
+    "navigationContext": "doc",
+    "keepSelectedForChildren": true,
+    "viewUrl": "__BASE_URL__/docs/luigi-client-api",
+    "context": {
+      "doc": "luigi-client-api"
+    },
+    "category": {
+      "label": "Luigi Client"
+    }
+  },
+  {
+    "label": "Custom messages",
+    "pathSegment": "communication",
+    "navigationContext": "doc",
+    "keepSelectedForChildren": true,
+    "viewUrl": "__BASE_URL__/docs/communication",
+    "context": {
+      "doc": "communication"
+    },
+    "category": {
+      "label": "Advanced"
+    }
+  },
+  {
+    "label": "Angular",
+    "pathSegment": "",
+    "navigationContext": "doc",
+    "keepSelectedForChildren": true,
+    "viewUrl": "__BASE_URL__/docs/",
+    "context": {
+      "doc": ""
+    },
+    "category": {
+      "label": "Examples"
+    },
+    "externalLink": {
+      "url": "https://github.com/SAP/luigi/tree/master/core/examples/luigi-example-angular"
+    }
+  },
+  {
+    "label": "Vue",
+    "pathSegment": "",
+    "navigationContext": "doc",
+    "keepSelectedForChildren": true,
+    "viewUrl": "__BASE_URL__/docs/",
+    "context": {
+      "doc": ""
+    },
+    "category": {
+      "label": "Examples"
+    },
+    "externalLink": {
+      "url": "https://github.com/SAP/luigi/tree/master/core/examples/luigi-example-vue"
+    }
+  },
+  {
+    "label": "React",
+    "pathSegment": "",
+    "navigationContext": "doc",
+    "keepSelectedForChildren": true,
+    "viewUrl": "__BASE_URL__/docs/",
+    "context": {
+      "doc": ""
+    },
+    "category": {
+      "label": "Examples"
+    },
+    "externalLink": {
+      "url": "https://github.com/SAP/luigi/tree/master/core/examples/luigi-example-react"
+    }
+  }
+]
