@@ -32,18 +32,14 @@
 		 initialise the router -->
 	%sapper.scripts%
 	<script type="text/javascript">
-		let link = document.createElement("link");
-		link.rel = "stylesheet";
 		let script = document.createElement("script");
 		script.type = "text/javascript";
 		if (location.port == '4001') {
-			link.href = "/fundamental-ui/fiori-fundamentals.min.css";
 			script.src = "/luigi-client/luigi-client.js";
 		} else {
-			link.href = "/docu-microfrontend/fundamental-ui/fiori-fundamentals.min.css";
 			script.src = "/docu-microfrontend/luigi-client/luigi-client.js";
 		}
-		document.getElementsByTagName("head")[0].appendChild(link);
+
 		document.getElementsByTagName("body")[0].appendChild(script);
 	</script>
 </body>
