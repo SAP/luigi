@@ -192,6 +192,10 @@ $side-nav-width: 260px;
     border: none;
     border-radius: 0;
     background: none;
+    max-height: none;
+    height: 69px;
+    padding-bottom: 41px;
+    margin-bottom: -41px;
 
     span {
 
@@ -199,8 +203,8 @@ $side-nav-width: 260px;
         color: white;
         font-size: 18px;
         color: #fff;
-        padding-bottom: 41px;
-        margin-bottom: -41px;
+        padding-bottom: 36px;
+        // margin-bottom: -41px;
         border-bottom: 4px solid transparent;
         transition: all .2s ease;
       }
