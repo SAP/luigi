@@ -167,13 +167,14 @@
 
 			.copyCode {
 				position: absolute;
-				right: -14px;
-				top: -14px;
+				right: -10px;
+				top: -10px;
 				width: 28px;
 				height: 28px;
 				border-radius: 50%;
 				background-color: $primary-color;
-				border: 1px $powder-blue solid;
+				border: 1px $primary-color solid;
+				box-shadow: 0 0 4px 0 $primary-color;
 				cursor: pointer;
 				& > div {
 					position: relative;
@@ -189,7 +190,7 @@
 				}
 				.popoverCopy {
 					position: absolute;
-					bottom: -39px;
+					bottom: -36px;
 					font-family: 'Open Sans', sans-serif;
 					display: none;
 					font-size: 11px;
