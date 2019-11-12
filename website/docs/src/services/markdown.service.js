@@ -7,6 +7,7 @@ import html from 'rehype-stringify';
 import addIdsToHeadings from 'rehype-slug';
 
 import luigiLinkParser from '../unified-plugins/rehype-luigi-linkparser';
+import addCopyToClipboard from '../unified-plugins/rehype-copy-to-clipboard';
 
 // import highlight from 'rehype-highlight' // syntax highlight code blocks with lowlight: https://github.com/wooorm/lowlight
 import rehypeSection from '@agentofuser/rehype-section';
@@ -14,7 +15,7 @@ const section = rehypeSection.default;
 
 class MarkdownService {
   async process(value, data = {}) {
-    return new Promise((resolve) => {
+    return new Promise((resolve, reject) => {
       unified()
         .use(markdown)
         .use(remark2rehype, {allowDangerousHTML: true})
@@ -23,10 +24,14 @@ class MarkdownService {
         .use(section)
         // .use(highlight)
         .use(addIdsToHeadings)
+        .use(addCopyToClipboard)
         .use(format)
         .use(html)
         .process(String(value), function (err, file) {
-          // console.error(report(err || file))
+          if(err) {
+            console.error(err || file)
+            return reject();
+          }
           resolve(file.contents);
         });
     });

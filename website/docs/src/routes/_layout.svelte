@@ -147,7 +147,7 @@
 		pre {
 			width: 100%;
 			display: block;
-			overflow-x: auto;
+			position: relative;
 			border: 1px solid $powder-blue;
 			background-color: rgba(237, 242, 247, 0.1);
 			padding: 25px;
@@ -156,12 +156,83 @@
 			margin-bottom: 40px;
 
 			code {
+				overflow-x: auto;
 				word-break: normal;
 				white-space: pre;
 				overflow-wrap: normal;
 				background: none;
 				border-radius: 0;
 				padding: 0;
+			}
+
+			.copyCode {
+				position: absolute;
+				right: -14px;
+				top: -14px;
+				width: 28px;
+				height: 28px;
+				border-radius: 50%;
+				background-color: $primary-color;
+				border: 1px $powder-blue solid;
+				cursor: pointer;
+				& > div {
+					position: relative;
+					display: flex;
+					align-items: center;
+					justify-content: center;
+					height: 100%;
+					width: 100%;
+				}
+				img {
+					width: 13px;
+					height: 16px;
+				}
+				.popoverCopy {
+					position: absolute;
+					bottom: -39px;
+					font-family: 'Open Sans', sans-serif;
+					display: none;
+					font-size: 11px;
+					line-height: 13px;
+					color: $secondary-color;
+					background-color: white;
+					border: 1px $primary-color solid;
+					padding: 5px 11px;
+					// Arrow needs to be added
+					&:before {
+						content: ' ';
+						height: 0;
+						width: 0;
+						position: absolute;
+						bottom: 100%;
+						left: 34px;
+						width: 0;
+						height: 0;
+						border: 10px solid transparent;
+						border-bottom-color: $primary-color;
+					}
+					// cutout
+					&:after {
+						content: ' ';
+						height: 0;
+						width: 0;
+						position: absolute;
+						bottom: 100%;
+						left: 35px;
+						width: 0;
+						height: 0;
+						border: 9px solid transparent;
+						border-bottom-color: white;
+						background-color: transparent;
+					}
+				}
+				&:hover {
+					background-color: white;
+					border-color: $primary-color;
+					.popoverCopy {
+						display: block;
+					}
+				}
 			}
 		}
 
