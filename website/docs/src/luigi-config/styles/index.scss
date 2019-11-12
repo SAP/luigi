@@ -1,3 +1,415 @@
-.fd-shellbar {
-  // background: pink !important;
+@import url('https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700,800|Quicksand:500&display=swap');
+
+// Icon font
+// @charset "UTF-8";
+
+@mixin custom-icon {
+  &:before {
+    font-family: 'icon-font' !important;
+    content: attr(data-icon);
+    font-style: normal !important;
+    font-weight: normal !important;
+    font-variant: normal !important;
+    text-transform: none !important;
+    speak: none;
+    line-height: 1;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
 }
+
+@font-face {
+  font-family: 'icon-font';
+  src: url('/fonts/icon-font/icon-font.eot');
+  src: url('/fonts/icon-font/icon-font.eot?#iefix')
+      format('embedded-opentype'),
+    url('/fonts/icon-font/icon-font.woff') format('woff'),
+    url('/fonts/icon-font/icon-font.ttf') format('truetype'),
+    url('/fonts/icon-font/icon-font.svg#icon-font') format('svg');
+  font-weight: normal;
+  font-style: normal;
+}
+
+[data-icon]:before {
+  font-family: 'icon-font' !important;
+  content: attr(data-icon);
+  font-style: normal !important;
+  font-weight: normal !important;
+  font-variant: normal !important;
+  text-transform: none !important;
+  speak: none;
+  line-height: 1;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+[class^='icon-']:before,
+[class*=' icon-']:before {
+  font-family: 'icon-font' !important;
+  font-style: normal !important;
+  font-weight: normal !important;
+  font-variant: normal !important;
+  text-transform: none !important;
+  speak: none;
+  line-height: 1;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.icon-github-icon:before {
+  content: "\61";
+}
+.icon-twitter-icon:before {
+  content: "\62";
+}
+.icon-slack-icon:before {
+  content: "\63";
+}
+.icon-burger-menu:before {
+  content: "\64";
+}
+.icon-burger-menu-close:before {
+  content: "\65";
+}
+
+
+
+
+$primary-color: #2deb8a;
+$secondary-color: #3c4553;
+$light-gray: #e6e6e6;
+$medium-gray: #cacaca;
+
+$powder-blue: #d0d8e2;
+$ice-blue: #edf2f7;
+$border-color: #b6bac1;
+
+$height-shellbar: 110px;
+$height-shellbar-mobile: 95px;
+
+$side-nav-width: 260px;
+
+.luigi-documentation {
+
+  * {
+    font-family: 'Open Sans', sans-serif;
+  }
+
+  .fd-shellbar {
+    background-color: $secondary-color;
+    height: $height-shellbar-mobile;
+
+    span {
+      font-weight: 600;
+    }
+    
+
+    @media screen and (max-width: 1023px) {
+      padding: 20px 30px;
+    }
+
+    @media screen and (min-width: 1024px) {
+      height: $height-shellbar;
+    }
+  }
+
+  .fd-shellbar-collapse {
+    @media screen and (max-width: 1023px) {
+      .fd-button--shell {
+        &.sap-icon--overflow {
+          @include custom-icon;
+
+          &:before {
+            content: "\64";
+            color: white;
+            font-size: 20px;
+          }
+
+          &[aria-expanded='true'] {
+            &:before {
+              content: "\65";
+            }
+          }
+        }
+      }
+
+      .fd-popover__body {
+        position: fixed;
+        top: $height-shellbar-mobile;
+        left: 100%;
+        right: 0;
+        bottom: 0;
+        box-shadow: none;
+        border: none;
+        border-radius: 0;
+        transform: none;
+        background-color: $secondary-color;
+        margin-top: -10px;
+        padding: 10px 30px;
+
+        &[aria-hidden='false'] {
+          left: 0;
+        }
+
+        &:before,
+        &:after {
+          display: none;
+        }
+
+        .fd-menu__item {
+          font-size: 16px;
+          padding: 15px 0;
+          color: white;
+
+          &:hover,
+          &:active,
+          &.is-selected,
+          &[aria-selected=true] {
+            color: $primary-color;
+          }
+        }
+
+        .fd-menu__item,
+        .fd-menu__item.is-selected,
+        .fd-menu__item[aria-selected=true] {
+          background-color: transparent;
+        }
+
+        .fd-top-nav__icon,
+        .y-full-width-list__icon {
+          min-width: 24px;
+          min-height: 24px;
+        }
+
+        li {
+          border-bottom: 1px solid $border-color;
+        }
+      }
+    }
+  }
+
+  .fd-button--shell {
+    border: none;
+    border-radius: 0;
+    background: none;
+    max-height: none;
+    height: 69px;
+    padding-bottom: 41px;
+    margin-bottom: -41px;
+
+    span {
+
+      &:not(.fd-top-nav__icon) {
+        color: white;
+        font-size: 18px;
+        color: #fff;
+        padding-bottom: 36px;
+        // margin-bottom: -41px;
+        border-bottom: 4px solid transparent;
+        transition: all .2s ease;
+      }
+    }
+
+    &:hover,
+    &.is-selected {
+      span {
+        &:not(.fd-top-nav__icon) {
+          border-bottom-color: $primary-color;
+        }
+      }
+    }
+  }
+
+  .fd-app__sidebar,
+  .iframeContainer {
+    top: $height-shellbar-mobile;
+
+    @media screen and (min-width: 1024px) {
+      top: $height-shellbar;
+    }
+  }
+
+  
+
+  .fd-app__sidebar {
+    box-shadow: none;
+    background-color: #fafbfc;
+  }
+
+  .fd-shellbar__logo {
+    max-height: 60px;
+
+    img {
+      max-height: 60px;
+    }
+  }
+
+
+
+
+  .lui-customlogo {
+    img {
+      width: 118px;
+      height: 47px !important;
+
+      @media screen and (min-width: 1024px) {
+        width: 147px;
+        height: 60px !important;
+      }
+    }
+  }
+
+  @media screen and (max-width: 599px) {
+    .lui-burger {
+      width: 50px;
+      height: 50px;
+      text-align: center;
+      position: fixed;
+      bottom: 20px;
+      left: 20px;
+      color: black;
+      z-index: 20;
+      transition: left 0.1s linear;
+      background-color: white;
+      padding: 15px;
+      border-radius: 50%;
+      box-shadow: rgba(137, 165, 199, 0.42) 0px 1px 26px 0px;
+      cursor: pointer;
+      margin: 0;
+
+      &:before {
+        content: "\e1c0";
+        transition: transform 0.4s ease;
+      }
+    }
+
+    &.lui-leftNavToggle {
+      .lui-burger {
+        left: calc(#{$side-nav-width} + 10px);
+
+        &:before {
+          transform: rotateZ(-180deg);
+        }
+      }
+    }
+
+    .fd-app__sidebar {
+      width: $side-nav-width;
+    }
+  
+    &.lui-simpleSlideInNav.lui-leftNavToggle .fd-app__sidebar {
+      width: $side-nav-width;
+    }
+  
+    &.lui-simpleSlideInNav .fd-app__sidebar {
+      left: -$side-nav-width;
+    }
+  }
+
+  .fd-page {
+    background-color: white;
+  }
+
+  .lui-side-nav__footer {
+    background-color: $secondary-color;
+    color: white;
+
+    .lui-side-nav__footer--text {
+      width: 100%;
+      color: white;
+      font-size: 14px;
+      font-weight: 600;
+      text-align: center;
+      padding: 20px;
+
+      &:before {
+        content: '\00a9';
+        margin-right: 5px;
+      }
+    }
+  }
+
+  .fd-top-nav__icon {
+
+    font-size: 24px;
+    line-height: 1;
+    transition: color .3s ease;
+    color: white;
+
+    &:before {
+      font-family: 'icon-font' !important;
+      content: attr(data-icon);
+      font-style: normal !important;
+      font-weight: normal !important;
+      font-variant: normal !important;
+      text-transform: none !important;
+      speak: none;
+      line-height: 1;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      font-size: 24px;
+    }
+
+    &:hover {
+      color: $primary-color;
+    }
+  }
+
+  .sap-icon--twitter::before {
+    content: "\62";
+  }
+  .sap-icon--slack::before {
+    content: "\63";
+  }
+  .sap-icon--github::before {
+    content: "\61";
+  }
+
+  .fd-side-nav__subitem {
+    padding: 10px 0;
+  }
+
+  .fd-side-nav__link,
+  .fd-side-nav__sublink {
+    font-size: 15px;
+    padding: 1px 10px;
+    border-left: 2px solid transparent;
+
+    &:hover,
+    &.is-selected {
+      border-color: $primary-color;
+      color: $secondary-color;
+      background: none;
+      font-weight: 400;
+
+      &:before {
+        display: none;
+      }
+    }
+  }
+
+  .fd-side-nav__link .fd-side-nav__icon {
+    display: none;
+  }
+
+  .lui-category {
+    text-transform: uppercase;
+    border: none;
+    font-size: 12px;
+    padding: 8px 0;
+  }
+
+  .fd-side-nav {
+    padding: 30px;
+
+    @media screen and (min-width: 1024px) {
+      padding: 93px 40px 0;
+    }
+  }
+
+  .fd-side-nav__group {
+    margin-bottom: 10px;
+  }
+}
+
+
