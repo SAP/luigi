@@ -223,7 +223,7 @@ Here is an example of a dynamic navigation node including a context:
 
 ## Profile
 
-<img src="https://github.com/SAP/luigi/blob/c70658fcb78c48012303a4e59012d5d158ca46b3/docs/assets/profile.png" width="628">
+<img src="https://github.com/SAP/luigi/raw/c70658fcb78c48012303a4e59012d5d158ca46b3/docs/assets/profile.png" width="628">
 
 The profile is a drop-down list in the top navigation that allows you to override the logout item content if authorization is already configured. You can also add links to Luigi navigation nodes.
 
@@ -243,7 +243,7 @@ Example:
 
 ## Context switcher
 
-<img src="https://github.com/SAP/luigi/blob/c70658fcb78c48012303a4e59012d5d158ca46b3/docs/assets/context-switcher.png" width="628">
+<img src="https://github.com/SAP/luigi/raw/c70658fcb78c48012303a4e59012d5d158ca46b3/docs/assets/context-switcher.png" width="628">
 
 The context switcher is a drop-down element in the top navigation. It allows you to switch between a curated list of navigation elements such as Environments. To do so, add the **contextSwitcher** property to the navigation object. Find all the parameters you can use to configure it [here](navigation-parameters-reference.md#context-switcher).
 
@@ -263,7 +263,7 @@ contextSwitcher: {
 
 ## Product switcher
 
-<img src="https://github.com/SAP/luigi/blob/c70658fcb78c48012303a4e59012d5d158ca46b3/docs/assets/product-switcher.png" width="704">
+<img src="https://github.com/SAP/luigi/raw/c70658fcb78c48012303a4e59012d5d158ca46b3/docs/assets/product-switcher.png" width="704">
 
 The product switcher is window in top the navigation which allows you to switch between navigation elements displayed there. To add it to your application, include the **productSwitcher** property in your **navigation** object. You may also add any of the parameters listed [here](navigation-parameters-reference.md#product-switcher).
 
@@ -295,7 +295,7 @@ productSwitcher: {
 
 ## App switcher
 
-<img src="https://github.com/SAP/luigi/blob/c70658fcb78c48012303a4e59012d5d158ca46b3/docs/assets/app-switcher.png" width="407">
+<img src="https://github.com/SAP/luigi/raw/c70658fcb78c48012303a4e59012d5d158ca46b3/docs/assets/app-switcher.png" width="407">
 
 The app switcher is a drop-down in top the navigation which allows you to switch between applications. To use it, add the **appSwitcher** property in your **navigation** object. You may also add any of the parameters listed [here](navigation-parameters-reference.md#app-switcher).
 
