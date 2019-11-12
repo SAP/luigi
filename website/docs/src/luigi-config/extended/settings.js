@@ -2,8 +2,8 @@ const version = 'none';
 
 class Settings {
   header = {
-    logo: 'logo.svg',
-    favicon: 'favicon.png'
+    logo: '/logo.svg',
+    favicon: '/favicon.png'
   };
 
   responsiveNavigation = 'simpleMobileOnly'; // Options: simple | simpleMobileOnly | semiCollapsible

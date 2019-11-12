@@ -16,8 +16,8 @@
     "test": "run-p --race dev cy:run",
     "cy:run": "cypress run",
     "cy:open": "cypress open",
-    "mock:develop-plugins": "node -r esm scripts/markdown.unified-preview.js",
-    "mock:develop-plugins:watch": "nodemon -r esm scripts/markdown.unified-preview.js"
+    "mock:develop-plugins": "NODE_ENV=debug node -r esm scripts/markdown.unified-preview.js",
+    "mock:develop-plugins:watch": "NODE_ENV=debug nodemon -r esm scripts/markdown.unified-preview.js"
   },
   "dependencies": {
     "@kyma-project/luigi-client": "^0.6.0",

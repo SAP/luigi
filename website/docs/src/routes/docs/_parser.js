@@ -31,10 +31,11 @@ function setParsedDocs() {
     .map(name => {
       const mdContent = readFileSync(dir + '/' + name);
       parsingArr.push(new Promise((resolve) => {
-        MarkdownSvc.process(mdContent).then((contents) => {
+        const shortName = name.replace('.md', '');
+        MarkdownSvc.process(mdContent, { shortName }).then((contents) => {
           resolve({
             name,
-            shortName: name.replace('.md', ''),
+            shortName,
             // file,
             contents
           });
