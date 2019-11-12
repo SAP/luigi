@@ -194,7 +194,6 @@
 			margin: 0px;
 			border-radius: 3px;
 			font-size: 14px;
-			font-family: 'Open Sans', sans-serif;
 		}
 	}
 </style>
