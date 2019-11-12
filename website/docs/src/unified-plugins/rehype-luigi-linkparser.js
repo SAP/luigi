@@ -34,8 +34,17 @@ export default function luigiLinkParser(options) {
         // sample links: https://..., file.md, should not start with /file.md or ../file.md
         // node.properties['on:click|preventDefault|stopPropagation'] = '{handleInternal}';
         node.properties['onclick'] = 'navigateInternal(event, this)';
-        const newHref = '/docs/' + parsed.href.replace(githubMaster + 'docs/', '').replace('.md', '');
-        node.properties['href'] = newHref;
+        
+        let newHref = parsed.href.replace(githubMaster + 'docs/', '').replace('.md', '');
+
+        // clean ./ from beginning of the link
+        if(newHref.startsWith('./')) {
+          newHref = newHref.substr(2);
+        }
+
+        const newUrl = url.parse('/docs/' + newHref);
+        // parsed.href does not work currently with # anchor link links
+        node.properties['href'] = newUrl.pathname;
       } else if (parsed.protocol) {
         // external link
         console.log('href external', parsed.href);

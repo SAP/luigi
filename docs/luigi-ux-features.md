@@ -20,7 +20,7 @@ You can quickly adjust the Luigi application to improve user experience on mobil
 <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1">
 ```
 
-* Define and apply [responsiveNavigation](./general-settings.md) settings to make the left navigation responsive.
+* Define and apply [responsiveNavigation](general-settings.md) settings to make the left navigation responsive.
 
 ### App loading indicator
 
