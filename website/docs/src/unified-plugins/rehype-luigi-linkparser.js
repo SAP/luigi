@@ -47,7 +47,6 @@ export default function luigiLinkParser(options) {
         node.properties['href'] = newUrl.pathname;
       } else if (parsed.protocol) {
         // external link
-        console.log('href external', parsed.href);
         node.properties['rel'] = 'external';
         node.properties['target'] = '_blank';
       } else if (parsed.hash && !parsed.pathname && !parsed.hostname) {
@@ -57,11 +56,19 @@ export default function luigiLinkParser(options) {
         parsed.pathname.startsWith('../') || parsed.pathname.startsWith('/')
       )) {
         // internal absolute link, probably to some raw file
-        console.log('href internal absolute link, probably to some raw file', parsed.href);
+        let newHref = parsed.href;
+        // remove .. if its leading
+        if(newHref.startsWith('../')) {
+          newHref = newHref.substr(2);
+        }
+        // remove leading slash
+        newHref = newHref.substr(1);
+
+        node.properties['href'] = githubMaster + newHref;
         node.properties['rel'] = 'external';
         node.properties['target'] = '_blank';
       } else {
-        console.log('========= UNMATCHED HREF ============');
+        console.log('========= UNMATCHED HREF FOUND ============');
         console.log('href', parsed.href);
         console.log(parsed);
         console.log('========= check debug.log ============');

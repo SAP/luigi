@@ -53,12 +53,12 @@ function setParsedDocs() {
           pathSegment: name,
           navigationContext: 'doc',
           keepSelectedForChildren: true,
-          viewUrl: `__BASE_URL__/docs/${name}`,
-          context: {
-            doc: name
-          }
+          viewUrl: `__BASE_URL__/docs/${name}`
+          // context: {
+          //   doc: name
+          // }
         }));
-      writeFileSync('./static/luigi/navigation-children.json', JSON.stringify(navChildren, null, 2));
+      writeFileSync('./static/luigi/navigation-children-raw.json', JSON.stringify(navChildren, null, 2));
 
       // return for sapper
       return Promise.resolve(files);
