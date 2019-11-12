@@ -6,7 +6,7 @@ if (location.port == '4000') {
 }
 
 const getDocuItems = () => {
-  return fetch('/navigation-children.json')
+  return fetch('/navigation-nodes.json')
         .then(function(response) {
           return response.json();
         })
@@ -24,10 +24,45 @@ class Navigation {
   nodes = [
     {
       pathSegment: 'docs',
-      label: 'Overview',
+      label: 'Documentation',
       viewUrl: baseUrl + '/docs',
       children: getDocuItems()
+    },
+    {
+      label: 'About Luigi',
+      defaultChildNode: 'docs',
+      externalLink: {
+        url: 'https://luigi-project.io/about',
+        sameWindow: true
+      }
+    },
+    {
+      label: 'Twitter',
+      externalLink: {
+        url: 'https://twitter.com/luigiprojectio'
+      },
+      icon: 'twitter'
+    },
+    {
+      label: 'Slack',
+      externalLink: {
+        url: 'https://slack.luigi-project.io'
+      },
+      icon: 'slack'
+    },
+    {
+      label: 'Github',
+      externalLink: {
+        url: 'https://github.com/SAP/luigi'
+      },
+      icon: 'github'
     }
+    // {
+    //   pathSegment: 'docs',
+    //   label: 'Overview',
+    //   viewUrl: baseUrl + '/docs',
+    //   children: getDocuItems()
+    // }
   ];
 
   // getContextSwitcherActions = () => {
