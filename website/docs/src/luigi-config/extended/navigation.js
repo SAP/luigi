@@ -5,32 +5,65 @@ if (location.port == '4000') {
   baseUrl = '/docu-microfrontend';
 }
 const getDocuItems = () => {
-  return fetch('/navigation-children.json', {
-      headers: {
-        'Strict-Transport-Security': 'max-age=31536000; includeSubDomains; preload'
-      }
-    })
-    .then((res) => {
-      return res.json();
-    })
-    .then(function (json) {
-      return json.map((child) => {
-        child.viewUrl = child.viewUrl.replace('__BASE_URL__', baseUrl);
-        return child;
-      });
-    }).catch(function (err) {
-      console.error(`Error: ${err}`);
-    })
+  return fetch('/navigation-nodes.json', {
+    headers: {
+      'Strict-Transport-Security': 'max-age=31536000; includeSubDomains; preload'
+    }
+  }).then(function (response) {
+    return response.json();
+  }).then(function (json) {
+    return json.map((child) => {
+      child.viewUrl = child.viewUrl.replace('__BASE_URL__', baseUrl);
+      return child;
+    });
+  }).catch(function (err) {
+    console.error(`Error: ${err}`);
+  })
 }
 
 class Navigation {
   nodes = [
     {
       pathSegment: 'docs',
-      label: 'Overview',
+      label: 'Documentation',
       viewUrl: baseUrl + '/docs',
       children: getDocuItems()
+    },
+    {
+      label: 'About Luigi',
+      defaultChildNode: 'docs',
+      externalLink: {
+        url: 'https://luigi-project.io/about',
+        sameWindow: true
+      }
+    },
+    {
+      label: 'Twitter',
+      externalLink: {
+        url: 'https://twitter.com/luigiprojectio'
+      },
+      icon: 'twitter'
+    },
+    {
+      label: 'Slack',
+      externalLink: {
+        url: 'https://slack.luigi-project.io'
+      },
+      icon: 'slack'
+    },
+    {
+      label: 'Github',
+      externalLink: {
+        url: 'https://github.com/SAP/luigi'
+      },
+      icon: 'github'
     }
+    // {
+    //   pathSegment: 'docs',
+    //   label: 'Overview',
+    //   viewUrl: baseUrl + '/docs',
+    //   children: getDocuItems()
+    // }
   ];
 
   // getContextSwitcherActions = () => {
