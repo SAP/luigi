@@ -24,7 +24,7 @@ export default function addCopyToClipboard() {
       // Docu: https://github.com/syntax-tree/hastscript#use
       const copyCode = h('a.copyCode', { onclick: 'copyCode(event, this)' }, [
         h('div', [
-          h('img', { src: '/assets/copy-clipboard-default.svg' }),
+          h('img', { src: '/images/copy-clipboard-default.svg' }),
           h('.popoverCopy', [
             'Click to copy'
           ]),
