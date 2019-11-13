@@ -14,7 +14,6 @@ if (process.env.NODE_ENV === 'debug') {
 
 export default function luigiLinkParser(options) {
   var settings = options || {};
-
   return function transformer(tree) {
     visit(tree, 'element', function (node) {
       modify(node, 'href');
