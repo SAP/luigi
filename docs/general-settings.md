@@ -1,5 +1,6 @@
 # General settings
 
+<!-- add-attribute:class:success -->
 >**NOTE:** For learning and testing purposes, use the [Luigi Fiddle](https://fiddle.luigi-project.io) page where you can configure a sample Luigi application.
 
 The configuration file contains a section called **Settings** in which you can configure additional Luigi options.
@@ -50,7 +51,9 @@ If you don't specify any value for  **responsiveNavigation**, the buttons remain
   }
 }
 ```
+<!-- add-attribute:class:success -->
 > **NOTE:** You can translate Luigi internal messages by providing translation for [these keys](../core/src/utilities/defaultLuigiTranslationTable.js).
+
 * **customSandboxRules** is an array of custom rules for the content in the iframe. You can extend the [Luigi default sandbox rules](https://github.com/SAP/luigi/blob/af1deebb392dcec6490f72576e32eb5853a894bc/core/src/utilities/helpers/iframe-helpers.js#L140) by adding further rules.
 * **iframeCreationInterceptor** is a function called on iframe creation. It gives you full control over the created iframe DOM element. You can modify it to your needs just before it is added to the DOM tree. 
 This function is called with these parameters: 

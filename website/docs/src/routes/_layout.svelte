@@ -99,6 +99,52 @@
 			}
 		}
 
+		blockquote {
+			padding: 20px;
+			p {
+				padding: 0;
+				margin: 0;
+			}
+		}
+
+		blockquote.success,
+		blockquote.warning {
+			position: relative;
+			padding-left: 60px;
+			p {
+				padding: 0;
+				margin: 0;
+			}
+			&::before {
+				content: "";
+				position: absolute;
+				display: block;
+				width: 24px;
+				height: 24px;
+				top: 20px;
+				left: 20px;
+				background-position: center center;
+				background-size: contain;
+				background-repeat: no-repeat;
+			}
+		}
+
+		blockquote.success {
+			background-color: rgba(45, 235, 138, 0.08);
+
+			&::before {
+				background-image: url('/assets/icon_info.svg');
+			}
+		}
+
+		blockquote.warning {
+			background-color: rgba(247, 216, 96, 0.08);
+
+			&::before {
+				background-image: url('/assets/icon_alert.svg');
+			}
+		}
+
 		ul {
 			list-style: none;
 			padding: 0 0 0 15px;
