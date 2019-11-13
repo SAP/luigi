@@ -101,6 +101,7 @@
 
 		blockquote {
 			padding: 20px;
+			border-radius: 6px;
 			p {
 				padding: 0;
 				margin: 0;
