@@ -245,6 +245,32 @@ describe('Navigation', function() {
       expect(children[0].label).to.equal('child2');
     });
   });
+
+  describe('bindChildrenToParent', () => {
+    const emptyNode = {};
+    const nodeWithoutPathSegment = {
+      children: [{ name: 'subCategory1' }, { name: 'subCategory2' }]
+    };
+    const node = {
+      pathSegment: 'category1',
+      children: [{ name: 'subCategory1' }, { name: 'subCategory2' }]
+    };
+    it("should return empty node if it doesn't have children or empty", () => {
+      Navigation.bindChildrenToParent(emptyNode);
+      assert.deepEqual(emptyNode, {});
+    });
+    it('should return node if pathSegment is not defined', () => {
+      Navigation.bindChildrenToParent(nodeWithoutPathSegment);
+      assert.deepEqual(nodeWithoutPathSegment, {
+        children: [{ name: 'subCategory1' }, { name: 'subCategory2' }]
+      });
+    });
+    it('should return parent.pathSegment of first child', () => {
+      Navigation.bindChildrenToParent(node);
+      assert.equal(node.children[0].parent.pathSegment, 'category1');
+    });
+  });
+
   describe('findMatchingNode', () => {
     it('with dynamic path, does not substitute values', () => {
       // given
