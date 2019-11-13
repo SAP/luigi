@@ -4,20 +4,21 @@ if (location.port == '4000') {
 } else {
   baseUrl = '/docu-microfrontend';
 }
-
 const getDocuItems = () => {
-  return fetch('/navigation-nodes.json')
-        .then(function(response) {
-          return response.json();
-        })
-        .then(function(json) {
-          return json.map((child) => {
-            child.viewUrl = child.viewUrl.replace('__BASE_URL__', baseUrl);
-            return child;
-          });
-        }).catch(function(err) {
-          console.error(`Error: ${err}`);
-        })
+  return fetch('/navigation-nodes.json', {
+    headers: {
+      'Strict-Transport-Security': 'max-age=31536000; includeSubDomains; preload'
+    }
+  }).then(function (response) {
+    return response.json();
+  }).then(function (json) {
+    return json.map((child) => {
+      child.viewUrl = child.viewUrl.replace('__BASE_URL__', baseUrl);
+      return child;
+    });
+  }).catch(function (err) {
+    console.error(`Error: ${err}`);
+  })
 }
 
 class Navigation {
