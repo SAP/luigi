@@ -54,9 +54,6 @@ function setParsedDocs() {
           navigationContext: 'doc',
           keepSelectedForChildren: true,
           viewUrl: `__BASE_URL__/docs/${name}`
-          // context: {
-          //   doc: name
-          // }
         }));
       writeFileSync('./static/luigi/navigation-children-raw.json', JSON.stringify(navChildren, null, 2));
 

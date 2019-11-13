@@ -15,4 +15,3 @@ tmp-*
 
 # WhiteSource
 whitesource.config.json
-debug.log

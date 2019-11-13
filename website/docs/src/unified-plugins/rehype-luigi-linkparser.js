@@ -25,14 +25,12 @@ export default function luigiLinkParser(options) {
     const githubMaster = 'https://github.com/SAP/luigi/blob/master/';
     if (has(node, prop)) {
       var parsed = url.parse(node.properties[prop]);
-      // console.log(prop, 'parsed', parsed);
       if (
         parsed.href.startsWith(githubMaster + 'docs') && parsed.pathname && parsed.pathname.endsWith('.md') ||
         parsed.pathname && parsed.pathname.endsWith('.md') 
       ) {
         // internal link
         // sample links: https://..., file.md, should not start with /file.md or ../file.md
-        // node.properties['on:click|preventDefault|stopPropagation'] = '{handleInternal}';
         node.properties['onclick'] = 'navigateInternal(event, this)';
         
         let newHref = parsed.href.replace(githubMaster + 'docs/', '').replace('.md', '');
@@ -71,7 +69,7 @@ export default function luigiLinkParser(options) {
         console.log('========= UNMATCHED HREF FOUND ============');
         console.log('href', parsed.href);
         console.log(parsed);
-        console.log('========= check debug.log ============');
+        console.log('========= Warning saved to debug.log ============');
         log(parsed.href + ' on ' + JSON.stringify(node) + '\n');
       }
       // node.properties[prop] = fn(parsed)

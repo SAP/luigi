@@ -14,6 +14,10 @@
 
 	$side-nav-width: 320px;
 
+	:global(body *) {
+		box-sizing: border-box;
+	}
+
 	:global(body) {
 		background-color: white;
 		margin: 0;
@@ -53,8 +57,12 @@
 		ol,
 		ul,
 		blockquote,
-		h1, h2, h3, h4 {
-			margin: 0 0 25px;
+		h1, h2, h3, h4, h5 {
+			margin: 0 0 15px;
+
+			@media screen and (min-width: (1024px - $side-nav-width)) {
+				margin: 0 0 25px;
+			}
 		}
 
 		h1, h2, h3, h4, h5 {
@@ -148,6 +156,11 @@
 			width: 100%;
 			display: block;
 			position: relative;
+			width: 1px;
+			min-width: 100%;
+			*width: 100%;
+			// overflow-x: auto;
+			-webkit-overflow-scrolling: touch;
 			border: 1px solid $powder-blue;
 			background-color: rgba(237, 242, 247, 0.1);
 			padding: 25px;
@@ -252,7 +265,6 @@
 			margin: 0px;
 			border-radius: 3px;
 			font-size: 14px;
-			font-family: 'Open Sans', sans-serif;
 		}
 	}
 </style>
