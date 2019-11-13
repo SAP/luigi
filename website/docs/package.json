@@ -12,7 +12,7 @@
     "build:config": "webpack --config webpack-generateConfig.config",
     "export:sapper": "NODE_ENV=production sapper export --basepath /docu-microfrontend && sh ./scripts/move-export.sh",
     "export:serve": "sirv public --single --dev --cors --port 5000",
-    "export": "npm run export:sapper",
+    "export": "npm run build:config && npm run export:sapper",
     "test": "run-p --race dev cy:run",
     "cy:run": "cypress run",
     "cy:open": "cypress open",
