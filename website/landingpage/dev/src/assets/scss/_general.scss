@@ -170,7 +170,8 @@ section,
   }
 }
 
-.btn-primary {
+.btn-primary,
+.btn-secondary {
   display: inline-block;
   padding: 16px 32px;
   border: 2px solid $primary-color;
@@ -195,6 +196,18 @@ section,
     font-size: 15px;
   }
 }
+
+.btn-secondary {
+  background-color: white;
+  border-color: white;
+
+  &:hover,
+  &:active,
+  &:focus {
+    border-color: $primary-color;
+  }
+}
+
 
 a {
   transition: color 0.2s ease;
