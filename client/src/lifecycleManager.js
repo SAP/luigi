@@ -91,6 +91,12 @@ class LifecycleManager extends LuigiClientBase {
         helpers.sendPostMessageToLuigiCore({ msg: 'luigi.navigate.ok' });
       });
 
+      helpers.setThirdPartyCookieCheck();
+      let cookies = document.cookie;
+      console.log('cookies ', cookies);
+      if (document.cookie === 'luigiCookie=true') {
+        window.parent.postMessage({ msg: 'luigi.third-party-cookie' }, '*');
+      }
       /**
        * Get context once initially
        * @private

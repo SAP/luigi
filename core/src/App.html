@@ -101,6 +101,7 @@
   import { SplitViewSvc } from './services/split-view';
   import { ViewGroupPreloading } from './services/preloading';
   import { MessagesListeners } from './services/messages-listeners';
+  import { thirdPartyCookiesStatus } from './utilities/third-party-cookies-check.js';
 
   const dispatch = createEventDispatcher();
 
@@ -143,6 +144,7 @@
   let responsiveNavSetting;
   let tabNav;
   let resizeTabNavToggle = false;
+  let thirdPartyCookie;
 
   const prepareInternalData = config => {
     const internalData = {
@@ -504,9 +506,7 @@
       getAlertWithId(currentAlerts, settings.id)
     ) {
       console.error(
-        `The alert with id '${
-          settings.id
-        }' already exists in a queue, therefore it won't be displayed `
+        `The alert with id '${settings.id}' already exists in a queue, therefore it won't be displayed `
       );
       return Promise.reject();
     }
@@ -984,6 +984,27 @@
       simpleSlideInNav = true;
     } else if (responsiveNavSetting === 'semiCollapsible') {
       document.body.classList.add('lui-semiCollapsible');
+    }
+
+    thirdPartyCookie = LuigiConfig.getConfigValue(
+      'settings.thirdPartyCookiesScriptLocation'
+    );
+    if (thirdPartyCookie) {
+      let thirdPartyCookieCheckIframe = document.createElement('iframe');
+      thirdPartyCookieCheckIframe.width = '0px';
+      thirdPartyCookieCheckIframe.height = '0px';
+      document.body.appendChild(thirdPartyCookieCheckIframe);
+      thirdPartyCookieCheckIframe.src = thirdPartyCookie;
+      thirdPartyCookieCheckIframe.onload = function() {
+        if (thirdPartyCookiesStatus() === 'disabled') {
+          const alert = {
+            text: 'Third Party Cookies are not enabled.',
+            type: 'warning'
+          };
+          showAlert(alert);
+        }
+        document.body.removeChild(thirdPartyCookieCheckIframe);
+      };
     }
   });
 

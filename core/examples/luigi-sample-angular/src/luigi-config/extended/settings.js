@@ -13,6 +13,7 @@ class Settings {
   };
   responsiveNavigation = 'simpleMobileOnly'; // Options: simple | simpleMobileOnly | semiCollapsible
   sideNavFooterText = `Luigi Client: ${version || 'unknown'}`;
+  //thirdPartyCookiesScriptLocation = 'https://johannesdoberer.gitlab.io/pexit/init.html';
   // allowRules = ['microphone'];
   // iframeCreationInterceptor = (iframe, viewGroup, navigationNode, microFrontendType) => { };
   // hideNavigation = true
