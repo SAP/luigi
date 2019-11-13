@@ -133,7 +133,7 @@
 			background-color: rgba(45, 235, 138, 0.08);
 
 			&::before {
-				background-image: url('/assets/icon_info.svg');
+				background-image: url('/images/icon_info.svg');
 			}
 		}
 
@@ -141,7 +141,7 @@
 			background-color: rgba(247, 216, 96, 0.08);
 
 			&::before {
-				background-image: url('/assets/icon_alert.svg');
+				background-image: url('/images/icon_alert.svg');
 			}
 		}
 
