@@ -6,7 +6,7 @@ if (location.port == '4000') {
 }
 
 const getDocuItems = () => {
-  return fetch('/navigation-children2.json')
+  return fetch('/navigation-nodes.json')
         .then(function(response) {
           return response.json();
         })

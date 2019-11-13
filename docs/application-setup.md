@@ -4,9 +4,9 @@ Prior to start developing with Luigi, you need to set up your application. This 
 
 Choose the framework to build your application:
 
-[Application setup without a framework](#noframework) <br>
-[Angular 6](#angular6)<br>
-[SAPUI5/OpenUI5](#sapui5)<br>
+[Application setup without a framework](#noframework)  
+[Angular 6](#angular6)  
+[SAPUI5/OpenUI5](#sapui5)  
 [VUE.JS](#vuejs)
 
 ## Basic application setup
