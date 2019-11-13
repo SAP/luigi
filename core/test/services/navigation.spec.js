@@ -271,6 +271,109 @@ describe('Navigation', function() {
     });
   });
 
+  describe('buildNode', () => {
+    //need to add more cases
+    const nodeNamesInCurrentPath = 'projects';
+    const nodesInCurrentPath = [
+      {
+        children: [
+          {
+            pathSegment: 'projects',
+            label: 'Projects',
+            viewUrl: '/projects',
+            children: [
+              {
+                navigationContext: 'project',
+                pathSegment: 'pr1',
+                label: 'Project One',
+                viewUrl: '/projects/pr1',
+                context: {}
+              },
+              {
+                navigationContext: 'project',
+                pathSegment: 'pr2',
+                label: 'Project Two',
+                viewUrl: '/projects/pr2',
+                context: {}
+              }
+            ]
+          },
+          {
+            pathSegment: 'groups',
+            label: 'Groups',
+            viewUrl: '/groups',
+            children: [
+              {
+                navigationContext: 'group',
+                pathSegment: 'gr1',
+                label: 'Group One',
+                viewUrl: '/groups/gr1',
+                context: {}
+              },
+              {
+                navigationContext: 'group',
+                pathSegment: 'gr2',
+                label: 'Group Two',
+                viewUrl: '/groups/gr2',
+                context: {}
+              }
+            ]
+          }
+        ]
+      },
+      {
+        pathSegment: 'projects',
+        label: 'Projects',
+        viewUrl: '/projects',
+        children: [
+          {
+            navigationContext: 'project',
+            pathSegment: 'pr1',
+            label: 'Project One',
+            viewUrl: '/projects/pr1',
+            context: {}
+          },
+          {
+            navigationContext: 'project',
+            pathSegment: 'pr2',
+            label: 'Project Two',
+            viewUrl: '/projects/pr2',
+            context: {}
+          }
+        ]
+      }
+    ];
+    const childrenOfCurrentNode = [
+      {
+        navigationContext: 'project',
+        pathSegment: 'pr1',
+        label: 'Project One',
+        viewUrl: '/projects/pr1',
+        context: {}
+      },
+      {
+        navigationContext: 'project',
+        pathSegment: 'pr2',
+        label: 'Project Two',
+        viewUrl: '/projects/pr2',
+        context: {}
+      }
+    ];
+    const context = {};
+    it('should build node', async () => {
+      const result = await Navigation.buildNode(
+        nodeNamesInCurrentPath,
+        nodesInCurrentPath,
+        childrenOfCurrentNode,
+        context
+      );
+      expect(result.navigationPath.length).to.be.equal(2);
+      expect(result.navigationPath[1].children.length).to.be.equal(2);
+      expect(result.pathParams).to.be.deep.equal({});
+      expect(result.navigationPath[1].label).to.be.equal('Projects');
+    });
+  });
+
   describe('findMatchingNode', () => {
     it('with dynamic path, does not substitute values', () => {
       // given
