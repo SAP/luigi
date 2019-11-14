@@ -8,7 +8,6 @@
     "dev:config": "npm run build:config -- --watch",
     "dev:luigi": "sirv static/luigi --single --dev --cors --port 4000",
     "debug:sapper": "PORT=4001 node --inspect node_modules/sapper/dist/cli.js dev",
-    "build:sapper": "NODE_ENV=production sapper build",
     "build:config": "webpack --config webpack-generateConfig.config",
     "export:sapper": "NODE_ENV=production sapper export --basepath /docu-microfrontend && sh ./scripts/move-export.sh",
     "export:serve": "sirv public --single --dev --cors --port 5000",

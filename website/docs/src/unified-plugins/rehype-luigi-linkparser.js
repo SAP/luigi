@@ -21,7 +21,7 @@ export default function luigiLinkParser(options) {
   }
 
   function prependForExport() {
-    if (process.NODE_ENV == 'production') {
+    if (process.env.NODE_ENV == 'production') {
       return '/docu-microfrontend';
     } else {
       return '';
@@ -39,6 +39,7 @@ export default function luigiLinkParser(options) {
         // internal link
         // sample links: https://..., file.md, should not start with /file.md or ../file.md
         node.properties['onclick'] = 'navigateInternal(event, this)';
+        node.properties['data-linktype'] = 'internal';
         
         let newHref = parsed.href.replace(githubMaster + 'docs/', '');
 
