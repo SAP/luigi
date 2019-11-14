@@ -20,6 +20,14 @@ export default function luigiLinkParser(options) {
     });
   }
 
+  function prependForExport() {
+    if (process.NODE_ENV == 'production') {
+      return '/docu-microfrontend';
+    } else {
+      return '';
+    }
+  }
+
   function modify(node, prop) {
     const githubMaster = 'https://github.com/SAP/luigi/blob/master/';
     if (has(node, prop)) {
@@ -32,14 +40,13 @@ export default function luigiLinkParser(options) {
         // sample links: https://..., file.md, should not start with /file.md or ../file.md
         node.properties['onclick'] = 'navigateInternal(event, this)';
         
-        let newHref = parsed.href.replace(githubMaster + 'docs/', '').replace('.md', '');
+        let newHref = parsed.href.replace(githubMaster + 'docs/', '');
 
         // clean ./ from beginning of the link
         if(newHref.startsWith('./')) {
           newHref = newHref.substr(2);
         }
-
-        const newUrl = url.parse('/docs/' + newHref);
+        const newUrl = url.parse(prependForExport() + '/docs/' + newHref);
         // parsed.href does not work currently with # anchor link links
         node.properties['href'] = newUrl.pathname;
       } else if (parsed.protocol) {
@@ -48,7 +55,7 @@ export default function luigiLinkParser(options) {
         node.properties['target'] = '_blank';
       } else if (parsed.hash && !parsed.pathname && !parsed.hostname) {
         // current page anchor link
-        node.properties['href'] = '/docs/' + settings.shortName + parsed.hash;
+        node.properties['href'] = prependForExport() + '/docs/' + settings.shortName + parsed.hash;
       } else if (parsed.pathname && (
         parsed.pathname.startsWith('../') || parsed.pathname.startsWith('/')
       )) {

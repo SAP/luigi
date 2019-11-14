@@ -8,5 +8,5 @@ sapper.start({
 window.navigateInternal = (evt, elem) => {
 	evt.preventDefault();
 	evt.stopPropagation();
-	LuigiClient.linkManager().navigate(elem.getAttribute('href'));
+	LuigiClient.linkManager().navigate(elem.getAttribute('href').replace('/docu-microfrontend', '').replace('.md', ''));
 }
