@@ -960,6 +960,16 @@
           );
         }
       }
+
+      if ('luigi.third-party-cookie' === e.data.msg) {
+        if (e.data.tcp === 'disabled') {
+          const alert = {
+            text: 'Third Party Cookies are not enabled.',
+            type: 'warning'
+          };
+          showAlert(alert);
+        }
+      }
     });
 
     // listeners are not automatically removed — cancel

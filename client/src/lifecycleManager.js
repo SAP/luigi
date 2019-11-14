@@ -91,12 +91,17 @@ class LifecycleManager extends LuigiClientBase {
         helpers.sendPostMessageToLuigiCore({ msg: 'luigi.navigate.ok' });
       });
 
-      helpers.setThirdPartyCookieCheck();
-      let cookies = document.cookie;
-      console.log('cookies ', cookies);
-      if (document.cookie === 'luigiCookie=true') {
-        window.parent.postMessage({ msg: 'luigi.third-party-cookie' }, '*');
+      document.cookie = 'luigiCookie=true';
+      let cookies = document.cookie.split('; ');
+      let luigiCookie = '';
+      let tcp = 'enabled';
+      luigiCookie = cookies.find(cookie => cookie === 'luigiCookie=true');
+      if (luigiCookie !== 'luigiCookie=true') {
+        tcp = 'disabled';
       }
+
+      window.parent.postMessage({ msg: 'luigi.third-party-cookie', tcp }, '*');
+      document.cookie = 'luigiCookie=; Max-Age=-99999999;';
       /**
        * Get context once initially
        * @private

@@ -106,10 +106,6 @@ class Helpers {
   sendPostMessageToLuigiCore(msg) {
     window.parent.postMessage(msg, this.origin);
   }
-
-  setThirdPartyCookieCheck() {
-    document.cookie = 'luigiCookie=true';
-  }
 }
 
 export const helpers = new Helpers();
