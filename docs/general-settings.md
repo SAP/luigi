@@ -77,5 +77,5 @@ For example, to allow 'fullscreen' for non-modal iframes:
 There are two possibilities to check the third party cookie support from user's browser.
 
 - **thirdPartyCookiesScriptLocation** is the URL to the page containing third-party cookies support check.
-To detect whether the user's browser supports the mechanism, use the script in the third-party-cookies catalog. Deploy these files on a domain different from your main application's and set thirdPartyCookiesScriptLocation to the init.html file. During initialization, Luigi detects the cookies support and produces an alert if cookies are disabled in the user's browser.
+To detect whether the user's browser supports the mechanism, use the script in the third-party cookies catalog. Deploy these files on a domain different from your main application's and set **thirdPartyCookiesScriptLocation** to the `init.html` file. During initialization, Luigi detects cookies support and produces an alert if cookies are disabled in the user's browser.
 * **thirdPartyCookieDetection** is a flag to check if third party cookies are supported. When set to `true`, Luigi detects during initialization of an external microfrontend the cookie support and produces an alert if cookies are disabled in the user's browsers.
