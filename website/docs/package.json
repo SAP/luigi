@@ -17,7 +17,7 @@
     "cy:run": "cypress run",
     "cy:open": "cypress open",
     "mock:develop-plugins": "NODE_ENV=debug node -r esm scripts/markdown.unified-preview.js",
-    "mock:develop-plugins:watch": "NODE_ENV=debug nodemon -r esm scripts/markdown.unified-preview.js"
+    "mock:develop-plugins:watch": "NODE_ENV=debug nodemon --ignore 'static/**' -r esm scripts/markdown.unified-preview.js"
   },
   "dependencies": {
     "@kyma-project/luigi-client": "^0.6.0",
@@ -45,6 +45,7 @@
     "css-loader": "^3.2.0",
     "esm": "^3.2.25",
     "fiori-fundamentals": "^1.7.1",
+    "lodash.orderby": "^4.6.0",
     "mini-css-extract-plugin": "^0.8.0",
     "node-sass": "^4.12.0",
     "npm-run-all": "^4.1.5",
@@ -56,6 +57,7 @@
     "rehype-slug": "^2.0.3",
     "rehype-stringify": "^6.0.0",
     "remark": "^11.0.1",
+    "remark-frontmatter": "^1.3.2",
     "remark-html": "^10.0.0",
     "remark-parse": "^7.0.1",
     "remark-preset-lint-markdown-style-guide": "^2.1.3",
