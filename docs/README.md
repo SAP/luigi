@@ -32,7 +32,7 @@ The following guides outline Luigi Core API features and additional UI o
 
 Luigi Client enables you to connect micro frontends to an already existing Luigi Core application.
 
-[Installation](https://github.com/SAP/luigi/tree/master/client) shows you how to install the Luigi Client.
+[Installation](luigi-client-setup.md) shows you how to install the Luigi Client.
 
 Read the Luigi Client API documentation to learn more about the functions and parameters you can use to communicate with the core application:
 
