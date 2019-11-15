@@ -145,6 +145,7 @@
   let tabNav;
   let resizeTabNavToggle = false;
   let thirdPartyCookie;
+  let thirdPartyCookieDetection;
 
   const prepareInternalData = config => {
     const internalData = {
@@ -960,9 +961,11 @@
           );
         }
       }
-
-      if ('luigi.third-party-cookie' === e.data.msg) {
-        if (e.data.tcp === 'disabled') {
+      if (
+        thirdPartyCookieDetection &&
+        'luigi.third-party-cookie' === e.data.msg
+      ) {
+        if (e.data.tpc === 'disabled') {
           const alert = {
             text: 'Third Party Cookies are not enabled.',
             type: 'warning'
@@ -995,7 +998,9 @@
     } else if (responsiveNavSetting === 'semiCollapsible') {
       document.body.classList.add('lui-semiCollapsible');
     }
-
+    thirdPartyCookieDetection = LuigiConfig.getConfigValue(
+      'settings.thirdPartyCookieDetection'
+    );
     thirdPartyCookie = LuigiConfig.getConfigValue(
       'settings.thirdPartyCookiesScriptLocation'
     );

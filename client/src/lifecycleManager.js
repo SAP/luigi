@@ -90,18 +90,6 @@ class LifecycleManager extends LuigiClientBase {
         this._notifyUpdate();
         helpers.sendPostMessageToLuigiCore({ msg: 'luigi.navigate.ok' });
       });
-
-      document.cookie = 'luigiCookie=true';
-      let cookies = document.cookie.split('; ');
-      let luigiCookie = '';
-      let tcp = 'enabled';
-      luigiCookie = cookies.find(cookie => cookie === 'luigiCookie=true');
-      if (luigiCookie !== 'luigiCookie=true') {
-        tcp = 'disabled';
-      }
-
-      window.parent.postMessage({ msg: 'luigi.third-party-cookie', tcp }, '*');
-      document.cookie = 'luigiCookie=; Max-Age=-99999999;';
       /**
        * Get context once initially
        * @private
@@ -112,6 +100,24 @@ class LifecycleManager extends LuigiClientBase {
         },
         '*'
       );
+      setTimeout(() => {
+        let tpc = 'enabled';
+        try {
+          localStorage.setItem('luigi-tpc-detection', true);
+          window.parent.postMessage(
+            { msg: 'luigi.third-party-cookie', tpc },
+            '*'
+          );
+          localStorage.removeItem('luigi-tpc-detection');
+        } catch (err) {
+          tpc = 'disabled';
+          window.parent.postMessage(
+            { msg: 'luigi.third-party-cookie', tpc },
+            '*'
+          );
+          console.warn('Third party cookies are not supported!');
+        }
+      });
     };
 
     luigiClientInit();

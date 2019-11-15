@@ -25,7 +25,8 @@ settings: {
   allowRules: ['microphone'],
   appLoadingIndicator: {
     hideAutomatically: true
-  }
+  },
+  thirdPartyCookiesScriptLocation: 'someUrlWhereInit_htmlAndComplent_htmlAreHosted',
 }
 ```
 
@@ -70,3 +71,11 @@ For example, to allow 'fullscreen' for non-modal iframes:
 ```
 * **allowRules** is an array of rules for the content in the iframe, managed by the HTML **allow** attribute. You can use one or more rules by adding them to the array, for example `allowRules: ['microphone', 'camera']`. Be aware that this mechanism requires the browser to support [Feature Policy](https://developer.mozilla.org/en-US/docs/Web/HTTP/Feature_Policy).
 * **appLoadingIndicator.hideAutomatically** allows you to disable automatic hiding of the app loading indicator, which is enabled by default in case the app loading indicator is being used. Take a look at the [App loading indicator](luigi-ux-features.md#app-loading-indicator) section on how to use this feature.
+
+### Third-party cookies support check
+
+There are two possibilities to check the third party cookie support from user's browser.
+
+- **thirdPartyCookiesScriptLocation** is the URL to the page containing third-party cookies support check.
+To detect whether the user's browser supports the mechanism, use the script in the third-party-cookies catalog. Deploy these files on a domain different from your main application's and set thirdPartyCookiesScriptLocation to the init.html file. During initialization, Luigi detects the cookies support and produces an alert if cookies are disabled in the user's browser.
+* **thirdPartyCookieDetection** is a flag to check if third party cookies are supported. When set to `true`, Luigi detects during initialization of an external microfrontend the cookie support and produces an alert if cookies are disabled in the user's browsers.
