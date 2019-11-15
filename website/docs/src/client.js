@@ -15,7 +15,7 @@ LuigiClient.addInitListener((ctx) => {
 	const links = document.querySelectorAll('a[data-linktype]');
 	if (links) {
 		links.forEach((link, index) => {
-			if (link.getAttribute('data-linktype') === 'internal' && index < 4) {
+			if (link.getAttribute('data-linktype') === 'internal') {
 				const url = new URL(link.href);
 				link.setAttribute('href', ctx.coreBaseUrl + url.pathname.replace('.md', '').replace('/docu-microfrontend', ''));
 			}
