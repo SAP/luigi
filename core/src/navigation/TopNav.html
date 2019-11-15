@@ -32,7 +32,10 @@
         class="fd-shellbar__action fd-shellbar__action--hide fd-shellbar__action--collapsible"
       >
         <div class="fd-popover fd-popover--right">
-          <div class="fd-popover__control" on:click|stopPropagation="{() => {}}">
+          <div
+            class="fd-popover__control"
+            on:click|stopPropagation="{() => {}}"
+          >
             <button
               title="{getNodeLabel(node)}"
               class="fd-button--shell {node === selectedNode ? 'is-selected' : ''}"
@@ -51,6 +54,7 @@
               <img
                 class="fd-top-nav__icon nav-icon"
                 src="{node.icon}"
+                alt="{node.altText ? node.altText : ''}"
               >
               {/if}
               <!-- end hasOpenUIicon-->
@@ -92,6 +96,7 @@
           <img
             class="fd-top-nav__icon nav-icon"
             src="{node.icon}"
+            alt="{node.altText ? node.altText : ''}"
           >
           {/if}
           <!-- end hasOpenUIicon-->
@@ -118,7 +123,10 @@
       <div class="fd-shellbar__action fd-shellbar__action--collapse">
         <div class="fd-shellbar-collapse">
           <div class="fd-popover fd-popover--right">
-            <div class="fd-popover__control" on:click|stopPropagation="{() => {}}">
+            <div
+              class="fd-popover__control"
+              on:click|stopPropagation="{() => {}}"
+            >
               <div
                 class="fd-shellbar-collapse--control"
                 aria-controls="eYVEJ960"
@@ -158,7 +166,10 @@
                         class="fd-top-nav__icon {node.icon && hasOpenUIicon(node) ? 'sap-icon--' + node.icon + ' sap-icon--m' : '' }"
                       >
                         {#if !hasOpenUIicon(node)}
-                        <img src="{node.icon}">
+                        <img
+                          src="{node.icon}"
+                          alt="{node.altText ? node.altText : ''}"
+                        >
                         {/if}
                         <BadgeCounter {node}/>
                       </span>
@@ -177,7 +188,10 @@
                         class="fd-top-nav__icon {node.icon && hasOpenUIicon(node) ? 'sap-icon--' + node.icon + ' sap-icon--m' : '' }"
                       >
                         {#if !hasOpenUIicon(node)}
-                        <img src="{node.icon}">
+                        <img
+                          src="{node.icon}"
+                          alt="{node.altText ? node.altText : ''}"
+                        >
                         {/if}
                         <BadgeCounter {node}/>
                       </span>
@@ -221,12 +235,16 @@
                         class="fd-top-nav__icon sap-icon--{productSwitcherConfig.icon || 'grid'} sap-icon--m"
                       ></span>
                       {:else}
-                      <img
-                        class="fd-top-nav__icon nav-icon"
-                        src="{productSwitcherConfig.icon}"
+                      <span
+                        class="fd-top-nav__icon"
                       >
+                        <img
+                          src="{productSwitcherConfig.icon}"
+                          alt="{productSwitcherConfig.altText ? productSwitcherConfig.altText : ''}"
+                        >
+                      </span>
                       {/if}
-                      {productSwitcherConfig.label}
+                      <span>{productSwitcherConfig.label}</span>
                     </a>
                   </li>
                   {/if}
@@ -260,7 +278,10 @@
       >
         <div class="fd-user-menu">
           <div class="fd-popover">
-            <div class="fd-popover__control" on:click|stopPropagation="{() => {}}">
+            <div
+              class="fd-popover__control"
+              on:click|stopPropagation="{() => {}}"
+            >
               <div class="{userInfo.picture ? 'fd-user-menu__control' : '' }">
                 <button
                   class="fd-button--shell {!userInfo.picture?'sap-icon--customer':'fd-identifier fd-identifier--xs fd-identifier--circle'}"
@@ -303,8 +324,8 @@
   isHidden="{true}"
   {urlAuthError}
 />
-{/if}
 
+{/if}
 <script>
   import LogoTitle from './LogoTitle.html';
   import BadgeCounter from './BadgeCounter.html';
@@ -312,7 +333,12 @@
   import TopNavDropDown from '../TopNavDropDown.html';
   import ContextSwitcher from './ContextSwitcher.html';
   import ProductSwitcher from './ProductSwitcher.html';
-  import { beforeUpdate, createEventDispatcher, onMount, getContext } from 'svelte';
+  import {
+    beforeUpdate,
+    createEventDispatcher,
+    onMount,
+    getContext
+  } from 'svelte';
   import { LuigiAuth, LuigiConfig, LuigiI18N } from '../core-api';
   import {
     AuthHelpers,
@@ -365,11 +391,21 @@
       store,
       () => {
         authorizationEnabled = LuigiAuth.isAuthorizationEnabled();
-        profileItemsAvailable = LuigiConfig.getConfigValue('navigation.profile');
-        autologinEnabled = !Boolean(LuigiConfig.getConfigValue('auth.disableAutoLogin'));
-        isProductSwitcherAvailable = LuigiConfig.getConfigValue('navigation.productSwitcher');
-        hideNavComponent = LuigiConfig.getConfigBooleanValue('settings.hideNavigation');
-        responsiveNavSetting = LuigiConfig.getConfigValue('settings.responsiveNavigation');
+        profileItemsAvailable = LuigiConfig.getConfigValue(
+          'navigation.profile'
+        );
+        autologinEnabled = !Boolean(
+          LuigiConfig.getConfigValue('auth.disableAutoLogin')
+        );
+        isProductSwitcherAvailable = LuigiConfig.getConfigValue(
+          'navigation.productSwitcher'
+        );
+        hideNavComponent = LuigiConfig.getConfigBooleanValue(
+          'settings.hideNavigation'
+        );
+        responsiveNavSetting = LuigiConfig.getConfigValue(
+          'settings.responsiveNavigation'
+        );
         productSwitcherConfig = NavigationHelpers.getProductSwitcherConfig();
       },
       ['navigation']
@@ -391,7 +427,8 @@
   });
 
   export let showTopNav;
-  $: showTopNav = (authorizationEnabled && (!autologinEnabled || isLoggedIn)) ||
+  $: showTopNav =
+    (authorizationEnabled && (!autologinEnabled || isLoggedIn)) ||
     !authorizationEnabled;
 
   function hasOpenUIicon(node) {

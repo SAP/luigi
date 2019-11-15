@@ -172,6 +172,7 @@ class NavigationHelpersClass {
         if (cats[catLabel]) {
           if (!cats[catLabel].icon) {
             cats[catLabel].icon = node.category.icon;
+            cats[catLabel].altText = node.category.altText;
           }
           if (hasBadge && !cats[catLabel].badgeCounter) {
             cats[catLabel].badgeCounter = {
@@ -188,6 +189,7 @@ class NavigationHelpersClass {
             isCat: true,
             label: catLabel,
             icon: node.category.icon,
+            altText: node.category.altText,
             children: [],
             badgeCounter: hasBadge && { label: '', count: () => badgeCount }
           };

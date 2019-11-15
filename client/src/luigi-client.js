@@ -46,6 +46,12 @@ class LuigiClient {
   removeCustomMessageListener(listenerId) {
     return lifecycleManager.removeCustomMessageListener(listenerId);
   }
+  addInactiveListener(messageId, listener) {
+    return lifecycleManager.addInactiveListener(messageId, listener);
+  }
+  removeInactiveListener(listenerId) {
+    return lifecycleManager.removeInactiveListener(listenerId);
+  }
   /**
    * @private
    */

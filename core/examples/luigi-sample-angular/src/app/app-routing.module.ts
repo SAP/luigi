@@ -18,8 +18,10 @@ import { DynamicComponent } from './project/dynamic/dynamic.component';
 import { HideSideNavComponent } from './project/hide-side-nav/hide-side-nav.component';
 import { AnonymousComponent } from './anonymous/anonymous.component';
 import { OnNodeActivationComponent } from './onNodeActivation/onNodeActivation.component';
+import { PreloadComponent } from './preload/preload.component';
 
 const routes: Routes = [
+  { path: 'preload', component: PreloadComponent },
   { path: 'overview', component: OverviewComponent },
   { path: 'projects', component: ProjectComponent },
   { path: 'settings', component: SettingsComponent },

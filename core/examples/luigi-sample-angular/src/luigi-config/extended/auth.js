@@ -11,6 +11,8 @@ class Auth {
    */
   use = 'mockAuth';
 
+  storage = 'localStorage'; // localStorage, sessionStorage, none
+
   disableAutoLogin = false;
 
   mockAuth = {

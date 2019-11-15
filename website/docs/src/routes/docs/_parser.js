@@ -1,14 +1,5 @@
-import unified from 'unified';
-import markdown from 'remark-parse';
-import remark2rehype from 'remark-rehype';
-import raw from 'rehype-raw';
-import doc from 'rehype-document';
-import format from 'rehype-format';
-import html from 'rehype-stringify';
-// import highlight from 'rehype-highlight'
-import section from '@agentofuser/rehype-section';
+import { MarkdownSvc } from '../../services/markdown.service';
 import { readdirSync, readFileSync, writeFileSync } from 'fs';
-import path from 'path';
 
 let parsedDocs;
 export function getParsedDocs() {
@@ -20,37 +11,36 @@ export function getParsedDocs() {
     return Promise.resolve(JSON.stringify(parsedDocs));
   });
 }
+// let parsedReadMeDoc;
+// export function getParsedReadMeDoc() {
+//   if (parsedReadMeDoc) {
+//     return Promise.resolve(JSON.stringify(parsedReadMeDoc));
+//   }
+//   return setParsedReadMeDoc().then((doc) => {
+//     parsedReadMeDoc = doc;
+//     return Promise.resolve(JSON.stringify(parsedReadMeDoc));
+//   });
+// }
 
 function setParsedDocs() {
   const dir = './../../docs';
   const parsingArr = [];
   readdirSync(dir)
-    .filter(name => name !== 'README.md')
+    // .filter(name => name !== 'README.md')
     .filter(name => name.endsWith('.md'))
     .map(name => {
       const mdContent = readFileSync(dir + '/' + name);
-
       parsingArr.push(new Promise((resolve) => {
-        unified()
-          .use(markdown)
-          .use(remark2rehype, {allowDangerousHTML: true})
-          .use(raw)
-          .use(doc)
-          .use(format)
-          // .use(highlight)
-          .use(section)
-          .use(html)
-          .process(String(mdContent), function (err, file) {
-            // console.error(report(err || file))
-            resolve({
-              name,
-              shortName: name.replace('.md', ''),
-              // file,
-              contents: file.contents
-            });
-          })
+        const shortName = name.replace('.md', '');
+        MarkdownSvc.process(mdContent, { shortName }).then((contents) => {
+          resolve({
+            name,
+            shortName,
+            // file,
+            contents
+          });
         })
-      )
+      }));
     });
   
   return Promise.all(parsingArr)
@@ -63,14 +53,35 @@ function setParsedDocs() {
           pathSegment: name,
           navigationContext: 'doc',
           keepSelectedForChildren: true,
-          viewUrl: `__BASE_URL__/docs/${name}`,
-          context: {
-            doc: name
-          }
+          viewUrl: `__BASE_URL__/docs/${name}`
         }));
-      writeFileSync('./static/luigi/navigation-children.json', JSON.stringify(navChildren, null, 2));
+      writeFileSync('./static/luigi/navigation-children-raw.json', JSON.stringify(navChildren, null, 2));
 
       // return for sapper
       return Promise.resolve(files);
     });
 }
+
+// function setParsedReadMeDoc() {
+//   const dir = './../../docs';
+//   let parsingArr;
+//   readdirSync(dir)
+//     .find(name => {
+//       if(name == 'README.md') {
+//         const mdContent = readFileSync(dir + '/' + name);
+//         parsingArr = new Promise((resolve) => {
+//           MarkdownSvc.process(mdContent).then((contents) => {
+//             resolve({
+//               contents
+//             });
+//           })
+//         });
+//       }
+//     });
+    
+//   return parsingArr
+//     .then((file) => {
+//       // return for sapper
+//       return file;
+//     });
+// }

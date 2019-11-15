@@ -147,6 +147,10 @@ loadingIndicator: {
 - **type**: string
 - **description**: the name of an icon, without the `sap-icon--` prefix. Its source may be [OpenUI](https://openui5.hana.ondemand.com/1.40.10/iconExplorer.html) or a custom link (relative or absolute) to an image. The icon is displayed next to the node label in the side navigation or instead of the label in the top navigation.
 
+### altText
+- **type**: string
+- **description**: adds the HTML `alt` attribute to an icon. Note that this property only applies to icons with a defined absolute or relative path.
+
 ### hideSideNav
 - **type**: boolean
 - **description**: if set to `true`, the left navigation disappears when you click the affected node. It is set to `false` by default.
@@ -165,6 +169,7 @@ loadingIndicator: {
 - **attributes**:
   - **label** is a string that represents the title of the category.
   - **icon** is the name of an icon, without the `sap-icon--` prefix. Its source may be [OpenUI](https://openui5.hana.ondemand.com/1.40.10/iconExplorer.html) or a custom link (relative or absolute) to an image. The icon is displayed next to the node label in the side navigation or instead of the label in the top navigation. In case you accidentally define different icons in a category group, only the first one is used.
+  - **altText** adds the HTML `alt` attribute to an icon. Note that this property only applies to icons with a defined absolute or relative path.
   - **collapsible** if set to `true`, category items are hidden at first. To expand them, click the main category node.
   - **testId** is a string where you can define your own custom `testId`. If nothing is specified, it is the node's label written as one word in lower case, for example`label`.
 
@@ -248,6 +253,7 @@ The profile section is a configurable drop-down list available in the top naviga
   - **label** overrides the text for the logout item. The default value is "Sign Out".
   - **testId** is a string where you can define your own custom `testId`. If nothing is specified, it is the node's label written as one word and lower case (e.g. `label`).
   - **icon** overrides the icon for the logout item. The default value is [SAP UI5 log icon](https://sapui5.hana.ondemand.com/test-resources/sap/m/demokit/iconExplorer/webapp/index.html#/overview/SAP-icons/?tag=logout).
+  - **altText** adds the HTML `alt` attribute to an icon. Note that this property only applies to icons with a defined absolute or relative path.
   - **customLogoutFn** defines a function to implement your own logout functionality. Use this function only if no IDP is configured. If you define IDP with a corresponding [logout function](authorization-configuration.md), the **customLogoutFn** set for a profile is ignored.
 
 ### items
@@ -257,6 +263,7 @@ The profile section is a configurable drop-down list available in the top naviga
   - **label** defines the text for the link.
   - **testId** is a string where you can define your own custom `testId`. If nothing is specified, it is the node's label written as one word and lower case (e.g. `label`).
   - **icon** is the name of an icon from the [OpenUI](https://openui5.hana.ondemand.com/1.40.10/iconExplorer.html) or a custom link (relative or absolute) to an image displayed next to the label or instead of it.
+  - **altText** adds the HTML `alt` attribute to an icon. Note that this property only applies to icons with a defined absolute or relative path.
   - **link** defines an absolute link to a **node**.
   - **externalLink** is an object which indicates that the node links to an external URL. If this parameter
  is defined, the **link** parameter
@@ -287,6 +294,10 @@ The product switcher is a pop-up window available in the top navigation bar. It 
 - **type**: string
 - **description**: the name of an icon, without the `sap-icon--` prefix. Its source may be [OpenUI](https://openui5.hana.ondemand.com/1.40.10/iconExplorer.html) or a custom link (relative or absolute) to an image. The icon is displayed without label in the top navigation.
 
+### altText
+- **type**: string
+- **description**: adds the HTML `alt` attribute to an icon. Note that this property only applies to icons with a defined absolute or relative path.
+
 ### items
 - **type**: array
 - **description**: an array of objects, each one being a link to a Luigi navigation node or an external URL. An item can have several attributes.
@@ -294,6 +305,7 @@ The product switcher is a pop-up window available in the top navigation bar. It 
   - **label** defines the text for the link.
   - **testId** is a string where you can define your own custom `testId`. If nothing is specified, it is the node's label written as one word and lower case (e.g. `label`).
   - **icon** is the name of an icon from the [OpenUI](https://openui5.hana.ondemand.com/1.40.10/iconExplorer.html) or a custom link (relative or absolute) to an image displayed next to the label or instead of it.
+  - **altText** adds the HTML `alt` attribute to an icon. Note that this property only applies to icons with a defined absolute or relative path.
   - **link** defines an absolute link to a **node**.
   - **externalLink** is an object which indicates that the node links to an external URL. If this parameter
  is defined, the **link** parameter

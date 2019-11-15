@@ -246,6 +246,7 @@ Authorization helpers
 #### isAuthorizationEnabled
 
 Detects if authorization is enabled via configuration.
+Read more about [custom authorization providers](authorization-configuration.md).
 
 ##### Examples
 
@@ -254,6 +255,94 @@ Luigi.auth().isAuthorizationEnabled();
 ```
 
 Returns **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)** true if authorization is enabled. Otherwise returns false.
+
+### AuthorizationStore
+
+Authorization Storage helpers, to be used in your custom authorization provider.
+Read more about [custom authorization providers](authorization-configuration.md#implement-a-custom-authorization-provider).
+
+#### getStorageKey
+
+Retrieves the key name that is used to store the auth data.
+
+##### Examples
+
+```javascript
+Luigi.auth().store.getStorageKey()
+```
+
+Returns **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** name of the store key
+
+#### getStorageType
+
+Retrieves the storage type that is used to store the auth data.
+
+##### Examples
+
+```javascript
+Luigi.auth().store.getStorageType()
+```
+
+Returns **(`"localStorage"` \| `"sessionStorage"` \| `"none"`)** storage type
+
+#### getAuthData
+
+Retrieves the current auth object.
+
+##### Examples
+
+```javascript
+Luigi.auth().store.getAuthData()
+```
+
+Returns **[AuthData](#authdata)** the current auth data object
+
+#### setAuthData
+
+Sets autorization data
+
+##### Parameters
+
+-   `data` **[AuthData](#authdata)** new auth data object
+
+##### Examples
+
+```javascript
+Luigi.auth().store.setAuthData(data)
+```
+
+#### removeAuthData
+
+Clears autorization data from store
+
+##### Examples
+
+```javascript
+Luigi.auth().store.removeAuthData()
+```
+
+#### setNewlyAuthorized
+
+Defines a new authorization session. Must be triggered after initial `setAuthData()` in order to trigger **onAuthSuccessful** event after login.
+
+##### Examples
+
+```javascript
+Luigi.auth().store.setNewlyAuthorized()
+```
+
+### AuthData
+
+Authorization object that is stored in auth store and used within Luigi. It is then available in [LuigiClient.addInitListener](luigi-client-api.md#addInitListener) and can also be used in the Core configuration.
+
+Type: [Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
+
+#### Properties
+
+-   `accessToken` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** access token value
+-   `accessTokenExpirationDate` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** timestamp value
+-   `scope` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** scope, can be empty if it is not required
+-   `idToken` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** id token, used for renewing authentication
 
 ## Luigi.navigation()
 

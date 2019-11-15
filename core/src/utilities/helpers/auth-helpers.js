@@ -1,13 +1,14 @@
+import { AuthStoreSvc } from '../../services';
 import { LuigiAuth } from '../../core-api';
 import { GenericHelpers } from './';
 
 class AuthHelpersClass {
   getStoredAuthData() {
-    return JSON.parse(localStorage.getItem('luigi.auth'));
+    return AuthStoreSvc.getAuthData();
   }
 
   isLoggedIn() {
-    const storedAuthData = JSON.parse(localStorage.getItem('luigi.auth'));
+    const storedAuthData = this.getStoredAuthData();
     const isAuthValid = () =>
       storedAuthData.accessTokenExpirationDate > Number(new Date());
     return storedAuthData && isAuthValid();

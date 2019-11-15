@@ -27,6 +27,7 @@
         <img
           class="fd-top-nav__icon nav-icon"
           src="{profileItem.icon}"
+          alt="{profileItem.altText ? profileItem.altText : ''}"
         >
         {/if}
         {/if}
@@ -46,6 +47,7 @@
         <img
           class="fd-top-nav__icon nav-icon"
           src="{profileNav.logout.icon}"
+          alt="{profileNav.logout.altText ? profileNav.logout.altText : ''}"
         >
         {/if}
         {/if}
@@ -64,13 +66,13 @@
 <script>
   import { createEventDispatcher, onMount, getContext } from 'svelte';
   import { LuigiAuth, LuigiConfig } from './core-api';
-  import { Routing } from './services/routing';
   import {
     AuthHelpers,
     GenericHelpers,
     NavigationHelpers,
     StateHelpers
   } from './utilities/helpers';
+  import { AuthStoreSvc, Routing } from './services';
   import { oAuth2ImplicitGrant } from './providers/auth/oAuth2ImplicitGrant';
   import { openIdConnect } from './providers/auth/openIdConnect';
   import { TOP_NAV_DEFAULTS } from './utilities/luigi-config-defaults';
@@ -98,8 +100,6 @@
     'getUnsavedChangesModalPromise'
   );
 
-  const newlyAuthorized = () =>
-    JSON.parse(localStorage.getItem('luigi.newlyAuthorized'));
   const isAuthValid = () =>
     AuthHelpers.getStoredAuthData().accessTokenExpirationDate >
     Number(new Date());
@@ -216,8 +216,8 @@
       const hasAuthSuccessFulFn = GenericHelpers.isFunction(
         LuigiConfig.getConfigValue('auth.events.onAuthSuccessful')
       );
-      if (hasAuthSuccessFulFn && newlyAuthorized()) {
-        localStorage.removeItem('luigi.newlyAuthorized');
+      if (hasAuthSuccessFulFn && AuthStoreSvc.isNewlyAuthorized) {
+        AuthStoreSvc.removeNewlyAuthorized();
         await LuigiAuth.handleAuthEvent(
           'onAuthSuccessful',
           idpProviderSettings,
@@ -330,7 +330,7 @@
   export function startAuthorization() {
     if (idpProviderInstance) {
       idpProviderInstance.login().then(res => {
-        localStorage.setItem('luigi.newlyAuthorized', true);
+        AuthStoreSvc.setNewlyAuthorized();
         if (res) {
           alert(res);
         }
@@ -367,7 +367,7 @@
         redirectUrl
       );
       isLoggedIn = false;
-      localStorage.removeItem('luigi.auth');
+      AuthStoreSvc.removeAuthData();
     };
     const customLogoutFn = LuigiConfig.getConfigValue(
       `auth.${LuigiConfig.getConfigValue('auth.use')}.logoutFn`

@@ -21,6 +21,8 @@ jobs:
         - lerna bootstrap --ci --ignore "*luigi-example-vue" || travis_terminate 1
         - lerna run bundle --ignore "*luigi-example-vue" || travis_terminate 1
         - lerna run bundlesizeOnly --ignore "*luigi-example-vue" || travis_terminate 1
+        - ls -lah $TRAVIS_BUILD_DIR/core/examples/luigi-sample-angular/node_modules/@kyma-project
+        - cat $TRAVIS_BUILD_DIR/core/examples/luigi-sample-angular/node_modules/@kyma-project/luigi-client/package.json
         - lerna run build --ignore "*luigi-example-vue" || travis_terminate 1
         - npm test --prefix core || travis_terminate 1
         - du -sh

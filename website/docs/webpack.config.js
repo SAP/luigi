@@ -4,6 +4,12 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 // const CleanWebpackPlugin = require('clean-webpack-plugin');
 
+const sveltePreprocess = require('svelte-preprocess');
+
+const preprocess = sveltePreprocess({
+  // postcss: true,
+});
+
 const config = require('sapper/config/webpack.js');
 const pkg = require('./package.json');
 const commonRules = require('./webpack-common-rules');
@@ -14,8 +20,6 @@ const dev = mode === 'development';
 const alias = { svelte: path.resolve('node_modules', 'svelte') };
 const extensions = ['.mjs', '.js', '.json', '.svelte', '.html'];
 const mainFields = ['svelte', 'module', 'browser', 'main'];
-// console.log('entry', config.client.entry());
-console.log('output', config.client.output());
 
 module.exports = {
 	client: {
@@ -31,12 +35,12 @@ module.exports = {
 						options: {
 							dev,
 							hydratable: true,
-							hotReload: false // pending https://github.com/sveltejs/svelte/issues/2377
+							hotReload: false, // pending https://github.com/sveltejs/svelte/issues/2377
+							preprocess
 						}
 					}
 				},
 				commonRules.babel,
-				// commonRules.svelte,
 				commonRules.css,
 				commonRules.urls
 			]
@@ -78,12 +82,12 @@ module.exports = {
 						options: {
 							css: false,
 							generate: 'ssr',
-							dev
+							dev,
+							preprocess
 						}
 					}
 				},
 				commonRules.babel,
-				// commonRules.svelte,
 				commonRules.css,
 				commonRules.urls
 			]
