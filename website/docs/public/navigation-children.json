@@ -1,5 +1,15 @@
 [
   {
+    "label": "README",
+    "pathSegment": "README",
+    "navigationContext": "doc",
+    "keepSelectedForChildren": true,
+    "viewUrl": "__BASE_URL__/docs/README",
+    "context": {
+      "doc": "README"
+    }
+  },
+  {
     "label": "application-setup",
     "pathSegment": "application-setup",
     "navigationContext": "doc",

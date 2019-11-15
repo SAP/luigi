@@ -18,7 +18,6 @@
 		box-sizing: border-box;
 	}
 
-
 	:global(body) {
 		background-color: white;
 		margin: 0;
@@ -160,14 +159,13 @@
 			width: 1px;
 			min-width: 100%;
 			*width: 100%;
+			-webkit-overflow-scrolling: touch;
 			border: 1px solid $powder-blue;
 			background-color: rgba(237, 242, 247, 0.1);
 			padding: 25px;
 			box-sizing: border-box;
 			border-radius: 6px;
 			margin-bottom: 40px;
-			-webkit-overflow-scrolling: touch;
-
 
 			code {
 				word-break: normal;

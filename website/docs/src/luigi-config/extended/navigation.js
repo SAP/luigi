@@ -27,7 +27,10 @@ class Navigation {
       pathSegment: 'docs',
       label: 'Documentation',
       viewUrl: baseUrl + '/docs',
-      children: getDocuItems()
+      children: getDocuItems(),
+      context: {
+        coreBaseUrl: window.location.origin
+      }
     },
     {
       label: 'About Luigi',

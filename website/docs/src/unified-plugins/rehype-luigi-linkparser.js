@@ -1,18 +1,84 @@
 import has from 'hast-util-has-property';
 import url from 'url';
 import visit from 'unist-util-visit';
+import fs from 'fs';
 
-export default function transform() {
+let log = () => {}
+if (process.env.NODE_ENV === 'debug') {
+  const debugFile =  __dirname + '/debug.log';
+  fs.writeFileSync(debugFile, '');
+  log = (text = '') => {
+    fs.appendFileSync(debugFile, text);
+  }
+}
+
+export default function luigiLinkParser(options) {
+  var settings = options || {};
   return function transformer(tree) {
     visit(tree, 'element', function (node) {
       modify(node, 'href');
     });
   }
 
+  function prependForExport() {
+    if (process.env.NODE_ENV == 'production') {
+      return '/docu-microfrontend';
+    } else {
+      return '';
+    }
+  }
+
   function modify(node, prop) {
+    const githubMaster = 'https://github.com/SAP/luigi/blob/master/';
     if (has(node, prop)) {
       var parsed = url.parse(node.properties[prop]);
-      // console.log(prop, 'parsed', parsed);
+      if (
+        parsed.href.startsWith(githubMaster + 'docs') && parsed.pathname && parsed.pathname.endsWith('.md') ||
+        parsed.pathname && parsed.pathname.endsWith('.md') 
+      ) {
+        // internal link
+        // sample links: https://..., file.md, should not start with /file.md or ../file.md
+        node.properties['onclick'] = 'navigateInternal(event, this)';
+        node.properties['data-linktype'] = 'internal';
+        
+        let newHref = parsed.href.replace(githubMaster + 'docs/', '');
+
+        // clean ./ from beginning of the link
+        if(newHref.startsWith('./')) {
+          newHref = newHref.substr(2);
+        }
+        const newUrl = url.parse(prependForExport() + '/docs/' + newHref);
+        // parsed.href does not work currently with # anchor link links
+        node.properties['href'] = newUrl.pathname;
+      } else if (parsed.protocol) {
+        // external link
+        node.properties['rel'] = 'external';
+        node.properties['target'] = '_blank';
+      } else if (parsed.hash && !parsed.pathname && !parsed.hostname) {
+        // current page anchor link
+        node.properties['href'] = prependForExport() + '/docs/' + settings.shortName + parsed.hash;
+      } else if (parsed.pathname && (
+        parsed.pathname.startsWith('../') || parsed.pathname.startsWith('/')
+      )) {
+        // internal absolute link, probably to some raw file
+        let newHref = parsed.href;
+        // remove .. if its leading
+        if(newHref.startsWith('../')) {
+          newHref = newHref.substr(2);
+        }
+        // remove leading slash
+        newHref = newHref.substr(1);
+
+        node.properties['href'] = githubMaster + newHref;
+        node.properties['rel'] = 'external';
+        node.properties['target'] = '_blank';
+      } else {
+        console.log('========= UNMATCHED HREF FOUND ============');
+        console.log('href', parsed.href);
+        console.log(parsed);
+        console.log('========= Warning saved to debug.log ============');
+        log(parsed.href + ' on ' + JSON.stringify(node) + '\n');
+      }
       // node.properties[prop] = fn(parsed)
       // add logic here
     }
