@@ -54,6 +54,20 @@
     }
   },
   {
+    "label": "Configuration Example",
+    "pathSegment": "navigation-configuration-example",
+    "navigationContext": "doc",
+    "keepSelectedForChildren": true,
+    "hideFromNav": true,
+    "viewUrl": "__BASE_URL__/docs/navigation-configuration-example",
+    "context": {
+      "doc": "navigation-configuration-example"
+    },
+    "category": {
+      "label": "Luigi Core"
+    }
+  },
+  {
     "label": "Advanced navigation",
     "pathSegment": "navigation-advanced",
     "navigationContext": "doc",

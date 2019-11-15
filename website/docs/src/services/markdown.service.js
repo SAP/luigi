@@ -2,10 +2,9 @@ import unified from 'unified';
 import markdown from 'remark-parse';
 import remark2rehype from 'remark-rehype';
 import raw from 'rehype-raw';
-import doc from 'rehype-document';
 import format from 'rehype-format';
 import html from 'rehype-stringify';
-import slug from 'rehype-slug';
+import addIdsToHeadings from 'rehype-slug';
 
 import luigiLinkParser from '../unified-plugins/rehype-luigi-linkparser';
 
@@ -18,14 +17,13 @@ class MarkdownService {
     return new Promise((resolve) => {
       unified()
         .use(markdown)
-        .use(remark2rehype)
-        // .use(remark2rehype, {allowDangerousHTML: true})
-        // .use(raw)
-        .use(luigiLinkParser)
+        .use(remark2rehype, {allowDangerousHTML: true})
+        .use(raw)
+        .use(luigiLinkParser, data)
         .use(section)
         // .use(highlight)
+        .use(addIdsToHeadings)
         .use(format)
-        // .use(doc, { title: data.name })
         .use(html)
         .process(String(value), function (err, file) {
           // console.error(report(err || file))
