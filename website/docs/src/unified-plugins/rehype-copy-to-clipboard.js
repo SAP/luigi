@@ -1,5 +1,6 @@
 import h from 'hastscript';
 import visit from 'unist-util-visit';
+import { prependForExport } from './plugin-helpers';
 
 export default function addCopyToClipboard() {
   return function transformer(tree) {
@@ -15,7 +16,7 @@ export default function addCopyToClipboard() {
       const newNodeData = h('div.copyCodeContainer', [
         h('a.copyCode', { onclick: 'copyCode(event, this)' }, 
           [h('div', [
-            h('img', { src: '/images/copy-clipboard-default.svg' }),
+            h('img', { src: prependForExport() + '/images/copy-clipboard-default.svg' }),
             h('.popoverCopy', [
               'Click to copy'
             ])]
