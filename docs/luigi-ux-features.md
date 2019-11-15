@@ -1,3 +1,12 @@
+<!-- meta
+{
+  "label": "UI features",
+  "category": "Luigi Core",
+  "categoryPosition": 2,
+  "position": 8
+}
+meta -->
+
 
 # Luigi UX features
 

@@ -21,7 +21,7 @@ class MarkdownService {
     return new Promise((resolve, reject) => {
       unified()
         .use(markdown)
-        .use(frontmatter, ['yaml', 'toml'])
+        .use(frontmatter, {type: 'json', fence: {open: '<!-- meta', close: 'meta -->'}})
         // .use(logger)
         .use(luigiNavigationBuilder, data)
         .use(remark2rehype, {allowDangerousHTML: true})

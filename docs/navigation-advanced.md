@@ -1,3 +1,12 @@
+<!-- meta
+{
+  "label": "Advanced navigation",
+  "category": "Luigi Core",
+  "categoryPosition": 2,
+  "position": 4
+}
+meta -->
+
 # Advanced navigation
 
 This document shows you how to configure the following Luigi features:

@@ -1,3 +1,12 @@
+<!-- meta
+{
+  "label": "Overview",
+  "category": "Basics",
+  "categoryPosition": 1,
+  "position": 0
+}
+meta -->
+
 # Luigi Documentation
 
 If you are new to Luigi, read the [Getting started guide](getting-started.md) to learn more about its structure and key features.

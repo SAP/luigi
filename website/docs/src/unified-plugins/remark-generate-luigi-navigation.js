@@ -1,18 +1,22 @@
 import visit from 'unist-util-visit';
-import { writeFileSync, readFileSync } from 'fs';
+import { writeFileSync, readFileSync, readdirSync } from 'fs';
 import orderBy from 'lodash.orderby';
 
-const staticLuigiFolder = __dirname + '/../../static/luigi/';
+const staticLuigiFolder = 'static/luigi/';
 const navigationFile = staticLuigiFolder + 'navigation-generated.json';
-writeFileSync(navigationFile, '[]');
+const staticNavigation = readFileSync(staticLuigiFolder + 'navigation-nodes.json');
+
+// initially write static navigation items to file
+writeFileSync(navigationFile, String(staticNavigation));
 
 export default function luigiNavigationBuilder(data = {}) {
   
   return function transformer(tree) {
     const navItems = JSON.parse(readFileSync(navigationFile));
-    visit(tree, 'yaml', function (node) {
-      const navData = Object.assign({}, data, parseYaml(node.value));
+    visit(tree, ['json'], function (node) {
+      const navData = Object.assign({}, data, parseFrontmatter(node.value));
       navItems.push(generateNavItem(navData));
+      node.value = ''; // clear, to not produce html output
     });
     
     // sort by metaData.categoryPosition AND metaData.position
@@ -43,17 +47,7 @@ export default function luigiNavigationBuilder(data = {}) {
     return navItem;
   }
 
-  function parseYaml(str) {
-    const valueArr = str
-      .split('\n')
-      .map(line => {
-        return line.split(':')
-          .map(v => v.trim());
-      });
-    const values = {};
-    valueArr.forEach(v => {
-      values[v[0]] = v[1];
-    });
-    return values;
+  function parseFrontmatter(str) {
+    return JSON.parse(str);
   }
 }

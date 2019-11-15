@@ -1,3 +1,13 @@
+<!-- meta
+{
+  "label": "Client Setup",
+  "category": "Luigi Client",
+  "categoryPosition": 3,
+  "position": 2,
+  "hideFromNav": true
+}
+meta -->
+
 # Luigi Client Installation
 
 Luigi Client contains a library that allows your application to use all features of the Luigi framework.

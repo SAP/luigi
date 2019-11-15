@@ -1,3 +1,12 @@
+<!-- meta
+{
+  "label": "Routing",
+  "category": "Luigi Core",
+  "categoryPosition": 2,
+  "position": 5
+}
+meta -->
+
 # Navigation parameters reference
 
 <!-- add-attribute:class:success -->

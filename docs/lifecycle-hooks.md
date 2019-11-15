@@ -1,3 +1,12 @@
+<!-- meta
+{
+  "label": "Lifecycle hooks",
+  "category": "Luigi Core",
+  "categoryPosition": 2,
+  "position": 8
+}
+meta -->
+
 # Lifecycle hooks
 
 You can use any of the Luigi lifecycle hooks by adding additional setup to the root of the Luigi configuration object. Here is an example:

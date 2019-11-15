@@ -1,3 +1,12 @@
+<!-- meta
+{
+  "label": "Installation",
+  "category": "Luigi Core",
+  "categoryPosition": 2,
+  "position": 1
+}
+meta -->
+
 # Application setup
 
 Prior to start developing with Luigi, you need to set up your application. This document shows you how to set up a web application using the Luigi micro frontend framework.

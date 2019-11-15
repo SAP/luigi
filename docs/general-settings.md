@@ -1,3 +1,12 @@
+<!-- meta
+{
+  "label": "General settings",
+  "category": "Luigi Core",
+  "categoryPosition": 2,
+  "position": 7
+}
+meta -->
+
 # General settings
 
 <!-- add-attribute:class:success -->

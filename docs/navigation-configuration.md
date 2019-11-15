@@ -1,3 +1,12 @@
+<!-- meta
+{
+  "label": "Basic navigation",
+  "category": "Luigi Core",
+  "categoryPosition": 2,
+  "position": 2
+}
+meta -->
+
 #  Basic navigation configuration
 
 Read these guides to get started with configuring your navigation:

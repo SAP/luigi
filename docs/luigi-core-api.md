@@ -1,3 +1,12 @@
+<!-- meta
+{
+  "label": "API",
+  "category": "Luigi Core",
+  "categoryPosition": 2,
+  "position": 9
+}
+meta -->
+
 # Luigi Core API
 
 ## Luigi Config

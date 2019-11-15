@@ -1,3 +1,12 @@
+<!-- meta
+{
+  "label": "Getting started",
+  "category": "Basics",
+  "categoryPosition": 1,
+  "position": 1
+}
+meta -->
+
 # Getting started
 
 ## What is Luigi?
