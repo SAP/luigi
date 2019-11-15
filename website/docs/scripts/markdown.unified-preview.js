@@ -3,8 +3,8 @@ import { readdirSync, readFileSync } from 'fs';
 
 const filesToProcess = [
   // 'plain.md',
-  // 'links.md',
-  'codeblocks.md',
+  // 'codeblocks.md',
+  'links.md',
   // 'link.md',
 ];
 

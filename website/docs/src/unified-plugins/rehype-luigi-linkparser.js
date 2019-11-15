@@ -1,15 +1,15 @@
 import has from 'hast-util-has-property';
 import url from 'url';
 import visit from 'unist-util-visit';
-import fs from 'fs';
+import { writeFileSync, appendFileSync } from 'fs';
 import { prependForExport } from './plugin-helpers';
 
 let log = () => {}
 if (process.env.NODE_ENV === 'debug') {
   const debugFile =  __dirname + '/debug.log';
-  fs.writeFileSync(debugFile, '');
+  writeFileSync(debugFile, '');
   log = (text = '') => {
-    fs.appendFileSync(debugFile, text);
+    appendFileSync(debugFile, text);
   }
 }
 
