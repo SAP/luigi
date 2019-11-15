@@ -31,10 +31,11 @@ function setParsedDocs() {
     .map(name => {
       const mdContent = readFileSync(dir + '/' + name);
       parsingArr.push(new Promise((resolve) => {
-        MarkdownSvc.process(mdContent).then((contents) => {
+        const shortName = name.replace('.md', '');
+        MarkdownSvc.process(mdContent, { shortName }).then((contents) => {
           resolve({
             name,
-            shortName: name.replace('.md', ''),
+            shortName,
             // file,
             contents
           });
@@ -52,12 +53,9 @@ function setParsedDocs() {
           pathSegment: name,
           navigationContext: 'doc',
           keepSelectedForChildren: true,
-          viewUrl: `__BASE_URL__/docs/${name}`,
-          context: {
-            doc: name
-          }
+          viewUrl: `__BASE_URL__/docs/${name}`
         }));
-      writeFileSync('./static/luigi/navigation-children.json', JSON.stringify(navChildren, null, 2));
+      writeFileSync('./static/luigi/navigation-children-raw.json', JSON.stringify(navChildren, null, 2));
 
       // return for sapper
       return Promise.resolve(files);
