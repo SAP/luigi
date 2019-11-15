@@ -206,7 +206,7 @@
 			width: 1px;
 			min-width: 100%;
 			*width: 100%;
-			// overflow-x: auto;
+			overflow-x: auto;
 			-webkit-overflow-scrolling: touch;
 			border: 1px solid $powder-blue;
 			background-color: rgba(237, 242, 247, 0.1);

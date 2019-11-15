@@ -5,13 +5,6 @@ sapper.start({
 	target: document.querySelector('#sapper')
 });
 
-window.navigateInternal = (evt, elem) => {
-	evt.preventDefault();
-	evt.stopPropagation();
-	LuigiClient.linkManager().navigate(elem.getAttribute('href'));
-}
-
-
 const selectText = (node) => {
 	if (document.body.createTextRange) {
 		const range = document.body.createTextRange();
@@ -37,3 +30,15 @@ window.copyCode = (evt, elem) => {
 		console.error('Browser copy command not supported?', e);
 	}
 }
+
+LuigiClient.addInitListener((ctx) => {
+	const links = document.querySelectorAll('a[data-linktype]');
+	if (links) {
+		links.forEach((link, index) => {
+			if (link.getAttribute('data-linktype') === 'internal') {
+				const url = new URL(link.href);
+				link.setAttribute('href', ctx.coreBaseUrl + url.pathname.replace('.md', '').replace('/docu-microfrontend', ''));
+			}
+		});
+	}
+});
