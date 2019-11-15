@@ -26,7 +26,7 @@ settings: {
   appLoadingIndicator: {
     hideAutomatically: true
   },
-  thirdPartyCookiesScriptLocation: 'someUrlWhereInit_htmlAndComplent_htmlAreHosted',
+  thirdPartyCookiesScriptLocation: 'someUrlWhereInit_htmlAndCompete_htmlAreHosted',
 }
 ```
 
