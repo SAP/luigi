@@ -64,27 +64,6 @@ export const projectDetailNavStructure = projectId => [
     viewUrl: '/sampleapp.html#/projects/' + projectId + '/developers',
     icon: '/assets/favicon-sap.ico'
   },
-  // {
-  //   pathSegment: 'pexit',
-  //   label: 'Pexit',
-  //   category: 'Fun',
-  //   loadingIndicator: {
-  //     enabled: false
-  //   },
-  //   icon: 'pending',
-  //   isolateView: true,
-  //   viewUrl: 'https://johannesdoberer.gitlab.io/pexit/'
-  // },
-  {
-    pathSegment: 'externallocalmf',
-    label: 'externalMF Local',
-    viewUrl: 'http://localhost:8080'
-  },
-  {
-    pathSegment: 'externalmf',
-    label: 'externalMF external',
-    viewUrl: 'https://johannesdoberer.gitlab.io/externalmf'
-  },
   {
     pathSegment: 'clientPermissionsTets',
     label: 'ClientPermissionsTets',
