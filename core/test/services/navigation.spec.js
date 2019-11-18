@@ -448,6 +448,69 @@ describe('Navigation', function() {
       sinon.assert.calledOnce(console.error);
     });
   });
+  describe('getNodes', () => {
+    let children;
+    let pathData;
+    before(() => {
+      children = [];
+      pathData = [];
+    });
+    afterEach(() => {
+      // reset
+      sinon.restore();
+      sinon.reset();
+    });
+    it('should not fail, returns empty array if empty nav was found', () => {
+      const result = Navigation.getNodes(children, pathData);
+      expect(result).to.be.empty;
+    });
+    it('should not fail, returns nested node children if children is empty', () => {
+      pathData = [
+        {
+          children: [{ pathSegment: 'overview' }, { pathSegment: 'projects' }]
+        },
+        {
+          pathSegment: 'projects',
+          children: [
+            {
+              pathSegment: 'settings1'
+            }
+          ]
+        },
+        {
+          pathSegment: 'settings2'
+        }
+      ];
+      const result = Navigation.getNodes(children, pathData);
+      expect(result).to.be.deep.equal([{ pathSegment: 'settings1' }]);
+    });
+    it('should not fail, returns children if pathData is empty', () => {
+      children = [{ pathSegment: 'overview' }, { pathSegment: 'projects' }];
+      const result = Navigation.getNodes(children, pathData);
+      expect(result).to.be.deep.equal([
+        { pathSegment: 'overview' },
+        { pathSegment: 'projects' }
+      ]);
+    });
+    it('returns children on standard usecase', () => {
+      children = [{ pathSegment: 'settings1' }];
+      pathData = [
+        {
+          children: [{ pathSegment: 'overview' }, { pathSegment: 'projects' }]
+        },
+        {
+          pathSegment: 'projects',
+          children: [
+            {
+              pathSegment: 'settings1'
+            }
+          ]
+        }
+      ];
+      const result = Navigation.getNodes(children, pathData);
+      expect(result).to.be.deep.equal([{ pathSegment: 'settings1' }]);
+    });
+  });
   describe('getLeftNavData', () => {
     it('returns empty object if no pathData was found (empty nav)', async () => {
       const res = await Navigation.getLeftNavData({ pathData: [] });
