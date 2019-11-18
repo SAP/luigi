@@ -1,5 +1,6 @@
 # Navigation parameters reference
 
+<!-- add-attribute:class:success -->
 > **NOTE:** To see the navigation parameters in use, see the [navigation configuration example](navigation-configuration-example.md) or configure a test application in the [Luigi Fiddle](https://fiddle.luigi-project.io).
 
 Use the parameters and functions in this reference to configure your Luigi navigation structure.
