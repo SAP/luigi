@@ -3,15 +3,18 @@ import { readdirSync, readFileSync } from 'fs';
 
 const filesToProcess = [
   // 'plain.md',
-  'links.md',
+  // 'links.md',
   // 'link.md',
+  // 'codeblocks.md',
+  'custom-attributes.md',
 ];
 
 filesToProcess.forEach(async (name) => {
   const fileContent = readFileSync(__dirname + '/mocks/' + name);
-  const result = await MarkdownSvc.process(String(fileContent), { shortName: name.replace('.md', '') });
-  console.log(`============== ${name} =================`);
-  console.log(result)
-  console.log(`============ end: ${name} ==============`);
-  console.log('');
+  MarkdownSvc.process(String(fileContent), { shortName: name.replace('.md', '') }).then(result => {
+    console.log(`============== ${name} =================`);
+    console.log(result)
+    console.log(`============ end: ${name} ==============`);
+    console.log('');
+  }).catch(e => console.error);
 });

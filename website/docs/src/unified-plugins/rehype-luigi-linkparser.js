@@ -1,31 +1,25 @@
 import has from 'hast-util-has-property';
 import url from 'url';
 import visit from 'unist-util-visit';
-import fs from 'fs';
+import { writeFileSync, appendFileSync } from 'fs';
+import { prependForExport } from './plugin-helpers';
 
 let log = () => {}
 if (process.env.NODE_ENV === 'debug') {
   const debugFile =  __dirname + '/debug.log';
-  fs.writeFileSync(debugFile, '');
+  writeFileSync(debugFile, '');
   log = (text = '') => {
-    fs.appendFileSync(debugFile, text);
+    appendFileSync(debugFile, text);
   }
 }
 
 export default function luigiLinkParser(options) {
   var settings = options || {};
+
   return function transformer(tree) {
     visit(tree, 'element', function (node) {
       modify(node, 'href');
     });
-  }
-
-  function prependForExport() {
-    if (process.env.NODE_ENV == 'production') {
-      return '/docu-microfrontend';
-    } else {
-      return '';
-    }
   }
 
   function modify(node, prop) {
@@ -41,7 +35,7 @@ export default function luigiLinkParser(options) {
         node.properties['onclick'] = 'navigateInternal(event, this)';
         node.properties['data-linktype'] = 'internal';
         
-        let newHref = parsed.href.replace(githubMaster + 'docs/', '');
+        let newHref = parsed.href.replace(githubMaster + 'docs/', '').replace('.md', '');
 
         // clean ./ from beginning of the link
         if(newHref.startsWith('./')) {
