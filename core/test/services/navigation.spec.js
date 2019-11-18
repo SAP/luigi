@@ -621,6 +621,58 @@ describe('Navigation', function() {
       expect(result.___0[1].pathSegment).to.be.equal('category');
     });
   });
+  describe('getTruncatedChildren', () => {
+    let children;
+    before(() => {
+      children = [];
+    });
+    afterEach(() => {
+      // reset
+      sinon.restore();
+      sinon.reset();
+    });
+    it('should not fail, returns empty array if children not provided', () => {
+      const result = Navigation.getTruncatedChildren(children);
+      expect(result).to.be.deep.equal([]);
+    });
+    it('returns children if tabNav is true', () => {
+      children = [
+        { 1: '1' },
+        { 2: '2', tabNav: true },
+        { 3: '3' },
+        { 4: '4' },
+        { 5: '5' }
+      ];
+      const result = Navigation.getTruncatedChildren(children);
+      expect(result).to.be.deep.equal([{ 1: '1' }, { 2: '2', tabNav: true }]);
+    });
+    it('returns children if keepSelectedForChildren is true', () => {
+      children = [
+        { 1: '1' },
+        { 2: '2' },
+        { 3: '3', keepSelectedForChildren: true },
+        { 4: '4' },
+        { 5: '5' }
+      ];
+      const result = Navigation.getTruncatedChildren(children);
+      expect(result).to.be.deep.equal([
+        { 1: '1' },
+        { 2: '2' },
+        { 3: '3', keepSelectedForChildren: true }
+      ]);
+    });
+    it('returns children if keepSelectedForChildren and tabNav are true', () => {
+      children = [
+        { 1: '1' },
+        { 2: '2', tabNav: true },
+        { 3: '3', keepSelectedForChildren: true },
+        { 4: '4' },
+        { 5: '5' }
+      ];
+      const result = Navigation.getTruncatedChildren(children);
+      expect(result).to.be.deep.equal([{ 1: '1' }, { 2: '2', tabNav: true }]);
+    });
+  });
   describe('getLeftNavData', () => {
     it('returns empty object if no pathData was found (empty nav)', async () => {
       const res = await Navigation.getLeftNavData({ pathData: [] });
