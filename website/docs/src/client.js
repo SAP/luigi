@@ -5,12 +5,6 @@ sapper.start({
 	target: document.querySelector('#sapper')
 });
 
-window.navigateInternal = (evt, elem) => {
-	evt.preventDefault();
-	evt.stopPropagation();
-	LuigiClient.linkManager().navigate(elem.getAttribute('href'));
-}
-
 const selectText = (node) => {
 	if (document.body.createTextRange) {
 		const range = document.body.createTextRange();
@@ -26,6 +20,7 @@ const selectText = (node) => {
 		console.warn("Could not select text in node: Unsupported browser.");
 	}
 }
+
 window.copyCode = (evt, elem) => {
 	evt.preventDefault();
 	evt.stopPropagation();
@@ -46,5 +41,11 @@ LuigiClient.addInitListener((ctx) => {
 				link.setAttribute('href', ctx.coreBaseUrl + url.pathname.replace('.md', '').replace('/docu-microfrontend', ''));
 			}
 		});
+	}
+
+	window.navigateInternal = (evt, elem) => {
+		evt.preventDefault();
+		evt.stopPropagation();
+		LuigiClient.linkManager().navigate(elem.getAttribute('href').replace(ctx.coreBaseUrl, '').replace('.md', '').replace('/docu-microfrontend', ''));
 	}
 });

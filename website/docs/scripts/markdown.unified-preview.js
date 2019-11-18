@@ -9,7 +9,7 @@ const filesToProcess = [
   // 'custom-attributes.md',
   'frontmatter-3.md',
   'frontmatter-2.md',
-  'frontmatter.md',
+  'frontmatter.md'
 ];
 
 filesToProcess.forEach(async (name) => {
