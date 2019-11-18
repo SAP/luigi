@@ -99,6 +99,53 @@
 			}
 		}
 
+		blockquote {
+			padding: 20px;
+			border-radius: 6px;
+			p {
+				padding: 0;
+				margin: 0;
+			}
+		}
+
+		blockquote.success,
+		blockquote.warning {
+			position: relative;
+			padding-left: 60px;
+			p {
+				padding: 0;
+				margin: 0;
+			}
+			&::before {
+				content: "";
+				position: absolute;
+				display: block;
+				width: 24px;
+				height: 24px;
+				top: 20px;
+				left: 20px;
+				background-position: center center;
+				background-size: contain;
+				background-repeat: no-repeat;
+			}
+		}
+
+		blockquote.success {
+			background-color: rgba(45, 235, 138, 0.08);
+
+			&::before {
+				background-image: url('images/icon_info.svg');
+			}
+		}
+
+		blockquote.warning {
+			background-color: rgba(247, 216, 96, 0.08);
+
+			&::before {
+				background-image: url('images/icon_alert.svg');
+			}
+		}
+
 		ul {
 			list-style: none;
 			padding: 0 0 0 15px;
@@ -155,10 +202,11 @@
 		pre {
 			width: 100%;
 			display: block;
-			overflow-x: auto;
+			position: relative;
 			width: 1px;
 			min-width: 100%;
 			*width: 100%;
+			overflow-x: auto;
 			-webkit-overflow-scrolling: touch;
 			border: 1px solid $powder-blue;
 			background-color: rgba(237, 242, 247, 0.1);
@@ -168,12 +216,84 @@
 			margin-bottom: 40px;
 
 			code {
+				overflow-x: auto;
 				word-break: normal;
 				white-space: pre;
 				overflow-wrap: normal;
 				background: none;
 				border-radius: 0;
 				padding: 0;
+			}
+
+			.copyCode {
+				position: absolute;
+				right: -10px;
+				top: -10px;
+				width: 28px;
+				height: 28px;
+				border-radius: 50%;
+				background-color: $primary-color;
+				border: 1px $primary-color solid;
+				box-shadow: 0 0 4px 0 $primary-color;
+				cursor: pointer;
+				& > div {
+					position: relative;
+					display: flex;
+					align-items: center;
+					justify-content: center;
+					height: 100%;
+					width: 100%;
+				}
+				img {
+					width: 13px;
+					height: 16px;
+				}
+				.popoverCopy {
+					position: absolute;
+					bottom: -36px;
+					font-family: 'Open Sans', sans-serif;
+					display: none;
+					font-size: 11px;
+					line-height: 13px;
+					color: $secondary-color;
+					background-color: white;
+					border: 1px $primary-color solid;
+					padding: 5px 11px;
+					// Arrow needs to be added
+					&:before {
+						content: ' ';
+						height: 0;
+						width: 0;
+						position: absolute;
+						bottom: 100%;
+						left: 34px;
+						width: 0;
+						height: 0;
+						border: 10px solid transparent;
+						border-bottom-color: $primary-color;
+					}
+					// cutout
+					&:after {
+						content: ' ';
+						height: 0;
+						width: 0;
+						position: absolute;
+						bottom: 100%;
+						left: 35px;
+						width: 0;
+						height: 0;
+						border: 9px solid transparent;
+						border-bottom-color: white;
+						background-color: transparent;
+					}
+				}
+				&:hover {
+					background-color: white;
+					border-color: $primary-color;
+					.popoverCopy {
+						display: block;
+					}
+				}
 			}
 		}
 

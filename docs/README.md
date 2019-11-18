@@ -10,6 +10,7 @@ Luigi Core enables you to create web applications with an easily configurable an
 
 ### Configuration
 
+<!-- add-attribute:class:success -->
 > **TIP:** [Luigi Fiddle](https://fiddle.luigi-project.io) allows you to configure a very simple application and get a feel for the process.
 
 To configure your Luigi application, simply edit the files in the `luigi-config` folder of your project. Luigi configuration is divided into several sections, which are outlined in the guides below:
