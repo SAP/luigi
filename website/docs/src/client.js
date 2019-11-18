@@ -41,4 +41,9 @@ LuigiClient.addInitListener((ctx) => {
 			}
 		});
 	}
+	window.navigateInternal = (evt, elem) => {
+		evt.preventDefault();
+		evt.stopPropagation();
+		LuigiClient.linkManager().navigate(new URL(elem.getAttribute('href')).pathname);
+	}
 });
