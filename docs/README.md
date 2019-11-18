@@ -1,9 +1,15 @@
 <!-- meta
 {
-  "label": "Overview",
-  "category": "Basics",
-  "categoryPosition": 1,
-  "position": 0
+  "node": {
+    "label": "Overview",
+    "category": {
+      "label": "Basics"
+    },
+    "metaData": {
+      "categoryPosition": 1,
+      "position": 0
+    }
+  }
 }
 meta -->
 

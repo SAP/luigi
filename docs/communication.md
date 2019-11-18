@@ -1,9 +1,15 @@
 <!-- meta
 {
-  "label": "Custom messages",
-  "category": "Luigi Client",
-  "categoryPosition": 3,
-  "position": 3
+  "node": {
+    "label": "Custom messages",
+    "category": {
+      "label": "Luigi Client"
+    },
+    "metaData": {
+      "categoryPosition": 3,
+      "position": 3
+    }
+  }
 }
 meta -->
 

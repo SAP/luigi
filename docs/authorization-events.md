@@ -1,9 +1,15 @@
 <!-- meta
 {
-  "label": "Authorization events",
-  "category": "Luigi Core",
-  "categoryPosition": 2,
-  "position": 6
+  "node": {
+    "label": "Authorization events",
+    "category": {
+      "label": "Luigi Core"
+    },
+    "metaData": {
+      "categoryPosition": 2,
+      "position": 6
+    }
+  }
 }
 meta -->
 

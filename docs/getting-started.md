@@ -1,9 +1,15 @@
 <!-- meta
 {
-  "label": "Getting started",
-  "category": "Basics",
-  "categoryPosition": 1,
-  "position": 1
+  "node": {
+    "label": "Getting started",
+    "category": {
+      "label": "Basics"
+    },
+    "metaData": {
+      "categoryPosition": 1,
+      "position": 1
+    }
+  }
 }
 meta -->
 

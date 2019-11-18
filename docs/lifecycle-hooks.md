@@ -1,9 +1,15 @@
 <!-- meta
 {
-  "label": "Lifecycle hooks",
-  "category": "Luigi Core",
-  "categoryPosition": 2,
-  "position": 8
+  "node": {
+    "label": "Lifecycle hooks",
+    "category": {
+      "label": "Luigi Core"
+    },
+    "metaData": {
+      "categoryPosition": 2,
+      "position": 8
+    }
+  }
 }
 meta -->
 

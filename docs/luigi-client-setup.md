@@ -1,10 +1,16 @@
 <!-- meta
 {
-  "label": "Client Setup",
-  "category": "Luigi Client",
-  "categoryPosition": 3,
-  "position": 2,
-  "hideFromNav": true
+  "node": {
+    "label": "Client Setup",
+    "category": {
+      "label": "Luigi Client"
+    },
+    "metaData": {
+      "categoryPosition": 3,
+      "position": 2
+    },
+    "hideFromNav": true
+  }
 }
 meta -->
 

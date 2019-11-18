@@ -1,9 +1,15 @@
 <!-- meta
 {
-  "label": "API",
-  "category": "Luigi Client",
-  "categoryPosition": 3,
-  "position": 2
+  "node": {
+    "label": "API",
+    "category": {
+      "label": "Luigi Client"
+    },
+    "metaData": {
+      "categoryPosition": 3,
+      "position": 2
+    }
+  }
 }
 meta -->
 

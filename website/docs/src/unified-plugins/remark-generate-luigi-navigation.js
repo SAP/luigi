@@ -27,27 +27,35 @@ export default function luigiNavigationBuilder(data = {}) {
   }
 
   function generateNavItem(d) {
-    const navItem = {
-      label: d.label || d.shortName,
-      pathSegment: d.shortName,
-      navigationContext: 'doc',
-      keepSelectedForChildren: true,
-      viewUrl: `__BASE_URL__/docs/${d.shortName}`,
-      hideFromNav: d.hideFromNav && Boolean(d.hideFromNav) || false
-    };
-    if (d.category) {
-      navItem['category'] = {
-        "label": d.category
-      }
+    if(!d.node || !d.node.label) {
+      console.warn('WARNING: possible invalid frontmatter data', d);
     }
-    navItem['metaData'] = {
-      position: parseInt(d.position) || 10,
-      categoryPosition: parseInt(d.categoryPosition) || 10
-    };
+
+    const navItem = Object.assign({}, 
+      d.node,
+      {
+        label: d.node && d.node.label || d.shortName,
+        pathSegment: d.shortName,
+        navigationContext: 'doc',
+        keepSelectedForChildren: true,
+        viewUrl: `__BASE_URL__/docs/${d.shortName}`      
+      });
     return navItem;
   }
 
+  function IsJsonString(str) {
+    try {
+        JSON.parse(str);
+    } catch (e) {
+        return false;
+    }
+    return true;
+  }
+
   function parseFrontmatter(str) {
+    if(!IsJsonString(str)) {
+      console.error('ERROR, invalid json', str);
+    }
     return JSON.parse(str);
   }
 }

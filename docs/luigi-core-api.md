@@ -1,9 +1,15 @@
 <!-- meta
 {
-  "label": "API",
-  "category": "Luigi Core",
-  "categoryPosition": 2,
-  "position": 9
+  "node": {
+    "label": "API",
+    "category": {
+      "label": "Luigi Core"
+    },
+    "metaData": {
+      "categoryPosition": 2,
+      "position": 9
+    }
+  }
 }
 meta -->
 

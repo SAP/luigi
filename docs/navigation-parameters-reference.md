@@ -1,9 +1,15 @@
 <!-- meta
 {
-  "label": "Routing",
-  "category": "Luigi Core",
-  "categoryPosition": 2,
-  "position": 5
+  "node": {
+    "label": "Routing",
+    "category": {
+      "label": "Luigi Core"
+    },
+    "metaData": {
+      "categoryPosition": 2,
+      "position": 5
+    }
+  }
 }
 meta -->
 

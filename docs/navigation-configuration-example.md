@@ -1,10 +1,16 @@
 <!-- meta
 {
-  "label": "Configuration Example",
-  "category": "Luigi Core",
-  "categoryPosition": 2,
-  "position": 2,
-  "hideFromNav": true
+  "node": {
+    "label": "Configuration Example",
+    "category": {
+      "label": "Luigi Core"
+    },
+    "metaData": {
+      "categoryPosition": 2,
+      "position": 2
+    },
+    "hideFromNav": true
+  }
 }
 meta -->
 

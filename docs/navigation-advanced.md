@@ -1,9 +1,15 @@
 <!-- meta
 {
-  "label": "Advanced navigation",
-  "category": "Luigi Core",
-  "categoryPosition": 2,
-  "position": 4
+  "node": {
+    "label": "Advanced navigation",
+    "category": {
+      "label": "Luigi Core"
+    },
+    "metaData": {
+      "categoryPosition": 2,
+      "position": 4
+    }
+  }
 }
 meta -->
 
