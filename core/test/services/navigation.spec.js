@@ -464,7 +464,24 @@ describe('Navigation', function() {
       const result = Navigation.getNodes(children, pathData);
       expect(result).to.be.empty;
     });
-    it('should not fail, returns nested node children if children is empty', () => {
+    it('should not fail, returns empty array if pathData has not nestedNode', () => {
+      pathData = [
+        {
+          children: [{ pathSegment: 'overview' }, { pathSegment: 'projects' }]
+        },
+        {
+          pathSegment: 'projects',
+          children: [
+            {
+              pathSegment: 'settings1'
+            }
+          ]
+        }
+      ];
+      const result = Navigation.getNodes(children, pathData);
+      expect(result).to.be.deep.equal([]);
+    });
+    it('should not fail, returns nested node children if pathData has nestedNode', () => {
       pathData = [
         {
           children: [{ pathSegment: 'overview' }, { pathSegment: 'projects' }]
@@ -509,6 +526,99 @@ describe('Navigation', function() {
       ];
       const result = Navigation.getNodes(children, pathData);
       expect(result).to.be.deep.equal([{ pathSegment: 'settings1' }]);
+    });
+  });
+  describe('getGroupedChildren', () => {
+    let children;
+    let current;
+    before(() => {
+      children = [];
+      current = [];
+    });
+    afterEach(() => {
+      // reset
+      sinon.restore();
+      sinon.reset();
+    });
+    it('should not fail, returns empty array if params are not provided', () => {
+      current = {
+        pathData: []
+      };
+      const result = Navigation.getGroupedChildren(children, current);
+      expect(result).to.be.deep.equal({});
+    });
+    it('returns nested node children if pathData has nestedNode', () => {
+      current = {
+        pathData: [
+          {
+            children: [{ pathSegment: 'overview' }, { pathSegment: 'projects' }]
+          },
+          {
+            pathSegment: 'projects',
+            children: [
+              {
+                pathSegment: 'category'
+              }
+            ]
+          },
+          {
+            pathSegment: 'settings'
+          }
+        ]
+      };
+      const result = Navigation.getGroupedChildren(children, current);
+      expect(result.___0[0].pathSegment).to.be.equal('category');
+    });
+    it('returns empty object if pathData has not nestedNode', () => {
+      current = {
+        pathData: [
+          {
+            children: [{ pathSegment: 'overview' }, { pathSegment: 'projects' }]
+          },
+          {
+            pathSegment: 'projects',
+            children: [
+              {
+                pathSegment: 'category'
+              }
+            ]
+          }
+        ]
+      };
+      const result = Navigation.getGroupedChildren(children, current);
+      expect(result).to.be.deep.equal({});
+    });
+    it('returns grouped children if no pathData was found (empty nav)', () => {
+      children = [{ pathSegment: 'settings' }];
+      current = {
+        pathData: []
+      };
+      const result = Navigation.getGroupedChildren(children, current);
+      expect(result.___0[0].pathSegment).to.be.equal('settings');
+    });
+    it('returns grouped children on standard usecase', () => {
+      children = [{ pathSegment: 'settings' }, { pathSegment: 'category' }];
+      current = {
+        pathData: [
+          {
+            children: [{ pathSegment: 'overview' }, { pathSegment: 'projects' }]
+          },
+          {
+            pathSegment: 'projects',
+            children: [
+              {
+                pathSegment: 'settings'
+              }
+            ]
+          },
+          {
+            pathSegment: 'settings'
+          }
+        ]
+      };
+      const result = Navigation.getGroupedChildren(children, current);
+      expect(result.___0[0].pathSegment).to.be.equal('settings');
+      expect(result.___0[1].pathSegment).to.be.equal('category');
     });
   });
   describe('getLeftNavData', () => {
