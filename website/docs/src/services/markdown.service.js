@@ -8,6 +8,7 @@ import addIdsToHeadings from 'rehype-slug';
 
 import luigiLinkParser from '../unified-plugins/rehype-luigi-linkparser';
 import addCopyToClipboard from '../unified-plugins/rehype-copy-to-clipboard';
+import addCustomAttributes from '../unified-plugins/rehype-add-custom-attributes';
 
 // import highlight from 'rehype-highlight' // syntax highlight code blocks with lowlight: https://github.com/wooorm/lowlight
 import rehypeSection from '@agentofuser/rehype-section';
@@ -20,6 +21,7 @@ class MarkdownService {
         .use(markdown)
         .use(remark2rehype, {allowDangerousHTML: true})
         .use(raw)
+        .use(addCustomAttributes)
         .use(luigiLinkParser, data)
         .use(section)
         // .use(highlight)

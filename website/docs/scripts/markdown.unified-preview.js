@@ -3,9 +3,10 @@ import { readdirSync, readFileSync } from 'fs';
 
 const filesToProcess = [
   // 'plain.md',
-  // 'codeblocks.md',
-  'links.md',
+  // 'links.md',
   // 'link.md',
+  // 'codeblocks.md',
+  'custom-attributes.md',
 ];
 
 filesToProcess.forEach(async (name) => {

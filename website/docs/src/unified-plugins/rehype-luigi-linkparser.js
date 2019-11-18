@@ -35,7 +35,7 @@ export default function luigiLinkParser(options) {
         node.properties['onclick'] = 'navigateInternal(event, this)';
         node.properties['data-linktype'] = 'internal';
         
-        let newHref = parsed.href.replace(githubMaster + 'docs/', '');
+        let newHref = parsed.href.replace(githubMaster + 'docs/', '').replace('.md', '');
 
         // clean ./ from beginning of the link
         if(newHref.startsWith('./')) {
