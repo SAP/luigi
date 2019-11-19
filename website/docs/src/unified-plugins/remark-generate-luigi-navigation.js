@@ -4,12 +4,10 @@ import orderBy from 'lodash.orderby';
 
 const staticLuigiFolder = 'static/luigi/';
 const navigationFile = staticLuigiFolder + 'navigation-generated.json';
-const navigationFilePublic = staticLuigiFolder + 'navigation-generated.json';
 const staticNavigation = readFileSync(staticLuigiFolder + 'navigation-nodes.json');
 
 // initially write static navigation items to file
 writeFileSync(navigationFile, String(staticNavigation));
-writeFileSync(navigationFilePublic, String(staticNavigation));
 
 export default function luigiNavigationBuilder(data = {}) {
   
@@ -26,7 +24,6 @@ export default function luigiNavigationBuilder(data = {}) {
 
     // write to navigationFile
     writeFileSync(navigationFile, JSON.stringify(navItemsSorted, null, 2));
-    writeFileSync(navigationFilePublic, JSON.stringify(navItemsSorted, null, 2));
   }
 
   function generateNavItem(d) {
