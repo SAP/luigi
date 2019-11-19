@@ -22,13 +22,8 @@ By default, Luigi content, including the top navigation, left navigation, and th
 
 However, you can render Luigi content in any other HTML container. It can be useful if you want to add a header or a footer on top of the Luigi content. To use this feature, add the `luigi-app-root` custom HTML attribute to the HTML tag in which you want to render the Luigi content.
 
-<<<<<<< HEAD
-<!-- add-attribute:class:success -->
-> **NOTE:** If you render the Luigi content in a custom container, the container is positioned relatively when you apply your own CSS. Also, set the height of the Luigi custom container either in **px** or **vh**.
-=======
 <!-- add-attribute:class:warning -->
 >**NOTE:** If you render the Luigi content in a custom container, the container is positioned relatively when you apply your own CSS. Also, set the height of the Luigi custom container either in **px** or **vh**.
->>>>>>> cosmetic changes to Luigi docs; adding custom attributes to render green/yellow note boxes
 
 
 ## Responsive application setup

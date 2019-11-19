@@ -32,11 +32,7 @@ To configure your Luigi application, simply edit the files in the `luigi-config`
 
 * [Navigation (basic)](navigation-configuration.md) - configure basic top and side navigation, links, and categories.
 * [Navigation (advanced)](navigation-advanced.md) - create a dynamic path, reuse micro frontends with the same origin, and configure additional navigation elements. 
-<<<<<<< HEAD
-* [Routing](navigation-parameters-reference.md#routing-parameters) - define routing options for your application.
-=======
 * [Full parameter reference](navigation-parameters-reference.md) - find all the parameters which you can use to configure Luigi navigation in one place.
->>>>>>> cosmetic changes to Luigi docs; adding custom attributes to render green/yellow note boxes
 * [Authorization](authorization-configuration.md) - configure login and security features for your application.
 * [Authorization events](authorization-events.md) - define event configuration used to react to Luigi authorization events.
 * [General settings](general-settings.md) - fully customize a micro frontend, define a header, make your application responsive, and more.
