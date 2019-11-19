@@ -1,22 +1,5 @@
 [
   {
-    "label": "Architecture",
-    "pathSegment": "",
-    "navigationContext": "doc",
-    "keepSelectedForChildren": true,
-    "viewUrl": "__BASE_URL__/docs/",
-    "context": {
-      "doc": ""
-    },
-    "category": {
-      "label": "Basics"
-    },
-    "metaData": {
-      "categoryPosition": 1,
-      "position": 2
-    }
-  },
-  {
     "label": "Angular",
     "pathSegment": "",
     "navigationContext": "doc",
