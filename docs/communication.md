@@ -1,3 +1,18 @@
+<!-- meta
+{
+  "node": {
+    "label": "Custom messages",
+    "category": {
+      "label": "Advanced"
+    },
+    "metaData": {
+      "categoryPosition": 4,
+      "position": 0
+    }
+  }
+}
+meta -->
+
 # Communication
 
 >**NOTE:** For learning and testing purposes, use the [Luigi Fiddle](https://fiddle.luigi-project.io) page where you can configure a sample Luigi application.

@@ -1,3 +1,18 @@
+<!-- meta
+{
+  "node": {
+    "label": "Routing",
+    "category": {
+      "label": "Luigi Core"
+    },
+    "metaData": {
+      "categoryPosition": 2,
+      "position": 3
+    }
+  }
+}
+meta -->
+
 # Navigation parameters reference
 
 <!-- add-attribute:class:success -->

@@ -1,3 +1,18 @@
+<!-- meta
+{
+  "node": {
+    "label": "Authorization events",
+    "category": {
+      "label": "Luigi Core"
+    },
+    "metaData": {
+      "categoryPosition": 2,
+      "position": 5
+    }
+  }
+}
+meta -->
+
 # Authorization events
 
 >**NOTE:** For learning and testing purposes, use the [Luigi Fiddle](https://fiddle.luigi-project.io) page where you can configure a sample Luigi application.
