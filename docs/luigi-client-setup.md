@@ -1,15 +1,14 @@
 <!-- meta
 {
   "node": {
-    "label": "Client Setup",
+    "label": "Installation",
     "category": {
       "label": "Luigi Client"
     },
     "metaData": {
       "categoryPosition": 3,
-      "position": 2
-    },
-    "hideFromNav": true
+      "position": 0
+    }
   }
 }
 meta -->

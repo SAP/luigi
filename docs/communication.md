@@ -3,11 +3,11 @@
   "node": {
     "label": "Custom messages",
     "category": {
-      "label": "Luigi Client"
+      "label": "Communication"
     },
     "metaData": {
-      "categoryPosition": 3,
-      "position": 3
+      "categoryPosition": 4,
+      "position": 0
     }
   }
 }
