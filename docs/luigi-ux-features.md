@@ -1,3 +1,18 @@
+<!-- meta
+{
+  "node": {
+    "label": "UI features",
+    "category": {
+      "label": "Luigi Core"
+    },
+    "metaData": {
+      "categoryPosition": 2,
+      "position": 8
+    }
+  }
+}
+meta -->
+
 
 # Luigi UX features
 

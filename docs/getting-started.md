@@ -1,3 +1,18 @@
+<!-- meta
+{
+  "node": {
+    "label": "Getting started",
+    "category": {
+      "label": "Basics"
+    },
+    "metaData": {
+      "categoryPosition": 1,
+      "position": 1
+    }
+  }
+}
+meta -->
+
 # Getting started
 
 ## What is Luigi?

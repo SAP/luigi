@@ -1,3 +1,18 @@
+<!-- meta
+{
+  "node": {
+    "label": "Authorization",
+    "category": {
+      "label": "Luigi Core"
+    },
+    "metaData": {
+      "categoryPosition": 2,
+      "position": 4
+    }
+  }
+}
+meta -->
+
 # Authorization configuration
 
 To configure authorization in Luigi, go to the `auth:` section of your project's `basicConfiguration.js` file. To see how authorization works, you can also go to the [Luigi Fiddle](https://fiddle.luigi-project.io) site and configure a sample application.
