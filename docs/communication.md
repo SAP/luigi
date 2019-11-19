@@ -3,7 +3,7 @@
   "node": {
     "label": "Custom messages",
     "category": {
-      "label": "Communication"
+      "label": "Advanced"
     },
     "metaData": {
       "categoryPosition": 4,
