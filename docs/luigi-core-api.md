@@ -1,3 +1,18 @@
+<!-- meta
+{
+  "node": {
+    "label": "API",
+    "category": {
+      "label": "Luigi Core"
+    },
+    "metaData": {
+      "categoryPosition": 2,
+      "position": 9
+    }
+  }
+}
+meta -->
+
 # Luigi Core API
 
 ## Luigi Config
