@@ -44,12 +44,17 @@ Choose the framework to build your application:
 * [Application setup without a framework](#application-setup-without-a-framework)
 * [Angular 6](#application-setup-for-angular-6)
 <<<<<<< HEAD
+<<<<<<< HEAD
 * [SAPUI5/OpenUI5](#application-setup-for-sapui5openui5)
 * [VUE.JS](#application-setup-for-vuejs)
 * [React](#application-setup-for-react)
 =======
 * [SAPUI5/OpenUI5](#application-setup-for-sapui5/openui5)
 * [VUE.JS](#application-setup-for-vue.js)
+=======
+* [SAPUI5/OpenUI5](#application-setup-for-sapui5openui5)
+* [VUE.JS](#application-setup-for-vuejs)
+>>>>>>> links fix
 
 >>>>>>> update application-setup.md
 
