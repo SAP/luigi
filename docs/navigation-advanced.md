@@ -337,6 +337,7 @@ appSwitcher = {
 
 For more options and parameters which you can use to configure navigation in Luigi, read the [full parameter reference](navigation-parameters-reference.md). Some of the topics you can find there include:
 
+* Defining the [routing] strategy of your application (navigation-parameters-reference.md#routing-parameters)
 * Enabling and disabling the [loading indicator](navigation-parameters-reference.md#loadingindicatorenabled)
 * Hiding [navigation nodes](navigation-parameters-reference.md#hidefromnav) or [side navigation](navigation-parameters-reference.md#hidesidenav)
 * Including a horizontal [tab navigation](navigation-parameters-reference.md#tabnav) bar
