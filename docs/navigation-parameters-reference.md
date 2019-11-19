@@ -16,7 +16,7 @@ meta -->
 # Navigation parameters reference
 
 <!-- add-attribute:class:success -->
-> **NOTE:** To see the navigation parameters in use, see the [navigation configuration example](navigation-configuration-example.md) or configure a test application in the [Luigi Fiddle](https://fiddle.luigi-project.io).
+> **TIP:** To see the navigation parameters in use, see the [navigation configuration example](navigation-configuration-example.md) or configure a test application in the [Luigi Fiddle](https://fiddle.luigi-project.io).
 
 Use the parameters and functions in this reference to configure your Luigi navigation structure.
 
@@ -292,8 +292,13 @@ The profile section is a configurable drop-down list available in the top naviga
 - **type**: function
 - **description**: used to retrieve a user's name and email to simulate logging in. It can be used when authorization is disabled and also gets called if the defined IDP provider does not have **settings.userInfoFn** defined or does not provide a `userInfo` function internally. It can be asynchronous and should return an object with **name**, **email** and **picture** parameters.
 
+<<<<<<< HEAD
 <!-- add-attribute:class:success -->
 > **NOTE:** Neither authorization nor profile parameter are configured if the profile section in the top navigation bar is not visible.
+=======
+<!-- add-attribute:class:warning -->
+>**NOTE:** Neither authorization nor profile parameter are configured if the profile section in the top navigation bar is not visible.
+>>>>>>> cosmetic changes to Luigi docs; adding custom attributes to render green/yellow note boxes
 
 ## Product switcher
 
