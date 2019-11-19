@@ -114,6 +114,30 @@ Node parameters are all the parameters that can be added to an individual naviga
 - **type**: string
 - **description**: sets the child node that Luigi activates automatically if the current node has no **viewUrl** defined. Provide **pathSegment** of the child node you want to activate as a string.
 
+<!-- add-attribute:class:success -->
+>**NOTE:** To define **defaultChildNode** on root level to specify a different default node than the first header navigation node, set an object with **defaultChildNode** and **children** definition as `navigation.nodes` instead of an array of nodes.
+
+```javascript
+settings: {
+  navigation: {
+    nodes: {
+      defaultChildNode: 'overview',
+      children: [
+        {
+          pathSegment: 'docs',
+          label: 'Documentation',
+          viewUrl: '...'
+        },
+        {
+          pathSegment: 'overview',
+          label: 'Overview',
+          viewUrl: '...'
+        }
+      ]
+    }
+  }
+```
+
 ### isolateView
 - **type**: boolean
 - **description**: renders the view in a new frame when you enter and leave the node. This setting overrides the same-domain frame re-usage. The **isolateView** is disabled by default.
