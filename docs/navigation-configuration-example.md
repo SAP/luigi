@@ -7,7 +7,7 @@
     },
     "metaData": {
       "categoryPosition": 2,
-      "position": 2
+      "position": 10
     },
     "hideFromNav": true
   }

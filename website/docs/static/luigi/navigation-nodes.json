@@ -17,23 +17,6 @@
     }
   },
   {
-    "label": "Installation",
-    "pathSegment": "",
-    "navigationContext": "doc",
-    "keepSelectedForChildren": true,
-    "viewUrl": "__BASE_URL__/docs/",
-    "context": {
-      "doc": ""
-    },
-    "category": {
-      "label": "Luigi Client"
-    },
-    "metaData": {
-      "categoryPosition": 3,
-      "position": 1
-    }
-  },
-  {
     "label": "Angular",
     "pathSegment": "",
     "navigationContext": "doc",
@@ -49,8 +32,8 @@
       "url": "https://github.com/SAP/luigi/tree/master/core/examples/luigi-example-angular"
     },
     "metaData": {
-      "categoryPosition": 3,
-      "position": 4
+      "categoryPosition": 5,
+      "position": 0
     }
   },
   {
@@ -69,8 +52,8 @@
       "url": "https://github.com/SAP/luigi/tree/master/core/examples/luigi-example-vue"
     },
     "metaData": {
-      "categoryPosition": 3,
-      "position": 4
+      "categoryPosition": 5,
+      "position": 1
     }
   },
   {
@@ -89,8 +72,8 @@
       "url": "https://github.com/SAP/luigi/tree/master/core/examples/luigi-example-react"
     },
     "metaData": {
-      "categoryPosition": 3,
-      "position": 4
+      "categoryPosition": 5,
+      "position": 2
     }
   }
 ]
