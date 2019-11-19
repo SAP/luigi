@@ -16,11 +16,7 @@ meta -->
 # Authorization events
 
 <!-- add-attribute:class:success -->
-<<<<<<< HEAD
-> **NOTE:** For learning and testing purposes, use the [Luigi Fiddle](https://fiddle.luigi-project.io) page where you can configure a sample Luigi application.
-=======
 >**TIP:** For learning and testing purposes, use the [Luigi Fiddle](https://fiddle.luigi-project.io) page where you can configure a sample Luigi application.
->>>>>>> cosmetic changes to Luigi docs; adding custom attributes to render green/yellow note boxes
 
 Luigi provides life cycle events which it can trigger internally or by authorization providers.
 Events are part of the **auth** configuration object and have to be functions. They can be executed asynchronously.
