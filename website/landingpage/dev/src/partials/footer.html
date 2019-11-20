@@ -1,22 +1,26 @@
-<footer class="p-footer p-footer--home">
-  <section class="s-stage">
-    <div class="row align-justify align-middle">
-      <div class="column small-12 large-6 image">
-        <img src="{{root}}assets/img/luigi_diagramm.png" alt="Luigi - Micro Frontend Framework - open source" />
+<footer class="p-footer {{#ifpage 'index'}}p-footer--home{{/ifpage}}">
+  
+  {{#ifpage 'index'}}
+    <section class="s-stage">
+      <div class="row align-justify align-middle">
+        <div class="column small-12 large-6 image">
+          <img src="{{root}}assets/img/luigi_diagramm.png" alt="Luigi - Micro Frontend Framework - open source" />
+        </div>
+        <div class="column small-12 large-6 xlarge-5 content">
+          <h2 class="title-2">
+            Develop distributed user interfaces the Easy Way
+          </h2>
+          <a
+            class="btn-primary"
+            href="https://github.com/SAP/luigi/blob/master/docs/application-setup.md"
+            target="_blank"
+            >GET STARTED</a
+          >
+        </div>
       </div>
-      <div class="column small-12 large-6 xlarge-5 content">
-        <h2 class="title-2">
-          Develop distributed user interfaces the Easy Way
-        </h2>
-        <a
-          class="btn-primary"
-          href="https://github.com/SAP/luigi/blob/master/docs/application-setup.md"
-          target="_blank"
-          >GET STARTED</a
-        >
-      </div>
-    </div>
-  </section>
+    </section>
+  {{/ifpage}}
+
   <div class="row wr align-middle xxlarge-collapse">
     <div class="column small-12 large-6 left-content">
       <a class="logo" href="/">

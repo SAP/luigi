@@ -1,3 +1,4 @@
+
 {#if contextSwitcherEnabled}
 <div class="fd-shellbar__action fd-shellbar__action--show-always">
   <div class="fd-product-menu">
@@ -7,7 +8,7 @@
           class="fd-button--shell fd-product-menu__control lui-tendant-menu__control"
           aria-expanded="{dropDownStates.contextSwitcherPopover || false}"
           aria-haspopup="true"
-          title="{selectedLabel ? selectedLabel : ''}"
+          title="{selectedLabel ? selectedLabel : config.defaultLabel}"
           on:click="{toggleDropdownState}"
         >
           {#if !selectedLabel}{$getTranslation(config.defaultLabel)}{/if} {#if
@@ -25,7 +26,10 @@
           <ul class="fd-menu__list fd-menu__list--top">
             {#each actions as node} {#if node.position === 'top' || !['top',
             'bottom'].includes(node.position)}
-            <li on:click="{() => onActionClick(node)}" data-testid="{getTestId(node)}">
+            <li
+              on:click="{() => onActionClick(node)}"
+              data-testid="{getTestId(node)}"
+            >
               <a class="fd-menu__item">{$getTranslation(node.label)}</a>
             </li>
             {/if} {/each}
@@ -41,7 +45,10 @@
             {/if} {#if options && options.length} {#each options as node}
             {#await getNodeName(node.label, config.fallbackLabelResolver,
             node.id)} {:then label}
-            <li on:click="{() => goToOption(node, selectedOption)}" data-testid="{getTestId(node)}">
+            <li
+              on:click="{() => goToOption(node, selectedOption)}"
+              data-testid="{getTestId(node)}"
+            >
               <a
                 class="fd-menu__item {node === selectedLabel ? 'is-selected' : ''}"
                 title="{label}"
@@ -52,7 +59,10 @@
           {#if actions && actions.length}
           <ul class="fd-menu__list fd-menu__list--bottom">
             {#each actions as node} {#if node.position === 'bottom'}
-            <li on:click="{() => onActionClick(node)}" data-testid="{getTestId(node)}">
+            <li
+              on:click="{() => onActionClick(node)}"
+              data-testid="{getTestId(node)}"
+            >
               <a class="fd-menu__item">{$getTranslation(node.label)}</a>
             </li>
             {/if} {/each}
@@ -64,7 +74,6 @@
   </div>
 </div>
 {/if}
-
 <script>
   import { createEventDispatcher, onMount, getContext } from 'svelte';
   import { ContextSwitcherHelpers } from './services/context-switcher';
@@ -88,7 +97,9 @@
   export let selectedOption;
   export let fallbackLabelResolver = null;
   let preserveSubPathOnSwitch;
-  let getUnsavedChangesModalPromise = getContext('getUnsavedChangesModalPromise');
+  let getUnsavedChangesModalPromise = getContext(
+    'getUnsavedChangesModalPromise'
+  );
   let store = getContext('store');
   let getTranslation = getContext('getTranslation');
 
@@ -130,9 +141,7 @@
       ['navigation.contextSwitcher']
     );
 
-    RoutingHelpers.addRouteChangeListener(path =>
-      setSelectedContext(path)
-    );
+    RoutingHelpers.addRouteChangeListener(path => setSelectedContext(path));
 
     window.addEventListener('message', e => {
       if (!IframeHelpers.getValidMessageSource(e)) return;
@@ -159,9 +168,7 @@
   // [svelte-upgrade suggestion]
   // review these functions and remove unnecessary 'export' keywords
   export async function fetchOptions() {
-    options = await ContextSwitcherHelpers.fetchOptions(
-      options
-    );
+    options = await ContextSwitcherHelpers.fetchOptions(options);
     const conf = config || {};
     const parentNodePath = conf.parentNodePath;
     const fallbackLabelResolver = conf.fallbackLabelResolver;
@@ -221,7 +228,12 @@
     getUnsavedChangesModalPromise().then(() => {
       LuigiConfig._configModificationTimestamp = new Date();
       if (preserveSubPathOnSwitch && selectedOption) {
-        Routing.navigateTo(ContextSwitcherHelpers.getNodePathFromCurrentPath(option, selectedOption))
+        Routing.navigateTo(
+          ContextSwitcherHelpers.getNodePathFromCurrentPath(
+            option,
+            selectedOption
+          )
+        );
       } else {
         Routing.navigateTo(option.path);
       }
@@ -252,6 +264,21 @@
   .lui-tendant-menu__control {
     /* Overwrite color inheriting of product menu */
     color: var(--fd-color-shell-2);
+    max-width: 30vw;
+    overflow: hidden;
+    text-overflow: ellipsis;
+
+    &:after {
+      right: -8px;
+    }
+
+    @media (min-width: 1024px) {
+      max-width: 15vw;
+    }
+
+    @media (min-width: 1300px) {
+      max-width: 30vw;
+    }
   }
 
   .fd-button--secondary,

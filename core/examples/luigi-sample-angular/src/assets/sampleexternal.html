@@ -78,6 +78,17 @@ function hideLoadingIndicator() {
 }
 hideLoadingIndicator();
 </script>
-
+<script type="text/javascript">
+window.addEventListener('popstate', function(event) {
+  if (window.location.hash) {
+    var anch = document.getElementsByName(encodeURIComponent(window.location.hash.replace('#', '')));
+    if (anch.length > 0) {
+      anch[0].scrollIntoView();
+    }
+  } else {
+    window.scrollTo(0, 0);
+  }
+});
+</script>
 </body>
 </html>

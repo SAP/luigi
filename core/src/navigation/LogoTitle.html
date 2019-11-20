@@ -3,7 +3,12 @@
   aria-label="SAP"
 >
   {#if hasLogo}
-  <img data-testid="luigi-topnav-logo" on:click="{() => goTo('/')}" bind:this={logo}>
+  <img
+    data-testid="luigi-topnav-logo"
+    on:click="{() => goTo('/')}"
+    bind:this="{logo}"
+    alt
+  >
   {/if}
 </div>
 {#if title}
@@ -27,7 +32,7 @@
         <div
           class="fd-shellbar__title fd-product-menu__title"
           data-testid="luigi-topnav-title"
-         >{$getTranslation(title)}</div>
+        >{$getTranslation(title)}</div>
       </button>
     </div>
     <div
@@ -38,19 +43,27 @@
       <nav class="fd-menu">
         <ul class="fd-menu__list">
           {#if showMainAppEntry && selectedItem}
-            <li>
-              <a role="button" class="fd-menu__item" on:click="{goToRoot}" data-testid="{getTestId(defaultTitle)}">{$getTranslation(defaultTitle)}
-              </a>
-            </li>
+          <li>
+            <a
+              role="button"
+              class="fd-menu__item"
+              on:click="{goToRoot}"
+              data-testid="{getTestId(defaultTitle)}"
+            >{$getTranslation(defaultTitle)}</a>
+          </li>
           {/if}
           {#if appSwitcherItems && appSwitcherItems.length > 0}
           {#each appSwitcherItems as item}
-            {#if item !== selectedItem && hasValidLink(item, pathParams)}
-            <li>
-              <a role="button" class="fd-menu__item" on:click="{() => goTo(item.link)}" data-testid="{getTestId(item)}">{$getTranslation(item.title)}
-              </a>
-            </li>
-            {/if}
+          {#if item !== selectedItem && hasValidLink(item, pathParams)}
+          <li>
+            <a
+              role="button"
+              class="fd-menu__item"
+              on:click="{() => goTo(item.link)}"
+              data-testid="{getTestId(item)}"
+            >{$getTranslation(item.title)}</a>
+          </li>
+          {/if}
           {/each}
           {/if}
         </ul>
@@ -60,14 +73,17 @@
   {/if}
 </div>
 {#if subTitle}
-<div class="fd-shellbar__subtitle">
-  {$getTranslation(subTitle)}
-</div>
-{/if}
-{/if}
+<div class="fd-shellbar__subtitle">{$getTranslation(subTitle)}</div>
 
+{/if}
+{/if}
 <script>
-  import { beforeUpdate, createEventDispatcher, onMount, getContext } from 'svelte';
+  import {
+    beforeUpdate,
+    createEventDispatcher,
+    onMount,
+    getContext
+  } from 'svelte';
   import * as Header from './services/header';
   import { Routing } from '../services/routing';
   import { NavigationHelpers, RoutingHelpers } from '../utilities/helpers';
@@ -88,29 +104,32 @@
   export let defaultSubTitle;
   export let pathData;
   let previousPathData;
-  let getUnsavedChangesModalPromise = getContext('getUnsavedChangesModalPromise');
+  let getUnsavedChangesModalPromise = getContext(
+    'getUnsavedChangesModalPromise'
+  );
   let getTranslation = getContext('getTranslation');
   let store = getContext('store');
 
   //TODO refactor
   const getComponentWrapper = () => {
     return {
-      get: () => { return {
-        pathData,
-        pathParams,
-        appSwitcherItems,
-        selectedItem,
-        defaultTitle,
-        title,
-        subTitle,
-        defaultSubTitle,
-        showMainAppEntry,
-        hasApps,
-        hasLogo,
-        logo
-      }
+      get: () => {
+        return {
+          pathData,
+          pathParams,
+          appSwitcherItems,
+          selectedItem,
+          defaultTitle,
+          title,
+          subTitle,
+          defaultSubTitle,
+          showMainAppEntry,
+          hasApps,
+          hasLogo,
+          logo
+        };
       },
-      set: (obj) => {
+      set: obj => {
         if (obj) {
           Object.getOwnPropertyNames(obj).forEach(prop => {
             if (prop === 'pathData') {
@@ -185,8 +204,14 @@
 
   function hasValidLink(item, pathParams) {
     if (item.link) {
-      const concreteLink = RoutingHelpers.applyPathParams(item.link, pathParams);
-      if (concreteLink.indexOf(':') !== 0 && concreteLink.indexOf('/:') === -1) {
+      const concreteLink = RoutingHelpers.applyPathParams(
+        item.link,
+        pathParams
+      );
+      if (
+        concreteLink.indexOf(':') !== 0 &&
+        concreteLink.indexOf('/:') === -1
+      ) {
         return true;
       }
     }

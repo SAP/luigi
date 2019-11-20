@@ -1,28 +1,30 @@
 <svelte:window on:resize="{onResize}"/>
 <div id="app" class="{hideNav? 'no-nav' : ''} {hideSideNav? 'no-side-nav':''}">
   {#if confirmationModal.displayed}
-    <ConfirmationModal
-      settings="{confirmationModal.settings}"
-      on:modalConfirm="{() => handleModalResult(true)}"
-      on:modalDismiss="{() => handleModalResult(false)}"
-    ></ConfirmationModal>
+  <ConfirmationModal
+    settings="{confirmationModal.settings}"
+    on:modalConfirm="{() => handleModalResult(true)}"
+    on:modalDismiss="{() => handleModalResult(false)}"
+  ></ConfirmationModal>
   {/if}
   {#if alerts && alerts.length}
-    <Alerts alertQueue="{alerts}" on:alertDismiss="{handleAlertDismissExternal}"></Alerts>
+  <Alerts alertQueue="{alerts}" on:alertDismiss="{handleAlertDismissExternal}"></Alerts>
   {/if}
   {#if mfModal.displayed}
-    <Modal
-      modalSettings="{mfModal.modalSettings}"
-      nodepath="{mfModal.nodepath}"
-      on:close="{closeModal}"
-      on:iframeCreated="{modalIframeCreated}"
-    ></Modal>
+  <Modal
+    modalSettings="{mfModal.modalSettings}"
+    nodepath="{mfModal.nodepath}"
+    on:close="{closeModal}"
+    on:iframeCreated="{modalIframeCreated}"
+  ></Modal>
   {/if}
   <Backdrop>
     <div
       class="fd-page iframeContainer {mfSplitView.displayed?'lui-split-view':''} {mfSplitView.collapsed?'lui-collapsed':''}"
       use:init
-    ></div>
+    >
+      <Backdrop area="main"></Backdrop>
+    </div>
     {#if mfSplitView.displayed}
     <SplitView
       splitViewSettings="{mfSplitView.settings}"
@@ -34,17 +36,17 @@
     {/if}
   </Backdrop>
   {#if showLoadingIndicator}
-    <div
-      in:fade="{{delay: 250, duration: 250}}"
-      out:fade="{{duration: 250}}"
-      class="fd-page spinnerContainer"
-      aria-hidden="false"
-      aria-label="Loading"
-    >
-      <div class="fd-spinner">
-        <div></div>
-      </div>
+  <div
+    in:fade="{{delay: 250, duration: 250}}"
+    out:fade="{{duration: 250}}"
+    class="fd-page spinnerContainer"
+    aria-hidden="false"
+    aria-label="Loading"
+  >
+    <div class="fd-spinner">
+      <div></div>
     </div>
+  </div>
   {/if}
   <TopNav
     pathData="{navigationPath}"
@@ -53,11 +55,11 @@
     on:resizeTabNav="{onResizeTabNav}"
   />
   {#if !(hideNav||hideSideNav)}
-    <LeftNav
-      pathData="{navigationPath}"
-      on:handleClick="{handleNavClick}"
-      on:resizeTabNav="{onResizeTabNav}"
-    />
+  <LeftNav
+    pathData="{navigationPath}"
+    on:handleClick="{handleNavClick}"
+    on:resizeTabNav="{onResizeTabNav}"
+  />
   {/if}
   {#if (tabNav && !hideNav)}
   <TabNav
@@ -77,10 +79,21 @@
   import LeftNav from './navigation/LeftNav.html';
   import TopNav from './navigation/TopNav.html';
   import TabNav from './navigation/TabNav.html';
-  import { afterUpdate, onMount, setContext, createEventDispatcher } from 'svelte';
+  import {
+    afterUpdate,
+    onMount,
+    setContext,
+    createEventDispatcher
+  } from 'svelte';
   import { fade } from 'svelte/transition';
   import { CSS_BREAKPOINTS } from './utilities/constants';
-  import { GenericHelpers, StateHelpers, RoutingHelpers, IframeHelpers, AuthHelpers } from './utilities/helpers'
+  import {
+    GenericHelpers,
+    StateHelpers,
+    RoutingHelpers,
+    IframeHelpers,
+    AuthHelpers
+  } from './utilities/helpers';
   import { LuigiI18N, LuigiConfig, LuigiElements } from './core-api';
   import { Navigation } from './navigation/services/navigation';
   import { Routing } from './services/routing';
@@ -131,7 +144,7 @@
   let tabNav;
   let resizeTabNavToggle = false;
 
-  const prepareInternalData = (config) => {
+  const prepareInternalData = config => {
     const internalData = {
       isNavigateBack: isNavigateBack,
       viewStackSize: preservedViews.length,
@@ -156,11 +169,7 @@
     const message = {
       msg: 'luigi.init',
       context: JSON.stringify(
-        Object.assign(
-          {},
-          config.context || context,
-          goBackContext
-        )
+        Object.assign({}, config.context || context, goBackContext)
       ),
       nodeParams: JSON.stringify(
         Object.assign({}, config.nodeParams || nodeParams)
@@ -222,15 +231,12 @@
     return paths.includes(removeQueryParams(routePath));
   };
 
-  const getUnsavedChangesModalPromise = (source) => {
+  const getUnsavedChangesModalPromise = source => {
     return new Promise(resolve => {
       if (shouldShowUnsavedChangesModal(source)) {
         showUnsavedChangesModal().then(
           () => {
-            if (
-              unsavedChanges &&
-              unsavedChanges.dirtySet
-            ) {
+            if (unsavedChanges && unsavedChanges.dirtySet) {
               if (source) {
                 unsavedChanges.dirtySet.delete(source);
               } else {
@@ -250,28 +256,31 @@
   //TODO refactor
   const getComponentWrapper = () => {
     return {
-      get: () => { return {
-        unsavedChanges,
-        hideNav,
-        viewUrl,
-        nodeParams,
-        viewGroup,
-        urlParamsRaw,
-        currentNode,
-        navigationPath,
-        context,
-        pathParams,
-        hideSideNav,
-        isolateView,
-        previousNodeValues,
-        mfSplitView,
-        splitViewValues,
-        splitViewIframe,
-        showLoadingIndicator,
-        tabNav
-      }
+      get: () => {
+        return {
+          unsavedChanges,
+          hideNav,
+          viewUrl,
+          nodeParams,
+          viewGroup,
+          urlParamsRaw,
+          currentNode,
+          navigationPath,
+          context,
+          pathParams,
+          hideSideNav,
+          isolateView,
+          previousNodeValues,
+          mfSplitView,
+          splitViewValues,
+          splitViewIframe,
+          showLoadingIndicator,
+          tabNav,
+          isNavigateBack,
+          goBackContext
+        };
       },
-      set: (obj) => {
+      set: obj => {
         if (obj) {
           Object.getOwnPropertyNames(obj).forEach(prop => {
             if (prop === 'hideNav') {
@@ -308,12 +317,17 @@
               showLoadingIndicator = obj.showLoadingIndicator;
             } else if (prop === 'tabNav') {
               tabNav = obj.tabNav;
+            } else if (prop === 'isNavigateBack') {
+              isNavigateBack = obj.isNavigateBack;
+            } else if (prop === 'goBackContext') {
+              goBackContext = obj.goBackContext;
             }
           });
         }
       },
       shouldShowUnsavedChangesModal,
       getUnsavedChangesModalPromise,
+      showUnsavedChangesModal,
       showAlert,
       prepareInternalData,
       dispatch
@@ -327,7 +341,12 @@
       () => {
         LuigiConfig._configModificationTimestamp = new Date();
         const currentPath = Routing.getCurrentPath();
-        Routing.handleRouteChange(currentPath, getComponentWrapper(), node, config);
+        Routing.handleRouteChange(
+          currentPath,
+          getComponentWrapper(),
+          node,
+          config
+        );
       },
       ['navigation.nodes']
     );
@@ -347,7 +366,7 @@
     });
   };
 
-  const getSubPath = (node) => {
+  const getSubPath = node => {
     return GenericHelpers.replaceVars(
       Routing.getNodePath(node),
       pathParams,
@@ -356,7 +375,7 @@
     );
   };
 
-  const buildPath = (params) => {
+  const buildPath = params => {
     let path = params.link;
     if (params.fromClosestContext) {
       // from the closest navigation context
@@ -367,14 +386,13 @@
     } else if (params.fromContext) {
       // from a given navigation context
       const navigationContext = params.fromContext;
-      const node = navigationPath.find(n => navigationContext === n.navigationContext);
+      const node = navigationPath.find(
+        n => navigationContext === n.navigationContext
+      );
       path = Routing.concatenatePath(getSubPath(node), params.link);
     } else if (params.relative) {
       // relative
-      path = Routing.concatenatePath(
-        getSubPath(currentNode),
-        params.link
-      );
+      path = Routing.concatenatePath(getSubPath(currentNode), params.link);
     }
 
     if (params.nodeParams && Object.keys(params.nodeParams).length) {
@@ -392,15 +410,12 @@
     return path;
   };
 
-  const handleNavClick = (event) => {
+  const handleNavClick = event => {
     const node = event.detail.node;
     getUnsavedChangesModalPromise().then(() => {
       closeLeftNav();
       if (node.openNodeInModal) {
-        const route = RoutingHelpers.buildRoute(
-          node,
-          `/${node.pathSegment}`
-        );
+        const route = RoutingHelpers.buildRoute(node, `/${node.pathSegment}`);
         openViewInModal(
           route,
           node.openNodeInModal === true ? {} : node.openNodeInModal
@@ -514,19 +529,15 @@
           openFromClient,
           promise: { resolve }
         }
-      ]
+      ];
     });
   };
 
-  const handleAlertDismiss = (id) => {
+  const handleAlertDismiss = id => {
     const alert = getAlertWithId(alerts, id);
 
     if (!alert) {
-      console.error(
-        'An unexisting alert has been dismissed.',
-        alerts,
-        id
-      );
+      console.error('An unexisting alert has been dismissed.', alerts, id);
       return;
     }
 
@@ -545,7 +556,7 @@
     }
   };
 
-  const handleAlertDismissExternal = (event) => {
+  const handleAlertDismissExternal = event => {
     handleAlertDismiss(event.detail.id);
   };
 
@@ -571,11 +582,11 @@
         settings,
         openFromClient,
         promise: { resolve, reject }
-      }
+      };
     });
   };
 
-  const handleModalResult = (result) => {
+  const handleModalResult = result => {
     const { promise, openFromClient } = confirmationModal;
 
     resetConfirmationModalData();
@@ -596,7 +607,7 @@
     }
   };
 
-  const shouldShowUnsavedChangesModal = (source) => {
+  const shouldShowUnsavedChangesModal = source => {
     if (
       //TODO GenericHelpers.canComponentHandleModal(this) &&
       unsavedChanges.dirtySet
@@ -643,7 +654,7 @@
       displayed: true,
       nodepath,
       modalSettings
-    }
+    };
   };
 
   const modalIframeCreated = event => {
@@ -653,12 +664,10 @@
 
   const closeModal = () => {
     if (modalIframe) {
-      getUnsavedChangesModalPromise(
-        modalIframe.contentWindow
-      ).then(() => {
+      getUnsavedChangesModalPromise(modalIframe.contentWindow).then(() => {
         mfModal = {
           displayed: false
-        }
+        };
       });
     }
   };
@@ -689,11 +698,7 @@
 
       const updatedAlerts = alertQueue
         .map(a => {
-          if (
-            a &&
-            !a.openFromClient &&
-            typeof a.settings.ttl === 'number'
-          ) {
+          if (a && !a.openFromClient && typeof a.settings.ttl === 'number') {
             //alert has some TTL set
             if (a.settings.ttl === 0) {
               //the TTL value dropped down to 0, remove this alert
@@ -717,9 +722,8 @@
 
       if ('custom' === e.data.msg) {
         const customMessagesListeners =
-          LuigiConfig.getConfigValue(
-            'communication.customMessagesListeners'
-          ) || {};
+          LuigiConfig.getConfigValue('communication.customMessagesListeners') ||
+          {};
         const message = MessagesListeners.convertCustomMessageInternalToUser(
           e.data
         );
@@ -732,9 +736,7 @@
           customMessageListener(
             message,
             microfrontend,
-            GenericHelpers.removeInternalProperties(
-              iframe.luigi.currentNode
-            )
+            GenericHelpers.removeInternalProperties(iframe.luigi.currentNode)
           );
         }
       }
@@ -759,7 +761,8 @@
           splitView
         };
         const specialIframeMessageSource = IframeHelpers.specialIframeTypes.filter(
-          typ => IframeHelpers.isMessageSource(e, specialIframeProps[typ.iframeKey])
+          typ =>
+            IframeHelpers.isMessageSource(e, specialIframeProps[typ.iframeKey])
         );
         if (specialIframeMessageSource.length) {
           specialIframeMessageSource.forEach(typ => {
@@ -781,7 +784,9 @@
         ) {
           sendContextToClient(config, {});
           const loadingIndicatorAutoHideEnabled =
-            !currentNode || !currentNode.loadingIndicator || currentNode.loadingIndicator.hideAutomatically !== false;
+            !currentNode ||
+            !currentNode.loadingIndicator ||
+            currentNode.loadingIndicator.hideAutomatically !== false;
           if (loadingIndicatorAutoHideEnabled) {
             showLoadingIndicator = false;
           }
@@ -842,9 +847,7 @@
             goBackContext:
               e.data.goBackContext && JSON.parse(e.data.goBackContext)
           });
-        } else if (
-          IframeHelpers.isMessageSource(e, splitViewIframe)
-        ) {
+        } else if (IframeHelpers.isMessageSource(e, splitViewIframe)) {
           closeSplitView();
           sendContextToClient(config, {
             goBackContext:
@@ -963,7 +966,6 @@
     // them to prevent memory leaks
     // this.on('destroy', storeListener.cancel);
     enableRouting(node, config);
-
   }
 
   setContext('store', store);
@@ -985,9 +987,7 @@
     }
   });
 
-  afterUpdate(() => {
-
-  });
+  afterUpdate(() => {});
 </script>
 
 <style type="text/scss">

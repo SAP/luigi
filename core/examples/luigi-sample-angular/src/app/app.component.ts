@@ -2,7 +2,8 @@ import { Component, ViewEncapsulation, OnInit } from '@angular/core';
 import {
   addInitListener,
   addContextUpdateListener,
-  sendCustomMessage
+  sendCustomMessage,
+  addInactiveListener
 } from '@kyma-project/luigi-client';
 import {
   LuigiContextService,
@@ -22,6 +23,12 @@ export class AppComponent implements OnInit {
   ngOnInit() {
     addInitListener(context => this.onLuigiContext('init', context));
     addContextUpdateListener(context => this.onLuigiContext('update', context));
+
+    addInactiveListener(() => {
+      console.debug(
+        'inactiveListener: micro frontend is now in the background'
+      );
+    });
   }
 
   private onLuigiContext(contextType: ILuigiContextTypes, context: any): void {

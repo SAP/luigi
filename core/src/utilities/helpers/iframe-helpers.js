@@ -22,7 +22,9 @@ class IframeHelpersClass {
   hideElementChildren(node) {
     if (node.children) {
       Array.from(node.children).forEach(child => {
-        child.style.display = 'none';
+        if (child.tagName === 'IFRAME') {
+          child.style.display = 'none';
+        }
       });
     }
   }
@@ -30,7 +32,7 @@ class IframeHelpersClass {
   removeElementChildren(node) {
     const children = [...node.children];
     children.forEach(child => {
-      if (!child.vg) {
+      if (!child.vg && child.tagName === 'IFRAME') {
         node.removeChild(child);
       }
     });
@@ -198,7 +200,9 @@ class IframeHelpersClass {
   sendMessageToIframe(iframe, message) {
     if (!(iframe.luigi && iframe.luigi.viewUrl)) return;
     const trustedIframeDomain = this.getLocation(iframe.luigi.viewUrl);
-    iframe.contentWindow.postMessage(message, trustedIframeDomain);
+    if (trustedIframeDomain !== '') {
+      iframe.contentWindow.postMessage(message, trustedIframeDomain);
+    }
   }
 
   sendMessageToVisibleIframes(message) {

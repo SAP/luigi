@@ -15,7 +15,9 @@ class IframeClass {
 
   getActiveIframe(node) {
     const children = [...node.children];
-    return children.find(GenericHelpers.isElementVisible);
+    return children
+      .filter(child => child.tagName === 'IFRAME')
+      .find(GenericHelpers.isElementVisible);
   }
 
   setActiveIframeToPrevious(node) {
@@ -37,7 +39,11 @@ class IframeClass {
   removeInactiveIframes(node) {
     const children = Array.from(node.children);
     children.forEach(child => {
-      if (!GenericHelpers.isElementVisible(child) && !child.vg) {
+      if (
+        !GenericHelpers.isElementVisible(child) &&
+        !child.vg &&
+        child.tagName === 'IFRAME'
+      ) {
         node.removeChild(child);
       }
     });
@@ -81,6 +87,19 @@ class IframeClass {
     return vgSettings && vgSettings.preloadUrl;
   }
 
+  notifyInactiveIframes() {
+    const message = {
+      msg: 'luigi-client.inactive-microfrontend',
+      context: JSON.stringify({}),
+      nodeParams: JSON.stringify({}),
+      pathParams: JSON.stringify({}),
+      internal: JSON.stringify({
+        currentLocale: LuigiI18N.getCurrentLocale()
+      })
+    };
+    IframeHelpers.sendMessageToVisibleIframes(message);
+  }
+
   switchActiveIframe(container, newActiveIframe, removeCurrentActive) {
     const currentActiveIframe = this.getActiveIframe(container);
     if (currentActiveIframe !== newActiveIframe) {
@@ -91,9 +110,15 @@ class IframeClass {
           if (removeCurrentActive) {
             container.removeChild(child);
           } else {
-            child.style.display = 'none';
             const vgSettings = this.getViewGroupSettings(child.vg);
-            if (vgSettings && vgSettings.preloadUrl) {
+            if (vgSettings) {
+              this.notifyInactiveIframes();
+            }
+
+            // set non only after inactive message, else it will not get detected.
+            child.style.display = 'none';
+
+            if (vgSettings.preloadUrl) {
               const message = {
                 msg: 'luigi.navigate',
                 viewUrl: vgSettings.preloadUrl,
@@ -204,6 +229,7 @@ class IframeClass {
     if (!config.iframe) {
       // preserveView, hide other frames, else remove
       if (pvSituation) {
+        this.notifyInactiveIframes();
         IframeHelpers.hideElementChildren(node);
       } else {
         IframeHelpers.removeElementChildren(node);
@@ -230,6 +256,7 @@ class IframeClass {
           component.get().currentNode,
           'main'
         );
+
         node.insertBefore(config.iframe, node.firstChild);
 
         if (config.builderCompatibilityMode) {

@@ -1,5 +1,21 @@
+<!-- meta
+{
+  "node": {
+    "label": "General settings",
+    "category": {
+      "label": "Luigi Core"
+    },
+    "metaData": {
+      "categoryPosition": 2,
+      "position": 6
+    }
+  }
+}
+meta -->
+
 # General settings
 
+<!-- add-attribute:class:success -->
 >**NOTE:** For learning and testing purposes, use the [Luigi Fiddle](https://fiddle.luigi-project.io) page where you can configure a sample Luigi application.
 
 The configuration file contains a section called **Settings** in which you can configure additional Luigi options.
@@ -32,6 +48,7 @@ settings: {
 * **hideNavigation** disables Luigi's default out-of-the-box navigation when set to `true`. This means that top, side, and tab navigation is no longer visible and you can implement your own navigation UI. By default, the parameter is set to `false`, which means the navigation is enabled.
 * **backdropDisabled** prevents the backdrop layer from covering the top and left navigation when showing modal windows. By default, the backdrop is set to `true`.
 * **header.logo** defines the top left navigation logo. It has a fixed height of 28px.
+* **header.altText** adds the HTML `alt` attribute to the logo image.
 * **header.title** defines the top left navigation title.
 * **header.favicon** defines the favicon. It requires a standard favicon file with the `.ico` extension, and 16x16px or 32x32px dimensions.
 * **responsiveNavigation** allows customizing the navigation display settings. For example, you can define a button which shows or completely hides the left navigation, or a button which collapses the navigation to only show the icons. 
@@ -49,7 +66,9 @@ If you don't specify any value for  **responsiveNavigation**, the buttons remain
   }
 }
 ```
+<!-- add-attribute:class:success -->
 > **NOTE:** You can translate Luigi internal messages by providing translation for [these keys](../core/src/utilities/defaultLuigiTranslationTable.js).
+
 * **customSandboxRules** is an array of custom rules for the content in the iframe. You can extend the [Luigi default sandbox rules](https://github.com/SAP/luigi/blob/af1deebb392dcec6490f72576e32eb5853a894bc/core/src/utilities/helpers/iframe-helpers.js#L140) by adding further rules.
 * **iframeCreationInterceptor** is a function called on iframe creation. It gives you full control over the created iframe DOM element. You can modify it to your needs just before it is added to the DOM tree. 
 This function is called with these parameters: 

@@ -1,13 +1,10 @@
 .p-header {
   position: relative;
+  background-color: $secondary-color;
 
   > .has-border {
     padding-top: 25px;
     padding-bottom: 25px;
-
-    @include breakpoint(xlarge) {
-      border-bottom: 1px solid $border-color;
-    }
 
     @include breakpoint(xxlarge) {
       max-width: calc(1290px - 50px);
@@ -15,14 +12,24 @@
   }
 
   &--home {
+    padding-bottom: 0;
+    background-color: $ice-blue;
     background-image: url('../img/header_bg.svg');
     background-repeat: no-repeat;
     background-position: left 50% bottom 100px;
     background-size: cover;
-    z-index: 2;
+    z-index: 3;
 
     @include breakpoint(large) {
       background-position: left 50% bottom 0;
+    }
+
+
+
+    @include breakpoint(xlarge) {
+      > .has-border {
+        border-bottom: 1px solid $border-color;
+      }
     }
 
     @include breakpoint(xxlarge) {
@@ -69,6 +76,10 @@
       @include breakpoint(large) {
         height: 350px;
         padding-top: 30px;
+
+        a {
+          margin-right: 10px;
+        }
       }
 
       @include breakpoint(xxlarge) {
@@ -92,8 +103,24 @@
       background-repeat: no-repeat;
       background-size: cover;
 
+      .play-button {
+        display: block;
+        width: 88px;
+        height: 88px;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%,-50%);
+        background: rgba($powder-blue,0.51) url('../img/play_icon.svg') 60% 50% no-repeat;
+        background-size: 22px 28px;
+        border-radius: 50%;
+        border: 8px solid rgba($ice-blue,0.46);
+        background-clip: padding-box;
+      }
+
       @include breakpoint(medium down) {
         padding-top: 52%;
+        position: relative;
       }
 
       @include breakpoint(large) {
@@ -151,6 +178,7 @@
     align-items: center;
 
     .item {
+      min-width: 26px;
       margin-left: 25px;
 
       &:first-child {
@@ -210,7 +238,8 @@
 
           &:hover,
           &:active,
-          &:focus {
+          &:focus,
+          &.is-active {
             color: $primary-color;
           }
         }
@@ -245,7 +274,7 @@
           &:hover,
           &:focus,
           &:active,
-          .is-active {
+          &.is-active {
             color: white;
             border-bottom-color: $primary-color;
           }

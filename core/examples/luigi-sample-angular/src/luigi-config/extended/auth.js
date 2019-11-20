@@ -11,6 +11,8 @@ class Auth {
    */
   use = 'mockAuth';
 
+  storage = 'localStorage'; // localStorage, sessionStorage, none
+
   disableAutoLogin = false;
 
   mockAuth = {
@@ -104,7 +106,7 @@ class Auth {
       // return false; // prevent redirect to logoutUrl
     },
     onAuthError: (settings, err) => {
-      console.info('authErrorHandler 1', err, settings);
+      console.info('authErrorHandler', err, settings);
       // return false; // prevent redirect to logoutUrl, but go to /
     },
     onAuthExpireSoon: settings => {
@@ -112,6 +114,13 @@ class Auth {
       Luigi.showAlert({
         text: 'Token expires soon',
         type: 'warning'
+      });
+    },
+    onAuthConfigError: err => {
+      console.error(`IDP Provider ${err.idpProviderName} does not exist`);
+      Luigi.showAlert({
+        text: `IDP Provider ${err.idpProviderName} does not exist`,
+        type: 'error'
       });
     }
   };
