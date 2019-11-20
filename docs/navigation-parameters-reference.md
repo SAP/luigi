@@ -1,7 +1,7 @@
 <!-- meta
 {
   "node": {
-    "label": "Routing",
+    "label": "Navigation parameters reference",
     "category": {
       "label": "Luigi Core"
     },
@@ -83,7 +83,7 @@ Node parameters are all the parameters that can be added to an individual naviga
 - **description**: specifies the partial URL of the current segment. **pathSegment** must not contain slashes.
 - **examples**:
   - A static **pathSegment** of value `settings` results in `example.com/settings`.
-  - A dynamic **pathSegment** is prefixed with a colon and can load any value. Find out more about dynamic paths in Luigi [here](navigation-configuration.md#creating-a-dynamic-path).
+  - A dynamic **pathSegment** is prefixed with a colon and can load any value. Find out more about dynamic paths in Luigi [here](navigation-advanced.md#dynamically-changeable-paths).
 
 ### link
 - **type**: string
