@@ -161,11 +161,12 @@ Depending on the type of content, you should use different types of text, for ex
 |     Type           |      Font          |    Example    |
 |--------------------|:------------------:|---------------|
 | Parameters         |      **bold**     | **viewGroup** |
-| Attributes, values         |      `code`     |  Set `collapsible` to `true` |
+| Attributes | **bold** | **collapsible** |
+| Values         |      `code`     | `true`, `false` |
 | Dynamic parameters         |      `code`        | `{userId}`    |
 | Folders, paths, filenames  |      `code`        | Open `basicConfiguration.js` inside `assets/luigi-config`|
 | Code snippets      |      `code`        | See [this section](#code-snippets) |
-| Functions          |      **bold**     | **showLoadingIndicator()** |
+| Functions          |      `code`     | `showLoadingIndicator()` |
 
 ## Links
 
@@ -194,4 +195,4 @@ This section contains terminology frequently used in the Luigi documentation.
 * **Luigi Fiddle** - a [page](https://fiddle.luigi-project.io/) where you can configure an example Luigi application and explore Luigi functions.
 * **Parameters** - the parameters that can be used to configure Luigi in the Luigi configuration file, for example **category**, **viewUrl**, and more.
 * **Dynamic parameters** - the parameters that can be added to create a dynamically changeable path.
-* **Attributes** - the "sub properties" of parameters. E.g. the **category** parameter can have `label`, `icon`, and `collapsible` as attributes.
+* **Attributes** - the "sub properties" of parameters. E.g. the **category** parameter can have **label**, **icon**, and **collapsible** as attributes.
