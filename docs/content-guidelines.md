@@ -1,6 +1,13 @@
 # Content Guidelines
 
-This page contains instructions on how to create documentation for Luigi. It explain how to format documentation and provides a [glossary](#glossary) of Luigi terms.
+This page contains instructions on how to create documentation for Luigi. It defines the rules for each of these topics:
+* [Structure](#structure)
+* [Metadata](#metadata)
+* [Audience and language](#audience-and-language)
+* [Format](#format)
+* [Links](#links)
+* [Screenshots and diagrams](#screenshots-and-diagrams)
+* [Glossary](#glossary)
 
 ## Overview
 
@@ -10,17 +17,19 @@ Documentation is located in the `luigi/docs` folder in the [Luigi repository](ht
 
 ## Structure
 
+Documentation on the Luigi website follows the structure below. When adding a new document, you need to place it into one of the five main categories depending on its topic.
+
 **Basics**
 
 - [Getting started](getting-started.md)
-- Architecture
+- [Architecture](luigi-architecture.md)
 
 **Luigi Core**
 
 - [Installation](application-setup.md)
 - [Basic navigation](navigation-configuration.md)
-- [Advanced navigation](https://github.com/SAP/luigi/blob/master/docs/navigation-advanced.md)
-- [Routing](https://github.com/SAP/luigi/blob/master/docs/navigation-parameters-reference.md#routing-parameters)
+- [Advanced navigation](navigation-advanced.md)
+- [Navigation parameters reference](navigation-parameters-reference.md)
 - [Authorization](authorization-configuration.md)
 - [Authorization events](authorization-events.md)
 - [General settings](general-settings.md)
@@ -43,20 +52,64 @@ Documentation is located in the `luigi/docs` folder in the [Luigi repository](ht
 - [Vue](https://github.com/SAP/luigi/tree/master/core/examples/luigi-example-vue)
 - [React](https://github.com/SAP/luigi/tree/master/core/examples/luigi-example-react)
 
-## Audience
+## Metadata
+
+In order to render documentation correctly on the Luigi website, you need to add metadata to the Markdown documents on GitHub.
+
+### Navigation metadata
+
+This type of metadata determines where in the navigation structure of the Luigi website the document will be shown. It must be written as a json object surrounded by `<!--meta` `meta-->` tags. For example:
+
+```json
+<!-- meta
+{
+  "node": {
+    "label": "Overview",
+    "category": {
+      "label": "Basics"
+    },
+    "metaData": {
+      "categoryPosition": 1,
+      "position": 0
+    }
+  }
+}
+meta -->
+```
+
+### Alert blocks metadata
+
+To draw the reader's attention to something, you can use the quote block option in Markdown. Directly above the quote block, you need to add metadata which determines whether the alert box on the website will be green (`success`) or yellow (`warning`).
+
+Use one of these three options for alert blocks:
+
+```
+<!-- add-attribute:class:warning -->
+>**NOTE:** Necessary information
+```
+```
+<!-- add-attribute:class:success -->
+>**TIP:** Useful, but not strictly necessary information
+```
+```
+<!-- add-attribute:class:warning -->
+>**WARNING:** Very important information
+```
+
+
+
+## Audience and language
 
 The audience of this documentation consists mainly of developers interested in implementing a micro frontend UI solution. It is assumed the reader already has basic knowledge of web development. Do not explain general concepts unrelated to Luigi except if they are instrumental for working with the feature you're describing.
-
-## Language
 
 When writing documentation, you should adhere to a few basic rules:
 - Use active voice. For example, instead of writing "Luigi Client should be installed...", write "Install Luigi Client..."
 - Do not use slang or abbreviations. This also means you should not use contractions ("don't" instead of "do not") or short forms ("info" instead of "information").
 - Use the present tense.
 - Use concise language and avoid long blocks of text. Lists, tables, or subheadings can help you with that.
-- Give practical examples of features instead of only using words to explain them. Additionally, link to the [Luigi fiddle](https://fiddle.luigi-project.io/) as a tool where users can experiment with features.
+- Give practical examples of features instead of only using words to explain them. Additionally, link to the [Luigi Fiddle](https://fiddle.luigi-project.io/) as a tool where users can experiment with features.
 
-## Formatting
+## Format
 
 This section provides you with guidelines on how to format and organize your text.
 
@@ -108,32 +161,29 @@ Depending on the type of content, you should use different types of text, for ex
 |     Type           |      Font          |    Example    |
 |--------------------|:------------------:|---------------|
 | Parameters         |      **bold**     | **viewGroup** |
+| Attributes, values         |      **code**      |  Set the `collapsible` attribute to `true`
 | Dynamic parameters         |      `code`        | `{userId}`    |
-| Folders and paths  |      `code`        | the file `basicConfiguration.js` inside `assets/luigi-config`|
+| Folders, paths, filenames  |      `code`        | Open `basicConfiguration.js` inside `assets/luigi-config`|
 | Code snippets      |      `code`        | See [this section](#code-snippets) |
 | Functions          |      **bold**     | **showLoadingIndicator()** |
 
 ## Links
 
-If the link is within the same folder on github, use only the relative path. For all other links, use the absolute path (the one starting with https://...).
+If the link is within the same folder on GitHub, use only the relative path. For all other links, including external links, use the absolute path (which starts with https://...).
 
-## Alert blocks
+To link to a section within a document, use the title of that section as an anchor. For example:
 
-To draw the reader's attention to something, you can use the quote block option in Markdown. Use one of these three options:
+```
+[Link to the "custom messages" section in the "communication" document](communication.md#custom-messages)
+```
 
->**NOTE:** Something the reader should take note of
+## Screenshots and diagrams
 
->**TIP:** Useful, but not necessary information
+When adding screenshots or diagrams you should adhere to to the following rules:
 
->**WARNING:** Very important information
-
-## Screenshots
-
-When adding screenshots you should adhere to to the following rules:
-
-- Use high resolution screenshots
-- Only use screenshots if necessary, as too many of them can create visual noise
-- As an alternative to screenshots, point to the [Luigi fiddle](https://fiddle.luigi-project.io/) or other Luigi [examples] when you want to illustrate a concept.
+- Only use high resolution images
+- Only use screenshots or diagrams if necessary, as too many of them can create visual noise
+- As an alternative to screenshots, point to the [Luigi fiddle](https://fiddle.luigi-project.io/) or other Luigi examples when you want to illustrate a concept.
 
 ## Glossary
 
