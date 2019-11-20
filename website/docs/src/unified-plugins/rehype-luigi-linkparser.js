@@ -50,7 +50,7 @@ export default function luigiLinkParser(options) {
       } else if (parsed.hash && !parsed.pathname && !parsed.hostname) {
         // current page anchor link
         node.properties['href'] = prependForExport() + '/docs/' + settings.shortName + parsed.hash.toLowerCase();
-        node.properties['class'] = 'lui-scroll';
+        node.properties['onclick'] = 'scrollAnchor(event, event.target)';
       } else if (parsed.pathname && (
         parsed.pathname.startsWith('../') || parsed.pathname.startsWith('/')
       )) {
