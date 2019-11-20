@@ -161,7 +161,7 @@ Depending on the type of content, you should use different types of text, for ex
 |     Type           |      Font          |    Example    |
 |--------------------|:------------------:|---------------|
 | Parameters         |      **bold**     | **viewGroup** |
-| Attributes, values         |      **code**      |  Set the `collapsible` attribute to `true`
+| Attributes, values         |      `code`     |  Set the `collapsible` attribute to `true`
 | Dynamic parameters         |      `code`        | `{userId}`    |
 | Folders, paths, filenames  |      `code`        | Open `basicConfiguration.js` inside `assets/luigi-config`|
 | Code snippets      |      `code`        | See [this section](#code-snippets) |
