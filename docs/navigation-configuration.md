@@ -1,3 +1,18 @@
+<!-- meta
+{
+  "node": {
+    "label": "Basic navigation",
+    "category": {
+      "label": "Luigi Core"
+    },
+    "metaData": {
+      "categoryPosition": 2,
+      "position": 1
+    }
+  }
+}
+meta -->
+
 #  Basic navigation configuration
 
 Read these guides to get started with configuring your navigation:
