@@ -65,7 +65,7 @@ The node navigation parameters allow you to configure global navigation settings
 
 ### preloadViewGroups
 - **type**: boolean
-- **description**: allows deactivating the default preloading of [view groups](navigation-configuration.md#view-groups) iframes.
+- **description**: allows deactivating the default preloading of [view groups](navigation-advanced.md#view-groups) iframes.
 
 ### viewGroupsSettings
 - **type**: object
