@@ -13,7 +13,7 @@ export class InternalLinksHandler {
         links.forEach((link, index) => {
           if (link.getAttribute('data-linktype') === 'internal') {
             const url = new URL(link.href);
-            let newHref = ctx.coreBaseUrl + url.pathname.replace('.md', '').replace('/docu-microfrontend', '') + url.hash;
+            let newHref = ctx.coreBaseUrl + url.pathname.replace('.md', '').replace('/docu-microfrontend', '') + url.hash.toLowerCase();
             link.setAttribute('href', newHref);
           }
         });
@@ -26,7 +26,7 @@ export class InternalLinksHandler {
         const url = new URL(elem.getAttribute('href'));
         const urlWithPath = url.pathname.replace(ctx.coreBaseUrl, '').replace('.md', '').replace('/docu-microfrontend', '');
         if (url.hash) {
-          LuigiClient.linkManager().withParams({hash: url.hash}).navigate(urlWithPath);
+          LuigiClient.linkManager().withParams({hash: url.hash.toLowerCase()}).navigate(urlWithPath);
         } else {
           LuigiClient.linkManager().navigate(urlWithPath);
         }

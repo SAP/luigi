@@ -49,7 +49,7 @@ export default function luigiLinkParser(options) {
         node.properties['target'] = '_blank';
       } else if (parsed.hash && !parsed.pathname && !parsed.hostname) {
         // current page anchor link
-        node.properties['href'] = prependForExport() + '/docs/' + settings.shortName + parsed.hash;
+        node.properties['href'] = prependForExport() + '/docs/' + settings.shortName + parsed.hash.toLowerCase();
         node.properties['class'] = 'lui-scroll';
       } else if (parsed.pathname && (
         parsed.pathname.startsWith('../') || parsed.pathname.startsWith('/')
