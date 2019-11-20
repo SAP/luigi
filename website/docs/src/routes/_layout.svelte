@@ -199,10 +199,100 @@
 			}
 		}
 
+		.copyCodeContainer {
+			position: relative;
+		}
+
+		.copyCode {
+			position: absolute;
+			right: -10px;
+			top: -10px;
+			width: 28px;
+			height: 28px;
+			border-radius: 50%;
+			background-color: $primary-color;
+			border: 1px $primary-color solid;
+			box-shadow: 0 0 4px 0 $primary-color;
+			cursor: pointer;
+			& > div {
+				position: relative;
+				display: flex;
+				align-items: center;
+				justify-content: center;
+				height: 100%;
+				width: 100%;
+			}
+			img {
+				width: 13px;
+				height: 16px;
+			}
+			.popoverCopy {
+				position: absolute;
+				right: 0;
+				bottom: -37px;
+				font-family: 'Open Sans', sans-serif;
+				display: none;
+				font-size: 11px;
+				line-height: 13px;
+				color: $secondary-color;
+				background-color: white;
+				border: 1px $primary-color solid;
+				padding: 5px 11px;
+				white-space: nowrap;
+
+				// Arrow needs to be added
+				&:before,
+				&:after {
+					content: ' ';
+					position: absolute;
+					bottom: 100%;
+					width: 0;
+					height: 0;
+				}
+
+				&:before {
+					right: 2px;
+					border: 10px solid transparent;
+					border-bottom-color: $primary-color;
+				}
+
+				// cutout
+				&:after {
+					right: 3px;
+					border: 9px solid transparent;
+					border-bottom-color: white;
+					background-color: transparent;
+				}
+
+				@media screen and (min-width: (1024px - $side-nav-width)) {
+
+					left: 50%;
+					right: auto;
+					transform: translateX(-50%);
+
+					&:before {
+						left: 34px;
+						right: auto;
+					}
+
+					&:after {
+						left: 35px;
+						right: auto;
+					}
+				}
+			}
+			&:hover {
+				background-color: white;
+				border-color: $primary-color;
+				.popoverCopy {
+					display: block;
+				}
+			}
+		}
+
 		pre {
 			width: 100%;
 			display: block;
-			position: relative;
 			width: 1px;
 			min-width: 100%;
 			*width: 100%;

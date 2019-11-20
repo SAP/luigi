@@ -1,3 +1,18 @@
+<!-- meta
+{
+  "node": {
+    "label": "General settings",
+    "category": {
+      "label": "Luigi Core"
+    },
+    "metaData": {
+      "categoryPosition": 2,
+      "position": 6
+    }
+  }
+}
+meta -->
+
 # General settings
 
 <!-- add-attribute:class:success -->
