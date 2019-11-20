@@ -112,9 +112,9 @@ Node parameters are all the parameters that can be added to an individual naviga
 ### viewUrl
 - **type**: string
 - **description**: contains the URL or path to a view which renders when you click the navigation node. Use either a full URL or a relative path. If **viewUrl** is undefined, Luigi activates the child node specified in **defaultChildNode**. When both **viewUrl** and **defaultChildNode** are undefined, Luigi opens the first child of the current node. **viewUrl** can contain variables from:
-* dynamic path segments
-* node parameters
-* contexts
+  * dynamic path segments
+  * node parameters
+  * contexts
 
 
 ### navigationContext
@@ -145,20 +145,20 @@ Node parameters are all the parameters that can be added to an individual naviga
 - **type**: boolean
 - **description**: shows a loading indicator when switching between micro frontends. If you have a fast micro frontend, you can disable this feature to prevent flickering of the loading indicator. This parameter is enabled by default.
 - **example**:
-```javascript
-loadingIndicator: {
-  enabled: true
-}
-```
+    ```javascript
+    loadingIndicator: {
+      enabled: true
+    }
+   ```
 ### loadingIndicator.hideAutomatically
 - **type**: boolean
 - **description**: if set to `false`, it disables the automatic hiding of the loading indicator once the micro frontend is loaded. It is only considered if the loading indicator is enabled. It does not apply if the loading indicator is activated manually with the `LuigiClient.uxManager().showLoadingIndicator()` function. If the loading indicator is enabled and automatic hiding is disabled, use `LuigiClient.uxManager().hideLoadingIndicator()` to hide it manually in your micro frontend during the startup. This parameter is enabled by default.
 - **example**:
-```javascript
-loadingIndicator: {
-  hideAutomatically: false
-}
-```
+    ```javascript
+    loadingIndicator: {
+      hideAutomatically: false
+    }
+    ```
 ### icon
 - **type**: string
 - **description**: the name of an icon, without the `sap-icon--` prefix. Its source may be [OpenUI](https://openui5.hana.ondemand.com/1.40.10/iconExplorer.html) or a custom link (relative or absolute) to an image. The icon is displayed next to the node label in the side navigation or instead of the label in the top navigation.
@@ -204,11 +204,11 @@ loadingIndicator: {
 - **type**: boolean
 - **description**: current locale can be changed from client using the corresponding API if this is set to `true`
 - **example**:
-```javascript
-  clientPermissions: {
-    changeCurrentLocale: true
-  }
-```
+    ```javascript
+    clientPermissions: {
+      changeCurrentLocale: true
+    }
+    ```
 
 ### tabNav
 - **type**: boolean
