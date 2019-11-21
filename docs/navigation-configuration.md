@@ -87,7 +87,8 @@ navigation: {
 
 ## Basic navigation parameters
 
->**NOTE:** For a full list of available parameters, see the [parameter reference](navigation-parameters-reference.md) document.
+<!-- add-attribute:class:success -->
+> **NOTE:** For a full list of available parameters, see the [parameter reference](navigation-parameters-reference.md) document.
 
 The [first steps](#first-steps) example provides some basic navigation parameters:
 
