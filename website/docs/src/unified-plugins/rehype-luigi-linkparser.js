@@ -41,16 +41,16 @@ export default function luigiLinkParser(options) {
         if(newHref.startsWith('./')) {
           newHref = newHref.substr(2);
         }
-        const newUrl = url.parse(prependForExport() + '/docs/' + newHref);
-        // parsed.href does not work currently with # anchor link links
-        node.properties['href'] = newUrl.pathname;
+
+        node.properties['href'] = prependForExport() + '/docs/' + newHref;
       } else if (parsed.protocol) {
         // external link
         node.properties['rel'] = 'external';
         node.properties['target'] = '_blank';
       } else if (parsed.hash && !parsed.pathname && !parsed.hostname) {
         // current page anchor link
-        node.properties['href'] = prependForExport() + '/docs/' + settings.shortName + parsed.hash;
+        node.properties['href'] = prependForExport() + '/docs/' + settings.shortName + parsed.hash.toLowerCase();
+        node.properties['onclick'] = 'scrollAnchor(event, event.target)';
       } else if (parsed.pathname && (
         parsed.pathname.startsWith('../') || parsed.pathname.startsWith('/')
       )) {
