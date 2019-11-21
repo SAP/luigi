@@ -27,10 +27,6 @@ module.exports = {
         "to": "../luigi-client"
       },
       {
-        "from": "node_modules/fiori-fundamentals/dist",
-        "to": "../fundamental-ui"
-      },
-      {
         "from": "../../docs/assets",
         "to": "../assets"
       }

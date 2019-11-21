@@ -12,7 +12,10 @@
 </script>
 
 <style>
-	
+	.invisible {
+		height: 0;
+		overflow: hidden;
+	}
 </style>
 
 <svelte:head>
@@ -20,13 +23,10 @@
 </svelte:head>
 
 {#each docs as doc}
-		<!-- we're using the non-standard `rel=prefetch` attribute to
-				tell Sapper to load the data for the page as soon as
-				the user hovers over the link or taps it, instead of
-				waiting for the 'click' event -->
 		{#if doc.shortName == "README"}
 			{@html doc.contents}
 		{:else}
-			<li><a rel='prefetch' href='docs/{doc.shortName}'>{doc.name}</a></li>
+		  <!-- Used as sapper sitemap -->
+			<li class="invisible"><a rel='prefetch' href='docs/{doc.shortName}'>{doc.name}</a></li>
 		{/if}
 {/each}
