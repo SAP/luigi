@@ -18,6 +18,9 @@ mv $EXPORT_DIR/luigi/* $LUIGI_DIR
 mkdir -p $LUIGI_DIR/docu-microfrontend
 mv $EXPORT_DIR/* $LUIGI_DIR/docu-microfrontend
 
+# copy generated-json afterwards, since static files are only copied once by sapper in the beginning
+cp $BASE_DIR/../static/luigi/navigation-generated.json $LUIGI_DIR/
+
 # copy redirects file for netlify
 cp $LUIGI_DIR/../src/_redirects $LUIGI_DIR/
 

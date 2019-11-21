@@ -1,3 +1,18 @@
+<!-- meta
+{
+  "node": {
+    "label": "Routing",
+    "category": {
+      "label": "Luigi Core"
+    },
+    "metaData": {
+      "categoryPosition": 2,
+      "position": 3
+    }
+  }
+}
+meta -->
+
 # Navigation parameters reference
 
 <!-- add-attribute:class:success -->
@@ -277,7 +292,8 @@ The profile section is a configurable drop-down list available in the top naviga
 - **type**: function
 - **description**: used to retrieve a user's name and email to simulate logging in. It can be used when authorization is disabled and also gets called if the defined IDP provider does not have **settings.userInfoFn** defined or does not provide a `userInfo` function internally. It can be asynchronous and should return an object with **name**, **email** and **picture** parameters.
 
->**NOTE:** Neither authorization nor profile parameter are configured if the profile section in the top navigation bar is not visible.
+<!-- add-attribute:class:success -->
+> **NOTE:** Neither authorization nor profile parameter are configured if the profile section in the top navigation bar is not visible.
 
 ## Product switcher
 
