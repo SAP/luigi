@@ -13,6 +13,5 @@ new CopyCodeHandler().init();
 new InternalLinksHandler().init();
 new Accordion().init();
 
-const scrollHandler = new ScrollAnchorsHandler();
-scrollHandler.init();
-window.scrollAnchor = scrollHandler.scrollAnchor;
+new ScrollAnchorsHandler().init();
+
