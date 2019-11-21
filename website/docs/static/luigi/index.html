@@ -7,10 +7,35 @@
       name="viewport"
       content="width=device-width, user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1"
     />
+    <style>
+      /* LUIGI CUSTOM CONTAINER FEATURE */
+      body {
+        background: white !important;
+      }
+      [luigi-app-root] {
+        height: 100vh;
+        max-width: calc(1290px - 50px);
+        margin: 0 auto;
+      }
+      header {
+        background-color: #3c4553;
+        height: 110px;
+        position: absolute;
+        left: 0;
+        right: 0;
+      }
+      .fd-shellbar {
+        padding-left: 0 !important;
+        padding-right: 0 !important;
+      }
+    </style>
     <link rel="stylesheet" href="/luigi-core/luigi.css" />
     <link rel="stylesheet" href="/coreStyles.css" />
   </head>
   <body class="luigi-documentation">
+    <header></header>
+    <div luigi-app-root></div>
+    
     <noscript>You need to enable JavaScript to run this app.</noscript>
     <script src="/luigi-core/luigi.js"></script>
     <script src="/extendedConfiguration.bundle.js"></script>
