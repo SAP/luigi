@@ -1,3 +1,18 @@
+<!-- meta
+{
+  "node": {
+    "label": "UI features",
+    "category": {
+      "label": "Luigi Core"
+    },
+    "metaData": {
+      "categoryPosition": 2,
+      "position": 8
+    }
+  }
+}
+meta -->
+
 
 # Luigi UX features
 
@@ -7,7 +22,8 @@ By default, the Luigi content, including the top navigation, the left navigation
 
 However, you can render the Luigi content in any other HTML container. It can be useful if you want to add a header or a footer on top of the Luigi content. To use this feature, add the `luigi-app-root` custom HTML attribute to the HTML tag in which you want to render the Luigi content.
 
->**NOTE:** If you render the Luigi content in a custom container, the container is positioned relatively when you apply your own CSS. Also, set the height of the Luigi custom container either in **px** or **vh**.
+<!-- add-attribute:class:success -->
+> **NOTE:** If you render the Luigi content in a custom container, the container is positioned relatively when you apply your own CSS. Also, set the height of the Luigi custom container either in **px** or **vh**.
 
 
 ### Responsive application setup

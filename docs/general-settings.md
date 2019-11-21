@@ -1,7 +1,22 @@
+<!-- meta
+{
+  "node": {
+    "label": "General settings",
+    "category": {
+      "label": "Luigi Core"
+    },
+    "metaData": {
+      "categoryPosition": 2,
+      "position": 6
+    }
+  }
+}
+meta -->
+
 # General settings
 
 <!-- add-attribute:class:success -->
->**NOTE:** For learning and testing purposes, use the [Luigi Fiddle](https://fiddle.luigi-project.io) page where you can configure a sample Luigi application.
+> **NOTE:** For learning and testing purposes, use the [Luigi Fiddle](https://fiddle.luigi-project.io) page where you can configure a sample Luigi application.
 
 The configuration file contains a section called **Settings** in which you can configure additional Luigi options.
 

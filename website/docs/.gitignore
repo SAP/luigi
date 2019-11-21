@@ -12,6 +12,7 @@ luigi-client
 public/*
 static/assets
 *coreStyles*
+navigation-generated.json
 
 # Debug
 yarn-error.log

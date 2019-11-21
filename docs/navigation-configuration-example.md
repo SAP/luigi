@@ -1,3 +1,19 @@
+<!-- meta
+{
+  "node": {
+    "label": "Configuration Example",
+    "category": {
+      "label": "Luigi Core"
+    },
+    "metaData": {
+      "categoryPosition": 2,
+      "position": 10
+    },
+    "hideFromNav": true
+  }
+}
+meta -->
+
 # Navigation configuration example
 
 This example represents a sample Luigi navigation configuration including parameters described in the [navigation parameters reference](navigation-parameters-reference.md).

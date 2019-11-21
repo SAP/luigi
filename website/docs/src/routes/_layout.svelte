@@ -29,8 +29,6 @@
 		color: $secondary-color;
 		box-sizing: border-box;
 
-		
-
 		.docu-content {
 
 			padding: 30px;
