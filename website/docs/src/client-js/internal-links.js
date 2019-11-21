@@ -23,7 +23,12 @@ export class InternalLinksHandler {
       window.navigateInternal = (evt, elem) => {
         evt.preventDefault();
         evt.stopPropagation();
-        const url = new URL(elem.getAttribute('href'));
+        let url;
+        try {
+          url = new URL(elem.getAttribute('href'));
+        } catch (error) {
+          console.debug('navigateInternal URL parse error', elem, elem.getAttribute('href'), error);
+        }
         const urlWithPath = url.pathname.replace(ctx.coreBaseUrl, '').replace('.md', '').replace('/docu-microfrontend', '');
         if (url.hash) {
           LuigiClient.linkManager().withParams({hash: url.hash.toLowerCase()}).navigate(urlWithPath);

@@ -11,6 +11,5 @@ sapper.start({
 new CopyCodeHandler().init();
 new InternalLinksHandler().init();
 
-const scrollHandler = new ScrollAnchorsHandler();
-scrollHandler.init();
-window.scrollAnchor = scrollHandler.scrollAnchor;
+new ScrollAnchorsHandler().init();
+

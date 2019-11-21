@@ -10,6 +10,7 @@ export class ScrollAnchorsHandler {
       if (LuigiClient.getNodeParams().hash) {
         this.scrollAnchor(null, LuigiClient.getNodeParams().hash);
       }
+      window.scrollAnchor = scrollHandler.scrollAnchor;
     });
   }
   
