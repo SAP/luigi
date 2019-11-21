@@ -168,6 +168,9 @@ describe('Navigation', function() {
     const nodeWithChildren = {
       children: [{ name: 'children1' }, { name: 'children2' }]
     };
+    const nodeWith_Children = {
+      _children: [{ name: 'children1' }, { name: 'children2' }]
+    };
     const nodeWithChildrenProvider = {
       children: () => {
         return [{ name: 'children' }];
@@ -194,6 +197,13 @@ describe('Navigation', function() {
         undefined
       );
       expect(children).to.equal(nodeWithChildren.children);
+    });
+    it('should return nodes children and bind them if _children are provided', async () => {
+      const children = await Navigation.getChildren(
+        nodeWith_Children,
+        undefined
+      );
+      expect(children).to.be.deep.equal(nodeWith_Children.children);
     });
     it('should return nodes children and bind them if children provider is provided', async () => {
       const children = await Navigation.getChildren(

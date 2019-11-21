@@ -387,5 +387,53 @@ describe('Header', function() {
       assert.equal(document.title, 'Luigi with subTitle');
       assert.equal(window.Luigi.config.settings.header.subTitle, 'here');
     });
+
+    it('set appSwitcherItems, update title', () => {
+      const headerSettings = {
+        title: 'Luigi',
+        subTitle: 'one'
+      };
+      setHeaderSettings(headerSettings);
+
+      document.title = '';
+      const items = [
+        {
+          title: 'Luigi One',
+          subTitle: 'project one',
+          link: '/projects/pr1'
+        },
+        {
+          title: 'Luigi Two',
+          subTitle: 'project two',
+          link: '/projects/pr2'
+        }
+      ];
+      const pathData = [
+        {
+          pathSegment: 'home',
+          children: [{ pathSegment: 'overview' }, { pathSegment: 'projects' }]
+        },
+        {
+          pathSegment: 'projects',
+          children: [
+            {
+              pathSegment: 'pr1'
+            }
+          ]
+        },
+        {
+          pathSegment: 'pr2'
+        }
+      ];
+
+      component.set({
+        appSwitcherItems: items
+      });
+      component.set({
+        pathData: pathData
+      });
+      headerService.updateTitle(component);
+      assert.equal(document.title, 'Luigi Two');
+    });
   });
 });
