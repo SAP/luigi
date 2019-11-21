@@ -20,12 +20,17 @@ Everything fine!
 
 <!-- accordion:end -->
 
-Luigi provides even more ...
+And now an accordion with all items openend
 
 
-<!-- accordion:start -->
+<!-- accordion:start defaultState:active -->
 
-### Another FAQ Section
+### Another Section
+
+This is the text
+This is the text
+
+### Another Section
 
 This is the text
 This is the text

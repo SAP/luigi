@@ -1,10 +1,10 @@
-import visit from 'unist-util-visit';
 import h from 'hastscript';
 // import hastFromParse5 from 'hast-util-from-parse5';
 // import hastToHTML from 'hast-util-to-html';
 // import parse5 from 'parse5';
 
 export default function wrapAccordion(options = { questionTagName: 'h3' }) {
+  let settings = getDefaultSettings();
   let isAccordion = false;
   let accordion;
   let currentQuestion;
@@ -15,11 +15,17 @@ export default function wrapAccordion(options = { questionTagName: 'h3' }) {
     });
   }
 
+  function getDefaultSettings() {
+    return Object.assign({}, {
+      defaultState: ''
+    });
+  }
+
   function beginQuestion(node) {
-    currentQuestion = h('div.accordion-item', [
-      h('dt.accordion-item-question', 
-        { onclick: 'accordionOpenAnswer(event, this)' }, Object.assign({}, node)),
-      h('dd.accordion-item-answer', []),
+    currentQuestion = h('div.accordion-item', { class: settings.defaultState }, [
+      h('dt.accordion-item-title',
+        { onclick: 'accordionToggle(event, this)' }, Object.assign({}, node)),
+      h('dd.accordion-item-content', []),
     ]);
   }
 
@@ -35,10 +41,19 @@ export default function wrapAccordion(options = { questionTagName: 'h3' }) {
     node.children = [];
   }
 
+  function storeSettings(str) {
+    const keyValues = str.split(' ');
+    const options = keyValues.map(kv => ({ key: kv.split(':')[0], value: kv.split(':')[1] }));
+    for (const opt of options) {
+      settings[opt.key] = opt.value;
+    }
+  }
+
   function processAccordionElements(node) {
     if(currentQuestion && node.tagName === options.questionTagName) {
       finishQuestion();
     }
+
     if(!currentQuestion && node.tagName === options.questionTagName) {
       beginQuestion(node);
     } else if(currentQuestion) {
@@ -52,6 +67,8 @@ export default function wrapAccordion(options = { questionTagName: 'h3' }) {
     if (node.type === 'comment') {
       if (node.value.trim().startsWith('accordion:start')) {
         isAccordion = true;
+        storeSettings(node.value.trim());
+
         // start accordion section
         accordion = h('dl.accordion-container', [
           // all accordion-items will be pushed here
@@ -59,7 +76,10 @@ export default function wrapAccordion(options = { questionTagName: 'h3' }) {
       }
 
       if (node.value.trim().startsWith('accordion:end')) {
+        // reset
         isAccordion = false;
+        settings = getDefaultSettings();
+
         if(currentQuestion) {
           finishQuestion();
         }

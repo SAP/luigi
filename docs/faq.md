@@ -15,7 +15,7 @@ meta -->
 
 # Frequently asked questions about Luigi
 
-<!-- accordion:start -->
+<!-- accordion:start defaultState:active -->
 
 ### What is Luigi?
 

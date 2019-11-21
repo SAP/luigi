@@ -1,8 +1,8 @@
 export class Accordion {
   init() {
-    window.faqOpenAnswer = (event, element) => {
+    window.accordionToggle = (event, element) => {
       event.preventDefault();
-      element.parentNode.classList.add('active');
+      element.parentNode.classList.toggle('active');
     };
   }
 }
