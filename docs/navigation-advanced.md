@@ -1,3 +1,18 @@
+<!-- meta
+{
+  "node": {
+    "label": "Advanced navigation",
+    "category": {
+      "label": "Luigi Core"
+    },
+    "metaData": {
+      "categoryPosition": 2,
+      "position": 2
+    }
+  }
+}
+meta -->
+
 # Advanced navigation
 
 This document shows you how to configure the following Luigi features:
@@ -322,6 +337,7 @@ appSwitcher = {
 
 For more options and parameters which you can use to configure navigation in Luigi, read the [full parameter reference](navigation-parameters-reference.md). Some of the topics you can find there include:
 
+* Defining the [routing](navigation-parameters-reference.md#routing-parameters) strategy of your application
 * Enabling and disabling the [loading indicator](navigation-parameters-reference.md#loadingindicatorenabled)
 * Hiding [navigation nodes](navigation-parameters-reference.md#hidefromnav) or [side navigation](navigation-parameters-reference.md#hidesidenav)
 * Including a horizontal [tab navigation](navigation-parameters-reference.md#tabnav) bar

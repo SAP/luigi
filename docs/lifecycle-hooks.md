@@ -1,3 +1,18 @@
+<!-- meta
+{
+  "node": {
+    "label": "Lifecycle hooks",
+    "category": {
+      "label": "Luigi Core"
+    },
+    "metaData": {
+      "categoryPosition": 2,
+      "position": 7
+    }
+  }
+}
+meta -->
+
 # Lifecycle hooks
 
 You can use any of the Luigi lifecycle hooks by adding additional setup to the root of the Luigi configuration object. Here is an example:
@@ -20,5 +35,5 @@ You can use any of the Luigi lifecycle hooks by adding additional setup to the r
 
 ### luigiAfterInit()
 
-This method will be called after `Luigi.setConfig({})` is executed. 
+This method will be called after [Luigi.setConfig({})](luigi-core-api.md#setconfig) is executed.
 

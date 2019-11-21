@@ -1,3 +1,18 @@
+<!-- meta
+{
+  "node": {
+    "label": "Overview",
+    "category": {
+      "label": "Basics"
+    },
+    "metaData": {
+      "categoryPosition": 1,
+      "position": 0
+    }
+  }
+}
+meta -->
+
 # Luigi Documentation
 
 If you are new to Luigi, read the [Getting started guide](getting-started.md) to learn more about its structure and key features.
@@ -17,9 +32,9 @@ To configure your Luigi application, simply edit the files in the `luigi-config`
 
 * [Navigation (basic)](navigation-configuration.md) - configure basic top and side navigation, links, and categories.
 * [Navigation (advanced)](navigation-advanced.md) - create a dynamic path, reuse micro frontends with the same origin, and configure additional navigation elements. 
-* [Routing](navigation-parameters-reference.md#routing) - define routing options for your application.
+* [Full parameter reference](navigation-parameters-reference.md) - find all the parameters which you can use to configure Luigi navigation in one place.
 * [Authorization](authorization-configuration.md) - configure login and security features for your application.
-    * [Authorization events](authorization-events.md) - define event configuration used to react to Luigi authorization events.
+* [Authorization events](authorization-events.md) - define event configuration used to react to Luigi authorization events.
 * [General settings](general-settings.md) - fully customize a micro frontend, define a header, make your application responsive, and more.
 * [Lifecycle hooks](lifecycle-hooks.md) - execute custom logic on any of the Luigi lifecycle steps.
 
@@ -41,7 +56,8 @@ Read the Luigi Client API documentation to learn more about the functions and pa
 * [UX Manager](luigi-client-api.md#uxmanager) - manage appearance options such as the behavior of backdrop or loading indicators.
 
 ## Advanced
-* [Communication](communication.md) describes how to send custom messages between Luigi Core and Client.
+
+[Communication](communication.md) describes how to send custom messages between Luigi Core and Client.
 
 ## Examples
 

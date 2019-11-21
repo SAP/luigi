@@ -1,3 +1,18 @@
+<!-- meta
+{
+  "node": {
+    "label": "Basic navigation",
+    "category": {
+      "label": "Luigi Core"
+    },
+    "metaData": {
+      "categoryPosition": 2,
+      "position": 1
+    }
+  }
+}
+meta -->
+
 #  Basic navigation configuration
 
 Read these guides to get started with configuring your navigation:
@@ -72,6 +87,7 @@ navigation: {
 
 ## Basic navigation parameters
 
+<!-- add-attribute:class:warning -->
 >**NOTE:** For a full list of available parameters, see the [parameter reference](navigation-parameters-reference.md) document.
 
 The [first steps](#first-steps) example provides some basic navigation parameters:
