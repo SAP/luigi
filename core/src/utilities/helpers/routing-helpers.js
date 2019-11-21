@@ -30,7 +30,17 @@ class RoutingHelpersClass {
       return lastElement.defaultChildNode;
     } else if (children && children.length) {
       const rootPath = pathData.navigationPath.length === 1;
-      if (rootPath) return children[0].pathSegment;
+      if (rootPath) {
+        const firstNodeWithPathSegment = children.find(
+          child => child.pathSegment
+        );
+        return (
+          (firstNodeWithPathSegment && firstNodeWithPathSegment.pathSegment) ||
+          console.error(
+            'At least one navigation node in the root hierarchy must have a pathSegment.'
+          )
+        );
+      }
       const validChild = children.find(
         child =>
           child.pathSegment &&
