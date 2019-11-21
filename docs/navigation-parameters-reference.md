@@ -293,7 +293,7 @@ The profile section is a configurable drop-down list available in the top naviga
 - **description**: used to retrieve a user's name and email to simulate logging in. It can be used when authorization is disabled and also gets called if the defined IDP provider does not have **settings.userInfoFn** defined or does not provide a `userInfo` function internally. It can be asynchronous and should return an object with **name**, **email** and **picture** parameters.
 
 <!-- add-attribute:class:warning -->
->**NOTE:** Neither authorization nor profile parameter are configured if the profile section in the top navigation bar is not visible.
+>**NOTE:** Neither **authorization** nor **profile** parameter is configured if the profile section in the top navigation bar is not visible.
 
 ## Product switcher
 
