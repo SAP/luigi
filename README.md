@@ -57,7 +57,8 @@ import {
 // } from '@kyma-project/luigi-client';
 ```
 
->**NOTE**: The angular example application is not fully compatible with IE11.
+<!-- add-attribute:class:warning -->
+> **NOTE**: The angular example application is not fully compatible with IE11.
 
 ## Development
 
@@ -71,8 +72,8 @@ For security reasons, follow these guidelines when developing a micro frontend:
 - Maintain a whitelist with trusted domains and compare it with the origin of the Luigi Core application. The origin will be passed when you call the init listener in your micro frontend. Stop further processing if the origin does not match.
 
 
->**NOTE**: Luigi follows these [sandbox rules for iframes](https://github.com/SAP/luigi/blob/af1deebb392dcec6490f72576e32eb5853a894bc/core/src/utilities/helpers/iframe-helpers.js#L140).
-
+<!-- add-attribute:class:success -->
+> **NOTE**: Luigi follows these [sandbox rules for iframes](https://github.com/SAP/luigi/blob/af1deebb392dcec6490f72576e32eb5853a894bc/core/src/utilities/helpers/iframe-helpers.js#L140).
 
 
 ### Code formatting for contributors

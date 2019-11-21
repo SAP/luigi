@@ -19,10 +19,10 @@ Prior to start developing with Luigi, you need to set up your application. This 
 
 Choose the framework to build your application:
 
-[Application setup without a framework](#noframework)  
-[Angular 6](#angular6)  
-[SAPUI5/OpenUI5](#sapui5)  
-[VUE.JS](#vuejs)
+[Application setup without a framework](#application-setup-for-an-application-not-using-a-framework)  
+[Angular 6](#application-setup-for-angular-6)  
+[SAPUI5/OpenUI5](#application-setup-for-sapui5openui5)  
+[VUE.JS](#application-setup-for-vuejs)
 
 ## Basic application setup
 
@@ -46,7 +46,8 @@ The examples on this page demonstrate commands that perform each of the necessar
 <a name="noframework"></a> 
 ### Application setup for an application not using a framework 
 
->**NOTE:** You need a development server capable of hosting Single Page Applications. The recommended server is Live Server.
+<!-- add-attribute:class:success -->
+> **NOTE:** You need a development server capable of hosting Single Page Applications. The recommended server is Live Server.
 
 1. If you do not have Live Server installed, use this command to install it.
 
@@ -83,7 +84,8 @@ live-server --entry-file=index.html public
 
 ### Application setup for Angular 6
 
->**NOTE:** The Angular CLI is a prerequisite for this example.
+<!-- add-attribute:class:warning -->
+> **NOTE:** The Angular CLI is a prerequisite for this example.
 
 1. If you do not have the Angular CLI installed, download and install it from [this URL](https://cli.angular.io/).
 
@@ -115,7 +117,8 @@ npm run start
 
 ### Application setup for SAPUI5/OpenUI5 
 
->**NOTE:** Live Server must be installed as your development server.
+<!-- add-attribute:class:warning -->
+> **NOTE:** Live Server must be installed as your development server.
 
 1. If you do not have Live Server installed, use this command to install it.
 
@@ -148,7 +151,8 @@ $ live-server --entry-file=index.html public
 
 ### Application setup for VUE.JS 
 
->**NOTE:** The VUE CLI is a prerequisite for this example.
+<!-- add-attribute:class:warning -->
+> **NOTE:** The VUE CLI is a prerequisite for this example.
 
 1. If you do not have VUE CLI installed, use this command to install it.
 
