@@ -17,9 +17,9 @@ export default function wrapAccordion(options = { questionTagName: 'h3' }) {
 
   function beginQuestion(node) {
     currentQuestion = h('div.accordion-item', [
-      h('div.accordion-item-question', 
+      h('dt.accordion-item-question', 
         { onclick: 'accordionOpenAnswer(event, this)' }, Object.assign({}, node)),
-      h('div.accordion-item-answer', []),
+      h('dd.accordion-item-answer', []),
     ]);
   }
 
@@ -53,7 +53,7 @@ export default function wrapAccordion(options = { questionTagName: 'h3' }) {
       if (node.value.trim().startsWith('accordion:start')) {
         isAccordion = true;
         // start accordion section
-        accordion = h('div.accordion-container', [
+        accordion = h('dl.accordion-container', [
           // all accordion-items will be pushed here
         ]);
       }
