@@ -1,7 +1,7 @@
 <!-- meta
 {
   "node": {
-    "label": "Routing",
+    "label": "Navigation parameters reference",
     "category": {
       "label": "Luigi Core"
     },
@@ -16,7 +16,7 @@ meta -->
 # Navigation parameters reference
 
 <!-- add-attribute:class:success -->
-> **NOTE:** To see the navigation parameters in use, see the [navigation configuration example](navigation-configuration-example.md) or configure a test application in the [Luigi Fiddle](https://fiddle.luigi-project.io).
+> **TIP:** To see the navigation parameters in use, see the [navigation configuration example](navigation-configuration-example.md) or configure a test application in the [Luigi Fiddle](https://fiddle.luigi-project.io).
 
 Use the parameters and functions in this reference to configure your Luigi navigation structure.
 
@@ -65,7 +65,7 @@ The node navigation parameters allow you to configure global navigation settings
 
 ### preloadViewGroups
 - **type**: boolean
-- **description**: allows deactivating the default preloading of [view groups](navigation-configuration.md#view-groups) iframes.
+- **description**: allows deactivating the default preloading of [view groups](navigation-advanced.md#view-groups) iframes.
 
 ### viewGroupsSettings
 - **type**: object
@@ -83,7 +83,7 @@ Node parameters are all the parameters that can be added to an individual naviga
 - **description**: specifies the partial URL of the current segment. **pathSegment** must not contain slashes.
 - **examples**:
   - A static **pathSegment** of value `settings` results in `example.com/settings`.
-  - A dynamic **pathSegment** is prefixed with a colon and can load any value. Find out more about dynamic paths in Luigi [here](navigation-configuration.md#creating-a-dynamic-path).
+  - A dynamic **pathSegment** is prefixed with a colon and can load any value. Find out more about dynamic paths in Luigi [here](navigation-advanced.md#dynamically-changeable-paths).
 
 ### link
 - **type**: string
@@ -112,9 +112,9 @@ Node parameters are all the parameters that can be added to an individual naviga
 ### viewUrl
 - **type**: string
 - **description**: contains the URL or path to a view which renders when you click the navigation node. Use either a full URL or a relative path. If **viewUrl** is undefined, Luigi activates the child node specified in **defaultChildNode**. When both **viewUrl** and **defaultChildNode** are undefined, Luigi opens the first child of the current node. **viewUrl** can contain variables from:
-* dynamic path segments
-* node parameters
-* contexts
+  * dynamic path segments
+  * node parameters
+  * contexts
 
 
 ### navigationContext
@@ -145,20 +145,20 @@ Node parameters are all the parameters that can be added to an individual naviga
 - **type**: boolean
 - **description**: shows a loading indicator when switching between micro frontends. If you have a fast micro frontend, you can disable this feature to prevent flickering of the loading indicator. This parameter is enabled by default.
 - **example**:
-```javascript
-loadingIndicator: {
-  enabled: true
-}
-```
+    ```javascript
+    loadingIndicator: {
+      enabled: true
+    }
+   ```
 ### loadingIndicator.hideAutomatically
 - **type**: boolean
 - **description**: if set to `false`, it disables the automatic hiding of the loading indicator once the micro frontend is loaded. It is only considered if the loading indicator is enabled. It does not apply if the loading indicator is activated manually with the `LuigiClient.uxManager().showLoadingIndicator()` function. If the loading indicator is enabled and automatic hiding is disabled, use `LuigiClient.uxManager().hideLoadingIndicator()` to hide it manually in your micro frontend during the startup. This parameter is enabled by default.
 - **example**:
-```javascript
-loadingIndicator: {
-  hideAutomatically: false
-}
-```
+    ```javascript
+    loadingIndicator: {
+      hideAutomatically: false
+    }
+    ```
 ### icon
 - **type**: string
 - **description**: the name of an icon, without the `sap-icon--` prefix. Its source may be [OpenUI](https://openui5.hana.ondemand.com/1.40.10/iconExplorer.html) or a custom link (relative or absolute) to an image. The icon is displayed next to the node label in the side navigation or instead of the label in the top navigation.
@@ -204,11 +204,11 @@ loadingIndicator: {
 - **type**: boolean
 - **description**: current locale can be changed from client using the corresponding API if this is set to `true`
 - **example**:
-```javascript
-  clientPermissions: {
-    changeCurrentLocale: true
-  }
-```
+    ```javascript
+    clientPermissions: {
+      changeCurrentLocale: true
+    }
+    ```
 
 ### tabNav
 - **type**: boolean
@@ -292,8 +292,8 @@ The profile section is a configurable drop-down list available in the top naviga
 - **type**: function
 - **description**: used to retrieve a user's name and email to simulate logging in. It can be used when authorization is disabled and also gets called if the defined IDP provider does not have **settings.userInfoFn** defined or does not provide a `userInfo` function internally. It can be asynchronous and should return an object with **name**, **email** and **picture** parameters.
 
-<!-- add-attribute:class:success -->
-> **NOTE:** Neither authorization nor profile parameter are configured if the profile section in the top navigation bar is not visible.
+<!-- add-attribute:class:warning -->
+>**NOTE:** Neither **authorization** nor **profile** parameter is configured if the profile section in the top navigation bar is not visible.
 
 ## Product switcher
 
