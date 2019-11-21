@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 <!-- meta
 {
   "node": {
@@ -14,7 +13,6 @@
 }
 meta -->
 
-<<<<<<< HEAD
 # Luigi Core Installation
 
 This document shows you how to set up a web application using the Luigi micro frontend framework. This involves a few basic steps:
@@ -23,40 +21,16 @@ This document shows you how to set up a web application using the Luigi micro fr
 * Starting the server to run your application.
 
 All those steps are achieved through a single **installer** script which sets up a Luigi application on your system. Keep in mind that if you have a single page application, you need to transfer it to a "two-page application". You should run your application to make sure the existing router doesn't interfere.
-=======
-# Application setup
-=======
-# Luigi Core Installation
->>>>>>> update application-setup.md
-
-This document shows you how to set up a web application using the Luigi micro frontend framework. This involves several basic steps:
-* Adding Luigi's `npm` packages to your project dependencies
-* Giving Luigi exclusive control over your entry `index.html` file
-* Starting the server to run your application
-
-All those steps are condensed in a single installer script which sets up a Luigi application on your system. Keep in mind that if you have a single page application, you need to transfer it to a two-page application. Your application should run to make sure the existing router doesn't interfere.
 
 Once the installation is complete, you can [configure](navigation-configuration.md) Luigi by editing the files in your `luigi-config` folder.
->>>>>>> update application-setup.md
 
 Choose the framework to build your application:
 
 * [Application setup without a framework](#application-setup-without-a-framework)
 * [Angular 6](#application-setup-for-angular-6)
-<<<<<<< HEAD
-<<<<<<< HEAD
 * [SAPUI5/OpenUI5](#application-setup-for-sapui5openui5)
 * [VUE.JS](#application-setup-for-vuejs)
 * [React](#application-setup-for-react)
-=======
-* [SAPUI5/OpenUI5](#application-setup-for-sapui5/openui5)
-* [VUE.JS](#application-setup-for-vue.js)
-=======
-* [SAPUI5/OpenUI5](#application-setup-for-sapui5openui5)
-* [VUE.JS](#application-setup-for-vuejs)
->>>>>>> links fix
-
->>>>>>> update application-setup.md
 
 ## Application setup without a framework
 
