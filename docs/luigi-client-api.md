@@ -1,7 +1,7 @@
 <!-- meta
 {
   "node": {
-    "label": "API",
+    "label": "API Reference",
     "category": {
       "label": "Luigi Client"
     },
