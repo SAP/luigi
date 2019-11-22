@@ -7,7 +7,7 @@ class Settings {
   };
 
   responsiveNavigation = 'simpleMobileOnly'; // Options: simple | simpleMobileOnly | semiCollapsible
-  sideNavFooterText = 'Privacy Policy';
+  sideNavFooterText = ' ';
   // hideNavigation = true
   // backdropDisabled = true
 }
