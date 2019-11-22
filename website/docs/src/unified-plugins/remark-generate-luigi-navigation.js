@@ -37,9 +37,6 @@ export default function luigiNavigationBuilder(data = {}) {
         label: d.node && d.node.label || d.shortName,
         pathSegment: d.shortName,
         navigationContext: 'doc',
-        loadingIndicator: {
-          enabled: false
-        },
         keepSelectedForChildren: true,
         viewUrl: `__BASE_URL__/docs/${d.shortName}`      
       });
