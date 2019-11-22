@@ -8,16 +8,18 @@ export class InternalLinksHandler {
 
       // modify internal links to be valid links for users and still make sapper happy 
       // since leaving them "wrong" (as local iframe links) in the first place
-      const links = document.querySelectorAll('a[data-linktype]');
-      if (links) {
-        links.forEach((link, index) => {
-          if (link.getAttribute('data-linktype') === 'internal') {
-            const url = new URL(link.href);
-            let newHref = ctx.coreBaseUrl + url.pathname.replace('.md', '').replace('/docu-microfrontend', '') + url.hash.toLowerCase();
-            link.setAttribute('href', newHref);
-          }
-        });
-      }
+      let intvCount = 0;
+      const intv = setInterval(() => {
+        const links = document.querySelectorAll('a[data-linktype]');
+        intvCount++;
+        if (links.length) {
+          this.prepareLinks(ctx, links);
+        }
+        if (links.length || intvCount >= 20) {
+          clearInterval(intv);
+        }
+      }, 150);
+      
 
       // register click handler
       window.navigateInternal = (evt, elem) => {
@@ -35,6 +37,16 @@ export class InternalLinksHandler {
         } else {
           LuigiClient.linkManager().navigate(urlWithPath);
         }
+      }
+    });
+  }
+
+  prepareLinks(ctx, links) {
+    links.forEach((link) => {
+      if (link.getAttribute('data-linktype') === 'internal') {
+        const url = new URL(link.href);
+        let newHref = ctx.coreBaseUrl + url.pathname.replace('.md', '').replace('/docu-microfrontend', '') + url.hash.toLowerCase();
+        link.setAttribute('href', newHref);
       }
     });
   }

@@ -11,6 +11,7 @@
 	$light-gray: #e6e6e6;
 	$medium-gray: #cacaca;
 	$powder-blue: #d0d8e2;
+	$ice-blue: #edf2f7;
 
 	$side-nav-width: 320px;
 
@@ -33,9 +34,10 @@
 
 			padding: 30px;
 			font-size: 16px;
+			max-width: 1500px;
 
 			@media screen and (min-width: (1024px - $side-nav-width)) {
-				padding: 95px 80px;
+				padding: 50px 80px;
 			}
 		}
 
@@ -400,6 +402,72 @@
 			margin: 0px;
 			border-radius: 3px;
 			font-size: 14px;
+		}
+
+		.accordion-container {
+
+			margin: 30px 0;
+
+			@media screen and (min-width: (1024px - $side-nav-width)) {
+				margin: 50px 0;
+			}
+
+			.accordion-item {
+
+				margin-bottom: 12px;
+				border: 1px solid $powder-blue;
+				position: relative;
+
+				&:after {
+					display: block;
+					position: absolute;
+					top: 18px;
+					right: 21px;
+					content: '+';
+					color: $primary-color;
+					font-size: 28px;
+				}
+
+				&.active {
+					.accordion-item-content {
+						display: block;
+					}
+
+					.accordion-item-title {
+						background-color: $ice-blue;
+					}
+
+					&:after {
+						top: 16px;
+						content: '\2013';
+					}
+				}
+			}
+
+			.accordion-item-title {
+				padding: 18px 80px 18px 20px;
+				cursor: pointer;
+
+				h3 {
+					font-size: 16px;
+					line-height: 28px;
+					margin: 0;
+					font-weight: 600;
+				}
+			}
+
+			.accordion-item-content {
+				display: none;
+				margin: 0;
+				padding: 18px 20px;
+
+				p {
+
+					&:last-child {
+						margin-bottom: 0;
+					}
+				}
+			}
 		}
 	}
 </style>
