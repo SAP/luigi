@@ -31,7 +31,7 @@ No, Luigi itself does not deliver any micro frontends. It is a framework that he
 
 ### Where can I download Luigi?
 
-The Luigi project can be found on GitHub. Depending on the UI framework you use there are different setups with Luigi. Please familiarise here: [application-setup](application-setup.md)
+The Luigi project can be found on [GitHub](https://github.com/SAP/luigi). Depending on the UI framework you use, there are different setups for Luigi. You can find more information here: [application setup](application-setup.md)
 
 
 
@@ -39,7 +39,7 @@ The Luigi project can be found on GitHub. Depending on the UI framework you use 
 
 Development scalability was one of the main goals right from the beginning. There is a nice article on [martinfowler.com](https://martinfowler.com/articles/micro-frontends.html) explaining the benefits of a micro frontend architecture in general. All the disadvantages of the iframe approach mentioned in the article are solved with Luigi. 
 
-### One of the topics in the [article](https://martinfowler.com/articles/micro-frontends.html) on martinfowler.com that stood out was the styling issue. You suggest to use the CSS elements of Fundamentals to solve that issue. Is that correct?
+### One of the potential issues with a micro frontend architecture is styling. You suggest to use the CSS elements of Fundamentals to solve that issue. Is that correct?
 
 It is crucial that all micro frontends in a solution follow the same design guidelines. Luigi's default UI styling is based on [Fundamentals](https://sap.github.io/fundamental-styles/) but it can be customised. If you don’t want to use Fundamentals, but Bootstrap, Material, or something else instead, you need to re-style the Luigi view components according to your design guidelines or replace them with your own components completely.
 
@@ -55,7 +55,7 @@ Last but not least, "technology agnostic" also means that there are no conflicts
 
 ### Are there any equivalents of Luigi?
 
-Indeed, there are several. Here are some of the most popular: [Mosaic](https://www.mosaic9.org/), [Single-spa](https://github.com/CanopyTax/single-spa), [OpenComponents](https://opencomponents.github.io/), [Piral](https://www.piral.io). Note that they are not 100% equivalents of Luigi!
+Yes, there are several. Here are some of the most popular: [Mosaic](https://www.mosaic9.org/), [Single-spa](https://github.com/CanopyTax/single-spa), [OpenComponents](https://opencomponents.github.io/), [Piral](https://www.piral.io). Note that they are not 100% equivalents of Luigi!
 
 <!--
 ### In what way is Luigi different from these mentioned framework/products?
