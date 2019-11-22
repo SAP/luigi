@@ -31,7 +31,7 @@ No, Luigi itself does not deliver any micro frontends. It is a framework that su
 
 ### Where can I download Luigi?
 
-The Luigi project can be found on GitHub. Depending on the UI framework you use there are different setups with Luigi. Please familiarise here: [application-setup.md](application-setup.md)
+The Luigi project can be found on GitHub. Depending on the UI framework you use there are different setups with Luigi. Please familiarise here: [application-setup](application-setup.md)
 
 ### The approach behind Luigi sounds like it was developed for scenarios where Kyma is used (i.e. technology-independent, extension/integration of various SAP/3rd-party apps, on-premise and cloud-based), is that correct?
 
