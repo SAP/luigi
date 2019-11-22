@@ -317,6 +317,12 @@ $side-nav-width: 260px;
 
     a {
       color: white;
+      display: inline-block;
+      margin-right: 20px;
+
+      &:last-child {
+        margin-right: 0;
+      }
 
       &:hover,
       &:active {
@@ -329,8 +335,7 @@ $side-nav-width: 260px;
       color: white;
       font-size: 14px;
       font-weight: 600;
-      text-align: center;
-      padding: 20px;
+      padding: 20px 40px;
 
       // &:before {
       //   content: '\00a9';
