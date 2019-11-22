@@ -313,6 +313,16 @@ $side-nav-width: 260px;
   .lui-side-nav__footer {
     background-color: $secondary-color;
     color: white;
+    min-height: 58px;
+
+    a {
+      color: white;
+
+      &:hover,
+      &:active {
+        color: $primary-color;
+      }
+    }
 
     .lui-side-nav__footer--text {
       width: 100%;
@@ -321,10 +331,11 @@ $side-nav-width: 260px;
       font-weight: 600;
       text-align: center;
       padding: 20px;
-      &:before {
-        content: '\00a9';
-        margin-right: 5px;
-      }
+
+      // &:before {
+      //   content: '\00a9';
+      //   margin-right: 5px;
+      // }
     }
   }
 

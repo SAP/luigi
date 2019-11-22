@@ -7,7 +7,7 @@ class Settings {
   };
 
   responsiveNavigation = 'simpleMobileOnly'; // Options: simple | simpleMobileOnly | semiCollapsible
-  sideNavFooterText = 'Copyright 2019.';
+  sideNavFooterText = 'Privacy Policy';
   // hideNavigation = true
   // backdropDisabled = true
 }
