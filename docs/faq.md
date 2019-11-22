@@ -31,7 +31,7 @@ No, Luigi itself does not deliver any micro frontends. It is a framework that he
 
 ### Where can I download Luigi?
 
-The Luigi project can be found on [GitHub](https://github.com/SAP/luigi). Depending on the UI framework you use, there are different setups for Luigi. You can find more information here: [application setup](application-setup.md)
+The Luigi project can be found on [GitHub](https://github.com/SAP/luigi). Depending on the UI framework you use, there are different setups for Luigi. You can find more information here: [application setup](application-setup.md).
 
 
 
