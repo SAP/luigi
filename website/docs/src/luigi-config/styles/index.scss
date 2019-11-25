@@ -313,18 +313,34 @@ $side-nav-width: 260px;
   .lui-side-nav__footer {
     background-color: $secondary-color;
     color: white;
+    min-height: 58px;
+
+    a {
+      color: white;
+      display: inline-block;
+      margin-right: 20px;
+
+      &:last-child {
+        margin-right: 0;
+      }
+
+      &:hover,
+      &:active {
+        color: $primary-color;
+      }
+    }
 
     .lui-side-nav__footer--text {
       width: 100%;
       color: white;
       font-size: 14px;
       font-weight: 600;
-      text-align: center;
-      padding: 20px;
-      &:before {
-        content: '\00a9';
-        margin-right: 5px;
-      }
+      padding: 20px 40px;
+
+      // &:before {
+      //   content: '\00a9';
+      //   margin-right: 5px;
+      // }
     }
   }
 
@@ -402,7 +418,7 @@ $side-nav-width: 260px;
     padding: 30px;
 
     @media screen and (min-width: 1024px) {
-      padding: 93px 40px 0;
+      padding: 50px 40px 0;
     }
   }
 
