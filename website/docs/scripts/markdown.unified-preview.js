@@ -7,9 +7,10 @@ const filesToProcess = [
   // 'link.md',
   // 'codeblocks.md',
   // 'custom-attributes.md',
-  'frontmatter-3.md',
-  'frontmatter-2.md',
-  'frontmatter.md'
+  'custom-wrappers.md',
+  // 'frontmatter-3.md',
+  // 'frontmatter-2.md',
+  // 'frontmatter.md'
 ];
 
 filesToProcess.forEach(async (name) => {
