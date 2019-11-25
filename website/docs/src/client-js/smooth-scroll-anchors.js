@@ -7,13 +7,13 @@ export class ScrollAnchorsHandler {
     LuigiClient.addInitListener((ctx) => {
       if(this.initDone) { return; }
       this.initDone = true;
-      if (LuigiClient.getNodeParams().hash) {
-        this.scrollAnchor(null, LuigiClient.getNodeParams().hash);
+      if (LuigiClient.getNodeParams().section) {
+        this.scrollAnchor(null, LuigiClient.getNodeParams().section);
       }
       window.scrollAnchor = this.scrollAnchor;
     });
   }
-  
+
   // Vanilla JavaScript Scroll to Anchor
   // @ https://perishablepress.com/vanilla-javascript-scroll-anchor/
   // modified so respond could be also just a string with the #hash
@@ -24,13 +24,13 @@ export class ScrollAnchorsHandler {
       targetID = (respond) ? respond.getAttribute('href') : this.getAttribute('href');
       targetID = `#${targetID.split('#').pop()}`;
     } else {
-      targetID = respond;
+      targetID = '#' + respond;
     }
 
     const targetAnchor = document.querySelector(targetID);
     if (!targetAnchor) return;
-    targetAnchor.scrollIntoView({ 
-      behavior: 'smooth' 
+    targetAnchor.scrollIntoView({
+      behavior: 'smooth'
     });
   }
 }
