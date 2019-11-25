@@ -136,25 +136,6 @@ class LifecycleManager extends LuigiClientBase {
         );
         console.warn('Third party cookies are not supported!');
       }
-
-      // setTimeout(() => {
-      //   let tpc = 'enabled';
-      //   try {
-      //     localStorage.setItem('luigi-tpc-detection', true);
-      //     window.parent.postMessage(
-      //       { msg: 'luigi.third-party-cookie', tpc },
-      //       '*'
-      //     );
-      //     localStorage.removeItem('luigi-tpc-detection');
-      //   } catch (err) {
-      //     tpc = 'disabled';
-      //     window.parent.postMessage(
-      //       { msg: 'luigi.third-party-cookie', tpc },
-      //       '*'
-      //     );
-      //     console.warn('Third party cookies are not supported!');
-      //   }
-      // });
     };
 
     luigiClientInit();
