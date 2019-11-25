@@ -27,7 +27,7 @@ export class InternalLinksHandler {
         evt.stopPropagation();
         let url;
         try {
-          url = new URL(elem.getAttribute('href'));
+          url = new URL(elem.getAttribute('href'), window.location.origin);
         } catch (error) {
           console.debug('navigateInternal URL parse error', elem, elem.getAttribute('href'), error);
         }
