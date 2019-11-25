@@ -1,0 +1,9 @@
+body {
+  padding: 0;
+  margin: 0;
+  position: absolute;
+}
+
+.fd-panel {
+  padding: 15px;
+}

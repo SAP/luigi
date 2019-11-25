@@ -1,38 +1,68 @@
-# Luigi Documentation
+<!-- meta
+{
+  "node": {
+    "label": "Overview",
+    "category": {
+      "label": "Basics"
+    },
+    "metaData": {
+      "categoryPosition": 1,
+      "position": 0
+    }
+  }
+}
+meta -->
 
-The aim of this documentation is to provide step-by-step instructions for Luigi as well as to provide a comprehensive reference of all the features you can use.
+# Luigi Documentation
 
-If you are new to Luigi, go to the [Getting started guide](getting-started.md) to learn more about its structure and key functions.
+If you are new to Luigi, read the [Getting started guide](getting-started.md) to learn more about its structure and key features.
 
-## Luigi Core
+## Luigi Core
 
-Set up and configure your main Luigi application by following these guides. The Luigi Core libraries allow you to create a user interface where you can configure navigation, authorization, and more.
+Luigi Core enables you to create web applications with an easily configurable and consistent user interface.
 
-* [Application setup](application-setup.md) shows you the first steps to prepare your application for development.
-* [Navigation configuration](navigation-configuration.md) shows you how to configure navigation in Luigi.
-* [Navigation parameters reference](navigation-parameters-reference.md) lists the parameters you can use to configure the top and side navigation.
-* [Authorization configuration](authorization-configuration.md) guides you through the configuration to secure Luigi.
-* [Authorization events](authorization-events.md) guides you through the event configuration to react to Luigi authorization events.
-* [General settings](general-settings.md) provides you with additional configuration parameters for Luigi.
-* [Luigi lifecycle hooks](lifecycle-hooks.md) allows you to execute custom logic on any of the Luigi lifecycle steps.
-* [Core API](luigi-core-api.md) provides you with API features that help you enrich and use Luigi Core.
-* [Luigi UI features](luigi-ux-features.md) provides different customization options for some of the Luigi UI components.
+[Installation](application-setup.md) shows you the first steps to prepare your application for development.
 
-## Luigi Client
+### Configuration
 
-Luigi Client enables you to connect micro frontends or views to the main Luigi Core application. Find the Luigi Client API documentation here and learn more about the functions and parameters used to define lifecycles, links, and the appearance of the application.
+<!-- add-attribute:class:success -->
+> **TIP:** [Luigi Fiddle](https://fiddle.luigi-project.io) allows you to configure a very simple application and get a feel for the process.
 
-* [Lifecycle](luigi-client-api.md#lifecycle) gives you details on the lifecycle of listeners, navigation nodes, and Event data.
-* [Link Manager](luigi-client-api.md#linkmanager) allows you to navigate to a specific route.
-* [UX Manager](luigi-client-api.md#uxmanager) helps you manage the appearance features in Luigi, such as the behaviour of backdrop or loading indicators.
+To configure your Luigi application, simply edit the files in the `luigi-config` folder of your project. Luigi configuration is divided into several sections, which are outlined in the guides below:
 
-## Core/Client communication
-* [Communication](communication.md) describes how to configure features related to communication between Luigi Core and Client.
+* [Navigation (basic)](navigation-configuration.md) - configure basic top and side navigation, links, and categories.
+* [Navigation (advanced)](navigation-advanced.md) - create a dynamic path, reuse micro frontends with the same origin, and configure additional navigation elements. 
+* [Full parameter reference](navigation-parameters-reference.md) - find all the parameters which you can use to configure Luigi navigation in one place.
+* [Authorization](authorization-configuration.md) - configure login and security features for your application.
+* [Authorization events](authorization-events.md) - define event configuration used to react to Luigi authorization events.
+* [General settings](general-settings.md) - fully customize a micro frontend, define a header, make your application responsive, and more.
+* [Lifecycle hooks](lifecycle-hooks.md) - execute custom logic on any of the Luigi lifecycle steps.
+
+The following guides outline Luigi Core API features and additional UI options that exist outside the configuration files:
+
+* [Core API](luigi-core-api.md) - API features that help you enrich and use Luigi Core.
+* [Luigi UI features](luigi-ux-features.md) - customization options for some of the Luigi UI components.
+
+## Luigi Client
+
+Luigi Client enables you to connect micro frontends to an already existing Luigi Core application.
+
+[Installation](luigi-client-setup.md) shows you how to install the Luigi Client.
+
+Read the Luigi Client API documentation to learn more about the functions and parameters you can use to communicate with the core application:
+
+* [Lifecycle](luigi-client-api.md#lifecycle) - manage the lifecycle of listeners, navigation nodes, and event data.
+* [Link Manager](luigi-client-api.md#linkmanager) - navigate to a specific route.
+* [UX Manager](luigi-client-api.md#uxmanager) - manage appearance options such as the behavior of backdrop or loading indicators.
+
+## Advanced
+
+[Communication](communication.md) describes how to send custom messages between Luigi Core and Client.
 
 ## Examples
 
-Follow the Luigi [application examples](../core/examples/README.md) for an in-depth look at Luigi capabilities.
+Check the Luigi [application examples](../core/examples) for an in-depth look at Luigi capabilities.
 
 ## Development
 
-Read the [development and code formatting guidelines](https://github.com/SAP/luigi#development) if you are interested in contributing.
+Read the [development and code formatting guidelines](https://github.com/SAP/luigi#development) if you are interested in contributing.

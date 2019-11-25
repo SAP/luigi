@@ -1,13 +1,19 @@
+# Sapper + copied node modules
 .DS_Store
 /node_modules/
 /src/node_modules/@sapper/
-yarn-error.log
 /cypress/screenshots/
 /__sapper__/
+
+# Generated and copied
 extendedConfiguration.bundle.js
-fundamental-ui
 luigi-core
 luigi-client
 public/*
 static/assets
 *coreStyles*
+navigation-generated.json
+
+# Debug
+yarn-error.log
+debug*.log
