@@ -353,5 +353,9 @@ class LifecycleManager extends LuigiClientBase {
     );
     helpers.sendPostMessageToLuigiCore(customMessageInternal);
   }
+
+  setCustomOrigin(origin) {
+    helpers.setCustomOrigin(origin);
+  }
 }
 export const lifecycleManager = new LifecycleManager();

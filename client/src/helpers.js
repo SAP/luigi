@@ -103,6 +103,10 @@ class Helpers {
     }
   }
 
+  setCustomOrigin(origin) {
+    this.setLuigiCoreDomain(origin || '*');
+  }
+
   sendPostMessageToLuigiCore(msg) {
     window.parent.postMessage(msg, this.origin);
   }

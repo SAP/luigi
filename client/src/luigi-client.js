@@ -52,6 +52,9 @@ class LuigiClient {
   removeInactiveListener(listenerId) {
     return lifecycleManager.removeInactiveListener(listenerId);
   }
+  setCustomOrigin(origin) {
+    return lifecycleManager.setCustomOrigin(origin);
+  }
   /**
    * @private
    */
@@ -73,4 +76,4 @@ class LuigiClient {
     return lifecycleManager;
   }
 }
-export default (LuigiClient = new LuigiClient());
+export default LuigiClient = new LuigiClient();
