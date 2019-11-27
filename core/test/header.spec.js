@@ -163,6 +163,37 @@ describe('Header', function() {
       assert(appendChild.calledOnceWith(expectedLink), 'appendChild() call');
     });
 
+    it('should resolve favicon with childNodes', async () => {
+      // given
+      const headerSettings = {
+        favicon: '/assets/favicon.ico'
+      };
+      setHeaderSettings(headerSettings);
+
+      const appendChild = sinon.spy();
+      const remove = sinon.spy();
+      const childNodes = [
+        {
+          rel: 'shortcut icon',
+          remove
+        },
+        {
+          rel: 'shortcut icon',
+          remove
+        }
+      ];
+
+      sinon
+        .stub(document, 'getElementsByTagName')
+        .returns([{ appendChild, childNodes, remove }]);
+
+      // when
+      await headerService.processHeaderSettings(component);
+
+      // then
+      assert(remove.calledTwice, 'remove() call');
+    });
+
     it('should have no app switcher if no apps configured', async () => {
       setHeaderSettings({});
 
