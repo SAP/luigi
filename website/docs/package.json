@@ -43,7 +43,6 @@
     "copy-webpack-plugin": "^5.0.4",
     "css-loader": "^3.2.0",
     "esm": "^3.2.25",
-    "fiori-fundamentals": "^1.7.1",
     "lodash.orderby": "^4.6.0",
     "mini-css-extract-plugin": "^0.8.0",
     "node-sass": "^4.12.0",
