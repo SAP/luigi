@@ -22,8 +22,8 @@ Choose the framework to build your application:
 [Application setup without a framework](#application-setup-for-an-application-not-using-a-framework)  
 [Angular 6](#application-setup-for-angular-6)  
 [SAPUI5/OpenUI5](#application-setup-for-sapui5openui5)  
-[VUE.JS](#application-setup-for-vuejs)
-[React.JS](#application-setup-for-reactjs)
+[VUE.JS](#application-setup-for-vuejs)  
+[React.JS](#application-setup-for-reactjs)  
 
 ## Basic application setup
 
