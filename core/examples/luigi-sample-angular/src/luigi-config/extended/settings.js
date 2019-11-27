@@ -13,6 +13,19 @@ class Settings {
   };
   responsiveNavigation = 'simpleMobileOnly'; // Options: simple | simpleMobileOnly | semiCollapsible
   sideNavFooterText = `Luigi Client: ${version || 'unknown'}`;
+  thirdPartyCookieCheck = {
+    // thirdPartyCookieDetection: true,
+    thirdPartyCookieScriptLocation:
+      'https://johannesdoberer.gitlab.io/pexit/init.html',
+    thirdPartyCookieMessage: () => {
+      const alert = {
+        text:
+          'Third Party Cookies are not enabled. Please check your browser settings.',
+        type: 'warning'
+      };
+      Luigi.ux().showAlert(alert);
+    }
+  };
   // allowRules = ['microphone'];
   // iframeCreationInterceptor = (iframe, viewGroup, navigationNode, microFrontendType) => { };
   // hideNavigation = true
