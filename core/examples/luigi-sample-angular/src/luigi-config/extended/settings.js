@@ -14,9 +14,9 @@ class Settings {
   responsiveNavigation = 'simpleMobileOnly'; // Options: simple | simpleMobileOnly | semiCollapsible
   sideNavFooterText = `Luigi Client: ${version || 'unknown'}`;
   thirdPartyCookieCheck = {
-    // thirdPartyCookieDetection: true,
-    thirdPartyCookieScriptLocation:
-      'https://johannesdoberer.gitlab.io/pexit/init.html',
+    thirdPartyCookieDetection: true,
+    // thirdPartyCookieScriptLocation:
+    //   'https://someUrl/init.html',
     thirdPartyCookieMessage: () => {
       const alert = {
         text:
