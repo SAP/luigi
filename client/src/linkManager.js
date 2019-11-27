@@ -84,8 +84,8 @@ export class linkManager extends LuigiClientBase {
    * @example
    * LuigiClient.linkManager().openAsModal('projects/pr1/users', {title:'Users', size:'m'});
    */
-  openAsModal(path, modalSettings) {
-    this.navigate(path, 0, true, modalSettings || {});
+  openAsModal(path, modalSettings = {}) {
+    this.navigate(path, 0, true, modalSettings);
   }
 
   /**
