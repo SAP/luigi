@@ -111,7 +111,7 @@ class Helpers {
     if (this.origin) {
       window.parent.postMessage(msg, this.origin);
     } else {
-      console.log('There is no origin set. Please set origin in the client.');
+      console.warn('There is no target origin set.');
     }
   }
 }
