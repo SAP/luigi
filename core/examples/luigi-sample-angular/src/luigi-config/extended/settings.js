@@ -15,9 +15,8 @@ class Settings {
   sideNavFooterText = `Luigi Client: ${version || 'unknown'}`;
   thirdPartyCookieCheck = {
     thirdPartyCookieDetection: true,
-    // thirdPartyCookieScriptLocation:
-    //   'https://someUrl/init.html',
-    thirdPartyCookieMessage: () => {
+    // thirdPartyCookieScriptLocation: 'https://domain/init.html',
+    thirdPartyCookieErrorHandling: () => {
       const alert = {
         text:
           'Third Party Cookies are not enabled. Please check your browser settings.',
