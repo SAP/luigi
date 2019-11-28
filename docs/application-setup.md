@@ -23,7 +23,7 @@ Choose the framework to build your application:
 [Angular 6](#application-setup-for-angular-6)  
 [SAPUI5/OpenUI5](#application-setup-for-sapui5openui5)  
 [VUE.JS](#application-setup-for-vuejs)  
-[React.JS](#application-setup-for-reactjs)  
+[React](#application-setup-for-react)  
 
 ## Basic application setup
 
@@ -182,7 +182,7 @@ $ npm run serve
 
 <a name="reactjs"></a>
 
-### Application setup for React.JS 
+### Application setup for React
 
 1. Use the installer to create your application, install Luigi, make assets available, and serve your application:
 ````
