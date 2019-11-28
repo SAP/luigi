@@ -34,6 +34,36 @@ describe('Routing', function() {
     // sinon.reset();
   });
 
+  describe('getNodePath()', () => {
+    let node;
+    let params;
+    beforeEach(() => {
+      node = {
+        pathSegment: 'projects',
+        label: 'AAA',
+        viewUrl: '/aaa.html'
+      };
+      params = '~test=true&foo=bar';
+    });
+
+    it('should not fail if node is not defined', () => {
+      node = undefined;
+      const result = Routing.getNodePath(node, params);
+      assert.equal(result, '');
+    });
+
+    it('should not fail if params are not defined', () => {
+      params = undefined;
+      const result = Routing.getNodePath(node, params);
+      assert.equal(result, '/projects');
+    });
+
+    it('returns node path', () => {
+      const result = Routing.getNodePath(node, params);
+      assert.equal(result, '/projects?~test=true&foo=bar');
+    });
+  });
+
   describe('navigateTo', () => {
     beforeEach(() => {
       window.history.replaceState = sinon.spy();
