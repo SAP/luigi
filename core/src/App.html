@@ -962,7 +962,7 @@
       }
       if (
         thirdPartyCookiesCheck &&
-        thirdPartyCookiesCheck.thirdPartyCookieDetection &&
+        !thirdPartyCookiesCheck.thirdPartyCookieScriptLocation &&
         'luigi.third-party-cookie' === e.data.msg
       ) {
         if (e.data.tpc === 'disabled') {
