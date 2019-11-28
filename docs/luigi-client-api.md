@@ -149,7 +149,7 @@ Returns **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/G
 
 ### setTargetOrigin
 
-When there is no Luigi core available it is possible to set the target origin to send postMessages to the target.
+When the micro frontend is not embedded in the Luigi Core application and there is no init handshake you can set the target origin that is used in postMessage function calls by Luigi Client.
 
 #### Parameters
 
