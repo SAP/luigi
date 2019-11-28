@@ -44,7 +44,7 @@ settings: {
   },
   thirdPartyCookieCheck = {
     thirdPartyCookieDetection: true,
-    //thirdPartyCookieScriptLocation: 'https://johannesdoberer.gitlab.io/pexit/init.html',
+    //thirdPartyCookieScriptLocation: 'https://domain/init.html',
     thirdPartyCookieMessage: () => {
       const alert = {
         text: 'Third Party Cookies are not enabled. Please check your browser settings.',
