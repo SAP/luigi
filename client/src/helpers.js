@@ -111,7 +111,9 @@ class Helpers {
     if (this.origin) {
       window.parent.postMessage(msg, this.origin);
     } else {
-      console.warn('There is no target origin set.');
+      console.warn(
+        'There is no target origin set. You can specify the target origin by calling LuigiClient.setTargetOrigin("targetorigin") in your micro frontend.'
+      );
     }
   }
 }
