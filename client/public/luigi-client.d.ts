@@ -424,6 +424,15 @@ export function getClientPermissions(): ClientPermissions;
 export type getClientPermissions = () => ClientPermissions;
 
 /**
+ * When there is no Luigi core available it is possible to set the target origin to send postMessages to the target.
+ * @param {string} targetOrigin target origin.
+ * @memberof Lifecycle
+ * @since 0.7.2
+ */
+export function setTargetOrigin(targetOrigin: string): void;
+export type setTargetOrigin = (targetOrigin: string) => void;
+
+/**
  * Sends a custom message to the Luigi Core application.
  * @param {Object} message an object containing data to be sent to the Luigi Core to further process the custom event. This object is set as an input parameter of the event handler on the Luigi Core side.
  * @param {string} message.id a string containing the message id

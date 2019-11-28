@@ -103,12 +103,16 @@ class Helpers {
     }
   }
 
-  setCustomOrigin(origin) {
-    this.setLuigiCoreDomain(origin || '*');
+  setTargetOrigin(origin) {
+    this.setLuigiCoreDomain(origin);
   }
 
   sendPostMessageToLuigiCore(msg) {
-    window.parent.postMessage(msg, this.origin);
+    if (this.origin) {
+      window.parent.postMessage(msg, this.origin);
+    } else {
+      console.log('There is no origin set. Please set origin in the client.');
+    }
   }
 }
 

@@ -337,6 +337,16 @@ class LifecycleManager extends LuigiClientBase {
   }
 
   /**
+   * When there is no Luigi core available it is possible to set the target origin to send postMessages to the target.
+   * @param {string} origin target origin.
+   * @memberof Lifecycle
+   * @since 0.7.2
+   */
+  setTargetOrigin(origin) {
+    helpers.setOrigin(origin);
+  }
+
+  /**
    * Sends a custom message to the Luigi Core application.
    * @param {Object} message an object containing data to be sent to the Luigi Core to process it further. This object is set as an input parameter of the custom message listener on the Luigi Core side.
    * @param {string} message.id a string containing the message id
@@ -352,10 +362,6 @@ class LifecycleManager extends LuigiClientBase {
       message
     );
     helpers.sendPostMessageToLuigiCore(customMessageInternal);
-  }
-
-  setCustomOrigin(origin) {
-    helpers.setCustomOrigin(origin);
   }
 }
 export const lifecycleManager = new LifecycleManager();

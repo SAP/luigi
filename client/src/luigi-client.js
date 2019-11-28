@@ -52,8 +52,8 @@ class LuigiClient {
   removeInactiveListener(listenerId) {
     return lifecycleManager.removeInactiveListener(listenerId);
   }
-  setCustomOrigin(origin) {
-    return lifecycleManager.setCustomOrigin(origin);
+  setTargetOrigin(origin) {
+    return lifecycleManager.setTargetOrigin(origin);
   }
   /**
    * @private

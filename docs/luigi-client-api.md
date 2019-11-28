@@ -147,6 +147,18 @@ Returns the current client permissions as specified in the navigation node or an
 
 Returns **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** client permissions as specified in the navigation node.
 
+### setTargetOrigin
+
+When there is no Luigi core available it is possible to set the target origin to send postMessages to the target.
+
+#### Parameters
+
+-   `origin` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** target origin.
+
+**Meta**
+
+-   **since**: 0.7.2
+
 ### sendCustomMessage
 
 Sends a custom message to the Luigi Core application.
