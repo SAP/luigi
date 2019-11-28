@@ -343,7 +343,7 @@ class LifecycleManager extends LuigiClientBase {
    * @since 0.7.2
    */
   setTargetOrigin(origin) {
-    helpers.setOrigin(origin);
+    helpers.setTargetOrigin(origin);
   }
 
   /**
