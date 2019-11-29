@@ -23,6 +23,28 @@ The lerna-changelog tool detects changes based on PR labels and maps them to sec
     ...
   }
 -->
+## [v0.7.2] (2019-11-29)
+
+#### :rocket: Added
+* [#970](https://github.com/SAP/luigi/pull/970) Third party cookie check ([@JohannesDoberer](https://github.com/JohannesDoberer))
+* [#941](https://github.com/SAP/luigi/pull/941) Strip down angular example app ([@pekura](https://github.com/pekura))
+* [#901](https://github.com/SAP/luigi/pull/901) Inactive lifecycle hook ([@maxmarkus](https://github.com/maxmarkus))
+* [#923](https://github.com/SAP/luigi/pull/923) Refactor authentication ([@maxmarkus](https://github.com/maxmarkus))
+* [#925](https://github.com/SAP/luigi/pull/925) Provide possibility to add alt attribute to the <img> tag ([@marynaKhromova](https://github.com/marynaKhromova))
+* [#926](https://github.com/SAP/luigi/pull/926) Update vue example app ([@pekura](https://github.com/pekura))
+
+#### :bug: Fixed
+* [#992](https://github.com/SAP/luigi/pull/992) Edge browser back issue fixed ([@maxmarkus](https://github.com/maxmarkus))
+* [#979](https://github.com/SAP/luigi/pull/979) Invalid initial root navigation node bug fix ([@maxmarkus](https://github.com/maxmarkus))
+* [#937](https://github.com/SAP/luigi/pull/937) Example app switcher backdrop bug fix ([@maxmarkus](https://github.com/maxmarkus))
+
+#### :memo: Documentation
+* [#982](https://github.com/SAP/luigi/pull/982) FAQ page in documentation ([@maxmarkus](https://github.com/maxmarkus))
+* [#969](https://github.com/SAP/luigi/pull/969) Luigi architecture page ([@alexandra-simeonova](https://github.com/alexandra-simeonova))
+* [#957](https://github.com/SAP/luigi/pull/957) Luigi client installation document ([@alexandra-simeonova](https://github.com/alexandra-simeonova))
+* [#907](https://github.com/SAP/luigi/pull/907) Categories for documentation ([@alexandra-simeonova](https://github.com/alexandra-simeonova))
+* [#847](https://github.com/SAP/luigi/pull/847) Improve navigation parameters reference ([@alexandra-simeonova](https://github.com/alexandra-simeonova))
+
 ## [v0.7.1] (2019-10-25)
 
 #### :rocket: Added
@@ -582,3 +604,4 @@ The lerna-changelog tool detects changes based on PR labels and maps them to sec
 [v0.6.6]: https://github.com/SAP/luigi/compare/v0.6.5...v0.6.6
 [v0.7.0]: https://github.com/SAP/luigi/compare/v0.6.6...v0.7.0
 [v0.7.1]: https://github.com/SAP/luigi/compare/v0.7.0...v0.7.1
+[v0.7.2]: https://github.com/SAP/luigi/compare/v0.7.1...v0.7.2
