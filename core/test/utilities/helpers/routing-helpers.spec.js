@@ -160,6 +160,98 @@ describe('Routing-helpers', () => {
         'child'
       );
     });
+
+    it('should return first node that has pathSegment defined', async () => {
+      mockPathData.navigationPath = [
+        {
+          pathSegment: 'myPath',
+          children: [
+            {
+              pathSegment: 'pathToHome',
+              viewUrl: 'http://site.url/home',
+              label: 'go back'
+            },
+            {
+              pathSegment: 'maskopatol',
+              label: 'still no viewUrl'
+            },
+            {
+              pathSegment: 'child',
+              label: 'This should be the default child',
+              externalLink: {
+                url: 'https://google.com'
+              }
+            }
+          ]
+        }
+      ];
+
+      assert.equal(
+        await RoutingHelpers.getDefaultChildNode(mockPathData),
+        'pathToHome'
+      );
+    });
+
+    it('should return undefined if at least one of children has no pathsegment defined', async () => {
+      mockPathData.navigationPath = [
+        {
+          pathSegment: 'myPath',
+          children: [
+            {
+              viewUrl: 'http://site.url/home',
+              label: 'go back'
+            },
+            {
+              label: 'still no viewUrl'
+            },
+            {
+              label: 'This should be the default child',
+              externalLink: {
+                url: 'https://google.com'
+              }
+            }
+          ]
+        }
+      ];
+      assert.equal(
+        await RoutingHelpers.getDefaultChildNode(mockPathData),
+        undefined
+      );
+    });
+
+    it('should return child that has pathSegment and viewUrl defined', async () => {
+      mockPathData.navigationPath = [
+        {
+          // DOESN'T MATTER
+        },
+        {
+          pathSegment: 'myPath',
+          children: [
+            {
+              pathSegment: 'home',
+              viewUrl: 'http://site.url/home',
+              label: 'go back'
+            },
+            {
+              pathSegment: 'maskopatol',
+              label: 'still no viewUrl'
+            },
+            {
+              pathSegment: 'child',
+              label: 'This should be the default child',
+              externalLink: {
+                url: 'https://google.com'
+              }
+            }
+          ]
+        }
+      ];
+
+      assert.equal(
+        await RoutingHelpers.getDefaultChildNode(mockPathData),
+        'home'
+      );
+    });
   });
 
   describe('applyPathParams', () => {
