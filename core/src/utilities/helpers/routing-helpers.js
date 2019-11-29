@@ -102,10 +102,13 @@ class RoutingHelpersClass {
   }
 
   getContentViewParamPrefix() {
-    return (
-      LuigiConfig.getConfigValue('routing.nodeParamPrefix') ||
-      this.defaultContentViewParamPrefix
-    );
+    let prefix = LuigiConfig.getConfigValue('routing.nodeParamPrefix');
+    if (prefix === false) {
+      prefix = '';
+    } else if (!prefix) {
+      prefix = this.defaultContentViewParamPrefix;
+    }
+    return prefix;
   }
 
   addRouteChangeListener(callback) {
