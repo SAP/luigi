@@ -54,7 +54,7 @@ describe('Luigi client linkManager', () => {
       cy.wrap($iframeBody).should('contain', 'Called with params:');
       cy.wrap($iframeBody).should('contain', '"foo": "bar"');
 
-      cy.expectSearchToBe('?~foo=bar&');
+      cy.expectSearchToBe('?~foo=bar');
 
       cy.wrap($iframeBody)
         .contains('Click here')
