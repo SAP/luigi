@@ -1,6 +1,6 @@
 {
   "name": "luigi-core-private",
-  "version": "0.7.1",
+  "version": "0.7.2",
   "private": true,
   "description": "luigi-core development version, only the public folder is being published to npm as a package",
   "devDependencies": {
@@ -126,7 +126,7 @@
     "url": "ssh://github.com/SAP/luigi.git"
   },
   "dependencies": {
-    "npm": "^6.13.0",
+    "npm": "^6.13.1",
     "test": "^0.6.0",
     "diff": ">=3.5.0"
   }
