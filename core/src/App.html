@@ -399,14 +399,14 @@
 
     if (params.nodeParams && Object.keys(params.nodeParams).length) {
       path += '?';
-      Object.entries(params.nodeParams).forEach(entry => {
+      Object.entries(params.nodeParams).forEach((entry, index) => {
         path +=
           encodeURIComponent(
             RoutingHelpers.getContentViewParamPrefix() + entry[0]
           ) +
           '=' +
           encodeURIComponent(entry[1]) +
-          '&';
+          (index < Object.keys(params.nodeParams).length - 1 ? '&' : '');
       });
     }
     return path;
