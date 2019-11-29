@@ -559,9 +559,13 @@ describe('Routing', function() {
   });
 
   describe('getModifiedPathname()', () => {
-    it('without state', () => {
+    it('without state, falls back to location', () => {
+      const mockPathName = 'projects';
       sinon.stub(window.history, 'state').returns(null);
-      assert.equal(Routing.getModifiedPathname(), '');
+      sinon.stub(window, 'location').value({
+        pathname: '/' + mockPathName
+      });
+      assert.equal(Routing.getModifiedPathname(), mockPathName);
     });
 
     it('with state path', () => {
