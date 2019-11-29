@@ -4,15 +4,14 @@
   "private": true,
   "description": "luigi-core development version, only the public folder is being published to npm as a package",
   "devDependencies": {
+    "@babel/cli": "^7.6.2",
     "@babel/core": "^7.6.2",
     "@babel/node": "^7.6.2",
+    "@babel/plugin-transform-runtime": "^7.6.2",
+    "@babel/polyfill": "^7.6.0",
     "@babel/preset-env": "^7.6.2",
     "@babel/register": "^7.6.2",
-    "@babel/cli": "^7.6.2",
-    "@babel/polyfill": "^7.6.0",
-    "@babel/plugin-transform-runtime": "^7.6.2",
     "@webcomponents/webcomponentsjs": "^2.3.0",
-    "regenerator-runtime": "^0.13.3",
     "acorn": "^6.1.1",
     "axios": ">=0.18.1",
     "babel-loader": "^8.0.4",
@@ -26,6 +25,8 @@
     "fiori-fundamentals": "1.6.0",
     "jsdom": "15.0.0",
     "jsdom-global": "3.0.2",
+    "lodash": ">=4.17.13",
+    "lodash.template": ">=4.5.0",
     "mini-css-extract-plugin": "^0.8.0",
     "mocha": "^6.1.4",
     "node-sass": "^4.12.0",
@@ -33,6 +34,7 @@
     "oidc-client": "^1.5.2",
     "postcss-loader": "^3.0.0",
     "postcss-preset-env": "^6.6.0",
+    "regenerator-runtime": "^0.13.3",
     "sinon": "^7.3.2",
     "source-map-loader": "^0.2.3",
     "style-loader": "^0.23.1",
@@ -40,11 +42,11 @@
     "svelte-loader": "2.13.6",
     "svelte-transitions": "^1.2.0",
     "tar": ">=4.4.2",
+    "terser": "^4.4.0",
     "url-loader": "^1.0.1",
     "webpack": "^4.40.2",
-    "webpack-cli": "^3.3.9",
-    "lodash": ">=4.17.13",
-    "lodash.template": ">=4.5.0"
+    "webpack-bundle-analyzer": "^3.6.0",
+    "webpack-cli": "^3.3.9"
   },
   "scripts": {
     "bundle": "npm run bundle-evergreen && npm run bundle-ie11",
@@ -56,7 +58,8 @@
     "test": "babel-node ./node_modules/nyc/bin/nyc.js mocha -- --recursive test",
     "test:watch": "npm run test -- --watch",
     "bundlesize": "npm run bundle && bundlesize",
-    "bundlesizeOnly": "bundlesize"
+    "bundlesizeOnly": "bundlesize",
+    "helper:webpack-analyze": "ANALYZE=true npm run bundle-evergreen"
   },
   "bundlesize": [
     {
