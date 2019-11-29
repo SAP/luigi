@@ -424,7 +424,7 @@ export function getClientPermissions(): ClientPermissions;
 export type getClientPermissions = () => ClientPermissions;
 
 /**
- * When there is no Luigi core available it is possible to set the target origin to send postMessages to the target.
+ * When the micro frontend is not embedded in the Luigi Core application and there is no init handshake you can set the target origin that is used in postMessage function calls by Luigi Client.
  * @param {string} targetOrigin target origin.
  * @memberof Lifecycle
  * @since 0.7.2
