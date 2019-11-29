@@ -3,14 +3,14 @@
 Object.keys(productSwitcherItems[0]).length }
 <!-- DESKTOP VERSION (popover): -->
 {#if !isMobile}
-<div class="fd-shellbar__action fd-shellbar__action--collapsible">
-  <div class="fd-product-switcher">
+<div class="fd-shellbar__action fd-shellbar__action--desktop">
+  <div class="fd-product-switch">
     <div class="fd-popover fd-popover--right">
       <div class="fd-popover__control" on:click|stopPropagation="{() => {}}">
         <!-- default: sap-icon--grid -->
         {#if hasOpenUIicon(config)}
         <button
-          class="fd-button--shell sap-icon--{config.icon}"
+          class="fd-button fd-shellbar__button sap-icon--{config.icon}"
           aria-expanded="{dropDownStates.productSwitcherPopover || false}"
           aria-haspopup="true"
           on:click|stopPropagation="{toggleDropdownState}"
@@ -19,7 +19,7 @@ Object.keys(productSwitcherItems[0]).length }
         ></button>
         {:else}
         <button
-          class="fd-button--shell"
+          class="fd-button fd-shellbar__button"
           aria-expanded="{dropDownStates.productSwitcherPopover || false}"
           aria-haspopup="true"
           on:click|stopPropagation="{toggleDropdownState}"
@@ -35,35 +35,37 @@ Object.keys(productSwitcherItems[0]).length }
         aria-hidden="{!(dropDownStates.productSwitcherPopover || false)}"
         id="productSwitcherPopover"
       >
-        <div class="fd-product-switcher__body">
-          <nav class="fd-menu">
-            <ul class="fd-menu__list">
-              {#each productSwitcherItems as productSwitcherItem}
-              {#if productSwitcherItem.label}
-              <li
-                on:click="{() => onActionClick(productSwitcherItem)}"
-                data-testid="{getTestId(productSwitcherItem)}"
+        <div class="fd-product-switch__body">
+          <!-- <nav class="fd-menu"> -->
+          <ul class="fd-product-switch__list">
+            {#each productSwitcherItems as productSwitcherItem}
+            {#if productSwitcherItem.label}
+            <li
+              class="fd-product-switch__item"
+              on:click="{() => onActionClick(productSwitcherItem)}"
+              data-testid="{getTestId(productSwitcherItem)}"
+            >
+              <!-- <a class="fd-menu__item"> -->
+              <span
+                class="fd-product-switch__icon {productSwitcherItem.icon && hasOpenUIicon(productSwitcherItem) ? 'sap-icon--' + productSwitcherItem.icon : '' }"
               >
-                <a class="fd-menu__item">
-                  <span
-                    class="fd-product-switcher__product-icon {productSwitcherItem.icon && hasOpenUIicon(productSwitcherItem) ? 'sap-icon--' + productSwitcherItem.icon + ' sap-icon--m' : '' }"
-                  >
-                    {#if !hasOpenUIicon(productSwitcherItem)}
-                    <img
-                      src="{productSwitcherItem.icon}"
-                      alt="{productSwitcherItem.altText ? productSwitcherItem.altText : ''}"
-                    >
-                    {/if}
-                  </span>
-                  <span
-                    class="fd-product-switcher__product-title"
-                  >{getNodeLabel(productSwitcherItem)}</span>
-                </a>
-              </li>
-              {/if}
-              {/each}
-            </ul>
-          </nav>
+                {#if !hasOpenUIicon(productSwitcherItem)}
+                <img
+                  src="{productSwitcherItem.icon}"
+                  alt="{productSwitcherItem.altText ? productSwitcherItem.altText : ''}"
+                >
+                {/if}
+              </span>
+              <span
+                class="fd-product-switch__text"
+              >{getNodeLabel(productSwitcherItem)}</span>
+              <div class="fd-product-switch__subtitle"></div>
+              <!-- </a> -->
+            </li>
+            {/if}
+            {/each}
+          </ul>
+          <!-- </nav> -->
         </div>
       </div>
     </div>
@@ -81,7 +83,6 @@ Object.keys(productSwitcherItems[0]).length }
   {getNodeLabel}
   {getTestId}
 />
-
 {/if}
 {/if}
 <script>

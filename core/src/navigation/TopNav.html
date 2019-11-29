@@ -1,7 +1,7 @@
 <svelte:window on:click="{closeAllDropdowns}" on:blur="{closeAllDropdowns}"/>
 {#if showTopNav}
 <div class="fd-shellbar {hideNavComponent ? 'hideNavComponent' : ''}">
-  <div class="fd-shellbar__group fd-shellbar__group--start">
+  <div class="fd-shellbar__group fd-shellbar__group--product">
     {#if responsiveNavSetting==="simple" || responsiveNavSetting==="simpleMobileOnly"}
     <span
       class="sap-icon--menu2 lui-burger"
@@ -16,7 +16,7 @@
       on:handleClick="{handleClickExternal}"
     />
   </div>
-  <div class="fd-shellbar__group fd-shellbar__group--end">
+  <div class="fd-shellbar__group fd-shellbar__group--actions">
     <div class="fd-shellbar__actions">
       {#if !authorizationEnabled || isLoggedIn}
       <ContextSwitcher
@@ -29,7 +29,7 @@
       {#if !node.hideFromNav}
       {#if node.isCat}
       <div
-        class="fd-shellbar__action fd-shellbar__action--hide fd-shellbar__action--collapsible"
+        class="fd-shellbar__action fd-shellbar__action--hide fd-shellbar__action--desktop"
       >
         <div class="fd-popover fd-popover--right">
           <div
@@ -38,7 +38,7 @@
           >
             <button
               title="{getNodeLabel(node)}"
-              class="fd-button--shell {node === selectedNode ? 'is-selected' : ''}"
+              class="fd-button fd-shellbar__button {node === selectedNode ? 'is-selected' : ''}"
               aria-controls="dropDownPopover-{i}"
               aria-expanded="{dropDownStates[`dropDownPopover-${i}`] || false}"
               aria-haspopup="true"
@@ -76,11 +76,11 @@
       </div>
       {:else}
       <div
-        class="fd-shellbar__action fd-shellbar__action--hide fd-shellbar__action--collapsible"
+        class="fd-shellbar__action fd-shellbar__action--hide fd-shellbar__action--desktop"
       >
         <button
           title="{getNodeLabel(node)}"
-          class="fd-button--shell {node === selectedNode ? 'is-selected' : ''}"
+          class="fd-button fd-shellbar__button {node === selectedNode ? 'is-selected' : ''}"
           aria-controls="0AcWE812"
           aria-expanded="false"
           aria-haspopup="true"
@@ -111,8 +111,8 @@
       {/if}
       {/each}
       <!-- Sample Markup for Notifications
-              <div class="fd-shellbar__action fd-shellbar__action--collapsible">
-                <button class=" fd-button--shell sap-icon--bell" aria-label="Notifications">
+              <div class="fd-shellbar__action fd-shellbar__action--desktop">
+                <button class="fd-button fd-shellbar__button sap-icon--bell" aria-label="Notifications">
                   <span class="fd-counter fd-counter--notification" aria-label="Unread count">25</span>
                 </button>
               </div>
@@ -120,7 +120,7 @@
 
       <!-- dropdown for top nav nodes on smaller screens -->
       {#if visibleNodeCount > 0}
-      <div class="fd-shellbar__action fd-shellbar__action--collapse">
+      <div class="fd-shellbar__action fd-shellbar__action--mobile">
         <div class="fd-shellbar-collapse">
           <div class="fd-popover fd-popover--right">
             <div
@@ -135,7 +135,7 @@
                 role="button"
               >
                 <button
-                  class="fd-button--shell sap-icon--overflow"
+                  class="fd-button fd-shellbar__button sap-icon--overflow"
                   aria-controls="overflowPopover"
                   aria-expanded="{dropDownStates.overflowPopover || false}"
                   aria-haspopup="true"
@@ -284,7 +284,7 @@
             >
               <div class="{userInfo.picture ? 'fd-user-menu__control' : '' }">
                 <button
-                  class="fd-button--shell {!userInfo.picture?'sap-icon--customer':'fd-identifier fd-identifier--xs fd-identifier--circle'}"
+                  class="fd-button fd-shellbar__button {!userInfo.picture?'sap-icon--customer':'fd-identifier fd-identifier--xs fd-identifier--circle'}"
                   style="{userInfo.picture?`background-image: url('${userInfo.picture}');background-size:30px;background-repeat: no-repeat;background-position: center;`:''}"
                   aria-expanded="{dropDownStates.profilePopover || false}"
                   aria-haspopup="true"
@@ -324,7 +324,6 @@
   isHidden="{true}"
   {urlAuthError}
 />
-
 {/if}
 <script>
   import LogoTitle from './LogoTitle.html';
