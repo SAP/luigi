@@ -43,7 +43,7 @@ describe('Auth-helpers', function() {
     it('return true if token expiration date is valid', () => {
       AuthHelpers.getStoredAuthData.returns({
         accessToken: 'thisisanaccesstoken',
-        accessTokenExpirationDate: 1575038418900,
+        accessTokenExpirationDate: 1585038418900,
         idToken: '123'
       });
       const result = AuthHelpers.isLoggedIn();
