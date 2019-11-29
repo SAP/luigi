@@ -6,7 +6,7 @@ export class InternalLinksHandler {
       if(this.initDone) { return; }
       this.initDone = true;
 
-      // modify internal links to be valid links for users and still make sapper happy 
+      // modify internal links to be valid links for users and still make sapper happy
       // since leaving them "wrong" (as local iframe links) in the first place
       let intvCount = 0;
       const intv = setInterval(() => {
@@ -19,7 +19,7 @@ export class InternalLinksHandler {
           clearInterval(intv);
         }
       }, 150);
-      
+
 
       // register click handler
       window.navigateInternal = (evt, elem) => {
@@ -27,13 +27,13 @@ export class InternalLinksHandler {
         evt.stopPropagation();
         let url;
         try {
-          url = new URL(elem.getAttribute('href'));
+          url = new URL(elem.getAttribute('href'), window.location.origin);
         } catch (error) {
           console.debug('navigateInternal URL parse error', elem, elem.getAttribute('href'), error);
         }
         const urlWithPath = url.pathname.replace(ctx.coreBaseUrl, '').replace('.md', '').replace('/docu-microfrontend', '');
         if (url.hash) {
-          LuigiClient.linkManager().withParams({hash: url.hash.toLowerCase()}).navigate(urlWithPath);
+          LuigiClient.linkManager().withParams({'section': url.hash.substring(1).toLowerCase()}).navigate(urlWithPath);
         } else {
           LuigiClient.linkManager().navigate(urlWithPath);
         }

@@ -47,7 +47,7 @@ The examples on this page demonstrate commands that perform each of the necessar
 <a name="noframework"></a> 
 ### Application setup for an application not using a framework 
 
-<!-- add-attribute:class:success -->
+<!-- add-attribute:class:warning -->
 > **NOTE:** You need a development server capable of hosting Single Page Applications. The recommended server is Live Server.
 
 1. If you do not have Live Server installed, use this command to install it.
