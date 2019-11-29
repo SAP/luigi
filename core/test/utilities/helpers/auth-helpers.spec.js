@@ -3,6 +3,7 @@ const assert = chai.assert;
 const sinon = require('sinon');
 
 import { AuthHelpers, GenericHelpers } from '../../../src/utilities/helpers';
+import { AuthStoreSvc } from '../../../src/services';
 import { LuigiAuth } from '../../../src/core-api';
 
 describe('Auth-helpers', function() {
@@ -20,6 +21,43 @@ describe('Auth-helpers', function() {
   });
   afterEach(() => {
     window.location = windowLocationImplementation;
+    sinon.restore();
+  });
+
+  describe('getStoredAuthData', () => {
+    beforeEach(() => {
+      sinon.stub(AuthStoreSvc, 'getAuthData');
+    });
+
+    it('return message from getAuthData()', () => {
+      AuthStoreSvc.getAuthData.returns('Stored data');
+      const result = AuthHelpers.getStoredAuthData();
+      assert.equal(result, 'Stored data');
+    });
+  });
+
+  describe('isLoggedIn', () => {
+    beforeEach(() => {
+      sinon.stub(AuthHelpers, 'getStoredAuthData');
+    });
+    it('return true if token expiration date is valid', () => {
+      AuthHelpers.getStoredAuthData.returns({
+        accessToken: 'thisisanaccesstoken',
+        accessTokenExpirationDate: 1575038418900,
+        idToken: '123'
+      });
+      const result = AuthHelpers.isLoggedIn();
+      assert.equal(result, true);
+    });
+    it('return false if token expiration date is not valid', () => {
+      AuthHelpers.getStoredAuthData.returns({
+        accessToken: 'thisisanaccesstoken',
+        accessTokenExpirationDate: 1575035663808,
+        idToken: '123'
+      });
+      const result = AuthHelpers.isLoggedIn();
+      assert.equal(result, false);
+    });
   });
 
   describe('parseUrlAuthErrors', () => {
