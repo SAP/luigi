@@ -107,7 +107,7 @@ When writing documentation, adhere to a few basic rules:
 - Do not use slang or abbreviations. This also means you should not use contractions ("don't" instead of "do not") or short forms ("info" instead of "information").
 - Use the present tense.
 - Use concise language and avoid long blocks of text. Lists, tables, or subheadings can help you with that.
-- Give practical examples of features instead of only using words to explain them. Additionally, link to the [Luigi Fiddle](https://fiddle.luigi-project.io/) as a tool where users can experiment with features.
+- Give practical examples of features instead of only using words to explain them. Additionally, link to [Luigi Fiddle](https://fiddle.luigi-project.io/) as a tool where users can experiment with features.
 
 ## Format
 
@@ -128,7 +128,7 @@ Lists are very useful for breaking up text and providing instructions.
 
 ### Tables
 
-Use tables when content needs comparison or to organize small bits of information. Avoid long sentences or paragraph inside tables.
+Use tables when content needs comparison or to organize small bits of information. Avoid long sentences or paragraphs inside tables.
 
 You can find an example of a table in the [Styles](#styles) section of this document.
 
@@ -182,8 +182,8 @@ To link to a section within a document, use the title of that section as an anch
 
 When adding screenshots or diagrams, adhere to the following rules:
 
-- Only use high resolution images
-- Only use screenshots or diagrams if necessary, as too many of them can create visual noise
+- Only use high-resolution images.
+- Only use screenshots or diagrams if necessary, as too many of them can create visual noise.
 - As an alternative to screenshots, point to [Luigi Fiddle](https://fiddle.luigi-project.io/) or other Luigi examples when you want to illustrate a concept.
 
 ## Glossary
