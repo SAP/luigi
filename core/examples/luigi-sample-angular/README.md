@@ -4,7 +4,8 @@
 
 This is the Angular-based sample application which runs with Luigi framework.
 
->**NOTE:** The authorization flow in this application is a mock implementation for local development. **DO NOT USE IN PRODUCTION!**
+<!-- add-attribute:class:success -->
+> **NOTE:** The authorization flow in this application is a mock implementation for local development. **DO NOT USE IN PRODUCTION!**
 
 ## Development
 

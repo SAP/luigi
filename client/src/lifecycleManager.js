@@ -90,7 +90,6 @@ class LifecycleManager extends LuigiClientBase {
         this._notifyUpdate();
         helpers.sendPostMessageToLuigiCore({ msg: 'luigi.navigate.ok' });
       });
-
       /**
        * Get context once initially
        * @private
@@ -101,6 +100,42 @@ class LifecycleManager extends LuigiClientBase {
         },
         '*'
       );
+      let tpc = 'enabled';
+      let cookies = document.cookie;
+      let luigiCookie;
+      let luigiCookieKey;
+      if (cookies) {
+        luigiCookie = cookies
+          .split(';')
+          .map(cookie => cookie.trim())
+          .find(cookie => cookie == 'luigiCookie=true');
+      }
+      if (luigiCookie === 'luigiCookie=true') {
+        luigiCookieKey = luigiCookie.split('=')[0];
+        document.cookie = luigiCookieKey + '=; Max-Age=-99999999;';
+      }
+      document.cookie = 'luigiCookie=true';
+      cookies = document.cookie;
+      if (cookies) {
+        luigiCookie = cookies
+          .split(';')
+          .map(cookie => cookie.trim())
+          .find(cookie => cookie == 'luigiCookie=true');
+      }
+      if (luigiCookie === 'luigiCookie=true') {
+        window.parent.postMessage(
+          { msg: 'luigi.third-party-cookie', tpc },
+          '*'
+        );
+        document.cookie = luigiCookieKey + '=; Max-Age=-99999999;';
+      } else {
+        tpc = 'disabled';
+        window.parent.postMessage(
+          { msg: 'luigi.third-party-cookie', tpc },
+          '*'
+        );
+        console.warn('Third party cookies are not supported!');
+      }
     };
 
     luigiClientInit();
@@ -306,7 +341,8 @@ class LifecycleManager extends LuigiClientBase {
   /**
    * Returns the node parameters of the active URL.
    * Node parameters are defined like URL query parameters but with a specific prefix allowing Luigi to pass them to the micro frontend view. The default prefix is **~** and you can use it in the following way: `https://my.luigi.app/home/products?~sort=asc~page=3`.
-   * >**NOTE:** some special characters (`<`, `>`, `"`, `'`, `/`) in node parameters are HTML-encoded.
+   * <!-- add-attribute:class:warning -->
+   * > **NOTE:** some special characters (`<`, `>`, `"`, `'`, `/`) in node parameters are HTML-encoded.
    * @returns {Object} node parameters, where the object property name is the node parameter name without the prefix, and its value is the value of the node parameter. For example `{sort: 'asc', page: 3}`
    * @memberof Lifecycle
    */
@@ -317,7 +353,8 @@ class LifecycleManager extends LuigiClientBase {
    * Returns the dynamic path parameters of the active URL.
    * Path parameters are defined by navigation nodes with a dynamic **pathSegment** value starting with **:**, such as **productId**.
    * All path parameters in the current navigation path (as defined by the active URL) are returned.
-   * >**NOTE:** some special characters (`<`, `>`, `"`, `'`, `/`) in path parameters are HTML-encoded.
+   * <!-- add-attribute:class:warning -->
+   * > **NOTE:** some special characters (`<`, `>`, `"`, `'`, `/`) in path parameters are HTML-encoded.
    * @returns {Object} path parameters, where the object property name is the path parameter name without the prefix, and its value is the actual value of the path parameter. For example ` {productId: 1234, ...}`
    * @memberof Lifecycle
    */
