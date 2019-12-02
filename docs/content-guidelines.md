@@ -13,18 +13,18 @@ This page contains instructions on how to create documentation for Luigi. It def
 
 Luigi documentation is written in Markdown and stored on GitHub. The Markdown files are then rendered on the main documentation page using Sapper. Find more about what GitHub-flavored Markdown is [here](https://github.github.com/gfm).
 
-Documentation is located in the `luigi/docs` folder in the [Luigi repository](https://github.com/SAP/luigi).
+Documentation resides in the `luigi/docs` folder in the [Luigi repository](https://github.com/SAP/luigi).
 
 ## Structure
 
 Documentation on the Luigi website follows the structure below. When adding a new document, you need to place it into one of the five main categories depending on its topic.
 
-**Basics**
+### Basics
 
 - [Getting started](getting-started.md)
 - [Architecture](luigi-architecture.md)
 
-**Luigi Core**
+### Luigi Core
 
 - [Installation](application-setup.md)
 - [Basic navigation](navigation-configuration.md)
@@ -37,16 +37,16 @@ Documentation on the Luigi website follows the structure below. When adding a ne
 - [UI features](luigi-ux-features.md)
 - [API](luigi-core-api.md)
 
-**Luigi Client**
+### Luigi Client
 
 - [Installation](luigi-client-setup.md)
 - [API](luigi-client-api.md)
 
-**Advanced**
+### Advanced
 
 - [Custom messages](communication.md)
 
-**Examples**
+### Examples
 
 - [Angular](https://github.com/SAP/luigi/tree/master/core/examples/luigi-example-angular)
 - [Vue](https://github.com/SAP/luigi/tree/master/core/examples/luigi-example-vue)
@@ -128,7 +128,7 @@ Lists are very useful for breaking up text and providing instructions.
 
 ### Tables
 
-Use tables when content needs comparison or to organize small bits of information. Keep in mind that in Markdown it is not possible to break up the content of a table cell into separate lines or bullet points, therefore tables are not useful when they contain long sentences or lists.
+Use tables when content needs comparison or to organize small bits of information. Avoid long sentences or paragraph inside tables.
 
 You can find an example of a table in the [Styles](#styles) section of this document.
 
@@ -182,9 +182,9 @@ To link to a section within a document, use the title of that section as an anch
 
 When adding screenshots or diagrams, adhere to the following rules:
 
-- Only use high-resolution images.
-- Only use screenshots or diagrams if necessary, as too many of them can create visual noise.
-- As an alternative to screenshots, point to the [Luigi fiddle](https://fiddle.luigi-project.io/) or other Luigi examples when you want to illustrate a concept.
+- Only use high resolution images
+- Only use screenshots or diagrams if necessary, as too many of them can create visual noise
+- As an alternative to screenshots, point to [Luigi Fiddle](https://fiddle.luigi-project.io/) or other Luigi examples when you want to illustrate a concept.
 
 ## Glossary
 
