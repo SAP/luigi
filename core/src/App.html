@@ -504,9 +504,7 @@
       getAlertWithId(currentAlerts, settings.id)
     ) {
       console.error(
-        `The alert with id '${
-          settings.id
-        }' already exists in a queue, therefore it won't be displayed `
+        `The alert with id '${settings.id}' already exists in a queue, therefore it won't be displayed `
       );
       return Promise.reject();
     }
@@ -996,15 +994,16 @@
 
   $topNavHeight: 48px;
   $topNavHeightTab: 51px;
-  $leftNavWidth: 320px;
-  $leftNavWidthCollapsed: 40px;
+  $leftNavWidth: 15rem;
+  $leftNavWidthCollapsed: 2.75rem;
   $desktopMinWidth: 600px;
 
   :global(html) {
     box-sizing: border-box;
-    font-size: 14px;
+    font-size: 16px;
     position: fixed;
     width: 100%;
+    min-height: 100%;
   }
   :global(body) {
     -webkit-font-smoothing: antialiased;
@@ -1167,9 +1166,9 @@
       display: inline;
     }
 
-    :global(.fd-app__sidebar) {
+    /* :global(.fd-app__sidebar) {
       width: $leftNavWidth;
-    }
+    } */
     :global(body.lui-simpleSlideInNav.lui-leftNavToggle) {
       .iframeContainer,
       .spinnerContainer {
