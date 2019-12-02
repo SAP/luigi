@@ -11,7 +11,7 @@ This page contains instructions on how to create documentation for Luigi. It def
 
 ## Overview
 
-Luigi documentation exists in the form of Markdown files on GitHub, which are then transferred to the main documentation page using Sapper. Find more about what GitHub-flavored Markdown is [here](https://github.github.com/gfm).
+Luigi documentation is written in Markdown and stored on GitHub. The Markdown files are then rendered on the main documentation page using Sapper. Find more about what GitHub-flavored Markdown is [here](https://github.github.com/gfm).
 
 Documentation is located in the `luigi/docs` folder in the [Luigi repository](https://github.com/SAP/luigi).
 
@@ -58,7 +58,7 @@ In order to render documentation correctly on the Luigi website, you need to add
 
 ### Navigation metadata
 
-This type of metadata determines where in the navigation structure of the Luigi website the document will be shown. It must be written as a json object surrounded by `<!--meta` `meta-->` tags. For example:
+This type of metadata determines where to display the document in the navigation structure of the Luigi website. It must be written as a JSON object surrounded by `<!--meta` `meta-->` tags. For example:
 
 ```json
 <!-- meta
@@ -79,7 +79,7 @@ meta -->
 
 ### Alert blocks metadata
 
-To draw the reader's attention to something, you can use the quote block option in Markdown. Directly above the quote block, you need to add metadata which determines whether the alert box on the website will be green (`success`) or yellow (`warning`).
+To draw the reader's attention to something, you can use the quote block option in Markdown. Directly above the quote block, add metadata which determines whether the alert box on the website will be green (`success`) or yellow (`warning`).
 
 Use one of these three options for alert blocks:
 
@@ -100,9 +100,9 @@ Use one of these three options for alert blocks:
 
 ## Audience and language
 
-The audience of this documentation consists mainly of developers interested in implementing a micro frontend UI solution. It is assumed the reader already has basic knowledge of web development. Do not explain general concepts unrelated to Luigi except if they are instrumental for working with the feature you're describing.
+The audience of this documentation consists mainly of developers interested in implementing a micro frontend UI solution. It is assumed the reader already has basic knowledge of web development. Do not explain general concepts unrelated to Luigi except if they are instrumental for working with the feature you are describing.
 
-When writing documentation, you should adhere to a few basic rules:
+When writing documentation, adhere to a few basic rules:
 - Use active voice. For example, instead of writing "Luigi Client should be installed...", write "Install Luigi Client..."
 - Do not use slang or abbreviations. This also means you should not use contractions ("don't" instead of "do not") or short forms ("info" instead of "information").
 - Use the present tense.
@@ -115,9 +115,9 @@ This section provides you with guidelines on how to format and organize your tex
 
 ### Headings
 
-Use H1 headings (preceded by # in Markdown) only at the start of the document to indicate the document name.
+Use H1 headings only at the start of the document to indicate the document name.
 
-Only use H2 and H3 headings to organize your content into categories. Do not use H4 (####) headings or lower.
+Only use H2 and H3 headings to organize your content into categories. Do not use H4 headings or lower.
 
 ### Lists
 
@@ -134,7 +134,7 @@ You can find an example of a table in the [Styles](#styles) section of this docu
 
 ### Code snippets
 
-Code snippets must be surrounded with the Markdown code block tag and the programming language should be specified. Make sure to indent code correctly using your text editor (2 space indentation is the default).
+Surround code snippets with the Markdown code block tag and specify the programming language. Make sure to indent code correctly using your text editor (2 space indentation is the default).
 
 For example:
 
@@ -156,7 +156,7 @@ Luigi.setConfig({
 
 ### Styles
 
-Depending on the type of content, you should use different types of text, for example **bolded** or `code`.
+Depending on the type of content,  use different types of text, for example, **bolded** or `code`.
 
 |     Type           |      Font          |    Example    |
 |--------------------|:------------------:|---------------|
@@ -170,7 +170,7 @@ Depending on the type of content, you should use different types of text, for ex
 
 ## Links
 
-If the link is within the same folder on GitHub, use only the relative path. For all other links, including external links, use the absolute path (which starts with https://...).
+If the link is within the same folder on GitHub, use only the relative path. For all other links, including external links, use the absolute path, starting with `https://`.
 
 To link to a section within a document, use the title of that section as an anchor. For example:
 
@@ -180,10 +180,10 @@ To link to a section within a document, use the title of that section as an anch
 
 ## Screenshots and diagrams
 
-When adding screenshots or diagrams you should adhere to to the following rules:
+When adding screenshots or diagrams, adhere to the following rules:
 
-- Only use high resolution images
-- Only use screenshots or diagrams if necessary, as too many of them can create visual noise
+- Only use high-resolution images.
+- Only use screenshots or diagrams if necessary, as too many of them can create visual noise.
 - As an alternative to screenshots, point to the [Luigi fiddle](https://fiddle.luigi-project.io/) or other Luigi examples when you want to illustrate a concept.
 
 ## Glossary
@@ -195,4 +195,4 @@ This section contains terminology frequently used in the Luigi documentation.
 * **Luigi Fiddle** - a [page](https://fiddle.luigi-project.io/) where you can configure an example Luigi application and explore Luigi functions.
 * **Parameters** - the parameters that can be used to configure Luigi in the Luigi configuration file, for example **category**, **viewUrl**, and more.
 * **Dynamic parameters** - the parameters that can be added to create a dynamically changeable path.
-* **Attributes** - the "sub properties" of parameters. E.g. the **category** parameter can have **label**, **icon**, and **collapsible** as attributes.
+* **Attributes** - the "sub properties" of parameters. For example, the **category** parameter can have **label**, **icon**, and **collapsible** as attributes.
