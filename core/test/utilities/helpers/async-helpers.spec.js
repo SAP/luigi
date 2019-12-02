@@ -5,11 +5,64 @@ const assert = chai.assert;
 import { AsyncHelpers, GenericHelpers } from './../../../src/utilities/helpers';
 
 describe('Async-helpers', () => {
+  let clock;
+  let obj;
   beforeEach(() => {
     // sinon.stub(LuigiConfig, 'getConfigValue');
+    obj = {
+      client: 'here'
+    };
+    clock = sinon.useFakeTimers();
   });
   afterEach(() => {
     //   sinon.restore();
+    clock.restore();
+  });
+
+  describe('waitForKeyExistency', () => {
+    it('returns true if key exists immediately', done => {
+      AsyncHelpers.waitForKeyExistency(obj, 'client').then(result => {
+        assert.equal(result, true);
+        done();
+      });
+      clock.tick(1000);
+    });
+    it('returns true if key exists after some time', done => {
+      obj.client = undefined;
+      AsyncHelpers.waitForKeyExistency(obj, 'client').then(result => {
+        assert.equal(result, true);
+        done();
+      });
+      setTimeout(() => {
+        obj.client = 'yes';
+      }, 500);
+      clock.tick(1000);
+    });
+    it('returns message if key exists after 20000ms', done => {
+      obj.client = undefined;
+      AsyncHelpers.waitForKeyExistency(obj, 'client')
+        .then(result => {})
+        .catch(e => {
+          assert.equal(e, 'client did not appear in object within 20 seconds.');
+          done();
+        });
+      setTimeout(() => {
+        obj.client = 'yes';
+      }, 20200);
+      clock.tick(22000);
+    });
+    it('returns message if key does not exist', done => {
+      AsyncHelpers.waitForKeyExistency(obj, 'client2')
+        .then(result => {})
+        .catch(e => {
+          assert.equal(
+            e,
+            'client2 did not appear in object within 20 seconds.'
+          );
+          done();
+        });
+      clock.tick(21000);
+    });
   });
 
   describe('wrapAsPromise', () => {
