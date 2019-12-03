@@ -71,11 +71,7 @@ class NavigationClass {
       return [];
     }
     if (!node._childrenProvider) {
-      if (node.children instanceof Array && node.children.length) {
-        node.children.forEach(child => {
-          this.expandStructuralPathSegments(child);
-        });
-      }
+      this.expandStructuralPathSegments(node.children);
       node._childrenProvider = node.children;
     }
     if (
@@ -93,9 +89,7 @@ class NavigationClass {
             '_childrenProvider',
             context || node.context
           )) || [];
-        node._children.forEach(child => {
-          this.expandStructuralPathSegments(child);
-        });
+        this.expandStructuralPathSegments(node._children);
         node.children = node._children.filter(child =>
           NavigationHelpers.isNodeAccessPermitted(child, node, context)
         );
@@ -104,9 +98,7 @@ class NavigationClass {
         console.error('Could not lazy-load children for node', err);
       }
     } else if (node._children) {
-      node._children.forEach(child => {
-        this.expandStructuralPathSegments(child);
-      });
+      this.expandStructuralPathSegments(node._children);
       node.children = node._children.filter(child =>
         NavigationHelpers.isNodeAccessPermitted(child, node, context)
       );
@@ -126,15 +118,21 @@ class NavigationClass {
     }
   }
 
-  expandStructuralPathSegments(node) {
+  expandStructuralPathSegments(children) {
+    if (children instanceof Array && children.length) {
+      children.forEach(child => {
+        this.expandStructuralPathSegment(child);
+      });
+    }
+  }
+
+  expandStructuralPathSegment(node) {
     // Checking for pathSegment to exclude virtual root node
     if (node && node.pathSegment && node.pathSegment.indexOf('/') !== -1) {
-      console.log('=== expanding', node.pathSegment);
       const segs = node.pathSegment.split('/');
       const buildStructuralNode = (segs, node) => {
         const seg = segs.shift();
         let child = {};
-        console.log('working on seg', segs.length, seg);
         if (segs.length) {
           child.pathSegment = seg;
           child.children = [buildStructuralNode(segs, node)];
@@ -152,7 +150,6 @@ class NavigationClass {
       });
       node.origNode = true;
       GenericHelpers.extend(node, newNode);
-      console.log('=== end of expand', GenericHelpers.extend({}, node));
     }
   }
 
