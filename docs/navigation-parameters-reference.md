@@ -53,7 +53,7 @@ You can configure the way Luigi tackles routing in your application in the `rout
 
 
 ## Navigation parameters
-The node navigation parameters allow you to configure global navigation settings under the `navigation:` section in the configuration file.
+The navigation parameters allow you to configure **global** navigation settings directly under the `navigation:` section in the configuration file.
 
 ### nodeAccessibilityResolver
 - **type**: any
@@ -206,7 +206,7 @@ settings: {
 
 ### category
 - **type**: string or object
-- **description**: defines a group of views separated with a headline and an icon. You should define at least one node in a group should as an Object with **label** and **icon** attributes. For all other nodes, you can set **category** as a string with the `label` value.
+- **description**: defines a group of views separated with a headline and an icon. You should define at least one node in a group as an Object with **label** and **icon** attributes. For all other nodes, you can set **category** as a string with the `label` value.
 - **attributes**:
   - **label** is a string that represents the title of the category.
   - **icon** is the name of an icon, without the `sap-icon--` prefix. Its source may be [OpenUI](https://openui5.hana.ondemand.com/1.40.10/iconExplorer.html) or a custom link (relative or absolute) to an image. The icon is displayed next to the node label in the side navigation or instead of the label in the top navigation. In case you accidentally define different icons in a category group, only the first one is used.
