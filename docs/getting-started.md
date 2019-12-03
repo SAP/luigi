@@ -7,13 +7,15 @@
     },
     "metaData": {
       "categoryPosition": 1,
-      "position": 1
+      "position": 0
     }
   }
 }
 meta -->
 
 # Getting started
+
+<!-- accordion:start -->
 
 ## What is Luigi?
 
@@ -36,6 +38,8 @@ This diagram illustrates the structure of Luigi:
 
 ![Overview diagram](assets/luigi-overview-diagram.jpg)
 
+<!-- accordion:end -->
+
 ## Prerequisites
 
 All you need to get started with Luigi is basic knowledge of HTML and JavaScript.
@@ -44,6 +48,7 @@ You can build an application in Luigi without a framework, or use different fram
 * Angular 6
 * SAPI5/OpenUI5
 * VUE.JS
+* React
 
 ## Next steps
 
