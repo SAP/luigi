@@ -35,6 +35,7 @@ You can configure the way Luigi tackles routing in your application in the `rout
 ### useHashRouting
 - **type**: boolean
 - **description**: defines either hash-based (`example.com/#/yourpath`) or path-based (`example.com/yourpath`) routing.
+- **default**: the default is `false`, which means path routing is used.
 
 ### nodeParamPrefix
 - **type**: string
@@ -103,7 +104,7 @@ Node parameters are all the parameters that can be added to an individual naviga
 
 ### testId
 - **type**: string
-- **description**: allows you to define your own custom **testId**. If you do not specify it, it is a combination of the node's **pathSegment** followed by an underscore and the label, written as one word in lower case. If the **pathSegment** does not exist, the **testId** includes the label only. This way, you can have `pathsegment_label` or `label`.
+- **description**: allows you to define your own custom **testId** to be used in E2E tests. If you do not specify it, it is a combination of the node's **pathSegment** followed by an underscore and the label, written as one word in lower case. If the **pathSegment** does not exist, the **testId** includes the label only. This way, you can have `pathsegment_label` or `label`.
 
 ### hideFromNav
 - **type**: boolean
@@ -212,7 +213,7 @@ settings: {
   - **icon** is the name of an icon, without the `sap-icon--` prefix. Its source may be [OpenUI](https://openui5.hana.ondemand.com/1.40.10/iconExplorer.html) or a custom link (relative or absolute) to an image. The icon is displayed next to the node label in the side navigation or instead of the label in the top navigation. In case you accidentally define different icons in a category group, only the first one is used.
   - **altText** adds the HTML `alt` attribute to an icon. Note that this property only applies to icons with a defined absolute or relative path.
   - **collapsible** if set to `true`, category items are hidden at first. To expand them, click the main category node.
-  - **testId** is a string where you can define your own custom `testId`. If nothing is specified, it is the node's label written as one word in lower case, for example`label`.
+  - **testId** is a string where you can define your own custom `testId` for  E2E tests. If nothing is specified, it is the node's label written as one word in lower case, for example`label`.
 
 ### openNodeInModal
 - **type**: boolean or object
@@ -267,7 +268,7 @@ The context switcher is a drop-down list available in the top navigation bar. It
 - **description**: defines a list of additional elements that are shown on above or below the context switcher **options**.
 - **attributes**:
   - **label** defines the action element label.
-  - **testId** is a string where you can define your own custom `testId`. If nothing is specified, it is the node's label written as one word and lower case (e.g. `label`).
+  - **testId** is a string where you can define your own custom `testId` for E2E tests. If nothing is specified, it is the node's label written as one word and lower case (e.g. `label`).
   - **position** defines the action element position. Can be `top` or `bottom`. The default value is `top`. This parameter
  is optional.
   - **link** defines an absolute Link to a **node**. This parameter
@@ -292,7 +293,7 @@ The profile section is a configurable drop-down list available in the top naviga
 - **description**: defines a list of additional elements that are shown on above or below the context switcher **options**.
 - **attributes**:
   - **label** overrides the text for the logout item. The default value is "Sign Out".
-  - **testId** is a string where you can define your own custom `testId`. If nothing is specified, it is the node's label written as one word and lower case (e.g. `label`).
+  - **testId** is a string where you can define your own custom `testId` for E2E tests. If nothing is specified, it is the node's label written as one word and lower case (e.g. `label`).
   - **icon** overrides the icon for the logout item. The default value is [SAP UI5 log icon](https://sapui5.hana.ondemand.com/test-resources/sap/m/demokit/iconExplorer/webapp/index.html#/overview/SAP-icons/?tag=logout).
   - **altText** adds the HTML `alt` attribute to an icon. Note that this property only applies to icons with a defined absolute or relative path.
   - **customLogoutFn** defines a function to implement your own logout functionality. Use this function only if no IDP is configured. If you define IDP with a corresponding [logout function](authorization-configuration.md), the **customLogoutFn** set for a profile is ignored.
@@ -302,7 +303,7 @@ The profile section is a configurable drop-down list available in the top naviga
 - **description**: an array of objects, each one being a link to a Luigi navigation node or an external URL.
 - **attributes**:
   - **label** defines the text for the link.
-  - **testId** is a string where you can define your own custom `testId`. If nothing is specified, it is the node's label written as one word and lower case (e.g. `label`).
+  - **testId** is a string where you can define your own custom `testId` for E2E tests. If nothing is specified, it is the node's label written as one word and lower case (e.g. `label`).
   - **icon** is the name of an icon from the [OpenUI](https://openui5.hana.ondemand.com/1.40.10/iconExplorer.html) or a custom link (relative or absolute) to an image displayed next to the label or instead of it.
   - **altText** adds the HTML `alt` attribute to an icon. Note that this property only applies to icons with a defined absolute or relative path.
   - **link** defines an absolute link to a **node**.
@@ -330,7 +331,7 @@ The product switcher is a pop-up window available in the top navigation bar. It 
 
 ### testId
 - **type**: string
-- **description**: enables you to define your own custom `testId`. If nothing is specified, it is the node's label written as one word and lower case (e.g. `label`).
+- **description**: enables you to define your own custom `testId` for E2E tests. If nothing is specified, it is the node's label written as one word and lower case (e.g. `label`).
 
 ### icon
 - **type**: string
@@ -345,7 +346,7 @@ The product switcher is a pop-up window available in the top navigation bar. It 
 - **description**: an array of objects, each one being a link to a Luigi navigation node or an external URL. An item can have several attributes.
 - **attributes**:
   - **label** defines the text for the link.
-  - **testId** is a string where you can define your own custom `testId`. If nothing is specified, it is the node's label written as one word and lower case (e.g. `label`).
+  - **testId** is a string where you can define your own custom `testId` for E2E tests. If nothing is specified, it is the node's label written as one word and lower case (e.g. `label`).
   - **icon** is the name of an icon from the [OpenUI](https://openui5.hana.ondemand.com/1.40.10/iconExplorer.html) or a custom link (relative or absolute) to an image displayed next to the label or instead of it.
   - **altText** adds the HTML `alt` attribute to an icon. Note that this property only applies to icons with a defined absolute or relative path.
   - **link** defines an absolute link to a **node**.

@@ -3,13 +3,13 @@
   "node": {
     "label": "Configuration Example",
     "category": {
-      "label": "Luigi Core"
+      "label": "Examples"
     },
     "metaData": {
-      "categoryPosition": 2,
-      "position": 10
+      "categoryPosition": 5,
+      "position": 0
     },
-    "hideFromNav": true
+    "hideFromNav": false
   }
 }
 meta -->

@@ -207,17 +207,17 @@ Luigi.setConfig({
 
 ## Contexts
 
-Contexts can serve as an alternative way to create a dynamically changeable path in the **viewUrl**. They are used together with path parameters and utilize the Luigi Client to receive contexts for the micro frontends.
-
-You can create a context by adding these parameters to your node:
-
-### navigationContext
-- **type**: string
-- **description**: contains a named node that is mainly for use in combination with a dynamic **pathSegment** to start navigation from a dynamic node using `LuigiClient.linkManager().fromContext('contextname')`.
+The purpose of contexts is to send objects to the micro frontend. You can do this by adding this parameter to your node:
 
 ### context
 - **type**: object
 - **description**: sends the specified object as context to the view. Use this property in combination with the dynamic **pathSegment** to receive the context through the context listeners of Luigi Client. This is an alternative to using the dynamic value in the **viewUrl**.
+
+Navigation contexts can be used together with path parameters and utilize the Luigi Client to receive contexts for the micro frontends.
+
+### navigationContext
+- **type**: string
+- **description**: contains a named node that is mainly for use in combination with a dynamic **pathSegment** to start navigation from a dynamic node using `LuigiClient.linkManager().fromContext('contextname')`.
 
 Here is an example of a dynamic navigation node including a context:
 
