@@ -559,7 +559,6 @@
   }
 
   .fd-app__sidebar {
-    //width: $leftNavWidth;
     position: fixed;
     top: $topNavHeight;
     left: 0;
@@ -569,7 +568,6 @@
     flex-direction: column;
     background-color: white;
     color: #32363a;
-    //@include box-shadow(1px 1px 2px 0 rgba(0, 0, 0, 0.05));
     border-right: 1px solid var(--sapGroup_ContentBorderColor, #d9d9d9);
     z-index: 1;
 
@@ -595,6 +593,19 @@
   .fd-nested-list__icon {
     img {
       max-width: 18px;
+    }
+  }
+
+  .fd-nested-list__group-header {
+    .fd-nested-list__icon {
+      margin-left: -1rem;
+      font-size: 0.875rem;
+      color: black;
+      height: 74%;
+
+      img {
+        max-width: 0.875rem;
+      }
     }
   }
 
@@ -650,32 +661,11 @@
   }
 
   .lui-category {
-    /* // this should be inherited from $fd-menu-item-seperator-color
-    border-top: 1px solid #eeeeef;
-    // Align style with normal nodes - should be extended from sidebar item
-    display: block;
-    font-size: 1rem;
-    line-height: 1.42857;
-    font-weight: 400;
-    text-transform: inherit; */
     .fd-side-nav__icon {
       width: 2em;
     }
   }
-  /* // Add missing visual indicator for two senses indication of active state
-  .fd-side-nav__link.is-selected {
-    position: relative;
-    &:before {
-      content: '';
-      position: absolute;
-      left: 0;
-      top: 0;
-      width: 4px;
-      height: 100%;
-      background: #0a6ed1;
-      display: block;
-    }
-  } */
+
   // Overwrite padding of icon
   .fd-side-nav__icon {
     padding-right: 2px;
@@ -754,51 +744,6 @@
         .lui-category {
           width: $leftNavWidthCollapsed;
           overflow: hidden;
-        }
-
-        .lui-collapsible-item,
-        .lui-category {
-          /* position: relative; */
-
-          /* &:after {
-            display: block;
-            content: '\e066';
-            position: absolute;
-            top: 50%;
-            right: 4px;
-            font-family: SAP-icons;
-            transform: translateY(-50%);
-            font-size: 10px;
-            opacity: 0;
-            color: var(--fd-color-text-2);
-            animation-name: arrowAnimation;
-            animation-duration: 0.2s;
-            animation-fill-mode: forwards;
-
-            @-webkit-keyframes arrowAnimation {
-              0% {
-                opacity: 0;
-              }
-              90% {
-                opacity: 0;
-              }
-              100% {
-                opacity: 1;
-              }
-            }
-
-            @keyframes arrowAnimation {
-              0% {
-                opacity: 0;
-              }
-              90% {
-                opacity: 0;
-              }
-              100% {
-                opacity: 1;
-              }
-            }
-          } */
         }
 
         .lui-collapsible-item .fd-side-nav__link[aria-expanded='true'] {

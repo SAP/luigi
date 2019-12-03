@@ -46,7 +46,7 @@ Object.keys(productSwitcherItems[0]).length }
               data-testid="{getTestId(productSwitcherItem)}"
             >
               <!-- <a class="fd-menu__item"> -->
-              <span
+              <div
                 class="fd-product-switch__icon {productSwitcherItem.icon && hasOpenUIicon(productSwitcherItem) ? 'sap-icon--' + productSwitcherItem.icon : '' }"
               >
                 {#if !hasOpenUIicon(productSwitcherItem)}
@@ -55,11 +55,13 @@ Object.keys(productSwitcherItems[0]).length }
                   alt="{productSwitcherItem.altText ? productSwitcherItem.altText : ''}"
                 >
                 {/if}
-              </span>
-              <span
-                class="fd-product-switch__text"
-              >{getNodeLabel(productSwitcherItem)}</span>
-              <div class="fd-product-switch__subtitle"></div>
+              </div>
+              <div class="fd-product-switch__text">
+                <div
+                  class="fd-product-switch__title"
+                >{getNodeLabel(productSwitcherItem)}</div>
+                <div class="fd-product-switch__subtitle">Lorem ipsum</div>
+              </div>
               <!-- </a> -->
             </li>
             {/if}
@@ -160,44 +162,9 @@ Object.keys(productSwitcherItems[0]).length }
 </script>
 
 <style type="text/scss">
-  .fd-product-switcher {
-    position: relative;
-    display: block;
-
-    .fd-button--shell {
-      img {
-        max-height: 100%;
-      }
-    }
-  }
-  .fd-product-switcher__product-icon > img {
-    max-height: 40px;
-  }
-
-  .fd-product-switcher__body {
-    overflow: auto;
-    max-height: calc(100vh - 50px);
-    max-height: calc(var(--vh, 1vh) * 100 - 50px);
-
-    .fd-menu__item {
-      padding: 0;
-      text-align: center;
-
-      &:hover {
-        background-color: transparent;
-      }
-    }
-  }
-
-  @media (min-width: 1024px) {
-    .fd-product-switcher {
-      &__product-icon {
-        &.sap-icon--m {
-          &:before {
-            font-size: 38px;
-          }
-        }
-      }
+  .fd-product-switch__icon {
+    img {
+      max-height: 24px;
     }
   }
 </style>
