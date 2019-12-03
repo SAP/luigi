@@ -44,8 +44,6 @@ Follow these steps to create a global user interface and host a **full web appli
   * [React](application-setup.md#application-setup-for-react)
 
 2. Configure the application according to your needs. For example, you can begin by configuring the [basic navigation](navigation-configuration.md) of your application.
-<!-- add-attribute:class:success -->
-> **NOTE:** Luigi provides many configuration options for [navigation](navigation-parameters-reference.md), [authorization](authorization-configiration.md), and more. They are described in the documentation. You can use any configuration options and parameters that are useful for you and omit ones that are not. Luigi is fully customizable.
 
 ### Luigi Client
 
