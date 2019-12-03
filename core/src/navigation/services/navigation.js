@@ -32,6 +32,7 @@ class NavigationClass {
       } else {
         rootNode = { children: topNavNodes };
       }
+
       await this.getChildren(rootNode); // keep it, mutates and filters children
       const nodeNamesInCurrentPath = activePath.split('/');
       const navObj = await this.buildNode(
@@ -69,8 +70,12 @@ class NavigationClass {
     if (!node) {
       return [];
     }
-
     if (!node._childrenProvider) {
+      if (node.children instanceof Array && node.children.length) {
+        node.children.forEach(child => {
+          this.expandStructuralPathSegments(child);
+        });
+      }
       node._childrenProvider = node.children;
     }
     if (
@@ -88,15 +93,20 @@ class NavigationClass {
             '_childrenProvider',
             context || node.context
           )) || [];
+        node._children.forEach(child => {
+          this.expandStructuralPathSegments(child);
+        });
         node.children = node._children.filter(child =>
           NavigationHelpers.isNodeAccessPermitted(child, node, context)
         );
-        this.bindChildrenToParent(node);
         return node.children;
       } catch (err) {
         console.error('Could not lazy-load children for node', err);
       }
     } else if (node._children) {
+      node._children.forEach(child => {
+        this.expandStructuralPathSegments(child);
+      });
       node.children = node._children.filter(child =>
         NavigationHelpers.isNodeAccessPermitted(child, node, context)
       );
@@ -113,6 +123,36 @@ class NavigationClass {
       node.children.forEach(child => {
         child.parent = node;
       });
+    }
+  }
+
+  expandStructuralPathSegments(node) {
+    // Checking for pathSegment to exclude virtual root node
+    if (node && node.pathSegment && node.pathSegment.indexOf('/') !== -1) {
+      console.log('=== expanding', node.pathSegment);
+      const segs = node.pathSegment.split('/');
+      const buildStructuralNode = (segs, node) => {
+        const seg = segs.shift();
+        let child = {};
+        console.log('working on seg', segs.length, seg);
+        if (segs.length) {
+          child.pathSegment = seg;
+          child.children = [buildStructuralNode(segs, node)];
+        } else {
+          // set original data to last child
+          GenericHelpers.extend(child, node);
+          child.pathSegment = seg;
+        }
+        return child;
+      };
+      const newNode = buildStructuralNode(segs, node);
+      // clear old node reference
+      Object.keys(node).forEach(key => {
+        delete node[key];
+      });
+      node.origNode = true;
+      GenericHelpers.extend(node, newNode);
+      console.log('=== end of expand', GenericHelpers.extend({}, node));
     }
   }
 

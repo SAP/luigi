@@ -1,5 +1,7 @@
 // Standalone or partly-standalone methods that are used widely through the whole app and are synchronous.
 import { LuigiElements } from '../../core-api';
+import merge from 'lodash.merge';
+
 class GenericHelpersClass {
   /**
    * Creates a random Id
@@ -57,6 +59,14 @@ class GenericHelpersClass {
     }
 
     return this.deepMerge(target, ...sources);
+  }
+
+  /**
+   * extends 'from' object with members from 'to'.
+   * If 'to' is null, a deep clone of 'from' is returned
+   */
+  extend(target, source) {
+    return merge(target, source);
   }
 
   getUrlWithoutHash(url) {

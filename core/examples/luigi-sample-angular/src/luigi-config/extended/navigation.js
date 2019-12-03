@@ -47,16 +47,22 @@ class Navigation {
         label: 'Create Environment'
       }
     },
+    // {
+    //   hideFromNav: true,
+    //   pathSegment: 'environments',
+    //   viewUrl: '/sampleapp.html#/environments',
+    //   children: [
+    //     {
+    //       pathSegment: ':environmentId',
+    //       viewUrl: '/sampleapp.html#/environments/:environmentId'
+    //     }
+    //   ]
+    // },
     {
       hideFromNav: true,
-      pathSegment: 'environments',
-      viewUrl: '/sampleapp.html#/environments',
-      children: [
-        {
-          pathSegment: ':environmentId',
-          viewUrl: '/sampleapp.html#/environments/:environmentId'
-        }
-      ]
+      // this is an implicit structural node
+      pathSegment: 'environments/:environmentId',
+      viewUrl: '/sampleapp.html#/environments/:environmentId'
     },
     {
       pathSegment: 'forbidden-sample',
