@@ -15,15 +15,16 @@ meta -->
 
 # Getting started
 
-## What are Luigi Core and Luigi Client?
+## What is Luigi?
+
+<div style="text-align: right"><img src="https://github.com/SAP/luigi/blob/master/docs/assets/luigi-overview-diagram.jpg" width="100"/></div>
 
 Luigi is an open source JavaScript framework for micro frontends. It enables you to:
 * create a unified user interface for a web application using **Luigi Core**.
 * create micro frontends and connect them to the Luigi Core app using **Luigi Client**.
 
-This diagram illustrates the structure of Luigi:
+The diagram on the right illustrates the structure of Luigi.
 
-![Overview diagram](assets/luigi-overview-diagram.jpg)
 
 ## Prerequisites
 
