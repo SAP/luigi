@@ -590,9 +590,30 @@
     }
   }
 
+  :global(.fd-nested-list__item) {
+    &:not(.lui-collapsible-item) {
+      .fd-nested-list__link {
+        padding-right: 1rem;
+      }
+    }
+  }
+
+  .fd-nested-list__title {
+    width: auto;
+    padding-right: 5px;
+  }
+
   .fd-nested-list__icon {
     img {
       max-width: 18px;
+    }
+  }
+
+  :global(.fd-nested-list--compact) {
+    .fd-nested-list__icon {
+      img {
+        max-width: 16px;
+      }
     }
   }
 
