@@ -23,7 +23,7 @@ Luigi is an open source JavaScript framework for micro frontends. It enables you
 
 This diagram illustrates the structure of Luigi:
 
-<img src="https://github.com/SAP/luigi/blob/master/docs/assets/luigi-overview-diagram.jpg?raw=true" width="500"/>
+<img src="https://github.com/SAP/luigi/blob/master/docs/assets/luigi-overview-diagram.jpg?raw=true" width="600"/>
 
 
 ## Prerequisites
