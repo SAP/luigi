@@ -7,7 +7,7 @@
         <h1 class="fd-modal__title">{modalSettings.title}</h1>
         {/if}
         <button
-          class="fd-button--light fd-modal__close"
+          class="fd-button--light fd-modal__close sap-icon--decline sap-icon--l"
           on:click="{() => dispatch('close')}"
           aria-label="close"
         ></button>
@@ -37,7 +37,7 @@
   let pathData;
   let nodeParams;
 
-  const prepareNodeData = async (path) => {
+  const prepareNodeData = async path => {
     const pathUrlRaw =
       path && path.length ? GenericHelpers.getPathWithoutHash(path) : '';
     const params = RoutingHelpers.parseParams(pathUrlRaw.split('?')[1]);
@@ -52,16 +52,13 @@
     isDataPrepared = true;
   };
 
-  const getNode = async (path) => {
+  const getNode = async path => {
     if (isDataPrepared) {
-      const iframe = createIframeModal(
-        nodeObject.viewUrl,
-        {
-          context: pathData.context,
-          pathParams: pathData.pathParams,
-          nodeParams
-        }
-      );
+      const iframe = createIframeModal(nodeObject.viewUrl, {
+        context: pathData.context,
+        pathParams: pathData.pathParams,
+        nodeParams
+      });
       dispatch('iframeCreated', {
         modalIframe: iframe,
         modalIframeData: { ...pathData, nodeParams }
@@ -99,7 +96,6 @@
     iframeCtn.appendChild(iframe);
     return iframe;
   };
-
 
   // [svelte-upgrade warning]
   // beforeUpdate and afterUpdate handlers behave
