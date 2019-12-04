@@ -35,7 +35,7 @@ Object.keys(productSwitcherItems[0]).length }
         aria-hidden="{!(dropDownStates.productSwitcherPopover || false)}"
         id="productSwitcherPopover"
       >
-        <div class="fd-product-switch__body">
+        <div class="{columnsClass}">
           <!-- <nav class="fd-menu"> -->
           <ul class="fd-product-switch__list">
             {#each productSwitcherItems as productSwitcherItem}
@@ -60,7 +60,9 @@ Object.keys(productSwitcherItems[0]).length }
                 <div
                   class="fd-product-switch__title"
                 >{getNodeLabel(productSwitcherItem)}</div>
-                <div class="fd-product-switch__subtitle">Lorem ipsum</div>
+                <div
+                  class="fd-product-switch__subtitle"
+                >{getNodeSubtitle(productSwitcherItem)}</div>
               </div>
               <!-- </a> -->
             </li>
@@ -105,6 +107,7 @@ Object.keys(productSwitcherItems[0]).length }
   let getUnsavedChangesModalPromise = getContext(
     'getUnsavedChangesModalPromise'
   );
+  let columnsClass;
 
   onMount(async () => {
     StateHelpers.doOnStoreChange(
@@ -115,6 +118,7 @@ Object.keys(productSwitcherItems[0]).length }
           productSwitcherItems = await LuigiConfig.getConfigValueAsync(
             'navigation.productSwitcher.items'
           );
+          setColumnsClass();
         }
         setViewportHeightVariable();
       },
@@ -152,6 +156,19 @@ Object.keys(productSwitcherItems[0]).length }
 
   function getNodeLabel(node) {
     return LuigiI18N.getTranslation(node.label);
+  }
+
+  function getNodeSubtitle(node) {
+    return LuigiI18N.getTranslation(node.subtitle);
+  }
+
+  function setColumnsClass() {
+    const columns = NavigationHelpers.getProductSwitcherColumnsNumber();
+    if (columns === 3) {
+      columnsClass = 'fd-product-switch__body--col-3';
+    } else {
+      columnsClass = 'fd-product-switch__body';
+    }
   }
 
   function getTestId(node) {
