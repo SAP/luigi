@@ -45,6 +45,9 @@
             {/if} {#if options && options.length} {#each options as node}
             {#await getNodeName(node.label, config.fallbackLabelResolver,
             node.id)} {:then label}
+            {#if customListRenderer}
+            {@html customListRenderer(node, selectedOption, getOptionLink(node, selectedOption))}
+            {:else}
             <li
               on:click="{() => goToOption(node, selectedOption)}"
               data-testid="{getTestId(node)}"
@@ -54,6 +57,7 @@
                 title="{label}"
               >{label}</a>
             </li>
+            {/if}
             {/await} {/each} {/if}
           </ul>
           {#if actions && actions.length}
@@ -96,6 +100,7 @@
   export let options = null;
   export let selectedOption;
   export let fallbackLabelResolver = null;
+  export let customListRenderer;
   let preserveSubPathOnSwitch;
   let getUnsavedChangesModalPromise = getContext(
     'getUnsavedChangesModalPromise'
@@ -111,7 +116,7 @@
         const contextSwitcherConfig = LuigiConfig.getConfigValue(
           'navigation.contextSwitcher'
         );
-
+        customListRenderer = contextSwitcherConfig.customListRenderer;
         contextSwitcherEnabled = !!contextSwitcherConfig;
         config = contextSwitcherConfig;
         options = undefined;
@@ -224,19 +229,21 @@
     });
   }
 
+  export function getOptionLink(option, selectedOption) {
+    LuigiConfig._configModificationTimestamp = new Date();
+    if (preserveSubPathOnSwitch && selectedOption) {
+      return ContextSwitcherHelpers.getNodePathFromCurrentPath(
+        option,
+        selectedOption
+      );
+    } else {
+      return option.path;
+    }
+  }
+
   export function goToOption(option, selectedOption) {
     getUnsavedChangesModalPromise().then(() => {
-      LuigiConfig._configModificationTimestamp = new Date();
-      if (preserveSubPathOnSwitch && selectedOption) {
-        Routing.navigateTo(
-          ContextSwitcherHelpers.getNodePathFromCurrentPath(
-            option,
-            selectedOption
-          )
-        );
-      } else {
-        Routing.navigateTo(option.path);
-      }
+      Routing.navigateTo(option.path);
     });
   }
 
