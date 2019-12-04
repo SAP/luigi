@@ -52,40 +52,11 @@
               {/if}
             </a>
           </li>
+
           {/if} {/if} {/each}
           {:else}
-          <!-- <div class="fd-side-nav__group"> -->
-          <!-- {#if nodes.metaInfo && nodes.metaInfo.label === selectedCategory}
-            <div class="lui-flyout-sublist">
-              <div class="lui-flyout-sublist__wrapper">
-                <h5
-                  class="lui-flyout-sublist__title fd-has-type-minus-1 fd-has-color-text-4"
-                >{$getTranslation(key)}</h5>
-                <ul class="fd-side-nav__sublist">
-                  {#each nodes as node} {#if !node.hideFromNav} {#if node.label}
-                  <li
-                    class="fd-side-nav__subitem"
-                  >
-                    <a
-                      href="javascript:void(null)"
-                      class="fd-side-nav__sublink {node === selectedNode ? 'is-selected' : ''}"
-                      on:click="{() => handleClick(node)}"
-                      data-testid="{getTestId(node)}"
-                    >
-                      {getNodeLabel(node)} {#if node.externalLink && node.externalLink.url}
-                      <span
-                        class="sap-icon--action sap-icon--s"
-                      ></span>
-                      {/if}
-                    </a>
-                  </li>
-                  {/if} {/if} {/each}
-                </ul>
-              </div>
-            </div>
-          {/if}-->
-          {#if nodes.metaInfo.collapsible}
           <!-- Collapsible nodes -->
+          {#if nodes.metaInfo.collapsible}
           <li
             class="fd-nested-list__item lui-collapsible-item"
             on:click|stopPropagation="{() => handleIconClick(nodes, event.currentTarget)}"
@@ -138,12 +109,40 @@
               </li>
               {/if} {/if} {/each}
             </ul>
+            <!-- Flyout for collapsible nodes -->
+            {#if nodes.metaInfo && nodes.metaInfo.label === selectedCategory}
+            <div class="lui-flyout-sublist">
+              <div class="lui-flyout-sublist__wrapper">
+                <h5
+                  class="lui-flyout-sublist__title fd-has-type-minus-1 fd-has-color-text-4"
+                >{$getTranslation(key)}</h5>
+                <ul class="fd-nested-list fd-nested-list--text-only">
+                  {#each nodes as node} {#if !node.hideFromNav} {#if node.label}
+                  <li class="fd-nested-list__item">
+                    <a
+                      href="javascript:void(null)"
+                      class="fd-nested-list__link {node === selectedNode ? 'is-selected' : ''}"
+                      on:click="{() => handleClick(node)}"
+                      data-testid="{getTestId(node)}"
+                    >
+                      <span class="fd-nested-list__title">{getNodeLabel(node)}</span>
+                      {#if node.externalLink && node.externalLink.url}
+                      <span
+                        class="sap-icon--action sap-icon--s"
+                      ></span>
+                      {/if}
+                    </a>
+                  </li>
+                  {/if} {/if} {/each}
+                </ul>
+              </div>
+            </div>
+            {/if}
           </li>
           {:else}
           <!-- Category nodes -->
           <li
             class="fd-nested-list__group-header lui-category"
-            on:click|stopPropagation="{() => handleIconClick(nodes, event.currentTarget)}"
             title="{isSemiCollapsed ? key : ''}"
             data-testid="{getTestIdForCat(nodes.metaInfo, key)}"
           >
@@ -413,7 +412,7 @@
 
   export function calculateFlyoutPosition(el) {
     //Calculate top/bottom position for flyout sublist
-    const parent = el.closest('.fd-side-nav__group');
+    const parent = el.closest('.fd-nested-list__item');
     const parentTopPosition = parent.offsetTop;
     const shellbarHeight = LuigiElements.getShellbar().offsetHeight;
     let containerHeight;
@@ -636,27 +635,7 @@
     overflow-x: hidden;
     -webkit-overflow-scrolling: touch;
     background-color: transparent;
-
-    /* .fd-side-nav__sublink,
-    .fd-side-nav__link {
-      .sap-icon--action {
-        //external-link icon
-        margin-left: 0.3em;
-        vertical-align: middle;
-      }
-      .fd-side-nav__icon {
-        width: 2em;
-      }
-    }
-
-    &__sublink {
-      &.fd-side-nav__link--icon {
-        padding-left: 16px;
-      }
-      .fd-side-nav__icon {
-        width: 2em;
-      }
-    } */
+    @include transition(width 0.1s linear);
   }
 
   .lui-side-nav__footer {
@@ -681,51 +660,9 @@
     }
   }
 
-  .lui-category {
-    .fd-side-nav__icon {
-      width: 2em;
-    }
-  }
-
-  // Overwrite padding of icon
-  .fd-side-nav__icon {
-    padding-right: 2px;
-    display: inline-block;
-    width: 1em;
-    vertical-align: middle;
-    max-height: 100%;
-    &.sap-icon--m::before {
-      width: 1.25rem;
-    }
-  }
-
   :global(.lui-semiCollapsible) {
     .fd-app__sidebar {
       @include transition(width 0.1s linear);
-
-      .fd-side-nav {
-        .fd-side-nav__item,
-        .lui-collapsible-item,
-        .lui-category {
-          width: 100%;
-          @include transition(width 0.1s linear);
-        }
-
-        .fd-side-nav__title,
-        .fd-side-nav__link {
-          white-space: nowrap;
-        }
-
-        .fd-side-nav__title + .fd-side-nav__list,
-        .fd-side-nav__list .fd-side-nav__sublist {
-          width: 100%;
-          @include transition(width 0.1s linear);
-
-          .fd-side-nav__sublink {
-            white-space: nowrap;
-          }
-        }
-      }
     }
 
     .lui-side-nav__footer {
@@ -736,6 +673,10 @@
   }
 
   :global(.semiCollapsed) {
+    .level-2 {
+      display: none;
+    }
+
     .fd-app__sidebar {
       width: $leftNavWidthCollapsed;
 
@@ -748,98 +689,6 @@
         width: calc(#{$leftNavWidthCollapsed} + 70px);
         padding-right: 70px;
         margin-right: -70px;
-
-        .fd-side-nav__title {
-          background-color: transparent;
-          border-top: none;
-          overflow: hidden;
-          cursor: pointer;
-
-          &:hover {
-            background-color: var(--fd-color-neutral-1);
-          }
-        }
-
-        .fd-side-nav__item,
-        .lui-collapsible-item,
-        .lui-category {
-          width: $leftNavWidthCollapsed;
-          overflow: hidden;
-        }
-
-        .lui-collapsible-item .fd-side-nav__link[aria-expanded='true'] {
-          background-color: transparent;
-        }
-
-        .fd-side-nav__icon {
-          line-height: 1;
-          width: auto;
-
-          &:before {
-            font-size: 16px;
-          }
-        }
-
-        .fd-side-nav__title + .fd-side-nav__list,
-        .fd-side-nav__list .fd-side-nav__sublist {
-          width: 40px;
-          height: 0;
-          opacity: 0;
-          visibility: hidden;
-        }
-
-        .fd-side-nav__title,
-        .fd-side-nav__link {
-          padding: 10px;
-          line-height: 1;
-
-          img {
-            width: 18px;
-          }
-        }
-
-        .fd-side-nav__link {
-          &:hover,
-          &.is-hover {
-            color: var(--fd-color-text-2);
-          }
-
-          &.has-child {
-            background-image: none;
-          }
-        }
-
-        .fd-side-nav__text {
-          width: $leftNavWidthCollapsed;
-          margin-left: 12px;
-          opacity: 1;
-          visibility: visible;
-          animation-name: labelAnimation;
-          animation-duration: 0.1s;
-          animation-fill-mode: forwards;
-
-          @-webkit-keyframes labelAnimation {
-            0% {
-              opacity: 1;
-              visibility: visible;
-            }
-            100% {
-              opacity: 0;
-              visibility: hidden;
-            }
-          }
-
-          @keyframes labelAnimation {
-            0% {
-              opacity: 1;
-              visibility: visible;
-            }
-            100% {
-              opacity: 0;
-              visibility: hidden;
-            }
-          }
-        }
       }
     }
 
@@ -906,7 +755,7 @@
       &:after {
         display: block;
         position: absolute;
-        top: 9px;
+        top: 13px;
         content: '';
         width: 13px;
         border-style: solid;
@@ -925,6 +774,10 @@
       }
     }
 
+    .fd-nested-list__title {
+      display: inline-block;
+    }
+
     li {
       border-top: 1px solid var(--fd-color-neutral-2);
 
@@ -933,22 +786,11 @@
       }
     }
 
-    .fd-side-nav {
-      &__sublist {
-        display: block;
-        position: relative;
-        max-height: 190px;
-        overflow-y: auto;
-      }
-    }
-
-    .fd-side-nav__link {
-      font-size: 14px;
-      padding: 10px 20px;
-    }
-
-    a {
-      padding-left: 20px;
+    .fd-nested-list {
+      display: block;
+      position: relative;
+      max-height: 190px;
+      overflow-y: auto;
     }
 
     &__title {
