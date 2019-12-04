@@ -52,7 +52,6 @@
               {/if}
             </a>
           </li>
-
           {/if} {/if} {/each}
           {:else}
           <!-- Collapsible nodes -->
@@ -113,9 +112,7 @@
             {#if nodes.metaInfo && nodes.metaInfo.label === selectedCategory}
             <div class="lui-flyout-sublist">
               <div class="lui-flyout-sublist__wrapper">
-                <h5
-                  class="lui-flyout-sublist__title fd-has-type-minus-1 fd-has-color-text-4"
-                >{$getTranslation(key)}</h5>
+                <h5 class="lui-flyout-sublist__title">{$getTranslation(key)}</h5>
                 <ul class="fd-nested-list fd-nested-list--text-only">
                   {#each nodes as node} {#if !node.hideFromNav} {#if node.label}
                   <li class="fd-nested-list__item">
@@ -205,9 +202,7 @@
   {/if}
   {#if footerText || semiCollapsible}
   <span class="lui-side-nav__footer">
-    <span
-      class="lui-side-nav__footer--text fd-has-type-minus-1"
-    >{footerText ? footerText : ''}</span>
+    <span class="lui-side-nav__footer--text">{footerText ? footerText : ''}</span>
     {#if semiCollapsible}
     <span
       class="lui-side-nav__footer--icon {isSemiCollapsed ? 'sap-icon--open-command-field' : 'sap-icon--close-command-field'}"
@@ -652,6 +647,9 @@
       text-overflow: ellipsis;
       overflow: hidden;
       max-width: 100%;
+      font-size: 12px;
+      line-height: 1.33333;
+      font-weight: 400;
     }
 
     &--icon {
@@ -797,6 +795,11 @@
       padding: 11px 12px 12px;
       text-transform: uppercase;
       margin: 0;
+      font-size: 12px;
+      line-height: 1.33333;
+      font-weight: 400;
+      color: #74777a;
+      color: var(--fd-color-text-4, #74777a);
     }
 
     &.has-bottom-position {
