@@ -1,7 +1,8 @@
 Cypress.env('RETRIES', 1);
 describe('Go back with param data', () => {
   let $iframeBody;
-  let $stringBuongiorno = 'Buongiorno Luigi';
+  let $inputTypeNormal = 'Buongiorno Luigi';
+  let $inputTypeModal = 'Buona notte Luigi';
   beforeEach(() => {
     cy.visitLoggedIn('/projects/pr2');
 
@@ -10,12 +11,12 @@ describe('Go back with param data', () => {
     });
   });
 
-  describe('Behaviour when passing to Settings from LinkManager', () => {
+  describe('Normal Preserved view go back test', () => {
     beforeEach(() => {
       cy.goToLinkManagerMethods($iframeBody);
     });
 
-    it(`changes url to settings`, () => {
+    it('goes to Settings and comes back with data', () => {
       cy.expectPathToBe('/projects/pr2');
 
       cy.wrap($iframeBody)
@@ -24,14 +25,13 @@ describe('Go back with param data', () => {
 
       cy.expectPathToBe('/settings');
 
-      console.log($iframeBody);
-
       cy.getIframeBody().then($body => {
         // type buongiorno into input
+        console.log('Hello', $body);
         cy.wrap($body)
           .find('input')
           .clear()
-          .type($stringBuongiorno);
+          .type($inputTypeNormal);
 
         cy.wrap($body)
           .find('button')
@@ -39,9 +39,37 @@ describe('Go back with param data', () => {
 
         cy.expectPathToBe('/projects/pr2');
 
-        // buongiorno should be there when going back to pr2
-        cy.wrap($iframeBody).should('contain', $stringBuongiorno);
+        cy.wrap($iframeBody).should('contain', $inputTypeNormal);
       });
+    });
+  });
+
+  describe('Modal Preserved view  go back test', () => {
+    beforeEach(() => {
+      cy.goToLinkManagerMethods($iframeBody);
+    });
+
+    it('goes to settings with modal and back with data', () => {
+      cy.expectPathToBe('/projects/pr2');
+
+      cy.wrap($iframeBody)
+        .contains('rendered in a modal')
+        .click();
+
+      cy.get('[data-testid=modal-mf] iframe')
+        .eq(0)
+        .iframe()
+        .then($modal => {
+          cy.wrap($modal)
+            .find('input')
+            .clear()
+            .type($inputTypeModal);
+
+          cy.wrap($modal)
+            .find('button')
+            .click();
+        });
+      cy.wrap($iframeBody).should('contain', $inputTypeModal);
     });
   });
 });
