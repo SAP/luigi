@@ -41,4 +41,5 @@ curl https://raw.githubusercontent.com/SAP/luigi/master/core/examples/luigi-exam
 curl https://raw.githubusercontent.com/SAP/luigi/master/core/examples/luigi-example-react/src/views/sample1.js > src/views/sample1.js
 curl https://raw.githubusercontent.com/SAP/luigi/master/core/examples/luigi-example-react/src/views/sample2.js > src/views/sample2.js
 
+npm i
 npm start
