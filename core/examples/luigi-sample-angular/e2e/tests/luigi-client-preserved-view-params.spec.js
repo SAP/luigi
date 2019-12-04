@@ -27,7 +27,6 @@ describe('Go back with param data', () => {
 
       cy.getIframeBody().then($body => {
         // type buongiorno into input
-        console.log('Hello', $body);
         cy.wrap($body)
           .find('input')
           .clear()
