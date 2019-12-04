@@ -484,4 +484,42 @@ describe('Navigation', function() {
       expect(actual).to.be.false;
     });
   });
+  describe('expandStructuralPathSegment', () => {
+    it('keeps node unchanged if is normal pathSegment', () => {
+      const input = {
+        label: 'Projects',
+        pathSegment: 'projects'
+      };
+      const expected = Object.assign({}, input);
+
+      Navigation.expandStructuralPathSegment(input);
+
+      assert.deepEqual(input, expected);
+    });
+
+    it('expands slashes in pathSegments', () => {
+      const input = {
+        label: 'Projects',
+        pathSegment: 'some/cool/projects'
+      };
+      const expected = {
+        pathSegment: 'some',
+        children: [
+          {
+            pathSegment: 'cool',
+            children: [
+              {
+                label: 'Projects',
+                pathSegment: 'projects'
+              }
+            ]
+          }
+        ]
+      };
+
+      Navigation.expandStructuralPathSegment(input);
+
+      assert.deepEqual(input, expected);
+    });
+  });
 });

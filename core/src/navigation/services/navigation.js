@@ -148,7 +148,6 @@ class NavigationClass {
       Object.keys(node).forEach(key => {
         delete node[key];
       });
-      node.origNode = true;
       GenericHelpers.extend(node, newNode);
     }
   }
