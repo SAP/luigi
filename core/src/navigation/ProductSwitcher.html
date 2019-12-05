@@ -60,9 +60,11 @@ Object.keys(productSwitcherItems[0]).length }
                 <div
                   class="fd-product-switch__title"
                 >{getNodeLabel(productSwitcherItem)}</div>
+                {#if getNodeSubtitle(productSwitcherItem)}
                 <div
                   class="fd-product-switch__subtitle"
                 >{getNodeSubtitle(productSwitcherItem)}</div>
+                {/if}
               </div>
               <!-- </a> -->
             </li>
@@ -85,6 +87,7 @@ Object.keys(productSwitcherItems[0]).length }
   label="{config.label}"
   {hasOpenUIicon}
   {getNodeLabel}
+  {getNodeSubtitle}
   {getTestId}
 />
 {/if}

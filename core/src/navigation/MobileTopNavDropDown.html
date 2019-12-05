@@ -39,7 +39,9 @@
             </div>
             <div class="fd-product-switch__text">
               <div class="fd-product-switch__title">{getNodeLabel(node)}</div>
-              <div class="fd-product-switch__subtitle">Lorem ipsum</div>
+              {#if getNodeSubtitle(node)}
+              <div class="fd-product-switch__subtitle">{getNodeSubtitle(node)}</div>
+              {/if}
             </div>
           </li>
           {/each}
@@ -61,6 +63,7 @@
   export let getTestId;
   export let hasOpenUIicon;
   export let getNodeLabel;
+  export let getNodeSubtitle;
 
   // [svelte-upgrade suggestion]
   // review these functions and remove unnecessary 'export' keywords
