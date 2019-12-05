@@ -240,9 +240,6 @@ class Navigation {
           label: 'Environment ' + n, // (i.e mapping between what the user sees and what is taken to replace the dynamic part for the dynamic node)
           pathValue: 'env' + n // will be used to replace dynamic part
         })),
-    customOptionsRenderer: option => {
-      return `<a class="fd-menu__item">${option.label}</a>`;
-    },
     actions: this.getContextSwitcherActions,
 
     /**
