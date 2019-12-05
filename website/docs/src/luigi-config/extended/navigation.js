@@ -35,7 +35,6 @@ class Navigation {
       {
         pathSegment: 'docs',
         label: 'Documentation',
-        viewUrl: baseUrl + '/getting-started',
         children: getDocuItems(),
         context: {
           coreBaseUrl: window.location.origin
