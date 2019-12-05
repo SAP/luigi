@@ -11,7 +11,7 @@ class Settings {
   appLoadingIndicator = {
     hideAutomatically: false
   };
-  responsiveNavigation = 'semiCollapsible'; // Options: simple | simpleMobileOnly | semiCollapsible
+  responsiveNavigation = 'simpleMobileOnly'; // Options: simple | simpleMobileOnly | semiCollapsible
   sideNavFooterText = `Luigi Client: ${version || 'unknown'}`;
   // allowRules = ['microphone'];
   // iframeCreationInterceptor = (iframe, viewGroup, navigationNode, microFrontendType) => { };

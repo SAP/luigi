@@ -50,7 +50,7 @@ describe('Navigation', () => {
       .should('have.class', 'is-selected');
 
     cy.visit('projects/pr1');
-    cy.get('.fd-side-nav__subitem')
+    cy.get('.fd-nested-list__item')
       .contains('Project Settings')
       .click()
       .should('have.class', 'is-selected');
@@ -99,11 +99,11 @@ describe('Navigation', () => {
     cy.get('.fd-shellbar')
       .contains('Projects')
       .click();
-    cy.get('.fd-app__sidebar .fd-side-nav__item')
+    cy.get('.fd-app__sidebar .fd-nested-list__item')
       .contains('Project One')
       .click();
 
-    cy.get('.fd-side-nav__subitem')
+    cy.get('.fd-nested-list__item')
       .contains('Project Settings')
       .find('.fd-side-nav__icon')
       .should('exist');
@@ -238,7 +238,7 @@ describe('Navigation', () => {
 
       //go to absolute path
       goToAnotherNodeFeature();
-      cy.get('.fd-app__sidebar .fd-side-nav__item')
+      cy.get('.fd-app__sidebar .fd-nested-list__item')
         .contains('Go to absolute path')
         .click();
 
@@ -246,7 +246,7 @@ describe('Navigation', () => {
 
       //go to relative path from the parent node
       goToAnotherNodeFeature();
-      cy.get('.fd-app__sidebar .fd-side-nav__item')
+      cy.get('.fd-app__sidebar .fd-nested-list__item')
         .contains('Go to relative path')
         .click();
 
@@ -254,13 +254,13 @@ describe('Navigation', () => {
 
       //go to relative path from node that is a sibiling
       goToAnotherNodeFeature();
-      cy.get('.fd-app__sidebar .fd-side-nav__item')
+      cy.get('.fd-app__sidebar .fd-nested-list__item')
         .contains('Keep Selected Example')
         .click();
 
       cy.expectPathToBe('/projects/pr2/avengers');
 
-      cy.get('.fd-app__sidebar .fd-side-nav__item')
+      cy.get('.fd-app__sidebar .fd-nested-list__item')
         .contains('Go to relative path')
         .click();
 
@@ -271,7 +271,7 @@ describe('Navigation', () => {
       cy.get('.fd-shellbar')
         .contains('Projects')
         .click();
-      cy.get('.fd-app__sidebar .fd-side-nav__item')
+      cy.get('.fd-app__sidebar .fd-nested-list__item')
         .contains('Project One')
         .click();
 
