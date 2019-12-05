@@ -87,7 +87,8 @@
     IframeHelpers,
     RoutingHelpers,
     StateHelpers,
-    NavigationHelpers
+    NavigationHelpers,
+    GenericHelpers
   } from '../utilities/helpers';
 
   const dispatch = createEventDispatcher();
@@ -116,11 +117,14 @@
         const contextSwitcherConfig = LuigiConfig.getConfigValue(
           'navigation.contextSwitcher'
         );
-        customOptionsRenderer = contextSwitcherConfig.customOptionsRenderer;
+        customOptionsRenderer =
+          contextSwitcherConfig.customOptionsRenderer &&
+          GenericHelpers.isFunction(contextSwitcherConfig.customOptionsRenderer)
+            ? contextSwitcherConfig.customOptionsRenderer
+            : undefined;
         contextSwitcherEnabled = !!contextSwitcherConfig;
         config = contextSwitcherConfig;
         options = undefined;
-
         if (contextSwitcherConfig) {
           actions = await LuigiConfig.getConfigValueAsync(
             'navigation.contextSwitcher.actions'

@@ -14,7 +14,6 @@ class Settings {
   responsiveNavigation = 'simpleMobileOnly'; // Options: simple | simpleMobileOnly | semiCollapsible
   sideNavFooterText = `Luigi Client: ${version || 'unknown'}`;
   thirdPartyCookieCheck = {
-    thirdPartyCookieDetection: true,
     // thirdPartyCookieScriptLocation: 'https://domain/init.html',
     thirdPartyCookieErrorHandling: () => {
       const alert = {

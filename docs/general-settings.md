@@ -43,7 +43,6 @@ settings: {
     hideAutomatically: true
   },
   thirdPartyCookieCheck = {
-    thirdPartyCookieDetection: true,
     //thirdPartyCookieScriptLocation: 'https://domain/init.html',
     thirdPartyCookieErrorHandling: () => {
       const alert = {
