@@ -33,9 +33,9 @@
   label="{getNodeLabel(node)}"
   {hasOpenUIicon}
   {getNodeLabel}
+  {getNodeSubtitle}
   {getTestId}
 />
-
 {/if}
 <script>
   import BadgeCounter from './navigation/BadgeCounter.html';
@@ -62,6 +62,7 @@
     'getUnsavedChangesModalPromise'
   );
   let openViewInModal = getContext('openViewInModal');
+  const getNodeSubtitle = () => {};
 
   //TODO refactor
   const getComponentWrapper = () => {
