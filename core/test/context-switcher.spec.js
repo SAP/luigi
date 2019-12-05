@@ -186,7 +186,7 @@ describe('Context-switcher', function() {
 
     it('returns undefined if node is not inside options', () => {
       const result = CSHelpers.getOptionById([env1, env2], '3');
-      assert.equal(result, undefined);
+      assert.isUndefined(result, 'getOptionById call');
     });
 
     it('returns matching node', () => {
@@ -276,44 +276,51 @@ describe('Context-switcher', function() {
       currentPath = '/home/projects/pr1';
     });
 
-    it('returns undefined if parent node path is not defined', () => {
-      parentNodePath = undefined;
-      const selectedId = CSHelpers.getSelectedId(
-        currentPath,
-        [env1, env2],
-        parentNodePath
-      );
-      assert.isUndefined(selectedId);
+    [
+      {
+        it: 'returns undefined if parent node path is not defined',
+        parentNodePath: undefined,
+        assert: undefined
+      },
+      {
+        it:
+          'returns undefined if parent node path is not included in current path',
+        parentNodePath: '/home/nomatch',
+        assert: undefined
+      }
+    ].forEach(t => {
+      it(t.it, () => {
+        const selectedId = CSHelpers.getSelectedId(
+          currentPath,
+          [env1, env2],
+          t.parentNodePath
+        );
+        assert.equal(selectedId, t.assert);
+      });
     });
 
-    it('returns undefined if parent node path is not included in current path', () => {
-      parentNodePath = '/home/nomatch';
-      const selectedId = CSHelpers.getSelectedId(
-        currentPath,
-        [env1, env2],
-        parentNodePath
-      );
-      assert.isUndefined(selectedId);
-    });
-
-    it('returns undefined if last path segment from parent node is not a full match in currentPath', () => {
-      currentPath = '/home/projectsandmore/pr1';
-      const selectedId = CSHelpers.getSelectedId(
-        currentPath,
-        [env1, env2],
-        parentNodePath
-      );
-      assert.isUndefined(selectedId);
-    });
-
-    it('returns undefined if current path has no content after parent node path', () => {
-      currentPath = '/home/projects';
-      const selectedId = CSHelpers.getSelectedId(
-        currentPath,
-        [env1, env2],
-        parentNodePath
-      );
-      assert.isUndefined(selectedId);
+    [
+      {
+        it:
+          'returns undefined if last path segment from parent node is not a full match in currentPath',
+        currentPath: '/home/projectsandmore/pr1',
+        assert: undefined
+      },
+      {
+        it:
+          'returns undefined if current path has no content after parent node path',
+        currentPath: '/home/projects',
+        assert: undefined
+      }
+    ].forEach(t => {
+      it(t.it, () => {
+        const selectedId = CSHelpers.getSelectedId(
+          t.currentPath,
+          [env1, env2],
+          parentNodePath
+        );
+        assert.equal(selectedId, t.assert);
+      });
     });
 
     it('returns id if current path has id after parent node path', () => {
@@ -347,44 +354,51 @@ describe('Context-switcher', function() {
       currentPath = '/home/projects/pr1';
     });
 
-    it('returns undefined if parent node path is not defined', async () => {
-      parentNodePath = undefined;
-      const selectedOption = await CSHelpers.getSelectedOption(
-        currentPath,
-        [env1, env2],
-        parentNodePath
-      );
-      assert.isUndefined(selectedOption);
+    [
+      {
+        it: 'returns undefined if parent node path is not defined',
+        parentNodePath: undefined,
+        assert: undefined
+      },
+      {
+        it:
+          'returns undefined if parent node path is not included in current path',
+        parentNodePath: '/home/nomatch',
+        assert: undefined
+      }
+    ].forEach(t => {
+      it(t.it, async () => {
+        const selectedOption = await CSHelpers.getSelectedOption(
+          currentPath,
+          [env1, env2],
+          t.parentNodePath
+        );
+        assert.equal(selectedOption, t.assert);
+      });
     });
 
-    it('returns undefined if parent node path is not included in current path', async () => {
-      parentNodePath = '/home/nomatch';
-      const selectedOption = await CSHelpers.getSelectedOption(
-        currentPath,
-        [env1, env2],
-        parentNodePath
-      );
-      assert.isUndefined(selectedOption);
-    });
-
-    it('returns undefined if last path segment from parent node is not a full match in currentPath', async () => {
-      currentPath = '/home/projectsandmore/pr1';
-      const selectedOption = await CSHelpers.getSelectedOption(
-        currentPath,
-        [env1, env2],
-        parentNodePath
-      );
-      assert.isUndefined(selectedOption);
-    });
-
-    it('returns undefined if current path has no content after parent node path', async () => {
-      currentPath = '/home/projects';
-      const selectedOption = await CSHelpers.getSelectedOption(
-        currentPath,
-        [env1, env2],
-        parentNodePath
-      );
-      assert.isUndefined(selectedOption);
+    [
+      {
+        it:
+          'returns undefined if last path segment from parent node is not a full match in currentPath',
+        currentPath: '/home/projectsandmore/pr1',
+        assert: undefined
+      },
+      {
+        it:
+          'returns undefined if current path has no content after parent node path',
+        currentPath: '/home/projects',
+        assert: undefined
+      }
+    ].forEach(t => {
+      it(t.it, async () => {
+        const selectedOption = await CSHelpers.getSelectedOption(
+          t.currentPath,
+          [env1, env2],
+          parentNodePath
+        );
+        assert.equal(selectedOption, t.assert);
+      });
     });
 
     it('returns option if current path has id after parent node path', async () => {
