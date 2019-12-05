@@ -489,7 +489,7 @@ describe('Navigation', function() {
         }
       ];
       const result = Navigation.getNodes(children, pathData);
-      expect(result).to.be.deep.equal([]);
+      assert.deepEqual(result, []);
     });
     it('should not fail, returns nested node children if pathData has nestedNode', () => {
       pathData = [
