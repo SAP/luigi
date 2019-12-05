@@ -157,7 +157,7 @@ When the micro frontend is not embedded in the Luigi Core application and there 
 
 **Meta**
 
--   **since**: 0.7.3
+-   **since**: 0.7.2
 
 ### sendCustomMessage
 
