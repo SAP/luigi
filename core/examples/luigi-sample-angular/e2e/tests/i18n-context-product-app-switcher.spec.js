@@ -178,13 +178,16 @@ describe('ProductSwitcher', () => {
         .contains('hybris');
 
       //check if internal link is there
-      cy.get('.fd-product-switch__title')
+      cy.get('.fd-product-switch .fd-product-switch__title')
         .contains('Project 1')
         .click();
 
       cy.expectPathToBe('/projects/pr1');
 
-      cy.get('.fd-product-switch__title').should('not.contain', 'Project 3');
+      cy.get('.fd-product-switch .fd-product-switch__title').should(
+        'not.contain',
+        'Project 3'
+      );
 
       cy.goToOverviewPage();
       cy.expectPathToBe('/overview');
@@ -193,11 +196,14 @@ describe('ProductSwitcher', () => {
       cy.selectContextSwitcherItem('New Project');
       cy.expectPathToBe('/projects');
 
-      cy.get('.fd-product-switch__title').should('contain', 'Project 4');
+      cy.get('.fd-product-switch .fd-product-switch__title').should(
+        'contain',
+        'Project 4'
+      );
 
       cy.get('.fd-product-switch').click();
 
-      cy.get('.fd-product-switch__title')
+      cy.get('.fd-product-switch .fd-product-switch__title')
         .contains('Project 4')
         .click();
 
