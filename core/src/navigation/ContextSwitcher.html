@@ -45,19 +45,19 @@
             {/if} {#if options && options.length} {#each options as node}
             {#await getNodeName(node.label, config.fallbackLabelResolver,
             node.id)} {:then label}
-            {#if customListRenderer}
-            {@html customListRenderer(node, selectedOption, getOptionLink(node, selectedOption))}
-            {:else}
             <li
               on:click="{() => goToOption(node, selectedOption)}"
               data-testid="{getTestId(node)}"
             >
+              {#if customOptionsRenderer}
+              {@html customOptionsRenderer(node)}
+              {:else}
               <a
                 class="fd-menu__item {node === selectedLabel ? 'is-selected' : ''}"
                 title="{label}"
               >{label}</a>
+              {/if}
             </li>
-            {/if}
             {/await} {/each} {/if}
           </ul>
           {#if actions && actions.length}
@@ -100,7 +100,7 @@
   export let options = null;
   export let selectedOption;
   export let fallbackLabelResolver = null;
-  export let customListRenderer;
+  export let customOptionsRenderer;
   let preserveSubPathOnSwitch;
   let getUnsavedChangesModalPromise = getContext(
     'getUnsavedChangesModalPromise'
@@ -116,7 +116,7 @@
         const contextSwitcherConfig = LuigiConfig.getConfigValue(
           'navigation.contextSwitcher'
         );
-        customListRenderer = contextSwitcherConfig.customListRenderer;
+        customOptionsRenderer = contextSwitcherConfig.customOptionsRenderer;
         contextSwitcherEnabled = !!contextSwitcherConfig;
         config = contextSwitcherConfig;
         options = undefined;
