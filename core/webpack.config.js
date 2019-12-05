@@ -95,7 +95,7 @@ module.exports = {
       //'./node_modules/fundamental-styles/dist/token.css',
       //'./node_modules/fundamental-styles/dist/input-group.css',
       './node_modules/fundamental-styles/dist/shellbar.css',
-      // './node_modules/fundamental-styles/dist/helpers.css',
+      './node_modules/fundamental-styles/dist/helpers.css',
 
       './node_modules/core-js/stable/index.js',
       './node_modules/regenerator-runtime/runtime.js',
