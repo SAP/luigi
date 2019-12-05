@@ -8,6 +8,7 @@ import {
   RoutingHelpers
 } from '../../utilities/helpers';
 import { LuigiConfig } from '../../core-api';
+import merge from 'lodash.merge';
 
 class NavigationClass {
   async getNavigationPath(rootNavProviderPromise, path = '') {
@@ -71,7 +72,6 @@ class NavigationClass {
       return [];
     }
     if (!node._childrenProvider) {
-      this.expandStructuralPathSegments(node.children);
       node._childrenProvider = node.children;
     }
     if (
@@ -88,68 +88,60 @@ class NavigationClass {
             node,
             '_childrenProvider',
             context || node.context
-          )) || [];
-        this.expandStructuralPathSegments(node._children);
-        node.children = node._children.filter(child =>
-          NavigationHelpers.isNodeAccessPermitted(child, node, context)
-        );
+          ))
+            .map(n => this.getExpandStructuralPathSegment(n))
+            .map(n => this.bindChildToParent(n, node)) || [];
+
+        node.children = this.getAccessibleNodes(node, context);
         return node.children;
       } catch (err) {
         console.error('Could not lazy-load children for node', err);
       }
     } else if (node._children) {
-      this.expandStructuralPathSegments(node._children);
-      node.children = node._children.filter(child =>
-        NavigationHelpers.isNodeAccessPermitted(child, node, context)
-      );
-      this.bindChildrenToParent(node);
+      node.children = this.getAccessibleNodes(node, context);
       return node.children;
     } else {
       return [];
     }
   }
 
-  bindChildrenToParent(node) {
+  getAccessibleNodes(node, context) {
+    return node._children.filter(child =>
+      NavigationHelpers.isNodeAccessPermitted(child, node, context)
+    );
+  }
+
+  bindChildToParent(child, node) {
     // Checking for pathSegment to exclude virtual root node
-    if (node && node.pathSegment && node.children) {
-      node.children.forEach(child => {
-        child.parent = node;
-      });
+    // node.pathSegment check is also required for virtual nodes like categories
+    if (node && node.pathSegment) {
+      child.parent = node;
     }
+    return child;
   }
 
-  expandStructuralPathSegments(children) {
-    if (children instanceof Array && children.length) {
-      children.forEach(child => {
-        this.expandStructuralPathSegment(child);
-      });
-    }
-  }
-
-  expandStructuralPathSegment(node) {
+  getExpandStructuralPathSegment(node) {
     // Checking for pathSegment to exclude virtual root node
     if (node && node.pathSegment && node.pathSegment.indexOf('/') !== -1) {
       const segs = node.pathSegment.split('/');
+      const clonedNode = merge({}, node);
       const buildStructuralNode = (segs, node) => {
         const seg = segs.shift();
         let child = {};
         if (segs.length) {
           child.pathSegment = seg;
+          if (node.hideFromNav) child.hideFromNav = node.hideFromNav;
           child.children = [buildStructuralNode(segs, node)];
         } else {
           // set original data to last child
-          GenericHelpers.extend(child, node);
+          child = clonedNode;
           child.pathSegment = seg;
         }
         return child;
       };
-      const newNode = buildStructuralNode(segs, node);
-      // clear old node reference
-      Object.keys(node).forEach(key => {
-        delete node[key];
-      });
-      GenericHelpers.extend(node, newNode);
+      return buildStructuralNode(segs, node);
     }
+    return node;
   }
 
   async buildNode(

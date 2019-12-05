@@ -492,9 +492,9 @@ describe('Navigation', function() {
       };
       const expected = Object.assign({}, input);
 
-      Navigation.expandStructuralPathSegment(input);
+      const result = Navigation.getExpandStructuralPathSegment(input);
 
-      assert.deepEqual(input, expected);
+      assert.deepEqual(result, expected);
     });
 
     it('expands slashes in pathSegments', () => {
@@ -517,9 +517,9 @@ describe('Navigation', function() {
         ]
       };
 
-      Navigation.expandStructuralPathSegment(input);
+      const result = Navigation.getExpandStructuralPathSegment(input);
 
-      assert.deepEqual(input, expected);
+      assert.deepEqual(result, expected);
     });
   });
 });

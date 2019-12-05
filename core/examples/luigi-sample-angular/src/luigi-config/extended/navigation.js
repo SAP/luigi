@@ -233,6 +233,7 @@ class Navigation {
     defaultLabel: 'Select Environment ...',
     parentNodePath: '/environments', // absolute path
     lazyloadOptions: true, // load options on click instead on page load
+    preserveSubPathOnSwitch: true,
     options: () =>
       [...Array(10).keys()]
         .filter(n => n !== 0)
