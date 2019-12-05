@@ -105,7 +105,7 @@ describe('Navigation', () => {
 
     cy.get('.fd-nested-list__item')
       .contains('Project Settings')
-      .find('.fd-side-nav__icon')
+      .find('.fd-nested-list__icon')
       .should('exist');
   });
 
