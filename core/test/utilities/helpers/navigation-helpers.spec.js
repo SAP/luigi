@@ -125,6 +125,29 @@ describe('Navigation-helpers', () => {
     });
   });
 
+  describe('getProductSwitcherColumnsNumber', () => {
+    beforeEach(() => {
+      sinon.stub(LuigiConfig, 'getConfigValue');
+    });
+    afterEach(() => {
+      sinon.restore();
+    });
+    it('should return number from config file if columns are defined', () => {
+      LuigiConfig.getConfigValue.returns({
+        icon: 'grid',
+        label: 'Products',
+        columns: 3
+      });
+      const columns = NavigationHelpers.getProductSwitcherColumnsNumber();
+      assert.equal(columns, 3);
+    });
+    it('should return number from config file even if columns are not defined', () => {
+      LuigiConfig.getConfigValue.returns({ icon: 'grid', label: 'Products' });
+      const columns = NavigationHelpers.getProductSwitcherColumnsNumber();
+      assert.equal(columns, 4);
+    });
+  });
+
   it('getNodePath', () => {
     const node = {
       parent: {
