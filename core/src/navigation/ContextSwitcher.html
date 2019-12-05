@@ -233,21 +233,19 @@
     });
   }
 
-  export function getOptionLink(option, selectedOption) {
-    LuigiConfig._configModificationTimestamp = new Date();
-    if (preserveSubPathOnSwitch && selectedOption) {
-      return ContextSwitcherHelpers.getNodePathFromCurrentPath(
-        option,
-        selectedOption
-      );
-    } else {
-      return option.path;
-    }
-  }
-
   export function goToOption(option, selectedOption) {
     getUnsavedChangesModalPromise().then(() => {
-      Routing.navigateTo(option.path);
+      LuigiConfig._configModificationTimestamp = new Date();
+      if (preserveSubPathOnSwitch && selectedOption) {
+        Routing.navigateTo(
+          ContextSwitcherHelpers.getNodePathFromCurrentPath(
+            option,
+            selectedOption
+          )
+        );
+      } else {
+        Routing.navigateTo(option.path);
+      }
     });
   }
 
