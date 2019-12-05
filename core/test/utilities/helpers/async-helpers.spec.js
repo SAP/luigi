@@ -38,20 +38,7 @@ describe('Async-helpers', () => {
       }, 500);
       clock.tick(1000);
     });
-    it('returns message if key exists after 20000ms', done => {
-      obj.client = undefined;
-      AsyncHelpers.waitForKeyExistency(obj, 'client')
-        .then(result => {})
-        .catch(e => {
-          assert.equal(e, 'client did not appear in object within 20 seconds.');
-          done();
-        });
-      setTimeout(() => {
-        obj.client = 'yes';
-      }, 20200);
-      clock.tick(22000);
-    });
-    it('returns message if key does not exist', done => {
+    it('returns message if key does not exist after timeout', done => {
       AsyncHelpers.waitForKeyExistency(obj, 'client2')
         .then(result => {})
         .catch(e => {

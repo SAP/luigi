@@ -388,9 +388,6 @@ describe('Header', function() {
       component.set({
         defaultTitle: window.Luigi.config.settings.header.title
       });
-      component.set({
-        defaultSubTitle: window.Luigi.config.settings.header.subTitle
-      });
 
       headerService.updateTitle(component);
       assert.equal(document.title, 'SubTitle is not defined');
