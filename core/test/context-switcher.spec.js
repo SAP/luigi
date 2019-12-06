@@ -180,6 +180,21 @@ describe('Context-switcher', function() {
     });
   });
 
+  describe('getOptionById', () => {
+    const env1 = { label: 'Env 1', id: '1' };
+    const env2 = { label: 'Env 2', id: '2' };
+
+    it('returns undefined if node is not inside options', () => {
+      const result = CSHelpers.getOptionById([env1, env2], '3');
+      assert.isUndefined(result, 'getOptionById call');
+    });
+
+    it('returns matching node', () => {
+      const result = CSHelpers.getOptionById([env1, env2], '2');
+      assert.deepEqual(result, { label: 'Env 2', id: '2' });
+    });
+  });
+
   describe('getLabelFromOptions', () => {
     const env1 = { label: 'Env 1', id: 'env1' };
     const env2 = { label: 'Env 2', id: 'env2' };
@@ -247,6 +262,162 @@ describe('Context-switcher', function() {
         parentNodePath
       );
       assert.isTrue(actual);
+    });
+  });
+
+  describe('getSelectedId', () => {
+    let currentPath;
+    let parentNodePath;
+    const env1 = { label: 'Env 1', id: '1' };
+    const env2 = { label: 'Env 2', id: '2' };
+
+    beforeEach(() => {
+      parentNodePath = '/home/projects';
+      currentPath = '/home/projects/pr1';
+    });
+
+    [
+      {
+        it: 'returns undefined if parent node path is not defined',
+        parentNodePath: undefined,
+        assert: undefined
+      },
+      {
+        it:
+          'returns undefined if parent node path is not included in current path',
+        parentNodePath: '/home/nomatch',
+        assert: undefined
+      }
+    ].forEach(t => {
+      it(t.it, () => {
+        const selectedId = CSHelpers.getSelectedId(
+          currentPath,
+          [env1, env2],
+          t.parentNodePath
+        );
+        assert.equal(selectedId, t.assert);
+      });
+    });
+
+    [
+      {
+        it:
+          'returns undefined if last path segment from parent node is not a full match in currentPath',
+        currentPath: '/home/projectsandmore/pr1',
+        assert: undefined
+      },
+      {
+        it:
+          'returns undefined if current path has no content after parent node path',
+        currentPath: '/home/projects',
+        assert: undefined
+      }
+    ].forEach(t => {
+      it(t.it, () => {
+        const selectedId = CSHelpers.getSelectedId(
+          t.currentPath,
+          [env1, env2],
+          parentNodePath
+        );
+        assert.equal(selectedId, t.assert);
+      });
+    });
+
+    it('returns id if current path has id after parent node path', () => {
+      const selectedId = CSHelpers.getSelectedId(
+        currentPath,
+        [env1, env2],
+        parentNodePath
+      );
+      assert.equal(selectedId, 'pr1');
+    });
+
+    it('returns id even if current path has params after id', () => {
+      currentPath = '/home/projects/pr1?foo=bar&test=false';
+      const selectedId = CSHelpers.getSelectedId(
+        currentPath,
+        [env1, env2],
+        parentNodePath
+      );
+      assert.equal(selectedId, 'pr1');
+    });
+  });
+
+  describe('getSelectedOption', () => {
+    let currentPath;
+    let parentNodePath;
+    const env1 = { label: 'Env 1', id: 'pr1' };
+    const env2 = { label: 'Env 2', id: 'pr2' };
+
+    beforeEach(() => {
+      parentNodePath = '/home/projects';
+      currentPath = '/home/projects/pr1';
+    });
+
+    [
+      {
+        it: 'returns undefined if parent node path is not defined',
+        parentNodePath: undefined,
+        assert: undefined
+      },
+      {
+        it:
+          'returns undefined if parent node path is not included in current path',
+        parentNodePath: '/home/nomatch',
+        assert: undefined
+      }
+    ].forEach(t => {
+      it(t.it, async () => {
+        const selectedOption = await CSHelpers.getSelectedOption(
+          currentPath,
+          [env1, env2],
+          t.parentNodePath
+        );
+        assert.equal(selectedOption, t.assert);
+      });
+    });
+
+    [
+      {
+        it:
+          'returns undefined if last path segment from parent node is not a full match in currentPath',
+        currentPath: '/home/projectsandmore/pr1',
+        assert: undefined
+      },
+      {
+        it:
+          'returns undefined if current path has no content after parent node path',
+        currentPath: '/home/projects',
+        assert: undefined
+      }
+    ].forEach(t => {
+      it(t.it, async () => {
+        const selectedOption = await CSHelpers.getSelectedOption(
+          t.currentPath,
+          [env1, env2],
+          parentNodePath
+        );
+        assert.equal(selectedOption, t.assert);
+      });
+    });
+
+    it('returns option if current path has id after parent node path', async () => {
+      const selectedOption = await CSHelpers.getSelectedOption(
+        currentPath,
+        [env1, env2],
+        parentNodePath
+      );
+      assert.deepEqual(selectedOption, { label: 'Env 1', id: 'pr1' });
+    });
+
+    it('returns option even if current path has params after id', async () => {
+      currentPath = '/home/projects/pr1?foo=bar&test=false';
+      const selectedOption = await CSHelpers.getSelectedOption(
+        currentPath,
+        [env1, env2],
+        parentNodePath
+      );
+      assert.deepEqual(selectedOption, { label: 'Env 1', id: 'pr1' });
     });
   });
 
