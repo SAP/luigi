@@ -3,14 +3,8 @@ const assert = require('chai').assert;
 const sinon = require('sinon');
 
 describe('Header', function() {
-  let clock;
-
-  afterEach(() => {
-    clock.restore();
-    sinon.restore();
-  });
-
   describe('processHeaderSettings', function() {
+    let clock;
     let component;
     const setHeaderSettings = headerSettings => {
       window.Luigi.config = {
@@ -40,6 +34,11 @@ describe('Header', function() {
         }
       };
       sinon.spy(component, 'set');
+    });
+
+    afterEach(() => {
+      clock.restore();
+      sinon.restore();
     });
 
     it('should not fail for undefined arguments', async () => {
@@ -164,6 +163,37 @@ describe('Header', function() {
       assert(appendChild.calledOnceWith(expectedLink), 'appendChild() call');
     });
 
+    it('should resolve favicon with childNodes', async () => {
+      // given
+      const headerSettings = {
+        favicon: '/assets/favicon.ico'
+      };
+      setHeaderSettings(headerSettings);
+
+      const appendChild = sinon.spy();
+      const remove = sinon.spy();
+      const childNodes = [
+        {
+          rel: 'shortcut icon',
+          remove
+        },
+        {
+          rel: 'shortcut icon',
+          remove
+        }
+      ];
+
+      sinon
+        .stub(document, 'getElementsByTagName')
+        .returns([{ appendChild, childNodes, remove }]);
+
+      // when
+      await headerService.processHeaderSettings(component);
+
+      // then
+      assert(remove.calledTwice, 'remove() call');
+    });
+
     it('should have no app switcher if no apps configured', async () => {
       setHeaderSettings({});
 
@@ -280,6 +310,158 @@ describe('Header', function() {
         component.set.calledWith({ appSwitcherItems: items }),
         'component set() appSwitcherItems item'
       );
+    });
+  });
+
+  describe('updateTitle', () => {
+    let component;
+    const setHeaderSettings = headerSettings => {
+      window.Luigi.config = {
+        settings: {
+          header: Object.assign({}, headerSettings)
+        }
+      };
+    };
+
+    beforeEach(() => {
+      let componentData = {};
+      component = {
+        get: () => componentData,
+        set: o => {
+          componentData = { ...componentData, ...o };
+        },
+        store: {
+          on: (e, cb) => {},
+          get: () => {},
+          subscribe: fn => fn(),
+          subscribeToScope: () => {}
+        }
+      };
+      sinon.spy(component, 'set');
+    });
+
+    afterEach(() => {
+      sinon.restore();
+    });
+
+    it('should not fail if title is not defined', () => {
+      const headerSettings = {
+        subTitle: 'Title is not defined'
+      };
+      setHeaderSettings(headerSettings);
+      assert.equal(window.Luigi.config.settings.header.title, undefined);
+
+      document.title = '';
+      component.set({
+        defaultTitle: window.Luigi.config.settings.header.title
+      });
+
+      headerService.updateTitle(component);
+      assert.equal(document.title, '');
+    });
+
+    it('should not fail if title is empty string', () => {
+      const headerSettings = {
+        title: '',
+        subTitle: 'Title is empty'
+      };
+      setHeaderSettings(headerSettings);
+
+      document.title = '';
+
+      component.set({
+        defaultTitle: window.Luigi.config.settings.header.title
+      });
+
+      headerService.updateTitle(component);
+      assert.equal(document.title, '');
+    });
+
+    it('update title if subTitle is not defined', () => {
+      const headerSettings = {
+        title: 'SubTitle is not defined'
+      };
+      setHeaderSettings(headerSettings);
+      assert.equal(window.Luigi.config.settings.header.subTitle, undefined);
+      document.title = '';
+
+      component.set({
+        defaultTitle: window.Luigi.config.settings.header.title
+      });
+
+      headerService.updateTitle(component);
+      assert.equal(document.title, 'SubTitle is not defined');
+    });
+
+    it('update title and subTitle', () => {
+      assert.equal(window.Luigi.config.settings.header.subTitle, undefined);
+
+      const headerSettings = {
+        title: 'Luigi with subTitle',
+        subTitle: 'here'
+      };
+      setHeaderSettings(headerSettings);
+
+      document.title = '';
+
+      component.set({
+        defaultTitle: window.Luigi.config.settings.header.title
+      });
+      component.set({
+        defaultSubTitle: window.Luigi.config.settings.header.subTitle
+      });
+
+      headerService.updateTitle(component);
+      assert.equal(document.title, 'Luigi with subTitle');
+      assert.equal(window.Luigi.config.settings.header.subTitle, 'here');
+    });
+
+    it('set appSwitcherItems, update title', () => {
+      const headerSettings = {
+        title: 'Luigi',
+        subTitle: 'one'
+      };
+      setHeaderSettings(headerSettings);
+
+      document.title = '';
+      const items = [
+        {
+          title: 'Luigi One',
+          subTitle: 'project one',
+          link: '/projects/pr1'
+        },
+        {
+          title: 'Luigi Two',
+          subTitle: 'project two',
+          link: '/projects/pr2'
+        }
+      ];
+      const pathData = [
+        {
+          pathSegment: 'home',
+          children: [{ pathSegment: 'overview' }, { pathSegment: 'projects' }]
+        },
+        {
+          pathSegment: 'projects',
+          children: [
+            {
+              pathSegment: 'pr1'
+            }
+          ]
+        },
+        {
+          pathSegment: 'pr2'
+        }
+      ];
+
+      component.set({
+        appSwitcherItems: items
+      });
+      component.set({
+        pathData: pathData
+      });
+      headerService.updateTitle(component);
+      assert.equal(document.title, 'Luigi Two');
     });
   });
 });
