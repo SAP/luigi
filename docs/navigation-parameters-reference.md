@@ -264,7 +264,7 @@ The context switcher is a drop-down list available in the top navigation bar. It
 
 ### customOptionsRenderer
 - **type**: function
-- **parameter**: option
+- **parameter**: option, isSelected
 - **description**: possibility to render code inside an `<li>` element. The list element has already registered a navigation function to the options path. The function gets an option as parameter. It is recommended to use this function carefully because it is possible to inject javascript code.
 
 ### actions

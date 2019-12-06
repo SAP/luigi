@@ -50,10 +50,10 @@
               data-testid="{getTestId(node)}"
             >
               {#if customOptionsRenderer}
-              {@html customOptionsRenderer(node)}
+              {@html customOptionsRenderer(node, node.label === selectedLabel)}
               {:else}
               <a
-                class="fd-menu__item {node === selectedLabel ? 'is-selected' : ''}"
+                class="fd-menu__item {node.label === selectedLabel ? 'is-selected' : ''}"
                 title="{label}"
               >{label}</a>
               {/if}
