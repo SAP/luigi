@@ -147,6 +147,18 @@ Returns the current client permissions as specified in the navigation node or an
 
 Returns **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** client permissions as specified in the navigation node.
 
+### setTargetOrigin
+
+When the micro frontend is not embedded in the Luigi Core application and there is no init handshake you can set the target origin that is used in postMessage function calls by Luigi Client.
+
+#### Parameters
+
+-   `origin` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** target origin.
+
+**Meta**
+
+-   **since**: 0.7.2
+
 ### sendCustomMessage
 
 Sends a custom message to the Luigi Core application.
