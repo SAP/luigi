@@ -45,6 +45,8 @@ The configuration file contains a tree-like structure of **navigation nodes**. T
 
 Here is an example of a simple navigation structure:
 
+<!-- accordion:start -->
+###
 ```javascript
 navigation: {
   nodes: [
@@ -80,6 +82,7 @@ navigation: {
       children: [
 ...
 ```
+<!-- accordion:end -->
 
 ## Basic navigation parameters
 
