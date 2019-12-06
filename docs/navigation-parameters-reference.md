@@ -349,7 +349,7 @@ The product switcher is a pop-up window available in the top navigation bar. It 
 - **description**: an array of objects, each one being a link to a Luigi navigation node or an external URL. An item can have several attributes.
 - **attributes**:
   - **label** defines the text for the link.
-  - **subtitle** defines additional text line for the link.
+  - **subTitle** defines additional text line for the link.
   - **testId** is a string where you can define your own custom `testId`. If nothing is specified, it is the node's label written as one word and lower case (e.g. `label`).
   - **icon** is the name of an icon from the [OpenUI](https://openui5.hana.ondemand.com/1.40.10/iconExplorer.html) or a custom link (relative or absolute) to an image displayed next to the label or instead of it.
   - **altText** adds the HTML `alt` attribute to an icon. Note that this property only applies to icons with a defined absolute or relative path.
