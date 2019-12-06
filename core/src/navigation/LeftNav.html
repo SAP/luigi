@@ -13,7 +13,7 @@
       on:keyup="{handleKey}"
     >
       <div class="fd-side-nav__main-navigation">
-        <ul class="fd-nested-list">
+        <ul class="{sideNavClass}">
           {#each sortedChildrenEntries as [key, nodes]}
           {#if key === 'undefined' || key.startsWith(virtualGroupPrefix)}
           <!-- Single nodes -->
@@ -280,9 +280,12 @@
   export let selectedCategory = null;
   export let expandedCategories;
   export let hasCategoriesWithIcon;
+  export let sideNavClass;
   let context;
   let previousWindowWidth;
   let responsiveNavSetting;
+  let sideNavCompactMode;
+  let sideNavClass;
   let store = getContext('store');
   let getTranslation = getContext('getTranslation');
 
@@ -308,6 +311,9 @@
     hideNavComponent = LuigiConfig.getConfigBooleanValue(
       'settings.hideNavigation'
     );
+    sideNavCompactMode = LuigiConfig.getConfigBooleanValue(
+      'settings.sideNavCompactMode'
+    );
     expandedCategories = NavigationHelpers.loadExpandedCategories();
     previousWindowWidth = window.innerWidth;
 
@@ -328,6 +334,13 @@
     }
     const isSemiCollapsed = semiCollapsible ? getIsSemiCollapsed() : false;
     setIsSemiCollapsed(isSemiCollapsed);
+
+    // set compact mode class
+    if (Boolean(sideNavCompactMode)) {
+      sideNavClass = 'fd-nested-list fd-nested-list--compact';
+    } else {
+      sideNavClass = 'fd-nested-list';
+    }
   });
 
   beforeUpdate(() => {

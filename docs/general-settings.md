@@ -30,6 +30,7 @@ settings: {
     favicon: 'path/to/favicon.ico'
   },
   sideNavFooterText: 'MyLovelyApp 1.0.0',
+  sideNavCompactMode: false,
   customTranslationImplementation: () => {
     return {
       getTranslation: (key, interpolations, locale) => {
@@ -58,6 +59,7 @@ You can set the following values:
   * `semiCollapsible` displays the arrow button at the bottom of the left side navigation. Once you click the button, the navigation shows up or collapses.<br>
 If you don't specify any value for  **responsiveNavigation**, the buttons remain hidden. The same applies when you enable **hideSideNav** for the currently active navigation node.
 * **sideNavFooterText** is a string displayed in a sticky footer inside the side navigation. It is a good place to display the version of your application.
+* **sideNavCompactMode** reduces dimensions of the side navigation and allows you to display more information.
 * **customTranslationImplementation** provides a custom localization implementation. It can be an Object or a Function returning an Object. This Object must provide the **getTranslation** Function as property:
 ```javascript
 {
