@@ -46,8 +46,6 @@
     "url-loader": "^1.0.1",
     "webpack": "^4.40.2",
     "webpack-cli": "^3.3.9",
-    "lodash": ">=4.17.13",
-    "lodash.template": ">=4.5.0",
     "webpack-bundle-analyzer": "^3.6.0",
     "serialize-javascript": ">=2.1.1"
   },
