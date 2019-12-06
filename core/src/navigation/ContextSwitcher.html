@@ -93,7 +93,8 @@
   export let config = {};
   export let actions = [];
   export let options = null;
-  $: renderAsDropdown = (actions && actions.length > 0) || (options && options.length > 1) || !selectedOption;
+  let alwaysShowDropdown = true;
+  $: renderAsDropdown = alwaysShowDropdown || (actions && actions.length > 0) || (options && options.length > 1) || !selectedOption;
   export let selectedOption;
   export let fallbackLabelResolver = null;
   let preserveSubPathOnSwitch;
@@ -117,6 +118,7 @@
         options = undefined;
 
         if (contextSwitcherConfig) {
+          alwaysShowDropdown = contextSwitcherConfig.alwaysShowDropdown !== false; // default is true
           actions = await LuigiConfig.getConfigValueAsync(
             'navigation.contextSwitcher.actions'
           );
