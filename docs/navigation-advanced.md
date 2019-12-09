@@ -24,6 +24,7 @@ This document shows you how to configure the following Luigi features:
 * [Context switcher](#context-switcher) 
 * [Product switcher](#product-switcher) 
 * [App switcher](#app-switcher) 
+* [Tab navigation](#tab-navigation)
 * [Additional options](#additional-options)
 
 ## View groups
@@ -213,7 +214,7 @@ The purpose of contexts is to send objects to the micro frontend. You can do thi
 - **type**: object
 - **description**: sends the specified object as context to the view. Use this property in combination with the dynamic **pathSegment** to receive the context through the context listeners of Luigi Client. This is an alternative to using the dynamic value in the **viewUrl**.
 
-Navigation contexts can be used together with path parameters and utilize the Luigi Client to receive contexts for the micro frontends.
+One example of where contexts are used is during the creation of dynamic navigation nodes. For this, you need an additional **navigationContext** parameter. Used together with path parameters and Luigi Client, it passes information to the micro frontend.
 
 ### navigationContext
 - **type**: string
@@ -237,7 +238,7 @@ Here is an example of a dynamic navigation node including a context:
 
 ## Profile
 
-<img src="https://github.com/SAP/luigi/raw/c70658fcb78c48012303a4e59012d5d158ca46b3/docs/assets/profile.png" width="628">
+<img src="https://github.com/SAP/luigi/tree/master/docs/assets/profile.png" width="628">
 
 The profile is a drop-down list in the top navigation that allows you to override the logout item content if authorization is already configured. You can also add links to Luigi navigation nodes.
 
@@ -257,7 +258,7 @@ Example:
 
 ## Context switcher
 
-<img src="https://github.com/SAP/luigi/raw/c70658fcb78c48012303a4e59012d5d158ca46b3/docs/assets/context-switcher.png" width="628">
+<img src="https://github.com/SAP/luigi/tree/master/docs/assets/context-switcher.png" width="628">
 
 The context switcher is a drop-down element in the top navigation. It allows you to switch between a curated list of navigation elements such as Environments. To do so, add the **contextSwitcher** property to the navigation object. Find all the parameters you can use to configure it [here](navigation-parameters-reference.md#context-switcher).
 
@@ -277,7 +278,7 @@ contextSwitcher: {
 
 ## Product switcher
 
-<img src="https://github.com/SAP/luigi/raw/c70658fcb78c48012303a4e59012d5d158ca46b3/docs/assets/product-switcher.png" width="704">
+<img src="https://github.com/SAP/luigi/tree/master/docs/assets/product-switcher.png" width="704">
 
 The product switcher is window in top the navigation which allows you to switch between navigation elements displayed there. To add it to your application, include the **productSwitcher** property in your **navigation** object. You may also add any of the parameters listed [here](navigation-parameters-reference.md#product-switcher).
 
@@ -309,7 +310,7 @@ productSwitcher: {
 
 ## App switcher
 
-<img src="https://github.com/SAP/luigi/raw/c70658fcb78c48012303a4e59012d5d158ca46b3/docs/assets/app-switcher.png" width="407">
+<img src="https://github.com/SAP/luigi/tree/master/docs/assets/app-switcher.png" width="407">
 
 The app switcher is a drop-down in top the navigation which allows you to switch between applications. To use it, add the **appSwitcher** property in your **navigation** object. You may also add any of the parameters listed [here](navigation-parameters-reference.md#app-switcher).
 
@@ -333,6 +334,16 @@ appSwitcher = {
   };
 ```
 
+## Tab navigation
+
+<img src="https://github.com/SAP/luigi/tree/master/docs/assets/tabnav.png" width="710">
+
+Tab-style navigation in Luigi can be displayed directly above the micro frontend area, providing you with additional menu options. When you put tab navigation nodes into a [category](navigation-configuration.md#category), they will be rendered in a drop-down. Add this parameter to your configuration to create tab navigation nodes:
+
+### tabNav
+- **type**: boolean
+- **description**: renders the children of the node as a horizontal navigation bar. Sub-children are not supported. When you categorize nodes you will get a drop-down menu in the horizontal navigation.
+
 ## Additional options
 
 For more options and parameters which you can use to configure navigation in Luigi, read the [full parameter reference](navigation-parameters-reference.md). Some of the topics you can find there include:
@@ -340,7 +351,6 @@ For more options and parameters which you can use to configure navigation in Lui
 * Defining the [routing](navigation-parameters-reference.md#routing-parameters) strategy of your application
 * Enabling and disabling the [loading indicator](navigation-parameters-reference.md#loadingindicatorenabled)
 * Hiding [navigation nodes](navigation-parameters-reference.md#hidefromnav) or [side navigation](navigation-parameters-reference.md#hidesidenav)
-* Including a horizontal [tab navigation](navigation-parameters-reference.md#tabnav) bar
 * Displaying content in a [modal](navigation-parameters-reference.md#opennodeinmodal)
 * Adding a [badge counter](navigation-parameters-reference.md#badgecounter) to your nodes
 * Defining a custom [testId](navigation-parameters-reference.md#testid) for your nodes
