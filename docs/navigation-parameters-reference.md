@@ -265,7 +265,7 @@ The context switcher is a drop-down list available in the top navigation bar. It
 ### customOptionsRenderer
 - **type**: function
 - **parameters**: [option](navigation-parameters-reference.md#options), isSelected
-- **description**: - **description**: enables you to add custom items to the context switcher by rendering code inside a `<li>` element. The function takes an **option** object and a boolean **isSelected** as a parameter. It is recommended to use this function carefully because it is possible to inject JavaScript code.
+- **description**: - **description**: enables you to add custom items to the context switcher by rendering code inside a `<li>` element. The function take an **option** object and a boolean **isSelected** as a parameter. It is recommended to use this function carefully because it is possible to inject JavaScript code.
 
 
 ### actions
