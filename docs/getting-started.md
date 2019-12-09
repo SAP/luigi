@@ -28,9 +28,10 @@ This diagram illustrates the structure of Luigi:
 
 ## Prerequisites
 
-All you need to get started with Luigi is basic knowledge of HTML and JavaScript.
+* Basic knowledge of HTML 
+* Basic knowledge of JavaScript
 
-## Next steps
+## Steps
 
 ### Luigi Core
 
