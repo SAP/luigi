@@ -282,6 +282,10 @@ The context switcher is a drop-down list available in the top navigation bar. It
 - **type**: boolean
 - **description**: if set to `true`, the sub-path is preserved on context switch.
 
+### alwaysShowDropdown
+- **type**: boolean
+- **description**: if set to `false`, the dropdown is not shown on click if there is only one option and no actions
+- **default**: true
 
 ## Profile
 
