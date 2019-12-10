@@ -353,4 +353,4 @@ For more options and parameters which you can use to configure navigation in Lui
 * Hiding [navigation nodes](navigation-parameters-reference.md#hidefromnav) or [side navigation](navigation-parameters-reference.md#hidesidenav)
 * Displaying content in a [modal](navigation-parameters-reference.md#opennodeinmodal)
 * Adding a [badge counter](navigation-parameters-reference.md#badgecounter) to your nodes
-* Defining a custom [testId](navigation-parameters-reference.md#testid) for your nodes
+* Defining a custom [testId](navigation-parameters-reference.md#testid) for end-to-end tests

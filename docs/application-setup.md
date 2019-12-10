@@ -19,16 +19,16 @@ Prior to start developing with Luigi, you need to set up your application. This 
 
 Choose the framework to build your application:
 
-[Application setup without a framework](#application-setup-for-an-application-not-using-a-framework)  
-[Angular 6](#application-setup-for-angular-6)  
-[SAPUI5/OpenUI5](#application-setup-for-sapui5openui5)  
+[Application setup without a framework](#application-setup-for-an-application-not-using-a-framework)
+[Angular 6](#application-setup-for-angular-6)
+[SAPUI5/OpenUI5](#application-setup-for-sapui5openui5)
 [VUE.JS](#application-setup-for-vuejs)
 
 ## Basic application setup
 
 Follow these steps to build a web application based on Luigi:
 
-1. Add Luigi npm packages to your project dependencies. 
+1. Add Luigi npm packages to your project dependencies.
 
 ````
 npm install --save @kyma-project/luigi-core
@@ -43,8 +43,8 @@ npm install --save @kyma-project/luigi-client
 
 The examples on this page demonstrate commands that perform each of the necessary steps to set up your application. Each set of commands is grouped by the framework on which you execute it.
 
-<a name="noframework"></a> 
-### Application setup for an application not using a framework 
+<a name="noframework"></a>
+### Application setup for an application not using a framework
 
 <!-- add-attribute:class:warning -->
 > **NOTE:** You need a development server capable of hosting Single Page Applications. The recommended server is Live Server.
@@ -67,7 +67,7 @@ mkdir my-new-app && cd my-new-app
 npm init -y
 sed 's/"scripts": {/"scripts": {\
 \   "buildConfig":"webpack --entry .\/src\/luigi-config\/basic\/basicConfiguration.js -o .\/public\/assets\/sampleconfig.js --mode production",/1' package.json > p.tmp.json && mv p.tmp.json package.json
-npm i -save @kyma-project/luigi-core @kyma-project/luigi-client fiori-fundamentals webpack webpack-cli @babel/core @babel/preset-env babel-loader 
+npm i -save @kyma-project/luigi-core @kyma-project/luigi-client fiori-fundamentals webpack webpack-cli @babel/core @babel/preset-env babel-loader
 mkdir -p public/assets
 mkdir -p src/luigi-config/basic
 curl https://raw.githubusercontent.com/SAP/luigi/master/core/examples/luigi-sample-angular/src/index.html > public/index.html
@@ -97,7 +97,7 @@ bash <(curl -s https://raw.githubusercontent.com/SAP/luigi/master/scripts/setup/
 or execute these commands manually to get the same result:
 ```bash
 ng new my-angular-app --routing && cd my-angular-app
-npm i -P @kyma-project/luigi-core @kyma-project/luigi-client fiori-fundamentals webpack webpack-cli @babel/core @babel/preset-env babel-loader 
+npm i -P @kyma-project/luigi-core @kyma-project/luigi-client fiori-fundamentals webpack webpack-cli @babel/core @babel/preset-env babel-loader
 sed 's/"scripts": {/"scripts": {\
 \   "buildConfig":"webpack --entry .\/src\/luigi-config\/basic\/basicConfiguration.js -o .\/src\/assets\/sampleconfig.js --mode production",/1' package.json > p.tmp.json && mv p.tmp.json package.json
 mkdir -p src/luigi-config/basic
@@ -115,7 +115,7 @@ npm run start
 
 <a name="sapui5"></a>
 
-### Application setup for SAPUI5/OpenUI5 
+### Application setup for SAPUI5/OpenUI5
 
 <!-- add-attribute:class:warning -->
 > **NOTE:** Live Server must be installed as your development server.
@@ -149,7 +149,7 @@ $ live-server --entry-file=index.html public
 
 <a name="vuejs"></a>
 
-### Application setup for VUE.JS 
+### Application setup for VUE.JS
 
 <!-- add-attribute:class:warning -->
 > **NOTE:** The VUE CLI is a prerequisite for this example.
