@@ -285,7 +285,7 @@ The context switcher is a drop-down list available in the top navigation bar. It
 ### alwaysShowDropdown
 - **type**: boolean
 - **description**: if set to `false`, the drop-down is not shown on click if there is only one option and no actions.
-- **default**: true
+- **default**: `true`
 
 ## Profile
 
