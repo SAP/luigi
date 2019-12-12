@@ -1249,4 +1249,70 @@
       }
     }
   }
+
+  //Overvrites with SAP variables
+  :global(.fd-page) {
+    background-color: var(--sapBackgroundColor, #edeff0);
+  }
+
+  :global(.fd-shellbar) {
+    background-color: var(--sapShell_Background, #354a5f);
+  }
+
+  :global(.fd-shellbar__subtitle, .fd-shellbar__title) {
+    color: var(--sapLinkColor, #fff);
+  }
+
+  :global(.fd-product-menu__control:after) {
+    border-top-color: var(--sapLinkColor, #fff);
+  }
+
+  :global(.fd-shellbar__button) {
+    border: 1px solid var(--sapShell_BorderColor, transparent);
+    color: var(--sapShell_TextColor, #d1e8ff);
+
+    &:focus {
+      border-color: transparent;
+    }
+  }
+
+  :global(.fd-shellbar__button .is-hover, .fd-shellbar__button:hover) {
+    border: 1px solid var(--sapShell_BorderColor, transparent);
+  }
+
+  :global(.fd-shellbar__button .is-hover, .fd-shellbar__button:hover) {
+    background-color: var(--sapButton_Hover_Background, #323d4d);
+  }
+
+  :global(.fd-product-menu__control) {
+    border: 0.125rem solid var(--sapShell_BorderColor, transparent);
+    padding-left: 10px;
+    padding-right: 27px;
+  }
+
+  :global(.fd-popover__body) {
+    background-color: var(--sapShell_Background, #fff);
+    border-color: var(--sapShell_BorderColor, #89919a);
+  }
+
+  :global(.fd-menu__item) {
+    background-color: var(--sapBackgroundColor, #fff);
+    color: var(--sapLinkColor, #51555a);
+  }
+
+  :global(.fd-menu__item .is-hover, .fd-menu__item:hover) {
+    color: var(--sapLink_Hover_Color, #32363a);
+  }
+
+  :global(.fd-menu__item .is-hover, .fd-menu__item:hover) {
+    background-color: var(--sapButton_Hover_Background, #fafafa);
+  }
+
+  :global(.fd-popover__body:before) {
+    border-bottom-color: var(--sapShell_Background, #fff);
+  }
+
+  :global(.fd-popover__body:after) {
+    border-bottom-color: var(--sapShell_BorderColor, #89919a);
+  }
 </style>
