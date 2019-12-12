@@ -104,7 +104,7 @@ You can also specify a nested node as `project/:id`. It can only be used standal
 ```
 // structural node example
 {
-  viewUrl: '//mf.url/projects/:id',
+  viewUrl: '//example.com/projects/:id',
   pathSegment: `project/:id`,
   context: { id: ':id' }
 }
@@ -112,7 +112,7 @@ You can also specify a nested node as `project/:id`. It can only be used standal
 {
   viewUrl: 'project',
   children: [{
-    viewUrl: '//mf.url/projects/:id',
+    viewUrl: '//example.com/projects/:id',
     pathSegment: `:id`,
     context: { id: ':id' }
   }]
