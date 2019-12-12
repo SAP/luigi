@@ -22,7 +22,7 @@ This document shows you how to set up a web application using the Luigi micro fr
 
 All those steps are achieved through a single **installer** script which sets up a Luigi application on your system. Keep in mind that if you have a single page application, you need to transfer it to a "two-page application". You should run your application to make sure the existing router doesn't interfere.
 
-Once the installation is complete, you can [configure](navigation-configuration.md) Luigi by editing the files in your `luigi-config` folder.
+Once the installation is complete, you can [configure](navigation-configuration.md) Luigi by editing the files in the `src/luigi-config` directory.
 
 Choose the framework to build your application:
 
