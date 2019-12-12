@@ -61,14 +61,6 @@ class GenericHelpersClass {
     return this.deepMerge(target, ...sources);
   }
 
-  /**
-   * extends 'from' object with members from 'to'.
-   * If 'to' is null, a deep clone of 'from' is returned
-   */
-  extend(target, source) {
-    return merge(target, source);
-  }
-
   getUrlWithoutHash(url) {
     if (!url) {
       return false;
