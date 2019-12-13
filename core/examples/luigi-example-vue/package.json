@@ -26,6 +26,7 @@
     "mem": ">=4.0.0",
     "lodash": ">=4.17.13",
     "lodash.defaultsdeep": ">=4.6.1",
-    "lodash.mergewith": ">=4.6.2"
+    "lodash.mergewith": ">=4.6.2",
+    "serialize-javascript": ">=2.1.1"
   }
 }

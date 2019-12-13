@@ -76,4 +76,4 @@ class LuigiClient {
     return lifecycleManager;
   }
 }
-export default LuigiClient = new LuigiClient();
+export default (LuigiClient = new LuigiClient());
