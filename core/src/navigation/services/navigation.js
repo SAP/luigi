@@ -8,7 +8,6 @@ import {
   RoutingHelpers
 } from '../../utilities/helpers';
 import { LuigiConfig } from '../../core-api';
-import merge from 'lodash.merge';
 
 class NavigationClass {
   async getNavigationPath(rootNavProviderPromise, path = '') {
@@ -124,7 +123,7 @@ class NavigationClass {
     // Checking for pathSegment to exclude virtual root node
     if (node && node.pathSegment && node.pathSegment.indexOf('/') !== -1) {
       const segs = node.pathSegment.split('/');
-      const clonedNode = merge({}, node);
+      const clonedNode = { ...node };
       const buildStructuralNode = (segs, node) => {
         const seg = segs.shift();
         let child = {};

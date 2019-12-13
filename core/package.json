@@ -26,7 +26,6 @@
     "jsdom": "15.0.0",
     "jsdom-global": "3.0.2",
     "lodash": ">=4.17.13",
-    "lodash.merge": "^4.6.2",
     "lodash.template": ">=4.5.0",
     "mini-css-extract-plugin": "^0.8.0",
     "mocha": "^6.1.4",
