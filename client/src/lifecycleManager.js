@@ -373,7 +373,7 @@ class LifecycleManager extends LuigiClientBase {
    * When the micro frontend is not embedded in the Luigi Core application and there is no init handshake you can set the target origin that is used in postMessage function calls by Luigi Client.
    * @param {string} origin target origin.
    * @memberof Lifecycle
-   * @since 0.7.2
+   * @since 0.7.3
    */
   setTargetOrigin(origin) {
     helpers.setTargetOrigin(origin);
