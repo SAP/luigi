@@ -45,8 +45,9 @@
     "terser": "^4.4.0",
     "url-loader": "^1.0.1",
     "webpack": "^4.40.2",
+    "webpack-cli": "^3.3.9",
     "webpack-bundle-analyzer": "^3.6.0",
-    "webpack-cli": "^3.3.9"
+    "serialize-javascript": ">=2.1.1"
   },
   "scripts": {
     "bundle": "npm run bundle-evergreen && npm run bundle-ie11",
