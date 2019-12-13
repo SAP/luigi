@@ -103,8 +103,18 @@ class Helpers {
     }
   }
 
+  setTargetOrigin(origin) {
+    this.setLuigiCoreDomain(origin);
+  }
+
   sendPostMessageToLuigiCore(msg) {
-    window.parent.postMessage(msg, this.origin);
+    if (this.origin) {
+      window.parent.postMessage(msg, this.origin);
+    } else {
+      console.warn(
+        'There is no target origin set. You can specify the target origin by calling LuigiClient.setTargetOrigin("targetorigin") in your micro frontend.'
+      );
+    }
   }
 }
 
