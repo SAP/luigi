@@ -241,7 +241,7 @@ settings: {
 
 ### anonymousAccess
 - **type**: boolean or "exclusive"
-- **description**: when set to `true`, the node is always accessible. When set to `exclusive`, the node is only visible in logged-out state. Requires **auth.disableAutoLogin** to be set to `true`. **anonymousAccess** needs to be defined also on it's child nodes.
+- **description**: when set to `true`, the node is always accessible. When set to `exclusive`, the node is only visible in logged-out state. Requires **auth.disableAutoLogin** to be set to `true`. **anonymousAccess** needs to be defined both on parent and child nodes.
 
 ## Context switcher
 
