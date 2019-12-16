@@ -48,10 +48,14 @@
               on:click="{() => goToOption(node, selectedOption)}"
               data-testid="{getTestId(node)}"
             >
+              {#if customOptionsRenderer}
+              {@html customOptionsRenderer(node, node.label === selectedLabel)}
+              {:else}
               <a
-                class="fd-menu__item {node === selectedLabel ? 'is-selected' : ''}"
+                class="fd-menu__item {node.label === selectedLabel ? 'is-selected' : ''}"
                 title="{label}"
               >{label}</a>
+              {/if}
             </li>
             {/await} {/each} {/if}
           </ul>
@@ -82,7 +86,8 @@
     IframeHelpers,
     RoutingHelpers,
     StateHelpers,
-    NavigationHelpers
+    NavigationHelpers,
+    GenericHelpers
   } from '../utilities/helpers';
 
   const dispatch = createEventDispatcher();
@@ -97,6 +102,7 @@
   $: renderAsDropdown = alwaysShowDropdown || (actions && actions.length > 0) || (options && options.length > 1) || !selectedOption;
   export let selectedOption;
   export let fallbackLabelResolver = null;
+  export let customOptionsRenderer;
   let preserveSubPathOnSwitch;
   let getUnsavedChangesModalPromise = getContext(
     'getUnsavedChangesModalPromise'
@@ -112,11 +118,14 @@
         const contextSwitcherConfig = LuigiConfig.getConfigValue(
           'navigation.contextSwitcher'
         );
-
+        customOptionsRenderer =
+          contextSwitcherConfig.customOptionsRenderer &&
+          GenericHelpers.isFunction(contextSwitcherConfig.customOptionsRenderer)
+            ? contextSwitcherConfig.customOptionsRenderer
+            : undefined;
         contextSwitcherEnabled = !!contextSwitcherConfig;
         config = contextSwitcherConfig;
         options = undefined;
-
         if (contextSwitcherConfig) {
           alwaysShowDropdown = contextSwitcherConfig.alwaysShowDropdown !== false; // default is true
           actions = await LuigiConfig.getConfigValueAsync(
