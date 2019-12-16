@@ -224,7 +224,6 @@ One example of where contexts are used is during the creation of dynamic navigat
     projectId: ':projectId'
   }
 }
-
  ```
 
 ## Profile
