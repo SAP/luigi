@@ -221,7 +221,7 @@ One example of where contexts are used is during the creation of dynamic navigat
   pathSegment: ':projectId',
   viewUrl: '/some/path/:projectId',
   context: {
-  projectId: ':projectId'
+    projectId: ':projectId'
 }
 
  ```
