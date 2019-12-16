@@ -12,10 +12,12 @@ import {
 import { LuigiConfig } from '../../src/core-api';
 
 describe('Iframe', () => {
+  let clock;
   let node;
   let component;
 
   beforeEach(() => {
+    clock = sinon.useFakeTimers();
     let lastObj = {};
     component = {
       set: obj => {
@@ -151,6 +153,72 @@ describe('Iframe', () => {
 
       Iframe.navigateIframe(config, component, node);
       assert.equal(node.children.length, 2);
+    });
+  });
+
+  describe('create new iframe and add event listener', () => {
+    it('navigate', () => {
+      const spy = sinon.spy(IframeHelpers, 'sendMessageToIframe');
+      sinon.stub(IframeHelpers, 'getMainIframes').callsFake(() => [
+        {
+          src: 'http://url.com/app.html!#/prevUrl',
+          style: { display: 'block' },
+          vg: 'tets1',
+          luigi: {}
+        }
+      ]);
+      const config = {
+        builderCompatibilityMode: true
+      };
+      component.set({
+        viewUrl: 'http://luigi.url.de/1',
+        viewGroup: 'tets2',
+        previousNodeValues: {
+          viewUrl: 'http://luigi.url.desdf/1'
+        },
+        currentNode: {}
+      });
+
+      assert.notExists(config.iframe);
+
+      Iframe.navigateIframe(config, component, node);
+      config.iframe.dispatchEvent(new Event('load'));
+
+      assert.exists(config.iframe);
+      assert(spy.called, 'sendMessageToIframe(config.iframe, message) call');
+    });
+  });
+
+  describe('check if luigi respond, if not, callback again to replace the iframe', () => {
+    it('navigate', () => {
+      const spy = sinon.spy(console, 'info');
+      sinon.stub(IframeHelpers, 'getMainIframes').callsFake(() => [
+        {
+          src: 'http://url.com/app.html!#/prevUrl',
+          style: { display: 'block' },
+          vg: 'tets1',
+          luigi: {}
+        }
+      ]);
+      const config = {
+        iframe: {
+          src: 'http://luigi.url.de',
+          vg: 'tets2'
+        }
+      };
+      component.set({
+        viewUrl: 'http://luigi.url.de/1',
+        viewGroup: 'tets1',
+        previousNodeValues: {
+          viewUrl: 'http://luigi.url.desdf/1'
+        },
+        currentNode: {}
+      });
+      assert.equal(config.iframe.src, 'http://luigi.url.de');
+      Iframe.navigateIframe(config, component, node);
+      clock.tick(3000);
+      assert(spy.called, 'console.info() call');
+      assert.equal(config.iframe.src, 'http://url.com/app.html!#/prevUrl');
     });
   });
 
