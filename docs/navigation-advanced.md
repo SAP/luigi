@@ -222,6 +222,7 @@ One example of where contexts are used is during the creation of dynamic navigat
   viewUrl: '/some/path/:projectId',
   context: {
     projectId: ':projectId'
+  }
 }
 
  ```
@@ -237,12 +238,13 @@ You can configure the profile element in the top navigation by adding the **prof
 Example:
 
 ```javascript
-  profile: {
-      logout: {
-        label: 'End session'
-        icon: "sys-cancel",
-        customLogoutFn: myLogoutFn
-      },
+profile: {
+  logout: {
+  label: 'End session'
+  icon: "sys-cancel",
+  customLogoutFn: myLogoutFn
+  },
+}
 ```
 
 
@@ -256,16 +258,16 @@ The context switcher is a drop-down element in the top navigation. It allows you
 
 ```javascript
 contextSwitcher: {
-      defaultLabel: 'Select Environment ...',
-      testId: 'myTestId',
-      parentNodePath: '/environments',
-      lazyloadOptions: false,
-      fallbackLabelResolver: (id) => (id.toUpperCase()),
-      options: [{label,pathValue}, {label,pathValue}],
-      customOptionsRenderer: (option, isSelected) => {let className = 'fd-menu__item' + (isSelected ? ' is-selected' : '');
-      return `<a class="${className}">${option.label} test</a>`;},
-      actions: [{label,link,position,clickHandler?}]
-    },
+  defaultLabel: 'Select Environment ...',
+  testId: 'myTestId',
+  parentNodePath: '/environments',
+  lazyloadOptions: false,
+  fallbackLabelResolver: (id) => (id.toUpperCase()),
+  options: [{label,pathValue}, {label,pathValue}],
+  customOptionsRenderer: (option, isSelected) => {let className = 'fd-menu__item' + (isSelected ? ' is-selected' : '');
+  return `<a class="${className}">${option.label} test</a>`;},
+  actions: [{label,link,position,clickHandler?}]
+},
 ```
 
 ## Product switcher
@@ -277,27 +279,27 @@ The product switcher is window in top the navigation which allows you to switch 
 Example:
 ```javascript
 productSwitcher: {
-      label: 'My Products',
+  label: 'My Products',
+  testId: 'myTestId',
+  icon: 'grid',
+  items: [
+    {
+      icon: '',
+      label: 'Luigi in Github',
       testId: 'myTestId',
-      icon: 'grid',
-      items: [
-        {
-          icon: '',
-          label: 'Luigi in Github',
-          testId: 'myTestId',
-          externalLink: {
-            url: 'https://luigi-project.io/',
-            sameWindow: false
-          }
-        },
-        {
-          icon: '',
-          label: 'Project 1',
-          testId: 'myTestId',
-          link: '/projects/pr1'
-        }
-      ]
+      externalLink: {
+        url: 'https://luigi-project.io/',
+        sameWindow: false
+      }
     },
+    {
+      icon: '',
+      label: 'Project 1',
+      testId: 'myTestId',
+      link: '/projects/pr1'
+    }
+  ]
+},
 ```
 
 ## App switcher
@@ -310,20 +312,20 @@ Example:
 
 ```javascript
 appSwitcher = {
-    showMainAppEntry: true,
-    items: [
-      {
-        title: 'Application One',
-        subTitle: 'the first app',
-        link: '/projects/pr1'
-      },
-      {
-        title: 'Application Two',
-        link: '/projects/pr2',
-        subTitle: 'the second app'
-      },
-    ]
-  };
+  showMainAppEntry: true,
+  items: [
+    {
+      title: 'Application One',
+      subTitle: 'the first app',
+      link: '/projects/pr1'
+    },
+    {
+      title: 'Application Two',
+      link: '/projects/pr2',
+      subTitle: 'the second app'
+    },
+  ]
+};
 ```
 
 ## Tab navigation
