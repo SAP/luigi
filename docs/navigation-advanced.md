@@ -239,9 +239,9 @@ Example:
 ```javascript
 profile: {
   logout: {
-  label: 'End session'
-  icon: "sys-cancel",
-  customLogoutFn: myLogoutFn
+    label: 'End session'
+    icon: "sys-cancel",
+    customLogoutFn: myLogoutFn
   },
 }
 ```
