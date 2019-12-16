@@ -15,6 +15,19 @@ meta -->
 
 # Authorization configuration
 
+To configure authorization in Luigi:
+
+1. Configure the [general authorization options](#general-authorization-options)
+
+2. Choose an authorization provider:
+  * [OpenID Connect](#openid-connect-configuration)
+    * [Third-party cookies and silent token refresh](#third-party-cookies-and-silent-token-refresh)
+  * [OAuth2 Implicit Grant](#oauth2-implicit-grant-configuration)
+  * [Custom authorization provider](#custom-authorization-provider)
+  * [Create your own authorization provider](#implement-a-custom-authorization-provider)
+
+## General authorization settings
+
 To configure authorization in Luigi, go to the `auth:` section of your Luigi configuration file. To see how authorization works, you can also go to the [Luigi Fiddle](https://fiddle.luigi-project.io) site and configure a sample application.
 
 Luigi provides OpenID Connect and OAuth2 Implicit Grant authorization out of the box. The **use** key defines the active authorization provider and the **disableAutoLogin** key allows you to disable the automatic login flow that is provided by default.
@@ -29,12 +42,7 @@ auth: {
 }
 ```
 
-You have several authorization options:
-* [OpenID Connect](#openid-connect-configuration)
-  * [Third-party cookies and silent token refresh](#third-party-cookies-and-silent-token-refresh)
-* [OAuth2 Implicit Grant](#oauth2-implicit-grant-configuration)
-* [Custom authorization provider](#custom-authorization-provider)
-* [Create your own authorization provider](#implement-a-custom-authorization-provider)
+To show certain nodes only to non-authenticated users, utilize the [anonymousAccess](navigation-parameters-reference.md#anonymousaccess) parameter.
 
 ## OpenID Connect configuration
 
