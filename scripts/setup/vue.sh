@@ -1,4 +1,9 @@
 #!/bin/bash
+if ! command -v vue 2>/dev/null; then
+  echo "Vue CLI required, please install it globally and try again."
+  echo "npm i -g @vue/cli."
+  exit 1;
+fi
 echo ""
 echo "Installing Luigi with static files and basic configuration"
 echo ""

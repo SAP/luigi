@@ -28,13 +28,13 @@ export default function luigiLinkParser(options) {
       var parsed = url.parse(node.properties[prop]);
       if (
         parsed.href.startsWith(githubMaster + 'docs') && parsed.pathname && parsed.pathname.endsWith('.md') ||
-        parsed.pathname && parsed.pathname.endsWith('.md') 
+        parsed.pathname && parsed.pathname.endsWith('.md')
       ) {
         // internal link
         // sample links: https://..., file.md, should not start with /file.md or ../file.md
         node.properties['onclick'] = 'navigateInternal(event, this)';
         node.properties['data-linktype'] = 'internal';
-        
+
         let newHref = parsed.href.replace(githubMaster + 'docs/', '').replace('.md', '');
 
         // clean ./ from beginning of the link
@@ -50,7 +50,7 @@ export default function luigiLinkParser(options) {
       } else if (parsed.hash && !parsed.pathname && !parsed.hostname) {
         // current page anchor link
         node.properties['href'] = prependForExport() + '/docs/' + settings.shortName + parsed.hash.toLowerCase();
-        node.properties['onclick'] = 'scrollAnchor(event, event.target)';
+        node.properties['onclick'] = 'navigateInternal(event, this)';
       } else if (parsed.pathname && (
         parsed.pathname.startsWith('../') || parsed.pathname.startsWith('/')
       )) {
