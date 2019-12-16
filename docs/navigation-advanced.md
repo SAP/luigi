@@ -217,12 +217,12 @@ The purpose of contexts is to send objects to the micro frontend. You can do thi
 One example of where contexts are used is during the creation of dynamic navigation nodes. Used together with path parameters and Luigi Client, contexts pass information to the micro frontend:
 
 ```javascript
-    {
-        pathSegment: ':projectId',
-        viewUrl: '/some/path/:projectId',
-        context: {
-          projectId: ':projectId'
-        }
+{
+  pathSegment: ':projectId',
+  viewUrl: '/some/path/:projectId',
+  context: {
+  projectId: ':projectId'
+}
 
  ```
 
