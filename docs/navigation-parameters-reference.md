@@ -271,6 +271,12 @@ The context switcher is a drop-down list available in the top navigation bar. It
   - **label** defines the context element label. If not defined, the **pathValue** is passed to **fallbackLabelResolver** to set its value. The default value is **pathValue**, if **fallbackLabelResolver** is not defined.
   - **pathValue** defines the context element path that is appended to **parentNodePath** and reflects a **pathSegment**.
 
+### customOptionsRenderer
+- **type**: function
+- **parameters**: [option](navigation-parameters-reference.md#options), isSelected
+- **description**: - **description**: enables you to add custom items to the context switcher by rendering code inside a `<li>` element. The function take an **option** object and a boolean **isSelected** as a parameter. It is recommended to use this function carefully because it is possible to inject JavaScript code.
+
+
 ### actions
 - **type**: array
 - **description**: defines a list of additional elements that are shown on above or below the context switcher **options**.

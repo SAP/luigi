@@ -19,10 +19,11 @@ Prior to start developing with Luigi, you need to set up your application. This 
 
 Choose the framework to build your application:
 
-[Application setup without a framework](#application-setup-for-an-application-not-using-a-framework)
-[Angular 6](#application-setup-for-angular-6)
-[SAPUI5/OpenUI5](#application-setup-for-sapui5openui5)
-[VUE.JS](#application-setup-for-vuejs)
+[Application setup without a framework](#application-setup-for-an-application-not-using-a-framework)  
+[Angular 6](#application-setup-for-angular-6)  
+[SAPUI5/OpenUI5](#application-setup-for-sapui5openui5)  
+[VUE.JS](#application-setup-for-vuejs)  
+[React](#application-setup-for-react)  
 
 ## Basic application setup
 
@@ -176,4 +177,40 @@ $ curl https://raw.githubusercontent.com/SAP/luigi/master/core/examples/luigi-sa
 $ curl https://raw.githubusercontent.com/SAP/luigi/master/core/examples/luigi-sample-angular/src/assets/sampleexternal.html > public/assets/basicexternal.html
 $ echo "const webpack=require('webpack');const CopyWebpackPlugin=require('copy-webpack-plugin');module.exports={pages:{sampleapp:{entry:'src/main.js',template:'public/vue.html',filename:'vue.html'}},lintOnSave:true,runtimeCompiler:true,outputDir:'dist',configureWebpack:{plugins:[new CopyWebpackPlugin([{context:'public',to:'index.html',from:'index.html'},{context:'node_modules/@kyma-project/luigi-core',to:'./luigi-core',from:{glob:'**',dot:true}},{context:'node_modules/@kyma-project/luigi-client',to:'./luigi-client',from:{glob:'**',dot:true}}],{ignore:['.gitkeep','**/.DS_Store','**/Thumbs.db'],debug:'warning'})]}};" > vue.config.js
 $ npm run serve
+````
+
+
+<a name="reactjs"></a>
+
+### Application setup for React
+
+1. Use the installer to create your application, install Luigi, make assets available, and serve your application:
+````
+bash <(curl -s https://raw.githubusercontent.com/SAP/luigi/master/scripts/setup/react.sh)
+````
+or execute these commands manually to get the same result:
+````
+$ npx create-react-app my-react-app && cd my-react-app
+$ echo yes | npm run eject
+$ npm i -P @kyma-project/luigi-core @kyma-project/luigi-client fiori-fundamentals react-router-dom
+$ npm i copy-webpack-plugin --save-dev
+$ sed "s/const HtmlWebpackPlugin = require('html-webpack-plugin');/const HtmlWebpackPlugin = require('html-webpack-plugin');const CopyWebpackPlugin = require('copy-webpack-plugin');/g" config/webpack.config.js > config/webpack.config.tmp.js && mv config/webpack.config.tmp.js config/webpack.config.js
+$ sed "s/new HtmlWebpackPlugin(/new CopyWebpackPlugin([{context: 'public', to: 'index.html', from: 'index.html'  },{context: 'node_modules\/@kyma-project\/luigi-core',to: '.\/luigi-core',from: {glob: '**',dot: true}}],{ignore: ['.gitkeep', '**\/.DS_Store', '**\/Thumbs.db'],debug: 'warning'}),new HtmlWebpackPlugin(/g" config/webpack.config.js > config/webpack.config.tmp.js && mv config/webpack.config.tmp.js config/webpack.config.js
+$ sed "s/template: paths.appHtml,/template: paths.appHtml, filename: 'sampleapp.html',/g" config/webpack.config.js > config/webpack.config.tmp.js && mv config/webpack.config.tmp.js config/webpack.config.js
+$ sed "s/public\/index.html/public\/sampleapp.html/g" config/paths.js > config/paths.tmp.js && mv config/paths.tmp.js config/paths.js
+$ sed "s/publicUrl + '\/index.html',/publicUrl + '\/sampleapp.html',/g" config/webpack.config.js > config/webpack.config.tmp.js && mv config/webpack.config.tmp.js config/webpack.config.js
+$ sed "s/const isWsl = require('is-wsl');//g" config/webpack.config.js > config/webpack.config.tmp.js && mv config/webpack.config.tmp.js config/webpack.config.js
+$ sed "s/!isWsl/true/g" config/webpack.config.js > config/webpack.config.tmp.js && mv config/webpack.config.tmp.js config/webpack.config.js
+$ mv public/index.html public/react.html
+$ curl https://raw.githubusercontent.com/SAP/luigi/master/core/examples/luigi-example-react/public/index.html > public/index.html
+$ curl https://raw.githubusercontent.com/SAP/luigi/master/core/examples/luigi-example-react/public/logo.png > public/logo.png
+$ curl https://raw.githubusercontent.com/SAP/luigi/master/core/examples/luigi-example-react/public/sampleapp.html > public/sampleapp.html
+$ curl https://raw.githubusercontent.com/SAP/luigi/master/core/examples/luigi-example-react/public/luigi-config.js > public/luigi-config.js
+$ curl https://raw.githubusercontent.com/SAP/luigi/master/core/examples/luigi-example-react/src/index.js > src/index.js
+$ curl https://raw.githubusercontent.com/SAP/luigi/master/core/examples/luigi-example-react/src/index.css > src/index.css
+$ mkdir src/views
+$ curl https://raw.githubusercontent.com/SAP/luigi/master/core/examples/luigi-example-react/src/views/home.js > src/views/home.js
+$ curl https://raw.githubusercontent.com/SAP/luigi/master/core/examples/luigi-example-react/src/views/sample1.js > src/views/sample1.js
+$ curl https://raw.githubusercontent.com/SAP/luigi/master/core/examples/luigi-example-react/src/views/sample2.js > src/views/sample2.js
+$ npm start
 ````

@@ -272,6 +272,8 @@ contextSwitcher: {
       lazyloadOptions: false,
       fallbackLabelResolver: (id) => (id.toUpperCase()),
       options: [{label,pathValue}, {label,pathValue}],
+      customOptionsRenderer: (option, isSelected) => {let className = 'fd-menu__item' + (isSelected ? ' is-selected' : '');
+      return `<a class="${className}">${option.label} test</a>`;},
       actions: [{label,link,position,clickHandler?}]
     },
 ```
