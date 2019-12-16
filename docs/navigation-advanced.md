@@ -214,37 +214,17 @@ The purpose of contexts is to send objects to the micro frontend. You can do thi
 - **type**: object
 - **description**: sends the specified object as context to the view. Use this property in combination with the dynamic **pathSegment** to receive the context through the context listeners of Luigi Client. This is an alternative to using the dynamic value in the **viewUrl**.
 
-One example of where contexts are used is during the creation of dynamic navigation nodes. For this, you need an additional **navigationContext** parameter. Used together with path parameters and Luigi Client, it passes information to the micro frontend.
+One example of where contexts are used is during the creation of dynamic navigation nodes. Used together with path parameters and Luigi Client, contexts pass information to the micro frontend:
 
-- **example**:
-    ```javascript
+```javascript
     {
         pathSegment: ':projectId',
         viewUrl: '/some/path/:projectId',
         context: {
           projectId: ':projectId'
         }
-        
-    ```
-### navigationContext
-- **type**: string
-- **description**: contains a named node that is mainly for use in combination with a dynamic **pathSegment** to start navigation from a dynamic node using `LuigiClient.linkManager().fromContext('contextname')`.
 
-Here is an example of a dynamic navigation node including a context:
-
-```javascript
-...
-      {
-        navigationContext: 'contextName',
-        pathSegment: ':projectId',
-        testId: 'myTestId',
-        viewUrl: '/some/path/:projectId',
-        context: {
-          projectId: ':projectId'
-        },
-        children: [node, node, node]
-      }
-```
+ ```
 
 ## Profile
 
