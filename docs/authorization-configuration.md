@@ -49,7 +49,7 @@ The **use** key defines the active authorization provider and the **disableAutoL
 
 ### How do I show some navigation nodes only to non-authenticated users?
 
-To show certain nodes only to non-authenticated users, utilize the [anonymousAccess](navigation-parameters-reference.md#anonymousaccess) parameter.
+To show certain nodes only to non-authenticated users, use the [anonymousAccess](navigation-parameters-reference.md#anonymousaccess) parameter.
 
 Make sure **disableAutoLogin** is set to `true`. Add this parameter to the nodes you want to hide and their children:
 
