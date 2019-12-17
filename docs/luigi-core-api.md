@@ -13,17 +13,17 @@
 }
 meta -->
 
-# Luigi Core API
-
 This document outlines the features provided by the Luigi Core API. It covers these topics:
 
 * [Configuration](#luigi-config) - functions related to Luigi configuration
 * [Elements](#luigi.elements()) - functions related to DOM elements
 * [Authorization](#luigi.auth()) - authorization options for Luigi
 * [Navigation](#luigi.navigation()) - functions related to Luigi navigation
-* [Localization](Luigi.i18n()) - options related to language, translation, and localization
-* [Custom messages](Luigi.customMessages()) - custom messages between Luigi Core and micro frontends
-* [UX]() - functions related to Luigi Core UX features (such as the loading indicator)
+* [Localization](#luigi.i18n()) - options related to language, translation, and localization
+* [Custom messages](#luigi.customMessages()) - custom messages between Luigi Core and micro frontends
+* [UX](#luigi.ux()) - functions related to Luigi Core UX features (such as the loading indicator)
+
+# Luigi Core API
 
 ## Luigi Config
 
