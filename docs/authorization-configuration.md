@@ -46,9 +46,7 @@ auth: {
 ```
 
 The **use** key defines the active authorization provider and the **disableAutoLogin** key allows you to disable the automatic login flow that is provided by default.
-<!-- accordion:end -->
 
-<!-- accordion:start -->
 ### How do I show some navigation nodes only to non-authenticated users?
 
 To show certain nodes only to non-authenticated users, utilize the [anonymousAccess](navigation-parameters-reference.md#anonymousaccess) parameter.
