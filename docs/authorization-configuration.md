@@ -31,7 +31,7 @@ To configure authorization in Luigi:
 <!-- accordion:start -->
 ### How do I configure authorization in Luigi?
 
-Luigi authorization can be configured the `auth:` section of your Luigi configuration file. To see how authorization works, you can also go to the [Luigi Fiddle](https://fiddle.luigi-project.io) site and configure a sample application.
+You can configure Luigi authorization using the `auth:` section of your Luigi configuration file. To see how authorization works, go to the [Luigi Fiddle](https://fiddle.luigi-project.io) site and configure a sample application.
 
 This is an example of a simplified authorization structure:
 
