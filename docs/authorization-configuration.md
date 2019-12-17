@@ -20,18 +20,20 @@ To configure authorization in Luigi:
 1. Configure the [general authorization options](#general-authorization-options).
 
 2. Choose an authorization provider:
-  * [OpenID Connect](#openid-connect-configuration)
-    * [Third-party cookies and silent token refresh](#third-party-cookies-and-silent-token-refresh)
-  * [OAuth2 Implicit Grant](#oauth2-implicit-grant-configuration)
-  * [Custom authorization provider](#custom-authorization-provider)
-  * [Create your own authorization provider](#implement-a-custom-authorization-provider)
+    * [OpenID Connect](#openid-connect-configuration)
+      * [Third-party cookies and silent token refresh](#third-party-cookies-and-silent-token-refresh)
+    * [OAuth2 Implicit Grant](#oauth2-implicit-grant-configuration)
+    * [Custom authorization provider](#custom-authorization-provider)
+    * [Create your own authorization provider](#implement-a-custom-authorization-provider)
 
 ## General authorization options
 
+<!-- accordion:start -->
+### How do I configure authorization in Luigi?
 
 Luigi authorization can be configured the `auth:` section of your Luigi configuration file. To see how authorization works, you can also go to the [Luigi Fiddle](https://fiddle.luigi-project.io) site and configure a sample application.
 
-This is an example of an authorization structure:
+This is an example of a simplified authorization structure:
 
 ```javascript
 auth: {
@@ -44,8 +46,21 @@ auth: {
 ```
 
 The **use** key defines the active authorization provider and the **disableAutoLogin** key allows you to disable the automatic login flow that is provided by default.
+<!-- accordion:end -->
+
+<!-- accordion:start -->
+### How do I show some navigation nodes only to non-authenticated users?
 
 To show certain nodes only to non-authenticated users, utilize the [anonymousAccess](navigation-parameters-reference.md#anonymousaccess) parameter.
+
+Make sure **disableAutoLogin** is set to `true`. Add this parameter to the nodes you want to hide and their children:
+
+```javascript
+anonymousAccess: `exclusive` // show nodes only when logged out
+// OR
+anonymousAccess: true // always show nodes
+```
+<!-- accordion:end -->
 
 ## OpenID Connect configuration
 
