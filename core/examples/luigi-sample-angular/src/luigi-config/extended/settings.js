@@ -13,6 +13,17 @@ class Settings {
   };
   responsiveNavigation = 'simpleMobileOnly'; // Options: simple | simpleMobileOnly | semiCollapsible
   sideNavFooterText = `Luigi Client: ${version || 'unknown'}`;
+  thirdPartyCookieCheck = {
+    // thirdPartyCookieScriptLocation: 'https://domain/init.html',
+    thirdPartyCookieErrorHandling: () => {
+      const alert = {
+        text:
+          'Third Party Cookies are not enabled. Please check your browser settings.',
+        type: 'warning'
+      };
+      Luigi.ux().showAlert(alert);
+    }
+  };
   // allowRules = ['microphone'];
   // iframeCreationInterceptor = (iframe, viewGroup, navigationNode, microFrontendType) => { };
   // hideNavigation = true

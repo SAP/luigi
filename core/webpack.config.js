@@ -1,6 +1,8 @@
 const path = require('path');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const CleanWebpackPlugin = require('clean-webpack-plugin');
+const BundleAnalyzerPlugin = require('webpack-bundle-analyzer')
+  .BundleAnalyzerPlugin;
 const commonRules = require('./webpack-common-rules');
 const commonPlugins = require('./webpack-common-plugins');
 const exec = require('child_process').exec;
@@ -22,9 +24,13 @@ class PatchLuigiPlugin {
   }
   apply(compiler) {
     if (compiler.hooks) {
-      compiler.hooks.afterEmit.tap('Luigi Patch', () =>
+      compiler.hooks.afterEmit.tap('Luigi Patch babel + terser', () =>
         exec(
-          'babel public/luigi.js --out-file public/luigi.js --presets=@babel/preset-env --root . --root-mode upward --minified',
+          [
+            'babel public/luigi.js --out-file public/luigi.babel.js --presets=@babel/preset-env --root . --root-mode upward --source-maps inline',
+            `terser --compress --mangle --output public/luigi.js --source-map "content=inline" -- public/luigi.babel.js`,
+            'rm -f public/luigi.babel.js'
+          ].join(' && '),
           PatchLuigiPlugin.execHandler
         )
       );
@@ -107,7 +113,8 @@ module.exports = {
   output: {
     path: __dirname + '/public',
     filename: '[name].js',
-    chunkFilename: '[name].[id].js'
+    chunkFilename: '[name].[id].js',
+    sourceMapFilename: '[name].svelte.map.js'
   },
   module: {
     rules: [commonRules.svelte, commonRules.css, commonRules.urls]
@@ -119,9 +126,15 @@ module.exports = {
     }),
     new MiniCssExtractPlugin({ filename: '[name].css' }),
     commonPlugins.copyWebpackPlugin,
-    new PatchLuigiPlugin()
-  ],
+    new PatchLuigiPlugin(),
+    process.env.ANALYZE == 'true' &&
+      new BundleAnalyzerPlugin({
+        openAnalyzer: true,
+        generateStatsFile: true
+      })
+  ].filter(f => !!f), // filter out disabled plugins (eg ANALYZE returns undefined if not active)
   stats: {
     warnings: false
-  }
+  },
+  devtool: 'inline'
 };
