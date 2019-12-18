@@ -338,11 +338,11 @@ describe('Navigation', () => {
           .contains('More')
           .click();
 
-        cy.get('.fd-menu')
+        cy.get('.fd-nested-list')
           .contains('Default Child node Example')
           .click();
 
-        cy.get('.fd-side-nav__subitem')
+        cy.get('.fd-nested-list__item')
           .contains('First Child')
           .click();
         cy.expectPathToBe('/projects/tabNav/dps1');
