@@ -527,3 +527,80 @@ Hides the app loading indicator.
 **Meta**
 
 -   **since**: 0.6.4
+
+#### showAlert
+
+Shows an alert.
+
+##### Parameters
+
+-   `settings` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** the settings for the alert
+    -   `settings.text` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** the content of the alert. To add a link to the content, you have to set up the link in the `links` object. The key(s) in the `links` object must be used in the text to reference the links, wrapped in curly brackets with no spaces. If you don't specify any text, the alert is not displayed
+    -   `settings.type` **(`"info"` \| `"success"` \| `"warning"` \| `"error"`)** sets the type of alert
+    -   `settings.links` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** provides links data
+        -   `settings.links.LINK_KEY` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** object containing the data for a particular link. To properly render the link in the alert message refer to the description of the **settings.text** parameter
+            -   `settings.links.LINK_KEY.text` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** text which replaces the link identifier in the alert content
+            -   `settings.links.LINK_KEY.url` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** url to navigate when you click the link. Currently, only internal links are supported in the form of relative or absolute paths.
+    -   `settings.closeAfter` **[number](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number)** (optional) time in milliseconds that tells Luigi when to close the Alert automatically. If not provided, the Alert will stay on until closed manually. It has to be greater than `100`.
+
+##### Examples
+
+```javascript
+const settings = {
+ text: "Ut enim ad minim veniam, {goToHome} quis nostrud exercitation ullamco {relativePath}. Duis aute irure dolor {goToOtherProject}",
+ type: 'info',
+ links: {
+   goToHome: { text: 'homepage', url: '/overview' },
+   goToOtherProject: { text: 'other project', url: '/projects/pr2' },
+   relativePath: { text: 'relative hide side nav', url: 'hideSideNav' }
+ },
+ closeAfter: 3000
+}
+Luigi
+ .ux()
+ .showAlert(settings)
+ .then(() => {
+    // Logic to execute when the alert is dismissed
+ });
+```
+
+Returns **[promise](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise)** which is resolved when the alert is dismissed.
+
+**Meta**
+
+-   **since**: 0.6.4
+
+#### showConfirmationModal
+
+Shows a confirmation modal.
+
+##### Parameters
+
+-   `settings` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** the settings of the confirmation modal. If you don't provide any value for any of the fields, a default value is used
+    -   `settings.header` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** the content of the modal header (optional, default `"Confirmation"`)
+    -   `settings.body` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** the content of the modal body (optional, default `"Are you sure you want to do this?"`)
+    -   `settings.buttonConfirm` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** the label for the modal confirm button (optional, default `"Yes"`)
+    -   `settings.buttonDismiss` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** the label for the modal dismiss button (optional, default `"No"`)
+
+##### Examples
+
+```javascript
+const settings = {
+ header: "Confirmation",
+ body: "Are you sure you want to do this?",
+ buttonConfirm: "Yes",
+ buttonDismiss: "No"
+}
+Luigi
+ .ux()
+ .showConfirmationModal(settings)
+ .then(() => {
+    // Logic to execute when the confirmation modal is dismissed
+ });
+```
+
+Returns **[promise](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise)** which is resolved when accepting the confirmation modal and rejected when dismissing it
+
+**Meta**
+
+-   **since**: 0.6.4
