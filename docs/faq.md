@@ -77,19 +77,10 @@ Yes, to use Luigi with a google account, follow these steps:
       oAuth2ImplicitGrant: {
         authorizeUrl: 'https://accounts.google.com/o/oauth2/v2/auth',
         oAuthData: {
+          response_type: 'id_token token',
           client_id: 'YOUR_CLIENT_ID...apps.googleusercontent.com',
           scope: 'openid https://www.googleapis.com/auth/userinfo.email profile',
         }
-      },
-      userInfoFn: async (settings, authData) => {
-        const response = await fetch('https://www.googleapis.com/oauth2/v1/userinfo', {
-            method: 'GET',
-            headers: {
-                'Authorization': 'Bearer ' + authData.accessToken
-            }
-        });
-        const json = await response.json();
-        return json;
       },
       logoutFn: async (settings, authData, logoutCallback) => {
         console.log('revoking token');
@@ -99,6 +90,22 @@ Yes, to use Luigi with a google account, follow these steps:
       }
     }
   }
+  ```
+
+Google's id_token contains basic identiy data like name, user id which allows to show this data in the profile already. 
+Additionally, if you would like to show also the user picture, add the following code to enrich the user profile information: 
+
+  ```javascript
+  userInfoFn: async (settings, authData) => {
+    const response = await fetch('https://www.googleapis.com/oauth2/v1/userinfo', {
+      method: 'GET',
+      headers: {
+        'Authorization': 'Bearer ' + authData.accessToken
+      }
+    });
+    const json = await response.json();
+    return json;
+  },
   ```
 
 <!-- accordion:end -->
