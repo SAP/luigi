@@ -23,7 +23,7 @@ This document outlines the features provided by the Luigi Core API. It covers th
 -   [Navigation](#luiginavigation) - functions related to Luigi navigation
 -   [Localization](#luigii18n) - options related to language, translation, and localization
 -   [Custom messages](#custommessages) - custom messages between Luigi Core and micro frontends
--   [UX](#ux) - functions related to Luigi Core UX features (such as the loading indicator)
+-   [UX](#ux) - functions related to Luigi's appearance and user interface
 
 ## Luigi Config
 
