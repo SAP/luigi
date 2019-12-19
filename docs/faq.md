@@ -92,7 +92,7 @@ Yes, to use Luigi with a Google account, follow these steps:
   }
   ```
 
-Google's id_token contains basic identiy data like name, user id which allows to show this data in the profile already. 
+Google's `id_token` contains basic identity data like name and user ID, which allows for this data to be shown in the profile. 
 Additionally, if you would like to show also the user picture, add the following code to enrich the user profile information: 
 
   ```javascript
