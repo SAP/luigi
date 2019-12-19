@@ -279,12 +279,12 @@ Read more about [custom authorization providers](authorization-configuration.md)
 Luigi.auth().isAuthorizationEnabled();
 ```
 
-Returns **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)** true if authorization is enabled. Otherwise returns false.
+Returns **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)** `true` if authorization is enabled. Otherwise returns `false`.
 
 ### AuthorizationStore
 
 Authorization Storage helpers, to be used in your custom authorization provider.
-Read more about [custom authorization providers](authorization-configuration.md#implement-a-custom-authorization-provider).
+Read more about custom authorization providers [here](authorization-configuration.md#implement-a-custom-authorization-provider).
 
 #### getStorageKey
 
