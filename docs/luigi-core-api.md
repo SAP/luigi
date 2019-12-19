@@ -324,7 +324,7 @@ Returns **[AuthData](#authdata)** the current auth data object
 
 #### setAuthData
 
-Sets autorization data
+Sets authorization data
 
 ##### Parameters
 
@@ -338,7 +338,7 @@ Luigi.auth().store.setAuthData(data)
 
 #### removeAuthData
 
-Clears autorization data from store
+Clears authorization data from store
 
 ##### Examples
 

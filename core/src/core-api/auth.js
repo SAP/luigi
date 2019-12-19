@@ -89,14 +89,14 @@ class LuigiAuth {
        */
       getAuthData: () => AuthStoreSvc.getAuthData(),
       /**
-       * Sets autorization data
+       * Sets authorization data
        * @memberof AuthorizationStore
        * @param {AuthData} data new auth data object
        * @example Luigi.auth().store.setAuthData(data)
        */
       setAuthData: data => AuthStoreSvc.setAuthData(data),
       /**
-       * Clears autorization data from store
+       * Clears authorization data from store
        * @memberof AuthorizationStore
        * @example Luigi.auth().store.removeAuthData()
        */
