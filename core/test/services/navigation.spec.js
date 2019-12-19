@@ -68,6 +68,10 @@ describe('Navigation', function() {
 
     global['localStorage'] = mockStorage();
   });
+  beforeEach(() => {
+    Navigation._rootNodeProviderUsed = undefined;
+    Navigation.rootNode = undefined;
+  });
   afterEach(() => {
     // reset
     LuigiConfig.config = {};
