@@ -70,7 +70,8 @@ Yes, to use Luigi with a Google account, follow these steps:
 2. To get your app running locally, set the Autorized JavaScript Origins URIs to `http://localhost:4200` and Authorized redirect URIs to `http://localhost:4200/luigi-core/auth/oauth2/callback.html?storageType=localStorage`.
 3. Copy the Client ID on the right side, ending with `apps.googleusercontent.com`
 4. Update the LuigiConfig auth section. We have added also the parts for logout and getting user information.
-   ```javascript
+
+```javascript
   {
     auth: {
       use: 'oAuth2ImplicitGrant',
@@ -90,12 +91,12 @@ Yes, to use Luigi with a Google account, follow these steps:
       }
     }
   }
-  ```
+```
 
 Google's `id_token` contains basic identity data like name and user ID, which allows for this data to be shown in the profile. 
 Additionally, if you would also like to show the user picture, add the following code to enrich the user profile information: 
 
-  ```javascript
+```javascript
   userInfoFn: async (settings, authData) => {
     const response = await fetch('https://www.googleapis.com/oauth2/v1/userinfo', {
       method: 'GET',
@@ -106,6 +107,6 @@ Additionally, if you would also like to show the user picture, add the following
     const json = await response.json();
     return json;
   },
-  ```
+```
 
 <!-- accordion:end -->
