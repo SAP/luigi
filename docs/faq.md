@@ -64,7 +64,7 @@ Yes, it is already being used in production and close-to-production within SAP. 
 
 ### Can I authenticate Luigi with Google Cloud Identity?
 
-Yes, to use Luigi with a google account, follow these steps:
+Yes, to use Luigi with a Google account, follow these steps:
 
 1. Register a project and generate an OAuth2 Web Client based on [Google Developers Identity - OAuth2UserAgent](https://developers.google.com/identity/protocols/OAuth2UserAgent).
 2. To get your app running locally, set the Autorized JavaScript Origins URIs to `http://localhost:4200` and Authorized redirect URIs to `http://localhost:4200/luigi-core/auth/oauth2/callback.html?storageType=localStorage`.
