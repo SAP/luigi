@@ -91,7 +91,6 @@ class NavigationClass {
     if (!node) {
       return [];
     }
-
     if (!node._childrenProvider) {
       node._childrenProvider = node.children;
     }
@@ -102,33 +101,60 @@ class NavigationClass {
             node,
             '_childrenProvider',
             context || node.context
-          )) || [];
-        node.children = node._children.filter(child =>
-          NavigationHelpers.isNodeAccessPermitted(child, node, context)
-        );
-        this.bindChildrenToParent(node);
+          ))
+            .map(n => this.getExpandStructuralPathSegment(n))
+            .map(n => this.bindChildToParent(n, node)) || [];
+
+        node.children = this.getAccessibleNodes(node, context);
         return node.children;
       } catch (err) {
         console.error('Could not lazy-load children for node', err);
       }
     } else if (node._children) {
-      node.children = node._children.filter(child =>
-        NavigationHelpers.isNodeAccessPermitted(child, node, context)
-      );
-      this.bindChildrenToParent(node);
+      node.children = this.getAccessibleNodes(node, context);
       return node.children;
     } else {
       return [];
     }
   }
 
-  bindChildrenToParent(node) {
+  getAccessibleNodes(node, context) {
+    return node._children.filter(child =>
+      NavigationHelpers.isNodeAccessPermitted(child, node, context)
+    );
+  }
+
+  bindChildToParent(child, node) {
     // Checking for pathSegment to exclude virtual root node
-    if (node && node.pathSegment && node.children) {
-      node.children.forEach(child => {
-        child.parent = node;
-      });
+    // node.pathSegment check is also required for virtual nodes like categories
+    if (node && node.pathSegment) {
+      child.parent = node;
     }
+    return child;
+  }
+
+  getExpandStructuralPathSegment(node) {
+    // Checking for pathSegment to exclude virtual root node
+    if (node && node.pathSegment && node.pathSegment.indexOf('/') !== -1) {
+      const segs = node.pathSegment.split('/');
+      const clonedNode = { ...node };
+      const buildStructuralNode = (segs, node) => {
+        const seg = segs.shift();
+        let child = {};
+        if (segs.length) {
+          child.pathSegment = seg;
+          if (node.hideFromNav) child.hideFromNav = node.hideFromNav;
+          child.children = [buildStructuralNode(segs, node)];
+        } else {
+          // set original data to last child
+          child = clonedNode;
+          child.pathSegment = seg;
+        }
+        return child;
+      };
+      return buildStructuralNode(segs, node);
+    }
+    return node;
   }
 
   async buildNode(
