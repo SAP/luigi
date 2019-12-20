@@ -378,6 +378,7 @@ describe('Navigation', () => {
         cy.get('.luigi__more').click();
         cy.get('.fd-nested-list__title')
           .contains('Keep Selected Example')
+          .parent()
           .should('have.attr', 'aria-selected', 'true');
       });
 
