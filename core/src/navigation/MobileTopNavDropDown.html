@@ -106,13 +106,15 @@
     }
 
     .fd-modal__body {
-      max-height: calc(100vh - #{$topNavHeight} - #{$mobileTopNavHeight});
-      max-height: calc(
-        var(--vh, 1vh) * 100 - #{$topNavHeight} - #{$mobileTopNavHeight}
-      );
+      max-height: calc( var(--vh, 1vh) * 100 );
       padding: 0;
       -webkit-overflow-scrolling: touch;
     }
+
+    .fd-modal__body>:last-child {
+      padding-bottom: 35px;
+    }
+
   }
 
   @media (min-width: 320px) {
