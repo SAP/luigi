@@ -24,10 +24,10 @@
       >
         <a
           class="fd-tabs__link"
-          href="javascript:void(null)"
+          href="{getRouteLink(node)}"
           role="tab"
           aria-selected="{node === selectedNodeForTabNav}"
-          on:click="{() => handleClick(node)}"
+          on:click|preventDefault="{() => handleClick(node)}"
         >{node.label}</a>
       </span>
       {/if}
@@ -44,9 +44,8 @@
           <a
             class="fd-tabs__link has-child"
             aria-expanded="false"
-            href="javascript:void(null)"
             role="tab"
-            on:click="{() => toggleDropdownState(key)}"
+            on:click|preventDefault="{() => toggleDropdownState(key)}"
             aria-selected="{isSelectedCat(key,selectedNodeForTabNav)}"
           >
             <span class="label">{key}</span>
@@ -63,9 +62,9 @@
                 {#if node.label}
                 <li>
                   <a
-                    href="javascript:void(null)"
+                    href="{getRouteLink(node)}"
                     class="fd-menu__item"
-                    on:click="{() => handleClick(node)}"
+                    on:click|preventDefault="{() => handleClick(node)}"
                     aria-selected="{node === selectedNodeForTabNav}"
                   >{node.label}</a>
                 </li>
@@ -88,9 +87,8 @@
         <a
           class="fd-tabs__link fd-popover__control has-child luigi__more"
           aria-expanded="false"
-          href="javascript:void(null)"
           role="tab"
-          on:click="{toggleMoreBtn}"
+          on:click|preventDefault="{toggleMoreBtn}"
         >
           <span class="label">More</span>
           <span class="sap-icon--dropdown sap-icon--l"></span>
@@ -105,9 +103,9 @@
             {#each nodes as node, index2}
             <li class="fd-side-nav__item" uid="{index}-{index2}">
               <a
-                href="javascript:void(null)"
+                href="{getRouteLink(node)}"
                 class="fd-menu__item"
-                on:click="{() => handleClick(node)}"
+                on:click|preventDefault="{() => handleClick(node)}"
                 aria-selected="{node===selectedNodeForTabNav}"
               >{node.label}</a>
             </li>
@@ -116,11 +114,10 @@
             <li class="fd-side-nav__item" uid="{index}-0">
               <a
                 class="fd-side-nav__link has-child"
-                href="javascript:void(null)"
                 aria-haspopup="true"
                 aria-expanded="{dropDownStates[key+index]}"
                 aria-selected="{isSelectedCat(key,selectedNodeForTabNav)}"
-                on:click="{() => toggleDropdownState(key+index)}"
+                on:click|preventDefault="{() => toggleDropdownState(key+index)}"
               >{key}</a>
               <ul
                 class="fd-side-nav__sublist"
@@ -130,8 +127,8 @@
                 <li class="fd-side-nav__subitem">
                   <a
                     class="fd-side-nav__sublink"
-                    href="javascript:void(null)"
-                    on:click="{() => handleClick(node)}"
+                    href="{getRouteLink(node)}"
+                    on:click|preventDefault="{() => handleClick(node)}"
                     aria-selected="{node===selectedNodeForTabNav}"
                   >{node.label}</a>
                 </li>
@@ -146,16 +143,16 @@
     </span>
   </div>
 </nav>
-
 {/if}
 <script>
   import { beforeUpdate, createEventDispatcher, onMount } from 'svelte';
   import { Navigation } from './services/navigation';
-  import { NavigationHelpers } from '../utilities/helpers';
+  import { NavigationHelpers, RoutingHelpers } from '../utilities/helpers';
   import { LuigiConfig } from '../core-api';
 
   export let children;
   export let pathData;
+  export let pathParams;
   let previousPathData;
   export let hideNavComponent;
   export let virtualGroupPrefix = NavigationHelpers.virtualGroupPrefix;
@@ -306,6 +303,11 @@
       (selectedNodeForTabNav.category === key ||
         selectedNodeForTabNav.category.label === key)
     );
+  }
+
+  function getRouteLink(node) {
+    const link = RoutingHelpers.getRouteLink(node, pathParams);
+    return link.url || link;
   }
 
   // [svelte-upgrade suggestion]

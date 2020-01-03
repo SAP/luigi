@@ -30,7 +30,11 @@
               on:click="{() => onActionClick(node)}"
               data-testid="{getTestId(node)}"
             >
-              <a class="fd-menu__item">{$getTranslation(node.label)}</a>
+              <a
+                href="{getRouteLink(node)}"
+                on:click|preventDefault="{() => {}}"
+                class="fd-menu__item"
+              >{$getTranslation(node.label)}</a>
             </li>
             {/if} {/each}
           </ul>
@@ -50,6 +54,8 @@
               data-testid="{getTestId(node)}"
             >
               <a
+                href="{getRouteLink(node)}"
+                on:click|preventDefault="{() => {}}"
                 class="fd-menu__item {node === selectedLabel ? 'is-selected' : ''}"
                 title="{label}"
               >{label}</a>
@@ -63,7 +69,11 @@
               on:click="{() => onActionClick(node)}"
               data-testid="{getTestId(node)}"
             >
-              <a class="fd-menu__item">{$getTranslation(node.label)}</a>
+              <a
+                href="{getRouteLink(node)}"
+                on:click|preventDefault="{() => {}}"
+                class="fd-menu__item"
+              >{$getTranslation(node.label)}</a>
             </li>
             {/if} {/each}
           </ul>
@@ -96,6 +106,7 @@
   export let options = null;
   export let selectedOption;
   export let fallbackLabelResolver = null;
+  export let pathParams;
   let preserveSubPathOnSwitch;
   let getUnsavedChangesModalPromise = getContext(
     'getUnsavedChangesModalPromise'
@@ -163,6 +174,11 @@
     return node.testId
       ? node.testId
       : NavigationHelpers.prepareForTests(node.pathSegment, node.label);
+  }
+
+  function getRouteLink(node) {
+    const link = RoutingHelpers.getRouteLink(node, pathParams);
+    return link.url || link;
   }
 
   // [svelte-upgrade suggestion]
