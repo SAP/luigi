@@ -243,6 +243,10 @@ settings: {
 - **type**: boolean
 - **description**: renders the children of the node as a horizontal navigation bar. Sub-children are not supported. When you categorize nodes you will get a drop-down menu in the horizontal navigation.
 
+### anonymousAccess
+- **type**: boolean or "exclusive"
+- **description**: when set to `true`, the node is always accessible. When set to `exclusive`, the node is only visible in logged-out state. Requires **auth.disableAutoLogin** to be set to `true`. **anonymousAccess** needs to be defined both on parent and child nodes.
+
 ## Context switcher
 
 The context switcher is a drop-down list available in the top navigation bar. It allows you to switch between a curated list of navigation elements such as Environments. To do so, add the **contextSwitcher** parameter to the **navigation** object using the following optional parameters:
@@ -266,6 +270,12 @@ The context switcher is a drop-down list available in the top navigation bar. It
   - **label** defines the context element label. If not defined, the **pathValue** is passed to **fallbackLabelResolver** to set its value. The default value is **pathValue**, if **fallbackLabelResolver** is not defined.
   - **pathValue** defines the context element path that is appended to **parentNodePath** and reflects a **pathSegment**.
 
+### customOptionsRenderer
+- **type**: function
+- **parameters**: [option](navigation-parameters-reference.md#options), isSelected
+- **description**: - **description**: enables you to add custom items to the context switcher by rendering code inside a `<li>` element. The function take an **option** object and a boolean **isSelected** as a parameter. It is recommended to use this function carefully because it is possible to inject JavaScript code.
+
+
 ### actions
 - **type**: array
 - **description**: defines a list of additional elements that are shown on above or below the context switcher **options**.
@@ -286,6 +296,10 @@ The context switcher is a drop-down list available in the top navigation bar. It
 - **type**: boolean
 - **description**: if set to `true`, the sub-path is preserved on context switch.
 
+### alwaysShowDropdown
+- **type**: boolean
+- **description**: if set to `false`, the drop-down is not shown on click if there is only one option and no actions.
+- **default**: `true`
 
 ## Profile
 

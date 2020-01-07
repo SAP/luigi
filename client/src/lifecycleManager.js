@@ -90,7 +90,6 @@ class LifecycleManager extends LuigiClientBase {
         this._notifyUpdate();
         helpers.sendPostMessageToLuigiCore({ msg: 'luigi.navigate.ok' });
       });
-
       /**
        * Get context once initially
        * @private
@@ -101,9 +100,43 @@ class LifecycleManager extends LuigiClientBase {
         },
         '*'
       );
+      this._tpcCheck();
     };
 
     luigiClientInit();
+  }
+
+  _tpcCheck() {
+    let tpc = 'enabled';
+    let cookies = document.cookie;
+    let luigiCookie;
+    let luigiCookieKey;
+    if (cookies) {
+      luigiCookie = cookies
+        .split(';')
+        .map(cookie => cookie.trim())
+        .find(cookie => cookie == 'luigiCookie=true');
+    }
+    if (luigiCookie === 'luigiCookie=true') {
+      luigiCookieKey = luigiCookie.split('=')[0];
+      document.cookie = luigiCookieKey + '=; Max-Age=-99999999;';
+    }
+    document.cookie = 'luigiCookie=true';
+    cookies = document.cookie;
+    if (cookies) {
+      luigiCookie = cookies
+        .split(';')
+        .map(cookie => cookie.trim())
+        .find(cookie => cookie == 'luigiCookie=true');
+    }
+    if (luigiCookie === 'luigiCookie=true') {
+      window.parent.postMessage({ msg: 'luigi.third-party-cookie', tpc }, '*');
+      document.cookie = luigiCookieKey + '=; Max-Age=-99999999;';
+    } else {
+      tpc = 'disabled';
+      window.parent.postMessage({ msg: 'luigi.third-party-cookie', tpc }, '*');
+      console.warn('Third party cookies are not supported!');
+    }
   }
 
   /**
@@ -334,6 +367,16 @@ class LifecycleManager extends LuigiClientBase {
    */
   getClientPermissions() {
     return this.currentContext.internal.clientPermissions || {};
+  }
+
+  /**
+   * When the micro frontend is not embedded in the Luigi Core application and there is no init handshake you can set the target origin that is used in postMessage function calls by Luigi Client.
+   * @param {string} origin target origin.
+   * @memberof Lifecycle
+   * @since 0.7.3
+   */
+  setTargetOrigin(origin) {
+    helpers.setTargetOrigin(origin);
   }
 
   /**

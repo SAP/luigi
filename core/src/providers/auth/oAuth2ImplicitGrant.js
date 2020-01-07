@@ -53,6 +53,9 @@ export class oAuth2ImplicitGrant {
       const generatedNonce =
         (settings.nonceFn && settings.nonceFn()) || this.generateNonce();
       sessionStorage.setItem('luigi.nonceValue', generatedNonce);
+      if (!settings.oAuthData.nonce) {
+        settings.oAuthData.nonce = generatedNonce;
+      }
 
       const createInputElement = (name, value) => {
         const inputElem = document.createElement('input');

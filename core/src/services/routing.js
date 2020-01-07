@@ -116,11 +116,11 @@ class RoutingClass {
   }
 
   getModifiedPathname() {
-    if (!window.history.state) {
-      return '';
-    }
+    const path =
+      (window.history.state && window.history.state.path) ||
+      window.location.pathname;
 
-    return window.history.state.path
+    return path
       .split('/')
       .slice(1)
       .join('/');
