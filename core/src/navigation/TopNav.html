@@ -454,8 +454,7 @@
   }
 
   function getRouteLink(node) {
-    const link = RoutingHelpers.getRouteLink(node, pathParams);
-    return link.url || link;
+    return RoutingHelpers.getNodeHref(node, pathParams);
   }
 
   export function openMobileProductSwitcher() {

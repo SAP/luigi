@@ -158,6 +158,14 @@ class RoutingHelpersClass {
     return GenericHelpers.replaceVars(route, pathParams, ':', false);
   }
 
+  getNodeHref(node, pathParams) {
+    if (LuigiConfig.getConfigBooleanValue('navigation.addNavHrefs')) {
+      const link = RoutingHelpers.getRouteLink(node, pathParams);
+      return link.url || link;
+    }
+    return 'javascript:void(0)';
+  }
+
   substituteDynamicParamsInObject(object, paramMap, paramPrefix = ':') {
     return Object.entries(object)
       .map(([key, value]) => {

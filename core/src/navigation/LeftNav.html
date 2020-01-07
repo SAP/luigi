@@ -96,7 +96,7 @@
               class="fd-side-nav__link has-child"
               aria-haspopup="true"
               aria-expanded="{isExpanded(nodes, expandedCategories)}"
-              on:click|PreventDefault="{() => setExpandedState(nodes, !isExpanded(nodes, expandedCategories), this)}"
+              on:click|preventDefault="{() => setExpandedState(nodes, !isExpanded(nodes, expandedCategories), this)}"
             >
               {#if isOpenUIiconName(nodes.metaInfo.icon)}
               <span
@@ -372,8 +372,7 @@
   }
 
   function getRouteLink(node) {
-    const link = RoutingHelpers.getRouteLink(node, pathParams);
-    return link.url || link;
+    return RoutingHelpers.getNodeHref(node, pathParams);
   }
 
   function getTestIdForCat(metaInfo, key) {
