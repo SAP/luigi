@@ -377,6 +377,133 @@ Refreshes top navigation badge counters by rendering the navigation again.
 Luigi.navigation().updateTopNavigation();
 ```
 
+#### navigate
+
+Navigates to the given path in the application. It contains either a full absolute path or a relative path without a leading slash that uses the active route as a base. This is the standard navigation.
+
+##### Parameters
+
+-   `path` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** path to be navigated to
+-   `preserveView` **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)** preserve a view by setting it to `true`. It keeps the current view opened in the background and opens the new route in a new frame. Use the [goBack()](#goBack) function to navigate back. You can use this feature across different levels. Preserved views are discarded as soon as you use the standard [navigate()](#navigate) function instead of [goBack()](#goBack)
+-   `modalSettings` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** opens a view in a modal. Use these settings to configure the modal's title and size
+    -   `modalSettings.title` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** modal title. By default, it is the node label. If there is no label, it is left empty
+    -   `modalSettings.size` **(`"l"` \| `"m"` \| `"s"`)** size of the modal (optional, default `"l"`)
+
+##### Examples
+
+```javascript
+Luigi.navigation().navigate('/overview')
+Luigi.navigation().navigate('users/groups/stakeholders')
+Luigi.navigation().navigate('/settings', null, true) // preserve view
+```
+
+#### openAsModal
+
+Opens a view in a modal. You can specify the modal's title and size. If you don't specify the title, it is the node label. If there is no node label, the title remains empty.  The default size of the modal is `l`, which means 80%. You can also use `m` (60%) and `s` (40%) to set the modal size. Optionally, use it in combination with any of the navigation functions.
+
+##### Parameters
+
+-   `path` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** navigation path
+-   `modalSettings` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** opens a view in a modal. Use these settings to configure the modal's title and size
+    -   `modalSettings.title` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** modal title. By default, it is the node label. If there is no label, it is left empty
+    -   `modalSettings.size` **(`"l"` \| `"m"` \| `"s"`)** size of the modal (optional, default `"l"`)
+
+##### Examples
+
+```javascript
+Luigi.navigation().openAsModal('projects/pr1/users', {title:'Users', size:'m'});
+```
+
+#### fromContext
+
+Sets the current navigation context to that of a specific parent node which has the [navigationContext](navigation-configuration.md) field declared in the navigation configuration. This navigation context is then used by the `navigate` function.
+
+##### Parameters
+
+-   `navigationContext` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** 
+
+##### Examples
+
+```javascript
+Luigi.navigation().fromContext('project').navigate('/settings')
+```
+
+Returns **linkManager** link manager instance
+
+#### fromClosestContext
+
+Sets the current navigation context which is then used by the `navigate` function. This has to be a parent navigation context, it is not possible to use the child navigation contexts.
+
+##### Examples
+
+```javascript
+Luigi.navigation().fromClosestContext().navigate('/users/groups/stakeholders')
+```
+
+Returns **linkManager** link manager instance
+
+#### withParams
+
+Sends node parameters to the route. The parameters are used by the `navigate` function. Use it optionally in combination with any of the navigation functions and receive it as part of the context object in Luigi Client.
+
+##### Parameters
+
+-   `nodeParams` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** 
+
+##### Examples
+
+```javascript
+Luigi.navigation().withParams({foo: "bar"}).navigate("path")
+
+// Can be chained with context setting functions such as:
+Luigi.navigation().fromContext("currentTeam").withParams({foo: "bar"}).navigate("path")
+```
+
+Returns **linkManager** link manager instance
+
+#### pathExists
+
+Checks if the path you can navigate to exists in the main application. For example, you can use this helper method conditionally to display a DOM element like a button.
+
+##### Parameters
+
+-   `path` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** path which existence you want to check
+
+##### Examples
+
+```javascript
+let pathExists;
+ Luigi
+ .navigation()
+ .pathExists('projects/pr2')
+ .then(
+   (pathExists) => {  }
+ );
+```
+
+Returns **[promise](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise)** a promise which resolves to a Boolean variable specifying whether the path exists or not
+
+#### hasBack
+
+Checks if there is one or more preserved views. You can use it to show a **back** button.
+
+Returns **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)** indicating if there is a preserved view you can return to
+
+#### goBack
+
+Discards the active view and navigates back to the last visited view. Works with preserved views, and also acts as the substitute of the browser **back** button. **goBackContext** is only available when using preserved views.
+
+##### Parameters
+
+-   `goBackValue` **any** data that is passed in the **goBackContext** field to the last visited view when using preserved views.
+
+##### Examples
+
+```javascript
+Luigi.navigation().goBack({ foo: 'bar' });
+Luigi.navigation().goBack(true);
+```
+
 ## Luigi.i18n()
 
 <!-- Generated by documentation.js. Update this documentation by updating the source code. -->

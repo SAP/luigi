@@ -19,8 +19,8 @@
     "mock:develop-plugins:watch": "NODE_ENV=debug nodemon --ignore 'static/**' -r esm scripts/markdown.unified-preview.js"
   },
   "dependencies": {
-    "@kyma-project/luigi-client": "^0.6.0",
-    "@kyma-project/luigi-core": "^0.6.0",
+    "@kyma-project/luigi-client": "0.7.2",
+    "@kyma-project/luigi-core": "0.7.2",
     "polka": "next"
   },
   "devDependencies": {
@@ -70,6 +70,7 @@
     "unified": "^8.3.2",
     "vfile-reporter": "^6.0.0",
     "webpack": "^4.7.0",
-    "webpack-cli": "^3.0.3"
+    "webpack-cli": "^3.0.3",
+    "serialize-javascript": ">=2.1.1"
   }
 }

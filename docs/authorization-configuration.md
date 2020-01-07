@@ -50,7 +50,7 @@ auth: {
     redirect_uri: '',
     post_logout_redirect_uri: '/logout.html',
     automaticSilentRenew: true,
-    userInfoFn:()=>{},
+    userInfoFn:(authSettings, authData)=>{},
     accessTokenExpiringNotificationTime: 60
   },
   disableAutoLogin: false
@@ -71,7 +71,7 @@ auth: {
 
 The OpenID Connect configuration allows you to specify the **automaticSilentRenew** option. When set to `true`, Luigi attempts to automatically renew the token in the background before it expires. Be aware that this mechanism requires the browser to support [third-party cookies](https://developer.mozilla.org/en-US/docs/Web/HTTP/Cookies#Third-party_cookies).
 
-To detect whether the user's browser supports the mechanism, use the script in the [`third-party-cookies`](https://github.com/SAP/luigi/tree/master/core/third-party-cookies) catalog. Deploy these files on a domain different from your main application's and set **thirdPartyCookiesScriptLocation** to the `init.html` file. During initialization, Luigi detects the cookies support and produces a warning in the console if cookies are disabled in the user's browser.
+To detect whether the user's browser supports the mechanism, use the script in the [`third-party-cookies`](https://github.com/SAP/luigi/tree/master/core/third-party-cookies) catalog. Deploy this file on a domain different from your main application's and set **thirdPartyCookiesScriptLocation** to the `init.html` file. During initialization, Luigi detects the cookies support and produces a warning in the console if cookies are disabled in the user's browser.
 
 When Luigi fails to renew the token and then logs the user out, it adds the `?reason=tokenExpired&thirdPartyCookies=[VALUE]` query parameters to the logout page redirect URL. Luigi replaces **[VALUE]**  with one of these options:
 - `disabled` means that third party cookies are disabled.
@@ -101,7 +101,7 @@ auth: {
     // optional functions
     nonceFn: () => {},
     logoutFn: (settings, authData, logoutCallback) => {},
-    userInfoFn:()=>{},
+    userInfoFn:(settings, authData)=>{},
     accessTokenExpiringNotificationTime: 60,
     expirationCheckInterval: 5
   },
