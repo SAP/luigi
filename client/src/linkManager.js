@@ -32,16 +32,16 @@ export class linkManager extends LuigiClientBase {
   /**
    * Navigates to the given path in the application hosted by Luigi. It contains either a full absolute path or a relative path without a leading slash that uses the active route as a base. This is the standard navigation.
    * @memberof linkManager
-   * @param {string} path path to be navigated to
-   * @param {string} sessionId current Luigi **sessionId**
-   * @param {boolean} preserveView preserve a view by setting it to `true`. It keeps the current view opened in the background and opens the new route in a new frame. Use the {@link #goBack goBack()} function to navigate back. You can use this feature across different levels. Preserved views are discarded as soon as you use the standard {@link #navigate navigate()} function instead of {@link #goBack goBack()}
-   * @param {Object} modalSettings opens a view in a modal. Use these settings to configure the modal's title and size
-   * @param {string} modalSettings.title modal title. By default, it is the node label. If there is no label, it is left empty
-   * @param {('l'|'m'|'s')} [modalSettings.size="l"] size of the modal
-   * @param {Object} splitViewSettings opens a view in a split view. Use these settings to configure the split view's behaviour
-   * @param {string} splitViewSettings.title split view title. By default, it is the node label. If there is no label, it is left empty
-   * @param {number} [splitViewSettings.size=40] height of the split view in percent
-   * @param {boolean} [splitViewSettings.collapsed=false] creates split view but leaves it closed initially
+   * @param {string} path: path to be navigated to
+   * @param {string} sessionId: current Luigi **sessionId**
+   * @param {boolean} preserveView: preserve a view by setting it to `true`. It keeps the current view opened in the background and opens the new route in a new frame. Use the {@link #goBack goBack()} function to navigate back. You can use this feature across different levels. Preserved views are discarded as soon as you use the standard {@link #navigate navigate()} function instead of {@link #goBack goBack()}
+   * @param {Object} modalSettings: opens a view in a modal. Use these settings to configure the modal's title and size
+   * @param {string} modalSettings.title: modal title. By default, it is the node label. If there is no label, it is left empty
+   * @param {('l'|'m'|'s')} [modalSettings.size="l"] : size of the modal
+   * @param {Object} splitViewSettings: opens a view in a split view. Use these settings to configure the split view's behaviour
+   * @param {string} splitViewSettings.title: split view title. By default, it is the node label. If there is no label, it is left empty
+   * @param {number} [splitViewSettings.size=40] : height of the split view in percent
+   * @param {boolean} [splitViewSettings.collapsed=false] : creates split view but leaves it closed initially
    * @example
    * LuigiClient.linkManager().navigate('/overview')
    * LuigiClient.linkManager().navigate('users/groups/stakeholders')
@@ -77,10 +77,10 @@ export class linkManager extends LuigiClientBase {
   /**
    * Opens a view in a modal. You can specify the modal's title and size. If you don't specify the title, it is the node label. If there is no node label, the title remains empty.  The default size of the modal is `l`, which means 80%. You can also use `m` (60%) and `s` (40%) to set the modal size. Optionally, use it in combination with any of the navigation functions.
    * @memberof linkManager
-   * @param {string} path navigation path
-   * @param {Object} [modalSettings] opens a view in a modal. Use these settings to configure the modal's title and size
-   * @param {string} modalSettings.title modal title. By default, it is the node label. If there is no label, it is left empty
-   * @param {('l'|'m'|'s')} [modalSettings.size="l"] size of the modal
+   * @param {string} path: navigation path
+   * @param {Object} [modalSettings] : opens a view in a modal. Use these settings to configure the modal's title and size
+   * @param {string} modalSettings.title: modal title. By default, it is the node label. If there is no label, it is left empty
+   * @param {('l'|'m'|'s')} [modalSettings.size="l"] : size of the modal
    * @example
    * LuigiClient.linkManager().openAsModal('projects/pr1/users', {title:'Users', size:'m'});
    */
@@ -91,12 +91,12 @@ export class linkManager extends LuigiClientBase {
   /**
    * Opens a view in a split view. You can specify the split view's title and size. If you don't specify the title, it is the node label. If there is no node label, the title remains empty. The default size of the split view is `40`, which means 40% height of the split view.
    * @memberof linkManager
-   * @param {string} path navigation path
-   * @param {Object} splitViewSettings opens a view in a split view. Use these settings to configure the split view's behaviour
-   * @param {string} splitViewSettings.title split view title. By default, it is the node label. If there is no label, it is left empty
-   * @param {number} [splitViewSettings.size=40] height of the split view in percent
-   * @param {boolean} [splitViewSettings.collapsed=false] opens split view in collapsed state
-   * @returns {Object} instance of the SplitView. It provides Event listeners and you can use the available functions to control its behavior.
+   * @param {string} path: navigation path
+   * @param {Object} splitViewSettings: opens a view in a split view. Use these settings to configure the split view's behaviour
+   * @param {string} splitViewSettings.title: split view title. By default, it is the node label. If there is no label, it is left empty
+   * @param {number} [splitViewSettings.size=40] : height of the split view in percent
+   * @param {boolean} [splitViewSettings.collapsed=false] : opens split view in collapsed state
+   * @returns {Object}: instance of the SplitView. It provides Event listeners and you can use the available functions to control its behavior.
    * @see {@link splitView} for further documentation about the returned instance
    * @since 0.6.0
    * @example
@@ -111,7 +111,7 @@ export class linkManager extends LuigiClientBase {
    * Sets the current navigation context to that of a specific parent node which has the {@link navigation-configuration.md navigationContext} field declared in the navigation configuration. This navigation context is then used by the `navigate` function.
    * @memberof linkManager
    * @param {string} navigationContext
-   * @returns {linkManager} link manager instance
+   * @returns {linkManager}: link manager instance
    * @example
    * LuigiClient.linkManager().fromContext('project').navigate('/settings')
    */
@@ -136,7 +136,7 @@ export class linkManager extends LuigiClientBase {
   /**
    * Sets the current navigation context which is then used by the `navigate` function. This has to be a parent navigation context, it is not possible to use the child navigation contexts.
    * @memberof linkManager
-   * @returns {linkManager} link manager instance
+   * @returns {linkManager}: link manager instance
    * @example
    * LuigiClient.linkManager().fromClosestContext().navigate('/users/groups/stakeholders')
    */
@@ -158,7 +158,7 @@ export class linkManager extends LuigiClientBase {
    * Sends node parameters to the route. The parameters are used by the `navigate` function. Use it optionally in combination with any of the navigation functions and receive it as part of the context object in Luigi Client.
    * @memberof linkManager
    * @param {Object} nodeParams
-   * @returns {linkManager} link manager instance
+   * @returns {linkManager}: link manager instance
    * @example
    * LuigiClient.linkManager().withParams({foo: "bar"}).navigate("path")
    *
@@ -176,8 +176,8 @@ export class linkManager extends LuigiClientBase {
   /**
    * Checks if the path you can navigate to exists in the main application. For example, you can use this helper method conditionally to display a DOM element like a button.
    * @memberof linkManager
-   * @param {string} path path which existence you want to check
-   * @returns {promise} a promise which resolves to a Boolean variable specifying whether the path exists or not
+   * @param {string} path: path which existence you want to check
+   * @returns {promise}: a promise which resolves to a Boolean variable specifying whether the path exists or not
    * @example
    *  let pathExists;
    *  LuigiClient
@@ -240,7 +240,7 @@ export class linkManager extends LuigiClientBase {
   /**
    * Discards the active view and navigates back to the last visited view. Works with preserved views, and also acts as the substitute of the browser **back** button. **goBackContext** is only available when using preserved views.
    * @memberof linkManager
-   * @param {any} goBackValue data that is passed in the **goBackContext** field to the last visited view when using preserved views.
+   * @param {any} goBackValue: data that is passed in the **goBackContext** field to the last visited view when using preserved views.
    * @example
    * LuigiClient.linkManager().goBack({ foo: 'bar' });
    * LuigiClient.linkManager().goBack(true);

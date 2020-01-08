@@ -8,7 +8,7 @@ import { IframeHelpers } from './../utilities/helpers';
 class LuigiElements {
   /**
    * Returns the container of the Luigi content.
-   * @returns {HTMLElement} the DOM element that wraps the Luigi content.
+   * @returns {HTMLElement}: the DOM element that wraps the Luigi content.
    * @memberof Elements
    * @since 0.6.0
    * @example
@@ -20,7 +20,7 @@ class LuigiElements {
 
   /**
    * Returns a boolean that indicates if Luigi is being rendered in a custom container or not.
-   * @returns {Boolean} _true_ if Luigi content is wrapped in a custom html tag, _false_ otherwise.
+   * @returns {Boolean}: 'true' if Luigi content is wrapped in a custom html tag, 'false' otherwise.
    * @memberof Elements
    * @private
    * @since 0.6.0
@@ -51,7 +51,7 @@ class LuigiElements {
 
   /**
    * Returns the shellbar component.
-   * @returns {HTMLElement} the shellbar DOM element.
+   * @returns {HTMLElement}: the shellbar DOM element.
    * @memberof Elements
    * @since 0.4.12
    * @example
@@ -63,7 +63,7 @@ class LuigiElements {
 
   /**
    * Returns the shellbar actions component.
-   * @returns {HTMLElement} the shellbar actions DOM element.
+   * @returns {HTMLElement}: the shellbar actions DOM element.
    * @memberof Elements
    * @since 0.4.12
    * @example
@@ -75,7 +75,7 @@ class LuigiElements {
 
   /**
    * Returns a list of all available micro frontends.
-   * @returns {{id: string, active: boolean, container: HTMLElement, type: ('main'|'split-view'|'modal')}[]} list of objects defining all micro frontends from the DOM
+   * @returns {{id: string, active: boolean, container: HTMLElement, type: ('main'|'split-view'|'modal')}[]}: list of objects defining all micro frontends from the DOM
    * @example
    * Luigi.elements().getMicrofrontends();
    * @memberof Elements
@@ -87,7 +87,7 @@ class LuigiElements {
 
   /**
    * Returns all micro frontend iframes including the iframe from the modal if it exists.
-   * @returns {HTMLElement[]} an array of all micro frontend iframes from the DOM.
+   * @returns {HTMLElement[]}: an array of all micro frontend iframes from the DOM.
    * @memberof Elements
    * @since 0.4.12
    * @example
@@ -100,7 +100,7 @@ class LuigiElements {
   /**
    * Returns the active micro frontend iframe.
    * If there is a modal, which includes the micro frontend iframe, the function returns this iframe.
-   * @returns {HTMLElement} the active micro frontend iframe DOM element.
+   * @returns {HTMLElement}: the active micro frontend iframe DOM element.
    * @memberof Elements
    * @since 0.4.12
    * @example

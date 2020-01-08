@@ -30,7 +30,7 @@ class LuigiI18NManager {
 
   /**
    * Gets the current locale.
-   * @returns {string} current locale
+   * @returns {string}: current locale
    * @since 0.5.3
    * @memberof LuigiI18N
    */
@@ -42,7 +42,7 @@ class LuigiI18NManager {
 
   /**
    * Sets current locale to the specified one.
-   * @param {string} locale locale to be set as the current locale
+   * @param {string}: locale locale to be set as the current locale
    * @since 0.5.3
    * @memberof LuigiI18N
    */
@@ -55,8 +55,8 @@ class LuigiI18NManager {
 
   /**
    * Registers a listener for locale changes.
-   * @param {Function} listener function called on every locale change with the new locale as argument
-   * @returns {number} listener ID associated with the given listener; use it when removing the listener
+   * @param {Function} listener: function called on every locale change with the new locale as argument
+   * @returns {number}: listener ID associated with the given listener; use it when removing the listener
    * @since 0.5.3
    * @memberof LuigiI18N
    */
@@ -72,7 +72,7 @@ class LuigiI18NManager {
 
   /**
    * Unregisters a listener for locale changes.
-   * @param {number} listenerId listener ID associated with the listener to be removed, returned by addCurrentLocaleChangeListener
+   * @param {number} listenerId: listener ID associated with the listener to be removed, returned by addCurrentLocaleChangeListener
    * @since 0.5.3
    * @memberof LuigiI18N
    */
@@ -113,9 +113,9 @@ class LuigiI18NManager {
   /**
    * Gets translated text for the specified key in the current locale or in the specified one.
    * Property values for token replacement in the localization key will be taken from the specified interpolations object.
-   * @param {string} key key to be translated
-   * @param {Object} interpolations objects with properties that will be used for token replacements in the localization key
-   * @param {locale} locale optional locale to get the translation for; default is the current locale
+   * @param {string} key: key to be translated
+   * @param {Object} interpolations: objects with properties that will be used for token replacements in the localization key
+   * @param {locale} locale: optional locale to get the translation for; default is the current locale
    * @memberof LuigiI18N
    */
   getTranslation(key, interpolations = undefined, locale = undefined) {
@@ -141,8 +141,8 @@ class LuigiI18NManager {
   /**
    * @private
    * Finds the translated value based on given key.
-   * @param {string} key key to be translated.
-   * @param {*} obj translation table.
+   * @param {string} key: key to be translated.
+   * @param {*} obj: translation table.
    * @memberof LuigiI18N
    */
   findTranslation(key, obj, interpolations) {

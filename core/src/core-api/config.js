@@ -29,7 +29,7 @@ class LuigiConfig {
   /**
    * Sets the configuration for Luigi initially. Can also be called at a later point in time again to update the configuration.
    * @memberof Configuration
-   * @param {Object} configInput <br> - the Luigi Core configuration object
+   * @param {Object} configInput: the Luigi Core configuration object
    * @example
    * Luigi.setConfig({
    *   navigation: {
@@ -69,7 +69,7 @@ class LuigiConfig {
 
   /**
    * Returns the current active configuration
-   * @returns {Object} <br> - the configuration object
+   * @returns {Object}: the configuration object
    * @memberof Configuration
    * @example
    * Luigi.getConfig()
@@ -80,7 +80,7 @@ class LuigiConfig {
 
   /**
    * Tells Luigi that the configuration has been changed. Luigi will update the application or parts of it based on the specified scope.
-   * @param {...string} scope <br> - one or more scope selectors specifying what parts of the configuration were changed. If no scope selector is provided, the whole configuration is considered changed.
+   * @param {...string} scope: one or more scope selectors specifying what parts of the configuration were changed. If no scope selector is provided, the whole configuration is considered changed.
    * <p>
    * The supported scope selectors are:
    * <p>
@@ -132,7 +132,7 @@ class LuigiConfig {
   /**
    * Gets value of the given property on Luigi config object. Target can be a value or a synchronous function.
    * @memberof Configuration
-   * @param {string} property <br> - the object traversal path
+   * @param {string} property: the object traversal path
    * @example
    * Luigi.getConfigValue('auth.use')
    * Luigi.getConfigValue('settings.sideNavFooterText')
@@ -145,7 +145,7 @@ class LuigiConfig {
    * Gets boolean value of the given property on Luigi config object.
    * Function return true if the property value is equal true or 'true'. Otherwise the function returns false.
    * @memberof Configuration
-   * @param {string} property <br> - the object traversal path
+   * @param {string} property: the object traversal path
    * @example
    * Luigi.getConfigBooleanValue('settings.hideNavigation')
    */
@@ -165,8 +165,8 @@ class LuigiConfig {
    * If the value is a Function it is called (with the given parameters) and the result of that call is the value.
    * If the value is not a Promise it is wrapped to a Promise so that the returned value is definitely a Promise.
    * @memberof Configuration
-   * @param {string} property <br> - the object traversal path
-   * @param {*} parameters optional parameters that are used if the target is a function
+   * @param {string} property: the object traversal path
+   * @param {*} parameters: optional parameters that are used if the target is a function
    * @example
    * Luigi.getConfigValueAsync('navigation.nodes')
    * Luigi.getConfigValueAsync('navigation.profile.items')
@@ -207,7 +207,7 @@ class LuigiConfig {
   /**
    * Detects if authorization is enabled via configuration.
    * @memberof Configuration
-   * @returns {boolean} <br> - returns true if authorization is enabled. Otherwise returns false.
+   * @returns {boolean}: returns true if authorization is enabled. Otherwise returns false.
    * @deprecated now located in Luigi.auth() instead of Luigi
    */
   isAuthorizationEnabled() {
