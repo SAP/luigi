@@ -506,9 +506,7 @@
       getAlertWithId(currentAlerts, settings.id)
     ) {
       console.error(
-        `The alert with id '${
-          settings.id
-        }' already exists in a queue, therefore it won't be displayed `
+        `The alert with id '${settings.id}' already exists in a queue, therefore it won't be displayed `
       );
       return Promise.reject();
     }
@@ -992,6 +990,23 @@
     ) {
       thirdPartyCookiesCheck.thirdPartyCookieErrorHandling();
     }
+  };
+
+  export const pathExists = async path => {
+    const data = {
+      link: path,
+      relative: path[0] !== '/'
+    };
+    const builtPath = buildPath(data);
+    const pathData = await Navigation.getNavigationPath(
+      LuigiConfig.getConfigValueAsync('navigation.nodes'),
+      builtPath
+    );
+    return pathData.isExistingRoute;
+  };
+
+  export const hasBack = () => {
+    return (mfModal && mfModal.displayed) || preservedViews.length !== 0;
   };
 
   onMount(() => {
