@@ -23,7 +23,7 @@
     "css-loader": "^3.0.0",
     "file-loader": "^2.0.0",
     "fiori-fundamentals": "1.6.0",
-    "fundamental-styles": "^0.4.0-rc.20",
+    "fundamental-styles": "^0.4.0",
     "jsdom": "15.0.0",
     "jsdom-global": "3.0.2",
     "lodash": ">=4.17.13",
