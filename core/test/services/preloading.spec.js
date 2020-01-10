@@ -230,6 +230,25 @@ describe('Iframe', () => {
       assert.equal(iframes[3].vg, 'cheese');
     });
 
+    it('preload, set shouldPreload to true if it was false', () => {
+      assert.equal(ViewGroupPreloading.shouldPreload, false);
+      ViewGroupPreloading.preload();
+      assert.equal(ViewGroupPreloading.shouldPreload, true);
+    });
+
+    it('preload, call preloadViewGroups and extend iframes', () => {
+      ViewGroupPreloading.preloadBatchSize = 4;
+      ViewGroupPreloading.shouldPreload = true;
+
+      assert.equal(iframes.length, 1);
+
+      preloadingAllowed = true;
+      ViewGroupPreloading.preload();
+      clock.tick(1);
+
+      assert.equal(iframes.length, 4);
+    });
+
     it('loaded', () => {
       const iframe = {
         src: 'http://luigi.url.de',
