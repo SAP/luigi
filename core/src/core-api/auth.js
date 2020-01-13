@@ -16,7 +16,7 @@ class LuigiAuth {
    * Detects if authorization is enabled via configuration.
    * Read more about [custom authorization providers](authorization-configuration.md).
    * @memberof Authorization
-   * @returns {boolean}: `true` if authorization is enabled. Otherwise returns `false`.
+   * @returns {boolean} - `true` if authorization is enabled. Otherwise returns `false`.
    * @example
    * Luigi.auth().isAuthorizationEnabled();
    */
@@ -60,38 +60,38 @@ class LuigiAuth {
   /**
    * Authorization object that is stored in auth store and used within Luigi. It is then available in [LuigiClient.addInitListener](luigi-client-api.md#addInitListener) and can also be used in the Core configuration.
    * @typedef {Object} AuthData
-   * @property {string} accessToken: access token value
-   * @property {string} accessTokenExpirationDate: timestamp value
-   * @property {string} scope: scope, can be empty if it is not required
-   * @property {string} idToken: id token, used for renewing authentication
+   * @property {string} accessToken - access token value
+   * @property {string} accessTokenExpirationDate - timestamp value
+   * @property {string} scope - scope, can be empty if it is not required
+   * @property {string} idToken - id token, used for renewing authentication
    */
   get store() {
     return {
       /**
        * Retrieves the key name that is used to store the auth data.
        * @memberof AuthorizationStore
-       * @returns {string}: name of the store key
+       * @returns {string} - name of the store key
        * @example Luigi.auth().store.getStorageKey()
        */
       getStorageKey: () => AuthStoreSvc.getStorageKey(),
       /**
        * Retrieves the storage type that is used to store the auth data.
        * @memberof AuthorizationStore
-       * @returns {('localStorage'|'sessionStorage'|'none')}: storage type
+       * @returns {('localStorage'|'sessionStorage'|'none')} - storage type
        * @example Luigi.auth().store.getStorageType()
        */
       getStorageType: () => AuthStoreSvc.getStorageType(),
       /**
        * Retrieves the current auth object.
        * @memberof AuthorizationStore
-       * @returns {AuthData}: the current auth data object
+       * @returns {AuthData} - the current auth data object
        * @example Luigi.auth().store.getAuthData()
        */
       getAuthData: () => AuthStoreSvc.getAuthData(),
       /**
        * Sets authorization data
        * @memberof AuthorizationStore
-       * @param {AuthData} data: new auth data object
+       * @param {AuthData} data - new auth data object
        * @example Luigi.auth().store.setAuthData(data)
        */
       setAuthData: data => AuthStoreSvc.setAuthData(data),

@@ -37,7 +37,7 @@ Sets the configuration for Luigi initially. Can also be called at a later point 
 
 ##### Parameters
 
--   `configInput` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** : the Luigi Core configuration object
+-   `configInput` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** <br> - the Luigi Core configuration object
 
 ##### Examples
 
@@ -74,7 +74,7 @@ Returns the current active configuration
 Luigi.getConfig()
 ```
 
-Returns **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** : the configuration object
+Returns **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** <br> - the configuration object
 
 #### configChanged
 
@@ -82,7 +82,7 @@ Tells Luigi that the configuration has been changed. Luigi will update the appli
 
 ##### Parameters
 
--   `scope` **...[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** : one or more scope selectors specifying what parts of the configuration were changed. If no scope selector is provided, the whole configuration is considered changed.<p>
+-   `scope` **...[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** <br> - one or more scope selectors specifying what parts of the configuration were changed. If no scope selector is provided, the whole configuration is considered changed.<p>
     The supported scope selectors are:
     <p>
     <ul>
@@ -102,7 +102,7 @@ Gets value of the given property on Luigi config object. Target can be a value o
 
 ##### Parameters
 
--   `property` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** : the object traversal path
+-   `property` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** <br> - the object traversal path
 
 ##### Examples
 
@@ -118,7 +118,7 @@ Function return true if the property value is equal true or 'true'. Otherwise th
 
 ##### Parameters
 
--   `property` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** : the object traversal path
+-   `property` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** <br> - the object traversal path
 
 ##### Examples
 
@@ -134,7 +134,7 @@ If the value is not a Promise it is wrapped to a Promise so that the returned va
 
 ##### Parameters
 
--   `property` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** : the object traversal path
+-   `property` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** <br> - the object traversal path
 -   `parameters` **any** optional parameters that are used if the target is a function
 
 ##### Examples
@@ -149,7 +149,7 @@ Luigi.getConfigValueAsync('navigation.contextSwitcher.options')
 
 Detects if authorization is enabled via configuration.
 
-Returns **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)** : returns true if authorization is enabled. Otherwise returns false.
+Returns **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)** <br> - returns true if authorization is enabled. Otherwise returns false.
 
 **Meta**
 
