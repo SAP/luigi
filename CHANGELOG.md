@@ -23,6 +23,24 @@ The lerna-changelog tool detects changes based on PR labels and maps them to sec
     ...
   }
 -->
+## [v0.7.3] (2019-12-19)
+
+#### :rocket: Added
+* [#1002](https://github.com/SAP/luigi/pull/1002) Implicit structural nodes ([@maxmarkus](https://github.com/maxmarkus))
+* [#1014](https://github.com/SAP/luigi/pull/1014) Disable context switcher drop down caret when there is only one option ([@pekura](https://github.com/pekura))
+* [#1008](https://github.com/SAP/luigi/pull/1008) Custom item renderer for options in context switcher ([@JohannesDoberer](https://github.com/JohannesDoberer))
+* [#993](https://github.com/SAP/luigi/pull/993) React setup ([@ndricimrr](https://github.com/ndricimrr))
+* [#994](https://github.com/SAP/luigi/pull/994) Handle init in Luigi client without init handshake ([@JohannesDoberer](https://github.com/JohannesDoberer))
+* [#1028](https://github.com/SAP/luigi/pull/1028) Add navigation functionality to core api ([@JohannesDoberer](https://github.com/JohannesDoberer))
+
+#### :bug: Fixed
+* [#1017](https://github.com/SAP/luigi/pull/1017) Improve root nav caching ([@maxmarkus](https://github.com/maxmarkus))
+* [#1027](https://github.com/SAP/luigi/pull/1027) Add nonce param for OAuth2 and parameters to userInfoFn ([@maxmarkus](https://github.com/maxmarkus))
+
+#### :memo: Documentation
+* [#1023](https://github.com/SAP/luigi/pull/1023) Document anonymous access ([@maxmarkus](https://github.com/maxmarkus))
+
+
 ## [v0.7.2] (2019-11-29)
 
 #### :rocket: Added
@@ -605,3 +623,4 @@ The lerna-changelog tool detects changes based on PR labels and maps them to sec
 [v0.7.0]: https://github.com/SAP/luigi/compare/v0.6.6...v0.7.0
 [v0.7.1]: https://github.com/SAP/luigi/compare/v0.7.0...v0.7.1
 [v0.7.2]: https://github.com/SAP/luigi/compare/v0.7.1...v0.7.2
+[v0.7.3]: https://github.com/SAP/luigi/compare/v0.7.2...v0.7.3

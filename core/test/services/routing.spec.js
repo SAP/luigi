@@ -9,7 +9,7 @@ import { LuigiConfig, LuigiI18N } from '../../src/core-api';
 import { Navigation } from '../../src/navigation/services/navigation';
 
 describe('Routing', function() {
-  this.retries(2);
+  this.retries(1);
 
   let component;
   beforeEach(() => {
@@ -25,6 +25,8 @@ describe('Routing', function() {
 
     sinon.stub(LuigiConfig, 'getConfigValue');
     sinon.stub(GenericHelpers, 'getRandomId').returns('123');
+    Navigation._rootNodeProviderUsed = undefined;
+    Navigation.rootNode = undefined;
   });
   afterEach(() => {
     if (document.createElement.restore) {

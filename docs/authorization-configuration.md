@@ -72,7 +72,7 @@ auth: {
     redirect_uri: '',
     post_logout_redirect_uri: '/logout.html',
     automaticSilentRenew: true,
-    userInfoFn:()=>{},
+    userInfoFn:(authSettings, authData)=>{},
     accessTokenExpiringNotificationTime: 60
   },
   disableAutoLogin: false
@@ -123,7 +123,7 @@ auth: {
     // optional functions
     nonceFn: () => {},
     logoutFn: (settings, authData, logoutCallback) => {},
-    userInfoFn:()=>{},
+    userInfoFn:(settings, authData)=>{},
     accessTokenExpiringNotificationTime: 60,
     expirationCheckInterval: 5
   },
