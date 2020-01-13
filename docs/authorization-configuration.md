@@ -183,6 +183,31 @@ export class CustomAuthenticationProvider {
 
 You can write your own authorization provider that meets your requirements.
 
+It needs to be implemented as a class object and included as `customIdpProvider: yourProviderClass` in the `auth:` section of the Luigi configuration file. For example:
+​
+```javascript
+class myProvider {
+  constructor(configSettings = {}) {
+    const defaultSettings = {
+      redirect_uri: window.location.origin + '/custom-auth-callback.html';
+    }
+    this.settings = Object.assign({}, defaultSettings, configSettings);
+  }
+  logout() {}
+  login() {}
+  userInfo() {}
+}
+Luigi.setConfig({
+  auth: {
+    customIdpProvider: myProvider,
+    use: 'myProviderConfig',
+    myProviderConfig: {
+      redirect_uri: '/another-callback.html'
+    }
+  }
+})
+```
+
 [oAuth2ImplicitGrant.js](../core/src/providers/auth/oAuth2ImplicitGrant.js) is a good starting point if you don't use an external authorization library.
 
 After authorization is successful on the authorization provider's side, it redirects back to `Luigi callback.html` **redirect_uri**. The provider verifies the authorization data, saves it in  **localStorage** for Luigi, and redirects to the Luigi main page.
