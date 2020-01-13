@@ -22,7 +22,7 @@ This document shows you how to set up a web application using the Luigi micro fr
 
 All those steps are achieved through a single **installer** script which sets up a Luigi application on your system. Keep in mind that if you have a single page application, you need to transfer it to a "two-page application". You should run your application to make sure the existing router doesn't interfere.
 
-Once the installation is complete, you can [configure](navigation-configuration.md) Luigi by editing the files in the `src/luigi-config` directory.
+<!-- accordion:end -->
 
 Choose the framework to build your application:
 
@@ -179,6 +179,7 @@ $ npm run serve
 ```
 <!-- accordion:end -->
 
+<<<<<<< HEAD
 3. Open the folder where Luigi is installed. Navigate to the `my-original-vue-app/public/assets` directory. The JavaScript file(s) in this folder can be used to configure Luigi [navigation](navigation-configuration.md), [authorization](authorization-configuration.md), [general settings](general-setting.md) and more.
 
 ## Application setup for React
@@ -219,3 +220,6 @@ $ npm start
 <!-- accordion:end -->
 
 3. Open the directory where Luigi is installed. Navigate to the `public` folder. The JavaScript file(s) in this folder can be used to configure Luigi [navigation](navigation-configuration.md), [authorization](authorization-configuration.md), [general settings](general-setting.md) and more.
+=======
+3. Open the folder where Luigi is installed. Navigate to the `my-original-vue-app/public/assets` directory. The JavaScript file(s) in this folder can be used to configure Luigi [navigation](navigation-configuration.md), [authorization](authorization-configuration.md), [general settings](general-setting.md) and more.
+>>>>>>> update
