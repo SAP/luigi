@@ -1,5 +1,6 @@
 // Standalone or partly-standalone methods that are used widely through the whole app and are synchronous.
 import { LuigiElements } from '../../core-api';
+
 class GenericHelpersClass {
   /**
    * Creates a random Id
