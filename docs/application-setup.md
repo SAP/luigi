@@ -179,7 +179,6 @@ $ npm run serve
 ```
 <!-- accordion:end -->
 
-<<<<<<< HEAD
 3. Open the folder where Luigi is installed. Navigate to the `my-original-vue-app/public/assets` directory. The JavaScript file(s) in this folder can be used to configure Luigi [navigation](navigation-configuration.md), [authorization](authorization-configuration.md), [general settings](general-setting.md) and more.
 
 ## Application setup for React
@@ -220,6 +219,3 @@ $ npm start
 <!-- accordion:end -->
 
 3. Open the directory where Luigi is installed. Navigate to the `public` folder. The JavaScript file(s) in this folder can be used to configure Luigi [navigation](navigation-configuration.md), [authorization](authorization-configuration.md), [general settings](general-setting.md) and more.
-=======
-3. Open the folder where Luigi is installed. Navigate to the `my-original-vue-app/public/assets` directory. The JavaScript file(s) in this folder can be used to configure Luigi [navigation](navigation-configuration.md), [authorization](authorization-configuration.md), [general settings](general-setting.md) and more.
->>>>>>> update
