@@ -195,11 +195,13 @@
         idpProviderInstance.settings &&
         GenericHelpers.isFunction(idpProviderInstance.settings.userInfoFn)
       ) {
-        idpProviderInstance.settings.userInfoFn().then(res => {
-          userInfo = res;
-          isLoggedIn = true;
-          dispatch('userInfoUpdated', userInfo);
-        });
+        idpProviderInstance.settings
+          .userInfoFn(idpProviderInstance.settings, authData)
+          .then(res => {
+            userInfo = res;
+            isLoggedIn = true;
+            dispatch('userInfoUpdated', userInfo);
+          });
       } else {
         if (GenericHelpers.isFunction(idpProviderInstance.userInfo)) {
           idpProviderInstance.userInfo(idpProviderSettings).then(res => {

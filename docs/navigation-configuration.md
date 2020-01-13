@@ -89,11 +89,32 @@ navigation: {
 The [first steps](#first-steps) example contains some basic navigation parameters:
 
 ### pathSegment
-This is used to build the path in the browser URL. The main application path is built from values in the navigation path, joined with the **/** character. For example, if the value of a node's **pathSegment** is `home`, the path for that node would be `[YOUR.WEBSITE]/home`. You can override this setting by using one of the following instead of **pathSegment**:
+This is used to build the path in the browser URL. The main application path is built from values in the navigation path, joined with the **/** character. For example, if the value of a node's **pathSegment** is `home`, the path for that node would be `[YOUR.WEBSITE]/home`.  You can override this setting by using one of the following instead of **pathSegment**:
 * **link** - define a specific internal path. Note that a valid path must always start from the **root node**. For example, if your root node is `home`, and you want to navigate to the `projects` directory:
 	- `link: '/home/projects'` is correct
 	- `link: '/projects'`is not correct, since `/projects` is not the root node
 * **externalLink** - takes you to an external website. You must define the **url** of the website and whether it should be opened in a new window (`sameWindow: false`) or the same window (`sameWindow: true`).
+
+You can also specify a nested node as `project/:id`. It can only be used standalone, with no other nodes having the same or partially overlapping pathSegments (eg. `projects` and `projects/:id` do not work together).
+
+```
+// structural node example
+{
+  viewUrl: '//example.com/projects/:id',
+  pathSegment: `project/:id`,
+  context: { id: ':id' }
+}
+// gets internally expanded to this node structure
+{
+  viewUrl: 'project',
+  children: [{
+    viewUrl: '//example.com/projects/:id',
+    pathSegment: `:id`,
+    context: { id: ':id' }
+  }]
+}
+```
+
 ### label
 The name of the node which will be visible on your page.
 ### viewUrl
