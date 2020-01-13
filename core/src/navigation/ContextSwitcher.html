@@ -5,7 +5,7 @@
     <div class="fd-popover fd-popover--right">
       <div class="fd-popover__control" on:click|stopPropagation="{() => {}}">
         <button
-          class="fd-button fd-shellbar__button fd-product-menu__control lui-tendant-menu__control"
+          class="fd-button fd-shellbar__button fd-product-menu__control lui-ctx-switch-menu"
           aria-expanded="{dropDownStates.contextSwitcherPopover || false}"
           aria-haspopup="true"
           title="{selectedLabel ? selectedLabel : config.defaultLabel}"
@@ -261,7 +261,7 @@
     background-color: transparent;
   }
 
-  .lui-tendant-menu__control {
+  .lui-ctx-switch-menu {
     /* Overwrite color inheriting of product menu */
     color: var(--fd-color-shell-2);
     max-width: 30vw;
