@@ -1,4 +1,3 @@
-
 {#if contextSwitcherEnabled}
 <div class="fd-shellbar__action fd-shellbar__action--show-always">
   <div class="fd-product-menu">
@@ -9,13 +8,13 @@
           aria-expanded="{dropDownStates.contextSwitcherPopover || false}"
           aria-haspopup="true"
           title="{selectedLabel ? selectedLabel : config.defaultLabel}"
-          on:click="{toggleDropdownState}"
+          on:click="{() => {if (renderAsDropdown) toggleDropdownState()}}"
+          aria-disabled="{!renderAsDropdown}"
         >
           {#if !selectedLabel}{$getTranslation(config.defaultLabel)}{/if} {#if
           selectedLabel}{selectedLabel}{/if}
         </button>
       </div>
-
       <div
         class="fd-popover__body fd-popover__body--right"
         aria-hidden="{!(dropDownStates.contextSwitcherPopover || false)}"
@@ -49,10 +48,14 @@
               on:click="{() => goToOption(node, selectedOption)}"
               data-testid="{getTestId(node)}"
             >
+              {#if customOptionsRenderer}
+              {@html customOptionsRenderer(node, node.label === selectedLabel)}
+              {:else}
               <a
-                class="fd-menu__item {node === selectedLabel ? 'is-selected' : ''}"
+                class="fd-menu__item {node.label === selectedLabel ? 'is-selected' : ''}"
                 title="{label}"
               >{label}</a>
+              {/if}
             </li>
             {/await} {/each} {/if}
           </ul>
@@ -83,7 +86,8 @@
     IframeHelpers,
     RoutingHelpers,
     StateHelpers,
-    NavigationHelpers
+    NavigationHelpers,
+    GenericHelpers
   } from '../utilities/helpers';
 
   const dispatch = createEventDispatcher();
@@ -94,8 +98,11 @@
   export let config = {};
   export let actions = [];
   export let options = null;
+  let alwaysShowDropdown = true;
+  $: renderAsDropdown = alwaysShowDropdown || (actions && actions.length > 0) || (options && options.length > 1) || !selectedOption;
   export let selectedOption;
   export let fallbackLabelResolver = null;
+  export let customOptionsRenderer;
   let preserveSubPathOnSwitch;
   let getUnsavedChangesModalPromise = getContext(
     'getUnsavedChangesModalPromise'
@@ -111,12 +118,16 @@
         const contextSwitcherConfig = LuigiConfig.getConfigValue(
           'navigation.contextSwitcher'
         );
-
+        customOptionsRenderer =
+          contextSwitcherConfig.customOptionsRenderer &&
+          GenericHelpers.isFunction(contextSwitcherConfig.customOptionsRenderer)
+            ? contextSwitcherConfig.customOptionsRenderer
+            : undefined;
         contextSwitcherEnabled = !!contextSwitcherConfig;
         config = contextSwitcherConfig;
         options = undefined;
-
         if (contextSwitcherConfig) {
+          alwaysShowDropdown = contextSwitcherConfig.alwaysShowDropdown !== false; // default is true
           actions = await LuigiConfig.getConfigValueAsync(
             'navigation.contextSwitcher.actions'
           );
@@ -278,6 +289,14 @@
 
     @media (min-width: 1300px) {
       max-width: 30vw;
+    }
+  }
+
+  .lui-tendant-menu__control[aria-disabled='true'] {
+    opacity: 1;
+    cursor: default;
+    &:after {
+      border: none;
     }
   }
 

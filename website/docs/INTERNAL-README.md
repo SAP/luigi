@@ -12,6 +12,7 @@ Development:
 
 Open [http://localhost:4000](http://localhost:4000), micro frontend is hosted on port 4001 and defined dynamically in configuration and sapper serve.
 
+
 Production build:
 
 `npm run export`
