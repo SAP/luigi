@@ -619,9 +619,13 @@
     }
   }
 
-  .fd-nested-list__title {
-    width: auto;
-    padding-right: 5px;
+  .fd-nested-list__link {
+    &:not(.has-child) {
+      .fd-nested-list__title {
+        width: auto;
+        padding-right: 5px;
+      }
+    }
   }
 
   .fd-nested-list__icon {
