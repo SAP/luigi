@@ -1250,6 +1250,33 @@
     }
   }
 
+  //IE11 fixes
+  :global(.fd-nested-list__content),
+  :global(.fd-nested-list__link) {
+    &.has-child:after {
+      height: 100%;
+    }
+  }
+
+  :global(.fd-side-nav--condensed) {
+    :global(.fd-nested-list__link) {
+      font-size: 10px;
+      &.has-child:after {
+        height: 0;
+      }
+    }
+  }
+
+  //Fixing issues for fundamental styles
+  :global(.fd-shellbar__button) {
+    padding-left: 12px;
+    padding-right: 12px;
+  }
+
+  :global(.fd-shellbar__button .is-hover, .fd-shellbar__button:hover) {
+    color: var(--sapShell_TextColor, #d1e8ff);
+  }
+
   //Overwrites with SAP variables
   :global(.fd-page) {
     background-color: var(--sapBackgroundColor, #edeff0);
@@ -1278,9 +1305,6 @@
 
   :global(.fd-shellbar__button .is-hover, .fd-shellbar__button:hover) {
     border: 1px solid var(--sapShell_BorderColor, transparent);
-  }
-
-  :global(.fd-shellbar__button .is-hover, .fd-shellbar__button:hover) {
     background-color: var(--sapButton_Hover_Background, #323d4d);
   }
 

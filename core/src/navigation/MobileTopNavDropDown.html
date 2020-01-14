@@ -21,7 +21,7 @@
           {#if nodes}
           {#each nodes as node}
           <li
-            class="fd-product-switch__item"
+            class="fd-product-switch__item {noSubTitle == 'true' ? 'y-has-no-subtitle' : '' }"
             on:click="{() => onActionClick(node)}"
             data-e2e="mobile-topnav-item"
             data-testid="{getTestId(node)}"
@@ -64,6 +64,7 @@
   export let hasOpenUIicon;
   export let getNodeLabel;
   export let getNodeSubtitle;
+  export let noSubTitle;
 
   // [svelte-upgrade suggestion]
   // review these functions and remove unnecessary 'export' keywords
@@ -106,6 +107,11 @@
     }
 
     .fd-modal__body {
+      max-height: none;
+      padding: 0;
+    }
+
+    .fd-product-switch__body {
       max-height: calc(100vh - #{$topNavHeight} - #{$mobileTopNavHeight});
       max-height: calc(
         var(--vh, 1vh) * 100 - #{$topNavHeight} - #{$mobileTopNavHeight}
@@ -122,41 +128,20 @@
   }
 
   @media (max-width: 1023px) {
-    .y-full-width-list {
-      &__icon {
+    .fd-product-switch__body--mobile {
+      .fd-product-switch__icon {
         img {
-          width: 16px;
-          vertical-align: top;
+          max-width: 24px;
         }
       }
-    }
-  }
 
-  .y-full-width-list {
-    width: 100%;
-    text-align: left;
-    list-style: none;
+      .y-has-no-subtitle {
+        align-items: center;
 
-    &__item {
-      display: block;
-      padding: 12px 15px;
-      cursor: pointer;
-      cursor: pointer;
-
-      &:hover {
-        background: #f5faff;
-        .y-full-width-list__title {
-          font-weight: bold;
+        .fd-product-switch__text {
+          height: auto;
         }
       }
-    }
-
-    &__title {
-      color: #515559;
-    }
-
-    &__subtitle {
-      color: #74777a;
     }
   }
 </style>

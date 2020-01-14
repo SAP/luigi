@@ -6,13 +6,13 @@
 <div
   class="fd-app__sidebar {hideNavComponent ? 'hideNavComponent' : ''} {footerText || semiCollapsible ? 'hasFooter' : ''}"
 >
-  {#if children && pathData.length > 1}
-  <div class="lui-fd-side-nav-wrapper">
-    <nav
-      class="fd-side-nav {isSemiCollapsed ? 'fd-side-nav--condensed' : ''}"
-      on:keyup="{handleKey}"
-    >
-      <div class="fd-side-nav__main-navigation">
+  <nav
+    class="fd-side-nav {isSemiCollapsed ? 'fd-side-nav--condensed' : ''}"
+    on:keyup="{handleKey}"
+  >
+    {#if children && pathData.length > 1}
+    <div class="fd-side-nav__main-navigation">
+      <div class="lui-fd-side-nav-wrapper">
         <ul class="{sideNavClass}">
           {#each sortedChildrenEntries as [key, nodes]}
           {#if key === 'undefined' || key.startsWith(virtualGroupPrefix)}
@@ -199,23 +199,25 @@
           {/if} {/each}
         </ul>
       </div>
-    </nav>
-  </div>
-  {/if}
-  {#if footerText || semiCollapsible}
-  <span class="lui-side-nav__footer">
-    <span
-      class="lui-side-nav__footer--text fd-has-type-minus-1"
-    >{footerText ? footerText : ''}</span>
-    {#if semiCollapsible}
-    <span
-      class="lui-side-nav__footer--icon {isSemiCollapsed ? 'sap-icon--open-command-field' : 'sap-icon--close-command-field'}"
-      on:click="{() => semiCollapsibleButtonClicked(this)}"
-      data-testid="semiCollapsibleButton"
-    ></span>
+    </div>
     {/if}
-  </span>
-  {/if}
+    {#if footerText || semiCollapsible}
+    <div class="fd-side-nav__utility">
+      <span class="lui-side-nav__footer">
+        <span
+          class="lui-side-nav__footer--text fd-has-type-minus-1"
+        >{footerText ? footerText : ''}</span>
+        {#if semiCollapsible}
+        <span
+          class="lui-side-nav__footer--icon {isSemiCollapsed ? 'sap-icon--open-command-field' : 'sap-icon--close-command-field'}"
+          on:click="{() => semiCollapsibleButtonClicked(this)}"
+          data-testid="semiCollapsibleButton"
+        ></span>
+        {/if}
+      </span>
+    </div>
+    {/if}
+  </nav>
 </div>
 
 <script>
@@ -436,7 +438,7 @@
       const flyoutSublist = parent.getElementsByClassName(
         'lui-flyout-sublist'
       )[0];
-      const topScroll = el.closest('nav').scrollTop;
+      const topScroll = el.closest('.lui-fd-side-nav-wrapper').scrollTop;
       const topPosition = parentTopPosition + shellbarHeight - topScroll;
       const bottomPosition =
         containerHeight -
@@ -521,11 +523,11 @@
 
       //Force browser to re-render vertical scrollbar
       document
-        .getElementsByClassName('fd-side-nav')[0]
+        .getElementsByClassName('lui-fd-side-nav-wrapper')[0]
         .setAttribute('style', 'overflow-y:hidden;');
       window.setTimeout(function() {
         document
-          .getElementsByClassName('fd-side-nav')[0]
+          .getElementsByClassName('lui-fd-side-nav-wrapper')[0]
           .setAttribute('style', 'overflow-y:auto;');
       });
     } else {
@@ -573,24 +575,33 @@
     top: $topNavHeight;
     left: 0;
     bottom: 0;
-    display: flex;
-    justify-content: space-between;
-    flex-direction: column;
-    background-color: var(--sapList_Background, #fff);
-    color: #32363a;
-    border-right: 1px solid var(--sapGroup_ContentBorderColor, #d9d9d9);
     z-index: 1;
 
-    .fd-side-nav {
-      border-right: none;
+    .lui-fd-side-nav-wrapper {
+      display: flex;
+      justify-content: space-between;
+      flex-direction: column;
     }
 
-    .lui-fd-side-nav-wrapper {
+    .fd-side-nav {
       height: 100%;
     }
 
+    .fd-side-nav__main-navigation {
+      height: 100%;
+      overflow: hidden;
+    }
+
+    .fd-side-nav__utility {
+      margin-top: 0;
+
+      &:before {
+        display: none;
+      }
+    }
+
     &.hasFooter {
-      .lui-fd-side-nav-wrapper {
+      .fd-side-nav__main-navigation {
         height: calc(100% - 50px);
       }
     }
@@ -608,9 +619,13 @@
     }
   }
 
-  .fd-nested-list__title {
-    width: auto;
-    padding-right: 5px;
+  .fd-nested-list__link {
+    &:not(.has-child) {
+      .fd-nested-list__title {
+        width: auto;
+        padding-right: 5px;
+      }
+    }
   }
 
   .fd-nested-list__icon {
@@ -640,7 +655,7 @@
     }
   }
 
-  .fd-side-nav {
+  .lui-fd-side-nav-wrapper {
     height: 100%;
     overflow-y: auto;
     overflow-x: hidden;
@@ -692,10 +707,6 @@
       width: $leftNavWidthCollapsed;
 
       .lui-fd-side-nav-wrapper {
-        overflow: hidden;
-      }
-
-      .fd-side-nav {
         min-width: auto;
         width: calc(#{$leftNavWidthCollapsed} + 70px);
         padding-right: 70px;
@@ -704,7 +715,7 @@
     }
 
     .isBlocked {
-      .fd-side-nav {
+      .lui-fd-side-nav-wrapper {
         overflow: hidden !important;
       }
     }
