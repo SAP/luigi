@@ -21,7 +21,7 @@
           {#if nodes}
           {#each nodes as node}
           <li
-            class="fd-product-switch__item"
+            class="fd-product-switch__item {noSubTitle == 'true' ? 'y-has-no-subtitle' : '' }"
             on:click="{() => onActionClick(node)}"
             data-e2e="mobile-topnav-item"
             data-testid="{getTestId(node)}"
@@ -64,6 +64,7 @@
   export let hasOpenUIicon;
   export let getNodeLabel;
   export let getNodeSubtitle;
+  export let noSubTitle;
 
   // [svelte-upgrade suggestion]
   // review these functions and remove unnecessary 'export' keywords
@@ -131,6 +132,14 @@
       .fd-product-switch__icon {
         img {
           max-width: 24px;
+        }
+      }
+
+      .y-has-no-subtitle {
+        align-items: center;
+
+        .fd-product-switch__text {
+          height: auto;
         }
       }
     }
