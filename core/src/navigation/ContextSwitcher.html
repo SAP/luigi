@@ -5,7 +5,7 @@
     <div class="fd-popover fd-popover--right">
       <div class="fd-popover__control" on:click|stopPropagation="{() => {}}">
         <button
-          class="fd-button fd-shellbar__button fd-product-menu__control lui-ctx-switch-menu"
+          class="fd-button fd-shellbar__button lui-ctx-switch-menu"
           aria-expanded="{dropDownStates.contextSwitcherPopover || false}"
           aria-haspopup="true"
           title="{selectedLabel ? selectedLabel : config.defaultLabel}"
@@ -267,9 +267,23 @@
     max-width: 30vw;
     overflow: hidden;
     text-overflow: ellipsis;
+    padding-right: 27px;
 
     &:after {
-      right: -8px;
+      height: 0;
+      width: 0;
+      border-style: solid;
+      border-width: 5px 5px 0 5px;
+      border-top-color: #fff;
+      border-top-color: var(--sapLinkColor, #fff);
+      border-left-color: transparent;
+      border-right-color: transparent;
+      content: '';
+      position: absolute;
+      top: calc(50% - 2.5px);
+      margin-left: 8px;
+      margin-right: 8px;
+      right: 3px;
     }
 
     @media (min-width: 1024px) {
