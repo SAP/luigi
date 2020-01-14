@@ -22,8 +22,6 @@ This document shows you how to set up a web application using the Luigi micro fr
 
 All those steps are achieved through a single **installer** script which sets up a Luigi application on your system. Keep in mind that if you have a single page application, you need to transfer it to a "two-page application". You should run your application to make sure the existing router doesn't interfere.
 
-<!-- accordion:end -->
-
 Choose the framework to build your application:
 
 * [Application setup without a framework](#application-setup-without-a-framework)
