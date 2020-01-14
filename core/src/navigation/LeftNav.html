@@ -216,7 +216,6 @@
         {/if}
       </span>
     </div>
-
     {/if}
   </nav>
 </div>
@@ -590,6 +589,7 @@
 
     .fd-side-nav__main-navigation {
       height: 100%;
+      overflow: hidden;
     }
 
     &.hasFooter {
@@ -693,10 +693,6 @@
 
     .fd-app__sidebar {
       width: $leftNavWidthCollapsed;
-
-      .fd-side-nav__main-navigation {
-        overflow: hidden;
-      }
 
       .lui-fd-side-nav-wrapper {
         min-width: auto;
