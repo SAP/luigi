@@ -73,7 +73,6 @@
     StateHelpers
   } from './utilities/helpers';
   import { AuthStoreSvc, Routing } from './services';
-  import { oAuth2ImplicitGrant } from './providers/auth/oAuth2ImplicitGrant';
   import { openIdConnect } from './providers/auth/openIdConnect';
   import { TOP_NAV_DEFAULTS } from './utilities/luigi-config-defaults';
 
@@ -81,8 +80,6 @@
 
   let idpProviderInstance;
   const standardProviders = {
-    mockAuth: oAuth2ImplicitGrant,
-    oAuth2ImplicitGrant,
     openIdConnect
   };
   export let userInfo;

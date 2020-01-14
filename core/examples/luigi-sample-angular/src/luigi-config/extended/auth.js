@@ -1,3 +1,5 @@
+import oAuth2ImplicitGrant from '@luigi-project/plugin-auth-oauth2';
+
 class Auth {
   /**
    * auth identity provider settings
@@ -16,6 +18,7 @@ class Auth {
   disableAutoLogin = false;
 
   mockAuth = {
+    customIdpProvider: oAuth2ImplicitGrant,
     authorizeUrl: `${window.location.origin}/assets/auth-mock/login-mock.html`,
     logoutUrl: `${window.location.origin}/assets/auth-mock/logout-mock.html`,
     post_logout_redirect_uri: '/logout.html',

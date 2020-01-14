@@ -6,6 +6,8 @@
     "client/public",
     "core",
     "core/public",
+    "plugins/public/auth-oauth2",
+    "plugins/public/auth-openid",
     "core/examples/luigi-sample-angular",
     "core/examples/luigi-example-vue"
   ],
