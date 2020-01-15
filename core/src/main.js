@@ -70,6 +70,14 @@ const configReadyCallback = () => {
         return app.$$.ctx.showModal(settings);
       };
 
+      Luigi.pathExists = path => {
+        return app.$$.ctx.pathExists(path);
+      };
+
+      Luigi.hasBack = () => {
+        return app.$$.ctx.hasBack();
+      };
+
       resolve();
     });
   });

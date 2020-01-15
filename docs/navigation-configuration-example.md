@@ -71,6 +71,12 @@ Luigi.setConfig({
         },
         children: [node, node, node]
       },
+      // Implicit structural node
+      {
+        pathSegment: 'project/:projectId',
+        viewUrl: '/some/path/:projectId',
+        children: [node, node, node]
+      }
       // View groups nodes
       {
         viewGroup: 'main',

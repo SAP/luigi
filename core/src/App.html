@@ -992,6 +992,23 @@
     }
   };
 
+  export const pathExists = async path => {
+    const data = {
+      link: path,
+      relative: path[0] !== '/'
+    };
+    const builtPath = buildPath(data);
+    const pathData = await Navigation.getNavigationPath(
+      LuigiConfig.getConfigValueAsync('navigation.nodes'),
+      builtPath
+    );
+    return pathData.isExistingRoute;
+  };
+
+  export const hasBack = () => {
+    return (mfModal && mfModal.displayed) || preservedViews.length !== 0;
+  };
+
   onMount(() => {
     responsiveNavSetting = LuigiConfig.getConfigValue(
       'settings.responsiveNavigation'
