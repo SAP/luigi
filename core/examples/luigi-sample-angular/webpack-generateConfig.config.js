@@ -1,5 +1,6 @@
 const path = require('path');
 const webpack = require('webpack');
+const CopyWebpackPlugin = require('copy-webpack-plugin');
 
 module.exports = {
   watch: false,
@@ -19,7 +20,15 @@ module.exports = {
       This file was generated automatically and you should not modify it.
       The documentation (located in /docs) will tell you how to modify Luigi configuration with pleasure.
       `
-    )
+    ),
+
+    // customIdpProvider OAuth2 callback asset
+    new CopyWebpackPlugin([
+      {
+        from: 'node_modules/@luigi-project/plugin-auth-oauth2/callback.html',
+        to: path.resolve(__dirname, 'src/assets') + '/auth-oauth2/'
+      }
+    ])
   ],
   module: {
     rules: [

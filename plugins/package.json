@@ -20,13 +20,13 @@
   },
   "bundlesize": [
     {
-      "path": "./public/provider.js",
-      "maxSize": "50 kB",
+      "path": "./public/auth-oauth2/plugin.js",
+      "maxSize": "15 kB",
       "compression": "none"
     },
     {
-      "path": "./public/provider-ie11.js",
-      "maxSize": "100 kB",
+      "path": "./public/auth-oauth2/plugin-ie11.js",
+      "maxSize": "75 kB",
       "compression": "none"
     }
   ],
@@ -46,6 +46,7 @@
     "mixin-deep": ">=1.3.2",
     "bundlesize": "^0.17.0",
     "acorn": "^6.0.5",
-    "serialize-javascript": ">=2.1.1"
+    "serialize-javascript": ">=2.1.1",
+    "oidc-client": "^1.10.1"
   }
 }

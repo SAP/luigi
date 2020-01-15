@@ -15,3 +15,5 @@ tmp-*
 
 # WhiteSource
 whitesource.config.json
+callback.html
+plugin*.js

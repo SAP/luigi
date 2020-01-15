@@ -6,7 +6,7 @@ export default class oAuth2ImplicitGrant {
     const defaultSettings = {
       oAuthData: {
         redirect_uri:
-          window.location.origin + '/luigi-core/auth/oauth2/callback.html',
+          window.location.origin + '/assets/auth-oauth2/callback.html',
         response_type: 'id_token token',
         scope: ''
       },
@@ -56,20 +56,21 @@ export default class oAuth2ImplicitGrant {
       }
 
       const createInputElement = (name, value) => {
-        const inputElem = document.createElement('input');
-        inputElem.name = name;
-        inputElem.id = name;
-        inputElem.value = value;
-        inputElem.type = 'hidden';
-        return inputElem;
+        return Object.assign(document.createElement('input'), {
+          name: name,
+          id: name,
+          value: value,
+          type: 'hidden'
+        });
       };
 
-      const formElem = document.createElement('form');
-      formElem.name = 'signIn';
-      formElem.id = 'signIn';
-      formElem.action = settings.authorizeUrl;
-      formElem.method = settings.authorizeMethod;
-      formElem.target = '_self';
+      const formElem = Object.assign(document.createElement('form'), {
+        name: 'signIn',
+        id: 'signIn',
+        action: settings.authorizeUrl,
+        method: settings.authorizeMethod,
+        target: '_self'
+      });
 
       settings.oAuthData.redirect_uri = `${Helpers.prependOrigin(
         settings.oAuthData.redirect_uri

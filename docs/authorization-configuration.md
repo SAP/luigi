@@ -17,12 +17,13 @@ meta -->
 
 To configure authorization in Luigi, go to the `auth:` section of your Luigi configuration file. To see how authorization works, you can also go to the [Luigi Fiddle](https://fiddle.luigi-project.io) site and configure a sample application.
 
-Luigi provides OpenID Connect and OAuth2 Implicit Grant authorization out of the box. The **use** key defines the active authorization provider and the **disableAutoLogin** key allows you to disable the automatic login flow that is provided by default.
+Luigi provides OpenID Connect and OAuth2 Implicit Grant authorization as plugins. The **use** key defines the active authorization provider setting and the **disableAutoLogin** key allows you to disable the automatic login flow that is provided by default.
 
 ```javascript
 auth: {
   use: 'openIdConnect',
   openIdConnect: {
+    
     ...
   },
   disableAutoLogin: true

@@ -8,7 +8,7 @@ class Auth {
    *  - openIdConnect (eg. DEX)
    *  - oAuth2ImplicitGrant
    * custom:
-   *  - customIdpProvider (if you provide a class to Luigi.config.auth.customIdpProvider)
+   *  - customIdpProvider (if you provide a class to Luigi.config.auth.[providerName].customIdpProvider)
    *
    */
   use = 'mockAuth';
