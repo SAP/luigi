@@ -1,0 +1,24 @@
+{
+  "name": "no-framework-js",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "buildConfig": "webpack --entry ./src/luigi-config/luigi-config.js -o ./public/assets/luigi-config.js --mode production",
+    "start":"live-server --entry-file=index.html public",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@babel/core": "^7.8.3",
+    "@babel/preset-env": "^7.8.3",
+    "@kyma-project/luigi-client": "^0.7.3",
+    "@kyma-project/luigi-core": "^0.7.3",
+    "babel-loader": "^8.0.6",
+    "fiori-fundamentals": "^1.7.3",
+    "webpack": "^4.41.5",
+    "webpack-cli": "^3.3.10"
+  }
+}
