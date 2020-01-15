@@ -173,7 +173,7 @@ Returns the container of the Luigi content.
 Luigi.elements().getLuigiContainer();
 ```
 
-Returns **[HTMLElement](https://developer.mozilla.org/docs/Web/HTML/Element)** the DOM element that wraps the Luigi content.
+Returns **[HTMLElement](https://developer.mozilla.org/docs/Web/HTML/Element)** the DOM element that wraps the Luigi content
 
 **Meta**
 
@@ -189,7 +189,7 @@ Returns the shellbar component.
 Luigi.elements().getShellbar();
 ```
 
-Returns **[HTMLElement](https://developer.mozilla.org/docs/Web/HTML/Element)** the shellbar DOM element.
+Returns **[HTMLElement](https://developer.mozilla.org/docs/Web/HTML/Element)** the shellbar DOM element
 
 **Meta**
 
@@ -205,7 +205,7 @@ Returns the shellbar actions component.
 Luigi.elements().getShellbarActions();
 ```
 
-Returns **[HTMLElement](https://developer.mozilla.org/docs/Web/HTML/Element)** the shellbar actions DOM element.
+Returns **[HTMLElement](https://developer.mozilla.org/docs/Web/HTML/Element)** the shellbar actions DOM element
 
 **Meta**
 
@@ -237,7 +237,7 @@ Returns all micro frontend iframes including the iframe from the modal if it exi
 Luigi.elements().getMicrofrontendIframes();
 ```
 
-Returns **[Array](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array)&lt;[HTMLElement](https://developer.mozilla.org/docs/Web/HTML/Element)>** an array of all micro frontend iframes from the DOM.
+Returns **[Array](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array)&lt;[HTMLElement](https://developer.mozilla.org/docs/Web/HTML/Element)>** an array of all micro frontend iframes from the DOM
 
 **Meta**
 
@@ -254,7 +254,7 @@ If there is a modal, which includes the micro frontend iframe, the function retu
 Luigi.elements().getCurrentMicrofrontendIframe();
 ```
 
-Returns **[HTMLElement](https://developer.mozilla.org/docs/Web/HTML/Element)** the active micro frontend iframe DOM element.
+Returns **[HTMLElement](https://developer.mozilla.org/docs/Web/HTML/Element)** the active micro frontend iframe DOM element
 
 **Meta**
 
@@ -414,7 +414,7 @@ Opens a view in a modal. You can specify the modal's title and size. If you don'
 ##### Parameters
 
 -   `path` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** navigation path
--   `modalSettings` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** opens a view in a modal. Use these settings to configure the modal's title and size
+-   `modalSettings` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)?** opens a view in a modal. Use these settings to configure the modal's title and size
     -   `modalSettings.title` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** modal title. By default, it is the node label. If there is no label, it is left empty
     -   `modalSettings.size` **(`"l"` \| `"m"` \| `"s"`)** size of the modal (optional, default `"l"`)
 
@@ -505,7 +505,7 @@ Discards the active view and navigates back to the last visited view. Works with
 
 ##### Parameters
 
--   `goBackValue` **any** data that is passed in the **goBackContext** field to the last visited view when using preserved views.
+-   `goBackValue` **any** data that is passed in the **goBackContext** field to the last visited view when using preserved views
 
 ##### Examples
 
@@ -621,7 +621,7 @@ Use Luigi.elements().getMicrofrontends() to get the iframe id.
 ##### Parameters
 
 -   `microfrontendId` **[number](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number)** the id of the micro frontend
--   `message` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** an object containing data to be sent to the micro frontend to process it further. This object is set as an input parameter of the custom message listener on the micro frontend side.
+-   `message` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** an object containing data to be sent to the micro frontend to process it further. This object is set as an input parameter of the custom message listener on the micro frontend side
     -   `message.id` **[number](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number)** the id of the message
     -   `message.MY_DATA_FIELD` **any** any other message data field
 
@@ -667,8 +667,8 @@ Shows an alert.
     -   `settings.links` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** provides links data
         -   `settings.links.LINK_KEY` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** object containing the data for a particular link. To properly render the link in the alert message refer to the description of the **settings.text** parameter
             -   `settings.links.LINK_KEY.text` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** text which replaces the link identifier in the alert content
-            -   `settings.links.LINK_KEY.url` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** url to navigate when you click the link. Currently, only internal links are supported in the form of relative or absolute paths.
-    -   `settings.closeAfter` **[number](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number)** (optional) time in milliseconds that tells Luigi when to close the Alert automatically. If not provided, the Alert will stay on until closed manually. It has to be greater than `100`.
+            -   `settings.links.LINK_KEY.url` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** url to navigate when you click the link. Currently, only internal links are supported in the form of relative or absolute paths
+    -   `settings.closeAfter` **[number](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number)** (optional) time in milliseconds that tells Luigi when to close the Alert automatically. If not provided, the Alert will stay on until closed manually. It has to be greater than `100`
 
 ##### Examples
 
@@ -691,7 +691,7 @@ Luigi
  });
 ```
 
-Returns **[promise](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise)** which is resolved when the alert is dismissed.
+Returns **[promise](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise)** which is resolved when the alert is dismissed
 
 **Meta**
 
