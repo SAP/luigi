@@ -78,11 +78,11 @@ Yes, to use Luigi with a Google account, follow these steps:
     auth: {
       use: 'google',
       google: {
-        customIdpProvider: oAuth2ImplicitGrant,
+        idpProvider: oAuth2ImplicitGrant,
         authorizeUrl: 'https://accounts.google.com/o/oauth2/v2/auth',
         oAuthData: {
           response_type: 'id_token token',
-          client_id: 'YOUR_CLIENT_ID...apps.googleusercontent.com',
+          client_id: 'YOUR_CLIENT_ID.apps.googleusercontent.com',
           scope: 'openid https://www.googleapis.com/auth/userinfo.email profile',
         }
       },

@@ -114,12 +114,12 @@
     }
 
     // custom provider provided via config:
-    const customIdpProvider = GenericHelpers.getConfigValueFromObject(
+    const idpProvider = GenericHelpers.getConfigValueFromObject(
       idpProviderSettings,
-      'customIdpProvider'
+      'idpProvider'
     );
-    if (customIdpProvider) {
-      const customIdpInstance = new customIdpProvider(idpProviderSettings);
+    if (idpProvider) {
+      const customIdpInstance = new idpProvider(idpProviderSettings);
       ['login'].forEach(requiredFnName => {
         if (!GenericHelpers.isFunction(customIdpInstance[requiredFnName])) {
           throw IdpProviderException(

@@ -22,7 +22,7 @@ module.exports = {
       `
     ),
 
-    // customIdpProvider OAuth2 callback asset
+    // idpProvider OAuth2 callback asset
     new CopyWebpackPlugin([
       {
         from: 'node_modules/@luigi-project/plugin-auth-oauth2/callback.html',

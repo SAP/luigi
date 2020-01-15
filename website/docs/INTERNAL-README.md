@@ -21,6 +21,26 @@ Production build:
 
 Open [http://localhost:5000](http://localhost:5000), it is exported to `public` folder and the micro frontend is stored in subfolder `docu-microfrontend`.
 
+## Adding Documents
+
+Put markdown files to /docs folder, and add frontmatter metadata at the beginning of the file:
+```
+<!-- meta
+{
+  "node": {
+    "label": "FAQ",
+    "category": {
+      "label": "Basics"
+    },
+    "metaData": {
+      "categoryPosition": 1,
+      "position": 4
+    }
+  }
+}
+meta -->
+``` 
+
 ## Developing markdown parser plugins
 
 Markdown files are transformed into html using unified/remark2rehype, which already has an ecosystem of plugins (npm packages are prefixed with rehype-). In order to quickly develop new plugins, a small script executes only the `src/services/markdown.service.js` file with a small markdown dataset defined in `scripts/markdown.unified-preview.js`. The referenced md files are located in `scripts/mocks`.

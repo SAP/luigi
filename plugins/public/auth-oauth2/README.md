@@ -27,7 +27,7 @@ Luigi.setConfig({
   auth: {
     use: 'myProviderConfig',
     myProviderConfig: {
-      customIdpProvider: oAuth2ImplicitGrant,
+      idpProvider: oAuth2ImplicitGrant,
       // ... configuration data comes here
       redirect_uri: '/assets/auth-oauth2/callback.html'
     }
