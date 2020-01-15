@@ -19,8 +19,8 @@ This document outlines the features provided by the Luigi Client API. It covers 
 
 -   [Lifecycle](#lifecycle) - functions that define the lifecycle of different Luigi elements
 -   [Callbacks](#lifecycle˜initlistenercallback) - callback functions for initListener and customMessageListener
--   [Link manager](#linkmanager) - you can use the linkManager instead of an internal router
--   [Split view](#splitview) - allows you to open a micro frontend in the lower part of the content area in a "split screen" view
+-   [Link manager](#linkmanager) - functions that allow you to use the linkManager instead of an internal router
+-   [Split view](#splitview) - functions that allow you to open a micro frontend in the lower part of the content area in a "split-screen" view
 -   [uxManager](#uxmanager) - functions related to appearance and user interface
 
 ## API Reference
