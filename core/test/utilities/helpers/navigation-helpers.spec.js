@@ -138,4 +138,28 @@ describe('Navigation-helpers', () => {
       'path should match'
     );
   });
+  it('removeCacheObjects', () => {
+    const nodes = [
+      { lable: 'test', _childrenProvider: true, _childrenProviderUsed: true },
+      {},
+      { _childrenProvider: true, _childrenProviderUsed: true },
+      {
+        _childrenProvider: true,
+        _childrenProviderUsed: true,
+        children: [{}, { _childrenProvider: true, _childrenProviderUsed: true }]
+      }
+    ];
+
+    const expected = [{ lable: 'test' }, {}, {}, { children: [{}, {}] }];
+
+    assert.equal(
+      nodes.filter(n => n._childrenProvider).length,
+      3,
+      'num of nodes with underscores'
+    );
+
+    NavigationHelpers.removeCacheObjects(nodes);
+
+    assert.deepEqual(nodes, expected, 'all underscores have been removed');
+  });
 });

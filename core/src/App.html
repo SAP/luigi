@@ -92,7 +92,8 @@
     StateHelpers,
     RoutingHelpers,
     IframeHelpers,
-    AuthHelpers
+    AuthHelpers,
+    NavigationHelpers
   } from './utilities/helpers';
   import { LuigiI18N, LuigiConfig, LuigiElements } from './core-api';
   import { Navigation } from './navigation/services/navigation';
@@ -341,6 +342,10 @@
     StateHelpers.doOnStoreChange(
       store,
       () => {
+        NavigationHelpers.removeCacheObjects(
+          LuigiConfig.config.navigation.nodes
+        );
+
         LuigiConfig._configModificationTimestamp = new Date();
         const currentPath = Routing.getCurrentPath();
         Routing.handleRouteChange(

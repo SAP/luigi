@@ -254,6 +254,28 @@ class NavigationHelpersClass {
   isOpenUIiconName(string) {
     return /^[a-z0-9\-]+$/i.test(string);
   }
+
+  /**
+   * Recursively removes all keys that start with
+   * underscore from a given array of nodes.
+   * @param nodes {Array} of nodes
+   */
+  removeCacheObjects(nodes) {
+    const cacheObjects = nodes.filter(n => n._childrenProvider);
+    if (cacheObjects.length > 0) {
+      const removeCaches = node => {
+        Object.keys(node).forEach(key => {
+          if (key.startsWith('_')) {
+            delete node[key];
+          }
+        });
+        if (node.children && node.children.length) {
+          node.children.forEach(n => removeCaches(n));
+        }
+      };
+      nodes.forEach(n => removeCaches(n));
+    }
+  }
 }
 
 export const NavigationHelpers = new NavigationHelpersClass();
