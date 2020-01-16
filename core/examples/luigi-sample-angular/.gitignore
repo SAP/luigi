@@ -44,3 +44,5 @@ Thumbs.db
 # config
 /src/assets/devconfig.js
 /src/assets/*.bundle.js
+/src/assets/auth-oidc
+/src/assets/auth-oauth2

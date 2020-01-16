@@ -1,24 +1,14 @@
 import oAuth2ImplicitGrant from '@luigi-project/plugin-auth-oauth2';
 import openIdConnect from '@luigi-project/plugin-auth-oidc';
 class Auth {
-  /**
-   * auth identity provider settings
-   *
-   * use: enum of already implemented providers:
-   *  - openIdConnect (eg. DEX)
-   *  - oAuth2ImplicitGrant
-   * custom:
-   *  - idpProvider (if you provide a class to Luigi.config.auth.[providerName].idpProvider)
-   *
-   */
-  use = 'mockAuth';
-
   storage = 'localStorage'; // localStorage, sessionStorage, none
 
   disableAutoLogin = false;
 
+  use = 'mockAuth';
+
   mockAuth = {
-    customIdpProvider: oAuth2ImplicitGrant,
+    idpProvider: oAuth2ImplicitGrant,
     authorizeUrl: `${window.location.origin}/assets/auth-mock/login-mock.html`,
     logoutUrl: `${window.location.origin}/assets/auth-mock/logout-mock.html`,
     post_logout_redirect_uri: '/logout.html',
@@ -39,7 +29,7 @@ class Auth {
     }
   };
 
-  openIdConnect = {
+  oidc = {
     idpProvider: openIdConnect,
     // To run OIDC Mock Server, go to luigi/scripts/oidc-mockserver
     // and run docker-compose up. Default user: Luigi , password: pwd
@@ -47,11 +37,11 @@ class Auth {
     logoutUrl: 'http://localhost:4011/connect/endsession',
     client_id: 'implicit-mock-client',
     scope: 'openid profile email',
+
     // optional parameters
     // redirect_uri: '',
     // post_logout_redirect_uri: '/logout.html',
-    // automaticSilentRenew: true,
-    // loadUserInfo: false // returned metadata must contain userinfo_endpoint
+    automaticSilentRenew: true
   };
 
   oAuth2ImplicitGrant = {
@@ -99,6 +89,21 @@ class Auth {
     // }
     // TODO: logout parameters (GET/POST?)
   };
+
+  // google = {
+  //   idpProvider: oAuth2ImplicitGrant,
+  //   authorizeUrl: 'https://accounts.google.com/o/oauth2/v2/auth',
+  //   oAuthData: {
+  //     response_type: 'id_token token',
+  //     client_id: 'APP_ID.apps.googleusercontent.com',
+  //     scope: 'openid https://www.googleapis.com/auth/userinfo.email profile',
+  //   }
+  // };
+  // logoutFn = async (settings, authData, logoutCallback) => {
+  //   await fetch(`https://accounts.google.com/o/oauth2/revoke?token=${authData.accessToken}`);
+  //   logoutCallback();
+  //   location.href = '/logout.html';
+  // }
 
   events = {
     onLogout: settings => {
