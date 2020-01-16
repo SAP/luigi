@@ -37,7 +37,7 @@ There are three main elements to Luigi:
 
 ## First steps
 
-To configure navigation, edit the file in the `src/luigi-config` folder of your project, specifically the `navigation:` category.
+To configure navigation, edit the JavaScript configuration file of your project, specifically the `navigation:` category. See [application setup](application-setup.md) for instructions on where to find this file for your framework.
 
 >**TIP:** You can use [Luigi Fiddle](https://fiddle.luigi-project.io) to experiment with configuration.
 

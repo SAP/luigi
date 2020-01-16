@@ -216,4 +216,4 @@ $ npm start
 ```
 <!-- accordion:end -->
 
-3. Open the directory where Luigi is installed. Navigate to the `public` folder. The JavaScript file(s) in this folder can be used to configure Luigi [navigation](navigation-configuration.md), [authorization](authorization-configuration.md), [general settings](general-setting.md) and more.
+2. Open the directory where Luigi is installed. Navigate to the `public` folder. The JavaScript file(s) in this folder can be used to configure Luigi [navigation](navigation-configuration.md), [authorization](authorization-configuration.md), [general settings](general-setting.md) and more.
