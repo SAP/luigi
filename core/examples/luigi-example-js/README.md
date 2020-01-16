@@ -10,7 +10,8 @@ This is the JS-based sample application which runs with Luigi framework.
 
 To run this application, follow these steps:
 
-1.If you do not have Live Server installed, use this command to install it.
+
+1. If you do not have Live Server installed, use this command to install it.
     ```bash
     npm install -g live-server
     ```
