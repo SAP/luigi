@@ -21,7 +21,7 @@ To run this application, follow these steps:
     npm install
     ```
     
-3. Build configuration.
+3. Build modules.
     ```bash
       npm run build
     ```
