@@ -312,9 +312,11 @@
     }
   }
 
-  .lui-tendant-menu__control[aria-disabled='true'] {
+  .lui-ctx-switch-menu[aria-disabled='true'] {
     opacity: 1;
     cursor: default;
+    background-color: transparent;
+    border: 1px solid var(--sapShell_BorderColor, transparent);
     &:after {
       border: none;
     }

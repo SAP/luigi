@@ -170,7 +170,7 @@ describe('Context switcher', () => {
 
       cy.expectPathToBe('/environments/env1');
 
-      cy.get('.lui-tendant-menu__control[aria-disabled="false"]')
+      cy.get('.lui-ctx-switch-menu[aria-disabled="false"]')
         .should('exist')
         .click();
 
@@ -195,7 +195,7 @@ describe('Context switcher', () => {
 
       cy.expectPathToBe('/environments/env1');
 
-      cy.get('.lui-tendant-menu__control[aria-disabled="true"]')
+      cy.get('.lui-ctx-switch-menu[aria-disabled="true"]')
         .should('exist')
         .click();
 
