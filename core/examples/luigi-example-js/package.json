@@ -1,11 +1,11 @@
 {
-  "name": "no-framework-js",
+  "name": "luigi-using-js",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "public/index.html",
   "scripts": {
-    "buildConfig": "webpack --entry ./src/luigi-config/luigi-config.js -o ./public/assets/luigi-config.js --mode production",
-    "start":"live-server --entry-file=index.html public",
+    "build": "webpack --entry ./luigi-config.js -o ./public/luigi-config.js --mode production",
+    "start": "live-server --entry-file=index.html public",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
@@ -17,6 +17,7 @@
     "@kyma-project/luigi-client": "^0.7.3",
     "@kyma-project/luigi-core": "^0.7.3",
     "babel-loader": "^8.0.6",
+    "copy-webpack-plugin": "^5.1.1",
     "fiori-fundamentals": "^1.7.3",
     "webpack": "^4.41.5",
     "webpack-cli": "^3.3.10"

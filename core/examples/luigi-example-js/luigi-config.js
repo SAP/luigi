@@ -6,19 +6,19 @@ Luigi.setConfig({
         pathSegment: 'home',
         label: 'Home',
         icon: 'home',
-        viewUrl: '/assets/home.html',
+        viewUrl: '/views/home.html',
         children: [
           {
             pathSegment: 'sample1',
             label: 'First',
             icon: 'nutrition-activity',
-            viewUrl: '/assets/sample1.html'
+            viewUrl: '/views/sample1.html'
           },
           {
             pathSegment: 'sample2',
             label: 'Second',
             icon: 'paper-plane',
-            viewUrl: '/assets/sample2.html'
+            viewUrl: '/views/sample2.html'
           },
           {
             category: { label: 'Links', icon: 'cloud' },
@@ -48,8 +48,9 @@ Luigi.setConfig({
   },
   settings: {
     header: {
-      title: 'Luigi Vanilla JS',
-      logo: '/logo.png'
+      title: 'Luigi Javascript',
+      logo: '/logo.png',
+      favicon: '/logo.ico'
     },
     responsiveNavigation: 'simpleMobileOnly',
     appLoadingIndicator: {
