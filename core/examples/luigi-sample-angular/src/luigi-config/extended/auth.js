@@ -36,12 +36,12 @@ class Auth {
     authority: 'http://localhost:4011',
     logoutUrl: 'http://localhost:4011/connect/endsession',
     client_id: 'implicit-mock-client',
-    scope: 'openid profile email',
+    scope: 'openid profile email'
 
     // optional parameters
     // redirect_uri: '',
     // post_logout_redirect_uri: '/logout.html',
-    automaticSilentRenew: true
+    // automaticSilentRenew: true
   };
 
   oAuth2ImplicitGrant = {

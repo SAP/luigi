@@ -28,8 +28,11 @@ Luigi.setConfig({
     use: 'myProviderConfig',
     myProviderConfig: {
       idpProvider: OpenIdConnect,
-      // ... configuration data comes here
-      redirect_uri: '/assets/auth-oauth2/callback.html'
+      authority: 'http://authority.server',
+      logoutUrl: 'http://authority.server/connect/endsession',
+      client_id: 'implicit-mock-client',
+      scope: 'openid profile email',
+      // ... further configuration data comes here
     }
   }
 })

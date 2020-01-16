@@ -20,10 +20,11 @@ To configure authorization in Luigi, go to the `auth:` section of your Luigi con
 Luigi provides OpenID Connect and OAuth2 Implicit Grant authorization as plugins. The **use** key defines the active authorization provider setting and the **disableAutoLogin** key allows you to disable the automatic login flow that is provided by default.
 
 ```javascript
+import oidcProvider from '@luigi-project/plugin-auth-oidc';
 auth: {
   use: 'openIdConnect',
   openIdConnect: {
-    
+    idpProvider: oidcProvider,
     ...
   },
   disableAutoLogin: true
@@ -42,9 +43,11 @@ You have several authorization options:
 This code snippet demonstrates how to configure authorization using OpenID Connect in Luigi.
 
 ```javascript
+import oidcProvider from '@luigi-project/plugin-auth-oidc';
 auth: {
   use: 'openIdConnect',
   openIdConnect: {
+    idpProvider: oidcProvider,
     authority: 'https://example.com',
     client_id: 'client',
     scope: 'audience:server:client_id:client openID profile email groups',
@@ -86,16 +89,19 @@ Use these parameters to set a logout page.
 This code snippet demonstrates how to configure authorization using OAuth2 Implicit Grant in Luigi.
 
 ```javascript
+import oAuth2ImplicitGrant from '@luigi-project/plugin-auth-oauth2';
+
 auth: {
   use: 'oAuth2ImplicitGrant',
   oAuth2ImplicitGrant: {
+    idpProvider: oAuth2ImplicitGrant,
     authorizeUrl: 'https://example.com/authorize',
     logoutUrl: 'https://example.com/logout',
     oAuthData: {
       client_id: 'egDuozijY5SVr0NSIowUP1dT6RVqHnlp'
       scope: '',
       // optional parameters
-      redirect_uri: '/luigi-core/auth/oauth2/callback.html'
+      redirect_uri: '/assets/auth-oauth2/callback.html'
       response_type: 'id_token token',
       // all specified values inside oAuthData will be added to the oauth call, i.e display="popup",
     }
