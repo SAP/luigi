@@ -1,7 +1,7 @@
 {
   "name": "@luigi-project/plugin-auth-oidc",
   "version": "1.0.0",
-  "description": "OAuth2 implicit grant provider plugin for @luigi-project/core",
+  "description": "OpenID Connect provider plugin for @luigi-project/core",
   "license": "Apache-2.0",
   "main": "plugin.js",
   "repository": {

@@ -5,7 +5,7 @@
 This is the Angular-based sample application which runs with Luigi framework.
 
 <!-- add-attribute:class:success -->
-> **NOTE:** The authorization flow in this application is a mock implementation for local development. **DO NOT USE IN PRODUCTION!**
+> **NOTE:** The authorization flow `mockAuth` in this application is a mock implementation for local development. **DO NOT USE IN PRODUCTION!**
 
 ## Development
 
@@ -66,15 +66,15 @@ Run the sample application to perform the tests. When the application is ready:
 
 - Run `npm run e2e:run` to start tests in the headless browser.
 - Run `npm run e2e:open` to start tests in the interactive mode.
-<!-- ## Run server
-* Using Angular CLI (standard): `npm run start`
 
-## Use OpenID Connect
+## How to use OpenID Connect
 
-For running OpenID Connect (OIDC) locally, for example with DEX, follow these steps:
+To run OpenID Connect (OIDC) with a mock server, follow these steps:
 
-1. Run your app locally
-2. Add `127.0.0.1 your.address` to `/etc/hosts` 
-3. Set __Luigi.config.auth.use__ to `openIdConnect`
-4. Run using `npm run start -- --host your.address`
-5. Open [your.address:4200](http://your.address:4200) -->
+1. Start the oidc-mockserver in `scripts/oidc-mockserver` with `docker-compose up`
+2. Set __Luigi.config.auth.use__ to `openIdConnect`
+3. Run using `npm run start`
+4. Open [localhost:4200](http://localhost:4200)
+5. Default login credentials are:
+   - username: Luigi
+   - password: pwd

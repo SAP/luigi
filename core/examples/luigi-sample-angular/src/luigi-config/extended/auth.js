@@ -1,11 +1,11 @@
 import oAuth2ImplicitGrant from '@luigi-project/plugin-auth-oauth2';
 import openIdConnect from '@luigi-project/plugin-auth-oidc';
 class Auth {
+  use = 'mockAuth';
+
   storage = 'localStorage'; // localStorage, sessionStorage, none
 
   disableAutoLogin = false;
-
-  use = 'mockAuth';
 
   mockAuth = {
     idpProvider: oAuth2ImplicitGrant,
@@ -29,7 +29,7 @@ class Auth {
     }
   };
 
-  oidc = {
+  openIdConnect = {
     idpProvider: openIdConnect,
     // To run OIDC Mock Server, go to luigi/scripts/oidc-mockserver
     // and run docker-compose up. Default user: Luigi , password: pwd
