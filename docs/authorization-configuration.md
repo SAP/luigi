@@ -135,8 +135,9 @@ export class CustomAuthenticationProvider {
         // returns a promise which contains an error message if something went wrong
     }
 
-    logout(authData, logoutCallback){
-        // logic to handle the logout mechanism
+    logout(authData, logoutLuigiCore){
+      // call logoutLuigiCore() to reset stored data in Luigi Core
+      // logic to handle the logout mechanism
     }
 
     setTokenExpirationAction(){

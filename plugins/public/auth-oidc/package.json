@@ -1,5 +1,5 @@
 {
-  "name": "@luigi-project/plugin-auth-oauth2",
+  "name": "@luigi-project/plugin-auth-oidc",
   "version": "1.0.0",
   "description": "OAuth2 implicit grant provider plugin for @luigi-project/core",
   "license": "Apache-2.0",
@@ -9,12 +9,13 @@
     "url": "ssh://github.com/SAP/luigi.git"
   },
   "publishConfig": {
-    "tag": "luigi-plugin-auth-oauth2"
+    "tag": "luigi-plugin-auth-oidc"
   },
   "keywords": [
     "luigi",
     "core",
-    "oauth2",
+    "oidc",
+    "openid connect",
     "provider"
   ]
 }

@@ -39,7 +39,8 @@ Put markdown files to /docs folder, and add frontmatter metadata at the beginnin
   }
 }
 meta -->
-``` 
+```
+Then run `npm run export` once to get an updated navigation (navigation-generated.json) created. Afterwards you can also go into development mode `npm run start` to see docu updates.
 
 ## Developing markdown parser plugins
 
