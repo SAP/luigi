@@ -62,7 +62,7 @@ export const projectDetailNavStructure = projectId => [
     pathSegment: 'developers',
     label: 'Developers',
     viewUrl: '/sampleapp.html#/projects/' + projectId + '/developers',
-    icon: 'collaborate'
+    icon: 'employee'
   },
   {
     pathSegment: 'clientPermissionsTets',
