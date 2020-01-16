@@ -70,7 +70,7 @@ class LuigiElements {
    * Luigi.elements().getShellbarActions();
    */
   getShellbarActions() {
-    return document.getElementsByClassName('fd-shellbar__actions')[0];
+    return document.getElementsByClassName('fd-shellbar__group--actions')[0];
   }
 
   /**
