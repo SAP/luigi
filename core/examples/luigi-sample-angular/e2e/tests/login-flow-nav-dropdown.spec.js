@@ -6,10 +6,6 @@ describe('Login Flow', () => {
     });
   });
 
-  it('Login', () => {
-    cy.login('tets@email.com', 'tets');
-  });
-
   it('Username in profile dropdown', () => {
     cy.login('tets@email.com', 'tets');
 

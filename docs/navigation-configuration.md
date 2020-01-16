@@ -15,12 +15,7 @@ meta -->
 
 #  Basic navigation configuration
 
-Read these guides to get started with configuring your navigation:
-
-* [Navigation elements](#navigation-elements)
-* [First steps](#first-steps)
-* [Basic navigation parameters](#basic-navigation-parameters)
-* [Grouping navigation nodes](#grouping-navigation-nodes)
+This guide describes some basic features of Luigi navigation and how to configure it.
 
 If you are already familiar with the basics, take a look at:
 * [Advanced navigation configuration](navigation-advanced.md)
@@ -30,9 +25,10 @@ If you are already familiar with the basics, take a look at:
 
 There are three main elements to Luigi:
 
-1. Top navigation which displays the main navigation path. Additionally, it can include context, product, app, and profile [switchers](navigation-parameters-reference.md#context-switcher) .
+1. Top navigation which displays the main navigation path. Additionally, it can include context, product, app, and profile [switchers](navigation-advanced.md#context-switcher).
 
 2. Side navigation which displays the child nodes of the root navigation node. It can include structures like collapsible dropdowns and categories which can be used for deep linking.
+
 3. Main content window which renders the micro frontend.
 
 
@@ -41,11 +37,11 @@ There are three main elements to Luigi:
 
 ## First steps
 
-To configure navigation, edit the `luigi-config/extended/navigation.js` file in your project.
+To configure navigation, edit the JavaScript configuration file of your project, specifically the `navigation:` category. See [application setup](application-setup.md) for instructions on where to find this file for your framework.
 
-You can also use the file in `luigi-config/basic` or the [Luigi Fiddle](https://fiddle.luigi-project.io) to configure a simple application that is not intended for real-life purposes.
+>**TIP:** You can use [Luigi Fiddle](https://fiddle.luigi-project.io) to experiment with configuration.
 
-The configuration file consists of a tree-like structure of **navigation nodes**. The first level nodes represent the top navigation, while their children represent the side navigation. The nodes have some basic properties, such as labels, links, views, and (optionally) children. These properties are called **navigation parameters**.
+The configuration file contains a tree-like structure of **navigation nodes**. The first level nodes represent the top navigation, while their children represent the side navigation. The nodes have some basic properties, such as labels, links, views, and (optionally) children. These properties are called **navigation parameters**.
 
 Here is an example of a simple navigation structure:
 
@@ -90,14 +86,35 @@ navigation: {
 <!-- add-attribute:class:warning -->
 >**NOTE:** For a full list of available parameters, see the [parameter reference](navigation-parameters-reference.md) document.
 
-The [first steps](#first-steps) example provides some basic navigation parameters:
+The [first steps](#first-steps) example contains some basic navigation parameters:
 
 ### pathSegment
-This is used to build the path in the browser URL. The main application path is built from values in the navigation path, joined with the **/** character. For example, if the value of a node's **pathSegment** is `home`, the path for that node would be `[YOUR.WEBSITE]/home`. You can override this setting by using one of the following instead of **pathSegment**:
+This is used to build the path in the browser URL. The main application path is built from values in the navigation path, joined with the **/** character. For example, if the value of a node's **pathSegment** is `home`, the path for that node would be `[YOUR.WEBSITE]/home`.  You can override this setting by using one of the following instead of **pathSegment**:
 * **link** - define a specific internal path. Note that a valid path must always start from the **root node**. For example, if your root node is `home`, and you want to navigate to the `projects` directory:
 	- `link: '/home/projects'` is correct
 	- `link: '/projects'`is not correct, since `/projects` is not the root node
 * **externalLink** - takes you to an external website. You must define the **url** of the website and whether it should be opened in a new window (`sameWindow: false`) or the same window (`sameWindow: true`).
+
+You can also specify a nested node as `project/:id`. It can only be used standalone, with no other nodes having the same or partially overlapping pathSegments (eg. `projects` and `projects/:id` do not work together).
+
+```
+// structural node example
+{
+  viewUrl: '//example.com/projects/:id',
+  pathSegment: `project/:id`,
+  context: { id: ':id' }
+}
+// gets internally expanded to this node structure
+{
+  viewUrl: 'project',
+  children: [{
+    viewUrl: '//example.com/projects/:id',
+    pathSegment: `:id`,
+    context: { id: ':id' }
+  }]
+}
+```
+
 ### label
 The name of the node which will be visible on your page.
 ### viewUrl

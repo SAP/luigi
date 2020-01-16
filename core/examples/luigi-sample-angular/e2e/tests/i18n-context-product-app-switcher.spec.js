@@ -159,6 +159,49 @@ describe('Context switcher', () => {
       });
     });
   });
+
+  it('aways show dropdown option - many options', () => {
+    cy.window().then(win => {
+      const config = win.Luigi.getConfig();
+      config.navigation.contextSwitcher.alwaysShowDropdown = false;
+      win.Luigi.configChanged('navigation');
+
+      cy.selectContextSwitcherItem('Environment 1');
+
+      cy.expectPathToBe('/environments/env1');
+
+      cy.get('.lui-tendant-menu__control[aria-disabled="false"]')
+        .should('exist')
+        .click();
+
+      cy.get('#contextSwitcherPopover[aria-hidden="false"]').should('exist');
+    });
+  });
+
+  it('aways show dropdown option - one option only', () => {
+    cy.window().then(win => {
+      const config = win.Luigi.getConfig();
+      config.navigation.contextSwitcher.alwaysShowDropdown = false;
+      config.navigation.contextSwitcher.options = [
+        {
+          label: 'Environment 1',
+          pathValue: 'env1'
+        }
+      ];
+      config.navigation.contextSwitcher.actions = [];
+      win.Luigi.configChanged('navigation');
+
+      cy.selectContextSwitcherItem('Environment 1');
+
+      cy.expectPathToBe('/environments/env1');
+
+      cy.get('.lui-tendant-menu__control[aria-disabled="true"]')
+        .should('exist')
+        .click();
+
+      cy.get('#contextSwitcherPopover[aria-hidden="true"]').should('exist');
+    });
+  });
 });
 
 describe('ProductSwitcher', () => {

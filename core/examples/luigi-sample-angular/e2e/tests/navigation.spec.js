@@ -4,6 +4,36 @@ describe('Navigation', () => {
     cy.visitLoggedIn('/');
   });
 
+  describe('Core api navigation test', () => {
+    it('Core API navigate', () => {
+      cy.window().then(win => {
+        win.Luigi.navigation().navigate('/projects/pr2');
+        cy.expectPathToBe('/projects/pr2');
+      });
+    });
+    it('Core API open in modal', () => {
+      cy.window().then(win => {
+        win.Luigi.navigation().openAsModal('/settings', {
+          title: 'Preserved View',
+          size: 'm'
+        });
+        cy.get('.fd-modal__close').click();
+        cy.expectPathToBe('/overview');
+      });
+    });
+    it('Core API navigate with params', () => {
+      cy.window().then(win => {
+        win.Luigi.navigation()
+          .withParams({ test: true })
+          .navigate('/settings');
+        cy.expectPathToBe('/settings');
+        cy.getIframeBody().then($iframeBody => {
+          cy.wrap($iframeBody).should('contain', '"test": "true"');
+        });
+      });
+    });
+  });
+
   it('Click around using navigation', () => {
     // projects page
     cy.get('.fd-shellbar')
