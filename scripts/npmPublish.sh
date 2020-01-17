@@ -8,11 +8,22 @@ BASE_DIR="$( cd "$(dirname "$0")" ; pwd -P )"
 
 source $BASE_DIR/shared/bashHelpers.sh
 
-function setNpmToken {
+# @kyma-project npm token
+function setKymaNpmToken {
   if [ "$TRAVIS" = "true" ]; then
     # setup token when running in travis
-    echo "setNpmToken"
+    echo "setKymaNpmToken"
     echo "//registry.npmjs.org/:_authToken=$NPM_AUTH_TOKEN" > ~/.npmrc
+    # npm whoami
+  fi
+}
+
+# @luigi-project npm token
+function setLuigiNpmToken {
+  if [ "$TRAVIS" = "true" ]; then
+    # setup token when running in travis
+    echo "setLuigiNpmToken"
+    echo "//registry.npmjs.org/:_authToken=$NPM_LUIGI_AUTH_TOKEN" > ~/.npmrc
     # npm whoami
   fi
 }
@@ -79,8 +90,15 @@ function removeNpmToken {
 }
 
 
+# Luigi Client & Core
+setKymaNpmToken
 prepublishChecks
-setNpmToken
 publishPackage "core" "core/public"
 publishPackage "client" "client/public"
 removeNpmToken
+
+# Luigi Core Plugins
+# setLuigiNpmToken
+# publishPackage "plugins" "plugins/public/auth-oauth2"
+# publishPackage "plugins" "plugins/public/auth-oidc"
+# removeNpmToken
