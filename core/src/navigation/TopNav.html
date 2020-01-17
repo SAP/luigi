@@ -298,8 +298,6 @@
               >
                 <Authorization
                   on:toggleDropdownState="{() => toggleDropdownState('profilePopover')}"
-                  on:userInfoUpdated="{userInfoUpdate}"
-                  {urlAuthError}
                 />
               </div>
             </div>
@@ -320,11 +318,8 @@
 {:else}
 <Authorization
   on:toggleDropdownState="{() => toggleDropdownState('profilePopover')}"
-  on:userInfoUpdated="{userInfoUpdate}"
   isHidden="{true}"
-  {urlAuthError}
 />
-
 {/if}
 <script>
   import LogoTitle from './LogoTitle.html';
@@ -410,7 +405,6 @@
       },
       ['navigation']
     );
-    urlAuthError = AuthHelpers.parseUrlAuthErrors();
 
     window.addEventListener('message', e => {
       if ('luigi.navigation.update-badge-counters' === e.data.msg) {
