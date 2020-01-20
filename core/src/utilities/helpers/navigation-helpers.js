@@ -269,7 +269,7 @@ class NavigationHelpersClass {
             delete node[key];
           }
         });
-        if (node.children && node.children.length) {
+        if (node.children instanceof Array) {
           node.children.forEach(n => removeCaches(n));
         }
       };
