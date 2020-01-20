@@ -15,6 +15,8 @@ meta -->
 
 # Luigi Core Installation
 
+[![Luigi Installation](assets/video1.jpg)](http://www.youtube.com/watch?v=kEzTZ2U9KMM "Luigi Project - Installation")
+
 This document shows you how to set up a web application using the Luigi micro frontend framework. This involves a few basic steps:
 * Adding Luigi's `npm` packages to your project dependencies.
 * Giving Luigi exclusive control over your entry `index.html` file.
