@@ -1357,7 +1357,7 @@
   }
 
   :global(.fd-shellbar__button) {
-    border: 1px solid var(--sapShell_InteractiveTextColor, transparent);
+    border: 1px solid var(--sapShell_BorderColor, #354a5f);
     color: var(--sapShell_InteractiveTextColor, #d1e8ff);
 
     &:focus {
@@ -1365,7 +1365,8 @@
     }
 
     &.is-selected {
-      background-color: var(--sapButton_Selected_Background, #0854a0);
+      background-color: var(--sapShell_Selected_Background, #23303e);
+      border-color: var(--sapShell_InteractiveBorderColor, #7996b4);
     }
   }
 
