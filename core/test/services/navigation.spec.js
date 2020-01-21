@@ -144,19 +144,16 @@ describe('Navigation', function() {
     it('should load lazy-loaded children nodes only on activation', async () => {
       const navPath = await Navigation.getNavigationPath(
         sampleNavPromise,
-        'bbb'
+        'bbb/b1'
       );
       assert.equal(
         navPath.navigationPath.length,
-        2,
-        '2 nodes active : root node + "bbb" node'
+        3,
+        '3 nodes active : root, "bbb" + "b1" node'
       );
       const activatedNodeWithLazyLoadedChildren = navPath.navigationPath[1];
       assert.equal(activatedNodeWithLazyLoadedChildren.pathSegment, 'bbb');
-      expect(activatedNodeWithLazyLoadedChildren.children.length).to.be.above(
-        0
-      );
-      assert.propertyVal(navPath.context, 'lazy', false);
+      assert.propertyVal(navPath.context, 'lazy', true);
     });
 
     it('child node should overwrite existing context variable from a parent', async () => {
@@ -200,21 +197,24 @@ describe('Navigation', function() {
         nodeWithChildren,
         undefined
       );
-      expect(children).to.equal(nodeWithChildren.children);
+      const expected = [ { name: 'children1' }, { name: 'children2' } ];
+      assert.deepEqual(children, expected);
     });
     it('should return nodes children and bind them if _children are provided', async () => {
       const children = await Navigation.getChildren(
         nodeWith_Children,
         undefined
       );
-      expect(children).to.be.deep.equal(nodeWith_Children.children);
+      const expected = [ { name: 'children1' }, { name: 'children2' } ];
+      assert.deepEqual(children, expected);
     });
     it('should return nodes children and bind them if children provider is provided', async () => {
       const children = await Navigation.getChildren(
         nodeWithChildrenProvider,
         undefined
       );
-      expect(children).to.equal(nodeWithChildrenProvider.children);
+      const expected = [ { name: 'children' } ];
+      assert.deepEqual(children, expected);
     });
     it('should not fail if children provider throws an error', async () => {
       const children = await Navigation.getChildren(
@@ -228,7 +228,8 @@ describe('Navigation', function() {
         nodeWithChildrenProvider,
         'context'
       );
-      expect(children).to.equal(nodeWithChildrenProvider.children);
+      const expected = [ { name: 'children' } ];
+      assert.deepEqual(children, expected);
     });
     it('uses navigationPermissionChecker and returns correct amount of children', async () => {
       //given
