@@ -1344,23 +1344,28 @@
   }
 
   :global(.fd-shellbar) {
-    background-color: var(--sapShell_Background, #354a5f);
+    background-color: var(--sapShellColor, #354a5f);
+    border-bottom: 1px solid var(--sapShell_BorderColor, #354a5f);
   }
 
   :global(.fd-shellbar__subtitle, .fd-shellbar__title) {
-    color: var(--sapLinkColor, #fff);
+    color: var(--sapShell_TextColor, #fff);
   }
 
   :global(.fd-product-menu__control:after) {
-    border-top-color: var(--sapLinkColor, #fff);
+    border-top-color: var(--sapShell_TextColor, #fff);
   }
 
   :global(.fd-shellbar__button) {
-    border: 1px solid var(--sapShell_BorderColor, transparent);
-    color: var(--sapShell_TextColor, #d1e8ff);
+    border: 1px solid var(--sapShell_InteractiveTextColor, transparent);
+    color: var(--sapShell_InteractiveTextColor, #d1e8ff);
 
     &:focus {
       border-color: transparent;
+    }
+
+    &.is-selected {
+      background-color: var(--sapButton_Selected_Background, #0854a0);
     }
   }
 
