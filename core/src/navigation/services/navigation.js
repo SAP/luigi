@@ -114,14 +114,12 @@ class NavigationClass {
             .map(n => this.getExpandStructuralPathSegment(n))
             .map(n => this.bindChildToParent(n, node)) || [];
 
-        node.children = this.getAccessibleNodes(node, context);
-        return node.children;
+        return this.getAccessibleNodes(node, context);
       } catch (err) {
         console.error('Could not lazy-load children for node', err);
       }
     } else if (node._children) {
-      node.children = this.getAccessibleNodes(node, context);
-      return node.children;
+      return this.getAccessibleNodes(node, context);
     } else {
       return [];
     }
