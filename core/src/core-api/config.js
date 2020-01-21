@@ -86,7 +86,6 @@ class LuigiConfig {
    * <p>
    * <ul>
    *   <li><code>navigation</code>: the navigation part of the configuration was changed. This includes navigation nodes, the context switcher, the product switcher and the profile menu.</li>
-   *   <li><code>navigation.nodes</code>: navigation nodes were changed.</li>
    *   <li><code>navigation.contextSwitcher</code>: context switcher related data were changed.</li>
    *   <li><code>navigation.productSwitcher</code>: product switcher related data were changed.</li>
    *   <li><code>navigation.profile</code>: profile menu was changed.</li>
@@ -94,6 +93,9 @@ class LuigiConfig {
    *   <li><code>settings.header</code>: header settings (title, icon) were changed.</li>
    *   <li><code>settings.footer</code>: left navigation footer settings were changed.</li>
    * </ul>
+   * <!-- add-attribute:class:warning -->
+   * >**NOTE:** <code>navigation.nodes</code> is temporary deprecated due to unwanted side effects. Therefore do not use `getConfig` and `setConfig` methods for updating `navigation.nodes` configuration.
+   *
    * @memberof Configuration
    */
   configChanged(...scope) {

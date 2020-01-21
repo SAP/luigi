@@ -85,6 +85,40 @@ navigation: {
 ...
 ```
 
+### Best practices for navigation structuring
+
+<!-- add-attribute:class:warning -->
+>**NOTE:** Do not use `getConfig` and `setConfig` methods to extend `navigation.nodes` configuration. Unwanted side effects might occur.
+
+We encourage you to use (async) functions to build the node tree, since there are limitations if you try to update the `navigation.nodes` with `setConfig` and `configChanged('navigation')`. Each `node.children` which is of type function, gets executed every time it's parent node is routed to.
+
+In the following example, the `settings.children` function will be excuted whenever the user navigates to `/settings` or one of its nested routes like `/settings/general`. In case you are fetching them from eg. a RESTful API, you need to take care of caching by yourself, if necessary.
+
+```javascript
+{
+  navigation: {
+    nodes: [  // can also be a function
+        {
+          label: "Overview",
+          ...
+        },
+        {
+          label: "Settings",
+          pathSegment: "settings",
+          children: () => {
+            return new Promise((resolve, _) => {
+              fetch('management.api.url/data').then((result) => {
+                const children = result.map(entry => buildNode(entry));
+                resolve(children);
+              })
+            })
+          }
+        }
+      ]
+  }
+}
+```
+
 ## Basic navigation parameters
 
 <!-- add-attribute:class:warning -->
