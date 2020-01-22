@@ -95,7 +95,7 @@ Tells Luigi that the configuration has been changed. Luigi will update the appli
       <li><code>settings.footer</code>: left navigation footer settings were changed.</li>
     </ul>
     <!-- add-attribute:class:warning -->
-    >**NOTE:** <code>navigation.nodes</code> is temporary deprecated due to unwanted side effects. Therefore do not use `getConfig` and `setConfig` methods for updating `navigation.nodes` configuration.
+>**NOTE:** <code>navigation.nodes</code> is temporary deprecated due to unwanted side effects. Therefore do not use `getConfig` and `setConfig` methods for updating `navigation.nodes` configuration.
 
 #### getConfigValue
 
