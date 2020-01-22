@@ -80,22 +80,26 @@ Returns **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/G
 
 Tells Luigi that the configuration has been changed. Luigi will update the application or parts of it based on the specified scope.
 
+<p>
+The supported scope selectors are:
+<p>
+<ul>
+  <li><code>navigation</code>: the navigation part of the configuration was changed. This includes navigation nodes, the context switcher, the product switcher and the profile menu.</li>
+  <li><code>navigation.contextSwitcher</code>: context switcher related data were changed.</li>
+  <li><code>navigation.productSwitcher</code>: product switcher related data were changed.</li>
+  <li><code>navigation.profile</code>: profile menu was changed.</li>
+  <li><code>settings</code>: settings were changed.</li>
+  <li><code>settings.header</code>: header settings (title, icon) were changed.</li>
+  <li><code>settings.footer</code>: left navigation footer settings were changed.</li>
+</ul>
+
+<!-- add-attribute:class:warning -->
+
+> **NOTE:** <code>navigation.nodes</code> is temporary deprecated due to unwanted side effects. Therefore do not use `getConfig` and `setConfig` methods for updating `navigation.nodes` configuration.
+
 ##### Parameters
 
--   `scope` **...[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** one or more scope selectors specifying what parts of the configuration were changed. If no scope selector is provided, the whole configuration is considered changed.<p>
-    The supported scope selectors are:
-    <p>
-    <ul>
-      <li><code>navigation</code>: the navigation part of the configuration was changed. This includes navigation nodes, the context switcher, the product switcher and the profile menu.</li>
-      <li><code>navigation.contextSwitcher</code>: context switcher related data were changed.</li>
-      <li><code>navigation.productSwitcher</code>: product switcher related data were changed.</li>
-      <li><code>navigation.profile</code>: profile menu was changed.</li>
-      <li><code>settings</code>: settings were changed.</li>
-      <li><code>settings.header</code>: header settings (title, icon) were changed.</li>
-      <li><code>settings.footer</code>: left navigation footer settings were changed.</li>
-    </ul>
-    <!-- add-attribute:class:warning -->
->**NOTE:** <code>navigation.nodes</code> is temporary deprecated due to unwanted side effects. Therefore do not use `getConfig` and `setConfig` methods for updating `navigation.nodes` configuration.
+-   `scope` **...[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** one or more scope selectors specifying what parts of the configuration were changed. If no scope selector is provided, the whole configuration is considered changed.
 
 #### getConfigValue
 
@@ -704,7 +708,7 @@ Shows a confirmation modal.
 
 ##### Parameters
 
--   `settings` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** the settings of the confirmation modal. If you do not provide any value for any of the fields, a default value is used
+-   `settings` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** the settings of the confirmation modal. If you don't provide any value for any of the fields, a default value is used
     -   `settings.header` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** the content of the modal header (optional, default `"Confirmation"`)
     -   `settings.body` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** the content of the modal body (optional, default `"Are you sure you want to do this?"`)
     -   `settings.buttonConfirm` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** the label for the modal confirm button (optional, default `"Yes"`)
