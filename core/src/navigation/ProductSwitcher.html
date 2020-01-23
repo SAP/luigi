@@ -44,7 +44,11 @@ Object.keys(productSwitcherItems[0]).length }
                 on:click="{() => onActionClick(productSwitcherItem)}"
                 data-testid="{getTestId(productSwitcherItem)}"
               >
-                <a class="fd-menu__item">
+                <a
+                  class="fd-menu__item"
+                  href="{getRouteLink(productSwitcherItem)}"
+                  on:click|preventDefault="{() => {}}"
+                >
                   <span
                     class="fd-product-switcher__product-icon {productSwitcherItem.icon && hasOpenUIicon(productSwitcherItem) ? 'sap-icon--' + productSwitcherItem.icon + ' sap-icon--m' : '' }"
                   >
@@ -81,7 +85,6 @@ Object.keys(productSwitcherItems[0]).length }
   {getNodeLabel}
   {getTestId}
 />
-
 {/if}
 {/if}
 <script>
@@ -89,7 +92,7 @@ Object.keys(productSwitcherItems[0]).length }
   import { createEventDispatcher, onMount, getContext } from 'svelte';
   import { LuigiConfig, LuigiI18N } from '../core-api';
   import { Routing } from '../services/routing';
-  import { StateHelpers } from '../utilities/helpers';
+  import { StateHelpers, RoutingHelpers } from '../utilities/helpers';
   import { NavigationHelpers } from '../utilities/helpers';
 
   const dispatch = createEventDispatcher();
@@ -102,6 +105,9 @@ Object.keys(productSwitcherItems[0]).length }
   let getUnsavedChangesModalPromise = getContext(
     'getUnsavedChangesModalPromise'
   );
+  function getRouteLink(node) {
+    return RoutingHelpers.getNodeHref(node);
+  }
 
   onMount(async () => {
     StateHelpers.doOnStoreChange(
