@@ -30,7 +30,7 @@ To run this application, follow these steps:
 
 ### Build
 
-1. Build
+1. Build your application
     ```bash
     npm run build
     ```
@@ -42,4 +42,4 @@ To run this application, follow these steps:
 
 
 The build compiles and minimizes the source files for production usage.
-The build generates a `build` folder which you can serve using a web server.
+The build generates a `dist` folder which you can serve using a web server.
