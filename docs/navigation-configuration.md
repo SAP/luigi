@@ -84,13 +84,14 @@ navigation: {
 ### Best practices for navigation structuring
 
 <!-- add-attribute:class:warning -->
->**NOTE:** Do not use the [Core API](https://docs.luigi-project.io/docs/luigi-core-api?section=luigi-config)`getConfig` and `setConfig` methods to extend `navigation.nodes` configuration. Unwanted side effects might occur.
+>**NOTE:** Do not use the [Core API](https://docs.luigi-project.io/docs/luigi-core-api?section=luigi-config) `Luigi.getConfig` and `setConfig` methods to extend `navigation.nodes` configuration. Unwanted side effects might occur.
 
-We encourage you to use functions or [async functions](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/async_function) to build the node tree, since there are limitations if you try to update the `navigation.nodes` with `setConfig` and `configChanged('navigation')`. Each `node.children` which is of type function gets executed every time its parent node is routed to.
+We encourage you to use functions or [async functions](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/async_function) to build the node tree, since there are limitations if you try to update the `navigation.nodes` with `setConfig`. Each `node.children` which is of type function gets executed one time, once its parent node is routed to. The results are cached until we receive [`Luigi.configChanged('navigation.nodes')`](https://docs.luigi-project.io/docs/luigi-core-api?configChanged) event.
 
-In the following example, the `settings.children` function will be executed whenever the user navigates to `/settings` or one of its nested routes such as `/settings/general`. In case you are fetching them from, for example, a RESTful API, you need to take care of caching by yourself, if necessary.
+In the following example, the `settings.children` function will be executed once the user navigates to `/settings` or one of its nested routes such as `/settings/general`. When navigating to other routes and then back to `/settings`, we are showing a chached variant until we explicitly execute `Luigi.configChanged('navigation.nodes')`.
 
 ```javascript
+// Core:
 {
   navigation: {
     nodes: [  // can also be a function
@@ -113,6 +114,18 @@ In the following example, the `settings.children` function will be executed when
       ]
   }
 }
+
+// Core is listening for an event coming from micro-frontends.
+window.addEventListener('message', (ev) => {
+  if (evt.data.msg === 'navigation-update-required') {
+    // Navigation tree will be rebuilt immediately
+    Luigi.configChanged('navigation.nodes');
+  }
+});
+
+// Micro-Frontend:
+// On user interaction, after adding an entity via API
+LuigiClient.sendCustomMessage({ id: 'navigation-update-required' })
 ```
 
 ## Basic navigation parameters
@@ -151,8 +164,23 @@ You can also specify a nested node as `project/:id`. It can only be used standal
 
 ### label
 The name of the node which will be visible on your page.
+
 ### viewUrl
 The URL of the micro frontend which will be displayed in the main content area of your page.
+
+### children
+An array, function or asynchronous function that returns an array of navigation nodes. Functions are executed once and their results stay cached until we receive `Luigi.configUpdated('navigation.nodes')` or `Luigi.configUpdated('navigation')` event, which trigger an immediate rebuild of the navigation tree.
+
+```javascript
+  {
+    viewUrl: 'home',
+    children: [node, node, node]
+  },
+  {
+    viewUrl: 'settings',
+    children: () => fetch('micro-frontend.url/nav-config.json')
+  }
+```
 
 ## Grouping navigation nodes
 
