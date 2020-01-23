@@ -1,3 +1,4 @@
+
 {#if contextSwitcherEnabled}
 <div class="fd-shellbar__action fd-shellbar__action--show-always">
   <div class="fd-product-menu">
@@ -99,7 +100,11 @@
   export let actions = [];
   export let options = null;
   let alwaysShowDropdown = true;
-  $: renderAsDropdown = alwaysShowDropdown || (actions && actions.length > 0) || (options && options.length > 1) || !selectedOption;
+  $: renderAsDropdown =
+    alwaysShowDropdown ||
+    (actions && actions.length > 0) ||
+    (options && options.length > 1) ||
+    !selectedOption;
   export let selectedOption;
   export let fallbackLabelResolver = null;
   export let customOptionsRenderer;
@@ -118,16 +123,21 @@
         const contextSwitcherConfig = LuigiConfig.getConfigValue(
           'navigation.contextSwitcher'
         );
-        customOptionsRenderer =
-          contextSwitcherConfig.customOptionsRenderer &&
-          GenericHelpers.isFunction(contextSwitcherConfig.customOptionsRenderer)
-            ? contextSwitcherConfig.customOptionsRenderer
-            : undefined;
         contextSwitcherEnabled = !!contextSwitcherConfig;
+        if (!contextSwitcherEnabled) {
+          return;
+        }
+
+        customOptionsRenderer = GenericHelpers.isFunction(
+          contextSwitcherConfig.customOptionsRenderer
+        )
+          ? contextSwitcherConfig.customOptionsRenderer
+          : undefined;
         config = contextSwitcherConfig;
         options = undefined;
         if (contextSwitcherConfig) {
-          alwaysShowDropdown = contextSwitcherConfig.alwaysShowDropdown !== false; // default is true
+          alwaysShowDropdown =
+            contextSwitcherConfig.alwaysShowDropdown !== false; // default is true
           actions = await LuigiConfig.getConfigValueAsync(
             'navigation.contextSwitcher.actions'
           );
