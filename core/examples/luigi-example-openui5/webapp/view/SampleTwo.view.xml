@@ -1,0 +1,15 @@
+<mvc:View
+	controllerName="luigi.demo.controller.SampleTwo"
+	xmlns="sap.m"
+	xmlns:f="sap.f"
+	xmlns:card="sap.f.cards"
+	xmlns:mvc="sap.ui.core.mvc">
+	<VBox class="sapUiMediumMargin">
+		<Title  class="sapUiSmallMargin" titleStyle="H1" text="{i18n>sample2Title}" wrapping="true" />
+		<f:Card class="sapUiSmallMargin">
+			<f:content>
+				<Title  class="sapUiSmallMargin" titleStyle="H4" text="{i18n>sample2Text}" wrapping="true" />
+			</f:content>
+		</f:Card>
+	</VBox>
+</mvc:View>

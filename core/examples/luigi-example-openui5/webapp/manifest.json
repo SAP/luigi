@@ -1,0 +1,86 @@
+{
+	"_version": "1.12.0",
+	"sap.app": {
+		"id": "luigi.demo",
+		"type": "application",
+		"i18n": "i18n/i18n.properties",
+		"title": "{{appTitle}}",
+		"description": "{{appDescription}}",
+		"applicationVersion": {
+			"version": "1.0.0"
+		},
+		"dataSources": {}
+	},
+	"sap.ui": {
+		"technology": "UI5",
+		"deviceTypes": {
+			"desktop": true,
+			"tablet": true,
+			"phone": true
+		}
+  	},
+	"sap.ui5": {
+		"rootView": {
+			"viewName": "luigi.demo.view.App",
+			"type": "XML",
+			"async": true,
+			"id": "app"
+		},
+		"dependencies": {
+			"minUI5Version": "1.30",
+			"libs": {
+				"sap.m": {},
+				"sap.ui.core": {},
+				"sap.f":{}
+			}
+		},
+		"models": {
+			"i18n": {
+				"type": "sap.ui.model.resource.ResourceModel",
+				"settings": {
+					"bundleName": "luigi.demo.i18n.i18n"
+				}
+			}
+		},
+		"routing": {
+			"config": {
+				"routerClass": "sap.m.routing.Router",
+				"viewType": "XML",
+				"viewPath": "luigi.demo.view",
+				"controlId": "app",
+				"controlAggregation": "pages",
+				"async": true
+			},
+			"routes": [{
+				"pattern": "home",
+				"name": "appHome",
+				"target": "home"
+			}, {
+				"pattern": "home/sample1",
+				"name": "sampleOne",
+				"target": "sampleone"
+			},
+			{
+				"pattern": "home/sample2",
+				"name": "sampleTwo",
+				"target": "sampletwo"
+			}],
+			"targets": {
+				"home": {
+					"viewId": "home",
+					"viewName": "Home"
+				},
+				"sampleone": {
+					"viewId": "sampleOne",
+					"viewPath": "luigi.demo.view",
+					"viewName": "SampleOne"
+				},
+				"sampletwo": {
+					"viewId": "sampleTwo",
+					"viewPath": "luigi.demo.view",
+					"viewName": "SampleTwo"
+				}
+			}
+		}
+	}
+}
