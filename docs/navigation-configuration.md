@@ -84,9 +84,9 @@ navigation: {
 ### Best practices for navigation structuring
 
 <!-- add-attribute:class:warning -->
->**NOTE:** Do not use the [Core API](https://docs.luigi-project.io/docs/luigi-core-api?section=luigi-config) `Luigi.getConfig` and `setConfig` methods to extend `navigation.nodes` configuration. Unwanted side effects might occur.
+>**NOTE:** Do not use the [Core API](luigi-core-api.md#luigi-config) `Luigi.getConfig` and `setConfig` methods to extend `navigation.nodes` configuration. Unwanted side effects might occur.
 
-We encourage you to use functions or [async functions](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/async_function) to build the node tree, since there are limitations if you try to update the `navigation.nodes` with `setConfig`. Each `node.children` which is of type function gets executed one time, once its parent node is routed to. The results are cached until we receive [`Luigi.configChanged('navigation.nodes')`](https://docs.luigi-project.io/docs/luigi-core-api?configChanged) event.
+We encourage you to use functions or [async functions](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/async_function) to build the node tree, since there are limitations if you try to update the `navigation.nodes` with `setConfig`. Each `node.children` which is of type function gets executed one time, once its parent node is routed to. The results are cached until we receive [`Luigi.configChanged('navigation.nodes')`](luigi-core-api.md#configChanged) event.
 
 In the following example, the `settings.children` function will be executed once the user navigates to `/settings` or one of its nested routes such as `/settings/general`. When navigating to other routes and then back to `/settings`, we are showing a chached variant until we explicitly execute `Luigi.configChanged('navigation.nodes')`.
 
@@ -124,7 +124,7 @@ In the following example, the `settings.children` function will be executed once
 }
 
 // Micro-Frontend:
-// On user interaction, after adding an entity via API
+// On user interaction, after adding or removing an entity via API
 LuigiClient.sendCustomMessage({ id: 'navigation-update-required' })
 ```
 

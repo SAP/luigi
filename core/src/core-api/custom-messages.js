@@ -8,6 +8,7 @@ import { MessagesListeners } from '../services/messages-listeners';
 class CustomMessagesManager {
   /**
    * Sends a custom message to all opened micro frontends.
+   * Read more about usage of [Custom Messages](communication.md) in our advanced documentation section.
    * @param {Object} message an object containing data to be sent to the micro frontend to process it further. This object is set as an input parameter of the custom message listener on the micro frontend side.
    * @param {string} message.id the id of the message
    * @param {*} message.MY_DATA_FIELD any other message data field

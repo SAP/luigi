@@ -381,6 +381,7 @@ class LifecycleManager extends LuigiClientBase {
 
   /**
    * Sends a custom message to the Luigi Core application.
+   * Read more about usage of [Custom Messages](communication.md) in our advanced documentation section.
    * @param {Object} message an object containing data to be sent to the Luigi Core to process it further. This object is set as an input parameter of the custom message listener on the Luigi Core side
    * @param {string} message.id a string containing the message id
    * @param {*} message.MY_DATA_FIELD any other message data field

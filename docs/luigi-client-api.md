@@ -172,6 +172,7 @@ When the micro frontend is not embedded in the Luigi Core application and there 
 #### sendCustomMessage
 
 Sends a custom message to the Luigi Core application.
+Read more about usage of [Custom Messages](communication.md) in our advanced documentation section.
 
 ##### Parameters
 
