@@ -169,7 +169,7 @@ The name of the node which will be visible on your page.
 The URL of the micro frontend which will be displayed in the main content area of your page.
 
 ### children
-An array, function or asynchronous function that returns an array of navigation nodes. Functions are executed once and their results stay cached until we receive `Luigi.configUpdated('navigation.nodes')` or `Luigi.configUpdated('navigation')` event, which trigger an immediate rebuild of the navigation tree.
+An array, function or asynchronous function that returns an array of navigation nodes. Functions are executed once and their results stay cached until we receive `Luigi.configChanged('navigation.nodes')` or `Luigi.configChanged('navigation')` event, which trigger an immediate rebuild of the navigation tree.
 
 ```javascript
   {
