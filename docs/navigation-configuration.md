@@ -112,16 +112,16 @@ In the following example, the `settings.children` function will be executed once
           }
         }
       ]
+  },
+  communication: {
+    customMessagesListeners: {
+      'navigation-update-required': () => {
+        // Navigation tree will be rebuilt immediately
+        Luigi.configChanged('navigation.nodes');
+      }
+    }
   }
 }
-
-// Core is listening for an event coming from micro-frontends.
-window.addEventListener('message', (ev) => {
-  if (evt.data.msg === 'navigation-update-required') {
-    // Navigation tree will be rebuilt immediately
-    Luigi.configChanged('navigation.nodes');
-  }
-});
 
 // Micro-Frontend:
 // On user interaction, after adding an entity via API
