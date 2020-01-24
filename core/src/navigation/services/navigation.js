@@ -61,7 +61,7 @@ class NavigationClass {
           this.rootNode = { children: topNavNodes };
         }
 
-        await this.getChildren(this.rootNode); // keep it, mutates and filters children
+        await this.getChildren(this.rootNode, null, activePath); // keep it, mutates and filters children
       }
 
       const nodeNamesInCurrentPath = activePath.split('/');
@@ -171,7 +171,8 @@ class NavigationClass {
     nodesInCurrentPath,
     childrenOfCurrentNode,
     context,
-    pathParams = {}
+    pathParams = {},
+    virtualPathNames
   ) {
     if (!context.parentNavigationContexts) {
       context.parentNavigationContexts = [];
@@ -205,14 +206,22 @@ class NavigationClass {
           pathParams
         );
         try {
-          let children = await this.getChildren(node, newContext);
+          /**
+           * If its a virtual tree,
+           * build static children
+           */
+          virtualPathNames = this.buildVirtualTree(node, nodeNamesInCurrentPath, virtualPathNames);
+
+          // STANDARD PROCEDURE
+          let children = await this.getChildren(node, newContext, nodeNamesInCurrentPath);
           const newNodeNamesInCurrentPath = nodeNamesInCurrentPath.slice(1);
           result = this.buildNode(
             newNodeNamesInCurrentPath,
             nodesInCurrentPath,
             children,
             newContext,
-            pathParams
+            pathParams,
+            virtualPathNames
           );
         } catch (err) {
           console.error('Error getting nodes children', err);
@@ -220,6 +229,69 @@ class NavigationClass {
       }
     }
     return result;
+  }
+
+  cleanObj(input, keys) {
+    const res = {};
+    for (const key in input) {
+      if (input.hasOwnProperty(key)) {
+        const noFullMatch = keys.filter(k => key.includes(k)).length === 0;
+        const noPartialMatch = keys.filter(k => k.endsWith('*'))
+                                .map(k => k.slice(0, -1))
+                                .filter(k => key.startsWith(k)).length === 0;
+        if (noFullMatch && noPartialMatch) {
+          res[key] = input[key];
+        }
+      }
+    }
+    return res;
+  }
+
+  
+  buildVirtualTree(node, nodeNamesInCurrentPath) {
+    if ((node.isVirtualTree || node._isVirtualTree) && nodeNamesInCurrentPath[0]) {
+      const isVirtualTreeRoot = node.isVirtualTree;
+      // Temporary store values that will be cleaned up when creating a copy
+      let _virtualPathNames = node._virtualPathNames;
+      let _virtualPathIndex = node._virtualPathIndex;
+      if (!_virtualPathNames) {
+        _virtualPathNames = nodeNamesInCurrentPath.slice(); // take without first segment, which is the parent one.
+        _virtualPathIndex = 0;
+        if(!node.context) {
+          node.context = {};
+        }
+      }
+      // In case of defined virtualTree, when it got directly accessed
+      // Or when someone tries to target a to long url
+      const maxPathDepth = 50;
+      if(!_virtualPathNames.length || _virtualPathIndex > maxPathDepth) {
+        return;
+      }
+
+      // console.log('== buildVirtualTree', this.isVirtualTree, _virtualPathIndex, _virtualPathNames.join('/'), 'nniCP', nodeNamesInCurrentPath.join('/'))
+
+      const vPath = _virtualPathNames.slice(0, _virtualPathIndex).join('/');
+      _virtualPathIndex++;
+      // TODO: VIEWURL IS NOT WORKING, HAVE CHANGED INDEX + VPATH ORDER
+
+      const keysToClean = ['_*', 'parent', 'isVirtualTree', 'viewUrl', 'children'];
+      const newChild = this.cleanObj(node, keysToClean);
+
+      Object.assign(newChild, {
+        // _prevSegment: nodeNamesInCurrentPath[0], // just for debugging
+        pathSegment: ':virtualSegment',
+        label: ':virtualSegment',
+        viewUrl: node.virtualViewUrl.replace(':virtualPath', vPath),
+        _isVirtualTree: true,
+        _virtualPath: vPath,
+        _virtualPathNames,
+        _virtualPathIndex
+      });
+
+      // override .children with a represence of the current node
+      node.children = [newChild];
+      return _virtualPathNames;
+    }
   }
 
   findMatchingNode(urlPathElement, nodes) {
