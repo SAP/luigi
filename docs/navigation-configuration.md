@@ -21,6 +21,8 @@ If you are already familiar with the basics, take a look at:
 * [Advanced navigation configuration](navigation-advanced.md)
 * [Full reference list of navigation parameters](navigation-parameters-reference.md)
 
+<object width="425" height="344"><param name="movie" value="https://www.youtube.com/v/9hczgxJV1eU&hl=en&fs=1"></param><param name="allowFullScreen" value="true"></param><embed src="https://www.youtube.com/v/9hczgxJV1eU&hl=en&fs=1" type="application/x-shockwave-flash" allowfullscreen="true" width="425" height="344"></embed></object>
+
 ## Navigation elements
 
 There are three main elements to Luigi:
