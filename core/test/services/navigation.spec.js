@@ -71,11 +71,16 @@ describe('Navigation', function() {
   beforeEach(() => {
     Navigation._rootNodeProviderUsed = undefined;
     Navigation.rootNode = undefined;
+    console.warn = sinon.spy();
+    console.error = sinon.spy();
+    console.warn.resetHistory();
+    console.error.resetHistory();
   });
   afterEach(() => {
     // reset
     LuigiConfig.config = {};
     sinon.restore();
+    sinon.reset();
   });
   describe('getNavigationPath', function() {
     it('should not fail for undefined arguments', () => {
@@ -433,9 +438,6 @@ describe('Navigation', function() {
           }
         ]
       });
-
-      console.warn = sinon.spy();
-      console.error = sinon.spy();
 
       // truthy tests
       // when
@@ -912,6 +914,144 @@ describe('Navigation', function() {
       const result = Navigation.getExpandStructuralPathSegment(input);
 
       assert.deepEqual(result, expected);
+    });
+  });
+  describe('buildVirtualViewUrl', () => {
+    it('returns same if :virtualPath is not defined', () => {
+      const given = 'https://mf.luigi-project.io';
+      assert.equal(Navigation.buildVirtualViewUrl(given), given);
+    });
+    it('returns valid substituted string without proper pathParams', () => {
+      const mock = {
+        url: 'https://mf.luigi-project.io#!/:virtualPath',
+        pathParams: {
+          otherParam: 'foo'
+        },
+        index: 1
+      };
+      const expected = 'https://mf.luigi-project.io#!/:virtualSegment_1/';
+
+      assert.equal(
+        Navigation.buildVirtualViewUrl(mock.url, mock.pathParams, mock.index),
+        expected
+      );
+    });
+    it('returns valid substituted string with pathParams', () => {
+      const mock = {
+        url: 'https://mf.luigi-project.io#!/:virtualPath',
+        pathParams: {
+          otherParam: 'foo',
+          virtualSegment_1: 'one',
+          virtualSegment_2: 'two'
+        },
+        index: 3
+      };
+      const expected =
+        'https://mf.luigi-project.io#!/:virtualSegment_1/:virtualSegment_2/:virtualSegment_3/';
+
+      assert.equal(
+        Navigation.buildVirtualViewUrl(mock.url, mock.pathParams, mock.index),
+        expected
+      );
+    });
+  });
+  describe('buildVirtualTree', () => {
+    it('unchanged node if not a virtual tree root', () => {
+      const given = {
+        label: 'Luigi'
+      };
+      const expected = Object.assign({}, given);
+
+      Navigation.buildVirtualTree(given);
+
+      assert.deepEqual(given, expected);
+    });
+    it('unchanged if directly accessing a node which is defined as virtual tree root', () => {
+      const mockNode = {
+        label: 'Luigi',
+        isVirtualTree: true,
+        virtualViewUrl: 'foo'
+      };
+      const mockNodeNames = []; // no further child segments
+
+      const expected = Object.assign({}, mockNode);
+
+      Navigation.buildVirtualTree(mockNode, mockNodeNames);
+
+      assert.deepEqual(mockNode, expected);
+    });
+    it('throws and error if virtualViewUrl is undefined', () => {
+      const mockNode = {
+        label: 'Luigi',
+        isVirtualTree: true
+      };
+      const expected = Object.assign({}, mockNode);
+
+      Navigation.buildVirtualTree(mockNode, ['one']);
+
+      sinon.assert.calledOnce(console.error);
+      assert.deepEqual(mockNode, expected);
+    });
+    it('with first virtual tree segment', () => {
+      const mockNode = {
+        label: 'Luigi',
+        isVirtualTree: true,
+        virtualViewUrl: 'http://mf.luigi-project.io/:virtualPath'
+      };
+      const mockNodeNames = ['foo'];
+
+      const expected = Object.assign({}, mockNode, {
+        children: [
+          {
+            _isVirtualTree: true,
+            _virtualPathIndex: 1,
+            label: ':virtualSegment_1',
+            pathSegment: ':virtualSegment_1',
+            viewUrl: 'http://mf.luigi-project.io/:virtualSegment_1/',
+            virtualViewUrl: 'http://mf.luigi-project.io/:virtualPath'
+          }
+        ]
+      });
+
+      Navigation.buildVirtualTree(mockNode, mockNodeNames);
+
+      assert.deepEqual(mockNode, expected);
+    });
+    it('with a deep nested virtual tree segment', () => {
+      const mockNode = {
+        _isVirtualTree: true,
+        _virtualPathIndex: 3,
+        label: ':virtualSegment_3',
+        pathSegment: ':virtualSegment_3',
+        viewUrl:
+          'http://mf.luigi-project.io/:virtualSegment_2/:virtualSegment_3/',
+        virtualViewUrl: 'http://mf.luigi-project.io/:virtualPath'
+      };
+      const mockNodeNames = ['foo'];
+      const pathParams = {
+        otherParam: 'foo',
+        virtualSegment_1: 'one',
+        virtualSegment_2: 'two',
+        virtualSegment_3: 'three'
+      };
+
+      const expected = Object.assign({}, mockNode, {
+        children: [
+          {
+            _isVirtualTree: true,
+            _virtualPathIndex: 4,
+            label: ':virtualSegment_4',
+            pathSegment: ':virtualSegment_4',
+            viewUrl:
+              'http://mf.luigi-project.io/:virtualSegment_1/:virtualSegment_2/:virtualSegment_3/:virtualSegment_4/',
+            virtualViewUrl: 'http://mf.luigi-project.io/:virtualPath'
+          }
+        ]
+      });
+
+      Navigation.buildVirtualTree(mockNode, mockNodeNames, pathParams);
+
+      assert.deepEqual(mockNode, expected);
     });
   });
 });

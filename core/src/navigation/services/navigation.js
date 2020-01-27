@@ -233,8 +233,17 @@ class NavigationClass {
     return result;
   }
 
+  /**
+   * Requires str to include :virtualPath
+   * and pathParams consist of :virtualSegment_N
+   * for deep nested virtual tree building
+   *
+   * @param {string} str
+   * @param {Object} pathParams
+   * @param {number} _virtualPathIndex
+   */
   buildVirtualViewUrl(str, pathParams, _virtualPathIndex) {
-    let newStr = '/';
+    let newStr = '';
     for (const key in pathParams) {
       if (key.startsWith('virtualSegment')) {
         newStr += ':' + key + '/';
@@ -251,14 +260,22 @@ class NavigationClass {
       (isVirtualTreeRoot || isVirtualTreeChild) &&
       nodeNamesInCurrentPath[0]
     ) {
+      // Check requirements
+      if (isVirtualTreeRoot && !node.virtualViewUrl) {
+        console.error(
+          '[ERROR] node is declared as virtual tree, but no virtualViewUrl parameter found in node.',
+          node
+        );
+        return;
+      }
+
       // Temporary store values that will be cleaned up when creating a copy
       let _virtualPathIndex = node._virtualPathIndex;
       if (isVirtualTreeRoot) {
         _virtualPathIndex = 0;
       }
-      // In case of defined virtualTree, when it got directly accessed
-      // Or when someone tries to target a to long url
-      // Or if end of indexes reached
+
+      // Allowing maximum of 50 path segments to avoid memory issues
       const maxPathDepth = 50;
       if (_virtualPathIndex > maxPathDepth) {
         return;
@@ -266,7 +283,7 @@ class NavigationClass {
 
       _virtualPathIndex++;
       const keysToClean = ['_*', 'parent', 'isVirtualTree', 'children'];
-      const newChild = GenericHelpers.cleanObject(node, keysToClean);
+      const newChild = GenericHelpers.removeProperties(node, keysToClean);
       Object.assign(newChild, {
         pathSegment: ':virtualSegment_' + _virtualPathIndex,
         label: ':virtualSegment_' + _virtualPathIndex,

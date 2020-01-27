@@ -272,8 +272,14 @@ class GenericHelpersClass {
    * @param {Object} input any given object
    * @param {Array} of keys, allows also wildcards at the end, like: _*
    */
-  cleanObject(input, keys) {
+  removeProperties(input, keys) {
     const res = {};
+    if (!keys instanceof Array || !keys.length) {
+      console.error(
+        '[ERROR] removeProperties requires second parameter: array of keys to remove from object.'
+      );
+      return input;
+    }
     for (const key in input) {
       if (input.hasOwnProperty(key)) {
         const noFullMatch = keys.filter(k => key.includes(k)).length === 0;
