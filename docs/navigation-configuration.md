@@ -84,11 +84,11 @@ navigation: {
 ### Best practices for navigation structuring
 
 <!-- add-attribute:class:warning -->
->**NOTE:** Do not use the [Core API](luigi-core-api.md#luigi-config) `Luigi.getConfig` and `setConfig` methods to extend `navigation.nodes` configuration. Unwanted side effects might occur.
+>**NOTE:** Due to performance reasons, we do not recommend using the [Core API](luigi-core-api.md#luigi-config) `Luigi.setConfig` methods for applying runtime changes to luigi navigation configuration, unless you really need to.
 
 We encourage you to use functions or [async functions](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/async_function) to build the node tree, since there are limitations if you try to update the `navigation.nodes` with `setConfig`. Each `node.children` which is of type function gets executed one time, once its parent node is routed to. The results are cached until we receive [`Luigi.configChanged('navigation.nodes')`](luigi-core-api.md#configChanged) event.
 
-In the following example, the `settings.children` function will be executed once the user navigates to `/settings` or one of its nested routes such as `/settings/general`. When navigating to other routes and then back to `/settings`, we are showing a chached variant until we explicitly execute `Luigi.configChanged('navigation.nodes')`.
+In the following example, the `settings.children` function will be executed once the user navigates to `/settings` or one of its nested routes such as `/settings/general`. When navigating to other routes and then back to `/settings`, we are showing a cached variant until we explicitly execute `Luigi.configChanged('navigation.nodes')`.
 
 ```javascript
 // Core:
