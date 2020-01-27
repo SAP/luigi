@@ -134,12 +134,16 @@
         const contextSwitcherConfig = LuigiConfig.getConfigValue(
           'navigation.contextSwitcher'
         );
-        customOptionsRenderer =
-          contextSwitcherConfig.customOptionsRenderer &&
-          GenericHelpers.isFunction(contextSwitcherConfig.customOptionsRenderer)
-            ? contextSwitcherConfig.customOptionsRenderer
-            : undefined;
         contextSwitcherEnabled = !!contextSwitcherConfig;
+        if (!contextSwitcherEnabled) {
+          return;
+        }
+
+        customOptionsRenderer = GenericHelpers.isFunction(
+          contextSwitcherConfig.customOptionsRenderer
+        )
+          ? contextSwitcherConfig.customOptionsRenderer
+          : undefined;
         config = contextSwitcherConfig;
         options = undefined;
         if (contextSwitcherConfig) {
