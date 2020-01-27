@@ -171,8 +171,7 @@ class NavigationClass {
     nodesInCurrentPath,
     childrenOfCurrentNode,
     context,
-    pathParams = {},
-    virtualPathNames
+    pathParams = {}
   ) {
     if (!context.parentNavigationContexts) {
       context.parentNavigationContexts = [];
@@ -210,18 +209,21 @@ class NavigationClass {
            * If its a virtual tree,
            * build static children
            */
-          virtualPathNames = this.buildVirtualTree(node, nodeNamesInCurrentPath, virtualPathNames);
+          this.buildVirtualTree(node, nodeNamesInCurrentPath, pathParams);
 
           // STANDARD PROCEDURE
-          let children = await this.getChildren(node, newContext, nodeNamesInCurrentPath);
+          let children = await this.getChildren(
+            node,
+            newContext,
+            nodeNamesInCurrentPath
+          );
           const newNodeNamesInCurrentPath = nodeNamesInCurrentPath.slice(1);
           result = this.buildNode(
             newNodeNamesInCurrentPath,
             nodesInCurrentPath,
             children,
             newContext,
-            pathParams,
-            virtualPathNames
+            pathParams
           );
         } catch (err) {
           console.error('Error getting nodes children', err);
@@ -231,66 +233,53 @@ class NavigationClass {
     return result;
   }
 
-  cleanObj(input, keys) {
-    const res = {};
-    for (const key in input) {
-      if (input.hasOwnProperty(key)) {
-        const noFullMatch = keys.filter(k => key.includes(k)).length === 0;
-        const noPartialMatch = keys.filter(k => k.endsWith('*'))
-                                .map(k => k.slice(0, -1))
-                                .filter(k => key.startsWith(k)).length === 0;
-        if (noFullMatch && noPartialMatch) {
-          res[key] = input[key];
-        }
+  buildVirtualViewUrl(str, pathParams, _virtualPathIndex) {
+    let newStr = '/';
+    for (const key in pathParams) {
+      if (key.startsWith('virtualSegment')) {
+        newStr += ':' + key + '/';
       }
     }
-    return res;
+    newStr += ':virtualSegment_' + _virtualPathIndex + '/';
+    return str.replace(':virtualPath', newStr);
   }
 
-  
-  buildVirtualTree(node, nodeNamesInCurrentPath) {
-    if ((node.isVirtualTree || node._isVirtualTree) && nodeNamesInCurrentPath[0]) {
-      const isVirtualTreeRoot = node.isVirtualTree;
+  buildVirtualTree(node, nodeNamesInCurrentPath, pathParams) {
+    const isVirtualTreeRoot = node.isVirtualTree;
+    const isVirtualTreeChild = node._isVirtualTree;
+    if (
+      (isVirtualTreeRoot || isVirtualTreeChild) &&
+      nodeNamesInCurrentPath[0]
+    ) {
       // Temporary store values that will be cleaned up when creating a copy
-      let _virtualPathNames = node._virtualPathNames;
       let _virtualPathIndex = node._virtualPathIndex;
-      if (!_virtualPathNames) {
-        _virtualPathNames = nodeNamesInCurrentPath.slice(); // take without first segment, which is the parent one.
+      if (isVirtualTreeRoot) {
         _virtualPathIndex = 0;
-        if(!node.context) {
-          node.context = {};
-        }
       }
       // In case of defined virtualTree, when it got directly accessed
       // Or when someone tries to target a to long url
+      // Or if end of indexes reached
       const maxPathDepth = 50;
-      if(!_virtualPathNames.length || _virtualPathIndex > maxPathDepth) {
+      if (_virtualPathIndex > maxPathDepth) {
         return;
       }
 
-      // console.log('== buildVirtualTree', this.isVirtualTree, _virtualPathIndex, _virtualPathNames.join('/'), 'nniCP', nodeNamesInCurrentPath.join('/'))
-
-      const vPath = _virtualPathNames.slice(0, _virtualPathIndex).join('/');
       _virtualPathIndex++;
-      // TODO: VIEWURL IS NOT WORKING, HAVE CHANGED INDEX + VPATH ORDER
-
-      const keysToClean = ['_*', 'parent', 'isVirtualTree', 'viewUrl', 'children'];
-      const newChild = this.cleanObj(node, keysToClean);
-
+      const keysToClean = ['_*', 'parent', 'isVirtualTree', 'children'];
+      const newChild = GenericHelpers.cleanObject(node, keysToClean);
       Object.assign(newChild, {
-        // _prevSegment: nodeNamesInCurrentPath[0], // just for debugging
-        pathSegment: ':virtualSegment',
-        label: ':virtualSegment',
-        viewUrl: node.virtualViewUrl.replace(':virtualPath', vPath),
+        pathSegment: ':virtualSegment_' + _virtualPathIndex,
+        label: ':virtualSegment_' + _virtualPathIndex,
+        viewUrl: this.buildVirtualViewUrl(
+          node.virtualViewUrl,
+          pathParams,
+          _virtualPathIndex
+        ),
         _isVirtualTree: true,
-        _virtualPath: vPath,
-        _virtualPathNames,
         _virtualPathIndex
       });
 
-      // override .children with a represence of the current node
       node.children = [newChild];
-      return _virtualPathNames;
     }
   }
 

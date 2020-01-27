@@ -262,6 +262,33 @@ class GenericHelpersClass {
       input
     );
   }
+
+  /**
+   * Returns a new Object with the same object,
+   * without the keys that were given.
+   * References still stay.
+   * Allows wildcard ending keys
+   *
+   * @param {Object} input any given object
+   * @param {Array} of keys, allows also wildcards at the end, like: _*
+   */
+  cleanObject(input, keys) {
+    const res = {};
+    for (const key in input) {
+      if (input.hasOwnProperty(key)) {
+        const noFullMatch = keys.filter(k => key.includes(k)).length === 0;
+        const noPartialMatch =
+          keys
+            .filter(k => k.endsWith('*'))
+            .map(k => k.slice(0, -1))
+            .filter(k => key.startsWith(k)).length === 0;
+        if (noFullMatch && noPartialMatch) {
+          res[key] = input[key];
+        }
+      }
+    }
+    return res;
+  }
 }
 
 export const GenericHelpers = new GenericHelpersClass();
