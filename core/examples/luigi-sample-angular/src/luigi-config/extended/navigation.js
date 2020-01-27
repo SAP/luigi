@@ -15,6 +15,7 @@ class Navigation {
     this.projectsNavProviderFn = projectsNavProviderFn;
   }
 
+  addNavHrefs = true;
   preloadViewGroups = false;
   viewGroupSettings = {
     tets: {
