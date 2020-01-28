@@ -40,7 +40,7 @@ You have several authorization options:
 
 ## OpenID Connect configuration
 
-This code snippet demonstrates how to configure authorization using OpenID Connect in Luigi.
+This code snippet demonstrates how to configure authorization using OpenID Connect in Luigi. Note that you must install the [OpenID Plugin](https://github.com/SAP/luigi/tree/master/plugins/public/oidc/README.md) first. 
 
 ```javascript
 import oidcProvider from '@luigi-project/plugin-auth-oidc';
