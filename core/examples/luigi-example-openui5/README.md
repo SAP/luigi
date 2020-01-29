@@ -2,7 +2,7 @@
 
 ## Overview
 
-This is the OpenUI5-based sample application which runs with Luigi framework.
+This is the OpenUI5-based sample application which runs with the Luigi framework.
 
 
 ## Development
