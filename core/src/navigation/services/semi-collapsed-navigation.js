@@ -2,30 +2,30 @@ import { NavigationHelpers } from '../../utilities/helpers';
 import { LuigiConfig } from '../../core-api';
 import { CSS_BREAKPOINTS } from '../../utilities/constants';
 
-let responsiveNavSetting;
-let semiCollapsible;
-let previousWindowWidth;
-
 class SemiCollapsibleNavigationClass {
   initial() {
-    responsiveNavSetting = LuigiConfig.getConfigValue(
+    this.responsiveNavSetting = LuigiConfig.getConfigValue(
       'settings.responsiveNavigation'
     );
-    semiCollapsible = responsiveNavSetting === 'semiCollapsible' || 'Fiori3';
+    this.semiCollapsible =
+      this.responsiveNavSetting === 'semiCollapsible' || 'Fiori3';
 
     // set this.isSemiCollapsed to true for mobile
     if (
-      semiCollapsible &&
+      this.semiCollapsible &&
       window.innerWidth < CSS_BREAKPOINTS.desktopMinWidth
     ) {
       this.setCollapsed(true);
     }
-    this.isSemiCollapsed = semiCollapsible ? this.getCollapsed() : false;
+    this.isSemiCollapsed = this.semiCollapsible ? this.getCollapsed() : false;
     this.setCollapsed(this.isSemiCollapsed);
 
-    previousWindowWidth = window.innerWidth;
+    this.previousWindowWidth = window.innerWidth;
 
-    return { isSemiCollapsed: this.isSemiCollapsed, semiCollapsible };
+    return {
+      isSemiCollapsed: this.isSemiCollapsed,
+      semiCollapsible: this.semiCollapsible
+    };
   }
 
   onValueChanged(fn) {
@@ -37,10 +37,10 @@ class SemiCollapsibleNavigationClass {
   }
 
   onResize(selectedCategory) {
-    if (semiCollapsible) {
+    if (this.semiCollapsible) {
       const isDesktopToMobile =
         window.innerWidth < CSS_BREAKPOINTS.desktopMinWidth &&
-        previousWindowWidth >= CSS_BREAKPOINTS.desktopMinWidth;
+        this.previousWindowWidth >= CSS_BREAKPOINTS.desktopMinWidth;
       if (isDesktopToMobile) {
         this.setCollapsed(true);
       }
