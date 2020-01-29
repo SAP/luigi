@@ -7,19 +7,19 @@ Luigi.setConfig({
         pathSegment: 'home',
         label: 'Home',
         icon: 'home',
-        viewUrl: 'openui5.html#home',
+        viewUrl: 'openui5.html#/home',
         children: [
           {
             pathSegment: 'sample1',
             label: 'First',
             icon: 'nutrition-activity',
-            viewUrl: 'openui5.html#/home/sample1'
+            viewUrl: 'sample1/sample1.html'
           },
           {
             pathSegment: 'sample2',
             label: 'Second',
             icon: 'paper-plane',
-            viewUrl: 'openui5.html#/home/sample2'
+            viewUrl: 'sample2/sample2.html'
           },
           {
             category: { label: 'Links', icon: 'cloud' },

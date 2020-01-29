@@ -21,11 +21,12 @@
   	},
 	"sap.ui5": {
 		"rootView": {
-			"viewName": "luigi.demo.view.App",
+			"viewName": "luigi.demo.home.Home",
 			"type": "XML",
 			"async": true,
 			"id": "app"
 		},
+		
 		"dependencies": {
 			"minUI5Version": "1.30",
 			"libs": {
@@ -57,28 +58,29 @@
 				"target": "home"
 			}, {
 				"pattern": "home/sample1",
-				"name": "sampleOne",
-				"target": "sampleone"
+				"name": "sample1",
+				"target": "sample1"
 			},
 			{
 				"pattern": "home/sample2",
-				"name": "sampleTwo",
-				"target": "sampletwo"
+				"name": "sample2",
+				"target": "sample2"
 			}],
 			"targets": {
 				"home": {
 					"viewId": "home",
+					"viewPath": "luigi.demo.home",
 					"viewName": "Home"
 				},
-				"sampleone": {
-					"viewId": "sampleOne",
-					"viewPath": "luigi.demo.view",
-					"viewName": "SampleOne"
+				"sample1": {
+					"viewId": "sample1",
+					"viewPath": "luigi.demo.sample1",
+					"viewName": "Sample1"
 				},
-				"sampletwo": {
-					"viewId": "sampleTwo",
-					"viewPath": "luigi.demo.view",
-					"viewName": "SampleTwo"
+				"sample2": {
+					"viewId": "sample2",
+					"viewPath": "luigi.demo.sample2",
+					"viewName": "Sample2"
 				}
 			}
 		}

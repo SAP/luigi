@@ -3,13 +3,12 @@
 <head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>Navigation and Routing Tutorial</title>
-	<link rel="stylesheet" href="./libs/luigi-core/luigi.css" />
+	<title>OpenUI5 used with the Luigi Framework</title>
 	<script id="sap-ui-bootstrap"
 		src="resources/sap-ui-core.js"
 		data-sap-ui-theme="sap_fiori_3"
 		data-sap-ui-resourceroots='{
-			"luigi.demo": "./"
+			"luigi.demo": "./", "luigi.demo.sample1": "./sample1", "luigi.demo.sample2": "./sample2"
 		}'
 		data-sap-ui-oninit="module:sap/ui/core/ComponentSupport"
 		data-sap-ui-compatVersion="edge"
@@ -19,6 +18,6 @@
 	</script>
 </head>
 <body class="sapUiBody">
-	<div data-sap-ui-component data-name="luigi.demo" data-id="container" data-settings='{"id" : "nav"}'></div>
+	<div data-sap-ui-component data-name="luigi.demo" data-id="container" data-settings='{"id" : "app"}'></div>
 </body>
 </html>
