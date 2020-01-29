@@ -8,7 +8,6 @@
     "start": "live-server --entry-file=index.html public",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "author": "",
   "license": "ISC",
   "dependencies": {
     "@babel/core": "^7.8.3",
