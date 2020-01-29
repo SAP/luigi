@@ -332,11 +332,11 @@
     } else {
       sideNavClass = 'fd-nested-list';
     }
-    let arr = SemiCollapsibleNavigation.initial();
-    isSemiCollapsed = arr.isSemiCollapsed;
-    semiCollapsible = arr.semiCollapsible;
-    SemiCollapsibleNavigation.onValueChanged(arr => {
-      isSemiCollapsed = arr.isSemiCollapsed;
+    let stateArr = SemiCollapsibleNavigation.initial();
+    isSemiCollapsed = stateArr.isSemiCollapsed;
+    semiCollapsible = stateArr.semiCollapsible;
+    SemiCollapsibleNavigation.onValueChanged(stateArr => {
+      isSemiCollapsed = stateArr.isSemiCollapsed;
     });
   });
 
@@ -457,9 +457,9 @@
   }
 
   export function onResize() {
-    let arr = SemiCollapsibleNavigation.onResize(selectedCategory);
-    isSemiCollapsed = arr.isSemiCollapsed;
-    selectedCategory = arr.selectedCategory;
+    let stateArr = SemiCollapsibleNavigation.onResize(selectedCategory);
+    isSemiCollapsed = stateArr.isSemiCollapsed;
+    selectedCategory = stateArr.selectedCategory;
   }
 
   export function handleKey(event) {
