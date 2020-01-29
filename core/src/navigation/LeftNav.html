@@ -457,9 +457,11 @@
   }
 
   export function onResize() {
-    let stateArr = SemiCollapsibleNavigation.onResize(selectedCategory);
-    isSemiCollapsed = stateArr.isSemiCollapsed;
-    selectedCategory = stateArr.selectedCategory;
+    if (semiCollapsible) {
+      let stateArr = SemiCollapsibleNavigation.onResize(selectedCategory);
+      isSemiCollapsed = stateArr.isSemiCollapsed;
+      selectedCategory = stateArr.selectedCategory;
+    }
   }
 
   export function handleKey(event) {

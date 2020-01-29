@@ -12,7 +12,6 @@ class SemiCollapsibleNavigationClass {
       this.responsiveNavSetting === 'Fiori3'
         ? true
         : false;
-    console.log(this.semiCollapsible);
     // set this.isSemiCollapsed to true for mobile
     if (
       this.semiCollapsible &&
@@ -40,16 +39,14 @@ class SemiCollapsibleNavigationClass {
   }
 
   onResize(selectedCategory) {
-    if (this.semiCollapsible) {
-      const isDesktopToMobile =
-        window.innerWidth < CSS_BREAKPOINTS.desktopMinWidth &&
-        this.previousWindowWidth >= CSS_BREAKPOINTS.desktopMinWidth;
-      if (isDesktopToMobile) {
-        this.setCollapsed(true);
-      }
-      selectedCategory = this.closePopupMenu(selectedCategory);
-      return { isSemiCollapsed: this.isSemiCollapsed, selectedCategory };
+    const isDesktopToMobile =
+      window.innerWidth < CSS_BREAKPOINTS.desktopMinWidth &&
+      this.previousWindowWidth >= CSS_BREAKPOINTS.desktopMinWidth;
+    if (isDesktopToMobile) {
+      this.setCollapsed(true);
     }
+    selectedCategory = this.closePopupMenu(selectedCategory);
+    return { isSemiCollapsed: this.isSemiCollapsed, selectedCategory };
   }
 
   setCollapsed(state) {
