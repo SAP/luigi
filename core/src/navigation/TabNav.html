@@ -401,8 +401,24 @@
     }
   }
 
-  .fd-side-nav__link.has-child {
-    padding-right: 40px;
-    background-position: right 15px center;
+  .fd-side-nav {
+    &__item {
+      :global(&.hide_element) {
+        display: none;
+      }
+    }
+
+    &__link {
+      &.has-child {
+        padding-right: 40px;
+        background-position: right 15px center;
+      }
+    }
+  }
+
+  .luigi-tabsMoreButton {
+    :global(&.hide_element) {
+      display: none;
+    }
   }
 </style>
