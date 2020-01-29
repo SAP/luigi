@@ -1,6 +1,7 @@
 //you can now use ES6 goodies here
 Luigi.setConfig({
   navigation: {
+    contextSwitcher: false,
     nodes: () => [
       {
         pathSegment: 'home',
