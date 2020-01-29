@@ -23,7 +23,7 @@ To run this application, follow these steps:
     
 3. Build modules.
     ```bash
-npm run build
+    npm run build
     ```
 
 4. Start the application .
