@@ -8,8 +8,11 @@ class SemiCollapsibleNavigationClass {
       'settings.responsiveNavigation'
     );
     this.semiCollapsible =
-      this.responsiveNavSetting === 'semiCollapsible' || 'Fiori3';
-
+      this.responsiveNavSetting === 'semiCollapsible' ||
+      this.responsiveNavSetting === 'Fiori3'
+        ? true
+        : false;
+    console.log(this.semiCollapsible);
     // set this.isSemiCollapsed to true for mobile
     if (
       this.semiCollapsible &&
