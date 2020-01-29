@@ -4,7 +4,7 @@
  <img src="https://raw.githubusercontent.com/sap/luigi/master/logo.png" width="235">
 </p>
 
-## Overview
+## Overview 
 
 [Luigi](https://luigi-project.io) is a micro frontend JavaScript framework that enables you to create an administrative user interface driven by local and distributed views. Luigi allows a web application to communicate with the micro frontends which the application contains. To make sure the communication runs smoothly, you can easily configure the settings such as routing, navigation, authorization, and user experience elements.
 
