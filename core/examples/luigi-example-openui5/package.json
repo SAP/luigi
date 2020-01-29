@@ -1,7 +1,7 @@
 {
-  "name": "LuigiOpenUI5",
+  "name": "luigi-example-openui5",
   "private": true,
-  "version": "1.0.0",
+  "version": "0.1.0",
   "author": "SAP SE",
   "description": "Luigi with OpenUI5 Demo App",
   "scripts": {
