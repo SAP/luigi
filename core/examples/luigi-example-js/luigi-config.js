@@ -29,7 +29,7 @@ Luigi.setConfig({
           },
           {
             category: 'Links',
-            label: 'Javascript',
+            label: 'JavaScript',
             externalLink: {
               url: 'https://developer.mozilla.org/en-US/docs/Web/JavaScript'
             }
