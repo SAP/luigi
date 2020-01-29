@@ -48,7 +48,7 @@ Luigi.setConfig({
   },
   settings: {
     header: {
-      title: 'Luigi Javascript',
+      title: 'Luigi JavaScript',
       logo: '/logo.png',
       favicon: '/logo.ico'
     },
