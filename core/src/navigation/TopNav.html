@@ -66,7 +66,11 @@
           aria-hidden="{!(dropDownStates[`dropDownPopover-${i}`] || false)}"
           id="dropDownPopover-{i}"
         >
-          <TopNavDropDown node="{node}" isMobile="{false}"/>
+          <TopNavDropDown
+            node="{node}"
+            isMobile="{false}"
+            pathParams="{pathParams}"
+          />
         </div>
       </div>
     </div>
@@ -154,8 +158,9 @@
                 {#if !node.isCat}
                 <li>
                   <a
+                    href="{getRouteLink(node)}"
                     class="fd-menu__item {node === selectedNode ? 'is-selected' : ''}"
-                    on:click="{() => handleClick(node)}"
+                    on:click|preventDefault="{() => handleClick(node)}"
                     data-testid="{getTestId(node)}"
                   >
                     <span
@@ -175,9 +180,10 @@
                 {:else}
                 <li>
                   <a
+                    href="{getRouteLink(node)}"
                     title="{getNodeLabel(node)}"
                     class="fd-menu__item"
-                    on:click="{() => openMobileTopNavDropDown(node)}"
+                    on:click|preventDefault="{() => openMobileTopNavDropDown(node)}"
                     data-e2e="mobile-topnav-dropdown-category"
                   >
                     <span
@@ -197,9 +203,10 @@
                 <!-- {:else}
                 <li>
                   <a
+                    href="{getRouteLink(node)}"
                     title="{getNodeLabel(node)}"
                     class="fd-menu__item"
-                    on:click="openMobileTopNavDropDown(node)"
+                    on:click|preventDefault="openMobileTopNavDropDown(node)"
                     data-testid="mobile-topnav-dropdown-category"
                   >
                     {#if node.icon} {#if hasOpenUIicon(node)}
@@ -257,6 +264,7 @@
             node="{nodeForMobile}"
             isMobile="{true}"
             on:close="{closeMobileTopNavDropDown}"
+            pathParams="{pathParams}"
           />
           {/if}
         </div>
@@ -335,6 +343,7 @@
   import {
     AuthHelpers,
     NavigationHelpers,
+    RoutingHelpers,
     StateHelpers
   } from '../utilities/helpers';
 
@@ -435,6 +444,10 @@
     return node.testId
       ? node.testId
       : NavigationHelpers.prepareForTests(node.pathSegment, node.label);
+  }
+
+  function getRouteLink(node) {
+    return RoutingHelpers.getNodeHref(node, pathParams);
   }
 
   export function openMobileProductSwitcher() {

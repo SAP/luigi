@@ -24,10 +24,10 @@
       >
         <a
           class="fd-tabs__link"
-          href="javascript:void(null)"
+          href="{getRouteLink(node)}"
           role="tab"
           aria-selected="{node === selectedNodeForTabNav}"
-          on:click="{() => handleClick(node)}"
+          on:click|preventDefault="{() => handleClick(node)}"
         >{node.label}</a>
       </span>
       {/if}
@@ -44,9 +44,8 @@
           <a
             class="fd-tabs__link has-child"
             aria-expanded="false"
-            href="javascript:void(null)"
             role="tab"
-            on:click="{() => toggleDropdownState(key)}"
+            on:click|preventDefault="{() => toggleDropdownState(key)}"
             aria-selected="{isSelectedCat(key,selectedNodeForTabNav)}"
           >
             <span class="label">{key}</span>
@@ -63,9 +62,9 @@
                 {#if node.label}
                 <li>
                   <a
-                    href="javascript:void(null)"
+                    href="{getRouteLink(node)}"
                     class="fd-menu__item"
-                    on:click="{() => handleClick(node)}"
+                    on:click|preventDefault="{() => handleClick(node)}"
                     aria-selected="{node === selectedNodeForTabNav}"
                   >{node.label}</a>
                 </li>
@@ -88,9 +87,8 @@
         <a
           class="fd-tabs__link fd-popover__control has-child luigi__more"
           aria-expanded="false"
-          href="javascript:void(null)"
           role="tab"
-          on:click="{toggleMoreBtn}"
+          on:click|preventDefault="{toggleMoreBtn}"
         >
           <span class="label">More</span>
           <span class="sap-icon--dropdown sap-icon--l"></span>
@@ -107,9 +105,9 @@
             {#each nodes as node, index2}
             <li class="fd-nested-list__item" uid="{index}-{index2}">
               <a
-                href="javascript:void(null)"
+                href="{getRouteLink(node)}"
                 class="fd-nested-list__link"
-                on:click="{() => handleClick(node)}"
+                on:click|preventDefault="{() => handleClick(node)}"
                 aria-selected="{node===selectedNodeForTabNav}"
               >
                 <span class="fd-nested-list__title">{node.label}</span>
@@ -119,12 +117,12 @@
             {:else}
             <li class="fd-nested-list__item" uid="{index}-0">
               <a
-                class="fd-nested-list__link has-child"
                 href="javascript:void(null)"
+                class="fd-nested-list__link has-child"
                 aria-haspopup="true"
                 aria-expanded="{dropDownStates[key+index]}"
                 aria-selected="{isSelectedCat(key,selectedNodeForTabNav)}"
-                on:click="{() => toggleDropdownState(key+index)}"
+                on:click|preventDefault="{() => toggleDropdownState(key+index)}"
               >
                 <span class="fd-nested-list__title">{key}</span>
               </a>
@@ -136,8 +134,8 @@
                 <li class="fd-nested-list__item">
                   <a
                     class="fd-nested-list__link"
-                    href="javascript:void(null)"
-                    on:click="{() => handleClick(node)}"
+                    href="{getRouteLink(node)}"
+                    on:click|preventDefault="{() => handleClick(node)}"
                     aria-selected="{node===selectedNodeForTabNav}"
                   >
                     <span class="fd-nested-list__title">{node.label}</span>
@@ -158,11 +156,12 @@
 <script>
   import { beforeUpdate, createEventDispatcher, onMount } from 'svelte';
   import { Navigation } from './services/navigation';
-  import { NavigationHelpers } from '../utilities/helpers';
+  import { NavigationHelpers, RoutingHelpers } from '../utilities/helpers';
   import { LuigiConfig } from '../core-api';
 
   export let children;
   export let pathData;
+  export let pathParams;
   let previousPathData;
   export let hideNavComponent;
   export let virtualGroupPrefix = NavigationHelpers.virtualGroupPrefix;
@@ -315,6 +314,10 @@
     );
   }
 
+  function getRouteLink(node) {
+    return RoutingHelpers.getNodeHref(node, pathParams);
+  }
+
   // [svelte-upgrade suggestion]
   // review these functions and remove unnecessary 'export' keywords
   export function handleClick(node) {
@@ -371,6 +374,15 @@
         .fd-nested-list__item:last-child {
           border-bottom: none;
         }
+      }
+    }
+    :global(&.hide_element) {
+      display: none;
+    }
+
+    .fd-nested-list__item {
+      :global(&.hide_element) {
+        display: none;
       }
     }
   }

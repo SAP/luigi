@@ -30,7 +30,11 @@
               on:click="{() => onActionClick(node)}"
               data-testid="{getTestId(node)}"
             >
-              <a class="fd-menu__item">{$getTranslation(node.label)}</a>
+              <a
+                href="{getRouteLink(node)}"
+                on:click|preventDefault="{() => {}}"
+                class="fd-menu__item"
+              >{$getTranslation(node.label)}</a>
             </li>
             {/if} {/each}
           </ul>
@@ -53,6 +57,8 @@
               {@html customOptionsRenderer(node, node.label === selectedLabel)}
               {:else}
               <a
+                href="{getRouteLink(node)}"
+                on:click|preventDefault="{() => {}}"
                 class="fd-menu__item {node.label === selectedLabel ? 'is-selected' : ''}"
                 title="{label}"
               >{label}</a>
@@ -67,7 +73,11 @@
               on:click="{() => onActionClick(node)}"
               data-testid="{getTestId(node)}"
             >
-              <a class="fd-menu__item">{$getTranslation(node.label)}</a>
+              <a
+                href="{getRouteLink(node)}"
+                on:click|preventDefault="{() => {}}"
+                class="fd-menu__item"
+              >{$getTranslation(node.label)}</a>
             </li>
             {/if} {/each}
           </ul>
@@ -107,6 +117,7 @@
     !selectedOption;
   export let selectedOption;
   export let fallbackLabelResolver = null;
+  export let pathParams;
   export let customOptionsRenderer;
   let preserveSubPathOnSwitch;
   let getUnsavedChangesModalPromise = getContext(
@@ -123,12 +134,16 @@
         const contextSwitcherConfig = LuigiConfig.getConfigValue(
           'navigation.contextSwitcher'
         );
-        customOptionsRenderer =
-          contextSwitcherConfig.customOptionsRenderer &&
-          GenericHelpers.isFunction(contextSwitcherConfig.customOptionsRenderer)
-            ? contextSwitcherConfig.customOptionsRenderer
-            : undefined;
         contextSwitcherEnabled = !!contextSwitcherConfig;
+        if (!contextSwitcherEnabled) {
+          return;
+        }
+
+        customOptionsRenderer = GenericHelpers.isFunction(
+          contextSwitcherConfig.customOptionsRenderer
+        )
+          ? contextSwitcherConfig.customOptionsRenderer
+          : undefined;
         config = contextSwitcherConfig;
         options = undefined;
         if (contextSwitcherConfig) {
@@ -180,6 +195,10 @@
     return node.testId
       ? node.testId
       : NavigationHelpers.prepareForTests(node.pathSegment, node.label);
+  }
+
+  function getRouteLink(node) {
+    return RoutingHelpers.getNodeHref(node, pathParams);
   }
 
   // [svelte-upgrade suggestion]
@@ -252,7 +271,7 @@
           )
         );
       } else {
-        Routing.navigateTo(option.path);
+        Routing.navigateTo(option.link);
       }
     });
   }

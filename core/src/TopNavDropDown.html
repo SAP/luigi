@@ -5,7 +5,11 @@
     {#if children}
     {#each children as node}
     <li on:click="{() => onActionClick(node)}" data-testid="{getTestId(node)}">
-      <a class="fd-menu__item">
+      <a
+        href="{getRouteLink(node)}"
+        on:click|preventDefault="{() => {}}"
+        class="fd-menu__item"
+      >
         <span
           class="fd-top-nav__icon {node.icon && hasOpenUIicon(node) ? 'sap-icon--' + node.icon + ' sap-icon--m' : '' }"
         >
@@ -136,6 +140,10 @@
     return node.testId
       ? node.testId
       : NavigationHelpers.prepareForTests(node.pathSegment, node.label);
+  }
+
+  function getRouteLink(node) {
+    return RoutingHelpers.getNodeHref(node, pathParams);
   }
 </script>
 

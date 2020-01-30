@@ -23,9 +23,9 @@
             title="{isSemiCollapsed ? getNodeLabel(node) : ''}"
           >
             <a
-              href="javascript:void(null)"
+              href="{getRouteLink(node)}"
               class="fd-nested-list__link {node === selectedNode ? 'is-selected' : ''}"
-              on:click="{() => handleClick(node)}"
+              on:click|preventDefault="{() => handleClick(node)}"
               data-testid="{getTestId(node)}"
             >
               {#if node.icon} {#if isOpenUIiconName(node.icon)}
@@ -67,7 +67,7 @@
               class="fd-nested-list__link has-child {isExpanded(nodes, expandedCategories) ? 'is-expanded' : ''}"
               aria-haspopup="true"
               aria-expanded="{isExpanded(nodes, expandedCategories)}"
-              on:click="{() => setExpandedState(nodes, !isExpanded(nodes, expandedCategories), this)}"
+              on:click|preventDefault="{() => setExpandedState(nodes, !isExpanded(nodes, expandedCategories), this)}"
             >
               {#if isOpenUIiconName(nodes.metaInfo.icon)}
               <span
@@ -93,9 +93,9 @@
               {#each nodes as node} {#if !node.hideFromNav} {#if node.label}
               <li class="fd-nested-list__item">
                 <a
-                  href="javascript:void(null)"
+                  href="{getRouteLink(node)}"
                   class="fd-nested-list__link {node === selectedNode ? 'is-selected' : ''}"
-                  on:click="{() => handleClick(node)}"
+                  on:click|preventDefault="{() => handleClick(node)}"
                   data-testid="{getTestId(node)}"
                 >
                   <span class="fd-nested-list__title">{getNodeLabel(node)}</span>
@@ -119,9 +119,9 @@
                   {#each nodes as node} {#if !node.hideFromNav} {#if node.label}
                   <li class="fd-nested-list__item">
                     <a
-                      href="javascript:void(null)"
+                      href="{getRouteLink(node)}"
                       class="fd-nested-list__link {node === selectedNode ? 'is-selected' : ''}"
-                      on:click="{() => handleClick(node)}"
+                      on:click|preventDefault="{() => handleClick(node)}"
                       data-testid="{getTestId(node)}"
                     >
                       <span class="fd-nested-list__title">{getNodeLabel(node)}</span>
@@ -165,9 +165,9 @@
           {#each nodes as node} {#if !node.hideFromNav} {#if node.label}
           <li class="fd-nested-list__item">
             <a
-              href="javascript:void(null)"
+              href="{getRouteLink(node)}"
               class="fd-nested-list__link {node === selectedNode ? 'is-selected' : ''}"
-              on:click="{() => handleClick(node)}"
+              on:click|preventDefault="{() => handleClick(node)}"
               data-testid="{getTestId(node)}"
             >
               {#if node.icon} {#if isOpenUIiconName(node.icon)}
@@ -227,6 +227,7 @@
     onMount,
     getContext
   } from 'svelte';
+  import { RoutingHelpers } from '../utilities/helpers';
 
   //TODO refactor
   const __this = {
@@ -275,6 +276,7 @@
   export let footerText;
   export let semiCollapsible;
   export let pathData;
+  export let pathParams;
   let previousPathData;
   export let virtualGroupPrefix = NavigationHelpers.virtualGroupPrefix;
   export let isSemiCollapsed;
@@ -377,6 +379,10 @@
     return node.testId
       ? node.testId
       : NavigationHelpers.prepareForTests(node.pathSegment, node.label);
+  }
+
+  function getRouteLink(node) {
+    return RoutingHelpers.getNodeHref(node, pathParams);
   }
 
   function getTestIdForCat(metaInfo, key) {

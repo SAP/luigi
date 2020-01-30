@@ -57,6 +57,7 @@
   {#if !(hideNav||hideSideNav)}
   <LeftNav
     pathData="{navigationPath}"
+    pathParams="{pathParams}"
     on:handleClick="{handleNavClick}"
     on:resizeTabNav="{onResizeTabNav}"
   />
@@ -64,6 +65,7 @@
   {#if (tabNav && !hideNav)}
   <TabNav
     pathData="{navigationPath}"
+    pathParams="{pathParams}"
     on:handleClick="{handleNavClick}"
     resizeTabNavToggle="{resizeTabNavToggle}"
   />

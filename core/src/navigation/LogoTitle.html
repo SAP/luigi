@@ -47,7 +47,8 @@
             <a
               role="button"
               class="fd-menu__item"
-              on:click="{goToRoot}"
+              on:click|preventDefault="{goToRoot}"
+              href="/"
               data-testid="{getTestId(defaultTitle)}"
             >{$getTranslation(defaultTitle)}</a>
           </li>
@@ -59,7 +60,8 @@
             <a
               role="button"
               class="fd-menu__item"
-              on:click="{() => goTo(item.link)}"
+              on:click|preventDefault="{() => goTo(item.link)}"
+              href="{getRouteLink(item, pathParams)}"
               data-testid="{getTestId(item)}"
             >{$getTranslation(item.title)}</a>
           </li>
@@ -215,6 +217,10 @@
       }
     }
     return false;
+  }
+
+  function getRouteLink(node) {
+    return RoutingHelpers.getNodeHref(node);
   }
 </script>
 
