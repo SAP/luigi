@@ -250,20 +250,18 @@ class NavigationClass {
       }
     }
     newStr += ':virtualSegment_' + _virtualPathIndex + '/';
-    return str.replace(':virtualPath', newStr);
+    return str + '/' + newStr;
   }
 
   buildVirtualTree(node, nodeNamesInCurrentPath, pathParams) {
-    const isVirtualTreeRoot = node.isVirtualTree;
-    const isVirtualTreeChild = node._isVirtualTree;
-    if (
-      (isVirtualTreeRoot || isVirtualTreeChild) &&
-      nodeNamesInCurrentPath[0]
-    ) {
+    const virtualTreeRoot = node.virtualTree;
+    const virtualTreeChild = node._virtualTree;
+    const _virtualViewUrl = node._virtualViewUrl || node.viewUrl;
+    if ((virtualTreeRoot || virtualTreeChild) && nodeNamesInCurrentPath[0]) {
       // Check requirements
-      if (isVirtualTreeRoot && !node.virtualViewUrl) {
+      if (virtualTreeRoot && !_virtualViewUrl) {
         console.error(
-          '[ERROR] node is declared as virtual tree, but no virtualViewUrl parameter found in node.',
+          '[ERROR] node is declared as virtual tree, but no _virtualViewUrl parameter found in node.',
           node
         );
         return;
@@ -271,8 +269,9 @@ class NavigationClass {
 
       // Temporary store values that will be cleaned up when creating a copy
       let _virtualPathIndex = node._virtualPathIndex;
-      if (isVirtualTreeRoot) {
+      if (virtualTreeRoot) {
         _virtualPathIndex = 0;
+        node.keepSelectedForChildren = true;
       }
 
       // Allowing maximum of 50 path segments to avoid memory issues
@@ -282,18 +281,26 @@ class NavigationClass {
       }
 
       _virtualPathIndex++;
-      const keysToClean = ['_*', 'parent', 'isVirtualTree', 'children'];
+      const keysToClean = [
+        '_*',
+        'virtualTree',
+        'parent',
+        'children',
+        'keepSelectedForChildren',
+        'navigationContext'
+      ];
       const newChild = GenericHelpers.removeProperties(node, keysToClean);
       Object.assign(newChild, {
         pathSegment: ':virtualSegment_' + _virtualPathIndex,
         label: ':virtualSegment_' + _virtualPathIndex,
         viewUrl: this.buildVirtualViewUrl(
-          node.virtualViewUrl,
+          _virtualViewUrl,
           pathParams,
           _virtualPathIndex
         ),
-        _isVirtualTree: true,
-        _virtualPathIndex
+        _virtualTree: true,
+        _virtualPathIndex,
+        _virtualViewUrl
       });
 
       node.children = [newChild];
