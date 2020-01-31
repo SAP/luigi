@@ -1,22 +1,23 @@
 <!-- meta
 {
   "node": {
-    "label": "Configuration Example",
+    "label": "Navigation configuration Example",
     "category": {
-      "label": "Luigi Core"
+      "label": "Examples"
     },
     "metaData": {
-      "categoryPosition": 2,
-      "position": 10
-    },
-    "hideFromNav": true
+      "categoryPosition": 5,
+      "position": 0
+    }
   }
 }
 meta -->
 
 # Navigation configuration example
 
-This example represents a sample Luigi navigation configuration including parameters described in the [navigation parameters reference](navigation-parameters-reference.md).
+This example represents a Luigi navigation configuration example including parameters described in the [navigation parameters reference](navigation-parameters-reference.md).
+
+Note that this is not a functional example, as its purpose is to illustrate different configuration options. For example, the line `children: [node, node, node]` will return an error because `node` is just a placeholder which has to be replaced by actual nodes.
 
 ```javascript
 Luigi.setConfig({
