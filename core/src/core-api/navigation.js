@@ -49,6 +49,31 @@ class LuigiNavigationManager {
     return new linkManager().openAsModal(path, modalSettings);
   }
 
+  /** 
+   * Opens a view in a split view. You can specify the split view's title and size. If you don't specify the title, it is the node label. If there is no node label, the title remains empty. The default size of the split view is 40, which means 40% height of the split view.
+   * @memberof LuigiNavigation
+   * @param {string} path navigation path
+   * @param {Object} splitViewSettings opens a view in a split view. Use these settings to configure the split view's behaviour
+   * @param {string} splitViewSettings.title split view title. By default, it is the node label. If there is no label, it is left empty
+   * @param {number} [splitViewSettings.size=40] height of the split view in percent
+   * @param {boolean} [splitViewSettings.collapsed=false] opens split view in collapsed state
+   * @example
+   * Luigi.navigation().openAsSplitView('projects/pr1/users', {title:'Users', size:'m'});
+   */
+  openAsSplitView(path, splitViewSettings) {
+    return new linkManager().openAsSplitView(path, splitViewSettings);
+  }
+
+  /**
+   * Closes split view opened with openAsSplitView(path, splitViewSettings)
+   * @memberof LuigiNavigation
+   * @example
+   * Luigi.navigation().closeSplitView();
+   */
+  closeSplitView() {
+    return new linkManager().closeSplitView();
+  }
+
   /**
    * Sets the current navigation context to that of a specific parent node which has the {@link navigation-configuration.md navigationContext} field declared in the navigation configuration. This navigation context is then used by the `navigate` function.
    * @memberof LuigiNavigation

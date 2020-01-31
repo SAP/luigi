@@ -1,4 +1,5 @@
 import { GenericHelpers } from '../utilities/helpers';
+// import { splitViewHandle } from './splitViewHandle';
 /**
  * @private
  * @abstract
@@ -46,7 +47,8 @@ export class linkManager extends LuigiClientBase {
     };
   }
 
-  navigate(path, preserveView, modalSettings) {
+  // TODO-ndricim : add new param here
+  navigate(path, preserveView, modalSettings, splitViewSettings) {
     if (this.options.errorSkipNavigation) {
       this.options.errorSkipNavigation = false;
       return;
@@ -59,7 +61,8 @@ export class linkManager extends LuigiClientBase {
       params: Object.assign(this.options, {
         link: path,
         relative: relativePath,
-        modal: modalSettings
+        modal: modalSettings,
+        splitView: splitViewSettings,
       })
     };
 
@@ -68,6 +71,15 @@ export class linkManager extends LuigiClientBase {
 
   openAsModal(path, modalSettings = {}) {
     this.navigate(path, true, modalSettings);
+  }
+
+  // TODO-ndricim add new method here : 
+  openAsSplitView(path, splitViewSettings = {}){
+    return Luigi.openAsSplitView(path,splitViewSettings);
+  }
+
+  closeSplitView(){
+    return Luigi.closeSplitView();
   }
 
   fromContext(navigationContext) {

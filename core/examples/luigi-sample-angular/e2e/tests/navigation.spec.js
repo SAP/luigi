@@ -21,6 +21,17 @@ describe('Navigation', () => {
         cy.expectPathToBe('/overview');
       });
     });
+    it('Core API open in SplitView', () => {
+      cy.window().then(win => {
+        win.Luigi.navigation().openAsSplitView('/settings', {
+          title: 'Preserved Split View',
+          size: '40',
+          collapsed: false,
+        });
+        win.Luigi.navigation().closeSplitView();
+        cy.expectPathToBe('/overview');
+      });
+    });
     it('Core API navigate with params', () => {
       cy.window().then(win => {
         win.Luigi.navigation()

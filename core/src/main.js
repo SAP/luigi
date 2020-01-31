@@ -70,6 +70,14 @@ const configReadyCallback = () => {
         return app.$$.ctx.showModal(settings);
       };
 
+      Luigi.openAsSplitView = (path , settings)  => {
+        return app.$$.ctx.openSplitView(path, settings);
+      }
+
+      Luigi.closeSplitView = () => {
+        return app.$$.ctx.closeSplitView();
+      }
+
       Luigi.pathExists = path => {
         return app.$$.ctx.pathExists(path);
       };

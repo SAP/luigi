@@ -438,11 +438,11 @@
 
   //// SPLIT VIEW
 
-  const openSplitView = (nodepath, settings) => {
+  export const openSplitView = (nodepath, settings) => {
     SplitViewSvc.open(getComponentWrapper(), nodepath, settings);
   };
 
-  const closeSplitView = () => {
+  export const closeSplitView = () => {
     SplitViewSvc.close(getComponentWrapper());
   };
 
