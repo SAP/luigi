@@ -10,7 +10,6 @@
   },
   "license": "ISC",
   "dependencies": {
-    "@babel/core": "^7.8.3",
     "@kyma-project/luigi-client": "^0.7.3",
     "@kyma-project/luigi-core": "^0.7.3",
     "babel-loader": "^8.0.6",
