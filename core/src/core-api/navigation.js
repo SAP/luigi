@@ -31,8 +31,8 @@ class LuigiNavigationManager {
    * Luigi.navigation().navigate('users/groups/stakeholders')
    * Luigi.navigation().navigate('/settings', null, true) // preserve view
    */
-  navigate(path, preserveView, modalSettings) {
-    return new linkManager().navigate(path, preserveView, modalSettings);
+  navigate(path, preserveView, modalSettings, splitViewSettings) {
+    return new linkManager().navigate(path, preserveView, modalSettings,splitViewSettings);
   }
 
   /**
@@ -61,17 +61,7 @@ class LuigiNavigationManager {
    * Luigi.navigation().openAsSplitView('projects/pr1/users', {title:'Users', size:'m'});
    */
   openAsSplitView(path, splitViewSettings) {
-    return new linkManager().openAsSplitView(path, splitViewSettings);
-  }
-
-  /**
-   * Closes split view opened with openAsSplitView(path, splitViewSettings)
-   * @memberof LuigiNavigation
-   * @example
-   * Luigi.navigation().closeSplitView();
-   */
-  closeSplitView() {
-    return new linkManager().closeSplitView();
+    return new linkManager().openAsSplitView(path,splitViewSettings);
   }
 
   /**

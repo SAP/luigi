@@ -1,33 +1,8 @@
 import { GenericHelpers } from '../utilities/helpers';
-// import { splitViewHandle } from './splitViewHandle';
-/**
- * @private
- * @abstract
- */
-export class LuigiClientBase {
-  /**
-   * @private
-   */
-  constructor() {
-    this.promises = {};
-  }
-  /**
-   * Returns the promises object
-   * @private
-   */
-  setPromise(name, value) {
-    this.promises[name] = value;
-  }
-  /**
-   * Sets the promises object
-   * @private
-   */
-  getPromise(name) {
-    return this.promises[name];
-  }
-}
+import { splitViewHandle } from './splitViewHandle';
+import { LuigiCoreAPIBase } from './baseClass';
 
-export class linkManager extends LuigiClientBase {
+export class linkManager extends LuigiCoreAPIBase {
   /**
    * @private
    */
@@ -47,7 +22,6 @@ export class linkManager extends LuigiClientBase {
     };
   }
 
-  // TODO-ndricim : add new param here
   navigate(path, preserveView, modalSettings, splitViewSettings) {
     if (this.options.errorSkipNavigation) {
       this.options.errorSkipNavigation = false;
@@ -73,13 +47,9 @@ export class linkManager extends LuigiClientBase {
     this.navigate(path, true, modalSettings);
   }
 
-  // TODO-ndricim add new method here : 
   openAsSplitView(path, splitViewSettings = {}){
-    return Luigi.openAsSplitView(path,splitViewSettings);
-  }
-
-  closeSplitView(){
-    return Luigi.closeSplitView();
+    this.navigate(path, true, undefined,splitViewSettings);
+    return new splitViewHandle(splitViewSettings);
   }
 
   fromContext(navigationContext) {
