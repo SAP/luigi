@@ -255,19 +255,10 @@ class NavigationClass {
 
   buildVirtualTree(node, nodeNamesInCurrentPath, pathParams) {
     const virtualTreeRoot = node.virtualTree;
+    // Temporary store values that will be cleaned up when creating a copy
     const virtualTreeChild = node._virtualTree;
     const _virtualViewUrl = node._virtualViewUrl || node.viewUrl;
     if ((virtualTreeRoot || virtualTreeChild) && nodeNamesInCurrentPath[0]) {
-      // Check requirements
-      if (virtualTreeRoot && !_virtualViewUrl) {
-        console.error(
-          '[ERROR] node is declared as virtual tree, but no _virtualViewUrl parameter found in node.',
-          node
-        );
-        return;
-      }
-
-      // Temporary store values that will be cleaned up when creating a copy
       let _virtualPathIndex = node._virtualPathIndex;
       if (virtualTreeRoot) {
         _virtualPathIndex = 0;

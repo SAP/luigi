@@ -917,13 +917,9 @@ describe('Navigation', function() {
     });
   });
   describe('buildVirtualViewUrl', () => {
-    it('returns same if :virtualPath is not defined', () => {
-      const given = 'https://mf.luigi-project.io';
-      assert.equal(Navigation.buildVirtualViewUrl(given), given);
-    });
     it('returns valid substituted string without proper pathParams', () => {
       const mock = {
-        url: 'https://mf.luigi-project.io#!/:virtualPath',
+        url: 'https://mf.luigi-project.io#!',
         pathParams: {
           otherParam: 'foo'
         },
@@ -938,7 +934,7 @@ describe('Navigation', function() {
     });
     it('returns valid substituted string with pathParams', () => {
       const mock = {
-        url: 'https://mf.luigi-project.io#!/:virtualPath',
+        url: 'https://mf.luigi-project.io#!',
         pathParams: {
           otherParam: 'foo',
           virtualSegment_1: 'one',
@@ -969,8 +965,8 @@ describe('Navigation', function() {
     it('unchanged if directly accessing a node which is defined as virtual tree root', () => {
       const mockNode = {
         label: 'Luigi',
-        isVirtualTree: true,
-        virtualViewUrl: 'foo'
+        virtualTree: true,
+        viewUrl: 'foo'
       };
       const mockNodeNames = []; // no further child segments
 
@@ -980,52 +976,41 @@ describe('Navigation', function() {
 
       assert.deepEqual(mockNode, expected);
     });
-    it('throws and error if virtualViewUrl is undefined', () => {
-      const mockNode = {
-        label: 'Luigi',
-        isVirtualTree: true
-      };
-      const expected = Object.assign({}, mockNode);
-
-      Navigation.buildVirtualTree(mockNode, ['one']);
-
-      sinon.assert.calledOnce(console.error);
-      assert.deepEqual(mockNode, expected);
-    });
     it('with first virtual tree segment', () => {
       const mockNode = {
         label: 'Luigi',
-        isVirtualTree: true,
-        virtualViewUrl: 'http://mf.luigi-project.io/:virtualPath'
+        virtualTree: true,
+        viewUrl: 'http://mf.luigi-project.io'
       };
       const mockNodeNames = ['foo'];
 
       const expected = Object.assign({}, mockNode, {
+        keepSelectedForChildren: true,
         children: [
           {
-            _isVirtualTree: true,
+            _virtualTree: true,
             _virtualPathIndex: 1,
             label: ':virtualSegment_1',
             pathSegment: ':virtualSegment_1',
             viewUrl: 'http://mf.luigi-project.io/:virtualSegment_1/',
-            virtualViewUrl: 'http://mf.luigi-project.io/:virtualPath'
+            _virtualViewUrl: 'http://mf.luigi-project.io'
           }
         ]
       });
 
       Navigation.buildVirtualTree(mockNode, mockNodeNames);
 
-      assert.deepEqual(mockNode, expected);
+      assert.deepEqual(expected, mockNode);
     });
     it('with a deep nested virtual tree segment', () => {
       const mockNode = {
-        _isVirtualTree: true,
+        _virtualTree: true,
         _virtualPathIndex: 3,
         label: ':virtualSegment_3',
         pathSegment: ':virtualSegment_3',
         viewUrl:
           'http://mf.luigi-project.io/:virtualSegment_2/:virtualSegment_3/',
-        virtualViewUrl: 'http://mf.luigi-project.io/:virtualPath'
+        _virtualViewUrl: 'http://mf.luigi-project.io'
       };
       const mockNodeNames = ['foo'];
       const pathParams = {
@@ -1038,20 +1023,20 @@ describe('Navigation', function() {
       const expected = Object.assign({}, mockNode, {
         children: [
           {
-            _isVirtualTree: true,
+            _virtualTree: true,
             _virtualPathIndex: 4,
             label: ':virtualSegment_4',
             pathSegment: ':virtualSegment_4',
             viewUrl:
               'http://mf.luigi-project.io/:virtualSegment_1/:virtualSegment_2/:virtualSegment_3/:virtualSegment_4/',
-            virtualViewUrl: 'http://mf.luigi-project.io/:virtualPath'
+            _virtualViewUrl: 'http://mf.luigi-project.io'
           }
         ]
       });
 
       Navigation.buildVirtualTree(mockNode, mockNodeNames, pathParams);
 
-      assert.deepEqual(mockNode, expected);
+      assert.deepEqual(expected, mockNode);
     });
   });
 });
