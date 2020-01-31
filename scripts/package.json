@@ -4,17 +4,18 @@
     "docu": "npm run docu:client && npm run docu:core",
     "docu:generate:section": "npm run docu:client:generate:section && npm run docu:core:generate:section",
     "docu:client": "npm run docu:client:validate && npm run docu:client:generate:section",
-    "docu:client:generate:section": "documentation readme ../client/src/luigi-client.js -f md --readme-file=../docs/luigi-client-api.md --section='Luigi Client API' --markdown-toc=false --quiet --github false",
+    "docu:client:generate:section": "documentation readme ../client/src/luigi-client.js -f md --readme-file=../docs/luigi-client-api.md --section='API Reference' --markdown-toc=false --quiet --github false",
     "docu:client:validate": "documentation lint ../client/src/luigi-client.js",
     "docu:core": "npm run docu:core:validate && npm run docu:core:generate:sections",
-    "docu:core:validate": "documentation lint --shallow ../core/src/core-api/config.js ../core/src/core-api/elements.js ../core/src/core-api/auth.js ../core/src/core-api/navigation.js ../core/src/core-api/i18n.js ../core/src/core-api/custom-messages.js",
-    "docu:core:generate:sections": "npm run docu:core:generate:config && npm run docu:core:generate:dom-elements && npm run docu:core:generate:auth && npm run docu:core:generate:navigation && npm run docu:core:generate:i18n && npm run docu:core:generate:custom-messages",
+    "docu:core:validate": "documentation lint --shallow ../core/src/core-api/config.js ../core/src/core-api/elements.js ../core/src/core-api/auth.js ../core/src/core-api/navigation.js ../core/src/core-api/i18n.js ../core/src/core-api/custom-messages.js ../core/src/core-api/ux.js",
+    "docu:core:generate:sections": "npm run docu:core:generate:config && npm run docu:core:generate:dom-elements && npm run docu:core:generate:auth && npm run docu:core:generate:navigation && npm run docu:core:generate:i18n && npm run docu:core:generate:custom-messages && npm run docu:core:generate:ux",
     "docu:core:generate:config": "documentation readme ../core/src/core-api/config.js --shallow -f md --section='Luigi Config' --readme-file=../docs/luigi-core-api.md --markdown-toc=false --github false --quiet",
     "docu:core:generate:dom-elements": "documentation readme ../core/src/core-api/dom-elements.js --shallow -f md --section='Luigi.elements()' --readme-file=../docs/luigi-core-api.md --markdown-toc=false --github false --quiet",
     "docu:core:generate:auth": "documentation readme ../core/src/core-api/auth.js --shallow -f md --section='Luigi.auth()' --readme-file=../docs/luigi-core-api.md --markdown-toc=false --github false --quiet",
     "docu:core:generate:navigation": "documentation readme ../core/src/core-api/navigation.js --shallow -f md --section='Luigi.navigation()' --readme-file=../docs/luigi-core-api.md --markdown-toc=false --github false --quiet",
     "docu:core:generate:i18n": "documentation readme ../core/src/core-api/i18n.js --shallow -f md --section='Luigi.i18n()' --readme-file=../docs/luigi-core-api.md --markdown-toc=false --github false --quiet",
-    "docu:core:generate:custom-messages": "documentation readme ../core/src/core-api/custom-messages.js --shallow -f md --section='Luigi.customMessages()' --readme-file=../docs/luigi-core-api.md --markdown-toc=false --github false --quiet"
+    "docu:core:generate:custom-messages": "documentation readme ../core/src/core-api/custom-messages.js --shallow -f md --section='Luigi.customMessages()' --readme-file=../docs/luigi-core-api.md --markdown-toc=false --github false --quiet",
+    "docu:core:generate:ux": "documentation readme ../core/src/core-api/ux.js --shallow -f md --section='Luigi.ux()' --readme-file=../docs/luigi-core-api.md --markdown-toc=false --github false --quiet"
   },
   "devDependencies": {
     "documentation": "^11.0.0",

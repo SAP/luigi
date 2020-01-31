@@ -141,8 +141,8 @@ class LuigiI18NManager {
   /**
    * @private
    * Finds the translated value based on given key.
-   * @param {string} key key to be translated.
-   * @param {*} obj translation table.
+   * @param {string} key key to be translated
+   * @param {*} obj translation table
    * @memberof LuigiI18N
    */
   findTranslation(key, obj, interpolations) {
