@@ -23,12 +23,12 @@ describe('Navigation', () => {
     });
     it('Core API open in SplitView', () => {
       cy.window().then(win => {
-        win.Luigi.navigation().openAsSplitView('/settings', {
+        var handler = win.Luigi.navigation().openAsSplitView('/settings', {
           title: 'Preserved Split View',
           size: '40',
           collapsed: false,
         });
-        win.Luigi.navigation().closeSplitView();
+        handler.close();
         cy.expectPathToBe('/overview');
       });
     });
