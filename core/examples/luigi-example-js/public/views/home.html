@@ -19,12 +19,10 @@
   <script type="text/javascript" src="/luigi-client/luigi-client.js"></script>
   <script type="text/javascript">
     LuigiClient.addContextUpdateListener(updatedContext => {
-      console.log('Luigi Client updated');
       document.getElementById("init-text").textContent = 'Luigi Client updated.';
     });
     LuigiClient.addInitListener(initialContext => {
       document.getElementById("init-text").textContent = 'Luigi Client initialized.' ;
-      console.log('Luigi Client initialized');
     });
   </script>
 
