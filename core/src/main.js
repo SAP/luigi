@@ -70,6 +70,34 @@ const configReadyCallback = () => {
         return app.$$.ctx.showModal(settings);
       };
 
+      Luigi.openAsSplitView = (path , settings)  => {
+        return app.$$.ctx.openSplitView(path, settings);
+      }
+
+      Luigi.closeSplitView = () => {
+        return app.$$.ctx.closeSplitView();
+      }
+
+      Luigi.collapseSplitView = () => {
+        return app.$$.ctx.collapseSplitView();
+      }
+
+      Luigi.expandSplitView = () => {
+        return app.$$.ctx.expandSplitView();
+      }
+
+      Luigi.isSplitViewCollapsed = () => {
+        return app.$$.ctx.isSplitViewCollapsed();
+      }
+
+      Luigi.isSplitViewExpanded = () => {
+        return app.$$.ctx.isSplitViewExpanded();
+      }
+
+      Luigi.isSplitViewClosed = () => {
+        return app.$$.ctx.isSplitViewClosed();
+      }
+
       Luigi.pathExists = path => {
         return app.$$.ctx.pathExists(path);
       };

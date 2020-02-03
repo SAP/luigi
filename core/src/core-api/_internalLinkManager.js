@@ -48,8 +48,31 @@ export class linkManager extends LuigiCoreAPIBase {
   }
 
   openAsSplitView(path, splitViewSettings = {}){
-    this.navigate(path, true, undefined,splitViewSettings);
-    return new splitViewHandle(splitViewSettings);
+    return Luigi.openAsSplitView(path,splitViewSettings);
+  }
+
+  closeSplitView(){
+    return Luigi.closeSplitView();
+  }
+
+  collapseSplitView(){
+    return Luigi.collapseSplitView();
+  }
+
+  expandSplitView(){
+    return Luigi.expandSplitView();
+  }
+
+  isSplitViewExpanded(){
+    return Luigi.isSplitViewExpanded();
+  }
+
+  isSplitViewCollapsed(){
+    return Luigi.isSplitViewCollapsed();
+  }
+
+  isSplitViewClosed(){
+    return Luigi.isSplitViewClosed();
   }
 
   fromContext(navigationContext) {

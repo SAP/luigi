@@ -26,6 +26,10 @@ class LuigiNavigationManager {
    * @param {Object} modalSettings opens a view in a modal. Use these settings to configure the modal's title and size
    * @param {string} modalSettings.title modal title. By default, it is the node label. If there is no label, it is left empty
    * @param {('l'|'m'|'s')} [modalSettings.size="l"] size of the modal
+   * @param {Object} splitViewSettings opens a view in a split view. Use these settings to configure the split view's behaviour
+   * @param {string} splitViewSettings.title split view title. By default, it is the node label. If there is no label, it is left empty
+   * @param {number} [splitViewSettings.size=40] height of the split view in percent
+   * @param {boolean} [splitViewSettings.collapsed=false] opens split view in collapsed state
    * @example
    * Luigi.navigation().navigate('/overview')
    * Luigi.navigation().navigate('users/groups/stakeholders')
@@ -58,10 +62,70 @@ class LuigiNavigationManager {
    * @param {number} [splitViewSettings.size=40] height of the split view in percent
    * @param {boolean} [splitViewSettings.collapsed=false] opens split view in collapsed state
    * @example
-   * Luigi.navigation().openAsSplitView('projects/pr1/users', {title:'Users', size:'m'});
+   * Luigi.navigation().openAsSplitView('projects/pr1/users', {title:'Users', size:'40'});
    */
   openAsSplitView(path, splitViewSettings) {
     return new linkManager().openAsSplitView(path,splitViewSettings);
+  }
+
+  /**
+   * Closes split view opened with openAsSplitView(path, splitViewSettings)
+   * @memberof LuigiNavigation
+   * @example
+   * Luigi.navigation().closeSplitView();
+   */
+  closeSplitView() {
+    return new linkManager().closeSplitView();
+  }
+
+  /**
+   * Collapse split view opened with openAsSplitView(path, splitViewSettings)
+   * @memberof LuigiNavigation
+   * @example
+   * Luigi.navigation().closeSplitView();
+   */
+  collapseSplitView() {
+    return new linkManager().collapseSplitView();
+  }
+
+  /**
+   * Expands split view when in collapsed mode
+   * @memberof LuigiNavigation
+   * @example
+   * Luigi.navigation().expandSplitView();
+   */
+  expandSplitView() {
+    return new linkManager().expandSplitView();
+  }
+
+  /**
+   * Returns true if splitview is collapsed
+   * @memberof LuigiNavigation
+   * @example
+   * Luigi.navigation().isSplitViewCollapsed();
+   */
+  isSplitViewCollapsed() {
+    return new linkManager().isSplitViewCollapsed();
+  }
+
+  /**
+   * Returns true if splitview is expanded
+   * @memberof LuigiNavigation
+   * @example
+   * Luigi.navigation().isSplitViewExpanded();
+   */
+  isSplitViewExpanded() {
+    return new linkManager().isSplitViewExpanded();
+  }
+
+  /**
+   * Returns true if splitview is closed
+   * @memberof LuigiNavigation
+   * @example
+   * Luigi.navigation().isSplitviewClosed();
+   */
+  isSplitViewClosed() {
+    return new linkManager().isSplitViewClosed();
   }
 
   /**

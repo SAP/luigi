@@ -21,15 +21,37 @@ describe('Navigation', () => {
         cy.expectPathToBe('/overview');
       });
     });
-    it('Core API open in SplitView', () => {
+    it('Core API open and close in SplitView', () => {
       cy.window().then(win => {
-        var handler = win.Luigi.navigation().openAsSplitView('/settings', {
+        win.Luigi.navigation().openAsSplitView('/settings', {
           title: 'Preserved Split View',
           size: '40',
           collapsed: false,
         });
-        handler.close();
+        win.Luigi.navigation().closeSplitView();
         cy.expectPathToBe('/overview');
+      });
+    });
+    it('Core API collapse in SplitView', () => {
+      cy.window().then(win => {
+        win.Luigi.navigation().openAsSplitView('/settings', {
+          title: 'Preserved Split View',
+          size: '40',
+          collapsed: false,
+        });
+        win.Luigi.navigation().collapseSplitView();
+        cy.expect(win.Luigi.navigation().isSplitViewCollapsed()).to.be.true;
+      });
+    });
+    it('Core API expand SplitView', () => {
+      cy.window().then(win => {
+        win.Luigi.navigation().openAsSplitView('/settings', {
+          title: 'Preserved Split View',
+          size: '40',
+          collapsed: false,
+        });
+        win.Luigi.navigation().expandSplitView();
+        cy.expect(win.Luigi.navigation().isSplitViewExpanded()).to.be.true;
       });
     });
     it('Core API navigate with params', () => {
