@@ -8,7 +8,7 @@
     "build": "ui5 build preload --all=true",
     "start": "ui5 serve --open index.html",
     "serve": "ws --compress -d dist",
-    "postinstall": "cp -r node_modules/@kyma-project/luigi-core webapp/libs/luigi-core && cp -r node_modules/@kyma-project/luigi-client webapp/libs/luigi-client"
+    "postinstall": "cp -r node_modules/@kyma-project/luigi-core webapp/libs/ && cp -r node_modules/@kyma-project/luigi-client webapp/libs/"
   },
   "dependencies": {
     "@kyma-project/luigi-client": "^0.7.3",
