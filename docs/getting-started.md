@@ -27,10 +27,11 @@ This diagram illustrates the structure of Luigi:
 
  Do you want to try out Luigi without installing it on your machine? Try one of these options:
 
- 1. Copy and paste this file in a text editor, then save it as `index.html`. You've now created a Luigi application using a single HTML file. (Note that this example aims to show the simplicity of Luigi, but is not intended for real life use.)
+ 1. Copy and paste this code in a text editor, then save it as an HTML file:
  <!-- accordion:start -->
  ### Click to expand
 
+```html
  <!DOCTYPE html>
 <html lang="en">
 
@@ -90,8 +91,13 @@ This diagram illustrates the structure of Luigi:
 </body>
 
 </html>
+```
+
  <!-- accordion:end -->
- 2. Go to the (Luigi Fiddle)[https://fiddle.luigi-project.io/] website. Click on `Modify Config` at the bottom right to make changes to the Luigi application.
+ You have now created a Luigi application inside a single HTML file.
+ (Note that this example aims to show the simplicity of Luigi, but is not intended for real life use.)
+
+ 2. Go to the [Luigi Fiddle](https://fiddle.luigi-project.io/) website. Click on `Modify Config` at the bottom right to make changes to the Luigi application.
 
 ## Prerequisites
 
