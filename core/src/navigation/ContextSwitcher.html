@@ -221,6 +221,7 @@
   export let customOptionsRenderer;
   export let isMobile;
   export let contextSwitcherToggle = false;
+  export let defaultLabel;
   let preserveSubPathOnSwitch;
   let getUnsavedChangesModalPromise = getContext(
     'getUnsavedChangesModalPromise'
@@ -288,11 +289,12 @@
         fetchOptions();
       }
     });
+
+    defaultLabel = config.defaultLabel;
   });
 
   beforeUpdate(() => {
     if (prevContextSwitcherToggle !== contextSwitcherToggle) {
-      console.log('fetch');
       prevContextSwitcherToggle = contextSwitcherToggle;
       fetchOptions();
     }

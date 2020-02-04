@@ -161,7 +161,7 @@
                     on:click|stopPropagation="{openMobileContextSwitcher}"
                   >
                     <span class="fd-top-nav__icon sap-icon--switch-views"></span>
-                    <span>Select Environment</span>
+                    <span>{selectedLabel ? selectedLabel : defaultLabelContextSwitcher}</span>
                   </a>
                 </li>
                 {/if}
@@ -285,6 +285,8 @@
             on:toggleDropdownState="{() => toggleDropdownState('contextSwitcherPopover')}"
             isMobile="{true}"
             contextSwitcherToggle="{contextSwitcherToggle}"
+            bind:selectedLabel="{selectedLabel}"
+            bind:defaultLabel="{defaultLabelContextSwitcher}"
           />
           {/if}
         </div>
@@ -391,7 +393,8 @@
   export let urlAuthError;
   let store = getContext('store');
   let contextSwitcherToggle = false;
-
+  let selectedLabel;
+  let defaultLabelContextSwitcher;
   const setTopNavData = async () => {
     if (pathData && 0 < pathData.length) {
       const tnd = await NavigationHelpers.generateTopNavNodes(pathData);
