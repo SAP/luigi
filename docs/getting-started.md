@@ -25,13 +25,80 @@ This diagram illustrates the structure of Luigi:
 
 <img src="https://github.com/SAP/luigi/blob/master/docs/assets/luigi-overview-diagram.jpg?raw=true" width="600"/>
 
+ Do you want to try out Luigi without installing it on your machine? Try one of these options:
+
+ 1. Copy and paste this file in a text editor, then save it as `index.html`. You've now created a Luigi application using a single HTML file. (Note that this example aims to show the simplicity of Luigi, but is not intended for real life use.)
+ <!-- accordion:start -->
+ ### Click to expand
+
+ <!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<title>Hello Luigi</title>
+	<link rel='stylesheet' href='https://unpkg.com/@kyma-project/luigi-core/luigi.css'>
+    <meta charset="utf-8">
+</head>
+
+<body>
+    <noscript>You need to enable JavaScript to run this app.</noscript>
+    <script src="https://unpkg.com/@kyma-project/luigi-core/luigi.js"></script>
+	<script>
+        Luigi.setConfig({
+            navigation: {
+                nodes: [{
+                    pathSegment: 'home',
+                    hideFromNav: true,
+                    children: [{
+                        pathSegment: 'hello',
+                        label: 'Hello Luigi',
+                        viewUrl: 'https://fiddle.luigi-project.io/examples/microfrontends/multipurpose.html',
+                        context: {
+                            title: 'Hello Luigi!',
+                            content: " ",
+                            imgUrl: "https://fiddle.luigi-project.io/img/logos/Luigi-logo_rgb.svg",
+                            imgWidth: "300",
+                            imgTopMargin: true
+                        }
+                    },{
+                        pathSegment: 'hello2',
+                        label: 'Hello Mario',
+                        viewUrl: 'https://fiddle.luigi-project.io/examples/microfrontends/multipurpose.html',
+                        isolateView: true,
+                        context: {
+                            title: 'Hello mario!',
+                            content: " ",
+                            imgUrl: "https://fiddle.luigi-project.io/img/logos/Luigi-logo_rgb.svg",
+                            imgWidth: "300",
+                            imgTopMargin: true
+                        }
+                    }]
+                }]
+            },
+            routing: {
+                useHashRouting: true
+            },
+            settings: {
+                responsiveNavigation: 'semiCollapsible',
+                header: {
+                    title: 'Hello Luigi',
+                    logo: 'https://fiddle.luigi-project.io/img/luigi.png'
+                }
+            }
+        });
+    </script>
+</body>
+
+</html>
+ <!-- accordion:end -->
+ 2. Go to the (Luigi Fiddle)[https://fiddle.luigi-project.io/] website. Click on `Modify Config` at the bottom right to make changes to the Luigi application.
 
 ## Prerequisites
 
-* Basic knowledge of HTML 
+* Basic knowledge of HTML
 * Basic knowledge of JavaScript
 
-## Steps
+## Setup
 
 ### Luigi Core
 
