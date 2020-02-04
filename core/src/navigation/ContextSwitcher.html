@@ -1,6 +1,8 @@
 
 {#if contextSwitcherEnabled}
-<div class="fd-shellbar__action fd-shellbar__action--show-always">
+<!-- DESKTOP VERSION (popover): -->
+{#if !isMobile}
+<div class="fd-shellbar__action fd-shellbar__action--desktop">
   <div class="fd-product-menu">
     <div class="fd-popover fd-popover--right">
       <div class="fd-popover__control" on:click|stopPropagation="{() => {}}">
@@ -88,8 +90,106 @@
   </div>
 </div>
 {/if}
+<!-- MOBILE VERSION (fullscreen modal): -->
+{#if isMobile && dropDownStates.contextSwitcherPopover}
+<div
+  class="fd-modal y-fd-modal--full-screen"
+  on:click|stopPropagation="{()=>{}}"
+>
+  <div class="fd-modal__content" role="document">
+    <div class="fd-action-bar">
+      <div class="fd-action-bar__back">
+        <button
+          class="fd-button--light fd-button--compact sap-icon--nav-back"
+          on:click="{toggleDropdownState}"
+          data-testid="mobile-topnav-close"
+        ></button>
+      </div>
+      <div class="fd-action-bar__header">
+        <h5 class="fd-action-bar__title fd-has-type-1">
+          {#if !selectedLabel}
+          {$getTranslation(config.defaultLabel)}
+          {/if} {#if selectedLabel}
+          {selectedLabel}
+          {/if}
+        </h5>
+      </div>
+    </div>
+    <div class="fd-modal__body">
+      <nav class="fd-menu">
+        {#if actions && actions.length}
+        <ul class="fd-menu__list fd-menu__list--top">
+          {#each actions as node} {#if node.position === 'top' || !['top',
+          'bottom'].includes(node.position)}
+          <li
+            on:click="{() => onActionClick(node)}"
+            data-testid="{getTestId(node)}"
+          >
+            <a
+              href="{getRouteLink(node)}"
+              on:click|preventDefault="{() => {}}"
+              class="fd-menu__item"
+            >{$getTranslation(node.label)}</a>
+          </li>
+          {/if} {/each}
+        </ul>
+        {/if}
+        <ul class="fd-menu__list" id="context_menu_middle">
+          {#if options && options.length === 0}
+          <li>
+            <div class="fd-spinner">
+              <div class="fd-spinner__body"></div>
+            </div>
+          </li>
+          {/if} {#if options && options.length} {#each options as node}
+          {#await getNodeName(node.label, config.fallbackLabelResolver,
+          node.id)} {:then label}
+          <li
+            on:click="{() => goToOption(node, selectedOption)}"
+            data-testid="{getTestId(node)}"
+          >
+            {#if customOptionsRenderer}
+            {@html customOptionsRenderer(node, node.label === selectedLabel)}
+            {:else}
+            <a
+              href="{getRouteLink(node)}"
+              on:click|preventDefault="{() => {}}"
+              class="fd-menu__item {node.label === selectedLabel ? 'is-selected' : ''}"
+              title="{label}"
+            >{label}</a>
+            {/if}
+          </li>
+          {/await} {/each} {/if}
+        </ul>
+        {#if actions && actions.length}
+        <ul class="fd-menu__list fd-menu__list--bottom">
+          {#each actions as node} {#if node.position === 'bottom'}
+          <li
+            on:click="{() => onActionClick(node)}"
+            data-testid="{getTestId(node)}"
+          >
+            <a
+              href="{getRouteLink(node)}"
+              on:click|preventDefault="{() => {}}"
+              class="fd-menu__item"
+            >{$getTranslation(node.label)}</a>
+          </li>
+          {/if} {/each}
+        </ul>
+        {/if}
+      </nav>
+    </div>
+  </div>
+</div>
+{/if}
+{/if}
 <script>
-  import { createEventDispatcher, onMount, getContext } from 'svelte';
+  import {
+    createEventDispatcher,
+    onMount,
+    getContext,
+    beforeUpdate
+  } from 'svelte';
   import { ContextSwitcherHelpers } from './services/context-switcher';
   import { LuigiConfig } from '../core-api';
   import { Routing } from '../services/routing';
@@ -119,12 +219,18 @@
   export let fallbackLabelResolver = null;
   export let pathParams;
   export let customOptionsRenderer;
+  export let isMobile;
+  export let contextSwitcherToggle = false;
   let preserveSubPathOnSwitch;
   let getUnsavedChangesModalPromise = getContext(
     'getUnsavedChangesModalPromise'
   );
   let store = getContext('store');
   let getTranslation = getContext('getTranslation');
+  let prevContextSwitcherToggle = false;
+
+  // no lazy load for mobile
+  //$: isMobile === true && options === null ? fetchOptions() : '';
 
   onMount(async () => {
     StateHelpers.doOnStoreChange(
@@ -182,6 +288,14 @@
         fetchOptions();
       }
     });
+  });
+
+  beforeUpdate(() => {
+    if (prevContextSwitcherToggle !== contextSwitcherToggle) {
+      console.log('fetch');
+      prevContextSwitcherToggle = contextSwitcherToggle;
+      fetchOptions();
+    }
   });
 
   function getNodeName(label, config, id) {
@@ -361,5 +475,76 @@
     max-height: 50vh;
     overflow-y: auto;
     -webkit-overflow-scrolling: touch;
+  }
+
+  $topNavHeight: 48px;
+  $mobileTopNavHeight: 64px;
+
+  .y-fd-modal--full-screen {
+    z-index: 1000;
+    position: fixed;
+    box-sizing: border-box;
+    top: $topNavHeight;
+    left: 0;
+    margin: auto auto;
+
+    .fd-modal__content {
+      $margin: 0px; //distance from viewport borders. Please remove the line below (border-radius) if not set to 0.
+      border-radius: 0;
+
+      width: calc(100vw - 2 * #{$margin});
+      height: 100vh; /* Fallback for browsers that do not support Custom Properties */
+      height: calc(var(--vh, 1vh) * 100);
+      margin: $margin;
+      display: grid;
+      grid-template-rows: 1fr auto; //no row for title by default
+    }
+
+    .fd-modal__title {
+      text-align: left;
+      @at-root {
+        .y-fd-modal--full-screen .fd-modal__content {
+          grid-template-rows: auto 1fr auto; //add another row to the top of the modal if __title is present
+        }
+      }
+    }
+
+    .fd-modal__body {
+      max-height: none;
+      padding: 0;
+    }
+
+    .fd-product-switch__body {
+      max-height: calc(100vh - #{$topNavHeight} - #{$mobileTopNavHeight});
+      max-height: calc(
+        var(--vh, 1vh) * 100 - #{$topNavHeight} - #{$mobileTopNavHeight}
+      );
+      padding: 0;
+      -webkit-overflow-scrolling: touch;
+    }
+  }
+
+  @media (min-width: 320px) {
+    .fd-action-bar__back {
+      display: block !important;
+    }
+  }
+
+  @media (max-width: 1023px) {
+    .fd-product-switch__body--mobile {
+      .fd-product-switch__icon {
+        img {
+          max-width: 24px;
+        }
+      }
+
+      .y-has-no-subtitle {
+        align-items: center;
+
+        .fd-product-switch__text {
+          height: auto;
+        }
+      }
+    }
   }
 </style>

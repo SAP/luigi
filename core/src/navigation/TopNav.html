@@ -21,6 +21,7 @@
     <ContextSwitcher
       bind:dropDownStates
       on:toggleDropdownState="{() => toggleDropdownState('contextSwitcherPopover')}"
+      isMobile="{false}"
     />
     {/if}
     {#if children && pathData.length > 0}
@@ -153,6 +154,17 @@
           >
             <nav class="fd-menu">
               <ul class="fd-menu__list">
+                {#if !authorizationEnabled || isLoggedIn}
+                <li class="lui-mobile-switch-menu">
+                  <a
+                    class="fd-menu__item"
+                    on:click|stopPropagation="{openMobileContextSwitcher}"
+                  >
+                    <span class="fd-top-nav__icon sap-icon--switch-views"></span>
+                    <span>Select Environment</span>
+                  </a>
+                </li>
+                {/if}
                 {#each children as node,i}
                 {#if !node.hideFromNav}
                 {#if !node.isCat}
@@ -267,6 +279,14 @@
             pathParams="{pathParams}"
           />
           {/if}
+          {#if !authorizationEnabled || isLoggedIn}
+          <ContextSwitcher
+            bind:dropDownStates
+            on:toggleDropdownState="{() => toggleDropdownState('contextSwitcherPopover')}"
+            isMobile="{true}"
+            contextSwitcherToggle="{contextSwitcherToggle}"
+          />
+          {/if}
         </div>
       </div>
     </div>
@@ -370,6 +390,7 @@
   export let userInfo = {};
   export let urlAuthError;
   let store = getContext('store');
+  let contextSwitcherToggle = false;
 
   const setTopNavData = async () => {
     if (pathData && 0 < pathData.length) {
@@ -452,6 +473,11 @@
 
   export function openMobileProductSwitcher() {
     toggleDropdownState('productSwitcherPopover');
+  }
+
+  export function openMobileContextSwitcher() {
+    contextSwitcherToggle = !contextSwitcherToggle;
+    toggleDropdownState('contextSwitcherPopover');
   }
 
   export function openMobileTopNavDropDown(node) {
@@ -582,5 +608,9 @@
         right: 14px;
       }
     }
+  }
+
+  .lui-mobile-switch-menu {
+    border-bottom: 1px solid var(--sapList_BorderColor, #e4e4e4);
   }
 </style>
