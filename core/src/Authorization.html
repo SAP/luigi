@@ -356,7 +356,7 @@
         typeof item.openNodeInModal === 'object' &&
         item.openNodeInModal !== null
       ) {
-        const route = RoutingHelpers.buildRoute(item, `/${item.link}`);
+        const route = RoutingHelpers.buildRoute(item, `${item.link}`);
         openViewInModal(route, item.openNodeInModal);
       } else {
         Routing.navigateToLink(item);
