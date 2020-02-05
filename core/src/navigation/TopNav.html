@@ -616,4 +616,42 @@
   .lui-mobile-switch-menu {
     border-bottom: 1px solid var(--sapList_BorderColor, #e4e4e4);
   }
+
+  $topNavHeight: 48px;
+
+  :global(.y-fd-modal--full-screen) {
+    z-index: 1000;
+    position: fixed;
+    box-sizing: border-box;
+    top: $topNavHeight;
+    left: 0;
+    margin: auto auto;
+
+    :global(.fd-modal__content) {
+      $margin: 0px; //distance from viewport borders. Please remove the line below (border-radius) if not set to 0.
+      border-radius: 0;
+
+      width: calc(100vw - 2 * #{$margin});
+      height: 100vh; /* Fallback for browsers that do not support Custom Properties */
+      height: calc(var(--vh, 1vh) * 100);
+      margin: $margin;
+      display: grid;
+      grid-template-rows: auto 1fr auto; //add another row to the top of the modal if __title is present
+    }
+
+    :global(.fd-modal__title) {
+      text-align: left;
+    }
+
+    :global(.fd-modal__body) {
+      max-height: none;
+      padding: 0;
+    }
+
+    @media (min-width: 320px) {
+      :global(.fd-action-bar__back) {
+        display: block !important;
+      }
+    }
+  }
 </style>

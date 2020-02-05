@@ -455,15 +455,6 @@
     }
   }
 
-  .fd-button--secondary,
-  .fd-menu__item {
-    max-width: 300px;
-    overflow: hidden;
-    text-overflow: ellipsis;
-  }
-  .fd-popover__body {
-    right: 0;
-  }
   .fd-spinner {
     margin: 20px auto;
   }
@@ -473,80 +464,22 @@
   .fd-menu__list--bottom {
     border-top: 1px solid #eeeeef;
   }
-  #context_menu_middle {
-    max-height: 50vh;
-    overflow-y: auto;
-    -webkit-overflow-scrolling: touch;
-  }
 
-  $topNavHeight: 48px;
-  $mobileTopNavHeight: 64px;
-
-  .y-fd-modal--full-screen {
-    z-index: 1000;
-    position: fixed;
-    box-sizing: border-box;
-    top: $topNavHeight;
-    left: 0;
-    margin: auto auto;
-
-    .fd-modal__content {
-      $margin: 0px; //distance from viewport borders. Please remove the line below (border-radius) if not set to 0.
-      border-radius: 0;
-
-      width: calc(100vw - 2 * #{$margin});
-      height: 100vh; /* Fallback for browsers that do not support Custom Properties */
-      height: calc(var(--vh, 1vh) * 100);
-      margin: $margin;
-      display: grid;
-      grid-template-rows: 1fr auto; //no row for title by default
-    }
-
-    .fd-modal__title {
-      text-align: left;
-      @at-root {
-        .y-fd-modal--full-screen .fd-modal__content {
-          grid-template-rows: auto 1fr auto; //add another row to the top of the modal if __title is present
-        }
-      }
-    }
-
-    .fd-modal__body {
-      max-height: none;
-      padding: 0;
-    }
-
-    .fd-product-switch__body {
-      max-height: calc(100vh - #{$topNavHeight} - #{$mobileTopNavHeight});
-      max-height: calc(
-        var(--vh, 1vh) * 100 - #{$topNavHeight} - #{$mobileTopNavHeight}
-      );
-      padding: 0;
+  .fd-popover {
+    #context_menu_middle {
+      max-height: 50vh;
+      overflow-y: auto;
       -webkit-overflow-scrolling: touch;
     }
-  }
 
-  @media (min-width: 320px) {
-    .fd-action-bar__back {
-      display: block !important;
+    .fd-button--secondary,
+    .fd-menu__item {
+      max-width: 300px;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
-  }
-
-  @media (max-width: 1023px) {
-    .fd-product-switch__body--mobile {
-      .fd-product-switch__icon {
-        img {
-          max-width: 24px;
-        }
-      }
-
-      .y-has-no-subtitle {
-        align-items: center;
-
-        .fd-product-switch__text {
-          height: auto;
-        }
-      }
+    .fd-popover__body {
+      right: 0;
     }
   }
 </style>
