@@ -99,7 +99,7 @@ Copy and paste this code in a text editor, then save it as an HTML file:
 ```
 
 ### Luigi Fiddle
-Go to the [Luigi Fiddle](https://fiddle.luigi-project.io/) website. Click on `Modify Config` at the bottom right to make changes to the Luigi application.
+Go to the [Luigi Fiddle](https://fiddle.luigi-project.io/) website. Click on **Modify Config** at the bottom right of the page to make changes to the Luigi application.
 
 <!-- accordion:end -->
 
