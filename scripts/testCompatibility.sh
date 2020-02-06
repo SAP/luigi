@@ -183,7 +183,7 @@ startE2eTestrunner() {
 LUIGI_DIR="${PWD}"
 LUIGI_FOLDERNAME="luigi-compatibility-testing"
 LUIGI_DIR_TESTING="$LUIGI_DIR/../$LUIGI_FOLDERNAME"
-EXAMPLE_DIR="$LUIGI_DIR_TESTING/core/examples/luigi-sample-angular"
+EXAMPLE_DIR="$LUIGI_DIR_TESTING/test/e2e-test-application"
 EXAMPLE_NODE_MODULES=$EXAMPLE_DIR/node_modules/@kyma-project
 TESTONLY=""
 

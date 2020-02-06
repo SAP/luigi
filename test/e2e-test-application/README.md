@@ -32,7 +32,7 @@ To have this application running, follow these steps:
     lerna run bundle
     ```
 
-4. Start the example application from the `luigi/core/examples/luigi-sample-angular` folder.
+4. Start the example application from the `luigi/test/e2e-test-application` folder.
 
    The [`src/luigi-config/extended`](src/luigi-config/extended) folder contains the default configuration that includes all available features. If you want to try out a simpler example, change the configuration reference in the [`index.html`](src/index.html) file to `<script src="/assets/basicConfiguration.bundle.js"></script>`. You can edit the `basicConfiguration.bundle.js` file [here](src/luigi-config/basic/basicConfiguration.js).
 
