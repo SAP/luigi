@@ -71,7 +71,7 @@ Copy and paste this code in a text editor, then save it as an HTML file:
                         viewUrl: 'https://fiddle.luigi-project.io/examples/microfrontends/multipurpose.html',
                         isolateView: true,
                         context: {
-                            title: 'Hello mario!',
+                            title: 'Hello Mario!',
                             content: " ",
                             imgUrl: "https://fiddle.luigi-project.io/img/logos/Luigi-logo_rgb.svg",
                             imgWidth: "300",
