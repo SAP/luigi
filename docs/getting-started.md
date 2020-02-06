@@ -31,7 +31,7 @@ This diagram illustrates the structure of Luigi:
 
  ### HTML file
 
-It is possible to create a Luigi application using a single HTML file. This example aims to show the simplicity of Luigi, but is not intended for real life use.
+It is possible to create a Luigi application using a single HTML file. This example aims to show the simplicity of Luigi, but it is not intended for real-life use.
 
 Copy and paste this code in a text editor, then save it as an HTML file:
 
