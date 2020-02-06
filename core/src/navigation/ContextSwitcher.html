@@ -230,9 +230,6 @@
   let getTranslation = getContext('getTranslation');
   let prevContextSwitcherToggle = false;
 
-  // no lazy load for mobile
-  //$: isMobile === true && options === null ? fetchOptions() : '';
-
   onMount(async () => {
     StateHelpers.doOnStoreChange(
       store,
