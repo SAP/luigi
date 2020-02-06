@@ -86,12 +86,12 @@ To ensure that existing features still work as expected after your changes, run 
 
 ### E2E tests
 
-To ensure that existing features still work as expected after your changes, run UI tests from the [Angular example application](/core/examples/luigi-sample-angular). Before running the tests, start the sample application by using the `npm start` command in the application folder.
+To ensure that existing features still work as expected after your changes, run UI tests from the [Angular example application](/test/e2e-test-application). Before running the tests, start the sample application by using the `npm start` command in the application folder.
 
 When the application is ready:
 
-- Run `npm run e2e:open` in the `core/examples/luigi-sample-angular` folder to start tests in the interactive mode.
-- Run `npm run e2e:run` in the `core/examples/luigi-sample-angular` folder to start tests in the headless browser.
+- Run `npm run e2e:open` in the `test/e2e-test-application` folder to start tests in the interactive mode.
+- Run `npm run e2e:run` in the `test/e2e-test-application` folder to start tests in the headless browser.
 
 ### Backward compatibility tests
 
