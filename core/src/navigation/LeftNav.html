@@ -4,7 +4,7 @@
   on:blur="{closePopupMenu}"
 />
 <div
-  class="fd-app__sidebar {hideNavComponent ? 'hideNavComponent' : ''} {footerText || semiCollapsible ? 'hasFooter' : ''}"
+  class="fd-app__sidebar {hideNavComponent ? 'hideNavComponent' : ''} {footerText || semiCollapsibleButton ? 'hasFooter' : ''} {footerText && !semiCollapsibleButton ? 'hasOnlyFooterText' : ''}"
 >
   <nav
     class="fd-side-nav {isSemiCollapsed ? 'fd-side-nav--condensed' : ''}"
@@ -201,13 +201,13 @@
       </div>
     </div>
     {/if}
-    {#if footerText || semiCollapsible}
+    {#if footerText || semiCollapsibleButton}
     <div class="fd-side-nav__utility">
       <span class="lui-side-nav__footer">
         <span
           class="lui-side-nav__footer--text fd-has-type-minus-1"
         >{footerText ? footerText : ''}</span>
-        {#if semiCollapsible}
+        {#if semiCollapsibleButton}
         <span
           class="lui-side-nav__footer--icon {isSemiCollapsed ? 'sap-icon--open-command-field' : 'sap-icon--close-command-field'}"
           on:click="{() => semiCollapsibleButtonClicked(this)}"
@@ -270,11 +270,13 @@
   import { LuigiConfig, LuigiElements, LuigiI18N } from '../core-api';
   import { StateHelpers } from '../utilities/helpers';
   import { CSS_BREAKPOINTS } from '../utilities/constants';
+  import { SemiCollapsibleNavigation } from './services/semi-collapsed-navigation';
 
   export let children;
   export let hideNavComponent;
   export let footerText;
   export let semiCollapsible;
+  export let semiCollapsibleButton;
   export let pathData;
   export let pathParams;
   let previousPathData;
@@ -307,10 +309,9 @@
   };
 
   onMount(() => {
-    responsiveNavSetting = LuigiConfig.getConfigValue(
-      'settings.responsiveNavigation'
-    );
-    semiCollapsible = responsiveNavSetting === 'semiCollapsible';
+    semiCollapsibleButton =
+      LuigiConfig.getConfigValue('settings.responsiveNavigation') ===
+      'semiCollapsible';
     hideNavComponent = LuigiConfig.getConfigBooleanValue(
       'settings.hideNavigation'
     );
@@ -318,7 +319,6 @@
       'settings.sideNavCompactMode'
     );
     expandedCategories = NavigationHelpers.loadExpandedCategories();
-    previousWindowWidth = window.innerWidth;
 
     StateHelpers.doOnStoreChange(
       store,
@@ -328,22 +328,18 @@
       ['settings.footer']
     );
 
-    // set isSemiCollapsed to true for mobile
-    if (
-      semiCollapsible &&
-      window.innerWidth < CSS_BREAKPOINTS.desktopMinWidth
-    ) {
-      setIsSemiCollapsed(true);
-    }
-    const isSemiCollapsed = semiCollapsible ? getIsSemiCollapsed() : false;
-    setIsSemiCollapsed(isSemiCollapsed);
-
     // set compact mode class
     if (Boolean(sideNavCompactMode)) {
       sideNavClass = 'fd-nested-list fd-nested-list--compact';
     } else {
       sideNavClass = 'fd-nested-list';
     }
+    let stateArr = SemiCollapsibleNavigation.initial();
+    isSemiCollapsed = stateArr.isSemiCollapsed;
+    semiCollapsible = stateArr.semiCollapsible;
+    SemiCollapsibleNavigation.onValueChanged(stateArr => {
+      isSemiCollapsed = stateArr.isSemiCollapsed;
+    });
   });
 
   beforeUpdate(() => {
@@ -394,14 +390,16 @@
   // [svelte-upgrade suggestion]
   // review these functions and remove unnecessary 'export' keywords
   export function handleClick(node) {
-    if (getIsSemiCollapsed()) {
-      closePopupMenu();
+    if (SemiCollapsibleNavigation.getCollapsed()) {
+      selectedCategory = SemiCollapsibleNavigation.closePopupMenu(
+        selectedCategory
+      );
     }
     dispatch('handleClick', { node });
   }
 
   export function handleIconClick(nodeOrNodes, el) {
-    if (getIsSemiCollapsed()) {
+    if (SemiCollapsibleNavigation.getCollapsed()) {
       let selectedCat;
       let sideBar = document.getElementsByClassName('fd-app__sidebar')[0];
 
@@ -419,7 +417,9 @@
 
       // only close if same clicked
       if (selectedCat === selectedCategory) {
-        closePopupMenu();
+        selectedCategory = SemiCollapsibleNavigation.closePopupMenu(
+          selectedCategory
+        );
         return;
       }
 
@@ -464,13 +464,9 @@
 
   export function onResize() {
     if (semiCollapsible) {
-      const isDesktopToMobile =
-        window.innerWidth < CSS_BREAKPOINTS.desktopMinWidth &&
-        previousWindowWidth >= CSS_BREAKPOINTS.desktopMinWidth;
-      if (isDesktopToMobile) {
-        setIsSemiCollapsed(true);
-      }
-      closePopupMenu();
+      let stateArr = SemiCollapsibleNavigation.onResize(selectedCategory);
+      isSemiCollapsed = stateArr.isSemiCollapsed;
+      selectedCategory = stateArr.selectedCategory;
     }
   }
 
@@ -485,7 +481,7 @@
   }
 
   export function setExpandedState(nodes, value) {
-    if (getIsSemiCollapsed()) {
+    if (SemiCollapsibleNavigation.getCollapsed()) {
       return;
     }
 
@@ -495,49 +491,16 @@
     );
   }
 
-  export function getIsSemiCollapsed() {
-    return localStorage.getItem(NavigationHelpers.COL_NAV_KEY) === 'true';
-  }
-
-  export function setIsSemiCollapsed(state) {
-    document.body.classList.remove('semiCollapsed');
-    // add if true
-    if (state) {
-      document.body.classList.add('semiCollapsed');
-    }
-    // initial state
-    isSemiCollapsed = state;
-    localStorage.setItem(NavigationHelpers.COL_NAV_KEY, state);
-  }
-
   export function closePopupMenu() {
-    if (selectedCategory) {
-      selectedCategory = null;
-      document
-        .getElementsByClassName('fd-app__sidebar')[0]
-        .classList.remove('isBlocked');
-    }
+    selectedCategory = SemiCollapsibleNavigation.closePopupMenu(
+      selectedCategory
+    );
   }
 
-  export function semiCollapsibleButtonClicked(el) {
-    closePopupMenu();
+  function semiCollapsibleButtonClicked(el) {
+    isSemiCollapsed = SemiCollapsibleNavigation.buttonClicked();
     if (document.getElementsByClassName('fd-tabs').length > 0) {
       dispatch('resizeTabNav', {});
-    }
-    if (!getIsSemiCollapsed()) {
-      setIsSemiCollapsed(true);
-
-      //Force browser to re-render vertical scrollbar
-      document
-        .getElementsByClassName('lui-fd-side-nav-wrapper')[0]
-        .setAttribute('style', 'overflow-y:hidden;');
-      window.setTimeout(function() {
-        document
-          .getElementsByClassName('lui-fd-side-nav-wrapper')[0]
-          .setAttribute('style', 'overflow-y:auto;');
-      });
-    } else {
-      setIsSemiCollapsed(false);
     }
   }
 </script>
@@ -739,6 +702,11 @@
           padding-left: 14px;
           padding-right: 14px;
         }
+      }
+    }
+    .hasOnlyFooterText {
+      .fd-side-nav__main-navigation {
+        height: 100%;
       }
     }
   }

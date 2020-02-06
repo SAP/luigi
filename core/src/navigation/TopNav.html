@@ -2,10 +2,10 @@
 {#if showTopNav}
 <div class="fd-shellbar {hideNavComponent ? 'hideNavComponent' : ''}">
   <div class="fd-shellbar__group fd-shellbar__group--product">
-    {#if responsiveNavSetting==="simple" || responsiveNavSetting==="simpleMobileOnly"}
+    {#if responsiveNavSetting==="simple" || responsiveNavSetting==="simpleMobileOnly" || responsiveNavSetting==="Fiori3"}
     <span
       class="sap-icon--menu2 lui-burger"
-      on:click="{burgerClicked}"
+      on:click="{burgerClickHandler}"
     ></span>
     {/if}
     <LogoTitle
@@ -346,6 +346,7 @@
     RoutingHelpers,
     StateHelpers
   } from '../utilities/helpers';
+  import { SemiCollapsibleNavigation } from './services/semi-collapsed-navigation';
 
   const dispatch = createEventDispatcher();
 
@@ -498,8 +499,26 @@
     }
   }
 
-  export function burgerClicked() {
+  function burgerClickHandler() {
+    if (
+      responsiveNavSetting === 'simple' ||
+      responsiveNavSetting === 'simpleMobileOnly'
+    ) {
+      simpleNav();
+    } else {
+      semicollapsedNav();
+    }
+  }
+
+  export function simpleNav() {
     document.body.classList.toggle('lui-leftNavToggle');
+    if (document.getElementsByClassName('fd-tabs').length > 0) {
+      dispatch('resizeTabNav', {});
+    }
+  }
+
+  export function semicollapsedNav() {
+    SemiCollapsibleNavigation.buttonClicked();
     if (document.getElementsByClassName('fd-tabs').length > 0) {
       dispatch('resizeTabNav', {});
     }
