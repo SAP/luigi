@@ -536,6 +536,14 @@
     text-align: unset;
   }
 
+  .fd-shellbar__button {
+    .fd-top-nav__icon {
+      &:before {
+        margin-top: 10px;
+      }
+    }
+  }
+
   .hideNavComponent {
     display: none;
   }
@@ -548,6 +556,13 @@
     img {
       width: 16px;
       vertical-align: top;
+    }
+  }
+
+  img {
+    &.fd-top-nav__icon {
+      height: 16px;
+      min-width: auto;
     }
   }
 
