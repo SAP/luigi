@@ -15,7 +15,9 @@
     "acorn": "^6.1.1",
     "axios": ">=0.18.1",
     "babel-loader": "^8.0.4",
+    "browserslist": "^4.8.6",
     "bundlesize": "^0.17.0",
+    "caniuse-lite": "^1.0.30001025",
     "chai": "^4.2.0",
     "clean-webpack-plugin": "^1.0.0",
     "copy-webpack-plugin": "^4.5.2",
@@ -35,6 +37,7 @@
     "postcss-loader": "^3.0.0",
     "postcss-preset-env": "^6.6.0",
     "regenerator-runtime": "^0.13.3",
+    "serialize-javascript": ">=2.1.1",
     "sinon": "^7.3.2",
     "source-map-loader": "^0.2.3",
     "style-loader": "^0.23.1",
@@ -45,9 +48,8 @@
     "terser": "^4.4.0",
     "url-loader": "^1.0.1",
     "webpack": "^4.40.2",
-    "webpack-cli": "^3.3.9",
     "webpack-bundle-analyzer": "^3.6.0",
-    "serialize-javascript": ">=2.1.1"
+    "webpack-cli": "^3.3.9"
   },
   "scripts": {
     "bundle": "npm run bundle-evergreen && npm run bundle-ie11",

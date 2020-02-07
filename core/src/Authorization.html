@@ -352,12 +352,12 @@
 
   export function onActionClick(item) {
     getUnsavedChangesModalPromise().then(() => {
-      if (
-        typeof item.openNodeInModal === 'object' &&
-        item.openNodeInModal !== null
-      ) {
+      if (item.openNodeInModal) {
         const route = RoutingHelpers.buildRoute(item, `${item.link}`);
-        openViewInModal(route, item.openNodeInModal);
+        openViewInModal(
+          route,
+          item.openNodeInModal === true ? {} : item.openNodeInModal
+        );
       } else {
         Routing.navigateToLink(item);
       }
