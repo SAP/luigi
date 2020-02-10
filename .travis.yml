@@ -1,7 +1,7 @@
 language: node_js
 node_js:
   - '11.14' #TODO: change it to 'node' once Travis supports the newest version
-dist: trusty
+dist: xenial
 cache:
   directories:
     - $TRAVIS_BUILD_DIR/client/public
@@ -68,7 +68,7 @@ jobs:
       addons:
         chrome: stable
       before_install:
-        - google-chrome-stable --disable-dev-shm-usage --headless --disable-gpu --remote-debugging-port=9222 http://localhost &
+        - google-chrome-stable --headless --disable-gpu --remote-debugging-port=9222 http://localhost &
       before_cache:
         - rm -rf ~/.npm/_logs
         - rm -rf ~/.npm/_cacache
