@@ -2,11 +2,6 @@ language: node_js
 node_js:
   - '11.14' #TODO: change it to 'node' once Travis supports the newest version
 dist: xenial
-addons:
-  apt:
-    packages:
-      # Ubuntu 16+ does not install this dependency by default, so we need to install it ourselves
-      - libgconf-2-4
 cache:
   directories:
     - $TRAVIS_BUILD_DIR/client/public
@@ -69,6 +64,10 @@ jobs:
         - export CYPRESS_CACHE_FOLDER=$TRAVIS_BUILD_DIR/cypress-binary-cache
         - bash ./test/e2e.sh
       addons:
+        apt:
+          packages:
+            # Ubuntu 16+ does not install this dependency by default, so we need to install it ourselves
+            - libgconf-2-4
         chrome: stable
       before_install:
         - google-chrome-stable --headless --disable-gpu --remote-debugging-port=9222 http://localhost &
