@@ -72,7 +72,7 @@
       "label": "Examples"
     },
     "externalLink": {
-      "url": "https://github.com/SAP/luigi/tree/master/core/examples/luigi-example-react"
+      "url": "https://github.com/SAP/luigi/tree/master/core/examples/luigi-example-svelte"
     },
     "metaData": {
       "categoryPosition": 5,
