@@ -15,9 +15,23 @@ meta -->
 
 # Authorization configuration
 
-To configure authorization in Luigi, go to the `auth:` section of your Luigi configuration file. To see how authorization works, you can also go to the [Luigi Fiddle](https://fiddle.luigi-project.io) site and configure a sample application.
+To configure authorization in Luigi:
 
-Luigi provides OpenID Connect and OAuth2 Implicit Grant authorization out of the box. The **use** key defines the active authorization provider and the **disableAutoLogin** key allows you to disable the automatic login flow that is provided by default.
+1. Configure the [general authorization options](#general-authorization-options).
+
+2. Choose an authorization provider:
+    * [OpenID Connect](#openid-connect-configuration)
+    * [OAuth2 Implicit Grant](#oauth2-implicit-grant-configuration)
+    * [Custom authorization provider](#custom-authorization-provider)
+
+## General authorization options
+
+<!-- accordion:start -->
+### How do I configure authorization in Luigi?
+
+You can configure Luigi authorization using the `auth:` section of your Luigi configuration file. To see how authorization works, go to the [Luigi Fiddle](https://fiddle.luigi-project.io) site and configure a sample application.
+
+This is an example of a simplified authorization structure:
 
 ```javascript
 auth: {
@@ -29,12 +43,20 @@ auth: {
 }
 ```
 
-You have several authorization options:
-* [OpenID Connect](#openid-connect-configuration)
-  * [Third-party cookies and silent token refresh](#third-party-cookies-and-silent-token-refresh)
-* [OAuth2 Implicit Grant](#oauth2-implicit-grant-configuration)
-* [Custom authorization provider](#custom-authorization-provider)
-* [Create your own authorization provider](#implement-a-custom-authorization-provider)
+The **use** key defines the active authorization provider and the **disableAutoLogin** key allows you to disable the automatic login flow that is provided by default.
+
+### How do I show some navigation nodes only to non-authenticated users?
+
+To show certain nodes only to non-authenticated users, use the [anonymousAccess](navigation-parameters-reference.md#anonymousaccess) parameter.
+
+Make sure **disableAutoLogin** is set to `true`. Add this parameter to the nodes you want to hide and their children:
+
+```javascript
+anonymousAccess: `exclusive` // show nodes only when logged out
+// OR
+anonymousAccess: true // always show nodes
+```
+<!-- accordion:end -->
 
 ## OpenID Connect configuration
 
@@ -123,66 +145,92 @@ auth: {
 
 
 ## Custom authorization provider
-
-If you use a custom authorization provider, you can also implement these functions for Luigi:
-
+​
+You can write your own authorization provider that meets your requirements. This is an example of what a custom authorization provider may look like:
+​
 ```javascript
 export class CustomAuthenticationProvider {
-
-    login(){
-        // logic to handle the login mechanism
-        // returns a promise which contains an error message if something went wrong
+​
+  constructor(configSettings = {}) {
+    const defaultSettings = {
+      redirect_uri: window.location.origin + '/custom-auth-callback.html';
     }
-
-    logout(authData, logoutCallback){
-        // logic to handle the logout mechanism
-    }
-
-    setTokenExpirationAction(){
-    }
-
-    setTokenExpireSoonAction() {}
-
-    generateNonce(){
-        // returns a string
-    }
-
-    userInfo(){
-        // logic to get some user information
-        // returns a promise of a userinfo object which contains an object with `name`, `email` and `picture` properties to display in the profile dropdown menu
-        return { name, email, picture };
-    }
+    this.settings = Object.assign({}, defaultSettings, configSettings);
+  }
+​
+  login(){
+    // logic to handle the login mechanism
+    // returns a promise which contains an error message if something went wrong
+  }
+​
+  logout(authData, logoutCallback){
+    // logic to handle the logout mechanism
+  }
+​
+  setTokenExpirationAction() {}
+​
+  setTokenExpireSoonAction() {}
+​
+  generateNonce(){
+    // returns a string
+  }
+​
+  userInfo(){
+      // logic to get some user information
+      // returns a promise of a userinfo object which contains an object with `name`, `email` and `picture` properties to display in the profile dropdown menu
+      return { name, email, picture };
+  }
 }
 ```
-
-## Implement a custom authorization provider
-
-You can write your own authorization provider that meets your requirements.
-
-[oAuth2ImplicitGrant.js](../core/src/providers/auth/oAuth2ImplicitGrant.js) is a good starting point if you don't use an external authorization library.
-
-After authorization is successful on the authorization provider's side, it redirects back to `Luigi callback.html` **redirect_uri**. The provider verifies the authorization data, saves it in  **localStorage** for Luigi, and redirects to the Luigi main page.
-
-[openIdConnect.js](../core/src/providers/auth/openIdConnect.js) lazy loads the official `oidc-client` library and is a good starting point if you also depend on external authorization libraries.
-
-Make sure to set this data in your authorization provider implementation, so that it is used after successful authorization:
+​
+To use the custom authentication provider in your Luigi app, include this code in the `auth:` section of the configuration file:
 
 ```javascript
+Luigi.setConfig({
+  auth: {
+    use: 'myProviderConfig',
+    myProviderConfig: {
+      customIdpProvider: myProvider,
+      redirect_uri: '/another-callback.html'
+    }
+  }
+})
+```
+​
+[oAuth2ImplicitGrant.js](../core/src/providers/auth/oAuth2ImplicitGrant.js) is a good starting point if you don't use an external authorization library.
+​
+After authorization is successful on the authorization provider's side, it redirects back to `Luigi callback.html` **redirect_uri**. The provider verifies the authorization data, saves it in  **localStorage** for Luigi, and redirects to the Luigi main page.
+​
+[openIdConnect.js](../core/src/providers/auth/openIdConnect.js) lazy loads the official `oidc-client` library and is a good starting point if you also depend on external authorization libraries.
+
+<!-- add-attribute:class:success -->
+> **NOTE:** Read more about authorization helpers in the [Core API: AuthorizationStore](luigi-core-api.md#AuthorizationStore) section.
+​
+
+### Persisting auth data
+​
+Make sure to set this data in your authorization provider implementation. Most of the time it is used in a `callback.html` so that its data is available for Luigi after successful authorization:
+​
+```javascript
+// partial content of callback.html
 const data = {
   accessToken: hashParams['access_token'],
   accessTokenExpirationDate: hashParams['expiry_timestamp'],
   scope: hashParams['scope'],
   idToken: hashParams['id_token']
 };
-
+​
 Luigi.auth().store.setAuthData(data);
 Luigi.auth().store.setNewlyAuthorized();
+​
+// redirect back to Luigi
+window.location.href = '/';
 ```
 
-Read more about authorization helpers in the [Core API: AuthorizationStore](luigi-core-api.md#AuthorizationStore) section.
+### Additional options ​
 
 Additionally, if you process authorization data during Luigi runtime (inside the custom provider, similarly to using the`openIdConnect` provider), dispatch the `luigi.auth.tokenIssued` Event to update the currently opened micro frontends with the latest authorization data. This is not required when processing authorization outside Luigi, for example when `oAuth2ImplicitGrant` provider processes the data in `callback.html` and redirects to Luigi afterward.
-
+​
 ```javascript
 window.postMessage(
   { msg: 'luigi.auth.tokenIssued', authData: data },
