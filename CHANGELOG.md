@@ -23,6 +23,25 @@ The lerna-changelog tool detects changes based on PR labels and maps them to sec
     ...
   }
 -->
+
+## [v0.7.4] (2020-01-29)
+
+#### :rocket: Added
+* [#1034](https://github.com/SAP/luigi/pull/1034) Add valid href to navigation links ([@maxmarkus](https://github.com/maxmarkus))
+
+#### :bug: Fixed
+* [#1065](https://github.com/SAP/luigi/pull/1065) Fix items calculation in more btn of tab nav ([@JohannesDoberer](https://github.com/JohannesDoberer))
+* [#1047](https://github.com/SAP/luigi/pull/1047) Custom options renderer config error ([@maxmarkus](https://github.com/maxmarkus))
+
+#### :memo: Documentation
+* [#1025](https://github.com/SAP/luigi/pull/1025) Improve API documentation ([@alexandra-simeonova](https://github.com/alexandra-simeonova))
+* [#1024](https://github.com/SAP/luigi/pull/1024) Improve authorization doc structure ([@alexandra-simeonova](https://github.com/alexandra-simeonova))
+* [#1000](https://github.com/SAP/luigi/pull/1000) Improve Overview page ([@alexandra-simeonova](https://github.com/alexandra-simeonova))
+* [#965](https://github.com/SAP/luigi/pull/965) Improve application-setup.md ([@alexandra-simeonova](https://github.com/alexandra-simeonova))
+* [#877](https://github.com/SAP/luigi/pull/877) Create content guidelines ([@alexandra-simeonova](https://github.com/alexandra-simeonova))
+* [#1003](https://github.com/SAP/luigi/pull/1003) Documentation fixes ([@alexandra-simeonova](https://github.com/alexandra-simeonova))
+
+
 ## [v0.7.3] (2019-12-19)
 
 #### :rocket: Added
@@ -624,3 +643,4 @@ The lerna-changelog tool detects changes based on PR labels and maps them to sec
 [v0.7.1]: https://github.com/SAP/luigi/compare/v0.7.0...v0.7.1
 [v0.7.2]: https://github.com/SAP/luigi/compare/v0.7.1...v0.7.2
 [v0.7.3]: https://github.com/SAP/luigi/compare/v0.7.2...v0.7.3
+[v0.7.4]: https://github.com/SAP/luigi/compare/v0.7.3...v0.7.4

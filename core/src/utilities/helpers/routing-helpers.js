@@ -146,6 +146,29 @@ class RoutingHelpersClass {
         );
   }
 
+  getRouteLink(node, pathParams) {
+    if (node.externalLink && node.externalLink.url) {
+      return node.externalLink;
+      // externalLinkUrl property is provided so there's no need to trigger routing mechanizm
+    } else if (node.link) {
+      const link = node.link.startsWith('/')
+        ? node.link
+        : Routing.buildFromRelativePath(node);
+      return link;
+    }
+
+    let route = RoutingHelpers.buildRoute(node, `/${node.pathSegment}`);
+    return GenericHelpers.replaceVars(route, pathParams, ':', false);
+  }
+
+  getNodeHref(node, pathParams) {
+    if (LuigiConfig.getConfigBooleanValue('navigation.addNavHrefs')) {
+      const link = RoutingHelpers.getRouteLink(node, pathParams);
+      return link.url || link;
+    }
+    return 'javascript:void(0)';
+  }
+
   substituteDynamicParamsInObject(object, paramMap, paramPrefix = ':') {
     return Object.entries(object)
       .map(([key, value]) => {
