@@ -47,7 +47,8 @@
     "webpack": "^4.40.2",
     "webpack-cli": "^3.3.9",
     "webpack-bundle-analyzer": "^3.6.0",
-    "serialize-javascript": ">=2.1.1"
+    "serialize-javascript": ">=2.1.1",
+    "dot-prop": "5.1.1"
   },
   "scripts": {
     "bundle": "npm run bundle-evergreen && npm run bundle-ie11",
