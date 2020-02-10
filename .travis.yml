@@ -57,26 +57,18 @@ jobs:
         - rm -rf ~/.npm/_logs
         - rm -rf ~/.npm/_cacache
 
-    #----- UNIT -----
-    # - name: 'Unit Tests'
-    #   script:
-    #     - echo 'core' && ls core/node_modules | wc -l && echo 'client' && ls client/node_modules | wc -l
-    #     - npm test --prefix core
-    #   before_cache:
-    #     - rm -rf ~/.npm/_logs
-    #     - rm -rf ~/.npm/_cacache
-
     # ----- INTEGRATION -----
     - &integration-testing
       name: 'Integration Testing'
       script:
         - export CYPRESS_CACHE_FOLDER=$TRAVIS_BUILD_DIR/cypress-binary-cache
         # - npm i -g cypress cypress-plugin-retries sirv-cli
+        - df -h
         - bash ./test/e2e.sh
       addons:
         chrome: stable
       before_install:
-        - google-chrome-stable --headless --disable-gpu --remote-debugging-port=9222 http://localhost &
+        - google-chrome-stable --disable-dev-shm-usage --headless --disable-gpu --remote-debugging-port=9222 http://localhost &
       before_cache:
         - rm -rf ~/.npm/_logs
         - rm -rf ~/.npm/_cacache
