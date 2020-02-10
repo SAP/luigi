@@ -57,6 +57,7 @@
   {#if !(hideNav||hideSideNav)}
   <LeftNav
     pathData="{navigationPath}"
+    pathParams="{pathParams}"
     on:handleClick="{handleNavClick}"
     on:resizeTabNav="{onResizeTabNav}"
   />
@@ -64,6 +65,7 @@
   {#if (tabNav && !hideNav)}
   <TabNav
     pathData="{navigationPath}"
+    pathParams="{pathParams}"
     on:handleClick="{handleNavClick}"
     resizeTabNavToggle="{resizeTabNavToggle}"
   />
@@ -731,8 +733,8 @@
         );
         const customMessageListener = customMessagesListeners[message.id];
         if (typeof customMessageListener === 'function') {
-          const microfrontend = LuigiElements.getMicrofrontends().find(
-            mf => mf.id === e.source.frameElement.luigi.id
+          const microfrontend = LuigiElements.getMicrofrontends().find(mf =>
+            IframeHelpers.isMessageSource(e, mf.container)
           );
 
           customMessageListener(
