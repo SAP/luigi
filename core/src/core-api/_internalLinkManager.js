@@ -1,5 +1,4 @@
 import { GenericHelpers } from '../utilities/helpers';
-import { splitViewHandle } from './splitViewHandle';
 import { LuigiCoreAPIBase } from './baseClass';
 
 export class linkManager extends LuigiCoreAPIBase {
@@ -45,34 +44,6 @@ export class linkManager extends LuigiCoreAPIBase {
 
   openAsModal(path, modalSettings = {}) {
     this.navigate(path, true, modalSettings);
-  }
-
-  openAsSplitView(path, splitViewSettings = {}){
-    return Luigi.openAsSplitView(path,splitViewSettings);
-  }
-
-  closeSplitView(){
-    return Luigi.closeSplitView();
-  }
-
-  collapseSplitView(){
-    return Luigi.collapseSplitView();
-  }
-
-  expandSplitView(){
-    return Luigi.expandSplitView();
-  }
-
-  isSplitViewExpanded(){
-    return Luigi.isSplitViewExpanded();
-  }
-
-  isSplitViewCollapsed(){
-    return Luigi.isSplitViewCollapsed();
-  }
-
-  isSplitViewClosed(){
-    return Luigi.isSplitViewClosed();
   }
 
   fromContext(navigationContext) {
