@@ -75,7 +75,7 @@ class LuigiAuth {
        */
       getStorageKey: () => AuthStoreSvc.getStorageKey(),
       /**
-       * Retrieves the storage type that is used to store the auth data.
+       * Retrieves the storage type that is used to store the auth data. To set it, use the `auth.storage` property of the `auth` Luigi configuration object. Find out more [here](https://docs.luigi-project.io/docs/authorization-configuration?section=general-authorization-options).
        * @memberof AuthorizationStore
        * @returns {('localStorage'|'sessionStorage'|'none')} - storage type
        * @example Luigi.auth().store.getStorageType()
