@@ -6,8 +6,8 @@ cache:
   directories:
     - $TRAVIS_BUILD_DIR/client/public
     - $TRAVIS_BUILD_DIR/core/public
-    - $TRAVIS_BUILD_DIR/plugins/public/auth-oauth2
-    - $TRAVIS_BUILD_DIR/plugins/public/auth-oidc
+    - $TRAVIS_BUILD_DIR/plugins/auth/public/auth-oauth2
+    - $TRAVIS_BUILD_DIR/plugins/auth/public/auth-oidc
     - $TRAVIS_BUILD_DIR/core/examples/luigi-sample-angular/dist
     - $TRAVIS_BUILD_DIR/cypress-binary-cache
     - $HOME/.cache/Cypress

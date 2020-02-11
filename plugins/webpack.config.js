@@ -5,8 +5,8 @@ const { readFileSync } = require('fs');
 const babelSettings = JSON.parse(readFileSync('.babelrc'));
 
 module.exports = {
-  entry: glob.sync('./src/**/index.js').reduce((acc, path) => {
-    const entry = path.replace('/index.js', '').replace('./src/', '');
+  entry: glob.sync('./auth/**/index.js').reduce((acc, path) => {
+    const entry = path.replace('/index.js', '').replace('./auth/src/', '');
     acc[entry] = path;
     return acc;
   }, {}),

@@ -99,6 +99,6 @@ removeNpmToken
 
 # Luigi Core Plugins
 # setLuigiNpmToken
-# publishPackage "plugins" "plugins/public/auth-oauth2"
-# publishPackage "plugins" "plugins/public/auth-oidc"
+# publishPackage "plugins" "plugins/auth/public/auth-oauth2"
+# publishPackage "plugins" "plugins/auth/public/auth-oidc"
 # removeNpmToken

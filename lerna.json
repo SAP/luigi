@@ -7,8 +7,8 @@
     "core",
     "core/public",
     "plugins",
-    "plugins/public/auth-oauth2",
-    "plugins/public/auth-oidc",
+    "plugins/auth/public/auth-oauth2",
+    "plugins/auth/public/auth-oidc",
     "core/examples/luigi-sample-angular",
     "core/examples/luigi-example-vue"
   ],
