@@ -257,7 +257,7 @@ settings: {
 
 ### virtualTree
 - **type**: boolean
-- **description**: marks the node as the beginning of a virtual tree. Allows navigation to any of its child path without the need of specifying nested children. **keepSelectedForChildren** is automatically applied.
+- **description**: marks the node as the beginning of a virtual tree. Allows navigation to any of its children's paths without the need of specifying nested children. **keepSelectedForChildren** is automatically applied.
 
 ## Context switcher
 
