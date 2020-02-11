@@ -310,6 +310,10 @@ The context switcher is a drop-down list available in the top navigation bar. It
 - **description**: if set to `false`, the drop-down is not shown on click if there is only one option and no actions.
 - **default**: `true`
 
+### Icon
+- **type**: string
+- **description**: is the name of an icon from the [OpenUI](https://openui5.hana.ondemand.com/1.40.10/iconExplorer.html). It's displayed on smaller screens next to the default label or the selected context in a dropdown for the top navigation nodes. There is a default icon if nothing is set.
+
 ## Profile
 
 The profile section is a configurable drop-down list available in the top navigation bar. Within the configuration, you can override the logout item content (if authorization is configured) and/or add links to Luigi navigation nodes. To do so, add the **profile** parameter to the **navigation** object using the following optional parameters:
