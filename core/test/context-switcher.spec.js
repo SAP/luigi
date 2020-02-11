@@ -156,7 +156,7 @@ describe('Context-switcher', function() {
         JSON.stringify([
           {
             label: 'Env 1',
-            path: '/environment/env1',
+            link: '/environment/env1',
             id: 'env1'
           }
         ])
@@ -172,7 +172,7 @@ describe('Context-switcher', function() {
         JSON.stringify([
           {
             label: 'Env 1',
-            path: '/env1',
+            link: '/env1',
             id: 'env1'
           }
         ])
@@ -486,10 +486,10 @@ describe('Context-switcher', function() {
       });
       const result = CSHelpers.getNodePathFromCurrentPath(
         {
-          path: '/environments/env3'
+          link: '/environments/env3'
         },
         {
-          path: '/environments/env1'
+          link: '/environments/env1'
         }
       );
       assert.equal(result, '/environments/env3');
@@ -501,10 +501,10 @@ describe('Context-switcher', function() {
       });
       const result = CSHelpers.getNodePathFromCurrentPath(
         {
-          path: '/environments/env3/details'
+          link: '/environments/env3/details'
         },
         {
-          path: '/environments/env1/details'
+          link: '/environments/env1/details'
         }
       );
       assert.equal(result, '/environments/env3/details/and/more');

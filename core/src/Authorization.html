@@ -17,7 +17,12 @@
       on:click="{() => onActionClick(profileItem)}"
       data-testid="{getTestId(profileItem)}"
     >
-      <a class="fd-menu__item" data-testid="luigi-topnav-profile-item">
+      <a
+        class="fd-menu__item"
+        data-testid="luigi-topnav-profile-item"
+        href="{getRouteLink(profileItem)}"
+        on:click|preventDefault="{() => {}}"
+      >
         {#if profileItem.icon}
         {#if hasOpenUIicon(profileItem)}
         <span
@@ -70,7 +75,8 @@
     AuthHelpers,
     GenericHelpers,
     NavigationHelpers,
-    StateHelpers
+    StateHelpers,
+    RoutingHelpers
   } from './utilities/helpers';
   import { AuthStoreSvc, Routing } from './services';
   import { TOP_NAV_DEFAULTS } from './utilities/luigi-config-defaults';
@@ -271,6 +277,9 @@
     return profileItem.testId
       ? profileItem.testId
       : NavigationHelpers.prepareForTests(profileItem.label);
+  }
+  function getRouteLink(node) {
+    return RoutingHelpers.getNodeHref(node);
   }
 
   // [svelte-upgrade suggestion]
