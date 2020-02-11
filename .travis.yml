@@ -62,6 +62,7 @@ jobs:
       name: 'Integration Testing'
       script:
         - export CYPRESS_CACHE_FOLDER=$TRAVIS_BUILD_DIR/cypress-binary-cache
+        - find $CYPRESS_CACHE_FOLDER
         - bash ./test/e2e.sh
       addons:
         apt:
