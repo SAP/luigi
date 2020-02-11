@@ -131,7 +131,7 @@
     "url": "ssh://github.com/SAP/luigi.git"
   },
   "dependencies": {
-    "npm": ">=6.13.4",
+    "npm": ">=6.13.7",
     "test": "^0.6.0",
     "diff": ">=3.5.0"
   }
