@@ -14,23 +14,23 @@ notifications:
     secure: wiOchVgoiKNUikjCeIhsuv3Y5jolFud6ercdZdO3+JigQqkmoAC95f2jKTYEdplJWyJr8JY6z0+UJNceHyr5YJx/l1wpm6Zq+3H4dq/V0yUXH1uhw2eaTzweX2vjfw0bzewEdc1CGl4kSfdyTajnbKgt+mtnrAV9lPqiXYSOOJTu5BCFomi7u2GhAz1JjBK6P4Ar2jXm+oc81nYjj40P8bZFlA7Rjm0hNN42MMkKvnD8OHztL3EwezKHXlQW7fN4eOrhPOMbT3NRU72g9Nir+lfoKJlch1zPoHXQ7DRp41uGyHV/qfvfRLzXwxftZK6kdvzMe0eI0i1aIm0R6AE0bLphB2o/klJzyQpqSiQgETTH0qJN+3px2kddGrw7Me+UNC/1zZrt1MJfWf0h6WjXTsPDJf3ajLsn8OoIeBTRZbAb9as3UWQZcknuuMf8oGUzZkrZNMWYqo3py0+qWm4wSbWXWVUCgVAIYA6oEADwq37z59HySGkyHI4gEPzxsYODfCuvO4pJX1h4vEyH7w2IigwhDAPq5G4Vdez9ZFS96p/LSCF+iH8yWMy294u8wk5ofWUutFFv0JC45LQBXu51a2TeQkalwVn4DiuxxHE6jZieREw75YFjra4jpWsyziWkzshGT75NCra6cKAbNa4T8n6Pm3ogjEPeeWAO3psgSdo=
 jobs:
   include:
-    - stage: 'Precache & Unit Tests'
-      script:
-        - export CYPRESS_CACHE_FOLDER=$TRAVIS_BUILD_DIR/cypress-binary-cache
-        # - npm i -g lerna
-        # - lerna bootstrap --ci --ignore "*luigi-example-vue" || travis_terminate 1
-        # - lerna run bundle --ignore "*luigi-example-vue" || travis_terminate 1
-        # - lerna run bundlesizeOnly --ignore "*luigi-example-vue" || travis_terminate 1
-        # - ls -lah $TRAVIS_BUILD_DIR/core/examples/luigi-sample-angular/node_modules/@kyma-project
-        # - cat $TRAVIS_BUILD_DIR/core/examples/luigi-sample-angular/node_modules/@kyma-project/luigi-client/package.json
-        # - lerna run build --ignore "*luigi-example-vue" || travis_terminate 1
-        # - npm test --prefix core || travis_terminate 1
-        # - du -sh
-      before_cache:
-        - rm -rf ~/.npm/_logs
-        - rm -rf ~/.npm/_cacache
-        - rm -rf $TRAVIS_BUILD_DIR/website
-        - rm -rf $TRAVIS_BUILD_DIR/core/examples/luigi-example-vue
+    # - stage: 'Precache & Unit Tests'
+    #   script:
+    #     - export CYPRESS_CACHE_FOLDER=$TRAVIS_BUILD_DIR/cypress-binary-cache
+    #     - npm i -g lerna
+    #     - lerna bootstrap --ci --ignore "*luigi-example-vue" || travis_terminate 1
+    #     - lerna run bundle --ignore "*luigi-example-vue" || travis_terminate 1
+    #     - lerna run bundlesizeOnly --ignore "*luigi-example-vue" || travis_terminate 1
+    #     - ls -lah $TRAVIS_BUILD_DIR/core/examples/luigi-sample-angular/node_modules/@kyma-project
+    #     - cat $TRAVIS_BUILD_DIR/core/examples/luigi-sample-angular/node_modules/@kyma-project/luigi-client/package.json
+    #     - lerna run build --ignore "*luigi-example-vue" || travis_terminate 1
+    #     - npm test --prefix core || travis_terminate 1
+    #     - du -sh
+    #   before_cache:
+    #     - rm -rf ~/.npm/_logs
+    #     - rm -rf ~/.npm/_cacache
+    #     - rm -rf $TRAVIS_BUILD_DIR/website
+    #     - rm -rf $TRAVIS_BUILD_DIR/core/examples/luigi-example-vue
 
     # #----- DOCU -----
     # - stage: 'Documentation & Tests'
@@ -68,7 +68,7 @@ jobs:
           packages:
             # Ubuntu 16+ does not install this dependency by default, so we need to install it ourselves
             - libgconf-2-4
-            - chromium-browser_79.0.3945.130-0ubuntu0.16.04.1
+            - chromium-browser=79.0.3945.130-0ubuntu0.16.04.1
         # chrome: stable
       before_install:
         # - export CHROME_SOURCE_URL=http://security.ubuntu.com/ubuntu/pool/universe/c/chromium-browser/chromium-browser_79.0.3945.130-0ubuntu0.16.04.1_amd64.deb
