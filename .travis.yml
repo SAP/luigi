@@ -17,45 +17,45 @@ jobs:
     - stage: 'Precache & Unit Tests'
       script:
         - export CYPRESS_CACHE_FOLDER=$TRAVIS_BUILD_DIR/cypress-binary-cache
-        - npm i -g lerna
-        - lerna bootstrap --ci --ignore "*luigi-example-vue" || travis_terminate 1
-        - lerna run bundle --ignore "*luigi-example-vue" || travis_terminate 1
-        - lerna run bundlesizeOnly --ignore "*luigi-example-vue" || travis_terminate 1
-        - ls -lah $TRAVIS_BUILD_DIR/core/examples/luigi-sample-angular/node_modules/@kyma-project
-        - cat $TRAVIS_BUILD_DIR/core/examples/luigi-sample-angular/node_modules/@kyma-project/luigi-client/package.json
-        - lerna run build --ignore "*luigi-example-vue" || travis_terminate 1
-        - npm test --prefix core || travis_terminate 1
-        - du -sh
+        # - npm i -g lerna
+        # - lerna bootstrap --ci --ignore "*luigi-example-vue" || travis_terminate 1
+        # - lerna run bundle --ignore "*luigi-example-vue" || travis_terminate 1
+        # - lerna run bundlesizeOnly --ignore "*luigi-example-vue" || travis_terminate 1
+        # - ls -lah $TRAVIS_BUILD_DIR/core/examples/luigi-sample-angular/node_modules/@kyma-project
+        # - cat $TRAVIS_BUILD_DIR/core/examples/luigi-sample-angular/node_modules/@kyma-project/luigi-client/package.json
+        # - lerna run build --ignore "*luigi-example-vue" || travis_terminate 1
+        # - npm test --prefix core || travis_terminate 1
+        # - du -sh
       before_cache:
         - rm -rf ~/.npm/_logs
         - rm -rf ~/.npm/_cacache
         - rm -rf $TRAVIS_BUILD_DIR/website
         - rm -rf $TRAVIS_BUILD_DIR/core/examples/luigi-example-vue
 
-    #----- DOCU -----
-    - stage: 'Documentation & Tests'
-      name: 'Check Documentation'
-      script:
-        - cd $TRAVIS_BUILD_DIR/scripts && npm ci
-        - cd $TRAVIS_BUILD_DIR && bash ./scripts/docuCheck.sh
-      before_cache:
-        - rm -rf ~/.npm/_logs
-        - rm -rf ~/.npm/_cacache
+    # #----- DOCU -----
+    # - stage: 'Documentation & Tests'
+    #   name: 'Check Documentation'
+    #   script:
+    #     - cd $TRAVIS_BUILD_DIR/scripts && npm ci
+    #     - cd $TRAVIS_BUILD_DIR && bash ./scripts/docuCheck.sh
+    #   before_cache:
+    #     - rm -rf ~/.npm/_logs
+    #     - rm -rf ~/.npm/_cacache
 
-    #----- WHITESOURCE -----
-    - name: 'Whitesource check'
-      if: repo = SAP/luigi AND (branch = master)
-      script:
-        - 'if [ ! -z "${WHITESOURCE_APIKEY}" ]; then
-            npm --prefix ./website/landingpage/dev install ./website/landingpage/dev;
-            npm --prefix ./website/fiddle install ./website/fiddle;
-            lerna bootstrap --ci --ignore "*luigi-example-vue";
-            npm i -g whitesource;
-            bash ./scripts/whiteSource.sh;
-          fi'
-      before_cache:
-        - rm -rf ~/.npm/_logs
-        - rm -rf ~/.npm/_cacache
+    # #----- WHITESOURCE -----
+    # - name: 'Whitesource check'
+    #   if: repo = SAP/luigi AND (branch = master)
+    #   script:
+    #     - 'if [ ! -z "${WHITESOURCE_APIKEY}" ]; then
+    #         npm --prefix ./website/landingpage/dev install ./website/landingpage/dev;
+    #         npm --prefix ./website/fiddle install ./website/fiddle;
+    #         lerna bootstrap --ci --ignore "*luigi-example-vue";
+    #         npm i -g whitesource;
+    #         bash ./scripts/whiteSource.sh;
+    #       fi'
+    #   before_cache:
+    #     - rm -rf ~/.npm/_logs
+    #     - rm -rf ~/.npm/_cacache
 
     # ----- INTEGRATION -----
     - &integration-testing
@@ -68,15 +68,19 @@ jobs:
           packages:
             # Ubuntu 16+ does not install this dependency by default, so we need to install it ourselves
             - libgconf-2-4
-        chrome: stable
+            - chromium-browser_79.0.3945.130-0ubuntu0.16.04.1
+        # chrome: stable
       before_install:
-        - google-chrome-stable --headless --disable-gpu --remote-debugging-port=9222 http://localhost &
+        # - export CHROME_SOURCE_URL=http://security.ubuntu.com/ubuntu/pool/universe/c/chromium-browser/chromium-browser_79.0.3945.130-0ubuntu0.16.04.1_amd64.deb
+        # - export CHROME_SOURCE_URL=https://ftp-stud.hs-esslingen.de/ubuntu/pool/universe/c/chromium-browser/chromium-browser_79.0.3945.130-0ubuntu0.16.04.1_amd64.deb # germany
+        # - wget --no-verbose -O /tmp/$(basename $CHROME_SOURCE_URL) $CHROME_SOURCE_URL
+        # - dpkg -i /tmp/$(basename $CHROME_SOURCE_URL)
+        - chromium-browser --headless --disable-gpu --remote-debugging-port=9222 http://localhost &
       before_cache:
         - rm -rf ~/.npm/_logs
         - rm -rf ~/.npm/_cacache
         - rm -rf ~/.cache/Cypress/cy/production/browsers #it is individual for each run anyway so caching it slows down the job
-    - <<: *integration-testing
-    - <<: *integration-testing
+    # - <<: *integration-testing
     # - <<: *integration-testing
 
     # ----- NPM PUBLISH -----
