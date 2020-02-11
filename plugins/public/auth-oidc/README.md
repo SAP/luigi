@@ -2,17 +2,17 @@
 
 ## Overview
 
-This project contains a library that allows your application to extend the [Luigi framework](https://github.com/SAP/luigi/tree/master/core) with a OpenID Connect authorization provider. 
-Further configuration details can be found in the main documentation: [authorization-configuration](https://docs.luigi-project.io/docs/authorization-configuration#oauth2-implicit-grant-configuration)
+This project contains a library that allows your application to extend the [Luigi framework](https://github.com/SAP/luigi/tree/master/core) with an OpenID Connect authorization provider. 
+Further configuration details can be found in the [main documentation](https://docs.luigi-project.io/docs/authorization-configuration#openid-connect-configuration).
 
 ## Installation
 
-Install the client in your project using npm:
+Install the plugin in your project using npm:
 ```bash
 npm install @luigi-project/plugin-auth-oidc
 ```
 
-Import the client in places where you want to use it, depending on the environment of your choice:
+Import the plugin in places where you want to use it, depending on the environment of your choice:
 ```javascript
 var OpenIdConnect = require('@luigi-project/plugin-auth-oidc');
 ```
@@ -21,7 +21,7 @@ or
 import OpenIdConnect from '@luigi-project/plugin-auth-oidc';
 ```
 
-Then integrating it as authorization provider:
+Then, integrate it as an authorization provider in your Luigi configuration file:
 ```javascript
 Luigi.setConfig({
   auth: {
@@ -38,7 +38,7 @@ Luigi.setConfig({
 })
 ```
 
-If you want to use the silent token renewal feature, the silent-callback.html needs to be copied to a folder in Luigi Core installation, which is the return path for idp provider, configured through the `redirect_uri` setting. Default location of `redirect_uri` is `/assets/auth-oidc/silent-callback.html`. This file contains also a reference to `/assets/auth-oidc/plugin.js` to make the OIDC client available.
+If you want to use the silent token renewal feature, the `silent-callback.html` needs to be copied to a folder in your Luigi Core installation, which is the return path for the IdP provider, configured through the `redirect_uri` setting. The default location of `redirect_uri` is `/assets/auth-oidc/silent-callback.html`. This file also contains a reference to `/assets/auth-oidc/plugin.js` to make the OIDC client available.
 
 ```javascript
 const CopyWebpackPlugin = require('copy-webpack-plugin');
