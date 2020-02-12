@@ -1,7 +1,7 @@
 import {
   LuigiContextService,
   IContextMessage
-} from './../../services/luigi-context.service';
+} from '../../services/luigi-context.service';
 import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { ActivatedRoute, Params } from '@angular/router';
 import {
@@ -32,7 +32,7 @@ export class SettingsComponent implements OnInit {
     private activatedRoute: ActivatedRoute,
     private cdr: ChangeDetectorRef,
     private luigiService: LuigiContextService
-  ) {}
+  ) { }
 
   ngOnInit() {
     this.activatedRoute.params.subscribe((params: Params) => {
