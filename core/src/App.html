@@ -508,7 +508,9 @@
       getAlertWithId(currentAlerts, settings.id)
     ) {
       console.error(
-        `The alert with id '${settings.id}' already exists in a queue, therefore it won't be displayed `
+        `The alert with id '${
+          settings.id
+        }' already exists in a queue, therefore it won't be displayed `
       );
       return Promise.reject();
     }
