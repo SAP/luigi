@@ -7,7 +7,7 @@
     },
     "metaData": {
       "categoryPosition": 1,
-      "position": 3
+      "position": 2
     }
   }
 }
@@ -35,7 +35,7 @@ The Luigi project can be found on [GitHub](https://github.com/SAP/luigi). Depend
 
 ### The distributed development possibilities seem like a big advantage; is that just an additional benefit from using Luigi, or was that a main factor behind it?
 
-Development scalability was one of the main goals right from the beginning. There is a nice article on [martinfowler.com](https://martinfowler.com/articles/micro-frontends.html) explaining the benefits of a micro frontend architecture in general. All the disadvantages of the iframe approach mentioned in the article are solved with Luigi. 
+Development scalability was one of the main goals right from the beginning. There is a nice article on [martinfowler.com](https://martinfowler.com/articles/micro-frontends.html) explaining the benefits of a micro frontend architecture in general. All the disadvantages of the iframe approach mentioned in the article are solved with Luigi.
 
 ### One of the potential issues with a micro frontend architecture is styling. You suggest to use the CSS elements of Fundamentals to solve that issue. Is that correct?
 

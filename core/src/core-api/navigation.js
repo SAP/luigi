@@ -9,7 +9,7 @@ class LuigiNavigationManager {
 
   /**
    * Refreshes top navigation badge counters by rendering the navigation again.
-  
+
    * @memberof LuigiNavigation
    * @example
    * Luigi.navigation().updateTopNavigation();
@@ -118,7 +118,7 @@ class LuigiNavigationManager {
   /**
    * Discards the active view and navigates back to the last visited view. Works with preserved views, and also acts as the substitute of the browser **back** button. **goBackContext** is only available when using preserved views.
    * @memberof LuigiNavigation
-   * @param {any} goBackValue data that is passed in the **goBackContext** field to the last visited view when using preserved views.
+   * @param {any} goBackValue data that is passed in the **goBackContext** field to the last visited view when using preserved views
    * @example
    * Luigi.navigation().goBack({ foo: 'bar' });
    * Luigi.navigation().goBack(true);
