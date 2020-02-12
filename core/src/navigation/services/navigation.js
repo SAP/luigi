@@ -11,20 +11,26 @@ import { LuigiConfig } from '../../core-api';
 
 class NavigationClass {
   childrenProviderRequiresEvaluation(node) {
-    const result = node && node._childrenProvider &&
+    const result =
+      node &&
+      node._childrenProvider &&
       (!node._childrenProviderUsed ||
         !LuigiConfig._configModificationTimestamp ||
         node._childrenProviderUsed <
-          new Date(LuigiConfig._configModificationTimestamp.getTime()))
+          new Date(LuigiConfig._configModificationTimestamp.getTime()));
 
-    if(result) {
+    if (result) {
       node._childrenProviderUsed = new Date();
     }
     return result;
   }
   rootNodeRequiresEvaluation() {
-    const result = !this.rootNode || !this._rootNodeProviderUsed || this._rootNodeProviderUsed < new Date(LuigiConfig._configModificationTimestamp.getTime());
-    if(result) {
+    const result =
+      !this.rootNode ||
+      !this._rootNodeProviderUsed ||
+      this._rootNodeProviderUsed <
+        new Date(LuigiConfig._configModificationTimestamp.getTime());
+    if (result) {
       this._rootNodeProviderUsed = new Date();
     }
     return result;
@@ -38,7 +44,10 @@ class NavigationClass {
         return [{}];
       }
 
-      if (this.rootNodeRequiresEvaluation() || this.childrenProviderRequiresEvaluation(this.rootNode)) {
+      if (
+        this.rootNodeRequiresEvaluation() ||
+        this.childrenProviderRequiresEvaluation(this.rootNode)
+      ) {
         const topNavNodes = await rootNavProviderPromise;
         if (GenericHelpers.isObject(topNavNodes)) {
           this.rootNode = topNavNodes;
