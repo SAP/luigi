@@ -7,15 +7,15 @@ read -p "Luigi project folder name: " folder
 echo ""
 ng new $folder --routing && cd $folder
 
-npm i -P @kyma-project/luigi-core @kyma-project/luigi-client fiori-fundamentals webpack webpack-cli @babel/core @babel/preset-env babel-loader 
+npm i -P @kyma-project/luigi-core @kyma-project/luigi-client fiori-fundamentals webpack webpack-cli @babel/core @babel/preset-env babel-loader
 sed 's/"scripts": {/"scripts": {\
-\   "buildConfig":"webpack --entry .\/src\/luigi-config\/basic\/basicConfiguration.js -o .\/src\/assets\/sampleconfig.js --mode production",/1' package.json > p.tmp.json && mv p.tmp.json package.json
+\   "buildConfig":"webpack --entry .\/src\/luigi-config\/basic\/basicConfiguration.js -o .\/src\/assets\/luigi-config\/sampleconfig.js --mode production",/1' package.json > p.tmp.json && mv p.tmp.json package.json
 mkdir -p src/luigi-config/basic
 
  # the following steps can be copy and pasted to the terminal at once
 mv src/index.html src/angular.html
 
-# download 
+# download
 curl https://raw.githubusercontent.com/SAP/luigi/master/core/examples/luigi-sample-angular/src/index.html > src/index.html
 curl https://raw.githubusercontent.com/SAP/luigi/master/core/examples/luigi-sample-angular/src/luigi-config/basic/basicConfiguration.js > src/luigi-config/basic/basicConfiguration.js
 curl https://raw.githubusercontent.com/SAP/luigi/master/core/examples/luigi-sample-angular/src/assets/sampleexternal.html > src/assets/basicexternal.html
