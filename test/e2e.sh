@@ -14,8 +14,6 @@ fi
 
 cd $NG_EXAMPLE
 
-# ./node_modules/cypress/bin/cypress install
-
 echo "Starting webserver"
 sirv start dist --single --cors --port 4200 &
 WS_PID=$!
