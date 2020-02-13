@@ -36,7 +36,7 @@ or, if you are not using any bundler, Luigi is also available as a global object
 ```javascript
 window.LuigiClient
 ```
-You can see Luigi Client in action by running the [Angular example application](/core/examples/luigi-sample-angular).
+You can see Luigi Client in action by running the [Angular example application](/test/e2e-test-application).
 
 ## Usage
 

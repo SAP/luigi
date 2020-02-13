@@ -9,8 +9,8 @@
     "plugins",
     "plugins/auth/public/auth-oauth2",
     "plugins/auth/public/auth-oidc",
-    "core/examples/luigi-sample-angular",
     "core/examples/luigi-example-vue"
+    "test/e2e-test-application"
   ],
   "version": "0.0.0"
 }

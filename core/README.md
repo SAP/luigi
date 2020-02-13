@@ -35,7 +35,7 @@ The `lerna run bundle` command runs the `bundle` script in every package referen
     ```
 
 
-You can see the Luigi Core in action by running the [Angular example application](/core/examples/luigi-sample-angular).
+You can see the Luigi Core in action by running the [Angular example application](/test/e2e-test-application).
 
 
 
