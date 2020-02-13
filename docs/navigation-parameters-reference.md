@@ -64,7 +64,7 @@ The navigation parameters allow you to configure **global** navigation settings 
 
 ### nodeAccessibilityResolver
 - **type**: any
-- **description**: receives all values defined in the node configuration. It allows you to define a permission checker function that gets executed on every node. If it returns `false`, Luigi removes the node and its children from the navigation structure. See [angular navigation.js](../core/examples/luigi-sample-angular/src/luigi-config/extended/navigation.js) for an example.
+- **description**: receives all values defined in the node configuration. It allows you to define a permission checker function that gets executed on every node. If it returns `false`, Luigi removes the node and its children from the navigation structure. See [angular navigation.js](../test/e2e-test-application/src/luigi-config/extended/navigation.js) for an example.
 
 ### defaults.isolateView
 - **type**: boolean
