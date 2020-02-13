@@ -55,7 +55,7 @@ Follow these steps to develop **micro frontends** and connect them to an already
 
 ### Examples
 
-In the Examples section of our documentation, you can find links to several "Hello World" example applications which can help you explore Luigi's functions:
+In the **Examples** section of our documentation, you can find links to several "Hello World" example applications which can help you explore Luigi's functions:
 * [Angular](https://github.com/SAP/luigi/tree/master/core/examples/luigi-example-angular)
 * [React](https://github.com/SAP/luigi/tree/master/core/examples/luigi-example-react)
 * [Vue](https://github.com/SAP/luigi/tree/master/core/examples/luigi-example-vue)
@@ -64,5 +64,5 @@ In the Examples section of our documentation, you can find links to several "Hel
 
 You can install them by following the instructions in the `README` file.
 
-Advanced users can install our end-to-end example application which includes all of Luigi's features:
+**Advanced users** can install our end-to-end test example application which includes all of Luigi's features in one place:
 * [e2e example]()
