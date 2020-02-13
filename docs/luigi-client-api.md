@@ -180,6 +180,37 @@ LuigiClient.sendCustomMessage({id: 'environment.created', production: false})
 
 -   **since**: 0.6.2
 
+### setNavigationSync
+
+Configures automatic routing synchronization
+Allows the use of a micro frontend router as main navigation strategy, which implicitely updates the Luigi Core URL.
+Mostly used in combination with **virtualTree** node configuration, which allows to simply drop-in a micro-frontend under a specified navigation tree.
+// TODO: skipEvaluation: true
+
+#### Parameters
+
+-   `config` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** Configuration object
+    -   `config.active` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** enables or disables routing synchronization (optional, default `true`)
+    -   `config.useHashRouting` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** defines the configured routing strategy of the micro frontend. If not set, path routing is assumed. (optional, default `false`)
+    -   `config.useClosestContext` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** when set to true, **fromClosestContext()** will be used. Set **navigationContext** at the node where virtualTree is defined and enable this value. (optional, default `false`)
+    -   `config.localBasePath` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)?** defines
+
+#### Examples
+
+```javascript
+import LuigiClient from '@kyma-project/luigi-client';
+LuigiClient.lifecycleManager().setNavigationSync({ useHashRouting: false, useClosestContext: true });
+LuigiClient.lifecycleManager().setNavigationSync({ active: true, useHashRouting: false, useClosestContext: true });
+Disable:
+LuigiClient.lifecycleManager().setNavigationSync({active: false});
+```
+
+Returns **[Promise](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise)** gets resolved when congigVirtualTreeNav got applied and can be used. This is required since the configuration needs to wait for the successful client initialization
+
+**Meta**
+
+-   **since**: 0.7.4
+
 ## Lifecycle~initListenerCallback
 
 Callback of the addInitListener

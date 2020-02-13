@@ -461,3 +461,14 @@ export type linkManager = () => LinkManager;
 /** @name uxManager */
 export function uxManager(): UxManager;
 export type uxManager = () => UxManager;
+
+/**
+ * Use the LifeCycle Manager to manage the appearance features in Luigi.
+ */
+/** @name lifecycleManager */
+export function lifecycleManager(): LifecycleManager;
+export type lifecycleManager = () => LifecycleManager;
+
+export declare interface LifecycleManager {
+  setNavigationSync: (config: object) => void;
+}
