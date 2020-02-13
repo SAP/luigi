@@ -1,4 +1,4 @@
-# Sample Luigi application written in Angular
+# Luigi sample and e2e test application written in Angular
 
 ## Overview
 
