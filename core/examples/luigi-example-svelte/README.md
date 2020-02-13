@@ -24,10 +24,15 @@ Navigate to [localhost:5000](http://localhost:5000). You should see your app run
 
 ## Build
 
-```
-npm run build:prod
-npm run serve
-```
+1. Build your application
+    ```bash
+    npm run build
+    ```
+    
+2. Serve your application
+    ```bash
+    npm run serve
+    ```
 
 The build compiles and minimizes the source files for production usage.
 The build generates a `public` folder which you can serve using a web server.
