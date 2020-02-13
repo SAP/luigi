@@ -257,7 +257,18 @@ settings: {
 
 ### virtualTree
 - **type**: boolean
-- **description**: marks the node as the beginning of a virtual tree. Allows navigation to any of its children's paths without the need of specifying nested children. **keepSelectedForChildren** is automatically applied.
+- **description**: marks the node as the beginning of a virtual tree. Allows navigation to any of its children's paths without the need of specifying nested children. The path that comes after the node marked as **virtualTree** is appended to its **viewUrl**. [**keepSelectedForChildren**](#keepSelectedForChildren) is automatically applied.
+- **example**:
+    In this example, navigating to `core.tld/settings/some/nested/view` will result in opening `/sampleapp.html#/settings/some/nested/view`.
+    ```javascript
+    {
+      pathSegment: 'settings',
+      label: 'Settings',
+      viewUrl: '/sampleapp.html#/settings',
+      navigationContext: 'settings',
+      virtualTree: true
+    }
+    ```
 
 ## Context switcher
 
