@@ -1,12 +1,12 @@
 language: node_js
 node_js:
   - '11.14' #TODO: change it to 'node' once Travis supports the newest version
-dist: trusty
+dist: xenial
 cache:
   directories:
     - $TRAVIS_BUILD_DIR/client/public
     - $TRAVIS_BUILD_DIR/core/public
-    - $TRAVIS_BUILD_DIR/core/examples/luigi-sample-angular/dist
+    - $TRAVIS_BUILD_DIR/test/e2e-test-application/dist
     - $TRAVIS_BUILD_DIR/cypress-binary-cache
     - $HOME/.cache/Cypress
 notifications:
@@ -21,8 +21,8 @@ jobs:
         - lerna bootstrap --ci --ignore "*luigi-example-vue" || travis_terminate 1
         - lerna run bundle --ignore "*luigi-example-vue" || travis_terminate 1
         - lerna run bundlesizeOnly --ignore "*luigi-example-vue" || travis_terminate 1
-        - ls -lah $TRAVIS_BUILD_DIR/core/examples/luigi-sample-angular/node_modules/@kyma-project
-        - cat $TRAVIS_BUILD_DIR/core/examples/luigi-sample-angular/node_modules/@kyma-project/luigi-client/package.json
+        - ls -lah $TRAVIS_BUILD_DIR/test/e2e-test-application/node_modules/@kyma-project
+        - cat $TRAVIS_BUILD_DIR/test/e2e-test-application/node_modules/@kyma-project/luigi-client/package.json
         - lerna run build --ignore "*luigi-example-vue" || travis_terminate 1
         - npm test --prefix core || travis_terminate 1
         - du -sh
@@ -57,33 +57,28 @@ jobs:
         - rm -rf ~/.npm/_logs
         - rm -rf ~/.npm/_cacache
 
-    #----- UNIT -----
-    # - name: 'Unit Tests'
-    #   script:
-    #     - echo 'core' && ls core/node_modules | wc -l && echo 'client' && ls client/node_modules | wc -l
-    #     - npm test --prefix core
-    #   before_cache:
-    #     - rm -rf ~/.npm/_logs
-    #     - rm -rf ~/.npm/_cacache
-
     # ----- INTEGRATION -----
     - &integration-testing
       name: 'Integration Testing'
       script:
         - export CYPRESS_CACHE_FOLDER=$TRAVIS_BUILD_DIR/cypress-binary-cache
-        # - npm i -g cypress cypress-plugin-retries sirv-cli
+        - ls $CYPRESS_CACHE_FOLDER
         - bash ./test/e2e.sh
       addons:
-        chrome: stable
+        apt:
+          packages:
+            # Ubuntu 16+ does not install this dependency by default, so we need to install it ourselves
+            - libgconf-2-4
+            - chromium-browser=79.0.3945.130-0ubuntu0.16.04.1 # update also if you upgrade from Xenial
+        # chrome: stable
       before_install:
-        - google-chrome-stable --headless --disable-gpu --remote-debugging-port=9222 http://localhost &
+        - chromium-browser --headless --disable-gpu --remote-debugging-port=9222 http://localhost &
       before_cache:
         - rm -rf ~/.npm/_logs
         - rm -rf ~/.npm/_cacache
         - rm -rf ~/.cache/Cypress/cy/production/browsers #it is individual for each run anyway so caching it slows down the job
     - <<: *integration-testing
     - <<: *integration-testing
-    # - <<: *integration-testing
 
     # ----- NPM PUBLISH -----
     - stage: 'Publish'

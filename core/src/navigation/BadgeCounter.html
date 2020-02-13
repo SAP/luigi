@@ -7,7 +7,6 @@
   class="fd-counter fd-counter--notification"
   aria-label="{node.badgeCounter.label}"
 >{count}</span>
-
 {/if}
 {:catch error}
 {/await}
@@ -28,6 +27,7 @@
       min-width: 16px;
       min-height: 16px;
       display: inline-block;
+      vertical-align: middle;
 
       .fd-counter--notification {
         transform: none;

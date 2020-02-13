@@ -508,7 +508,9 @@
       getAlertWithId(currentAlerts, settings.id)
     ) {
       console.error(
-        `The alert with id '${settings.id}' already exists in a queue, therefore it won't be displayed `
+        `The alert with id '${
+          settings.id
+        }' already exists in a queue, therefore it won't be displayed `
       );
       return Promise.reject();
     }
@@ -731,8 +733,8 @@
         );
         const customMessageListener = customMessagesListeners[message.id];
         if (typeof customMessageListener === 'function') {
-          const microfrontend = LuigiElements.getMicrofrontends().find(
-            mf => mf.id === e.source.frameElement.luigi.id
+          const microfrontend = LuigiElements.getMicrofrontends().find(mf =>
+            IframeHelpers.isMessageSource(e, mf.container)
           );
 
           customMessageListener(
@@ -1022,7 +1024,7 @@
     } else if (responsiveNavSetting === 'simpleMobileOnly') {
       document.body.classList.add('lui-simpleSlideInNav', 'lui-mobileOnly');
       simpleSlideInNav = true;
-    } else if (responsiveNavSetting === 'semiCollapsible') {
+    } else if (responsiveNavSetting === 'semiCollapsible' || 'Fiori3') {
       document.body.classList.add('lui-semiCollapsible');
     }
     thirdPartyCookiesCheck = LuigiConfig.getConfigValue(
