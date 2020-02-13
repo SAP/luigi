@@ -98,6 +98,7 @@
   let getUnsavedChangesModalPromise = getContext(
     'getUnsavedChangesModalPromise'
   );
+  let openViewInModal = getContext('openViewInModal');
 
   const isAuthValid = () =>
     AuthHelpers.getStoredAuthData().accessTokenExpirationDate >
@@ -341,7 +342,15 @@
 
   export function onActionClick(item) {
     getUnsavedChangesModalPromise().then(() => {
-      Routing.navigateToLink(item);
+      if (item.openNodeInModal) {
+        const route = RoutingHelpers.buildRoute(item, `${item.link}`);
+        openViewInModal(
+          route,
+          item.openNodeInModal === true ? {} : item.openNodeInModal
+        );
+      } else {
+        Routing.navigateToLink(item);
+      }
     });
     dispatch('toggleDropdownState');
   }
