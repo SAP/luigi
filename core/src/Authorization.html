@@ -84,6 +84,7 @@
 
   const dispatch = createEventDispatcher();
 
+  let idpProviderInstance;
   export let userInfo;
   export let isHidden = false;
   export let isLoggedIn;
@@ -98,6 +99,7 @@
   let getUnsavedChangesModalPromise = getContext(
     'getUnsavedChangesModalPromise'
   );
+  let openViewInModal = getContext('openViewInModal');
 
   onMount(async () => {
     if (!LuigiAuth.isAuthorizationEnabled()) {
@@ -182,7 +184,15 @@
 
   export function onActionClick(item) {
     getUnsavedChangesModalPromise().then(() => {
-      Routing.navigateToLink(item);
+      if (item.openNodeInModal) {
+        const route = RoutingHelpers.buildRoute(item, `${item.link}`);
+        openViewInModal(
+          route,
+          item.openNodeInModal === true ? {} : item.openNodeInModal
+        );
+      } else {
+        Routing.navigateToLink(item);
+      }
     });
     dispatch('toggleDropdownState');
   }

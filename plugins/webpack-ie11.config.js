@@ -5,8 +5,8 @@ const { readFileSync } = require('fs');
 const babelSettings = JSON.parse(readFileSync('.babelrc-ie11'));
 
 module.exports = {
-  entry: glob.sync('./src/**/index.js').reduce((acc, path) => {
-    const entry = path.replace('/index.js', '').replace('./src/', '');
+  entry: glob.sync('./auth/**/index.js').reduce((acc, path) => {
+    const entry = path.replace('/index.js', '').replace('./auth/src/', '');
     acc[entry] = path;
     return acc;
   }, {}),
@@ -16,7 +16,7 @@ module.exports = {
     libraryExport: 'default',
     library: 'LuigiPlugin-[name]-IE11',
     libraryTarget: 'umd',
-    path: path.join(path.resolve(__dirname), 'public')
+    path: path.join(path.resolve(__dirname), 'auth', 'public')
   },
 
   module: {

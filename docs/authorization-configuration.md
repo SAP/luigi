@@ -51,7 +51,7 @@ The **use** key defines the active authorization provider and the **disableAutoL
 
 To show certain nodes only to non-authenticated users, use the [anonymousAccess](navigation-parameters-reference.md#anonymousaccess) parameter.
 
-Make sure **disableAutoLogin** is set to `true`. Add this parameter to the nodes you want to hide and their children:
+Make sure **disableAutoLogin** is set to `true`. Add the **anonymousAccess** parameter to the nodes you want to hide and their children:
 
 ```javascript
 anonymousAccess: `exclusive` // show nodes only when logged out
@@ -62,7 +62,7 @@ anonymousAccess: true // always show nodes
 
 ## OpenID Connect configuration
 
-This code snippet demonstrates how to configure authorization using OpenID Connect in Luigi. Note that you must install the [OpenID Plugin](https://github.com/SAP/luigi/tree/master/plugins/public/oidc/README.md) first. 
+This code snippet demonstrates how to configure authorization using OpenID Connect in Luigi. Note that you must install the [OpenID Plugin](https://github.com/SAP/luigi/tree/master/plugins/auth/public/auth-oidc/README.md) first. 
 
 ```javascript
 import oidcProvider from '@luigi-project/plugin-auth-oidc';
@@ -157,7 +157,7 @@ You can write your own authorization provider that meets your requirements. This
 
 ```javascript
 export class CustomAuthenticationProvider {
-​
+
   constructor(configSettings = {}) {
     const defaultSettings = {
       redirect_uri: window.location.origin + '/custom-auth-callback.html';
@@ -169,24 +169,25 @@ export class CustomAuthenticationProvider {
     // logic to handle the login mechanism
     // returns a promise which contains an error message if something went wrong
   }
-​
+
   logout(authData, logoutLuigiCore){
     // call logoutLuigiCore() to reset stored data in Luigi Core
     // logic to handle the logout mechanism
   }
-​
-  setTokenExpirationAction() {}
-​
+
+  setTokenExpirationAction(){
+  }
+
   setTokenExpireSoonAction() {}
-​
+
   generateNonce(){
     // returns a string
   }
-​
+
   userInfo(){
-      // logic to get some user information
-      // returns a promise of a userinfo object which contains an object with `name`, `email` and `picture` properties to display in the profile dropdown menu
-      return { name, email, picture };
+    // logic to get some user information
+    // returns a promise of a userinfo object which contains an object with `name`, `email` and `picture` properties to display in the profile dropdown menu
+    return { name, email, picture };
   }
 }
 ```
@@ -214,7 +215,6 @@ After authorization is successful on the authorization provider's side, it redir
 <!-- add-attribute:class:success -->
 > **NOTE:** Read more about authorization helpers in the [Core API: AuthorizationStore](luigi-core-api.md#AuthorizationStore) section.
 ​
-
 ### Persisting auth data
 ​
 Make sure to set this data in your authorization provider implementation. Most of the time it is used in a `callback.html` so that its data is available for Luigi after successful authorization:

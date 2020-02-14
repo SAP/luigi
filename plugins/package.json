@@ -20,12 +20,12 @@
   },
   "bundlesize": [
     {
-      "path": "./public/auth-oauth2/plugin.js",
+      "path": "./auth/public/auth-oauth2/plugin.js",
       "maxSize": "15 kB",
       "compression": "none"
     },
     {
-      "path": "./public/auth-oauth2/plugin-ie11.js",
+      "path": "./auth/public/auth-oauth2/plugin-ie11.js",
       "maxSize": "75 kB",
       "compression": "none"
     }
