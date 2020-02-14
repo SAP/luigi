@@ -71,7 +71,8 @@ jobs:
             - libgconf-2-4
             chrome: beta
       before_install:
-        - chromium-browser --headless --disable-gpu --remote-debugging-port=9222 http://localhost &
+        # - chromium-browser --headless --disable-gpu --remote-debugging-port=9222 http://localhost &
+        - google-chrome-beta --headless --disable-gpu --remote-debugging-port=9222 http://localhost &
       before_cache:
         - rm -rf ~/.npm/_logs
         - rm -rf ~/.npm/_cacache
