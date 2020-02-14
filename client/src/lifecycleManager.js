@@ -41,6 +41,19 @@ class LifecycleManager extends LuigiClientBase {
     this.navigationSync = {};
     this.originalHistory = {};
     /**
+     * Virtual Tree Nav related vars
+     * @memberof Lifecycle
+     * @private
+     */
+    this._navigationSyncDefaults = {
+      active: true,
+      useHashRouting: false,
+      useClosestContext: false,
+      localBasePath: null
+    };
+    this.navigationSync = {};
+    this.originalHistory = {};
+    /**
      * Adds event listener for communication with Luigi Core and starts communication
      * @private
      */
@@ -436,6 +449,7 @@ class LifecycleManager extends LuigiClientBase {
 
   /**
    * @private
+   * @memberof Lifecycle
    * @since 0.7.4
    */
   _initNavigationSync() {
