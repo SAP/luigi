@@ -72,7 +72,6 @@ module.exports = {
       verbose: true
     }),
     new MiniCssExtractPlugin({ filename: '[name].css' }),
-    commonPlugins.copyWebpackPlugin,
     new PatchLuigiPlugin(),
     process.env.ANALYZE == 'true' &&
       new BundleAnalyzerPlugin({
