@@ -6,6 +6,7 @@
     "client/public",
     "core",
     "core/public",
+    "plugins",
     "plugins/public/auth-oauth2",
     "plugins/public/auth-oidc",
     "core/examples/luigi-sample-angular",

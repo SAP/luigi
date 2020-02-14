@@ -21,9 +21,9 @@ meta -->
 
 We have excluded the default authorization providers from Luigi Core and published them as separate modules.
 The property `customIdpProvider` has been renamed to `idpProvider`, since you now always need to define a provider.
-Additionally you need to copy callback assets to your Core application.
+Additionally, you need to copy callback assets to your Core application.
 
-Follow the installation guide on the plugin's readme:
+To install the plugins, follow these installation guides:
 
 - [OAuth2 Implicit Grant](https://github.com/SAP/luigi/tree/master/plugins/public/oauth2/README.md)
 - [OpenID Connect (OIDC)](https://github.com/SAP/luigi/tree/master/plugins/public/oidc/README.md)
