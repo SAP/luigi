@@ -240,6 +240,17 @@ export const projectDetailNavStructure = projectId => [
     icon: 'full-screen'
   },
   {
+    pathSegment: 'virtual-tree',
+    label: 'Virtual Tree',
+    viewUrl: '/sampleapp.html#/projects/' + projectId + '/dynamic',
+    context: {
+      mfBasePath: '/projects/' + projectId + '/dynamic/',
+      showRouting: true
+    },
+    navigationContext: 'virt',
+    virtualTree: true
+  },
+  {
     label: 'Open Github in new tab',
     category: {
       label: 'Super useful Github links',

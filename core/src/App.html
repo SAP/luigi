@@ -131,7 +131,7 @@
   let viewGroup;
   let isolateView;
   let previousNodeValues;
-  let isVirtualTree = false;
+  let isNavigationSyncDisabled = true;
   let isNavigateBack = false;
   let goBackContext;
   let navigationPath;
@@ -150,7 +150,6 @@
   const prepareInternalData = config => {
     const iframeConf = config.iframe.luigi;
     const internalData = {
-      isVirtualTree,
       isNavigateBack,
       viewStackSize: preservedViews.length,
       currentLocale: LuigiI18N.getCurrentLocale(),
@@ -189,16 +188,7 @@
       internal: JSON.stringify(prepareInternalData(config)),
       authData: AuthHelpers.getStoredAuthData()
     };
-    console.log(
-      'currentNode',
-      currentNode.isVirtualTree,
-      currentNode._isVirtualTree,
-      currentNode,
-      (config.iframe.luigi.currentNode || {}).isVirtualTree,
-      (config.iframe.luigi.currentNode || {})._isVirtualTree,
-      'int',
-      prepareInternalData(config)
-    );
+
     IframeHelpers.sendMessageToIframe(config.iframe, message);
   };
 
@@ -231,9 +221,7 @@
 
     addPreserveView(data, config);
 
-    if (!data.params.skipRouting) {
-      Routing.navigateTo(path); //navigate to the raw path. Any errors/alerts are handled later
-    }
+    Routing.navigateTo(path); //navigate to the raw path. Any errors/alerts are handled later
   };
 
   const removeQueryParams = str => str.split('?')[0];
@@ -300,7 +288,7 @@
           tabNav,
           isNavigateBack,
           goBackContext,
-          isVirtualTree
+          isNavigationSyncDisabled
         };
       },
       set: obj => {
@@ -344,8 +332,8 @@
               isNavigateBack = obj.isNavigateBack;
             } else if (prop === 'goBackContext') {
               goBackContext = obj.goBackContext;
-            } else if (prop === 'isVirtualTree') {
-              isVirtualTree = obj.isVirtualTree;
+            } else if (prop === 'isNavigationSyncDisabled') {
+              isNavigationSyncDisabled = obj.isNavigationSyncDisabled;
             }
           });
         }
@@ -387,7 +375,10 @@
       closeModal();
       closeSplitView();
 
-      Routing.handleRouteChange(path, getComponentWrapper(), node, config);
+      if (isNavigationSyncDisabled) {
+        Routing.handleRouteChange(path, getComponentWrapper(), node, config);
+      }
+      isNavigationSyncDisabled = true; // always reset it after use
     });
   };
 
@@ -856,11 +847,8 @@
           openSplitView(path, e.data.params.splitView);
         } else {
           getUnsavedChangesModalPromise().then(() => {
-            const isNavigationSyncDisabled = !e.data.params.withoutSync;
-            if (isNavigationSyncDisabled) {
-              console.log('handleNavigation', e.data);
-              handleNavigation(e.data, config);
-            }
+            isNavigationSyncDisabled = !e.data.params.withoutSync;
+            handleNavigation(e.data, config);
             closeModal();
             closeSplitView();
           });

@@ -47,5 +47,8 @@
     "bundlesize": "^0.17.0",
     "acorn": "^6.0.5",
     "serialize-javascript": ">=2.1.1"
+  },
+  "dependencies": {
+    "history": "^4.10.1"
   }
 }

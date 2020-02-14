@@ -41,6 +41,8 @@
       <pre>LuigiClient.uxManager().showLoadingIndicator();
 LuigiClient.uxManager().hideLoadingIndicator();</pre>
     </p>
+    <p><a href="javascript:navigateDeep()">Navigate deep</a>
+    </p>
 
 </section>
 
@@ -76,10 +78,20 @@ function hideLoadingIndicator() {
     LuigiClient.uxManager().hideLoadingIndicator();
   }, 3000);
 }
-hideLoadingIndicator();
-</script>
-<script type="text/javascript">
+// hideLoadingIndicator();
+LuigiClient.uxManager().hideLoadingIndicator();
+
+setTimeout(() => {
+  console.log('context', LuigiClient.getContext())
+},500)
+
+
+function navigateDeep() {
+  LuigiClient.linkManager().fromClosestContext().navigate('/corp/ave/bar');
+}
+
 window.addEventListener('popstate', function(event) {
+  console.log('hash', window.location.hash)
   if (window.location.hash) {
     var anch = document.getElementsByName(encodeURIComponent(window.location.hash.replace('#', '')));
     if (anch.length > 0) {

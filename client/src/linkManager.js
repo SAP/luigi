@@ -69,7 +69,7 @@ export class linkManager extends LuigiClientBase {
         splitView: splitViewSettings
       })
     };
-
+    console.log('navigationOpenMsg', navigationOpenMsg);
     helpers.sendPostMessageToLuigiCore(navigationOpenMsg);
   }
 

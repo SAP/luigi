@@ -1,6 +1,9 @@
 import { LuigiClientBase } from './baseClass';
 import { helpers } from './helpers';
+
 import { linkManager } from './linkManager';
+// import { createBrowserHistory } from 'history';
+
 /**
  * Use the functions and parameters to define the Lifecycle of listeners, navigation nodes, and Event data.
  * @name Lifecycle
@@ -27,19 +30,7 @@ class LifecycleManager extends LuigiClientBase {
     this._onInactiveFns = {};
     this._onInitFns = {};
     this.authData = {};
-    
-    /**
-     * Virtual Tree Nav related vars
-     * @private
-     */
-    this._navigationSyncDefaults = {
-      active: true,
-      useHashRouting: false,
-      useClosestContext: false,
-      localBasePath: null
-    }
-    this.navigationSync = {};
-    this.originalHistory = {};
+
     /**
      * Virtual Tree Nav related vars
      * @memberof Lifecycle
@@ -53,6 +44,7 @@ class LifecycleManager extends LuigiClientBase {
     };
     this.navigationSync = {};
     this.originalHistory = {};
+
     /**
      * Adds event listener for communication with Luigi Core and starts communication
      * @private
@@ -105,7 +97,10 @@ class LifecycleManager extends LuigiClientBase {
 
       helpers.addEventListener('luigi.navigate', e => {
         setContext(e.data);
-        if (!this.currentContext.internal.isNavigateBack && !this.navigationSync.active) {
+        if (
+          !this.currentContext.internal.isNavigateBack &&
+          !this.navigationSync.active
+        ) {
           history.replaceState(null, '', e.data.viewUrl);
           window.dispatchEvent(
             new PopStateEvent('popstate', { state: 'luiginavigation' })
@@ -422,17 +417,17 @@ class LifecycleManager extends LuigiClientBase {
     );
     helpers.sendPostMessageToLuigiCore(customMessageInternal);
   }
-  
+
   /**
    * Configures automatic routing synchronization
    * Allows the use of a micro frontend router as main navigation strategy, which implicitely updates the Luigi Core URL.
    * Mostly used in combination with **virtualTree** node configuration, which allows to simply drop-in a micro-frontend under a specified navigation tree.
-   * // TODO: skipEvaluation: true 
+   * // TODO: skipEvaluation: true
    * @param {Object} config Configuration object
    * @param {string} [config.active=true] enables or disables routing synchronization
    * @param {string} [config.useHashRouting=false] defines the configured routing strategy of the micro frontend. If not set, path routing is assumed.
    * @param {string} [config.useClosestContext=false] when set to true, **fromClosestContext()** will be used. Set **navigationContext** at the node where virtualTree is defined and enable this value.
-   * @param {string} [config.localBasePath] defines 
+   * @param {string} [config.localBasePath] defines
    * @returns {Promise} gets resolved when congigVirtualTreeNav got applied and can be used. This is required since the configuration needs to wait for the successful client initialization
    * @example
    * import LuigiClient from '@kyma-project/luigi-client';
@@ -444,7 +439,11 @@ class LifecycleManager extends LuigiClientBase {
    * @since 0.7.4
    */
   setNavigationSync(config) {
-    this.navigationSync = Object.assign({}, this._navigationSyncDefaults, config);
+    this.navigationSync = Object.assign(
+      {},
+      this._navigationSyncDefaults,
+      config
+    );
   }
 
   /**
@@ -453,9 +452,13 @@ class LifecycleManager extends LuigiClientBase {
    * @since 0.7.4
    */
   _initNavigationSync() {
-    if(this._navigationSyncInitalized) {
+    if (this._navigationSyncInitalized) {
       return;
     }
+    // const history = createBrowserHistory();
+    // history.listen((location, action) => {
+    //   console.log('history.listen', action, location.pathname, location.state, `The current URL is ${location.pathname}${location.search}${location.hash}`)
+    // })
 
     this._navigationSyncInitalized = true;
     this.addInitListener(() => {
@@ -465,14 +468,20 @@ class LifecycleManager extends LuigiClientBase {
       const navigateTo = function(rawPath) {
         let path = rawPath.startsWith('#') ? rawPath.slice(1) : rawPath;
 
-        if (this.navigationSync.localBasePath && path.startsWith(this.navigationSync.localBasePath)) {
+        if (
+          this.navigationSync.localBasePath &&
+          path.startsWith(this.navigationSync.localBasePath)
+        ) {
           path = path.replace(this.navigationSync.localBasePath, '');
         }
 
-        if(this.navigationSync.useClosestContext) {
-          linkManagerInstance.withoutSync().fromClosestContext().navigate(path);
+        if (this.navigationSync.useClosestContext) {
+          linkManagerInstance
+            .withoutSync()
+            .fromClosestContext()
+            .navigate(path);
         } else {
-          linkManagerInstance.withoutSync().navigate(path);        
+          linkManagerInstance.withoutSync().navigate(path);
         }
       }.bind(this);
 
@@ -481,21 +490,29 @@ class LifecycleManager extends LuigiClientBase {
       }
       const isNavigationSyncActive = () => {
         return this.navigationSync.active;
-      }
+      };
 
       if (this.navigationSync.active) {
-        const routingEventName = this.navigationSync.useHashRouting ? 'hashchange' : 'popstate';
+        const routingEventName = this.navigationSync.useHashRouting
+          ? 'hashchange'
+          : 'popstate';
         const isHashRouting = routingEventName === 'hashchange';
-        this.navigationSync.listenerId = helpers.addEventListener(routingEventName, (e) => {
-          console.log('url change', e);
-        });
-        this.navigationSync.listenerId = helpers.addEventListener('popstate', (e) => {
-          console.log('url popstate', e);
-        });
+        this.navigationSync.listenerId = helpers.addEventListener(
+          routingEventName,
+          e => {
+            console.log('url change', e);
+          }
+        );
+        this.navigationSync.listenerId = helpers.addEventListener(
+          'popstate',
+          e => {
+            console.log('url popstate', e);
+          }
+        );
 
         // monkeypatch history api to listen to router changes
-        ["pushState", "replaceState"].map(type => {
-          // keep a "real" original history api in the reference, it is required if 
+        ['pushState', 'replaceState'].map(type => {
+          // keep a "real" original history api in the reference, it is required if
           // setNavigationSync is called multiple times
           const original = this.originalHistory[type] || history[type];
           this.originalHistory[type] = original;
@@ -504,14 +521,12 @@ class LifecycleManager extends LuigiClientBase {
             const result = original.apply(this, arguments);
             const event = new Event(type);
             event.arguments = arguments;
-
-            if(isNavigationSyncActive()) {
-              console.log('isNavigationSyncActive');
-              if(isHashRouting) {
+            if (isNavigationSyncActive()) {
+              if (isHashRouting) {
                 const hash = arguments[2];
-                console.log('update prarent hash route to', hash, event.arguments);
                 navigateTo(hash);
               } else {
+                console.log('update prarent path route to', event.arguments);
                 navigateTo(arguments[1]); // TODO: Check validity
               }
             }
@@ -521,7 +536,7 @@ class LifecycleManager extends LuigiClientBase {
           };
         });
       }
-    })
+    });
   }
 }
 export const lifecycleManager = new LifecycleManager();

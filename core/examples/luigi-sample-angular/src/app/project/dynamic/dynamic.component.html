@@ -1,7 +1,22 @@
-<section class="fd-section">
+<section class="fd-section dynamic-component">
   <div class="fd-section__header">
     <h1 class="fd-section__title">{{ nodeLabel }}</h1>
   </div>
+
+  <div *ngIf="showRouting" class="fd-panel">
+    <p><strong>Playground for Virtual Tree and navigation sync</strong></p>
+
+    <label>Go to route using Angular router:</label>
+    <ul class="fd-list-group">
+      <li class="fd-list-group__item">
+        <input type="text" [(ngModel)]="routeUrl" /> &nbsp;
+        <button class="fd-button clickable" (click)="goToRoute(routeUrl)">
+          <span class="sap-icon--navigation-right-arrow"></span>
+        </button>
+      </li>
+    </ul>
+  </div>
+
   <div class="fd-panel" *ngIf="!links">{{ nodeLabel }} content.</div>
   <div class="fd-panel" *ngIf="links">
     <ul class="fd-list-group">

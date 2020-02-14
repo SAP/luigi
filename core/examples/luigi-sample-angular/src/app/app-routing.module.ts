@@ -71,7 +71,27 @@ const routes: Routes = [
     component: ChildNode2Component
   },
   {
+    path: 'projects/:projectId/dynamic',
+    component: DynamicComponent
+  },
+  {
     path: 'projects/:projectId/dynamic/:dynamicValue',
+    component: DynamicComponent
+  },
+  {
+    path: 'projects/:projectId/dynamic/:dyn1/:dynamicValue',
+    component: DynamicComponent
+  },
+  {
+    path: 'projects/:projectId/dynamic/:dyn1/:dyn2/:dynamicValue',
+    component: DynamicComponent
+  },
+  {
+    path: 'projects/:projectId/dynamic/:dyn1/:dyn2/:dyn3/:dynamicValue',
+    component: DynamicComponent
+  },
+  {
+    path: 'projects/:projectId/dynamic/:dyn1/:dyn2/:dyn3/:dyn4/:dynamicValue',
     component: DynamicComponent
   },
   {
@@ -87,7 +107,7 @@ const routes: Routes = [
     component: DynamicComponent
   },
   {
-    path: 'environments/:ignoredDynamicValue/:dynamicValue',
+    path: 'environments/:dyn1/:dynamicValue',
     component: DynamicComponent
   }
 ];
