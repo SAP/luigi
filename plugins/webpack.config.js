@@ -16,7 +16,7 @@ module.exports = {
     libraryExport: 'default',
     library: 'LuigiPlugin-[name]',
     libraryTarget: 'umd',
-    path: path.join(path.resolve(__dirname), 'public')
+    path: path.join(path.resolve(__dirname), 'auth', 'public')
   },
 
   module: {
