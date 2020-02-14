@@ -81,7 +81,6 @@ module.exports = {
       verbose: true
     }),
     new MiniCssExtractPlugin({ filename: '[name].css' }),
-    commonPlugins.copyWebpackPlugin,
     new PatchLuigiPlugin()
   ],
   stats: {
