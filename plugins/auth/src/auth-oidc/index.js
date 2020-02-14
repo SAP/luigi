@@ -1,10 +1,7 @@
-/* istanbul ignore file */
-import { AsyncHelpers, GenericHelpers } from '../../utilities/helpers';
-import { thirdPartyCookiesStatus } from '../../utilities/third-party-cookies-check';
-import { LuigiAuth, LuigiConfig } from '../../core-api';
-import { AuthStoreSvc } from '../../services';
-
-export class openIdConnect {
+import Oidc from 'oidc-client';
+import { Helpers } from '../helpers';
+import { thirdPartyCookiesStatus } from '../third-party-cookies-check';
+export default class openIdConnect {
   constructor(settings = {}) {
     const defaultSettings = {
       redirect_uri: window.location.origin,
@@ -17,74 +14,68 @@ export class openIdConnect {
       thirdPartyCookiesScriptLocation: '',
       logoutUrl: window.location.origin + '/logout.html',
       silent_redirect_uri:
-        window.location.origin + '/luigi-core/auth/oidc/silent-callback.html'
+        window.location.origin + '/assets/auth-oidc/silent-callback.html'
     };
-    const mergedSettings = GenericHelpers.deepMerge(defaultSettings, settings);
+    const mergedSettings = Helpers.deepMerge(defaultSettings, settings);
 
     // Prepend current url to redirect_uri, if it is a relative path
     ['redirect_uri', 'post_logout_redirect_uri'].forEach(key => {
-      mergedSettings[key] = GenericHelpers.prependOrigin(mergedSettings[key]);
+      mergedSettings[key] = Helpers.prependOrigin(mergedSettings[key]);
     });
 
     this.settings = mergedSettings;
+ 
+    this.client = new Oidc.UserManager(this.settings);
 
-    return AsyncHelpers.waitForKeyExistency(window, 'Oidc', 60000).then(res => {
-      this.client = new Oidc.UserManager(this.settings);
+    this.client.events.addUserLoaded(payload => {
+      const data = {
+        accessToken: payload.access_token,
+        accessTokenExpirationDate: payload.expires_at * 1000,
+        scope: payload.scope,
+        idToken: payload.id_token,
+        profile: payload.profile
+      };
+      Luigi.auth().store.setAuthData(data);
 
-      this.client.events.addUserLoaded(payload => {
-        const data = {
-          accessToken: payload.access_token,
-          accessTokenExpirationDate: payload.expires_at * 1000,
-          scope: payload.scope,
-          idToken: payload.id_token,
-          profile: payload.profile
-        };
-        AuthStoreSvc.setAuthData(data);
+      window.postMessage(
+        { msg: 'luigi.auth.tokenIssued', authData: data },
+        window.location.origin
+      );
+    });
 
-        window.postMessage(
-          { msg: 'luigi.auth.tokenIssued', authData: data },
-          window.location.origin
-        );
-      });
-
-      return Promise.all([
-        this._processLoginResponse(),
-        this._processLogoutResponse()
-      ]).then(() => {
-        return this;
-      });
+    return Promise.all([
+      this._processLoginResponse(),
+      this._processLogoutResponse()
+    ]).then(() => {
+      return this;
     });
   }
 
   login() {
-    return AsyncHelpers.waitForKeyExistency(this, 'client').then(res => {
-      return this.client.signinRedirect(this.settings).catch(err => {
-        console.error(err);
-        return err;
-      });
+    return this.client.signinRedirect(this.settings).catch(err => {
+      console.error(err);
+      return err;
     });
   }
 
   logout(authData, authOnLogoutFn) {
-    authOnLogoutFn();
-    window.location.href = this.settings.logoutUrl;
-    // TODO: dex logout is not yet supported
-    // const signoutData = {
-    //   id_token_hint: authData && authData.idToken,
-    //   state: window.location.href
-    // };
-    // return this.client.createSignoutRequest(signoutData).then((req) => {
-    //    callback();
-    //   window.location = req.url;
-    // }).catch(function (err) {
-    //   console.error(err);
-    // });
+    const signoutData = {
+      id_token_hint: authData && authData.idToken,
+      state: window.location.href
+    };
+    return this.client.createSignoutRequest(signoutData).then((req) => {
+      authOnLogoutFn();
+      window.location = req.url;
+    }).catch(function (err) {
+      console.error(err);
+      authOnLogoutFn();
+    });
   }
 
   setTokenExpirationAction() {
     if (!this.settings.automaticSilentRenew) {
       this.client.events.addAccessTokenExpired(() => {
-        LuigiAuth.handleAuthEvent(
+        Luigi.auth().handleAuthEvent(
           'onAuthExpired',
           this.settings,
           undefined,
@@ -121,13 +112,13 @@ export class openIdConnect {
             '?error=tokenExpired&errorDescription=' +
             e.message;
       }
-      LuigiAuth.handleAuthEvent('onAuthError', this.settings, e, redirectUrl);
+      Luigi.auth().handleAuthEvent('onAuthError', this.settings, e, redirectUrl);
     });
   }
 
   setTokenExpireSoonAction() {
     this.client.events.addAccessTokenExpiring(() => {
-      LuigiAuth.handleAuthEvent('onAuthExpireSoon', this.settings);
+      Luigi.auth().handleAuthEvent('onAuthExpireSoon', this.settings);
     });
   }
 
@@ -138,7 +129,7 @@ export class openIdConnect {
         this.client
           .processSignoutResponse()
           .then(response => {
-            AuthStoreSvc.removeAuthData();
+            Luigi.auth().store.removeAuthData();
             log('signout response', response);
             resolve(response);
           })
@@ -183,8 +174,8 @@ export class openIdConnect {
         })
         .catch(err => {
           console.error(err);
-          AuthStoreSvc.removeAuthData();
-          LuigiAuth.handleAuthEvent(
+          Luigi.auth().store.removeAuthData();
+          Luigi.auth().handleAuthEvent(
             'onAuthExpired',
             this.settings,
             err,

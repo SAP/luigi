@@ -6,6 +6,8 @@ cache:
   directories:
     - $TRAVIS_BUILD_DIR/client/public
     - $TRAVIS_BUILD_DIR/core/public
+    - $TRAVIS_BUILD_DIR/plugins/auth/public/auth-oauth2
+    - $TRAVIS_BUILD_DIR/plugins/auth/public/auth-oidc
     - $TRAVIS_BUILD_DIR/test/e2e-test-application/dist
     - $TRAVIS_BUILD_DIR/cypress-binary-cache
     - $HOME/.cache/Cypress
@@ -18,14 +20,13 @@ jobs:
       script:
         - export CYPRESS_CACHE_FOLDER=$TRAVIS_BUILD_DIR/cypress-binary-cache
         - npm i -g lerna
-        - lerna bootstrap --ci --ignore "*luigi-example-vue" || travis_terminate 1
-        - lerna run bundle --ignore "*luigi-example-vue" || travis_terminate 1
-        - lerna run bundlesizeOnly --ignore "*luigi-example-vue" || travis_terminate 1
+        - lerna bootstrap --ci --ignore "*luigi-example*" || travis_terminate 1
+        - lerna run bundle --ignore "*luigi-example*" || travis_terminate 1
+        - lerna run bundlesizeOnly --ignore "*luigi-example*" || travis_terminate 1
         - ls -lah $TRAVIS_BUILD_DIR/test/e2e-test-application/node_modules/@kyma-project
-        - cat $TRAVIS_BUILD_DIR/test/e2e-test-application/node_modules/@kyma-project/luigi-client/package.json
-        - lerna run build --ignore "*luigi-example-vue" || travis_terminate 1
+        - head $TRAVIS_BUILD_DIR/test/e2e-test-application/node_modules/@kyma-project/luigi-client/package.json
+        - lerna run build --ignore "*luigi-example*" || travis_terminate 1
         - npm test --prefix core || travis_terminate 1
-        - du -sh
       before_cache:
         - rm -rf ~/.npm/_logs
         - rm -rf ~/.npm/_cacache
@@ -69,10 +70,12 @@ jobs:
           packages:
             # Ubuntu 16+ does not install this dependency by default, so we need to install it ourselves
             - libgconf-2-4
-            - chromium-browser=79.0.3945.130-0ubuntu0.16.04.1 # update also if you upgrade from Xenial
+            # - chromium-browser=79.0.3945.130-0ubuntu0.16.04.1 # update also if you upgrade from Xenial
         # chrome: stable
+        chrome: beta
       before_install:
-        - chromium-browser --headless --disable-gpu --remote-debugging-port=9222 http://localhost &
+        # - chromium-browser --headless --disable-gpu --remote-debugging-port=9222 http://localhost &
+        - google-chrome-beta --headless --disable-gpu --remote-debugging-port=9222 http://localhost &
       before_cache:
         - rm -rf ~/.npm/_logs
         - rm -rf ~/.npm/_cacache
