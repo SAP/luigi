@@ -508,9 +508,7 @@
       getAlertWithId(currentAlerts, settings.id)
     ) {
       console.error(
-        `The alert with id '${
-          settings.id
-        }' already exists in a queue, therefore it won't be displayed `
+        `The alert with id '${settings.id}' already exists in a queue, therefore it won't be displayed `
       );
       return Promise.reject();
     }
@@ -1061,7 +1059,7 @@
   @import 'styles/mixins';
 
   $topNavHeight: 48px;
-  $topNavHeightTab: 51px;
+  $topNavHeightTab: 44px;
   $leftNavWidth: 15rem;
   $leftNavWidthCollapsed: 2.75rem;
   $desktopMinWidth: 600px;
