@@ -59,10 +59,11 @@ In the **Examples** section of our documentation, you can find links to several 
 * [Angular](https://github.com/SAP/luigi/tree/master/core/examples/luigi-example-angular)
 * [React](https://github.com/SAP/luigi/tree/master/core/examples/luigi-example-react)
 * [Vue](https://github.com/SAP/luigi/tree/master/core/examples/luigi-example-vue)
+* [UI5]()
 * [Svelte]()
 * [Plain JavaScript]()
 
-You can install them by following the instructions in the `README` file.
+You can install them by following the instructions in the `README` file of each example.
 
 **Advanced users** can install our end-to-end test example application which includes all of Luigi's features in one place:
 * [e2e example]()
