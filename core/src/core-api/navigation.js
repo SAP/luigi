@@ -103,7 +103,7 @@ class LuigiNavigationManager {
   }
 
   /**
-   * Returns true if splitview is collapsed
+   * Returns `true` if split view is collapsed
    * @memberof LuigiNavigation
    * @since NEXTRELEASE
    * @example
