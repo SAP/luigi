@@ -125,7 +125,7 @@ class LuigiNavigationManager {
   }
 
   /**
-   * Returns true if splitview is closed
+   * Returns `true` if split view is closed
    * @memberof LuigiNavigation
    * @since NEXTRELEASE
    * @example
