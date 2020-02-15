@@ -81,7 +81,7 @@ class LuigiNavigationManager {
   }
 
   /**
-   * Collapse split view opened with openAsSplitView(path, splitViewSettings)
+   * Collapses split view opened with openAsSplitView(path, splitViewSettings)
    * @memberof LuigiNavigation
    * @since NEXTRELEASE
    * @example
