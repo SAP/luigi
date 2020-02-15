@@ -114,7 +114,7 @@ class LuigiNavigationManager {
   }
 
   /**
-   * Returns true if splitview is expanded
+   * Returns `true` if split view is expanded
    * @memberof LuigiNavigation
    * @since NEXTRELEASE
    * @example
