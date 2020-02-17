@@ -47,7 +47,12 @@ auth: {
 - **disableAutoLogin** allows you to disable the automatic login flow that is provided by default.
 
 Optionally, you can also add:
-- **auth.storage** parameter which allows you to set the storage type.
+- **storage** parameter which allows you to set the storage type. It can be set to `localStorage`, `sessionStorage` or `none`. For example:
+```javascript
+auth: {
+   storage: 'sessionStorage'
+```
+
 
 ### How do I show some navigation nodes only to non-authenticated users?
 
