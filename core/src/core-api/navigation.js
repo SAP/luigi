@@ -128,4 +128,31 @@ class LuigiNavigationManager {
   }
 }
 
+  /**
+   * Registers a listener called with the context object when the URL is changed. For example, you can use this when changing environments in a context switcher in order for the micro frontend to do an API call to the environment picked.
+   * @param {function} contextUpdatedFn the listener function called each time Luigi context changes
+   * @memberof Lifecycle
+   */
+  addContextUpdateListener(contextUpdatedFn) {
+    const id = helpers.getRandomId();
+    this._onContextUpdatedFns[id] = contextUpdatedFn;
+    if (this.luigiInitialized && helpers.isFunction(contextUpdatedFn)) {
+      contextUpdatedFn(this.currentContext.context);
+    }
+    return id;
+  }
+
+  /**
+   * Removes a context update listener.
+   * @param {string} id the id that was returned by the `addContextUpdateListener` function
+   * @memberof Lifecycle
+   */
+  removeContextUpdateListener(id) {
+    if (this._onContextUpdatedFns[id]) {
+      this._onContextUpdatedFns[id] = undefined;
+      return true;
+    }
+    return false;
+  }
+
 export const navigation = new LuigiNavigationManager();
