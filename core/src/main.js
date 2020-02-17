@@ -1,5 +1,4 @@
 import App from './App.html';
-import { authLibraries } from './providers/auth/libraryLoaders';
 import { LuigiConfig, LuigiI18N, LuigiElements } from './core-api';
 import { writable, readable } from 'svelte/store';
 import { version } from '../package.json';
@@ -39,11 +38,6 @@ Luigi._store = store;
 
 const configReadyCallback = () => {
   return new Promise(resolve => {
-    const authLib = LuigiConfig.getConfigValue('auth.use');
-    if (authLib && authLibraries[authLib]) {
-      authLibraries[authLib]();
-    }
-
     LuigiI18N._init();
     // setTimeout needed so that luigi container is rendered when we retrieve it
     let app;

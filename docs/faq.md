@@ -67,19 +67,22 @@ Yes, it is already being used in production and close-to-production within SAP. 
 Yes, to use Luigi with a Google account, follow these steps:
 
 1. Register a project and generate an OAuth2 Web Client based on [Google Developers Identity - OAuth2UserAgent](https://developers.google.com/identity/protocols/OAuth2UserAgent).
-2. To get your app running locally, set the Autorized JavaScript Origins URIs to `http://localhost:4200` and Authorized redirect URIs to `http://localhost:4200/luigi-core/auth/oauth2/callback.html?storageType=localStorage`.
+2. To get your app running locally, set the _Authorized JavaScript Origins URIs_ to `http://localhost:4200` and _Authorized redirect URIs_ to `http://localhost:4200/assets/auth-oauth2/callback.html?storageType=localStorage`.
 3. Copy the Client ID on the right side, ending with `apps.googleusercontent.com`
 4. Update the LuigiConfig auth section. We have added also the parts for logout and getting user information.
 
 ```javascript
+  import oAuth2ImplicitGrant from '@luigi-project/plugin-auth-oauth2';
+
   {
     auth: {
-      use: 'oAuth2ImplicitGrant',
-      oAuth2ImplicitGrant: {
+      use: 'google',
+      google: {
+        idpProvider: oAuth2ImplicitGrant,
         authorizeUrl: 'https://accounts.google.com/o/oauth2/v2/auth',
         oAuthData: {
           response_type: 'id_token token',
-          client_id: 'YOUR_CLIENT_ID...apps.googleusercontent.com',
+          client_id: 'YOUR_CLIENT_ID.apps.googleusercontent.com',
           scope: 'openid https://www.googleapis.com/auth/userinfo.email profile',
         }
       },

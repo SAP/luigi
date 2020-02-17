@@ -1,14 +1,12 @@
 /* istanbul ignore file */
-import { GenericHelpers } from '../../utilities/helpers';
-import { LuigiAuth } from '../../core-api';
-import { AuthStoreSvc } from '../../services';
+import { Helpers } from '../helpers';
 
-export class oAuth2ImplicitGrant {
+export default class oAuth2ImplicitGrant {
   constructor(settings = {}) {
     const defaultSettings = {
       oAuthData: {
         redirect_uri:
-          window.location.origin + '/luigi-core/auth/oauth2/callback.html',
+          window.location.origin + '/assets/auth-oauth2/callback.html',
         response_type: 'id_token token',
         scope: ''
       },
@@ -18,13 +16,13 @@ export class oAuth2ImplicitGrant {
       accessTokenExpiringNotificationTime: 60,
       expirationCheckInterval: 5
     };
-    const mergedSettings = GenericHelpers.deepMerge(defaultSettings, settings);
+    const mergedSettings = Helpers.deepMerge(defaultSettings, settings);
 
     this.settings = mergedSettings;
   }
 
   getAuthData() {
-    return AuthStoreSvc.getAuthData();
+    return Luigi.auth().store.getAuthData();
   }
 
   parseIdToken(token) {
@@ -58,24 +56,25 @@ export class oAuth2ImplicitGrant {
       }
 
       const createInputElement = (name, value) => {
-        const inputElem = document.createElement('input');
-        inputElem.name = name;
-        inputElem.id = name;
-        inputElem.value = value;
-        inputElem.type = 'hidden';
-        return inputElem;
+        return Object.assign(document.createElement('input'), {
+          name: name,
+          id: name,
+          value: value,
+          type: 'hidden'
+        });
       };
 
-      const formElem = document.createElement('form');
-      formElem.name = 'signIn';
-      formElem.id = 'signIn';
-      formElem.action = settings.authorizeUrl;
-      formElem.method = settings.authorizeMethod;
-      formElem.target = '_self';
+      const formElem = Object.assign(document.createElement('form'), {
+        name: 'signIn',
+        id: 'signIn',
+        action: settings.authorizeUrl,
+        method: settings.authorizeMethod,
+        target: '_self'
+      });
 
-      settings.oAuthData.redirect_uri = `${GenericHelpers.prependOrigin(
+      settings.oAuthData.redirect_uri = `${Helpers.prependOrigin(
         settings.oAuthData.redirect_uri
-      )}?storageType=${AuthStoreSvc.getStorageType()}`;
+      )}?storageType=${Luigi.auth().store.getStorageType()}`;
       settings.oAuthData.state = btoa(
         window.location.href + '_luigiNonce=' + generatedNonce
       );
@@ -105,7 +104,7 @@ export class oAuth2ImplicitGrant {
       authData.idToken
     }&client_id=${
       settings.oAuthData.client_id
-    }&post_logout_redirect_uri=${GenericHelpers.prependOrigin(
+    }&post_logout_redirect_uri=${Helpers.prependOrigin(
       settings.post_logout_redirect_uri
     )}`;
     authEventLogoutFn && authEventLogoutFn();
@@ -128,14 +127,14 @@ export class oAuth2ImplicitGrant {
       const currentDate = new Date();
       if (tokenExpirationDate - currentDate < expirationCheckInterval) {
         clearInterval(expirationCheckIntervalInstance);
-        AuthStoreSvc.removeAuthData();
+        Luigi.auth().store.removeAuthData();
         // TODO: check if valid (mock-auth requires it), post_logout_redirect_uri is an assumption, might not be available for all auth providers
         const redirectUrl = `${
           this.settings.logoutUrl
-        }?error=tokenExpired&post_logout_redirect_uri=${GenericHelpers.prependOrigin(
+        }?error=tokenExpired&post_logout_redirect_uri=${Helpers.prependOrigin(
           this.settings.post_logout_redirect_uri
         )}`;
-        LuigiAuth.handleAuthEvent(
+        Luigi.auth().handleAuthEvent(
           'onAuthExpired',
           this.settings,
           undefined,
@@ -160,7 +159,7 @@ export class oAuth2ImplicitGrant {
           tokenExpirationDate - currentDate.getTime() <
           accessTokenExpiringNotificationTime
         ) {
-          LuigiAuth.handleAuthEvent('onAuthExpireSoon', this.settings);
+          Luigi.auth().handleAuthEvent('onAuthExpireSoon', this.settings);
           clearInterval(expirationCheckIntervalInstance);
         }
       }, expirationCheckInterval);
