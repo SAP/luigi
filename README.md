@@ -2,7 +2,7 @@
 # Luigi
 <p align="center">
  <img src="https://raw.githubusercontent.com/sap/luigi/master/logo.png" width="235">
-</p>
+</p> 
 
 ## Overview
 
