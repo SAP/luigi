@@ -36,13 +36,13 @@ It is possible to create a Luigi application using a single HTML file. This exam
 Copy and paste this code in a text editor, then save it as an HTML file:
 
 ```html
- <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 
 <head>
-	<title>Hello Luigi</title>
-	<link rel='stylesheet' href='https://unpkg.com/@kyma-project/luigi-core/luigi.css'>
-    <meta charset="utf-8">
+	  <title>Hello Luigi</title>
+	  <link rel='stylesheet' href='https://unpkg.com/@kyma-project/luigi-core/luigi.css'>
+      <meta charset="utf-8">
 </head>
 
 <body>
