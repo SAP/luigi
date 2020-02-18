@@ -104,10 +104,11 @@
   onMount(async () => {
     if (!LuigiAuth.isAuthorizationEnabled()) {
       isAuthorizationEnabled = false;
+      setProfileUserData();
+    } else {
+      isAuthorizationEnabled = true;
     }
     setProfileNavData();
-    setProfileUserData();
-    isAuthorizationEnabled = true;
 
     AuthLayerSvc.getLoggedInStore().subscribe(loggedIn => {
       isLoggedIn = loggedIn;
