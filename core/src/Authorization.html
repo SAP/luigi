@@ -93,7 +93,7 @@
   export let isProfileLogoutItem;
 
   let navProfileListenerInstalled;
-  let profileLogoutfnDefinded;
+  let profileLogoutFnDefined;
   let store = getContext('store');
   let getTranslation = getContext('getTranslation');
   let getUnsavedChangesModalPromise = getContext(
@@ -156,11 +156,15 @@
             ...logoutItem
           };
           isProfileLogoutItem = !!logoutItem;
-          profileLogoutfnDefinded = false;
+          profileLogoutFnDefined = false;
+          AuthLayerSvc.setProfileLogoutFn(null);
           if (logoutItem) {
             const profileLogoutfn = logoutItem.customLogoutFn;
+            // TODO: PROFNAVLOGOUT: three smiliar implementations.
+            // TODO: whats the difference between this profileLogoutFn, profileNav, auth-layer
             if (profileLogoutfn && GenericHelpers.isFunction(profileLogoutfn)) {
-              profileLogoutfnDefinded = true;
+              profileLogoutFnDefined = true;
+              AuthLayerSvc.setProfileLogoutFn(profileLogoutfn);
             }
           }
           profileNav = profileNavData;
@@ -201,10 +205,12 @@
     getUnsavedChangesModalPromise().then(() => {
       if (isAuthorizationEnabled) {
         logout();
-      } else if (isProfileLogoutItem && profileLogoutfnDefinded) {
+      } else if (isProfileLogoutItem && profileLogoutFnDefined) {
+        // TODO: PROFNAVLOGOUT: check if auth-layer logout _profileLogoutFn is a duplicate
+        // TODO: PROFNAVLOGOUT: three smiliar implementations. profilen
         profileNav.logout.customLogoutFn();
       } else {
-        console.error('No IDP logout or customLogoutFn is defined.');
+        console.error('No IDP provider or profile.customLogoutFn is defined.');
       }
     });
   }

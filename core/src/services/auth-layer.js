@@ -29,6 +29,10 @@ class AuthLayerSvcClass {
     return this._loggedInStore;
   }
 
+  setProfileLogoutFn(fn) {
+    this._profileLogoutFn = fn;
+  }
+
   async init() {
     const idpProviderName = LuigiConfig.getConfigValue('auth.use');
     const idpProviderSettings = LuigiConfig.getConfigValue(
@@ -69,16 +73,9 @@ class AuthLayerSvcClass {
     return this.checkAuth(idpProviderSettings);
   }
 
-  isAuthValid() {
-    return (
-      AuthHelpers.getStoredAuthData().accessTokenExpirationDate >
-      Number(new Date())
-    );
-  }
-
   async checkAuth(idpProviderSettings) {
     const authData = AuthHelpers.getStoredAuthData();
-    if (!authData || !this.isAuthValid()) {
+    if (!authData || !AuthHelpers.isLoggedIn()) {
       if (LuigiConfig.getConfigValue('auth.disableAutoLogin')) {
         return;
       }
@@ -117,6 +114,7 @@ class AuthLayerSvcClass {
         this.idpProviderInstance
           .userInfo(idpProviderSettings)
           .then(userInfo => {
+            this.setUserInfo(userInfo);
             this.setLoggedIn(true);
           });
       } else {
@@ -128,7 +126,8 @@ class AuthLayerSvcClass {
     const hasAuthSuccessFulFn = GenericHelpers.isFunction(
       LuigiConfig.getConfigValue('auth.events.onAuthSuccessful')
     );
-    if (hasAuthSuccessFulFn && AuthStoreSvc.isNewlyAuthorized) {
+
+    if (hasAuthSuccessFulFn && AuthStoreSvc.isNewlyAuthorized()) {
       AuthStoreSvc.removeNewlyAuthorized();
       await LuigiAuth.handleAuthEvent(
         'onAuthSuccessful',
@@ -152,12 +151,15 @@ class AuthLayerSvcClass {
       this.idpProviderInstance.setTokenExpireSoonAction();
     }
   }
+
   async startAuthorization() {
     if (this.idpProviderInstance) {
       return this.idpProviderInstance.login().then(res => {
         AuthStoreSvc.setNewlyAuthorized();
         if (res) {
-          alert(res);
+          // TODO: is not required for secure usecases, only if auth is done within core.
+          // Normally the login() redirects to external idp and errors are shown there.
+          console.error(res);
         }
         return;
       });
@@ -186,8 +188,10 @@ class AuthLayerSvcClass {
       );
     } else if (GenericHelpers.isFunction(this.idpProviderInstance.logout)) {
       this.idpProviderInstance.logout(authData, logoutCallback);
-    } else if (isProfileLogoutItem && profileLogoutfnDefinded) {
-      profileNav.logout.customLogoutFn();
+    } else if (this._profileLogoutFn) {
+      // TODO: Is this being reached at all? similar code is in Authorization.html
+      // TODO: PROFNAVLOGOUT: three smiliar implementations. profilen
+      this._profileLogoutFn(authData, logoutCallback);
     } else {
       logoutCallback(this.idpProviderInstance.settings.logoutUrl);
     }
@@ -226,7 +230,7 @@ class AuthLayerSvcClass {
         type: 'IdpProviderException'
       });
     } else {
-      throw IdpProviderException(
+      throw this.IdpProviderException(
         `IDP Provider ${idpProviderName} does not exist.`
       );
     }
