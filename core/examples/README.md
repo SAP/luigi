@@ -11,3 +11,4 @@ See the particular subfolders for the installation instructions:
 * [Vue example application](/core/examples/luigi-example-vue)
 * [React example application](/core/examples/luigi-example-react)
 * [Svelte example application](/core/examples/luigi-example-svelte)
+* [OpenUI5 example application](/core/examples/luigi-example-openui5)
