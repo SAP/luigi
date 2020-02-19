@@ -154,7 +154,7 @@
           >
             <nav class="fd-menu">
               <ul class="fd-menu__list">
-                {#if !authorizationEnabled || isLoggedIn}
+                {#if (!authorizationEnabled || isLoggedIn) && contextSwitcherConfig}
                 <li class="lui-mobile-switch-menu">
                   <a
                     class="fd-menu__item"
