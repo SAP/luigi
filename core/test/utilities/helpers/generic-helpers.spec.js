@@ -77,4 +77,19 @@ describe('Generic-helpers', () => {
     };
     assert.deepEqual(GenericHelpers.removeInternalProperties(input), expected);
   });
+  it('removeProperties', () => {
+    const input = {
+      some: true,
+      value: true,
+      _internal: true,
+      _somefn: () => true,
+      internalOne: true,
+      internalTwo: true
+    };
+    const keys = ['_*', 'value', 'internal*'];
+    const expected = {
+      some: true
+    };
+    assert.deepEqual(GenericHelpers.removeProperties(input, keys), expected);
+  });
 });
