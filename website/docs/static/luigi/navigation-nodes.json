@@ -16,7 +16,7 @@
     },
     "metaData": {
       "categoryPosition": 5,
-      "position": 0
+      "position": 1
     }
   },
   {
@@ -36,7 +36,7 @@
     },
     "metaData": {
       "categoryPosition": 5,
-      "position": 1
+      "position": 2
     }
   },
   {
@@ -56,7 +56,27 @@
     },
     "metaData": {
       "categoryPosition": 5,
-      "position": 2
+      "position": 3
+    }
+  },
+  {
+    "label": "Svelte",
+    "pathSegment": "",
+    "navigationContext": "doc",
+    "keepSelectedForChildren": true,
+    "viewUrl": "__BASE_URL__/docs/",
+    "context": {
+      "doc": ""
+    },
+    "category": {
+      "label": "Examples"
+    },
+    "externalLink": {
+      "url": "https://github.com/SAP/luigi/tree/master/core/examples/luigi-example-svelte"
+    },
+    "metaData": {
+      "categoryPosition": 5,
+      "position": 6
     }
   }
 ]

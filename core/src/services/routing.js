@@ -311,24 +311,13 @@ class RoutingClass {
   }
 
   handleRouteClick(node, component) {
-    const componentData = component.get();
+    const route = RoutingHelpers.getRouteLink(node, component.get().pathParams);
     if (node.externalLink && node.externalLink.url) {
-      this.navigateToExternalLink(node.externalLink);
+      this.navigateToExternalLink(route);
       // externalLinkUrl property is provided so there's no need to trigger routing mechanizm
     } else if (node.link) {
-      const link = node.link.startsWith('/')
-        ? node.link
-        : this.buildFromRelativePath(node);
-      this.navigateTo(link);
+      this.navigateTo(route);
     } else {
-      let route = RoutingHelpers.buildRoute(node, `/${node.pathSegment}`);
-      route = GenericHelpers.replaceVars(
-        route,
-        componentData.pathParams,
-        ':',
-        false
-      );
-
       const windowPath = GenericHelpers.trimLeadingSlash(this.getWindowPath());
       if (windowPath === GenericHelpers.trimLeadingSlash(route)) {
         const iframeContainer = IframeHelpers.getIframeContainer();

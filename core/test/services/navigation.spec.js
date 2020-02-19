@@ -984,11 +984,12 @@ describe('Navigation', function() {
       const mockNode = {
         label: 'Luigi',
         virtualTree: true,
-        _virtualViewUrl: 'http://mf.luigi-project.io/:virtualPath'
+        viewUrl: 'http://mf.luigi-project.io'
       };
       const mockNodeNames = ['foo'];
 
       const expected = Object.assign({}, mockNode, {
+        keepSelectedForChildren: true,
         children: [
           {
             _virtualTree: true,
@@ -1003,7 +1004,7 @@ describe('Navigation', function() {
 
       Navigation.buildVirtualTree(mockNode, mockNodeNames);
 
-      assert.deepEqual(mockNode, expected);
+      assert.deepEqual(expected, mockNode);
     });
     it('with a deep nested virtual tree segment', () => {
       const mockNode = {
@@ -1039,7 +1040,7 @@ describe('Navigation', function() {
 
       Navigation.buildVirtualTree(mockNode, mockNodeNames, pathParams);
 
-      assert.deepEqual(mockNode, expected);
+      assert.deepEqual(expected, mockNode);
     });
   });
 });
