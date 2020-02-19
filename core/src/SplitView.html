@@ -31,7 +31,6 @@
     <span class="sap-icon--navigation-down-arrow sap-icon--s"></span>
   </a>
 </div>
-
 {/if}
 <script>
   import Backdrop from './Backdrop.html';
@@ -144,9 +143,7 @@
     }
 
     elements.split.style.top = `${SplitViewSvc.splitViewValues.top}px`;
-    elements.iframe.style.paddingBottom = `${
-      SplitViewSvc.splitViewValues.bottom
-    }px`;
+    elements.iframe.style.paddingBottom = `${SplitViewSvc.splitViewValues.bottom}px`;
   };
 
   function _messageHandler(e) {
@@ -309,7 +306,7 @@
 </script>
 
 <style type="text/scss">
-  $topNavHeight: 48px;
+  $topNavHeight: 44px;
   $leftNavWidth: 320px;
   $collapsedSplitviewHeight: 38px;
   $desktopMinWidth: 600px;
