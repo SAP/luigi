@@ -24,6 +24,7 @@ describe('AuthLayer', () => {
   // this.retries(1);
   beforeEach(() => {
     // AuthLayerSvc = Object.assign(Object.create(Object.getPrototypeOf(OrigAuthLayerSvc)), OrigAuthLayerSvc);
+    console.error.resetHistory();
     AuthLayerSvc.idpProviderInstance = undefined;
     AuthLayerSvc.setProfileLogoutFn();
     sinon.stub(LuigiAuth, 'handleAuthEvent');
@@ -101,7 +102,6 @@ describe('AuthLayer', () => {
       });
       it('promise provider failure', async () => {
         // given
-        sinon.stub(console, 'error');
         LuigiConfig.getConfigValue.returns(authConfigMock().mock);
         AuthLayerSvc.getIdpProviderInstance.rejects({
           message: 'Something failed'
@@ -125,7 +125,6 @@ describe('AuthLayer', () => {
         assert.isUndefined(result);
       });
       it('valid instance, success', async () => {
-        sinon.spy(console, 'error');
         AuthLayerSvc.idpProviderInstance = {
           login: sinon.stub().resolves(undefined)
         };
@@ -140,7 +139,6 @@ describe('AuthLayer', () => {
       });
       it('valid instance, error', async () => {
         const providerError = 'Error';
-        sinon.stub(console, 'error');
         AuthLayerSvc.idpProviderInstance = {
           login: sinon.stub().resolves(providerError)
         };
