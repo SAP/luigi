@@ -51,7 +51,7 @@ Luigi.setConfig({
     header: {
       title: 'Luigi OpenUI5',
       logo: '/logo.png',
-      favicon: '/logo.ico'
+      favicon: '/favicon.ico'
     },
     responsiveNavigation: 'simpleMobileOnly',
     appLoadingIndicator: {
