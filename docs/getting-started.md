@@ -136,9 +136,9 @@ In the **Examples** section of our documentation, you can find links to several 
 * [Angular](https://github.com/SAP/luigi/tree/master/core/examples/luigi-example-angular)
 * [React](https://github.com/SAP/luigi/tree/master/core/examples/luigi-example-react)
 * [Vue](https://github.com/SAP/luigi/tree/master/core/examples/luigi-example-vue)
-* [UI5]()
-* [Svelte]()
-* [Plain JavaScript]()
+* [OpenUI5](https://github.com/SAP/luigi/tree/master/core/examples/luigi-example-openui5)
+* [Svelte](https://github.com/SAP/luigi/tree/master/core/examples/luigi-example-svelte)
+* [Plain JavaScript](https://github.com/SAP/luigi/tree/master/core/examples/luigi-example-js)
 
 You can install them by following the instructions in the `README` file of each example.
 
