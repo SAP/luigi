@@ -36,7 +36,12 @@ class LuigiNavigationManager {
    * Luigi.navigation().navigate('/settings', null, true) // preserve view
    */
   navigate(path, preserveView, modalSettings, splitViewSettings) {
-    return new linkManager().navigate(path, preserveView, modalSettings,splitViewSettings);
+    return new linkManager().navigate(
+      path,
+      preserveView,
+      modalSettings,
+      splitViewSettings
+    );
   }
 
   /**
@@ -53,7 +58,7 @@ class LuigiNavigationManager {
     return new linkManager().openAsModal(path, modalSettings);
   }
 
-  /** 
+  /**
    * Opens a view in a split view. You can specify the split view's title and size. If you don't specify the title, it is the node label. If there is no node label, the title remains empty. The default size of the split view is 40, which means 40% height of the split view.
    * @memberof LuigiNavigation
    * @param {string} path navigation path
@@ -65,8 +70,8 @@ class LuigiNavigationManager {
    * @example
    * Luigi.navigation().openAsSplitView('projects/pr1/users', {title:'Users', size:'40'});
    */
-  openAsSplitView(path, splitViewSettings) {
-    return Luigi.splitView.openAsSplitView(path,splitViewSettings);
+  openAsSplitView(path, splitViewSettings = {}) {
+    return Luigi.splitView.openAsSplitView(path, splitViewSettings);
   }
 
   /**

@@ -398,6 +398,10 @@ Navigates to the given path in the application. It contains either a full absolu
 -   `modalSettings` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** opens a view in a modal. Use these settings to configure the modal's title and size
     -   `modalSettings.title` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** modal title. By default, it is the node label. If there is no label, it is left empty
     -   `modalSettings.size` **(`"l"` \| `"m"` \| `"s"`)** size of the modal (optional, default `"l"`)
+-   `splitViewSettings` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** opens a view in a split view. Use these settings to configure the split view's behaviour
+    -   `splitViewSettings.title` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** split view title. By default, it is the node label. If there is no label, it is left empty
+    -   `splitViewSettings.size` **[number](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number)** height of the split view in percent (optional, default `40`)
+    -   `splitViewSettings.collapsed` **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)** opens split view in collapsed state (optional, default `false`)
 
 ##### Examples
 
@@ -423,6 +427,112 @@ Opens a view in a modal. You can specify the modal's title and size. If you don'
 ```javascript
 Luigi.navigation().openAsModal('projects/pr1/users', {title:'Users', size:'m'});
 ```
+
+#### openAsSplitView
+
+Opens a view in a split view. You can specify the split view's title and size. If you don't specify the title, it is the node label. If there is no node label, the title remains empty. The default size of the split view is 40, which means 40% height of the split view.
+
+##### Parameters
+
+-   `path` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** navigation path
+-   `splitViewSettings` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** opens a view in a split view. Use these settings to configure the split view's behaviour (optional, default `{}`)
+    -   `splitViewSettings.title` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** split view title. By default, it is the node label. If there is no label, it is left empty
+    -   `splitViewSettings.size` **[number](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number)** height of the split view in percent (optional, default `40`)
+    -   `splitViewSettings.collapsed` **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)** opens split view in collapsed state (optional, default `false`)
+
+##### Examples
+
+```javascript
+Luigi.navigation().openAsSplitView('projects/pr1/users', {title:'Users', size:'40'});
+```
+
+**Meta**
+
+-   **since**: NEXTRELEASE
+
+#### closeSplitView
+
+Closes split view opened with openAsSplitView(path, splitViewSettings)
+
+##### Examples
+
+```javascript
+Luigi.navigation().closeSplitView();
+```
+
+**Meta**
+
+-   **since**: NEXTRELEASE
+
+#### collapseSplitView
+
+Collapses split view opened with openAsSplitView(path, splitViewSettings)
+
+##### Examples
+
+```javascript
+Luigi.navigation().closeSplitView();
+```
+
+**Meta**
+
+-   **since**: NEXTRELEASE
+
+#### expandSplitView
+
+Expands split view when in collapsed mode
+
+##### Examples
+
+```javascript
+Luigi.navigation().expandSplitView();
+```
+
+**Meta**
+
+-   **since**: NEXTRELEASE
+
+#### isSplitViewCollapsed
+
+Returns `true` if split view is collapsed
+
+##### Examples
+
+```javascript
+Luigi.navigation().isSplitViewCollapsed();
+```
+
+**Meta**
+
+-   **since**: NEXTRELEASE
+
+#### isSplitViewExpanded
+
+Returns `true` if split view is expanded
+
+##### Examples
+
+```javascript
+Luigi.navigation().isSplitViewExpanded();
+```
+
+**Meta**
+
+-   **since**: NEXTRELEASE
+
+#### isSplitViewClosed
+
+Returns `true` if split view is closed
+
+##### Examples
+
+```javascript
+Luigi.navigation().isSplitviewClosed();
+```
+
+**Meta**
+
+-   **since**: NEXTRELEASE
 
 #### fromContext
 
@@ -703,7 +813,7 @@ Shows a confirmation modal.
 
 ##### Parameters
 
--   `settings` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** the settings of the confirmation modal. If you do not provide any value for any of the fields, a default value is used
+-   `settings` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** the settings of the confirmation modal. If you don't provide any value for any of the fields, a default value is used
     -   `settings.header` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** the content of the modal header (optional, default `"Confirmation"`)
     -   `settings.body` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** the content of the modal body (optional, default `"Are you sure you want to do this?"`)
     -   `settings.buttonConfirm` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** the label for the modal confirm button (optional, default `"Yes"`)
