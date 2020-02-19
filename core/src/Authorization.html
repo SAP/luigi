@@ -79,18 +79,11 @@
     RoutingHelpers
   } from './utilities/helpers';
   import { AuthStoreSvc, Routing } from './services';
-  import { oAuth2ImplicitGrant } from './providers/auth/oAuth2ImplicitGrant';
-  import { openIdConnect } from './providers/auth/openIdConnect';
   import { TOP_NAV_DEFAULTS } from './utilities/luigi-config-defaults';
 
   const dispatch = createEventDispatcher();
 
   let idpProviderInstance;
-  const standardProviders = {
-    mockAuth: oAuth2ImplicitGrant,
-    oAuth2ImplicitGrant,
-    openIdConnect
-  };
   export let userInfo;
   export let isHidden = false;
   export let isLoggedIn;
@@ -119,17 +112,13 @@
     idpProviderName,
     idpProviderSettings
   ) => {
-    if (GenericHelpers.isFunction(standardProviders[idpProviderName])) {
-      return new standardProviders[idpProviderName](idpProviderSettings);
-    }
-
     // custom provider provided via config:
-    const customIdpProvider = GenericHelpers.getConfigValueFromObject(
+    const idpProvider = GenericHelpers.getConfigValueFromObject(
       idpProviderSettings,
-      'customIdpProvider'
+      'idpProvider'
     );
-    if (customIdpProvider) {
-      const customIdpInstance = new customIdpProvider(idpProviderSettings);
+    if (idpProvider) {
+      const customIdpInstance = await new idpProvider(idpProviderSettings);
       ['login'].forEach(requiredFnName => {
         if (!GenericHelpers.isFunction(customIdpInstance[requiredFnName])) {
           throw IdpProviderException(
@@ -141,6 +130,7 @@
       return customIdpInstance;
     }
 
+    // handle non-existing providers
     const onAuthConfigError = GenericHelpers.isFunction(
       LuigiConfig.getConfigValue('auth.events.onAuthConfigError')
     );
