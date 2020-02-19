@@ -51,7 +51,7 @@ Luigi.setConfig({
     header: {
       title: 'Luigi JavaScript',
       logo: '/logo.png',
-      favicon: '/logo.ico'
+      favicon: '/favicon.ico'
     },
     responsiveNavigation: 'simpleMobileOnly',
     appLoadingIndicator: {
