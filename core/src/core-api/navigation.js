@@ -66,78 +66,16 @@ class LuigiNavigationManager {
    * @param {string} splitViewSettings.title split view title. By default, it is the node label. If there is no label, it is left empty
    * @param {number} [splitViewSettings.size=40] height of the split view in percent
    * @param {boolean} [splitViewSettings.collapsed=false] opens split view in collapsed state
+   * @returns {Object} an instance of the SplitView. It provides functions to control its behavior.
+   * @see {@link https://docs.luigi-project.io/docs/luigi-client-api?section=splitview|SplitView Client} for further documentation. These methods are implemented for Luigi Core: `close`, `collapse`, `expand`, `isCollapsed`, `isExpanded`, `exists`
+   *
    * @since NEXTRELEASE
    * @example
    * Luigi.navigation().openAsSplitView('projects/pr1/users', {title:'Users', size:'40'});
    */
   openAsSplitView(path, splitViewSettings = {}) {
-    return Luigi.splitView.openAsSplitView(path, splitViewSettings);
-  }
-
-  /**
-   * Closes split view opened with openAsSplitView(path, splitViewSettings)
-   * @memberof LuigiNavigation
-   * @since NEXTRELEASE
-   * @example
-   * Luigi.navigation().closeSplitView();
-   */
-  closeSplitView() {
-    return Luigi.splitView.closeSplitView();
-  }
-
-  /**
-   * Collapses split view opened with openAsSplitView(path, splitViewSettings)
-   * @memberof LuigiNavigation
-   * @since NEXTRELEASE
-   * @example
-   * Luigi.navigation().closeSplitView();
-   */
-  collapseSplitView() {
-    return Luigi.splitView.collapseSplitView();
-  }
-
-  /**
-   * Expands split view when in collapsed mode
-   * @memberof LuigiNavigation
-   * @since NEXTRELEASE
-   * @example
-   * Luigi.navigation().expandSplitView();
-   */
-  expandSplitView() {
-    return Luigi.splitView.expandSplitView();
-  }
-
-  /**
-   * Returns `true` if split view is collapsed
-   * @memberof LuigiNavigation
-   * @since NEXTRELEASE
-   * @example
-   * Luigi.navigation().isSplitViewCollapsed();
-   */
-  isSplitViewCollapsed() {
-    return Luigi.splitView.isSplitViewCollapsed();
-  }
-
-  /**
-   * Returns `true` if split view is expanded
-   * @memberof LuigiNavigation
-   * @since NEXTRELEASE
-   * @example
-   * Luigi.navigation().isSplitViewExpanded();
-   */
-  isSplitViewExpanded() {
-    return Luigi.splitView.isSplitViewExpanded();
-  }
-
-  /**
-   * Returns `true` if split view is closed
-   * @memberof LuigiNavigation
-   * @since NEXTRELEASE
-   * @example
-   * Luigi.navigation().isSplitviewClosed();
-   */
-  isSplitViewClosed() {
-    return Luigi.splitView.isSplitViewClosed();
+    Luigi.splitView.openAsSplitView(path, splitViewSettings);
+    return Luigi.splitView.splitViewHandle;
   }
 
   /**

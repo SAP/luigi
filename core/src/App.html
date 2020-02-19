@@ -438,7 +438,7 @@
 
   //// SPLIT VIEW
   export const openSplitView = (nodepath, settings) => {
-    if(mfSplitView.displayed){
+    if (mfSplitView.displayed) {
       console.warn('Only one splitview can be oppened at a time');
       return;
     }
@@ -452,30 +452,30 @@
   export const collapseSplitView = () => {
     SplitViewSvc.collapse(getComponentWrapper());
     mfSplitView.collapsed = true;
-  }
+  };
 
   export const expandSplitView = () => {
     SplitViewSvc.expand(getComponentWrapper());
     mfSplitView.collapsed = false;
-  }
+  };
 
   export const isSplitViewCollapsed = () => {
-    if (mfSplitView.displayed){
+    if (mfSplitView.displayed) {
       return mfSplitView.collapsed;
     }
     return false;
-  }
+  };
 
   export const isSplitViewExpanded = () => {
-    if (mfSplitView.displayed){
+    if (mfSplitView.displayed) {
       return !mfSplitView.collapsed;
     }
     return false;
-  }
-  
-  export const isSplitViewClosed = () => {
-    return !mfSplitView.displayed;
-  }
+  };
+
+  export const existsSplitView = () => {
+    return mfSplitView.displayed;
+  };
 
   const splitViewIframeCreated = event => {
     splitViewIframe = event.detail.splitViewIframe;
@@ -539,9 +539,7 @@
       getAlertWithId(currentAlerts, settings.id)
     ) {
       console.error(
-        `The alert with id '${
-          settings.id
-        }' already exists in a queue, therefore it won't be displayed `
+        `The alert with id '${settings.id}' already exists in a queue, therefore it won't be displayed `
       );
       return Promise.reject();
     }

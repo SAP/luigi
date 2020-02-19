@@ -71,14 +71,17 @@ const configReadyCallback = () => {
       };
 
       Luigi.splitView = {
-        openAsSplitView: (path , settings) => app.$$.ctx.openSplitView(path, settings),
-        closeSplitView: () => app.$$.ctx.closeSplitView(),
-        collapseSplitView : () =>  app.$$.ctx.collapseSplitView(),
-        expandSplitView : () => app.$$.ctx.expandSplitView(),
-        isSplitViewCollapsed : () => app.$$.ctx.isSplitViewCollapsed(),
-        isSplitViewExpanded: () => app.$$.ctx.isSplitViewExpanded(),
-        isSplitViewClosed : () => app.$$.ctx.isSplitViewClosed()
-      }
+        openAsSplitView: (path, settings) =>
+          app.$$.ctx.openSplitView(path, settings),
+        splitViewHandle: {
+          close: () => app.$$.ctx.closeSplitView(),
+          collapse: () => app.$$.ctx.collapseSplitView(),
+          expand: () => app.$$.ctx.expandSplitView(),
+          isCollapsed: () => app.$$.ctx.isSplitViewCollapsed(),
+          isExpanded: () => app.$$.ctx.isSplitViewExpanded(),
+          exists: () => app.$$.ctx.existsSplitView()
+        }
+      };
 
       Luigi.pathExists = path => {
         return app.$$.ctx.pathExists(path);

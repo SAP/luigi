@@ -430,6 +430,8 @@ Luigi.navigation().openAsModal('projects/pr1/users', {title:'Users', size:'m'});
 
 #### openAsSplitView
 
+-   **See: [SplitView Client](https://docs.luigi-project.io/docs/luigi-client-api?section=splitview) for further documentation. These methods are implemented for Luigi Core: `close`, `collapse`, `expand`, `isCollapsed`, `isExpanded`, `exists`**
+
 Opens a view in a split view. You can specify the split view's title and size. If you don't specify the title, it is the node label. If there is no node label, the title remains empty. The default size of the split view is 40, which means 40% height of the split view.
 
 ##### Parameters
@@ -446,89 +448,7 @@ Opens a view in a split view. You can specify the split view's title and size. I
 Luigi.navigation().openAsSplitView('projects/pr1/users', {title:'Users', size:'40'});
 ```
 
-**Meta**
-
--   **since**: NEXTRELEASE
-
-#### closeSplitView
-
-Closes split view opened with openAsSplitView(path, splitViewSettings)
-
-##### Examples
-
-```javascript
-Luigi.navigation().closeSplitView();
-```
-
-**Meta**
-
--   **since**: NEXTRELEASE
-
-#### collapseSplitView
-
-Collapses split view opened with openAsSplitView(path, splitViewSettings)
-
-##### Examples
-
-```javascript
-Luigi.navigation().closeSplitView();
-```
-
-**Meta**
-
--   **since**: NEXTRELEASE
-
-#### expandSplitView
-
-Expands split view when in collapsed mode
-
-##### Examples
-
-```javascript
-Luigi.navigation().expandSplitView();
-```
-
-**Meta**
-
--   **since**: NEXTRELEASE
-
-#### isSplitViewCollapsed
-
-Returns `true` if split view is collapsed
-
-##### Examples
-
-```javascript
-Luigi.navigation().isSplitViewCollapsed();
-```
-
-**Meta**
-
--   **since**: NEXTRELEASE
-
-#### isSplitViewExpanded
-
-Returns `true` if split view is expanded
-
-##### Examples
-
-```javascript
-Luigi.navigation().isSplitViewExpanded();
-```
-
-**Meta**
-
--   **since**: NEXTRELEASE
-
-#### isSplitViewClosed
-
-Returns `true` if split view is closed
-
-##### Examples
-
-```javascript
-Luigi.navigation().isSplitviewClosed();
-```
+Returns **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** an instance of the SplitView. It provides functions to control its behavior.
 
 **Meta**
 
