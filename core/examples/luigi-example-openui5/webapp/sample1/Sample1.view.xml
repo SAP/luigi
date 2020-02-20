@@ -1,0 +1,18 @@
+<mvc:View
+	controllerName="luigi.demo.sample1.Sample1"
+	xmlns="sap.m"
+	xmlns:mvc="sap.ui.core.mvc"
+	xmlns:f="sap.f"
+	xmlns:card="sap.f.cards"
+	displayBlock="true">
+	<App id="app">
+		<VBox class="sapUiMediumMargin">
+			<Title  class="sapUiSmallMargin" titleStyle="H1" text="Sample 1" wrapping="true" />
+			<f:Card class="sapUiSmallMargin">
+				<f:content>
+					<Title  class="sapUiSmallMargin" titleStyle="H4" text="Luigi ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua." wrapping="true" />
+				</f:content>
+			</f:Card>
+		</VBox>
+	</App>
+</mvc:View>
