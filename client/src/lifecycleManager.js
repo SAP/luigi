@@ -1,9 +1,6 @@
 import { LuigiClientBase } from './baseClass';
 import { helpers } from './helpers';
 
-import { linkManager } from './linkManager';
-import { createBrowserHistory } from 'history';
-
 /**
  * Use the functions and parameters to define the Lifecycle of listeners, navigation nodes, and Event data.
  * @name Lifecycle
