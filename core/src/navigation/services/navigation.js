@@ -61,7 +61,7 @@ class NavigationClass {
           this.rootNode = { children: topNavNodes };
         }
 
-        await this.getChildren(this.rootNode); // keep it, mutates and filters children
+        await this.getChildren(this.rootNode, null, activePath); // keep it, mutates and filters children
       }
 
       const nodeNamesInCurrentPath = activePath.split('/');
@@ -205,7 +205,18 @@ class NavigationClass {
           pathParams
         );
         try {
-          let children = await this.getChildren(node, newContext);
+          /**
+           * If its a virtual tree,
+           * build static children
+           */
+          this.buildVirtualTree(node, nodeNamesInCurrentPath, pathParams);
+
+          // STANDARD PROCEDURE
+          let children = await this.getChildren(
+            node,
+            newContext,
+            nodeNamesInCurrentPath
+          );
           const newNodeNamesInCurrentPath = nodeNamesInCurrentPath.slice(1);
           result = this.buildNode(
             newNodeNamesInCurrentPath,
@@ -220,6 +231,71 @@ class NavigationClass {
       }
     }
     return result;
+  }
+
+  /**
+   * Requires str to include :virtualPath
+   * and pathParams consist of :virtualSegment_N
+   * for deep nested virtual tree building
+   *
+   * @param {string} str
+   * @param {Object} pathParams
+   * @param {number} _virtualPathIndex
+   */
+  buildVirtualViewUrl(str, pathParams, _virtualPathIndex) {
+    let newStr = '';
+    for (const key in pathParams) {
+      if (key.startsWith('virtualSegment')) {
+        newStr += ':' + key + '/';
+      }
+    }
+    newStr += ':virtualSegment_' + _virtualPathIndex + '/';
+    return str + '/' + newStr;
+  }
+
+  buildVirtualTree(node, nodeNamesInCurrentPath, pathParams) {
+    const virtualTreeRoot = node.virtualTree;
+    // Temporary store values that will be cleaned up when creating a copy
+    const virtualTreeChild = node._virtualTree;
+    const _virtualViewUrl = node._virtualViewUrl || node.viewUrl;
+    if ((virtualTreeRoot || virtualTreeChild) && nodeNamesInCurrentPath[0]) {
+      let _virtualPathIndex = node._virtualPathIndex;
+      if (virtualTreeRoot) {
+        _virtualPathIndex = 0;
+        node.keepSelectedForChildren = true;
+      }
+
+      // Allowing maximum of 50 path segments to avoid memory issues
+      const maxPathDepth = 50;
+      if (_virtualPathIndex > maxPathDepth) {
+        return;
+      }
+
+      _virtualPathIndex++;
+      const keysToClean = [
+        '_*',
+        'virtualTree',
+        'parent',
+        'children',
+        'keepSelectedForChildren',
+        'navigationContext'
+      ];
+      const newChild = GenericHelpers.removeProperties(node, keysToClean);
+      Object.assign(newChild, {
+        pathSegment: ':virtualSegment_' + _virtualPathIndex,
+        label: ':virtualSegment_' + _virtualPathIndex,
+        viewUrl: this.buildVirtualViewUrl(
+          _virtualViewUrl,
+          pathParams,
+          _virtualPathIndex
+        ),
+        _virtualTree: true,
+        _virtualPathIndex,
+        _virtualViewUrl
+      });
+
+      node.children = [newChild];
+    }
   }
 
   findMatchingNode(urlPathElement, nodes) {
