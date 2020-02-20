@@ -71,12 +71,12 @@ Cypress.Commands.add('goToProjectsPage', () => {
 
 Cypress.Commands.add('selectContextSwitcherItem', (item, currentLabel) => {
   // default label
-  cy.get('.fd-product-menu')
+  cy.get('[data-testid="luigi-contextswitcher-button"]')
     .contains(currentLabel || 'Select Environment ...')
     .click();
 
   // click an action
-  cy.get('.fd-product-menu .fd-popover__body')
+  cy.get('[data-testid="luigi-contextswitcher-popover"]')
     .contains(item)
     .click();
 });

@@ -12,6 +12,7 @@
         title="{selectedLabel ? selectedLabel : config.defaultLabel}"
         on:click="{() => {if (renderAsDropdown) toggleDropdownState()}}"
         aria-disabled="{!renderAsDropdown}"
+        data-testid="luigi-contextswitcher-button"
       >
         {#if !selectedLabel}{$getTranslation(config.defaultLabel)}{/if} {#if
         selectedLabel}{selectedLabel}{/if}
@@ -21,6 +22,7 @@
       class="fd-popover__body fd-popover__body--right"
       aria-hidden="{!(dropDownStates.contextSwitcherPopover || false)}"
       id="contextSwitcherPopover"
+      data-testid="luigi-contextswitcher-popover"
     >
       <ContextSwitcherNav
         {actions}
@@ -329,6 +331,13 @@
     text-overflow: ellipsis;
     color: #fff;
     color: var(--sapShell_TextColor, #fff);
+    padding-right: 30px;
+
+    &:after {
+      position: absolute;
+      top: calc(50% - 5px);
+      right: 12px;
+    }
 
     @media (min-width: 1024px) {
       max-width: 15vw;

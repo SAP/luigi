@@ -15,7 +15,7 @@ describe('Context switcher', () => {
     cy.expectPathToBe('/environments/env1');
 
     // check label
-    cy.get('.fd-product-menu .fd-popover__control button').should(
+    cy.get('[data-testid="luigi-contextswitcher-button"]').should(
       'contain',
       'Environment 1'
     );
@@ -81,7 +81,7 @@ describe('Context switcher', () => {
     cy.get('.fd-app__sidebar').should('not.contain', 'Project Two');
     cy.get('.fd-app__sidebar').should('not.contain', 'Project 3');
 
-    cy.get('.fd-product-menu .fd-popover__body').should(
+    cy.get('[data-testid="luigi-contextswitcher-popover"]').should(
       'not.contain',
       'Remove Project'
     );
@@ -96,7 +96,7 @@ describe('Context switcher', () => {
     cy.get('.fd-app__sidebar').should('not.contain', 'Project 2');
     cy.get('.fd-app__sidebar').should('not.contain', 'Project 3');
 
-    cy.get('.fd-product-menu .fd-popover__body').should(
+    cy.get('[data-testid="luigi-contextswitcher-popover"]').should(
       'contain',
       'Remove Project'
     );
@@ -109,7 +109,7 @@ describe('Context switcher', () => {
     cy.get('.fd-app__sidebar').should('contain', 'Project 2');
     cy.get('.fd-app__sidebar').should('not.contain', 'Project 3');
 
-    cy.get('.fd-product-menu .fd-popover__body').should(
+    cy.get('[data-testid="luigi-contextswitcher-popover"]').should(
       'contain',
       'Remove Project'
     );
