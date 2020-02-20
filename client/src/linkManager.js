@@ -69,7 +69,6 @@ export class linkManager extends LuigiClientBase {
         splitView: splitViewSettings
       })
     };
-    console.log('navigationOpenMsg', navigationOpenMsg);
     helpers.sendPostMessageToLuigiCore(navigationOpenMsg);
   }
 
@@ -254,13 +253,13 @@ export class linkManager extends LuigiClientBase {
   }
 
   /**
-   * Disables the navigation handling for this specific request
-   * Used in **lifecycleManager().setNavigationSync** to prevent
-   * Luigi Core from handling url change after navigate.
-   * @private
+   * Disables the navigation handling for a single navigation request
+   * It prevents Luigi Core from handling url change after `navigate()`.
+   * Used for auto-navigation
    * @since NEXTRELEASE
    * @example
    * LuigiClient.linkManager().withoutSync().navigate('/projects/xy/foobar');
+   * LuigiClient.linkManager().withoutSync().fromClosestContext().navigate('settings');
    */
   withoutSync() {
     this.options.withoutSync = true;

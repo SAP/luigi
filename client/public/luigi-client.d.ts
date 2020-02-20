@@ -281,6 +281,17 @@ export declare interface LinkManager {
     path: string,
     splitViewSettings?: SplitViewSettings
   ) => SplitViewInstance;
+
+  /**
+   * Disables the navigation handling for a single navigation request
+   * It prevents Luigi Core from handling url change after `navigate()`.
+   * Used for auto-navigation
+   * @since NEXTRELEASE
+   * @example
+   * LuigiClient.linkManager().withoutSync().navigate('/projects/xy/foobar');
+   * LuigiClient.linkManager().withoutSync().fromClosestContext().navigate('settings');
+   */
+  withoutSync: () => this;
 }
 
 /**
@@ -461,14 +472,3 @@ export type linkManager = () => LinkManager;
 /** @name uxManager */
 export function uxManager(): UxManager;
 export type uxManager = () => UxManager;
-
-/**
- * Use the LifeCycle Manager to manage the appearance features in Luigi.
- */
-/** @name lifecycleManager */
-export function lifecycleManager(): LifecycleManager;
-export type lifecycleManager = () => LifecycleManager;
-
-export declare interface LifecycleManager {
-  setNavigationSync: (config: object) => void;
-}

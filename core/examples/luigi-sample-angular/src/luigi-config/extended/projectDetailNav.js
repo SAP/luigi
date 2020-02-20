@@ -241,14 +241,28 @@ export const projectDetailNavStructure = projectId => [
   },
   {
     pathSegment: 'virtual-tree',
-    label: 'Virtual Tree',
+    label: 'VirtualTree',
+    icon: 'tree',
     viewUrl: '/sampleapp.html#/projects/' + projectId + '/dynamic',
-    context: {
-      mfBasePath: '/projects/' + projectId + '/dynamic/',
-      showRouting: true
-    },
     navigationContext: 'virt',
+    context: {
+      label: 'VirtualTree - add segments to the url',
+      links: false
+    },
     virtualTree: true
+  },
+  {
+    pathSegment: 'nav-sync',
+    label: 'Nav Sync',
+    // viewUrl: '/sampleapp.html#/nav-sync-example/one',
+    icon: 'synchronize',
+    keepSelectedForChildren: true,
+    navigationContext: 'navSync',
+    children: ['one', 'two', 'three', 'four'].map(seg => ({
+      label: seg,
+      pathSegment: seg,
+      viewUrl: '/sampleapp.html#/nav-sync-example/' + seg
+    }))
   },
   {
     label: 'Open Github in new tab',

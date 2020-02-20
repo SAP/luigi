@@ -19,6 +19,7 @@ import { HideSideNavComponent } from './project/hide-side-nav/hide-side-nav.comp
 import { AnonymousComponent } from './anonymous/anonymous.component';
 import { OnNodeActivationComponent } from './onNodeActivation/onNodeActivation.component';
 import { PreloadComponent } from './preload/preload.component';
+import { NavSyncComponent } from './nav-sync/nav-sync.component';
 
 const routes: Routes = [
   { path: 'preload', component: PreloadComponent },
@@ -75,27 +76,27 @@ const routes: Routes = [
     component: DynamicComponent
   },
   {
-    path: 'projects/:projectId/dynamic/:dynamicValue',
+    path: 'projects/:projectId/dynamic/:dyn1',
     component: DynamicComponent
   },
   {
-    path: 'projects/:projectId/dynamic/:dyn1/:dynamicValue',
+    path: 'projects/:projectId/dynamic/:dyn1/:dyn2',
     component: DynamicComponent
   },
   {
-    path: 'projects/:projectId/dynamic/:dyn1/:dyn2/:dynamicValue',
+    path: 'projects/:projectId/dynamic/:dyn1/:dyn2/:dyn3',
     component: DynamicComponent
   },
   {
-    path: 'projects/:projectId/dynamic/:dyn1/:dyn2/:dyn3/:dynamicValue',
+    path: 'projects/:projectId/dynamic/:dyn1/:dyn2/:dyn3/:dyn4',
     component: DynamicComponent
   },
   {
-    path: 'projects/:projectId/dynamic/:dyn1/:dyn2/:dyn3/:dyn4/:dynamicValue',
+    path: 'projects/:projectId/dynamic/:dyn1/:dyn2/:dyn3/:dyn4/:dyn5',
     component: DynamicComponent
   },
   {
-    path: 'create/:dynamicValue',
+    path: 'create/:dyn1',
     component: DynamicComponent
   },
   {
@@ -103,12 +104,16 @@ const routes: Routes = [
     component: DynamicComponent
   },
   {
-    path: 'environments/:dynamicValue',
+    path: 'environments/:dyn1',
     component: DynamicComponent
   },
   {
-    path: 'environments/:dyn1/:dynamicValue',
+    path: 'environments/:dyn1/:dyn2',
     component: DynamicComponent
+  },
+  {
+    path: 'nav-sync-example/:dyn',
+    component: NavSyncComponent
   }
 ];
 

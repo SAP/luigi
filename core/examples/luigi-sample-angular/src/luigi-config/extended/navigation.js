@@ -31,20 +31,6 @@ class Navigation {
       hideSideNav: true
     },
     {
-      pathSegment: 'todos',
-      label: 'Todos',
-      viewUrl: '/sampleapp.html#/environments',
-      children: [
-        {
-          pathSegment: 'react-hooks',
-          label: 'React Hooks',
-          viewUrl: 'http://localhost:3000/',
-          navigationContext: 'todo-react-hooks',
-          virtualTree: true
-        }
-      ]
-    },
-    {
       pathSegment: 'projects',
       label: 'Projects',
       viewUrl: '/sampleapp.html#/projects',
