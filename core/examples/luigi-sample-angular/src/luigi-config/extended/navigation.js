@@ -5,8 +5,7 @@ import {
   addProject,
   removeProject,
   getProjectCount,
-  projectExists,
-  getMockBadgeCount
+  projectExists
 } from './helpers';
 
 class Navigation {
