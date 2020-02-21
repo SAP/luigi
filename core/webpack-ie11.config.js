@@ -4,6 +4,14 @@ const CleanWebpackPlugin = require('clean-webpack-plugin');
 const commonPlugins = require('./webpack-common-plugins');
 const commonRules = require('./webpack-common-rules');
 const exec = require('child_process').exec;
+const fundamentalStyles = require('./fundamentalStyleClasses');
+
+const luigifiles = [
+  ...fundamentalStyles,
+  './node_modules/@babel/polyfill/dist/polyfill.js',
+  './node_modules/@webcomponents/webcomponentsjs/webcomponents-bundle.js',
+  './src/main.js'
+];
 
 const env = process.env.NODE_ENV;
 
@@ -40,12 +48,7 @@ class PatchLuigiPlugin {
 module.exports = {
   devtool: 'false',
   entry: {
-    'luigi-ie11': [
-      './node_modules/@babel/polyfill/dist/polyfill.js',
-      './node_modules/@webcomponents/webcomponentsjs/webcomponents-bundle.js',
-      './node_modules/fiori-fundamentals/dist/fiori-fundamentals-ie11.min.css',
-      './src/main.js'
-    ]
+    'luigi-ie11': luigifiles
   },
   resolve: {
     alias: {

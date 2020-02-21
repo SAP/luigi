@@ -170,7 +170,7 @@ describe('Context switcher', () => {
 
       cy.expectPathToBe('/environments/env1');
 
-      cy.get('.lui-tendant-menu__control[aria-disabled="false"]')
+      cy.get('.lui-ctx-switch-menu[aria-disabled="false"]')
         .should('exist')
         .click();
 
@@ -195,7 +195,7 @@ describe('Context switcher', () => {
 
       cy.expectPathToBe('/environments/env1');
 
-      cy.get('.lui-tendant-menu__control[aria-disabled="true"]')
+      cy.get('.lui-ctx-switch-menu[aria-disabled="true"]')
         .should('exist')
         .click();
 
@@ -216,18 +216,18 @@ describe('ProductSwitcher', () => {
 
     it('Clicking around the product switcher', () => {
       //check if hybris is there
-      cy.get('.fd-product-switcher')
+      cy.get('.fd-product-switch')
         .click()
         .contains('hybris');
 
       //check if internal link is there
-      cy.get('.fd-product-switcher__product-title')
+      cy.get('.fd-product-switch .fd-product-switch__title')
         .contains('Project 1')
         .click();
 
       cy.expectPathToBe('/projects/pr1');
 
-      cy.get('.fd-product-switcher__product-title').should(
+      cy.get('.fd-product-switch .fd-product-switch__title').should(
         'not.contain',
         'Project 3'
       );
@@ -239,14 +239,14 @@ describe('ProductSwitcher', () => {
       cy.selectContextSwitcherItem('New Project');
       cy.expectPathToBe('/projects');
 
-      cy.get('.fd-product-switcher__product-title').should(
+      cy.get('.fd-product-switch .fd-product-switch__title').should(
         'contain',
         'Project 4'
       );
 
-      cy.get('.fd-product-switcher').click();
+      cy.get('.fd-product-switch').click();
 
-      cy.get('.fd-product-switcher__product-title')
+      cy.get('.fd-product-switch .fd-product-switch__title')
         .contains('Project 4')
         .click();
 
@@ -276,7 +276,7 @@ describe('ProductSwitcher', () => {
       cy.get('[data-testid="mobile-product-switcher"]').click();
 
       //check if internal link is there
-      cy.get('.y-full-width-list__title')
+      cy.get('.fd-product-switch__title')
         .contains('Project 1')
         .click();
 
@@ -293,7 +293,7 @@ describe('ProductSwitcher', () => {
       cy.get('[data-testid="mobile-topnav-close"]').click();
 
       //no product switcher is visible
-      cy.get('.fd-product-switcher').should('not.be.visible');
+      cy.get('.fd-product-switch').should('not.be.visible');
 
       //the path wasn't changed
       cy.expectPathToBe('/overview');

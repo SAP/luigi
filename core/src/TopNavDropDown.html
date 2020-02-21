@@ -37,7 +37,9 @@
   label="{getNodeLabel(node)}"
   {hasOpenUIicon}
   {getNodeLabel}
+  {getNodeSubtitle}
   {getTestId}
+  noSubTitle="true"
 />
 {/if}
 <script>
@@ -65,6 +67,7 @@
     'getUnsavedChangesModalPromise'
   );
   let openViewInModal = getContext('openViewInModal');
+  const getNodeSubtitle = () => {};
 
   //TODO refactor
   const getComponentWrapper = () => {
@@ -147,7 +150,8 @@
 <style type="text/scss">
   .fd-top-nav__icon {
     img {
-      width: 16px;
+      max-width: 16px;
+      height: 16px;
       vertical-align: top;
     }
   }

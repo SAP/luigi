@@ -11,7 +11,7 @@ class Settings {
   appLoadingIndicator = {
     hideAutomatically: false
   };
-  responsiveNavigation = 'simpleMobileOnly'; // Options: simple | simpleMobileOnly | semiCollapsible
+  responsiveNavigation = 'simpleMobileOnly'; // Options: simple | simpleMobileOnly | semiCollapsible | Fiori3
   sideNavFooterText = `Luigi Client: ${version || 'unknown'}`;
   thirdPartyCookieCheck = {
     // thirdPartyCookieScriptLocation: 'https://domain/init.html',
@@ -24,6 +24,7 @@ class Settings {
       Luigi.ux().showAlert(alert);
     }
   };
+  // sideNavCompactMode = true;
   // allowRules = ['microphone'];
   // iframeCreationInterceptor = (iframe, viewGroup, navigationNode, microFrontendType) => { };
   // hideNavigation = true

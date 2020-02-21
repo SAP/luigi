@@ -258,6 +258,7 @@ class Navigation {
         icon:
           'https://pbs.twimg.com/profile_images/1143452953858183170/QLk-HGmK_bigger.png',
         label: 'hybris',
+        subTitle: 'first subtitle',
         externalLink: {
           url: 'https://www.hybris.com',
           sameWindow: false
@@ -304,7 +305,8 @@ class Navigation {
     label: 'My Products',
     icon: 'grid',
     // icon: '/assets/favicon-sap.ico',
-    items: this.getProductSwitcherItems
+    items: this.getProductSwitcherItems,
+    columns: 3
   };
 
   getProfileItems = () => {
