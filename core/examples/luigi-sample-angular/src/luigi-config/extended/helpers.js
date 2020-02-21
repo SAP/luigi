@@ -4,36 +4,36 @@ const getProjectPlugins = projectId =>
   new Promise(resolve => {
     if (projectId === 'pr2') {
       resolve([
-        {
-          category: 'External Views',
-          viewId: 'viewX',
-          label: 'This is X',
-          viewUrl: 'https://this.is.x/index.html'
-        },
-        {
-          category: 'External Views',
-          viewId: 'viewY',
-          label: 'This is Y',
-          viewUrl: 'https://this.is.y/index.html'
-        }
+        // {
+        //   category: 'External Views',
+        //   viewId: 'viewX',
+        //   label: 'This is X',
+        //   viewUrl: 'https://this.is.x/index.html'
+        // },
+        // {
+        //   category: 'External Views',
+        //   viewId: 'viewY',
+        //   label: 'This is Y',
+        //   viewUrl: 'https://this.is.y/index.html'
+        // }
       ]);
     } else {
       resolve([
-        {
-          category: 'External Views',
-          viewId: 'abc',
-          label: 'A B C',
-          viewUrl: 'https://a.b.c/index.html'
-        },
-        {
-          category: 'External Views',
-          viewId: 'def',
-          label: 'D E F',
-          viewUrl: 'https://d.e.f/index.html',
-          context: {
-            aaaaa: 'hiiiiii'
-          }
-        }
+        // {
+        //   category: 'External Views',
+        //   viewId: 'abc',
+        //   label: 'A B C',
+        //   viewUrl: 'https://a.b.c/index.html'
+        // },
+        // {
+        //   category: 'External Views',
+        //   viewId: 'def',
+        //   label: 'D E F',
+        //   viewUrl: 'https://d.e.f/index.html',
+        //   context: {
+        //     aaaaa: 'hiiiiii'
+        //   }
+        // }
       ]);
     }
   });
