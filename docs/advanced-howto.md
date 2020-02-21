@@ -37,7 +37,7 @@ For keeping the example simple, we use [**virtualTree**](navigation-parameters-r
     {
       pathSegment: 'Orders',
       label: 'orders',
-      viewUrl: 'https://orders.microfrontend.tld/',
+      viewUrl: 'https://orders.microfrontend/',
       navigationContext: 'orders',
       virtualTree: true
     }
@@ -89,14 +89,14 @@ Implement `luigi-auto-navigation.service.ts`, which is globally imported in our 
     }
 ```
 
-Other than adding the service, which also could be implemented as a RouteGuard or similar, the microfrontend is unchanged and uses `[routerLink='']` or other functionalities to navigate.
+Other than adding the service, which also could be implemented as a RouteGuard or similar, the micro frontend is unchanged and uses `[routerLink='']` or other functionalities to navigate.
 
 ### Authenticate Luigi with Google Cloud Identity
 
 To use Luigi with a Google account, follow these steps:
 
 1. Register a project and generate an OAuth2 Web Client based on [Google Developers Identity - OAuth2UserAgent](https://developers.google.com/identity/protocols/OAuth2UserAgent).
-2. To get your app running locally, set the Autorized JavaScript Origins URIs to `http://localhost:4200` and Authorized redirect URIs to `http://localhost:4200/luigi-core/auth/oauth2/callback.html?storageType=localStorage`.
+2. To get your app running locally, set the Authorized JavaScript Origins URIs to `http://localhost:4200` and Authorized redirect URIs to `http://localhost:4200/luigi-core/auth/oauth2/callback.html?storageType=localStorage`.
 3. Copy the Client ID on the right side, ending with `apps.googleusercontent.com`
 4. Update the LuigiConfig auth section. We have added also the parts for logout and getting user information.
 
