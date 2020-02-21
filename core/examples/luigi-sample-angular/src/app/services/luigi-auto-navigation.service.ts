@@ -23,8 +23,8 @@ export class LuigiAutoNavigationService implements OnDestroy {
         .subscribe((ev: NavigationEnd) => {
           if (ev instanceof NavigationEnd) {
             linkManager()
-              .fromClosestContext()
               .withoutSync()
+              .fromClosestContext()
               .navigate(ev.url.substr(customLocalPrefix.length));
           }
         })
