@@ -12,7 +12,7 @@
   {/if}
 </div>
 {#if title}
-<div class="fd-shellbar__product">
+<div class="fd-product-menu">
   {#if !hasApps}
   <div
     class="fd-shellbar__title"
@@ -225,6 +225,8 @@
 </script>
 
 <style type="text/scss">
+  $desktopMinWidth: 600px;
+
   // Force height because of base64 img src
   .lui-customlogo img {
     height: 24px;
@@ -233,5 +235,11 @@
   .fd-shellbar__logo,
   .fd-shellbar__title {
     cursor: pointer;
+  }
+
+  @media (max-width: $desktopMinWidth - 1) {
+    .fd-shellbar__subtitle {
+      display: none;
+    }
   }
 </style>

@@ -16,31 +16,38 @@
       </div>
     </div>
     <div class="fd-modal__body">
-      <ul class="y-full-width-list">
-        {#if nodes}
-        {#each nodes as node}
-        <li
-          class="y-full-width-list__item"
-          on:click="{() => onActionClick(node)}"
-          data-e2e="mobile-topnav-item"
-          data-testid="{getTestId(node)}"
-        >
-          <span
-            class="y-full-width-list__icon {node.icon && hasOpenUIicon(node) ? 'sap-icon--' + node.icon + ' sap-icon--m' : '' }"
+      <div class="fd-product-switch__body fd-product-switch__body--mobile">
+        <ul class="fd-product-switch__list">
+          {#if nodes}
+          {#each nodes as node}
+          <li
+            class="fd-product-switch__item {noSubTitle == 'true' ? 'y-has-no-subtitle' : '' }"
+            on:click="{() => onActionClick(node)}"
+            data-e2e="mobile-topnav-item"
+            data-testid="{getTestId(node)}"
           >
-            {#if !hasOpenUIicon(node)}
-            <img
-              src="{node.icon}"
-              alt="{node.altText ? node.altText : ''}"
+            <div
+              class="fd-product-switch__icon {node.icon && hasOpenUIicon(node) ? 'sap-icon--' + node.icon : '' }"
             >
-            {/if}
-            <BadgeCounter {node}/>
-          </span>
-          <span class="y-full-width-list__title">{getNodeLabel(node)}</span>
-        </li>
-        {/each}
-        {/if}
-      </ul>
+              {#if !hasOpenUIicon(node)}
+              <img
+                src="{node.icon}"
+                alt="{node.altText ? node.altText : ''}"
+              >
+              {/if}
+              <BadgeCounter {node}/>
+            </div>
+            <div class="fd-product-switch__text">
+              <div class="fd-product-switch__title">{getNodeLabel(node)}</div>
+              {#if getNodeSubtitle(node)}
+              <div class="fd-product-switch__subtitle">{getNodeSubtitle(node)}</div>
+              {/if}
+            </div>
+          </li>
+          {/each}
+          {/if}
+        </ul>
+      </div>
     </div>
   </div>
 </div>
@@ -56,6 +63,8 @@
   export let getTestId;
   export let hasOpenUIicon;
   export let getNodeLabel;
+  export let getNodeSubtitle;
+  export let noSubTitle;
 
   // [svelte-upgrade suggestion]
   // review these functions and remove unnecessary 'export' keywords
@@ -69,35 +78,7 @@
   $mobileTopNavHeight: 64px;
 
   .y-fd-modal--full-screen {
-    z-index: 1000;
-    position: fixed;
-    box-sizing: border-box;
-    top: $topNavHeight;
-    left: 0;
-    margin: auto auto;
-
-    .fd-modal__content {
-      $margin: 0px; //distance from viewport borders. Please remove the line below (border-radius) if not set to 0.
-      border-radius: 0;
-
-      width: calc(100vw - 2 * #{$margin});
-      height: 100vh; /* Fallback for browsers that do not support Custom Properties */
-      height: calc(var(--vh, 1vh) * 100);
-      margin: $margin;
-      display: grid;
-      grid-template-rows: 1fr auto; //no row for title by default
-    }
-
-    .fd-modal__title {
-      text-align: left;
-      @at-root {
-        .y-fd-modal--full-screen .fd-modal__content {
-          grid-template-rows: auto 1fr auto; //add another row to the top of the modal if __title is present
-        }
-      }
-    }
-
-    .fd-modal__body {
+    .fd-product-switch__body {
       max-height: calc(100vh - #{$topNavHeight} - #{$mobileTopNavHeight});
       max-height: calc(
         var(--vh, 1vh) * 100 - #{$topNavHeight} - #{$mobileTopNavHeight}
@@ -107,48 +88,21 @@
     }
   }
 
-  @media (min-width: 320px) {
-    .fd-action-bar__back {
-      display: block !important;
-    }
-  }
-
   @media (max-width: 1023px) {
-    .y-full-width-list {
-      &__icon {
+    .fd-product-switch__body--mobile {
+      .fd-product-switch__icon {
         img {
-          width: 16px;
-          vertical-align: top;
+          max-width: 24px;
         }
       }
-    }
-  }
 
-  .y-full-width-list {
-    width: 100%;
-    text-align: left;
-    list-style: none;
+      .y-has-no-subtitle {
+        align-items: center;
 
-    &__item {
-      display: block;
-      padding: 12px 15px;
-      cursor: pointer;
-      cursor: pointer;
-
-      &:hover {
-        background: #f5faff;
-        .y-full-width-list__title {
-          font-weight: bold;
+        .fd-product-switch__text {
+          height: auto;
         }
       }
-    }
-
-    &__title {
-      color: #515559;
-    }
-
-    &__subtitle {
-      color: #74777a;
     }
   }
 </style>

@@ -24,6 +24,15 @@ The lerna-changelog tool detects changes based on PR labels and maps them to sec
   }
 -->
 
+## [v0.7.5] (2020-02-14)
+
+#### :rocket: Added
+* [#1083](https://github.com/SAP/luigi/pull/1083) Open profile items in a modal window ([@zarkosimic](https://github.com/zarkosimic))
+
+#### :bug: Fixed
+* [#1081](https://github.com/SAP/luigi/pull/1081) CustomMessages from external mf does not work ([@JohannesDoberer](https://github.com/JohannesDoberer))
+* [#1068](https://github.com/SAP/luigi/pull/1068) Fix fd-modal mix-up ([@JohannesDoberer](https://github.com/JohannesDoberer))
+
 ## [v0.7.4] (2020-01-29)
 
 #### :rocket: Added
@@ -644,3 +653,4 @@ The lerna-changelog tool detects changes based on PR labels and maps them to sec
 [v0.7.2]: https://github.com/SAP/luigi/compare/v0.7.1...v0.7.2
 [v0.7.3]: https://github.com/SAP/luigi/compare/v0.7.2...v0.7.3
 [v0.7.4]: https://github.com/SAP/luigi/compare/v0.7.3...v0.7.4
+[v0.7.5]: https://github.com/SAP/luigi/compare/v0.7.4...v0.7.5

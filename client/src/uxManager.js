@@ -159,9 +159,7 @@ class UxManager extends LuigiClientBase {
     settings.id = helpers.getRandomId();
     if (settings?.closeAfter < 100) {
       console.warn(
-        `Message with id='${
-          settings.id
-        }' has too small 'closeAfter' value. It needs to be at least 100ms.`
+        `Message with id='${settings.id}' has too small 'closeAfter' value. It needs to be at least 100ms.`
       );
       settings.closeAfter = undefined;
     }

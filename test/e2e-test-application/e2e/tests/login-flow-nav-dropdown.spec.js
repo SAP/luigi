@@ -165,7 +165,7 @@ describe('TopNavDropDown', () => {
       cy.get('[data-testid="mobile-topnav-close"]').click();
 
       //no mobile topnav dropdown is visible
-      cy.get('.fd-product-switcher').should('not.be.visible');
+      cy.get('.fd-product-switch').should('not.be.visible');
 
       //the path wasn't changed
       cy.expectPathToBe('/overview');

@@ -80,7 +80,7 @@ describe('Navigation', () => {
       .should('have.class', 'is-selected');
 
     cy.visit('projects/pr1');
-    cy.get('.fd-side-nav__subitem')
+    cy.get('.fd-nested-list__item')
       .contains('Project Settings')
       .click()
       .should('have.class', 'is-selected');
@@ -129,13 +129,13 @@ describe('Navigation', () => {
     cy.get('.fd-shellbar')
       .contains('Projects')
       .click();
-    cy.get('.fd-app__sidebar .fd-side-nav__item')
+    cy.get('.fd-app__sidebar .fd-nested-list__item')
       .contains('Project One')
       .click();
 
-    cy.get('.fd-side-nav__subitem')
+    cy.get('.fd-nested-list__item')
       .contains('Project Settings')
-      .find('.fd-side-nav__icon')
+      .find('.fd-nested-list__icon')
       .should('exist');
   });
 
@@ -268,7 +268,7 @@ describe('Navigation', () => {
 
       //go to absolute path
       goToAnotherNodeFeature();
-      cy.get('.fd-app__sidebar .fd-side-nav__item')
+      cy.get('.fd-app__sidebar .fd-nested-list__item')
         .contains('Go to absolute path')
         .click();
 
@@ -276,7 +276,7 @@ describe('Navigation', () => {
 
       //go to relative path from the parent node
       goToAnotherNodeFeature();
-      cy.get('.fd-app__sidebar .fd-side-nav__item')
+      cy.get('.fd-app__sidebar .fd-nested-list__item')
         .contains('Go to relative path')
         .click();
 
@@ -284,13 +284,13 @@ describe('Navigation', () => {
 
       //go to relative path from node that is a sibiling
       goToAnotherNodeFeature();
-      cy.get('.fd-app__sidebar .fd-side-nav__item')
+      cy.get('.fd-app__sidebar .fd-nested-list__item')
         .contains('Keep Selected Example')
         .click();
 
       cy.expectPathToBe('/projects/pr2/avengers');
 
-      cy.get('.fd-app__sidebar .fd-side-nav__item')
+      cy.get('.fd-app__sidebar .fd-nested-list__item')
         .contains('Go to relative path')
         .click();
 
@@ -301,7 +301,7 @@ describe('Navigation', () => {
       cy.get('.fd-shellbar')
         .contains('Projects')
         .click();
-      cy.get('.fd-app__sidebar .fd-side-nav__item')
+      cy.get('.fd-app__sidebar .fd-nested-list__item')
         .contains('Project One')
         .click();
 
@@ -368,11 +368,11 @@ describe('Navigation', () => {
           .contains('More')
           .click();
 
-        cy.get('.fd-menu')
+        cy.get('.fd-nested-list')
           .contains('Default Child node Example')
           .click();
 
-        cy.get('.fd-side-nav__subitem')
+        cy.get('.fd-nested-list__item')
           .contains('First Child')
           .click();
         cy.expectPathToBe('/projects/tabNav/dps1');
@@ -406,8 +406,9 @@ describe('Navigation', () => {
         cy.visit('/projects/tabNav/avengers/captain-america/super-power');
         cy.get('.luigi__more').should('have.attr', 'aria-selected', 'true');
         cy.get('.luigi__more').click();
-        cy.get('.fd-menu__item')
+        cy.get('.fd-nested-list__title')
           .contains('Keep Selected Example')
+          .parent()
           .should('have.attr', 'aria-selected', 'true');
       });
 

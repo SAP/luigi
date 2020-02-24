@@ -70,11 +70,10 @@ jobs:
           packages:
             # Ubuntu 16+ does not install this dependency by default, so we need to install it ourselves
             - libgconf-2-4
-            # - chromium-browser=79.0.3945.130-0ubuntu0.16.04.1 # update also if you upgrade from Xenial
-        # chrome: stable
+            #- chromium-browser=79.0.3945.130-0ubuntu0.16.04.1 # update also if you upgrade from Xenial
         chrome: beta
       before_install:
-        # - chromium-browser --headless --disable-gpu --remote-debugging-port=9222 http://localhost &
+        #- chromium-browser --headless --disable-gpu --remote-debugging-port=9222 http://localhost &
         - google-chrome-beta --headless --disable-gpu --remote-debugging-port=9222 http://localhost &
       before_cache:
         - rm -rf ~/.npm/_logs
