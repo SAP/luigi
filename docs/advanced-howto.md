@@ -1,13 +1,13 @@
 <!-- meta
 {
   "node": {
-    "label": "Tutorials",
+    "label": "Expert how-to guides",
     "category": {
-      "label": "Basics"
+      "label": "Advanced"
     },
     "metaData": {
-      "categoryPosition": 1,
-      "position": 3
+      "categoryPosition": 4,
+      "position": 1
     }
   }
 }
