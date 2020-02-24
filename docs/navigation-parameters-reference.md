@@ -257,7 +257,7 @@ settings: {
 
 ### virtualTree
 - **type**: boolean
-- **description**: marks the node as the beginning of a virtual tree. Allows navigation to any of its children's paths without the need of specifying nested children. The path that comes after the node marked as **virtualTree** is appended to its **viewUrl**. [**keepSelectedForChildren**](#keepSelectedForChildren) is automatically applied. This feature is often used in combination with [**LinkManager().withoutSync().navigate**](luigi-client-api.md#withoutsync) to be able to keep a microfrontend's existing router links.
+- **description**: marks the node as the beginning of a virtual tree. Allows navigation to any of its children's paths without the need of specifying nested children. The path that comes after the node marked as **virtualTree** is appended to its **viewUrl**. [**keepSelectedForChildren**](#keepSelectedForChildren) is automatically applied. This feature is often used in combination with [LinkManager().withoutSync().navigate](luigi-client-api.md#withoutsync) to be able to keep a micro frontend's existing router links.
 - **example**:
     In this example, navigating to `core.tld/settings/some/nested/view` will result in opening `/sampleapp.html#/settings/some/nested/view`.
     ```javascript
