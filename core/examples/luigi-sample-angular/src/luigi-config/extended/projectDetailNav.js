@@ -109,8 +109,7 @@ export const projectDetailNavStructure = projectId => [
     viewUrl: '/sampleapp.html#/projects/' + projectId + '/settings',
     icon: 'settings',
     testId: 'myTestId'
-  }
-  /*,
+  },
   {
     pathSegment: 'miscellaneous',
     constraints: ['unicorns'],
@@ -259,5 +258,5 @@ export const projectDetailNavStructure = projectId => [
       sameWindow: true
     },
     icon: 'globe'
-  }*/
+  }
 ];

@@ -11,34 +11,6 @@ import { NodeDataManagementStorage } from '../../services/node-data-management';
 import { LuigiConfig } from '../../core-api';
 
 class NavigationClass {
-  childrenProviderRequiresEvaluation(node) {
-    let nodeInStorage = NodeDataManagementStorage.getData(node);
-    const result =
-      nodeInStorage &&
-      nodeInStorage._childrenProvider &&
-      (!nodeInStorage._childrenProviderUsed ||
-        !LuigiConfig._configModificationTimestamp ||
-        nodeInStorage._childrenProviderUsed <
-          new Date(LuigiConfig._configModificationTimestamp.getTime()));
-
-    if (result) {
-      NodeDataManagementStorage.addData(node, {
-        _childrenProviderUsed: new Date()
-      });
-    }
-    return result;
-  }
-  rootNodeRequiresEvaluation() {
-    const result =
-      !this.rootNode ||
-      !this._rootNodeProviderUsed ||
-      this._rootNodeProviderUsed <
-        new Date(LuigiConfig._configModificationTimestamp.getTime());
-    if (result) {
-      this._rootNodeProviderUsed = new Date();
-    }
-    return result;
-  }
   async getNavigationPath(rootNavProviderPromise, path = '') {
     try {
       const activePath = GenericHelpers.getTrimmedUrl(path);
@@ -97,37 +69,6 @@ class NavigationClass {
     }
   }
 
-  // async getChildren(node, context) {
-  //   if (!node) {
-  //     return [];
-  //   }
-  //   if (!node._childrenProvider) {
-  //     node._childrenProvider = node.children;
-  //   }
-  //   if (this.childrenProviderRequiresEvaluation(node)) {
-  //     try {
-  //       node._children =
-  //         (await AsyncHelpers.getConfigValueFromObjectAsync(
-  //           node,
-  //           '_childrenProvider',
-  //           context || node.context
-  //         ))
-  //           .map(n => this.getExpandStructuralPathSegment(n))
-  //           .map(n => this.bindChildToParent(n, node)) || [];
-
-  //       node.children = this.getAccessibleNodes(node, context);
-  //       return node.children;
-  //     } catch (err) {
-  //       console.error('Could not lazy-load children for node', err);
-  //     }
-  //   } else if (node._children) {
-  //     node.children = this.getAccessibleNodes(node, context);
-  //     return node.children;
-  //   } else {
-  //     return [];
-  //   }
-  // }
-
   // dynamic node handle is
   async getChildren(node, context) {
     if (!node) {
@@ -136,28 +77,32 @@ class NavigationClass {
     let children = [];
     if (!NodeDataManagementStorage.hasChildren(node)) {
       try {
+        children = await AsyncHelpers.getConfigValueFromObjectAsync(
+          node,
+          'children',
+          context || node.context
+        );
+        if (children === undefined) {
+          children = [];
+        }
         children =
-          (await AsyncHelpers.getConfigValueFromObjectAsync(
-            node,
-            '_childrenProvider',
-            context || node.context
-          ))
+          children
             .map(n => this.getExpandStructuralPathSegment(n))
             .map(n => this.bindChildToParent(n, node)) || [];
       } catch (err) {
         console.error('Could not lazy-load children for node', err);
       }
     } else {
-      let data = NodeDataManagementStorage.getData(node);
+      let data = NodeDataManagementStorage.getChildren(node);
       if (data) children = data.children;
     }
     let filteredChildren = this.getAccessibleNodes(node, children, context);
-    NodeDataManagementStorage.addData(node, { children, filteredChildren });
+    NodeDataManagementStorage.setChildren(node, { children, filteredChildren });
     return filteredChildren;
   }
 
   getChildrenFromCache(node) {
-    let data = NodeDataManagementStorage.getData(node);
+    let data = NodeDataManagementStorage.getChildren(node);
     if (data) return data.filteredChildren;
     else [];
   }
@@ -309,10 +254,9 @@ class NavigationClass {
       const lastElement = pathData[pathData.length - 1];
       const oneBeforeLast = pathData[pathData.length - 2];
       const nestedNode = pathData.length > 1 ? oneBeforeLast : lastElement;
-      //TODO Cache
-      //check if getChildrenFromCache()
-      if (nestedNode && nestedNode.children) {
-        return nestedNode.children;
+
+      if (nestedNode && NodeDataManagementStorage.hasChildren(nestedNode)) {
+        return this.getChildrenFromCache(nestedNode);
       }
     }
 
