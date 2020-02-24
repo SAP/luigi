@@ -15,7 +15,7 @@ meta -->
 
 # Expert how-to guides
 
-This is a collection of advanced use cases and example implementations. If you are new to Luigi, you might want to have a look at our [**Getting Started**](getting-started.md) section first or one of our SPA implementations in the **Examples** section on the left.
+This is a collection of advanced use cases and example implementations. If you are new to Luigi, you might want to have a look at our [Getting Started](getting-started.md) section first or one of our SPA implementations in the **Examples** section on the left.
 
 <!-- accordion:start -->
 
@@ -23,13 +23,13 @@ This is a collection of advanced use cases and example implementations. If you a
 
 It can be convenient to keep an existing routing strategy, and be able to use an existing micro frontend as drop-in without the need to refactor everything to `LuigiClient.linkManager()`.
 
-Concept wise it is necessary to update the Luigi Core URL when routing internally with the micro frontend router, but without an update of the URL on Luigi Client side. This can be achieved by using the `linkManager()` [**withoutSync**](luigi-client-api.md#withoutsync) method.
+It is necessary to update the Luigi Core URL when routing internally with the micro frontend router, but without an update of the URL on Luigi Client side. This can be achieved by using the `linkManager()` [withoutSync](luigi-client-api.md#withoutsync) method.
 
-The following example shows how to configure the navigation node and use router events for automatic update of the url when using the micro frontends built in router.
+The following example shows how to configure the navigation node and use router events for automatic update of the URL when using the micro frontends built in router.
 
-Be aware that this is a very simple example for navigation and special cases like modals, split views and other functionalities still require to use `LuigiClient`.
+Be aware that this is a very simple example for navigation. Special cases like modals, split views and other functionalities still require the use of [Luigi Client](luigi-client-api.md).
 
-For keeping the example simple, we use [**virtualTree**](navigation-parameters-reference.md#virtualtree) to allow any nested navigation. This is not mandatory, you can always specify the node tree by yourself and still use automatic navigation with router events.
+To keep the example simple, we use [virtualTree](navigation-parameters-reference.md#virtualtree) to allow any nested navigation. This is not mandatory; you can always specify the node tree by yourself and still use automatic navigation with router events.
 
 #### Luigi node configuration
 
@@ -45,7 +45,7 @@ For keeping the example simple, we use [**virtualTree**](navigation-parameters-r
 
 #### Use Angular Router for navigation
 
-Angular provides Router events. We are reacting on NavigationEnd to update the URL after a successful route change.
+Angular provides [Router events](https://angular.io/guide/router#router-events). We are reacting on `NavigationEnd` to update the URL after a successful route change.
 
 We assume that the whole Angular app is one micro frontend and has its routes declared on the root level:
 
@@ -89,7 +89,7 @@ Implement `luigi-auto-navigation.service.ts`, which is globally imported in our 
     }
 ```
 
-Other than adding the service, which also could be implemented as a RouteGuard or similar, the micro frontend is unchanged and uses `[routerLink='']` or other functionalities to navigate.
+Other than adding the service, which also could be implemented as a `RouteGuard` or similar, the micro frontend is unchanged and uses `[routerLink='']` or other functionalities to navigate.
 
 ### Authenticate Luigi with Google Cloud Identity
 
