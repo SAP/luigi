@@ -21,35 +21,30 @@ describe('Navigation', () => {
         cy.expectPathToBe('/overview');
       });
     });
-    it('Core API open and close in SplitView', () => {
+    it('Core API open and close in SplitView', done => {
+      cy.get('.fd-shellbar').should('be.visible');
       cy.window().then(win => {
         const handle = win.Luigi.navigation().openAsSplitView('/ext', {
           title: 'Preserved Split View',
           size: '40',
           collapsed: false
         });
+        cy.get('#splitViewContainer').should('be.visible');
+        cy.expect(handle.exists()).to.be.true;
+
+        // It is not totally clear why it is not working without timeout, but it seems like a race condition
         // TODO: Check stackoverflow for solution
         // https://stackoverflow.com/questions/60338487/cypress-executes-assertion-immediately-on-function-that-returns-a-handle
-        // cy.expect(handle.exists()).to.be.true;
-        handle.close();
-        // cy.expect(handle.exists()).to.be.false;
+        setTimeout(() => {
+          handle.close();
+          setTimeout(() => {
+            cy.expect(handle.exists()).to.be.false;
+            cy.get('#splitViewContainer').should('not.be.visible');
+            done();
+          }, 50);
+        }, 50);
       });
     });
-    // it('Core API open and close in SplitView', () => {
-    //   cy.window().then(win => {
-    //     const handle = win.Luigi.navigation().openAsSplitView('/ext', {
-    //       title: 'Preserved Split View',
-    //       size: '40',
-    //       collapsed: false,
-    //     });
-    //     cy.get('#splitViewContainer').should('be.visible');
-    //     cy.expect(handle.exists()).to.be.true;
-    //     handle.close();
-    //     cy.expect(handle.exists()).to.be.false;
-    //     cy.get('#splitViewContainer').should('not.be.visible');
-    //     cy.expect(handle.exists()).to.be.false;
-    //   });
-    // });
     it('Core API collapse in SplitView', () => {
       cy.window().then(win => {
         const handle = win.Luigi.navigation().openAsSplitView('/ext', {
