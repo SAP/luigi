@@ -1,7 +1,7 @@
 <!-- meta
 {
   "node": {
-    "label": "Expert how-to guides",
+    "label": "Expert scenarios",
     "category": {
       "label": "Advanced"
     },
@@ -13,13 +13,13 @@
 }
 meta -->
 
-# Expert how-to guides
+# Expert scenarios
 
 This is a collection of advanced use cases and example implementations. If you are new to Luigi, you might want to have a look at our [Getting Started](getting-started.md) section first or one of our SPA implementations in the **Examples** section on the left.
 
 <!-- accordion:start -->
 
-### Use a SPA router for navigation and keep Luigi Core URL in sync
+### Using a SPA router for navigation and keeping Luigi Core URL in sync
 
 It can be convenient to keep an existing routing strategy, and be able to use an existing micro frontend as drop-in without the need to refactor everything to `LuigiClient.linkManager()`.
 
@@ -43,7 +43,7 @@ To keep the example simple, we use [virtualTree](navigation-parameters-reference
     }
 ```
 
-#### Use Angular Router for navigation
+#### Using Angular Router for navigation
 
 Angular provides [Router events](https://angular.io/guide/router#router-events). We are reacting on `NavigationEnd` to update the URL after a successful route change.
 
@@ -91,7 +91,7 @@ Implement `luigi-auto-navigation.service.ts`, which is globally imported in our 
 
 Other than adding the service, which also could be implemented as a `RouteGuard` or similar, the micro frontend is unchanged and uses `[routerLink='']` or other functionalities to navigate.
 
-### Authenticate Luigi with Google Cloud Identity
+### Authenticating Luigi with Google Cloud Identity
 
 To use Luigi with a Google account, follow these steps:
 
