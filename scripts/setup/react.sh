@@ -12,7 +12,7 @@ npx create-react-app $folder && cd $folder
 echo yes | npm run eject
 
 #install dependencies
-npm i -P @kyma-project/luigi-core @kyma-project/luigi-client fiori-fundamentals react-router-dom
+npm i -P @luigi-project/core @luigi-project/client fiori-fundamentals react-router-dom
 npm i copy-webpack-plugin --save-dev
 
 # replace strings in some places

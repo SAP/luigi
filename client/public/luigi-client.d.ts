@@ -113,7 +113,7 @@ export declare interface UxManager {
    * @param {string} settings.links.LINK_KEY.url url to navigate when you click the link. Currently, only internal links are supported in the form of relative or absolute paths.
    * @returns {promise} which is resolved when the alert is dismissed
    * @example
-   * import LuigiClient from '@kyma-project/luigi-client';
+   * import LuigiClient from '@luigi-project/client';
    * const settings = {
    *  text: Ut enim ad minim veniam, {goToHome} quis nostrud exercitation ullamco {relativePath} laboris nisi ut aliquip ex ea commodo consequat.
    *    Duis aute irure dolor {goToOtherProject},
@@ -438,7 +438,7 @@ export type setTargetOrigin = (targetOrigin: string) => void;
  * @param {string} message.id a string containing the message id
  * @param {*} message.MY_DATA_FIELD any other message data field
  * @example
- * import LuigiClient from '@kyma-project/luigi-client';
+ * import LuigiClient from '@luigi-project/client';
  * LuigiClient.sendCustomMessage({id: 'environment.created', production: false})
  * @memberof Lifecycle
  */

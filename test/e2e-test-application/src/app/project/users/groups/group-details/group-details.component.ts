@@ -1,6 +1,6 @@
 import { Component, OnInit, ChangeDetectorRef, OnDestroy } from '@angular/core';
 import { Subscription } from 'rxjs';
-import { getPathParams, linkManager } from '@kyma-project/luigi-client';
+import { getPathParams, linkManager } from '@luigi-project/client';
 
 import {
   LuigiContextService,

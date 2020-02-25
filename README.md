@@ -53,8 +53,8 @@ If you want to support Internet Explorer 11 in your application, update your Lui
 import {
   linkManager,
   uxManager
-} from '@kyma-project/luigi-client/luigi-client-ie11';
-// } from '@kyma-project/luigi-client';
+} from '@luigi-project/client/luigi-client-ie11';
+// } from '@luigi-project/client';
 ```
 
 <!-- add-attribute:class:warning -->

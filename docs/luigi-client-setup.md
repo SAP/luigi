@@ -21,16 +21,16 @@ Luigi Client contains a library that allows your application to use all features
 
 Install the client in your project using npm:
 ```bash
-npm install @kyma-project/luigi-client
+npm install @luigi-project/client
 ```
 
 Import the client in places where you want to use it, depending on the environment of your choice:
 ```javascript
-var LuigiClient = require('@kyma-project/luigi-client');
+var LuigiClient = require('@luigi-project/client');
 ```
 or
 ```javascript
-import LuigiClient from '@kyma-project/luigi-client';
+import LuigiClient from '@luigi-project/client';
 ```
 or, if you are not using any bundler, Luigi is also available as a global object:
 ```javascript
