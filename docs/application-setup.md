@@ -216,4 +216,4 @@ $ npm start
 ```
 <!-- accordion:end -->
 
-2. Open the directory where Luigi is installed. Search for the `luigi-config.js` file which can be used to configure Luigi [navigation](navigation-configuration.md), [authorization](authorization-configuration.md), [general settings](general-setting.md) and more.
+2. Open the directory where Luigi is installed. Search for the `luigi-config.js` file which you can use to configure Luigi [navigation](navigation-configuration.md), [authorization](authorization-configuration.md), [general settings](general-setting.md) and more.
