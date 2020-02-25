@@ -142,5 +142,5 @@ In the **Examples** section of our documentation, you can find links to several 
 
 You can install them by following the instructions in the `README` file of each example.
 
-**Advanced users** can install our end-to-end test example application which includes all of Luigi's features in one place:
+**Advanced users** can install our end-to-end test sample application which includes all of Luigi's features in one place:
 * [e2e example](https://github.com/SAP/luigi/tree/master/test/e2e-test-application)
