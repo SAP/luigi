@@ -104,7 +104,7 @@ npm run start
 ```
 <!-- accordion:end -->
 
-3. Open the directory where Luigi is installed. Search for the `luigi-config.js` file which can be used to configure Luigi [navigation](navigation-configuration.md), [authorization](authorization-configuration.md), [general settings](general-setting.md) and more.
+3. Open the directory where Luigi is installed. Search for the `luigi-config.js` file which you can use to configure Luigi [navigation](navigation-configuration.md), [authorization](authorization-configuration.md), [general settings](general-setting.md) and more.
 
 ## Application setup for SAPUI5/OpenUI5
 
