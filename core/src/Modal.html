@@ -7,7 +7,7 @@
         <h1 class="fd-modal__title">{modalSettings.title}</h1>
         {/if}
         <button
-          class="fd-button--light fd-modal__close"
+          class="fd-button--light fd-modal__close sap-icon--decline sap-icon--l"
           on:click="{() => dispatch('close')}"
           aria-label="close"
         ></button>
@@ -124,6 +124,8 @@
     width: 100%;
     overflow: auto;
     -webkit-overflow-scrolling: touch;
+    background-color: #fff;
+    background-color: var(--sapGroup_ContentBackground, #fff);
   }
   .iframeModalCtn :global(iframe) {
     width: 100%;

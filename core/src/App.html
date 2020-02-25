@@ -44,7 +44,7 @@
     aria-label="Loading"
   >
     <div class="fd-spinner">
-      <div></div>
+      <div class="fd-spinner__body"></div>
     </div>
   </div>
   {/if}
@@ -1024,7 +1024,7 @@
     } else if (responsiveNavSetting === 'simpleMobileOnly') {
       document.body.classList.add('lui-simpleSlideInNav', 'lui-mobileOnly');
       simpleSlideInNav = true;
-    } else if (responsiveNavSetting === 'semiCollapsible') {
+    } else if (responsiveNavSetting === 'semiCollapsible' || 'Fiori3') {
       document.body.classList.add('lui-semiCollapsible');
     }
     thirdPartyCookiesCheck = LuigiConfig.getConfigValue(
@@ -1062,15 +1062,16 @@
 
   $topNavHeight: 48px;
   $topNavHeightTab: 51px;
-  $leftNavWidth: 320px;
-  $leftNavWidthCollapsed: 40px;
+  $leftNavWidth: 15rem;
+  $leftNavWidthCollapsed: 2.75rem;
   $desktopMinWidth: 600px;
 
   :global(html) {
     box-sizing: border-box;
-    font-size: 14px;
+    font-size: 16px;
     position: fixed;
     width: 100%;
+    min-height: 100%;
   }
   :global(body) {
     -webkit-font-smoothing: antialiased;
@@ -1233,9 +1234,6 @@
       display: inline;
     }
 
-    :global(.fd-app__sidebar) {
-      width: $leftNavWidth;
-    }
     :global(body.lui-simpleSlideInNav.lui-leftNavToggle) {
       .iframeContainer,
       .spinnerContainer {
@@ -1315,5 +1313,106 @@
         position: absolute;
       }
     }
+  }
+
+  //IE11 fixes
+  :global(.fd-nested-list__content),
+  :global(.fd-nested-list__link) {
+    &.has-child:after {
+      height: 100%;
+    }
+  }
+
+  :global(.fd-side-nav--condensed) {
+    :global(.fd-nested-list__link) {
+      font-size: 10px;
+      &.has-child:after {
+        height: 0;
+      }
+    }
+  }
+
+  //Fixing issues for fundamental styles
+  :global(.fd-shellbar__button) {
+    padding-left: 12px;
+    padding-right: 12px;
+  }
+
+  :global(.fd-shellbar__button .is-hover, .fd-shellbar__button:hover) {
+    color: var(--sapShell_TextColor, #d1e8ff);
+  }
+
+  //Overwrites with SAP variables
+  :global(.fd-page) {
+    background-color: var(--sapBackgroundColor, #edeff0);
+  }
+
+  :global(.fd-shellbar) {
+    background-color: var(--sapShellColor, #354a5f);
+    border-bottom: 1px solid var(--sapShell_BorderColor, #354a5f);
+  }
+
+  :global(.fd-shellbar__subtitle, .fd-shellbar__title) {
+    color: var(--sapShell_TextColor, #fff);
+  }
+
+  :global(.fd-product-menu__control:after) {
+    border-top-color: var(--sapShell_TextColor, #fff);
+  }
+
+  :global(.fd-shellbar__button) {
+    border: 1px solid var(--sapShell_BorderColor, #354a5f);
+    color: var(--sapShell_InteractiveTextColor, #d1e8ff);
+
+    &:focus {
+      border-color: transparent;
+    }
+
+    &.is-selected {
+      background-color: var(--sapShell_Selected_Background, #23303e);
+      border-color: var(--sapShell_InteractiveBorderColor, #7996b4);
+    }
+  }
+
+  :global(.fd-shellbar__button .is-hover, .fd-shellbar__button:hover) {
+    border: 1px solid var(--sapShell_BorderColor, transparent);
+    background-color: var(--sapShell_Hover_Background, #283848);
+  }
+
+  :global(.fd-product-menu__control) {
+    border: 0.125rem solid var(--sapShell_BorderColor, transparent);
+    padding-left: 10px;
+    padding-right: 27px;
+  }
+
+  :global(.fd-popover__body) {
+    background-color: var(--sapShell_Background, #fff);
+    border-color: var(--sapShell_BorderColor, #89919a);
+  }
+
+  :global(.fd-menu__item) {
+    background-color: var(--sapBackgroundColor, #fff);
+    color: var(--sapLinkColor, #51555a);
+  }
+
+  :global(.fd-menu__item .is-hover, .fd-menu__item:hover) {
+    color: var(--sapLink_Hover_Color, #32363a);
+  }
+
+  :global(.fd-menu__item .is-hover, .fd-menu__item:hover) {
+    background-color: var(--sapButton_Hover_Background, #fafafa);
+  }
+
+  :global(.fd-popover__body:before) {
+    border-bottom-color: var(--sapShell_Background, #fff);
+  }
+
+  :global(.fd-popover__body:after) {
+    border-bottom-color: var(--sapShell_BorderColor, #89919a);
+  }
+
+  :global(.fd-modal__content) {
+    background-color: #fff;
+    background-color: var(--sapGroup_ContentBackground, #fff);
   }
 </style>
