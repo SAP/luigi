@@ -40,54 +40,54 @@ class Navigation {
         count: projectsCounterFn
       }
     },
-    // {
-    //   hideFromNav: true,
-    //   pathSegment: 'create-environment',
-    //   viewUrl: '/sampleapp.html#/create/environment',
-    //   context: {
-    //     label: 'Create Environment'
-    //   }
-    // },
-    // {
-    //   hideFromNav: true,
-    //   pathSegment: 'environments',
-    //   viewUrl: '/sampleapp.html#/environments',
-    //   children: [
-    //     {
-    //       pathSegment: ':environmentId',
-    //       viewUrl: '/sampleapp.html#/environments/:environmentId'
-    //     }
-    //   ]
-    // },
+    {
+      hideFromNav: true,
+      pathSegment: 'create-environment',
+      viewUrl: '/sampleapp.html#/create/environment',
+      context: {
+        label: 'Create Environment'
+      }
+    },
+    {
+      hideFromNav: true,
+      pathSegment: 'environments',
+      viewUrl: '/sampleapp.html#/environments',
+      children: [
+        {
+          pathSegment: ':environmentId',
+          viewUrl: '/sampleapp.html#/environments/:environmentId'
+        }
+      ]
+    },
     {
       pathSegment: 'forbidden-sample',
       label: 'Forbidden',
       viewUrl: '/sampleapp.html#/restricted',
       constraints: ['unicorns']
     },
-    // {
-    //   pathSegment: 'settings',
-    //   label: 'Settings',
-    //   viewUrl: '/sampleapp.html#/settings',
-    //   icon: 'settings',
-    //   viewGroup: 'tets'
-    // },
-    // {
-    //   category: { label: 'Misc', icon: 'badge' },
-    //   label: 'Open Google in this tab',
-    //   externalLink: {
-    //     url: 'http://google.com',
-    //     sameWindow: true
-    //   }
-    // }, // showing an anonymous content is possible only with auto login disabled
-    // {
-    //   category: 'Misc',
-    //   pathSegment: 'all-users',
-    //   label: 'Visible for all users',
-    //   anonymousAccess: true,
-    //   viewUrl: '/sampleapp.html#/anonymous',
-    //   hideSideNav: true
-    // },
+    {
+      pathSegment: 'settings',
+      label: 'Settings',
+      viewUrl: '/sampleapp.html#/settings',
+      icon: 'settings',
+      viewGroup: 'tets'
+    },
+    {
+      category: { label: 'Misc', icon: 'badge' },
+      label: 'Open Google in this tab',
+      externalLink: {
+        url: 'http://google.com',
+        sameWindow: true
+      }
+    }, // showing an anonymous content is possible only with auto login disabled
+    {
+      category: 'Misc',
+      pathSegment: 'all-users',
+      label: 'Visible for all users',
+      anonymousAccess: true,
+      viewUrl: '/sampleapp.html#/anonymous',
+      hideSideNav: true
+    },
     {
       pathSegment: 'anonymous',
       label: 'Visible for anonymous users only',
@@ -95,84 +95,84 @@ class Navigation {
       viewUrl: '/sampleapp.html#/anonymous?exclusive=true',
       hideSideNav: true
     },
-    // {
-    //   category: 'Misc',
-    //   pathSegment: 'ext',
-    //   label: 'External Page',
-    //   loadingIndicator: {
-    //     hideAutomatically: false
-    //   },
-    //   viewUrl: '/assets/sampleexternal.html#ext',
-    //   children: [
-    //     {
-    //       pathSegment: 'one',
-    //       label: 'One',
-    //       loadingIndicator: {
-    //         hideAutomatically: false
-    //       },
-    //       icon: 'drill-up',
-    //       viewUrl: '/assets/sampleexternal.html#one'
-    //     },
-    //     {
-    //       pathSegment: 'two',
-    //       label: 'Two',
-    //       loadingIndicator: {
-    //         hideAutomatically: false
-    //       },
-    //       icon: 'drill-down',
-    //       viewUrl: '/assets/sampleexternal.html#two'
-    //     }
-    //   ]
-    // },
+    {
+      category: 'Misc',
+      pathSegment: 'ext',
+      label: 'External Page',
+      loadingIndicator: {
+        hideAutomatically: false
+      },
+      viewUrl: '/assets/sampleexternal.html#ext',
+      children: [
+        {
+          pathSegment: 'one',
+          label: 'One',
+          loadingIndicator: {
+            hideAutomatically: false
+          },
+          icon: 'drill-up',
+          viewUrl: '/assets/sampleexternal.html#one'
+        },
+        {
+          pathSegment: 'two',
+          label: 'Two',
+          loadingIndicator: {
+            hideAutomatically: false
+          },
+          icon: 'drill-down',
+          viewUrl: '/assets/sampleexternal.html#two'
+        }
+      ]
+    },
     {
       pathSegment: 'page-not-found',
       label: 'Page not found',
       viewUrl: '/assets/404.html',
       hideFromNav: true,
       hideSideNav: true
+    },
+    {
+      category: { label: 'Messages', icon: 'lightbulb' },
+      label: 'Errors',
+      pathSegment: 'errors',
+      viewUrl: '/sampleapp.html#/projects/pr1/dynamic/errors',
+      icon: 'alert',
+      context: {
+        label: 'Errors'
+      },
+      badgeCounter: {
+        label: 'Number of Errors',
+        count: () => 2
+      }
+    },
+    {
+      category: 'Messages',
+      label: 'Warnings',
+      pathSegment: 'warnings',
+      viewUrl: '/sampleapp.html#/projects/pr1/dynamic/warnings',
+      icon: 'message-warning',
+      context: {
+        label: 'Warnings'
+      },
+      badgeCounter: {
+        label: 'Number of Warnings',
+        count: () => 5
+      }
+    },
+    {
+      category: 'Messages',
+      label: 'Notifications',
+      pathSegment: 'notifications',
+      viewUrl: '/sampleapp.html#/projects/pr1/dynamic/notifications',
+      icon: 'ui-notifications',
+      context: {
+        label: 'Notifications'
+      },
+      badgeCounter: {
+        label: 'Number of Notifications',
+        count: getMockBadgeCount
+      }
     }
-    // {
-    //   category: { label: 'Messages', icon: 'lightbulb' },
-    //   label: 'Errors',
-    //   pathSegment: 'errors',
-    //   viewUrl: '/sampleapp.html#/projects/pr1/dynamic/errors',
-    //   icon: 'alert',
-    //   context: {
-    //     label: 'Errors'
-    //   },
-    //   badgeCounter: {
-    //     label: 'Number of Errors',
-    //     count: () => 2
-    //   }
-    // },
-    // {
-    //   category: 'Messages',
-    //   label: 'Warnings',
-    //   pathSegment: 'warnings',
-    //   viewUrl: '/sampleapp.html#/projects/pr1/dynamic/warnings',
-    //   icon: 'message-warning',
-    //   context: {
-    //     label: 'Warnings'
-    //   },
-    //   badgeCounter: {
-    //     label: 'Number of Warnings',
-    //     count: () => 5
-    //   }
-    // },
-    // {
-    //   category: 'Messages',
-    //   label: 'Notifications',
-    //   pathSegment: 'notifications',
-    //   viewUrl: '/sampleapp.html#/projects/pr1/dynamic/notifications',
-    //   icon: 'ui-notifications',
-    //   context: {
-    //     label: 'Notifications'
-    //   },
-    //   badgeCounter: {
-    //     label: 'Number of Notifications',
-    //     count: getMockBadgeCount
-    //   }
-    // }
   ];
 
   getContextSwitcherActions = () => {
@@ -234,8 +234,6 @@ class Navigation {
     defaultLabel: 'Select Environment ...',
     parentNodePath: '/environments', // absolute path
     lazyloadOptions: true, // load options on click instead on page load
-    preserveSubPathOnSwitch: true,
-    // alwaysShowDropdown: false, // disable dropdown if there is only one option and no actions
     options: () =>
       [...Array(10).keys()]
         .filter(n => n !== 0)
