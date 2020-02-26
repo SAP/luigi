@@ -17,6 +17,32 @@ meta -->
 
 <!-- accordion:start -->
 
+### Internet Explorer 11 (IE11)
+
+IE11 related content is now in a separated package.
+
+Install the client in your project using npm:
+```bash
+npm install @luigi-project/client-ie11
+npm install @luigi-project/core-ie11
+```
+
+Import the client in places where you want to use it, depending on the environment of your choice:
+```javascript
+var LuigiClient = require('@luigi-project/client-ie11');
+var LuigiCore = require('@luigi-project/core-ie11');
+```
+or
+```javascript
+import LuigiClient from '@luigi-project/client-ie11';
+import LuigiCore from '@luigi-project/core-ie11';
+```
+or, if you are not using any bundler, Luigi is still available as a global object:
+```javascript
+window.LuigiClient
+window.Luigi
+```
+
 ### Authorization Providers
 
 We have excluded the default authorization providers from Luigi Core and published them as separate modules.

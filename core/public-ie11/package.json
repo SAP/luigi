@@ -1,18 +1,19 @@
 {
-  "name": "@luigi-project/client",
+  "name": "@luigi-project/core",
   "version": "1.0.0-next.0",
   "description": "Javascript library supporting consumers of the Luigi framework",
   "license": "Apache-2.0",
-  "main": "luigi-client.js",
+  "main": "luigi-ie11.js",
   "repository": {
     "type": "git",
     "url": "ssh://github.com/SAP/luigi.git"
   },
   "publishConfig": {
-    "tag": "luigi-client"
+    "tag": "luigi"
   },
   "keywords": [
     "luigi",
+    "core",
     "UI",
     "extensibility",
     "micro-frontends",

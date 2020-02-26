@@ -103,6 +103,8 @@ setLuigiNpmToken
 prepublishChecks
 publishPackage "core" "core/public"
 publishPackage "client" "client/public"
+publishPackage "core" "core/public-ie11"
+publishPackage "client" "client/public-ie11"
 
 if ( prepublishCheck "plugins/auth/public/auth-oauth2" ); then
   publishPackage "plugins" "plugins/auth/public/auth-oauth2"
