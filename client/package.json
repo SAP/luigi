@@ -25,7 +25,7 @@
       "compression": "none"
     },
     {
-      "path": "./public/luigi-client-ie11.js",
+      "path": "./public-ie11/luigi-client-ie11.js",
       "maxSize": "100 kB",
       "compression": "none"
     }
