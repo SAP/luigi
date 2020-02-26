@@ -11,10 +11,15 @@ source $BASE_DIR/shared/bashHelpers.sh
 # @luigi-project npm token
 function setLuigiNpmToken {
   if [ "$TRAVIS" = "true" ]; then
+    if [ "$NPM_LUI_AUTH_TOKEN" = "" ]; then
+     echoe "NPM_LUI_AUTH_TOKEN is not set, cannot continue publishing."
+     exit 1
+    fi
+
     # setup token when running in travis
     echo "setLuigiNpmToken"
     echo "//registry.npmjs.org/:_authToken=$NPM_LUI_AUTH_TOKEN" > ~/.npmrc
-    # npm whoami
+    npm whoami
   fi
 }
 
