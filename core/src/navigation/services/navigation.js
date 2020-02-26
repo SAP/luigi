@@ -19,8 +19,10 @@ class NavigationClass {
         console.error('No navigation nodes provided in the configuration.');
         return [{}];
       }
-
-      let rootNode = NodeDataManagementStorage.getRootNode();
+      let rootNode;
+      if (NodeDataManagementStorage.hasRootNode()) {
+        rootNode = NodeDataManagementStorage.getRootNode().node;
+      }
       if (!rootNode) {
         const topNavNodes = await rootNavProviderPromise;
         if (GenericHelpers.isObject(topNavNodes)) {

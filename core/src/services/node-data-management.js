@@ -3,7 +3,13 @@ class NodeDataManagementStorageClass {
   constructor() {
     this.dataManagement = new Map();
   }
-
+  /**
+   *
+   * @param {any} node
+   * @param {any} value
+   * Node will be stored as key and value as value.
+   *
+   */
   setChildren(node, value) {
     if (node && value) {
       if (GenericHelpers.isObject(value)) {
@@ -26,29 +32,48 @@ class NodeDataManagementStorageClass {
     }
   }
 
+  /**
+   *
+   * @param {any} node
+   * return the map entry which belongs to the node, stored as key
+   */
   getChildren(node) {
-    return node ? this.dataManagement.get(node) : [];
+    return node ? this.dataManagement.get(node) : {};
   }
 
+  /**
+   *
+   * @param {any} node
+   * Checks if there is a entry of given node
+   */
   hasChildren(node) {
     let data = this.getChildren(node);
     return data && data.hasOwnProperty('children');
   }
 
+  /**
+   *
+   * @param {any} node
+   * Stores root node as object with key '_luigiRootNode'.
+   */
   setRootNode(node) {
     this.dataManagement.set('_luigiRootNode', { node });
   }
 
-  /*
-    Get the rootNode 
-    */
+  /**
+   * Returns the root node
+   */
   getRootNode() {
-    this.dataManagement.get('_luigiRootNode');
+    return this.dataManagement.get('_luigiRootNode');
+  }
+
+  hasRootNode() {
+    return this.getRootNode() ? true : false;
   }
 
   /* 
-    Clear the map and remove all key/values from map.
-    */
+      Clear the map and remove all key/values from map.
+      */
   deleteCache() {
     this.dataManagement.clear();
   }
