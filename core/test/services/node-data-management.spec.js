@@ -1,5 +1,6 @@
 const chai = require('chai');
 const expect = chai.expect;
+const assert = chai.assert;
 import { NodeDataManagementStorage } from '../../src/services/node-data-management';
 
 describe('NodeDataManagementStorage', function() {
@@ -17,6 +18,9 @@ describe('NodeDataManagementStorage', function() {
   afterEach(() => {
     // reset
     NodeDataManagementStorage.deleteCache();
+  });
+  it('constructor values', () => {
+    assert.exists(NodeDataManagementStorage.dataManagement);
   });
   describe('setChildren', function() {
     it('fill the cache with an node as key and an object as value using setChildren', () => {
