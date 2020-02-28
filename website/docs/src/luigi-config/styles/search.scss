@@ -1,0 +1,35 @@
+
+// keep in sync with core/src/utilities/constants.js CSS_BREAKPOINTS.desktopMinWidth
+$desktopMinWidth: 600px;
+
+$fd-search-closed-control-body-width: 250px;
+
+#lui-search-button {
+  position: relative;
+  z-index: 2;
+}
+.algolia-autocomplete {
+  display: block !important;
+}
+.fd-search-input__closedcontrol {
+  width: $fd-search-closed-control-body-width;
+  &[aria-hidden="true"],
+  &.is-hidden {
+    width: $fd-search-closed-control-body-width;
+  }
+}
+.algolia-autocomplete .algolia-docsearch-footer {
+  width: 100px;
+  height: 15px;
+}
+@media screen and (max-width: $desktopMinWidth - 1px) {
+  .algolia-autocomplete.algolia-autocomplete-right .ds-dropdown-menu {
+    right: -15vw !important;
+    left: -15vw !important;
+  }
+  .algolia-autocomplete .ds-dropdown-menu [class^=ds-dataset-] {
+    max-width: 88vw;
+    max-height: 90vh;
+    overflow-x: auto;
+  }
+}
