@@ -15,17 +15,17 @@ meta -->
 
 # Expert scenarios
 
-This is a collection of advanced use cases and example implementations. If you are new to Luigi, you might want to have a look at our [Getting Started](getting-started.md) section first or one of our SPA implementations in the **Examples** section on the left.
+This is a collection of advanced use cases and example implementations. If you are new to Luigi, take a look at our [Getting Started](getting-started.md) section first.
 
 <!-- accordion:start -->
 
 ### Using a SPA router for navigation and keeping Luigi Core URL in sync
 
-It can be convenient to keep an existing routing strategy, and be able to use an existing micro frontend as drop-in without the need to refactor everything to `LuigiClient.linkManager()`.
+Follow this example if you want to keep an existing routing strategy and use an existing micro frontend as drop-in without the need to refactor everything to `LuigiClient.linkManager()`.
 
-It is necessary to update the Luigi Core URL when routing internally with the micro frontend router, but without an update of the URL on Luigi Client side. This can be achieved by using the `linkManager()` [withoutSync](luigi-client-api.md#withoutsync) method.
+To update the Luigi Core URL when routing internally with the micro frontend router, without updating the URL on the Luigi Client side, use the `linkManager()` [withoutSync](luigi-client-api.md#withoutsync) method.
 
-The following example shows how to configure the navigation node and use router events for automatic update of the URL when using the micro frontends built in router.
+The following example shows how to configure the navigation node and use router events for automatic update of the URL when using the micro frontend's built-in router.
 
 Be aware that this is a very simple example for navigation. Special cases like modals, split views and other functionalities still require the use of [Luigi Client](luigi-client-api.md).
 
