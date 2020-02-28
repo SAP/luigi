@@ -23,7 +23,7 @@ This is a collection of advanced use cases and example implementations. If you a
 
 Follow this example if you want to keep an existing routing strategy and use an existing micro frontend as drop-in without the need to refactor everything to `LuigiClient.linkManager()`.
 
-To update the Luigi Core URL when routing internally with the micro frontend router, without updating the URL on the Luigi Client side, use the `linkManager()` [withoutSync](luigi-client-api.md#withoutsync) method.
+To update the Luigi Core URL when routing internally with the micro frontend router, without updating the URL on the Luigi Client side, use the `linkManager() withoutSync` method.
 
 The following example shows how to configure the navigation node and use router events for automatic update of the URL when using the micro frontend's built-in router.
 
