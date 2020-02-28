@@ -11,25 +11,7 @@ class NodeDataManagementStorageClass {
    *
    */
   setChildren(node, value) {
-    if (node && value) {
-      if (GenericHelpers.isObject(value)) {
-        let tmpStorage = this.dataManagement.get(node);
-        if (tmpStorage) {
-          Object.keys(value).forEach(item => {
-            tmpStorage[item] = value[item];
-          });
-          this.dataManagement.set(node, tmpStorage);
-        } else {
-          this.dataManagement.set(node, value);
-        }
-      } else {
-        this.dataManagement.set(node, value);
-      }
-    } else {
-      console.log(
-        "Something went wrong!If you talk about cache, it's not cache anymore!"
-      );
-    }
+    this.dataManagement.set(node, value);
   }
 
   /**
@@ -47,7 +29,7 @@ class NodeDataManagementStorageClass {
    * Checks if there is a entry of given node
    */
   hasChildren(node) {
-    let data = this.getChildren(node);
+    const data = this.getChildren(node);
     return data && data.hasOwnProperty('children');
   }
 
@@ -68,7 +50,7 @@ class NodeDataManagementStorageClass {
   }
 
   hasRootNode() {
-    return this.getRootNode() ? true : false;
+    return !!this.getRootNode();
   }
 
   /* 
