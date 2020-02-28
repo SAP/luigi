@@ -18,12 +18,15 @@ $fd-search-closed-control-body-width: 250px;
     width: $fd-search-closed-control-body-width;
   }
 }
+.algolia-autocomplete .ds-dropdown-menu {
+  margin-top: 10px;
+}
 .algolia-autocomplete .algolia-docsearch-footer {
   width: 100px;
   height: 15px;
 }
 @media screen and (max-width: $desktopMinWidth - 1px) {
-  .algolia-autocomplete.algolia-autocomplete-right .ds-dropdown-menu {
+  .algolia-autocomplete .ds-dropdown-menu {
     right: -15vw !important;
     left: -15vw !important;
   }
