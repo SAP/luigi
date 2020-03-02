@@ -30,7 +30,6 @@ $fd-search-closed-control-body-width: 250px;
 }
 @media screen and (max-width: $desktopMinWidth - 1px) {
   .algolia-autocomplete.algolia-autocomplete-right .ds-dropdown-menu {
-    right: -15vw !important;
     left: -15vw !important;
   }
   .algolia-autocomplete .ds-dropdown-menu [class^=ds-dataset-] {
