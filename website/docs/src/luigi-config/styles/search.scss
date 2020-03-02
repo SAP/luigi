@@ -28,6 +28,11 @@ $fd-search-closed-control-body-width: 220px;
   width: 100px;
   height: 15px;
 }
+@media screen and (max-width: 1024px) {
+  .algolia-autocomplete .ds-dropdown-menu {
+    min-width: 360px;
+  }
+}
 @media screen and (max-width: $desktopMinWidth - 1px) {
   .luigi-documentation .fd-shellbar {
     background-color: #555;
