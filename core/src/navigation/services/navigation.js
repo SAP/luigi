@@ -324,18 +324,15 @@ class NavigationClass {
     return result;
   }
 
-  getNodes(children, pathData) {
-    if (children && 0 < children.length) {
+  getNodesToDisplay(children, pathData) {
+    if (children && children.length > 0) {
       return children;
     }
-
-    if (2 < pathData.length) {
-      const lastElement = pathData[pathData.length - 1];
-      const oneBeforeLast = pathData[pathData.length - 2];
-      const nestedNode = pathData.length > 1 ? oneBeforeLast : lastElement;
-
-      if (nestedNode && NodeDataManagementStorage.hasChildren(nestedNode)) {
-        return this.getChildrenFromCache(nestedNode);
+    if (pathData.length > 2) {
+      //try to get the children from parent node
+      let parentNode = pathData[pathData.length - 2];
+      if (NodeDataManagementStorage.hasChildren(parentNode)) {
+        return this.getChildrenFromCache(parentNode);
       }
     }
 
@@ -343,7 +340,7 @@ class NavigationClass {
   }
 
   getGroupedChildren(children, current) {
-    const nodes = this.getNodes(children, current.pathData);
+    const nodes = this.getNodesToDisplay(children, current.pathData);
     return NavigationHelpers.groupNodesBy(nodes, 'category', true);
   }
 

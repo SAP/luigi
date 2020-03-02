@@ -500,11 +500,11 @@ describe('Navigation', function() {
       sinon.reset();
       NodeDataManagementStorage.deleteCache();
     });
-    it('should not fail, returns empty array if empty nav was found', () => {
-      const result = Navigation.getNodes(children, pathData);
+    it('should not fail, returns empty array if empty children and pathData are set', () => {
+      const result = Navigation.getNodesToDisplay(children, pathData);
       expect(result).to.be.empty;
     });
-    it('should not fail, returns empty array if pathData has not nestedNode', () => {
+    it('should not fail, returns empty array if pathData has not parent node', () => {
       pathData = [
         {
           children: [{ pathSegment: 'overview' }, { pathSegment: 'projects' }]
@@ -518,61 +518,47 @@ describe('Navigation', function() {
           ]
         }
       ];
-      const result = Navigation.getNodes(children, pathData);
+      const result = Navigation.getNodesToDisplay(children, pathData);
       assert.deepEqual(result, []);
     });
-
-    //TODO fix it
-    /*it('should not fail, returns nested node children if pathData has nestedNode', async () => {
-      pathData = [
+    it('should not fail, returns parent node children if children is empty and pathData has parent node', () => {
+      let parentChildren = [
         {
-          children: [{ pathSegment: 'overview' }, { pathSegment: 'projects' }]
-        },
-        node1
-        ,
-        {
-          pathSegment: 'settings2'
+          pathSegment: 'settings1'
         }
       ];
-      const node1 = {
-        pathSegment: 'projects',
-        children: [
-          {
-            pathSegment: 'settings1'
-          }
-        ]
+      let parentNode = {
+        pathSegment: 'settings',
+        children: parentChildren
       };
-      await NodeDataManagementStorage.setChildren(node1, { children: node1.children });
-      console.log(NodeDataManagementStorage.dataManagement.get(node1).children);
-      const result = Navigation.getNodes(children, pathData);
-      console.log(result);
-      expect(result).to.deep.equal([{ pathSegment: 'settings1' }]);
-    });*/
-    it('should not fail, returns children if pathData is empty', () => {
-      children = [{ pathSegment: 'overview' }, { pathSegment: 'projects' }];
-      const result = Navigation.getNodes(children, pathData);
-      expect(result).to.be.deep.equal([
-        { pathSegment: 'overview' },
-        { pathSegment: 'projects' }
-      ]);
-    });
-    it('returns children on standard usecase', () => {
-      children = [{ pathSegment: 'settings1' }];
       pathData = [
         {
-          children: [{ pathSegment: 'overview' }, { pathSegment: 'projects' }]
-        },
-        {
-          pathSegment: 'projects',
           children: [
+            { pathSegment: 'overview' },
             {
-              pathSegment: 'settings1'
+              pathSegment: 'settings',
+              children: [{ pathSegment: 'settings1' }]
             }
           ]
+        },
+        parentNode,
+        {
+          pathSegment: 'settings1'
         }
       ];
-      const result = Navigation.getNodes(children, pathData);
-      expect(result).to.be.deep.equal([{ pathSegment: 'settings1' }]);
+
+      NodeDataManagementStorage.dataManagement.set(parentNode, {
+        children: parentChildren,
+        filteredChildren: parentChildren
+      });
+      expect(Navigation.getNodesToDisplay([], pathData)).to.deep.equal(
+        parentChildren
+      );
+    });
+    it('should not fail, returns children if pathData is empty', () => {
+      children = [{ pathSegment: 'overview' }, { pathSegment: 'projects' }];
+      const result = Navigation.getNodesToDisplay(children, pathData);
+      expect(result).to.be.equal(children);
     });
   });
   describe('getGroupedChildren', () => {
