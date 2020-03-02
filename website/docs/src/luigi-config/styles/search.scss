@@ -21,6 +21,9 @@ $fd-search-closed-control-body-width: 250px;
 .algolia-autocomplete .ds-dropdown-menu {
   margin-top: 10px;
 }
+.algolia-autocomplete .algolia-docsearch-suggestion--highlight {
+  padding: 0em .05em;
+}
 .algolia-autocomplete .algolia-docsearch-footer {
   width: 100px;
   height: 15px;
