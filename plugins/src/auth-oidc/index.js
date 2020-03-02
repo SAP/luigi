@@ -24,7 +24,7 @@ export default class openIdConnect {
     });
 
     this.settings = mergedSettings;
-
+ 
     this.client = new Oidc.UserManager(this.settings);
 
     this.client.events.addUserLoaded(payload => {
@@ -63,16 +63,13 @@ export default class openIdConnect {
       id_token_hint: authData && authData.idToken,
       state: window.location.href
     };
-    return this.client
-      .createSignoutRequest(signoutData)
-      .then(req => {
-        authOnLogoutFn();
-        window.location = req.url;
-      })
-      .catch(function(err) {
-        console.error(err);
-        authOnLogoutFn();
-      });
+    return this.client.createSignoutRequest(signoutData).then((req) => {
+      authOnLogoutFn();
+      window.location = req.url;
+    }).catch(function (err) {
+      console.error(err);
+      authOnLogoutFn();
+    });
   }
 
   setTokenExpirationAction() {
@@ -115,12 +112,7 @@ export default class openIdConnect {
             '?error=tokenExpired&errorDescription=' +
             e.message;
       }
-      Luigi.auth().handleAuthEvent(
-        'onAuthError',
-        this.settings,
-        e,
-        redirectUrl
-      );
+      Luigi.auth().handleAuthEvent('onAuthError', this.settings, e, redirectUrl);
     });
   }
 
