@@ -2,7 +2,7 @@
 // keep in sync with core/src/utilities/constants.js CSS_BREAKPOINTS.desktopMinWidth
 $desktopMinWidth: 600px;
 
-$fd-search-closed-control-body-width: 250px;
+$fd-search-closed-control-body-width: 220px;
 
 #lui-search-button {
   position: relative;
@@ -29,12 +29,23 @@ $fd-search-closed-control-body-width: 250px;
   height: 15px;
 }
 @media screen and (max-width: $desktopMinWidth - 1px) {
+  .luigi-documentation .fd-shellbar {
+    background-color: #555;
+  }
+
+  .algolia-autocomplete.algolia-autocomplete-left .ds-dropdown-menu,
   .algolia-autocomplete.algolia-autocomplete-right .ds-dropdown-menu {
-    left: -15vw !important;
+    position: fixed !important;
+    top: 72px !important;
+    left: 3vw !important;
+    right: 3vw !important;
+  }
+  .algolia-autocomplete.algolia-autocomplete-left .ds-dropdown-menu:before {
+    left: 60vw;
   }
   .algolia-autocomplete .ds-dropdown-menu [class^=ds-dataset-] {
-    max-width: 88vw;
-    max-height: 90vh;
+    max-width: 94vw;
+    max-height: 75vh;
     overflow-x: auto;
   }
 }
