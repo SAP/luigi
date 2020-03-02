@@ -1,0 +1,21 @@
+{
+  "name": "@luigi-project/plugin-auth-oidc",
+  "version": "1.0.0",
+  "description": "OpenID Connect provider plugin for @luigi-project/core",
+  "license": "Apache-2.0",
+  "main": "plugin.js",
+  "repository": {
+    "type": "git",
+    "url": "ssh://github.com/SAP/luigi.git"
+  },
+  "publishConfig": {
+    "tag": "luigi-plugin-auth-oidc"
+  },
+  "keywords": [
+    "luigi",
+    "core",
+    "oidc",
+    "openid connect",
+    "provider"
+  ]
+}
