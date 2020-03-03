@@ -106,8 +106,7 @@ class NavigationClass {
 
   getChildrenFromCache(node) {
     let data = NodeDataManagementStorage.getChildren(node);
-    if (data) return data.filteredChildren;
-    else [];
+    return data ? data.filteredChildren : [];
   }
 
   getAccessibleNodes(node, children, context) {
