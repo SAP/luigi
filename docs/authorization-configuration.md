@@ -29,7 +29,7 @@ To configure authorization in Luigi:
 <!-- accordion:start -->
 ### How do I configure authorization in Luigi?
 
-You can configure Luigi authorization using the `auth:` section of your Luigi configuration file. To see how authorization works, go to the [Luigi Fiddle](https://fiddle.luigi-project.io) site and configure a sample application.
+You can configure Luigi authorization using the `auth:` section of your Luigi configuration file.
 
 This is an example of a simplified authorization structure:
 
@@ -43,7 +43,16 @@ auth: {
 }
 ```
 
-The **use** key defines the active authorization provider and the **disableAutoLogin** key allows you to disable the automatic login flow that is provided by default.
+- **use** defines the active authorization provider.
+- **disableAutoLogin** allows you to disable the automatic login flow that is provided by default.
+
+Optionally, you can also add:
+- **storage** parameter which allows you to set the storage type. It can be set to `localStorage`, `sessionStorage` or `none`. For example:
+```javascript
+auth: {
+   storage: 'sessionStorage'
+```
+
 
 ### How do I show some navigation nodes only to non-authenticated users?
 
