@@ -130,19 +130,25 @@ checkoutLuigiToTestfolder() {
 linkLuigi() {
   echoe "Linking current Luigi to selected version"
   # remove installed luigi versions and symlink with latest
-  rm -rf $EXAMPLE_NODE_MODULES/luigi*
-  ln -s $LUIGI_DIR/core/public $EXAMPLE_NODE_MODULES/luigi-core
-  ln -s $LUIGI_DIR/client/public $EXAMPLE_NODE_MODULES/luigi-client
+  rm -rf $EXAMPLE_NODE_MODULES/*
+  ln -s $LUIGI_DIR/core/public $EXAMPLE_NODE_MODULES/core
+  ln -s $LUIGI_DIR/client/public $EXAMPLE_NODE_MODULES/client
+  ln -s $LUIGI_DIR/plugins/auth/public/auth-oauth2 $EXAMPLE_NODE_MODULES/plugin-auth-oauth2
   ls -la $EXAMPLE_NODE_MODULES
-  ls $EXAMPLE_NODE_MODULES/luigi-core
-  ls $EXAMPLE_NODE_MODULES/luigi-client
+  ls $EXAMPLE_NODE_MODULES/core
+  ls $EXAMPLE_NODE_MODULES/client
+  ls $EXAMPLE_NODE_MODULES/plugin-auth-oauth2
 
-  if [ ! -f $EXAMPLE_NODE_MODULES/luigi-core/package.json ]; then
-    echoe "There was an issue linking the luigi-core module"
+  if [ ! -f $EXAMPLE_NODE_MODULES/core/package.json ]; then
+    echoe "There was an issue linking the core module"
     exit 2
   fi
-  if [ ! -f $EXAMPLE_NODE_MODULES/luigi-client/package.json ]; then
-    echoe "There was an issue linking the luigi-client module"
+  if [ ! -f $EXAMPLE_NODE_MODULES/client/package.json ]; then
+    echoe "There was an issue linking the client module"
+    exit 2
+  fi
+  if [ ! -f $EXAMPLE_NODE_MODULES/plugin-auth-oauth2/package.json ]; then
+    echoe "There was an issue linking the auth-oauth2 module"
     exit 2
   fi
 }
@@ -184,7 +190,7 @@ LUIGI_DIR="${PWD}"
 LUIGI_FOLDERNAME="luigi-compatibility-testing"
 LUIGI_DIR_TESTING="$LUIGI_DIR/../$LUIGI_FOLDERNAME"
 EXAMPLE_DIR="$LUIGI_DIR_TESTING/test/e2e-test-application"
-EXAMPLE_NODE_MODULES=$EXAMPLE_DIR/node_modules/@kyma-project
+EXAMPLE_NODE_MODULES=$EXAMPLE_DIR/node_modules/@luigi-project
 TESTONLY=""
 
 while [ "$#" -gt 0 ]; do
