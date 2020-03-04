@@ -2,8 +2,12 @@
 echo ""
 echo "Installing Luigi with React specification"
 echo ""
-read -p "Luigi project folder name: " folder
-echo "Creating luigified react app: " $folder
+if [[ "$1" = "" ]]; then
+  read -p "Luigi project folder name: " folder
+else
+  folder=$1
+  echo "Luigi project folder name: $folder"
+fi
 
 # create sample react app
 npx create-react-app $folder && cd $folder

@@ -2,7 +2,12 @@
 echo ""
 echo "Installing Luigi with static files and basic configuration"
 echo ""
-read -p "Luigi project folder name: " folder
+if [[ "$1" = "" ]]; then
+  read -p "Luigi project folder name: " folder
+else
+  folder=$1
+  echo "Luigi project folder name: $folder"
+fi
 # steps to execute line by line
 echo ""
 mkdir $folder && cd $folder

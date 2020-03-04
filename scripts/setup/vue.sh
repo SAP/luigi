@@ -1,13 +1,19 @@
 #!/bin/bash
 if ! command -v vue 2>/dev/null; then
   echo "Vue CLI required, please install it globally and try again."
-  echo "npm i -g @vue/cli."
+  echo "npm i -g @vue/cli"
   exit 1;
 fi
+
 echo ""
 echo "Installing Luigi with static files and basic configuration"
 echo ""
-read -p "Luigi project folder name: " folder
+if [[ "$1" = "" ]]; then
+  read -p "Luigi project folder name: " folder
+else
+  folder=$1
+  echo "Luigi project folder name: $folder"
+fi
 # steps to execute line by line
 echo ""
 vue create -d $folder && cd $folder
