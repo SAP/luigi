@@ -19,9 +19,9 @@ meta -->
 
 ### Internet Explorer 11 (IE11)
 
-IE11 related content is now in a separated package.
+IE11-related content is now in a separate package.
 
-Install the client in your project using npm:
+If you want to support IE11, install the client in your project using npm:
 ```bash
 npm install @luigi-project/client-ie11
 npm install @luigi-project/core-ie11
