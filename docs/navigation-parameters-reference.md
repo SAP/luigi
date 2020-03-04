@@ -255,6 +255,21 @@ settings: {
 - **type**: boolean or "exclusive"
 - **description**: when set to `true`, the node is always accessible. When set to `exclusive`, the node is only visible in logged-out state. Requires **auth.disableAutoLogin** to be set to `true`. **anonymousAccess** needs to be defined both on parent and child nodes.
 
+### virtualTree
+- **type**: boolean
+- **description**: marks the node as the beginning of a virtual tree. Allows navigation to any of its children's paths without the need of specifying nested children. The path that comes after the node marked as **virtualTree** is appended to its **viewUrl**. [**keepSelectedForChildren**](#keepSelectedForChildren) is automatically applied.
+- **example**:
+    In this example, navigating to `core.tld/settings/some/nested/view` will result in opening `/sampleapp.html#/settings/some/nested/view`.
+    ```javascript
+    {
+      pathSegment: 'settings',
+      label: 'Settings',
+      viewUrl: '/sampleapp.html#/settings',
+      navigationContext: 'settings',
+      virtualTree: true
+    }
+    ```
+
 ## Context switcher
 
 The context switcher is a drop-down list available in the top navigation bar. It allows you to switch between a curated list of navigation elements such as Environments. To do so, add the **contextSwitcher** parameter to the **navigation** object using the following optional parameters:
