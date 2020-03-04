@@ -18,39 +18,65 @@ $fd-search-closed-control-body-width: 220px;
     width: $fd-search-closed-control-body-width;
   }
 }
-.algolia-autocomplete .ds-dropdown-menu {
-  margin-top: 10px;
+.algolia-autocomplete {
+  .ds-dropdown-menu {
+    margin-top: 10px;
+  }
+  
+  .algolia-docsearch-suggestion--highlight {
+    padding: 0em .05em;
+  }
+
+  .algolia-docsearch-footer {
+    width: 100px;
+    height: 15px;
+  }
+
+  .ds-dropdown-menu [class^=ds-dataset-] {
+    max-height: 75vh;
+    overflow-x: auto;
+  }
 }
-.algolia-autocomplete .algolia-docsearch-suggestion--highlight {
-  padding: 0em .05em;
-}
-.algolia-autocomplete .algolia-docsearch-footer {
-  width: 100px;
-  height: 15px;
-}
+
 @media screen and (max-width: 1024px) {
-  .algolia-autocomplete .ds-dropdown-menu {
-    min-width: 360px;
+  .algolia-autocomplete {
+    .ds-dropdown-menu {
+      min-width: 360px;
+    }
   }
 }
 @media screen and (max-width: $desktopMinWidth - 1px) {
-  .luigi-documentation .fd-shellbar {
-    background-color: #555;
-  }
 
-  .algolia-autocomplete.algolia-autocomplete-left .ds-dropdown-menu,
-  .algolia-autocomplete.algolia-autocomplete-right .ds-dropdown-menu {
-    position: fixed !important;
-    top: 72px !important;
-    left: 3vw !important;
-    right: 3vw !important;
-  }
-  .algolia-autocomplete.algolia-autocomplete-left .ds-dropdown-menu:before {
-    left: 60vw;
-  }
-  .algolia-autocomplete .ds-dropdown-menu [class^=ds-dataset-] {
-    max-width: 94vw;
-    max-height: 75vh;
-    overflow-x: auto;
+  .algolia-autocomplete {
+    
+    &.algolia-autocomplete-left,
+    &.algolia-autocomplete-right {
+      .ds-dropdown-menu {
+        position: fixed !important;
+        top: 72px !important;
+        left: 3vw !important;
+        right: 3vw !important;
+      }
+    }
+
+    &.algolia-autocomplete-left {
+      .ds-dropdown-menu {
+        &:before {
+          left: 60vw;
+        }
+      }
+    }
+
+    &.algolia-autocomplete-right {
+      .ds-dropdown-menu {
+        &:before {
+          right: 25vw;
+        }
+      }
+    }
+
+    .ds-dropdown-menu [class^=ds-dataset-] {
+      max-width: 94vw;
+    }
   }
 }

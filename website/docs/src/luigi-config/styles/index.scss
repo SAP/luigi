@@ -98,6 +98,7 @@ $side-nav-width: 260px;
   .fd-shellbar {
     background-color: $secondary-color;
     height: $height-shellbar-mobile;
+    z-index: 2;
 
     span {
       font-weight: 600;
