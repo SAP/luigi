@@ -222,7 +222,7 @@ class LifecycleManager extends LuigiClientBase {
   }
 
   /**
-   * Registers a listener called with the context object upon any navigation change.
+   * Registers a listener called with the context object when the URL is changed. For example, you can use this when changing environments in a context switcher in order for the micro frontend to do an API call to the environment picked.
    * @param {function} contextUpdatedFn the listener function called each time Luigi context changes
    * @memberof Lifecycle
    */
