@@ -26,7 +26,7 @@ class LuigiUX {
    * Shows an alert.
    * @memberof UX
    * @param {Object} settings the settings for the alert
-   * @param {string} settings.text the content of the alert. To add a link to the content, you have to set up the link in the `links` object. The key(s) in the `links` object must be used in the text to reference the links, wrapped in curly brackets with no spaces. If you don't specify any text, the alert is not displayed
+   * @param {string} settings.text the content of the alert. To add a link to the content, you have to set up the link in the `links` object. The key(s) in the `links` object must be used in the text to reference the links, wrapped in curly brackets with no spaces. If you do not specify any text, the alert is not displayed
    * @param {('info'|'success'|'warning'|'error')} settings.type sets the type of alert
    * @param {Object} settings.links provides links data
    * @param {Object} settings.links.LINK_KEY object containing the data for a particular link. To properly render the link in the alert message refer to the description of the **settings.text** parameter
@@ -67,7 +67,7 @@ class LuigiUX {
   /**
    * Shows a confirmation modal.
    * @memberof UX
-   * @param {Object} settings the settings of the confirmation modal. If you don't provide any value for any of the fields, a default value is used
+   * @param {Object} settings the settings of the confirmation modal. If you do not provide any value for any of the fields, a default value is used
    * @param {string} [settings.header="Confirmation"] the content of the modal header
    * @param {string} [settings.body="Are you sure you want to do this?"] the content of the modal body
    * @param {string} [settings.buttonConfirm="Yes"] the label for the modal confirm button
