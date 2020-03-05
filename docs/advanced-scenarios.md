@@ -19,19 +19,21 @@ This is a collection of advanced use cases and example implementations. If you a
 
 <!-- accordion:start -->
 
-### Using a SPA router for navigation and keeping Luigi Core URL in sync
+### Use a SPA router and keep Luigi Core URL in sync
 
-Follow this example if you want to keep an existing routing strategy and use an existing micro frontend as drop-in without the need to refactor everything to `LuigiClient.linkManager()`.
+#### Overview
 
-To update the Luigi Core URL when routing internally with the micro frontend router, without updating the URL on the Luigi Client side, use the `linkManager()` [withoutSync](luigi-client-api.md#withoutsync) method.
+This example shows you how to keep an existing routing strategy and use an existing micro frontend as drop-in without the need to refactor everything to `LuigiClient.linkManager()`. To update the Luigi Core URL when routing internally with the micro frontend router, without updating the URL on the Luigi Client side, use the `linkManager()` [withoutSync](luigi-client-api.md#withoutsync) method.
 
-The following example shows how to configure the navigation node and use router events for automatic update of the URL when using the micro frontend's built-in router.
+<!-- add-attribute:class:warning -->
+> **NOTE**: This is a very simple example for navigation. Special cases like modals, split views and other functionalities still require the use of [Luigi Client](luigi-client-api.md).
 
-Be aware that this is a very simple example for navigation. Special cases like modals, split views and other functionalities still require the use of [Luigi Client](luigi-client-api.md).
+#### Steps
 
-To keep the example simple, we use [virtualTree](navigation-parameters-reference.md#virtualtree) to allow any nested navigation. This is not mandatory; you can always specify the node tree by yourself and still use automatic navigation with router events.
+1. Configure the Luigi navigation node.
 
-#### Luigi node configuration
+<!-- add-attribute:class:success -->
+> **NOTE**: To keep the example simple, we use [virtualTree](navigation-parameters-reference.md#virtualtree) to allow any nested navigation. This is not mandatory; you can always specify the node tree by yourself and still use automatic navigation with router events.
 
 ```javascript
     {
@@ -43,7 +45,7 @@ To keep the example simple, we use [virtualTree](navigation-parameters-reference
     }
 ```
 
-#### Using Angular Router for navigation
+2. Use an Angular Router for navigation.
 
 Angular provides [Router events](https://angular.io/guide/router#router-events). We are reacting on `NavigationEnd` to update the URL after a successful route change.
 
@@ -57,6 +59,7 @@ We assume that the whole Angular app is one micro frontend and has its routes de
 ```
 
 Implement `luigi-auto-navigation.service.ts`, which is globally imported in our `app.module.ts`:
+
 ```javascript
     import { Router, NavigationEnd } from '@angular/router';
     import { Injectable, OnDestroy } from '@angular/core';
@@ -89,16 +92,22 @@ Implement `luigi-auto-navigation.service.ts`, which is globally imported in our 
     }
 ```
 
-Other than adding the service, which also could be implemented as a `RouteGuard` or similar, the micro frontend is unchanged and uses `[routerLink='']` or other functionalities to navigate.
+#### Result
 
-### Authenticating Luigi with Google Cloud Identity
+Other than the added service, which could also be implemented as a `RouteGuard` or similar, the micro frontend is unchanged and uses `[routerLink='']` or other functionalities to navigate.
 
-To use Luigi with a Google account, follow these steps:
+### Authenticate Luigi with Google Cloud Identity
+
+#### Overview
+
+This example shows you how to use Luigi with a Google account.
+
+#### Steps
 
 1. Register a project and generate an OAuth2 Web Client based on [Google Developers Identity - OAuth2UserAgent](https://developers.google.com/identity/protocols/OAuth2UserAgent).
 2. To get your app running locally, set the Authorized JavaScript Origins URIs to `http://localhost:4200` and Authorized redirect URIs to `http://localhost:4200/luigi-core/auth/oauth2/callback.html?storageType=localStorage`.
 3. Copy the Client ID on the right side, ending with `apps.googleusercontent.com`
-4. Update the LuigiConfig auth section. We have added also the parts for logout and getting user information.
+4. Update the LuigiConfig auth section. We have added also the parts for logout and getting user information:
 
 ```javascript
   {
