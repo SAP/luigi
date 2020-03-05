@@ -1,11 +1,11 @@
 {
-  "name": "auth-plugin-oauth2",
-  "version": "0.0.1",
+  "name": "auth-plugins",
+  "version": "0.0.0",
   "private": true,
-  "description": "luigi-auth-plugin-oauth2 development version, only the public folder is being published to npm as a package",
+  "description": "luigi-auth-plugin-* development versions, only the public folders are being published to npm as a package",
   "repository": {
     "type": "git",
-    "url": "ssh://github.com/SAP/luigi-plugin-auth-oauth2.git"
+    "url": "ssh://github.com/SAP/luigiluigi.git"
   },
   "scripts": {
     "bundle": "npm run bundle-evergreen && npm run bundle-ie11",

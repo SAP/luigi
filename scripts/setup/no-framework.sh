@@ -13,7 +13,7 @@ npm init -y
 sed 's/"scripts": {/"scripts": {\
 \   "buildConfig":"webpack --entry .\/src\/luigi-config\/basic\/basicConfiguration.js -o .\/public\/assets\/sampleconfig.js --mode production",/1' package.json > p.tmp.json && mv p.tmp.json package.json
 
-npm i -save @kyma-project/luigi-core @kyma-project/luigi-client fiori-fundamentals webpack webpack-cli @babel/core @babel/preset-env babel-loader 
+npm i -save @luigi-project/core @luigi-project/client fiori-fundamentals webpack webpack-cli @babel/core @babel/preset-env babel-loader 
 mkdir -p public/assets
 mkdir -p src/luigi-config/basic
 
@@ -24,7 +24,7 @@ curl https://raw.githubusercontent.com/SAP/luigi/master/test/e2e-test-applicatio
 
 sed "s|extendedConfiguration.bundle.js|sampleconfig.js|g" public/index.html > public/index.tmp.html && mv public/index.tmp.html public/index.html
 
-cp -r node_modules/\@kyma-project/luigi-* public
+cp -r node_modules/\@luigi-project/* public
 cp -r node_modules/fiori-fundamentals/dist public/fiori-fundamentals
 
 npm run buildConfig

@@ -95,12 +95,21 @@ verifyInstallation() {
   ### VERIFY LOCAL CURRENT LUIGI
   if [ "$INSTALL" == "true" ]; then
     echoe "Verifying current Luigi"
+
+    echoe "Core"
     cd "$LUIGI_DIR/core"
     npm i
+
+    echoe "Client"
     cd "$LUIGI_DIR/client"
     npm i
+
+    echoe "Plugins"
+    cd "$LUIGI_DIR/plugins"
+    npm i
+
     echoe "Bundling current Luigi"
-    npx lerna run bundle
+    lerna run bundle
   fi
 }
 
@@ -120,29 +129,44 @@ checkoutLuigiToTestfolder() {
   cd $LUIGI_DIR_TESTING
   echoe "Checking out selected release tag $TAG"
   git reset --hard HEAD
+  git fetch --tags
   git checkout tags/$TAG
 
   echoe "Installing selected Luigi example app"
+  echo $EXAMPLE_DIR
   cd $EXAMPLE_DIR
-  npm install
+  npm i
 }
 
 linkLuigi() {
   echoe "Linking current Luigi to selected version"
   # remove installed luigi versions and symlink with latest
-  rm -rf $EXAMPLE_NODE_MODULES/luigi*
-  ln -s $LUIGI_DIR/core/public $EXAMPLE_NODE_MODULES/luigi-core
-  ln -s $LUIGI_DIR/client/public $EXAMPLE_NODE_MODULES/luigi-client
+  mkdir -p $EXAMPLE_NODE_MODULES
+  rm -rf $EXAMPLE_NODE_MODULES/*
+  ln -s $LUIGI_DIR/core/public $EXAMPLE_NODE_MODULES/core
+  ln -s $LUIGI_DIR/client/public $EXAMPLE_NODE_MODULES/client
+  ln -s $LUIGI_DIR/plugins/auth/public/auth-oauth2 $EXAMPLE_NODE_MODULES/plugin-auth-oauth2
+  ln -s $LUIGI_DIR/plugins/auth/public/auth-oidc $EXAMPLE_NODE_MODULES/plugin-auth-oidc
   ls -la $EXAMPLE_NODE_MODULES
-  ls $EXAMPLE_NODE_MODULES/luigi-core
-  ls $EXAMPLE_NODE_MODULES/luigi-client
+  ls $EXAMPLE_NODE_MODULES/core
+  ls $EXAMPLE_NODE_MODULES/client
+  ls $EXAMPLE_NODE_MODULES/plugin-auth-oauth2
+  ls $EXAMPLE_NODE_MODULES/plugin-auth-oidc
 
-  if [ ! -f $EXAMPLE_NODE_MODULES/luigi-core/package.json ]; then
-    echoe "There was an issue linking the luigi-core module"
+  if [ ! -f $EXAMPLE_NODE_MODULES/core/package.json ]; then
+    echoe "There was an issue linking the core module"
     exit 2
   fi
-  if [ ! -f $EXAMPLE_NODE_MODULES/luigi-client/package.json ]; then
-    echoe "There was an issue linking the luigi-client module"
+  if [ ! -f $EXAMPLE_NODE_MODULES/client/package.json ]; then
+    echoe "There was an issue linking the client module"
+    exit 2
+  fi
+  if [ ! -f $EXAMPLE_NODE_MODULES/plugin-auth-oauth2/package.json ]; then
+    echoe "There was an issue linking the auth-oauth2 module"
+    exit 2
+  fi
+  if [ ! -f $EXAMPLE_NODE_MODULES/plugin-auth-oidc/package.json ]; then
+    echoe "There was an issue linking the auth-oidc module"
     exit 2
   fi
 }
@@ -180,11 +204,11 @@ startE2eTestrunner() {
 
 # Script
 
-LUIGI_DIR="${PWD}"
+LUIGI_DIR="${BASE_DIR}/.."
 LUIGI_FOLDERNAME="luigi-compatibility-testing"
 LUIGI_DIR_TESTING="$LUIGI_DIR/../$LUIGI_FOLDERNAME"
 EXAMPLE_DIR="$LUIGI_DIR_TESTING/test/e2e-test-application"
-EXAMPLE_NODE_MODULES=$EXAMPLE_DIR/node_modules/@kyma-project
+EXAMPLE_NODE_MODULES=$EXAMPLE_DIR/node_modules/@luigi-project
 TESTONLY=""
 
 while [ "$#" -gt 0 ]; do

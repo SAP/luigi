@@ -182,7 +182,7 @@ Sends a custom message to the Luigi Core application.
 ##### Examples
 
 ```javascript
-import LuigiClient from '@kyma-project/luigi-client';
+import LuigiClient from '@luigi-project/client';
 LuigiClient.sendCustomMessage({id: 'environment.created', production: false})
 ```
 
@@ -602,7 +602,7 @@ Shows a confirmation modal.
 ##### Examples
 
 ```javascript
-import LuigiClient from '@kyma-project/luigi-client';
+import LuigiClient from '@luigi-project/client';
 const settings = {
  header: "Confirmation",
  body: "Are you sure you want to do this?",
@@ -637,7 +637,7 @@ Shows an alert.
 ##### Examples
 
 ```javascript
-import LuigiClient from '@kyma-project/luigi-client';
+import LuigiClient from '@luigi-project/client';
 const settings = {
  text: "Ut enim ad minim veniam, {goToHome} quis nostrud exercitation ullamco {relativePath}. Duis aute irure dolor {goToOtherProject}",
  type: 'info',
