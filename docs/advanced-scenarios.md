@@ -30,7 +30,7 @@ This example shows you how to keep an existing routing strategy and use an exist
 
 #### Steps
 
-1. Configure the Luigi navigation node.
+1. Configure the Luigi navigation node:
 
 <!-- add-attribute:class:success -->
 > **NOTE**: To keep the example simple, we use [virtualTree](navigation-parameters-reference.md#virtualtree) to allow any nested navigation. This is not mandatory; you can always specify the node tree by yourself and still use automatic navigation with router events.
@@ -58,7 +58,7 @@ We assume that the whole Angular app is one micro frontend and has its routes de
   { path: ':id/details', component: OrderDetailsComponent },
 ```
 
-Implement `luigi-auto-navigation.service.ts`, which is globally imported in our `app.module.ts`:
+Use this code to implement `luigi-auto-navigation.service.ts`, which is globally imported in our `app.module.ts`:
 
 ```javascript
     import { Router, NavigationEnd } from '@angular/router';
