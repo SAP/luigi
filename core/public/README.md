@@ -8,4 +8,4 @@ For details on Luigi Core, see [this](https://github.com/SAP/luigi/tree/master/c
 
 If you want to try Luigi out, see the [examples](https://github.com/SAP/luigi/tree/master/core/examples).
 
-For documentation on Luigi Core, see [Luigi documentation](https://github.com/SAP/luigi/tree/master/docs).
+For documentation on Luigi Core, see [Luigi documentation](https://docs.luigi-project.io).

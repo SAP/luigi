@@ -24,12 +24,11 @@ yarn-debug.log*
 yarn-error.log*
 
 .vscode/
-/public/luigi*.css
-/public/luigi*.js
-/public/*.woff
-/public/*.woff2
-/public/*.ttf
-/public/auth
+/public*/luigi*.css
+/public*/luigi*.js
+/public*/*.woff
+/public*/*.woff2
+/public*/*.ttf
 
 # maps
 *.map

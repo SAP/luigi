@@ -1,8 +1,5 @@
 import { Component, OnInit, OnDestroy, ChangeDetectorRef } from '@angular/core';
-import {
-  addInitListener,
-  removeInitListener
-} from '@kyma-project/luigi-client';
+import { addInitListener, removeInitListener } from '@luigi-project/client';
 @Component({
   selector: 'app-developers',
   templateUrl: './developers.component.html',

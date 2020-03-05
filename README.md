@@ -31,7 +31,7 @@ For details, see [Luigi documentation](docs/README.md).
 
 ## Browser support
 
-If you want to support Internet Explorer 11 in your application, update your Luigi imports as follows:
+If you want to support Internet Explorer 11 in your application, install the `@luigi-project/core-ie11` package and update your Luigi imports as follows:
 ### Luigi Core
 ```html
 <!DOCTYPE html>
@@ -49,16 +49,16 @@ If you want to support Internet Explorer 11 in your application, update your Lui
 ```
 
 ### Luigi Client
+Install the `@luigi-project/client-ie11` package and update your Luigi imports as follows:
 ```javascript
 import {
   linkManager,
   uxManager
-} from '@kyma-project/luigi-client/luigi-client-ie11';
-// } from '@kyma-project/luigi-client';
+} from '@luigi-project/client-ie11';
 ```
 
 <!-- add-attribute:class:warning -->
-> **NOTE**: The angular example application is not fully compatible with IE11.
+> **NOTE**: The example applications are not fully compatible with IE11.
 
 ## Development
 

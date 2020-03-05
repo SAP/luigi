@@ -152,9 +152,9 @@ auth: {
 
 
 ## Custom authorization provider
-​
+
 You can write your own authorization provider that meets your requirements. This is an example of what a custom authorization provider may look like:
-​
+
 ```javascript
 export class CustomAuthenticationProvider {
 

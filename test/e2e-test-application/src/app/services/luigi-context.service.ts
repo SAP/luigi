@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Observable, ReplaySubject } from 'rxjs';
-import { Context } from '@kyma-project/luigi-client';
+import { Context } from '@luigi-project/client';
 
 export type ILuigiContextTypes = 'init' | 'update';
 export interface IContextMessage {

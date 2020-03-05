@@ -1,6 +1,6 @@
 {
   "name": "luigi-core-private",
-  "version": "0.7.5",
+  "version": "0.0.0",
   "private": true,
   "description": "luigi-core development version, only the public folder is being published to npm as a package",
   "devDependencies": {
@@ -74,12 +74,12 @@
       "compression": "none"
     },
     {
-      "path": "./public/luigi-ie11.js",
+      "path": "./public-ie11/luigi-ie11.js",
       "maxSize": "550 kB",
       "compression": "none"
     },
     {
-      "path": "./public/luigi-ie11.css",
+      "path": "./public-ie11/luigi-ie11.css",
       "maxSize": "550 kB",
       "compression": "none"
     }
@@ -97,7 +97,7 @@
       ],
       "functions": [
         55,
-        65
+        60
       ],
       "branches": [
         55,

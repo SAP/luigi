@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { linkManager } from '@kyma-project/luigi-client';
+import { linkManager } from '@luigi-project/client';
 
 @Component({
   selector: 'app-on-node-activation',

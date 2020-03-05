@@ -1,4 +1,4 @@
-import { version } from '../../../node_modules/@kyma-project/luigi-client/package.json';
+import { version } from '../../../node_modules/@luigi-project/client/package.json';
 
 class Settings {
   header = {
