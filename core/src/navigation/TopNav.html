@@ -35,7 +35,7 @@
         <div class="fd-popover__control" on:click|stopPropagation="{() => {}}">
           <button
             title="{getNodeLabel(node)}"
-            class="fd-shellbar__button fd-button {node === selectedNode ? 'is-selected' : ''}"
+            class="fd-button fd-shellbar__button {node === selectedNode ? 'is-selected' : ''}"
             aria-controls="dropDownPopover-{i}"
             aria-expanded="{dropDownStates[`dropDownPopover-${i}`] || false}"
             aria-haspopup="true"
@@ -81,7 +81,7 @@
     >
       <button
         title="{getNodeLabel(node)}"
-        class="fd-shellbar__button fd-button {node === selectedNode ? 'is-selected' : ''}"
+        class="fd-button fd-shellbar__button {node === selectedNode ? 'is-selected' : ''}"
         aria-controls="0AcWE812"
         aria-expanded="false"
         aria-haspopup="true"
@@ -113,7 +113,7 @@
     {/each}
     <!-- Sample Markup for Notifications
             <div class="fd-shellbar__action fd-shellbar__action--desktop">
-              <button class="fd-shellbar__button fd-button sap-icon--bell" aria-label="Notifications">
+              <button class="fd-button fd-shellbar__button sap-icon--bell" aria-label="Notifications">
                 <span class="fd-counter fd-counter--notification" aria-label="Unread count">25</span>
               </button>
             </div>
@@ -136,7 +136,7 @@
               role="button"
             >
               <button
-                class="fd-shellbar__button fd-button sap-icon--overflow"
+                class="fd-button fd-shellbar__button sap-icon--overflow"
                 aria-controls="overflowPopover"
                 aria-expanded="{dropDownStates.overflowPopover || false}"
                 aria-haspopup="true"
@@ -310,7 +310,7 @@
           >
             <div class="{userInfo.picture ? 'fd-user-menu__control' : '' }">
               <button
-                class="fd-shellbar__button fd-button {!userInfo.picture?'sap-icon--customer':'fd-identifier fd-identifier--xs fd-identifier--circle'}"
+                class="fd-button fd-shellbar__button {!userInfo.picture?'sap-icon--customer':'fd-identifier fd-identifier--xs fd-identifier--circle'}"
                 style="{userInfo.picture?`background-image: url('${userInfo.picture}');background-size:30px;background-repeat: no-repeat;background-position: center;`:''}"
                 aria-expanded="{dropDownStates.profilePopover || false}"
                 aria-haspopup="true"
