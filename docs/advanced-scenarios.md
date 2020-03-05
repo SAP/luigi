@@ -1,4 +1,4 @@
- <!-- meta
+<!-- meta
 {
   "node": {
     "label": "Expert scenarios",
