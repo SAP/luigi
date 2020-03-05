@@ -4,7 +4,7 @@ import {
   addContextUpdateListener,
   sendCustomMessage,
   addInactiveListener
-} from '@kyma-project/luigi-client';
+} from '@luigi-project/client';
 import {
   LuigiContextService,
   ILuigiContextTypes

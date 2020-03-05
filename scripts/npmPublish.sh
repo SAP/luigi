@@ -8,23 +8,18 @@ BASE_DIR="$( cd "$(dirname "$0")" ; pwd -P )"
 
 source $BASE_DIR/shared/bashHelpers.sh
 
-# @kyma-project npm token
-function setKymaNpmToken {
-  if [ "$TRAVIS" = "true" ]; then
-    # setup token when running in travis
-    echo "setKymaNpmToken"
-    echo "//registry.npmjs.org/:_authToken=$NPM_AUTH_TOKEN" > ~/.npmrc
-    # npm whoami
-  fi
-}
-
 # @luigi-project npm token
 function setLuigiNpmToken {
   if [ "$TRAVIS" = "true" ]; then
+    if [ "$NPM_LUI_AUTH_TOKEN" = "" ]; then
+     echoe "NPM_LUI_AUTH_TOKEN is not set, cannot continue publishing."
+     exit 1
+    fi
+
     # setup token when running in travis
     echo "setLuigiNpmToken"
-    echo "//registry.npmjs.org/:_authToken=$NPM_LUIGI_AUTH_TOKEN" > ~/.npmrc
-    # npm whoami
+    echo "//registry.npmjs.org/:_authToken=$NPM_LUI_AUTH_TOKEN" > ~/.npmrc
+    npm whoami
   fi
 }
 
@@ -43,6 +38,19 @@ function prepublishChecks {
   TAGS_GREP=`git ls-remote --tags origin | grep "v$CORE_VERSION$" | wc -l`
   if [[ "$TAGS_GREP" =~ "0" ]]; then
     echo "Tag (github release) does not exist, not going to publish $CORE_VERSION to npm"
+    exit 0
+  fi
+}
+
+
+function prepublishCheck {
+  cd $BASE_DIR/../$1
+  VERSION=$(node -p "require('./package.json').version")
+  
+  # Check if it can be published (github release must exist)
+  TAGS_GREP=`git ls-remote --tags origin | grep "v$VERSION$" | wc -l`
+  if [[ "$TAGS_GREP" =~ "0" ]]; then
+    echo "Tag (github release) does not exist, not going to publish $VERSION to npm"
     exit 0
   fi
 }
@@ -71,11 +79,11 @@ function publishPackage {
     echoe "Publishing $NAME@$VERSION ..."
 
     npm publish $BASE_DIR/../$PUBLISH_FOLDER --access public
-    if [[ $VERSION != *"rc."* ]]; then
+    if [[ $VERSION != *"rc."* ]] && [[ $VERSION != *"next."* ]]; then
       echo "Tag $NAME@$VERSION with latest on npm"
       npm dist-tag add $NAME@$VERSION latest
     else
-      echo "Release candidate $NAME@$VERSION NOT tagged as latest"
+      echo "Release/Next candidate $NAME@$VERSION NOT tagged as latest"
     fi
 
     echoe "Published $NAME@$VERSION"
@@ -91,14 +99,17 @@ function removeNpmToken {
 
 
 # Luigi Client & Core
-setKymaNpmToken
+setLuigiNpmToken
 prepublishChecks
 publishPackage "core" "core/public"
 publishPackage "client" "client/public"
-removeNpmToken
+publishPackage "core" "core/public-ie11"
+publishPackage "client" "client/public-ie11"
 
-# Luigi Core Plugins
-# setLuigiNpmToken
-# publishPackage "plugins" "plugins/auth/public/auth-oauth2"
-# publishPackage "plugins" "plugins/auth/public/auth-oidc"
-# removeNpmToken
+if ( prepublishCheck "plugins/auth/public/auth-oauth2" ); then
+  publishPackage "plugins" "plugins/auth/public/auth-oauth2"
+fi
+if ( prepublishCheck "plugins/auth/public/auth-oidc" ); then
+publishPackage "plugins" "plugins/auth/public/auth-oidc"
+fi
+removeNpmToken

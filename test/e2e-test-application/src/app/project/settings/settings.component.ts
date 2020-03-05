@@ -10,7 +10,7 @@ import {
   getNodeParams,
   NodeParams,
   uxManager
-} from '@kyma-project/luigi-client';
+} from '@luigi-project/client';
 import { Subscription } from 'rxjs';
 
 @Component({
@@ -32,7 +32,7 @@ export class SettingsComponent implements OnInit {
     private activatedRoute: ActivatedRoute,
     private cdr: ChangeDetectorRef,
     private luigiService: LuigiContextService
-  ) { }
+  ) {}
 
   ngOnInit() {
     this.activatedRoute.params.subscribe((params: Params) => {

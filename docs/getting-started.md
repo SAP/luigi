@@ -41,13 +41,13 @@ Copy and paste this code in a text editor, then save it as an HTML file:
 
 <head>
 	  <title>Hello Luigi</title>
-	  <link rel='stylesheet' href='https://unpkg.com/@kyma-project/luigi-core/luigi.css'>
+	  <link rel='stylesheet' href='https://unpkg.com/@luigi-project/core/luigi.css'>
       <meta charset="utf-8">
 </head>
 
 <body>
     <noscript>You need to enable JavaScript to run this app.</noscript>
-    <script src="https://unpkg.com/@kyma-project/luigi-core/luigi.js"></script>
+    <script src="https://unpkg.com/@luigi-project/core/luigi.js"></script>
 	<script>
         Luigi.setConfig({
             navigation: {

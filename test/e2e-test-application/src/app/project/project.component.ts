@@ -13,7 +13,7 @@ import {
   getClientPermissions,
   addContextUpdateListener,
   removeContextUpdateListener
-} from '@kyma-project/luigi-client';
+} from '@luigi-project/client';
 import {
   IContextMessage,
   LuigiContextService
