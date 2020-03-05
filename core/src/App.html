@@ -376,10 +376,7 @@
       closeModal();
       closeSplitView();
 
-      if (isNavigationSyncDisabled) {
         Routing.handleRouteChange(path, getComponentWrapper(), node, config);
-      }
-      isNavigationSyncDisabled = true; // always reset it after use
     });
   };
 

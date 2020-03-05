@@ -254,9 +254,7 @@ export const projectDetailNavStructure = projectId => [
   {
     pathSegment: 'nav-sync',
     label: 'Nav Sync',
-    // viewUrl: '/sampleapp.html#/nav-sync-example/one',
     icon: 'synchronize',
-    keepSelectedForChildren: true,
     navigationContext: 'navSync',
     children: ['one', 'two', 'three', 'four'].map(seg => ({
       label: seg,
