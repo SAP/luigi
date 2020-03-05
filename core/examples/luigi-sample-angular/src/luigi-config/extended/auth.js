@@ -47,7 +47,7 @@ class Auth {
     // redirect_uri: '',
     // post_logout_redirect_uri: '/logout.html',
     // automaticSilentRenew: true,
-    profileStorageInterceptor: (profile) => {
+    profileStorageInterceptorFn: (profile) => {
       profile.email = undefined
       return profile;
     }
