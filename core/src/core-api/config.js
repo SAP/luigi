@@ -138,7 +138,6 @@ class LuigiConfig {
    * Luigi.getConfigValue('settings.sideNavFooterText')
    */
   getConfigValue(property) {
-    if(!this.initialized)  console.warn("Luigi config is not initialized yet");
     return GenericHelpers.getConfigValueFromObject(this.getConfig(), property);
   }
 
@@ -151,7 +150,6 @@ class LuigiConfig {
    * Luigi.getConfigBooleanValue('settings.hideNavigation')
    */
   getConfigBooleanValue(property) {
-    if(!this.initialized)  console.warn("Luigi config is not initialized yet");
     const configuredValue = GenericHelpers.getConfigValueFromObject(
       this.getConfig(),
       property
