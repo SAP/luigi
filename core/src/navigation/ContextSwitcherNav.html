@@ -1,4 +1,4 @@
-<nav class="fd-menu">
+<nav class="fd-menu lui-ctx-switch-nav">
   {#if actions && actions.length}
   <ul class="fd-menu__list fd-menu__list--top">
     {#each actions as node} {#if node.position === 'top' || !['top',
@@ -78,3 +78,10 @@
     dispatch('goToOption', { option, selectedOption });
   }
 </script>
+
+<style type="text/scss">
+  .lui-ctx-switch-nav {
+    max-height: calc(100vh - 76px);
+    overflow-y: auto;
+  }
+</style>
