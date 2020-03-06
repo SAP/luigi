@@ -1,0 +1,24 @@
+version: "3"
+services:
+  oidc-server-mock:
+    container_name: oidc-server-mock
+    image: soluto/oidc-server-mock
+    ports:
+      - "4011:80"
+    environment:
+      ASPNETCORE_ENVIRONMENT: Development
+      API_RESOURCES_INLINE: |
+        [
+          "some-app"
+        ]
+      USERS_CONFIGURATION_INLINE: |
+        [
+          {
+            "SubjectId":"1",
+            "Username":"Luigi",
+            "Password":"pwd"
+          }
+        ]
+      CLIENTS_CONFIGURATION_PATH: /tmp/config/clients-config.json
+    volumes:
+      - .:/tmp/config:ro
