@@ -286,13 +286,13 @@ class IframeClass {
         internal: JSON.stringify(component.prepareInternalData(config))
       };
 
-      const withSync = !componentData.isNavigationSyncDisabled;
+      const withSync = componentData.isNavigationSyncEnabled;
       if (withSync) {
         // default, send navigation event to client
         IframeHelpers.sendMessageToIframe(config.iframe, message);
       } else {
         // `withoutSync()` used. client navigation was skipped, reset after one-time use.
-        component.set({ isNavigationSyncDisabled: true });
+        component.set({ isNavigationSyncEnabled: true });
       }
 
       // clear goBackContext and reset navigateBack after sending it to the client

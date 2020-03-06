@@ -133,7 +133,7 @@
   let viewGroup;
   let isolateView;
   let previousNodeValues;
-  let isNavigationSyncDisabled = true;
+  let isNavigationSyncEnabled = true;
   let isNavigateBack = false;
   let goBackContext;
   let navigationPath;
@@ -289,7 +289,7 @@
           tabNav,
           isNavigateBack,
           goBackContext,
-          isNavigationSyncDisabled
+          isNavigationSyncEnabled
         };
       },
       set: obj => {
@@ -333,8 +333,8 @@
               isNavigateBack = obj.isNavigateBack;
             } else if (prop === 'goBackContext') {
               goBackContext = obj.goBackContext;
-            } else if (prop === 'isNavigationSyncDisabled') {
-              isNavigationSyncDisabled = obj.isNavigationSyncDisabled;
+            } else if (prop === 'isNavigationSyncEnabled') {
+              isNavigationSyncEnabled = obj.isNavigationSyncEnabled;
             }
           });
         }
@@ -376,7 +376,7 @@
       closeModal();
       closeSplitView();
 
-        Routing.handleRouteChange(path, getComponentWrapper(), node, config);
+      Routing.handleRouteChange(path, getComponentWrapper(), node, config);
     });
   };
 
@@ -876,7 +876,7 @@
           openSplitView(path, e.data.params.splitView);
         } else {
           getUnsavedChangesModalPromise().then(() => {
-            isNavigationSyncDisabled = !e.data.params.withoutSync;
+            isNavigationSyncEnabled = !e.data.params.withoutSync;
             handleNavigation(e.data, config);
             closeModal();
             closeSplitView();
