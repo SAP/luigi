@@ -1,3 +1,4 @@
+import { LuigiAutoNavigationService } from './services/luigi-auto-navigation.service';
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
@@ -27,6 +28,7 @@ import { DynamicComponent } from './project/dynamic/dynamic.component';
 import { HideSideNavComponent } from './project/hide-side-nav/hide-side-nav.component';
 import { AnonymousComponent } from './anonymous/anonymous.component';
 import { OnNodeActivationComponent } from './onNodeActivation/onNodeActivation.component';
+import { NavSyncComponent } from './nav-sync/nav-sync.component';
 
 @NgModule({
   declarations: [
@@ -52,10 +54,11 @@ import { OnNodeActivationComponent } from './onNodeActivation/onNodeActivation.c
     DynamicComponent,
     HideSideNavComponent,
     AnonymousComponent,
-    OnNodeActivationComponent
+    OnNodeActivationComponent,
+    NavSyncComponent
   ],
   imports: [BrowserModule, FormsModule, AppRoutingModule],
-  providers: [LuigiContextService],
+  providers: [LuigiContextService, LuigiAutoNavigationService],
   bootstrap: [AppComponent]
 })
 export class AppModule {}

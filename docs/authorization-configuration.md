@@ -83,6 +83,7 @@ auth: {
     automaticSilentRenew: true,
     userInfoFn:(authSettings, authData)=>{},
     accessTokenExpiringNotificationTime: 60
+    profileStorageInterceptorFn:(jwtProfile)=>{}
   },
   disableAutoLogin: false
 }
@@ -97,6 +98,7 @@ auth: {
 - **accessTokenExpiringNotificationTime** is the number of seconds before an access token expires and triggers silent token refresh. The default value is `60` seconds.
 - **thirdPartyCookiesScriptLocation** is the URL to the page containing third-party cookies support check. For details, see [Third-party cookies and silent token refresh section](#Third-party-cookies-and-silent-token-refresh).
 - **userInfoFn** provides a function to get user information. It returns a promise of a **userinfo** object which can contain **name**, **email** and **picture** (value is a URL to the image). **Name** or **email** are displayed in the profile drop-down menu and the user’s profile picture is displayed in the top navigation.
+- **profileStorageInterceptorFn** provides a function to mutate the profile values of the [JSON Web Token (JWT)](https://jwt.io) before it gets stored in Luigi. It allows the removal of values like **email** to comply with data privacy restrictions. Since it is async, you could use it to enrich the profile data, but it should not get mixed up with **userInfoFn** which is specifically designed to define user information.
 
 ### Third-party cookies and silent token refresh
 
