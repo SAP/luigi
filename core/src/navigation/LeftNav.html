@@ -517,7 +517,7 @@
     --fd-color-text-4: #74777a;
   }
 
-  $topNavHeight: 48px;
+  $topNavHeight: 44px;
   $leftNavWidthCollapsed: 2.75rem;
   $footerPaddingVertical: 13px;
   $footerHeight: calc(16px + (2 * #{$footerPaddingVertical}));
@@ -642,7 +642,8 @@
     align-items: center;
 
     &--text {
-      color: var(--fd-color-text-4);
+      color: #32363a;
+      color: var(--sapTextColor, #32363a);
       white-space: nowrap;
       width: auto;
       padding: $footerPaddingVertical 20px;

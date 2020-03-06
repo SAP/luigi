@@ -3,41 +3,41 @@
 <!-- DESKTOP VERSION (popover): -->
 {#if !isMobile}
 <div class="fd-shellbar__action fd-shellbar__action--desktop">
-  <div class="fd-product-menu">
-    <div class="fd-popover fd-popover--right">
-      <div class="fd-popover__control" on:click|stopPropagation="{() => {}}">
-        <button
-          class="fd-button fd-shellbar__button lui-ctx-switch-menu"
-          aria-expanded="{dropDownStates.contextSwitcherPopover || false}"
-          aria-haspopup="true"
-          title="{selectedLabel ? selectedLabel : config.defaultLabel}"
-          on:click="{() => {if (renderAsDropdown) toggleDropdownState()}}"
-          aria-disabled="{!renderAsDropdown}"
-        >
-          {#if !selectedLabel}{$getTranslation(config.defaultLabel)}{/if} {#if
-          selectedLabel}{selectedLabel}{/if}
-        </button>
-      </div>
-      <div
-        class="fd-popover__body fd-popover__body--right"
-        aria-hidden="{!(dropDownStates.contextSwitcherPopover || false)}"
-        id="contextSwitcherPopover"
+  <div class="fd-popover fd-popover--right">
+    <div class="fd-popover__control" on:click|stopPropagation="{() => {}}">
+      <button
+        class="fd-button--light fd-button--menu fd-shellbar__button--menu lui-ctx-switch-menu"
+        aria-expanded="{dropDownStates.contextSwitcherPopover || false}"
+        aria-haspopup="true"
+        title="{selectedLabel ? selectedLabel : config.defaultLabel}"
+        on:click="{() => {if (renderAsDropdown) toggleDropdownState()}}"
+        aria-disabled="{!renderAsDropdown}"
+        data-testid="luigi-contextswitcher-button"
       >
-        <ContextSwitcherNav
-          {actions}
-          {config}
-          {customOptionsRenderer}
-          {options}
-          {selectedLabel}
-          {selectedOption}
-          {getNodeName}
-          {getRouteLink}
-          {getTestId}
-          {getTranslation}
-          on:onActionClick="{onActionClick}"
-          on:goToOption="{goToOption}"
-        />
-      </div>
+        {#if !selectedLabel}{$getTranslation(config.defaultLabel)}{/if} {#if
+        selectedLabel}{selectedLabel}{/if}
+      </button>
+    </div>
+    <div
+      class="fd-popover__body fd-popover__body--right"
+      aria-hidden="{!(dropDownStates.contextSwitcherPopover || false)}"
+      id="contextSwitcherPopover"
+      data-testid="luigi-contextswitcher-popover"
+    >
+      <ContextSwitcherNav
+        {actions}
+        {config}
+        {customOptionsRenderer}
+        {options}
+        {selectedLabel}
+        {selectedOption}
+        {getNodeName}
+        {getRouteLink}
+        {getTestId}
+        {getTranslation}
+        on:onActionClick="{onActionClick}"
+        on:goToOption="{goToOption}"
+      />
     </div>
   </div>
 </div>
@@ -329,23 +329,14 @@
     max-width: 30vw;
     overflow: hidden;
     text-overflow: ellipsis;
-    padding-right: 27px;
+    color: #fff;
+    color: var(--sapShell_TextColor, #fff);
+    padding-right: 30px;
 
     &:after {
-      height: 0;
-      width: 0;
-      border-style: solid;
-      border-width: 5px 5px 0 5px;
-      border-top-color: #fff;
-      border-top-color: var(--sapShell_InteractiveTextColor, #d1e8ff);
-      border-left-color: transparent;
-      border-right-color: transparent;
-      content: '';
       position: absolute;
-      top: calc(50% - 2.5px);
-      margin-left: 8px;
-      margin-right: 8px;
-      right: 3px;
+      top: calc(50% - 5px);
+      right: 12px;
     }
 
     @media (min-width: 1024px) {

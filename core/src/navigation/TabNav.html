@@ -5,7 +5,7 @@
 />
 {#if children && pathData.length > 1}
 <nav
-  class="fd-tabs"
+  class="fd-tabs fd-tabs--l"
   role="tablist"
   id="tabsContainer"
   on:toggleDropdownState="{event => toggleDropdownState(event.name)}"
@@ -234,12 +234,16 @@
     let hasMoreBtnElements = false;
     let componentData = __this.get();
     let current = componentData.pathData[componentData.pathData.length - 1];
+    let style;
+    let margin;
     moreLink.setAttribute('aria-selected', 'false');
     if (tabsContainer) {
       tabsContainerOffsetWidth = tabsContainer.offsetWidth;
       let tabs = [...tabsContainer.children];
       tabs.forEach(element => {
-        totalTabsSize += element.offsetWidth;
+        style = element.currentStyle || window.getComputedStyle(element);
+        margin = parseFloat(style.marginLeft) + parseFloat(style.marginRight);
+        totalTabsSize += element.offsetWidth + margin;
         let uid = element.getAttribute('uid');
         if (totalTabsSize >= tabsContainerOffsetWidth) {
           element.classList.add('hide_element');
@@ -385,6 +389,15 @@
         display: none;
       }
     }
+    .fd-tabs__link {
+      padding-right: 0;
+
+      &.has-child {
+        .sap-icon--l {
+          right: 0;
+        }
+      }
+    }
   }
 
   .fd-tabs {
@@ -414,11 +427,10 @@
         .label {
           padding-right: 17px;
         }
-
         .sap-icon--l {
           position: absolute;
-          top: 0.7em;
-          right: 0;
+          top: 0.4em;
+          right: 14px;
         }
       }
     }
