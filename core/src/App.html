@@ -133,6 +133,7 @@
   let viewGroup;
   let isolateView;
   let previousNodeValues;
+  let isNavigationSyncEnabled = true;
   let isNavigateBack = false;
   let goBackContext;
   let navigationPath;
@@ -149,19 +150,22 @@
   let thirdPartyCookiesCheck;
 
   const prepareInternalData = config => {
+    const iframeConf = config.iframe.luigi;
     const internalData = {
-      isNavigateBack: isNavigateBack,
+      isNavigateBack,
       viewStackSize: preservedViews.length,
       currentLocale: LuigiI18N.getCurrentLocale(),
-      clientPermissions: config.iframe.luigi.nextViewUrl
-        ? config.iframe.luigi.nextClientPermissions
-        : config.iframe.luigi.clientPermissions
+      clientPermissions: iframeConf.nextViewUrl
+        ? iframeConf.nextClientPermissions
+        : iframeConf.clientPermissions
     };
+
     IframeHelpers.specialIframeTypes
       .map(o => o.iframeConfigKey)
       .forEach(key => {
         internalData[key] = config[key] || false;
       });
+
     return internalData;
   };
 
@@ -170,6 +174,7 @@
       console.info('iframe does not exist, not able to send context.');
       return;
     }
+
     const message = {
       msg: 'luigi.init',
       context: JSON.stringify(
@@ -184,6 +189,7 @@
       internal: JSON.stringify(prepareInternalData(config)),
       authData: AuthHelpers.getStoredAuthData()
     };
+
     IframeHelpers.sendMessageToIframe(config.iframe, message);
   };
 
@@ -215,6 +221,7 @@
     path = GenericHelpers.addLeadingSlash(path);
 
     addPreserveView(data, config);
+
     Routing.navigateTo(path); //navigate to the raw path. Any errors/alerts are handled later
   };
 
@@ -281,7 +288,8 @@
           showLoadingIndicator,
           tabNav,
           isNavigateBack,
-          goBackContext
+          goBackContext,
+          isNavigationSyncEnabled
         };
       },
       set: obj => {
@@ -325,6 +333,8 @@
               isNavigateBack = obj.isNavigateBack;
             } else if (prop === 'goBackContext') {
               goBackContext = obj.goBackContext;
+            } else if (prop === 'isNavigationSyncEnabled') {
+              isNavigationSyncEnabled = obj.isNavigationSyncEnabled;
             }
           });
         }
@@ -868,6 +878,7 @@
           openSplitView(path, e.data.params.splitView);
         } else {
           getUnsavedChangesModalPromise().then(() => {
+            isNavigationSyncEnabled = !e.data.params.withoutSync;
             handleNavigation(e.data, config);
             closeModal();
             closeSplitView();
