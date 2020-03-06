@@ -12,8 +12,8 @@ source $BASE_DIR/shared/bashHelpers.sh
 function setLuigiNpmToken {
   if [ "$TRAVIS" = "true" ]; then
     if [ "$NPM_LUI_AUTH_TOKEN" = "" ]; then
-     echoe "NPM_LUI_AUTH_TOKEN is not set, cannot continue publishing."
-     exit 1
+     echoe "NPM_LUI_AUTH_TOKEN is not set, skipping publishing."
+     exit 0
     fi
 
     # setup token when running in travis
