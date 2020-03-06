@@ -917,6 +917,10 @@ describe('Navigation', function() {
     });
   });
   describe('buildVirtualViewUrl', () => {
+    it('returns same if virtualTree is not defined', () => {
+      const given = 'https://mf.luigi-project.io';
+      assert.equal(Navigation.buildVirtualViewUrl(given), given);
+    });
     it('returns valid substituted string without proper pathParams', () => {
       const mock = {
         url: 'https://mf.luigi-project.io#!',
@@ -934,7 +938,7 @@ describe('Navigation', function() {
     });
     it('returns valid substituted string with pathParams', () => {
       const mock = {
-        url: 'https://mf.luigi-project.io#!',
+        url: 'https://mf.luigi-project.io#!/x',
         pathParams: {
           otherParam: 'foo',
           virtualSegment_1: 'one',
@@ -943,7 +947,7 @@ describe('Navigation', function() {
         index: 3
       };
       const expected =
-        'https://mf.luigi-project.io#!/:virtualSegment_1/:virtualSegment_2/:virtualSegment_3/';
+        'https://mf.luigi-project.io#!/x/:virtualSegment_1/:virtualSegment_2/:virtualSegment_3/';
 
       assert.equal(
         Navigation.buildVirtualViewUrl(mock.url, mock.pathParams, mock.index),
