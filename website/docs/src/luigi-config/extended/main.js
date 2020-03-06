@@ -2,6 +2,7 @@
 import { navigation } from './navigation';
 import { routing } from './routing';
 import { settings } from './settings';
+import { search } from './search';
 
 Luigi.setConfig({
   // auth,
@@ -9,3 +10,5 @@ Luigi.setConfig({
   routing,
   settings
 });
+
+search.init();

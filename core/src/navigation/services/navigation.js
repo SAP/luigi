@@ -233,6 +233,9 @@ class NavigationClass {
         newStr += ':' + key + '/';
       }
     }
+    if (!_virtualPathIndex) {
+      return str;
+    }
     newStr += ':virtualSegment_' + _virtualPathIndex + '/';
     return str + '/' + newStr;
   }
