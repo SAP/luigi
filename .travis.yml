@@ -23,8 +23,7 @@ jobs:
         - lerna bootstrap --ci --ignore "*luigi-example*" || travis_terminate 1
         - lerna run bundle --ignore "*luigi-example*" || travis_terminate 1
         - lerna run bundlesizeOnly --ignore "*luigi-example*" || travis_terminate 1
-        - ls -lah $TRAVIS_BUILD_DIR/test/e2e-test-application/node_modules/@kyma-project
-        - head $TRAVIS_BUILD_DIR/test/e2e-test-application/node_modules/@kyma-project/luigi-client/package.json
+        - head $TRAVIS_BUILD_DIR/test/e2e-test-application/node_modules/@luigi-project/client/package.json
         - lerna run build --ignore "*luigi-example*" || travis_terminate 1
         - npm test --prefix core || travis_terminate 1
       before_cache:
@@ -86,7 +85,7 @@ jobs:
     - stage: 'Publish'
       name: 'Publish to NPM'
       # run only when merging from release-v branch to master
-      # if: repo = SAP/luigi AND head_branch ~= ^release-v
+      # if: repo = SAP/luigi AND (branch = master OR branch ~= ^release-v)
       if: repo = SAP/luigi AND (branch = master OR branch ~= ^release-v)
       script:
         - bash ./scripts/npmPublish.sh

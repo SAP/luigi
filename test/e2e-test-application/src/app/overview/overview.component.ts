@@ -4,7 +4,7 @@ import {
   uxManager,
   sendCustomMessage,
   addCustomMessageListener
-} from '@kyma-project/luigi-client';
+} from '@luigi-project/client';
 
 @Component({
   selector: 'app-overview',

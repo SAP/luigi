@@ -69,7 +69,7 @@ class UxManager extends LuigiClientBase {
    * @param {string} [settings.buttonDismiss="No"] the label for the modal dismiss button
    * @returns {promise} which is resolved when accepting the confirmation modal and rejected when dismissing it
    * @example
-   * import LuigiClient from '@kyma-project/luigi-client';
+   * import LuigiClient from '@luigi-project/client';
    * const settings = {
    *  header: "Confirmation",
    *  body: "Are you sure you want to do this?",
@@ -131,7 +131,7 @@ class UxManager extends LuigiClientBase {
    * @param {number} settings.closeAfter (optional) time in milliseconds that tells Luigi when to close the Alert automatically. If not provided, the Alert will stay on until closed manually. It has to be greater than `100`
    * @returns {promise} which is resolved when the alert is dismissed
    * @example
-   * import LuigiClient from '@kyma-project/luigi-client';
+   * import LuigiClient from '@luigi-project/client';
    * const settings = {
    *  text: "Ut enim ad minim veniam, {goToHome} quis nostrud exercitation ullamco {relativePath}. Duis aute irure dolor {goToOtherProject}",
    *  type: 'info',

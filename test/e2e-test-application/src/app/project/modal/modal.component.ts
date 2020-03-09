@@ -7,7 +7,7 @@ import {
   SimpleChanges
 } from '@angular/core';
 
-import { uxManager } from '@kyma-project/luigi-client';
+import { uxManager } from '@luigi-project/client';
 
 @Component({
   selector: 'app-modal',

@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy, ChangeDetectorRef } from '@angular/core';
-import { getPathParams, linkManager } from '@kyma-project/luigi-client';
+import { getPathParams, linkManager } from '@luigi-project/client';
 
 import {
   LuigiContextService,

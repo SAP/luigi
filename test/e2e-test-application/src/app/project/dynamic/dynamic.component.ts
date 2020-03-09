@@ -6,7 +6,7 @@ import {
   linkManager,
   PathParams,
   NodeParams
-} from '@kyma-project/luigi-client';
+} from '@luigi-project/client';
 import {
   LuigiContextService,
   IContextMessage
