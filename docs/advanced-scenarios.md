@@ -33,7 +33,7 @@ This example shows you how to keep an existing routing strategy and use an exist
 1. Configure the Luigi navigation node:
 
 <!-- add-attribute:class:success -->
-> **NOTE**: To keep the example simple, we use [virtualTree](navigation-parameters-reference.md#virtualtree) to allow any nested navigation. This is not mandatory; you can always specify the node tree by yourself and still use automatic navigation with router events.
+> **NOTE**: To keep the example simple, we use [virtualTree](navigation-parameters-reference.md#virtualtree) to allow any nested navigation, but this is not mandatory. You can always specify the node tree yourself and still use automatic navigation with router events.
 
 ```javascript
     {
