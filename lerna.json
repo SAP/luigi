@@ -6,9 +6,7 @@
     "client/public",
     "core",
     "core/public",
-    "core/examples/luigi-sample-angular",
-    "website/fiddle",
-    "website/docs"
+    "core/examples/luigi-sample-angular"
   ],
   "version": "0.0.0"
 }
