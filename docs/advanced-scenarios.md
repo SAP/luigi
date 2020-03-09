@@ -94,7 +94,7 @@ Use this code to implement `luigi-auto-navigation.service.ts`, which is globally
 
 #### Result
 
-Other than the added service, which could also be implemented as a `RouteGuard` or similar, the micro frontend is unchanged and uses `[routerLink='']` or other functionalities to navigate.
+Other than the added service, which you can also implement as a `RouteGuard` or similar, the micro frontend is unchanged and uses `[routerLink='']` or other functionality to navigate.
 
 ### Authenticate Luigi with Google Cloud Identity
 
