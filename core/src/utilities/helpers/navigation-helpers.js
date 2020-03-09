@@ -1,6 +1,7 @@
 // Helper methods for 'navigation.js' file. They don't require any method from 'navigation.js` but are required by them.
 import { LuigiAuth, LuigiConfig } from '../../core-api';
 import { AuthHelpers } from './';
+import { Navigation } from '../../navigation/services/navigation';
 
 class NavigationHelpersClass {
   constructor() {
@@ -149,7 +150,7 @@ class NavigationHelpersClass {
   }
 
   async generateTopNavNodes(pathData) {
-    const rawChildren = pathData[0].children;
+    const rawChildren = await Navigation.getChildrenFromCache(pathData[0]);
     let selectedNode = null;
     let visibleNodeCount = 0;
     let cats = {};

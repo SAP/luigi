@@ -5,3 +5,6 @@
 .sap-icon--navigation-left-arrow::before {
   font-size: 11px;
 }
+.dynamic-component .fd-panel + .fd-panel {
+  margin-top: 20px;
+}

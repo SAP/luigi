@@ -1,12 +1,12 @@
 import {
+  addProject,
+  getMockBadgeCount,
+  getProjectCount,
   navigationPermissionChecker,
   projectsNavProviderFn,
   projectsCounterFn,
-  addProject,
-  removeProject,
-  getProjectCount,
   projectExists,
-  getMockBadgeCount
+  removeProject
 } from './helpers';
 
 class Navigation {

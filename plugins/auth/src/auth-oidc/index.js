@@ -27,13 +27,27 @@ export default class openIdConnect {
 
     this.client = new Oidc.UserManager(this.settings);
 
-    this.client.events.addUserLoaded(payload => {
+    this.client.events.addUserLoaded(async payload => {
+      let profile = payload.profile;
+      if (
+        payload.profile &&
+        LuigiConfig.getConfigValue(
+          'auth.openIdConnect.profileStorageInterceptorFn'
+        )
+      ) {
+        profile = await LuigiConfig.executeConfigFnAsync(
+          'auth.openIdConnect.profileStorageInterceptorFn',
+          true,
+          payload.profile
+        );
+      }
+
       const data = {
         accessToken: payload.access_token,
         accessTokenExpirationDate: payload.expires_at * 1000,
         scope: payload.scope,
         idToken: payload.id_token,
-        profile: payload.profile
+        profile
       };
       Luigi.auth().store.setAuthData(data);
 
