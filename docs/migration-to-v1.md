@@ -59,7 +59,7 @@ To install the plugins, follow these installation guides:
 
 ### Fundamental Library Styles
 
-During switching from SAP Fundamentals to Fundamental Library Styles there were changes in the HTML structure. Some classes were renamed or removed completely. The full list of Fundamental Library Styles changes you can see [here](https://github.com/SAP/fundamental-styles/wiki/Breaking-Changes). 
+Following an upgrade from SAP Fundamentals to Fundamental Library Styles, there were changes in the HTML structure. Some classes were renamed or removed completely. You can find the full list of Fundamental Library Styles changes [here](https://github.com/SAP/fundamental-styles/wiki/Breaking-Changes). 
 
 On Luigi side we renamed `lui-tendant-menu__control` class into `lui-ctx-switch-menu`.
 
