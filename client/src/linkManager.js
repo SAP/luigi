@@ -14,7 +14,6 @@ export class linkManager extends LuigiClientBase {
    * @private
    */
   constructor(values) {
-    // @param {object} values TODO: is it necessary at all, where is it used?
     super();
     Object.assign(this, values);
 
@@ -70,7 +69,6 @@ export class linkManager extends LuigiClientBase {
         splitView: splitViewSettings
       })
     };
-
     helpers.sendPostMessageToLuigiCore(navigationOpenMsg);
   }
 
@@ -117,6 +115,7 @@ export class linkManager extends LuigiClientBase {
    */
   fromContext(navigationContext) {
     const navigationContextInParent =
+      this.currentContext.context.parentNavigationContexts &&
       this.currentContext.context.parentNavigationContexts.indexOf(
         navigationContext
       ) !== -1;
@@ -142,6 +141,7 @@ export class linkManager extends LuigiClientBase {
    */
   fromClosestContext() {
     const hasParentNavigationContext =
+      this.currentContext &&
       this.currentContext.context.parentNavigationContexts.length > 0;
     if (hasParentNavigationContext) {
       this.options.fromContext = null;
@@ -250,5 +250,19 @@ export class linkManager extends LuigiClientBase {
       msg: 'luigi.navigation.back',
       goBackContext: goBackValue && JSON.stringify(goBackValue)
     });
+  }
+
+  /**
+   * Disables the navigation handling for a single navigation request
+   * It prevents Luigi Core from handling url change after `navigate()`.
+   * Used for auto-navigation
+   * @since NEXTRELEASE
+   * @example
+   * LuigiClient.linkManager().withoutSync().navigate('/projects/xy/foobar');
+   * LuigiClient.linkManager().withoutSync().fromClosestContext().navigate('settings');
+   */
+  withoutSync() {
+    this.options.withoutSync = true;
+    return this;
   }
 }

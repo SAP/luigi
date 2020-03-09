@@ -29,7 +29,7 @@ To configure authorization in Luigi:
 <!-- accordion:start -->
 ### How do I configure authorization in Luigi?
 
-You can configure Luigi authorization using the `auth:` section of your Luigi configuration file. To see how authorization works, go to the [Luigi Fiddle](https://fiddle.luigi-project.io) site and configure a sample application.
+You can configure Luigi authorization using the `auth:` section of your Luigi configuration file.
 
 This is an example of a simplified authorization structure:
 
@@ -43,7 +43,16 @@ auth: {
 }
 ```
 
-The **use** key defines the active authorization provider and the **disableAutoLogin** key allows you to disable the automatic login flow that is provided by default.
+- **use** defines the active authorization provider.
+- **disableAutoLogin** allows you to disable the automatic login flow that is provided by default.
+
+Optionally, you can also add:
+- **storage** parameter which allows you to set the storage type. It can be set to `localStorage`, `sessionStorage` or `none`. For example:
+```javascript
+auth: {
+   storage: 'sessionStorage'
+```
+
 
 ### How do I show some navigation nodes only to non-authenticated users?
 
@@ -74,6 +83,7 @@ auth: {
     automaticSilentRenew: true,
     userInfoFn:(authSettings, authData)=>{},
     accessTokenExpiringNotificationTime: 60
+    profileStorageInterceptorFn:(jwtProfile)=>{}
   },
   disableAutoLogin: false
 }
@@ -88,6 +98,7 @@ auth: {
 - **accessTokenExpiringNotificationTime** is the number of seconds before an access token expires and triggers silent token refresh. The default value is `60` seconds.
 - **thirdPartyCookiesScriptLocation** is the URL to the page containing third-party cookies support check. For details, see [Third-party cookies and silent token refresh section](#Third-party-cookies-and-silent-token-refresh).
 - **userInfoFn** provides a function to get user information. It returns a promise of a **userinfo** object which can contain **name**, **email** and **picture** (value is a URL to the image). **Name** or **email** are displayed in the profile drop-down menu and the user’s profile picture is displayed in the top navigation.
+- **profileStorageInterceptorFn** provides a function to mutate the profile values of the [JSON Web Token (JWT)](https://jwt.io) before it gets stored in Luigi. It allows the removal of values like **email** to comply with data privacy restrictions. Since it is async, you could use it to enrich the profile data, but it should not get mixed up with **userInfoFn** which is specifically designed to define user information.
 
 ### Third-party cookies and silent token refresh
 
