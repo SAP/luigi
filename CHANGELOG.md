@@ -23,6 +23,23 @@ The lerna-changelog tool detects changes based on PR labels and maps them to sec
     ...
   }
 -->
+## [v0.7.6] (2020-03-09)
+
+#### :rocket: Added
+* [#1075](https://github.com/SAP/luigi/pull/1075) Virtual tree navigation ([@maxmarkus](https://github.com/maxmarkus))
+* [#1111](https://github.com/SAP/luigi/pull/1111) Ability to update core URL without micro frontend URL change ([@maxmarkus](https://github.com/maxmarkus))
+* [#1076](https://github.com/SAP/luigi/pull/1076) Core API: Add splitview functionality ([@ndricimrr](https://github.com/ndricimrr))
+* [#1129](https://github.com/SAP/luigi/pull/1129) OpenIdConnect (OIDC) provider profile interceptor ([@maxmarkus](https://github.com/maxmarkus))
+
+#### :bug: Fixed
+* [#1119](https://github.com/SAP/luigi/pull/1119) Refactor resolved node children data management ([@JohannesDoberer](https://github.com/JohannesDoberer))
+* [#1115](https://github.com/SAP/luigi/pull/1115) Profile icon tooltip text ([@maxmarkus](https://github.com/maxmarkus))
+
+#### :memo: Documentation
+* [#1109](https://github.com/SAP/luigi/pull/1109) Document how to make use of contextUpdateListener ([@alexandra-simeonova](https://github.com/alexandra-simeonova))
+* [#1096](https://github.com/SAP/luigi/pull/1096) Document how to set auth storage type ([@alexandra-simeonova](https://github.com/alexandra-simeonova))
+* [#1099](https://github.com/SAP/luigi/pull/1099) Update documentation for examples + consolidate filenames ([@alexandra-simeonova](https://github.com/alexandra-simeonova))
+
 
 ## [v0.7.5] (2020-02-14)
 
@@ -654,3 +671,4 @@ The lerna-changelog tool detects changes based on PR labels and maps them to sec
 [v0.7.3]: https://github.com/SAP/luigi/compare/v0.7.2...v0.7.3
 [v0.7.4]: https://github.com/SAP/luigi/compare/v0.7.3...v0.7.4
 [v0.7.5]: https://github.com/SAP/luigi/compare/v0.7.4...v0.7.5
+[v0.7.6]: https://github.com/SAP/luigi/compare/v0.7.5...v0.7.6
