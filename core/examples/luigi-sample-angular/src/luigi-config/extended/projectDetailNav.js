@@ -102,7 +102,6 @@ export const projectDetailNavStructure = projectId => [
       }
     ]
   },
-
   {
     category: { label: 'Settings', icon: 'action-settings' },
     pathSegment: 'settings',

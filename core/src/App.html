@@ -104,6 +104,7 @@
   import { ViewGroupPreloading } from './services/preloading';
   import { MessagesListeners } from './services/messages-listeners';
   import { thirdPartyCookiesStatus } from './utilities/third-party-cookies-check.js';
+  import { NodeDataManagementStorage } from './services/node-data-management.js';
 
   const dispatch = createEventDispatcher();
 
@@ -353,7 +354,7 @@
     StateHelpers.doOnStoreChange(
       store,
       () => {
-        LuigiConfig._configModificationTimestamp = new Date();
+        NodeDataManagementStorage.deleteCache();
         const currentPath = Routing.getCurrentPath();
         Routing.handleRouteChange(
           currentPath,
