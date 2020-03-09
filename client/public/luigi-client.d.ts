@@ -322,6 +322,17 @@ export declare interface LinkManager {
     path: string,
     splitViewSettings?: SplitViewSettings
   ) => SplitViewInstance;
+
+  /**
+   * Disables the navigation handling for a single navigation request
+   * It prevents Luigi Core from handling url change after `navigate()`.
+   * Used for auto-navigation
+   * @since NEXTRELEASE
+   * @example
+   * LuigiClient.linkManager().withoutSync().navigate('/projects/xy/foobar');
+   * LuigiClient.linkManager().withoutSync().fromClosestContext().navigate('settings');
+   */
+  withoutSync: () => this;
 }
 
 /**
