@@ -69,7 +69,7 @@ class LuigiNavigationManager {
    * @returns {Object} an instance of the SplitView. It provides functions to control its behavior.
    * @see {@link https://docs.luigi-project.io/docs/luigi-client-api?section=splitview|SplitView Client} for further documentation. These methods from the Client SplitView are also implemented for Luigi Core: `close`, `collapse`, `expand`, `isCollapsed`, `isExpanded`, `exists`
    *
-   * @since NEXTRELEASE
+   * @since 0.7.6
    * @example
    * Luigi.navigation().openAsSplitView('projects/pr1/users', {title:'Users', size:'40'});
    */
