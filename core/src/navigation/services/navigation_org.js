@@ -7,10 +7,34 @@ import {
   NavigationHelpers,
   RoutingHelpers
 } from '../../utilities/helpers';
-import { NodeDataManagementStorage } from '../../services/node-data-management';
 import { LuigiConfig } from '../../core-api';
 
 class NavigationClass {
+  childrenProviderRequiresEvaluation(node) {
+    const result =
+      node &&
+      node._childrenProvider &&
+      (!node._childrenProviderUsed ||
+        !LuigiConfig._configModificationTimestamp ||
+        node._childrenProviderUsed <
+          new Date(LuigiConfig._configModificationTimestamp.getTime()));
+
+    if (result) {
+      node._childrenProviderUsed = new Date();
+    }
+    return result;
+  }
+  rootNodeRequiresEvaluation() {
+    const result =
+      !this.rootNode ||
+      !this._rootNodeProviderUsed ||
+      this._rootNodeProviderUsed <
+        new Date(LuigiConfig._configModificationTimestamp.getTime());
+    if (result) {
+      this._rootNodeProviderUsed = new Date();
+    }
+    return result;
+  }
   async getNavigationPath(rootNavProviderPromise, path = '') {
     try {
       const activePath = GenericHelpers.getTrimmedUrl(path);
@@ -19,34 +43,33 @@ class NavigationClass {
         console.error('No navigation nodes provided in the configuration.');
         return [{}];
       }
-      let rootNode;
-      if (NodeDataManagementStorage.hasRootNode()) {
-        rootNode = NodeDataManagementStorage.getRootNode().node;
-      }
-      if (!rootNode) {
+
+      if (
+        this.rootNodeRequiresEvaluation() ||
+        this.childrenProviderRequiresEvaluation(this.rootNode)
+      ) {
         const topNavNodes = await rootNavProviderPromise;
         if (GenericHelpers.isObject(topNavNodes)) {
-          rootNode = topNavNodes;
-          if (rootNode.pathSegment) {
-            rootNode.pathSegment = '';
+          this.rootNode = topNavNodes;
+          if (this.rootNode.pathSegment) {
+            this.rootNode.pathSegment = '';
             console.warn(
               'Root node must have an empty path segment. Provided path segment will be ignored.'
             );
           }
         } else {
-          rootNode = { children: topNavNodes };
+          this.rootNode = { children: topNavNodes };
         }
-        await this.getChildren(rootNode); // keep it, mutates and filters c
-        NodeDataManagementStorage.setRootNode(rootNode);
 
-        //await this.getChildren(this.rootNode, null, activePath); // keep it, mutates and filters children
+        await this.getChildren(this.rootNode, null, activePath); // keep it, mutates and filters children
       }
+
       const nodeNamesInCurrentPath = activePath.split('/');
       const navObj = await this.buildNode(
         nodeNamesInCurrentPath,
-        [rootNode],
-        rootNode.children,
-        rootNode.context || {}
+        [this.rootNode],
+        this.rootNode.children,
+        this.rootNode.context || {}
       );
 
       const navPathSegments = navObj.navigationPath
@@ -77,44 +100,37 @@ class NavigationClass {
     if (!node) {
       return [];
     }
-    let children = [];
-    if (!NodeDataManagementStorage.hasChildren(node)) {
+    if (!node._childrenProvider) {
+      node._childrenProvider = node.children;
+    }
+    if (this.childrenProviderRequiresEvaluation(node)) {
       try {
-        children = await AsyncHelpers.getConfigValueFromObjectAsync(
-          node,
-          'children',
-          context || node.context
-        );
-        if (children === undefined) {
-          children = [];
-        }
-        children =
-          children
+        node._children =
+          (await AsyncHelpers.getConfigValueFromObjectAsync(
+            node,
+            '_childrenProvider',
+            context || node.context
+          ))
             .map(n => this.getExpandStructuralPathSegment(n))
             .map(n => this.bindChildToParent(n, node)) || [];
+
+        node.children = this.getAccessibleNodes(node, context);
+        return node.children;
       } catch (err) {
         console.error('Could not lazy-load children for node', err);
       }
+    } else if (node._children) {
+      node.children = this.getAccessibleNodes(node, context);
+      return node.children;
     } else {
-      let data = NodeDataManagementStorage.getChildren(node);
-      if (data) children = data.children;
+      return [];
     }
-    let filteredChildren = this.getAccessibleNodes(node, children, context);
-    NodeDataManagementStorage.setChildren(node, { children, filteredChildren });
-    return filteredChildren;
   }
 
-  getChildrenFromCache(node) {
-    let data = NodeDataManagementStorage.getChildren(node);
-    return data ? data.filteredChildren : [];
-  }
-
-  getAccessibleNodes(node, children, context) {
-    return children
-      ? children.filter(child =>
-          NavigationHelpers.isNodeAccessPermitted(child, node, context)
-        )
-      : [];
+  getAccessibleNodes(node, context) {
+    return node._children.filter(child =>
+      NavigationHelpers.isNodeAccessPermitted(child, node, context)
+    );
   }
 
   bindChildToParent(child, node) {
@@ -233,9 +249,6 @@ class NavigationClass {
         newStr += ':' + key + '/';
       }
     }
-    if (!_virtualPathIndex) {
-      return str;
-    }
     newStr += ':virtualSegment_' + _virtualPathIndex + '/';
     return str + '/' + newStr;
   }
@@ -326,15 +339,18 @@ class NavigationClass {
     return result;
   }
 
-  getNodesToDisplay(children, pathData) {
-    if (children && children.length > 0) {
+  getNodes(children, pathData) {
+    if (children && 0 < children.length) {
       return children;
     }
-    if (pathData.length > 2) {
-      //try to get the children from parent node
-      let parentNode = pathData[pathData.length - 2];
-      if (NodeDataManagementStorage.hasChildren(parentNode)) {
-        return this.getChildrenFromCache(parentNode);
+
+    if (2 < pathData.length) {
+      const lastElement = pathData[pathData.length - 1];
+      const oneBeforeLast = pathData[pathData.length - 2];
+      const nestedNode = pathData.length > 1 ? oneBeforeLast : lastElement;
+
+      if (nestedNode && nestedNode.children) {
+        return nestedNode.children;
       }
     }
 
@@ -342,7 +358,7 @@ class NavigationClass {
   }
 
   getGroupedChildren(children, current) {
-    const nodes = this.getNodesToDisplay(children, current.pathData);
+    const nodes = this.getNodes(children, current.pathData);
     return NavigationHelpers.groupNodesBy(nodes, 'category', true);
   }
 
