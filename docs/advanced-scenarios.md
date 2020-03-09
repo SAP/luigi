@@ -107,7 +107,7 @@ This example shows you how to use Luigi with a Google account.
 1. Register a project and generate an OAuth2 Web Client based on [Google Developers Identity - OAuth2UserAgent](https://developers.google.com/identity/protocols/OAuth2UserAgent).
 2. To get your app running locally, set the Authorized JavaScript Origins URIs to `http://localhost:4200` and Authorized redirect URIs to `http://localhost:4200/luigi-core/auth/oauth2/callback.html?storageType=localStorage`.
 3. Copy the Client ID on the right side, ending with `apps.googleusercontent.com`
-4. Update the LuigiConfig auth section. We have added also the parts for logout and getting user information:
+4. Update the LuigiConfig auth section. In this example, we have also provided a configuration for logout and getting user information:
 
 ```javascript
   {
