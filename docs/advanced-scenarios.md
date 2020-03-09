@@ -132,7 +132,7 @@ This example shows you how to use Luigi with a Google account.
 ```
 
 Google's `id_token` contains basic identity data like name and user ID, which allows for this data to be shown in the profile.
-Additionally, if you would also like to show the user picture, add the following code to enrich the user profile information:
+5. If you would also like to show the user picture, add the following code to enrich the user profile information:
 
 ```javascript
   userInfoFn: async (settings, authData) => {
