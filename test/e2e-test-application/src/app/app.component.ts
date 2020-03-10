@@ -1,3 +1,4 @@
+import { LuigiAutoNavigationService } from './services/luigi-auto-navigation.service';
 import { Component, ViewEncapsulation, OnInit } from '@angular/core';
 import {
   addInitListener,
@@ -18,10 +19,16 @@ import {
 export class AppComponent implements OnInit {
   public title = 'app';
 
-  constructor(private luigiService: LuigiContextService) {}
+  constructor(
+    private luigiService: LuigiContextService,
+    private luigiAutoNav: LuigiAutoNavigationService
+  ) {}
 
   ngOnInit() {
-    addInitListener(context => this.onLuigiContext('init', context));
+    addInitListener(context => {
+      this.onLuigiContext('init', context);
+      this.luigiAutoNav.init();
+    });
     addContextUpdateListener(context => this.onLuigiContext('update', context));
 
     addInactiveListener(() => {

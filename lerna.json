@@ -1,5 +1,5 @@
 {
-  "lerna": "2.11.0",
+  "lerna": "3.15.0",
   "packages": [
     "scripts",
     "client",
@@ -9,7 +9,6 @@
     "plugins",
     "plugins/auth/public/auth-oauth2",
     "plugins/auth/public/auth-oidc",
-    "core/examples/luigi-example-vue",
     "test/e2e-test-application",
     "website/docs"
   ],

@@ -2,11 +2,15 @@
 echo ""
 echo "Installing Luigi with React specification"
 echo ""
-read -p "Luigi project folder name: " folder 
-echo "Creating luigified react app: " $folder 
+if [[ "$1" = "" ]]; then
+  read -p "Luigi project folder name: " folder
+else
+  folder=$1
+  echo "Luigi project folder name: $folder"
+fi
 
 # create sample react app
-npx create-react-app $folder && cd $folder 
+npx create-react-app $folder && cd $folder
 
 # eject project to customize webpack configs
 echo yes | npm run eject
@@ -29,7 +33,7 @@ mv public/index.html public/react.html
 curl https://raw.githubusercontent.com/SAP/luigi/master/core/examples/luigi-example-react/public/index.html > public/index.html
 curl https://raw.githubusercontent.com/SAP/luigi/master/core/examples/luigi-example-react/public/logo.png > public/logo.png
 curl https://raw.githubusercontent.com/SAP/luigi/master/core/examples/luigi-example-react/public/sampleapp.html > public/sampleapp.html
-curl https://raw.githubusercontent.com/SAP/luigi/master/core/examples/luigi-example-react/public/luigi-config.js > public/luigi-config.js
+curl https://raw.githubusercontent.com/SAP/luigi/master/core/examples/luigi-example-react/public/luigi-config/luigi-config.js > public/luigi-config.js
 
 # add index.js
 curl https://raw.githubusercontent.com/SAP/luigi/master/core/examples/luigi-example-react/src/index.js > src/index.js

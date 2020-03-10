@@ -1,0 +1,17 @@
+<mvc:View
+	controllerName="luigi.demo.home.Home"
+	xmlns="sap.m"
+	xmlns:f="sap.f"
+	xmlns:card="sap.f.cards"
+	xmlns:mvc="sap.ui.core.mvc">
+	<App id="app">
+		<VBox class="sapUiMediumMargin">
+			<Title  class="sapUiSmallMargin" titleStyle="H1" text="Home" wrapping="true" />
+			<f:Card class="sapUiSmallMargin">
+				<f:content>
+					<Title  class="sapUiSmallMargin" titleStyle="H4" id="luigi-initialized"  text="" wrapping="true" />
+				</f:content>
+			</f:Card>
+		</VBox>
+	</App>
+</mvc:View>
