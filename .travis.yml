@@ -18,6 +18,8 @@ jobs:
       script:
         - export CYPRESS_CACHE_FOLDER=$TRAVIS_BUILD_DIR/cypress-binary-cache
         - npm i -g lerna
+        - head $TRAVIS_BUILD_DIR/client/public/package.json && head $TRAVIS_BUILD_DIR/core/public/package.json
+        - cat $TRAVIS_BUILD_DIR/core/examples/luigi-sample-angular/package.json | grep luigi
         - lerna bootstrap --ci --ignore "*luigi-example-vue" || travis_terminate 1
         - lerna run bundle --ignore "*luigi-example-vue" || travis_terminate 1
         - lerna run bundlesizeOnly --ignore "*luigi-example-vue" || travis_terminate 1
@@ -85,8 +87,8 @@ jobs:
     - stage: 'Publish'
       name: 'Publish to NPM'
       # run only when merging from release-v branch to master
-      # if: repo = SAP/luigi AND head_branch ~= ^release-v
-      if: repo = SAP/luigi AND (branch = master OR branch ~= ^release-v)
+      # if: repo = SAP/luigi AND (branch = master OR branch ~= ^release-v)
+      if: repo = SAP/luigi AND branch = master AND head_branch = master
       script:
         - bash ./scripts/npmPublish.sh
       before_cache:
