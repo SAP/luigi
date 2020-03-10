@@ -6,11 +6,11 @@
     "start": "run-p dev:*",
     "dev:sapper": "PORT=4001 sapper dev",
     "dev:config": "npm run build:config -- --watch",
-    "dev:luigi": "sirv static/luigi --single --dev --cors --port 4000",
+    "dev:luigi": "sirv static/luigi --single --dev --cors --port 4000 --host 0.0.0.0",
     "debug:sapper": "PORT=4001 node --inspect node_modules/sapper/dist/cli.js dev",
     "build:config": "webpack --config webpack-generateConfig.config",
     "export:sapper": "NODE_ENV=production sapper export --basepath /docu-microfrontend && sh ./scripts/move-export.sh",
-    "export:serve": "sirv public --single --dev --cors --port 5000",
+    "export:serve": "sirv public --single --dev --cors --port 5000 --host 0.0.0.0",
     "export": "npm run build:config && npm run export:sapper",
     "test": "run-p --race dev cy:run",
     "cy:run": "cypress run",
@@ -19,8 +19,8 @@
     "mock:develop-plugins:watch": "NODE_ENV=debug nodemon --ignore 'static/**' -r esm scripts/markdown.unified-preview.js"
   },
   "dependencies": {
-    "@kyma-project/luigi-client": "0.7.2",
-    "@kyma-project/luigi-core": "0.7.2",
+    "@kyma-project/luigi-client": "0.7.5",
+    "@kyma-project/luigi-core": "0.7.5",
     "polka": "next"
   },
   "devDependencies": {

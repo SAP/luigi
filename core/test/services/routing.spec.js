@@ -7,6 +7,7 @@ import { Routing } from '../../src/services/routing';
 import { GenericHelpers } from '../../src/utilities/helpers';
 import { LuigiConfig, LuigiI18N } from '../../src/core-api';
 import { Navigation } from '../../src/navigation/services/navigation';
+import { NodeDataManagementStorage } from '../../src/services/node-data-management';
 
 describe('Routing', function() {
   this.retries(1);
@@ -33,6 +34,7 @@ describe('Routing', function() {
       document.createElement.restore();
     }
     sinon.restore();
+    NodeDataManagementStorage.deleteCache();
     // sinon.reset();
   });
 
