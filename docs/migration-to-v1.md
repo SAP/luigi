@@ -57,4 +57,10 @@ To install the plugins, follow these installation guides:
 <!-- add-attribute:class:warning -->
 > **NOTE:** If you already had a custom provider defined, you only need to rename the provider key to `idpProvider`.
 
+### Fundamental Library Styles
+
+Following an upgrade from SAP Fundamentals to Fundamental Library Styles, there were changes in the HTML structure. Some classes were renamed or removed completely. You can find the full list of Fundamental Library Styles changes [here](https://github.com/SAP/fundamental-styles/wiki/Breaking-Changes). 
+
+Within Luigi, we renamed the `lui-tendant-menu__control` class to `lui-ctx-switch-menu`.
+
 <!-- accordion:end -->
