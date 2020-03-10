@@ -1,5 +1,6 @@
 import { Component, OnInit, ChangeDetectorRef, OnDestroy } from '@angular/core';
 import { Subscription } from 'rxjs';
+
 import {
   getPathParams,
   getNodeParams,
@@ -26,7 +27,13 @@ export class DynamicComponent implements OnInit, OnDestroy {
   public hasBack: boolean;
   public nodeParams: NodeParams = null;
   public callbackValue = 'default value';
-  private lcSubscription: Subscription;
+
+  // routing playground
+  public routeUrl: string;
+  public mfBasePath = '';
+  public showRouting = false;
+
+  private lcSubscription: Subscription = new Subscription();
 
   constructor(
     private luigiService: LuigiContextService,
@@ -34,9 +41,8 @@ export class DynamicComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit() {
-    this.lcSubscription = this.luigiService
-      .getContext()
-      .subscribe((ctx: IContextMessage) => {
+    this.lcSubscription.add(
+      this.luigiService.getContext().subscribe((ctx: IContextMessage) => {
         if (!ctx.context) {
           console.warn(
             `To use this component properly, node configuration requires context.label to be defined.
@@ -44,11 +50,12 @@ export class DynamicComponent implements OnInit, OnDestroy {
           );
           return;
         }
-
         const lastPathParam = Object.values(getPathParams() || {}).pop();
 
         // We can directly access our specified context values here
-        this.nodeLabel = toTitleCase(ctx.context.label || lastPathParam);
+        this.nodeLabel = toTitleCase(
+          ctx.context.label || lastPathParam || 'hello'
+        );
         this.links = ctx.context.links;
 
         // preserveView and node params
@@ -59,13 +66,11 @@ export class DynamicComponent implements OnInit, OnDestroy {
         if (!this.cdr['destroyed']) {
           this.cdr.detectChanges();
         }
-      });
+      })
+    );
   }
-
   ngOnDestroy() {
-    if (this.lcSubscription) {
-      this.lcSubscription.unsubscribe();
-    }
+    this.lcSubscription.unsubscribe();
   }
 
   public slugify(str: string): string {

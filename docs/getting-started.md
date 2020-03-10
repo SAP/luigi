@@ -129,3 +129,18 @@ Follow these steps to develop **micro frontends** and connect them to an already
 
 1. [Install Luigi Client](luigi-client-setup.md).
 2. Use the functions and parameters provided by the Luigi Client API. You can find them in the [Luigi Client API documentation](luigi-client-api.md).
+
+### Examples
+
+In the **Examples** section of our documentation, you can find links to several "Hello World" example applications which can help you explore Luigi's functions:
+* [Angular](https://github.com/SAP/luigi/tree/master/core/examples/luigi-example-angular)
+* [React](https://github.com/SAP/luigi/tree/master/core/examples/luigi-example-react)
+* [Vue](https://github.com/SAP/luigi/tree/master/core/examples/luigi-example-vue)
+* [OpenUI5](https://github.com/SAP/luigi/tree/master/core/examples/luigi-example-openui5)
+* [Svelte](https://github.com/SAP/luigi/tree/master/core/examples/luigi-example-svelte)
+* [Plain JavaScript](https://github.com/SAP/luigi/tree/master/core/examples/luigi-example-js)
+
+You can install them by following the instructions in the `README` file of each example.
+
+**Advanced users** can install our end-to-end test sample application which includes all of Luigi's features in one place:
+* [e2e example](https://github.com/SAP/luigi/tree/master/test/e2e-test-application)

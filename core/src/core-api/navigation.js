@@ -26,17 +26,26 @@ class LuigiNavigationManager {
    * @param {Object} modalSettings opens a view in a modal. Use these settings to configure the modal's title and size
    * @param {string} modalSettings.title modal title. By default, it is the node label. If there is no label, it is left empty
    * @param {('l'|'m'|'s')} [modalSettings.size="l"] size of the modal
+   * @param {Object} splitViewSettings opens a view in a split view. Use these settings to configure the split view's behaviour
+   * @param {string} splitViewSettings.title split view title. By default, it is the node label. If there is no label, it is left empty
+   * @param {number} [splitViewSettings.size=40] height of the split view in percent
+   * @param {boolean} [splitViewSettings.collapsed=false] opens split view in collapsed state
    * @example
    * Luigi.navigation().navigate('/overview')
    * Luigi.navigation().navigate('users/groups/stakeholders')
    * Luigi.navigation().navigate('/settings', null, true) // preserve view
    */
-  navigate(path, preserveView, modalSettings) {
-    return new linkManager().navigate(path, preserveView, modalSettings);
+  navigate(path, preserveView, modalSettings, splitViewSettings) {
+    return new linkManager().navigate(
+      path,
+      preserveView,
+      modalSettings,
+      splitViewSettings
+    );
   }
 
   /**
-   * Opens a view in a modal. You can specify the modal's title and size. If you don't specify the title, it is the node label. If there is no node label, the title remains empty.  The default size of the modal is `l`, which means 80%. You can also use `m` (60%) and `s` (40%) to set the modal size. Optionally, use it in combination with any of the navigation functions.
+   * Opens a view in a modal. You can specify the modal's title and size. If you do not specify the title, it is the node label. If there is no node label, the title remains empty.  The default size of the modal is `l`, which means 80%. You can also use `m` (60%) and `s` (40%) to set the modal size. Optionally, use it in combination with any of the navigation functions.
    * @memberof LuigiNavigation
    * @param {string} path navigation path
    * @param {Object} [modalSettings] opens a view in a modal. Use these settings to configure the modal's title and size
@@ -47,6 +56,26 @@ class LuigiNavigationManager {
    */
   openAsModal(path, modalSettings) {
     return new linkManager().openAsModal(path, modalSettings);
+  }
+
+  /**
+   * Opens a view in a split view. You can specify the split view's title and size. If you don't specify the title, it is the node label. If there is no node label, the title remains empty. The default size of the split view is 40, which means 40% height of the split view.
+   * @memberof LuigiNavigation
+   * @param {string} path navigation path
+   * @param {Object} splitViewSettings opens a view in a split view. Use these settings to configure the split view's behaviour
+   * @param {string} splitViewSettings.title split view title. By default, it is the node label. If there is no label, it is left empty
+   * @param {number} [splitViewSettings.size=40] height of the split view in percent
+   * @param {boolean} [splitViewSettings.collapsed=false] opens split view in collapsed state
+   * @returns {Object} an instance of the SplitView. It provides functions to control its behavior.
+   * @see {@link https://docs.luigi-project.io/docs/luigi-client-api?section=splitview|SplitView Client} for further documentation. These methods from the Client SplitView are also implemented for Luigi Core: `close`, `collapse`, `expand`, `isCollapsed`, `isExpanded`, `exists`
+   *
+   * @since 0.7.6
+   * @example
+   * Luigi.navigation().openAsSplitView('projects/pr1/users', {title:'Users', size:'40'});
+   */
+  openAsSplitView(path, splitViewSettings = {}) {
+    Luigi.splitView.openAsSplitView(path, splitViewSettings);
+    return Luigi.splitView.splitViewHandle;
   }
 
   /**
