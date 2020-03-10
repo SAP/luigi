@@ -15,7 +15,7 @@ meta -->
 
 # Luigi Core Installation
 
-<object width="425" height="344"><param name="movie" value="https://www.youtube.com/v/kEzTZ2U9KMM&hl=en&fs=1"></param><param name="allowFullScreen" value="true"></param><embed src="https://www.youtube.com/v/kEzTZ2U9KMM&hl=en&fs=1" type="application/x-shockwave-flash" allowfullscreen="true" width="425" height="344"></embed></object>
+<iframe width="560" height="315" src="https://www.youtube.com/embed/kEzTZ2U9KMM" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 
 This document shows you how to set up a web application using the Luigi micro frontend framework. This involves a few basic steps:
 * Adding Luigi's `npm` packages to your project dependencies.
