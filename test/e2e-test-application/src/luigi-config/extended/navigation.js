@@ -234,10 +234,8 @@ class Navigation {
     defaultLabel: 'Select Environment ...',
     parentNodePath: '/environments', // absolute path
     lazyloadOptions: true, // load options on click instead on page load
-    customSelectedOptionRenderer: (isSelected)=>{
-      let defaultBtnClasses = " fd-button--menu fd-shellbar__button--menu lui-ctx-switch-menu";
-      let customBtnClasses = ["fd-button--emphasized","fd-button--light"];
-      return isSelected ? customBtnClasses[0].concat(defaultBtnClasses) :  customBtnClasses[1].concat(defaultBtnClasses);
+    customSelectedOptionRenderer: (label, isSelected)=>{
+      return isSelected ? `<label>${label} test</label>` : `<label>${label} -n</label>`;
     },
     options: () =>
       [...Array(10).keys()]
