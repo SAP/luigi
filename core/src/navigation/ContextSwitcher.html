@@ -5,18 +5,33 @@
 <div class="fd-shellbar__action fd-shellbar__action--desktop">
   <div class="fd-popover fd-popover--right">
     <div class="fd-popover__control" on:click|stopPropagation="{() => {}}">
-      <button
-        class="fd-button--light fd-button--menu fd-shellbar__button--menu lui-ctx-switch-menu"
-        aria-expanded="{dropDownStates.contextSwitcherPopover || false}"
-        aria-haspopup="true"
-        title="{selectedLabel ? selectedLabel : config.defaultLabel}"
-        on:click="{() => {if (renderAsDropdown) toggleDropdownState()}}"
-        aria-disabled="{!renderAsDropdown}"
-        data-testid="luigi-contextswitcher-button"
-      >
-        {#if !selectedLabel}{$getTranslation(config.defaultLabel)}{/if} {#if
-        selectedLabel}{selectedLabel}{/if}
-      </button>
+      {#if customSelectedOptionRenderer}
+        <button
+          class={customSelectedOptionRenderer(!!selectedLabel)}
+          aria-expanded="{dropDownStates.contextSwitcherPopover || false}"
+          aria-haspopup="true"
+          title="{selectedLabel ? selectedLabel : config.defaultLabel}"
+          on:click="{() => {if (renderAsDropdown) toggleDropdownState()}}"
+          aria-disabled="{!renderAsDropdown}"
+          data-testid="luigi-contextswitcher-button"
+        >
+          {#if !selectedLabel}{$getTranslation(config.defaultLabel)}{/if} {#if
+          selectedLabel}{selectedLabel}{/if}
+        </button>
+      {:else}
+        <button
+          class="fd-button--light fd-button--menu fd-shellbar__button--menu lui-ctx-switch-menu"
+          aria-expanded="{dropDownStates.contextSwitcherPopover || false}"
+          aria-haspopup="true"
+          title="{selectedLabel ? selectedLabel : config.defaultLabel}"
+          on:click="{() => {if (renderAsDropdown) toggleDropdownState()}}"
+          aria-disabled="{!renderAsDropdown}"
+          data-testid="luigi-contextswitcher-button"
+        >
+          {#if !selectedLabel}{$getTranslation(config.defaultLabel)}{/if} {#if
+          selectedLabel}{selectedLabel}{/if}
+        </button>
+      {/if}
     </div>
     <div
       class="fd-popover__body fd-popover__body--right"
@@ -124,6 +139,7 @@
   export let fallbackLabelResolver = null;
   export let pathParams;
   export let customOptionsRenderer;
+  export let customSelectedOptionRenderer
   export let isMobile;
   export let contextSwitcherToggle = false;
   export let defaultLabel;
@@ -153,6 +169,13 @@
         )
           ? contextSwitcherConfig.customOptionsRenderer
           : undefined;
+
+        customSelectedOptionRenderer = GenericHelpers.isFunction(
+          contextSwitcherConfig.customSelectedOptionRenderer
+        )
+          ? contextSwitcherConfig.customSelectedOptionRenderer
+          : undefined;
+
         config = contextSwitcherConfig;
         options = undefined;
         if (contextSwitcherConfig) {

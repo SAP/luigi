@@ -263,6 +263,11 @@ contextSwitcher: {
   lazyloadOptions: false,
   fallbackLabelResolver: (id) => (id.toUpperCase()),
   options: [{label,pathValue}, {label,pathValue}],
+  customSelectedOptionRenderer: (isSelected)=>{
+      let defaultBtnClasses = " fd-button--menu fd-shellbar__button--menu lui-ctx-switch-menu";
+      let customBtnClasses = ["fd-button--emphasized","fd-button--light"];
+      return isSelected ? customBtnClasses[0].concat(defaultBtnClasses) :  customBtnClasses[1].concat(defaultBtnClasses);
+    },
   customOptionsRenderer: (option, isSelected) => {let className = 'fd-menu__item' + (isSelected ? ' is-selected' : '');
   return `<a class="${className}">${option.label} test</a>`;},
   actions: [{label,link,position,clickHandler?}]
