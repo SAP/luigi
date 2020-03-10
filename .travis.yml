@@ -59,7 +59,7 @@ jobs:
 
     # ----- INTEGRATION -----
     - &integration-testing
-      name: 'Integration Testing 1'
+      name: 'Integration Testing'
       script:
         - export CYPRESS_CACHE_FOLDER=$TRAVIS_BUILD_DIR/cypress-binary-cache
         - ls $CYPRESS_CACHE_FOLDER
@@ -78,17 +78,16 @@ jobs:
         - rm -rf ~/.npm/_logs
         - rm -rf ~/.npm/_cacache
         - rm -rf ~/.cache/Cypress/cy/production/browsers #it is individual for each run anyway so caching it slows down the job
-    - name: 'Integration Testing 2'
-      <<: *integration-testing
-    - name: 'Integration Testing 3'
-      <<: *integration-testing
+    - <<: *integration-testing
+    - <<: *integration-testing
 
     # ----- NPM PUBLISH -----
     - stage: 'Publish'
       name: 'Publish to NPM'
       # run only when merging from release-v branch to master
       # if: repo = SAP/luigi AND branch = master
-      if: repo = SAP/luigi AND (branch = master OR branch ~= ^release-v)
+      # if: repo = SAP/luigi AND (branch = master OR branch ~= ^release-v)
+      if: repo = SAP/luigi AND (branch = master OR branch ~= release-v1)
       script:
         - bash ./scripts/npmPublish.sh
       before_cache:
