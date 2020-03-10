@@ -286,7 +286,7 @@ export declare interface LinkManager {
    * Disables the navigation handling for a single navigation request
    * It prevents Luigi Core from handling url change after `navigate()`.
    * Used for auto-navigation
-   * @since NEXTRELEASE
+   * @since v0.7.6
    * @example
    * LuigiClient.linkManager().withoutSync().navigate('/projects/xy/foobar');
    * LuigiClient.linkManager().withoutSync().fromClosestContext().navigate('settings');
