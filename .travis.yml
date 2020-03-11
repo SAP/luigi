@@ -20,7 +20,7 @@ jobs:
       script:
         - export CYPRESS_CACHE_FOLDER=$TRAVIS_BUILD_DIR/cypress-binary-cache
         - npm i -g lerna
-        - lerna bootstrap --ci --ignore "*website*" --force-local || travis_terminate 1
+        - lerna bootstrap --ci --ignore "*website*" --force-local --loglevel=silly || travis_terminate 1
         - cat $TRAVIS_BUILD_DIR/test/e2e-test-application/node_modules/@luigi-project/client/luigi-client.d.ts | grep -C 3 "withoutSync" || travis_terminate 1
         - lerna run bundle --ignore "*website*" || travis_terminate 1
         - lerna run bundlesizeOnly --ignore "*website*" || travis_terminate 1
