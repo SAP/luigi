@@ -294,6 +294,11 @@ The context switcher is a drop-down list available in the top navigation bar. It
   - **label** defines the context element label. If not defined, the **pathValue** is passed to **fallbackLabelResolver** to set its value. The default value is **pathValue**, if **fallbackLabelResolver** is not defined.
   - **pathValue** defines the context element path that is appended to **parentNodePath** and reflects a **pathSegment**.
 
+### customSelectedOptionRenderer
+- **type**: function
+- **parameters**: label, isSelected
+- **description**: enables you to customize the dropdown button of the context switcher by rendering custom button label through returning an html string. The function takes a boolean **isSelected** as a parameter, defining the state of the button and a string **label** defining the label of the button.
+
 ### customOptionsRenderer
 - **type**: function
 - **parameters**: [option](navigation-parameters-reference.md#options), isSelected

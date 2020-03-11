@@ -14,8 +14,11 @@
         aria-disabled="{!renderAsDropdown}"
         data-testid="luigi-contextswitcher-button"
       >
-        {#if !selectedLabel}{$getTranslation(config.defaultLabel)}{/if} {#if
-        selectedLabel}{selectedLabel}{/if}
+        {#if customSelectedOptionRenderer}
+        {@html customSelectedOptionRenderer(selectedLabel ? selectedLabel: $getTranslation(config.defaultLabel), !!selectedLabel)}
+        {:else}
+        {#if !selectedLabel}{$getTranslation(config.defaultLabel)} {:else}{selectedLabel}{/if}
+        {/if}
       </button>
     </div>
     <div
@@ -124,6 +127,7 @@
   export let fallbackLabelResolver = null;
   export let pathParams;
   export let customOptionsRenderer;
+  export let customSelectedOptionRenderer;
   export let isMobile;
   export let contextSwitcherToggle = false;
   export let defaultLabel;
@@ -153,6 +157,12 @@
         )
           ? contextSwitcherConfig.customOptionsRenderer
           : undefined;
+
+        customSelectedOptionRenderer = GenericHelpers.isFunction(
+        contextSwitcherConfig.customSelectedOptionRenderer
+      )
+        ? contextSwitcherConfig.customSelectedOptionRenderer
+        : undefined;  
         config = contextSwitcherConfig;
         options = undefined;
         if (contextSwitcherConfig) {
