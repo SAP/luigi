@@ -1,3 +1,26 @@
+import fiddleConfig from '../configs/default';
+Cypress.Commands.add(
+  'visitWithFiddleConfig',
+  (path = '/', config = fiddleConfig) => {
+    cy.visit(`https://fiddle.luigi-project.io/#${path}`, {
+      onBeforeLoad: win => {
+        const newTime = Date.now() + 6e4;
+        const newLuigiAuth = {
+          accessToken: 'thisisanaccesstokenthatisnotreallyneeded',
+          accessTokenExpirationDate: newTime,
+          idToken:
+            'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJodHRwOi8vbG9jYWxob3N0OjQyMDAiLCJzdWIiOiJtYXNrb3BhdG9sIiwiZXhwIjoxNjQzNzY0OTIwLCJhenAiOiJtYXNrb3BhdG9sIiwibm9uY2UiOiJidE5rWVZzc1FldVlWNmEyR1RVZm1wWVFFelBRN3c1ZENCbU54SG54IiwiZW1haWwiOiJsdWlnaXVzZXJAa3ltYS5jeCIsIm5hbWUiOiJMdWlnaSBVc2VyIn0.YUBE3tufmmNIJHwzKRXlImteuh_qDeuwGjkzN3Z0erg'
+        };
+        const key = 'luigi.auth';
+        win.localStorage.setItem(key, JSON.stringify(newLuigiAuth));
+        win.sessionStorage.setItem(
+          'fiddle',
+          `Luigi.setConfig(${JSON.stringify(config)});`
+        );
+      }
+    });
+  }
+);
 Cypress.Commands.add('visitLoggedIn', (path = '/') => {
   cy.visit(path, {
     onBeforeLoad: win => {
