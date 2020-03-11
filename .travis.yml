@@ -90,7 +90,7 @@ jobs:
       # run only when merging from release-v branch to master
       # if: repo = SAP/luigi AND branch = master
       # if: repo = SAP/luigi AND (branch = master OR branch ~= ^release-v)
-      if: repo = SAP/luigi AND ((branch = master AND type = push) OR branch = release-v1))
+      if: (repo = SAP/luigi AND branch = master AND type = push) OR (repo = SAP/luigi AND branch = release-v1)
       script:
         - bash ./scripts/npmPublish.sh
       before_cache:
