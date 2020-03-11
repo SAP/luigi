@@ -14,9 +14,13 @@ fi
 
 cd $NG_EXAMPLE
 
-echo "Starting webserver"
-sirv start dist --single --cors --port 4200 &
-WS_PID=$!
+echo "Starting Angular webserver"
+sirv start dist --single --cors --port 4200 --silent &
+WS_NG_PID=$!
+
+echo "Starting Fiddle webserver"
+sirv start $BASE_DIR/../website/fiddle/public --single --cors --port 4300 --silent &
+WS_FID_PID=$!
 
 # wait until example is built and running
 SLEEPSECS=1 # sleep time between webserver availability check
@@ -26,8 +30,16 @@ until $(curl --output /dev/null --silent --head --fail http://localhost:4200); d
   sleep $SLEEPSECS
   WAITCOUNT=$(($WAITCOUNT + $SLEEPSECS))
 done
-echo "Webserver was ready after $WAITCOUNT seconds."
+echo "Angular Webserver was ready after $WAITCOUNT seconds."
 
+SLEEPSECS=1 # sleep time between webserver availability check
+WAITCOUNT=0
+until $(curl --output /dev/null --silent --head --fail http://localhost:4300); do
+  printf '.'
+  sleep $SLEEPSECS
+  WAITCOUNT=$(($WAITCOUNT + $SLEEPSECS))
+done
+echo "Fiddle Webserver was ready after $WAITCOUNT seconds."
 
 if [ "$USE_CYPRESS_DASHBOARD" == "true" ]; then
   echo "Running tests in parallel with recording"
@@ -38,5 +50,6 @@ else
   npm run e2e:run
 fi
 RV=$?
-kill $WS_PID
+kill $WS_NG_PID
+kill $WS_FID_PID
 exit $RV

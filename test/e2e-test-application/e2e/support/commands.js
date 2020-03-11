@@ -2,7 +2,7 @@ import fiddleConfig from '../configs/default';
 Cypress.Commands.add(
   'visitWithFiddleConfig',
   (path = '/', config = fiddleConfig) => {
-    cy.visit(`https://fiddle.luigi-project.io/#${path}`, {
+    cy.visit(`http://localhost:4300/#${path}`, {
       onBeforeLoad: win => {
         const newTime = Date.now() + 6e4;
         const newLuigiAuth = {

@@ -9,6 +9,7 @@ cache:
     - $TRAVIS_BUILD_DIR/plugins/auth/public/auth-oauth2
     - $TRAVIS_BUILD_DIR/plugins/auth/public/auth-oidc
     - $TRAVIS_BUILD_DIR/test/e2e-test-application/dist
+    - $TRAVIS_BUILD_DIR/website/fiddle/public
     - $TRAVIS_BUILD_DIR/cypress-binary-cache
     - $HOME/.cache/Cypress
 notifications:
@@ -34,7 +35,7 @@ jobs:
         - lerna run bundle --ignore docs || travis_terminate 1
         - lerna run bundlesizeOnly --ignore docs || travis_terminate 1
         - head $TRAVIS_BUILD_DIR/client/public/package.json
-        - lerna run build --scope e2e-test-application || travis_terminate 1
+        - lerna run build --ignore docs || travis_terminate 1
         - npm test --prefix core || travis_terminate 1
       before_cache:
         - rm -rf ~/.npm/_logs
