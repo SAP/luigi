@@ -23,9 +23,10 @@ jobs:
         - lerna bootstrap --ci --ignore "*website*" --force-local || travis_terminate 1
         - lerna run bundle --ignore "*website*" || travis_terminate 1
         - lerna run bundlesizeOnly --ignore "*website*" || travis_terminate 1
+        - head $TRAVIS_BUILD_DIR/client/public/package.json
+        - cat $TRAVIS_BUILD_DIR/client/public/luigi-client.d.ts | grep "withoutSync"
         - head $TRAVIS_BUILD_DIR/test/e2e-test-application/node_modules/@luigi-project/client/package.json
-        - cat $TRAVIS_BUILD_DIR/test/e2e-test-application/node_modules/@luigi-project/client/public/luigi-client.d.ts | grep "withoutSync"
-        - cat $TRAVIS_BUILD_DIR/test/e2e-test-application/node_modules/@luigi-project/client/public/luigi-client.d.ts | grep -B 5 -A 5 "withoutSync: ()"
+        - cat $TRAVIS_BUILD_DIR/test/e2e-test-application/node_modules/@luigi-project/client/luigi-client.d.ts | grep "withoutSync"
         - lerna run build --scope test/e2e-test-application || travis_terminate 1
         - npm test --prefix core || travis_terminate 1
       before_cache:
