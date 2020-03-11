@@ -2,7 +2,7 @@ import { Router, NavigationEnd } from '@angular/router';
 import { Injectable, OnDestroy } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { filter } from 'rxjs/operators';
-import { linkManager } from '@kyma-project/luigi-client';
+import { linkManager } from '@luigi-project/client';
 
 @Injectable({
   providedIn: 'root'

@@ -127,7 +127,7 @@ describe('Navigation', () => {
         .should('have.class', 'is-selected');
 
       cy.visit('projects/pr1');
-      cy.get('.fd-side-nav__subitem')
+      cy.get('.fd-nested-list')
         .contains('Project Settings')
         .click()
         .should('have.class', 'is-selected');
@@ -176,13 +176,13 @@ describe('Navigation', () => {
       cy.get('.fd-shellbar')
         .contains('Projects')
         .click();
-      cy.get('.fd-app__sidebar .fd-side-nav__item')
+      cy.get('.fd-app__sidebar .fd-nested-list__item')
         .contains('Project One')
         .click();
 
-      cy.get('.fd-side-nav__subitem')
+      cy.get('.fd-nested-list__item')
         .contains('Project Settings')
-        .find('.fd-side-nav__icon')
+        .find('.fd-nested-list__icon')
         .should('exist');
     });
 
