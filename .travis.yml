@@ -27,7 +27,7 @@ jobs:
         - cat $TRAVIS_BUILD_DIR/client/public/luigi-client.d.ts | grep -A 15 "openAsSplitView:"
         - head $TRAVIS_BUILD_DIR/test/e2e-test-application/node_modules/@luigi-project/client/package.json
         - cat $TRAVIS_BUILD_DIR/test/e2e-test-application/node_modules/@luigi-project/client/luigi-client.d.ts | grep -A 15 "openAsSplitView:"
-        - lerna run build --scope test/e2e-test-application || travis_terminate 1
+        - lerna run build --scope e2e-test-application || travis_terminate 1
         - npm test --prefix core || travis_terminate 1
       before_cache:
         - rm -rf ~/.npm/_logs
@@ -47,7 +47,7 @@ jobs:
 
     #----- WHITESOURCE -----
     - name: 'Whitesource check'
-      if: repo = SAP/luigi AND (branch = master)
+      if: repo = SAP/luigi AND (branch = master OR branch = release-v1)
       script:
         - 'if [ ! -z "${WHITESOURCE_APIKEY}" ]; then
             npm --prefix ./website/landingpage/dev install ./website/landingpage/dev;
