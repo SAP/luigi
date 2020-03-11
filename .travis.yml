@@ -55,7 +55,8 @@ jobs:
 
     #----- WHITESOURCE -----
     - name: 'Whitesource check'
-      if: repo = SAP/luigi AND (branch = master OR branch = release-v1)
+      if: repo = SAP/luigi AND branch = master
+      #if: repo = SAP/luigi AND (branch = master OR branch = release-v1)
       script:
         - 'if [ ! -z "${WHITESOURCE_APIKEY}" ]; then
             npm --prefix ./website/landingpage/dev install ./website/landingpage/dev;
