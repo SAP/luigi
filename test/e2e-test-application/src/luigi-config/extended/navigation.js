@@ -234,9 +234,6 @@ class Navigation {
     defaultLabel: 'Select Environment ...',
     parentNodePath: '/environments', // absolute path
     lazyloadOptions: true, // load options on click instead on page load
-    customSelectedOptionRenderer: (label, isSelected)=>{
-      return isSelected ? `<label>${label} test</label>` : `<label>${label} -n</label>`;
-    },
     options: () =>
       [...Array(10).keys()]
         .filter(n => n !== 0)
