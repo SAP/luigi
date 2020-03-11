@@ -21,13 +21,13 @@ jobs:
         - export CYPRESS_CACHE_FOLDER=$TRAVIS_BUILD_DIR/cypress-binary-cache
         - npm i -g lerna
         - lerna bootstrap --ci --ignore "*website*" --force-local || travis_terminate 1
+        - cat $TRAVIS_BUILD_DIR/test/e2e-test-application/node_modules/@luigi-project/client/luigi-client.d.ts | grep -C 3 "withoutSync" || travis_terminate 1
         - lerna run bundle --ignore "*website*" || travis_terminate 1
         - lerna run bundlesizeOnly --ignore "*website*" || travis_terminate 1
+        - ls -lah $TRAVIS_BUILD_DIR/test/e2e-test-application/node_modules/@luigi-project
         - head $TRAVIS_BUILD_DIR/client/public/package.json
         - cat $TRAVIS_BUILD_DIR/client/public/luigi-client.d.ts | grep -A 15 "openAsSplitView:"
         - head $TRAVIS_BUILD_DIR/test/e2e-test-application/node_modules/@luigi-project/client/package.json
-        - cat $TRAVIS_BUILD_DIR/test/e2e-test-application/node_modules/@luigi-project/client/luigi-client.d.ts | grep -A 15 "openAsSplitView:"
-        - ls -lah $TRAVIS_BUILD_DIR/test/e2e-test-application/node_modules/@luigi-project
         - lerna run build --scope e2e-test-application || travis_terminate 1
         - npm test --prefix core || travis_terminate 1
       before_cache:
