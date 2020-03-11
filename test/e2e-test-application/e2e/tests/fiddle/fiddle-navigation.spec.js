@@ -1,4 +1,4 @@
-import fiddleConfig from '../configs/default';
+import fiddleConfig from '../../configs/default';
 Cypress.env('RETRIES', 0);
 describe('Navigation with Fiddle', () => {
   describe('Core api navigation test', () => {
