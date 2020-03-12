@@ -297,7 +297,7 @@ The context switcher is a drop-down list available in the top navigation bar. It
 ### customSelectedOptionRenderer
 - **type**: function
 - **parameters**: label, isSelected
-- **description**: enables you to customize the dropdown button of the context switcher by rendering custom button label through returning an html string. The function takes a boolean **isSelected** as a parameter, defining the state of the button and a string **label** defining the label of the button. It is recommended to use this function carefully because it is possible to inject JavaScript code.
+- **description**: enables you to customize the dropdown button of the context switcher by rendering a custom button label through the return of a HTML string. The function takes a boolean **isSelected** as a parameter, defining the state of the button, and a string **label** defining the label of the button.
 
 ### customOptionsRenderer
 - **type**: function
