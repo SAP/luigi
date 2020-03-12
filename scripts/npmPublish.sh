@@ -116,10 +116,10 @@ publishPackage "core" "core/public"
 checkRequiredFiles "client/public" "luigi-client.d.ts" "luigi-client.js" "README.md"
 publishPackage "client" "client/public"
 
-checkRequiredFiles "core/public-ie11" "luigi.js" "luigi.css" "README.md"
+checkRequiredFiles "core/public-ie11" "luigi-ie11.js" "luigi-ie11.css" "README.md"
 publishPackage "core" "core/public-ie11"
 
-checkRequiredFiles "client/public-ie11" "luigi-client.d.ts" "luigi-client.js" "README.md"
+checkRequiredFiles "client/public-ie11" "luigi-client-ie11.d.ts" "luigi-client-ie11.js" "README.md"
 publishPackage "client" "client/public-ie11"
 
 if ( prepublishCheck "plugins/auth/public/auth-oauth2" ); then
