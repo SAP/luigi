@@ -126,11 +126,17 @@ let defaultConfig = `Luigi.setConfig({
                 }]
             } 
         }, 
-        /***
-        // uncomment if you want to use our mocked oidc idp
+        
+        // uncomment if you want to use our mock oidc idp
+        /*
         auth: {
-            use: 'mockAuth',
-            mockAuth: {
+            // We have registered the following provider at the window object:
+            // OAuth2 Implicit Grant: window.LuigiAuthOAuth2 - Docs: https://docs.luigi-project.io/docs/authorization-configuration?section=oauth2-implicit-grant-configuration
+            // OIDC Implicit Grant: window.LuigiAuthOIDC - Docs: https://docs.luigi-project.io/docs/authorization-configuration/?section=openid-connect-configuration
+ 
+            use: 'myOAuth2',
+            myOAuth2: {
+                idpProvider: window.LuigiAuthOAuth2,
                 authorizeUrl: '/auth/idpmock/implicit.html',
                 logoutUrl: '/auth/idpmock/logout.html',
                 post_logout_redirect_uri: '/auth/logout.html',
@@ -140,7 +146,8 @@ let defaultConfig = `Luigi.setConfig({
                   redirect_uri: '/auth/callback.html'
                 }
             }
-        },*/
+        },
+        */
         routing: { 
             useHashRouting: true 
         }, 

@@ -49,10 +49,13 @@ module.exports = {
 	mode,
 	plugins: [
 		new CopyPlugin([
-			{ from: './node_modules/@kyma-project/luigi-core', to: 'vendor/luigi-core' },
-			{ from: './node_modules/@kyma-project/luigi-client', to: 'vendor/luigi-client' },
-			{ from: './node_modules/fiori-fundamentals', to: 'vendor/fiori-fundamentals' },
-			{ from: './node_modules/ace-builds', to: 'vendor/ace' }
+			{ from: './node_modules/@luigi-project/core', to: 'vendor/luigi-core' },
+			{ from: './node_modules/@luigi-project/client', to: 'vendor/luigi-client' },
+			{ from: './node_modules/@luigi-project/plugin-auth-oauth2', to: 'vendor/plugin-auth-oauth2' },
+			{ from: './node_modules/@luigi-project/plugin-auth-oidc', to: 'vendor/plugin-auth-oidc' },
+			{ from: './node_modules/fundamental-styles', to: 'vendor/fundamental-styles' },
+			{ from: './node_modules/ace-builds/src-min/ace.js', to: 'vendor/ace/src-min/' },
+			{ from: './node_modules/ace-builds/src-min/mode-javascript.js', to: 'vendor/ace/src-min/' }
 		  ]),
 		new MiniCssExtractPlugin({
 			filename: '[name].css'

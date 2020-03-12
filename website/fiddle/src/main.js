@@ -1,5 +1,5 @@
 import App from './App.svelte';
-import '@kyma-project/luigi-core/luigi';
+import '@luigi-project/core';
 
 const app = new App({
 	target: document.body,
