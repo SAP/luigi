@@ -263,8 +263,8 @@ contextSwitcher: {
   lazyloadOptions: false,
   fallbackLabelResolver: (id) => (id.toUpperCase()),
   options: [{label,pathValue}, {label,pathValue}],
-  customSelectedOptionRenderer: (label, isSelected)=>{
-      return isSelected ? `<label>${label} test</label>` : `<label>${label} </label>`;
+  customSelectedOptionRenderer: (label, isSelected) => {
+      return isSelected ? `<label class="is-selected">${label} </label>` : `<label>${label} </label>`;
   },
   customOptionsRenderer: (option, isSelected) => {
     let className = 'fd-menu__item' + (isSelected ? ' is-selected' : '');
