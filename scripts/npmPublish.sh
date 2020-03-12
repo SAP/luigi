@@ -97,13 +97,31 @@ function removeNpmToken {
   fi
 }
 
+function checkRequiredFiles {
+  args=("$@")
+  for ((i=0; i<${#args[@]}; i++)); do
+    if [ $i -gt 0 ]; then
+      if [ ! -f $BASE_DIR/../${args[0]}/${args[i]} ]; then
+        echo "Invalid release, file does not exist: ${args[0]}/${args[i]}"
+        exit 1;
+      fi
+    fi
+  done
+}
 
 # Luigi Client & Core
 setLuigiNpmToken
-prepublishChecks
+# prepublishChecks
+
+checkRequiredFiles "core/public" "luigi.js" "luigi.css" "README.md"
 publishPackage "core" "core/public"
+
+checkRequiredFiles "client/public" "luigi-client.d.ts" "luigi-client.js" "README.md"
 publishPackage "client" "client/public"
+
+# checkRequiredFiles "client/public" "luigi-client-ie11.d.ts"
 publishPackage "core" "core/public-ie11"
+
 publishPackage "client" "client/public-ie11"
 
 if ( prepublishCheck "plugins/auth/public/auth-oauth2" ); then
