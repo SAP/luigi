@@ -64,9 +64,6 @@ function publishPackage {
   VERSION=$(node -p "require('./package.json').version")
 
   cd $BASE_DIR/../$BASE_FOLDER
-  # travis already installed it
-    # echoe "Running npm ci in $(pwd) ..."
-    # npm ci
 
   # Check if was published already
   NPM_GREP=`npm info $NAME versions | grep "'$VERSION'" | wc -l`
@@ -111,7 +108,7 @@ function checkRequiredFiles {
 
 # Luigi Client & Core
 setLuigiNpmToken
-# prepublishChecks
+prepublishChecks
 
 checkRequiredFiles "core/public" "luigi.js" "luigi.css" "README.md"
 publishPackage "core" "core/public"
@@ -119,15 +116,18 @@ publishPackage "core" "core/public"
 checkRequiredFiles "client/public" "luigi-client.d.ts" "luigi-client.js" "README.md"
 publishPackage "client" "client/public"
 
-# checkRequiredFiles "client/public" "luigi-client-ie11.d.ts"
+checkRequiredFiles "core/public-ie11" "luigi.js" "luigi.css" "README.md"
 publishPackage "core" "core/public-ie11"
 
+checkRequiredFiles "client/public-ie11" "luigi-client.d.ts" "luigi-client.js" "README.md"
 publishPackage "client" "client/public-ie11"
 
 if ( prepublishCheck "plugins/auth/public/auth-oauth2" ); then
+  checkRequiredFiles "plugins/auth/public/auth-oauth2" "plugin.js" "plugin-ie11.js" "README.md"
   publishPackage "plugins" "plugins/auth/public/auth-oauth2"
 fi
 if ( prepublishCheck "plugins/auth/public/auth-oidc" ); then
-publishPackage "plugins" "plugins/auth/public/auth-oidc"
+  checkRequiredFiles "plugins/auth/public/auth-oidc" "plugin.js" "plugin-ie11.js" "README.md"
+  publishPackage "plugins" "plugins/auth/public/auth-oidc"
 fi
 removeNpmToken
