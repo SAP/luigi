@@ -266,8 +266,10 @@ contextSwitcher: {
   customSelectedOptionRenderer: (label, isSelected)=>{
       return isSelected ? `<label>${label} test</label>` : `<label>${label} </label>`;
   },
-  customOptionsRenderer: (option, isSelected) => {let className = 'fd-menu__item' + (isSelected ? ' is-selected' : '');
-  return `<a class="${className}">${option.label} test</a>`;},
+  customOptionsRenderer: (option, isSelected) => {
+    let className = 'fd-menu__item' + (isSelected ? ' is-selected' : '');
+    return `<a class="${className}">${option.label} test</a>`;
+  },
   actions: [{label,link,position,clickHandler?}]
 },
 ```
