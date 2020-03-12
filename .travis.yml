@@ -25,10 +25,11 @@ jobs:
         # WORKAROUND - START
         # Due to open bug at lerna, https://github.com/lerna/lerna/issues/2352
         # Some packages need to be linked manually:
-        - rm -rf $TRAVIS_BUILD_DIR/test/e2e-test-application/node_modules/@luigi-project/core
-        - rm -rf $TRAVIS_BUILD_DIR/test/e2e-test-application/node_modules/@luigi-project/client
+        - rm -rf $TRAVIS_BUILD_DIR/test/e2e-test-application/node_modules/@luigi-project/*
         - ln -s $TRAVIS_BUILD_DIR/core/public $TRAVIS_BUILD_DIR/test/e2e-test-application/node_modules/@luigi-project/core
         - ln -s $TRAVIS_BUILD_DIR/client/public $TRAVIS_BUILD_DIR/test/e2e-test-application/node_modules/@luigi-project/client
+        - ln -s $TRAVIS_BUILD_DIR/plugins/auth/public/auth-oauth2 $TRAVIS_BUILD_DIR/test/e2e-test-application/node_modules/@luigi-project/plugin-auth-oauth2
+        - ln -s $TRAVIS_BUILD_DIR/plugins/auth/public/auth-oidc $TRAVIS_BUILD_DIR/test/e2e-test-application/node_modules/@luigi-project/plugin-auth-oidc
         # Verifying step
         - cat $TRAVIS_BUILD_DIR/test/e2e-test-application/node_modules/@luigi-project/client/luigi-client.d.ts | grep -C 3 "withoutSync" || travis_terminate 1
         # WORKAROUND - END
@@ -55,12 +56,13 @@ jobs:
 
     #----- WHITESOURCE -----
     - name: 'Whitesource check'
-      if: repo = SAP/luigi AND (branch = master OR branch = release-v1)
+      if: repo = SAP/luigi AND branch = master
+      # if: repo = SAP/luigi AND (branch = master OR branch = release-v1)
       script:
         - 'if [ ! -z "${WHITESOURCE_APIKEY}" ]; then
             npm --prefix ./website/landingpage/dev install ./website/landingpage/dev;
             npm --prefix ./website/fiddle install ./website/fiddle;
-            lerna bootstrap --ci --ignore docs;
+            lerna bootstrap --ci --ignore e2e-test-application;
             npm i -g whitesource;
             bash ./scripts/whiteSource.sh;
           fi'
