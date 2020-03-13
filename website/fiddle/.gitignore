@@ -2,5 +2,4 @@
 node_modules
 public/bundle.*
 public/vendor
-package-lock.json
 yarn.lock

@@ -128,7 +128,7 @@ let defaultConfig = `Luigi.setConfig({
         }, 
         
         // uncomment if you want to use our mock oidc idp
-        /*
+        /**
         auth: {
             // We have registered the following provider at the window object:
             // OAuth2 Implicit Grant: window.LuigiAuthOAuth2 - Docs: https://docs.luigi-project.io/docs/authorization-configuration?section=oauth2-implicit-grant-configuration

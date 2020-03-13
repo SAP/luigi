@@ -112,6 +112,7 @@ export class linkManager extends LuigiCoreAPIBase {
   }
 
   sendPostMessageToLuigiCore(msg) {
+    console.log('sending postMessage to Core', msg);
     window.postMessage(msg, '*');
   }
 }

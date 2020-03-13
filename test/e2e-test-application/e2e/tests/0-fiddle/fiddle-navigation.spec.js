@@ -5,21 +5,19 @@ describe('Navigation with Fiddle', () => {
     beforeEach(() => {
       cy.visitWithFiddleConfig('/');
     });
-    it('Core API navigate', () => {
+    it('Core API navigate and open and close modal', () => {
       cy.window().then(win => {
         win.Luigi.navigation().navigate('/home/two');
         cy.expectPathToBe('/home/two');
-      });
-    });
-    it('Core API open in modal', () => {
-      cy.window().then(win => {
+
+        cy.log('Opening /settings as modal');
         win.Luigi.navigation().openAsModal('/settings', {
           title: 'Preserved View',
           size: 'm'
         });
-
-        cy.get('.fd-modal__header:visible .fd-modal__close').click();
-        cy.expectPathToBe('/home');
+        cy.contains('Preserved View')
+        cy.get('body').find('.fd-modal__close', {timeout: 5000}).click();
+        cy.expectPathToBe('/home/two');
       });
     });
   });

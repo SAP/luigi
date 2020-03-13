@@ -19,7 +19,7 @@ sirv start dist --single --cors --port 4200 --silent &
 WS_NG_PID=$!
 
 echo "Starting Fiddle webserver"
-sirv start $BASE_DIR/../website/fiddle/public --single --cors --port 4300 --silent &
+sirv start $BASE_DIR/../website/fiddle/public --single --cors --port 8080 --silent &
 WS_FID_PID=$!
 
 # wait until example is built and running
