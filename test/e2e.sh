@@ -34,7 +34,7 @@ echo "Angular Webserver was ready after $WAITCOUNT seconds."
 
 SLEEPSECS=1 # sleep time between webserver availability check
 WAITCOUNT=0
-until $(curl --output /dev/null --silent --head --fail http://localhost:4300); do
+until $(curl --output /dev/null --silent --head --fail http://localhost:8080); do
   printf '.'
   sleep $SLEEPSECS
   WAITCOUNT=$(($WAITCOUNT + $SLEEPSECS))
