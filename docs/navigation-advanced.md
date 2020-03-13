@@ -98,7 +98,7 @@ navigation: {
 ### Dynamic viewUrl parameters
 
 You have the following options to add a parameter to **viewUrl**:
-- Place the parameter anywhere in the **viewUrl** value. For example, if the main application URL is `https://[YOUR.WEBSITE]/home/users/JohnSmith`, then the **viewUrl** of the micro frontend in the content area can be `https://example.com/users/details.html#id=JohnSmith`.
+- Place the parameter anywhere in the **viewUrl** value. For example, if the main application URL is `https://[YOUR.WEBSITE]/home/users/:id`, then the **viewUrl** of the micro frontend in the content area can be `https://example.com/users.html#id=JohnSmith`.
 - Use the [Luigi Client API](luigi-client-api.md) to access the node parameter values from the micro frontend. Use the `LuigiClient.getPathParams()` function.
 For example, to get the value of the **userId** parameter, use `LuigiClient.getPathParams().userId`.
 - Add a parameter to the context part of your configuration:
@@ -214,17 +214,8 @@ The purpose of contexts is to send objects to the micro frontend. You can do thi
 - **type**: object
 - **description**: sends the specified object as context to the view. Use this property in combination with the dynamic **pathSegment** to receive the context through the context listeners of Luigi Client. This is an alternative to using the dynamic value in the **viewUrl**.
 
-One example of where contexts are used is during the creation of dynamic navigation nodes. Used together with path parameters and Luigi Client, contexts pass information to the micro frontend:
+> **NOTE**: Context should not be used to create the path or URL as this can lead to errors. Please use one of the methods described in the [dynamically changeable paths](#dynamically-changeable-paths) section instead.
 
-```javascript
-{
-  pathSegment: ':projectId',
-  viewUrl: '/some/path/:projectId',
-  context: {
-    projectId: ':projectId'
-  }
-}
- ```
 
 ## Profile
 
