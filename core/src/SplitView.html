@@ -307,8 +307,9 @@
 
 <style type="text/scss">
   $topNavHeight: 44px;
-  $leftNavWidth: 320px;
+  $leftNavWidth: 15em;
   $collapsedSplitviewHeight: 38px;
+  $collapsedSplitViewContainerHeight: 49px;
   $desktopMinWidth: 600px;
   $colorNeutral4: #89919a;
 
@@ -329,7 +330,7 @@
   }
 
   :global(.lui-collapsed.splitViewContainer) {
-    height: $collapsedSplitviewHeight;
+    height: $collapsedSplitViewContainerHeight;
     top: auto;
   }
 
@@ -369,14 +370,13 @@
 
   .lui-collapse-btn {
     width: 36px;
-    height: 20px;
+    height: 22px;
     background: white;
     position: absolute;
     left: 50%;
     margin-left: -12px;
     margin-top: -11px;
     text-align: center;
-    padding: 1px;
     border: 1px solid $colorNeutral4;
     border-radius: 4px;
     cursor: pointer;
