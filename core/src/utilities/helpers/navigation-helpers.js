@@ -264,8 +264,8 @@ class NavigationHelpersClass {
       console.warn(
         'Something went wrong with a client! You will be redirected to another page.'
       );
-      const path = node.redirectPath;
-      path ? Routing.navigateTo(path) : Routing.navigateTo('/');
+      const path = node.redirectPath || '/';
+      Routing.navigateTo(path);
     }
   }
 }
