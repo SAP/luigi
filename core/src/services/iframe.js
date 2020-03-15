@@ -270,7 +270,6 @@ class IframeClass {
         const pageErrorHandler = componentData.currentNode.pageErrorHandler;
         if (pageErrorHandler) {
           this.timeoutHandle = setTimeout(() => {
-            // debugger;
             if (component.get().showLoadingIndicator) {
               NavigationHelpers.handleUnresponsiveClient(pageErrorHandler);
             }
