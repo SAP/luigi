@@ -3,7 +3,8 @@
 import {
   GenericHelpers,
   IframeHelpers,
-  RoutingHelpers
+  RoutingHelpers,
+  NavigationHelpers
 } from '../utilities/helpers';
 import { LuigiConfig, LuigiI18N } from '../core-api';
 
@@ -264,6 +265,16 @@ class IframeClass {
             const message = ['init', JSON.stringify(componentData.context)];
             IframeHelpers.sendMessageToIframe(config.iframe, message);
           });
+        }
+        // In case something goes wrong with client and showLoadingIndicator is still active
+        const pageErrorHandler = componentData.currentNode.pageErrorHandler;
+        if (pageErrorHandler) {
+          this.timeoutHandle = setTimeout(() => {
+            // debugger;
+            if (component.get().showLoadingIndicator) {
+              NavigationHelpers.handleUnresponsiveClient(pageErrorHandler);
+            }
+          }, pageErrorHandler.timeout);
         }
       }
     } else {

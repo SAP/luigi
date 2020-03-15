@@ -2,6 +2,7 @@
 import { LuigiAuth, LuigiConfig } from '../../core-api';
 import { AuthHelpers } from './';
 import { Navigation } from '../../navigation/services/navigation';
+import { Routing } from '../../services/routing';
 
 class NavigationHelpersClass {
   constructor() {
@@ -254,6 +255,18 @@ class NavigationHelpersClass {
 
   isOpenUIiconName(string) {
     return /^[a-z0-9\-]+$/i.test(string);
+  }
+
+  handleUnresponsiveClient(node) {
+    if (node.errorFn) {
+      node.errorFn();
+    } else {
+      console.warn(
+        'Something went wrong with a client! You will be redirected to another page.'
+      );
+      const path = node.redirectPath;
+      path ? Routing.navigateTo(path) : Routing.navigateTo('/');
+    }
   }
 }
 
