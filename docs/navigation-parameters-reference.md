@@ -272,7 +272,7 @@ settings: {
 
 ### pageErrorHandler
 - **type**: object
-- **description**: gives you the possibility to handle a situation if Luigi client doesn't respond. By default, it will redirect to the home page if nothing else is not specified.
+- **description**: gives you the possibility to handle a situation if Luigi client doesn't respond. By default, it will redirect to the home page if nothing else is specified.
 - **attributes**:
   - **timeout** amount of time after which redirection will take effect.
   - **redirectPath** redirection to this location.
