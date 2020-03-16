@@ -270,6 +270,14 @@ settings: {
     }
     ```
 
+### pageErrorHandler
+- **type**: object
+- **description**: gives you the possibility to handle a situation if Luigi client doesn't respond. By default, it will redirect to the home page if nothing else is not specified.
+- **attributes**:
+  - **timeout** amount of time after which redirection will take effect.
+  - **redirectPath** redirection to this location.
+  - **errorFn** use to handle different scenarios except redirection.
+
 ## Context switcher
 
 The context switcher is a drop-down list available in the top navigation bar. It allows you to switch between a curated list of navigation elements such as Environments. To do so, add the **contextSwitcher** parameter to the **navigation** object using the following optional parameters:
