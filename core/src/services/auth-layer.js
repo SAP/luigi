@@ -1,9 +1,5 @@
 import { LuigiAuth, LuigiConfig } from '../core-api';
-import {
-  AuthHelpers,
-  GenericHelpers,
-  StateHelpers
-} from '../utilities/helpers';
+import { AuthHelpers, GenericHelpers } from '../utilities/helpers';
 import { AuthStoreSvc } from './';
 import { get, writable } from 'svelte/store';
 
@@ -35,6 +31,10 @@ class AuthLayerSvcClass {
 
   async init() {
     const idpProviderName = LuigiConfig.getConfigValue('auth.use');
+    if (!idpProviderName) {
+      // No Authentication active
+      return Promise.resolve(true);
+    }
     const idpProviderSettings = LuigiConfig.getConfigValue(
       `auth.${idpProviderName}`
     );
