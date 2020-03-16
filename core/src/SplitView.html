@@ -307,9 +307,8 @@
 
 <style type="text/scss">
   $topNavHeight: 44px;
-  $leftNavWidth: 15em;
+  $leftNavWidth: 15rem;
   $collapsedSplitviewHeight: 38px;
-  $collapsedSplitViewContainerHeight: 49px;
   $desktopMinWidth: 600px;
   $colorNeutral4: #89919a;
 
@@ -330,11 +329,12 @@
   }
 
   :global(.lui-collapsed.splitViewContainer) {
-    height: $collapsedSplitViewContainerHeight;
+    height: $collapsedSplitviewHeight;
     top: auto;
   }
 
   .fd-splitView__title {
+    margin-top:0;
     font-size: 16px;
     line-height: $collapsedSplitviewHeight;
     vertical-align: center;
