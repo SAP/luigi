@@ -9,6 +9,7 @@ import {
 import { LuigiConfig, LuigiI18N } from '../core-api';
 import { Iframe } from './iframe';
 import { NAVIGATION_DEFAULTS } from './../utilities/luigi-config-defaults';
+import { NodeDataManagementStorage } from './node-data-management';
 
 class RoutingClass {
   getNodePath(node, params) {
@@ -171,6 +172,22 @@ class RoutingClass {
         path
       );
 
+      //wenn sich dynNode geändert, dann node von cache löschen (recursive)
+
+      const navigationPathAsString = GenericHelpers.getRawNavigationPath(
+        pathData.navigationPath
+      );
+
+      if (NodeDataManagementStorage.lastUrl !== pathUrlRaw) {
+      }
+
+      if (NodeDataManagementStorage.hasChildren(nodeObject)) {
+        NodeDataManagementStorage.deleteCacheEntry(nodeObject);
+      }
+
+      //speicher die lastUrl
+      NodeDataManagementStorage.lastUrl = pathUrlRaw;
+      NodeDataManagementStorage.lastPathData = pathData;
       const viewUrl = nodeObject.viewUrl || '';
 
       if (!viewUrl) {

@@ -55,7 +55,13 @@ class Navigation {
       children: [
         {
           pathSegment: ':environmentId',
-          viewUrl: '/sampleapp.html#/environments/:environmentId'
+          viewUrl: '/sampleapp.html#/environments/:environmentId',
+          children: [
+            {
+              pathSegment: ':dynamic',
+              viewUrl: '/sampleapp.html#/environments/:environmentId/overview'
+            }
+          ]
         }
       ]
     },

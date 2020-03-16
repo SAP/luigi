@@ -2,6 +2,8 @@ import { GenericHelpers } from '../utilities/helpers/generic-helpers';
 class NodeDataManagementStorageClass {
   constructor() {
     this.dataManagement = new Map();
+    this.lastUrl;
+    this.lastPathData;
   }
   /**
    *
@@ -11,6 +13,14 @@ class NodeDataManagementStorageClass {
    *
    */
   setChildren(node, value) {
+    // pathSegment: ":environmentId"
+    // viewUrl: "/sampleapp.html#/environments/:environmentId"
+    // parent: {hideFromNav: true, pathSegment: "environments", viewUrl: "/sampleapp.html#/environments", children: Array(1)}
+    // __proto__: Object
+    if (node && node.pathSegment && node.pathSegment !== undefined) {
+    }
+
+    //baue den path zusammen rekursiv über parent
     this.dataManagement.set(node, value);
   }
 
@@ -58,6 +68,10 @@ class NodeDataManagementStorageClass {
       */
   deleteCache() {
     this.dataManagement.clear();
+  }
+
+  deleteCacheEntry(node) {
+    this.dataManagement.delete(node);
   }
 }
 export const NodeDataManagementStorage = new NodeDataManagementStorageClass();
