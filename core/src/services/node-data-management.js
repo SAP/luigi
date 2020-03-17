@@ -4,6 +4,7 @@ class NodeDataManagementStorageClass {
     this.dataManagement = new Map();
     this.lastUrl;
     this.lastPathData;
+    this.navPath = '';
   }
   /**
    *
@@ -13,16 +14,30 @@ class NodeDataManagementStorageClass {
    *
    */
   setChildren(node, value) {
-    // pathSegment: ":environmentId"
-    // viewUrl: "/sampleapp.html#/environments/:environmentId"
-    // parent: {hideFromNav: true, pathSegment: "environments", viewUrl: "/sampleapp.html#/environments", children: Array(1)}
-    // __proto__: Object
-    if (node && node.pathSegment && node.pathSegment !== undefined) {
+    //baue den path zusammen rekursiv über parent
+    if (node.pathSegment) {
+      value.rawNavPath = this.buildNavigationPath(node.pathSegment, node);
+    }
+    this.dataManagement.set(node, value);
+    this.navPath = '';
+  }
+
+  buildNavigationPath(pathSegment, node) {
+    let navPathRaw = pathSegment;
+    if (node.parent) {
+      navPathRaw = node.parent.pathSegment.concat('/' + navPathRaw);
+      this.buildNavigationPath(navPathRaw, node.parent);
+    } else if (navPathRaw !== node.pathSegment) {
+      navPathRaw = node.pathSegment.concat('/' + navPathRaw);
     }
 
-    //baue den path zusammen rekursiv über parent
-    this.dataManagement.set(node, value);
+    return navPathRaw;
   }
+
+  // if (this.navPath !== '') {
+  //   console.log('schau ma mal');
+  //   return this.navPath;
+  // }
 
   /**
    *

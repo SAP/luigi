@@ -58,8 +58,12 @@ class Navigation {
           viewUrl: '/sampleapp.html#/environments/:environmentId',
           children: [
             {
-              pathSegment: ':dynamic',
+              pathSegment: 'overview',
               viewUrl: '/sampleapp.html#/environments/:environmentId/overview'
+            },
+            {
+              pathSegment: 'settings',
+              viewUrl: '/sampleapp.html#/environments/:environmentId/settings'
             }
           ]
         }

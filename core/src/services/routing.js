@@ -174,15 +174,17 @@ class RoutingClass {
 
       //wenn sich dynNode geändert, dann node von cache löschen (recursive)
 
-      const navigationPathAsString = GenericHelpers.getRawNavigationPath(
-        pathData.navigationPath
-      );
-
       if (NodeDataManagementStorage.lastUrl !== pathUrlRaw) {
-      }
-
-      if (NodeDataManagementStorage.hasChildren(nodeObject)) {
-        NodeDataManagementStorage.deleteCacheEntry(nodeObject);
+        if (NodeDataManagementStorage.hasChildren(nodeObject)) {
+          console.log(
+            'rawNavPath in Cache',
+            NodeDataManagementStorage.getChildren(nodeObject).rawNavPath
+          );
+          const navigationPathAsString = GenericHelpers.getRawNavigationPath(
+            pathData.navigationPath
+          );
+          console.log('navigationPathAsString ', navigationPathAsString);
+        }
       }
 
       //speicher die lastUrl
