@@ -14,12 +14,12 @@ fi
 
 cd $NG_EXAMPLE
 echo "Starting Angular webserver"
-sirv start dist --single --cors --port 4200 --silent &
+$BASE_DIR/../node_modules/.bin/sirv start dist --single --cors --port 4200 --silent &
 WS_NG_PID=$!
 
 cd $BASE_DIR/../website/fiddle
 echo "Starting Fiddle webserver"
-sirv start public --single --cors --port 8080 --silent &
+$BASE_DIR/../node_modules/.bin/sirv start public --single --cors --port 8080 --silent &
 WS_FID_PID=$!
 
 # wait until example is built and running
