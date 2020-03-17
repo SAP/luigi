@@ -95,6 +95,7 @@ const projectDetailNavProviderFn = context =>
           pathSegment: plugin.viewId,
           label: plugin.label,
           viewUrl: plugin.viewUrl,
+          pageErrorHandler: plugin.pageErrorHandler,
           context: plugin.context
         });
       });
