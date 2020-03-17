@@ -25,7 +25,7 @@ WS_FID_PID=$!
 # wait until example is built and running
 SLEEPSECS=1 # sleep time between webserver availability check
 WAITCOUNT=0
-until $(curl --output /dev/null --silent --head --fail http://localhost:4200); do
+until $(curl --output /dev/null --silent --head --fail http://localhost:4200/luigi-core/luigi.js); do
   printf '.'
   sleep $SLEEPSECS
   WAITCOUNT=$(($WAITCOUNT + $SLEEPSECS))
@@ -34,13 +34,12 @@ echo "Angular Webserver was ready after $WAITCOUNT seconds."
 
 SLEEPSECS=1 # sleep time between webserver availability check
 WAITCOUNT=0
-until $(curl --output /dev/null --silent --head --fail http://localhost:8080); do
+until $(curl --output /dev/null --silent --head --fail http://localhost:8080/bundle.js); do
   printf '.'
   sleep $SLEEPSECS
   WAITCOUNT=$(($WAITCOUNT + $SLEEPSECS))
 done
 echo "Fiddle Webserver was ready after $WAITCOUNT seconds."
-
 if [ "$USE_CYPRESS_DASHBOARD" == "true" ]; then
   echo "Running tests in parallel with recording"
   # obtain the key here: https://dashboard.cypress.io/#/projects/czq7qc/settings
