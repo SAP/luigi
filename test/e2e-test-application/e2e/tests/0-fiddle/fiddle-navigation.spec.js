@@ -8,6 +8,10 @@ describe('Navigation with Fiddle', () => {
     it('Core API navigate and open and close modal', () => {
       cy.wait(500);
       cy.window().then(win => {
+        cy.log(typeof win.Luigi);
+        cy.log(typeof win.Luigi.navigation);
+        console.log(typeof win.Luigi);
+        console.log(typeof win.Luigi.navigation);
         win.Luigi.navigation().navigate('/home/two');
         cy.expectPathToBe('/home/two');
 
