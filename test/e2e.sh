@@ -19,6 +19,7 @@ WS_NG_PID=$!
 
 cd $BASE_DIR/../website/fiddle
 echo "Starting Fiddle webserver"
+ls public/
 $BASE_DIR/../node_modules/.bin/sirv start public --single --cors --port 8080 --silent &
 WS_FID_PID=$!
 
