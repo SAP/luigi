@@ -3,33 +3,26 @@ Cypress.env('RETRIES', 0);
 describe('Navigation with Fiddle', () => {
   describe('Core api navigation test', () => {
     beforeEach(() => {
-      cy.visitWithFiddleConfig('/');
+      cy.visitWithFiddleConfig('/', fiddleConfig);
     });
     it('Core API navigate and open and close modal', () => {
-      cy.wait(500);
       cy.window().then(win => {
-        cy.log(typeof win.Luigi);
-        cy.log(typeof win.Luigi.navigation);
-        console.log(typeof win.Luigi);
-        console.log(typeof win.Luigi.navigation);
         win.Luigi.navigation().navigate('/home/two');
-        cy.expectPathToBe('/home/two');
+      });
+      cy.expectPathToBe('/home/two');
 
+      cy.window().then(win => {
         win.Luigi.navigation().openAsModal('/settings', {
           title: 'Preserved View',
           size: 'm'
         });
-        // cy.wait(2000)
-        // win.Luigi.navigation().openAsModal('/settings', {
-        //   title: 'Preserved View 2',
-        //   size: 'm'
-        // });
-        // cy.contains('Preserved View')
-        cy.get('body')
-          .find('.fd-modal__close', { timeout: 5000 })
-          .click();
-        cy.expectPathToBe('/home/two');
       });
+
+      cy.contains('Preserved View');
+      cy.get('body')
+        .find('[aria-label="close"]', { timeout: 5000 })
+        .click();
+      cy.expectPathToBe('/home/two');
     });
   });
   describe('Normal navigation', () => {
