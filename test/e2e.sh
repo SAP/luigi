@@ -13,13 +13,13 @@ if [[ ! -L $NG_MODULES ]] && [[ ! -d $NG_MODULES ]]; then
 fi
 
 cd $NG_EXAMPLE
-
 echo "Starting Angular webserver"
 sirv start dist --single --cors --port 4200 --silent &
 WS_NG_PID=$!
 
+cd $BASE_DIR/../website/fiddle
 echo "Starting Fiddle webserver"
-sirv start $BASE_DIR/../website/fiddle/public --single --cors --port 8080 --silent &
+sirv start public --single --cors --port 8080 --silent &
 WS_FID_PID=$!
 
 # wait until example is built and running
@@ -39,6 +39,11 @@ until $(curl --output /dev/null --silent --head --fail http://localhost:8080/bun
   sleep $SLEEPSECS
   WAITCOUNT=$(($WAITCOUNT + $SLEEPSECS))
 done
+
+echo "special output test"
+curl http://localhost:8080/bundle.js
+
+cd $NG_EXAMPLE
 echo "Fiddle Webserver was ready after $WAITCOUNT seconds."
 if [ "$USE_CYPRESS_DASHBOARD" == "true" ]; then
   echo "Running tests in parallel with recording"
