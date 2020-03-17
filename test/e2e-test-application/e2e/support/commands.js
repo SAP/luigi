@@ -2,7 +2,7 @@ import fiddleConfig from '../configs/default';
 Cypress.Commands.add(
   'visitWithFiddleConfig',
   (path = '/', config = fiddleConfig) => {
-    cy.visit(`/#${path}`, {
+    cy.visit(`http://localhost:8080/#${path}`, {
       onBeforeLoad: win => {
         win.localStorage.setItem('cookiesAccepted', 'true');
         win.sessionStorage.setItem(
