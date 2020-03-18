@@ -275,7 +275,7 @@ settings: {
 - **description**: gives you the possibility to handle a situation in which Luigi Client doesn't respond. By default, it will redirect to the home page if nothing else is specified.
 - **attributes**:
   - **timeout** amount of time after which redirection will take effect.
-  - **redirectPath** redirection to this location.
+  - **redirectPath** specifies the location to redirect to.
   - **errorFn** use to handle different scenarios except redirection.
 
 ## Context switcher
