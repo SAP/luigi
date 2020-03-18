@@ -125,7 +125,7 @@ You can specify them in the main application URL, similarly to URL query paramet
 
 All parameters without the prefix are not passed to the micro frontend and are consumed by the main application.
 
-A sample **viewUrl** `https://[YOUR.WEBSITE]/home/users/allUsers?~sorting=asc&~page=2` supports sorting and paging by introducing the **sort** and **page** node parameters.
+A sample **viewUrl** `https://[YOUR.WEBSITE]/home/users/allUsers?~sorting=asc&~page=2` supports sorting and pagination by introducing the **sort** and **page** node parameters.
 
 Using dynamic node parameters in the previous example results in:
 
