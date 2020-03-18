@@ -406,6 +406,13 @@ $side-nav-width-mobile: 260px;
       }
     }
 
+    &:active {
+      background-color: transparent;
+      .fd-nested-list__title {
+        color: var(--sapList_TextColor,#32363a);
+      }
+    }
+
     .fd-nested-list__title {
       font-size: 15px;
       white-space: normal;
