@@ -198,6 +198,28 @@ $side-nav-width-mobile: 260px;
     outline: none !important;
   }
 
+  .fd-shellbar {
+    .fd-search-input  {
+
+      a {
+        text-decoration: none;
+      }
+
+      .fd-input[aria-hidden=true] {
+        visibility: visible;
+      }
+
+      .fd-input {
+        width: 100%;
+        padding-left: 12px;
+        padding-right: 30px;
+        height: 36px;
+        border-radius: 4px;
+        font-size: 14px;
+      }
+    }
+  }
+
   .fd-shellbar__button {
     border: none;
     border-radius: 0;
@@ -470,6 +492,14 @@ $side-nav-width-mobile: 260px;
   
     &.lui-simpleSlideInNav .fd-app__sidebar {
       left: -$side-nav-width-mobile;
+    }
+  }
+
+  @media screen and (max-width: 1023px) {
+    .fd-search-input__control .fd-shellbar__button {
+      padding-bottom: 0;
+      margin-bottom: 0;
+      height: auto;
     }
   }
 }
