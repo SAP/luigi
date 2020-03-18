@@ -44,7 +44,6 @@ jobs:
       script:
         - export CYPRESS_CACHE_FOLDER=$TRAVIS_BUILD_DIR/cypress-binary-cache
         - npm i -g lerna
-<<<<<<< HEAD
         - lerna bootstrap --ci --force-local --ignore docs || travis_terminate 1
         # WORKAROUND - START
         # Due to open bug at lerna, https://github.com/lerna/lerna/issues/2352
@@ -63,16 +62,6 @@ jobs:
         - ls -lah $TRAVIS_BUILD_DIR/test/e2e-test-application/node_modules/@luigi-project/client/
         - echo "check if luigi-client.d.ts exists" && cat $TRAVIS_BUILD_DIR/test/e2e-test-application/node_modules/@luigi-project/client/luigi-client.d.ts | grep -C 3 "withoutSync" || travis_terminate 1
         - lerna run build --scope e2e-test-application || travis_terminate 1
-=======
-        - head $TRAVIS_BUILD_DIR/client/public/package.json && head $TRAVIS_BUILD_DIR/core/public/package.json
-        - cat $TRAVIS_BUILD_DIR/core/examples/luigi-sample-angular/package.json | grep luigi
-        - lerna bootstrap --ci --ignore "*luigi-example-vue" || travis_terminate 1
-        - lerna run bundle --ignore "*luigi-example-vue" || travis_terminate 1
-        - lerna run bundlesizeOnly --ignore "*luigi-example-vue" || travis_terminate 1
-        - ls -lah $TRAVIS_BUILD_DIR/core/examples/luigi-sample-angular/node_modules/@kyma-project
-        - cat $TRAVIS_BUILD_DIR/core/examples/luigi-sample-angular/node_modules/@kyma-project/luigi-client/package.json
-        - lerna run build --ignore "*luigi-example-vue" || travis_terminate 1
->>>>>>> master
         - npm test --prefix core || travis_terminate 1
       before_cache:
         - rm -rf ~/.npm/_logs
@@ -120,14 +109,9 @@ jobs:
     - stage: 'Publish'
       name: 'Publish to NPM'
       # run only when merging from release-v branch to master
-<<<<<<< HEAD
       # if: repo = SAP/luigi AND branch = master
       # if: repo = SAP/luigi AND (branch = master OR branch ~= ^release-v)
       if: repo = SAP/luigi AND type = push AND (branch = master OR branch = release-v1)
-=======
-      # if: repo = SAP/luigi AND (branch = master OR branch ~= ^release-v)
-      if: repo = SAP/luigi AND branch = master AND head_branch = master
->>>>>>> master
       script:
         - bash ./scripts/npmPublish.sh
       before_cache:
