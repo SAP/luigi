@@ -87,7 +87,8 @@ $border-color: #b6bac1;
 $height-shellbar: 110px;
 $height-shellbar-mobile: 95px;
 
-$side-nav-width: 260px;
+$side-nav-width-desktop: 320px;
+$side-nav-width-mobile: 260px;
 
 .luigi-documentation {
 
@@ -111,12 +112,16 @@ $side-nav-width: 260px;
 
     @media screen and (min-width: 1024px) {
       height: $height-shellbar;
+      padding: 4px 32px;
     }
   }
 
   .fd-shellbar-collapse {
     @media screen and (max-width: 1023px) {
-      .fd-button--shell {
+      .fd-shellbar__button {
+        padding-bottom: 0;
+        margin-bottom: 0;
+        height: auto;
         &.sap-icon--overflow {
           @include custom-icon;
 
@@ -189,7 +194,11 @@ $side-nav-width: 260px;
     }
   }
 
-  .fd-button--shell {
+  .fd-button:focus {
+    outline: none !important;
+  }
+
+  .fd-shellbar__button {
     border: none;
     border-radius: 0;
     background: none;
@@ -211,6 +220,12 @@ $side-nav-width: 260px;
       }
     }
 
+    .fd-top-nav__icon {
+      &:before {
+        margin-top: 0 !important;
+      }
+    }
+
     &:hover,
     &.is-selected {
       span {
@@ -228,6 +243,11 @@ $side-nav-width: 260px;
     @media screen and (min-width: 1024px) {
       top: $height-shellbar;
     }
+  }
+
+  .iframeContainer,
+  .spinnerContainer {
+    left: $side-nav-width-desktop;
   }
 
   
@@ -260,53 +280,6 @@ $side-nav-width: 260px;
     }
   }
 
-  @media screen and (max-width: 599px) {
-    .lui-burger {
-      width: 50px;
-      height: 50px;
-      text-align: center;
-      position: fixed;
-      bottom: 20px;
-      left: 20px;
-      color: black;
-      z-index: 20;
-      transition: left 0.1s linear;
-      background-color: white;
-      padding: 15px;
-      border-radius: 50%;
-      box-shadow: rgba(137, 165, 199, 0.42) 0px 1px 26px 0px;
-      cursor: pointer;
-      margin: 0;
-
-      &:before {
-        content: "\e1c0";
-        transition: transform 0.4s ease;
-      }
-    }
-
-    &.lui-leftNavToggle {
-      .lui-burger {
-        left: calc(#{$side-nav-width} + 10px);
-
-        &:before {
-          transform: rotateZ(-180deg);
-        }
-      }
-    }
-
-    .fd-app__sidebar {
-      width: $side-nav-width;
-    }
-  
-    &.lui-simpleSlideInNav.lui-leftNavToggle .fd-app__sidebar {
-      width: $side-nav-width;
-    }
-  
-    &.lui-simpleSlideInNav .fd-app__sidebar {
-      left: -$side-nav-width;
-    }
-  }
-
   .fd-page {
     background-color: white;
   }
@@ -320,6 +293,7 @@ $side-nav-width: 260px;
       color: white;
       display: inline-block;
       margin-right: 20px;
+      text-decoration: none;
 
       &:last-child {
         margin-right: 0;
@@ -381,15 +355,22 @@ $side-nav-width: 260px;
     content: "\61";
   }
 
-  .fd-side-nav__subitem {
+  .fd-nested-list__item {
     padding: 10px 0;
   }
 
-  .fd-side-nav__link,
-  .fd-side-nav__sublink {
+  .fd-nested-list__group-header,
+  .fd-nested-list__item {
+    background: none;
+  }
+
+  .fd-nested-list__link {
+    display: block;
     font-size: 15px;
+    height: auto;
     padding: 1px 10px;
     border-left: 2px solid transparent;
+    border-bottom: none;
 
     &:hover,
     &.is-selected {
@@ -402,10 +383,16 @@ $side-nav-width: 260px;
         display: none;
       }
     }
-  }
 
-  .fd-side-nav__link .fd-side-nav__icon {
-    display: none;
+    .fd-nested-list__title {
+      font-size: 15px;
+      white-space: normal;
+      text-overflow: unset;
+    }
+
+    .fd-nested-list__icon {
+      display: none;
+    }
   }
 
   .lui-category {
@@ -413,18 +400,77 @@ $side-nav-width: 260px;
     border: none;
     font-size: 12px;
     padding: 8px 0;
+    line-height: 1.42857;
+    font-weight: 400;
+    color: #6a6d70;
   }
 
   .fd-side-nav {
-    padding: 30px;
+    width: $side-nav-width-desktop;
+    background-color: transparent;
+    border-right: none;
 
-    @media screen and (min-width: 1024px) {
-      padding: 50px 40px 0;
+    .lui-fd-side-nav-wrapper {
+      padding: 30px;
+
+      @media screen and (min-width: 1024px) {
+        padding: 40px 40px 20px;
+      }
     }
   }
 
   .fd-side-nav__group {
     margin-bottom: 10px;
+  }
+  @media screen and (max-width: 599px) {
+    .lui-burger {
+      width: 50px;
+      height: 50px;
+      text-align: center;
+      position: fixed;
+      bottom: 20px;
+      left: 20px;
+      color: black;
+      z-index: 20;
+      transition: left 0.1s linear;
+      background-color: white;
+      padding: 15px;
+      border-radius: 50%;
+      box-shadow: rgba(137, 165, 199, 0.42) 0px 1px 26px 0px;
+      cursor: pointer;
+      margin: 0;
+
+      &:before {
+        content: "\e1c0";
+        transition: transform 0.4s ease;
+      }
+    }
+
+    &.lui-leftNavToggle {
+      .lui-burger {
+        left: calc(#{$side-nav-width-mobile} + 10px);
+
+        &:before {
+          transform: rotateZ(-180deg);
+        }
+      }
+    }
+
+    .fd-app__sidebar,
+    .fd-side-nav {
+      width: $side-nav-width-mobile;
+    }
+  
+    &.lui-simpleSlideInNav.lui-leftNavToggle {
+      .fd-app__sidebar,
+      .fd-side-nav {
+        width: $side-nav-width-mobile;
+      }
+    }
+  
+    &.lui-simpleSlideInNav .fd-app__sidebar {
+      left: -$side-nav-width-mobile;
+    }
   }
 }
 
