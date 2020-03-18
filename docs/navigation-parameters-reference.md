@@ -276,7 +276,7 @@ settings: {
 - **attributes**:
   - **timeout** amount of time after which redirection will take effect.
   - **redirectPath** specifies the location to redirect to.
-  - **errorFn** use to handle different scenarios except redirection.
+  - **errorFn** used to handle different scenarios other than redirection.
 
 ## Context switcher
 
