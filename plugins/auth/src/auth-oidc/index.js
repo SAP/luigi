@@ -31,11 +31,9 @@ export default class openIdConnect {
       let profile = payload.profile;
       if (
         payload.profile &&
-        LuigiConfig.getConfigValue(
-          'auth.openIdConnect.profileStorageInterceptorFn'
-        )
+        Luigi.getConfigValue('auth.openIdConnect.profileStorageInterceptorFn')
       ) {
-        profile = await LuigiConfig.executeConfigFnAsync(
+        profile = await Luigi.executeConfigFnAsync(
           'auth.openIdConnect.profileStorageInterceptorFn',
           true,
           payload.profile
