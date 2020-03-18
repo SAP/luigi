@@ -145,6 +145,7 @@ or execute these commands manually to get the same result:
 <!-- accordion:start -->
 ### Click to expand
 ```bash
+<<<<<<< HEAD
 mkdir my-ui5-app && cd my-ui5-app
 npm init -y
 npm i -save @luigi-project/core @luigi-project/client fiori-fundamentals
@@ -156,6 +157,19 @@ curl https://raw.githubusercontent.com/SAP/luigi/master/test/e2e-test-applicatio
 sed 's/extendedConfiguration.bundle.js/luigi-config.js/g' public/index.html > public/index.tmp.html && mv public/index.tmp.html public/index.html
 cp -r node_modules/\@luigi-project/* public
 live-server --entry-file=index.html public
+=======
+$ mkdir my-ui5-app && cd my-ui5-app
+$ npm init -y
+$ npm i -save @kyma-project/luigi-core @kyma-project/luigi-client fiori-fundamentals
+$ mkdir -p public/assets
+$ curl https://raw.githubusercontent.com/SAP/luigi/master/core/examples/luigi-sample-angular/src/index.html > public/index.html
+$ sed 's/extendedConfiguration.bundle.js/luigi-config.js/g' public/index.html > public/index.tmp.html && mv public/index.tmp.html public/index.html
+$ curl https://raw.githubusercontent.com/SAP/openui5/master/src/sap.m/test/sap/m/demokit/tutorial/quickstart/01/webapp/index.html | sed 's/src="..\/..\/..\/..\/..\/..\/..\/..\/resources\/sap-ui-core.js"/src="https:\/\/openui5.hana.ondemand.com\/resources\/sap-ui-core.js"/g' > public/ui5.html
+$ curl https://raw.githubusercontent.com/SAP/luigi/master/core/examples/luigi-sample-angular/src/luigi-config/basic/basicConfiguration.js > public/assets/luigi-config.js
+$ curl https://raw.githubusercontent.com/SAP/luigi/master/core/examples/luigi-sample-angular/src/assets/sampleexternal.html > public/assets/basicexternal.html
+$ cp -r node_modules/\@kyma-project/luigi-* public
+$ live-server --entry-file=index.html public
+>>>>>>> master
 ```
 <!-- accordion:end -->
 
@@ -182,6 +196,7 @@ or execute these commands manually to get the same result:
 <!-- accordion:start -->
 ### Click to expand
 ```bash
+<<<<<<< HEAD
 vue create -d my-original-vue-app && cd my-original-vue-app
 npm i -save @luigi-project/core @luigi-project/client fiori-fundamentals
 mkdir -p public/assets
@@ -192,6 +207,18 @@ curl https://raw.githubusercontent.com/SAP/luigi/master/test/e2e-test-applicatio
 curl https://raw.githubusercontent.com/SAP/luigi/master/test/e2e-test-application/src/assets/sampleexternal.html > public/assets/basicexternal.html
 echo "const webpack=require('webpack');const CopyWebpackPlugin=require('copy-webpack-plugin');module.exports={pages:{sampleapp:{entry:'src/main.js',template:'public/vue.html',filename:'vue.html'}},lintOnSave:true,runtimeCompiler:true,outputDir:'dist',configureWebpack:{plugins:[new CopyWebpackPlugin([{context:'public',to:'index.html',from:'index.html'},{context:'node_modules/@luigi-project/core',to:'./luigi-core',from:{glob:'**',dot:true}},{context:'node_modules/@luigi-project/client',to:'./luigi-client',from:{glob:'**',dot:true}}],{ignore:['.gitkeep','**/.DS_Store','**/Thumbs.db'],debug:'warning'})]}};" > vue.config.js
 npm run serve
+=======
+$ vue create -d my-original-vue-app && cd my-original-vue-app
+$ npm i -save @kyma-project/luigi-core @kyma-project/luigi-client fiori-fundamentals
+$ mkdir -p public/assets
+$ mv public/index.html public/vue.html
+$ curl https://raw.githubusercontent.com/SAP/luigi/master/core/examples/luigi-example-vue/public/index.html > public/index.html
+$ sed 's/luigi-config.js/assets\/luigi-config.js/g' public/index.html > public/index.tmp.html && mv public/index.tmp.html public/index.html
+$ curl https://raw.githubusercontent.com/SAP/luigi/master/core/examples/luigi-sample-angular/src/luigi-config/basic/basicConfiguration.js > public/assets/luigi-config.js
+$ curl https://raw.githubusercontent.com/SAP/luigi/master/core/examples/luigi-sample-angular/src/assets/sampleexternal.html > public/assets/basicexternal.html
+$ echo "const webpack=require('webpack');const CopyWebpackPlugin=require('copy-webpack-plugin');module.exports={pages:{sampleapp:{entry:'src/main.js',template:'public/vue.html',filename:'vue.html'}},lintOnSave:true,runtimeCompiler:true,outputDir:'dist',configureWebpack:{plugins:[new CopyWebpackPlugin([{context:'public',to:'index.html',from:'index.html'},{context:'node_modules/@kyma-project/luigi-core',to:'./luigi-core',from:{glob:'**',dot:true}},{context:'node_modules/@kyma-project/luigi-client',to:'./luigi-client',from:{glob:'**',dot:true}}],{ignore:['.gitkeep','**/.DS_Store','**/Thumbs.db'],debug:'warning'})]}};" > vue.config.js
+$ npm run serve
+>>>>>>> master
 ```
 <!-- accordion:end -->
 

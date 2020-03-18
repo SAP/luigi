@@ -83,6 +83,10 @@ const configReadyCallback = () => {
           return app.$$.ctx.pathExists(path);
         };
 
+        Luigi.pathExists = path => {
+          return app.$$.ctx.pathExists(path);
+        };
+
         Luigi.hasBack = () => {
           return app.$$.ctx.hasBack();
         };
