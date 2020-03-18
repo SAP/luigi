@@ -19,8 +19,8 @@
     "mock:develop-plugins:watch": "NODE_ENV=debug nodemon --ignore 'static/**' -r esm scripts/markdown.unified-preview.js"
   },
   "dependencies": {
-    "@kyma-project/luigi-client": "0.7.7",
-    "@kyma-project/luigi-core": "0.7.7",
+    "@luigi-project/core": "1.0.0-bbqseb.41.0",
+    "@luigi-project/client": "1.0.0-bbqseb.41.0",
     "polka": "next"
   },
   "devDependencies": {
@@ -63,6 +63,7 @@
     "remark-toc": "^6.0.0",
     "sapper": "^0.27.0",
     "sass-loader": "^8.0.0",
+    "serialize-javascript": ">=2.1.1",
     "sirv-cli": "0.4.4",
     "svelte": "^3.0.0",
     "svelte-loader": "^2.9.0",
@@ -70,7 +71,6 @@
     "unified": "^8.3.2",
     "vfile-reporter": "^6.0.0",
     "webpack": "^4.7.0",
-    "webpack-cli": "^3.0.3",
-    "serialize-javascript": ">=2.1.1"
+    "webpack-cli": "^3.0.3"
   }
 }
