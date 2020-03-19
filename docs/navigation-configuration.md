@@ -21,6 +21,8 @@ If you are already familiar with the basics, take a look at:
 * [Advanced navigation configuration](navigation-advanced.md)
 * [Full reference list of navigation parameters](navigation-parameters-reference.md)
 
+<iframe width="560" height="315" src="https://www.youtube.com/embed/9hczgxJV1eU" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+
 ## Navigation elements
 
 There are three main elements to Luigi:
