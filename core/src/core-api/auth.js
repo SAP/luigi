@@ -66,6 +66,12 @@ class LuigiAuth {
    * @property {string} idToken - id token, used for renewing authentication
    */
   get store() {
+    if (!LuigiConfig.initialized) {
+      console.warn(
+        'Luigi Core is not initialized yet. Consider moving your code to the luigiAfterInit lifecycle hook. ' +
+          'Documentation: https://docs.luigi-project.io/docs/lifecycle-hooks'
+      );
+    }
     return {
       /**
        * Retrieves the key name that is used to store the auth data.
