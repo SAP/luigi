@@ -101,9 +101,6 @@ jobs:
 
     - name: 'Integration Testing 2'
       <<: *integration-testing
- 
-    - name: 'Integration Testing 3'
-      <<: *integration-testing
 
     # ----- NPM PUBLISH -----
     - stage: 'Publish'
