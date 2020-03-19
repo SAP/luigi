@@ -21,9 +21,15 @@ meta -->
 
 Luigi is a micro frontend framework that helps you build modularizable, extensible, scalable and consistent UIs and web applications (for administrators and business users).
 
+You can watch this video of a Luigi use case to understand its functions better:
+<iframe width="560" height="315" src="https://www.youtube.com/embed/fRYESd-YDhA" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+
 ### What are micro frontends?
 
 The term "micro frontends" extends the concepts of micro services to the frontend. It's an architectural style where big frontend monoliths are decomposed into smaller and simpler chunks to be developed, tested, deployed and maintained independently and rapidly (by many distributed teams), while still appearing to the customer as a one cohesive product.
+
+This video which explains the basics of micro frontend architecture and how it can be implemented with Luigi:
+<iframe width="560" height="315" src="https://www.youtube.com/embed/Bjp1_yvtR4Y" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 
 ### Does Luigi deliver micro frontends?
 
