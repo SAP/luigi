@@ -14,8 +14,8 @@
         aria-disabled="{!renderAsDropdown}"
         data-testid="luigi-contextswitcher-button"
       >
-        {#if customSelectedOptionRenderer}
-        {@html customSelectedOptionRenderer(selectedLabel ? selectedLabel: $getTranslation(config.defaultLabel), !!selectedLabel)}
+        {#if selectedOption && customSelectedOptionRenderer }
+        {@html customSelectedOptionRenderer(selectedOption)}
         {:else}
         {#if !selectedLabel}{$getTranslation(config.defaultLabel)} {:else}{selectedLabel}{/if}
         {/if}
@@ -162,7 +162,7 @@
           contextSwitcherConfig.customSelectedOptionRenderer
         )
           ? contextSwitcherConfig.customSelectedOptionRenderer
-          : undefined;  
+          : undefined;
         config = contextSwitcherConfig;
         options = undefined;
         if (contextSwitcherConfig) {

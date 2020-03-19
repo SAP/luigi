@@ -21,7 +21,8 @@ export const ContextSwitcherHelpers = {
       label: opt.label,
       link: (parentNodePath || '/') + opt.pathValue,
       id: opt.pathValue,
-      testId: opt.testId
+      testId: opt.testId,
+      customRendererCategory: opt.customRendererCategory
     }));
   },
 
