@@ -262,9 +262,15 @@ contextSwitcher: {
   parentNodePath: '/environments',
   lazyloadOptions: false,
   fallbackLabelResolver: (id) => (id.toUpperCase()),
-  options: [{label,pathValue}, {label,pathValue}],
-  customSelectedOptionRenderer: (label, isSelected) => {
-      return isSelected ? `<label class="is-selected">${label} </label>` : `<label>${label} </label>`;
+  options: [{label, pathValue,customRendererCategory}, {label, pathValue, customRendererCategory}],
+  customSelectedOptionRenderer: (option) => {
+    let color = "white";
+    if(option.customRendererCategory === 'production'){
+      color = "#87FF00";
+    }else if (option.customRendererCategory === 'stage'){
+      color = "#00C9FF";
+    }
+    return  `<label style="color:${color}">${option.label} </label>`;
   },
   customOptionsRenderer: (option, isSelected) => {
     let className = 'fd-menu__item' + (isSelected ? ' is-selected' : '');
