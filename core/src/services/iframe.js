@@ -283,8 +283,6 @@ class IframeClass {
             const message = ['init', JSON.stringify(componentData.context)];
             IframeHelpers.sendMessageToIframe(config.iframe, message);
           });
-        } else if (!config.isFallbackFrame) {
-          this.setOkResponseHandler(config, component, node);
         }
       }
     } else {
