@@ -9,8 +9,7 @@
     "plugins",
     "plugins/auth/public/auth-oauth2",
     "plugins/auth/public/auth-oidc",
-    "test/e2e-test-application",
-    "website/docs"
+    "test/e2e-test-application"
   ],
   "version": "0.0.0"
 }
