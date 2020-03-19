@@ -943,6 +943,8 @@ describe('Navigation', function() {
         },
         index: 3
       };
+
+      // trailing slash is expected, it gets removed later by trimTrailingSlash() before setting viewUrl
       const expected =
         'https://mf.luigi-project.io#!/x/:virtualSegment_1/:virtualSegment_2/:virtualSegment_3/';
 
@@ -993,7 +995,7 @@ describe('Navigation', function() {
             _virtualPathIndex: 1,
             label: ':virtualSegment_1',
             pathSegment: ':virtualSegment_1',
-            viewUrl: 'http://mf.luigi-project.io/:virtualSegment_1/',
+            viewUrl: 'http://mf.luigi-project.io/:virtualSegment_1',
             _virtualViewUrl: 'http://mf.luigi-project.io'
           }
         ]
@@ -1010,7 +1012,7 @@ describe('Navigation', function() {
         label: ':virtualSegment_3',
         pathSegment: ':virtualSegment_3',
         viewUrl:
-          'http://mf.luigi-project.io/:virtualSegment_2/:virtualSegment_3/',
+          'http://mf.luigi-project.io/:virtualSegment_2/:virtualSegment_3',
         _virtualViewUrl: 'http://mf.luigi-project.io'
       };
       const mockNodeNames = ['foo'];
@@ -1029,7 +1031,7 @@ describe('Navigation', function() {
             label: ':virtualSegment_4',
             pathSegment: ':virtualSegment_4',
             viewUrl:
-              'http://mf.luigi-project.io/:virtualSegment_1/:virtualSegment_2/:virtualSegment_3/:virtualSegment_4/',
+              'http://mf.luigi-project.io/:virtualSegment_1/:virtualSegment_2/:virtualSegment_3/:virtualSegment_4',
             _virtualViewUrl: 'http://mf.luigi-project.io'
           }
         ]

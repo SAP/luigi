@@ -8,6 +8,7 @@ class Settings {
 
   responsiveNavigation = 'simpleMobileOnly'; // Options: simple | simpleMobileOnly | semiCollapsible
   sideNavFooterText = ' ';
+  customSandboxRules = ['allow-presentation']
   // hideNavigation = true
   // backdropDisabled = true
 }
