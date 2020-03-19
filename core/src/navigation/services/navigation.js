@@ -280,10 +280,12 @@ class NavigationClass {
       Object.assign(newChild, {
         pathSegment: ':virtualSegment_' + _virtualPathIndex,
         label: ':virtualSegment_' + _virtualPathIndex,
-        viewUrl: this.buildVirtualViewUrl(
-          _virtualViewUrl,
-          pathParams,
-          _virtualPathIndex
+        viewUrl: GenericHelpers.trimTrailingSlash(
+          this.buildVirtualViewUrl(
+            _virtualViewUrl,
+            pathParams,
+            _virtualPathIndex
+          )
         ),
         _virtualTree: true,
         _virtualPathIndex,
