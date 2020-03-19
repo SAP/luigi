@@ -104,6 +104,15 @@ class NavigationClass {
     return filteredChildren;
   }
 
+  /**
+   * returns filtered children from cache if present otherwise calculates them.
+   * */
+  async getFilteredChildren(node) {
+    return NodeDataManagementStorage.hasChildren(node)
+      ? Navigation.getChildrenFromCache(node)
+      : await Navigation.getChildren(node);
+  }
+
   getChildrenFromCache(node) {
     let data = NodeDataManagementStorage.getChildren(node);
     return data ? data.filteredChildren : [];
