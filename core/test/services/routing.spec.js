@@ -8,6 +8,7 @@ import { GenericHelpers } from '../../src/utilities/helpers';
 import { LuigiConfig, LuigiI18N } from '../../src/core-api';
 import { Navigation } from '../../src/navigation/services/navigation';
 import { NodeDataManagementStorage } from '../../src/services/node-data-management';
+import { Iframe } from '../../src/services/iframe';
 
 describe('Routing', function() {
   this.retries(1);
@@ -167,6 +168,7 @@ describe('Routing', function() {
     let config;
 
     beforeEach(() => {
+      sinon.stub(Iframe, 'setOkResponseHandler');
       const sampleLuigiConfig = {
         navigation: {
           nodes: () => [
