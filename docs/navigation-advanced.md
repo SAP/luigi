@@ -265,9 +265,9 @@ contextSwitcher: {
   options: [{label, pathValue,customRendererCategory}, {label, pathValue, customRendererCategory}],
   customSelectedOptionRenderer: (option) => {
     let color = "white";
-    if(option.customRendererCategory === 'production'){
+    if (option.customRendererCategory === 'production') {
       color = "#87FF00";
-    }else if (option.customRendererCategory === 'stage'){
+    } else if (option.customRendererCategory === 'stage') {
       color = "#00C9FF";
     }
     return  `<label style="color:${color}">${option.label} </label>`;
