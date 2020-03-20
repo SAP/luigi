@@ -20,9 +20,9 @@ To have this application running, follow these steps:
 
 2. Install dependencies by running the following command in the root `luigi` folder.
     ```bash
-    # The `lerna bootstrap` command executes the npm package manager installation and links cross-dependencies.
+    # The `lerna bootstrap --force-local` command executes the npm package manager installation and links cross-dependencies.
 
-    lerna bootstrap
+    lerna bootstrap --force-local
     ```
 
 3. Bundle Luigi Core by running the following command in the `luigi/core` folder.
