@@ -9,13 +9,13 @@
           aria-expanded="{dropDownStates.contextSwitcherPopover || false}"
           aria-haspopup="true"
           title="{selectedLabel ? selectedLabel : config.defaultLabel}"
-          on:click="{toggleDropdownState}"
+          on:click="{() => {if (renderAsDropdown) toggleDropdownState()}}"
+          aria-disabled="{!renderAsDropdown}"
         >
           {#if !selectedLabel}{$getTranslation(config.defaultLabel)}{/if} {#if
           selectedLabel}{selectedLabel}{/if}
         </button>
       </div>
-
       <div
         class="fd-popover__body fd-popover__body--right"
         aria-hidden="{!(dropDownStates.contextSwitcherPopover || false)}"
@@ -30,7 +30,11 @@
               on:click="{() => onActionClick(node)}"
               data-testid="{getTestId(node)}"
             >
-              <a class="fd-menu__item">{$getTranslation(node.label)}</a>
+              <a
+                href="{getRouteLink(node)}"
+                on:click|preventDefault="{() => {}}"
+                class="fd-menu__item"
+              >{$getTranslation(node.label)}</a>
             </li>
             {/if} {/each}
           </ul>
@@ -49,10 +53,16 @@
               on:click="{() => goToOption(node, selectedOption)}"
               data-testid="{getTestId(node)}"
             >
+              {#if customOptionsRenderer}
+              {@html customOptionsRenderer(node, node.label === selectedLabel)}
+              {:else}
               <a
-                class="fd-menu__item {node === selectedLabel ? 'is-selected' : ''}"
+                href="{getRouteLink(node)}"
+                on:click|preventDefault="{() => {}}"
+                class="fd-menu__item {node.label === selectedLabel ? 'is-selected' : ''}"
                 title="{label}"
               >{label}</a>
+              {/if}
             </li>
             {/await} {/each} {/if}
           </ul>
@@ -63,7 +73,11 @@
               on:click="{() => onActionClick(node)}"
               data-testid="{getTestId(node)}"
             >
-              <a class="fd-menu__item">{$getTranslation(node.label)}</a>
+              <a
+                href="{getRouteLink(node)}"
+                on:click|preventDefault="{() => {}}"
+                class="fd-menu__item"
+              >{$getTranslation(node.label)}</a>
             </li>
             {/if} {/each}
           </ul>
@@ -79,11 +93,13 @@
   import { ContextSwitcherHelpers } from './services/context-switcher';
   import { LuigiConfig } from '../core-api';
   import { Routing } from '../services/routing';
+  import { NodeDataManagementStorage } from '../services/node-data-management';
   import {
     IframeHelpers,
     RoutingHelpers,
     StateHelpers,
-    NavigationHelpers
+    NavigationHelpers,
+    GenericHelpers
   } from '../utilities/helpers';
 
   const dispatch = createEventDispatcher();
@@ -94,8 +110,16 @@
   export let config = {};
   export let actions = [];
   export let options = null;
+  let alwaysShowDropdown = true;
+  $: renderAsDropdown =
+    alwaysShowDropdown ||
+    (actions && actions.length > 0) ||
+    (options && options.length > 1) ||
+    !selectedOption;
   export let selectedOption;
   export let fallbackLabelResolver = null;
+  export let pathParams;
+  export let customOptionsRenderer;
   let preserveSubPathOnSwitch;
   let getUnsavedChangesModalPromise = getContext(
     'getUnsavedChangesModalPromise'
@@ -107,16 +131,25 @@
     StateHelpers.doOnStoreChange(
       store,
       async () => {
-        LuigiConfig._configModificationTimestamp = new Date();
+        NodeDataManagementStorage.deleteCache();
         const contextSwitcherConfig = LuigiConfig.getConfigValue(
           'navigation.contextSwitcher'
         );
-
         contextSwitcherEnabled = !!contextSwitcherConfig;
+        if (!contextSwitcherEnabled) {
+          return;
+        }
+
+        customOptionsRenderer = GenericHelpers.isFunction(
+          contextSwitcherConfig.customOptionsRenderer
+        )
+          ? contextSwitcherConfig.customOptionsRenderer
+          : undefined;
         config = contextSwitcherConfig;
         options = undefined;
-
         if (contextSwitcherConfig) {
+          alwaysShowDropdown =
+            contextSwitcherConfig.alwaysShowDropdown !== false; // default is true
           actions = await LuigiConfig.getConfigValueAsync(
             'navigation.contextSwitcher.actions'
           );
@@ -163,6 +196,10 @@
     return node.testId
       ? node.testId
       : NavigationHelpers.prepareForTests(node.pathSegment, node.label);
+  }
+
+  function getRouteLink(node) {
+    return RoutingHelpers.getNodeHref(node, pathParams);
   }
 
   // [svelte-upgrade suggestion]
@@ -219,14 +256,14 @@
 
   export function goToPath(path) {
     getUnsavedChangesModalPromise().then(() => {
-      LuigiConfig._configModificationTimestamp = new Date();
+      NodeDataManagementStorage.deleteCache();
       Routing.navigateTo(path);
     });
   }
 
   export function goToOption(option, selectedOption) {
     getUnsavedChangesModalPromise().then(() => {
-      LuigiConfig._configModificationTimestamp = new Date();
+      NodeDataManagementStorage.deleteCache();
       if (preserveSubPathOnSwitch && selectedOption) {
         Routing.navigateTo(
           ContextSwitcherHelpers.getNodePathFromCurrentPath(
@@ -235,7 +272,7 @@
           )
         );
       } else {
-        Routing.navigateTo(option.path);
+        Routing.navigateTo(option.link);
       }
     });
   }
@@ -278,6 +315,14 @@
 
     @media (min-width: 1300px) {
       max-width: 30vw;
+    }
+  }
+
+  .lui-tendant-menu__control[aria-disabled='true'] {
+    opacity: 1;
+    cursor: default;
+    &:after {
+      border: none;
     }
   }
 

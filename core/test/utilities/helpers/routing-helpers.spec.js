@@ -1,7 +1,10 @@
+const sinon = require('sinon');
 const chai = require('chai');
 const expect = chai.expect;
 const assert = chai.assert;
-import { RoutingHelpers } from '../../../src/utilities/helpers';
+import { GenericHelpers, RoutingHelpers } from '../../../src/utilities/helpers';
+import { LuigiConfig } from '../../../src/core-api';
+import { Routing } from '../../../src/services/routing';
 
 describe('Routing-helpers', () => {
   describe('substituteDynamicParamsInObject', () => {
@@ -160,6 +163,98 @@ describe('Routing-helpers', () => {
         'child'
       );
     });
+
+    it('should return first node that has pathSegment defined', async () => {
+      mockPathData.navigationPath = [
+        {
+          pathSegment: 'myPath',
+          children: [
+            {
+              pathSegment: 'pathToHome',
+              viewUrl: 'http://site.url/home',
+              label: 'go back'
+            },
+            {
+              pathSegment: 'maskopatol',
+              label: 'still no viewUrl'
+            },
+            {
+              pathSegment: 'child',
+              label: 'This should be the default child',
+              externalLink: {
+                url: 'https://google.com'
+              }
+            }
+          ]
+        }
+      ];
+
+      assert.equal(
+        await RoutingHelpers.getDefaultChildNode(mockPathData),
+        'pathToHome'
+      );
+    });
+
+    it('should return undefined if at least one of children has no pathsegment defined', async () => {
+      mockPathData.navigationPath = [
+        {
+          pathSegment: 'myPath',
+          children: [
+            {
+              viewUrl: 'http://site.url/home',
+              label: 'go back'
+            },
+            {
+              label: 'still no viewUrl'
+            },
+            {
+              label: 'This should be the default child',
+              externalLink: {
+                url: 'https://google.com'
+              }
+            }
+          ]
+        }
+      ];
+      assert.equal(
+        await RoutingHelpers.getDefaultChildNode(mockPathData),
+        undefined
+      );
+    });
+
+    it('should return child that has pathSegment and viewUrl defined', async () => {
+      mockPathData.navigationPath = [
+        {
+          // DOESN'T MATTER
+        },
+        {
+          pathSegment: 'myPath',
+          children: [
+            {
+              pathSegment: 'home',
+              viewUrl: 'http://site.url/home',
+              label: 'go back'
+            },
+            {
+              pathSegment: 'maskopatol',
+              label: 'still no viewUrl'
+            },
+            {
+              pathSegment: 'child',
+              label: 'This should be the default child',
+              externalLink: {
+                url: 'https://google.com'
+              }
+            }
+          ]
+        }
+      ];
+
+      assert.equal(
+        await RoutingHelpers.getDefaultChildNode(mockPathData),
+        'home'
+      );
+    });
   });
 
   describe('applyPathParams', () => {
@@ -173,6 +268,239 @@ describe('Routing-helpers', () => {
           entry: 'e23'
         })
       ).to.equal('/projects/pr1/details/e23');
+    });
+  });
+
+  describe('buildRoute', () => {
+    const node = {
+      pathSegment: 'one',
+      parent: {
+        pathSegment: 'projects',
+        parent: {
+          pathSegment: 'home'
+        }
+      }
+    };
+    it('without params', () => {
+      assert.equal(
+        RoutingHelpers.buildRoute(node, '/' + node.pathSegment),
+        '/home/projects/one'
+      );
+    });
+    it('with params', () => {
+      const params = 'sort=desc&filter=false';
+      assert.equal(
+        RoutingHelpers.buildRoute(node, '/' + node.pathSegment, params),
+        '/home/projects/one?' + params
+      );
+    });
+  });
+  describe('getRouteLink', () => {
+    beforeEach(() => {
+      sinon.stub(LuigiConfig, 'getConfigBooleanValue');
+      sinon.stub(Routing, 'buildFromRelativePath');
+      sinon.stub(RoutingHelpers, 'buildRoute');
+      sinon.stub(GenericHelpers, 'replaceVars');
+    });
+    afterEach(() => {
+      sinon.restore();
+    });
+    it('externalLink', () => {
+      const expected = { url: 'https://luigi-project.io' };
+      const given = {
+        externalLink: expected,
+        link: 'something',
+        pathSegment: 'something-else'
+      };
+
+      assert.equal(RoutingHelpers.getRouteLink(given), expected);
+    });
+    it('when it starts with /', () => {
+      const expected = '/projects';
+      const given = {
+        link: expected,
+        pathSegment: 'something-else'
+      };
+
+      assert.equal(RoutingHelpers.getRouteLink(given), expected);
+      sinon.assert.notCalled(Routing.buildFromRelativePath);
+    });
+    it('calls build function for relative links', () => {
+      const given = {
+        link: 'projects',
+        pathSegment: 'something-else'
+      };
+      Routing.buildFromRelativePath.returns(`/${given.link}`);
+
+      assert.equal(RoutingHelpers.getRouteLink(given), '/projects');
+      sinon.assert.calledWith(Routing.buildFromRelativePath, given);
+    });
+    it('on pathSegment calls getRoute and replaceVars', () => {
+      const expected = '/projects/something-else';
+      const given = {
+        pathSegment: 'something-else'
+      };
+
+      RoutingHelpers.buildRoute.returns(expected);
+      GenericHelpers.replaceVars.returns(expected);
+
+      assert.equal(RoutingHelpers.getRouteLink(given), expected);
+
+      sinon.assert.notCalled(Routing.buildFromRelativePath);
+      sinon.assert.calledWith(
+        RoutingHelpers.buildRoute,
+        given,
+        '/' + given.pathSegment
+      );
+      sinon.assert.calledWith(
+        GenericHelpers.replaceVars,
+        expected,
+        undefined,
+        ':',
+        false
+      );
+    });
+  });
+  describe('getNodeHref', () => {
+    beforeEach(() => {
+      sinon.stub(LuigiConfig, 'getConfigBooleanValue');
+      sinon.stub(RoutingHelpers, 'getRouteLink');
+    });
+    afterEach(() => {
+      sinon.restore();
+    });
+    it('js:void on falsy config value', () => {
+      LuigiConfig.getConfigBooleanValue.returns(false);
+
+      expect(RoutingHelpers.getNodeHref({}, {})).to.equal('javascript:void(0)');
+      sinon.assert.notCalled(RoutingHelpers.getRouteLink);
+      sinon.assert.calledWith(
+        LuigiConfig.getConfigBooleanValue,
+        'navigation.addNavHrefs'
+      );
+    });
+    it('returns valid link on url object', () => {
+      LuigiConfig.getConfigBooleanValue.returns(true);
+      RoutingHelpers.getRouteLink.returns({ url: '/test' });
+      expect(RoutingHelpers.getNodeHref({ pathSegment: 'test' }, {})).to.equal(
+        '/test'
+      );
+      sinon.assert.calledOnce(RoutingHelpers.getRouteLink);
+    });
+    it('returns valid link on string received', () => {
+      LuigiConfig.getConfigBooleanValue.returns(true);
+      RoutingHelpers.getRouteLink.returns('/test');
+      expect(RoutingHelpers.getNodeHref({ pathSegment: 'test' }, {})).to.equal(
+        '/test'
+      );
+      sinon.assert.calledOnce(RoutingHelpers.getRouteLink);
+    });
+  });
+  describe('getLastNodeObject', () => {
+    let mockPathData;
+
+    it('return last node of navigationPath', () => {
+      mockPathData = {
+        navigationPath: [
+          {
+            pathSegment: 'project1'
+          },
+          {
+            pathSegment: 'project2'
+          },
+          {
+            pathSegment: 'project3'
+          }
+        ]
+      };
+      assert.deepEqual(RoutingHelpers.getLastNodeObject(mockPathData), {
+        pathSegment: 'project3'
+      });
+    });
+
+    it('should not fail on empty navigationPath', () => {
+      mockPathData = {
+        navigationPath: []
+      };
+      expect(RoutingHelpers.getLastNodeObject(mockPathData)).to.deep.equal({});
+    });
+  });
+
+  describe('parseParams', () => {
+    let mockParams;
+
+    it('return pairs of params', () => {
+      mockParams = 'test=true&foo=bar';
+      assert.deepEqual(RoutingHelpers.parseParams(mockParams), {
+        test: 'true',
+        foo: 'bar'
+      });
+    });
+
+    it('should not fail on empty params', () => {
+      mockParams = '';
+      expect(RoutingHelpers.parseParams(mockParams)).to.deep.equal({});
+    });
+  });
+
+  describe('findViewGroup', () => {
+    const noViewGroupInNode = {
+      link: 'child-node',
+      parent: {
+        pathSegment: 'parent-node'
+      }
+    };
+
+    const viewGroupInNode = {
+      link: 'child-node',
+      viewGroup: 'tets 1',
+      parent: {
+        pathSegment: 'parent-node'
+      }
+    };
+
+    const viewGroupInNodeParent = {
+      link: 'child-node',
+      parent: {
+        pathSegment: 'parent-node',
+        viewGroup: 'tets 1-1'
+      }
+    };
+
+    const viewGroupInParentOfNodeParent = {
+      link: 'child-node',
+      parent: {
+        pathSegment: 'parent-node',
+        parent: {
+          pathSegment: 'parent-parent-node',
+          viewGroup: 'tets 1-1-1'
+        }
+      }
+    };
+
+    it('return viewGroup from node', () => {
+      assert.deepEqual(RoutingHelpers.findViewGroup(viewGroupInNode), 'tets 1');
+    });
+
+    it('return viewGroup from node.parent', () => {
+      assert.deepEqual(
+        RoutingHelpers.findViewGroup(viewGroupInNodeParent),
+        'tets 1-1'
+      );
+    });
+
+    it('return viewGroup from parent at node.parent', () => {
+      assert.deepEqual(
+        RoutingHelpers.findViewGroup(viewGroupInParentOfNodeParent),
+        'tets 1-1-1'
+      );
+    });
+
+    it('return undefined if viewGroup is not inside node', () => {
+      assert.deepEqual(
+        RoutingHelpers.findViewGroup(noViewGroupInNode),
+        undefined
+      );
     });
   });
 });

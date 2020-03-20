@@ -19,7 +19,7 @@ export const ContextSwitcherHelpers = {
     const parentNodePath = this.getPreparedParentNodePath(config);
     return rawOptions.map(opt => ({
       label: opt.label,
-      path: (parentNodePath || '/') + opt.pathValue,
+      link: (parentNodePath || '/') + opt.pathValue,
       id: opt.pathValue,
       testId: opt.testId
     }));
@@ -29,16 +29,16 @@ export const ContextSwitcherHelpers = {
     const currentPath = GenericHelpers.addLeadingSlash(
       Routing.getCurrentPath()
     );
-    const selectedPath = GenericHelpers.addLeadingSlash(selectedOption.path);
+    const selectedPath = GenericHelpers.addLeadingSlash(selectedOption.link);
     if (currentPath.startsWith(selectedPath)) {
       return (
-        option.path +
+        option.link +
         GenericHelpers.addLeadingSlash(
           currentPath.substring(selectedPath.length)
         )
       );
     } else {
-      return option.path;
+      return option.link;
     }
   },
 

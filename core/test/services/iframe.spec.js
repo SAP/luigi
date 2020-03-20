@@ -12,11 +12,23 @@ import {
 import { LuigiConfig } from '../../src/core-api';
 
 describe('Iframe', () => {
+  let clock;
   let node;
   let component;
 
   beforeEach(() => {
-    let lastObj = {};
+    global['sessionStorage'] = {
+      getItem: sinon.stub(),
+      setItem: sinon.stub()
+    };
+    global['localStorage'] = {
+      getItem: sinon.stub(),
+      setItem: sinon.stub()
+    };
+    clock = sinon.useFakeTimers();
+    let lastObj = {
+      isNavigationSyncEnabled: true
+    };
     component = {
       set: obj => {
         Object.assign(lastObj, obj);
@@ -24,6 +36,7 @@ describe('Iframe', () => {
       get: () => lastObj,
       prepareInternalData: () => {}
     };
+    sinon.stub(Iframe, 'setOkResponseHandler');
     sinon.stub(LuigiConfig, 'getConfigValue').callsFake();
     sinon.stub(GenericHelpers);
     GenericHelpers.getRandomId.returns('abc');
@@ -154,6 +167,135 @@ describe('Iframe', () => {
     });
   });
 
+  describe('create new iframe and add event listener', () => {
+    it('navigate', () => {
+      const spy = sinon.spy(IframeHelpers, 'sendMessageToIframe');
+      sinon.stub(IframeHelpers, 'getMainIframes').callsFake(() => [
+        {
+          src: 'http://url.com/app.html!#/prevUrl',
+          style: { display: 'block' },
+          vg: 'tets1',
+          luigi: {}
+        }
+      ]);
+      const config = {
+        builderCompatibilityMode: true
+      };
+      component.set({
+        viewUrl: 'http://luigi.url.de/1',
+        viewGroup: 'tets2',
+        previousNodeValues: {
+          viewUrl: 'http://luigi.url.desdf/1'
+        },
+        currentNode: {}
+      });
+
+      assert.notExists(config.iframe);
+
+      Iframe.navigateIframe(config, component, node);
+      config.iframe.dispatchEvent(new Event('load'));
+
+      assert.exists(config.iframe);
+      assert(spy.called, 'sendMessageToIframe(config.iframe, message) call');
+    });
+  });
+
+  describe('check if luigi respond, if not, callback again to replace the iframe', () => {
+    it('navigate', () => {
+      sinon.stub(IframeHelpers, 'getMainIframes').callsFake(() => [
+        {
+          src: 'http://url.com/app.html!#/prevUrl',
+          style: { display: 'block' },
+          vg: 'tets1',
+          luigi: {}
+        }
+      ]);
+      const config = {
+        iframe: {
+          src: 'http://luigi.url.de',
+          vg: 'tets2'
+        }
+      };
+      component.set({
+        viewUrl: 'http://luigi.url.de/1',
+        viewGroup: 'tets1',
+        previousNodeValues: {
+          viewUrl: 'http://luigi.url.desdf/1'
+        },
+        currentNode: {}
+      });
+      assert.equal(config.iframe.src, 'http://luigi.url.de');
+      Iframe.navigateIframe(config, component, node);
+
+      assert(Iframe.setOkResponseHandler.called, 'setOkResponseHandler call');
+      assert.equal(config.iframe.src, 'http://url.com/app.html!#/prevUrl');
+    });
+  });
+
+  // If with setTimeout, async clock does not work.
+  xdescribe('setOkResponseHandler', () => {
+    beforeEach(() => {
+      Iframe.setOkResponseHandler.restore();
+    });
+    beforeEach(() => {
+      sinon.restore();
+    });
+    it('ok', () => {
+      sinon.stub(Iframe, 'navigateIframe');
+      const config = {
+        navigateOk: true,
+        iframe: {
+          src: 'http://luigi.url.de'
+        }
+      };
+      component.set({
+        currentNode: {}
+      });
+
+      assert.isTrue(config.navigateOk);
+
+      Iframe.setOkResponseHandler(config, component, node);
+      clock.tick(3000);
+
+      assert.isUndefined(config.navigateOk);
+      assert.deepEqual(config, {
+        navigateOk: undefined,
+        iframe: {
+          src: 'http://luigi.url.de'
+        }
+      });
+      assert(
+        Iframe.navigateIframe.notCalled,
+        'Iframe.navigateIframe not called'
+      );
+    });
+    it('not ok', () => {
+      sinon.stub(Iframe, 'navigateIframe');
+      sinon.stub(console, 'info');
+      const config = {
+        navigateOk: undefined,
+        iframe: {
+          src: 'http://luigi.url.de'
+        }
+      };
+      component.set({
+        currentNode: {}
+      });
+
+      Iframe.setOkResponseHandler(config, component, node);
+      clock.tick(3000);
+
+      assert.isUndefined(config.navigateOk);
+      assert.deepEqual(config, {
+        navigateOk: undefined,
+        iframe: undefined,
+        isFallbackFrame: true
+      });
+      assert(console.info.called, 'console.info called');
+      assert(Iframe.navigateIframe.called, 'Iframe.navigateIframe called');
+    });
+  });
+
   describe('use cached iframe with same viewgroup and change viewUrl', () => {
     it('navigate', () => {
       sinon.stub(IframeHelpers, 'getMainIframes').callsFake(() => [
@@ -189,6 +331,43 @@ describe('Iframe', () => {
       assert.equal(config.iframe.luigi.nextViewUrl, 'http://luigi.url.de/2');
       Iframe.navigateIframe(config, component, node);
       assert.equal(config.iframe.luigi.nextViewUrl, 'http://luigi.url.de/1m');
+    });
+  });
+
+  describe('using withoutSync whould not trigger iframe fallback', () => {
+    it('navigate', () => {
+      const spy = sinon.spy(console, 'info');
+      spy.resetHistory();
+
+      sinon.stub(IframeHelpers, 'getMainIframes').callsFake(() => [
+        {
+          src: 'http://url.com/app.html!#/prevUrl',
+          style: { display: 'block' },
+          vg: 'tets1',
+          luigi: {}
+        }
+      ]);
+      const config = {
+        iframe: {
+          src: 'http://luigi.url.de',
+          vg: 'tets2'
+        }
+      };
+      component.set({
+        viewUrl: 'http://luigi.url.de/1',
+        viewGroup: 'tets1',
+        previousNodeValues: {
+          viewUrl: 'http://luigi.url.desdf/1'
+        },
+        currentNode: {},
+        isNavigationSyncEnabled: false
+      });
+      assert.equal(config.iframe.src, 'http://luigi.url.de');
+      Iframe.navigateIframe(config, component, node);
+      clock.tick(3000);
+      assert(spy.notCalled, 'console.info() call should not apply');
+      // assert.equal(config.iframe.src, 'http://luigi.url.de');
+      assert.isTrue(component.get().isNavigationSyncEnabled);
     });
   });
 });

@@ -23,6 +23,91 @@ The lerna-changelog tool detects changes based on PR labels and maps them to sec
     ...
   }
 -->
+## [v0.7.6] (2020-03-09)
+
+#### :rocket: Added
+* [#1075](https://github.com/SAP/luigi/pull/1075) Virtual tree navigation ([@maxmarkus](https://github.com/maxmarkus))
+* [#1111](https://github.com/SAP/luigi/pull/1111) Ability to update core URL without micro frontend URL change ([@maxmarkus](https://github.com/maxmarkus))
+* [#1076](https://github.com/SAP/luigi/pull/1076) Core API: Add splitview functionality ([@ndricimrr](https://github.com/ndricimrr))
+* [#1129](https://github.com/SAP/luigi/pull/1129) OpenIdConnect (OIDC) provider profile interceptor ([@maxmarkus](https://github.com/maxmarkus))
+
+#### :bug: Fixed
+* [#1119](https://github.com/SAP/luigi/pull/1119) Refactor resolved node children data management ([@JohannesDoberer](https://github.com/JohannesDoberer))
+* [#1115](https://github.com/SAP/luigi/pull/1115) Profile icon tooltip text ([@maxmarkus](https://github.com/maxmarkus))
+
+#### :memo: Documentation
+* [#1109](https://github.com/SAP/luigi/pull/1109) Document how to make use of contextUpdateListener ([@alexandra-simeonova](https://github.com/alexandra-simeonova))
+* [#1096](https://github.com/SAP/luigi/pull/1096) Document how to set auth storage type ([@alexandra-simeonova](https://github.com/alexandra-simeonova))
+* [#1099](https://github.com/SAP/luigi/pull/1099) Update documentation for examples + consolidate filenames ([@alexandra-simeonova](https://github.com/alexandra-simeonova))
+
+
+## [v0.7.5] (2020-02-14)
+
+#### :rocket: Added
+* [#1083](https://github.com/SAP/luigi/pull/1083) Open profile items in a modal window ([@zarkosimic](https://github.com/zarkosimic))
+
+#### :bug: Fixed
+* [#1081](https://github.com/SAP/luigi/pull/1081) CustomMessages from external mf does not work ([@JohannesDoberer](https://github.com/JohannesDoberer))
+* [#1068](https://github.com/SAP/luigi/pull/1068) Fix fd-modal mix-up ([@JohannesDoberer](https://github.com/JohannesDoberer))
+
+## [v0.7.4] (2020-01-29)
+
+#### :rocket: Added
+* [#1034](https://github.com/SAP/luigi/pull/1034) Add valid href to navigation links ([@maxmarkus](https://github.com/maxmarkus))
+
+#### :bug: Fixed
+* [#1065](https://github.com/SAP/luigi/pull/1065) Fix items calculation in more btn of tab nav ([@JohannesDoberer](https://github.com/JohannesDoberer))
+* [#1047](https://github.com/SAP/luigi/pull/1047) Custom options renderer config error ([@maxmarkus](https://github.com/maxmarkus))
+
+#### :memo: Documentation
+* [#1025](https://github.com/SAP/luigi/pull/1025) Improve API documentation ([@alexandra-simeonova](https://github.com/alexandra-simeonova))
+* [#1024](https://github.com/SAP/luigi/pull/1024) Improve authorization doc structure ([@alexandra-simeonova](https://github.com/alexandra-simeonova))
+* [#1000](https://github.com/SAP/luigi/pull/1000) Improve Overview page ([@alexandra-simeonova](https://github.com/alexandra-simeonova))
+* [#965](https://github.com/SAP/luigi/pull/965) Improve application-setup.md ([@alexandra-simeonova](https://github.com/alexandra-simeonova))
+* [#877](https://github.com/SAP/luigi/pull/877) Create content guidelines ([@alexandra-simeonova](https://github.com/alexandra-simeonova))
+* [#1003](https://github.com/SAP/luigi/pull/1003) Documentation fixes ([@alexandra-simeonova](https://github.com/alexandra-simeonova))
+
+
+## [v0.7.3] (2019-12-19)
+
+#### :rocket: Added
+* [#1002](https://github.com/SAP/luigi/pull/1002) Implicit structural nodes ([@maxmarkus](https://github.com/maxmarkus))
+* [#1014](https://github.com/SAP/luigi/pull/1014) Disable context switcher drop down caret when there is only one option ([@pekura](https://github.com/pekura))
+* [#1008](https://github.com/SAP/luigi/pull/1008) Custom item renderer for options in context switcher ([@JohannesDoberer](https://github.com/JohannesDoberer))
+* [#993](https://github.com/SAP/luigi/pull/993) React setup ([@ndricimrr](https://github.com/ndricimrr))
+* [#994](https://github.com/SAP/luigi/pull/994) Handle init in Luigi client without init handshake ([@JohannesDoberer](https://github.com/JohannesDoberer))
+* [#1028](https://github.com/SAP/luigi/pull/1028) Add navigation functionality to core api ([@JohannesDoberer](https://github.com/JohannesDoberer))
+
+#### :bug: Fixed
+* [#1017](https://github.com/SAP/luigi/pull/1017) Improve root nav caching ([@maxmarkus](https://github.com/maxmarkus))
+* [#1027](https://github.com/SAP/luigi/pull/1027) Add nonce param for OAuth2 and parameters to userInfoFn ([@maxmarkus](https://github.com/maxmarkus))
+
+#### :memo: Documentation
+* [#1023](https://github.com/SAP/luigi/pull/1023) Document anonymous access ([@maxmarkus](https://github.com/maxmarkus))
+
+
+## [v0.7.2] (2019-11-29)
+
+#### :rocket: Added
+* [#970](https://github.com/SAP/luigi/pull/970) Third party cookie check ([@JohannesDoberer](https://github.com/JohannesDoberer))
+* [#941](https://github.com/SAP/luigi/pull/941) Strip down angular example app ([@pekura](https://github.com/pekura))
+* [#901](https://github.com/SAP/luigi/pull/901) Inactive lifecycle hook ([@maxmarkus](https://github.com/maxmarkus))
+* [#923](https://github.com/SAP/luigi/pull/923) Refactor authentication ([@maxmarkus](https://github.com/maxmarkus))
+* [#925](https://github.com/SAP/luigi/pull/925) Provide possibility to add alt attribute to the <img> tag ([@marynaKhromova](https://github.com/marynaKhromova))
+* [#926](https://github.com/SAP/luigi/pull/926) Update vue example app ([@pekura](https://github.com/pekura))
+
+#### :bug: Fixed
+* [#992](https://github.com/SAP/luigi/pull/992) Edge browser back issue fixed ([@maxmarkus](https://github.com/maxmarkus))
+* [#979](https://github.com/SAP/luigi/pull/979) Invalid initial root navigation node bug fix ([@maxmarkus](https://github.com/maxmarkus))
+* [#937](https://github.com/SAP/luigi/pull/937) Example app switcher backdrop bug fix ([@maxmarkus](https://github.com/maxmarkus))
+
+#### :memo: Documentation
+* [#982](https://github.com/SAP/luigi/pull/982) FAQ page in documentation ([@maxmarkus](https://github.com/maxmarkus))
+* [#969](https://github.com/SAP/luigi/pull/969) Luigi architecture page ([@alexandra-simeonova](https://github.com/alexandra-simeonova))
+* [#957](https://github.com/SAP/luigi/pull/957) Luigi client installation document ([@alexandra-simeonova](https://github.com/alexandra-simeonova))
+* [#907](https://github.com/SAP/luigi/pull/907) Categories for documentation ([@alexandra-simeonova](https://github.com/alexandra-simeonova))
+* [#847](https://github.com/SAP/luigi/pull/847) Improve navigation parameters reference ([@alexandra-simeonova](https://github.com/alexandra-simeonova))
+
 ## [v0.7.1] (2019-10-25)
 
 #### :rocket: Added
@@ -582,3 +667,8 @@ The lerna-changelog tool detects changes based on PR labels and maps them to sec
 [v0.6.6]: https://github.com/SAP/luigi/compare/v0.6.5...v0.6.6
 [v0.7.0]: https://github.com/SAP/luigi/compare/v0.6.6...v0.7.0
 [v0.7.1]: https://github.com/SAP/luigi/compare/v0.7.0...v0.7.1
+[v0.7.2]: https://github.com/SAP/luigi/compare/v0.7.1...v0.7.2
+[v0.7.3]: https://github.com/SAP/luigi/compare/v0.7.2...v0.7.3
+[v0.7.4]: https://github.com/SAP/luigi/compare/v0.7.3...v0.7.4
+[v0.7.5]: https://github.com/SAP/luigi/compare/v0.7.4...v0.7.5
+[v0.7.6]: https://github.com/SAP/luigi/compare/v0.7.5...v0.7.6

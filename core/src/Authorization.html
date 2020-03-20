@@ -17,7 +17,12 @@
       on:click="{() => onActionClick(profileItem)}"
       data-testid="{getTestId(profileItem)}"
     >
-      <a class="fd-menu__item" data-testid="luigi-topnav-profile-item">
+      <a
+        class="fd-menu__item"
+        data-testid="luigi-topnav-profile-item"
+        href="{getRouteLink(profileItem)}"
+        on:click|preventDefault="{() => {}}"
+      >
         {#if profileItem.icon}
         {#if hasOpenUIicon(profileItem)}
         <span
@@ -70,7 +75,8 @@
     AuthHelpers,
     GenericHelpers,
     NavigationHelpers,
-    StateHelpers
+    StateHelpers,
+    RoutingHelpers
   } from './utilities/helpers';
   import { AuthStoreSvc, Routing } from './services';
   import { oAuth2ImplicitGrant } from './providers/auth/oAuth2ImplicitGrant';
@@ -99,6 +105,7 @@
   let getUnsavedChangesModalPromise = getContext(
     'getUnsavedChangesModalPromise'
   );
+  let openViewInModal = getContext('openViewInModal');
 
   const isAuthValid = () =>
     AuthHelpers.getStoredAuthData().accessTokenExpirationDate >
@@ -195,11 +202,13 @@
         idpProviderInstance.settings &&
         GenericHelpers.isFunction(idpProviderInstance.settings.userInfoFn)
       ) {
-        idpProviderInstance.settings.userInfoFn().then(res => {
-          userInfo = res;
-          isLoggedIn = true;
-          dispatch('userInfoUpdated', userInfo);
-        });
+        idpProviderInstance.settings
+          .userInfoFn(idpProviderInstance.settings, authData)
+          .then(res => {
+            userInfo = res;
+            isLoggedIn = true;
+            dispatch('userInfoUpdated', userInfo);
+          });
       } else {
         if (GenericHelpers.isFunction(idpProviderInstance.userInfo)) {
           idpProviderInstance.userInfo(idpProviderSettings).then(res => {
@@ -280,6 +289,9 @@
       ? profileItem.testId
       : NavigationHelpers.prepareForTests(profileItem.label);
   }
+  function getRouteLink(node) {
+    return RoutingHelpers.getNodeHref(node);
+  }
 
   // [svelte-upgrade suggestion]
   // review these functions and remove unnecessary 'export' keywords
@@ -340,7 +352,15 @@
 
   export function onActionClick(item) {
     getUnsavedChangesModalPromise().then(() => {
-      Routing.navigateToLink(item);
+      if (item.openNodeInModal) {
+        const route = RoutingHelpers.buildRoute(item, `${item.link}`);
+        openViewInModal(
+          route,
+          item.openNodeInModal === true ? {} : item.openNodeInModal
+        );
+      } else {
+        Routing.navigateToLink(item);
+      }
     });
     dispatch('toggleDropdownState');
   }

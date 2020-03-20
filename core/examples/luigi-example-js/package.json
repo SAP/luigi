@@ -1,0 +1,20 @@
+{
+  "name": "luigi-example-js",
+  "version": "0.1.0",
+  "description": "",
+  "main": "public/index.html",
+  "scripts": {
+    "build": "webpack --entry ./luigi-config.js -o ./public/luigi-config.js --mode production",
+    "start": "live-server --entry-file=index.html public",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "license": "ISC",
+  "dependencies": {
+    "@kyma-project/luigi-client": "^0.7.3",
+    "@kyma-project/luigi-core": "^0.7.3",
+    "copy-webpack-plugin": "^5.1.1",
+    "fiori-fundamentals": "^1.7.3",
+    "webpack": "^4.41.5",
+    "webpack-cli": "^3.3.10"
+  }
+}

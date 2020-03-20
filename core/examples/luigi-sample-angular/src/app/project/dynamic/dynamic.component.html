@@ -1,7 +1,8 @@
-<section class="fd-section">
+<section class="fd-section dynamic-component">
   <div class="fd-section__header">
     <h1 class="fd-section__title">{{ nodeLabel }}</h1>
   </div>
+
   <div class="fd-panel" *ngIf="!links">{{ nodeLabel }} content.</div>
   <div class="fd-panel" *ngIf="links">
     <ul class="fd-list-group">

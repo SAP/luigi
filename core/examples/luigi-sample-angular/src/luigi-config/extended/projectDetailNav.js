@@ -102,7 +102,6 @@ export const projectDetailNavStructure = projectId => [
       }
     ]
   },
-
   {
     category: { label: 'Settings', icon: 'action-settings' },
     pathSegment: 'settings',
@@ -238,6 +237,29 @@ export const projectDetailNavStructure = projectId => [
     viewUrl: '/sampleapp.html#/projects/' + projectId + '/hideSideNav',
     hideSideNav: true,
     icon: 'full-screen'
+  },
+  {
+    pathSegment: 'virtual-tree',
+    label: 'VirtualTree',
+    icon: 'tree',
+    viewUrl: '/sampleapp.html#/projects/' + projectId + '/dynamic',
+    navigationContext: 'virt',
+    context: {
+      label: 'VirtualTree - add segments to the url',
+      links: false
+    },
+    virtualTree: true
+  },
+  {
+    pathSegment: 'nav-sync',
+    label: 'Nav Sync',
+    icon: 'synchronize',
+    navigationContext: 'navSync',
+    children: ['one', 'two', 'three', 'four'].map(seg => ({
+      label: seg,
+      pathSegment: seg,
+      viewUrl: '/sampleapp.html#/nav-sync-example/' + seg
+    }))
   },
   {
     label: 'Open Github in new tab',

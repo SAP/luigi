@@ -20,7 +20,8 @@ class RoutingHelpersClass {
 
     const children = await AsyncHelpers.getConfigValueFromObjectAsync(
       lastElement,
-      'children'
+      'children',
+      pathData.context
     );
     const pathExists = children.find(
       childNode => childNode.pathSegment === lastElement.defaultChildNode
@@ -102,10 +103,13 @@ class RoutingHelpersClass {
   }
 
   getContentViewParamPrefix() {
-    return (
-      LuigiConfig.getConfigValue('routing.nodeParamPrefix') ||
-      this.defaultContentViewParamPrefix
-    );
+    let prefix = LuigiConfig.getConfigValue('routing.nodeParamPrefix');
+    if (prefix === false) {
+      prefix = '';
+    } else if (!prefix) {
+      prefix = this.defaultContentViewParamPrefix;
+    }
+    return prefix;
   }
 
   addRouteChangeListener(callback) {
@@ -141,6 +145,29 @@ class RoutingHelpersClass {
           `/${node.parent.pathSegment}${path}`,
           params
         );
+  }
+
+  getRouteLink(node, pathParams) {
+    if (node.externalLink && node.externalLink.url) {
+      return node.externalLink;
+      // externalLinkUrl property is provided so there's no need to trigger routing mechanizm
+    } else if (node.link) {
+      const link = node.link.startsWith('/')
+        ? node.link
+        : Routing.buildFromRelativePath(node);
+      return link;
+    }
+
+    let route = RoutingHelpers.buildRoute(node, `/${node.pathSegment}`);
+    return GenericHelpers.replaceVars(route, pathParams, ':', false);
+  }
+
+  getNodeHref(node, pathParams) {
+    if (LuigiConfig.getConfigBooleanValue('navigation.addNavHrefs')) {
+      const link = RoutingHelpers.getRouteLink(node, pathParams);
+      return link.url || link;
+    }
+    return 'javascript:void(0)';
   }
 
   substituteDynamicParamsInObject(object, paramMap, paramPrefix = ':') {

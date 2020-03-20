@@ -7,9 +7,11 @@ import { Routing } from '../../src/services/routing';
 import { GenericHelpers } from '../../src/utilities/helpers';
 import { LuigiConfig, LuigiI18N } from '../../src/core-api';
 import { Navigation } from '../../src/navigation/services/navigation';
+import { NodeDataManagementStorage } from '../../src/services/node-data-management';
+import { Iframe } from '../../src/services/iframe';
 
 describe('Routing', function() {
-  this.retries(2);
+  this.retries(1);
 
   let component;
   beforeEach(() => {
@@ -25,13 +27,46 @@ describe('Routing', function() {
 
     sinon.stub(LuigiConfig, 'getConfigValue');
     sinon.stub(GenericHelpers, 'getRandomId').returns('123');
+    Navigation._rootNodeProviderUsed = undefined;
+    Navigation.rootNode = undefined;
   });
   afterEach(() => {
     if (document.createElement.restore) {
       document.createElement.restore();
     }
     sinon.restore();
+    NodeDataManagementStorage.deleteCache();
     // sinon.reset();
+  });
+
+  describe('getNodePath()', () => {
+    let node;
+    let params;
+    beforeEach(() => {
+      node = {
+        pathSegment: 'projects',
+        label: 'AAA',
+        viewUrl: '/aaa.html'
+      };
+      params = '~test=true&foo=bar';
+    });
+
+    it('should not fail if node is not defined', () => {
+      node = undefined;
+      const result = Routing.getNodePath(node, params);
+      assert.equal(result, '');
+    });
+
+    it('should not fail if params are not defined', () => {
+      params = undefined;
+      const result = Routing.getNodePath(node, params);
+      assert.equal(result, '/projects');
+    });
+
+    it('returns node path', () => {
+      const result = Routing.getNodePath(node, params);
+      assert.equal(result, '/projects?~test=true&foo=bar');
+    });
   });
 
   describe('navigateTo', () => {
@@ -133,6 +168,7 @@ describe('Routing', function() {
     let config;
 
     beforeEach(() => {
+      sinon.stub(Iframe, 'setOkResponseHandler');
       const sampleLuigiConfig = {
         navigation: {
           nodes: () => [
@@ -529,9 +565,13 @@ describe('Routing', function() {
   });
 
   describe('getModifiedPathname()', () => {
-    it('without state', () => {
+    it('without state, falls back to location', () => {
+      const mockPathName = 'projects';
       sinon.stub(window.history, 'state').returns(null);
-      assert.equal(Routing.getModifiedPathname(), '');
+      sinon.stub(window, 'location').value({
+        pathname: '/' + mockPathName
+      });
+      assert.equal(Routing.getModifiedPathname(), mockPathName);
     });
 
     it('with state path', () => {

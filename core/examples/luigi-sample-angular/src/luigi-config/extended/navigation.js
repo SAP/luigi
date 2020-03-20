@@ -1,12 +1,12 @@
 import {
+  addProject,
+  getMockBadgeCount,
+  getProjectCount,
   navigationPermissionChecker,
   projectsNavProviderFn,
   projectsCounterFn,
-  addProject,
-  removeProject,
-  getProjectCount,
   projectExists,
-  getMockBadgeCount
+  removeProject
 } from './helpers';
 
 class Navigation {
@@ -15,6 +15,7 @@ class Navigation {
     this.projectsNavProviderFn = projectsNavProviderFn;
   }
 
+  addNavHrefs = true;
   preloadViewGroups = false;
   viewGroupSettings = {
     tets: {

@@ -57,6 +57,7 @@
   {#if !(hideNav||hideSideNav)}
   <LeftNav
     pathData="{navigationPath}"
+    pathParams="{pathParams}"
     on:handleClick="{handleNavClick}"
     on:resizeTabNav="{onResizeTabNav}"
   />
@@ -64,6 +65,7 @@
   {#if (tabNav && !hideNav)}
   <TabNav
     pathData="{navigationPath}"
+    pathParams="{pathParams}"
     on:handleClick="{handleNavClick}"
     resizeTabNavToggle="{resizeTabNavToggle}"
   />
@@ -101,6 +103,8 @@
   import { SplitViewSvc } from './services/split-view';
   import { ViewGroupPreloading } from './services/preloading';
   import { MessagesListeners } from './services/messages-listeners';
+  import { thirdPartyCookiesStatus } from './utilities/third-party-cookies-check.js';
+  import { NodeDataManagementStorage } from './services/node-data-management.js';
 
   const dispatch = createEventDispatcher();
 
@@ -130,6 +134,7 @@
   let viewGroup;
   let isolateView;
   let previousNodeValues;
+  let isNavigationSyncEnabled = true;
   let isNavigateBack = false;
   let goBackContext;
   let navigationPath;
@@ -143,21 +148,25 @@
   let responsiveNavSetting;
   let tabNav;
   let resizeTabNavToggle = false;
+  let thirdPartyCookiesCheck;
 
   const prepareInternalData = config => {
+    const iframeConf = config.iframe.luigi;
     const internalData = {
-      isNavigateBack: isNavigateBack,
+      isNavigateBack,
       viewStackSize: preservedViews.length,
       currentLocale: LuigiI18N.getCurrentLocale(),
-      clientPermissions: config.iframe.luigi.nextViewUrl
-        ? config.iframe.luigi.nextClientPermissions
-        : config.iframe.luigi.clientPermissions
+      clientPermissions: iframeConf.nextViewUrl
+        ? iframeConf.nextClientPermissions
+        : iframeConf.clientPermissions
     };
+
     IframeHelpers.specialIframeTypes
       .map(o => o.iframeConfigKey)
       .forEach(key => {
         internalData[key] = config[key] || false;
       });
+
     return internalData;
   };
 
@@ -166,6 +175,7 @@
       console.info('iframe does not exist, not able to send context.');
       return;
     }
+
     const message = {
       msg: 'luigi.init',
       context: JSON.stringify(
@@ -180,6 +190,7 @@
       internal: JSON.stringify(prepareInternalData(config)),
       authData: AuthHelpers.getStoredAuthData()
     };
+
     IframeHelpers.sendMessageToIframe(config.iframe, message);
   };
 
@@ -211,6 +222,7 @@
     path = GenericHelpers.addLeadingSlash(path);
 
     addPreserveView(data, config);
+
     Routing.navigateTo(path); //navigate to the raw path. Any errors/alerts are handled later
   };
 
@@ -277,7 +289,8 @@
           showLoadingIndicator,
           tabNav,
           isNavigateBack,
-          goBackContext
+          goBackContext,
+          isNavigationSyncEnabled
         };
       },
       set: obj => {
@@ -321,6 +334,8 @@
               isNavigateBack = obj.isNavigateBack;
             } else if (prop === 'goBackContext') {
               goBackContext = obj.goBackContext;
+            } else if (prop === 'isNavigationSyncEnabled') {
+              isNavigationSyncEnabled = obj.isNavigationSyncEnabled;
             }
           });
         }
@@ -339,7 +354,7 @@
     StateHelpers.doOnStoreChange(
       store,
       () => {
-        LuigiConfig._configModificationTimestamp = new Date();
+        NodeDataManagementStorage.deleteCache();
         const currentPath = Routing.getCurrentPath();
         Routing.handleRouteChange(
           currentPath,
@@ -397,14 +412,14 @@
 
     if (params.nodeParams && Object.keys(params.nodeParams).length) {
       path += '?';
-      Object.entries(params.nodeParams).forEach(entry => {
+      Object.entries(params.nodeParams).forEach((entry, index) => {
         path +=
           encodeURIComponent(
             RoutingHelpers.getContentViewParamPrefix() + entry[0]
           ) +
           '=' +
           encodeURIComponent(entry[1]) +
-          '&';
+          (index < Object.keys(params.nodeParams).length - 1 ? '&' : '');
       });
     }
     return path;
@@ -433,13 +448,44 @@
   setContext('handleNavigation', handleNavigation);
 
   //// SPLIT VIEW
-
-  const openSplitView = (nodepath, settings) => {
+  export const openSplitView = (nodepath, settings) => {
+    if (mfSplitView.displayed) {
+      console.warn('Only one splitview can be oppened at a time');
+      return;
+    }
     SplitViewSvc.open(getComponentWrapper(), nodepath, settings);
   };
 
-  const closeSplitView = () => {
+  export const closeSplitView = () => {
     SplitViewSvc.close(getComponentWrapper());
+  };
+
+  export const collapseSplitView = () => {
+    SplitViewSvc.collapse(getComponentWrapper());
+    mfSplitView.collapsed = true;
+  };
+
+  export const expandSplitView = () => {
+    SplitViewSvc.expand(getComponentWrapper());
+    mfSplitView.collapsed = false;
+  };
+
+  export const isSplitViewCollapsed = () => {
+    if (mfSplitView.displayed) {
+      return mfSplitView.collapsed;
+    }
+    return false;
+  };
+
+  export const isSplitViewExpanded = () => {
+    if (mfSplitView.displayed) {
+      return !mfSplitView.collapsed;
+    }
+    return false;
+  };
+
+  export const existsSplitView = () => {
+    return mfSplitView.displayed;
   };
 
   const splitViewIframeCreated = event => {
@@ -729,8 +775,8 @@
         );
         const customMessageListener = customMessagesListeners[message.id];
         if (typeof customMessageListener === 'function') {
-          const microfrontend = LuigiElements.getMicrofrontends().find(
-            mf => mf.id === e.source.frameElement.luigi.id
+          const microfrontend = LuigiElements.getMicrofrontends().find(mf =>
+            IframeHelpers.isMessageSource(e, mf.container)
           );
 
           customMessageListener(
@@ -833,6 +879,7 @@
           openSplitView(path, e.data.params.splitView);
         } else {
           getUnsavedChangesModalPromise().then(() => {
+            isNavigationSyncEnabled = !e.data.params.withoutSync;
             handleNavigation(e.data, config);
             closeModal();
             closeSplitView();
@@ -875,7 +922,7 @@
           } else {
             if (e.data.goBackContext) {
               console.warn(
-                `Warning: goBack() does not support goBackContext value. This is available only when using preserved views feature. Documentation: https://github.com/SAP/luigi/blob/master/docs/luigi-client-api.md#navigate`
+                `Warning: goBack() does not support goBackContext value. This is available only when using preserved views feature. Documentation: https://docs.luigi-project.io/docs/luigi-client-api.md#navigate`
               );
             }
             // TODO: does not work with default child node behavior, fixed by #216
@@ -960,6 +1007,15 @@
           );
         }
       }
+      if (
+        thirdPartyCookiesCheck &&
+        !thirdPartyCookiesCheck.thirdPartyCookieScriptLocation &&
+        'luigi.third-party-cookie' === e.data.msg
+      ) {
+        if (e.data.tpc === 'disabled') {
+          tpcErrorHandling(thirdPartyCookiesCheck);
+        }
+      }
     });
 
     // listeners are not automatically removed — cancel
@@ -970,6 +1026,35 @@
 
   setContext('store', store);
   setContext('getTranslation', getTranslation);
+
+  const tpcErrorHandling = thirdpartycookiecheck => {
+    if (
+      thirdPartyCookiesCheck &&
+      thirdPartyCookiesCheck.thirdPartyCookieErrorHandling &&
+      GenericHelpers.isFunction(
+        thirdPartyCookiesCheck.thirdPartyCookieErrorHandling
+      )
+    ) {
+      thirdPartyCookiesCheck.thirdPartyCookieErrorHandling();
+    }
+  };
+
+  export const pathExists = async path => {
+    const data = {
+      link: path,
+      relative: path[0] !== '/'
+    };
+    const builtPath = buildPath(data);
+    const pathData = await Navigation.getNavigationPath(
+      LuigiConfig.getConfigValueAsync('navigation.nodes'),
+      builtPath
+    );
+    return pathData.isExistingRoute;
+  };
+
+  export const hasBack = () => {
+    return (mfModal && mfModal.displayed) || preservedViews.length !== 0;
+  };
 
   onMount(() => {
     responsiveNavSetting = LuigiConfig.getConfigValue(
@@ -984,6 +1069,30 @@
       simpleSlideInNav = true;
     } else if (responsiveNavSetting === 'semiCollapsible') {
       document.body.classList.add('lui-semiCollapsible');
+    }
+    thirdPartyCookiesCheck = LuigiConfig.getConfigValue(
+      'settings.thirdPartyCookieCheck'
+    );
+    if (
+      thirdPartyCookiesCheck &&
+      thirdPartyCookiesCheck.thirdPartyCookieScriptLocation
+    ) {
+      setTimeout(() => {
+        let thirdPartyCookieCheckIframe = document.createElement('iframe');
+        thirdPartyCookieCheckIframe.width = '0px';
+        thirdPartyCookieCheckIframe.height = '0px';
+        thirdPartyCookieCheckIframe.src =
+          thirdPartyCookiesCheck.thirdPartyCookieScriptLocation;
+        document.body.appendChild(thirdPartyCookieCheckIframe);
+        thirdPartyCookieCheckIframe.onload = function() {
+          setTimeout(() => {
+            if (thirdPartyCookiesStatus() === 'disabled') {
+              tpcErrorHandling(thirdPartyCookiesCheck);
+            }
+          });
+          document.body.removeChild(thirdPartyCookieCheckIframe);
+        };
+      });
     }
   });
 

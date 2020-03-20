@@ -16,7 +16,7 @@
     },
     "metaData": {
       "categoryPosition": 5,
-      "position": 0
+      "position": 1
     }
   },
   {
@@ -36,7 +36,7 @@
     },
     "metaData": {
       "categoryPosition": 5,
-      "position": 1
+      "position": 2
     }
   },
   {
@@ -56,7 +56,67 @@
     },
     "metaData": {
       "categoryPosition": 5,
-      "position": 2
+      "position": 3
+    }
+  },
+  {
+    "label": "Plain JavaScript",
+    "pathSegment": "",
+    "navigationContext": "doc",
+    "keepSelectedForChildren": true,
+    "viewUrl": "__BASE_URL__/docs/",
+    "context": {
+      "doc": ""
+    },
+    "category": {
+      "label": "Examples"
+    },
+    "externalLink": {
+      "url": "https://github.com/SAP/luigi/tree/master/core/examples/luigi-example-js"
+    },
+    "metaData": {
+      "categoryPosition": 5,
+      "position": 4
+    }
+  },
+  {
+    "label": "OpenUI5",
+    "pathSegment": "",
+    "navigationContext": "doc",
+    "keepSelectedForChildren": true,
+    "viewUrl": "__BASE_URL__/docs/",
+    "context": {
+      "doc": ""
+    },
+    "category": {
+      "label": "Examples"
+    },
+    "externalLink": {
+      "url": "https://github.com/SAP/luigi/tree/master/core/examples/luigi-example-openui5"
+    },
+    "metaData": {
+      "categoryPosition": 5,
+      "position": 5
+    }
+  },
+  {
+    "label": "Svelte",
+    "pathSegment": "",
+    "navigationContext": "doc",
+    "keepSelectedForChildren": true,
+    "viewUrl": "__BASE_URL__/docs/",
+    "context": {
+      "doc": ""
+    },
+    "category": {
+      "label": "Examples"
+    },
+    "externalLink": {
+      "url": "https://github.com/SAP/luigi/tree/master/core/examples/luigi-example-svelte"
+    },
+    "metaData": {
+      "categoryPosition": 5,
+      "position": 6
     }
   }
 ]

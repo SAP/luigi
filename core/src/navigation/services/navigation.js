@@ -7,6 +7,7 @@ import {
   NavigationHelpers,
   RoutingHelpers
 } from '../../utilities/helpers';
+import { NodeDataManagementStorage } from '../../services/node-data-management';
 import { LuigiConfig } from '../../core-api';
 
 class NavigationClass {
@@ -18,21 +19,28 @@ class NavigationClass {
         console.error('No navigation nodes provided in the configuration.');
         return [{}];
       }
-
       let rootNode;
-      const topNavNodes = await rootNavProviderPromise;
-      if (GenericHelpers.isObject(topNavNodes)) {
-        rootNode = topNavNodes;
-        if (rootNode.pathSegment) {
-          rootNode.pathSegment = '';
-          console.warn(
-            'Root node must have an empty path segment. Provided path segment will be ignored.'
-          );
-        }
-      } else {
-        rootNode = { children: topNavNodes };
+      if (NodeDataManagementStorage.hasRootNode()) {
+        rootNode = NodeDataManagementStorage.getRootNode().node;
       }
-      await this.getChildren(rootNode); // keep it, mutates and filters children
+      if (!rootNode) {
+        const topNavNodes = await rootNavProviderPromise;
+        if (GenericHelpers.isObject(topNavNodes)) {
+          rootNode = topNavNodes;
+          if (rootNode.pathSegment) {
+            rootNode.pathSegment = '';
+            console.warn(
+              'Root node must have an empty path segment. Provided path segment will be ignored.'
+            );
+          }
+        } else {
+          rootNode = { children: topNavNodes };
+        }
+        await this.getChildren(rootNode); // keep it, mutates and filters c
+        NodeDataManagementStorage.setRootNode(rootNode);
+
+        //await this.getChildren(this.rootNode, null, activePath); // keep it, mutates and filters children
+      }
       const nodeNamesInCurrentPath = activePath.split('/');
       const navObj = await this.buildNode(
         nodeNamesInCurrentPath,
@@ -69,51 +77,86 @@ class NavigationClass {
     if (!node) {
       return [];
     }
-
-    if (!node._childrenProvider) {
-      node._childrenProvider = node.children;
-    }
-    if (
-      node._childrenProvider &&
-      (!node._childrenProviderUsed ||
-        !LuigiConfig._configModificationTimestamp ||
-        node._childrenProviderUsed <
-          new Date(LuigiConfig._configModificationTimestamp.getTime()))
-    ) {
-      node._childrenProviderUsed = new Date();
+    let children = [];
+    if (!NodeDataManagementStorage.hasChildren(node)) {
       try {
-        node._children =
-          (await AsyncHelpers.getConfigValueFromObjectAsync(
-            node,
-            '_childrenProvider',
-            context || node.context
-          )) || [];
-        node.children = node._children.filter(child =>
-          NavigationHelpers.isNodeAccessPermitted(child, node, context)
+        children = await AsyncHelpers.getConfigValueFromObjectAsync(
+          node,
+          'children',
+          context || node.context
         );
-        this.bindChildrenToParent(node);
-        return node.children;
+        if (children === undefined) {
+          children = [];
+        }
+        children =
+          children
+            .map(n => this.getExpandStructuralPathSegment(n))
+            .map(n => this.bindChildToParent(n, node)) || [];
       } catch (err) {
         console.error('Could not lazy-load children for node', err);
       }
-    } else if (node._children) {
-      node.children = node._children.filter(child =>
-        NavigationHelpers.isNodeAccessPermitted(child, node, context)
-      );
-      this.bindChildrenToParent(node);
-      return node.children;
     } else {
-      return [];
+      let data = NodeDataManagementStorage.getChildren(node);
+      if (data) children = data.children;
     }
+    let filteredChildren = this.getAccessibleNodes(node, children, context);
+    NodeDataManagementStorage.setChildren(node, { children, filteredChildren });
+    return filteredChildren;
   }
 
-  bindChildrenToParent(node) {
+  /**
+   * returns filtered children from cache if present otherwise calculates them.
+   * */
+  async getFilteredChildren(node) {
+    return NodeDataManagementStorage.hasChildren(node)
+      ? Navigation.getChildrenFromCache(node)
+      : await Navigation.getChildren(node);
+  }
+
+  getChildrenFromCache(node) {
+    let data = NodeDataManagementStorage.getChildren(node);
+    return data ? data.filteredChildren : [];
+  }
+
+  getAccessibleNodes(node, children, context) {
+    return children
+      ? children.filter(child =>
+          NavigationHelpers.isNodeAccessPermitted(child, node, context)
+        )
+      : [];
+  }
+
+  bindChildToParent(child, node) {
     // Checking for pathSegment to exclude virtual root node
-    if (node && node.pathSegment && node.children) {
-      node.children.forEach(child => {
-        child.parent = node;
-      });
+    // node.pathSegment check is also required for virtual nodes like categories
+    if (node && node.pathSegment) {
+      child.parent = node;
     }
+    return child;
+  }
+
+  getExpandStructuralPathSegment(node) {
+    // Checking for pathSegment to exclude virtual root node
+    if (node && node.pathSegment && node.pathSegment.indexOf('/') !== -1) {
+      const segs = node.pathSegment.split('/');
+      const clonedNode = { ...node };
+      const buildStructuralNode = (segs, node) => {
+        const seg = segs.shift();
+        let child = {};
+        if (segs.length) {
+          child.pathSegment = seg;
+          if (node.hideFromNav) child.hideFromNav = node.hideFromNav;
+          child.children = [buildStructuralNode(segs, node)];
+        } else {
+          // set original data to last child
+          child = clonedNode;
+          child.pathSegment = seg;
+        }
+        return child;
+      };
+      return buildStructuralNode(segs, node);
+    }
+    return node;
   }
 
   async buildNode(
@@ -155,7 +198,18 @@ class NavigationClass {
           pathParams
         );
         try {
-          let children = await this.getChildren(node, newContext);
+          /**
+           * If its a virtual tree,
+           * build static children
+           */
+          this.buildVirtualTree(node, nodeNamesInCurrentPath, pathParams);
+
+          // STANDARD PROCEDURE
+          let children = await this.getChildren(
+            node,
+            newContext,
+            nodeNamesInCurrentPath
+          );
           const newNodeNamesInCurrentPath = nodeNamesInCurrentPath.slice(1);
           result = this.buildNode(
             newNodeNamesInCurrentPath,
@@ -170,6 +224,76 @@ class NavigationClass {
       }
     }
     return result;
+  }
+
+  /**
+   * Requires str to include :virtualPath
+   * and pathParams consist of :virtualSegment_N
+   * for deep nested virtual tree building
+   *
+   * @param {string} str
+   * @param {Object} pathParams
+   * @param {number} _virtualPathIndex
+   */
+  buildVirtualViewUrl(str, pathParams, _virtualPathIndex) {
+    let newStr = '';
+    for (const key in pathParams) {
+      if (key.startsWith('virtualSegment')) {
+        newStr += ':' + key + '/';
+      }
+    }
+    if (!_virtualPathIndex) {
+      return str;
+    }
+    newStr += ':virtualSegment_' + _virtualPathIndex + '/';
+    return str + '/' + newStr;
+  }
+
+  buildVirtualTree(node, nodeNamesInCurrentPath, pathParams) {
+    const virtualTreeRoot = node.virtualTree;
+    // Temporary store values that will be cleaned up when creating a copy
+    const virtualTreeChild = node._virtualTree;
+    const _virtualViewUrl = node._virtualViewUrl || node.viewUrl;
+    if ((virtualTreeRoot || virtualTreeChild) && nodeNamesInCurrentPath[0]) {
+      let _virtualPathIndex = node._virtualPathIndex;
+      if (virtualTreeRoot) {
+        _virtualPathIndex = 0;
+        node.keepSelectedForChildren = true;
+      }
+
+      // Allowing maximum of 50 path segments to avoid memory issues
+      const maxPathDepth = 50;
+      if (_virtualPathIndex > maxPathDepth) {
+        return;
+      }
+
+      _virtualPathIndex++;
+      const keysToClean = [
+        '_*',
+        'virtualTree',
+        'parent',
+        'children',
+        'keepSelectedForChildren',
+        'navigationContext'
+      ];
+      const newChild = GenericHelpers.removeProperties(node, keysToClean);
+      Object.assign(newChild, {
+        pathSegment: ':virtualSegment_' + _virtualPathIndex,
+        label: ':virtualSegment_' + _virtualPathIndex,
+        viewUrl: GenericHelpers.trimTrailingSlash(
+          this.buildVirtualViewUrl(
+            _virtualViewUrl,
+            pathParams,
+            _virtualPathIndex
+          )
+        ),
+        _virtualTree: true,
+        _virtualPathIndex,
+        _virtualViewUrl
+      });
+
+      node.children = [newChild];
+    }
   }
 
   findMatchingNode(urlPathElement, nodes) {
@@ -213,18 +337,15 @@ class NavigationClass {
     return result;
   }
 
-  getNodes(children, pathData) {
-    if (children && 0 < children.length) {
+  getNodesToDisplay(children, pathData) {
+    if (children && children.length > 0) {
       return children;
     }
-
-    if (2 < pathData.length) {
-      const lastElement = pathData[pathData.length - 1];
-      const oneBeforeLast = pathData[pathData.length - 2];
-      const nestedNode = pathData.length > 1 ? oneBeforeLast : lastElement;
-
-      if (nestedNode && nestedNode.children) {
-        return nestedNode.children;
+    if (pathData.length > 2) {
+      //try to get the children from parent node
+      let parentNode = pathData[pathData.length - 2];
+      if (NodeDataManagementStorage.hasChildren(parentNode)) {
+        return this.getChildrenFromCache(parentNode);
       }
     }
 
@@ -232,7 +353,7 @@ class NavigationClass {
   }
 
   getGroupedChildren(children, current) {
-    const nodes = this.getNodes(children, current.pathData);
+    const nodes = this.getNodesToDisplay(children, current.pathData);
     return NavigationHelpers.groupNodesBy(nodes, 'category', true);
   }
 

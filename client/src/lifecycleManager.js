@@ -90,7 +90,6 @@ class LifecycleManager extends LuigiClientBase {
         this._notifyUpdate();
         helpers.sendPostMessageToLuigiCore({ msg: 'luigi.navigate.ok' });
       });
-
       /**
        * Get context once initially
        * @private
@@ -101,9 +100,43 @@ class LifecycleManager extends LuigiClientBase {
         },
         '*'
       );
+      this._tpcCheck();
     };
 
     luigiClientInit();
+  }
+
+  _tpcCheck() {
+    let tpc = 'enabled';
+    let cookies = document.cookie;
+    let luigiCookie;
+    let luigiCookieKey;
+    if (cookies) {
+      luigiCookie = cookies
+        .split(';')
+        .map(cookie => cookie.trim())
+        .find(cookie => cookie == 'luigiCookie=true');
+    }
+    if (luigiCookie === 'luigiCookie=true') {
+      luigiCookieKey = luigiCookie.split('=')[0];
+      document.cookie = luigiCookieKey + '=; Max-Age=-99999999;';
+    }
+    document.cookie = 'luigiCookie=true';
+    cookies = document.cookie;
+    if (cookies) {
+      luigiCookie = cookies
+        .split(';')
+        .map(cookie => cookie.trim())
+        .find(cookie => cookie == 'luigiCookie=true');
+    }
+    if (luigiCookie === 'luigiCookie=true') {
+      window.parent.postMessage({ msg: 'luigi.third-party-cookie', tpc }, '*');
+      document.cookie = luigiCookieKey + '=; Max-Age=-99999999;';
+    } else {
+      tpc = 'disabled';
+      window.parent.postMessage({ msg: 'luigi.third-party-cookie', tpc }, '*');
+      console.warn('Third party cookies are not supported!');
+    }
   }
 
   /**
@@ -157,7 +190,7 @@ class LifecycleManager extends LuigiClientBase {
 
   /**
    * Registers a listener called with the context object and the Luigi Core domain as soon as Luigi is instantiated. Defer your application bootstrap if you depend on authentication data coming from Luigi.
-   * @param {Lifecycle~initListenerCallback} initFn the function that is called once Luigi is initialized, receives current context and origin as parameters.
+   * @param {Lifecycle~initListenerCallback} initFn the function that is called once Luigi is initialized, receives current context and origin as parameters
    * @memberof Lifecycle
    */
   addInitListener(initFn) {
@@ -177,7 +210,7 @@ class LifecycleManager extends LuigiClientBase {
    */
   /**
    * Removes an init listener.
-   * @param {string} id the id that was returned by the `addInitListener` function
+   * @param {string} id the id that was returned by the `addInitListener` function.
    * @memberof Lifecycle
    */
   removeInitListener(id) {
@@ -189,7 +222,7 @@ class LifecycleManager extends LuigiClientBase {
   }
 
   /**
-   * Registers a listener called with the context object upon any navigation change.
+   * Registers a listener called with the context object when the URL is changed. For example, you can use this when changing environments in a context switcher in order for the micro frontend to do an API call to the environment picked.
    * @param {function} contextUpdatedFn the listener function called each time Luigi context changes
    * @memberof Lifecycle
    */
@@ -247,7 +280,7 @@ class LifecycleManager extends LuigiClientBase {
   /**
    * Registers a listener called when the micro frontend receives a custom message.
    * @param {string} customMessageId the custom message id
-   * @param {Lifecycle~customMessageListenerCallback} customMessageListener the function that is called when the micro frontend receives the corresponding event.
+   * @param {Lifecycle~customMessageListenerCallback} customMessageListener the function that is called when the micro frontend receives the corresponding event
    * @memberof Lifecycle
    * @since 0.6.2
    */
@@ -329,7 +362,7 @@ class LifecycleManager extends LuigiClientBase {
 
   /**
    * Returns the current client permissions as specified in the navigation node or an empty object. For details, see [Node parameters](navigation-parameters-reference.md).
-   * @returns {Object} client permissions as specified in the navigation node.
+   * @returns {Object} client permissions as specified in the navigation node
    * @memberof Lifecycle
    */
   getClientPermissions() {
@@ -337,8 +370,18 @@ class LifecycleManager extends LuigiClientBase {
   }
 
   /**
+   * When the micro frontend is not embedded in the Luigi Core application and there is no init handshake you can set the target origin that is used in postMessage function calls by Luigi Client.
+   * @param {string} origin target origin
+   * @memberof Lifecycle
+   * @since 0.7.3
+   */
+  setTargetOrigin(origin) {
+    helpers.setTargetOrigin(origin);
+  }
+
+  /**
    * Sends a custom message to the Luigi Core application.
-   * @param {Object} message an object containing data to be sent to the Luigi Core to process it further. This object is set as an input parameter of the custom message listener on the Luigi Core side.
+   * @param {Object} message an object containing data to be sent to the Luigi Core to process it further. This object is set as an input parameter of the custom message listener on the Luigi Core side
    * @param {string} message.id a string containing the message id
    * @param {*} message.MY_DATA_FIELD any other message data field
    * @example

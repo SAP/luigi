@@ -4,129 +4,207 @@ describe('Navigation', () => {
     cy.visitLoggedIn('/');
   });
 
-  it('Click around using navigation', () => {
-    // projects page
-    cy.get('.fd-shellbar')
-      .contains('Projects')
-      .click();
+  describe('Core api navigation test', () => {
+    it('Core API navigate', () => {
+      cy.window().then(win => {
+        win.Luigi.navigation().navigate('/projects/pr2');
+        cy.expectPathToBe('/projects/pr2');
+      });
+    });
+    it('Core API open in modal', () => {
+      cy.window().then(win => {
+        win.Luigi.navigation().openAsModal('/settings', {
+          title: 'Preserved View',
+          size: 'm'
+        });
+        cy.get('.fd-modal__close').click();
+        cy.expectPathToBe('/overview');
+      });
+    });
+    it('Core API open and close in SplitView', done => {
+      cy.get('.fd-shellbar').should('be.visible');
+      cy.window().then(win => {
+        const handle = win.Luigi.navigation().openAsSplitView('/ext', {
+          title: 'Preserved Split View',
+          size: '40',
+          collapsed: false
+        });
+        cy.get('#splitViewContainer').should('be.visible');
+        cy.expect(handle.exists()).to.be.true;
 
-    //projects page
-    cy.get('.fd-app__sidebar').should('contain', 'Project One');
-    cy.get('.fd-app__sidebar').should('contain', 'Project Two');
-    cy.get('.fd-app__sidebar')
-      .contains('Project One')
-      .click();
-
-    //project one page
-    cy.expectPathToBe('/projects/pr1');
-
-    cy.get('.fd-app__sidebar').should('not.contain', 'Project One');
-    cy.get('.fd-app__sidebar').should('contain', 'Miscellaneous2');
-    cy.get('.fd-app__sidebar')
-      .contains('Default Child node Example')
-      .click();
-
-    //default child node example
-    cy.expectPathToBe('/projects/pr1/dps/dps2');
-
-    cy.get('.fd-app__sidebar').should('contain', 'First Child');
-    cy.get('.fd-app__sidebar').should('contain', 'Second Child');
+        // It is not totally clear why it is not working without timeout, but it seems like a race condition
+        // TODO: Check stackoverflow for solution
+        // https://stackoverflow.com/questions/60338487/cypress-executes-assertion-immediately-on-function-that-returns-a-handle
+        setTimeout(() => {
+          handle.close();
+          setTimeout(() => {
+            cy.expect(handle.exists()).to.be.false;
+            cy.get('#splitViewContainer').should('not.be.visible');
+            done();
+          }, 50);
+        }, 50);
+      });
+    });
+    it('Core API collapse in SplitView', () => {
+      cy.window().then(win => {
+        const handle = win.Luigi.navigation().openAsSplitView('/ext', {
+          title: 'Preserved Split View',
+          size: '40',
+          collapsed: false
+        });
+        handle.collapse();
+        cy.expect(handle.isCollapsed()).to.be.true;
+      });
+    });
+    it('Core API expand SplitView', () => {
+      cy.window().then(win => {
+        const handle = win.Luigi.navigation().openAsSplitView('/ext', {
+          title: 'Preserved Split View',
+          size: '40',
+          collapsed: false
+        });
+        handle.expand();
+        cy.expect(handle.isExpanded()).to.be.true;
+      });
+    });
+    it('Core API navigate with params', () => {
+      cy.window().then(win => {
+        win.Luigi.navigation()
+          .withParams({ test: true })
+          .navigate('/settings');
+        cy.expectPathToBe('/settings');
+        cy.getIframeBody().then($iframeBody => {
+          cy.wrap($iframeBody).should('contain', '"test": "true"');
+        });
+      });
+    });
   });
 
-  it('Find configured testid on navigation node', () => {
-    cy.visit('/projects/pr1/settings');
-    cy.get('a[data-testid="myTestId"]').should('exist');
-  });
-
-  it('Set default testid on navigation node', () => {
-    cy.visit('/projects/pr1/developers');
-    cy.get('a[data-testid="developers_developers"]').should('exist');
-  });
-
-  it('Check if active node is selected', () => {
-    cy.visit('/projects');
-    cy.get('.fd-shellbar')
-      .contains('Projects')
-      .should('have.class', 'is-selected');
-
-    cy.visit('projects/pr1');
-    cy.get('.fd-side-nav__subitem')
-      .contains('Project Settings')
-      .click()
-      .should('have.class', 'is-selected');
-  });
-
-  it('Check if active node reloads page', () => {
-    cy.visit('/projects/pr1/developers');
-    cy.getIframeBody().then($iframeBody => {
-      cy.wrap($iframeBody)
-        .should('contain', 'Developers content')
-        .find('[title="visitors: 1"]');
-      cy.get('.fd-app__sidebar')
-        .contains('Project Settings')
+  describe('Normal navigating', () => {
+    it('Click around using navigation', () => {
+      // projects page
+      cy.get('.fd-shellbar')
+        .contains('Projects')
         .click();
+
+      //projects page
+      cy.get('.fd-app__sidebar').should('contain', 'Project One');
+      cy.get('.fd-app__sidebar').should('contain', 'Project Two');
+      cy.get('.fd-app__sidebar')
+        .contains('Project One')
+        .click();
+
+      //project one page
+      cy.expectPathToBe('/projects/pr1');
+
+      cy.get('.fd-app__sidebar').should('not.contain', 'Project One');
+      cy.get('.fd-app__sidebar').should('contain', 'Miscellaneous2');
+      cy.get('.fd-app__sidebar')
+        .contains('Default Child node Example')
+        .click();
+
+      //default child node example
+      cy.expectPathToBe('/projects/pr1/dps/dps2');
+
+      cy.get('.fd-app__sidebar').should('contain', 'First Child');
+      cy.get('.fd-app__sidebar').should('contain', 'Second Child');
+    });
+
+    it('Find configured testid on navigation node', () => {
+      cy.visit('/projects/pr1/settings');
+      cy.get('a[data-testid="myTestId"]').should('exist');
+    });
+
+    it('Set default testid on navigation node', () => {
+      cy.visit('/projects/pr1/developers');
+      cy.get('a[data-testid="developers_developers"]').should('exist');
+    });
+
+    it('Check if active node is selected', () => {
+      cy.visit('/projects');
+      cy.get('.fd-shellbar')
+        .contains('Projects')
+        .should('have.class', 'is-selected');
+
+      cy.visit('projects/pr1');
+      cy.get('.fd-side-nav__subitem')
+        .contains('Project Settings')
+        .click()
+        .should('have.class', 'is-selected');
+    });
+
+    it('Check if active node reloads page', () => {
+      cy.visit('/projects/pr1/developers');
+      cy.getIframeBody().then($iframeBody => {
+        cy.wrap($iframeBody)
+          .should('contain', 'Developers content')
+          .find('[title="visitors: 1"]');
+        cy.get('.fd-app__sidebar')
+          .contains('Project Settings')
+          .click();
+        cy.get('.fd-app__sidebar')
+          .contains('Developers')
+          .click();
+        cy.wrap($iframeBody).find('[title="visitors: 2"]');
+      });
       cy.get('.fd-app__sidebar')
         .contains('Developers')
         .click();
-      cy.wrap($iframeBody).find('[title="visitors: 2"]');
+      cy.getIframeBody().then($iframeBody => {
+        cy.wrap($iframeBody).find('[title="visitors: 1"]');
+      });
     });
-    cy.get('.fd-app__sidebar')
-      .contains('Developers')
-      .click();
-    cy.getIframeBody().then($iframeBody => {
-      cy.wrap($iframeBody).find('[title="visitors: 1"]');
-    });
-  });
 
-  it('Browser back works with Default Child mechanism', () => {
-    cy.getIframeBody().then($iframeBody => {
-      cy.wrap($iframeBody)
-        .contains('defaultChildNode')
+    it('Browser back works with Default Child mechanism', () => {
+      cy.getIframeBody().then($iframeBody => {
+        cy.wrap($iframeBody)
+          .contains('defaultChildNode')
+          .click();
+        cy.expectPathToBe('/projects/pr1/dps/dps2');
+
+        cy.window().historyBack();
+        cy.expectPathToBe('/overview');
+      });
+    });
+
+    it('Icon instead of label in TopNav', () => {
+      cy.get('button[title="Settings"]>.fd-top-nav__icon').should('exist');
+      cy.get('button[title="Settings"]').should('contain', '');
+    });
+
+    it('Icon with label in LeftNav', () => {
+      cy.get('.fd-shellbar')
+        .contains('Projects')
         .click();
-      cy.expectPathToBe('/projects/pr1/dps/dps2');
+      cy.get('.fd-app__sidebar .fd-side-nav__item')
+        .contains('Project One')
+        .click();
 
-      cy.window().historyBack();
-      cy.expectPathToBe('/overview');
+      cy.get('.fd-side-nav__subitem')
+        .contains('Project Settings')
+        .find('.fd-side-nav__icon')
+        .should('exist');
     });
-  });
 
-  it('Icon instead of label in TopNav', () => {
-    cy.get('button[title="Settings"]>.fd-top-nav__icon').should('exist');
-    cy.get('button[title="Settings"]').should('contain', '');
-  });
-
-  it('Icon with label in LeftNav', () => {
-    cy.get('.fd-shellbar')
-      .contains('Projects')
-      .click();
-    cy.get('.fd-app__sidebar .fd-side-nav__item')
-      .contains('Project One')
-      .click();
-
-    cy.get('.fd-side-nav__subitem')
-      .contains('Project Settings')
-      .find('.fd-side-nav__icon')
-      .should('exist');
-  });
-
-  it('Shows Kyma version in LeftNav', () => {
-    // projects page
-    cy.get('.fd-shellbar')
-      .contains('Projects')
-      .click();
-
-    cy.get('.fd-app__sidebar .lui-side-nav__footer')
-      .contains('Luigi Client:')
-      .should('be.visible');
-
-    cy.window().then(win => {
-      const config = win.Luigi.getConfig();
-      config.settings.sideNavFooterText = 'Hello from tets.';
-      win.Luigi.configChanged('settings.footer');
+    it('Shows Kyma version in LeftNav', () => {
+      // projects page
+      cy.get('.fd-shellbar')
+        .contains('Projects')
+        .click();
 
       cy.get('.fd-app__sidebar .lui-side-nav__footer')
-        .contains('Hello from tets.')
+        .contains('Luigi Client:')
         .should('be.visible');
+
+      cy.window().then(win => {
+        const config = win.Luigi.getConfig();
+        config.settings.sideNavFooterText = 'Hello from tets.';
+        win.Luigi.configChanged('settings.footer');
+
+        cy.get('.fd-app__sidebar .lui-side-nav__footer')
+          .contains('Hello from tets.')
+          .should('be.visible');
+      });
     });
   });
 
