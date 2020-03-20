@@ -101,6 +101,7 @@
   import ContextSwitcherNav from './ContextSwitcherNav.html';
   import { LuigiConfig } from '../core-api';
   import { Routing } from '../services/routing';
+  import { NodeDataManagementStorage } from '../services/node-data-management';
   import {
     IframeHelpers,
     RoutingHelpers,
@@ -143,7 +144,7 @@
     StateHelpers.doOnStoreChange(
       store,
       async () => {
-        LuigiConfig._configModificationTimestamp = new Date();
+        NodeDataManagementStorage.deleteCache();
         const contextSwitcherConfig = LuigiConfig.getConfigValue(
           'navigation.contextSwitcher'
         );
@@ -288,7 +289,7 @@
 
   export function goToPath(path) {
     getUnsavedChangesModalPromise().then(() => {
-      LuigiConfig._configModificationTimestamp = new Date();
+      NodeDataManagementStorage.deleteCache();
       Routing.navigateTo(path);
     });
   }
@@ -297,7 +298,7 @@
     let option = event.detail.option;
     let selectedOption = event.detail.selectedOption;
     getUnsavedChangesModalPromise().then(() => {
-      LuigiConfig._configModificationTimestamp = new Date();
+      NodeDataManagementStorage.deleteCache();
       if (preserveSubPathOnSwitch && selectedOption) {
         Routing.navigateTo(
           ContextSwitcherHelpers.getNodePathFromCurrentPath(

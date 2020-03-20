@@ -11,9 +11,15 @@
 	<link href="bundle.css" rel="stylesheet">
 	<script src='/vendor/ace/src-min/ace.js'></script>
 	<script src='/vendor/ace/src-min/mode-javascript.js'></script>
+	<script src='/vendor/plugin-auth-oauth2/plugin.js'></script>
+	<script src='/vendor/plugin-auth-oidc/plugin.js'></script>
+	<script>
+		window.LuigiAuthOAuth2 = window['LuigiPlugin-auth-oauth2'];
+		window.LuigiAuthOIDC = window['LuigiPlugin-auth-oidc'];
+	</script>
 </head>
 
-<body class="show-bar">
+<body class="show-bar">	
 	<script src='bundle.js'></script>
 	<script src='cookieBar.js'></script>
 </body>
