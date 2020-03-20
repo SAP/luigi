@@ -237,7 +237,7 @@ LuigiClient.linkManager().withoutSync().fromClosestContext().navigate('settings'
 
 **Meta**
 
--   **since**: 0.7.6
+-   **since**: 0.7.7
 
 #### navigate
 
