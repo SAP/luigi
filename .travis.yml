@@ -7,6 +7,8 @@ cache:
   directories:
     - $TRAVIS_BUILD_DIR/client/public
     - $TRAVIS_BUILD_DIR/core/public
+    - $TRAVIS_BUILD_DIR/client/public-ie11
+    - $TRAVIS_BUILD_DIR/core/public-ie11
     - $TRAVIS_BUILD_DIR/plugins/auth/public/auth-oauth2
     - $TRAVIS_BUILD_DIR/plugins/auth/public/auth-oidc
     - $TRAVIS_BUILD_DIR/test/e2e-test-application/dist
