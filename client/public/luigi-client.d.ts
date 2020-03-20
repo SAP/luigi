@@ -327,7 +327,7 @@ export declare interface LinkManager {
    * Disables the navigation handling for a single navigation request
    * It prevents Luigi Core from handling url change after `navigate()`.
    * Used for auto-navigation
-   * @since NEXTRELEASE
+   * @since 0.7.7
    * @example
    * LuigiClient.linkManager().withoutSync().navigate('/projects/xy/foobar');
    * LuigiClient.linkManager().withoutSync().fromClosestContext().navigate('settings');
@@ -347,17 +347,17 @@ export type addInitListener = (
   initFn: (context: Context, origin?: string) => void
 ) => number;
 
-  /**
-   * Callback of the addInitListener
-   * @callback Lifecycle~initListenerCallback
-   * @param {Object} context current context data
-   * @param {string} origin Luigi Core URL
-   */
-  /**
-   * Removes an init listener.
-   * @param {string} id the id that was returned by the `addInitListener` function.
-   * @memberof Lifecycle
-   */
+/**
+ * Callback of the addInitListener
+ * @callback Lifecycle~initListenerCallback
+ * @param {Object} context current context data
+ * @param {string} origin Luigi Core URL
+ */
+/**
+ * Removes an init listener.
+ * @param {string} id the id that was returned by the `addInitListener` function.
+ * @memberof Lifecycle
+ */
 export function removeInitListener(id: number): boolean;
 export type removeInitListener = (id: number) => boolean;
 
