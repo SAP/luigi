@@ -7,7 +7,7 @@ describe('Modal Microfrontend', () => {
     cy.getIframeBody().then(result => {
       $iframeBody = result;
     });
-  });
+  }); 
 
   describe('Behaviour when used in LinkManager', () => {
     beforeEach(() => {
@@ -139,6 +139,7 @@ describe('SplitView Microfrontend', () => {
         }
       ];
       tests.forEach(test => {
+        cy.wait(50);
         test.buttonsVisible.forEach((enabled, index) => {
           cy.splitViewButtons($iframeBody)
             .contains(buttons[index])
