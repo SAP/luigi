@@ -23,6 +23,22 @@ The lerna-changelog tool detects changes based on PR labels and maps them to sec
     ...
   }
 -->
+
+
+## [v0.7.7] (2020-03-20)
+
+#### :bug: Fixed
+* [#1172](https://github.com/SAP/luigi/pull/1172) Fix virtualtree trailing slash ([@maxmarkus](https://github.com/maxmarkus))
+* [#1179](https://github.com/SAP/luigi/pull/1179) Fix navigate ok check for withoutSync ([@maxmarkus](https://github.com/maxmarkus))
+* [#1173](https://github.com/SAP/luigi/pull/1173) Recalculation after cache deletion ([@JohannesDoberer](https://github.com/JohannesDoberer))
+* [#1148](https://github.com/SAP/luigi/pull/1148) deleteCache was missing in contextswitcher ([@JohannesDoberer](https://github.com/JohannesDoberer))
+* [#1145](https://github.com/SAP/luigi/pull/1145) Route change loses context in contextswitcher ([@JohannesDoberer](https://github.com/JohannesDoberer))
+
+#### :memo: Documentation
+* [#1060](https://github.com/SAP/luigi/pull/1060) Luigi Videos ([@alexandra-simeonova](https://github.com/alexandra-simeonova))
+* [#1116](https://github.com/SAP/luigi/pull/1116) Add implementations/scenarios ([@alexandra-simeonova](https://github.com/alexandra-simeonova))
+
+
 ## [v0.7.6] (2020-03-09)
 
 #### :rocket: Added
@@ -672,3 +688,4 @@ The lerna-changelog tool detects changes based on PR labels and maps them to sec
 [v0.7.4]: https://github.com/SAP/luigi/compare/v0.7.3...v0.7.4
 [v0.7.5]: https://github.com/SAP/luigi/compare/v0.7.4...v0.7.5
 [v0.7.6]: https://github.com/SAP/luigi/compare/v0.7.5...v0.7.6
+[v0.7.7]: https://github.com/SAP/luigi/compare/v0.7.6...v0.7.7
