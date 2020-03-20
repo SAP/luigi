@@ -12,6 +12,7 @@ cache:
     - $TRAVIS_BUILD_DIR/plugins/auth/public/auth-oauth2
     - $TRAVIS_BUILD_DIR/plugins/auth/public/auth-oidc
     - $TRAVIS_BUILD_DIR/test/e2e-test-application/dist
+    - $TRAVIS_BUILD_DIR/website/fiddle/public
     - $TRAVIS_BUILD_DIR/cypress-binary-cache
     - $HOME/.cache/Cypress
 notifications:
@@ -30,10 +31,12 @@ integration-testing: &integration-testing
         # Ubuntu 16+ does not install this dependency by default, so we need to install it ourselves
         - libgconf-2-4
         #- chromium-browser=79.0.3945.130-0ubuntu0.16.04.1 # update also if you upgrade from Xenial
-    chrome: beta
+    # chrome: beta
+    chrome: stable
   before_install:
-    #- chromium-browser --headless --disable-gpu --remote-debugging-port=9222 http://localhost &
-    - google-chrome-beta --headless --disable-gpu --remote-debugging-port=9222 http://localhost &
+    # - chromium-browser --headless --disable-gpu --remote-debugging-port=9222 http://localhost &
+    # - google-chrome-beta --headless --disable-gpu --remote-debugging-port=9222 http://localhost &
+    - google-chrome-stable --headless --disable-gpu --remote-debugging-port=9222 http://localhost &
   before_cache:
     - rm -rf ~/.npm/_logs
     - rm -rf ~/.npm/_cacache
@@ -49,12 +52,18 @@ jobs:
         - lerna bootstrap --ci --force-local --ignore docs || travis_terminate 1
         # WORKAROUND - START
         # Due to open bug at lerna, https://github.com/lerna/lerna/issues/2352
-        # Some packages need to be linked manually:
+        # Link e2e-test-application manually:
         - rm -rf $TRAVIS_BUILD_DIR/test/e2e-test-application/node_modules/@luigi-project/*
         - ln -s $TRAVIS_BUILD_DIR/core/public $TRAVIS_BUILD_DIR/test/e2e-test-application/node_modules/@luigi-project/core
         - ln -s $TRAVIS_BUILD_DIR/client/public $TRAVIS_BUILD_DIR/test/e2e-test-application/node_modules/@luigi-project/client
         - ln -s $TRAVIS_BUILD_DIR/plugins/auth/public/auth-oauth2 $TRAVIS_BUILD_DIR/test/e2e-test-application/node_modules/@luigi-project/plugin-auth-oauth2
         - ln -s $TRAVIS_BUILD_DIR/plugins/auth/public/auth-oidc $TRAVIS_BUILD_DIR/test/e2e-test-application/node_modules/@luigi-project/plugin-auth-oidc
+        # Link fiddle manually:
+        - rm -rf $TRAVIS_BUILD_DIR/website/fiddle/node_modules/@luigi-project/*
+        - ln -s $TRAVIS_BUILD_DIR/core/public $TRAVIS_BUILD_DIR/website/fiddle/node_modules/@luigi-project/core
+        - ln -s $TRAVIS_BUILD_DIR/client/public $TRAVIS_BUILD_DIR/website/fiddle/node_modules/@luigi-project/client
+        - ln -s $TRAVIS_BUILD_DIR/plugins/auth/public/auth-oauth2 $TRAVIS_BUILD_DIR/website/fiddle/node_modules/@luigi-project/plugin-auth-oauth2
+        - ln -s $TRAVIS_BUILD_DIR/plugins/auth/public/auth-oidc $TRAVIS_BUILD_DIR/website/fiddle/node_modules/@luigi-project/plugin-auth-oidc
         # WORKAROUND - END
         - lerna run bundle --ignore docs || travis_terminate 1
         - lerna run bundlesizeOnly --ignore docs || travis_terminate 1
@@ -63,12 +72,11 @@ jobs:
         - ls -lah $TRAVIS_BUILD_DIR/test/e2e-test-application/node_modules/@luigi-project
         - ls -lah $TRAVIS_BUILD_DIR/test/e2e-test-application/node_modules/@luigi-project/client/
         - echo "check if luigi-client.d.ts exists" && cat $TRAVIS_BUILD_DIR/test/e2e-test-application/node_modules/@luigi-project/client/luigi-client.d.ts | grep -C 3 "withoutSync" || travis_terminate 1
-        - lerna run build --scope e2e-test-application || travis_terminate 1
+        - lerna run build --ignore docs || travis_terminate 1
         - npm test --prefix core || travis_terminate 1
       before_cache:
         - rm -rf ~/.npm/_logs
         - rm -rf ~/.npm/_cacache
-        - rm -rf $TRAVIS_BUILD_DIR/website
         - rm -rf $TRAVIS_BUILD_DIR/core/examples
 
     #----- DOCU -----
