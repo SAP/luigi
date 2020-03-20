@@ -1,5 +1,5 @@
 
-import { getParsedDocs } from './_parser';
+import { getParsedReadMeDoc } from './_parser';
 
 export function get(req, res) {
 

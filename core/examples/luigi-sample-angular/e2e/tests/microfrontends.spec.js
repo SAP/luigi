@@ -139,6 +139,7 @@ describe('SplitView Microfrontend', () => {
         }
       ];
       tests.forEach(test => {
+        cy.wait(50);
         test.buttonsVisible.forEach((enabled, index) => {
           cy.splitViewButtons($iframeBody)
             .contains(buttons[index])

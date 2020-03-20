@@ -148,6 +148,25 @@ class IframeClass {
     return newActiveIframe;
   }
 
+  setOkResponseHandler(config, component, node) {
+    /**
+     * check if luigi responded
+     * if not, callback again to replace the iframe
+     */
+    this.timeoutHandle = setTimeout(() => {
+      if (config.navigateOk) {
+        config.navigateOk = undefined;
+      } else {
+        config.iframe = undefined;
+        config.isFallbackFrame = true;
+        console.info(
+          'navigate: luigi-client did not respond, using fallback by replacing iframe'
+        );
+        this.navigateIframe(config, component, node);
+      }
+    }, this.iframeNavFallbackTimeout);
+  }
+
   navigateIframe(config, component, node) {
     clearTimeout(this.timeoutHandle);
     const componentData = component.get();
@@ -300,6 +319,7 @@ class IframeClass {
       if (withSync) {
         // default, send navigation event to client
         IframeHelpers.sendMessageToIframe(config.iframe, message);
+        this.setOkResponseHandler(config, component, node);
       } else {
         // `withoutSync()` used. client navigation was skipped, reset after one-time use.
         component.set({ isNavigationSyncEnabled: true });
@@ -307,22 +327,6 @@ class IframeClass {
 
       // clear goBackContext and reset navigateBack after sending it to the client
       component.set({ goBackContext: undefined, isNavigateBack: false });
-
-      /**
-       * check if luigi responded
-       * if not, callback again to replace the iframe
-       */
-      this.timeoutHandle = setTimeout(() => {
-        if (config.navigateOk) {
-          config.navigateOk = undefined;
-        } else {
-          config.iframe = undefined;
-          console.info(
-            'navigate: luigi-client did not respond, using fallback by replacing iframe'
-          );
-          this.navigateIframe(config, component, node);
-        }
-      }, this.iframeNavFallbackTimeout);
     }
   }
 }
