@@ -7,7 +7,7 @@ describe('Modal Microfrontend', () => {
     cy.getIframeBody().then(result => {
       $iframeBody = result;
     });
-  }); 
+  });
 
   describe('Behaviour when used in LinkManager', () => {
     beforeEach(() => {
