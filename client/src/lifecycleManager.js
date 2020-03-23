@@ -96,7 +96,8 @@ class LifecycleManager extends LuigiClientBase {
        */
       window.parent.postMessage(
         {
-          msg: 'luigi.get-context'
+          msg: 'luigi.get-context',
+          clientVersion: require('../public/package.json').version
         },
         '*'
       );

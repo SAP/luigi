@@ -1,5 +1,5 @@
 <script>
-  import * as luigiCorePkg from '../node_modules/@kyma-project/luigi-core/package.json';
+  import * as luigiCorePkg from '../node_modules/@luigi-project/core/package.json';
   import defaultConfig from './defaultConfig.js';
   import { onMount } from 'svelte';
 
