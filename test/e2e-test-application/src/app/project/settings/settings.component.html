@@ -43,29 +43,37 @@
   </div>
 
   <div class="fd-panel">
-    LuigiClient hasBack/GoBack:<br />
-
-    <div *ngIf="hasBack">
-      <p>
-        <label
-          >Modify goBackContext value, that you receive then via
-          LuigiClient.addContextUpdateListener(): <br />
-          <input type="text" [(ngModel)]="callbackValue"
-        /></label>
-      </p>
-      <p>
-        <button class="fd-button" (click)="goBack()">Click here</button> to go
-        back to your preserved view.
-      </p>
+    <div class="fd-panel__header">
+      <div class="fd-panel__head">
+        <h3 class="fd-panel__title">
+          LuigiClient hasBack/GoBack
+        </h3>
+      </div>
     </div>
-    <div *ngIf="!hasBack">
-      No go back state available,
-      <a
-        href="javascript:void(0)"
-        (click)="linkManager().navigate('/projects/pr2')"
-        >Click here</a
-      >
-      to go to <i>project two</i>, where you can try out hasBack functionality
+    <div class="fd-panel__body">
+      <div *ngIf="hasBack">
+        <div class="fd-form-item">
+          <label class="fd-form-label"
+            >Modify goBackContext value, that you receive then via
+            LuigiClient.addContextUpdateListener():
+          </label>
+          <input type="text" class="fd-input" [(ngModel)]="callbackValue" />
+        </div>
+        <p>
+          <button class="fd-button" (click)="goBack()">Click here</button> to go
+          back to your preserved view.
+        </p>
+      </div>
+      <div *ngIf="!hasBack">
+        No go back state available,
+        <a
+          href="javascript:void(0)"
+          class="fd-link"
+          (click)="linkManager().navigate('/projects/pr2')"
+          >Click here</a
+        >
+        to go to <i>project two</i>, where you can try out hasBack functionality
+      </div>
     </div>
   </div>
 </section>
