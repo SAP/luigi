@@ -124,6 +124,7 @@
     -webkit-overflow-scrolling: touch;
     background-color: #fff;
     background-color: var(--sapGroup_ContentBackground, #fff);
+    border-radius: 0 0 4px 4px;
   }
   .iframeModalCtn :global(iframe) {
     width: 100%;
@@ -146,6 +147,11 @@
     &__body,
     &__header {
       overflow-wrap: break-word;
+    }
+
+    &__content {
+      display: flex;
+      flex-direction: column;
     }
   }
 
