@@ -122,8 +122,6 @@ Node parameters are all the parameters that can be added to an individual naviga
 - **description**: contains the URL or path to a view which renders when you click the navigation node. Use either a full URL or a relative path. If **viewUrl** is undefined, Luigi activates the child node specified in **defaultChildNode**. When both **viewUrl** and **defaultChildNode** are undefined, Luigi opens the first child of the current node. **viewUrl** can contain variables from:
   * dynamic path segments
   * node parameters
-  * contexts
-
 
 ### navigationContext
 - **type**: string
@@ -131,7 +129,7 @@ Node parameters are all the parameters that can be added to an individual naviga
 
 ### context
 - **type**: object
-- **description**: sends the specified object as context to the view. Use this parameter in combination with the dynamic **pathSegment** to receive the context through the context listeners of **Luigi Client**. This is an alternative to using the dynamic value in the **viewUrl**.
+- **description**: sends the specified object as a context to the micro frontend.
 
 ### defaultChildNode
 - **type**: string
