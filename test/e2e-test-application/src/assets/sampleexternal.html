@@ -9,12 +9,36 @@
       font-family: Arial, Helvetica, sans-serif;
     }
 
+    body {
+      padding: 0;
+      margin: 0;
+      font-size: 14px;
+    }
+
+    blockquote,
+    figure,
+    ol,
+    p,
+    table,
+    ul {
+      margin-top: 0;
+      margin-bottom: 12px;
+    }
+
     .section-spacer {
       height: 800px;
     }
 
-    .fd-panel {
-      padding: 15px;
+    .fd-page__header {
+      padding-left: 1.5rem;
+    }
+
+    .fd-form-item {
+      margin-bottom: 10px;
+    }
+
+    .fd-list-group__item {
+      display: block;
     }
 
     a {
@@ -35,27 +59,36 @@
       <h1 class="fd-section__title">Cross Domain Example</h1>
     </div>
     <div class="fd-panel">
-      This page behaves equally to an external hosted micro frontend. <br />For demo purposes, it utilizes manual hiding
-      of the loading indicator.
+      <div class="fd-panel__body">
+        <p>This page behaves equally to an external hosted micro frontend. <br />For demo purposes, it utilizes manual hiding
+          of the loading indicator.</p>
+      </div>
     </div>
   </section>
 
   <section class="fd-section">
     <div class="fd-panel">
-      <p><strong>Luigi Client Features:</strong></p>
-
-      <p><a href="javascript:demoLoadingIndicator()">Show loading indicator</a> - and hide it after 3 seconds.<br />
-        <pre>LuigiClient.uxManager().showLoadingIndicator();
-LuigiClient.uxManager().hideLoadingIndicator();</pre>
-      </p>
-
+      <div class="fd-panel__header">
+        <div class="fd-panel__head">
+          <h3 class="fd-panel__title">Luigi Client Features</h3>
+        </div>
+      </div>
+      <div class="fd-panel__body">
+        <p><a class="fd-link" href="javascript:demoLoadingIndicator()">Show loading indicator</a> - and hide it after 3 seconds.<br />
+          <pre>LuigiClient.uxManager().showLoadingIndicator();
+  LuigiClient.uxManager().hideLoadingIndicator();</pre>
+        </p>
+      </div>
+    </div>
   </section>
 
   <div class="section-spacer"></div>
   <a name="one"></a>
   <section class="fd-section">
     <div class="fd-panel">
-      <p><strong>One</strong></p>
+      <div class="fd-panel__body">
+        <p><strong>One</strong></p>
+      </div>
     </div>
   </section>
 
@@ -63,7 +96,9 @@ LuigiClient.uxManager().hideLoadingIndicator();</pre>
   <a name="two"></a>
   <section class="fd-section">
     <div class="fd-panel">
-      <p><strong>Two</strong></p>
+      <div class="fd-panel__body">
+        <p><strong>Two</strong></p>
+      </div>
     </div>
   </section>
   <div class="section-spacer"></div>
