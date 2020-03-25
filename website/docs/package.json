@@ -19,9 +19,8 @@
     "mock:develop-plugins:watch": "NODE_ENV=debug nodemon --ignore 'static/**' -r esm scripts/markdown.unified-preview.js"
   },
   "dependencies": {
-    "@kyma-project/luigi-client": "0.7.5",
-    "@kyma-project/luigi-core": "0.7.5",
-    "docsearch.js": "^2.6.3",
+    "@kyma-project/luigi-client": "0.7.7",
+    "@kyma-project/luigi-core": "0.7.7",
     "polka": "next"
   },
   "devDependencies": {
