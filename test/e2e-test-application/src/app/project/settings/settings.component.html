@@ -1,35 +1,57 @@
 <section class="fd-section" *ngIf="nodeParams">
-  <div class="fd-panel">
-    <div class="fd-alert" role="alert">
-      <span class="fd-status-label fd-status-label--available"></span> Called
-      with params:<br />
-      <pre>{{ nodeParams | json }}</pre>
+  <div class="fd-panel fd-has-margin-bottom-small">
+    <div class="fd-panel__body">
+      <div class="fd-alert" role="alert">
+        <div class="fd-alert__text">
+          <div class="fd-alert__text">
+            <span class="fd-status-label fd-status-label--available"></span>
+            Called with params:<br />
+            <pre>{{ nodeParams | json }}</pre>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
-  <div class="fd-panel" *ngIf="hasBack">
-    Advanced: node Params and preserveView active. <br />
-    <a
-      href="javascript:void(0)"
-      (click)="
-        linkManager()
-          .withParams({ foo: 'bar' })
-          .navigate('/environments/env1', null, true)
-      "
-      >Go to /environments/env1 with preserveView</a
-    >
-    <br /><br />
-    <a href="javascript:void(0)" (click)="linkManager().goBack()"
-      >Go back: use default history method</a
-    >
+  <div class="fd-panel fd-has-margin-bottom-small" *ngIf="hasBack">
+    <div class="fd-panel__body">
+      <p>
+        Advanced: node Params and preserveView active. <br />
+        <a
+          href="javascript:void(0)"
+          class="fd-link"
+          (click)="
+            linkManager()
+              .withParams({ foo: 'bar' })
+              .navigate('/environments/env1', null, true)
+          "
+          >Go to /environments/env1 with preserveView</a
+        >
+      </p>
+      <p>
+        <a
+          href="javascript:void(0)"
+          class="fd-link"
+          (click)="linkManager().goBack()"
+        >
+          Go back: use default history method
+        </a>
+      </p>
+    </div>
   </div>
 </section>
 
 <section class="fd-section" *ngIf="preservedViewCallbackContext">
-  <div class="fd-panel">
-    <div class="fd-alert" role="alert">
-      <span class="fd-status-label fd-status-label--available"></span> Context
-      received from linkManager().goBack():<br />
-      <pre>{{ preservedViewCallbackContext | json }}</pre>
+  <div class="fd-panel fd-has-margin-bottom-small">
+    <div class="fd-panel__body">
+      <div class="fd-alert" role="alert">
+        <div class="fd-alert__text">
+          <div class="fd-alert__text">
+            <span class="fd-status-label fd-status-label--available"></span>
+            Context received from linkManager().goBack():<br />
+            <pre>{{ preservedViewCallbackContext | json }}</pre>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </section>
