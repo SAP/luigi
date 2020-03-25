@@ -251,10 +251,14 @@
     </div>
     <ng-container *ngIf="preservedViewCallbackContext">
       <div class="fd-panel fd-has-margin-bottom-small">
-        <div class="fd-alert" role="alert">
-          <span class="fd-status-label fd-status-label--available"></span>
-          Context received from linkManager().goBack():<br />
-          <pre>{{ preservedViewCallbackContext | json }}</pre>
+        <div class="fd-panel__body">
+          <div class="fd-alert" role="alert">
+            <div class="fd-alert__text">
+              <span class="fd-status-label fd-status-label--available"></span>
+              Context received from linkManager().goBack():<br />
+              <pre>{{ preservedViewCallbackContext | json }}</pre>
+            </div>
+          </div>
         </div>
       </div>
     </ng-container>
