@@ -88,10 +88,9 @@ class DocSearch {
         inputSelector: '#docsearch',
         autocompleteOptions: {
           debug: this.isDevelop,
-          openOnFocus: true,
+          openOnFocus: false,
           autoselect: true,
           hint: true,
-          keyboardShortcuts: [`s`],
         },
         algoliaOptions,
         transformData,
@@ -103,10 +102,15 @@ class DocSearch {
 
   attachHandlers() {
     const inputEl = document.getElementById('lui-search-field');
-
+  
     const focusSearch = () => {
+      let inputField = document.getElementById('docsearch');
       if (this.inputActive) {
-        inputEl.focus();
+        setTimeout(() => {
+          inputField.focus();
+        }, 200);
+      } else {
+        inputField.value = "";
       }
     };
     
