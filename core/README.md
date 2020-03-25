@@ -51,4 +51,3 @@ npm install --global local-web-server
 
 To perform the unit test on JavaScript files, run `npm test`.
 
-
