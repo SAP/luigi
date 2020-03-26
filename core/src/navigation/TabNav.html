@@ -5,7 +5,7 @@
 />
 {#if children && pathData.length > 1}
 <nav
-  class="fd-tabs"
+  class="fd-tabs fd-tabs--l"
   role="tablist"
   id="tabsContainer"
   on:toggleDropdownState="{event => toggleDropdownState(event.name)}"
@@ -97,47 +97,56 @@
           class="fd-popover__body fd-popover__body--right fd-popover__body--no-arrow"
           aria-hidden="{!isMoreBtnExpanded}"
         >
-          <div class="fd-menu">
+          <ul
+            class="fd-nested-list fd-nested-list--compact fd-nested-list--text-only"
+          >
             {#each Object.entries(children) as [key, nodes], index}
             {#if key === 'undefined' || key.indexOf(virtualGroupPrefix) === 0}
             {#each nodes as node, index2}
-            <li class="fd-side-nav__item" uid="{index}-{index2}">
+            <li class="fd-nested-list__item" uid="{index}-{index2}">
               <a
                 href="{getRouteLink(node)}"
-                class="fd-menu__item"
+                class="fd-nested-list__link"
                 on:click|preventDefault="{() => handleClick(node)}"
                 aria-selected="{node===selectedNodeForTabNav}"
-              >{node.label}</a>
+              >
+                <span class="fd-nested-list__title">{node.label}</span>
+              </a>
             </li>
             {/each}
             {:else}
-            <li class="fd-side-nav__item" uid="{index}-0">
+            <li class="fd-nested-list__item" uid="{index}-0">
               <a
-                class="fd-side-nav__link has-child"
+                href="javascript:void(null)"
+                class="fd-nested-list__link has-child"
                 aria-haspopup="true"
                 aria-expanded="{dropDownStates[key+index]}"
                 aria-selected="{isSelectedCat(key,selectedNodeForTabNav)}"
                 on:click|preventDefault="{() => toggleDropdownState(key+index)}"
-              >{key}</a>
+              >
+                <span class="fd-nested-list__title">{key}</span>
+              </a>
               <ul
-                class="fd-side-nav__sublist"
+                class="fd-nested-list level-2"
                 aria-hidden="{!dropDownStates[key+index]}"
               >
                 {#each nodes as node}
-                <li class="fd-side-nav__subitem">
+                <li class="fd-nested-list__item">
                   <a
-                    class="fd-side-nav__sublink"
+                    class="fd-nested-list__link"
                     href="{getRouteLink(node)}"
                     on:click|preventDefault="{() => handleClick(node)}"
                     aria-selected="{node===selectedNodeForTabNav}"
-                  >{node.label}</a>
+                  >
+                    <span class="fd-nested-list__title">{node.label}</span>
+                  </a>
                 </li>
                 {/each}
               </ul>
             </li>
             {/if}
             {/each}
-          </div>
+          </ul>
         </div>
       </div>
     </span>
@@ -225,12 +234,16 @@
     let hasMoreBtnElements = false;
     let componentData = __this.get();
     let current = componentData.pathData[componentData.pathData.length - 1];
+    let style;
+    let margin;
     moreLink.setAttribute('aria-selected', 'false');
     if (tabsContainer) {
       tabsContainerOffsetWidth = tabsContainer.offsetWidth;
       let tabs = [...tabsContainer.children];
       tabs.forEach(element => {
-        totalTabsSize += element.offsetWidth;
+        style = element.currentStyle || window.getComputedStyle(element);
+        margin = parseFloat(style.marginLeft) + parseFloat(style.marginRight);
+        totalTabsSize += element.offsetWidth + margin;
         let uid = element.getAttribute('uid');
         if (totalTabsSize >= tabsContainerOffsetWidth) {
           element.classList.add('hide_element');
@@ -342,7 +355,7 @@
   /*Mixins*/
   @import 'styles/mixins';
 
-  $leftNavWidth: 320px;
+  $leftNavWidth: 15rem;
 
   .tabsContainer {
     width: 100%;
@@ -355,11 +368,34 @@
   }
 
   .luigi-tabsMoreButton {
-    .fd-menu {
-      max-height: calc(100vh - 110px);
-      overflow-y: scroll !important;
-      .fd-side-nav__item:not(:last-child) {
-        border-bottom: 1px solid #eeeeef;
+    .fd-popover__body {
+      > .fd-nested-list {
+        max-height: calc(100vh - 110px);
+        overflow-y: scroll !important;
+        padding-top: 4px;
+        padding-bottom: 4px;
+
+        .fd-nested-list__item:last-child {
+          border-bottom: none;
+        }
+      }
+    }
+    :global(&.hide_element) {
+      display: none;
+    }
+
+    .fd-nested-list__item {
+      :global(&.hide_element) {
+        display: none;
+      }
+    }
+    .fd-tabs__link {
+      padding-right: 0;
+
+      &.has-child {
+        .sap-icon--l {
+          right: 0;
+        }
       }
     }
   }
@@ -391,34 +427,12 @@
         .label {
           padding-right: 17px;
         }
-
         .sap-icon--l {
           position: absolute;
-          top: 0.7em;
-          right: 0;
+          top: 0.4em;
+          right: 14px;
         }
       }
-    }
-  }
-
-  .fd-side-nav {
-    &__item {
-      :global(&.hide_element) {
-        display: none;
-      }
-    }
-
-    &__link {
-      &.has-child {
-        padding-right: 40px;
-        background-position: right 15px center;
-      }
-    }
-  }
-
-  .luigi-tabsMoreButton {
-    :global(&.hide_element) {
-      display: none;
     }
   }
 </style>

@@ -31,7 +31,6 @@
     <span class="sap-icon--navigation-down-arrow sap-icon--s"></span>
   </a>
 </div>
-
 {/if}
 <script>
   import Backdrop from './Backdrop.html';
@@ -144,9 +143,7 @@
     }
 
     elements.split.style.top = `${SplitViewSvc.splitViewValues.top}px`;
-    elements.iframe.style.paddingBottom = `${
-      SplitViewSvc.splitViewValues.bottom
-    }px`;
+    elements.iframe.style.paddingBottom = `${SplitViewSvc.splitViewValues.bottom}px`;
   };
 
   function _messageHandler(e) {
@@ -309,8 +306,8 @@
 </script>
 
 <style type="text/scss">
-  $topNavHeight: 48px;
-  $leftNavWidth: 320px;
+  $topNavHeight: 44px;
+  $leftNavWidth: 15rem;
   $collapsedSplitviewHeight: 38px;
   $desktopMinWidth: 600px;
   $colorNeutral4: #89919a;
@@ -337,6 +334,7 @@
   }
 
   .fd-splitView__title {
+    margin-top: 0;
     font-size: 16px;
     line-height: $collapsedSplitviewHeight;
     vertical-align: center;
@@ -372,14 +370,13 @@
 
   .lui-collapse-btn {
     width: 36px;
-    height: 20px;
+    height: 22px;
     background: white;
     position: absolute;
     left: 50%;
     margin-left: -12px;
     margin-top: -11px;
     text-align: center;
-    padding: 1px;
     border: 1px solid $colorNeutral4;
     border-radius: 4px;
     cursor: pointer;
