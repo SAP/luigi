@@ -27,7 +27,7 @@ class PatchLuigiPlugin {
       compiler.hooks.afterEmit.tap('Luigi Patch babel + terser', () =>
         exec(
           [
-            'babel public/luigi.js --out-file public/luigi.babel.js --presets=@babel/preset-env --root-mode upward --source-maps inline',
+            'babel public/luigi.js --out-file public/luigi.babel.js --presets=@babel/preset-env --root . --root-mode upward --source-maps inline',
             `terser --compress --mangle --output public/luigi.js --source-map "content=inline" -- public/luigi.babel.js`,
             'rm -f public/luigi.babel.js'
           ].join(' && '),
