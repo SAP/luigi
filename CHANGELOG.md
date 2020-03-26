@@ -23,22 +23,21 @@ The lerna-changelog tool detects changes based on PR labels and maps them to sec
     ...
   }
 -->
-## [v0.7.6] (2020-03-09)
+## [v1.0.0] (2020-03-26)
 
 #### :rocket: Added
-* [#1075](https://github.com/SAP/luigi/pull/1075) Virtual tree navigation ([@maxmarkus](https://github.com/maxmarkus))
-* [#1111](https://github.com/SAP/luigi/pull/1111) Ability to update core URL without micro frontend URL change ([@maxmarkus](https://github.com/maxmarkus))
-* [#1076](https://github.com/SAP/luigi/pull/1076) Core API: Add splitview functionality ([@ndricimrr](https://github.com/ndricimrr))
-* [#1129](https://github.com/SAP/luigi/pull/1129) OpenIdConnect (OIDC) provider profile interceptor ([@maxmarkus](https://github.com/maxmarkus))
+* [#1151](https://github.com/SAP/luigi/pull/1151) Add customSelectedOptionRenderer to style ContextSwitcher dropdown button ([@ndricimrr](https://github.com/ndricimrr))
+* [#1058](https://github.com/SAP/luigi/pull/1058) Refactor authorisation to activate idp providers before Luigi is rendered ([@maxmarkus](https://github.com/maxmarkus))
+* [#1055](https://github.com/SAP/luigi/pull/1055) Externalize auth providers ([@maxmarkus](https://github.com/maxmarkus))
+* [#912](https://github.com/SAP/luigi/issues/912) Switch to fundamental styles ([@marynaKhromova](https://github.com/marynaKhromova))
 
 #### :bug: Fixed
-* [#1119](https://github.com/SAP/luigi/pull/1119) Refactor resolved node children data management ([@JohannesDoberer](https://github.com/JohannesDoberer))
-* [#1115](https://github.com/SAP/luigi/pull/1115) Profile icon tooltip text ([@maxmarkus](https://github.com/maxmarkus))
+* [#1189](https://github.com/SAP/luigi/pull/1189) Modal window contrast on dark themes ([@marynaKhromova](https://github.com/marynaKhromova))
+* [#1158](https://github.com/SAP/luigi/pull/1158) Aligned splitview and centered arrow ([@ndricimrr](https://github.com/ndricimrr))
 
 #### :memo: Documentation
-* [#1109](https://github.com/SAP/luigi/pull/1109) Document how to make use of contextUpdateListener ([@alexandra-simeonova](https://github.com/alexandra-simeonova))
-* [#1096](https://github.com/SAP/luigi/pull/1096) Document how to set auth storage type ([@alexandra-simeonova](https://github.com/alexandra-simeonova))
-* [#1099](https://github.com/SAP/luigi/pull/1099) Update documentation for examples + consolidate filenames ([@alexandra-simeonova](https://github.com/alexandra-simeonova))
+* [#1155](https://github.com/SAP/luigi/pull/1155) Document potential wrong-usage of context/dynamic nodes ([@alexandra-simeonova](https://github.com/alexandra-simeonova))
+* [#1135](https://github.com/SAP/luigi/pull/1135) Add fundamental library styles section to migration docu ([@marynaKhromova](https://github.com/marynaKhromova))
 
 
 
@@ -706,3 +705,4 @@ The lerna-changelog tool detects changes based on PR labels and maps them to sec
 [v0.7.5]: https://github.com/SAP/luigi/compare/v0.7.4...v0.7.5
 [v0.7.6]: https://github.com/SAP/luigi/compare/v0.7.5...v0.7.6
 [v0.7.7]: https://github.com/SAP/luigi/compare/v0.7.6...v0.7.7
+[v1.0.0]: https://github.com/SAP/luigi/compare/v0.7.7...v1.0.0
