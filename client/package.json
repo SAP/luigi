@@ -1,6 +1,6 @@
 {
   "name": "luigi-client-private",
-  "version": "1.0.0-next.2",
+  "version": "1.0.0",
   "private": true,
   "description": "luigi-client development version, only the public folder is being published to npm as a package",
   "repository": {
