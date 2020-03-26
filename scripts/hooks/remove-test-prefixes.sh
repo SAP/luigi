@@ -36,8 +36,8 @@ while read LINE; do
     cleanFiles "${LINE}"
 done <<HERE
 $BASE_DIR/../../core/test
-$BASE_DIR/../../core/examples/luigi-sample-angular/e2e
-$BASE_DIR/../../core/examples/luigi-sample-angular/src/app
+$BASE_DIR/../../test/e2e-test-application/e2e
+$BASE_DIR/../../test/e2e-test-application/src/app
 HERE
 
 exit 0
