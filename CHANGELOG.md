@@ -23,6 +23,22 @@ The lerna-changelog tool detects changes based on PR labels and maps them to sec
     ...
   }
 -->
+## [v1.0.0] (2020-03-26)
+
+#### :rocket: Added
+* [#1151](https://github.com/SAP/luigi/pull/1151) Add customSelectedOptionRenderer to style ContextSwitcher dropdown button ([@ndricimrr](https://github.com/ndricimrr))
+* [#1058](https://github.com/SAP/luigi/pull/1058) Refactor authorisation to activate idp providers before Luigi is rendered ([@maxmarkus](https://github.com/maxmarkus))
+* [#1055](https://github.com/SAP/luigi/pull/1055) Externalize auth providers ([@maxmarkus](https://github.com/maxmarkus))
+* [#912](https://github.com/SAP/luigi/issues/912) Switch to fundamental styles ([@marynaKhromova](https://github.com/marynaKhromova))
+
+#### :bug: Fixed
+* [#1189](https://github.com/SAP/luigi/pull/1189) Modal window contrast on dark themes ([@marynaKhromova](https://github.com/marynaKhromova))
+* [#1158](https://github.com/SAP/luigi/pull/1158) Aligned splitview and centered arrow ([@ndricimrr](https://github.com/ndricimrr))
+
+#### :memo: Documentation
+* [#1155](https://github.com/SAP/luigi/pull/1155) Document potential wrong-usage of context/dynamic nodes ([@alexandra-simeonova](https://github.com/alexandra-simeonova))
+* [#1135](https://github.com/SAP/luigi/pull/1135) Add fundamental library styles section to migration docu ([@marynaKhromova](https://github.com/marynaKhromova))
+
 
 
 ## [v0.7.7] (2020-03-20)
@@ -689,3 +705,4 @@ The lerna-changelog tool detects changes based on PR labels and maps them to sec
 [v0.7.5]: https://github.com/SAP/luigi/compare/v0.7.4...v0.7.5
 [v0.7.6]: https://github.com/SAP/luigi/compare/v0.7.5...v0.7.6
 [v0.7.7]: https://github.com/SAP/luigi/compare/v0.7.6...v0.7.7
+[v1.0.0]: https://github.com/SAP/luigi/compare/v0.7.7...v1.0.0

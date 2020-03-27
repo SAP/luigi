@@ -96,7 +96,8 @@ class LifecycleManager extends LuigiClientBase {
        */
       window.parent.postMessage(
         {
-          msg: 'luigi.get-context'
+          msg: 'luigi.get-context',
+          clientVersion: require('../public/package.json').version
         },
         '*'
       );
@@ -385,7 +386,7 @@ class LifecycleManager extends LuigiClientBase {
    * @param {string} message.id a string containing the message id
    * @param {*} message.MY_DATA_FIELD any other message data field
    * @example
-   * import LuigiClient from '@kyma-project/luigi-client';
+   * import LuigiClient from '@luigi-project/client';
    * LuigiClient.sendCustomMessage({id: 'environment.created', production: false})
    * @memberof Lifecycle
    * @since 0.6.2
