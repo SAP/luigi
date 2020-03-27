@@ -94,6 +94,32 @@
     bottom: 50px !important;
   }
 
+  :global(body) {
+    font-family: var(--sapFontFamily, "72", "72full", Arial, Helvetica, sans-serif);
+  }
+
+  :global(#ext-cookiebar) {
+    width: 100%;
+    position: fixed;
+    top: 0;
+    left: 0;
+    padding: 10px 5px;
+    background: rgba(0,0,0,.6);
+    font-size: 12px;
+    color: white;
+    text-align: center;
+    box-sizing: border-box;
+    z-index: 1000;
+  }
+
+  :global(#ext-cookiebar a) {
+    color: #2deb8a;
+  }
+
+  :global(#ext-cookiebar a:hover) {
+    text-decoration: none;
+  }
+
   .fiddle-toolbar {
     border-top: 1px solid rgb(48, 48, 48);
     background: #3c4553;
