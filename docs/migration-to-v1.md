@@ -15,6 +15,8 @@ meta -->
 
 # Migration Guides for Luigi 0.x to 1.x
 
+As part of the upgrade to Luigi 1.0, some important changes were made. Luigi npm packages (preciously under `kyma-project`) are now under a [new npm org](https://www.npmjs.com/~luigi-robot). You can read more about the other changes below:
+
 <!-- accordion:start -->
 
 ### Internet Explorer 11 (IE11)
