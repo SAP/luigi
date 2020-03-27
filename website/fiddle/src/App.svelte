@@ -147,6 +147,10 @@
     margin: -3px 5px 2px -5px;
   }
 
+  .fd-action-bar__header img {
+    vertical-align: middle;
+  }
+
   .btn-primary {
     display: inline-block;
     border: 2px solid #2deb8a;
