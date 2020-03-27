@@ -7,7 +7,12 @@ cache:
   directories:
     - $TRAVIS_BUILD_DIR/client/public
     - $TRAVIS_BUILD_DIR/core/public
-    - $TRAVIS_BUILD_DIR/core/examples/luigi-sample-angular/dist
+    - $TRAVIS_BUILD_DIR/client/public-ie11
+    - $TRAVIS_BUILD_DIR/core/public-ie11
+    - $TRAVIS_BUILD_DIR/plugins/auth/public/auth-oauth2
+    - $TRAVIS_BUILD_DIR/plugins/auth/public/auth-oidc
+    - $TRAVIS_BUILD_DIR/test/e2e-test-application/dist
+    - $TRAVIS_BUILD_DIR/website/fiddle/public
     - $TRAVIS_BUILD_DIR/cypress-binary-cache
     - $HOME/.cache/Cypress
 notifications:
@@ -26,10 +31,12 @@ integration-testing: &integration-testing
         # Ubuntu 16+ does not install this dependency by default, so we need to install it ourselves
         - libgconf-2-4
         #- chromium-browser=79.0.3945.130-0ubuntu0.16.04.1 # update also if you upgrade from Xenial
-    chrome: beta
+    # chrome: beta
+    chrome: stable
   before_install:
-    #- chromium-browser --headless --disable-gpu --remote-debugging-port=9222 http://localhost &
-    - google-chrome-beta --headless --disable-gpu --remote-debugging-port=9222 http://localhost &
+    # - chromium-browser --headless --disable-gpu --remote-debugging-port=9222 http://localhost &
+    # - google-chrome-beta --headless --disable-gpu --remote-debugging-port=9222 http://localhost &
+    - google-chrome-stable --headless --disable-gpu --remote-debugging-port=9222 http://localhost &
   before_cache:
     - rm -rf ~/.npm/_logs
     - rm -rf ~/.npm/_cacache
@@ -42,21 +49,35 @@ jobs:
       script:
         - export CYPRESS_CACHE_FOLDER=$TRAVIS_BUILD_DIR/cypress-binary-cache
         - npm i -g lerna
-        - head $TRAVIS_BUILD_DIR/client/public/package.json && head $TRAVIS_BUILD_DIR/core/public/package.json
-        - cat $TRAVIS_BUILD_DIR/core/examples/luigi-sample-angular/package.json | grep luigi
-        - lerna bootstrap --ci --ignore "*luigi-example-vue" || travis_terminate 1
-        - lerna run bundle --ignore "*luigi-example-vue" || travis_terminate 1
-        - lerna run bundlesizeOnly --ignore "*luigi-example-vue" || travis_terminate 1
-        - ls -lah $TRAVIS_BUILD_DIR/core/examples/luigi-sample-angular/node_modules/@kyma-project
-        - cat $TRAVIS_BUILD_DIR/core/examples/luigi-sample-angular/node_modules/@kyma-project/luigi-client/package.json
-        - lerna run build --ignore "*luigi-example-vue" || travis_terminate 1
+        - lerna bootstrap --ci --force-local --ignore docs || travis_terminate 1
+        # WORKAROUND - START
+        # Due to open bug at lerna, https://github.com/lerna/lerna/issues/2352
+        # Link e2e-test-application manually:
+        - rm -rf $TRAVIS_BUILD_DIR/test/e2e-test-application/node_modules/@luigi-project/*
+        - ln -s $TRAVIS_BUILD_DIR/core/public $TRAVIS_BUILD_DIR/test/e2e-test-application/node_modules/@luigi-project/core
+        - ln -s $TRAVIS_BUILD_DIR/client/public $TRAVIS_BUILD_DIR/test/e2e-test-application/node_modules/@luigi-project/client
+        - ln -s $TRAVIS_BUILD_DIR/plugins/auth/public/auth-oauth2 $TRAVIS_BUILD_DIR/test/e2e-test-application/node_modules/@luigi-project/plugin-auth-oauth2
+        - ln -s $TRAVIS_BUILD_DIR/plugins/auth/public/auth-oidc $TRAVIS_BUILD_DIR/test/e2e-test-application/node_modules/@luigi-project/plugin-auth-oidc
+        # Link fiddle manually:
+        - rm -rf $TRAVIS_BUILD_DIR/website/fiddle/node_modules/@luigi-project/*
+        - ln -s $TRAVIS_BUILD_DIR/core/public $TRAVIS_BUILD_DIR/website/fiddle/node_modules/@luigi-project/core
+        - ln -s $TRAVIS_BUILD_DIR/client/public $TRAVIS_BUILD_DIR/website/fiddle/node_modules/@luigi-project/client
+        - ln -s $TRAVIS_BUILD_DIR/plugins/auth/public/auth-oauth2 $TRAVIS_BUILD_DIR/website/fiddle/node_modules/@luigi-project/plugin-auth-oauth2
+        - ln -s $TRAVIS_BUILD_DIR/plugins/auth/public/auth-oidc $TRAVIS_BUILD_DIR/website/fiddle/node_modules/@luigi-project/plugin-auth-oidc
+        # WORKAROUND - END
+        - lerna run bundle --ignore docs || travis_terminate 1
+        - lerna run bundlesizeOnly --ignore docs || travis_terminate 1
+        # Verifying step
+        - head $TRAVIS_BUILD_DIR/client/public/package.json
+        - ls -lah $TRAVIS_BUILD_DIR/test/e2e-test-application/node_modules/@luigi-project
+        - ls -lah $TRAVIS_BUILD_DIR/test/e2e-test-application/node_modules/@luigi-project/client/
+        - echo "check if luigi-client.d.ts exists" && cat $TRAVIS_BUILD_DIR/test/e2e-test-application/node_modules/@luigi-project/client/luigi-client.d.ts | grep -C 3 "withoutSync" || travis_terminate 1
+        - lerna run build --ignore docs || travis_terminate 1
         - npm test --prefix core || travis_terminate 1
-        - du -sh
       before_cache:
         - rm -rf ~/.npm/_logs
         - rm -rf ~/.npm/_cacache
-        - rm -rf $TRAVIS_BUILD_DIR/website
-        - rm -rf $TRAVIS_BUILD_DIR/core/examples/luigi-example-vue
+        - rm -rf $TRAVIS_BUILD_DIR/core/examples
 
     #----- DOCU -----
     - stage: 'Documentation & Tests'
@@ -70,12 +91,13 @@ jobs:
 
     #----- WHITESOURCE -----
     - name: 'Whitesource check'
-      if: repo = SAP/luigi AND (branch = master)
+      if: repo = SAP/luigi AND branch = master
+      # if: repo = SAP/luigi AND (branch = master OR branch = release-v1)
       script:
         - 'if [ ! -z "${WHITESOURCE_APIKEY}" ]; then
             npm --prefix ./website/landingpage/dev install ./website/landingpage/dev;
             npm --prefix ./website/fiddle install ./website/fiddle;
-            lerna bootstrap --ci --ignore "*luigi-example-vue";
+            lerna bootstrap --ci;
             npm i -g whitesource;
             bash ./scripts/whiteSource.sh;
           fi'
@@ -88,9 +110,6 @@ jobs:
       <<: *integration-testing
 
     - name: 'Integration Testing 2'
-      <<: *integration-testing
- 
-    - name: 'Integration Testing 3'
       <<: *integration-testing
 
     # ----- NPM PUBLISH -----
