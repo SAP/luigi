@@ -71,7 +71,7 @@ anonymousAccess: true // always show nodes
 
 ## OpenID Connect configuration
 
-This code snippet demonstrates how to configure authorization using OpenID Connect in Luigi. Note that you must install the [OpenID Plugin](https://github.com/SAP/luigi/tree/master/plugins/auth/public/auth-oidc/README.md) first. 
+This code snippet demonstrates how to configure authorization using OpenID Connect in Luigi. Note that you must install the [OpenID Plugin](https://github.com/SAP/luigi/tree/master/plugins/auth/public/auth-oidc) first. 
 
 ```javascript
 import oidcProvider from '@luigi-project/plugin-auth-oidc';
