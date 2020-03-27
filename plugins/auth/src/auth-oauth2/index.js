@@ -76,8 +76,10 @@ export default class oAuth2ImplicitGrant {
         settings.oAuthData.redirect_uri
       )}?storageType=${Luigi.auth().store.getStorageType()}`;
       const nonceSegment = '_luigiNonce=' + generatedNonce;
-      var encodedUrl = encodeURIComponent(window.location.href + nonceSegment);
-      settings.oAuthData.state = btoa(decodeURIComponent(encodedUrl));
+      const encodedNonceUrl = encodeURIComponent(
+        window.location.href + nonceSegment
+      );
+      settings.oAuthData.state = btoa(decodeURIComponent(encodedNonceUrl));
 
       for (const name in settings.oAuthData) {
         const node = createInputElement(name, settings.oAuthData[name]);
