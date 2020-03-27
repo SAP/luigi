@@ -1,14 +1,14 @@
 <script context="module">
 	export function preload({ params, query }) {
-		return this.fetch(`docs.json`).then(r => r.json()).then(docs => {
-			return { docs };
+		return this.fetch(`docs.json`).then(r => r.json()).then(doc => {
+			return { doc };
 		});
 	}
 	
 </script>
 
 <script>
-	export let docs;
+	export let doc;
 </script>
 
 <style>
