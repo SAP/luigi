@@ -4,7 +4,7 @@
   "private": true,
   "description": "luigi-core development version, only the public folder is being published to npm as a package",
   "devDependencies": {
-    "@babel/cli": "^7.6.2",
+    "@babel/cli": "^7.6.4",
     "@babel/core": "^7.6.2",
     "@babel/node": "^7.6.2",
     "@babel/plugin-transform-runtime": "^7.6.2",
