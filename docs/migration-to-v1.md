@@ -15,7 +15,7 @@ meta -->
 
 # Migration Guides for Luigi 0.x to 1.x
 
-As part of the upgrade to Luigi 1.0, some important changes were made. Luigi npm packages (preciously under `kyma-project`) are now under a new npm org. The new packages are:
+As part of the upgrade to Luigi 1.0, some important changes were made. Luigi npm packages (previously under `kyma-project`) are now under a new npm org. The new packages are:
 - @luigi-project/client
 - @luigi-project/client-ie11
 - @luigi-project/core
