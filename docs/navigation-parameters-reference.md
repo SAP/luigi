@@ -122,8 +122,6 @@ Node parameters are all the parameters that can be added to an individual naviga
 - **description**: contains the URL or path to a view which renders when you click the navigation node. Use either a full URL or a relative path. If **viewUrl** is undefined, Luigi activates the child node specified in **defaultChildNode**. When both **viewUrl** and **defaultChildNode** are undefined, Luigi opens the first child of the current node. **viewUrl** can contain variables from:
   * dynamic path segments
   * node parameters
-  * contexts
-
 
 ### navigationContext
 - **type**: string
@@ -131,7 +129,7 @@ Node parameters are all the parameters that can be added to an individual naviga
 
 ### context
 - **type**: object
-- **description**: sends the specified object as context to the view. Use this parameter in combination with the dynamic **pathSegment** to receive the context through the context listeners of **Luigi Client**. This is an alternative to using the dynamic value in the **viewUrl**.
+- **description**: sends the specified object as a context to the micro frontend.
 
 ### defaultChildNode
 - **type**: string
@@ -293,11 +291,17 @@ The context switcher is a drop-down list available in the top navigation bar. It
 - **attributes**:
   - **label** defines the context element label. If not defined, the **pathValue** is passed to **fallbackLabelResolver** to set its value. The default value is **pathValue**, if **fallbackLabelResolver** is not defined.
   - **pathValue** defines the context element path that is appended to **parentNodePath** and reflects a **pathSegment**.
+  - **customRendererCategory** defines a custom category for the option, which can be used by **customSelectedOptionRenderer** function to customize the rendering of the option when selected
+
+### customSelectedOptionRenderer
+- **type**: function
+- **parameters**: [option](navigation-parameters-reference.md#options)
+- **description**: enables you to customize the selected option of the dropdown button of the context switcher by rendering HTML code inside a `<button>`. The function takes an  **option** object as a parameter. It is recommended to use this function carefully because it is possible to inject JavaScript code.
 
 ### customOptionsRenderer
 - **type**: function
 - **parameters**: [option](navigation-parameters-reference.md#options), isSelected
-- **description**: - **description**: enables you to add custom items to the context switcher by rendering code inside a `<li>` element. The function take an **option** object and a boolean **isSelected** as a parameter. It is recommended to use this function carefully because it is possible to inject JavaScript code.
+- **description**: enables you to add custom items to the context switcher by rendering code inside a `<li>` element. The function takes an **option** object and a boolean **isSelected** as a parameter. It is recommended to use this function carefully because it is possible to inject JavaScript code.
 
 
 ### actions

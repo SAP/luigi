@@ -23,6 +23,38 @@ The lerna-changelog tool detects changes based on PR labels and maps them to sec
     ...
   }
 -->
+## [v1.0.0] (2020-03-26)
+
+#### :rocket: Added
+* [#1151](https://github.com/SAP/luigi/pull/1151) Add customSelectedOptionRenderer to style ContextSwitcher dropdown button ([@ndricimrr](https://github.com/ndricimrr))
+* [#1058](https://github.com/SAP/luigi/pull/1058) Refactor authorisation to activate idp providers before Luigi is rendered ([@maxmarkus](https://github.com/maxmarkus))
+* [#1055](https://github.com/SAP/luigi/pull/1055) Externalize auth providers ([@maxmarkus](https://github.com/maxmarkus))
+* [#912](https://github.com/SAP/luigi/issues/912) Switch to fundamental styles ([@marynaKhromova](https://github.com/marynaKhromova))
+
+#### :bug: Fixed
+* [#1189](https://github.com/SAP/luigi/pull/1189) Modal window contrast on dark themes ([@marynaKhromova](https://github.com/marynaKhromova))
+* [#1158](https://github.com/SAP/luigi/pull/1158) Aligned splitview and centered arrow ([@ndricimrr](https://github.com/ndricimrr))
+
+#### :memo: Documentation
+* [#1155](https://github.com/SAP/luigi/pull/1155) Document potential wrong-usage of context/dynamic nodes ([@alexandra-simeonova](https://github.com/alexandra-simeonova))
+* [#1135](https://github.com/SAP/luigi/pull/1135) Add fundamental library styles section to migration docu ([@marynaKhromova](https://github.com/marynaKhromova))
+
+
+
+## [v0.7.7] (2020-03-20)
+
+#### :bug: Fixed
+* [#1172](https://github.com/SAP/luigi/pull/1172) Fix virtualtree trailing slash ([@maxmarkus](https://github.com/maxmarkus))
+* [#1179](https://github.com/SAP/luigi/pull/1179) Fix navigate ok check for withoutSync ([@maxmarkus](https://github.com/maxmarkus))
+* [#1173](https://github.com/SAP/luigi/pull/1173) Recalculation after cache deletion ([@JohannesDoberer](https://github.com/JohannesDoberer))
+* [#1148](https://github.com/SAP/luigi/pull/1148) deleteCache was missing in contextswitcher ([@JohannesDoberer](https://github.com/JohannesDoberer))
+* [#1145](https://github.com/SAP/luigi/pull/1145) Route change loses context in contextswitcher ([@JohannesDoberer](https://github.com/JohannesDoberer))
+
+#### :memo: Documentation
+* [#1060](https://github.com/SAP/luigi/pull/1060) Luigi Videos ([@alexandra-simeonova](https://github.com/alexandra-simeonova))
+* [#1116](https://github.com/SAP/luigi/pull/1116) Add implementations/scenarios ([@alexandra-simeonova](https://github.com/alexandra-simeonova))
+
+
 ## [v0.7.6] (2020-03-09)
 
 #### :rocket: Added
@@ -672,3 +704,5 @@ The lerna-changelog tool detects changes based on PR labels and maps them to sec
 [v0.7.4]: https://github.com/SAP/luigi/compare/v0.7.3...v0.7.4
 [v0.7.5]: https://github.com/SAP/luigi/compare/v0.7.4...v0.7.5
 [v0.7.6]: https://github.com/SAP/luigi/compare/v0.7.5...v0.7.6
+[v0.7.7]: https://github.com/SAP/luigi/compare/v0.7.6...v0.7.7
+[v1.0.0]: https://github.com/SAP/luigi/compare/v0.7.7...v1.0.0

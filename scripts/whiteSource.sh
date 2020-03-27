@@ -10,7 +10,6 @@ declare -a FOLDERS=("client"
                     "website/landingpage/dev"
                     "website/fiddle"
                     "plugins"
-                    "test/e2e-test-application"
                    )
 
 # Project tokens for corresponding folders
@@ -19,7 +18,6 @@ declare -a PROJECT_TOKENS=("a63fd5aaaa2343199327aac6d3e2b5346e930927d66441bf9211
                            "0bc00859083a4cf98e1246c91cabc56a4623fb69f1f24cdd8ca10f9f0d3dfbb4"
                            "8b3ce944979d49c8b1d2917533199aeb4e73a993843f4820a509a33932e18a29"
                            "56eb623145264763a82330025e4f11efd538074a3cd04791ab6ab87293174aca"
-                           "38e3dba3c31e479a948fc7b3ae4a56da6f18d279640f42028a4572d40562fc89"
                           )
 
 for ((i=0;i<${#FOLDERS[@]};++i)); do

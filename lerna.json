@@ -9,7 +9,8 @@
     "plugins",
     "plugins/auth/public/auth-oauth2",
     "plugins/auth/public/auth-oidc",
-    "test/e2e-test-application"
+    "test/e2e-test-application",
+    "website/fiddle"
   ],
   "version": "0.0.0"
 }

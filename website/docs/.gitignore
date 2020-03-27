@@ -9,7 +9,7 @@
 extendedConfiguration.bundle.js
 luigi-core
 luigi-client
-public/*
+public
 static/assets
 *coreStyles*
 navigation-generated.json

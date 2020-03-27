@@ -678,13 +678,12 @@
 
   //// MICRO-FRONTEND MODAL
 
-  let mfModal;
+  let mfModal = {};
 
   const resetMicrofrontendModalData = () => {
-    mfModal = {
-      displayed: false,
-      settings: {}
-    };
+    mfModal.displayed = false;
+    mfModal.nodepath = undefined;
+    mfModal.modalSettings = {};
   };
 
   resetMicrofrontendModalData();
@@ -694,11 +693,9 @@
     if (await Navigation.shouldPreventNavigation(nodeObject)) {
       return;
     }
-    mfModal = {
-      displayed: true,
-      nodepath,
-      modalSettings
-    };
+    mfModal.displayed = true;
+    mfModal.nodepath = nodepath;
+    mfModal.modalSettings = modalSettings;
   };
 
   const modalIframeCreated = event => {
@@ -709,9 +706,7 @@
   const closeModal = () => {
     if (modalIframe) {
       getUnsavedChangesModalPromise(modalIframe.contentWindow).then(() => {
-        mfModal = {
-          displayed: false
-        };
+        resetMicrofrontendModalData();
       });
     }
   };
@@ -1410,5 +1405,10 @@
   :global(.fd-modal__content) {
     background-color: #fff;
     background-color: var(--sapGroup_ContentBackground, #fff);
+    box-shadow: var(
+      --sapContent_Shadow3,
+      0 0 0 0.0625rem rgba(0, 0, 0, 0.42),
+      0 1.25rem 5rem 0 rgba(0, 0, 0, 0.3)
+    );
   }
 </style>

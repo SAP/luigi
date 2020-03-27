@@ -125,7 +125,7 @@ You can specify them in the main application URL, similarly to URL query paramet
 
 All parameters without the prefix are not passed to the micro frontend and are consumed by the main application.
 
-A sample **viewUrl** `https://[YOUR.WEBSITE]/home/users/allUsers?~sorting=asc&~page=2` supports sorting and paging by introducing the **sort** and **page** node parameters.
+A sample **viewUrl** `https://[YOUR.WEBSITE]/home/users/allUsers?~sorting=asc&~page=2` supports sorting and pagination by introducing the **sort** and **page** node parameters.
 
 Using dynamic node parameters in the previous example results in:
 
@@ -214,17 +214,8 @@ The purpose of contexts is to send objects to the micro frontend. You can do thi
 - **type**: object
 - **description**: sends the specified object as context to the view. Use this property in combination with the dynamic **pathSegment** to receive the context through the context listeners of Luigi Client. This is an alternative to using the dynamic value in the **viewUrl**.
 
-One example of where contexts are used is during the creation of dynamic navigation nodes. Used together with path parameters and Luigi Client, contexts pass information to the micro frontend:
+> **NOTE**: Context should not be used to create the path or URL as this can lead to errors. Please use one of the methods described in the [dynamically changeable paths](#dynamically-changeable-paths) section instead.
 
-```javascript
-{
-  pathSegment: ':projectId',
-  viewUrl: '/some/path/:projectId',
-  context: {
-    projectId: ':projectId'
-  }
-}
- ```
 
 ## Profile
 
@@ -262,9 +253,20 @@ contextSwitcher: {
   parentNodePath: '/environments',
   lazyloadOptions: false,
   fallbackLabelResolver: (id) => (id.toUpperCase()),
-  options: [{label,pathValue}, {label,pathValue}],
-  customOptionsRenderer: (option, isSelected) => {let className = 'fd-menu__item' + (isSelected ? ' is-selected' : '');
-  return `<a class="${className}">${option.label} test</a>`;},
+  options: [{label, pathValue,customRendererCategory}, {label, pathValue, customRendererCategory}],
+  customSelectedOptionRenderer: (option) => {
+    let color = "white";
+    if (option.customRendererCategory === 'production') {
+      color = "#87FF00";
+    } else if (option.customRendererCategory === 'stage') {
+      color = "#00C9FF";
+    }
+    return  `<label style="color:${color}">${option.label} </label>`;
+  },
+  customOptionsRenderer: (option, isSelected) => {
+    let className = 'fd-menu__item' + (isSelected ? ' is-selected' : '');
+    return `<a class="${className}">${option.label} test</a>`;
+  },
   actions: [{label,link,position,clickHandler?}]
 },
 ```
