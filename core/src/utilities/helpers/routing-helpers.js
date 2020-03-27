@@ -20,7 +20,8 @@ class RoutingHelpersClass {
 
     const children = await AsyncHelpers.getConfigValueFromObjectAsync(
       lastElement,
-      'children'
+      'children',
+      pathData.context
     );
     const pathExists = children.find(
       childNode => childNode.pathSegment === lastElement.defaultChildNode

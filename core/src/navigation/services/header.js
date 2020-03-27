@@ -55,11 +55,12 @@ export const processHeaderSettings = component => {
             href: header.favicon
           });
           const head = document.getElementsByTagName('head')[0];
-          head.childNodes.forEach(child => {
+
+          for (const child of head.childNodes) {
             if (child.rel === 'shortcut icon') {
               child.remove();
             }
-          });
+          }
           head.appendChild(link);
         }
       });

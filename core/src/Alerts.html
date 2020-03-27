@@ -7,19 +7,24 @@
     data-testid="luigi-alert"
   >
     <button
-      class="fd-alert__close close-button"
+      class="fd-button fd-button--light fd-button--compact fd-alert__close"
       on:click="{() => dispatch('alertDismiss',{id: al.settings.id})}"
       aria-label="Close"
       aria-controls="j2ALl423"
       data-testid="luigi-alert-dismiss"
     ></button>
-    {@html al.dataSanitized ? al.settings.text: ''}
+    <p class="fd-alert__text">{@html al.dataSanitized ? al.settings.text: ''}</p>
   </div>
   {/each}
 </div>
 
 <script>
-  import { beforeUpdate, createEventDispatcher, onMount, getContext } from 'svelte';
+  import {
+    beforeUpdate,
+    createEventDispatcher,
+    onMount,
+    getContext
+  } from 'svelte';
 
   const dispatch = createEventDispatcher();
 
@@ -32,7 +37,9 @@
     warning: 'warning',
     error: 'error'
   };
-  const getUnsavedChangesModalPromise = getContext('getUnsavedChangesModalPromise');
+  const getUnsavedChangesModalPromise = getContext(
+    'getUnsavedChangesModalPromise'
+  );
   const handleNavigation = getContext('handleNavigation');
 
   beforeUpdate(() => {
@@ -70,9 +77,7 @@
     alertQueue = processedAlerts;
   });
 
-  onMount(() => {
-
-  });
+  onMount(() => {});
 
   // [svelte-upgrade suggestion]
   // review these functions and remove unnecessary 'export' keywords
@@ -104,6 +109,23 @@
     flex-direction: column;
     .fd-alert:not(:first-child) {
       margin-top: 8px;
+    }
+  }
+  .fd-alert__text {
+    :global(a) {
+      display: inline-block;
+      line-height: 1.42857;
+      color: #0a6ed1;
+      color: var(--sapLinkColor, #0a6ed1);
+      -webkit-transition: all 125ms ease-in;
+      transition: all 125ms ease-in;
+      text-decoration: none;
+
+      &:hover {
+        text-decoration: underline;
+        color: #0854a0;
+        color: var(--sapLink_Hover_Color, #0854a0);
+      }
     }
   }
 </style>

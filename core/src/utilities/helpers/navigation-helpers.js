@@ -2,7 +2,7 @@
 import { LuigiAuth, LuigiConfig } from '../../core-api';
 import { AuthHelpers } from './';
 import { Navigation } from '../../navigation/services/navigation';
-
+import { NodeDataManagementStorage } from '../../services/node-data-management';
 class NavigationHelpersClass {
   constructor() {
     this.EXP_CAT_KEY = 'luigi.preferences.navigation.expandedCategories';
@@ -13,6 +13,11 @@ class NavigationHelpersClass {
   getProductSwitcherConfig() {
     const userConfig = LuigiConfig.getConfigValue('navigation.productSwitcher');
     return Object.assign({ icon: 'grid', label: 'My Products' }, userConfig);
+  }
+
+  getProductSwitcherColumnsNumber() {
+    const productSwitcherConfig = this.getProductSwitcherConfig();
+    return productSwitcherConfig.columns === 3 ? 3 : 4;
   }
 
   prepareForTests(...parts) {
@@ -145,7 +150,7 @@ class NavigationHelpersClass {
   }
 
   async generateTopNavNodes(pathData) {
-    const rawChildren = await Navigation.getChildrenFromCache(pathData[0]);
+    const rawChildren = await Navigation.getFilteredChildren(pathData[0]);
     let selectedNode = null;
     let visibleNodeCount = 0;
     let cats = {};

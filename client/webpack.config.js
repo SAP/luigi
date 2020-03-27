@@ -1,6 +1,6 @@
 const path = require('path');
 const { readFileSync } = require('fs');
-
+const CopyWebpackPlugin = require('copy-webpack-plugin');
 const babelSettings = JSON.parse(readFileSync('.babelrc'));
 
 module.exports = {
@@ -27,5 +27,14 @@ module.exports = {
         }
       }
     ]
-  }
+  },
+
+  plugins: [
+    new CopyWebpackPlugin([
+      {
+        from: 'luigi-client.d.ts',
+        to: '.'
+      }
+    ])
+  ]
 };
