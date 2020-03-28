@@ -167,7 +167,6 @@ class IframeClass {
   }
 
   navigateIframe(config, component, node) {
-    console.log('config');
     clearTimeout(this.timeoutHandle);
     const componentData = component.get();
     let viewUrl = componentData.viewUrl;
