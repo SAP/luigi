@@ -70,6 +70,7 @@ class Navigation {
       label: 'Settings',
       viewUrl: '/sampleapp.html#/settings',
       icon: 'settings',
+      hideSideNav: true,
       viewGroup: 'tets'
     },
     {
@@ -136,6 +137,7 @@ class Navigation {
       label: 'Errors',
       pathSegment: 'errors',
       viewUrl: '/sampleapp.html#/projects/pr1/dynamic/errors',
+      hideSideNav: true,
       icon: 'alert',
       context: {
         label: 'Errors'
@@ -150,6 +152,7 @@ class Navigation {
       label: 'Warnings',
       pathSegment: 'warnings',
       viewUrl: '/sampleapp.html#/projects/pr1/dynamic/warnings',
+      hideSideNav: true,
       icon: 'message-warning',
       context: {
         label: 'Warnings'
@@ -163,6 +166,7 @@ class Navigation {
       category: 'Messages',
       label: 'Notifications',
       pathSegment: 'notifications',
+      hideSideNav: true,
       viewUrl: '/sampleapp.html#/projects/pr1/dynamic/notifications',
       icon: 'ui-notifications',
       context: {
