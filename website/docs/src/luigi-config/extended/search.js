@@ -30,7 +30,7 @@ class DocSearch {
         <div class="fd-search-input fd-search-input--closed">
           <div class="fd-popover">
             <div class="fd-popover__control fd-search-input__control">
-              <button class="sap-icon--search fd-button--shell" id="lui-search-button" aria-controls="lui-search-field" aria-expanded="false"
+              <button class="fd-button fd-shellbar__button sap-icon--search" id="lui-search-button" aria-controls="lui-search-field" aria-expanded="false"
                 aria-haspopup="true"></button>
               <div class="fd-search-input__closedcontrol" id="lui-search-field" aria-hidden="true">
                 <div class="fd-search-input__controlinput" aria-controls="f7erK342" aria-expanded="false"
