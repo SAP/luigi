@@ -4,6 +4,14 @@ const CleanWebpackPlugin = require('clean-webpack-plugin');
 const commonPlugins = require('./webpack-common-plugins');
 const commonRules = require('./webpack-common-rules');
 const exec = require('child_process').exec;
+const fundamentalStyles = require('./fundamentalStyleClasses');
+
+const luigifiles = [
+  ...fundamentalStyles,
+  './node_modules/@babel/polyfill/dist/polyfill.js',
+  './node_modules/@webcomponents/webcomponentsjs/webcomponents-bundle.js',
+  './src/main.js'
+];
 
 const env = process.env.NODE_ENV;
 
@@ -28,7 +36,7 @@ class PatchLuigiPlugin {
     if (compiler.hooks) {
       compiler.hooks.afterEmit.tap('Luigi Patch', () =>
         exec(
-          'babel public/luigi-ie11.js --out-file public/luigi-ie11.js --presets=@babel/preset-env --root . --root-mode upward' +
+          'babel public-ie11/luigi-ie11.js --out-file public-ie11/luigi-ie11.js --presets=@babel/preset-env --root . --root-mode upward' +
             (process.env.MINIFY === 'false' ? '' : ' --minified'),
           PatchLuigiPlugin.execHandler
         )
@@ -40,12 +48,7 @@ class PatchLuigiPlugin {
 module.exports = {
   devtool: 'false',
   entry: {
-    'luigi-ie11': [
-      './node_modules/@babel/polyfill/dist/polyfill.js',
-      './node_modules/@webcomponents/webcomponentsjs/webcomponents-bundle.js',
-      './node_modules/fiori-fundamentals/dist/fiori-fundamentals-ie11.min.css',
-      './src/main.js'
-    ]
+    'luigi-ie11': luigifiles
   },
   resolve: {
     alias: {
@@ -55,7 +58,7 @@ module.exports = {
     extensions: ['.mjs', '.js', '.svelte', '.html']
   },
   output: {
-    path: __dirname + '/public',
+    path: __dirname + '/public-ie11',
     filename: '[name].js',
     chunkFilename: '[name].[id].js'
   },
@@ -76,12 +79,11 @@ module.exports = {
     ]
   },
   plugins: [
-    new CleanWebpackPlugin(['public'], {
-      exclude: ['package.json', 'README.md', 'luigi.css', 'luigi.js'],
+    new CleanWebpackPlugin(['public-ie11'], {
+      exclude: ['package.json', 'README.md'],
       verbose: true
     }),
     new MiniCssExtractPlugin({ filename: '[name].css' }),
-    commonPlugins.copyWebpackPlugin,
     new PatchLuigiPlugin()
   ],
   stats: {

@@ -1,0 +1,46 @@
+<section class="fd-section">
+  <div class="fd-section__header">
+    <h1 class="fd-section__title">Groups</h1>
+  </div>
+  <div class="fd-panel">
+    <div class="fd-panel__body">
+      <p>Groups content.</p>
+    </div>
+  </div>
+</section>
+
+<section class="fd-section">
+  <div class="fd-section__header">
+    <h1 class="fd-section__title">Go to dynamic child node</h1>
+  </div>
+  <div class="fd-panel">
+    <div class="fd-panel__header">
+      <div class="fd-panel__head">
+        <h3 class="fd-panel__title">
+          Dynamic node example
+        </h3>
+      </div>
+    </div>
+    <div class="fd-panel__body">
+      <p>Enter a custom group id and press the arrow button to navigate.</p>
+      <div class="fd-container fd-container--fluid">
+        <div class="fd-col--11">
+          <input
+            type="text"
+            [(ngModel)]="customValue"
+            class="fd-input fd-has-margin-none"
+          />
+        </div>
+        <div class="fd-col--1">
+          <button
+            *ngIf="customValue"
+            class="fd-button clickable"
+            (click)="linkManager().navigate(customValue)"
+          >
+            <span class="sap-icon--navigation-right-arrow"></span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

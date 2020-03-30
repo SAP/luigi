@@ -20,9 +20,9 @@ Follow these steps:
     ```
 
 2. Install dependencies. 
-The `lerna bootstrap` command executes the Node Package Manager (NPM) installation and links cross-dependencies.
+The `lerna bootstrap --force-local` command executes the Node Package Manager (NPM) installation and links cross-dependencies.
     ```bash
-    lerna bootstrap
+    lerna bootstrap --force-local
     ```
 
 3. Bundle the Luigi Core.
@@ -35,7 +35,7 @@ The `lerna run bundle` command runs the `bundle` script in every package referen
     ```
 
 
-You can see the Luigi Core in action by running the [Angular example application](/core/examples/luigi-sample-angular).
+You can see the Luigi Core in action by running the [Angular example application](/test/e2e-test-application).
 
 
 
@@ -50,5 +50,4 @@ npm install --global local-web-server
 ### Run tests
 
 To perform the unit test on JavaScript files, run `npm test`.
-
 

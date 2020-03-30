@@ -1,0 +1,19 @@
+body {
+  padding: 0;
+  margin: 0;
+  font-size: 14px;
+}
+
+blockquote,
+figure,
+ol,
+p,
+table,
+ul {
+  margin-top: 0;
+  margin-bottom: 12px;
+}
+
+.clickable {
+  cursor: pointer;
+}

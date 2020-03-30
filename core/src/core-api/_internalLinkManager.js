@@ -35,7 +35,7 @@ export class linkManager extends LuigiCoreAPIBase {
         link: path,
         relative: relativePath,
         modal: modalSettings,
-        splitView: splitViewSettings,
+        splitView: splitViewSettings
       })
     };
 
