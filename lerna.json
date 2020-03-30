@@ -6,7 +6,11 @@
     "client/public",
     "core",
     "core/public",
-    "core/examples/luigi-sample-angular"
+    "plugins",
+    "plugins/auth/public/auth-oauth2",
+    "plugins/auth/public/auth-oidc",
+    "test/e2e-test-application",
+    "website/fiddle"
   ],
   "version": "0.0.0"
 }

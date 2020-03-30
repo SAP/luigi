@@ -44,7 +44,7 @@
     aria-label="Loading"
   >
     <div class="fd-spinner">
-      <div></div>
+      <div class="fd-spinner__body"></div>
     </div>
   </div>
   {/if}
@@ -682,13 +682,12 @@
 
   //// MICRO-FRONTEND MODAL
 
-  let mfModal;
+  let mfModal = {};
 
   const resetMicrofrontendModalData = () => {
-    mfModal = {
-      displayed: false,
-      settings: {}
-    };
+    mfModal.displayed = false;
+    mfModal.nodepath = undefined;
+    mfModal.modalSettings = {};
   };
 
   resetMicrofrontendModalData();
@@ -698,11 +697,9 @@
     if (await Navigation.shouldPreventNavigation(nodeObject)) {
       return;
     }
-    mfModal = {
-      displayed: true,
-      nodepath,
-      modalSettings
-    };
+    mfModal.displayed = true;
+    mfModal.nodepath = nodepath;
+    mfModal.modalSettings = modalSettings;
   };
 
   const modalIframeCreated = event => {
@@ -713,9 +710,7 @@
   const closeModal = () => {
     if (modalIframe) {
       getUnsavedChangesModalPromise(modalIframe.contentWindow).then(() => {
-        mfModal = {
-          displayed: false
-        };
+        resetMicrofrontendModalData();
       });
     }
   };
@@ -1069,7 +1064,7 @@
     } else if (responsiveNavSetting === 'simpleMobileOnly') {
       document.body.classList.add('lui-simpleSlideInNav', 'lui-mobileOnly');
       simpleSlideInNav = true;
-    } else if (responsiveNavSetting === 'semiCollapsible') {
+    } else if (responsiveNavSetting === 'semiCollapsible' || 'Fiori3') {
       document.body.classList.add('lui-semiCollapsible');
     }
     thirdPartyCookiesCheck = LuigiConfig.getConfigValue(
@@ -1105,17 +1100,18 @@
   /*Mixins*/
   @import 'styles/mixins';
 
-  $topNavHeight: 48px;
-  $topNavHeightTab: 51px;
-  $leftNavWidth: 320px;
-  $leftNavWidthCollapsed: 40px;
+  $topNavHeight: 44px;
+  $topNavHeightTab: 44px;
+  $leftNavWidth: 15rem;
+  $leftNavWidthCollapsed: 2.75rem;
   $desktopMinWidth: 600px;
 
   :global(html) {
     box-sizing: border-box;
-    font-size: 14px;
+    font-size: 16px;
     position: fixed;
     width: 100%;
+    min-height: 100%;
   }
   :global(body) {
     -webkit-font-smoothing: antialiased;
@@ -1278,9 +1274,6 @@
       display: inline;
     }
 
-    :global(.fd-app__sidebar) {
-      width: $leftNavWidth;
-    }
     :global(body.lui-simpleSlideInNav.lui-leftNavToggle) {
       .iframeContainer,
       .spinnerContainer {
@@ -1360,5 +1353,66 @@
         position: absolute;
       }
     }
+  }
+
+  //IE11 fixes
+  :global(.fd-nested-list__content),
+  :global(.fd-nested-list__link) {
+    &.has-child:after {
+      height: 100%;
+    }
+  }
+
+  :global(.fd-side-nav--condensed) {
+    :global(.fd-nested-list__link) {
+      font-size: 10px;
+      &.has-child:after {
+        height: 0;
+      }
+    }
+  }
+
+  //Fixing issues for fundamental styles
+  :global(.fd-shellbar__button) {
+    padding-left: 12px;
+    padding-right: 12px;
+  }
+
+  //Overwrites with SAP variables
+
+  :global(.fd-shellbar) {
+    border-bottom: #354a5f;
+    border-bottom: 1px solid var(--sapShell_BorderColor, #354a5f);
+  }
+
+  :global(.fd-menu__item) {
+    background-color: var(--sapBackgroundColor, #fff);
+    color: var(--sapLinkColor, #51555a);
+
+    &.is-hover,
+    &:hover,
+    &.is-selected:hover {
+      color: #0854a0;
+      color: var(--sapLink_Hover_Color, #0854a0);
+      background-color: #ebf5fe;
+      background-color: var(--sapButton_Hover_Background, #ebf5fe);
+    }
+
+    &.is-selected {
+      color: #32363a;
+      color: var(--sapList_TextColor, #32363a);
+      background: #e5f0fa;
+      background: var(--sapList_SelectionBackgroundColor, #e5f0fa);
+    }
+  }
+
+  :global(.fd-modal__content) {
+    background-color: #fff;
+    background-color: var(--sapGroup_ContentBackground, #fff);
+    box-shadow: var(
+      --sapContent_Shadow3,
+      0 0 0 0.0625rem rgba(0, 0, 0, 0.42),
+      0 1.25rem 5rem 0 rgba(0, 0, 0, 0.3)
+    );
   }
 </style>
