@@ -1,0 +1,101 @@
+<section class="fd-section" *ngIf="nodeParams">
+  <div class="fd-panel fd-has-margin-bottom-small">
+    <div class="fd-panel__body">
+      <div class="fd-alert" role="alert">
+        <div class="fd-alert__text">
+          <div class="fd-alert__text">
+            <span class="fd-status-label fd-status-label--available"></span>
+            Called with params:<br />
+            <pre>{{ nodeParams | json }}</pre>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="fd-panel fd-has-margin-bottom-small" *ngIf="hasBack">
+    <div class="fd-panel__body">
+      <p>
+        Advanced: node Params and preserveView active. <br />
+        <a
+          href="javascript:void(0)"
+          class="fd-link"
+          (click)="
+            linkManager()
+              .withParams({ foo: 'bar' })
+              .navigate('/environments/env1', null, true)
+          "
+          >Go to /environments/env1 with preserveView</a
+        >
+      </p>
+      <p>
+        <a
+          href="javascript:void(0)"
+          class="fd-link"
+          (click)="linkManager().goBack()"
+        >
+          Go back: use default history method
+        </a>
+      </p>
+    </div>
+  </div>
+</section>
+
+<section class="fd-section" *ngIf="preservedViewCallbackContext">
+  <div class="fd-panel fd-has-margin-bottom-small">
+    <div class="fd-panel__body">
+      <div class="fd-alert" role="alert">
+        <div class="fd-alert__text">
+          <div class="fd-alert__text">
+            <span class="fd-status-label fd-status-label--available"></span>
+            Context received from linkManager().goBack():<br />
+            <pre>{{ preservedViewCallbackContext | json }}</pre>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="fd-section">
+  <div class="fd-section__header">
+    <h1 *ngIf="projectId" class="fd-section__title">
+      Settings of {{ projectId }}
+    </h1>
+    <h1 *ngIf="!projectId" class="fd-section__title">Global Settings</h1>
+  </div>
+
+  <div class="fd-panel">
+    <div class="fd-panel__header">
+      <div class="fd-panel__head">
+        <h3 class="fd-panel__title">
+          LuigiClient hasBack/GoBack
+        </h3>
+      </div>
+    </div>
+    <div class="fd-panel__body">
+      <div *ngIf="hasBack">
+        <div class="fd-form-item">
+          <label class="fd-form-label"
+            >Modify goBackContext value, that you receive then via
+            LuigiClient.addContextUpdateListener():
+          </label>
+          <input type="text" class="fd-input" [(ngModel)]="callbackValue" />
+        </div>
+        <p>
+          <button class="fd-button" (click)="goBack()">Click here</button> to go
+          back to your preserved view.
+        </p>
+      </div>
+      <div *ngIf="!hasBack">
+        No go back state available,
+        <a
+          href="javascript:void(0)"
+          class="fd-link"
+          (click)="linkManager().navigate('/projects/pr2')"
+          >Click here</a
+        >
+        to go to <i>project two</i>, where you can try out hasBack functionality
+      </div>
+    </div>
+  </div>
+</section>

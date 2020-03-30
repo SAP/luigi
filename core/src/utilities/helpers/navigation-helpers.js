@@ -15,6 +15,11 @@ class NavigationHelpersClass {
     return Object.assign({ icon: 'grid', label: 'My Products' }, userConfig);
   }
 
+  getProductSwitcherColumnsNumber() {
+    const productSwitcherConfig = this.getProductSwitcherConfig();
+    return productSwitcherConfig.columns === 3 ? 3 : 4;
+  }
+
   prepareForTests(...parts) {
     let result = '';
     parts.forEach(p => {

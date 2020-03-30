@@ -1,10 +1,22 @@
 {
-  "name": "@kyma-project/luigi-core",
-  "version": "0.7.7",
-  "description": "luigi-core",
+  "name": "@luigi-project/core",
+  "version": "1.0.0",
+  "description": "Javascript library supporting consumers of the Luigi framework",
   "license": "Apache-2.0",
+  "main": "luigi.js",
   "repository": {
     "type": "git",
     "url": "ssh://github.com/SAP/luigi.git"
-  }
+  },
+  "publishConfig": {
+    "tag": "luigi"
+  },
+  "keywords": [
+    "luigi",
+    "core",
+    "UI",
+    "extensibility",
+    "micro-frontends",
+    "microfrontends"
+  ]
 }

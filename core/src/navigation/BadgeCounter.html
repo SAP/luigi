@@ -1,3 +1,4 @@
+
 {#if node && node.badgeCounter}
 {#await node.badgeCounter.count()}
 {:then count}
@@ -10,7 +11,6 @@
 {:catch error}
 {/await}
 {/if}
-
 <script>
   export let node;
 </script>
@@ -21,13 +21,13 @@
   }
 
   :global(.fd-shellbar__action) {
-    .fd-menu .fd-top-nav__icon,
-    .y-full-width-list__icon {
+    .fd-menu .fd-top-nav__icon {
       position: relative;
       margin-right: 8px;
       min-width: 16px;
       min-height: 16px;
       display: inline-block;
+      vertical-align: middle;
 
       .fd-counter--notification {
         transform: none;
@@ -39,6 +39,20 @@
         line-height: 6px;
         display: block;
         height: 14px;
+      }
+    }
+
+    .fd-product-switch__body--mobile {
+      .fd-product-switch__icon {
+        position: relative;
+
+        .fd-counter--notification {
+          transform: none;
+          position: absolute;
+          top: 0;
+          right: 0;
+          display: block;
+        }
       }
     }
   }

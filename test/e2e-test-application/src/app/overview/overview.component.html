@@ -1,0 +1,100 @@
+<header class="fd-page__header">
+  <div class="fd-action-bar">
+    <div class="fd-action-bar__header">
+      <h1 class="fd-action-bar__title">Luigi Angular Example</h1>
+      <p class="fd-action-bar__description">
+        Follow the links below to the Luigi feature demos.
+      </p>
+    </div>
+  </div>
+</header>
+
+<section class="fd-section">
+  <div class="fd-panel">
+    <div class="fd-panel__header">
+      <div class="fd-panel__head">
+        <h3 class="fd-panel__title">LuigiClient Features</h3>
+      </div>
+    </div>
+    <div class="fd-panel__body">
+      <ul class="fd-list-group">
+        <li
+          class="fd-list-group__item clickable"
+          *ngFor="let item of luigiClientItems"
+          (click)="item.clickHandler()"
+        >
+          <span
+            ><strong>{{ item.text }}</strong></span
+          >&nbsp;&ndash;&nbsp;<span>{{ item.description }}</span>
+        </li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section class="fd-section">
+  <div class="fd-panel">
+    <div class="fd-panel__header">
+      <div class="fd-panel__head">
+        <h3 class="fd-panel__title">Luigi Core Features</h3>
+      </div>
+    </div>
+    <div class="fd-panel__body">
+      <ul class="fd-list-group">
+        <li
+          class="fd-list-group__item clickable"
+          *ngFor="let item of luigiCoreLinks"
+          (click)="linkManager().navigate(item.link)"
+        >
+          <strong>{{ item.text }}</strong> &nbsp;&ndash; {{ item.description }}
+        </li>
+        <li class="fd-list-group__item">
+          <div class="fd-form-item">
+            <label class="fd-switch__label" for="ImBw4551">
+              <span class="fd-switch fd-switch--compact">
+                <input
+                  type="checkbox"
+                  class="fd-switch__input"
+                  [(ngModel)]="isDirty"
+                  (change)="sendDirtyEvent()"
+                  id="ImBw4551"
+                />
+                <div class="fd-switch__wrapper">
+                  <div class="fd-switch__track">
+                    <span
+                      class="fd-switch__handle"
+                      role="presentation"
+                      data-testid="toggle-dirty-state"
+                    ></span>
+                  </div>
+                </div>
+              </span>
+            </label>
+          </div>
+          <p *ngIf="!isDirty">
+            <strong>There are no unsaved changes</strong> &nbsp;&ndash; toggle
+            this to be asked for confirmation when you leave this page
+          </p>
+          <p *ngIf="isDirty">
+            <strong>There are unsaved changes</strong> &nbsp;&ndash; a
+            confirmation modal will appear when you navigate
+            <a
+              class="fd-link"
+              title="Navigate to /projects/pr2 as an example"
+              (click)="linkManager().navigate('/projects/pr2')"
+            >
+              somewhere else
+            </a>
+          </p>
+        </li>
+        <li
+          class="fd-list-group__item clickable"
+          (click)="updateBadgeCounters()"
+        >
+          <strong>Update Header Navigation</strong> &nbsp;&ndash; Updates the
+          top navigation, eg. to update badge counters
+        </li>
+      </ul>
+    </div>
+  </div>
+</section>
