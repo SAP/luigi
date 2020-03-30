@@ -21,6 +21,7 @@
   "dependencies": {
     "@kyma-project/luigi-client": "0.7.7",
     "@kyma-project/luigi-core": "0.7.7",
+    "docsearch.js": "^2.6.3",
     "polka": "next"
   },
   "devDependencies": {
