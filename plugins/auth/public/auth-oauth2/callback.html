@@ -87,7 +87,7 @@
           var decodedState = atob(
             decodeURIComponent(hashParams['state'])
           ).split('_luigiNonce=');
-          var appState = decodedState[0] || '';
+          var appState = decodeURI(decodedState[0]) || '';
           var nonce = decodedState[1];
 
           if (nonce !== sessionStorage.getItem('luigi.nonceValue')) {
