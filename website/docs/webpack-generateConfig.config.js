@@ -27,8 +27,8 @@ module.exports = {
         "to": "../luigi-client"
       },
       {
-        "from": "node_modules/docsearch.js/dist/cdn",
-        "to": "docsearch"
+        "from": "node_modules/docsearch.js/dist/cdn/docsearch.min.css",
+        "to": "docsearch.min.css"
       },
       {
         "from": "../../docs/assets",
