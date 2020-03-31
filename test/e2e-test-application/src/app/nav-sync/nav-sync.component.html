@@ -3,22 +3,25 @@
     <h1 class="fd-section__title">Navigation Synchronization</h1>
   </div>
   <div class="fd-panel">
-    <div>
-      This page uses the Angular router to navigate between pages. The Url is
-      updated through a custom Angular service named
-      <code>LuigiAutoNavigation</code> which utilized router events to update
-      the URL on Luigi Core side by using the <code>.withoutSync()</code> method
-      when navigating with <code>LuigiClient.linkManager()</code>.
+    <div class="fd-panel__body">
+      <p>
+        This page uses the Angular router to navigate between pages. The Url is
+        updated through a custom Angular service named
+        <code>LuigiAutoNavigation</code> which utilized router events to update
+        the URL on Luigi Core side by using the
+        <code>.withoutSync()</code> method when navigating with
+        <code>LuigiClient.linkManager()</code>.
+      </p>
+      <ul class="fd-list-group">
+        <li class="fd-list-group__item">
+          Current pathsegment: {{ currentSegment }}
+        </li>
+        <li class="fd-list-group__item">
+          Go to:&nbsp;<a class="fd-link" [routerLink]="['../' + nextSegment]">{{
+            nextSegment
+          }}</a>
+        </li>
+      </ul>
     </div>
-    <ul class="fd-list-group">
-      <li class="fd-list-group__item">
-        Current pathsegment: {{ currentSegment }}
-      </li>
-      <li class="fd-list-group__item">
-        Go to:&nbsp;<a [routerLink]="['../' + nextSegment]">{{
-          nextSegment
-        }}</a>
-      </li>
-    </ul>
   </div>
 </section>

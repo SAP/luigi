@@ -19,18 +19,18 @@ class DocSearch {
   }
 
   addSearchField() {
-    const createElementFromHTML = (htmlString) => {
+    const createElementFromHTML = htmlString => {
       var div = document.createElement('div');
       div.innerHTML = htmlString.trim();
       // Change this to div.childNodes to support multiple top-level nodes
-      return div.firstChild; 
-    }
+      return div.firstChild;
+    };
     const searchElement = createElementFromHTML(`
       <div class="fd-shellbar__action">
         <div class="fd-search-input fd-search-input--closed">
           <div class="fd-popover">
             <div class="fd-popover__control fd-search-input__control">
-              <button class="sap-icon--search fd-button--shell" id="lui-search-button" aria-controls="lui-search-field" aria-expanded="false"
+              <button class="fd-button fd-shellbar__button sap-icon--search" id="lui-search-button" aria-controls="lui-search-field" aria-expanded="false"
                 aria-haspopup="true"></button>
               <div class="fd-search-input__closedcontrol" id="lui-search-field" aria-hidden="true">
                 <div class="fd-search-input__controlinput" aria-controls="f7erK342" aria-expanded="false"
@@ -47,16 +47,19 @@ class DocSearch {
   }
 
   initDocSearch() {
-    const transformData = (suggestions) => {
-      return suggestions.map((sg) => {
+    const transformData = suggestions => {
+      return suggestions.map(sg => {
         if (this.isDevelop) {
-          sg.url = sg.url.replace('https://docs.luigi-project.io', this.coreBaseUrl);
+          sg.url = sg.url.replace(
+            'https://docs.luigi-project.io',
+            this.coreBaseUrl
+          );
         }
         sg.url = sg.url.replace('/docu-microfrontend', '');
         return sg;
       });
     };
-    
+
     const handleSelected = (_, event) => {
       if (
         !event ||
@@ -69,9 +72,14 @@ class DocSearch {
         return;
       }
       const url = new URL(event._args[0].url);
-      const urlWithPath = url.pathname.replace(this.coreBaseUrl, '').replace('.md', '').replace('/docu-microfrontend', '');
+      const urlWithPath = url.pathname
+        .replace(this.coreBaseUrl, '')
+        .replace('.md', '')
+        .replace('/docu-microfrontend', '');
       if (url.hash) {
-        Luigi.navigation().withParams({'section': url.hash.substring(1).toLowerCase()}).navigate(urlWithPath);
+        Luigi.navigation()
+          .withParams({ section: url.hash.substring(1).toLowerCase() })
+          .navigate(urlWithPath);
       } else {
         Luigi.navigation().navigate(urlWithPath);
       }
@@ -79,7 +87,7 @@ class DocSearch {
 
     const createAlgoliaOptions = () => {
       const algoliaOptions = {
-        hitsPerPage: 8,
+        hitsPerPage: 8
       };
 
       return {
@@ -88,14 +96,14 @@ class DocSearch {
         inputSelector: '#docsearch',
         autocompleteOptions: {
           debug: this.isDevelop,
-          openOnFocus: true,
+          openOnFocus: false,
           autoselect: true,
           hint: true,
-          keyboardShortcuts: [`s`],
+          clearOnSelected: true
         },
         algoliaOptions,
         transformData,
-        handleSelected,
+        handleSelected
       };
     };
     docsearch(createAlgoliaOptions());
@@ -105,24 +113,31 @@ class DocSearch {
     const inputEl = document.getElementById('lui-search-field');
 
     const focusSearch = () => {
+      let inputField = document.getElementById('docsearch');
       if (this.inputActive) {
-        inputEl.focus();
+        setTimeout(() => {
+          inputField.focus();
+        }, 200);
+      } else {
+        inputField.value = '';
       }
     };
-    
+
     const toggleInputActive = () => {
       this.inputActive = !this.inputActive;
-      const searchButton = document.getElementById('lui-search-button');    
+      const searchButton = document.getElementById('lui-search-button');
       searchButton.setAttribute('aria-hidden', this.inputActive);
       searchButton.setAttribute('aria-expanded', !this.inputActive);
       inputEl.setAttribute('aria-hidden', !this.inputActive);
-    }
+    };
 
-    document.getElementById('lui-search-button').addEventListener('click', (e) => {
-      e.preventDefault();
-      toggleInputActive();
-      focusSearch();
-    });
+    document
+      .getElementById('lui-search-button')
+      .addEventListener('click', e => {
+        e.preventDefault();
+        toggleInputActive();
+        focusSearch();
+      });
   }
 }
 

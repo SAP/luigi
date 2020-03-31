@@ -4,33 +4,39 @@
   </div>
 
   <div class="fd-panel">
-    <p>
-      This is a dynamic node with value:
-      <strong>{{ pathParams?.group }}</strong>
-    </p>
+    <div class="fd-panel__body">
+      <p>
+        This is a dynamic node with value:
+        <strong>{{ pathParams?.group }}</strong>
+      </p>
 
-    <a
-      class="clickable"
-      (click)="
-        linkManager()
-          .fromContext('project')
-          .navigate('/users/groups')
-      "
-    >
-      <span class="sap-icon--navigation-left-arrow"></span> Back to Groups
-    </a>
+      <a
+        class="fd-link clickable"
+        (click)="
+          linkManager()
+            .fromContext('project')
+            .navigate('/users/groups')
+        "
+      >
+        <span class="sap-icon--navigation-left-arrow"></span> Back to Groups
+      </a>
+    </div>
   </div>
 </section>
 <section class="fd-section">
   <div class="fd-panel">
-    <p>Navigation node configuration for <strong>dynamic node</strong> demo:</p>
-    <app-code-snippet
-      data="{
-  {
-    pathSegment: ':group',
-    viewUrl: '/sampleapp.html#/groups/:group'
-  }
-}"
-    ></app-code-snippet>
+    <div class="fd-panel__body">
+      <p>
+        Navigation node configuration for <strong>dynamic node</strong> demo:
+      </p>
+      <app-code-snippet
+        data="{
+    {
+      pathSegment: ':group',
+      viewUrl: '/sampleapp.html#/groups/:group'
+    }
+  }"
+      ></app-code-snippet>
+    </div>
   </div>
 </section>
