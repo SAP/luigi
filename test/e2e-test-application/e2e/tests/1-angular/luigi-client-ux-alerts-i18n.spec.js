@@ -102,7 +102,7 @@ describe('Luigi Client UX Alerts + Localization', () => {
         .select('warning');
       cy.wrap($iframeBody)
         .find('[data-testid=luigi-alert-links]')
-        .check();
+        .check({ force: true });
       cy.wrap($iframeBody)
         .find('[data-testid=show-luigi-alert]')
         .click();
@@ -144,7 +144,7 @@ describe('Luigi Client UX Alerts + Localization', () => {
         .select('error');
       cy.wrap($iframeBody)
         .find('[data-testid=luigi-alert-links]')
-        .uncheck();
+        .uncheck({ force: true });
       cy.wrap($iframeBody)
         .find('[data-testid=show-luigi-alert]')
         .click();
@@ -165,7 +165,7 @@ describe('Luigi Client UX Alerts + Localization', () => {
 
       cy.wrap($iframeBody)
         .find('[data-testid=luigi-alert-text]')
-        .uncheck();
+        .uncheck({ force: true });
       cy.wrap($iframeBody)
         .find('[data-testid=show-luigi-alert]')
         .click();
