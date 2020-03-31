@@ -11,16 +11,6 @@ export function getParsedDocs() {
     return Promise.resolve(JSON.stringify(parsedDocs));
   });
 }
-let parsedReadMeDoc;
-export function getParsedReadMeDoc() {
-  if (parsedReadMeDoc) {
-    return Promise.resolve(JSON.stringify(parsedReadMeDoc));
-  }
-  return setParsedReadMeDoc().then((doc) => {
-    parsedReadMeDoc = doc;
-    return Promise.resolve(JSON.stringify(parsedReadMeDoc));
-  });
-}
 
 function setParsedDocs() {
   const dir = './../../docs';
