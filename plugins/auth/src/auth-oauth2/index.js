@@ -76,7 +76,7 @@ export default class oAuth2ImplicitGrant {
         settings.oAuthData.redirect_uri
       )}?storageType=${Luigi.auth().store.getStorageType()}`;
       settings.oAuthData.state = btoa(
-        window.location.href + '_luigiNonce=' + generatedNonce
+        encodeURI(window.location.href) + '_luigiNonce=' + generatedNonce
       );
 
       for (const name in settings.oAuthData) {
