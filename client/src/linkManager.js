@@ -23,6 +23,7 @@ export class linkManager extends LuigiClientBase {
       errorSkipNavigation: false,
       fromContext: null,
       fromClosestContext: false,
+      fromParent: false,
       relative: false,
       link: ''
     };
@@ -153,6 +154,19 @@ export class linkManager extends LuigiClientBase {
     }
     return this;
   }
+
+  /**
+   * Enables navigating to sibling nodes without knowing the  absolute path
+   * @memberof linkManager
+   * @returns {linkManager} link manager instance
+   * @example
+   * LuigiClient.linkManager().fromParent().navigate('/sibling')
+   */
+  fromParent() {
+    this.options.fromParent = true;
+    return this;
+  }
+
 
   /**
    * Sends node parameters to the route. The parameters are used by the `navigate` function. Use it optionally in combination with any of the navigation functions and receive it as part of the context object in Luigi Client.
