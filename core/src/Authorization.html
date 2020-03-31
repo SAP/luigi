@@ -44,7 +44,8 @@
     {#if isLoggedIn && isProfileLogoutItem}
     <li on:click="{onLogoutClick}" data-testid="{getTestId(profileNav.logout)}">
       <a aria-label="Logout" class="fd-menu__item">
-        {#if profileNav.logout.icon and hasOpenUIicon(profileNav.logout)}
+        {#if profileNav.logout.icon}
+        {#if hasOpenUIicon(profileNav.logout)}
         <span
           class="fd-top-nav__icon sap-icon--{profileNav.logout.icon} sap-icon--m"
         ></span>
@@ -54,6 +55,7 @@
           src="{profileNav.logout.icon}"
           alt="{profileNav.logout.altText ? profileNav.logout.altText : ''}"
         >
+        {/if}
         {/if}
         <span>{$getTranslation(profileNav.logout.label)}</span>
       </a>
