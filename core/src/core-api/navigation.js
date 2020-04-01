@@ -102,6 +102,18 @@ class LuigiNavigationManager {
   }
 
   /**
+   * Sets the current navigation base to the parent node that is defined as virtualTree. This method works only when already inside a virtualTree.
+   * @memberof LuigiNavigation
+   * @returns {linkManager} link manager instance
+   * @since NEXTRELEASE
+   * @example
+   * Luigi.navigation().fromVirtualTreeRoot().navigate('/users/groups/stakeholders')
+   */
+  fromVirtualTreeRoot() {
+    return new linkManager().fromVirtualTreeRoot();
+  }
+
+  /**
    * Sends node parameters to the route. The parameters are used by the `navigate` function. Use it optionally in combination with any of the navigation functions and receive it as part of the context object in Luigi Client.
    * @memberof LuigiNavigation
    * @param {Object} nodeParams
