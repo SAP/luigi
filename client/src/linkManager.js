@@ -23,6 +23,7 @@ export class linkManager extends LuigiClientBase {
       errorSkipNavigation: false,
       fromContext: null,
       fromClosestContext: false,
+      fromVirtualTreeRoot: false,
       relative: false,
       link: ''
     };
@@ -151,6 +152,20 @@ export class linkManager extends LuigiClientBase {
         'Navigation not possible, no parent navigationContext found.'
       );
     }
+    return this;
+  }
+  /**
+   * Sets the current navigation base to the parent node that is defined as virtualTree. This method works only when already inside a virtualTree.
+   * @memberof linkManager
+   * @returns {linkManager} link manager instance
+   * @since NEXTRELEASE
+   * @example
+   * LuigiClient.linkManager().fromVirtualTreeRoot().navigate('/users/groups/stakeholders')
+   */
+  fromVirtualTreeRoot() {
+    this.options.fromContext = null;
+    this.options.fromClosestContext = false;
+    this.options.fromVirtualTreeRoot = true;
     return this;
   }
 

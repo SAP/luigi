@@ -202,6 +202,16 @@ export declare interface UxManager {
 
 export declare interface LinkManager {
   /**
+   * Sets the current navigation base to the parent node that is defined as virtualTree. This method works only when already inside a virtualTree.
+   * @memberof linkManager
+   * @returns {linkManager} link manager instance
+   * @since NEXTRELEASE
+   * @example
+   * LuigiClient.linkManager().fromVirtualTreeRoot().navigate('/users/groups/stakeholders')
+   */
+  fromVirtualTreeRoot: () => this;
+
+  /**
    * Sets the current navigation context which is then used by the `navigate` function. This has to be a parent navigation context, it is not possible to use the child navigation contexts.
    * @memberof linkManager
    * @returns {linkManager} link manager instance

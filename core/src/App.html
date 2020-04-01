@@ -392,7 +392,17 @@
 
   const buildPath = params => {
     let path = params.link;
-    if (params.fromClosestContext) {
+    if (params.fromVirtualTreeRoot) {
+      // from the closest navigation context
+      const node = [...navigationPath].reverse().find(n => n.virtualTree);
+      if (!node) {
+        console.error(
+          'LuigiClient Error: fromVirtualTreeRoot() is not possible, not inside a virtualTree navigation. Docs: https://docs.luigi-project.io/docs/navigation-parameters-reference/?section=virtualtree'
+        );
+        return;
+      }
+      path = Routing.concatenatePath(getSubPath(node), params.link);
+    } else if (params.fromClosestContext) {
       // from the closest navigation context
       const node = [...navigationPath]
         .reverse()

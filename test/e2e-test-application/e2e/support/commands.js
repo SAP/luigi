@@ -171,7 +171,6 @@ Cypress.Commands.add(
             .click();
     });
  */
-
 Cypress.Commands.add('iframe', { prevSubject: 'element' }, $iframe => {
   Cypress.log({
     name: 'iframe',
@@ -244,3 +243,16 @@ function onIframeReady($iframe, successFn, errorFn) {
     errorFn();
   }
 }
+
+/**
+ * getIframeWindow
+ * returns the window instance of an iframe
+ */
+Cypress.Commands.add('getIframeWindow', (num = 0) => {
+  cy.wait(0); // Just wait for next tick
+  return cy
+    .get('iframe')
+    .eq(num)
+    .its('0.contentWindow')
+    .should('exist');
+});
