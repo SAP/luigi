@@ -220,6 +220,15 @@ export declare interface LinkManager {
    */
   fromContext: (navigationContext: string) => this;
 
+    /**
+   * Enables navigating to sibling nodes without knowing the absolute path
+   * @memberof linkManager
+   * @returns {linkManager} link manager instance
+   * @example
+   * LuigiClient.linkManager().fromParent().navigate('/sibling')
+   */
+  fromParent: () => this;
+  
   /**
    * Discards the active view and navigates back to the last visited view. Works with preserved views, and also acts as the substitute of the browser **back** button. **goBackContext** is only available when using preserved views.
    * @memberof linkManager
