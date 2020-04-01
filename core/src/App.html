@@ -721,11 +721,15 @@
     const isolateAllViews = LuigiConfig.getConfigValue(
       'navigation.defaults.isolateView'
     );
+    const defaultPageErrorHandler = LuigiConfig.getConfigValue(
+      'navigation.defaults.pageErrorHandler'
+    );
     const config = {
       iframe: null,
       navigateOk: null,
       builderCompatibilityMode: Boolean(window.builderCompatibilityMode),
-      isolateAllViews
+      isolateAllViews,
+      defaultPageErrorHandler
     };
     LuigiI18N.addCurrentLocaleChangeListener(locale => {
       const message = {
