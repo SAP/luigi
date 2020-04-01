@@ -305,9 +305,7 @@ class IframeClass {
 
         if (pageErrorHandler) {
           this.checkIframe(pageErrorHandler, component, viewUrl, config, node);
-        }
-
-        if (config.defaultPageErrorHandler) {
+        } else if (config.defaultPageErrorHandler) {
           this.checkIframe(
             config.defaultPageErrorHandler,
             component,
