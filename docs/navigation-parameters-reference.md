@@ -71,6 +71,16 @@ The navigation parameters allow you to configure **global** navigation settings 
 - **description**: renders all views in new frames. This setting overrides the same-domain frame reuse.
 - **default**: the parameter **defaults.isolateView** is `false` by default, and you can overwrite it using the **isolateView** value on a single node level.
 
+### defaults.pageErrorHandler
+- **type**: object
+- **description**: gives you the possibility to handle a situation in which Luigi Client doesn't respond. By default, it will redirect to the home page if nothing else is specified. **timeout** is required.
+- **default**: the parameter **defaults.pageErrorHandler** is not specified by default, and you can overwrite it using the **pageErrorHandler** value on a single node level.
+- **attributes**:
+  - **timeout** amount of time after which redirection will take effect.
+  - **viewUrl** specifies the location to redirect to on the micro frontends level(URL is not changed).
+  - **redirectPath** specifies the location to redirect to on the Luigi level(URL is changed).
+  - **errorFn** used to handle different scenarios other than redirection.
+
 ### preloadViewGroups
 - **type**: boolean
 - **description**: allows deactivating the default preloading of [view groups](navigation-advanced.md#view-groups) iframes.
@@ -270,10 +280,11 @@ settings: {
 
 ### pageErrorHandler
 - **type**: object
-- **description**: gives you the possibility to handle a situation in which Luigi Client doesn't respond. By default, it will redirect to the home page if nothing else is specified.
+- **description**: gives you the possibility to handle a situation in which Luigi Client doesn't respond. By default, it will redirect to the home page if nothing else is specified. **timeout** is required.
 - **attributes**:
   - **timeout** amount of time after which redirection will take effect.
-  - **redirectPath** specifies the location to redirect to.
+  - **viewUrl** specifies the location to redirect to on the micro frontends level(URL is not changed).
+  - **redirectPath** specifies the location to redirect to on the Luigi level(URL is changed).
   - **errorFn** used to handle different scenarios other than redirection.
 
 ## Context switcher
