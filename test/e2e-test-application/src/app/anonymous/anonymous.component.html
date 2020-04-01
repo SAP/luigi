@@ -3,12 +3,14 @@
     <h1 class="fd-section__title">Anonymous content</h1>
   </div>
   <div class="fd-panel">
-    <div *ngIf="exclusive">
-      This page is visible <strong> only </strong> for users that are not logged
-      in.
-    </div>
-    <div *ngIf="!exclusive">
-      This page is visible for all users, also those that are not logged in.
+    <div class="fd-panel__body">
+      <p *ngIf="exclusive">
+        This page is visible <strong> only </strong> for users that are not
+        logged in.
+      </p>
+      <p *ngIf="!exclusive">
+        This page is visible for all users, also those that are not logged in.
+      </p>
     </div>
   </div>
 </section>
