@@ -95,9 +95,9 @@ jobs:
       # if: repo = SAP/luigi AND (branch = master OR branch = release-v1)
       script:
         - 'if [ ! -z "${WHITESOURCE_APIKEY}" ]; then
+            lerna bootstrap --ci;
             npm --prefix ./website/landingpage/dev install ./website/landingpage/dev;
             npm --prefix ./website/fiddle install ./website/fiddle;
-            lerna bootstrap --ci;
             npm i -g whitesource;
             bash ./scripts/whiteSource.sh;
           fi'
