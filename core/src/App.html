@@ -394,8 +394,7 @@
     let path = params.link;
     if (params.fromParent) {
       path = Routing.concatenatePath(getSubPath(currentNode.parent), params.link);
-    }
-    else if (params.fromClosestContext) {
+    } else if (params.fromClosestContext) {
       const node = [...navigationPath]
       .reverse()
       .find(n => n.navigationContext && n.navigationContext.length > 0);

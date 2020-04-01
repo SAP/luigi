@@ -287,6 +287,21 @@
             href="javascript:void(0)"
             (click)="
               linkManager()
+                .fromParent()
+                .navigate('/pr1')
+            "
+          >
+            from parent: to sibling</a
+          >
+          <app-code-snippet
+            data="linkManager().fromParent().navigate('/pr1')"
+          ></app-code-snippet>
+        </li>
+        <li class="fd-list-group__item">
+          <a
+            href="javascript:void(0)"
+            (click)="
+              linkManager()
                 .fromClosestContext()
                 .withParams({ foo: 'bar' })
                 .navigate('settings')
