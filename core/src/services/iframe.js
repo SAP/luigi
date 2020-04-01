@@ -167,6 +167,21 @@ class IframeClass {
     }, this.iframeNavFallbackTimeout);
   }
 
+  checkIframe(errorHandlerNode, componentNode, viewUrlPath, config, node) {
+    this.timeoutHandle = setTimeout(() => {
+      if (componentNode.get().showLoadingIndicator) {
+        if (errorHandlerNode.viewUrl) {
+          viewUrlPath = errorHandlerNode.viewUrl;
+          componentNode.set({ viewUrl: viewUrlPath });
+          this.iframeNavFallbackTimeout = 0;
+          this.setOkResponseHandler(config, componentNode, node);
+        } else {
+          NavigationHelpers.handleUnresponsiveClient(errorHandlerNode);
+        }
+      }
+    }, errorHandlerNode.timeout);
+  }
+
   navigateIframe(config, component, node) {
     clearTimeout(this.timeoutHandle);
     const componentData = component.get();
@@ -287,12 +302,19 @@ class IframeClass {
         }
         // In case something goes wrong with client and showLoadingIndicator is still active
         const pageErrorHandler = componentData.currentNode.pageErrorHandler;
+
         if (pageErrorHandler) {
-          this.timeoutHandle = setTimeout(() => {
-            if (component.get().showLoadingIndicator) {
-              NavigationHelpers.handleUnresponsiveClient(pageErrorHandler);
-            }
-          }, pageErrorHandler.timeout);
+          this.checkIframe(pageErrorHandler, component, viewUrl, config, node);
+        }
+
+        if (config.defaultPageErrorHandler) {
+          this.checkIframe(
+            config.defaultPageErrorHandler,
+            component,
+            viewUrl,
+            config,
+            node
+          );
         }
       }
     } else {
