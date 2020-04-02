@@ -21,7 +21,8 @@
   "dependencies": {
     "@luigi-project/core": "1.0.0",
     "@luigi-project/client": "1.0.0",
-    "polka": "next"
+    "polka": "next",
+    "docsearch.js": "2.6.3"
   },
   "devDependencies": {
     "@agentofuser/rehype-section": "^1.0.5",
