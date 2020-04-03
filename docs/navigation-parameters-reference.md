@@ -77,7 +77,7 @@ The navigation parameters allow you to configure **global** navigation settings 
 - **default**: the parameter **defaults.pageErrorHandler** is not specified by default, and you can overwrite it using the **pageErrorHandler** value on a single node level.
 - **attributes**:
   - **timeout** amount of time after which redirection will take effect.
-  - **viewUrl** specifies the location to redirect to on the micro frontends level(URL is not changed).
+  - **viewUrl** specifies the location to redirect to on the micro frontend level (the main URL is not changed).
   - **redirectPath** specifies the location to redirect to on the Luigi level(URL is changed).
   - **errorFn** used to handle different scenarios other than redirection.
 
