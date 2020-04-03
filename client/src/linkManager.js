@@ -156,7 +156,7 @@ export class linkManager extends LuigiClientBase {
   }
 
   /**
-   * Enables navigating to sibling nodes without knowing the absolute path
+   * Enables navigating to sibling nodes without knowing the absolute path.
    * @memberof linkManager
    * @returns {linkManager} link manager instance
    * @since NEXTRELASE
