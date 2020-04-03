@@ -60,7 +60,7 @@ auth: {
 
 ### How do I show some navigation nodes only to non-authenticated users?
 
-To show certain nodes only to logged-out users, use the [anonymousAccess](navigation-parameters-reference.md#anonymousaccess) parameter.
+To show certain nodes only to users who are not logged-in, use the [anonymousAccess](navigation-parameters-reference.md#anonymousaccess) parameter.
 
 Make sure **disableAutoLogin** is set to `true`. Add the **anonymousAccess** parameter to the nodes you want to hide and their children:
 
