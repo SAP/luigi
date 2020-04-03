@@ -184,12 +184,19 @@ export default class openIdConnect {
           // else persistence might fail.
           setTimeout(() => {
             if (authenticatedUser.state) {
-              window.location.href = decodeURIComponent(
-                authenticatedUser.state
+              history.pushState(
+                '',
+                document.title,
+                decodeURIComponent(authenticatedUser.state)
               );
             } else {
-              window.location.href = window.location.origin;
+              history.pushState(
+                '',
+                document.title,
+                window.location.pathname + window.location.search
+              );
             }
+            resolve(true);
           }, 50);
         })
         .catch(err => {
