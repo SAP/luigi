@@ -214,6 +214,7 @@ The purpose of contexts is to send objects to the micro frontend. You can do thi
 - **type**: object
 - **description**: sends the specified object as context to the view. Use this property in combination with the dynamic **pathSegment** to receive the context through the context listeners of Luigi Client. This is an alternative to using the dynamic value in the **viewUrl**.
 
+<!-- add-attribute:class:warning -->
 > **NOTE**: Context should not be used to create the path or URL as this can lead to errors. Please use one of the methods described in the [dynamically changeable paths](#dynamically-changeable-paths) section instead.
 
 
