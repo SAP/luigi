@@ -141,7 +141,7 @@ auth: {
     }
     // optional functions
     nonceFn: () => {},
-    logoutFn: (settings, authData, logoutCallback) => {},
+    logoutFn: (settings, authData, logoutCallback) => { ...; logoutCallback('logout.html'); },
     userInfoFn:(settings, authData)=>{},
     accessTokenExpiringNotificationTime: 60,
     expirationCheckInterval: 5
@@ -157,7 +157,7 @@ auth: {
 - **redirect_uri** contains the URL to return to after login. The default application root is `/`.
 - **response_type** defaults to the **id_token**. Any other parameter that is added to oAuthData is also added to the authorization payload.
 - **nonceFn** provides a function that returns a string in order to override the default **nonce**.
-- **logoutFn** provides the function to override the **logoutUrl** functionality for a custom logout. It needs to execute the **logoutCallback()** function after logout.
+- **logoutFn** provides the function to override the **logoutUrl** functionality for a custom logout. It needs to execute the **logoutCallback(redirectUri)** function after logout. Its parameter **redirectUri** is an URL or path to redirect to after executing **logoutCallback**. If no **redirectUri** is defined, Luigi stays in the current state.
 - **userInfoFn** provides a function to get user information. It returns a promise of a **userinfo** object which can contain **name**, **email** and **picture** (value is a URL to the image). **Name** or **email** are displayed in the profile drop-down menu and the user’s profile picture is displayed in the top navigation.
 - **accessTokenExpiringNotificationTime** number of seconds that pass before an access token expires and the **onAuthExpireSoon** event is fired. The default value is `60` seconds.
 - **expirationCheckInterval** the number of seconds to pass between each check if the token is about to expire. The default value is `5` seconds.
