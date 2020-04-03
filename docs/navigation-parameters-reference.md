@@ -283,7 +283,7 @@ settings: {
 - **description**: gives you the possibility to handle a situation in which Luigi Client doesn't respond. By default, it will redirect to the home page if nothing else is specified. **timeout** is required.
 - **attributes**:
   - **timeout** amount of time after which redirection will take effect.
-  - **viewUrl** specifies the location to redirect to on the micro frontends level(URL is not changed).
+  - **viewUrl** specifies the location to redirect to on the micro frontend level (the main URL is not changed).
   - **redirectPath** specifies the location to redirect to on the Luigi level(URL is changed).
   - **errorFn** used to handle different scenarios other than redirection.
 
