@@ -78,7 +78,7 @@ The navigation parameters allow you to configure **global** navigation settings 
 - **attributes**:
   - **timeout** amount of time after which redirection will take effect.
   - **viewUrl** specifies the location to redirect to on the micro frontend level (the main URL is not changed).
-  - **redirectPath** specifies the location to redirect to on the Luigi level(URL is changed).
+  - **redirectPath** specifies the location to redirect to on the Luigi level (the main URL is changed).
   - **errorFn** used to handle different scenarios other than redirection.
 
 ### preloadViewGroups
