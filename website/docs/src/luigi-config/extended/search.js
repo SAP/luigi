@@ -1,3 +1,4 @@
+import docsearch from 'docsearch.js';
 class DocSearch {
   init() {
     this.isDevelop = parseInt(window.location.port) === 4000;

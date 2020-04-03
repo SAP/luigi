@@ -41,7 +41,7 @@ class AuthHelpersClass {
         providerInstanceSettings,
         { error, errorDescription },
         providerInstanceSettings.logoutUrl +
-          '?markus=test&post_logout_redirect_uri=' +
+          '?post_logout_redirect_uri=' +
           providerInstanceSettings.post_logout_redirect_uri +
           '&error=' +
           error +
