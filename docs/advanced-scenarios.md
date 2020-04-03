@@ -124,8 +124,7 @@ This example shows you how to use Luigi with a Google account.
       logoutFn: async (settings, authData, logoutCallback) => {
         console.log('revoking token');
         await fetch(`https://accounts.google.com/o/oauth2/revoke?token=${authData.accessToken}`);
-        logoutCallback();
-        location.href = '/logout.html';
+        logoutCallback('/logout.html');
       }
     }
   }
