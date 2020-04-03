@@ -40,7 +40,8 @@
       </a>
     </li>
     {/each}
-    {#if isAuthorizationEnabled || isProfileLogoutItem}
+    {#if isAuthorizationEnabled}
+    {#if isLoggedIn && isProfileLogoutItem}
     <li on:click="{onLogoutClick}" data-testid="{getTestId(profileNav.logout)}">
       <a aria-label="Logout" class="fd-menu__item">
         {#if profileNav.logout.icon}
@@ -59,6 +60,7 @@
         <span>{$getTranslation(profileNav.logout.label)}</span>
       </a>
     </li>
+    {/if}
     {#if !isLoggedIn && !isProfileLogoutItem}
     <li on:click="{startAuthorization}">
       <a aria-label="Login" class="fd-menu__item">Login</a>
