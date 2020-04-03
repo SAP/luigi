@@ -6,6 +6,7 @@
     <meta name="description" content="">
     <title>Table</title>
     <link href="/vendor/fundamental-styles/dist/fundamental-styles.css" rel="stylesheet">
+	<link href="../../styles/styles.css" rel="stylesheet">
 	<script src="/vendor/luigi-client/luigi-client.js"></script>
 </head>
 <body>
@@ -34,20 +35,20 @@
             
             <div class="fd-panel__body fd-panel__body--bleed">
                 <table class="fd-table">
-                    <thead>
-                        <tr id="headerRow">
-                            <th>Column Header</th>
-                            <th>Column Header</th>
-                            <th>Column Header</th>
-                            <th>Column Header</th>
+                    <thead class="fd-table__header">
+                        <tr class="fd-table__row" id="headerRow">
+                            <th class="fd-table__cell">Column Header</th>
+                            <th class="fd-table__cell">Column Header</th>
+                            <th class="fd-table__cell">Column Header</th>
+                            <th class="fd-table__cell">Column Header</th>
                         </tr>
                     </thead>
                     <tbody id="table">
-                        <tr>
-                            <td>user.name@email.com</td>
-                            <td>First Name</td>
-                            <td>Last Name</td>
-                            <td>01/26/17</td>
+                        <tr class="fd-table__row">
+                            <td class="fd-table__cell">user.name@email.com</td>
+                            <td class="fd-table__cell">First Name</td>
+                            <td class="fd-table__cell">Last Name</td>
+                            <td class="fd-table__cell">01/26/17</td>
                         </tr>
                     </tbody>
                 </table>
