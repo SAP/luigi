@@ -4,7 +4,6 @@
 
 This is the Angular-based sample application which runs with Luigi framework.
 
-<!-- add-attribute:class:warning -->
 > **NOTE:** The authorization flow `mockAuth` in this application is a mock implementation for local development. **DO NOT USE IN PRODUCTION!**
 
 ## Development
