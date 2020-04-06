@@ -104,8 +104,12 @@ function addToChangelog(versionText, changelog, lastline) {
   console.log(headline('Appended changelog'));
 }
 
-function replaceInAllFiles(search, replace) {}
-replaceInAllFiles('NEXTRELEASE', `v${input.version}`);
+function replaceInAllFiles(search, replace) {
+  require('child_process').execSync(
+    `${__dirname}/replaceInAllFiles.sh "${search}" "${replace}"`,
+    { stdio: [0, 1, 2] }
+  );
+}
 
 /**
  * PROMPT
