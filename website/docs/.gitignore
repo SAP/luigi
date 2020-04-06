@@ -9,6 +9,7 @@
 extendedConfiguration.bundle.js
 luigi-core
 luigi-client
+docsearch.min.css
 public
 static/assets
 *coreStyles*

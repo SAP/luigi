@@ -19,12 +19,16 @@ module.exports = {
   plugins: [
     new CopyWebpackPlugin([
       {
-        "from": "node_modules/@kyma-project/luigi-core",
+        "from": "node_modules/@luigi-project/core",
         "to": "luigi-core"
       },   
       {
-        "from": "node_modules/@kyma-project/luigi-client",
+        "from": "node_modules/@luigi-project/client",
         "to": "../luigi-client"
+      },
+      {
+        "from": "node_modules/docsearch.js/dist/cdn/docsearch.min.css",
+        "to": "docsearch.min.css"
       },
       {
         "from": "../../docs/assets",
