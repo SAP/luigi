@@ -133,6 +133,7 @@
   let viewUrl;
   let viewGroup;
   let isolateView;
+  let pageErrorHandler;
   let previousNodeValues;
   let isNavigationSyncEnabled = true;
   let isNavigateBack = false;
@@ -282,6 +283,7 @@
           pathParams,
           hideSideNav,
           isolateView,
+          pageErrorHandler,
           previousNodeValues,
           mfSplitView,
           splitViewValues,
@@ -318,6 +320,8 @@
               hideSideNav = obj.hideSideNav;
             } else if (prop === 'isolateView') {
               isolateView = obj.isolateView;
+            } else if (prop === 'pageErrorHandler') {
+              pageErrorHandler = obj.pageErrorHandler;
             } else if (prop === 'previousNodeValues') {
               previousNodeValues = obj.previousNodeValues;
             } else if (prop === 'mfSplitView') {
@@ -717,11 +721,15 @@
     const isolateAllViews = LuigiConfig.getConfigValue(
       'navigation.defaults.isolateView'
     );
+    const defaultPageErrorHandler = LuigiConfig.getConfigValue(
+      'navigation.defaults.pageErrorHandler'
+    );
     const config = {
       iframe: null,
       navigateOk: null,
       builderCompatibilityMode: Boolean(window.builderCompatibilityMode),
-      isolateAllViews
+      isolateAllViews,
+      defaultPageErrorHandler
     };
     LuigiI18N.addCurrentLocaleChangeListener(locale => {
       const message = {
