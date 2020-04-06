@@ -18,28 +18,36 @@ fi
 SEARCH=$1
 REPLACE=$2
 
-FOLDERS=(
-  "core/src",
-  "client/src",
-  "client/luigi-client.d.ts",
-  "plugins/src",
+SOURCES=(
+  "core/src"
+  "client/src"
+  "client/luigi-client.d.ts"
+  "plugins/auth/src"
   "docs"
 )
 
-if [[ "$OSTYPE" == "linux-gnu" ]]; then
-  # Linux Syntax
-  echo "Linux replacing $SEARCH with $REPLACE"
-  # find /usr/share/nginx/public -type f -name '*.js' -exec sed -i "s@REPLACE_ME_API@$BACKEND_URL@g" {} \;
-elif [[ "$OSTYPE" == "darwin"* ]]; then
-  echo "Mac OS X replacing $SEARCH with $REPLACE"
-  # Mac OSX
-  for i in "${FOLDERS[@]}"; do
-    if [ -d "$LUIGI_ROOT_DIR$i" ]; then # if directory
-      echo "is dir: $LUIGI_ROOT_DIR$i"
-    elif [ -f "$LUIGI_ROOT_DIR$i" ]; then # if directory
-      echo "is file: $LUIGI_ROOT_DIR$i"
+# Mac OSX implementation done yet
+if [[ "$OSTYPE" == "darwin"* ]]; then
+  echo "Replacing $SEARCH with $REPLACE"
+  LC_CTYPE="C"
+  LANG="C"
+    # Iterate over Sources
+  for i in "${SOURCES[@]}"; do
+    # On directories find matches and replace only matches
+    # it could be also done a one-liner but it might lead to false-positive
+    # git changes (because files are touched)
+    FIND_RESULTS=`find $LUIGI_ROOT_DIR$i -type f \( -name '*.js' -o -name '*.ts' -o -name '*.md' \) | xargs grep -l $SEARCH`
+    FIND_COUNT=`echo $FIND_RESULTS | wc -l | xargs`
+    # Execute replace only if there were findings
+    if [ "$FIND_COUNT" -gt 0 ]; then
+      for i in "${FIND_RESULTS[@]}"; do
+        if [ ! "$i" = "" ]; then
+          sed -i '' "s@$SEARCH@$REPLACE@" "$i"
+        fi
+      done
     fi
   done
-  # sed -ie 's@http://localhost:8080@$BACKEND_URL@' ./dist/prod/js/app.js
-  # find dist/. -type f -name '*.*' -exec sed -i '' s@http://localhost:8080@$BACKEND_URL@ {} +
+  exit 0
 fi
+
+echo "Unknown OS, this script requires Mac OS X"

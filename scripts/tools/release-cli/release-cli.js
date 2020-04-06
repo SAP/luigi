@@ -5,13 +5,6 @@ import prompts from 'prompts';
 import asyncRequest from 'async-request';
 import color from 'cli-color';
 
-// for quicker testing
-// prompts.inject([
-//   '1.0.1', true, 0, 0, // first questionaire
-//   true, // changelog questionaire
-//   true // NEXTRELEASE questionaire
-// ]);
-
 /**
  * COLORS
  */
@@ -119,7 +112,6 @@ replaceInAllFiles('NEXTRELEASE', `v${input.version}`);
  */
 
 (async () => {
-  return;
   const releases = await getReleases();
   const nextVersion = getNextVersion();
   const questions = [
@@ -151,9 +143,9 @@ replaceInAllFiles('NEXTRELEASE', `v${input.version}`);
   /**
    * PACKAGE VERSIONS
    */
-  // for (const name of Object.keys(paths)) {
-  //   writeVersion(paths[name], input.version);
-  // }
+  for (const name of Object.keys(paths)) {
+    writeVersion(paths[name], input.version);
+  }
   console.log(headline('\nPackages updated to v' + input.version + ':'));
   console.log(Object.keys(paths).join(', '));
 
@@ -214,6 +206,6 @@ replaceInAllFiles('NEXTRELEASE', `v${input.version}`);
   console.log(`\nContinue with the following steps:
   1. Check and modify CHANGELOG.md entries
   2. Add and commit changed files
-  3. 
+  3. Follow the rest of our internal release documentation
   `);
 })();
