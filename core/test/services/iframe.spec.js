@@ -7,7 +7,8 @@ import { Iframe } from '../../src/services/iframe';
 import {
   GenericHelpers,
   RoutingHelpers,
-  IframeHelpers
+  IframeHelpers,
+  NavigationHelpers
 } from '../../src/utilities/helpers';
 import { LuigiConfig } from '../../src/core-api';
 
@@ -37,6 +38,7 @@ describe('Iframe', () => {
       prepareInternalData: () => {}
     };
     sinon.stub(Iframe, 'setOkResponseHandler');
+    sinon.stub(NavigationHelpers, 'handleUnresponsiveClient');
     sinon.stub(LuigiConfig, 'getConfigValue').callsFake();
     sinon.stub(GenericHelpers);
     GenericHelpers.getRandomId.returns('abc');
@@ -293,6 +295,62 @@ describe('Iframe', () => {
       });
       assert(console.info.called, 'console.info called');
       assert(Iframe.navigateIframe.called, 'Iframe.navigateIframe called');
+    });
+  });
+
+  describe('checkIframe', () => {
+    let viewUrl;
+    let config;
+    let node;
+    beforeEach(() => {
+      component.set({
+        showLoadingIndicator: true
+      });
+      viewUrl = '/something';
+      config = {};
+      node = {};
+      // NavigationHelpers.handleUnresponsiveClient = sinon.spy();
+    });
+    afterEach(() => {
+      sinon.restore();
+    });
+
+    it('if viewUrl is defined ', () => {
+      // given
+      const errorHandlerNode = {
+        timeout: 1000,
+        viewUrl: '/somewhere',
+        redirectPath: '/',
+        errorFn: () => {
+          console.log('Works!');
+        }
+      };
+
+      // when
+      Iframe.checkIframe(errorHandlerNode, component, viewUrl, config, node);
+      clock.tick(2000);
+
+      // then
+      assert.deepEqual(component.get().viewUrl, '/somewhere');
+      assert(Iframe.setOkResponseHandler.called, 'setOkResponseHandler() call');
+    });
+
+    it('if viewUrl is not defined', async () => {
+      // given
+      const errorHandlerNode = {
+        timeout: 1000,
+        redirectPath: '/'
+      };
+
+      // when
+      Iframe.checkIframe(errorHandlerNode, component, viewUrl, config, node);
+      clock.tick(2000);
+
+      // then
+      assert(
+        NavigationHelpers.handleUnresponsiveClient.called,
+        'handleUnresponsiveClient() call'
+      );
     });
   });
 
