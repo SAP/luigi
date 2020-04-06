@@ -2,7 +2,9 @@
 import { LuigiAuth, LuigiConfig } from '../../core-api';
 import { AuthHelpers } from './';
 import { Navigation } from '../../navigation/services/navigation';
+import { Routing } from '../../services/routing';
 import { NodeDataManagementStorage } from '../../services/node-data-management';
+
 class NavigationHelpersClass {
   constructor() {
     this.EXP_CAT_KEY = 'luigi.preferences.navigation.expandedCategories';
@@ -259,6 +261,18 @@ class NavigationHelpersClass {
 
   isOpenUIiconName(string) {
     return /^[a-z0-9\-]+$/i.test(string);
+  }
+
+  handleUnresponsiveClient(node) {
+    if (node.errorFn) {
+      node.errorFn();
+    } else {
+      console.warn(
+        'Something went wrong with a client! You will be redirected to another page.'
+      );
+      const path = node.redirectPath || '/';
+      Routing.navigateTo(path);
+    }
   }
 }
 
