@@ -23,7 +23,7 @@ This is a collection of advanced use cases and example implementations. If you a
 
 #### Overview
 
-This example shows you how to keep an existing routing strategy and use an existing micro frontend as drop-in without the need to refactor everything to [`LuigiClient.linkManager()`](https://docs.luigi-project.io/docs/luigi-client-api?section=linkmanager). To update the Luigi Core URL when routing internally with the micro frontend router, without updating the URL on the Luigi Client side, use the `linkManager()` [withoutSync](luigi-client-api.md#withoutsync) method.
+This example shows you how to keep an existing routing strategy and use an existing micro frontend as drop-in without the need to refactor everything to [`LuigiClient.linkManager()`](https://docs.luigi-project.io/docs/luigi-client-api?section=linkmanager). To update the Luigi Core URL when routing internally with the micro frontend router, without updating the URL on the Luigi Client side, use the `linkManager()` [withoutSync](luigi-client-api.md#withoutsync) and [fromVirtualTreeRoot](luigi-client-api.md#fromvirtualtreeroot) methods.
 
 <!-- add-attribute:class:warning -->
 > **NOTE**: This is a very simple example. For cases like modals or split views, you still require the use of [Luigi Client](luigi-client-api.md).
@@ -40,7 +40,6 @@ This example shows you how to keep an existing routing strategy and use an exist
       pathSegment: 'Orders',
       label: 'orders',
       viewUrl: 'https://orders.microfrontend/',
-      navigationContext: 'orders',
       virtualTree: true
     }
 ```
@@ -78,7 +77,7 @@ Use this code to implement `luigi-auto-navigation.service.ts`, which is globally
             .subscribe((ev: NavigationEnd) => {
               if (ev instanceof NavigationEnd) {
                 linkManager()
-                  .fromClosestContext()
+                  .fromVirtualTreeRoot()
                   .withoutSync()
                   .navigate(ev.url);
               }
