@@ -26,6 +26,10 @@ WS_FID_PID=$!
 SLEEPSECS=1 # sleep time between webserver availability check
 WAITCOUNT=0
 until $(curl --output /dev/null --silent --head --fail http://localhost:4200/luigi-core/luigi.js); do
+  if [ $WAITCOUNT -gt 15 ]; then
+    echo "Starting Angular Webserver timed out."
+    exit 1;
+  fi
   printf '.'
   sleep $SLEEPSECS
   WAITCOUNT=$(($WAITCOUNT + $SLEEPSECS))
@@ -35,6 +39,10 @@ echo "Angular Webserver was ready after $WAITCOUNT seconds."
 SLEEPSECS=1 # sleep time between webserver availability check
 WAITCOUNT=0
 until $(curl --output /dev/null --silent --head --fail http://localhost:8080/bundle.js); do
+  if [ $WAITCOUNT -gt 15 ]; then
+    echo "Starting Fiddle Webserver timed out."
+    exit 1;
+  fi
   printf '.'
   sleep $SLEEPSECS
   WAITCOUNT=$(($WAITCOUNT + $SLEEPSECS))
