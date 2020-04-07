@@ -11,7 +11,7 @@ class Settings {
   appLoadingIndicator = {
     hideAutomatically: false
   };
-  responsiveNavigation = 'simpleMobileOnly'; // Options: simple | simpleMobileOnly | semiCollapsible | Fiori3
+  responsiveNavigation = 'simple'; // Options: simple | simpleMobileOnly | semiCollapsible | Fiori3
   sideNavFooterText = `Luigi Client: ${version || 'unknown'}`;
   thirdPartyCookieCheck = {
     // thirdPartyCookieScriptLocation: 'https://domain/init.html',
