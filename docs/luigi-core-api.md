@@ -484,7 +484,7 @@ Returns **linkManager** link manager instance
 
 #### fromVirtualTreeRoot
 
-Sets the current navigation base to the parent node that is defined as virtualTree. This method works only when already inside a virtualTree.
+Sets the current navigation base to the parent node that is defined as virtualTree. This method works only when current active micro frontend is inside a virtualTree.
 
 ##### Examples
 
