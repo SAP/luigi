@@ -1,31 +1,32 @@
 <svelte:window on:keydown="{handleKeydown}"/>
-<div class="fd-ui__overlay fd-overlay fd-overlay--modal" aria-hidden="false">
-  <div class="fd-modal" data-testid="luigi-confirmation-modal">
-    <div class="fd-modal__content" role="document">
-      <div class="fd-modal__header">
-        <h1 class="fd-modal__title">{settings.header}</h1>
-        <button
-          class="fd-button--light fd-modal__close sap-icon--decline sap-icon--l"
-          on:click="{() => dispatch('modalDismiss')}"
-          aria-label="close"
-        ></button>
+<div class="fd-dialog fd-dialog--active" data-testid="luigi-confirmation-modal">
+  <div class="fd-dialog__content fd-dialog__content--s">
+    <header class="fd-dialog__header fd-bar fd-bar--header">
+      <div class="fd-bar__left">
+        <div class="fd-bar__element">
+          <h3 class="fd-dialog__title">{settings.header}</h3>
+        </div>
       </div>
-      <div class="fd-modal__body">{settings.body}</div>
-      <footer class="fd-modal__footer">
-        <div class="fd-modal__actions">
-          <button
-            on:click="{() => dispatch('modalDismiss')}"
-            data-testid="luigi-modal-dismiss"
-            class="fd-button--light"
-          >{settings.buttonDismiss}</button>
+    </header>
+    <div class="fd-dialog__body">{settings.body}</div>
+    <footer class="fd-dialog__footer fd-bar fd-bar--footer">
+      <div class="fd-bar__right">
+        <div class="fd-bar__element">
           <button
             on:click="{() => dispatch('modalConfirm')}"
             data-testid="luigi-modal-confirm"
-            class="fd-button confirm-button"
+            class="fd-dialog__decisive-button fd-button fd-button--emphasized fd-button--compact confirm-button"
           >{settings.buttonConfirm}</button>
         </div>
-      </footer>
-    </div>
+        <div class="fd-bar__element">
+          <button
+            on:click="{() => dispatch('modalDismiss')}"
+            data-testid="luigi-modal-dismiss"
+            class="fd-dialog__decisive-button fd-button fd-button--transparent fd-button--compact"
+          >{settings.buttonDismiss}</button>
+        </div>
+      </div>
+    </footer>
   </div>
 </div>
 
@@ -65,6 +66,10 @@
 
 <style type="text/scss">
   $width: 32rem;
+
+  .fd-dialog {
+    z-index: 3;
+  }
 
   .fd-overlay--modal {
     left: 0;
