@@ -8,13 +8,16 @@ import color from 'cli-color';
 /**
  * COLORS
  */
-const headline = color.bold.cyan;
+const logHeadline = str => console.log(color.bold.cyan(str));
+const logStep = str => console.log(color.cyan(str));
+const logWarning = str => console.log(color.yellow.bold(str));
+const logError = str => console.log(color.redBright.bold(str));
 
 /**
  * PATHS
  */
 const base = path.resolve(__dirname, '..', '..', '..');
-const paths = {
+const pkgJsonPaths = {
   core: path.resolve(base, 'core', 'public', 'package.json'),
   coreIE11: path.resolve(base, 'core', 'public-ie11', 'package.json'),
   client: path.resolve(base, 'client', 'public', 'package.json'),
@@ -61,7 +64,7 @@ async function getReleases() {
 }
 
 function getVersion(pkg) {
-  return require(paths[pkg]).version;
+  return require(pkgJsonPaths[pkg]).version;
 }
 
 function getNextVersion() {
@@ -69,7 +72,6 @@ function getNextVersion() {
 }
 
 function writeVersion(packagePath, version) {
-  console.log('write', version, packagePath);
   const pkgjson = require(packagePath);
   pkgjson.version = version;
   fs.writeFileSync(packagePath, JSON.stringify(pkgjson, null, 2));
@@ -85,30 +87,35 @@ function addToChangelog(versionText, changelog, lastline) {
   const changelogFile = path.resolve(base, 'CHANGELOG.md');
   let md = fs.readFileSync(changelogFile).toString();
   if (md.indexOf(versionText) !== -1) {
-    console.log(
-      color.yellow(
-        'WARNING: Version already exist in the changelog, not appending.'
-      )
+    logWarning(
+      'WARNING: Version already exist in the changelog, not appending.'
     );
     return;
   }
   // remove committers from changelog
-  console.log(changelog.length);
-  console.log(changelog.indexOf('#### Committers'));
-  changelog = changelog.slice(0, changelog.indexOf('#### Committers'));
+
   // add changelog text
   md = md.replace('-->', `-->\n\n${changelog}\n\n`);
   // add github compare link
   md = md += `\n${lastline}`;
   fs.writeFileSync(changelogFile, md);
-  console.log(headline('Appended changelog'));
+  logHeadline('Appended changelog');
 }
 
 function replaceInAllFiles(search, replace) {
-  require('child_process').execSync(
-    `${__dirname}/replaceInAllFiles.sh "${search}" "${replace}"`,
-    { stdio: [0, 1, 2] }
-  );
+  try {
+    // TODO: Getting errors while it is working fine from command line. Seems node cannot handle pipes while evaluating commands.
+    // const result = require('child_process').execSync(`cd ${__dirname} && ./replaceInAllFiles.sh "${search}" "${replace}"`, { stdio: [0, 1, 2] });
+
+    logHeadline('Replace version in files:');
+    logStep(
+      '\nRun now: ',
+      `./tools/release-cli/replaceInAllFiles.sh "${search}" "${replace}"`,
+      '\n'
+    );
+  } catch (error) {
+    logError('Replace error:', error);
+  }
 }
 
 /**
@@ -147,69 +154,77 @@ function replaceInAllFiles(search, replace) {
   /**
    * PACKAGE VERSIONS
    */
-  for (const name of Object.keys(paths)) {
-    writeVersion(paths[name], input.version);
+  for (const name of Object.keys(pkgJsonPaths)) {
+    writeVersion(pkgJsonPaths[name], input.version);
   }
-  console.log(headline('\nPackages updated to v' + input.version + ':'));
-  console.log(Object.keys(paths).join(', '));
+  logHeadline('\nPackages updated to v' + input.version + ':');
+  logStep(Object.keys(pkgJsonPaths).join(', '));
 
   /**
    * CHANGELOG
    */
-  const prevVersion = releases[input.prevVersion];
-  const versionText = '## [v' + input.version + ']';
-  const changelog = require('child_process')
-    .execSync(
-      base +
-        '/node_modules/lerna-changelog/bin/cli.js --ignoreCommiters --from ' +
-        prevVersion
-    )
-    .toString()
-    .replace('## Unreleased', versionText);
+  if (input.changelog) {
+    const prevVersion = releases[input.prevVersion];
+    const versionText = '## [v' + input.version + ']';
+    let changelog = require('child_process')
+      .execSync(
+        base +
+          '/node_modules/lerna-changelog/bin/cli.js --ignoreCommiters --from ' +
+          prevVersion
+      )
+      .toString()
+      .replace('## Unreleased', versionText);
 
-  const lastline = `[v${input.version}]: https://github.com/SAP/luigi/compare/${prevVersion}...v${input.version}`;
+    // strip committers part
+    changelog = changelog.slice(0, changelog.indexOf('#### Committers'));
 
-  console.log(headline('\nPrepared Changelog:\n'));
-  console.log(changelog);
+    const lastline = `[v${input.version}]: https://github.com/SAP/luigi/compare/${prevVersion}...v${input.version}`;
 
-  console.log(headline('\nChangelog last line:\n'));
-  console.log(lastline);
-  console.log('\n');
+    logHeadline('\nPrepared Changelog:');
+    logStep(changelog);
 
-  const changelogQuestions = [
-    {
-      type: 'confirm',
-      name: 'prepend',
-      message: 'Prepend it to the changelog.md?',
-      initial: true
+    logHeadline('\nChangelog last line:\n');
+    logStep(lastline);
+    logStep('\n');
+
+    const changelogQuestions = [
+      {
+        type: 'confirm',
+        name: 'prepend',
+        message: 'Prepend it to the changelog.md?',
+        initial: true
+      }
+    ];
+    const changeloginput = await prompts(changelogQuestions);
+    if (changeloginput.prepend) {
+      addToChangelog(versionText, changelog, lastline);
     }
-  ];
-  const changeloginput = await prompts(changelogQuestions);
-  if (changeloginput.prepend) {
-    addToChangelog(versionText, changelog, lastline);
-  }
-
-  /**
-   * REPLACE VERSION IN FILES
-   */
-  replaceInAllFiles('NEXTRELEASE', `v${input.version}`);
+  } // end if changelog
 
   /**
    * UPDATE PACKAGE-LOCKS
    */
+  logHeadline('\nInstalling packages to update package-lock.json');
   for (const key in installPaths) {
-    console.log(`Installing ${key}`);
+    logStep(`Installing ${key}`);
     require('child_process').execSync(
-      `cd ${installPaths[key]} && npm install && git add ${installPaths[key]}/package-lock.json`,
+      `cd ${installPaths[key]} && npm install`,
       { stdio: [0, 1, 2] }
     );
   }
-  console.log(headline('Package-lock.json files updated and added to git.'));
+  logHeadline('Package-lock.json files updated.\n');
+  logHeadline('\nRELEASE PREPARED');
 
-  console.log(headline('\nRELEASE PREPARED'));
-  console.log(`\nContinue with the following steps:
+  /**
+   * REPLACE VERSION IN FILES
+   */
+  replaceInAllFiles('NEXTRELEASE', `${input.version}`);
+
+  console.log(
+    color.bold(`\nThen continue with the following steps:
   1. Check and modify CHANGELOG.md entries
   2. Add and commit changed files
   3. Follow the rest of our internal release documentation
-  `);
+  `)
+  );
 })();
