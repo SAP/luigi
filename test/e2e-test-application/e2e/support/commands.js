@@ -1,6 +1,6 @@
 import fiddleConfig from '../configs/default';
 Cypress.Commands.add(
-  'visitWithFiddleConfigWStringify',
+  'visitWithFiddleConfig',
   (path = '/', config = fiddleConfig) => {
     cy.visit(`http://localhost:8080/#${path}`, {
       onBeforeLoad: win => {
@@ -10,20 +10,7 @@ Cypress.Commands.add(
     });
   }
 );
-Cypress.Commands.add(
-  'visitWithFiddleConfig',
-  (path = '/', config = fiddleConfig) => {
-    cy.visit(`http://localhost:8080/#${path}`, {
-      onBeforeLoad: win => {
-        win.localStorage.setItem('cookiesAccepted', 'true');
-        win.sessionStorage.setItem(
-          'fiddle',
-          `Luigi.setConfig(${JSON.stringify(config)});`
-        );
-      }
-    });
-  }
-);
+
 Cypress.Commands.add('visitLoggedIn', (path = '/') => {
   cy.visit(path, {
     onBeforeLoad: win => {

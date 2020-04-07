@@ -3,7 +3,7 @@ Cypress.env('RETRIES', 0);
 describe('Navigation with Fiddle', () => {
   describe('Core api navigation test', () => {
     beforeEach(() => {
-      cy.visitWithFiddleConfig('/', fiddleConfig);
+      cy.visitWithFiddleConfig('/', JSON.stringify(fiddleConfig));
     });
     it('Core API navigate and open and close modal', () => {
       cy.window().then(win => {
@@ -29,7 +29,7 @@ describe('Navigation with Fiddle', () => {
     beforeEach(() => {
       const newConfig = Object.assign({}, fiddleConfig);
       newConfig.navigation.nodes[0].viewUrl = null;
-      cy.visitWithFiddleConfig('/', newConfig);
+      cy.visitWithFiddleConfig('/', JSON.stringify(newConfig));
     });
     it('defaultChildNode', () => {
       cy.window().then(win => {

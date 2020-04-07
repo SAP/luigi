@@ -47,8 +47,7 @@ describe('Navigation with Fiddle', () => {
                 }
               }`
       );
-      console.log(newConfig);
-      cy.visitWithFiddleConfigWStringify('/', newConfig);
+      cy.visitWithFiddleConfig('/', newConfig);
     });
     it('custom selected option renderer', () => {
       cy.contains('Select Environment').click();
