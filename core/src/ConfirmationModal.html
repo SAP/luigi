@@ -65,26 +65,15 @@
 </script>
 
 <style type="text/scss">
-  $width: 32rem;
-
   .fd-dialog {
     z-index: 3;
-  }
 
-  .fd-overlay--modal {
-    left: 0;
-  }
-  .fd-modal {
-    &__body,
-    &__header {
-      overflow-wrap: break-word;
+    &__content {
+      max-width: 460px;
     }
-  }
 
-  :global(.no-side-nav),
-  :global(.no-nav) {
-    .fd-modal {
-      left: calc(50% - #{$width}/ 2);
+    &__body {
+      overflow-wrap: break-word;
     }
   }
 </style>
