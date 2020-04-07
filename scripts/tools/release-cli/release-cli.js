@@ -128,6 +128,8 @@ function replaceInAllFiles(search, replace) {
  */
 
 (async () => {
+  logHeadline('Preparing new release.');
+
   const releases = await getReleases();
   const nextVersion = getNextVersion();
   const questions = [
