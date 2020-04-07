@@ -188,10 +188,10 @@ function replaceInAllFiles(search, replace) {
     const lastline = `[v${input.version}]: https://github.com/SAP/luigi/compare/${prevVersion}...v${input.version}`;
 
     logHeadline('\nPrepared Changelog:');
-    logStep(changelog);
+    console.log(changelog);
 
     logHeadline('\nChangelog last line:\n');
-    logStep(lastline);
+    console.log(lastline);
     logStep('\n');
 
     const changelogQuestions = [
@@ -230,7 +230,7 @@ function replaceInAllFiles(search, replace) {
 
   console.log(
     color.bold(`\nThen continue with the following steps:
-  1. Run: ./tools/release-cli/replaceInAllFiles.sh "${search}" "${replace}"
+  1. Run: ./tools/release-cli/replaceInAllFiles.sh "NEXTRELEASE", "${input.version}"
   2. Check and modify CHANGELOG.md entries
   3. Add and commit changed files
   4. Follow the rest of our internal release documentation
