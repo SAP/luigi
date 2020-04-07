@@ -102,7 +102,7 @@ class LuigiNavigationManager {
   }
 
   /**
-   * Sets the current navigation base to the parent node that is defined as virtualTree. This method works only when current active micro frontend is inside a virtualTree.
+   * Sets the current navigation base to the parent node that is defined as virtualTree. This method works only when the currently active micro frontend is inside a virtualTree.
    * @memberof LuigiNavigation
    * @returns {linkManager} link manager instance
    * @since NEXTRELEASE
