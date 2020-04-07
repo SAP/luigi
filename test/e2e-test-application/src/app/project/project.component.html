@@ -34,7 +34,7 @@
       <div class="fd-panel__body">
         <button
           class="fd-button"
-          data-testid="show-luigi-confirmation-modal"
+          data-testid="show-luigi-confirmation-dialog"
           (click)="showConfirmationModal()"
         >
           Show Luigi confirmation modal
@@ -46,7 +46,7 @@
         </p>
         <p
           class="fd-has-font-style-italic"
-          data-testid="luigi-confirmation-modal-result"
+          data-testid="luigi-confirmation-dialog-result"
           ngClass="{{
             confirmationModalResult === 'confirmed'
               ? 'fd-has-color-status-1'

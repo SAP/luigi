@@ -27,7 +27,7 @@ describe('Luigi Client ux manager features', () => {
       cy.get('.lui-backdrop').should('exist');
       //close modal
       cy.wrap($iframeBody)
-        .find('.fd-modal__footer')
+        .find('.fd-dialog__footer')
         .contains('Confirm')
         .click();
 
@@ -38,47 +38,57 @@ describe('Luigi Client ux manager features', () => {
     it('Luigi Client generic confirmation modal', () => {
       cy.goToUxManagerMethods($iframeBody);
 
-      cy.get('[data-testid=luigi-confirmation-modal]').should('not.be.visible');
+      cy.get('[data-testid=luigi-confirmation-dialog]').should(
+        'not.be.visible'
+      );
 
       cy.wrap($iframeBody)
-        .find('[data-testid=show-luigi-confirmation-modal]')
+        .find('[data-testid=show-luigi-confirmation-dialog]')
         .click();
-      cy.get('[data-testid=luigi-confirmation-modal]').should('be.visible');
+      cy.get('[data-testid=luigi-confirmation-dialog]').should('be.visible');
 
       cy.get('[data-testid=luigi-modal-dismiss]').click();
-      cy.get('[data-testid=luigi-confirmation-modal]').should('not.be.visible');
+      cy.get('[data-testid=luigi-confirmation-dialog]').should(
+        'not.be.visible'
+      );
       cy.wrap($iframeBody)
-        .find('[data-testid=luigi-confirmation-modal-result]')
+        .find('[data-testid=luigi-confirmation-dialog-result]')
         .contains('Luigi confirmation modal has been dismissed');
 
       cy.wrap($iframeBody)
-        .find('[data-testid=show-luigi-confirmation-modal]')
+        .find('[data-testid=show-luigi-confirmation-dialog]')
         .click();
-      cy.get('[data-testid=luigi-confirmation-modal]').should('be.visible');
+      cy.get('[data-testid=luigi-confirmation-dialog]').should('be.visible');
 
       cy.get('[data-testid=luigi-modal-confirm]').click();
-      cy.get('[data-testid=luigi-confirmation-modal]').should('not.be.visible');
+      cy.get('[data-testid=luigi-confirmation-dialog]').should(
+        'not.be.visible'
+      );
       cy.wrap($iframeBody)
-        .find('[data-testid=luigi-confirmation-modal-result]')
+        .find('[data-testid=luigi-confirmation-dialog-result]')
         .contains('Luigi confirmation modal has been confirmed');
     });
 
     it('Close Luigi Client generic confirmation modal by esc keypress', () => {
       cy.goToUxManagerMethods($iframeBody);
 
-      cy.get('[data-testid=luigi-confirmation-modal]').should('not.be.visible');
+      cy.get('[data-testid=luigi-confirmation-dialog]').should(
+        'not.be.visible'
+      );
       cy.wrap($iframeBody)
-        .find('[data-testid=show-luigi-confirmation-modal]')
+        .find('[data-testid=show-luigi-confirmation-dialog]')
         .click();
-      cy.get('[data-testid=luigi-confirmation-modal]').should('be.visible');
+      cy.get('[data-testid=luigi-confirmation-dialog]').should('be.visible');
 
       cy.get('[data-testid=luigi-modal-dismiss]').trigger('keydown', {
         keyCode: 27,
         which: 27
       });
-      cy.get('[data-testid=luigi-confirmation-modal]').should('not.be.visible');
+      cy.get('[data-testid=luigi-confirmation-dialog]').should(
+        'not.be.visible'
+      );
       cy.wrap($iframeBody)
-        .find('[data-testid=luigi-confirmation-modal-result]')
+        .find('[data-testid=luigi-confirmation-dialog-result]')
         .contains('Luigi confirmation modal has been dismissed');
     });
 
@@ -119,13 +129,13 @@ describe('Luigi Client ux manager features', () => {
           .contains('Projects')
           .click();
 
-        cy.get('[data-testid=luigi-confirmation-modal]').should('be.visible');
+        cy.get('[data-testid=luigi-confirmation-dialog]').should('be.visible');
 
         cy.expectPathToBe('/overview'); //the location is unchanged
 
         cy.get('[data-testid=luigi-modal-dismiss]').click();
 
-        cy.get('[data-testid=luigi-confirmation-modal]').should(
+        cy.get('[data-testid=luigi-confirmation-dialog]').should(
           'not.be.visible'
         );
 
@@ -141,13 +151,13 @@ describe('Luigi Client ux manager features', () => {
           .contains('Projects')
           .click();
 
-        cy.get('[data-testid=luigi-confirmation-modal]').should('be.visible');
+        cy.get('[data-testid=luigi-confirmation-dialog]').should('be.visible');
 
         cy.expectPathToBe('/overview'); //the location is unchanged
 
         cy.get('[data-testid=luigi-modal-confirm]').click();
 
-        cy.get('[data-testid=luigi-confirmation-modal]').should(
+        cy.get('[data-testid=luigi-confirmation-dialog]').should(
           'not.be.visible'
         );
 

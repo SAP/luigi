@@ -12,3 +12,6 @@ $fd-icons-path: '~fundamental-styles/scss/icons/';
 .fd-list-group__item {
   display: block;
 }
+.fd-dialog {
+  z-index: 2;
+}
