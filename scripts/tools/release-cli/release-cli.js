@@ -226,7 +226,7 @@ function replaceInAllFiles(search, replace) {
     );
   }
   logHeadline('Package-lock.json files updated.\n');
-  logHeadline('\nRELEASE PREPARED');
+  logHeadline('\nRelease prepared!');
 
   console.log(
     color.bold(`\nThen continue with the following steps:
