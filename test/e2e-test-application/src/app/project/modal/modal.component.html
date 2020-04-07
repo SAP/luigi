@@ -2,7 +2,7 @@
   *ngIf="modalActive"
   class="fd-dialog fd-dialog--active fd-dialog-docs-static"
   role="dialog"
-  data-testid="luigi-confirmation-dialog"
+  data-testid="luigi-confirmation-modal"
   aria-hidden="false"
 >
   <div class="fd-dialog__content fd-dialog__content--s">
@@ -36,6 +36,7 @@
           <button
             (click)="onCloseModalClick()"
             class="fd-dialog__decisive-button fd-button fd-button--transparent fd-button--compact"
+            aria-label="close"
           >
             Cancel
           </button>
