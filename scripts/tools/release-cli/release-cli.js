@@ -9,9 +9,17 @@ import color from 'cli-color';
  * COLORS
  */
 const logHeadline = str => console.log(color.bold.cyan(str));
-const logStep = str => console.log(color.cyan(str));
 const logWarning = str => console.log(color.yellow.bold(str));
 const logError = str => console.log(color.redBright.bold(str));
+const logStep = (s1, s2, s3) => {
+  if (s3) {
+    console.log(color.cyan(s1), color.cyan(s2), color.cyan(s3));
+  } else if (s2) {
+    console.log(color.cyan(s1), color.cyan(s2));
+  } else if (s1) {
+    console.log(color.cyan(s1));
+  }
+};
 
 /**
  * PATHS
@@ -105,14 +113,11 @@ function addToChangelog(versionText, changelog, lastline) {
 function replaceInAllFiles(search, replace) {
   try {
     // TODO: Getting errors while it is working fine from command line. Seems node cannot handle pipes while evaluating commands.
-    // const result = require('child_process').execSync(`cd ${__dirname} && ./replaceInAllFiles.sh "${search}" "${replace}"`, { stdio: [0, 1, 2] });
-
-    logHeadline('Replace version in files:');
-    logStep(
-      '\nRun now: ',
-      `./tools/release-cli/replaceInAllFiles.sh "${search}" "${replace}"`,
-      '\n'
+    require('child_process').execSync(
+      `cd ${__dirname} && ./replaceInAllFiles.sh "${search}" "${replace}"`,
+      { stdio: [0, 1, 2] }
     );
+    logHeadline('\nReplaced version in files.');
   } catch (error) {
     logError('Replace error:', error);
   }
@@ -202,6 +207,12 @@ function replaceInAllFiles(search, replace) {
   } // end if changelog
 
   /**
+   * REPLACE VERSION IN FILES
+   */
+  // TODO: disabled due to runtime errors and added as console log
+  // replaceInAllFiles('NEXTRELEASE', `${input.version}`);
+
+  /**
    * UPDATE PACKAGE-LOCKS
    */
   logHeadline('\nInstalling packages to update package-lock.json');
@@ -215,16 +226,12 @@ function replaceInAllFiles(search, replace) {
   logHeadline('Package-lock.json files updated.\n');
   logHeadline('\nRELEASE PREPARED');
 
-  /**
-   * REPLACE VERSION IN FILES
-   */
-  replaceInAllFiles('NEXTRELEASE', `${input.version}`);
-
   console.log(
     color.bold(`\nThen continue with the following steps:
-  1. Check and modify CHANGELOG.md entries
-  2. Add and commit changed files
-  3. Follow the rest of our internal release documentation
+  1. Run: ./tools/release-cli/replaceInAllFiles.sh "${search}" "${replace}"
+  2. Check and modify CHANGELOG.md entries
+  3. Add and commit changed files
+  4. Follow the rest of our internal release documentation
   `)
   );
 })();
