@@ -117,11 +117,11 @@ describe('Luigi Client UX Alerts + Localization', () => {
 
       cy.get('*[id$=_link_relativePath]').click();
       cy.expectPathToBe('/projects/pr1');
-      cy.get('[data-testid=luigi-confirmation-modal]').should('be.visible');
+      cy.get('[data-testid=luigi-confirmation-dialog]').should('be.visible');
       cy.get('[data-testid=luigi-modal-dismiss]').click();
       cy.expectPathToBe('/projects/pr1');
       cy.get('*[id$=_link_relativePath]').click();
-      cy.get('[data-testid=luigi-confirmation-modal]').should('be.visible');
+      cy.get('[data-testid=luigi-confirmation-dialog]').should('be.visible');
       cy.get('[data-testid=luigi-modal-confirm]').click();
       cy.expectPathToBe('/projects/pr1/hideSideNav');
 
