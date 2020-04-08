@@ -397,7 +397,7 @@
   const buildPath = params => {
     let path = params.link;
     if (params.fromVirtualTreeRoot) {
-      // from the closest navigation context
+      // from a parent node specified with virtualTree: true
       const node = [...navigationPath].reverse().find(n => n.virtualTree);
       if (!node) {
         console.error(
@@ -406,6 +406,12 @@
         return;
       }
       path = Routing.concatenatePath(getSubPath(node), params.link);
+    } else if (params.fromParent) {
+      // from direct parent
+      path = Routing.concatenatePath(
+        getSubPath(currentNode.parent),
+        params.link
+      );
     } else if (params.fromClosestContext) {
       // from the closest navigation context
       const node = [...navigationPath]

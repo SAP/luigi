@@ -202,16 +202,6 @@ export declare interface UxManager {
 
 export declare interface LinkManager {
   /**
-   * Sets the current navigation base to the parent node that is defined as virtualTree. This method works only when already inside a virtualTree.
-   * @memberof linkManager
-   * @returns {linkManager} link manager instance
-   * @since NEXTRELEASE
-   * @example
-   * LuigiClient.linkManager().fromVirtualTreeRoot().navigate('/users/groups/stakeholders')
-   */
-  fromVirtualTreeRoot: () => this;
-
-  /**
    * Sets the current navigation context which is then used by the `navigate` function. This has to be a parent navigation context, it is not possible to use the child navigation contexts.
    * @memberof linkManager
    * @returns {linkManager} link manager instance
@@ -229,6 +219,26 @@ export declare interface LinkManager {
    * LuigiClient.linkManager().fromContext('project').navigate('/settings')
    */
   fromContext: (navigationContext: string) => this;
+
+  /**
+   * Enables navigating to sibling nodes without knowing the absolute path
+   * @memberof linkManager
+   * @returns {linkManager} link manager instance
+   * @since NEXTRELEASE
+   * @example
+   * LuigiClient.linkManager().fromParent().navigate('/sibling')
+   */
+  fromParent: () => this;
+
+  /**
+   * Sets the current navigation base to the parent node that is defined as virtualTree. This method works only when the currently active micro frontend is inside a virtualTree.
+   * @memberof linkManager
+   * @returns {linkManager} link manager instance
+   * @since NEXTRELEASE
+   * @example
+   * LuigiClient.linkManager().fromVirtualTreeRoot().navigate('/users/groups/stakeholders')
+   */
+  fromVirtualTreeRoot: () => this;
 
   /**
    * Discards the active view and navigates back to the last visited view. Works with preserved views, and also acts as the substitute of the browser **back** button. **goBackContext** is only available when using preserved views.
