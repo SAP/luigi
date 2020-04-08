@@ -1441,31 +1441,15 @@
     padding-right: 12px;
   }
 
+  :global(.fd-menu__link) {
+    text-decoration: none; //Remove underline from links in fd-menu
+    border-radius: 0; //Remove border radius from links inside fd-menu
+  }
+
   //Overwrites with SAP variables
 
   :global(.fd-shellbar) {
     border-bottom: #354a5f;
     border-bottom: 1px solid var(--sapShell_BorderColor, #354a5f);
-  }
-
-  :global(.fd-menu__item) {
-    background-color: var(--sapBackgroundColor, #fff);
-    color: var(--sapLinkColor, #51555a);
-
-    &.is-hover,
-    &:hover,
-    &.is-selected:hover {
-      color: #0854a0;
-      color: var(--sapLink_Hover_Color, #0854a0);
-      background-color: #ebf5fe;
-      background-color: var(--sapButton_Hover_Background, #ebf5fe);
-    }
-
-    &.is-selected {
-      color: #32363a;
-      color: var(--sapList_TextColor, #32363a);
-      background: #e5f0fa;
-      background: var(--sapList_SelectionBackgroundColor, #e5f0fa);
-    }
   }
 </style>

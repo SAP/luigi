@@ -3,12 +3,18 @@
   <ul class="fd-menu__list fd-menu__list--top">
     {#each actions as node} {#if node.position === 'top' || !['top',
     'bottom'].includes(node.position)}
-    <li on:click="{() => onActionClick(node)}" data-testid="{getTestId(node)}">
+    <li
+      class="fd-menu__item"
+      on:click="{() => onActionClick(node)}"
+      data-testid="{getTestId(node)}"
+    >
       <a
         href="{getRouteLink(node)}"
         on:click|preventDefault="{() => {}}"
-        class="fd-menu__item"
-      >{$getTranslation(node.label)}</a>
+        class="fd-menu__link"
+      >
+        <span class="fd-menu__title">{$getTranslation(node.label)}</span>
+      </a>
     </li>
     {/if} {/each}
   </ul>
@@ -24,6 +30,7 @@
     {#await getNodeName(node.label, config.fallbackLabelResolver,
     node.id)} {:then label}
     <li
+      class="fd-menu__item"
       on:click="{() => goToOption(node, selectedOption)}"
       data-testid="{getTestId(node)}"
     >
@@ -33,9 +40,11 @@
       <a
         href="{getRouteLink(node)}"
         on:click|preventDefault="{() => {}}"
-        class="fd-menu__item {node.label === selectedLabel ? 'is-selected' : ''}"
+        class="fd-menu__link {node.label === selectedLabel ? 'is-selected' : ''}"
         title="{label}"
-      >{label}</a>
+      >
+        <span class="fd-menu__title">{label}</span>
+      </a>
       {/if}
     </li>
     {/await} {/each} {/if}
@@ -43,12 +52,18 @@
   {#if actions && actions.length}
   <ul class="fd-menu__list fd-menu__list--bottom">
     {#each actions as node} {#if node.position === 'bottom'}
-    <li on:click="{() => onActionClick(node)}" data-testid="{getTestId(node)}">
+    <li
+      class="fd-menu__item"
+      on:click="{() => onActionClick(node)}"
+      data-testid="{getTestId(node)}"
+    >
       <a
         href="{getRouteLink(node)}"
         on:click|preventDefault="{() => {}}"
-        class="fd-menu__item"
-      >{$getTranslation(node.label)}</a>
+        class="fd-menu__link"
+      >
+        <span class="fd-menu__title">{$getTranslation(node.label)}</span>
+      </a>
     </li>
     {/if} {/each}
   </ul>
@@ -83,5 +98,16 @@
   .lui-ctx-switch-nav {
     max-height: calc(100vh - 76px);
     overflow-y: auto;
+  }
+
+  .fd-menu__list--top {
+    border-bottom: 1px solid #eeeeef;
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+  }
+  .fd-menu__list--bottom {
+    border-top: 1px solid #eeeeef;
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
   }
 </style>
