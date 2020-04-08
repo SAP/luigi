@@ -10,7 +10,7 @@ Object.keys(productSwitcherItems[0]).length }
         <!-- default: sap-icon--grid -->
         {#if hasOpenUIicon(config)}
         <button
-          class="fd-button--light fd-product-switch__control sap-icon--{config.icon}"
+          class="fd-button fd-button--transparent fd-product-switch__control sap-icon--{config.icon}"
           aria-expanded="{dropDownStates.productSwitcherPopover || false}"
           aria-haspopup="true"
           on:click|stopPropagation="{toggleDropdownState}"
@@ -19,7 +19,7 @@ Object.keys(productSwitcherItems[0]).length }
         ></button>
         {:else}
         <button
-          class="fd-button--light fd-product-switch__control"
+          class="fd-button fd-button--transparent fd-product-switch__control"
           aria-expanded="{dropDownStates.productSwitcherPopover || false}"
           aria-haspopup="true"
           on:click|stopPropagation="{toggleDropdownState}"
