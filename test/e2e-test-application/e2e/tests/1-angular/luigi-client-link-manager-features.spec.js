@@ -49,8 +49,8 @@ describe('Luigi client linkManager', () => {
 
       //navigate to sibling through parent
       cy.wrap($iframeBody)
-      .contains('from parent: to sibling')
-      .click();
+        .contains('from parent: to sibling')
+        .click();
       cy.expectPathToBe('/projects/pr1');
 
       cy.goToOverviewPage();
