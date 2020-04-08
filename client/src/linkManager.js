@@ -23,6 +23,7 @@ export class linkManager extends LuigiClientBase {
       errorSkipNavigation: false,
       fromContext: null,
       fromClosestContext: false,
+      fromParent: false,
       relative: false,
       link: ''
     };
@@ -151,6 +152,19 @@ export class linkManager extends LuigiClientBase {
         'Navigation not possible, no parent navigationContext found.'
       );
     }
+    return this;
+  }
+
+  /**
+   * Enables navigating to sibling nodes without knowing the absolute path.
+   * @memberof linkManager
+   * @returns {linkManager} link manager instance
+   * @since NEXTRELEASE
+   * @example
+   * LuigiClient.linkManager().fromParent().navigate('/sibling')
+   */
+  fromParent() {
+    this.options.fromParent = true;
     return this;
   }
 
