@@ -5,7 +5,7 @@ Go to the [Luigi Fiddle](https://fiddle.luigi-project.io) site to see Luigi in a
 
 ### Code formatting for contributors
 
-All projects in the repository use [Prettier](https://prettier.io) to format source code. Run the `npm install` command in the root folder to install it along with [husky](https://github.com/typicode/husky), the Git hooks manager. Both tools ensure proper codebase formatting before committing it.
+Run the `npm install` command in the root folder to install it.
 
 ### Run fiddle locally
 `npm run dev`
