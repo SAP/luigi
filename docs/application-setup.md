@@ -71,7 +71,8 @@ curl https://raw.githubusercontent.com/SAP/luigi/master/test/e2e-test-applicatio
 
 sed "s|extendedConfiguration.bundle.js|luigi-config.js|g" public/index.html > public/index.tmp.html && mv public/index.tmp.html public/index.html
 
-cp -r node_modules/\@luigi-project/* public
+cp -r node_modules/\@luigi-project/core public/luigi-core
+cp -r node_modules/\@luigi-project/client public/luigi-client
 cp -r node_modules/fiori-fundamentals/dist public/fiori-fundamentals
 
 npm run buildConfig
