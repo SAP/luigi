@@ -1,5 +1,6 @@
 {
   "name": "luigi-scripts-private",
+  "private": true,
   "scripts": {
     "docu": "npm run docu:client && npm run docu:core",
     "docu:generate:section": "npm run docu:client:generate:section && npm run docu:core:generate:section",
