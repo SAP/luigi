@@ -4,6 +4,7 @@ const assert = chai.assert;
 const sinon = require('sinon');
 import { AuthHelpers, NavigationHelpers } from '../../../src/utilities/helpers';
 import { LuigiAuth, LuigiConfig } from '../../../src/core-api';
+import { Routing } from '../../../src/services/routing';
 
 describe('Navigation-helpers', () => {
   describe('isNodeAccessPermitted', () => {
@@ -160,5 +161,65 @@ describe('Navigation-helpers', () => {
       'parent/pathSegment',
       'path should match'
     );
+  });
+
+  describe('handleUnresponsiveClient', () => {
+    let node;
+    beforeEach(() => {
+      node = {
+        category: 'External Views',
+        viewId: 'viewX',
+        label: 'This is X',
+        viewUrl: 'https://this.is.x/index.html'
+      };
+      Routing.navigateTo = sinon.spy();
+    });
+    afterEach(() => {
+      sinon.restore();
+    });
+
+    it('default redirection', () => {
+      // given
+      node.errorPageHandler = {
+        timeout: 1000
+      };
+      const defaultPath = '/';
+
+      // when
+      NavigationHelpers.handleUnresponsiveClient(node.errorPageHandler);
+
+      // then
+      sinon.assert.calledWithExactly(Routing.navigateTo, defaultPath);
+    });
+
+    it('redirection to the specified path', async () => {
+      // given
+      node.errorPageHandler = {
+        timeout: 1000,
+        redirectPath: '/somewhere'
+      };
+      const expectedPath = node.errorPageHandler.redirectPath;
+
+      // when
+      NavigationHelpers.handleUnresponsiveClient(node.errorPageHandler);
+
+      // then
+      sinon.assert.calledWithExactly(Routing.navigateTo, expectedPath);
+    });
+
+    it('test when errorFn takes effect', async () => {
+      // given
+      node.errorPageHandler = {
+        timeout: 1000,
+        redirectPath: '/somewhere',
+        errorFn: sinon.spy()
+      };
+
+      // when
+      NavigationHelpers.handleUnresponsiveClient(node.errorPageHandler);
+
+      // then
+      sinon.assert.calledOnce(node.errorPageHandler.errorFn);
+    });
   });
 });
