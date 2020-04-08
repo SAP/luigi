@@ -335,6 +335,18 @@ LuigiClient.linkManager().fromClosestContext().navigate('/users/groups/stakehold
 
 Returns **[linkManager](#linkmanager)** link manager instance
 
+#### fromParent
+
+Enables navigating to sibling nodes without knowing the absolute path
+
+##### Examples
+
+```javascript
+LuigiClient.linkManager().fromParent().navigate('/sibling')
+```
+
+Returns **[linkManager](#linkmanager)** link manager instance
+
 #### withParams
 
 Sends node parameters to the route. The parameters are used by the `navigate` function. Use it optionally in combination with any of the navigation functions and receive it as part of the context object in Luigi Client.
