@@ -335,7 +335,444 @@ LuigiClient.linkManager().fromClosestContext().navigate('/users/groups/stakehold
 
 Returns **[linkManager](#linkmanager)** link manager instance
 
+#### fromVirtualTreeRoot
+
+Sets the current navigation base to the parent node that is defined as virtualTree. This method works only when the currently active micro frontend is inside a virtualTree.
+
+##### Examples
+
+```javascript
+LuigiClient.linkManager().fromVirtualTreeRoot().navigate('/users/groups/stakeholders')
+```
+
+Returns **[linkManager](#linkmanager)** link manager instance
+
+**Meta**
+
+-   **since**: NEXTRELEASE
+
+#### fromParent
+
+Enables navigating to sibling nodes without knowing the absolute path.
+
+##### Examples
+
+```javascript
+LuigiClient.linkManager().fromParent().navigate('/sibling')
+```
+
+Returns **[linkManager](#linkmanager)** link manager instance
+
+**Meta**
+
+-   **since**: NEXTRELEASE
+
 #### withParams
+
+Sends node parameters to the route. The parameters are used by the `navigate` function. Use it optionally in combination with any of the navigation functions and receive it as part of the context object in Luigi Client.
+
+##### Parameters
+
+-   `nodeParams` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** 
+
+##### Examples
+
+```javascript
+LuigiClient.linkManager().withParams({foo: "bar"}).navigate("path")
+
+// Can be chained with context setting functions such as:
+LuigiClient.linkManager().fromContext("currentTeam").withParams({foo: "bar"}).navigate("path")
+```
+
+Returns **[linkManager](#linkmanager)** link manager instance
+
+#### pathExists
+
+Checks if the path you can navigate to exists in the main application. For example, you can use this helper method conditionally to display a DOM element like a button.
+
+##### Parameters
+
+-   `path` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** path which existence you want to check
+
+##### Examples
+
+```javascript
+let pathExists;
+ LuigiClient
+ .linkManager()
+ .pathExists('projects/pr2')
+ .then(
+   (pathExists) => {  }
+ );
+```
+
+Returns **[promise](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise)** a promise which resolves to a Boolean variable specifying whether the path exists or not
+
+#### hasBack
+
+Checks if there is one or more preserved views. You can use it to show a **back** button.
+
+Returns **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)** indicating if there is a preserved view you can return to
+
+#### goBack
+
+Discards the active view and navigates back to the last visited view. Works with preserved views, and also acts as the substitute of the browser **back** button. **goBackContext** is only available when using preserved views.
+
+##### Parameters
+
+-   `goBackValue` **any** data that is passed in the **goBackContext** field to the last visited view when using preserved views
+
+##### Examples
+
+```javascript
+LuigiClient.linkManager().goBack({ foo: 'bar' });
+LuigiClient.linkManager().goBack(true);
+```
+
+### splitView
+
+Split view 
+Allows to open a micro frontend in a split screen in the lower part of the content area. Open it by calling `const splitViewHandle = LuigiClient.linkManager().openAsSplitView`. 
+At a given time, you can open only one split view. It closes automatically when you navigate to a different route.
+When you call `handle.collapse()`, the split view gets destroyed. It recreates when you use `handle.expand()`.
+`openAsSplitView` returns an instance of the split view handle. The functions, actions, and event handlers listed below allow you to control and manage the split view.
+
+**Meta**
+
+-   **since**: 0.6.0
+
+#### collapse
+
+Collapses the split view
+
+##### Examples
+
+```javascript
+splitViewHandle.collapse();
+```
+
+**Meta**
+
+-   **since**: 0.6.0
+
+#### expand
+
+Expands the split view
+
+##### Examples
+
+```javascript
+splitViewHandle.expand();
+```
+
+**Meta**
+
+-   **since**: 0.6.0
+
+#### close
+
+Closes and destroys the split view
+
+##### Examples
+
+```javascript
+splitViewHandle.close();
+```
+
+**Meta**
+
+-   **since**: 0.6.0
+
+#### setSize
+
+Sets the height of the split view
+
+##### Parameters
+
+-   `value` **[number](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number)** lower height in percent
+
+##### Examples
+
+```javascript
+splitViewHandle.setSize(60);
+```
+
+**Meta**
+
+-   **since**: 0.6.0
+
+#### on
+
+Registers a listener for split view events
+
+##### Parameters
+
+-   `name` **(`"expand"` \| `"collapse"` \| `"resize"` \| `"close"`)** event name
+-   `callback` **[function](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Statements/function)** gets called when this event gets triggered by Luigi
+
+##### Examples
+
+```javascript
+const listenerId = splitViewHandle.on('expand', () => {});
+const listenerId = splitViewHandle.on('collapse', () => {});
+const listenerId = splitViewHandle.on('resize', () => {});
+const listenerId = splitViewHandle.on('close', () => {});
+*
+```
+
+Returns **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** listener id
+
+**Meta**
+
+-   **since**: 0.6.0
+
+#### removeEventListener
+
+Unregisters a split view listener
+
+##### Parameters
+
+-   `id` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** listener id
+
+##### Examples
+
+```javascript
+splitViewHandle.removeEventListener(listenerId);
+```
+
+**Meta**
+
+-   **since**: 0.6.0
+
+#### exists
+
+Gets the split view status
+
+##### Examples
+
+```javascript
+splitViewHandle.exists();
+```
+
+Returns **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)** true if a split view is loaded
+
+**Meta**
+
+-   **since**: 0.6.0
+
+#### getSize
+
+Reads the size of the split view
+
+##### Examples
+
+```javascript
+splitViewHandle.getSize();
+```
+
+Returns **[number](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number)** height in percent
+
+**Meta**
+
+-   **since**: 0.6.0
+
+#### isCollapsed
+
+Reads the collapse status
+
+##### Examples
+
+```javascript
+splitViewHandle.isCollapsed();
+```
+
+Returns **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)** true if the split view is currently collapsed
+
+**Meta**
+
+-   **since**: 0.6.0
+
+#### isExpanded
+
+Reads the expand status
+
+##### Examples
+
+```javascript
+splitViewHandle.isExpanded();
+```
+
+Returns **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)** true if the split view is currently expanded
+
+**Meta**
+
+-   **since**: 0.6.0
+
+### uxManager
+
+Use the UX Manager to manage the appearance features in Luigi.
+
+#### showLoadingIndicator
+
+Adds a backdrop with a loading indicator for the micro frontend frame. This overrides the [loadingIndicator.enabled](navigation-parameters-reference.md#node-parameters) setting.
+
+#### hideLoadingIndicator
+
+Removes the loading indicator. Use it after calling [showLoadingIndicator()](#showLoadingIndicator) or to hide the indicator when you use the [loadingIndicator.hideAutomatically: false](navigation-parameters-reference.md#node-parameters) node configuration.
+
+#### addBackdrop
+
+Adds a backdrop to block the top and side navigation. It is based on the Fundamental UI Modal, which you can use in your micro frontend to achieve the same behavior.
+
+#### removeBackdrop
+
+Removes the backdrop.
+
+#### setDirtyStatus
+
+This method informs the main application that there are unsaved changes in the current view in the iframe. For example, that can be a view with form fields which were edited but not submitted.
+
+##### Parameters
+
+-   `isDirty` **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)** indicates if there are any unsaved changes on the current page or in the component
+
+#### showConfirmationModal
+
+Shows a confirmation modal.
+
+##### Parameters
+
+-   `settings` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** the settings of the confirmation modal. If you don't provide any value for any of the fields, a default value is used
+    -   `settings.header` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** the content of the modal header (optional, default `"Confirmation"`)
+    -   `settings.body` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** the content of the modal body (optional, default `"Are you sure you want to do this?"`)
+    -   `settings.buttonConfirm` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** the label for the modal confirm button (optional, default `"Yes"`)
+    -   `settings.buttonDismiss` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** the label for the modal dismiss button (optional, default `"No"`)
+
+##### Examples
+
+```javascript
+import LuigiClient from '@luigi-project/client';
+const settings = {
+ header: "Confirmation",
+ body: "Are you sure you want to do this?",
+ buttonConfirm: "Yes",
+ buttonDismiss: "No"
+}
+LuigiClient
+ .uxManager()
+ .showConfirmationModal(settings)
+ .then(() => {
+    // Logic to execute when the confirmation modal is dismissed
+ });
+```
+
+Returns **[promise](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise)** which is resolved when accepting the confirmation modal and rejected when dismissing it
+
+#### showAlert
+
+Shows an alert.
+
+##### Parameters
+
+-   `settings` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** the settings for the alert
+    -   `settings.text` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** the content of the alert. To add a link to the content, you have to set up the link in the `links` object. The key(s) in the `links` object must be used in the text to reference the links, wrapped in curly brackets with no spaces. If you don't specify any text, the alert is not displayed
+    -   `settings.type` **(`"info"` \| `"success"` \| `"warning"` \| `"error"`)** sets the type of alert
+    -   `settings.links` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** provides links data
+        -   `settings.links.LINK_KEY` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** object containing the data for a particular link. To properly render the link in the alert message refer to the description of the **settings.text** parameter
+            -   `settings.links.LINK_KEY.text` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** text which replaces the link identifier in the alert content
+            -   `settings.links.LINK_KEY.url` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** url to navigate when you click the link. Currently, only internal links are supported in the form of relative or absolute paths
+    -   `settings.closeAfter` **[number](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number)** (optional) time in milliseconds that tells Luigi when to close the Alert automatically. If not provided, the Alert will stay on until closed manually. It has to be greater than `100`
+
+##### Examples
+
+```javascript
+import LuigiClient from '@luigi-project/client';
+const settings = {
+ text: "Ut enim ad minim veniam, {goToHome} quis nostrud exercitation ullamco {relativePath}. Duis aute irure dolor {goToOtherProject}",
+ type: 'info',
+ links: {
+   goToHome: { text: 'homepage', url: '/overview' },
+   goToOtherProject: { text: 'other project', url: '/projects/pr2' },
+   relativePath: { text: 'relative hide side nav', url: 'hideSideNav' }
+ },
+ closeAfter: 3000
+}
+LuigiClient
+ .uxManager()
+ .showAlert(settings)
+ .then(() => {
+    // Logic to execute when the alert is dismissed
+ });
+```
+
+Returns **[promise](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise)** which is resolved when the alert is dismissed
+
+#### getCurrentLocale
+
+Gets the current locale.
+
+Returns **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** current locale
+
+#### setCurrentLocale
+
+Sets current locale to the specified one.
+
+**NOTE:** this must be explicitly allowed on the navigation node level by setting `clientPermissions.changeCurrentLocale` to `true`. (See [Node parameters](navigation-parameters-reference.md).)
+
+##### Parameters
+
+-   `locale` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** locale to be set as the current locale
+
+#### isSplitView
+
+Checks if the current micro frontend is displayed inside a split view
+
+Returns **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)** indicating if it is loaded inside a split view
+
+**Meta**
+
+-   **since**: 0.6.0
+
+#### isModal
+
+Checks if the current micro frontend is displayed inside a modal
+
+Returns **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)** indicating if it is loaded inside a modal
+
+**Meta**
+
+-   **since**: 0.6.0
+
+# Sets the current navigation base to the parent node that is defined as virtualTree. This method works only when already inside a virtualTree.
+
+#### fromParent
+
+Enables navigating to sibling nodes without knowing the absolute path
+
+> > > > > > > upstream/master
+
+##### Examples
+
+```javascript
+<<<<<<< HEAD
+LuigiClient.linkManager().fromVirtualTreeRoot().navigate('/users/groups/stakeholders')
+=======
+LuigiClient.linkManager().fromParent().navigate('/sibling')
+>>>>>>> upstream/master
+```
+
+Returns **[linkManager](#linkmanager)** link manager instance
+
+&lt;&lt;&lt;&lt;&lt;&lt;&lt; HEAD
+**Meta**
+
+-   **since**: NEXTRELEASE
+
+=======
+
+> > > > > > > upstream/master
+> > > > > > >
+> > > > > > > #### withParams
 
 Sends node parameters to the route. The parameters are used by the `navigate` function. Use it optionally in combination with any of the navigation functions and receive it as part of the context object in Luigi Client.
 
