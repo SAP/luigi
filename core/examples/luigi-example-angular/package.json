@@ -36,14 +36,14 @@
     "@types/jasminewd2": "2.0.8",
     "@types/node": "8.10.56",
     "codelyzer": "5.2.0",
+    "lodash": ">=4.17.13",
+    "serialize-javascript": ">=2.1.1",
+    "tar": ">=4.4.2",
     "ts-node": "4.1.0",
     "tslint": "5.20.0",
     "typescript": "3.5.3",
-    "webpack": "4.41.2",
+    "webpack": "^4.42.1",
     "webpack-cli": "3.3.9",
-    "webpack-dev-server": "3.9.0",
-    "lodash": ">=4.17.13",
-    "tar": ">=4.4.2",
-    "serialize-javascript": ">=2.1.1"
+    "webpack-dev-server": "3.9.0"
   }
 }
