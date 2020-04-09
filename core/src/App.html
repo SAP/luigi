@@ -1491,6 +1491,21 @@
     }
   }
 
+  //Add z-index for dialogs
+  :global(.fd-dialog) {
+    z-index: 3;
+  }
+
+  //Remove border-radius from mobile fullscreen dialog
+  :global(.fd-dialog__content--mobile) {
+    border-radius: 0;
+
+    :global(.fd-dialog__header.fd-bar),
+    :global(.fd-dialog__footer.fd-bar) {
+      border-radius: 0;
+    }
+  }
+
   //Overwrites with SAP variables
 
   :global(.fd-shellbar) {

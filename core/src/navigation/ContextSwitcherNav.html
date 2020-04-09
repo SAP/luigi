@@ -1,4 +1,4 @@
-<nav class="fd-menu lui-ctx-switch-nav">
+<nav class="fd-menu lui-ctx-switch-nav { isMobile ? 'fd-menu--mobile' : '' }">
   {#if actions && actions.length}
   <ul class="fd-menu__list fd-menu__list--top">
     {#each actions as node} {#if node.position === 'top' || !['top',
@@ -79,6 +79,7 @@
   export let options = [];
   export let selectedLabel;
   export let selectedOption;
+  export let isMobile;
 
   export let getNodeName;
   export let getRouteLink;
@@ -95,9 +96,11 @@
 </script>
 
 <style type="text/scss">
-  .lui-ctx-switch-nav {
-    max-height: calc(100vh - 76px);
-    overflow-y: auto;
+  :global(.fd-popover__body) {
+    .lui-ctx-switch-nav {
+      max-height: calc(100vh - 76px);
+      overflow-y: auto;
+    }
   }
 
   .fd-menu__list--top {
