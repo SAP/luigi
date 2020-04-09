@@ -1,6 +1,6 @@
 {
   "name": "luigi-fiddle",
-  "version": "1.0.0",
+  "private": true,
   "devDependencies": {
     "copy-webpack-plugin": "^5.0.4",
     "cross-env": "^5.2.0",
