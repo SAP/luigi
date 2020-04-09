@@ -37,13 +37,7 @@ Choose the framework to build your application:
 <!-- add-attribute:class:warning -->
 > **NOTE:** You need a development server capable of hosting Single Page Applications. The recommended server is Live Server.
 
-1. If you do not have Live Server installed, use this command to install it.
-
-```bash
-npm install -g live-server
-```
-
-2. Use the following installer to create a directory for your application, install Luigi, make assets available, and start your local server:
+1. Use the following installer to create a directory for your application, install Luigi, make assets available, and start your local server:
 
 ```bash
 bash <(curl -s https://raw.githubusercontent.com/SAP/luigi/master/scripts/setup/no-framework.sh)
@@ -54,13 +48,15 @@ or execute these commands manually to get the same result:
 ```bash
 mkdir my-new-app && cd my-new-app
 
-npm init -y
+npm init -y > /dev/null
 
 # add "start" command to the package.json file. This command is split into 2 lines on purpose!
 sed 's/"scripts": {/"scripts": {\
 \   "buildConfig":"webpack --entry .\/src\/luigi-config.js -o .\/public\/assets\/luigi-config.js --mode production",/1' package.json > p.tmp.json && mv p.tmp.json package.json
+sed 's/"scripts": {/"scripts": {\
+\   "start":"live-server --entry-file=index.html public",/1' package.json > p.tmp.json && mv p.tmp.json package.json
 
-npm i -save @luigi-project/core @luigi-project/client fiori-fundamentals webpack webpack-cli @babel/core @babel/preset-env babel-loader 
+npm i -save @luigi-project/core @luigi-project/client fiori-fundamentals live-server webpack webpack-cli @babel/core @babel/preset-env babel-loader 
 mkdir -p public/assets
 mkdir -p src
 
@@ -69,18 +65,19 @@ curl https://raw.githubusercontent.com/SAP/luigi/master/test/e2e-test-applicatio
 curl https://raw.githubusercontent.com/SAP/luigi/master/test/e2e-test-application/src/assets/sampleexternal.html > public/assets/basicexternal.html
 curl https://raw.githubusercontent.com/SAP/luigi/master/test/e2e-test-application/src/luigi-config/basic/basicConfiguration.js > src/luigi-config.js
 
-sed "s|extendedConfiguration.bundle.js|luigi-config.js|g" public/index.html > public/index.tmp.html && mv public/index.tmp.html public/index.html
+sed -i '' "s|extendedConfiguration.bundle.js|luigi-config.js|g" public/index.html
+sed -i '' "s|fundamental-styles\/fundamental-styles\.css|fiori-fundamentals\/fiori-fundamentals\.min\.css|g" public/assets/basicexternal.html
 
 cp -r node_modules/\@luigi-project/core public/luigi-core
 cp -r node_modules/\@luigi-project/client public/luigi-client
 cp -r node_modules/fiori-fundamentals/dist public/fiori-fundamentals
 
 npm run buildConfig
-live-server --entry-file=index.html public
+npm run start
 ```
 <!-- accordion:end -->
 
-3. Open the directory where Luigi is installed. Search for the `luigi-config.js` file which you can use to configure Luigi [navigation](navigation-configuration.md), [authorization](authorization-configuration.md), [general settings](general-settings.md) and more.
+2. Open the directory where Luigi is installed. Search for the `luigi-config.js` file which you can use to configure Luigi [navigation](navigation-configuration.md), [authorization](authorization-configuration.md), [general settings](general-settings.md) and more.
 
 ## Application setup for Angular 6
 
