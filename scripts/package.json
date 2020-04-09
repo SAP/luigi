@@ -1,5 +1,6 @@
 {
   "name": "luigi-scripts-private",
+  "private": true,
   "scripts": {
     "docu": "npm run docu:client && npm run docu:core",
     "docu:generate:section": "npm run docu:client:generate:section && npm run docu:core:generate:section",
@@ -15,10 +16,22 @@
     "docu:core:generate:navigation": "documentation readme ../core/src/core-api/navigation.js --shallow -f md --section='Luigi.navigation()' --readme-file=../docs/luigi-core-api.md --markdown-toc=false --github false --quiet",
     "docu:core:generate:i18n": "documentation readme ../core/src/core-api/i18n.js --shallow -f md --section='Luigi.i18n()' --readme-file=../docs/luigi-core-api.md --markdown-toc=false --github false --quiet",
     "docu:core:generate:custom-messages": "documentation readme ../core/src/core-api/custom-messages.js --shallow -f md --section='Luigi.customMessages()' --readme-file=../docs/luigi-core-api.md --markdown-toc=false --github false --quiet",
-    "docu:core:generate:ux": "documentation readme ../core/src/core-api/ux.js --shallow -f md --section='Luigi.ux()' --readme-file=../docs/luigi-core-api.md --markdown-toc=false --github false --quiet"
+    "docu:core:generate:ux": "documentation readme ../core/src/core-api/ux.js --shallow -f md --section='Luigi.ux()' --readme-file=../docs/luigi-core-api.md --markdown-toc=false --github false --quiet",
+    "release": "babel-node tools/release-cli/release-cli.js",
+    "release:watch": "nodemon --exec babel-node tools/release-cli/release-cli.js"
   },
   "devDependencies": {
+    "@babel/cli": "^7.8.4",
+    "@babel/core": "^7.9.0",
+    "@babel/node": "^7.8.7",
+    "@babel/preset-env": "^7.9.0",
+    "async-request": "^1.2.0",
+    "cli-color": "^2.0.0",
+    "diff": ">=3.5.0",
     "documentation": "^11.0.0",
-    "diff": ">=3.5.0"
-  }
+    "nodemon": "^2.0.2",
+    "prompts": "^2.3.2",
+    "semver": "^7.1.3"
+  },
+  "browserslist": "> 0.25%, not dead"
 }

@@ -1,7 +1,7 @@
 {
   "name": "luigi-documentation",
   "description": "Interactive documentation based on svelte3, sapper and luigi",
-  "version": "0.0.1",
+  "private": true,
   "scripts": {
     "start": "run-p dev:*",
     "dev:sapper": "PORT=4001 sapper dev",
