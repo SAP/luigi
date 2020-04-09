@@ -5,14 +5,12 @@ Cypress.Commands.add(
     cy.visit(`http://localhost:8080/#${path}`, {
       onBeforeLoad: win => {
         win.localStorage.setItem('cookiesAccepted', 'true');
-        win.sessionStorage.setItem(
-          'fiddle',
-          `Luigi.setConfig(${JSON.stringify(config)});`
-        );
+        win.sessionStorage.setItem('fiddle', `Luigi.setConfig(${config});`);
       }
     });
   }
 );
+
 Cypress.Commands.add('visitLoggedIn', (path = '/') => {
   cy.visit(path, {
     onBeforeLoad: win => {
