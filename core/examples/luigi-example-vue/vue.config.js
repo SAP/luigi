@@ -13,6 +13,18 @@ module.exports = {
   runtimeCompiler: true,
   outputDir: 'dist',
   configureWebpack: {
+    module: {
+      rules: [
+        {
+          test: /\.css$/,
+          use: ['css-loader']
+        },
+        {
+          test: /\.scss$/,
+          use: ['sass-loader']
+        }
+      ]
+    },
     plugins: [
       new CopyWebpackPlugin(
         [
