@@ -390,11 +390,6 @@
   // [svelte-upgrade suggestion]
   // review these functions and remove unnecessary 'export' keywords
   export function handleClick(node) {
-    if (SemiCollapsibleNavigation.getCollapsed()) {
-      selectedCategory = SemiCollapsibleNavigation.closePopupMenu(
-        selectedCategory
-      );
-    }
     dispatch('handleClick', { node });
   }
 
