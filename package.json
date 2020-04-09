@@ -1,4 +1,5 @@
 {
+  "private": true,
   "scripts": {
     "test:compatibility": "./scripts/testCompatibility.sh"
   },
