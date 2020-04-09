@@ -36,7 +36,6 @@ Object.keys(productSwitcherItems[0]).length }
         id="productSwitcherPopover"
       >
         <div class="{columnsClass}">
-          <!-- <nav class="fd-menu"> -->
           <ul class="fd-product-switch__list">
             {#each productSwitcherItems as productSwitcherItem}
             {#if productSwitcherItem.label}
@@ -45,7 +44,6 @@ Object.keys(productSwitcherItems[0]).length }
               on:click="{() => onActionClick(productSwitcherItem)}"
               data-testid="{getTestId(productSwitcherItem)}"
             >
-              <!-- <a class="fd-menu__item"> -->
               <div
                 class="fd-product-switch__icon {productSwitcherItem.icon && hasOpenUIicon(productSwitcherItem) ? 'sap-icon--' + productSwitcherItem.icon : '' }"
               >
@@ -66,12 +64,10 @@ Object.keys(productSwitcherItems[0]).length }
                 >{getNodeSubtitle(productSwitcherItem)}</div>
                 {/if}
               </div>
-              <!-- </a> -->
             </li>
             {/if}
             {/each}
           </ul>
-          <!-- </nav> -->
         </div>
       </div>
     </div>

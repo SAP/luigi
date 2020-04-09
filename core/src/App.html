@@ -1436,14 +1436,59 @@
   }
 
   //Fixing issues for fundamental styles
+
+  //Add padding for shellbar buttons
   :global(.fd-shellbar__button) {
-    padding-left: 12px;
-    padding-right: 12px;
+    padding-left: 0.5625rem !important;
+    padding-right: 0.5625rem !important;
   }
 
   :global(.fd-menu__link) {
     text-decoration: none; //Remove underline from links in fd-menu
     border-radius: 0; //Remove border radius from links inside fd-menu
+  }
+
+  //Make border radius for links inside fd-menu only for the first and last elements
+  :global(.fd-menu) {
+    :global(.fd-menu__list) {
+      &:first-child {
+        :global(.fd-menu__item) {
+          &:first-child {
+            :global(.fd-menu__link) {
+              border-top-left-radius: 0.25rem;
+              border-top-left-radius: var(
+                --sapElement_BorderCornerRadius,
+                0.25rem
+              );
+              border-top-right-radius: 0.25rem;
+              border-top-right-radius: var(
+                --sapElement_BorderCornerRadius,
+                0.25rem
+              );
+            }
+          }
+        }
+      }
+
+      &:last-child {
+        :global(.fd-menu__item) {
+          &:last-child {
+            :global(.fd-menu__link) {
+              border-bottom-left-radius: 0.25rem;
+              border-bottom-left-radius: var(
+                --sapElement_BorderCornerRadius,
+                0.25rem
+              );
+              border-bottom-right-radius: 0.25rem;
+              border-bottom-right-radius: var(
+                --sapElement_BorderCornerRadius,
+                0.25rem
+              );
+            }
+          }
+        }
+      }
+    }
   }
 
   //Overwrites with SAP variables
