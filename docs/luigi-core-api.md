@@ -496,7 +496,7 @@ Returns **linkManager** link manager instance
 
 **Meta**
 
--   **since**: NEXTRELEASE
+-   **since**: 1.0.1
 
 #### withParams
 
