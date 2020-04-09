@@ -155,25 +155,27 @@
             <nav class="fd-menu">
               <ul class="fd-menu__list">
                 {#if contextSwitcherConfig && (!authorizationEnabled || isLoggedIn)}
-                <li class="lui-mobile-switch-menu">
+                <li class="fd-menu__item lui-mobile-switch-menu">
                   <a
-                    class="fd-menu__item"
+                    class="fd-menu__link"
                     on:click|stopPropagation="{openMobileContextSwitcher}"
                   >
                     <span
                       class="fd-top-nav__icon sap-icon--m {contextSwitcherConfig.icon && hasOpenUIicon(contextSwitcherConfig) ? 'sap-icon--' + contextSwitcherConfig.icon : 'sap-icon--switch-views'}"
                     ></span>
-                    <span>{selectedLabel ? selectedLabel : defaultLabelContextSwitcher}</span>
+                    <span
+                      class="fd-menu__title"
+                    >{selectedLabel ? selectedLabel : defaultLabelContextSwitcher}</span>
                   </a>
                 </li>
                 {/if}
                 {#each children as node,i}
                 {#if !node.hideFromNav}
                 {#if !node.isCat}
-                <li>
+                <li class="fd-menu__item">
                   <a
                     href="{getRouteLink(node)}"
-                    class="fd-menu__item {node === selectedNode ? 'is-selected' : ''}"
+                    class="fd-menu__link {node === selectedNode ? 'is-selected' : ''}"
                     on:click|preventDefault="{() => handleClick(node)}"
                     data-testid="{getTestId(node)}"
                   >
@@ -188,15 +190,15 @@
                       {/if}
                       <BadgeCounter {node}/>
                     </span>
-                    <span>{getNodeLabel(node)}</span>
+                    <span class="fd-menu__title">{getNodeLabel(node)}</span>
                   </a>
                 </li>
                 {:else}
-                <li>
+                <li class="fd-menu__item">
                   <a
                     href="{getRouteLink(node)}"
                     title="{getNodeLabel(node)}"
-                    class="fd-menu__item"
+                    class="fd-menu__link"
                     on:click|preventDefault="{() => openMobileTopNavDropDown(node)}"
                     data-e2e="mobile-topnav-dropdown-category"
                   >
@@ -211,15 +213,15 @@
                       {/if}
                       <BadgeCounter {node}/>
                     </span>
-                    <span>{getNodeLabel(node)}</span>
+                    <span class="fd-list__title">{getNodeLabel(node)}</span>
                   </a>
                 </li>
                 <!-- {:else}
-                <li>
+                <li class="fd-menu__item">
                   <a
                     href="{getRouteLink(node)}"
                     title="{getNodeLabel(node)}"
-                    class="fd-menu__item"
+                    class="fd-menu__link"
                     on:click|preventDefault="openMobileTopNavDropDown(node)"
                     data-testid="mobile-topnav-dropdown-category"
                   >
@@ -233,7 +235,7 @@
                       src="{node.icon}"
                     >
                     {/if} {/if}
-                    <span>{getNodeLabel(node)}</span>
+                    <span class="fd-list__title">{getNodeLabel(node)}</span>
                   </a>
                 </li>-->
                 <!-- {/if} -->
@@ -241,9 +243,9 @@
                 {/if}
                 {/each}
                 {#if isProductSwitcherAvailable}
-                <li>
+                <li class="fd-menu__item">
                   <a
-                    class="fd-menu__item"
+                    class="fd-menu__link"
                     on:click|stopPropagation="{openMobileProductSwitcher}"
                     data-testid="mobile-product-switcher"
                   >
@@ -259,7 +261,9 @@
                       >
                     </span>
                     {/if}
-                    <span>{productSwitcherConfig.label}</span>
+                    <span
+                      class="fd-menu__title"
+                    >{productSwitcherConfig.label}</span>
                   </a>
                 </li>
                 {/if}
