@@ -159,7 +159,7 @@ export class linkManager extends LuigiClientBase {
    * Sets the current navigation base to the parent node that is defined as virtualTree. This method works only when the currently active micro frontend is inside a virtualTree.
    * @memberof linkManager
    * @returns {linkManager} link manager instance
-   * @since NEXTRELEASE
+   * @since 1.0.1
    * @example
    * LuigiClient.linkManager().fromVirtualTreeRoot().navigate('/users/groups/stakeholders')
    */
@@ -174,7 +174,7 @@ export class linkManager extends LuigiClientBase {
    * Enables navigating to sibling nodes without knowing the absolute path.
    * @memberof linkManager
    * @returns {linkManager} link manager instance
-   * @since NEXTRELEASE
+   * @since 1.0.1
    * @example
    * LuigiClient.linkManager().fromParent().navigate('/sibling')
    */
