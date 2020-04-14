@@ -21,9 +21,11 @@
   {/if}
   <ul class="fd-menu__list" id="context_menu_middle">
     {#if options && options.length === 0}
-    <li>
-      <div class="fd-spinner">
-        <div class="fd-spinner__body"></div>
+    <li class="lui-contextswitcher-indicator">
+      <div class="fd-busy-indicator" aria-hidden="false" aria-label="Loading">
+        <div class="fd-busy-indicator--circle-0"></div>
+        <div class="fd-busy-indicator--circle-1"></div>
+        <div class="fd-busy-indicator--circle-2"></div>
       </div>
     </li>
     {/if} {#if options && options.length} {#each options as node}
@@ -112,5 +114,10 @@
     border-top: 1px solid #eeeeef;
     border-top-left-radius: 0;
     border-top-right-radius: 0;
+  }
+
+  :global(.lui-contextswitcher-indicator) {
+    padding: 20px 0;
+    text-align: center;
   }
 </style>
