@@ -349,7 +349,7 @@ Returns **[linkManager](#linkmanager)** link manager instance
 
 **Meta**
 
--   **since**: NEXTRELEASE
+-   **since**: 1.0.1
 
 #### fromParent
 
@@ -365,7 +365,7 @@ Returns **[linkManager](#linkmanager)** link manager instance
 
 **Meta**
 
--   **since**: NEXTRELEASE
+-   **since**: 1.0.1
 
 #### withParams
 
