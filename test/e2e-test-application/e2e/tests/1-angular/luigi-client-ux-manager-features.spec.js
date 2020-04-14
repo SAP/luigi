@@ -90,11 +90,15 @@ describe('Luigi Client ux manager features', () => {
         .contains('External Page')
         .click();
 
-      cy.get('.spinnerContainer .fd-busy-indicator').should('exist');
+      cy.get('.spinnerContainer [data-testid=luigi-loading-spinner]').should(
+        'exist'
+      );
 
       cy.wait(250); // give it some time to hide
 
-      cy.get('.spinnerContainer .fd-busy-indicator').should('not.be.visible');
+      cy.get('.spinnerContainer [data-testid=luigi-loading-spinner]').should(
+        'not.be.visible'
+      );
 
       // show loading indicator
       cy.getIframeBody().then($iframeBody => {
@@ -102,10 +106,14 @@ describe('Luigi Client ux manager features', () => {
           .contains('Show loading indicator')
           .click();
 
-        cy.get('.spinnerContainer .fd-busy-indicator').should('exist');
+        cy.get('.spinnerContainer [data-testid=luigi-loading-spinner]').should(
+          'exist'
+        );
         cy.wait(250); // give it some time to hide
         // wait for programmatic hide of loading indicator
-        cy.get('.spinnerContainer .fd-busy-indicator').should('not.be.visible');
+        cy.get('.spinnerContainer [data-testid=luigi-loading-spinner]').should(
+          'not.be.visible'
+        );
       });
     });
 
