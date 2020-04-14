@@ -1,6 +1,6 @@
 {
   "name": "luigi-fiddle",
-  "version": "1.0.0",
+  "private": true,
   "devDependencies": {
     "copy-webpack-plugin": "^5.0.4",
     "cross-env": "^5.2.0",
@@ -20,11 +20,12 @@
     "dev": "webpack-dev-server --content-base public"
   },
   "dependencies": {
-    "@luigi-project/plugin-auth-oauth2": "1.0.0-next.1",
-    "@luigi-project/plugin-auth-oidc": "1.0.0-next.1",
-    "@luigi-project/client": "1.0.0-next.1",
-    "@luigi-project/core": "1.0.0-next.1",
+    "@luigi-project/client": "1.0.0",
+    "@luigi-project/core": "1.0.0",
+    "@luigi-project/plugin-auth-oauth2": "1.0.0",
+    "@luigi-project/plugin-auth-oidc": "1.0.0",
+    "@sap-theming/theming-base-content": "^11.1.18",
     "ace-builds": "1.4.7",
-    "fundamental-styles": "0.6.0"
+    "fundamental-styles": "0.8.1"
   }
 }

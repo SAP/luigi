@@ -23,7 +23,10 @@ This is a collection of advanced use cases and example implementations. If you a
 
 #### Overview
 
-This example shows you how to keep an existing routing strategy and use an existing micro frontend as drop-in without the need to refactor everything to [`LuigiClient.linkManager()`](https://docs.luigi-project.io/docs/luigi-client-api?section=linkmanager). To update the Luigi Core URL when routing internally with the micro frontend router, without updating the URL on the Luigi Client side, use the `linkManager()` [withoutSync](luigi-client-api.md#withoutsync) method.
+
+This example shows you how to keep an existing routing strategy and use an existing micro frontend as drop-in without the need to refactor everything to [`LuigiClient.linkManager()`](https://docs.luigi-project.io/docs/luigi-client-api?section=linkmanager). To update the Luigi Core URL when routing internally with the micro frontend router, without updating the URL on the Luigi Client side, use the `linkManager()` [withoutSync](luigi-client-api.md#withoutsync) and [fromVirtualTreeRoot](luigi-client-api.md#fromvirtualtreeroot) methods. 
+
+If you are running Luigi Core v0.7.7+, you can use [fromClosestContext](luigi-client-api.md#fromclosestcontext) instead of `fromVirtualTreeRoot`, which requires a [navigationContext](luigi-client-api.md#navigationcontext) at the `virtualTree` node configuration.
 
 <!-- add-attribute:class:warning -->
 > **NOTE**: This is a very simple example. For cases like modals or split views, you still require the use of [Luigi Client](luigi-client-api.md).
@@ -32,15 +35,15 @@ This example shows you how to keep an existing routing strategy and use an exist
 
 1. Configure the Luigi navigation node:
 
-<!-- add-attribute:class:success -->
+<!-- add-attribute:class:warning -->
 > **NOTE**: To keep the example simple, we use [virtualTree](navigation-parameters-reference.md#virtualtree) to allow any nested navigation, but this is not mandatory. You can always specify the node tree yourself and still use automatic navigation with router events.
+
 
 ```javascript
     {
       pathSegment: 'Orders',
       label: 'orders',
       viewUrl: 'https://orders.microfrontend/',
-      navigationContext: 'orders',
       virtualTree: true
     }
 ```
@@ -78,7 +81,7 @@ Use this code to implement `luigi-auto-navigation.service.ts`, which is globally
             .subscribe((ev: NavigationEnd) => {
               if (ev instanceof NavigationEnd) {
                 linkManager()
-                  .fromClosestContext()
+                  .fromVirtualTreeRoot()
                   .withoutSync()
                   .navigate(ev.url);
               }
@@ -124,8 +127,7 @@ This example shows you how to use Luigi with a Google account.
       logoutFn: async (settings, authData, logoutCallback) => {
         console.log('revoking token');
         await fetch(`https://accounts.google.com/o/oauth2/revoke?token=${authData.accessToken}`);
-        logoutCallback();
-        location.href = '/logout.html';
+        logoutCallback('/logout.html');
       }
     }
   }

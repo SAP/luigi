@@ -38,4 +38,24 @@ describe('Navigation with Fiddle', () => {
       });
     });
   });
+  describe('virtualTree with fromVirtualTreeRoot', () => {
+    beforeEach(() => {
+      const newConfig = Object.assign({}, fiddleConfig);
+      newConfig.navigation.nodes.push({
+        pathSegment: 'virtual',
+        label: 'Virtual',
+        virtualTree: true,
+        viewUrl: '/examples/microfrontends/multipurpose.html#'
+      });
+      cy.visitWithFiddleConfig('/virtual', newConfig);
+    });
+    it('navigate', () => {
+      cy.getIframeWindow().then(win => {
+        win.LuigiClient.linkManager()
+          .fromVirtualTreeRoot()
+          .navigate('/this/is/a/tree');
+      });
+      cy.expectPathToBe('/virtual/this/is/a/tree');
+    });
+  });
 });

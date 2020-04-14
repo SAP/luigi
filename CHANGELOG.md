@@ -23,6 +23,21 @@ The lerna-changelog tool detects changes based on PR labels and maps them to sec
     ...
   }
 -->
+
+
+## [v1.0.1] (2020-04-09)
+
+#### :rocket: Added
+* [#1226](https://github.com/SAP/luigi/pull/1226) Add fromVirtualTreeRoot to linkManager ([@maxmarkus](https://github.com/maxmarkus))
+* [#1222](https://github.com/SAP/luigi/pull/1222) Add fromParent to linkManager ([@ndricimrr](https://github.com/ndricimrr))
+* [#1159](https://github.com/SAP/luigi/pull/1159) Getting notified of unresponsive Luigi clients ([@zarkosimic](https://github.com/zarkosimic))
+
+#### :bug: Fixed
+* [#1251](https://github.com/SAP/luigi/pull/1251) Flyout should close after click ([@marynaKhromova](https://github.com/marynaKhromova))
+* [#1213](https://github.com/SAP/luigi/pull/1213) Fix OIDC storage: none ([@maxmarkus](https://github.com/maxmarkus))
+* [#1220](https://github.com/SAP/luigi/pull/1220) Fix duplicate login logout buttons ([@maxmarkus](https://github.com/maxmarkus))
+
+
 ## [v1.0.0] (2020-03-26)
 
 #### :rocket: Added
@@ -706,3 +721,4 @@ The lerna-changelog tool detects changes based on PR labels and maps them to sec
 [v0.7.6]: https://github.com/SAP/luigi/compare/v0.7.5...v0.7.6
 [v0.7.7]: https://github.com/SAP/luigi/compare/v0.7.6...v0.7.7
 [v1.0.0]: https://github.com/SAP/luigi/compare/v0.7.7...v1.0.0
+[v1.0.1]: https://github.com/SAP/luigi/compare/v1.0.0...v1.0.1
