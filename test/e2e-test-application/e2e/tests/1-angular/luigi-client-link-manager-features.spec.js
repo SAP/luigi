@@ -75,7 +75,7 @@ describe('Luigi client linkManager', () => {
 
       //wait for the alert coming from an inactive iFrame to be shown and second iFrame to be loaded
       cy.wait(500);
-      cy.get('.fd-alert').should(
+      cy.get('.fd-message-strip').should(
         'contain',
         'Information alert sent from an inactive iFrame'
       );
@@ -155,7 +155,7 @@ describe('Luigi client linkManager', () => {
         .click();
       cy.expectPathToBe('/projects/pr2/miscellaneous2');
 
-      cy.get('.fd-alert').contains(
+      cy.get('.fd-message-strip').contains(
         'Could not map the exact target node for the requested route projects/pr2/miscellaneous2/maskopatol'
       );
 
@@ -165,7 +165,7 @@ describe('Luigi client linkManager', () => {
         .click();
 
       //alert disappears
-      cy.get('.fd-alert').should('not.exist');
+      cy.get('.fd-message-strip').should('not.exist');
     });
 
     it('navigate to a totally wrong link', () => {
@@ -174,7 +174,7 @@ describe('Luigi client linkManager', () => {
         .click();
       cy.expectPathToBe('/overview');
 
-      cy.get('.fd-alert').contains(
+      cy.get('.fd-message-strip').contains(
         'Could not find the requested route maskopatol/has/a/child'
       );
 
@@ -184,7 +184,7 @@ describe('Luigi client linkManager', () => {
         .click();
 
       //alert disappears
-      cy.get('.fd-alert').should('not.exist');
+      cy.get('.fd-message-strip').should('not.exist');
     });
   });
 
