@@ -140,6 +140,7 @@
   let viewUrl;
   let viewGroup;
   let isolateView;
+  let pageErrorHandler;
   let previousNodeValues;
   let isNavigationSyncEnabled = true;
   let isNavigateBack = false;
@@ -289,6 +290,7 @@
           pathParams,
           hideSideNav,
           isolateView,
+          pageErrorHandler,
           previousNodeValues,
           mfSplitView,
           splitViewValues,
@@ -325,6 +327,8 @@
               hideSideNav = obj.hideSideNav;
             } else if (prop === 'isolateView') {
               isolateView = obj.isolateView;
+            } else if (prop === 'pageErrorHandler') {
+              pageErrorHandler = obj.pageErrorHandler;
             } else if (prop === 'previousNodeValues') {
               previousNodeValues = obj.previousNodeValues;
             } else if (prop === 'mfSplitView') {
@@ -399,7 +403,23 @@
 
   const buildPath = params => {
     let path = params.link;
-    if (params.fromClosestContext) {
+    if (params.fromVirtualTreeRoot) {
+      // from a parent node specified with virtualTree: true
+      const node = [...navigationPath].reverse().find(n => n.virtualTree);
+      if (!node) {
+        console.error(
+          'LuigiClient Error: fromVirtualTreeRoot() is not possible, not inside a virtualTree navigation. Docs: https://docs.luigi-project.io/docs/navigation-parameters-reference/?section=virtualtree'
+        );
+        return;
+      }
+      path = Routing.concatenatePath(getSubPath(node), params.link);
+    } else if (params.fromParent) {
+      // from direct parent
+      path = Routing.concatenatePath(
+        getSubPath(currentNode.parent),
+        params.link
+      );
+    } else if (params.fromClosestContext) {
       // from the closest navigation context
       const node = [...navigationPath]
         .reverse()
@@ -724,11 +744,15 @@
     const isolateAllViews = LuigiConfig.getConfigValue(
       'navigation.defaults.isolateView'
     );
+    const defaultPageErrorHandler = LuigiConfig.getConfigValue(
+      'navigation.defaults.pageErrorHandler'
+    );
     const config = {
       iframe: null,
       navigateOk: null,
       builderCompatibilityMode: Boolean(window.builderCompatibilityMode),
-      isolateAllViews
+      isolateAllViews,
+      defaultPageErrorHandler
     };
     LuigiI18N.addCurrentLocaleChangeListener(locale => {
       const message = {

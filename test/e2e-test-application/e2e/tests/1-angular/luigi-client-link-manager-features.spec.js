@@ -47,6 +47,15 @@ describe('Luigi client linkManager', () => {
         .click();
       cy.expectPathToBe('/projects/pr2');
 
+      //navigate to sibling through parent
+      cy.wrap($iframeBody)
+        .contains('from parent: to sibling')
+        .click();
+      cy.expectPathToBe('/projects/pr1');
+
+      cy.goToOverviewPage();
+      cy.goToLinkManagerMethods($iframeBody);
+
       //navigate with params
       cy.wrap($iframeBody)
         .contains('project to settings with params (foo=bar)')
