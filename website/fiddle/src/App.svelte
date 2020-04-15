@@ -199,6 +199,15 @@
     background-color: white;
     color: #2deb8a;
   }
+  .fd-modal__header{
+    padding-bottom: 25px;
+  }
+  .fd-modal__title{
+    display: inline-block;
+  }
+  .fd-button--close{
+    float: right;
+  }
 
   @media (max-width: 600px) {
     .lui-mobile-hide {
@@ -218,8 +227,8 @@
       <header class="fd-modal__header">
         <h1 class="fd-modal__title">Luigi Config</h1>
         <button
-          class="fd-button--light fd-modal__close"
-          on:click={closeConfig} />
+        class="fd-button fd-button--close sap-icon--decline"
+        on:click={closeConfig} />
       </header>
       <div class="fd-modal__body_nostyle">
         <div id="editor" class="lui-mobile-hide"/>
