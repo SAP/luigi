@@ -1,4 +1,8 @@
-import { UserManager, WebStorageStateStore } from 'oidc-client';
+import {
+  UserManager,
+  WebStorageStateStore,
+  InMemoryWebStorage
+} from 'oidc-client';
 import { Helpers } from '../helpers';
 import { thirdPartyCookiesStatus } from '../third-party-cookies-check';
 export default class openIdConnect {
