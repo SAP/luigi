@@ -20,13 +20,13 @@ npm install
 npm run dev
 ```
 
-Navigate to [localhost:5000](http://localhost:5000). You should see your app running. Edit a component file in `src/routes`, save it, and the page should reload with your changes.
+Open it in your browser by going to [localhost:5000](http://localhost:5000).
 
 ## Build
 
 1. Build your application
     ```bash
-    npm run build
+    npm run build:prod
     ```
     
 2. Serve your application
