@@ -204,9 +204,10 @@
     display: inline-block;
   }
   .fd-button--close{
-    height: 0;
     line-height: 18px;
-    float: right;
+    position: absolute;
+    right: 8px;
+    top: 8px;
   }
 
   @media (max-width: 600px) {
