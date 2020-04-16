@@ -10,27 +10,29 @@
     "node-sass": "^4.13.1",
     "serve": "^11.0.0",
     "style-loader": "^0.23.1",
-    "svelte": "^3.0.0",
+    "svelte": "^3.20.1",
     "svelte-loader": "2.13.3",
-    "webpack": "^4.30.0",
-    "webpack-cli": "^3.3.0",
-    "webpack-dev-server": "^3.3.1"
+    "webpack": "^4.42.1",
+    "webpack-cli": "^3.3.11",
+    "webpack-dev-server": "^3.10.3"
   },
   "scripts": {
-    "build:prod": "webpack --mode=production --display-error-details",
+    "build:prod": "NODE_ENV=production webpack --display-error-details",
     "build:dev": "webpack",
-    "dev": "concurrently \"npm run build:dev -- --watch\" \"npm run serve:dev\" \"npm run serve:luigi\"",
-    "serve": "concurrently \"npm run serve:dev\" \"npm run serve:luigi\"",
-    "serve:dev": "sirv public --single --dev --port 5000",
-    "serve:luigi": "cd public && ws --spa mf.html --port 5001"
+    "dev": "concurrently \"npm run build:dev -- --watch\" \"npm run serve:dev\" \"npm run serve:microfrontend\"",
+    "serve": "concurrently \"npm run build:prod -- --watch\" \"npm run serve:prod\" \"npm run serve:microfrontend\"",
+    "serve:dev": "sirv public --single",
+    "serve:prod": "sirv public --single",
+    "serve:microfrontend": "cd public && ws --spa mf.html --port 5001"
   },
   "dependencies": {
-    "@kyma-project/luigi-client": "0.7.3",
-    "@kyma-project/luigi-core": "0.7.3",
+    "@luigi-project/client": "1.0.1",
+    "@luigi-project/core": "1.0.1",
     "concurrently": "^5.1.0",
-    "fiori-fundamentals": "1.6.0",
+    "fundamental-styles": "^0.8.1",
+    "@sap-theming/theming-base-content": "^11.1.18",
     "local-web-server": "^3.0.7",
-    "sirv-cli": "^0.4.5",
-    "svelte-routing": "^1.4.0"
+    "svelte-routing": "^1.4.2",
+    "sirv-cli": "^0.4.5"
   }
 }
