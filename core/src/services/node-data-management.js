@@ -1,4 +1,3 @@
-import { GenericHelpers } from '../utilities/helpers/generic-helpers';
 class NodeDataManagementStorageClass {
   constructor() {
     this.dataManagement = new Map();
@@ -26,12 +25,9 @@ class NodeDataManagementStorageClass {
     let navPathRaw = pathSegment;
     if (node.parent) {
       navPathRaw = node.parent.pathSegment.concat('/' + navPathRaw);
-      this.buildNavigationPath(navPathRaw, node.parent);
-    } else if (navPathRaw !== node.pathSegment) {
-      navPathRaw = node.pathSegment.concat('/' + navPathRaw);
+      return this.buildNavigationPath(navPathRaw, node.parent);
     }
-
-    return navPathRaw;
+    return navPathRaw; // projects/pr1/users/groups/:OTHER/settings/:DYNNODES1
   }
 
   // if (this.navPath !== '') {
@@ -86,7 +82,27 @@ class NodeDataManagementStorageClass {
   }
 
   deleteCacheEntry(node) {
-    this.dataManagement.delete(node);
+    console.log(
+      'before deletion this.dataManagement ',
+      this.dataManagement.size
+    );
+    if (node && node.pathSegment) {
+      let rawNavPath = this.buildNavigationPath(node.pathSegment, node);
+      if (rawNavPath) {
+        for (let [
+          key,
+          value
+        ] of NodeDataManagementStorage.dataManagement.entries()) {
+          if (value.rawNavPath && value.rawNavPath.includes(rawNavPath)) {
+            this.dataManagement.delete(key);
+          }
+        }
+      }
+    }
+    console.log(
+      'after deletion this.dataManagement ',
+      this.dataManagement.size
+    );
   }
 }
 export const NodeDataManagementStorage = new NodeDataManagementStorageClass();

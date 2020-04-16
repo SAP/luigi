@@ -168,28 +168,81 @@ class RoutingClass {
 
       const pathUrlRaw =
         path && path.length ? GenericHelpers.getPathWithoutHash(path) : '';
+
+      if (NodeDataManagementStorage.lastPathData) {
+        const newPathSegments = pathUrlRaw.split('/');
+        let stop = false;
+        newPathSegments.forEach((pathSegment, index) => {
+          if (stop) {
+            stop = false;
+            return;
+          }
+          if (NodeDataManagementStorage.lastPathData.navigationPath.length) {
+            const oldPathNode =
+              NodeDataManagementStorage.lastPathData.navigationPath[index++];
+            if (oldPathNode) {
+              const oldPathSegment = oldPathNode.pathSegment;
+              if (oldPathSegment) {
+                if (oldPathSegment.startsWith(':')) {
+                  const pathValue =
+                    NodeDataManagementStorage.lastPathData.pathParams[
+                      oldPathSegment.substring(1)
+                    ];
+                  if (pathValue !== pathSegment) {
+                    if (NodeDataManagementStorage.hasChildren(oldPathNode)) {
+                      NodeDataManagementStorage.deleteCacheEntry(oldPathNode);
+                    }
+                  }
+                } else {
+                  if (pathSegment !== oldPathSegment) {
+                    stop = true;
+                  }
+                }
+              }
+            }
+          }
+        });
+      }
+
       const { nodeObject, pathData } = await Navigation.extractDataFromPath(
         path
       );
+      NodeDataManagementStorage.lastPathData = pathData;
 
+      //pathData.pathParams !==null
       //wenn sich dynNode geändert, dann node von cache löschen (recursive)
 
-      if (NodeDataManagementStorage.lastUrl !== pathUrlRaw) {
-        if (NodeDataManagementStorage.hasChildren(nodeObject)) {
-          console.log(
-            'rawNavPath in Cache',
-            NodeDataManagementStorage.getChildren(nodeObject).rawNavPath
-          );
-          const navigationPathAsString = GenericHelpers.getRawNavigationPath(
-            pathData.navigationPath
-          );
-          console.log('navigationPathAsString ', navigationPathAsString);
-        }
-      }
-
-      //speicher die lastUrl
-      NodeDataManagementStorage.lastUrl = pathUrlRaw;
-      NodeDataManagementStorage.lastPathData = pathData;
+      //if (NodeDataManagementStorage.lastUrl && NodeDataManagementStorage.lastUrl !== pathUrlRaw) {
+      //   if (NodeDataManagementStorage.hasChildren(nodeObject)) {
+      //     const navigationPathAsString = GenericHelpers.getRawNavigationPath(
+      //       pathData.navigationPath
+      //     );
+      //     if (navigationPathAsString === NodeDataManagementStorage.getChildren(nodeObject).rawNavPath) {
+      //       const splittedPath = navigationPathAsString.split('/');
+      //       let startToDeleteNodesFromHere = false;
+      //       let trimmedPath = '';
+      //       for (let i = 0; i < splittedPath.length; i++) {
+      //         if (trimmedPath === '') {
+      //           trimmedPath = splittedPath[i];
+      //         } else {
+      //           trimmedPath = trimmedPath + '/' + splittedPath[i];
+      //         }
+      //         if (splittedPath[i].charAt(0) === ':') {
+      //           startToDeleteNodesFromHere = true;
+      //         }
+      //         if (startToDeleteNodesFromHere) {
+      //           for (let [key, value] of NodeDataManagementStorage.dataManagement.entries()) {
+      //             if (value.rawNavPath === trimmedPath) {
+      //               // console.log('key', key);
+      //               //console.log(NodeDataManagementStorage.getChildren(key));
+      //               //NodeDataManagementStorage.deleteCacheEntry(key);
+      //             }
+      //           }
+      //         }
+      //       }
+      //     }
+      //   }
+      // }
       const viewUrl = nodeObject.viewUrl || '';
 
       if (!viewUrl) {
