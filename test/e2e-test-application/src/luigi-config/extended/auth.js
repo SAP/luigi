@@ -3,7 +3,7 @@ import openIdConnect from '@luigi-project/plugin-auth-oidc';
 class Auth {
   use = 'mockAuth';
 
-  storage = 'sessionStorage'; // localStorage, sessionStorage, none
+  storage = 'localStorage'; // localStorage, sessionStorage, none
 
   disableAutoLogin = false;
 
