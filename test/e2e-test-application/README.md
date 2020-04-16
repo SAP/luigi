@@ -4,7 +4,6 @@
 
 This is the Angular-based sample application which runs with Luigi framework.
 
-<!-- add-attribute:class:success -->
 > **NOTE:** The authorization flow `mockAuth` in this application is a mock implementation for local development. **DO NOT USE IN PRODUCTION!**
 
 ## Development
@@ -40,8 +39,8 @@ To have this application running, follow these steps:
 
     - To run Luigi with hash-based routing, set the **routing.useHashrouting** configuration to `true`.
     - To run Luigi with path-based routing, set the **routing.useHashrouting** configuration to `false`.
-    
-    Run the server with the following command: 
+
+    Run the server with the following command:
     ```bash
     npm run start
     ```
@@ -50,13 +49,13 @@ To have this application running, follow these steps:
 
 6. Optional: Reflect the changes introduced to the Luigi Core code in the sample application.
 
-    - Allow the Luigi Core to bundle every change you apply to it. The easiest approach is to open the Luigi `root` folder in another tab of your terminal window and run the following command: 
-  
-      ```bash    
+    - Allow the Luigi Core to bundle every change you apply to it. The easiest approach is to open the Luigi `root` folder in another tab of your terminal window and run the following command:
+
+      ```bash
       lerna run bundle-develop
       ```
     - The Luigi Client is not bundled, so you can update it without bundling.
-    
+
     - The auto-reload of your application updates only the application. Type `CMD + R` to reflect the changes in the linked Luigi Core and Luigi Client modules on the website.
 
 

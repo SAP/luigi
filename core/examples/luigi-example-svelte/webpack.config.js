@@ -1,5 +1,5 @@
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
-const CleanWebpackPlugin = require('clean-webpack-plugin');
+const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const path = require('path');
 
 const commonRules = require('./webpack-common-rules');
@@ -29,7 +29,7 @@ module.exports = {
   },
   mode,
   plugins: [
-    new CleanWebpackPlugin(['public'], {
+    new CleanWebpackPlugin({
       exclude: [],
       verbose: true
     }),

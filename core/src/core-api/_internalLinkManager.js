@@ -83,6 +83,13 @@ export class linkManager extends LuigiCoreAPIBase {
     return this;
   }
 
+  fromVirtualTreeRoot() {
+    this.options.fromContext = null;
+    this.options.fromClosestContext = false;
+    this.options.fromVirtualTreeRoot = true;
+    return this;
+  }
+
   withParams(nodeParams) {
     if (nodeParams) {
       Object.assign(this.options.nodeParams, nodeParams);
