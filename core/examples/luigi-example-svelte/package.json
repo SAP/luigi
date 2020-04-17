@@ -19,7 +19,7 @@
   "scripts": {
     "build:prod": "NODE_ENV=production webpack --display-error-details",
     "build:dev": "webpack",
-    "dev": "concurrently \"npm run build:dev --watch\" \"npm run serve:luigi\" \"npm run serve:microfrontend\"",
+    "dev": "concurrently \"npm run build:dev \" \"npm run serve:luigi\" \"npm run serve:microfrontend\"",
     "serve": "concurrently \"npm run build:prod \" \"npm run serve:luigi\" \"npm run serve:microfrontend\"",
     "serve:luigi": "sirv public --single",
     "serve:microfrontend": "cd public && ws --spa mf.html --port 5001"
