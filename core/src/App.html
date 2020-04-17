@@ -1417,23 +1417,26 @@
   }
 
   //Make border radius for links inside fd-menu only for the first and last elements
+  @mixin luigi-menu__link--border($position) {
+    :global(.fd-menu__link) {
+      border-#{$position}-left-radius: 0.25rem;
+      border-#{$position}-left-radius: var(
+        --sapElement_BorderCornerRadius,
+        0.25rem
+      );
+      border-#{$position}-right-radius: 0.25rem;
+      border-#{$position}-right-radius: var(
+        --sapElement_BorderCornerRadius,
+        0.25rem
+      );
+    }
+  }
   :global(.fd-menu) {
     :global(.fd-menu__list) {
       &:first-child {
         :global(.fd-menu__item) {
           &:first-child {
-            :global(.fd-menu__link) {
-              border-top-left-radius: 0.25rem;
-              border-top-left-radius: var(
-                --sapElement_BorderCornerRadius,
-                0.25rem
-              );
-              border-top-right-radius: 0.25rem;
-              border-top-right-radius: var(
-                --sapElement_BorderCornerRadius,
-                0.25rem
-              );
-            }
+            @include luigi-menu__link--border('top');
           }
         }
       }
@@ -1441,18 +1444,7 @@
       &:last-child {
         :global(.fd-menu__item) {
           &:last-child {
-            :global(.fd-menu__link) {
-              border-bottom-left-radius: 0.25rem;
-              border-bottom-left-radius: var(
-                --sapElement_BorderCornerRadius,
-                0.25rem
-              );
-              border-bottom-right-radius: 0.25rem;
-              border-bottom-right-radius: var(
-                --sapElement_BorderCornerRadius,
-                0.25rem
-              );
-            }
+            @include luigi-menu__link--border('bottom');
           }
         }
       }
