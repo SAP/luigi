@@ -12,9 +12,6 @@ import { NAVIGATION_DEFAULTS } from './../utilities/luigi-config-defaults';
 import { NodeDataManagementStorage } from './node-data-management';
 
 class RoutingClass {
-  constructor() {
-    this.previousPathData;
-  }
   getNodePath(node, params) {
     return node
       ? RoutingHelpers.buildRoute(
@@ -170,43 +167,9 @@ class RoutingClass {
       }
       const pathUrlRaw =
         path && path.length ? GenericHelpers.getPathWithoutHash(path) : '';
-
-      if (this.previousPathData) {
-        const newPathSegments = pathUrlRaw.split('/');
-        let stop = false;
-        newPathSegments.forEach((pathSegment, index) => {
-          if (stop) {
-            stop = false;
-            return;
-          }
-          if (this.previousPathData.navigationPath.length) {
-            let oldPathNode = this.previousPathData.navigationPath[++index];
-            if (oldPathNode) {
-              const oldPathSegment = oldPathNode.pathSegment;
-              if (oldPathSegment) {
-                if (oldPathSegment.startsWith(':')) {
-                  const pathValue = this.previousPathData.pathParams[
-                    oldPathSegment.substring(1)
-                  ];
-                  if (pathValue !== pathSegment) {
-                    if (NodeDataManagementStorage.hasChildren(oldPathNode)) {
-                      NodeDataManagementStorage.deleteCacheEntry(oldPathNode);
-                    }
-                  }
-                } else {
-                  if (pathSegment !== oldPathSegment) {
-                    stop = true;
-                  }
-                }
-              }
-            }
-          }
-        });
-      }
       const { nodeObject, pathData } = await Navigation.extractDataFromPath(
         path
       );
-      this.previousPathData = pathData;
       const viewUrl = nodeObject.viewUrl || '';
 
       if (!viewUrl) {
@@ -314,8 +277,47 @@ class RoutingClass {
         isolateView: nodeObject.isolateView || false,
         tabNav: tabNavInherited
       };
-
       const previousCompData = component.get();
+      if (previousCompData.navigationPath) {
+        let isSamePath = true;
+        for (let i = 0; i < previousCompData.navigationPath.length; i++) {
+          let newPathNode =
+            newNodeData.navigationPath.length > i
+              ? newNodeData.navigationPath[i]
+              : undefined;
+          let previousPathNode = previousCompData.navigationPath[i];
+          if (newPathNode) {
+            const newPathSegment = newPathNode.pathSegment;
+            if (newPathSegment !== previousPathNode.pathSegment) {
+              isSamePath = false;
+            }
+            if (RoutingHelpers.isDynamicNode(previousPathNode)) {
+              if (!isSamePath) {
+                NodeDataManagementStorage.deleteNodesRecursively(
+                  previousPathNode
+                );
+                break;
+              }
+              if (
+                RoutingHelpers.getDynamicNodeValue(
+                  newPathNode,
+                  newNodeData.pathParams
+                ) !==
+                RoutingHelpers.getDynamicNodeValue(
+                  previousPathNode,
+                  previousCompData.pathParams
+                )
+              ) {
+                NodeDataManagementStorage.deleteNodesRecursively(
+                  previousPathNode
+                );
+                break;
+              }
+            }
+          }
+        }
+      }
+
       component.set(
         Object.assign({}, newNodeData, {
           previousNodeValues: previousCompData

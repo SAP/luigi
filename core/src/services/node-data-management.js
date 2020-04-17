@@ -66,34 +66,24 @@ class NodeDataManagementStorageClass {
   }
 
   /* 
-      Clear the map and remove all key/values from map.
-      */
+    Clear the map and remove all key/values from map.
+  */
   deleteCache() {
     this.dataManagement.clear();
   }
 
-  deleteCacheEntry(node) {
-    console.log(
-      'before deletion this.dataManagement ',
-      this.dataManagement.size
-    );
-    if (node && node.pathSegment) {
-      let rawNavPath = this.buildNavigationPath(node.pathSegment, node);
-      if (rawNavPath) {
-        for (let [
-          key,
-          value
-        ] of NodeDataManagementStorage.dataManagement.entries()) {
-          if (value.rawNavPath && value.rawNavPath.includes(rawNavPath)) {
-            this.dataManagement.delete(key);
-          }
-        }
+  /**
+   * since NEXTRELEASE
+   * @param {*} node
+   */
+  deleteNodesRecursively(node) {
+    if (this.hasChildren(node)) {
+      let children = this.getChildren(node).children;
+      for (let i = 0; i < children.length; i++) {
+        this.deleteNodesRecursively(children[i]);
       }
     }
-    console.log(
-      'after deletion this.dataManagement ',
-      this.dataManagement.size
-    );
+    this.dataManagement.delete(node);
   }
 }
 export const NodeDataManagementStorage = new NodeDataManagementStorageClass();

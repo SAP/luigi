@@ -183,6 +183,30 @@ class RoutingHelpersClass {
       }, {});
   }
 
+  /**
+   * since NEXTRELEASE
+   * @param {*} node
+   * @param {*} pathParams
+   */
+  isDynamicNode(node) {
+    return (
+      node.pathSegment &&
+      node.pathSegment.length > 0 &&
+      node.pathSegment[0] === ':'
+    );
+  }
+
+  /**
+   * since NEXTRELEASE
+   * @param {*} node
+   * @param {*} pathParams
+   */
+  getDynamicNodeValue(node, pathParams) {
+    return this.isDynamicNode(node)
+      ? pathParams[node.pathSegment.substring(1)]
+      : undefined;
+  }
+
   substituteViewUrl(viewUrl, componentData) {
     const contextVarPrefix = 'context.';
     const nodeParamsVarPrefix = 'nodeParams.';
