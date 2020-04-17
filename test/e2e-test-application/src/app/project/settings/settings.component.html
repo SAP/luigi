@@ -1,12 +1,10 @@
 <section class="fd-section" *ngIf="nodeParams">
   <div class="fd-panel fd-has-margin-bottom-small">
     <div class="fd-panel__body">
-      <div class="fd-alert" role="alert">
-        <div class="fd-alert__text">
-          <div class="fd-alert__text">
-            Called with params:<br />
-            <pre>{{ nodeParams | json }}</pre>
-          </div>
+      <div class="fd-message-strip" role="alert">
+        <div class="fd-message-strip__text">
+          Called with params:<br />
+          <pre>{{ nodeParams | json }}</pre>
         </div>
       </div>
     </div>
@@ -42,12 +40,10 @@
 <section class="fd-section" *ngIf="preservedViewCallbackContext">
   <div class="fd-panel fd-has-margin-bottom-small">
     <div class="fd-panel__body">
-      <div class="fd-alert" role="alert">
-        <div class="fd-alert__text">
-          <div class="fd-alert__text">
-            Context received from linkManager().goBack():<br />
-            <pre>{{ preservedViewCallbackContext | json }}</pre>
-          </div>
+      <div class="fd-message-strip" role="alert">
+        <div class="fd-message-strip__text">
+          Context received from linkManager().goBack():<br />
+          <pre>{{ preservedViewCallbackContext | json }}</pre>
         </div>
       </div>
     </div>
