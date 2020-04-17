@@ -15,11 +15,18 @@
     <style>
         .fd-col--3 {
             margin: 0;
+            width: 25%;
             border-color: var(--fd-panel-divider-color);
             border-width: 0 1px 1px 0;
             border-style: solid;
             box-sizing: border-box;
         }
+        @media (max-width: 600px){
+            .fd-col--3{
+                width: 100%;
+            }
+        }
+
     </style>
 </head>
 <body>
