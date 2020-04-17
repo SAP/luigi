@@ -65,13 +65,17 @@
 </script>
 
 <style type="text/scss">
-  .fd-dialog {
-    &__content {
-      max-width: 460px;
-    }
+  @import 'styles/variables';
 
+  .fd-dialog {
     &__body {
       overflow-wrap: break-word;
+    }
+  }
+
+  @media (min-width: $desktopMinWidth) {
+    .fd-dialog__content {
+      max-width: 460px;
     }
   }
 </style>

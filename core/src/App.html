@@ -1126,12 +1126,7 @@
 <style type="text/scss">
   @import 'styles/fonts';
   @import 'styles/mixins';
-
-  $topNavHeight: 44px;
-  $topNavHeightTab: 44px;
-  $leftNavWidth: 15rem;
-  $leftNavWidthCollapsed: 2.75rem;
-  $desktopMinWidth: 600px;
+  @import 'styles/variables';
 
   :global(html) {
     box-sizing: border-box;
@@ -1357,6 +1352,13 @@
       :global(#splitViewDraggerBackdrop),
       :global(#tabsContainer) {
         left: $leftNavWidthCollapsed;
+      }
+    }
+
+    :global(.fd-dialog) {
+      &__content {
+        max-width: 90%;
+        min-width: 90%;
       }
     }
   }
