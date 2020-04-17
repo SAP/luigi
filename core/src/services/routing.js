@@ -12,6 +12,9 @@ import { NAVIGATION_DEFAULTS } from './../utilities/luigi-config-defaults';
 import { NodeDataManagementStorage } from './node-data-management';
 
 class RoutingClass {
+  constructor() {
+    this.previousPathData;
+  }
   getNodePath(node, params) {
     return node
       ? RoutingHelpers.buildRoute(
@@ -165,11 +168,10 @@ class RoutingClass {
         );
         return;
       }
-
       const pathUrlRaw =
         path && path.length ? GenericHelpers.getPathWithoutHash(path) : '';
 
-      if (NodeDataManagementStorage.lastPathData) {
+      if (this.previousPathData) {
         const newPathSegments = pathUrlRaw.split('/');
         let stop = false;
         newPathSegments.forEach((pathSegment, index) => {
@@ -177,17 +179,15 @@ class RoutingClass {
             stop = false;
             return;
           }
-          if (NodeDataManagementStorage.lastPathData.navigationPath.length) {
-            const oldPathNode =
-              NodeDataManagementStorage.lastPathData.navigationPath[index++];
+          if (this.previousPathData.navigationPath.length) {
+            let oldPathNode = this.previousPathData.navigationPath[++index];
             if (oldPathNode) {
               const oldPathSegment = oldPathNode.pathSegment;
               if (oldPathSegment) {
                 if (oldPathSegment.startsWith(':')) {
-                  const pathValue =
-                    NodeDataManagementStorage.lastPathData.pathParams[
-                      oldPathSegment.substring(1)
-                    ];
+                  const pathValue = this.previousPathData.pathParams[
+                    oldPathSegment.substring(1)
+                  ];
                   if (pathValue !== pathSegment) {
                     if (NodeDataManagementStorage.hasChildren(oldPathNode)) {
                       NodeDataManagementStorage.deleteCacheEntry(oldPathNode);
@@ -203,46 +203,10 @@ class RoutingClass {
           }
         });
       }
-
       const { nodeObject, pathData } = await Navigation.extractDataFromPath(
         path
       );
-      NodeDataManagementStorage.lastPathData = pathData;
-
-      //pathData.pathParams !==null
-      //wenn sich dynNode geändert, dann node von cache löschen (recursive)
-
-      //if (NodeDataManagementStorage.lastUrl && NodeDataManagementStorage.lastUrl !== pathUrlRaw) {
-      //   if (NodeDataManagementStorage.hasChildren(nodeObject)) {
-      //     const navigationPathAsString = GenericHelpers.getRawNavigationPath(
-      //       pathData.navigationPath
-      //     );
-      //     if (navigationPathAsString === NodeDataManagementStorage.getChildren(nodeObject).rawNavPath) {
-      //       const splittedPath = navigationPathAsString.split('/');
-      //       let startToDeleteNodesFromHere = false;
-      //       let trimmedPath = '';
-      //       for (let i = 0; i < splittedPath.length; i++) {
-      //         if (trimmedPath === '') {
-      //           trimmedPath = splittedPath[i];
-      //         } else {
-      //           trimmedPath = trimmedPath + '/' + splittedPath[i];
-      //         }
-      //         if (splittedPath[i].charAt(0) === ':') {
-      //           startToDeleteNodesFromHere = true;
-      //         }
-      //         if (startToDeleteNodesFromHere) {
-      //           for (let [key, value] of NodeDataManagementStorage.dataManagement.entries()) {
-      //             if (value.rawNavPath === trimmedPath) {
-      //               // console.log('key', key);
-      //               //console.log(NodeDataManagementStorage.getChildren(key));
-      //               //NodeDataManagementStorage.deleteCacheEntry(key);
-      //             }
-      //           }
-      //         }
-      //       }
-      //     }
-      //   }
-      // }
+      this.previousPathData = pathData;
       const viewUrl = nodeObject.viewUrl || '';
 
       if (!viewUrl) {

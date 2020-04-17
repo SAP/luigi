@@ -1,9 +1,6 @@
 class NodeDataManagementStorageClass {
   constructor() {
     this.dataManagement = new Map();
-    this.lastUrl;
-    this.lastPathData;
-    this.navPath = '';
   }
   /**
    *
@@ -13,7 +10,6 @@ class NodeDataManagementStorageClass {
    *
    */
   setChildren(node, value) {
-    //baue den path zusammen rekursiv über parent
     if (node.pathSegment) {
       value.rawNavPath = this.buildNavigationPath(node.pathSegment, node);
     }
@@ -29,11 +25,6 @@ class NodeDataManagementStorageClass {
     }
     return navPathRaw; // projects/pr1/users/groups/:OTHER/settings/:DYNNODES1
   }
-
-  // if (this.navPath !== '') {
-  //   console.log('schau ma mal');
-  //   return this.navPath;
-  // }
 
   /**
    *
