@@ -295,20 +295,6 @@ class GenericHelpersClass {
     }
     return res;
   }
-
-  getRawNavigationPath(arr) {
-    let navPath = '';
-    if (arr.length > 1) {
-      arr.shift(); //remove root node
-      for (let i = 0; i < arr.length; i++) {
-        if (navPath !== '') {
-          navPath = navPath.concat('/');
-        }
-        navPath = navPath.concat(arr[i].pathSegment);
-      }
-    }
-    return navPath;
-  }
 }
 
 export const GenericHelpers = new GenericHelpersClass();
