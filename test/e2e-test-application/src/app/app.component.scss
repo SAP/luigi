@@ -1,6 +1,3 @@
-$fd-scss-font-path: '~fundamental-styles/scss/fonts/';
-$fd-icons-path: '~fundamental-styles/scss/icons/';
-
 .fd-form-item {
   margin-bottom: 10px;
 }
@@ -8,7 +5,7 @@ $fd-icons-path: '~fundamental-styles/scss/icons/';
 .fd-list__item {
   display: block;
   border-bottom: none;
-  height: auto;
+  height: auto; //override the 2,75rem from FD Styles, otherwise the content doesn#t fit
   padding: 10px;
 }
 .fd-dialog {

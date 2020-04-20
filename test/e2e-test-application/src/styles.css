@@ -1,22 +1,3 @@
-body {
-  padding: 0;
-  margin: 0;
-  font-size: 14px;
-}
-
-blockquote,
-figure,
-ol,
-p,
-table,
-ul {
-  margin-top: 0;
-  margin-bottom: 12px;
-}
-
-.clickable {
-  cursor: pointer;
-}
 @font-face {
   font-family: '72';
   src: url('../node_modules/@sap-theming/theming-base-content/content/Base/baseLib/sap_base_fiori/fonts/72-Light-full.woff')
@@ -95,8 +76,19 @@ body {
     Helvetica,
     sans-serif
   );
+  font-size: 14px;
 }
 
-.fd-menu a {
-  text-decoration: none;
+blockquote,
+figure,
+ol,
+p,
+table,
+ul {
+  margin-top: 0;
+  margin-bottom: 12px;
+}
+
+.clickable {
+  cursor: pointer;
 }
