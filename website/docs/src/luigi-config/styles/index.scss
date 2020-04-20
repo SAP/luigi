@@ -105,6 +105,9 @@ $side-nav-width-mobile: 260px;
       font-weight: 600;
     }
     
+    .fd-shellbar__title {
+      display: none;
+    }
 
     @media screen and (max-width: 1023px) {
       padding: 20px 30px;
