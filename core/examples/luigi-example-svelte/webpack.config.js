@@ -29,7 +29,6 @@ module.exports = {
   },
   mode,
   plugins: [
-    new CleanWebpackPlugin(),
     new MiniCssExtractPlugin({
       filename: '[name].css'
     }),
