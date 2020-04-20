@@ -74,6 +74,7 @@ class NodeDataManagementStorageClass {
 
   /**
    * since NEXTRELEASE
+   * Delete node from cache and its children recursively
    * @param {*} node
    */
   deleteNodesRecursively(node) {
