@@ -10,9 +10,9 @@
   </div>
   <div class="fd-panel" *ngIf="links">
     <div class="fd-panel__body">
-      <ul class="fd-list-group">
+      <ul class="fd-list">
         <li
-          class="fd-list-group__item clickable"
+          class="fd-list__item clickable"
           *ngFor="let link of links"
           (click)="linkManager().navigate(slugify(link))"
         >

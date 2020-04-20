@@ -5,8 +5,11 @@ $fd-icons-path: '~fundamental-styles/scss/icons/';
   margin-bottom: 10px;
 }
 
-.fd-list-group__item {
+.fd-list__item {
   display: block;
+  border-bottom: none;
+  height: auto;
+  padding: 10px;
 }
 .fd-dialog {
   z-index: 2;

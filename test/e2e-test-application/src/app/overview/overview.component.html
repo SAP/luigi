@@ -17,14 +17,13 @@
       </div>
     </div>
     <div class="fd-panel__body">
-      <ul class="fd-list-group">
+      <ul class="fd-list">
         <li
-          class="fd-list-group__item clickable"
+          class="fd-list__item clickable"
           *ngFor="let item of luigiClientItems"
           (click)="item.clickHandler()"
         >
-          <span
-            ><strong>{{ item.text }}</strong></span
+          <strong>{{ item.text }}</strong>
           >&nbsp;&ndash;&nbsp;<span>{{ item.description }}</span>
         </li>
       </ul>
@@ -40,15 +39,15 @@
       </div>
     </div>
     <div class="fd-panel__body">
-      <ul class="fd-list-group">
+      <ul class="fd-list">
         <li
-          class="fd-list-group__item clickable"
+          class="fd-list__item clickable"
           *ngFor="let item of luigiCoreLinks"
           (click)="linkManager().navigate(item.link)"
         >
           <strong>{{ item.text }}</strong> &nbsp;&ndash; {{ item.description }}
         </li>
-        <li class="fd-list-group__item">
+        <li class="fd-list__item">
           <div class="fd-form-item">
             <label class="fd-switch__label" for="ImBw4551">
               <span class="fd-switch fd-switch--compact">
@@ -87,10 +86,7 @@
             </a>
           </p>
         </li>
-        <li
-          class="fd-list-group__item clickable"
-          (click)="updateBadgeCounters()"
-        >
+        <li class="fd-list__item clickable" (click)="updateBadgeCounters()">
           <strong>Update Header Navigation</strong> &nbsp;&ndash; Updates the
           top navigation, eg. to update badge counters
         </li>

@@ -277,7 +277,7 @@ describe('Navigation', () => {
 
       cy.getIframeBody().then($iframeBody => {
         cy.wrap($iframeBody)
-          .find('.fd-list-group__item')
+          .find('.fd-list__item')
           .contains('keepSelectedForChildren')
           .click();
         cy.wait(500);
@@ -289,7 +289,7 @@ describe('Navigation', () => {
       cy.getIframeBody().then($iframeBody => {
         // wrap this body with cy so as to do cy actions inside iframe elements
         cy.wrap($iframeBody)
-          .find('.fd-list-group__item')
+          .find('.fd-list__item')
           .contains('Thor')
           .click();
         cy.wait(500);
@@ -308,7 +308,7 @@ describe('Navigation', () => {
         cy.wait(500);
         cy.getIframeBody().then($iframeBody => {
           cy.wrap($iframeBody)
-            .find('.fd-list-group__item strong')
+            .find('.fd-list__item strong')
             .contains('Node with link to another node')
             .click();
         });
