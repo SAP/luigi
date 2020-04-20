@@ -1357,8 +1357,10 @@
 
     :global(.fd-dialog) {
       &__content {
-        max-width: 90%;
-        min-width: 90%;
+        &:not(.fd-dialog__content--mobile) {
+          max-width: 90%;
+          min-width: 90%;
+        }
       }
     }
   }
