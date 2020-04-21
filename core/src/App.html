@@ -1458,14 +1458,18 @@
     z-index: 1000;
   }
 
-  //Remove border-radius from mobile fullscreen dialog
   :global(.fd-dialog__content--mobile) {
+    //Remove border-radius from mobile fullscreen dialog
     border-radius: 0;
 
     :global(.fd-dialog__header.fd-bar),
     :global(.fd-dialog__footer.fd-bar) {
       border-radius: 0;
     }
+
+    //Recalculate height for mobile devices
+    height: calc(var(--vh, 1vh) * 100});
+    max-height: calc(var(--vh, 1vh) * 100});
   }
 
   //Overwrites with SAP variables
