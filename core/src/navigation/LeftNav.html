@@ -18,10 +18,7 @@
           {#if key === 'undefined' || key.startsWith(virtualGroupPrefix)}
           <!-- Single nodes -->
           {#each nodes as node} {#if !node.hideFromNav} {#if node.label}
-          <li
-            class="fd-nested-list__item"
-            title="{isSemiCollapsed ? getNodeLabel(node) : ''}"
-          >
+          <li class="fd-nested-list__item" title="{getNodeLabel(node)}">
             <a
               href="{getRouteLink(node)}"
               class="fd-nested-list__link {node === selectedNode ? 'is-selected' : ''}"
@@ -59,7 +56,7 @@
           <li
             class="fd-nested-list__item lui-collapsible-item"
             on:click|stopPropagation="{() => handleIconClick(nodes, event.currentTarget)}"
-            title="{isSemiCollapsed ? key : ''}"
+            title="{$getTranslation(key)}"
             data-testid="{getTestIdForCat(nodes.metaInfo, key)}"
           >
             <a
@@ -142,7 +139,7 @@
           <!-- Category nodes -->
           <li
             class="fd-nested-list__group-header lui-category"
-            title="{isSemiCollapsed ? key : ''}"
+            title="{$getTranslation(key)}"
             data-testid="{getTestIdForCat(nodes.metaInfo, key)}"
           >
             {#if hasCategoriesWithIcon && nodes.metaInfo.icon}
@@ -163,7 +160,7 @@
             {$getTranslation(key)}
           </li>
           {#each nodes as node} {#if !node.hideFromNav} {#if node.label}
-          <li class="fd-nested-list__item">
+          <li class="fd-nested-list__item" title="{getNodeLabel(node)}">
             <a
               href="{getRouteLink(node)}"
               class="fd-nested-list__link {node === selectedNode ? 'is-selected' : ''}"
