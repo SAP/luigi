@@ -64,36 +64,39 @@ We assume that the whole Angular app is one micro frontend and has its routes de
 Use this code to implement `luigi-auto-navigation.service.ts`, which is globally imported in our `app.module.ts`:
 
 ```javascript
-    import { Router, NavigationEnd } from '@angular/router';
-    import { Injectable, OnDestroy } from '@angular/core';
-    import { Subscription } from 'rxjs';
-    import { filter } from 'rxjs/operators';
-    import { linkManager } from '@kyma-project/luigi-client';
+import { Router, NavigationEnd } from '@angular/router';
+import { Injectable, OnDestroy } from '@angular/core';
+import { Subscription } from 'rxjs';
+import { filter } from 'rxjs/operators';
+import { linkManager } from '@luigi-project/client';
 
-    @Injectable()
-    export class LuigiAutoNavigationService implements OnDestroy {
-      private subscriptions: Subscription = new Subscription();
-      constructor(private router: Router) {}
-      public init(): void {
-        this.subscriptions.add(
-          this.router.events
-            .pipe(filter(ev => ev instanceof NavigationEnd))
-            .subscribe((ev: NavigationEnd) => {
-              if (ev instanceof NavigationEnd) {
-                linkManager()
-                  .fromVirtualTreeRoot()
-                  .withoutSync()
-                  .navigate(ev.url);
-              }
-            })
-        );
-      }
+@Injectable({ providedIn: 'root' })
+export class LuigiAutoNavigationService implements OnDestroy {
+  private subscriptions: Subscription = new Subscription();
+  constructor(private router: Router) {
+    this.subscriptions.add(
+      router.events
+        .pipe(filter(ev => ev instanceof NavigationEnd))
+        .subscribe((ev: NavigationEnd) => {
+          linkManager()
+            .fromVirtualTreeRoot()
+            .withoutSync()
+            .navigate(ev.url);
+        })
+    );
+  }
 
-      ngOnDestroy(): void {
-        this.subscriptions.unsubscribe();
-      }
-    }
+  ngOnDestroy(): void {
+    this.subscriptions.unsubscribe();
+  }
+}
 ```
+`app.module.ts`:
+```javascript
+@NgModule({
+    providers: [LuigiAutoNavigationService],
+```
+
 
 #### Result
 
