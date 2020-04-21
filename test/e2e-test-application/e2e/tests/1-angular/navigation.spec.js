@@ -17,7 +17,7 @@ describe('Navigation', () => {
           title: 'Preserved View',
           size: 'm'
         });
-        cy.get('.fd-dialog__close').click();
+        cy.get('.fd-modal__close').click();
         cy.expectPathToBe('/overview');
       });
     });
@@ -412,7 +412,7 @@ describe('Navigation', () => {
 
         cy.getIframeBody().then($iframeBody => {
           cy.wrap($iframeBody)
-            .find('.fd-list-group__item')
+            .find('.fd-list__item')
             .contains('Current pathsegment: ' + label);
         });
       });

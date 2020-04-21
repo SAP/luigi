@@ -45,7 +45,7 @@ describe('Context switcher', () => {
 
     cy.get('[data-testid=luigi-alert]').should(
       'have.class',
-      'fd-message-strip--information'
+      'fd-alert--information'
     );
 
     cy.get('[data-testid=luigi-alert]').should('contain', 'Project 4 created.');
