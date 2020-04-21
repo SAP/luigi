@@ -12,31 +12,6 @@ describe('NodeDataManagementStorage', function() {
       },
       {
         pathSegment: 'children2'
-      },
-      getChildren3Mock()
-    ]
-  });
-  const getChildren3Mock = () => ({
-    pathSegment: 'children3',
-    children: [getDynamicNode1()]
-  });
-  const getDynamicNode1 = () => ({
-    pathSegment: ':group',
-    children: [getDynamicNode1Children()]
-  });
-  const getDynamicNode1Children = () => ({
-    pathSegment: 'children4',
-    children: [
-      {
-        pathSegment: 'children5',
-        children: [
-          {
-            pathSegment: ':dynNode'
-          }
-        ]
-      },
-      {
-        pathSegment: 'children6'
       }
     ]
   });
@@ -145,29 +120,28 @@ describe('NodeDataManagementStorage', function() {
     });
     it('remove node and its children recursivly', () => {
       expect(NodeDataManagementStorage.dataManagement.size).to.equal(0);
-      const nodeMock = getNodeMock();
-      NodeDataManagementStorage.setChildren(nodeMock, {
-        children: nodeMock.children
+      let children1 = { pathSegment: 'child1' };
+      let children4 = { pathSegment: 'child4' };
+      let children3 = { pathSegment: 'child3', children: [children4] };
+      let children2 = { pathSegment: 'child2', children: [children3] };
+      let rootNode = {
+        children: [children1, children2]
+      };
+      NodeDataManagementStorage.setChildren(rootNode, {
+        children: rootNode.children
       });
-      const children3Mock = getChildren3Mock();
-      NodeDataManagementStorage.setChildren(children3Mock, {
-        children: children3Mock.children
+      NodeDataManagementStorage.setChildren(children1, {
+        children: children1.children
       });
-      const dynamicNode1 = getDynamicNode1();
-      NodeDataManagementStorage.setChildren(dynamicNode1, {
-        children: dynamicNode1.children
+      NodeDataManagementStorage.setChildren(children2, {
+        children: children2.children
       });
-      console.log('cache ', NodeDataManagementStorage.dataManagement);
-      console.log('size ', NodeDataManagementStorage.dataManagement.size);
-      NodeDataManagementStorage.deleteCache(dynamicNode1);
-      console.log(
-        'after deletion cache ',
-        NodeDataManagementStorage.dataManagement
-      );
-      console.log(
-        'after deletion size ',
-        NodeDataManagementStorage.dataManagement.size
-      );
+      NodeDataManagementStorage.setChildren(children3, {
+        children: children3.children
+      });
+      expect(NodeDataManagementStorage.dataManagement.size).to.equal(4);
+      NodeDataManagementStorage.deleteNodesRecursively(children2);
+      expect(NodeDataManagementStorage.dataManagement.size).to.equal(2);
     });
   });
 });

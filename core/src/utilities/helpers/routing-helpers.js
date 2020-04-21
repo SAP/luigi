@@ -184,9 +184,9 @@ class RoutingHelpersClass {
   }
 
   /**
+   * Returns true or false whether the passed node is a dynamic node or not
    * since NEXTRELEASE
    * @param {*} node
-   * @param {*} pathParams
    */
   isDynamicNode(node) {
     return (
@@ -197,6 +197,7 @@ class RoutingHelpersClass {
   }
 
   /**
+   * Returns the value from the passed node's pathSegment, e.g. :groupId -> yourGroupId
    * since NEXTRELEASE
    * @param {*} node
    * @param {*} pathParams

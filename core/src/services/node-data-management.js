@@ -10,20 +10,8 @@ class NodeDataManagementStorageClass {
    *
    */
   setChildren(node, value) {
-    if (node.pathSegment) {
-      value.rawNavPath = this.buildNavigationPath(node.pathSegment, node);
-    }
     this.dataManagement.set(node, value);
     this.navPath = '';
-  }
-
-  buildNavigationPath(pathSegment, node) {
-    let navPathRaw = pathSegment;
-    if (node.parent) {
-      navPathRaw = node.parent.pathSegment.concat('/' + navPathRaw);
-      return this.buildNavigationPath(navPathRaw, node.parent);
-    }
-    return navPathRaw; // projects/pr1/users/groups/:OTHER/settings/:DYNNODES1
   }
 
   /**

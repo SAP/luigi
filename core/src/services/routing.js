@@ -277,7 +277,17 @@ class RoutingClass {
         isolateView: nodeObject.isolateView || false,
         tabNav: tabNavInherited
       };
+
       const previousCompData = component.get();
+      /*
+      This block takes the previous node data and the new node data and compares
+      if the navigation path of both contains a dynamic node.
+        - If the path of the previous node (which contains a dynamic node) and the new node is different, the previous node
+        will be removed from cache, because when you come back to the previous node (which would be in the cache)
+        you can not ensure that it is up to date. 
+        - If the dynamic node value of the new node is different from the previous node, the previous node will be removed
+        from cache with all its children.
+      */
       if (previousCompData.navigationPath) {
         let isSamePath = true;
         for (let i = 0; i < previousCompData.navigationPath.length; i++) {

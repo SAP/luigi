@@ -113,6 +113,10 @@ class NavigationClass {
       : await Navigation.getChildren(node);
   }
 
+  /**
+   * Returns the children from the passed node from Cache
+   * @param {} node
+   */
   getChildrenFromCache(node) {
     let data = NodeDataManagementStorage.getChildren(node);
     return data ? data.filteredChildren : [];
