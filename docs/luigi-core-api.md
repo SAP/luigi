@@ -621,6 +621,11 @@ Unregisters a listener for locale changes.
 Gets translated text for the specified key in the current locale or in the specified one.
 Property values for token replacement in the localization key will be taken from the specified interpolations object.
 
+<!-- add-attribute:class:success -->
+
+> Be aware that this function is not asynchronous and therefore the translation table must be existing already at initialization.
+> Take a look at our [Translation Tutorial](advanced-scenarios.md#setup-and-use-translation--internationalization-i18n) for an implementation suggestion.
+
 ##### Parameters
 
 -   `key` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** key to be translated
