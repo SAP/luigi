@@ -11,13 +11,13 @@ describe('Navigation', () => {
         cy.expectPathToBe('/projects/pr2');
       });
     });
-    it('Core API open in modal', () => {
+    it('Core API open in dialog', () => {
       cy.window().then(win => {
         win.Luigi.navigation().openAsModal('/settings', {
           title: 'Preserved View',
           size: 'm'
         });
-        cy.get('.fd-modal__close').click();
+        cy.get('.fd-dialog__close').click();
         cy.expectPathToBe('/overview');
       });
     });
