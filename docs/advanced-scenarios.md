@@ -165,7 +165,7 @@ Luigi Core provides a generic [API for I18N](luigi-core-api.md#luigii18n). We wi
 4. Add locale change listener after Luigi initialization
 5. Use translation as a node label
 
-##### 1. Custom translation function
+#### 1. Custom translation function
 
 Create a internationalization provider that will expose the `getTranslation` method for `settings.customTranslationImplementation` configuration.
 
@@ -254,7 +254,7 @@ class I18nProvider {
 export const i18nProvider = new I18nProvider();
 ```
 
-##### 2. Configure `customTranslationImplementation`
+#### 2. Configure `customTranslationImplementation`
 
 Specify `settings.customTranslationImplementation`:
 
@@ -268,7 +268,7 @@ const coreConfig = {
 }
 ```
 
-##### 3. Load translations before `Luigi.setConfig()`
+#### 3. Load translations before `Luigi.setConfig()`
 
 Since translations may come from external sources, loaded asynchronously, we should load them ahead, before `Luigi.setConfig` is triggered. Be aware that other Luigi Core API functionality is only available after initialization.
 
@@ -281,7 +281,7 @@ i18nProvider.init().then(() => {
 })
 ```
 
-##### 4. Add locale change listener after Luigi initialization
+#### 4. Add locale change listener after Luigi initialization
 
 Specify `customTranslationImplementation`:
 
@@ -297,7 +297,7 @@ const coreConfig = {
 }
 ```
 
-##### 5. Use translation as a node label
+#### 5. Use translation as a node label
 
 You can use the translation keys as `node.label`, on other labels in the configuration or programmatically.
 
