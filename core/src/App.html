@@ -1472,6 +1472,11 @@
     max-height: calc(var(--vh, 1vh) * 100});
   }
 
+  //Recalculate height for mobile devices
+  :global(.fd-product-switch__body) {
+    max-height: calc(var(--vh, 1vh) * 100 - 76px);
+  }
+
   //Overwrites with SAP variables
 
   :global(.fd-shellbar) {
