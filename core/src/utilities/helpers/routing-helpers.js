@@ -185,7 +185,7 @@ class RoutingHelpersClass {
 
   /**
    * Returns true or false whether the passed node is a dynamic node or not
-   * since NEXTRELEASE
+   * @since NEXTRELEASE
    * @param {*} node
    */
   isDynamicNode(node) {
