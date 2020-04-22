@@ -57,13 +57,6 @@
   font-weight: normal;
   font-style: normal;
 }
-@font-face {
-  font-family: 'SAP-icons';
-  src: url('../../../node_modules/theming-base-content/content/Base/baseLib/sap_fiori_3/fonts/SAP-icons.ttf')
-    format('ttf');
-  font-weight: normal;
-  font-style: normal;
-}
 
 body {
   margin: 0;
