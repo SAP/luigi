@@ -456,6 +456,7 @@
           node.openNodeInModal === true ? {} : node.openNodeInModal
         );
       } else {
+        getComponentWrapper().set({ isNavigationSyncEnabled: true });
         Routing.handleRouteClick(node, getComponentWrapper());
       }
     });
