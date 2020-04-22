@@ -198,7 +198,7 @@ class RoutingHelpersClass {
 
   /**
    * Returns the value from the passed node's pathSegment, e.g. :groupId -> yourGroupId
-   * since NEXTRELEASE
+   * @since NEXTRELEASE
    * @param {*} node
    * @param {*} pathParams
    */
