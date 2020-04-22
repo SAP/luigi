@@ -18,7 +18,10 @@
           {#if key === 'undefined' || key.startsWith(virtualGroupPrefix)}
           <!-- Single nodes -->
           {#each nodes as node} {#if !node.hideFromNav} {#if node.label}
-          <li class="fd-nested-list__item" title="{getNodeLabel(node)}">
+          <li
+            class="fd-nested-list__item"
+            title="{$getTranslation(node.label)}"
+          >
             <a
               href="{getRouteLink(node)}"
               class="fd-nested-list__link {node === selectedNode ? 'is-selected' : ''}"
@@ -41,7 +44,7 @@
               {/if}
               <span
                 class="fd-nested-list__title"
-              >{getNodeLabel(node)}</span>
+              >{$getTranslation(node.label)}</span>
               {#if node.externalLink && node.externalLink.url}
               <span
                 class="sap-icon--action sap-icon--s"
@@ -95,7 +98,9 @@
                   on:click|preventDefault="{() => handleClick(node)}"
                   data-testid="{getTestId(node)}"
                 >
-                  <span class="fd-nested-list__title">{getNodeLabel(node)}</span>
+                  <span
+                    class="fd-nested-list__title"
+                  >{$getTranslation(node.label)}</span>
                   {#if node.externalLink && node.externalLink.url}
                   <span
                     class="sap-icon--action sap-icon--s"
@@ -121,7 +126,9 @@
                       on:click|preventDefault="{() => handleClick(node)}"
                       data-testid="{getTestId(node)}"
                     >
-                      <span class="fd-nested-list__title">{getNodeLabel(node)}</span>
+                      <span
+                        class="fd-nested-list__title"
+                      >{$getTranslation(node.label)}</span>
                       {#if node.externalLink && node.externalLink.url}
                       <span
                         class="sap-icon--action sap-icon--s"
@@ -160,7 +167,10 @@
             {$getTranslation(key)}
           </li>
           {#each nodes as node} {#if !node.hideFromNav} {#if node.label}
-          <li class="fd-nested-list__item" title="{getNodeLabel(node)}">
+          <li
+            class="fd-nested-list__item"
+            title="{$getTranslation(node.label)}"
+          >
             <a
               href="{getRouteLink(node)}"
               class="fd-nested-list__link {node === selectedNode ? 'is-selected' : ''}"
@@ -183,7 +193,7 @@
               {/if}
               <span
                 class="fd-nested-list__title"
-              >{getNodeLabel(node)}</span>
+              >{$getTranslation(node.label)}</span>
               {#if node.externalLink && node.externalLink.url}
               <span
                 class="sap-icon--action sap-icon--s"
@@ -362,10 +372,6 @@
     return (
       expandedList && expandedList.indexOf(nodes.metaInfo.categoryUid) >= 0
     );
-  }
-
-  function getNodeLabel(node) {
-    return LuigiI18N.getTranslation(node.label);
   }
 
   function getTestId(node) {
