@@ -749,16 +749,10 @@ Returns **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/
 
 Enables navigating to sibling nodes without knowing the absolute path
 
-> > > > > > > upstream/master
-
 ##### Examples
 
 ```javascript
-<<<<<<< HEAD
-LuigiClient.linkManager().fromVirtualTreeRoot().navigate('/users/groups/stakeholders')
-=======
 LuigiClient.linkManager().fromParent().navigate('/sibling')
->>>>>>> upstream/master
 ```
 
 Returns **[linkManager](#linkmanager)** link manager instance
