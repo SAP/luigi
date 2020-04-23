@@ -17,7 +17,7 @@ describe('Navigation', () => {
           title: 'Preserved View',
           size: 'm'
         });
-        cy.get('.fd-modal__close').click();
+        cy.get('.fd-dialog__close').click();
         cy.expectPathToBe('/overview');
       });
     });
