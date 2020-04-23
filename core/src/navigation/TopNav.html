@@ -297,6 +297,23 @@
     {/if}
     {/if}
     <!-- closes {#if children && pathData.length > 0} -->
+    {#if isGlobalSearchAvailable}
+    <GlobalSearch
+      bind:dropDownStates
+      on:toggleDropDownState="{() => toggleDropdownState('globalSearchPopover')}"
+    />
+    <div class="fd-shellbar__action fd-shellbar__action--desktop">
+      <div on:click|stopPropagation="{() => {}}">
+        <button
+          class="fd-button fd-shellbar__button sap-icon--search"
+          aria-label="Search"
+          aria-haspopup="true"
+          aria-expanded="{dropDownStates.globalSearchPopover || false}"
+          on:click="{() => toggleDropdownState('globalSearchPopover')}"
+        ></button>
+      </div>
+    </div>
+    {/if}
     {#if authorizationEnabled || profileItemsAvailable}
     <div
       class="fd-shellbar__action fd-shellbar__action--show-always"
@@ -355,6 +372,7 @@
   import TopNavDropDown from '../TopNavDropDown.html';
   import ContextSwitcher from './ContextSwitcher.html';
   import ProductSwitcher from './ProductSwitcher.html';
+  import GlobalSearch from './GlobalSearch.html';
   import {
     beforeUpdate,
     createEventDispatcher,
@@ -392,6 +410,7 @@
   export let profileItemsAvailable;
   export let userInfo = {};
   export let urlAuthError;
+  export let isGlobalSearchAvailable;
   let store = getContext('store');
   let contextSwitcherToggle = false;
   let selectedLabel;
@@ -436,6 +455,9 @@
           'settings.responsiveNavigation'
         );
         productSwitcherConfig = NavigationHelpers.getProductSwitcherConfig();
+        isGlobalSearchAvailable = LuigiConfig.getConfigValue(
+          'globalSearch.enabled'
+        );
       },
       ['navigation']
     );
@@ -509,7 +531,7 @@
 
     closeAllDropdowns();
     closeMobileTopNavDropDown();
-
+    console.log('HER WE GO ' + name + ' ' + dropDownState);
     ddStates[name] = dropDownState;
 
     dropDownStates = ddStates;

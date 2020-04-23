@@ -4,6 +4,7 @@ import { routing } from './routing';
 import { settings } from './settings';
 import { communication } from './communication';
 import { lifecycleHooks } from './lifecycle-hooks';
+import { globalSearch } from './globalSearch';
 
 Luigi.setConfig({
   auth,
@@ -11,5 +12,6 @@ Luigi.setConfig({
   routing,
   settings,
   communication,
-  lifecycleHooks
+  lifecycleHooks,
+  globalSearch
 });

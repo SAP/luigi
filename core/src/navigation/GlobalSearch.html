@@ -1,0 +1,33 @@
+<div class="fd-shellbar__action fd-shellbar__action--desktop">
+  <div class="fd-popover__control" on:click|stopPropagation="{() => {}}">
+    <div
+      aria-label="Image label"
+      aria-controls="UIO6J688"
+      aria-hidden="{!(dropDownStates.globalSearchPopover || false)}"
+      aria-haspopup="true"
+      class="luigi-search"
+    >
+      <div class="fd-input-group fd-shellbar__input-group">
+        <input
+          type="text"
+          class="fd-input fd-input-group__input fd-shellbar__input-group__input"
+          id="UIO6J6881"
+          value="Sear"
+          placeholder="Search..."
+        >
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+  import { beforeUpdate, createEventDispatcher, onMount } from 'svelte';
+  export let dropDownStates = {};
+  onMount(() => {});
+</script>
+<style type="text/scss">
+  .luigi-search {
+    &[aria-hidden='true'] {
+      display: none !important;
+    }
+  }
+</style>
