@@ -118,7 +118,7 @@ class LuigiConfig {
     fd_ui.setAttribute('style', 'text-align: center;');
 
     var errorDiv = document.createElement('div');
-    errorDiv.setAttribute('class', 'fd-alert fd-alert--error');
+    errorDiv.setAttribute('class', 'fd-message-strip fd-message-strip--error');
     errorDiv.setAttribute(
       'style',
       'max-width: 800px; display: inline-block; margin-top: 40px;'

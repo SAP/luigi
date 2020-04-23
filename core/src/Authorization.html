@@ -3,22 +3,23 @@
 <nav class="fd-menu">
   <ul class="fd-menu__list">
     {#if showUserInfo}
-    <li>
+    <li class="fd-menu__item">
       <span
         aria-label="Username"
         id="username"
-        class="fd-has-type-2"
+        class="lui-username fd-has-type-1"
         data-testid="luigi-topnav-profile-username"
       >{userInfo.name ? userInfo.name : userInfo.email}</span>
     </li>
     {/if}
     {#each profileNav.items as profileItem}
     <li
+      class="fd-menu__item"
       on:click="{() => onActionClick(profileItem)}"
       data-testid="{getTestId(profileItem)}"
     >
       <a
-        class="fd-menu__item"
+        class="fd-menu__link"
         data-testid="luigi-topnav-profile-item"
         href="{getRouteLink(profileItem)}"
         on:click|preventDefault="{() => {}}"
@@ -36,14 +37,20 @@
         >
         {/if}
         {/if}
-        <span>{$getTranslation(profileItem.label)}</span>
+        <span
+          class="fd-menu__title"
+        >{$getTranslation(profileItem.label)}</span>
       </a>
     </li>
     {/each}
     {#if isAuthorizationEnabled}
     {#if isLoggedIn && isProfileLogoutItem}
-    <li on:click="{onLogoutClick}" data-testid="{getTestId(profileNav.logout)}">
-      <a aria-label="Logout" class="fd-menu__item">
+    <li
+      class="fd-menu__item"
+      on:click="{onLogoutClick}"
+      data-testid="{getTestId(profileNav.logout)}"
+    >
+      <a aria-label="Logout" class="fd-menu__link">
         {#if profileNav.logout.icon}
         {#if hasOpenUIicon(profileNav.logout)}
         <span
@@ -57,13 +64,17 @@
         >
         {/if}
         {/if}
-        <span>{$getTranslation(profileNav.logout.label)}</span>
+        <span
+          class="fd-menu__title"
+        >{$getTranslation(profileNav.logout.label)}</span>
       </a>
     </li>
     {/if}
     {#if !isLoggedIn && !isProfileLogoutItem}
-    <li on:click="{startAuthorization}">
-      <a aria-label="Login" class="fd-menu__item">Login</a>
+    <li class="fd-menu__item" on:click="{startAuthorization}">
+      <a aria-label="Login" class="fd-link">
+        <span class="fd-menu__title">Login</span>
+      </a>
     </li>
     {/if}
     {/if}
@@ -235,9 +246,8 @@
   .nav-icon {
     height: 2em;
   }
-  #username {
+  .lui-username {
     display: block;
-    padding: 10px 24px;
-    cursor: default;
+    padding: 0.75rem 1rem 0.75rem 0.75rem;
   }
 </style>
