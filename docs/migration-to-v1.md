@@ -1,7 +1,7 @@
 <!-- meta
 {
   "node": {
-    "label": "Migration to 1.x",
+    "label": "Versions",
     "category": {
       "label": "Basics"
     },
@@ -13,7 +13,14 @@
 }
 meta -->
 
-# Migration Guides for Luigi 0.x to 1.x
+# Versions
+
+This document covers the different versions of Luigi.
+
+* [Luigi version 1.0](#luigi-1.0)
+* [Earlier versions](#earlier-versions)
+
+## Luigi 1.0
 
 As part of the upgrade to Luigi 1.0, some important changes were made. Luigi npm packages (previously under `kyma-project`) are now under a new npm org. The new packages are:
 - @luigi-project/client
@@ -74,3 +81,14 @@ Following an upgrade from SAP Fundamentals to Fundamental Library Styles, there 
 Within Luigi, we renamed the `lui-tendant-menu__control` class to `lui-ctx-switch-menu`.
 
 <!-- accordion:end -->
+
+
+## Earlier versions
+
+You can access documentation for previous versions on our GitHub repository:
+
+* 0.7
+* 0.6
+* 0.5
+* 0.4
+* 0.3
