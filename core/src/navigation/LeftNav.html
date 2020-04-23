@@ -502,22 +502,16 @@
 
 <style type="text/scss">
   @import 'styles/mixins';
+  @import 'styles/variables';
 
   :root {
     /* needed for IE11 support */
-    --fd-color-neutral-1: #fafafa;
     --fd-color-neutral-2: #eeeeef;
     --fd-color-neutral-3: #d9d9d9;
-    --fd-color-text-2: #51555a;
-    --fd-color-text-4: #74777a;
   }
 
-  $topNavHeight: 44px;
-  $leftNavWidthCollapsed: 2.75rem;
   $footerPaddingVertical: 13px;
   $footerHeight: calc(16px + (2 * #{$footerPaddingVertical}));
-  $leftNavWidth: 15rem;
-  /* text height + vertical padding */
 
   a {
     cursor: pointer;
