@@ -1,3 +1,10 @@
-:host .fd-dialog__content {
-  max-width: 460px;
+@media (max-width: 599px) {
+  :host .fd-dialog__content:not(.fd-dialog__content--mobile) {
+    max-width: 90%;
+    min-width: 90%;
+  }
+}
+
+.fd-dialog {
+  z-index: 1000;
 }
