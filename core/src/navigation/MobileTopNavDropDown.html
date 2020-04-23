@@ -1,21 +1,13 @@
-<div
-  class="fd-modal y-fd-modal--full-screen"
-  on:click|stopPropagation="{()=>{}}"
->
-  <div class="fd-modal__content" role="document">
-    <div class="fd-action-bar">
-      <div class="fd-action-bar__back">
-        <button
-          class="fd-button--light fd-button--compact sap-icon--nav-back"
-          on:click
-          data-testid="mobile-topnav-close"
-        ></button>
-      </div>
-      <div class="fd-action-bar__header">
-        <h5 class="fd-action-bar__title fd-has-type-1">{label}</h5>
+<div class="fd-dialog fd-dialog--active" on:click|stopPropagation="{()=>{}}">
+  <div class="fd-dialog__content fd-dialog__content--mobile">
+    <div class="fd-dialog__header fd-bar fd-bar--header">
+      <div class="fd-bar__left">
+        <div class="fd-bar__element">
+          <h3 class="fd-dialog__title">{label}</h3>
+        </div>
       </div>
     </div>
-    <div class="fd-modal__body">
+    <div class="fd-dialog__body fd-dialog__body--no-vertical-padding">
       <div class="fd-product-switch__body fd-product-switch__body--mobile">
         <ul class="fd-product-switch__list">
           {#if nodes}
@@ -49,6 +41,17 @@
         </ul>
       </div>
     </div>
+    <footer class="fd-dialog__footer fd-bar fd-bar--cosy fd-bar--footer">
+      <div class="fd-bar__right">
+        <div class="fd-bar__element">
+          <button
+            class="fd-button fd-button--light fd-dialog__decisive-button"
+            on:click
+            data-testid="mobile-topnav-close"
+          >Cancel</button>
+        </div>
+      </div>
+    </footer>
   </div>
 </div>
 
