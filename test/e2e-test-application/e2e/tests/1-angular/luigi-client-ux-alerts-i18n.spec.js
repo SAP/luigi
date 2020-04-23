@@ -26,7 +26,7 @@ describe('Luigi Client UX Alerts + Localization', () => {
 
       cy.get('[data-testid=luigi-alert]').should(
         'have.class',
-        'fd-alert--success'
+        'fd-message-strip--success'
       );
 
       cy.get('[data-testid=luigi-alert-dismiss]').click();
@@ -44,7 +44,7 @@ describe('Luigi Client UX Alerts + Localization', () => {
 
       cy.get('[data-testid=luigi-alert]').should(
         'have.class',
-        'fd-alert--information'
+        'fd-message-strip--information'
       );
     });
     it('hides Alert after specified time', () => {
@@ -112,7 +112,7 @@ describe('Luigi Client UX Alerts + Localization', () => {
 
       cy.get('[data-testid=luigi-alert]').should(
         'have.class',
-        'fd-alert--warning'
+        'fd-message-strip--warning'
       );
 
       cy.get('*[id$=_link_relativePath]').click();
@@ -150,7 +150,7 @@ describe('Luigi Client UX Alerts + Localization', () => {
         .click();
 
       cy.get('[data-testid=luigi-alert]')
-        .should('have.class', 'fd-alert--error')
+        .should('have.class', 'fd-message-strip--error')
         .should('contain', "<b onmouseover=alert('Wufff!')>click me!</b>");
 
       cy.get('[data-testid=luigi-alert]')
