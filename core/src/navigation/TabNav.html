@@ -60,13 +60,15 @@
                 {#each nodes as node}
                 {#if !node.hideFromNav}
                 {#if node.label}
-                <li>
+                <li class="fd-menu__item">
                   <a
                     href="{getRouteLink(node)}"
-                    class="fd-menu__item"
+                    class="fd-menu__link"
                     on:click|preventDefault="{() => handleClick(node)}"
                     aria-selected="{node === selectedNodeForTabNav}"
-                  >{node.label}</a>
+                  >
+                    <span class="fd-menu__title">{node.label}</span>
+                  </a>
                 </li>
                 {/if}
                 {/if}
@@ -352,10 +354,8 @@
 </script>
 
 <style type="text/scss">
-  /*Mixins*/
   @import 'styles/mixins';
-
-  $leftNavWidth: 15rem;
+  @import 'styles/variables';
 
   .tabsContainer {
     width: 100%;
@@ -376,7 +376,9 @@
         padding-bottom: 4px;
 
         .fd-nested-list__item:last-child {
-          border-bottom: none;
+          .fd-nested-list__link {
+            border-bottom: none;
+          }
         }
       }
     }
