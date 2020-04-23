@@ -10,7 +10,7 @@ Object.keys(productSwitcherItems[0]).length }
         <!-- default: sap-icon--grid -->
         {#if hasOpenUIicon(config)}
         <button
-          class="fd-button--light fd-product-switch__control sap-icon--{config.icon}"
+          class="fd-button fd-button--transparent fd-product-switch__control sap-icon--{config.icon}"
           aria-expanded="{dropDownStates.productSwitcherPopover || false}"
           aria-haspopup="true"
           on:click|stopPropagation="{toggleDropdownState}"
@@ -19,7 +19,7 @@ Object.keys(productSwitcherItems[0]).length }
         ></button>
         {:else}
         <button
-          class="fd-button--light fd-product-switch__control"
+          class="fd-button fd-button--transparent fd-product-switch__control"
           aria-expanded="{dropDownStates.productSwitcherPopover || false}"
           aria-haspopup="true"
           on:click|stopPropagation="{toggleDropdownState}"
@@ -36,7 +36,6 @@ Object.keys(productSwitcherItems[0]).length }
         id="productSwitcherPopover"
       >
         <div class="{columnsClass}">
-          <!-- <nav class="fd-menu"> -->
           <ul class="fd-product-switch__list">
             {#each productSwitcherItems as productSwitcherItem}
             {#if productSwitcherItem.label}
@@ -45,7 +44,6 @@ Object.keys(productSwitcherItems[0]).length }
               on:click="{() => onActionClick(productSwitcherItem)}"
               data-testid="{getTestId(productSwitcherItem)}"
             >
-              <!-- <a class="fd-menu__item"> -->
               <div
                 class="fd-product-switch__icon {productSwitcherItem.icon && hasOpenUIicon(productSwitcherItem) ? 'sap-icon--' + productSwitcherItem.icon : '' }"
               >
@@ -66,12 +64,10 @@ Object.keys(productSwitcherItems[0]).length }
                 >{getNodeSubtitle(productSwitcherItem)}</div>
                 {/if}
               </div>
-              <!-- </a> -->
             </li>
             {/if}
             {/each}
           </ul>
-          <!-- </nav> -->
         </div>
       </div>
     </div>
