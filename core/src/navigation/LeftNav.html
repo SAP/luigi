@@ -20,7 +20,7 @@
           {#each nodes as node} {#if !node.hideFromNav} {#if node.label}
           <li
             class="fd-nested-list__item"
-            title="{isSemiCollapsed ? getNodeLabel(node) : ''}"
+            title="{$getTranslation(node.label)}"
           >
             <a
               href="{getRouteLink(node)}"
@@ -44,7 +44,7 @@
               {/if}
               <span
                 class="fd-nested-list__title"
-              >{getNodeLabel(node)}</span>
+              >{$getTranslation(node.label)}</span>
               {#if node.externalLink && node.externalLink.url}
               <span
                 class="sap-icon--action sap-icon--s"
@@ -59,7 +59,7 @@
           <li
             class="fd-nested-list__item lui-collapsible-item"
             on:click|stopPropagation="{() => handleIconClick(nodes, event.currentTarget)}"
-            title="{isSemiCollapsed ? key : ''}"
+            title="{$getTranslation(key)}"
             data-testid="{getTestIdForCat(nodes.metaInfo, key)}"
           >
             <a
@@ -98,7 +98,9 @@
                   on:click|preventDefault="{() => handleClick(node)}"
                   data-testid="{getTestId(node)}"
                 >
-                  <span class="fd-nested-list__title">{getNodeLabel(node)}</span>
+                  <span
+                    class="fd-nested-list__title"
+                  >{$getTranslation(node.label)}</span>
                   {#if node.externalLink && node.externalLink.url}
                   <span
                     class="sap-icon--action sap-icon--s"
@@ -124,7 +126,9 @@
                       on:click|preventDefault="{() => handleClick(node)}"
                       data-testid="{getTestId(node)}"
                     >
-                      <span class="fd-nested-list__title">{getNodeLabel(node)}</span>
+                      <span
+                        class="fd-nested-list__title"
+                      >{$getTranslation(node.label)}</span>
                       {#if node.externalLink && node.externalLink.url}
                       <span
                         class="sap-icon--action sap-icon--s"
@@ -142,7 +146,7 @@
           <!-- Category nodes -->
           <li
             class="fd-nested-list__group-header lui-category"
-            title="{isSemiCollapsed ? key : ''}"
+            title="{$getTranslation(key)}"
             data-testid="{getTestIdForCat(nodes.metaInfo, key)}"
           >
             {#if hasCategoriesWithIcon && nodes.metaInfo.icon}
@@ -163,7 +167,10 @@
             {$getTranslation(key)}
           </li>
           {#each nodes as node} {#if !node.hideFromNav} {#if node.label}
-          <li class="fd-nested-list__item">
+          <li
+            class="fd-nested-list__item"
+            title="{$getTranslation(node.label)}"
+          >
             <a
               href="{getRouteLink(node)}"
               class="fd-nested-list__link {node === selectedNode ? 'is-selected' : ''}"
@@ -186,7 +193,7 @@
               {/if}
               <span
                 class="fd-nested-list__title"
-              >{getNodeLabel(node)}</span>
+              >{$getTranslation(node.label)}</span>
               {#if node.externalLink && node.externalLink.url}
               <span
                 class="sap-icon--action sap-icon--s"
@@ -367,10 +374,6 @@
     );
   }
 
-  function getNodeLabel(node) {
-    return LuigiI18N.getTranslation(node.label);
-  }
-
   function getTestId(node) {
     return node.testId
       ? node.testId
@@ -502,22 +505,16 @@
 
 <style type="text/scss">
   @import 'styles/mixins';
+  @import 'styles/variables';
 
   :root {
     /* needed for IE11 support */
-    --fd-color-neutral-1: #fafafa;
     --fd-color-neutral-2: #eeeeef;
     --fd-color-neutral-3: #d9d9d9;
-    --fd-color-text-2: #51555a;
-    --fd-color-text-4: #74777a;
   }
 
-  $topNavHeight: 44px;
-  $leftNavWidthCollapsed: 2.75rem;
   $footerPaddingVertical: 13px;
   $footerHeight: calc(16px + (2 * #{$footerPaddingVertical}));
-  $leftNavWidth: 15rem;
-  /* text height + vertical padding */
 
   a {
     cursor: pointer;

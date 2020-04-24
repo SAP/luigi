@@ -109,13 +109,13 @@ describe('Navigation with Fiddle', () => {
     it('custom selected option renderer', () => {
       cy.contains('Select Environment').click();
       cy.contains('Environment 1').click();
-      cy.get('.fd-button--light')
+      cy.get('[data-testid=luigi-contextswitcher-button]')
         .find('label')
         .should('have.css', 'color', 'rgb(136, 255, 0)')
         .and('have.css', 'font-weight', '700');
       cy.contains('Environment 1').click();
       cy.contains('Environment 2').click();
-      cy.get('.fd-button--light')
+      cy.get('[data-testid=luigi-contextswitcher-button]')
         .find('label')
         .should('have.css', 'color', 'rgb(0, 136, 255)')
         .and('have.css', 'font-weight', '700');
