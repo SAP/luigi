@@ -5,6 +5,12 @@
   }
 }
 
+@media (min-width: 600px) {
+  .fd-dialog__content {
+    max-width: 460px;
+  }
+}
+
 .fd-dialog {
   z-index: 1000;
 }
