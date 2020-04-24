@@ -115,7 +115,7 @@ class LuigiI18NManager {
    * Property values for token replacement in the localization key will be taken from the specified interpolations object.
    *
    * <!-- add-attribute:class:success -->
-   * > Be aware that this function is not asynchronous and therefore the translation table must be existing already at initialization.
+   * > **TIP**: Be aware that this function is not asynchronous and therefore the translation table must be existing already at initialization.
    * Take a look at our [Translation Tutorial](advanced-scenarios.md#setup-and-use-translation--internationalization-i18n) for an implementation suggestion.
    *
    * @param {string} key key to be translated

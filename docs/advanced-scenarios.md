@@ -152,23 +152,18 @@ Google's `id_token` contains basic identity data like name and user ID, which al
   },
 ```
 
-### Setup and use translation / internationalization (i18n)
+### Translation and internationalization (i18n)
 
 #### Overview
 
 This example shows you how to use Luigi with a centrally implemented translation dictionary.
 
-Luigi Core provides a generic [API for I18N](luigi-core-api.md#luigii18n). We will write a custom translation provider that gathers translation strings from static files hosted either on Core or on micro-frontend side.
+Luigi Core provides a generic [API for I18N](luigi-core-api.md#luigii18n). We will write a custom translation provider that gathers translation strings from static files hosted either on Luigi Core or on the micro-frontend side.
 
 #### Steps
 
-1. Create a custom translation function
-2. Configure `settings.customTranslationImplementation`
-3. Load translations before `Luigi.setConfig()`
-4. Add locale change listener after Luigi initialization
-5. Use translation as a node label
 
-#### 1. Custom translation function
+#### 1. Create a custom translation function
 
 Create a internationalization provider that will expose the `getTranslation` method for `settings.customTranslationImplementation` configuration.
 
@@ -176,7 +171,7 @@ File `i18n-provider.js`:
 ```javascript
 class I18nProvider {
   init() {
-    // Could also be some ajax based implementation.
+    // Could also be an Ajax based implementation.
     this.translationTable = {
       "en": {
         "COMMON": {
@@ -273,7 +268,7 @@ const coreConfig = {
 
 #### 3. Load translations before `Luigi.setConfig()`
 
-Since translations may come from external sources, loaded asynchronously, we should load them ahead, before `Luigi.setConfig` is triggered. Be aware that other Luigi Core API functionality is only available after initialization.
+Since translations may come from external sources, loaded asynchronously, you should load them ahead before `Luigi.setConfig` is triggered. Be aware that other Luigi Core API functionality is only available after initialization.
 
 ```javascript
 import { i18nProvider } from './i18n-provider';
@@ -323,6 +318,5 @@ const coreConfig = {
 }
 ```
 
-#### Result
 
 <!-- accordion:end -->
