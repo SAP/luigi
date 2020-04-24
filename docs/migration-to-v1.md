@@ -15,7 +15,7 @@ meta -->
 
 # Versions
 
-This document covers the different versions of Luigi.
+Read about the versions of Luigi in this document.
 
 * [Luigi version 1.0](#luigi-1.0)
 * [Earlier versions](#earlier-versions)
@@ -85,10 +85,13 @@ Within Luigi, we renamed the `lui-tendant-menu__control` class to `lui-ctx-switc
 
 ## Earlier versions
 
-You can access documentation for previous versions on our GitHub repository:
+<!-- add-attribute:class:warning -->
+> **NOTE**: Always download the latest patch version!
 
-* 0.7
-* 0.6
-* 0.5
-* 0.4
-* 0.3
+You can find the documentation for previous versions of Luigi here:
+
+* [0.7](https://github.com/SAP/luigi/blob/v0.7.7/docs/README.md)
+* [0.6](https://github.com/SAP/luigi/blob/v0.6.6/docs/README.md)
+* [0.5](https://github.com/SAP/luigi/blob/v0.5.4/docs/README.md)
+* [0.4](https://github.com/SAP/luigi/blob/v0.4.12/docs/README.md)
+* [0.3](https://github.com/SAP/luigi/blob/v0.3.8/docs/README.md)
