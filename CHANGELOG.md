@@ -41,8 +41,6 @@ The lerna-changelog tool detects changes based on PR labels and maps them to sec
 * [#1271](https://github.com/SAP/luigi/pull/1271) Fix leftnav nav-sync issue ([@maxmarkus](https://github.com/maxmarkus))
 * [#1263](https://github.com/SAP/luigi/pull/1263) Fiddle demo page mobile view ([@UlianaMunich](https://github.com/UlianaMunich))
 
-#### :memo: Documentation
-* [#1268](https://github.com/SAP/luigi/pull/1268) Update auto-nav experts scenario ([@maxmarkus](https://github.com/maxmarkus))
 
 
 
