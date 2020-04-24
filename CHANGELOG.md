@@ -43,7 +43,6 @@ The lerna-changelog tool detects changes based on PR labels and maps them to sec
 
 #### :memo: Documentation
 * [#1268](https://github.com/SAP/luigi/pull/1268) Update auto-nav experts scenario ([@maxmarkus](https://github.com/maxmarkus))
-* [#1250](https://github.com/SAP/luigi/pull/1250) Fix no-framework and react setup scripts ([@maxmarkus](https://github.com/maxmarkus))
 
 
 
