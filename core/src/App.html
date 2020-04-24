@@ -43,8 +43,15 @@
     aria-hidden="false"
     aria-label="Loading"
   >
-    <div class="fd-spinner">
-      <div class="fd-spinner__body"></div>
+    <div
+      class="fd-busy-indicator--m"
+      aria-hidden="false"
+      aria-label="Loading"
+      data-testid="luigi-loading-spinner"
+    >
+      <div class="fd-busy-indicator--circle-0"></div>
+      <div class="fd-busy-indicator--circle-1"></div>
+      <div class="fd-busy-indicator--circle-2"></div>
     </div>
   </div>
   {/if}
@@ -456,6 +463,7 @@
           node.openNodeInModal === true ? {} : node.openNodeInModal
         );
       } else {
+        getComponentWrapper().set({ isNavigationSyncEnabled: true });
         Routing.handleRouteClick(node, getComponentWrapper());
       }
     });
@@ -1117,14 +1125,9 @@
 </script>
 
 <style type="text/scss">
-  /*Mixins*/
+  @import 'styles/fonts';
   @import 'styles/mixins';
-
-  $topNavHeight: 44px;
-  $topNavHeightTab: 44px;
-  $leftNavWidth: 15rem;
-  $leftNavWidthCollapsed: 2.75rem;
-  $desktopMinWidth: 600px;
+  @import 'styles/variables';
 
   :global(html) {
     box-sizing: border-box;
@@ -1155,12 +1158,14 @@
   :global([luigi-app-loading-indicator]) {
     z-index: 10;
     background-color: var(--fd-background-color);
-    padding-top: 30vh;
     position: absolute;
     top: 0;
     right: 0;
     bottom: 0;
     left: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
   :global([luigi-app-loading-indicator].hidden) {
     visibility: hidden;
@@ -1350,6 +1355,15 @@
         left: $leftNavWidthCollapsed;
       }
     }
+
+    :global(.fd-dialog) {
+      &__content {
+        &:not(.fd-dialog__content--mobile) {
+          max-width: 90%;
+          min-width: 90%;
+        }
+      }
+    }
   }
 
   :global(html.luigi-app-in-custom-container) {
@@ -1393,9 +1407,76 @@
   }
 
   //Fixing issues for fundamental styles
+
+  //Add padding for shellbar buttons
   :global(.fd-shellbar__button) {
-    padding-left: 12px;
-    padding-right: 12px;
+    padding-left: 0.5625rem !important;
+    padding-right: 0.5625rem !important;
+  }
+
+  :global(.fd-menu__link) {
+    text-decoration: none; //Remove underline from links in fd-menu
+    border-radius: 0; //Remove border radius from links inside fd-menu
+  }
+
+  //Make border radius for links inside fd-menu only for the first and last elements
+  @mixin luigi-menu__link--border($position) {
+    :global(.fd-menu__link) {
+      border-#{$position}-left-radius: 0.25rem;
+      border-#{$position}-left-radius: var(
+        --sapElement_BorderCornerRadius,
+        0.25rem
+      );
+      border-#{$position}-right-radius: 0.25rem;
+      border-#{$position}-right-radius: var(
+        --sapElement_BorderCornerRadius,
+        0.25rem
+      );
+    }
+  }
+  :global(.fd-menu) {
+    :global(.fd-menu__list) {
+      &:first-child {
+        :global(.fd-menu__item) {
+          &:first-child {
+            @include luigi-menu__link--border('top');
+          }
+        }
+      }
+
+      &:last-child {
+        :global(.fd-menu__item) {
+          &:last-child {
+            @include luigi-menu__link--border('bottom');
+          }
+        }
+      }
+    }
+  }
+
+  //Add z-index for dialogs
+  :global(.fd-dialog) {
+    z-index: 1000;
+  }
+
+  :global(.fd-dialog__content--mobile) {
+    //Remove border-radius from mobile fullscreen dialog
+    border-radius: 0;
+
+    :global(.fd-dialog__header.fd-bar),
+    :global(.fd-dialog__footer.fd-bar) {
+      border-radius: 0;
+    }
+
+    //Recalculate height for mobile devices
+    height: calc(var(--vh, 1vh) * 100});
+    max-height: calc(var(--vh, 1vh) * 100});
+    -webkit-overflow-scrolling: touch;
+  }
+
+  //Recalculate height for mobile devices
+  :global(.fd-product-switch__body) {
+    max-height: calc(var(--vh, 1vh) * 100 - 76px);
   }
 
   //Overwrites with SAP variables
@@ -1403,36 +1484,5 @@
   :global(.fd-shellbar) {
     border-bottom: #354a5f;
     border-bottom: 1px solid var(--sapShell_BorderColor, #354a5f);
-  }
-
-  :global(.fd-menu__item) {
-    background-color: var(--sapBackgroundColor, #fff);
-    color: var(--sapLinkColor, #51555a);
-
-    &.is-hover,
-    &:hover,
-    &.is-selected:hover {
-      color: #0854a0;
-      color: var(--sapLink_Hover_Color, #0854a0);
-      background-color: #ebf5fe;
-      background-color: var(--sapButton_Hover_Background, #ebf5fe);
-    }
-
-    &.is-selected {
-      color: #32363a;
-      color: var(--sapList_TextColor, #32363a);
-      background: #e5f0fa;
-      background: var(--sapList_SelectionBackgroundColor, #e5f0fa);
-    }
-  }
-
-  :global(.fd-modal__content) {
-    background-color: #fff;
-    background-color: var(--sapGroup_ContentBackground, #fff);
-    box-shadow: var(
-      --sapContent_Shadow3,
-      0 0 0 0.0625rem rgba(0, 0, 0, 0.42),
-      0 1.25rem 5rem 0 rgba(0, 0, 0, 0.3)
-    );
   }
 </style>
