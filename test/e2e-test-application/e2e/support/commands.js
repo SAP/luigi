@@ -5,10 +5,7 @@ Cypress.Commands.add(
     cy.visit(`http://localhost:8080/#${path}`, {
       onBeforeLoad: win => {
         win.localStorage.setItem('cookiesAccepted', 'true');
-        win.sessionStorage.setItem(
-          'fiddle',
-          `Luigi.setConfig(${JSON.stringify(config)});`
-        );
+        win.sessionStorage.setItem('fiddle', `Luigi.setConfig(${config});`);
       }
     });
   }
@@ -171,7 +168,6 @@ Cypress.Commands.add(
             .click();
     });
  */
-
 Cypress.Commands.add('iframe', { prevSubject: 'element' }, $iframe => {
   Cypress.log({
     name: 'iframe',
@@ -244,3 +240,16 @@ function onIframeReady($iframe, successFn, errorFn) {
     errorFn();
   }
 }
+
+/**
+ * getIframeWindow
+ * returns the window instance of an iframe
+ */
+Cypress.Commands.add('getIframeWindow', (num = 0) => {
+  cy.wait(100);
+  return cy
+    .get('iframe')
+    .eq(num)
+    .its('0.contentWindow')
+    .should('exist');
+});

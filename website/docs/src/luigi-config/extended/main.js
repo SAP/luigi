@@ -8,7 +8,10 @@ Luigi.setConfig({
   // auth,
   navigation,
   routing,
-  settings
+  settings,
+  lifecycleHooks: {
+    luigiAfterInit: () => {
+      search.init();
+    }
+  }
 });
-
-search.init();

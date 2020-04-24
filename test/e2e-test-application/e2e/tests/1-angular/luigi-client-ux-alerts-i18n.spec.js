@@ -26,7 +26,7 @@ describe('Luigi Client UX Alerts + Localization', () => {
 
       cy.get('[data-testid=luigi-alert]').should(
         'have.class',
-        'fd-alert--success'
+        'fd-message-strip--success'
       );
 
       cy.get('[data-testid=luigi-alert-dismiss]').click();
@@ -44,7 +44,7 @@ describe('Luigi Client UX Alerts + Localization', () => {
 
       cy.get('[data-testid=luigi-alert]').should(
         'have.class',
-        'fd-alert--information'
+        'fd-message-strip--information'
       );
     });
     it('hides Alert after specified time', () => {
@@ -102,7 +102,7 @@ describe('Luigi Client UX Alerts + Localization', () => {
         .select('warning');
       cy.wrap($iframeBody)
         .find('[data-testid=luigi-alert-links]')
-        .check();
+        .check({ force: true });
       cy.wrap($iframeBody)
         .find('[data-testid=show-luigi-alert]')
         .click();
@@ -112,7 +112,7 @@ describe('Luigi Client UX Alerts + Localization', () => {
 
       cy.get('[data-testid=luigi-alert]').should(
         'have.class',
-        'fd-alert--warning'
+        'fd-message-strip--warning'
       );
 
       cy.get('*[id$=_link_relativePath]').click();
@@ -144,13 +144,13 @@ describe('Luigi Client UX Alerts + Localization', () => {
         .select('error');
       cy.wrap($iframeBody)
         .find('[data-testid=luigi-alert-links]')
-        .uncheck();
+        .uncheck({ force: true });
       cy.wrap($iframeBody)
         .find('[data-testid=show-luigi-alert]')
         .click();
 
       cy.get('[data-testid=luigi-alert]')
-        .should('have.class', 'fd-alert--error')
+        .should('have.class', 'fd-message-strip--error')
         .should('contain', "<b onmouseover=alert('Wufff!')>click me!</b>");
 
       cy.get('[data-testid=luigi-alert]')
@@ -165,7 +165,7 @@ describe('Luigi Client UX Alerts + Localization', () => {
 
       cy.wrap($iframeBody)
         .find('[data-testid=luigi-alert-text]')
-        .uncheck();
+        .uncheck({ force: true });
       cy.wrap($iframeBody)
         .find('[data-testid=show-luigi-alert]')
         .click();

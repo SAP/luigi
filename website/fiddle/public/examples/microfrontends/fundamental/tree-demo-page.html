@@ -10,83 +10,70 @@
     <meta name="keywords" content=" tree demo page">
     <title>Tree Starter Page | SAP Fundamentals</title>
     <link href="/vendor/fundamental-styles/dist/fundamental-styles.css" rel="stylesheet">
-	<script src="/vendor/luigi-client/luigi-client.js"></script>
+	<link href="../../../styles/styles.css" rel="stylesheet">
+    <script src="/vendor/luigi-client/luigi-client.js"></script>
+    <style>
+        @media (max-width: 600px) {
+            .fd-tree--header .fd-tree__col:nth-child(2){
+                display: none;
+            }
+           .fd-tree__item .fd-tree__col:nth-child(2){
+                display: none;
+            }
+        }
+    </style>
 </head>
 <body>
 <div>
     <div class="fd-page">
-	<header class="fd-page__header">
-    <div class="fd-action-bar">
-        <div class="fd-action-bar__header">
-          <h3 class="fd-action-bar__title">
-              Tree
-          </h3>
-          <p class="fd-action-bar__description">Optional page intro lorem ipsum dolor</p>
-        </div>
-        
-        <div class="fd-action-bar__actions">
-            <button class="fd-button sap-icon--add">Add New Item</button>
-        </div>
-        
-    </div>
-</header>
-
-	<div class="fd-page__content">
-    <section class="fd-section">
-        <div class="fd-panel">
-            <div class="fd-panel__header">
-                <h3 class="fd-panel__title">
-                    Categories
-                </h3>
-            </div>
-            <div class="fd-panel__body fd-panel__body--bleed">
-                <div class="fd-tree fd-tree--header">
-                    <div class="fd-tree__row fd-tree__row--header">
-                        <div class="fd-tree__col fd-tree__col--control">
-                            <button class="fd-tree__control" aria-label="Expand all" aria-controls="DweQe422" aria-pressed="false"></button>
-                            Column Header
-                        </div>
-                        <div class="fd-tree__col">
-                            Column Header
-                        </div>
-                        <div class="fd-tree__col">
-                            Column Header
-                        </div>
-                        <div class="fd-tree__col">
-                            Status
-                        </div>
-                        <div class="fd-tree__col fd-tree__col--actions">
-                        </div>
+        <header class="fd-page__header">
+            <div class="fd-action-bar">
+                <div class="fd-action-bar__header">
+                    <h3 class="fd-action-bar__title">
+                        Tree
+                    </h3>
+                    <div class="fd-action-bar__actions">
+                        <button class="fd-button fd-button--compact sap-icon--add">Add New Item</button>
                     </div>
                 </div>
-                <ul class="fd-tree" id="DweQe422" role="tree">
-                    <li class="fd-tree__item" role="treeitem" id="yD5mz259" aria-expanded="false">
-                        <div class="fd-tree__row">
-                            <div class="fd-tree__col fd-tree__col--control">
-                                <button class="fd-tree__control" aria-label="Expand" aria-controls="yD5mz259" aria-pressed="false"></button>
-                                First Level
-                            </div>
-                            <div class="fd-tree__col">
-                                Secondary Value
-                            </div>
-                            <div class="fd-tree__col">
-                                Secondary Value
-                            </div>
-                            <div class="fd-tree__col">
-                                <span class="fd-label">
-                                    Inactive
-                                </span>
-                            </div>
-                            <div class="fd-tree__col fd-tree__col--actions">
-                                <button class="fd-button--light sap-icon--overflow" aria-label="More"></button>
+                <p class="fd-action-bar__description">Optional page intro lorem ipsum dolor</p>
+            </div>
+        </header>
+
+        <div class="fd-page__content">
+            <section class="fd-section">
+                <div class="fd-panel">
+                    <div class="fd-panel__header">
+                        <h3 class="fd-panel__title">
+                            Categories
+                        </h3>
+                    </div>
+                    <div class="fd-panel__body fd-panel__body--bleed">
+                        <div class="fd-tree fd-tree--header">
+                            <div class="fd-tree__row fd-tree__row--header">
+                                <div class="fd-tree__col fd-tree__col--control">
+                                    <button class="fd-tree__control" aria-label="Expand all" aria-controls="DweQe422" aria-pressed="false"></button>
+                                    Column Header
+                                </div>
+                                <div class="fd-tree__col">
+                                    Column Header
+                                </div>
+                                <div class="fd-tree__col">
+                                    Column Header
+                                </div>
+                                <div class="fd-tree__col">
+                                    Status
+                                </div>
+                                <div class="fd-tree__col fd-tree__col--actions">
+                                </div>
                             </div>
                         </div>
-                        <ul class="fd-tree__group fd-tree__group--sublevel-1 is-hidden" role="group" aria-hidden="true">
-                            <li class="fd-tree__item" role="treeitem" id="FCFWI960" aria-expanded="false">
+                        <ul class="fd-tree" id="DweQe422" role="tree">
+                            <li class="fd-tree__item" role="treeitem" id="yD5mz259" aria-expanded="false">
                                 <div class="fd-tree__row">
                                     <div class="fd-tree__col fd-tree__col--control">
-                                        <button class="fd-tree__control" aria-label="Expand" aria-controls="FCFWI960" aria-pressed="false"></button>
-                                        Second Level
+                                        <button class="fd-tree__control" aria-label="Expand" aria-controls="yD5mz259" aria-pressed="false"></button>
+                                        First Level
                                     </div>
                                     <div class="fd-tree__col">
                                         Secondary Value
@@ -100,15 +87,15 @@
                                         </span>
                                     </div>
                                     <div class="fd-tree__col fd-tree__col--actions">
-                                        <button class="fd-button--light sap-icon--overflow" aria-label="More"></button>
+                                        <button class="fd-button fd-button--transparent sap-icon--overflow" aria-label="More"></button>
                                     </div>
                                 </div>
-                                <ul class="fd-tree__group fd-tree__group--sublevel-2 is-hidden" role="group" aria-hidden="true">
-                                    <li class="fd-tree__item" role="treeitem" id="7xZEz738" aria-expanded="false">
+                                <ul class="fd-tree__group fd-tree__group--sublevel-1 is-hidden" role="group" aria-hidden="true">
+                                    <li class="fd-tree__item" role="treeitem" id="FCFWI960" aria-expanded="false">
                                         <div class="fd-tree__row">
                                             <div class="fd-tree__col fd-tree__col--control">
-                                                <button class="fd-tree__control" aria-label="Expand" aria-controls="7xZEz738" aria-pressed="false"></button>
-                                                Third Level
+                                                <button class="fd-tree__control" aria-label="Expand" aria-controls="FCFWI960" aria-pressed="false"></button>
+                                                Second Level
                                             </div>
                                             <div class="fd-tree__col">
                                                 Secondary Value
@@ -122,14 +109,15 @@
                                                 </span>
                                             </div>
                                             <div class="fd-tree__col fd-tree__col--actions">
-                                                <button class="fd-button--light sap-icon--overflow" aria-label="More"></button>
+                                                <button class="fd-button fd-button--transparent sap-icon--overflow" aria-label="More"></button>
                                             </div>
                                         </div>
-                                        <ul class="fd-tree__group fd-tree__group--sublevel-3 is-hidden" role="group" aria-hidden="true">
-                                            <li class="fd-tree__item" role="treeitem">
+                                        <ul class="fd-tree__group fd-tree__group--sublevel-2 is-hidden" role="group" aria-hidden="true">
+                                            <li class="fd-tree__item" role="treeitem" id="7xZEz738" aria-expanded="false">
                                                 <div class="fd-tree__row">
                                                     <div class="fd-tree__col fd-tree__col--control">
-                                                        Fourth Level
+                                                        <button class="fd-tree__control" aria-label="Expand" aria-controls="7xZEz738" aria-pressed="false"></button>
+                                                        Third Level
                                                     </div>
                                                     <div class="fd-tree__col">
                                                         Secondary Value
@@ -143,18 +131,63 @@
                                                         </span>
                                                     </div>
                                                     <div class="fd-tree__col fd-tree__col--actions">
-                                                        <button class="fd-button--light sap-icon--overflow" aria-label="More"></button>
+                                                        <button class="fd-button fd-button--transparent sap-icon--overflow" aria-label="More"></button>
                                                     </div>
                                                 </div>
+                                                <ul class="fd-tree__group fd-tree__group--sublevel-3 is-hidden" role="group" aria-hidden="true">
+                                                    <li class="fd-tree__item" role="treeitem">
+                                                        <div class="fd-tree__row">
+                                                            <div class="fd-tree__col fd-tree__col--control">
+                                                                Fourth Level
+                                                            </div>
+                                                            <div class="fd-tree__col">
+                                                                Secondary Value
+                                                            </div>
+                                                            <div class="fd-tree__col">
+                                                                Secondary Value
+                                                            </div>
+                                                            <div class="fd-tree__col">
+                                                                <span class="fd-label">
+                                                                    Inactive
+                                                                </span>
+                                                            </div>
+                                                            <div class="fd-tree__col fd-tree__col--actions">
+                                                                <button class="fd-button fd-button--transparent sap-icon--overflow" aria-label="More"></button>
+                                                            </div>
+                                                        </div>
+                                                    </li>
+                                                </ul>
                                             </li>
                                         </ul>
                                     </li>
+                                    <li class="fd-tree__item" role="treeitem">
+                                        <div class="fd-tree__row">
+                                            <div class="fd-tree__col fd-tree__col--control">
+                                                Second Level
+                                            </div>
+                                            <div class="fd-tree__col">
+                                                Secondary Value
+                                            </div>
+                                            <div class="fd-tree__col">
+                                                Secondary Value
+                                            </div>
+                                            <div class="fd-tree__col">
+                                                <span class="fd-label">
+                                                    Default
+                                                </span>
+                                            </div>
+                                            <div class="fd-tree__col fd-tree__col--actions">
+                                                <button class="fd-button fd-button--transparent sap-icon--overflow" aria-label="More"></button>
+                                            </div>
+                                        </div>
+                                    </li>
                                 </ul>
                             </li>
-                            <li class="fd-tree__item" role="treeitem">
+                            <li class="fd-tree__item" role="treeitem" id="GoFSH985" aria-expanded="false">
                                 <div class="fd-tree__row">
                                     <div class="fd-tree__col fd-tree__col--control">
-                                        Second Level
+                                        <button class="fd-tree__control" aria-label="Expand" aria-controls="GoFSH985" aria-pressed="false"></button>
+                                        First Level
                                     </div>
                                     <div class="fd-tree__col">
                                         Secondary Value
@@ -168,38 +201,37 @@
                                         </span>
                                     </div>
                                     <div class="fd-tree__col fd-tree__col--actions">
-                                        <button class="fd-button--light sap-icon--overflow" aria-label="More"></button>
+                                        <button class="fd-button fd-button--transparent sap-icon--overflow" aria-label="More"></button>
                                     </div>
                                 </div>
+                                <ul class="fd-tree__group fd-tree__group--sublevel-1 is-hidden" role="group" aria-hidden="true">
+                                    <li class="fd-tree__item" role="treeitem">
+                                        <div class="fd-tree__row">
+                                            <div class="fd-tree__col fd-tree__col--control">
+                                                Second Level
+                                            </div>
+                                            <div class="fd-tree__col">
+                                                Secondary Value
+                                            </div>
+                                            <div class="fd-tree__col">
+                                                Secondary Value
+                                            </div>
+                                            <div class="fd-tree__col">
+                                                <span class="fd-label">
+                                                    Inactive
+                                                </span>
+                                            </div>
+                                            <div class="fd-tree__col fd-tree__col--actions">
+                                                <button class="fd-button fd-button--transparent sap-icon--overflow" aria-label="More"></button>
+                                            </div>
+                                        </div>
+                                    </li>
+                                </ul>
                             </li>
-                        </ul>
-                    </li>
-                    <li class="fd-tree__item" role="treeitem" id="GoFSH985" aria-expanded="false">
-                        <div class="fd-tree__row">
-                            <div class="fd-tree__col fd-tree__col--control">
-                                <button class="fd-tree__control" aria-label="Expand" aria-controls="GoFSH985" aria-pressed="false"></button>
-                                First Level
-                            </div>
-                            <div class="fd-tree__col">
-                                Secondary Value
-                            </div>
-                            <div class="fd-tree__col">
-                                Secondary Value
-                            </div>
-                            <div class="fd-tree__col">
-                                <span class="fd-label">
-                                    Default
-                                </span>
-                            </div>
-                            <div class="fd-tree__col fd-tree__col--actions">
-                                <button class="fd-button--light sap-icon--overflow" aria-label="More"></button>
-                            </div>
-                        </div>
-                        <ul class="fd-tree__group fd-tree__group--sublevel-1 is-hidden" role="group" aria-hidden="true">
                             <li class="fd-tree__item" role="treeitem">
                                 <div class="fd-tree__row">
                                     <div class="fd-tree__col fd-tree__col--control">
-                                        Second Level
+                                        First Level
                                     </div>
                                     <div class="fd-tree__col">
                                         Secondary Value
@@ -213,41 +245,16 @@
                                         </span>
                                     </div>
                                     <div class="fd-tree__col fd-tree__col--actions">
-                                        <button class="fd-button--light sap-icon--overflow" aria-label="More"></button>
+                                        <button class="fd-button fd-button--transparent sap-icon--overflow" aria-label="More"></button>
                                     </div>
                                 </div>
                             </li>
                         </ul>
-                    </li>
-                    <li class="fd-tree__item" role="treeitem">
-                        <div class="fd-tree__row">
-                            <div class="fd-tree__col fd-tree__col--control">
-                                First Level
-                            </div>
-                            <div class="fd-tree__col">
-                                Secondary Value
-                            </div>
-                            <div class="fd-tree__col">
-                                Secondary Value
-                            </div>
-                            <div class="fd-tree__col">
-                                <span class="fd-label">
-                                    Inactive
-                                </span>
-                            </div>
-                            <div class="fd-tree__col fd-tree__col--actions">
-                                <button class="fd-button--light sap-icon--overflow" aria-label="More"></button>
-                            </div>
-                        </div>
-                    </li>
-                </ul>
-            </div>
+                    </div>
+                </div>
+            </section>
         </div>
-    </section>
-</div>
-
-</div>
-
+    </div>
 </div>
 
 

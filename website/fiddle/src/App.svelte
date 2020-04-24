@@ -94,6 +94,32 @@
     bottom: 50px !important;
   }
 
+  :global(body) {
+    font-family: var(--sapFontFamily, "72", "72full", Arial, Helvetica, sans-serif);
+  }
+
+  :global(#ext-cookiebar) {
+    width: 100%;
+    position: fixed;
+    top: 0;
+    left: 0;
+    padding: 10px 5px;
+    background: rgba(0,0,0,.6);
+    font-size: 12px;
+    color: white;
+    text-align: center;
+    box-sizing: border-box;
+    z-index: 1000;
+  }
+
+  :global(#ext-cookiebar a) {
+    color: #2deb8a;
+  }
+
+  :global(#ext-cookiebar a:hover) {
+    text-decoration: none;
+  }
+
   .fiddle-toolbar {
     border-top: 1px solid rgb(48, 48, 48);
     background: #3c4553;
@@ -147,6 +173,10 @@
     margin: -3px 5px 2px -5px;
   }
 
+  .fd-action-bar__header img {
+    vertical-align: middle;
+  }
+
   .btn-primary {
     display: inline-block;
     border: 2px solid #2deb8a;
@@ -170,6 +200,16 @@
     color: #2deb8a;
   }
 
+  .fd-modal__title{
+    display: inline-block;
+  }
+  .fd-button--close{
+    line-height: 18px;
+    position: absolute;
+    right: 8px;
+    top: 8px;
+  }
+
   @media (max-width: 600px) {
     .lui-mobile-hide {
       display: none;
@@ -188,8 +228,8 @@
       <header class="fd-modal__header">
         <h1 class="fd-modal__title">Luigi Config</h1>
         <button
-          class="fd-button--light fd-modal__close"
-          on:click={closeConfig} />
+        class="fd-button--light fd-button--close sap-icon--decline"
+        on:click={closeConfig} />
       </header>
       <div class="fd-modal__body_nostyle">
         <div id="editor" class="lui-mobile-hide"/>

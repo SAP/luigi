@@ -97,14 +97,14 @@ let defaultConfig = `Luigi.setConfig({
                         url: 'https://github.com/kyma-project/luigi'
                     }
                 },{
-                    label: 'SAP Fiori Fundamentals',
+                    label: 'Fundamental Library',
                     externalLink : { 
-                        url: 'https://sap.github.io/fundamental/index.html'
+                        url: 'https://sap.github.io/fundamental-styles'
                     }
                 },{
-                    label: 'Fiori Icons',
+                    label: 'Fundamental Icons',
                     externalLink : { 
-                        url: 'https://sap.github.io/fundamental/components/icon.html'
+                        url: 'https://sap.github.io/fundamental-styles/components/icon.html'
                     }
                 }]
             }],

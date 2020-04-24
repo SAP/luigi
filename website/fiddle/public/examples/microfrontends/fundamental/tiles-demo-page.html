@@ -10,26 +10,41 @@
     <meta name="keywords" content=" tiles demo page">
     <title>Tiles Demo Page | SAP Fundamentals</title>
     <link href="/vendor/fundamental-styles/dist/fundamental-styles.css" rel="stylesheet">
-	<script src="/vendor/luigi-client/luigi-client.js"></script>
+	<link href="../../../styles/styles.css" rel="stylesheet">
+    <script src="/vendor/luigi-client/luigi-client.js"></script>
+    <style>
+        .fd-col--3 {
+            margin: 0;
+            width: 25%;
+            border-color: var(--fd-panel-divider-color);
+            border-width: 0 1px 1px 0;
+            border-style: solid;
+            box-sizing: border-box;
+        }
+        @media (max-width: 600px){
+            .fd-col--3{
+                width: 100%;
+            }
+        }
+
+    </style>
 </head>
 <body>
 <div>
     <div class="fd-page">
-	<header class="fd-page__header">
-    <div class="fd-action-bar">
-        <div class="fd-action-bar__header">
-          <h3 class="fd-action-bar__title">
-              Tiles
-          </h3>
-          <p class="fd-action-bar__description">Optional page intro lorem ipsum dolor</p>
-        </div>
-        
-        <div class="fd-action-bar__actions">
-            <button class="fd-button sap-icon--add">Add New Item</button>
-        </div>
-        
-    </div>
-</header>
+        <header class="fd-page__header">
+            <div class="fd-action-bar">
+                <div class="fd-action-bar__header">
+                    <h3 class="fd-action-bar__title">
+                        Tiles
+                    </h3>
+                    <div class="fd-action-bar__actions">
+                        <button class="fd-button fd-button--compact sap-icon--add">Add New Item</button>
+                    </div>
+                </div>
+                <p class="fd-action-bar__description">Optional page intro lorem ipsum dolor</p>
+            </div>
+        </header>
 
 	<div class="fd-page__content">
     <section class="fd-section">
@@ -39,301 +54,337 @@
                     Items (18)
                 </h3>
                 <div class="fd-panel__actions">
-                    <button class="fd-button--compact fd-button--standard sap-icon--search" aria-label="Search"></button>
-                    <div class="fd-button-group" role="group" aria-label="Show as">
+                    <button class="fd-button--compact fd-button sap-icon--search" aria-label="Search"></button>
+                    <div class="fd-segmented-button" role="group" aria-label="Show as">
                         <button class=" fd-button fd-button--compact sap-icon--grid" aria-pressed="true"></button>
                         <button class=" fd-button fd-button--compact sap-icon--list"></button>
                     </div>
                 </div>
             </div>
             <div class="fd-panel__body fd-panel__body--bleed">
-                <div class="fd-tile-grid fd-tile-grid--4col">
-                    <div class="fd-tile">
-                        <div class="fd-tile__media">
-                            <span class=" fd-identifier--m sap-icon--person-placeholder fd-has-background-color-accent-1"></span>
-                        </div>
-                        <div class="fd-tile__content">
-                            <h3 class="fd-tile__title">Lorem ipsum</h3><p>Second line</p>
-                            <p>
-                                <span class="fd-badge fd-badge--success fd-badge--filled fd-sap-icon--accept">
-                                    Active
-                                </span>
-                            </p>
-                        </div>
-                        <div class="fd-tile__actions">
-                            <button class="fd-button--light sap-icon--overflow" aria-label="More"></button>
-                        </div>
-                    </div>
-                    <div class="fd-tile">
-                        <div class="fd-tile__media">
-                            <span class=" fd-identifier--m sap-icon--person-placeholder fd-has-background-color-accent-1"></span>
-                        </div>
-                        <div class="fd-tile__content">
-                            <h3 class="fd-tile__title">Lorem ipsum</h3><p>Second line</p>
-                            <p>
-                                <span class="fd-badge fd-badge--success fd-badge--filled fd-sap-icon--accept">
-                                    Active
-                                </span>
-                            </p>
-                        </div>
-                        <div class="fd-tile__actions">
-                            <button class="fd-button--light sap-icon--overflow" aria-label="More"></button>
+                <div class="fd-container fd-container--fluid">
+                    <div class="fd-col--3">
+                        <div class="fd-tile">
+                            <div class="fd-tile__media">
+                                <span class="fd-identifier fd-identifier--m sap-icon--person-placeholder fd-has-background-color-accent-1"></span>
+                            </div>
+                            <div class="fd-tile__content">
+                                <h3 class="fd-tile__title">Lorem ipsum</h3><p>Second line</p>
+                                <p>
+                                    <span class="fd-object-status fd-object-status--inverted fd-object-status--positive">
+                                        Active
+                                    </span>
+                                </p>
+                            </div>
+                            <div class="fd-tile__actions">
+                                <button class="fd-button fd-button--transparent sap-icon--overflow" aria-label="More"></button>
+                            </div>
                         </div>
                     </div>
-                    <div class="fd-tile">
-                        <div class="fd-tile__media">
-                            <span class=" fd-identifier--m sap-icon--person-placeholder fd-has-background-color-accent-1"></span>
-                        </div>
-                        <div class="fd-tile__content">
-                            <h3 class="fd-tile__title">Lorem ipsum</h3><p>Second line</p>
-                            <p>
-                                <span class="fd-badge fd-badge--success fd-badge--filled fd-sap-icon--accept">
-                                    Active
-                                </span>
-                            </p>
-                        </div>
-                        <div class="fd-tile__actions">
-                            <button class="fd-button--light sap-icon--overflow" aria-label="More"></button>
-                        </div>
-                    </div>
-                    <div class="fd-tile">
-                        <div class="fd-tile__media">
-                            <span class=" fd-identifier--m sap-icon--person-placeholder fd-has-background-color-accent-1"></span>
-                        </div>
-                        <div class="fd-tile__content">
-                            <h3 class="fd-tile__title">Lorem ipsum</h3><p>Second line</p>
-                            <p>
-                                <span class="fd-badge fd-badge--success fd-badge--filled fd-sap-icon--accept">
-                                    Active
-                                </span>
-                            </p>
-                        </div>
-                        <div class="fd-tile__actions">
-                            <button class="fd-button--light sap-icon--overflow" aria-label="More"></button>
+                    <div class="fd-col--3">
+                        <div class="fd-tile">
+                            <div class="fd-tile__media">
+                                <span class="fd-identifier fd-identifier--m sap-icon--person-placeholder fd-has-background-color-accent-1"></span>
+                            </div>
+                            <div class="fd-tile__content">
+                                <h3 class="fd-tile__title">Lorem ipsum</h3><p>Second line</p>
+                                <p>
+                                    <span class="fd-object-status fd-object-status--inverted fd-object-status--positive">
+                                        Active
+                                    </span>
+                                </p>
+                            </div>
+                            <div class="fd-tile__actions">
+                                <button class="fd-button fd-button--transparent sap-icon--overflow" aria-label="More"></button>
+                            </div>
                         </div>
                     </div>
-                    <div class="fd-tile">
-                        <div class="fd-tile__media">
-                            <span class=" fd-identifier--m sap-icon--person-placeholder fd-has-background-color-accent-1"></span>
-                        </div>
-                        <div class="fd-tile__content">
-                            <h3 class="fd-tile__title">Lorem ipsum</h3><p>Second line</p>
-                            <p>
-                                <span class="fd-badge fd-badge--success fd-badge--filled fd-sap-icon--accept">
-                                    Active
-                                </span>
-                            </p>
-                        </div>
-                        <div class="fd-tile__actions">
-                            <button class="fd-button--light sap-icon--overflow" aria-label="More"></button>
-                        </div>
-                    </div>
-                    <div class="fd-tile">
-                        <div class="fd-tile__media">
-                            <span class=" fd-identifier--m sap-icon--person-placeholder fd-has-background-color-accent-1"></span>
-                        </div>
-                        <div class="fd-tile__content">
-                            <h3 class="fd-tile__title">Lorem ipsum</h3><p>Second line</p>
-                            <p>
-                                <span class="fd-badge fd-badge--success fd-badge--filled fd-sap-icon--accept">
-                                    Active
-                                </span>
-                            </p>
-                        </div>
-                        <div class="fd-tile__actions">
-                            <button class="fd-button--light sap-icon--overflow" aria-label="More"></button>
+                    <div class="fd-col--3">
+                        <div class="fd-tile">
+                            <div class="fd-tile__media">
+                                <span class="fd-identifier fd-identifier--m sap-icon--person-placeholder fd-has-background-color-accent-1"></span>
+                            </div>
+                            <div class="fd-tile__content">
+                                <h3 class="fd-tile__title">Lorem ipsum</h3><p>Second line</p>
+                                <p>
+                                    <span class="fd-object-status fd-object-status--inverted fd-object-status--positive">
+                                        Active
+                                    </span>
+                                </p>
+                            </div>
+                            <div class="fd-tile__actions">
+                                <button class="fd-button fd-button--transparent sap-icon--overflow" aria-label="More"></button>
+                            </div>
                         </div>
                     </div>
-                    <div class="fd-tile">
-                        <div class="fd-tile__media">
-                            <span class=" fd-identifier--m sap-icon--person-placeholder fd-has-background-color-accent-1"></span>
-                        </div>
-                        <div class="fd-tile__content">
-                            <h3 class="fd-tile__title">Lorem ipsum</h3><p>Second line</p>
-                            <p>
-                                <span class="fd-badge fd-badge--success fd-badge--filled fd-sap-icon--accept">
-                                    Active
-                                </span>
-                            </p>
-                        </div>
-                        <div class="fd-tile__actions">
-                            <button class="fd-button--light sap-icon--overflow" aria-label="More"></button>
-                        </div>
-                    </div>
-                    <div class="fd-tile">
-                        <div class="fd-tile__media">
-                            <span class=" fd-identifier--m sap-icon--person-placeholder fd-has-background-color-accent-1"></span>
-                        </div>
-                        <div class="fd-tile__content">
-                            <h3 class="fd-tile__title">Lorem ipsum</h3><p>Second line</p>
-                            <p>
-                                <span class="fd-badge fd-badge--success fd-badge--filled fd-sap-icon--accept">
-                                    Active
-                                </span>
-                            </p>
-                        </div>
-                        <div class="fd-tile__actions">
-                            <button class="fd-button--light sap-icon--overflow" aria-label="More"></button>
+                    <div class="fd-col--3">
+                        <div class="fd-tile">
+                            <div class="fd-tile__media">
+                                <span class="fd-identifier fd-identifier--m sap-icon--person-placeholder fd-has-background-color-accent-1"></span>
+                            </div>
+                            <div class="fd-tile__content">
+                                <h3 class="fd-tile__title">Lorem ipsum</h3><p>Second line</p>
+                                <p>
+                                    <span class="fd-object-status fd-object-status--inverted fd-object-status--positive">
+                                        Active
+                                    </span>
+                                </p>
+                            </div>
+                            <div class="fd-tile__actions">
+                                <button class="fd-button fd-button--transparent sap-icon--overflow" aria-label="More"></button>
+                            </div>
                         </div>
                     </div>
-                    <div class="fd-tile">
-                        <div class="fd-tile__media">
-                            <span class=" fd-identifier--m sap-icon--person-placeholder fd-has-background-color-accent-1"></span>
-                        </div>
-                        <div class="fd-tile__content">
-                            <h3 class="fd-tile__title">Lorem ipsum</h3><p>Second line</p>
-                            <p>
-                                <span class="fd-badge fd-badge--success fd-badge--filled fd-sap-icon--accept">
-                                    Active
-                                </span>
-                            </p>
-                        </div>
-                        <div class="fd-tile__actions">
-                            <button class="fd-button--light sap-icon--overflow" aria-label="More"></button>
-                        </div>
-                    </div>
-                    <div class="fd-tile">
-                        <div class="fd-tile__media">
-                            <span class=" fd-identifier--m sap-icon--person-placeholder fd-has-background-color-accent-1"></span>
-                        </div>
-                        <div class="fd-tile__content">
-                            <h3 class="fd-tile__title">Lorem ipsum</h3><p>Second line</p>
-                            <p>
-                                <span class="fd-badge fd-badge--success fd-badge--filled fd-sap-icon--accept">
-                                    Active
-                                </span>
-                            </p>
-                        </div>
-                        <div class="fd-tile__actions">
-                            <button class="fd-button--light sap-icon--overflow" aria-label="More"></button>
+                    <div class="fd-col--3">
+                        <div class="fd-tile">
+                            <div class="fd-tile__media">
+                                <span class="fd-identifier fd-identifier--m sap-icon--person-placeholder fd-has-background-color-accent-1"></span>
+                            </div>
+                            <div class="fd-tile__content">
+                                <h3 class="fd-tile__title">Lorem ipsum</h3><p>Second line</p>
+                                <p>
+                                    <span class="fd-object-status fd-object-status--inverted fd-object-status--positive">
+                                        Active
+                                    </span>
+                                </p>
+                            </div>
+                            <div class="fd-tile__actions">
+                                <button class="fd-button fd-button--transparent sap-icon--overflow" aria-label="More"></button>
+                            </div>
                         </div>
                     </div>
-                    <div class="fd-tile">
-                        <div class="fd-tile__media">
-                            <span class=" fd-identifier--m sap-icon--person-placeholder fd-has-background-color-accent-1"></span>
-                        </div>
-                        <div class="fd-tile__content">
-                            <h3 class="fd-tile__title">Lorem ipsum</h3><p>Second line</p>
-                            <p>
-                                <span class="fd-badge fd-badge--success fd-badge--filled fd-sap-icon--accept">
-                                    Active
-                                </span>
-                            </p>
-                        </div>
-                        <div class="fd-tile__actions">
-                            <button class="fd-button--light sap-icon--overflow" aria-label="More"></button>
-                        </div>
-                    </div>
-                    <div class="fd-tile">
-                        <div class="fd-tile__media">
-                            <span class=" fd-identifier--m sap-icon--person-placeholder fd-has-background-color-accent-1"></span>
-                        </div>
-                        <div class="fd-tile__content">
-                            <h3 class="fd-tile__title">Lorem ipsum</h3><p>Second line</p>
-                            <p>
-                                <span class="fd-badge fd-badge--success fd-badge--filled fd-sap-icon--accept">
-                                    Active
-                                </span>
-                            </p>
-                        </div>
-                        <div class="fd-tile__actions">
-                            <button class="fd-button--light sap-icon--overflow" aria-label="More"></button>
+                    <div class="fd-col--3">
+                        <div class="fd-tile">
+                            <div class="fd-tile__media">
+                                <span class="fd-identifier fd-identifier--m sap-icon--person-placeholder fd-has-background-color-accent-1"></span>
+                            </div>
+                            <div class="fd-tile__content">
+                                <h3 class="fd-tile__title">Lorem ipsum</h3><p>Second line</p>
+                                <p>
+                                    <span class="fd-object-status fd-object-status--inverted fd-object-status--positive">
+                                        Active
+                                    </span>
+                                </p>
+                            </div>
+                            <div class="fd-tile__actions">
+                                <button class="fd-button fd-button--transparent sap-icon--overflow" aria-label="More"></button>
+                            </div>
                         </div>
                     </div>
-                    <div class="fd-tile">
-                        <div class="fd-tile__media">
-                            <span class=" fd-identifier--m sap-icon--person-placeholder fd-has-background-color-accent-1"></span>
-                        </div>
-                        <div class="fd-tile__content">
-                            <h3 class="fd-tile__title">Lorem ipsum</h3><p>Second line</p>
-                            <p>
-                                <span class="fd-badge fd-badge--success fd-badge--filled fd-sap-icon--accept">
-                                    Active
-                                </span>
-                            </p>
-                        </div>
-                        <div class="fd-tile__actions">
-                            <button class="fd-button--light sap-icon--overflow" aria-label="More"></button>
-                        </div>
-                    </div>
-                    <div class="fd-tile">
-                        <div class="fd-tile__media">
-                            <span class=" fd-identifier--m sap-icon--person-placeholder fd-has-background-color-accent-1"></span>
-                        </div>
-                        <div class="fd-tile__content">
-                            <h3 class="fd-tile__title">Lorem ipsum</h3><p>Second line</p>
-                            <p>
-                                <span class="fd-badge fd-badge--success fd-badge--filled fd-sap-icon--accept">
-                                    Active
-                                </span>
-                            </p>
-                        </div>
-                        <div class="fd-tile__actions">
-                            <button class="fd-button--light sap-icon--overflow" aria-label="More"></button>
+                    <div class="fd-col--3">
+                        <div class="fd-tile">
+                            <div class="fd-tile__media">
+                                <span class="fd-identifier fd-identifier--m sap-icon--person-placeholder fd-has-background-color-accent-1"></span>
+                            </div>
+                            <div class="fd-tile__content">
+                                <h3 class="fd-tile__title">Lorem ipsum</h3><p>Second line</p>
+                                <p>
+                                    <span class="fd-object-status fd-object-status--inverted fd-object-status--positive">
+                                        Active
+                                    </span>
+                                </p>
+                            </div>
+                            <div class="fd-tile__actions">
+                                <button class="fd-button fd-button--transparent sap-icon--overflow" aria-label="More"></button>
+                            </div>
                         </div>
                     </div>
-                    <div class="fd-tile">
-                        <div class="fd-tile__media">
-                            <span class=" fd-identifier--m sap-icon--person-placeholder fd-has-background-color-accent-1"></span>
-                        </div>
-                        <div class="fd-tile__content">
-                            <h3 class="fd-tile__title">Lorem ipsum</h3><p>Second line</p>
-                            <p>
-                                <span class="fd-badge fd-badge--success fd-badge--filled fd-sap-icon--accept">
-                                    Active
-                                </span>
-                            </p>
-                        </div>
-                        <div class="fd-tile__actions">
-                            <button class="fd-button--light sap-icon--overflow" aria-label="More"></button>
-                        </div>
-                    </div>
-                    <div class="fd-tile">
-                        <div class="fd-tile__media">
-                            <span class=" fd-identifier--m sap-icon--person-placeholder fd-has-background-color-accent-1"></span>
-                        </div>
-                        <div class="fd-tile__content">
-                            <h3 class="fd-tile__title">Lorem ipsum</h3><p>Second line</p>
-                            <p>
-                                <span class="fd-badge fd-badge--success fd-badge--filled fd-sap-icon--accept">
-                                    Active
-                                </span>
-                            </p>
-                        </div>
-                        <div class="fd-tile__actions">
-                            <button class="fd-button--light sap-icon--overflow" aria-label="More"></button>
+                    <div class="fd-col--3">
+                        <div class="fd-tile">
+                            <div class="fd-tile__media">
+                                <span class="fd-identifier fd-identifier--m sap-icon--person-placeholder fd-has-background-color-accent-1"></span>
+                            </div>
+                            <div class="fd-tile__content">
+                                <h3 class="fd-tile__title">Lorem ipsum</h3><p>Second line</p>
+                                <p>
+                                    <span class="fd-object-status fd-object-status--inverted fd-object-status--positive">
+                                        Active
+                                    </span>
+                                </p>
+                            </div>
+                            <div class="fd-tile__actions">
+                                <button class="fd-button fd-button--transparent sap-icon--overflow" aria-label="More"></button>
+                            </div>
                         </div>
                     </div>
-                    <div class="fd-tile">
-                        <div class="fd-tile__media">
-                            <span class=" fd-identifier--m sap-icon--person-placeholder fd-has-background-color-accent-1"></span>
-                        </div>
-                        <div class="fd-tile__content">
-                            <h3 class="fd-tile__title">Lorem ipsum</h3><p>Second line</p>
-                            <p>
-                                <span class="fd-badge fd-badge--success fd-badge--filled fd-sap-icon--accept">
-                                    Active
-                                </span>
-                            </p>
-                        </div>
-                        <div class="fd-tile__actions">
-                            <button class="fd-button--light sap-icon--overflow" aria-label="More"></button>
+                    <div class="fd-col--3">
+                        <div class="fd-tile">
+                            <div class="fd-tile__media">
+                                <span class="fd-identifier fd-identifier--m sap-icon--person-placeholder fd-has-background-color-accent-1"></span>
+                            </div>
+                            <div class="fd-tile__content">
+                                <h3 class="fd-tile__title">Lorem ipsum</h3><p>Second line</p>
+                                <p>
+                                    <span class="fd-object-status fd-object-status--inverted fd-object-status--positive">
+                                        Active
+                                    </span>
+                                </p>
+                            </div>
+                            <div class="fd-tile__actions">
+                                <button class="fd-button fd-button--transparent sap-icon--overflow" aria-label="More"></button>
+                            </div>
                         </div>
                     </div>
-                    <div class="fd-tile">
-                        <div class="fd-tile__media">
-                            <span class=" fd-identifier--m sap-icon--person-placeholder fd-has-background-color-accent-1"></span>
+                    <div class="fd-col--3">
+                        <div class="fd-tile">
+                            <div class="fd-tile__media">
+                                <span class="fd-identifier fd-identifier--m sap-icon--person-placeholder fd-has-background-color-accent-1"></span>
+                            </div>
+                            <div class="fd-tile__content">
+                                <h3 class="fd-tile__title">Lorem ipsum</h3><p>Second line</p>
+                                <p>
+                                    <span class="fd-object-status fd-object-status--inverted fd-object-status--positive">
+                                        Active
+                                    </span>
+                                </p>
+                            </div>
+                            <div class="fd-tile__actions">
+                                <button class="fd-button fd-button--transparent sap-icon--overflow" aria-label="More"></button>
+                            </div>
                         </div>
-                        <div class="fd-tile__content">
-                            <h3 class="fd-tile__title">Lorem ipsum</h3><p>Second line</p>
-                            <p>
-                                <span class="fd-badge fd-badge--success fd-badge--filled fd-sap-icon--accept">
-                                    Active
-                                </span>
-                            </p>
+                    </div>
+                    <div class="fd-col--3">
+                        <div class="fd-tile">
+                            <div class="fd-tile__media">
+                                <span class="fd-identifier fd-identifier--m sap-icon--person-placeholder fd-has-background-color-accent-1"></span>
+                            </div>
+                            <div class="fd-tile__content">
+                                <h3 class="fd-tile__title">Lorem ipsum</h3><p>Second line</p>
+                                <p>
+                                    <span class="fd-object-status fd-object-status--inverted fd-object-status--positive">
+                                        Active
+                                    </span>
+                                </p>
+                            </div>
+                            <div class="fd-tile__actions">
+                                <button class="fd-button fd-button--transparent sap-icon--overflow" aria-label="More"></button>
+                            </div>
                         </div>
-                        <div class="fd-tile__actions">
-                            <button class="fd-button--light sap-icon--overflow" aria-label="More"></button>
+                    </div>
+                    <div class="fd-col--3">
+                        <div class="fd-tile">
+                            <div class="fd-tile__media">
+                                <span class="fd-identifier fd-identifier--m sap-icon--person-placeholder fd-has-background-color-accent-1"></span>
+                            </div>
+                            <div class="fd-tile__content">
+                                <h3 class="fd-tile__title">Lorem ipsum</h3><p>Second line</p>
+                                <p>
+                                    <span class="fd-object-status fd-object-status--inverted fd-object-status--positive">
+                                        Active
+                                    </span>
+                                </p>
+                            </div>
+                            <div class="fd-tile__actions">
+                                <button class="fd-button fd-button--transparent sap-icon--overflow" aria-label="More"></button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="fd-col--3">
+                        <div class="fd-tile">
+                            <div class="fd-tile__media">
+                                <span class="fd-identifier fd-identifier--m sap-icon--person-placeholder fd-has-background-color-accent-1"></span>
+                            </div>
+                            <div class="fd-tile__content">
+                                <h3 class="fd-tile__title">Lorem ipsum</h3><p>Second line</p>
+                                <p>
+                                    <span class="fd-object-status fd-object-status--inverted fd-object-status--positive">
+                                        Active
+                                    </span>
+                                </p>
+                            </div>
+                            <div class="fd-tile__actions">
+                                <button class="fd-button fd-button--transparent sap-icon--overflow" aria-label="More"></button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="fd-col--3">
+                        <div class="fd-tile">
+                            <div class="fd-tile__media">
+                                <span class="fd-identifier fd-identifier--m sap-icon--person-placeholder fd-has-background-color-accent-1"></span>
+                            </div>
+                            <div class="fd-tile__content">
+                                <h3 class="fd-tile__title">Lorem ipsum</h3><p>Second line</p>
+                                <p>
+                                    <span class="fd-object-status fd-object-status--inverted fd-object-status--positive">
+                                        Active
+                                    </span>
+                                </p>
+                            </div>
+                            <div class="fd-tile__actions">
+                                <button class="fd-button fd-button--transparent sap-icon--overflow" aria-label="More"></button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="fd-col--3">
+                        <div class="fd-tile">
+                            <div class="fd-tile__media">
+                                <span class="fd-identifier fd-identifier--m sap-icon--person-placeholder fd-has-background-color-accent-1"></span>
+                            </div>
+                            <div class="fd-tile__content">
+                                <h3 class="fd-tile__title">Lorem ipsum</h3><p>Second line</p>
+                                <p>
+                                    <span class="fd-object-status fd-object-status--inverted fd-object-status--positive">
+                                        Active
+                                    </span>
+                                </p>
+                            </div>
+                            <div class="fd-tile__actions">
+                                <button class="fd-button fd-button--transparent sap-icon--overflow" aria-label="More"></button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="fd-col--3">
+                        <div class="fd-tile">
+                            <div class="fd-tile__media">
+                                <span class="fd-identifier fd-identifier--m sap-icon--person-placeholder fd-has-background-color-accent-1"></span>
+                            </div>
+                            <div class="fd-tile__content">
+                                <h3 class="fd-tile__title">Lorem ipsum</h3><p>Second line</p>
+                                <p>
+                                    <span class="fd-object-status fd-object-status--inverted fd-object-status--positive">
+                                        Active
+                                    </span>
+                                </p>
+                            </div>
+                            <div class="fd-tile__actions">
+                                <button class="fd-button fd-button--transparent sap-icon--overflow" aria-label="More"></button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="fd-col--3">
+                        <div class="fd-tile">
+                            <div class="fd-tile__media">
+                                <span class="fd-identifier fd-identifier--m sap-icon--person-placeholder fd-has-background-color-accent-1"></span>
+                            </div>
+                            <div class="fd-tile__content">
+                                <h3 class="fd-tile__title">Lorem ipsum</h3><p>Second line</p>
+                                <p>
+                                    <span class="fd-object-status fd-object-status--inverted fd-object-status--positive">
+                                        Active
+                                    </span>
+                                </p>
+                            </div>
+                            <div class="fd-tile__actions">
+                                <button class="fd-button fd-button--transparent sap-icon--overflow" aria-label="More"></button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="fd-col--3">
+                        <div class="fd-tile">
+                            <div class="fd-tile__media">
+                                <span class="fd-identifier fd-identifier--m sap-icon--person-placeholder fd-has-background-color-accent-1"></span>
+                            </div>
+                            <div class="fd-tile__content">
+                                <h3 class="fd-tile__title">Lorem ipsum</h3><p>Second line</p>
+                                <p>
+                                    <span class="fd-object-status fd-object-status--inverted fd-object-status--positive">
+                                        Active
+                                    </span>
+                                </p>
+                            </div>
+                            <div class="fd-tile__actions">
+                                <button class="fd-button fd-button--transparent sap-icon--overflow" aria-label="More"></button>
+                            </div>
                         </div>
                     </div>
                 </div>

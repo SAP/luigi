@@ -17,7 +17,7 @@ describe('Navigation', () => {
           title: 'Preserved View',
           size: 'm'
         });
-        cy.get('.fd-modal__close').click();
+        cy.get('.fd-dialog__close').click();
         cy.expectPathToBe('/overview');
       });
     });
@@ -384,6 +384,64 @@ describe('Navigation', () => {
       cy.get('[data-testid=modal-mf] [aria-label=close]').click();
 
       cy.get('[data-testid=modal-mf]').should('not.be.visible');
+    });
+
+    it('Nav sync - click sidenav', () => {
+      // projects page
+      cy.get('.fd-shellbar')
+        .contains('Projects')
+        .click();
+
+      //projects page
+      cy.get('.fd-app__sidebar')
+        .contains('Project Two')
+        .click();
+
+      cy.get('.fd-app__sidebar')
+        .contains('Nav Sync')
+        .click();
+
+      cy.expectPathToBe('/projects/pr2/nav-sync/one');
+
+      ['four', 'three', 'two', 'three', 'two'].forEach(label => {
+        cy.get('.fd-app__sidebar')
+          .contains(label)
+          .click();
+
+        cy.expectPathToBe('/projects/pr2/nav-sync/' + label);
+
+        cy.getIframeBody().then($iframeBody => {
+          cy.wrap($iframeBody)
+            .find('.fd-list-group__item')
+            .contains('Current pathsegment: ' + label);
+        });
+      });
+    });
+    it('Nav sync - use synched nav', () => {
+      // projects page
+      cy.get('.fd-shellbar')
+        .contains('Projects')
+        .click();
+
+      //projects page
+      cy.get('.fd-app__sidebar')
+        .contains('Project Two')
+        .click();
+
+      cy.get('.fd-app__sidebar')
+        .contains('Nav Sync')
+        .click();
+
+      cy.expectPathToBe('/projects/pr2/nav-sync/one');
+
+      ['two', 'three', 'four', 'one'].forEach((label, index) => {
+        cy.getIframeBody().then($iframeBody => {
+          cy.wrap($iframeBody)
+            .find('.fd-link')
+            .click();
+        });
+        cy.expectPathToBe('/projects/pr2/nav-sync/' + label);
+      });
     });
   });
   describe('Horizontal Tab Navigation', () => {

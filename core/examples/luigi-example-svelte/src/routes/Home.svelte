@@ -10,7 +10,7 @@
   import LuigiClient from '@kyma-project/luigi-client';
   import { onMount } from 'svelte';
 
-  export let message;
+  export let message='Hello world'
 
   onMount(() => {
     LuigiClient.addInitListener(() => {

@@ -482,6 +482,22 @@ Luigi.navigation().fromClosestContext().navigate('/users/groups/stakeholders')
 
 Returns **linkManager** link manager instance
 
+#### fromVirtualTreeRoot
+
+Sets the current navigation base to the parent node that is defined as virtualTree. This method works only when the currently active micro frontend is inside a virtualTree.
+
+##### Examples
+
+```javascript
+Luigi.navigation().fromVirtualTreeRoot().navigate('/users/groups/stakeholders')
+```
+
+Returns **linkManager** link manager instance
+
+**Meta**
+
+-   **since**: 1.0.1
+
 #### withParams
 
 Sends node parameters to the route. The parameters are used by the `navigate` function. Use it optionally in combination with any of the navigation functions and receive it as part of the context object in Luigi Client.

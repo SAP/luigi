@@ -3,40 +3,59 @@
     <h1 class="fd-section__title">{{ nodeLabel }}</h1>
   </div>
 
-  <div class="fd-panel" *ngIf="!links">{{ nodeLabel }} content.</div>
+  <div class="fd-panel" *ngIf="!links">
+    <div class="fd-panel__body">
+      <p>{{ nodeLabel }} content.</p>
+    </div>
+  </div>
   <div class="fd-panel" *ngIf="links">
-    <ul class="fd-list-group">
-      <li
-        class="fd-list-group__item clickable"
-        *ngFor="let link of links"
-        (click)="linkManager().navigate(slugify(link))"
-      >
-        <span class="sap-icon--navigation-right-arrow"></span> &nbsp; {{ link }}
-      </li>
-    </ul>
+    <div class="fd-panel__body">
+      <ul class="fd-list-group">
+        <li
+          class="fd-list-group__item clickable"
+          *ngFor="let link of links"
+          (click)="linkManager().navigate(slugify(link))"
+        >
+          <span class="sap-icon--navigation-right-arrow"></span> &nbsp;
+          {{ link }}
+        </li>
+      </ul>
+    </div>
   </div>
 </section>
 
 <section class="fd-section" *ngIf="nodeParams && hasBack">
-  <div class="fd-panel">
-    <div class="fd-alert" role="alert">
-      <span class="fd-status-label fd-status-label--available"></span> Called
-      with params:<br />
-      <pre>{{ nodeParams | json }}</pre>
+  <div class="fd-panel fd-has-margin-bottom-small">
+    <div class="fd-panel__body">
+      <div class="fd-alert" role="alert">
+        <div class="fd-alert__text">
+          <span class="fd-status-label fd-status-label--available"></span>
+          Called with params:<br />
+          <pre>{{ nodeParams | json }}</pre>
+        </div>
+      </div>
     </div>
   </div>
-  <div class="fd-panel">
-    <p><strong>LuigiClient hasBack/GoBack:</strong></p>
-    <p>
-      <label
-        >Modify goBackContext value, that you receive then via
-        LuigiClient.addContextUpdateListener(): <br />
-        <input type="text" [(ngModel)]="callbackValue"
-      /></label>
-    </p>
-    <p>
-      <button class="fd-button" (click)="goBack()">Click here</button> to go
-      back to your preserved view.
-    </p>
+  <div class="fd-panel fd-has-margin-bottom-small">
+    <div class="fd-panel__header">
+      <div class="fd-panel__head">
+        <h3 class="fd-panel__title">
+          LuigiClient hasBack/GoBack
+        </h3>
+      </div>
+    </div>
+    <div class="fd-panel__body">
+      <div class="fd-form-item">
+        <label class="fd-form-label">
+          Modify goBackContext value, that you receive then via
+          LuigiClient.addContextUpdateListener():
+        </label>
+        <input type="text" class="fd-input" [(ngModel)]="callbackValue" />
+      </div>
+      <p>
+        <button class="fd-button" (click)="goBack()">Click here</button> to go
+        back to your preserved view.
+      </p>
+    </div>
   </div>
 </section>

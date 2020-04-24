@@ -15,6 +15,16 @@ meta -->
 
 # Migration Guides for Luigi 0.x to 1.x
 
+As part of the upgrade to Luigi 1.0, some important changes were made. Luigi npm packages (previously under `kyma-project`) are now under a new npm org. The new packages are:
+- @luigi-project/client
+- @luigi-project/client-ie11
+- @luigi-project/core
+- @luigi-project/core-ie11
+- @luigi-project/plugin-auth-oauth2
+- @luigi-project/plugin-auth-oidc
+
+You can read more about the changes below:
+
 <!-- accordion:start -->
 
 ### Internet Explorer 11 (IE11)
@@ -59,7 +69,7 @@ To install the plugins, follow these installation guides:
 
 ### Fundamental Library Styles
 
-Following an upgrade from SAP Fundamentals to Fundamental Library Styles, there were changes in the HTML structure. Some classes were renamed or removed completely. You can find the full list of Fundamental Library Styles changes [here](https://github.com/SAP/fundamental-styles/wiki/Breaking-Changes). 
+Following an upgrade from SAP Fundamentals to Fundamental Library Styles, there were changes in the HTML structure. Some classes were renamed or removed completely. You can find the full list of Fundamental Library Styles changes [here](https://github.com/SAP/fundamental-styles/wiki/Breaking-Changes).
 
 Within Luigi, we renamed the `lui-tendant-menu__control` class to `lui-ctx-switch-menu`.
 

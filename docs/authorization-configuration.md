@@ -26,7 +26,9 @@ To configure authorization in Luigi:
 
 ## General authorization options
 
-<!-- accordion:start -->
+* [General authorization configuration in Luigi](#how-do-i-configure-authorization-in-luigi)
+* [Show content to logged out users / allow anonymous access](#how-do-i-show-some-navigation-nodes-only-to-non-authenticated-users) 
+
 ### How do I configure authorization in Luigi?
 
 You can configure Luigi authorization using the `auth:` section of your Luigi configuration file.
@@ -58,7 +60,7 @@ auth: {
 
 ### How do I show some navigation nodes only to non-authenticated users?
 
-To show certain nodes only to non-authenticated users, use the [anonymousAccess](navigation-parameters-reference.md#anonymousaccess) parameter.
+To show certain nodes only to users who are not logged-in, use the [anonymousAccess](navigation-parameters-reference.md#anonymousaccess) parameter.
 
 Make sure **disableAutoLogin** is set to `true`. Add the **anonymousAccess** parameter to the nodes you want to hide and their children:
 
@@ -67,11 +69,10 @@ anonymousAccess: `exclusive` // show nodes only when logged out
 // OR
 anonymousAccess: true // always show nodes
 ```
-<!-- accordion:end -->
 
 ## OpenID Connect configuration
 
-This code snippet demonstrates how to configure authorization using OpenID Connect in Luigi. Note that you must install the [OpenID Plugin](https://github.com/SAP/luigi/tree/master/plugins/auth/public/auth-oidc) first. 
+This code snippet demonstrates how to configure authorization using OpenID Connect in Luigi. Note that you must install the [OpenID Plugin](https://github.com/SAP/luigi/tree/master/plugins/auth/public/auth-oidc) first.
 
 ```javascript
 import oidcProvider from '@luigi-project/plugin-auth-oidc';
@@ -140,7 +141,7 @@ auth: {
     }
     // optional functions
     nonceFn: () => {},
-    logoutFn: (settings, authData, logoutCallback) => {},
+    logoutFn: (settings, authData, logoutCallback) => { ...; logoutCallback('logout.html'); },
     userInfoFn:(settings, authData)=>{},
     accessTokenExpiringNotificationTime: 60,
     expirationCheckInterval: 5
@@ -156,7 +157,7 @@ auth: {
 - **redirect_uri** contains the URL to return to after login. The default application root is `/`.
 - **response_type** defaults to the **id_token**. Any other parameter that is added to oAuthData is also added to the authorization payload.
 - **nonceFn** provides a function that returns a string in order to override the default **nonce**.
-- **logoutFn** provides the function to override the **logoutUrl** functionality for a custom logout. It needs to execute the **logoutCallback()** function after logout.
+- **logoutFn** provides the function to override the **logoutUrl** functionality for a custom logout. It needs to execute the **logoutCallback(redirectUri)** function after logout. Its parameter **redirectUri** is an URL or path to redirect to after executing **logoutCallback**. If no **redirectUri** is defined, Luigi stays in the current state.
 - **userInfoFn** provides a function to get user information. It returns a promise of a **userinfo** object which can contain **name**, **email** and **picture** (value is a URL to the image). **Name** or **email** are displayed in the profile drop-down menu and the user’s profile picture is displayed in the top navigation.
 - **accessTokenExpiringNotificationTime** number of seconds that pass before an access token expires and the **onAuthExpireSoon** event is fired. The default value is `60` seconds.
 - **expirationCheckInterval** the number of seconds to pass between each check if the token is about to expire. The default value is `5` seconds.
@@ -223,7 +224,7 @@ After authorization is successful on the authorization provider's side, it redir
 ​
 [openIdConnect.js](../core/src/providers/auth/openIdConnect.js) lazy loads the official `oidc-client` library and is a good starting point if you also depend on external authorization libraries.
 
-<!-- add-attribute:class:success -->
+<!-- add-attribute:class:warning -->
 > **NOTE:** Read more about authorization helpers in the [Core API: AuthorizationStore](luigi-core-api.md#AuthorizationStore) section.
 ​
 ### Persisting auth data
