@@ -28,7 +28,7 @@ The lerna-changelog tool detects changes based on PR labels and maps them to sec
 ## [v1.1.0] (2020-04-24)
 
 #### :boom: Breaking Change 
-* [#1267](https://github.com/SAP/luigi/pull/1267) Following an upgrade to Fundamental Library Styles version 0.8.1, there were changes in the HTML structure. Some classes were renamed or removed completely. You can find the full list of Fundamental Library Styles changes [here](https://github.com/marynaKhromova).  ([@marynaKhromova](https://github.com/marynaKhromova))
+* [#1267](https://github.com/SAP/luigi/pull/1267) Following an upgrade to Fundamental Library Styles version 0.8.1, there were changes in the HTML structure. Some classes were renamed or removed completely. You can find the full list of Fundamental Library Styles changes [here](https://github.com/SAP/fundamental-styles/wiki/Breaking-Changes).  ([@marynaKhromova](https://github.com/marynaKhromova))
 
 #### :rocket: Added
 * [#1283](https://github.com/SAP/luigi/pull/1283) Translate tooltip text in semi collapsed mode and add title attributes to entries in left nav ([@zarkosimic](https://github.com/zarkosimic))
