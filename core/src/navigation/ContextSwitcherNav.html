@@ -1,29 +1,38 @@
-<nav class="fd-menu lui-ctx-switch-nav">
+<nav class="fd-menu lui-ctx-switch-nav { isMobile ? 'fd-menu--mobile' : '' }">
   {#if actions && actions.length}
   <ul class="fd-menu__list fd-menu__list--top">
     {#each actions as node} {#if node.position === 'top' || !['top',
     'bottom'].includes(node.position)}
-    <li on:click="{() => onActionClick(node)}" data-testid="{getTestId(node)}">
+    <li
+      class="fd-menu__item"
+      on:click="{() => onActionClick(node)}"
+      data-testid="{getTestId(node)}"
+    >
       <a
         href="{getRouteLink(node)}"
         on:click|preventDefault="{() => {}}"
-        class="fd-menu__item"
-      >{$getTranslation(node.label)}</a>
+        class="fd-menu__link"
+      >
+        <span class="fd-menu__title">{$getTranslation(node.label)}</span>
+      </a>
     </li>
     {/if} {/each}
   </ul>
   {/if}
   <ul class="fd-menu__list" id="context_menu_middle">
     {#if options && options.length === 0}
-    <li>
-      <div class="fd-spinner">
-        <div class="fd-spinner__body"></div>
+    <li class="lui-contextswitcher-indicator">
+      <div class="fd-busy-indicator" aria-hidden="false" aria-label="Loading">
+        <div class="fd-busy-indicator--circle-0"></div>
+        <div class="fd-busy-indicator--circle-1"></div>
+        <div class="fd-busy-indicator--circle-2"></div>
       </div>
     </li>
     {/if} {#if options && options.length} {#each options as node}
     {#await getNodeName(node.label, config.fallbackLabelResolver,
     node.id)} {:then label}
     <li
+      class="fd-menu__item"
       on:click="{() => goToOption(node, selectedOption)}"
       data-testid="{getTestId(node)}"
     >
@@ -33,9 +42,11 @@
       <a
         href="{getRouteLink(node)}"
         on:click|preventDefault="{() => {}}"
-        class="fd-menu__item {node.label === selectedLabel ? 'is-selected' : ''}"
+        class="fd-menu__link {node.label === selectedLabel ? 'is-selected' : ''}"
         title="{label}"
-      >{label}</a>
+      >
+        <span class="fd-menu__title">{label}</span>
+      </a>
       {/if}
     </li>
     {/await} {/each} {/if}
@@ -43,12 +54,18 @@
   {#if actions && actions.length}
   <ul class="fd-menu__list fd-menu__list--bottom">
     {#each actions as node} {#if node.position === 'bottom'}
-    <li on:click="{() => onActionClick(node)}" data-testid="{getTestId(node)}">
+    <li
+      class="fd-menu__item"
+      on:click="{() => onActionClick(node)}"
+      data-testid="{getTestId(node)}"
+    >
       <a
         href="{getRouteLink(node)}"
         on:click|preventDefault="{() => {}}"
-        class="fd-menu__item"
-      >{$getTranslation(node.label)}</a>
+        class="fd-menu__link"
+      >
+        <span class="fd-menu__title">{$getTranslation(node.label)}</span>
+      </a>
     </li>
     {/if} {/each}
   </ul>
@@ -64,6 +81,7 @@
   export let options = [];
   export let selectedLabel;
   export let selectedOption;
+  export let isMobile;
 
   export let getNodeName;
   export let getRouteLink;
@@ -80,8 +98,26 @@
 </script>
 
 <style type="text/scss">
-  .lui-ctx-switch-nav {
-    max-height: calc(100vh - 76px);
-    overflow-y: auto;
+  :global(.fd-popover__body) {
+    .lui-ctx-switch-nav {
+      max-height: calc(100vh - 76px);
+      overflow-y: auto;
+    }
+  }
+
+  .fd-menu__list--top {
+    border-bottom: 1px solid #eeeeef;
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+  }
+  .fd-menu__list--bottom {
+    border-top: 1px solid #eeeeef;
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+  }
+
+  :global(.lui-contextswitcher-indicator) {
+    padding: 20px 0;
+    text-align: center;
   }
 </style>

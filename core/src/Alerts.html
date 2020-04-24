@@ -1,19 +1,24 @@
-<div class="fd-shell__overlay fd-overlay fd-overlay--alert" aria-hidden="false">
+<div
+  class="fd-shell__overlay fd-overlay fd-overlay--message-strip"
+  aria-hidden="false"
+>
   {#each alertQueue as al}
   <div
-    class="fd-alert fd-alert--{alertTypeMap[al.settings.type]} fd-alert--dismissible"
+    class="fd-message-strip fd-message-strip--{alertTypeMap[al.settings.type]} fd-message-strip--dismissible"
     role="alert"
     id="j2ALl423"
     data-testid="luigi-alert"
   >
+    <p
+      class="fd-message-strip__text"
+    >{@html al.dataSanitized ? al.settings.text: ''}</p>
     <button
-      class="fd-button fd-button--light fd-button--compact fd-alert__close"
+      class="fd-button fd-button--transparent fd-button--compact fd-message-strip__close"
       on:click="{() => dispatch('alertDismiss',{id: al.settings.id})}"
       aria-label="Close"
       aria-controls="j2ALl423"
       data-testid="luigi-alert-dismiss"
     ></button>
-    <p class="fd-alert__text">{@html al.dataSanitized ? al.settings.text: ''}</p>
   </div>
   {/each}
 </div>
@@ -103,15 +108,15 @@
 </script>
 
 <style type="text/scss">
-  .fd-overlay--alert {
+  .fd-overlay--message-strip {
     position: absolute;
     z-index: 1100;
     flex-direction: column;
-    .fd-alert:not(:first-child) {
+    .fd-message-strip:not(:first-child) {
       margin-top: 8px;
     }
   }
-  .fd-alert__text {
+  .fd-message-strip__text {
     :global(a) {
       display: inline-block;
       line-height: 1.42857;
