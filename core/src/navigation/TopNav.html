@@ -18,6 +18,12 @@
   </div>
   <div class="fd-shellbar__group fd-shellbar__group--actions">
     {#if !authorizationEnabled || isLoggedIn}
+    {#if isGlobalSearchAvailable}
+    <GlobalSearch
+      bind:dropDownStates
+      on:toggleDropdownState="{toggleDropdownStateExternal}"
+    />
+    {/if}
     <ContextSwitcher
       bind:dropDownStates
       on:toggleDropdownState="{() => toggleDropdownState('contextSwitcherPopover')}"
@@ -301,23 +307,6 @@
     {/if}
     {/if}
     <!-- closes {#if children && pathData.length > 0} -->
-    {#if isGlobalSearchAvailable}
-    <GlobalSearch
-      bind:dropDownStates
-      on:toggleDropDownState="{() => toggleDropdownState('globalSearchPopover')}"
-    />
-    <div class="fd-shellbar__action fd-shellbar__action--desktop">
-      <div on:click|stopPropagation="{() => {}}">
-        <button
-          class="fd-button fd-shellbar__button sap-icon--search"
-          aria-label="Search"
-          aria-haspopup="true"
-          aria-expanded="{dropDownStates.globalSearchPopover || false}"
-          on:click="{() => toggleDropdownState('globalSearchPopover')}"
-        ></button>
-      </div>
-    </div>
-    {/if}
     {#if authorizationEnabled || profileItemsAvailable}
     <div
       class="fd-shellbar__action fd-shellbar__action--show-always"
@@ -535,7 +524,6 @@
 
     closeAllDropdowns();
     closeMobileTopNavDropDown();
-    console.log('HER WE GO ' + name + ' ' + dropDownState);
     ddStates[name] = dropDownState;
 
     dropDownStates = ddStates;

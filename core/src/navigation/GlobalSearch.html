@@ -2,27 +2,77 @@
   <div class="fd-popover__control" on:click|stopPropagation="{() => {}}">
     <div
       aria-label="Image label"
-      aria-controls="UIO6J688"
-      aria-hidden="{!(dropDownStates.globalSearchPopover || false)}"
+      aria-hidden="{!(dropDownStates.globalSearchPopover || dropDownStates.showResultAndSearchField)}"
       aria-haspopup="true"
       class="luigi-search"
     >
       <div class="fd-input-group fd-shellbar__input-group">
         <input
           type="text"
-          class="fd-input fd-input-group__input fd-shellbar__input-group__input"
-          id="UIO6J6881"
-          value="Sear"
-          placeholder="Search..."
+          class="fd-input fd-input-group__input fd-shellbar__input-group__input luigi-input-search-field"
         >
       </div>
     </div>
+    <div
+      class="fd-popover__body fd-popover__body--right"
+      aria-hidden="{!dropDownStates.showResultAndSearchField}"
+    >
+      {#if searchResults}
+      <nav class="fd-menu">
+        <ul class="fd-menu__list fd-menu__list--top">
+          {#each searchResults as result}
+          <li class="fd-menu__item">{result}</li>
+          {/each}
+        </ul>
+      </nav>
+      {/if}
+    </div>
+  </div>
+</div>
+<div class="fd-shellbar__action fd-shellbar__action--desktop">
+  <div on:click|stopPropagation="{() => {}}">
+    <button
+      class="fd-button fd-shellbar__button sap-icon--search"
+      aria-label="Search"
+      aria-haspopup="true"
+      aria-expanded="{dropDownStates.globalSearchPopover || false}"
+      on:click="{() => toggleDropdownState('globalSearchPopover')}"
+    ></button>
   </div>
 </div>
 <script>
   import { beforeUpdate, createEventDispatcher, onMount } from 'svelte';
+  import { LuigiAuth, LuigiConfig } from '../core-api';
+  import { GenericHelpers } from '../utilities/helpers';
   export let dropDownStates = {};
-  onMount(() => {});
+  const dispatch = createEventDispatcher();
+  let showResultAndSearchField = false;
+  let searchResults = {};
+  let search;
+  onMount(async () => {
+    search = await LuigiConfig.getConfigValueAsync('globalSearch.search');
+
+    const input = document.querySelector('input');
+    if (search && GenericHelpers.isFunction(search.customSearch)) {
+      input.addEventListener('keyup', e => {
+        //TODO security validation
+        triggerSearch(e);
+      });
+    }
+  });
+
+  function triggerSearch(e) {
+    search.customSearch(e).then(results => {
+      if (results) {
+        toggleDropdownState('showResultAndSearchField');
+        searchResults = results;
+      }
+    });
+  }
+
+  export function toggleDropdownState(name) {
+    dispatch('toggleDropdownState', { name });
+  }
 </script>
 <style type="text/scss">
   .luigi-search {
