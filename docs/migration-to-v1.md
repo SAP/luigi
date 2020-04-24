@@ -90,8 +90,8 @@ Within Luigi, we renamed the `lui-tendant-menu__control` class to `lui-ctx-switc
 
 You can find the documentation for previous versions of Luigi here:
 
-* [0.7](https://github.com/SAP/luigi/blob/v0.7.7/docs/README.md)
-* [0.6](https://github.com/SAP/luigi/blob/v0.6.6/docs/README.md)
-* [0.5](https://github.com/SAP/luigi/blob/v0.5.4/docs/README.md)
-* [0.4](https://github.com/SAP/luigi/blob/v0.4.12/docs/README.md)
-* [0.3](https://github.com/SAP/luigi/blob/v0.3.8/docs/README.md)
+* [0.7](https://github.com/SAP/luigi/tree/v0.7.7/docs)
+* [0.6](https://github.com/SAP/luigi/tree/v0.6.6/docs)
+* [0.5](https://github.com/SAP/luigi/tree/v0.5.4/docs)
+* [0.4](https://github.com/SAP/luigi/tree/v0.4.12/docs)
+* [0.3](https://github.com/SAP/luigi/blob/v0.3.8/docs)
