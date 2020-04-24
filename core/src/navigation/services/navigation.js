@@ -205,11 +205,7 @@ class NavigationClass {
           this.buildVirtualTree(node, nodeNamesInCurrentPath, pathParams);
 
           // STANDARD PROCEDURE
-          let children = await this.getChildren(
-            node,
-            newContext,
-            nodeNamesInCurrentPath
-          );
+          let children = await this.getChildren(node, newContext);
           const newNodeNamesInCurrentPath = nodeNamesInCurrentPath.slice(1);
           result = this.buildNode(
             newNodeNamesInCurrentPath,

@@ -11,7 +11,7 @@ describe('Navigation', () => {
         cy.expectPathToBe('/projects/pr2');
       });
     });
-    it('Core API open in modal', () => {
+    it('Core API open in dialog', () => {
       cy.window().then(win => {
         win.Luigi.navigation().openAsModal('/settings', {
           title: 'Preserved View',
@@ -277,7 +277,7 @@ describe('Navigation', () => {
 
       cy.getIframeBody().then($iframeBody => {
         cy.wrap($iframeBody)
-          .find('.fd-list-group__item')
+          .find('.fd-list__item')
           .contains('keepSelectedForChildren')
           .click();
         cy.wait(500);
@@ -289,7 +289,7 @@ describe('Navigation', () => {
       cy.getIframeBody().then($iframeBody => {
         // wrap this body with cy so as to do cy actions inside iframe elements
         cy.wrap($iframeBody)
-          .find('.fd-list-group__item')
+          .find('.fd-list__item')
           .contains('Thor')
           .click();
         cy.wait(500);
@@ -308,7 +308,7 @@ describe('Navigation', () => {
         cy.wait(500);
         cy.getIframeBody().then($iframeBody => {
           cy.wrap($iframeBody)
-            .find('.fd-list-group__item strong')
+            .find('.fd-list__item strong')
             .contains('Node with link to another node')
             .click();
         });
@@ -412,7 +412,7 @@ describe('Navigation', () => {
 
         cy.getIframeBody().then($iframeBody => {
           cy.wrap($iframeBody)
-            .find('.fd-list-group__item')
+            .find('.fd-list__item')
             .contains('Current pathsegment: ' + label);
         });
       });

@@ -15,6 +15,7 @@ class SemiCollapsibleNavigationClass {
     // set this.isSemiCollapsed to true for mobile
     if (
       this.semiCollapsible &&
+      window.innerWidth !== 0 &&
       window.innerWidth < CSS_BREAKPOINTS.desktopMinWidth
     ) {
       this.setCollapsed(true);
@@ -40,6 +41,7 @@ class SemiCollapsibleNavigationClass {
 
   onResize(selectedCategory) {
     const isDesktopToMobile =
+      window.innerWidth !== 0 &&
       window.innerWidth < CSS_BREAKPOINTS.desktopMinWidth &&
       this.previousWindowWidth >= CSS_BREAKPOINTS.desktopMinWidth;
     if (isDesktopToMobile) {
