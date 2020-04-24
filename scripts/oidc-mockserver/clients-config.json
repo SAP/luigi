@@ -7,7 +7,7 @@
     "AutomaticRedirectAfterSignout": true,
     "RedirectUris": [
       "http://localhost:4200",
-      "http://localhost:4200/assets/auth-oidc"
+      "http://localhost:4200/assets/auth-oidc/silent-callback.html"
     ],
     "PostLogoutRedirectUris": ["http://localhost:4200/logout.html"],
     "AllowedScopes": ["openid", "profile", "email"],

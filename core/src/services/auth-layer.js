@@ -128,13 +128,13 @@ class AuthLayerSvcClass {
     );
 
     if (hasAuthSuccessFulFn && AuthStoreSvc.isNewlyAuthorized()) {
-      AuthStoreSvc.removeNewlyAuthorized();
       await LuigiAuth.handleAuthEvent(
         'onAuthSuccessful',
         idpProviderSettings,
         authData
       );
     }
+    AuthStoreSvc.removeNewlyAuthorized();
 
     if (
       GenericHelpers.isFunction(
