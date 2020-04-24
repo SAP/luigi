@@ -28,7 +28,7 @@
           role="tab"
           aria-selected="{node === selectedNodeForTabNav}"
           on:click|preventDefault="{() => handleClick(node)}"
-        >{node.label}</a>
+        >{$getTranslation(node.label)}</a>
       </span>
       {/if}
       {/if}
@@ -48,7 +48,7 @@
             on:click|preventDefault="{() => toggleDropdownState(key)}"
             aria-selected="{isSelectedCat(key,selectedNodeForTabNav)}"
           >
-            <span class="label">{key}</span>
+            <span class="label">{$getTranslation(key)}</span>
             <span class="sap-icon--dropdown sap-icon--l"></span>
           </a>
           <div
@@ -66,7 +66,7 @@
                     class="fd-menu__item"
                     on:click|preventDefault="{() => handleClick(node)}"
                     aria-selected="{node === selectedNodeForTabNav}"
-                  >{node.label}</a>
+                  >{$getTranslation(node.label)}</a>
                 </li>
                 {/if}
                 {/if}
@@ -110,7 +110,9 @@
                 on:click|preventDefault="{() => handleClick(node)}"
                 aria-selected="{node===selectedNodeForTabNav}"
               >
-                <span class="fd-nested-list__title">{node.label}</span>
+                <span
+                  class="fd-nested-list__title"
+                >{$getTranslation(node.label)}</span>
               </a>
             </li>
             {/each}
@@ -124,7 +126,7 @@
                 aria-selected="{isSelectedCat(key,selectedNodeForTabNav)}"
                 on:click|preventDefault="{() => toggleDropdownState(key+index)}"
               >
-                <span class="fd-nested-list__title">{key}</span>
+                <span class="fd-nested-list__title">{$getTranslation(key)}</span>
               </a>
               <ul
                 class="fd-nested-list level-2"
@@ -138,7 +140,9 @@
                     on:click|preventDefault="{() => handleClick(node)}"
                     aria-selected="{node===selectedNodeForTabNav}"
                   >
-                    <span class="fd-nested-list__title">{node.label}</span>
+                    <span
+                      class="fd-nested-list__title"
+                    >{$getTranslation(node.label)}</span>
                   </a>
                 </li>
                 {/each}
@@ -154,10 +158,15 @@
 </nav>
 {/if}
 <script>
-  import { beforeUpdate, createEventDispatcher, onMount } from 'svelte';
+  import {
+    beforeUpdate,
+    createEventDispatcher,
+    onMount,
+    getContext
+  } from 'svelte';
   import { Navigation } from './services/navigation';
   import { NavigationHelpers, RoutingHelpers } from '../utilities/helpers';
-  import { LuigiConfig } from '../core-api';
+  import { LuigiConfig, LuigiI18N } from '../core-api';
 
   export let children;
   export let pathData;
@@ -171,6 +180,7 @@
   export let isMoreBtnExpanded = false;
   export let resizeTabNavToggle;
   let previousResizeTabNavToggle;
+  let getTranslation = getContext('getTranslation');
 
   //TODO refactor
   const __this = {
