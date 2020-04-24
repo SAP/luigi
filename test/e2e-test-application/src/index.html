@@ -68,8 +68,15 @@
     <script src="/assets/extendedConfiguration.bundle.js"></script>
 
     <div luigi-app-loading-indicator>
-      <div class="fd-spinner" aria-hidden="false" aria-label="Loading">
-        <div class="fd-spinner__body"></div>
+      <div
+        class="fd-busy-indicator--m"
+        aria-hidden="false"
+        aria-label="Loading"
+        data-testid="luigi-loading-spinner"
+      >
+        <div class="fd-busy-indicator--circle-0"></div>
+        <div class="fd-busy-indicator--circle-1"></div>
+        <div class="fd-busy-indicator--circle-2"></div>
       </div>
     </div>
     <!-- LUIGI CUSTOM CONTAINER FEATURE -->
@@ -78,8 +85,10 @@
       <div class="custom" id="my-leftnav">MY LEFTNAV</div>
       <div luigi-app-root></div>
       <div luigi-app-loading-indicator>
-        <div class="fd-spinner">
-          <div></div>
+        <div class="fd-busy-indicator--m" aria-hidden="false" aria-label="Loading" data-testid="luigi-loading-spinner">
+          <div class="fd-busy-indicator--circle-0"></div>
+          <div class="fd-busy-indicator--circle-1"></div>
+          <div class="fd-busy-indicator--circle-2"></div>
         </div>
       </div>
       <div class="custom" id="my-rightnav">MY RIGHTNAV</div>

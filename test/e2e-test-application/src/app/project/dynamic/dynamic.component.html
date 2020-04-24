@@ -10,9 +10,9 @@
   </div>
   <div class="fd-panel" *ngIf="links">
     <div class="fd-panel__body">
-      <ul class="fd-list-group">
+      <ul class="fd-list">
         <li
-          class="fd-list-group__item clickable"
+          class="fd-list__item clickable"
           *ngFor="let link of links"
           (click)="linkManager().navigate(slugify(link))"
         >
@@ -27,9 +27,8 @@
 <section class="fd-section" *ngIf="nodeParams && hasBack">
   <div class="fd-panel fd-has-margin-bottom-small">
     <div class="fd-panel__body">
-      <div class="fd-alert" role="alert">
-        <div class="fd-alert__text">
-          <span class="fd-status-label fd-status-label--available"></span>
+      <div class="fd-message-strip" role="alert">
+        <div class="fd-message-strip_text">
           Called with params:<br />
           <pre>{{ nodeParams | json }}</pre>
         </div>
