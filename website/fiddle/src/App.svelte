@@ -131,6 +131,15 @@
     display: none;
   }
 
+  .fiddle-toolbar .fd-action-bar {
+    background: none;
+    padding: 0.5rem;
+  }
+
+  .fiddle-toolbar .title-wrapper {
+    flex-grow: 1;
+  }
+
   .fiddle-toolbar .fd-link {
     color: #2deb8a;
   }
@@ -147,6 +156,10 @@
     z-index: 2;
   }
 
+  :global(.editorVisible) .fd-dialog {
+    display: flex;
+  }
+
   #editor, #editorTA {
     width: 100%;
     height: calc(100vh - 300px);
@@ -159,18 +172,12 @@
 
   .fd-action-bar__header {
     overflow: visible;
-    padding-left: 5px;
     color: white;
     font-size: 0.8em;
-    margin-top: -3px;
   }
 
   .fd-action-bar__header a.fd-link {
     margin-left: 10px;
-  }
-
-  .fd-action-bar > .fd-action-bar__actions {
-    margin: -3px 5px 2px -5px;
   }
 
   .fd-action-bar__header img {
@@ -200,16 +207,6 @@
     color: #2deb8a;
   }
 
-  .fd-modal__title{
-    display: inline-block;
-  }
-  .fd-button--close{
-    line-height: 18px;
-    position: absolute;
-    right: 8px;
-    top: 8px;
-  }
-
   @media (max-width: 600px) {
     .lui-mobile-hide {
       display: none;
@@ -222,25 +219,42 @@
   }
 </style>
 
-<div class="editor_container fd-shell__overlay fd-overlay fd-overlay--modal">
-  <div class="fd-modal" role="dialog" style="width:80%; max-width:80%;">
-    <div class="fd-modal__content" role="document">
-      <header class="fd-modal__header">
-        <h1 class="fd-modal__title">Luigi Config</h1>
-        <button
-        class="fd-button--light fd-button--close sap-icon--decline"
-        on:click={closeConfig} />
+<div class="editor_container">
+  <div class="fd-dialog" role="dialog">
+    <div class="fd-dialog__content" role="document"  style="width:80%; max-width:80%;">
+      <header class="fd-dialog__header fd-bar fd-bar--header">
+        <div class="fd-bar__left">
+          <div class="fd-bar__element">
+            <h3 class="fd-dialog__title">Luigi Config</h3>
+          </div>
+        </div>
+        <div class="fd-bar__right">
+          <div class="fd-bar__element">
+            <button
+            class="fd-button fd-button--transparent fd-button--compact fd-dialog__close sap-icon--decline sap-icon--l"
+            on:click={closeConfig}
+            aria-label="close" />
+          </div>
+        </div>
       </header>
-      <div class="fd-modal__body_nostyle">
+      <div class="fd-dialog__body fd-dialog__body--no-vertical-padding">
         <div id="editor" class="lui-mobile-hide"/>
-		<textarea id="editorTA" class="lui-mobile-show"/>
+		    <textarea id="editorTA" class="lui-mobile-show"/>
       </div>
-      <footer class="fd-modal__footer">
-        <div class="fd-modal__actions">
-          <button class="fd-button--light" on:click={resetConfig}>Reset</button>
-          <button class="fd-button lui-mobile-hide" on:click={saveConfig}>Apply</button>
-          <button class="fd-button lui-mobile-show" on:click={saveConfigTA}>Apply</button>
-          <button class="fd-button--light" on:click={closeConfig}>Cancel</button>
+      <footer class="fd-dialog__footer fd-bar fd-bar--footer">
+        <div class="fd-bar__right">
+          <div class="fd-bar__element">
+            <button class="fd-dialog__decisive-button fd-button fd-button--transparent fd-button--compact" on:click={resetConfig}>Reset</button>
+          </div>
+          <div class="fd-bar__element lui-mobile-hide">
+            <button class="fd-dialog__decisive-button fd-button fd-button--compact" on:click={saveConfig}>Apply</button>
+          </div>
+          <div class="fd-bar__element lui-mobile-show">
+            <button class="fd-dialog__decisive-button fd-button fd-button--compact" on:click={saveConfigTA}>Apply</button>
+          </div>
+          <div class="fd-bar__element">
+            <button class="fd-dialog__decisive-button fd-button fd-button--transparent fd-button--compact" on:click={closeConfig}>Cancel</button>
+          </div>
         </div>
       </footer>
     </div>
@@ -250,37 +264,40 @@
 <div class="fiddle-toolbar">
   <div class="fd-action-bar">
     <div class="fd-action-bar__header">
-      <img alt="Luigi" src="./img/luigi.png" />
-      <span class="lui-mobile-hide">powered by Luigi v{luigiVersion}</span>
-      <span>
-        <a
-          class="fd-link"
-          href="https://www.sap.com/about/legal/privacy.html"
-          target="_blank">
-          Privacy Policy
-        </a>
-        <a
-          class="fd-link"
-          href="https://www.sap.com/about/legal/impressum.html"
-          target="_blank">
-          Legal
-        </a>
-      </span>
-    </div>
-    <div class="fd-action-bar__actions">
-      <button class="fd-button--standard btn-primary" on:click={clearAll}>
-        <span class="lui-mobile-hide">Clear All</span>
-        <span class="lui-mobile-show sap-icon--delete" />
-      </button>
-      <span class="lui-sep" />
-      <button class="fd-button--standard btn-primary" on:click={openConfig}>
-        <span class="lui-mobile-hide">Modify Config</span>
-        <span class="lui-mobile-show sap-icon--edit" />
-      </button>
-      <button class="fd-button--standard btn-primary" on:click={hide}>
-        <span class="lui-mobile-hide">Hide</span>
-        <span class="lui-mobile-show sap-icon--hide" />
-      </button>
+      <div class="title-wrapper">
+        <img alt="Luigi" src="./img/luigi.png" />
+        <span class="lui-mobile-hide">powered by Luigi v{luigiVersion}</span>
+        <span>
+          <a
+            class="fd-link"
+            href="https://www.sap.com/about/legal/privacy.html"
+            target="_blank">
+            Privacy Policy
+          </a>
+          <a
+            class="fd-link"
+            href="https://www.sap.com/about/legal/impressum.html"
+            target="_blank">
+            Legal
+          </a>
+        </span>
+      </div>
+
+      <div class="fd-action-bar__actions">
+        <button class="fd-button fd-button--standard btn-primary" on:click={clearAll}>
+          <span class="lui-mobile-hide">Clear All</span>
+          <span class="lui-mobile-show sap-icon--delete" />
+        </button>
+        <span class="lui-sep" />
+        <button class="fd-button fd-button--standard btn-primary" on:click={openConfig}>
+          <span class="lui-mobile-hide">Modify Config</span>
+          <span class="lui-mobile-show sap-icon--edit" />
+        </button>
+        <button class="fd-button fd-button--standard btn-primary" on:click={hide}>
+          <span class="lui-mobile-hide">Hide</span>
+          <span class="lui-mobile-show sap-icon--hide" />
+        </button>
+      </div>
     </div>
   </div>
 </div>
