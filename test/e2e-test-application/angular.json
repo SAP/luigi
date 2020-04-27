@@ -21,6 +21,7 @@
             "polyfills": "src/polyfills.ts",
             "assets": [
               "src/assets",
+              "src/styles.css",
               "src/index.html",
               "src/logout.html",
               {
@@ -29,14 +30,14 @@
                 "output": "/fundamental-styles"
               },
               {
-                "glob": "fonts/**",
-                "input": "node_modules/fundamental-styles/dist",
-                "output": "/fundamental-styles"
+                "glob": "**",
+                "input": "node_modules/@sap-theming/theming-base-content/content/Base/baseLib/sap_base_fiori/fonts",
+                "output": "/fonts"
               },
               {
-                "glob": "icons/**",
-                "input": "node_modules/fundamental-styles/dist",
-                "output": "/fundamental-styles"
+                "glob": "**",
+                "input": "node_modules/@sap-theming/theming-base-content/content/Base/baseLib/sap_fiori_3/fonts/",
+                "output": "/fonts"
               },
               {
                 "glob": "**",
