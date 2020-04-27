@@ -1,3 +1,8 @@
+.luigi-search .fd-input-group,
+.luigi-search .fd-input {
+  overflow: visible;
+}
+
 .searchbox {
   display: inline-block;
   position: relative;
