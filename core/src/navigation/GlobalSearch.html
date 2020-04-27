@@ -1,7 +1,7 @@
 <div class="fd-shellbar__action fd-shellbar__action--desktop">
   <div class="fd-popover__control" on:click|stopPropagation="{() => {}}">
     <div
-      aria-label="Image label"
+      aria-label="LuigiGlobalSearch"
       aria-hidden="{!(dropDownStates.globalSearchPopover || dropDownStates.showResultAndSearchField)}"
       aria-haspopup="true"
       class="luigi-search"
@@ -33,7 +33,7 @@
   <div on:click|stopPropagation="{() => {}}">
     <button
       class="fd-button fd-shellbar__button sap-icon--search"
-      aria-label="Search"
+      aria-label="LuigiGlobalSearch"
       aria-haspopup="true"
       aria-expanded="{dropDownStates.globalSearchPopover || false}"
       on:click="{() => toggleDropdownState('globalSearchPopover')}"
@@ -75,7 +75,7 @@
   }
 </script>
 <style type="text/scss">
-  .luigi-search {
+  :global(.luigi-search) {
     &[aria-hidden='true'] {
       display: none !important;
     }

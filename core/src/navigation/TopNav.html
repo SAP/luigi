@@ -128,6 +128,23 @@
     <!-- dropdown for top nav nodes on smaller screens -->
     {#if visibleNodeCount > 0}
     <div class="fd-shellbar__action fd-shellbar__action--mobile">
+      <div class="fd-popover__control" on:click|stopPropagation="{() => {}}">
+        <div
+          aria-label="LuigiGlobalSearch"
+          aria-hidden="{!(dropDownStates.globalSearchMobilePopover  || false)}"
+          aria-haspopup="true"
+          class="luigi-search"
+        >
+          <div class="fd-input-group fd-shellbar__input-group">
+            <input
+              type="text"
+              class="fd-input fd-input-group__input fd-shellbar__input-group__input luigi-input-search-field"
+            >
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="fd-shellbar__action fd-shellbar__action--mobile">
       <div class="fd-shellbar-collapse">
         <div class="fd-popover fd-popover--right">
           <div
@@ -160,6 +177,15 @@
           >
             <nav class="fd-menu">
               <ul class="fd-menu__list">
+                <li class="fd-menu__item lui-mobile-switch-menu">
+                  <a
+                    class="fd-menu__link"
+                    on:click="{() => toggleDropdownState('globalSearchMobilePopover')}"
+                  >
+                    <span class="fd-top-nav__icon sap-icon--search"></span>
+                    <span class="fd-menu__title">Search</span>
+                  </a>
+                </li>
                 {#if contextSwitcherConfig && (!authorizationEnabled || isLoggedIn)}
                 <li class="fd-menu__item lui-mobile-switch-menu">
                   <a
@@ -576,6 +602,11 @@
 </script>
 
 <style type="text/scss">
+  .luigi-search {
+    &[aria-hidden='true'] {
+      display: none !important;
+    }
+  }
   // Fix for Fiori aligning everything to right inside shellbar end
   .fd-shellbar__group--end {
     text-align: unset;
