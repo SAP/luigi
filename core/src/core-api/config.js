@@ -1,10 +1,11 @@
 import {
   AsyncHelpers,
+  EventListenerHelpers,
   GenericHelpers,
   StateHelpers
 } from '../utilities/helpers';
-import { LuigiAuth, LuigiElements, LuigiI18N } from '.';
-import { LifecycleHooks } from '../services';
+import { LuigiAuth, LuigiElements } from '.';
+import { AuthLayerSvc, LifecycleHooks } from '../services';
 /**
  * @name Configuration
  */
@@ -204,6 +205,7 @@ class LuigiConfig {
     // Promise.reject(property + ' is not a function.');
     return Promise.resolve(undefined);
   }
+
   /**
    * Detects if authorization is enabled via configuration.
    * @memberof Configuration
@@ -212,6 +214,20 @@ class LuigiConfig {
    */
   isAuthorizationEnabled() {
     return LuigiAuth.isAuthorizationEnabled();
+  }
+
+  /**
+   * Unloads the current Luigi instance, which can be initialized later again by using `Luigi.config().init()`
+   * @memberof Configuration
+   */
+  unload() {
+    this.initialized = false;
+    AuthLayerSvc.unload();
+    EventListenerHelpers.removeAllEventListeners();
+    const container = LuigiElements.getLuigiContainer();
+    while (container.firstChild) {
+      container.removeChild(container.lastChild);
+    }
   }
 }
 

@@ -235,6 +235,15 @@ class AuthLayerSvcClass {
       );
     }
   }
+
+  unload() {
+    if (
+      this.idpProviderInstance &&
+      GenericHelpers.isFunction(this.idpProviderInstance.unload)
+    ) {
+      this.idpProviderInstance.unload();
+    }
+  }
 }
 
 export const AuthLayerSvc = new AuthLayerSvcClass();

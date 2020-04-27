@@ -1,7 +1,12 @@
 // Helper methods for 'routing.js' file. They don't require any method from 'routing.js' but are required by them.
 // They are also rarely used directly from outside of 'routing.js'
 import { LuigiConfig } from '../../core-api';
-import { AsyncHelpers, EscapingHelpers, GenericHelpers } from './';
+import {
+  AsyncHelpers,
+  EscapingHelpers,
+  EventListenerHelpers,
+  GenericHelpers
+} from './';
 import { Routing } from '../../services/routing';
 
 class RoutingHelpersClass {
@@ -117,7 +122,7 @@ class RoutingHelpersClass {
       'routing.useHashRouting'
     );
 
-    window.addEventListener('message', e => {
+    EventListenerHelpers.addEventListener('message', e => {
       if ('refreshRoute' === e.data.msg && e.origin === window.origin) {
         const path = hashRoutingActive
           ? Routing.getHashPath()
@@ -127,12 +132,12 @@ class RoutingHelpersClass {
     });
 
     if (hashRoutingActive) {
-      return window.addEventListener('hashchange', event => {
+      return EventListenerHelpers.addEventListener('hashchange', event => {
         callback(Routing.getHashPath(event.newURL));
       });
     }
 
-    window.addEventListener('popstate', () => {
+    EventListenerHelpers.addEventListener('popstate', () => {
       callback(Routing.getModifiedPathname());
     });
   }

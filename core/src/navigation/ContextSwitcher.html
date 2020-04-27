@@ -112,7 +112,8 @@
     RoutingHelpers,
     StateHelpers,
     NavigationHelpers,
-    GenericHelpers
+    GenericHelpers,
+    EventListenerHelpers
   } from '../utilities/helpers';
 
   const dispatch = createEventDispatcher();
@@ -200,7 +201,7 @@
 
     RoutingHelpers.addRouteChangeListener(path => setSelectedContext(path));
 
-    window.addEventListener('message', e => {
+    EventListenerHelpers.addEventListener('message', e => {
       if (!IframeHelpers.getValidMessageSource(e)) return;
       if (e.data && e.data.msg === 'luigi.refresh-context-switcher') {
         options = null;

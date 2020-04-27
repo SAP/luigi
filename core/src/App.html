@@ -97,6 +97,7 @@
   import { fade } from 'svelte/transition';
   import { CSS_BREAKPOINTS } from './utilities/constants';
   import {
+    EventListenerHelpers,
     GenericHelpers,
     StateHelpers,
     RoutingHelpers,
@@ -763,7 +764,7 @@
       IframeHelpers.broadcastMessageToAllIframes(message);
     });
 
-    window.addEventListener('popstate', async e => {
+    EventListenerHelpers.addEventListener('popstate', async e => {
       const alertQueue = alerts;
       if (!alertQueue || !alertQueue.length) return;
 
@@ -787,7 +788,7 @@
       alerts = updatedAlerts;
     });
 
-    window.addEventListener('message', async e => {
+    EventListenerHelpers.addEventListener('message', async e => {
       const iframe = IframeHelpers.getValidMessageSource(e);
       if (!iframe) return;
 
