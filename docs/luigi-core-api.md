@@ -623,8 +623,8 @@ Property values for token replacement in the localization key will be taken from
 
 <!-- add-attribute:class:success -->
 
-> Be aware that this function is not asynchronous and therefore the translation table must be existing already at initialization.
-> Take a look at our [Translation Tutorial](advanced-scenarios.md#setup-and-use-translation--internationalization-i18n) for an implementation suggestion.
+> **TIP**: Be aware that this function is not asynchronous and therefore the translation table must be existing already at initialization.
+> Take a look at our [i18n](i18n.md) section for an implementation suggestion.
 
 ##### Parameters
 
