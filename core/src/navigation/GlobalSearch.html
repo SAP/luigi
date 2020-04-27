@@ -1,3 +1,5 @@
+
+{#if !isMobile}
 <div class="fd-shellbar__action fd-shellbar__action--desktop">
   <div class="fd-popover__control" on:click|stopPropagation="{() => {}}">
     <div
@@ -9,6 +11,7 @@
       <div class="fd-input-group fd-shellbar__input-group">
         <input
           type="text"
+          id="luigi-globalSearch"
           class="fd-input fd-input-group__input fd-shellbar__input-group__input luigi-input-search-field"
         >
       </div>
@@ -34,17 +37,40 @@
     <button
       class="fd-button fd-shellbar__button sap-icon--search"
       aria-label="LuigiGlobalSearch"
+      id="lui-search-button"
       aria-haspopup="true"
       aria-expanded="{dropDownStates.globalSearchPopover || false}"
       on:click="{() => toggleDropdownState('globalSearchPopover')}"
     ></button>
   </div>
 </div>
+{/if}
+{#if isMobile}
+<div class="fd-shellbar__action fd-shellbar__action--mobile">
+  <div class="fd-popover__control" on:click|stopPropagation="{() => {}}">
+    <div
+      aria-label="LuigiGlobalSearch"
+      aria-hidden="{!(dropDownStates.globalSearchMobilePopover  || false)}"
+      aria-haspopup="true"
+      class="luigi-search"
+    >
+      <div class="fd-input-group fd-shellbar__input-group">
+        <input
+          type="text"
+          id="luigi-globalSearch-mobile"
+          class="fd-input fd-input-group__input fd-shellbar__input-group__input luigi-input-search-field"
+        >
+      </div>
+    </div>
+  </div>
+</div>
+{/if}
 <script>
   import { beforeUpdate, createEventDispatcher, onMount } from 'svelte';
   import { LuigiAuth, LuigiConfig } from '../core-api';
   import { GenericHelpers } from '../utilities/helpers';
   export let dropDownStates = {};
+  export let isMobile;
   const dispatch = createEventDispatcher();
   let showResultAndSearchField = false;
   let searchResults = {};
@@ -52,8 +78,10 @@
   onMount(async () => {
     search = await LuigiConfig.getConfigValueAsync('globalSearch.search');
 
-    const input = document.querySelector('input');
-    if (search && GenericHelpers.isFunction(search.customSearch)) {
+    const input = isMobile
+      ? document.getElementById('luigi-globalSearch-mobile')
+      : document.getElementById('luigi-globalSearch');
+    if (search && GenericHelpers.isFunction(search.init)) {
       input.addEventListener('keyup', e => {
         //TODO security validation
         triggerSearch(e);
@@ -62,7 +90,7 @@
   });
 
   function triggerSearch(e) {
-    search.customSearch(e).then(results => {
+    search.init(e).then(results => {
       if (results) {
         toggleDropdownState('showResultAndSearchField');
         searchResults = results;

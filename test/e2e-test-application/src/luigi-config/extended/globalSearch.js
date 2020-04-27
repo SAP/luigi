@@ -1,3 +1,4 @@
+import docsearch from 'docsearch.js';
 class GlobalSearch {
   enabled = true;
   search = {
