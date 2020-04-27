@@ -11,7 +11,7 @@ class GlobalSearch {
     customSearch: e => {
       return new Promise((resolve, reject) => {
         if (e.keyCode === 13) {
-          return resolve(['search something crazy', 'more crazy stuff']);
+          return resolve(['search something crazy']);
         }
       });
     },

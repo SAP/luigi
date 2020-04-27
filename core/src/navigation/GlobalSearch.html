@@ -1,24 +1,32 @@
-
-{#if !isMobile}
-<div class="fd-shellbar__action fd-shellbar__action--desktop">
+<div
+  class="fd-shellbar__action {!isMobile ? 'fd-shellbar__action--desktop':'fd-shellbar__action--mobile'}"
+>
   <div class="fd-popover__control" on:click|stopPropagation="{() => {}}">
-    <!--{!(dropDownStates.globalSearchPopover || dropDownStates.showResultAndSearchField)}-->
     <div
       aria-label="LuigiGlobalSearch"
-      aria-hidden="false"
+      aria-hidden="{!isMobile ? (!(dropDownStates.globalSearchPopover || dropDownStates.showResultAndSearchField)) : (!(dropDownStates.globalSearchMobilePopover  || false))}"
       aria-haspopup="true"
       class="luigi-search"
     >
       <div class="fd-input-group fd-shellbar__input-group">
+        {#if !isMobile}
         <input
           type="text"
           id="luigi-globalSearch"
           class="fd-input fd-input-group__input fd-shellbar__input-group__input luigi-input-search-field"
         >
+        {#if}
+        {#if !isMobile}
+        <input
+          type="text"
+          id="luigi-globalSearch"
+          class="fd-input fd-input-group__input fd-shellbar__input-group__input luigi-input-search-field"
+        >
+        {#if}
       </div>
     </div>
-    <!--
-       <div
+
+    <div
       class="fd-popover__body fd-popover__body--right"
       aria-hidden="{!dropDownStates.showResultAndSearchField}"
     >
@@ -31,9 +39,10 @@
         </ul>
       </nav>
       {/if}
-    </div>-->
+    </div>
   </div>
 </div>
+{#if !isMobile}
 <div class="fd-shellbar__action fd-shellbar__action--desktop">
   <div on:click|stopPropagation="{() => {}}">
     <button
@@ -47,7 +56,7 @@
   </div>
 </div>
 {/if}
-{#if isMobile}
+<!-- {#if isMobile}
 <div class="fd-shellbar__action fd-shellbar__action--mobile">
   <div class="fd-popover__control" on:click|stopPropagation="{() => {}}">
     <div
@@ -59,14 +68,14 @@
       <div class="fd-input-group fd-shellbar__input-group">
         <input
           type="text"
-          id="luigi-globalSearch-mobile"
+          id="luigi-globalSearch"
           class="fd-input fd-input-group__input fd-shellbar__input-group__input luigi-input-search-field-mobile"
         >
       </div>
     </div>
   </div>
 </div>
-{/if}
+{/if}-->
 <script>
   import { beforeUpdate, createEventDispatcher, onMount } from 'svelte';
   import { LuigiAuth, LuigiConfig } from '../core-api';
@@ -79,30 +88,22 @@
   let search;
   onMount(async () => {
     search = await LuigiConfig.getConfigValueAsync('globalSearch.search');
-
-    const input = isMobile
-      ? document.getElementById('luigi-globalSearch-mobile')
-      : document.getElementById('luigi-globalSearch');
-    if (search && GenericHelpers.isFunction(search.triggerDocSearch)) {
-      debugger;
-      //search.triggerDocSearch();
-
-      //input.addEventListener('keyup', e => {
-      //   //TODO security validation
-      //   //triggerSearch(e);
-      //   search.triggerDocSearch();
-      // });
-    }
   });
 
-  function triggerSearch(e) {
-    search.init(e).then(results => {
-      if (results) {
-        toggleDropdownState('showResultAndSearchField');
-        searchResults = results;
-      }
-    });
-  }
+  beforeUpdate(() => {
+    if (search && GenericHelpers.isFunction(search.customSearch)) {
+      const input = document.getElementById('luigi-globalSearch');
+      input.addEventListener('keyup', e => {
+        //TODO security validation
+        search.customSearch(e).then(results => {
+          if (results) {
+            searchResults = results;
+            toggleDropdownState('showResultAndSearchField');
+          }
+        });
+      });
+    }
+  });
 
   export function toggleDropdownState(name) {
     dispatch('toggleDropdownState', { name });

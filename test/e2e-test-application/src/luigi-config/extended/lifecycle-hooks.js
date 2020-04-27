@@ -7,7 +7,7 @@ class LifecycleHooks {
     setTimeout(() => {
       Luigi.ux().hideAppLoadingIndicator();
     }, fallbackHideTimeout);
-    globalSearch.search.triggerDocSearch();
+    //globalSearch.search.triggerDocSearch();
   }
 }
 

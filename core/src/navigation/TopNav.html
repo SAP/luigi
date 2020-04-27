@@ -128,11 +128,13 @@
 
     <!-- dropdown for top nav nodes on smaller screens -->
     {#if visibleNodeCount > 0}
+    {#if isGlobalSearchAvailable}
     <GlobalSearch
       bind:dropDownStates
       on:toggleDropdownState="{toggleDropdownStateExternal}"
       isMobile="{true}"
     />
+    {/if}
     <div class="fd-shellbar__action fd-shellbar__action--mobile">
       <div class="fd-shellbar-collapse">
         <div class="fd-popover fd-popover--right">
