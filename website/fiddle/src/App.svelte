@@ -228,14 +228,6 @@
             <h3 class="fd-dialog__title">Luigi Config</h3>
           </div>
         </div>
-        <div class="fd-bar__right">
-          <div class="fd-bar__element">
-            <button
-            class="fd-button fd-button--transparent fd-button--compact fd-dialog__close sap-icon--decline sap-icon--l"
-            on:click={closeConfig}
-            aria-label="close" />
-          </div>
-        </div>
       </header>
       <div class="fd-dialog__body fd-dialog__body--no-vertical-padding">
         <div id="editor" class="lui-mobile-hide"/>
