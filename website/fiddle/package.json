@@ -20,10 +20,10 @@
     "dev": "webpack-dev-server --content-base public"
   },
   "dependencies": {
-    "@luigi-project/client": "1.1.0",
-    "@luigi-project/core": "1.1.0",
-    "@luigi-project/plugin-auth-oauth2": "1.1.0",
-    "@luigi-project/plugin-auth-oidc": "1.1.0",
+    "@luigi-project/client": "1.0.1",
+    "@luigi-project/core": "1.0.1",
+    "@luigi-project/plugin-auth-oauth2": "1.0.1",
+    "@luigi-project/plugin-auth-oidc": "1.0.1",
     "@sap-theming/theming-base-content": "^11.1.18",
     "ace-builds": "1.4.7",
     "fundamental-styles": "0.8.1"
