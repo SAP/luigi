@@ -1,10 +1,13 @@
 const path = require('path');
+const fs = require('fs');
 const glob = require('glob');
+const merge = require('lodash.merge');
+
 const { readFileSync } = require('fs');
 
 const babelSettings = JSON.parse(readFileSync('.babelrc'));
 
-module.exports = {
+const config = {
   entry: glob.sync('./auth/**/index.js').reduce((acc, path) => {
     const entry = path.replace('/index.js', '').replace('./auth/src/', '');
     acc[entry] = path;
@@ -32,3 +35,10 @@ module.exports = {
     ]
   }
 };
+
+// Extend with custom webpack configuration:
+glob.sync('./auth/**/webpack-extra.config.js').forEach(path => {
+  merge(config, require(path));
+});
+
+module.exports = config;

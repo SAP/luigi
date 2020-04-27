@@ -1,7 +1,6 @@
 const path = require('path');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const CleanWebpackPlugin = require('clean-webpack-plugin');
-const commonPlugins = require('./webpack-common-plugins');
 const commonRules = require('./webpack-common-rules');
 const exec = require('child_process').exec;
 const fundamentalStyles = require('./fundamentalStyleClasses');

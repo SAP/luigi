@@ -252,9 +252,8 @@
     <ng-container *ngIf="preservedViewCallbackContext">
       <div class="fd-panel fd-has-margin-bottom-small">
         <div class="fd-panel__body">
-          <div class="fd-alert" role="alert">
-            <div class="fd-alert__text">
-              <span class="fd-status-label fd-status-label--available"></span>
+          <div class="fd-message-strip" role="alert">
+            <div class="fd-message-strip__text">
               Context received from linkManager().goBack():<br />
               <pre>{{ preservedViewCallbackContext | json }}</pre>
             </div>
@@ -269,8 +268,8 @@
         </div>
       </div>
       <div class="fd-panel__body">
-        <ul class="fd-list-group">
-          <li class="fd-list-group__item">
+        <ul class="fd-list">
+          <li class="fd-list__item">
             <a
               href="javascript:void(0)"
               class="fd-link"
@@ -281,7 +280,7 @@
               data="linkManager().navigate('/overview')"
             ></app-code-snippet>
           </li>
-          <li class="fd-list-group__item">
+          <li class="fd-list__item">
             <a
               href="javascript:void(0)"
               class="fd-link"
@@ -292,7 +291,7 @@
               data="linkManager().navigate('users/groups/stakeholders')"
             ></app-code-snippet>
           </li>
-          <li class="fd-list-group__item">
+          <li class="fd-list__item">
             <a
               href="javascript:void(0)"
               class="fd-link"
@@ -309,7 +308,7 @@
             >
             </app-code-snippet>
           </li>
-          <li class="fd-list-group__item">
+          <li class="fd-list__item">
             <a
               href="javascript:void(0)"
               class="fd-link"
@@ -326,7 +325,7 @@
             >
             </app-code-snippet>
           </li>
-          <li class="fd-list-group__item">
+          <li class="fd-list__item">
             <a
               href="javascript:void(0)"
               class="fd-link"
@@ -342,7 +341,7 @@
               data="linkManager().fromContext('project').navigate('/settings')"
             ></app-code-snippet>
           </li>
-          <li class="fd-list-group__item">
+          <li class="fd-list__item">
             <a
               href="javascript:void(0)"
               class="fd-link"
@@ -360,7 +359,7 @@
             >
             </app-code-snippet>
           </li>
-          <li class="fd-list-group__item">
+          <li class="fd-list__item">
             <a
               href="javascript:void(0)"
               class="fd-link"
@@ -377,7 +376,7 @@
               data="linkManager().fromContext('NONEXISTING').navigate('/settings')"
             ></app-code-snippet>
           </li>
-          <li class="fd-list-group__item">
+          <li class="fd-list__item">
             <a
               href="javascript:void(0)"
               class="fd-link"
@@ -389,7 +388,7 @@
               data="linkManager().navigate('/settings', null, true)"
             ></app-code-snippet>
           </li>
-          <li class="fd-list-group__item">
+          <li class="fd-list__item">
             <a
               href="javascript:void(0)"
               class="fd-link"
@@ -407,7 +406,7 @@
             >
             </app-code-snippet>
           </li>
-          <li class="fd-list-group__item">
+          <li class="fd-list__item">
             <a
               href="javascript:void(0)"
               class="fd-link"
@@ -428,7 +427,7 @@
             >
             </app-code-snippet>
           </li>
-          <li class="fd-list-group__item">
+          <li class="fd-list__item">
             <a
               href="javascript:void(0)"
               class="fd-link"
@@ -473,7 +472,7 @@
               </button>
             </div>
           </li>
-          <li class="fd-list-group__item">
+          <li class="fd-list__item">
             <a
               href="javascript:void(0)"
               class="fd-link"
@@ -534,8 +533,8 @@
         </div>
       </div>
       <div class="fd-panel__body">
-        <ul class="fd-list-group">
-          <li class="fd-list-group__item">
+        <ul class="fd-list">
+          <li class="fd-list__item">
             <a
               href="javascript:void(0)"
               class="fd-link"
@@ -550,7 +549,7 @@
               data="linkManager().navigate('/projects/pr2/miscellaneous2/maskopatol')"
             ></app-code-snippet>
           </li>
-          <li class="fd-list-group__item">
+          <li class="fd-list__item">
             <a
               href="javascript:void(0)"
               class="fd-link"
