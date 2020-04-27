@@ -201,6 +201,10 @@ export class CustomAuthenticationProvider {
     // returns a promise of a userinfo object which contains an object with `name`, `email` and `picture` properties to display in the profile dropdown menu
     return { name, email, picture };
   }
+
+  unload() {
+    // logic that is called if you use Luigi.unload() in order to remove event listeners and intervals.
+  }
 }
 ```
 ​
