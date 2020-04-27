@@ -25,6 +25,28 @@ The lerna-changelog tool detects changes based on PR labels and maps them to sec
 -->
 
 
+## [v1.1.0] (2020-04-24)
+
+#### :boom: Breaking Change 
+* [#1267](https://github.com/SAP/luigi/pull/1267) Following an upgrade to Fundamental Library Styles version 0.8.1, there were changes in the HTML structure. Some classes were renamed or removed completely. You can find the full list of Fundamental Library Styles changes [here](https://github.com/SAP/fundamental-styles/wiki/Breaking-Changes).  ([@marynaKhromova](https://github.com/marynaKhromova))
+
+#### :rocket: Added
+* [#1283](https://github.com/SAP/luigi/pull/1283) Translate tooltip text in semi collapsed mode and add title attributes to entries in left nav ([@zarkosimic](https://github.com/zarkosimic))
+* [#1269](https://github.com/SAP/luigi/pull/1269) Oidc provider uses storage type also for oidc client configuration ([@maxmarkus](https://github.com/maxmarkus))
+* [#1241](https://github.com/SAP/luigi/pull/1241) Update fundamental styles to 0.8.1 ([@UlianaMunich](https://github.com/UlianaMunich))
+
+
+#### :bug: Fixed
+* [#1291](https://github.com/SAP/luigi/pull/1291) Fix semicollapsible issue ([@maxmarkus](https://github.com/maxmarkus))
+* [#1271](https://github.com/SAP/luigi/pull/1271) Fix leftnav nav-sync issue ([@maxmarkus](https://github.com/maxmarkus))
+* [#1263](https://github.com/SAP/luigi/pull/1263) Fiddle demo page mobile view ([@UlianaMunich](https://github.com/UlianaMunich))
+
+
+
+
+
+
+
 ## [v1.0.1] (2020-04-09)
 
 #### :rocket: Added
@@ -722,3 +744,4 @@ The lerna-changelog tool detects changes based on PR labels and maps them to sec
 [v0.7.7]: https://github.com/SAP/luigi/compare/v0.7.6...v0.7.7
 [v1.0.0]: https://github.com/SAP/luigi/compare/v0.7.7...v1.0.0
 [v1.0.1]: https://github.com/SAP/luigi/compare/v1.0.0...v1.0.1
+[v1.1.0]: https://github.com/SAP/luigi/compare/v1.0.1...v1.1.0

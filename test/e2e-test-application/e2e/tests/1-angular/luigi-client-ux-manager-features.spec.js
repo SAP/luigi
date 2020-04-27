@@ -27,7 +27,7 @@ describe('Luigi Client ux manager features', () => {
       cy.get('.lui-backdrop').should('exist');
       //close modal
       cy.wrap($iframeBody)
-        .find('.fd-modal__footer')
+        .find('.fd-dialog__footer')
         .contains('Confirm')
         .click();
 
