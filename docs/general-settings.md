@@ -79,6 +79,7 @@ If you don't specify any value for  **responsiveNavigation**, the buttons remain
   }
 }
 ```
+Take a look at our [i18n](i18n.md) section for an implementation suggestion.
 <!-- add-attribute:class:warning -->
 > **NOTE:** You can translate Luigi internal messages by providing translation for [these keys](../core/src/utilities/defaultLuigiTranslationTable.js).
 
