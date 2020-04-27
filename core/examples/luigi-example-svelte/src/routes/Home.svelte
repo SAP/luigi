@@ -7,10 +7,10 @@
   </div>
 </section>
 <script>
-  import LuigiClient from '@kyma-project/luigi-client';
+  import LuigiClient from '@luigi-project/client';
   import { onMount } from 'svelte';
 
-  export let message='Hello world'
+  let message = 'The app loaded without Luigi';
 
   onMount(() => {
     LuigiClient.addInitListener(() => {
