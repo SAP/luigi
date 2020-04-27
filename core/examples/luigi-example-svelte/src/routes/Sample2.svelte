@@ -6,12 +6,3 @@
     Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat.
   </div>
 </section>
-
-
-<script>
-	import LuigiClient from '@kyma-project/luigi-client';
-
-	function showAlert() {
-		LuigiClient.uxManager().showAlert({text: 'Hello World!'});
-	}
-</script>

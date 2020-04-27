@@ -4,7 +4,6 @@ const CleanWebpackPlugin = require('clean-webpack-plugin');
 const BundleAnalyzerPlugin = require('webpack-bundle-analyzer')
   .BundleAnalyzerPlugin;
 const commonRules = require('./webpack-common-rules');
-const commonPlugins = require('./webpack-common-plugins');
 const exec = require('child_process').exec;
 const fundamentalStyles = require('./fundamentalStyleClasses');
 
