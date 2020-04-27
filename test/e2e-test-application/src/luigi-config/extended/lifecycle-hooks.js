@@ -1,3 +1,4 @@
+import { globalSearch } from './globalSearch';
 class LifecycleHooks {
   luigiAfterInit() {
     // fallback in case some micro frontend did not send 'my-microfrontend-is-ready' custom message
@@ -6,6 +7,7 @@ class LifecycleHooks {
     setTimeout(() => {
       Luigi.ux().hideAppLoadingIndicator();
     }, fallbackHideTimeout);
+    globalSearch.search.triggerDocSearch();
   }
 }
 

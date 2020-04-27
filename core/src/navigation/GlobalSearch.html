@@ -2,9 +2,10 @@
 {#if !isMobile}
 <div class="fd-shellbar__action fd-shellbar__action--desktop">
   <div class="fd-popover__control" on:click|stopPropagation="{() => {}}">
+    <!--{!(dropDownStates.globalSearchPopover || dropDownStates.showResultAndSearchField)}-->
     <div
       aria-label="LuigiGlobalSearch"
-      aria-hidden="{!(dropDownStates.globalSearchPopover || dropDownStates.showResultAndSearchField)}"
+      aria-hidden="false"
       aria-haspopup="true"
       class="luigi-search"
     >
@@ -16,7 +17,8 @@
         >
       </div>
     </div>
-    <div
+    <!--
+       <div
       class="fd-popover__body fd-popover__body--right"
       aria-hidden="{!dropDownStates.showResultAndSearchField}"
     >
@@ -29,7 +31,7 @@
         </ul>
       </nav>
       {/if}
-    </div>
+    </div>-->
   </div>
 </div>
 <div class="fd-shellbar__action fd-shellbar__action--desktop">
@@ -58,7 +60,7 @@
         <input
           type="text"
           id="luigi-globalSearch-mobile"
-          class="fd-input fd-input-group__input fd-shellbar__input-group__input luigi-input-search-field"
+          class="fd-input fd-input-group__input fd-shellbar__input-group__input luigi-input-search-field-mobile"
         >
       </div>
     </div>
@@ -81,11 +83,15 @@
     const input = isMobile
       ? document.getElementById('luigi-globalSearch-mobile')
       : document.getElementById('luigi-globalSearch');
-    if (search && GenericHelpers.isFunction(search.init)) {
-      input.addEventListener('keyup', e => {
-        //TODO security validation
-        triggerSearch(e);
-      });
+    if (search && GenericHelpers.isFunction(search.triggerDocSearch)) {
+      debugger;
+      //search.triggerDocSearch();
+
+      //input.addEventListener('keyup', e => {
+      //   //TODO security validation
+      //   //triggerSearch(e);
+      //   search.triggerDocSearch();
+      // });
     }
   });
 

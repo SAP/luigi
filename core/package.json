@@ -48,7 +48,8 @@
     "url-loader": "^1.0.1",
     "webpack": "^4.42.1",
     "webpack-bundle-analyzer": "^3.6.0",
-    "webpack-cli": "^3.3.9"
+    "webpack-cli": "^3.3.9",
+    "docsearch.js": "2.6.3"
   },
   "scripts": {
     "bundle": "npm run bundle-evergreen && npm run bundle-ie11",
