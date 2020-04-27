@@ -180,7 +180,7 @@
                 <li class="fd-menu__item lui-mobile-switch-menu">
                   <a
                     class="fd-menu__link"
-                    on:click="{() => toggleDropdownState('globalSearchMobilePopover')}"
+                    on:click|stopPropagation="{() => toggleDropdownState('globalSearchMobilePopover')}"
                   >
                     <span class="fd-top-nav__icon sap-icon--search"></span>
                     <span class="fd-menu__title">Search</span>
