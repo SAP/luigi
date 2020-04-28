@@ -12,6 +12,6 @@ echoe() {
 
   echo ""
   echo ""
-  echo -e "${On_IYellow}${BIBlack}${1}${Color_Off}"
+  echo -e " ${On_IYellow}${BIBlack}${1}${Color_Off} "
   echo ""
 }

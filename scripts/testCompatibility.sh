@@ -4,12 +4,12 @@
 # luigi is in ~/Sites/SAP/luigi with the branch checked out
 # that we want to test.
 
+
 showHelp() {
   echo ""
-  echo "DO NOT RUN THIS SCRIPT IN THIS FOLDER (./testComp...)!"
   echo ""
-  echo "Be sure to stop all other running luigi or console related"
-  echo "frontend projects (eg. port 4200 in use)"
+  echo "Be sure to stop all other running luigi related"
+  echo "frontend projects (ports 4200 and 8080 must not be in use)"
   echo ""
   echo ""
   echo "Usage:"
@@ -42,16 +42,34 @@ showHelp() {
 
 BASE_DIR="$( cd "$(dirname "$0")" ; pwd -P )"
 
+cd $BASE_DIR/../
+
 source $BASE_DIR/shared/bashHelpers.sh
 
+declare -a APP_FOLDERS=(
+  "/test/e2e-test-application"
+  "/website/fiddle"
+)
+
+declare -a APP_PORTS=(
+  4200 # e2e-test-application
+  8080 # fiddle
+)
+
+declare -a APP_PUBLIC_FOLDERS=(
+  "dist" # e2e-test-application
+  "public" # fiddle
+)
+
+
 killWebServer() {
-  # the [] is a workaround to prevent ps showing up itself
-  # https://unix.stackexchange.com/questions/74185/how-can-i-prevent-grep-from-showing-up-in-ps-results
-  SPAPID=`ps -A -ww | grep '[p]ort 4200' | tr -s ' ' |  cut -d ' ' -f 1`
-  if [ ! -z "$SPAPID" ]; then
-    echoe "Cleanup: Stopping SPA webserver"
-    kill -9 $SPAPID
-  fi
+  for PORT in "${APP_PORTS[@]}"; do
+    SPAPID=`lsof -i :${PORT} | tail -n 1 | tr -s ' ' | cut -d ' ' -f 2`
+    if [ ! -z "$SPAPID" ]; then
+      echoe "Cleanup: Stopping webserver on port $PORT"
+      kill -9 $SPAPID
+    fi
+  done
 }
 
 promptForTag() {
@@ -110,6 +128,8 @@ verifyInstallation() {
 
     echoe "Bundling current Luigi"
     lerna run bundle
+
+    echoe "Luigi installation done"
   fi
 }
 
@@ -132,68 +152,76 @@ checkoutLuigiToTestfolder() {
   git fetch --tags
   git checkout tags/$TAG
 
-  echoe "Installing selected Luigi example app"
-  echo $EXAMPLE_DIR
-  cd $EXAMPLE_DIR
-  npm i
+  for FOLDER in "${APP_FOLDERS[@]}"; do
+    echoe "Installing app $FOLDER"
+    cd $LUIGI_DIR_TESTING/$FOLDER
+    npm i
+  done
 }
 
 linkLuigi() {
-  echoe "Linking current Luigi to selected version"
-  # remove installed luigi versions and symlink with latest
-  mkdir -p $EXAMPLE_NODE_MODULES
-  rm -rf $EXAMPLE_NODE_MODULES/*
-  ln -s $LUIGI_DIR/core/public $EXAMPLE_NODE_MODULES/core
-  ln -s $LUIGI_DIR/client/public $EXAMPLE_NODE_MODULES/client
-  ln -s $LUIGI_DIR/plugins/auth/public/auth-oauth2 $EXAMPLE_NODE_MODULES/plugin-auth-oauth2
-  ln -s $LUIGI_DIR/plugins/auth/public/auth-oidc $EXAMPLE_NODE_MODULES/plugin-auth-oidc
-  ls -la $EXAMPLE_NODE_MODULES
-  ls $EXAMPLE_NODE_MODULES/core
-  ls $EXAMPLE_NODE_MODULES/client
-  ls $EXAMPLE_NODE_MODULES/plugin-auth-oauth2
-  ls $EXAMPLE_NODE_MODULES/plugin-auth-oidc
+  for FOLDER in "${APP_FOLDERS[@]}"; do
+    NODE_MODULES=$LUIGI_DIR_TESTING/$FOLDER/node_modules/@luigi-project
+    echoe "Linking current Luigi to selected version in $FOLDER"
+    # remove installed luigi versions and symlink with latest
+    mkdir -p $NODE_MODULES
+    rm -rf $NODE_MODULES/*
+    ln -s $LUIGI_DIR/core/public $NODE_MODULES/core
+    ln -s $LUIGI_DIR/client/public $NODE_MODULES/client
+    ln -s $LUIGI_DIR/plugins/auth/public/auth-oauth2 $NODE_MODULES/plugin-auth-oauth2
+    ln -s $LUIGI_DIR/plugins/auth/public/auth-oidc $NODE_MODULES/plugin-auth-oidc
+    ls -la $NODE_MODULES
+    ls $NODE_MODULES/core
+    ls $NODE_MODULES/client
+    ls $NODE_MODULES/plugin-auth-oauth2
+    ls $NODE_MODULES/plugin-auth-oidc
 
-  if [ ! -f $EXAMPLE_NODE_MODULES/core/package.json ]; then
-    echoe "There was an issue linking the core module"
-    exit 2
-  fi
-  if [ ! -f $EXAMPLE_NODE_MODULES/client/package.json ]; then
-    echoe "There was an issue linking the client module"
-    exit 2
-  fi
-  if [ ! -f $EXAMPLE_NODE_MODULES/plugin-auth-oauth2/package.json ]; then
-    echoe "There was an issue linking the auth-oauth2 module"
-    exit 2
-  fi
-  if [ ! -f $EXAMPLE_NODE_MODULES/plugin-auth-oidc/package.json ]; then
-    echoe "There was an issue linking the auth-oidc module"
-    exit 2
-  fi
+    if [ ! -f $NODE_MODULES/core/package.json ]; then
+      echoe "There was an issue linking the core module"
+      exit 2
+    fi
+    if [ ! -f $NODE_MODULES/client/package.json ]; then
+      echoe "There was an issue linking the client module"
+      exit 2
+    fi
+    if [ ! -f $NODE_MODULES/plugin-auth-oauth2/package.json ]; then
+      echoe "There was an issue linking the auth-oauth2 module"
+      exit 2
+    fi
+    if [ ! -f $NODE_MODULES/plugin-auth-oidc/package.json ]; then
+      echoe "There was an issue linking the auth-oidc module"
+      exit 2
+    fi
+  done
 }
 
 bundleLuigi() {
-  echoe "Bundling example app"
-  cd $EXAMPLE_DIR
-  npm run build
+  for FOLDER in "${APP_FOLDERS[@]}"; do
+    echoe "Bundling app $FOLDER"
+    cd $LUIGI_DIR_TESTING/$FOLDER
+    npm run build
+  done
 }
 
 verifyAndStartWebserver() {
+  killWebServer
+
   WS=`command -v sirv`
   if [ ! -x $WS ] || [ "$WS" == "" ] ; then
     echoe "Installing webserver"
     npm i -g sirv-cli
   fi
 
-  killWebServer
-
-  echoe "Run webserver"
-  cd $EXAMPLE_DIR
-  (sirv start dist --port 4200 --single --quiet &)
+  for i in "${!APP_FOLDERS[@]}"; do 
+    echoe "Run app webserver on ${APP_PORTS[$i]}"
+    cd $LUIGI_DIR_TESTING/${APP_FOLDERS[$i]}
+    (sirv start ${APP_PUBLIC_FOLDERS[$i]} --port ${APP_PORTS[$i]} --single --quiet &)
+  done
 }
 
 startE2eTestrunner() {
   echoe "Starting e2e test headless"
-  cd $EXAMPLE_DIR
+  cd $LUIGI_DIR_TESTING/${APP_FOLDERS[0]}
   # start separately
   npm run e2e:run
 
@@ -207,8 +235,10 @@ startE2eTestrunner() {
 LUIGI_DIR="${BASE_DIR}/.."
 LUIGI_FOLDERNAME="luigi-compatibility-testing"
 LUIGI_DIR_TESTING="$LUIGI_DIR/../$LUIGI_FOLDERNAME"
-EXAMPLE_DIR="$LUIGI_DIR_TESTING/test/e2e-test-application"
-EXAMPLE_NODE_MODULES=$EXAMPLE_DIR/node_modules/@luigi-project
+
+EXAMPLE_DIR="$LUIGI_DIR_TESTING"
+NODE_MODULES=$EXAMPLE_DIR/node_modules/@luigi-project
+
 TESTONLY=""
 
 while [ "$#" -gt 0 ]; do
