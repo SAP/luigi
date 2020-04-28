@@ -5,12 +5,13 @@ Cypress.Commands.add(
     cy.visit(`http://localhost:8080/#${path}`, {
       onBeforeLoad: win => {
         win.localStorage.setItem('cookiesAccepted', 'true');
+
         var intv = setInterval(function() {
-            if(win.Luigi.config) {
+            if(win.Luigi != undefined) {
                 win.Luigi.setConfig(config)
                 clearInterval(intv)
             }
-        }, 100)
+        }, 50) 
       }
     });
   }
