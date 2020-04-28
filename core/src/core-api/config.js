@@ -217,8 +217,11 @@ class LuigiConfig {
   }
 
   /**
-   * Unloads the current Luigi instance, which can be initialized later again by using `Luigi.config().init()`
+   * Unloads the current Luigi instance, which can be initialized later again by using `Luigi.config({...})`
    * @memberof Configuration
+   * @since NEXTRELEASE
+   * @example
+   * Luigi.unload()
    */
   unload() {
     this.initialized = false;

@@ -157,7 +157,17 @@ Returns **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/
 
 #### unload
 
-Unloads the current Luigi instance, which can be initialized later again by using `Luigi.config().init()`
+Unloads the current Luigi instance, which can be initialized later again by using `Luigi.config({...})`
+
+##### Examples
+
+```javascript
+Luigi.unload()
+```
+
+**Meta**
+
+-   **since**: NEXTRELEASE
 
 ## Luigi.elements()
 
