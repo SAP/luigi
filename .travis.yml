@@ -90,22 +90,22 @@ jobs:
     #     - rm -rf ~/.npm/_cacache
 
     #----- WHITESOURCE -----
-    - name: 'Whitesource check'
-      if: repo = SAP/luigi AND branch = master
-      # if: repo = SAP/luigi AND (branch = master OR branch = release-v1)
-      # Whitesource can't deal with symlinking, therefore we can't use lerna
-      script:
-        - 'if [ ! -z "${WHITESOURCE_APIKEY}" ]; then
-            npm --prefix ./client ci ./client;
-            npm --prefix ./core ci ./core;
-            npm --prefix ./website/landingpage/dev install ./website/landingpage/dev;
-            npm --prefix ./website/fiddle install ./website/fiddle;
-            npm i -g whitesource;
-            bash ./scripts/whiteSource.sh;
-          fi'
-      before_cache:
-        - rm -rf ~/.npm/_logs
-        - rm -rf ~/.npm/_cacache
+    # - name: 'Whitesource check'
+    #   if: repo = SAP/luigi AND branch = master
+    #   # if: repo = SAP/luigi AND (branch = master OR branch = release-v1)
+    #   # Whitesource can't deal with symlinking, therefore we can't use lerna
+    #   script:
+    #     - 'if [ ! -z "${WHITESOURCE_APIKEY}" ]; then
+    #         npm --prefix ./client ci ./client;
+    #         npm --prefix ./core ci ./core;
+    #         npm --prefix ./website/landingpage/dev install ./website/landingpage/dev;
+    #         npm --prefix ./website/fiddle install ./website/fiddle;
+    #         npm i -g whitesource;
+    #         bash ./scripts/whiteSource.sh;
+    #       fi'
+    #   before_cache:
+    #     - rm -rf ~/.npm/_logs
+    #     - rm -rf ~/.npm/_cacache
 
     # ----- INTEGRATION -----
     # - name: 'Integration Testing 1'
@@ -118,7 +118,6 @@ jobs:
     - name: 'Compatibility tests'
       # run only when merging from release-v branch to master
       # if: repo = SAP/luigi AND branch ~= ^release-v
-      if: repo = SAP/luigi AND branch ~= ^594
       script:
         - bash ./scripts/testCompatibility.sh
       before_cache:
