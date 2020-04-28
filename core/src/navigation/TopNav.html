@@ -24,6 +24,11 @@
       on:toggleSearch="{()=>toggleSearch()}"
       isMobile="{false}"
     />
+    <GlobalSearch
+      bind:isSearchFieldVissible
+      on:toggleSearch="{()=>toggleSearch()}"
+      isMobile="{true}"
+    />
     {/if}
     <ContextSwitcher
       bind:dropDownStates
@@ -128,13 +133,6 @@
 
     <!-- dropdown for top nav nodes on smaller screens -->
     {#if visibleNodeCount > 0}
-    {#if isGlobalSearchAvailable}
-    <GlobalSearch
-      bind:isSearchFieldVissible
-      on:toggleSearch="{()=>toggleSearch()}"
-      isMobile="{true}"
-    />
-    {/if}
     <div class="fd-shellbar__action fd-shellbar__action--mobile">
       <div class="fd-shellbar-collapse">
         <div class="fd-popover fd-popover--right">
@@ -561,6 +559,7 @@
   }
   export function toggleSearch() {
     clearSearchField();
+    debugger;
     isSearchFieldVissible = !isSearchFieldVissible;
   }
 

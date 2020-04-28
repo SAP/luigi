@@ -23,17 +23,7 @@ class GlobalSearch {
     },
     //algolia
     initDocSearch: () => {
-      console.log(
-        document.querySelector(
-          '.fd-shellbar__action--desktop .luigi-search__input'
-        )
-      );
       docsearch(this.docSearchConfig);
-      console.log(
-        document.querySelector(
-          '.fd-shellbar__action--mobile .luigi-search__input'
-        )
-      );
       docsearch(this.docSearchConfigMobile);
     }
   };
