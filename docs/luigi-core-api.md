@@ -7,7 +7,7 @@
     },
     "metaData": {
       "categoryPosition": 2,
-      "position": 9
+      "position": 10
     }
   }
 }
@@ -634,6 +634,11 @@ Unregisters a listener for locale changes.
 
 Gets translated text for the specified key in the current locale or in the specified one.
 Property values for token replacement in the localization key will be taken from the specified interpolations object.
+
+<!-- add-attribute:class:success -->
+
+> **TIP**: Be aware that this function is not asynchronous and therefore the translation table must be existing already at initialization.
+> Take a look at our [i18n](i18n.md) section for an implementation suggestion.
 
 ##### Parameters
 
