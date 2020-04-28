@@ -13,15 +13,18 @@
   }
 
   function reloadConfig() {
-	let customConfig = sessionStorage.getItem('fiddle');
-	let customConfigPreviousSession = localStorage.getItem('fiddle');
-	if(!customConfig && customConfigPreviousSession) {
-		if (confirm('We found a fiddle from a previous session. Do you want to restore it?')) {
-			customConfig = customConfigPreviousSession;
-        	sessionStorage.setItem('fiddle', customConfig);
-		}
-	}
+      let customConfig = sessionStorage.getItem('fiddle');
+      let customConfigPreviousSession = localStorage.getItem('fiddle');
 
+      // check if config saved from a previous session
+      if(!customConfig && customConfigPreviousSession) {
+        if (confirm('We found a fiddle from a previous session. Do you want to restore it?')) {
+          customConfig = customConfigPreviousSession;
+          sessionStorage.setItem('fiddle', customConfig);
+        }
+      }
+      
+    // try to execyte custom configuration or defaut
     try {
       if (!customConfig) {
         sessionStorage.setItem('fiddle', defaultConfigString);
