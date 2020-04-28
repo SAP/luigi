@@ -3,26 +3,16 @@
 >
   <div class="fd-popover__control" on:click|stopPropagation="{() => {}}">
     <div
-      aria-label="LuigiGlobalSearch"
       aria-hidden="{!isMobile ? (!(dropDownStates.globalSearchPopover || dropDownStates.showResultAndSearchField)) : (!(dropDownStates.globalSearchMobilePopover  || false))}"
       aria-haspopup="true"
       class="luigi-search"
     >
       <div class="fd-input-group fd-shellbar__input-group">
-        {#if !isMobile}
         <input
           type="text"
           id="luigi-globalSearch"
           class="fd-input fd-input-group__input fd-shellbar__input-group__input luigi-input-search-field"
         >
-        {/if}
-        {#if isMobile}
-        <input
-          type="text"
-          id="luigi-globalSearch"
-          class="fd-input fd-input-group__input fd-shellbar__input-group__input luigi-input-search-field"
-        >
-        {/if}
       </div>
     </div>
 
@@ -34,7 +24,7 @@
       <nav class="fd-menu">
         <ul class="fd-menu__list fd-menu__list--top">
           {#each searchResults as result}
-          <li class="fd-menu__item">{result}</li>
+          <li class="fd-menu__item" on:click="{clearInputField}">{result}</li>
           {/each}
         </ul>
       </nav>
@@ -47,7 +37,6 @@
   <div on:click|stopPropagation="{() => {}}">
     <button
       class="fd-button fd-shellbar__button sap-icon--search"
-      aria-label="LuigiGlobalSearch"
       id="lui-search-button"
       aria-haspopup="true"
       aria-expanded="{dropDownStates.globalSearchPopover || false}"
@@ -107,6 +96,11 @@
 
   export function toggleDropdownState(name) {
     dispatch('toggleDropdownState', { name });
+  }
+
+  function clearInputField() {
+    const input = document.getElementById('luigi-globalSearch');
+    input.value = '';
   }
 </script>
 <style type="text/scss">
