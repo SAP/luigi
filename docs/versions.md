@@ -17,12 +17,17 @@ meta -->
 
 Read about the versions of Luigi in this document.
 
-* [Luigi version 1.x](#luigi-1.x)
-* [Earlier versions](#earlier-versions)
+* [Changelog](#changelog)
+* [Important version 1.x upgrades](#luigi-1.x-upgrades)
+* [Docs for earlier versions](#docs-for-earlier-versions)
 
-## Luigi 1.x
+## Changelog
 
-Versions 1.0 and above differ from earlier Luigi versions in some important ways. Luigi npm packages (previously under `kyma-project`) are under a new npm org. The new packages are:
+Our [changelog](https://bit.ly/2W47Ewv) contains information on all the updates and features which were added to Luigi starting from its initial release.
+
+## Luigi 1.x upgrades
+
+Luigi versions 1.0 and above differ from earlier versions in some important ways. Luigi npm packages (previously under `kyma-project`) are under a new npm org. The new packages are:
 - @luigi-project/client
 - @luigi-project/client-ie11
 - @luigi-project/core
@@ -83,12 +88,12 @@ Within Luigi, we renamed the `lui-tendant-menu__control` class to `lui-ctx-switc
 <!-- accordion:end -->
 
 
-## Earlier versions
+## Docs for earlier versions
 
 <!-- add-attribute:class:warning -->
 > **NOTE**: Always download the latest patch version!
 
-You can find the documentation for previous versions of Luigi here:
+The current documentation page describes the latest Luigi version. You can find the documentation for earlier versions of Luigi here:
 
 * [0.7](https://github.com/SAP/luigi/tree/v0.7.7/docs)
 * [0.6](https://github.com/SAP/luigi/tree/v0.6.6/docs)
