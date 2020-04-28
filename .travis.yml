@@ -115,7 +115,8 @@ jobs:
     #   <<: *integration-testing
 
     # ----- NPM PUBLISH -----
-    - name: 'Compatibility tests'
+    - stage: 'Compatibility'
+      name: 'Compatibility tests'
       # run only when merging from release-v branch to master
       # if: repo = SAP/luigi AND branch ~= ^release-v
       script:
