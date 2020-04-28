@@ -168,6 +168,7 @@
           >
             <nav class="fd-menu">
               <ul class="fd-menu__list">
+                {#if isGlobalSearchAvailable}
                 <li class="fd-menu__item lui-mobile-switch-menu">
                   <a
                     class="fd-menu__link"
@@ -177,6 +178,7 @@
                     <span class="fd-menu__title">Search</span>
                   </a>
                 </li>
+                {/if}
                 {#if contextSwitcherConfig && (!authorizationEnabled || isLoggedIn)}
                 <li class="fd-menu__item lui-mobile-switch-menu">
                   <a
