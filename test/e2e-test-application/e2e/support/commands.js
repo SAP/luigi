@@ -6,7 +6,7 @@ Cypress.Commands.add(
       onBeforeLoad: win => {
         win.localStorage.setItem('cookiesAccepted', 'true');
         var intv = setInterval(function() {
-          if (win.Luigi != undefined) {
+          if (win.Luigi) {
             win.Luigi.setConfig(config);
             clearInterval(intv);
           }
