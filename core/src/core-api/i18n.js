@@ -113,6 +113,11 @@ class LuigiI18NManager {
   /**
    * Gets translated text for the specified key in the current locale or in the specified one.
    * Property values for token replacement in the localization key will be taken from the specified interpolations object.
+   *
+   * <!-- add-attribute:class:success -->
+   * > **TIP**: Be aware that this function is not asynchronous and therefore the translation table must be existing already at initialization.
+   * Take a look at our [i18n](i18n.md) section for an implementation suggestion.
+   *
    * @param {string} key key to be translated
    * @param {Object} interpolations objects with properties that will be used for token replacements in the localization key
    * @param {locale} locale optional locale to get the translation for; default is the current locale
@@ -159,6 +164,15 @@ class LuigiI18NManager {
     }
   }
 
+  /**
+   * @private
+   * Replaces values that are defiend in translation strings
+   * @param {string} value string to be translated
+   * @param {*} interpolations translation table
+   * @memberof LuigiI18N
+   * @example
+   * findInterpolations('Environment {num}', {num: 1})
+   */
   findInterpolations(value, interpolations) {
     Object.keys(interpolations).forEach(item => {
       value = value.replace(
