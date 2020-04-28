@@ -17,12 +17,12 @@ meta -->
 
 Read about the versions of Luigi in this document.
 
-* [Luigi version 1.0](#luigi-1.0)
+* [Luigi version 1.x](#luigi-1.x)
 * [Earlier versions](#earlier-versions)
 
-## Luigi 1.0
+## Luigi 1.x
 
-As part of the upgrade to Luigi 1.0, some important changes were made. Luigi npm packages (previously under `kyma-project`) are now under a new npm org. The new packages are:
+Versions 1.0 and above differ from earlier Luigi versions in some important ways. Luigi npm packages (previously under `kyma-project`) are under a new npm org. The new packages are:
 - @luigi-project/client
 - @luigi-project/client-ie11
 - @luigi-project/core
@@ -30,9 +30,23 @@ As part of the upgrade to Luigi 1.0, some important changes were made. Luigi npm
 - @luigi-project/plugin-auth-oauth2
 - @luigi-project/plugin-auth-oidc
 
-You can read more about the changes below:
+You can read more about the other changes below:
 
 <!-- accordion:start -->
+
+### Authorization Providers
+
+We have excluded the default authorization providers from Luigi Core and published them as separate modules.
+The property `customIdpProvider` has been renamed to `idpProvider`, since you now always need to define a provider.
+Additionally, you need to copy callback assets to your Core application.
+
+To install the plugins, follow these installation guides:
+
+- [OAuth2 Implicit Grant](https://github.com/SAP/luigi/tree/master/plugins/auth/public/auth-oauth2)
+- [OpenID Connect (OIDC)](https://github.com/SAP/luigi/tree/master/plugins/auth/public/auth-oidc)
+
+<!-- add-attribute:class:warning -->
+> **NOTE:** If you already had a custom provider defined, you only need to rename the provider key to `idpProvider`.
 
 ### Internet Explorer 11 (IE11)
 
@@ -59,20 +73,6 @@ or, if you are not using any bundler, Luigi is still available as a global objec
 window.LuigiClient
 window.Luigi
 ```
-
-### Authorization Providers
-
-We have excluded the default authorization providers from Luigi Core and published them as separate modules.
-The property `customIdpProvider` has been renamed to `idpProvider`, since you now always need to define a provider.
-Additionally, you need to copy callback assets to your Core application.
-
-To install the plugins, follow these installation guides:
-
-- [OAuth2 Implicit Grant](https://github.com/SAP/luigi/tree/master/plugins/auth/public/auth-oauth2)
-- [OpenID Connect (OIDC)](https://github.com/SAP/luigi/tree/master/plugins/auth/public/auth-oidc)
-
-<!-- add-attribute:class:warning -->
-> **NOTE:** If you already had a custom provider defined, you only need to rename the provider key to `idpProvider`.
 
 ### Fundamental Library Styles
 
