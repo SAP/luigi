@@ -7,7 +7,6 @@
 </div>
 
 <script>
-  
   import { Router, Route } from "svelte-routing";
   import Home from "./routes/Home.svelte";
   import Sample1 from "./routes/Sample1.svelte";
@@ -16,7 +15,7 @@
 </script>
 
 <style type="text/scss">
-:global(.fd-panel) {
-  padding: 15px;
-}
+  :global(.fd-panel) {
+    padding: 15px;
+  }
 </style>

@@ -1,14 +1,10 @@
-$fd-scss-font-path: '~fundamental-styles/scss/fonts/';
-$fd-icons-path: '~fundamental-styles/scss/icons/';
-
-.fd-page__header {
-  padding-left: 1.5rem;
-}
-
 .fd-form-item {
   margin-bottom: 10px;
 }
 
-.fd-list-group__item {
+.fd-list__item {
   display: block;
+  border-bottom: none;
+  height: auto; //override the 2,75rem from FD Styles, otherwise the content doesn#t fit
+  padding: 10px;
 }
