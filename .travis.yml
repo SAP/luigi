@@ -79,7 +79,18 @@ jobs:
         - rm -rf ~/.npm/_cacache
         - rm -rf $TRAVIS_BUILD_DIR/core/examples
 
-    #----- DOCU -----
+    # ----- NPM PUBLISH -----
+    - stage: 'Compatibility'
+      name: 'Compatibility tests'
+      # run only when merging from release-v branch to master
+      # if: repo = SAP/luigi AND branch ~= ^release-v
+      script:
+        - bash ./scripts/testCompatibility.sh
+      before_cache:
+        - rm -rf ~/.npm/_logs
+        - rm -rf ~/.npm/_cacache
+
+    # #----- DOCU -----
     # - stage: 'Documentation & Tests'
     #   name: 'Check Documentation'
     #   script:
@@ -89,7 +100,7 @@ jobs:
     #     - rm -rf ~/.npm/_logs
     #     - rm -rf ~/.npm/_cacache
 
-    #----- WHITESOURCE -----
+    # #----- WHITESOURCE -----
     # - name: 'Whitesource check'
     #   if: repo = SAP/luigi AND branch = master
     #   # if: repo = SAP/luigi AND (branch = master OR branch = release-v1)
@@ -107,32 +118,21 @@ jobs:
     #     - rm -rf ~/.npm/_logs
     #     - rm -rf ~/.npm/_cacache
 
-    # ----- INTEGRATION -----
+    # # ----- INTEGRATION -----
     # - name: 'Integration Testing 1'
     #   <<: *integration-testing
 
     # - name: 'Integration Testing 2'
     #   <<: *integration-testing
 
-    # ----- NPM PUBLISH -----
-    - stage: 'Compatibility'
-      name: 'Compatibility tests'
-      # run only when merging from release-v branch to master
-      # if: repo = SAP/luigi AND branch ~= ^release-v
-      script:
-        - bash ./scripts/testCompatibility.sh
-      before_cache:
-        - rm -rf ~/.npm/_logs
-        - rm -rf ~/.npm/_cacache
-
-    # ----- NPM PUBLISH -----
-    - stage: 'Publish'
-      name: 'Publish to NPM'
-      # run only when merging from release-v branch to master
-      # if: repo = SAP/luigi AND (branch = master OR branch ~= ^release-v)
-      if: repo = SAP/luigi AND tag ~= ^v
-      script:
-        - bash ./scripts/npmPublish.sh
-      before_cache:
-        - rm -rf ~/.npm/_logs
-        - rm -rf ~/.npm/_cacache
+    # # ----- NPM PUBLISH -----
+    # - stage: 'Publish'
+    #   name: 'Publish to NPM'
+    #   # run only when merging from release-v branch to master
+    #   # if: repo = SAP/luigi AND (branch = master OR branch ~= ^release-v)
+    #   if: repo = SAP/luigi AND tag ~= ^v
+    #   script:
+    #     - bash ./scripts/npmPublish.sh
+    #   before_cache:
+    #     - rm -rf ~/.npm/_logs
+    #     - rm -rf ~/.npm/_cacache
