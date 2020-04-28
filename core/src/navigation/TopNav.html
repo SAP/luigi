@@ -20,8 +20,8 @@
     {#if !authorizationEnabled || isLoggedIn}
     {#if isGlobalSearchAvailable}
     <GlobalSearch
-      bind:dropDownStates
-      on:toggleDropdownState="{toggleDropdownStateExternal}"
+      bind:isSearchFieldVissible
+      on:toggleSearch="{()=>toggleSearch()}"
       isMobile="{false}"
     />
     {/if}
@@ -130,8 +130,8 @@
     {#if visibleNodeCount > 0}
     {#if isGlobalSearchAvailable}
     <GlobalSearch
-      bind:dropDownStates
-      on:toggleDropdownState="{toggleDropdownStateExternal}"
+      bind:isSearchFieldVissible
+      on:toggleSearch="{()=>toggleSearch()}"
       isMobile="{true}"
     />
     {/if}
@@ -172,7 +172,7 @@
                 <li class="fd-menu__item lui-mobile-switch-menu">
                   <a
                     class="fd-menu__link"
-                    on:click|stopPropagation="{() => toggleDropdownState('globalSearchMobilePopover')}"
+                    on:click|stopPropagation="{()=>{toggleSearch(),toggleDropdownState('overflowPopover')}}"
                   >
                     <span class="fd-top-nav__icon sap-icon--search"></span>
                     <span class="fd-menu__title">Search</span>
@@ -425,6 +425,7 @@
   export let isGlobalSearchAvailable;
   let store = getContext('store');
   let contextSwitcherToggle = false;
+  let isSearchFieldVissible = false;
   let selectedLabel;
   let defaultLabelContextSwitcher;
   let contextSwitcherConfig = LuigiConfig.getConfigValue(
@@ -552,6 +553,17 @@
     toggleDropdownState(event.detail.name);
   }
 
+  export function clearSearchField() {
+    const input = document.querySelector(
+      '.fd-shellbar__action--mobile .luigi-search__input'
+    );
+    input.value = '';
+  }
+  export function toggleSearch() {
+    clearSearchField();
+    isSearchFieldVissible = !isSearchFieldVissible;
+  }
+
   export function closeAllDropdowns() {
     const ddStates = dropDownStates || {};
     const keys = Object.keys(ddStates);
@@ -595,11 +607,6 @@
 </script>
 
 <style type="text/scss">
-  .luigi-search {
-    &[aria-hidden='true'] {
-      display: none !important;
-    }
-  }
   // Fix for Fiori aligning everything to right inside shellbar end
   .fd-shellbar__group--end {
     text-align: unset;

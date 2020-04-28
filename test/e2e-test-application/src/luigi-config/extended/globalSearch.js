@@ -1,10 +1,16 @@
 import docsearch from 'docsearch.js';
 class GlobalSearch {
   enabled = true;
-  docsearchOBj = {
+  docSearchConfig = {
     apiKey: '5ab04e0673d89f07c964afcf1522ad3a',
     indexName: 'luigi-project',
-    inputSelector: '#luigi-globalSearch',
+    inputSelector: '.fd-shellbar__action--desktop .luigi-search__input',
+    debug: true
+  };
+  docSearchConfigMobile = {
+    apiKey: '5ab04e0673d89f07c964afcf1522ad3a',
+    indexName: 'luigi-project',
+    inputSelector: '.fd-shellbar__action--mobile .luigi-search__input',
     debug: true
   };
   search = {
@@ -16,9 +22,19 @@ class GlobalSearch {
       });
     },
     //algolia
-    triggerDocSearch: () => {
-      console.log('test');
-      docsearch(this.docsearchOBj);
+    initDocSearch: () => {
+      console.log(
+        document.querySelector(
+          '.fd-shellbar__action--desktop .luigi-search__input'
+        )
+      );
+      docsearch(this.docSearchConfig);
+      console.log(
+        document.querySelector(
+          '.fd-shellbar__action--mobile .luigi-search__input'
+        )
+      );
+      docsearch(this.docSearchConfigMobile);
     }
   };
 }
