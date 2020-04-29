@@ -63,13 +63,21 @@ declare -a APP_PUBLIC_FOLDERS=(
 
 killWebServer() {
   for PORT in "${APP_PORTS[@]}"; do
+    echo "Pre Kill for $PORT"
     SPAPID=`lsof -i :${PORT} | tail -n 1 | tr -s ' ' | cut -d ' ' -f 2`
+    echo $?
+    echo "Post SPApid $SPAPID"
     if [ ! -z "$SPAPID" ]; then
       echoe "Cleanup: Stopping webserver on port $PORT"
       kill -9 $SPAPID
+      echo "Post Kill $SPAPID"
     fi
   done
 }
+
+killWebServer
+
+exit
 
 promptForTag() {
   # PROMPT FOR TAG
