@@ -80,18 +80,17 @@ jobs:
         - rm -rf $TRAVIS_BUILD_DIR/core/examples
 
     # ----- NPM PUBLISH -----
-    - stage: 'Compatibility'
+    - stage: 'Documentation & Tests'
       name: 'Compatibility tests'
       # run only when merging from release-v branch to master
       # if: repo = SAP/luigi AND branch ~= ^release-v
       script:
-        - bash ./scripts/testCompatibility.sh
+        - bash ./scripts/testCompatibility.sh --tag latest
       before_cache:
         - rm -rf ~/.npm/_logs
         - rm -rf ~/.npm/_cacache
 
     # #----- DOCU -----
-    # - stage: 'Documentation & Tests'
     #   name: 'Check Documentation'
     #   script:
     #     - cd $TRAVIS_BUILD_DIR/scripts && npm ci
