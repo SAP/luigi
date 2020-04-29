@@ -138,7 +138,13 @@ checkoutLuigiToTestfolder() {
   # check if lfolder exists, else only walk into it
   if [ ! -d $LUIGI_DIR_TESTING ]; then
     echoe "Creating test folder"
-    git clone git@github.com:SAP/luigi.git $LUIGI_DIR_TESTING
+    if [ "$USER" != "travis" ]; then
+      # travis
+      git clone https://github.com/SAP/luigi.git $LUIGI_DIR_TESTING
+    else
+      # osx localhost
+      git clone git@github.com:SAP/luigi.git $LUIGI_DIR_TESTING
+    fi
   fi
 
   if [ ! -d $LUIGI_DIR_TESTING ]; then
