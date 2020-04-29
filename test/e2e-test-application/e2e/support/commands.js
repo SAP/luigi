@@ -8,10 +8,9 @@ Cypress.Commands.add(
         var intv = setInterval(function() {
           if (win.Luigi) {
             win.Luigi.setConfig(config);
-            // console.log("Before clear int",win.Luigi.config)
             clearInterval(intv);
           }
-        }, 50);
+        }, 20);
       }
     });
   }
