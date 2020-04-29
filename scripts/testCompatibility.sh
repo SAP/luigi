@@ -275,6 +275,9 @@ if [ "" == "$TESTONLY" ]; then
   verifyInstallation
   checkoutLuigiToTestfolder
   linkLuigi
+  ls -lah $LUIGI_DIR_TESTING/test/e2e-test-application/node_modules/@luigi-project
+  cd $LUIGI_DIR_TESTING/test/e2e-test-application/node_modules/@luigi-project
+  ls *
   bundleApps
 else
   echoe "Running bunded example and e2e tests"
