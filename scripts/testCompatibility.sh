@@ -4,6 +4,7 @@
 # luigi is in ~/Sites/SAP/luigi with the branch checked out
 # that we want to test.
 
+set -e # exit on errors
 
 showHelp() {
   echo ""
