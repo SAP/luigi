@@ -1,5 +1,5 @@
 import fiddleConfig from '../../configs/default';
-Cypress.env('RETRIES', 0);
+Cypress.env('RETRIES', 1);
 describe('Navigation with Fiddle', () => {
   describe('Core api navigation test', () => {
     beforeEach(() => {
