@@ -4,8 +4,6 @@
 # luigi is in ~/Sites/SAP/luigi with the branch checked out
 # that we want to test.
 
-set -e # exit on errors
-
 showHelp() {
   echo ""
   echo ""
@@ -275,6 +273,9 @@ if [ "" == "$TESTONLY" ]; then
 else
   echoe "Running bunded example and e2e tests"
 fi
+
+# do it later since the installation might break
+set -e # exit on errors
 
 verifyAndStartWebserver
 startE2eTestrunner
