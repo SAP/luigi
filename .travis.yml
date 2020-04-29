@@ -86,9 +86,11 @@ jobs:
       # if: repo = SAP/luigi AND branch ~= ^release-v
       script:
         - bash ./scripts/testCompatibility.sh --tag latest || travis_terminate 1
+      cache: false # remove for production use
       before_cache:
         - rm -rf ~/.npm/_logs
         - rm -rf ~/.npm/_cacache
+        - rm -rf $TRAVIS_BUILD_DIR/../luigi-compatibility-testing # remove compatibility build
 
     # #----- DOCU -----
     #   name: 'Check Documentation'

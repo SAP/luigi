@@ -75,8 +75,18 @@ killWebServer() {
   done
 }
 
-killWebServer
 
+WS=`command -v sirv`
+if [ ! -x $WS ] || [ "$WS" == "" ] ; then
+  echoe "Installing webserver"
+  npm i -g sirv-cli
+fi
+
+echoe "Run app webserver on 4200"
+(sirv start --port 4200 --single --quiet &)
+wait 2
+
+killWebServer
 exit
 
 promptForTag() {
