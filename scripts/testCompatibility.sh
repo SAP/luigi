@@ -200,7 +200,7 @@ linkLuigi() {
   done
 }
 
-bundleLuigi() {
+bundleApps() {
   for FOLDER in "${APP_FOLDERS[@]}"; do
     echoe "Bundling app $FOLDER"
     cd $LUIGI_DIR_TESTING/$FOLDER
@@ -209,6 +209,7 @@ bundleLuigi() {
 }
 
 verifyAndStartWebserver() {
+  echoe "Kill webserver instances if required"
   killWebServer
 
   WS=`command -v sirv`
@@ -231,6 +232,7 @@ startE2eTestrunner() {
   npm run e2e:run
 
   # Check and kill webserver
+  echoe "Run successful, killing webserver instances"
   killWebServer
 }
 
@@ -269,7 +271,7 @@ if [ "" == "$TESTONLY" ]; then
   verifyInstallation
   checkoutLuigiToTestfolder
   linkLuigi
-  bundleLuigi
+  bundleApps
 else
   echoe "Running bunded example and e2e tests"
 fi
@@ -279,3 +281,5 @@ set -e # exit on errors
 
 verifyAndStartWebserver
 startE2eTestrunner
+
+echoe "Compatibility tests finished successfully"
