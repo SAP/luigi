@@ -69,17 +69,7 @@ declare -a APP_PATH_CHECK=(
 
 killWebServers() {
   for PORT in "${APP_PORTS[@]}"; do
-    echo ""
-    echo ""
-    echo "Checking to kill webserver on $PORT"
-    echo ""
-    echo ""
     killWebserver $PORT
-    echo ""
-    echo ""
-    echo "After kill"
-    echo ""
-    echo ""
   done
 }
 

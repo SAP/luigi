@@ -38,7 +38,6 @@ runWebserver() {
 
   echo ""
   echo "Starting webserver on port $PORT"
-  
 
   sirv start $FOLDER --single --cors --port $PORT --quiet &
   PID=$!
@@ -68,16 +67,7 @@ killWebserver() {
   PORT=$1
   SPAPID=`lsof -i :${PORT} | tail -n 1 | tr -s ' ' | cut -d ' ' -f 2`
   if [ "$SPAPID" == "" ]; then
-    echo "EMPTY"
-  fi
-  if [ -z "$SPAPID" ]; then
-    echo "-z"
-  fi
-  echo "SPAPID: $SPAPID"
-  
-  if [ "$SPAPID" == "" ]; then
     # Fallback
-    echo "spapid was empty: $SPAPID using ps fallback"
     # the [] is a workaround to prevent ps showing up itself
     # https://unix.stackexchange.com/questions/74185/how-can-i-prevent-grep-from-showing-up-in-ps-results
     SPAPID=$(eval "ps -A -ww | grep '[p]ort $PORT' | tr -s ' ' |  cut -d ' ' -f 1")
