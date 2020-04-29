@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 # We're considering the branch checked out that we want to test against.
 
@@ -62,45 +62,12 @@ declare -a APP_PUBLIC_FOLDERS=(
 )
 
 
-killWebServer() {
+killWebServers() {
   for PORT in "${APP_PORTS[@]}"; do
-    echo "Pre Kill for $PORT"
-    # the [] is a workaround to prevent ps showing up itself
-    # https://unix.stackexchange.com/questions/74185/how-can-i-prevent-grep-from-showing-up-in-ps-results
-    eval "ps -A -ww | grep '[p]ort $PORT'"
-    SPAPID=$(eval "ps -A -ww | grep '[p]ort $PORT' | tr -s ' ' |  cut -d ' ' -f 1")
-    echo "$SPAPID exit ps $?"
-    echo "lsof:"
-    echo `lsof -i :${PORT}`
-    # if [ "$SPAPID" == "" ]; then
-      # Fallback
-      SPAPID=`lsof -i :${PORT} | tail -n 1 | tr -s ' ' | cut -d ' ' -f 2`
-      echo "of lsof |$SPAPID|"
-      echo "$SPAPID exit lsof $?"
-    # fi
-
-    echo "Post SPApid $SPAPID"
-    if [ ! -z "$SPAPID" ]; then
-      echoe "Cleanup: Stopping webserver on port $PORT"
-      kill -9 $SPAPID
-      echo "Post: killed $SPAPID"
-    fi
+    echo "Checking to kill webserver on $PORT"
+    killWebserver $PORT
   done
 }
-
-
-WS=`command -v sirv`
-if [ ! -x $WS ] || [ "$WS" == "" ] ; then
-  echoe "Installing webserver"
-  npm i -g sirv-cli
-fi
-
-echoe "Run app webserver on 4200"
-(sirv start --port 4200 --single --quiet &)
-
-
-killWebServer
-exit
 
 promptForTag() {
   # PROMPT FOR TAG
@@ -240,19 +207,12 @@ bundleApps() {
 }
 
 verifyAndStartWebserver() {
-  echoe "Kill webserver instances if required"
-  killWebServer
-
-  WS=`command -v sirv`
-  if [ ! -x $WS ] || [ "$WS" == "" ] ; then
-    echoe "Installing webserver"
-    npm i -g sirv-cli
-  fi
+  killWebServers
 
   for i in "${!APP_FOLDERS[@]}"; do 
     echoe "Run app webserver on ${APP_PORTS[$i]}"
     cd $LUIGI_DIR_TESTING/${APP_FOLDERS[$i]}
-    (sirv start ${APP_PUBLIC_FOLDERS[$i]} --port ${APP_PORTS[$i]} --single --quiet &)
+    runWebserver 4200 dist /luigi-core/luigi.js
   done
 }
 
@@ -263,8 +223,7 @@ startE2eTestrunner() {
   npm run e2e:run
 
   # Check and kill webserver
-  echoe "Run successful, killing webserver instances"
-  killWebServer
+  killWebServers
 }
 
 

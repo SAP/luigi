@@ -1,6 +1,10 @@
 #!/usr/bin/env bash
+
 set -e # exit on errors
 BASE_DIR="$( cd "$(dirname "$0")" ; pwd -P )"
+
+source $BASE_DIR/../scripts/shared/bashHelpers.sh
+
 
 # We assume, Angular example is ran with `npm run build`
 # and root dependencies are installed
@@ -12,42 +16,19 @@ if [[ ! -L $NG_MODULES ]] && [[ ! -d $NG_MODULES ]]; then
   ln -s "$BASE_DIR/../node_modules" $NG_MODULES
 fi
 
+echo ""
+echo "Angular App"
 cd $NG_EXAMPLE
-echo "Starting Angular webserver"
-$BASE_DIR/../node_modules/.bin/sirv start dist --single --cors --port 4200 --quiet &
-WS_NG_PID=$!
+killWebserver 4200
+runWebserver 4200 dist /luigi-core/luigi.js
+WS_NG_PID=$PID
 
+echo ""
+echo "Fiddle App"
 cd $BASE_DIR/../website/fiddle
-echo "Starting Fiddle webserver"
-$BASE_DIR/../node_modules/.bin/sirv start public --single --cors --port 8080 --quiet &
-WS_FID_PID=$!
-
-# wait until example is built and running
-SLEEPSECS=1 # sleep time between webserver availability check
-WAITCOUNT=0
-until $(curl --output /dev/null --silent --head --fail http://localhost:4200/luigi-core/luigi.js); do
-  if [ $WAITCOUNT -gt 15 ]; then
-    echo "Starting Angular Webserver timed out."
-    exit 1;
-  fi
-  printf '.'
-  sleep $SLEEPSECS
-  WAITCOUNT=$(($WAITCOUNT + $SLEEPSECS))
-done
-echo "Angular Webserver was ready after $WAITCOUNT seconds."
-
-SLEEPSECS=1 # sleep time between webserver availability check
-WAITCOUNT=0
-until $(curl --output /dev/null --silent --head --fail http://localhost:8080/bundle.js); do
-  if [ $WAITCOUNT -gt 15 ]; then
-    echo "Starting Fiddle Webserver timed out."
-    exit 1;
-  fi
-  printf '.'
-  sleep $SLEEPSECS
-  WAITCOUNT=$(($WAITCOUNT + $SLEEPSECS))
-done
-echo "Fiddle Webserver was ready after $WAITCOUNT seconds."
+killWebserver 4200
+runWebserver 8080 public /bundle.js
+WS_FID_PID=$PID
 
 cd $NG_EXAMPLE
 if [ "$USE_CYPRESS_DASHBOARD" == "true" ]; then

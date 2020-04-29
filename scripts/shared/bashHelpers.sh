@@ -1,3 +1,6 @@
+#!/usr/bin/env bash
+
+LUIGI_BASE_DIR="$( cd "$(dirname "$BASH_SOURCE")" ; pwd -P )/../.."
 
 echoe() {
   # find all colors here: https://stackoverflow.com/questions/5947742/how-to-change-the-output-color-of-echo-in-linux#5947802
@@ -14,4 +17,73 @@ echoe() {
   echo ""
   echo -e " ${On_IYellow}${BIBlack}${1}${Color_Off} "
   echo ""
+}
+
+#
+# runWebserver PORT FOLDER TESTLINK
+# runWebserver 4200 dist /luigi-core/luigi.js
+# returns/exposes $PID
+#
+runWebserver() {
+  local PORT=$1
+  local FOLDER=$2
+  local TESTPATH=$3
+
+  PATH="$PATH:$LUIGI_BASE_DIR/node_modules/.bin"
+  WS=`command -v sirv`
+  if [ ! -x $WS ] || [ "$WS" == "" ] ; then
+    echoe "Installing webserver"
+    npm i -g sirv-cli
+  fi
+
+  echo ""
+  echo "Starting webserver on port $PORT"
+  
+
+  sirv start $FOLDER --single --cors --port $PORT --quiet &
+  PID=$!
+
+  echo "Webserver running with PID $PID"
+  # wait until example is built and running
+  local SLEEPSECS=1 # sleep time between webserver availability check
+  local WAITCOUNT=0
+  until $(curl --output /dev/null --silent --head --fail http://localhost:$PORT$TESTPATH); do
+    if [ $WAITCOUNT -gt 15 ]; then
+      echo "Starting Webserver on $PORT timed out."
+      exit 1;
+    fi
+    printf '.'
+    sleep $SLEEPSECS
+    WAITCOUNT=$(($WAITCOUNT + $SLEEPSECS))
+  done
+  echo ""
+  echo "Webserver was ready after $WAITCOUNT seconds"
+}
+
+#
+# killWebserver PORT
+# killWebserver 4200
+#
+killWebserver() {
+  PORT=$1
+  # the [] is a workaround to prevent ps showing up itself
+  # https://unix.stackexchange.com/questions/74185/how-can-i-prevent-grep-from-showing-up-in-ps-results
+  eval "ps -A -ww | grep '[p]ort $PORT'"
+  SPAPID=$(eval "ps -A -ww | grep '[p]ort $PORT' | tr -s ' ' |  cut -d ' ' -f 1")
+  echo "$SPAPID exit ps $?"
+  echo "lsof:"
+  echo `lsof -i :${PORT}`
+  # if [ "$SPAPID" == "" ]; then
+    # Fallback
+    SPAPID=`lsof -i :${PORT} | tail -n 1 | tr -s ' ' | cut -d ' ' -f 2`
+    echo "of lsof |$SPAPID|"
+    echo "$SPAPID exit lsof $?"
+  # fi
+
+  echo "Post SPApid $SPAPID"
+  if [ ! -z "$SPAPID" ]; then
+    echoe "Cleanup: Stopping webserver on port $PORT"
+    kill -9 $SPAPID
+    echo "Post: killed $SPAPID"
+  fi
 }
