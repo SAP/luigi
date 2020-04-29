@@ -47,37 +47,11 @@ export class linkManager extends LuigiCoreAPIBase {
   }
 
   fromContext(navigationContext) {
-    //TODO fix currentContext
-    // const navigationContextInParent =
-    //     this.currentContext.context.parentNavigationContexts.indexOf(
-    //         navigationContext
-    //     ) !== -1;
-    // if (navigationContextInParent) {
-    //     this.options.fromContext = navigationContext;
-    // } else {
-    //     this.options.errorSkipNavigation = true;
-    //     console.error(
-    //         'Navigation not possible, navigationContext ' +
-    //         navigationContext +
-    //         ' not found.'
-    //     );
-    // }
     this.options.fromContext = navigationContext;
     return this;
   }
 
   fromClosestContext() {
-    //TODO
-    // const hasParentNavigationContext =
-    //     this.currentContext.context.parentNavigationContexts.length > 0;
-    // if (hasParentNavigationContext) {
-    //     this.options.fromContext = null;
-    //     this.options.fromClosestContext = true;
-    // } else {
-    //     console.error(
-    //         'Navigation not possible, no parent navigationContext found.'
-    //     );
-    // }
     this.options.fromContext = null;
     this.options.fromClosestContext = true;
     return this;

@@ -19,7 +19,7 @@
 </svelte:head>
 
 <figure>
-	<img alt='Borat' src='https://raw.githubusercontent.com/sap/luigi/master/logo.png'>
+	<img alt='Luigi' src='https://raw.githubusercontent.com/sap/luigi/master/logo.png'>
 </figure>
 
 <p><strong><a href="docs">Show documentation subpages</a></strong></p>
