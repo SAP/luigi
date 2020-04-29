@@ -51,6 +51,7 @@ declare -a APP_FOLDERS=(
   "/website/fiddle"
 )
 
+# Used for setting up webserver and killing them
 declare -a APP_PORTS=(
   4200 # e2e-test-application
   8080 # fiddle
@@ -61,11 +62,24 @@ declare -a APP_PUBLIC_FOLDERS=(
   "public" # fiddle
 )
 
+declare -a APP_PATH_CHECK=(
+  "/luigi-core/luigi.js" # e2e-test-application
+  "/bundle.js" # fiddle
+)
 
 killWebServers() {
   for PORT in "${APP_PORTS[@]}"; do
+    echo ""
+    echo ""
     echo "Checking to kill webserver on $PORT"
+    echo ""
+    echo ""
     killWebserver $PORT
+    echo ""
+    echo ""
+    echo "After kill"
+    echo ""
+    echo ""
   done
 }
 
@@ -212,7 +226,7 @@ verifyAndStartWebserver() {
   for i in "${!APP_FOLDERS[@]}"; do 
     echoe "Run app webserver on ${APP_PORTS[$i]}"
     cd $LUIGI_DIR_TESTING/${APP_FOLDERS[$i]}
-    runWebserver 4200 dist /luigi-core/luigi.js
+    runWebserver ${APP_PORTS[$i]} ${APP_PUBLIC_FOLDERS[$i]} ${APP_PATH_CHECK[$i]}
   done
 }
 
@@ -265,7 +279,6 @@ if [ "" == "$TESTONLY" ]; then
 else
   echoe "Running bunded example and e2e tests"
 fi
-
 
 verifyAndStartWebserver
 startE2eTestrunner

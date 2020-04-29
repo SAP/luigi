@@ -66,24 +66,25 @@ runWebserver() {
 #
 killWebserver() {
   PORT=$1
-  # the [] is a workaround to prevent ps showing up itself
-  # https://unix.stackexchange.com/questions/74185/how-can-i-prevent-grep-from-showing-up-in-ps-results
-  eval "ps -A -ww | grep '[p]ort $PORT'"
-  SPAPID=$(eval "ps -A -ww | grep '[p]ort $PORT' | tr -s ' ' |  cut -d ' ' -f 1")
-  echo "$SPAPID exit ps $?"
-  echo "lsof:"
-  echo `lsof -i :${PORT}`
-  # if [ "$SPAPID" == "" ]; then
+  SPAPID=`lsof -i :${PORT} | tail -n 1 | tr -s ' ' | cut -d ' ' -f 2`
+  if [ "$SPAPID" == "" ]; then
+    echo "EMPTY"
+  fi
+  if [ -z "$SPAPID" ]; then
+    echo "-z"
+  fi
+  echo "SPAPID: $SPAPID"
+  
+  if [ "$SPAPID" == "" ]; then
     # Fallback
-    SPAPID=`lsof -i :${PORT} | tail -n 1 | tr -s ' ' | cut -d ' ' -f 2`
-    echo "of lsof |$SPAPID|"
-    echo "$SPAPID exit lsof $?"
-  # fi
+    echo "spapid was empty: $SPAPID using ps fallback"
+    # the [] is a workaround to prevent ps showing up itself
+    # https://unix.stackexchange.com/questions/74185/how-can-i-prevent-grep-from-showing-up-in-ps-results
+    SPAPID=$(eval "ps -A -ww | grep '[p]ort $PORT' | tr -s ' ' |  cut -d ' ' -f 1")
+  fi
 
-  echo "Post SPApid $SPAPID"
   if [ ! -z "$SPAPID" ]; then
-    echoe "Cleanup: Stopping webserver on port $PORT"
+    # echoe "Cleanup: Stopping webserver on port $PORT"
     kill -9 $SPAPID
-    echo "Post: killed $SPAPID"
   fi
 }
