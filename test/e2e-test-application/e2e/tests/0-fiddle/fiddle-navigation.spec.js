@@ -3,7 +3,7 @@ Cypress.env('RETRIES', 0);
 describe('Navigation with Fiddle', () => {
   describe('Core api navigation test', () => {
     beforeEach(() => {
-      cy.visitWithFiddleConfig('/', fiddleConfig);
+      cy.visitWithFiddleConfig('/');
     });
     it('Core API navigate and open and close modal', () => {
       cy.window().then(win => {
@@ -38,26 +38,6 @@ describe('Navigation with Fiddle', () => {
       });
     });
   });
-  describe('virtualTree with fromVirtualTreeRoot', () => {
-    beforeEach(() => {
-      const newConfig = Object.assign({}, fiddleConfig);
-      newConfig.navigation.nodes.push({
-        pathSegment: 'virtual',
-        label: 'Virtual',
-        virtualTree: true,
-        viewUrl: '/examples/microfrontends/multipurpose.html#'
-      });
-      cy.visitWithFiddleConfig('/virtual', newConfig);
-    });
-    it('navigate', () => {
-      cy.getIframeWindow().then(win => {
-        win.LuigiClient.linkManager()
-          .fromVirtualTreeRoot()
-          .navigate('/this/is/a/tree');
-      });
-      cy.expectPathToBe('/virtual/this/is/a/tree');
-    });
-  });
   describe('context switcher', () => {
     beforeEach(() => {
       let newConfig = Object.assign({}, fiddleConfig);
@@ -73,35 +53,35 @@ describe('Navigation with Fiddle', () => {
         ]
       });
       newConfig.navigation.contextSwitcher = {
-          defaultLabel: 'Select Environment',
-          parentNodePath: '/environments', 
-          lazyloadOptions: true, 
-          options: () => {
-            return [
-              {
-                label : 'Environment 1',
-                pathValue: 'env1',
-                customRendererCategory: 'production'
-              },
-              {
-                label : 'Environment 2',
-                pathValue: 'env2',
-                customRendererCategory: 'stage'
-              }
-            ]
-          },
-          customSelectedOptionRenderer: (option) => {
-            if (option.customRendererCategory === 'production') {
-              return `<label style='color: rgb(136, 255, 0); font-weight:700'> 
+        defaultLabel: 'Select Environment',
+        parentNodePath: '/environments',
+        lazyloadOptions: true,
+        options: () => {
+          return [
+            {
+              label: 'Environment 1',
+              pathValue: 'env1',
+              customRendererCategory: 'production'
+            },
+            {
+              label: 'Environment 2',
+              pathValue: 'env2',
+              customRendererCategory: 'stage'
+            }
+          ];
+        },
+        customSelectedOptionRenderer: option => {
+          if (option.customRendererCategory === 'production') {
+            return `<label style='color: rgb(136, 255, 0); font-weight:700'> 
               ${option.label} 
               </label>`;
-            } else if (option.customRendererCategory === 'stage') {
-                return `<label style='color: rgb(0, 136, 255); font-weight:700'> 
+          } else if (option.customRendererCategory === 'stage') {
+            return `<label style='color: rgb(0, 136, 255); font-weight:700'> 
                 ${option.label} 
                 </label>`;
-            }
           }
-      }
+        }
+      };
       cy.visitWithFiddleConfig('/', newConfig);
     });
     it('custom selected option renderer', () => {
@@ -117,6 +97,26 @@ describe('Navigation with Fiddle', () => {
         .find('label')
         .should('have.css', 'color', 'rgb(0, 136, 255)')
         .and('have.css', 'font-weight', '700');
+    });
+  });
+  describe('virtualTree with fromVirtualTreeRoot', () => {
+    beforeEach(() => {
+      const newConfigs = Object.assign({}, fiddleConfig);
+      newConfigs.navigation.nodes.push({
+        pathSegment: 'virtual',
+        label: 'Virtual',
+        virtualTree: true,
+        viewUrl: '/examples/microfrontends/multipurpose.html#'
+      });
+      cy.visitWithFiddleConfig('/virtual', newConfigs);
+    });
+    it('navigate', () => {
+      cy.getIframeWindow().then(win => {
+        win.LuigiClient.linkManager()
+          .fromVirtualTreeRoot()
+          .navigate('/this/is/a/tree');
+      });
+      cy.expectPathToBe('/virtual/this/is/a/tree');
     });
   });
 });
