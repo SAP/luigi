@@ -1,8 +1,8 @@
 #!/bin/bash
 
-# We're considering this file is located in ~/Sites/SAP and
-# luigi is in ~/Sites/SAP/luigi with the branch checked out
-# that we want to test.
+# We're considering the branch checked out that we want to test against.
+
+set -e # exit on errors
 
 showHelp() {
   echo ""
@@ -13,10 +13,11 @@ showHelp() {
   echo ""
   echo "Usage:"
   echo ""
+  echo "./scripts/testCompatibility --tag latest"
   echo "./scripts/testCompatibility --tag latest --install"
   echo "or"
-  echo "npm run test:compatibility -- --tag v4.4.0 "
   echo "npm run test:compatibility -- --tag latest"
+  echo "npm run test:compatibility -- --tag v4.4.0"
   echo "npm run test:compatibility -- --tag v4.4.0 --install"
   echo ""
   echo "npm run test:compatibility -- --test-only"
@@ -84,7 +85,7 @@ fi
 
 echoe "Run app webserver on 4200"
 (sirv start --port 4200 --single --quiet &)
-wait 2
+
 
 killWebServer
 exit
@@ -294,8 +295,6 @@ else
   echoe "Running bunded example and e2e tests"
 fi
 
-# do it later since the installation might break
-set -e # exit on errors
 
 verifyAndStartWebserver
 startE2eTestrunner
