@@ -20,12 +20,12 @@
     {#if !authorizationEnabled || isLoggedIn}
     {#if isGlobalSearchAvailable}
     <GlobalSearch
-      bind:isSearchFieldVissible
+      bind:isSearchFieldVisible
       on:toggleSearch="{()=>toggleSearch()}"
       isMobile="{false}"
     />
     <GlobalSearch
-      bind:isSearchFieldVissible
+      bind:isSearchFieldVisible
       on:toggleSearch="{()=>toggleSearch()}"
       isMobile="{true}"
     />
@@ -424,7 +424,7 @@
   export let isGlobalSearchAvailable;
   let store = getContext('store');
   let contextSwitcherToggle = false;
-  let isSearchFieldVissible = false;
+  let isSearchFieldVisible = false;
   let selectedLabel;
   let defaultLabelContextSwitcher;
   let contextSwitcherConfig = LuigiConfig.getConfigValue(
@@ -560,7 +560,7 @@
   }
   export function toggleSearch() {
     clearSearchField();
-    isSearchFieldVissible = !isSearchFieldVissible;
+    isSearchFieldVisible = !isSearchFieldVisible;
   }
 
   export function closeAllDropdowns() {
