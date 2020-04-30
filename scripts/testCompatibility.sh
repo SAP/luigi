@@ -223,17 +223,10 @@ verifyAndStartWebserver() {
 startE2eTestrunner() {
   echoe "Starting e2e test headless"
   cd $LUIGI_DIR_TESTING/${APP_FOLDERS[0]}
-  
-  if [ "$USE_CYPRESS_DASHBOARD" == "true" ]; then
-    echo "Running tests with cypress recording"
-    # obtain the key here: https://dashboard.cypress.io/#/projects/czq7qc/settings
-    npm run e2e:run -- --record --parallel --key 4bf20f87-8352-47d5-aefa-1e684fab69cf
-  else
-    echo "Running tests without parallelization"
-    npm run e2e:run
-  fi
 
-  # Check and kill webserver
+  npm run e2e:run
+
+  # Check and kill webservers again
   killWebServers
 }
 
