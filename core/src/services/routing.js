@@ -333,31 +333,28 @@ class RoutingClass {
 
       let isSamePath = true;
       for (let i = 0; i < previousNavPathWithoutRoot.length; i++) {
-        let newPathSegment =
-        newPathArray.length > i
-            ? newPathArray[i]
-            : undefined;
+        let newPathSegment = newPathArray.length > i ? newPathArray[i] : undefined;
         let previousPathNode = previousNavPathWithoutRoot[i];
-        if (newPathSegment) {
-          if (newPathSegment !== previousPathNode.pathSegment) {
-            if (RoutingHelpers.isDynamicNode(previousPathNode)) {
-              if (!isSamePath ||
-                newPathSegment !==
-                RoutingHelpers.getDynamicNodeValue(
-                  previousPathNode,
-                  previousCompData.pathParams
-                )
-              ) {
-                NodeDataManagementStorage.deleteNodesRecursively(
-                  previousPathNode
-                );
-                break;
-              }
-            } else {
-              isSamePath = false;
+
+        if (newPathSegment !== previousPathNode.pathSegment || !isSamePath) {
+          if (RoutingHelpers.isDynamicNode(previousPathNode)) {
+            if (!isSamePath ||
+              newPathSegment !==
+              RoutingHelpers.getDynamicNodeValue(
+                previousPathNode,
+                previousCompData.pathParams
+              )
+            ) {
+              NodeDataManagementStorage.deleteNodesRecursively(
+                previousPathNode
+              );
+              break;
             }
+          } else {
+            isSamePath = false;
           }
         }
+
       }
     }
   }
