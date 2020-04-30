@@ -463,9 +463,7 @@ describe('Routing', function() {
       // given
       const path = '#/projects/teams';
       const expectedPath = '/projects/teams/t2';
-      const component = {
-        shouldShowUnsavedChangesModal: () => false
-      };
+      component.shouldShowUnsavedChangesModal = () => false;
       const node = {};
 
       // when
