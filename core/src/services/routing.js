@@ -147,9 +147,6 @@ class RoutingClass {
       return;
     }
 
-
-    const previousCompData = component.get();
-    this.checkInvalidateCache(previousCompData, path);
     try {
       // just used for browser changes, like browser url manual change or browser back/forward button click
       if (component.shouldShowUnsavedChangesModal()) {
@@ -169,6 +166,10 @@ class RoutingClass {
         );
         return;
       }
+
+      const previousCompData = component.get();
+      this.checkInvalidateCache(previousCompData, path);
+
       const pathUrlRaw =
         path && path.length ? GenericHelpers.getPathWithoutHash(path) : '';
       const { nodeObject, pathData } = await Navigation.extractDataFromPath(
@@ -178,7 +179,7 @@ class RoutingClass {
 
       if (!viewUrl) {
         const defaultChildNode = await RoutingHelpers.getDefaultChildNode(
-          pathData
+          pathData, (async (node, ctx) => { return await Navigation.getChildren(node, ctx); })
         );
 
         if (pathData.isExistingRoute) {
@@ -188,6 +189,8 @@ class RoutingClass {
             `${trimmedPathUrl ? `/${trimmedPathUrl}` : ''}/${defaultChildNode}`,
             false
           );
+          // reset comp data
+          component.set({ navigationPath : [] });
         } else {
           if (defaultChildNode && pathData.navigationPath.length > 1) {
             //last path segment was invalid but a default node could be in its place
@@ -325,37 +328,33 @@ class RoutingClass {
       */
   checkInvalidateCache(previousCompData, newPath) {
       let newPathArray = newPath.split('/');
+     if (previousCompData.navigationPath && previousCompData.navigationPath.length > 0) {
+       let previousNavPathWithoutRoot = previousCompData.navigationPath.slice(1);
 
-     if (previousCompData.navigationPath) {
       let isSamePath = true;
-      for (let i = 0; i < previousCompData.navigationPath.length; i++) {
+      for (let i = 0; i < previousNavPathWithoutRoot.length; i++) {
         let newPathSegment =
         newPathArray.length > i
             ? newPathArray[i]
             : undefined;
-        let previousPathNode = previousCompData.navigationPath[i];
+        let previousPathNode = previousNavPathWithoutRoot[i];
         if (newPathSegment) {
           if (newPathSegment !== previousPathNode.pathSegment) {
-            isSamePath = false;
-          }
-          if (RoutingHelpers.isDynamicNode(previousPathNode)) {
-            if (!isSamePath) {
-              NodeDataManagementStorage.deleteNodesRecursively(
-                previousPathNode
-              );
-              break;
-            }
-            if (
-              newPathSegment !==
-              RoutingHelpers.getDynamicNodeValue(
-                previousPathNode,
-                previousCompData.pathParams
-              )
-            ) {
-              NodeDataManagementStorage.deleteNodesRecursively(
-                previousPathNode
-              );
-              break;
+            if (RoutingHelpers.isDynamicNode(previousPathNode)) {
+              if (!isSamePath ||
+                newPathSegment !==
+                RoutingHelpers.getDynamicNodeValue(
+                  previousPathNode,
+                  previousCompData.pathParams
+                )
+              ) {
+                NodeDataManagementStorage.deleteNodesRecursively(
+                  previousPathNode
+                );
+                break;
+              }
+            } else {
+              isSamePath = false;
             }
           }
         }
