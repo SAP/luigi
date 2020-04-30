@@ -146,6 +146,10 @@ class RoutingClass {
     if (hasSkipMatches) {
       return;
     }
+
+
+    const previousCompData = component.get();
+    this.checkInvalidateCache(previousCompData, path);
     try {
       // just used for browser changes, like browser url manual change or browser back/forward button click
       if (component.shouldShowUnsavedChangesModal()) {
@@ -278,55 +282,7 @@ class RoutingClass {
         tabNav: tabNavInherited
       };
 
-      const previousCompData = component.get();
-      /*
-      This block takes the previous node data and the new node data and compares
-      if the navigation path of both contains a dynamic node.
-        - If the path of the previous node (which contains a dynamic node) and the new node is different, the previous node
-        will be removed from cache, because when you come back to the previous node (which would be in the cache)
-        you can not ensure that it is up to date. 
-        - If the dynamic node value of the new node is different from the previous node, the previous node will be removed
-        from cache with all its children.
-      */
-      if (previousCompData.navigationPath) {
-        let isSamePath = true;
-        for (let i = 0; i < previousCompData.navigationPath.length; i++) {
-          let newPathNode =
-            newNodeData.navigationPath.length > i
-              ? newNodeData.navigationPath[i]
-              : undefined;
-          let previousPathNode = previousCompData.navigationPath[i];
-          if (newPathNode) {
-            const newPathSegment = newPathNode.pathSegment;
-            if (newPathSegment !== previousPathNode.pathSegment) {
-              isSamePath = false;
-            }
-            if (RoutingHelpers.isDynamicNode(previousPathNode)) {
-              if (!isSamePath) {
-                NodeDataManagementStorage.deleteNodesRecursively(
-                  previousPathNode
-                );
-                break;
-              }
-              if (
-                RoutingHelpers.getDynamicNodeValue(
-                  newPathNode,
-                  newNodeData.pathParams
-                ) !==
-                RoutingHelpers.getDynamicNodeValue(
-                  previousPathNode,
-                  previousCompData.pathParams
-                )
-              ) {
-                NodeDataManagementStorage.deleteNodesRecursively(
-                  previousPathNode
-                );
-                break;
-              }
-            }
-          }
-        }
-      }
+
 
       component.set(
         Object.assign({}, newNodeData, {
@@ -355,6 +311,55 @@ class RoutingClass {
       Iframe.navigateIframe(config, component, iframeElement);
     } catch (err) {
       console.info('Could not handle route change', err);
+    }
+  }
+
+  /**
+      This function takes the previous node data and the new node path and compares
+      if the navigation path of both contains a dynamic node.
+        - If the path of the previous node (which contains a dynamic node) and the new node is different, the previous node
+        will be removed from cache, because when you come back to the previous node (which would be in the cache)
+        you can not ensure that it is up to date.
+        - If the dynamic node value of the new node is different from the previous node, the previous node will be removed
+        from cache with all its children.
+      */
+  checkInvalidateCache(previousCompData, newPath) {
+      let newPathArray = newPath.split('/');
+
+     if (previousCompData.navigationPath) {
+      let isSamePath = true;
+      for (let i = 0; i < previousCompData.navigationPath.length; i++) {
+        let newPathSegment =
+        newPathArray.length > i
+            ? newPathArray[i]
+            : undefined;
+        let previousPathNode = previousCompData.navigationPath[i];
+        if (newPathSegment) {
+          if (newPathSegment !== previousPathNode.pathSegment) {
+            isSamePath = false;
+          }
+          if (RoutingHelpers.isDynamicNode(previousPathNode)) {
+            if (!isSamePath) {
+              NodeDataManagementStorage.deleteNodesRecursively(
+                previousPathNode
+              );
+              break;
+            }
+            if (
+              newPathSegment !==
+              RoutingHelpers.getDynamicNodeValue(
+                previousPathNode,
+                previousCompData.pathParams
+              )
+            ) {
+              NodeDataManagementStorage.deleteNodesRecursively(
+                previousPathNode
+              );
+              break;
+            }
+          }
+        }
+      }
     }
   }
 
