@@ -18,6 +18,18 @@
   </div>
   <div class="fd-shellbar__group fd-shellbar__group--actions">
     {#if !authorizationEnabled || isLoggedIn}
+    {#if isGlobalSearchAvailable}
+    <GlobalSearch
+      bind:isSearchFieldVissible
+      on:toggleSearch="{()=>toggleSearch()}"
+      isMobile="{false}"
+    />
+    <GlobalSearch
+      bind:isSearchFieldVissible
+      on:toggleSearch="{()=>toggleSearch()}"
+      isMobile="{true}"
+    />
+    {/if}
     <ContextSwitcher
       bind:dropDownStates
       on:toggleDropdownState="{() => toggleDropdownState('contextSwitcherPopover')}"
@@ -154,6 +166,18 @@
           >
             <nav class="fd-menu">
               <ul class="fd-menu__list">
+                {#if isGlobalSearchAvailable}
+                <li class="fd-menu__item lui-mobile-switch-menu">
+                  <a
+                    class="fd-menu__link"
+                    on:click|stopPropagation="{()=>{toggleSearch(),toggleDropdownState('overflowPopover')}}"
+                    data-testid="luigi-search-btn-mobile"
+                  >
+                    <span class="fd-top-nav__icon sap-icon--search"></span>
+                    <span class="fd-menu__title">Search</span>
+                  </a>
+                </li>
+                {/if}
                 {#if contextSwitcherConfig && (!authorizationEnabled || isLoggedIn)}
                 <li class="fd-menu__item lui-mobile-switch-menu">
                   <a
@@ -359,6 +383,7 @@
   import TopNavDropDown from '../TopNavDropDown.html';
   import ContextSwitcher from './ContextSwitcher.html';
   import ProductSwitcher from './ProductSwitcher.html';
+  import GlobalSearch from './GlobalSearch.html';
   import {
     beforeUpdate,
     createEventDispatcher,
@@ -396,8 +421,10 @@
   export let profileItemsAvailable;
   export let userInfo = {};
   export let urlAuthError;
+  export let isGlobalSearchAvailable;
   let store = getContext('store');
   let contextSwitcherToggle = false;
+  let isSearchFieldVissible = false;
   let selectedLabel;
   let defaultLabelContextSwitcher;
   let contextSwitcherConfig = LuigiConfig.getConfigValue(
@@ -440,6 +467,9 @@
           'settings.responsiveNavigation'
         );
         productSwitcherConfig = NavigationHelpers.getProductSwitcherConfig();
+        isGlobalSearchAvailable = LuigiConfig.getConfigValue(
+          'globalSearch.enabled'
+        );
       },
       ['navigation']
     );
@@ -513,7 +543,6 @@
 
     closeAllDropdowns();
     closeMobileTopNavDropDown();
-
     ddStates[name] = dropDownState;
 
     dropDownStates = ddStates;
@@ -521,6 +550,17 @@
 
   export function toggleDropdownStateExternal(event) {
     toggleDropdownState(event.detail.name);
+  }
+
+  export function clearSearchField() {
+    const input = document.querySelector(
+      '.fd-shellbar__action--mobile .luigi-search__input'
+    );
+    input.value = '';
+  }
+  export function toggleSearch() {
+    clearSearchField();
+    isSearchFieldVissible = !isSearchFieldVissible;
   }
 
   export function closeAllDropdowns() {
