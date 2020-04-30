@@ -32,6 +32,11 @@ module.exports = {
       {
         from: 'node_modules/@luigi-project/plugin-auth-oidc',
         to: path.resolve(__dirname, 'src/assets') + '/auth-oidc/'
+      },
+      // DOCSEARCH algolia
+      {
+        from: 'node_modules/docsearch.js/dist/cdn/docsearch.min.css',
+        to: path.resolve(__dirname, 'src/assets')
       }
     ])
   ],

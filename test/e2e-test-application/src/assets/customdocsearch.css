@@ -1,3 +1,8 @@
+.luigi-search .fd-input-group,
+.luigi-search .fd-input {
+  overflow: visible;
+}
+
 .luigi-search__button {
   position: relative;
   z-index: 2;
