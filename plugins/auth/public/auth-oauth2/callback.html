@@ -67,9 +67,6 @@
 
   <body>
     <script type="text/javascript">
-      // var encodeURIComponent = function(val) {
-      //   return val;
-      // };
       var uri = encodeURIComponent(window.location.href);
       var hashParams = getHashParams(uri);
       if (hashParams && (hashParams['access_token'] || hashParams['error'])) {
