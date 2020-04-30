@@ -26,7 +26,7 @@ WS_NG_PID=$PID
 echo ""
 echo "Fiddle App"
 cd $BASE_DIR/../website/fiddle
-killWebserver 4200
+killWebserver 8080
 runWebserver 8080 public /bundle.js
 WS_FID_PID=$PID
 
