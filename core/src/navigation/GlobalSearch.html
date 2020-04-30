@@ -3,7 +3,7 @@
 >
   <div class="fd-popover__control" on:click|stopPropagation="{() => {}}">
     <div
-      aria-hidden="{!isSearchFieldVissible}"
+      aria-hidden="{!isSearchFieldVisible}"
       aria-haspopup="true"
       class="luigi-search"
     >
@@ -38,7 +38,7 @@
     <button
       class="fd-button fd-shellbar__button sap-icon--search luigi-search__button"
       aria-haspopup="true"
-      aria-expanded="{!isSearchFieldVissible}"
+      aria-expanded="{!isSearchFieldVisible}"
       on:click="{toggleSearch}"
       data-testid="luigi-search-btn-desktop"
     ></button>
@@ -51,7 +51,7 @@
   import { GenericHelpers } from '../utilities/helpers';
   export let dropDownStates = {};
   export let isMobile;
-  export let isSearchFieldVissible;
+  export let isSearchFieldVisible;
   const dispatch = createEventDispatcher();
   let searchResults = {};
   let showPopOverCustomSearch = false;
