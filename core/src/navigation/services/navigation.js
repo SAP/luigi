@@ -36,10 +36,8 @@ class NavigationClass {
         } else {
           rootNode = { children: topNavNodes };
         }
-        await this.getChildren(rootNode); // keep it, mutates and filters c
+        await this.getChildren(rootNode);
         NodeDataManagementStorage.setRootNode(rootNode);
-
-        //await this.getChildren(this.rootNode, null, activePath); // keep it, mutates and filters children
       }
       const nodeNamesInCurrentPath = activePath.split('/');
       const navObj = await this.buildNode(
