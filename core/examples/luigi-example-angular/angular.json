@@ -41,12 +41,12 @@
               },
               {
                 "glob": "**",
-                "input": "node_modules/@kyma-project/luigi-core",
+                "input": "node_modules/@luigi-project/core",
                 "output": "/luigi-core"
               },
               {
                 "glob": "luigi-client*.js",
-                "input": "node_modules/@kyma-project/luigi-client",
+                "input": "node_modules/@luigi-project/client",
                 "output": "/luigi-client"
               }
             ],
