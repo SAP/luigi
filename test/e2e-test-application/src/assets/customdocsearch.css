@@ -41,7 +41,7 @@
 
 @media screen and (max-width: 1024px) {
   .algolia-autocomplete .ds-dropdown-menu {
-    min-width: 360px;
+    min-width: 300px;
   }
 }
 
@@ -49,7 +49,7 @@
   .algolia-autocomplete.algolia-autocomplete-left .ds-dropdown-menu,
   .algolia-autocomplete.algolia-autocomplete-right .ds-dropdown-menu {
     position: fixed !important;
-    top: 72px !important;
+    top: 44px !important;
     left: 3vw !important;
     right: 3vw !important;
   }
