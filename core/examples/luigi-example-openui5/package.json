@@ -13,8 +13,6 @@
   "dependencies": {
     "@luigi-project/client": "^1.1.0",
     "@luigi-project/core": "^1.1.0",
-    "@sap-theming/theming-base-content": "^11.1.18",
-    "fundamental-styles": "^0.8.1",
     "@openui5/sap.f": "^1.73.2",
     "@openui5/sap.m": "^1",
     "@openui5/sap.ui.core": "^1",
