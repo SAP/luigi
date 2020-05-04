@@ -11,13 +11,12 @@ module.exports = {
       },
       {
         from:
-          'node_modules/@sap-theming/theming-base-content/content/Base/baseLib/sap_base_fiori/fonts/**',
+          'node_modules/@sap-theming/theming-base-content/content/Base/baseLib/sap_base_fiori/fonts',
         to: './fonts'
       },
       {
-        glob: '**',
         from:
-          'node_modules/@sap-theming/theming-base-content/content/Base/baseLib/sap_fiori_3/fonts/**',
+          'node_modules/@sap-theming/theming-base-content/content/Base/baseLib/sap_fiori_3/fonts',
         to: './fonts'
       }
     ])
