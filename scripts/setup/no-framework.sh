@@ -26,7 +26,7 @@ npm i -save @luigi-project/core @luigi-project/client fundamental-styles @sap-th
 mkdir -p public/assets
 mkdir -p src/luigi-config
 
-# download assets from assets
+# download assets
 curl https://raw.githubusercontent.com/SAP/luigi/master/scripts/setup/assets/index.html > public/index.html
 curl https://raw.githubusercontent.com/SAP/luigi/master/scripts/setup/assets/luigi-config.es6.js > src/luigi-config/luigi-config.es6.js
 curl https://raw.githubusercontent.com/SAP/luigi/master/scripts/setup/assets/basicMicroFrontend.html > public/assets/basicMicroFrontend.html

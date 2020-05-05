@@ -21,7 +21,7 @@ mkdir -p src/luigi-config
  # the following steps can be copy and pasted to the terminal at once
 mv src/index.html src/angular.html
 
-# download assets from assets
+# download assets
 curl https://raw.githubusercontent.com/SAP/luigi/master/scripts/setup/assets/index.html > src/index.html
 curl https://raw.githubusercontent.com/SAP/luigi/master/scripts/setup/assets/luigi-config.es6.js > src/luigi-config/luigi-config.es6.js
 curl https://raw.githubusercontent.com/SAP/luigi/master/scripts/setup/assets/basicMicroFrontend.html > src/assets/basicMicroFrontend.html
