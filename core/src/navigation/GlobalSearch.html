@@ -1,5 +1,5 @@
 <div
-  class="fd-shellbar__action {!isMobile ? 'fd-shellbar__action--desktop':'fd-shellbar__action--mobile'}"
+  class="fd-shellbar__action {!isMobile ? 'fd-shellbar__action--desktop':'fd-shellbar__action--mobile luigi-search-shell__mobile'}"
 >
   <div class="fd-popover">
     <div class="fd-popover__control" on:click|stopPropagation="{() => {}}">
@@ -87,35 +87,32 @@
   }
 </script>
 <style type="text/scss">
-  :global(.luigi-search) {
+  .luigi-search {
     &[aria-hidden='true'] {
       visibility: hidden;
       width: 0;
     }
   }
-  .fd-popover {
-    position: relative;
-  }
 
-  .fd-popver__control {
-    position: relative;
-    margin-left: 0;
-  }
-
-  .luigi-search {
-    position: absolute;
-    top: -20px;
-    right: 0;
-    -webkit-transition: all 125ms;
-    transition: all 125ms;
-    opacity: 1;
-    overflow: hidden;
+  .luigi-search__input {
     min-width: 120px;
-    background: #354a5f;
-    z-index: 1;
   }
 
-  :global(.luigi-search__input) {
-    min-width: 120px;
+  .luigi-search-shell__mobile {
+    position: relative;
+    height: calc(2.25rem + 2px);
+    padding: 0;
+
+    .fd-popover {
+      vertical-align: top;
+    }
+
+    .luigi-search {
+      position: absolute;
+      top: 0;
+      right: 0;
+      background: var(--sapShellColor);
+      z-index: 1;
+    }
   }
 </style>
