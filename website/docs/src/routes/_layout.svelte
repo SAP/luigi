@@ -466,6 +466,18 @@
 				}
 			}
 		}
+		.keyword-container{
+        	display:flex;
+            flex-wrap: wrap;
+            justify-content: start;
+        }
+		label.keyword {
+			border: 1px solid $powder-blue;
+			padding: 6px 12px;
+			background-color:rgba(237, 242, 247, 0.1);
+			border-radius: 6px;
+			margin-right: 10px;
+		}
 	}
 </style>
 
