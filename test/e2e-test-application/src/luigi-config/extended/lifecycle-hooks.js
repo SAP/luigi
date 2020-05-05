@@ -5,7 +5,10 @@ class LifecycleHooks {
   async luigiAfterInit() {
     // fallback in case some micro frontend did not send 'my-microfrontend-is-ready' custom message
     // (settings.appLoadingIndicator.hideAutomatically is set to false)
-    globalSearch.search.initDocSearch();
+
+    // Example to enable docSearch
+    //globalSearch.search.initDocSearch();
+
     const fallbackHideTimeout = 5000;
     setTimeout(() => {
       Luigi.ux().hideAppLoadingIndicator();

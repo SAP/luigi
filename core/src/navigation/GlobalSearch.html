@@ -1,34 +1,36 @@
 <div
   class="fd-shellbar__action {!isMobile ? 'fd-shellbar__action--desktop':'fd-shellbar__action--mobile'}"
 >
-  <div class="fd-popover__control" on:click|stopPropagation="{() => {}}">
-    <div
-      aria-hidden="{!isSearchFieldVisible}"
-      aria-haspopup="true"
-      class="luigi-search"
-    >
-      <div class="fd-input-group fd-shellbar__input-group">
-        <input
-          type="text"
-          on:keyup="{(event) => onKeyUp(event)}"
-          class="fd-input fd-input-group__input fd-shellbar__input-group__input luigi-search__input"
-          data-testid="luigi-search-input"
-        >
+  <div class="fd-popover">
+    <div class="fd-popover__control" on:click|stopPropagation="{() => {}}">
+      <div
+        aria-hidden="{!isSearchFieldVisible}"
+        aria-haspopup="true"
+        class="luigi-search"
+      >
+        <div class="fd-input-group fd-shellbar__input-group">
+          <input
+            type="text"
+            on:keyup="{(event) => onKeyUp(event)}"
+            class="fd-input fd-input-group__input fd-shellbar__input-group__input luigi-search__input"
+            data-testid="luigi-search-input"
+          >
+        </div>
       </div>
-    </div>
-    <div
-      class="fd-popover__body fd-popover__body--right"
-      aria-hidden="{!showPopOverCustomSearch}"
-    >
-      <nav class="fd-menu">
-        {#if searchResults}
-        <ul class="fd-menu__list fd-menu__list--top">
-          {#each searchResults as result}
-          <li class="fd-menu__item">{result}</li>
-          {/each}
-        </ul>
-        {/if}
-      </nav>
+      <div
+        class="fd-popover__body fd-popover__body--right"
+        aria-hidden="{!showPopOverCustomSearch}"
+      >
+        <nav class="fd-menu">
+          {#if searchResults}
+          <ul class="fd-menu__list fd-menu__list--top">
+            {#each searchResults as result}
+            <li class="fd-menu__item">{result}</li>
+            {/each}
+          </ul>
+          {/if}
+        </nav>
+      </div>
     </div>
   </div>
 </div>
@@ -90,6 +92,27 @@
       visibility: hidden;
       width: 0;
     }
+  }
+  .fd-popover {
+    position: relative;
+  }
+
+  .fd-popver__control {
+    position: relative;
+    margin-left: 0;
+  }
+
+  .luigi-search {
+    position: absolute;
+    top: -20px;
+    right: 0;
+    -webkit-transition: all 125ms;
+    transition: all 125ms;
+    opacity: 1;
+    overflow: hidden;
+    min-width: 120px;
+    background: #354a5f;
+    z-index: 1;
   }
 
   :global(.luigi-search__input) {
