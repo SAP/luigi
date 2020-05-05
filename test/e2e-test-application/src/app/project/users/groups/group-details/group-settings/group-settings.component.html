@@ -9,6 +9,28 @@
         This is a child of a dynamic node with value:
         <strong>{{ pathParams?.group }}</strong>
       </p>
+      <div
+        class="clickable"
+        (click)="
+          linkManager().navigate(
+            '/projects/pr2/users/groups/avengers/settings/dyn1'
+          )
+        "
+      >
+        projects/pr2/users/groups/avengers/settings/dyn1
+      </div>
+      <br />
+      <div
+        class="clickable"
+        (click)="
+          linkManager().navigate(
+            '/projects/pr2/users/groups/others/settings/dyn1'
+          )
+        "
+      >
+        projects/pr2/users/groups/others/settings/dyn1
+      </div>
+      <br />
 
       <a
         class="fd-link clickable"
