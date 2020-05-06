@@ -602,27 +602,27 @@ describe('Navigation', () => {
         cy.viewport('iphone-6');
       });
       it('GlobalSearch Mobile', () => {
-        cy.get('.fd-shellbar__action--mobile .luigi-search__input').should(
+        cy.get('.luigi-search-shell__mobile .luigi-search__input').should(
           'not.be.visible'
         );
         cy.get('[data-testid=mobile-menu]').click();
         cy.get('[data-testid=luigi-search-btn-mobile]').click();
-        cy.get('.fd-shellbar__action--mobile .luigi-search__input').should(
+        cy.get('.luigi-search-shell__mobile .luigi-search__input').should(
           'be.visible'
         );
-        cy.get('.fd-shellbar__action--mobile .luigi-search__input').type(
+        cy.get('.luigi-search-shell__mobile .luigi-search__input').type(
           'Luigi'
         );
 
         cy.get('[data-testid=mobile-menu]').click();
         cy.get('[data-testid=luigi-search-btn-mobile]').click();
-        cy.get('.fd-shellbar__action--mobile .luigi-search__input').should(
+        cy.get('.luigi-search-shell__mobile .luigi-search__input').should(
           'not.be.visible'
         );
 
         cy.get('[data-testid=mobile-menu]').click();
         cy.get('[data-testid=luigi-search-btn-mobile]').click();
-        cy.get('.fd-shellbar__action--mobile .luigi-search__input').should(
+        cy.get('.luigi-search-shell__mobile .luigi-search__input').should(
           'not.have.value',
           'Luigi'
         );
