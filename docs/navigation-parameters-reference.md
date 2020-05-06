@@ -282,7 +282,7 @@ settings: {
 
 ### pageErrorHandler
 <!-- add-attribute:class:warning -->
-> **NOTE**: The **pageErrorHandler** only works if the [loading indicator](#loadingIndicator.enabled) is not disabled.
+> **NOTE**: The **pageErrorHandler** only works if the [loading indicator](#loadingindicatorenabled) is not disabled.
 - **type**: object
 - **description**: gives you the possibility to handle a situation in which Luigi Client doesn't respond. By default, it will redirect to the home page if nothing else is specified. **timeout** is required.
 - **attributes**:
