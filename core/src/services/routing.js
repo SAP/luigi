@@ -81,6 +81,7 @@ class RoutingClass {
     }
 
     window.dispatchEvent(event);
+    Navigation.onNodeChange();
   }
 
   getWindowPath() {

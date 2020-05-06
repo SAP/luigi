@@ -333,6 +333,17 @@ class NavigationClass {
     return result;
   }
 
+  onNodeChange() {
+    const invokedFunction = LuigiConfig.getConfigValue(
+      'navigation.onNodeChange'
+    );
+    if (typeof invokedFunction === 'function') {
+      invokedFunction();
+    } else if (invokedFunction !== undefined) {
+      console.log('onNodeChange is not a function!');
+    }
+  }
+
   getNodesToDisplay(children, pathData) {
     if (children && children.length > 0) {
       return children;
