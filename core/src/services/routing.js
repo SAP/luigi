@@ -9,6 +9,7 @@ import {
 import { LuigiConfig, LuigiI18N } from '../core-api';
 import { Iframe } from './iframe';
 import { NAVIGATION_DEFAULTS } from './../utilities/luigi-config-defaults';
+import { NodeDataManagementStorage } from './node-data-management';
 
 class RoutingClass {
   getNodePath(node, params) {
@@ -146,6 +147,7 @@ class RoutingClass {
     if (hasSkipMatches) {
       return;
     }
+
     try {
       // just used for browser changes, like browser url manual change or browser back/forward button click
       if (component.shouldShowUnsavedChangesModal()) {
@@ -166,17 +168,19 @@ class RoutingClass {
         return;
       }
 
+      const previousCompData = component.get();
+      this.checkInvalidateCache(previousCompData, path);
+
       const pathUrlRaw =
         path && path.length ? GenericHelpers.getPathWithoutHash(path) : '';
       const { nodeObject, pathData } = await Navigation.extractDataFromPath(
         path
       );
-
       const viewUrl = nodeObject.viewUrl || '';
 
       if (!viewUrl) {
         const defaultChildNode = await RoutingHelpers.getDefaultChildNode(
-          pathData
+          pathData, (async (node, ctx) => { return await Navigation.getChildren(node, ctx); })
         );
 
         if (pathData.isExistingRoute) {
@@ -186,6 +190,8 @@ class RoutingClass {
             `${trimmedPathUrl ? `/${trimmedPathUrl}` : ''}/${defaultChildNode}`,
             false
           );
+          // reset comp data
+          component.set({ navigationPath : [] });
         } else {
           if (defaultChildNode && pathData.navigationPath.length > 1) {
             //last path segment was invalid but a default node could be in its place
@@ -280,7 +286,8 @@ class RoutingClass {
         tabNav: tabNavInherited
       };
 
-      const previousCompData = component.get();
+
+
       component.set(
         Object.assign({}, newNodeData, {
           previousNodeValues: previousCompData
@@ -308,6 +315,48 @@ class RoutingClass {
       Iframe.navigateIframe(config, component, iframeElement);
     } catch (err) {
       console.info('Could not handle route change', err);
+    }
+  }
+
+  /**
+      This function takes the previous node data and the new node path and compares
+      if the navigation path of both contains a dynamic node.
+        - If the path of the previous node (which contains a dynamic node) and the new node is different, the previous node
+        will be removed from cache, because when you come back to the previous node (which would be in the cache)
+        you can not ensure that it is up to date.
+        - If the dynamic node value of the new node is different from the previous node, the previous node will be removed
+        from cache with all its children.
+      */
+  checkInvalidateCache(previousCompData, newPath) {
+      let newPathArray = newPath.split('/');
+     if (previousCompData.navigationPath && previousCompData.navigationPath.length > 0) {
+       let previousNavPathWithoutRoot = previousCompData.navigationPath.slice(1);
+
+      let isSamePath = true;
+      for (let i = 0; i < previousNavPathWithoutRoot.length; i++) {
+        let newPathSegment = newPathArray.length > i ? newPathArray[i] : undefined;
+        let previousPathNode = previousNavPathWithoutRoot[i];
+
+        if (newPathSegment !== previousPathNode.pathSegment || !isSamePath) {
+          if (RoutingHelpers.isDynamicNode(previousPathNode)) {
+            if (!isSamePath ||
+              newPathSegment !==
+              RoutingHelpers.getDynamicNodeValue(
+                previousPathNode,
+                previousCompData.pathParams
+              )
+            ) {
+              NodeDataManagementStorage.deleteNodesRecursively(
+                previousPathNode
+              );
+              break;
+            }
+          } else {
+            isSamePath = false;
+          }
+        }
+
+      }
     }
   }
 
