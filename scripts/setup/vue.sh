@@ -14,29 +14,21 @@ else
   folder=$1
   echo "Luigi project folder name: $folder"
 fi
-# steps to execute line by line
-# echo "Creating Vue base with Luigi Core and Config"
-# vue create -d $folder && cd $folder
-# echo "Creating Vue Micro-Frontend"
+
 vue create -d $folder && cd $folder
 npm i vue-router vuex @luigi-project/core @luigi-project/client fundamental-styles @sap-theming/theming-base-content
 npm i -D sass-loader node-sass webpack webpack-cli @babel/core @babel/preset-env babel-loader
 
 mkdir -p src/luigi-config src/assets/scss src/views public/assets
-rm public/index.html
 
-sed 's/"scripts": {/"scripts": {\
-  \  "buildConfig":"webpack --entry .\/src\/luigi-config\/luigi-config.es6.js -o .\/public\/assets\/luigi-config.js --mode production",/1' package.json > p.tmp.json && mv p.tmp.json package.json
-
+# cleanup default installation
+rm public/index.html src/app.vue # remove default index, will be replaced with example assets
+rm -rf src/components
 
 echo "@import '~fundamental-styles/dist/fundamental-styles.css';
 " > src/assets/scss/style.scss
 
-# cleanup defaults
-rm -f src/app.vue
-rm -rf src/components
-
-# fetch assets from example
+# fetch assets from vue example
 curl https://raw.githubusercontent.com/SAP/luigi/master/core/examples/luigi-example-vue/public/sampleapp.html > public/sampleapp.html
 curl https://raw.githubusercontent.com/SAP/luigi/master/core/examples/luigi-example-vue/src/app.vue > src/app.vue
 curl https://raw.githubusercontent.com/SAP/luigi/master/core/examples/luigi-example-vue/src/main.js > src/main.js
@@ -45,10 +37,15 @@ curl https://raw.githubusercontent.com/SAP/luigi/master/core/examples/luigi-exam
 curl https://raw.githubusercontent.com/SAP/luigi/master/core/examples/luigi-example-vue/src/views/home.vue > src/views/home.vue
 curl https://raw.githubusercontent.com/SAP/luigi/master/core/examples/luigi-example-vue/src/views/sample1.vue > src/views/sample1.vue
 curl https://raw.githubusercontent.com/SAP/luigi/master/core/examples/luigi-example-vue/src/views/sample2.vue > src/views/sample2.vue
+curl https://raw.githubusercontent.com/SAP/luigi/master/core/examples/luigi-example-vue/public/luigi-config.js > src/luigi-config/luigi-config.es6.js
 
 # generic assets
 curl https://raw.githubusercontent.com/SAP/luigi/master/scripts/setup/assets/index.html > public/index.html
-curl https://raw.githubusercontent.com/SAP/luigi/master/core/examples/luigi-example-vue/public/luigi-config.js > src/luigi-config/luigi-config.es6.js
+
+
+# set scripts
+sed 's/"scripts": {/"scripts": {\
+  \  "buildConfig":"webpack --entry .\/src\/luigi-config\/luigi-config.es6.js -o .\/public\/assets\/luigi-config.js --mode production",/1' package.json > p.tmp.json && mv p.tmp.json package.json
 
 
 echo "const webpack = require('webpack');
