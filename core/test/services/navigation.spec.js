@@ -840,6 +840,39 @@ describe('Navigation', function() {
     });
   });
 
+  describe('onNodeChange', () => {
+    afterEach(() => {
+      sinon.restore();
+      sinon.reset();
+    });
+
+    it('when onNodeChange is defined', () => {
+      console.log = sinon.spy();
+      LuigiConfig.config = {
+        navigation: {
+          onNodeChange: () => {
+            console.log('radi!!!');
+          }
+        }
+      };
+      Navigation.onNodeChange();
+      sinon.assert.calledOnce(console.log);
+    });
+    it('when onNodeChange is not defined', () => {
+      sinon.stub(LuigiConfig, 'getConfigValue');
+      LuigiConfig.config = {
+        navigation: {}
+      };
+      Navigation.onNodeChange();
+      sinon.assert.calledWithExactly(
+        LuigiConfig.getConfigValue,
+        'navigation.onNodeChange'
+      );
+      const result = LuigiConfig.getConfigValue('navigation.onNodeChange');
+      assert.equal(result, undefined);
+    });
+  });
+
   describe('shouldPreventNavigation', () => {
     let node;
     let nodeActivationHook;
