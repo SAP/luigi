@@ -4,7 +4,7 @@ const sinon = require('sinon');
 import { afterEach } from 'mocha';
 
 import { Routing } from '../../src/services/routing';
-import { GenericHelpers } from '../../src/utilities/helpers';
+import { GenericHelpers, RoutingHelpers } from '../../src/utilities/helpers';
 import { LuigiConfig, LuigiI18N } from '../../src/core-api';
 import { Navigation } from '../../src/navigation/services/navigation';
 import { NodeDataManagementStorage } from '../../src/services/node-data-management';
@@ -463,9 +463,7 @@ describe('Routing', function() {
       // given
       const path = '#/projects/teams';
       const expectedPath = '/projects/teams/t2';
-      const component = {
-        shouldShowUnsavedChangesModal: () => false
-      };
+      component.shouldShowUnsavedChangesModal = () => false;
       const node = {};
 
       // when
@@ -661,6 +659,27 @@ describe('Routing', function() {
       Routing.showPageNotFoundError(component, pathToRedirect, notFoundPath);
 
       sinon.assert.calledWithExactly(Routing.navigateTo, pathToRedirect2);
+    });
+  });
+  describe('dynamicNode', () => {
+    let nodeData = {
+      pathParam: {
+        dynNode1: 'dyn1'
+      }
+    };
+    let node = {
+      pathSegment: ':dynNode1'
+    };
+    it('check if it is dynamic Node', () => {
+      let isDynamic = RoutingHelpers.isDynamicNode(node);
+      assert.isTrue(isDynamic);
+    });
+    it('check if it is dynamic Node', () => {
+      let pathParamValue = RoutingHelpers.getDynamicNodeValue(
+        node,
+        nodeData.pathParam
+      );
+      assert.equal(pathParamValue, 'dyn1');
     });
   });
 });
