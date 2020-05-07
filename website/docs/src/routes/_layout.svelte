@@ -467,10 +467,10 @@
 			}
 		}
 		.keyword-container{
-        	display:flex;
-            flex-wrap: wrap;
-            justify-content: start;
-        }
+    	display:flex;
+    	flex-wrap: wrap;
+    	justify-content: start;
+    }
 		label.keyword {
 			border: 1px solid $powder-blue;
 			padding: 6px 12px;
