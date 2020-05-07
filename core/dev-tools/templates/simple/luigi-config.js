@@ -7,7 +7,7 @@ Luigi.setConfig({
           loadingIndicator: {
             enabled: false
           },
-          viewUrl: './microfrontend.html'
+          viewUrl: '/microfrontend.html'
       }],
   },
   settings: {
