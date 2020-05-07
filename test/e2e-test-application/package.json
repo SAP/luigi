@@ -32,8 +32,7 @@
     "fundamental-styles": "^0.8.1",
     "rxjs": "6.2.0",
     "zone.js": "^0.8.14",
-    "lodash": ">=4.17.13",
-    "docsearch.js": "2.6.3"
+    "lodash": ">=4.17.13"
   },
   "devDependencies": {
     "@angular-builders/custom-webpack": "7.1.1",

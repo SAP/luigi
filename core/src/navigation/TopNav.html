@@ -167,7 +167,7 @@
             <nav class="fd-menu">
               <ul class="fd-menu__list">
                 {#if isGlobalSearchAvailable}
-                <li class="fd-menu__item lui-mobile-switch-menu">
+                <li class="fd-menu__item">
                   <a
                     class="fd-menu__link"
                     on:click|stopPropagation="{()=>{toggleSearch(),toggleDropdownState('overflowPopover')}}"
@@ -179,7 +179,7 @@
                 </li>
                 {/if}
                 {#if contextSwitcherConfig && (!authorizationEnabled || isLoggedIn)}
-                <li class="fd-menu__item lui-mobile-switch-menu">
+                <li class="fd-menu__item">
                   <a
                     class="fd-menu__link"
                     on:click|stopPropagation="{openMobileContextSwitcher}"
@@ -467,9 +467,7 @@
           'settings.responsiveNavigation'
         );
         productSwitcherConfig = NavigationHelpers.getProductSwitcherConfig();
-        isGlobalSearchAvailable = LuigiConfig.getConfigValue(
-          'globalSearch.enabled'
-        );
+        isGlobalSearchAvailable = LuigiConfig.getConfigValue('globalSearch');
       },
       ['navigation']
     );
@@ -685,9 +683,5 @@
         right: 14px;
       }
     }
-  }
-
-  .lui-mobile-switch-menu {
-    border-bottom: 1px solid var(--sapList_BorderColor, #e4e4e4);
   }
 </style>
