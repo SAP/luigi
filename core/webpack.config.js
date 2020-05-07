@@ -37,7 +37,7 @@ class PatchLuigiPlugin {
             [
               'babel public/luigi.js --out-file public/luigi.babel.js --presets=@babel/preset-env --root . --root-mode upward --source-maps inline',
               `terser --compress --mangle --output public/luigi.js --source-map "content=inline" -- public/luigi.babel.js`,
-              'echo '+ (new Date()) + ' > dev-tools/latest_build.log'
+              'echo "'+ (new Date()) + '" > dev-tools/latest_build.log'
             ].join(' && '),
             PatchLuigiPlugin.execHandler
         );
