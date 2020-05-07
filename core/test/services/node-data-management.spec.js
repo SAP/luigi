@@ -118,5 +118,30 @@ describe('NodeDataManagementStorage', function() {
       NodeDataManagementStorage.deleteCache();
       expect(NodeDataManagementStorage.dataManagement.size).to.equal(0);
     });
+    it('remove node and its children recursivly', () => {
+      expect(NodeDataManagementStorage.dataManagement.size).to.equal(0);
+      let children1 = { pathSegment: 'child1' };
+      let children4 = { pathSegment: 'child4' };
+      let children3 = { pathSegment: 'child3', children: [children4] };
+      let children2 = { pathSegment: 'child2', children: [children3] };
+      let rootNode = {
+        children: [children1, children2]
+      };
+      NodeDataManagementStorage.setChildren(rootNode, {
+        children: rootNode.children
+      });
+      NodeDataManagementStorage.setChildren(children1, {
+        children: children1.children
+      });
+      NodeDataManagementStorage.setChildren(children2, {
+        children: children2.children
+      });
+      NodeDataManagementStorage.setChildren(children3, {
+        children: children3.children
+      });
+      expect(NodeDataManagementStorage.dataManagement.size).to.equal(4);
+      NodeDataManagementStorage.deleteNodesRecursively(children2);
+      expect(NodeDataManagementStorage.dataManagement.size).to.equal(2);
+    });
   });
 });
