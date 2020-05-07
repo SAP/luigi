@@ -1,0 +1,118 @@
+<div
+  class="fd-shellbar__action {!isMobile ? 'fd-shellbar__action--desktop':'fd-shellbar__action--mobile luigi-search-shell__mobile'}"
+>
+  <div class="fd-popover">
+    <div class="fd-popover__control" on:click|stopPropagation="{() => {}}">
+      <div
+        aria-hidden="{!isSearchFieldVisible}"
+        aria-haspopup="true"
+        class="luigi-search"
+      >
+        <div class="fd-input-group fd-shellbar__input-group">
+          <input
+            type="text"
+            on:keyup="{(event) => onKeyUp(event)}"
+            class="fd-input fd-input-group__input fd-shellbar__input-group__input luigi-search__input"
+            data-testid="luigi-search-input"
+          >
+        </div>
+      </div>
+      <div
+        class="fd-popover__body fd-popover__body--right"
+        aria-hidden="{!showPopOverCustomSearch}"
+      >
+        <nav class="fd-menu">
+          {#if searchResults}
+          <ul class="fd-menu__list fd-menu__list--top">
+            {#each searchResults as result}
+            <li class="fd-menu__item">{result}</li>
+            {/each}
+          </ul>
+          {/if}
+        </nav>
+      </div>
+    </div>
+  </div>
+</div>
+{#if !isMobile}
+<div class="fd-shellbar__action fd-shellbar__action--desktop">
+  <div on:click|stopPropagation="{() => {}}">
+    <button
+      class="fd-button fd-shellbar__button sap-icon--search luigi-search__button"
+      aria-haspopup="true"
+      aria-expanded="{!isSearchFieldVisible}"
+      on:click="{toggleSearch}"
+      data-testid="luigi-search-btn-desktop"
+    ></button>
+  </div>
+</div>
+{/if}
+<script>
+  import { beforeUpdate, createEventDispatcher, onMount } from 'svelte';
+  import { LuigiAuth, LuigiConfig } from '../core-api';
+  import { GenericHelpers } from '../utilities/helpers';
+  export let dropDownStates = {};
+  export let isMobile;
+  export let isSearchFieldVisible;
+  const dispatch = createEventDispatcher();
+  let searchResults = {};
+  let showPopOverCustomSearch = false;
+  let search;
+  onMount(async () => {
+    search = await LuigiConfig.getConfigValueAsync('globalSearch.search');
+  });
+
+  function onKeyUp(event) {
+    //Issue 1260
+    // if (search && GenericHelpers.isFunction(search.customSearch)) {
+    //TODO showPopOverCustomSearch toggleImplementation
+    // search.customSearch(event).then(results => {
+    //   if (results) {
+    //     searchResults = results;
+    //   }
+    // });
+    // }
+  }
+
+  function clearSearchField() {
+    let input = document.querySelector(
+      '.fd-shellbar__action--desktop .luigi-search__input'
+    );
+    input.value = '';
+  }
+
+  export function toggleSearch() {
+    clearSearchField();
+    dispatch('toggleSearch');
+  }
+</script>
+<style type="text/scss">
+  .luigi-search {
+    &[aria-hidden='true'] {
+      visibility: hidden;
+      width: 0;
+    }
+  }
+
+  .luigi-search__input {
+    width: 184px;
+  }
+
+  .luigi-search-shell__mobile {
+    position: relative;
+    height: calc(2.25rem + 2px);
+    padding: 0;
+
+    .fd-popover {
+      vertical-align: top;
+    }
+
+    .luigi-search {
+      position: absolute;
+      top: 0;
+      right: 0;
+      background: var(--sapShellColor);
+      z-index: 1;
+    }
+  }
+</style>

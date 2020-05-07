@@ -4,6 +4,7 @@ import { routing } from './routing';
 import { settings } from './settings';
 import { communication } from './communication';
 import { lifecycleHooks } from './lifecycle-hooks';
+import { globalSearch } from './globalSearch';
 import { i18nProvider } from './i18n-provider';
 
 i18nProvider.init().then(trans => {
@@ -13,6 +14,7 @@ i18nProvider.init().then(trans => {
     routing,
     settings,
     communication,
-    lifecycleHooks
+    lifecycleHooks,
+    globalSearch
   });
 });
