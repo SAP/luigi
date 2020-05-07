@@ -92,7 +92,7 @@ const watching = webpack_compiler.watch({
 });
 
 var params = {
-	port: 4000,
+	port: 4100,
 	host: "0.0.0.0",
 	root: rootPath,
 	open: false,
@@ -106,4 +106,3 @@ var params = {
 
 liveServer.start(params);
 console.log('\x1b[32mStarting live-server at','\x1b[36m','http://localhost:' + params.port,'\x1b[0m');
-
