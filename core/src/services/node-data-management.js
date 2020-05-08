@@ -1,4 +1,3 @@
-import { GenericHelpers } from '../utilities/helpers/generic-helpers';
 class NodeDataManagementStorageClass {
   constructor() {
     this.dataManagement = new Map();
@@ -12,6 +11,7 @@ class NodeDataManagementStorageClass {
    */
   setChildren(node, value) {
     this.dataManagement.set(node, value);
+    this.navPath = '';
   }
 
   /**
@@ -54,10 +54,24 @@ class NodeDataManagementStorageClass {
   }
 
   /* 
-      Clear the map and remove all key/values from map.
-      */
+    Clear the map and remove all key/values from map.
+  */
   deleteCache() {
     this.dataManagement.clear();
+  }
+
+  /**
+   * Delete node from cache and its children recursively
+   * @param {*} node
+   */
+  deleteNodesRecursively(node) {
+    if (this.hasChildren(node)) {
+      let children = this.getChildren(node).children;
+      for (let i = 0; i < children.length; i++) {
+        this.deleteNodesRecursively(children[i]);
+      }
+    }
+    this.dataManagement.delete(node);
   }
 }
 export const NodeDataManagementStorage = new NodeDataManagementStorageClass();

@@ -6,6 +6,76 @@
   <div class="fd-panel" *ngIf="!links">
     <div class="fd-panel__body">
       <p>{{ nodeLabel }} content.</p>
+      <div
+        class="clickable"
+        (click)="
+          linkManager().navigate(
+            '/projects/pr2/users/groups/avengers/settings/dyn1'
+          )
+        "
+      >
+        projects/pr2/users/groups/avengers/settings/dyn1
+      </div>
+      <br />
+      <div
+        class="clickable"
+        (click)="
+          linkManager().navigate('/projects/pr2/users/groups/avengers/settings')
+        "
+      >
+        projects/pr2/users/groups/avengers/settings
+      </div>
+      <br />
+      <div
+        class="clickable"
+        (click)="
+          linkManager().navigate(
+            '/projects/pr2/users/groups/avengers/settings/dyn2'
+          )
+        "
+      >
+        projects/pr2/users/groups/avengers/settings/dyn2
+      </div>
+      <br /><br />
+      <div
+        class="clickable"
+        (click)="
+          linkManager().navigate(
+            '/projects/pr2/users/groups/others/settings/dyn1'
+          )
+        "
+      >
+        projects/pr2/users/groups/others/settings/dyn1
+      </div>
+      <br />
+      <div
+        class="clickable"
+        (click)="
+          linkManager().navigate('/projects/pr2/users/groups/others/settings')
+        "
+      >
+        projects/pr2/users/groups/others/settings
+      </div>
+      <br />
+      <div
+        class="clickable"
+        (click)="
+          linkManager().navigate(
+            '/projects/pr2/users/groups/others/settings/dyn2'
+          )
+        "
+      >
+        projects/pr2/users/groups/others/settings/dyn2
+      </div>
+      <br />
+      <br /><br /><br />
+      <div
+        class="clickable"
+        (click)="linkManager().navigate('/projects/pr2/developers')"
+      >
+        projects/pr2/developers
+      </div>
+      <br />
     </div>
   </div>
   <div class="fd-panel" *ngIf="links">

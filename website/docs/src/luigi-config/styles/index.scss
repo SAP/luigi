@@ -221,46 +221,46 @@ $side-nav-width-mobile: 260px;
         font-size: 14px;
       }
     }
-  }
 
-  .fd-shellbar__button {
-    border: none;
-    border-radius: 0;
-    background: none;
-    max-height: none;
-    height: 69px;
-    padding-bottom: 41px;
-    margin-bottom: -41px;
-
-    span {
-
-      &:not(.fd-top-nav__icon) {
-        color: white;
-        font-size: 18px;
-        color: #fff;
-        padding-bottom: 36px;
-        // margin-bottom: -41px;
-        border-bottom: 4px solid transparent;
-        transition: all .2s ease;
-      }
-    }
-
-    .fd-top-nav__icon {
-      &:before {
-        margin-top: 0 !important;
-      }
-    }
-
-    &:hover,
-    &.is-selected {
+    .fd-button.fd-shellbar__button {
+      border: none;
+      border-radius: 0;
+      background: none;
+      max-height: none;
+      height: 69px;
+      padding-bottom: 41px;
+      margin-bottom: -41px;
+  
       span {
+  
         &:not(.fd-top-nav__icon) {
-          border-bottom-color: $primary-color;
+          color: white;
+          font-size: 18px;
+          color: #fff;
+          padding-bottom: 36px;
+          // margin-bottom: -41px;
+          border-bottom: 4px solid transparent;
+          transition: all .2s ease;
+        }
+      }
+  
+      .fd-top-nav__icon {
+        &:before {
+          margin-top: 0 !important;
+        }
+      }
+  
+      &:hover,
+      &.is-selected {
+        span {
+          &:not(.fd-top-nav__icon) {
+            border-bottom-color: $primary-color;
+          }
         }
       }
     }
   }
-
+  
   .fd-app__sidebar,
   .iframeContainer {
     top: $height-shellbar-mobile;
