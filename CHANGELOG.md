@@ -25,6 +25,20 @@ The lerna-changelog tool detects changes based on PR labels and maps them to sec
 -->
 
 
+## [v1.1.1] (2020-05-07)
+
+#### :rocket: Added
+* [#1317](https://github.com/SAP/luigi/pull/1317) Simple core development setup ([@hardl](https://github.com/hardl))
+
+#### :bug: Fixed
+* [#1318](https://github.com/SAP/luigi/pull/1318) Fix tabnav active state indication ([@hardl](https://github.com/hardl))
+* [#1278](https://github.com/SAP/luigi/pull/1278) Cache improvements for dynamic nodes ([@JohannesDoberer](https://github.com/JohannesDoberer))
+
+#### :memo: Documentation
+* [#1284](https://github.com/SAP/luigi/pull/1284) Documentation for Internationalization i18n ([@maxmarkus](https://github.com/maxmarkus))
+* [#1287](https://github.com/SAP/luigi/pull/1287) Link to 0.7.x documentation ([@alexandra-simeonova](https://github.com/alexandra-simeonova))
+
+
 ## [v1.1.0] (2020-04-24)
 
 #### :boom: Breaking Change 
@@ -745,3 +759,4 @@ The lerna-changelog tool detects changes based on PR labels and maps them to sec
 [v1.0.0]: https://github.com/SAP/luigi/compare/v0.7.7...v1.0.0
 [v1.0.1]: https://github.com/SAP/luigi/compare/v1.0.0...v1.0.1
 [v1.1.0]: https://github.com/SAP/luigi/compare/v1.0.1...v1.1.0
+[v1.1.1]: https://github.com/SAP/luigi/compare/v1.1.0...v1.1.1
