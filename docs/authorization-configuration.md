@@ -207,6 +207,7 @@ export class CustomAuthenticationProvider {
   }
 }
 ```
+Read more about [Luigi.unload()](luigi-core-api.md#unload).
 ​
 To use the custom authentication provider in your Luigi app, include this code in the `auth:` section of the configuration file:
 
