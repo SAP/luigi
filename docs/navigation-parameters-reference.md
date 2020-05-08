@@ -61,6 +61,7 @@ The navigation parameters allow you to configure **global** navigation settings 
 ### addNavHrefs
 - **type**: boolean
 - **description**: if set to `true`, proper href attributes are added to all navigation links. It is set to `false` by default.
+- **since**: v0.7.4
 
 ### nodeAccessibilityResolver
 - **type**: any
@@ -80,6 +81,7 @@ The navigation parameters allow you to configure **global** navigation settings 
   - **viewUrl** specifies the location to redirect to on the micro frontend level (the main URL is not changed).
   - **redirectPath** specifies the location to redirect to on the Luigi level (the main URL is changed).
   - **errorFn** used to handle different scenarios other than redirection.
+- **since**: v1.0.1
 
 ### preloadViewGroups
 - **type**: boolean
@@ -258,6 +260,7 @@ settings: {
 ### tabNav
 - **type**: boolean
 - **description**: renders the children of the node as a horizontal navigation bar. Sub-children are not supported. When you categorize nodes you will get a drop-down menu in the horizontal navigation.
+- **since**: v0.7.0
 
 ### anonymousAccess
 - **type**: boolean or "exclusive"
@@ -277,6 +280,7 @@ settings: {
       virtualTree: true
     }
     ```
+- **since**: v0.7.6
 
 ### pageErrorHandler
 - **type**: object
@@ -286,6 +290,7 @@ settings: {
   - **viewUrl** specifies the location to redirect to on the micro frontend level (the main URL is not changed).
   - **redirectPath** specifies the location to redirect to on the Luigi level (the main URL is changed).
   - **errorFn** used to handle different scenarios other than redirection.
+  - **since**: v1.0.1
 
 ## Context switcher
 
@@ -316,11 +321,13 @@ The context switcher is a drop-down list available in the top navigation bar. It
 - **type**: function
 - **parameters**: [option](navigation-parameters-reference.md#options)
 - **description**: enables you to customize the selected option of the dropdown button of the context switcher by rendering HTML code inside a `<button>`. The function takes an  **option** object as a parameter. It is recommended to use this function carefully because it is possible to inject JavaScript code.
+- **since**: v1.0.0
 
 ### customOptionsRenderer
 - **type**: function
 - **parameters**: [option](navigation-parameters-reference.md#options), isSelected
 - **description**: enables you to add custom items to the context switcher by rendering code inside a `<li>` element. The function takes an **option** object and a boolean **isSelected** as a parameter. It is recommended to use this function carefully because it is possible to inject JavaScript code.
+- **since**: v0.7.3
 
 
 ### actions
@@ -347,6 +354,7 @@ The context switcher is a drop-down list available in the top navigation bar. It
 - **type**: boolean
 - **description**: if set to `false`, the drop-down is not shown on click if there is only one option and no actions.
 - **default**: `true`
+- **since**: v0.7.3
 
 ### Icon
 - **type**: string
@@ -385,6 +393,7 @@ The profile section is a configurable drop-down list available in the top naviga
 ### staticUserInfoFn
 - **type**: function
 - **description**: used to retrieve a user's name and email to simulate logging in. It can be used when authorization is disabled and also gets called if the defined IDP provider does not have **settings.userInfoFn** defined or does not provide a `userInfo` function internally. It can be asynchronous and should return an object with **name**, **email** and **picture** parameters.
+- **since**: v0.6.5
 
 <!-- add-attribute:class:warning -->
 >**NOTE:** Neither **authorization** nor **profile** parameter is configured if the profile section in the top navigation bar is not visible.

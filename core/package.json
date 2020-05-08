@@ -22,9 +22,11 @@
     "core-js": "^3.2.1",
     "css-loader": "^3.0.0",
     "file-loader": "^2.0.0",
+    "fs-extra": "9.0.0",
     "fundamental-styles": "^0.8.1",
     "jsdom": "15.0.0",
     "jsdom-global": "3.0.2",
+    "live-server": "^1.2.1",
     "lodash": ">=4.17.13",
     "lodash.template": ">=4.5.0",
     "mini-css-extract-plugin": "^0.8.0",
@@ -61,7 +63,8 @@
     "test:watch": "npm run test -- --watch",
     "bundlesize": "npm run bundle && bundlesize",
     "bundlesizeOnly": "bundlesize",
-    "helper:webpack-analyze": "ANALYZE=true npm run bundle-evergreen"
+    "helper:webpack-analyze": "ANALYZE=true npm run bundle-evergreen",
+    "simpledev": "node ./dev-tools/simpledev.js"
   },
   "bundlesize": [
     {
