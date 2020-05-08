@@ -148,16 +148,6 @@ section,
         margin-bottom: -200px;
         padding-bottom: calc(200px + 100px);
       }
-
-      &.has-big-bottom-margin {
-        margin-bottom: -300px;
-        padding-bottom: 300px;
-
-        @include breakpoint(xxlarge) {
-          margin-bottom: -500px;
-          padding-bottom: calc(500px + 100px);
-        }
-      }
     }
   }
 
