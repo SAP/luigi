@@ -2,7 +2,7 @@ import visit from 'unist-util-visit';
 import h from 'hastscript';
 
 /**
- * This unified plugin function adds keyword labels 
+ * This unified plugin function adds keyword labels
  * example markdown comment: <!-- keywords: key1, key2-->
  * result : <div class="keyword-container">
  *              <label class="keyword">key1</label>
