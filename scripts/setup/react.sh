@@ -15,7 +15,7 @@ npx create-react-app $folder && cd $folder
 # eject project to customize webpack configs
 echo yes | npm run eject
 
-#install dependencies
+# install dependencies
 npm i -P @luigi-project/core @luigi-project/client fundamental-styles @sap-theming/theming-base-content react-router-dom
 npm i copy-webpack-plugin webpack webpack-cli @babel/core @babel/preset-env babel-loader --save-dev
 
