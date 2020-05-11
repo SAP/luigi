@@ -1,14 +1,12 @@
 import visit from 'unist-util-visit';
 import h from 'hastscript';
 
-/**
- * This unified plugin function adds keyword labels
- * example markdown comment: <!-- keywords: key1, key2-->
- * result : <div class="keyword-container">
- *              <label class="keyword">key1</label>
- *              <label class="keyword">key2</label> 
- *          </div>
- */
+// This unified plugin function adds keyword labels 
+// example markdown comment: <!-- keywords: key1, key2-->
+// result : <div class="keyword-container">
+//              <label class="keyword">key1</label>
+//              <label class="keyword">key2</label> 
+//          </div>
 export default function addKeyWords() {
   return function transformer(tree) {
     visit(tree, ['element', 'comment'], function (node) {
