@@ -473,7 +473,8 @@
 		}
 		label.keyword {
 			border: 1px solid $powder-blue;
-			padding: 0 7px;
+			padding: 0 14px;
+			font-size: 14px;
 			background-color: rgba(237, 242, 247, 0.1);
 			border-radius: 6px;
 			margin-right: 10px;
