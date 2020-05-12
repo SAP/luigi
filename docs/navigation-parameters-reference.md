@@ -69,7 +69,7 @@ The navigation parameters allow you to configure **global** navigation settings 
 
 ### onNodeChange
 - **type**: function
-- **description**: gives possibility to invoke and execute specific function on the global level when a request to navigate to the node occurs.
+- **description**: allows you to invoke and execute a specific function on the global level when a request to navigate to the node occurs.
 
 ### defaults.isolateView
 - **type**: boolean
