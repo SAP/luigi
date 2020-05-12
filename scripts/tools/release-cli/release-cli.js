@@ -1,3 +1,12 @@
+/**
+ * Usage:
+ * cd scripts
+ * npm run release
+ *
+ * or for nightly build, to just update patch version without changelog:
+ * NIGHTLY=true npm run release
+ */
+
 import fs from 'fs';
 import path from 'path';
 import semver from 'semver';
@@ -110,18 +119,18 @@ function addToChangelog(versionText, changelog, lastline) {
   logHeadline('Appended changelog');
 }
 
-function replaceInAllFiles(search, replace) {
-  try {
-    // TODO: Getting errors while it is working fine from command line. Seems node cannot handle pipes while evaluating commands.
-    require('child_process').execSync(
-      `cd ${__dirname} && ./replaceInAllFiles.sh "${search}" "${replace}"`,
-      { stdio: [0, 1, 2] }
-    );
-    logHeadline('\nReplaced version in files.');
-  } catch (error) {
-    logError('Replace error:', error);
-  }
-}
+// function replaceInAllFiles(search, replace) {
+//   try {
+//     // TODO: Getting errors while it is working fine from command line. Seems node cannot handle pipes while evaluating commands.
+//     require('child_process').execSync(
+//       `cd ${__dirname} && ./replaceInAllFiles.sh "${search}" "${replace}"`,
+//       { stdio: [0, 1, 2] }
+//     );
+//     logHeadline('\nReplaced version in files.');
+//   } catch (error) {
+//     logError('Replace error:', error);
+//   }
+// }
 
 /**
  * PROMPT
@@ -132,6 +141,22 @@ function replaceInAllFiles(search, replace) {
 
   const releases = await getReleases();
   const nextVersion = getNextVersion();
+
+  // NIGHTLY BUILD
+  if (process.env.NIGHTLY === 'true') {
+    const padLeft = (str, inp) => {
+      return (
+        str.substring(0, str.length - inp.toString().length) + inp.toString()
+      );
+    };
+    const currentDatetime = new Date();
+    let formattedDate = `${currentDatetime.getFullYear()}${padLeft(
+      '00',
+      currentDatetime.getMonth() + 1
+    )}${currentDatetime.getDate()}`;
+    prompts.inject([nextVersion + '-dev.' + formattedDate, false]);
+  }
+
   const questions = [
     {
       type: 'text',
