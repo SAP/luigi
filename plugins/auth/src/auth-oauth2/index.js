@@ -116,17 +116,17 @@ export default class oAuth2ImplicitGrant {
 
   setTokenExpirationAction() {
     const expirationCheckInterval = 5000;
-    const expirationCheckIntervalInstance = setInterval(() => {
+    this.expirationCheckIntervalInstance = setInterval(() => {
       let authData = this.getAuthData();
       if (!authData) {
-        return clearInterval(expirationCheckIntervalInstance);
+        return clearInterval(this.expirationCheckIntervalInstance);
       }
 
       const tokenExpirationDate =
         (authData && authData.accessTokenExpirationDate) || 0;
       const currentDate = new Date();
       if (tokenExpirationDate - currentDate < expirationCheckInterval) {
-        clearInterval(expirationCheckIntervalInstance);
+        clearInterval(this.expirationCheckIntervalInstance);
         Luigi.auth().store.removeAuthData();
         // TODO: check if valid (mock-auth requires it), post_logout_redirect_uri is an assumption, might not be available for all auth providers
         const redirectUrl = `${
@@ -151,7 +151,7 @@ export default class oAuth2ImplicitGrant {
       this.settings.expirationCheckInterval * 1000;
     let authData = this.getAuthData();
     if (authData) {
-      const expirationCheckIntervalInstance = setInterval(() => {
+      this.expirationSoonCheckIntervalInstance = setInterval(() => {
         const tokenExpirationDate =
           (authData && authData.accessTokenExpirationDate) || 0;
         const currentDate = new Date();
@@ -160,7 +160,7 @@ export default class oAuth2ImplicitGrant {
           accessTokenExpiringNotificationTime
         ) {
           Luigi.auth().handleAuthEvent('onAuthExpireSoon', this.settings);
-          clearInterval(expirationCheckIntervalInstance);
+          clearInterval(this.expirationSoonCheckIntervalInstance);
         }
       }, expirationCheckInterval);
     }
@@ -174,5 +174,10 @@ export default class oAuth2ImplicitGrant {
     const random = Array.from(crypto.getRandomValues(new Uint8Array(20)));
 
     return random.map(x => validChars[x % validChars.length]).join('');
+  }
+
+  unload() {
+    clearInterval(this.expirationCheckIntervalInstance);
+    clearInterval(this.expirationSoonCheckIntervalInstance);
   }
 }
