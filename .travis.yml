@@ -124,6 +124,16 @@ jobs:
     - name: 'Integration Testing 2'
       <<: *integration-testing
 
+    - name: 'Nightly release'
+      if: TRAVIS_EVENT_TYPE = cron
+      script:
+        - cd $TRAVIS_BUILD_DIR/scripts && npm ci
+        - cd $TRAVIS_BUILD_DIR && NIGHTLY=true npm run release
+        - cd $TRAVIS_BUILD_DIR && npm run publish:nightly
+      before_cache:
+        - rm -rf ~/.npm/_logs
+        - rm -rf ~/.npm/_cacache
+
     # ----- NPM PUBLISH -----
     - stage: 'Publish'
       name: 'Publish to NPM'
@@ -132,16 +142,6 @@ jobs:
       if: repo = SAP/luigi AND tag ~= ^v AND TRAVIS_EVENT_TYPE != cron
       script:
         - bash ./scripts/npmPublish.sh
-      before_cache:
-        - rm -rf ~/.npm/_logs
-        - rm -rf ~/.npm/_cacache
-    
-    - name: 'Nightly release'
-      if: TRAVIS_EVENT_TYPE = cron
-      script:
-        - cd $TRAVIS_BUILD_DIR/scripts && npm ci
-        - cd $TRAVIS_BUILD_DIR && NIGHTLY=true npm run release
-        - cd $TRAVIS_BUILD_DIR && npm run publish:nightly
       before_cache:
         - rm -rf ~/.npm/_logs
         - rm -rf ~/.npm/_cacache
