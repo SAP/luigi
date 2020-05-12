@@ -20,6 +20,11 @@ export class ScrollAnchorsHandler {
         });
       }
     });
+    window.scrollAnchor = (evt, elem) => {
+      evt.preventDefault();
+      evt.stopPropagation();
+      this.scrollAnchor(evt, elem);
+    }
   }
 
   // Vanilla JavaScript Scroll to Anchor
@@ -30,7 +35,11 @@ export class ScrollAnchorsHandler {
     if (e) {
       e.preventDefault();
       targetID = (respond) ? respond.getAttribute('href') : this.getAttribute('href');
+      if (targetID.indexOf('?section=')){
+        targetID = `#${targetID.split('?section=').pop()}`
+      } else {
       targetID = `#${targetID.split('#').pop()}`;
+      } 
     } else {
       targetID = '#' + respond;
     }

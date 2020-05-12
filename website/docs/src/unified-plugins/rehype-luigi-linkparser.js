@@ -2,7 +2,8 @@ import has from 'hast-util-has-property';
 import url from 'url';
 import visit from 'unist-util-visit';
 import { writeFileSync, appendFileSync } from 'fs';
-import { prependForExport } from './plugin-helpers';
+import { prependForExport, prependForExportNewTab } from './plugin-helpers';
+
 
 let log = () => {}
 if (process.env.NODE_ENV === 'debug') {
@@ -26,7 +27,11 @@ export default function luigiLinkParser(options) {
     const githubMaster = 'https://github.com/SAP/luigi/blob/master/';
     if (has(node, prop)) {
       var parsed = url.parse(node.properties[prop]);
-      if (
+      if (parsed.hash && !parsed.pathname && !parsed.hostname) {
+        // current page anchor link
+        node.properties['href'] = prependForExportNewTab() + '/docs/' + settings.shortName + '/?section='+ parsed.hash.toLowerCase().replace('#', '');
+        node.properties['onclick'] = 'scrollAnchor(event, this)';
+      } else if (
         parsed.href.startsWith(githubMaster + 'docs') && parsed.pathname && parsed.pathname.endsWith('.md') ||
         parsed.pathname && parsed.pathname.endsWith('.md')
       ) {
@@ -47,10 +52,6 @@ export default function luigiLinkParser(options) {
         // external link
         node.properties['rel'] = 'external';
         node.properties['target'] = '_blank';
-      } else if (parsed.hash && !parsed.pathname && !parsed.hostname) {
-        // current page anchor link
-        node.properties['href'] = prependForExport() + '/docs/' + settings.shortName + parsed.hash.toLowerCase();
-        node.properties['onclick'] = 'navigateInternal(event, this)';
       } else if (parsed.pathname && (
         parsed.pathname.startsWith('../') || parsed.pathname.startsWith('/')
       )) {

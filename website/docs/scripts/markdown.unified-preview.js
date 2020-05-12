@@ -3,11 +3,11 @@ import { readFileSync } from 'fs';
 
 const filesToProcess = [
   // 'plain.md',
-  // 'links.md',
+ 'links.md',
   // 'link.md',
   // 'codeblocks.md',
   // 'custom-attributes.md',
-  'custom-wrappers.md',
+  //'custom-wrappers.md',
   // 'frontmatter-3.md',
   // 'frontmatter-2.md',
   // 'frontmatter.md'
