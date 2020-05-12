@@ -22,8 +22,6 @@ class Helpers {
     }.bind(this);
 
     window.addEventListener('message', helperListener);
-    window.onunload = () =>
-      window.removeEventListener('message', helperListener);
   }
 
   convertCustomMessageInternalToUser(internalMessage) {
