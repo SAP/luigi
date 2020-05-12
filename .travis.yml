@@ -103,7 +103,6 @@ jobs:
     #----- WHITESOURCE -----
     - name: 'Whitesource check'
       if: repo = SAP/luigi AND branch = master AND TRAVIS_EVENT_TYPE != cron
-      # if: repo = SAP/luigi AND (branch = master OR branch = release-v1)
       # Whitesource can't deal with symlinking, therefore we can't use lerna
       script:
         - 'if [ ! -z "${WHITESOURCE_APIKEY}" ]; then
@@ -138,7 +137,7 @@ jobs:
         - rm -rf ~/.npm/_cacache
     
     - name: 'Nightly release'
-      if: repo = SAP/luigi AND TRAVIS_EVENT_TYPE = cron
+      if: TRAVIS_EVENT_TYPE = cron
       script:
         - cd $TRAVIS_BUILD_DIR/scripts && npm ci
         - cd $TRAVIS_BUILD_DIR && NIGHTLY=true npm run release
