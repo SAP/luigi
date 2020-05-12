@@ -9,7 +9,7 @@
 <script>
   import { beforeUpdate, onMount, createEventDispatcher } from 'svelte';
   import { LuigiConfig } from './core-api';
-  import { IframeHelpers } from './utilities/helpers';
+  import { IframeHelpers, EventListenerHelpers } from './utilities/helpers';
 
   const dispatch = createEventDispatcher();
 
@@ -53,7 +53,7 @@
     );
     if (!backdropDisabled) {
       setBackdropClass();
-      window.addEventListener('message', e => {
+      EventListenerHelpers.addEventListener('message', e => {
         if (!IframeHelpers.getValidMessageSource(e)) return;
         if ('luigi.add-backdrop' === e.data.msg) {
           if (isValidForArea(e)) {
