@@ -241,24 +241,32 @@ function addToChangelog(versionText, changelog, lastline) {
 
   /**
    * UPDATE PACKAGE-LOCKS
+   * Skip when running in ci for nightly.
    */
-  logHeadline('\nInstalling packages to update package-lock.json');
-  for (const key in installPaths) {
-    logStep(`Installing ${key}`);
-    require('child_process').execSync(
-      `cd ${installPaths[key]} && npm install`,
-      { stdio: [0, 1, 2] }
-    );
+  if (process.env.NIGHTLY !== true) {
+    logHeadline('\nInstalling packages to update package-lock.json');
+    for (const key in installPaths) {
+      logStep(`Installing ${key}`);
+      require('child_process').execSync(
+        `cd ${installPaths[key]} && npm install`,
+        { stdio: [0, 1, 2] }
+      );
+    }
+    logHeadline('Package-lock.json files updated.\n');
   }
-  logHeadline('Package-lock.json files updated.\n');
+
   logHeadline('\nRelease prepared!');
 
-  console.log(
-    color.bold(`\nThen continue with the following steps:
-  1. Run: ./tools/release-cli/replaceInAllFiles.sh "NEXTRELEASE" "${input.version}"
-  2. Check and modify CHANGELOG.md entries
-  3. Add and commit changed files
-  4. Follow the rest of our internal release documentation
-  `)
-  );
+  if (process.env.NIGHTLY === true) {
+    console.log(color.bold(`\nNow execute: npm run release:nightly`));
+  } else {
+    console.log(
+      color.bold(`\nThen continue with the following steps:
+    1. Run: ./tools/release-cli/replaceInAllFiles.sh "NEXTRELEASE" "${input.version}"
+    2. Check and modify CHANGELOG.md entries
+    3. Add and commit changed files
+    4. Follow the rest of our internal release documentation
+    `)
+    );
+  }
 })();
