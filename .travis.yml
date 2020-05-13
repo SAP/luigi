@@ -128,8 +128,7 @@ jobs:
     # ----- NPM PUBLISH -----
     - stage: 'Publish'
       name: 'Publish to NPM'
-      # run only when merging from release-v branch to master
-      # if: repo = SAP/luigi AND (branch = master OR branch ~= ^release-v)
+      # run only when a release in github was created
       if: repo = SAP/luigi AND tag ~= ^v AND type != cron
       script:
         - bash ./scripts/npmPublish.sh
