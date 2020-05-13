@@ -54,7 +54,7 @@ function execTrim(cmd) {
 }
 
 function setLuigiNpmToken() {
-  if (process.env.TRAVIS == true) {
+  if (process.env.TRAVIS) {
     if (process.env.NPM_LUI_AUTH_TOKEN == '') {
       console.error('NPM_LUI_AUTH_TOKEN is not set, skipping publishing.');
       process.exit(0);
