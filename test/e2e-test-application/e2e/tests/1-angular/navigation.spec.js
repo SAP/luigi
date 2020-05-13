@@ -438,6 +438,7 @@ describe('Navigation', () => {
         cy.getIframeBody().then($iframeBody => {
           cy.wrap($iframeBody)
             .find('.fd-link')
+            .contains(label)
             .click();
         });
         cy.expectPathToBe('/projects/pr2/nav-sync/' + label);
