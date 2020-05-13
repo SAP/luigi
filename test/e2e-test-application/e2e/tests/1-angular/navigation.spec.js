@@ -437,12 +437,9 @@ describe('Navigation', () => {
       const labels = ['two', 'three', 'four', 'one'];
       labels.forEach((label, index) => {
         cy.getIframeBody().then($iframeBody => {
-          const currentLabel = labels[index - 1]
-            ? labels[index - 1]
-            : labels[labels.length - 1];
           cy.wrap($iframeBody)
             .find('.fd-link')
-            .contains(currentLabel)
+            .contains(label)
             .click();
         });
         cy.expectPathToBe('/projects/pr2/nav-sync/' + label);
