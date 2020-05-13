@@ -139,9 +139,11 @@ jobs:
     - name: 'Nightly release'
       if: type = cron
       script:
+        - echo "//registry.npmjs.org/:_authToken=$NPM_LUI_AUTH_TOKEN" > ~/.npmrc
         - cd $TRAVIS_BUILD_DIR/scripts && npm ci
         - cd $TRAVIS_BUILD_DIR/scripts && NIGHTLY=true npm run release
         - cd $TRAVIS_BUILD_DIR/scripts && npm run publish:nightly
+        - echo "" > ~/.npmrc
       before_cache:
         - rm -rf ~/.npm/_logs
         - rm -rf ~/.npm/_cacache

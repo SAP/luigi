@@ -53,20 +53,6 @@ function execTrim(cmd) {
     .trim();
 }
 
-function setLuigiNpmToken() {
-  if (process.env.TRAVIS) {
-    if (process.env.NPM_LUI_AUTH_TOKEN == '') {
-      console.error('NPM_LUI_AUTH_TOKEN is not set, skipping publishing.');
-      process.exit(0);
-    }
-    console.info('setLuigiNpmToken');
-    fs.writeFileSync(
-      '~/.npmrc',
-      `//registry.npmjs.org/:_authToken=${process.env.NPM_LUI_AUTH_TOKEN}`
-    );
-  }
-}
-
 const LATEST_TAG = execTrim('git describe --tags --abbrev=0');
 const FILES_CHANGED = execTrim(`git diff --name-only HEAD ${LATEST_TAG}`);
 
@@ -90,8 +76,6 @@ const FILES_CHANGED = execTrim(`git diff --name-only HEAD ${LATEST_TAG}`);
     const packagesToUpdate = changed.map(c => c[0]);
     logStep(packagesToUpdate.join(', '));
     logStep('\n');
-
-    setLuigiNpmToken();
 
     packagesToUpdate.forEach(pkg => {
       const publicPath = `${base}/${publishPaths[pkg].join('/')}`;
