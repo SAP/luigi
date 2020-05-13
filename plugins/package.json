@@ -20,7 +20,7 @@
   "bundlesize": [
     {
       "path": "./auth/public/auth-oauth2/plugin.js",
-      "maxSize": "15 kB",
+      "maxSize": "75 kB",
       "compression": "none"
     },
     {
