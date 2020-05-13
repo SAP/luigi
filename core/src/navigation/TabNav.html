@@ -28,7 +28,9 @@
           role="tab"
           aria-selected="{node === selectedNodeForTabNav}"
           on:click|preventDefault="{() => handleClick(node)}"
-        >{$getTranslation(node.label)}</a>
+        >
+          <span class="fd-tabs__tag">{$getTranslation(node.label)}</span>
+        </a>
       </span>
       {/if}
       {/if}
@@ -48,7 +50,7 @@
             on:click|preventDefault="{() => toggleDropdownState(key)}"
             aria-selected="{isSelectedCat(key,selectedNodeForTabNav)}"
           >
-            <span class="label">{$getTranslation(key)}</span>
+            <span class="label fd-tabs__tag">{$getTranslation(key)}</span>
             <span class="sap-icon--dropdown sap-icon--l"></span>
           </a>
           <div
@@ -92,7 +94,7 @@
           role="tab"
           on:click|preventDefault="{toggleMoreBtn}"
         >
-          <span class="label">More</span>
+          <span class="label fd-tabs__tag">More</span>
           <span class="sap-icon--dropdown sap-icon--l"></span>
         </a>
         <div
@@ -381,7 +383,7 @@
     .fd-popover__body {
       > .fd-nested-list {
         max-height: calc(100vh - 110px);
-        overflow-y: scroll !important;
+        overflow-y: auto !important;
         padding-top: 4px;
         padding-bottom: 4px;
 

@@ -17,7 +17,8 @@ class LuigiUX {
     if (appLoadingIndicator) {
       appLoadingIndicator.classList.add('hidden');
       setTimeout(() => {
-        appLoadingIndicator.parentNode.removeChild(appLoadingIndicator);
+        appLoadingIndicator.parentNode &&
+          appLoadingIndicator.parentNode.removeChild(appLoadingIndicator);
       }, 500);
     }
   }
