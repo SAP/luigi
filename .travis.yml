@@ -127,9 +127,8 @@ jobs:
     - name: 'Nightly release'
       if: type = cron
       script:
-        - cd $TRAVIS_BUILD_DIR/scripts && npm ci
-        - cd $TRAVIS_BUILD_DIR && NIGHTLY=true npm run release
-        - cd $TRAVIS_BUILD_DIR && npm run publish:nightly
+        - cd $TRAVIS_BUILD_DIR/scripts && NIGHTLY=true npm run release
+        - cd $TRAVIS_BUILD_DIR/scripts && npm run publish:nightly
       before_cache:
         - rm -rf ~/.npm/_logs
         - rm -rf ~/.npm/_cacache
