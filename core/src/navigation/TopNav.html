@@ -120,7 +120,7 @@
     -->
 
     <!-- dropdown for top nav nodes on smaller screens -->
-    {#if visibleNodeCount > 0}
+    {#if visibleNodeCount > 0 || isProductSwitcherAvailable || contextSwitcherConfig}
     <div class="fd-shellbar__action fd-shellbar__action--mobile">
       <div class="fd-shellbar-collapse">
         <div class="fd-popover fd-popover--right">
@@ -370,7 +370,8 @@
     AuthHelpers,
     NavigationHelpers,
     RoutingHelpers,
-    StateHelpers
+    StateHelpers,
+    EventListenerHelpers
   } from '../utilities/helpers';
   import { SemiCollapsibleNavigation } from './services/semi-collapsed-navigation';
 
@@ -444,7 +445,7 @@
       ['navigation']
     );
 
-    window.addEventListener('message', e => {
+    EventListenerHelpers.addEventListener('message', e => {
       if ('luigi.navigation.update-badge-counters' === e.data.msg) {
         setTopNavData();
       }

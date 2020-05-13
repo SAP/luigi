@@ -106,13 +106,13 @@
   import ContextSwitcherNav from './ContextSwitcherNav.html';
   import { LuigiConfig } from '../core-api';
   import { Routing } from '../services/routing';
-  import { NodeDataManagementStorage } from '../services/node-data-management';
   import {
     IframeHelpers,
     RoutingHelpers,
     StateHelpers,
     NavigationHelpers,
-    GenericHelpers
+    GenericHelpers,
+    EventListenerHelpers
   } from '../utilities/helpers';
 
   const dispatch = createEventDispatcher();
@@ -149,7 +149,6 @@
     StateHelpers.doOnStoreChange(
       store,
       async () => {
-        NodeDataManagementStorage.deleteCache();
         const contextSwitcherConfig = LuigiConfig.getConfigValue(
           'navigation.contextSwitcher'
         );
@@ -200,7 +199,7 @@
 
     RoutingHelpers.addRouteChangeListener(path => setSelectedContext(path));
 
-    window.addEventListener('message', e => {
+    EventListenerHelpers.addEventListener('message', e => {
       if (!IframeHelpers.getValidMessageSource(e)) return;
       if (e.data && e.data.msg === 'luigi.refresh-context-switcher') {
         options = null;
@@ -294,7 +293,6 @@
 
   export function goToPath(path) {
     getUnsavedChangesModalPromise().then(() => {
-      NodeDataManagementStorage.deleteCache();
       Routing.navigateTo(path);
     });
   }
@@ -303,7 +301,6 @@
     let option = event.detail.option;
     let selectedOption = event.detail.selectedOption;
     getUnsavedChangesModalPromise().then(() => {
-      NodeDataManagementStorage.deleteCache();
       if (preserveSubPathOnSwitch && selectedOption) {
         Routing.navigateTo(
           ContextSwitcherHelpers.getNodePathFromCurrentPath(
