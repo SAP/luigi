@@ -470,6 +470,7 @@
 			display: flex;
 			flex-wrap: wrap;
 			justify-content: start;
+			margin-bottom: 38px;
 		}
 		label.keyword {
 			border: 1px solid $powder-blue;
