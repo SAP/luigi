@@ -8,11 +8,11 @@
     "build": "ui5 build preload --all=true",
     "start": "ui5 serve --open index.html",
     "serve": "ws --compress -d dist",
-    "postinstall": "cp -r node_modules/@kyma-project/luigi-core webapp/libs/ && cp -r node_modules/@kyma-project/luigi-client webapp/libs/"
+    "postinstall": "cp -r node_modules/@luigi-project/core webapp/libs/luigi-core && cp -r node_modules/@luigi-project/client webapp/libs/luigi-client"
   },
   "dependencies": {
-    "@kyma-project/luigi-client": "^0.7.3",
-    "@kyma-project/luigi-core": "^0.7.3",
+    "@luigi-project/client": "^1.1.0",
+    "@luigi-project/core": "^1.1.0",
     "@openui5/sap.f": "^1.73.2",
     "@openui5/sap.m": "^1",
     "@openui5/sap.ui.core": "^1",
