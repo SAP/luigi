@@ -310,8 +310,13 @@ class RoutingClass {
           }
         }
       }
-
-      Iframe.navigateIframe(config, component, iframeElement);
+      if(nodeObject.webcomponent) {
+        iContainer.classList.add('lui-webComponent');
+        this.navigateWebComponent(config, component, iframeElement, nodeObject, iContainer);
+      } else {
+        iContainer.classList.remove('lui-webComponent');
+        Iframe.navigateIframe(config, component, iframeElement);
+      }
     } catch (err) {
       console.info('Could not handle route change', err);
     }
@@ -453,6 +458,49 @@ class RoutingClass {
         updatedExternalLink.sameWindow ? '_self' : '_blank'
       )
       .focus();
+  }
+
+
+  attachWC(wc_id, wc_container, ctx) {
+    /*let wcWrapper = document.createElement('div');
+    wcWrapper.innerHTML=`<${wc_id} label='bla'></${wc_id}>`;
+    wc_container.appendChild(wcWrapper);*/
+    const wc = document.createElement(wc_id);
+    wc.context = ctx;
+    wc.luigi = Luigi;
+    wc_container.appendChild(wc);
+  }
+
+  navigateWebComponent(config, component, node, navNode, iframeContainer) {
+    console.log("web component detected....", navNode.pathSegment);
+    const componentData = component.get();
+    let viewUrl = componentData.viewUrl;
+
+    if(navNode.webcomponent && navNode.webcomponent.id) {
+      const wc_id = 'luigi-wc-' + navNode.webcomponent.id;
+      const wc_container = document.querySelector('.wcContainer');
+      while(wc_container.lastChild) {
+        wc_container.lastChild.remove();
+      }
+      if(window.customElements.get(wc_id)) {
+        this.attachWC(wc_id, wc_container, componentData.context);
+      } else {
+        const wcScript = document.createElement('script');
+        wcScript.src = viewUrl;
+        Luigi.wc = undefined;
+        document.body.appendChild(wcScript);
+        wcScript.onload = () => {
+          if(Luigi.wc) {
+            window.customElements.define(wc_id, Luigi.wc.elementClass);
+            this.attachWC(wc_id, wc_container, componentData.context);
+          } else {
+            console.error("couldn't load web component", navNode);
+          }
+        };
+      }
+    } else {
+      console.error("id not defined for web component", navNode);
+    }
   }
 }
 

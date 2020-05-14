@@ -24,6 +24,7 @@
       use:init
     >
       <Backdrop area="main"></Backdrop>
+      <div class="wcContainer"></div>
     </div>
     {#if mfSplitView.displayed}
     <SplitView
@@ -1486,5 +1487,26 @@
   :global(.fd-shellbar) {
     border-bottom: #354a5f;
     border-bottom: 1px solid var(--sapShell_BorderColor, #354a5f);
+  }
+
+
+
+  .wcContainer {
+    position: absolute;
+    left: 0;
+    top: 0;
+    display: none;
+    width: 100%;
+    height: 100%;
+  }
+
+  :global(.lui-webComponent) {
+    .wcContainer {
+      display: block;
+    }
+
+    iframe {
+      display: none;
+    }
   }
 </style>
