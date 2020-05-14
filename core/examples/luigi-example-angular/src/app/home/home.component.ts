@@ -2,7 +2,7 @@ import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import {
   addInitListener,
   addContextUpdateListener
-} from '@kyma-project/luigi-client';
+} from '@luigi-project/client';
 
 @Component({
   selector: 'app-home',
