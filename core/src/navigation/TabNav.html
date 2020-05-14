@@ -28,7 +28,9 @@
           role="tab"
           aria-selected="{node === selectedNodeForTabNav}"
           on:click|preventDefault="{() => handleClick(node)}"
-        ><span class="fd-tabs__tag">{$getTranslation(node.label)}</span></a>
+        >
+          <span class="fd-tabs__tag">{$getTranslation(node.label)}</span>
+        </a>
       </span>
       {/if}
       {/if}
