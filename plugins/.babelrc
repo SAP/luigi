@@ -1,14 +1,11 @@
 {
   "presets": [
     [
-      "@babel/preset-env",
-      {
-        "useBuiltIns": "usage",
-        "corejs": 3
-      }
+      "@babel/preset-env"
     ]
   ],
   "plugins": [
-    "@babel/plugin-proposal-optional-chaining"
+    "@babel/plugin-proposal-optional-chaining",
+    "@babel/plugin-transform-runtime"
   ]
 }
