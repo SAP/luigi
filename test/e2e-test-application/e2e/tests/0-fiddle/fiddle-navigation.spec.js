@@ -4,7 +4,7 @@ describe('Fiddle', () => {
   describe('Navigation', () => {
     describe('Core api navigation test', () => {
       beforeEach(() => {
-        cy.visitWithFiddleConfig('/', JSON.stringify(fiddleConfig));
+        cy.visitWithFiddleConfig('/');
       });
       it('Core API navigate and open and close modal', () => {
         cy.window().then(win => {
@@ -30,7 +30,7 @@ describe('Fiddle', () => {
       beforeEach(() => {
         const newConfig = Object.assign({}, fiddleConfig);
         newConfig.navigation.nodes[0].viewUrl = null;
-        cy.visitWithFiddleConfig('/', JSON.stringify(newConfig));
+        cy.visitWithFiddleConfig('/', newConfig);
       });
       it('defaultChildNode', () => {
         cy.window().then(win => {
@@ -48,7 +48,7 @@ describe('Fiddle', () => {
           virtualTree: true,
           viewUrl: '/examples/microfrontends/multipurpose.html#'
         });
-        cy.visitWithFiddleConfig('/virtual', JSON.stringify(newConfig));
+        cy.visitWithFiddleConfig('/virtual', newConfig);
       });
       it('navigate', () => {
         cy.getIframeWindow().then(win => {
@@ -73,38 +73,36 @@ describe('Fiddle', () => {
             }
           ]
         });
-        newConfig.navigation.contextSwitcher = 5;
-        newConfig = JSON.stringify(newConfig).replace(
-          `"contextSwitcher":5`,
-          `contextSwitcher : {
-                  defaultLabel: 'Select Environment ...',
-                  lazyloadOptions: true,
-                  parentNodePath: '/environments', 
-                  options: function options() {
-                      return [{
-                          label : 'Environment 1',
-                          pathValue: 'env1',
-                          customRendererCategory: 'production'
-                      },
-                      {
-                          label : 'Environment 2',
-                          pathValue: 'env2',
-                          customRendererCategory: 'stage'
-                      }]
-                  },
-                  customSelectedOptionRenderer : (option) => { 
-                      if (option.customRendererCategory === 'production') {
-                          return ${`"<label style='color: rgb(136, 255, 0); font-weight:700'>" +
-                          option.label +
-                          "</label>"`};
-                      } else if (option.customRendererCategory === 'stage') {
-                          return ${`"<label style='color: rgb(0, 136, 255); font-weight:700'>" +
-                          option.label +
-                          "</label>"`};
-                      }
-                  }
-                }`
-        );
+        newConfig.navigation.contextSwitcher = {
+          defaultLabel: 'Select Environment',
+          parentNodePath: '/environments',
+          lazyloadOptions: true,
+          options: () => {
+            return [
+              {
+                label: 'Environment 1',
+                pathValue: 'env1',
+                customRendererCategory: 'production'
+              },
+              {
+                label: 'Environment 2',
+                pathValue: 'env2',
+                customRendererCategory: 'stage'
+              }
+            ];
+          },
+          customSelectedOptionRenderer: option => {
+            if (option.customRendererCategory === 'production') {
+              return `<label style='color: rgb(136, 255, 0); font-weight:700'> 
+                    ${option.label} 
+                    </label>`;
+            } else if (option.customRendererCategory === 'stage') {
+              return `<label style='color: rgb(0, 136, 255); font-weight:700'> 
+                        ${option.label} 
+                        </label>`;
+            }
+          }
+        };
         cy.visitWithFiddleConfig('/', newConfig);
       });
       it('custom selected option renderer', () => {
@@ -125,7 +123,7 @@ describe('Fiddle', () => {
   });
   describe('Unload and load Luigi', () => {
     beforeEach(() => {
-      cy.visitWithFiddleConfig('/home/two', JSON.stringify(fiddleConfig));
+      cy.visitWithFiddleConfig('/home/two', fiddleConfig);
     });
     it('Core API unload', () => {
       let config;
