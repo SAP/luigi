@@ -46,7 +46,7 @@ Cypress.Commands.add(
       .type('tets')
       .should('have.value', 'tets');
 
-    cy.get('#login-button').click();
+    cy.get('.fd-button').click();
 
     if (!skipReturnPathCheck) {
       cy.get('.fd-shellbar').contains('Overview');

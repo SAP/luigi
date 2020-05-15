@@ -62,7 +62,7 @@
           autocomplete="current-password"
         />
         <br />
-        <button id="login-button" class="fd-button">Login</button>
+        <button class="fd-button">Login</button>
       </form>
     </div>
     <script>
@@ -94,9 +94,9 @@
       In0.YUBE3tufmmNIJHwzKRXlImteuh_qDeuwGjkzN3Z0erg& \
       token_type=bearer';
 
-        let loginButton = document.getElementById('login-button');
+        let loginButton = document.getElementsByClassName('fd-button');
 
-        loginButton.addEventListener('click', function(ev) {
+        loginButton[0].addEventListener('click', function(ev) {
           ev.preventDefault();
           window.location = removeIndent(goTo);
         });
