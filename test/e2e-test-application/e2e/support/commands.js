@@ -34,13 +34,13 @@ Cypress.Commands.add('visitLoggedIn', (path = '/') => {
 Cypress.Commands.add(
   'login',
   (email, password, skipReturnPathCheck = false) => {
-    cy.get('.form-input')
+    cy.get('.fd-input')
       .first()
       .clear()
       .type('tets@email.com')
       .should('have.value', 'tets@email.com');
 
-    cy.get('.form-input')
+    cy.get('.fd-input')
       .last()
       .clear()
       .type('tets')
