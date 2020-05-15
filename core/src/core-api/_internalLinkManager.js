@@ -56,7 +56,7 @@ export class linkManager extends LuigiCoreAPIBase {
     this.options.fromClosestContext = true;
     return this;
   }
-
+  //window.addEventListener
   fromVirtualTreeRoot() {
     this.options.fromContext = null;
     this.options.fromClosestContext = false;

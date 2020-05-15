@@ -23,4 +23,22 @@ function check_conflict_marker() {
     done
 }
 
+function check_addEventListener_wrong_usage() { 
+    # string containing number of changes already staged for commit
+    declare -a illegal_strings=("window.addEventListener")
+    illegal_files = $(git diff  --cached --diff-filter=ACMR \
+                    -G 'window.addEventListener' --name-only  -- core \
+                    ':(exclude)scripts/hooks/prevent-illegal-characters.sh' \
+                    ':(exclude)core/src/utilities/helpers/event-listener-helpers.js')
+    echo $illegal_files
+    if [ -n "$illegal_files" ]; then
+        echo "The following files should not contain 'window.addEventListener':"
+        echo -e "\033[1;31m $illegal_files\033[0m"
+        echo "Aborting commit!"
+        exit 1
+    fi
+}
+
 check_conflict_marker
+
+check_addEventListener_wrong_usage
