@@ -1,6 +1,6 @@
 /**
- * Functions to use Luigi Core UX features.
- * @namespace UX
+ * Functions to use Luigi Global Search
+ * @name GlobalSearch
  */
 class LuigiGlobalSearch {
   /**
@@ -25,23 +25,23 @@ class LuigiGlobalSearch {
   clearSearchField() {}
 
   /**
-    * Open the global search result. By standard it is a popover
-    * @memberof LuigiGlobalSearch
-    * @param array of search result items
-    * @example 
-    * Luigi.globalSearch().showSearchResult(
-    * [
-    *   {
-            pathObject: {
-                path,
-                params: {}// can be used by linkmanager.navigate(path).withParams(params)
-            },
-            label,
-            description,
-            onActivate() { }
-        }
-    * ])
-    */
+      * Open the global search result. By standard it is a popover
+      * @memberof LuigiGlobalSearch
+      * @param array of search result items
+      * @example 
+      * Luigi.globalSearch().showSearchResult(
+      * [
+      *   {
+              pathObject: {
+                  path,
+                  params: {}// can be used by linkmanager.navigate(path).withParams(params)
+              },
+              label,
+              description,
+              onActivate() { }
+          }
+      * ])
+      */
   showSearchResult(arr) {}
 
   /**
