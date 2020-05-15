@@ -7,7 +7,6 @@ class EventListenerHelpersClass {
   addEventListener(type, listenerFn) {
     this.listeners.push({ type, listenerFn });
     window.addEventListener(type, listenerFn);
-    //    window.addEventListener(type, listenerFn);
   }
 
   removeAllEventListeners() {

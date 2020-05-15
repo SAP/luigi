@@ -25,8 +25,7 @@ function check_conflict_marker() {
 
 function check_addEventListener_wrong_usage() { 
     # string containing number of changes already staged for commit
-    declare -a illegal_strings=("window.addEventListener")
-    illegal_files = $(git diff  --cached --diff-filter=ACMR \
+    illegal_files=$(git diff  --cached --diff-filter=ACMR \
                     -G 'window.addEventListener' --name-only  -- core \
                     ':(exclude)scripts/hooks/prevent-illegal-characters.sh' \
                     ':(exclude)core/src/utilities/helpers/event-listener-helpers.js')
@@ -41,4 +40,4 @@ function check_addEventListener_wrong_usage() {
 
 check_conflict_marker
 
-check_addEventListener_wrong_usage
+# check_addEventListener_wrong_usage

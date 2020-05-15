@@ -1,7 +1,7 @@
 /**
  * @private
  * @abstract
- */ //    window.addEventListener(type, listenerFn);
+ */
 export class LuigiClientBase {
   /**
    * @private
