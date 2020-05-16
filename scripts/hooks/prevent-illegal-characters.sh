@@ -13,7 +13,7 @@ function check_conflict_marker() {
     # string containing number of changes already staged for commit
     declare -a illegal_strings=("<<<<<<<" "=======" ">>>>>>>")
     staged_changes=$(git diff --cached --diff-filter=ACMR -- . ':(exclude)scripts/hooks/prevent-illegal-characters.sh')
-    echo $staged_changes
+    
     for illegal in ${illegal_strings[@]}; do
         if [[ $staged_changes == *$illegal*   ]]; then
             echo "Found illegal string: $illegal"
@@ -32,7 +32,7 @@ function check_addEventListener_wrong_usage() {
     echo $illegal_files
     if [ -n "$illegal_files" ]; then
         echo "The following files should not contain 'window.addEventListener':"
-        echo -e "\033[1;31m $illegal_files\033[0m"
+        echo -e "\033[1;31m$illegal_files\033[0m"
         echo "Aborting commit!"
         exit 1
     fi
@@ -40,4 +40,4 @@ function check_addEventListener_wrong_usage() {
 
 check_conflict_marker
 
-# check_addEventListener_wrong_usage
+check_addEventListener_wrong_usage
