@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 # Checks and aborts the commit:
 #   if (there are files which contain merge conflict markers)
