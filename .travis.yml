@@ -82,7 +82,8 @@ jobs:
     # ----- NPM PUBLISH -----
     - stage: 'Documentation & Tests'
       name: 'Compatibility tests'
-      if: repo = SAP/luigi AND type = push
+      # run only when merging from release-v branch to master
+      if: repo = SAP/luigi AND branch = master AND type = push
       script:
         - bash ./scripts/testCompatibility.sh --tag latest || travis_terminate 1
       before_cache:

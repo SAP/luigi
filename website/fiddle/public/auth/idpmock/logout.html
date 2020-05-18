@@ -9,10 +9,18 @@
 	Logging out...
 	<script>
 		window.onload = function() {
-    const redirectTo = decodeURIComponent(
+    let redirectTo = decodeURIComponent(
       window.location.href.match(/post_logout_redirect_uri=(.*?)(&|$)/)[1]
     );
-    window.location.href = redirectTo;
+    const decodeChars = (string) => {
+      return string.replace(/[<>'*+?^${}()|[\]\\]/g, '\\$&')
+    }
+    redirectTo = decodeChars(redirectTo);
+    if(!redirectTo.startsWith(window.location.origin)) {
+      console.warn("post_logout_redirect_uri has wrong input. You are redirected to /auth/logout.html!");
+      redirectTo = window.location.origin + '/auth/logout.html';
+    }
+    window.location.href = redirectTo; 
   };
 	</script>
 </body>
