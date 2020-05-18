@@ -31,12 +31,12 @@ Luigi can help you quickly adapt your application to mobile devices and differen
 ## Security/ID provider abstraction​
 ![Security and ID](assets/Security_ID.jpg)
 
-Luigi provides authorization plugins which make your app secure and enable users to login with a password. Find out more [here](auhtorization-configuration.md).
+Luigi provides authorization plugins which make your app secure and enable users to login with a password. Find out more [here](authorization-configuration.md).
 
 ## Role-based visibility restrictions
 ![Visibility restrictions](assets/Role-based.jpg)
 
-Another way to use Luigi's [authorization](auhtorization-configuration.md) and API features is to make certain parts of your application only visible to some users. This allows for more flexibility and security in your app.
+Another way to use Luigi's [authorization](authorization-configuration.md) and API features is to make certain parts of your application only visible to some users. This allows for more flexibility and security in your app.
 
 ## Notification management​
 ![Notifications](assets/alert.jpg)
