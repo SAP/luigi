@@ -29,7 +29,6 @@ function check_addEventListener_wrong_usage() {
                     -G 'window.addEventListener' --name-only  -- core \
                     ':(exclude)scripts/hooks/prevent-illegal-characters.sh' \
                     ':(exclude)core/src/utilities/helpers/event-listener-helpers.js')
-    echo $illegal_files
     if [ -n "$illegal_files" ]; then
         echo "The following files should not contain 'window.addEventListener':"
         echo -e "\033[1;31m$illegal_files\033[0m"
