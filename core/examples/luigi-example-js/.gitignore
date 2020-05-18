@@ -4,5 +4,6 @@
 /node_modules
 /public/luigi-client
 /public/luigi-core
-/public/fiori-fundamentals
+/public/fundamental-styles
+/public/fonts
 /public/luigi-config.js
