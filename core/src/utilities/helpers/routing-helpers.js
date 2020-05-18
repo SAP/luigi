@@ -23,11 +23,13 @@ class RoutingHelpersClass {
     const lastElement =
       pathData.navigationPath[pathData.navigationPath.length - 1];
 
-    const children = childrenResolverFn ? await childrenResolverFn(lastElement, pathData.context) : await AsyncHelpers.getConfigValueFromObjectAsync(
-      lastElement,
-      'children',
-      pathData.context
-    );
+    const children = childrenResolverFn
+      ? await childrenResolverFn(lastElement, pathData.context)
+      : await AsyncHelpers.getConfigValueFromObjectAsync(
+          lastElement,
+          'children',
+          pathData.context
+        );
     const pathExists = children.find(
       childNode => childNode.pathSegment === lastElement.defaultChildNode
     );

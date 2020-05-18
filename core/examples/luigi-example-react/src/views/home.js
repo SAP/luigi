@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
-import '../../node_modules/fiori-fundamentals/dist/fiori-fundamentals.css';
+import '../../node_modules/fundamental-styles/dist/fundamental-styles.css';
 import {
   addInitListener,
   addContextUpdateListener,
   removeContextUpdateListener,
   removeInitListener
-} from '@kyma-project/luigi-client';
+} from '@luigi-project/client';
 
 export default class Home extends Component {
   constructor(props) {
