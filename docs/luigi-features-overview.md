@@ -1,34 +1,55 @@
+<!-- meta
+{
+  "node": {
+    "label": "Luigi out-of-the-box features",
+    "category": {
+      "label": "Basics"
+    },
+    "metaData": {
+      "categoryPosition": 1,
+      "position": 1
+    }
+  }
+}
+meta -->
+
 # Luigi out-of-the-box features
 
-Luigi provides a variety of out-of-the-box features in addition to micro frontend support. This makes it one of the most comprehensive and easy to use micro frontend frameworks that exist today. Read more about these additional benefits below:
+Luigi does more than help you implement micro frontends - it also provides many additional out-of-the-box features. Their aim is to make your app as consistent and easy to develop as possible. Read more about these additional benefits below:
+
+
+## Pre-set UI
+![Pre-set UI](assets/ui.jpg)
+
+Do you want a clean and standardized UI for your app? Luigi can help you implement that with ease. With our Fundamental Styles navigation, all your micro frontends can take advantage of a simple global user interface. Learn more about Luigi navigation [here](navigation-configuration).
 
 ## Responsive design
-![Responsive design](assets/Devices.png)
+![Responsive design](assets/Devices.jpg)
 
 Luigi can help you quickly adapt your application to mobile devices and different screen sizes. Find out more [here](#luigi-ux-features.md).
 
 ## Security/ID provider abstraction​
-![Security and ID](assets/Security_ID.png)
+![Security and ID](assets/Security_ID.jpg)
 
-Luigi provides authorization plugins which make your app secure and enable users to set a login password. Find out more [here](auhtorization-configuration.md).
+Luigi provides authorization plugins which make your app secure and enable users to login with a password. Find out more [here](auhtorization-configuration.md).
 
 ## Role-based visibility restrictions
-![Visibility restrictions](assets/Role-based.png)
+![Visibility restrictions](assets/Role-based.jpg)
 
 Another way to use Luigi's authorization and API features is to make certain parts of your application only visible to some users. This allows for more flexibility and security in your app.
 
 ## Notification management​
-![Notifications](assets/alert.png)
+![Notifications](assets/alert.jpg)
 
-Effortlessly implement alerts via the Luigi API.
+Implement alerts for your application via the Luigi API. The alerts are displayed in the main app, which means that you save time and effort
 
 ## Form- and modal management​
-![Forms and modals](assets/Form-and-Modal.png)
+![Forms and modals](assets/Form-and-Modal.jpg)
 
-Input forms, messages, and modals can be added to your app via your Luigi configuration.
+Besides alerts, you can also add input forms, messages, and modals can be added to your app via your Luigi configuration.
 
 ## Multi language ​support​
-![Language support](assets/Multi-language.png)
+![Language support](assets/Multi-language.jpg)
 
-Luigi offers localization and translation features described in more detail [here](i18n.md).
+Looking for an easy way to offer your app in other languages? Luigi offers localization and translation features described in more detail [here](i18n.md).
 
