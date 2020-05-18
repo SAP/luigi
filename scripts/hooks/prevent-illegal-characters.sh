@@ -10,8 +10,8 @@
 
 
 function check_conflict_marker() { 
-    # string containing number of changes already staged for commit
     declare -a illegal_strings=("<<<<<<<" "=======" ">>>>>>>")
+    # string diff containing changes already staged for commit
     staged_changes=$(git diff --cached --diff-filter=ACMR -- . ':(exclude)scripts/hooks/prevent-illegal-characters.sh')
     
     for illegal in ${illegal_strings[@]}; do
@@ -24,7 +24,7 @@ function check_conflict_marker() {
 }
 
 function check_addEventListener_wrong_usage() { 
-    # string containing number of changes already staged for commit
+    # git search query returning file names that used window.addEventListener illegally
     illegal_files=$(git diff  --cached --diff-filter=ACMR \
                     -G 'window.addEventListener' --name-only  -- core \
                     ':(exclude)scripts/hooks/prevent-illegal-characters.sh' \
