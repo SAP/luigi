@@ -26,7 +26,7 @@ Do you want an easy-to-configure standardized UI for your app? Luigi can help yo
 ## Responsive design
 ![Responsive design](assets/Devices.jpg)
 
-Luigi can help you quickly adapt your application to mobile devices and different screen sizes. Find out more [here](#luigi-ux-features.md).
+Luigi can help you quickly adapt your application to mobile devices and different screen sizes. Find out more [here](luigi-ux-features.md).
 
 ## Security/ID provider abstraction​
 ![Security and ID](assets/Security_ID.jpg)
