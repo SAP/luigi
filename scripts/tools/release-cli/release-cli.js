@@ -1,3 +1,12 @@
+/**
+ * Usage:
+ * cd scripts
+ * npm run release
+ *
+ * or for nightly build, to just update patch version without changelog:
+ * NIGHTLY=true npm run release
+ */
+
 import fs from 'fs';
 import path from 'path';
 import semver from 'semver';
@@ -110,18 +119,18 @@ function addToChangelog(versionText, changelog, lastline) {
   logHeadline('Appended changelog');
 }
 
-function replaceInAllFiles(search, replace) {
-  try {
-    // TODO: Getting errors while it is working fine from command line. Seems node cannot handle pipes while evaluating commands.
-    require('child_process').execSync(
-      `cd ${__dirname} && ./replaceInAllFiles.sh "${search}" "${replace}"`,
-      { stdio: [0, 1, 2] }
-    );
-    logHeadline('\nReplaced version in files.');
-  } catch (error) {
-    logError('Replace error:', error);
-  }
-}
+// function replaceInAllFiles(search, replace) {
+//   try {
+//     // TODO: Getting errors while it is working fine from command line. Seems node cannot handle pipes while evaluating commands.
+//     require('child_process').execSync(
+//       `cd ${__dirname} && ./replaceInAllFiles.sh "${search}" "${replace}"`,
+//       { stdio: [0, 1, 2] }
+//     );
+//     logHeadline('\nReplaced version in files.');
+//   } catch (error) {
+//     logError('Replace error:', error);
+//   }
+// }
 
 /**
  * PROMPT
@@ -132,6 +141,22 @@ function replaceInAllFiles(search, replace) {
 
   const releases = await getReleases();
   const nextVersion = getNextVersion();
+
+  // NIGHTLY BUILD
+  if (process.env.NIGHTLY === 'true') {
+    const padLeft = (str, inp) => {
+      return (
+        str.substring(0, str.length - inp.toString().length) + inp.toString()
+      );
+    };
+    const currentDatetime = new Date();
+    let formattedDate = `${currentDatetime.getFullYear()}${padLeft(
+      '00',
+      currentDatetime.getMonth() + 1
+    )}${currentDatetime.getDate()}`;
+    prompts.inject([nextVersion + '-dev.' + formattedDate, false]);
+  }
+
   const questions = [
     {
       type: 'text',
@@ -216,24 +241,32 @@ function replaceInAllFiles(search, replace) {
 
   /**
    * UPDATE PACKAGE-LOCKS
+   * Skip when running in ci for nightly.
    */
-  logHeadline('\nInstalling packages to update package-lock.json');
-  for (const key in installPaths) {
-    logStep(`Installing ${key}`);
-    require('child_process').execSync(
-      `cd ${installPaths[key]} && npm install`,
-      { stdio: [0, 1, 2] }
-    );
+  if (process.env.NIGHTLY !== true) {
+    logHeadline('\nInstalling packages to update package-lock.json');
+    for (const key in installPaths) {
+      logStep(`Installing ${key}`);
+      require('child_process').execSync(
+        `cd ${installPaths[key]} && npm install`,
+        { stdio: [0, 1, 2] }
+      );
+    }
+    logHeadline('Package-lock.json files updated.\n');
   }
-  logHeadline('Package-lock.json files updated.\n');
+
   logHeadline('\nRelease prepared!');
 
-  console.log(
-    color.bold(`\nThen continue with the following steps:
-  1. Run: ./tools/release-cli/replaceInAllFiles.sh "NEXTRELEASE" "${input.version}"
-  2. Check and modify CHANGELOG.md entries
-  3. Add and commit changed files
-  4. Follow the rest of our internal release documentation
-  `)
-  );
+  if (process.env.NIGHTLY === true) {
+    console.log(color.bold(`\nNow execute: npm run release:nightly`));
+  } else {
+    console.log(
+      color.bold(`\nThen continue with the following steps:
+    1. Run: ./tools/release-cli/replaceInAllFiles.sh "NEXTRELEASE" "${input.version}"
+    2. Check and modify CHANGELOG.md entries
+    3. Add and commit changed files
+    4. Follow the rest of our internal release documentation
+    `)
+    );
+  }
 })();
