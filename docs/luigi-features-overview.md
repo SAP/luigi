@@ -21,7 +21,7 @@ Luigi does more than help you implement micro frontends - it also provides many 
 ## Pre-set UI
 ![Pre-set UI](assets/ui.jpg)
 
-Do you want an easy-to-configure standardized UI for your app? Luigi can help you implement it. With our Fundamental Styles navigation, all your micro frontends can take advantage of a pre-set global user interface. Learn more about Luigi navigation [here](navigation-configuration).
+Do you want an easy-to-configure standardized UI for your app? Luigi can help you implement it. With our Fundamental Styles navigation, all your micro frontends can take advantage of a pre-set global user interface. Learn more about Luigi navigation [here](navigation-configuration.md).
 
 ## Responsive design
 ![Responsive design](assets/Devices.jpg)
