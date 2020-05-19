@@ -60,6 +60,8 @@
     pathParams="{pathParams}"
     on:handleClick="{handleNavClick}"
     on:resizeTabNav="{onResizeTabNav}"
+    on:toggleSearch="{toggleSearch}"
+    bind:isSearchFieldVisible
   />
   {#if !(hideNav||hideSideNav)}
   <LeftNav
@@ -157,6 +159,7 @@
   let tabNav;
   let resizeTabNavToggle = false;
   let thirdPartyCookiesCheck;
+  export let isSearchFieldVisible;
 
   const prepareInternalData = config => {
     const iframeConf = config.iframe.luigi;
@@ -474,6 +477,19 @@
   };
 
   setContext('handleNavigation', handleNavigation);
+
+  ////SEARCH
+  export const closeSearchField = () => {
+    isSearchFieldVisible = false;
+  };
+
+  export const openSearchField = () => {
+    isSearchFieldVisible = true;
+  };
+
+  export const toggleSearch = () => {
+    isSearchFieldVisible = !isSearchFieldVisible;
+  };
 
   //// SPLIT VIEW
   export const openSplitView = (nodepath, settings) => {

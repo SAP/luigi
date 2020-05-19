@@ -74,16 +74,8 @@
     // }
   }
 
-  function clearSearchField() {
-    let input = document.querySelector(
-      '.fd-shellbar__action--desktop .luigi-search__input'
-    );
-    input.value = '';
-  }
-
   export function toggleSearch() {
-    clearSearchField();
-    dispatch('toggleSearch');
+    dispatch('toggleSearch', isSearchFieldVisible);
   }
 </script>
 <style type="text/scss">

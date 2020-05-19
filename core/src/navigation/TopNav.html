@@ -19,16 +19,8 @@
   <div class="fd-shellbar__group fd-shellbar__group--actions">
     {#if !authorizationEnabled || isLoggedIn}
     {#if isGlobalSearchAvailable}
-    <GlobalSearch
-      bind:isSearchFieldVisible
-      on:toggleSearch="{()=>toggleSearch()}"
-      isMobile="{false}"
-    />
-    <GlobalSearch
-      bind:isSearchFieldVisible
-      on:toggleSearch="{()=>toggleSearch()}"
-      isMobile="{true}"
-    />
+    <GlobalSearch bind:isSearchFieldVisible on:toggleSearch isMobile="{false}"/>
+    <GlobalSearch bind:isSearchFieldVisible on:toggleSearch isMobile="{true}"/>
     {/if}
     <ContextSwitcher
       bind:dropDownStates
@@ -422,9 +414,10 @@
   export let userInfo = {};
   export let urlAuthError;
   export let isGlobalSearchAvailable;
+  export let isSearchFieldVisible;
+
   let store = getContext('store');
   let contextSwitcherToggle = false;
-  let isSearchFieldVisible = false;
   let selectedLabel;
   let defaultLabelContextSwitcher;
   let contextSwitcherConfig = LuigiConfig.getConfigValue(
@@ -550,15 +543,8 @@
     toggleDropdownState(event.detail.name);
   }
 
-  export function clearSearchField() {
-    const input = document.querySelector(
-      '.fd-shellbar__action--mobile .luigi-search__input'
-    );
-    input.value = '';
-  }
   export function toggleSearch() {
-    clearSearchField();
-    isSearchFieldVisible = !isSearchFieldVisible;
+    dispatch('toggleSearch', isSearchFieldVisible);
   }
 
   export function closeAllDropdowns() {
