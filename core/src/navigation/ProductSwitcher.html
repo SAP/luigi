@@ -40,7 +40,7 @@ Object.keys(productSwitcherItems[0]).length }
             {#each productSwitcherItems as productSwitcherItem}
             {#if productSwitcherItem.label}
             <li
-              class="fd-product-switch__item"
+              class="fd-product-switch__item {productSwitcherItem.selected?'selected':''}"
               on:click="{() => onActionClick(productSwitcherItem)}"
               data-testid="{getTestId(productSwitcherItem)}"
             >
