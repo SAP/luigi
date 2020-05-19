@@ -438,7 +438,7 @@ describe('Navigation', () => {
       labels.forEach((label, index) => {
         cy.getIframeBody().then($iframeBody => {
           cy.wrap($iframeBody)
-            .find('.fd-link')
+            // .find('.fd-link')
             .contains(label)
             .click();
         });
