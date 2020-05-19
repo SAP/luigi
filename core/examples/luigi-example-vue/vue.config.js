@@ -34,7 +34,7 @@ module.exports = {
             from: 'index.html'
           },
           {
-            context: 'node_modules/@kyma-project/luigi-core',
+            context: 'node_modules/@luigi-project/core',
             to: './luigi-core',
             from: {
               glob: '**',

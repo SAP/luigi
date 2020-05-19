@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import '../../node_modules/fiori-fundamentals/dist/fiori-fundamentals.css';
+import '../../node_modules/fundamental-styles/dist/fundamental-styles.css';
 
 export default class Sample1 extends Component {
   render() {

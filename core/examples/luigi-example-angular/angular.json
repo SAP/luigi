@@ -25,34 +25,34 @@
               "src/favicon.ico",
               "src/logo.svg",
               {
-                "glob": "fiori-fundamentals.min.css",
-                "input": "node_modules/fiori-fundamentals/dist",
-                "output": "/fiori-fundamentals"
-              },
-              {
-                "glob": "fonts/**",
-                "input": "node_modules/fiori-fundamentals/dist",
-                "output": "/fiori-fundamentals"
-              },
-              {
-                "glob": "SAP-icons.*",
-                "input": "node_modules/fiori-fundamentals/dist",
-                "output": "/fiori-fundamentals"
+                "glob": "fundamental-styles.css",
+                "input": "node_modules/fundamental-styles/dist",
+                "output": "/fundamental-styles"
               },
               {
                 "glob": "**",
-                "input": "node_modules/@kyma-project/luigi-core",
+                "input": "node_modules/@sap-theming/theming-base-content/content/Base/baseLib/sap_base_fiori/fonts",
+                "output": "/fonts"
+              },
+              {
+                "glob": "**",
+                "input": "node_modules/@sap-theming/theming-base-content/content/Base/baseLib/sap_fiori_3/fonts/",
+                "output": "/fonts"
+              },
+              {
+                "glob": "**",
+                "input": "node_modules/@luigi-project/core",
                 "output": "/luigi-core"
               },
               {
                 "glob": "luigi-client*.js",
-                "input": "node_modules/@kyma-project/luigi-client",
+                "input": "node_modules/@luigi-project/client",
                 "output": "/luigi-client"
               }
             ],
             "styles": [
               "src/styles.css",
-              "node_modules/fiori-fundamentals/dist/fiori-fundamentals.min.css"
+              "node_modules/fundamental-styles/dist/fundamental-styles.css"
             ],
             "scripts": []
           },

@@ -395,7 +395,8 @@
     AuthHelpers,
     NavigationHelpers,
     RoutingHelpers,
-    StateHelpers
+    StateHelpers,
+    EventListenerHelpers
   } from '../utilities/helpers';
   import { SemiCollapsibleNavigation } from './services/semi-collapsed-navigation';
 
@@ -472,7 +473,7 @@
       ['navigation']
     );
 
-    window.addEventListener('message', e => {
+    EventListenerHelpers.addEventListener('message', e => {
       if ('luigi.navigation.update-badge-counters' === e.data.msg) {
         setTopNavData();
       }
