@@ -5,7 +5,12 @@ Cypress.Commands.add(
     cy.visit(`http://localhost:8080/#${path}`, {
       onBeforeLoad: win => {
         win.localStorage.setItem('cookiesAccepted', 'true');
-        win.sessionStorage.setItem('fiddle', `Luigi.setConfig(${config});`);
+        var intv = setInterval(function() {
+          if (win.Luigi) {
+            win.Luigi.setConfig(config);
+            clearInterval(intv);
+          }
+        }, 20);
       }
     });
   }
@@ -29,19 +34,19 @@ Cypress.Commands.add('visitLoggedIn', (path = '/') => {
 Cypress.Commands.add(
   'login',
   (email, password, skipReturnPathCheck = false) => {
-    cy.get('.form-input')
+    cy.get('.fd-input')
       .first()
       .clear()
       .type('tets@email.com')
       .should('have.value', 'tets@email.com');
 
-    cy.get('.form-input')
+    cy.get('.fd-input')
       .last()
       .clear()
       .type('tets')
       .should('have.value', 'tets');
 
-    cy.get('#login-button').click();
+    cy.get('.fd-button').click();
 
     if (!skipReturnPathCheck) {
       cy.get('.fd-shellbar').contains('Overview');

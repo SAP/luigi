@@ -31,16 +31,13 @@
   }
 }
 
-.s-benefits {
-  padding: 50px 0;
-
+.s-benefits { 
   .title-2 {
     margin-bottom: 2em;
   }
 
   @include breakpoint(large) {
-    padding: 100px 0;
-
+    padding-bottom: 0;
     .title-2 {
       margin-bottom: 4em;
     }
@@ -162,6 +159,32 @@
 
     .item {
       margin: 0 30px 30px;
+      font-weight: 600;
+
+      &.add-your-company {
+        width: 100%;
+        a {
+          display: inline-block;
+          position: relative;
+          color: $body-font-color;
+          padding-left: 25px;
+    
+          &:before {
+            position: absolute;
+            top: 6px;
+            left: 0;
+            content: '';
+            width: 16px;
+            height: 16px;
+            background: url('../img/plus.svg') no-repeat 50% 50%;
+            background-size: auto;
+          }
+    
+          &:hover {
+            color: $primary-color;
+          }
+        }
+      }
 
       img {
         filter: grayscale(1);
