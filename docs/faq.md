@@ -51,6 +51,13 @@ Development scalability was one of the main goals right from the beginning. Ther
 
 It is crucial that all micro frontends in a solution follow the same design guidelines. Luigi's default UI styling is based on [Fundamentals](https://sap.github.io/fundamental-styles/) but it can be customised. If you don’t want to use Fundamentals, but Bootstrap, Material, or something else instead, you need to re-style the Luigi view components according to your design guidelines or replace them with your own components completely.
 
+### I don't want to use the default Fiori Fundamentals style. How can I style Luigi differently?
+
+There are a few options to do that at the moment:
+- Use the Fundamental Styles theming capabilities which already allow you to achieve a lot by customizing the CSS variables. Find more info [here](https://github.com/SAP/theming-base-content).
+- Manually overwrite the styles where needed. The current documentation page can be used as an example, as it was developed with Luigi.
+- Turn off Luigi view components completely and implement your own view components for header and navigation.
+
 ### Luigi claims to be ‘technology agnostic’. Are you referring to the UI framework that can be used, or to some other technology?
 
 The main point is that you can choose any base frontend technology you prefer, such as UI5, Angular, React, or Vue. You can even mix them in one solution. One micro frontend can use UI5, while another is written in Angular and Fundamentals. The only thing that matters is that HTML/JavaScript/CSS resources are provided and served via HTTPS in the end. The fact that a micro frontend is its own web application also means that you have full freedom regarding your development toolchain and CI/CD solutions, and the web server you want to use (such as Nginx, Apache, Tomcat, or Github Pages).
