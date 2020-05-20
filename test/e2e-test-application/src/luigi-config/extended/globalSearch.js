@@ -1,25 +1,23 @@
 class GlobalSearch {
   searchProvider = {
-    searchProvider: {
-      onInput: () => {
-        //Luigi.globalSearch().getSearchString();
-        let searchResultItem = {
-          pathObject: {
-            path,
-            params: {} // can be used by linkmanager.navigate(path).withParams(params)
-          },
-          label,
-          description,
-          onActivate() {}
-        };
-        //Luigi.globalSearch().showSearchResult([searchResultItem]);
-      }
-    },
-    onEnter: () => {},
-    onEscape: () => {},
-    customResultRenderer: searchResultItem => {},
-    onSearchResultItemSelected: searchResultItem => {}
+    onInput: () => {
+      //Luigi.globalSearch().getSearchString();
+      let searchResultItem = {
+        pathObject: {
+          path,
+          params: {} // can be used by linkmanager.navigate(path).withParams(params)
+        },
+        label,
+        description,
+        onActivate() {}
+      };
+      //Luigi.globalSearch().showSearchResult([searchResultItem]);
+    }
   };
+  onEnter = () => {};
+  onEscape = () => {};
+  customResultRenderer = searchResultItem => {};
+  onSearchResultItemSelected = searchResultItem => {};
 }
 
 export const globalSearch = new GlobalSearch();

@@ -59,7 +59,7 @@
   let showPopOverCustomSearch = false;
   let search;
   onMount(async () => {
-    search = await LuigiConfig.getConfigValueAsync('globalSearch.search');
+    search = await LuigiConfig.getConfigValueAsync('globalSearch');
   });
 
   function onKeyUp(event) {
