@@ -20,6 +20,7 @@ notifications:
     secure: wiOchVgoiKNUikjCeIhsuv3Y5jolFud6ercdZdO3+JigQqkmoAC95f2jKTYEdplJWyJr8JY6z0+UJNceHyr5YJx/l1wpm6Zq+3H4dq/V0yUXH1uhw2eaTzweX2vjfw0bzewEdc1CGl4kSfdyTajnbKgt+mtnrAV9lPqiXYSOOJTu5BCFomi7u2GhAz1JjBK6P4Ar2jXm+oc81nYjj40P8bZFlA7Rjm0hNN42MMkKvnD8OHztL3EwezKHXlQW7fN4eOrhPOMbT3NRU72g9Nir+lfoKJlch1zPoHXQ7DRp41uGyHV/qfvfRLzXwxftZK6kdvzMe0eI0i1aIm0R6AE0bLphB2o/klJzyQpqSiQgETTH0qJN+3px2kddGrw7Me+UNC/1zZrt1MJfWf0h6WjXTsPDJf3ajLsn8OoIeBTRZbAb9as3UWQZcknuuMf8oGUzZkrZNMWYqo3py0+qWm4wSbWXWVUCgVAIYA6oEADwq37z59HySGkyHI4gEPzxsYODfCuvO4pJX1h4vEyH7w2IigwhDAPq5G4Vdez9ZFS96p/LSCF+iH8yWMy294u8wk5ofWUutFFv0JC45LQBXu51a2TeQkalwVn4DiuxxHE6jZieREw75YFjra4jpWsyziWkzshGT75NCra6cKAbNa4T8n6Pm3ogjEPeeWAO3psgSdo=
 
 integration-testing: &integration-testing
+  if: repo = SAP/luigi AND type != cron
   script:
     - export CYPRESS_CACHE_FOLDER=$TRAVIS_BUILD_DIR/cypress-binary-cache
     - ls $CYPRESS_CACHE_FOLDER
@@ -82,7 +83,7 @@ jobs:
     - stage: 'Documentation & Tests'
       name: 'Compatibility tests'
       # run only when merging from release-v branch to master
-      # if: repo = SAP/luigi AND branch ~= ^release-v
+      if: repo = SAP/luigi AND branch = master AND type = push
       script:
         - bash ./scripts/testCompatibility.sh --tag latest || travis_terminate 1
       before_cache:
@@ -92,6 +93,7 @@ jobs:
 
     #----- DOCU -----
     - name: 'Check Documentation'
+      if: repo = SAP/luigi AND type != cron
       script:
         - cd $TRAVIS_BUILD_DIR/scripts && npm ci
         - cd $TRAVIS_BUILD_DIR && bash ./scripts/docuCheck.sh
@@ -101,8 +103,7 @@ jobs:
 
     #----- WHITESOURCE -----
     - name: 'Whitesource check'
-      if: repo = SAP/luigi AND branch = master
-      # if: repo = SAP/luigi AND (branch = master OR branch = release-v1)
+      if: repo = SAP/luigi AND branch = master AND type != cron
       # Whitesource can't deal with symlinking, therefore we can't use lerna
       script:
         - 'if [ ! -z "${WHITESOURCE_APIKEY}" ]; then
@@ -124,14 +125,26 @@ jobs:
     - name: 'Integration Testing 2'
       <<: *integration-testing
 
+
     # ----- NPM PUBLISH -----
     - stage: 'Publish'
       name: 'Publish to NPM'
-      # run only when merging from release-v branch to master
-      # if: repo = SAP/luigi AND (branch = master OR branch ~= ^release-v)
-      if: repo = SAP/luigi AND tag ~= ^v
+      # run only when a release in github was created
+      if: repo = SAP/luigi AND tag ~= ^v AND type != cron
       script:
         - bash ./scripts/npmPublish.sh
+      before_cache:
+        - rm -rf ~/.npm/_logs
+        - rm -rf ~/.npm/_cacache
+
+    - name: 'Nightly release'
+      if: type = cron
+      script:
+        - echo "//registry.npmjs.org/:_authToken=$NPM_LUI_AUTH_TOKEN" > ~/.npmrc
+        - cd $TRAVIS_BUILD_DIR/scripts && npm ci
+        - cd $TRAVIS_BUILD_DIR/scripts && NIGHTLY=true npm run release
+        - cd $TRAVIS_BUILD_DIR/scripts && npm run publish:nightly
+        - echo "" > ~/.npmrc
       before_cache:
         - rm -rf ~/.npm/_logs
         - rm -rf ~/.npm/_cacache
