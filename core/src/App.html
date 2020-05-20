@@ -800,16 +800,22 @@
           e.data
         );
         const customMessageListener = customMessagesListeners[message.id];
-        if (typeof customMessageListener === 'function') {
-          const microfrontend = LuigiElements.getMicrofrontends().find(mf =>
-            IframeHelpers.isMessageSource(e, mf.container)
+        if (customMessageListener == undefined) {
+          console.warn(
+            `Warning: Custom message with id: '${message.id}' does not exist. Make sure you provided the same id as in the config file`
           );
+        } else {
+          if (typeof customMessageListener === 'function') {
+            const microfrontend = LuigiElements.getMicrofrontends().find(mf =>
+              IframeHelpers.isMessageSource(e, mf.container)
+            );
 
-          customMessageListener(
-            message,
-            microfrontend,
-            GenericHelpers.removeInternalProperties(iframe.luigi.currentNode)
-          );
+            customMessageListener(
+              message,
+              microfrontend,
+              GenericHelpers.removeInternalProperties(iframe.luigi.currentNode)
+            );
+          }
         }
       }
 
