@@ -1,7 +1,8 @@
 /* istanbul ignore file */
+import { EventListenerHelpers } from './helpers';
 let status = 'not_checked';
 
-window.addEventListener(
+EventListenerHelpers.addEventListener(
   'message',
   function(e) {
     if (e.data === 'luigi.tpcDisabled') {
