@@ -851,7 +851,7 @@ describe('Navigation', function() {
       LuigiConfig.config = {
         navigation: {
           onNodeChange: () => {
-            console.log('radi!!!');
+            console.log('Tets!');
           }
         }
       };
