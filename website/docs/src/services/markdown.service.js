@@ -12,6 +12,7 @@ import addCopyToClipboard from '../unified-plugins/rehype-copy-to-clipboard';
 import addCustomAttributes from '../unified-plugins/rehype-add-custom-attributes';
 import wrapAccordion from '../unified-plugins/rehype-accordion';
 import luigiNavigationBuilder from '../unified-plugins/remark-generate-luigi-navigation';
+import addKeyWords from '../unified-plugins/rehype-add-keywords';
 
 // import highlight from 'rehype-highlight' // syntax highlight code blocks with lowlight: https://github.com/wooorm/lowlight
 import rehypeSection from '@agentofuser/rehype-section';
@@ -32,6 +33,7 @@ class MarkdownService {
         .use(luigiLinkParser, data)
         .use(addIdsToHeadings)
         .use(addCopyToClipboard)
+        .use(addKeyWords)
         .use(section) // section should be the last one
         .use(format)
         .use(html)
