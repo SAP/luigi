@@ -167,7 +167,7 @@
       currentLocale: LuigiI18N.getCurrentLocale(),
       clientPermissions: iframeConf.nextViewUrl
         ? iframeConf.nextClientPermissions
-        : iframeConf.clientPermissions
+        : iframeConf.clientPermissions,
     };
 
     IframeHelpers.specialIframeTypes
@@ -751,6 +751,7 @@
     );
     const config = {
       iframe: null,
+      initOk: null,
       navigateOk: null,
       builderCompatibilityMode: Boolean(window.builderCompatibilityMode),
       isolateAllViews,
@@ -811,6 +812,14 @@
             GenericHelpers.removeInternalProperties(iframe.luigi.currentNode)
           );
         }
+      }
+
+      /**
+       * Persist the answer of the init handshake
+       * to prevent half-initialized clients
+       */
+      if ('luigi.init.ok' === e.data.msg) {
+        config.initOk = true;
       }
 
       if ('luigi.navigate.ok' === e.data.msg) {

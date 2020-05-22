@@ -261,7 +261,8 @@ class IframeClass {
       config.iframe = activeIframe;
     }
 
-    if (!config.iframe) {
+    // if iframe does not exist, or handshake was interrupted, create a new one
+    if (!config.iframe || !config.initOk) {
       // preserveView, hide other frames, else remove
       if (pvSituation) {
         this.notifyInactiveIframes();
