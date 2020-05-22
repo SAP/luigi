@@ -13,7 +13,7 @@
           {#if nodes}
           {#each nodes as node}
           <li
-            class="fd-product-switch__item {noSubTitle == 'true' ? 'y-has-no-subtitle' : '' }"
+            class="fd-product-switch__item {noSubTitle == 'true' ? 'y-has-no-subtitle' : '' } {node.selected?'selected':''}"
             on:click="{() => onActionClick(node)}"
             data-e2e="mobile-topnav-item"
             data-testid="{getTestId(node)}"
@@ -77,6 +77,12 @@
 </script>
 
 <style type="text/scss">
+  /* TODO remove after update to fundamental 0.9 */
+  .fd-product-switch__item.selected .fd-product-switch__title:before,
+  .fd-product-switch__item.selected .fd-product-switch__title:after {
+    content: none !important;
+  }
+
   @media (max-width: 1023px) {
     .fd-product-switch__body--mobile {
       .fd-product-switch__icon {

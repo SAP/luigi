@@ -3,9 +3,10 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "@kyma-project/luigi-client": "0.7.1",
-    "@kyma-project/luigi-core": "0.7.1",
-    "fiori-fundamentals": "1.6.0",
+    "@luigi-project/client": "^1.1.0",
+    "@luigi-project/core": "^1.1.0",
+    "@sap-theming/theming-base-content": "^11.1.18",
+    "fundamental-styles": "^0.8.1",
     "@svgr/webpack": "4.3.2",
     "@typescript-eslint/eslint-plugin": "^2.2.0",
     "@typescript-eslint/parser": "^2.2.0",
