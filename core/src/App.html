@@ -106,7 +106,12 @@
     IframeHelpers,
     AuthHelpers
   } from './utilities/helpers';
-  import { LuigiI18N, LuigiConfig, LuigiElements } from './core-api';
+  import {
+    LuigiI18N,
+    LuigiConfig,
+    LuigiElements,
+    LuigiGlobalSearch
+  } from './core-api';
   import { Navigation } from './navigation/services/navigation';
   import { Routing } from './services/routing';
   import { Iframe } from './services/iframe';
@@ -490,6 +495,7 @@
 
   export const toggleSearch = () => {
     isSearchFieldVisible = !isSearchFieldVisible;
+    LuigiGlobalSearch.clearSearchField();
   };
 
   //// SPLIT VIEW

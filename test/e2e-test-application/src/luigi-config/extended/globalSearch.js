@@ -2,15 +2,15 @@ class GlobalSearch {
   searchProvider = {
     onInput: () => {
       //Luigi.globalSearch().getSearchString();
-      let searchResultItem = {
-        pathObject: {
-          path,
-          params: {} // can be used by linkmanager.navigate(path).withParams(params)
-        },
-        label,
-        description,
-        onActivate() {}
-      };
+      // let searchResultItem = {
+      //   pathObject: {
+      //     path,
+      //     params: {} // can be used by linkmanager.navigate(path).withParams(params)
+      //   },
+      //   label,
+      //   description,
+      //   onActivate() {}
+      // };
       //Luigi.globalSearch().showSearchResult([searchResultItem]);
     },
     onEnter: () => {},
