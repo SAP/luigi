@@ -27,7 +27,12 @@ class LuigiGlobalSearch {
    * @example Luigi.globalSearch().clearSearchField()
    */
   clearSearchField() {
-    document.querySelector('.luigi-search__input').value = '';
+    document.querySelector(
+      '.luigi-search-shell__mobile .luigi-search__input'
+    ).value = '';
+    document.querySelector(
+      '.luigi-search-shell__desktop .luigi-search__input'
+    ).value = '';
   }
 
   /**
