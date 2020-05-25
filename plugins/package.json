@@ -20,7 +20,7 @@
   "bundlesize": [
     {
       "path": "./auth/public/auth-oauth2/plugin.js",
-      "maxSize": "15 kB",
+      "maxSize": "75 kB",
       "compression": "none"
     },
     {
@@ -33,7 +33,9 @@
   "devDependencies": {
     "@babel/core": "^7.2.2",
     "@babel/plugin-proposal-optional-chaining": "^7.2.0",
+    "@babel/plugin-transform-runtime": "^7.9.6",
     "@babel/preset-env": "^7.2.3",
+    "@babel/runtime": "^7.9.6",
     "acorn": "^6.0.5",
     "babel-loader": "^8.0.5",
     "bundlesize": "^0.17.0",
