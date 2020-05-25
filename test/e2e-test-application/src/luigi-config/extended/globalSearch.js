@@ -12,12 +12,12 @@ class GlobalSearch {
         onActivate() {}
       };
       //Luigi.globalSearch().showSearchResult([searchResultItem]);
-    }
+    },
+    onEnter: () => {},
+    onEscape: () => {},
+    customResultRenderer: searchResultItem => {},
+    onSearchResultItemSelected: searchResultItem => {}
   };
-  onEnter = () => {};
-  onEscape = () => {};
-  customResultRenderer = searchResultItem => {};
-  onSearchResultItemSelected = searchResultItem => {};
 }
 
 export const globalSearch = new GlobalSearch();
