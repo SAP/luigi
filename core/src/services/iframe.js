@@ -57,15 +57,6 @@ class IframeClass {
     );
   }
 
-  removeIframe(iframe, node) {
-    const children = Array.from(node.children);
-    children.forEach(child => {
-      if (child === iframe) {
-        node.removeChild(child);
-      }
-    });
-  }
-
   getPreservedViewsInDom(iframes) {
     return iframes.filter(iframe => iframe.pv);
   }
@@ -157,6 +148,7 @@ class IframeClass {
       if (config.navigateOk) {
         config.navigateOk = undefined;
       } else {
+        IframeHelpers.removeIframe(config.iframe, node);
         config.iframe = undefined;
         config.isFallbackFrame = true;
         console.info(

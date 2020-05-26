@@ -128,19 +128,6 @@ describe('Iframe', () => {
     });
   });
 
-  it('removeIframe', () => {
-    const testNode = {
-      children: ['one', 'two', 'three', 'four'],
-      removeChild: sinon.spy()
-    };
-    Iframe.removeIframe('two', testNode);
-    assert.equal(testNode.removeChild.callCount, 1, 'removeChild call count');
-    assert(
-      testNode.removeChild.calledWith('two'),
-      'correct node child was deleted'
-    );
-  });
-
   describe('create new iframe with different viewgroup and dont delete the previous one (cache)', () => {
     it('navigate', () => {
       sinon.stub(IframeHelpers, 'getMainIframes').callsFake(() => [
