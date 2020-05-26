@@ -182,6 +182,24 @@ class IframeClass {
     }, errorHandlerNode.timeout);
   }
 
+  /**
+   * Checks if Client has set the initOk if the clientVersion is younger than NEXTRELEASE
+   * @since: NEXTRELEASE
+   */
+  initHandshakeFailed(config) {
+    // splitting it up so it does not get replaced on release
+    const clientVersion = config.iframe.luigi.clientVersion;
+    if (!clientVersion
+      // valid minimum handshake versions: 0.7.8, 1.1.2
+      // using the current versions to check so everything after those versions applies
+      || clientVersion.startsWith('0') && GenericHelpers.semverCompare('0.7.7', clientVersion) !== -1
+      || clientVersion.startsWith('1') && GenericHelpers.semverCompare('1.1.1', clientVersion) !== -1
+      ) {
+      return false;
+    }
+    return !config.iframe.luigi.initOk;
+  }
+
   navigateIframe(config, component, node) {
     clearTimeout(this.timeoutHandle);
     const componentData = component.get();
@@ -262,7 +280,7 @@ class IframeClass {
     }
 
     // if iframe does not exist, or handshake was interrupted, create a new one
-    if (!config.iframe || !config.initOk) {
+    if (!config.iframe || this.initHandshakeFailed(config)) {
       // preserveView, hide other frames, else remove
       if (pvSituation) {
         this.notifyInactiveIframes();

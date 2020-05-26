@@ -751,7 +751,6 @@
     );
     const config = {
       iframe: null,
-      initOk: null,
       navigateOk: null,
       builderCompatibilityMode: Boolean(window.builderCompatibilityMode),
       isolateAllViews,
@@ -819,7 +818,7 @@
        * to prevent half-initialized clients
        */
       if ('luigi.init.ok' === e.data.msg) {
-        config.initOk = true;
+        config.iframe.luigi.initOk = true;
       }
 
       if ('luigi.navigate.ok' === e.data.msg) {
@@ -833,6 +832,7 @@
       }
 
       if ('luigi.get-context' === e.data.msg) {
+        config.iframe.luigi.clientVersion = e.data.clientVersion;
         const specialIframeProps = {
           modalIframe,
           modalIframeData,
