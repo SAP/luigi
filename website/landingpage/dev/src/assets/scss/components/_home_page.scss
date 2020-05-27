@@ -52,6 +52,13 @@
 
     .description {
       margin-left: 30px;
+      a{
+        font-weight: 600;
+        color: #3c4553;
+        &:hover {
+          color: #2deb8a;
+        }
+      }
     }
   }
 
@@ -192,5 +199,12 @@
         max-height: 45px;
       }
     }
+  }
+}
+
+.main-content  > .s-outofthebox {
+  padding-bottom: 0;
+  .item .description{
+    width: 100%;
   }
 }
