@@ -544,7 +544,21 @@
     toggleDropdownState(event.detail.name);
   }
 
+  function setFocusOnGlobalSearchFieldMobile() {
+    if (
+      document.querySelector('.luigi-search-shell__mobile .luigi-search__input')
+    ) {
+      document
+        .querySelector('.luigi-search-shell__mobile .luigi-search__input')
+        .focus();
+    }
+  }
+
   export function toggleSearch() {
+    if (!isSearchFieldVisible)
+      setTimeout(() => {
+        setFocusOnGlobalSearchFieldMobile();
+      });
     dispatch('toggleSearch', isSearchFieldVisible);
   }
 
