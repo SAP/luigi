@@ -167,7 +167,7 @@
       currentLocale: LuigiI18N.getCurrentLocale(),
       clientPermissions: iframeConf.nextViewUrl
         ? iframeConf.nextClientPermissions
-        : iframeConf.clientPermissions,
+        : iframeConf.clientPermissions
     };
 
     IframeHelpers.specialIframeTypes
@@ -832,7 +832,9 @@
       }
 
       if ('luigi.get-context' === e.data.msg) {
-        config.iframe.luigi.clientVersion = e.data.clientVersion;
+        config.iframe.luigi.clientVersion = e.data.clientVersion; // undefined for v0.x clients
+        config.iframe.luigi.initOk = false; // get-context indication. used for handshake verification
+
         const specialIframeProps = {
           modalIframe,
           modalIframeData,
