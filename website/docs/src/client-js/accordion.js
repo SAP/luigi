@@ -1,3 +1,4 @@
+import { isSearchBot } from './helpers';
 export class Accordion {
   init() {
     window.accordionToggle = (event, element) => {
@@ -7,8 +8,7 @@ export class Accordion {
     this.openAllOnDocSearchScraper();
   }
   openAllOnDocSearchScraper() {
-    const isBot = /docsearch|algolia|bot|googlebot|crawler|spider|robot|crawling/i.test(navigator.userAgent);
-    if(isBot) {
+    if(isSearchBot) {
       // timeout required: even with sapper export, its data get set with javascript
       setTimeout(() => {
         const accordionItems = document.querySelectorAll('.accordion-item');
