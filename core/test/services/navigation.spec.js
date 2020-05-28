@@ -840,17 +840,17 @@ describe('Navigation', function() {
     });
   });
 
-  describe('onNodeChange', () => {
+  describe('nodeChangeHook', () => {
     afterEach(() => {
       sinon.restore();
       sinon.reset();
     });
 
-    it('when onNodeChange is defined', () => {
+    it('when nodeChangeHook is defined', () => {
       console.log = sinon.spy();
       LuigiConfig.config = {
         navigation: {
-          onNodeChange: () => {
+          nodeChangeHook: () => {
             console.log('Tets!');
           }
         }
@@ -858,7 +858,7 @@ describe('Navigation', function() {
       Navigation.onNodeChange();
       sinon.assert.calledOnce(console.log);
     });
-    it('when onNodeChange is not defined', () => {
+    it('when nodeChangeHook is not defined', () => {
       sinon.stub(LuigiConfig, 'getConfigValue');
       LuigiConfig.config = {
         navigation: {}
@@ -866,9 +866,9 @@ describe('Navigation', function() {
       Navigation.onNodeChange();
       sinon.assert.calledWithExactly(
         LuigiConfig.getConfigValue,
-        'navigation.onNodeChange'
+        'navigation.nodeChangeHook'
       );
-      const result = LuigiConfig.getConfigValue('navigation.onNodeChange');
+      const result = LuigiConfig.getConfigValue('navigation.nodeChangeHook');
       assert.equal(result, undefined);
     });
   });

@@ -337,12 +337,12 @@ class NavigationClass {
 
   onNodeChange() {
     const invokedFunction = LuigiConfig.getConfigValue(
-      'navigation.onNodeChange'
+      'navigation.nodeChangeHook'
     );
     if (typeof invokedFunction === 'function') {
       invokedFunction();
     } else if (invokedFunction !== undefined) {
-      console.log('onNodeChange is not a function!');
+      console.log('nodeChangeHook is not a function!');
     }
   }
 

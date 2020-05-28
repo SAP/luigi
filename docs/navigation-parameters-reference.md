@@ -67,7 +67,7 @@ The navigation parameters allow you to configure **global** navigation settings 
 - **type**: any
 - **description**: receives all values defined in the node configuration. It allows you to define a permission checker function that gets executed on every node. If it returns `false`, Luigi removes the node and its children from the navigation structure. See [angular navigation.js](../test/e2e-test-application/src/luigi-config/extended/navigation.js) for an example.
 
-### onNodeChange
+### nodeChangeHook
 - **type**: function
 - **description**: allows you to invoke and execute a specific function on the global level when a request to navigate to the node occurs.
 
