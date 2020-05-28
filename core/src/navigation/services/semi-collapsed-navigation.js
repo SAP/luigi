@@ -18,9 +18,19 @@ class SemiCollapsibleNavigationClass {
       window.innerWidth !== 0 &&
       window.innerWidth < CSS_BREAKPOINTS.desktopMinWidth
     ) {
-      this.setCollapsed(true);
+      if (this.isSemiCollapsed === undefined) {
+        this.isSemiCollapsed = true;
+      } else {
+        this.isSemiCollapsed = this.getCollapsed();
+      }
+    } else {
+      if (this.isSemiCollapsed === undefined) {
+        this.isSemiCollapsed = false;
+      } else {
+        this.isSemiCollapsed = this.getCollapsed();
+      }
     }
-    this.isSemiCollapsed = this.semiCollapsible ? this.getCollapsed() : false;
+
     this.setCollapsed(this.isSemiCollapsed);
 
     this.previousWindowWidth = window.innerWidth;
@@ -71,7 +81,7 @@ class SemiCollapsibleNavigationClass {
   }
 
   getCollapsed() {
-    return localStorage.getItem(NavigationHelpers.COL_NAV_KEY) === 'true';
+    return this.isSemiCollapsed;
   }
 
   closePopupMenu(selectedCategory) {
