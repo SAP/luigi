@@ -45,7 +45,7 @@ export class InternalLinksHandler {
     links.forEach((link) => {
       if (link.getAttribute('data-linktype') === 'internal') {
         const url = new URL(link.href);
-        let newHref = ctx.coreBaseUrl + url.pathname.replace('.md', '').replace('/docu-microfrontend', '') + url.hash.toLowerCase();
+        let newHref = ctx.coreBaseUrl + url.pathname.replace('.md', '').replace('/docu-microfrontend', '') + url.hash.toLowerCase().replace('#', '?section=');
         link.setAttribute('href', newHref);
       }
     });
