@@ -18,12 +18,10 @@
           {#if key === 'undefined' || key.startsWith(virtualGroupPrefix)}
           <!-- Single nodes -->
           {#each nodes as node} {#if !node.hideFromNav} {#if node.label}
-          <li
-            class="fd-nested-list__item"
-            title="{$getTranslation(node.label)}"
-          >
+          <li class="fd-nested-list__item">
             <a
               href="{getRouteLink(node)}"
+              title="{$getTranslation(node.label)}"
               class="fd-nested-list__link {node === selectedNode ? 'is-selected' : ''}"
               on:click|preventDefault="{() => handleClick(node)}"
               data-testid="{getTestId(node)}"
@@ -59,11 +57,11 @@
           <li
             class="fd-nested-list__item lui-collapsible-item"
             on:click|stopPropagation="{() => handleIconClick(nodes, event.currentTarget)}"
-            title="{$getTranslation(key)}"
             data-testid="{getTestIdForCat(nodes.metaInfo, key)}"
           >
             <a
               href="javascript:void(null)"
+              title="{$getTranslation(key)}"
               class="fd-nested-list__link has-child {isExpanded(nodes, expandedCategories) ? 'is-expanded' : ''}"
               aria-haspopup="true"
               aria-expanded="{isExpanded(nodes, expandedCategories)}"
@@ -97,6 +95,7 @@
                   class="fd-nested-list__link {node === selectedNode ? 'is-selected' : ''}"
                   on:click|preventDefault="{() => handleClick(node)}"
                   data-testid="{getTestId(node)}"
+                  title="{$getTranslation(node.label)}"
                 >
                   <span
                     class="fd-nested-list__title"
@@ -125,6 +124,7 @@
                       class="fd-nested-list__link {node === selectedNode ? 'is-selected' : ''}"
                       on:click|preventDefault="{() => handleClick(node)}"
                       data-testid="{getTestId(node)}"
+                      title="{$getTranslation(node.label)}"
                     >
                       <span
                         class="fd-nested-list__title"
