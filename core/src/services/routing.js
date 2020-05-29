@@ -314,7 +314,11 @@ class RoutingClass {
       if (config.iframe !== null) {
         const prevUrl = config.iframe.luigi.viewUrl.split('/').pop();
         if (path !== prevUrl) {
-          Navigation.onNodeChange();
+          const { nodeObject, pathData } = await Navigation.extractDataFromPath(
+            prevUrl
+          );
+          const previousNode = nodeObject;
+          Navigation.onNodeChange(previousNode, currentNode);
         }
       }
       Iframe.navigateIframe(config, component, iframeElement);
