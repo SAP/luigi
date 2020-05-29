@@ -578,25 +578,14 @@ describe('Navigation', () => {
   describe('GlobalSearch', () => {
     context('Desktop', () => {
       it('GlobalSearch Desktop', () => {
-        cy.get('.fd-shellbar__action--desktop .luigi-search__input').should(
-          'not.be.visible'
-        );
+        cy.get('.luigi-search__input').should('not.be.visible');
         cy.get('[data-testid=luigi-search-btn-desktop]').click();
-        cy.get('.fd-shellbar__action--desktop .luigi-search__input').should(
-          'be.visible'
-        );
-        cy.get('.fd-shellbar__action--desktop .luigi-search__input').type(
-          'Luigi'
-        );
+        cy.get('.luigi-search__input').should('be.visible');
+        cy.get('.luigi-search__input').type('Luigi');
         cy.get('[data-testid=luigi-search-btn-desktop]').click();
-        cy.get('.fd-shellbar__action--desktop .luigi-search__input').should(
-          'not.be.visible'
-        );
+        cy.get('.luigi-search__input').should('not.be.visible');
         cy.get('[data-testid=luigi-search-btn-desktop]').click();
-        cy.get('.fd-shellbar__action--desktop .luigi-search__input').should(
-          'not.have.value',
-          'Luigi'
-        );
+        cy.get('.luigi-search__input').should('not.have.value', 'Luigi');
       });
     });
     context('Mobile', () => {
