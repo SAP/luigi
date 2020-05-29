@@ -342,7 +342,7 @@ class NavigationClass {
     if (typeof invokedFunction === 'function') {
       invokedFunction(prevNode, nextNode);
     } else if (invokedFunction !== undefined) {
-      console.log('nodeChangeHook is not a function!');
+      console.warn('nodeChangeHook is not a function!');
     }
   }
 
