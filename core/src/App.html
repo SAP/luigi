@@ -491,11 +491,33 @@
 
   export const openSearchField = () => {
     isSearchFieldVisible = true;
+    if (document.querySelector('.luigi-search__input')) {
+      debugger;
+      setTimeout(() => {
+        document.querySelector('.luigi-search__input').focus();
+      });
+    }
   };
 
   export const toggleSearch = () => {
     isSearchFieldVisible = !isSearchFieldVisible;
     LuigiGlobalSearch.clearSearchField();
+  };
+
+  export const getGlobalSearchString = () => {
+    if (document.querySelector('.luigi-search__input')) {
+      return document.querySelector('.luigi-search__input').value;
+    }
+  };
+
+  export const setGlobalSearchString = searchString => {
+    if (document.querySelector('.luigi-search__input')) {
+      document.querySelector('.luigi-search__input').value = searchString;
+      const triggerSearch = LuigiConfig.getConfigValue(
+        'globalSearch.searchProvider.onInput'
+      );
+      triggerSearch();
+    }
   };
 
   //// SPLIT VIEW
