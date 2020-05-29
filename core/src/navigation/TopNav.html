@@ -19,8 +19,7 @@
   <div class="fd-shellbar__group fd-shellbar__group--actions">
     {#if !authorizationEnabled || isLoggedIn}
     {#if isGlobalSearchAvailable}
-    <GlobalSearch bind:isSearchFieldVisible on:toggleSearch isMobile="{false}"/>
-    <GlobalSearch bind:isSearchFieldVisible on:toggleSearch isMobile="{true}"/>
+    <GlobalSearch bind:isSearchFieldVisible on:toggleSearch/>
     {/if}
     <ContextSwitcher
       bind:dropDownStates
@@ -545,12 +544,8 @@
   }
 
   function setFocusOnGlobalSearchFieldMobile() {
-    if (
-      document.querySelector('.luigi-search-shell__mobile .luigi-search__input')
-    ) {
-      document
-        .querySelector('.luigi-search-shell__mobile .luigi-search__input')
-        .focus();
+    if (document.querySelector('.luigi-search__input')) {
+      document.querySelector('.luigi-search__input').focus();
     }
   }
 

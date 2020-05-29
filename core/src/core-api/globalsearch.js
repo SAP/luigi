@@ -27,32 +27,29 @@ class LuigiGlobalSearch {
    * @example Luigi.globalSearch().clearSearchField()
    */
   clearSearchField() {
-    document.querySelector(
-      '.luigi-search-shell__mobile .luigi-search__input'
-    ).value = '';
-    document.querySelector(
-      '.luigi-search-shell__desktop .luigi-search__input'
-    ).value = '';
+    if (document.querySelector('.luigi-search__input')) {
+      document.querySelector('.luigi-search__input').value = '';
+    }
   }
 
   /**
-          * Open the global search result. By standard it is a popover
-          * @memberof LuigiGlobalSearch
-          * @param array of search result items
-          * @example 
-          * Luigi.globalSearch().showSearchResult(
-          * [
-          *   {
-                  pathObject: {
-                      path,
-                      params: {}// can be used by linkmanager.navigate(path).withParams(params)
-                  },
-                  label,
-                  description,
-                  onActivate() { }
-              }
-          * ])
-          */
+            * Open the global search result. By standard it is a popover
+            * @memberof LuigiGlobalSearch
+            * @param array of search result items
+            * @example 
+            * Luigi.globalSearch().showSearchResult(
+            * [
+            *   {
+                    pathObject: {
+                        path,
+                        params: {}// can be used by linkmanager.navigate(path).withParams(params)
+                    },
+                    label,
+                    description,
+                    onActivate() { }
+                }
+            * ])
+            */
   showSearchResult(arr) {}
 
   /**

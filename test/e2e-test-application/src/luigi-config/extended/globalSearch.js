@@ -1,7 +1,7 @@
 class GlobalSearch {
   searchProvider = {
     onInput: () => {
-      //Luigi.globalSearch().getSearchString();
+      console.log('searchValue ', Luigi.globalSearch().getSearchString());
       // let searchResultItem = {
       //   pathObject: {
       //     path,
