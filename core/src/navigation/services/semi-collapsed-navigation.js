@@ -13,22 +13,19 @@ class SemiCollapsibleNavigationClass {
         ? true
         : false;
     // set this.isSemiCollapsed to true for mobile
+    let isSemiCollapsedUndefined = this.isSemiCollapsed === undefined;
     if (
       this.semiCollapsible &&
       window.innerWidth !== 0 &&
       window.innerWidth < CSS_BREAKPOINTS.desktopMinWidth
     ) {
-      if (this.isSemiCollapsed === undefined) {
-        this.isSemiCollapsed = true;
-      } else {
-        this.isSemiCollapsed = this.getCollapsed();
-      }
+      this.isSemiCollapsed = isSemiCollapsedUndefined
+        ? true
+        : this.getCollapsed();
     } else {
-      if (this.isSemiCollapsed === undefined) {
-        this.isSemiCollapsed = false;
-      } else {
-        this.isSemiCollapsed = this.getCollapsed();
-      }
+      this.isSemiCollapsed = isSemiCollapsedUndefined
+        ? false
+        : this.getCollapsed();
     }
 
     this.setCollapsed(this.isSemiCollapsed);
