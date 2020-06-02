@@ -492,10 +492,7 @@
   export const openSearchField = () => {
     isSearchFieldVisible = true;
     if (document.querySelector('.luigi-search__input')) {
-      debugger;
-      setTimeout(() => {
-        document.querySelector('.luigi-search__input').focus();
-      });
+      document.querySelector('.luigi-search__input').focus();
     }
   };
 
