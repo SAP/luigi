@@ -66,6 +66,13 @@ const configReadyCallback = () => {
           return app.$$.ctx.showModal(settings);
         };
 
+        Luigi.closeSearchField = () => {
+          return app.$$.ctx.closeSearchField();
+        };
+        Luigi.openSearchField = () => {
+          return app.$$.ctx.openSearchField();
+        };
+
         Luigi.splitView = {
           openAsSplitView: (path, settings) =>
             app.$$.ctx.openSplitView(path, settings),

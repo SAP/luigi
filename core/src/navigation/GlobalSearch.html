@@ -1,5 +1,5 @@
 <div
-  class="fd-shellbar__action {!isMobile ? 'fd-shellbar__action--desktop':'fd-shellbar__action--mobile luigi-search-shell__mobile'}"
+  class="fd-shellbar__action {isSearchFieldVisible ? 'luigi-search-shell__mobile':''}"
 >
   <div class="fd-popover">
     <div class="fd-popover__control" on:click|stopPropagation="{() => {}}">
@@ -34,7 +34,6 @@
     </div>
   </div>
 </div>
-{#if !isMobile}
 <div class="fd-shellbar__action fd-shellbar__action--desktop">
   <div on:click|stopPropagation="{() => {}}">
     <button
@@ -46,7 +45,6 @@
     ></button>
   </div>
 </div>
-{/if}
 <script>
   import { beforeUpdate, createEventDispatcher, onMount } from 'svelte';
   import { LuigiAuth, LuigiConfig } from '../core-api';
@@ -63,27 +61,23 @@
   });
 
   function onKeyUp(event) {
-    //Issue 1260
-    // if (search && GenericHelpers.isFunction(search.customSearch)) {
-    //TODO showPopOverCustomSearch toggleImplementation
-    // search.customSearch(event).then(results => {
-    //   if (results) {
-    //     searchResults = results;
-    //   }
-    // });
-    // }
+    if (search && GenericHelpers.isFunction(search.searchProvider.onInput)) {
+      search.searchProvider.onInput();
+    }
   }
 
-  function clearSearchField() {
-    let input = document.querySelector(
-      '.fd-shellbar__action--desktop .luigi-search__input'
-    );
-    input.value = '';
+  function setFocusOnGlobalSearchFieldDesktop() {
+    if (document.querySelector('.luigi-search__input')) {
+      document.querySelector('.luigi-search__input').focus();
+    }
   }
 
   export function toggleSearch() {
-    clearSearchField();
-    dispatch('toggleSearch');
+    if (!isSearchFieldVisible)
+      setTimeout(() => {
+        setFocusOnGlobalSearchFieldDesktop();
+      });
+    dispatch('toggleSearch', { isSearchFieldVisible });
   }
 </script>
 <style type="text/scss">
@@ -98,21 +92,23 @@
     width: 184px;
   }
 
-  .luigi-search-shell__mobile {
-    position: relative;
-    height: calc(2.25rem + 2px);
-    padding: 0;
+  @media screen and (max-width: 1024px) {
+    .luigi-search-shell__mobile {
+      position: relative;
+      height: calc(2.25rem + 2px);
+      padding: 0;
 
-    .fd-popover {
-      vertical-align: top;
-    }
+      .fd-popover {
+        vertical-align: top;
+      }
 
-    .luigi-search {
-      position: absolute;
-      top: 0;
-      right: 0;
-      background: var(--sapShellColor);
-      z-index: 1;
+      .luigi-search {
+        position: absolute;
+        top: 0;
+        right: 0;
+        background: var(--sapShellColor);
+        z-index: 1;
+      }
     }
   }
 </style>

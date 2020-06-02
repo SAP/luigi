@@ -8,40 +8,48 @@ class LuigiGlobalSearch {
    * @memberof LuigiGlobalSearch
    * @example Luigi.globalSearch().openSearchField()
    */
-  openSearchField() {}
+  openSearchField() {
+    Luigi.openSearchField();
+  }
 
   /**
    * Close the global search field
    * @memberof LuigiGlobalSearch
    * @example Luigi.globalSearch().closeSearchField()
    */
-  closeSearchField() {}
+  closeSearchField() {
+    Luigi.closeSearchField();
+  }
 
   /**
    * Clear the global search field
    * @memberof LuigiGlobalSearch
    * @example Luigi.globalSearch().clearSearchField()
    */
-  clearSearchField() {}
+  clearSearchField() {
+    if (document.querySelector('.luigi-search__input')) {
+      document.querySelector('.luigi-search__input').value = '';
+    }
+  }
 
   /**
-      * Open the global search result. By standard it is a popover
-      * @memberof LuigiGlobalSearch
-      * @param array of search result items
-      * @example 
-      * Luigi.globalSearch().showSearchResult(
-      * [
-      *   {
-              pathObject: {
-                  path,
-                  params: {}// can be used by linkmanager.navigate(path).withParams(params)
-              },
-              label,
-              description,
-              onActivate() { }
-          }
-      * ])
-      */
+            * Open the global search result. By standard it is a popover
+            * @memberof LuigiGlobalSearch
+            * @param array of search result items
+            * @example 
+            * Luigi.globalSearch().showSearchResult(
+            * [
+            *   {
+                    pathObject: {
+                        path,
+                        params: {}// can be used by linkmanager.navigate(path).withParams(params)
+                    },
+                    label,
+                    description,
+                    onActivate() { }
+                }
+            * ])
+            */
   showSearchResult(arr) {}
 
   /**

@@ -60,6 +60,8 @@
     pathParams="{pathParams}"
     on:handleClick="{handleNavClick}"
     on:resizeTabNav="{onResizeTabNav}"
+    on:toggleSearch="{toggleSearch}"
+    bind:isSearchFieldVisible
   />
   {#if !(hideNav||hideSideNav)}
   <LeftNav
@@ -104,7 +106,12 @@
     IframeHelpers,
     AuthHelpers
   } from './utilities/helpers';
-  import { LuigiI18N, LuigiConfig, LuigiElements } from './core-api';
+  import {
+    LuigiI18N,
+    LuigiConfig,
+    LuigiElements,
+    LuigiGlobalSearch
+  } from './core-api';
   import { Navigation } from './navigation/services/navigation';
   import { Routing } from './services/routing';
   import { Iframe } from './services/iframe';
@@ -158,6 +165,7 @@
   let tabNav;
   let resizeTabNavToggle = false;
   let thirdPartyCookiesCheck;
+  export let isSearchFieldVisible;
 
   const prepareInternalData = config => {
     const iframeConf = config.iframe.luigi;
@@ -475,6 +483,20 @@
   };
 
   setContext('handleNavigation', handleNavigation);
+
+  ////GLOBALSEARCH
+  export const closeSearchField = () => {
+    isSearchFieldVisible = false;
+  };
+
+  export const openSearchField = () => {
+    isSearchFieldVisible = true;
+  };
+
+  export const toggleSearch = () => {
+    isSearchFieldVisible = !isSearchFieldVisible;
+    LuigiGlobalSearch.clearSearchField();
+  };
 
   //// SPLIT VIEW
   export const openSplitView = (nodepath, settings) => {
