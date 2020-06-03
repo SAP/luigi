@@ -81,6 +81,19 @@ describe('Iframe-helpers', () => {
     });
   });
 
+  it('removeIframe', () => {
+    const testNode = {
+      children: ['one', 'two', 'three', 'four'],
+      removeChild: sinon.spy()
+    };
+    IframeHelpers.removeIframe('two', testNode);
+    assert.equal(testNode.removeChild.callCount, 1, 'removeChild call count');
+    assert(
+      testNode.removeChild.calledWith('two'),
+      'correct node child was deleted'
+    );
+  });
+
   describe('canReuseIframe', () => {
     const config = {
       iframe: {
