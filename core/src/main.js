@@ -81,6 +81,10 @@ const configReadyCallback = () => {
           app.$$.ctx.setGlobalSearchString(searchString);
         };
 
+        Luigi.clearSearchField = () => {
+          app.$$.ctx.clearSearchField();
+        };
+
         Luigi.splitView = {
           openAsSplitView: (path, settings) =>
             app.$$.ctx.openSplitView(path, settings),

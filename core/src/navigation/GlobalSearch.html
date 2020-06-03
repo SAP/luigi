@@ -54,6 +54,7 @@
   export let isMobile;
   export let isSearchFieldVisible;
   const dispatch = createEventDispatcher();
+  const searchInputElem = () => document.querySelector('.luigi-search__input');
   let searchResults = {};
   let showPopOverCustomSearch = false;
   let search;
@@ -68,8 +69,8 @@
   }
 
   function setFocusOnGlobalSearchFieldDesktop() {
-    if (document.querySelector('.luigi-search__input')) {
-      document.querySelector('.luigi-search__input').focus();
+    if (searchInputElem()) {
+      searchInputElem().focus();
     }
   }
 

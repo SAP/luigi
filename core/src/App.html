@@ -489,12 +489,18 @@
     isSearchFieldVisible = false;
   };
 
-const searchInputElem = () => document.querySelector('.luigi-search__input');
+  const searchInputElem = () => document.querySelector('.luigi-search__input');
 
-export const openSearchField = () => {
+  export const openSearchField = () => {
     isSearchFieldVisible = true;
     if (searchInputElem()) {
       searchInputElem().focus();
+    }
+  };
+
+  export const clearSearchField = () => {
+    if (searchInputElem()) {
+      searchInputElem().value = '';
     }
   };
 
@@ -504,18 +510,20 @@ export const openSearchField = () => {
   };
 
   export const getGlobalSearchString = () => {
-    if (document.querySelector('.luigi-search__input')) {
-      return document.querySelector('.luigi-search__input').value;
+    if (searchInputElem()) {
+      return searchInputElem().value;
     }
   };
 
   export const setGlobalSearchString = searchString => {
-    if (document.querySelector('.luigi-search__input')) {
-      document.querySelector('.luigi-search__input').value = searchString;
+    if (searchInputElem()) {
+      searchInputElem().value = searchString;
       const triggerSearch = LuigiConfig.getConfigValue(
         'globalSearch.searchProvider.onInput'
       );
-      triggerSearch();
+      if (GenericHelpers.isFunction(triggerSearch)) {
+        triggerSearch();
+      }
     }
   };
 
