@@ -62,6 +62,8 @@
     on:resizeTabNav="{onResizeTabNav}"
     on:toggleSearch="{toggleSearch}"
     bind:isSearchFieldVisible
+    bind:displaySearchResult
+    bind:searchResult
   />
   {#if !(hideNav||hideSideNav)}
   <LeftNav
@@ -166,6 +168,8 @@
   let resizeTabNavToggle = false;
   let thirdPartyCookiesCheck;
   export let isSearchFieldVisible;
+  export let displaySearchResult;
+  export let searchResult;
 
   const prepareInternalData = config => {
     const iframeConf = config.iframe.luigi;
@@ -517,6 +521,14 @@
     }
   };
 
+  export const showSearchResult = arr => {
+    displaySearchResult = true;
+    searchResult = arr;
+  };
+
+  export const closeSearchResult = () => {
+    displaySearchResult = false;
+  };
   //// SPLIT VIEW
   export const openSplitView = (nodepath, settings) => {
     if (mfSplitView.displayed) {

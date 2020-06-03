@@ -20,13 +20,18 @@
       </div>
       <div
         class="fd-popover__body fd-popover__body--right"
-        aria-hidden="{!showPopOverCustomSearch}"
+        aria-hidden="{!displaySearchResult}"
       >
-        <nav class="fd-menu">
-          {#if searchResults}
+        <nav class="fd-menu {searchResult.length}">
+          {#if searchResult}
           <ul class="fd-menu__list fd-menu__list--top">
-            {#each searchResults as result}
-            <li class="fd-menu__item">{result}</li>
+            {#each searchResult as result}
+            <li class="fd-menu__item">
+              <a class="fd-menu__link" href="{result.pathObject.path}">
+                <span class="fd-menu__title">{result.label}</span>
+                <span class="fd-product-switch__subtitle">{result.description}</span>
+              </a>
+            </li>
             {/each}
           </ul>
           {/if}
@@ -53,9 +58,9 @@
   export let dropDownStates = {};
   export let isMobile;
   export let isSearchFieldVisible;
+  export let searchResult = [];
+  export let displaySearchResult;
   const dispatch = createEventDispatcher();
-  let searchResults = {};
-  let showPopOverCustomSearch = false;
   let search;
   onMount(async () => {
     search = await LuigiConfig.getConfigValueAsync('globalSearch');
@@ -78,6 +83,9 @@
       setTimeout(() => {
         setFocusOnGlobalSearchFieldDesktop();
       });
+    else {
+      displaySearchResult = false;
+    }
     dispatch('toggleSearch', { isSearchFieldVisible });
   }
 </script>

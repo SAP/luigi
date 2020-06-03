@@ -50,14 +50,18 @@ class LuigiGlobalSearch {
                 }
             * ])
             */
-  showSearchResult(arr) {}
+  showSearchResult(arr) {
+    Luigi.showSearchResult(arr);
+  }
 
   /**
    * Close the global search result. By standard it is a popover
    * @memberof LuigiGlobalSearch
    * @example Luigi.globalSearch().closeSearchResult()
    */
-  closeSearchResult() {}
+  closeSearchResult() {
+    Luigi.closeSearchResult();
+  }
 
   /**
    * Get the value of the search input field

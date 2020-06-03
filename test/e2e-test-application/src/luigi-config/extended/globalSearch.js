@@ -2,16 +2,20 @@ class GlobalSearch {
   searchProvider = {
     onInput: () => {
       console.log('searchValue ', Luigi.globalSearch().getSearchString());
-      // let searchResultItem = {
-      //   pathObject: {
-      //     path,
-      //     params: {} // can be used by linkmanager.navigate(path).withParams(params)
-      //   },
-      //   label,
-      //   description,
-      //   onActivate() {}
-      // };
-      //Luigi.globalSearch().showSearchResult([searchResultItem]);
+      let searchResult = [];
+      for (let i = 0; i < 10; i++) {
+        let searchResultItem = {
+          pathObject: {
+            path: 'overview',
+            params: {} // can be used by linkmanager.navigate(path).withParams(params)
+          },
+          label: 'label' + i,
+          description: 'description' + i,
+          onActivate() {}
+        };
+        searchResult.push(searchResultItem);
+      }
+      Luigi.globalSearch().showSearchResult(searchResult);
     },
     onEnter: () => {},
     onEscape: () => {},

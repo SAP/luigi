@@ -19,7 +19,12 @@
   <div class="fd-shellbar__group fd-shellbar__group--actions">
     {#if !authorizationEnabled || isLoggedIn}
     {#if isGlobalSearchAvailable}
-    <GlobalSearch bind:isSearchFieldVisible on:toggleSearch/>
+    <GlobalSearch
+      bind:isSearchFieldVisible
+      on:toggleSearch
+      bind:searchResult
+      bind:displaySearchResult
+    />
     {/if}
     <ContextSwitcher
       bind:dropDownStates
@@ -415,6 +420,8 @@
   export let urlAuthError;
   export let isGlobalSearchAvailable;
   export let isSearchFieldVisible;
+  export let displaySearchResult;
+  export let searchResult;
 
   let store = getContext('store');
   let contextSwitcherToggle = false;
