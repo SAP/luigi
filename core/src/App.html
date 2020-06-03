@@ -810,6 +810,10 @@
             microfrontend,
             GenericHelpers.removeInternalProperties(iframe.luigi.currentNode)
           );
+        } else {
+          console.warn(
+            `Warning: Custom message with id: '${message.id}' does not exist. Make sure you provided the same id as in the config file. Documentation: https://docs.luigi-project.io/docs/communication?section=custom-messages`
+          );
         }
       }
 
