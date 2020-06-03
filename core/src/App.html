@@ -523,6 +523,10 @@
       );
       if (GenericHelpers.isFunction(triggerSearch)) {
         triggerSearch();
+      } else {
+        console.error(
+          'onInput is not a function. Please check the global search configuration.'
+        );
       }
     }
   };
