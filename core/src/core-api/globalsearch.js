@@ -27,9 +27,7 @@ class LuigiGlobalSearch {
    * @example Luigi.globalSearch().clearSearchField()
    */
   clearSearchField() {
-    if (document.querySelector('.luigi-search__input')) {
-      document.querySelector('.luigi-search__input').value = '';
-    }
+    Luigi.clearSearchField();
   }
 
   /**

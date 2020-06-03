@@ -61,6 +61,9 @@
   export let searchResult = [];
   export let displaySearchResult;
   const dispatch = createEventDispatcher();
+  const searchInputElem = () => document.querySelector('.luigi-search__input');
+  let searchResults = {};
+  let showPopOverCustomSearch = false;
   let search;
   onMount(async () => {
     search = await LuigiConfig.getConfigValueAsync('globalSearch');
@@ -68,13 +71,18 @@
 
   function onKeyUp(event) {
     if (search && GenericHelpers.isFunction(search.searchProvider.onInput)) {
-      search.searchProvider.onInput();
+      debugger;
+      if (searchInputElem().value === '') {
+        displaySearchResult = false;
+      } else {
+        search.searchProvider.onInput();
+      }
     }
   }
 
   function setFocusOnGlobalSearchFieldDesktop() {
-    if (document.querySelector('.luigi-search__input')) {
-      document.querySelector('.luigi-search__input').focus();
+    if (searchInputElem()) {
+      searchInputElem().focus();
     }
   }
 
