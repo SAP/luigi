@@ -71,7 +71,6 @@
 
   function onKeyUp(event) {
     if (search && GenericHelpers.isFunction(search.searchProvider.onInput)) {
-      debugger;
       if (searchInputElem().value === '') {
         displaySearchResult = false;
       } else {
