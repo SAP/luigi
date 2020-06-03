@@ -38,6 +38,15 @@ class IframeHelpersClass {
     });
   }
 
+  removeIframe(iframe, node) {
+    const children = Array.from(node.children);
+    children.forEach(child => {
+      if (child === iframe) {
+        node.removeChild(child);
+      }
+    });
+  }
+
   replaceVars(viewUrl, params, prefix, parenthesis = true) {
     let processedUrl = viewUrl;
     if (params) {
