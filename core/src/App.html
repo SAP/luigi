@@ -817,6 +817,14 @@
         }
       }
 
+      /**
+       * Persist the answer of the init handshake
+       * to prevent half-initialized clients
+       */
+      if ('luigi.init.ok' === e.data.msg) {
+        config.iframe.luigi.initOk = true;
+      }
+
       if ('luigi.navigate.ok' === e.data.msg) {
         iframe.luigi.viewUrl = iframe.luigi.nextViewUrl;
         iframe.luigi.nextViewUrl = '';
@@ -828,6 +836,9 @@
       }
 
       if ('luigi.get-context' === e.data.msg) {
+        config.iframe.luigi.clientVersion = e.data.clientVersion; // undefined for v0.x clients
+        config.iframe.luigi.initOk = false; // get-context indication. used for handshake verification
+
         const specialIframeProps = {
           modalIframe,
           modalIframeData,

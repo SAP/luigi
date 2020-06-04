@@ -38,6 +38,7 @@ describe('Iframe', () => {
       prepareInternalData: () => {}
     };
     sinon.stub(Iframe, 'setOkResponseHandler');
+    sinon.stub(Iframe, 'initHandshakeFailed').returns(false);
     sinon.stub(NavigationHelpers, 'handleUnresponsiveClient');
     sinon.stub(LuigiConfig, 'getConfigValue').callsFake();
     sinon.stub(GenericHelpers);
