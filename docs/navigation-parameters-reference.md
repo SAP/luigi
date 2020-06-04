@@ -67,6 +67,10 @@ The navigation parameters allow you to configure **global** navigation settings 
 - **type**: any
 - **description**: receives all values defined in the node configuration. It allows you to define a permission checker function that gets executed on every node. If it returns `false`, Luigi removes the node and its children from the navigation structure. See [angular navigation.js](../test/e2e-test-application/src/luigi-config/extended/navigation.js) for an example.
 
+### nodeChangeHook
+- **type**: function
+- **description**: allows you to invoke and execute a specific function on the global level when a request to navigate to the node occurs. The function receives two node objects as input parameters: the previous node and current node, as described in the configuration. 
+
 ### defaults.isolateView
 - **type**: boolean
 - **description**: renders all views in new frames. This setting overrides the same-domain frame reuse.
