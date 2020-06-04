@@ -489,13 +489,46 @@
     isSearchFieldVisible = false;
   };
 
+  const searchInputElem = () => document.querySelector('.luigi-search__input');
+
   export const openSearchField = () => {
     isSearchFieldVisible = true;
+    if (searchInputElem()) {
+      searchInputElem().focus();
+    }
+  };
+
+  export const clearSearchField = () => {
+    if (searchInputElem()) {
+      searchInputElem().value = '';
+    }
   };
 
   export const toggleSearch = () => {
     isSearchFieldVisible = !isSearchFieldVisible;
     LuigiGlobalSearch.clearSearchField();
+  };
+
+  export const getGlobalSearchString = () => {
+    if (searchInputElem()) {
+      return searchInputElem().value;
+    }
+  };
+
+  export const setGlobalSearchString = searchString => {
+    if (searchInputElem()) {
+      searchInputElem().value = searchString;
+      const triggerSearch = LuigiConfig.getConfigValue(
+        'globalSearch.searchProvider.onInput'
+      );
+      if (GenericHelpers.isFunction(triggerSearch)) {
+        triggerSearch();
+      } else {
+        console.error(
+          'onInput is not a function. Please check the global search configuration.'
+        );
+      }
+    }
   };
 
   //// SPLIT VIEW

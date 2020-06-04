@@ -14,6 +14,7 @@
             on:keyup="{(event) => onKeyUp(event)}"
             class="fd-input fd-input-group__input fd-shellbar__input-group__input luigi-search__input"
             data-testid="luigi-search-input"
+            autofocus
           >
         </div>
       </div>
@@ -53,6 +54,7 @@
   export let isMobile;
   export let isSearchFieldVisible;
   const dispatch = createEventDispatcher();
+  const searchInputElem = () => document.querySelector('.luigi-search__input');
   let searchResults = {};
   let showPopOverCustomSearch = false;
   let search;
@@ -67,8 +69,8 @@
   }
 
   function setFocusOnGlobalSearchFieldDesktop() {
-    if (document.querySelector('.luigi-search__input')) {
-      document.querySelector('.luigi-search__input').focus();
+    if (searchInputElem()) {
+      searchInputElem().focus();
     }
   }
 

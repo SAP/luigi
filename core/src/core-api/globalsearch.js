@@ -27,9 +27,7 @@ class LuigiGlobalSearch {
    * @example Luigi.globalSearch().clearSearchField()
    */
   clearSearchField() {
-    if (document.querySelector('.luigi-search__input')) {
-      document.querySelector('.luigi-search__input').value = '';
-    }
+    Luigi.clearSearchField();
   }
 
   /**
@@ -64,13 +62,17 @@ class LuigiGlobalSearch {
    * @memberof LuigiGlobalSearch
    * @example Luigi.globalSearch().getSearchString()
    */
-  getSearchString() {}
+  getSearchString() {
+    return Luigi.getGlobalSearchString();
+  }
 
   /**
    * Set the value of the search input field
    * @memberof LuigiGlobalSearch
    * @example Luigi.globalSearch().getSearchString()
    */
-  setSearchString(searchString) {}
+  setSearchString(searchString) {
+    Luigi.setGlobalSearchString(searchString);
+  }
 }
 export const globalSearch = new LuigiGlobalSearch();
