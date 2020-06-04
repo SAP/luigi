@@ -42,8 +42,6 @@ The lerna-changelog tool detects changes based on PR labels and maps them to sec
 * [#1335](https://github.com/SAP/luigi/pull/1335) Fix oidc regenerator runtime issue ([@maxmarkus](https://github.com/maxmarkus))
 
 #### :memo: Documentation
-* [#1316](https://github.com/SAP/luigi/pull/1316) Add onNodeChange hook ([@zarkosimic](https://github.com/zarkosimic))
-* [#1337](https://github.com/SAP/luigi/pull/1337) Add docu shell on direct loading of micro frontend ([@maxmarkus](https://github.com/maxmarkus))
 * [#1313](https://github.com/SAP/luigi/pull/1313) Add read-only keyword labels to documentation ([@ndricimrr](https://github.com/ndricimrr))
 
 
