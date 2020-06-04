@@ -55,6 +55,7 @@
   import { beforeUpdate, createEventDispatcher, onMount } from 'svelte';
   import { LuigiAuth, LuigiConfig } from '../core-api';
   import { GenericHelpers } from '../utilities/helpers';
+  import { Routing } from '../services/routing';
   export let dropDownStates = {};
   export let isMobile;
   export let isSearchFieldVisible;
@@ -70,10 +71,18 @@
   });
 
   function onKeyUp(event) {
-    if (search && GenericHelpers.isFunction(search.searchProvider.onInput)) {
-      if (searchInputElem().value === '') {
-        displaySearchResult = false;
-      } else {
+    if (search) {
+      if (
+        GenericHelpers.isFunction(search.searchProvider.onEnter) &&
+        event.keyCode === 13
+      ) {
+        search.searchProvider.onEnter();
+      } else if (
+        GenericHelpers.isFunction(search.searchProvider.onEscape) &&
+        event.keyCode === 27
+      ) {
+        search.searchProvider.onEscape();
+      } else if (GenericHelpers.isFunction(search.searchProvider.onInput)) {
         search.searchProvider.onInput();
       }
     }
