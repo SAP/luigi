@@ -69,7 +69,7 @@ The navigation parameters allow you to configure **global** navigation settings 
 
 ### nodeChangeHook
 - **type**: function
-- **description**: allows you to invoke and execute a specific function on the global level when a request to navigate to the node occurs. As input parameters, the function receives two node objects, previous node and current node, as they described in the configuration.
+- **description**: allows you to invoke and execute a specific function on the global level when a request to navigate to the node occurs. The function receives two node objects as input parameters: the previous node and current node, as described in the configuration. 
 
 ### defaults.isolateView
 - **type**: boolean
