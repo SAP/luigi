@@ -52,7 +52,7 @@
 
     .description {
       margin-left: 30px;
-      a{
+      a {
         font-weight: 600;
         color: #3c4553;
         &:hover {
@@ -199,12 +199,5 @@
         max-height: 45px;
       }
     }
-  }
-}
-
-.main-content  > .s-outofthebox {
-  padding-bottom: 0;
-  .item .description{
-    width: 100%;
   }
 }
