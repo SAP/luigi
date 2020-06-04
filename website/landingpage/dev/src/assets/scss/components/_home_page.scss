@@ -54,9 +54,9 @@
       margin-left: 30px;
       a {
         font-weight: 600;
-        color: #3c4553;
+        color: $secondary-color;
         &:hover {
-          color: #2deb8a;
+          color: $anchor-color;
         }
       }
     }
