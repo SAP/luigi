@@ -23,13 +23,12 @@ const generateBlogEntry = (blog, content, showButton = false) => {
   const button = showButton ? `<p><a href="/blog/${blog.slug}" class="btn-primary">Read more</a></p>` : '';
   return `
   <!-- Single Blog entry start -->
-  <div class="column small-9 large-6 blog-entry-header">
+  <div class="blog-entry-header">
     <div class="title-2">
       ${blog.title}
     </div>
     <div class="sub-title"><span class="text">${blog.date}</span></div>
-  </div>
-  <div class="columns xlarge-9 blog-entry-content">
+
     ${content}
     ${button}
   </div>
