@@ -23,11 +23,12 @@
 
     <div class="main-content">
       <section>
-        <div class="row" id="stickyAnchor" data-something><div>
-        <div class="row">
-          {{> body}}
+        <div class="row" id="stickyAnchor" data-something>
+          <div class="column small-9 blog-entry-header">
+            {{> body}}
+          </div>
 
-          <div class="columns xlarge-3 right show-for-xlarge" data-sticky-container>
+          <div class="columns small-3 right show-for-xlarge" data-sticky-container>
             <div class="sticky" data-sticky data-margin-top="6" data-anchor="stickyAnchor">
               <ul class="list-type-1 sticky-navigation">
                 <li><a href="https://docs.luigi-project.io">Read Documentation</a></li>
