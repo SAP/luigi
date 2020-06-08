@@ -26,8 +26,8 @@
           {#if searchResult}
           <ul class="fd-menu__list fd-menu__list--top">
             {#each searchResult as result}
-            <li class="fd-menu__item">
-              <a class="fd-menu__link" href="{result.pathObject.path}">
+            <li class="fd-menu__item" on:click="{() => onActionClick(result)}">
+              <a class="fd-menu__link" on:click|preventDefault="{() => {}}">
                 <span class="fd-menu__title">{result.label}</span>
                 <span class="fd-product-switch__subtitle">{result.description}</span>
               </a>
@@ -55,8 +55,6 @@
   import { beforeUpdate, createEventDispatcher, onMount } from 'svelte';
   import { LuigiAuth, LuigiConfig } from '../core-api';
   import { GenericHelpers } from '../utilities/helpers';
-  import { Routing } from '../services/routing';
-  export let dropDownStates = {};
   export let isMobile;
   export let isSearchFieldVisible;
   export let searchResult = [];
@@ -86,6 +84,18 @@
         search.searchProvider.onInput();
       }
     }
+  }
+
+  export function onActionClick(searchResultItem) {
+    //TODO clarify when do we call this?
+    if (
+      searchResultItem &&
+      GenericHelpers.isFunction(searchResultItem.onActivate)
+    ) {
+      searchResultItem.onActivate();
+    }
+    let node = searchResultItem.pathObject;
+    dispatch('handleSearchNavigation', { node });
   }
 
   function setFocusOnGlobalSearchFieldDesktop() {

@@ -22,6 +22,7 @@
     <GlobalSearch
       bind:isSearchFieldVisible
       on:toggleSearch
+      on:handleSearchNavigation
       bind:searchResult
       bind:displaySearchResult
     />
@@ -529,6 +530,10 @@
 
   export function handleClick(node) {
     dispatch('handleClick', { node });
+  }
+
+  export function handleSearchNavigation(node) {
+    dispatch('handleSearchNavigation', { node });
   }
 
   export function handleClickExternal(event) {
