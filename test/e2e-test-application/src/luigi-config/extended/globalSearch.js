@@ -12,6 +12,7 @@ class GlobalSearch {
     },
     onEnter: () => {
       let nodes = Luigi.getConfigValue('navigation.nodes');
+      this.searchResult = [];
       for (let i = 0; i < nodes.length; i++) {
         if (
           nodes[i].label &&
