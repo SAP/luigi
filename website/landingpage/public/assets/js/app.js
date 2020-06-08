@@ -22771,6 +22771,16 @@ function removeActiveState(arr) {
   [].forEach.call(arr, function (el) {
     el.classList.remove('is-active');
   });
+} // BLOG
+// use history api back() instead of standard link if coming from overview page
+
+
+if (jQuery('.back-to-blog').length && document.referrer.indexOf('/blog/overview') !== -1 && window.history) {
+  jQuery('.back-to-blog').on('click', function (e) {
+    e.preventDefault();
+    e.stopPropagation();
+    history.back();
+  });
 }
 
 /***/ }),

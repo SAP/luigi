@@ -22,9 +22,13 @@
     {{> header}} 
 
     <div class="main-content">
-      <section>
+        <section>
         <div class="row" id="stickyAnchor" data-something>
-          <div class="column small-9 blog-entry-header">
+          <div class="column small-9">    
+            {{#unlesspage 'overview'}}
+            <a href="/blog/overview" class="back-to-blog">Back to Blog</a>
+            {{/unlesspage}}
+
             {{> body}}
           </div>
 

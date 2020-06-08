@@ -23,7 +23,7 @@ const generateBlogEntry = (blog, content, showButton = false) => {
   const button = showButton ? `<p><a href="/blog/${blog.slug}" class="btn-primary">Read more</a></p>` : '';
   return `
 
-  <div class="blog-entry-header">
+  <div class="blog-entry">
     <div class="title-2">
       ${blog.title}
     </div>
