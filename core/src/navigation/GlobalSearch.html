@@ -55,6 +55,7 @@
   import { beforeUpdate, createEventDispatcher, onMount } from 'svelte';
   import { LuigiAuth, LuigiConfig } from '../core-api';
   import { GenericHelpers } from '../utilities/helpers';
+  import { Routing } from '../services/routing';
   export let isMobile;
   export let isSearchFieldVisible;
   export let searchResult = [];
@@ -95,7 +96,11 @@
       searchResultItem.onActivate();
     }
     let node = searchResultItem.pathObject;
-    dispatch('handleSearchNavigation', { node });
+    if (node.externalLink) {
+      Routing.navigateToExternalLink(node.externalLink);
+    } else {
+      dispatch('handleSearchNavigation', { node });
+    }
   }
 
   function setFocusOnGlobalSearchFieldDesktop() {
