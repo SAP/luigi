@@ -24,7 +24,16 @@
   margin-bottom: 60px;  
   border-bottom: 1px solid rgb(229, 229, 229);
 
+  &:last-child {
+    border-bottom: 0;
+    margin-bottom: 0px;
+  }
+
   .title-2 {
     margin-bottom: 0.5em;
+  }
+
+  .sub-title {
+    font-style: italic;
   }
 }

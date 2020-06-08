@@ -18,8 +18,30 @@ const getSlug = (fileName) => {
   return slugify(fileName.slice(0, -3)); // remove .md from the end
 }
 
+/**
+ * Format english date from YYYY-MM-DD
+ * @returns string 1. Mar, 2020
+ */
+const formatDate = (date) => {
+  const d = new Date(Date.parse(date));
+  const options = { year: 'numeric', month: 'short', day: 'numeric' };
+  return d.toLocaleDateString('en-US', options);
+}
+
+const getAuthors = (authors) => {
+  let authorStr;
+  if (!authors) {
+    return '';
+  } else if (authors instanceof Array) {
+    return authors.join(' and ');
+  } else {
+    return authors;
+  }
+}
+
 const generateBlogEntry = (blog, content, showButton = false) => {
   // console.log(blog, content)
+  
   const button = showButton ? `<p><a href="/blog/${blog.slug}" class="btn-primary">Read more</a></p>` : '';
   return `
 
@@ -27,7 +49,7 @@ const generateBlogEntry = (blog, content, showButton = false) => {
     <div class="title-2">
       ${blog.title}
     </div>
-    <div class="sub-title"><span class="text">${blog.date}</span></div>
+    <div class="sub-title"><span class="text">${getAuthors(blog.author)} @Luigi on ${formatDate(blog.date)}</span></div>
     ${content}
     ${button}
   </div>
@@ -50,6 +72,7 @@ export const getBlogEntries = (singleSlug = false) => {
         title: mdData.data.title,
         fileName,
         description: mdData.data.description,
+        author: mdData.data.author,
         htmlExcerpt: marked(mdData.content),
         htmlContent: marked(frontmatter(fileContent).content)
       };

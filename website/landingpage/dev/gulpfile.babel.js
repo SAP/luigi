@@ -186,7 +186,10 @@ function buildBlogFiles(done) {
 function watch() {
   gulp.watch(PATHS.assets, copy);
   gulp
-    .watch(__dirname + '/../../../blog/*.md')
+    .watch([
+      __dirname + '/../../../blog/*.md',
+      'src/services/*.js'
+    ])
     .on('all', gulp.series(buildBlogFiles, resetPages, pages, browser.reload));
   gulp
     .watch([
