@@ -19,14 +19,19 @@
         </div>
       </div>
       <div
-        class="fd-popover__body fd-popover__body--right"
-        aria-hidden="{!showPopOverCustomSearch}"
+        class="fd-popover__body fd-popover__body--right luigi-search__popover__body"
+        aria-hidden="{!displaySearchResult}"
       >
-        <nav class="fd-menu">
-          {#if searchResults}
+        <nav class="fd-menu {searchResult.length}">
+          {#if searchResult}
           <ul class="fd-menu__list fd-menu__list--top">
-            {#each searchResults as result}
-            <li class="fd-menu__item">{result}</li>
+            {#each searchResult as result}
+            <li class="fd-menu__item">
+              <a class="fd-menu__link" href="{result.pathObject.path}">
+                <span class="fd-menu__title">{result.label}</span>
+                <span class="fd-product-switch__subtitle">{result.description}</span>
+              </a>
+            </li>
             {/each}
           </ul>
           {/if}
@@ -50,9 +55,12 @@
   import { beforeUpdate, createEventDispatcher, onMount } from 'svelte';
   import { LuigiAuth, LuigiConfig } from '../core-api';
   import { GenericHelpers } from '../utilities/helpers';
+  import { Routing } from '../services/routing';
   export let dropDownStates = {};
   export let isMobile;
   export let isSearchFieldVisible;
+  export let searchResult = [];
+  export let displaySearchResult;
   const dispatch = createEventDispatcher();
   const searchInputElem = () => document.querySelector('.luigi-search__input');
   let searchResults = {};
@@ -63,8 +71,20 @@
   });
 
   function onKeyUp(event) {
-    if (search && GenericHelpers.isFunction(search.searchProvider.onInput)) {
-      search.searchProvider.onInput();
+    if (search) {
+      if (
+        GenericHelpers.isFunction(search.searchProvider.onEnter) &&
+        event.keyCode === 13
+      ) {
+        search.searchProvider.onEnter();
+      } else if (
+        GenericHelpers.isFunction(search.searchProvider.onEscape) &&
+        event.keyCode === 27
+      ) {
+        search.searchProvider.onEscape();
+      } else if (GenericHelpers.isFunction(search.searchProvider.onInput)) {
+        search.searchProvider.onInput();
+      }
     }
   }
 
@@ -79,6 +99,9 @@
       setTimeout(() => {
         setFocusOnGlobalSearchFieldDesktop();
       });
+    else {
+      displaySearchResult = false;
+    }
     dispatch('toggleSearch', { isSearchFieldVisible });
   }
 </script>
@@ -110,6 +133,10 @@
         right: 0;
         background: var(--sapShellColor);
         z-index: 1;
+      }
+
+      .luigi-search__popover__body {
+        top: 50px;
       }
     }
   }

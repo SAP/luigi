@@ -81,6 +81,14 @@ const configReadyCallback = () => {
           app.$$.ctx.setGlobalSearchString(searchString);
         };
 
+        Luigi.showSearchResult = arr => {
+          return app.$$.ctx.showSearchResult(arr);
+        };
+
+        Luigi.closeSearchResult = () => {
+          app.$$.ctx.closeSearchResult();
+        };
+
         Luigi.clearSearchField = () => {
           app.$$.ctx.clearSearchField();
         };
