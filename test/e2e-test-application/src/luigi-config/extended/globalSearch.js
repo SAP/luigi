@@ -35,7 +35,7 @@ class GlobalSearch {
       //     this.searchResult.push(searchResultItem);
       //   }
       // }
-
+      this.searchResult = [];
       let searchResultItem1 = {
         pathObject: {
           link: '/settings',
