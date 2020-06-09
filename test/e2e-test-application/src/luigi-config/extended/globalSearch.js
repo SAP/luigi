@@ -38,7 +38,7 @@ class GlobalSearch {
 
       let searchResultItem1 = {
         pathObject: {
-          link: 'settings',
+          link: '/settings',
           params: { foo: 'bar' }
         },
         label: 'Settings',
@@ -49,7 +49,7 @@ class GlobalSearch {
       };
       let searchResultItem1a = {
         pathObject: {
-          link: 'settings'
+          link: '/settings'
         },
         label: 'Settings ohne params',
         description: 'settings',

@@ -97,7 +97,7 @@
     }
     let node = searchResultItem.pathObject;
     if (node.externalLink) {
-      Routing.navigateToExternalLink(node.externalLink);
+      Routing.navigateToLink(node);
     } else {
       dispatch('handleSearchNavigation', { node });
     }
