@@ -32,7 +32,6 @@ module.exports = [
   //'./node_modules/fundamental-styles/dist/layout-grid.css',
   './node_modules/fundamental-styles/dist/link.css',
   //'./node_modules/fundamental-styles/dist/list.css',
-  //'./node_modules/fundamental-styles/dist/list-group.css',
   //'./node_modules/fundamental-styles/dist/localization-editor.css',
   './node_modules/fundamental-styles/dist/menu.css',
   //'./node_modules/fundamental-styles/dist/message-box.css',
