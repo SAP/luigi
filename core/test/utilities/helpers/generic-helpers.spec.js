@@ -92,4 +92,35 @@ describe('Generic-helpers', () => {
     };
     assert.deepEqual(GenericHelpers.removeProperties(input, keys), expected);
   });
+
+  describe('semverCompare', () => {
+    it('standard versions', () => {
+      const input = ['1.1.1', '0.6.4', '0.7.7', '0.7.1', '1.0.0'];
+      const expected = ['0.6.4', '0.7.1', '0.7.7', '1.0.0', '1.1.1'];
+      assert.deepEqual(input.sort(GenericHelpers.semverCompare), expected);
+    });
+
+    it('with beta and next', () => {
+      const input = [
+        '1.1.1-dev.0000',
+        '0.6.4',
+        '0.7.7-beta.0',
+        '0.7.1',
+        '1.0.0'
+      ];
+      const expected = [
+        '0.6.4',
+        '0.7.1',
+        '0.7.7-beta.0',
+        '1.0.0',
+        '1.1.1-dev.0000'
+      ];
+      assert.deepEqual(input.sort(GenericHelpers.semverCompare), expected);
+    });
+
+    it('single comparison', () => {
+      assert.equal(GenericHelpers.semverCompare('0.7.4', '1.1.1'), -1);
+      assert.equal(GenericHelpers.semverCompare('1.1.1', '0.7.4'), 1);
+    });
+  });
 });

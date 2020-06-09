@@ -13,14 +13,21 @@ class SemiCollapsibleNavigationClass {
         ? true
         : false;
     // set this.isSemiCollapsed to true for mobile
+    let isSemiCollapsedUndefined = this.isSemiCollapsed === undefined;
     if (
       this.semiCollapsible &&
       window.innerWidth !== 0 &&
       window.innerWidth < CSS_BREAKPOINTS.desktopMinWidth
     ) {
-      this.setCollapsed(true);
+      this.isSemiCollapsed = isSemiCollapsedUndefined
+        ? true
+        : this.getCollapsed();
+    } else {
+      this.isSemiCollapsed = isSemiCollapsedUndefined
+        ? false
+        : this.getCollapsed();
     }
-    this.isSemiCollapsed = this.semiCollapsible ? this.getCollapsed() : false;
+
     this.setCollapsed(this.isSemiCollapsed);
 
     this.previousWindowWidth = window.innerWidth;
@@ -71,7 +78,7 @@ class SemiCollapsibleNavigationClass {
   }
 
   getCollapsed() {
-    return localStorage.getItem(NavigationHelpers.COL_NAV_KEY) === 'true';
+    return this.isSemiCollapsed;
   }
 
   closePopupMenu(selectedCategory) {

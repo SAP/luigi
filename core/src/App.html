@@ -890,7 +890,19 @@
             microfrontend,
             GenericHelpers.removeInternalProperties(iframe.luigi.currentNode)
           );
+        } else {
+          console.warn(
+            `Warning: Custom message with id: '${message.id}' does not exist. Make sure you provided the same id as in the config file. Documentation: https://docs.luigi-project.io/docs/communication?section=custom-messages`
+          );
         }
+      }
+
+      /**
+       * Persist the answer of the init handshake
+       * to prevent half-initialized clients
+       */
+      if ('luigi.init.ok' === e.data.msg) {
+        config.iframe.luigi.initOk = true;
       }
 
       if ('luigi.navigate.ok' === e.data.msg) {
@@ -904,6 +916,9 @@
       }
 
       if ('luigi.get-context' === e.data.msg) {
+        config.iframe.luigi.clientVersion = e.data.clientVersion; // undefined for v0.x clients
+        config.iframe.luigi.initOk = false; // get-context indication. used for handshake verification
+
         const specialIframeProps = {
           modalIframe,
           modalIframeData,

@@ -52,6 +52,13 @@
 
     .description {
       margin-left: 30px;
+      a {
+        font-weight: 600;
+        color: $secondary-color;
+        &:hover {
+          color: $anchor-color;
+        }
+      }
     }
   }
 
