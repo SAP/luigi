@@ -93,9 +93,7 @@ class GlobalSearch {
       this.searchResult.push(
         searchResultItem1,
         searchResultItem1a,
-        searchResultItem2,
-        searchResultItem3,
-        searchResultItem4
+        searchResultItem2
       );
       if (this.searchResult.length > 0) {
         Luigi.globalSearch().showSearchResult(this.searchResult);

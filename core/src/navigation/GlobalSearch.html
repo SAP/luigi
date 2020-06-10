@@ -24,10 +24,18 @@
       >
         <nav class="fd-menu {searchResult.length}">
           {#if searchResult}
-          <ul class="fd-menu__list fd-menu__list--top">
-            {#each searchResult as result}
+          <ul
+            class="fd-menu__list fd-menu__list--top luigi-search-result-items"
+          >
+            {#each searchResult as result, index}
             <li class="fd-menu__item" on:click="{() => onActionClick(result)}">
-              <a class="fd-menu__link" on:click|preventDefault="{() => {}}">
+              <a
+                class="fd-menu__link"
+                is-selected="{index==0?'true':'false'}"
+                on:click|preventDefault="{() => {}}"
+                aria-selected="{index==0?'true':'false'}"
+                uid="luigi-searchresult__{index}"
+              >
                 <span class="fd-menu__title">{result.label}</span>
                 <span class="fd-product-switch__subtitle">{result.description}</span>
               </a>
@@ -81,8 +89,75 @@
         event.keyCode === 27
       ) {
         search.searchProvider.onEscape();
+      } else if (event.keyCode === 38) {
+        calcSearchResultItemSelected(38);
+      } else if (event.keyCode === 40) {
+        calcSearchResultItemSelected(40);
       } else if (GenericHelpers.isFunction(search.searchProvider.onInput)) {
         search.searchProvider.onInput();
+      }
+    }
+  }
+
+  function isSelected(index, arrLength) {
+    console.log('index', index);
+    console.log('arrLength', arrLength);
+  }
+
+  function calcSearchResultItemSelected(direction) {
+    let renderedSearchResultItems = document.querySelector(
+      '.luigi-search-result-items'
+    ).children;
+    if (renderedSearchResultItems) {
+      for (let index = 0; index < renderedSearchResultItems.length; index++) {
+        let element = renderedSearchResultItems[index].childNodes[0];
+        if (element.getAttribute('is-selected') === 'true') {
+          if (direction === 38) {
+            element.setAttribute('aria-selected', 'false');
+            element.setAttribute('is-selected', 'false');
+            if (0 > index - 1) {
+              renderedSearchResultItems[
+                renderedSearchResultItems.length - 1
+              ].childNodes[0].setAttribute('aria-selected', 'true');
+              renderedSearchResultItems[
+                renderedSearchResultItems.length - 1
+              ].childNodes[0].setAttribute('is-selected', 'true');
+            } else {
+              renderedSearchResultItems[index - 1].childNodes[0].setAttribute(
+                'aria-selected',
+                'true'
+              );
+              renderedSearchResultItems[index - 1].childNodes[0].setAttribute(
+                'is-selected',
+                'true'
+              );
+            }
+            break;
+          } else if (direction === 40) {
+            element.setAttribute('is-selected', 'false');
+            element.setAttribute('aria-selected', 'false');
+            if (renderedSearchResultItems.length == index + 1) {
+              renderedSearchResultItems[0].childNodes[0].setAttribute(
+                'aria-selected',
+                'true'
+              );
+              renderedSearchResultItems[0].childNodes[0].setAttribute(
+                'is-selected',
+                'true'
+              );
+            } else {
+              renderedSearchResultItems[index + 1].childNodes[0].setAttribute(
+                'aria-selected',
+                'true'
+              );
+              renderedSearchResultItems[index + 1].childNodes[0].setAttribute(
+                'is-selected',
+                'true'
+              );
+            }
+            break;
+          }
+        }
       }
     }
   }
@@ -96,7 +171,7 @@
       searchResultItem.onActivate();
     }
     let node = searchResultItem.pathObject;
-    if (node.externalLink) {
+    if (node && node.externalLink) {
       Routing.navigateToLink(node);
     } else {
       dispatch('handleSearchNavigation', { node });
