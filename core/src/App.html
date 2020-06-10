@@ -538,8 +538,10 @@
   };
 
   export const showSearchResult = arr => {
-    displaySearchResult = true;
-    searchResult = arr;
+    if (arr && arr.length > 0) {
+      displaySearchResult = true;
+      searchResult = arr;
+    }
   };
 
   export const closeSearchResult = () => {
