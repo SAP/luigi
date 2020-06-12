@@ -95,12 +95,21 @@
     ) {
       searchResultItem.onActivate();
     }
-    let node = searchResultItem.pathObject;
-    if (node.externalLink) {
-      Routing.navigateToLink(node);
-    } else {
-      dispatch('handleSearchNavigation', { node });
+    if (
+      search &&
+      GenericHelpers.isFunction(
+        search.searchProvider.onSearchResultItemSelected
+      )
+    ) {
+      console.log('searchResultItem GlobalSearch', searchResultItem);
+      search.searchProvider.onSearchResultItemSelected(searchResultItem);
     }
+    // let node = searchResultItem.pathObject;
+    // if (node.externalLink) {
+    //   Routing.navigateToLink(node);
+    // } else {
+    //   dispatch('handleSearchNavigation', { node });
+    // }
   }
 
   function setFocusOnGlobalSearchFieldDesktop() {

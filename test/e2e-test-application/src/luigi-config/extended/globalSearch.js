@@ -1,3 +1,5 @@
+import { linkManager } from '../../../../../core/src/core-api/_internalLinkManager';
+
 class GlobalSearch {
   constructor() {
     this.searchResult = [];
@@ -119,7 +121,10 @@ class GlobalSearch {
       this.searchResult = [];
     },
     customResultRenderer: searchResultItem => {},
-    onSearchResultItemSelected: searchResultItem => {}
+    onSearchResultItemSelected: searchResultItem => {
+      console.log(searchResultItem);
+      linkManager.navigate(searchResultItem.pathObject.link);
+    }
   };
 }
 
