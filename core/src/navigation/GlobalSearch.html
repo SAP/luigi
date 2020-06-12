@@ -26,7 +26,10 @@
           {#if searchResult}
           <ul class="fd-menu__list fd-menu__list--top">
             {#each searchResult as result}
-            <li class="fd-menu__item" on:click="{() => onActionClick(result)}">
+            <li
+              class="fd-menu__item"
+              on:click="{() => onSearchResultItemSelected(result)}"
+            >
               <a class="fd-menu__link" on:click|preventDefault="{() => {}}">
                 <span class="fd-menu__title">{result.label}</span>
                 <span class="fd-product-switch__subtitle">{result.description}</span>
@@ -87,7 +90,7 @@
     }
   }
 
-  export function onActionClick(searchResultItem) {
+  export function onSearchResultItemSelected(searchResultItem) {
     //TODO clarify when do we call this?
     if (
       searchResultItem &&
@@ -104,12 +107,6 @@
       console.log('searchResultItem GlobalSearch', searchResultItem);
       search.searchProvider.onSearchResultItemSelected(searchResultItem);
     }
-    // let node = searchResultItem.pathObject;
-    // if (node.externalLink) {
-    //   Routing.navigateToLink(node);
-    // } else {
-    //   dispatch('handleSearchNavigation', { node });
-    // }
   }
 
   function setFocusOnGlobalSearchFieldDesktop() {

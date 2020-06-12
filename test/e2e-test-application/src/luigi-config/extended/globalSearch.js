@@ -1,5 +1,3 @@
-import { linkManager } from '../../../../../core/src/core-api/_internalLinkManager';
-
 class GlobalSearch {
   constructor() {
     this.searchResult = [];
@@ -122,8 +120,21 @@ class GlobalSearch {
     },
     customResultRenderer: searchResultItem => {},
     onSearchResultItemSelected: searchResultItem => {
-      console.log(searchResultItem);
-      linkManager.navigate(searchResultItem.pathObject.link);
+      if (searchResultItem.pathObject.externalLink) {
+        window.open(searchResultItem.pathObject.externalLink.url, '_blank');
+      } else if (
+        searchResultItem.pathObject.link &&
+        !searchResultItem.pathObject.params
+      ) {
+        Luigi.navigation().navigate(searchResultItem.pathObject.link);
+      } else if (
+        searchResultItem.pathObject.link &&
+        searchResultItem.pathObject.params
+      ) {
+        Luigi.navigation()
+          .withParams(searchResultItem.pathObject.params)
+          .navigate(searchResultItem.pathObject.link);
+      }
     }
   };
 }
