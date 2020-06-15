@@ -31,3 +31,8 @@ npm run build
 
 The build compiles and minimizes the source files for production usage.
 The build generates a `build` folder which you can serve using a web server.
+You can also test the production build locally using the command below: 
+
+```
+npm run serve
+```
