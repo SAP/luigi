@@ -60,7 +60,7 @@ export const projectDetailNavStructure = projectId => [
   {
     category: 'User Management',
     pathSegment: 'developers',
-    label: 'Developer',
+    label: 'Developers',
     viewUrl: '/sampleapp.html#/projects/' + projectId + '/developers',
     icon: 'employee',
     badgeCounter: {
