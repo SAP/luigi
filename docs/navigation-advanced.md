@@ -26,6 +26,7 @@ This document shows you how to configure the following Luigi features:
 * [App switcher](#app-switcher) 
 * [Tab navigation](#tab-navigation)
 * [Additional options](#additional-options)
+* [Global search](#global-search)
 
 ## View groups
 
@@ -339,6 +340,18 @@ Tab-style navigation in Luigi can be displayed directly above the micro frontend
 ### tabNav
 - **type**: boolean
 - **description**: renders the children of the node as a horizontal navigation bar. Sub-children are not supported. When you categorize nodes you will get a drop-down menu in the horizontal navigation.
+
+## Global search
+
+The global search element can be used to trigger a search. In you configuration you can implement an own search provider and some action events like onEnter, onEscape, onInput and onSearchResultItemSelected.
+By default the search result will be rendered in a popup.
+
+Example:
+
+```javascript
+
+```
+
 
 ## Additional options
 

@@ -27,6 +27,7 @@ Use the parameters and functions in this reference to configure your Luigi navig
 * [Context switcher](#context-switcher)
 * [Product switcher](#product-switcher)
 * [App switcher](#app-switcher)
+* [Global search](#global-search)
 
 
 ## Routing parameters
@@ -463,3 +464,28 @@ The app switcher is a drop-down list available in the top navigation bar. It all
   - **title** defines the application title. This is shown in the **appSwitcher** drop-down as well as the title in the header of the Luigi application if a user is in the context of the app.
   - **subTitle** defines the application sub-title. This is shown as the sub-title in the header of the Luigi application if a user is in the context of the app.
   - **link** is a link within the Luigi application that defines the root of the app. It is used to switch to the application if the drop-down entry is selected. It is also used to determine if a user is within the app's scope, so that the corresponding title and sub-title can be rendered in the header.
+
+## Global search
+
+### searchProvider
+- **type**: Object
+- **description**: 
+  **attributes**
+  - **onInput**
+    - **type**: Function
+    - **description**: This function will be executed on every keyup event, if it is implemented.
+  - **onEnter**
+    - **type**: Function
+    - **description**: This function will be executed, when the user presses 'enter'. 
+  - **onEscape**
+    - **type**: Function
+    - **description**: This function will be executed, when the user presses 'escape'. 
+  - **customResultRenderer** 
+    - **type**: Function
+    - **description**:
+  - **onSearchResultItemSelected**
+    - **type**: Function
+    - **description**: This function will be executed, when the user clicks on a search result item. 
+    - **attribute** [searchResultItem](luigi-core-api.md#globalsearch)
+      
+          
