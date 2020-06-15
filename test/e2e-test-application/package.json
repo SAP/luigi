@@ -26,10 +26,10 @@
     "@luigi-project/plugin-auth-oidc": "1.0.0",
     "@luigi-project/client": "1.0.0",
     "@luigi-project/core": "1.0.0",
-    "@sap-theming/theming-base-content": "^11.1.18",
+    "@sap-theming/theming-base-content": "~11.1.19",
     "ajv": "^6.1.1",
     "core-js": "^2.4.1",
-    "fundamental-styles": "^0.8.1",
+    "fundamental-styles": "~0.10.0",
     "rxjs": "6.2.0",
     "zone.js": "^0.8.14",
     "lodash": ">=4.17.13"
