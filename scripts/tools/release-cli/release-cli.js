@@ -207,11 +207,8 @@ function addToChangelog(versionText, changelog, lastline) {
       .toString()
       .replace('## Unreleased', versionText);
 
-    // strip everything after documentation tag (inclusive)
-    changelog = changelog.slice(
-      0,
-      changelog.indexOf('#### :memo: Documentation')
-    );
+    // strip committers part
+    changelog = changelog.slice(0, changelog.indexOf('#### Committers'));
 
     const lastline = `[v${input.version}]: https://github.com/SAP/luigi/compare/${prevVersion}...v${input.version}`;
 
