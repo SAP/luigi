@@ -133,5 +133,7 @@
     "type": "git",
     "url": "ssh://github.com/SAP/luigi.git"
   },
-  "dependencies": {}
+  "dependencies": {
+    "@ui5/webcomponents": "^1.0.0-rc.7"
+  }
 }

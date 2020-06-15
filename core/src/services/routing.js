@@ -15,10 +15,10 @@ class RoutingClass {
   getNodePath(node, params) {
     return node
       ? RoutingHelpers.buildRoute(
-          node,
-          node.pathSegment ? '/' + node.pathSegment : '',
-          params
-        )
+        node,
+        node.pathSegment ? '/' + node.pathSegment : '',
+        params
+      )
       : '';
   }
 
@@ -131,9 +131,9 @@ class RoutingClass {
     return LuigiConfig.getConfigValue('routing.useHashRouting')
       ? window.location.hash.replace('#', '') // TODO: GenericHelpers.getPathWithoutHash(window.location.hash) fails in ContextSwitcher
       : window.location.search
-      ? GenericHelpers.trimLeadingSlash(window.location.pathname) +
+        ? GenericHelpers.trimLeadingSlash(window.location.pathname) +
         window.location.search
-      : GenericHelpers.trimLeadingSlash(window.location.pathname);
+        : GenericHelpers.trimLeadingSlash(window.location.pathname);
   }
 
   async handleRouteChange(path, component, iframeElement, config) {
@@ -197,8 +197,8 @@ class RoutingClass {
             this.showPageNotFoundError(
               component,
               GenericHelpers.trimTrailingSlash(pathData.matchedPath) +
-                '/' +
-                defaultChildNode,
+              '/' +
+              defaultChildNode,
               pathUrlRaw,
               true
             );
@@ -291,10 +291,10 @@ class RoutingClass {
         Object.assign({}, newNodeData, {
           previousNodeValues: previousCompData
             ? {
-                viewUrl: previousCompData.viewUrl,
-                isolateView: previousCompData.isolateView,
-                viewGroup: previousCompData.viewGroup
-              }
+              viewUrl: previousCompData.viewUrl,
+              isolateView: previousCompData.isolateView,
+              viewGroup: previousCompData.viewGroup
+            }
             : {}
         })
       );
@@ -332,9 +332,9 @@ class RoutingClass {
         from cache with all its children.
       */
   checkInvalidateCache(previousCompData, newPath) {
-      let newPathArray = newPath.split('/');
-     if (previousCompData.navigationPath && previousCompData.navigationPath.length > 0) {
-       let previousNavPathWithoutRoot = previousCompData.navigationPath.slice(1);
+    let newPathArray = newPath.split('/');
+    if (previousCompData.navigationPath && previousCompData.navigationPath.length > 0) {
+      let previousNavPathWithoutRoot = previousCompData.navigationPath.slice(1);
 
       let isSamePath = true;
       for (let i = 0; i < previousNavPathWithoutRoot.length; i++) {
@@ -462,9 +462,6 @@ class RoutingClass {
 
 
   attachWC(wc_id, wc_container, ctx) {
-    /*let wcWrapper = document.createElement('div');
-    wcWrapper.innerHTML=`<${wc_id} label='bla'></${wc_id}>`;
-    wc_container.appendChild(wcWrapper);*/
     const wc = document.createElement(wc_id);
     wc.context = ctx;
     wc.luigi = Luigi;
@@ -476,27 +473,58 @@ class RoutingClass {
     const componentData = component.get();
     let viewUrl = componentData.viewUrl;
 
-    if(navNode.webcomponent && navNode.webcomponent.id) {
+    if (navNode.webcomponent && navNode.webcomponent.id) {
       const wc_id = 'luigi-wc-' + navNode.webcomponent.id;
       const wc_container = document.querySelector('.wcContainer');
-      while(wc_container.lastChild) {
+      while (wc_container.lastChild) {
         wc_container.lastChild.remove();
       }
-      if(window.customElements.get(wc_id)) {
-        this.attachWC(wc_id, wc_container, componentData.context);
-      } else {
-        const wcScript = document.createElement('script');
-        wcScript.src = viewUrl;
-        Luigi.wc = undefined;
-        document.body.appendChild(wcScript);
-        wcScript.onload = () => {
-          if(Luigi.wc) {
-            window.customElements.define(wc_id, Luigi.wc.elementClass);
+
+      if (navNode.webcomponent.type === 'module') {
+        if (window.customElements.get(wc_id)) {
+          this.attachWC(wc_id, wc_container, componentData.context);
+        } else {
+          const wcScript = document.createElement('script');
+          wcScript.type = 'module';
+
+          wcScript.innerHTML = `
+            import wcClass from '${viewUrl}';
+            window.customElements.define('${wc_id}', wcClass);
+            document.querySelector('.wcContainer script').dispatchEvent(new Event('registered'));
+          `;
+
+          wc_container.appendChild(wcScript);
+
+          wcScript.addEventListener('registered', () => {
             this.attachWC(wc_id, wc_container, componentData.context);
-          } else {
-            console.error("couldn't load web component", navNode);
-          }
-        };
+          });
+
+
+          /** The following doesn't work for external urls, unfortunately */
+          /*
+          import(viewUrl).then(wcClass => {
+            let id = 'ce-' + new Date().getTime();
+            window.customElements.define(id, wcClass);
+            document.body.appendChild(document.createElement(id));
+          });*/
+        }
+      } else {
+        if (window.customElements.get(wc_id)) {
+          this.attachWC(wc_id, wc_container, componentData.context);
+        } else {
+          const wcScript = document.createElement('script');
+          wcScript.src = viewUrl;
+          Luigi.wc = undefined;
+          wc_container.appendChild(wcScript);
+          wcScript.onload = () => {
+            if (Luigi.wc) {
+              window.customElements.define(wc_id, Luigi.wc.elementClass);
+              this.attachWC(wc_id, wc_container, componentData.context);
+            } else {
+              console.error("couldn't load web component", navNode);
+            }
+          };
+        }
       }
     } else {
       console.error("id not defined for web component", navNode);
