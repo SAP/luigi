@@ -57,15 +57,6 @@ class IframeClass {
     );
   }
 
-  removeIframe(iframe, node) {
-    const children = Array.from(node.children);
-    children.forEach(child => {
-      if (child === iframe) {
-        node.removeChild(child);
-      }
-    });
-  }
-
   getPreservedViewsInDom(iframes) {
     return iframes.filter(iframe => iframe.pv);
   }
@@ -157,6 +148,7 @@ class IframeClass {
       if (config.navigateOk) {
         config.navigateOk = undefined;
       } else {
+        IframeHelpers.removeIframe(config.iframe, node);
         config.iframe = undefined;
         config.isFallbackFrame = true;
         console.info(
@@ -180,6 +172,26 @@ class IframeClass {
         }
       }
     }, errorHandlerNode.timeout);
+  }
+
+  /**
+   * Checks if Client has set the initOk if the clientVersion is younger than NEXTRELEASE
+   * or if it failed to receive the initial get-context request.
+   * @since: NEXTRELEASE
+   */
+  initHandshakeFailed(config) {
+    const clientVersion = config.iframe.luigi.clientVersion;
+    if (config.iframe.luigi.initOk === undefined) {
+      // initial get-context request was not received
+      return true;
+    } else if (
+      // valid minimum handshake version: NEXTRELEASE
+      !clientVersion ||
+      GenericHelpers.semverCompare('1.1.1', clientVersion) !== -1
+    ) {
+      return false;
+    }
+    return !config.iframe.luigi.initOk;
   }
 
   navigateIframe(config, component, node) {
@@ -261,7 +273,8 @@ class IframeClass {
       config.iframe = activeIframe;
     }
 
-    if (!config.iframe) {
+    // if iframe does not exist, or handshake was interrupted, create a new one
+    if (!config.iframe || this.initHandshakeFailed(config)) {
       // preserveView, hide other frames, else remove
       if (pvSituation) {
         this.notifyInactiveIframes();

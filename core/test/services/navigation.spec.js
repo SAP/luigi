@@ -840,6 +840,39 @@ describe('Navigation', function() {
     });
   });
 
+  describe('nodeChangeHook', () => {
+    afterEach(() => {
+      sinon.restore();
+      sinon.reset();
+    });
+
+    it('when nodeChangeHook is defined', () => {
+      console.log = sinon.spy();
+      LuigiConfig.config = {
+        navigation: {
+          nodeChangeHook: () => {
+            console.log('Tets!');
+          }
+        }
+      };
+      Navigation.onNodeChange();
+      sinon.assert.calledOnce(console.log);
+    });
+    it('when nodeChangeHook is not defined', () => {
+      sinon.stub(LuigiConfig, 'getConfigValue');
+      LuigiConfig.config = {
+        navigation: {}
+      };
+      Navigation.onNodeChange();
+      sinon.assert.calledWithExactly(
+        LuigiConfig.getConfigValue,
+        'navigation.nodeChangeHook'
+      );
+      const result = LuigiConfig.getConfigValue('navigation.nodeChangeHook');
+      assert.equal(result, undefined);
+    });
+  });
+
   describe('shouldPreventNavigation', () => {
     let node;
     let nodeActivationHook;
