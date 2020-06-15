@@ -63,11 +63,7 @@ function pages() {
         layouts: 'src/layouts/',
         partials: 'src/partials/',
         data: 'src/data/',
-        helpers: 'src/helpers/',
-        // pageLayouts: {
-        //   // All pages inside src/pages/blog will use the blog.html layout
-        //   'blog': 'blog'
-        // }
+        helpers: 'src/helpers/'
       })
     )
     .pipe(gulp.dest(PATHS.dist));
