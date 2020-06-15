@@ -1,6 +1,6 @@
 <section class="fd-section" *ngIf="nodeParams">
-  <div class="fd-panel fd-has-margin-bottom-small">
-    <div class="fd-panel__body">
+  <div class="fd-layout-panel fd-has-margin-bottom-small">
+    <div class="fd-layout-panel__body">
       <div class="fd-message-strip" role="alert">
         <div class="fd-message-strip__text">
           Called with params:<br />
@@ -9,8 +9,8 @@
       </div>
     </div>
   </div>
-  <div class="fd-panel fd-has-margin-bottom-small" *ngIf="hasBack">
-    <div class="fd-panel__body">
+  <div class="fd-layout-panel fd-has-margin-bottom-small" *ngIf="hasBack">
+    <div class="fd-layout-panel__body">
       <p>
         Advanced: node Params and preserveView active. <br />
         <a
@@ -38,8 +38,8 @@
 </section>
 
 <section class="fd-section" *ngIf="preservedViewCallbackContext">
-  <div class="fd-panel fd-has-margin-bottom-small">
-    <div class="fd-panel__body">
+  <div class="fd-layout-panel fd-has-margin-bottom-small">
+    <div class="fd-layout-panel__body">
       <div class="fd-message-strip" role="alert">
         <div class="fd-message-strip__text">
           Context received from linkManager().goBack():<br />
@@ -58,15 +58,15 @@
     <h1 *ngIf="!projectId" class="fd-section__title">Global Settings</h1>
   </div>
 
-  <div class="fd-panel">
-    <div class="fd-panel__header">
-      <div class="fd-panel__head">
-        <h3 class="fd-panel__title">
+  <div class="fd-layout-panel">
+    <div class="fd-layout-panel__header">
+      <div class="fd-layout-panel__head">
+        <h3 class="fd-layout-panel__title">
           LuigiClient hasBack/GoBack
         </h3>
       </div>
     </div>
-    <div class="fd-panel__body">
+    <div class="fd-layout-panel__body">
       <div *ngIf="hasBack">
         <div class="fd-form-item">
           <label class="fd-form-label"

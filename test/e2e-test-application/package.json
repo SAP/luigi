@@ -25,7 +25,7 @@
     "@luigi-project/plugin-auth-oauth2": "1.0.0",
     "@luigi-project/plugin-auth-oidc": "1.0.0",
     "@luigi-project/client": "1.0.0",
-    "@luigi-project/core": "1.0.0",
+    "@luigi-project/core": "1.2.1",
     "@sap-theming/theming-base-content": "~11.1.19",
     "ajv": "^6.1.1",
     "core-js": "^2.4.1",
