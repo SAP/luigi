@@ -468,64 +468,54 @@ class RoutingClass {
     wc_container.appendChild(wc);
   }
 
+  generateWCId(viewUrl) {
+    let charRep = '';
+    for(let i = 0; i < viewUrl.length; i++) {
+      charRep += viewUrl.charCodeAt(i).toString(16);
+    }
+    console.log(viewUrl, charRep);
+    return 'luigi-wc-' + charRep;
+  }
+
   navigateWebComponent(config, component, node, navNode, iframeContainer) {
     console.log("web component detected....", navNode.pathSegment);
     const componentData = component.get();
     let viewUrl = componentData.viewUrl;
 
-    if (navNode.webcomponent && navNode.webcomponent.id) {
-      const wc_id = 'luigi-wc-' + navNode.webcomponent.id;
+    if (navNode.webcomponent) {
+      const wc_id = this.generateWCId(navNode.viewUrl);
       const wc_container = document.querySelector('.wcContainer');
       while (wc_container.lastChild) {
         wc_container.lastChild.remove();
       }
 
-      if (navNode.webcomponent.type === 'module') {
-        if (window.customElements.get(wc_id)) {
-          this.attachWC(wc_id, wc_container, componentData.context);
-        } else {
-          const wcScript = document.createElement('script');
-          wcScript.type = 'module';
-
-          wcScript.innerHTML = `
-            import wcClass from '${viewUrl}';
-            window.customElements.define('${wc_id}', wcClass);
-            document.querySelector('.wcContainer script').dispatchEvent(new Event('registered'));
-          `;
-
-          wc_container.appendChild(wcScript);
-
-          wcScript.addEventListener('registered', () => {
-            this.attachWC(wc_id, wc_container, componentData.context);
-          });
-
-
-          /** The following doesn't work for external urls, unfortunately */
-          /*
-          import(viewUrl).then(wcClass => {
-            let id = 'ce-' + new Date().getTime();
-            window.customElements.define(id, wcClass);
-            document.body.appendChild(document.createElement(id));
-          });*/
-        }
+      if (window.customElements.get(wc_id)) {
+        this.attachWC(wc_id, wc_container, componentData.context);
       } else {
-        if (window.customElements.get(wc_id)) {
+        const wcScript = document.createElement('script');
+        wcScript.type = 'module';
+
+        wcScript.innerHTML = `
+          import wcClass from '${viewUrl}';
+          window.customElements.define('${wc_id}', wcClass);
+          document.querySelector('.wcContainer script').dispatchEvent(new Event('registered'));
+        `;
+
+        wc_container.appendChild(wcScript);
+
+        wcScript.addEventListener('registered', () => {
           this.attachWC(wc_id, wc_container, componentData.context);
-        } else {
-          const wcScript = document.createElement('script');
-          wcScript.src = viewUrl;
-          Luigi.wc = undefined;
-          wc_container.appendChild(wcScript);
-          wcScript.onload = () => {
-            if (Luigi.wc) {
-              window.customElements.define(wc_id, Luigi.wc.elementClass);
-              this.attachWC(wc_id, wc_container, componentData.context);
-            } else {
-              console.error("couldn't load web component", navNode);
-            }
-          };
-        }
+        });
+
+
+        /** The following doesn't work for external urls, unfortunately */
+        /*
+        import(viewUrl).then(wcClass => {
+          window.customElements.define(wc_id, wcClass);
+          document.body.appendChild(document.createElement(id));
+        });*/
       }
+
     } else {
       console.error("id not defined for web component", navNode);
     }
