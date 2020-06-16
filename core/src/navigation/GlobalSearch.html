@@ -31,14 +31,10 @@
             <li
               class="fd-menu__item luigi-search-result-item__{index}"
               on:click="{(event) => onSearchResultItemSelected(result, event)}"
-              on:keyup="{(event) => onSearchResultItemSelected(result, event)}"
+              on:keyup="{(event) => handleKeydown(result, event)}"
               tabindex="0"
             >
-              <a
-                class="fd-menu__link"
-                on:click|preventDefault="{() => {}}"
-                aria-selected="{index==0?'true':'false'}"
-              >
+              <a class="fd-menu__link" on:click|preventDefault="{() => {}}">
                 <span class="fd-menu__title">{result.label}</span>
                 <span class="fd-product-switch__subtitle">{result.description}</span>
               </a>
@@ -92,10 +88,13 @@
         event.keyCode === 27
       ) {
         search.searchProvider.onEscape();
-      } else if (event.keyCode === 38) {
-        // document.querySelector('.luigi-search-result-item__2').focus();
       } else if (event.keyCode === 40) {
-        // document.querySelector('.luigi-search-result-item__2').focus();
+        if (displaySearchResult) {
+          document
+            .querySelector('.luigi-search-result-item__0')
+            .childNodes[0].setAttribute('aria-selected', 'true');
+          document.querySelector('.luigi-search-result-item__0').focus();
+        }
       } else if (GenericHelpers.isFunction(search.searchProvider.onInput)) {
         search.searchProvider.onInput();
       }
@@ -110,40 +109,16 @@
     ).children;
     if (renderedSearchResultItems) {
       for (let index = 0; index < renderedSearchResultItems.length; index++) {
-        let element = renderedSearchResultItems[index].childNodes[0];
-        if (element.getAttribute('aria-selected') === 'true') {
-          if (direction === 38) {
-            element.setAttribute('aria-selected', 'false');
-            if (0 > index - 1) {
-              renderedSearchResultItems[
-                renderedSearchResultItems.length - 1
-              ].childNodes[0].setAttribute('aria-selected', 'true');
-              renderedSearchResultItems[
-                renderedSearchResultItems.length - 1
-              ].childNodes[0].focus();
-            } else {
-              renderedSearchResultItems[index - 1].childNodes[0].setAttribute(
-                'aria-selected',
-                'true'
-              );
-              renderedSearchResultItems[index - 1].childNodes[0].focus();
-            }
-            break;
-          } else if (direction === 40) {
-            element.setAttribute('aria-selected', 'false');
-            if (renderedSearchResultItems.length == index + 1) {
-              renderedSearchResultItems[0].childNodes[0].setAttribute(
-                'aria-selected',
-                'true'
-              );
-              renderedSearchResultItems[0].childNodes[0].focus();
-            } else {
-              renderedSearchResultItems[index + 1].childNodes[0].setAttribute(
-                'aria-selected',
-                'true'
-              );
-              renderedSearchResultItems[index + 1].childNodes[0].focus();
-            }
+        let element = renderedSearchResultItems[index];
+        if (element.childNodes[0].getAttribute('aria-selected') === 'true') {
+          if (direction === 40) {
+            let nextSibling =
+              element.nextSibling != null
+                ? element.nextSibling
+                : renderedSearchResultItems[0];
+            element.childNodes[0].setAttribute('aria-selected', 'false');
+            nextSibling.childNodes[0].setAttribute('aria-selected', 'true');
+            nextSibling.focus();
             break;
           }
         }
@@ -151,19 +126,51 @@
     }
   }
 
-  export function onSearchResultItemSelected(searchResultItem, event) {
+  function clearAriaSelected() {
+    let renderedSearchResultItems = document.querySelector(
+      '.luigi-search-result-items'
+    ).children;
+    if (renderedSearchResultItems) {
+      for (let index = 0; index < renderedSearchResultItems.length; index++) {
+        let element = renderedSearchResultItems[index];
+        if (element.childNodes[0].getAttribute('aria-selected') === 'true') {
+          element.childNodes[0].setAttribute('aria-selected', 'false');
+        }
+      }
+    }
+  }
+
+  function onSearchResultItemSelected(searchResultItem, event) {
     if (
       search &&
       GenericHelpers.isFunction(
         search.searchProvider.onSearchResultItemSelected
-      ) &&
-      event.keyCode === 13
+      )
     ) {
       search.searchProvider.onSearchResultItemSelected(searchResultItem);
-    } else if (event.keyCode === 38) {
+    } else if (
+      GenericHelpers.isFunction(search.searchProvider.onEscape) &&
+      event.keyCode === 27
+    ) {
+      search.searchProvider.onEscape();
+    }
+  }
+
+  function handleKeydown(result, event) {
+    if (event.keyCode === 13) {
+      search.searchProvider.onSearchResultItemSelected(result);
+    }
+    if (event.keyCode === 38) {
       calcSearchResultItemSelected(38);
     } else if (event.keyCode === 40) {
       calcSearchResultItemSelected(40);
+    } else if (
+      GenericHelpers.isFunction(search.searchProvider.onEscape) &&
+      event.keyCode === 27
+    ) {
+      clearAriaSelected();
+      searchInputElem().focus();
+      search.searchProvider.onEscape();
     }
   }
 
