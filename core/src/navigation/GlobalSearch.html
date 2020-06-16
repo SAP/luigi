@@ -28,13 +28,17 @@
             class="fd-menu__list fd-menu__list--top luigi-search-result-items"
           >
             {#each searchResult as result, index}
-            <li class="fd-menu__item" on:click="{() => onActionClick(result)}">
+            <li
+              class="fd-menu__item luigi-searchresult__{index}"
+              on:click="{() => onActionClick(result)}"
+              on:keydown="{(event) => onEnter(result, event)}"
+              tabindex="0"
+            >
               <a
                 class="fd-menu__link"
                 is-selected="{index==0?'true':'false'}"
                 on:click|preventDefault="{() => {}}"
                 aria-selected="{index==0?'true':'false'}"
-                uid="luigi-searchresult__{index}"
               >
                 <span class="fd-menu__title">{result.label}</span>
                 <span class="fd-product-switch__subtitle">{result.description}</span>
@@ -96,12 +100,9 @@
       } else if (GenericHelpers.isFunction(search.searchProvider.onInput)) {
         search.searchProvider.onInput();
       }
+    } else {
+      console.warn('GlobalSearch is not available.');
     }
-  }
-
-  function isSelected(index, arrLength) {
-    console.log('index', index);
-    console.log('arrLength', arrLength);
   }
 
   function calcSearchResultItemSelected(direction) {
@@ -111,55 +112,50 @@
     if (renderedSearchResultItems) {
       for (let index = 0; index < renderedSearchResultItems.length; index++) {
         let element = renderedSearchResultItems[index].childNodes[0];
-        if (element.getAttribute('is-selected') === 'true') {
+        console.log('calc');
+        if (element.getAttribute('aria-selected') === 'true') {
           if (direction === 38) {
             element.setAttribute('aria-selected', 'false');
-            element.setAttribute('is-selected', 'false');
             if (0 > index - 1) {
               renderedSearchResultItems[
                 renderedSearchResultItems.length - 1
               ].childNodes[0].setAttribute('aria-selected', 'true');
               renderedSearchResultItems[
                 renderedSearchResultItems.length - 1
-              ].childNodes[0].setAttribute('is-selected', 'true');
+              ].childNodes[0].focus();
             } else {
               renderedSearchResultItems[index - 1].childNodes[0].setAttribute(
                 'aria-selected',
                 'true'
               );
-              renderedSearchResultItems[index - 1].childNodes[0].setAttribute(
-                'is-selected',
-                'true'
-              );
+              renderedSearchResultItems[index - 1].childNodes[0].focus();
             }
             break;
           } else if (direction === 40) {
-            element.setAttribute('is-selected', 'false');
             element.setAttribute('aria-selected', 'false');
             if (renderedSearchResultItems.length == index + 1) {
               renderedSearchResultItems[0].childNodes[0].setAttribute(
                 'aria-selected',
                 'true'
               );
-              renderedSearchResultItems[0].childNodes[0].setAttribute(
-                'is-selected',
-                'true'
-              );
+              renderedSearchResultItems[0].childNodes[0].focus();
             } else {
               renderedSearchResultItems[index + 1].childNodes[0].setAttribute(
                 'aria-selected',
                 'true'
               );
-              renderedSearchResultItems[index + 1].childNodes[0].setAttribute(
-                'is-selected',
-                'true'
-              );
+              renderedSearchResultItems[index + 1].childNodes[0].focus();
             }
             break;
           }
         }
       }
     }
+  }
+
+  function onEnter(searchResultItem, event) {
+    debugger;
+    console.log('ENTER', searchResultItem);
   }
 
   export function onActionClick(searchResultItem) {
