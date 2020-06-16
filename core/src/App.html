@@ -61,6 +61,7 @@
     on:handleClick="{handleNavClick}"
     on:resizeTabNav="{onResizeTabNav}"
     on:toggleSearch="{toggleSearch}"
+    on:handleSearchNavigation="{handleSearchNavigation}"
     bind:isSearchFieldVisible
     bind:displaySearchResult
     bind:searchResult
@@ -537,12 +538,25 @@
   };
 
   export const showSearchResult = arr => {
-    displaySearchResult = true;
-    searchResult = arr;
+    if (arr && arr.length > 0) {
+      displaySearchResult = true;
+      searchResult = arr;
+    }
   };
 
   export const closeSearchResult = () => {
     displaySearchResult = false;
+  };
+
+  export const handleSearchNavigation = event => {
+    let node = event.detail.node;
+    let data = {
+      params: {
+        link: node.link,
+        nodeParams: node.params
+      }
+    };
+    handleNavigation(data);
   };
   //// SPLIT VIEW
   export const openSplitView = (nodepath, settings) => {
