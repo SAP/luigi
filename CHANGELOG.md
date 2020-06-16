@@ -25,6 +25,30 @@ The lerna-changelog tool detects changes based on PR labels and maps them to sec
 -->
 
 
+## [v1.2.1] (2020-06-04)
+
+#### :rocket: Added
+* [#1316](https://github.com/SAP/luigi/pull/1316) Add onNodeChange hook ([@zarkosimic](https://github.com/zarkosimic))
+* [#1326](https://github.com/SAP/luigi/pull/1326) Selected state for product switch items ([@hardl](https://github.com/hardl))
+* [#1304](https://github.com/SAP/luigi/pull/1304) Add possibility to unload Luigi ([@maxmarkus](https://github.com/maxmarkus))
+
+#### :bug: Fixed
+* [#1356](https://github.com/SAP/luigi/pull/1356) Fix client half init state ([@maxmarkus](https://github.com/maxmarkus))
+* [#1374](https://github.com/SAP/luigi/pull/1374) Fix flyout title propagation ([@maxmarkus](https://github.com/maxmarkus))
+* [#1367](https://github.com/SAP/luigi/pull/1367) Add testing production build capability ([@ndricimrr](https://github.com/ndricimrr))
+* [#1364](https://github.com/SAP/luigi/pull/1364) Fix iframe fallback ([@maxmarkus](https://github.com/maxmarkus))
+* [#1376](https://github.com/SAP/luigi/pull/1376) Fix left-nav flyout ([@zarkosimic](https://github.com/zarkosimic))
+* [#1368](https://github.com/SAP/luigi/pull/1368) ContextSwitcher bugfix ([@marynaKhromova](https://github.com/marynaKhromova))
+* [#1335](https://github.com/SAP/luigi/pull/1335) Fix oidc regenerator runtime issue ([@maxmarkus](https://github.com/maxmarkus))
+
+#### :memo: Documentation
+* [#1313](https://github.com/SAP/luigi/pull/1313) Add read-only keyword labels to documentation ([@ndricimrr](https://github.com/ndricimrr))
+
+
+
+
+
+
 ## [v1.1.1] (2020-05-07)
 
 #### :rocket: Added
@@ -760,3 +784,4 @@ The lerna-changelog tool detects changes based on PR labels and maps them to sec
 [v1.0.1]: https://github.com/SAP/luigi/compare/v1.0.0...v1.0.1
 [v1.1.0]: https://github.com/SAP/luigi/compare/v1.0.1...v1.1.0
 [v1.1.1]: https://github.com/SAP/luigi/compare/v1.1.0...v1.1.1
+[v1.2.1]: https://github.com/SAP/luigi/compare/v1.1.1...v1.2.1

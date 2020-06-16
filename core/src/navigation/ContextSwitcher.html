@@ -47,7 +47,7 @@
 </div>
 {/if}
 <!-- MOBILE VERSION (fullscreen dialog): -->
-{#if isMobile && dropDownStates.contextSwitcherPopover}
+{#if isMobile && dropDownStates.contextSwitcherPopover && renderAsDropdown}
 <div class="fd-dialog fd-dialog--active" on:click|stopPropagation="{()=>{}}">
   <div class="fd-dialog__content fd-dialog__content--mobile">
     <div class="fd-dialog__header fd-bar fd-bar--header">
@@ -328,11 +328,6 @@
 </script>
 
 <style type="text/scss">
-  :root {
-    /* needed for IE11 support */
-    --fd-color-shell-2: #d1e8ff;
-  }
-
   .fd-button--shell .is-hover,
   .fd-button--shell:hover {
     background-color: transparent;
@@ -361,13 +356,17 @@
     }
   }
 
-  .lui-ctx-switch-menu[aria-disabled='true'] {
-    opacity: 1;
-    cursor: default;
-    background-color: transparent;
-    border: 1px solid var(--sapShell_BorderColor, transparent);
-    &:after {
-      border: none;
+  .lui-ctx-switch-menu {
+    &.fd-button[aria-disabled='true'] {
+      opacity: 1;
+      cursor: default;
+      background-color: transparent;
+      border: 1px solid var(--sapShell_BorderColor, transparent);
+      padding-right: calc(0.625rem - var(--sapButton_BorderWidth, 0.0625rem));
+      &:after {
+        display: none;
+        content: '';
+      }
     }
   }
 

@@ -179,7 +179,10 @@ class RoutingClass {
 
       if (!viewUrl) {
         const defaultChildNode = await RoutingHelpers.getDefaultChildNode(
-          pathData, (async (node, ctx) => { return await Navigation.getChildren(node, ctx); })
+          pathData,
+          async (node, ctx) => {
+            return await Navigation.getChildren(node, ctx);
+          }
         );
 
         if (pathData.isExistingRoute) {
@@ -190,7 +193,7 @@ class RoutingClass {
             false
           );
           // reset comp data
-          component.set({ navigationPath : [] });
+          component.set({ navigationPath: [] });
         } else {
           if (defaultChildNode && pathData.navigationPath.length > 1) {
             //last path segment was invalid but a default node could be in its place
@@ -285,8 +288,6 @@ class RoutingClass {
         tabNav: tabNavInherited
       };
 
-
-
       component.set(
         Object.assign({}, newNodeData, {
           previousNodeValues: previousCompData
@@ -308,6 +309,16 @@ class RoutingClass {
           if (iContainer.classList.contains('iframeContainerTabNav')) {
             iContainer.classList.remove('iframeContainerTabNav');
           }
+        }
+      }
+      if (config.iframe !== null) {
+        const prevUrl = config.iframe.luigi.viewUrl.split('/').pop();
+        if (path !== prevUrl) {
+          const { nodeObject, pathData } = await Navigation.extractDataFromPath(
+            prevUrl
+          );
+          const previousNode = nodeObject;
+          Navigation.onNodeChange(previousNode, currentNode);
         }
       }
       if(nodeObject.webcomponent) {
@@ -333,22 +344,27 @@ class RoutingClass {
       */
   checkInvalidateCache(previousCompData, newPath) {
     let newPathArray = newPath.split('/');
-    if (previousCompData.navigationPath && previousCompData.navigationPath.length > 0) {
+    if (
+      previousCompData.navigationPath &&
+      previousCompData.navigationPath.length > 0
+    ) {
       let previousNavPathWithoutRoot = previousCompData.navigationPath.slice(1);
 
       let isSamePath = true;
       for (let i = 0; i < previousNavPathWithoutRoot.length; i++) {
-        let newPathSegment = newPathArray.length > i ? newPathArray[i] : undefined;
+        let newPathSegment =
+          newPathArray.length > i ? newPathArray[i] : undefined;
         let previousPathNode = previousNavPathWithoutRoot[i];
 
         if (newPathSegment !== previousPathNode.pathSegment || !isSamePath) {
           if (RoutingHelpers.isDynamicNode(previousPathNode)) {
-            if (!isSamePath ||
+            if (
+              !isSamePath ||
               newPathSegment !==
-              RoutingHelpers.getDynamicNodeValue(
-                previousPathNode,
-                previousCompData.pathParams
-              )
+                RoutingHelpers.getDynamicNodeValue(
+                  previousPathNode,
+                  previousCompData.pathParams
+                )
             ) {
               NodeDataManagementStorage.deleteNodesRecursively(
                 previousPathNode
@@ -359,7 +375,6 @@ class RoutingClass {
             isSamePath = false;
           }
         }
-
       }
     }
   }

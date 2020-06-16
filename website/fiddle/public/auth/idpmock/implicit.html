@@ -1,77 +1,56 @@
 <!DOCTYPE html>
 <html>
 <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Luigi Mock Identity Provider</title>
+  <link href="/vendor/fundamental-styles/dist/fundamental-styles.css" rel="stylesheet">
+  <link rel="stylesheet" type="text/css" href="../../styles/styles.css" />
   <style type="text/css">
     body {
-      background-color: #f3f4f5
+      background-color: #f7f7f7;
     }
-    .form-input {
-      border-radius: 4px;
-      border: 1px solid #CCC;
-      box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
-      color: #666;
+
+    h1 {
+      text-align: center;
+      font-weight: 400;
+    }
+
+    .fd-input {
       display: block;
-      font-size: 14px;
-      height: 20px;
-      line-height: 1.42857143;
       margin: auto;
-      padding: 6px 12px;
       width: 200px;
     }
-    #login-button {
+
+   .fd-button {
       display: block;
       margin: auto;
-      cursor: pointer;
-      border-radius: 4px;
-      font-size: 1rem;
-      background-color: #ffffff;
-      color: #0a6ed1;
-      border: solid 1px #0a6ed1;
-      padding: 0 10px;
-      height: 36px;
-      max-height: 36px;
-      min-width: 36px;
-      transition: all 0.125s ease-in;
     }
-    #login-button:hover {
-      border-color: #085caf;
-      color: #085caf;
-      box-shadow: 0 0 0 1px #0a6ed1;
-    }
-    .panel {
+    
+    .login-form {
       background-color: #ffffff;
       box-shadow: 0 5px 20px 0 rgba(50, 54, 58, 0.08);
       border-radius: 4px;
       border: none;
       width: 50%;
       margin: auto;
+      margin-top: 50px;
       min-width: 270px;
       padding: 15px;
-    }
-    h1 {
-      text-align: center;
-      font-size: 1.42857143rem;
-      line-height: 1.33333333;
-      font-weight: 400;
-      display: block;
-      margin-bottom: 20px;
-      color: #32363a;
-      font-family: '72', -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Helvetica Neue, Arial, sans-serif, Apple Color Emoji, Segoe UI Emoji, Segoe UI Symbol;
     }
   </style>
 </head>
 <body>
-
-<div class="panel">
-  <h1>Login to Luigi sample app</h1>
-  <form>
-    <input type="text" class="form-input" value="LuigiUsername"><br>
-    <input type="password" class="form-input" value="LuigiPassword"><br>
-    <button id="login-button">Login</button>
-  </form>
-</div>
-<script src="implicit.js">
+  <div class="login-form">
+    <h1>Login to Luigi sample app</h1>
+    <form>
+      <input type="text" class="fd-input" value="LuigiUsername" placeholder="Username"><br>
+      <input type="password" class="fd-input" value="LuigiPassword" placeholder="Password"><br>
+      <button id="login-button" class="fd-button">Login</button>
+   </form>
+  </div>
+  <script src="implicit.js">
 </script>
 </body>
-</html>
+</html>   
