@@ -8,6 +8,84 @@ class GlobalSearch {
       if (Luigi.globalSearch().getSearchString() === '') {
         this.searchResult = [];
         Luigi.globalSearch().closeSearchResult();
+      } else {
+        this.searchResult = [];
+        let searchResultItem1 = {
+          pathObject: {
+            link: '/settings',
+            params: { foo: 'bar' }
+          },
+          label: 'Settings',
+          description: 'settings',
+          onActivate() {
+            Luigi.globalSearch().closeSearchResult();
+          }
+        };
+        let searchResultItem1a = {
+          pathObject: {
+            link: '/settings'
+          },
+          label: 'Settings ohne params',
+          description: 'settings',
+          onActivate() {
+            Luigi.globalSearch().closeSearchResult();
+          }
+        };
+        let searchResultItem2 = {
+          pathObject: {
+            link: '/projects'
+          },
+          label: 'Projects',
+          description: 'projects',
+          onActivate() {
+            Luigi.globalSearch().closeSearchResult();
+          }
+        };
+        let searchResultItem3 = {
+          pathObject: {
+            link: '/projects/pr2'
+          },
+          label: 'Projects 2',
+          description: 'projects 2',
+          onActivate() {
+            Luigi.globalSearch().closeSearchResult();
+          }
+        };
+        let searchResultItem4 = {
+          pathObject: {
+            externalLink: {
+              url: 'https://www.hybris.com',
+              sameWindow: false
+            }
+          },
+          label: 'hybris GmbH',
+          description: 'hybris',
+          onActivate() {
+            Luigi.globalSearch().closeSearchResult();
+          }
+        };
+        this.searchResult.push(
+          searchResultItem1,
+          searchResultItem1a,
+          searchResultItem2,
+          searchResultItem3,
+          searchResultItem4
+        );
+        if (this.searchResult.length > 0) {
+          Luigi.globalSearch().showSearchResult(this.searchResult);
+        } else {
+          Luigi.globalSearch().showSearchResult([
+            {
+              pathObject: {
+                path: '',
+                params: {} // can be used by linkmanager.navigate(path).withParams(params)
+              },
+              label: 'Nothing found',
+              description: '',
+              onActivate() {}
+            }
+          ]);
+        }
       }
     },
     onEnter: () => {
@@ -35,81 +113,6 @@ class GlobalSearch {
       //     this.searchResult.push(searchResultItem);
       //   }
       // }
-      this.searchResult = [];
-      let searchResultItem1 = {
-        pathObject: {
-          link: '/settings',
-          params: { foo: 'bar' }
-        },
-        label: 'Settings',
-        description: 'settings',
-        onActivate() {
-          Luigi.globalSearch().closeSearchResult();
-        }
-      };
-      let searchResultItem1a = {
-        pathObject: {
-          link: '/settings'
-        },
-        label: 'Settings ohne params',
-        description: 'settings',
-        onActivate() {
-          Luigi.globalSearch().closeSearchResult();
-        }
-      };
-      let searchResultItem2 = {
-        pathObject: {
-          link: '/projects'
-        },
-        label: 'Projects',
-        description: 'projects',
-        onActivate() {
-          Luigi.globalSearch().closeSearchResult();
-        }
-      };
-      let searchResultItem3 = {
-        pathObject: {
-          link: '/projects/pr2'
-        },
-        label: 'Projects 2',
-        description: 'projects 2',
-        onActivate() {
-          Luigi.globalSearch().closeSearchResult();
-        }
-      };
-      let searchResultItem4 = {
-        pathObject: {
-          externalLink: {
-            url: 'https://www.hybris.com',
-            sameWindow: false
-          }
-        },
-        label: 'hybris GmbH',
-        description: 'hybris',
-        onActivate() {
-          Luigi.globalSearch().closeSearchResult();
-        }
-      };
-      this.searchResult.push(
-        searchResultItem1,
-        searchResultItem1a,
-        searchResultItem2
-      );
-      if (this.searchResult.length > 0) {
-        Luigi.globalSearch().showSearchResult(this.searchResult);
-      } else {
-        Luigi.globalSearch().showSearchResult([
-          {
-            pathObject: {
-              path: '',
-              params: {} // can be used by linkmanager.navigate(path).withParams(params)
-            },
-            label: 'Nothing found',
-            description: '',
-            onActivate() {}
-          }
-        ]);
-      }
     },
     onEscape: () => {
       Luigi.globalSearch().closeSearchResult();
@@ -117,7 +120,27 @@ class GlobalSearch {
       this.searchResult = [];
     },
     customResultRenderer: searchResultItem => {},
-    onSearchResultItemSelected: searchResultItem => {}
+    onSearchResultItemSelected: searchResultItem => {
+      var self = this;
+      if (searchResultItem.pathObject.externalLink) {
+        window.open(searchResultItem.pathObject.externalLink.url, '_blank');
+      } else if (
+        searchResultItem.pathObject.link &&
+        !searchResultItem.pathObject.params
+      ) {
+        Luigi.navigation().navigate(searchResultItem.pathObject.link);
+      } else if (
+        searchResultItem.pathObject.link &&
+        searchResultItem.pathObject.params
+      ) {
+        Luigi.navigation()
+          .withParams(searchResultItem.pathObject.params)
+          .navigate(searchResultItem.pathObject.link);
+      }
+      Luigi.globalSearch().closeSearchResult();
+      Luigi.globalSearch().clearSearchField();
+      this.searchResult = [];
+    }
   };
 }
 
