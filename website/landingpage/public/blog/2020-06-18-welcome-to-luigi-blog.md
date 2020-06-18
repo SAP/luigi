@@ -1,4 +1,3 @@
-
 ---
 title: Welcome to the Luigi blog!
 description: This is our first blog entry and it introduces our new blog section.
