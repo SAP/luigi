@@ -7,6 +7,14 @@ import { uxManager } from './uxManager';
  * @private
  */
 class LuigiClient {
+  constructor() {
+    if (!window.parent.Luigi) {
+      console.warn(
+        'Luigi Core not found. This microfrontend is running standalone.'
+      );
+    }
+  }
+
   addInitListener(initFn) {
     return lifecycleManager.addInitListener(initFn);
   }
