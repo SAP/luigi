@@ -8,7 +8,7 @@
 function check_and_generate_website() {
   staged_changes=$(git diff --cached --name-only --diff-filter=ACM | grep -e "website/landingpage/" -e "blog/" | wc -l)
   if [[ "$staged_changes" != *"0"* ]]; then
-    echo "Changes in blog or landingpage found. Building landingpage"
+    echo "Changes in website or blog found. Building landingpage"
     BASE=`pwd`
     cd website/landingpage/dev
     npm run build
@@ -22,14 +22,15 @@ function check_and_generate_website() {
     if [ -z "$staged_changes" ]; then
       echo "No website or blog changes found. Ok"
     else
-      not_staged_md=$(git diff --name-only --diff-filter=ACM | grep -e "website/landingpage/public")
-      if [ ! -z "$not_staged_md" ]; then
+      not_staged_md=$(git diff --name-only | grep -e "website/landingpage")
+      untracked_landingpage=$(git ls-files -o --exclude-standard | grep "landingpage/public")
+      if [ [ ! -z "$not_staged_md" ] || [ ! -z "$untracked_landingpage" ]; then
         echo "Staging generated website files"
         echo "$not_staged_md"
         echo "$not_staged_md" | xargs git add
         exit 0
       else
-        echo "No docu changes found. Ok"
+        echo "No website or blog changes found. Ok"
       fi
     fi
   fi
