@@ -11,7 +11,11 @@ export const projectDetailTabNavStructure = projectId => [
     pathSegment: 'developers',
     label: 'Developers',
     viewUrl: '/sampleapp.html#/projects/' + projectId + '/developers',
-    icon: '/assets/favicon-sap.ico'
+    icon: '/assets/favicon-sap.ico',
+    badgeCounter: {
+      label: 'Number of developers',
+      count: () => 100
+    }
   },
   {
     pathSegment: 'clientPermissionsTets',
