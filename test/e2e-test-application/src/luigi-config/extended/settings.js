@@ -24,6 +24,9 @@ class Settings {
       Luigi.ux().showAlert(alert);
     }
   };
+  theming = {
+    themes: ['light', 'dark']
+  };
   // sideNavCompactMode = true;
   // allowRules = ['microphone'];
   // iframeCreationInterceptor = (iframe, viewGroup, navigationNode, microFrontendType) => { };
