@@ -64,7 +64,10 @@
     on:handleSearchNavigation="{handleSearchNavigation}"
     bind:isSearchFieldVisible
     bind:displaySearchResult
+    bind:displayCustomSearchResult
     bind:searchResult
+    bind:inputElem
+    bind:luigiCustomSearchRenderer__slot
   />
   {#if !(hideNav||hideSideNav)}
   <LeftNav
@@ -168,8 +171,12 @@
   let tabNav;
   let resizeTabNavToggle = false;
   let thirdPartyCookiesCheck;
+  let searchProvider;
   export let isSearchFieldVisible;
+  export let inputElem;
+  export let luigiCustomSearchRenderer__slot;
   export let displaySearchResult;
+  export let displayCustomSearchResult = true;
   export let searchResult;
 
   const prepareInternalData = config => {
@@ -494,18 +501,14 @@
     isSearchFieldVisible = false;
   };
 
-  const searchInputElem = () => document.querySelector('.luigi-search__input');
-
   export const openSearchField = () => {
     isSearchFieldVisible = true;
-    if (searchInputElem()) {
-      searchInputElem().focus();
-    }
+    inputElem.focus();
   };
 
   export const clearSearchField = () => {
-    if (searchInputElem()) {
-      searchInputElem().value = '';
+    if (inputElem) {
+      inputElem.value = '';
       closeSearchResult();
     }
   };
@@ -516,19 +519,16 @@
   };
 
   export const getGlobalSearchString = () => {
-    if (searchInputElem()) {
-      return searchInputElem().value;
+    if (inputElem) {
+      return inputElem.value;
     }
   };
 
   export const setGlobalSearchString = searchString => {
-    if (searchInputElem()) {
-      searchInputElem().value = searchString;
-      const triggerSearch = LuigiConfig.getConfigValue(
-        'globalSearch.searchProvider.onInput'
-      );
-      if (GenericHelpers.isFunction(triggerSearch)) {
-        triggerSearch();
+    if (inputElem) {
+      inputElem.value = searchString;
+      if (GenericHelpers.isFunction(searchProvider.onInput)) {
+        searchProvider.onInput();
       } else {
         console.error(
           'onInput is not a function. Please check the global search configuration.'
@@ -539,13 +539,39 @@
 
   export const showSearchResult = arr => {
     if (arr && arr.length > 0) {
-      displaySearchResult = true;
-      searchResult = arr;
+      if (
+        GenericHelpers.isFunction(searchProvider.customSearchResultRenderer)
+      ) {
+        displayCustomSearchResult = true;
+        let searchApiObj = {
+          fireItemSelected: item => {
+            searchProvider.onSearchResultItemSelected(item);
+          }
+        };
+        searchProvider.customSearchResultRenderer(
+          arr,
+          luigiCustomSearchRenderer__slot,
+          searchApiObj
+        );
+      } else {
+        displaySearchResult = true;
+        searchResult = arr;
+      }
+    } else {
+      console.warn('Search result is empty.');
     }
   };
 
   export const closeSearchResult = () => {
     displaySearchResult = false;
+    searchResult = [];
+    if (luigiCustomSearchRenderer__slot) {
+      while (luigiCustomSearchRenderer__slot.lastElementChild) {
+        luigiCustomSearchRenderer__slot.removeChild(
+          luigiCustomSearchRenderer__slot.lastElementChild
+        );
+      }
+    }
   };
 
   export const handleSearchNavigation = event => {
@@ -1180,6 +1206,7 @@
   };
 
   onMount(() => {
+    searchProvider = LuigiConfig.getConfigValue('globalSearch.searchProvider');
     responsiveNavSetting = LuigiConfig.getConfigValue(
       'settings.responsiveNavigation'
     );

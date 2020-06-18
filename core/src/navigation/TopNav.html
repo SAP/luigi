@@ -25,6 +25,9 @@
       on:handleSearchNavigation
       bind:searchResult
       bind:displaySearchResult
+      bind:displayCustomSearchResult
+      bind:inputElem
+      bind:luigiCustomSearchRenderer__slot
     />
     {/if}
     <ContextSwitcher
@@ -421,7 +424,10 @@
   export let urlAuthError;
   export let isGlobalSearchAvailable;
   export let isSearchFieldVisible;
+  export let inputElem;
+  export let luigiCustomSearchRenderer__slot;
   export let displaySearchResult;
+  export let displayCustomSearchResult;
   export let searchResult;
 
   let store = getContext('store');
@@ -556,8 +562,9 @@
   }
 
   function setFocusOnGlobalSearchFieldMobile() {
-    if (document.querySelector('.luigi-search__input')) {
-      document.querySelector('.luigi-search__input').focus();
+    debugger;
+    if (inputElem) {
+      inputElem.focus();
     }
   }
 
@@ -566,7 +573,11 @@
       setTimeout(() => {
         setFocusOnGlobalSearchFieldMobile();
       });
-    dispatch('toggleSearch', isSearchFieldVisible);
+    dispatch('toggleSearch', {
+      isSearchFieldVisible,
+      inputElem,
+      luigiCustomSearchRenderer__slot
+    });
   }
 
   export function closeAllDropdowns() {
