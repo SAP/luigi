@@ -122,16 +122,26 @@
             {/each}
             {:else}
             <li class="fd-nested-list__item" uid="{index}-0">
-              <a
-                href="javascript:void(null)"
-                class="fd-nested-list__link has-child"
-                aria-haspopup="true"
-                aria-expanded="{dropDownStates[key+index]}"
-                aria-selected="{isSelectedCat(key,selectedNodeForTabNav)}"
-                on:click|preventDefault="{() => toggleDropdownState(key+index)}"
-              >
-                <span class="fd-nested-list__title">{$getTranslation(key)}</span>
-              </a>
+              <div class="fd-nested-list__content has-child" tabindex="0">
+                <a
+                  href="javascript:void(null)"
+                  tabindex="-1"
+                  class="fd-nested-list__link"
+                  aria-haspopup="true"
+                  aria-expanded="{dropDownStates[key+index]}"
+                  aria-selected="{isSelectedCat(key,selectedNodeForTabNav)}"
+                  on:click|preventDefault="{() => toggleDropdownState(key+index)}"
+                >
+                  <span class="fd-nested-list__title">{$getTranslation(key)}</span>
+                </a>
+                <a
+                  class="fd-nested-list__expand-icon"
+                  href="#"
+                  tabindex="-1"
+                  aria-controls="EX100L2"
+                  aria-haspopup="true"
+                ></a>
+              </div>
               <ul
                 class="fd-nested-list level-2"
                 aria-hidden="{!dropDownStates[key+index]}"
@@ -388,7 +398,7 @@
         padding-bottom: 4px;
 
         .fd-nested-list__item:last-child {
-          .fd-nested-list__link {
+          .fd-nested-list__content {
             border-bottom: none;
           }
         }
