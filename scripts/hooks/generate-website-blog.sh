@@ -3,7 +3,7 @@
 # Checks if there are changes in blog or website folder
 # and generates website if necessary
 # Run this script only from Luigi root folder, else git adding won't work.
-# ./scripts/hooks/generate-landingpage.sh
+# ./scripts/hooks/generate-website-blog.sh
 
 function check_and_generate_website() {
   staged_changes=$(git diff --cached --name-only --diff-filter=ACM | grep -e "website/landingpage/" -e "blog/" | wc -l)
