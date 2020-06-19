@@ -24,10 +24,16 @@ function check_and_generate_website() {
     else
       not_staged_md=$(git diff --name-only | grep -e "website/landingpage")
       untracked_landingpage=$(git ls-files -o --exclude-standard | grep "landingpage/public")
-      if [ [ ! -z "$not_staged_md" ] || [ ! -z "$untracked_landingpage" ]; then
+      if [ ! -z "$not_staged_md" ] || [ ! -z "$untracked_landingpage" ]; then
         echo "Staging generated website files"
-        echo "$not_staged_md"
-        echo "$not_staged_md" | xargs git add
+        if [ ! -z "$not_staged_md" ]; then
+          echo "$not_staged_md"
+          echo "$not_staged_md" | xargs git add
+        fi
+        if [ ! -z "$untracked_landingpage" ]; then
+          echo "$untracked_landingpage"
+          echo "$untracked_landingpage" | xargs git add
+        fi
         exit 0
       else
         echo "No website or blog changes found. Ok"
