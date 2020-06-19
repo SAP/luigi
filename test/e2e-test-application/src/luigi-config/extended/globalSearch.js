@@ -189,8 +189,8 @@ class GlobalSearch {
         Luigi.globalSearch().showSearchResult([
           {
             pathObject: {
-              path: '',
-              params: {} // can be used by linkmanager.navigate(path).withParams(params)
+              link: '',
+              params: {}
             },
             label: 'Nothing found',
             description: '',

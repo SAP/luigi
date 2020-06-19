@@ -27,8 +27,8 @@
         <nav class="fd-menu">
           {#if searchResult}
           <ul
-            class="fd-menu__list fd-menu__list--top luigi-search-result-items"
-            bind:this="{luigiCustomSearchItemRenderer__slotcontainer}"
+            class="fd-menu__list fd-menu__list--top"
+            bind:this="{luigiCustomSearchItemRenderer__slotContainer}"
           >
             {#each searchResult as result, index}
             <li
@@ -75,7 +75,6 @@
   import { LuigiAuth, LuigiConfig } from '../core-api';
   import { GenericHelpers } from '../utilities/helpers';
   import { Routing } from '../services/routing';
-  export let isMobile;
   export let isSearchFieldVisible;
   export let searchResult = [];
   export let displaySearchResult;
@@ -84,16 +83,16 @@
   export let luigiCustomSearchRenderer__slot; //dom element binding
   export let luigiCustomSearchItemRenderer__slotcontainer; //dom element binding
   const dispatch = createEventDispatcher();
-  let searchResults = {};
-  let showPopOverCustomSearch = false;
-  let search;
-  let isCustomSearchRenderer;
-  let isCustomSearchResultItemRenderer;
   const searchApiObj = {
     fireItemSelected: item => {
       searchProvider.onSearchResultItemSelected(item);
     }
   };
+  let searchResults = {};
+  let showPopOverCustomSearch = false;
+  let search;
+  let isCustomSearchRenderer;
+  let isCustomSearchResultItemRenderer;
   onMount(async () => {
     search = await LuigiConfig.getConfigValueAsync('globalSearch');
     let inputElement = inputElem;
@@ -178,7 +177,7 @@
     }
   }
 
-  export function onSearchResultItemSelected(searchResultItem) {
+  function onSearchResultItemSelected(searchResultItem) {
     if (
       search &&
       GenericHelpers.isFunction(
