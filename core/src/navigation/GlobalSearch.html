@@ -24,11 +24,15 @@
       >
         <nav class="fd-menu {searchResult.length}">
           {#if searchResult}
-          <ul class="fd-menu__list fd-menu__list--top">
-            {#each searchResult as result}
+          <ul
+            class="fd-menu__list fd-menu__list--top luigi-search-result-items"
+          >
+            {#each searchResult as result, index}
             <li
-              class="fd-menu__item"
-              on:click="{() => onSearchResultItemSelected(result)}"
+              class="fd-menu__item luigi-search-result-item__{index}"
+              on:click="{(event) => onSearchResultItemSelected(result, event)}"
+              on:keyup="{(event) => handleKeydown(result, event)}"
+              tabindex="0"
             >
               <a class="fd-menu__link" on:click|preventDefault="{() => {}}">
                 <span class="fd-menu__title">{result.label}</span>
@@ -84,28 +88,89 @@
         event.keyCode === 27
       ) {
         search.searchProvider.onEscape();
+      } else if (event.keyCode === 40) {
+        if (displaySearchResult) {
+          document
+            .querySelector('.luigi-search-result-item__0')
+            .childNodes[0].setAttribute('aria-selected', 'true');
+          document.querySelector('.luigi-search-result-item__0').focus();
+        }
       } else if (GenericHelpers.isFunction(search.searchProvider.onInput)) {
         search.searchProvider.onInput();
+      }
+    } else {
+      console.warn('GlobalSearch is not available.');
+    }
+  }
+
+  function calcSearchResultItemSelected(direction) {
+    let renderedSearchResultItems = document.querySelector(
+      '.luigi-search-result-items'
+    ).children;
+    if (renderedSearchResultItems) {
+      for (let index = 0; index < renderedSearchResultItems.length; index++) {
+        let element = renderedSearchResultItems[index];
+        if (element.childNodes[0].getAttribute('aria-selected') === 'true') {
+          if (direction === 40) {
+            let nextSibling =
+              element.nextSibling != null
+                ? element.nextSibling
+                : renderedSearchResultItems[0];
+            element.childNodes[0].setAttribute('aria-selected', 'false');
+            nextSibling.childNodes[0].setAttribute('aria-selected', 'true');
+            nextSibling.focus();
+            break;
+          }
+        }
       }
     }
   }
 
-  export function onSearchResultItemSelected(searchResultItem) {
-    //TODO clarify when do we call this?
-    if (
-      searchResultItem &&
-      GenericHelpers.isFunction(searchResultItem.onActivate)
-    ) {
-      searchResultItem.onActivate();
+  function clearAriaSelected() {
+    let renderedSearchResultItems = document.querySelector(
+      '.luigi-search-result-items'
+    ).children;
+    if (renderedSearchResultItems) {
+      for (let index = 0; index < renderedSearchResultItems.length; index++) {
+        let element = renderedSearchResultItems[index];
+        if (element.childNodes[0].getAttribute('aria-selected') === 'true') {
+          element.childNodes[0].setAttribute('aria-selected', 'false');
+        }
+      }
     }
+  }
+
+  function onSearchResultItemSelected(searchResultItem, event) {
     if (
       search &&
       GenericHelpers.isFunction(
         search.searchProvider.onSearchResultItemSelected
       )
     ) {
-      console.log('searchResultItem GlobalSearch', searchResultItem);
       search.searchProvider.onSearchResultItemSelected(searchResultItem);
+    } else if (
+      GenericHelpers.isFunction(search.searchProvider.onEscape) &&
+      event.keyCode === 27
+    ) {
+      search.searchProvider.onEscape();
+    }
+  }
+
+  function handleKeydown(result, event) {
+    if (event.keyCode === 13) {
+      search.searchProvider.onSearchResultItemSelected(result);
+    }
+    if (event.keyCode === 38) {
+      calcSearchResultItemSelected(38);
+    } else if (event.keyCode === 40) {
+      calcSearchResultItemSelected(40);
+    } else if (
+      GenericHelpers.isFunction(search.searchProvider.onEscape) &&
+      event.keyCode === 27
+    ) {
+      clearAriaSelected();
+      searchInputElem().focus();
+      search.searchProvider.onEscape();
     }
   }
 
