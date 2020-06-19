@@ -40,9 +40,9 @@
                 class="fd-nested-list__icon {isSemiCollapsed ? 'sap-icon--rhombus-milestone-2' : ''}"
               ></span>
               {/if}
-              <span
-                class="fd-nested-list__title"
-              >{$getTranslation(node.label)}</span>
+              <span class="fd-nested-list__title">
+                <p>{$getTranslation(node.label)}</p>
+              </span>
               {#if node.externalLink && node.externalLink.url}
               <span
                 class="sap-icon--action sap-icon--s"
@@ -59,33 +59,44 @@
             on:click|stopPropagation="{() => handleIconClick(nodes, event.currentTarget)}"
             data-testid="{getTestIdForCat(nodes.metaInfo, key)}"
           >
-            <a
-              href="javascript:void(null)"
-              title="{$getTranslation(key)}"
-              class="fd-nested-list__link has-child {isExpanded(nodes, expandedCategories) ? 'is-expanded' : ''}"
-              aria-haspopup="true"
-              aria-expanded="{isExpanded(nodes, expandedCategories)}"
-              on:click|preventDefault="{() => setExpandedState(nodes, !isExpanded(nodes, expandedCategories), this)}"
-            >
-              {#if isOpenUIiconName(nodes.metaInfo.icon)}
-              <span
-                class="fd-nested-list__icon {'sap-icon--' + nodes.metaInfo.icon} {isSemiCollapsed && !nodes.metaInfo.icon ? 'sap-icon--rhombus-milestone-2' : ''}"
-                role="presentation"
-              ></span>
-              {:else}
-              <span class="fd-nested-list__icon">
-                <img
-                  src="{nodes.metaInfo.icon}"
-                  alt="{nodes.metaInfo.altText ? nodes.metaInfo.altText : ''}"
-                >
-              </span>
-              {/if}
-              <span
-                class="fd-nested-list__title"
-              >{$getTranslation(key)}</span>
-            </a>
+            <div class="fd-nested-list__content has-child" tabindex="0">
+              <a
+                href="javascript:void(null)"
+                title="{$getTranslation(key)}"
+                class="fd-nested-list__link {isExpanded(nodes, expandedCategories) ? 'is-expanded' : ''}"
+                tabindex="-1"
+                aria-haspopup="true"
+                aria-expanded="{isExpanded(nodes, expandedCategories)}"
+                on:click|preventDefault="{() => setExpandedState(nodes, !isExpanded(nodes, expandedCategories), this)}"
+              >
+                {#if isOpenUIiconName(nodes.metaInfo.icon)}
+                <span
+                  class="fd-nested-list__icon {'sap-icon--' + nodes.metaInfo.icon} {isSemiCollapsed && !nodes.metaInfo.icon ? 'sap-icon--rhombus-milestone-2' : ''}"
+                  role="presentation"
+                ></span>
+                {:else}
+                <span class="fd-nested-list__icon">
+                  <img
+                    src="{nodes.metaInfo.icon}"
+                    alt="{nodes.metaInfo.altText ? nodes.metaInfo.altText : ''}"
+                  >
+                </span>
+                {/if}
+                <span class="fd-nested-list__title">
+                  <p>{$getTranslation(key)}</p>
+                </span>
+              </a>
+              <a
+                class="fd-nested-list__expand-icon"
+                href="#"
+                tabindex="-1"
+                aria-controls="EX400L2"
+                aria-haspopup="true"
+              ></a>
+            </div>
             <ul
               class="fd-nested-list fd-nested-list--text-only level-2"
+              id="EX400L2"
               aria-hidden="{!isExpanded(nodes, expandedCategories)}"
             >
               {#each nodes as node} {#if !node.hideFromNav} {#if node.label}
@@ -97,9 +108,9 @@
                   data-testid="{getTestId(node)}"
                   title="{$getTranslation(node.label)}"
                 >
-                  <span
-                    class="fd-nested-list__title"
-                  >{$getTranslation(node.label)}</span>
+                  <span class="fd-nested-list__title">
+                    <p>{$getTranslation(node.label)}</p>
+                  </span>
                   {#if node.externalLink && node.externalLink.url}
                   <span
                     class="sap-icon--action sap-icon--s"
@@ -126,9 +137,9 @@
                       data-testid="{getTestId(node)}"
                       title="{$getTranslation(node.label)}"
                     >
-                      <span
-                        class="fd-nested-list__title"
-                      >{$getTranslation(node.label)}</span>
+                      <span class="fd-nested-list__title">
+                        <p>{$getTranslation(node.label)}</p>
+                      </span>
                       {#if node.externalLink && node.externalLink.url}
                       <span
                         class="sap-icon--action sap-icon--s"
@@ -191,9 +202,9 @@
                 class="fd-nested-list__icon {isSemiCollapsed ? 'sap-icon--rhombus-milestone-2' : ''}"
               ></span>
               {/if}
-              <span
-                class="fd-nested-list__title"
-              >{$getTranslation(node.label)}</span>
+              <span class="fd-nested-list__title">
+                <p>{$getTranslation(node.label)}</p>
+              </span>
               {#if node.externalLink && node.externalLink.url}
               <span
                 class="sap-icon--action sap-icon--s"
@@ -583,8 +594,29 @@
   .fd-nested-list__link {
     &:not(.has-child) {
       .fd-nested-list__title {
-        width: auto;
-        padding-right: 5px;
+        padding-right: 0.5rem;
+        p {
+          white-space: nowrap;
+          overflow: hidden;
+          text-overflow: ellipsis;
+        }
+      }
+    }
+  }
+
+  .fd-nested-list__content {
+    .fd-nested-list__expand-icon {
+      min-width: 8%;
+    }
+    &.has-child {
+      .fd-nested-list__link {
+        .fd-nested-list__title {
+          width: 75%;
+          padding-right: 0;
+        }
+      }
+      .fd-nested-list__expand-icon {
+        padding-right: 20px;
       }
     }
   }
@@ -706,6 +738,7 @@
       }
     }
   }
+
   :global(.lui-flyout-sublist) {
     position: fixed;
     left: 48px;
@@ -764,10 +797,6 @@
         left: -13px;
         border-right-color: white;
       }
-    }
-
-    .fd-nested-list__title {
-      display: inline-block;
     }
 
     li {
