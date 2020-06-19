@@ -26,10 +26,13 @@
       >
         <nav class="fd-menu">
           {#if searchResult}
-          <ul class="fd-menu__list fd-menu__list--top">
-            {#each searchResult as result}
+          <ul
+            class="fd-menu__list fd-menu__list--top"
+            bind:this="{luigiCustomSearchItemRenderer__slotcontainer}"
+          >
+            {#each searchResult as result, index}
             <li
-              class="fd-menu__item luigi-customSearchResultItem__slot"
+              class="fd-menu__item"
               on:click="{() => onSearchResultItemSelected(result)}"
             >
               {#if !isCustomSearchResultItemRenderer}
@@ -40,7 +43,7 @@
                 <span class="fd-menu__title">{result.label}</span>
               </a>
               {:else}
-              {@html search.searchProvider.customSearchResultItemRenderer(result)}
+              {@html renderCustomSearchItem(result,luigiCustomSearchItemRenderer__slotcontainer, index)}
               {/if}
             </li>
             {/each}
@@ -77,16 +80,21 @@
   export let displayCustomSearchResult;
   export let inputElem; //dom element binding
   export let luigiCustomSearchRenderer__slot; //dom element binding
+  export let luigiCustomSearchItemRenderer__slotcontainer; //dom element binding
   const dispatch = createEventDispatcher();
   let searchResults = {};
   let showPopOverCustomSearch = false;
   let search;
   let isCustomSearchRenderer;
   let isCustomSearchResultItemRenderer;
+  const searchApiObj = {
+    fireItemSelected: item => {
+      searchProvider.onSearchResultItemSelected(item);
+    }
+  };
   onMount(async () => {
     search = await LuigiConfig.getConfigValueAsync('globalSearch');
     let inputElement = inputElem;
-    // let customResultRendererSlot = luigiCustomSearchRenderer__slot
     isCustomSearchRenderer = GenericHelpers.isFunction(
       search.searchProvider.customSearchResultRenderer
     );
@@ -94,6 +102,17 @@
       search.searchProvider.customSearchResultItemRenderer
     );
   });
+
+  function renderCustomSearchItem(item, slotContainer, index) {
+    setTimeout(() => {
+      search.searchProvider.customSearchResultItemRenderer(
+        item,
+        slotContainer.children[index],
+        searchApiObj
+      );
+    });
+    return '';
+  }
 
   function onKeyUp(event) {
     if (search) {
