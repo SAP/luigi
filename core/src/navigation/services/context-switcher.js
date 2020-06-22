@@ -85,7 +85,7 @@ export const ContextSwitcherHelpers = {
       return labelCache.get(id);
     }
     // if id not in cache, use resolver and store in local map
-    return await PromiseResolverCache.execPromise(() => resolverFn(id)).then(
+    return await PromiseResolverCache.execAsPromise(() => resolverFn(id)).then(
       result => {
         labelCache.set(id, result);
         return result;

@@ -15,10 +15,10 @@ class PromiseResolverCacheClass {
    * @param {function} promiseFn a function that returns promise in question
    * @returns {promise} a new promise which resolves after the input promise has been resolved
    */
-  execPromise(promiseFn) {
+  async execAsPromise(promiseFn) {
     if (!GenericHelpers.isFunction(promiseFn)) {
       console.error(
-        'execPromise awaits a function that returns a Promise. Falling back to non-caching.'
+        'execAsPromise awaits a function that returns a Promise. Falling back to non-caching.'
       );
       return promiseFn;
     }
@@ -29,26 +29,17 @@ class PromiseResolverCacheClass {
         this.cache.set(promiseFn, [resolve]);
       });
 
-      // resolve original promise
-      const promise = promiseFn();
-      if (!GenericHelpers.isPromise(promise)) {
-        console.error(
-          'execPromise awaits a function that returns a Promise, it is a function, but does not return a promise',
-          typeof promise,
-          promise,
-          'falling back to non-caching.'
-        );
-        return promise;
+      try {
+        // resolve original promise
+        const result = await promiseFn();
+        // resolve all listeners
+        this.cache.get(promiseFn).forEach(resolve => resolve(result));
+      } catch (error) {
+        console.error('execAsPromise: Error occured:', e);
+      } finally {
+        // cleanup
+        this.cache.delete(promiseFn);
       }
-      promise
-        .then(result => {
-          // resolve all listeners
-          this.cache.get(promiseFn).forEach(resolve => resolve(result));
-          this.cache.delete(promiseFn);
-        })
-        .catch(e => {
-          console.error('Error occured:', e);
-        });
     } else {
       // already existing, just add another resolver
       tmpPromise = new Promise(resolve => {

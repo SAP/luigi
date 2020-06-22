@@ -4,7 +4,7 @@ const sinon = require('sinon');
 import { ContextSwitcherHelpers as CSHelpers } from '../src/navigation/services/context-switcher';
 import { GenericHelpers } from '../src/utilities/helpers';
 import { LuigiConfig } from '../src/core-api';
-import { Routing } from '../src/services/routing';
+import { PromiseResolverCache, Routing } from '../src/services';
 
 describe('Context-switcher', function() {
   afterEach(() => {
@@ -72,17 +72,45 @@ describe('Context-switcher', function() {
 
   describe('getFallbackLabel', () => {
     beforeEach(() => {
-      sinon.stub(PromiseResolverCache, 'execPromise');
+      CSHelpers._fallbackLabelCache = new Map();
+      sinon
+        .stub(PromiseResolverCache, 'execAsPromise')
+        .returns(Promise.resolve('##some_id##'));
+    });
+    afterEach(() => {
+      CSHelpers._fallbackLabelCache = new Map();
     });
 
     it('works without fallback resolver', async () => {
       const result = await CSHelpers.getFallbackLabel(undefined, 'some_id');
       assert.equal(result, 'some_id');
+      sinon.assert.notCalled(PromiseResolverCache.execAsPromise);
     });
 
     it('works with fallback resolver', async () => {
-      const result = await CSHelpers.getFallbackLabel(myResolverFn, 'some_id');
+      const result = await CSHelpers.getFallbackLabel(() => {}, 'some_id');
       assert.equal(result, '##some_id##');
+      sinon.assert.calledOnce(PromiseResolverCache.execAsPromise);
+    });
+
+    it('works with fallback cache when called twice', async () => {
+      let result;
+      result = await CSHelpers.getFallbackLabel(() => {}, 'some_id');
+      sinon.assert.calledOnce(PromiseResolverCache.execAsPromise);
+
+      // different
+      result = await CSHelpers.getFallbackLabel(() => {}, 'another_id');
+      sinon.assert.calledTwice(PromiseResolverCache.execAsPromise);
+
+      // same as first, should receive from cache
+      result = await CSHelpers.getFallbackLabel(() => {}, 'some_id');
+      sinon.assert.calledTwice(PromiseResolverCache.execAsPromise);
+      assert.equal(result, '##some_id##');
+      assert.equal(
+        CSHelpers._fallbackLabelCache.size,
+        2,
+        'internal cache size'
+      );
     });
   });
 

@@ -24,18 +24,18 @@ describe('PromiseResolverCache', () => {
 
   it('resolve single promise', async () => {
     const mockResult = 'result';
-    const result = await PromiseResolverCache.execPromise(() =>
+    const result = await PromiseResolverCache.execAsPromise(() =>
       Promise.resolve(mockResult)
     );
     assert.equal(result, mockResult);
   });
 
   it('resolve multiple equal promises', () => {
-    let one = PromiseResolverCache.execPromise(() => getMockPromise('id'));
+    let one = PromiseResolverCache.execAsPromise(() => getMockPromise('id'));
     assert.equal(PromiseResolverCache.cache.size, 1);
     clock.tick(100);
 
-    let two = PromiseResolverCache.execPromise(() => getMockPromise('id'));
+    let two = PromiseResolverCache.execAsPromise(() => getMockPromise('id'));
     assert.equal(PromiseResolverCache.cache.size, 1);
     clock.tick(100);
 
