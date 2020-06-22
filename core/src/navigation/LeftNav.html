@@ -48,6 +48,9 @@
                 class="sap-icon--action sap-icon--s"
               ></span>
               {/if}
+              {#if node.badgeCounter}
+                <BadgeCounter {node} />
+              {/if}
             </a>
           </li>
           {/if} {/if} {/each}
@@ -118,6 +121,9 @@
                     class="sap-icon--action sap-icon--s"
                   ></span>
                   {/if}
+                  {#if node.badgeCounter}
+                    <BadgeCounter {node} />
+                  {/if}
                 </a>
               </li>
               {/if} {/if} {/each}
@@ -146,6 +152,9 @@
                       <span
                         class="sap-icon--action sap-icon--s"
                       ></span>
+                      {/if}
+                      {#if node.badgeCounter}
+                        <BadgeCounter {node} />
                       {/if}
                     </a>
                   </li>
@@ -211,6 +220,9 @@
               <span
                 class="sap-icon--action sap-icon--s"
               ></span>
+              {/if}
+              {#if node.badgeCounter}
+                <BadgeCounter {node} />
               {/if}
             </a>
           </li>
@@ -288,9 +300,10 @@
   import { Navigation } from './services/navigation';
   import { IframeHelpers, NavigationHelpers } from '../utilities/helpers';
   import { LuigiConfig, LuigiElements, LuigiI18N } from '../core-api';
-  import { StateHelpers } from '../utilities/helpers';
+  import { StateHelpers, EventListenerHelpers } from '../utilities/helpers';
   import { CSS_BREAKPOINTS } from '../utilities/constants';
   import { SemiCollapsibleNavigation } from './services/semi-collapsed-navigation';
+  import BadgeCounter from './BadgeCounter.html';
 
   export let children;
   export let hideNavComponent;
@@ -359,6 +372,12 @@
     semiCollapsible = stateArr.semiCollapsible;
     SemiCollapsibleNavigation.onValueChanged(stateArr => {
       isSemiCollapsed = stateArr.isSemiCollapsed;
+    });
+
+    EventListenerHelpers.addEventListener('message', e => {
+      if ('luigi.navigation.update-badge-counters' === e.data.msg) {
+        setLeftNavData();
+      }
     });
   });
 
@@ -607,6 +626,8 @@
       max-height: 18px;
     }
   }
+
+   
 
   :global(.fd-nested-list--compact) {
     .fd-nested-list__icon {
