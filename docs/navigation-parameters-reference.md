@@ -217,7 +217,7 @@ settings: {
 
 ### showLabel
 - **type**: boolean
-- **description**: Forces the label to be visible in the top navigation whenever an icon is set.
+- **description**: Forces the label to be visible in the top navigation even if an icon is set.
 
 ### altText
 - **type**: string
