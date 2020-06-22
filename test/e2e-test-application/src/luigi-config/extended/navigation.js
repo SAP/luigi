@@ -82,9 +82,9 @@ class Navigation {
       },
       label: 'Git',
       icon: 'globe',
-      showLabel:true,
+      showLabel: true,
       hideSideNav: false,
-      testId: "label-and-git"
+      testId: "icon-and-label"
     },
     {
       pathSegment: 'settings',
