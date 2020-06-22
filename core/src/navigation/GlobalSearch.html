@@ -43,9 +43,10 @@
                 on:click|preventDefault="{() => {}}"
               >
                 <span class="fd-menu__title">{result.label}</span>
+                <!-- <span class="fd-product-switch__subtitle">{result.description}</span> -->
               </a>
               {:else}
-              {@html renderCustomSearchItem(result,luigiCustomSearchItemRenderer__slotcontainer, index)}
+              {@html renderCustomSearchItem(result,luigiCustomSearchItemRenderer__slotContainer, index)}
               {/if}
             </li>
             {/each}
@@ -79,9 +80,9 @@
   export let searchResult = [];
   export let displaySearchResult;
   export let displayCustomSearchResult;
-  export let inputElem; //dom element binding
-  export let luigiCustomSearchRenderer__slot; //dom element binding
-  export let luigiCustomSearchItemRenderer__slotcontainer; //dom element binding
+  export let inputElem;
+  export let luigiCustomSearchRenderer__slot;
+  export let luigiCustomSearchItemRenderer__slotContainer;
   const dispatch = createEventDispatcher();
   const searchApiObj = {
     fireItemSelected: item => {
@@ -144,7 +145,7 @@
 
   function calcSearchResultItemSelected(direction) {
     let renderedSearchResultItems =
-      luigiCustomSearchItemRenderer__slotcontainer.children;
+      luigiCustomSearchItemRenderer__slotContainer.children;
     if (renderedSearchResultItems) {
       for (let index = 0; index < renderedSearchResultItems.length; index++) {
         let element = renderedSearchResultItems[index];
@@ -166,7 +167,7 @@
 
   function clearAriaSelected() {
     let renderedSearchResultItems =
-      luigiCustomSearchItemRenderer__slotcontainer.children;
+      luigiCustomSearchItemRenderer__slotContainer.children;
     if (renderedSearchResultItems) {
       for (let index = 0; index < renderedSearchResultItems.length; index++) {
         let element = renderedSearchResultItems[index];
@@ -206,7 +207,9 @@
       event.keyCode === 27
     ) {
       clearAriaSelected();
-      searchInputElem().focus();
+      setTimeout(() => {
+        inputElem.focus();
+      });
       search.searchProvider.onEscape();
     }
   }
