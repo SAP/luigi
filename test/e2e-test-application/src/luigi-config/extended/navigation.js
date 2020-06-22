@@ -76,6 +76,17 @@ class Navigation {
       constraints: ['unicorns']
     },
     {
+      externalLink: {
+        url: 'https://github.com/SAP/luigi',
+        sameWindow: true
+      },
+      label: 'Git',
+      icon: 'globe',
+      showLabel:true,
+      hideSideNav: false,
+      testId: "label-and-git"
+    },
+    {
       pathSegment: 'settings',
       label: 'Settings',
       viewUrl: '/sampleapp.html#/settings',
@@ -83,6 +94,7 @@ class Navigation {
       hideSideNav: true,
       viewGroup: 'tets'
     },
+    
     {
       category: { label: 'Misc', icon: 'badge' },
       label: 'Open Google in this tab',
@@ -91,6 +103,7 @@ class Navigation {
         sameWindow: true
       }
     }, // showing an anonymous content is possible only with auto login disabled
+    
     {
       category: 'Misc',
       pathSegment: 'all-users',
@@ -135,6 +148,7 @@ class Navigation {
         }
       ]
     },
+    
     {
       pathSegment: 'page-not-found',
       label: 'Page not found',

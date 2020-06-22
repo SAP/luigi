@@ -172,6 +172,11 @@ describe('Navigation', () => {
       cy.get('button[title="Settings"]').should('contain', '');
     });
 
+    it('Icon with label label in TopNav', () => {
+      cy.get('button[title="Git"]>.fd-top-nav__icon').should('exist');
+      cy.get('button[title="Git"]').should('contain', 'Git');
+    });
+
     it('Icon with label in LeftNav', () => {
       cy.get('.fd-shellbar')
         .contains('Projects')
