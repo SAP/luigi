@@ -213,7 +213,7 @@ settings: {
     ```
 ### icon
 - **type**: string
-- **description**: the name of an icon, without the `sap-icon--` prefix. Its source may be [OpenUI](https://openui5.hana.ondemand.com/1.40.10/iconExplorer.html) or a custom link (relative or absolute) to an image. It is recommended to use a square image. The icon is displayed next to the node label in the side navigation or instead of the label in the top navigation. Should the label be required in the top navigation, add the `showLabel` attribute.
+- **description**: the name of an icon, without the `sap-icon--` prefix. Its source may be [OpenUI](https://openui5.hana.ondemand.com/1.40.10/iconExplorer.html) or a custom link (relative or absolute) to an image. It is recommended to use a square image. The icon is displayed next to the node label in the side navigation or instead of the label in the top navigation. To show the label next to the icon in the top navigation, add the `showLabel` attribute.
 
 ### showLabel
 - **type**: boolean
