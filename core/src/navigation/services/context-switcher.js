@@ -1,8 +1,11 @@
 import { GenericHelpers } from '../../utilities/helpers';
 import { Routing } from '../../services/routing';
 import { LuigiConfig } from '../../core-api';
+import { PromiseResolverCache } from '../../services';
 
 export const ContextSwitcherHelpers = {
+  _fallbackLabelCache: new Map(),
+
   getPreparedParentNodePath(config) {
     if (!config.parentNodePath || !config.parentNodePath.startsWith('/')) {
       console.error(
@@ -66,8 +69,28 @@ export const ContextSwitcherHelpers = {
     );
   },
 
-  async getFallbackLabel(fallbackLabelResolver, id) {
-    return fallbackLabelResolver ? await fallbackLabelResolver(id) : id;
+  /**
+   * Fallback label specific cache that takes the resolverFn
+   * intercepts it to create
+   * - a label cache
+   * - a promise cache for async labels
+   */
+  async getFallbackLabel(resolverFn, id) {
+    if (!resolverFn) {
+      return id;
+    }
+    const labelCache = ContextSwitcherHelpers._fallbackLabelCache;
+    // if id in cache, return from local map
+    if (labelCache.has(id)) {
+      return labelCache.get(id);
+    }
+    // if id not in cache, use resolver and store in local map
+    return await PromiseResolverCache.execPromise(() => resolverFn(id)).then(
+      result => {
+        labelCache.set(id, result);
+        return result;
+      }
+    );
   },
 
   getSelectedId(currentPath, options, parentNodePath) {

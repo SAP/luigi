@@ -71,6 +71,10 @@ describe('Context-switcher', function() {
   });
 
   describe('getFallbackLabel', () => {
+    beforeEach(() => {
+      sinon.stub(PromiseResolverCache, 'execPromise');
+    });
+
     it('works without fallback resolver', async () => {
       const result = await CSHelpers.getFallbackLabel(undefined, 'some_id');
       assert.equal(result, 'some_id');
