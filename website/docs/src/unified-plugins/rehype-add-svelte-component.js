@@ -28,7 +28,7 @@ const svelte = require('svelte/compiler');
         if (node.value.trim().startsWith('svelte')) {
           // split string after first semicolon
           const words = node.value.trim().substr(node.value.trim().indexOf(':') + 1);
-          if (words[0] != '') {
+          if (words != '') {
             const results = svelte.compile(words, {
               format: "cjs",
               generate: "ssr",
