@@ -27,7 +27,6 @@
       "breaking": ":boom: Breaking Change",
       "enhancement": ":rocket: Added",
       "bug": ":bug: Fixed",
-      "documentation": ":memo: Documentation",
       "internal": ":house: Internal"
     },
     "cacheDir": ".changelog"

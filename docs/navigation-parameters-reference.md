@@ -213,7 +213,11 @@ settings: {
     ```
 ### icon
 - **type**: string
-- **description**: the name of an icon, without the `sap-icon--` prefix. Its source may be [OpenUI](https://openui5.hana.ondemand.com/1.40.10/iconExplorer.html) or a custom link (relative or absolute) to an image. It is recommended to use a square image. The icon is displayed next to the node label in the side navigation or instead of the label in the top navigation.
+- **description**: the name of an icon, without the `sap-icon--` prefix. Its source may be [OpenUI](https://openui5.hana.ondemand.com/1.40.10/iconExplorer.html) or a custom link (relative or absolute) to an image. It is recommended to use a square image. The icon is displayed next to the node label in the side navigation or instead of the label in the top navigation. To show the label next to the icon in the top navigation, add the `showLabel` attribute.
+
+### showLabel
+- **type**: boolean
+- **description**: Forces the label to be visible in the top navigation even if an icon is set.
 
 ### altText
 - **type**: string
@@ -226,7 +230,7 @@ settings: {
 
 ### badgeCounter
 - **type**: object
-- **description**: adds a badge with a number and a label to a node. Nodes that are part of a category show a cumulated number of all badges in this category. **badgeCounter** is only available for top navigation items.
+- **description**: adds a badge with a number and a label to a node. Nodes that are part of a category show a cumulated number of all badges in this category. 
 - **attributes**:
   - **label** is the label of the badge.
   - **count** is a function or asynchronous function that returns a number.
