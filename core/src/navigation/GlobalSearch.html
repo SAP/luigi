@@ -88,13 +88,6 @@
   }
 
   export function onActionClick(searchResultItem) {
-    //TODO clarify when do we call this?
-    if (
-      searchResultItem &&
-      GenericHelpers.isFunction(searchResultItem.onActivate)
-    ) {
-      searchResultItem.onActivate();
-    }
     let node = searchResultItem.pathObject;
     if (node.externalLink) {
       Routing.navigateToLink(node);

@@ -45,8 +45,7 @@ class LuigiGlobalSearch {
    *     params: {}
    *   },
    *   label,
-   *   description,
-   *   onActivate() { }
+   *   description
    * }
    *
    * Luigi.globalSearch().showSearchResult([searchResultItem1, searchResultItem2]);
