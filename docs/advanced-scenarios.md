@@ -12,7 +12,6 @@
   }
 }
 meta --> 
- 
 # Expert scenarios
 
 This is a collection of advanced use cases and example implementations. If you are new to Luigi, take a look at our [Getting Started](getting-started.md) section first.
