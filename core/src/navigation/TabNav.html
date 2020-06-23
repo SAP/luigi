@@ -43,22 +43,24 @@
         isSelected="{isSelectedCat(key,selectedNodeForTabNav)}"
       >
         <div class="fd-popover">
-          <a
-            class="fd-tabs__link has-child"
-            aria-expanded="false"
-            role="tab"
-            on:click|preventDefault="{() => toggleDropdownState(key)}"
-            aria-selected="{isSelectedCat(key,selectedNodeForTabNav)}"
-          >
-            <span class="label fd-tabs__tag">{$getTranslation(key)}</span>
-            <span class="sap-icon--dropdown sap-icon--l"></span>
-          </a>
+          <div class="fd-popover__control">
+            <a
+              class="fd-tabs__link has-child"
+              aria-expanded="false"
+              role="tab"
+              on:click|preventDefault="{() => toggleDropdownState(key)}"
+              aria-selected="{isSelectedCat(key,selectedNodeForTabNav)}"
+            >
+              <span class="label fd-tabs__tag">{$getTranslation(key)}</span>
+              <span class="sap-icon--dropdown sap-icon--l"></span>
+            </a>
+          </div>
           <div
             class="fd-popover__body fd-popover__body--no-arrow"
             aria-hidden="{!dropDownStates[key]}"
           >
             <nav class="fd-menu">
-              <ul class="fd-menu__list">
+              <ul class="fd-menu__list fd-menu__list--no-shadow">
                 {#each nodes as node}
                 {#if !node.hideFromNav}
                 {#if node.label}
