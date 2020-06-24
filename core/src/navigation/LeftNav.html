@@ -93,7 +93,6 @@
                 class="fd-nested-list__expand-icon"
                 href="#"
                 tabindex="-1"
-                aria-controls="EX400L2"
                 aria-haspopup="true"
                 aria-expanded="{isExpanded(nodes, expandedCategories)}"
                 on:click|preventDefault="{() => setExpandedState(nodes, !isExpanded(nodes, expandedCategories), this)}"
@@ -101,7 +100,6 @@
             </div>
             <ul
               class="fd-nested-list fd-nested-list--text-only level-2"
-              id="EX400L2"
               aria-hidden="{!isExpanded(nodes, expandedCategories)}"
             >
               {#each nodes as node} {#if !node.hideFromNav} {#if node.label}
@@ -213,9 +211,9 @@
                 class="fd-nested-list__icon {isSemiCollapsed ? 'sap-icon--rhombus-milestone-2' : ''}"
               ></span>
               {/if}
-              <span class="fd-nested-list__title">
-                <p>{$getTranslation(node.label)}</p>
-              </span>
+              <span
+                class="fd-nested-list__title"
+              >{$getTranslation(node.label)}</span>
               {#if node.externalLink && node.externalLink.url}
               <span
                 class="sap-icon--action sap-icon--s"
