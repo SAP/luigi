@@ -24,6 +24,16 @@ The lerna-changelog tool detects changes based on PR labels and maps them to sec
   }
 -->
 
+## [v1.2.2] (2020-06-25)
+#### :rocket: Added
+* [#1429](https://github.com/SAP/luigi/pull/1429) Added showLabel attribute to node for top level nav ([@azriel46d](https://github.com/azriel46d))
+* [#1409](https://github.com/SAP/luigi/pull/1409) Added badge counter to left navigation ([@azriel46d](https://github.com/azriel46d))
+
+#### :bug: Fixed
+* [#1433](https://github.com/SAP/luigi/pull/1433) Fix double frame ([@hardl](https://github.com/hardl))
+
+
+
 
 ## [v1.2.1] (2020-06-04)
 
@@ -785,3 +795,5 @@ The lerna-changelog tool detects changes based on PR labels and maps them to sec
 [v1.1.0]: https://github.com/SAP/luigi/compare/v1.0.1...v1.1.0
 [v1.1.1]: https://github.com/SAP/luigi/compare/v1.1.0...v1.1.1
 [v1.2.1]: https://github.com/SAP/luigi/compare/v1.1.1...v1.2.1
+
+[v1.2.2]: https://github.com/SAP/luigi/compare/v1.2.1...v1.2.2
