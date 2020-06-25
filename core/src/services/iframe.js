@@ -180,6 +180,9 @@ class IframeClass {
    * @since: NEXTRELEASE
    */
   initHandshakeFailed(config) {
+    if(!(config && config.iframe && config.iframe.luigi)) {
+      return true;
+    }
     const clientVersion = config.iframe.luigi.clientVersion;
     if (config.iframe.luigi.initOk === undefined) {
       // initial get-context request was not received
@@ -275,6 +278,9 @@ class IframeClass {
 
     // if iframe does not exist, or handshake was interrupted, create a new one
     if (!config.iframe || this.initHandshakeFailed(config)) {
+      if(config.iframe) {
+        node.removeChild(config.iframe);
+      }
       // preserveView, hide other frames, else remove
       if (pvSituation) {
         this.notifyInactiveIframes();
