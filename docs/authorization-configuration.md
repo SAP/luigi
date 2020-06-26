@@ -216,7 +216,7 @@ Luigi.setConfig({
   auth: {
     use: 'myProviderConfig',
     myProviderConfig: {
-      customIdpProvider: myProvider,
+      idpProvider: myProvider,
       redirect_uri: '/another-callback.html'
     }
   }
