@@ -30,12 +30,14 @@ describe('PromiseResolverCache', () => {
     assert.equal(result, mockResult);
   });
 
-  it('resolve multiple equal promises', () => {
-    let one = PromiseResolverCache.execAsPromise(() => getMockPromise('id'));
+  it('resolve multiple equal promises', done => {
+    const promiseFn = () => getMockPromise('id');
+
+    let one = PromiseResolverCache.execAsPromise(promiseFn);
     assert.equal(PromiseResolverCache.cache.size, 1);
     clock.tick(100);
 
-    let two = PromiseResolverCache.execAsPromise(() => getMockPromise('id'));
+    let two = PromiseResolverCache.execAsPromise(promiseFn);
     assert.equal(PromiseResolverCache.cache.size, 1);
     clock.tick(100);
 
@@ -43,11 +45,9 @@ describe('PromiseResolverCache', () => {
     Promise.all([one, two]).then(results => {
       results.forEach(result => {
         assert.equal(result, 'id');
-        console.log('asserted for id');
+        assert.equal(PromiseResolverCache.cache.size, 0, 'final cache size');
       });
     });
     clock.tick(1000);
-
-    assert.equal(PromiseResolverCache.cache.size, 0, 'final cache size');
   });
 });
