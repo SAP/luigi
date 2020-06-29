@@ -175,12 +175,12 @@ class IframeClass {
   }
 
   /**
-   * Checks if Client has set the initOk if the clientVersion is younger than NEXTRELEASE
+   * Checks if Client has set the initOk if the clientVersion is younger than 1.2.2
    * or if it failed to receive the initial get-context request.
-   * @since: NEXTRELEASE
+   * @since: 1.2.2
    */
   initHandshakeFailed(config) {
-    if(!(config && config.iframe && config.iframe.luigi)) {
+    if (!(config && config.iframe && config.iframe.luigi)) {
       return true;
     }
     const clientVersion = config.iframe.luigi.clientVersion;
@@ -188,7 +188,7 @@ class IframeClass {
       // initial get-context request was not received
       return true;
     } else if (
-      // valid minimum handshake version: NEXTRELEASE
+      // valid minimum handshake version: 1.2.2
       !clientVersion ||
       GenericHelpers.semverCompare('1.1.1', clientVersion) !== -1
     ) {
@@ -278,7 +278,7 @@ class IframeClass {
 
     // if iframe does not exist, or handshake was interrupted, create a new one
     if (!config.iframe || this.initHandshakeFailed(config)) {
-      if(config.iframe) {
+      if (config.iframe) {
         node.removeChild(config.iframe);
       }
       // preserveView, hide other frames, else remove
