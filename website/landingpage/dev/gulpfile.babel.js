@@ -14,6 +14,7 @@ import webpack2 from 'webpack';
 import named from 'vinyl-named';
 import uncss from 'uncss';
 import autoprefixer from 'autoprefixer';
+import { writeBlogFiles } from './src/services/blogprocessor';
 
 // Load all Gulp plugins into one variable
 const $ = plugins();
@@ -33,7 +34,7 @@ function loadConfig() {
 // Sass must be run later so UnCSS can search for used classes in the others assets.
 gulp.task(
   'build',
-  gulp.series(gulp.parallel(pages, javascript, images, copy), sass)
+  gulp.series(gulp.parallel(buildBlogFiles, pages, javascript, images, copy), sass)
 );
 
 // Build the site, run the server, and watch for file changes
@@ -172,11 +173,25 @@ function reload(done) {
   done();
 }
 
+function buildBlogFiles(done) {
+  writeBlogFiles();
+  done();
+}
+
 // Watch for changes to static assets, pages, Sass, and JavaScript
 function watch() {
   gulp.watch(PATHS.assets, copy);
   gulp
-    .watch('src/pages/**/*.html')
+    .watch([
+      __dirname + '/../../../blog/*.md',
+      'src/services/*.js'
+    ])
+    .on('all', gulp.series(buildBlogFiles, resetPages, pages, browser.reload));
+  gulp
+    .watch([
+      'src/pages/**/*.html',
+      '!src/pages/blog/20*.html' // skip processed blog entries
+      ])
     .on('all', gulp.series(pages, browser.reload));
   gulp
     .watch('src/{layouts,partials}/**/*.html')
