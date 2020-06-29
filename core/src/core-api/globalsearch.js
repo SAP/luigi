@@ -55,7 +55,7 @@ class LuigiGlobalSearch {
   }
 
   /**
-   * Closes the global search result. By standard it is rendered a popover.
+   * Closes the global search result. By standard it is rendered as a popover.
    * @memberof GlobalSearch
    * @since X.X.X
    * @example Luigi.globalSearch().closeSearchResult();
