@@ -79,7 +79,7 @@ class LuigiGlobalSearch {
    * @memberof GlobalSearch
    * @param searchString search value
    * @since X.X.X
-   * @example Luigi.globalSearch().setSearchString();
+   * @example Luigi.globalSearch().setSearchString('searchString');
    */
   setSearchString(searchString) {
     Luigi.setGlobalSearchString(searchString);

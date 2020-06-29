@@ -914,7 +914,7 @@ Sets the value of the search input field.
 ##### Examples
 
 ```javascript
-Luigi.globalSearch().setSearchString();
+Luigi.globalSearch().setSearchString('searchString');
 ```
 
 **Meta**
