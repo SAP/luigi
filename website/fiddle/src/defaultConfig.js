@@ -42,14 +42,6 @@ let defaultConfig = `Luigi.setConfig({
                     },
                     viewUrl: '/examples/microfrontends/fundamental/tree-demo-page.html'
                 },{ 
-                    pathSegment: 'tiles', 
-                    label: 'Tiles', 
-                    category: 'Fundamental Demo Pages',
-                    loadingIndicator: {
-                        enabled: false
-                    },
-                    viewUrl: '/examples/microfrontends/fundamental/tiles-demo-page.html'
-                },{ 
                     pathSegment: 'ui5qs', 
                     label: 'Quickstart', 
                     category: {
