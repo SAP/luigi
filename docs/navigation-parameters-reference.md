@@ -472,7 +472,7 @@ The global search is an input field available in the top navigation bar. The sea
 ### searchProvider
 - **type**: Object
 - **description**: The search provider is an object which contains different events and the possibility to implement a custom result renderer or change only the search result item.
-  **attributes**
+ - **attributes:**
   - **onInput**
     - **type**: Function
     - **description**: will be executed on every key-up event.
