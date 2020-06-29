@@ -467,34 +467,34 @@ The app switcher is a drop-down list available in the top navigation bar. It all
 
 ## Global search
 
-The global search is an input field available in the top navigation bar. The search is available if the search provider object is configured and implemented in the config file.
+The global search is an input field available in the top navigation bar. The search is available if the search provider object is configured and implemented in the `luigi-config.js` file.
 
 ### searchProvider
 - **type**: Object
 - **description**: The search provider is an object which contains different events and the possibility to implement a custom result renderer or change only the search result item.
-  **attributes**
+ - **attributes:**
   - **onInput**
     - **type**: Function
     - **description**: will be executed on every key-up event.
   - **onEnter**
     - **type**: Function
-    - **description**: will be executed, when the user presses 'enter'. 
+    - **description**: will be executed when the user presses 'Enter'. 
   - **onEscape**
     - **type**: Function
-    - **description**: will be executed, when the user presses 'escape'. 
+    - **description**: will be executed when the user presses 'Escape'. 
   - **customSearchResultRenderer** 
     - **type**: Function
     - **description**: This function allows you to append your custom search result to a slot which Luigi provides for you. If this function is implemented the default search result popover is disabled.
-    - **attributes**
+    - **attributes**:
       - **searchResults**
         - **type**: Array
-        - **description** array of search result items
+        - **description**: array of search result items
       - **slot**
         - **type**: DIV element
         - **description**: `div` element as slot. You can append a custom implementation of the search result to this `div` element.
       - **searchApiObj**
         - **type**: Object
-        - **description** It's an object with a function `fireItemSelected` as property. This function gets a search result item as parameter and fires the search provider event `onSearchResultItemSelected`.
+        - **description**: It is an object with a function `fireItemSelected` as property. This function gets a search result item as parameter and fires the search provider event `onSearchResultItemSelected`.
   - **customSearchResultItemRenderer**
     - **type**: Function
     - **description**: This function allows you to customize the single list element rendered in the default search result popover.
@@ -510,7 +510,7 @@ The global search is an input field available in the top navigation bar. The sea
         - **description** It's an object with a function `fireItemSelected` as property. This function gets a `searchResultItem` as parameter and fires the search provider event `onSearchResultItemSelected`.
   - **onSearchResultItemSelected**
     - **type**: Function
-    - **description**: will be executed, when the user clicks on a `searchResultItem`. 
+    - **description**: will be executed when the user clicks on a `searchResultItem`. 
     - **attribute** [searchResultItem](luigi-core-api.md#globalsearch)
       
           
