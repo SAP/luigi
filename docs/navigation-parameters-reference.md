@@ -494,7 +494,7 @@ The global search is an input field available in the top navigation bar. The sea
         - **description**: `div` element as slot. You can append a custom implementation of the search result to this `div` element.
       - **searchApiObj**
         - **type**: Object
-        - **description** It's an object with a function `fireItemSelected` as property. This function gets a search result item as parameter and fires the search provider event `onSearchResultItemSelected`.
+        - **description**: It is an object with a function `fireItemSelected` as property. This function gets a search result item as parameter and fires the search provider event `onSearchResultItemSelected`.
   - **customSearchResultItemRenderer**
     - **type**: Function
     - **description**: This function allows you to customize the single list element rendered in the default search result popover.
