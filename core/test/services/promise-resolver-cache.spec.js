@@ -30,7 +30,7 @@ describe('PromiseResolverCache', () => {
     assert.equal(result, mockResult);
   });
 
-  it('resolve multiple equal promises', done => {
+  it('resolve multiple equal promises', () => {
     const promiseFn = () => getMockPromise('id');
 
     let one = PromiseResolverCache.execAsPromise(promiseFn);
