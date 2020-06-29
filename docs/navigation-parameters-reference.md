@@ -488,7 +488,7 @@ The global search is an input field available in the top navigation bar. The sea
     - **attributes**
       - **searchResults**
         - **type**: Array
-        - **description** array of search result items
+        - **description**: array of search result items
       - **slot**
         - **type**: DIV element
         - **description**: `div` element as slot. You can append a custom implementation of the search result to this `div` element.
