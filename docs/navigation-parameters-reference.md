@@ -478,7 +478,7 @@ The global search is an input field available in the top navigation bar. The sea
     - **description**: will be executed on every key-up event.
   - **onEnter**
     - **type**: Function
-    - **description**: will be executed, when the user presses 'enter'. 
+    - **description**: will be executed when the user presses 'Enter'. 
   - **onEscape**
     - **type**: Function
     - **description**: will be executed when the user presses 'Escape'. 
