@@ -10,7 +10,7 @@ import {
 } from './helpers';
 
 // For ASYNC ContextSwitcher DEMO
-const csOptions;
+const csOptions = null;
 
 class Navigation {
   constructor(navigationPermissionChecker, projectsNavProviderFn) {
