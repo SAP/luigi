@@ -1,7 +1,8 @@
 /**
  * Intercepts a promise and caches it to allow multiple equal promise calls
  * which resolve at the same time with just one request.
- * Prevents duplicate fetch requests and behaves similar to a rxjs take(1).subscribe()
+ * Prevents duplicate fetch requests and aims to allow multiple subscribers
+ * similar to rxjs .subscribe()
  */
 
 import { GenericHelpers } from '../utilities/helpers';
@@ -12,6 +13,21 @@ class PromiseResolverCacheClass {
   }
   /**
    * Promise cache handler
+   * Usage:
+    You cannot do something like execAsPromise(() => fetchSmth(id)) multiple times, it would
+    not cache it.
+    You need to cache also the function that we send to execAsPromise
+    since creating a new function every time would prevent execAsPromise to cache it
+    properly
+    let cachedResolverFn;
+    if (labelFnCache.has(id)) {
+      cachedResolverFn = labelFnCache.get(id);
+    } else {
+      cachedResolverFn = () => resolverFn(id);
+      labelFnCache.set(id, cachedResolverFn);
+    }
+    
+   *
    * @param {function} promiseFn a function that returns promise in question
    * @returns {promise} a new promise which resolves after the input promise has been resolved
    */

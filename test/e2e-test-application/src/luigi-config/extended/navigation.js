@@ -9,6 +9,9 @@ import {
   removeProject
 } from './helpers';
 
+// For ASYNC ContextSwitcher DEMO
+const csOptions;
+
 class Navigation {
   constructor(navigationPermissionChecker, projectsNavProviderFn) {
     this.navigationPermissionChecker = navigationPermissionChecker;
@@ -262,13 +265,27 @@ class Navigation {
     defaultLabel: 'Select Environment ...',
     parentNodePath: '/environments', // absolute path
     lazyloadOptions: true, // load options on click instead on page load
-    options: () =>
-      [...Array(10).keys()]
+    options: () => [...Array(10).keys()]
         .filter(n => n !== 0)
         .map(n => ({
           label: 'Environment ' + n, // (i.e mapping between what the user sees and what is taken to replace the dynamic part for the dynamic node)
           pathValue: 'env' + n // will be used to replace dynamic part
         })),
+    // ASYNC ContextSwitcher DEMO
+    // options: () => {
+    //   if(csOptions) {
+    //     return csOptions;
+    //   }
+    //   return fetch('https://jsonplaceholder.typicode.com/users')
+    //     .then(response => response.json())
+    //     .then(json => {
+    //       csOptions = json.map(u => ({
+    //         // label: u.username, // (i.e mapping between what the user sees and what is taken to replace the dynamic part for the dynamic node)
+    //         pathValue: u.id // will be used to replace dynamic part
+    //       }));
+    //       return csOptions;
+    //     });
+    // },
     actions: this.getContextSwitcherActions,
 
     /**
@@ -278,6 +295,15 @@ class Navigation {
      * or if options have not been fetched yet
      */
     fallbackLabelResolver: id => id.replace(/\b\w/g, l => l.toUpperCase())
+
+    // ASYNC ContextSwitcher DEMO
+    // fallbackLabelResolver: id => {
+    //   console.log('getting fallback for ', id);
+    //   return fetch('https://jsonplaceholder.typicode.com/users/' + id)
+    //     .then(response => response.json())
+    //     .then(json => json.username)
+    //   // id.replace(/\b\w/g, l => l.toUpperCase())
+    // }
   };
 
   getProductSwitcherItems = () => {

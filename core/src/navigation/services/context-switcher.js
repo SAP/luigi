@@ -5,6 +5,7 @@ import { PromiseResolverCache } from '../../services';
 
 export const ContextSwitcherHelpers = {
   _fallbackLabelCache: new Map(),
+  _fallbackLabelFunctionCache: new Map(), // functions that return the original promise
 
   getPreparedParentNodePath(config) {
     if (!config.parentNodePath || !config.parentNodePath.startsWith('/')) {
@@ -84,8 +85,21 @@ export const ContextSwitcherHelpers = {
     if (labelCache.has(id)) {
       return labelCache.get(id);
     }
+
     // if id not in cache, use resolver and store in local map
-    return await PromiseResolverCache.execAsPromise(() => resolverFn(id)).then(
+    const labelFnCache = ContextSwitcherHelpers._fallbackLabelFunctionCache;
+    let cachedResolverFn;
+    // we need to cache also the function that we send ot the promiseresolvercache
+    // since creating a new function every time would prevent execAsPromise to cache it
+    // properly
+    if (labelFnCache.has(id)) {
+      cachedResolverFn = labelFnCache.get(id);
+    } else {
+      cachedResolverFn = () => resolverFn(id);
+      labelFnCache.set(id, cachedResolverFn);
+    }
+
+    return await PromiseResolverCache.execAsPromise(cachedResolverFn).then(
       result => {
         labelCache.set(id, result);
         return result;
