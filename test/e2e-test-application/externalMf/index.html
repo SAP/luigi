@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>External micro frontend</title>
+    <meta
+      name="viewport"
+      content="width=device-width, user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1"
+    />
+    <script src="./node_modules/@luigi-project/client/luigi-client.js"></script>
+    <link
+      rel="stylesheet"
+      href="./node_modules/@luigi-project/core/luigi.css"
+    />
+    <link
+      rel="stylesheet"
+      href="./node_modules/fundamental-styles/dist/layout-panel.css"
+    />
+    <link
+      rel="stylesheet"
+      href="./node_modules/fundamental-styles/dist/button.css"
+    />
+  </head>
+
+  <body>
+    <div class="fd-layout-panel">
+      <div class="fd-layout-panel__header">
+        <div class="fd-layout-panel__head">
+          <h3 class="fd-layout-panel__title">
+            Just a test page from an external micro frontend.
+          </h3>
+        </div>
+        <div class="fd-layout-panel__body">
+          <button class="fd-button externalMf" onclick="goBack()">
+            Go back
+          </button>
+        </div>
+      </div>
+    </div>
+    <script>
+      function goBack() {
+        debugger;
+        console.log(window.LuigiClient);
+        window.LuigiClient.linkManager().navigate('/overview');
+      }
+    </script>
+  </body>
+</html>

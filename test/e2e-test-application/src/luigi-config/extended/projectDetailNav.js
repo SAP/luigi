@@ -115,6 +115,11 @@ export const projectDetailNavStructure = projectId => [
     testId: 'myTestId'
   },
   {
+    pathSegment: 'test',
+    label: 'Test',
+    viewUrl: 'http://localhost:8080/index.html'
+  },
+  {
     pathSegment: 'miscellaneous',
     constraints: ['unicorns'],
     label: 'Miscellaneous',

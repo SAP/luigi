@@ -154,6 +154,23 @@ describe('Navigation', () => {
         cy.wrap($iframeBody).find('[title="visitors: 1"]');
       });
     });
+    it('Check if external micro frontend is available and working with luigi-client', () => {
+      cy.visit('/projects/pr1/');
+      cy.get('.fd-app__sidebar')
+        .contains('Test')
+        .click();
+      cy.getIframeBody().then($iframeBody => {
+        cy.wrap($iframeBody).should(
+          'contain',
+          'Just a test page from an external micro frontend.'
+        );
+        cy.wrap($iframeBody).should('contain', 'Go back');
+        cy.wrap($iframeBody)
+          .find('button')
+          .click();
+      });
+      cy.expectPathToBe('/overview');
+    });
 
     it('Browser back works with Default Child mechanism', () => {
       cy.getIframeBody().then($iframeBody => {
@@ -173,7 +190,9 @@ describe('Navigation', () => {
     });
 
     it('Icon with label label in TopNav', () => {
-      cy.get('button[data-testid="icon-and-label"]>.fd-top-nav__icon').should('exist');
+      cy.get('button[data-testid="icon-and-label"]>.fd-top-nav__icon').should(
+        'exist'
+      );
       cy.get('button[data-testid="icon-and-label"]').should('contain', 'Git');
     });
 

@@ -10,7 +10,8 @@
     "e2e:run": "cypress run --browser chrome -c video=false",
     "e2e:run:electron": "cypress run",
     "buildConfig": "webpack --config webpack-generateConfig.config",
-    "start": "concurrently \"npm run buildConfig -- --watch\" \"ng serve --host 0.0.0.0 --port 4200\""
+    "startExternalMf": "http-server",
+    "start": "concurrently \"npm run buildConfig -- --watch\" \"ng serve --host 0.0.0.0 --port 4200\" \"npm run startExternalMf ./externalMf\""
   },
   "dependencies": {
     "@angular/animations": "^6.1.0",
@@ -66,6 +67,7 @@
     "webpack-cli": "^3.2.3",
     "webpack-dev-server": "^3.1.14",
     "lodash": ">=4.17.13",
-    "serialize-javascript": ">=2.1.1"
+    "serialize-javascript": ">=2.1.1",
+    "http-server": "0.12.3"
   }
 }
