@@ -485,7 +485,7 @@ The global search is an input field available in the top navigation bar. The sea
   - **customSearchResultRenderer** 
     - **type**: Function
     - **description**: This function allows you to append your custom search result to a slot which Luigi provides for you. If this function is implemented the default search result popover is disabled.
-    - **attributes**
+    - **attributes**:
       - **searchResults**
         - **type**: Array
         - **description**: array of search result items
