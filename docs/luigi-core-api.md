@@ -877,7 +877,7 @@ Luigi.globalSearch().showSearchResult([searchResultItem1, searchResultItem2]);
 
 #### closeSearchResult
 
-Closes the global search result. By standard it is rendered a popover.
+Closes the global search result. By standard it is rendered as a popover.
 
 ##### Examples
 
