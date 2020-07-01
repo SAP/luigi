@@ -353,7 +353,7 @@ onInput: () => {},
   searchProvider = {
     onInput: () => {
       let searchString = Luigi.globalSearch().getSearchString();
-      //Searchprovider do search
+      //searchProvider does a search
     },
     onEnter: () => {
       Luigi.globalSearch().showSearchResult(searchResults)
