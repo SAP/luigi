@@ -17,7 +17,7 @@ if [[ ! -L $NG_MODULES ]] && [[ ! -d $NG_MODULES ]]; then
 fi
 
 
-NG_MODULES_EXTERNALMF="$BASE_DIR/e2e-test-application/externalMf/node_modules"
+NG_MODULES_EXTERNALMF="$BASE_DIR/e2e-test-application/externalMf"
 echo $(ls $NG_MODULES_EXTERNALMF);
 
 
