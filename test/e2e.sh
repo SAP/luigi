@@ -19,6 +19,8 @@ fi
 NG_MODULES_EXTERNALMF="$NG_EXAMPLE/externalMf/node_modules"
 if [[ ! -L $NG_MODULES_EXTERNALMF ]] && [[ ! -d $NG_MODULES_EXTERNALMF ]]; then
   echo "Creating symlink for example node_modules";
+  echo "$BASE_DIR/../node_modules";
+  echo " ng_modules-external $NG_MODULES_EXTERNALMF";
   ln -s "$BASE_DIR/../node_modules" $NG_MODULES_EXTERNALMF
 fi
 
