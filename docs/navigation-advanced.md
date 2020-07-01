@@ -344,7 +344,7 @@ Tab-style navigation in Luigi can be displayed directly above the micro frontend
 ## Global search
 
 The global search element can be used to trigger a search. In your configuration, you can implement a custom search provider and some action events like [onEnter](navigation-parameters-reference.md#onEnter), [onEscape](navigation-parameters-reference.md#onEscape), [onInput](navigation-parameters-reference.md#onInput) and [onSearchResultItemSelected](navigation-parameters-reference.md#onSearchResultItemSelected).
-By default the search result will be rendered in a popup.
+By default, the search result will be rendered in a popup.
 
 Example:
 
