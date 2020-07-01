@@ -17,12 +17,7 @@ if [[ ! -L $NG_MODULES ]] && [[ ! -d $NG_MODULES ]]; then
 fi
 
 NG_MODULES_EXTERNALMF="$NG_EXAMPLE/externalMf/node_modules"
-if [[ ! -L $NG_MODULES_EXTERNALMF ]] && [[ ! -d $NG_MODULES_EXTERNALMF ]]; then
-  echo "Creating symlink for example node_modules";
-  echo "$BASE_DIR/../node_modules";
-  echo " ng_modules-external $NG_MODULES_EXTERNALMF";
-  ln -s "$BASE_DIR/../node_modules" $NG_MODULES_EXTERNALMF
-fi
+echo $(ls $NG_MODULES_EXTERNALMF);
 
 echo ""
 echo "Angular App"
@@ -36,6 +31,7 @@ echo "External Micro frontend"
 cd "$BASE_DIR/../test/e2e-test-application/externalMf"
 killWebserver 8090
 runWebserver 8090
+WS_EXT_PID=$PID
 
 echo ""
 echo "Fiddle App"
@@ -65,4 +61,5 @@ fi
 RV=$?
 kill $WS_NG_PID
 kill $WS_FID_PID
+kill $WS_EXT_PID
 exit $RV
