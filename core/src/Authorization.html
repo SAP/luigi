@@ -50,7 +50,7 @@
       on:click="{onLogoutClick}"
       data-testid="{getTestId(profileNav.logout)}"
     >
-      <a aria-label="Logout" class="fd-menu__link">
+      <a aria-label="Logout" class="fd-menu__link" data-testid="logout-link">
         {#if profileNav.logout.icon}
         {#if hasOpenUIicon(profileNav.logout)}
         <span
@@ -72,7 +72,7 @@
     {/if}
     {#if isAuthorizationEnabled && !isLoggedIn}
     <li class="fd-menu__item" on:click="{startAuthorization}">
-      <a aria-label="Login" class="fd-menu__link">
+      <a aria-label="Login" class="fd-menu__link" data-testid="login-link">
         <span class="fd-menu__title">Login</span>
       </a>
     </li>
