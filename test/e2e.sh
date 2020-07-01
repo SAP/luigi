@@ -16,8 +16,10 @@ if [[ ! -L $NG_MODULES ]] && [[ ! -d $NG_MODULES ]]; then
   ln -s "$BASE_DIR/../node_modules" $NG_MODULES
 fi
 
-NG_MODULES_EXTERNALMF="$NG_EXAMPLE/externalMf/node_modules"
+
+NG_MODULES_EXTERNALMF="$BASE_DIR/test/e2e-test-application/externalMf/node_modules"
 echo $(ls $NG_MODULES_EXTERNALMF);
+
 
 echo ""
 echo "Angular App"

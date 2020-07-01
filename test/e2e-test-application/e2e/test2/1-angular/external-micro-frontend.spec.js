@@ -4,7 +4,7 @@ describe('Navigation', () => {
     cy.visitLoggedIn('/');
   });
   describe('Normal navigating', () => {
-    it('Check if external micro frontend is available and  by open an alert.', () => {
+    it('Check if external micro frontend is available and an alert will be shown.', () => {
       cy.visit('/projects/pr1/externalmf');
       cy.wait(1000);
       cy.get('[data-testid=luigi-alert]').should(

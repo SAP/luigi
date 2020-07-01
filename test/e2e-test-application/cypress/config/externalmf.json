@@ -5,7 +5,7 @@
   "supportFile": "e2e/support/index.js",
   "videosFolder": "e2e/videos",
   "screenshotsFolder": "e2e/screenshots",
-  "chromeWebSecurity": true,
+  "chromeWebSecurity": false,
   "viewportWidth": 1250,
   "viewportHeight": 790,
   "baseUrl": "http://localhost:4200/"
