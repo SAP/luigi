@@ -115,8 +115,8 @@ Go to the [Luigi Fiddle](https://fiddle.luigi-project.io/) website. Click on **M
 Follow these steps to create a global user interface and host a **full web application** in Luigi:
 
 1. Set up a Luigi Core application on one of the following frameworks:
-  * [No framework](application-setup.md#application-setup-for-an-application-not-using-a-framework)
-  * [Angular 6](application-setup.md#application-setup-for-angular-6)
+  * [No framework](application-setup.md#application-setup-without-a-framework)
+  * [Angular 6](application-setup.md#application-setup-for-angular)
   * [SAPUI5/OpenUI5](application-setup.md#application-setup-for-sapui5openui5)
   * [VUE.JS](application-setup.md#application-setup-for-vuejs)
   * [React](application-setup.md#application-setup-for-react)
