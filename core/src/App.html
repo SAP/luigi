@@ -498,18 +498,32 @@
 
   ////GLOBALSEARCH
   export const closeSearchField = () => {
-    isSearchFieldVisible = false;
+    if (searchProvider) {
+      isSearchFieldVisible = false;
+    } else {
+      console.warn('No search provider defined.');
+    }
   };
 
   export const openSearchField = () => {
-    isSearchFieldVisible = true;
-    inputElem.focus();
+    if (searchProvider) {
+      if (inputElem) {
+        isSearchFieldVisible = true;
+        inputElem.focus();
+      }
+    } else {
+      console.warn('No search provider defined.');
+    }
   };
 
   export const clearSearchField = () => {
-    if (inputElem) {
-      inputElem.value = '';
-      closeSearchResult();
+    if (searchProvider) {
+      if (inputElem) {
+        inputElem.value = '';
+        closeSearchResult();
+      }
+    } else {
+      console.warn('No search provider defined.');
     }
   };
 
@@ -519,58 +533,74 @@
   };
 
   export const getGlobalSearchString = () => {
-    if (inputElem) {
-      return inputElem.value;
+    if (searchProvider) {
+      if (inputElem) {
+        return inputElem.value;
+      }
+    } else {
+      console.warn('No search provider defined.');
     }
   };
 
   export const setGlobalSearchString = searchString => {
-    if (inputElem) {
-      inputElem.value = searchString;
-      if (GenericHelpers.isFunction(searchProvider.onInput)) {
-        searchProvider.onInput();
-      } else {
-        console.error(
-          'onInput is not a function. Please check the global search configuration.'
-        );
+    if (searchProvider) {
+      if (inputElem) {
+        inputElem.value = searchString;
+        if (GenericHelpers.isFunction(searchProvider.onInput)) {
+          searchProvider.onInput();
+        } else {
+          console.error(
+            'onInput is not a function. Please check the global search configuration.'
+          );
+        }
       }
+    } else {
+      console.warn('No search provider defined.');
     }
   };
 
   export const showSearchResult = arr => {
-    if (arr && arr.length > 0) {
-      if (
-        GenericHelpers.isFunction(searchProvider.customSearchResultRenderer)
-      ) {
-        displayCustomSearchResult = true;
-        let searchApiObj = {
-          fireItemSelected: item => {
-            searchProvider.onSearchResultItemSelected(item);
-          }
-        };
-        searchProvider.customSearchResultRenderer(
-          arr,
-          luigiCustomSearchRenderer__slot,
-          searchApiObj
-        );
+    if (searchProvider) {
+      if (arr && arr.length > 0) {
+        if (
+          GenericHelpers.isFunction(searchProvider.customSearchResultRenderer)
+        ) {
+          displayCustomSearchResult = true;
+          let searchApiObj = {
+            fireItemSelected: item => {
+              searchProvider.onSearchResultItemSelected(item);
+            }
+          };
+          searchProvider.customSearchResultRenderer(
+            arr,
+            luigiCustomSearchRenderer__slot,
+            searchApiObj
+          );
+        } else {
+          displaySearchResult = true;
+          searchResult = arr;
+        }
       } else {
-        displaySearchResult = true;
-        searchResult = arr;
+        console.warn('Search result array is empty.');
       }
     } else {
-      console.warn('Search result array is empty.');
+      console.warn('No search provider defined.');
     }
   };
 
   export const closeSearchResult = () => {
-    displaySearchResult = false;
-    searchResult = [];
-    if (luigiCustomSearchRenderer__slot) {
-      while (luigiCustomSearchRenderer__slot.lastElementChild) {
-        luigiCustomSearchRenderer__slot.removeChild(
-          luigiCustomSearchRenderer__slot.lastElementChild
-        );
+    if (searchProvider) {
+      displaySearchResult = false;
+      searchResult = [];
+      if (luigiCustomSearchRenderer__slot) {
+        while (luigiCustomSearchRenderer__slot.lastElementChild) {
+          luigiCustomSearchRenderer__slot.removeChild(
+            luigiCustomSearchRenderer__slot.lastElementChild
+          );
+        }
       }
+    } else {
+      console.warn('No search provider defined.');
     }
   };
 
