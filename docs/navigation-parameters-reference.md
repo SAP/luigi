@@ -501,7 +501,7 @@ The global search is an input field available in the top navigation bar. The sea
     - **attributes**:
       - **searchResultItem**
         - **type**: Object
-        - **description** search result item
+        - **description**: search result item
       - **slot**
         - **type** LI element
         - **description** `li` element as slot. You can append a custom implementation of a `searchResultItem` to this `li` element.
