@@ -363,7 +363,7 @@ onInput: () => {},
       Luigi.globalSearch().clearSearchField();
     },
     customSearchResultRenderer: (searchResults, slot, searchApiObj) => {
-      //If this function implemented the default search result popover will not be displayed.
+      //If this function is implemented, the default search result popover will not be displayed.
       let div = document.createElement('div');
       div.setAttribute(
         'class',
