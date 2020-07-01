@@ -6,11 +6,13 @@
   "scripts": {
     "build": "npm run buildConfig && ng build",
     "lint": "ng lint",
-    "e2e:open": "cypress open",
-    "e2e:run": "cypress run --browser chrome -c video=false",
+    "e2e:open": "cypress open --env configFile=testapp",
+    "e2e:open:external": "cypress open --env configFile=externalmf",
+    "e2e:run": "cypress run --env configFile=testapp --browser chrome -c video=false",
+    "e2e:run:external": "cypress run --env configFile=externalmf --browser chrome -c video=false",
     "e2e:run:electron": "cypress run",
     "buildConfig": "webpack --config webpack-generateConfig.config",
-    "startExternalMf": "http-server",
+    "startExternalMf": "http-server --port 8090",
     "start": "concurrently \"npm run buildConfig -- --watch\" \"ng serve --host 0.0.0.0 --port 4200\" \"npm run startExternalMf ./externalMf\""
   },
   "dependencies": {

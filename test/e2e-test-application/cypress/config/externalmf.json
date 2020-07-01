@@ -1,0 +1,13 @@
+{
+  "fixturesFolder": "e2e/fixtures",
+  "integrationFolder": "e2e/test2",
+  "pluginsFile": false,
+  "supportFile": "e2e/support/index.js",
+  "videosFolder": "e2e/videos",
+  "screenshotsFolder": "e2e/screenshots",
+  "chromeWebSecurity": true,
+  "viewportWidth": 1250,
+  "viewportHeight": 790,
+  "baseUrl": "http://localhost:4200/",
+  "projectId": "czq7qc"
+}

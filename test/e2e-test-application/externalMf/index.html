@@ -29,19 +29,16 @@
             Just a test page from an external micro frontend.
           </h3>
         </div>
-        <div class="fd-layout-panel__body">
-          <button class="fd-button externalMf" onclick="goBack()">
-            Go back
-          </button>
-        </div>
       </div>
     </div>
     <script>
-      function goBack() {
-        debugger;
-        console.log(window.LuigiClient);
-        window.LuigiClient.linkManager().navigate('/overview');
-      }
+      const settings = {
+        text: 'This is just a test alert for external micro frontend.',
+        type: 'success'
+      };
+      window.LuigiClient.addInitListener((context, origin) => {
+        LuigiClient.uxManager().showAlert(settings);
+      });
     </script>
   </body>
 </html>
