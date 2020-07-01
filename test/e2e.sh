@@ -17,7 +17,7 @@ if [[ ! -L $NG_MODULES ]] && [[ ! -d $NG_MODULES ]]; then
 fi
 
 
-NG_MODULES_EXTERNALMF="$BASE_DIR/test/e2e-test-application/externalMf/node_modules"
+NG_MODULES_EXTERNALMF="$BASE_DIR/e2e-test-application/externalMf/node_modules"
 echo $(ls $NG_MODULES_EXTERNALMF);
 
 
@@ -30,7 +30,7 @@ WS_NG_PID=$PID
 
 echo ""
 echo "External Micro frontend"
-cd "$BASE_DIR/../test/e2e-test-application/externalMf"
+cd "$BASE_DIR/e2e-test-application/externalMf"
 killWebserver 8090
 runWebserver 8090
 WS_EXT_PID=$PID
