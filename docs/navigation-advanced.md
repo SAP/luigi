@@ -343,8 +343,8 @@ Tab-style navigation in Luigi can be displayed directly above the micro frontend
 
 ## Global search
 
-The global search element can be used to trigger a search. In your configuration, you can implement a custom search provider and some action events like [onEnter](navigarion-parameters-reference.md#onEnter), [onEscape](navigarion-parameters-reference.md#onEscape), [onInput](navigarion-parameters-reference.md#onInput) and [onSearchResultItemSelected](navigarion-parameters-reference.md#onSearchResultItemSelected).
-By default the search result will be rendered in a popup.
+The global search element can be used to trigger a search. In your configuration, you can implement a custom search provider and some action events like [onEnter](navigation-parameters-reference.md#onEnter), [onEscape](navigation-parameters-reference.md#onEscape), [onInput](navigation-parameters-reference.md#onInput) and [onSearchResultItemSelected](navigation-parameters-reference.md#onSearchResultItemSelected).
+By default, the search result will be rendered in a popup.
 
 Example:
 
@@ -353,7 +353,7 @@ onInput: () => {},
   searchProvider = {
     onInput: () => {
       let searchString = Luigi.globalSearch().getSearchString();
-      //Searchprovider do search
+      //searchProvider does a search
     },
     onEnter: () => {
       Luigi.globalSearch().showSearchResult(searchResults)
@@ -363,7 +363,7 @@ onInput: () => {},
       Luigi.globalSearch().clearSearchField();
     },
     customSearchResultRenderer: (searchResults, slot, searchApiObj) => {
-      //If this function implemented the default search result popover will not be displayed.
+      //If this function is implemented, the default search result popover will not be displayed.
       let div = document.createElement('div');
       div.setAttribute(
         'class',
