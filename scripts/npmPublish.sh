@@ -77,8 +77,9 @@ function publishPackage {
 
     npm publish $BASE_DIR/../$PUBLISH_FOLDER --access public
     if [[ $VERSION != *"rc."* ]] && [[ $VERSION != *"next."* ]]; then
-      echo "Tag $NAME@$VERSION with latest on npm"
+      echo "Tag $NAME@$VERSION with latest and next on npm"
       npm dist-tag add $NAME@$VERSION latest
+      npm dist-tag add $NAME@$VERSION next
     else
       echo "Release/Next candidate $NAME@$VERSION NOT tagged as latest"
     fi
