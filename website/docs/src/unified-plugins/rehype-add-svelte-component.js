@@ -2,7 +2,7 @@ import visit from 'unist-util-visit';
 import requireFromString from 'require-from-string';
 import unified from 'unified'
 import parse from 'rehype-parse'
-const svelte = require('svelte/compiler');
+import * as svelte from 'svelte/compiler';
 
   /**
    * This unified plugin function adds svelte components
@@ -34,11 +34,11 @@ const svelte = require('svelte/compiler');
               generate: "ssr",
               css: true,
             });
-        
+
             let component = requireFromString(results.js.code).default
-  
+
             const { head, html, css } = component.render();
-            // css parsed to hast tree, but couldn't join to node - future improvement ?
+            // TODO: css parsed to hast tree, but couldn't join to node - future improvement ?
             // var parseSelector = require('hast-util-parse-selector')
             // var CSS = parseSelector(css.code)
   

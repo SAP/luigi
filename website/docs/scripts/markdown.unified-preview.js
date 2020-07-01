@@ -7,10 +7,11 @@ const filesToProcess = [
   // 'link.md',
   // 'codeblocks.md',
   // 'custom-attributes.md',
-  'custom-wrappers.md',
+  // 'custom-wrappers.md',
   // 'frontmatter-3.md',
   // 'frontmatter-2.md',
-  // 'frontmatter.md'
+  // 'frontmatter.md',
+  'svelte-components.md'
 ];
 
 filesToProcess.forEach(async (name) => {
