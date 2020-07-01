@@ -507,7 +507,7 @@ The global search is an input field available in the top navigation bar. The sea
         - **description** `li` element as slot. You can append a custom implementation of a `searchResultItem` to this `li` element.
       - **searchApiObj**
         - **type**: Object
-        - **description** It's an object with a function `fireItemSelected` as property. This function gets a `searchResultItem` as parameter and fires the search provider event `onSearchResultItemSelected`.
+        - **description**: It is an object with a function `fireItemSelected` as property. This function gets a `searchResultItem` as parameter and fires the search provider event `onSearchResultItemSelected`.
   - **onSearchResultItemSelected**
     - **type**: Function
     - **description**: will be executed when the user clicks on a `searchResultItem`. 
