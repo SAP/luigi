@@ -1,6 +1,6 @@
 {
   "name": "@luigi-project/core",
-  "version": "1.2.3",
+  "version": "1.2.4",
   "description": "Javascript library supporting consumers of the Luigi framework",
   "license": "Apache-2.0",
   "main": "luigi.js",
