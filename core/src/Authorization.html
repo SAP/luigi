@@ -180,7 +180,7 @@
             // TODO: PROFNAVLOGOUT: three smiliar implementations.
             // TODO: whats the difference between this profileLogoutFn, profileNav, auth-layer
             profileLogoutFnDefined = true;
-            AuthLayerSvc.setProfileLogoutFn(profileLogoutfn);
+            AuthLayerSvc.setProfileLogoutFn(logoutItem.customLogoutFn);
           }
           profileNav = profileNavData;
         },

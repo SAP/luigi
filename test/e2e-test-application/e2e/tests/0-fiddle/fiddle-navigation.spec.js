@@ -180,11 +180,32 @@ describe('Fiddle', () => {
         };
         cy.visitWithFiddleConfig('/home/two', newConfig);
       });
-      it('Static profile', () => {
+      it('Static profile, and logging out with customLogoutFn', () => {
         cy.get('[data-testid="luigi-topnav-profile"] button').click();
-        cy.get('[data-testid="byebye"]').should('exist');
         logoutLink().should('exist');
         loginLink().should('not.exist');
+
+        let profileLogout;
+        cy.window().then(win => {
+          const config = win.Luigi.getConfig();
+          profileLogout = config.navigation.profile.logout;
+          profileLogout.customLogoutFn = () => {
+            return true;
+          };
+          cy.spy(profileLogout, 'customLogoutFn');
+          win.Luigi.setConfig(config);
+          win.Luigi.configChanged('navigation.profile');
+        });
+
+        // Verify profile value
+        logoutLink()
+          .contains('Bye bye')
+          .click();
+
+        // need to wrap 'expect' into some cypress function, else it executes immediately
+        cy.window().then(win => {
+          expect(profileLogout.customLogoutFn).to.be.called;
+        });
       });
     });
     describe('With Auth', () => {
