@@ -1,11 +1,5 @@
 # This is a headline
 
-<!-- svelte:
-<script>
-import mock from './mock.svelte';
-</script>
-
-<mock></mock>
- -->
+<!-- svelte:  mock.svelte-->
 
 # This is another headline

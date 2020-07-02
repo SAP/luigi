@@ -11,7 +11,7 @@ const filesToProcess = [
   // 'frontmatter-3.md',
   // 'frontmatter-2.md',
   // 'frontmatter.md',
-  'svelte-components.md'
+  // 'svelte-components.md'
 ];
 
 filesToProcess.forEach(async (name) => {
