@@ -78,6 +78,23 @@ describe('Navigation', () => {
         });
       });
     });
+    it('Core API navigate with params to same node without params', () => {
+      cy.window().then(win => {
+        win.Luigi.navigation().navigate('/settings');
+        cy.wait(5000);
+        cy.expectPathToBe('/settings');
+        cy.wait(5000);
+        win.Luigi.navigation()
+          .withParams({ test: true })
+          .navigate('/settings');
+        cy.wait(5000);
+        cy.expectPathToBe('/settings');
+        cy.getIframeBody().then($iframeBody => {
+          cy.wrap($iframeBody).should('contain', '"test": "true"');
+        });
+        cy.wait(5000);
+      });
+    });
   });
 
   describe('Normal navigating', () => {
@@ -173,7 +190,9 @@ describe('Navigation', () => {
     });
 
     it('Icon with label label in TopNav', () => {
-      cy.get('button[data-testid="icon-and-label"]>.fd-top-nav__icon').should('exist');
+      cy.get('button[data-testid="icon-and-label"]>.fd-top-nav__icon').should(
+        'exist'
+      );
       cy.get('button[data-testid="icon-and-label"]').should('contain', 'Git');
     });
 
