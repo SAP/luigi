@@ -25,6 +25,12 @@ The lerna-changelog tool detects changes based on PR labels and maps them to sec
 -->
 
 
+## [v1.2.4] (2020-07-02)
+
+#### :bug: Fixed
+* [#1453](https://github.com/SAP/luigi/pull/1453) Fix logout label ([@maxmarkus](https://github.com/maxmarkus))
+* [#1431](https://github.com/SAP/luigi/pull/1431) Fix semicollapsible resize ([@maxmarkus](https://github.com/maxmarkus))
+
 ## [v1.2.3] (2020-06-26)
 
 #### :rocket: Added
@@ -801,3 +807,4 @@ The lerna-changelog tool detects changes based on PR labels and maps them to sec
 
 [v1.2.2]: https://github.com/SAP/luigi/compare/v1.2.1...v1.2.2
 [v1.2.3]: https://github.com/SAP/luigi/compare/v1.2.2...v1.2.3
+[v1.2.4]: https://github.com/SAP/luigi/compare/v1.2.3...v1.2.4
