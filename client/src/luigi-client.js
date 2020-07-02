@@ -7,7 +7,12 @@ import { uxManager } from './uxManager';
  * @private
  */
 class LuigiClient {
-  constructor() {}
+  constructor() {
+    console.log('TEST', window.parent.Luigi);
+    if (!window.parent.Luigi) {
+      console.log('test constructor');
+    }
+  }
 
   addInitListener(initFn) {
     return lifecycleManager.addInitListener(initFn);
