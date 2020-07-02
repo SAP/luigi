@@ -7,10 +7,6 @@
   "dependencies": {
     "@luigi-project/client": "^1.1.0",
     "@luigi-project/core": "^1.1.0",
-    "copy-webpack-plugin": "^5.1.1",
-    "fundamental-styles": "^0.10.0",
-    "@sap-theming/theming-base-content": "^11.1.18",
-    "webpack": "^4.41.5",
-    "webpack-cli": "^3.3.10"
+    "fundamental-styles": "^0.10.0"
   }
 }

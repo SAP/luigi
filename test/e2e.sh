@@ -18,8 +18,6 @@ fi
 
 
 NG_MODULES_EXTERNALMF="$BASE_DIR/e2e-test-application/externalMf"
-echo $(ls $NG_MODULES_EXTERNALMF);
-echo $(ls $NG_MODULES);
 if [[ ! -L $NG_MODULES ]] && [[ ! -d $NG_MODULES ]]; then
   echo "Creating symlink for example node_modules";
   ln -s $NG_MODULES $NG_MODULES_EXTERNALMF
