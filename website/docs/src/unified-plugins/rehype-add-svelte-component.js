@@ -6,8 +6,8 @@ import parse from 'rehype-parse'
    * This unified plugin function adds svelte components
    * example markdown comment: 
    * <!-- svelte:mock.svelte -->
-   * -->
-   * result : output of mock.svelte
+   * 
+   * result : output of docs/components/mock.svelte 
    */
   export default function addSvelteComponents() {
     return function transformer(tree) {
@@ -21,10 +21,11 @@ import parse from 'rehype-parse'
         if (node.value.trim().startsWith('svelte')) {
           // split string after first semicolon
           const words = node.value.trim().substr(node.value.trim().indexOf(':') + 1).trim();
-          if (words != '') {            
+          if (words != '') { 
             let component = require("../../../../docs/components/" + words).default;
+            console.log(component)
             const { head, html, css } = component.render();
-            // TODO: css parsed to hast tree, but couldn't join to node - future improvement ?
+            // TODO: css parsed to hast tree, but couldn't join to html node - future improvement ?
             // var parseSelector = require('hast-util-parse-selector')
             // var CSS = parseSelector(css.code)
   
