@@ -6,7 +6,6 @@
   "license": "ISC",
   "dependencies": {
     "@luigi-project/client": "^1.1.0",
-    "@luigi-project/core": "^1.1.0",
     "fundamental-styles": "^0.10.0"
   }
 }
