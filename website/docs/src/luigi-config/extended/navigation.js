@@ -41,6 +41,13 @@ class Navigation {
         }
       },
       {
+        label: 'Blog',
+        externalLink: {
+          url: 'https://luigi-project.io/blog',
+          sameWindow: true
+        }
+      },
+      {
         label: 'Twitter',
         externalLink: {
           url: 'https://twitter.com/luigiprojectio'
