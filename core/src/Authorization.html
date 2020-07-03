@@ -43,14 +43,14 @@
       </a>
     </li>
     {/each}
-    {#if isAuthorizationEnabled}
-    {#if isLoggedIn && isProfileLogoutItem}
+    {#if isAuthorizationEnabled || isProfileLogoutItem}
+    {#if isLoggedIn || !isAuthorizationEnabled && isProfileLogoutItem}
     <li
       class="fd-menu__item"
       on:click="{onLogoutClick}"
       data-testid="{getTestId(profileNav.logout)}"
     >
-      <a aria-label="Logout" class="fd-menu__link">
+      <a aria-label="Logout" class="fd-menu__link" data-testid="logout-link">
         {#if profileNav.logout.icon}
         {#if hasOpenUIicon(profileNav.logout)}
         <span
@@ -70,9 +70,9 @@
       </a>
     </li>
     {/if}
-    {#if !isLoggedIn && !isProfileLogoutItem}
+    {#if isAuthorizationEnabled && !isLoggedIn}
     <li class="fd-menu__item" on:click="{startAuthorization}">
-      <a aria-label="Login" class="fd-link">
+      <a aria-label="Login" class="fd-menu__link" data-testid="login-link">
         <span class="fd-menu__title">Login</span>
       </a>
     </li>
@@ -97,14 +97,14 @@
 
   const dispatch = createEventDispatcher();
 
-  let idpProviderInstance;
-  export let userInfo;
   export let isHidden = false;
-  export let isLoggedIn;
-  export let profileNav = { logout: {}, items: [] };
-  export let isAuthorizationEnabled;
-  export let isProfileLogoutItem;
 
+  let idpProviderInstance;
+  let userInfo;
+  let isLoggedIn;
+  let profileNav = { logout: {}, items: [] };
+  let isAuthorizationEnabled;
+  let isProfileLogoutItem;
   let navProfileListenerInstalled;
   let profileLogoutFnDefined;
   let store = getContext('store');
@@ -169,17 +169,18 @@
             ...TOP_NAV_DEFAULTS.logout,
             ...logoutItem
           };
-          isProfileLogoutItem = !!logoutItem;
+
+          isProfileLogoutItem = Boolean(logoutItem);
           profileLogoutFnDefined = false;
           AuthLayerSvc.setProfileLogoutFn(null);
-          if (logoutItem) {
-            const profileLogoutfn = logoutItem.customLogoutFn;
+          if (
+            logoutItem &&
+            GenericHelpers.isFunction(logoutItem.customLogoutFn)
+          ) {
             // TODO: PROFNAVLOGOUT: three smiliar implementations.
             // TODO: whats the difference between this profileLogoutFn, profileNav, auth-layer
-            if (profileLogoutfn && GenericHelpers.isFunction(profileLogoutfn)) {
-              profileLogoutFnDefined = true;
-              AuthLayerSvc.setProfileLogoutFn(profileLogoutfn);
-            }
+            profileLogoutFnDefined = true;
+            AuthLayerSvc.setProfileLogoutFn(logoutItem.customLogoutFn);
           }
           profileNav = profileNavData;
         },
