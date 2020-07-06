@@ -168,7 +168,7 @@ Luigi.unload()
 
 **Meta**
 
--   **since**: NEXTRELEASE
+-   **since**: 1.2.2
 
 ## Luigi.elements()
 

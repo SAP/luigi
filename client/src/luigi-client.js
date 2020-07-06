@@ -7,6 +7,8 @@ import { uxManager } from './uxManager';
  * @private
  */
 class LuigiClient {
+  constructor() {}
+
   addInitListener(initFn) {
     return lifecycleManager.addInitListener(initFn);
   }
