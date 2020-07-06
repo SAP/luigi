@@ -501,7 +501,11 @@
   const checkSearchProvider = searchProvider => {
     if (!searchProvider) {
       console.warn('No search provider defined.');
+      return false;
+    } else {
+      return true;
     }
+
     // check for required searchProvider keys here.
   };
   export const closeSearchField = () => {
