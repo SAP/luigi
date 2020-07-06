@@ -497,33 +497,34 @@
   setContext('handleNavigation', handleNavigation);
 
   ////GLOBALSEARCH
-  export const closeSearchField = () => {
-    if (searchProvider) {
-      isSearchFieldVisible = false;
-    } else {
+
+  const checkSearchProvider = searchProvider => {
+    if (!searchProvider) {
       console.warn('No search provider defined.');
+    }
+    // check for required searchProvider keys here.
+  };
+  export const closeSearchField = () => {
+    if (checkSearchProvider(searchProvider)) {
+      isSearchFieldVisible = false;
     }
   };
 
   export const openSearchField = () => {
-    if (searchProvider) {
+    if (checkSearchProvider(searchProvider)) {
       if (inputElem) {
         isSearchFieldVisible = true;
         inputElem.focus();
       }
-    } else {
-      console.warn('No search provider defined.');
     }
   };
 
   export const clearSearchField = () => {
-    if (searchProvider) {
+    if (checkSearchProvider(searchProvider)) {
       if (inputElem) {
         inputElem.value = '';
         closeSearchResult();
       }
-    } else {
-      console.warn('No search provider defined.');
     }
   };
 
@@ -533,17 +534,15 @@
   };
 
   export const getGlobalSearchString = () => {
-    if (searchProvider) {
+    if (checkSearchProvider(searchProvider)) {
       if (inputElem) {
         return inputElem.value;
       }
-    } else {
-      console.warn('No search provider defined.');
     }
   };
 
   export const setGlobalSearchString = searchString => {
-    if (searchProvider) {
+    if (checkSearchProvider(searchProvider)) {
       if (inputElem) {
         inputElem.value = searchString;
         if (GenericHelpers.isFunction(searchProvider.onInput)) {
@@ -554,13 +553,11 @@
           );
         }
       }
-    } else {
-      console.warn('No search provider defined.');
     }
   };
 
   export const showSearchResult = arr => {
-    if (searchProvider) {
+    if (checkSearchProvider(searchProvider)) {
       if (arr && arr.length > 0) {
         if (
           GenericHelpers.isFunction(searchProvider.customSearchResultRenderer)
@@ -583,13 +580,11 @@
       } else {
         console.warn('Search result array is empty.');
       }
-    } else {
-      console.warn('No search provider defined.');
     }
   };
 
   export const closeSearchResult = () => {
-    if (searchProvider) {
+    if (checkSearchProvider(searchProvider)) {
       displaySearchResult = false;
       searchResult = [];
       if (luigiCustomSearchRenderer__slot) {
@@ -599,8 +594,6 @@
           );
         }
       }
-    } else {
-      console.warn('No search provider defined.');
     }
   };
 
