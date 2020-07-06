@@ -64,10 +64,11 @@
             >
             {/if}
             <!-- end hasOpenUIicon-->
-            {:else}
-            <span>{getNodeLabel(node)}</span>
             {/if}
             <!-- end node.icon -->
+            {#if !node.icon || node.showLabel}
+            <span>{getNodeLabel(node)}</span>
+            {/if}
             <BadgeCounter {node}/>
           </button>
         </div>
@@ -110,10 +111,11 @@
         >
         {/if}
         <!-- end hasOpenUIicon-->
-        {:else}
-        <span>{getNodeLabel(node)}</span>
         {/if}
         <!-- end node.icon -->
+        {#if !node.icon || node.showLabel}
+          <span>{getNodeLabel(node)}</span>
+        {/if}
         <BadgeCounter {node}/>
       </button>
     </div>
@@ -622,6 +624,9 @@
       &:before {
         margin-top: 10px;
       }
+    }
+    .fd-top-nav__icon + span {
+      line-height: 2.4rem;
     }
   }
 

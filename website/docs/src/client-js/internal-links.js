@@ -32,8 +32,12 @@ export class InternalLinksHandler {
           console.debug('navigateInternal URL parse error', elem, elem.getAttribute('href'), error);
         }
         const urlWithPath = url.pathname.replace(ctx.coreBaseUrl, '').replace('.md', '').replace('/docu-microfrontend', '');
-        if (url.hash) {
-          LuigiClient.linkManager().withParams({'section': url.hash.substring(1).toLowerCase()}).navigate(urlWithPath);
+        
+        // Links can be either with a ?section param or with hash, both should work.
+        const sectionParam = this.getUrlParameter('section', url.search);
+        const hashParam = url.hash ? url.hash.substring(1).toLowerCase() : false;
+        if (sectionParam || hashParam) {
+          LuigiClient.linkManager().withParams({'section': sectionParam || hashParam}).navigate(urlWithPath);
         } else {
           LuigiClient.linkManager().navigate(urlWithPath);
         }
@@ -49,5 +53,18 @@ export class InternalLinksHandler {
         link.setAttribute('href', newHref);
       }
     });
+  }
+
+
+  /**
+   * Returns the value of a given url parameter name
+   * Original source: Luigi Core GenericHelpers
+   * @param {string} name
+   */
+  getUrlParameter(name, locationSearch = window.location.search) {
+    name = name.replace(/[\[]/, '\\[').replace(/[\]]/, '\\]');
+    var regex = new RegExp('[\\?&]' + name + '=([^&#]*)');
+    var result = regex.exec(locationSearch);
+    return (result && decodeURIComponent(result[1].replace(/\+/g, ' '))) || '';
   }
 }
