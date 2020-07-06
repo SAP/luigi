@@ -11,7 +11,7 @@
     <priority>1.0</priority>
   </url>
     <url>
-    <loc>hhttps://docs.luigi-project.io/docs/luigi-architecture</loc>
+    <loc>https://docs.luigi-project.io/docs/luigi-architecture</loc>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
@@ -36,7 +36,7 @@
     <priority>0.5</priority>
   </url>
   <url>
-    <loc>hhttps://docs.luigi-project.io/docs/authorization-configuration</loc>
+    <loc>https://docs.luigi-project.io/docs/authorization-configuration</loc>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
