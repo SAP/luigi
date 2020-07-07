@@ -14,7 +14,7 @@ import webpack2 from 'webpack';
 import named from 'vinyl-named';
 import uncss from 'uncss';
 import autoprefixer from 'autoprefixer';
-import { writeBlogFiles } from './src/services/blogprocessor';
+import { processBlogFiles } from './src/services/blogprocessor';
 
 // Load all Gulp plugins into one variable
 const $ = plugins();
@@ -63,7 +63,11 @@ function pages() {
         layouts: 'src/layouts/',
         partials: 'src/partials/',
         data: 'src/data/',
-        helpers: 'src/helpers/'
+        helpers: 'src/helpers/',
+        // pageLayouts: {
+        //   // All pages inside src/pages/blog will use the blog.html layout
+        //   'blog': 'blog'
+        // }
       })
     )
     .pipe(gulp.dest(PATHS.dist));
@@ -174,7 +178,7 @@ function reload(done) {
 }
 
 function buildBlogFiles(done) {
-  writeBlogFiles();
+  processBlogFiles();
   done();
 }
 

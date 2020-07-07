@@ -3,6 +3,7 @@ import path from 'path';
 import frontmatter from 'frontmatter';
 import marked from 'marked';
 import slugify from 'slugify';
+import { BlogFeeds } from './feeds.service';
 
 const luigiRootFolder = __dirname + '/../../../../../';
 const blogMdPath = path.join(luigiRootFolder, 'blog');
@@ -82,9 +83,9 @@ export const getBlogEntries = (singleSlug = false) => {
     });
 }
 
-export const writeBlogFiles = () => {
-  getBlogEntries().forEach(entry => {
-    const blogHtml = `---
+const writeBlogFiles = (blogEntries) => {
+  blogEntries.forEach(entry => {
+  const blogHtml = `---
 title: ${entry.title}
 description: ${entry.description}
 layout: blog
@@ -92,4 +93,10 @@ layout: blog
 ${entry.blogContent}`;
     writeFileSync(blogHtmlPath + `/${entry.slug}.html`, blogHtml);
   });
+};
+
+export const processBlogFiles = () => {
+  const blogEntries = getBlogEntries();
+  writeBlogFiles(blogEntries);
+  BlogFeeds.generate(blogEntries);
 };
