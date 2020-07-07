@@ -35,6 +35,14 @@ This video which explains the basics of micro frontend architecture and how it c
 
 No, Luigi itself does not deliver any micro frontends. It is a framework that helps you develop micro frontends and connect them to web applications.
 
+### I don't want to use the default Fiori Fundamentals style. How can I style Luigi differently? How can I change the look of Luigi's UI?
+
+There are a few options to do that at the moment:
+- Use the Fundamental Styles theming capabilities which already allow you to achieve a lot by customizing the CSS variables. Find more info [here](https://github.com/SAP/theming-base-content).
+- Manually overwrite the styles where needed. The documentation page you are on right now can be used as an example, as it was developed with Luigi!
+- Turn off Luigi view components completely via the [hideNavigation](general-settings.md) parameter in the `settings:` section of your Luigi configuration. Then you can implement your own view components for header and navigation and use the [Luigi Core API](luigi-core-api.md) to set them up with Luigi.
+- Configure [theming](general-settings.md) directly in Luigi to change the look of the UI.
+
 ### Is Luigi only useful in the context of SAP or very large corporate applications?
 
 No, Luigi can be used independently of SAP for a variety of purposes. You can find one example in [this article](https://medium.com/swlh/luigi-micro-fronteds-orchestrator-8c0eca710151) which describes how to create a small hobby project using Luigi.
@@ -43,6 +51,14 @@ No, Luigi can be used independently of SAP for a variety of purposes. You can fi
 
 The Luigi project can be found on [GitHub](https://github.com/SAP/luigi). Depending on the UI framework you use, there are different setups for Luigi. You can find more information here: [application setup](application-setup.md).
 
+### Does Luigi provide micro frontend to micro frontend communication?
+
+Yes. The simplest way to configure this type of communication is unidirectional via [linkmanager.navigate](luigi-client-api.md#linkmanager) where you can send additional data to the target micro frontend via [withParams](luigi-client-api.md#withparams).
+
+Another possibility is to call [linkmanager.navigate](luigi-client-api.md#linkmanager) with the [preserveView](luigi-client-api.md#navigate) option set to `true`. This allows you to get a "return value" from the target micro frontend if it uses the [goBack](luigi-client-api.md#goback) function. Lastly, you can use custom events to model your own communication functionality.
+
+Of course, Luigi also allows you to communicate between the core application (Luigi Core) and the micro frontend (Luigi Client). See [custom messages](communication.md) for more info.
+
 ### The distributed development possibilities seem like a big advantage; is that just an additional benefit from using Luigi, or was that a main factor behind it?
 
 Development scalability was one of the main goals right from the beginning. There is a nice article on [martinfowler.com](https://martinfowler.com/articles/micro-frontends.html) explaining the benefits of a micro frontend architecture in general. All the disadvantages of the iframe approach mentioned in the article are solved with Luigi.
@@ -50,13 +66,6 @@ Development scalability was one of the main goals right from the beginning. Ther
 ### One of the potential issues with a micro frontend architecture is styling. You suggest to use the CSS elements of Fundamentals to solve that issue. Is that correct?
 
 It is crucial that all micro frontends in a solution follow the same design guidelines. Luigi's default UI styling is based on [Fundamentals](https://sap.github.io/fundamental-styles/) but it can be customised. If you don’t want to use Fundamentals, but Bootstrap, Material, or something else instead, you need to re-style the Luigi view components according to your design guidelines or replace them with your own components completely.
-
-### I don't want to use the default Fiori Fundamentals style. How can I style Luigi differently?
-
-There are a few options to do that at the moment:
-- Use the Fundamental Styles theming capabilities which already allow you to achieve a lot by customizing the CSS variables. Find more info [here](https://github.com/SAP/theming-base-content).
-- Manually overwrite the styles where needed. The documentation page you are on right now can be used as an example, as it was developed with Luigi!
-- Turn off Luigi view components completely via the [hideNavigation](general-settings.md) parameter in the `settings:` section of your Luigi configuration. Then you can implement your own view components for header and navigation and use the [Luigi Core API](luigi-core-api.md) to set them up with Luigi.
 
 ### Luigi claims to be ‘technology agnostic’. Are you referring to the UI framework that can be used, or to some other technology?
 
