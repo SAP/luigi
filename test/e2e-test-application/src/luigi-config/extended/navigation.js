@@ -84,7 +84,7 @@ class Navigation {
       icon: 'globe',
       showLabel: true,
       hideSideNav: false,
-      testId: "icon-and-label"
+      testId: 'icon-and-label'
     },
     {
       pathSegment: 'settings',
@@ -94,7 +94,7 @@ class Navigation {
       hideSideNav: true,
       viewGroup: 'tets'
     },
-    
+
     {
       category: { label: 'Misc', icon: 'badge' },
       label: 'Open Google in this tab',
@@ -103,7 +103,7 @@ class Navigation {
         sameWindow: true
       }
     }, // showing an anonymous content is possible only with auto login disabled
-    
+
     {
       category: 'Misc',
       pathSegment: 'all-users',
@@ -148,7 +148,7 @@ class Navigation {
         }
       ]
     },
-    
+
     {
       pathSegment: 'page-not-found',
       label: 'Page not found',
