@@ -173,7 +173,9 @@ describe('Navigation', () => {
     });
 
     it('Icon with label label in TopNav', () => {
-      cy.get('button[data-testid="icon-and-label"]>.fd-top-nav__icon').should('exist');
+      cy.get('button[data-testid="icon-and-label"]>.fd-top-nav__icon').should(
+        'exist'
+      );
       cy.get('button[data-testid="icon-and-label"]').should('contain', 'Git');
     });
 
