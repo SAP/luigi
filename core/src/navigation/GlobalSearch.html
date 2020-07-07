@@ -214,6 +214,15 @@
     }
   }
 
+  export function onActionClick(searchResultItem) {
+    let node = searchResultItem.pathObject;
+    if (node.externalLink) {
+      Routing.navigateToLink(node);
+    } else {
+      dispatch('handleSearchNavigation', { node });
+    }
+  }
+
   function setFocusOnGlobalSearchFieldDesktop() {
     if (inputElem) {
       inputElem.focus();

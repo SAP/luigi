@@ -497,19 +497,38 @@
   setContext('handleNavigation', handleNavigation);
 
   ////GLOBALSEARCH
+
+  const checkSearchProvider = searchProvider => {
+    if (!searchProvider) {
+      console.warn('No search provider defined.');
+      return false;
+    } else {
+      return true;
+    }
+
+    // check for required searchProvider keys here.
+  };
   export const closeSearchField = () => {
-    isSearchFieldVisible = false;
+    if (checkSearchProvider(searchProvider)) {
+      isSearchFieldVisible = false;
+    }
   };
 
   export const openSearchField = () => {
-    isSearchFieldVisible = true;
-    inputElem.focus();
+    if (checkSearchProvider(searchProvider)) {
+      if (inputElem) {
+        isSearchFieldVisible = true;
+        inputElem.focus();
+      }
+    }
   };
 
   export const clearSearchField = () => {
-    if (inputElem) {
-      inputElem.value = '';
-      closeSearchResult();
+    if (checkSearchProvider(searchProvider)) {
+      if (inputElem) {
+        inputElem.value = '';
+        closeSearchResult();
+      }
     }
   };
 
@@ -519,57 +538,65 @@
   };
 
   export const getGlobalSearchString = () => {
-    if (inputElem) {
-      return inputElem.value;
+    if (checkSearchProvider(searchProvider)) {
+      if (inputElem) {
+        return inputElem.value;
+      }
     }
   };
 
   export const setGlobalSearchString = searchString => {
-    if (inputElem) {
-      inputElem.value = searchString;
-      if (GenericHelpers.isFunction(searchProvider.onInput)) {
-        searchProvider.onInput();
-      } else {
-        console.error(
-          'onInput is not a function. Please check the global search configuration.'
-        );
+    if (checkSearchProvider(searchProvider)) {
+      if (inputElem) {
+        inputElem.value = searchString;
+        if (GenericHelpers.isFunction(searchProvider.onInput)) {
+          searchProvider.onInput();
+        } else {
+          console.error(
+            'onInput is not a function. Please check the global search configuration.'
+          );
+        }
       }
     }
   };
 
   export const showSearchResult = arr => {
-    if (arr && arr.length > 0) {
-      if (
-        GenericHelpers.isFunction(searchProvider.customSearchResultRenderer)
-      ) {
-        displayCustomSearchResult = true;
-        let searchApiObj = {
-          fireItemSelected: item => {
-            searchProvider.onSearchResultItemSelected(item);
-          }
-        };
-        searchProvider.customSearchResultRenderer(
-          arr,
-          luigiCustomSearchRenderer__slot,
-          searchApiObj
-        );
+    if (checkSearchProvider(searchProvider)) {
+      if (arr && arr.length > 0) {
+        if (
+          GenericHelpers.isFunction(searchProvider.customSearchResultRenderer)
+        ) {
+          displayCustomSearchResult = true;
+          let searchApiObj = {
+            fireItemSelected: item => {
+              searchProvider.onSearchResultItemSelected(item);
+            }
+          };
+          searchProvider.customSearchResultRenderer(
+            arr,
+            luigiCustomSearchRenderer__slot,
+            searchApiObj
+          );
+        } else {
+          displaySearchResult = true;
+          searchResult = arr;
+        }
       } else {
-        displaySearchResult = true;
-        searchResult = arr;
+        console.warn('Search result array is empty.');
       }
-    } else {
-      console.warn('Search result is empty.');
     }
   };
 
   export const closeSearchResult = () => {
-    displaySearchResult = false;
-    searchResult = [];
-    if (luigiCustomSearchRenderer__slot) {
-      while (luigiCustomSearchRenderer__slot.lastElementChild) {
-        luigiCustomSearchRenderer__slot.removeChild(
-          luigiCustomSearchRenderer__slot.lastElementChild
-        );
+    if (checkSearchProvider(searchProvider)) {
+      displaySearchResult = false;
+      searchResult = [];
+      if (luigiCustomSearchRenderer__slot) {
+        while (luigiCustomSearchRenderer__slot.lastElementChild) {
+          luigiCustomSearchRenderer__slot.removeChild(
+            luigiCustomSearchRenderer__slot.lastElementChild
+          );
+        }
       }
     }
   };

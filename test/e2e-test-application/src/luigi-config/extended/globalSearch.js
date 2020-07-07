@@ -4,6 +4,17 @@ class GlobalSearch {
   }
 
   searchProvider = {
+    // onInput: () => {},
+    // onEnter: () => {},
+    // onEscape: () => {},
+    // customSearchResultRenderer: (searchResults, slot, searchApiObj) => {},
+    // customSearchResultItemRenderer: (
+    //   searchResultItem,
+    //   slot,
+    //   searchApiObj
+    // ) => {},
+    // onSearchResultItemSelected: searchResultItem => {},
+
     onInput: () => {
       if (Luigi.globalSearch().getSearchString() === '') {
         this.searchResult = [];
