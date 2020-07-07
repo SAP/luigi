@@ -7,9 +7,17 @@ import { LuigiConfig } from '../src/core-api';
 import { Routing } from '../src/services/routing';
 
 describe('Context-switcher', function() {
+  let myResolverFn;
+  beforeEach(() => {
+    CSHelpers._fallbackLabels.clear();
+    myResolverFn = sinon.spy(id => {
+      return '##' + id + '##';
+    });
+  });
   afterEach(() => {
-    sinon.restore();
     sinon.reset();
+    sinon.resetHistory();
+    sinon.restore();
   });
 
   const getMockConfig = () => ({
@@ -25,10 +33,6 @@ describe('Context-switcher', function() {
     ],
     options: []
   });
-
-  const myResolverFn = id => {
-    return '##' + id + '##';
-  };
 
   describe('getPreparedParentNodePath', () => {
     let mockConfig;
@@ -79,6 +83,16 @@ describe('Context-switcher', function() {
     it('works with fallback resolver', async () => {
       const result = await CSHelpers.getFallbackLabel(myResolverFn, 'some_id');
       assert.equal(result, '##some_id##');
+    });
+
+    it('works with fallback resolver cached', async () => {
+      const result = await CSHelpers.getFallbackLabel(myResolverFn, 'some_id');
+      assert.equal(result, '##some_id##');
+
+      const result2 = await CSHelpers.getFallbackLabel(myResolverFn, 'some_id');
+      assert.equal(result2, '##some_id##');
+
+      sinon.assert.calledOnce(myResolverFn);
     });
   });
 

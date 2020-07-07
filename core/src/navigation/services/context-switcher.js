@@ -3,6 +3,8 @@ import { Routing } from '../../services/routing';
 import { LuigiConfig } from '../../core-api';
 
 export const ContextSwitcherHelpers = {
+  _fallbackLabels: new Map(),
+
   getPreparedParentNodePath(config) {
     if (!config.parentNodePath || !config.parentNodePath.startsWith('/')) {
       console.error(
@@ -67,7 +69,18 @@ export const ContextSwitcherHelpers = {
   },
 
   async getFallbackLabel(fallbackLabelResolver, id) {
-    return fallbackLabelResolver ? await fallbackLabelResolver(id) : id;
+    if (!fallbackLabelResolver) {
+      return id;
+    }
+
+    const labelCache = ContextSwitcherHelpers._fallbackLabels;
+    if (labelCache.has(id)) {
+      return labelCache.get(id);
+    }
+
+    const label = await fallbackLabelResolver(id);
+    labelCache.set(id, label);
+    return label;
   },
 
   getSelectedId(currentPath, options, parentNodePath) {
