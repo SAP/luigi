@@ -73,6 +73,37 @@ describe('Navigation', () => {
           .withParams({ test: true })
           .navigate('/settings');
         cy.expectPathToBe('/settings');
+        cy.expectSearchToBe('?~test=true');
+        cy.getIframeBody().then($iframeBody => {
+          cy.wrap($iframeBody).should('contain', '"test": "true"');
+        });
+      });
+    });
+    it('Core API navigate back & forth from node w/ params to node w/o params', () => {
+      cy.window().then(win => {
+        win.Luigi.navigation()
+          .withParams({ test: true })
+          .navigate('/settings');
+        cy.expectPathToBe('/settings');
+        cy.expectSearchToBe('?~test=true');
+        cy.getIframeBody().then($iframeBody => {
+          cy.wrap($iframeBody).should('contain', '"test": "true"');
+        });
+      });
+      cy.window().then(win => {
+        win.Luigi.navigation().navigate('/settings');
+        cy.expectPathToBe('/settings');
+        cy.expectSearchToBe('');
+        cy.getIframeBody().then($iframeBody => {
+          cy.wrap($iframeBody).should('not.contain', '"test": "true"');
+        });
+      });
+      cy.window().then(win => {
+        win.Luigi.navigation()
+          .withParams({ test: true })
+          .navigate('/settings');
+        cy.expectPathToBe('/settings');
+        cy.expectSearchToBe('?~test=true');
         cy.getIframeBody().then($iframeBody => {
           cy.wrap($iframeBody).should('contain', '"test": "true"');
         });
