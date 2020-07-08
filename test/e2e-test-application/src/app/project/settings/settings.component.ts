@@ -56,6 +56,8 @@ export class SettingsComponent implements OnInit {
       .subscribe((ctx: IContextMessage) => {
         if (ctx.contextType === 'init' || ctx.contextType === 'update') {
           this.preservedViewCallbackContext = ctx.context.goBackContext;
+          this.nodeParams =
+            Object.keys(getNodeParams()).length > 0 ? getNodeParams() : null;
           // Since Luigi runs outside of Zone.js, changes need
           // to be updated manually
           // Be sure to check for destroyed ChangeDetectorRef,
