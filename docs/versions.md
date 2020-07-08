@@ -85,9 +85,7 @@ Following an upgrade from SAP Fundamentals to Fundamental Library Styles, there 
 
 Within Luigi, we renamed the `lui-tendant-menu__control` class to `lui-ctx-switch-menu`.
 
-### Fundamental Library Styles v.0.10.0
-
-In Luigi v.1.2.4, we upgraded to the new version of Fundamental Library Styles. This resulted in breaking changes to the Luigi side navigation and a different look for nested (collapsible) navigation nodes. To see the full list of changes, click [here](https://sap.github.io/fundamental-styles/components/side-navigation.html).
+With the new v.0.10.0 of Fundamental Library Styles, there were also breaking changes to the Luigi side navigation and a different look for nested (collapsible) navigation nodes. To see the full list of changes, click [here](https://sap.github.io/fundamental-styles/components/side-navigation.html).
 
 <!-- accordion:end -->
 
