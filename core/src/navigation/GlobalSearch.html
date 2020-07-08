@@ -42,8 +42,10 @@
                 class="fd-menu__link"
                 on:click|preventDefault="{() => {}}"
               >
-                <span class="fd-menu__title">{result.label}</span>
-                <!-- <span class="fd-product-switch__subtitle">{result.description}</span> -->
+                <div class="fd-product-switch__text">
+                  <div class="fd-product-switch__title">{result.label}</div>
+                  <div class="fd-product-switch__subtitle">{result.description}</div>
+                </div>
               </a>
               {:else}
               {@html renderCustomSearchItem(result,luigiCustomSearchItemRenderer__slotContainer, index)}
@@ -247,6 +249,28 @@
     width: 184px;
   }
 
+  //remove arrow from the search popover
+  .luigi-search__popover__body {
+    top: 42px;
+    &:before,
+    &:after {
+      display: none;
+    }
+    .fd-menu {
+      max-height: 70vh;
+      overflow: auto;
+      li {
+        padding-bottom: 10px;
+      }
+      li:first-child {
+        padding-top: 10px;
+      }
+      .fd-product-switch__title {
+        font-weight: 600;
+      }
+    }
+  }
+
   @media screen and (max-width: 1024px) {
     .luigi-search-shell__mobile {
       position: relative;
@@ -264,9 +288,8 @@
         background: var(--sapShellColor);
         z-index: 1;
       }
-
-      .luigi-search__popover__body {
-        top: 50px;
+      .fd-menu {
+        max-width: 12rem;
       }
     }
   }

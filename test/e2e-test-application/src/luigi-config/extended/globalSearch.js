@@ -26,7 +26,8 @@ class GlobalSearch {
             link: '/settings'
           },
           label: 'Settings ohne params',
-          description: 'settings',
+          description:
+            'Extremely long description of the search results of newe field',
           onActivate() {
             Luigi.globalSearch().closeSearchResult();
           }
