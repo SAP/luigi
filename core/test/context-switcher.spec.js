@@ -89,7 +89,7 @@ describe('Context-switcher', function() {
       assert.equal(result, '##some_id##');
 
       sinon.assert.calledWithExactly(
-        'LuigiConfig.getConfigBooleanValue',
+        LuigiConfig.getConfigBooleanValue,
         'navigation.contextSwitcher.useFallbackLabelCache'
       );
     });
