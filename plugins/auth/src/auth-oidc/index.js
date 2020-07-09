@@ -187,7 +187,14 @@ export default class openIdConnect {
 
   _processLoginResponse() {
     return new Promise((resolve, reject) => {
-      if (window.location.hash.indexOf('access_token') === -1) {
+      let responseType = this.settings.response_type
+      let toCheck;
+      if (responseType.indexOf('token') > -1){
+        toCheck = window.location.hash.indexOf("access_token") === -1
+      } else if (responseType.indexOf('code') > -1){
+        toCheck = window.location.search.indexOf('code') === -1
+      }
+      if (toCheck) {
         return resolve(true);
       }
 
