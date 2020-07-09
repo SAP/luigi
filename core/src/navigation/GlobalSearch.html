@@ -2,26 +2,25 @@
   class="fd-shellbar__action {isSearchFieldVisible ? 'luigi-search-shell__mobile':''}"
 >
   <div class="fd-popover">
-    <div class="fd-popover__control" on:click|stopPropagation="{() => {}}">
-      <div
-        aria-hidden="{!isSearchFieldVisible}"
-        aria-haspopup="true"
-        class="luigi-search"
-      >
-        <div class="fd-input-group fd-shellbar__input-group">
-          <input
-            type="text"
-            on:keyup="{(event) => onKeyUp(event)}"
-            class="fd-input fd-input-group__input fd-shellbar__input-group__input luigi-search__input"
-            data-testid="luigi-search-input"
-            autofocus
-            bind:this="{inputElem}"
-          >
-        </div>
+    <div
+      class="fd-popover__control luigi-search"
+      on:click|stopPropagation="{() => {}}"
+      aria-hidden="{!isSearchFieldVisible}"
+      aria-haspopup="true"
+    >
+      <div class="fd-input-group fd-shellbar__input-group">
+        <input
+          type="text"
+          on:keyup="{(event) => onKeyUp(event)}"
+          class="fd-input fd-input-group__input fd-shellbar__input-group__input luigi-search__input"
+          data-testid="luigi-search-input"
+          autofocus
+          bind:this="{inputElem}"
+        >
       </div>
       {#if !isCustomSearchRenderer}
       <div
-        class="fd-popover__body fd-popover__body--right luigi-search__popover__body"
+        class="fd-popover__body fd-popover__body--right luigi-search-popover__body"
         aria-hidden="{!displaySearchResult}"
       >
         <nav class="fd-menu">
@@ -65,7 +64,7 @@
 <div class="fd-shellbar__action fd-shellbar__action--desktop">
   <div on:click|stopPropagation="{() => {}}">
     <button
-      class="fd-button fd-shellbar__button sap-icon--search luigi-search__button"
+      class="fd-button fd-shellbar__button sap-icon--search"
       aria-haspopup="true"
       aria-expanded="{!isSearchFieldVisible}"
       on:click="{toggleSearch}"
@@ -243,33 +242,37 @@
       visibility: hidden;
       width: 0;
     }
-  }
 
-  .luigi-search__input {
-    width: 184px;
+    &__input {
+      width: 184px;
+    }
+    &-popover__body {
+      top: calc(2.25rem + 5px);
+
+      &:before,
+      &:after {
+        display: none;
+      }
+      .fd-menu {
+        max-height: 70vh;
+        overflow: auto;
+        .fd-menu__item {
+          padding-bottom: 10px;
+          &:first-child {
+            padding-top: 10px;
+          }
+          &:last-child .fd-menu__link {
+            border-radius: 0;
+          }
+          .fd-product-switch__title {
+            font-weight: 600;
+          }
+        }
+      }
+    }
   }
 
   //remove arrow from the search popover
-  .luigi-search__popover__body {
-    top: 42px;
-    &:before,
-    &:after {
-      display: none;
-    }
-    .fd-menu {
-      max-height: 70vh;
-      overflow: auto;
-      li {
-        padding-bottom: 10px;
-      }
-      li:first-child {
-        padding-top: 10px;
-      }
-      .fd-product-switch__title {
-        font-weight: 600;
-      }
-    }
-  }
 
   @media screen and (max-width: 1024px) {
     .luigi-search-shell__mobile {
