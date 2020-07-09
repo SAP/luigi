@@ -75,6 +75,10 @@ describe('Context-switcher', function() {
   });
 
   describe('getFallbackLabel', () => {
+    beforeEach(() => {
+      sinon.stub(LuigiConfig, 'getConfigBooleanValue').returns(false);
+    });
+
     it('works without fallback resolver', async () => {
       const result = await CSHelpers.getFallbackLabel(undefined, 'some_id');
       assert.equal(result, 'some_id');
@@ -83,9 +87,16 @@ describe('Context-switcher', function() {
     it('works with fallback resolver', async () => {
       const result = await CSHelpers.getFallbackLabel(myResolverFn, 'some_id');
       assert.equal(result, '##some_id##');
+
+      sinon.assert.calledWithExactly(
+        'LuigiConfig.getConfigBooleanValue',
+        'navigation.contextSwitcher.useFallbackLabelCache'
+      );
     });
 
     it('works with fallback resolver cached', async () => {
+      LuigiConfig.getConfigBooleanValue.returns(true);
+
       const result = await CSHelpers.getFallbackLabel(myResolverFn, 'some_id');
       assert.equal(result, '##some_id##');
 
@@ -93,6 +104,16 @@ describe('Context-switcher', function() {
       assert.equal(result2, '##some_id##');
 
       sinon.assert.calledOnce(myResolverFn);
+    });
+
+    it('works with fallback resolver cache disabled', async () => {
+      const result = await CSHelpers.getFallbackLabel(myResolverFn, 'some_id');
+      assert.equal(result, '##some_id##');
+
+      const result2 = await CSHelpers.getFallbackLabel(myResolverFn, 'some_id');
+      assert.equal(result2, '##some_id##');
+
+      sinon.assert.calledTwice(myResolverFn);
     });
   });
 
@@ -443,7 +464,8 @@ describe('Context-switcher', function() {
         '/environmentWhatever',
         [],
         parentNodePath,
-        myResolverFn
+        myResolverFn,
+        false
       );
       assert.equal(result, undefined);
     });
@@ -453,7 +475,8 @@ describe('Context-switcher', function() {
         '/something',
         [],
         parentNodePath,
-        myResolverFn
+        myResolverFn,
+        false
       );
       assert.equal(result, undefined);
     });
@@ -465,7 +488,8 @@ describe('Context-switcher', function() {
         '/environment/env2',
         [env1, env2],
         parentNodePath,
-        myResolverFn
+        myResolverFn,
+        false
       );
       assert.equal(result, env2.label);
     });
@@ -477,7 +501,8 @@ describe('Context-switcher', function() {
         '/environment/env3',
         [env1, env2],
         parentNodePath,
-        myResolverFn
+        myResolverFn,
+        false
       );
       assert.equal(result, '##env3##');
     });
@@ -487,7 +512,8 @@ describe('Context-switcher', function() {
         '/environment/env1?mask=opatol',
         null,
         parentNodePath,
-        myResolverFn
+        myResolverFn,
+        false
       );
       assert.equal(result, '##env1##');
     });

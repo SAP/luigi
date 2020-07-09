@@ -254,6 +254,7 @@ contextSwitcher: {
   parentNodePath: '/environments',
   lazyloadOptions: false,
   fallbackLabelResolver: (id) => (id.toUpperCase()),
+  useFallbackLabelCache: true,
   options: [{label, pathValue,customRendererCategory}, {label, pathValue, customRendererCategory}],
   customSelectedOptionRenderer: (option) => {
     let color = "white";

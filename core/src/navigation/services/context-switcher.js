@@ -73,13 +73,18 @@ export const ContextSwitcherHelpers = {
       return id;
     }
 
+    const useFallbackLabelCache = LuigiConfig.getConfigBooleanValue(
+      'navigation.contextSwitcher.useFallbackLabelCache'
+    );
     const labelCache = ContextSwitcherHelpers._fallbackLabels;
-    if (labelCache.has(id)) {
-      return labelCache.get(id);
+    if (useFallbackLabelCache) {
+      if (labelCache.has(id)) {
+        return labelCache.get(id);
+      }
     }
 
     const label = await fallbackLabelResolver(id);
-    labelCache.set(id, label);
+    useFallbackLabelCache && labelCache.set(id, label);
     return label;
   },
 
