@@ -1406,14 +1406,6 @@
     }
   }
 
-  //IE11 fixes
-  :global(.fd-nested-list__content),
-  :global(.fd-nested-list__link) {
-    &.has-child:after {
-      height: 100%;
-    }
-  }
-
   :global(.fd-side-nav--condensed) {
     :global(.fd-nested-list__link) {
       font-size: 10px;
@@ -1424,6 +1416,13 @@
   }
 
   //Fixing issues for fundamental styles
+  //IE11 fixes
+  :global(.fd-nested-list__content),
+  :global(.fd-nested-list__link) {
+    &.has-child:after {
+      height: 100%;
+    }
+  }
 
   //Add padding for shellbar buttons
   :global(.fd-shellbar__button) {
@@ -1437,7 +1436,7 @@
   }
 
   //Make border radius for links inside fd-menu only for the first and last elements
-  @mixin luigi-menu__link--border($position) {
+  @mixin luigi-menu__link--border-radius($position) {
     :global(.fd-menu__link) {
       border-#{$position}-left-radius: 0.25rem;
       border-#{$position}-left-radius: var(
@@ -1451,12 +1450,13 @@
       );
     }
   }
+
   :global(.fd-menu) {
     :global(.fd-menu__list) {
       &:first-child {
         :global(.fd-menu__item) {
           &:first-child {
-            @include luigi-menu__link--border('top');
+            @include luigi-menu__link--border-radius('top');
           }
         }
       }
@@ -1464,7 +1464,7 @@
       &:last-child {
         :global(.fd-menu__item) {
           &:last-child {
-            @include luigi-menu__link--border('bottom');
+            @include luigi-menu__link--border-radius('bottom');
           }
         }
       }
