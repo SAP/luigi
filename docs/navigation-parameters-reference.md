@@ -361,6 +361,7 @@ The context switcher is a drop-down list available in the top navigation bar. It
 ### useFallbackLabelCache
 - **type**: boolean
 - **description**: if set to `true`, the labels retrieved through **fallbackLabelResolver** are cached within Luigi. This is useful, if **fallbackLabelResolver** is an async function which does a remote server call to fetch its value.
+- **since**: NEXTRELEASE
 
 ### preserveSubPathOnSwitch
 - **type**: boolean
