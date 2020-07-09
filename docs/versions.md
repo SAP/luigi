@@ -97,6 +97,8 @@ With the new v.0.10.0 of Fundamental Library Styles, there were breaking changes
 
 The current documentation page describes the latest Luigi version. You can find the documentation for earlier versions of Luigi here:
 
+* [1.1](https://github.com/SAP/luigi/tree/v1.1.1/docs)
+* [1.0](https://github.com/SAP/luigi/tree/v1.0.1/docs)
 * [0.7](https://github.com/SAP/luigi/tree/v0.7.7/docs)
 * [0.6](https://github.com/SAP/luigi/tree/v0.6.6/docs)
 * [0.5](https://github.com/SAP/luigi/tree/v0.5.4/docs)
