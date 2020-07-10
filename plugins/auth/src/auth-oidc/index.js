@@ -206,7 +206,7 @@ export default class openIdConnect {
           fromWhere = (responseMode === 'fragment') ? 'hash' : 'search'
         }
       }
-      console.log(window.location.fragment, fromWhere, toCheck)
+      
       if (window.location[fromWhere].indexOf(toCheck) === -1) {
         return resolve(true);
       }

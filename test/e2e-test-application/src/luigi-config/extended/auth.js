@@ -42,7 +42,7 @@ class Auth {
     // post_logout_redirect_uri: '/logout.html',
     // automaticSilentRenew: true,
     // response_type: "code", for PKCE
-    // response_mode: "query", // change between `query` and `fragment`
+    // response_mode: "fragment", // change between `query` and `fragment`
     profileStorageInterceptorFn: profile => {
       profile.email = undefined;
       return profile;
