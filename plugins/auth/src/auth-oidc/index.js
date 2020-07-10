@@ -188,23 +188,23 @@ export default class openIdConnect {
 ​
   _processLoginResponse() {
     return new Promise((resolve, reject) => {
-      let responseType = this.settings.response_type
-      let responseMode = this.settings.response_mode
+      let responseType = this.settings.response_type;
+      let responseMode = this.settings.response_mode;
       let toCheck, fromWhere;
       if (responseType.indexOf('code') > -1){
-        toCheck = "code"
+        toCheck = "code";
         if (!responseMode){
-          fromWhere = "search"
+          fromWhere = "search";
         } else {
-          fromWhere = (responseMode === 'fragment') ? 'hash' : 'search'
+          fromWhere = (responseMode === 'fragment') ? 'hash' : 'search';
         }
       } else {
         // defaulting to access token
-        toCheck = "access_token"
+        toCheck = "access_token";
         if (!responseMode){
-          fromWhere = "hash"
+          fromWhere = "hash";
         } else {
-          fromWhere = (responseMode === 'fragment') ? 'hash' : 'search'
+          fromWhere = (responseMode === 'fragment') ? 'hash' : 'search';
         }
       }
 ​
