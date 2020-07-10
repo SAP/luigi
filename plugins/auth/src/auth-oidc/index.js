@@ -5,7 +5,6 @@ import {
 } from 'oidc-client';
 import { Helpers } from '../helpers';
 import { thirdPartyCookiesStatus } from '../third-party-cookies-check';
-​
 export default class openIdConnect {
   constructor(settings = {}) {
     const defaultSettings = {
@@ -21,14 +20,14 @@ export default class openIdConnect {
       silent_redirect_uri:
         window.location.origin + '/assets/auth-oidc/silent-callback.html'
     };
-​
+
     const mergedSettings = Helpers.deepMerge(defaultSettings, settings);
-​
+
     // Prepend current url to redirect_uri, if it is a relative path
     ['redirect_uri', 'post_logout_redirect_uri'].forEach(key => {
       mergedSettings[key] = Helpers.prependOrigin(mergedSettings[key]);
     });
-​
+
     // set storage type
     const storageType = Luigi.getConfigValue('auth.storage');
     const isValidStore = ['none', 'sessionStorage', 'localStorage'].includes(
@@ -46,11 +45,11 @@ export default class openIdConnect {
         store: window[storageType]
       });
     } // else fall back to OIDC default
-​
+
     this.settings = mergedSettings;
-​
+
     this.client = new UserManager(this.settings);
-​
+
     this.client.events.addUserLoaded(async payload => {
       let profile = payload.profile;
       if (
@@ -63,7 +62,7 @@ export default class openIdConnect {
           payload.profile
         );
       }
-​
+
       const data = {
         accessToken: payload.access_token,
         accessTokenExpirationDate: payload.expires_at * 1000,
@@ -72,13 +71,13 @@ export default class openIdConnect {
         profile
       };
       Luigi.auth().store.setAuthData(data);
-​
+
       window.postMessage(
         { msg: 'luigi.auth.tokenIssued', authData: data },
         window.location.origin
       );
     });
-​
+
     return Promise.all([
       this._processLoginResponse(),
       this._processLogoutResponse()
@@ -86,14 +85,14 @@ export default class openIdConnect {
       return this;
     });
   }
-​
+
   login() {
     return this.client.signinRedirect(this.settings).catch(err => {
       console.error('[OIDC] login() Error', err);
       return err;
     });
   }
-​
+
   logout(authData, authOnLogoutFn) {
     const signoutData = {
       id_token_hint: authData && authData.idToken,
@@ -111,7 +110,7 @@ export default class openIdConnect {
         authOnLogoutFn();
       });
   }
-​
+
   setTokenExpirationAction() {
     if (!this.settings.automaticSilentRenew) {
       this.client.events.addAccessTokenExpired(() => {
@@ -123,14 +122,14 @@ export default class openIdConnect {
         );
       });
     }
-​
+
     if (this.settings.thirdPartyCookiesScriptLocation) {
       const iframe = document.createElement('iframe');
       iframe.src = this.settings.thirdPartyCookiesScriptLocation;
       iframe.style.display = 'none';
       document.body.appendChild(iframe);
     }
-​
+
     this.client.events.addSilentRenewError(e => {
       let redirectUrl;
       switch (e.message) {
@@ -160,13 +159,13 @@ export default class openIdConnect {
       );
     });
   }
-​
+
   setTokenExpireSoonAction() {
     this.client.events.addAccessTokenExpiring(() => {
       Luigi.auth().handleAuthEvent('onAuthExpireSoon', this.settings);
     });
   }
-​
+
   _processLogoutResponse() {
     return new Promise((resolve, reject) => {
       // TODO: dex logout does not yet support proper logout
@@ -186,7 +185,7 @@ export default class openIdConnect {
       resolve(true);
     });
   }
-​
+
   _processLoginResponse() {
     return new Promise((resolve, reject) => {
       let responseType = this.settings.response_type;
@@ -208,11 +207,11 @@ export default class openIdConnect {
           fromWhere = (responseMode === 'fragment') ? 'hash' : 'search';
         }
       }
-​
+
       if (window.location[fromWhere].indexOf(toCheck) === -1) {
         return resolve(true);
       }
-​
+
       this.tryToSignIn()
         .then((authenticatedUser = {}) => {
           if (authenticatedUser.error) {
@@ -223,7 +222,7 @@ export default class openIdConnect {
               authenticatedUser
             );
           }
-​
+
           // since auth storages have no callback we need to wait couple of ms before proceeding
           // else persistence might fail.
           setTimeout(() => {
@@ -255,7 +254,7 @@ export default class openIdConnect {
         });
     });
   }
-​
+
   async tryToSignIn() {
     try {
       // If the user was just redirected here from the sign in page, sign them in.
