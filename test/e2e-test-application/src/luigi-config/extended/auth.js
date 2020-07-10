@@ -35,12 +35,14 @@ class Auth {
     // and run docker-compose up. Default user: Luigi , password: pwd
     authority: 'http://localhost:4011',
     logoutUrl: 'http://localhost:4011/connect/endsession',
-    client_id: 'implicit-mock-client',
+    client_id: 'implicit-mock-client', //for PKCE use authorisation-code-pkce-mock-client | for implicit use implicit-mock-client
     scope: 'openid profile email',
     // optional parameters
     // redirect_uri: '',
     // post_logout_redirect_uri: '/logout.html',
     // automaticSilentRenew: true,
+    // response_type: "code", for PKCE
+    // response_mode: "query", // change between `query` and `fragment`
     profileStorageInterceptorFn: profile => {
       profile.email = undefined;
       return profile;

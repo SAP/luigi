@@ -188,13 +188,26 @@ export default class openIdConnect {
   _processLoginResponse() {
     return new Promise((resolve, reject) => {
       let responseType = this.settings.response_type
-      let toCheck;
-      if (responseType.indexOf('token') > -1){
-        toCheck = window.location.hash.indexOf("access_token") === -1
-      } else if (responseType.indexOf('code') > -1){
-        toCheck = window.location.search.indexOf('code') === -1
+      let responseMode = this.settings.response_mode
+      let toCheck, fromWhere;
+      if (responseType.indexOf('code') > -1){
+        toCheck = "code"
+        if (!responseMode){
+          fromWhere = "search"
+        } else {
+          fromWhere = (responseMode === 'fragment') ? 'hash' : 'search'
+        }
+      } else {
+        // defaulting to access token
+        toCheck = "access_token"
+        if (!responseMode){
+          fromWhere = "hash"
+        } else {
+          fromWhere = (responseMode === 'fragment') ? 'hash' : 'search'
+        }
       }
-      if (toCheck) {
+      console.log(window.location.fragment, fromWhere, toCheck)
+      if (window.location[fromWhere].indexOf(toCheck) === -1) {
         return resolve(true);
       }
 
