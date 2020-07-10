@@ -44,7 +44,7 @@ class Auth {
 
     // for PKCE flow
     client_id: 'authorisation-code-pkce-mock-client', // oidc-mockserver client id
-    response_type: "code", for PKCE
+    response_type: "code", // for PKCE
     response_mode: "fragment", // change between `query` and `fragment`
 
     // for implicit grant flow
