@@ -3,13 +3,13 @@
     <div class="fd-section__header">
       <h1 class="fd-section__title">LuigiClient uxManager methods</h1>
     </div>
-    <div class="fd-panel fd-has-margin-bottom-small">
-      <div class="fd-panel__header">
-        <div class="fd-panel__head">
-          <h3 class="fd-panel__title">Backdrop</h3>
+    <div class="fd-layout-panel fd-has-margin-bottom-small">
+      <div class="fd-layout-panel__header">
+        <div class="fd-layout-panel__head">
+          <h3 class="fd-layout-panel__title">Backdrop</h3>
         </div>
       </div>
-      <div class="fd-panel__body">
+      <div class="fd-layout-panel__body">
         <button
           class="fd-button"
           data-testid="add-backdrop"
@@ -25,13 +25,13 @@
         </p>
       </div>
     </div>
-    <div class="fd-panel fd-has-margin-bottom-small">
-      <div class="fd-panel__header">
-        <div class="fd-panel__head">
-          <h3 class="fd-panel__title">Confirmation modal</h3>
+    <div class="fd-layout-panel fd-has-margin-bottom-small">
+      <div class="fd-layout-panel__header">
+        <div class="fd-layout-panel__head">
+          <h3 class="fd-layout-panel__title">Confirmation modal</h3>
         </div>
       </div>
-      <div class="fd-panel__body">
+      <div class="fd-layout-panel__body">
         <button
           class="fd-button"
           data-testid="show-luigi-confirmation-modal"
@@ -59,13 +59,13 @@
       </div>
     </div>
 
-    <div class="fd-panel fd-has-margin-bottom-small">
-      <div class="fd-panel__header">
-        <div class="fd-panel__head">
-          <h3 class="fd-panel__title">Alert</h3>
+    <div class="fd-layout-panel fd-has-margin-bottom-small">
+      <div class="fd-layout-panel__header">
+        <div class="fd-layout-panel__head">
+          <h3 class="fd-layout-panel__title">Alert</h3>
         </div>
       </div>
-      <div class="fd-panel__body">
+      <div class="fd-layout-panel__body">
         <form #luigiAlertForm="ngForm">
           <div class="fd-form__set fd-has-padding-bottom-small">
             <div class="fd-form-item">
@@ -143,13 +143,13 @@
       </div>
     </div>
 
-    <div class="fd-panel fd-has-margin-bottom-small">
-      <div class="fd-panel__header">
-        <div class="fd-panel__head">
-          <h3 class="fd-panel__title">Localization</h3>
+    <div class="fd-layout-panel fd-has-margin-bottom-small">
+      <div class="fd-layout-panel__header">
+        <div class="fd-layout-panel__head">
+          <h3 class="fd-layout-panel__title">Localization</h3>
         </div>
       </div>
-      <div class="fd-panel__body">
+      <div class="fd-layout-panel__body">
         <div class="fd-form-item">
           <label class="fd-form-label" data-testid="luigi-current-locale">
             Current locale is: '{{ currentLocale }}'
@@ -192,16 +192,16 @@
       </div>
     </div>
 
-    <div class="fd-panel fd-has-margin-bottom-small">
-      <div class="fd-panel__header">
-        <div class="fd-panel__head">
-          <h3 class="fd-panel__title">
+    <div class="fd-layout-panel fd-has-margin-bottom-small">
+      <div class="fd-layout-panel__header">
+        <div class="fd-layout-panel__head">
+          <h3 class="fd-layout-panel__title">
             Combine unsaved changes feature with Luigi Client UX manager
             methods!!
           </h3>
         </div>
       </div>
-      <div class="fd-panel__body">
+      <div class="fd-layout-panel__body">
         <div class="fd-form-item">
           <label class="fd-switch__label" for="ImBw4551">
             <span class="fd-switch fd-switch--compact">
@@ -250,8 +250,8 @@
       <h1 class="fd-section__title">LuigiClient linkManager methods</h1>
     </div>
     <ng-container *ngIf="preservedViewCallbackContext">
-      <div class="fd-panel fd-has-margin-bottom-small">
-        <div class="fd-panel__body">
+      <div class="fd-layout-panel fd-has-margin-bottom-small">
+        <div class="fd-layout-panel__body">
           <div class="fd-message-strip" role="alert">
             <div class="fd-message-strip__text">
               Context received from linkManager().goBack():<br />
@@ -261,13 +261,13 @@
         </div>
       </div>
     </ng-container>
-    <div class="fd-panel fd-has-margin-bottom-small">
-      <div class="fd-panel__header">
-        <div class="fd-panel__head">
-          <h3 class="fd-panel__title">Navigate</h3>
+    <div class="fd-layout-panel fd-has-margin-bottom-small">
+      <div class="fd-layout-panel__header">
+        <div class="fd-layout-panel__head">
+          <h3 class="fd-layout-panel__title">Navigate</h3>
         </div>
       </div>
-      <div class="fd-panel__body">
+      <div class="fd-layout-panel__body">
         <ul class="fd-list">
           <li class="fd-list__item">
             <a
@@ -486,13 +486,13 @@
       </div>
     </div>
 
-    <div class="fd-panel fd-has-margin-bottom-small check-path">
-      <div class="fd-panel__header">
-        <div class="fd-panel__head">
-          <h3 class="fd-panel__title">Check if path exists</h3>
+    <div class="fd-layout-panel fd-has-margin-bottom-small check-path">
+      <div class="fd-layout-panel__header">
+        <div class="fd-layout-panel__head">
+          <h3 class="fd-layout-panel__title">Check if path exists</h3>
         </div>
       </div>
-      <div class="fd-panel__body">
+      <div class="fd-layout-panel__body">
         <p>
           <app-code-snippet
             data="linkManager().pathExists('{{ pathExists.formValue }}')"
@@ -524,15 +524,15 @@
       </div>
     </div>
 
-    <div class="fd-panel">
-      <div class="fd-panel__header">
-        <div class="fd-panel__head">
-          <h3 class="fd-panel__title">
+    <div class="fd-layout-panel">
+      <div class="fd-layout-panel__header">
+        <div class="fd-layout-panel__head">
+          <h3 class="fd-layout-panel__title">
             LuigiClient - wrong paths in linkManager.navigate():
           </h3>
         </div>
       </div>
-      <div class="fd-panel__body">
+      <div class="fd-layout-panel__body">
         <ul class="fd-list">
           <li class="fd-list__item">
             <a
@@ -568,8 +568,8 @@
     <div class="fd-section__header">
       <h1 class="fd-section__title">Horizontal navigation</h1>
     </div>
-    <div class="fd-panel" title="visitors: {{ visitors }}">
-      <div class="fd-panel__body">
+    <div class="fd-layout-panel" title="visitors: {{ visitors }}">
+      <div class="fd-layout-panel__body">
         <p>Horizontal navigation content</p>
       </div>
     </div>
