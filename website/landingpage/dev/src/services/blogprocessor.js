@@ -72,7 +72,7 @@ export const getBlogEntries = (singleSlug = false) => {
         date,
         title: mdData.data.title,
         fileName,
-        description: mdData.data.description,
+        seoMetaDescription: mdData.data.seoMetaDescription,
         author: mdData.data.author,
         htmlExcerpt: marked(mdData.content),
         htmlContent: marked(frontmatter(fileContent).content)
@@ -87,7 +87,7 @@ const writeBlogFiles = (blogEntries) => {
   blogEntries.forEach(entry => {
   const blogHtml = `---
 title: ${entry.title}
-description: ${entry.description}
+seoMetaDescription: ${entry.seoMetaDescription}
 layout: blog
 ---
 ${entry.blogContent}`;

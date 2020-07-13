@@ -38,7 +38,7 @@ class BlogFeedsService {
         title: post.title,
         id: `https://luigi-project.io/blog/${post.slug}`,
         link: `https://luigi-project.io/blog/${post.slug}`,
-        description: post.description,
+        description: post.seoMetaDescription,
         content: post.htmlContent, // or htmlExcerpt?
         author: post.author.map(name => ({name})),
         // contributor: [{name, email, link}],

@@ -13,7 +13,7 @@ Excerpt content for overview page is separated with `<!-- Excerpt -->`.
 ```markdown
 ---
 title: Our first blog entry
-description: This is our first blog entry and it introduces our new blog section.
+seoMetaDescription: This is our first blog entry and it introduces our new blog section.
 author:
   - Name 1
   - Name 2
