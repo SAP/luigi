@@ -27,6 +27,7 @@ Use the parameters and functions in this reference to configure your Luigi navig
 * [Context switcher](#context-switcher)
 * [Product switcher](#product-switcher)
 * [App switcher](#app-switcher)
+* [Global search](#global-search)
 
 
 ## Routing parameters
@@ -61,10 +62,15 @@ The navigation parameters allow you to configure **global** navigation settings 
 ### addNavHrefs
 - **type**: boolean
 - **description**: if set to `true`, proper href attributes are added to all navigation links. It is set to `false` by default.
+- **since**: v0.7.4
 
 ### nodeAccessibilityResolver
 - **type**: any
 - **description**: receives all values defined in the node configuration. It allows you to define a permission checker function that gets executed on every node. If it returns `false`, Luigi removes the node and its children from the navigation structure. See [angular navigation.js](../test/e2e-test-application/src/luigi-config/extended/navigation.js) for an example.
+
+### nodeChangeHook
+- **type**: function
+- **description**: allows you to invoke and execute a specific function on the global level when a request to navigate to the node occurs. The function receives two node objects as input parameters: the previous node and current node, as described in the configuration. 
 
 ### defaults.isolateView
 - **type**: boolean
@@ -72,6 +78,8 @@ The navigation parameters allow you to configure **global** navigation settings 
 - **default**: the parameter **defaults.isolateView** is `false` by default, and you can overwrite it using the **isolateView** value on a single node level.
 
 ### defaults.pageErrorHandler
+<!-- add-attribute:class:warning -->
+> **NOTE**: The **pageErrorHandler** only works if the [loading indicator](#loadingindicatorenabled) is not disabled.
 - **type**: object
 - **description**: gives you the possibility to handle a situation in which Luigi Client doesn't respond. By default, it will redirect to the home page if nothing else is specified. **timeout** is required.
 - **default**: the parameter **defaults.pageErrorHandler** is not specified by default, and you can overwrite it using the **pageErrorHandler** value on a single node level.
@@ -80,6 +88,7 @@ The navigation parameters allow you to configure **global** navigation settings 
   - **viewUrl** specifies the location to redirect to on the micro frontend level (the main URL is not changed).
   - **redirectPath** specifies the location to redirect to on the Luigi level (the main URL is changed).
   - **errorFn** used to handle different scenarios other than redirection.
+- **since**: v1.0.1
 
 ### preloadViewGroups
 - **type**: boolean
@@ -205,7 +214,11 @@ settings: {
     ```
 ### icon
 - **type**: string
-- **description**: the name of an icon, without the `sap-icon--` prefix. Its source may be [OpenUI](https://openui5.hana.ondemand.com/1.40.10/iconExplorer.html) or a custom link (relative or absolute) to an image. It is recommended to use a square image. The icon is displayed next to the node label in the side navigation or instead of the label in the top navigation.
+- **description**: the name of an icon, without the `sap-icon--` prefix. Its source may be [OpenUI](https://openui5.hana.ondemand.com/1.40.10/iconExplorer.html) or a custom link (relative or absolute) to an image. It is recommended to use a square image. The icon is displayed next to the node label in the side navigation or instead of the label in the top navigation. To show the label next to the icon in the top navigation, add the `showLabel` attribute.
+
+### showLabel
+- **type**: boolean
+- **description**: Forces the label to be visible in the top navigation even if an icon is set.
 
 ### altText
 - **type**: string
@@ -218,7 +231,7 @@ settings: {
 
 ### badgeCounter
 - **type**: object
-- **description**: adds a badge with a number and a label to a node. Nodes that are part of a category show a cumulated number of all badges in this category. **badgeCounter** is only available for top navigation items.
+- **description**: adds a badge with a number and a label to a node. Nodes that are part of a category show a cumulated number of all badges in this category. 
 - **attributes**:
   - **label** is the label of the badge.
   - **count** is a function or asynchronous function that returns a number.
@@ -258,6 +271,7 @@ settings: {
 ### tabNav
 - **type**: boolean
 - **description**: renders the children of the node as a horizontal navigation bar. Sub-children are not supported. When you categorize nodes you will get a drop-down menu in the horizontal navigation.
+- **since**: v0.7.0
 
 ### anonymousAccess
 - **type**: boolean or "exclusive"
@@ -277,8 +291,11 @@ settings: {
       virtualTree: true
     }
     ```
+- **since**: v0.7.6
 
 ### pageErrorHandler
+<!-- add-attribute:class:warning -->
+> **NOTE**: The **pageErrorHandler** only works if the [loading indicator](#loadingindicatorenabled) is not disabled.
 - **type**: object
 - **description**: gives you the possibility to handle a situation in which Luigi Client doesn't respond. By default, it will redirect to the home page if nothing else is specified. **timeout** is required.
 - **attributes**:
@@ -286,6 +303,7 @@ settings: {
   - **viewUrl** specifies the location to redirect to on the micro frontend level (the main URL is not changed).
   - **redirectPath** specifies the location to redirect to on the Luigi level (the main URL is changed).
   - **errorFn** used to handle different scenarios other than redirection.
+  - **since**: v1.0.1
 
 ## Context switcher
 
@@ -316,11 +334,13 @@ The context switcher is a drop-down list available in the top navigation bar. It
 - **type**: function
 - **parameters**: [option](navigation-parameters-reference.md#options)
 - **description**: enables you to customize the selected option of the dropdown button of the context switcher by rendering HTML code inside a `<button>`. The function takes an  **option** object as a parameter. It is recommended to use this function carefully because it is possible to inject JavaScript code.
+- **since**: v1.0.0
 
 ### customOptionsRenderer
 - **type**: function
 - **parameters**: [option](navigation-parameters-reference.md#options), isSelected
 - **description**: enables you to add custom items to the context switcher by rendering code inside a `<li>` element. The function takes an **option** object and a boolean **isSelected** as a parameter. It is recommended to use this function carefully because it is possible to inject JavaScript code.
+- **since**: v0.7.3
 
 
 ### actions
@@ -347,6 +367,7 @@ The context switcher is a drop-down list available in the top navigation bar. It
 - **type**: boolean
 - **description**: if set to `false`, the drop-down is not shown on click if there is only one option and no actions.
 - **default**: `true`
+- **since**: v0.7.3
 
 ### Icon
 - **type**: string
@@ -385,6 +406,7 @@ The profile section is a configurable drop-down list available in the top naviga
 ### staticUserInfoFn
 - **type**: function
 - **description**: used to retrieve a user's name and email to simulate logging in. It can be used when authorization is disabled and also gets called if the defined IDP provider does not have **settings.userInfoFn** defined or does not provide a `userInfo` function internally. It can be asynchronous and should return an object with **name**, **email** and **picture** parameters.
+- **since**: v0.6.5
 
 <!-- add-attribute:class:warning -->
 >**NOTE:** Neither **authorization** nor **profile** parameter is configured if the profile section in the top navigation bar is not visible.
@@ -423,6 +445,7 @@ The product switcher is a pop-up window available in the top navigation bar. It 
   - **icon** is the name of an icon from the [OpenUI](https://openui5.hana.ondemand.com/1.40.10/iconExplorer.html) or a custom link (relative or absolute) to an image displayed next to the label or instead of it.
   - **altText** adds the HTML `alt` attribute to an icon. Note that this property only applies to icons with a defined absolute or relative path.
   - **link** defines an absolute link to a **node**.
+  - **selected** if set to true, the item is displayed in selected state, useful e.g. if the item refers to the current product.
   - **externalLink** is an object which indicates that the node links to an external URL. If this parameter
  is defined, the **link** parameter
  is ignored. It has the following attributes:
@@ -445,3 +468,53 @@ The app switcher is a drop-down list available in the top navigation bar. It all
   - **title** defines the application title. This is shown in the **appSwitcher** drop-down as well as the title in the header of the Luigi application if a user is in the context of the app.
   - **subTitle** defines the application sub-title. This is shown as the sub-title in the header of the Luigi application if a user is in the context of the app.
   - **link** is a link within the Luigi application that defines the root of the app. It is used to switch to the application if the drop-down entry is selected. It is also used to determine if a user is within the app's scope, so that the corresponding title and sub-title can be rendered in the header.
+
+## Global search
+
+The global search is an input field available in the top navigation bar. The search is available if the search provider object is configured and implemented in the `luigi-config.js` file.
+
+### searchProvider
+- **type**: Object
+- **description**: The search provider is an object which contains different events and the possibility to implement a custom result renderer or change only the search result item.
+ - **attributes:**
+  - **onInput**
+    - **type**: Function
+    - **description**: will be executed on every key-up event.
+  - **onEnter**
+    - **type**: Function
+    - **description**: will be executed when the user presses 'Enter'. 
+  - **onEscape**
+    - **type**: Function
+    - **description**: will be executed when the user presses 'Escape'. 
+  - **customSearchResultRenderer** 
+    - **type**: Function
+    - **description**: This function allows you to append your custom search result to a slot which Luigi provides for you. If this function is implemented the default search result popover is disabled.
+    - **attributes**:
+      - **searchResults**
+        - **type**: Array
+        - **description**: array of search result items
+      - **slot**
+        - **type**: DIV element
+        - **description**: `div` element as slot. You can append a custom implementation of the search result to this `div` element.
+      - **searchApiObj**
+        - **type**: Object
+        - **description**: It is an object with a function `fireItemSelected` as property. This function gets a search result item as parameter and fires the search provider event `onSearchResultItemSelected`.
+  - **customSearchResultItemRenderer**
+    - **type**: Function
+    - **description**: This function allows you to customize the single list element rendered in the default search result popover.
+    - **attributes**:
+      - **searchResultItem**
+        - **type**: Object
+        - **description**: search result item
+      - **slot**
+        - **type**: LI element
+        - **description**: `li` element as slot. You can append a custom implementation of a `searchResultItem` to this `li` element.
+      - **searchApiObj**
+        - **type**: Object
+        - **description**: It is an object with a function `fireItemSelected` as property. This function gets a `searchResultItem` as parameter and fires the search provider event `onSearchResultItemSelected`.
+  - **onSearchResultItemSelected**
+    - **type**: Function
+    - **description**: will be executed when the user clicks on a `searchResultItem`. 
+    - **attribute** [searchResultItem](luigi-core-api.md#globalsearch)
+      
+          

@@ -36,10 +36,8 @@ class NavigationClass {
         } else {
           rootNode = { children: topNavNodes };
         }
-        await this.getChildren(rootNode); // keep it, mutates and filters c
+        await this.getChildren(rootNode);
         NodeDataManagementStorage.setRootNode(rootNode);
-
-        //await this.getChildren(this.rootNode, null, activePath); // keep it, mutates and filters children
       }
       const nodeNamesInCurrentPath = activePath.split('/');
       const navObj = await this.buildNode(
@@ -113,6 +111,10 @@ class NavigationClass {
       : await Navigation.getChildren(node);
   }
 
+  /**
+   * Returns the children from the passed node from Cache
+   * @param {} node
+   */
   getChildrenFromCache(node) {
     let data = NodeDataManagementStorage.getChildren(node);
     return data ? data.filteredChildren : [];
@@ -331,6 +333,17 @@ class NavigationClass {
       }
     });
     return result;
+  }
+
+  onNodeChange(prevNode, nextNode) {
+    const invokedFunction = LuigiConfig.getConfigValue(
+      'navigation.nodeChangeHook'
+    );
+    if (typeof invokedFunction === 'function') {
+      invokedFunction(prevNode, nextNode);
+    } else if (invokedFunction !== undefined) {
+      console.warn('nodeChangeHook is not a function!');
+    }
   }
 
   getNodesToDisplay(children, pathData) {

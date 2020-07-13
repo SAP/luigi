@@ -60,6 +60,14 @@
     pathParams="{pathParams}"
     on:handleClick="{handleNavClick}"
     on:resizeTabNav="{onResizeTabNav}"
+    on:toggleSearch="{toggleSearch}"
+    on:handleSearchNavigation="{handleSearchNavigation}"
+    bind:isSearchFieldVisible
+    bind:displaySearchResult
+    bind:displayCustomSearchResult
+    bind:searchResult
+    bind:inputElem
+    bind:luigiCustomSearchRenderer__slot
   />
   {#if !(hideNav||hideSideNav)}
   <LeftNav
@@ -97,13 +105,19 @@
   import { fade } from 'svelte/transition';
   import { CSS_BREAKPOINTS } from './utilities/constants';
   import {
+    EventListenerHelpers,
     GenericHelpers,
     StateHelpers,
     RoutingHelpers,
     IframeHelpers,
     AuthHelpers
   } from './utilities/helpers';
-  import { LuigiI18N, LuigiConfig, LuigiElements } from './core-api';
+  import {
+    LuigiI18N,
+    LuigiConfig,
+    LuigiElements,
+    LuigiGlobalSearch
+  } from './core-api';
   import { Navigation } from './navigation/services/navigation';
   import { Routing } from './services/routing';
   import { Iframe } from './services/iframe';
@@ -157,6 +171,13 @@
   let tabNav;
   let resizeTabNavToggle = false;
   let thirdPartyCookiesCheck;
+  let searchProvider;
+  export let isSearchFieldVisible;
+  export let inputElem;
+  export let luigiCustomSearchRenderer__slot;
+  export let displaySearchResult;
+  export let displayCustomSearchResult = true;
+  export let searchResult;
 
   const prepareInternalData = config => {
     const iframeConf = config.iframe.luigi;
@@ -475,6 +496,121 @@
 
   setContext('handleNavigation', handleNavigation);
 
+  ////GLOBALSEARCH
+
+  const checkSearchProvider = searchProvider => {
+    if (!searchProvider) {
+      console.warn('No search provider defined.');
+      return false;
+    } else {
+      return true;
+    }
+
+    // check for required searchProvider keys here.
+  };
+  export const closeSearchField = () => {
+    if (checkSearchProvider(searchProvider)) {
+      isSearchFieldVisible = false;
+    }
+  };
+
+  export const openSearchField = () => {
+    if (checkSearchProvider(searchProvider)) {
+      if (inputElem) {
+        isSearchFieldVisible = true;
+        inputElem.focus();
+      }
+    }
+  };
+
+  export const clearSearchField = () => {
+    if (checkSearchProvider(searchProvider)) {
+      if (inputElem) {
+        inputElem.value = '';
+        closeSearchResult();
+      }
+    }
+  };
+
+  export const toggleSearch = () => {
+    isSearchFieldVisible = !isSearchFieldVisible;
+    LuigiGlobalSearch.clearSearchField();
+  };
+
+  export const getGlobalSearchString = () => {
+    if (checkSearchProvider(searchProvider)) {
+      if (inputElem) {
+        return inputElem.value;
+      }
+    }
+  };
+
+  export const setGlobalSearchString = searchString => {
+    if (checkSearchProvider(searchProvider)) {
+      if (inputElem) {
+        inputElem.value = searchString;
+        if (GenericHelpers.isFunction(searchProvider.onInput)) {
+          searchProvider.onInput();
+        } else {
+          console.error(
+            'onInput is not a function. Please check the global search configuration.'
+          );
+        }
+      }
+    }
+  };
+
+  export const showSearchResult = arr => {
+    if (checkSearchProvider(searchProvider)) {
+      if (arr && arr.length > 0) {
+        if (
+          GenericHelpers.isFunction(searchProvider.customSearchResultRenderer)
+        ) {
+          displayCustomSearchResult = true;
+          let searchApiObj = {
+            fireItemSelected: item => {
+              searchProvider.onSearchResultItemSelected(item);
+            }
+          };
+          searchProvider.customSearchResultRenderer(
+            arr,
+            luigiCustomSearchRenderer__slot,
+            searchApiObj
+          );
+        } else {
+          displaySearchResult = true;
+          searchResult = arr;
+        }
+      } else {
+        console.warn('Search result array is empty.');
+      }
+    }
+  };
+
+  export const closeSearchResult = () => {
+    if (checkSearchProvider(searchProvider)) {
+      displaySearchResult = false;
+      searchResult = [];
+      if (luigiCustomSearchRenderer__slot) {
+        while (luigiCustomSearchRenderer__slot.lastElementChild) {
+          luigiCustomSearchRenderer__slot.removeChild(
+            luigiCustomSearchRenderer__slot.lastElementChild
+          );
+        }
+      }
+    }
+  };
+
+  export const handleSearchNavigation = event => {
+    let node = event.detail.node;
+    let data = {
+      params: {
+        link: node.link,
+        nodeParams: node.params
+      }
+    };
+    handleNavigation(data);
+  };
   //// SPLIT VIEW
   export const openSplitView = (nodepath, settings) => {
     if (mfSplitView.displayed) {
@@ -763,7 +899,7 @@
       IframeHelpers.broadcastMessageToAllIframes(message);
     });
 
-    window.addEventListener('popstate', async e => {
+    EventListenerHelpers.addEventListener('popstate', async e => {
       const alertQueue = alerts;
       if (!alertQueue || !alertQueue.length) return;
 
@@ -787,7 +923,7 @@
       alerts = updatedAlerts;
     });
 
-    window.addEventListener('message', async e => {
+    EventListenerHelpers.addEventListener('message', async e => {
       const iframe = IframeHelpers.getValidMessageSource(e);
       if (!iframe) return;
 
@@ -809,7 +945,19 @@
             microfrontend,
             GenericHelpers.removeInternalProperties(iframe.luigi.currentNode)
           );
+        } else {
+          console.warn(
+            `Warning: Custom message with id: '${message.id}' does not exist. Make sure you provided the same id as in the config file. Documentation: https://docs.luigi-project.io/docs/communication?section=custom-messages`
+          );
         }
+      }
+
+      /**
+       * Persist the answer of the init handshake
+       * to prevent half-initialized clients
+       */
+      if ('luigi.init.ok' === e.data.msg) {
+        config.iframe.luigi.initOk = true;
       }
 
       if ('luigi.navigate.ok' === e.data.msg) {
@@ -823,6 +971,9 @@
       }
 
       if ('luigi.get-context' === e.data.msg) {
+        config.iframe.luigi.clientVersion = e.data.clientVersion; // undefined for v0.x clients
+        config.iframe.luigi.initOk = false; // get-context indication. used for handshake verification
+
         const specialIframeProps = {
           modalIframe,
           modalIframeData,
@@ -1082,6 +1233,7 @@
   };
 
   onMount(() => {
+    searchProvider = LuigiConfig.getConfigValue('globalSearch.searchProvider');
     responsiveNavSetting = LuigiConfig.getConfigValue(
       'settings.responsiveNavigation'
     );
@@ -1140,6 +1292,7 @@
     -webkit-font-smoothing: antialiased;
     margin: 0;
     line-height: 1.42857;
+    overflow: hidden;
   }
   :global(*) {
     box-sizing: inherit;

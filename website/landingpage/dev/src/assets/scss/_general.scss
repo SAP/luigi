@@ -151,7 +151,7 @@ section,
 
       &.has-big-bottom-margin {
         margin-bottom: -300px;
-        padding-bottom: 300px;
+        padding-bottom: 350px;
 
         @include breakpoint(xxlarge) {
           margin-bottom: -500px;

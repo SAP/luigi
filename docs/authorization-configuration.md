@@ -201,8 +201,13 @@ export class CustomAuthenticationProvider {
     // returns a promise of a userinfo object which contains an object with `name`, `email` and `picture` properties to display in the profile dropdown menu
     return { name, email, picture };
   }
+
+  unload() {
+    // logic that is called if you use Luigi.unload() in order to remove event listeners and intervals.
+  }
 }
 ```
+Read more about [Luigi.unload()](luigi-core-api.md#unload).
 ​
 To use the custom authentication provider in your Luigi app, include this code in the `auth:` section of the configuration file:
 
@@ -211,7 +216,7 @@ Luigi.setConfig({
   auth: {
     use: 'myProviderConfig',
     myProviderConfig: {
-      customIdpProvider: myProvider,
+      idpProvider: myProvider,
       redirect_uri: '/another-callback.html'
     }
   }

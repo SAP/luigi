@@ -16,3 +16,5 @@ tmp-*
 # WhiteSource
 whitesource.config.json
 plugin*.js
+core/dev-tools/latest_build.log
+core/dev-tools/simple-app

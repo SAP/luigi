@@ -172,6 +172,11 @@ describe('Navigation', () => {
       cy.get('button[title="Settings"]').should('contain', '');
     });
 
+    it('Icon with label label in TopNav', () => {
+      cy.get('button[data-testid="icon-and-label"]>.fd-top-nav__icon').should('exist');
+      cy.get('button[data-testid="icon-and-label"]').should('contain', 'Git');
+    });
+
     it('Icon with label in LeftNav', () => {
       cy.get('.fd-shellbar')
         .contains('Projects')
@@ -434,10 +439,12 @@ describe('Navigation', () => {
 
       cy.expectPathToBe('/projects/pr2/nav-sync/one');
 
-      ['two', 'three', 'four', 'one'].forEach((label, index) => {
+      const labels = ['two', 'three', 'four', 'one'];
+      labels.forEach((label, index) => {
         cy.getIframeBody().then($iframeBody => {
           cy.wrap($iframeBody)
-            .find('.fd-link')
+            // .find('.fd-link')
+            .contains(label)
             .click();
         });
         cy.expectPathToBe('/projects/pr2/nav-sync/' + label);
@@ -570,6 +577,51 @@ describe('Navigation', () => {
             .contains('Miscellaneous2')
             .should('visible');
         });
+      });
+    });
+  });
+  describe('GlobalSearch', () => {
+    context('Desktop', () => {
+      it('GlobalSearch Desktop', () => {
+        cy.get('.luigi-search__input').should('not.be.visible');
+        cy.get('[data-testid=luigi-search-btn-desktop]').click();
+        cy.get('.luigi-search__input').should('be.visible');
+        cy.get('.luigi-search__input').type('Luigi');
+        cy.get('[data-testid=luigi-search-btn-desktop]').click();
+        cy.get('.luigi-search__input').should('not.be.visible');
+        cy.get('[data-testid=luigi-search-btn-desktop]').click();
+        cy.get('.luigi-search__input').should('not.have.value', 'Luigi');
+      });
+    });
+    context('Mobile', () => {
+      beforeEach(() => {
+        cy.viewport('iphone-6');
+      });
+      it('GlobalSearch Mobile', () => {
+        cy.get('.luigi-search-shell__mobile .luigi-search__input').should(
+          'not.be.visible'
+        );
+        cy.get('[data-testid=mobile-menu]').click();
+        cy.get('[data-testid=luigi-search-btn-mobile]').click();
+        cy.get('.luigi-search-shell__mobile .luigi-search__input').should(
+          'be.visible'
+        );
+        cy.get('.luigi-search-shell__mobile .luigi-search__input').type(
+          'Luigi'
+        );
+
+        cy.get('[data-testid=mobile-menu]').click();
+        cy.get('[data-testid=luigi-search-btn-mobile]').click();
+        cy.get('.luigi-search-shell__mobile .luigi-search__input').should(
+          'not.be.visible'
+        );
+
+        cy.get('[data-testid=mobile-menu]').click();
+        cy.get('[data-testid=luigi-search-btn-mobile]').click();
+        cy.get('.luigi-search-shell__mobile .luigi-search__input').should(
+          'not.have.value',
+          'Luigi'
+        );
       });
     });
   });

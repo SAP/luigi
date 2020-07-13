@@ -38,6 +38,15 @@ class IframeHelpersClass {
     });
   }
 
+  removeIframe(iframe, node) {
+    const children = Array.from(node.children);
+    children.forEach(child => {
+      if (child === iframe) {
+        node.removeChild(child);
+      }
+    });
+  }
+
   replaceVars(viewUrl, params, prefix, parenthesis = true) {
     let processedUrl = viewUrl;
     if (params) {
@@ -200,7 +209,7 @@ class IframeHelpersClass {
   sendMessageToIframe(iframe, message) {
     if (!(iframe.luigi && iframe.luigi.viewUrl)) return;
     const trustedIframeDomain = this.getLocation(iframe.luigi.viewUrl);
-    if (trustedIframeDomain !== '') {
+    if (trustedIframeDomain !== '' && iframe.contentWindow) {
       iframe.contentWindow.postMessage(message, trustedIframeDomain);
     }
   }

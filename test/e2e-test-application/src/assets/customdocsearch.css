@@ -1,0 +1,68 @@
+.luigi-search .fd-input-group,
+.luigi-search .fd-input {
+  overflow: visible;
+}
+
+.luigi-search__button {
+  position: relative;
+  z-index: 2;
+}
+
+.algolia-autocomplete {
+  display: block !important;
+}
+
+.fd-search-input__closedcontrol {
+  width: 220px;
+}
+
+.fd-search-input__closedcontrol[aria-hidden='true'],
+.fd-search-input__closedcontrol.is-hidden {
+  width: 220px;
+}
+
+.algolia-autocomplete .ds-dropdown-menu {
+  margin-top: 10px;
+}
+
+.algolia-autocomplete .algolia-docsearch-suggestion--highlight {
+  padding: 0em 0.05em;
+}
+
+.algolia-autocomplete .algolia-docsearch-footer {
+  width: 100px;
+  height: 15px;
+}
+
+.algolia-autocomplete .ds-dropdown-menu [class^='ds-dataset-'] {
+  max-height: 75vh;
+  overflow-x: auto;
+}
+
+@media screen and (max-width: 1024px) {
+  .algolia-autocomplete .ds-dropdown-menu {
+    min-width: 300px;
+  }
+}
+
+@media screen and (max-width: 599px) {
+  .algolia-autocomplete.algolia-autocomplete-left .ds-dropdown-menu,
+  .algolia-autocomplete.algolia-autocomplete-right .ds-dropdown-menu {
+    position: fixed !important;
+    top: 44px !important;
+    left: 3vw !important;
+    right: 3vw !important;
+  }
+
+  .algolia-autocomplete.algolia-autocomplete-left .ds-dropdown-menu:before {
+    left: 60vw;
+  }
+
+  .algolia-autocomplete.algolia-autocomplete-right .ds-dropdown-menu:before {
+    right: 25vw;
+  }
+
+  .algolia-autocomplete .ds-dropdown-menu [class^='ds-dataset-'] {
+    max-width: 94vw;
+  }
+}

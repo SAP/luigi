@@ -1,27 +1,87 @@
 import fiddleConfig from '../configs/default';
+
+const setAcceptedCookies = win => {
+  win.localStorage.setItem('cookiesAccepted', 'true');
+};
+
+const setLoggedIn = win => {
+  const newTime = Date.now() + 6e4;
+  const newLuigiAuth = {
+    accessToken: 'thisisanaccesstokenthatisnotreallyneeded',
+    accessTokenExpirationDate: newTime,
+    idToken:
+      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJodHRwOi8vbG9jYWxob3N0OjQyMDAiLCJzdWIiOiJtYXNrb3BhdG9sIiwiZXhwIjoxNjQzNzY0OTIwLCJhenAiOiJtYXNrb3BhdG9sIiwibm9uY2UiOiJidE5rWVZzc1FldVlWNmEyR1RVZm1wWVFFelBRN3c1ZENCbU54SG54IiwiZW1haWwiOiJsdWlnaXVzZXJAa3ltYS5jeCIsIm5hbWUiOiJMdWlnaSBVc2VyIn0.YUBE3tufmmNIJHwzKRXlImteuh_qDeuwGjkzN3Z0erg'
+  };
+  const key = 'luigi.auth';
+  win.localStorage.setItem(key, JSON.stringify(newLuigiAuth));
+};
+
+const setLuigiConfig = (win, config) => {
+  const intv = setInterval(function() {
+    if (win.Luigi) {
+      win.Luigi.setConfig(config);
+      clearInterval(intv);
+    }
+  }, 20);
+};
+
 Cypress.Commands.add(
   'visitWithFiddleConfig',
   (path = '/', config = fiddleConfig) => {
     cy.visit(`http://localhost:8080/#${path}`, {
       onBeforeLoad: win => {
-        win.localStorage.setItem('cookiesAccepted', 'true');
-        win.sessionStorage.setItem('fiddle', `Luigi.setConfig(${config});`);
+        win.localStorage.clear();
+        win.sessionStorage.clear();
+        setAcceptedCookies(win);
+        setLuigiConfig(win, config);
       }
     });
   }
 );
+Cypress.Commands.add(
+  'visitWithFiddleConfigString',
+  (path = '/', config = fiddleConfig) => {
+    cy.visit(`http://localhost:8080/#${path}`, {
+      onBeforeLoad: win => {
+        win.localStorage.clear();
+        win.sessionStorage.clear();
+        setAcceptedCookies(win);
+        // Not using setLuigiConfig(win, config);
+        const strConfig =
+          typeof config === 'object' ? JSON.stringify(config) : config;
+        win.sessionStorage.setItem('fiddle', `Luigi.setConfig(${strConfig})`);
+        win.localStorage.setItem('fiddle', `Luigi.setConfig(${strConfig})`);
+      }
+    });
+  }
+);
+
+Cypress.Commands.add(
+  'visitLoggedInWithFiddleConfig',
+  (path = '/', config = fiddleConfig) => {
+    cy.visit(`http://localhost:8080/#${path}`, {
+      onBeforeLoad: win => {
+        win.localStorage.clear();
+        win.sessionStorage.clear();
+        setAcceptedCookies(win);
+        setLoggedIn(win);
+
+        const strConfig =
+          typeof config === 'object' ? JSON.stringify(config) : config;
+        win.sessionStorage.setItem('fiddle', `Luigi.setConfig(${strConfig})`);
+        win.localStorage.setItem('fiddle', `Luigi.setConfig(${strConfig})`);
+      }
+    });
+  }
+);
+
 Cypress.Commands.add('visitLoggedIn', (path = '/') => {
   cy.visit(path, {
     onBeforeLoad: win => {
-      const newTime = Date.now() + 6e4;
-      const newLuigiAuth = {
-        accessToken: 'thisisanaccesstokenthatisnotreallyneeded',
-        accessTokenExpirationDate: newTime,
-        idToken:
-          'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJodHRwOi8vbG9jYWxob3N0OjQyMDAiLCJzdWIiOiJtYXNrb3BhdG9sIiwiZXhwIjoxNjQzNzY0OTIwLCJhenAiOiJtYXNrb3BhdG9sIiwibm9uY2UiOiJidE5rWVZzc1FldVlWNmEyR1RVZm1wWVFFelBRN3c1ZENCbU54SG54IiwiZW1haWwiOiJsdWlnaXVzZXJAa3ltYS5jeCIsIm5hbWUiOiJMdWlnaSBVc2VyIn0.YUBE3tufmmNIJHwzKRXlImteuh_qDeuwGjkzN3Z0erg'
-      };
-      const key = 'luigi.auth';
-      win.localStorage.setItem(key, JSON.stringify(newLuigiAuth));
+      win.localStorage.clear();
+      win.sessionStorage.clear();
+      setAcceptedCookies(win);
+      setLoggedIn(win);
     }
   });
 });
@@ -29,19 +89,19 @@ Cypress.Commands.add('visitLoggedIn', (path = '/') => {
 Cypress.Commands.add(
   'login',
   (email, password, skipReturnPathCheck = false) => {
-    cy.get('.form-input')
+    cy.get('.fd-input')
       .first()
       .clear()
-      .type('tets@email.com')
-      .should('have.value', 'tets@email.com');
+      .type(email)
+      .should('have.value', email);
 
-    cy.get('.form-input')
+    cy.get('.fd-input')
       .last()
       .clear()
-      .type('tets')
-      .should('have.value', 'tets');
+      .type(password)
+      .should('have.value', password);
 
-    cy.get('#login-button').click();
+    cy.get('.fd-button').click();
 
     if (!skipReturnPathCheck) {
       cy.get('.fd-shellbar').contains('Overview');

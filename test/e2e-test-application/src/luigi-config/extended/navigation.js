@@ -55,7 +55,17 @@ class Navigation {
       children: [
         {
           pathSegment: ':environmentId',
-          viewUrl: '/sampleapp.html#/environments/:environmentId'
+          viewUrl: '/sampleapp.html#/environments/:environmentId',
+          children: [
+            {
+              pathSegment: 'overview',
+              viewUrl: '/sampleapp.html#/environments/:environmentId/overview'
+            },
+            {
+              pathSegment: 'settings',
+              viewUrl: '/sampleapp.html#/environments/:environmentId/settings'
+            }
+          ]
         }
       ]
     },
@@ -66,6 +76,17 @@ class Navigation {
       constraints: ['unicorns']
     },
     {
+      externalLink: {
+        url: 'https://github.com/SAP/luigi',
+        sameWindow: true
+      },
+      label: 'Git',
+      icon: 'globe',
+      showLabel: true,
+      hideSideNav: false,
+      testId: "icon-and-label"
+    },
+    {
       pathSegment: 'settings',
       label: 'Settings',
       viewUrl: '/sampleapp.html#/settings',
@@ -73,6 +94,7 @@ class Navigation {
       hideSideNav: true,
       viewGroup: 'tets'
     },
+    
     {
       category: { label: 'Misc', icon: 'badge' },
       label: 'Open Google in this tab',
@@ -81,6 +103,7 @@ class Navigation {
         sameWindow: true
       }
     }, // showing an anonymous content is possible only with auto login disabled
+    
     {
       category: 'Misc',
       pathSegment: 'all-users',
@@ -125,6 +148,7 @@ class Navigation {
         }
       ]
     },
+    
     {
       pathSegment: 'page-not-found',
       label: 'Page not found',
