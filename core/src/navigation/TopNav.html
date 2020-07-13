@@ -28,6 +28,7 @@
       bind:displayCustomSearchResult
       bind:inputElem
       bind:luigiCustomSearchRenderer__slot
+      on:closeSearchResult
     />
     {/if}
     <ContextSwitcher
@@ -117,7 +118,7 @@
         {/if}
         <!-- end node.icon -->
         {#if !node.icon || node.showLabel}
-          <span>{getNodeLabel(node)}</span>
+        <span>{getNodeLabel(node)}</span>
         {/if}
         <BadgeCounter {node}/>
       </button>
@@ -579,6 +580,10 @@
       inputElem,
       luigiCustomSearchRenderer__slot
     });
+  }
+
+  export function closeSearchResult() {
+    dispatch('closeSearchResult');
   }
 
   export function closeAllDropdowns() {

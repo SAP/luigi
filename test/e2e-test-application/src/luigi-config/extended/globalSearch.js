@@ -36,8 +36,8 @@ class GlobalSearch {
           pathObject: {
             link: '/settings'
           },
-          label: 'Settings ohne params',
-          description: 'settings',
+          label: 'Settings ohne paramsasadfasdfklasdlfjkasdf',
+          description: 'settingssdfklasjdflsdjfk',
           onActivate() {
             Luigi.globalSearch().closeSearchResult();
           }
@@ -83,7 +83,7 @@ class GlobalSearch {
           searchResultItem4
         );
         if (this.searchResult.length > 0) {
-          Luigi.globalSearch().showSearchResult(this.searchResult);
+          //Luigi.globalSearch().showSearchResult(this.searchResult);
         } else {
           Luigi.globalSearch().showSearchResult([
             {
@@ -215,40 +215,40 @@ class GlobalSearch {
       Luigi.globalSearch().clearSearchField();
       this.searchResult = [];
     },
-    // customSearchResultRenderer: (searchResults, slot, searchApiObj) => {
-    //   let div = document.createElement('div');
-    //   div.setAttribute(
-    //     'class',
-    //     'fd-popover__body fd-popover__body--right luigi-search__popover__body'
-    //   );
-    //   let nav = document.createElement('nav');
-    //   nav.setAttribute('class', 'fd-menu');
-    //   let ul = document.createElement('ul');
-    //   ul.setAttribute('class', 'fd-menu__list fd-menu__list--top');
-    //   for (let i = 0; i < searchResults.length; i++) {
-    //     let li = document.createElement('li');
-    //     li.setAttribute('class', 'fd-menu__item');
-    //     li.setAttribute(
-    //       'style',
-    //       'background-color:green;border:1px solid red;'
-    //     );
-    //     let a = document.createElement('a');
-    //     a.addEventListener('click', e => {
-    //       console.log('e', e);
-    //       searchApiObj.fireItemSelected(searchResults[i]);
-    //     });
-    //     a.setAttribute('class', 'fd-menu__link');
-    //     let span = document.createElement('span');
-    //     span.setAttribute('class', 'fd-menu__title');
-    //     span.innerHTML = searchResults[i].label;
-    //     a.appendChild(span);
-    //     li.appendChild(a);
-    //     ul.appendChild(li);
-    //   }
-    //   nav.appendChild(ul);
-    //   div.appendChild(nav);
-    //   slot.appendChild(div);
-    // },
+    customSearchResultRenderer: (searchResults, slot, searchApiObj) => {
+      let div = document.createElement('div');
+      div.setAttribute(
+        'class',
+        'fd-popover__body fd-popover__body--right luigi-search__popover__body'
+      );
+      let nav = document.createElement('nav');
+      nav.setAttribute('class', 'fd-menu');
+      let ul = document.createElement('ul');
+      ul.setAttribute('class', 'fd-menu__list fd-menu__list--top');
+      for (let i = 0; i < searchResults.length; i++) {
+        let li = document.createElement('li');
+        li.setAttribute('class', 'fd-menu__item');
+        li.setAttribute(
+          'style',
+          'background-color:green;border:1px solid red;'
+        );
+        let a = document.createElement('a');
+        a.addEventListener('click', e => {
+          console.log('e', e);
+          searchApiObj.fireItemSelected(searchResults[i]);
+        });
+        a.setAttribute('class', 'fd-menu__link');
+        let span = document.createElement('span');
+        span.setAttribute('class', 'fd-menu__title');
+        span.innerHTML = searchResults[i].label;
+        a.appendChild(span);
+        li.appendChild(a);
+        ul.appendChild(li);
+      }
+      nav.appendChild(ul);
+      div.appendChild(nav);
+      slot.appendChild(div);
+    },
     // customSearchResultItemRenderer(searchResultItem, slot, searchApiObj) {
     //   let a = document.createElement('a');
     //   a.setAttribute('class', 'fd-menu__link');
