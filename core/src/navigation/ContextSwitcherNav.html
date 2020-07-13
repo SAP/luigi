@@ -105,15 +105,17 @@
     }
   }
 
-  .fd-menu__list--top {
-    border-bottom: 1px solid #eeeeef;
-    border-bottom-left-radius: 0;
-    border-bottom-right-radius: 0;
-  }
-  .fd-menu__list--bottom {
-    border-top: 1px solid #eeeeef;
-    border-top-left-radius: 0;
-    border-top-right-radius: 0;
+  .fd-menu__list {
+    &--bottom {
+      border-top: 1px solid #eeeeef;
+      border-top-left-radius: 0;
+      border-top-right-radius: 0;
+    }
+    &--top {
+      border-bottom: 1px solid #eeeeef;
+      border-bottom-left-radius: 0;
+      border-bottom-right-radius: 0;
+    }
   }
 
   :global(.lui-contextswitcher-indicator) {
