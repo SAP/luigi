@@ -2,46 +2,54 @@ import { LuigiConfig } from '../core-api';
 
 class ThemingClass {
   constructor() {
-    this.isAvailable = false;
-    this.defaultTheme = "not specified";
+    this.currentTheme;
     this.themes = {};
   }
 
   async getAvailableThemes() {
-    const themingObject = await LuigiConfig.getConfigValueAsync('settings.theming');
-    console.log("themingObject : " + JSON.stringify(themingObject));
-    themingObject !== undefined ? this.themes = themingObject.themes : this.themes = false;
+    const themingObject = await LuigiConfig.getConfigValueAsync(
+      'settings.theming'
+    );
+    console.log('[Theming] getAvailableThemes', themingObject);
+    this.themes =
+      typeof themingObject !== 'undefined' ? themingObject.themes : false;
     return this.themes;
   }
 
-  setCurrentTheme(themeObject) {}
+  async setCurrentTheme(themeName) {
+    const theme = await this.getThemeObject(themeName);
+    this.currentTheme;
+  }
 
-  getThemeObject(themeName) {
-    const themingObject = await LuigiConfig.getConfigValueAsync('settings.theming');
+  async getThemeObject(themeName) {
+    const themingObject = await LuigiConfig.getConfigValueAsync(
+      'settings.theming'
+    );
     const themeObject = themingObject.themes.find(t => t.name === themeName);
-    console.log("Theme Object is " + themeObject);
+    console.log('[Theming] getThemeObject for', themeName, themeObject);
     return themeObject;
   }
 
-  getCurrentTheme() {
-    const theming = LuigiConfig.getConfigValue('settings.theming');
-    if(theming.defaultTheme) {
-      this.defaultTheme = theming.defaultTheme;
-      const to = this.getThemeObject(this.defaultTheme);
-      console.log("TO : " + JSON.stringify(to));
+  async getCurrentTheme() {
+    if (this.currentTheme) {
+      return this.currentTheme;
     }
-    return this.defaultTheme;
+    const theming = await LuigiConfig.getConfigValueAsync('settings.theming');
+    if (theming.defaultTheme) {
+      const defaultTheme = theming.defaultTheme;
+      console.log('[Theming] fallback to default theme', theming.defaultTheme);
+      return this.getThemeObject(defaultTheme);
+    }
+    return false;
   }
 
   isThemingAvailable() {
-    const isAvailableTheming = LuigiConfig.getConfigValue('settings.theming');
-    console.log("isAvailableTheming : " + isAvailableTheming);
-    if(isAvailableTheming) {
-      this.isAvailable = true;
-    } 
-    return this.isAvailable;
+    console.log(
+      '[Theming] isThemingAvailable',
+      !!LuigiConfig.getConfigValue('settings.theming')
+    );
+    return !!LuigiConfig.getConfigValue('settings.theming');
   }
-
 }
 
 export const Theming = new ThemingClass();
