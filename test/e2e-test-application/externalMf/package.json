@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "description": "",
   "main": "index.html",
-  "license": "ISC",
+  "license": "MIT",
   "dependencies": {
     "@luigi-project/client": "^1.1.0",
     "fundamental-styles": "^0.10.0"
