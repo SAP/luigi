@@ -49,7 +49,7 @@
               ></span>
               {/if}
               {#if node.badgeCounter}
-                <BadgeCounter {node} />
+              <BadgeCounter {node}/>
               {/if}
             </a>
           </li>
@@ -62,31 +62,42 @@
             on:click|stopPropagation="{() => handleIconClick(nodes, event.currentTarget)}"
             data-testid="{getTestIdForCat(nodes.metaInfo, key)}"
           >
-            <a
-              href="javascript:void(null)"
-              title="{$getTranslation(key)}"
-              class="fd-nested-list__link has-child {isExpanded(nodes, expandedCategories) ? 'is-expanded' : ''}"
-              aria-haspopup="true"
-              aria-expanded="{isExpanded(nodes, expandedCategories)}"
-              on:click|preventDefault="{() => setExpandedState(nodes, !isExpanded(nodes, expandedCategories), this)}"
-            >
-              {#if isOpenUIiconName(nodes.metaInfo.icon)}
-              <span
-                class="fd-nested-list__icon {'sap-icon--' + nodes.metaInfo.icon} {isSemiCollapsed && !nodes.metaInfo.icon ? 'sap-icon--rhombus-milestone-2' : ''}"
-                role="presentation"
-              ></span>
-              {:else}
-              <span class="fd-nested-list__icon">
-                <img
-                  src="{nodes.metaInfo.icon}"
-                  alt="{nodes.metaInfo.altText ? nodes.metaInfo.altText : ''}"
-                >
-              </span>
-              {/if}
-              <span
-                class="fd-nested-list__title"
-              >{$getTranslation(key)}</span>
-            </a>
+            <div class="fd-nested-list__content has-child" tabindex="0">
+              <a
+                href="javascript:void(null)"
+                title="{$getTranslation(key)}"
+                class="fd-nested-list__link {isExpanded(nodes, expandedCategories) ? 'is-expanded' : ''}"
+                tabindex="-1"
+                aria-haspopup="true"
+                aria-expanded="{isExpanded(nodes, expandedCategories)}"
+                on:click|preventDefault="{() => setExpandedState(nodes, !isExpanded(nodes, expandedCategories), this)}"
+              >
+                {#if isOpenUIiconName(nodes.metaInfo.icon)}
+                <span
+                  class="fd-nested-list__icon {'sap-icon--' + nodes.metaInfo.icon} {isSemiCollapsed && !nodes.metaInfo.icon ? 'sap-icon--rhombus-milestone-2' : ''}"
+                  role="presentation"
+                ></span>
+                {:else}
+                <span class="fd-nested-list__icon">
+                  <img
+                    src="{nodes.metaInfo.icon}"
+                    alt="{nodes.metaInfo.altText ? nodes.metaInfo.altText : ''}"
+                  >
+                </span>
+                {/if}
+                <span
+                  class="fd-nested-list__title"
+                >{$getTranslation(key)}</span>
+              </a>
+              <a
+                class="fd-nested-list__expand-icon"
+                href="#"
+                tabindex="-1"
+                aria-haspopup="true"
+                aria-expanded="{isExpanded(nodes, expandedCategories)}"
+                on:click|preventDefault="{() => setExpandedState(nodes, !isExpanded(nodes, expandedCategories), this)}"
+              ></a>
+            </div>
             <ul
               class="fd-nested-list fd-nested-list--text-only level-2"
               aria-hidden="{!isExpanded(nodes, expandedCategories)}"
@@ -109,7 +120,7 @@
                   ></span>
                   {/if}
                   {#if node.badgeCounter}
-                    <BadgeCounter {node} />
+                  <BadgeCounter {node}/>
                   {/if}
                 </a>
               </li>
@@ -141,7 +152,7 @@
                       ></span>
                       {/if}
                       {#if node.badgeCounter}
-                        <BadgeCounter {node} />
+                      <BadgeCounter {node}/>
                       {/if}
                     </a>
                   </li>
@@ -209,7 +220,7 @@
               ></span>
               {/if}
               {#if node.badgeCounter}
-                <BadgeCounter {node} />
+              <BadgeCounter {node}/>
               {/if}
             </a>
           </li>
@@ -602,7 +613,6 @@
   .fd-nested-list__link {
     &:not(.has-child) {
       .fd-nested-list__title {
-        width: auto;
         padding-right: 5px;
       }
     }
@@ -614,8 +624,6 @@
       max-height: 18px;
     }
   }
-
-   
 
   :global(.fd-nested-list--compact) {
     .fd-nested-list__icon {
@@ -684,6 +692,16 @@
     }
   }
 
+  .fd-nested-list .fd-nested-list__title {
+    display: inline-block;
+    height: auto;
+  }
+  .fd-nested-list__content.has-child {
+    .fd-nested-list__link {
+      max-width: calc(100% - 2.5rem);
+    }
+  }
+
   :global(.semiCollapsed) {
     .level-2 {
       display: none;
@@ -691,7 +709,6 @@
 
     .fd-app__sidebar {
       width: $leftNavWidthCollapsed;
-
       .lui-fd-side-nav-wrapper {
         min-width: auto;
         width: calc(#{$leftNavWidthCollapsed} + 70px);
@@ -727,6 +744,7 @@
       }
     }
   }
+
   :global(.lui-flyout-sublist) {
     position: fixed;
     left: 48px;
@@ -785,10 +803,6 @@
         left: -13px;
         border-right-color: white;
       }
-    }
-
-    .fd-nested-list__title {
-      display: inline-block;
     }
 
     li {

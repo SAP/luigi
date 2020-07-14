@@ -1,3 +1,4 @@
+<svelte:window on:click="{closeSearchResult}" on:blur="{closeSearchResult}"/>
 <div
   class="fd-shellbar__action {isSearchFieldVisible ? 'luigi-search-shell__mobile':''}"
 >
@@ -117,6 +118,10 @@
     return '';
   }
 
+  function closeSearchResult() {
+    dispatch('closeSearchResult');
+  }
+
   function onKeyUp(event) {
     if (search) {
       if (
@@ -212,6 +217,15 @@
         inputElem.focus();
       });
       search.searchProvider.onEscape();
+    }
+  }
+
+  export function onActionClick(searchResultItem) {
+    let node = searchResultItem.pathObject;
+    if (node.externalLink) {
+      Routing.navigateToLink(node);
+    } else {
+      dispatch('handleSearchNavigation', { node });
     }
   }
 

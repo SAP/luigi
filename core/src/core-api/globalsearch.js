@@ -4,76 +4,82 @@
  */
 class LuigiGlobalSearch {
   /**
-   * Open the global search field
-   * @memberof LuigiGlobalSearch
-   * @example Luigi.globalSearch().openSearchField()
+   * Opens the global search field.
+   * @memberof GlobalSearch
+   * @since NEXTRELEASE
+   * @example Luigi.globalSearch().openSearchField();
    */
   openSearchField() {
     Luigi.openSearchField();
   }
 
   /**
-   * Close the global search field
-   * @memberof LuigiGlobalSearch
-   * @example Luigi.globalSearch().closeSearchField()
+   * Closes the global search field.
+   * @memberof GlobalSearch
+   * @since NEXTRELEASE
+   * @example Luigi.globalSearch().closeSearchField();
    */
   closeSearchField() {
     Luigi.closeSearchField();
   }
 
   /**
-   * Clear the global search field
-   * @memberof LuigiGlobalSearch
-   * @example Luigi.globalSearch().clearSearchField()
+   * Clears the global search field.
+   * @memberof GlobalSearch
+   * @since NEXTRELEASE
+   * @example Luigi.globalSearch().clearSearchField();
    */
   clearSearchField() {
     Luigi.clearSearchField();
   }
 
   /**
-            * Open the global search result. By standard it is a popover
-            * @memberof LuigiGlobalSearch
-            * @param array of search result items
-            * @example 
-            * Luigi.globalSearch().showSearchResult(
-            * [
-            *   {
-                    pathObject: {
-                        path,
-                        params: {}// can be used by linkmanager.navigate(path).withParams(params)
-                    },
-                    label,
-                    description,
-                    onActivate() { }
-                }
-            * ])
-            */
-  showSearchResult(arr) {
-    Luigi.showSearchResult(arr);
+   * Opens the global search result. By standard it is a popover.
+   * @memberof GlobalSearch
+   * @param {Array} searchResultItems
+   * @since NEXTRELEASE
+   * @example
+   * let searchResultItem = {
+   *   pathObject: {
+   *     link,
+   *     params: {}
+   *   },
+   *   label,
+   *   description
+   * }
+   *
+   * Luigi.globalSearch().showSearchResult([searchResultItem1, searchResultItem2]);
+   */
+  showSearchResult(searchResultItems) {
+    Luigi.showSearchResult(searchResultItems);
   }
 
   /**
-   * Close the global search result. By standard it is a popover
-   * @memberof LuigiGlobalSearch
-   * @example Luigi.globalSearch().closeSearchResult()
+   * Closes the global search result. By standard it is rendered as a popover.
+   * @memberof GlobalSearch
+   * @since NEXTRELEASE
+   * @example Luigi.globalSearch().closeSearchResult();
    */
   closeSearchResult() {
     Luigi.closeSearchResult();
   }
 
   /**
-   * Get the value of the search input field
-   * @memberof LuigiGlobalSearch
-   * @example Luigi.globalSearch().getSearchString()
+   * Gets the value of the search input field.
+   * @memberof GlobalSearch
+   * @since NEXTRELEASE
+   * @example Luigi.globalSearch().getSearchString();
    */
   getSearchString() {
     return Luigi.getGlobalSearchString();
   }
 
   /**
-   * Set the value of the search input field
-   * @memberof LuigiGlobalSearch
-   * @example Luigi.globalSearch().getSearchString()
+   * Sets the value of the search input field.
+   * @memberof GlobalSearch
+   * @param searchString search value
+   * @since NEXTRELEASE
+   * @example Luigi.globalSearch().setSearchString('searchString');
    */
   setSearchString(searchString) {
     Luigi.setGlobalSearchString(searchString);

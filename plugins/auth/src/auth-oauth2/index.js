@@ -169,7 +169,6 @@ export default class oAuth2ImplicitGrant {
   generateNonce() {
     const validChars =
       '0123456789ABCDEFGHIJKLMNOPQRSTUVXYZabcdefghijklmnopqrstuvwxyz';
-
     const crypto = window.crypto || window.msCrypto;
     const random = Array.from(crypto.getRandomValues(new Uint8Array(20)));
 

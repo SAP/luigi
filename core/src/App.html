@@ -61,6 +61,7 @@
     on:handleClick="{handleNavClick}"
     on:resizeTabNav="{onResizeTabNav}"
     on:toggleSearch="{toggleSearch}"
+    on:closeSearchResult="{closeSearchResult}"
     on:handleSearchNavigation="{handleSearchNavigation}"
     bind:isSearchFieldVisible
     bind:displaySearchResult
@@ -497,19 +498,38 @@
   setContext('handleNavigation', handleNavigation);
 
   ////GLOBALSEARCH
+
+  const checkSearchProvider = searchProvider => {
+    if (!searchProvider) {
+      console.warn('No search provider defined.');
+      return false;
+    } else {
+      return true;
+    }
+
+    // check for required searchProvider keys here.
+  };
   export const closeSearchField = () => {
-    isSearchFieldVisible = false;
+    if (checkSearchProvider(searchProvider)) {
+      isSearchFieldVisible = false;
+    }
   };
 
   export const openSearchField = () => {
-    isSearchFieldVisible = true;
-    inputElem.focus();
+    if (checkSearchProvider(searchProvider)) {
+      if (inputElem) {
+        isSearchFieldVisible = true;
+        inputElem.focus();
+      }
+    }
   };
 
   export const clearSearchField = () => {
-    if (inputElem) {
-      inputElem.value = '';
-      closeSearchResult();
+    if (checkSearchProvider(searchProvider)) {
+      if (inputElem) {
+        inputElem.value = '';
+        closeSearchResult();
+      }
     }
   };
 
@@ -519,57 +539,65 @@
   };
 
   export const getGlobalSearchString = () => {
-    if (inputElem) {
-      return inputElem.value;
+    if (checkSearchProvider(searchProvider)) {
+      if (inputElem) {
+        return inputElem.value;
+      }
     }
   };
 
   export const setGlobalSearchString = searchString => {
-    if (inputElem) {
-      inputElem.value = searchString;
-      if (GenericHelpers.isFunction(searchProvider.onInput)) {
-        searchProvider.onInput();
-      } else {
-        console.error(
-          'onInput is not a function. Please check the global search configuration.'
-        );
+    if (checkSearchProvider(searchProvider)) {
+      if (inputElem) {
+        inputElem.value = searchString;
+        if (GenericHelpers.isFunction(searchProvider.onInput)) {
+          searchProvider.onInput();
+        } else {
+          console.error(
+            'onInput is not a function. Please check the global search configuration.'
+          );
+        }
       }
     }
   };
 
   export const showSearchResult = arr => {
-    if (arr && arr.length > 0) {
-      if (
-        GenericHelpers.isFunction(searchProvider.customSearchResultRenderer)
-      ) {
-        displayCustomSearchResult = true;
-        let searchApiObj = {
-          fireItemSelected: item => {
-            searchProvider.onSearchResultItemSelected(item);
-          }
-        };
-        searchProvider.customSearchResultRenderer(
-          arr,
-          luigiCustomSearchRenderer__slot,
-          searchApiObj
-        );
+    if (checkSearchProvider(searchProvider)) {
+      if (arr && arr.length > 0) {
+        if (
+          GenericHelpers.isFunction(searchProvider.customSearchResultRenderer)
+        ) {
+          displayCustomSearchResult = true;
+          let searchApiObj = {
+            fireItemSelected: item => {
+              searchProvider.onSearchResultItemSelected(item);
+            }
+          };
+          searchProvider.customSearchResultRenderer(
+            arr,
+            luigiCustomSearchRenderer__slot,
+            searchApiObj
+          );
+        } else {
+          displaySearchResult = true;
+          searchResult = arr;
+        }
       } else {
-        displaySearchResult = true;
-        searchResult = arr;
+        console.warn('Search result array is empty.');
       }
-    } else {
-      console.warn('Search result is empty.');
     }
   };
 
   export const closeSearchResult = () => {
-    displaySearchResult = false;
-    searchResult = [];
-    if (luigiCustomSearchRenderer__slot) {
-      while (luigiCustomSearchRenderer__slot.lastElementChild) {
-        luigiCustomSearchRenderer__slot.removeChild(
-          luigiCustomSearchRenderer__slot.lastElementChild
-        );
+    if (checkSearchProvider(searchProvider)) {
+      displaySearchResult = false;
+      searchResult = [];
+      if (luigiCustomSearchRenderer__slot) {
+        while (luigiCustomSearchRenderer__slot.lastElementChild) {
+          luigiCustomSearchRenderer__slot.removeChild(
+            luigiCustomSearchRenderer__slot.lastElementChild
+          );
+        }
       }
     }
   };
@@ -1515,14 +1543,6 @@
     }
   }
 
-  //IE11 fixes
-  :global(.fd-nested-list__content),
-  :global(.fd-nested-list__link) {
-    &.has-child:after {
-      height: 100%;
-    }
-  }
-
   :global(.fd-side-nav--condensed) {
     :global(.fd-nested-list__link) {
       font-size: 10px;
@@ -1533,6 +1553,13 @@
   }
 
   //Fixing issues for fundamental styles
+  //IE11 fixes
+  :global(.fd-nested-list__content),
+  :global(.fd-nested-list__link) {
+    &.has-child:after {
+      height: 100%;
+    }
+  }
 
   //Add padding for shellbar buttons
   :global(.fd-shellbar__button) {
@@ -1546,7 +1573,7 @@
   }
 
   //Make border radius for links inside fd-menu only for the first and last elements
-  @mixin luigi-menu__link--border($position) {
+  @mixin luigi-menu__link--border-radius($position) {
     :global(.fd-menu__link) {
       border-#{$position}-left-radius: 0.25rem;
       border-#{$position}-left-radius: var(
@@ -1560,12 +1587,13 @@
       );
     }
   }
+
   :global(.fd-menu) {
     :global(.fd-menu__list) {
       &:first-child {
         :global(.fd-menu__item) {
           &:first-child {
-            @include luigi-menu__link--border('top');
+            @include luigi-menu__link--border-radius('top');
           }
         }
       }
@@ -1573,7 +1601,7 @@
       &:last-child {
         :global(.fd-menu__item) {
           &:last-child {
-            @include luigi-menu__link--border('bottom');
+            @include luigi-menu__link--border-radius('bottom');
           }
         }
       }

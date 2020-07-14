@@ -98,6 +98,7 @@ export default class openIdConnect {
       id_token_hint: authData && authData.idToken,
       state: window.location.href
     };
+
     return this.client
       .createSignoutRequest(signoutData)
       .then(req => {
