@@ -1,3 +1,4 @@
+<svelte:window on:click="{closeSearchResult}" on:blur="{closeSearchResult}"/>
 <div
   class="fd-shellbar__action {isSearchFieldVisible ? 'luigi-search-shell__mobile':''}"
 >
@@ -43,7 +44,7 @@
                 on:click|preventDefault="{() => {}}"
               >
                 <span class="fd-menu__title">{result.label}</span>
-                <!-- <span class="fd-product-switch__subtitle">{result.description}</span> -->
+                <span class="fd-product-switch__subtitle">{result.description}</span>
               </a>
               {:else}
               {@html renderCustomSearchItem(result,luigiCustomSearchItemRenderer__slotContainer, index)}
@@ -114,6 +115,10 @@
       );
     });
     return '';
+  }
+
+  function closeSearchResult() {
+    dispatch('closeSearchResult');
   }
 
   function onKeyUp(event) {
