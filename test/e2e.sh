@@ -16,12 +16,27 @@ if [[ ! -L $NG_MODULES ]] && [[ ! -d $NG_MODULES ]]; then
   ln -s "$BASE_DIR/../node_modules" $NG_MODULES
 fi
 
+
+NG_MODULES_EXTERNALMF="$BASE_DIR/e2e-test-application/externalMf"
+if [[ ! -L $NG_MODULES ]] && [[ ! -d $NG_MODULES ]]; then
+  echo "Creating symlink for example node_modules";
+  ln -s $NG_MODULES $NG_MODULES_EXTERNALMF
+fi
+
+
 echo ""
 echo "Angular App"
 cd $NG_EXAMPLE
 killWebserver 4200
 runWebserver 4200 dist /luigi-core/luigi.js
 WS_NG_PID=$PID
+
+echo ""
+echo "External Micro frontend"
+cd "$BASE_DIR/e2e-test-application/externalMf"
+killWebserver 8090
+runWebserver 8090
+WS_EXT_PID=$PID
 
 echo ""
 echo "Fiddle App"
@@ -39,7 +54,17 @@ else
   echo "Running tests without parallelization"
   npm run e2e:run
 fi
+
+if [ "$USE_CYPRESS_DASHBOARD" == "true" ]; then
+  echo "Running tests in parallel with recording"
+  # obtain the key here: https://dashboard.cypress.io/#/projects/czq7qc/settings
+  npm run e2e:run:external -- --record --parallel --key 4bf20f87-8352-47d5-aefa-1e684fab69cf
+else
+  echo "Running tests without parallelization"
+  npm run e2e:run:external
+fi
 RV=$?
 kill $WS_NG_PID
 kill $WS_FID_PID
+kill $WS_EXT_PID
 exit $RV

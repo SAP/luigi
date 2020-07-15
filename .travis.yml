@@ -12,6 +12,7 @@ cache:
     - $TRAVIS_BUILD_DIR/plugins/auth/public/auth-oauth2
     - $TRAVIS_BUILD_DIR/plugins/auth/public/auth-oidc
     - $TRAVIS_BUILD_DIR/test/e2e-test-application/dist
+    - $TRAVIS_BUILD_DIR/test/e2e-test-application/externalMf
     - $TRAVIS_BUILD_DIR/website/fiddle/public
     - $TRAVIS_BUILD_DIR/cypress-binary-cache
     - $HOME/.cache/Cypress
