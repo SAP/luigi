@@ -19,8 +19,8 @@
     "mock:develop-plugins:watch": "NODE_ENV=debug nodemon --ignore 'static/**' -r esm scripts/markdown.unified-preview.js"
   },
   "dependencies": {
-    "@luigi-project/core": "1.1.0",
-    "@luigi-project/client": "1.1.0",
+    "@luigi-project/core": "1.2.1",
+    "@luigi-project/client": "1.2.1",
     "polka": "next",
     "docsearch.js": "2.6.3"
   },

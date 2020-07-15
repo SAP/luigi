@@ -4,23 +4,22 @@
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-
-  <title>Logout successful</title>
   <meta name="description" content="">
   <meta name="keywords" content="logout">
-
+  <title>Logout successful</title>
   <link href="/vendor/fundamental-styles/dist/fundamental-styles.css" rel="stylesheet">
-  
+  <link rel="stylesheet" type="text/css" href="../styles/styles.css" />
+
   <style>
     .sap-icon--log::before {
-      font-size: 150px;
+      font-size: 50px;
       color: #a0a0a0;
     }
     .fd-container--centered {
       text-align: center;
     }
-    a.fd-button {
-      color: #FFF;
+    .fd-container  {
+      padding-top: 20px;
     }
   </style>
   <script type="text/javascript">
@@ -34,11 +33,10 @@
   <div class="fd-col--6 fd-col--shift-3">
     <span class="sap-icon--log"></span>
     <br />
-    Logout successful
+      Logout successful
     <br />
     <br />
-    <br />
-    <button class="fd-button fd-button--action-bar fd-button--l" onclick="login()">Login again</button>
+    <button class="fd-button" onclick="login()">Login again</button>
   </div>
 </div>
 

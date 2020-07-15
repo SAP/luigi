@@ -27,6 +27,6 @@
     "serialize-javascript": ">=2.1.1",
     "vue-template-compiler": "2.6.10",
     "webpack": "^4.42.1",
-    "webpack-dev-server": "^3.1.14"
+    "webpack-dev-server": "^3.11.0"
   }
 }
