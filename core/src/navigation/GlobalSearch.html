@@ -88,7 +88,7 @@
   const dispatch = createEventDispatcher();
   const searchApiObj = {
     fireItemSelected: item => {
-      searchProvider.onSearchResultItemSelected(item);
+      search.searchProvider.onSearchResultItemSelected(item);
     }
   };
   let searchResults = {};
