@@ -19,7 +19,8 @@
     "sirv-cli": "^0.4.4"
   },
   "prettier": {
-    "singleQuote": true
+    "singleQuote": true,
+    "semi": true
   },
   "changelog": {
     "repo": "SAP/luigi",
