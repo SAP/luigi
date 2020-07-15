@@ -16,7 +16,7 @@ class BlogFeedsService {
       language: "en", // optional, used only in RSS 2.0, possible values: http://www.w3.org/TR/REC-html40/struct/dirlang.html#langcodes
       image: "https://luigi-project.io/assets/img/luigi_diagramm.png",
       favicon: "https://luigi-project.io/assets/img/favicon.png",
-      copyright: "MIT license",
+      copyright: "Copyright 2020. The Luigi project authors",
       updated: new Date(), // optional, default = today
       generator: "Luigi Project", // optional, default = 'Feed for Node.js'
       feedLinks: {
