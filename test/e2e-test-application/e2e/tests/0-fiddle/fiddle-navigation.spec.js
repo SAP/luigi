@@ -61,9 +61,10 @@ describe('Fiddle', () => {
         cy.expectPathToBe('/virtual/this/is/a/tree');
       });
     });
-    describe('context switcher', () => {
+    describe('ContextSwitcher', () => {
+      let newConfig;
       beforeEach(() => {
-        const newConfig = cloneDeep(fiddleConfig);
+        newConfig = cloneDeep(fiddleConfig);
         newConfig.navigation.nodes.push({
           hideFromNav: true,
           pathSegment: 'environments',
@@ -105,9 +106,10 @@ describe('Fiddle', () => {
             }
           }
         };
-        cy.visitWithFiddleConfig('/', newConfig);
       });
       it('custom selected option renderer', () => {
+        cy.visitWithFiddleConfig('/', newConfig);
+
         cy.contains('Select Environment').click();
         cy.contains('Environment 1').click();
         cy.get('[data-testid=luigi-contextswitcher-button]')
@@ -120,6 +122,29 @@ describe('Fiddle', () => {
           .find('label')
           .should('have.css', 'color', 'rgb(0, 136, 255)')
           .and('have.css', 'font-weight', '700');
+
+        // checks if there is only one selected item
+        cy.get('#context_menu_middle .is-selected').should('have.length', 1);
+      });
+
+      it('using fallbackLabelResolver', () => {
+        newConfig.navigation.contextSwitcher.customSelectedOptionRenderer = undefined;
+        newConfig.navigation.contextSwitcher.fallbackLabelResolver = id =>
+          id.toUpperCase();
+        newConfig.navigation.contextSwitcher.options = [
+          { pathValue: 'env1' },
+          { pathValue: 'env2' }
+        ];
+
+        cy.visitWithFiddleConfig('/', newConfig);
+
+        cy.get('#context_menu_middle .is-selected').should('have.length', 0);
+
+        cy.contains('Select Environment').click();
+        cy.contains('ENV1').click(); // fb label resolver used
+
+        // checks if there is only one selected item
+        cy.get('#context_menu_middle .is-selected').should('have.length', 1);
       });
     });
   });
