@@ -1,55 +1,5 @@
 <svelte:window on:click="{closeAllDropdowns}" on:blur="{closeAllDropdowns}"/>
 {#if showTopNav}
-{#if isThemingAvailable}
-<label
-  class="fd-form-label"
-  id="f45564A57"
->Select Cozy Mode</label>
-<br>
-<div class="fd-popover">
-  <div class="fd-popover__control">
-    <div class="fd-select">
-      <div
-        aria-controls="h0C6A325"
-        aria-expanded="{!status}"
-        aria-haspopup="true"
-        class="fd-select__control {!status ? ' is-expanded' : ''}"
-        role="button"
-        tabindex="0"
-      >
-        <span class="fd-select__text-content">Select</span>
-        <span
-          on:click|preventDefault="{() => themingObj()}"
-          class="fd-button fd-button--transparent sap-icon--slim-arrow-down fd-select__button"
-        ></span>
-      </div>
-    </div>
-  </div>
-  <div
-    aria-hidden="{status}"
-    class="fd-popover__body fd-popover__body--no-arrow fd-popover__body--dropdown"
-    id="h0C6A325"
-  >
-    <ul
-      aria-labelledby="f45564A57"
-      class="fd-list fd-list--dropdown"
-      role="listbox"
-    >
-      {#each themesObjects as themeObj, i}
-      <li
-        aria-selected="false"
-        class="fd-list__item"
-        role="option"
-        tabindex="{i}"
-        on:click|preventDefault="{() => alert(themeObj.id)}"
-      >
-        <span class="fd-list__title">{themeObj.name}</span>
-      </li>
-      {/each}
-    </ul>
-  </div>
-</div>
-{/if}
 <div class="fd-shellbar {hideNavComponent ? 'hideNavComponent' : ''}">
   <div class="fd-shellbar__group fd-shellbar__group--product">
     {#if responsiveNavSetting==="simple" || responsiveNavSetting==="simpleMobileOnly" || responsiveNavSetting==="Fiori3"}
@@ -438,10 +388,6 @@
   export let pathParams;
   export let dropDownStates = {};
   export let children;
-  export let isThemingAvailable;
-  export let currentTheme;
-  export let themesObjects = [{ id: 0, name: 'first option' }];
-  export let status = false;
   export let selectedNode;
   export let visibleNodeCount;
   export let totalBadgeNode;
@@ -475,25 +421,6 @@
     isLoggedIn = AuthHelpers.isLoggedIn();
   };
 
-  const themingObj = async () => {
-    const to = await Theming.getAvailableThemes();
-    if (to) {
-      themesObjects = to;
-    }
-    console.log('TOPNAV : ' + themesObjects);
-    window.THEMING = to;
-    status = !status;
-  };
-
-  const themingAvailable = () => {
-    isThemingAvailable = Theming.isThemingAvailable();
-    console.log('isThemingAvailable NEW : ' + isThemingAvailable);
-  };
-
-  const getCurrentTheme = () => {
-    currentTheme = Theming.getCurrentTheme();
-    console.log('currentTheme NEW : ' + currentTheme);
-  };
   onMount(() => {
     StateHelpers.doOnStoreChange(
       store,
@@ -524,9 +451,6 @@
         setTopNavData();
       }
     });
-    themingAvailable();
-    themingObj();
-    getCurrentTheme();
   });
 
   beforeUpdate(() => {
