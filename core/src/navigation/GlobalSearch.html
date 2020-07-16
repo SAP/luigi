@@ -1,0 +1,313 @@
+<svelte:window on:click="{closeSearchResult}" on:blur="{closeSearchResult}"/>
+<div
+  class="fd-shellbar__action {isSearchFieldVisible ? 'luigi-search-shell__mobile':''}"
+>
+  <div class="fd-popover">
+    <div
+      class="fd-popover__control luigi-search"
+      on:click|stopPropagation="{() => {}}"
+      aria-hidden="{!isSearchFieldVisible}"
+      aria-haspopup="true"
+    >
+      <div class="fd-input-group fd-shellbar__input-group">
+        <input
+          type="text"
+          on:keyup="{(event) => onKeyUp(event)}"
+          class="fd-input fd-input-group__input fd-shellbar__input-group__input luigi-search__input"
+          data-testid="luigi-search-input"
+          autofocus
+          bind:this="{inputElem}"
+        >
+      </div>
+      {#if !isCustomSearchRenderer}
+      <div
+        class="fd-popover__body fd-popover__body--right luigi-search-popover__body"
+        aria-hidden="{!displaySearchResult}"
+      >
+        <nav class="fd-menu">
+          {#if searchResult}
+          <ul
+            class="fd-menu__list fd-menu__list--top"
+            bind:this="{luigiCustomSearchItemRenderer__slotContainer}"
+          >
+            {#each searchResult as result, index}
+            <li
+              class="fd-menu__item luigi-search-result-item__{index}"
+              on:click="{(event) => onSearchResultItemSelected(result, event)}"
+              on:keyup="{(event) => handleKeydown(result, event)}"
+              tabindex="0"
+            >
+              {#if !isCustomSearchResultItemRenderer}
+              <a
+                class="fd-menu__link"
+                on:click|preventDefault="{() => {}}"
+              >
+                <div class="fd-product-switch__text">
+                  <div class="fd-product-switch__title">{result.label}</div>
+                  <div class="fd-product-switch__subtitle">{result.description}</div>
+                </div>
+              </a>
+              {:else}
+              {@html renderCustomSearchItem(result,luigiCustomSearchItemRenderer__slotContainer, index)}
+              {/if}
+            </li>
+            {/each}
+          </ul>
+          {/if}
+        </nav>
+      </div>
+      {:else}
+      <div bind:this="{luigiCustomSearchRenderer__slot}"></div>
+      {/if}
+    </div>
+  </div>
+</div>
+<div class="fd-shellbar__action fd-shellbar__action--desktop">
+  <div on:click|stopPropagation="{() => {}}">
+    <button
+      class="fd-button fd-shellbar__button sap-icon--search"
+      aria-haspopup="true"
+      aria-expanded="{!isSearchFieldVisible}"
+      on:click="{toggleSearch}"
+      data-testid="luigi-search-btn-desktop"
+    ></button>
+  </div>
+</div>
+<script>
+  import { beforeUpdate, createEventDispatcher, onMount } from 'svelte';
+  import { LuigiAuth, LuigiConfig } from '../core-api';
+  import { GenericHelpers } from '../utilities/helpers';
+  import { Routing } from '../services/routing';
+  export let isSearchFieldVisible;
+  export let searchResult = [];
+  export let displaySearchResult;
+  export let displayCustomSearchResult;
+  export let inputElem;
+  export let luigiCustomSearchRenderer__slot;
+  export let luigiCustomSearchItemRenderer__slotContainer;
+  const dispatch = createEventDispatcher();
+  const searchApiObj = {
+    fireItemSelected: item => {
+      search.searchProvider.onSearchResultItemSelected(item);
+    }
+  };
+  let searchResults = {};
+  let showPopOverCustomSearch = false;
+  let search;
+  let isCustomSearchRenderer;
+  let isCustomSearchResultItemRenderer;
+  onMount(async () => {
+    search = await LuigiConfig.getConfigValueAsync('globalSearch');
+    let inputElement = inputElem;
+    isCustomSearchRenderer = GenericHelpers.isFunction(
+      search.searchProvider.customSearchResultRenderer
+    );
+    isCustomSearchResultItemRenderer = GenericHelpers.isFunction(
+      search.searchProvider.customSearchResultItemRenderer
+    );
+  });
+
+  function renderCustomSearchItem(item, slotContainer, index) {
+    setTimeout(() => {
+      search.searchProvider.customSearchResultItemRenderer(
+        item,
+        slotContainer.children[index],
+        searchApiObj
+      );
+    });
+    return '';
+  }
+
+  function closeSearchResult() {
+    dispatch('closeSearchResult');
+  }
+
+  function onKeyUp(event) {
+    if (search) {
+      if (
+        GenericHelpers.isFunction(search.searchProvider.onEnter) &&
+        event.keyCode === 13
+      ) {
+        search.searchProvider.onEnter();
+      } else if (
+        GenericHelpers.isFunction(search.searchProvider.onEscape) &&
+        event.keyCode === 27
+      ) {
+        search.searchProvider.onEscape();
+      } else if (event.keyCode === 40) {
+        if (displaySearchResult) {
+          document
+            .querySelector('.luigi-search-result-item__0')
+            .childNodes[0].setAttribute('aria-selected', 'true');
+          document.querySelector('.luigi-search-result-item__0').focus();
+        }
+      } else if (GenericHelpers.isFunction(search.searchProvider.onInput)) {
+        search.searchProvider.onInput();
+      }
+    } else {
+      console.warn('GlobalSearch is not available.');
+    }
+  }
+
+  function calcSearchResultItemSelected(direction) {
+    let renderedSearchResultItems =
+      luigiCustomSearchItemRenderer__slotContainer.children;
+    if (renderedSearchResultItems) {
+      for (let index = 0; index < renderedSearchResultItems.length; index++) {
+        let element = renderedSearchResultItems[index];
+        if (element.childNodes[0].getAttribute('aria-selected') === 'true') {
+          if (direction === 40) {
+            let nextSibling =
+              element.nextSibling != null
+                ? element.nextSibling
+                : renderedSearchResultItems[0];
+            element.childNodes[0].setAttribute('aria-selected', 'false');
+            nextSibling.childNodes[0].setAttribute('aria-selected', 'true');
+            nextSibling.focus();
+            break;
+          }
+        }
+      }
+    }
+  }
+
+  function clearAriaSelected() {
+    let renderedSearchResultItems =
+      luigiCustomSearchItemRenderer__slotContainer.children;
+    if (renderedSearchResultItems) {
+      for (let index = 0; index < renderedSearchResultItems.length; index++) {
+        let element = renderedSearchResultItems[index];
+        if (element.childNodes[0].getAttribute('aria-selected') === 'true') {
+          element.childNodes[0].setAttribute('aria-selected', 'false');
+        }
+      }
+    }
+  }
+
+  function onSearchResultItemSelected(searchResultItem) {
+    if (
+      search &&
+      GenericHelpers.isFunction(
+        search.searchProvider.onSearchResultItemSelected
+      )
+    ) {
+      search.searchProvider.onSearchResultItemSelected(searchResultItem);
+    } else if (
+      GenericHelpers.isFunction(search.searchProvider.onEscape) &&
+      event.keyCode === 27
+    ) {
+      search.searchProvider.onEscape();
+    }
+  }
+
+  function handleKeydown(result, event) {
+    if (event.keyCode === 13) {
+      search.searchProvider.onSearchResultItemSelected(result);
+    }
+    if (event.keyCode === 38) {
+      calcSearchResultItemSelected(38);
+    } else if (event.keyCode === 40) {
+      calcSearchResultItemSelected(40);
+    } else if (
+      GenericHelpers.isFunction(search.searchProvider.onEscape) &&
+      event.keyCode === 27
+    ) {
+      clearAriaSelected();
+      setTimeout(() => {
+        inputElem.focus();
+      });
+      search.searchProvider.onEscape();
+    }
+  }
+
+  export function onActionClick(searchResultItem) {
+    let node = searchResultItem.pathObject;
+    if (node.externalLink) {
+      Routing.navigateToLink(node);
+    } else {
+      dispatch('handleSearchNavigation', { node });
+    }
+  }
+
+  function setFocusOnGlobalSearchFieldDesktop() {
+    if (inputElem) {
+      inputElem.focus();
+    }
+  }
+
+  export function toggleSearch() {
+    if (!isSearchFieldVisible)
+      setTimeout(() => {
+        setFocusOnGlobalSearchFieldDesktop();
+      });
+    else {
+      displaySearchResult = false;
+    }
+    dispatch('toggleSearch', {
+      isSearchFieldVisible,
+      inputElem,
+      luigiCustomSearchRenderer__slot
+    });
+  }
+</script>
+<style type="text/scss">
+  .luigi-search {
+    &[aria-hidden='true'] {
+      visibility: hidden;
+      width: 0;
+    }
+
+    &__input {
+      width: 184px;
+    }
+    &-popover__body {
+      top: calc(2.25rem + 5px);
+
+      &:before,
+      &:after {
+        display: none;
+      }
+      .fd-menu {
+        max-height: 70vh;
+        overflow: auto;
+        .fd-menu__item {
+          padding-bottom: 10px;
+          &:first-child {
+            padding-top: 10px;
+          }
+          &:last-child .fd-menu__link {
+            border-radius: 0;
+          }
+          .fd-product-switch__title {
+            font-weight: 600;
+          }
+        }
+      }
+    }
+  }
+
+  //remove arrow from the search popover
+
+  @media screen and (max-width: 1024px) {
+    .luigi-search-shell__mobile {
+      position: relative;
+      height: calc(2.25rem + 2px);
+      padding: 0;
+
+      .fd-popover {
+        vertical-align: top;
+      }
+
+      .luigi-search {
+        position: absolute;
+        top: 0;
+        right: 0;
+        background: var(--sapShellColor);
+        z-index: 1;
+      }
+      .fd-menu {
+        max-width: 12rem;
+      }
+    }
+  }
+</style>
