@@ -174,12 +174,11 @@ export default class openIdConnect {
           .processSignoutResponse()
           .then(response => {
             Luigi.auth().store.removeAuthData();
-            log('signout response', response);
             resolve(response);
           })
           .catch(function(err) {
             reject(response);
-            log(err);
+            console.error('[OIDC] Logout Error', err);
           });
       }
       resolve(true);
@@ -191,20 +190,20 @@ export default class openIdConnect {
       let responseType = this.settings.response_type;
       let responseMode = this.settings.response_mode;
       let toCheck, fromWhere;
-      if (responseType.indexOf('code') > -1){
-        toCheck = "code";
-        if (!responseMode){
-          fromWhere = "search";
+      if (responseType.indexOf('code') > -1) {
+        toCheck = 'code';
+        if (!responseMode) {
+          fromWhere = 'search';
         } else {
-          fromWhere = (responseMode === 'fragment') ? 'hash' : 'search';
+          fromWhere = responseMode === 'fragment' ? 'hash' : 'search';
         }
       } else {
         // defaulting to access token
-        toCheck = "access_token";
-        if (!responseMode){
-          fromWhere = "hash";
+        toCheck = 'access_token';
+        if (!responseMode) {
+          fromWhere = 'hash';
         } else {
-          fromWhere = (responseMode === 'fragment') ? 'hash' : 'search';
+          fromWhere = responseMode === 'fragment' ? 'hash' : 'search';
         }
       }
 
@@ -259,10 +258,12 @@ export default class openIdConnect {
     try {
       // If the user was just redirected here from the sign in page, sign them in.
       await this.client.signinRedirectCallback();
-      console.debug('[OIDC] User was redirected via the sign-in page. Now signed in.');
+      console.debug(
+        '[OIDC] User was redirected via the sign-in page. Now signed in.'
+      );
     } catch (error) {
       console.debug(
-        '[OIDC] Error. Sign-in redirect callback doesn\'t work. Let\'s try a silent sign-in.',
+        "[OIDC] Error. Sign-in redirect callback doesn't work. Let's try a silent sign-in.",
         error
       );
       // Barring that, if the user chose to have the Identity Server remember their
