@@ -1,12 +1,12 @@
 ---
-title: Luigi NEXTRELEASE
-seoMetaDescription: Release notes for Luigi NEXTRELEASE.
+title: Luigi 1.3.0
+seoMetaDescription: Release notes for Luigi 1.3.0
 author:
   - Aleksandra Simeonova
 layout: blog
 ---
 
-The Luigi team has been hard at work even as the summer holiday season begins. We have prepared a brand new Luigi NEXTRELEASE release with some exciting features.
+The Luigi team has been hard at work even as the summer holiday season begins. We have prepared a brand new Luigi 1.3.0 release with some exciting features.
 <!-- Excerpt -->
 
 #### Global search
@@ -15,7 +15,7 @@ This new feature has the potential to improve your Luigi application dramaticall
 
 #### Fundamental Styles update
 
-With Luigi version NEXTRELEASE, the new v0.10.0 of Fundamental Library Styles were included. As a result, there were breaking changes to the Luigi side navigation. You can see the updated layout [here](https://sap.github.io/fundamental-styles/components/side-navigation.html).
+With Luigi version 1.3.0, the new v0.10.0 of Fundamental Library Styles were included. As a result, there were breaking changes to the Luigi side navigation. You can see the updated layout [here](https://sap.github.io/fundamental-styles/components/side-navigation.html).
 
 #### Support for authorization code flow with PKCE
 
