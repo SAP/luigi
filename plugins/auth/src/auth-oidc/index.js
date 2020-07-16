@@ -88,7 +88,7 @@ export default class openIdConnect {
 
   login() {
     return this.client.signinRedirect(this.settings).catch(err => {
-      console.error(err);
+      console.error('[OIDC] login() Error', err);
       return err;
     });
   }
@@ -106,7 +106,7 @@ export default class openIdConnect {
         window.location = req.url;
       })
       .catch(function(err) {
-        console.error(err);
+        console.error('[OIDC] logout() Error', err);
         authOnLogoutFn();
       });
   }
@@ -145,7 +145,7 @@ export default class openIdConnect {
             e.message;
           break;
         default:
-          console.error(e);
+          console.error('[OIDC] addSilentRenewError Error', e);
           redirectUrl =
             this.settings.logoutUrl +
             '?error=tokenExpired&errorDescription=' +
@@ -188,7 +188,27 @@ export default class openIdConnect {
 
   _processLoginResponse() {
     return new Promise((resolve, reject) => {
-      if (window.location.hash.indexOf('access_token') === -1) {
+      let responseType = this.settings.response_type;
+      let responseMode = this.settings.response_mode;
+      let toCheck, fromWhere;
+      if (responseType.indexOf('code') > -1){
+        toCheck = "code";
+        if (!responseMode){
+          fromWhere = "search";
+        } else {
+          fromWhere = (responseMode === 'fragment') ? 'hash' : 'search';
+        }
+      } else {
+        // defaulting to access token
+        toCheck = "access_token";
+        if (!responseMode){
+          fromWhere = "hash";
+        } else {
+          fromWhere = (responseMode === 'fragment') ? 'hash' : 'search';
+        }
+      }
+
+      if (window.location[fromWhere].indexOf(toCheck) === -1) {
         return resolve(true);
       }
 
@@ -196,7 +216,7 @@ export default class openIdConnect {
         .then((authenticatedUser = {}) => {
           if (authenticatedUser.error) {
             return console.error(
-              'Error',
+              '[OIDC] Error',
               authenticatedUser.error,
               authenticatedUser.error_description,
               authenticatedUser
@@ -223,7 +243,7 @@ export default class openIdConnect {
           }, 50);
         })
         .catch(err => {
-          console.error(err);
+          console.error('[OIDC] tryToSignIn Error', err);
           Luigi.auth().store.removeAuthData();
           Luigi.auth().handleAuthEvent(
             'onAuthExpired',
@@ -239,17 +259,17 @@ export default class openIdConnect {
     try {
       // If the user was just redirected here from the sign in page, sign them in.
       await this.client.signinRedirectCallback();
-      console.debug('User was redirected via the sign-in page. Now signed in.');
+      console.debug('[OIDC] User was redirected via the sign-in page. Now signed in.');
     } catch (error) {
       console.debug(
-        "Sign-in redirect callback doesn't work. Let's try a silent sign-in.",
+        '[OIDC] Error. Sign-in redirect callback doesn\'t work. Let\'s try a silent sign-in.',
         error
       );
       // Barring that, if the user chose to have the Identity Server remember their
       // credentials and permission decisions, we may be able to silently sign them
       // back in via a background iframe.
       await this.client.signinSilent();
-      console.debug('Silent sign-in completed.');
+      console.debug('[OIDC] Silent sign-in completed.');
     }
   }
 }

@@ -35,12 +35,21 @@ class Auth {
     // and run docker-compose up. Default user: Luigi , password: pwd
     authority: 'http://localhost:4011',
     logoutUrl: 'http://localhost:4011/connect/endsession',
-    client_id: 'implicit-mock-client',
     scope: 'openid profile email',
     // optional parameters
     // redirect_uri: '',
     // post_logout_redirect_uri: '/logout.html',
+    // options settings
     // automaticSilentRenew: true,
+
+    // for PKCE flow
+    client_id: 'authorisation-code-pkce-mock-client', // oidc-mockserver client id
+    response_type: "code", // for PKCE
+    response_mode: "fragment", // change between `query` and `fragment`
+
+    // for implicit grant flow
+    // client_id: 'implicit-mock-client', // oidc-mockserver client id
+
     profileStorageInterceptorFn: profile => {
       profile.email = undefined;
       return profile;
