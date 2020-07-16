@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://luigi-project.io/blog</id>
     <title>Luigi Blog</title>
-    <updated>2020-07-16T14:44:01.541Z</updated>
+    <updated>2020-07-16T15:00:55.152Z</updated>
     <generator>Luigi Project</generator>
     <author>
         <name>Luigi project authors</name>
@@ -26,7 +26,7 @@
 <!-- Excerpt -->
 
 <p>The Luigi project is growing quickly and attracting more attention in the open-source community. Micro frontend architecture is becoming more popular as an efficient strategy for future-proof, scalable applications. New features are added to Luigi regularly, and we want to keep you up to date.</p>
-<p>This is why we are adding a blog to our website to inform you of the latest Luigi releases, updates, and other important news! You can expect regular posts in the future documenting every release and other Luigi-related topics. If you have an idea for a blog post, you can write to <a href="mailto:&#97;&#x6c;&#x65;&#x6b;&#115;&#97;&#110;&#100;&#x72;&#97;&#x2e;&#115;&#x69;&#109;&#x65;&#111;&#x6e;&#111;&#x76;&#x61;&#x40;&#115;&#97;&#x70;&#46;&#x63;&#x6f;&#109;">&#97;&#x6c;&#x65;&#x6b;&#115;&#97;&#110;&#100;&#x72;&#97;&#x2e;&#115;&#x69;&#109;&#x65;&#111;&#x6e;&#111;&#x76;&#x61;&#x40;&#115;&#97;&#x70;&#46;&#x63;&#x6f;&#109;</a>.</p>
+<p>This is why we are adding a blog to our website to inform you of the latest Luigi releases, updates, and other important news! You can expect regular posts in the future documenting every release and other Luigi-related topics. If you have an idea for a blog post, you can write to <a href="mailto:&#97;&#108;&#101;&#107;&#115;&#97;&#x6e;&#100;&#114;&#x61;&#x2e;&#115;&#105;&#x6d;&#x65;&#111;&#x6e;&#111;&#118;&#x61;&#64;&#115;&#x61;&#x70;&#x2e;&#99;&#x6f;&#109;">&#97;&#108;&#101;&#107;&#115;&#97;&#x6e;&#100;&#114;&#x61;&#x2e;&#115;&#105;&#x6d;&#x65;&#111;&#x6e;&#111;&#118;&#x61;&#64;&#115;&#x61;&#x70;&#x2e;&#99;&#x6f;&#109;</a>.</p>
 <p>And yes, our first blog post is just to let you know that we have a blog now. #meta #nerdy</p>
 <p>P.S. Follow us on <a href="https://twitter.com/luigiprojectio?lang=en">Twitter</a> and <a href="https://www.youtube.com/channel/UC5WsYsHapDlg2K3iXS4n4AQ">YouTube</a> for more Luigi content.</p>
 ]]></content>
@@ -35,18 +35,18 @@
         </author>
     </entry>
     <entry>
-        <title type="html"><![CDATA[Luigi 1.3.0]]></title>
+        <title type="html"><![CDATA[Luigi v1.3.0]]></title>
         <id>https://luigi-project.io/blog/2020-07-16-release-notes</id>
         <link href="https://luigi-project.io/blog/2020-07-16-release-notes"/>
         <updated>2020-07-16T00:00:00.000Z</updated>
-        <summary type="html"><![CDATA[Release notes for Luigi 1.3.0]]></summary>
-        <content type="html"><![CDATA[<p>The Luigi team has been hard at work even as the summer holiday season begins. We have prepared a brand new Luigi 1.3.0 release with some exciting features.</p>
+        <summary type="html"><![CDATA[Release notes for Luigi v1.3.0]]></summary>
+        <content type="html"><![CDATA[<p>The Luigi team has been hard at work even as the summer holiday season begins. We have prepared a brand new Luigi v1.3.0 release with some exciting features.</p>
 <!-- Excerpt -->
 
 <h4 id="global-search">Global search</h4>
 <p>This new feature has the potential to improve your Luigi application dramatically. You can now add a <strong>search toggle</strong> to your app which is displayed in the top navigation. Full functionality is included with the Luigi default settings, but you can also create a custom search that fits your needs exactly. We encourage you to take a look at the full <a href="https://docs.luigi-project.io/docs/global-search">documentation</a> and provided example to learn more.</p>
 <h4 id="fundamental-styles-update">Fundamental Styles update</h4>
-<p>With Luigi version 1.3.0, the new v0.10.0 of Fundamental Library Styles were included. As a result, there were breaking changes to the Luigi side navigation. You can see the updated layout <a href="https://sap.github.io/fundamental-styles/components/side-navigation.html">here</a>.</p>
+<p>With Luigi version v1.3.0, the new v0.10.0 of Fundamental Library Styles were included. As a result, there were breaking changes to the Luigi side navigation. You can see the updated layout <a href="https://sap.github.io/fundamental-styles/components/side-navigation.html">here</a>.</p>
 <h4 id="support-for-authorization-code-flow-with-pkce">Support for authorization code flow with PKCE</h4>
 <p>If you use OIDC for authorization, you can now authenticate using <a href="https://oauth.net/2/pkce/">PKCE</a>. You can see the full changes in the code <a href="https://github.com/SAP/luigi/pull/1478">here</a>. Fun fact: this issue was fixed by an external developer. We&#39;d like to remind you that Luigi is 100% open source and we love receiving contributions and suggestions on GitHub. If you have any ideas, don&#39;t hesitate to participate.</p>
 <h4 id="bugfixes">Bugfixes</h4>
