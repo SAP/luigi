@@ -3,7 +3,7 @@
 ## Overview
 
 This project contains a library that allows your application to extend the [Luigi framework](https://github.com/SAP/luigi/tree/master/core) with an OpenID Connect authorization provider. 
-Further configuration details can be found in the [main documentation](https://docs.luigi-project.io/docs/authorization-configuration#openid-connect-configuration).
+Further configuration details can be found in the [main documentation](https://docs.luigi-project.io/docs/authorization-configuration#openid-connect-configuration). We support Authorization Code with PKCE and Implicit Grant flow.
 
 ## Installation
 
@@ -30,8 +30,16 @@ Luigi.setConfig({
       idpProvider: OpenIdConnect,
       authority: 'http://authority.server',
       logoutUrl: 'http://authority.server/connect/endsession',
-      client_id: 'implicit-mock-client',
       scope: 'openid profile email',
+
+      // for PKCE flow
+      client_id: 'authorisation-code-pkce-mock-client', // example oidc-mockserver client id
+      response_type: "code", // for PKCE
+      response_mode: "fragment", // change between `query` and `fragment`
+
+      // for implicit grant flow
+      // client_id: 'implicit-mock-client', // example oidc-mockserver client id
+
       // ... further configuration data comes here
     }
   }

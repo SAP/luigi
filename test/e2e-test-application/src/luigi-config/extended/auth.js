@@ -1,7 +1,7 @@
 import oAuth2ImplicitGrant from '@luigi-project/plugin-auth-oauth2';
 import openIdConnect from '@luigi-project/plugin-auth-oidc';
 class Auth {
-  use = 'mockAuth';
+  use = 'openIdConnect';
 
   storage = 'localStorage'; // localStorage, sessionStorage, none
 
@@ -44,8 +44,8 @@ class Auth {
 
     // for PKCE flow
     client_id: 'authorisation-code-pkce-mock-client', // oidc-mockserver client id
-    response_type: "code", // for PKCE
-    response_mode: "fragment", // change between `query` and `fragment`
+    response_type: 'code', // for PKCE
+    response_mode: 'fragment', // change between `query` and `fragment`
 
     // for implicit grant flow
     // client_id: 'implicit-mock-client', // oidc-mockserver client id
