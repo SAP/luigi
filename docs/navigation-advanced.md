@@ -340,6 +340,7 @@ Tab-style navigation in Luigi can be displayed directly above the micro frontend
 - **type**: boolean
 - **description**: renders the children of the node as a horizontal navigation bar. Sub-children are not supported. When you categorize nodes you will get a drop-down menu in the horizontal navigation.
 
+
 ## Additional options
 
 For more options and parameters which you can use to configure navigation in Luigi, read the [full parameter reference](navigation-parameters-reference.md). Some of the topics you can find there include:
