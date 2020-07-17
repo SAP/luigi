@@ -312,30 +312,4 @@ describe('Fiddle', () => {
       });
     });
   });
-  // describe('Theming', () => {
-  //   let newConfig;
-
-  //   beforeEach(() => {
-  //     newConfig = cloneDeep(fiddleConfig);
-  //     newConfig.settings.theming = {
-  //       themes: [
-  //         { id: 1, name: 'light' },
-  //         { id: 2, name: 'dark' },
-  //         { id: 3, name: 'blue' },
-  //         { id: 4, name: 'green' },
-  //         { id: 5, name: 'red' },
-  //         { id: 6, name: 'orange' },
-  //         { id: 7, name: 'yellow' }
-  //       ],
-  //       defaultTheme: 'light'
-  //     };
-  //   });
-
-  //   it('Core API', () => {
-  //     cy.visitWithFiddleConfig('/', newConfig);
-  //     cy.window().then(win => {
-
-  //     });
-  //   });
-  // });
 });
