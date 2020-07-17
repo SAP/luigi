@@ -22,7 +22,9 @@ describe('Core API - Theming', function() {
     };
   };
   beforeEach(() => {
-    sinon.spy(LuigiConfig, 'getConfigValueAsync').returns(getMockTheming());
+    sinon.stub(LuigiConfig);
+    LuigiConfig.getConfigValue.returns(getMockTheming());
+    LuigiConfig.getConfigValueAsync.returns(getMockTheming().themes);
   });
   afterEach(() => {
     sinon.reset();
@@ -37,7 +39,7 @@ describe('Core API - Theming', function() {
     it('no theming defined', async () => {
       LuigiConfig.getConfigValueAsync.returns(undefined);
       const res = await LuigiTheming.getAvailableThemes();
-      assert.isFalse(res);
+      assert.isUndefined(res);
     });
   });
   it('setCurrentTheme', () => {
@@ -51,13 +53,13 @@ describe('Core API - Theming', function() {
   describe('getThemeObject', () => {
     it('theme not found', async () => {
       const res = await LuigiTheming.getThemeObject('notexistingtheme');
-      assert.isFalse(res);
+      assert.isUndefined(res);
     });
     it('no theming defined', async () => {
       LuigiConfig.getConfigValueAsync.returns(undefined);
 
       const res = await LuigiTheming.getThemeObject('dark');
-      assert.deepEqual(res, { id: 2, name: 'dark' });
+      assert.isUndefined(res);
     });
   });
 });

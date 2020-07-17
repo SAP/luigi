@@ -58,7 +58,7 @@ class LuigiTheming {
     const themes = await LuigiConfig.getConfigValueAsync(
       'settings.theming.themes'
     );
-    return themes.find(t => t.name === themeName);
+    return themes && themes.find(t => t.name === themeName);
   }
   /**
    * Retrieves the current active theme. Falls back to **defaultTheme** if none explicitly specified before. Returns `false` if no theme selected and no defaultTheme defined.
