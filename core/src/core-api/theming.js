@@ -7,7 +7,6 @@ import { GenericHelpers } from '../utilities/helpers';
 class LuigiTheming {
   constructor() {
     this.currentTheme;
-    this.themes;
   }
 
   /**
@@ -24,13 +23,7 @@ class LuigiTheming {
    *  });
    */
   async getAvailableThemes() {
-    const themingObj = await LuigiConfig.getConfigValueAsync(
-      'settings.theming'
-    );
-    this.themes = GenericHelpers.isObject(themingObj)
-      ? themingObj.themes
-      : false;
-    return this.themes;
+    return await LuigiConfig.getConfigValueAsync('settings.theming.themes');
   }
 
   /**
@@ -51,7 +44,7 @@ class LuigiTheming {
    * Retrieves a theme object by name. Returns `false` on trying to access a non-existing theme.
    * @memberof Theming
    * @param {string} a theme name
-   * @returns {promise} resolves to a theming object
+   * @returns {Object} a theming object
    * @since NEXTRELEASE
    * @example
    * Luigi
@@ -62,10 +55,10 @@ class LuigiTheming {
    *  }))
    */
   async getThemeObject(themeName) {
-    const themingObj = await LuigiConfig.getConfigValueAsync(
-      'settings.theming'
+    const themes = await LuigiConfig.getConfigValueAsync(
+      'settings.theming.themes'
     );
-    return themingObj.themes.find(t => t.name === themeName) || false;
+    return themes.find(t => t.name === themeName);
   }
   /**
    * Retrieves the current active theme. Falls back to **defaultTheme** if none explicitly specified before. Returns `false` if no theme selected and no defaultTheme defined.
@@ -80,11 +73,11 @@ class LuigiTheming {
    *    // Logic
    *  }))
    */
-  async getCurrentTheme() {
+  getCurrentTheme() {
     if (this.currentTheme) {
       return this.currentTheme;
     }
-    const theming = await LuigiConfig.getConfigValueAsync('settings.theming');
+    const theming = LuigiConfig.getConfigValue('settings.theming');
     if (theming.defaultTheme) {
       const defaultTheme = theming.defaultTheme;
       return this.getThemeObject(defaultTheme);
