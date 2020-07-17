@@ -12,7 +12,7 @@ class LuigiTheming {
   /**
    * Retrieves the available themes
    * @memberof Theming
-   * @returns {promise} array of theming objects
+   * @returns {promise} resolves an array of theming objects
    * @since NEXTRELEASE
    * @example
    * Luigi
@@ -44,7 +44,7 @@ class LuigiTheming {
    * Retrieves a theme object by name. Returns `false` on trying to access a non-existing theme.
    * @memberof Theming
    * @param {string} a theme name
-   * @returns {Object} a theming object
+   * @returns {promise} resolves a theming object
    * @since NEXTRELEASE
    * @example
    * Luigi
