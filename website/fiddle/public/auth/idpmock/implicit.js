@@ -17,7 +17,8 @@ window.onload = function () {
 
     loginButton.addEventListener('click', function (ev) {
         ev.preventDefault();
-        const scope = 'admin';
+        const username = document.getElementById('username').value;
+        const scope = (username == 'admin') ? 'admin' : 'viewer';
         window.location.replace(goTo(scope).replace(/\s\s+/g, ''));
     });
 };
