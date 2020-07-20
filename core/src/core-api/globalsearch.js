@@ -6,7 +6,7 @@ class LuigiGlobalSearch {
   /**
    * Opens the global search field.
    * @memberof GlobalSearch
-   * @since NEXTRELEASE
+   * @since 1.3.0
    * @example Luigi.globalSearch().openSearchField();
    */
   openSearchField() {
@@ -16,7 +16,7 @@ class LuigiGlobalSearch {
   /**
    * Closes the global search field.
    * @memberof GlobalSearch
-   * @since NEXTRELEASE
+   * @since 1.3.0
    * @example Luigi.globalSearch().closeSearchField();
    */
   closeSearchField() {
@@ -26,7 +26,7 @@ class LuigiGlobalSearch {
   /**
    * Clears the global search field.
    * @memberof GlobalSearch
-   * @since NEXTRELEASE
+   * @since 1.3.0
    * @example Luigi.globalSearch().clearSearchField();
    */
   clearSearchField() {
@@ -37,7 +37,7 @@ class LuigiGlobalSearch {
    * Opens the global search result. By standard it is a popover.
    * @memberof GlobalSearch
    * @param {Array} searchResultItems
-   * @since NEXTRELEASE
+   * @since 1.3.0
    * @example
    * let searchResultItem = {
    *   pathObject: {
@@ -57,7 +57,7 @@ class LuigiGlobalSearch {
   /**
    * Closes the global search result. By standard it is rendered as a popover.
    * @memberof GlobalSearch
-   * @since NEXTRELEASE
+   * @since 1.3.0
    * @example Luigi.globalSearch().closeSearchResult();
    */
   closeSearchResult() {
@@ -67,7 +67,7 @@ class LuigiGlobalSearch {
   /**
    * Gets the value of the search input field.
    * @memberof GlobalSearch
-   * @since NEXTRELEASE
+   * @since 1.3.0
    * @example Luigi.globalSearch().getSearchString();
    */
   getSearchString() {
@@ -78,7 +78,7 @@ class LuigiGlobalSearch {
    * Sets the value of the search input field.
    * @memberof GlobalSearch
    * @param searchString search value
-   * @since NEXTRELEASE
+   * @since 1.3.0
    * @example Luigi.globalSearch().setSearchString('searchString');
    */
   setSearchString(searchString) {

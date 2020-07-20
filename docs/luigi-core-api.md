@@ -818,7 +818,7 @@ Luigi.globalSearch().openSearchField();
 
 **Meta**
 
--   **since**: NEXTRELEASE
+-   **since**: 1.3.0
 
 #### closeSearchField
 
@@ -832,7 +832,7 @@ Luigi.globalSearch().closeSearchField();
 
 **Meta**
 
--   **since**: NEXTRELEASE
+-   **since**: 1.3.0
 
 #### clearSearchField
 
@@ -846,7 +846,7 @@ Luigi.globalSearch().clearSearchField();
 
 **Meta**
 
--   **since**: NEXTRELEASE
+-   **since**: 1.3.0
 
 #### showSearchResult
 
@@ -873,7 +873,7 @@ Luigi.globalSearch().showSearchResult([searchResultItem1, searchResultItem2]);
 
 **Meta**
 
--   **since**: NEXTRELEASE
+-   **since**: 1.3.0
 
 #### closeSearchResult
 
@@ -887,7 +887,7 @@ Luigi.globalSearch().closeSearchResult();
 
 **Meta**
 
--   **since**: NEXTRELEASE
+-   **since**: 1.3.0
 
 #### getSearchString
 
@@ -901,7 +901,7 @@ Luigi.globalSearch().getSearchString();
 
 **Meta**
 
--   **since**: NEXTRELEASE
+-   **since**: 1.3.0
 
 #### setSearchString
 
@@ -919,4 +919,4 @@ Luigi.globalSearch().setSearchString('searchString');
 
 **Meta**
 
--   **since**: NEXTRELEASE
+-   **since**: 1.3.0
