@@ -5,7 +5,7 @@ Luigi landingpage, deployed via netlify and accessible at https://luigi-project.
 
 ## Blog entry creation
 
-Create a .md file in /blog with schema: `YYYY-MM-DD-page-slug.md`
+Create a .md file in the root folder /blog with schema: `YYYY-MM-DD-page-slug.md`. The .html pages in /website/landingpage are being created at build time.
 
 Front Matter data allows to set SEO title, description as well as author (can be single or list). Layout must be `blog`.
 Excerpt content for overview page is separated with `<!-- Excerpt -->`.
@@ -13,7 +13,7 @@ Excerpt content for overview page is separated with `<!-- Excerpt -->`.
 ```markdown
 ---
 title: Our first blog entry
-description: This is our first blog entry and it introduces our new blog section.
+seoMetaDescription: This is our first blog entry and it introduces our new blog section.
 author:
   - Name 1
   - Name 2
@@ -34,3 +34,5 @@ Google's `id_token` contains basic identity data like name and user ID, which al
 - list
 - entry
 ```
+
+Run `npm run build` and commit the resulting html and js files. `npm start` does the same.
