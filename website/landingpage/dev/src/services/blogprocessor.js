@@ -64,7 +64,6 @@ export const getBlogEntries = (singleSlug = false) => {
     .sort()
     .reverse()
     .map(fileName => {
-      console.log('blog file', fileName);
       const fileContent = readFileSync(path.join(blogMdPath, fileName)).toString();
       const mdData = frontmatter(fileContent.split('<!-- Excerpt -->')[0]);
       const date = fileName.substr(0, 10); // 10 is length of the date
