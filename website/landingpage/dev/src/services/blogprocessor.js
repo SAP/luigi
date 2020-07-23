@@ -42,7 +42,7 @@ const getAuthors = (authors) => {
 
 const generateBlogEntry = (blog, content, showButton = false) => {
   // console.log(blog, content)
-  
+
   const button = showButton ? `<p><a href="/blog/${blog.slug}" class="btn-primary">Read more</a></p>` : '';
   return `
 
@@ -58,10 +58,13 @@ const generateBlogEntry = (blog, content, showButton = false) => {
 }
 
 export const getBlogEntries = (singleSlug = false) => {
-  return readdirSync( blogMdPath )
+  return readdirSync(blogMdPath)
     .filter(fileName => !singleSlug || singleSlug == getSlug(fileName))
     .filter(fileName => hasValidDate(fileName))
+    .sort()
+    .reverse()
     .map(fileName => {
+      console.log('blog file', fileName);
       const fileContent = readFileSync(path.join(blogMdPath, fileName)).toString();
       const mdData = frontmatter(fileContent.split('<!-- Excerpt -->')[0]);
       const date = fileName.substr(0, 10); // 10 is length of the date
@@ -85,7 +88,7 @@ export const getBlogEntries = (singleSlug = false) => {
 
 const writeBlogFiles = (blogEntries) => {
   blogEntries.forEach(entry => {
-  const blogHtml = `---
+    const blogHtml = `---
 title: ${entry.title}
 seoMetaDescription: ${entry.seoMetaDescription}
 layout: blog

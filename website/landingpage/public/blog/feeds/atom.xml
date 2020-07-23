@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://luigi-project.io/blog</id>
     <title>Luigi Blog</title>
-    <updated>2020-07-16T15:00:55.152Z</updated>
+    <updated>2020-07-23T11:31:51.628Z</updated>
     <generator>Luigi Project</generator>
     <author>
         <name>Luigi project authors</name>
@@ -16,24 +16,6 @@
     <icon>https://luigi-project.io/assets/img/favicon.png</icon>
     <rights>Copyright 2020. The Luigi project authors</rights>
     <category term="Technology"/>
-    <entry>
-        <title type="html"><![CDATA[Welcome to the Luigi blog!]]></title>
-        <id>https://luigi-project.io/blog/2020-06-18-welcome-to-luigi-blog</id>
-        <link href="https://luigi-project.io/blog/2020-06-18-welcome-to-luigi-blog"/>
-        <updated>2020-06-18T00:00:00.000Z</updated>
-        <summary type="html"><![CDATA[This is our first blog entry and it introduces our new blog section.]]></summary>
-        <content type="html"><![CDATA[<p>The new blog section of our website will help you stay on top of the latest Luigi news and updates.</p>
-<!-- Excerpt -->
-
-<p>The Luigi project is growing quickly and attracting more attention in the open-source community. Micro frontend architecture is becoming more popular as an efficient strategy for future-proof, scalable applications. New features are added to Luigi regularly, and we want to keep you up to date.</p>
-<p>This is why we are adding a blog to our website to inform you of the latest Luigi releases, updates, and other important news! You can expect regular posts in the future documenting every release and other Luigi-related topics. If you have an idea for a blog post, you can write to <a href="mailto:&#97;&#108;&#101;&#107;&#115;&#97;&#x6e;&#100;&#114;&#x61;&#x2e;&#115;&#105;&#x6d;&#x65;&#111;&#x6e;&#111;&#118;&#x61;&#64;&#115;&#x61;&#x70;&#x2e;&#99;&#x6f;&#109;">&#97;&#108;&#101;&#107;&#115;&#97;&#x6e;&#100;&#114;&#x61;&#x2e;&#115;&#105;&#x6d;&#x65;&#111;&#x6e;&#111;&#118;&#x61;&#64;&#115;&#x61;&#x70;&#x2e;&#99;&#x6f;&#109;</a>.</p>
-<p>And yes, our first blog post is just to let you know that we have a blog now. #meta #nerdy</p>
-<p>P.S. Follow us on <a href="https://twitter.com/luigiprojectio?lang=en">Twitter</a> and <a href="https://www.youtube.com/channel/UC5WsYsHapDlg2K3iXS4n4AQ">YouTube</a> for more Luigi content.</p>
-]]></content>
-        <author>
-            <name>Aleksandra Simeonova</name>
-        </author>
-    </entry>
     <entry>
         <title type="html"><![CDATA[Luigi v1.3.0]]></title>
         <id>https://luigi-project.io/blog/2020-07-16-release-notes</id>
@@ -51,6 +33,24 @@
 <p>If you use OIDC for authorization, you can now authenticate using <a href="https://oauth.net/2/pkce/">PKCE</a>. You can see the full changes in the code <a href="https://github.com/SAP/luigi/pull/1478">here</a>. Fun fact: this issue was fixed by an external developer. We&#39;d like to remind you that Luigi is 100% open source and we love receiving contributions and suggestions on GitHub. If you have any ideas, don&#39;t hesitate to participate.</p>
 <h4 id="bugfixes">Bugfixes</h4>
 <p>For a full list of bugfixes in this release, see our <a href="https://github.com/SAP/luigi/blob/master/CHANGELOG.md">changelog</a>.</p>
+]]></content>
+        <author>
+            <name>Aleksandra Simeonova</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Welcome to the Luigi blog!]]></title>
+        <id>https://luigi-project.io/blog/2020-06-18-welcome-to-luigi-blog</id>
+        <link href="https://luigi-project.io/blog/2020-06-18-welcome-to-luigi-blog"/>
+        <updated>2020-06-18T00:00:00.000Z</updated>
+        <summary type="html"><![CDATA[This is our first blog entry and it introduces our new blog section.]]></summary>
+        <content type="html"><![CDATA[<p>The new blog section of our website will help you stay on top of the latest Luigi news and updates.</p>
+<!-- Excerpt -->
+
+<p>The Luigi project is growing quickly and attracting more attention in the open-source community. Micro frontend architecture is becoming more popular as an efficient strategy for future-proof, scalable applications. New features are added to Luigi regularly, and we want to keep you up to date.</p>
+<p>This is why we are adding a blog to our website to inform you of the latest Luigi releases, updates, and other important news! You can expect regular posts in the future documenting every release and other Luigi-related topics. If you have an idea for a blog post, you can write to <a href="mailto:&#97;&#108;&#101;&#x6b;&#x73;&#x61;&#110;&#x64;&#114;&#97;&#46;&#x73;&#105;&#109;&#101;&#x6f;&#x6e;&#x6f;&#118;&#97;&#64;&#x73;&#x61;&#112;&#46;&#x63;&#111;&#x6d;">&#97;&#108;&#101;&#x6b;&#x73;&#x61;&#110;&#x64;&#114;&#97;&#46;&#x73;&#105;&#109;&#101;&#x6f;&#x6e;&#x6f;&#118;&#97;&#64;&#x73;&#x61;&#112;&#46;&#x63;&#111;&#x6d;</a>.</p>
+<p>And yes, our first blog post is just to let you know that we have a blog now. #meta #nerdy</p>
+<p>P.S. Follow us on <a href="https://twitter.com/luigiprojectio?lang=en">Twitter</a> and <a href="https://www.youtube.com/channel/UC5WsYsHapDlg2K3iXS4n4AQ">YouTube</a> for more Luigi content.</p>
 ]]></content>
         <author>
             <name>Aleksandra Simeonova</name>
