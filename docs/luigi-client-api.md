@@ -222,10 +222,6 @@ The Link Manager allows you to navigate to another route. Use it instead of an i
 -   Reflect the route.
 -   Keep the navigation state in Luigi.
 
-**Meta**
-
--   **since**: NEXTRELEASE
-
 #### withoutSync
 
 Disables the navigation handling for a single navigation request
@@ -267,10 +263,6 @@ LuigiClient.linkManager().navigate('/overview')
 LuigiClient.linkManager().navigate('users/groups/stakeholders')
 LuigiClient.linkManager().navigate('/settings', null, true) // preserve view
 ```
-
-**Meta**
-
--   **since**: NEXTRELEASE
 
 #### openAsModal
 

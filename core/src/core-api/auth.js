@@ -19,7 +19,6 @@ class LuigiAuth {
    * @returns {boolean} - `true` if authorization is enabled. Otherwise returns `false`.
    * @example
    * Luigi.auth().isAuthorizationEnabled();
-   * @since NEXTRELEASE
    */
   isAuthorizationEnabled() {
     return !!LuigiConfig.getConfigValue('auth.use');

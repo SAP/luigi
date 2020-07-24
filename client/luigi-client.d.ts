@@ -79,7 +79,6 @@ export declare interface UxManager {
   /**
    * Adds a backdrop to block the top and side navigation. It is based on the Fundamental UI Modal, which you can use in your micro frontend to achieve the same behavior.
    * @memberof uxManager
-   * @since NEXTRELEASE
    */
   addBackdrop: () => void;
 
