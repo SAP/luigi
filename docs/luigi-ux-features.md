@@ -29,7 +29,7 @@ However, you can render Luigi content in any other HTML container. It can be use
 <!-- add-attribute:class:warning -->
 >**NOTE:** If you render the Luigi content in a custom container, the container is positioned relatively when you apply your own CSS. Also, set the height of the Luigi custom container either in **px** or **vh**.
 
-<!-- keywords: render in div, load in custom container,add own header or footer -->
+<!-- keywords: render in div, load in custom container, add own header or footer -->
 
 ## Responsive application setup
 
