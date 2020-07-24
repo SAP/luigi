@@ -25,6 +25,18 @@ The lerna-changelog tool detects changes based on PR labels and maps them to sec
 -->
 
 
+## [v1.3.0] (2020-07-16)
+
+#### :rocket: Added
+* [#1496](https://github.com/SAP/luigi/pull/1496) NEW: Global search ([@JohannesDoberer](https://github.com/JohannesDoberer))
+* [#1478](https://github.com/SAP/luigi/pull/1478) OIDC Support for Authorization Code flow with PKCE ([@azriel46d](https://github.com/azriel46d))
+
+#### :bug: Fixed
+* [#1477](https://github.com/SAP/luigi/pull/1477) ContextSwitcher fix selected state ([@maxmarkus](https://github.com/maxmarkus))
+* [#1441](https://github.com/SAP/luigi/pull/1441) Navigation with and without params on the same node ([@ndricimrr](https://github.com/ndricimrr))
+
+> With Luigi version v1.3.0, the new v0.10.0 of Fundamental Library Styles were included. As a result, there were breaking changes to the Luigi side navigation. You can see the updated layout [here](https://sap.github.io/fundamental-styles/components/side-navigation.html).
+
 ## [v1.2.4] (2020-07-02)
 
 #### :bug: Fixed
@@ -808,3 +820,4 @@ The lerna-changelog tool detects changes based on PR labels and maps them to sec
 [v1.2.2]: https://github.com/SAP/luigi/compare/v1.2.1...v1.2.2
 [v1.2.3]: https://github.com/SAP/luigi/compare/v1.2.2...v1.2.3
 [v1.2.4]: https://github.com/SAP/luigi/compare/v1.2.3...v1.2.4
+[v1.3.0]: https://github.com/SAP/luigi/compare/v1.2.4...v1.3.0
