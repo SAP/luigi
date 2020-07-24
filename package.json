@@ -34,7 +34,7 @@
   },
   "husky": {
     "hooks": {
-      "pre-commit": "./scripts/hooks/apply-formatters.sh && ./scripts/hooks/remove-test-prefixes.sh && ./scripts/hooks/generate-docu.sh && ./scripts/hooks/generate-website-blog.sh && ./scripts/hooks/prevent-illegal-characters.sh"
+      "pre-commit": "./scripts/hooks/apply-formatters.sh && ./scripts/hooks/remove-test-prefixes.sh && ./scripts/hooks/generate-docu.sh && ./scripts/hooks/prevent-illegal-characters.sh"
     }
   }
 }
