@@ -296,6 +296,10 @@ Luigi.auth().isAuthorizationEnabled();
 
 Returns **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)** `true` if authorization is enabled. Otherwise returns `false`.
 
+**Meta**
+
+-   **since**: NEXTRELEASE
+
 ### AuthorizationStore
 
 Authorization Storage helpers, to be used in your custom authorization provider.

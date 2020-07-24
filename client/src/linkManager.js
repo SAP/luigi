@@ -8,6 +8,7 @@ import { splitViewHandle } from './splitViewHandle';
   - Reflect the route.
   - Keep the navigation state in Luigi.
   * @name linkManager
+  * @since NEXTRELEASE
   */
 export class linkManager extends LuigiClientBase {
   /**
@@ -47,6 +48,7 @@ export class linkManager extends LuigiClientBase {
    * LuigiClient.linkManager().navigate('/overview')
    * LuigiClient.linkManager().navigate('users/groups/stakeholders')
    * LuigiClient.linkManager().navigate('/settings', null, true) // preserve view
+   * @since NEXTRELEASE
    */
   navigate(path, sessionId, preserveView, modalSettings, splitViewSettings) {
     if (this.options.errorSkipNavigation) {
