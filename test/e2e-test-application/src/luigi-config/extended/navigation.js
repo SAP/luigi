@@ -266,7 +266,7 @@ class Navigation {
       [...Array(10).keys()]
         .filter(n => n !== 0)
         .map(n => ({
-          label: 'Environment ' + n, // (i.e mapping between what the user sees and what is taken to replace the dynamic part for the dynamic node)
+          // label: 'Environment ' + n, // (i.e mapping between what the user sees and what is taken to replace the dynamic part for the dynamic node)
           pathValue: 'env' + n // will be used to replace dynamic part
         })),
     actions: this.getContextSwitcherActions,
@@ -277,7 +277,14 @@ class Navigation {
      * context (option) is not listed in available options (eg kyma-system namespace),
      * or if options have not been fetched yet
      */
-    fallbackLabelResolver: id => id.replace(/\b\w/g, l => l.toUpperCase())
+    fallbackLabelResolver: id => {
+      return new Promise(resolve => {
+        setTimeout(() => {
+          resolve(id.replace(/\b\w/g, l => l.toUpperCase()));
+        }, 1000);
+      });
+    },
+    useFallbackLabelCache: true
   };
 
   getProductSwitcherItems = () => {

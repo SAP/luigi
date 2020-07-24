@@ -117,6 +117,21 @@ describe('Context-switcher', function() {
     });
   });
 
+  describe('resetFallbackLabelCache', () => {
+    beforeEach(() => {
+      CSHelpers._fallbackLabels.set('id_1', 'a');
+      CSHelpers._fallbackLabels.set('id_2', 'b');
+    });
+
+    it('works without fallback resolver', async () => {
+      assert.equal(CSHelpers._fallbackLabels.size, 2);
+
+      CSHelpers.resetFallbackLabelCache();
+
+      assert.equal(CSHelpers._fallbackLabels.size, 0);
+    });
+  });
+
   describe('fetchOptions', () => {
     let mockConfig;
     beforeEach(() => {

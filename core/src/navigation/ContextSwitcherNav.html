@@ -5,12 +5,12 @@
     'bottom'].includes(node.position)}
     <li
       class="fd-menu__item"
-      on:click="{() => onActionClick(node)}"
+      on:click="{()=> onActionClick(node)}"
       data-testid="{getTestId(node)}"
     >
       <a
         href="{getRouteLink(node)}"
-        on:click|preventDefault="{() => {}}"
+        on:click|preventDefault="{()=> {}}"
         class="fd-menu__link"
       >
         <span class="fd-menu__title">{$getTranslation(node.label)}</span>
@@ -33,16 +33,16 @@
     node.id)} {:then label}
     <li
       class="fd-menu__item"
-      on:click="{() => goToOption(node, selectedOption)}"
+      on:click="{()=> goToOption(node, selectedOption)}"
       data-testid="{getTestId(node)}"
     >
       {#if customOptionsRenderer}
-      {@html customOptionsRenderer(node, node.label === selectedLabel)}
+      {@html customOptionsRenderer(node, label === selectedLabel)}
       {:else}
       <a
         href="{getRouteLink(node)}"
-        on:click|preventDefault="{() => {}}"
-        class="fd-menu__link {node.label === selectedLabel ? 'is-selected' : ''}"
+        on:click|preventDefault="{()=> {}}"
+        class="fd-menu__link {label === selectedLabel ? 'is-selected' : ''}"
         title="{label}"
       >
         <span class="fd-menu__title">{label}</span>
@@ -56,12 +56,12 @@
     {#each actions as node} {#if node.position === 'bottom'}
     <li
       class="fd-menu__item"
-      on:click="{() => onActionClick(node)}"
+      on:click="{()=> onActionClick(node)}"
       data-testid="{getTestId(node)}"
     >
       <a
         href="{getRouteLink(node)}"
-        on:click|preventDefault="{() => {}}"
+        on:click|preventDefault="{()=> {}}"
         class="fd-menu__link"
       >
         <span class="fd-menu__title">{$getTranslation(node.label)}</span>

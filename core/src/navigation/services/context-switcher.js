@@ -5,6 +5,10 @@ import { LuigiConfig } from '../../core-api';
 export const ContextSwitcherHelpers = {
   _fallbackLabels: new Map(),
 
+  resetFallbackLabelCache() {
+    this._fallbackLabels.clear();
+  },
+
   getPreparedParentNodePath(config) {
     if (!config.parentNodePath || !config.parentNodePath.startsWith('/')) {
       console.error(
