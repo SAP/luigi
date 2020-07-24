@@ -33,6 +33,14 @@ module.exports = {
       {
         "from": "../../docs/assets",
         "to": "../assets"
+      },
+      {
+        "from": "sitemap.xml",
+        "to": "sitemap.xml"
+      },
+      {
+        "from": "robots.txt",
+        "to": "robots.txt"
       }
     ]),
     new webpack.BannerPlugin(
