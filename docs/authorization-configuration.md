@@ -232,7 +232,7 @@ After authorization is successful on the authorization provider's side, it redir
 <!-- add-attribute:class:warning -->
 >**NOTE:** Read more about authorization helpers in the [Core API: AuthorizationStore](luigi-core-api.md#AuthorizationStore) section.
 
-​
+​<!-- second empty line required for quote -->
 ### Persisting auth data
 ​
 Make sure to set this data in your authorization provider implementation. Most of the time it is used in a `callback.html` so that its data is available for Luigi after successful authorization:
