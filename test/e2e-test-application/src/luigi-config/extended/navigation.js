@@ -277,7 +277,8 @@ class Navigation {
      * context (option) is not listed in available options (eg kyma-system namespace),
      * or if options have not been fetched yet
      */
-    fallbackLabelResolver: id => id.replace(/\b\w/g, l => l.toUpperCase())
+    fallbackLabelResolver: id => id.replace(/\b\w/g, l => l.toUpperCase()),
+    useFallbackLabelCache: true
   };
 
   getProductSwitcherItems = () => {

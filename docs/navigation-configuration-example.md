@@ -132,6 +132,7 @@ Luigi.setConfig({
       parentNodePath: '/environments',
       lazyloadOptions: false,
       fallbackLabelResolver: (id) => (id.toUpperCase()),
+      useFallbackLabelCache: true,
       options: [{label,pathValue}, {label,pathValue}],
       actions: [{label,link,position,clickHandler}]
     },
