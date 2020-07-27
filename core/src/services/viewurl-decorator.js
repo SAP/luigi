@@ -29,7 +29,6 @@ class ViewUrlDecoratorSvc {
     const queryParamDecorators = this.decorators.filter(
       d => d.type === 'queryString'
     );
-    console.log('decors', this.decorators, 'queryParam', queryParamDecorators);
     for (let i = 0; i < queryParamDecorators.length; i++) {
       const decorator = queryParamDecorators[i];
       if (urlObj.searchParams.has(decorator.key)) {

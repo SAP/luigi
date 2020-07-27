@@ -38,7 +38,7 @@ class ViewGroupPreloadingClass {
       .filter(([name, _]) => !existingVGs.includes(name))
       .filter(([_, settings]) => settings && settings.preloadUrl)
       .filter((_, index) => index < batchSize)
-      .forEach(([name, settings]) => {
+      .forEach(async ([name, settings]) => {
         console.debug(
           'preloading view group ' + name + ' - ' + settings.preloadUrl
         );
@@ -54,9 +54,9 @@ class ViewGroupPreloadingClass {
       });
   }
 
-  async preload() {
+  preload() {
     if (this.shouldPreload) {
-      setTimeout(() => {
+      setTimeout(async () => {
         await this.preloadViewGroups(this.preloadBatchSize);
       });
     }

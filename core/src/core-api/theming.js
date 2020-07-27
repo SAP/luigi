@@ -123,7 +123,6 @@ class LuigiTheming {
         theming.nodeViewURLDecorator &&
         theming.nodeViewURLDecorator.queryStringParameter
       ) {
-        console.log('add queryString for getCurrentTheme');
         ViewUrlDecorator.add({
           type: 'queryString',
           uid: 'theming',
