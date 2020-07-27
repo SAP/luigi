@@ -29,7 +29,7 @@ class LuigiTheming {
   /**
    * Sets the current theming object
    * @memberof Theming
-   * @param {Object} a theming object, has the same structure as retrieved from **getAvailableThemes**
+   * @param {Object} themeObj a theming object, has the same structure as retrieved from **getAvailableThemes**
    * @since NEXTRELEASE
    * @example
    * Luigi
@@ -43,7 +43,7 @@ class LuigiTheming {
   /**
    * Retrieves a theme object by name. Returns `false` on trying to access a non-existing theme.
    * @memberof Theming
-   * @param {string} a theme name
+   * @param {string} themeName a theme name
    * @returns {promise} resolves a theming object
    * @since NEXTRELEASE
    * @example
@@ -78,7 +78,7 @@ class LuigiTheming {
       return this.currentTheme;
     }
     const theming = LuigiConfig.getConfigValue('settings.theming');
-    if (theming.defaultTheme) {
+    if (theming && theming.defaultTheme) {
       const defaultTheme = theming.defaultTheme;
       return this.getThemeObject(defaultTheme);
     }

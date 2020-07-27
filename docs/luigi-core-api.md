@@ -956,8 +956,7 @@ Sets the current theming object
 
 ##### Parameters
 
--   `themeObj`  
--   `a` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** theming object, has the same structure as retrieved from **getAvailableThemes**
+-   `themeObj` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** a theming object, has the same structure as retrieved from **getAvailableThemes**
 
 ##### Examples
 
@@ -977,8 +976,7 @@ Retrieves a theme object by name. Returns `false` on trying to access a non-exis
 
 ##### Parameters
 
--   `themeName`  
--   `a` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** theme name
+-   `themeName` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** a theme name
 
 ##### Examples
 
