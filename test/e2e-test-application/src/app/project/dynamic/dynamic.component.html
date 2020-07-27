@@ -3,8 +3,8 @@
     <h1 class="fd-section__title">{{ nodeLabel }}</h1>
   </div>
 
-  <div class="fd-panel" *ngIf="!links">
-    <div class="fd-panel__body">
+  <div class="fd-layout-panel" *ngIf="!links">
+    <div class="fd-layout-panel__body">
       <p>{{ nodeLabel }} content.</p>
       <div
         class="clickable"
@@ -78,8 +78,8 @@
       <br />
     </div>
   </div>
-  <div class="fd-panel" *ngIf="links">
-    <div class="fd-panel__body">
+  <div class="fd-layout-panel" *ngIf="links">
+    <div class="fd-layout-panel__body">
       <ul class="fd-list">
         <li
           class="fd-list__item clickable"
@@ -95,8 +95,8 @@
 </section>
 
 <section class="fd-section" *ngIf="nodeParams && hasBack">
-  <div class="fd-panel fd-has-margin-bottom-small">
-    <div class="fd-panel__body">
+  <div class="fd-layout-panel fd-has-margin-bottom-small">
+    <div class="fd-layout-panel__body">
       <div class="fd-message-strip" role="alert">
         <div class="fd-message-strip_text">
           Called with params:<br />
@@ -105,15 +105,15 @@
       </div>
     </div>
   </div>
-  <div class="fd-panel fd-has-margin-bottom-small">
-    <div class="fd-panel__header">
-      <div class="fd-panel__head">
-        <h3 class="fd-panel__title">
+  <div class="fd-layout-panel fd-has-margin-bottom-small">
+    <div class="fd-layout-panel__header">
+      <div class="fd-layout-panel__head">
+        <h3 class="fd-layout-panel__title">
           LuigiClient hasBack/GoBack
         </h3>
       </div>
     </div>
-    <div class="fd-panel__body">
+    <div class="fd-layout-panel__body">
       <div class="fd-form-item">
         <label class="fd-form-label">
           Modify goBackContext value, that you receive then via

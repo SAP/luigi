@@ -55,10 +55,11 @@
             >
             {/if}
             <!-- end hasOpenUIicon-->
-            {:else}
-            <span>{getNodeLabel(node)}</span>
             {/if}
             <!-- end node.icon -->
+            {#if !node.icon || node.showLabel}
+            <span>{getNodeLabel(node)}</span>
+            {/if}
             <BadgeCounter {node}/>
           </button>
         </div>
@@ -101,10 +102,11 @@
         >
         {/if}
         <!-- end hasOpenUIicon-->
-        {:else}
-        <span>{getNodeLabel(node)}</span>
         {/if}
         <!-- end node.icon -->
+        {#if !node.icon || node.showLabel}
+        <span>{getNodeLabel(node)}</span>
+        {/if}
         <BadgeCounter {node}/>
       </button>
     </div>
@@ -153,7 +155,7 @@
             id="overflowPopover"
           >
             <nav class="fd-menu">
-              <ul class="fd-menu__list">
+              <ul class="fd-menu__list fd-menu__list--no-shadow">
                 {#if contextSwitcherConfig && (!authorizationEnabled || isLoggedIn)}
                 <li class="fd-menu__item lui-mobile-switch-menu">
                   <a
@@ -577,6 +579,9 @@
       &:before {
         margin-top: 10px;
       }
+    }
+    .fd-top-nav__icon + span {
+      line-height: 2.4rem;
     }
   }
 

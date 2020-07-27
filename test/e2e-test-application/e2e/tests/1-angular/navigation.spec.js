@@ -73,6 +73,37 @@ describe('Navigation', () => {
           .withParams({ test: true })
           .navigate('/settings');
         cy.expectPathToBe('/settings');
+        cy.expectSearchToBe('?~test=true');
+        cy.getIframeBody().then($iframeBody => {
+          cy.wrap($iframeBody).should('contain', '"test": "true"');
+        });
+      });
+    });
+    it('Core API navigate back & forth from node w/ params to node w/o params', () => {
+      cy.window().then(win => {
+        win.Luigi.navigation()
+          .withParams({ test: true })
+          .navigate('/settings');
+        cy.expectPathToBe('/settings');
+        cy.expectSearchToBe('?~test=true');
+        cy.getIframeBody().then($iframeBody => {
+          cy.wrap($iframeBody).should('contain', '"test": "true"');
+        });
+      });
+      cy.window().then(win => {
+        win.Luigi.navigation().navigate('/settings');
+        cy.expectPathToBe('/settings');
+        cy.expectSearchToBe('');
+        cy.getIframeBody().then($iframeBody => {
+          cy.wrap($iframeBody).should('not.contain', '"test": "true"');
+        });
+      });
+      cy.window().then(win => {
+        win.Luigi.navigation()
+          .withParams({ test: true })
+          .navigate('/settings');
+        cy.expectPathToBe('/settings');
+        cy.expectSearchToBe('?~test=true');
         cy.getIframeBody().then($iframeBody => {
           cy.wrap($iframeBody).should('contain', '"test": "true"');
         });
@@ -170,6 +201,13 @@ describe('Navigation', () => {
     it('Icon instead of label in TopNav', () => {
       cy.get('button[title="Settings"]>.fd-top-nav__icon').should('exist');
       cy.get('button[title="Settings"]').should('contain', '');
+    });
+
+    it('Icon with label label in TopNav', () => {
+      cy.get('button[data-testid="icon-and-label"]>.fd-top-nav__icon').should(
+        'exist'
+      );
+      cy.get('button[data-testid="icon-and-label"]').should('contain', 'Git');
     });
 
     it('Icon with label in LeftNav', () => {
