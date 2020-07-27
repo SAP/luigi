@@ -230,7 +230,8 @@ After authorization is successful on the authorization provider's side, it redir
 [openIdConnect.js](../core/src/providers/auth/openIdConnect.js) lazy loads the official `oidc-client` library and is a good starting point if you also depend on external authorization libraries.
 
 <!-- add-attribute:class:warning -->
-> **NOTE:** Read more about authorization helpers in the [Core API: AuthorizationStore](luigi-core-api.md#AuthorizationStore) section.
+>**NOTE:** Read more about authorization helpers in the [Core API: AuthorizationStore](luigi-core-api.md#AuthorizationStore) section.
+
 ​
 ### Persisting auth data
 ​
