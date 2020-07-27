@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://docs.luigi-project.io/sitemap.xml
