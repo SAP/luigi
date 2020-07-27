@@ -9,7 +9,7 @@ class ViewGroupPreloadingClass {
     this.shouldPreload = false;
   }
 
-  preloadViewGroups(batchSize = 3) {
+  async preloadViewGroups(batchSize = 3) {
     const preloadViewGroupsSetting = LuigiConfig.getConfigValue(
       'navigation.preloadViewGroups'
     );
@@ -42,7 +42,7 @@ class ViewGroupPreloadingClass {
         console.debug(
           'preloading view group ' + name + ' - ' + settings.preloadUrl
         );
-        const iframe = IframeHelpers.createIframe(
+        const iframe = await IframeHelpers.createIframe(
           settings.preloadUrl,
           name,
           null,
@@ -54,10 +54,10 @@ class ViewGroupPreloadingClass {
       });
   }
 
-  preload() {
+  async preload() {
     if (this.shouldPreload) {
       setTimeout(() => {
-        this.preloadViewGroups(this.preloadBatchSize);
+        await this.preloadViewGroups(this.preloadBatchSize);
       });
     }
     this.shouldPreload = true;

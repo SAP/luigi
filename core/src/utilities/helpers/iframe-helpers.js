@@ -2,6 +2,7 @@
 import { GenericHelpers } from './';
 import { MICROFRONTEND_TYPES } from './../constants';
 import { LuigiConfig } from '../../core-api';
+import { ViewUrlDecorator } from '../../services';
 
 class IframeHelpersClass {
   get specialIframeTypes() {
@@ -226,7 +227,7 @@ class IframeHelpersClass {
     );
   }
 
-  createIframe(viewUrl, viewGroup, currentNode, microFrontendType) {
+  async createIframe(viewUrl, viewGroup, currentNode, microFrontendType) {
     const luigiDefaultSandboxRules = [
       'allow-forms', // Allows the resource to submit forms. If this keyword is not used, form submission is blocked.
       'allow-modals', // Lets the resource open modal windows.
@@ -251,7 +252,8 @@ class IframeHelpersClass {
       : luigiDefaultSandboxRules;
 
     const iframe = document.createElement('iframe');
-    iframe.src = viewUrl;
+    console.log('iframe call applyDecorators', viewUrl);
+    iframe.src = await ViewUrlDecorator.applyDecorators(viewUrl);
     if (allowRules) {
       iframe.allow = allowRules.join(' ');
     }

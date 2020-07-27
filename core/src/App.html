@@ -3,7 +3,7 @@
   {#if confirmationModal.displayed}
   <ConfirmationModal
     settings="{confirmationModal.settings}"
-    on:modalConfirm="{() => handleModalResult(true)}"
+    on:modalConfirm="{()=> handleModalResult(true)}"
     on:modalDismiss="{() => handleModalResult(false)}"
   ></ConfirmationModal>
   {/if}
@@ -117,7 +117,8 @@
     LuigiI18N,
     LuigiConfig,
     LuigiElements,
-    LuigiGlobalSearch
+    LuigiGlobalSearch,
+    LuigiTheming
   } from './core-api';
   import { Navigation } from './navigation/services/navigation';
   import { Routing } from './services/routing';
@@ -968,7 +969,7 @@
         delete iframe.luigi.nextClientPermissions;
         config.navigateOk = true;
 
-        ViewGroupPreloading.preload();
+        await ViewGroupPreloading.preload();
       }
 
       if ('luigi.get-context' === e.data.msg) {
@@ -1014,7 +1015,7 @@
             showLoadingIndicator = false;
           }
 
-          ViewGroupPreloading.preload();
+          await ViewGroupPreloading.preload();
         } else if (iframe.luigi.preloading) {
           // set empty context to an existing but inactive iframe; this is a valid use case (view group pre-loading)
           sendContextToClient(
@@ -1234,6 +1235,7 @@
   };
 
   onMount(() => {
+    LuigiTheming._init();
     searchProvider = LuigiConfig.getConfigValue('globalSearch.searchProvider');
     responsiveNavSetting = LuigiConfig.getConfigValue(
       'settings.responsiveNavigation'

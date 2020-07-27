@@ -25,16 +25,16 @@ class Settings {
     }
   };
   theming = {
-    themes: [
-      { id: 1, name: 'light' },
-      { id: 2, name: 'dark' },
-      { id: 3, name: 'blue' },
-      { id: 4, name: 'green' },
-      { id: 5, name: 'red' },
-      { id: 6, name: 'orange' },
-      { id: 7, name: 'yellow' }
-    ],
-    defaultTheme: 'light'
+    themes: [{ id: 1, name: 'light' }, { id: 2, name: 'dark' }],
+    defaultTheme: 'light',
+    nodeViewURLDecorator: {
+      queryStringParameter: {
+        keyName: 'sap-theme',
+        value: theme => {
+          return theme.name;
+        }
+      }
+    }
   };
   // sideNavCompactMode = true;
   // allowRules = ['microphone'];

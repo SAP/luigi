@@ -321,7 +321,7 @@ class RoutingClass {
           Navigation.onNodeChange(previousNode, currentNode);
         }
       }
-      Iframe.navigateIframe(config, component, iframeElement);
+      await Iframe.navigateIframe(config, component, iframeElement);
     } catch (err) {
       console.info('Could not handle route change', err);
     }

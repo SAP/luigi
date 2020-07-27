@@ -1,5 +1,6 @@
 import { LuigiConfig } from '.';
-import { GenericHelpers } from '../utilities/helpers';
+import { GenericHelpers, StateHelpers } from '../utilities/helpers';
+import { ViewUrlDecorator } from '../services';
 /**
  * Functions to use Luigi Core Theming features.
  * @namespace Theming
@@ -7,6 +8,7 @@ import { GenericHelpers } from '../utilities/helpers';
 class LuigiTheming {
   constructor() {
     this.currentTheme;
+    this.defaultTheme;
   }
 
   /**
@@ -55,15 +57,13 @@ class LuigiTheming {
    *  }))
    */
   async getThemeObject(themeName) {
-    const themes = await LuigiConfig.getConfigValueAsync(
-      'settings.theming.themes'
-    );
+    const themes = await this.getAvailableThemes();
     return themes && themes.find(t => t.name === themeName);
   }
   /**
    * Retrieves the current active theme. Falls back to **defaultTheme** if none explicitly specified before. Returns `false` if no theme selected and no defaultTheme defined.
    * @memberof Theming
-   * @returns {Object} a theming object
+   * @returns {promise} resolves to a theming object
    * @since NEXTRELEASE
    * @example
    * Luigi
@@ -73,14 +73,17 @@ class LuigiTheming {
    *    // Logic
    *  }))
    */
-  getCurrentTheme() {
+  async getCurrentTheme() {
     if (this.currentTheme) {
       return this.currentTheme;
     }
+    if (this.defaultTheme) {
+      return this.defaultTheme;
+    }
     const theming = LuigiConfig.getConfigValue('settings.theming');
     if (theming && theming.defaultTheme) {
-      const defaultTheme = theming.defaultTheme;
-      return this.getThemeObject(defaultTheme);
+      this.defaultTheme = await this.getThemeObject(theming.defaultTheme);
+      return this.defaultTheme;
     }
     console.error(
       '[Theming] getCurrentTheme() error. No theme set and no defaultTheme found in configuration',
@@ -100,6 +103,54 @@ class LuigiTheming {
    */
   isThemingAvailable() {
     return !!LuigiConfig.getConfigValue('settings.theming');
+  }
+
+  /**
+   * Initialize Theming Core API
+   * @memberof Theming
+   * @private
+   */
+  _init() {
+    const setupViewUrlDecorator = () => {
+      /**
+       * Registers the viewUrl decorator
+       * @memberof Theming
+       * @private
+       */
+      const theming = LuigiConfig.getConfigValue('settings.theming');
+      if (
+        theming &&
+        theming.nodeViewURLDecorator &&
+        theming.nodeViewURLDecorator.queryStringParameter
+      ) {
+        console.log('add queryString for getCurrentTheme');
+        ViewUrlDecorator.add({
+          type: 'queryString',
+          uid: 'theming',
+          key: theming.nodeViewURLDecorator.queryStringParameter.keyName,
+          valueFn: async () => {
+            const value = await this.getCurrentTheme();
+            console.log(
+              'valueFn()',
+              value,
+              theming.nodeViewURLDecorator.queryStringParameter.value(value)
+            );
+            return theming.nodeViewURLDecorator.queryStringParameter.value(
+              value
+            );
+          }
+        });
+      }
+    };
+
+    StateHelpers.doOnStoreChange(
+      window.Luigi._store,
+      () => {
+        this.defaultTheme = null;
+        setupViewUrlDecorator();
+      },
+      ['settings.theming']
+    );
   }
 }
 

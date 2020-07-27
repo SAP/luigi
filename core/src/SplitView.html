@@ -121,7 +121,7 @@
   const getNode = async () => {
     if (isDataPrepared) {
       if (!collapsed) {
-        SplitViewSvc.createAndSetView(getComponentWrapper());
+        await SplitViewSvc.createAndSetView(getComponentWrapper());
       }
     } else {
       await SplitViewSvc.prepareSplitViewData(getComponentWrapper(), nodepath);

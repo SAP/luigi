@@ -1010,7 +1010,7 @@ Luigi
  }))
 ```
 
-Returns **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** a theming object
+Returns **[promise](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise)** resolves to a theming object
 
 **Meta**
 

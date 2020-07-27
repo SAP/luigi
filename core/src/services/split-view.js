@@ -45,11 +45,11 @@ class SplitViewSvcClass {
     };
   }
 
-  setIframe(viewUrl, componentData, component) {
+  async setIframe(viewUrl, componentData, component) {
     if (viewUrl) {
       viewUrl = RoutingHelpers.substituteViewUrl(viewUrl, componentData);
     }
-    const iframe = IframeHelpers.createIframe(
+    const iframe = await IframeHelpers.createIframe(
       viewUrl,
       undefined,
       component.get().lastNode,
@@ -85,10 +85,10 @@ class SplitViewSvcClass {
     });
   }
 
-  createAndSetView(component) {
+  async createAndSetView(component) {
     const { nodeParams, lastNode, pathData } = component.get();
 
-    const iframe = this.setIframe(
+    const iframe = await this.setIframe(
       lastNode.viewUrl,
       {
         context: pathData.context,
@@ -240,9 +240,7 @@ class SplitViewSvcClass {
     });
 
     this.getContainer().style.top = `${this.splitViewValues.top}px`;
-    IframeHelpers.getIframeContainer().style.paddingBottom = `${
-      this.splitViewValues.bottom
-    }px`;
+    IframeHelpers.getIframeContainer().style.paddingBottom = `${this.splitViewValues.bottom}px`;
     setTimeout(() => {
       this.getDragger().style.top = `${this.splitViewValues.top}px`;
     });

@@ -144,7 +144,7 @@ class IframeClass {
      * check if luigi responded
      * if not, callback again to replace the iframe
      */
-    this.timeoutHandle = setTimeout(() => {
+    this.timeoutHandle = setTimeout(async () => {
       if (config.navigateOk) {
         config.navigateOk = undefined;
       } else {
@@ -154,7 +154,7 @@ class IframeClass {
         console.info(
           'navigate: luigi-client did not respond, using fallback by replacing iframe'
         );
-        this.navigateIframe(config, component, node);
+        await this.navigateIframe(config, component, node);
       }
     }, this.iframeNavFallbackTimeout);
   }
@@ -197,7 +197,7 @@ class IframeClass {
     return !config.iframe.luigi.initOk;
   }
 
-  navigateIframe(config, component, node) {
+  async navigateIframe(config, component, node) {
     clearTimeout(this.timeoutHandle);
     const componentData = component.get();
     let viewUrl = componentData.viewUrl;
@@ -304,7 +304,7 @@ class IframeClass {
           componentData.viewGroup &&
           !nextViewIsolated &&
           this.canCache(componentData.viewGroup);
-        config.iframe = IframeHelpers.createIframe(
+        config.iframe = await IframeHelpers.createIframe(
           viewUrl,
           canCache ? componentData.viewGroup : undefined,
           component.get().currentNode,
