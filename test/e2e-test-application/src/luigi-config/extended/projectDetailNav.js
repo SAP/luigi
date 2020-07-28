@@ -62,7 +62,11 @@ export const projectDetailNavStructure = projectId => [
     pathSegment: 'developers',
     label: 'Developers',
     viewUrl: '/sampleapp.html#/projects/' + projectId + '/developers',
-    icon: 'employee'
+    icon: 'employee',
+    badgeCounter: {
+      label: 'Number of developers',
+      count: () => Math.floor(Math.random() * 100)
+    }
   },
   {
     pathSegment: 'clientPermissionsTets',
@@ -109,6 +113,11 @@ export const projectDetailNavStructure = projectId => [
     viewUrl: '/sampleapp.html#/projects/' + projectId + '/settings',
     icon: 'settings',
     testId: 'myTestId'
+  },
+  {
+    pathSegment: 'externalmf',
+    label: 'External micro frontend',
+    viewUrl: 'http://localhost:8090/index.html'
   },
   {
     pathSegment: 'miscellaneous',

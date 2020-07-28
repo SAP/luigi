@@ -73,6 +73,37 @@ describe('Navigation', () => {
           .withParams({ test: true })
           .navigate('/settings');
         cy.expectPathToBe('/settings');
+        cy.expectSearchToBe('?~test=true');
+        cy.getIframeBody().then($iframeBody => {
+          cy.wrap($iframeBody).should('contain', '"test": "true"');
+        });
+      });
+    });
+    it('Core API navigate back & forth from node w/ params to node w/o params', () => {
+      cy.window().then(win => {
+        win.Luigi.navigation()
+          .withParams({ test: true })
+          .navigate('/settings');
+        cy.expectPathToBe('/settings');
+        cy.expectSearchToBe('?~test=true');
+        cy.getIframeBody().then($iframeBody => {
+          cy.wrap($iframeBody).should('contain', '"test": "true"');
+        });
+      });
+      cy.window().then(win => {
+        win.Luigi.navigation().navigate('/settings');
+        cy.expectPathToBe('/settings');
+        cy.expectSearchToBe('');
+        cy.getIframeBody().then($iframeBody => {
+          cy.wrap($iframeBody).should('not.contain', '"test": "true"');
+        });
+      });
+      cy.window().then(win => {
+        win.Luigi.navigation()
+          .withParams({ test: true })
+          .navigate('/settings');
+        cy.expectPathToBe('/settings');
+        cy.expectSearchToBe('?~test=true');
         cy.getIframeBody().then($iframeBody => {
           cy.wrap($iframeBody).should('contain', '"test": "true"');
         });
@@ -170,6 +201,13 @@ describe('Navigation', () => {
     it('Icon instead of label in TopNav', () => {
       cy.get('button[title="Settings"]>.fd-top-nav__icon').should('exist');
       cy.get('button[title="Settings"]').should('contain', '');
+    });
+
+    it('Icon with label label in TopNav', () => {
+      cy.get('button[data-testid="icon-and-label"]>.fd-top-nav__icon').should(
+        'exist'
+      );
+      cy.get('button[data-testid="icon-and-label"]').should('contain', 'Git');
     });
 
     it('Icon with label in LeftNav', () => {
@@ -572,6 +610,51 @@ describe('Navigation', () => {
             .contains('Miscellaneous2')
             .should('visible');
         });
+      });
+    });
+  });
+  describe('GlobalSearch', () => {
+    context('Desktop', () => {
+      it('GlobalSearch Desktop', () => {
+        cy.get('.luigi-search__input').should('not.be.visible');
+        cy.get('[data-testid=luigi-search-btn-desktop]').click();
+        cy.get('.luigi-search__input').should('be.visible');
+        cy.get('.luigi-search__input').type('Luigi');
+        cy.get('[data-testid=luigi-search-btn-desktop]').click();
+        cy.get('.luigi-search__input').should('not.be.visible');
+        cy.get('[data-testid=luigi-search-btn-desktop]').click();
+        cy.get('.luigi-search__input').should('not.have.value', 'Luigi');
+      });
+    });
+    context('Mobile', () => {
+      beforeEach(() => {
+        cy.viewport('iphone-6');
+      });
+      it('GlobalSearch Mobile', () => {
+        cy.get('.luigi-search-shell__mobile .luigi-search__input').should(
+          'not.be.visible'
+        );
+        cy.get('[data-testid=mobile-menu]').click();
+        cy.get('[data-testid=luigi-search-btn-mobile]').click();
+        cy.get('.luigi-search-shell__mobile .luigi-search__input').should(
+          'be.visible'
+        );
+        cy.get('.luigi-search-shell__mobile .luigi-search__input').type(
+          'Luigi'
+        );
+
+        cy.get('[data-testid=mobile-menu]').click();
+        cy.get('[data-testid=luigi-search-btn-mobile]').click();
+        cy.get('.luigi-search-shell__mobile .luigi-search__input').should(
+          'not.be.visible'
+        );
+
+        cy.get('[data-testid=mobile-menu]').click();
+        cy.get('[data-testid=luigi-search-btn-mobile]').click();
+        cy.get('.luigi-search-shell__mobile .luigi-search__input').should(
+          'not.have.value',
+          'Luigi'
+        );
       });
     });
   });

@@ -1,4 +1,6 @@
 import fiddleConfig from '../../configs/default';
+import { cloneDeep } from 'lodash';
+
 Cypress.env('RETRIES', 1);
 describe('Fiddle', () => {
   describe('Navigation', () => {
@@ -28,7 +30,7 @@ describe('Fiddle', () => {
     });
     describe('Normal navigation', () => {
       beforeEach(() => {
-        const newConfig = Object.assign({}, fiddleConfig);
+        const newConfig = cloneDeep(fiddleConfig);
         newConfig.navigation.nodes[0].viewUrl = null;
         cy.visitWithFiddleConfig('/', newConfig);
       });
@@ -41,7 +43,7 @@ describe('Fiddle', () => {
     });
     describe('virtualTree with fromVirtualTreeRoot', () => {
       beforeEach(() => {
-        const newConfig = Object.assign({}, fiddleConfig);
+        const newConfig = cloneDeep(fiddleConfig);
         newConfig.navigation.nodes.push({
           pathSegment: 'virtual',
           label: 'Virtual',
@@ -59,9 +61,10 @@ describe('Fiddle', () => {
         cy.expectPathToBe('/virtual/this/is/a/tree');
       });
     });
-    describe('context switcher', () => {
+    describe('ContextSwitcher', () => {
+      let newConfig;
       beforeEach(() => {
-        let newConfig = Object.assign({}, fiddleConfig);
+        newConfig = cloneDeep(fiddleConfig);
         newConfig.navigation.nodes.push({
           hideFromNav: true,
           pathSegment: 'environments',
@@ -103,9 +106,10 @@ describe('Fiddle', () => {
             }
           }
         };
-        cy.visitWithFiddleConfig('/', newConfig);
       });
       it('custom selected option renderer', () => {
+        cy.visitWithFiddleConfig('/', newConfig);
+
         cy.contains('Select Environment').click();
         cy.contains('Environment 1').click();
         cy.get('[data-testid=luigi-contextswitcher-button]')
@@ -118,12 +122,36 @@ describe('Fiddle', () => {
           .find('label')
           .should('have.css', 'color', 'rgb(0, 136, 255)')
           .and('have.css', 'font-weight', '700');
+
+        // checks if there is only one selected item
+        cy.get('#context_menu_middle .is-selected').should('have.length', 1);
+      });
+
+      it('using fallbackLabelResolver', () => {
+        newConfig.navigation.contextSwitcher.customSelectedOptionRenderer = undefined;
+        newConfig.navigation.contextSwitcher.fallbackLabelResolver = id =>
+          id.toUpperCase();
+        newConfig.navigation.contextSwitcher.options = [
+          { pathValue: 'env1' },
+          { pathValue: 'env2' }
+        ];
+
+        cy.visitWithFiddleConfig('/', newConfig);
+
+        cy.get('#context_menu_middle .is-selected').should('have.length', 0);
+
+        cy.contains('Select Environment').click();
+        cy.contains('ENV1').click(); // fb label resolver used
+
+        // checks if there is only one selected item
+        cy.get('#context_menu_middle .is-selected').should('have.length', 1);
       });
     });
   });
   describe('Unload and load Luigi', () => {
     beforeEach(() => {
-      cy.visitWithFiddleConfig('/home/two', fiddleConfig);
+      const newConfig = cloneDeep(fiddleConfig);
+      cy.visitWithFiddleConfig('/home/two', newConfig);
     });
     it('Core API unload', () => {
       let config;
@@ -151,6 +179,162 @@ describe('Fiddle', () => {
       });
 
       cy.get('.fd-shellbar').should('be.visible');
+    });
+  });
+  describe('Show-hide of Logout & Login Buttons', () => {
+    const loginLink = () => {
+      return cy.get('[data-testid="login-link"]');
+    };
+    const logoutLink = () => {
+      return cy.get('[data-testid="logout-link"]');
+    };
+    describe('No Auth', () => {
+      beforeEach(() => {
+        const newConfig = cloneDeep(fiddleConfig);
+        newConfig.auth = undefined;
+        newConfig.navigation.profile = {
+          logout: {
+            label: 'Bye bye',
+            icon: 'sys-cancel'
+          },
+          staticUserInfoFn: () => ({
+            name: 'Static User',
+            email: 'other.luigi.user@example.com',
+            picture: '/assets/github-logo.png'
+          })
+        };
+        cy.visitWithFiddleConfig('/home/two', newConfig);
+      });
+      it('Static profile, and logging out with customLogoutFn', () => {
+        cy.get('[data-testid="luigi-topnav-profile"] button').click();
+        logoutLink().should('exist');
+        loginLink().should('not.exist');
+
+        let profileLogout;
+        cy.window().then(win => {
+          const config = win.Luigi.getConfig();
+          profileLogout = config.navigation.profile.logout;
+          profileLogout.customLogoutFn = () => {
+            return true;
+          };
+          cy.spy(profileLogout, 'customLogoutFn');
+          win.Luigi.setConfig(config);
+          win.Luigi.configChanged('navigation.profile');
+        });
+
+        // Verify profile value
+        logoutLink()
+          .contains('Bye bye')
+          .click();
+
+        // need to wrap 'expect' into some cypress function, else it executes immediately
+        cy.window().then(win => {
+          expect(profileLogout.customLogoutFn).to.be.called;
+        });
+      });
+    });
+    describe('With Auth', () => {
+      let newConfig;
+
+      const visitLoggedInWithAuthConfig = (path = '/', newConfig) => {
+        const strConfig = JSON.stringify(newConfig).replace(
+          '"OAUTH2_PROVIDER"',
+          'window.LuigiAuthOAuth2'
+        ); // workaround else it would just be undefined
+        cy.visitLoggedInWithFiddleConfig(path, strConfig);
+      };
+      const visitWithAuthConfig = (path = '/', newConfig) => {
+        const strConfig = JSON.stringify(newConfig).replace(
+          '"OAUTH2_PROVIDER"',
+          'window.LuigiAuthOAuth2'
+        ); // workaround else it would just be undefined
+        cy.visitWithFiddleConfigString(path, strConfig);
+      };
+
+      beforeEach(() => {
+        newConfig = cloneDeep(fiddleConfig);
+        newConfig.auth = {
+          use: 'myOAuth2',
+          myOAuth2: {
+            idpProvider: 'OAUTH2_PROVIDER',
+            authorizeUrl: '/auth/idpmock/implicit.html',
+            logoutUrl: '/auth/idpmock/logout.html',
+            post_logout_redirect_uri: '/auth/logout.html',
+            authorizeMethod: 'GET',
+            oAuthData: {
+              client_id: 'egDuozijY5SVr0NSIowUP1dT6RVqHnlp',
+              redirect_uri: '/auth/callback.html'
+            }
+          }
+        };
+        newConfig.navigation.profile = {
+          logout: {
+            label: 'Bye bye',
+            icon: 'sys-cancel'
+          }
+        };
+      });
+
+      it('Profile, no auto-login, logged out', () => {
+        newConfig.auth.disableAutoLogin = true;
+        visitWithAuthConfig('/', newConfig);
+
+        cy.get('[data-testid="luigi-topnav-profile"] button').click();
+        logoutLink().should('not.exist');
+        loginLink().should('exist');
+      });
+      it('No Profile, no auto-login, logged out and login', () => {
+        newConfig.auth.disableAutoLogin = true;
+        newConfig.navigation.profile = undefined;
+        visitWithAuthConfig('/', newConfig);
+
+        // Logged out
+        cy.get('[data-testid="luigi-topnav-profile"] button').click();
+        logoutLink().should('not.exist');
+        loginLink().should('exist');
+
+        // Log in
+        loginLink().click();
+        cy.login('tets@email.com', 'tets', true);
+
+        // Logged in
+        cy.get('[data-testid="luigi-topnav-profile"] button').click();
+        loginLink().should('not.exist');
+        logoutLink().should('exist');
+
+        // Verify default value
+        logoutLink().contains('Sign Out');
+      });
+
+      it('Profile, logged in', () => {
+        newConfig.navigation.profile = {
+          logout: {
+            label: 'Bye bye',
+            icon: 'sys-cancel'
+          }
+        };
+        newConfig.auth.disableAutoLogin = false;
+        visitLoggedInWithAuthConfig('/', newConfig);
+
+        cy.get('[data-testid="luigi-topnav-profile"] button').click();
+        logoutLink().should('exist');
+        loginLink().should('not.exist');
+
+        // Verify profile value
+        logoutLink().contains('Bye bye');
+      });
+      it('No profile, logged in', () => {
+        newConfig.navigation.profile = undefined;
+        newConfig.auth.disableAutoLogin = false;
+        visitLoggedInWithAuthConfig('/', newConfig);
+
+        cy.get('[data-testid="luigi-topnav-profile"] button').click();
+        logoutLink().should('exist');
+        loginLink().should('not.exist');
+
+        // Verify default value
+        logoutLink().contains('Sign Out');
+      });
     });
   });
 });

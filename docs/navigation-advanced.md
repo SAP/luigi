@@ -254,6 +254,7 @@ contextSwitcher: {
   parentNodePath: '/environments',
   lazyloadOptions: false,
   fallbackLabelResolver: (id) => (id.toUpperCase()),
+  useFallbackLabelCache: true,
   options: [{label, pathValue,customRendererCategory}, {label, pathValue, customRendererCategory}],
   customSelectedOptionRenderer: (option) => {
     let color = "white";
@@ -339,6 +340,7 @@ Tab-style navigation in Luigi can be displayed directly above the micro frontend
 ### tabNav
 - **type**: boolean
 - **description**: renders the children of the node as a horizontal navigation bar. Sub-children are not supported. When you categorize nodes you will get a drop-down menu in the horizontal navigation.
+
 
 ## Additional options
 

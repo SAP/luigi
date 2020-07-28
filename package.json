@@ -19,7 +19,8 @@
     "sirv-cli": "^0.4.4"
   },
   "prettier": {
-    "singleQuote": true
+    "singleQuote": true,
+    "semi": true
   },
   "changelog": {
     "repo": "SAP/luigi",
@@ -27,7 +28,6 @@
       "breaking": ":boom: Breaking Change",
       "enhancement": ":rocket: Added",
       "bug": ":bug: Fixed",
-      "documentation": ":memo: Documentation",
       "internal": ":house: Internal"
     },
     "cacheDir": ".changelog"

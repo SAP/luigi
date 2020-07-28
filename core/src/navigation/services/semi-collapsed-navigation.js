@@ -51,14 +51,22 @@ class SemiCollapsibleNavigationClass {
       window.innerWidth !== 0 &&
       window.innerWidth < CSS_BREAKPOINTS.desktopMinWidth &&
       this.previousWindowWidth >= CSS_BREAKPOINTS.desktopMinWidth;
+    const isMobileToDesktop =
+      window.innerWidth !== 0 &&
+      window.innerWidth > CSS_BREAKPOINTS.desktopMinWidth &&
+      this.previousWindowWidth >= CSS_BREAKPOINTS.desktopMinWidth;
+
     if (isDesktopToMobile) {
-      this.setCollapsed(true);
+      this.setCollapsed(true, false);
+    }
+    if (!this.isStoredCollapsed() && isMobileToDesktop) {
+      this.setCollapsed(false, false);
     }
     selectedCategory = this.closePopupMenu(selectedCategory);
     return { isSemiCollapsed: this.isSemiCollapsed, selectedCategory };
   }
 
-  setCollapsed(state) {
+  setCollapsed(state, persistState = true) {
     document.body.classList.remove('semiCollapsed');
     // add if true
     if (state) {
@@ -66,7 +74,9 @@ class SemiCollapsibleNavigationClass {
     }
     // initial state
     this.isSemiCollapsed = state;
-    localStorage.setItem(NavigationHelpers.COL_NAV_KEY, state);
+    if (persistState) {
+      localStorage.setItem(NavigationHelpers.COL_NAV_KEY, state);
+    }
 
     if (this.valueChangedFns instanceof Array) {
       this.valueChangedFns.forEach(fn =>
@@ -77,7 +87,14 @@ class SemiCollapsibleNavigationClass {
     }
   }
 
+  isStoredCollapsed() {
+    return JSON.parse(localStorage.getItem(NavigationHelpers.COL_NAV_KEY));
+  }
+
   getCollapsed() {
+    if (this.isStoredCollapsed()) {
+      return true;
+    }
     return this.isSemiCollapsed;
   }
 

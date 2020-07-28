@@ -27,6 +27,7 @@ Use the parameters and functions in this reference to configure your Luigi navig
 * [Context switcher](#context-switcher)
 * [Product switcher](#product-switcher)
 * [App switcher](#app-switcher)
+* [Global search](#global-search)
 
 
 ## Routing parameters
@@ -213,7 +214,11 @@ settings: {
     ```
 ### icon
 - **type**: string
-- **description**: the name of an icon, without the `sap-icon--` prefix. Its source may be [OpenUI](https://openui5.hana.ondemand.com/1.40.10/iconExplorer.html) or a custom link (relative or absolute) to an image. It is recommended to use a square image. The icon is displayed next to the node label in the side navigation or instead of the label in the top navigation.
+- **description**: the name of an icon, without the `sap-icon--` prefix. Its source may be [OpenUI](https://openui5.hana.ondemand.com/1.40.10/iconExplorer.html) or a custom link (relative or absolute) to an image. It is recommended to use a square image. The icon is displayed next to the node label in the side navigation or instead of the label in the top navigation. To show the label next to the icon in the top navigation, add the `showLabel` attribute.
+
+### showLabel
+- **type**: boolean
+- **description**: Forces the label to be visible in the top navigation even if an icon is set.
 
 ### altText
 - **type**: string
@@ -226,7 +231,7 @@ settings: {
 
 ### badgeCounter
 - **type**: object
-- **description**: adds a badge with a number and a label to a node. Nodes that are part of a category show a cumulated number of all badges in this category. **badgeCounter** is only available for top navigation items.
+- **description**: adds a badge with a number and a label to a node. Nodes that are part of a category show a cumulated number of all badges in this category. 
 - **attributes**:
   - **label** is the label of the badge.
   - **count** is a function or asynchronous function that returns a number.
@@ -354,6 +359,11 @@ The context switcher is a drop-down list available in the top navigation bar. It
 - **type**: any
 - **description**: specifies a function used to fetch the **label** for **options** with no **label** defined. Additionally, it fetches the drop-down label for non-existing **options**.
 
+### useFallbackLabelCache
+- **type**: boolean
+- **description**: if set to `true`, the labels retrieved through **fallbackLabelResolver** are cached within Luigi. This is useful, if **fallbackLabelResolver** is an async function which does a remote server call to fetch its value.
+- **since**: NEXTRELEASE
+
 ### preserveSubPathOnSwitch
 - **type**: boolean
 - **description**: if set to `true`, the sub-path is preserved on context switch.
@@ -463,3 +473,53 @@ The app switcher is a drop-down list available in the top navigation bar. It all
   - **title** defines the application title. This is shown in the **appSwitcher** drop-down as well as the title in the header of the Luigi application if a user is in the context of the app.
   - **subTitle** defines the application sub-title. This is shown as the sub-title in the header of the Luigi application if a user is in the context of the app.
   - **link** is a link within the Luigi application that defines the root of the app. It is used to switch to the application if the drop-down entry is selected. It is also used to determine if a user is within the app's scope, so that the corresponding title and sub-title can be rendered in the header.
+
+## Global search
+
+The global search is an input field available in the top navigation bar. The search is available if the search provider object is configured and implemented in the `luigi-config.js` file.
+
+### searchProvider
+- **type**: Object
+- **description**: The search provider is an object which contains different events and the possibility to implement a custom result renderer or change only the search result item.
+ - **attributes:**
+  - **onInput**
+    - **type**: Function
+    - **description**: will be executed on every key-up event.
+  - **onEnter**
+    - **type**: Function
+    - **description**: will be executed when the user presses 'Enter'. 
+  - **onEscape**
+    - **type**: Function
+    - **description**: will be executed when the user presses 'Escape'. 
+  - **customSearchResultRenderer** 
+    - **type**: Function
+    - **description**: This function allows you to append your custom search result to a slot which Luigi provides for you. If this function is implemented the default search result popover is disabled.
+    - **attributes**:
+      - **searchResults**
+        - **type**: Array
+        - **description**: array of search result items
+      - **slot**
+        - **type**: DIV element
+        - **description**: `div` element as slot. You can append a custom implementation of the search result to this `div` element.
+      - **searchApiObj**
+        - **type**: Object
+        - **description**: It is an object with a function `fireItemSelected` as property. This function gets a search result item as parameter and fires the search provider event `onSearchResultItemSelected`.
+  - **customSearchResultItemRenderer**
+    - **type**: Function
+    - **description**: This function allows you to customize the single list element rendered in the default search result popover.
+    - **attributes**:
+      - **searchResultItem**
+        - **type**: Object
+        - **description**: search result item
+      - **slot**
+        - **type**: LI element
+        - **description**: `li` element as slot. You can append a custom implementation of a `searchResultItem` to this `li` element.
+      - **searchApiObj**
+        - **type**: Object
+        - **description**: It is an object with a function `fireItemSelected` as property. This function gets a `searchResultItem` as parameter and fires the search provider event `onSearchResultItemSelected`.
+  - **onSearchResultItemSelected**
+    - **type**: Function
+    - **description**: will be executed when the user clicks on a `searchResultItem`. 
+    - **attribute** [searchResultItem](luigi-core-api.md#globalsearch)
+      
+          

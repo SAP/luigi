@@ -18,6 +18,19 @@
   </div>
   <div class="fd-shellbar__group fd-shellbar__group--actions">
     {#if !authorizationEnabled || isLoggedIn}
+    {#if isGlobalSearchAvailable}
+    <GlobalSearch
+      bind:isSearchFieldVisible
+      on:toggleSearch
+      on:handleSearchNavigation
+      bind:searchResult
+      bind:displaySearchResult
+      bind:displayCustomSearchResult
+      bind:inputElem
+      bind:luigiCustomSearchRenderer__slot
+      on:closeSearchResult
+    />
+    {/if}
     <ContextSwitcher
       bind:dropDownStates
       on:toggleDropdownState="{() => toggleDropdownState('contextSwitcherPopover')}"
@@ -55,10 +68,11 @@
             >
             {/if}
             <!-- end hasOpenUIicon-->
-            {:else}
-            <span>{getNodeLabel(node)}</span>
             {/if}
             <!-- end node.icon -->
+            {#if !node.icon || node.showLabel}
+            <span>{getNodeLabel(node)}</span>
+            {/if}
             <BadgeCounter {node}/>
           </button>
         </div>
@@ -101,10 +115,11 @@
         >
         {/if}
         <!-- end hasOpenUIicon-->
-        {:else}
-        <span>{getNodeLabel(node)}</span>
         {/if}
         <!-- end node.icon -->
+        {#if !node.icon || node.showLabel}
+        <span>{getNodeLabel(node)}</span>
+        {/if}
         <BadgeCounter {node}/>
       </button>
     </div>
@@ -153,9 +168,21 @@
             id="overflowPopover"
           >
             <nav class="fd-menu">
-              <ul class="fd-menu__list">
+              <ul class="fd-menu__list fd-menu__list--no-shadow">
+                {#if isGlobalSearchAvailable}
+                <li class="fd-menu__item">
+                  <a
+                    class="fd-menu__link"
+                    on:click|stopPropagation="{()=>{toggleSearch(),toggleDropdownState('overflowPopover')}}"
+                    data-testid="luigi-search-btn-mobile"
+                  >
+                    <span class="fd-top-nav__icon sap-icon--search"></span>
+                    <span class="fd-menu__title">Search</span>
+                  </a>
+                </li>
+                {/if}
                 {#if contextSwitcherConfig && (!authorizationEnabled || isLoggedIn)}
-                <li class="fd-menu__item lui-mobile-switch-menu">
+                <li class="fd-menu__item">
                   <a
                     class="fd-menu__link"
                     on:click|stopPropagation="{openMobileContextSwitcher}"
@@ -359,6 +386,7 @@
   import TopNavDropDown from '../TopNavDropDown.html';
   import ContextSwitcher from './ContextSwitcher.html';
   import ProductSwitcher from './ProductSwitcher.html';
+  import GlobalSearch from './GlobalSearch.html';
   import {
     beforeUpdate,
     createEventDispatcher,
@@ -397,6 +425,14 @@
   export let profileItemsAvailable;
   export let userInfo = {};
   export let urlAuthError;
+  export let isGlobalSearchAvailable;
+  export let isSearchFieldVisible;
+  export let inputElem;
+  export let luigiCustomSearchRenderer__slot;
+  export let displaySearchResult;
+  export let displayCustomSearchResult;
+  export let searchResult;
+
   let store = getContext('store');
   let contextSwitcherToggle = false;
   let selectedLabel;
@@ -441,6 +477,7 @@
           'settings.responsiveNavigation'
         );
         productSwitcherConfig = NavigationHelpers.getProductSwitcherConfig();
+        isGlobalSearchAvailable = LuigiConfig.getConfigValue('globalSearch');
       },
       ['navigation']
     );
@@ -504,6 +541,10 @@
     dispatch('handleClick', { node });
   }
 
+  export function handleSearchNavigation(node) {
+    dispatch('handleSearchNavigation', { node });
+  }
+
   export function handleClickExternal(event) {
     handleClick(event.detail.node);
   }
@@ -514,7 +555,6 @@
 
     closeAllDropdowns();
     closeMobileTopNavDropDown();
-
     ddStates[name] = dropDownState;
 
     dropDownStates = ddStates;
@@ -522,6 +562,24 @@
 
   export function toggleDropdownStateExternal(event) {
     toggleDropdownState(event.detail.name);
+  }
+
+  function setFocusOnGlobalSearchFieldMobile() {
+    if (inputElem) {
+      inputElem.focus();
+    }
+  }
+
+  export function toggleSearch() {
+    if (!isSearchFieldVisible)
+      setTimeout(() => {
+        setFocusOnGlobalSearchFieldMobile();
+      });
+    dispatch('toggleSearch', {
+      isSearchFieldVisible,
+      inputElem,
+      luigiCustomSearchRenderer__slot
+    });
   }
 
   export function closeAllDropdowns() {
@@ -577,6 +635,9 @@
       &:before {
         margin-top: 10px;
       }
+    }
+    .fd-top-nav__icon + span {
+      line-height: 2.4rem;
     }
   }
 
@@ -646,9 +707,5 @@
         right: 14px;
       }
     }
-  }
-
-  .lui-mobile-switch-menu {
-    border-bottom: 1px solid var(--sapList_BorderColor, #e4e4e4);
   }
 </style>

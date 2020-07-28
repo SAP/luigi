@@ -6,11 +6,14 @@
   "scripts": {
     "build": "npm run buildConfig && ng build",
     "lint": "ng lint",
-    "e2e:open": "cypress open",
-    "e2e:run": "cypress run --browser chrome -c video=false",
+    "e2e:open": "cypress open --env configFile=e2etestapp",
+    "e2e:open:external": "cypress open --env configFile=externalmf",
+    "e2e:run": "cypress run --env configFile=e2etestapp --browser chrome -c video=false",
+    "e2e:run:external": "cypress run --env configFile=externalmf --browser chrome -c video=false",
     "e2e:run:electron": "cypress run",
     "buildConfig": "webpack --config webpack-generateConfig.config",
-    "start": "concurrently \"npm run buildConfig -- --watch\" \"ng serve --host 0.0.0.0 --port 4200\""
+    "startExternalMf": "http-server --port 8090 ./externalMf",
+    "start": "concurrently \"npm run buildConfig -- --watch\" \"ng serve --host 0.0.0.0 --port 4200\" \"npm run startExternalMf\""
   },
   "dependencies": {
     "@angular/animations": "^6.1.0",
@@ -25,11 +28,11 @@
     "@luigi-project/plugin-auth-oauth2": "1.0.0",
     "@luigi-project/plugin-auth-oidc": "1.0.0",
     "@luigi-project/client": "1.0.0",
-    "@luigi-project/core": "1.0.0",
-    "@sap-theming/theming-base-content": "^11.1.18",
+    "@luigi-project/core": "1.2.1",
+    "@sap-theming/theming-base-content": "~11.1.19",
     "ajv": "^6.1.1",
     "core-js": "^2.4.1",
-    "fundamental-styles": "^0.8.1",
+    "fundamental-styles": "~0.10.0",
     "rxjs": "6.2.0",
     "zone.js": "^0.8.14",
     "lodash": ">=4.17.13"
@@ -66,6 +69,7 @@
     "webpack-cli": "^3.2.3",
     "webpack-dev-server": "^3.1.14",
     "lodash": ">=4.17.13",
-    "serialize-javascript": ">=2.1.1"
+    "serialize-javascript": ">=2.1.1",
+    "http-server": "0.12.3"
   }
 }

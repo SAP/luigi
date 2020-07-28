@@ -87,7 +87,7 @@ class RoutingClass {
   getWindowPath() {
     return LuigiConfig.getConfigValue('routing.useHashRouting')
       ? GenericHelpers.getPathWithoutHash(window.location.hash)
-      : window.location.pathname;
+      : window.location.pathname.concat(window.location.search);
   }
 
   buildFromRelativePath(node) {

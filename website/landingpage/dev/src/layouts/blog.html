@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html class="no-js" lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="x-ua-compatible" content="ie=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>{{ title }} - Luigi Blog</title>
+    <meta name="description" content="{{ seoMetaDescription }}" />
+
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="32x32"
+      href="{{root}}assets/img/favicon.png"
+    />
+    <link rel="stylesheet" href="{{root}}assets/css/app.css" />
+
+    <link rel="alternate" title="Luigi Blog" type="application/json" href="{{root}}blog/feeds/feed.json" />
+    <link rel="alternate" type="application/rss+xml" title="RSS" href="{{root}}blog/feeds/rss.xml" />
+    <atom:link href="{{root}}blog/feeds/atom.xml" rel="self" type="application/rss+xml" />
+  </head>
+  <body>
+    {{> header}}
+
+    <div class="main-content">
+        <section>
+        <div class="row" id="stickyAnchor" data-something>
+          <div class="column small-12 medium-9">
+            {{#unlesspage 'overview'}}
+            <a href="/blog/overview" class="back-to-blog">Back to Blog</a>
+            {{/unlesspage}}
+
+            {{> body}}
+          </div>
+
+          <div class="columns small-12 medium-3 right show-for-xlarge" data-sticky-container>
+            <div class="sticky" data-sticky data-margin-top="6" data-anchor="stickyAnchor">
+              <ul class="list-type-1 sticky-navigation">
+                <li><a href="https://docs.luigi-project.io">Read Documentation</a></li>
+                <li><a href="https://slack.luigi-project.io" target="_blank">Community</a></li>
+                <li><a href="https://docs.luigi-project.io/docs/getting-started">How to get started</a></li>
+                <li><a href="https://www.youtube.com/channel/UC5WsYsHapDlg2K3iXS4n4AQ" target="_blank">Our Youtube Channel</a></li>
+                <li><a href="https://twitter.com/luigiprojectio" target="_blank">Our Twitter Channel</a></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+
+
+      <section class="s-gradient">
+        <div class="row">
+          <div class="column small-12 large-6 content">
+            <div class="sub-title">
+              <span class="text">Our Youtube Channel</span>
+            </div>
+            <h3 class="title-3">Get the latest from Luigi</h3>
+            <p class="description">
+              Always stay up to date with our growing collection of news, innvovations and video tutorials.
+            </p>
+            <p>
+              <a class="btn-primary" href="https://www.youtube.com/channel/UC5WsYsHapDlg2K3iXS4n4AQ" target="_blank">Browse Channel</a>
+            </p>
+          </div>
+          <div class="column small-12 large-6 image">
+            <img src="{{root}}assets/img/youtube.svg" alt="Luigi - Our Youtube Channel - Youtube" />
+          </div>
+        </div>
+      </section>
+
+    </div>
+
+    {{> footer}}
+
+    <script src="{{root}}assets/js/app.js"></script>
+  </body>
+</html>
