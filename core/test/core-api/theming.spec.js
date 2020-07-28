@@ -10,13 +10,8 @@ describe('Core API - Theming', function() {
   const getMockTheming = () => {
     return {
       themes: [
-        { id: 1, name: 'light' },
-        { id: 2, name: 'dark' },
-        { id: 3, name: 'blue' },
-        { id: 4, name: 'green' },
-        { id: 5, name: 'red' },
-        { id: 6, name: 'orange' },
-        { id: 7, name: 'yellow' }
+        { id: 'light', name: 'Light Theme' },
+        { id: 'dark', name: 'Dark Theme' }
       ],
       defaultTheme: 'light'
     };
@@ -43,7 +38,7 @@ describe('Core API - Theming', function() {
     });
   });
   it('setCurrentTheme', () => {
-    const mockTheme = { id: 1, name: 'light' };
+    const mockTheme = { id: 'light', name: 'Light Theme' };
     assert.isUndefined(LuigiTheming.currentTheme);
 
     LuigiTheming.setCurrentTheme(mockTheme);
@@ -60,6 +55,10 @@ describe('Core API - Theming', function() {
 
       const res = await LuigiTheming.getThemeObject('dark');
       assert.isUndefined(res);
+    });
+    it('get theme object', async () => {
+      const res = await LuigiTheming.getThemeObject('dark');
+      assert.deepEqual(res, { id: 'dark', name: 'Dark Theme' });
     });
   });
 });

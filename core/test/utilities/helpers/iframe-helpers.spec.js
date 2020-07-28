@@ -5,6 +5,7 @@ import { afterEach } from 'mocha';
 
 import { IframeHelpers, GenericHelpers } from '../../../src/utilities/helpers';
 import { LuigiConfig } from '../../../src/core-api';
+import { ViewUrlDecorator } from '../../../src/services';
 
 describe('Iframe-helpers', () => {
   let component;
@@ -21,8 +22,10 @@ describe('Iframe-helpers', () => {
     };
 
     sinon.stub(GenericHelpers);
+    sinon.stub(ViewUrlDecorator);
     GenericHelpers.getRandomId.returns('abc');
     GenericHelpers.isFunction.callThrough();
+    ViewUrlDecorator.applyDecorators.callsFake(url => url);
   });
   afterEach(() => {
     if (document.createElement.restore) {

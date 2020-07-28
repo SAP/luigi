@@ -7,7 +7,7 @@ import {
   IframeHelpers
 } from '../utilities/helpers';
 import { LuigiConfig, LuigiI18N } from '../core-api';
-import { Iframe } from './iframe';
+import { Iframe } from './';
 import { NAVIGATION_DEFAULTS } from './../utilities/luigi-config-defaults';
 import { NodeDataManagementStorage } from './node-data-management';
 
@@ -321,7 +321,7 @@ class RoutingClass {
           Navigation.onNodeChange(previousNode, currentNode);
         }
       }
-      await Iframe.navigateIframe(config, component, iframeElement);
+      Iframe.navigateIframe(config, component, iframeElement);
     } catch (err) {
       console.info('Could not handle route change', err);
     }

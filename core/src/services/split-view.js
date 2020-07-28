@@ -45,11 +45,11 @@ class SplitViewSvcClass {
     };
   }
 
-  async setIframe(viewUrl, componentData, component) {
+  setIframe(viewUrl, componentData, component) {
     if (viewUrl) {
       viewUrl = RoutingHelpers.substituteViewUrl(viewUrl, componentData);
     }
-    const iframe = await IframeHelpers.createIframe(
+    const iframe = IframeHelpers.createIframe(
       viewUrl,
       undefined,
       component.get().lastNode,
@@ -85,10 +85,10 @@ class SplitViewSvcClass {
     });
   }
 
-  async createAndSetView(component) {
+  createAndSetView(component) {
     const { nodeParams, lastNode, pathData } = component.get();
 
-    const iframe = await this.setIframe(
+    const iframe = this.setIframe(
       lastNode.viewUrl,
       {
         context: pathData.context,

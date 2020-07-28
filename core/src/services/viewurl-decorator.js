@@ -23,7 +23,7 @@ class ViewUrlDecoratorSvc {
       .concat(decorator);
   }
 
-  async applyDecorators(url) {
+  applyDecorators(url) {
     const urlObj = new URL(GenericHelpers.prependOrigin(url));
     // apply query params
     const queryParamDecorators = this.decorators.filter(
@@ -34,7 +34,7 @@ class ViewUrlDecoratorSvc {
       if (urlObj.searchParams.has(decorator.key)) {
         urlObj.searchParams.delete(decorator.key);
       }
-      const value = await decorator.valueFn();
+      const value = decorator.valueFn();
       urlObj.searchParams.append(decorator.key, value);
       console.log('appending', decorator.key, value);
     }

@@ -25,14 +25,18 @@ class Settings {
     }
   };
   theming = {
-    themes: [{ id: 1, name: 'light' }, { id: 2, name: 'dark' }],
+    themes: () => [
+      { id: 'light', name: 'Fiori3 Light' },
+      { id: 'dark', name: 'Fiori3 Dark' }
+    ],
     defaultTheme: 'light',
     nodeViewURLDecorator: {
       queryStringParameter: {
-        keyName: 'sap-theme',
-        value: theme => {
-          return theme.name;
-        }
+        keyName: 'sap-theme'
+        // optional
+        // value: themeId => {
+        //   return themeId;
+        // }
       }
     }
   };

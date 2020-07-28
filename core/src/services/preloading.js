@@ -9,7 +9,7 @@ class ViewGroupPreloadingClass {
     this.shouldPreload = false;
   }
 
-  async preloadViewGroups(batchSize = 3) {
+  preloadViewGroups(batchSize = 3) {
     const preloadViewGroupsSetting = LuigiConfig.getConfigValue(
       'navigation.preloadViewGroups'
     );
@@ -38,11 +38,11 @@ class ViewGroupPreloadingClass {
       .filter(([name, _]) => !existingVGs.includes(name))
       .filter(([_, settings]) => settings && settings.preloadUrl)
       .filter((_, index) => index < batchSize)
-      .forEach(async ([name, settings]) => {
+      .forEach(([name, settings]) => {
         console.debug(
           'preloading view group ' + name + ' - ' + settings.preloadUrl
         );
-        const iframe = await IframeHelpers.createIframe(
+        const iframe = IframeHelpers.createIframe(
           settings.preloadUrl,
           name,
           null,
@@ -56,8 +56,8 @@ class ViewGroupPreloadingClass {
 
   preload() {
     if (this.shouldPreload) {
-      setTimeout(async () => {
-        await this.preloadViewGroups(this.preloadBatchSize);
+      setTimeout(() => {
+        this.preloadViewGroups(this.preloadBatchSize);
       });
     }
     this.shouldPreload = true;
