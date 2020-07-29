@@ -10,6 +10,7 @@ import { LuigiConfig, LuigiI18N } from '../core-api';
 import { Iframe } from './iframe';
 import { NAVIGATION_DEFAULTS } from './../utilities/luigi-config-defaults';
 import { NodeDataManagementStorage } from './node-data-management';
+import { WebComponentService } from './web-components'
 
 class RoutingClass {
   getNodePath(node, params) {
@@ -476,54 +477,15 @@ class RoutingClass {
   }
 
 
-  attachWC(wc_id, wc_container, ctx) {
-    const wc = document.createElement(wc_id);
-    wc.context = ctx;
-    wc.luigi = Luigi;
-    wc_container.appendChild(wc);
-  }
-
-  generateWCId(viewUrl) {
-    let charRep = '';
-    for(let i = 0; i < viewUrl.length; i++) {
-      charRep += viewUrl.charCodeAt(i).toString(16);
-    }
-    console.log(viewUrl, charRep);
-    return 'luigi-wc-' + charRep;
-  }
-
   navigateWebComponent(config, component, node, navNode, iframeContainer) {
-    console.log("web component detected....", navNode.pathSegment);
     const componentData = component.get();
-    let viewUrl = componentData.viewUrl;
+    const wc_container = document.querySelector('.wcContainer');
 
-    if (navNode.webcomponent) {
-      const wc_id = this.generateWCId(navNode.viewUrl);
-      const wc_container = document.querySelector('.wcContainer');
-      while (wc_container.lastChild) {
-        wc_container.lastChild.remove();
-      }
-
-      if (window.customElements.get(wc_id)) {
-        this.attachWC(wc_id, wc_container, componentData.context);
-      } else {
-        if(window.luigiWCFn) {
-          window.luigiWCFn(viewUrl, wc_id, wc_container, () => {
-            this.attachWC(wc_id, wc_container, componentData.context);
-          })
-        } else {
-          /** __luigi_dyn_import is replaced by import after webpack is done,
-           *    because webpack can't let his hands off imports ;) */
-          __luigi_dyn_import(viewUrl).then(module => {
-            window.customElements.define(wc_id, module.default);
-            this.attachWC(wc_id, wc_container, componentData.context);
-          });
-        }
-      }
-
-    } else {
-      console.error("id not defined for web component", navNode);
+    while (wc_container.lastChild) {
+      wc_container.lastChild.remove();
     }
+
+    WebComponentService.renderWebComponent(componentData.viewUrl, wc_container, componentData.context);
   }
 }
 
