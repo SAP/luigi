@@ -507,28 +507,18 @@ class RoutingClass {
       if (window.customElements.get(wc_id)) {
         this.attachWC(wc_id, wc_container, componentData.context);
       } else {
-        const wcScript = document.createElement('script');
-        wcScript.type = 'module';
-
-        wcScript.innerHTML = `
-          import wcClass from '${viewUrl}';
-          window.customElements.define('${wc_id}', wcClass);
-          document.querySelector('.wcContainer script').dispatchEvent(new Event('registered'));
-        `;
-
-        wc_container.appendChild(wcScript);
-
-        wcScript.addEventListener('registered', () => {
-          this.attachWC(wc_id, wc_container, componentData.context);
-        });
-
-
-        /** The following doesn't work for external urls, unfortunately */
-        /*
-        import(viewUrl).then(wcClass => {
-          window.customElements.define(wc_id, wcClass);
-          document.body.appendChild(document.createElement(id));
-        });*/
+        if(window.luigiWCFn) {
+          window.luigiWCFn(viewUrl, wc_id, wc_container, () => {
+            this.attachWC(wc_id, wc_container, componentData.context);
+          })
+        } else {
+          /** __luigi_dyn_import is replaced by import after webpack is done,
+           *    because webpack can't let his hands off imports ;) */
+          __luigi_dyn_import(viewUrl).then(module => {
+            window.customElements.define(wc_id, module.default);
+            this.attachWC(wc_id, wc_container, componentData.context);
+          });
+        }
       }
 
     } else {
