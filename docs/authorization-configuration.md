@@ -141,7 +141,7 @@ auth: {
     }
     // optional functions
     nonceFn: () => {},
-    logoutFn: (settings, authData, logoutCallback) => { ...; logoutCallback('logout.html'); },
+    logoutFn: (settings, authData, logoutCallback) => { ...; logoutCallback('/logout.html'); },
     userInfoFn:(settings, authData)=>{},
     accessTokenExpiringNotificationTime: 60,
     expirationCheckInterval: 5
