@@ -28,8 +28,8 @@ class Settings {
     themes: () => [
       { id: 'light', name: 'Fiori3 Light' },
       { id: 'dark', name: 'Fiori3 Dark' }
-    ]
-    // defaultTheme: 'light',
+    ],
+    defaultTheme: 'light'
     // nodeViewURLDecorator: {
     //   queryStringParameter: {
     //     keyName: 'sap-theme'
