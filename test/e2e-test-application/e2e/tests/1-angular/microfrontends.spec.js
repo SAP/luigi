@@ -48,7 +48,10 @@ describe('Modal Microfrontend', () => {
         .click();
 
       cy.get('[data-testid=modal-mf] iframe').then(ifr => {
-        expect(ifr.attr('src')).to.equal('/sampleapp.html#/settings');
+        const url = new URL(ifr.attr('src'));
+        expect(`${url.pathname}${url.hash}`).to.equal(
+          '/sampleapp.html#/settings'
+        );
       });
     });
 
