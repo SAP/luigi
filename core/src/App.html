@@ -181,14 +181,13 @@
   export let displayCustomSearchResult = true;
   export let searchResult;
 
-  const prepareInternalData = async config => {
+  const prepareInternalData = config => {
     const iframeConf = config.iframe.luigi;
-    const currentTheme = await LuigiTheming.getCurrentTheme();
     const internalData = {
       isNavigateBack,
       viewStackSize: preservedViews.length,
       currentLocale: LuigiI18N.getCurrentLocale(),
-      currentTheme,
+      currentTheme: LuigiTheming.getCurrentTheme(),
       clientPermissions: iframeConf.nextViewUrl
         ? iframeConf.nextClientPermissions
         : iframeConf.clientPermissions
@@ -208,7 +207,7 @@
       console.info('iframe does not exist, not able to send context.');
       return;
     }
-    const internal = await prepareInternalData(config);
+    const internal = prepareInternalData(config);
     const message = {
       msg: 'luigi.init',
       context: JSON.stringify(
