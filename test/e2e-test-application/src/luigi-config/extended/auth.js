@@ -111,12 +111,12 @@ class Auth {
   //     client_id: 'APP_ID.apps.googleusercontent.com',
   //     scope: 'openid https://www.googleapis.com/auth/userinfo.email profile',
   //   }
+  //   logoutFn: async (settings, authData, logoutCallback) => {
+  //     await fetch(`https://accounts.google.com/o/oauth2/revoke?token=${authData.accessToken}`);
+  //     logoutCallback();
+  //     location.href = '/logout.html';
+  //   }
   // };
-  // logoutFn = async (settings, authData, logoutCallback) => {
-  //   await fetch(`https://accounts.google.com/o/oauth2/revoke?token=${authData.accessToken}`);
-  //   logoutCallback();
-  //   location.href = '/logout.html';
-  // }
 
   events = {
     onLogout: settings => {
