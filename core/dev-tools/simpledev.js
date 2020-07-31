@@ -1,7 +1,10 @@
-const liveServer = require("live-server");
+const path = require('path');
 const webpack = require('webpack');
+const webpackDevServer = require('webpack-dev-server');
 const fs = require('fs-extra');
-const webpack_compiler = webpack(require('../webpack.config'));
+const webpackConfig = require('../webpack.config');
+webpackConfig.mode = 'development';
+const webpack_compiler = webpack(webpackConfig);
 
 let logo_ascii = `
                               //
@@ -42,67 +45,55 @@ let logo_ascii = `
                                       //////
 
 `;
-console.log('\x1b[32m', logo_ascii,'\x1b[0m');
+console.log('\x1b[32m', logo_ascii, '\x1b[0m');
 
 const rootPath = './dev-tools/simple-app';
 const indexPath = rootPath + '/index.html';
 try {
   if (fs.existsSync(indexPath)) {
-    console.log('\x1b[32mFound ' + indexPath,'\x1b[0m');
+    console.log('\x1b[32mFound ' + indexPath, '\x1b[0m');
   } else {
-    console.log('\x1b[33mCould not find ' + indexPath, '\nInitializing new minimalistic Luigi app from template...','\x1b[0m');
+    console.log(
+      '\x1b[33mCould not find ' + indexPath,
+      '\nInitializing new minimalistic Luigi app from template...',
+      '\x1b[0m'
+    );
     if (!fs.existsSync(rootPath)) {
       fs.mkdirSync(rootPath);
     }
     fs.copy('./dev-tools/templates/simple', rootPath);
-    console.log('\x1b[32mNew Luigi app created under ' + rootPath,'\x1b[0m');
+    console.log('\x1b[32mNew Luigi app created under ' + rootPath, '\x1b[0m');
   }
-} catch(err) {
-  console.error(err)
+} catch (err) {
+  console.error(err);
 }
 
 webpack_compiler.hooks.watchRun.tap('CLI output', () => {
-  console.log('\x1b[33mWebpack [' + new Date().toLocaleTimeString() +']: ', ' Rebuild in progress...','\x1b[0m');
+  console.log(
+    '\x1b[33mWebpack [' + new Date().toLocaleTimeString() + ']: ',
+    ' Rebuild in progress...',
+    '\x1b[0m'
+  );
 });
 
-const watching = webpack_compiler.watch({
-  aggregateTimeout: 300,
-  poll: undefined,
-  logLevel: 'verbose'
-}, (err, stats) => {
-  if (err) {
-    console.error(err.stack || err);
-    if (err.details) {
-      console.error(err.details);
-    }
-    return;
-  }
-
-  if(stats.hasErrors()) {
-    console.log('\x1b[33mWebpack [' + new Date().toLocaleTimeString() +']: ','\x1b[31m', "Rebuild of Luigi core failed! \n",
-      stats.toString({
-      all: false,
-      errors: true,
-      colors: true,
-
-    }));
-  } else {
-    console.log('\x1b[33mWebpack [' + new Date().toLocaleTimeString() +']: ','\x1b[32m', 'Luigi core rebuilt without errors.\n','\x1b[0m');
-  }
+let webpackServer = new webpackDevServer(webpack_compiler, {
+  publicPath: '/public',
+  contentBase: path.join(__dirname, 'simple-app'),
+  contentBasePublicPath: '/',
+  compress: true,
+  port: 4100,
+  historyApiFallback: true,
+  host: '0.0.0.0',
+  liveReload: true,
+  watchContentBase: true,
+  writeToDisk: true
 });
+webpackServer.listen(4100);
 
-var params = {
-	port: 4100,
-	host: "0.0.0.0",
-	root: rootPath,
-	open: false,
-	watch: ['./dev-tools'],
-	file: "index.html",
-	wait: 1000,
-	mount: [['/public', './public']],
-	logLevel: 0
-};
-
-
-liveServer.start(params);
-console.log('\x1b[32mStarting live-server at','\x1b[36m','http://localhost:' + params.port,'\x1b[0m');
+// liveServer.start(params);
+console.log(
+  '\x1b[32mStarting server at',
+  '\x1b[36m',
+  'http://0.0.0.0:4100',
+  '\x1b[0m'
+);

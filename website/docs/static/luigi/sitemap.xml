@@ -51,6 +51,11 @@
     <priority>1.0</priority>
   </url>
   <url>
+    <loc>https://docs.luigi-project.io/docs/global-search</loc>
+    <changefreq>monthly</changefreq>
+    <priority>1.0</priority>
+  </url>
+  <url>
     <loc>https://docs.luigi-project.io/docs/i18n</loc>
     <changefreq>monthly</changefreq>
     <priority>1.0</priority>

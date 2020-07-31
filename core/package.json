@@ -26,7 +26,6 @@
     "fundamental-styles": "~0.10.0",
     "jsdom": "15.0.0",
     "jsdom-global": "3.0.2",
-    "live-server": "^1.2.1",
     "lodash": ">=4.17.13",
     "lodash.template": ">=4.5.0",
     "mini-css-extract-plugin": "^0.8.0",
@@ -50,7 +49,8 @@
     "url-loader": "^1.0.1",
     "webpack": "^4.42.1",
     "webpack-bundle-analyzer": "^3.6.0",
-    "webpack-cli": "^3.3.9"
+    "webpack-cli": "^3.3.9",
+    "webpack-dev-server": "^3.11.0"
   },
   "scripts": {
     "bundle": "npm run bundle-evergreen && npm run bundle-ie11",

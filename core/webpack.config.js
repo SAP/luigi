@@ -7,46 +7,7 @@ const commonRules = require('./webpack-common-rules');
 const execSync = require('child_process').execSync;
 const fundamentalStyles = require('./fundamentalStyleClasses');
 
-const luigifiles = [
-  ...fundamentalStyles,
-  './node_modules/core-js/stable/index.js',
-  './node_modules/regenerator-runtime/runtime.js',
-  './src/main.js'
-];
-
-class PatchLuigiPlugin {
-  constructor() {}
-  static execHandler(err, stdout, stderr) {
-    if (stdout) {
-      console.log(stdout);
-      process.stdout.write(stdout);
-    }
-    if (stderr) {
-      console.error(stderr);
-      process.stderr.write(stderr);
-    }
-    if (err) {
-      throw err;
-    }
-  }
-  apply(compiler) {
-    if (compiler.hooks) {
-      compiler.hooks.afterEmit.tap('Luigi Patch babel + terser', () => {
-        console.log('\x1b[33mWebpack [' + new Date().toLocaleTimeString() +']: ', '\x1b[0m', 'Post-processing babel and terser...');
-        execSync(
-            [
-              'babel public/luigi.js --out-file public/luigi.babel.js --presets=@babel/preset-env --root . --root-mode upward --source-maps inline',
-              `terser --compress --mangle --output public/luigi.js --source-map "content=inline" -- public/luigi.babel.js`,
-              'echo "'+ (new Date()) + '" > dev-tools/latest_build.log'
-            ].join(' && '),
-            PatchLuigiPlugin.execHandler
-        );
-        require('fs').unlinkSync('public/luigi.babel.js');
-        console.log('\x1b[33mWebpack [' + new Date().toLocaleTimeString() +']: ', '\x1b[0m', 'Post-processing finished.');
-      });
-    }
-  }
-}
+const luigifiles = [...fundamentalStyles, './src/main.js'];
 
 module.exports = {
   entry: {
@@ -74,7 +35,6 @@ module.exports = {
       verbose: true
     }),
     new MiniCssExtractPlugin({ filename: '[name].css' }),
-    new PatchLuigiPlugin(),
     process.env.ANALYZE == 'true' &&
       new BundleAnalyzerPlugin({
         openAnalyzer: true,
