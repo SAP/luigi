@@ -43,7 +43,7 @@ You can quickly adjust the Luigi application to improve user experience on mobil
 
 * Define and apply [**responsiveNavigation**](general-settings.md) settings to make the left navigation responsive.
 
-* You can define and apply custom width of left side navigation. To do so simply apply the  rules below at the top of your index.html. By default it is 15rem.
+* Define a custom width for the left side navigation. To do so, simply add the code below to the top of your `index.html`. The default width is 15rem.
 
 ```html
 :root{
