@@ -49,7 +49,7 @@ class UxManager extends LuigiClientBase {
     helpers.sendPostMessageToLuigiCore({ msg: 'luigi.remove-backdrop' });
   }
   /**
-   * This method informs the main application that there are unsaved changes in the current view in the iframe. It can be used to prevent navigation away from the current view. For example, it can be used with form fields which were edited but not submitted, although the functionality is not restricted to forms.
+   * This method informs the main application that there are unsaved changes in the current view in the iframe. It can be used to prevent navigation away from the current view, for example with form fields which were edited but not submitted. However, this functionality is not restricted to forms.
    * @param {boolean} isDirty indicates if there are any unsaved changes on the current page or in the component
    * @memberof uxManager
    */
