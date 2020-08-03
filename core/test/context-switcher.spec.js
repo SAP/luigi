@@ -7,9 +7,17 @@ import { LuigiConfig } from '../src/core-api';
 import { Routing } from '../src/services/routing';
 
 describe('Context-switcher', function() {
+  let myResolverFn;
+  beforeEach(() => {
+    CSHelpers._fallbackLabels.clear();
+    myResolverFn = sinon.spy(id => {
+      return '##' + id + '##';
+    });
+  });
   afterEach(() => {
-    sinon.restore();
     sinon.reset();
+    sinon.resetHistory();
+    sinon.restore();
   });
 
   const getMockConfig = () => ({
@@ -25,10 +33,6 @@ describe('Context-switcher', function() {
     ],
     options: []
   });
-
-  const myResolverFn = id => {
-    return '##' + id + '##';
-  };
 
   describe('getPreparedParentNodePath', () => {
     let mockConfig;
@@ -71,6 +75,10 @@ describe('Context-switcher', function() {
   });
 
   describe('getFallbackLabel', () => {
+    beforeEach(() => {
+      sinon.stub(LuigiConfig, 'getConfigBooleanValue').returns(false);
+    });
+
     it('works without fallback resolver', async () => {
       const result = await CSHelpers.getFallbackLabel(undefined, 'some_id');
       assert.equal(result, 'some_id');
@@ -79,6 +87,48 @@ describe('Context-switcher', function() {
     it('works with fallback resolver', async () => {
       const result = await CSHelpers.getFallbackLabel(myResolverFn, 'some_id');
       assert.equal(result, '##some_id##');
+
+      sinon.assert.calledWithExactly(
+        LuigiConfig.getConfigBooleanValue,
+        'navigation.contextSwitcher.useFallbackLabelCache'
+      );
+    });
+
+    it('works with fallback resolver cached', async () => {
+      LuigiConfig.getConfigBooleanValue.returns(true);
+
+      const result = await CSHelpers.getFallbackLabel(myResolverFn, 'some_id');
+      assert.equal(result, '##some_id##');
+
+      const result2 = await CSHelpers.getFallbackLabel(myResolverFn, 'some_id');
+      assert.equal(result2, '##some_id##');
+
+      sinon.assert.calledOnce(myResolverFn);
+    });
+
+    it('works with fallback resolver cache disabled', async () => {
+      const result = await CSHelpers.getFallbackLabel(myResolverFn, 'some_id');
+      assert.equal(result, '##some_id##');
+
+      const result2 = await CSHelpers.getFallbackLabel(myResolverFn, 'some_id');
+      assert.equal(result2, '##some_id##');
+
+      sinon.assert.calledTwice(myResolverFn);
+    });
+  });
+
+  describe('resetFallbackLabelCache', () => {
+    beforeEach(() => {
+      CSHelpers._fallbackLabels.set('id_1', 'a');
+      CSHelpers._fallbackLabels.set('id_2', 'b');
+    });
+
+    it('works without fallback resolver', async () => {
+      assert.equal(CSHelpers._fallbackLabels.size, 2);
+
+      CSHelpers.resetFallbackLabelCache();
+
+      assert.equal(CSHelpers._fallbackLabels.size, 0);
     });
   });
 
@@ -429,7 +479,8 @@ describe('Context-switcher', function() {
         '/environmentWhatever',
         [],
         parentNodePath,
-        myResolverFn
+        myResolverFn,
+        false
       );
       assert.equal(result, undefined);
     });
@@ -439,7 +490,8 @@ describe('Context-switcher', function() {
         '/something',
         [],
         parentNodePath,
-        myResolverFn
+        myResolverFn,
+        false
       );
       assert.equal(result, undefined);
     });
@@ -451,7 +503,8 @@ describe('Context-switcher', function() {
         '/environment/env2',
         [env1, env2],
         parentNodePath,
-        myResolverFn
+        myResolverFn,
+        false
       );
       assert.equal(result, env2.label);
     });
@@ -463,7 +516,8 @@ describe('Context-switcher', function() {
         '/environment/env3',
         [env1, env2],
         parentNodePath,
-        myResolverFn
+        myResolverFn,
+        false
       );
       assert.equal(result, '##env3##');
     });
@@ -473,7 +527,8 @@ describe('Context-switcher', function() {
         '/environment/env1?mask=opatol',
         null,
         parentNodePath,
-        myResolverFn
+        myResolverFn,
+        false
       );
       assert.equal(result, '##env1##');
     });

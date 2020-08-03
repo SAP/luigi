@@ -4,20 +4,21 @@
 {#if !isMobile}
 <div class="fd-shellbar__action fd-shellbar__action--desktop">
   <div class="fd-popover fd-popover--right">
-    <div class="fd-popover__control" on:click|stopPropagation="{() => {}}">
+    <div class="fd-popover__control" on:click|stopPropagation="{()=> {}}">
       <button
         class="fd-button fd-button--transparent fd-button--menu fd-shellbar__button--menu lui-ctx-switch-menu"
         aria-expanded="{dropDownStates.contextSwitcherPopover || false}"
         aria-haspopup="true"
         title="{selectedLabel ? selectedLabel : config.defaultLabel}"
-        on:click="{() => {if (renderAsDropdown) toggleDropdownState()}}"
+        on:click="{()=> {if (renderAsDropdown) toggleDropdownState()}}"
         aria-disabled="{!renderAsDropdown}"
         data-testid="luigi-contextswitcher-button"
       >
         {#if selectedOption && customSelectedOptionRenderer }
         {@html customSelectedOptionRenderer(selectedOption)}
         {:else}
-        {#if !selectedLabel}{$getTranslation(config.defaultLabel)} {:else}{selectedLabel}{/if}
+        {#if !selectedLabel}{$getTranslation(config.defaultLabel)}
+        {:else}{selectedLabel}{/if}
         {/if}
       </button>
     </div>
@@ -179,6 +180,8 @@
           const currentPath = Routing.getCurrentPath();
 
           fallbackLabelResolver = contextSwitcherConfig.fallbackLabelResolver;
+
+          ContextSwitcherHelpers.resetFallbackLabelCache();
 
           // options are loaded lazy by default
           if (!contextSwitcherConfig.lazyloadOptions) {
