@@ -3,7 +3,7 @@ const sinon = require('sinon');
 const expect = chai.expect;
 const assert = chai.assert;
 
-import { WebComponentService} from '../../src/services/web-components';
+import { WebComponentService } from '../../src/services/web-components';
 
 describe('WebComponentService', function() {
   describe('generate web component id', function() {
@@ -81,8 +81,15 @@ describe('WebComponentService', function() {
     const container = document.createElement('div');
     const ctx = { someValue: true};
     const viewUrl = 'someurl';
-    window.Luigi = { mario: 'luigi' };
     const sb = sinon.createSandbox();
+
+    before(()=>{
+      window.Luigi = { mario: 'luigi', luigi: window.luigi };
+    });
+
+    after(()=>{
+      window.Luigi = window.Luigi.luigi;
+    });
 
     beforeEach(()=>{
       sb.stub(WebComponentService, 'dynamicImport').returns(new Promise((resolve, reject) => {
