@@ -1577,22 +1577,18 @@
     border-radius: 0; //Remove border radius from links inside fd-menu
   }
 
-  //Make border radius for links inside fd-menu only for the first and last elements
-  @mixin luigi-menu__link--border-radius($position) {
-    :global(.fd-menu__link) {
-      border-#{$position}-left-radius: 0.25rem;
-      border-#{$position}-left-radius: var(
-        --sapElement_BorderCornerRadius,
-        0.25rem
-      );
-      border-#{$position}-right-radius: 0.25rem;
-      border-#{$position}-right-radius: var(
-        --sapElement_BorderCornerRadius,
-        0.25rem
-      );
+  //This removes the border radius in nested menu inn the shellbar
+  :global(.fd-menu) {
+    :global(.fd-menu__list) {
+      box-shadow: none;
+
+      :global(.fd-menu__item:first-child) {
+        border-bottom: rgba(243, 244, 245, 0.8);
+      }
     }
   }
 
+  //Make border radius for links inside fd-menu only for the first and last elements
   :global(.fd-menu) {
     :global(.fd-menu__list) {
       &:first-child {
