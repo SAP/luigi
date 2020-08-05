@@ -15,10 +15,8 @@ You are welcome to contribute with your pull requests. These steps explain the c
 4. Make sure the tests pass.
 5. Sign the Contributor License Agreement (CLA).
 
-## Contributor License Agreement (CLA)
-You need you to sign the CLA for your pull request to be accepted. You only need to do it once.
-
-Sign your CLA [here](https://cla-assistant.io/SAP/luigi).
+## Developer Certificate of Origin (DCO)
+Due to legal reasons, contributors will be asked to accept a DCO before they submit the first pull request to this projects, this happens in an automated fashion during the submission process. SAP uses [the standard DCO text of the Linux Foundation](https://developercertificate.org/).
 
 ## Issues
 We use GitHub issues to track bugs. Please ensure your description is
