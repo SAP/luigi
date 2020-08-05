@@ -17,3 +17,18 @@
   -webkit-border-radius: $radius;
   -moz-border-radius: $radius;
 }
+
+@mixin luigi-menu__link--border-radius($position) {
+  :global(.fd-menu__link) {
+    border-#{$position}-left-radius: 0.25rem;
+    border-#{$position}-left-radius: var(
+      --sapElement_BorderCornerRadius,
+      0.25rem
+    );
+    border-#{$position}-right-radius: 0.25rem;
+    border-#{$position}-right-radius: var(
+      --sapElement_BorderCornerRadius,
+      0.25rem
+    );
+  }
+}
