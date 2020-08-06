@@ -3,6 +3,6 @@ Upstream-Name: Luigi
 Upstream-Contact: Philipp Pracht <philipp.pracht@sap.com>
 Source: https://github.com/SAP/luigi
 
-Files: luigi/*
+Files: *
 Copyright: 2020 SAP SE or an SAP affiliate company and Luigi contributors
 License: Apache-2.0
