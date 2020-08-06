@@ -2,10 +2,6 @@ export const CSS_BREAKPOINTS = {
   desktopMinWidth: 600
 };
 
-export const CSS_UTILITIES = {
-  leftNavWidth: '320px'
-};
-
 export const MICROFRONTEND_TYPES = [
   { type: 'main', selector: '.iframeContainer iframe' },
   { type: 'split-view', selector: '.iframeSplitViewCnt iframe' },
