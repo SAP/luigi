@@ -1285,6 +1285,11 @@
   @import 'styles/mixins';
   @import 'styles/variables';
 
+  /* needed to apply custom width of left side nav, by default 15rem as per FD Styles*/
+  :root {
+    --luigi__left-sidenav--width: 15rem;
+  }
+
   :global(html) {
     box-sizing: border-box;
     font-size: 16px;
@@ -1334,7 +1339,7 @@
   .spinnerContainer {
     position: absolute;
     top: $topNavHeight;
-    left: $leftNavWidth;
+    left: var(--luigi__left-sidenav--width);
     bottom: 0;
     right: 0;
     width: auto;
@@ -1469,7 +1474,7 @@
       }
 
       :global(.fd-app__sidebar) {
-        left: -$leftNavWidth;
+        left: calc(var(--luigi__left-sidenav--width) * -1);
       }
     }
   }
@@ -1487,14 +1492,14 @@
       }
 
       :global(.fd-app__sidebar) {
-        left: -$leftNavWidth;
+        left: calc(var(--luigi__left-sidenav--width) * -1);
       }
     }
 
     :global(body.lui-simpleSlideInNav.lui-leftNavToggle) {
       :global(.fd-app__sidebar) {
         display: block;
-        width: $leftNavWidth;
+        width: var(--luigi__left-sidenav--width);
         left: 0;
         @include box-shadow(6px 0px 9px 0px rgba(0, 0, 0, 0.44));
       }
