@@ -10,15 +10,16 @@ import { LuigiConfig, LuigiI18N } from '../core-api';
 import { Iframe } from './iframe';
 import { NAVIGATION_DEFAULTS } from './../utilities/luigi-config-defaults';
 import { NodeDataManagementStorage } from './node-data-management';
+import { WebComponentService } from './web-components'
 
 class RoutingClass {
   getNodePath(node, params) {
     return node
       ? RoutingHelpers.buildRoute(
-          node,
-          node.pathSegment ? '/' + node.pathSegment : '',
-          params
-        )
+        node,
+        node.pathSegment ? '/' + node.pathSegment : '',
+        params
+      )
       : '';
   }
 
@@ -131,9 +132,9 @@ class RoutingClass {
     return LuigiConfig.getConfigValue('routing.useHashRouting')
       ? window.location.hash.replace('#', '') // TODO: GenericHelpers.getPathWithoutHash(window.location.hash) fails in ContextSwitcher
       : window.location.search
-      ? GenericHelpers.trimLeadingSlash(window.location.pathname) +
+        ? GenericHelpers.trimLeadingSlash(window.location.pathname) +
         window.location.search
-      : GenericHelpers.trimLeadingSlash(window.location.pathname);
+        : GenericHelpers.trimLeadingSlash(window.location.pathname);
   }
 
   async handleRouteChange(path, component, iframeElement, config) {
@@ -200,8 +201,8 @@ class RoutingClass {
             this.showPageNotFoundError(
               component,
               GenericHelpers.trimTrailingSlash(pathData.matchedPath) +
-                '/' +
-                defaultChildNode,
+              '/' +
+              defaultChildNode,
               pathUrlRaw,
               true
             );
@@ -292,10 +293,10 @@ class RoutingClass {
         Object.assign({}, newNodeData, {
           previousNodeValues: previousCompData
             ? {
-                viewUrl: previousCompData.viewUrl,
-                isolateView: previousCompData.isolateView,
-                viewGroup: previousCompData.viewGroup
-              }
+              viewUrl: previousCompData.viewUrl,
+              isolateView: previousCompData.isolateView,
+              viewGroup: previousCompData.viewGroup
+            }
             : {}
         })
       );
@@ -321,7 +322,17 @@ class RoutingClass {
           Navigation.onNodeChange(previousNode, currentNode);
         }
       }
-      Iframe.navigateIframe(config, component, iframeElement);
+      if(nodeObject.webcomponent) {
+        if (iContainer) {
+          iContainer.classList.add('lui-webComponent');
+        }
+        this.navigateWebComponent(config, component, iframeElement, nodeObject, iContainer);
+      } else {
+        if (iContainer) {
+          iContainer.classList.remove('lui-webComponent');
+        }
+        Iframe.navigateIframe(config, component, iframeElement);
+      }
     } catch (err) {
       console.info('Could not handle route change', err);
     }
@@ -467,6 +478,18 @@ class RoutingClass {
         updatedExternalLink.sameWindow ? '_self' : '_blank'
       )
       .focus();
+  }
+
+
+  navigateWebComponent(config, component, node, navNode, iframeContainer) {
+    const componentData = component.get();
+    const wc_container = document.querySelector('.wcContainer');
+
+    while (wc_container.lastChild) {
+      wc_container.lastChild.remove();
+    }
+
+    WebComponentService.renderWebComponent(componentData.viewUrl, wc_container, componentData.context);
   }
 }
 
