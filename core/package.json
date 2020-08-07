@@ -38,6 +38,7 @@
     "postcss-loader": "^3.0.0",
     "postcss-preset-env": "^6.6.0",
     "regenerator-runtime": "^0.13.3",
+    "replace": "^1.2.0",
     "serialize-javascript": ">=2.1.1",
     "sinon": "^7.3.2",
     "source-map-loader": "^0.2.3",
@@ -132,6 +133,5 @@
   "repository": {
     "type": "git",
     "url": "ssh://github.com/SAP/luigi.git"
-  },
-  "dependencies": {}
+  }
 }
