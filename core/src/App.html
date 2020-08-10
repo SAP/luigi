@@ -24,6 +24,7 @@
       use:init
     >
       <Backdrop area="main"></Backdrop>
+      <div class="wcContainer"></div>
     </div>
     {#if mfSplitView.displayed}
     <SplitView
@@ -1282,6 +1283,11 @@
   @import 'styles/mixins';
   @import 'styles/variables';
 
+  /* needed to apply custom width of left side nav, by default 15rem as per FD Styles*/
+  :root {
+    --luigi__left-sidenav--width: 15rem;
+  }
+
   :global(html) {
     box-sizing: border-box;
     font-size: 16px;
@@ -1331,7 +1337,7 @@
   .spinnerContainer {
     position: absolute;
     top: $topNavHeight;
-    left: $leftNavWidth;
+    left: var(--luigi__left-sidenav--width);
     bottom: 0;
     right: 0;
     width: auto;
@@ -1466,7 +1472,7 @@
       }
 
       :global(.fd-app__sidebar) {
-        left: -$leftNavWidth;
+        left: calc(var(--luigi__left-sidenav--width) * -1);
       }
     }
   }
@@ -1484,14 +1490,14 @@
       }
 
       :global(.fd-app__sidebar) {
-        left: -$leftNavWidth;
+        left: calc(var(--luigi__left-sidenav--width) * -1);
       }
     }
 
     :global(body.lui-simpleSlideInNav.lui-leftNavToggle) {
       :global(.fd-app__sidebar) {
         display: block;
-        width: $leftNavWidth;
+        width: var(--luigi__left-sidenav--width);
         left: 0;
         @include box-shadow(6px 0px 9px 0px rgba(0, 0, 0, 0.44));
       }
@@ -1557,7 +1563,7 @@
   :global(.fd-nested-list__content),
   :global(.fd-nested-list__link) {
     &.has-child:after {
-      height: 100%;
+      max-height: 100%;
     }
   }
 
@@ -1572,22 +1578,18 @@
     border-radius: 0; //Remove border radius from links inside fd-menu
   }
 
-  //Make border radius for links inside fd-menu only for the first and last elements
-  @mixin luigi-menu__link--border-radius($position) {
-    :global(.fd-menu__link) {
-      border-#{$position}-left-radius: 0.25rem;
-      border-#{$position}-left-radius: var(
-        --sapElement_BorderCornerRadius,
-        0.25rem
-      );
-      border-#{$position}-right-radius: 0.25rem;
-      border-#{$position}-right-radius: var(
-        --sapElement_BorderCornerRadius,
-        0.25rem
-      );
+  //This removes the border radius in nested menu inn the shellbar
+  :global(.fd-menu) {
+    :global(.fd-menu__list) {
+      box-shadow: none;
+
+      :global(.fd-menu__item:first-child) {
+        border-bottom: rgba(243, 244, 245, 0.8);
+      }
     }
   }
 
+  //Make border radius for links inside fd-menu only for the first and last elements
   :global(.fd-menu) {
     :global(.fd-menu__list) {
       &:first-child {
@@ -1638,5 +1640,26 @@
   :global(.fd-shellbar) {
     border-bottom: #354a5f;
     border-bottom: 1px solid var(--sapShell_BorderColor, #354a5f);
+  }
+
+
+
+  .wcContainer {
+    position: absolute;
+    left: 0;
+    top: 0;
+    display: none;
+    width: 100%;
+    height: 100%;
+  }
+
+  :global(.lui-webComponent) {
+    .wcContainer {
+      display: block;
+    }
+
+    iframe {
+      display: none;
+    }
   }
 </style>

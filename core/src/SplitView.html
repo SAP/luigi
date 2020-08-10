@@ -328,7 +328,7 @@
     top: 60%; /* default, overridden by computed.getIframeSplitViewTop */
   }
   :global(.splitViewContainer, #splitViewDragger, #splitViewDraggerBackdrop) {
-    left: $leftNavWidth;
+    left: var(--luigi__left-sidenav--width);
   }
 
   :global(.lui-collapsed.splitViewContainer) {
@@ -349,7 +349,7 @@
     position: absolute;
     bottom: 0;
     right: 0;
-    left: $leftNavWidth;
+    left: var(--luigi__left-sidenav--width);
     top: 60%; /* default, overridden by computed.getIframeSplitViewTop */
     height: 8px;
     cursor: row-resize;
@@ -403,7 +403,7 @@
     top: $topNavHeight;
     right: 0;
     bottom: 0;
-    left: $leftNavWidth;
+    left: var(--luigi__left-sidenav--width);
     display: none;
   }
 
@@ -438,7 +438,7 @@
   @media (max-width: $desktopMinWidth - 1) {
     :global(body.lui-simpleSlideInNav) {
       :global(.fd-app__sidebar) {
-        left: -$leftNavWidth;
+        left: calc(var(--luigi__left-sidenav--width) * -1);
       }
       :global(#splitViewContainer, #splitViewDragger, #splitViewDraggerBackdrop) {
         left: 0;
