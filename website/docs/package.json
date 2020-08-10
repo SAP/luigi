@@ -16,7 +16,7 @@
     "cy:run": "cypress run",
     "cy:open": "cypress open",
     "mock:develop-plugins": "NODE_ENV=debug node -r esm scripts/markdown.unified-preview.js",
-    "mock:develop-plugins:watch": "NODE_ENV=debug nodemon --ignore 'static/**' -r esm scripts/markdown.unified-preview.js"
+    "mock:develop-plugins:watch": "NODE_ENV=debug nodemon --watch src --watch scripts -e js,md -r esm scripts/markdown.unified-preview.js"
   },
   "dependencies": {
     "@luigi-project/core": "1.2.1",
