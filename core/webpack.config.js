@@ -29,7 +29,7 @@ class PatchLuigiPlugin {
       compiler.hooks.afterEmit.tap('Luigi Patch dynamic import', () => {
         execSync(
           [
-            `replace '__luigi_dyn_import' 'import' -- public/luigi.js`,
+            `replace '__luigi_dyn_import' 'import' public/luigi.js`,
             'echo "' + new Date() + '" > dev-tools/latest_build.log'
           ].join(' && '),
           PatchLuigiPlugin.execHandler
