@@ -10,6 +10,7 @@ import { LuigiConfig, LuigiI18N } from '../core-api';
 import { Iframe } from './iframe';
 import { NAVIGATION_DEFAULTS } from './../utilities/luigi-config-defaults';
 import { NodeDataManagementStorage } from './node-data-management';
+import { WebComponentService } from './web-components';
 
 class RoutingClass {
   getNodePath(node, params) {
@@ -321,7 +322,23 @@ class RoutingClass {
           Navigation.onNodeChange(previousNode, currentNode);
         }
       }
-      Iframe.navigateIframe(config, component, iframeElement);
+      if (nodeObject.webcomponent) {
+        if (iContainer) {
+          iContainer.classList.add('lui-webComponent');
+        }
+        this.navigateWebComponent(
+          config,
+          component,
+          iframeElement,
+          nodeObject,
+          iContainer
+        );
+      } else {
+        if (iContainer) {
+          iContainer.classList.remove('lui-webComponent');
+        }
+        Iframe.navigateIframe(config, component, iframeElement);
+      }
     } catch (err) {
       console.info('Could not handle route change', err);
     }
@@ -467,6 +484,21 @@ class RoutingClass {
         updatedExternalLink.sameWindow ? '_self' : '_blank'
       )
       .focus();
+  }
+
+  navigateWebComponent(config, component, node, navNode, iframeContainer) {
+    const componentData = component.get();
+    const wc_container = document.querySelector('.wcContainer');
+
+    while (wc_container.lastChild) {
+      wc_container.lastChild.remove();
+    }
+
+    WebComponentService.renderWebComponent(
+      componentData.viewUrl,
+      wc_container,
+      componentData.context
+    );
   }
 }
 

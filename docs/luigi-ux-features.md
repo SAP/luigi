@@ -43,7 +43,13 @@ You can quickly adjust the Luigi application to improve user experience on mobil
 
 * Define and apply [**responsiveNavigation**](general-settings.md) settings to make the left navigation responsive.
 
-## App loading indicator
+* Define a custom width for the left side navigation. To do so, simply add the code below to the top of your `index.html`. The default width is 15rem.
+
+```html
+:root{
+  --luigi__left-sidenav--width: yourCustomWidth; 
+}
+```
 
 To show a loading indicator before Luigi Core or your first micro frontend is ready, add a container with the `luigi-app-loading-indicator` attribute to your `index.html` body or inside your `luigi-app-root` container.
 
