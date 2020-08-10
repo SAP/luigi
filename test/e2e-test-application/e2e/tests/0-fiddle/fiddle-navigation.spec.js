@@ -373,20 +373,6 @@ describe('Fiddle', () => {
         });
       });
     });
-    it('Client get and set theme', () => {
-      cy.visitWithFiddleConfig('/', newConfig);
-
-      cy.window().then(win => {
-        cy.getIframeWindow().then(win => {
-          const defaultTheme = win.LuigiClient.uxManager().getCurrentTheme();
-          expect(defaultTheme).to.equal('light');
-
-          // not yet implemented
-          // win.LuigiClient.uxManager().setCurrentTheme('dark');
-          // expect(defaultTheme).to.equal('dark');
-        });
-      });
-    });
     it('Iframe Url should get set with value by default', () => {
       newConfig.settings.theming.nodeViewURLDecorator = {
         queryStringParameter: {

@@ -252,7 +252,9 @@ class IframeHelpersClass {
       : luigiDefaultSandboxRules;
 
     const iframe = document.createElement('iframe');
-    iframe.src = ViewUrlDecorator.applyDecorators(viewUrl);
+    iframe.src = ViewUrlDecorator.hasDecorators()
+      ? ViewUrlDecorator.applyDecorators(viewUrl)
+      : viewUrl;
     if (allowRules) {
       iframe.allow = allowRules.join(' ');
     }

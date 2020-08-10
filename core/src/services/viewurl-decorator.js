@@ -17,6 +17,10 @@ class ViewUrlDecoratorSvc {
     this.decorators = [];
   }
 
+  hasDecorators() {
+    return this.decorators.length > 0;
+  }
+
   add(decorator) {
     this.decorators = this.decorators
       .filter(d => d.uid !== decorator.uid)
@@ -36,9 +40,7 @@ class ViewUrlDecoratorSvc {
       }
       const value = decorator.valueFn();
       urlObj.searchParams.append(decorator.key, value);
-      console.log('appending', decorator.key, value);
     }
-    console.log('urlObj.href', urlObj.href);
     return urlObj.href;
   }
 }
