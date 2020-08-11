@@ -1,4 +1,0 @@
-# Ignore both luigi dependencies in this empty directory
-*
-# The directory needs to have >=1 file to be committed 
-!.gitignore
