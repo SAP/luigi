@@ -35,7 +35,9 @@ class WebComponentSvcClass {
     return new Promise((resolve, reject) => {
       this.dynamicImport(viewUrl).then(module => {
         try {
-          window.customElements.define(wc_id, module.default);
+          if(!window.customElements.get(wc_id)) {
+            window.customElements.define(wc_id, module.default);
+          }
           resolve();
         } catch(e) {
           reject(e);
@@ -64,6 +66,31 @@ class WebComponentSvcClass {
         });
       }
     }
+  }
+
+  renderWebComponentGrid(navNode, wc_container, context) {
+    const containerClass = '__lui_grid_' + new Date().getTime();
+    const gridCnt = document.createElement('div');
+    gridCnt.classList.add(containerClass);
+    gridCnt.innerHTML = /*html*/`
+        <style scoped>
+          .${containerClass} {
+            display: grid;
+            grid-template-columns: ${navNode.grid.columns || 'auto'};
+            grid-template-rows: ${navNode.grid.rows || 'auto'};
+            grid-gap: ${navNode.grid.gap || '0'};
+          }
+        </style>
+    `;
+    navNode.grid.children.forEach(wc=>{
+      const ctx = {...componentData.context, ...wc.context};
+      const gridItemCnt = document.createElement('div');
+      const grid = wc.grid || {};
+      gridItemCnt.setAttribute('style', `grid-row: ${grid.row || 'auto'}; grid-column: ${grid.column || 'auto'}`);
+      gridCnt.appendChild(gridItemCnt);
+      WebComponentService.renderWebComponent(wc.viewUrl, gridItemCnt, ctx);
+    });
+    wc_container.appendChild(gridCnt);
   }
 }
 
