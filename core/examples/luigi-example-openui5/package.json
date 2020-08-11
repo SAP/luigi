@@ -1,22 +1,20 @@
 {
   "name": "luigi-example-openui5",
   "private": true,
-  "version": "0.1.0",
+  "version": "0.2.0",
   "author": "SAP SE",
   "description": "Luigi with OpenUI5 Demo App",
   "scripts": {
-    "build": "ui5 build preload --all=true",
+    "build": "ui5 build --all",
     "start": "ui5 serve --open index.html",
-    "serve": "ws --compress -d dist",
-    "postinstall": "cp -r node_modules/@luigi-project/core webapp/libs/luigi-core && cp -r node_modules/@luigi-project/client webapp/libs/luigi-client"
+    "serve": "ws --compress -d dist"
   },
   "dependencies": {
     "@luigi-project/client": "^1.1.0",
-    "@luigi-project/core": "^1.1.0",
-    "@openui5/sap.f": "^1.73.2",
-    "@openui5/sap.m": "^1",
-    "@openui5/sap.ui.core": "^1",
-    "@openui5/themelib_sap_fiori_3": "^1.73.2",
-    "local-web-server": "^3.0.7"
+    "@luigi-project/core": "^1.1.0"
+  },
+  "devDependencies": {
+    "@ui5/cli": "^2.3.1",
+    "local-web-server": "^4.2.1"
   }
 }
