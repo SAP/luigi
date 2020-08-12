@@ -9,11 +9,13 @@ class WebComponentSvcClass {
   }
 
   /** Creates a web component with tagname wc_id and adds it to wc_container*/
-  attachWC(wc_id, wc_container, ctx) {
-    const wc = document.createElement(wc_id);
-    wc.context = ctx;
-    wc.luigi = window.Luigi;
-    wc_container.appendChild(wc);
+  attachWC(wc_id, wcItemContainer, wc_container, ctx) {
+    if(wc_container && wc_container.contains(wcItemContainer)) {
+      const wc = document.createElement(wc_id);
+      wc.context = ctx;
+      wc.luigi = window.Luigi;
+      wcItemContainer.appendChild(wc);
+    }
   }
 
   /** Generates a unique web component id (tagname) based on the viewUrl
@@ -51,18 +53,20 @@ class WebComponentSvcClass {
    */
   renderWebComponent(viewUrl, wc_container, context) {
     const wc_id = this.generateWCId(viewUrl);
+    const wcItemCnt = document.createElement('div');
+    wc_container.appendChild(wcItemCnt);
 
     if (window.customElements.get(wc_id)) {
-      this.attachWC(wc_id, wc_container, context);
+      this.attachWC(wc_id, wcItemCnt, wc_container, context);
     } else {
       /** Custom import function, if defined */
       if(window.luigiWCFn) {
-        window.luigiWCFn(viewUrl, wc_id, wc_container, () => {
-          this.attachWC(wc_id, wc_container, context);
+        window.luigiWCFn(viewUrl, wc_id, wcItemCnt, () => {
+          this.attachWC(wc_id, wcItemCnt, wc_container, context);
         });
       } else {
         this.registerWCFromUrl(viewUrl, wc_id).then(() => {
-          this.attachWC(wc_id, wc_container, context);
+          this.attachWC(wc_id, wcItemCnt, wc_container, context);
         });
       }
     }
@@ -83,7 +87,7 @@ class WebComponentSvcClass {
         </style>
     `;
     navNode.grid.children.forEach(wc=>{
-      const ctx = {...componentData.context, ...wc.context};
+      const ctx = {...context, ...wc.context};
       const gridItemCnt = document.createElement('div');
       const grid = wc.grid || {};
       gridItemCnt.setAttribute('style', `grid-row: ${grid.row || 'auto'}; grid-column: ${grid.column || 'auto'}`);
