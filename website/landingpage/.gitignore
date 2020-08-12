@@ -2,3 +2,4 @@
 # compiled files
 app.js*
 app.css
+public/**/*.html
