@@ -75,6 +75,12 @@ export const projectDetailNavStructure = projectId => [
     hideFromNav: true
   },
   {
+    pathSegment: 'featureToggleTest',
+    label: 'Feature Toggle Test',
+    viewUrl: 'http://localhost:8080/index.html',
+    restrictedToFeatureToggle: ['name der aktiven Ft']
+  },
+  {
     pathSegment: 'on-node-activation',
     label: 'Node with node activation hook',
     icon: 'activate',

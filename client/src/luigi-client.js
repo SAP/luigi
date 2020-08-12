@@ -33,6 +33,10 @@ class LuigiClient {
   getNodeParams() {
     return lifecycleManager.getNodeParams();
   }
+  getActiveFeatureToggles() {
+    console.log('luigi-client');
+    return lifecycleManager.getActiveFeatureToggles();
+  }
   getPathParams() {
     return lifecycleManager.getPathParams();
   }
