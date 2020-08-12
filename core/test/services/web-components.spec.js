@@ -23,14 +23,22 @@ describe('WebComponentService', function() {
   });
 
   describe('attach web component', function() {
+    const container = document.createElement('div');
+    const itemContainer = document.createElement('div');
+    const ctx = { someValue: true};
+    window.Luigi = { mario: 'luigi' };
+
+    it('check dom injection abort if container not attached', () => {
+      WebComponentService.attachWC('div', itemContainer, container, ctx);
+
+      expect(itemContainer.children.length).to.equal(0);
+    });
+
     it('check dom injection', () => {
-      const container = document.createElement('div');
-      const ctx = { someValue: true};
-      window.Luigi = { mario: 'luigi' };
+      container.appendChild(itemContainer);
+      WebComponentService.attachWC('div', itemContainer, container, ctx);
 
-      WebComponentService.attachWC('div', container, ctx);
-
-      const expectedCmp = container.children[0];
+      const expectedCmp = itemContainer.children[0];
       expect(expectedCmp.context).to.equal(ctx);
       expect(expectedCmp.luigi).to.equal(window.Luigi);
     });
@@ -116,7 +124,7 @@ describe('WebComponentService', function() {
         assert(false, "should not be here");
       });
 
-      sb.stub(WebComponentService, 'attachWC').callsFake((id, cnt, context)=>{
+      sb.stub(WebComponentService, 'attachWC').callsFake((id, iCnt, cnt, context)=>{
         expect(cnt).to.equal(container);
         expect(context).to.equal(ctx);
         done();
@@ -141,7 +149,7 @@ describe('WebComponentService', function() {
         assert(false, "should not be here");
       });
 
-      sb.stub(WebComponentService, 'attachWC').callsFake((id, cnt, context)=>{
+      sb.stub(WebComponentService, 'attachWC').callsFake((id, iCnt, cnt, context)=>{
         expect(cnt).to.equal(container);
         expect(context).to.equal(ctx);
         done();
@@ -172,7 +180,7 @@ describe('WebComponentService', function() {
         })
       });
 
-      sb.stub(WebComponentService, 'attachWC').callsFake((id, cnt, context)=>{
+      sb.stub(WebComponentService, 'attachWC').callsFake((id, iCnt, cnt, context)=>{
         expect(cnt).to.equal(container);
         expect(context).to.equal(ctx);
         done();

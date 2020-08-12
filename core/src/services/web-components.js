@@ -8,7 +8,7 @@ class WebComponentSvcClass {
     return __luigi_dyn_import(viewUrl);
   }
 
-  /** Creates a web component with tagname wc_id and adds it to wc_container*/
+  /** Creates a web component with tagname wc_id and adds it to wcItemContainer, if attached to wc_container*/
   attachWC(wc_id, wcItemContainer, wc_container, ctx) {
     if(wc_container && wc_container.contains(wcItemContainer)) {
       const wc = document.createElement(wc_id);
