@@ -38,7 +38,7 @@
     "@types/node": "8.10.56",
     "codelyzer": "5.2.0",
     "lodash": ">=4.17.19",
-    "serialize-javascript": ">=2.1.1",
+    "serialize-javascript": ">=3.1.0",
     "tar": ">=4.4.2",
     "ts-node": "4.1.0",
     "tslint": "5.20.0",
