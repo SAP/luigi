@@ -26,7 +26,14 @@ describe('WebComponentService', function() {
     const container = document.createElement('div');
     const itemContainer = document.createElement('div');
     const ctx = { someValue: true};
-    window.Luigi = { mario: 'luigi' };
+
+    before(()=>{
+      window.Luigi = { mario: 'luigi', luigi: window.luigi };
+    });
+
+    after(()=>{
+      window.Luigi = window.Luigi.luigi;
+    });
 
     it('check dom injection abort if container not attached', () => {
       WebComponentService.attachWC('div', itemContainer, container, ctx);
