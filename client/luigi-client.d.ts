@@ -59,7 +59,7 @@ export declare interface NodeParams {
 }
 
 export declare interface FeatureToggle {
-  [key: Array]: Array;
+  [key: Array<string>]: Array;
 }
 
 export declare interface ClientPermissions {
