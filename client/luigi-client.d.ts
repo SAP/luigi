@@ -59,7 +59,7 @@ export declare interface NodeParams {
 }
 
 export declare interface FeatureToggle {
-  [key: Array<string>]: Array;
+  arr: Array<String>;
 }
 
 export declare interface ClientPermissions {
@@ -498,8 +498,8 @@ export type getNodeParams = () => NodeParams;
  * @returns {Object} node parameters, where the object property name is the node parameter name without the prefix, and its value is the value of the node parameter. For example `{sort: 'asc', page: 3}`
  * @memberof Lifecycle
  */
-export function getActiveFeatureToggles(): FeatureToggle;
-export type getActiveFeatureToggles = () => FeatureToggle;
+export function getActiveFeatureToggles(): String;
+export type getActiveFeatureToggles = () => String;
 
 /**
  * Returns the dynamic path parameters of the active URL.

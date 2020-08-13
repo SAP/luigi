@@ -77,7 +77,7 @@ export const projectDetailNavStructure = projectId => [
   {
     pathSegment: 'featureToggleTest',
     label: 'Feature Toggle Test',
-    viewUrl: 'http://localhost:8080/index.html',
+    viewUrl: 'http://localhost:8080/index.html?ft=test',
     restrictedToFeatureToggle: ['name der aktiven Ft']
   },
   {

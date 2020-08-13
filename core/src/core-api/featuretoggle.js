@@ -25,6 +25,12 @@ class LuigiFeatureToggle {
     }
   }
 
+  /**
+   * Remove the name of a feature toggle from the list
+   * @memberof Feature Toggle
+   * @since NEXTRELEASE
+   * @example Luigi.featureToggle().unsetFeatureToggle();
+   */
   unsetFeatureToggle(featureToggleName) {
     if (featureToggleName && typeof featureToggleName === 'string') {
       if (get(this.featureToggleList).includes(featureToggleName)) {
@@ -47,7 +53,7 @@ class LuigiFeatureToggle {
    * @example Luigi.featureToggle().getActiveFeatureToggleList();
    */
   getActiveFeatureToggleList() {
-    return this.featureToggleList;
+    return get(this.featureToggleList);
   }
 }
 export const featureToggle = new LuigiFeatureToggle();

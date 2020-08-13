@@ -185,12 +185,7 @@
 
   const prepareInternalData = config => {
     const iframeConf = config.iframe.luigi;
-    LuigiFeatureToggle.getActiveFeatureToggleList().subscribe(
-      featureToggles => {
-        featureToggleList = featureToggles;
-      }
-    );
-    console.log('Feature Toggle List', featureToggleList);
+    featureToggleList = LuigiFeatureToggle.getActiveFeatureToggleList();
     const internalData = {
       isNavigateBack,
       viewStackSize: preservedViews.length,

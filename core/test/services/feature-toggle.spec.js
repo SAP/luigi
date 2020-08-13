@@ -5,12 +5,7 @@ const assert = chai.assert;
 describe('Feature Toggle', () => {
   it('Set and unset feature toggle to list', async () => {
     //given
-    let featureToggleList = [];
-    LuigiFeatureToggle.getActiveFeatureToggleList().subscribe(
-      featureToggles => {
-        featureToggleList = featureToggles;
-      }
-    );
+    let featureToggleList = LuigiFeatureToggle.getActiveFeatureToggleList();
     assert.equal(featureToggleList, 0);
     LuigiFeatureToggle.setFeatureToggle('test');
     assert.equal(featureToggleList[0], 'test');
