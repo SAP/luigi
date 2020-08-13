@@ -102,9 +102,9 @@
 		// API Function names
 		.page-luigi-core-api, .page-luigi-client-api {
 			h4 {
-				margin-top: 20px;
+				margin-top:35px;
 				display: inline-block;
-				border-left: 5px solid $primary-color;
+				border-left: 4px solid $primary-color;
 				padding-left: 10px;
 			}
 		}
