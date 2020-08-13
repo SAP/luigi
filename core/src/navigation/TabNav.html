@@ -136,14 +136,15 @@
                 >
                   <span class="fd-nested-list__title">{$getTranslation(key)}</span>
                 </a>
-                <a
-                  class="fd-nested-list__expand-icon"
+                <button
+                  class="fd-button fd-nested-list__button"
                   href="#"
                   tabindex="-1"
+                  aria-label="Expand submenu"
                   aria-haspopup="true"
                   aria-expanded="{dropDownStates[key+index]}"
                   on:click|preventDefault="{() => toggleDropdownState(key+index)}"
-                ></a>
+                ></button>
               </div>
               <ul
                 class="fd-nested-list level-2"
