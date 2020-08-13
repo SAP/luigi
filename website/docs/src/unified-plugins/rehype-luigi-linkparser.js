@@ -43,7 +43,7 @@ export default function luigiLinkParser(options) {
         }
 
         node.properties['href'] = prependForExport() + '/docs/' + newHref;
-      } else if (parsed.protocol) {
+      } else if (parsed.protocol && !parsed.pathname.endsWith('.md')) {
         // external link
         node.properties['rel'] = 'external';
         node.properties['target'] = '_blank';
