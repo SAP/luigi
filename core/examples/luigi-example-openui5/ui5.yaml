@@ -1,4 +1,38 @@
-specVersion: '0.1'
+specVersion: '2.1'
 metadata:
   name: LuigiOpenUI5
 type: application
+framework:
+  name: OpenUI5
+  version: "1.80.0"
+  libraries:
+    - name: sap.f
+    - name: sap.m
+    - name: sap.ui.core
+    - name: themelib_sap_fiori_3
+---
+specVersion: "2.1"
+kind: extension
+type: project-shim # See https://sap.github.io/ui5-tooling/pages/extensibility/ProjectShims/
+metadata:
+  name: luigi.shim
+shims:
+  configurations:
+    "@luigi-project/client": # name as defined in package.json
+      specVersion: "2.1"
+      type: module
+      metadata:
+        name: luigi-client
+      resources:
+        configuration:
+          paths:
+            /libs/luigi-client/: ""
+    "@luigi-project/core":
+      specVersion: "2.1"
+      type: module
+      metadata:
+        name: luigi-core
+      resources:
+        configuration:
+          paths:
+            /libs/luigi-core/: ""

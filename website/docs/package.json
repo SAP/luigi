@@ -16,7 +16,7 @@
     "cy:run": "cypress run",
     "cy:open": "cypress open",
     "mock:develop-plugins": "NODE_ENV=debug node -r esm scripts/markdown.unified-preview.js",
-    "mock:develop-plugins:watch": "NODE_ENV=debug nodemon --ignore 'static/**' -r esm scripts/markdown.unified-preview.js"
+    "mock:develop-plugins:watch": "NODE_ENV=debug nodemon --watch src --watch scripts -e js,md -r esm scripts/markdown.unified-preview.js"
   },
   "dependencies": {
     "@luigi-project/core": "1.2.1",
@@ -64,7 +64,7 @@
     "remark-toc": "^6.0.0",
     "sapper": "^0.27.12",
     "sass-loader": "^8.0.0",
-    "serialize-javascript": ">=2.1.1",
+    "serialize-javascript": ">=3.1.0",
     "sirv-cli": "0.4.4",
     "svelte": "^3.0.0",
     "svelte-loader": "^2.9.0",
