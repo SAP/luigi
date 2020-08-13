@@ -14,6 +14,7 @@ public
 static/assets
 *coreStyles*
 navigation-generated.json
+sitemap.xml
 
 # Debug
 yarn-error.log
