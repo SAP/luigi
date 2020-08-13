@@ -100,11 +100,13 @@
 		}
 
 		// API Function names
-		h4 {
-			margin-top: 20px;
-			display: inline-block;
-			border-left: 5px solid $primary-color;
-			padding-left: 10px;
+		.page-luigi-core-api, .page-luigi-client-api {
+			h4 {
+				margin-top: 20px;
+				display: inline-block;
+				border-left: 5px solid $primary-color;
+				padding-left: 10px;
+			}
 		}
 
 		blockquote {
