@@ -99,6 +99,14 @@
 			}
 		}
 
+		// API Function names
+		h4 {
+			margin-top: 20px;
+			display: inline-block;
+			border-left: 5px solid $primary-color;
+			padding-left: 10px;
+		}
+
 		blockquote {
 			padding: 20px;
 			border-radius: 6px;
