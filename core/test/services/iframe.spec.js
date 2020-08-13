@@ -1,9 +1,9 @@
 const chai = require('chai');
 const assert = chai.assert;
 const sinon = require('sinon');
-import { afterEach } from 'mocha';
 
-import { Iframe } from '../../src/services/iframe';
+import { Iframe, ViewUrlDecorator } from '../../src/services';
+
 import {
   GenericHelpers,
   RoutingHelpers,
@@ -45,6 +45,8 @@ describe('Iframe', () => {
     GenericHelpers.getRandomId.returns('abc');
     sinon.stub(RoutingHelpers, 'substituteViewUrl');
     GenericHelpers.isElementVisible.callsFake(element => element.visible);
+    sinon.stub(ViewUrlDecorator);
+    ViewUrlDecorator.applyDecorators.callsFake(url => url);
 
     node = {
       children: [

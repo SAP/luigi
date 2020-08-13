@@ -1,4 +1,4 @@
-Cypress.env('RETRIES', 1);
+Cypress.env('RETRIES', 2);
 
 describe('Context switcher', () => {
   beforeEach(() => {

@@ -337,4 +337,74 @@ describe('Fiddle', () => {
       });
     });
   });
+
+  describe('Theming', () => {
+    let newConfig;
+    beforeEach(() => {
+      newConfig = cloneDeep(fiddleConfig);
+      newConfig.settings.theming = {
+        themes: () => [
+          { id: 'light', name: 'Fiori3 Light' },
+          { id: 'dark', name: 'Fiori3 Dark' }
+        ],
+        defaultTheme: 'light'
+        // nodeViewURLDecorator: {
+        //   queryStringParameter: {
+        //     keyName: 'sap-theme'
+        //     // optional
+        //     // value: themeId => {
+        //     //   return themeId + 'YES';
+        //     // }
+        //   }
+        // }
+      };
+    });
+    it('Client get and set theme', () => {
+      cy.visitWithFiddleConfig('/', newConfig);
+
+      cy.window().then(win => {
+        cy.getIframeWindow().then(win => {
+          const defaultTheme = win.LuigiClient.uxManager().getCurrentTheme();
+          expect(defaultTheme).to.equal('light');
+
+          // not yet implemented
+          // win.LuigiClient.uxManager().setCurrentTheme('dark');
+          // expect(defaultTheme).to.equal('dark');
+        });
+      });
+    });
+    it('Iframe Url should get set with value by default', () => {
+      newConfig.settings.theming.nodeViewURLDecorator = {
+        queryStringParameter: {
+          keyName: 'sap-theme'
+        }
+      };
+      cy.visitWithFiddleConfig('/', newConfig);
+
+      cy.get('iframe').then(ifr => {
+        const url = new URL(ifr.attr('src'));
+        expect(`${url.pathname}${url.search}${url.hash}`).to.equal(
+          '/examples/microfrontends/multipurpose.html?sap-theme=light'
+        );
+      });
+    });
+    it('Iframe Url should get set with custom value', () => {
+      newConfig.settings.theming.nodeViewURLDecorator = {
+        queryStringParameter: {
+          keyName: 'sap-theme',
+          value: themeId => {
+            return themeId + 'LUIGI';
+          }
+        }
+      };
+      cy.visitWithFiddleConfig('/', newConfig);
+
+      cy.get('iframe').then(ifr => {
+        const url = new URL(ifr.attr('src'));
+        expect(`${url.pathname}${url.search}${url.hash}`).to.equal(
+          '/examples/microfrontends/multipurpose.html?sap-theme=lightLUIGI'
+        );
+      });
+    });
+  });
 });

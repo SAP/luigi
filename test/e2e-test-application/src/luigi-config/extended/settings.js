@@ -25,16 +25,20 @@ class Settings {
     }
   };
   theming = {
-    themes: [
-      { id: 1, name: 'light' },
-      { id: 2, name: 'dark' },
-      { id: 3, name: 'blue' },
-      { id: 4, name: 'green' },
-      { id: 5, name: 'red' },
-      { id: 6, name: 'orange' },
-      { id: 7, name: 'yellow' }
+    themes: () => [
+      { id: 'light', name: 'Fiori3 Light' },
+      { id: 'dark', name: 'Fiori3 Dark' }
     ],
     defaultTheme: 'light'
+    // nodeViewURLDecorator: {
+    //   queryStringParameter: {
+    //     keyName: 'sap-theme'
+    //     // optional
+    //     // value: themeId => {
+    //     //   return themeId;
+    //     // }
+    //   }
+    // }
   };
   // sideNavCompactMode = true;
   // allowRules = ['microphone'];
