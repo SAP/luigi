@@ -28,15 +28,13 @@ class Navigation {
       pathSegment: 'overview',
       label: 'Overview FT=test',
       viewUrl: '/sampleapp.html#/overview',
-      hideSideNav: true,
-      visibleForFeatureToggles: ['test']
+      hideSideNav: true
     },
     {
       pathSegment: 'overview',
       label: 'Overview',
       viewUrl: '/sampleapp.html#/overview',
-      hideSideNav: true,
-      visibleForFeatureToggles: ['!test']
+      hideSideNav: true
     },
     {
       pathSegment: 'projects',
@@ -109,8 +107,7 @@ class Navigation {
       externalLink: {
         url: 'http://google.com',
         sameWindow: true
-      },
-      visibleForFeatureToggles: ['test']
+      }
     }, // showing an anonymous content is possible only with auto login disabled
 
     {
