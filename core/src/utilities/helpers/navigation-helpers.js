@@ -59,7 +59,6 @@ class NavigationHelpersClass {
             return false;
           }
         } else {
-          console.log(activeFeatureToggles);
           if (!activeFeatureToggles.includes(ft)) {
             return false;
           }
