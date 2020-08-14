@@ -27,7 +27,9 @@
         <section>
         <div class="row" id="stickyAnchor" data-something>
           <div class="column small-12 medium-9">
+            {{#unlesspage 'overview'}}
             <a href="/blog/overview" class="back-to-blog">Back to Blog</a>
+            {{/unlesspage}}
 
             {{> body}}
           </div>
