@@ -168,6 +168,19 @@ class RoutingClass {
         return;
       }
 
+      const featureToggleProperty = LuigiConfig.getConfigValue(
+        'settings.featureToggles.queryStringParam'
+      )
+        ? LuigiConfig.getConfigValue('settings.featureToggles.queryStringParam')
+        : undefined;
+      if (featureToggleProperty) {
+        RoutingHelpers.setFeatureToggles(featureToggleProperty);
+      } else {
+        console.warn(
+          'featureToggles.queryStringParam is not defined in settings.js'
+        );
+      }
+
       const previousCompData = component.get();
       this.checkInvalidateCache(previousCompData, path);
       const pathUrlRaw =
@@ -176,32 +189,6 @@ class RoutingClass {
         path
       );
       const viewUrl = nodeObject.viewUrl || '';
-      const featureToggleFromNode = nodeObject.restrictedToFeatureToggle
-        ? nodeObject.restrictedToFeatureToggle
-        : undefined;
-
-      const featureToggleProperty = LuigiConfig.getConfigValue(
-        'settings.featureToggle.featureToggleProperty'
-      )
-        ? LuigiConfig.getConfigValue(
-            'settings.featureToggle.featureToggleProperty'
-          )
-        : 'ft';
-      const featureTogglesFromUrl = GenericHelpers.getUrlParameter(
-        featureToggleProperty
-      );
-      let featureToggleList = [...featureToggleFromNode];
-      featureToggleList = featureToggleList.concat(
-        featureTogglesFromUrl.split(',')
-      );
-
-      if (featureToggleList.length > 0) {
-        featureToggleList.forEach(ft =>
-          LuigiFeatureToggle.setFeatureToggle(ft)
-        );
-      } else {
-        LuigiFeatureToggle.setFeatureToggle(featureToggle);
-      }
 
       if (!viewUrl) {
         const defaultChildNode = await RoutingHelpers.getDefaultChildNode(

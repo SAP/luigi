@@ -26,7 +26,6 @@ export class DevelopersComponent implements OnInit, OnDestroy {
     this.initListener = addInitListener((context, origin) => {
       this.visitors = this.updateVisitors();
       let featureToggleList = getActiveFeatureToggles();
-      debugger;
       if (featureToggleList.includes('test')) {
         this.testFeatureToggleActive = true;
       }

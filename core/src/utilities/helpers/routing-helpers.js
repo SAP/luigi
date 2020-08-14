@@ -1,6 +1,6 @@
 // Helper methods for 'routing.js' file. They don't require any method from 'routing.js' but are required by them.
 // They are also rarely used directly from outside of 'routing.js'
-import { LuigiConfig } from '../../core-api';
+import { LuigiConfig, LuigiFeatureToggle } from '../../core-api';
 import {
   AsyncHelpers,
   EscapingHelpers,
@@ -243,6 +243,17 @@ class RoutingHelpersClass {
       ] = EscapingHelpers.sanitizeParam(paramPair[1]);
       return sanitizedMap;
     }, {});
+  }
+
+  setFeatureToggles(featureToggleProperty) {
+    const featureTogglesFromUrl = GenericHelpers.getUrlParameter(
+      featureToggleProperty
+    );
+    let featureToggleList = featureTogglesFromUrl.split(',');
+
+    if (featureToggleList.length > 0 && featureToggleList[0] !== '') {
+      featureToggleList.forEach(ft => LuigiFeatureToggle.setFeatureToggle(ft));
+    }
   }
 }
 

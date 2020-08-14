@@ -5,6 +5,7 @@ export const projectDetailNavStructure = projectId => [
     label: 'Users and Groups',
     viewUrl: '/sampleapp.html#/projects/' + projectId + '/users',
     icon: 'group',
+    visibleForFeatureToggles: ['test'],
     children: [
       {
         category: { label: 'Groups', icon: 'group' },
@@ -75,10 +76,34 @@ export const projectDetailNavStructure = projectId => [
     hideFromNav: true
   },
   {
+    pathSegment: 'featureToggleTest2',
+    label: 'Feature Toggle Test 2',
+    viewUrl: 'http://localhost:8080/index.html',
+    visibleForFeatureToggles: ['test2']
+  },
+  {
     pathSegment: 'featureToggleTest',
     label: 'Feature Toggle Test',
     viewUrl: 'http://localhost:8080/index.html',
-    restrictedToFeatureToggle: ['test2']
+    visibleForFeatureToggles: ['test']
+  },
+  {
+    pathSegment: 'featureToggleTest',
+    label: 'Feature Toggle !Test',
+    viewUrl: 'http://localhost:8080/index.html',
+    visibleForFeatureToggles: ['!test']
+  },
+  {
+    pathSegment: 'featureToggleTest34',
+    label: 'Feature Toggle Test 3 oder 4',
+    viewUrl: 'http://localhost:8080/index.html',
+    visibleForFeatureToggles: ['test3', 'test4']
+  },
+  {
+    pathSegment: 'featureToggleTest3',
+    label: 'Feature Toggle Test 3',
+    viewUrl: 'http://localhost:8080/index.html',
+    visibleForFeatureToggles: ['test3']
   },
   {
     pathSegment: 'on-node-activation',
@@ -118,7 +143,8 @@ export const projectDetailNavStructure = projectId => [
     label: 'Project Settings',
     viewUrl: '/sampleapp.html#/projects/' + projectId + '/settings',
     icon: 'settings',
-    testId: 'myTestId'
+    testId: 'myTestId',
+    visibleForFeatureToggles: ['test']
   },
   {
     pathSegment: 'externalmf',
