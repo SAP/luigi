@@ -1,2 +1,6 @@
+# feeds
+*.xml
+*.json
+
+# files
 *.html
-!overview.html
