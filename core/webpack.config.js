@@ -31,12 +31,7 @@ class PatchLuigiPlugin {
   }
   apply(compiler) {
     if (compiler.hooks) {
-      compiler.hooks.afterEmit.tap('Luigi Patch babel + terser', () => {
-        console.log(
-          '\x1b[33mWebpack [' + new Date().toLocaleTimeString() + ']: ',
-          '\x1b[0m',
-          'Post-processing babel and terser...'
-        );
+      compiler.hooks.afterEmit.tap('Luigi Patch dyn_import', () => {
         execSync(
           [
             `replace '__luigi_dyn_import' 'import' public/luigi.js`,
