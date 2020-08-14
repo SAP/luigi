@@ -176,15 +176,25 @@ class RoutingClass {
         path
       );
       const viewUrl = nodeObject.viewUrl || '';
+      const featureToggleFromNode = nodeObject.restrictedToFeatureToggle
+        ? nodeObject.restrictedToFeatureToggle
+        : undefined;
+
       const featureToggleProperty = LuigiConfig.getConfigValue(
-        'settings.featureToggleProperty'
+        'settings.featureToggle.featureToggleProperty'
       )
-        ? LuigiConfig.getConfigValue('settings.featureToggleProperty')
+        ? LuigiConfig.getConfigValue(
+            'settings.featureToggle.featureToggleProperty'
+          )
         : 'ft';
-      const featureToggle = GenericHelpers.getUrlParameter(
+      const featureTogglesFromUrl = GenericHelpers.getUrlParameter(
         featureToggleProperty
       );
-      const featureToggleList = featureToggle.split(',');
+      let featureToggleList = [...featureToggleFromNode];
+      featureToggleList = featureToggleList.concat(
+        featureTogglesFromUrl.split(',')
+      );
+
       if (featureToggleList.length > 0) {
         featureToggleList.forEach(ft =>
           LuigiFeatureToggle.setFeatureToggle(ft)

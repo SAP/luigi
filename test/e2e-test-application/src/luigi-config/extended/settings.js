@@ -24,7 +24,8 @@ class Settings {
       Luigi.ux().showAlert(alert);
     }
   };
-  featureToggleProperty = 'ft';
+  // featureToggleProperty = 'ft';
+
   // sideNavCompactMode = true;
   // allowRules = ['microphone'];
   // iframeCreationInterceptor = (iframe, viewGroup, navigationNode, microFrontendType) => { };
