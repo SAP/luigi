@@ -36,6 +36,26 @@
     ></SplitView>
     {/if}
   </Backdrop>
+  {#if showLoadingIndicator}
+  <div
+    in:fade="{{delay: 250, duration: 250}}"
+    out:fade="{{duration: 250}}"
+    class="fd-page spinnerContainer"
+    aria-hidden="false"
+    aria-label="Loading"
+  >
+    <div
+      class="fd-busy-indicator--m"
+      aria-hidden="false"
+      aria-label="Loading"
+      data-testid="luigi-loading-spinner"
+    >
+      <div class="fd-busy-indicator--circle-0"></div>
+      <div class="fd-busy-indicator--circle-1"></div>
+      <div class="fd-busy-indicator--circle-2"></div>
+    </div>
+  </div>
+  {/if}
   <TopNav
     pathData="{navigationPath}"
     pathParams="{pathParams}"
