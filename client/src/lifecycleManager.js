@@ -340,11 +340,11 @@ class LifecycleManager extends LuigiClientBase {
   }
 
   /**Returns a list of active feature toggles
-   * @returns {string} a list of feature toggle names
+   * @returns {Array} a list of feature toggle names
    * @memberof Lifecycle
+   * @since NEXTRELEASE
    */
   getActiveFeatureToggles() {
-    console.log('lifecycleManager');
     return this.currentContext.internal.activeFeatureToggleList;
   }
   /**

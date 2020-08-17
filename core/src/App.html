@@ -119,7 +119,7 @@
     LuigiConfig,
     LuigiElements,
     LuigiGlobalSearch,
-    LuigiFeatureToggle
+    LuigiFeatureToggles
   } from './core-api';
   import { Navigation } from './navigation/services/navigation';
   import { Routing } from './services/routing';
@@ -185,7 +185,7 @@
 
   const prepareInternalData = config => {
     const iframeConf = config.iframe.luigi;
-    featureToggleList = LuigiFeatureToggle.getActiveFeatureToggleList();
+    featureToggleList = LuigiFeatureToggles.getActiveFeatureToggleList();
     const internalData = {
       isNavigateBack,
       viewStackSize: preservedViews.length,
@@ -463,9 +463,12 @@
       // relative
       path = Routing.concatenatePath(getSubPath(currentNode), params.link);
     }
-
     if (params.nodeParams && Object.keys(params.nodeParams).length) {
-      path += '?';
+      if (path.includes('?')) {
+        path += '&';
+      } else {
+        path += '?';
+      }
       Object.entries(params.nodeParams).forEach((entry, index) => {
         path +=
           encodeURIComponent(

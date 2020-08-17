@@ -132,7 +132,11 @@ Returns **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/G
 
 Returns a list of active feature toggles
 
-Returns **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** a list of feature toggle names
+Returns **[Array](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array)** a list of feature toggle names
+
+**Meta**
+
+-   **since**: NEXTRELEASE
 
 #### getNodeParams
 

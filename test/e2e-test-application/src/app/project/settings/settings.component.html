@@ -93,3 +93,11 @@
     </div>
   </div>
 </section>
+<section
+  *ngIf="testFeatureToggleActive"
+  class="fd-section luigi_featuretoggle_ft1"
+>
+  <div class="fd-layout-panel">
+    This is a feature toggle test and only visible if ft1 is active.
+  </div>
+</section>

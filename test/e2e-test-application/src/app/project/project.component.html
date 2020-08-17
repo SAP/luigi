@@ -299,7 +299,7 @@
               >FeatureToggle</a
             >
             <app-code-snippet
-              data="linkManager().navigate('/projects/pr1/settings?ft=test')"
+              data="linkManager().navigate('/projects/pr1/settings_ft?ft=test')"
             ></app-code-snippet>
           </li>
           <li class="fd-list__item">
@@ -367,6 +367,24 @@
             >
             <app-code-snippet
               data="linkManager().fromClosestContext().withParams({foo: 'bar'}).navigate('settings')"
+            >
+            </app-code-snippet>
+          </li>
+          <li class="fd-list__item">
+            <a
+              href="javascript:void(0)"
+              class="fd-link"
+              (click)="
+                linkManager()
+                  .fromClosestContext()
+                  .withParams({ feature: 'toggle' })
+                  .navigate('settings_ft?ft=test')
+              "
+            >
+              project to settings with params (foo=bar) and FeatureToggle</a
+            >
+            <app-code-snippet
+              data="linkManager().fromClosestContext().withParams({feature: 'toggle'}).navigate('settings_ft?ft=test')"
             >
             </app-code-snippet>
           </li>

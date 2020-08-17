@@ -1,17 +1,17 @@
 import { get, writable } from 'svelte/store';
 /**
- * Functions to use the feature toggle of Luigi
- * @name FeatureToggle
+ * Functions to use feature toggles in Luigi
+ * @name FeatureToggles
  */
 class LuigiFeatureToggle {
   constructor() {
     this.featureToggleList = writable([]);
   }
   /**
-   * Add the name of a feature toggle to a list
-   * @memberof Feature Toggle
+   * Add a feature toggle to an active feature toggles list
+   * @memberof FeatureToggles
    * @since NEXTRELEASE
-   * @example Luigi.featureToggle().setFeatureToggle();
+   * @example Luigi.featureToggles().setFeatureToggle('featureToggleName');
    */
   setFeatureToggle(featureToggleName) {
     if (featureToggleName && typeof featureToggleName === 'string') {
@@ -26,10 +26,10 @@ class LuigiFeatureToggle {
   }
 
   /**
-   * Remove the name of a feature toggle from the list
-   * @memberof Feature Toggle
+   * Remove a feature toggle from the list
+   * @memberof FeatureToggles
    * @since NEXTRELEASE
-   * @example Luigi.featureToggle().unsetFeatureToggle();
+   * @example Luigi.featureToggles().unsetFeatureToggle('featureToggleName');
    */
   unsetFeatureToggle(featureToggleName) {
     if (featureToggleName && typeof featureToggleName === 'string') {
@@ -47,13 +47,14 @@ class LuigiFeatureToggle {
   }
 
   /**
-   * Get a list of feature toggles
-   * @memberof Feature Toggle
+   * Get a list of active feature toggles
+   * @memberof FeatureToggles
    * @since NEXTRELEASE
-   * @example Luigi.featureToggle().getActiveFeatureToggleList();
+   * @return {Array} of active feature toggles
+   * @example Luigi.featureToggles().getActiveFeatureToggleList();
    */
   getActiveFeatureToggleList() {
     return get(this.featureToggleList);
   }
 }
-export const featureToggle = new LuigiFeatureToggle();
+export const featureToggles = new LuigiFeatureToggle();
