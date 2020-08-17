@@ -1,4 +1,5 @@
 [![Build Status](https://travis-ci.org/SAP/luigi.svg?branch=master)](https://travis-ci.org/SAP/luigi)
+[![REUSE status](https://api.reuse.software/badge/github.com/SAP/luigi)](https://api.reuse.software/info/github.com/SAP/luigi)
 # Luigi
 <p align="center">
  <img src="https://raw.githubusercontent.com/sap/luigi/master/logo.png" width="235">
