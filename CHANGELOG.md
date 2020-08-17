@@ -25,6 +25,12 @@ The lerna-changelog tool detects changes based on PR labels and maps them to sec
 -->
 
 
+## [v1.3.1] (2020-08-14)
+
+#### :bug: Fixed
+* [#1514](https://github.com/SAP/luigi/pull/1514) Fix a border-radius bug in nested list for 'Select Environment' popover ([@UlianaMunich](https://github.com/UlianaMunich))
+
+
 ## [v1.3.0] (2020-07-16)
 
 #### :rocket: Added
@@ -821,3 +827,5 @@ The lerna-changelog tool detects changes based on PR labels and maps them to sec
 [v1.2.3]: https://github.com/SAP/luigi/compare/v1.2.2...v1.2.3
 [v1.2.4]: https://github.com/SAP/luigi/compare/v1.2.3...v1.2.4
 [v1.3.0]: https://github.com/SAP/luigi/compare/v1.2.4...v1.3.0
+
+[v1.3.1]: https://github.com/SAP/luigi/compare/v1.3.0...v1.3.1
