@@ -26,12 +26,6 @@ class Navigation {
   nodes = [
     {
       pathSegment: 'overview',
-      label: 'Overview FT=test',
-      viewUrl: '/sampleapp.html#/overview',
-      hideSideNav: true
-    },
-    {
-      pathSegment: 'overview',
       label: 'Overview',
       viewUrl: '/sampleapp.html#/overview',
       hideSideNav: true

@@ -8,6 +8,7 @@ import {
   GenericHelpers
 } from './';
 import { Routing } from '../../services/routing';
+import { featureToggle } from '../../core-api/featuretoggle';
 
 class RoutingHelpersClass {
   constructor() {
@@ -245,12 +246,17 @@ class RoutingHelpersClass {
     }, {});
   }
 
-  setFeatureToggles(featureToggleProperty) {
-    const featureTogglesFromUrl = GenericHelpers.getUrlParameter(
-      featureToggleProperty
-    );
-    let featureToggleList = featureTogglesFromUrl.split(',');
+  setFeatureToggles(featureToggleProperty, path) {
+    let featureTogglesFromUrl;
+    let queryParams = this.parseParams(path.split('?')[1]);
 
+    if (queryParams[featureToggleProperty]) {
+      featureTogglesFromUrl = queryParams[featureToggleProperty];
+    }
+    if (!featureTogglesFromUrl) {
+      return;
+    }
+    let featureToggleList = featureTogglesFromUrl.split(',');
     if (featureToggleList.length > 0 && featureToggleList[0] !== '') {
       featureToggleList.forEach(ft => LuigiFeatureToggle.setFeatureToggle(ft));
     }

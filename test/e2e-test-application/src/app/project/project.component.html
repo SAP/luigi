@@ -295,6 +295,17 @@
             <a
               href="javascript:void(0)"
               class="fd-link"
+              (click)="linkManager().navigate('/projects/pr1/settings?ft=test')"
+              >FeatureToggle</a
+            >
+            <app-code-snippet
+              data="linkManager().navigate('/projects/pr1/settings?ft=test')"
+            ></app-code-snippet>
+          </li>
+          <li class="fd-list__item">
+            <a
+              href="javascript:void(0)"
+              class="fd-link"
               (click)="
                 linkManager()
                   .fromClosestContext()
@@ -547,7 +558,8 @@
             </a>
             <app-code-snippet
               data="linkManager().navigate('/projects/pr2/miscellaneous2/maskopatol')"
-            ></app-code-snippet>
+            >
+            </app-code-snippet>
           </li>
           <li class="fd-list__item">
             <a

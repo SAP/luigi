@@ -174,7 +174,7 @@ class RoutingClass {
         ? LuigiConfig.getConfigValue('settings.featureToggles.queryStringParam')
         : undefined;
       if (featureToggleProperty) {
-        RoutingHelpers.setFeatureToggles(featureToggleProperty);
+        RoutingHelpers.setFeatureToggles(featureToggleProperty, path);
       } else {
         console.warn(
           'featureToggles.queryStringParam is not defined in settings.js'
