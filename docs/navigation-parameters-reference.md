@@ -307,7 +307,7 @@ settings: {
 
 ### visibleForFeatureToggles
 - **type**: array
-- **description**: defines a list of feature toggles valid for this node. This list will be compared against the active feature toggles list. If there is a match the node will be visible in the left navigation. It is also possible to negate the feature Toggle. That means if a feature toggle, defined in this list, starts with exclamation mark it will not be visible if the same feature toggle is set in the active feature toggle list but for all other feature toggles.
+- **description**: defines a list of feature toggles valid for this node. This list will be compared against the active feature toggles list. If there is a match, the node will be visible in the top or left navigation. It is also possible to negate the feature toggle by adding a `!` in front of the toggle name.  Then, the node will be visible for all other feature toggles except the one defined with an exclamation point.
 - **example**:
     ```javascript
     {
