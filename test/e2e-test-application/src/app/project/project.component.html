@@ -67,7 +67,7 @@
       </div>
       <div class="fd-layout-panel__body">
         <form #luigiAlertForm="ngForm">
-          <div class="fd-form__set fd-has-padding-bottom-small">
+          <div class="fd-form__set luigi__margin-bottom--small">
             <div class="fd-form-item">
               <label class="fd-form-label" for="select-1">Type:</label>
               <select
@@ -158,7 +158,7 @@
           <label class="fd-form-label" data-testid="luigi-current-locale">
             Current locale is: '{{ currentLocale }}'
           </label>
-          <p class="fd-has-margin-bottom-s">
+          <p class="luigi__margin-bottom--small">
             <app-code-snippet
               data="uxManager().getCurrentLocale()"
             ></app-code-snippet>
@@ -511,7 +511,7 @@
               (input)="resetPathExistsResult()"
             />
           </div>
-          <div class="fd-col--8">
+          <div class="fd-col--8 luigi__input-button--margin">
             <button class="fd-button" (click)="checkIfPathExists()">
               Check
             </button>
