@@ -58,7 +58,7 @@
             {#if node.icon}
             {#if hasOpenUIicon(node)}
             <span
-              class="fd-top-nav__icon sap-icon--{node.icon} sap-icon--m"
+              class="fd-top-nav__icon sap-icon--{node.icon}"
             ></span>
             {:else}
             <img
@@ -105,7 +105,7 @@
         {#if node.icon}
         {#if hasOpenUIicon(node)}
         <span
-          class="fd-top-nav__icon sap-icon--{node.icon} sap-icon--m"
+          class="fd-top-nav__icon sap-icon--{node.icon}"
         ></span>
         {:else}
         <img
@@ -188,7 +188,7 @@
                     on:click|stopPropagation="{openMobileContextSwitcher}"
                   >
                     <span
-                      class="fd-top-nav__icon sap-icon--m {contextSwitcherConfig.icon && hasOpenUIicon(contextSwitcherConfig) ? 'sap-icon--' + contextSwitcherConfig.icon : 'sap-icon--switch-views'}"
+                      class="fd-top-nav__icon {contextSwitcherConfig.icon && hasOpenUIicon(contextSwitcherConfig) ? 'sap-icon--' + contextSwitcherConfig.icon : 'sap-icon--switch-views'}"
                     ></span>
                     <span
                       class="fd-menu__title"
@@ -207,7 +207,7 @@
                     data-testid="{getTestId(node)}"
                   >
                     <span
-                      class="fd-top-nav__icon {node.icon && hasOpenUIicon(node) ? 'sap-icon--' + node.icon + ' sap-icon--m' : '' }"
+                      class="fd-top-nav__icon {node.icon && hasOpenUIicon(node) ? 'sap-icon--' + node.icon : '' }"
                     >
                       {#if !hasOpenUIicon(node)}
                       <img
@@ -230,7 +230,7 @@
                     data-e2e="mobile-topnav-dropdown-category"
                   >
                     <span
-                      class="fd-top-nav__icon {node.icon && hasOpenUIicon(node) ? 'sap-icon--' + node.icon + ' sap-icon--m' : '' }"
+                      class="fd-top-nav__icon {node.icon && hasOpenUIicon(node) ? 'sap-icon--' + node.icon : '' }"
                     >
                       {#if !hasOpenUIicon(node)}
                       <img
@@ -254,7 +254,7 @@
                   >
                     {#if node.icon} {#if hasOpenUIicon(node)}
                     <span
-                      class="fd-top-nav__icon sap-icon--{node.icon} sap-icon--m"
+                      class="fd-top-nav__icon sap-icon--{node.icon}"
                     ></span>
                     {:else}
                     <img
@@ -278,7 +278,7 @@
                   >
                     {#if hasOpenUIicon(productSwitcherConfig) || !productSwitcherConfig.icon}
                     <span
-                      class="fd-top-nav__icon sap-icon--{productSwitcherConfig.icon || 'grid'} sap-icon--m"
+                      class="fd-top-nav__icon sap-icon--{productSwitcherConfig.icon || 'grid'}"
                     ></span>
                     {:else}
                     <span class="fd-top-nav__icon">
