@@ -80,7 +80,3 @@ ul {
 .fd-list .fd-list__item:active .fd-link {
   color: var(--sapList_Active_TextColor, #fff);
 }
-
-.fd-has-margin-bottom-small {
-  margin-bottom: 10px;
-}
