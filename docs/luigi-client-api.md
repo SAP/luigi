@@ -622,7 +622,7 @@ Removes the loading indicator. Use it after calling [showLoadingIndicator()](#sh
 
 #### closeModal
 
-Closes the modal from being visible.
+Closes the modal, if the Mirco Frontend is in a modal.
 
 #### addBackdrop
 
