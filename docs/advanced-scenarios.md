@@ -160,9 +160,9 @@ Luigi allows you to implement and configure feature toggles. They can be used to
 
 #### Usage
 * To **set** feature toggles, you have two possibilities:
-  1. Set feature toggles to the active feature toggle list through [Luigi Core API](luigi-core-api.md#featuretoggles):
+   1. Set feature toggles to the active feature toggle list through [Luigi Core API](luigi-core-api.md#featuretoggles):
   ```javascript
-  Luigi.featureToggles().setFeatureToggle('ft1');
+    Luigi.featureToggles().setFeatureToggle('ft1');
   ```
   2. Set feature toggles to the active feature toggle list via URL parameters:
   ```
@@ -203,5 +203,6 @@ Luigi allows you to implement and configure feature toggles. They can be used to
     if (LuigiClient.getActiveFeatureToggles().includes('ft1')) {
       //display content
     }
-  ```
+  ``` 
+
 <!-- accordion:end -->
