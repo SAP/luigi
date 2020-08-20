@@ -22,11 +22,10 @@ You can use any of the Luigi lifecycle hooks by adding additional setup to the r
   ...
   lifecycleHooks: {
     luigiAfterInit: () => {
-      const newCustomMessage = {
-        id: 'luigi.my-custom-message-for-client',
-        description: 'here goes the message description'
-      };
-      Luigi.customMessages().send('MY_MICRO_FRONTEND_ID', newCustomMessage);
+      // initializing with a different language
+      myGeoLocationService.getLanguage().then(lang => {
+        Luigi.i18n().setCurrentLocale(lang);
+      })
     }
   }
   ...
