@@ -168,7 +168,7 @@ There are two possibilities to add feature toggles to the active feature toggles
 
 In order to remove a feature toggle from the list you have to use the core api
 
-#### unset feature toggles from the active feature toggle list through core api
+#### Unset feature toggles from the active feature toggle list through core api
 ```javascript
   Luigi.featureToggles().setFeatureToggle('ft1');
 ```
