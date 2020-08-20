@@ -3,7 +3,7 @@ import { get, writable } from 'svelte/store';
  * Functions to use feature toggles in Luigi
  * @name FeatureToggles
  */
-class LuigiFeatureToggle {
+class LuigiFeatureToggles {
   constructor() {
     this.featureToggleList = writable([]);
   }
@@ -57,4 +57,4 @@ class LuigiFeatureToggle {
     return get(this.featureToggleList);
   }
 }
-export const featureToggles = new LuigiFeatureToggle();
+export const featureToggles = new LuigiFeatureToggles();

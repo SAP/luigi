@@ -6,7 +6,7 @@ import {
   RoutingHelpers,
   IframeHelpers
 } from '../utilities/helpers';
-import { LuigiConfig, LuigiI18N, LuigiFeatureToggle } from '../core-api';
+import { LuigiConfig, LuigiI18N } from '../core-api';
 import { Iframe } from './iframe';
 import { NAVIGATION_DEFAULTS } from './../utilities/luigi-config-defaults';
 import { NodeDataManagementStorage } from './node-data-management';
