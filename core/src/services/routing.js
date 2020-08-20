@@ -177,7 +177,7 @@ class RoutingClass {
         RoutingHelpers.setFeatureToggles(featureToggleProperty, path);
       } else {
         console.warn(
-          'featureToggles.queryStringParam is not defined in settings.js'
+          'featureToggles.queryStringParam is not defined in luigi settings'
         );
       }
 
