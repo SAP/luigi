@@ -170,7 +170,7 @@ In order to remove a feature toggle from the list you have to use the core api
 
 #### Unset feature toggles from the active feature toggle list through core api
 ```javascript
-  Luigi.featureToggles().setFeatureToggle('ft1');
+  Luigi.featureToggles().unsetFeatureToggle('ft1');
 ```
 
 Displaying nodes restricted to feature toggles in the top or left navigation you can define a list of feature toggles on the node.
