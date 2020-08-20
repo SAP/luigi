@@ -46,7 +46,12 @@
 </div>
 
 <script>
-  import { afterUpdate, createEventDispatcher } from 'svelte';
+  import {
+    afterUpdate,
+    createEventDispatcher,
+    onMount,
+    onDestroy
+  } from 'svelte';
   import { fade } from 'svelte/transition';
   const dispatch = createEventDispatcher();
 
@@ -135,7 +140,7 @@
     getNode(nodepath);
   });
 
-  EventListenerHelpers.addEventListener('message', async e => {
+  const onMessage = async e => {
     if ('luigi.show-loading-indicator' === e.data.msg) {
       showLoadingIndicator = true;
     }
@@ -154,9 +159,17 @@
       }
     }
 
-    if ('luigi.close-modal') {
+    if ('luigi.close-modal' === e.data.msg) {
       dispatch('close');
     }
+  };
+
+  onMount(() => {
+    EventListenerHelpers.addEventListener('message', onMessage);
+  });
+
+  onDestroy(() => {
+    EventListenerHelpers.removeEventListener('message', onMessage);
   });
 
   // [svelte-upgrade suggestion]
