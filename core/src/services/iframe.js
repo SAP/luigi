@@ -312,11 +312,14 @@ class IframeClass {
         );
 
         node.insertBefore(config.iframe, node.firstChild);
-
         if (config.builderCompatibilityMode) {
           config.iframe.addEventListener('load', () => {
             const message = ['init', JSON.stringify(componentData.context)];
             IframeHelpers.sendMessageToIframe(config.iframe, message);
+          });
+        } else {
+          config.iframe.addEventListener('load', () => {
+            config.iframe._loaded = true;
           });
         }
         // In case something goes wrong with client and showLoadingIndicator is still active
