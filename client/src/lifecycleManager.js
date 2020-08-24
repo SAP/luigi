@@ -346,22 +346,22 @@ class LifecycleManager extends LuigiClientBase {
    * @returns {Object} current context data
    * @memberof Lifecycle
    * @example
-   * const context = LuigiClient.getEventData()
-   */
-  getEventData() {
-    return this.currentContext.context;
-  }
-  /**
-   * Returns the context object. It is an alias function for getEventData().
-   * @returns {Object} current context data
-   * @memberof Lifecycle
-   * @alias getEventData
-   * @example
    * const context = LuigiClient.getContext()
    */
   getContext() {
     return this.getEventData();
   }
+
+  /**
+   * Returns the context object. It is an alias function for getContext().
+   * @returns {Object} current context data
+   * @memberof Lifecycle
+   * @deprecated
+   */
+  getEventData() {
+    return this.currentContext.context;
+  }
+
   /**
    * Returns the node parameters of the active URL.
    * Node parameters are defined like URL query parameters but with a specific prefix allowing Luigi to pass them to the micro frontend view. The default prefix is **~** and you can use it in the following way: `https://my.luigi.app/home/products?~sort=asc~page=3`.
@@ -420,7 +420,7 @@ class LifecycleManager extends LuigiClientBase {
    * @param {*} message.MY_DATA_FIELD any other message data field
    * @example
    * LuigiClient.sendCustomMessage({id: 'environment.created', production: false})
-   * LuigiClient.sendCustomMessage({id: 'environment.created', data: environmentDataObj)
+   * LuigiClient.sendCustomMessage({id: 'environment.created', data: environmentDataObj})
    * @memberof Lifecycle
    * @since 0.6.2
    */

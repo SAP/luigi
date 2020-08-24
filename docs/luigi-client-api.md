@@ -167,21 +167,9 @@ const accessToken = LuigiClient.getToken()
 
 Returns **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** current access token
 
-#### getEventData
+#### getContext
 
 Returns the context object. Typically it is not required as the [addContextUpdateListener()](#addContextUpdateListener) receives the same values.
-
-##### Examples
-
-```javascript
-const context = LuigiClient.getEventData()
-```
-
-Returns **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** current context data
-
-#### getEventData
-
-Returns the context object. It is an alias function for getEventData().
 
 ##### Examples
 
@@ -190,6 +178,17 @@ const context = LuigiClient.getContext()
 ```
 
 Returns **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** current context data
+
+#### getEventData
+
+Returns the context object. It is an alias function for getContext().
+
+Returns **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** current context data
+
+**Meta**
+
+-   **deprecated**: This is deprecated.
+
 
 #### getNodeParams
 
@@ -270,7 +269,7 @@ Sends a custom message to the Luigi Core application.
 
 ```javascript
 LuigiClient.sendCustomMessage({id: 'environment.created', production: false})
-LuigiClient.sendCustomMessage({id: 'environment.created', data: environmentDataObj)
+LuigiClient.sendCustomMessage({id: 'environment.created', data: environmentDataObj})
 ```
 
 **Meta**
