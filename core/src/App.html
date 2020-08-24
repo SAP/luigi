@@ -928,6 +928,7 @@
     EventListenerHelpers.addEventListener('message', async e => {
       const iframe = IframeHelpers.getValidMessageSource(e);
       if (!iframe) return;
+      iframe._ready = true;
 
       if ('custom' === e.data.msg) {
         const customMessagesListeners =
@@ -1641,8 +1642,6 @@
     border-bottom: #354a5f;
     border-bottom: 1px solid var(--sapShell_BorderColor, #354a5f);
   }
-
-
 
   .wcContainer {
     position: absolute;
