@@ -36,7 +36,7 @@ class UxManager extends LuigiClientBase {
   }
 
   /**
-   * Closes the modal from being visible.
+   * Closes the modal if it is displayed.
    * @memberof uxManager
    */
   closeModal() {
