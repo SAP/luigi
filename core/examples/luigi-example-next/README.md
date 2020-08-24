@@ -4,9 +4,17 @@
 
 This is the NextJS-based sample application which runs with Luigi framework.
 
+Due to the nature of NextJS's routing strategy, it is not possible to use `useHashRouting: false` in the Luigi Configuration. If you want to use path based routing, Luigi Core's index.html should be served separately.
+
 ## Getting Started
 
-First, run the development server:
+First, install dependencies
+
+```bash
+npm install
+```
+
+Second, run the development server:
 
 ```bash
 npm run dev

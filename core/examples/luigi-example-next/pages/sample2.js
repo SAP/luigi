@@ -1,5 +1,4 @@
 import { useEffect } from 'react';
-import styles from '../styles/Main.module.css';
 
 export default function Sample2() {
   useEffect(() => {
@@ -7,8 +6,15 @@ export default function Sample2() {
   }, []);
 
   return (
-    <div className={styles.layout}>
-      <h2>Hello from Sample2 micro frontend</h2>
-    </div>
+    <section className="fd-section">
+      <div className="fd-section__header">
+        <h1 className="fd-section__title">Sample 2</h1>
+      </div>
+      <div className="fd-panel">
+        Luigi ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy
+        eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam
+        voluptua.
+      </div>
+    </section>
   );
 }

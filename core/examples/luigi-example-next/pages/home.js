@@ -1,5 +1,4 @@
 import { useEffect } from 'react';
-import styles from '../styles/Main.module.css';
 
 export default function Home() {
   useEffect(() => {
@@ -7,8 +6,10 @@ export default function Home() {
   }, []);
 
   return (
-    <div className={styles.layout}>
-      <h2>Welcome to Luigi with Next.js</h2>
-    </div>
+    <section className="fd-section">
+      <div className="fd-section__header">
+        <h1 className="fd-section__title">Welcome to Luigi with Next.js</h1>
+      </div>
+    </section>
   );
 }
