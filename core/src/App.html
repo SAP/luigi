@@ -464,11 +464,7 @@
       path = Routing.concatenatePath(getSubPath(currentNode), params.link);
     }
     if (params.nodeParams && Object.keys(params.nodeParams).length) {
-      if (path.includes('?')) {
-        path += '&';
-      } else {
-        path += '?';
-      }
+      path += path.includes('?') ? '&' : '?';
       Object.entries(params.nodeParams).forEach((entry, index) => {
         path +=
           encodeURIComponent(
