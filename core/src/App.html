@@ -928,6 +928,7 @@
     EventListenerHelpers.addEventListener('message', async e => {
       const iframe = IframeHelpers.getValidMessageSource(e);
       if (!iframe) return;
+      iframe._ready = true;
 
       if ('custom' === e.data.msg) {
         const customMessagesListeners =
