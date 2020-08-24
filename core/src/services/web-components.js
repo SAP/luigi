@@ -9,11 +9,24 @@ class WebComponentSvcClass {
   }
 
   /** Creates a web component with tagname wc_id and adds it to wcItemContainer, if attached to wc_container*/
-  attachWC(wc_id, wcItemContainer, wc_container, ctx) {
+  attachWC(wc_id, wcItemContainer, wc_container, ctx, viewUrl, nodeId) {
     if(wc_container && wc_container.contains(wcItemContainer)) {
       const wc = document.createElement(wc_id);
-      wc.context = ctx;
-      wc.luigi = window.Luigi;
+      if(nodeId) {
+        wc.setAttribute('nodeId', nodeId);
+      }
+      const luigiObj = Object.assign({
+        publishEvent : (ev) => {
+          wc_container.eventBus.onPublishEvent(ev, nodeId, wc_id);
+        }
+      }, window.Luigi);
+      if(wc.__postProcess) {
+        const url = new URL('./', viewUrl);
+        wc.__postProcess(ctx, luigiObj, url.origin + url.pathname);
+      } else {
+        wc.context = ctx;
+        wc.luigi = luigiObj;
+      }
       wcItemContainer.appendChild(wc);
     }
   }
@@ -51,22 +64,22 @@ class WebComponentSvcClass {
   /** Adds a web component defined by viewUrl to the wc_container and sets the node context.
    * If the web component is not defined yet, it gets imported.
    */
-  renderWebComponent(viewUrl, wc_container, context) {
+  renderWebComponent(viewUrl, wc_container, context, nodeId) {
     const wc_id = this.generateWCId(viewUrl);
     const wcItemCnt = document.createElement('div');
     wc_container.appendChild(wcItemCnt);
 
     if (window.customElements.get(wc_id)) {
-      this.attachWC(wc_id, wcItemCnt, wc_container, context);
+      this.attachWC(wc_id, wcItemCnt, wc_container, context, viewUrl, nodeId);
     } else {
       /** Custom import function, if defined */
       if(window.luigiWCFn) {
         window.luigiWCFn(viewUrl, wc_id, wcItemCnt, () => {
-          this.attachWC(wc_id, wcItemCnt, wc_container, context);
+          this.attachWC(wc_id, wcItemCnt, wc_container, context, viewUrl, nodeId);
         });
       } else {
         this.registerWCFromUrl(viewUrl, wc_id).then(() => {
-          this.attachWC(wc_id, wcItemCnt, wc_container, context);
+          this.attachWC(wc_id, wcItemCnt, wc_container, context, viewUrl, nodeId);
         });
       }
     }
@@ -76,6 +89,32 @@ class WebComponentSvcClass {
     const containerClass = '__lui_grid_' + new Date().getTime();
     const gridCnt = document.createElement('div');
     gridCnt.classList.add(containerClass);
+    let mediaQueries = '';
+
+    if(navNode.grid.layouts) {
+      navNode.grid.layouts.forEach(el => {
+        if(el.minWidth || el.maxWidth) {
+          let mq = '@media only screen ';
+          if(el.minWidth) {
+            mq += `and (min-width: ${el.minWidth}px)`
+          }
+          if(el.maxWidth) {
+            mq += `and (max-width: ${el.maxWidth}px)`
+          }
+
+          mq += `{
+            .${containerClass} {
+              grid-template-columns: ${el.columns || 'auto'};
+              grid-template-rows: ${el.rows || 'auto'};
+              grid-gap: ${el.gap || '0'};
+            }
+          }
+          `;
+          mediaQueries += mq;
+        }
+      });
+    }
+
     gridCnt.innerHTML = /*html*/`
         <style scoped>
           .${containerClass} {
@@ -83,16 +122,55 @@ class WebComponentSvcClass {
             grid-template-columns: ${navNode.grid.columns || 'auto'};
             grid-template-rows: ${navNode.grid.rows || 'auto'};
             grid-gap: ${navNode.grid.gap || '0'};
+            min-height: ${navNode.grid.minHeight || 'auto'};
           }
+          ${mediaQueries}
         </style>
     `;
-    navNode.grid.children.forEach(wc=>{
+    const ebListeners = {};
+    gridCnt.eventBus = {
+      listeners: ebListeners,
+      onPublishEvent: (event, srcNodeId, wcId) => {
+        //console.log(wcId, ':', srcNodeId, "has published", event);
+        const listeners = ebListeners[srcNodeId + '.' + event.type];
+        //console.log('Searching for ', srcNodeId + '.' + event.type, 'in', ebListeners);
+        if(listeners) {
+          console.log("found listeners");
+          listeners.forEach(listenerInfo => {
+            const target = gridCnt.querySelector('[nodeId=' + listenerInfo.wcElementId + ']');
+            target.dispatchEvent(new CustomEvent(listenerInfo.action,
+              {
+                detail: listenerInfo.converter ? listenerInfo.converter(event.detail) : event.detail
+              }));
+          });
+        }
+      }
+    };
+    navNode.grid.children.forEach((wc, index)=>{
       const ctx = {...context, ...wc.context};
       const gridItemCnt = document.createElement('div');
+      gridItemCnt.eventBus = gridCnt.eventBus;
       const grid = wc.grid || {};
       gridItemCnt.setAttribute('style', `grid-row: ${grid.row || 'auto'}; grid-column: ${grid.column || 'auto'}`);
       gridCnt.appendChild(gridItemCnt);
-      WebComponentService.renderWebComponent(wc.viewUrl, gridItemCnt, ctx);
+      const nodeId = wc.id ? wc.id : ('gen_' + index);
+      WebComponentService.renderWebComponent(wc.viewUrl, gridItemCnt, ctx, nodeId);
+      if(wc.eventListeners) {
+        wc.eventListeners.forEach(el => {
+          const evID = el.source + '.' + el.name;
+          const listenerList = ebListeners[evID];
+          const listenerInfo = {
+            wcElementId: nodeId,
+            action: el.action,
+            converter: el.dataConverter
+          };
+          if(listenerList) {
+            listenerList.push(listenerInfo);
+          } else {
+            ebListeners[evID] = [listenerInfo];
+          }
+        });
+      }
     });
     wc_container.appendChild(gridCnt);
   }
