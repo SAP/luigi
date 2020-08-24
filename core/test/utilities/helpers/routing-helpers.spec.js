@@ -522,12 +522,7 @@ describe('Routing-helpers', () => {
       sinon.assert.calledWith(LuigiFeatureToggles.setFeatureToggle, 'test2');
     });
     it("setFeatureToggle won't be called with wrong queryParam name", () => {
-      RoutingHelpers.setFeatureToggles('ftt', mockPath);
-      sinon.assert.notCalled(LuigiFeatureToggles.setFeatureToggle);
-    });
-    it("setFeatureToggle won't be called if no ft is part of the url", () => {
-      mockPath = '/projects/pr1/settings';
-      RoutingHelpers.setFeatureToggles('ftt', mockPath);
+      RoutingHelpers.setFeatureToggles('fft', mockPath);
       sinon.assert.notCalled(LuigiFeatureToggles.setFeatureToggle);
     });
   });

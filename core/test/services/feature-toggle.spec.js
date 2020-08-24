@@ -5,17 +5,23 @@ const assert = chai.assert;
 describe('Feature Toggle', () => {
   it('Set and unset feature toggle to list', async () => {
     //given
-    let featureToggleList = LuigiFeatureToggles.getActiveFeatureToggleList();
-    assert.equal(featureToggleList, 0);
+
+    assert.equal(LuigiFeatureToggles.getActiveFeatureToggleList(), 0);
     LuigiFeatureToggles.setFeatureToggle('test');
-    assert.equal(featureToggleList[0], 'test');
+    assert.equal(LuigiFeatureToggles.getActiveFeatureToggleList(), 'test');
     LuigiFeatureToggles.unsetFeatureToggle('test');
 
-    LuigiFeatureToggles.setFeatureToggle('test');
     LuigiFeatureToggles.setFeatureToggle('test2');
-    assert.equal(featureToggleList[0], 'test');
-    assert.equal(featureToggleList[1], 'test2');
+    LuigiFeatureToggles.setFeatureToggle('test');
+
+    assert.deepEqual(LuigiFeatureToggles.getActiveFeatureToggleList(), [
+      'test2',
+      'test'
+    ]);
+
     LuigiFeatureToggles.unsetFeatureToggle('test');
-    assert.equal(featureToggleList[0], ['test2']);
+    assert.deepEqual(LuigiFeatureToggles.getActiveFeatureToggleList(), [
+      'test2'
+    ]);
   });
 });

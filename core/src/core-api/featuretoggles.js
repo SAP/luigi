@@ -18,10 +18,10 @@ class LuigiFeatureToggles {
       if (!get(this.featureToggleList).includes(featureToggleName)) {
         get(this.featureToggleList).push(featureToggleName);
       } else {
-        console.log('Feature toggle name already exists');
+        console.warn('Feature toggle name already exists');
       }
     } else {
-      console.log('Feature toggle name is empty or not a type of string');
+      console.warn('Feature toggle name is empty or not a type of string');
     }
   }
 
@@ -39,10 +39,10 @@ class LuigiFeatureToggles {
           get(this.featureToggleList).splice(index, 1);
         }
       } else {
-        console.log('Feature toggle name is not in the list.');
+        console.warn('Feature toggle name is not in the list.');
       }
     } else {
-      console.log('Feature toggle name is empty or not a type of string');
+      console.warn('Feature toggle name is empty or not a type of string');
     }
   }
 
@@ -54,7 +54,7 @@ class LuigiFeatureToggles {
    * @example Luigi.featureToggles().getActiveFeatureToggleList();
    */
   getActiveFeatureToggleList() {
-    return get(this.featureToggleList);
+    return [...get(this.featureToggleList)];
   }
 }
 export const featureToggles = new LuigiFeatureToggles();
