@@ -31,19 +31,19 @@ class PatchLuigiPlugin {
   }
   apply(compiler) {
     if (compiler.hooks) {
-      compiler.hooks.afterEmit.tap('Luigi Patch babel + terser', () => {
-        console.log('\x1b[33mWebpack [' + new Date().toLocaleTimeString() +']: ', '\x1b[0m', 'Post-processing babel and terser...');
+      compiler.hooks.afterEmit.tap('Luigi Patch dyn_import', () => {
         execSync(
-            [
-              'babel public/luigi.js --out-file public/luigi.babel.js --presets=@babel/preset-env --root . --root-mode upward --source-maps inline',
-              `terser --compress --mangle --output public/luigi.js --source-map "content=inline" -- public/luigi.babel.js`,
-              `replace '__luigi_dyn_import' 'import' public/luigi.js`,
-              'echo "'+ (new Date()) + '" > dev-tools/latest_build.log'
-            ].join(' && '),
-            PatchLuigiPlugin.execHandler
+          [
+            `replace '__luigi_dyn_import' 'import' public/luigi.js`,
+            'echo "' + new Date() + '" > dev-tools/latest_build.log'
+          ].join(' && '),
+          PatchLuigiPlugin.execHandler
         );
-        require('fs').unlinkSync('public/luigi.babel.js');
-        console.log('\x1b[33mWebpack [' + new Date().toLocaleTimeString() +']: ', '\x1b[0m', 'Post-processing finished.');
+        console.log(
+          '\x1b[33mWebpack [' + new Date().toLocaleTimeString() + ']: ',
+          '\x1b[0m',
+          'Post-processing finished.'
+        );
       });
     }
   }
