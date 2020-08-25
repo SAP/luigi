@@ -366,7 +366,7 @@ class LifecycleManager extends LuigiClientBase {
    * @returns {Array} a list of feature toggle names
    * @memberof Lifecycle
    * @since NEXTRELEASE
-   * * @example
+   * @example
    * const activeFeatureToggleList = LuigiClient.getActiveFeatureToggles()
    */
   getActiveFeatureToggles() {

@@ -194,13 +194,17 @@ Returns **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/G
 
 Returns a list of active feature toggles
 
+##### Examples
+
+```javascript
+const activeFeatureToggleList = LuigiClient.getActiveFeatureToggles()
+```
+
 Returns **[Array](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array)** a list of feature toggle names
 
 **Meta**
 
 -   **since**: NEXTRELEASE
-    \* @example
-    const activeFeatureToggleList = LuigiClient.getActiveFeatureToggles()
 
 #### getNodeParams
 
