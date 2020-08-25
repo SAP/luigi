@@ -362,6 +362,16 @@ class LifecycleManager extends LuigiClientBase {
     return this.currentContext.context;
   }
 
+  /**Returns a list of active feature toggles
+   * @returns {Array} a list of feature toggle names
+   * @memberof Lifecycle
+   * @since NEXTRELEASE
+   * @example
+   * const activeFeatureToggleList = LuigiClient.getActiveFeatureToggles()
+   */
+  getActiveFeatureToggles() {
+    return this.currentContext.internal.activeFeatureToggleList;
+  }
   /**
    * Returns the node parameters of the active URL.
    * Node parameters are defined like URL query parameters but with a specific prefix allowing Luigi to pass them to the micro frontend view. The default prefix is **~** and you can use it in the following way: `https://my.luigi.app/home/products?~sort=asc~page=3`.

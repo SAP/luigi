@@ -305,6 +305,21 @@ settings: {
   - **errorFn** used to handle different scenarios other than redirection.
   - **since**: v1.0.1
 
+### visibleForFeatureToggles
+- **type**: array
+- **description**: defines a list of feature toggles this node is restricted to. If all feature toggles in this list are active, the node will be visible in the top or left navigation. It is also possible to negate the feature toggle by adding a `!` in front of the toggle name. Then, the node is always visible except for the feature toggle defined with an exclamation mark.
+- **example**:
+    ```javascript
+    {
+      pathSegment: 'settings',
+      label: 'Settings',
+      viewUrl: '/sampleapp.html#/settings',
+      navigationContext: 'settings',
+      visibleForFeatureToggles:['ft1', '!ft2']
+    }
+    ```
+- **since**: NEXTRELEASE
+
 ## Context switcher
 
 The context switcher is a drop-down list available in the top navigation bar. It allows you to switch between a curated list of navigation elements such as Environments. To do so, add the **contextSwitcher** parameter to the **navigation** object using the following optional parameters:
