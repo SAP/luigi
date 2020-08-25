@@ -55,18 +55,14 @@ class NavigationHelpersClass {
       nodeToCheckPermissionFor.visibleForFeatureToggles
     ) {
       let activeFeatureToggles = LuigiFeatureToggles.getActiveFeatureToggleList();
-      if (activeFeatureToggles.length === 0) {
-        return false;
-      } else {
-        for (let ft of nodeToCheckPermissionFor.visibleForFeatureToggles) {
-          if (ft.startsWith('!')) {
-            if (activeFeatureToggles.includes(ft.slice(1))) {
-              return false;
-            }
-          } else {
-            if (!activeFeatureToggles.includes(ft)) {
-              return false;
-            }
+      for (let ft of nodeToCheckPermissionFor.visibleForFeatureToggles) {
+        if (ft.startsWith('!')) {
+          if (activeFeatureToggles.includes(ft.slice(1))) {
+            return false;
+          }
+        } else {
+          if (!activeFeatureToggles.includes(ft)) {
+            return false;
           }
         }
       }

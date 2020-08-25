@@ -186,7 +186,7 @@ Luigi allows you to implement and configure feature toggles. They can be used to
   }
   ```
   It is also possible to negate the visibility of a node by adding an exclamation mark at the beginning of the feature toggle name.
-  In this example, the node will not be visible if `ft1` is set as an active feature toggle, but if another feature toggle like `ft2` is active, the node will be displayed:
+  In this example, the node is always visible except if `ft1` is set as an active feature toggle:
   ```javascript
   {
       category: { label: 'Feature Toggle: Settings 2', icon: 'action-settings' },

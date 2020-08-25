@@ -175,10 +175,6 @@ class RoutingClass {
         : undefined;
       if (featureToggleProperty) {
         RoutingHelpers.setFeatureToggles(featureToggleProperty, path);
-      } else {
-        console.warn(
-          'featureToggles.queryStringParam is not defined in luigi settings'
-        );
       }
 
       const previousCompData = component.get();
