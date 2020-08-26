@@ -14,7 +14,7 @@ export default function Sample2() {
     <>
       <Head>
         <link
-          href="//unpkg.com/fundamental-styles@latest/dist/fundamental-styles.css"
+          href="//unpkg.com/fundamental-styles@0.11.0/dist/fundamental-styles.css"
           rel="stylesheet"
         />
       </Head>
