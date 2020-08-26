@@ -10,16 +10,16 @@ import { LuigiConfig, LuigiI18N } from '../core-api';
 import { Iframe } from './iframe';
 import { NAVIGATION_DEFAULTS } from './../utilities/luigi-config-defaults';
 import { NodeDataManagementStorage } from './node-data-management';
-import { WebComponentService } from './web-components'
+import { WebComponentService } from './web-components';
 
 class RoutingClass {
   getNodePath(node, params) {
     return node
       ? RoutingHelpers.buildRoute(
-        node,
-        node.pathSegment ? '/' + node.pathSegment : '',
-        params
-      )
+          node,
+          node.pathSegment ? '/' + node.pathSegment : '',
+          params
+        )
       : '';
   }
 
@@ -132,9 +132,9 @@ class RoutingClass {
     return LuigiConfig.getConfigValue('routing.useHashRouting')
       ? window.location.hash.replace('#', '') // TODO: GenericHelpers.getPathWithoutHash(window.location.hash) fails in ContextSwitcher
       : window.location.search
-        ? GenericHelpers.trimLeadingSlash(window.location.pathname) +
+      ? GenericHelpers.trimLeadingSlash(window.location.pathname) +
         window.location.search
-        : GenericHelpers.trimLeadingSlash(window.location.pathname);
+      : GenericHelpers.trimLeadingSlash(window.location.pathname);
   }
 
   async handleRouteChange(path, component, iframeElement, config) {
@@ -168,9 +168,17 @@ class RoutingClass {
         return;
       }
 
+      const featureToggleProperty = LuigiConfig.getConfigValue(
+        'settings.featureToggles.queryStringParam'
+      )
+        ? LuigiConfig.getConfigValue('settings.featureToggles.queryStringParam')
+        : undefined;
+      if (featureToggleProperty) {
+        RoutingHelpers.setFeatureToggles(featureToggleProperty, path);
+      }
+
       const previousCompData = component.get();
       this.checkInvalidateCache(previousCompData, path);
-
       const pathUrlRaw =
         path && path.length ? GenericHelpers.getPathWithoutHash(path) : '';
       const { nodeObject, pathData } = await Navigation.extractDataFromPath(
@@ -201,8 +209,8 @@ class RoutingClass {
             this.showPageNotFoundError(
               component,
               GenericHelpers.trimTrailingSlash(pathData.matchedPath) +
-              '/' +
-              defaultChildNode,
+                '/' +
+                defaultChildNode,
               pathUrlRaw,
               true
             );
@@ -293,10 +301,10 @@ class RoutingClass {
         Object.assign({}, newNodeData, {
           previousNodeValues: previousCompData
             ? {
-              viewUrl: previousCompData.viewUrl,
-              isolateView: previousCompData.isolateView,
-              viewGroup: previousCompData.viewGroup
-            }
+                viewUrl: previousCompData.viewUrl,
+                isolateView: previousCompData.isolateView,
+                viewGroup: previousCompData.viewGroup
+              }
             : {}
         })
       );
@@ -322,11 +330,17 @@ class RoutingClass {
           Navigation.onNodeChange(previousNode, currentNode);
         }
       }
-      if(nodeObject.webcomponent) {
+      if (nodeObject.webcomponent) {
         if (iContainer) {
           iContainer.classList.add('lui-webComponent');
         }
-        this.navigateWebComponent(config, component, iframeElement, nodeObject, iContainer);
+        this.navigateWebComponent(
+          config,
+          component,
+          iframeElement,
+          nodeObject,
+          iContainer
+        );
       } else {
         if (iContainer) {
           iContainer.classList.remove('lui-webComponent');
@@ -480,7 +494,6 @@ class RoutingClass {
       .focus();
   }
 
-
   navigateWebComponent(config, component, node, navNode, iframeContainer) {
     const componentData = component.get();
     const wc_container = document.querySelector('.wcContainer');
@@ -489,7 +502,11 @@ class RoutingClass {
       wc_container.lastChild.remove();
     }
 
-    WebComponentService.renderWebComponent(componentData.viewUrl, wc_container, componentData.context);
+    WebComponentService.renderWebComponent(
+      componentData.viewUrl,
+      wc_container,
+      componentData.context
+    );
   }
 }
 

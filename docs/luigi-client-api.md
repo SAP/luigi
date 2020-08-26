@@ -190,6 +190,22 @@ Returns **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/G
 -   **deprecated**: This is deprecated.
 
 
+#### getActiveFeatureToggles
+
+Returns a list of active feature toggles
+
+##### Examples
+
+```javascript
+const activeFeatureToggleList = LuigiClient.getActiveFeatureToggles()
+```
+
+Returns **[Array](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array)** a list of feature toggle names
+
+**Meta**
+
+-   **since**: NEXTRELEASE
+
 #### getNodeParams
 
 Returns the node parameters of the active URL.

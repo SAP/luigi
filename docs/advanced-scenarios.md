@@ -152,4 +152,57 @@ Google's `id_token` contains basic identity data like name and user ID, which al
   },
 ```
 
+### Use Feature Toggles in Luigi
+There are two possibilities to add feature toggles to the active feature toggles list. On the one hand you can use the core api and on the other hand it is possible to add a feature toggle through url parameters.
+
+#### Overview 
+Luigi allows you to implement and configure feature toggles. They can be used to organize and compartmentalize your code. 
+
+#### Usage
+* To **set** feature toggles, you have two possibilities:
+   1. Set feature toggles to the active feature toggle list through [Luigi Core API](luigi-core-api.md#featuretoggles):
+  ```javascript
+    Luigi.featureToggles().setFeatureToggle('ft1');
+  ```
+  2. Set feature toggles to the active feature toggle list via URL parameters:
+  ```
+  http://localhost:4200/projects/pr1?ft=ft1,ft2
+  ```
+* To **unset** feature toggles, you have to use the Core API:
+  ```javascript
+    Luigi.featureToggles().unsetFeatureToggle('ft1');
+  ```
+* To **restrict node visiblity with feature toggles**:
+  You can define a list of feature toggles for a particular top or left navigation node. Then, you can use the [visibleForFeatureToggles](navigation-parameters-reference.md#visibleForFeatureToggles) parameter in order to display the node for certain feature toggles.
+  For example, this node will be visible if `ft1` is added to the active feature toggle list:
+  ```javascript
+  {
+      category: { label: 'Feature Toggle: Settings 2', icon: 'action-settings' },
+      pathSegment: 'settings_ft',
+      label: 'Project Settings 2',
+      viewUrl: '/sampleapp.html#/projects/' + projectId + '/settings',
+      icon: 'settings',
+      visibleForFeatureToggles: ['ft1']
+  }
+  ```
+  It is also possible to negate the visibility of a node by adding an exclamation mark at the beginning of the feature toggle name.
+  In this example, the node is always visible except if `ft1` is set as an active feature toggle:
+  ```javascript
+  {
+      category: { label: 'Feature Toggle: Settings 2', icon: 'action-settings' },
+      pathSegment: 'settings_ft',
+      label: 'Project Settings 2',
+      viewUrl: '/sampleapp.html#/projects/' + projectId + '/settings',
+      icon: 'settings',
+      visibleForFeatureToggles: ['!ft1']
+  }
+  ```
+* To **use feature toggles in a micro frontend**:
+  It is possible to restrict content in a micro frontend using feature toggles. The active feature toggle list is available in the Luigi [Client API](luigi-client-api.md#getActiveFeatureToggles).
+  ```javascript
+    if (LuigiClient.getActiveFeatureToggles().includes('ft1')) {
+      //display content
+    }
+  ``` 
+
 <!-- accordion:end -->

@@ -658,4 +658,30 @@ describe('Navigation', () => {
       });
     });
   });
+  describe('Feature toggles', () => {
+    it('Node visibility with feature toggles via url', () => {
+      cy.window().then(win => {
+        win.Luigi.navigation().navigate('/projects/pr1/settings_ft');
+        cy.expectPathToBe('/projects/pr1');
+      });
+      cy.window().then(win => {
+        win.Luigi.navigation().navigate('/projects/pr1/settings_ft?ft=ft1');
+        cy.expectPathToBe('/projects/pr1/settings_ft');
+      });
+      cy.get('.fd-app__sidebar').should('contain', 'Project Settings 2');
+      cy.get('.fd-app__sidebar').should('not.contain', 'Project Settings 3');
+      cy.getIframeBody().then($iframeBody => {
+        cy.wrap($iframeBody).should(
+          'contain',
+          'This is a feature toggle test and only visible if ft1 is active.'
+        );
+      });
+    });
+
+    it('Negate featuretoggle for node visibility', () => {
+      cy.visit('/projects/pr1/settings_ft3?ft=ft2');
+      cy.get('.fd-app__sidebar').should('not.contain', 'Project Settings 2');
+      cy.get('.fd-app__sidebar').should('contain', 'Project Settings 3');
+    });
+  });
 });
