@@ -3,7 +3,7 @@ const chai = require('chai');
 const expect = chai.expect;
 const assert = chai.assert;
 import { GenericHelpers, RoutingHelpers } from '../../../src/utilities/helpers';
-import { LuigiConfig } from '../../../src/core-api';
+import { LuigiConfig, LuigiFeatureToggles } from '../../../src/core-api';
 import { Routing } from '../../../src/services/routing';
 
 describe('Routing-helpers', () => {
@@ -501,6 +501,29 @@ describe('Routing-helpers', () => {
         RoutingHelpers.findViewGroup(noViewGroupInNode),
         undefined
       );
+    });
+  });
+  describe('set feature toggle from url', () => {
+    beforeEach(() => {
+      sinon.stub(LuigiFeatureToggles, 'setFeatureToggle');
+    });
+    afterEach(() => {
+      sinon.restore();
+    });
+    let mockPath = '/projects/pr1/settings?ft=test';
+    it('setFeatureToggle will be called', () => {
+      RoutingHelpers.setFeatureToggles('ft', mockPath);
+      sinon.assert.calledWith(LuigiFeatureToggles.setFeatureToggle, 'test');
+    });
+    it('setFeatureToggle will be called with two featureToggles', () => {
+      mockPath = '/projects/pr1/settings?ft=test,test2';
+      RoutingHelpers.setFeatureToggles('ft', mockPath);
+      sinon.assert.calledWith(LuigiFeatureToggles.setFeatureToggle, 'test');
+      sinon.assert.calledWith(LuigiFeatureToggles.setFeatureToggle, 'test2');
+    });
+    it("setFeatureToggle won't be called with wrong queryParam name", () => {
+      RoutingHelpers.setFeatureToggles('fft', mockPath);
+      sinon.assert.notCalled(LuigiFeatureToggles.setFeatureToggle);
     });
   });
 });
