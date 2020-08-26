@@ -9,6 +9,13 @@ class EventListenerHelpersClass {
     window.addEventListener(type, listenerFn);
   }
 
+  removeEventListener(type, listenerFn) {
+    this.listeners = this.listeners.filter(
+      l => !(l.type === type && l.listenerFn === listenerFn)
+    );
+    window.removeEventListener(type, listenerFn);
+  }
+
   removeAllEventListeners() {
     this.listeners.forEach(l => {
       window.removeEventListener(l.type, l.listenerFn);

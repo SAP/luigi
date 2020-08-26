@@ -72,7 +72,7 @@ anonymousAccess: true // always show nodes
 
 ## OpenID Connect configuration
 
-This code snippet demonstrates how to configure authorization using OpenID Connect in Luigi. Note that you must install the [OpenID Plugin](https://github.com/SAP/luigi/tree/master/plugins/auth/public/auth-oidc) first.
+This code snippet demonstrates how to configure authorization using OpenID Connect in Luigi. Note that you must install the [OpenID Plugin](auth-oidc.md) first.
 
 ```javascript
 import oidcProvider from '@luigi-project/plugin-auth-oidc';
@@ -120,7 +120,7 @@ Use these parameters to set a logout page.
 
 ## OAuth2 Implicit Grant configuration
 
-This code snippet demonstrates how to configure authorization using OAuth2 Implicit Grant in Luigi.
+This code snippet demonstrates how to configure authorization using OAuth2 Implicit Grant in Luigi. Note that you must install the [OAuth2 Plugin](auth-oauth2.md) first.
 
 ```javascript
 import oAuth2ImplicitGrant from '@luigi-project/plugin-auth-oauth2';

@@ -39,6 +39,12 @@ Registers a listener called with the context object and the Luigi Core domain as
 
 -   `initFn` **[Lifecycle~initListenerCallback](#lifecycleinitlistenercallback)** the function that is called once Luigi is initialized, receives current context and origin as parameters
 
+##### Examples
+
+```javascript
+const initListenerId = LuigiClient.addInitListener((context) => storeContextToMF(context))
+```
+
 #### removeInitListener
 
 Removes an init listener.
@@ -46,6 +52,12 @@ Removes an init listener.
 ##### Parameters
 
 -   `id` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** the id that was returned by the `addInitListener` function.
+
+##### Examples
+
+```javascript
+LuigiClient.removeInitListener(initListenerId)
+```
 
 #### addContextUpdateListener
 
@@ -55,6 +67,12 @@ Registers a listener called with the context object when the URL is changed. For
 
 -   `contextUpdatedFn` **[function](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Statements/function)** the listener function called each time Luigi context changes
 
+##### Examples
+
+```javascript
+const updateListenerId = LuigiClient.addContextUpdateListener((context) => storeContextToMF(context))
+```
+
 #### removeContextUpdateListener
 
 Removes a context update listener.
@@ -62,6 +80,12 @@ Removes a context update listener.
 ##### Parameters
 
 -   `id` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** the id that was returned by the `addContextUpdateListener` function
+
+##### Examples
+
+```javascript
+LuigiClient.removeContextUpdateListener(updateListenerId)
+```
 
 #### addInactiveListener
 
@@ -72,10 +96,18 @@ Gets called when:
 -   navigating from or to a **viewGroup**
 
 Does not get called when navigating normally, or when `openAsModal` or `openAsSplitView` are used.
+Once the micro frontend turns back into active state, the `addContextUpdateListener` receives an updated context.
 
 ##### Parameters
 
 -   `inactiveFn` **[function](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Statements/function)** the listener function called each time a micro frontend turns into an inactive state
+
+##### Examples
+
+```javascript
+LuigiClient.addInactiveListener(() => mfIsInactive = true)
+const inactiveListenerId = LuigiClient.addInactiveListener(() => mfIsInactive = true)
+```
 
 #### removeInactiveListener
 
@@ -85,6 +117,12 @@ Removes a listener for inactive micro frontends.
 
 -   `id` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** the id that was returned by the `addInactiveListener` function
 
+##### Examples
+
+```javascript
+LuigiClient.removeInactiveListener(inactiveListenerId)
+```
+
 #### addCustomMessageListener
 
 Registers a listener called when the micro frontend receives a custom message.
@@ -93,6 +131,12 @@ Registers a listener called when the micro frontend receives a custom message.
 
 -   `customMessageId` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** the custom message id
 -   `customMessageListener` **[Lifecycle~customMessageListenerCallback](#lifecyclecustommessagelistenercallback)** the function that is called when the micro frontend receives the corresponding event
+
+##### Examples
+
+```javascript
+const customMsgId = LuigiClient.addCustomMessageListener('myapp.project-updated', (data) => doSomething(data))
+```
 
 **Meta**
 
@@ -109,24 +153,58 @@ Removes a custom message listener.
 **Meta**
 
 -   **since**: 0.6.2
+    LuigiClient.removeCustomMessageListener(customMsgId)
 
 #### getToken
 
 Returns the currently valid access token.
 
+##### Examples
+
+```javascript
+const accessToken = LuigiClient.getToken()
+```
+
 Returns **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** current access token
-
-#### getEventData
-
-Returns the context object. Typically it is not required as the [addContextUpdateListener()](#addContextUpdateListener) receives the same values.
-
-Returns **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** current context data
 
 #### getContext
 
-Returns the context object. It is an alias function for getEventData().
+Returns the context object. Typically it is not required as the [addContextUpdateListener()](#addContextUpdateListener) receives the same values.
+
+##### Examples
+
+```javascript
+const context = LuigiClient.getContext()
+```
 
 Returns **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** current context data
+
+#### getEventData
+
+Returns the context object. It is an alias function for getContext().
+
+Returns **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** current context data
+
+**Meta**
+
+-   **deprecated**: This is deprecated.
+
+
+#### getActiveFeatureToggles
+
+Returns a list of active feature toggles
+
+##### Examples
+
+```javascript
+const activeFeatureToggleList = LuigiClient.getActiveFeatureToggles()
+```
+
+Returns **[Array](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array)** a list of feature toggle names
+
+**Meta**
+
+-   **since**: NEXTRELEASE
 
 #### getNodeParams
 
@@ -136,6 +214,12 @@ Node parameters are defined like URL query parameters but with a specific prefix
 <!-- add-attribute:class:warning -->
 
 > **NOTE:** some special characters (`<`, `>`, `"`, `'`, `/`) in node parameters are HTML-encoded.
+
+##### Examples
+
+```javascript
+const nodeParams = LuigiClient.getNodeParams()
+```
 
 Returns **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** node parameters, where the object property name is the node parameter name without the prefix, and its value is the value of the node parameter. For example `{sort: 'asc', page: 3}`
 
@@ -149,21 +233,39 @@ All path parameters in the current navigation path (as defined by the active URL
 
 > **NOTE:** some special characters (`<`, `>`, `"`, `'`, `/`) in path parameters are HTML-encoded.
 
+##### Examples
+
+```javascript
+const pathParams = LuigiClient.getPathParams()
+```
+
 Returns **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** path parameters, where the object property name is the path parameter name without the prefix, and its value is the actual value of the path parameter. For example `{productId: 1234, ...}`
 
 #### getClientPermissions
 
 Returns the current client permissions as specified in the navigation node or an empty object. For details, see [Node parameters](navigation-parameters-reference.md).
 
+##### Examples
+
+```javascript
+const permissions = LuigiClient.getClientPermissions()
+```
+
 Returns **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** client permissions as specified in the navigation node
 
 #### setTargetOrigin
 
-When the micro frontend is not embedded in the Luigi Core application and there is no init handshake you can set the target origin that is used in postMessage function calls by Luigi Client.
+When the micro frontend is not embedded in the Luigi Core application and there is no init handshake you can set the target origin that is used in postMessage function calls by Luigi Client. Typically used only in custom micro-frontend frameworks that are compatible with LuigiClient API.
 
 ##### Parameters
 
 -   `origin` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** target origin
+
+##### Examples
+
+```javascript
+LuigiClient.setTargetOrigin(window.location.origin)
+```
 
 **Meta**
 
@@ -182,8 +284,8 @@ Sends a custom message to the Luigi Core application.
 ##### Examples
 
 ```javascript
-import LuigiClient from '@luigi-project/client';
 LuigiClient.sendCustomMessage({id: 'environment.created', production: false})
+LuigiClient.sendCustomMessage({id: 'environment.created', data: environmentDataObj})
 ```
 
 **Meta**
@@ -619,6 +721,10 @@ Adds a backdrop with a loading indicator for the micro frontend frame. This over
 #### hideLoadingIndicator
 
 Removes the loading indicator. Use it after calling [showLoadingIndicator()](#showLoadingIndicator) or to hide the indicator when you use the [loadingIndicator.hideAutomatically: false](navigation-parameters-reference.md#node-parameters) node configuration.
+
+#### closeCurrentModal
+
+Closes the currently opened micro frontend modal.
 
 #### addBackdrop
 

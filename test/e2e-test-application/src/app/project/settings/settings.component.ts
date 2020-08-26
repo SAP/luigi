@@ -9,7 +9,8 @@ import {
   linkManager,
   getNodeParams,
   NodeParams,
-  uxManager
+  uxManager,
+  getActiveFeatureToggles
 } from '@luigi-project/client';
 import { Subscription } from 'rxjs';
 
@@ -20,13 +21,16 @@ import { Subscription } from 'rxjs';
 })
 export class SettingsComponent implements OnInit {
   public linkManager = linkManager;
+  public uxManager = uxManager;
   projectId: string;
   groupId: string;
   hasBack: boolean;
+  isModal: boolean;
   nodeParams: NodeParams = null;
   callbackValue = 'default value';
   lcSubscription: Subscription;
   preservedViewCallbackContext: any;
+  private testFeatureToggleActive = false;
 
   constructor(
     private activatedRoute: ActivatedRoute,
@@ -42,8 +46,13 @@ export class SettingsComponent implements OnInit {
 
     addInitListener(init => {
       this.hasBack = linkManager().hasBack();
+      this.isModal = uxManager().isModal();
       this.nodeParams =
         Object.keys(getNodeParams()).length > 0 ? getNodeParams() : null;
+      let featureToggleList = getActiveFeatureToggles();
+      if (featureToggleList.includes('ft1')) {
+        this.testFeatureToggleActive = true;
+      }
       if (!this.cdr['destroyed']) {
         this.cdr.detectChanges();
       }

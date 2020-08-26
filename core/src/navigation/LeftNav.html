@@ -45,7 +45,7 @@
               >{$getTranslation(node.label)}</span>
               {#if node.externalLink && node.externalLink.url}
               <span
-                class="sap-icon--action sap-icon--s"
+                class="sap-icon--action"
               ></span>
               {/if}
               {#if node.badgeCounter}
@@ -89,14 +89,15 @@
                   class="fd-nested-list__title"
                 >{$getTranslation(key)}</span>
               </a>
-              <a
-                class="fd-nested-list__expand-icon"
+              <button
+                class="fd-button fd-nested-list__button"
                 href="#"
                 tabindex="-1"
+                aria-label="Expand categories"
                 aria-haspopup="true"
                 aria-expanded="{isExpanded(nodes, expandedCategories)}"
                 on:click|preventDefault="{() => setExpandedState(nodes, !isExpanded(nodes, expandedCategories), this)}"
-              ></a>
+              ></button>
             </div>
             <ul
               class="fd-nested-list fd-nested-list--text-only level-2"
@@ -116,7 +117,7 @@
                   >{$getTranslation(node.label)}</span>
                   {#if node.externalLink && node.externalLink.url}
                   <span
-                    class="sap-icon--action sap-icon--s"
+                    class="sap-icon--action"
                   ></span>
                   {/if}
                   {#if node.badgeCounter}
@@ -148,7 +149,7 @@
                       >{$getTranslation(node.label)}</span>
                       {#if node.externalLink && node.externalLink.url}
                       <span
-                        class="sap-icon--action sap-icon--s"
+                        class="sap-icon--action"
                       ></span>
                       {/if}
                       {#if node.badgeCounter}
@@ -216,7 +217,7 @@
               >{$getTranslation(node.label)}</span>
               {#if node.externalLink && node.externalLink.url}
               <span
-                class="sap-icon--action sap-icon--s"
+                class="sap-icon--action"
               ></span>
               {/if}
               {#if node.badgeCounter}
@@ -650,6 +651,12 @@
         max-height: 0.875rem;
       }
     }
+  }
+
+  //temporary fix of FD Styles 0.11.0 please review with new version
+  .lui-category {
+    border-top: var(--sapList_BorderWidth, 0.0625rem) solid
+      var(--sapList_GroupHeaderBorderColor, #d8d8d8);
   }
 
   .lui-fd-side-nav-wrapper {

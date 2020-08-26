@@ -58,7 +58,7 @@
     <h1 *ngIf="!projectId" class="fd-section__title">Global Settings</h1>
   </div>
 
-  <div class="fd-layout-panel">
+  <div class="fd-layout-panel fd-has-margin-bottom-small">
     <div class="fd-layout-panel__header">
       <div class="fd-layout-panel__head">
         <h3 class="fd-layout-panel__title">
@@ -91,5 +91,25 @@
         to go to <i>project two</i>, where you can try out hasBack functionality
       </div>
     </div>
+  </div>
+
+  <div *ngIf="isModal" class="fd-layout-panel fd-has-margin-bottom-small">
+    <div class="fd-layout-panel__header">
+      <div class="fd-layout-panel__head">
+        <h3 class="fd-layout-panel__title">
+          LuigiClient Modal
+        </h3>
+      </div>
+    </div>
+    <div class="fd-layout-panel__body">
+      <button class="fd-button" (click)="uxManager().closeCurrentModal()">
+        Close modal
+      </button>
+    </div>
+  </div>
+</section>
+<section *ngIf="testFeatureToggleActive" class="fd-section">
+  <div class="fd-layout-panel">
+    This is a feature toggle test and only visible if ft1 is active.
   </div>
 </section>

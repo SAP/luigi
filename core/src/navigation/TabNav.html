@@ -52,7 +52,7 @@
               aria-selected="{isSelectedCat(key,selectedNodeForTabNav)}"
             >
               <span class="label fd-tabs__tag">{$getTranslation(key)}</span>
-              <span class="sap-icon--dropdown sap-icon--l"></span>
+              <span class="sap-icon--dropdown luigi-icon--dropdown"></span>
             </a>
           </div>
           <div
@@ -97,7 +97,7 @@
           on:click|preventDefault="{toggleMoreBtn}"
         >
           <span class="label fd-tabs__tag">More</span>
-          <span class="sap-icon--dropdown sap-icon--l"></span>
+          <span class="sap-icon--dropdown luigi-icon--dropdown"></span>
         </a>
         <div
           class="fd-popover__body fd-popover__body--right fd-popover__body--no-arrow"
@@ -136,14 +136,15 @@
                 >
                   <span class="fd-nested-list__title">{$getTranslation(key)}</span>
                 </a>
-                <a
-                  class="fd-nested-list__expand-icon"
+                <button
+                  class="fd-button fd-nested-list__button"
                   href="#"
                   tabindex="-1"
+                  aria-label="Expand submenu"
                   aria-haspopup="true"
                   aria-expanded="{dropDownStates[key+index]}"
                   on:click|preventDefault="{() => toggleDropdownState(key+index)}"
-                ></a>
+                ></button>
               </div>
               <ul
                 class="fd-nested-list level-2"
@@ -420,7 +421,7 @@
       padding-right: 0;
 
       &.has-child {
-        .sap-icon--l {
+        .luigi-icon--dropdown {
           right: 0;
         }
       }
@@ -454,7 +455,7 @@
         .label {
           padding-right: 17px;
         }
-        .sap-icon--l {
+        .luigi-icon--dropdown {
           position: absolute;
           top: 0.4em;
           right: 14px;
