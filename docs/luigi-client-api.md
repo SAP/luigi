@@ -722,9 +722,9 @@ Adds a backdrop with a loading indicator for the micro frontend frame. This over
 
 Removes the loading indicator. Use it after calling [showLoadingIndicator()](#showLoadingIndicator) or to hide the indicator when you use the [loadingIndicator.hideAutomatically: false](navigation-parameters-reference.md#node-parameters) node configuration.
 
-#### closeModal
+#### closeCurrentModal
 
-Closes the modal if it is displayed.
+Closes the currently opened micro frontend modal.
 
 #### addBackdrop
 

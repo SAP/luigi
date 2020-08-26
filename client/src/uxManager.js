@@ -36,10 +36,10 @@ class UxManager extends LuigiClientBase {
   }
 
   /**
-   * Closes the modal if it is displayed.
+   * Closes the currently opened micro frontend modal.
    * @memberof uxManager
    */
-  closeModal() {
+  closeCurrentModal() {
     helpers.sendPostMessageToLuigiCore({ msg: 'luigi.close-modal' });
   }
 
