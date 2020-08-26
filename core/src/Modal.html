@@ -70,7 +70,7 @@
   let nodeObject;
   let pathData;
   let nodeParams;
-
+  let iframeCreated = false;
   let showLoadingIndicator = true;
 
   const prepareNodeData = async path => {
@@ -89,6 +89,9 @@
   };
 
   const getNode = async path => {
+    if (iframeCreated) {
+      return;
+    }
     if (isDataPrepared) {
       const iframe = createIframeModal(nodeObject.viewUrl, {
         context: pathData.context,
@@ -99,6 +102,7 @@
         modalIframe: iframe,
         modalIframeData: { ...pathData, nodeParams }
       });
+      iframeCreated = true;
     } else {
       await prepareNodeData(path);
     }
