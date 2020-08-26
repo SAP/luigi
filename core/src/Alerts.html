@@ -1,7 +1,4 @@
-<div
-  class="fd-shell__overlay fd-overlay fd-overlay--message-strip"
-  aria-hidden="false"
->
+<div class="fd-shell__overlay luigi-alert--overlay" aria-hidden="false">
   {#each alertQueue as al}
   <div
     class="fd-message-strip fd-message-strip--{alertTypeMap[al.settings.type]} fd-message-strip--dismissible"
@@ -108,10 +105,14 @@
 </script>
 
 <style type="text/scss">
-  .fd-overlay--message-strip {
+  .luigi-alert--overlay {
     position: absolute;
     z-index: 1100;
     flex-direction: column;
+    left: 50%;
+    -webkit-transform: translate(-50%);
+    transform: translate(-50%);
+    margin-top: 28px;
     .fd-message-strip:not(:first-child) {
       margin-top: 8px;
     }
