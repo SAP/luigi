@@ -491,6 +491,13 @@ export function getNodeParams(): NodeParams;
 export type getNodeParams = () => NodeParams;
 
 /**
+ * @returns {Object} node parameters, where the object property name is the node parameter name without the prefix, and its value is the value of the node parameter. For example `{sort: 'asc', page: 3}`
+ * @memberof Lifecycle
+ */
+export function getActiveFeatureToggles(): Array<String>;
+export type getActiveFeatureToggles = () => Array<String>;
+
+/**
  * Returns the dynamic path parameters of the active URL.
  * Path parameters are defined by navigation nodes with a dynamic **pathSegment** value starting with **:**, such as **productId**.
  * All path parameters in the current navigation path (as defined by the active URL) are returned.
