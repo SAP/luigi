@@ -93,7 +93,7 @@
     </div>
   </div>
 
-  <div class="fd-layout-panel fd-has-margin-bottom-small">
+  <div *ngIf="isModal" class="fd-layout-panel fd-has-margin-bottom-small">
     <div class="fd-layout-panel__header">
       <div class="fd-layout-panel__head">
         <h3 class="fd-layout-panel__title">
@@ -102,11 +102,9 @@
       </div>
     </div>
     <div class="fd-layout-panel__body">
-      <div *ngIf="isModal">
-        <button class="fd-button" (click)="uxManager().closeModal()">
-          Close modal
-        </button>
-      </div>
+      <button class="fd-button" (click)="uxManager().closeModal()">
+        Close modal
+      </button>
     </div>
   </div>
 </section>
