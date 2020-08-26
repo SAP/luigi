@@ -115,6 +115,24 @@ export const projectDetailNavStructure = projectId => [
     testId: 'myTestId'
   },
   {
+    category: { label: 'Feature Toggle: Settings 2', icon: 'action-settings' },
+    pathSegment: 'settings_ft',
+    label: 'Project Settings 2',
+    viewUrl: '/sampleapp.html#/projects/' + projectId + '/settings',
+    icon: 'settings',
+    testId: 'myTestId',
+    visibleForFeatureToggles: ['ft1']
+  },
+  {
+    category: { label: 'Feature Toggle: Settings 3', icon: 'action-settings' },
+    pathSegment: 'settings_ft3',
+    label: 'Project Settings 3',
+    viewUrl: '/sampleapp.html#/projects/' + projectId + '/settings',
+    icon: 'settings',
+    testId: 'myTestId',
+    visibleForFeatureToggles: ['!ft1']
+  },
+  {
     pathSegment: 'externalmf',
     label: 'External micro frontend',
     viewUrl: 'http://localhost:8090/index.html'

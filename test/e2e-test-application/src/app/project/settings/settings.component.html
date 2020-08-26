@@ -107,3 +107,8 @@
     </div>
   </div>
 </section>
+<section *ngIf="testFeatureToggleActive" class="fd-section">
+  <div class="fd-layout-panel">
+    This is a feature toggle test and only visible if ft1 is active.
+  </div>
+</section>
