@@ -251,6 +251,12 @@
   }
 </script>
 <style type="text/scss">
+  //remove default browser outline on focus for search results
+  .luigi-search-popover__body {
+    li[class*='luigi-search-result']:focus {
+      outline: none;
+    }
+  }
   .luigi-search {
     &[aria-hidden='true'] {
       visibility: hidden;
@@ -303,7 +309,7 @@
         top: 0;
         right: 0;
         background: var(--sapShellColor);
-        z-index: 1;
+        z-index: 2;
       }
       .fd-menu {
         max-width: 12rem;

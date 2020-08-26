@@ -10,7 +10,7 @@
     "@babel/polyfill": "^7.6.0",
     "@babel/preset-env": "^7.6.2",
     "@babel/register": "^7.6.2",
-    "@sap-theming/theming-base-content": "~11.1.19",
+    "@sap-theming/theming-base-content": "~11.1.21",
     "@webcomponents/webcomponentsjs": "^2.3.0",
     "acorn": "^6.4.1",
     "axios": ">=0.18.1",
@@ -23,7 +23,7 @@
     "css-loader": "^3.0.0",
     "file-loader": "^2.0.0",
     "fs-extra": "9.0.0",
-    "fundamental-styles": "~0.10.0",
+    "fundamental-styles": "^0.11.0",
     "jsdom": "15.0.0",
     "jsdom-global": "3.0.2",
     "live-server": "^1.2.1",
@@ -80,7 +80,7 @@
     },
     {
       "path": "./public-ie11/luigi-ie11.js",
-      "maxSize": "560 kB",
+      "maxSize": "565 kB",
       "compression": "none"
     },
     {

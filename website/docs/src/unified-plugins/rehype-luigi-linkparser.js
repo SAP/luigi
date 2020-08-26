@@ -28,7 +28,7 @@ export default function luigiLinkParser(options) {
       var parsed = url.parse(node.properties[prop]);
       if (
         parsed.href.startsWith(githubMaster + 'docs') && parsed.pathname && parsed.pathname.endsWith('.md') ||
-        parsed.pathname && parsed.pathname.endsWith('.md')
+        parsed.pathname && parsed.pathname.endsWith('.md') && !parsed.protocol
       ) {
         // internal link
         // sample links: https://..., file.md, should not start with /file.md or ../file.md
@@ -43,7 +43,7 @@ export default function luigiLinkParser(options) {
         }
 
         node.properties['href'] = prependForExport() + '/docs/' + newHref;
-      } else if (parsed.protocol) {
+      } else if (parsed.protocol && !parsed.pathname.endsWith('.md')) {
         // external link
         node.properties['rel'] = 'external';
         node.properties['target'] = '_blank';
@@ -51,7 +51,7 @@ export default function luigiLinkParser(options) {
         // current page anchor link
         node.properties['href'] = prependForExport() + '/docs/' + settings.shortName + parsed.hash.toLowerCase();
         node.properties['onclick'] = 'navigateInternal(event, this)';
-      } else if (parsed.pathname && (
+      } else if (parsed.pathname && !parsed.protocol && (
         parsed.pathname.startsWith('../') || parsed.pathname.startsWith('/')
       )) {
         // internal absolute link, probably to some raw file
@@ -72,6 +72,7 @@ export default function luigiLinkParser(options) {
         console.log(parsed);
         console.log('========= Warning saved to debug.log ============');
         log(parsed.href + ' on ' + JSON.stringify(node) + '\n');
+        node.properties['href'] = 'javascript:void(0)';
       }
       // node.properties[prop] = fn(parsed)
       // add logic here
