@@ -163,11 +163,11 @@
         if (childNodes[0].getAttribute('aria-selected') === 'true') {
           if (direction === 40) {
             nodeSibling =
-              nextSibling != null ? nextSibling : renderedSearchResultItems[0];
+              nextSibling !== null ? nextSibling : renderedSearchResultItems[0];
           }
           if (direction === 38) {
             nodeSibling =
-              previousSibling != null
+              previousSibling !== null
                 ? previousSibling
                 : renderedSearchResultItems[
                     renderedSearchResultItems.length - 1
