@@ -296,6 +296,19 @@
               href="javascript:void(0)"
               class="fd-link"
               (click)="
+                linkManager().navigate('/projects/pr1/settings_ft?ft=ft1')
+              "
+              >FeatureToggle</a
+            >
+            <app-code-snippet
+              data="linkManager().navigate('/projects/pr1/settings_ft?ft=ft1')"
+            ></app-code-snippet>
+          </li>
+          <li class="fd-list__item">
+            <a
+              href="javascript:void(0)"
+              class="fd-link"
+              (click)="
                 linkManager()
                   .fromClosestContext()
                   .navigate('/users/groups/stakeholders')
@@ -356,6 +369,24 @@
             >
             <app-code-snippet
               data="linkManager().fromClosestContext().withParams({foo: 'bar'}).navigate('settings')"
+            >
+            </app-code-snippet>
+          </li>
+          <li class="fd-list__item">
+            <a
+              href="javascript:void(0)"
+              class="fd-link"
+              (click)="
+                linkManager()
+                  .fromClosestContext()
+                  .withParams({ feature: 'toggle' })
+                  .navigate('settings_ft?ft=ft1')
+              "
+            >
+              project to settings with params (foo=bar) and FeatureToggle</a
+            >
+            <app-code-snippet
+              data="linkManager().fromClosestContext().withParams({feature: 'toggle'}).navigate('settings_ft?ft=ft1')"
             >
             </app-code-snippet>
           </li>
@@ -547,7 +578,8 @@
             </a>
             <app-code-snippet
               data="linkManager().navigate('/projects/pr2/miscellaneous2/maskopatol')"
-            ></app-code-snippet>
+            >
+            </app-code-snippet>
           </li>
           <li class="fd-list__item">
             <a

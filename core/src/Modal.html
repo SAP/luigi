@@ -12,7 +12,7 @@
       <div class="fd-bar__right">
         <div class="fd-bar__element">
           <button
-            class="fd-button fd-button--transparent fd-button--compact fd-dialog__close sap-icon--decline sap-icon--l"
+            class="fd-button fd-button--transparent fd-button--compact fd-dialog__close sap-icon--decline"
             on:click="{() => dispatch('close')}"
             aria-label="close"
           ></button>
@@ -22,16 +22,42 @@
     <div class="fd-dialog__body">
       <div class="iframeModalCtn"></div>
     </div>
+    {#if showLoadingIndicator}
+    <div
+      in:fade="{{delay: 250, duration: 250}}"
+      out:fade="{{duration: 250}}"
+      class="fd-page spinnerContainer"
+      aria-hidden="false"
+      aria-label="Loading"
+    >
+      <div
+        class="fd-busy-indicator--m"
+        aria-hidden="false"
+        aria-label="Loading"
+        data-testid="luigi-loading-spinner"
+      >
+        <div class="fd-busy-indicator--circle-0"></div>
+        <div class="fd-busy-indicator--circle-1"></div>
+        <div class="fd-busy-indicator--circle-2"></div>
+      </div>
+    </div>
+    {/if}
   </div>
 </div>
 
 <script>
-  import { afterUpdate, createEventDispatcher } from 'svelte';
-
+  import {
+    afterUpdate,
+    createEventDispatcher,
+    onMount,
+    onDestroy
+  } from 'svelte';
+  import { fade } from 'svelte/transition';
   const dispatch = createEventDispatcher();
 
   import { Navigation } from './navigation/services/navigation';
   import {
+    EventListenerHelpers,
     GenericHelpers,
     IframeHelpers,
     RoutingHelpers
@@ -44,6 +70,8 @@
   let nodeObject;
   let pathData;
   let nodeParams;
+  let iframeCreated = false;
+  let showLoadingIndicator = true;
 
   const prepareNodeData = async path => {
     const pathUrlRaw =
@@ -61,6 +89,9 @@
   };
 
   const getNode = async path => {
+    if (iframeCreated) {
+      return;
+    }
     if (isDataPrepared) {
       const iframe = createIframeModal(nodeObject.viewUrl, {
         context: pathData.context,
@@ -71,6 +102,7 @@
         modalIframe: iframe,
         modalIframeData: { ...pathData, nodeParams }
       });
+      iframeCreated = true;
     } else {
       await prepareNodeData(path);
     }
@@ -112,6 +144,38 @@
     getNode(nodepath);
   });
 
+  const onMessage = async e => {
+    if ('luigi.show-loading-indicator' === e.data.msg) {
+      showLoadingIndicator = true;
+    }
+
+    if ('luigi.hide-loading-indicator' === e.data.msg) {
+      showLoadingIndicator = false;
+    }
+
+    if ('luigi.get-context' === e.data.msg) {
+      const loadingIndicatorAutoHideEnabled =
+        !nodeObject ||
+        !nodeObject.loadingIndicator ||
+        nodeObject.loadingIndicator.hideAutomatically !== false;
+      if (loadingIndicatorAutoHideEnabled) {
+        showLoadingIndicator = false;
+      }
+    }
+
+    if ('luigi.close-modal' === e.data.msg) {
+      dispatch('close');
+    }
+  };
+
+  onMount(() => {
+    EventListenerHelpers.addEventListener('message', onMessage);
+  });
+
+  onDestroy(() => {
+    EventListenerHelpers.removeEventListener('message', onMessage);
+  });
+
   // [svelte-upgrade suggestion]
   // review these functions and remove unnecessary 'export' keywords
   export function handleKeydown(event) {
@@ -135,7 +199,23 @@
     border: 0;
     position: absolute;
   }
-
+  .lui-modal-mf {
+    position: relative;
+  }
+  .spinnerContainer {
+    background: rgba(243, 244, 245, 0.8);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    min-width: auto;
+    min-height: auto;
+    display: flex;
+    width: 100%;
+    height: 100%;
+  }
   .fd-dialog {
     &__content {
       width: 80%;

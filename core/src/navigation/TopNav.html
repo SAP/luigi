@@ -58,7 +58,7 @@
             {#if node.icon}
             {#if hasOpenUIicon(node)}
             <span
-              class="fd-top-nav__icon sap-icon--{node.icon} sap-icon--m"
+              class="fd-top-nav__icon sap-icon--{node.icon}"
             ></span>
             {:else}
             <img
@@ -105,7 +105,7 @@
         {#if node.icon}
         {#if hasOpenUIicon(node)}
         <span
-          class="fd-top-nav__icon sap-icon--{node.icon} sap-icon--m"
+          class="fd-top-nav__icon sap-icon--{node.icon}"
         ></span>
         {:else}
         <img
@@ -188,7 +188,7 @@
                     on:click|stopPropagation="{openMobileContextSwitcher}"
                   >
                     <span
-                      class="fd-top-nav__icon sap-icon--m {contextSwitcherConfig.icon && hasOpenUIicon(contextSwitcherConfig) ? 'sap-icon--' + contextSwitcherConfig.icon : 'sap-icon--switch-views'}"
+                      class="fd-top-nav__icon {contextSwitcherConfig.icon && hasOpenUIicon(contextSwitcherConfig) ? 'sap-icon--' + contextSwitcherConfig.icon : 'sap-icon--switch-views'}"
                     ></span>
                     <span
                       class="fd-menu__title"
@@ -207,7 +207,7 @@
                     data-testid="{getTestId(node)}"
                   >
                     <span
-                      class="fd-top-nav__icon {node.icon && hasOpenUIicon(node) ? 'sap-icon--' + node.icon + ' sap-icon--m' : '' }"
+                      class="fd-top-nav__icon {node.icon && hasOpenUIicon(node) ? 'sap-icon--' + node.icon : '' }"
                     >
                       {#if !hasOpenUIicon(node)}
                       <img
@@ -230,7 +230,7 @@
                     data-e2e="mobile-topnav-dropdown-category"
                   >
                     <span
-                      class="fd-top-nav__icon {node.icon && hasOpenUIicon(node) ? 'sap-icon--' + node.icon + ' sap-icon--m' : '' }"
+                      class="fd-top-nav__icon {node.icon && hasOpenUIicon(node) ? 'sap-icon--' + node.icon : '' }"
                     >
                       {#if !hasOpenUIicon(node)}
                       <img
@@ -254,7 +254,7 @@
                   >
                     {#if node.icon} {#if hasOpenUIicon(node)}
                     <span
-                      class="fd-top-nav__icon sap-icon--{node.icon} sap-icon--m"
+                      class="fd-top-nav__icon sap-icon--{node.icon}"
                     ></span>
                     {:else}
                     <img
@@ -278,7 +278,7 @@
                   >
                     {#if hasOpenUIicon(productSwitcherConfig) || !productSwitcherConfig.icon}
                     <span
-                      class="fd-top-nav__icon sap-icon--{productSwitcherConfig.icon || 'grid'} sap-icon--m"
+                      class="fd-top-nav__icon sap-icon--{productSwitcherConfig.icon || 'grid'}"
                     ></span>
                     {:else}
                     <span class="fd-top-nav__icon">
@@ -339,7 +339,9 @@
             class="fd-popover__control"
             on:click|stopPropagation="{() => {}}"
           >
-            <div class="{userInfo.picture ? 'fd-user-menu__control' : '' }">
+            <div
+              class="{userInfo.picture ? 'fd-shellbar__button--user-menu' : '' }"
+            >
               <button
                 class="fd-shellbar__button fd-button {!userInfo.picture?'sap-icon--customer':'fd-identifier fd-identifier--xs fd-identifier--circle'}"
                 style="{userInfo.picture?`background-image: url('${userInfo.picture}');background-size:30px;background-repeat: no-repeat;background-position: center;`:''}"
@@ -625,19 +627,15 @@
 </script>
 
 <style type="text/scss">
-  // Fix for Fiori aligning everything to right inside shellbar end
-  .fd-shellbar__group--end {
-    text-align: unset;
-  }
-
+  // Fix FD Styles for icons in Shellbar 0.11.2
   .fd-shellbar__button {
     .fd-top-nav__icon {
+      line-height: 2.4rem;
+      color: var(--sapShell_TextColor, #fff);
+
       &:before {
         margin-top: 10px;
       }
-    }
-    .fd-top-nav__icon + span {
-      line-height: 2.4rem;
     }
   }
 
