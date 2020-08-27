@@ -87,7 +87,7 @@ Within Luigi, we renamed the `lui-tendant-menu__control` class to `lui-ctx-switc
 
 With Luigi version v1.3.0, the new v0.10.0 of Fundamental Library Styles were included. As a result, there were breaking changes to the Luigi side navigation. You can see the updated layout [here](https://sap.github.io/fundamental-styles/components/side-navigation.html).
 
-With Luigi v1.4.0, the new v0.11.0 of Fundamental Library Styles were included. As a result, there were breaking changes to the Luigi Alerts. The classуи `fd-overlay fd-overlay--message-strip` were removed from Fundamental Library Styles and we added a new class `luigi-alert--overlay` to keep the same look and feel as in the past. You can see all breaking changes of Fundamental Library Styles [here](https://github.com/SAP/fundamental-styles/wiki/Breaking-Changes#0110).
+With Luigi v1.4.0, the new v0.11.0 of Fundamental Library Styles were included. As a result, there were breaking changes to the Luigi Alerts. The classes `fd-overlay fd-overlay--message-strip` were removed from Fundamental Library Styles and we added a new class `luigi-alert--overlay` to keep the same look and feel as in the past. You can see all breaking changes of Fundamental Library Styles [here](https://github.com/SAP/fundamental-styles/wiki/Breaking-Changes#0110).
 
 <!-- accordion:end -->
 
