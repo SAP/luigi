@@ -34,6 +34,15 @@ class UxManager extends LuigiClientBase {
   hideLoadingIndicator() {
     helpers.sendPostMessageToLuigiCore({ msg: 'luigi.hide-loading-indicator' });
   }
+
+  /**
+   * Closes the currently opened micro frontend modal.
+   * @memberof uxManager
+   */
+  closeCurrentModal() {
+    helpers.sendPostMessageToLuigiCore({ msg: 'luigi.close-modal' });
+  }
+
   /**
    * Adds a backdrop to block the top and side navigation. It is based on the Fundamental UI Modal, which you can use in your micro frontend to achieve the same behavior.
    * @memberof uxManager

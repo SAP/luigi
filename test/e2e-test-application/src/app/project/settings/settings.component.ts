@@ -21,9 +21,11 @@ import { Subscription } from 'rxjs';
 })
 export class SettingsComponent implements OnInit {
   public linkManager = linkManager;
+  public uxManager = uxManager;
   projectId: string;
   groupId: string;
   hasBack: boolean;
+  isModal: boolean;
   nodeParams: NodeParams = null;
   callbackValue = 'default value';
   lcSubscription: Subscription;
@@ -44,6 +46,7 @@ export class SettingsComponent implements OnInit {
 
     addInitListener(init => {
       this.hasBack = linkManager().hasBack();
+      this.isModal = uxManager().isModal();
       this.nodeParams =
         Object.keys(getNodeParams()).length > 0 ? getNodeParams() : null;
       let featureToggleList = getActiveFeatureToggles();
