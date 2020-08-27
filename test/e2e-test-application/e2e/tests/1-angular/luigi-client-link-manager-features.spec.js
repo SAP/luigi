@@ -253,7 +253,7 @@ describe('Luigi client linkManager', () => {
             .type($inputTypeModal);
 
           cy.wrap($modal)
-            .find('button')
+            .contains('Click here')
             .click();
         });
       cy.wrap($iframeBody).should('contain', $inputTypeModal);
