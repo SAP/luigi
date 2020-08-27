@@ -79,8 +79,8 @@
   import { GenericHelpers } from '../utilities/helpers';
   import { Routing } from '../services/routing';
   import {
-    KEYCODE_UP,
-    KEYCODE_DOWN,
+    KEYCODE_ARROW_UP,
+    KEYCODE_ARROW_DOWN,
     KEYCODE_ENTER,
     KEYCODE_ESC
   } from '../utilities/keycode.js';
@@ -140,7 +140,7 @@
         keyCode === KEYCODE_ESC
       ) {
         search.searchProvider.onEscape();
-      } else if (keyCode === KEYCODE_DOWN) {
+      } else if (keyCode === KEYCODE_ARROW_DOWN) {
         if (displaySearchResult) {
           document
             .querySelector('.luigi-search-result-item__0')
@@ -167,11 +167,11 @@
         } = renderedSearchResultItems[index];
         let nodeSibling;
         if (childNodes[0].getAttribute('aria-selected') === 'true') {
-          if (direction === KEYCODE_DOWN) {
+          if (direction === KEYCODE_ARROW_DOWN) {
             nodeSibling =
               nextSibling !== null ? nextSibling : renderedSearchResultItems[0];
           }
-          if (direction === KEYCODE_UP) {
+          if (direction === KEYCODE_ARROW_UP) {
             nodeSibling =
               previousSibling !== null
                 ? previousSibling
@@ -221,7 +221,7 @@
     if (keyCode === KEYCODE_ENTER) {
       search.searchProvider.onSearchResultItemSelected(result);
     }
-    if (keyCode === KEYCODE_UP || keyCode === KEYCODE_DOWN) {
+    if (keyCode === KEYCODE_ARROW_UP || keyCode === KEYCODE_ARROW_DOWN) {
       calcSearchResultItemSelected(keyCode);
     } else if (
       GenericHelpers.isFunction(search.searchProvider.onEscape) &&
