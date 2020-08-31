@@ -75,7 +75,6 @@ killWebServers() {
 
 promptForTag() {
   # PROMPT FOR TAG
-  git tag --list 'v1.*' > /tmp/tags.txt && cat /tmp/tags.txt
 
   if [ "latest" = "$TAG" ]; then
     LATEST_LOCAL_TAG=`(git tag -l | tail -1)`
@@ -245,10 +244,14 @@ NODE_MODULES=$EXAMPLE_DIR/node_modules/@luigi-project
 
 TESTONLY=""
 
+echo "No of params (should be 2): $#"
+echo "Params: $@"
+
 while [ "$#" -gt 0 ]; do
   case "$1" in
     # commands with input value, shift 2
     -t|--tag) TAG="$2"; shift 2;;
+
     # validity check for argumenst with input value
     -t|--tag) echoe "$1 requires an argument" >&2; exit 1;;
 
@@ -262,6 +265,7 @@ while [ "$#" -gt 0 ]; do
   esac
 done
 
+echo "Using TAG $TAG"
 
 if [ "" == "$TESTONLY" ]; then
   promptForTag
