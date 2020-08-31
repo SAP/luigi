@@ -75,10 +75,13 @@ killWebServers() {
 
 promptForTag() {
   # PROMPT FOR TAG
+  git tag --list 'v1.*' > /tmp/tags.txt && cat /tmp/tags.txt
+
   if [ "latest" = "$TAG" ]; then
     LATEST_LOCAL_TAG=`(git tag -l | tail -1)`
-    TAG=$LATEST_LOCAL_TAG;
+    TAG="$LATEST_LOCAL_TAG";
   fi
+echo "TAG: $TAG | LATEST_LOCAL_TAG: $LATEST_LOCAL_TAG"
   if [ "" = "$TAG" ]; then
     # LATEST_LOCAL_TAG=`(git tag -l | tail -1)`
     echoe "Choose Luigi Version to test against"
@@ -109,7 +112,7 @@ promptForTag() {
     TAG=${releases[selectedIndex]};
   fi
 }
-  
+
 verifyInstallation() {
   ### VERIFY LOCAL CURRENT LUIGI
   if [ "$INSTALL" == "true" ]; then
@@ -213,7 +216,7 @@ bundleApps() {
 verifyAndStartWebserver() {
   killWebServers
 
-  for i in "${!APP_FOLDERS[@]}"; do 
+  for i in "${!APP_FOLDERS[@]}"; do
     echoe "Run app webserver on ${APP_PORTS[$i]}"
     cd $LUIGI_DIR_TESTING/${APP_FOLDERS[$i]}
     runWebserver ${APP_PORTS[$i]} ${APP_PUBLIC_FOLDERS[$i]} ${APP_PATH_CHECK[$i]}
