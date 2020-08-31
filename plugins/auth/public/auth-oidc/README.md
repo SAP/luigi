@@ -1,3 +1,18 @@
+<!-- meta
+{
+  "node": {
+    "label": "OpenID Connect",
+    "category": {
+      "label": "Authorization Plugins"
+    },
+    "metaData": {
+      "categoryPosition": 2,
+      "position": 12
+    }
+  }
+}
+meta -->
+
 # OpenID Connect - Authorization Plugin for Luigi Core
 
 ## Overview

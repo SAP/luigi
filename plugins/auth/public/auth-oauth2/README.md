@@ -1,3 +1,17 @@
+<!-- meta
+{
+  "node": {
+    "label": "OAuth2",
+    "category": {
+      "label": "Authorization Plugins"
+    },
+    "metaData": {
+      "categoryPosition": 2,
+      "position": 12
+    }
+  }
+}
+meta -->
 # OAuth2 - Authorization Plugin for Luigi Core
 
 ## Overview
