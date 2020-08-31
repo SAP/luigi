@@ -78,6 +78,12 @@
   import { LuigiAuth, LuigiConfig } from '../core-api';
   import { GenericHelpers } from '../utilities/helpers';
   import { Routing } from '../services/routing';
+  import {
+    KEYCODE_ARROW_UP,
+    KEYCODE_ARROW_DOWN,
+    KEYCODE_ENTER,
+    KEYCODE_ESC
+  } from '../utilities/keycode.js';
   export let isSearchFieldVisible;
   export let searchResult = [];
   export let displaySearchResult;
@@ -122,19 +128,19 @@
     dispatch('closeSearchResult');
   }
 
-  function onKeyUp(event) {
+  function onKeyUp({ keyCode }) {
     if (search) {
       if (
         GenericHelpers.isFunction(search.searchProvider.onEnter) &&
-        event.keyCode === 13
+        keyCode === KEYCODE_ENTER
       ) {
         search.searchProvider.onEnter();
       } else if (
         GenericHelpers.isFunction(search.searchProvider.onEscape) &&
-        event.keyCode === 27
+        keyCode === KEYCODE_ESC
       ) {
         search.searchProvider.onEscape();
-      } else if (event.keyCode === 40) {
+      } else if (keyCode === KEYCODE_ARROW_DOWN) {
         if (displaySearchResult) {
           document
             .querySelector('.luigi-search-result-item__0')
@@ -154,18 +160,29 @@
       luigiCustomSearchItemRenderer__slotContainer.children;
     if (renderedSearchResultItems) {
       for (let index = 0; index < renderedSearchResultItems.length; index++) {
-        let element = renderedSearchResultItems[index];
-        if (element.childNodes[0].getAttribute('aria-selected') === 'true') {
-          if (direction === 40) {
-            let nextSibling =
-              element.nextSibling != null
-                ? element.nextSibling
-                : renderedSearchResultItems[0];
-            element.childNodes[0].setAttribute('aria-selected', 'false');
-            nextSibling.childNodes[0].setAttribute('aria-selected', 'true');
-            nextSibling.focus();
-            break;
+        let {
+          childNodes,
+          nextSibling,
+          previousSibling
+        } = renderedSearchResultItems[index];
+        let nodeSibling;
+        if (childNodes[0].getAttribute('aria-selected') === 'true') {
+          if (direction === KEYCODE_ARROW_DOWN) {
+            nodeSibling =
+              nextSibling !== null ? nextSibling : renderedSearchResultItems[0];
           }
+          if (direction === KEYCODE_ARROW_UP) {
+            nodeSibling =
+              previousSibling !== null
+                ? previousSibling
+                : renderedSearchResultItems[
+                    renderedSearchResultItems.length - 1
+                  ];
+          }
+          childNodes[0].setAttribute('aria-selected', 'false');
+          nodeSibling.childNodes[0].setAttribute('aria-selected', 'true');
+          nodeSibling.focus();
+          break;
         }
       }
     }
@@ -194,23 +211,21 @@
       search.searchProvider.onSearchResultItemSelected(searchResultItem);
     } else if (
       GenericHelpers.isFunction(search.searchProvider.onEscape) &&
-      event.keyCode === 27
+      event.keyCode === KEYCODE_ESC
     ) {
       search.searchProvider.onEscape();
     }
   }
 
-  function handleKeydown(result, event) {
-    if (event.keyCode === 13) {
+  function handleKeydown(result, { keyCode }) {
+    if (keyCode === KEYCODE_ENTER) {
       search.searchProvider.onSearchResultItemSelected(result);
     }
-    if (event.keyCode === 38) {
-      calcSearchResultItemSelected(38);
-    } else if (event.keyCode === 40) {
-      calcSearchResultItemSelected(40);
+    if (keyCode === KEYCODE_ARROW_UP || keyCode === KEYCODE_ARROW_DOWN) {
+      calcSearchResultItemSelected(keyCode);
     } else if (
       GenericHelpers.isFunction(search.searchProvider.onEscape) &&
-      event.keyCode === 27
+      keyCode === KEYCODE_ESC
     ) {
       clearAriaSelected();
       setTimeout(() => {
@@ -277,9 +292,9 @@
         max-height: 70vh;
         overflow: auto;
         .fd-menu__item {
-          padding-bottom: 10px;
+          margin-bottom: 10px;
           &:first-child {
-            padding-top: 10px;
+            margin-top: 10px;
           }
           &:last-child .fd-menu__link {
             border-radius: 0;
