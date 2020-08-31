@@ -101,6 +101,12 @@ export declare interface UxManager {
   hideLoadingIndicator: () => void;
 
   /**
+   * Closes the currently opened micro frontend modal.
+   * @memberof uxManager
+   */
+  closeCurrentModal: () => void;
+
+  /**
    * This method informs the main application that there are unsaved changes in the current view in the iframe. For example, that can be a view with form fields which were edited but not submitted.
    * @param {boolean} isDirty indicates if there are any unsaved changes on the current page or in the component
    * @memberof uxManager
@@ -489,6 +495,13 @@ export type getContext = () => Context;
  */
 export function getNodeParams(): NodeParams;
 export type getNodeParams = () => NodeParams;
+
+/**
+ * @returns {Object} node parameters, where the object property name is the node parameter name without the prefix, and its value is the value of the node parameter. For example `{sort: 'asc', page: 3}`
+ * @memberof Lifecycle
+ */
+export function getActiveFeatureToggles(): Array<String>;
+export type getActiveFeatureToggles = () => Array<String>;
 
 /**
  * Returns the dynamic path parameters of the active URL.
