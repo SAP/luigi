@@ -246,7 +246,18 @@ TESTONLY=""
 
 echo "No of params (should be 2): $#"
 echo "Params: $@"
+echo ""
+while getopts ":t:tag:" arg; do
+  echo "arg $arg"
+  case $arg in
+    -t) TAG=$OPTARG;;
+    --tag) TAG=$OPTARG;;
+  esac
+done
+echo "tag: $TAG"
 
+TAG=""
+echo "original implementation"
 while [ "$#" -gt 0 ]; do
   case "$1" in
     # commands with input value, shift 2
@@ -266,6 +277,8 @@ while [ "$#" -gt 0 ]; do
 done
 
 echo "Using TAG $TAG"
+exit
+
 
 if [ "" == "$TESTONLY" ]; then
   promptForTag
