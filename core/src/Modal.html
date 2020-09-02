@@ -63,6 +63,7 @@
     RoutingHelpers
   } from './utilities/helpers';
   import { LuigiConfig } from './core-api';
+  import { KEYCODE_ESC } from './utilities/keycode.js';
 
   export let modalSettings;
   export let isDataPrepared = false;
@@ -179,7 +180,7 @@
   // [svelte-upgrade suggestion]
   // review these functions and remove unnecessary 'export' keywords
   export function handleKeydown(event) {
-    if (event.keyCode === 27) {
+    if (event.keyCode === KEYCODE_ESC) {
       dispatch('close');
     }
   }
