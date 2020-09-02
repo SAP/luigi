@@ -16,7 +16,8 @@
     "mixin-deep": ">=1.3.2",
     "prettier": "^1.15.3",
     "set-value": ">=2.0.1",
-    "sirv-cli": "^0.4.4"
+    "sirv-cli": "^0.4.4",
+    "dot-prop": "5.2.0"
   },
   "prettier": {
     "singleQuote": true,
