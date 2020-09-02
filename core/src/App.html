@@ -16,6 +16,7 @@
     nodepath="{mfModal.nodepath}"
     on:close="{closeModal}"
     on:iframeCreated="{modalIframeCreated}"
+    on:wcCreated="{modalWCCreated}"
   ></Modal>
   {/if}
   <Backdrop>
@@ -145,6 +146,8 @@
   /// MFs
   let modalIframe;
   let modalIframeData;
+  let modalWC;
+  let modalWCData;
   let modal;
   let splitViewIframe;
   let splitViewIframeData;
@@ -210,7 +213,6 @@
       console.info('iframe does not exist, not able to send context.');
       return;
     }
-
     const message = {
       msg: 'luigi.init',
       context: JSON.stringify(
@@ -872,11 +874,18 @@
     modalIframeData = event.detail.modalIframeData;
   };
 
+  const modalWCCreated = event => {
+    modalWC = event.detail.modalWC;
+    modalWCData = event.detail.modalWCData;
+  };
+
   const closeModal = () => {
     if (modalIframe) {
       getUnsavedChangesModalPromise(modalIframe.contentWindow).then(() => {
         resetMicrofrontendModalData();
       });
+    } else if (modalWC) {
+      resetMicrofrontendModalData();
     }
   };
 

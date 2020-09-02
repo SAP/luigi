@@ -462,6 +462,27 @@
             <a
               href="javascript:void(0)"
               class="fd-link"
+              (click)="
+                linkManager().openAsModal('/projects/pr2/webcomponent', {
+                  title: 'Webcomponent in a modal',
+                  size: 'm'
+                })
+              "
+              >Open webcomponent in a modal</a
+            >
+            <app-code-snippet
+              data="linkManager()
+              .openAsModal('/projects/pr2/webcomponent', {
+                title: 'Webcomponent in a modal',
+                size: 'm'
+              })"
+            >
+            </app-code-snippet>
+          </li>
+          <li class="fd-list__item">
+            <a
+              href="javascript:void(0)"
+              class="fd-link"
               (click)="openSplitView()"
             >
               open view in split view with params</a

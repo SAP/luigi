@@ -145,10 +145,26 @@ export const projectDetailNavStructure = projectId => [
     icon: 'sys-help'
   },
   {
+    category: { label: 'Modals', icon: 'fallback' },
     pathSegment: 'miscellaneous2',
     label: 'Miscellaneous2',
     viewUrl: '/sampleapp.html#/projects/' + projectId + '/miscellaneous2',
     icon: 'sys-help',
+    openNodeInModal: true
+  },
+  {
+    category: { label: 'Modals' },
+    pathSegment: 'webcomponent',
+    label: 'Webcomponent',
+    icon: 'along-stacked-chart',
+    loadingIndicator: {
+      enabled: false
+    },
+    context: {
+      apiUrl: 'https://edenhauser.com/stupidb/?db=unijokes_db&random'
+    },
+    viewUrl: 'https://team-phteven.gitlab.io/joke-of-the-day-wc/main.js',
+    webcomponent: true,
     openNodeInModal: true
   },
   {

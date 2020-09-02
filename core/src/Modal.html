@@ -64,6 +64,7 @@
   } from './utilities/helpers';
   import { LuigiConfig } from './core-api';
   import { KEYCODE_ESC } from './utilities/keycode.js';
+  import { WebComponentService } from './services/web-components';
 
   export let modalSettings;
   export let isDataPrepared = false;
@@ -72,7 +73,8 @@
   let pathData;
   let nodeParams;
   let iframeCreated = false;
-  let showLoadingIndicator = true;
+  let wcCreated = false;
+  let showLoadingIndicator = false;
 
   const prepareNodeData = async path => {
     const pathUrlRaw =
@@ -90,25 +92,40 @@
   };
 
   const getNode = async path => {
-    if (iframeCreated) {
+    if (iframeCreated || wcCreated) {
       return;
     }
     if (isDataPrepared) {
-      const iframe = createIframeModal(nodeObject.viewUrl, {
-        context: pathData.context,
-        pathParams: pathData.pathParams,
-        nodeParams
-      });
-      dispatch('iframeCreated', {
-        modalIframe: iframe,
-        modalIframeData: { ...pathData, nodeParams }
-      });
-      iframeCreated = true;
+      if (nodeObject.webcomponent) {
+        setModalSize();
+        WebComponentService.renderWebComponent(
+          nodeObject.viewUrl,
+          document.querySelector('.iframeModalCtn'),
+          pathData.context
+        );
+        dispatch('wcCreated', {
+          modalWC: document.querySelector('.iframeModalCtn'),
+          modalWCData: { ...pathData, nodeParams }
+        });
+        wcCreated = true;
+      } else {
+        const iframe = createIframeModal(nodeObject.viewUrl, {
+          context: pathData.context,
+          pathParams: pathData.pathParams,
+          nodeParams
+        });
+        dispatch('iframeCreated', {
+          modalIframe: iframe,
+          modalIframeData: { ...pathData, nodeParams }
+        });
+        iframeCreated = true;
+      }
     } else {
       await prepareNodeData(path);
     }
   };
-  const createIframeModal = (viewUrl, componentData) => {
+
+  const setModalSize = () => {
     const elem = document.getElementsByClassName('lui-modal-mf');
     let modalSize = '80%';
     if (modalSettings.size) {
@@ -120,8 +137,11 @@
         modalSize = '40%';
       }
     }
-
     elem[0].setAttribute('style', `width:${modalSize};height:${modalSize}`);
+  };
+
+  const createIframeModal = (viewUrl, componentData) => {
+    setModalSize();
     if (viewUrl) {
       viewUrl = RoutingHelpers.substituteViewUrl(viewUrl, componentData);
     }
