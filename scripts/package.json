@@ -34,9 +34,7 @@
     "documentation": "^13.0.0",
     "nodemon": "^2.0.2",
     "prompts": "^2.3.2",
-    "semver": "^7.1.3",
-    "dot-prop": "5.2.0",
-    "lodash": "^4.17.20"
+    "semver": "^7.1.3"
   },
   "browserslist": "> 0.25%, not dead"
 }

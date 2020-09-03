@@ -9,15 +9,14 @@
     "cypress-plugin-retries": "^1.3.0",
     "diff": ">=3.5.0",
     "husky": "^1.3.1",
-    "lerna": "^3.9.0",
-    "lerna-changelog": "^0.8.0",
+    "lerna": "^3.22.1",
+    "lerna-changelog": "^1.0.1",
     "lodash": ">=4.17.13",
     "lodash.template": ">=4.5.0",
     "mixin-deep": ">=1.3.2",
     "prettier": "^1.15.3",
     "set-value": ">=2.0.1",
-    "sirv-cli": "^0.4.4",
-    "dot-prop": "5.2.0"
+    "sirv-cli": "^0.4.4"
   },
   "prettier": {
     "singleQuote": true,
