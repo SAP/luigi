@@ -20,8 +20,8 @@
     "@luigi-project/core": "^1.1.0",
     "ajv": "6.10.2",
     "core-js": "3.3.5",
-    "@sap-theming/theming-base-content": "^11.1.18",
-    "fundamental-styles": "^0.8.1",
+    "@sap-theming/theming-base-content": "11.1.21",
+    "fundamental-styles": "0.11.0",
     "rxjs": "6.5.3",
     "zone.js": "0.9.1"
   },
