@@ -81,7 +81,6 @@ killWebServers() {
 
 promptForTag() {
   # PROMPT FOR TAG
-
   if [ "latest" = "$TAG" ]; then
     LATEST_LOCAL_TAG=`(git tag -l | tail -1)`
     TAG="$LATEST_LOCAL_TAG";
