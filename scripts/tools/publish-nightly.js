@@ -53,7 +53,11 @@ function execTrim(cmd) {
     .trim();
 }
 
-const LATEST_TAG = execTrim('git describe --tags --abbrev=0');
+let LATEST_TAG = execTrim('git tag -l | tail -1');
+if (!LATEST_TAG) {
+  execTrim('git pull --tags');
+  LATEST_TAG = execTrim('git tag -l | tail -1');
+}
 const FILES_CHANGED = execTrim(`git diff --name-only HEAD ${LATEST_TAG}`);
 
 (async () => {
