@@ -87,7 +87,7 @@ promptForTag() {
     if [ "" = "$LATEST_LOCAL_TAG" ]; then
         git pull --tags --depth 500
         LATEST_LOCAL_TAG=`(git tag -l | tail -1)`
-        if [ "" = "$LATEST_LOCAL_TAG" ]; echo "Still no tags available, raise depth on git pull" && exit 1
+        [ "" = "$LATEST_LOCAL_TAG" ]; echo "Still no tags available, raise depth on git pull" && exit 1
     fi
     TAG=$LATEST_LOCAL_TAG;
   fi
