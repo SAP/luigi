@@ -55,8 +55,11 @@ function execTrim(cmd) {
 
 let LATEST_TAG = execTrim('git tag -l | tail -1');
 if (!LATEST_TAG) {
-  execTrim('git pull --tags');
+  execTrim('git pull --tags --depth 500');
   LATEST_TAG = execTrim('git tag -l | tail -1');
+  if (!LATEST_TAG) {
+    throw 'Error fetching latest tag (raise depth?)';
+  }
 }
 const FILES_CHANGED = execTrim(`git diff --name-only HEAD ${LATEST_TAG}`);
 
