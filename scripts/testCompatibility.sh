@@ -4,6 +4,12 @@
 
 set -e # exit on errors
 
+# xtrace https://wiki-dev.bash-hackers.org/scripting/debuggingtips#making_xtrace_more_useful
+# set -v # verbose output
+# set -x # print everything as if it were executed
+export PS4='+(${BASH_SOURCE}:${LINENO}): ${FUNCNAME[0]:+${FUNCNAME[0]}(): }'
+
+
 showHelp() {
   echo ""
   echo ""
@@ -78,9 +84,9 @@ promptForTag() {
 
   if [ "latest" = "$TAG" ]; then
     LATEST_LOCAL_TAG=`(git tag -l | tail -1)`
+    echo "TAG: $TAG | LATEST_LOCAL_TAG: $LATEST_LOCAL_TAG"
     TAG="$LATEST_LOCAL_TAG";
   fi
-echo "TAG: $TAG | LATEST_LOCAL_TAG: $LATEST_LOCAL_TAG"
   if [ "" = "$TAG" ]; then
     # LATEST_LOCAL_TAG=`(git tag -l | tail -1)`
     echoe "Choose Luigi Version to test against"
@@ -244,20 +250,8 @@ NODE_MODULES=$EXAMPLE_DIR/node_modules/@luigi-project
 
 TESTONLY=""
 
-echo "No of params (should be 2): $#"
-echo "Params: $@"
-echo ""
-while getopts ":t:tag:" arg; do
-  echo "arg $arg"
-  case $arg in
-    -t) TAG=$OPTARG;;
-    --tag) TAG=$OPTARG;;
-  esac
-done
-echo "tag: $TAG"
 
-TAG=""
-echo "original implementation"
+
 while [ "$#" -gt 0 ]; do
   case "$1" in
     # commands with input value, shift 2
@@ -275,9 +269,6 @@ while [ "$#" -gt 0 ]; do
     *) handle_argument "$1"; shift 1;;
   esac
 done
-
-echo "Using TAG $TAG"
-exit
 
 
 if [ "" == "$TESTONLY" ]; then
