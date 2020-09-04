@@ -86,6 +86,12 @@ promptForTag() {
     LATEST_LOCAL_TAG=`(git tag -l | tail -1)`
     echo "TAG: $TAG | LATEST_LOCAL_TAG: $LATEST_LOCAL_TAG"
     TAG="$LATEST_LOCAL_TAG";
+    if [ "" = "$LATEST_LOCAL_TAG" ]; then
+        git pull --tags
+        LATEST_LOCAL_TAG=`(git tag -l | tail -1)`
+        echo "TAG: $TAG | LATEST_LOCAL_TAG: $LATEST_LOCAL_TAG"
+    fi
+    TAG=$LATEST_LOCAL_TAG;
   fi
   if [ "" = "$TAG" ]; then
     # LATEST_LOCAL_TAG=`(git tag -l | tail -1)`
