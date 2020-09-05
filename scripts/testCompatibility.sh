@@ -81,15 +81,16 @@ killWebServers() {
 
 promptForTag() {
   # PROMPT FOR TAG
+  git reset --hard HEAD
   if [ "latest" = "$TAG" ]; then
+    git fetch --unshallow --tags
+    git config remote.origin.fetch "+refs/heads/*:refs/remotes/origin/*" # get access to all origin branches
     LATEST_LOCAL_TAG=`(git tag -l | tail -1)`
-    if [ "" = "$LATEST_LOCAL_TAG" ]; then
-        git pull --ff-only --tags --depth 500
-        LATEST_LOCAL_TAG=`(git tag -l | tail -1)`
-        [ "" = "$LATEST_LOCAL_TAG" ]; echo "Still no tags available, raise depth on git pull" && exit 1
-    fi
+    [ "" = "$LATEST_LOCAL_TAG" ]; echo "No tags available, raise depth on git pull" && exit 1
     TAG=$LATEST_LOCAL_TAG
     echo "Using latest Tag: $TAG"
+  else
+    git fetch --tags
   fi
   if [ "" = "$TAG" ]; then
     # LATEST_LOCAL_TAG=`(git tag -l | tail -1)`
@@ -167,8 +168,6 @@ checkoutLuigiToTestfolder() {
 
   cd $LUIGI_DIR_TESTING
   echoe "Checking out selected release tag $TAG"
-  git reset --hard HEAD
-  git fetch --tags
   git checkout tags/$TAG
 
   for FOLDER in "${APP_FOLDERS[@]}"; do
