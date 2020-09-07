@@ -178,7 +178,7 @@ class RoutingClass {
       );
       const viewUrl = nodeObject.viewUrl || '';
 
-      if (!viewUrl && !nodeObject.grid) {
+      if (!viewUrl && !nodeObject.compound) {
         const defaultChildNode = await RoutingHelpers.getDefaultChildNode(
           pathData,
           async (node, ctx) => {
@@ -327,11 +327,11 @@ class RoutingClass {
           iContainer.classList.add('lui-webComponent');
         }
         this.navigateWebComponent(config, component, iframeElement, nodeObject, iContainer);
-      } else if (nodeObject.grid) {
+      } else if (nodeObject.compound) {
         if (iContainer) {
           iContainer.classList.add('lui-webComponent');
         }
-        this.navigateWebComponentGrid(config, component, iframeElement, nodeObject, iContainer);
+        this.navigateWebComponentCompound(config, component, iframeElement, nodeObject, iContainer);
       } else {
         if (iContainer) {
           iContainer.classList.remove('lui-webComponent');
@@ -499,7 +499,7 @@ class RoutingClass {
 
 
 
-  navigateWebComponentGrid(config, component, node, navNode, iframeContainer) {
+  navigateWebComponentCompound(config, component, node, navNode, iframeContainer) {
     const componentData = component.get();
     const wc_container = document.querySelector('.wcContainer');
 
@@ -507,7 +507,7 @@ class RoutingClass {
       wc_container.lastChild.remove();
     }
 
-    WebComponentService.renderWebComponentGrid(navNode, wc_container, componentData.context);
+    WebComponentService.renderWebComponentCompound(navNode, wc_container, componentData.context);
   }
 }
 
