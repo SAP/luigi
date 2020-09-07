@@ -74,7 +74,7 @@
   let nodeParams;
   let iframeCreated = false;
   let wcCreated = false;
-  let showLoadingIndicator = false;
+  let showLoadingIndicator = true;
 
   const prepareNodeData = async path => {
     const pathUrlRaw =
@@ -97,6 +97,8 @@
     }
     if (isDataPrepared) {
       if (nodeObject.webcomponent) {
+        //"Workaround" because we need a webcomponent client api to hide/show the loadingIndicator
+        showLoadingIndicator = false;
         setModalSize();
         WebComponentService.renderWebComponent(
           nodeObject.viewUrl,
