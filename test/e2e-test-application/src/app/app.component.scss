@@ -8,3 +8,14 @@
   height: auto; //override the 2,75rem from FD Styles, otherwise the content doesn#t fit
   padding: 10px;
 }
+
+//Add margin bottom to panels
+.luigi__margin-bottom--small {
+  margin-bottom: 15px;
+}
+//align input field and actionn button next to it on one line
+.fd-container {
+  .luigi__input-button--margin {
+    margin-top: 4px;
+  }
+}

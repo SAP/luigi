@@ -1,10 +1,14 @@
 import { APP_LOADING_INDICATOR } from './../utilities/constants';
 import { GenericHelpers } from '../utilities/helpers';
+import { get, writable } from 'svelte/store';
 /**
  * Functions to use Luigi Core UX features.
  * @namespace UX
  */
 class LuigiUX {
+  constructor() {
+    this.documentTitle = writable();
+  }
   /**
    * Hides the app loading indicator.
    * @memberof UX
@@ -98,6 +102,29 @@ class LuigiUX {
         'Luigi.ux().showConfirmationModal() is only available inside your configuration, after the configuration was initialized with Luigi.setConfig().'
       );
     }
+  }
+
+  /**
+   * Set the document title
+   * @memberof UX
+   * @param {string} documentTitle
+   * @since NEXTRELEASE
+   * @example Luigi.ux().setDocumentTitle('Luigi');
+   */
+  setDocumentTitle(documentTitle) {
+    this.documentTitle.set(documentTitle);
+    Luigi.configChanged('settings.header');
+  }
+
+  /**
+   * Get the document title
+   * @memberof UX
+   * @since NEXTRELEASE
+   * @returns a string, which is displayed in the tab.
+   * @example Luigi.ux().getDocumentTitle();
+   */
+  getDocumentTitle() {
+    return get(this.documentTitle);
   }
 }
 

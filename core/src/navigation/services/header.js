@@ -1,5 +1,5 @@
 import { StateHelpers, GenericHelpers } from '../../utilities/helpers';
-import { LuigiConfig, LuigiI18N } from './../../core-api';
+import { LuigiConfig, LuigiI18N, LuigiUX } from './../../core-api';
 
 export const processHeaderSettings = component => {
   StateHelpers.doOnStoreChange(
@@ -20,6 +20,7 @@ export const processHeaderSettings = component => {
         if (!header) {
           return;
         }
+
         // Set Title and Logo
         if (header.title) {
           component.set({ defaultTitle: header.title || '' });
@@ -124,8 +125,9 @@ export const updateTitle = component => {
     selectedItem && selectedItem.title
       ? selectedItem.title
       : component.get().defaultTitle;
+  const documentTitle = LuigiUX.getDocumentTitle() || title;
   component.set({ title });
-  document.title = LuigiI18N.getTranslation(title);
+  document.title = LuigiI18N.getTranslation(documentTitle);
   const subTitle = selectedItem
     ? selectedItem.subTitle || ''
     : component.get().defaultSubTitle;
