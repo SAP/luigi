@@ -89,7 +89,7 @@ promptForTag() {
     echo "Set config remote.origin.fetch"
     git config remote.origin.fetch "+refs/heads/*:refs/remotes/origin/*" # get access to all origin branches
     echo "Debug list of tags"
-    git tag -l | tail 20
+    git tag -l | tail -n 20
     echo "Get latest tag"
     LATEST_LOCAL_TAG=`(git tag -l | tail -1)`
     [ "" = "$LATEST_LOCAL_TAG" ]; echo "No tags available, raise depth on git pull" && exit 1
