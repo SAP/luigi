@@ -83,8 +83,9 @@ promptForTag() {
   # PROMPT FOR TAG
   git reset --hard HEAD
   if [ "latest" = "$TAG" ]; then
-    echo "Unshallow with tags"
-    FETCHED=`(git pull --depth 500 --tags)`
+    git config pull.ff only       # fast-forward only
+    echo "Pull with depth 500 and tags"
+    git pull --depth 500 --tags
     echo "Set config remote.origin.fetch"
     git config remote.origin.fetch "+refs/heads/*:refs/remotes/origin/*" # get access to all origin branches
     echo "Get latest tag"
