@@ -91,6 +91,7 @@ promptForTag() {
     echo "Debug list of tags"
     git tag -l | tail -n 20
     echo "Get latest tag"
+    git tag -l | tail -1
     LATEST_LOCAL_TAG=`(git tag -l | tail -1)`
     [ "" = "$LATEST_LOCAL_TAG" ]; echo "No tags available, raise depth on git pull" && exit 1
     TAG=$LATEST_LOCAL_TAG
