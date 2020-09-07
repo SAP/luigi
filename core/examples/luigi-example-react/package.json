@@ -5,8 +5,8 @@
   "dependencies": {
     "@luigi-project/client": "^1.1.0",
     "@luigi-project/core": "^1.1.0",
-    "@sap-theming/theming-base-content": "^11.1.18",
-    "fundamental-styles": "^0.8.1",
+    "@sap-theming/theming-base-content": "^11.1.21",
+    "fundamental-styles": "^0.11.0",
     "@svgr/webpack": "4.3.2",
     "@typescript-eslint/eslint-plugin": "^2.2.0",
     "@typescript-eslint/parser": "^2.2.0",

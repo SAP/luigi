@@ -3,7 +3,7 @@
     <div class="fd-section__header">
       <h1 class="fd-section__title">LuigiClient uxManager methods</h1>
     </div>
-    <div class="fd-layout-panel fd-has-margin-bottom-small">
+    <div class="fd-layout-panel luigi__margin-bottom--small">
       <div class="fd-layout-panel__header">
         <div class="fd-layout-panel__head">
           <h3 class="fd-layout-panel__title">Backdrop</h3>
@@ -25,7 +25,7 @@
         </p>
       </div>
     </div>
-    <div class="fd-layout-panel fd-has-margin-bottom-small">
+    <div class="fd-layout-panel luigi__margin-bottom--small">
       <div class="fd-layout-panel__header">
         <div class="fd-layout-panel__head">
           <h3 class="fd-layout-panel__title">Confirmation modal</h3>
@@ -59,7 +59,7 @@
       </div>
     </div>
 
-    <div class="fd-layout-panel fd-has-margin-bottom-small">
+    <div class="fd-layout-panel luigi__margin-bottom--small">
       <div class="fd-layout-panel__header">
         <div class="fd-layout-panel__head">
           <h3 class="fd-layout-panel__title">Alert</h3>
@@ -67,7 +67,7 @@
       </div>
       <div class="fd-layout-panel__body">
         <form #luigiAlertForm="ngForm">
-          <div class="fd-form__set fd-has-padding-bottom-small">
+          <div class="fd-form__set luigi__margin-bottom--small">
             <div class="fd-form-item">
               <label class="fd-form-label" for="select-1">Type:</label>
               <select
@@ -91,7 +91,9 @@
                 id="checkbox-1"
                 data-testid="luigi-alert-links"
               />
-              <label class="fd-checkbox__label" for="checkbox-1">Links</label>
+              <label class="fd-checkbox__label" for="checkbox-1">
+                <span class="fd-checkbox__text">Links</span>
+              </label>
             </div>
             <div class="fd-form-item">
               <input
@@ -103,7 +105,9 @@
                 data-testid="luigi-alert-text"
               />
               <label class="fd-checkbox__label" for="checkbox-2">
-                With text (if alert has no text it is not displayed)
+                <span class="fd-checkbox__text"
+                  >With text (if alert has no text it is not displayed)</span
+                >
               </label>
             </div>
             <div class="fd-form-item">
@@ -143,7 +147,7 @@
       </div>
     </div>
 
-    <div class="fd-layout-panel fd-has-margin-bottom-small">
+    <div class="fd-layout-panel luigi__margin-bottom--small">
       <div class="fd-layout-panel__header">
         <div class="fd-layout-panel__head">
           <h3 class="fd-layout-panel__title">Localization</h3>
@@ -154,7 +158,7 @@
           <label class="fd-form-label" data-testid="luigi-current-locale">
             Current locale is: '{{ currentLocale }}'
           </label>
-          <p class="fd-has-margin-bottom-s">
+          <p class="luigi__margin-bottom--small">
             <app-code-snippet
               data="uxManager().getCurrentLocale()"
             ></app-code-snippet>
@@ -192,7 +196,7 @@
       </div>
     </div>
 
-    <div class="fd-layout-panel fd-has-margin-bottom-small">
+    <div class="fd-layout-panel luigi__margin-bottom--small">
       <div class="fd-layout-panel__header">
         <div class="fd-layout-panel__head">
           <h3 class="fd-layout-panel__title">
@@ -250,7 +254,7 @@
       <h1 class="fd-section__title">LuigiClient linkManager methods</h1>
     </div>
     <ng-container *ngIf="preservedViewCallbackContext">
-      <div class="fd-layout-panel fd-has-margin-bottom-small">
+      <div class="fd-layout-panel luigi__margin-bottom--small">
         <div class="fd-layout-panel__body">
           <div class="fd-message-strip" role="alert">
             <div class="fd-message-strip__text">
@@ -261,7 +265,7 @@
         </div>
       </div>
     </ng-container>
-    <div class="fd-layout-panel fd-has-margin-bottom-small">
+    <div class="fd-layout-panel luigi__margin-bottom--small">
       <div class="fd-layout-panel__header">
         <div class="fd-layout-panel__head">
           <h3 class="fd-layout-panel__title">Navigate</h3>
@@ -517,7 +521,7 @@
       </div>
     </div>
 
-    <div class="fd-layout-panel fd-has-margin-bottom-small check-path">
+    <div class="fd-layout-panel luigi__margin-bottom--small check-path">
       <div class="fd-layout-panel__header">
         <div class="fd-layout-panel__head">
           <h3 class="fd-layout-panel__title">Check if path exists</h3>
@@ -538,7 +542,7 @@
               (input)="resetPathExistsResult()"
             />
           </div>
-          <div class="fd-col--8">
+          <div class="fd-col--8 luigi__input-button--margin">
             <button class="fd-button" (click)="checkIfPathExists()">
               Check
             </button>
