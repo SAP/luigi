@@ -83,13 +83,17 @@ promptForTag() {
   # PROMPT FOR TAG
   git reset --hard HEAD
   if [ "latest" = "$TAG" ]; then
+    echo "Unshallow with tags"
     FETCHED=`(git fetch --unshallow --tags)`
+    echo "Set config remote.origin.fetch"
     git config remote.origin.fetch "+refs/heads/*:refs/remotes/origin/*" # get access to all origin branches
+    echo "Get latest tag"
     LATEST_LOCAL_TAG=`(git tag -l | tail -1)`
     [ "" = "$LATEST_LOCAL_TAG" ]; echo "No tags available, raise depth on git pull" && exit 1
     TAG=$LATEST_LOCAL_TAG
     echo "Using latest Tag: $TAG"
   else
+    echo "Fetching tags"
     git fetch --tags
   fi
   if [ "" = "$TAG" ]; then
