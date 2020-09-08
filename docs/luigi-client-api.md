@@ -849,3 +849,9 @@ Returns **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/
 **Meta**
 
 -   **since**: 0.6.0
+
+#### getCurrentTheme
+
+Gets the current theme.
+
+Returns **any** current themeObj

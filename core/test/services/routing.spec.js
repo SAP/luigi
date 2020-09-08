@@ -8,7 +8,7 @@ import { GenericHelpers, RoutingHelpers } from '../../src/utilities/helpers';
 import { LuigiConfig, LuigiI18N } from '../../src/core-api';
 import { Navigation } from '../../src/navigation/services/navigation';
 import { NodeDataManagementStorage } from '../../src/services/node-data-management';
-import { Iframe } from '../../src/services/iframe';
+import { Iframe, ViewUrlDecorator } from '../../src/services';
 
 describe('Routing', function() {
   this.retries(1);
@@ -29,6 +29,9 @@ describe('Routing', function() {
     sinon.stub(GenericHelpers, 'getRandomId').returns('123');
     Navigation._rootNodeProviderUsed = undefined;
     Navigation.rootNode = undefined;
+
+    sinon.stub(ViewUrlDecorator);
+    ViewUrlDecorator.applyDecorators.callsFake(url => url);
   });
   afterEach(() => {
     if (document.createElement.restore) {

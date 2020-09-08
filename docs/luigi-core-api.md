@@ -988,18 +988,16 @@ Returns **[promise](https://developer.mozilla.org/docs/Web/JavaScript/Reference/
 
 #### setCurrentTheme
 
-Sets the current theming object
+Sets the current theme id
 
 ##### Parameters
 
--   `themeObj` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** a theming object, has the same structure as retrieved from **getAvailableThemes**
+-   `id` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** of a theme object
 
 ##### Examples
 
 ```javascript
-Luigi
- .theming()
- .setCurrentTheme({id: 1, name: 'light'})
+Luigi.theming().setCurrentTheme('light')
 ```
 
 **Meta**
@@ -1008,11 +1006,11 @@ Luigi
 
 #### getThemeObject
 
-Retrieves a theme object by name. Returns `false` on trying to access a non-existing theme.
+Retrieves a theme object by name.
 
 ##### Parameters
 
--   `themeName` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** a theme name
+-   `id` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** a theme id
 
 ##### Examples
 
@@ -1020,12 +1018,12 @@ Retrieves a theme object by name. Returns `false` on trying to access a non-exis
 Luigi
  .theming()
  .getThemeObject('light')
- .then((themeObj => {
+ .then((id => {
    // Logic
  }))
 ```
 
-Returns **[promise](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise)** resolves a theming object
+Returns **[promise](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise)** resolves a theme object
 
 **Meta**
 
@@ -1033,20 +1031,15 @@ Returns **[promise](https://developer.mozilla.org/docs/Web/JavaScript/Reference/
 
 #### getCurrentTheme
 
-Retrieves the current active theme. Falls back to **defaultTheme** if none explicitly specified before. Returns `false` if no theme selected and no defaultTheme defined.
+Retrieves the current active theme. Falls back to **defaultTheme** if none explicitly specified before.
 
 ##### Examples
 
 ```javascript
-Luigi
- .theming()
- .getCurrentTheme()
- .then((themeObj => {
-   // Logic
- }))
+Luigi.theming().getCurrentTheme()
 ```
 
-Returns **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** a theming object
+Returns **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** theme id
 
 **Meta**
 
@@ -1059,12 +1052,10 @@ The general status about the Theming configuration.
 ##### Examples
 
 ```javascript
-Luigi
- .theming()
- .isThemingAvailable()
+Luigi.theming().isThemingAvailable()
 ```
 
-Returns **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)** `true` if **settings.theming** configuration object is defined.
+Returns **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)** `true` if **settings.theming** configuration object is defined
 
 **Meta**
 
