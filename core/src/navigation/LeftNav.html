@@ -666,6 +666,10 @@
     -webkit-overflow-scrolling: touch;
     background-color: transparent;
     @include transition(width 0.1s linear);
+    //remove dotted outline from anchor in left side nav
+    .fd-nested-list__link:focus {
+      outline: none;
+    }
   }
 
   .lui-side-nav__footer {
