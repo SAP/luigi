@@ -19,39 +19,44 @@
           <!-- Single nodes -->
           {#each nodes as node} {#if !node.hideFromNav} {#if node.label}
           <li class="fd-nested-list__item">
-            <a
-              href="{getRouteLink(node)}"
-              title="{$getTranslation(node.label)}"
-              class="fd-nested-list__link {node === selectedNode ? 'is-selected' : ''}"
-              on:click|preventDefault="{() => handleClick(node)}"
-              data-testid="{getTestId(node)}"
-            >
-              {#if node.icon} {#if isOpenUIiconName(node.icon)}
-              <span
-                class="fd-nested-list__icon sap-icon--{node.icon}"
-              ></span>
-              {:else}
-              <span class="fd-nested-list__icon">
-                <img src="{node.icon}" alt="{node.altText ? node.altText : ''}">
-              </span>
-              {/if}
-              {:else}
-              <span
-                class="fd-nested-list__icon {isSemiCollapsed ? 'sap-icon--rhombus-milestone-2' : ''}"
-              ></span>
-              {/if}
-              <span
-                class="fd-nested-list__title"
-              >{$getTranslation(node.label)}</span>
-              {#if node.externalLink && node.externalLink.url}
-              <span
-                class="sap-icon--action"
-              ></span>
-              {/if}
-              {#if node.badgeCounter}
-              <BadgeCounter {node}/>
-              {/if}
-            </a>
+            <div class="fd-nested-list__content">
+              <a
+                href="{getRouteLink(node)}"
+                title="{$getTranslation(node.label)}"
+                class="fd-nested-list__link {node === selectedNode ? 'is-selected' : ''}"
+                on:click|preventDefault="{() => handleClick(node)}"
+                data-testid="{getTestId(node)}"
+              >
+                {#if node.icon} {#if isOpenUIiconName(node.icon)}
+                <span
+                  class="fd-nested-list__icon sap-icon--{node.icon}"
+                ></span>
+                {:else}
+                <span class="fd-nested-list__icon">
+                  <img
+                    src="{node.icon}"
+                    alt="{node.altText ? node.altText : ''}"
+                  >
+                </span>
+                {/if}
+                {:else}
+                <span
+                  class="fd-nested-list__icon {isSemiCollapsed ? 'sap-icon--rhombus-milestone-2' : ''}"
+                ></span>
+                {/if}
+                <span
+                  class="fd-nested-list__title"
+                >{$getTranslation(node.label)}</span>
+                {#if node.externalLink && node.externalLink.url}
+                <span
+                  class="sap-icon--action"
+                ></span>
+                {/if}
+                {#if node.badgeCounter}
+                <BadgeCounter {node}/>
+                {/if}
+              </a>
+            </div>
           </li>
           {/if} {/if} {/each}
           {:else}
@@ -105,25 +110,27 @@
             >
               {#each nodes as node} {#if !node.hideFromNav} {#if node.label}
               <li class="fd-nested-list__item">
-                <a
-                  href="{getRouteLink(node)}"
-                  class="fd-nested-list__link {node === selectedNode ? 'is-selected' : ''}"
-                  on:click|preventDefault="{() => handleClick(node)}"
-                  data-testid="{getTestId(node)}"
-                  title="{$getTranslation(node.label)}"
-                >
-                  <span
-                    class="fd-nested-list__title"
-                  >{$getTranslation(node.label)}</span>
-                  {#if node.externalLink && node.externalLink.url}
-                  <span
-                    class="sap-icon--action"
-                  ></span>
-                  {/if}
-                  {#if node.badgeCounter}
-                  <BadgeCounter {node}/>
-                  {/if}
-                </a>
+                <div class="fd-nested-list__content">
+                  <a
+                    href="{getRouteLink(node)}"
+                    class="fd-nested-list__link {node === selectedNode ? 'is-selected' : ''}"
+                    on:click|preventDefault="{() => handleClick(node)}"
+                    data-testid="{getTestId(node)}"
+                    title="{$getTranslation(node.label)}"
+                  >
+                    <span
+                      class="fd-nested-list__title"
+                    >{$getTranslation(node.label)}</span>
+                    {#if node.externalLink && node.externalLink.url}
+                    <span
+                      class="sap-icon--action"
+                    ></span>
+                    {/if}
+                    {#if node.badgeCounter}
+                    <BadgeCounter {node}/>
+                    {/if}
+                  </a>
+                </div>
               </li>
               {/if} {/if} {/each}
             </ul>
@@ -137,25 +144,27 @@
                 <ul class="fd-nested-list fd-nested-list--text-only">
                   {#each nodes as node} {#if !node.hideFromNav} {#if node.label}
                   <li class="fd-nested-list__item">
-                    <a
-                      href="{getRouteLink(node)}"
-                      class="fd-nested-list__link {node === selectedNode ? 'is-selected' : ''}"
-                      on:click|preventDefault="{() => handleClick(node)}"
-                      data-testid="{getTestId(node)}"
-                      title="{$getTranslation(node.label)}"
-                    >
-                      <span
-                        class="fd-nested-list__title"
-                      >{$getTranslation(node.label)}</span>
-                      {#if node.externalLink && node.externalLink.url}
-                      <span
-                        class="sap-icon--action"
-                      ></span>
-                      {/if}
-                      {#if node.badgeCounter}
-                      <BadgeCounter {node}/>
-                      {/if}
-                    </a>
+                    <div class="fd-nested-list__content">
+                      <a
+                        href="{getRouteLink(node)}"
+                        class="fd-nested-list__link {node === selectedNode ? 'is-selected' : ''}"
+                        on:click|preventDefault="{() => handleClick(node)}"
+                        data-testid="{getTestId(node)}"
+                        title="{$getTranslation(node.label)}"
+                      >
+                        <span
+                          class="fd-nested-list__title"
+                        >{$getTranslation(node.label)}</span>
+                        {#if node.externalLink && node.externalLink.url}
+                        <span
+                          class="sap-icon--action"
+                        ></span>
+                        {/if}
+                        {#if node.badgeCounter}
+                        <BadgeCounter {node}/>
+                        {/if}
+                      </a>
+                    </div>
                   </li>
                   {/if} {/if} {/each}
                 </ul>
@@ -192,38 +201,43 @@
             class="fd-nested-list__item"
             title="{$getTranslation(node.label)}"
           >
-            <a
-              href="{getRouteLink(node)}"
-              class="fd-nested-list__link {node === selectedNode ? 'is-selected' : ''}"
-              on:click|preventDefault="{() => handleClick(node)}"
-              data-testid="{getTestId(node)}"
-            >
-              {#if node.icon} {#if isOpenUIiconName(node.icon)}
-              <span
-                class="fd-nested-list__icon sap-icon--{node.icon}"
-              ></span>
-              {:else}
-              <span class="fd-nested-list__icon">
-                <img src="{node.icon}" alt="{node.altText ? node.altText : ''}">
-              </span>
-              {/if}
-              {:else}
-              <span
-                class="fd-nested-list__icon {isSemiCollapsed ? 'sap-icon--rhombus-milestone-2' : ''}"
-              ></span>
-              {/if}
-              <span
-                class="fd-nested-list__title"
-              >{$getTranslation(node.label)}</span>
-              {#if node.externalLink && node.externalLink.url}
-              <span
-                class="sap-icon--action"
-              ></span>
-              {/if}
-              {#if node.badgeCounter}
-              <BadgeCounter {node}/>
-              {/if}
-            </a>
+            <div class="fd-nested-list__content">
+              <a
+                href="{getRouteLink(node)}"
+                class="fd-nested-list__link {node === selectedNode ? 'is-selected' : ''}"
+                on:click|preventDefault="{() => handleClick(node)}"
+                data-testid="{getTestId(node)}"
+              >
+                {#if node.icon} {#if isOpenUIiconName(node.icon)}
+                <span
+                  class="fd-nested-list__icon sap-icon--{node.icon}"
+                ></span>
+                {:else}
+                <span class="fd-nested-list__icon">
+                  <img
+                    src="{node.icon}"
+                    alt="{node.altText ? node.altText : ''}"
+                  >
+                </span>
+                {/if}
+                {:else}
+                <span
+                  class="fd-nested-list__icon {isSemiCollapsed ? 'sap-icon--rhombus-milestone-2' : ''}"
+                ></span>
+                {/if}
+                <span
+                  class="fd-nested-list__title"
+                >{$getTranslation(node.label)}</span>
+                {#if node.externalLink && node.externalLink.url}
+                <span
+                  class="sap-icon--action"
+                ></span>
+                {/if}
+                {#if node.badgeCounter}
+                <BadgeCounter {node}/>
+                {/if}
+              </a>
+            </div>
           </li>
           {/if} {/if} {/each}
           {/if}
@@ -667,8 +681,11 @@
     background-color: transparent;
     @include transition(width 0.1s linear);
     //remove dotted outline from anchor in left side nav
-    .fd-nested-list__link:focus {
-      outline: none;
+    .fd-nested-list {
+      &__link:focus,
+      &__button:focus {
+        outline: none;
+      }
     }
   }
 
