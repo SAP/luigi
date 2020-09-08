@@ -4,6 +4,12 @@
 
 set -e # exit on errors
 
+# xtrace https://wiki-dev.bash-hackers.org/scripting/debuggingtips#making_xtrace_more_useful
+# set -v # verbose output
+# set -x # print everything as if it were executed
+export PS4='+(${BASH_SOURCE}:${LINENO}): ${FUNCNAME[0]:+${FUNCNAME[0]}(): }'
+
+
 showHelp() {
   echo ""
   echo ""
@@ -75,9 +81,25 @@ killWebServers() {
 
 promptForTag() {
   # PROMPT FOR TAG
+  git reset --hard HEAD
   if [ "latest" = "$TAG" ]; then
+    git config pull.ff only       # fast-forward only
+    echo "Fetch with depth 500 and tags"
+    git fetch --depth 500 --tags
+    echo "Set config remote.origin.fetch"
+    git config remote.origin.fetch "+refs/heads/*:refs/remotes/origin/*" # get access to all origin branches
+    echo "Get latest tag"
+    git tag -l | tail -1
     LATEST_LOCAL_TAG=`(git tag -l | tail -1)`
-    TAG=$LATEST_LOCAL_TAG;
+    if [ "" = "$LATEST_LOCAL_TAG" ]; then
+        echo "No tags available, raise depth on git pull"
+        exit 2
+    fi
+    TAG=$LATEST_LOCAL_TAG
+    echo "Using latest Tag: $TAG"
+  else
+    echo "Fetching tags"
+    git fetch --tags
   fi
   if [ "" = "$TAG" ]; then
     # LATEST_LOCAL_TAG=`(git tag -l | tail -1)`
@@ -109,7 +131,7 @@ promptForTag() {
     TAG=${releases[selectedIndex]};
   fi
 }
-  
+
 verifyInstallation() {
   ### VERIFY LOCAL CURRENT LUIGI
   if [ "$INSTALL" == "true" ]; then
@@ -155,8 +177,6 @@ checkoutLuigiToTestfolder() {
 
   cd $LUIGI_DIR_TESTING
   echoe "Checking out selected release tag $TAG"
-  git reset --hard HEAD
-  git fetch --tags
   git checkout tags/$TAG
 
   for FOLDER in "${APP_FOLDERS[@]}"; do
@@ -213,7 +233,7 @@ bundleApps() {
 verifyAndStartWebserver() {
   killWebServers
 
-  for i in "${!APP_FOLDERS[@]}"; do 
+  for i in "${!APP_FOLDERS[@]}"; do
     echoe "Run app webserver on ${APP_PORTS[$i]}"
     cd $LUIGI_DIR_TESTING/${APP_FOLDERS[$i]}
     runWebserver ${APP_PORTS[$i]} ${APP_PUBLIC_FOLDERS[$i]} ${APP_PATH_CHECK[$i]}
@@ -242,10 +262,13 @@ NODE_MODULES=$EXAMPLE_DIR/node_modules/@luigi-project
 
 TESTONLY=""
 
+
+
 while [ "$#" -gt 0 ]; do
   case "$1" in
     # commands with input value, shift 2
     -t|--tag) TAG="$2"; shift 2;;
+
     # validity check for argumenst with input value
     -t|--tag) echoe "$1 requires an argument" >&2; exit 1;;
 
