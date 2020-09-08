@@ -12,7 +12,7 @@
 function check_conflict_marker() { 
     declare -a illegal_strings=("<<<<<<<" "=======" ">>>>>>>")
     # string diff containing changes already staged for commit
-    staged_changes=$(git diff --cached --diff-filter=ACMR -- . ':(exclude)scripts/hooks/prevent-illegal-characters.sh')
+    staged_changes=$(git diff --cached --diff-filter=ACMR --unified=0 -- . ':(exclude)scripts/hooks/prevent-illegal-characters.sh')
     
     for illegal in ${illegal_strings[@]}; do
         if [[ $staged_changes == *$illegal*   ]]; then

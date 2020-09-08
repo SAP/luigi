@@ -1,5 +1,6 @@
 import { MarkdownSvc } from '../../services/markdown.service';
 import { readdirSync, readFileSync, writeFileSync } from 'fs';
+import path from 'path';
 
 let parsedDocs;
 export function getParsedDocs() {
@@ -13,15 +14,19 @@ export function getParsedDocs() {
 }
 
 function setParsedDocs() {
-  const dir = './../../docs';
+  const dirs = ['./../../docs',
+               './../../plugins/auth/public/auth-oauth2',
+               './../../plugins/auth/public/auth-oidc'];
   const parsingArr = [];
-  readdirSync(dir)
+  dirs.forEach((dir) => {
+    readdirSync(dir)
     // .filter(name => name !== 'README.md')
     .filter(name => name.endsWith('.md'))
-    .map(name => {
+    .forEach(name => {
       const mdContent = readFileSync(dir + '/' + name);
       parsingArr.push(new Promise((resolve) => {
-        const shortName = name.replace('.md', '');
+        let shortName = name.replace('.md', '');
+        shortName = shortName == 'README' ? path.basename(dir) : shortName;
         MarkdownSvc.process(mdContent, { shortName }).then((contents) => {
           resolve({
             name,
@@ -32,6 +37,6 @@ function setParsedDocs() {
         })
       }));
     });
-  
+  })
   return Promise.all(parsingArr);
 }

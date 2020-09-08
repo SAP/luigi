@@ -42,6 +42,27 @@ describe('Modal Microfrontend', () => {
         .should('not.be.visible');
     });
 
+    it(`can be closed by the Luigi client`, () => {
+      cy.wrap($iframeBody)
+        .contains('rendered in a modal')
+        .click();
+
+      cy.wrap($iframeBody)
+        .get('[data-testid=modal-mf]')
+        .should('be.visible');
+
+      cy.get('[data-testid=modal-mf] iframe').then(ifr => {
+        cy.wrap(ifr[0].contentDocument)
+          .its('body')
+          .contains('Close modal')
+          .click();
+
+        cy.wrap($iframeBody)
+          .get('[data-testid=modal-mf]')
+          .should('not.be.visible');
+      });
+    });
+
     it(`sets proper URL inside iframe`, () => {
       cy.wrap($iframeBody)
         .contains('rendered in a modal')

@@ -1,9 +1,8 @@
 // Helper methods for 'navigation.js' file. They don't require any method from 'navigation.js` but are required by them.
-import { LuigiAuth, LuigiConfig } from '../../core-api';
+import { LuigiAuth, LuigiConfig, LuigiFeatureToggles } from '../../core-api';
 import { AuthHelpers } from './';
 import { Navigation } from '../../navigation/services/navigation';
 import { Routing } from '../../services/routing';
-import { NodeDataManagementStorage } from '../../services/node-data-management';
 
 class NavigationHelpersClass {
   constructor() {
@@ -49,6 +48,23 @@ class NavigationHelpersClass {
         (!loggedIn && anon !== 'exclusive' && anon !== true)
       ) {
         return false;
+      }
+    }
+    if (
+      nodeToCheckPermissionFor &&
+      nodeToCheckPermissionFor.visibleForFeatureToggles
+    ) {
+      let activeFeatureToggles = LuigiFeatureToggles.getActiveFeatureToggleList();
+      for (let ft of nodeToCheckPermissionFor.visibleForFeatureToggles) {
+        if (ft.startsWith('!')) {
+          if (activeFeatureToggles.includes(ft.slice(1))) {
+            return false;
+          }
+        } else {
+          if (!activeFeatureToggles.includes(ft)) {
+            return false;
+          }
+        }
       }
     }
     const permissionCheckerFn = LuigiConfig.getConfigValue(
@@ -165,10 +181,10 @@ class NavigationHelpersClass {
           selectedNode = node;
         }
       });
+
       if (!node.hideFromNav) {
         visibleNodeCount++;
       }
-
       let badgeCount;
       const hasBadge = !!node.badgeCounter;
       if (hasBadge) {

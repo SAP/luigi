@@ -118,7 +118,8 @@
     LuigiI18N,
     LuigiConfig,
     LuigiElements,
-    LuigiGlobalSearch
+    LuigiGlobalSearch,
+    LuigiFeatureToggles
   } from './core-api';
   import { Navigation } from './navigation/services/navigation';
   import { Routing } from './services/routing';
@@ -180,12 +181,15 @@
   export let displaySearchResult;
   export let displayCustomSearchResult = true;
   export let searchResult;
+  let featureToggleList;
 
   const prepareInternalData = config => {
     const iframeConf = config.iframe.luigi;
+    featureToggleList = LuigiFeatureToggles.getActiveFeatureToggleList();
     const internalData = {
       isNavigateBack,
       viewStackSize: preservedViews.length,
+      activeFeatureToggleList: featureToggleList,
       currentLocale: LuigiI18N.getCurrentLocale(),
       clientPermissions: iframeConf.nextViewUrl
         ? iframeConf.nextClientPermissions
@@ -459,9 +463,8 @@
       // relative
       path = Routing.concatenatePath(getSubPath(currentNode), params.link);
     }
-
     if (params.nodeParams && Object.keys(params.nodeParams).length) {
-      path += '?';
+      path += path.includes('?') ? '&' : '?';
       Object.entries(params.nodeParams).forEach((entry, index) => {
         path +=
           encodeURIComponent(
@@ -928,6 +931,7 @@
     EventListenerHelpers.addEventListener('message', async e => {
       const iframe = IframeHelpers.getValidMessageSource(e);
       if (!iframe) return;
+      iframe._ready = true;
 
       if ('custom' === e.data.msg) {
         const customMessagesListeners =
@@ -1634,15 +1638,6 @@
   :global(.fd-product-switch__body) {
     max-height: calc(var(--vh, 1vh) * 100 - 76px);
   }
-
-  //Overwrites with SAP variables
-
-  :global(.fd-shellbar) {
-    border-bottom: #354a5f;
-    border-bottom: 1px solid var(--sapShell_BorderColor, #354a5f);
-  }
-
-
 
   .wcContainer {
     position: absolute;

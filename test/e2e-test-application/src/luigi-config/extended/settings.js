@@ -36,6 +36,9 @@ class Settings {
     ],
     defaultTheme: 'light'
   };
+  featureToggles = {
+    queryStringParam: 'ft'
+  };
   // sideNavCompactMode = true;
   // allowRules = ['microphone'];
   // iframeCreationInterceptor = (iframe, viewGroup, navigationNode, microFrontendType) => { };
