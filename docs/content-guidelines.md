@@ -119,6 +119,8 @@ Use H1 headings only at the start of the document to indicate the document name.
 
 Only use H2 and H3 headings to organize your content into categories. Do not use H4 headings or lower.
 
+H4 can be only used as a function naming.
+
 ### Lists
 
 Lists are very useful for breaking up text and providing instructions.
