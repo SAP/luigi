@@ -24,6 +24,22 @@ class Settings {
       Luigi.ux().showAlert(alert);
     }
   };
+  theming = {
+    themes: () => [
+      { id: 'light', name: 'Fiori3 Light' },
+      { id: 'dark', name: 'Fiori3 Dark' }
+    ],
+    defaultTheme: 'light'
+    // nodeViewURLDecorator: {
+    //   queryStringParameter: {
+    //     keyName: 'sap-theme'
+    //     // optional
+    //     // value: themeId => {
+    //     //   return themeId;
+    //     // }
+    //   }
+    // }
+  };
   featureToggles = {
     queryStringParam: 'ft'
   };

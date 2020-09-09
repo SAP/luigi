@@ -1,4 +1,4 @@
-<svelte:window on:keydown="{handleKeydown}"/>
+<svelte:window on:keydown="{handleKeydown}" />
 <div class="fd-dialog fd-dialog--active" style="z-index:999">
   <div class="fd-dialog__content lui-modal-mf" data-testid="modal-mf">
     <div class="fd-dialog__header fd-bar fd-bar--header">
@@ -148,7 +148,7 @@
       viewUrl = RoutingHelpers.substituteViewUrl(viewUrl, componentData);
     }
 
-    const iframe = IframeHelpers.createIframe(
+    const iframe = await IframeHelpers.createIframe(
       viewUrl,
       undefined,
       nodeObject,
