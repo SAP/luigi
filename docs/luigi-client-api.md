@@ -204,7 +204,7 @@ Returns **[Array](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Gl
 
 **Meta**
 
--   **since**: NEXTRELEASE
+-   **since**: 1.4.0
 
 #### getNodeParams
 

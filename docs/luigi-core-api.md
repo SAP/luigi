@@ -816,7 +816,7 @@ Luigi.ux().setDocumentTitle('Luigi');
 
 **Meta**
 
--   **since**: NEXTRELEASE
+-   **since**: 1.4.0
 
 #### getDocumentTitle
 
@@ -832,7 +832,7 @@ Returns **any** a string, which is displayed in the tab.
 
 **Meta**
 
--   **since**: NEXTRELEASE
+-   **since**: 1.4.0
 
 ## Luigi.globalSearch()
 
@@ -984,7 +984,7 @@ Returns **[promise](https://developer.mozilla.org/docs/Web/JavaScript/Reference/
 
 **Meta**
 
--   **since**: NEXTRELEASE
+-   **since**: 1.4.0
 
 #### setCurrentTheme
 
@@ -1002,7 +1002,7 @@ Luigi.theming().setCurrentTheme('light')
 
 **Meta**
 
--   **since**: NEXTRELEASE
+-   **since**: 1.4.0
 
 #### getThemeObject
 
@@ -1027,7 +1027,7 @@ Returns **[promise](https://developer.mozilla.org/docs/Web/JavaScript/Reference/
 
 **Meta**
 
--   **since**: NEXTRELEASE
+-   **since**: 1.4.0
 
 #### getCurrentTheme
 
@@ -1043,7 +1043,7 @@ Returns **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/G
 
 **Meta**
 
--   **since**: NEXTRELEASE
+-   **since**: 1.4.0
 
 #### isThemingAvailable
 
@@ -1059,7 +1059,7 @@ Returns **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/
 
 **Meta**
 
--   **since**: NEXTRELEASE
+-   **since**: 1.4.0
 
 ## Luigi.featureToggles()
 
@@ -1085,7 +1085,7 @@ Luigi.featureToggles().setFeatureToggle('featureToggleName');
 
 **Meta**
 
--   **since**: NEXTRELEASE
+-   **since**: 1.4.0
 
 #### unsetFeatureToggle
 
@@ -1103,7 +1103,7 @@ Luigi.featureToggles().unsetFeatureToggle('featureToggleName');
 
 **Meta**
 
--   **since**: NEXTRELEASE
+-   **since**: 1.4.0
 
 #### getActiveFeatureToggleList
 
@@ -1119,4 +1119,4 @@ Returns **[Array](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Gl
 
 **Meta**
 
--   **since**: NEXTRELEASE
+-   **since**: 1.4.0

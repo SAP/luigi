@@ -25,6 +25,23 @@ The lerna-changelog tool detects changes based on PR labels and maps them to sec
 -->
 
 
+## [v1.4.0] (2020-09-09)
+
+#### :rocket: Added
+* [#1611](https://github.com/SAP/luigi/pull/1611) Theming API ([@maxmarkus](https://github.com/maxmarkus))
+* [#1591](https://github.com/SAP/luigi/pull/1591) Possibility to set document title without Luigi header config ([@JohannesDoberer](https://github.com/JohannesDoberer))
+* [#1578](https://github.com/SAP/luigi/pull/1578) Modal loading indicator and close Modal event ([@azriel46d](https://github.com/azriel46d))
+* [#1579](https://github.com/SAP/luigi/pull/1579) Luigi sample with NextJs ([@stanleychh](https://github.com/stanleychh))
+* [#1571](https://github.com/SAP/luigi/pull/1571) Feature toggles ([@JohannesDoberer](https://github.com/JohannesDoberer))
+
+#### :bug: Fixed
+* [#1612](https://github.com/SAP/luigi/pull/1612) Fix issue with dotted outline in the left side nav ([@UlianaMunich](https://github.com/UlianaMunich))
+* [#1606](https://github.com/SAP/luigi/pull/1606) Fix shellbar buttons alignment issue ([@stanleychh](https://github.com/stanleychh))
+* [#1587](https://github.com/SAP/luigi/pull/1587) Add up arrow key press to global search ([@stanleychh](https://github.com/stanleychh))
+* [#1580](https://github.com/SAP/luigi/pull/1580) Iframe handshake sync ([@JohannesDoberer](https://github.com/JohannesDoberer))
+
+
+
 ## [v1.3.1] (2020-08-14)
 
 #### :bug: Fixed
@@ -829,3 +846,4 @@ The lerna-changelog tool detects changes based on PR labels and maps them to sec
 [v1.3.0]: https://github.com/SAP/luigi/compare/v1.2.4...v1.3.0
 
 [v1.3.1]: https://github.com/SAP/luigi/compare/v1.3.0...v1.3.1
+[v1.4.0]: https://github.com/SAP/luigi/compare/v1.3.1...v1.4.0
