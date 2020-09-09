@@ -26,8 +26,6 @@ The lerna-changelog tool detects changes based on PR labels and maps them to sec
 
 
 ## [v1.4.0] (2020-09-09)
-#### :boom: Breaking Change 
-* [#1542](https://github.com/SAP/luigi/issues/1542) Update Fundamental Styles library to 0.11.0 ([@UlianaMunich](https://github.com/UlianaMunich))
 
 #### :rocket: Added
 * [#1611](https://github.com/SAP/luigi/pull/1611) Theming API ([@maxmarkus](https://github.com/maxmarkus))
@@ -35,6 +33,7 @@ The lerna-changelog tool detects changes based on PR labels and maps them to sec
 * [#1578](https://github.com/SAP/luigi/pull/1578) Modal loading indicator and close Modal event ([@azriel46d](https://github.com/azriel46d))
 * [#1579](https://github.com/SAP/luigi/pull/1579) Luigi sample with NextJs ([@stanleychh](https://github.com/stanleychh))
 * [#1571](https://github.com/SAP/luigi/pull/1571) Feature toggles ([@JohannesDoberer](https://github.com/JohannesDoberer))
+* [#1542](https://github.com/SAP/luigi/issues/1542) Update Fundamental Styles library to 0.11.0 ([@UlianaMunich](https://github.com/UlianaMunich))
 
 #### :bug: Fixed
 * [#1565](https://github.com/SAP/luigi/pull/1565) Fix for content security policy issues ([@maxmarkus](https://github.com/maxmarkus))
