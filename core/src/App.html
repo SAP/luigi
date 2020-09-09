@@ -3,7 +3,7 @@
   {#if confirmationModal.displayed}
   <ConfirmationModal
     settings="{confirmationModal.settings}"
-    on:modalConfirm="{() => handleModalResult(true)}"
+    on:modalConfirm="{()=> handleModalResult(true)}"
     on:modalDismiss="{() => handleModalResult(false)}"
   ></ConfirmationModal>
   {/if}
@@ -119,7 +119,8 @@
     LuigiConfig,
     LuigiElements,
     LuigiGlobalSearch,
-    LuigiFeatureToggles
+    LuigiFeatureToggles,
+    LuigiTheming
   } from './core-api';
   import { Navigation } from './navigation/services/navigation';
   import { Routing } from './services/routing';
@@ -191,6 +192,7 @@
       viewStackSize: preservedViews.length,
       activeFeatureToggleList: featureToggleList,
       currentLocale: LuigiI18N.getCurrentLocale(),
+      currentTheme: LuigiTheming.getCurrentTheme(),
       clientPermissions: iframeConf.nextViewUrl
         ? iframeConf.nextClientPermissions
         : iframeConf.clientPermissions
@@ -205,12 +207,12 @@
     return internalData;
   };
 
-  const sendContextToClient = (config, goBackContext = {}) => {
+  const sendContextToClient = async (config, goBackContext = {}) => {
     if (!config.iframe) {
       console.info('iframe does not exist, not able to send context.');
       return;
     }
-
+    const internal = prepareInternalData(config);
     const message = {
       msg: 'luigi.init',
       context: JSON.stringify(
@@ -222,7 +224,7 @@
       pathParams: JSON.stringify(
         Object.assign({}, config.pathParams || pathParams)
       ),
-      internal: JSON.stringify(prepareInternalData(config)),
+      internal: JSON.stringify(internal),
       authData: AuthHelpers.getStoredAuthData()
     };
 
@@ -993,7 +995,7 @@
             IframeHelpers.isMessageSource(e, specialIframeProps[typ.iframeKey])
         );
         if (specialIframeMessageSource.length) {
-          specialIframeMessageSource.forEach(typ => {
+          specialIframeMessageSource.forEach(async typ => {
             let ctx = specialIframeProps[typ.dataKey].context;
             const conf = {
               ...config,
@@ -1004,13 +1006,13 @@
               modal: typ.iframeKey.startsWith('modal'),
               splitView: typ.iframeKey.startsWith('splitView')
             };
-            sendContextToClient(conf, {});
+            await sendContextToClient(conf, {});
           });
         } else if (
           config.iframe &&
           IframeHelpers.isMessageSource(e, config.iframe)
         ) {
-          sendContextToClient(config, {});
+          await sendContextToClient(config, {});
           const loadingIndicatorAutoHideEnabled =
             !currentNode ||
             !currentNode.loadingIndicator ||
@@ -1022,7 +1024,7 @@
           ViewGroupPreloading.preload();
         } else if (iframe.luigi.preloading) {
           // set empty context to an existing but inactive iframe; this is a valid use case (view group pre-loading)
-          sendContextToClient(
+          await sendContextToClient(
             {
               iframe: iframe,
               context: {},
@@ -1072,13 +1074,13 @@
       if ('luigi.navigation.back' === e.data.msg) {
         if (IframeHelpers.isMessageSource(e, modalIframe)) {
           closeModal();
-          sendContextToClient(config, {
+          await sendContextToClient(config, {
             goBackContext:
               e.data.goBackContext && JSON.parse(e.data.goBackContext)
           });
         } else if (IframeHelpers.isMessageSource(e, splitViewIframe)) {
           closeSplitView();
-          sendContextToClient(config, {
+          await sendContextToClient(config, {
             goBackContext:
               e.data.goBackContext && JSON.parse(e.data.goBackContext)
           });
@@ -1239,6 +1241,7 @@
   };
 
   onMount(() => {
+    LuigiTheming._init();
     searchProvider = LuigiConfig.getConfigValue('globalSearch.searchProvider');
     responsiveNavSetting = LuigiConfig.getConfigValue(
       'settings.responsiveNavigation'

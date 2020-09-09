@@ -240,9 +240,7 @@ class SplitViewSvcClass {
     });
 
     this.getContainer().style.top = `${this.splitViewValues.top}px`;
-    IframeHelpers.getIframeContainer().style.paddingBottom = `${
-      this.splitViewValues.bottom
-    }px`;
+    IframeHelpers.getIframeContainer().style.paddingBottom = `${this.splitViewValues.bottom}px`;
     setTimeout(() => {
       this.getDragger().style.top = `${this.splitViewValues.top}px`;
     });
