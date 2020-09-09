@@ -14,7 +14,7 @@ class LuigiTheming {
    * Retrieves the available themes
    * @memberof Theming
    * @returns {promise} resolves an array of theming objects
-   * @since NEXTRELEASE
+   * @since 1.4.0
    * @example
    * Luigi
    *  .theming()
@@ -31,7 +31,7 @@ class LuigiTheming {
    * Sets the current theme id
    * @memberof Theming
    * @param {string} id of a theme object
-   * @since NEXTRELEASE
+   * @since 1.4.0
    * @example
    * Luigi.theming().setCurrentTheme('light')
    */
@@ -44,7 +44,7 @@ class LuigiTheming {
    * @memberof Theming
    * @param {string} id a theme id
    * @returns {promise} resolves a theme object
-   * @since NEXTRELEASE
+   * @since 1.4.0
    * @example
    * Luigi
    *  .theming()
@@ -61,7 +61,7 @@ class LuigiTheming {
    * Retrieves the current active theme. Falls back to **defaultTheme** if none explicitly specified before.
    * @memberof Theming
    * @returns {string} theme id
-   * @since NEXTRELEASE
+   * @since 1.4.0
    * @example
    * Luigi.theming().getCurrentTheme()
    */
@@ -85,7 +85,7 @@ class LuigiTheming {
    * The general status about the Theming configuration.
    * @memberof Theming
    * @returns {boolean} `true` if **settings.theming** configuration object is defined
-   * @since NEXTRELEASE
+   * @since 1.4.0
    * @example
    * Luigi.theming().isThemingAvailable()
    */
