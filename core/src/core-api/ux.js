@@ -108,7 +108,7 @@ class LuigiUX {
    * Set the document title
    * @memberof UX
    * @param {string} documentTitle
-   * @since NEXTRELEASE
+   * @since 1.4.0
    * @example Luigi.ux().setDocumentTitle('Luigi');
    */
   setDocumentTitle(documentTitle) {
@@ -119,7 +119,7 @@ class LuigiUX {
   /**
    * Get the document title
    * @memberof UX
-   * @since NEXTRELEASE
+   * @since 1.4.0
    * @returns a string, which is displayed in the tab.
    * @example Luigi.ux().getDocumentTitle();
    */
