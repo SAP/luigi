@@ -318,7 +318,7 @@ settings: {
       visibleForFeatureToggles:['ft1', '!ft2']
     }
     ```
-- **since**: NEXTRELEASE
+- **since**: 1.4.0
 
 ## Context switcher
 
@@ -377,7 +377,7 @@ The context switcher is a drop-down list available in the top navigation bar. It
 ### useFallbackLabelCache
 - **type**: boolean
 - **description**: if set to `true`, the labels retrieved through **fallbackLabelResolver** are cached within Luigi. This is useful, if **fallbackLabelResolver** is an async function which does a remote server call to fetch its value.
-- **since**: NEXTRELEASE
+- **since**: 1.4.0
 
 ### preserveSubPathOnSwitch
 - **type**: boolean
