@@ -144,7 +144,7 @@ class IframeClass {
      * check if luigi responded
      * if not, callback again to replace the iframe
      */
-    this.timeoutHandle = setTimeout(() => {
+    this.timeoutHandle = setTimeout(async () => {
       if (config.navigateOk) {
         config.navigateOk = undefined;
       } else {

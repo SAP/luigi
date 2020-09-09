@@ -5,6 +5,7 @@ import { afterEach } from 'mocha';
 
 import { IframeHelpers, GenericHelpers } from '../../../src/utilities/helpers';
 import { LuigiConfig } from '../../../src/core-api';
+import { ViewUrlDecorator } from '../../../src/services';
 
 describe('Iframe-helpers', () => {
   let component;
@@ -21,8 +22,11 @@ describe('Iframe-helpers', () => {
     };
 
     sinon.stub(GenericHelpers);
+    sinon.stub(ViewUrlDecorator);
     GenericHelpers.getRandomId.returns('abc');
     GenericHelpers.isFunction.callThrough();
+    ViewUrlDecorator.hasDecorators.returns(false);
+    ViewUrlDecorator.applyDecorators.callsFake(url => url);
   });
   afterEach(() => {
     if (document.createElement.restore) {
@@ -35,6 +39,7 @@ describe('Iframe-helpers', () => {
     it('createIframe', () => {
       const iframe = IframeHelpers.createIframe('http://luigi.url.com/');
       assert.equal(iframe.src, 'http://luigi.url.com/');
+      sinon.assert.notCalled(ViewUrlDecorator.applyDecorators);
     });
 
     it('createIframe with view group', () => {
@@ -78,6 +83,17 @@ describe('Iframe-helpers', () => {
         'main'
       );
       assert(interceptor.calledWith(iframe, 'vg1', node, 'main'));
+    });
+    it('createIframe with viewUrlDecorator', () => {
+      const mockUrl = 'http://luigi.url.com/';
+      ViewUrlDecorator.hasDecorators.returns(true);
+
+      const iframe = IframeHelpers.createIframe(mockUrl);
+
+      assert.equal(iframe.src, mockUrl);
+
+      sinon.assert.calledOnce(ViewUrlDecorator.hasDecorators);
+      sinon.assert.calledWithExactly(ViewUrlDecorator.applyDecorators, mockUrl);
     });
   });
 

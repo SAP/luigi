@@ -2,6 +2,7 @@
 import { GenericHelpers } from './';
 import { MICROFRONTEND_TYPES } from './../constants';
 import { LuigiConfig } from '../../core-api';
+import { ViewUrlDecorator } from '../../services';
 
 class IframeHelpersClass {
   get specialIframeTypes() {
@@ -253,7 +254,9 @@ class IframeHelpersClass {
       : luigiDefaultSandboxRules;
 
     const iframe = document.createElement('iframe');
-    iframe.src = viewUrl;
+    iframe.src = ViewUrlDecorator.hasDecorators()
+      ? ViewUrlDecorator.applyDecorators(viewUrl)
+      : viewUrl;
     if (allowRules) {
       iframe.allow = allowRules.join(' ');
     }

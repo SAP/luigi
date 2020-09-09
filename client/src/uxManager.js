@@ -246,5 +246,14 @@ class UxManager extends LuigiClientBase {
   isModal() {
     return lifecycleManager.currentContext?.internal?.modal;
   }
+
+  /**
+   * Gets the current theme.
+   * @returns {*} current themeObj
+   * @memberof uxManager
+   */
+  getCurrentTheme() {
+    return lifecycleManager.currentContext?.internal?.currentTheme;
+  }
 }
 export const uxManager = new UxManager();
