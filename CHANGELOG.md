@@ -26,6 +26,8 @@ The lerna-changelog tool detects changes based on PR labels and maps them to sec
 
 
 ## [v1.4.0] (2020-09-09)
+#### :boom: Breaking Change 
+* [#1542](https://github.com/SAP/luigi/issues/1542) Update Fundamental Styles library to 0.11.0 ([@UlianaMunich](https://github.com/UlianaMunich))
 
 #### :rocket: Added
 * [#1611](https://github.com/SAP/luigi/pull/1611) Theming API ([@maxmarkus](https://github.com/maxmarkus))
@@ -36,7 +38,6 @@ The lerna-changelog tool detects changes based on PR labels and maps them to sec
 
 #### :bug: Fixed
 * [#1565](https://github.com/SAP/luigi/pull/1565) Fix for content security policy issues ([@maxmarkus](https://github.com/maxmarkus))
-* [#1542](https://github.com/SAP/luigi/issues/1542) Update Fundamental Styles library to 0.11.0 ([@UlianaMunich](https://github.com/UlianaMunich))
 * [#1612](https://github.com/SAP/luigi/pull/1612) Fix issue with dotted outline in the left side nav ([@UlianaMunich](https://github.com/UlianaMunich))
 * [#1606](https://github.com/SAP/luigi/pull/1606) Fix shellbar buttons alignment issue ([@stanleychh](https://github.com/stanleychh))
 * [#1587](https://github.com/SAP/luigi/pull/1587) Add up arrow key press to global search ([@stanleychh](https://github.com/stanleychh))
