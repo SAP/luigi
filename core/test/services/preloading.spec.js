@@ -5,7 +5,7 @@ import { afterEach } from 'mocha';
 
 import { Iframe } from '../../src/services/iframe';
 import { IframeHelpers, GenericHelpers } from '../../src/utilities/helpers';
-import { ViewGroupPreloading } from '../../src/services/preloading';
+import { ViewGroupPreloading, ViewUrlDecorator } from '../../src/services';
 import { LuigiConfig } from '../../src/core-api';
 
 describe('Iframe', () => {
@@ -34,6 +34,10 @@ describe('Iframe', () => {
         return preloadingAllowed ? undefined : false;
       }
     });
+
+    sinon.stub(ViewUrlDecorator);
+    ViewUrlDecorator.applyDecorators.callsFake(url => url);
+
     iframes = [
       {
         src: 'http://luigi.url.de',
