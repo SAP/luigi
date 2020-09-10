@@ -493,6 +493,10 @@ The app switcher is a drop-down list available in the top navigation bar. It all
 
 The global search is an input field available in the top navigation bar. The search is available if the search provider object is configured and implemented in the `luigi-config.js` file.
 
+### disableInputHandlers
+- **type**: boolean
+- **description**: disables the on:keyUp and other internal handlers on the search input field. It is a plain input field then, which can be used to attach your own handlers. If set to `true`, a **searchProvider** must be defined in order to show the search field, which can contain your custom logic. It is recommended to initialize your custom logic in the [**lifeCycle.luigiAfterInit**](lifecycle-hooks.md#luigiafterinit) hook.
+
 ### searchProvider
 - **type**: Object
 - **description**: The search provider is an object which contains different events and the possibility to implement a custom result renderer or change only the search result item.
