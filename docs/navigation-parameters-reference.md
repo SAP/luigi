@@ -491,7 +491,7 @@ The app switcher is a drop-down list available in the top navigation bar. It all
 
 ## Global search
 
-The global search is an input field available in the top navigation bar. The search is available if the search provider object is configured and implemented in the `luigi-config.js` file.
+The global search is an input field available in the top navigation bar. The search is available if the search provider object is configured in the `globalSearch:` section of the Luigi configuration file.
 
 ### searchProvider
 - **type**: Object
