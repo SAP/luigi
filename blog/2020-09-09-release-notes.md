@@ -27,7 +27,7 @@ With Luigi v1.4.0, the new v0.11.0 of Fundamental Library Styles were included. 
 
 #### Core and Client API additions
 
-Two new functions were added to the Luigi Core API, [setDocumentTitle](https://docs.luigi-project.io/docs/luigi-core-api/?section=setdocumenttitle) and [getDocumentTitle](https://docs.luigi-project.io/docs/luigi-core-api/?section=getdocumenttitle). They allow you to set a document title without configuring the Luigi header.
+Two new functions were added to the Luigi Core API, [setDocumentTitle](https://docs.luigi-project.io/docs/luigi-core-api/?section=setdocumenttitle) and [getDocumentTitle](https://docs.luigi-project.io/docs/luigi-core-api/?section=getdocumenttitle). They allow you to set and get a document title without configuring the Luigi header.
 
 The Luigi Client API also includes a new function, [closeCurrentModal](https://docs.luigi-project.io/docs/luigi-client-api/?section=closecurrentmodal), which fires a `luigi.close-modal` event.
 
