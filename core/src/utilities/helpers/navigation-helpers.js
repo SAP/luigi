@@ -259,16 +259,22 @@ class NavigationHelpersClass {
     return expandedList;
   }
 
-  storeExpandedState(key, value) {
-    const expandedList = this.loadExpandedCategories();
+  storeExpandedState(key, value, replace = false) {
+    let expandedList = this.loadExpandedCategories();
     if (value) {
-      if (expandedList.indexOf(key) < 0) {
+      if (replace) {
+        expandedList = [key]
+      } else if (expandedList.indexOf(key) < 0) {
         expandedList.push(key);
       }
     } else {
-      let index = expandedList.indexOf(key);
-      if (index >= 0) {
-        expandedList.splice(index, 1);
+      if (replace){
+        expandedList = []
+      } else {
+        let index = expandedList.indexOf(key);
+        if (index >= 0) {
+          expandedList.splice(index, 1);
+        }
       }
     }
     localStorage.setItem(this.EXP_CAT_KEY, JSON.stringify(expandedList));
