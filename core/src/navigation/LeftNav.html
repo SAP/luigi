@@ -273,10 +273,11 @@
       selectedNode,
       selectedCategory,
       expandedCategories,
-      hasCategoriesWithIcon
+      hasCategoriesWithIcon,
     }),
     set: obj => {
       if (obj) {
+        console.log(obj)
         Object.getOwnPropertyNames(obj).forEach(prop => {
           if (prop === 'pathData') {
             pathData = obj.pathData;
@@ -319,6 +320,7 @@
   export let expandedCategories;
   export let hasCategoriesWithIcon;
   export let sideNavClass;
+  export let collapseOne;
   let context;
   let previousWindowWidth;
   let responsiveNavSetting;
@@ -340,6 +342,9 @@
     window.LEFTNAVDATA = leftNavData.children;
   };
 
+
+  
+
   onMount(() => {
     semiCollapsibleButton =
       LuigiConfig.getConfigValue('settings.responsiveNavigation') ===
@@ -352,6 +357,8 @@
     );
     expandedCategories = NavigationHelpers.loadExpandedCategories();
 
+    collapseOne = LuigiConfig.getConfigBooleanValue('navigation.categories.collapseOne')
+    
     StateHelpers.doOnStoreChange(
       store,
       () => {
@@ -516,7 +523,8 @@
 
     expandedCategories = NavigationHelpers.storeExpandedState(
       nodes.metaInfo.categoryUid,
-      value
+      value,
+      collapseOne
     );
   }
 

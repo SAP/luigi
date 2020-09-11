@@ -55,6 +55,9 @@ You can configure the way Luigi tackles routing in your application in the `rout
   - **wrongPath** (string): the path that the user tried navigating to.
   - **wasAnyPathFitted** (bool): it is true if Luigi managed to fit a valid path which means **wrongPath** was only partially wrong. Otherwise it is false.
 
+### categories.collapseOne
+- **type**: boolean
+- **description**: defines the behaviour of categories whether multiple categories can be collapsed at the same time or similar to an accordion. (Default: false)
 
 ## Navigation parameters
 The navigation parameters allow you to configure **global** navigation settings directly under the `navigation:` section in the configuration file.
