@@ -273,11 +273,10 @@
       selectedNode,
       selectedCategory,
       expandedCategories,
-      hasCategoriesWithIcon,
+      hasCategoriesWithIcon
     }),
     set: obj => {
       if (obj) {
-        console.log(obj)
         Object.getOwnPropertyNames(obj).forEach(prop => {
           if (prop === 'pathData') {
             pathData = obj.pathData;
