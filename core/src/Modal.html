@@ -111,7 +111,7 @@
         });
         wcCreated = true;
       } else {
-        const iframe = createIframeModal(nodeObject.viewUrl, {
+        const iframe = await createIframeModal(nodeObject.viewUrl, {
           context: pathData.context,
           pathParams: pathData.pathParams,
           nodeParams
