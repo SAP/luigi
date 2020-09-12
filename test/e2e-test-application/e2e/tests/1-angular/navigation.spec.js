@@ -687,38 +687,58 @@ describe('Navigation', () => {
   describe('Collapsible Categories',() => {
     it('It should have multiple categories collapsed', () => {
       cy.visit('/projects/pr2/collapsibles');
-      cy.window().then(win => {
-        const config = win.Luigi.getConfig();
-        config.navigation.categories = {
-          collapseOne: false
-        }
-        win.Luigi.configChanged('settings.navigation');
-        cy.get('li[data-testid="superusefulgithublinks"]>ul.fd-nested-list').should('not.be.visible')
-        cy.get('li[data-testid="usermanagement"]>ul.fd-nested-list').should('not.be.visible')
         
-        cy.get('li[data-testid="superusefulgithublinks"] a[title="Super useful Github links"]').click()
-        cy.get('li[data-testid="usermanagement"] a[title="User Management"]').click()
+      cy.get('li[data-testid="superusefulgithublinks"]>ul.fd-nested-list').should('not.be.visible')
+      cy.get('li[data-testid="usermanagement"]>ul.fd-nested-list').should('not.be.visible')
+      
+      cy.get('li[data-testid="superusefulgithublinks"] a[title="Super useful Github links"]').click()
+      cy.get('li[data-testid="usermanagement"] a[title="User Management"]').click()
 
-        cy.get('li[data-testid="superusefulgithublinks"]>ul.fd-nested-list').should('be.visible')
-        cy.get('li[data-testid="usermanagement"]>ul.fd-nested-list').should('be.visible')
+      cy.get('li[data-testid="superusefulgithublinks"]>ul.fd-nested-list').should('be.visible')
+      cy.get('li[data-testid="usermanagement"]>ul.fd-nested-list').should('be.visible')
 
-        cy.get('li[data-testid="superusefulgithublinks"] a[title="Super useful Github links"]').click()
-        cy.get('li[data-testid="usermanagement"] a[title="User Management"]').click()
+      cy.get('li[data-testid="superusefulgithublinks"] a[title="Super useful Github links"]').click()
+      cy.get('li[data-testid="usermanagement"] a[title="User Management"]').click()
 
-        cy.get('li[data-testid="superusefulgithublinks"]>ul.fd-nested-list').should('not.be.visible')
-        cy.get('li[data-testid="usermanagement"]>ul.fd-nested-list').should('not.be.visible')
-      })
+      cy.get('li[data-testid="superusefulgithublinks"]>ul.fd-nested-list').should('not.be.visible')
+      cy.get('li[data-testid="usermanagement"]>ul.fd-nested-list').should('not.be.visible')
     });
     
-    it('It should have one categories collapsed', () => {
+    it('It should have one category collapsed', () => {
+      cy.visit('/projects/pr2/collapseone');
+     
+      // All is closed
+      cy.get('li[data-testid="superusefulgithublinks"]>ul.fd-nested-list').should('not.be.visible')
+      cy.get('li[data-testid="usermanagement"]>ul.fd-nested-list').should('not.be.visible')
+      
+      cy.get('li[data-testid="superusefulgithublinks"] a[title="Super useful Github links"]').click()
+      
+      // First one is open only
+      cy.get('li[data-testid="superusefulgithublinks"]>ul.fd-nested-list').should('be.visible')
+      cy.get('li[data-testid="usermanagement"]>ul.fd-nested-list').should('not.be.visible')
+      
+      cy.get('li[data-testid="usermanagement"] a[title="User Management"]').click()
+      
+      // Second one is open only
+      cy.get('li[data-testid="superusefulgithublinks"]>ul.fd-nested-list').should('not.be.visible')
+      cy.get('li[data-testid="usermanagement"]>ul.fd-nested-list').should('be.visible')
+
+      cy.get('li[data-testid="usermanagement"] a[title="User Management"]').click()
+
+      // All is closed
+      cy.get('li[data-testid="superusefulgithublinks"]>ul.fd-nested-list').should('not.be.visible')
+      cy.get('li[data-testid="usermanagement"]>ul.fd-nested-list').should('not.be.visible')
+    });
+
+    it('It should use default collapse', () => {
       cy.visit('/projects/pr2/collapsibles');
       cy.window().then(win => {
         const config = win.Luigi.getConfig();
-        config.navigation.categories = {
+        config.navigation.defaults = {
           collapseOne: true
         }
         win.Luigi.configChanged('settings.navigation');
-        // All is closed
+         // All is closed
         cy.get('li[data-testid="superusefulgithublinks"]>ul.fd-nested-list').should('not.be.visible')
         cy.get('li[data-testid="usermanagement"]>ul.fd-nested-list').should('not.be.visible')
         
@@ -739,8 +759,10 @@ describe('Navigation', () => {
         // All is closed
         cy.get('li[data-testid="superusefulgithublinks"]>ul.fd-nested-list').should('not.be.visible')
         cy.get('li[data-testid="usermanagement"]>ul.fd-nested-list').should('not.be.visible')
+
       })
     });
   })
+  
 
 });

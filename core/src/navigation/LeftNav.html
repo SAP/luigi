@@ -271,6 +271,7 @@
       virtualGroupPrefix,
       isSemiCollapsed,
       selectedNode,
+      collapseOne,
       selectedCategory,
       expandedCategories,
       hasCategoriesWithIcon
@@ -290,6 +291,13 @@
             hasCategoriesWithIcon = obj.hasCategoriesWithIcon;
           }
         });
+
+        let collapseOneOverride = selectedNode && selectedNode.collapseOne || selectedNode && selectedNode.parent && selectedNode.parent.collapseOne
+        if (typeof collapseOneOverride !== 'undefined'){
+          collapseOne = collapseOneOverride
+        } else {
+          collapseOne = LuigiConfig.getConfigBooleanValue('navigation.defaults.collapseOne')
+        }
       }
     }
   };
@@ -356,8 +364,6 @@
     );
     expandedCategories = NavigationHelpers.loadExpandedCategories();
 
-    collapseOne = LuigiConfig.getConfigBooleanValue('navigation.categories.collapseOne')
-    
     StateHelpers.doOnStoreChange(
       store,
       () => {
@@ -519,7 +525,7 @@
     if (SemiCollapsibleNavigation.getCollapsed()) {
       return;
     }
-
+    
     expandedCategories = NavigationHelpers.storeExpandedState(
       nodes.metaInfo.categoryUid,
       value,
