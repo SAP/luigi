@@ -15,6 +15,7 @@ require('foundation-sites');
 
 $(document).foundation();
 
+
 $('#menuBtn, #closeMainNavigation').on('click', function() {
   $('#mainNavigation').toggleClass('is-active');
 });
@@ -154,10 +155,45 @@ function removeActiveState(arr) {
 
 // BLOG
 // use history api back() instead of standard link if coming from overview page
-if (jQuery('.back-to-blog').length && document.referrer.indexOf('/blog/overview') !== -1 && window.history) {
-  jQuery('.back-to-blog').on('click', function(e) {
+if ($('.back-to-blog').length && document.referrer.indexOf('/blog/overview') !== -1 && window.history) {
+  $('.back-to-blog').on('click', function(e) {
     e.preventDefault();
     e.stopPropagation();
     history.back();
   });
 }
+var loadMoreBlogsBtn = $('#load-more-blogs');
+var backToTopBtn = $('#back-to-top');
+var chunksAmount = 6; //count amount of  files created * chunksMinBlogLoadAmount
+var chunksMinBlogLoadAmount = 2; //amount of blogs to be visible on first load
+var u = 0;
+
+loadMoreBlogsBtn.on('click', function() {
+  fetch('blog-chunks/blog-chunk' + u + '.html', {
+    method: 'GET'
+  }).then(response => {
+    if (response.ok) {
+      response.text().then(response => {
+        $('#stickyAnchor .column #blog-chunk').append(response);
+        
+        u = u + chunksMinBlogLoadAmount;
+        var chunksWrapperDIV = $('#blog-chunk div.blog-entry:nth-child(' + u + ')');
+        var chunksPortions = chunksWrapperDIV.attr('id', 'chunk-number' + u);
+        var hrefLoadMoreBtn = loadMoreBlogsBtn.attr('href', '#chunk-number' + u);
+        console.log("Chunk-size:", u + chunksMinBlogLoadAmount);
+        console.log("chunksAmount", chunksAmount);
+        console.log("chunksAmount", hrefLoadMoreBtn);
+
+        var temp = u + chunksMinBlogLoadAmount;
+        if (temp === chunksAmount){
+          loadMoreBlogsBtn.addClass('hide');
+          backToTopBtn.removeClass('hide');
+        }
+      });
+    }
+  });
+
+});
+
+
+

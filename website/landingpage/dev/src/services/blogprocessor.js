@@ -4,6 +4,7 @@ import frontmatter from 'frontmatter';
 import marked from 'marked';
 import slugify from 'slugify';
 import { BlogFeeds } from './feeds.service';
+import { lt } from 'lodash';
 
 const luigiRootFolder = __dirname + '/../../../../../';
 const blogMdPath = path.join(luigiRootFolder, 'blog');
@@ -42,7 +43,7 @@ const getAuthors = (authors) => {
 
 const generateBlogEntry = (blog, content, showButton = false) => {
 
-  const button = showButton ? `<p><a href="/blog/${blog.slug}" class="btn-primary">Read more</a></p>` : '';
+  const button = showButton ? `<p><a href="/blog/${blog.slug}" class="btn-secondary">Read more</a></p>` : '';
   return `
 
   <div class="blog-entry">
@@ -93,7 +94,7 @@ layout: blog
 ---
 ${entry.blogContent}`;
     writeFileSync(blogHtmlPath + `/${entry.slug}.html`, blogHtml);
-  });
+  })
 };
 
 export const processBlogFiles = () => {
