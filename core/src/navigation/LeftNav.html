@@ -271,7 +271,7 @@
       virtualGroupPrefix,
       isSemiCollapsed,
       selectedNode,
-      collapseOne,
+      sideNavAccordionMode,
       selectedCategory,
       expandedCategories,
       hasCategoriesWithIcon
@@ -292,11 +292,11 @@
           }
         });
 
-        let collapseOneOverride = selectedNode && selectedNode.collapseOne || selectedNode && selectedNode.parent && selectedNode.parent.collapseOne
-        if (typeof collapseOneOverride !== 'undefined'){
-          collapseOne = collapseOneOverride
+        let sideNavAccordionModeOverride = selectedNode && selectedNode.sideNavAccordionMode || selectedNode && selectedNode.parent && selectedNode.parent.sideNavAccordionMode
+        if (typeof sideNavAccordionModeOverride !== 'undefined'){
+          sideNavAccordionMode = sideNavAccordionModeOverride
         } else {
-          collapseOne = LuigiConfig.getConfigBooleanValue('navigation.defaults.collapseOne')
+          sideNavAccordionMode = LuigiConfig.getConfigBooleanValue('navigation.defaults.sideNavAccordionMode')
         }
       }
     }
@@ -327,7 +327,7 @@
   export let expandedCategories;
   export let hasCategoriesWithIcon;
   export let sideNavClass;
-  export let collapseOne;
+  export let sideNavAccordionMode;
   let context;
   let previousWindowWidth;
   let responsiveNavSetting;
@@ -529,7 +529,7 @@
     expandedCategories = NavigationHelpers.storeExpandedState(
       nodes.metaInfo.categoryUid,
       value,
-      collapseOne
+      sideNavAccordionMode
     );
   }
 
