@@ -1,32 +1,32 @@
 import { getBlogEntries } from '../services/blogprocessor';
 import path from 'path';
 import { writeFileSync } from 'fs';
-import { isTypedArray, iteratee } from 'lodash';
 
-module.exports = (options) => {
-  const numberOfBlogsToBeVisibleOnLoad = 2;
+module.exports = () => {
+  const blogChunkPath = path.join(__dirname, '../../../public/blog', 'blog-chunks');
+
+  const numberOfBlogsToBeVisibleOnLoad = 3;
   const blogsMapAll = getBlogEntries().map(entry => entry.blogExcerpt);
   const blogsListLength = blogsMapAll.length;
   const showedBlogs = blogsMapAll.slice(0, numberOfBlogsToBeVisibleOnLoad);
   const showedBlogsHTML = showedBlogs.join(' ');
   const hiddenBlogsArray = blogsMapAll.slice(numberOfBlogsToBeVisibleOnLoad);
   let hiddenBlogsArrayLength = hiddenBlogsArray.length;
-  const hiddenBlogsHTML = hiddenBlogsArray.join(' ');
-  const blogChunkPath = path.join(__dirname, '../../../public/blog', 'blog-chunks');
 
+  const blogHTMLDataLength = `<div id="blog-chunks-data" 
+  data-chunk-step="${numberOfBlogsToBeVisibleOnLoad}" 
+  data-chunk-total="${blogsListLength}"></div>`
 
-  
   if (blogsListLength > numberOfBlogsToBeVisibleOnLoad){
     for (var currentBlogNumber=0 ; currentBlogNumber < hiddenBlogsArrayLength; currentBlogNumber += numberOfBlogsToBeVisibleOnLoad) {
-      var currentChunkOfBlogs = hiddenBlogsArray.slice(currentBlogNumber, currentBlogNumber + numberOfBlogsToBeVisibleOnLoad);
-      var currentChunkOfBlogsHTML = currentChunkOfBlogs.join(' ');
+      let currentChunkOfBlogs = hiddenBlogsArray.slice(currentBlogNumber, currentBlogNumber + numberOfBlogsToBeVisibleOnLoad);
+      let currentChunkOfBlogsHTML = currentChunkOfBlogs.join(' ');
       writeFileSync(blogChunkPath + `/blog-chunk` + currentBlogNumber + `.html`, currentChunkOfBlogsHTML);
-      /*hiddenBlogsArrayLength = hiddenBlogsArrayLength - numberOfBlogsToBeVisibleOnLoad;*/
     }
 
-    return `${showedBlogsHTML}`;
+    return `${showedBlogsHTML} ${blogHTMLDataLength}`;
 
-  } else if(hiddenBlogsArrayLength = 0  ){
+  } else if(hiddenBlogsArrayLength = 0){
     return `${showedBlogsHTML}`;
   } 
   

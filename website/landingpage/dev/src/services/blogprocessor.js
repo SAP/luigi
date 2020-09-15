@@ -43,9 +43,8 @@ const getAuthors = (authors) => {
 
 const generateBlogEntry = (blog, content, showButton = false) => {
 
-  const button = showButton ? `<p><a href="/blog/${blog.slug}" class="btn-secondary">Read more</a></p>` : '';
+  const button = showButton ? `<p><a href="/blog/${blog.slug}" class="button read-more-btn">Read more </a></p>` : '';
   return `
-
   <div class="blog-entry">
     <div class="title-2">
       ${blog.title}

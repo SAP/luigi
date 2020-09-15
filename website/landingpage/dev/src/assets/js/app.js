@@ -1,6 +1,7 @@
 import $ from 'jquery';
 import 'what-input';
 
+
 // Foundation JS relies on a global varaible. In ES6, all imports are hoisted
 // to the top of the file so if we used`import` to import Foundation,
 // it would execute earlier than we have assigned the global variable.
@@ -14,7 +15,6 @@ require('foundation-sites');
 //import './lib/foundation-explicit-pieces';
 
 $(document).foundation();
-
 
 $('#menuBtn, #closeMainNavigation').on('click', function() {
   $('#mainNavigation').toggleClass('is-active');
@@ -162,10 +162,12 @@ if ($('.back-to-blog').length && document.referrer.indexOf('/blog/overview') !==
     history.back();
   });
 }
-var loadMoreBlogsBtn = $('#load-more-blogs');
-var backToTopBtn = $('#back-to-top');
-var chunksAmount = 6; //count amount of  files created * chunksMinBlogLoadAmount
-var chunksMinBlogLoadAmount = 2; //amount of blogs to be visible on first load
+
+//variables for load more blogs functionality
+var loadMoreBlogsBtn = $('#load-more-blogs-btn');
+var backToTopBtn = $('#back-to-top-btn');
+var filesAmount = $('#blog-chunks-data').data("chunk-total"); //count amount of all blogs files
+var chunksMinBlogLoadAmount = $('#blog-chunks-data').data("chunk-step"); //amount of blogs to be visible on first load
 var u = 0;
 
 loadMoreBlogsBtn.on('click', function() {
@@ -174,25 +176,23 @@ loadMoreBlogsBtn.on('click', function() {
   }).then(response => {
     if (response.ok) {
       response.text().then(response => {
-        $('#stickyAnchor .column #blog-chunk').append(response);
+        $('#blog-chunk').append(response);
         
         u = u + chunksMinBlogLoadAmount;
-        var chunksWrapperDIV = $('#blog-chunk div.blog-entry:nth-child(' + u + ')');
-        var chunksPortions = chunksWrapperDIV.attr('id', 'chunk-number' + u);
-        var hrefLoadMoreBtn = loadMoreBlogsBtn.attr('href', '#chunk-number' + u);
-        console.log("Chunk-size:", u + chunksMinBlogLoadAmount);
-        console.log("chunksAmount", chunksAmount);
-        console.log("chunksAmount", hrefLoadMoreBtn);
+        let chunksWrapperDIV = $('#blog-chunk div.blog-entry:nth-child(' + u + ')');
+        
+        //ids for a smooth scroll to particular new div
+        chunksWrapperDIV.attr('id', 'chunk-number' + u); 
+        loadMoreBlogsBtn.attr('href', '#chunk-number' + u);
 
-        var temp = u + chunksMinBlogLoadAmount;
-        if (temp === chunksAmount){
+        let temp = u + chunksMinBlogLoadAmount;
+        if (temp === filesAmount || temp > filesAmount ){
           loadMoreBlogsBtn.addClass('hide');
           backToTopBtn.removeClass('hide');
         }
       });
     }
   });
-
 });
 
 
