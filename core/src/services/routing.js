@@ -508,6 +508,60 @@ class RoutingClass {
       componentData.context
     );
   }
+
+  // #?Intent=  semanticObject - action ? params
+  getIntent(link) {
+    const intentParams = link.split('#?Intent=')[1];
+    console.log('Checkpoint 1', intentParams);
+    if (intentParams) {
+      const elements = intentParams.split('-');
+      console.log('Checkpoint 2', elements);
+      if (elements.length == 2) {
+        // ensures only one '-'
+        var semanticObject = elements[0];
+        console.log('Checkpoint 3', semanticObject);
+        var actionParams = elements[1].split('?');
+        console.log('Checkpoint 4', actionParams);
+        if (actionParams.length == 2 || actionParams.length == 1) {
+          var action = actionParams[0];
+          var params = actionParams[1];
+          console.log('Checkpoint 5', action, params);
+          if (params) {
+            params = params.split('&');
+            params = params.map(item => {
+              const param = item.split('=');
+              return { [param[0]]: param[1] };
+            });
+            console.log('Checkpoint 6', params);
+          }
+          const alphanumeric = '/^[0-9a-zA-Z]+$/';
+          const alphanumeric_ = '/^[0-9a-zA-Z_]+$/';
+          console.log(
+            'Checkpoint 7',
+            semanticObject.match(alphanumeric),
+            action.match(alphanumeric_)
+          );
+
+          if (
+            semanticObject.match(alphanumeric) &&
+            action.match(alphanumeric_)
+          ) {
+            console.log('Checkpoint 8', { semanticObject, action, params });
+            return {
+              semanticObject: semanticObject,
+              action: action,
+              params: params
+            };
+          } else {
+            console.warn(
+              'Intent found is faulty, please check your configuration.'
+            );
+          }
+        }
+      }
+    }
+    return false;
+  }
 }
 
 export const Routing = new RoutingClass();

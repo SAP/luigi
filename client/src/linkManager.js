@@ -60,13 +60,16 @@ export class linkManager extends LuigiClientBase {
     }
 
     this.options.preserveView = preserveView;
+    console.log('PATH=', path);
     const relativePath = path[0] !== '/';
+    const intentPath = path.includes('#?Intent=');
     const navigationOpenMsg = {
       msg: 'luigi.navigation.open',
       sessionId: sessionId,
       params: Object.assign(this.options, {
         link: path,
         relative: relativePath,
+        intent: intentPath,
         modal: modalSettings,
         splitView: splitViewSettings
       })

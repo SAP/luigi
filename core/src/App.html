@@ -461,12 +461,39 @@
         n => navigationContext === n.navigationContext
       );
       path = Routing.concatenatePath(getSubPath(node), params.link);
+    } else if (params.intent) {
+      console.log('Received intent in Core -->', params.link);
+      const mappings = LuigiConfig.getConfigValue('navigation.intentMapping');
+      if (mappings && mappings.length > 0) {
+        console.log('mappings=', mappings);
+        // #?Intent=semanticObject-action?params
+        // const {semanticObject, action, paramaters} = Routing.getIntent();
+        console.log(Routing.getIntent(params.link));
+        const intentObject = Routing.getIntent(params.link);
+        if (intentObject) {
+          const realPath = mappings.find(
+            item =>
+              item.semanticObject === intentObject.semanticObject &&
+              item.action === intentObject.action
+          );
+          path = realPath.pathSegment;
+          console.log('realPath after=', path);
+        }
+        // const intentParams = params.link.split("#?Intent=")[1];
+        // const semanticObject = intentParams.split("-", 1)[0];
+        // const action = intentParams.split("-")[1];
+        // console.log("raw semantic",semanticObject);
+        // console.log("raw action", action);
+      }
     } else if (params.relative) {
       // relative
-      path = Routing.concatenatePath(getSubPath(currentNode), params.link);
+
+      path = Routing.concatenatePath(currentNode, params.link);
     }
     if (params.nodeParams && Object.keys(params.nodeParams).length) {
+      console.log('should not enter if path==>', path);
       path += path.includes('?') ? '&' : '?';
+      console.log('should not enter if path after==>', path);
       Object.entries(params.nodeParams).forEach((entry, index) => {
         path +=
           encodeURIComponent(
@@ -477,6 +504,7 @@
           (index < Object.keys(params.nodeParams).length - 1 ? '&' : '');
       });
     }
+    console.log('Path before return=', path);
     return path;
   };
 
