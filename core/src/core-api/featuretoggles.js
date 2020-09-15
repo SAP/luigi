@@ -10,7 +10,7 @@ class LuigiFeatureToggles {
   /**
    * Add a feature toggle to an active feature toggles list
    * @memberof FeatureToggles
-   * @since NEXTRELEASE
+   * @since 1.4.0
    * @example Luigi.featureToggles().setFeatureToggle('featureToggleName');
    */
   setFeatureToggle(featureToggleName) {
@@ -28,7 +28,7 @@ class LuigiFeatureToggles {
   /**
    * Remove a feature toggle from the list
    * @memberof FeatureToggles
-   * @since NEXTRELEASE
+   * @since 1.4.0
    * @example Luigi.featureToggles().unsetFeatureToggle('featureToggleName');
    */
   unsetFeatureToggle(featureToggleName) {
@@ -49,7 +49,7 @@ class LuigiFeatureToggles {
   /**
    * Get a list of active feature toggles
    * @memberof FeatureToggles
-   * @since NEXTRELEASE
+   * @since 1.4.0
    * @return {Array} of active feature toggles
    * @example Luigi.featureToggles().getActiveFeatureToggleList();
    */

@@ -94,7 +94,7 @@
       return;
     }
     if (isDataPrepared) {
-      const iframe = createIframeModal(nodeObject.viewUrl, {
+      const iframe = await createIframeModal(nodeObject.viewUrl, {
         context: pathData.context,
         pathParams: pathData.pathParams,
         nodeParams
@@ -108,7 +108,7 @@
       await prepareNodeData(path);
     }
   };
-  const createIframeModal = (viewUrl, componentData) => {
+  const createIframeModal = async (viewUrl, componentData) => {
     const elem = document.getElementsByClassName('lui-modal-mf');
     let modalSize = '80%';
     if (modalSettings.size) {
@@ -126,7 +126,7 @@
       viewUrl = RoutingHelpers.substituteViewUrl(viewUrl, componentData);
     }
 
-    const iframe = IframeHelpers.createIframe(
+    const iframe = await IframeHelpers.createIframe(
       viewUrl,
       undefined,
       nodeObject,

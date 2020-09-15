@@ -1,4 +1,4 @@
-Cypress.env('RETRIES', 1);
+Cypress.env('RETRIES', 2);
 describe('Luigi Client UX Alerts + Localization', () => {
   let $iframeBody;
   beforeEach(() => {

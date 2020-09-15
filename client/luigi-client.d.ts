@@ -180,6 +180,13 @@ export declare interface UxManager {
   getCurrentLocale: () => string;
 
   /**
+   * Gets the current theme.
+   * @returns {*} current themeObj
+   * @memberof uxManager
+   */
+  getCurrentTheme: () => any;
+
+  /**
    * Sets current locale to the specified one.
    *
    * **NOTE:** this must be explicitly allowed on the navigation node level by setting `clientPermissions.changeCurrentLocale` to `true`. (See {@link navigation-parameters-reference.md Node parameters}.)
