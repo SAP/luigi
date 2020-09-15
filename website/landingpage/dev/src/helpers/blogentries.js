@@ -5,13 +5,13 @@ import { writeFileSync } from 'fs';
 module.exports = () => {
   const blogChunkPath = path.join(__dirname, '../../../public/blog', 'blog-chunks');
 
-  const numberOfBlogsToBeVisibleOnLoad = 3;
-  const blogsMapAll = getBlogEntries().map(entry => entry.blogExcerpt);
-  const blogsListLength = blogsMapAll.length;
-  const showedBlogs = blogsMapAll.slice(0, numberOfBlogsToBeVisibleOnLoad);
-  const showedBlogsHTML = showedBlogs.join(' ');
-  const hiddenBlogsArray = blogsMapAll.slice(numberOfBlogsToBeVisibleOnLoad);
-  let hiddenBlogsArrayLength = hiddenBlogsArray.length;
+  const numberOfBlogsToBeVisibleOnLoad = 3,
+  blogsMapAll = getBlogEntries().map(entry => entry.blogExcerpt),
+  blogsListLength = blogsMapAll.length,
+  showedBlogs = blogsMapAll.slice(0, numberOfBlogsToBeVisibleOnLoad),
+  showedBlogsHTML = showedBlogs.join(' '),
+  hiddenBlogsArray = blogsMapAll.slice(numberOfBlogsToBeVisibleOnLoad),
+  hiddenBlogsArrayLength = hiddenBlogsArray.length;
 
   const blogHTMLDataLength = `<div id="blog-chunks-data" 
   data-chunk-step="${numberOfBlogsToBeVisibleOnLoad}" 
