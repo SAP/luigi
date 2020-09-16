@@ -129,14 +129,22 @@ class RoutingClass {
   }
 
   getModifiedPathname() {
+    let a = window.history.state;
+    console.log('getModifiedPathname,window.history.state=', a);
+    let b = window.history.state.path;
+    console.log('getModifiedPathname,window.history.state.path=', b);
     const path =
       (window.history.state && window.history.state.path) ||
       window.location.pathname;
-
-    return path
+    let c = window.location.pathname;
+    console.log('getModified,window.location.pathname', c);
+    console.log('path=', path);
+    let d = path
       .split('/')
       .slice(1)
       .join('/');
+    console.log('path, after=', d);
+    return d;
   }
 
   getCurrentPath() {
