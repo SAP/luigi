@@ -114,7 +114,18 @@ class RoutingClass {
   }
 
   getHashPath(url = window.location.hash) {
-    return url.split('#/')[1];
+    console.log('$$$$$$$====getHashPAth url=', url);
+    const abc = url.split('#/')[1];
+    console.log('$$$$$$$==== url split 1=', abc);
+    console.log(abc);
+    if (abc) {
+      return abc;
+    }
+    const h = this.getIntentPath(url.split('#')[1]);
+    console.log('$$$$$$$==== url split 2 + intent=', h);
+    if (h) {
+      return h;
+    }
   }
 
   getModifiedPathname() {
@@ -129,12 +140,29 @@ class RoutingClass {
   }
 
   getCurrentPath() {
-    return LuigiConfig.getConfigValue('routing.useHashRouting')
+    console.log('window.location', window.location);
+    if (window.location.hash) {
+      let h = window.location.hash;
+      console.log('---found a hash here yo', h);
+      h = this.getIntentPath(h);
+      if (h) {
+        return h;
+      }
+    }
+    const path = LuigiConfig.getConfigValue('routing.useHashRouting')
       ? window.location.hash.replace('#', '') // TODO: GenericHelpers.getPathWithoutHash(window.location.hash) fails in ContextSwitcher
       : window.location.search
       ? GenericHelpers.trimLeadingSlash(window.location.pathname) +
         window.location.search
       : GenericHelpers.trimLeadingSlash(window.location.pathname);
+
+    console.log('path getCurrentPath =', path);
+    console.log(
+      'GenericHelpers.trimLeadingSlash(window.location.pathname)=',
+      GenericHelpers.trimLeadingSlash(window.location.pathname)
+    );
+    console.log('window.location.search=', window.location.search);
+    return path;
   }
 
   async handleRouteChange(path, component, iframeElement, config) {
@@ -179,6 +207,7 @@ class RoutingClass {
 
       const previousCompData = component.get();
       this.checkInvalidateCache(previousCompData, path);
+      console.log('-----PATH=', path);
       const pathUrlRaw =
         path && path.length ? GenericHelpers.getPathWithoutHash(path) : '';
       const { nodeObject, pathData } = await Navigation.extractDataFromPath(
@@ -511,7 +540,7 @@ class RoutingClass {
 
   // #?Intent=  semanticObject - action ? params
   getIntent(link) {
-    const intentParams = link.split('#?Intent=')[1];
+    const intentParams = link.split('?Intent=')[1];
     console.log('Checkpoint 1', intentParams);
     if (intentParams) {
       const elements = intentParams.split('-');
@@ -519,23 +548,25 @@ class RoutingClass {
       if (elements.length == 2) {
         // ensures only one '-'
         var semanticObject = elements[0];
-        console.log('Checkpoint 3', semanticObject);
+        console.log('Checkpoint 3, semantic object=', semanticObject);
         var actionParams = elements[1].split('?');
         console.log('Checkpoint 4', actionParams);
         if (actionParams.length == 2 || actionParams.length == 1) {
           var action = actionParams[0];
           var params = actionParams[1];
-          console.log('Checkpoint 5', action, params);
+          console.log('Checkpoint 5, action+params', action, params);
           if (params) {
             params = params.split('&');
-            params = params.map(item => {
+            let paramObject = [];
+            params.forEach(item => {
               const param = item.split('=');
-              return { [param[0]]: param[1] };
+              param.length === 2 && paramObject.push({ [param[0]]: param[1] });
             });
-            console.log('Checkpoint 6', params);
+            params = paramObject;
+            console.log('Checkpoint 6, params', params);
           }
-          const alphanumeric = '/^[0-9a-zA-Z]+$/';
-          const alphanumeric_ = '/^[0-9a-zA-Z_]+$/';
+          const alphanumeric = /^[0-9a-zA-Z]+$/;
+          const alphanumeric_ = /^[0-9a-zA-Z_]+$/;
           console.log(
             'Checkpoint 7',
             semanticObject.match(alphanumeric),
@@ -554,11 +585,56 @@ class RoutingClass {
             };
           } else {
             console.warn(
-              'Intent found is faulty, please check your configuration.'
+              'Intent found contains illegal characters, please check your configuration.'
             );
           }
         }
       }
+    }
+    return false;
+  }
+
+  getIntentPath(link) {
+    console.log('Received intent in Core(routing) -->', link);
+    const mappings = LuigiConfig.getConfigValue('navigation.intentMapping');
+    if (mappings && mappings.length > 0) {
+      const intentObject = this.getIntent(link);
+      console.log('check A', intentObject);
+      if (intentObject) {
+        let realPath = mappings.find(
+          item =>
+            item.semanticObject === intentObject.semanticObject &&
+            item.action === intentObject.action
+        );
+        console.log('check B', realPath);
+
+        if (!realPath) {
+          console.log('check C', realPath);
+          return false;
+        }
+
+        realPath = realPath.pathSegment;
+        console.log('check D', realPath);
+        console.log('check E', intentObject.params);
+        if (intentObject.params) {
+          realPath = realPath.concat('?~');
+          intentObject.params.forEach(param => {
+            realPath = realPath.concat(Object.keys(param)[0]);
+            realPath = realPath.concat('=');
+            realPath = realPath
+              .concat(param[Object.keys(param)[0]])
+              .concat('&~');
+          });
+          realPath = realPath.slice(0, -2);
+          console.log('check F-params-', realPath);
+        }
+        console.log('check G-outside-', realPath);
+        return realPath;
+      } else {
+        console.warn('No intent object retrieved  .');
+      }
+    } else {
+      console.warn('No intent mapping defined.');
     }
     return false;
   }

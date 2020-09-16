@@ -95,7 +95,7 @@
         <a
           href="javascript:void(0)"
           class="fd-link"
-          (click)="linkManager().navigate('#?Intent=Sales-edit?param1=def')"
+          (click)="linkManager().navigate('/#?Intent=Sales-edit?param1=def')"
           >Click here</a
         >
         to go to <i>project two</i>
@@ -105,7 +105,7 @@
         <a
           href="javascript:void(0)"
           class="fd-link"
-          (click)="linkManager().navigate('#?Intent=Sales-view?param1=def')"
+          (click)="linkManager().navigate('/#?Intent=Sales-view?param1=def')"
           >Click here</a
         >
         to go to <i>project two</i>
@@ -115,7 +115,9 @@
         <a
           href="javascript:void(0)"
           class="fd-link"
-          (click)="linkManager().navigate('#?Intent=Sales-external?param1=abc')"
+          (click)="
+            linkManager().navigate('/#?Intent=Sales-settings?param1=abc')
+          "
           >Click here</a
         >
         to go to <i>project two</i>
