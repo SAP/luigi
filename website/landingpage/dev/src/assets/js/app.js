@@ -153,39 +153,30 @@ function removeActiveState(arr) {
 }
 
 // BLOG
-// use history api back() instead of standard link if coming from overview page
-if ($('.back-to-blog').length && document.referrer.indexOf('/blog/overview') !== -1 && window.history) {
-  $('.back-to-blog').on('click', function(e) {
-    e.preventDefault();
-    e.stopPropagation();
-    history.back();
-  });
-}
-
+var backToBlog = $('#back-to-blog');
 //variables for load more blogs functionality
 var loadMoreBlogsBtn = $('#load-more-blogs-btn');
 var backToTopBtn = $('#back-to-top-btn');
 var filesAmount = $('#blog-chunks-data').data("chunk-total"); //count amount of all blogs files
 var chunksMinBlogLoadAmount = $('#blog-chunks-data').data("chunk-step"); //amount of blogs to be visible on first load
-var u = 0;
+var chunkCounter = 0;
 
 loadMoreBlogsBtn.on('click', function() {
-  fetch('blog-chunks/blog-chunk' + u + '.html', {
+  fetch('blog-chunks/blog-chunk' + chunkCounter + '.html', {
     method: 'GET'
   }).then(response => {
     if (response.ok) {
       response.text().then(response => {
         $('#blog-chunk').append(response);
-        
-        u = u + chunksMinBlogLoadAmount;
-        let chunksWrapperDIV = $('#blog-chunk div.blog-entry:nth-child(' + u + ')');
+        chunkCounter = chunkCounter + chunksMinBlogLoadAmount;
+        let chunksWrapperDIV = $('#blog-chunk div.blog-entry:nth-child(' + chunkCounter + ')');
         
         //ids for a smooth scroll to particular new div
-        chunksWrapperDIV.attr('id', 'chunk-number' + u); 
-        loadMoreBlogsBtn.attr('href', '#chunk-number' + u);
+        chunksWrapperDIV.attr('id', 'chunk-number' + chunkCounter); 
+        loadMoreBlogsBtn.attr('href', '#chunk-number' + chunkCounter);
 
-        let temp = u + chunksMinBlogLoadAmount;
-        if (temp === filesAmount || temp > filesAmount ){
+        let currentVisibleBlogs = chunkCounter + chunksMinBlogLoadAmount;
+        if (currentVisibleBlogs >= filesAmount ){
           loadMoreBlogsBtn.addClass('hide');
           backToTopBtn.removeClass('hide');
         }
@@ -193,3 +184,12 @@ loadMoreBlogsBtn.on('click', function() {
     }
   });
 });
+
+// use history api back() instead of standard link if coming from overview page
+if (backToBlog.length && document.referrer.indexOf('/blog/overview') !== -1 && window.history) {
+  backToBlog.on('click', function(e) {
+    e.preventDefault();
+    e.stopPropagation();
+    history.back();
+});
+}

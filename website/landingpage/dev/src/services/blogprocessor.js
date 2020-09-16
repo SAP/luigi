@@ -4,7 +4,6 @@ import frontmatter from 'frontmatter';
 import marked from 'marked';
 import slugify from 'slugify';
 import { BlogFeeds } from './feeds.service';
-import { lt } from 'lodash';
 
 const luigiRootFolder = __dirname + '/../../../../../';
 const blogMdPath = path.join(luigiRootFolder, 'blog');

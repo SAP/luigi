@@ -5,7 +5,7 @@ import { writeFileSync } from 'fs';
 module.exports = () => {
   const blogChunkPath = path.join(__dirname, '../../../public/blog', 'blog-chunks');
 
-  const numberOfBlogsToBeVisibleOnLoad = 3,
+  const numberOfBlogsToBeVisibleOnLoad = 5,
   blogsMapAll = getBlogEntries().map(entry => entry.blogExcerpt),
   blogsListLength = blogsMapAll.length,
   showedBlogs = blogsMapAll.slice(0, numberOfBlogsToBeVisibleOnLoad),
@@ -26,8 +26,7 @@ module.exports = () => {
 
     return `${showedBlogsHTML} ${blogHTMLDataLength}`;
 
-  } else if(hiddenBlogsArrayLength = 0){
+  } else if(hiddenBlogsArrayLength === 0){
     return `${showedBlogsHTML}`;
   } 
-  
 }
