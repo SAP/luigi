@@ -118,5 +118,25 @@
       "categoryPosition": 5,
       "position": 6
     }
+  },
+  {
+    "label": "Next",
+    "pathSegment": "",
+    "navigationContext": "doc",
+    "keepSelectedForChildren": true,
+    "viewUrl": "__BASE_URL__/docs/",
+    "context": {
+      "doc": ""
+    },
+    "category": {
+      "label": "Examples"
+    },
+    "externalLink": {
+      "url": "https://github.com/SAP/luigi/tree/master/core/examples/luigi-example-next"
+    },
+    "metaData": {
+      "categoryPosition": 5,
+      "position": 7
+    }
   }
 ]
