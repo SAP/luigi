@@ -128,6 +128,7 @@ class RoutingClass {
     const path =
       (window.history.state && window.history.state.path) ||
       window.location.pathname;
+
     return path
       .split('/')
       .slice(1)

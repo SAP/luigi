@@ -464,12 +464,11 @@
       const intentPath = RoutingHelpers.getIntentPath(params.link);
       path = intentPath ? intentPath : path;
     } else if (params.relative) {
-      path = Routing.concatenatePath(currentNode, params.link);
+      // relative
+      path = Routing.concatenatePath(getSubPath(currentNode), params.link);
     }
     if (params.nodeParams && Object.keys(params.nodeParams).length) {
-      console.log('should not enter if path==>', path);
       path += path.includes('?') ? '&' : '?';
-      console.log('should not enter if path after==>', path);
       Object.entries(params.nodeParams).forEach((entry, index) => {
         path +=
           encodeURIComponent(

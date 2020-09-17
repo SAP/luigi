@@ -8,7 +8,6 @@ import {
   GenericHelpers
 } from './';
 import { Routing } from '../../services/routing';
-import { element } from 'svelte/internal';
 
 class RoutingHelpersClass {
   constructor() {
