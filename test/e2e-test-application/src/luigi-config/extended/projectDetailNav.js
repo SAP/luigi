@@ -360,11 +360,11 @@ export const projectDetailNavStructure = projectId => [
     ]
   },
   {
-    pathSegment: 'collapseone',
+    pathSegment: 'sidenavaccordionmode',
     label: 'Collapse one categories',
     viewUrl: '/sampleapp.html#/projects/' + projectId + '/miscellaneous2',
     icon: 'sys-help',
-    collapseOne: true,
+    sideNavAccordionMode: true,
     children: [
       {
         label: 'Open Github in new tab',

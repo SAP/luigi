@@ -55,9 +55,10 @@ You can configure the way Luigi tackles routing in your application in the `rout
   - **wrongPath** (string): the path that the user tried navigating to.
   - **wasAnyPathFitted** (bool): it is true if Luigi managed to fit a valid path which means **wrongPath** was only partially wrong. Otherwise it is false.
 
-### defaults.collapseOne
+### defaults.sideNavAccordionMode
 - **type**: boolean
-- **description**: defines the behaviour of categories whether multiple categories can be collapsed at the same time or similar to an accordion. (Default: false)
+- **description**: overrides the default behaviour of categories whether multiple categories can be collapsed. When set to `true`, only one category is collapsed. The navigation is similar to an accordion; when the user clicks another category the previously collapsed category is closed and the new one is opened.
+- **default**: `false`
 
 ## Navigation parameters
 The navigation parameters allow you to configure **global** navigation settings directly under the `navigation:` section in the configuration file.
@@ -323,9 +324,10 @@ settings: {
     ```
 - **since**: 1.4.0
 
-### collapseOne
+### sideNavAccordionMode
 - **type**: boolean
-- **description**: overrides the default behaviour of categories whether multiple categories can be collapsed at the same time or similar to an accordion. (Default: false)
+- **description**: overrides the default behaviour of categories whether multiple categories can be collapsed. When set to `true`, only one category is collapsed. The navigation is similar to an accordion; when the user clicks another category the previously collapsed category is closed and the new one is opened.
+- **default**: `false`
 
 
 ## Context switcher
