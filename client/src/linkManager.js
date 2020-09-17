@@ -60,7 +60,6 @@ export class linkManager extends LuigiClientBase {
     }
 
     this.options.preserveView = preserveView;
-    console.log('PATH=', path);
     const relativePath = path[0] !== '/';
     const intentPath = path.includes('?Intent=');
     const navigationOpenMsg = {

@@ -35,12 +35,18 @@ class Navigation {
     },
     {
       semanticObject: 'Sales',
-      action: 'external',
+      action: 'edit',
       pathSegment: '/projects/pr2/developers'
     }
   ];
   nodeAccessibilityResolver = navigationPermissionChecker;
   nodes = [
+    {
+      pathSegment: 'overview',
+      label: 'Overview',
+      viewUrl: '/sampleapp.html#/overview',
+      hideSideNav: true
+    },
     {
       pathSegment: 'projects',
       label: 'Projects',
@@ -50,12 +56,6 @@ class Navigation {
         label: 'Number of projects',
         count: projectsCounterFn
       }
-    },
-    {
-      pathSegment: 'overview',
-      label: 'Overview',
-      viewUrl: '/sampleapp.html#/overview',
-      hideSideNav: true
     },
     {
       hideFromNav: true,

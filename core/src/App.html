@@ -396,7 +396,6 @@
       () => {
         NodeDataManagementStorage.deleteCache();
         const currentPath = Routing.getCurrentPath();
-        console.log('==Current Path=', currentPath);
         Routing.handleRouteChange(
           currentPath,
           getComponentWrapper(),
@@ -417,7 +416,6 @@
 
       closeModal();
       closeSplitView();
-      console.log('Subsequent ROute=', path, node);
       Routing.handleRouteChange(path, getComponentWrapper(), node, config);
     });
   };
@@ -463,11 +461,9 @@
       );
       path = Routing.concatenatePath(getSubPath(node), params.link);
     } else if (params.intent) {
-      const intentPath = Routing.getIntentPath(params.link);
+      const intentPath = RoutingHelpers.getIntentPath(params.link);
       path = intentPath ? intentPath : path;
     } else if (params.relative) {
-      // relative
-
       path = Routing.concatenatePath(currentNode, params.link);
     }
     if (params.nodeParams && Object.keys(params.nodeParams).length) {
@@ -484,7 +480,6 @@
           (index < Object.keys(params.nodeParams).length - 1 ? '&' : '');
       });
     }
-    console.log('Path before return=', path);
     return path;
   };
 

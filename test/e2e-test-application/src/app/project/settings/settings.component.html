@@ -91,36 +91,35 @@
         to go to <i>project two</i>, where you can try out hasBack functionality
       </div>
       <div>
-        CLICK HERE TO TEST INTENT
+        Test Intent 1 =
         <a
           href="javascript:void(0)"
           class="fd-link"
-          (click)="linkManager().navigate('/#?Intent=Sales-edit?param1=def')"
-          >Click here</a
+          (click)="linkManager().navigate('/#?Intent=Sales-edit')"
+          >/#?Intent=Sales-edit</a
         >
-        to go to <i>project two</i>
       </div>
       <div>
-        CLICK HERE TO TEST INTENT 2
+        Test Intent 2 =
         <a
           href="javascript:void(0)"
           class="fd-link"
           (click)="linkManager().navigate('/#?Intent=Sales-view?param1=def')"
-          >Click here</a
+          >/#?Intent=Sales-view?param1=def</a
         >
-        to go to <i>project two</i>
       </div>
       <div>
-        CLICK HERE TO TEST External MF
+        Test Intent 3 =
         <a
           href="javascript:void(0)"
           class="fd-link"
           (click)="
-            linkManager().navigate('/#?Intent=Sales-settings?param1=abc')
+            linkManager().navigate(
+              '/#?Intent=Sales-settings?param1=abc&param2=bcd'
+            )
           "
-          >Click here</a
+          >/#?Intent=Sales-settings?param1=abc&param2=bcd</a
         >
-        to go to <i>project two</i>
       </div>
     </div>
   </div>
