@@ -1,4 +1,6 @@
 import { linkManager } from './_internalLinkManager';
+import { CustomListenerHelpers } from '../utilities/helpers';
+import { EVENT_PREFIXES } from '../utilities/constants';
 
 class LuigiNavigationManager {
   /**
@@ -166,6 +168,33 @@ class LuigiNavigationManager {
    */
   goBack(goBackValue) {
     return new linkManager().goBack(goBackValue);
+  }
+
+  /**
+   * Adds a navigation event listener
+   * @memberof LuigiNavigation
+   * @param {string} name leftNav, topNav, tabNav, routeChanged
+   * @param {function} callbackFn gets called on event received
+   * @returns {string} listener id
+   * @example
+   * Luigi.navigation().addEventListener('leftNav', (data) => {})
+   */
+  addEventListener(name, callbackFn) {
+    return CustomListenerHelpers.addEventListener(
+      EVENT_PREFIXES.navigation + name,
+      callbackFn
+    );
+  }
+
+  /**
+   * Removes a navigation event listener
+   * @memberof LuigiNavigation
+   * @param {string} id listener id
+   * @example
+   * Luigi.navigation().removeEventListener(listenerId)
+   */
+  removeEventListener(id) {
+    CustomListenerHelpers.removeEventListener(id);
   }
 }
 

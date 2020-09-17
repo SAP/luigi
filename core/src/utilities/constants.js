@@ -15,3 +15,7 @@ export const CUSTOM_LUIGI_CONTAINER = {
 export const APP_LOADING_INDICATOR = {
   cssSelector: '[luigi-app-loading-indicator]'
 };
+
+export const EVENT_PREFIXES = {
+  navigation: 'navigation.events.'
+};

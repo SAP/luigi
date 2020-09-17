@@ -401,9 +401,12 @@
     NavigationHelpers,
     RoutingHelpers,
     StateHelpers,
-    EventListenerHelpers
+    EventListenerHelpers,
+    CustomListenerHelpers
   } from '../utilities/helpers';
   import { SemiCollapsibleNavigation } from './services/semi-collapsed-navigation';
+  import { LifecycleHooks } from '../services/lifecycle-hooks';
+  import { EVENT_PREFIXES } from '../utilities/constants';
 
   const dispatch = createEventDispatcher();
 
@@ -449,8 +452,12 @@
       selectedNode = tnd.selectedNode;
       visibleNodeCount = tnd.visibleNodeCount;
       totalBadgeNode = tnd.totalBadgeNode;
-      window.TOPNAVDATA = tnd.children;
+      window.TOPNAVDATA = tnd.children; // TODO: remove? its totally useless
       previousPathData = pathData;
+      CustomListenerHelpers.dispatchEvent(
+        EVENT_PREFIXES.navigation + 'topNav',
+        tnd
+      );
     }
   };
 
@@ -500,8 +507,9 @@
 
   export let showTopNav;
   $: showTopNav =
-    (authorizationEnabled && (!autologinEnabled || isLoggedIn)) ||
-    !authorizationEnabled;
+    ((authorizationEnabled && (!autologinEnabled || isLoggedIn)) ||
+      !authorizationEnabled) &&
+    !hideNavComponent;
 
   function hasOpenUIicon(node) {
     return NavigationHelpers.isOpenUIiconName(node.icon);

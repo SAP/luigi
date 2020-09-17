@@ -3,6 +3,7 @@
   on:click="{closePopupMenu}"
   on:blur="{closePopupMenu}"
 />
+{#if !hideNavComponent}
 <div
   class="fd-app__sidebar {hideNavComponent ? 'hideNavComponent' : ''} {footerText || semiCollapsibleButton ? 'hasFooter' : ''} {footerText && !semiCollapsibleButton ? 'hasOnlyFooterText' : ''}"
 >
@@ -250,7 +251,7 @@
     {/if}
   </nav>
 </div>
-
+{/if}
 <script>
   import {
     beforeUpdate,
@@ -297,12 +298,17 @@
   const dispatch = createEventDispatcher();
 
   import { Navigation } from './services/navigation';
-  import { IframeHelpers, NavigationHelpers } from '../utilities/helpers';
+  import {
+    CustomListenerHelpers,
+    IframeHelpers,
+    NavigationHelpers
+  } from '../utilities/helpers';
   import { LuigiConfig, LuigiElements, LuigiI18N } from '../core-api';
   import { StateHelpers, EventListenerHelpers } from '../utilities/helpers';
-  import { CSS_BREAKPOINTS } from '../utilities/constants';
+  import { CSS_BREAKPOINTS, EVENT_PREFIXES } from '../utilities/constants';
   import { SemiCollapsibleNavigation } from './services/semi-collapsed-navigation';
   import BadgeCounter from './BadgeCounter.html';
+  import { LifecycleHooks } from '../services/lifecycle-hooks';
 
   export let children;
   export let hideNavComponent;
@@ -326,18 +332,23 @@
   let store = getContext('store');
   let getTranslation = getContext('getTranslation');
 
+  let leftNavData;
   const setLeftNavData = async () => {
     const componentData = __this.get();
-    const leftNavData = await Navigation.getLeftNavData(
+    leftNavData = await Navigation.getLeftNavData(
       { ...componentData },
       componentData
     );
-    if (!leftNavData) {
+    if (Object.keys(leftNavData).length === 0) {
       return;
     }
     __this.set(leftNavData);
     previousPathData = pathData;
-    window.LEFTNAVDATA = leftNavData.children;
+    window.LEFTNAVDATA = leftNavData.children; // TODO: remove? its totally useless
+    CustomListenerHelpers.dispatchEvent(
+      EVENT_PREFIXES.navigation + 'leftNav',
+      leftNavData
+    );
   };
 
   onMount(() => {

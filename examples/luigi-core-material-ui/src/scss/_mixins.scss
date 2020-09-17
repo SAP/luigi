@@ -1,0 +1,34 @@
+@mixin transition($args...) {
+  -webkit-transition: $args;
+  -moz-transition: $args;
+  -ms-transition: $args;
+  -o-transition: $args;
+  transition: $args;
+}
+
+@mixin box-shadow($shadow...) {
+  -webkit-box-shadow: $shadow;
+  -moz-box-shadow: $shadow;
+  box-shadow: $shadow;
+}
+
+@mixin border-radius($radius) {
+  border-radius: $radius;
+  -webkit-border-radius: $radius;
+  -moz-border-radius: $radius;
+}
+
+@mixin luigi-menu__link--border-radius($position) {
+  :global(.fd-menu__link) {
+    border-#{$position}-left-radius: 0.25rem;
+    border-#{$position}-left-radius: var(
+      --sapElement_BorderCornerRadius,
+      0.25rem
+    );
+    border-#{$position}-right-radius: 0.25rem;
+    border-#{$position}-right-radius: var(
+      --sapElement_BorderCornerRadius,
+      0.25rem
+    );
+  }
+}

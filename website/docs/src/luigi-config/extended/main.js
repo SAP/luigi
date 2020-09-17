@@ -12,6 +12,9 @@ Luigi.setConfig({
   lifecycleHooks: {
     luigiAfterInit: () => {
       search.init();
+    },
+    events: (name, data) => {
+      console.log('lfh.events', name, data);
     }
   }
 });

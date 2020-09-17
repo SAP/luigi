@@ -11,7 +11,8 @@
     "plugins/auth/public/auth-oidc",
     "test/e2e-test-application",
     "test/e2e-test-application/externalMf",
-    "website/fiddle"
+    "website/fiddle",
+    "example/luigi-core-material-ui"
   ],
   "version": "0.0.0"
 }
