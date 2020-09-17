@@ -179,10 +179,16 @@ loadMoreBlogsBtn.on('click', function() {
         if (currentVisibleBlogs >= filesAmount ){
           loadMoreBlogsBtn.addClass('hide');
           backToTopBtn.removeClass('hide');
+        } else if (filesAmount === undefined) {
+          loadMoreBlogsBtn.hide();
         }
       });
+    } else {
+      console.log("Can not fetch the chunk");
     }
-  });
+  }).catch(error => {
+    console.log("No blog-chunks is available", error);
+    });
 });
 
 // use history api back() instead of standard link if coming from overview page
