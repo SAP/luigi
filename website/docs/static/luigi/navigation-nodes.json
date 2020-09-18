@@ -120,7 +120,7 @@
     }
   },
   {
-    "label": "Next",
+    "label": "NextJS",
     "pathSegment": "",
     "navigationContext": "doc",
     "keepSelectedForChildren": true,
