@@ -130,9 +130,7 @@ class RoutingClass {
     if (window.location.hash && window.location.hash.includes('?Intent=')) {
       let hash = window.location.hash.replace('#/#', '').replace('#', '');
       let intentPath = RoutingHelpers.getIntentPath(hash);
-      if (intentPath) {
-        return intentPath;
-      }
+      return intentPath ? intentPath : '/';
     }
     const path =
       (window.history.state && window.history.state.path) ||
