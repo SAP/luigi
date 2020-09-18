@@ -717,6 +717,11 @@ describe('Routing', function() {
       window.location.hash = '#?Intent=Sales-settings';
       assert.equal(Routing.getModifiedPathname(), '/projects/pr2/settings');
     });
+
+    it('from faulty intent based link', () => {
+      window.location.hash = '#?Intent=Sales-sett-ings';
+      assert.equal(Routing.getModifiedPathname(), '/');
+    });
   });
 
   describe('navigateToLink()', () => {
