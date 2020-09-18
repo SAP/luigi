@@ -114,21 +114,29 @@ class RoutingClass {
   }
 
   getHashPath(url = window.location.hash) {
-    const defaultHash = url.split('#/')[1];
-    if (defaultHash) {
-      return defaultHash;
+    // check for intent, if any
+    if (window.location.hash.includes('?Intent=')) {
+      let hash = window.location.hash.replace('#/#', '#'); // handle default hash and intent specific hash
+      const intentHash = RoutingHelpers.getIntentPath(hash.split('#')[1]);
+      if (intentHash) {
+        return intentHash;
+      }
     }
-    const intentHash = RoutingHelpers.getIntentPath(url.split('#')[1]);
-    if (intentHash) {
-      return intentHash;
-    }
+    return url.split('#/')[1];
   }
 
   getModifiedPathname() {
+    // check for intent, if any
+    if (window.location.hash.includes('?Intent=')) {
+      let hash = window.location.hash.replace('#/#', '').replace('#', '');
+      let intentPath = RoutingHelpers.getIntentPath(hash);
+      if (intentPath) {
+        return intentPath;
+      }
+    }
     const path =
       (window.history.state && window.history.state.path) ||
       window.location.pathname;
-
     return path
       .split('/')
       .slice(1)
@@ -137,19 +145,19 @@ class RoutingClass {
 
   getCurrentPath() {
     if (window.location.hash.includes('?Intent=')) {
-      let intentPath = RoutingHelpers.getIntentPath(window.location.hash);
+      let hash = window.location.hash.replace('#/#', '').replace('#', '');
+      let intentPath = RoutingHelpers.getIntentPath(hash);
       if (intentPath) {
         // if intent faulty or illegal then skip
         return intentPath;
       }
     }
-    const path = LuigiConfig.getConfigValue('routing.useHashRouting')
+    return LuigiConfig.getConfigValue('routing.useHashRouting')
       ? window.location.hash.replace('#', '') // TODO: GenericHelpers.getPathWithoutHash(window.location.hash) fails in ContextSwitcher
       : window.location.search
       ? GenericHelpers.trimLeadingSlash(window.location.pathname) +
         window.location.search
       : GenericHelpers.trimLeadingSlash(window.location.pathname);
-    return path;
   }
 
   async handleRouteChange(path, component, iframeElement, config) {

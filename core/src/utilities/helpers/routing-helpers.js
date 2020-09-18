@@ -124,10 +124,6 @@ class RoutingHelpersClass {
       'routing.useHashRouting'
     );
 
-    const intentRoutingActive = LuigiConfig.getConfigValue(
-      'navigation.intentMapping'
-    );
-
     EventListenerHelpers.addEventListener('message', e => {
       if ('refreshRoute' === e.data.msg && e.origin === window.origin) {
         const path = hashRoutingActive
@@ -137,7 +133,7 @@ class RoutingHelpersClass {
       }
     });
 
-    if (hashRoutingActive || intentRoutingActive) {
+    if (hashRoutingActive) {
       return EventListenerHelpers.addEventListener('hashchange', event => {
         callback(Routing.getHashPath(event.newURL));
       });
