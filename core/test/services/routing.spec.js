@@ -116,7 +116,101 @@ describe('Routing', function() {
     });
   });
 
+  describe('getIntentObject()', () => {
+    beforeEach(() => {
+      LuigiConfig.getConfigValue.restore();
+      sinon
+        .stub(LuigiConfig, 'getConfigValue')
+        .withArgs('navigation.intentMapping')
+        .returns([
+          {
+            semanticObject: 'Sales',
+            action: 'settings',
+            pathSegment: '/projects/pr2/settings'
+          }
+        ]);
+    });
+
+    it('returns intentObject from provided intent link with params', () => {
+      const actual = RoutingHelpers.getIntentObject(
+        '#?Intent=Sales-settings?param1=luigi&param2=mario'
+      );
+      const expected = {
+        semanticObject: 'Sales',
+        action: 'settings',
+        params: [{ param1: 'luigi' }, { param2: 'mario' }]
+      };
+      assert.equal(actual, expected);
+    });
+
+    it('returns intentObject from provided intent link without params', () => {
+      const actual = RoutingHelpers.getIntentObject('#?Intent=Sales-settings');
+      const expected = {
+        semanticObject: 'Sales',
+        action: 'settings',
+        params: undefined
+      };
+      assert.equal(actual, expected);
+    });
+
+    it('returns intentObject from provided intent link with illegal characters', () => {
+      const actual = RoutingHelpers.getIntentObject(
+        '#?Intent=Sales-$et$$tings'
+      );
+      assert.equal(actual, false);
+    });
+  });
+
+  describe('getIntentPath()', () => {
+    beforeEach(() => {
+      LuigiConfig.getConfigValue.restore();
+      sinon
+        .stub(LuigiConfig, 'getConfigValue')
+        .withArgs('navigation.intentMapping')
+        .returns([
+          {
+            semanticObject: 'Sales',
+            action: 'settings',
+            pathSegment: '/projects/pr2/settings'
+          }
+        ]);
+    });
+
+    it('checks intent path parsing with illegal characters', () => {
+      const actual = RoutingHelpers.getIntentPath(
+        '#?Intent=Sa#les-sett!@ings?param1=luigi&param2=mario'
+      );
+      assert.equal(actual, undefined);
+    });
+
+    it('checks intent path parsing with illegal hyphen character', () => {
+      const actual = RoutingHelpers.getIntentPath(
+        '#?Intent=Sa-les-sett-ings?param1=luigi&param2=mario'
+      );
+      assert.equal(actual, expected);
+    });
+
+    it('returns path from provided intent link without params', () => {
+      const actual = RoutingHelpers.getIntentPath('#?Intent=Sales-settings');
+      const expected = '/projects/pr2/settings';
+      assert.equal(actual, expected);
+    });
+  });
+
   describe('getHashPath()', () => {
+    beforeEach(() => {
+      LuigiConfig.getConfigValue.restore();
+      sinon
+        .stub(LuigiConfig, 'getConfigValue')
+        .withArgs('navigation.intentMapping')
+        .returns([
+          {
+            semanticObject: 'Sales',
+            action: 'settings',
+            pathSegment: '/projects/pr2/settings'
+          }
+        ]);
+    });
     it('returns hash path from default param', () => {
       window.location.hash = '#/projects/pr3';
       const actual = Routing.getHashPath();
@@ -127,6 +221,20 @@ describe('Routing', function() {
     it('returns hash path from provided input param', () => {
       const actual = Routing.getHashPath('my-url#/projects/pr3');
       const expected = 'projects/pr3';
+      assert.equal(actual, expected);
+    });
+
+    it('returns path from provided intent link with params', () => {
+      const actual = Routing.getHashPath(
+        '#?Intent=Sales-settings?param1=luigi&param2=mario'
+      );
+      const expected = '/projects/pr2/settings?~param1=luigi&~param2=mario';
+      assert.equal(actual, expected);
+    });
+
+    it('returns path from provided intent link without params', () => {
+      const actual = Routing.getHashPath('#?Intent=Sales-settings');
+      const expected = '/projects/pr2/settings';
       assert.equal(actual, expected);
     });
   });
@@ -580,6 +688,25 @@ describe('Routing', function() {
         path: '/this/is/some/'
       });
       assert.equal(Routing.getModifiedPathname(), 'this/is/some/');
+    });
+
+    it('from intent based link', () => {
+      const mockIntentHash =
+        '#?Intent=Sales-settings?param1=luigi&param2=mario';
+      sinon.stub(window, 'location').value({
+        hash: mockIntentHash
+      });
+      LuigiConfig.getConfigValue.withArgs('navigation.intentMapping').returns([
+        {
+          semanticObject: 'Sales',
+          action: 'settingsm',
+          pathSegment: '/projects/pr2/settings'
+        }
+      ]);
+      assert.equal(
+        Routing.getModifiedPathname(),
+        '/projects/pr2/settings?~param1=luigi&~param2=mario'
+      );
     });
   });
 

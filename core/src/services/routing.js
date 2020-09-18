@@ -115,8 +115,8 @@ class RoutingClass {
 
   getHashPath(url = window.location.hash) {
     // check for intent, if any
-    if (window.location.hash.includes('?Intent=')) {
-      let hash = window.location.hash.replace('#/#', '#'); // handle default hash and intent specific hash
+    if (url && url.includes('?Intent=')) {
+      let hash = url.replace('#/#', '#'); // handle default hash and intent specific hash
       const intentHash = RoutingHelpers.getIntentPath(hash.split('#')[1]);
       if (intentHash) {
         return intentHash;
@@ -127,7 +127,7 @@ class RoutingClass {
 
   getModifiedPathname() {
     // check for intent, if any
-    if (window.location.hash.includes('?Intent=')) {
+    if (window.location.hash && window.location.hash.includes('?Intent=')) {
       let hash = window.location.hash.replace('#/#', '').replace('#', '');
       let intentPath = RoutingHelpers.getIntentPath(hash);
       if (intentPath) {
