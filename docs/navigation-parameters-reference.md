@@ -55,6 +55,10 @@ You can configure the way Luigi tackles routing in your application in the `rout
   - **wrongPath** (string): the path that the user tried navigating to.
   - **wasAnyPathFitted** (bool): it is true if Luigi managed to fit a valid path which means **wrongPath** was only partially wrong. Otherwise it is false.
 
+### defaults.sideNavAccordionMode
+- **type**: boolean
+- **description**: overrides the default behaviour of categories whether multiple categories can be collapsed. When set to `true`, only one category is collapsed. The navigation is similar to an accordion; when the user clicks another category the previously collapsed category is closed and the new one is opened.
+- **default**: `false`
 
 ## Navigation parameters
 The navigation parameters allow you to configure **global** navigation settings directly under the `navigation:` section in the configuration file.
@@ -320,6 +324,12 @@ settings: {
     ```
 - **since**: 1.4.0
 
+### sideNavAccordionMode
+- **type**: boolean
+- **description**: overrides the default behaviour of categories whether multiple categories can be collapsed. When set to `true`, only one category is collapsed. The navigation is similar to an accordion; when the user clicks another category the previously collapsed category is closed and the new one is opened. Note that this will be applied to its direct children.
+- **default**: `false`
+
+
 ## Context switcher
 
 The context switcher is a drop-down list available in the top navigation bar. It allows you to switch between a curated list of navigation elements such as Environments. To do so, add the **contextSwitcher** parameter to the **navigation** object using the following optional parameters:
@@ -491,7 +501,12 @@ The app switcher is a drop-down list available in the top navigation bar. It all
 
 ## Global search
 
-The global search is an input field available in the top navigation bar. The search is available if the search provider object is configured and implemented in the `luigi-config.js` file.
+The global search is an input field available in the top navigation bar. The search is available if the Luigi configuration file contains on its root level a section called `globalSearch`. Within this section you can implement and configure a search provider object.
+
+### disableInputHandlers
+- **type**: boolean
+- **description**: disables the on:keyUp and other internal handlers on the search input field. It is a plain input field then, which can be used to attach your own handlers. If set to `true`, a **searchProvider** must be defined in order to show the search field, which can contain your custom logic. It is recommended to initialize your custom logic in the [**lifeCycle.luigiAfterInit**](lifecycle-hooks.md#luigiafterinit) hook.
+- **since**: NEXTRELEASE
 
 ### searchProvider
 - **type**: Object
