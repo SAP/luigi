@@ -271,6 +271,7 @@
       virtualGroupPrefix,
       isSemiCollapsed,
       selectedNode,
+      sideNavAccordionMode,
       selectedCategory,
       expandedCategories,
       hasCategoriesWithIcon
@@ -290,6 +291,13 @@
             hasCategoriesWithIcon = obj.hasCategoriesWithIcon;
           }
         });
+
+        let sideNavAccordionModeOverride = selectedNode && selectedNode.sideNavAccordionMode || selectedNode && selectedNode.parent && selectedNode.parent.sideNavAccordionMode
+        if (typeof sideNavAccordionModeOverride !== 'undefined'){
+          sideNavAccordionMode = sideNavAccordionModeOverride
+        } else {
+          sideNavAccordionMode = LuigiConfig.getConfigBooleanValue('navigation.defaults.sideNavAccordionMode')
+        }
       }
     }
   };
@@ -319,6 +327,7 @@
   export let expandedCategories;
   export let hasCategoriesWithIcon;
   export let sideNavClass;
+  export let sideNavAccordionMode;
   let context;
   let previousWindowWidth;
   let responsiveNavSetting;
@@ -339,6 +348,9 @@
     previousPathData = pathData;
     window.LEFTNAVDATA = leftNavData.children;
   };
+
+
+  
 
   onMount(() => {
     semiCollapsibleButton =
@@ -513,10 +525,11 @@
     if (SemiCollapsibleNavigation.getCollapsed()) {
       return;
     }
-
+    
     expandedCategories = NavigationHelpers.storeExpandedState(
       nodes.metaInfo.categoryUid,
-      value
+      value,
+      sideNavAccordionMode
     );
   }
 
