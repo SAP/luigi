@@ -76,6 +76,17 @@ describe('Luigi client linkManager', () => {
         .click();
       cy.expectPathToBe('/projects/pr2');
 
+      //navigate with intent
+      cy.wrap($iframeBody)
+        .contains('navigate to settings with intent with parameters')
+        .click();
+      cy.expectPathToBe('/projects/pr2/settings');
+      cy.expectSearchToBe('?~param1=abc&~param2=bcd');
+
+      cy.goToOverviewPage();
+      cy.goToLinkManagerMethods($iframeBody);
+
+      cy.goToLinkManagerMethods($iframeBody);
       //navigate with preserve view functionality
       cy.wrap($iframeBody)
         .contains('with preserved view: project to global settings and back')

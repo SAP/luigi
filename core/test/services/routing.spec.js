@@ -153,7 +153,7 @@ describe('Routing', function() {
       assert.deepEqual(actual, expected);
     });
 
-    it('returns intentObject from provided intent link with illegal characters', () => {
+    it('falsy intentObject from provided intent link with illegal characters', () => {
       const actual = RoutingHelpers.getIntentObject(
         '#?Intent=Sales-$et$$tings'
       );
@@ -193,6 +193,14 @@ describe('Routing', function() {
     it('returns path from provided intent link without params', () => {
       const actual = RoutingHelpers.getIntentPath('#?Intent=Sales-settings');
       const expected = '/projects/pr2/settings';
+      assert.equal(actual, expected);
+    });
+
+    it('returns path from provided intent link with params', () => {
+      const actual = RoutingHelpers.getIntentPath(
+        '#?Intent=Sales-settings?param1=hello&param2=world'
+      );
+      const expected = '/projects/pr2/settings?~param1=hello&~param2=world';
       assert.equal(actual, expected);
     });
   });
@@ -720,6 +728,11 @@ describe('Routing', function() {
 
     it('from faulty intent based link', () => {
       window.location.hash = '#?Intent=Sales-sett-ings';
+      assert.equal(Routing.getModifiedPathname(), '/');
+    });
+
+    it('from intent based link with illegal characters', () => {
+      window.location.hash = '#?Intent=Sales-sett$ings';
       assert.equal(Routing.getModifiedPathname(), '/');
     });
   });
