@@ -101,6 +101,15 @@ The navigation parameters allow you to configure **global** navigation settings 
   - **preloadUrl**(string): needs to be an absolute URL of a micro frontend belonging to a view group. It cannot be an URL of a node. It is recommended that you use a dedicated small, visually empty view, which imports Luigi Client and is fine with getting an empty context, for example, without an access token. The **preloadUrl** parameter
  is also required for view group caching in case you need a view group iframe to refresh whenever you navigate back to it.
 
+ ### intentMapping
+- **type**: array
+- **description**: contains an array of abstract intent objects that can be used to navigate through microfrontends thorugh LuigiClient linkManager.navigate() method. The attributes contained in each intent object of the array are abstract notations which can be used to define the target mapping of your desired intent navigation in a semantic way. 
+Check our Advanced Scenarios page for an example scenario.
+- **attributes**:
+  - **semanticObject**(string): may represent a business entity such as a sales order or a product. It enables navigating to such entities in an abstract implementation-independent way. It can only only contain alphanumerical characters.
+  - **action**(string): defines an operation, i.e.: display, approve or edit. The operation is intended to be performed on a **semanticObject** such as a sales order or a certain product. It can only contain alphanumerical charcters but also the underscore character.
+  - **pathSegment**(string): represents the target of the navigation. In order to use it as a target link it has to be defined under navigation nodes in the Luigi Configuration.
+
 
 ## Node parameters
 Node parameters are all the parameters that can be added to an individual navigation node in the `nodes:` section of the Luigi configuration file.

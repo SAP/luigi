@@ -47,6 +47,7 @@ export class linkManager extends LuigiClientBase {
    * LuigiClient.linkManager().navigate('/overview')
    * LuigiClient.linkManager().navigate('users/groups/stakeholders')
    * LuigiClient.linkManager().navigate('/settings', null, true) // preserve view
+   * LuigiClient.linkManager().navigate('#Sales-order?id=13') // intent navigation
    */
   navigate(path, sessionId, preserveView, modalSettings, splitViewSettings) {
     if (this.options.errorSkipNavigation) {
