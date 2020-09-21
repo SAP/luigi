@@ -227,14 +227,14 @@ Luigi Client allows you to navigate through microfrontends by using an intent ba
   ];
   ```
   1. The intent link is built using the semanticObject, action and optional parameters in the following format:
-  `#semanticObject-action?params`
+  `#?Intent=semanticObject-action?params`
   An example of an intent link would be as follows:
   ```javascript
-    #Sales-edit?id=100
+    #?Intent=Sales-edit?id=100
   ```
   2. Navigation to a microfrontend through this intent is then made possible by using the linkManager navigate method from [Luigi Client API](luigi-client-api.md#navigate):
   ```javascript
-    LuigiClient.linkManager().navigate('#Sales-edit?id=100');
+    LuigiClient.linkManager().navigate('#?Intent=Sales-edit?id=100');
   ```
 
   3. This would then be navigating to the translated real path segment:
@@ -244,7 +244,7 @@ Luigi Client allows you to navigate through microfrontends by using an intent ba
 
   4. Alternatively, the intent link can also be accessed through the browser URL as well and accessed from outside:
   ```javascript
-    https://example.com/#Sales-edit?id=100;
+    https://example.com/#?Intent=Sales-edit?id=100;
   ```
 
 

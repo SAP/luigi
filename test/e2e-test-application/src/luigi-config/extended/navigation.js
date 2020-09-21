@@ -25,18 +25,8 @@ class Navigation {
   intentMapping = [
     {
       semanticObject: 'Sales',
-      action: 'view',
-      pathSegment: '/projects/pr2'
-    },
-    {
-      semanticObject: 'Sales',
       action: 'settings',
       pathSegment: '/projects/pr2/settings'
-    },
-    {
-      semanticObject: 'Sales',
-      action: 'edit',
-      pathSegment: '/projects/pr2/settings_ft?ft=ft1'
     }
   ];
   nodeAccessibilityResolver = navigationPermissionChecker;

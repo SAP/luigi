@@ -122,6 +122,7 @@ class RoutingClass {
         return intentHash;
       }
     }
+
     return url.split('#/')[1];
   }
 
