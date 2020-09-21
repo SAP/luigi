@@ -37,7 +37,7 @@
     "@babel/runtime": "^7.8.7",
     "acorn": "^6.4.1",
     "babel-loader": "^8.0.5",
-    "bundlesize": "^0.17.0",
+    "bundlesize": "^0.18.0",
     "copy-webpack-plugin": "^5.1.1",
     "core-js": "^3.0.1",
     "diff": ">=3.5.0",
@@ -47,6 +47,6 @@
     "serialize-javascript": ">=3.1.0",
     "set-value": ">=2.0.1",
     "webpack": "^4.42.1",
-    "webpack-cli": "^3.2.1"
+    "webpack-cli": "^3.3.12"
   }
 }
