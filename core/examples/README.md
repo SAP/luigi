@@ -13,3 +13,4 @@ See the particular subfolders for the installation instructions:
 * [Plain Javascript example application](/core/examples/luigi-example-js)
 * [Svelte example application](/core/examples/luigi-example-svelte)
 * [OpenUI5 example application](/core/examples/luigi-example-openui5)
+* [NextJS example application](/core/examples/luigi-example-next)
