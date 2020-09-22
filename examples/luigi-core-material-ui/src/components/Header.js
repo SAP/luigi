@@ -14,6 +14,8 @@ import Toolbar from '@material-ui/core/Toolbar';
 import Tooltip from '@material-ui/core/Tooltip';
 import { withStyles } from '@material-ui/core/styles';
 
+import { Icon } from '@rmwc/icon';
+
 const lightColor = 'rgba(255, 255, 255, 0.7)';
 
 const styles = theme => ({
@@ -60,6 +62,8 @@ function Header(props) {
             </Hidden>
             <Grid item xs />
             <Grid item>
+              <Icon icon="favorite" />
+
               <Link className={classes.link} href="#" variant="body2">
                 Go to docs
               </Link>
@@ -86,7 +90,7 @@ function Header(props) {
         position="static"
         elevation={0}
       ></AppBar>
-      <AppBar
+      {/*<AppBar
         component="div"
         className={classes.secondaryBar}
         color="primary"
@@ -99,7 +103,7 @@ function Header(props) {
           <Tab textColor="inherit" label="Templates" />
           <Tab textColor="inherit" label="Usage" />
         </Tabs>
-      </AppBar>
+      </AppBar> */}
     </React.Fragment>
   );
 }

@@ -4,6 +4,7 @@ class Navigation {
       label: 'Home',
       pathSegment: 'home',
       viewUrl: '/mf.html',
+      navigationContext: 'home',
       children: [
         {
           label: 'Sub 1',

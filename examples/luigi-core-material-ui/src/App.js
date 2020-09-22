@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 // import logo from './logo.svg';
 import './scss/index.scss';
 
@@ -152,36 +152,66 @@ const styles = {
   }
 };
 
+const listeners = [];
+const removeListeners = () =>
+  listeners.forEach(id => window.Luigi.navigation().removeEventListener(id));
 function App(props) {
   const { classes } = props;
   const [mobileOpen, setMobileOpen] = React.useState(false);
-  const [leftNav, setLeftNav] = React.useState(undefined);
+  const [leftNav, setLeftNav] = React.useState({ categories: [] });
 
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen);
   };
 
-  let evts = {};
+  const prepareCategories = childrenObj => {
+    const categories = [];
+    for (const category in childrenObj) {
+      if (!category.startsWith('__')) {
+        categories.push({
+          label: category,
+          children: childrenObj[category]
+        });
+      }
+    }
+    // categories = [
+    //   {
+    //     id: 'Develop',
+    //     children: [
+    //       { id: 'Authentication', icon: <PeopleIcon />, active: true },
+    return categories;
+  };
 
   const handleLuigiEvents = (name, data) => {
-    console.log('lui.events', name, data);
+    if (!data) {
+      return;
+    }
 
-    if (name === 'leftNav') {
+    if (name.endsWith('leftNav')) {
+      data.categories = prepareCategories(data.leftNavData.children);
       setLeftNav(data);
     }
   };
 
-  const luigiConfig = window.OUR_LUIGI_CONFIG;
-  window.Luigi.setConfig(luigiConfig);
-
-  const listeners = [];
-  // listeners.push(window.Luigi.navigation().addEventListener('leftNav', (data) => handleLuigiEvents('leftNav', data)));
-  // listeners.push(window.Luigi.navigation().addEventListener('topNav', (data) => handleLuigiEvents('topNav', data)));
-  // listeners.push(window.Luigi.navigation().addEventListener('tabNav', (data) => handleLuigiEvents('tabNav', data)));
-  window.onbeforeunload = () =>
-    listeners.forEach(id => window.Luigi.navigation().removeEventListener(id));
-
-  console.log('leftNav', leftNav);
+  useEffect(() => {
+    removeListeners();
+    listeners.push(
+      window.Luigi.navigation().addEventListener('leftNav', data =>
+        handleLuigiEvents('leftNav', data)
+      )
+    );
+    listeners.push(
+      window.Luigi.navigation().addEventListener('topNav', data =>
+        handleLuigiEvents('topNav', data)
+      )
+    );
+    listeners.push(
+      window.Luigi.navigation().addEventListener('tabNav', data =>
+        handleLuigiEvents('tabNav', data)
+      )
+    );
+    window.onbeforeunload = () => removeListeners();
+  });
 
   return (
     <ThemeProvider theme={theme}>
@@ -190,7 +220,7 @@ function App(props) {
         <nav className={classes.drawer}>
           <Hidden smUp implementation="js">
             <Navigator
-              navItems={leftNav}
+              leftNav={leftNav}
               PaperProps={{ style: { width: drawerWidth } }}
               variant="temporary"
               open={mobileOpen}
@@ -199,7 +229,7 @@ function App(props) {
           </Hidden>
           <Hidden xsDown implementation="css">
             <Navigator
-              navItems={evts.leftNav}
+              leftNav={leftNav}
               PaperProps={{ style: { width: drawerWidth } }}
             />
           </Hidden>

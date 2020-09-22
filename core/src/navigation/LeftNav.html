@@ -345,10 +345,10 @@
     __this.set(leftNavData);
     previousPathData = pathData;
     window.LEFTNAVDATA = leftNavData.children; // TODO: remove? its totally useless
-    CustomListenerHelpers.dispatchEvent(
-      EVENT_PREFIXES.navigation + 'leftNav',
-      leftNavData
-    );
+    CustomListenerHelpers.dispatchEvent(EVENT_PREFIXES.navigation + 'leftNav', {
+      leftNavData,
+      previousPathData
+    });
   };
 
   onMount(() => {

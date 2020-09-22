@@ -1,8 +1,12 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import '@rmwc/icon/styles';
 import './index.css';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
+
+const luigiConfig = window.OUR_LUIGI_CONFIG;
+window.Luigi.setConfig(luigiConfig);
 
 ReactDOM.render(
   <React.StrictMode>

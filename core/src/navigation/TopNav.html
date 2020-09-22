@@ -456,7 +456,7 @@
       previousPathData = pathData;
       CustomListenerHelpers.dispatchEvent(
         EVENT_PREFIXES.navigation + 'topNav',
-        tnd
+        { topNavData: tnd, previousPathData }
       );
     }
   };

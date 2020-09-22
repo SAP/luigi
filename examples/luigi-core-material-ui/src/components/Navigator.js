@@ -14,22 +14,22 @@ import { Icon } from '@rmwc/icon';
 
 // let categories = [
 // {
-//   id: 'Develop',
+//   label: 'Develop',
 //   children: [
-//     { id: 'Authentication', icon: <PeopleIcon />, active: true },
-//     { id: 'Database', icon: <DnsRoundedIcon /> },
-//     { id: 'Storage', icon: <PermMediaOutlinedIcon /> },
-//     { id: 'Hosting', icon: <PublicIcon /> },
-//     { id: 'Functions', icon: <SettingsEthernetIcon /> },
-//     { id: 'ML Kit', icon: <SettingsInputComponentIcon /> },
+//     { label: 'Authentication', icon: <PeopleIcon />, active: true },
+//     { label: 'Database', icon: <DnsRoundedIcon /> },
+//     { label: 'Storage', icon: <PermMediaOutlinedIcon /> },
+//     { label: 'Hosting', icon: <PublicIcon /> },
+//     { label: 'Functions', icon: <SettingsEthernetIcon /> },
+//     { label: 'ML Kit', icon: <SettingsInputComponentIcon /> },
 //   ],
 // },
 // {
-//   id: 'Quality',
+//   label: 'Quality',
 //   children: [
-//     { id: 'Analytics', icon: <SettingsIcon /> },
-//     { id: 'Performance', icon: <TimerIcon /> },
-//     { id: 'Test Lab', icon: <PhonelinkSetupIcon /> },
+//     { label: 'Analytics', icon: <SettingsIcon /> },
+//     { label: 'Performance', icon: <TimerIcon /> },
+//     { label: 'Test Lab', icon: <PhonelinkSetupIcon /> },
 //   ],
 // },
 // ];
@@ -75,19 +75,15 @@ const styles = theme => ({
   }
 });
 
-const prepareCategories = navItems => {
-  // categories = [
-  //   {
-  //     id: 'Develop',
-  //     children: [
-  //       { id: 'Authentication', icon: <PeopleIcon />, active: true },
-  return navItems;
-};
-
 function Navigator(props) {
-  const { classes, navItems, PaperProps } = props;
-  console.log('Navigator navItems', navItems);
-  const categories = prepareCategories(navItems || []);
+  const { classes, leftNav, PaperProps } = props;
+  console.log('Navigator leftNav', leftNav);
+
+  const navigateTo = pathSegment => {
+    window.Luigi.navigation()
+      .fromClosestContext()
+      .navigate(pathSegment);
+  };
 
   return (
     <Drawer variant="permanent" PaperProps={PaperProps}>
@@ -109,35 +105,45 @@ function Navigator(props) {
             Project Overview
           </ListItemText>
         </ListItem>
-        {categories.map(({ id, children }) => (
-          <React.Fragment key={id}>
+        {leftNav.categories.map(({ label, children }) => (
+          <React.Fragment key={label}>
             <ListItem className={classes.categoryHeader}>
               <ListItemText
                 classes={{
                   primary: classes.categoryHeaderPrimary
                 }}
               >
-                {id}
+                {label}
               </ListItemText>
             </ListItem>
-            {children.map(({ id: childId, icon, active }) => (
-              <ListItem
-                key={childId}
-                button
-                className={clsx(classes.item, active && classes.itemActiveItem)}
-              >
-                <ListItemIcon className={classes.itemIcon}>
-                  <Icon icon={icon} />
-                </ListItemIcon>
-                <ListItemText
-                  classes={{
-                    primary: classes.itemPrimary
-                  }}
+
+            {children.map(
+              ({ label: childLabel, icon, active, pathSegment }) => (
+                <ListItem
+                  key={childLabel}
+                  button
+                  className={clsx(
+                    classes.item,
+                    active && classes.itemActiveItem
+                  )}
+                  selected={
+                    leftNav.leftNavData.selectedNode.label === childLabel
+                  }
+                  onClick={() => navigateTo(pathSegment)}
                 >
-                  {childId}
-                </ListItemText>
-              </ListItem>
-            ))}
+                  <ListItemIcon className={classes.itemIcon}>
+                    <Icon icon={icon} />
+                  </ListItemIcon>
+                  <ListItemText
+                    classes={{
+                      primary: classes.itemPrimary
+                    }}
+                  >
+                    {childLabel}
+                  </ListItemText>
+                </ListItem>
+              )
+            )}
 
             <Divider className={classes.divider} />
           </React.Fragment>
@@ -149,7 +155,7 @@ function Navigator(props) {
 
 Navigator.propTypes = {
   classes: PropTypes.object.isRequired,
-  navItems: PropTypes.array
+  leftNav: PropTypes.object.isRequired
 };
 
 export default withStyles(styles)(Navigator);
