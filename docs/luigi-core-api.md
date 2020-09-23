@@ -25,6 +25,7 @@ This document outlines the features provided by the Luigi Core API. It covers th
 -   [Custom messages](#custommessages) - custom messages between Luigi Core and micro frontends
 -   [UX](#ux) - functions related to Luigi's appearance and user interface
 -   [Global search](#globalsearch) - functions related to Luigi's global search
+-   [Theming](#theming) - functions related to Luigi theming capabilties
 -   [Feature toggles](#featuretoggles) - functions related to Luigi's feature toggle mechanism
 
 ## Luigi Config
