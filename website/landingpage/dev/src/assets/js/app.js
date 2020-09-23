@@ -153,11 +153,49 @@ function removeActiveState(arr) {
 }
 
 // BLOG
+var backToBlog = $('#back-to-blog');
+//variables for load more blogs functionality
+var loadMoreBlogsBtn = $('#load-more-blogs-btn');
+var backToTopBtn = $('#back-to-top-btn');
+var filesAmount = $('#blog-chunks-data').data("chunk-total"); //count amount of all blogs files
+var chunksMinBlogLoadAmount = $('#blog-chunks-data').data("chunk-step"); //amount of blogs to be visible on first load
+var chunkCounter = 0;
+
+loadMoreBlogsBtn.on('click', function() {
+  fetch('blog-chunks/blog-chunk' + chunkCounter + '.html', {
+    method: 'GET'
+  }).then(response => {
+    if (response.ok) {
+      response.text().then(response => {
+        $('#blog-chunk').append(response);
+        chunkCounter = chunkCounter + chunksMinBlogLoadAmount;
+        let chunksWrapperDIV = $('#blog-chunk div.blog-entry:nth-child(' + chunkCounter + ')');
+        
+        //ids for a smooth scroll to particular new div
+        chunksWrapperDIV.attr('id', 'chunk-number' + chunkCounter); 
+        loadMoreBlogsBtn.attr('href', '#chunk-number' + chunkCounter);
+
+        let currentVisibleBlogs = chunkCounter + chunksMinBlogLoadAmount;
+        if (currentVisibleBlogs >= filesAmount ){
+          loadMoreBlogsBtn.addClass('hide');
+          backToTopBtn.removeClass('hide');
+        } else if (filesAmount === undefined) {
+          loadMoreBlogsBtn.hide();
+        }
+      });
+    } else {
+      console.log("Can not fetch the chunk");
+    }
+  }).catch(error => {
+    console.log("No blog-chunks is available", error);
+    });
+});
+
 // use history api back() instead of standard link if coming from overview page
-if (jQuery('.back-to-blog').length && document.referrer.indexOf('/blog/overview') !== -1 && window.history) {
-  jQuery('.back-to-blog').on('click', function(e) {
+if (backToBlog.length && document.referrer.indexOf('/blog/overview') !== -1 && window.history) {
+  backToBlog.on('click', function(e) {
     e.preventDefault();
     e.stopPropagation();
     history.back();
-  });
+});
 }

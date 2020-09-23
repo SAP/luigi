@@ -309,5 +309,104 @@ export const projectDetailNavStructure = projectId => [
       sameWindow: true
     },
     icon: 'globe'
-  }
+  },
+  {
+    pathSegment: 'collapsibles',
+    label: 'Collapsible categories',
+    viewUrl: '/sampleapp.html#/projects/' + projectId + '/miscellaneous2',
+    icon: 'sys-help',
+    children: [
+      {
+        label: 'Open Github in new tab',
+        category: {
+          label: 'Super useful Github links',
+          icon: '/assets/github-logo.png',
+          collapsible: true
+        },
+        externalLink: {
+          url: 'http://github.com',
+          sameWindow: false
+        },
+        icon: 'internet-browser'
+      },
+      {
+        label: 'Open Github in this tab',
+        category: 'Super useful Github links',
+        externalLink: {
+          url: 'http://github.com',
+          sameWindow: true
+        },
+        icon: 'globe'
+      },
+      {
+        category: { label: 'User Management', icon: 'person-placeholder', collapsible: true },
+        pathSegment: 'users',
+        label: 'Users and Groups',
+        viewUrl: '/sampleapp.html#/projects/' + projectId + '/users',
+        icon: 'group',
+        
+      },
+      {
+        category: 'User Management',
+        pathSegment: 'developers',
+        label: 'Developers',
+        viewUrl: '/sampleapp.html#/projects/' + projectId + '/developers',
+        icon: 'employee',
+        badgeCounter: {
+          label: 'Number of developers',
+          count: () => Math.floor(Math.random() * 100)
+        }
+      },
+    ]
+  },
+  {
+    pathSegment: 'sidenavaccordionmode',
+    label: 'Collapse one categories',
+    viewUrl: '/sampleapp.html#/projects/' + projectId + '/miscellaneous2',
+    icon: 'sys-help',
+    sideNavAccordionMode: true,
+    children: [
+      {
+        label: 'Open Github in new tab',
+        category: {
+          label: 'Super useful Github links',
+          icon: '/assets/github-logo.png',
+          collapsible: true
+        },
+        externalLink: {
+          url: 'http://github.com',
+          sameWindow: false
+        },
+        icon: 'internet-browser'
+      },
+      {
+        label: 'Open Github in this tab',
+        category: 'Super useful Github links',
+        externalLink: {
+          url: 'http://github.com',
+          sameWindow: true
+        },
+        icon: 'globe'
+      },
+      {
+        category: { label: 'User Management', icon: 'person-placeholder', collapsible: true },
+        pathSegment: 'users',
+        label: 'Users and Groups',
+        viewUrl: '/sampleapp.html#/projects/' + projectId + '/users',
+        icon: 'group',
+        
+      },
+      {
+        category: 'User Management',
+        pathSegment: 'developers',
+        label: 'Developers',
+        viewUrl: '/sampleapp.html#/projects/' + projectId + '/developers',
+        icon: 'employee',
+        badgeCounter: {
+          label: 'Number of developers',
+          count: () => Math.floor(Math.random() * 100)
+        }
+      },
+    ]
+  },
 ];
