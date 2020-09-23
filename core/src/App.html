@@ -18,14 +18,14 @@
     on:iframeCreated="{modalIframeCreated}"
   ></Modal>
   {/if}
-  {#if mfDrawer.displayed}
+  <!-- {#if mfDrawer.displayed}
   <Drawer
     drawerSettings="{mfDrawer.drawerSettings}"
     nodepath="{mfDrawer.nodepath}"
     on:close="{closeDrawer}"
     on:iframeCreated="{drawerIframeCreated}">
   </Drawer>
-  {/if}
+  {/if} -->
   <Backdrop>
     <div
       class="fd-page iframeContainer {mfSplitView.displayed?'lui-split-view':''} {mfSplitView.collapsed?'lui-collapsed':''}"
@@ -426,7 +426,7 @@
         Iframe.removeInactiveIframes(node);
       }
       closeModal();
-      closeDrawer();
+      //closeDrawer();
       closeSplitView();
 
       Routing.handleRouteChange(path, getComponentWrapper(), node, config);
@@ -504,7 +504,7 @@
         );
       } else if (node.drawer) {
         const route = RoutingHelpers.buildRoute(node, `/${node.pathSegment}`);
-        openViewInDrawer(
+        openViewInModal(
           route,
           node.drawer
         );
@@ -904,35 +904,35 @@
 
   //// MICRO-FRONTEND DRAWER
 
-  let mfDrawer = {};
-  const openViewInDrawer = async (nodepath, drawerSettings) => {
-    const { nodeObject } = await Navigation.extractDataFromPath(nodepath);
-    if (await Navigation.shouldPreventNavigation(nodeObject)) {
-      return;
-    }
-    mfDrawer.displayed = true;
-    mfDrawer.nodepath = nodepath;
-    mfDrawer.drawerSettings = drawerSettings;
-  };
+  // let mfDrawer = {};
+  // const openViewInDrawer = async (nodepath, drawerSettings) => {
+  //   const { nodeObject } = await Navigation.extractDataFromPath(nodepath);
+  //   if (await Navigation.shouldPreventNavigation(nodeObject)) {
+  //     return;
+  //   }
+  //   mfDrawer.displayed = true;
+  //   mfDrawer.nodepath = nodepath;
+  //   mfDrawer.drawerSettings = drawerSettings;
+  // };
 
-  const drawerIframeCreated = event => {
-    drawerIframe = event.detail.drawerIframe;
-    drawerIframeData = event.detail.drawerIframeData;
-  };
+  // const drawerIframeCreated = event => {
+  //   drawerIframe = event.detail.drawerIframe;
+  //   drawerIframeData = event.detail.drawerIframeData;
+  // };
 
-  const resetMicrofrontendDrawerData = () => {
-    mfDrawer.displayed = false;
-    mfDrawer.nodepath = undefined;
-    mfDrawer.modalSettings = {};
-  };
+  // const resetMicrofrontendDrawerData = () => {
+  //   mfDrawer.displayed = false;
+  //   mfDrawer.nodepath = undefined;
+  //   mfDrawer.modalSettings = {};
+  // };
 
-  const closeDrawer = () => {
-    if (drawerIframe) {
-      getUnsavedChangesModalPromise(drawerIframe.contentWindow).then(() => {
-        resetMicrofrontendDrawerData();
-      });
-    }
-  };
+  // const closeDrawer = () => {
+  //   if (drawerIframe) {
+  //     getUnsavedChangesModalPromise(drawerIframe.contentWindow).then(() => {
+  //       resetMicrofrontendDrawerData();
+  //     });
+  //   }
+  // };
 
 
   function init(node) {

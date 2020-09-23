@@ -66,6 +66,9 @@ export const projectDetailNavStructure = projectId => [
     badgeCounter: {
       label: 'Number of developers',
       count: () => Math.floor(Math.random() * 100)
+    },
+    drawer: {
+      position: 'right',
     }
   },
   {
@@ -344,7 +347,7 @@ export const projectDetailNavStructure = projectId => [
         label: 'Users and Groups',
         viewUrl: '/sampleapp.html#/projects/' + projectId + '/users',
         icon: 'group',
-        
+
       },
       {
         category: 'User Management',
@@ -394,7 +397,7 @@ export const projectDetailNavStructure = projectId => [
         label: 'Users and Groups',
         viewUrl: '/sampleapp.html#/projects/' + projectId + '/users',
         icon: 'group',
-        
+
       },
       {
         category: 'User Management',

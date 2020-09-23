@@ -1,6 +1,8 @@
-<svelte:window on:keydown="{handleKeydown}"/>
+<svelte:window on:keydown="{handleKeydown}" />
 <div class="fd-dialog fd-dialog--active" style="z-index:999">
-  <div class="fd-dialog__content lui-modal-mf" data-testid="modal-mf">
+  <div class="fd-dialog__content {isDrawer? 'drawer drawer-dialog__content':'lui-modal-mf modal-dialog__content'}"
+    data-testid="modal-mf">
+    {#if !isDrawer}
     <div class="fd-dialog__header fd-bar fd-bar--header">
       <div class="fd-bar__left">
         <div class="fd-bar__element">
@@ -19,6 +21,7 @@
         </div>
       </div>
     </div>
+    {/if}
     <div class="fd-dialog__body">
       <div class="iframeModalCtn"></div>
     </div>
@@ -73,6 +76,8 @@
   let nodeParams;
   let iframeCreated = false;
   let showLoadingIndicator = true;
+  let isDrawer = false;
+  let drawerSettings = {};
 
   const prepareNodeData = async path => {
     const pathUrlRaw =
@@ -81,6 +86,10 @@
     nodeParams = RoutingHelpers.getNodeParams(params);
     const dataFromPath = await Navigation.extractDataFromPath(path);
     nodeObject = dataFromPath.nodeObject;
+    isDrawer = typeof nodeObject.drawer === 'object';
+    if (isDrawer) {
+      drawerSettings = nodeObject.drawer;
+    }
     pathData = dataFromPath.pathData;
     if (!modalSettings.title) {
       modalSettings.title = nodeObject.label;
@@ -109,19 +118,22 @@
     }
   };
   const createIframeModal = async (viewUrl, componentData) => {
-    const elem = document.getElementsByClassName('lui-modal-mf');
-    let modalSize = '80%';
-    if (modalSettings.size) {
-      if (modalSettings.size === 'l') {
-        modalSize = '80%';
-      } else if (modalSettings.size === 'm') {
-        modalSize = '60%';
-      } else if (modalSettings.size === 's') {
-        modalSize = '40%';
+    if (isDrawer) {
+      await setDrawerSize();
+    } else {
+      const elemModal = document.getElementsByClassName('lui-modal-mf');
+      let modalSize = '80%';
+      if (modalSettings.size) {
+        if (modalSettings.size === 'l') {
+          modalSize = '80%';
+        } else if (modalSettings.size === 'm') {
+          modalSize = '60%';
+        } else if (modalSettings.size === 's') {
+          modalSize = '40%';
+        }
       }
+      elemModal[0].setAttribute('style', `width:${modalSize};height:${modalSize}`);
     }
-
-    elem[0].setAttribute('style', `width:${modalSize};height:${modalSize}`);
     if (viewUrl) {
       viewUrl = RoutingHelpers.substituteViewUrl(viewUrl, componentData);
     }
@@ -137,6 +149,27 @@
     iframeCtn.appendChild(iframe);
     return iframe;
   };
+
+  async function setDrawerSize(elem) {
+    let styleSettings = '';
+    const elemDrawer = document.getElementsByClassName('drawer');
+    if (drawerSettings.width) {
+      styleSettings = `width:${drawerSettings.width};`;
+    }
+    if (drawerSettings.height) {
+      styleSettings += `height:${drawerSettings.height};`;
+    }
+    if (drawerSettings.position === 'left') {
+      styleSettings += `left:0;right:auto;top:0;`;
+    } else if (drawerSettings.position === 'right') {
+      styleSettings += `left:auto;right:0;top:0;`;
+    } else if (drawerSettings.position === 'bottom') {
+      styleSettings += `bottom:0;left:auto;right:auto;top:auto`;
+    } else if (drawerSettings.position === 'top') {
+      styleSettings += `top:0;left:auto;right:auto;`;
+    }
+    elemDrawer[0].setAttribute('style', styleSettings);
+  }
 
   // [svelte-upgrade warning]
   // beforeUpdate and afterUpdate handlers behave
@@ -187,6 +220,15 @@
 </script>
 
 <style type="text/scss">
+  .drawer {
+    top: 44px;
+    height: 100vh;
+    width: 25vw;
+    position: fixed;
+    overflow-y: auto;
+    left: auto;
+    right: 0;
+  }
   .iframeModalCtn {
     position: relative;
     height: 70vh;
@@ -217,11 +259,25 @@
     width: 100%;
     height: 100%;
   }
-  .fd-dialog {
-    &__content {
-      width: 80%;
-    }
 
+  .modal-dialog__content{
+      width: 80%;
+  }
+
+  .drawer-dialog__content{
+    max-width: none;
+    max-height: none;
+    min-width: 0;
+  }
+
+  @media (max-width: 599px) {
+    .drawer-dialog__content:not(.fd-dialog__content--mobile) {
+        max-width: none;
+        min-width: 50vw;
+    }
+  }
+
+  .fd-dialog {
     &__body {
       overflow-wrap: break-word;
     }
