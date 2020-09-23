@@ -159,6 +159,7 @@ function App(props) {
   const { classes } = props;
   const [mobileOpen, setMobileOpen] = React.useState(false);
   const [leftNav, setLeftNav] = React.useState({ categories: [] });
+  const [topNav, setTopNav] = React.useState({ topNavData: { children: [] } });
 
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen);
@@ -187,6 +188,9 @@ function App(props) {
       return;
     }
 
+    if (name.endsWith('topNav')) {
+      setTopNav(data);
+    }
     if (name.endsWith('leftNav')) {
       data.categories = prepareCategories(data.leftNavData.children);
       setLeftNav(data);
@@ -205,11 +209,11 @@ function App(props) {
         handleLuigiEvents('topNav', data)
       )
     );
-    listeners.push(
-      window.Luigi.navigation().addEventListener('tabNav', data =>
-        handleLuigiEvents('tabNav', data)
-      )
-    );
+    // listeners.push(
+    //   window.Luigi.navigation().addEventListener('tabNav', data =>
+    //     handleLuigiEvents('tabNav', data)
+    //   )
+    // );
     window.onbeforeunload = () => removeListeners();
   });
 
@@ -235,7 +239,7 @@ function App(props) {
           </Hidden>
         </nav>
         <div className={classes.app}>
-          <Header onDrawerToggle={handleDrawerToggle} />
+          <Header topNav={topNav} onDrawerToggle={handleDrawerToggle} />
         </div>
       </div>
     </ThemeProvider>

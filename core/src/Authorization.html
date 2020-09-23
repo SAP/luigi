@@ -87,6 +87,7 @@
   import { LuigiAuth, LuigiConfig } from './core-api';
   import {
     AuthHelpers,
+    CustomListenerHelpers,
     GenericHelpers,
     NavigationHelpers,
     StateHelpers,
@@ -94,6 +95,7 @@
   } from './utilities/helpers';
   import { AuthStoreSvc, Routing } from './services';
   import { TOP_NAV_DEFAULTS } from './utilities/luigi-config-defaults';
+  import { EVENT_PREFIXES } from './utilities/constants';
 
   const dispatch = createEventDispatcher();
 
@@ -129,6 +131,11 @@
     AuthLayerSvc.getUserInfoStore().subscribe(uInfo => {
       userInfo = uInfo;
       dispatch('userInfoUpdated', userInfo);
+
+      CustomListenerHelpers.dispatchEvent(
+        EVENT_PREFIXES.navigation + 'userInfo',
+        userInfo
+      );
     });
   });
 
@@ -198,6 +205,11 @@
       AuthLayerSvc.setUserInfo(userInfo);
       userInfo = uInfo;
       dispatch('userInfoUpdated', userInfo);
+
+      CustomListenerHelpers.dispatchEvent(
+        EVENT_PREFIXES.navigation + 'userInfo',
+        userInfo
+      );
     }
   }
 

@@ -358,7 +358,7 @@
             >
               <Authorization
                 on:toggleDropdownState="{() => toggleDropdownState('profilePopover')}"
-                on:userInfoUpdated="{userInfoUpdate}"
+                on:userInfoUpdated="{(evt) => userInfoUpdate(evt)}"
               />
             </div>
           </div>

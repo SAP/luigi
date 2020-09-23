@@ -6,33 +6,9 @@ import Divider from '@material-ui/core/Divider';
 import Drawer from '@material-ui/core/Drawer';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
-import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
-import HomeIcon from '@material-ui/icons/Home';
 
-import { Icon } from '@rmwc/icon';
-
-// let categories = [
-// {
-//   label: 'Develop',
-//   children: [
-//     { label: 'Authentication', icon: <PeopleIcon />, active: true },
-//     { label: 'Database', icon: <DnsRoundedIcon /> },
-//     { label: 'Storage', icon: <PermMediaOutlinedIcon /> },
-//     { label: 'Hosting', icon: <PublicIcon /> },
-//     { label: 'Functions', icon: <SettingsEthernetIcon /> },
-//     { label: 'ML Kit', icon: <SettingsInputComponentIcon /> },
-//   ],
-// },
-// {
-//   label: 'Quality',
-//   children: [
-//     { label: 'Analytics', icon: <SettingsIcon /> },
-//     { label: 'Performance', icon: <TimerIcon /> },
-//     { label: 'Test Lab', icon: <PhonelinkSetupIcon /> },
-//   ],
-// },
-// ];
+// import { Icon } from '@rmwc/icon';
 
 const styles = theme => ({
   categoryHeader: {
@@ -77,7 +53,6 @@ const styles = theme => ({
 
 function Navigator(props) {
   const { classes, leftNav, PaperProps } = props;
-  console.log('Navigator leftNav', leftNav);
 
   const navigateTo = pathSegment => {
     window.Luigi.navigation()
@@ -91,22 +66,10 @@ function Navigator(props) {
         <ListItem
           className={clsx(classes.firebase, classes.item, classes.itemCategory)}
         >
-          Paperbase
-        </ListItem>
-        <ListItem className={clsx(classes.item, classes.itemCategory)}>
-          <ListItemIcon className={classes.itemIcon}>
-            <HomeIcon />
-          </ListItemIcon>
-          <ListItemText
-            classes={{
-              primary: classes.itemPrimary
-            }}
-          >
-            Project Overview
-          </ListItemText>
+          Custom Luigi
         </ListItem>
         {leftNav.categories.map(({ label, children }) => (
-          <React.Fragment key={label}>
+          <div key={label}>
             <ListItem className={classes.categoryHeader}>
               <ListItemText
                 classes={{
@@ -131,9 +94,6 @@ function Navigator(props) {
                   }
                   onClick={() => navigateTo(pathSegment)}
                 >
-                  <ListItemIcon className={classes.itemIcon}>
-                    <Icon icon={icon} />
-                  </ListItemIcon>
                   <ListItemText
                     classes={{
                       primary: classes.itemPrimary
@@ -146,7 +106,7 @@ function Navigator(props) {
             )}
 
             <Divider className={classes.divider} />
-          </React.Fragment>
+          </div>
         ))}
       </List>
     </Drawer>

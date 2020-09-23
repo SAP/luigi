@@ -21,7 +21,6 @@ class CustomListenerHelpersClass {
   }
 
   dispatchEvent(name, data) {
-    console.log('dispatchEvent', name, data, this.listeners);
     this.listeners
       .filter(listener => listener.name === name)
       .map(listener => listener.eventFn(data));

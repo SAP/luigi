@@ -3,14 +3,10 @@ class Navigation {
     {
       label: 'Home',
       pathSegment: 'home',
-      viewUrl: '/mf.html',
+      viewUrl: '/mf.html#entry',
+      isolateView: true,
       navigationContext: 'home',
       children: [
-        {
-          label: 'Sub 1',
-          pathSegment: 'sub1',
-          viewUrl: '/mf.html'
-        },
         ...[
           'Authentication',
           'Database',
@@ -25,6 +21,7 @@ class Navigation {
             label: label,
             pathSegment,
             category,
+            isolateView: true,
             viewUrl: '/mf.html#' + pathSegment,
             keepSelectedForChildren: true
           };
@@ -37,6 +34,7 @@ class Navigation {
             label: label,
             pathSegment,
             category,
+            isolateView: true,
             viewUrl: '/mf.html#' + pathSegment,
             keepSelectedForChildren: true
           };
@@ -45,10 +43,52 @@ class Navigation {
     },
     {
       pathSegment: 'settings',
-      label: 'settings',
+      label: 'Settings',
+      isolateView: true,
       viewUrl: '/mf.html#settings',
-      hideSideNav: true
+      navigationContext: 'settings',
+      children: [
+        ...['Analytics', 'Language', 'Profile'].map(label => {
+          const category = 'General Settings';
+          const pathSegment = label.toLowerCase().replace(' ', '-');
+          return {
+            label: label,
+            pathSegment,
+            category,
+            isolateView: true,
+            viewUrl: '/mf.html#' + pathSegment,
+            keepSelectedForChildren: true
+          };
+        })
+      ]
     }
   ];
+
+  profile = {
+    logout: {
+      label: 'Sign out',
+      customLogoutFn: () => {
+        console.log('Logout is not implemented.');
+      }
+    },
+    items: [
+      ...['Storage', 'Performance', 'Analytics'].map(label => ({
+        label,
+        link:
+          '/home/' +
+          label
+            .toLowerCase()
+            .split(' ')
+            .join('-')
+      }))
+    ],
+    staticUserInfoFn: () => {
+      return {
+        name: 'Mario Plumber',
+        email: 'noreply@luigi-project.io',
+        picture: '/static/images/avatar/1.jpg'
+      };
+    }
+  };
 }
 export const navigation = new Navigation();

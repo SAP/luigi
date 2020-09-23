@@ -12,14 +12,20 @@
         font-family: '72', sans-serif;
       }
       div {
-        height: 30rem;
+        height: 35rem;
         padding: 20px;
         border-bottom: 1px solid #eee;
+        max-width: 700px;
       }
     </style>
   </head>
   <body>
-    This is a micro frontend, with multiple sections.
+    <div></div>
+    <div id="entry">
+      Welcome to this custom built Luigi Core Theme based on React Material UI's
+      Paperbase Theme. We have implemented only the very bare minimum: Right
+      Navigation, Left Navigation
+    </div>
 
     <div id="authentication">Authentication</div>
     <div id="database">Database</div>
@@ -30,7 +36,17 @@
     <div id="analytics">Analytics</div>
     <div id="performance">Performance</div>
     <div id="test-lab">Test Lab</div>
+    <div id="settings">Settings</div>
+    <div id="language">Language</div>
+    <div id="profile">Profile</div>
 
     <script src="/luigi-client/luigi-client.js"></script>
+    <script>
+      window.addEventListener(
+        'hashchange',
+        () => console.log('hashchange', location.hash),
+        false
+      );
+    </script>
   </body>
 </html>

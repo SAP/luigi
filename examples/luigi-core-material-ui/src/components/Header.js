@@ -1,20 +1,14 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import AppBar from '@material-ui/core/AppBar';
-import Avatar from '@material-ui/core/Avatar';
 import Grid from '@material-ui/core/Grid';
 import Hidden from '@material-ui/core/Hidden';
 import IconButton from '@material-ui/core/IconButton';
 import Link from '@material-ui/core/Link';
 import MenuIcon from '@material-ui/icons/Menu';
-import NotificationsIcon from '@material-ui/icons/Notifications';
-import Tab from '@material-ui/core/Tab';
-import Tabs from '@material-ui/core/Tabs';
 import Toolbar from '@material-ui/core/Toolbar';
-import Tooltip from '@material-ui/core/Tooltip';
 import { withStyles } from '@material-ui/core/styles';
-
-import { Icon } from '@rmwc/icon';
+import ProfileMenu from './ProfileMenu';
 
 const lightColor = 'rgba(255, 255, 255, 0.7)';
 
@@ -24,9 +18,6 @@ const styles = theme => ({
   },
   menuButton: {
     marginLeft: -theme.spacing(1)
-  },
-  iconButtonAvatar: {
-    padding: 4
   },
   link: {
     textDecoration: 'none',
@@ -41,7 +32,12 @@ const styles = theme => ({
 });
 
 function Header(props) {
-  const { classes, onDrawerToggle } = props;
+  const { classes, onDrawerToggle, topNav } = props;
+
+  const navigateTo = pathSegment => {
+    window.Luigi.navigation().navigate('/' + pathSegment);
+    console.log('Header navigate to', '/' + pathSegment);
+  };
 
   return (
     <React.Fragment>
@@ -62,23 +58,20 @@ function Header(props) {
             </Hidden>
             <Grid item xs />
             <Grid item>
-              <Icon icon="favorite" />
-
-              <Link className={classes.link} href="#" variant="body2">
-                Go to docs
-              </Link>
+              {topNav.topNavData.children.map(({ label, pathSegment }) => (
+                <React.Fragment key={label}>
+                  <Link
+                    className={classes.link}
+                    variant="body2"
+                    onClick={() => navigateTo(pathSegment)}
+                  >
+                    {label}
+                  </Link>
+                </React.Fragment>
+              ))}
             </Grid>
             <Grid item>
-              <Tooltip title="Alerts • No alerts">
-                <IconButton color="inherit">
-                  <NotificationsIcon />
-                </IconButton>
-              </Tooltip>
-            </Grid>
-            <Grid item>
-              <IconButton color="inherit" className={classes.iconButtonAvatar}>
-                <Avatar src="/static/images/avatar/1.jpg" alt="My Avatar" />
-              </IconButton>
+              <ProfileMenu />
             </Grid>
           </Grid>
         </Toolbar>
@@ -109,6 +102,7 @@ function Header(props) {
 }
 
 Header.propTypes = {
+  topNav: PropTypes.object.isRequired,
   classes: PropTypes.object.isRequired,
   onDrawerToggle: PropTypes.func.isRequired
 };
