@@ -24,13 +24,9 @@ module.exports = {
     new CopyWebpackPlugin({
       patterns: [
         {
-          from: 'node_modules/material-components-web/dist',
-          to: path.resolve(__dirname, 'public', 'material-components-web')
+          from: 'node_modules/@luigi-project/core',
+          to: path.resolve(__dirname, 'public', 'luigi-core')
         },
-        // {
-        //     from: 'node_modules/@luigi-project/core',
-        //     to: path.resolve(__dirname, 'public', 'luigi-core'),
-        // },
         {
           from: 'node_modules/@luigi-project/client',
           to: path.resolve(__dirname, 'public', 'luigi-client')
