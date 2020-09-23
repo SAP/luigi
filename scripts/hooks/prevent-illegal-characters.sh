@@ -2,18 +2,18 @@
 
 # Checks and aborts the commit:
 #   if (there are files which contain merge conflict markers)
-#   OR if (`window.addEventListener` is used 
+#   OR if (`window.addEventListener` is used
 #           in other files other than EventListenerHelper class)
 # conflict_markers = ['<<<<<<<','=======','>>>>>>>']
 # Run this script only from Luigi root folder, else not all files will be checked
 # ./scripts/hooks/prevent-illegal-characters.sh
 
 
-function check_conflict_marker() { 
+function check_conflict_marker() {
     declare -a illegal_strings=("<<<<<<<" "=======" ">>>>>>>")
     # string diff containing changes already staged for commit
     staged_changes=$(git diff --cached --diff-filter=ACMR --unified=0 -- . ':(exclude)scripts/hooks/prevent-illegal-characters.sh')
-    
+
     for illegal in ${illegal_strings[@]}; do
         if [[ $staged_changes == *$illegal*   ]]; then
             echo "Found illegal string: $illegal"
@@ -23,11 +23,12 @@ function check_conflict_marker() {
     done
 }
 
-function check_addEventListener_wrong_usage() { 
+function check_addEventListener_wrong_usage() {
     # git search query returning file names that used window.addEventListener illegally
     illegal_files=$(git diff  --cached --diff-filter=ACMR \
                     -G 'window.addEventListener' --name-only  -- core \
                     ':(exclude)scripts/hooks/prevent-illegal-characters.sh' \
+                    ':(exclude)core/examples/luigi-core-material-ui/src/serviceWorker.js' \
                     ':(exclude)core/src/utilities/helpers/event-listener-helpers.js')
     if [ -n "$illegal_files" ]; then
         echo "The following files should not contain 'window.addEventListener':"
