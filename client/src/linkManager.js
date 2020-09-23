@@ -48,14 +48,14 @@ export class linkManager extends LuigiClientBase {
    * LuigiClient.linkManager().navigate('users/groups/stakeholders')
    * LuigiClient.linkManager().navigate('/settings', null, true) // preserve view
    */
-  navigate(path, sessionId, preserveView, modalSettings, splitViewSettings) {
+  navigate(path, sessionId, preserveView, modalSettings, splitViewSettings, drawerSettings) {
     if (this.options.errorSkipNavigation) {
       this.options.errorSkipNavigation = false;
       return;
     }
-    if (modalSettings && splitViewSettings) {
+    if (modalSettings && splitViewSettings && drawer) {
       console.warn(
-        'modalSettings and splitViewSettings cannot be used together. Only modal setting will be taken into account.'
+        'modalSettings, splitViewSettings and drawer cannot be used together. Only modal setting will be taken into account.'
       );
     }
 
@@ -68,7 +68,8 @@ export class linkManager extends LuigiClientBase {
         link: path,
         relative: relativePath,
         modal: modalSettings,
-        splitView: splitViewSettings
+        splitView: splitViewSettings,
+        drawer: drawerSettings
       })
     };
     helpers.sendPostMessageToLuigiCore(navigationOpenMsg);
@@ -107,6 +108,10 @@ export class linkManager extends LuigiClientBase {
     return new splitViewHandle(splitViewSettings);
   }
 
+  openAsDrawer(path, drawerSettings = {}) {
+    this.navigate(path, 0, true, undefined, drawerSettings);
+  }
+
   /**
    * Sets the current navigation context to that of a specific parent node which has the {@link navigation-configuration.md navigationContext} field declared in the navigation configuration. This navigation context is then used by the `navigate` function.
    * @memberof linkManager
@@ -127,8 +132,8 @@ export class linkManager extends LuigiClientBase {
       this.options.errorSkipNavigation = true;
       console.error(
         'Navigation not possible, navigationContext ' +
-          navigationContext +
-          ' not found.'
+        navigationContext +
+        ' not found.'
       );
     }
     return this;
@@ -220,8 +225,8 @@ export class linkManager extends LuigiClientBase {
     const currentId = Date.now();
     const pathExistsPromises = this.getPromise('pathExistsPromises') || {};
     pathExistsPromises[currentId] = {
-      resolveFn: function() {},
-      then: function(resolveFn) {
+      resolveFn: function () { },
+      then: function (resolveFn) {
         this.resolveFn = resolveFn;
       }
     };
@@ -230,7 +235,7 @@ export class linkManager extends LuigiClientBase {
     // register event listener, which will be cleaned up after this usage
     helpers.addEventListener(
       'luigi.navigation.pathExists.answer',
-      function(e, listenerId) {
+      function (e, listenerId) {
         const data = e.data.data;
         const pathExistsPromises = this.getPromise('pathExistsPromises') || {};
         if (pathExistsPromises[data.correlationId]) {

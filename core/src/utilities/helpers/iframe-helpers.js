@@ -16,6 +16,11 @@ class IframeHelpersClass {
         iframeKey: 'splitViewIframe',
         dataKey: 'splitViewIframeData',
         iframeConfigKey: 'splitView'
+      },
+      {
+        iframeKey: 'drawerIframe',
+        dataKey: 'drawerIframeData',
+        iframeConfigKey: 'drawer'
       }
     ];
   }
@@ -56,9 +61,9 @@ class IframeHelpersClass {
           new RegExp(
             GenericHelpers.escapeRegExp(
               (parenthesis ? '{' : '') +
-                prefix +
-                entry[0] +
-                (parenthesis ? '}' : '')
+              prefix +
+              entry[0] +
+              (parenthesis ? '}' : '')
             ),
             'g'
           ),

@@ -1,4 +1,4 @@
-<svelte:window on:resize="{onResize}"/>
+<svelte:window on:resize="{onResize}" />
 <div id="app" class="{hideNav? 'no-nav' : ''} {hideSideNav? 'no-side-nav':''}">
   {#if confirmationModal.displayed}
   <ConfirmationModal
@@ -17,6 +17,14 @@
     on:close="{closeModal}"
     on:iframeCreated="{modalIframeCreated}"
   ></Modal>
+  {/if}
+  {#if mfDrawer.displayed}
+  <Drawer
+    drawerSettings="{mfDrawer.drawerSettings}"
+    nodepath="{mfDrawer.nodepath}"
+    on:close="{closeDrawer}"
+    on:iframeCreated="{drawerIframeCreated}">
+  </Drawer>
   {/if}
   <Backdrop>
     <div
@@ -93,6 +101,7 @@
   import Alerts from './Alerts.html';
   import ConfirmationModal from './ConfirmationModal.html';
   import Modal from './Modal.html';
+  import Drawer from './Drawer.html';
   import Backdrop from './Backdrop.html';
   import SplitView from './SplitView.html';
   import LeftNav from './navigation/LeftNav.html';
@@ -146,7 +155,10 @@
   /// MFs
   let modalIframe;
   let modalIframeData;
+  let drawerIframe;
+  let drawerIframeData;
   let modal;
+  let drawer;
   let splitViewIframe;
   let splitViewIframeData;
   let splitView;
@@ -294,7 +306,7 @@
             }
             resolve();
           },
-          () => {}
+          () => { }
         );
       } else {
         resolve();
@@ -413,8 +425,8 @@
         preservedViews = [];
         Iframe.removeInactiveIframes(node);
       }
-
       closeModal();
+      closeDrawer();
       closeSplitView();
 
       Routing.handleRouteChange(path, getComponentWrapper(), node, config);
@@ -489,6 +501,12 @@
         openViewInModal(
           route,
           node.openNodeInModal === true ? {} : node.openNodeInModal
+        );
+      } else if (node.drawer) {
+        const route = RoutingHelpers.buildRoute(node, `/${node.pathSegment}`);
+        openViewInDrawer(
+          route,
+          node.drawer
         );
       } else {
         getComponentWrapper().set({ isNavigationSyncEnabled: true });
@@ -884,6 +902,39 @@
 
   setContext('openViewInModal', openViewInModal);
 
+  //// MICRO-FRONTEND DRAWER
+
+  let mfDrawer = {};
+  const openViewInDrawer = async (nodepath, drawerSettings) => {
+    const { nodeObject } = await Navigation.extractDataFromPath(nodepath);
+    if (await Navigation.shouldPreventNavigation(nodeObject)) {
+      return;
+    }
+    mfDrawer.displayed = true;
+    mfDrawer.nodepath = nodepath;
+    mfDrawer.drawerSettings = drawerSettings;
+  };
+
+  const drawerIframeCreated = event => {
+    drawerIframe = event.detail.drawerIframe;
+    drawerIframeData = event.detail.drawerIframeData;
+  };
+
+  const resetMicrofrontendDrawerData = () => {
+    mfDrawer.displayed = false;
+    mfDrawer.nodepath = undefined;
+    mfDrawer.modalSettings = {};
+  };
+
+  const closeDrawer = () => {
+    if (drawerIframe) {
+      getUnsavedChangesModalPromise(drawerIframe.contentWindow).then(() => {
+        resetMicrofrontendDrawerData();
+      });
+    }
+  };
+
+
   function init(node) {
     const isolateAllViews = LuigiConfig.getConfigValue(
       'navigation.defaults.isolateView'
@@ -979,6 +1030,7 @@
       }
 
       if ('luigi.get-context' === e.data.msg) {
+
         config.iframe.luigi.clientVersion = e.data.clientVersion; // undefined for v0.x clients
         config.iframe.luigi.initOk = false; // get-context indication. used for handshake verification
 
@@ -988,7 +1040,10 @@
           modal,
           splitViewIframe,
           splitViewIframeData,
-          splitView
+          splitView,
+          drawerIframe,
+          drawerIframeData,
+          drawer
         };
         const specialIframeMessageSource = IframeHelpers.specialIframeTypes.filter(
           typ =>
@@ -1004,7 +1059,8 @@
               pathParams: specialIframeProps[typ.dataKey].pathParams,
               nodeParams: specialIframeProps[typ.dataKey].nodeParams,
               modal: typ.iframeKey.startsWith('modal'),
-              splitView: typ.iframeKey.startsWith('splitView')
+              splitView: typ.iframeKey.startsWith('splitView'),
+              drawer: typ.iframeKey.startsWith('drawer')
             };
             await sendContextToClient(conf, {});
           });
@@ -1061,6 +1117,12 @@
           mfSplitView = SplitViewSvc.getDefaultData().mfSplitView;
 
           openSplitView(path, e.data.params.splitView);
+        } else if (e.data.params.drawer !== undefined) {
+          let path = buildPath(e.data.params);
+          path = GenericHelpers.addLeadingSlash(path);
+          contentNode = node;
+          resetMicrofrontendDrawerData();
+          openViewInDrawer(path, e.data.params.modal);
         } else {
           getUnsavedChangesModalPromise().then(() => {
             isNavigationSyncEnabled = !e.data.params.withoutSync;
@@ -1270,7 +1332,7 @@
         thirdPartyCookieCheckIframe.src =
           thirdPartyCookiesCheck.thirdPartyCookieScriptLocation;
         document.body.appendChild(thirdPartyCookieCheckIframe);
-        thirdPartyCookieCheckIframe.onload = function() {
+        thirdPartyCookieCheckIframe.onload = function () {
           setTimeout(() => {
             if (thirdPartyCookiesStatus() === 'disabled') {
               tpcErrorHandling(thirdPartyCookiesCheck);
@@ -1282,7 +1344,7 @@
     }
   });
 
-  afterUpdate(() => {});
+  afterUpdate(() => { });
 </script>
 
 <style type="text/scss">
