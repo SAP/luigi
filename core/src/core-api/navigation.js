@@ -171,9 +171,9 @@ class LuigiNavigationManager {
   }
 
   /**
-   * Adds a navigation event listener
+   * Adds a navigation or profile event listener
    * @memberof LuigiNavigation
-   * @param {string} name leftNav, topNav, tabNav, routeChanged
+   * @param {string} name leftNav, topNav, tabNav, routeChanged, userInfo
    * @param {function} callbackFn gets called on event received
    * @returns {string} listener id
    * @example

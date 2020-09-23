@@ -579,11 +579,11 @@ Luigi.navigation().goBack(true);
 
 #### addEventListener
 
-Adds a navigation event listener
+Adds a navigation or profile event listener
 
 ##### Parameters
 
--   `name` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** leftNav, topNav, tabNav, routeChanged
+-   `name` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** leftNav, topNav, tabNav, routeChanged, userInfo
 -   `callbackFn` **[function](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Statements/function)** gets called on event received
 
 ##### Examples

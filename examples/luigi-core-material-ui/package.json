@@ -15,7 +15,7 @@
     "start": "concurrently \"npm run config -- --watch\" \"npm run start:react\"",
     "start:react": "PORT=3003 react-scripts start",
     "config": "webpack --config webpack-generateConfig.config",
-    "build": "react-scripts build",
+    "build": "npm run config && react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },

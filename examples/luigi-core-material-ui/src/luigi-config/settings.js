@@ -4,7 +4,7 @@ class Settings {
   header = {
     title: 'Luigi Material-UI',
     subTitle: version || 'unknown',
-    favicon: '/favicon.ico'
+    favicon: '/favicon-sap.ico'
   };
   appLoadingIndicator = {
     hideAutomatically: true

@@ -1,10 +1,8 @@
-// import { auth } from './auth';
 import { navigation } from './navigation';
 import { routing } from './routing';
 import { settings } from './settings';
 
-window.OUR_LUIGI_CONFIG = {
-  // auth,
+Luigi.setConfig({
   navigation,
   routing,
   settings
@@ -13,4 +11,4 @@ window.OUR_LUIGI_CONFIG = {
   //       search.init();
   //     }
   //   }
-};
+});
