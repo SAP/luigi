@@ -111,6 +111,10 @@ export class linkManager extends LuigiClientBase {
     return new splitViewHandle(splitViewSettings);
   }
 
+  openAsDrawer(path, drawerSettings = {}) {
+    this.navigate(path, 0, true, undefined, drawerSettings);
+  }
+
   /**
      * Opens a view in a drawer. You can specify if the drawer has a header, if a backdrop is active in the background and configure the size of the drawer. By default the header is shown. The backdrop is not visible and has to be activated. The size of the drawer is by default set to `s` which means 25% of the micro frontend size. You can also use `l`(75%), `m`(50%) or `xs`(15.5%). Optionally, use it in combination with any of the navigation functions.
      * @memberof linkManager
