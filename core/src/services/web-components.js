@@ -87,64 +87,85 @@ class WebComponentSvcClass {
     }
   }
 
+  createCompoundContainerAsync(renderer) {
+    return new Promise(resolve => {
+      if(renderer.viewUrl) {
+        const wc_id = this.generateWCId(renderer.viewUrl);
+        this.registerWCFromUrl(renderer.viewUrl, wc_id).then(()=>{
+          resolve(document.createElement(wc_id));
+        });
+      } else {
+        resolve(renderer.createCompoundContainer());
+      }
+    });
+  }
+
   renderWebComponentCompound(navNode, wc_container, context) {
     let renderer;
 
-    if(navNode.compound.renderer) {
+    if(navNode.webcomponent && navNode.viewUrl) {
+      renderer = new DefaultCompoundRenderer();
+      renderer.viewUrl = navNode.viewUrl;
+      renderer.createCompoundItemContainer = (layoutConfig) => {
+        var cnt = document.createElement('div');
+        cnt.setAttribute('slot', layoutConfig.slot);
+        return cnt;
+      };
+    } else if(navNode.compound.renderer) {
       renderer = resolveRenderer(navNode.compound.renderer);
     }
 
     renderer = renderer || new DefaultCompoundRenderer();
 
-    const compoundCnt = renderer.createCompoundContainer();
+    //const compoundCnt = renderer.createCompoundContainer();
+    this.createCompoundContainerAsync(renderer).then(compoundCnt => {
+      const ebListeners = {};
+      compoundCnt.eventBus = {
+        listeners: ebListeners,
+        onPublishEvent: (event, srcNodeId, wcId) => {
+          const listeners = ebListeners[srcNodeId + '.' + event.type] || [];
+          listeners.push(...(ebListeners['*.' + event.type] || []));
 
+          listeners.forEach(listenerInfo => {
+            const target = compoundCnt.querySelector('[nodeId=' + listenerInfo.wcElementId + ']');
+            if(target) {
+              target.dispatchEvent(new CustomEvent(listenerInfo.action,
+                {
+                  detail: listenerInfo.converter ? listenerInfo.converter(event.detail) : event.detail
+                }));
+            } else {
+              console.debug("Could not find event target", listenerInfo);
+            }
+          });
+        }
+      };
+      navNode.compound.children.forEach((wc, index)=>{
+        const ctx = {...context, ...wc.context};
+        const compoundItemCnt = renderer.createCompoundItemContainer(wc.layoutConfig);
+        compoundItemCnt.eventBus = compoundCnt.eventBus;
+        renderer.attachCompoundItem(compoundCnt, compoundItemCnt);
 
-    const ebListeners = {};
-    compoundCnt.eventBus = {
-      listeners: ebListeners,
-      onPublishEvent: (event, srcNodeId, wcId) => {
-        const listeners = ebListeners[srcNodeId + '.' + event.type] || [];
-        listeners.push(...(ebListeners['*.' + event.type] || []));
-
-        listeners.forEach(listenerInfo => {
-          const target = compoundCnt.querySelector('[nodeId=' + listenerInfo.wcElementId + ']');
-          if(target) {
-            target.dispatchEvent(new CustomEvent(listenerInfo.action,
-              {
-                detail: listenerInfo.converter ? listenerInfo.converter(event.detail) : event.detail
-              }));
-          } else {
-            console.debug("Could not find event target", listenerInfo);
-          }
-        });
-      }
-    };
-    navNode.compound.children.forEach((wc, index)=>{
-      const ctx = {...context, ...wc.context};
-      const compoundItemCnt = renderer.createCompoundItemContainer(wc.layoutConfig);
-      compoundItemCnt.eventBus = compoundCnt.eventBus;
-      renderer.attachCompoundItem(compoundCnt, compoundItemCnt);
-
-      const nodeId = wc.id || ('gen_' + index);
-      WebComponentService.renderWebComponent(wc.viewUrl, compoundItemCnt, ctx, nodeId, true);
-      if(wc.eventListeners) {
-        wc.eventListeners.forEach(el => {
-          const evID = el.source + '.' + el.name;
-          const listenerList = ebListeners[evID];
-          const listenerInfo = {
-            wcElementId: nodeId,
-            action: el.action,
-            converter: el.dataConverter
-          };
-          if(listenerList) {
-            listenerList.push(listenerInfo);
-          } else {
-            ebListeners[evID] = [listenerInfo];
-          }
-        });
-      }
+        const nodeId = wc.id || ('gen_' + index);
+        WebComponentService.renderWebComponent(wc.viewUrl, compoundItemCnt, ctx, nodeId, true);
+        if(wc.eventListeners) {
+          wc.eventListeners.forEach(el => {
+            const evID = el.source + '.' + el.name;
+            const listenerList = ebListeners[evID];
+            const listenerInfo = {
+              wcElementId: nodeId,
+              action: el.action,
+              converter: el.dataConverter
+            };
+            if(listenerList) {
+              listenerList.push(listenerInfo);
+            } else {
+              ebListeners[evID] = [listenerInfo];
+            }
+          });
+        }
+      });
+      wc_container.appendChild(compoundCnt);
     });
-    wc_container.appendChild(compoundCnt);
   }
 }
 
