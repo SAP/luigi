@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import Avatar from '@material-ui/core/Avatar';
 import IconButton from '@material-ui/core/IconButton';
@@ -55,7 +55,7 @@ const removeListeners = () =>
 
 function ProfileMenu(props) {
   const { classes } = props;
-  const [userInfo, setUserInfo] = React.useState({});
+  const [userInfo, setUserInfo] = useState({});
   useEffect(() => {
     removeListeners();
     listeners.push(
@@ -66,7 +66,7 @@ function ProfileMenu(props) {
     window.onbeforeunload = () => removeListeners();
   });
 
-  const [anchorEl, setAnchorEl] = React.useState(null);
+  const [anchorEl, setAnchorEl] = useState(null);
   const handleClick = event => {
     setAnchorEl(event.currentTarget);
   };

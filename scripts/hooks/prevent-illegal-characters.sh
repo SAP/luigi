@@ -28,7 +28,6 @@ function check_addEventListener_wrong_usage() {
     illegal_files=$(git diff  --cached --diff-filter=ACMR \
                     -G 'window.addEventListener' --name-only  -- core \
                     ':(exclude)scripts/hooks/prevent-illegal-characters.sh' \
-                    ':(exclude)core/examples/luigi-core-material-ui/src/serviceWorker.js' \
                     ':(exclude)core/src/utilities/helpers/event-listener-helpers.js')
     if [ -n "$illegal_files" ]; then
         echo "The following files should not contain 'window.addEventListener':"

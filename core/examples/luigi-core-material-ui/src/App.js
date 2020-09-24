@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 // import logo from './logo.svg';
 import './scss/index.scss';
 
@@ -157,9 +157,9 @@ const removeListeners = () =>
   listeners.forEach(id => window.Luigi.navigation().removeEventListener(id));
 function App(props) {
   const { classes } = props;
-  const [mobileOpen, setMobileOpen] = React.useState(false);
-  const [leftNav, setLeftNav] = React.useState({ categories: [] });
-  const [topNav, setTopNav] = React.useState({ topNavData: { children: [] } });
+  const [mobileOpen, setMobileOpen] = useState(false);
+  const [leftNav, setLeftNav] = useState({ categories: [] });
+  const [topNav, setTopNav] = useState({ topNavData: { children: [] } });
 
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen);
@@ -175,11 +175,6 @@ function App(props) {
         });
       }
     }
-    // categories = [
-    //   {
-    //     id: 'Develop',
-    //     children: [
-    //       { id: 'Authentication', icon: <PeopleIcon />, active: true },
     return categories;
   };
 
