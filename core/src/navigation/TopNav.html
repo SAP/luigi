@@ -1,12 +1,17 @@
 <svelte:window on:click="{closeAllDropdowns}" on:blur="{closeAllDropdowns}"/>
 {#if showTopNav}
-<div class="fd-shellbar {hideNavComponent ? 'hideNavComponent' : ''}">
+<div
+  class="fd-shellbar {hideNavComponent ? 'hideNavComponent' : ''}"
+  tabindex="0"
+>
   <div class="fd-shellbar__group fd-shellbar__group--product">
     {#if responsiveNavSetting==="simple" || responsiveNavSetting==="simpleMobileOnly" || responsiveNavSetting==="Fiori3"}
-    <span
-      class="sap-icon--menu2 lui-burger"
+    <button
+      class="fd-shellbar__button fd-button sap-icon--menu2 lui-burger"
+      aria-controls="0AcWE812"
       on:click="{burgerClickHandler}"
-    ></span>
+      tabindex="0"
+    ></button>
     {/if}
     <LogoTitle
       pathData="{pathData}"
