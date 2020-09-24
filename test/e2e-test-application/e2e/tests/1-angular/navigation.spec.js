@@ -28,10 +28,9 @@ describe('Navigation', () => {
           size: '40',
           collapsed: false
         });
-        cy.get('#splitViewContainer').should('be.visible');
+        cy.get('#splitViewContainer').should('exist');
 
         cy.expect(handle.exists()).to.be.true;
-
         // It is not totally clear why it is not working without timeout, but it seems like a race condition
         // TODO: Check stackoverflow for solution
         // https://stackoverflow.com/questions/60338487/cypress-executes-assertion-immediately-on-function-that-returns-a-handle
