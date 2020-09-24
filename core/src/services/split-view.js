@@ -223,6 +223,11 @@ class SplitViewSvcClass {
           IframeHelpers.getIframeContainer().style.paddingBottom = '';
           SplitViewSvc.sendMessageToClients('close.ok');
         });
+    } else {
+      if (comp.get().mfSplitView && comp.get().mfSplitView.settings && comp.get().mfSplitView.settings.onlyExpandBoxVisible && comp.get().mfSplitView.settings.onlyExpandBoxVisible) {
+        comp.get().mfSplitView.displayed = false;
+        comp.set({ mfSplitView: comp.get().mfSplitView });
+      }
     }
   }
 
