@@ -31,6 +31,7 @@ integration-testing: &integration-testing
       packages:
         # Ubuntu 16+ does not install this dependency by default, so we need to install it ourselves
         - libgconf-2-4
+        - libgbm # needed for cypress 5.0.0 
         #- chromium-browser=79.0.3945.130-0ubuntu0.16.04.1 # update also if you upgrade from Xenial
     # chrome: beta
     chrome: stable
