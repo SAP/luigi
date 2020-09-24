@@ -154,7 +154,8 @@ class RoutingHelpersClass {
         );
   }
 
-  getRouteLink(node, pathParams) {
+  getRouteLink(node, pathParams, relativePathPrefix) {
+    const pp = relativePathPrefix || '';
     if (node.externalLink && node.externalLink.url) {
       return node.externalLink;
       // externalLinkUrl property is provided so there's no need to trigger routing mechanizm
@@ -162,16 +163,17 @@ class RoutingHelpersClass {
       const link = node.link.startsWith('/')
         ? node.link
         : Routing.buildFromRelativePath(node);
-      return link;
+      return pp + link;
     }
 
     let route = RoutingHelpers.buildRoute(node, `/${node.pathSegment}`);
-    return GenericHelpers.replaceVars(route, pathParams, ':', false);
+    return pp + GenericHelpers.replaceVars(route, pathParams, ':', false);
   }
 
   getNodeHref(node, pathParams) {
     if (LuigiConfig.getConfigBooleanValue('navigation.addNavHrefs')) {
-      const link = RoutingHelpers.getRouteLink(node, pathParams);
+      const link = RoutingHelpers.getRouteLink(node, pathParams,
+        LuigiConfig.getConfigValue('routing.useHashRouting')?"#":'');
       return link.url || link;
     }
     return 'javascript:void(0)';
