@@ -25,6 +25,8 @@ integration-testing: &integration-testing
   script:
     - export CYPRESS_CACHE_FOLDER=$TRAVIS_BUILD_DIR/cypress-binary-cache
     - ls $CYPRESS_CACHE_FOLDER
+    - cat $TRAVIS_BUILD_DIR/test/e2e-test-application/package.json
+    - cat $TRAVIS_BUILD_DIR/test/e2e-test-application/package-lock.json | grep -A 6 cypress
     - bash ./test/e2e.sh
   addons:
     apt:
@@ -49,6 +51,8 @@ jobs:
   include:
     - stage: 'Precache & Unit Tests'
       script:
+        - cat $TRAVIS_BUILD_DIR/test/e2e-test-application/package.json
+        - cat $TRAVIS_BUILD_DIR/test/e2e-test-application/package-lock.json | grep -A 6 cypress
         - export CYPRESS_CACHE_FOLDER=$TRAVIS_BUILD_DIR/cypress-binary-cache
         - npm i -g lerna
         - lerna bootstrap --ci --force-local --ignore docs || travis_terminate 1
