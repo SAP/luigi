@@ -54,6 +54,7 @@ integration-testing: &integration-testing
     # - chromium-browser --headless --disable-gpu --remote-debugging-port=9222 http://localhost &
     # - google-chrome-beta --headless --disable-gpu --remote-debugging-port=9222 http://localhost &
     - google-chrome-stable --headless --disable-gpu --remote-debugging-port=9222 http://localhost &
+    - npm install --prefix e2e-test-application
   before_cache:
     - rm -rf ~/.npm/_logs
     - rm -rf ~/.npm/_cacache
