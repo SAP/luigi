@@ -25,13 +25,15 @@ integration-testing: &integration-testing
   script:
     - export CYPRESS_CACHE_FOLDER=$TRAVIS_BUILD_DIR/cypress-binary-cache
     - ls $CYPRESS_CACHE_FOLDER
+    - cat $TRAVIS_BUILD_DIR/test/e2e-test-application/package.json
+    - cat $TRAVIS_BUILD_DIR/test/e2e-test-application/package-lock.json | grep -A 6 cypress
     - bash ./test/e2e.sh
   addons:
     apt:
       packages:
         # Ubuntu 16+ does not install this dependency by default, so we need to install it ourselves
         - libgconf-2-4
-        - libgbm-dev # needed for cypress 5.0.0 
+        - libgbm-dev # needed for cypress 5.0.0
         #- chromium-browser=79.0.3945.130-0ubuntu0.16.04.1 # update also if you upgrade from Xenial
     # chrome: beta
     chrome: stable
@@ -49,6 +51,8 @@ jobs:
   include:
     - stage: 'Precache & Unit Tests'
       script:
+        - cat $TRAVIS_BUILD_DIR/test/e2e-test-application/package.json
+        - cat $TRAVIS_BUILD_DIR/test/e2e-test-application/package-lock.json | grep -A 6 cypress
         - export CYPRESS_CACHE_FOLDER=$TRAVIS_BUILD_DIR/cypress-binary-cache
         - npm i -g lerna
         - lerna bootstrap --ci --force-local --ignore docs || travis_terminate 1
