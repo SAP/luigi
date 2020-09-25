@@ -8,9 +8,9 @@
     "lint": "ng lint",
     "e2e:open": "CYPRESS_RETRIES=2 cypress open --env configFile=e2etestapp",
     "e2e:open:external": "CYPRESS_RETRIES=2 cypress open --env configFile=externalmf",
-    "e2e:run": "CYPRESS_RETRIES=2 DEBUG=cypress:* cypress run --env configFile=e2etestapp --browser chrome -c video=false",
-    "e2e:run:external": "CYPRESS_RETRIES=2 DEBUG=cypress:* cypress run --env configFile=externalmf --browser chrome -c video=false",
-    "e2e:run:electron": "CYPRESS_RETRIES=2 DEBUG=cypress:* cypress run",
+    "e2e:run": "CYPRESS_RETRIES=2 DEBUG=cypress:webpack cypress run --env configFile=e2etestapp --browser chrome -c video=false",
+    "e2e:run:external": "CYPRESS_RETRIES=2 DEBUG=cypress:webpack cypress run --env configFile=externalmf --browser chrome -c video=false",
+    "e2e:run:electron": "CYPRESS_RETRIES=2 DEBUG=cypress:webpack cypress run",
     "buildConfig": "webpack --config webpack-generateConfig.config",
     "startExternalMf": "http-server --port 8090 ./externalMf",
     "start": "concurrently \"npm run buildConfig -- --watch\" \"ng serve --host 0.0.0.0 --port 4200\" \"npm run startExternalMf\""
