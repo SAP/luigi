@@ -25,32 +25,11 @@ integration-testing: &integration-testing
   script:
     - export CYPRESS_CACHE_FOLDER=$TRAVIS_BUILD_DIR/cypress-binary-cache
     - ls $CYPRESS_CACHE_FOLDER
-    - npm i -g lerna
-    - lerna bootstrap --ci --force-local --ignore docs || travis_terminate 1
-    - rm -rf $TRAVIS_BUILD_DIR/test/e2e-test-application/node_modules/@luigi-project/*
-    - ln -s $TRAVIS_BUILD_DIR/core/public $TRAVIS_BUILD_DIR/test/e2e-test-application/node_modules/@luigi-project/core
-    - ln -s $TRAVIS_BUILD_DIR/client/public $TRAVIS_BUILD_DIR/test/e2e-test-application/node_modules/@luigi-project/client
-    - ln -s $TRAVIS_BUILD_DIR/plugins/auth/public/auth-oauth2 $TRAVIS_BUILD_DIR/test/e2e-test-application/node_modules/@luigi-project/plugin-auth-oauth2
-    - ln -s $TRAVIS_BUILD_DIR/plugins/auth/public/auth-oidc $TRAVIS_BUILD_DIR/test/e2e-test-application/node_modules/@luigi-project/plugin-auth-oidc
-    # Link fiddle manually:
-    - rm -rf $TRAVIS_BUILD_DIR/website/fiddle/node_modules/@luigi-project/*
-    - ln -s $TRAVIS_BUILD_DIR/core/public $TRAVIS_BUILD_DIR/website/fiddle/node_modules/@luigi-project/core
-    - ln -s $TRAVIS_BUILD_DIR/client/public $TRAVIS_BUILD_DIR/website/fiddle/node_modules/@luigi-project/client
-    - ln -s $TRAVIS_BUILD_DIR/plugins/auth/public/auth-oauth2 $TRAVIS_BUILD_DIR/website/fiddle/node_modules/@luigi-project/plugin-auth-oauth2
-    - ln -s $TRAVIS_BUILD_DIR/plugins/auth/public/auth-oidc $TRAVIS_BUILD_DIR/website/fiddle/node_modules/@luigi-project/plugin-auth-oidc
-    # WORKAROUND - END
-    - lerna run bundle --ignore docs || travis_terminate 1
-    - lerna run bundlesizeOnly --ignore docs || travis_terminate 1
-    # Verifying step
-    - head $TRAVIS_BUILD_DIR/client/public/package.json
-    - ls -lah $TRAVIS_BUILD_DIR/test/e2e-test-application/node_modules/@luigi-project
-    - ls -lah $TRAVIS_BUILD_DIR/test/e2e-test-application/node_modules/@luigi-project/client/
-    - echo "check if luigi-client.d.ts exists" && cat $TRAVIS_BUILD_DIR/test/e2e-test-application/node_modules/@luigi-project/client/luigi-client.d.ts | grep -C 3 "withoutSync" || travis_terminate 1
-    - lerna run build --ignore docs || travis_terminate 1
-    - npm test --prefix core || travis_terminate 1
     - cat $TRAVIS_BUILD_DIR/test/e2e-test-application/package.json
     - cat $TRAVIS_BUILD_DIR/test/e2e-test-application/package-lock.json | grep -A 6 cypress
     - cat $TRAVIS_BUILD_DIR/test/e2e-test-application/package-lock.json | grep -A 6 plugin-proposal-class-properties
+    - npm install --prefix $TRAVIS_BUILD_DIR/test/e2e-test-application @babel/plugin-proposal-class-properties
+    - ls $TRAVIS_BUILD_DIR/test/e2e-test-application/node_modules/
     - ls $TRAVIS_BUILD_DIR/test/e2e-test-application/node_modules/\@babel/plugin-proposal-class-properties/
     - cat $TRAVIS_BUILD_DIR/test/e2e-test-application/node_modules/\@babel/plugin-proposal-class-properties/lib/index.js
     - bash ./test/e2e.sh
@@ -116,7 +95,7 @@ jobs:
         - echo "check if luigi-client.d.ts exists" && cat $TRAVIS_BUILD_DIR/test/e2e-test-application/node_modules/@luigi-project/client/luigi-client.d.ts | grep -C 3 "withoutSync" || travis_terminate 1
         - lerna run build --ignore docs || travis_terminate 1
         - npm test --prefix core || travis_terminate 1
-        - cat $TRAVIS_BUILD_DIR/test/e2e-test-application/package.json
+         cat $TRAVIS_BUILD_DIR/test/e2e-test-application/package.json
         - cat $TRAVIS_BUILD_DIR/test/e2e-test-application/package-lock.json | grep -A 6 cypress
         - cat $TRAVIS_BUILD_DIR/test/e2e-test-application/package-lock.json | grep -A 6 plugin-proposal-class-properties
         - ls $TRAVIS_BUILD_DIR/test/e2e-test-application/node_modules/\@babel/plugin-proposal-class-properties/
