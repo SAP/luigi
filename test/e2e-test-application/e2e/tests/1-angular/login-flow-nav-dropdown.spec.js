@@ -1,111 +1,122 @@
-Cypress.env('RETRIES', 1);
-describe('Login Flow', () => {
-  beforeEach(() => {
-    cy.visit('/', {
-      onBeforeLoad: () => cy.clearLocalStorage()
+describe(
+  'Login Flow',
+  {
+    retries: {
+      runMode: 2,
+      openMode: 1
+    }
+  },
+  () => {
+    beforeEach(() => {
+      cy.visit('/', {
+        onBeforeLoad: () => cy.clearLocalStorage()
+      });
     });
-  });
 
-  it('Username in profile dropdown', () => {
-    cy.login('tets@email.com', 'tets');
+    it('Username in profile dropdown', () => {
+      cy.login('tets@email.com', 'tets');
 
-    cy.get('[data-testid="luigi-topnav-profile"]').click();
-    cy.get('[data-testid="luigi-topnav-profile-username"]').should(
-      'contain',
-      'Luigi User'
-    );
-  });
+      cy.get('[data-testid="luigi-topnav-profile"]').click();
+      cy.get('[data-testid="luigi-topnav-profile-username"]').should(
+        'contain',
+        'Luigi User'
+      );
+    });
 
-  it('Link in profile dropdown', () => {
-    cy.login('tets@email.com', 'tets');
+    it('Link in profile dropdown', () => {
+      cy.login('tets@email.com', 'tets');
 
-    cy.get('[data-testid="luigi-topnav-profile"]').click();
-    cy.get('[data-testid="luigi-topnav-profile-item"]')
-      .contains('Project 1')
-      .click();
+      cy.get('[data-testid="luigi-topnav-profile"]').click();
+      cy.get('[data-testid="luigi-topnav-profile-item"]')
+        .contains('Project 1')
+        .click();
 
-    cy.expectPathToBe('/projects/pr1');
+      cy.expectPathToBe('/projects/pr1');
 
-    cy.goToOverviewPage();
-    cy.expectPathToBe('/overview');
+      cy.goToOverviewPage();
+      cy.expectPathToBe('/overview');
 
-    // remove projects
-    cy.selectContextSwitcherItem('Remove Project');
-    cy.expectPathToBe('/projects');
-    cy.selectContextSwitcherItem('Remove Project');
-    cy.expectPathToBe('/projects');
-    cy.selectContextSwitcherItem('Remove Project');
-    cy.expectPathToBe('/projects');
-    cy.get('[data-testid="luigi-topnav-profile"]').click();
-    cy.get('[data-testid="luigi-topnav-profile-item"]').should(
-      'not.contain',
-      'Project 1'
-    );
+      // remove projects
+      cy.selectContextSwitcherItem('Remove Project');
+      cy.expectPathToBe('/projects');
+      cy.selectContextSwitcherItem('Remove Project');
+      cy.expectPathToBe('/projects');
+      cy.selectContextSwitcherItem('Remove Project');
+      cy.expectPathToBe('/projects');
+      cy.get('[data-testid="luigi-topnav-profile"]').click();
+      cy.get('[data-testid="luigi-topnav-profile-item"]').should(
+        'not.contain',
+        'Project 1'
+      );
 
-    // add project
-    cy.selectContextSwitcherItem('New Project');
-    cy.expectPathToBe('/projects');
+      // add project
+      cy.selectContextSwitcherItem('New Project');
+      cy.expectPathToBe('/projects');
 
-    cy.get('[data-testid="luigi-topnav-profile-item"]').should(
-      'contain',
-      'Project 1'
-    );
-  });
+      cy.get('[data-testid="luigi-topnav-profile-item"]').should(
+        'contain',
+        'Project 1'
+      );
+    });
 
-  it('Change title and logo', () => {
-    cy.login('tets@email.com', 'tets');
+    it('Change title and logo', () => {
+      cy.login('tets@email.com', 'tets');
 
-    const testTitle = 'This is not my sandwich';
-    const testLogo =
-      'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mM0WCn/HgAD8gHpXMQ+4AAAAABJRU5ErkJggg==';
+      const testTitle = 'This is not my sandwich';
+      const testLogo =
+        'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mM0WCn/HgAD8gHpXMQ+4AAAAABJRU5ErkJggg==';
 
-    cy.get('[data-testid="luigi-topnav-title"]').should(
-      'contain',
-      'Luigi Demo'
-    );
-    cy.get('[data-testid="luigi-topnav-title"]').should(
-      'not.have.attr',
-      'src',
-      testLogo
-    );
-
-    cy.window().then(win => {
-      const config = win.Luigi.getConfig();
-      config.settings.header.title = testTitle;
-      config.settings.header.logo = testLogo;
-      win.Luigi.configChanged('settings.header');
-
-      cy.get('[data-testid="luigi-topnav-title"]').should('contain', testTitle);
-      cy.get('[data-testid="luigi-topnav-logo"]').should(
-        'have.attr',
+      cy.get('[data-testid="luigi-topnav-title"]').should(
+        'contain',
+        'Luigi Demo'
+      );
+      cy.get('[data-testid="luigi-topnav-title"]').should(
+        'not.have.attr',
         'src',
         testLogo
       );
+
+      cy.window().then(win => {
+        const config = win.Luigi.getConfig();
+        config.settings.header.title = testTitle;
+        config.settings.header.logo = testLogo;
+        win.Luigi.configChanged('settings.header');
+
+        cy.get('[data-testid="luigi-topnav-title"]').should(
+          'contain',
+          testTitle
+        );
+        cy.get('[data-testid="luigi-topnav-logo"]').should(
+          'have.attr',
+          'src',
+          testLogo
+        );
+      });
     });
-  });
 
-  it('Logout and login again', () => {
-    cy.login('tets@email.com', 'tets');
+    it('Logout and login again', () => {
+      cy.login('tets@email.com', 'tets');
 
-    //logout
-    cy.get('[data-testid="luigi-topnav-profile"]').click();
-    cy.contains('End session').click();
-    cy.get('[data-testid="logout-headline"]').should(
-      'contain',
-      'You have successfully logged out'
-    );
-    cy.get('[data-testid="logout-message"]').should(
-      'contain',
-      'Sign in again to continue working on awesome things!'
-    );
-    cy.expectPathToBe('/logout.html');
+      //logout
+      cy.get('[data-testid="luigi-topnav-profile"]').click();
+      cy.contains('End session').click();
+      cy.get('[data-testid="logout-headline"]').should(
+        'contain',
+        'You have successfully logged out'
+      );
+      cy.get('[data-testid="logout-message"]').should(
+        'contain',
+        'Sign in again to continue working on awesome things!'
+      );
+      cy.expectPathToBe('/logout.html');
 
-    //login again
-    cy.contains('Re-Login').click();
-    cy.get('body').should('contain', 'Login to Luigi sample app');
-    cy.login('tets@email.com', 'tets');
-  });
-});
+      //login again
+      cy.contains('Re-Login').click();
+      cy.get('body').should('contain', 'Login to Luigi sample app');
+      cy.login('tets@email.com', 'tets');
+    });
+  }
+);
 
 describe('TopNavDropDown', () => {
   beforeEach(() => {
