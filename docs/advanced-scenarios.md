@@ -219,18 +219,18 @@ In general, it consists of:
 - Listening to events like [`Luigi.navigation().addEventListener('topNav', (data) => {})`](luigi-core-api.md#addeventlistener)
 - Using this data to build and update navigation trees
 
-Be aware this is only a MVP with navigation and a simple profile, currently also only a limited amount of events are available publicly from Core. Please get in touch with us, if you want to build a Core app from scratch. We are happy to get to know what you are creating and give support by exposing required events.
+Be aware this is only a MVP with navigation and a simple profile, and only a limited amount of events are currently available publicly from Core. Please get in touch with us on [Slack](slack.luigi-project.io) if you want to build a Core app from scratch. We are happy to get to know what you are creating and support you with exposing required events.
 
 #### Implementation Steps
 
 - Create a base application which will be used for building the interface. It should not contain any routers, since the routing will be handled by Luigi. In this example we have specified a layout which consists of top and left navigation.
 
-- Inject `@luigi-project/core` to the `index.html` or the application itself, to be able to use `window.Luigi` later. See our [eample index.html:32](https://github.com/SAP/luigi/tree/master/core/examples/luigi-core-material-ui/public/index.html#L32). Additionally add a container which will be used to render Luigi iframes, it should not interfer with our application: [`<div luigi-app-root></div>`](https://github.com/SAP/luigi/tree/master/core/examples/luigi-core-material-ui/public/index.html#L38). 
+- Inject `@luigi-project/core` to the `index.html` or the application itself, to be able to use `window.Luigi` later. See our [example index.html:32](https://github.com/SAP/luigi/tree/master/core/examples/luigi-core-material-ui/public/index.html#L32). Additionally, add a container which will be used to render Luigi iframes; it should not interfere with our application: [`<div luigi-app-root></div>`](https://github.com/SAP/luigi/tree/master/core/examples/luigi-core-material-ui/public/index.html#L38). 
 
 - Create a Luigi configuration. We have used webpack to compile the configuration which can be found in `src/luigi-config/`. It gets built by running `npm run config`.
 
-- Add CSS styling to position the view container of Luigi
-Specify the left navigation width and position and style the view container. We additionally add a `.spinnerContainer` which is the view loading indicator backdrop.
+- Add CSS styling to position the view container of Luigi.
+Specify the left navigation width and position, and style the view container. We additionally add a `.spinnerContainer`, which is the view loading indicator backdrop:
 ```css
 :root {
   --luigi__left-sidenav--width: 256px;
@@ -265,7 +265,7 @@ Specify the left navigation width and position and style the view container. We 
   justify-content: center;
 }
 ```
-If you are intend to use the tab navigation, it makes sense to specify also the new top view container positioning `.iframeContainerTabNav`.
+If you intend to use [tab navigation](navigation-advanced.md#tab-navigation), it also makes sense to specify the new top view container positioning `.iframeContainerTabNav`:
 ```css
 .iframeContainerTabNav {
   top: calc(#{$topNavHeight} + #{$topNavHeightTab}); // header navigation height PLUS tab navigation height
@@ -282,25 +282,26 @@ const id = Luigi.navigation().addEventListener('topNav', data => setTopNavData(d
 window.onbeforeunload = () => Luigi.navigation().removeEventListener(id); // apply also on component destroy
 ```
 
-- Build your navigation based on the data received through the events
-Based on the `data` received above, use `data.topNavData` to build the navigation items, apply category logic, or anything else you want to see implemented. To utilize navigation, use a function that handles navigation clicks. See our [Header.js:38 and :66](https://github.com/SAP/luigi/tree/master/core/examples/luigi-core-material-ui/src/components/Header.js#L38)
 
-Example:
-```javascript
-// template
-<a class="nav-link" onClick="navigateTo(node.pathSegment)">{node.label}</a>
+- Build your navigation based on the data received through the events.
+Based on the `data` received above, use `data.topNavData` to build the navigation items, apply category logic, or anything else you want to implement. To utilize navigation, use a function that handles navigation clicks. See our [Header.js:38 and :66](https://github.com/SAP/luigi/tree/master/core/examples/luigi-core-material-ui/src/components/Header.js#L38)
 
-// navigation component
-function navigateTo(pathSegment) {
-  // for top nav
-  Luigi.navigation().navigate(`/${pathSegment}`);
-  // possible usecase on side nav, if each top nav node with children has a `navigationContext` defined
-  Luigi.navigation().fromClosestContext().navigate(pathSegment);
-}
-```
+  - Example:
+    ```javascript
+    // template
+    <a class="nav-link" onClick="navigateTo(node.pathSegment)">{node.label}</a>
 
-- Build a Profile navigation
-In our example we have specified the static profile in [luigi-config/navigation.js:67](https://github.com/SAP/luigi/tree/master/core/examples/luigi-core-material-ui/src/luigi-config/navigation.js:67) and use the name, email and picture received from the event listener above in combination with `Luigi.getConfigValue('navigation.profile')` to build the [ProfileMenu.js:54-130](https://github.com/SAP/luigi/tree/master/core/examples/luigi-core-material-ui/src/components/ProfileMenu.js#L54).
+    // navigation component
+    function navigateTo(pathSegment) {
+    // for top nav
+    Luigi.navigation().navigate(`/${pathSegment}`);
+    // possible usecase on side nav, if each top nav node with children has a `navigationContext` defined
+    Luigi.navigation().fromClosestContext().navigate(pathSegment);
+    }
+    ```
+
+- Build a Profile navigation.
+In our example, we have the static profile in [luigi-config/navigation.js:67](https://github.com/SAP/luigi/tree/master/core/examples/luigi-core-material-ui/src/luigi-config/navigation.js:67) and use the name, email and picture received from the event listener above in combination with `Luigi.getConfigValue('navigation.profile')` to build the [ProfileMenu.js:54-130](https://github.com/SAP/luigi/tree/master/core/examples/luigi-core-material-ui/src/components/ProfileMenu.js#L54).
 `Luigi.navigation().addEventListener('userInfo')` receives an object and gets triggered either through authentication or a static profile using [staticUserInfoFn](navigation-parameters-reference.md#staticuserinfofn).
 
 
