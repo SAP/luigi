@@ -27,6 +27,9 @@ integration-testing: &integration-testing
     - ls $CYPRESS_CACHE_FOLDER
     - cat $TRAVIS_BUILD_DIR/test/e2e-test-application/package.json
     - cat $TRAVIS_BUILD_DIR/test/e2e-test-application/package-lock.json | grep -A 6 cypress
+    - cat $TRAVIS_BUILD_DIR/test/e2e-test-application/package-lock.json | grep -A 6 plugin-proposal-class-properties
+    - ls $TRAVIS_BUILD_DIR/test/e2e-test-application/node_modules/\@babel/plugin-proposal-class-properties/
+    - cat $TRAVIS_BUILD_DIR/test/e2e-test-application/node_modules/\@babel/plugin-proposal-class-properties/lib/index.js
     - bash ./test/e2e.sh
   addons:
     apt:
