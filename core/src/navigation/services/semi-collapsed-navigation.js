@@ -112,6 +112,16 @@ class SemiCollapsibleNavigationClass {
     this.closePopupMenu();
     if (!this.getCollapsed()) {
       this.setCollapsed(true);
+
+      //Force browser to re-render vertical scrollbar
+      document
+        .getElementsByClassName('lui-fd-side-nav-wrapper')[0]
+        .setAttribute('style', 'overflow-y:hidden;');
+      window.setTimeout(function() {
+        document
+          .getElementsByClassName('lui-fd-side-nav-wrapper')[0]
+          .setAttribute('style', 'overflow-y:auto;');
+      });
     } else {
       this.setCollapsed(false);
     }

@@ -573,9 +573,10 @@
       display: flex;
       justify-content: space-between;
       flex-direction: column;
+      scrollbar-width: none;
 
-      .fd-nested-list {
-        width: inherit;
+      &::-webkit-scrollbar {
+        width: 0;
       }
     }
 
@@ -721,10 +722,6 @@
   .fd-nested-list__content.has-child {
     .fd-nested-list__link {
       max-width: calc(100% - 2.5rem);
-    }
-    &:after {
-      left: calc(#{$leftNavWidthCollapsed} - 0.5rem);
-      right: auto;
     }
   }
 
