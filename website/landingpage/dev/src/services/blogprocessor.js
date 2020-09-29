@@ -42,9 +42,8 @@ const getAuthors = (authors) => {
 
 const generateBlogEntry = (blog, content, showButton = false) => {
 
-  const button = showButton ? `<p><a href="/blog/${blog.slug}" class="btn-primary">Read more</a></p>` : '';
+  const button = showButton ? `<p><a href="/blog/${blog.slug}" class="button read-more-btn">Read more </a></p>` : '';
   return `
-
   <div class="blog-entry">
     <div class="title-2">
       ${blog.title}
@@ -93,7 +92,7 @@ layout: blog
 ---
 ${entry.blogContent}`;
     writeFileSync(blogHtmlPath + `/${entry.slug}.html`, blogHtml);
-  });
+  })
 };
 
 export const processBlogFiles = () => {

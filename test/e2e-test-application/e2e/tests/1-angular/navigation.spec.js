@@ -3,7 +3,7 @@ describe('Navigation', () => {
   beforeEach(() => {
     cy.visitLoggedIn('/');
   });
-
+  
   describe('Core api navigation test', () => {
     it('Core API navigate', () => {
       cy.window().then(win => {
@@ -684,4 +684,86 @@ describe('Navigation', () => {
       cy.get('.fd-app__sidebar').should('contain', 'Project Settings 3');
     });
   });
+  describe('Collapsible Categories / Accordion',() => {
+    it('It should have multiple categories collapsed', () => {
+      cy.visit('/projects/pr2/collapsibles');
+        
+      cy.get('li[data-testid="superusefulgithublinks"]>ul.fd-nested-list').should('not.be.visible')
+      cy.get('li[data-testid="usermanagement"]>ul.fd-nested-list').should('not.be.visible')
+      
+      cy.get('li[data-testid="superusefulgithublinks"] a[title="Super useful Github links"]').click()
+      cy.get('li[data-testid="usermanagement"] a[title="User Management"]').click()
+
+      cy.get('li[data-testid="superusefulgithublinks"]>ul.fd-nested-list').should('be.visible')
+      cy.get('li[data-testid="usermanagement"]>ul.fd-nested-list').should('be.visible')
+
+      cy.get('li[data-testid="superusefulgithublinks"] a[title="Super useful Github links"]').click()
+      cy.get('li[data-testid="usermanagement"] a[title="User Management"]').click()
+
+      cy.get('li[data-testid="superusefulgithublinks"]>ul.fd-nested-list').should('not.be.visible')
+      cy.get('li[data-testid="usermanagement"]>ul.fd-nested-list').should('not.be.visible')
+    });
+    
+    it('It should have a local side nav accordion mode', () => {
+      cy.visit('/projects/pr2/sidenavaccordionmode');
+      
+     
+      // All is closed
+      cy.get('li[data-testid="superusefulgithublinks"]>ul.fd-nested-list').should('not.be.visible')
+      cy.get('li[data-testid="usermanagement"]>ul.fd-nested-list').should('not.be.visible')
+      
+      cy.get('li[data-testid="superusefulgithublinks"] a[title="Super useful Github links"]').click()
+      
+      // First one is open only
+      cy.get('li[data-testid="superusefulgithublinks"]>ul.fd-nested-list').should('be.visible')
+      cy.get('li[data-testid="usermanagement"]>ul.fd-nested-list').should('not.be.visible')
+      
+      cy.get('li[data-testid="usermanagement"] a[title="User Management"]').click()
+      
+      // Second one is open only
+      cy.get('li[data-testid="superusefulgithublinks"]>ul.fd-nested-list').should('not.be.visible')
+      cy.get('li[data-testid="usermanagement"]>ul.fd-nested-list').should('be.visible')
+
+      cy.get('li[data-testid="usermanagement"] a[title="User Management"]').click()
+
+      // All is closed
+      cy.get('li[data-testid="superusefulgithublinks"]>ul.fd-nested-list').should('not.be.visible')
+      cy.get('li[data-testid="usermanagement"]>ul.fd-nested-list').should('not.be.visible')
+    });
+
+    it('It should have a global side nav accordion mode', () => {
+      cy.visit('/projects/pr2/collapsibles');
+      cy.window().then(win => {
+        const config = win.Luigi.getConfig();
+        config.navigation.defaults = {
+          sideNavAccordionMode: true
+        }
+        win.Luigi.configChanged('settings.navigation');
+         // All is closed
+        cy.get('li[data-testid="superusefulgithublinks"]>ul.fd-nested-list').should('not.be.visible')
+        cy.get('li[data-testid="usermanagement"]>ul.fd-nested-list').should('not.be.visible')
+        
+        cy.get('li[data-testid="superusefulgithublinks"] a[title="Super useful Github links"]').click()
+        
+        // First one is open only
+        cy.get('li[data-testid="superusefulgithublinks"]>ul.fd-nested-list').should('be.visible')
+        cy.get('li[data-testid="usermanagement"]>ul.fd-nested-list').should('not.be.visible')
+        
+        cy.get('li[data-testid="usermanagement"] a[title="User Management"]').click()
+        
+        // Second one is open only
+        cy.get('li[data-testid="superusefulgithublinks"]>ul.fd-nested-list').should('not.be.visible')
+        cy.get('li[data-testid="usermanagement"]>ul.fd-nested-list').should('be.visible')
+
+        cy.get('li[data-testid="usermanagement"] a[title="User Management"]').click()
+
+        // All is closed
+        cy.get('li[data-testid="superusefulgithublinks"]>ul.fd-nested-list').should('not.be.visible')
+        cy.get('li[data-testid="usermanagement"]>ul.fd-nested-list').should('not.be.visible')
+
+      })
+    });
+  })
+  
+
 });
