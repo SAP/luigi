@@ -129,6 +129,7 @@
                   href="javascript:void(null)"
                   tabindex="-1"
                   class="fd-nested-list__link"
+                  id="tabnav_list_level1_{index}"
                   aria-haspopup="true"
                   aria-expanded="{dropDownStates[key+index]}"
                   aria-selected="{isSelectedCat(key,selectedNodeForTabNav)}"
@@ -151,7 +152,10 @@
                 aria-hidden="{!dropDownStates[key+index]}"
               >
                 {#each nodes as node}
-                <li class="fd-nested-list__item">
+                <li
+                  class="fd-nested-list__item"
+                  aria-labelledby="tabnav_list_level1_{index}"
+                >
                   <a
                     class="fd-nested-list__link"
                     href="{getRouteLink(node)}"
