@@ -103,7 +103,6 @@
   import Alerts from './Alerts.html';
   import ConfirmationModal from './ConfirmationModal.html';
   import Modal from './Modal.html';
-  import Drawer from './Drawer.html';
   import Backdrop from './Backdrop.html';
   import SplitView from './SplitView.html';
   import LeftNav from './navigation/LeftNav.html';
@@ -429,7 +428,7 @@
         Iframe.removeInactiveIframes(node);
       }
       closeModal();
-      //closeDrawer();
+
       closeSplitView();
 
       Routing.handleRouteChange(path, getComponentWrapper(), node, config);
@@ -927,7 +926,6 @@
   resetMicrofrontendDrawerData();
 
   const openViewInDrawer = async (nodepath, settings) => {
-    debugger;
     const { nodeObject } = await Navigation.extractDataFromPath(nodepath);
     if (await Navigation.shouldPreventNavigation(nodeObject)) {
       return;
@@ -959,6 +957,7 @@
     }
   };
   ///
+
 
   function init(node) {
     const isolateAllViews = LuigiConfig.getConfigValue(
@@ -1068,10 +1067,7 @@
           modal,
           splitViewIframe,
           splitViewIframeData,
-          splitView,
-          drawerIframe,
-          drawerIframeData,
-          drawer
+          splitView
         };
         const specialIframeMessageSource = IframeHelpers.specialIframeTypes.filter(
           typ =>

@@ -112,7 +112,7 @@ export class linkManager extends LuigiClientBase {
   }
 
   openAsDrawer(path, drawerSettings = {}) {
-    this.navigate(path, 0, true, undefined, drawerSettings);
+    this.navigate(path, 0, true, undefined, undefined, drawerSettings);
   }
 
   /**
