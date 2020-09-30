@@ -1,13 +1,16 @@
 <svelte:window on:keydown="{handleKeydown}" />
-<div class="fd-dialog fd-dialog--active" style="z-index:999">
+<div class="{(isModal || drawerSettings.backdrop)?'fd-dialog fd-dialog--active':'fd-dialog drawer-dialog--active'}"
+  style="z-index:999">
   <div class="fd-dialog__content {isDrawer? 'drawer drawer-dialog__content':'lui-modal-mf modal-dialog__content'}"
     data-testid="modal-mf">
-    {#if !isDrawer}
+    {#if isModal || drawerSettings.header}
     <div class="fd-dialog__header fd-bar fd-bar--header">
       <div class="fd-bar__left">
         <div class="fd-bar__element">
           {#if modalSettings.title}
-          <h3 class="fd-dialog__title">{modalSettings.title}</h3>
+          <h3 class="fd-dialog__title modal_">{modalSettings.title}</h3>
+          {:else}
+          <h3 class="fd-dialog__title">{drawerSettings.title}</h3>
           {/if}
         </div>
       </div>
@@ -77,6 +80,7 @@
   let iframeCreated = false;
   let showLoadingIndicator = true;
   let isDrawer = false;
+  let isModal = true;
   let drawerSettings = {};
 
   const prepareNodeData = async path => {
@@ -86,14 +90,15 @@
     nodeParams = RoutingHelpers.getNodeParams(params);
     const dataFromPath = await Navigation.extractDataFromPath(path);
     nodeObject = dataFromPath.nodeObject;
-    isDrawer = typeof nodeObject.drawer === 'object';
+    isDrawer = modalSettings.isDrawer || typeof nodeObject.drawer === 'object';
     if (isDrawer) {
-      drawerSettings = nodeObject.drawer;
+      isModal = false;
+      drawerSettings = modalSettings;
     }
-    pathData = dataFromPath.pathData;
     if (!modalSettings.title) {
       modalSettings.title = nodeObject.label;
     }
+    pathData = dataFromPath.pathData;
 
     isDataPrepared = true;
   };
@@ -153,20 +158,14 @@
   async function setDrawerSize(elem) {
     let styleSettings = '';
     const elemDrawer = document.getElementsByClassName('drawer');
-    if (drawerSettings.width) {
-      styleSettings = `width:${drawerSettings.width};`;
-    }
-    if (drawerSettings.height) {
-      styleSettings += `height:${drawerSettings.height};`;
-    }
-    if (drawerSettings.position === 'left') {
-      styleSettings += `left:0;right:auto;top:0;`;
-    } else if (drawerSettings.position === 'right') {
-      styleSettings += `left:auto;right:0;top:0;`;
-    } else if (drawerSettings.position === 'bottom') {
-      styleSettings += `bottom:0;left:auto;right:auto;top:auto`;
-    } else if (drawerSettings.position === 'top') {
-      styleSettings += `top:0;left:auto;right:auto;`;
+    if (drawerSettings.size) {
+      if (drawerSettings.size === 'l') {
+        styleSettings = `width:75%;`;
+      } else if (drawerSettings.size === 'm') {
+        styleSettings = `width:50%;`;
+      } else if (drawerSettings.size === 's') {
+        styleSettings = `width:25%;`;
+      }
     }
     elemDrawer[0].setAttribute('style', styleSettings);
   }
@@ -268,6 +267,11 @@
     max-width: none;
     max-height: none;
     min-width: 0;
+  }
+
+  .drawer-dialog--active{
+    display:block;
+    background-color: transparent;
   }
 
   @media (max-width: 599px) {

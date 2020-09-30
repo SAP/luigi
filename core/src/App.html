@@ -1121,8 +1121,9 @@
           let path = buildPath(e.data.params);
           path = GenericHelpers.addLeadingSlash(path);
           contentNode = node;
-          resetMicrofrontendDrawerData();
-          openViewInDrawer(path, e.data.params.modal);
+          resetMicrofrontendModalData();
+          e.data.params.drawer.isDrawer = true;
+          openViewInModal(path, e.data.params.drawer);
         } else {
           getUnsavedChangesModalPromise().then(() => {
             isNavigationSyncEnabled = !e.data.params.withoutSync;
