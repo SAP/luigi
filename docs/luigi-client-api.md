@@ -383,6 +383,24 @@ Opens a view in a modal. You can specify the modal's title and size. If you don'
 LuigiClient.linkManager().openAsModal('projects/pr1/users', {title:'Users', size:'m'});
 ```
 
+#### openAsDrawer
+
+Opens a view in a drawer. You can specify if the drawer has a header, a backdrop is active in the background and the size of the drawer. By default the header is shown. The backdrop is not visible and has to be set to `true`. The size of the drawer is by default set to `m` which means 50% of the micro frontend size. You can also use `l`(75%) or `s`(25%). Optionally, use it in combination with any of the navigation functions.
+
+##### Parameters
+
+-   `path` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** navigation path
+-   `drawerSettings` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)?** opens a view in a drawer. Use these settings to configure the header, backdrop and size of the drawer.
+    -   `drawerSettings.header` **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)** By default, the header is displayed and the title is the node label.
+    -   `drawerSettings.size` **(`"l"` \| `"m"` \| `"s"`)** size of the drawer (optional, default `"m"`)
+    -  `drawerSettings.backdrop` **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)** By default, there is no backdrop visible.
+
+##### Examples
+
+```javascript
+LuigiClient.linkManager().openAsDrawer('projects/pr1/drawer', {header:true, backdrop:false, size:'m'});
+```
+
 #### openAsSplitView
 
 -   **See: [splitView](#splitview) for further documentation about the returned instance

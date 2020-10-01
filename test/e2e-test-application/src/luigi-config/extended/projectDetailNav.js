@@ -78,6 +78,11 @@ export const projectDetailNavStructure = projectId => [
     hideFromNav: true
   },
   {
+    pathSegment: 'drawer',
+    label: 'Drawer Example',
+    viewUrl: '/sampleapp.html#/projects/' + projectId + '/drawer'
+  },
+  {
     pathSegment: 'on-node-activation',
     label: 'Node with node activation hook',
     icon: 'activate',

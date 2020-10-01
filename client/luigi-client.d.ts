@@ -45,6 +45,12 @@ export declare interface SplitViewInstance {
   isExpanded: () => boolean;
 }
 
+export declare interface DrawerSettings {
+  header?: boolean;
+  size?: 'l' | 'm' | 's';
+  backdrop?: boolean
+}
+
 export declare interface Context {
   authData?: AuthData;
   context?: { parentNavigationContext?: string[] };
@@ -355,6 +361,19 @@ export declare interface LinkManager {
     path: string,
     splitViewSettings?: SplitViewSettings
   ) => SplitViewInstance;
+
+  /**
+   * Opens a view in a drawer view. You can specify if the drawer has a header, backdrop and size. If you don't specify the header, header will be visible. If you don't specify the backdrop property, the drawer will just overlay.  The default size of the drawer is `m`, which means 50%. You can also use `s` (25%) and `l` (75%) to set the drawer size. Optionally, use it in combination with any of the navigation functions.
+   * @memberof linkManager
+   * @param {string} path navigation path
+   * @param {Object} [drawerSettings] opens a view in a drawer. Use these settings to configure if the drawer has a header, backdrop and size.
+   * @param {boolean} modalSettings.header By default, the header is visible. Title is node label and 'x' is displayed to close the drawer view.
+   * @param {boolean} modalSettings.backdrop By default, it is set to `false`. If it is set to `true` the rest of the screen has a backdrop.
+   * @param {('l'|'m'|'s')} [modalSettings.size="m"] size of the drawer
+   * @example
+   * LuigiClient.linkManager().openAsDrawer('projects/pr1/drawer', {header:true, backdrop:true, size:'m'});
+   */
+  openAsDrawer: (nodepath: string, drawerSettings?: DrawerSettings) => void;
 
   /**
    * Disables the navigation handling for a single navigation request

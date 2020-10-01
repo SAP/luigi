@@ -1,0 +1,26 @@
+<section class="fd-section">
+  <div class="fd-section__header">
+    <h1 class="fd-section__title">LuigiClient linkManager methods</h1>
+  </div>
+  <div class="fd-layout-panel">
+    <div class="fd-layout-panel__header">
+      <div class="fd-layout-panel__head">
+        <h3 class="fd-layout-panel__title">Navigate</h3>
+      </div>
+    </div>
+    <div class="fd-layout-panel__body">
+      <ul class="fd-list">
+        <li class="fd-list__item">
+          <a href="javascript:void(0)" class="fd-link" (click)="linkManager().goBack()">
+            go back: single iframe, standard history back</a>
+          <app-code-snippet data="linkManager().goBack()"> </app-code-snippet>
+        </li>
+        <li class="fd-list__item">
+          <a href="javascript:void(0)" class="fd-link" (click)="linkManager().navigate('/overview')">absolute: to
+            overview</a>
+          <app-code-snippet data="linkManager().navigate('/overview')"></app-code-snippet>
+        </li>
+      </ul>
+    </div>
+  </div>
+</section>

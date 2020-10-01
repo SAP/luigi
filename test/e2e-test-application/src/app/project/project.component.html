@@ -300,14 +300,18 @@
             </app-code-snippet>
           </li>
           <li class="fd-list__item">
-            <a href="javascript:void(0)" class="fd-link"
-              (click)="
-              linkManager().openAsDrawer('/projects/pr1/developers', {header: true, size: 'm', backdrop: true, overlay: false })">
-              Open view in drawer component</a>
-            <app-code-snippet data="linkManager().openAsDrawer('/projects/pr1/developers', {header: true,
-                size: 'm', //s, m, l
-                backdrop: true,
-                overlay: false });">
+            <a href="javascript:void(0)" class="fd-link" (click)="
+              linkManager().openAsDrawer('/projects/pr2/drawer')">
+              Open drawer with default settings</a>
+            <app-code-snippet data="linkManager().openAsDrawer('/projects/pr1/drawer');">
+            </app-code-snippet>
+          </li>
+          <li class="fd-list__item">
+            <a href="javascript:void(0)" class="fd-link" (click)="
+              linkManager().openAsDrawer('/projects/pr2/drawer', {header: false, size: 's',backdrop: true})">
+              Open view in drawer component with and w/o backdrap and header</a>
+            <app-code-snippet data="linkManager().openAsDrawer('/projects/pr1/drawer', {header: false, size:'s'
+                backdrop: true});">
             </app-code-snippet>
           </li>
           <li class="fd-list__item">

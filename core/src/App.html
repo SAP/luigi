@@ -12,7 +12,7 @@
   {/if}
   {#if mfModal.displayed}
   <Modal
-    modalSettings="{mfModal.modalSettings}"
+    settings="{mfModal.settings}"
     nodepath="{mfModal.nodepath}"
     on:close="{closeModal}"
     on:iframeCreated="{modalIframeCreated}"
@@ -872,19 +872,19 @@
   const resetMicrofrontendModalData = () => {
     mfModal.displayed = false;
     mfModal.nodepath = undefined;
-    mfModal.modalSettings = {};
+    mfModal.settings = {};
   };
 
   resetMicrofrontendModalData();
 
-  const openViewInModal = async (nodepath, modalSettings) => {
+  const openViewInModal = async (nodepath, settings) => {
     const { nodeObject } = await Navigation.extractDataFromPath(nodepath);
     if (await Navigation.shouldPreventNavigation(nodeObject)) {
       return;
     }
     mfModal.displayed = true;
     mfModal.nodepath = nodepath;
-    mfModal.modalSettings = modalSettings;
+    mfModal.settings = settings;
   };
 
   const modalIframeCreated = event => {

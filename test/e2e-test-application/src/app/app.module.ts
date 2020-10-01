@@ -10,6 +10,7 @@ import { UsersComponent } from './project/users/users.component';
 import { AppRoutingModule } from './app-routing.module';
 import { SettingsComponent } from './project/settings/settings.component';
 import { DevelopersComponent } from './project/developers/developers.component';
+import { DrawerComponent } from './project/drawer/drawer.component';
 import { MiscellaneousComponent } from './project/miscellaneous/miscellaneous.component';
 import { UsersoverviewComponent } from './project/users/usersoverview/usersoverview.component';
 import { GroupsComponent } from './project/users/groups/groups.component';
@@ -38,6 +39,7 @@ import { NavSyncComponent } from './nav-sync/nav-sync.component';
     UsersComponent,
     SettingsComponent,
     DevelopersComponent,
+    DrawerComponent,
     MiscellaneousComponent,
     UsersoverviewComponent,
     GroupsComponent,
@@ -61,4 +63,4 @@ import { NavSyncComponent } from './nav-sync/nav-sync.component';
   providers: [LuigiContextService, LuigiAutoNavigationService],
   bootstrap: [AppComponent]
 })
-export class AppModule {}
+export class AppModule { }

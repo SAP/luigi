@@ -1,16 +1,15 @@
 <svelte:window on:keydown="{handleKeydown}" />
-<div class="{(isModal || drawerSettings.backdrop)?'fd-dialog fd-dialog--active':'fd-dialog drawer-dialog--active'}"
+<div
+  class="{(isModal || (isDrawer && settings.backdrop))?'fd-dialog fd-dialog--active':'fd-dialog drawer-dialog--active'}"
   style="z-index:999">
   <div class="fd-dialog__content {isDrawer? 'drawer drawer-dialog__content':'lui-modal-mf modal-dialog__content'}"
     data-testid="modal-mf">
-    {#if isModal || drawerSettings.header}
+    {#if isModal || (isDrawer && settings.header)}
     <div class="fd-dialog__header fd-bar fd-bar--header">
       <div class="fd-bar__left">
         <div class="fd-bar__element">
-          {#if modalSettings.title}
-          <h3 class="fd-dialog__title modal_">{modalSettings.title}</h3>
-          {:else}
-          <h3 class="fd-dialog__title">{drawerSettings.title}</h3>
+          {#if settings.title}
+          <h3 class="fd-dialog__title">{settings.title}</h3>
           {/if}
         </div>
       </div>
@@ -71,7 +70,7 @@
   import { LuigiConfig } from './core-api';
   import { KEYCODE_ESC } from './utilities/keycode.js';
 
-  export let modalSettings;
+  export let settings;
   export let isDataPrepared = false;
   export let nodepath;
   let nodeObject;
@@ -81,7 +80,6 @@
   let showLoadingIndicator = true;
   let isDrawer = false;
   let isModal = true;
-  let drawerSettings = {};
 
   const prepareNodeData = async path => {
     const pathUrlRaw =
@@ -90,13 +88,21 @@
     nodeParams = RoutingHelpers.getNodeParams(params);
     const dataFromPath = await Navigation.extractDataFromPath(path);
     nodeObject = dataFromPath.nodeObject;
-    isDrawer = modalSettings.isDrawer || typeof nodeObject.drawer === 'object';
+    isDrawer = settings.isDrawer || typeof nodeObject.drawer === 'object';
     if (isDrawer) {
       isModal = false;
-      drawerSettings = modalSettings;
+      if (settings.header === undefined) {
+        settings.header = true;
+      }
+      if (settings.backdrop === undefined) {
+        settings.backdrop = false;
+      }
+      if (!settings.size) {
+        settings.size = 'm';
+      }
     }
-    if (!modalSettings.title) {
-      modalSettings.title = nodeObject.label;
+    if (!settings.title) {
+      settings.title = nodeObject.label;
     }
     pathData = dataFromPath.pathData;
 
@@ -128,12 +134,12 @@
     } else {
       const elemModal = document.getElementsByClassName('lui-modal-mf');
       let modalSize = '80%';
-      if (modalSettings.size) {
-        if (modalSettings.size === 'l') {
+      if (settings.size) {
+        if (settings.size === 'l') {
           modalSize = '80%';
-        } else if (modalSettings.size === 'm') {
+        } else if (settings.size === 'm') {
           modalSize = '60%';
-        } else if (modalSettings.size === 's') {
+        } else if (settings.size === 's') {
           modalSize = '40%';
         }
       }
@@ -158,12 +164,12 @@
   async function setDrawerSize(elem) {
     let styleSettings = '';
     const elemDrawer = document.getElementsByClassName('drawer');
-    if (drawerSettings.size) {
-      if (drawerSettings.size === 'l') {
-        styleSettings = `width:75%;`;
-      } else if (drawerSettings.size === 'm') {
+    if (settings.size) {
+      if (settings.size === 'l') {
+        settings = `width:75%;`;
+      } else if (settings.size === 'm') {
         styleSettings = `width:50%;`;
-      } else if (drawerSettings.size === 's') {
+      } else if (settings.size === 's') {
         styleSettings = `width:25%;`;
       }
     }
