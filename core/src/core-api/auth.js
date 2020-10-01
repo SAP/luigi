@@ -1,5 +1,5 @@
 import { LuigiConfig } from './';
-import { AuthStoreSvc } from '../services';
+import { AuthStoreSvc, AuthLayerSvc } from '../services';
 
 /**
  * Authorization helpers
@@ -10,7 +10,7 @@ class LuigiAuth {
    * @private
    * @memberof Authorization
    */
-  constructor() {}
+  constructor() { }
 
   /**
    * Detects if authorization is enabled via configuration.
@@ -22,6 +22,19 @@ class LuigiAuth {
    */
   isAuthorizationEnabled() {
     return !!LuigiConfig.getConfigValue('auth.use');
+  }
+
+  /**
+   * Logout the user dynamically.
+   * This will run the same functionality as though the user clicked the logout button.
+   * @memberof Authorization
+   * @example
+   * Luigi.auth().logout();
+   */
+  logout() {
+    if (this.isAuthorizationEnabled()) {
+      AuthLayerSvc.logout();
+    }
   }
 
   /**
@@ -69,7 +82,7 @@ class LuigiAuth {
     if (!LuigiConfig.initialized) {
       console.warn(
         'Luigi Core is not initialized yet. Consider moving your code to the luigiAfterInit lifecycle hook. ' +
-          'Documentation: https://docs.luigi-project.io/docs/lifecycle-hooks'
+        'Documentation: https://docs.luigi-project.io/docs/lifecycle-hooks'
       );
     }
     return {
