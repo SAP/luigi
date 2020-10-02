@@ -224,9 +224,10 @@ class SplitViewSvcClass {
           SplitViewSvc.sendMessageToClients('close.ok');
         });
     } else {
-      if (comp.get().mfSplitView && comp.get().mfSplitView.settings && comp.get().mfSplitView.settings.onlyExpandBoxVisible) {
-        comp.get().mfSplitView.displayed = false;
-        comp.set({ mfSplitView: comp.get().mfSplitView });
+      let splitViewState = comp.get().mfSplitView;
+      if (splitViewState && splitViewState.settings && splitViewState.settings.onlyExpandBoxVisible) {
+        splitViewState.displayed = false;
+        comp.set({ mfSplitView: splitViewState });
       }
     }
   }
