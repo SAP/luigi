@@ -5,7 +5,7 @@ class LuigiNavigationManager {
    * Use these functions for navigation-related features.
    * @name LuigiNavigation
    */
-  constructor() {}
+  constructor() { }
 
   /**
    * Refreshes top navigation badge counters by rendering the navigation again.
@@ -76,6 +76,20 @@ class LuigiNavigationManager {
   openAsSplitView(path, splitViewSettings = {}) {
     Luigi.splitView.openAsSplitView(path, splitViewSettings);
     return Luigi.splitView.splitViewHandle;
+  }
+
+  /**
+   * Opens a view in a drawer. You can specify the modal's title and size. If you do not specify the title, it is the node label. If there is no node label, the title remains empty.  The default size of the modal is `l`, which means 80%. You can also use `m` (60%) and `s` (40%) to set the modal size. Optionally, use it in combination with any of the navigation functions.
+   * @memberof LuigiNavigation
+   * @param {string} path navigation path
+   * @param {Object} [modalSettings] opens a view in a modal. Use these settings to configure the modal's title and size
+   * @param {string} modalSettings.title modal title. By default, it is the node label. If there is no label, it is left empty
+   * @param {('l'|'m'|'s')} [modalSettings.size="l"] size of the modal
+   * @example
+   * Luigi.navigation().openAsModal('projects/pr1/users', {title:'Users', size:'m'});
+   */
+  openAsDrawer(path, drawerSettings) {
+    return new linkManager().openAsDrawer(path, drawerSettings);
   }
 
   /**

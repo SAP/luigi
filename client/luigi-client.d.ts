@@ -363,7 +363,7 @@ export declare interface LinkManager {
   ) => SplitViewInstance;
 
   /**
-   * Opens a view in a drawer view. You can specify if the drawer has a header, backdrop and size. If you don't specify the header, header will be visible. If you don't specify the backdrop property, the drawer will just overlay.  The default size of the drawer is `m`, which means 50%. You can also use `s` (25%) and `l` (75%) to set the drawer size. Optionally, use it in combination with any of the navigation functions.
+   * Opens a view in a drawer. You can specify if the drawer has a header, if a backdrop is active in the background and configure the size of the drawer. By default the header is shown. The backdrop is not visible and has to be activated. The size of the drawer is by default set to `m` which means 50% of the micro frontend size. You can also use `l`(75%) or `s`(25%). Optionally, use it in combination with any of the navigation functions.
    * @memberof linkManager
    * @param {string} path navigation path
    * @param {Object} [drawerSettings] opens a view in a drawer. Use these settings to configure if the drawer has a header, backdrop and size.

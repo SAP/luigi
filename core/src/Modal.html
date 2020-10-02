@@ -93,16 +93,20 @@
       isModal = false;
       if (settings.header === undefined) {
         settings.header = true;
+        settings.title = nodeObject.label;
+      } else if (settings.header && settings.header.title) {
+        settings.title = settings.header.title;
       }
       if (settings.backdrop === undefined) {
         settings.backdrop = false;
       }
       if (!settings.size) {
-        settings.size = 'm';
+        settings.size = 's';
       }
-    }
-    if (!settings.title) {
-      settings.title = nodeObject.label;
+    } else {
+      if (!settings.title) {
+        settings.title = nodeObject.label;
+      }
     }
     pathData = dataFromPath.pathData;
 
@@ -171,6 +175,8 @@
         styleSettings = `width:50%;`;
       } else if (settings.size === 's') {
         styleSettings = `width:25%;`;
+      } else if (settings.size === 'xs') {
+        styleSettings = `width:15.5%;`;
       }
     }
     elemDrawer[0].setAttribute('style', styleSettings);
@@ -234,9 +240,10 @@
     left: auto;
     right: 0;
   }
+  
   .iframeModalCtn {
     position: relative;
-    height: 70vh;
+    height: 100%;
     width: 100%;
     overflow: auto;
     -webkit-overflow-scrolling: touch;
@@ -247,6 +254,17 @@
     border: 0;
     position: absolute;
   }
+  /* Hide scrollbar for Chrome, Safari and Opera */
+.iframeModalCtn::-webkit-scrollbar {
+  -webkit-appearance: none;
+    display: none;
+}
+
+/* Hide scrollbar for IE, Edge and Firefox */
+.iframeModalCtn {
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;  /* Firefox */
+}
   .lui-modal-mf {
     position: relative;
   }
