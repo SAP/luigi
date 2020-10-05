@@ -298,6 +298,15 @@ Luigi.auth().isAuthorizationEnabled();
 
 Returns **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)** `true` if authorization is enabled. Otherwise returns `false`.
 
+### logout
+Logs out the user dynamically and runs the logout flow. Running this function is the same as clicking the logout button.
+
+##### Examples
+
+```javascript
+Luigi.auth().logout();
+```
+
 ### AuthorizationStore
 
 Authorization Storage helpers, to be used in your custom authorization provider.

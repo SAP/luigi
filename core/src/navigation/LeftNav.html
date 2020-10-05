@@ -15,7 +15,7 @@
     <div class="fd-side-nav__main-navigation">
       <div class="lui-fd-side-nav-wrapper">
         <ul class="{sideNavClass}">
-          {#each sortedChildrenEntries as [key, nodes]}
+          {#each sortedChildrenEntries as [key, nodes],index}
           {#if key === 'undefined' || key.startsWith(virtualGroupPrefix)}
           <!-- Single nodes -->
           {#each nodes as node} {#if !node.hideFromNav} {#if node.label}
@@ -69,6 +69,7 @@
                 title="{$getTranslation(key)}"
                 class="fd-nested-list__link {isExpanded(nodes, expandedCategories) ? 'is-expanded' : ''}"
                 tabindex="-1"
+                id="collapsible_listnode_{index}"
                 aria-haspopup="true"
                 aria-expanded="{isExpanded(nodes, expandedCategories)}"
                 on:click|preventDefault="{() => setExpandedState(nodes, !isExpanded(nodes, expandedCategories), this)}"
@@ -105,7 +106,10 @@
               aria-hidden="{!isExpanded(nodes, expandedCategories)}"
             >
               {#each nodes as node} {#if !node.hideFromNav} {#if node.label}
-              <li class="fd-nested-list__item">
+              <li
+                class="fd-nested-list__item"
+                aria-labelledby="collapsible_listnode_{index}"
+              >
                 <a
                   href="{getRouteLink(node)}"
                   class="fd-nested-list__link {node === selectedNode ? 'is-selected' : ''}"
@@ -170,6 +174,7 @@
             class="fd-nested-list__group-header lui-category"
             title="{$getTranslation(key)}"
             data-testid="{getTestIdForCat(nodes.metaInfo, key)}"
+            id="category_list_level1_{index}"
           >
             {#if hasCategoriesWithIcon && nodes.metaInfo.icon}
             {#if isOpenUIiconName(nodes.metaInfo.icon)}
@@ -192,6 +197,7 @@
           <li
             class="fd-nested-list__item"
             title="{$getTranslation(node.label)}"
+            aria-labelledby="category_list_level1_{index}"
           >
             <a
               href="{getRouteLink(node)}"
@@ -597,6 +603,11 @@
       display: flex;
       justify-content: space-between;
       flex-direction: column;
+      scrollbar-width: none;
+
+      &::-webkit-scrollbar {
+        width: 0;
+      }
     }
 
     .fd-side-nav {
