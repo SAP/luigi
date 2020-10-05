@@ -8,7 +8,6 @@
     {#if responsiveNavSetting==="simple" || responsiveNavSetting==="simpleMobileOnly" || responsiveNavSetting==="Fiori3"}
     <button
       class="fd-shellbar__button fd-button sap-icon--menu2 lui-burger"
-      aria-controls="0AcWE812"
       on:click="{burgerClickHandler}"
       tabindex="0"
     ></button>
@@ -101,7 +100,6 @@
       <button
         title="{getNodeLabel(node)}"
         class="fd-shellbar__button fd-button {node === selectedNode ? 'is-selected' : ''}"
-        aria-controls="0AcWE812"
         aria-expanded="false"
         aria-haspopup="true"
         on:click="{() => handleClick(node)}"
