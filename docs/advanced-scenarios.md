@@ -232,7 +232,7 @@ Luigi Client allows you to navigate through micro frontends by using an intent-b
   ```javascript
     #?Intent=Sales-edit?id=100
   ```
-  2. Navigation to a microfrontend through this intent is then made possible by using the linkManager navigate method from [Luigi Client API](luigi-client-api.md#navigate):
+  2. Navigation to a micro frontend through this intent is then made possible by using the [linkManager navigate method](luigi-client-api.md#navigate) from Luigi Client API:
   ```javascript
     LuigiClient.linkManager().navigate('#?Intent=Sales-edit?id=100');
   ```
