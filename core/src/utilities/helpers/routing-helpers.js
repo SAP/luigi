@@ -291,7 +291,7 @@ class RoutingHelpersClass {
         let semanticObject = elements[0];
         let actionAndParams = elements[1].split('?');
         // length 2 involves parameters, length 1 involves no parameters
-        if (actionAndParams.length == 2 || actionAndParams.length == 1) {
+        if (actionAndParams.length === 2 || actionAndParams.length === 1) {
           let action = actionAndParams[0];
           let params = actionAndParams[1];
           // parse parameters, if any
