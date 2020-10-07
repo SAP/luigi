@@ -237,7 +237,7 @@ Luigi Client allows you to navigate through micro frontends by using an intent-b
     LuigiClient.linkManager().navigate('#?Intent=Sales-edit?id=100');
   ```
 
-  3. This would then be navigating to the translated real path segment:
+  3. This method would then be navigating to the translated real path segment:
   ```javascript
     https://example.com/projects/sap/munich/database/sales/edit?~id=100;
   ```
