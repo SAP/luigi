@@ -242,7 +242,7 @@ Luigi Client allows you to navigate through micro frontends by using an intent-b
     https://example.com/projects/sap/munich/database/sales/edit?~id=100;
   ```
 
-  4. Alternatively, the intent link can also be accessed through the browser URL as well and accessed from outside:
+  4. Alternatively, the intent link can also be accessed through the browser URL and accessed from outside:
   ```javascript
     https://example.com/#?Intent=Sales-edit?id=100;
   ```
