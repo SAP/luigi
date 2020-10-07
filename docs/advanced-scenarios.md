@@ -208,7 +208,7 @@ Luigi allows you to implement and configure feature toggles. They can be used to
 ### Use Intent-Based Navigation in Luigi Client
 
 #### Overview 
-Luigi Client allows you to navigate through microfrontends by using an intent based navigation.
+Luigi Client allows you to navigate through micro frontends by using an intent-based navigation. This type of navigation decouples navigation triggers from the actual navigation targets. Rather than directly encoding the name of the target app into the URL fragment, app developers provide a navigation intent such as `display` or `edit` as shown in the examples below.
 
 #### Usage
 * To **enable** intent based navigation, you need to first identify the necessary target mappings. This can be defined by defining `intentMapping` to the LuigiConfig under `navigation` as in the example below:
