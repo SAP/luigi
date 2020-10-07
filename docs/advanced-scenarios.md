@@ -226,8 +226,8 @@ Luigi Client allows you to navigate through micro frontends by using an intent-b
     }
   ];
   ```
-  1. The intent link is built using the semanticObject, action and optional parameters in the following format:
-  `#?Intent=semanticObject-action?params`
+  1. The intent link is built using the `semanticObject`, `action` and optional parameters in the following format:
+  `#?Intent=semanticObject-action?params`. 
   An example of an intent link would be as follows:
   ```javascript
     #?Intent=Sales-edit?id=100
