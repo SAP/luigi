@@ -205,7 +205,7 @@ Luigi allows you to implement and configure feature toggles. They can be used to
     }
   ``` 
 
-### Use Intent Based Navigation in Luigi Client
+### Use Intent-Based Navigation in Luigi Client
 
 #### Overview 
 Luigi Client allows you to navigate through microfrontends by using an intent based navigation.
