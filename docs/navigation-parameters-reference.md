@@ -108,7 +108,7 @@ The navigation parameters allow you to configure **global** navigation settings 
  ### intentMapping
 - **type**: array
 - **description**: contains an array of abstract intent objects that can be used to navigate through micro frontends through the [LuigiClient linkManager.navigate()](luigi-client-api.md#navigate) method. The attributes contained in each intent object of the array are abstract notations which can be used to define the target mapping of your desired intent navigation in a semantic way. 
-Check our Advanced Scenarios page for an example scenario.
+Check our [Advanced Scenarios](advanced-scenarios.md) page for an example.
 - **attributes**:
   - **semanticObject**(string): may represent a business entity such as a sales order or a product. It enables navigating to such entities in an abstract implementation-independent way. It can only only contain alphanumerical characters.
   - **action**(string): defines an operation, i.e.: display, approve or edit. The operation is intended to be performed on a **semanticObject** such as a sales order or a certain product. It can only contain alphanumerical charcters but also the underscore character.
