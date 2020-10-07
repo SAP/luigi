@@ -286,7 +286,7 @@ class RoutingHelpersClass {
     const intentParams = intentLink.split('?Intent=')[1];
     if (intentParams) {
       const elements = intentParams.split('-');
-      if (elements.length == 2) {
+      if (elements.length === 2) {
         // avoids usage of '-' in semantic object and action
         let semanticObject = elements[0];
         let actionAndParams = elements[1].split('?');
