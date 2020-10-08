@@ -25,6 +25,19 @@ class LuigiAuth {
   }
 
   /**
+   * Login the user dynamically.
+   * This will run the same functionality as though the user clicked the login button.
+   * @memberof Authorization
+   * @example
+   * Luigi.auth().login();
+   */
+  login() {
+    if (this.isAuthorizationEnabled()) {
+      AuthLayerSvc.startAuthorization();
+    }
+  }
+
+  /**
    * Logout the user dynamically.
    * This will run the same functionality as though the user clicked the logout button.
    * @memberof Authorization
