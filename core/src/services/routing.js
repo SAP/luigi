@@ -130,7 +130,7 @@ class RoutingClass {
     // check for intent, if any
     if (window.location.hash && window.location.hash.includes('?Intent=')) {
       let hash = window.location.hash.replace('#/#', '').replace('#', '');
-      let intentPath = RoutingHelpers.getIntentPath(hash);
+      const intentPath = RoutingHelpers.getIntentPath(hash);
       return intentPath ? intentPath : '/';
     }
     const path =
@@ -145,7 +145,7 @@ class RoutingClass {
   getCurrentPath() {
     if (window.location.hash.includes('?Intent=')) {
       let hash = window.location.hash.replace('#/#', '').replace('#', '');
-      let intentPath = RoutingHelpers.getIntentPath(hash);
+      const intentPath = RoutingHelpers.getIntentPath(hash);
       if (intentPath) {
         // if intent faulty or illegal then skip
         return intentPath;
