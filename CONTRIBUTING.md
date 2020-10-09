@@ -11,7 +11,7 @@ You are welcome to contribute with your pull requests. These steps explain the c
 
 1. Fork the repository and create your branch from `master`.
 2. If you've added code that should be tested, add tests.
-3. If you've changed APIs, update the documentation. You can find more info on how to do that [here](docs/content-guidelines.md/#API-documentation).
+3. If you've changed APIs, update the documentation. You can find more details on how to do that [here](docs/content-guidelines.md/#API-documentation).
 4. If you are adding documentation, follow the [content guidelines](docs/content-guidelines.md).
 5. Make sure the tests pass.
 6. Sign the Developer Certificate of Origin (DCO).
