@@ -19,7 +19,9 @@ class WebComponentSvcClass {
       }
       const luigiObj = Object.assign({
         publishEvent : (ev) => {
-          wc_container.eventBus.onPublishEvent(ev, nodeId, wc_id);
+          if(wc_container.eventBus) {
+            wc_container.eventBus.onPublishEvent(ev, nodeId, wc_id);
+          }
         }
       }, window.Luigi);
       if(wc.__postProcess) {
@@ -66,8 +68,9 @@ class WebComponentSvcClass {
   /** Adds a web component defined by viewUrl to the wc_container and sets the node context.
    * If the web component is not defined yet, it gets imported.
    */
-  renderWebComponent(viewUrl, wc_container, context, nodeId) {
-    const wc_id = this.generateWCId(viewUrl);
+  renderWebComponent(viewUrl, wc_container, context, nodeId, node) {
+    const wc_id = (node.webcomponent && node.webcomponent.tagName) ?
+          node.webcomponent.tagName : this.generateWCId(viewUrl);
     const wcItemPlaceholder = document.createElement('div');
     wc_container.appendChild(wcItemPlaceholder);
 
@@ -79,6 +82,17 @@ class WebComponentSvcClass {
         window.luigiWCFn(viewUrl, wc_id, wcItemCnt, () => {
           this.attachWC(wc_id, wcItemPlaceholder, wc_container, context, viewUrl, nodeId);
         });
+      } else if (node.webcomponent && node.webcomponent.selfRegistered) {
+        let scriptTag = document.createElement('script');
+        scriptTag.setAttribute('src', viewUrl);
+        if(node.webcomponent.type === 'module') {
+          scriptTag.setAttribute('type', 'module');
+        }
+        scriptTag.setAttribute('defer', true);
+        scriptTag.addEventListener('load', ()=>{
+          this.attachWC(wc_id, wcItemPlaceholder, wc_container, context, viewUrl, nodeId);
+        });
+        document.body.appendChild(scriptTag);
       } else {
         this.registerWCFromUrl(viewUrl, wc_id).then(() => {
           this.attachWC(wc_id, wcItemPlaceholder, wc_container, context, viewUrl, nodeId);
@@ -108,7 +122,9 @@ class WebComponentSvcClass {
       renderer.viewUrl = navNode.viewUrl;
       renderer.createCompoundItemContainer = (layoutConfig) => {
         var cnt = document.createElement('div');
-        cnt.setAttribute('slot', layoutConfig.slot);
+        if(layoutConfig && layoutConfig.slot) {
+          cnt.setAttribute('slot', layoutConfig.slot);
+        }
         return cnt;
       };
     } else if(navNode.compound.renderer) {
@@ -146,7 +162,7 @@ class WebComponentSvcClass {
         renderer.attachCompoundItem(compoundCnt, compoundItemCnt);
 
         const nodeId = wc.id || ('gen_' + index);
-        WebComponentService.renderWebComponent(wc.viewUrl, compoundItemCnt, ctx, nodeId, true);
+        WebComponentService.renderWebComponent(wc.viewUrl, compoundItemCnt, ctx, nodeId, wc);
         if(wc.eventListeners) {
           wc.eventListeners.forEach(el => {
             const evID = el.source + '.' + el.name;

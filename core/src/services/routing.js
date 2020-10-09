@@ -504,7 +504,9 @@ class RoutingClass {
     WebComponentService.renderWebComponent(
       componentData.viewUrl,
       wc_container,
-      componentData.context
+      componentData.context,
+      undefined,
+      navNode
     );
   }
 
