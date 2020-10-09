@@ -121,7 +121,7 @@ For an example, you can look at the already existing functions, in this case [fr
    */
 ```
 
-2. Once you added your documentation in the relevant `.js` file, save your changes and run this command on your branch:
+2. Once you added your documentation in the relevant `.js` file, save your changes and run this command from the Luigi root folder:
 
     ```shell
     lerna run docu
