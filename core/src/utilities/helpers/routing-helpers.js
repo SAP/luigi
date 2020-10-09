@@ -172,8 +172,11 @@ class RoutingHelpersClass {
 
   getNodeHref(node, pathParams) {
     if (LuigiConfig.getConfigBooleanValue('navigation.addNavHrefs')) {
-      const link = RoutingHelpers.getRouteLink(node, pathParams,
-        LuigiConfig.getConfigValue('routing.useHashRouting')?"#":'');
+      const link = RoutingHelpers.getRouteLink(
+        node,
+        pathParams,
+        LuigiConfig.getConfigValue('routing.useHashRouting') ? '#' : ''
+      );
       return link.url || link;
     }
     return 'javascript:void(0)';
@@ -288,8 +291,8 @@ class RoutingHelpersClass {
       const elements = intentParams.split('-');
       if (elements.length === 2) {
         // avoids usage of '-' in semantic object and action
-        let semanticObject = elements[0];
-        let actionAndParams = elements[1].split('?');
+        const semanticObject = elements[0];
+        const actionAndParams = elements[1].split('?');
         // length 2 involves parameters, length 1 involves no parameters
         if (actionAndParams.length === 2 || actionAndParams.length === 1) {
           let action = actionAndParams[0];
@@ -312,9 +315,9 @@ class RoutingHelpersClass {
             action.match(alphanumericOrUnderscore)
           ) {
             return {
-              semanticObject: semanticObject,
-              action: action,
-              params: params
+              semanticObject,
+              action,
+              params
             };
           } else {
             console.warn(
