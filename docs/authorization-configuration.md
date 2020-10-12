@@ -27,7 +27,7 @@ To configure authorization in Luigi:
 ## General authorization options
 
 * [General authorization configuration in Luigi](#how-do-i-configure-authorization-in-luigi)
-* [Show content to logged out users / allow anonymous access](#how-do-i-show-some-navigation-nodes-only-to-non-authenticated-users) 
+* [Show content to logged out users/allow anonymous access](#how-do-i-show-some-navigation-nodes-only-to-non-authenticated-users)
 
 ### How do I configure authorization in Luigi?
 
@@ -69,6 +69,9 @@ anonymousAccess: `exclusive` // show nodes only when logged out
 // OR
 anonymousAccess: true // always show nodes
 ```
+
+<!-- add-attribute:class:success -->
+>**TIP:** To show navigation nodes only to certain authenticated (logged in) users instead, use the [nodeAcessibilityResolver](navigation-parameters-reference.md#nodeaccessibilityresolver) parameter.
 
 ## OpenID Connect configuration
 
