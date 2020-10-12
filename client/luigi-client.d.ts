@@ -367,11 +367,12 @@ export declare interface LinkManager {
    * @memberof linkManager
    * @param {string} path navigation path
    * @param {Object} [drawerSettings] opens a view in a drawer. Use these settings to configure if the drawer has a header, backdrop and size.
-   * @param {boolean} modalSettings.header By default, the header is visible. Title is node label and 'x' is displayed to close the drawer view.
-   * @param {boolean} modalSettings.backdrop By default, it is set to `false`. If it is set to `true` the rest of the screen has a backdrop.
-   * @param {('l'|'m'|'s')} [modalSettings.size="m"] size of the drawer
+   * @param {any} drawerSettings.header By default, the header is visible. Title is node label and 'x' is displayed to close the drawer view. The header could also be an object with a title attribute to specify an own title for the drawer component.
+   * @param {boolean} drawerSettings.backdrop By default, it is set to `false`. If it is set to `true` the rest of the screen has a backdrop.
+   * @param {('l'|'m'|'s'|'xs')} [drawerSettings.size="s"] size of the drawer
    * @example
-   * LuigiClient.linkManager().openAsDrawer('projects/pr1/drawer', {header:true, backdrop:true, size:'m'});
+   * LuigiClient.linkManager().openAsDrawer('projects/pr1/drawer', {header:true, backdrop:true, size:'s'});
+   * LuigiClient.linkManager().openAsDrawer('projects/pr1/drawer', {header:{title:'My drawer component'}, backdrop:true, size:'xs'});
    */
   openAsDrawer: (nodepath: string, drawerSettings?: DrawerSettings) => void;
 
