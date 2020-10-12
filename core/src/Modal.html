@@ -1,8 +1,8 @@
 <svelte:window on:keydown="{handleKeydown}" />
-<div
-  class="{(isModal || (isDrawer && settings.backdrop))?'fd-dialog fd-dialog--active':'fd-dialog drawer-dialog--active'}"
+<div class="{(isModal || (isDrawer && settings.backdrop))?'fd-dialog fd-dialog--active':'drawer-dialog'}"
   style="z-index:999">
-  <div class="fd-dialog__content {isDrawer? 'drawer drawer-dialog__content':'lui-modal-mf modal-dialog__content'}"
+  <div
+    class="fd-dialog__content {isDrawer? (settings.backdrop?'drawer drawer-dialog__content drawer__backdrop':'drawer drawer-dialog__content'):'lui-modal-mf modal-dialog__content'}"
     data-testid="modal-mf">
     {#if isModal || (isDrawer && settings.header)}
     <div class="fd-dialog__header fd-bar fd-bar--header">
@@ -17,7 +17,7 @@
         <div class="fd-bar__element">
           <button
             class="fd-button fd-button--transparent fd-button--compact fd-dialog__close sap-icon--decline"
-            on:click="{() => dispatch('close')}"
+            on:click="{() => dispatch('close',{ activeDrawer: false })}"
             aria-label="close"
           ></button>
         </div>
@@ -97,8 +97,9 @@
       } else if (settings.header && settings.header.title) {
         settings.title = settings.header.title;
       }
-      if (settings.backdrop === undefined) {
+      if (settings.backdrop === undefined || !settings.backdrop) {
         settings.backdrop = false;
+        dispatch('drawerState', { activeDrawer: true });
       }
       if (!settings.size) {
         settings.size = 's';
@@ -168,9 +169,10 @@
   async function setDrawerSize(elem) {
     let styleSettings = '';
     const elemDrawer = document.getElementsByClassName('drawer');
+    const drawerDialog = document.getElementsByClassName('drawer-dialog');
     if (settings.size) {
       if (settings.size === 'l') {
-        settings = `width:75%;`;
+        styleSettings = `width:75%;`;
       } else if (settings.size === 'm') {
         styleSettings = `width:50%;`;
       } else if (settings.size === 's') {
@@ -179,7 +181,12 @@
         styleSettings = `width:15.5%;`;
       }
     }
-    elemDrawer[0].setAttribute('style', styleSettings);
+    if (settings.backdrop) {
+      elemDrawer[0].setAttribute('style', styleSettings);
+    } else {
+      drawerDialog[0].setAttribute('style', styleSettings);
+      elemDrawer[0].setAttribute('style', 'width:100%');
+    }
   }
 
   // [svelte-upgrade warning]
@@ -231,18 +238,31 @@
 </script>
 
 <style type="text/scss">
+  @import 'styles/variables';
+  .drawer-dialog{
+    position: absolute;
+    top: $topNavHeight;
+    bottom: 0;
+    width: 25%;
+    z-index: 1;
+    right: 0;
+  }
+
   .drawer {
-    top: 44px;
-    height: 100vh;
+    bottom:0;
     width: 25vw;
-    position: fixed;
     overflow-y: auto;
     left: auto;
     right: 0;
+    height: 100%;
   }
-  
+
+  .drawer__backdrop{
+    top:$topNavHeight;
+  }
+
   .iframeModalCtn {
-    position: relative;
+    position: absolute;
     height: 100%;
     width: 100%;
     overflow: auto;
@@ -254,17 +274,6 @@
     border: 0;
     position: absolute;
   }
-  /* Hide scrollbar for Chrome, Safari and Opera */
-.iframeModalCtn::-webkit-scrollbar {
-  -webkit-appearance: none;
-    display: none;
-}
-
-/* Hide scrollbar for IE, Edge and Firefox */
-.iframeModalCtn {
-  -ms-overflow-style: none;  /* IE and Edge */
-  scrollbar-width: none;  /* Firefox */
-}
   .lui-modal-mf {
     position: relative;
   }
@@ -308,6 +317,8 @@
   .fd-dialog {
     &__body {
       overflow-wrap: break-word;
+      padding-top: 0;
+      padding-bottom: 0;
     }
   }
 </style>

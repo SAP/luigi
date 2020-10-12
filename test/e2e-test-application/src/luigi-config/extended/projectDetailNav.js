@@ -67,9 +67,6 @@ export const projectDetailNavStructure = projectId => [
       label: 'Number of developers',
       count: () => Math.floor(Math.random() * 100)
     },
-    drawer: {
-      position: 'right',
-    }
   },
   {
     pathSegment: 'clientPermissionsTets',

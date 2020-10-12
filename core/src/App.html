@@ -15,6 +15,7 @@
     settings="{mfModal.settings}"
     nodepath="{mfModal.nodepath}"
     on:close="{closeModal}"
+    on:drawerState="{setDrawerState}"
     on:iframeCreated="{modalIframeCreated}"
   ></Modal>
   {/if}
@@ -159,6 +160,7 @@
   let drawerIframeData;
   let modal;
   let drawer;
+  let activeDrawer = false;
   let splitViewIframe;
   let splitViewIframeData;
   let splitView;
@@ -426,7 +428,7 @@
         Iframe.removeInactiveIframes(node);
       }
       closeModal();
-      //closeDrawer();
+
       closeSplitView();
 
       Routing.handleRouteChange(path, getComponentWrapper(), node, config);
@@ -892,11 +894,20 @@
     modalIframeData = event.detail.modalIframeData;
   };
 
-  const closeModal = () => {
-    if (modalIframe) {
-      getUnsavedChangesModalPromise(modalIframe.contentWindow).then(() => {
-        resetMicrofrontendModalData();
-      });
+  const setDrawerState = (event) => {
+    activeDrawer = event.detail.activeDrawer;
+  }
+
+  const closeModal = (event) => {
+    if (event) {
+      activeDrawer = event.detail.activeDrawer;
+    }
+    if (!activeDrawer) {
+      if (modalIframe) {
+        getUnsavedChangesModalPromise(modalIframe.contentWindow).then(() => {
+          resetMicrofrontendModalData();
+        });
+      }
     }
   };
 
@@ -1136,6 +1147,9 @@
 
       if ('luigi.navigation.back' === e.data.msg) {
         if (IframeHelpers.isMessageSource(e, modalIframe)) {
+          if (activeDrawer) {
+            activeDrawer = !activeDrawer;
+          }
           closeModal();
           await sendContextToClient(config, {
             goBackContext:
