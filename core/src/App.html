@@ -94,7 +94,6 @@
   import Alerts from './Alerts.html';
   import ConfirmationModal from './ConfirmationModal.html';
   import Modal from './Modal.html';
-  import Drawer from './Drawer.html';
   import Backdrop from './Backdrop.html';
   import SplitView from './SplitView.html';
   import LeftNav from './navigation/LeftNav.html';
@@ -148,10 +147,7 @@
   /// MFs
   let modalIframe;
   let modalIframeData;
-  let drawerIframe;
-  let drawerIframeData;
   let modal;
-  let drawer;
   let activeDrawer = false;
   let splitViewIframe;
   let splitViewIframeData;
@@ -905,39 +901,6 @@
 
   setContext('openViewInModal', openViewInModal);
 
-  //// MICRO-FRONTEND DRAWER
-
-  // let mfDrawer = {};
-  // const openViewInDrawer = async (nodepath, drawerSettings) => {
-  //   const { nodeObject } = await Navigation.extractDataFromPath(nodepath);
-  //   if (await Navigation.shouldPreventNavigation(nodeObject)) {
-  //     return;
-  //   }
-  //   mfDrawer.displayed = true;
-  //   mfDrawer.nodepath = nodepath;
-  //   mfDrawer.drawerSettings = drawerSettings;
-  // };
-
-  // const drawerIframeCreated = event => {
-  //   drawerIframe = event.detail.drawerIframe;
-  //   drawerIframeData = event.detail.drawerIframeData;
-  // };
-
-  // const resetMicrofrontendDrawerData = () => {
-  //   mfDrawer.displayed = false;
-  //   mfDrawer.nodepath = undefined;
-  //   mfDrawer.modalSettings = {};
-  // };
-
-  // const closeDrawer = () => {
-  //   if (drawerIframe) {
-  //     getUnsavedChangesModalPromise(drawerIframe.contentWindow).then(() => {
-  //       resetMicrofrontendDrawerData();
-  //     });
-  //   }
-  // };
-
-
   function init(node) {
     const isolateAllViews = LuigiConfig.getConfigValue(
       'navigation.defaults.isolateView'
@@ -1043,10 +1006,7 @@
           modal,
           splitViewIframe,
           splitViewIframeData,
-          splitView,
-          drawerIframe,
-          drawerIframeData,
-          drawer
+          splitView
         };
         const specialIframeMessageSource = IframeHelpers.specialIframeTypes.filter(
           typ =>
