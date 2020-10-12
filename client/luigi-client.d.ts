@@ -46,8 +46,8 @@ export declare interface SplitViewInstance {
 }
 
 export declare interface DrawerSettings {
-  header?: boolean;
-  size?: 'l' | 'm' | 's';
+  header?: any;
+  size?: 'l' | 'm' | 's' | 'xs';
   backdrop?: boolean
 }
 
