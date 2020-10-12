@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 // import logo from './logo.svg';
 import './scss/index.scss';
 
