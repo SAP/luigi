@@ -133,7 +133,6 @@ class WebComponentSvcClass {
 
     renderer = renderer || new DefaultCompoundRenderer();
 
-    //const compoundCnt = renderer.createCompoundContainer();
     this.createCompoundContainerAsync(renderer).then(compoundCnt => {
       const ebListeners = {};
       compoundCnt.eventBus = {
@@ -143,7 +142,7 @@ class WebComponentSvcClass {
           listeners.push(...(ebListeners['*.' + event.type] || []));
 
           listeners.forEach(listenerInfo => {
-            const target = compoundCnt.querySelector('[nodeId=' + listenerInfo.wcElementId + ']');
+            const target = listenerInfo.wcElement || compoundCnt.querySelector('[nodeId=' + listenerInfo.wcElementId + ']');
             if(target) {
               target.dispatchEvent(new CustomEvent(listenerInfo.action,
                 {
@@ -181,6 +180,24 @@ class WebComponentSvcClass {
         }
       });
       wc_container.appendChild(compoundCnt);
+
+      // listener for nesting wc
+      if(navNode.compound.eventListeners) {
+        navNode.compound.eventListeners.forEach(el => {
+          const evID = el.source + '.' + el.name;
+          const listenerList = ebListeners[evID];
+          const listenerInfo = {
+            wcElement: compoundCnt,
+            action: el.action,
+            converter: el.dataConverter
+          };
+          if(listenerList) {
+            listenerList.push(listenerInfo);
+          } else {
+            ebListeners[evID] = [listenerInfo];
+          }
+        });
+      }
     });
   }
 }
