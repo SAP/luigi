@@ -18,7 +18,7 @@ meta -->
 This document outlines the features provided by the Luigi Client API. It covers these topics:
 
 -   [Lifecycle](#lifecycle) - functions that define the lifecycle of different Luigi elements
--   [Callbacks](#lifecycle˜initlistenercallback) - callback functions for initListener and customMessageListener
+-   [Callbacks](#lifecycleinitlistenercallback) - callback functions for initListener and customMessageListener
 -   [Link manager](#linkmanager) - you can use the linkManager instead of an internal router
 -   [Split view](#splitview) - allows you to open a micro frontend in the lower part of the content area in a "split screen" view
 -   [uxManager](#uxmanager) - functions related to user interface
@@ -204,7 +204,7 @@ Returns **[Array](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Gl
 
 **Meta**
 
--   **since**: NEXTRELEASE
+-   **since**: 1.4.0
 
 #### getNodeParams
 
@@ -385,7 +385,8 @@ LuigiClient.linkManager().openAsModal('projects/pr1/users', {title:'Users', size
 
 #### openAsSplitView
 
--   **See: [splitView](#splitview) for further documentation about the returned instance**
+-   **See: [splitView](#splitview) for further documentation about the returned instance
+    **
 
 Opens a view in a split view. You can specify the split view's title and size. If you don't specify the title, it is the node label. If there is no node label, the title remains empty. The default size of the split view is `40`, which means 40% height of the split view.
 
@@ -848,3 +849,9 @@ Returns **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/
 **Meta**
 
 -   **since**: 0.6.0
+
+#### getCurrentTheme
+
+Gets the current theme.
+
+Returns **any** current themeObj

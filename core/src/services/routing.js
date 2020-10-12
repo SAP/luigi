@@ -7,7 +7,7 @@ import {
   IframeHelpers
 } from '../utilities/helpers';
 import { LuigiConfig, LuigiI18N } from '../core-api';
-import { Iframe } from './iframe';
+import { Iframe } from './';
 import { NAVIGATION_DEFAULTS } from './../utilities/luigi-config-defaults';
 import { NodeDataManagementStorage } from './node-data-management';
 import { WebComponentService } from './web-components';
