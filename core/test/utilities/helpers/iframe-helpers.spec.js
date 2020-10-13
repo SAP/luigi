@@ -67,7 +67,7 @@ describe('Iframe-helpers', () => {
     });
 
     it('createIframe with interceptor', () => {
-      const icf = () => {};
+      const icf = () => { };
       const interceptor = sinon.spy(icf);
       sinon
         .stub(LuigiConfig, 'getConfigValue')
@@ -265,7 +265,6 @@ describe('Iframe-helpers', () => {
         // second container is not active
         return container.luigi.id !== 'main_2';
       });
-
       const iframes = IframeHelpers.getMicrofrontendsInDom();
       assert.equal(iframes.length, 4, 'total iframes');
       assert.equal(iframes.filter(i => i.active).length, 3, 'active iframes');

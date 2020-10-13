@@ -1022,8 +1022,7 @@
               pathParams: specialIframeProps[typ.dataKey].pathParams,
               nodeParams: specialIframeProps[typ.dataKey].nodeParams,
               modal: typ.iframeKey.startsWith('modal'),
-              splitView: typ.iframeKey.startsWith('splitView'),
-              drawer: typ.iframeKey.startsWith('drawer')
+              splitView: typ.iframeKey.startsWith('splitView')
             };
             await sendContextToClient(conf, {});
           });
