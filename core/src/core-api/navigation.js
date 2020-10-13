@@ -176,6 +176,7 @@ class LuigiNavigationManager {
    * @param {string} name leftNav, topNav, tabNav, routeChanged, userInfo
    * @param {function} callbackFn gets called on event received
    * @returns {string} listener id
+   * @since NEXTRELEASE
    * @example
    * Luigi.navigation().addEventListener('leftNav', (data) => {})
    */
