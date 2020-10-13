@@ -5,8 +5,7 @@ export const CSS_BREAKPOINTS = {
 export const MICROFRONTEND_TYPES = [
   { type: 'main', selector: '.iframeContainer iframe' },
   { type: 'split-view', selector: '.iframeSplitViewCnt iframe' },
-  { type: 'modal', selector: '.iframeModalCtn iframe' },
-  { type: 'drawer', selector: '.iframeDrawerCtn iframe' }
+  { type: 'modal', selector: '.iframeModalCtn iframe' }
 ];
 
 export const CUSTOM_LUIGI_CONTAINER = {
