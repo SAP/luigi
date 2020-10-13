@@ -123,7 +123,7 @@ For an example, you can look at the already existing functions, in this case [fr
    */
 ```
 
-2. Save and commit your changes. If you have run `npm install` in the root folder (as indicated in the [contributing guidelines](../contributing.md#pull-requests)), documentation should be automatically generated and added to the `luigi-core-api.md` or `luigi-client-api.md` file. If not, you can run `lerna run docu` manually.
+2. Save and commit your changes. If you have run `npm install` in the root folder (as indicated in the [contributing guidelines](/contributing.md#pull-requests)), documentation should be automatically generated and added to the `luigi-core-api.md` or `luigi-client-api.md` file. If not, you can run `lerna run docu` manually.
 
 
 ## Audience and language

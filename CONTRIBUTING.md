@@ -21,7 +21,7 @@ You are welcome to contribute with your pull requests. These steps explain the c
 
 > **NOTE:** You should always add tests if you are updating the Luigi Core API.
 
-If you've added code that should be tested, add tests to **Luigi Fiddle**.
+If you've added code that should be tested, add tests to the [Luigi Fiddle](https://github.com/SAP/luigi/tree/master/test/e2e-test-application/e2e/tests/0-fiddle).
 
 To let tests run locally, run `website/fiddle: npm start` and `test/e2e-test-application: npm run e2e:open` and click on the *fiddle-navigation.spec.js*.
 
