@@ -1,4 +1,4 @@
-<svelte:window on:resize="{onResize}"/>
+<svelte:window on:resize="{onResize}" />
 <div id="app" class="{hideNav? 'no-nav' : ''} {hideSideNav? 'no-side-nav':''}">
   {#if confirmationModal.displayed}
   <ConfirmationModal
@@ -16,6 +16,7 @@
     nodepath="{mfModal.nodepath}"
     on:close="{closeModal}"
     on:iframeCreated="{modalIframeCreated}"
+    on:wcCreated="{modalWCCreated}"
   ></Modal>
   {/if}
   <Backdrop>
@@ -146,6 +147,8 @@
   /// MFs
   let modalIframe;
   let modalIframeData;
+  let modalWC;
+  let modalWCData;
   let modal;
   let splitViewIframe;
   let splitViewIframeData;
@@ -294,7 +297,7 @@
             }
             resolve();
           },
-          () => {}
+          () => { }
         );
       } else {
         resolve();
@@ -874,11 +877,18 @@
     modalIframeData = event.detail.modalIframeData;
   };
 
+  const modalWCCreated = event => {
+    modalWC = event.detail.modalWC;
+    modalWCData = event.detail.modalWCData;
+  };
+
   const closeModal = () => {
     if (modalIframe) {
       getUnsavedChangesModalPromise(modalIframe.contentWindow).then(() => {
         resetMicrofrontendModalData();
       });
+    } else if (modalWC) {
+      resetMicrofrontendModalData();
     }
   };
 
@@ -1270,7 +1280,7 @@
         thirdPartyCookieCheckIframe.src =
           thirdPartyCookiesCheck.thirdPartyCookieScriptLocation;
         document.body.appendChild(thirdPartyCookieCheckIframe);
-        thirdPartyCookieCheckIframe.onload = function() {
+        thirdPartyCookieCheckIframe.onload = function () {
           setTimeout(() => {
             if (thirdPartyCookiesStatus() === 'disabled') {
               tpcErrorHandling(thirdPartyCookiesCheck);
@@ -1282,7 +1292,7 @@
     }
   });
 
-  afterUpdate(() => {});
+  afterUpdate(() => { });
 </script>
 
 <style type="text/scss">
