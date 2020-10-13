@@ -309,6 +309,10 @@ This will run the same functionality as though the user clicked the login button
 Luigi.auth().login();
 ```
 
+**Meta**
+
+-   **since**: NEXTRELEASE
+
 #### logout
 
 Logout the user dynamically.
@@ -319,6 +323,10 @@ This will run the same functionality as though the user clicked the logout butto
 ```javascript
 Luigi.auth().logout();
 ```
+
+**Meta**
+
+-   **since**: NEXTRELEASE
 
 ### AuthorizationStore
 
@@ -671,6 +679,10 @@ Property values for token replacement in the localization key will be taken from
 -   `key` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** key to be translated
 -   `interpolations` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** objects with properties that will be used for token replacements in the localization key (optional, default `undefined`)
 -   `locale` **locale** optional locale to get the translation for; default is the current locale (optional, default `undefined`)
+
+**Meta**
+
+-   **since**: 0.5.3
 
 ## Luigi.customMessages()
 
