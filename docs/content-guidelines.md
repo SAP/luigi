@@ -108,6 +108,8 @@ The [Core](luigi-core-api.md) and [Client API](luigi-client-api.md) documents ar
   * `@example` - example of how the function is used
   * `@since` - earliest Luigi version offering this feature
 
+> **NOTE:** It is mandatory to write `@since NEXTRELEASE` if you are adding a new API function. The `NEXTRELEASE` text will automatically update to the version number once the new version is released.
+
 For an example, you can look at the already existing functions, in this case [fromVirtualTreeRoot](luigi-client-api.md#fromvirtualtreeroot):
 
 ```javascript
@@ -121,15 +123,8 @@ For an example, you can look at the already existing functions, in this case [fr
    */
 ```
 
-2. Once you added your documentation in the relevant `.js` file, save your changes and run this command from the Luigi root folder:
+2. Save and commit your changes. If you have run `npm install` in the root folder (as indicated in the [contributing guidelines](../contributing.md#pull-requests)), documentation should be automatically generated and added to the `luigi-core-api.md` or `luigi-client-api.md` file. If not, you can run `lerna run docu` manually.
 
-    ```shell
-    lerna run docu
-    ```
-
-    This should automatically generate the documentation and add it to the `luigi-core-api.md` or `luigi-client-api.md` file. Do not make changes to this file, as they will be deleted.
-
-3. Save and commit your changes.
 
 ## Audience and language
 

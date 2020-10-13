@@ -10,12 +10,20 @@ We use GitHub to track issues and feature requests, as well as accept pull reque
 You are welcome to contribute with your pull requests. These steps explain the contribution process:
 
 1. Fork the repository and create your branch from `master`.
-2. If you've added code that should be tested, add tests.
-    > **NOTE:** You should always add tests if you are updating the Luigi Core API.
-3. If you've changed APIs, update the documentation. You can find more details on how to do that [here](docs/content-guidelines.md/#API-documentation).
-4. If you are adding documentation, follow the [content guidelines](docs/content-guidelines.md).
-5. Make sure the tests pass.
-6. Sign the Developer Certificate of Origin (DCO).
+2. Run `npm install` in the root folder. This will install pre-commit and pre-push hooks that will be activated on your pull request.
+3. [Add tests](#testing) for your code, especially if you are updating the Luigi Core API.
+4. If you've changed APIs, update the documentation. You can find more details on how to do that [here](docs/content-guidelines.md/#API-documentation).
+5. If you are adding documentation, follow the [content guidelines](docs/content-guidelines.md).
+6. Make sure the tests pass.
+7. Sign the Developer Certificate of Origin (DCO).
+
+## Testing
+
+> **NOTE:** You should always add tests if you are updating the Luigi Core API.
+
+If you've added code that should be tested, add tests to **Luigi Fiddle**.
+
+To let tests run locally, run `website/fiddle: npm start` and `test/e2e-test-application: npm run e2e:open` and click on the *fiddle-navigation.spec.js*.
 
 ## Developer Certificate of Origin (DCO)
 Due to legal reasons, contributors will be asked to accept a DCO before they submit the first pull request to this projects, this happens in an automated fashion during the submission process. SAP uses [the standard DCO text of the Linux Foundation](https://developercertificate.org/).
