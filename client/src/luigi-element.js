@@ -8,6 +8,10 @@ export class LuigiElement extends HTMLElement {
         this.__initialized = false;
     }
 
+    /**
+     * Invoked by luigi core if present, internal, don't override. 
+     * @private
+     */
     __postProcess(ctx, luigi, module_location_path) {
         this.luigi = luigi;
         this.context = ctx; 
@@ -58,18 +62,37 @@ export class LuigiElement extends HTMLElement {
         }
     }
 
+    /**
+     * Override to execute logic after initialization of the web component, i.e. 
+     * after internal rendering and all context data set.
+     * 
+     * @param {*} ctx The context object passed by luigi core
+     */
     afterInit(ctx) {
         return;
     }
 
+    /**
+     * Override to return the html template string defining the web component view.
+     * 
+     * @param {*} ctx The context object passed by luigi core
+     */
     render(ctx) {
         return '';
     }
 
+    /**
+     * Override to execute logic after an attribute of this web component has changed.
+     */
     update() {
         return;
     }
 
+    /**
+     * Override to execute logic when a new context object is set.
+     * 
+     * @param {*} ctx The new context object passed by luigi core
+     */
     onContextUpdate(ctx) {
         return;
     }
