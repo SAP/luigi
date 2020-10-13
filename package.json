@@ -5,7 +5,7 @@
   },
   "devDependencies": {
     "@starptech/prettyhtml": "^0.8.16",
-    "cypress": "^5.0.0",
+    "cypress": "^5.3.0",
     "diff": ">=3.5.0",
     "husky": "^4.3.0",
     "lerna": "^3.22.1",
