@@ -121,6 +121,7 @@ class LuigiI18NManager {
    * @param {string} key key to be translated
    * @param {Object} interpolations objects with properties that will be used for token replacements in the localization key
    * @param {locale} locale optional locale to get the translation for; default is the current locale
+   * @since 0.5.3
    * @memberof LuigiI18N
    */
   getTranslation(key, interpolations = undefined, locale = undefined) {
