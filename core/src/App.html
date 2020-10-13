@@ -1,4 +1,4 @@
-<svelte:window on:resize="{onResize}"/>
+<svelte:window on:resize="{onResize}" />
 <div id="app" class="{hideNav? 'no-nav' : ''} {hideSideNav? 'no-side-nav':''}">
   {#if confirmationModal.displayed}
   <ConfirmationModal
@@ -139,8 +139,7 @@
   let showLoadingIndicator = false;
 
   let mfSplitView = {
-    displayed: false,
-    onlyExpandBoxVisible: false
+    displayed: false
   };
   let splitViewValues;
 

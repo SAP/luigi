@@ -119,9 +119,6 @@
     if (isDataPrepared) {
       if (!collapsed) {
         SplitViewSvc.createAndSetView(getComponentWrapper());
-        splitViewSettings.onlyExpandBoxVisible = false;
-      } else {
-        splitViewSettings.onlyExpandBoxVisible = true;
       }
     } else {
       await SplitViewSvc.prepareSplitViewData(getComponentWrapper(), nodepath);
