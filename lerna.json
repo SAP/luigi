@@ -12,7 +12,7 @@
     "test/e2e-test-application",
     "test/e2e-test-application/externalMf",
     "website/fiddle",
-    "example/luigi-core-material-ui"
+    "core/examples/luigi-core-material-ui"
   ],
   "version": "0.0.0"
 }
