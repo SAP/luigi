@@ -105,8 +105,8 @@ The [Core](luigi-core-api.md) and [Client API](luigi-client-api.md) documents ar
   * `@memberof` - defines the larger category the function is part of, e.g. `LuigiNavigation` or `Authorization`
   * `@param` - parameters the function takes, e.g. `{boolean}`, `{string}`, `{Object}` followed by any specific name if applicable
   * `@returns` - type and description of what the function returns, e.g. `{boolean}`, `{string}`, `{Object}` followed by any specific name if applicable
-  * `@example` - example of how the function is used
-  * `@since` - earliest Luigi version offering this feature
+  * `@example` - one or more examples of how the function is used
+  * `@since NEXTRELEASE` - earliest Luigi version offering this feature
 
 > **NOTE:** It is mandatory to write `@since NEXTRELEASE` if you are adding a new API function. The `NEXTRELEASE` text will automatically update to the version number once the new version is released.
 
@@ -123,7 +123,7 @@ For an example, you can look at the already existing functions, in this case [fr
    */
 ```
 
-2. Save and commit your changes. If you have run `npm install` in the root folder (as indicated in the [contributing guidelines](https://github.com/SAP/luigi/blob/master/CONTRIBUTING.md)), documentation should be automatically generated and added to the `luigi-core-api.md` or `luigi-client-api.md` file. If not, you can run `lerna run docu` manually.
+2. Save and commit your changes. If you have run `npm install` in the root folder (as indicated in the [contributing guidelines](https://github.com/SAP/luigi/blob/master/CONTRIBUTING.md)), documentation should be automatically generated and added to the `luigi-core-api.md` or `luigi-client-api.md` file on push to your branch origin. If not, you can run `lerna run docu` manually.
 
 
 ## Audience and language
