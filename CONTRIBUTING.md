@@ -19,14 +19,11 @@ You are welcome to contribute with your pull requests. These steps explain the c
 
 ## Testing
 
-> **NOTE:** You should always add tests if you are updating the Luigi Core API.
+> **NOTE:** You should always add [*unit tests*](../core/test/) if you are adding code to our repository.
 
-If you've added code that should be tested, add tests to the [Luigi Fiddle](https://github.com/SAP/luigi/tree/master/test/e2e-test-application/e2e/tests/0-fiddle).
+If you've added code that is exposed as an API or configuration, additionally add e2e tests to [fiddle-navigation.spec.js](https://github.com/SAP/luigi/blob/master/test/e2e-test-application/e2e/tests/0-fiddle/fiddle-navigation.spec.js).
 
-To let tests run locally, run `website/fiddle: npm start` and `test/e2e-test-application: npm run e2e:open` and click on the *fiddle-navigation.spec.js*.
-
-## Developer Certificate of Origin (DCO)
-Due to legal reasons, contributors will be asked to accept a DCO before they submit the first pull request to this projects, this happens in an automated fashion during the submission process. SAP uses [the standard DCO text of the Linux Foundation](https://developercertificate.org/).
+To let tests run locally, run `cd website/fiddle && npm start` and `cd test/e2e-test-application && npm run e2e:open` and click on the *fiddle-navigation.spec.js*.
 
 ## Issues
 We use GitHub issues to track bugs. Please ensure your description is
