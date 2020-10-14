@@ -71,6 +71,14 @@ class WebComponentSvcClass {
     });
   }
 
+  /**
+   * Handles the import of self registered web component bundles, i.e. the web component
+   * is added to the customElements registry by the bundle code rather than by luigi.
+   *
+   * @param {*} node the corresponding navigation node
+   * @param {*} viewUrl the source of the wc bundle
+   * @param {*} onload callback function executed after script attached and loaded
+   */
   includeSelfRegisteredWCFromUrl(node, viewUrl, onload) {
     if(this.checkWCUrl(viewUrl))  {
       /** Append reg function to luigi object if not present */
@@ -95,6 +103,13 @@ class WebComponentSvcClass {
     }
   }
 
+
+  /**
+   * Checks if a url is allowed to be included, based on 'navigation.validWebcomponentUrls' in luigi config.
+   * Returns true, if allowed.
+   *
+   * @param {*} url the url string to check
+   */
   checkWCUrl(url) {
     if (url.indexOf('://') > 0 || url.trim().indexOf('//') === 0 ) {
       const ur = new URL(url);
@@ -150,6 +165,12 @@ class WebComponentSvcClass {
     }
   }
 
+  /**
+   * Creates a compound container according to the given renderer.
+   * Returns a promise that gets resolved with the created container DOM element.
+   *
+   * @param {DefaultCompoundRenderer} renderer
+   */
   createCompoundContainerAsync(renderer) {
     return new Promise(resolve => {
       if(renderer.viewUrl) {
@@ -163,6 +184,14 @@ class WebComponentSvcClass {
     });
   }
 
+  /**
+   * Responsible for rendering web component compounds based on a renderer or a nesting
+   * micro frontend.
+   *
+   * @param {*} navNode the navigation node defining the compound
+   * @param {*} wc_container the web component container dom element
+   * @param {*} context the luigi node context
+   */
   renderWebComponentCompound(navNode, wc_container, context) {
     let renderer;
 

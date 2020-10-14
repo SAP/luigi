@@ -1,3 +1,6 @@
+/**
+ * Default compound renderer.
+ */
 export class DefaultCompoundRenderer {
   constructor(rendererObj) {
     if(rendererObj) {
@@ -19,6 +22,9 @@ export class DefaultCompoundRenderer {
   }
 }
 
+/**
+ * Compound Renderer for custom rendering as defined in luigi config.
+ */
 export class CustomCompoundRenderer extends DefaultCompoundRenderer {
   constructor(rendererObj) {
     super(rendererObj);
@@ -59,6 +65,9 @@ export class CustomCompoundRenderer extends DefaultCompoundRenderer {
   }
 }
 
+/**
+ * Compound Renderer for a css grid compound view.
+ */
 export class GridCompoundRenderer extends DefaultCompoundRenderer {
   createCompoundContainer() {
     const containerClass = '__lui_compound_' + new Date().getTime();
@@ -113,14 +122,20 @@ export class GridCompoundRenderer extends DefaultCompoundRenderer {
   }
 }
 
-export const resolveRenderer = (renderer) => {
-  const rendererDef = renderer.use;
+/**
+ * Returns the compound renderer class for a given config.
+ * If no specific one is found, {DefaultCompoundRenderer} is returned.
+ *
+ * @param {*} rendererConfig the renderer config object defined in luigi config
+ */
+export const resolveRenderer = (rendererConfig) => {
+  const rendererDef = rendererConfig.use;
   if(rendererDef === 'grid') {
-    return new GridCompoundRenderer(renderer);
+    return new GridCompoundRenderer(rendererConfig);
   } else if(rendererDef.createCompoundContainer
     || rendererDef.createCompoundItemContainer
     || rendererDef.attachCompoundItem) {
-    return new CustomCompoundRenderer(renderer);
+    return new CustomCompoundRenderer(rendererConfig);
   }
-  return new DefaultCompoundRenderer(renderer);
+  return new DefaultCompoundRenderer(rendererConfig);
 };
