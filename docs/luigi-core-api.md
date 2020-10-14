@@ -298,8 +298,10 @@ Luigi.auth().isAuthorizationEnabled();
 
 Returns **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)** `true` if authorization is enabled. Otherwise returns `false`.
 
-### logout
-Logs out the user dynamically and runs the logout flow. Running this function is the same as clicking the logout button.
+#### logout
+
+Logout the user dynamically.
+This will run the same functionality as though the user clicked the logout button.
 
 ##### Examples
 
@@ -843,6 +845,18 @@ Returns **any** a string, which is displayed in the tab.
 **Meta**
 
 -   **since**: 1.4.0
+
+#### collapseLeftSideNav
+
+Set the collapsed state of the left side navigation
+
+##### Parameters
+
+-   `state` **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)** 
+
+**Meta**
+
+-   **since**: 1.5.0
 
 ## Luigi.globalSearch()
 

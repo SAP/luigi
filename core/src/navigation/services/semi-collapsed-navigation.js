@@ -7,11 +7,21 @@ class SemiCollapsibleNavigationClass {
     this.responsiveNavSetting = LuigiConfig.getConfigValue(
       'settings.responsiveNavigation'
     );
-    this.semiCollapsible =
-      this.responsiveNavSetting === 'semiCollapsible' ||
-      this.responsiveNavSetting === 'Fiori3'
-        ? true
-        : false;
+    let currentCollapsedState = localStorage.getItem(
+      NavigationHelpers.COL_NAV_KEY
+    );
+
+    if (currentCollapsedState != false) {
+      this.isSemiCollapsed = this.getCollapsed();
+      localStorage.setItem(NavigationHelpers.COL_NAV_KEY, true);
+    } else {
+      this.semiCollapsible =
+        this.responsiveNavSetting === 'semiCollapsible' ||
+        this.responsiveNavSetting === 'Fiori3'
+          ? true
+          : false;
+    }
+
     // set this.isSemiCollapsed to true for mobile
     let isSemiCollapsedUndefined = this.isSemiCollapsed === undefined;
     if (
