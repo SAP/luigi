@@ -300,12 +300,12 @@ class RoutingHelpersClass {
           // parse parameters, if any
           if (params) {
             params = params.split('&');
-            let paramObject = [];
+            let paramObjects = [];
             params.forEach(item => {
               const param = item.split('=');
-              param.length === 2 && paramObject.push({ [param[0]]: param[1] });
+              param.length === 2 && paramObjects.push({ [param[0]]: param[1] });
             });
-            params = paramObject;
+            params = paramObjects;
           }
           const alphanumeric = /^[0-9a-zA-Z]+$/;
           const alphanumericOrUnderscore = /^[0-9a-zA-Z_]+$/;
