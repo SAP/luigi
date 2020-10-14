@@ -1,4 +1,5 @@
 import {DefaultCompoundRenderer, resolveRenderer} from '../utilities/helpers/web-component-helpers';
+import { LuigiConfig } from '../core-api';
 
 /** Methods for dealing with web components based micro frontend handling */
 class WebComponentSvcClass {
@@ -52,17 +53,72 @@ class WebComponentSvcClass {
    * returns a promise that gets resolved after successfull import */
   registerWCFromUrl(viewUrl, wc_id) {
     return new Promise((resolve, reject) => {
-      this.dynamicImport(viewUrl).then(module => {
-        try {
-          if(!window.customElements.get(wc_id)) {
-            window.customElements.define(wc_id, module.default);
+      if(this.checkWCUrl(viewUrl)) {
+        this.dynamicImport(viewUrl).then(module => {
+          try {
+            if(!window.customElements.get(wc_id)) {
+              window.customElements.define(wc_id, module.default);
+            }
+            resolve();
+          } catch(e) {
+            reject(e);
           }
-          resolve();
-        } catch(e) {
-          reject(e);
-        }
-      }).catch(err => reject(err));
+        }).catch(err => reject(err));
+      } else {
+        console.warn(`View URL '${viewUrl}' not allowed to be included`);
+        reject(`View URL '${viewUrl}' not allowed`);
+      }
     });
+  }
+
+  includeSelfRegisteredWCFromUrl(node, viewUrl, onload) {
+    if(this.checkWCUrl(viewUrl))  {
+      /** Append reg function to luigi object if not present */
+      if(!window.Luigi._registerWebcomponent) {
+        window.Luigi._registerWebcomponent = (srcString, el) => {
+          window.customElements.define(this.generateWCId(srcString), el);
+        }
+      }
+
+      let scriptTag = document.createElement('script');
+      scriptTag.setAttribute('src', viewUrl);
+      if(node.webcomponent.type === 'module') {
+        scriptTag.setAttribute('type', 'module');
+      }
+      scriptTag.setAttribute('defer', true);
+      scriptTag.addEventListener('load', ()=>{
+        onload();
+      });
+      document.body.appendChild(scriptTag);
+    } else {
+      console.warn(`View URL '${viewUrl}' not allowed to be included`);
+    }
+  }
+
+  checkWCUrl(url) {
+    if (url.indexOf('://') > 0 || url.trim().indexOf('//') === 0 ) {
+      const ur = new URL(url);
+      if(ur.host === window.location.host) {
+        return true; // same host is okay
+      }
+
+      const valids = LuigiConfig.getConfigValue('navigation.validWebcomponentUrls');
+      if(valids && valids.length > 0) {
+        for(let el of valids) {
+          try {
+            if(new RegExp(el).test(url)) {
+              return true;
+            }
+
+          } catch (e) {
+            console.error(e);
+          }
+        };
+      }
+      return false;
+    }
+    // relative URL is okay
+    return true;
   }
 
   /** Adds a web component defined by viewUrl to the wc_container and sets the node context.
@@ -83,16 +139,9 @@ class WebComponentSvcClass {
           this.attachWC(wc_id, wcItemPlaceholder, wc_container, context, viewUrl, nodeId);
         });
       } else if (node.webcomponent && node.webcomponent.selfRegistered) {
-        let scriptTag = document.createElement('script');
-        scriptTag.setAttribute('src', viewUrl);
-        if(node.webcomponent.type === 'module') {
-          scriptTag.setAttribute('type', 'module');
-        }
-        scriptTag.setAttribute('defer', true);
-        scriptTag.addEventListener('load', ()=>{
+        this.includeSelfRegisteredWCFromUrl(node, viewUrl, ()=>{
           this.attachWC(wc_id, wcItemPlaceholder, wc_container, context, viewUrl, nodeId);
         });
-        document.body.appendChild(scriptTag);
       } else {
         this.registerWCFromUrl(viewUrl, wc_id).then(() => {
           this.attachWC(wc_id, wcItemPlaceholder, wc_container, context, viewUrl, nodeId);
