@@ -308,11 +308,11 @@ class RoutingHelpersClass {
             params = paramObjects;
           }
           const alphanumeric = /^[0-9a-zA-Z]+$/;
-          const alphanumericOrUnderscore = /^[0-9a-zA-Z_]+$/;
+          const alphanumericOrUnderscores = /^[0-9a-zA-Z_]+$/;
           // TODO: check for character size limit
           if (
             semanticObject.match(alphanumeric) &&
-            action.match(alphanumericOrUnderscore)
+            action.match(alphanumericOrUnderscores)
           ) {
             return {
               semanticObject,
