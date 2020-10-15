@@ -10,7 +10,7 @@ class LuigiAuth {
    * @private
    * @memberof Authorization
    */
-  constructor() { }
+  constructor() {}
 
   /**
    * Detects if authorization is enabled via configuration.
@@ -28,6 +28,7 @@ class LuigiAuth {
    * Login the user dynamically.
    * This will run the same functionality as though the user clicked the login button.
    * @memberof Authorization
+   * @since NEXTRELEASE
    * @example
    * Luigi.auth().login();
    */
@@ -41,6 +42,7 @@ class LuigiAuth {
    * Logout the user dynamically.
    * This will run the same functionality as though the user clicked the logout button.
    * @memberof Authorization
+   * @since NEXTRELEASE
    * @example
    * Luigi.auth().logout();
    */
@@ -95,7 +97,7 @@ class LuigiAuth {
     if (!LuigiConfig.initialized) {
       console.warn(
         'Luigi Core is not initialized yet. Consider moving your code to the luigiAfterInit lifecycle hook. ' +
-        'Documentation: https://docs.luigi-project.io/docs/lifecycle-hooks'
+          'Documentation: https://docs.luigi-project.io/docs/lifecycle-hooks'
       );
     }
     return {
