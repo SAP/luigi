@@ -133,7 +133,7 @@ describe('Routing', function() {
 
     it('returns intentObject from provided intent link with params', () => {
       const actual = RoutingHelpers.getIntentObject(
-        '#?Intent=Sales-settings?param1=luigi&param2=mario'
+        '#?intent=Sales-settings?param1=luigi&param2=mario'
       );
       const expected = {
         semanticObject: 'Sales',
@@ -144,7 +144,7 @@ describe('Routing', function() {
     });
 
     it('returns intentObject from provided intent link without params', () => {
-      const actual = RoutingHelpers.getIntentObject('#?Intent=Sales-settings');
+      const actual = RoutingHelpers.getIntentObject('#?intent=Sales-settings');
       const expected = {
         semanticObject: 'Sales',
         action: 'settings',
@@ -155,7 +155,7 @@ describe('Routing', function() {
 
     it('falsy intentObject from provided intent link with illegal characters', () => {
       const actual = RoutingHelpers.getIntentObject(
-        '#?Intent=Sales-$et$$tings'
+        '#?intent=Sales-$et$$tings'
       );
       assert.isNotOk(actual);
     });
@@ -178,27 +178,35 @@ describe('Routing', function() {
 
     it('checks intent path parsing with illegal characters', () => {
       const actual = RoutingHelpers.getIntentPath(
-        '#?Intent=Sa#les-sett!@ings?param1=luigi&param2=mario'
+        '#?intent=Sa#les-sett!@ings?param1=luigi&param2=mario'
       );
       assert.isNotOk(actual);
     });
 
     it('checks intent path parsing with illegal hyphen character', () => {
       const actual = RoutingHelpers.getIntentPath(
-        '#?Intent=Sa-les-sett-ings?param1=luigi&param2=mario'
+        '#?intent=Sa-les-sett-ings?param1=luigi&param2=mario'
       );
       assert.isNotOk(actual);
     });
 
     it('returns path from provided intent link without params', () => {
-      const actual = RoutingHelpers.getIntentPath('#?Intent=Sales-settings');
+      const actual = RoutingHelpers.getIntentPath('#?intent=Sales-settings');
       const expected = '/projects/pr2/settings';
       assert.equal(actual, expected);
     });
 
     it('returns path from provided intent link with params', () => {
       const actual = RoutingHelpers.getIntentPath(
-        '#?Intent=Sales-settings?param1=hello&param2=world'
+        '#?intent=Sales-settings?param1=hello&param2=world'
+      );
+      const expected = '/projects/pr2/settings?~param1=hello&~param2=world';
+      assert.equal(actual, expected);
+    });
+
+    it('returns path from intent link with params and case insensitive start pattern ', () => {
+      const actual = RoutingHelpers.getIntentPath(
+        '#?iNteNT=Sales-settings?param1=hello&param2=world'
       );
       const expected = '/projects/pr2/settings?~param1=hello&~param2=world';
       assert.equal(actual, expected);
@@ -234,14 +242,20 @@ describe('Routing', function() {
 
     it('returns path from provided intent link with params', () => {
       const actual = Routing.getHashPath(
-        '#?Intent=Sales-settings?param1=luigi&param2=mario'
+        '#?intent=Sales-settings?param1=luigi&param2=mario'
       );
       const expected = '/projects/pr2/settings?~param1=luigi&~param2=mario';
       assert.equal(actual, expected);
     });
 
     it('returns path from provided intent link without params', () => {
-      const actual = Routing.getHashPath('#?Intent=Sales-settings');
+      const actual = Routing.getHashPath('#?intent=Sales-settings');
+      const expected = '/projects/pr2/settings';
+      assert.equal(actual, expected);
+    });
+
+    it('returns path from provided intent link with case insensitive starting pattern', () => {
+      const actual = Routing.getHashPath('#?iNteNT=Sales-settings');
       const expected = '/projects/pr2/settings';
       assert.equal(actual, expected);
     });
@@ -714,7 +728,7 @@ describe('Routing', function() {
 
     it('from intent based link with params', () => {
       window.location.hash =
-        '#?Intent=Sales-settings?param1=luigi&param2=mario';
+        '#?intent=Sales-settings?param1=luigi&param2=mario';
       assert.equal(
         Routing.getModifiedPathname(),
         '/projects/pr2/settings?~param1=luigi&~param2=mario'
@@ -722,17 +736,22 @@ describe('Routing', function() {
     });
 
     it('from intent based link without params', () => {
-      window.location.hash = '#?Intent=Sales-settings';
+      window.location.hash = '#?intent=Sales-settings';
+      assert.equal(Routing.getModifiedPathname(), '/projects/pr2/settings');
+    });
+
+    it('from intent based link with case insensitive pattern', () => {
+      window.location.hash = '#?inTeNT=Sales-settings';
       assert.equal(Routing.getModifiedPathname(), '/projects/pr2/settings');
     });
 
     it('from faulty intent based link', () => {
-      window.location.hash = '#?Intent=Sales-sett-ings';
+      window.location.hash = '#?intent=Sales-sett-ings';
       assert.equal(Routing.getModifiedPathname(), '/');
     });
 
     it('from intent based link with illegal characters', () => {
-      window.location.hash = '#?Intent=Sales-sett$ings';
+      window.location.hash = '#?intent=Sales-sett$ings';
       assert.equal(Routing.getModifiedPathname(), '/');
     });
   });

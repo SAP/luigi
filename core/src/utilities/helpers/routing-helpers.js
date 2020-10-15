@@ -283,10 +283,10 @@ class RoutingHelpersClass {
    *  };
    * ```
    * @param {string} link  the intent link represents the semantic intent defined by the user
-   *                        i.e.: #?Intent=semanticObject-action?param=value
+   *                        i.e.: #?intent=semanticObject-action?param=value
    */
   getIntentObject(intentLink) {
-    const intentParams = intentLink.split('?Intent=')[1];
+    const intentParams = intentLink.split('?intent=')[1];
     if (intentParams) {
       const elements = intentParams.split('-');
       if (elements.length === 2) {
@@ -336,7 +336,7 @@ class RoutingHelpersClass {
    *
    * Example:
    *
-   * For intentLink = `#?Intent=Sales-order?foo=bar`
+   * For intentLink = `#?intent=Sales-order?foo=bar`
    * and Luigi configuration:
    * ```
    * intentMapping: [{
@@ -349,12 +349,13 @@ class RoutingHelpersClass {
    * resulting in pathSegment `/projects/pr2/order` being returned. The parameter is also added in
    * this case resulting in: `/projects/pr2/order?~foo=bar`
    * @param {string} intentLink  the intentLink represents the semantic intent defined by the user
-   *                        i.e.: #?Intent=semanticObject-action?param=value
+   *                        i.e.: #?intent=semanticObject-action?param=value
    */
   getIntentPath(intentLink) {
     const mappings = LuigiConfig.getConfigValue('navigation.intentMapping');
     if (mappings && mappings.length > 0) {
-      const intentObject = this.getIntentObject(intentLink);
+      const caseInsensitiveLink = intentLink.replace(/\?intent=/i, '?intent=');
+      const intentObject = this.getIntentObject(caseInsensitiveLink);
       if (intentObject) {
         let realPath = mappings.find(
           item =>
