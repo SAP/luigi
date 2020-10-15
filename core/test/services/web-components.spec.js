@@ -7,7 +7,7 @@ import { WebComponentService } from '../../src/services/web-components';
 import { LuigiConfig } from '../../src/core-api';
 import { DefaultCompoundRenderer } from '../../src/utilities/helpers/web-component-helpers';
 
-describe.only('WebComponentService', function() {
+describe('WebComponentService', function() {
   describe('generate web component id', function() {
     const someRandomString = 'dsfgljhbakjdfngb,mdcn vkjrzwero78to4     wfoasb    f,asndbf';
 
