@@ -76,6 +76,22 @@ describe('Luigi client linkManager', () => {
         .click();
       cy.expectPathToBe('/projects/pr2');
 
+      //open webcomponent in splitview
+      cy.wrap($iframeBody)
+        .contains('Open webcomponent in splitView')
+        .click();
+      cy.get('.iframeSplitViewCnt>div>').then(container => {
+        const comp = container
+          .children()
+          .prevObject[0].shadowRoot.querySelector('p>');
+        console.log('comp', comp);
+        // const text = container.children[0].shadowRoot.querySelector('p');
+        expect(comp).to.contain('Hello WebComponent!');
+      });
+
+      cy.goToOverviewPage();
+      cy.goToLinkManagerMethods($iframeBody);
+
       //navigate with preserve view functionality
       cy.wrap($iframeBody)
         .contains('with preserved view: project to global settings and back')

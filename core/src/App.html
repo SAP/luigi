@@ -1,4 +1,4 @@
-<svelte:window on:resize="{onResize}" />
+<svelte:window on:resize="{onResize}"/>
 <div id="app" class="{hideNav? 'no-nav' : ''} {hideSideNav? 'no-side-nav':''}">
   {#if confirmationModal.displayed}
   <ConfirmationModal
@@ -34,6 +34,7 @@
       nodepath="{mfSplitView.nodepath}"
       on:iframeCreated="{splitViewIframeCreated}"
       on:statusChanged="{splitViewStatusChanged}"
+      on:wcCreated="{splitViewWCCreated}"
     ></SplitView>
     {/if}
   </Backdrop>
@@ -152,6 +153,8 @@
   let modal;
   let splitViewIframe;
   let splitViewIframeData;
+  let splitViewWC;
+  let splitViewWCData;
   let splitView;
   let context;
   let nodeParams;
@@ -297,7 +300,7 @@
             }
             resolve();
           },
-          () => { }
+          () => {}
         );
       } else {
         resolve();
@@ -327,6 +330,7 @@
           mfSplitView,
           splitViewValues,
           splitViewIframe,
+          splitViewWC,
           showLoadingIndicator,
           tabNav,
           isNavigateBack,
@@ -369,6 +373,8 @@
               splitViewValues = obj.splitViewValues;
             } else if (prop === 'splitViewIframe') {
               splitViewIframe = obj.splitViewIframe;
+            } else if (prop == 'splitViewWC') {
+              splitViewWC = obj.splitViewWC;
             } else if (prop === 'showLoadingIndicator') {
               showLoadingIndicator = obj.showLoadingIndicator;
             } else if (prop === 'tabNav') {
@@ -675,6 +681,12 @@
     $: if (event.detail.collapsed !== undefined) {
       mfSplitView.collapsed = event.detail.collapsed;
     }
+  };
+
+  const splitViewWCCreated = event => {
+    splitViewWC = event.detail.splitViewWC;
+    splitViewWCData = event.detail.splitViewWCData;
+    $: mfSplitView.collapsed = event.detail.collapsed;
   };
 
   /// RESIZING
@@ -1280,7 +1292,7 @@
         thirdPartyCookieCheckIframe.src =
           thirdPartyCookiesCheck.thirdPartyCookieScriptLocation;
         document.body.appendChild(thirdPartyCookieCheckIframe);
-        thirdPartyCookieCheckIframe.onload = function () {
+        thirdPartyCookieCheckIframe.onload = function() {
           setTimeout(() => {
             if (thirdPartyCookiesStatus() === 'disabled') {
               tpcErrorHandling(thirdPartyCookiesCheck);
@@ -1292,7 +1304,7 @@
     }
   });
 
-  afterUpdate(() => { });
+  afterUpdate(() => {});
 </script>
 
 <style type="text/scss">

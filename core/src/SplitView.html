@@ -63,6 +63,9 @@
   let messageHandler;
   let splitViewIframe;
   let splitViewIframeData;
+  let splitViewWC;
+  let splitViewWCData;
+  let wcCreated;
   export let nodepath;
   export let collapsed;
   export let splitViewSettings = {};
@@ -85,7 +88,9 @@
           nodeParams,
           currentNode,
           splitViewIframe,
-          splitViewIframeData
+          splitViewIframeData,
+          splitViewWC,
+          splitViewWCData
         };
       },
       set: obj => {
@@ -109,6 +114,10 @@
               splitViewIframe = obj.splitViewIframe;
             } else if (prop === 'splitViewIframeData') {
               splitViewIframeData = obj.splitViewIframeData;
+            } else if (prop === 'splitViewWC') {
+              splitViewWC = obj.splitViewWC;
+            } else if (prop === 'splitViewWCData') {
+              splitViewWC = obj.splitViewWC;
             }
           });
         }
