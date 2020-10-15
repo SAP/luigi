@@ -83,10 +83,9 @@ describe('Luigi client linkManager', () => {
       cy.get('.iframeSplitViewCnt>div>').then(container => {
         const comp = container
           .children()
-          .prevObject[0].shadowRoot.querySelector('p>');
-        console.log('comp', comp);
-        // const text = container.children[0].shadowRoot.querySelector('p');
-        expect(comp).to.contain('Hello WebComponent!');
+          .prevObject[0].shadowRoot.querySelector('p').innerText;
+        console.log('comp', comp.innerText);
+        expect(comp).to.equal('Hello WebComponent!');
       });
 
       cy.goToOverviewPage();
