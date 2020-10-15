@@ -10,8 +10,8 @@ class SemiCollapsibleNavigationClass {
     let currentCollapsedState = localStorage.getItem(
       NavigationHelpers.COL_NAV_KEY
     );
-
-    if (currentCollapsedState != false) {
+    //checking if here was a previous state in localStorage before the reload
+    if ((currentCollapsedState = true)) {
       this.isSemiCollapsed = this.getCollapsed();
       localStorage.setItem(NavigationHelpers.COL_NAV_KEY, true);
     } else {
