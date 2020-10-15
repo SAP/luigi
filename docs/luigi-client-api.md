@@ -364,7 +364,7 @@ Navigates to the given path in the application hosted by Luigi. It contains eith
 LuigiClient.linkManager().navigate('/overview')
 LuigiClient.linkManager().navigate('users/groups/stakeholders')
 LuigiClient.linkManager().navigate('/settings', null, true) // preserve view
-LuigiClient.linkManager().navigate('#Sales-order?id=13') // intent navigation
+LuigiClient.linkManager().navigate('#?Intent=Sales-order?id=13') // intent navigation
 ```
 
 #### openAsModal
