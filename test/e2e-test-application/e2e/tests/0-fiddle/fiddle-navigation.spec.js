@@ -96,12 +96,12 @@ describe('Fiddle', () => {
           },
           customSelectedOptionRenderer: option => {
             if (option.customRendererCategory === 'production') {
-              return `<label style='color: rgb(136, 255, 0); font-weight:700'> 
-                    ${option.label} 
+              return `<label style='color: rgb(136, 255, 0); font-weight:700'>
+                    ${option.label}
                     </label>`;
             } else if (option.customRendererCategory === 'stage') {
-              return `<label style='color: rgb(0, 136, 255); font-weight:700'> 
-                        ${option.label} 
+              return `<label style='color: rgb(0, 136, 255); font-weight:700'>
+                        ${option.label}
                         </label>`;
             }
           }
@@ -334,6 +334,31 @@ describe('Fiddle', () => {
 
         // Verify default value
         logoutLink().contains('Sign Out');
+      });
+      it('Trigger Login and Logout with Core API', () => {
+        newConfig.navigation.profile = undefined;
+        newConfig.auth.disableAutoLogin = true;
+        visitWithAuthConfig('/', newConfig);
+
+        cy.get('[data-testid="luigi-topnav-profile"] button').click();
+        loginLink().should('exist');
+
+        cy.window().then(win => {
+          cy.log('Trigger auth().login()');
+          win.Luigi.auth().login();
+        });
+
+        cy.login('tets@email.com', 'tets', true);
+
+        cy.get('[data-testid="luigi-topnav-profile"] button').click();
+        logoutLink().should('exist');
+
+        cy.window().then(win => {
+          cy.log('Trigger auth().logout()');
+          win.Luigi.auth().logout();
+        });
+
+        cy.contains('Login again');
       });
     });
   });
