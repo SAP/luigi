@@ -407,4 +407,45 @@ describe('Fiddle', () => {
       });
     });
   });
+
+  describe('Collpasible Mode of Left Side Navigation', () => {
+    let newConfig;
+
+    beforeEach(() => {
+      newConfig = cloneDeep(fiddleConfig);
+      newConfig.settings.responsiveNavigation = 'semiCollapsible';
+      cy.window().then(win => {
+        win.Luigi.configChanged('settings');
+      });
+    });
+    it('should check if the btn hide/show left side nav visible', () => {
+      cy.get('[data-testid="semiCollapsibleButton"]').should('be.visible');
+    });
+
+    it('should collapse the left sidde nav on btn click', () => {
+      cy.get('[data-testid="semiCollapsibleButton"]').click();
+      cy.get('[data-testid="semiCollapsibleLeftNav"]').should(
+        'have.class',
+        'fd-side-nav--condensed'
+      );
+
+      cy.reload().wait(1000);
+
+      cy.get('[data-testid="semiCollapsibleLeftNav"]').should(
+        'have.class',
+        'fd-side-nav--condensed'
+      );
+    });
+
+    it('should execute Core API function collapseLeftSideNav() and open the nav', () => {
+      cy.window().then(win => {
+        win.Luigi.ux().collapseLeftSideNav(false);
+      });
+      cy.reload().wait(1000);
+      cy.get('[data-testid="semiCollapsibleLeftNav"]').should(
+        'not.have.class',
+        'fd-side-nav--condensed'
+      );
+    });
+  });
 });
