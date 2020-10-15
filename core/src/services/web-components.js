@@ -1,4 +1,4 @@
-import {DefaultCompoundRenderer, resolveRenderer} from '../utilities/helpers/web-component-helpers';
+import {DefaultCompoundRenderer, resolveRenderer, registerEventListeners} from '../utilities/helpers/web-component-helpers';
 import { LuigiConfig } from '../core-api';
 
 /** Methods for dealing with web components based micro frontend handling */
@@ -11,7 +11,9 @@ class WebComponentSvcClass {
     return __luigi_dyn_import(viewUrl);
   }
 
-  /** Creates a web component with tagname wc_id and adds it to wcItemContainer, if attached to wc_container*/
+  /** Creates a web component with tagname wc_id and adds it to wcItemContainer,
+   * if attached to wc_container
+   */
   attachWC(wc_id, wcItemPlaceholder, wc_container, ctx, viewUrl, nodeId) {
     if(wc_container && wc_container.contains(wcItemPlaceholder)) {
       const wc = document.createElement(wc_id);
@@ -139,7 +141,7 @@ class WebComponentSvcClass {
   /** Adds a web component defined by viewUrl to the wc_container and sets the node context.
    * If the web component is not defined yet, it gets imported.
    */
-  renderWebComponent(viewUrl, wc_container, context, nodeId, node) {
+  renderWebComponent(viewUrl, wc_container, context, node, nodeId) {
     const wc_id = (node.webcomponent && node.webcomponent.tagName) ?
           node.webcomponent.tagName : this.generateWCId(viewUrl);
     const wcItemPlaceholder = document.createElement('div');
@@ -150,7 +152,7 @@ class WebComponentSvcClass {
     } else {
       /** Custom import function, if defined */
       if(window.luigiWCFn) {
-        window.luigiWCFn(viewUrl, wc_id, wcItemCnt, () => {
+        window.luigiWCFn(viewUrl, wc_id, wcItemPlaceholder, () => {
           this.attachWC(wc_id, wcItemPlaceholder, wc_container, context, viewUrl, nodeId);
         });
       } else if (node.webcomponent && node.webcomponent.selfRegistered) {
@@ -211,71 +213,44 @@ class WebComponentSvcClass {
 
     renderer = renderer || new DefaultCompoundRenderer();
 
-    this.createCompoundContainerAsync(renderer).then(compoundCnt => {
-      const ebListeners = {};
-      compoundCnt.eventBus = {
-        listeners: ebListeners,
-        onPublishEvent: (event, srcNodeId, wcId) => {
-          const listeners = ebListeners[srcNodeId + '.' + event.type] || [];
-          listeners.push(...(ebListeners['*.' + event.type] || []));
+    return new Promise((resolve) => {
+      this.createCompoundContainerAsync(renderer).then(compoundCnt => {
+        const ebListeners = {};
+        compoundCnt.eventBus = {
+          listeners: ebListeners,
+          onPublishEvent: (event, srcNodeId, wcId) => {
+            const listeners = ebListeners[srcNodeId + '.' + event.type] || [];
+            listeners.push(...(ebListeners['*.' + event.type] || []));
 
-          listeners.forEach(listenerInfo => {
-            const target = listenerInfo.wcElement || compoundCnt.querySelector('[nodeId=' + listenerInfo.wcElementId + ']');
-            if(target) {
-              target.dispatchEvent(new CustomEvent(listenerInfo.action,
-                {
-                  detail: listenerInfo.converter ? listenerInfo.converter(event.detail) : event.detail
-                }));
-            } else {
-              console.debug("Could not find event target", listenerInfo);
-            }
-          });
-        }
-      };
-      navNode.compound.children.forEach((wc, index)=>{
-        const ctx = {...context, ...wc.context};
-        const compoundItemCnt = renderer.createCompoundItemContainer(wc.layoutConfig);
-        compoundItemCnt.eventBus = compoundCnt.eventBus;
-        renderer.attachCompoundItem(compoundCnt, compoundItemCnt);
-
-        const nodeId = wc.id || ('gen_' + index);
-        WebComponentService.renderWebComponent(wc.viewUrl, compoundItemCnt, ctx, nodeId, wc);
-        if(wc.eventListeners) {
-          wc.eventListeners.forEach(el => {
-            const evID = el.source + '.' + el.name;
-            const listenerList = ebListeners[evID];
-            const listenerInfo = {
-              wcElementId: nodeId,
-              action: el.action,
-              converter: el.dataConverter
-            };
-            if(listenerList) {
-              listenerList.push(listenerInfo);
-            } else {
-              ebListeners[evID] = [listenerInfo];
-            }
-          });
-        }
-      });
-      wc_container.appendChild(compoundCnt);
-
-      // listener for nesting wc
-      if(navNode.compound.eventListeners) {
-        navNode.compound.eventListeners.forEach(el => {
-          const evID = el.source + '.' + el.name;
-          const listenerList = ebListeners[evID];
-          const listenerInfo = {
-            wcElement: compoundCnt,
-            action: el.action,
-            converter: el.dataConverter
-          };
-          if(listenerList) {
-            listenerList.push(listenerInfo);
-          } else {
-            ebListeners[evID] = [listenerInfo];
+            listeners.forEach(listenerInfo => {
+              const target = listenerInfo.wcElement || compoundCnt.querySelector('[nodeId=' + listenerInfo.wcElementId + ']');
+              if(target) {
+                target.dispatchEvent(new CustomEvent(listenerInfo.action,
+                  {
+                    detail: listenerInfo.converter ? listenerInfo.converter(event.detail) : event.detail
+                  }));
+              } else {
+                console.debug("Could not find event target", listenerInfo);
+              }
+            });
           }
+        };
+        navNode.compound.children.forEach((wc, index)=>{
+          const ctx = {...context, ...wc.context};
+          const compoundItemCnt = renderer.createCompoundItemContainer(wc.layoutConfig);
+          compoundItemCnt.eventBus = compoundCnt.eventBus;
+          renderer.attachCompoundItem(compoundCnt, compoundItemCnt);
+
+          const nodeId = wc.id || ('gen_' + index);
+          this.renderWebComponent(wc.viewUrl, compoundItemCnt, ctx, wc, nodeId);
+          registerEventListeners(ebListeners, wc, nodeId);
         });
-      }
+        wc_container.appendChild(compoundCnt);
+
+        // listener for nesting wc
+        registerEventListeners(ebListeners, navNode.compound, undefined, compoundCnt);
+        resolve(compoundCnt);
+      });
     });
   }
 }

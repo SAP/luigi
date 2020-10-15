@@ -139,3 +139,33 @@ export const resolveRenderer = (rendererConfig) => {
   }
   return new DefaultCompoundRenderer(rendererConfig);
 };
+
+
+/**
+ * Registers event listeners defined at the navNode.
+ *
+ * @param {*} eventbusListeners a map of event listener arrays with event id as key
+ * @param {*} navNode the web component node configuration object
+ * @param {*} nodeId the web component node id
+ * @param {*} wcElement the web component element - optional
+ */
+export const registerEventListeners = (eventbusListeners, navNode, nodeId, wcElement) => {
+  if(navNode.eventListeners) {
+    navNode.eventListeners.forEach(el => {
+      const evID = el.source + '.' + el.name;
+      const listenerList = eventbusListeners[evID];
+      const listenerInfo = {
+        wcElementId: nodeId,
+        wcElement: wcElement,
+        action: el.action,
+        converter: el.dataConverter
+      };
+
+      if(listenerList) {
+        listenerList.push(listenerInfo);
+      } else {
+        eventbusListeners[evID] = [listenerInfo];
+      }
+    });
+  }
+}

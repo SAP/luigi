@@ -505,7 +505,6 @@ class RoutingClass {
       componentData.viewUrl,
       wc_container,
       componentData.context,
-      undefined,
       navNode
     );
   }
