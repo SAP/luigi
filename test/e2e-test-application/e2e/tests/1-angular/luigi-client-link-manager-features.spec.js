@@ -81,11 +81,10 @@ describe('Luigi client linkManager', () => {
         .contains('Open webcomponent in splitView')
         .click();
       cy.get('.iframeSplitViewCnt>div>').then(container => {
-        const comp = container
+        const wcContent = container
           .children()
           .prevObject[0].shadowRoot.querySelector('p').innerText;
-        console.log('comp', comp.innerText);
-        expect(comp).to.equal('Hello WebComponent!');
+        expect(wcContent).to.equal('Hello WebComponent!');
       });
 
       cy.goToOverviewPage();
