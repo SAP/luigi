@@ -126,7 +126,7 @@ class SplitViewSvcClass {
       });
     }
 
-    // this.fixIOSscroll();
+    this.fixIOSscroll();
   }
 
   // required for iOS to force repaint, else scrolling does not work
