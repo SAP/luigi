@@ -67,7 +67,7 @@ describe('Navigation', () => {
         cy.expect(handle.isExpanded()).to.be.true;
       });
     });
-    it.only('Core API open collapsed splitview and check if expand container will disappear after navigation', () => {
+    it('Core API open collapsed splitview and check if expand container will disappear after navigation', () => {
       cy.get('.fd-shellbar').should('be.visible');
       cy.window().then(win => {
         const handle = win.Luigi.navigation().openAsSplitView('/overview', {
