@@ -6,6 +6,8 @@ export class DefaultCompoundRenderer {
     if(rendererObj) {
       this.rendererObject = rendererObj;
       this.config = rendererObj.config || {};
+    } else {
+      this.config = {};
     }
   }
 
@@ -27,8 +29,8 @@ export class DefaultCompoundRenderer {
  */
 export class CustomCompoundRenderer extends DefaultCompoundRenderer {
   constructor(rendererObj) {
-    super(rendererObj);
-    if(rendererObj.use && rendererObj.use.extends) {
+    super(rendererObj || { use: {} });
+    if(rendererObj && rendererObj.use && rendererObj.use.extends) {
       this.superRenderer = resolveRenderer({
         use: rendererObj.use.extends,
         config: rendererObj.config
@@ -79,11 +81,11 @@ export class GridCompoundRenderer extends DefaultCompoundRenderer {
       this.config.layouts.forEach(el => {
         if(el.minWidth || el.maxWidth) {
           let mq = '@media only screen ';
-          if(el.minWidth) {
-            mq += `and (min-width: ${el.minWidth}px)`
+          if(el.minWidth != null) {
+            mq += `and (min-width: ${el.minWidth}px) `
           }
-          if(el.maxWidth) {
-            mq += `and (max-width: ${el.maxWidth}px)`
+          if(el.maxWidth != null) {
+            mq += `and (max-width: ${el.maxWidth}px) `
           }
 
           mq += `{
@@ -130,7 +132,10 @@ export class GridCompoundRenderer extends DefaultCompoundRenderer {
  */
 export const resolveRenderer = (rendererConfig) => {
   const rendererDef = rendererConfig.use;
-  if(rendererDef === 'grid') {
+  if(!rendererDef) {
+    return new DefaultCompoundRenderer(rendererConfig);
+  }
+  else if(rendererDef === 'grid') {
     return new GridCompoundRenderer(rendererConfig);
   } else if(rendererDef.createCompoundContainer
     || rendererDef.createCompoundItemContainer
