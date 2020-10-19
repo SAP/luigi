@@ -433,9 +433,7 @@ Luigi.auth().login();
 
 -   **since**: NEXTRELEASE
 
-> > > > > > > cc8090040fa22aef1a9eeeb45f0f12db9d485c08
-> > > > > > >
-> > > > > > > #### logout
+#### logout
 
 Logout the user dynamically.
 This will run the same functionality as though the user clicked the logout button.
