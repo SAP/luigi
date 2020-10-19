@@ -132,7 +132,7 @@ class LuigiUX {
    * Set the collapsed state of the left side navigation
    * @memberof UX
    * @param {boolean} state
-   * @since 1.5.0
+   * @since NEXTRELEASE
    */
   collapseLeftSideNav(state) {
     SemiCollapsibleNavigation.setCollapsed(state);
