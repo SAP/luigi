@@ -2,7 +2,7 @@
 <div class="{(isModal || (isDrawer && settings.backdrop))?'fd-dialog fd-dialog--active':'drawer-dialog'}"
   style="z-index:999">
   <div
-    class="fd-dialog__content {isDrawer? (settings.backdrop?'drawer drawer-dialog__content drawer__backdrop':'drawer drawer-dialog__content'):'lui-modal-mf modal-dialog__content'}"
+    class="fd-dialog__content {isDrawer? (settings.backdrop?'drawer drawer-dialog__content drawer__backdrop':'drawer drawer-dialog__content'):'lui-modal-mf'}"
     data-testid="modal-mf">
     {#if isModal || (isDrawer && settings.header)}
     <div class="fd-dialog__header fd-bar fd-bar--header">
@@ -290,10 +290,6 @@
     display: flex;
     width: 100%;
     height: 100%;
-  }
-
-  .modal-dialog__content{
-      width: 80%;
   }
 
   .drawer-dialog__content{

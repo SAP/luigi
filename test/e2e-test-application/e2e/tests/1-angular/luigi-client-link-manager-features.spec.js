@@ -260,18 +260,18 @@ describe('Luigi client linkManager', () => {
     });
   });
 
-  describe.only('Drawer', () => {
+  describe('Drawer', () => {
     let $iframeBody;
     beforeEach(() => {
       cy.visitLoggedIn('/projects/pr2');
       cy.getIframeBody().then(result => {
         $iframeBody = result;
+        cy.goToLinkManagerMethods($iframeBody);
+        cy.expectPathToBe('/projects/pr2');
+        cy.get('.drawer').should('not.exist');
       });
     });
     it('Open and close drawer component with default settings', () => {
-      cy.goToLinkManagerMethods($iframeBody);
-      cy.expectPathToBe('/projects/pr2');
-      cy.get('.drawer').should('not.exist');
       cy.wrap($iframeBody)
         .contains('Open drawer with default settings')
         .click();
@@ -283,9 +283,6 @@ describe('Luigi client linkManager', () => {
       cy.get('.drawer').should('not.exist');
     });
     it('Open and close drawer component with go back button', () => {
-      cy.goToLinkManagerMethods($iframeBody);
-      cy.expectPathToBe('/projects/pr2');
-      cy.get('.drawer').should('not.exist');
       cy.wrap($iframeBody)
         .contains('Open view in drawer component')
         .click();
