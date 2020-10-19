@@ -137,10 +137,6 @@ jobs:
     - name: 'Integration Testing 1'
       <<: *integration-testing
 
-    - name: 'Integration Testing 2'
-      <<: *integration-testing
-
-
     # ----- NPM PUBLISH -----
     - stage: 'Publish'
       name: 'Publish to NPM'
