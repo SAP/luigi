@@ -6,6 +6,7 @@ const assert = chai.assert;
 import { WebComponentService } from '../../src/services/web-components';
 import { LuigiConfig } from '../../src/core-api';
 import { DefaultCompoundRenderer } from '../../src/utilities/helpers/web-component-helpers';
+import { LuigiElement } from '../../../client/src/luigi-element';
 
 describe('WebComponentService', function() {
   describe('generate web component id', function() {
@@ -25,8 +26,9 @@ describe('WebComponentService', function() {
   });
 
   describe('attach web component', function() {
-    const container = document.createElement('div');
-    const itemPlaceholder = document.createElement('div');
+    const sb = sinon.createSandbox();
+    let container;
+    let itemPlaceholder;
     const ctx = { someValue: true};
 
     before(()=>{
@@ -35,6 +37,15 @@ describe('WebComponentService', function() {
 
     after(()=>{
       window.Luigi = window.Luigi.luigi;
+    });
+
+    afterEach(()=>{
+      sb.restore();
+    });
+
+    beforeEach(()=>{
+      container = document.createElement('div');
+      itemPlaceholder = document.createElement('div');
     });
 
     it('check dom injection abort if container not attached', () => {
@@ -50,6 +61,27 @@ describe('WebComponentService', function() {
       const expectedCmp = container.children[0];
       expect(expectedCmp.context).to.equal(ctx);
       expect(expectedCmp.luigi.mario).to.equal('luigi');
+    });
+
+    it('check post-processing', () => {
+      const wc_id = 'my-wc';
+      var MyLuigiElement = class extends LuigiElement {
+        render(ctx) {
+          return '<div></div>';
+        }
+      };
+
+      var myEl = Object.create(MyLuigiElement.prototype, {});
+      sb.stub(myEl, '__postProcess').callsFake(() => {});
+      sb.stub(document, 'createElement').callThrough().withArgs('my-wc').callsFake(() => {
+        return myEl;
+      });
+      sb.stub(container, 'replaceChild').callsFake(() => {});
+
+      container.appendChild(itemPlaceholder);
+      WebComponentService.attachWC(wc_id, itemPlaceholder, container, ctx, 'http://localhost:8080/');
+
+      assert(myEl.__postProcess.calledOnce, '__postProcess should be called');
     });
   });
 
