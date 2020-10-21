@@ -90,7 +90,11 @@ describe('SplitViewSvc', () => {
     it('without viewUrl', () => {
       const frame = { frame: 1 };
       const splitFrame = { frame: 2 };
-      document.querySelector.returns({ appendChild: sinon.spy() });
+      const container = document.createElement('div');
+      document.querySelector.returns({
+        appendChild: sinon.spy(),
+        firstChild: null
+      });
       IframeHelpers.createIframe.returns(splitFrame);
 
       const res = SplitViewSvc.setIframe(null, 'componentData', component);
@@ -103,7 +107,10 @@ describe('SplitViewSvc', () => {
     it('with viewUrl', () => {
       const frame = { frame: 1 };
       const splitFrame = { frame: 2 };
-      document.querySelector.returns({ appendChild: sinon.spy() });
+      document.querySelector.returns({
+        appendChild: sinon.spy(),
+        firstChild: null
+      });
       IframeHelpers.createIframe.returns(splitFrame);
       RoutingHelpers.substituteViewUrl.returns('otherUrl');
 
