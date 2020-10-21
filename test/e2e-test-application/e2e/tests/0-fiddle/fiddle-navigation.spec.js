@@ -56,8 +56,11 @@ describe('Fiddle', () => {
           win.LuigiClient.linkManager()
             .fromVirtualTreeRoot()
             .navigate('/this/is/a/tree');
+          // cypress workaround to fix travis flakiness
+          setTimeout(() => {
+            cy.expectPathToBe('/virtual/this/is/a/tree');
+          }, 0);
         });
-        cy.expectPathToBe('/virtual/this/is/a/tree');
       });
     });
     describe('ContextSwitcher', () => {
@@ -386,14 +389,16 @@ describe('Fiddle', () => {
     it('Client get and set theme', () => {
       cy.visitWithFiddleConfig('/', newConfig);
 
-      cy.wait(500);
       cy.getIframeWindow().then(win => {
+        // cypress workaround to fix travis flakiness
+        setTimeout(() => {
           const defaultTheme = win.LuigiClient.uxManager().getCurrentTheme();
           expect(defaultTheme).to.equal('light');
+        }, 0);
 
-          // not yet implemented
-          // win.LuigiClient.uxManager().setCurrentTheme('dark');
-          // expect(defaultTheme).to.equal('dark');
+        // not yet implemented
+        // win.LuigiClient.uxManager().setCurrentTheme('dark');
+        // expect(defaultTheme).to.equal('dark');
       });
     });
     it('Iframe Url should get set with value by default', () => {
