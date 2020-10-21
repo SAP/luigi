@@ -56,6 +56,9 @@ class SplitViewSvcClass {
       'split-view'
     );
     const iframeCtn = document.querySelector('.iframeSplitViewCnt');
+    while (iframeCtn.firstChild) {
+      iframeCtn.removeChild(iframeCtn.lastChild);
+    }
     iframeCtn.appendChild(iframe);
     return iframe;
   }
@@ -227,7 +230,6 @@ class SplitViewSvcClass {
       comp.get().mfSplitView.displayed = false;
       comp.set({ mfSplitView: comp.get().mfSplitView });
     }
-
   }
 
   async expand(comp) {
