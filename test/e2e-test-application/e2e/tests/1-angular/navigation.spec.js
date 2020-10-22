@@ -1,4 +1,3 @@
-Cypress.env('RETRIES', 1);
 describe('Navigation', () => {
   beforeEach(() => {
     cy.visitLoggedIn('/');
@@ -319,9 +318,13 @@ describe('Navigation', () => {
   */
 
   describe('features', () => {
-    it('keepSelectedForChildren', () => {
+    it('keepSelectedForChildren', {
+      retries: {
+        runMode: 3,
+        openMode: 3
+      }
+    }, () => {
       // keep selected for children example
-      Cypress.currentTest.retries(3);
       cy.get('.fd-shellbar')
         .contains('Overview')
         .click();
