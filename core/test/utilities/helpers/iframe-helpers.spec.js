@@ -67,7 +67,7 @@ describe('Iframe-helpers', () => {
     });
 
     it('createIframe with interceptor', () => {
-      const icf = () => {};
+      const icf = () => { };
       const interceptor = sinon.spy(icf);
       sinon
         .stub(LuigiConfig, 'getConfigValue')
@@ -121,6 +121,18 @@ describe('Iframe-helpers', () => {
       const url = 'http://.luigi.url.com';
       const iframeOrigin = IframeHelpers.getLocation(url);
       assert.equal(iframeOrigin, url);
+    });
+
+    it('urlMatchesTheDomain', () => {
+      let url = 'https://luigi.url.com/projects/index.html';
+      let domain = 'https://luigi.url.com/bla/bli';
+      assert.isTrue(IframeHelpers.urlMatchesTheDomain(url, domain));
+      url = 'https://luigi.url.com:443/projects/index.html'
+      domain = 'https://luigi.url.com:443/bla/bli';
+      assert.isTrue(IframeHelpers.urlMatchesTheDomain(url, domain));
+      url = 'http://luigi.url.com/projects/index.html'
+      domain = 'https://luigi.url.com:443/bla/bli';
+      assert.isFalse(IframeHelpers.urlMatchesTheDomain(url, domain));
     });
 
     it('getVisibleIframes', () => {
