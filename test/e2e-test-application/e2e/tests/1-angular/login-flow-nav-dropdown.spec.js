@@ -1,4 +1,3 @@
-Cypress.env('RETRIES', 1);
 describe('Login Flow', () => {
   beforeEach(() => {
     cy.visit('/', {
