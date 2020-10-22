@@ -1,7 +1,6 @@
 import fiddleConfig from '../../configs/default';
 import { cloneDeep } from 'lodash';
 
-Cypress.env('RETRIES', 1);
 describe('Fiddle', () => {
   describe('Navigation', () => {
     describe('Core api navigation test', () => {
@@ -387,15 +386,14 @@ describe('Fiddle', () => {
     it('Client get and set theme', () => {
       cy.visitWithFiddleConfig('/', newConfig);
 
-      cy.window().then(win => {
-        cy.getIframeWindow().then(win => {
+      cy.wait(500);
+      cy.getIframeWindow().then(win => {
           const defaultTheme = win.LuigiClient.uxManager().getCurrentTheme();
           expect(defaultTheme).to.equal('light');
 
           // not yet implemented
           // win.LuigiClient.uxManager().setCurrentTheme('dark');
           // expect(defaultTheme).to.equal('dark');
-        });
       });
     });
     it('Iframe Url should get set with value by default', () => {
