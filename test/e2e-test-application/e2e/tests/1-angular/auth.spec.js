@@ -1,4 +1,3 @@
-Cypress.env('RETRIES', 1);
 describe('Authorization', () => {
   beforeEach(() => {
     cy.visit('/', {
