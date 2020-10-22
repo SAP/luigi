@@ -59,7 +59,7 @@ describe('Fiddle', () => {
           // cypress workaround to fix travis flakiness
           setTimeout(() => {
             cy.expectPathToBe('/virtual/this/is/a/tree');
-          }, 0);
+          }, 50);
         });
       });
     });
