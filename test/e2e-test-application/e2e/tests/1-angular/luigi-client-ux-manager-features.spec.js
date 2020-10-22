@@ -1,4 +1,3 @@
-Cypress.env('RETRIES', 1);
 describe('Luigi Client ux manager features', () => {
   let $iframeBody;
   beforeEach(() => {
@@ -82,8 +81,12 @@ describe('Luigi Client ux manager features', () => {
         .contains('Luigi confirmation modal has been dismissed');
     });
 
-    it('loading indicator', () => {
-      Cypress.currentTest.retries(3);
+    it('loading indicator', {
+      retries: {
+        runMode: 3,
+        openMode: 3
+      }
+    }, () => {
       cy.get('[data-testid="misc"]').click();
 
       cy.get('[data-testid="ext_externalpage"]')

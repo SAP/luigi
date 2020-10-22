@@ -1,11 +1,14 @@
-Cypress.env('RETRIES', 1);
 describe('Luigi client linkManager', () => {
   beforeEach(() => {
     cy.visitLoggedIn('/');
   });
 
-  it('linkManager features', () => {
-    Cypress.currentTest.retries(2);
+  it('linkManager features', {
+    retries: {
+      runMode: 3,
+      openMode: 3
+    }
+  }, () => {
     cy.getIframeBody().then($iframeBody => {
       cy.goToLinkManagerMethods($iframeBody);
 
