@@ -28,9 +28,10 @@ describe('Navigation', () => {
           size: '40',
           collapsed: false
         });
+        setTimeout(() => {
         cy.get('#splitViewContainer').should('be.visible');
         cy.expect(handle.exists()).to.be.true;
-
+        }, 0);
         // It is not totally clear why it is not working without timeout, but it seems like a race condition
         // TODO: Check stackoverflow for solution
         // https://stackoverflow.com/questions/60338487/cypress-executes-assertion-immediately-on-function-that-returns-a-handle
@@ -580,7 +581,7 @@ describe('Navigation', () => {
         cy.get('.luigi-tabsContainer').within(() => {
           cy.get('.fd-tabs__item')
             .contains('User Management')
-            .should('visible');
+            .should('be.visible');
           cy.get('.fd-tabs__item')
             .contains('Node with node activation hook')
             .should('not.visible');
@@ -592,7 +593,7 @@ describe('Navigation', () => {
         cy.get('.luigi-tabsContainer').within(() => {
           cy.get('.fd-tabs__item')
             .contains('Settings')
-            .should('visible');
+            .should('be.visible');
           cy.get('.fd-tabs__item')
             .contains('Settings')
             .click();
@@ -625,7 +626,7 @@ describe('Navigation', () => {
           cy.wait(1000);
           cy.get('.fd-tabs__item')
             .contains('Miscellaneous2')
-            .should('visible');
+            .should('be.visible');
         });
       });
     });
