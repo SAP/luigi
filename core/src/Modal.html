@@ -1,6 +1,9 @@
 <svelte:window on:keydown="{handleKeydown}" />
 <div class="{(isModal || (isDrawer && settings.backdrop))?'fd-dialog fd-dialog--active':'drawer-dialog'}"
-  style="z-index:999">
+  style="{isModal?'z-index:999':''}">
+  {#if isDrawer}
+  <Backdrop area="split-view" on:stateChanged="{backdropStateChanged}"></Backdrop>
+  {/if}
   <div
     class="fd-dialog__content {isDrawer? (settings.backdrop?'drawer drawer-dialog__content drawer__backdrop':'drawer drawer-dialog__content'):'lui-modal-mf'}"
     data-testid="modal-mf">
@@ -51,6 +54,7 @@
 </div>
 
 <script>
+  import Backdrop from './Backdrop.html';
   import {
     afterUpdate,
     createEventDispatcher,
@@ -220,6 +224,12 @@
     }
   };
 
+  const backdropStateChanged = (event) => {
+    if (event && event.detail && event.detail.backdropActive) {
+      console.log('event.detail.backdropActive');
+    }
+  }
+
   onMount(() => {
     EventListenerHelpers.addEventListener('message', onMessage);
   });
@@ -244,7 +254,7 @@
     top: $topNavHeight;
     bottom: 0;
     width: 25%;
-    z-index: 1;
+    z-index: 3;
     right: 0;
   }
 

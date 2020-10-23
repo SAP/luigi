@@ -13,6 +13,11 @@ class IframeHelpersClass {
         iframeConfigKey: 'modal'
       },
       {
+        iframeKey: 'drawerIframe',
+        dataKey: 'drawerIframeData',
+        iframeConfigKey: 'drawer'
+      },
+      {
         iframeKey: 'splitViewIframe',
         dataKey: 'splitViewIframeData',
         iframeConfigKey: 'splitView'
