@@ -388,12 +388,12 @@ describe('Fiddle', () => {
 
       cy.wait(500);
       cy.getIframeWindow().then(win => {
-          const defaultTheme = win.LuigiClient.uxManager().getCurrentTheme();
-          expect(defaultTheme).to.equal('light');
+        const defaultTheme = win.LuigiClient.uxManager().getCurrentTheme();
+        expect(defaultTheme).to.equal('light');
 
-          // not yet implemented
-          // win.LuigiClient.uxManager().setCurrentTheme('dark');
-          // expect(defaultTheme).to.equal('dark');
+        // not yet implemented
+        // win.LuigiClient.uxManager().setCurrentTheme('dark');
+        // expect(defaultTheme).to.equal('dark');
       });
     });
     it('Iframe Url should get set with value by default', () => {
@@ -431,7 +431,7 @@ describe('Fiddle', () => {
     });
   });
 
-  describe('Collpasible Mode of Left Side Navigation', () => {
+  describe('semiCollapsible settings of Left Side Navigation', () => {
     let newConfig;
 
     beforeEach(() => {
@@ -461,6 +461,49 @@ describe('Fiddle', () => {
     });
 
     it('should execute Core API function collapseLeftSideNav() and open the nav', () => {
+      cy.window().then(win => {
+        win.Luigi.ux().collapseLeftSideNav(false);
+      });
+      cy.reload().wait(1000);
+      cy.get('[data-testid="semiCollapsibleLeftNav"]').should(
+        'not.have.class',
+        'fd-side-nav--condensed'
+      );
+    });
+  });
+
+  describe('Fiori3 settings of Left Side Navigation', () => {
+    let newConfig;
+
+    beforeEach(() => {
+      newConfig = cloneDeep(fiddleConfig);
+      newConfig.settings.responsiveNavigation = 'Fiori3';
+      cy.window().then(win => {
+        win.Luigi.configChanged('settings');
+      });
+      cy.visitWithFiddleConfig('/', newConfig);
+    });
+
+    it('should check if the burger btn exist', () => {
+      cy.get('button.lui-burger').should('be.visible');
+    });
+
+    it('should collapse the left sidde nav on burger click', () => {
+      cy.get('button.lui-burger').click();
+      cy.get('[data-testid="semiCollapsibleLeftNav"]').should(
+        'have.class',
+        'fd-side-nav--condensed'
+      );
+
+      cy.reload().wait(1000);
+
+      cy.get('[data-testid="semiCollapsibleLeftNav"]').should(
+        'have.class',
+        'fd-side-nav--condensed'
+      );
+    });
+
+    it('should execute Core API function collapseLeftSideNav() and open the nav in Fiori3 settings', () => {
       cy.window().then(win => {
         win.Luigi.ux().collapseLeftSideNav(false);
       });

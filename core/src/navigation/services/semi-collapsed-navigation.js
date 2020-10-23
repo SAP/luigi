@@ -10,20 +10,16 @@ class SemiCollapsibleNavigationClass {
     let currentCollapsedState = localStorage.getItem(
       NavigationHelpers.COL_NAV_KEY
     );
+    let checkTheResponsiveNavSettings =
+      this.responsiveNavSetting === 'semiCollapsible' ||
+      this.responsiveNavSetting === 'Fiori3';
 
     //checking if here was a previous state in localStorage before the reload
-    if (
-      currentCollapsedState != null &&
-      this.responsiveNavSetting === 'semiCollapsible'
-    ) {
+    if (currentCollapsedState != null && checkTheResponsiveNavSettings) {
       this.isSemiCollapsed = this.getCollapsed();
       localStorage.setItem(NavigationHelpers.COL_NAV_KEY, true);
     } else {
-      this.semiCollapsible =
-        this.responsiveNavSetting === 'semiCollapsible' ||
-        this.responsiveNavSetting === 'Fiori3'
-          ? true
-          : false;
+      this.semiCollapsible = checkTheResponsiveNavSettings ? true : false;
     }
 
     // set this.isSemiCollapsed to true for mobile
