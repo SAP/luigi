@@ -124,6 +124,11 @@ describe('Iframe-helpers', () => {
     });
 
     it('urlMatchesTheDomain', () => {
+      let domain = 'https://luigi.url.com/fd';
+      assert.isTrue(IframeHelpers.urlMatchesTheDomain(myElement.href, domain));
+    });
+
+    it('!urlMatchesTheDomain', () => {
       let domain = 'http://luigi.url.com/fd';
       assert.isFalse(IframeHelpers.urlMatchesTheDomain(myElement.href, domain));
     });
