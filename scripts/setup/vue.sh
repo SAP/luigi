@@ -17,7 +17,7 @@ fi
 
 vue create -d $folder && cd $folder
 npm i vue-router vuex @luigi-project/core @luigi-project/client fundamental-styles @sap-theming/theming-base-content
-npm i -D sass-loader node-sass webpack webpack-cli @babel/core @babel/preset-env babel-loader
+npm i -D sass-loader node-sass webpack@4.43.0 webpack-cli@3.3.12 @babel/core @babel/preset-env babel-loader
 
 mkdir -p src/luigi-config src/assets/scss src/views public/assets
 
@@ -45,7 +45,7 @@ curl https://raw.githubusercontent.com/SAP/luigi/master/scripts/setup/assets/ind
 
 # set scripts
 sed 's/"scripts": {/"scripts": {\
-  \  "buildConfig":"webpack --entry .\/src\/luigi-config\/luigi-config.es6.js -o .\/public\/assets\/luigi-config.js --mode production",/1' package.json > p.tmp.json && mv p.tmp.json package.json
+  \  "buildConfig":"webpack --entry .\/src\/luigi-config\/luigi-config.es6.js --output-path .\/public\/assets --output-filename luigi-config.js --mode production",/1' package.json > p.tmp.json && mv p.tmp.json package.json
 
 
 echo "const webpack = require('webpack');
