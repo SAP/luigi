@@ -110,6 +110,34 @@ describe('Iframe-helpers', () => {
     );
   });
 
+  describe('ie fix for domain check', () => {
+    const sb = sinon.createSandbox();
+    const myElement = {
+      host: 'luigi.url.com:443',
+      protocol: 'https:',
+      origin: 'https://luigi.url.com',
+      href: 'https://luigi.url.com/sdf/sdf'
+    }
+
+    afterEach(() => {
+      sb.restore();
+    });
+
+    it('urlMatchesTheDomain', () => {
+      let domain = 'http://luigi.url.com/fd';
+      assert.isFalse(IframeHelpers.urlMatchesTheDomain(myElement.href, domain));
+    });
+
+    it('ie11 urlMatchesTheDomain', () => {
+      let domain = 'https://luigi.url.com/bla/bli';
+      sb.stub(document, 'createElement').callThrough().withArgs('a').callsFake(() => {
+        return myElement;
+      });
+      sb.stub(myElement, 'origin').value(undefined)
+      assert.isTrue(IframeHelpers.urlMatchesTheDomain(myElement.href, domain));
+    });
+  });
+
   describe('canReuseIframe', () => {
     const config = {
       iframe: {
@@ -121,18 +149,6 @@ describe('Iframe-helpers', () => {
       const url = 'http://.luigi.url.com';
       const iframeOrigin = IframeHelpers.getLocation(url);
       assert.equal(iframeOrigin, url);
-    });
-
-    it('urlMatchesTheDomain', () => {
-      let url = 'https://luigi.url.com/projects/index.html';
-      let domain = 'https://luigi.url.com/bla/bli';
-      assert.isTrue(IframeHelpers.urlMatchesTheDomain(url, domain));
-      url = 'https://luigi.url.com:443/projects/index.html'
-      domain = 'https://luigi.url.com:443/bla/bli';
-      assert.isTrue(IframeHelpers.urlMatchesTheDomain(url, domain));
-      url = 'http://luigi.url.com/projects/index.html'
-      domain = 'https://luigi.url.com:443/bla/bli';
-      assert.isFalse(IframeHelpers.urlMatchesTheDomain(url, domain));
     });
 
     it('getVisibleIframes', () => {
