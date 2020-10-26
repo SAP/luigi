@@ -52,7 +52,7 @@ npm init -y > /dev/null
 
 # add "start" command to the package.json file. This command is split into 2 lines on purpose!
 sed 's/"scripts": {/"scripts": {\
-\   "buildConfig":"webpack --entry .\/src\/luigi-config\/luigi-config.es6.js -o .\/public\/assets\/luigi-config.js --mode production",/1' package.json > p.tmp.json && mv p.tmp.json package.json
+\   "buildConfig":"webpack --entry .\/src\/luigi-config\/luigi-config.es6.js --output-path .\/public\/assets --output-filename luigi-config.js --mode production",/1' package.json > p.tmp.json && mv p.tmp.json package.json
 sed 's/"scripts": {/"scripts": {\
 \   "start":"live-server --entry-file=index.html public",/1' package.json > p.tmp.json && mv p.tmp.json package.json
 
@@ -100,9 +100,9 @@ or execute these commands manually to get the same result:
 ```bash
 ng new my-angular-app --routing && cd my-angular-app
 
-npm i -P @luigi-project/core @luigi-project/client fundamental-styles @sap-theming/theming-base-content webpack webpack-cli @babel/core @babel/preset-env babel-loader 
+npm i -P @luigi-project/core @luigi-project/client fundamental-styles@0.11.0 @sap-theming/theming-base-content webpack@4.43.0 webpack-cli@3.3.12 @babel/core @babel/preset-env babel-loader 
 sed 's/"scripts": {/"scripts": {\
-\   "buildConfig":"webpack --entry .\/src\/luigi-config\/luigi-config.es6.js -o .\/src\/assets\/luigi-config.js --mode production",/1' package.json > p.tmp.json && mv p.tmp.json package.json
+\   "buildConfig":"webpack --entry .\/src\/luigi-config\/luigi-config.es6.js --output-path .\/src\/assets --output-filename luigi-config.js --mode production",/1' package.json > p.tmp.json && mv p.tmp.json package.json
 mkdir -p src/luigi-config
 
  # the following steps can be copy and pasted to the terminal at once
@@ -209,7 +209,7 @@ or execute these commands manually to get the same result:
 ```bash
 vue create -d my-vue-app && cd my-vue-app
 npm i vue-router vuex @luigi-project/core @luigi-project/client fundamental-styles @sap-theming/theming-base-content
-npm i -D sass-loader node-sass webpack webpack-cli @babel/core @babel/preset-env babel-loader
+npm i -D sass-loader node-sass webpack@4.43.0 webpack-cli@3.3.12 @babel/core @babel/preset-env babel-loader
 
 mkdir -p src/luigi-config src/assets/scss src/views public/assets
 
@@ -237,7 +237,7 @@ curl https://raw.githubusercontent.com/SAP/luigi/master/scripts/setup/assets/ind
 
 # set scripts
 sed 's/"scripts": {/"scripts": {\
-  \  "buildConfig":"webpack --entry .\/src\/luigi-config\/luigi-config.es6.js -o .\/public\/assets\/luigi-config.js --mode production",/1' package.json > p.tmp.json && mv p.tmp.json package.json
+  \  "buildConfig":"webpack --entry .\/src\/luigi-config\/luigi-config.es6.js --output-path .\/public\/assets --output-filename luigi-config.js --mode production",/1' package.json > p.tmp.json && mv p.tmp.json package.json
 
 
 echo "const webpack = require('webpack');
@@ -314,7 +314,7 @@ echo yes | npm run eject
 
 # install dependencies
 npm i -P @luigi-project/core @luigi-project/client fundamental-styles @sap-theming/theming-base-content react-router-dom
-npm i copy-webpack-plugin webpack webpack-cli @babel/core @babel/preset-env babel-loader --save-dev
+npm i copy-webpack-plugin@5 webpack@4.43.0 webpack-cli@3.3.12 @babel/core @babel/preset-env babel-loader --save-dev
 
 # replace strings in some places
 sed "s/const HtmlWebpackPlugin = require('html-webpack-plugin');/const HtmlWebpackPlugin = require('html-webpack-plugin');const CopyWebpackPlugin = require('copy-webpack-plugin');/g" config/webpack.config.js > config/webpack.config.tmp.js && mv config/webpack.config.tmp.js config/webpack.config.js
