@@ -51,15 +51,26 @@ class WebComponentSvcClass {
   }
 
   /** Does a module import from viewUrl and defines a new web component
-   * with the default export of the module.
-   * returns a promise that gets resolved after successfull import */
+   * with the default export of the module or the first export extending HTMLElement if no default is
+   * specified.
+   * @returns a promise that gets resolved after successfull import */
   registerWCFromUrl(viewUrl, wc_id) {
     return new Promise((resolve, reject) => {
       if(this.checkWCUrl(viewUrl)) {
         this.dynamicImport(viewUrl).then(module => {
           try {
             if(!window.customElements.get(wc_id)) {
-              window.customElements.define(wc_id, module.default);
+              let cmpClazz = module.default;
+              if(!(HTMLElement.isPrototypeOf(cmpClazz))) {
+                let props = Object.keys(module);
+                for(let i = 0; i < props.length; i++) {
+                  cmpClazz = module[props[i]];
+                  if(HTMLElement.isPrototypeOf(cmpClazz)) {
+                    break;
+                  }
+                }
+              }
+              window.customElements.define(wc_id, cmpClazz);
             }
             resolve();
           } catch(e) {
