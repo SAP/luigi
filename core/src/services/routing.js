@@ -330,12 +330,12 @@ class RoutingClass {
           Navigation.onNodeChange(previousNode, currentNode);
         }
       }
-      if (nodeObject.compound) {
+      if (nodeObject.compound && GenericHelpers.requestExperimentalFeature('webcomponents', true)) {
         if (iContainer) {
           iContainer.classList.add('lui-webComponent');
         }
         this.navigateWebComponentCompound(config, component, iframeElement, nodeObject, iContainer);
-      } else if (nodeObject.webcomponent) {
+      } else if (nodeObject.webcomponent && GenericHelpers.requestExperimentalFeature('webcomponents', true)) {
         if (iContainer) {
           iContainer.classList.add('lui-webComponent');
         }
