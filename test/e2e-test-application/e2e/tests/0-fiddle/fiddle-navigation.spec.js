@@ -389,21 +389,35 @@ describe('Fiddle', () => {
         //   }
         // }
       };
-    });
-    it('Client get and set theme', () => {
-      cy.visitWithFiddleConfig('/', newConfig);
-
-      cy.getIframeWindow().then(win => {
-        // cypress workaround to fix travis flakiness
-        setTimeout(() => {
-          const defaultTheme = win.LuigiClient.uxManager().getCurrentTheme();
-          expect(defaultTheme).to.equal('light');
-        }, 0);
-
-        // not yet implemented
-        // win.LuigiClient.uxManager().setCurrentTheme('dark');
-        // expect(defaultTheme).to.equal('dark');
+      newConfig.navigation.nodes.push({
+        pathSegment: 'theming',
+        label: 'Theming Test',
+        viewUrl: '/examples/microfrontends/multipurpose.html#',
+        context: {
+          title: 'Welcome <h2 id="themeText"></h2>',
+          content: `<img src="empty.gif" onerror='document.getElementById("themeText").innerHTML = LuigiClient.uxManager().getCurrentTheme();' />`
+        }
       });
+    });
+
+    it('Client get and set theme', () => {
+      cy.visitWithFiddleConfig('/theming', newConfig);
+
+      cy.getIframeBody().then($body => {
+        cy.wrap($body)
+          .find('h2')
+          .contains('light');
+      });
+
+      // cy.getIframeWindow().then(win => {
+      //   // cypress workaround to fix travis flakiness
+      //     const defaultTheme = win.LuigiClient.uxManager().getCurrentTheme();
+      //     expect(defaultTheme).to.equal('light');
+
+      //   // not yet implemented
+      //   // win.LuigiClient.uxManager().setCurrentTheme('dark');
+      //   // expect(defaultTheme).to.equal('dark');
+      // });
     });
     it('Iframe Url should get set with value by default', () => {
       newConfig.settings.theming.nodeViewURLDecorator = {
