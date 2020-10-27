@@ -34,8 +34,6 @@ sed "s/publicUrl + '\/index.html',/publicUrl + '\/sampleapp.html',/g" config/web
 sed "s/const isWsl = require('is-wsl');//g" config/webpack.config.js > config/webpack.config.tmp.js && mv config/webpack.config.tmp.js config/webpack.config.js
 sed "s/!isWsl/true/g" config/webpack.config.js > config/webpack.config.tmp.js && mv config/webpack.config.tmp.js config/webpack.config.js
 
-# sed 's/"scripts": {/"scripts": {\
-# \    "buildConfig":"webpack --entry .\/src\/luigi-config\/luigi-config.es6.js -o .\/public\/luigi-config.js --mode production",/1' package.json > p.tmp.json && mv p.tmp.json package.json
 
 # downloads
 mkdir -p src/luigi-config
@@ -56,5 +54,4 @@ curl https://raw.githubusercontent.com/SAP/luigi/master/core/examples/luigi-exam
 curl https://raw.githubusercontent.com/SAP/luigi/master/core/examples/luigi-example-react/src/views/sample2.js > src/views/sample2.js
 
 npm i
-# npm run buildConfig
 npm start
