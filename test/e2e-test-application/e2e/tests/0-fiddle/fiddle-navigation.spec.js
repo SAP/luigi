@@ -43,23 +43,27 @@ describe('Fiddle', () => {
     describe('virtualTree with fromVirtualTreeRoot', () => {
       beforeEach(() => {
         const newConfig = cloneDeep(fiddleConfig);
+        // cy.log(newConfig);
         newConfig.navigation.nodes.push({
           pathSegment: 'virtual',
           label: 'Virtual',
           virtualTree: true,
-          viewUrl: '/examples/microfrontends/multipurpose.html#'
+          viewUrl: '/examples/microfrontends/multipurpose.html#',
+          context: {
+            content:
+              '<button  onClick="LuigiClient.linkManager().fromVirtualTreeRoot().navigate(\'/this/is/a/tree\')">virtual</button>'
+          }
         });
         cy.visitWithFiddleConfig('/virtual', newConfig);
       });
       it('navigate', () => {
-        cy.getIframeWindow().then(win => {
-          win.LuigiClient.linkManager()
-            .fromVirtualTreeRoot()
-            .navigate('/this/is/a/tree');
-          // cypress workaround to fix travis flakiness
-          setTimeout(() => {
-            cy.expectPathToBe('/virtual/this/is/a/tree');
-          }, 50);
+        cy.getIframeBody().then($body => {
+          cy.wrap($body)
+            .find('button')
+            .contains('virtual')
+            .click();
+
+          cy.expectPathToBe('/virtual/this/is/a/tree');
         });
       });
     });
