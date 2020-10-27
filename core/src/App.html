@@ -624,9 +624,8 @@
     if (mfSplitView.displayed) {
       console.warn('Only one splitview can be opened at a time');
       return;
-    } else {
-      mfSplitView = SplitViewSvc.getDefaultData().mfSplitView;
     }
+    mfSplitView = SplitViewSvc.getDefaultData().mfSplitView;
     SplitViewSvc.open(getComponentWrapper(), nodepath, settings);
   };
 
