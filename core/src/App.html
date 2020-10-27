@@ -1059,8 +1059,9 @@
           let path = buildPath(e.data.params);
           path = GenericHelpers.addLeadingSlash(path);
           contentNode = node;
-          mfSplitView = SplitViewSvc.getDefaultData().mfSplitView;
-
+          if (!mfSplitView.displayed) {//fix if splitview already exist
+            mfSplitView = SplitViewSvc.getDefaultData().mfSplitView;
+          }
           openSplitView(path, e.data.params.splitView);
         } else {
           getUnsavedChangesModalPromise().then(() => {
