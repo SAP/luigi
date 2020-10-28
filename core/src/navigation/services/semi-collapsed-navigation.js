@@ -7,16 +7,15 @@ class SemiCollapsibleNavigationClass {
     this.responsiveNavSetting = LuigiConfig.getConfigValue(
       'settings.responsiveNavigation'
     );
-    const isCurrentStateCollapsed = JSON.parse(
-      localStorage.getItem(NavigationHelpers.COL_NAV_KEY)
-    );
+
     const isResponsiveNavSemiCollapsibleOrFiori3 =
       this.responsiveNavSetting === 'semiCollapsible' ||
       this.responsiveNavSetting === 'Fiori3';
 
-    //checking if here was a previous state in localStorage before the reload
+    //checking if there was a previous state in LocalStorage before the first load and reload
     if (
-      isCurrentStateCollapsed !== false &&
+      JSON.parse(localStorage.getItem(NavigationHelpers.COL_NAV_KEY)) !==
+        false &&
       isResponsiveNavSemiCollapsibleOrFiori3
     ) {
       this.isSemiCollapsed = this.getCollapsed();
