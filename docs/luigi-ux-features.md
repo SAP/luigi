@@ -19,6 +19,7 @@ meta -->
 - [Rendering of Luigi application in the DOM](#rendering-of-luigi-application-in-the-dom)
 - [Responsive application setup](#responsive-application-setup)
 - [App loading indicator](#app-loading-indicator)
+- [Collapsed left side navigation](#collapsed-left-side-navigation)
 
 ## Rendering of Luigi application in the DOM
 
@@ -81,3 +82,11 @@ Alternatively, to keep the loading indicator until the first micro frontend is u
 }
 ```
 2. To remove the loading indicator, call [Luigi.ux().hideAppLoadingIndicator()](./luigi-core-api.md#hideAppLoadingIndicator) in Luigi Core once your initial micro frontend has finished loading. You can, for example, use the [custom messages](./communication.md#custom-messages) feature to allow the Luigi Client micro frontend to communicate with the Core when this function should be executed.
+
+## Collapsed left side navigation
+
+If you use **responsiveNavigation = 'semiCollapsible'**  or **'Fiori3'** mode in your settings, you can adjust collapsed state of the left side navigation by using the **collapseLeftSideNav** function. 
+
+* To close the left side navigation, execute **Luigi.ux().collapseLeftSideNav(true)** in Luigi Core once your initial micro frontend has finished loading. It will set the collapsed state to `true` in **Local Storage**. Which closes the left side navgation, by showing only icons.
+
+* Set the value to `false` if you want to make left side navigation to be open.

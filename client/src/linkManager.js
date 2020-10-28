@@ -47,6 +47,7 @@ export class linkManager extends LuigiClientBase {
    * LuigiClient.linkManager().navigate('/overview')
    * LuigiClient.linkManager().navigate('users/groups/stakeholders')
    * LuigiClient.linkManager().navigate('/settings', null, true) // preserve view
+   * LuigiClient.linkManager().navigate('#?Intent=Sales-order?id=13') // intent navigation
    */
   navigate(path, sessionId, preserveView, modalSettings, splitViewSettings, drawerSettings) {
     if (this.options.errorSkipNavigation) {
@@ -61,12 +62,14 @@ export class linkManager extends LuigiClientBase {
 
     this.options.preserveView = preserveView;
     const relativePath = path[0] !== '/';
+    const hasIntent = path.toLowerCase().includes('?intent=');
     const navigationOpenMsg = {
       msg: 'luigi.navigation.open',
       sessionId: sessionId,
       params: Object.assign(this.options, {
         link: path,
         relative: relativePath,
+        intent: hasIntent,
         modal: modalSettings,
         splitView: splitViewSettings,
         drawer: drawerSettings

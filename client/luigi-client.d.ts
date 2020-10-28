@@ -293,6 +293,7 @@ export declare interface LinkManager {
    * LuigiClient.linkManager().navigate('/overview')
    * LuigiClient.linkManager().navigate('users/groups/stakeholders')
    * LuigiClient.linkManager().navigate('/settings', null, true) // preserve view
+   * LuigiClient.linkManager().navigate('#?intent=Sales-order?id=13') // intent navigation
    */
   navigate: (
     path: string,

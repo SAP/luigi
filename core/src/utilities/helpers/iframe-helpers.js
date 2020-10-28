@@ -147,7 +147,7 @@ class IframeHelpersClass {
   }
 
   urlMatchesTheDomain(viewUrl = '', domain) {
-    return this.getLocation(viewUrl) === domain;
+    return this.getLocation(viewUrl) === this.getLocation(domain);
   }
 
   iframeIsSameDomain(viewUrl, domain) {
