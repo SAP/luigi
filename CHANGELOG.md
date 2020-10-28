@@ -25,6 +25,30 @@ The lerna-changelog tool detects changes based on PR labels and maps them to sec
 -->
 
 
+## [v1.5.0] (2020-10-28)
+
+#### :rocket: Added
+* [#1634](https://github.com/SAP/luigi/pull/1634) Implement intent based navigation ([@ndricimrr](https://github.com/ndricimrr))
+* [#1646](https://github.com/SAP/luigi/pull/1646) 1549 ally fiori guidelines ([@UlianaMunich](https://github.com/UlianaMunich))
+* [#1652](https://github.com/SAP/luigi/pull/1652) Expose login method in core api([@ionutcirja](https://github.com/ionutcirja))
+* [#1631](https://github.com/SAP/luigi/pull/1631) Updating Auth API to allow dynamic logout ([@dangrima90](https://github.com/dangrima90))
+* [#1623](https://github.com/SAP/luigi/pull/1623) Add accordion effect to categories ([@azriel46d](https://github.com/azriel46d))
+* [#1620](https://github.com/SAP/luigi/pull/1620) Add disableInputHelpers for globalsearch ([@maxmarkus](https://github.com/maxmarkus))
+
+#### :bug: Fixed
+* [#1665](https://github.com/SAP/luigi/pull/1665) Fix bug in nav collapsed state ([@UlianaMunich](https://github.com/UlianaMunich))
+* [#1671](https://github.com/SAP/luigi/pull/1671) Fix bug IE11 domain check ([@JohannesDoberer](https://github.com/JohannesDoberer))
+* [#1675](https://github.com/SAP/luigi/pull/1675) Prevent to open a second splitview from LuigiClient ([@JohannesDoberer](https://github.com/JohannesDoberer))
+* [#1641](https://github.com/SAP/luigi/pull/1641) Close splitview after navigation ([@JohannesDoberer](https://github.com/JohannesDoberer))
+* [#1633](https://github.com/SAP/luigi/pull/1633) Fix issues with broken left side nav in semiCollapsed mode and scroller ([@UlianaMunich](https://github.com/UlianaMunich))
+* [#1640](https://github.com/SAP/luigi/pull/1640) Fixed nav hrefs for hash routing ([@hardl](https://github.com/hardl))
+* [#1624](https://github.com/SAP/luigi/pull/1624) Fix modal content not displaying issue in Safari ([@stanleychh](https://github.com/stanleychh))
+
+
+
+
+
+
 ## [v1.4.0] (2020-09-09)
 
 #### :rocket: Added
@@ -849,3 +873,4 @@ The lerna-changelog tool detects changes based on PR labels and maps them to sec
 
 [v1.3.1]: https://github.com/SAP/luigi/compare/v1.3.0...v1.3.1
 [v1.4.0]: https://github.com/SAP/luigi/compare/v1.3.1...v1.4.0
+[v1.5.0]: https://github.com/SAP/luigi/compare/v1.4.0...v1.5.0
