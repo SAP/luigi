@@ -43,7 +43,7 @@ describe('Fiddle', () => {
     describe('virtualTree with fromVirtualTreeRoot', () => {
       beforeEach(() => {
         const newConfig = cloneDeep(fiddleConfig);
-        // cy.log(newConfig);
+
         newConfig.navigation.nodes.push({
           pathSegment: 'virtual',
           label: 'Virtual',
@@ -408,16 +408,6 @@ describe('Fiddle', () => {
           .find('h2')
           .contains('light');
       });
-
-      // cy.getIframeWindow().then(win => {
-      //   // cypress workaround to fix travis flakiness
-      //     const defaultTheme = win.LuigiClient.uxManager().getCurrentTheme();
-      //     expect(defaultTheme).to.equal('light');
-
-      //   // not yet implemented
-      //   // win.LuigiClient.uxManager().setCurrentTheme('dark');
-      //   // expect(defaultTheme).to.equal('dark');
-      // });
     });
     it('Iframe Url should get set with value by default', () => {
       newConfig.settings.theming.nodeViewURLDecorator = {
