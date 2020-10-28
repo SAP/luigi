@@ -622,9 +622,10 @@
   //// SPLIT VIEW
   export const openSplitView = (nodepath, settings) => {
     if (mfSplitView.displayed) {
-      console.warn('Only one splitview can be oppened at a time');
+      console.warn('Only one splitview can be opened at a time');
       return;
     }
+    mfSplitView = SplitViewSvc.getDefaultData().mfSplitView;
     SplitViewSvc.open(getComponentWrapper(), nodepath, settings);
   };
 
@@ -1059,8 +1060,6 @@
           let path = buildPath(e.data.params);
           path = GenericHelpers.addLeadingSlash(path);
           contentNode = node;
-          mfSplitView = SplitViewSvc.getDefaultData().mfSplitView;
-
           openSplitView(path, e.data.params.splitView);
         } else {
           getUnsavedChangesModalPromise().then(() => {
