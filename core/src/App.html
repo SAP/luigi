@@ -462,6 +462,9 @@
         n => navigationContext === n.navigationContext
       );
       path = Routing.concatenatePath(getSubPath(node), params.link);
+    } else if (params.intent) {
+      const intentPath = RoutingHelpers.getIntentPath(params.link);
+      path = intentPath ? intentPath : path;
     } else if (params.relative) {
       // relative
       path = Routing.concatenatePath(getSubPath(currentNode), params.link);
