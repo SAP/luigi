@@ -517,6 +517,23 @@
             >
             <app-code-snippet data="linkManager().goBack()"> </app-code-snippet>
           </li>
+          <li class="fd-list__item">
+            <a
+              href="javascript:void(0)"
+              class="fd-link"
+              (click)="
+                linkManager().navigate(
+                  '/#?intent=Sales-settings?param1=abc&param2=bcd'
+                )
+              "
+            >
+              navigate to settings with intent with parameters</a
+            >
+            <app-code-snippet
+              data="linkManager().navigate('/#?intent=Sales-settings?param1=abc&param2=bcd')"
+            >
+            </app-code-snippet>
+          </li>
         </ul>
       </div>
     </div>
