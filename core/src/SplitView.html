@@ -1,5 +1,8 @@
-<svelte:window on:resize="{updateSizes}" />
-<div id="splitViewContainer" class="splitViewContainer {collapsed?'lui-collapsed':''}">
+<svelte:window on:resize="{updateSizes}"/>
+<div
+  id="splitViewContainer"
+  class="splitViewContainer {collapsed?'lui-collapsed':''}"
+>
   <Backdrop area="split-view" on:stateChanged="{backdropStateChanged}"></Backdrop>
   <div class="lui-split-view">
     {#if collapsed}
