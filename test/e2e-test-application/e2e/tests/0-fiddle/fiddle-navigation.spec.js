@@ -43,21 +43,28 @@ describe('Fiddle', () => {
     describe('virtualTree with fromVirtualTreeRoot', () => {
       beforeEach(() => {
         const newConfig = cloneDeep(fiddleConfig);
+
         newConfig.navigation.nodes.push({
           pathSegment: 'virtual',
           label: 'Virtual',
           virtualTree: true,
-          viewUrl: '/examples/microfrontends/multipurpose.html#'
+          viewUrl: '/examples/microfrontends/multipurpose.html#',
+          context: {
+            content:
+              '<button  onClick="LuigiClient.linkManager().fromVirtualTreeRoot().navigate(\'/this/is/a/tree\')">virtual</button>'
+          }
         });
         cy.visitWithFiddleConfig('/virtual', newConfig);
       });
       it('navigate', () => {
-        cy.getIframeWindow().then(win => {
-          win.LuigiClient.linkManager()
-            .fromVirtualTreeRoot()
-            .navigate('/this/is/a/tree');
+        cy.getIframeBody().then($body => {
+          cy.wrap($body)
+            .find('button')
+            .contains('virtual')
+            .click();
+
+          cy.expectPathToBe('/virtual/this/is/a/tree');
         });
-        cy.expectPathToBe('/virtual/this/is/a/tree');
       });
     });
     describe('ContextSwitcher', () => {
@@ -382,18 +389,24 @@ describe('Fiddle', () => {
         //   }
         // }
       };
+      newConfig.navigation.nodes.push({
+        pathSegment: 'theming',
+        label: 'Theming Test',
+        viewUrl: '/examples/microfrontends/multipurpose.html#',
+        context: {
+          title: 'Welcome <h2 id="themeText"></h2>',
+          content: `<img src="empty.gif" onerror='document.getElementById("themeText").innerHTML = LuigiClient.uxManager().getCurrentTheme();' />`
+        }
+      });
     });
+
     it('Client get and set theme', () => {
-      cy.visitWithFiddleConfig('/', newConfig);
+      cy.visitWithFiddleConfig('/theming', newConfig);
 
-      cy.wait(500);
-      cy.getIframeWindow().then(win => {
-          const defaultTheme = win.LuigiClient.uxManager().getCurrentTheme();
-          expect(defaultTheme).to.equal('light');
-
-          // not yet implemented
-          // win.LuigiClient.uxManager().setCurrentTheme('dark');
-          // expect(defaultTheme).to.equal('dark');
+      cy.getIframeBody().then($body => {
+        cy.wrap($body)
+          .find('h2')
+          .contains('light');
       });
     });
     it('Iframe Url should get set with value by default', () => {
