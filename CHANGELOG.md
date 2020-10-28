@@ -29,11 +29,12 @@ The lerna-changelog tool detects changes based on PR labels and maps them to sec
 
 #### :rocket: Added
 * [#1634](https://github.com/SAP/luigi/pull/1634) Implement intent based navigation ([@ndricimrr](https://github.com/ndricimrr))
-* [#1646](https://github.com/SAP/luigi/pull/1646) 1549 ally fiori guidelines ([@UlianaMunich](https://github.com/UlianaMunich))
 * [#1652](https://github.com/SAP/luigi/pull/1652) Expose login method in core api([@ionutcirja](https://github.com/ionutcirja))
 * [#1631](https://github.com/SAP/luigi/pull/1631) Updating Auth API to allow dynamic logout ([@dangrima90](https://github.com/dangrima90))
 * [#1623](https://github.com/SAP/luigi/pull/1623) Add accordion effect to categories ([@azriel46d](https://github.com/azriel46d))
 * [#1620](https://github.com/SAP/luigi/pull/1620) Add disableInputHelpers for globalsearch ([@maxmarkus](https://github.com/maxmarkus))
+* [#1665](https://github.com/SAP/luigi/pull/1665) Enable collapsed left side navigation via Core API ([@UlianaMunich](https://github.com/UlianaMunich))
+
 
 #### :bug: Fixed
 * [#1665](https://github.com/SAP/luigi/pull/1665) Fix bug in nav collapsed state ([@UlianaMunich](https://github.com/UlianaMunich))
