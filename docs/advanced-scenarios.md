@@ -205,4 +205,48 @@ Luigi allows you to implement and configure feature toggles. They can be used to
     }
   ``` 
 
+### Use Intent-Based Navigation in Luigi Client
+
+#### Overview 
+Luigi Client allows you to navigate through micro frontends by using an intent-based navigation. This type of navigation decouples navigation triggers from the actual navigation targets. Rather than directly encoding the name of the target app into the URL fragment, app developers provide a navigation intent such as `display` or `edit` as shown in the examples below.
+
+#### Usage
+* To **enable** intent-based navigation, you need to first identify the necessary target mappings. This can be done by defining `intentMapping` in the Luigi configuration under `navigation` as in the example below:
+  ```javascript
+  intentMapping = [
+    {
+      semanticObject: 'Sales',
+      action: 'display',
+      pathSegment: '/projects/sap/munich/database/sales/display'
+    },
+    {
+      semanticObject: 'Sales',
+      action: 'edit',
+      pathSegment: '/projects/sap/munich/database/sales/edit'
+    }
+  ];
+  ```
+  1. The intent link is built using the `semanticObject`, `action` and optional parameters in the following format:
+  `#?intent=semanticObject-action?params`. 
+  An example of an intent link would be as follows:
+  ```javascript
+    #?intent=Sales-edit?id=100
+  ```
+  2. Navigation to a micro frontend through this intent is then made possible by using the [linkManager navigate method](luigi-client-api.md#navigate) from Luigi Client API:
+  ```javascript
+    LuigiClient.linkManager().navigate('#?intent=Sales-edit?id=100');
+  ```
+
+  3. This method would then be navigating to the translated real path segment:
+  ```javascript
+    https://example.com/projects/sap/munich/database/sales/edit?~id=100;
+  ```
+
+  4. Alternatively, the intent link can also be accessed through the browser URL and accessed from outside:
+  ```javascript
+    https://example.com/#?intent=Sales-edit?id=100;
+  ```
+
+
+
 <!-- accordion:end -->
