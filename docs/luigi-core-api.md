@@ -311,7 +311,7 @@ Luigi.auth().login();
 
 **Meta**
 
--   **since**: NEXTRELEASE
+-   **since**: 1.5.0
 
 #### logout
 
@@ -326,7 +326,7 @@ Luigi.auth().logout();
 
 **Meta**
 
--   **since**: NEXTRELEASE
+-   **since**: 1.5.0
 
 ### AuthorizationStore
 
@@ -879,7 +879,7 @@ Set the collapsed state of the left side navigation
 
 **Meta**
 
--   **since**: NEXTRELEASE
+-   **since**: 1.5.0
 
 ## Luigi.globalSearch()
 
