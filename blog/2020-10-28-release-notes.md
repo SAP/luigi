@@ -19,7 +19,7 @@ The Luigi Core Auth API was improved by the addition of two new `login` and `log
 
 #### Accordion effect in categories
 
-This new feature allows a category in Luigi navigation to act as an accordion - when the user clicks another category the previously collapsed category is closed and the new one is opened. This feature can be used by configuring the `sideNavAccordionMode` parameter. Read more in our [navigation parameters reference](https://docs.luigi-project.io/docs/navigation-parameters-reference/?section=sidenavaccordionmode).
+This new feature allows a category in Luigi navigation to act as an accordion - when the user clicks another category, the previously expanded category is collapsed and the new one is expanded. This feature can be used by configuring the `sideNavAccordionMode` parameter. Read more in our [navigation parameters reference](https://docs.luigi-project.io/docs/navigation-parameters-reference/?section=sidenavaccordionmode).
 
 #### New global search
 
