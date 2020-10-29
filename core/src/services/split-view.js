@@ -227,7 +227,6 @@ class SplitViewSvcClass {
       comp.get().mfSplitView.displayed = false;
       comp.set({ mfSplitView: comp.get().mfSplitView });
     }
-
   }
 
   async expand(comp) {

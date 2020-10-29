@@ -56,9 +56,9 @@ class IframeHelpersClass {
           new RegExp(
             GenericHelpers.escapeRegExp(
               (parenthesis ? '{' : '') +
-                prefix +
-                entry[0] +
-                (parenthesis ? '}' : '')
+              prefix +
+              entry[0] +
+              (parenthesis ? '}' : '')
             ),
             'g'
           ),
@@ -142,7 +142,7 @@ class IframeHelpersClass {
   }
 
   urlMatchesTheDomain(viewUrl = '', domain) {
-    return this.getLocation(viewUrl) === domain;
+    return this.getLocation(viewUrl) === this.getLocation(domain);
   }
 
   iframeIsSameDomain(viewUrl, domain) {
