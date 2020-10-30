@@ -105,7 +105,7 @@ The navigation parameters allow you to configure **global** navigation settings 
   - **preloadUrl**(string): needs to be an absolute URL of a micro frontend belonging to a view group. It cannot be an URL of a node. It is recommended that you use a dedicated small, visually empty view, which imports Luigi Client and is fine with getting an empty context, for example, without an access token. The **preloadUrl** parameter
  is also required for view group caching in case you need a view group iframe to refresh whenever you navigate back to it.
 
- ### intentMapping
+### intentMapping
 - **type**: array
 - **description**: contains an array of abstract intent objects that can be used to navigate through micro frontends through the [LuigiClient linkManager.navigate()](luigi-client-api.md#navigate) method. The attributes contained in each intent object of the array are abstract notations which can be used to define the target mapping of your desired intent navigation in a semantic way. 
 Check our [Advanced Scenarios](advanced-scenarios.md) page for an example.
