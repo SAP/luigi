@@ -10,13 +10,20 @@ We use GitHub to track issues and feature requests, as well as accept pull reque
 You are welcome to contribute with your pull requests. These steps explain the contribution process:
 
 1. Fork the repository and create your branch from `master`.
-2. If you've added code that should be tested, add tests.
-3. If you've changed APIs, update the documentation.
-4. Make sure the tests pass.
-5. Sign the Developer Certificate of Origin (DCO).
+2. Run `npm install` in the root folder. This will install pre-commit and pre-push hooks that will take care about certain required preconditions.
+3. [Add tests](#testing) for your code, especially if you are updating the Luigi Core and Client API.
+4. If you've changed APIs, update the documentation. You can find more details on how to do that [here](docs/content-guidelines.md/#API-documentation).
+5. If you are adding documentation, follow the [content guidelines](docs/content-guidelines.md).
+6. Make sure the tests pass. Our [pipeline](https://travis-ci.com/SAP/luigi) is running the unit and e2e tests for your PR and will indicate any issues.
+7. Sign the Developer Certificate of Origin (DCO).
 
-## Developer Certificate of Origin (DCO)
-Due to legal reasons, contributors will be asked to accept a DCO before they submit the first pull request to this projects, this happens in an automated fashion during the submission process. SAP uses [the standard DCO text of the Linux Foundation](https://developercertificate.org/).
+## Testing
+
+> **NOTE:** You should always add [*unit tests*](../core/test/) if you are adding code to our repository.
+
+If you've added code that is exposed as an API or configuration, additionally add e2e tests to [fiddle-navigation.spec.js](https://github.com/SAP/luigi/blob/master/test/e2e-test-application/e2e/tests/0-fiddle/fiddle-navigation.spec.js).
+
+To let tests run locally, run `cd website/fiddle && npm start` and `cd test/e2e-test-application && npm run e2e:open` and click on the *fiddle-navigation.spec.js*.
 
 ## Issues
 We use GitHub issues to track bugs. Please ensure your description is
