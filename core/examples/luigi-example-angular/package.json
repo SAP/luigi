@@ -31,7 +31,7 @@
     "@angular-devkit/core": "0.8.9",
     "@angular-devkit/schematics": "0.8.9",
     "@angular/cli": "8.3.15",
-    "@angular/compiler-cli": "8.2.12",
+    "@angular/compiler-cli": "10.0.12",
     "@angular/language-service": "8.2.12",
     "@types/jasmine": "3.4.4",
     "@types/jasminewd2": "2.0.8",
@@ -39,13 +39,13 @@
     "codelyzer": "5.2.0",
     "lodash": ">=4.17.19",
     "serialize-javascript": ">=3.1.0",
+    "selfsigned": "1.10.8",
     "tar": ">=4.4.2",
     "ts-node": "4.1.0",
     "tslint": "5.20.0",
     "typescript": "3.5.3",
     "webpack": "^4.42.1",
-    "webpack-cli": "3.3.9",
-    "webpack-dev-server": "^3.11.0",
-    "selfsigned": "1.10.8"
+    "webpack-cli": "4.1.0",
+    "webpack-dev-server": "^3.11.0"
   }
 }
