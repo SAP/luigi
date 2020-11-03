@@ -3,10 +3,10 @@ echo ""
 echo "Installing Luigi with React specification"
 echo ""
 if [[ "$1" = "" ]]; then
-  read -p "Luigi project folder name: " folder
+  read -p "Luigi project folder name (lowercase letters only): " folder
 else
   folder=$1
-  echo "Luigi project folder name: $folder"
+  echo "Luigi project folder name (lowercase letters only): $folder"
 fi
 
 # create sample react app
