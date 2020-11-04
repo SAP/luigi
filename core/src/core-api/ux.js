@@ -1,6 +1,7 @@
 import { APP_LOADING_INDICATOR } from './../utilities/constants';
 import { GenericHelpers } from '../utilities/helpers';
 import { get, writable } from 'svelte/store';
+import { SemiCollapsibleNavigation } from './../navigation/services/semi-collapsed-navigation';
 /**
  * Functions to use Luigi Core UX features.
  * @namespace UX
@@ -108,7 +109,7 @@ class LuigiUX {
    * Set the document title
    * @memberof UX
    * @param {string} documentTitle
-   * @since NEXTRELEASE
+   * @since 1.4.0
    * @example Luigi.ux().setDocumentTitle('Luigi');
    */
   setDocumentTitle(documentTitle) {
@@ -119,12 +120,22 @@ class LuigiUX {
   /**
    * Get the document title
    * @memberof UX
-   * @since NEXTRELEASE
+   * @since 1.4.0
    * @returns a string, which is displayed in the tab.
    * @example Luigi.ux().getDocumentTitle();
    */
   getDocumentTitle() {
     return get(this.documentTitle);
+  }
+
+  /**
+   * Set the collapsed state of the left side navigation
+   * @memberof UX
+   * @param {boolean} state
+   * @since 1.5.0
+   */
+  collapseLeftSideNav(state) {
+    SemiCollapsibleNavigation.setCollapsed(state);
   }
 }
 

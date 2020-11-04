@@ -22,6 +22,13 @@ class Navigation {
       preloadUrl: '/sampleapp.html#/preload'
     }
   };
+  intentMapping = [
+    {
+      semanticObject: 'Sales',
+      action: 'settings',
+      pathSegment: '/projects/pr2/settings'
+    }
+  ];
   nodeAccessibilityResolver = navigationPermissionChecker;
   nodes = [
     {

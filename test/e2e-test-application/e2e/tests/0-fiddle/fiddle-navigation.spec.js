@@ -1,7 +1,6 @@
 import fiddleConfig from '../../configs/default';
 import { cloneDeep } from 'lodash';
 
-Cypress.env('RETRIES', 1);
 describe('Fiddle', () => {
   describe('Navigation', () => {
     describe('Core api navigation test', () => {
@@ -44,21 +43,28 @@ describe('Fiddle', () => {
     describe('virtualTree with fromVirtualTreeRoot', () => {
       beforeEach(() => {
         const newConfig = cloneDeep(fiddleConfig);
+
         newConfig.navigation.nodes.push({
           pathSegment: 'virtual',
           label: 'Virtual',
           virtualTree: true,
-          viewUrl: '/examples/microfrontends/multipurpose.html#'
+          viewUrl: '/examples/microfrontends/multipurpose.html#',
+          context: {
+            content:
+              '<button  onClick="LuigiClient.linkManager().fromVirtualTreeRoot().navigate(\'/this/is/a/tree\')">virtual</button>'
+          }
         });
         cy.visitWithFiddleConfig('/virtual', newConfig);
       });
       it('navigate', () => {
-        cy.getIframeWindow().then(win => {
-          win.LuigiClient.linkManager()
-            .fromVirtualTreeRoot()
-            .navigate('/this/is/a/tree');
+        cy.getIframeBody().then($body => {
+          cy.wrap($body)
+            .find('button')
+            .contains('virtual')
+            .click();
+
+          cy.expectPathToBe('/virtual/this/is/a/tree');
         });
-        cy.expectPathToBe('/virtual/this/is/a/tree');
       });
     });
     describe('ContextSwitcher', () => {
@@ -96,12 +102,12 @@ describe('Fiddle', () => {
           },
           customSelectedOptionRenderer: option => {
             if (option.customRendererCategory === 'production') {
-              return `<label style='color: rgb(136, 255, 0); font-weight:700'> 
-                    ${option.label} 
+              return `<label style='color: rgb(136, 255, 0); font-weight:700'>
+                    ${option.label}
                     </label>`;
             } else if (option.customRendererCategory === 'stage') {
-              return `<label style='color: rgb(0, 136, 255); font-weight:700'> 
-                        ${option.label} 
+              return `<label style='color: rgb(0, 136, 255); font-weight:700'>
+                        ${option.label}
                         </label>`;
             }
           }
@@ -335,6 +341,31 @@ describe('Fiddle', () => {
         // Verify default value
         logoutLink().contains('Sign Out');
       });
+      it('Trigger Login and Logout with Core API', () => {
+        newConfig.navigation.profile = undefined;
+        newConfig.auth.disableAutoLogin = true;
+        visitWithAuthConfig('/', newConfig);
+
+        cy.get('[data-testid="luigi-topnav-profile"] button').click();
+        loginLink().should('exist');
+
+        cy.window().then(win => {
+          cy.log('Trigger auth().login()');
+          win.Luigi.auth().login();
+        });
+
+        cy.login('tets@email.com', 'tets', true);
+
+        cy.get('[data-testid="luigi-topnav-profile"] button').click();
+        logoutLink().should('exist');
+
+        cy.window().then(win => {
+          cy.log('Trigger auth().logout()');
+          win.Luigi.auth().logout();
+        });
+
+        cy.contains('Login again');
+      });
     });
   });
 
@@ -358,19 +389,24 @@ describe('Fiddle', () => {
         //   }
         // }
       };
+      newConfig.navigation.nodes.push({
+        pathSegment: 'theming',
+        label: 'Theming Test',
+        viewUrl: '/examples/microfrontends/multipurpose.html#',
+        context: {
+          title: 'Welcome <h2 id="themeText"></h2>',
+          content: `<img src="empty.gif" onerror='document.getElementById("themeText").innerHTML = LuigiClient.uxManager().getCurrentTheme();' />`
+        }
+      });
     });
+
     it('Client get and set theme', () => {
-      cy.visitWithFiddleConfig('/', newConfig);
+      cy.visitWithFiddleConfig('/theming', newConfig);
 
-      cy.window().then(win => {
-        cy.getIframeWindow().then(win => {
-          const defaultTheme = win.LuigiClient.uxManager().getCurrentTheme();
-          expect(defaultTheme).to.equal('light');
-
-          // not yet implemented
-          // win.LuigiClient.uxManager().setCurrentTheme('dark');
-          // expect(defaultTheme).to.equal('dark');
-        });
+      cy.getIframeBody().then($body => {
+        cy.wrap($body)
+          .find('h2')
+          .contains('light');
       });
     });
     it('Iframe Url should get set with value by default', () => {
@@ -405,6 +441,90 @@ describe('Fiddle', () => {
           '/examples/microfrontends/multipurpose.html?sap-theme=lightLUIGI'
         );
       });
+    });
+  });
+
+  describe('semiCollapsible settings of Left Side Navigation', () => {
+    let newConfig;
+
+    beforeEach(() => {
+      newConfig = cloneDeep(fiddleConfig);
+      newConfig.settings.responsiveNavigation = 'semiCollapsible';
+      cy.window().then(win => {
+        win.Luigi.configChanged('settings');
+      });
+    });
+    it('should check if the btn hide/show left side nav visible', () => {
+      cy.get('[data-testid="semiCollapsibleButton"]').should('be.visible');
+    });
+
+    it('should collapse the left sidde nav on btn click', () => {
+      cy.get('[data-testid="semiCollapsibleButton"]').click();
+      cy.get('[data-testid="semiCollapsibleLeftNav"]').should(
+        'have.class',
+        'fd-side-nav--condensed'
+      );
+
+      cy.reload().wait(1000);
+
+      cy.get('[data-testid="semiCollapsibleLeftNav"]').should(
+        'have.class',
+        'fd-side-nav--condensed'
+      );
+    });
+
+    it('should execute Core API function collapseLeftSideNav() and open the nav', () => {
+      cy.window().then(win => {
+        win.Luigi.ux().collapseLeftSideNav(false);
+      });
+      cy.reload().wait(1000);
+      cy.get('[data-testid="semiCollapsibleLeftNav"]').should(
+        'not.have.class',
+        'fd-side-nav--condensed'
+      );
+    });
+  });
+
+  describe('Fiori3 settings of Left Side Navigation', () => {
+    let newConfig;
+
+    beforeEach(() => {
+      newConfig = cloneDeep(fiddleConfig);
+      newConfig.settings.responsiveNavigation = 'Fiori3';
+      cy.window().then(win => {
+        win.Luigi.configChanged('settings');
+      });
+      cy.visitWithFiddleConfig('/', newConfig);
+    });
+
+    it('should check if the burger btn exist', () => {
+      cy.get('button.lui-burger').should('be.visible');
+    });
+
+    it('should collapse the left sidde nav on burger click', () => {
+      cy.get('button.lui-burger').click();
+      cy.get('[data-testid="semiCollapsibleLeftNav"]').should(
+        'have.class',
+        'fd-side-nav--condensed'
+      );
+
+      cy.reload().wait(1000);
+
+      cy.get('[data-testid="semiCollapsibleLeftNav"]').should(
+        'have.class',
+        'fd-side-nav--condensed'
+      );
+    });
+
+    it('should execute Core API function collapseLeftSideNav() and open the nav in Fiori3 settings', () => {
+      cy.window().then(win => {
+        win.Luigi.ux().collapseLeftSideNav(false);
+      });
+      cy.reload().wait(1000);
+      cy.get('[data-testid="semiCollapsibleLeftNav"]').should(
+        'not.have.class',
+        'fd-side-nav--condensed'
+      );
     });
   });
 });

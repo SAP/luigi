@@ -55,6 +55,10 @@ You can configure the way Luigi tackles routing in your application in the `rout
   - **wrongPath** (string): the path that the user tried navigating to.
   - **wasAnyPathFitted** (bool): it is true if Luigi managed to fit a valid path which means **wrongPath** was only partially wrong. Otherwise it is false.
 
+### defaults.sideNavAccordionMode
+- **type**: boolean
+- **description**: overrides the default behaviour of categories whether multiple categories can be collapsed. When set to `true`, only one category is collapsed. The navigation is similar to an accordion; when the user clicks another category the previously collapsed category is closed and the new one is opened.
+- **default**: `false`
 
 ## Navigation parameters
 The navigation parameters allow you to configure **global** navigation settings directly under the `navigation:` section in the configuration file.
@@ -100,6 +104,15 @@ The navigation parameters allow you to configure **global** navigation settings 
 - **attributes**:
   - **preloadUrl**(string): needs to be an absolute URL of a micro frontend belonging to a view group. It cannot be an URL of a node. It is recommended that you use a dedicated small, visually empty view, which imports Luigi Client and is fine with getting an empty context, for example, without an access token. The **preloadUrl** parameter
  is also required for view group caching in case you need a view group iframe to refresh whenever you navigate back to it.
+
+### intentMapping
+- **type**: array
+- **description**: contains an array of abstract intent objects that can be used to navigate through micro frontends through the [LuigiClient linkManager.navigate()](luigi-client-api.md#navigate) method. The attributes contained in each intent object of the array are abstract notations which can be used to define the target mapping of your desired intent navigation in a semantic way. 
+Check our [Advanced Scenarios](advanced-scenarios.md) page for an example.
+- **attributes**:
+  - **semanticObject**(string): may represent a business entity such as a sales order or a product. It enables navigating to such entities in an abstract implementation-independent way. It can only only contain alphanumerical characters.
+  - **action**(string): defines an operation, i.e.: `display`, `approve` or `edit`. The operation is intended to be performed on a **semanticObject** such as a sales order or a certain product. It can only contain alphanumerical characters but also the underscore character.
+  - **pathSegment**(string): represents the target of the navigation. In order to use it as a target link, it has to be defined under navigation nodes in the Luigi configuration.
 
 
 ## Node parameters
@@ -318,7 +331,13 @@ settings: {
       visibleForFeatureToggles:['ft1', '!ft2']
     }
     ```
-- **since**: NEXTRELEASE
+- **since**: 1.4.0
+
+### sideNavAccordionMode
+- **type**: boolean
+- **description**: overrides the default behaviour of categories whether multiple categories can be collapsed. When set to `true`, only one category is collapsed. The navigation is similar to an accordion; when the user clicks another category the previously collapsed category is closed and the new one is opened. Note that this will be applied to its direct children.
+- **default**: `false`
+
 
 ## Context switcher
 
@@ -377,7 +396,7 @@ The context switcher is a drop-down list available in the top navigation bar. It
 ### useFallbackLabelCache
 - **type**: boolean
 - **description**: if set to `true`, the labels retrieved through **fallbackLabelResolver** are cached within Luigi. This is useful, if **fallbackLabelResolver** is an async function which does a remote server call to fetch its value.
-- **since**: NEXTRELEASE
+- **since**: 1.4.0
 
 ### preserveSubPathOnSwitch
 - **type**: boolean
@@ -491,7 +510,12 @@ The app switcher is a drop-down list available in the top navigation bar. It all
 
 ## Global search
 
-The global search is an input field available in the top navigation bar. The search is available if the search provider object is configured and implemented in the `luigi-config.js` file.
+The global search is an input field available in the top navigation bar. The search is available if the Luigi configuration file contains on its root level a section called `globalSearch`. Within this section you can implement and configure a search provider object.
+
+### disableInputHandlers
+- **type**: boolean
+- **description**: disables the on:keyUp and other internal handlers on the search input field. It is a plain input field then, which can be used to attach your own handlers. If set to `true`, a **searchProvider** must be defined in order to show the search field, which can contain your custom logic. It is recommended to initialize your custom logic in the [**lifeCycle.luigiAfterInit**](lifecycle-hooks.md#luigiafterinit) hook.
+- **since**: 1.5.0
 
 ### searchProvider
 - **type**: Object

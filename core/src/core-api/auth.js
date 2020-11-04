@@ -1,5 +1,5 @@
 import { LuigiConfig } from './';
-import { AuthStoreSvc } from '../services';
+import { AuthStoreSvc, AuthLayerSvc } from '../services';
 
 /**
  * Authorization helpers
@@ -22,6 +22,34 @@ class LuigiAuth {
    */
   isAuthorizationEnabled() {
     return !!LuigiConfig.getConfigValue('auth.use');
+  }
+
+  /**
+   * Login the user dynamically.
+   * This will run the same functionality as though the user clicked the login button.
+   * @memberof Authorization
+   * @since 1.5.0
+   * @example
+   * Luigi.auth().login();
+   */
+  login() {
+    if (this.isAuthorizationEnabled()) {
+      AuthLayerSvc.startAuthorization();
+    }
+  }
+
+  /**
+   * Logout the user dynamically.
+   * This will run the same functionality as though the user clicked the logout button.
+   * @memberof Authorization
+   * @since 1.5.0
+   * @example
+   * Luigi.auth().logout();
+   */
+  logout() {
+    if (this.isAuthorizationEnabled()) {
+      AuthLayerSvc.logout();
+    }
   }
 
   /**

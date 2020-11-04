@@ -259,9 +259,19 @@ class NavigationHelpersClass {
     return expandedList;
   }
 
-  storeExpandedState(key, value) {
-    const expandedList = this.loadExpandedCategories();
+  storeExpandedState(key, value, replace = false) {
+    let expandedList = this.loadExpandedCategories();
+
+    //get conxtext for siblings
+    let context = key.split(':')[0];
     if (value) {
+      if (replace) {
+        // Filter out other categories
+        expandedList = expandedList.filter(
+          f => f.indexOf(context + ':') === -1
+        );
+      }
+
       if (expandedList.indexOf(key) < 0) {
         expandedList.push(key);
       }
