@@ -25,7 +25,9 @@
       on:close="{closeDrawer}"
       on:drawerState="{setDrawerState}"
       on:iframeCreated="{drawerIframeCreated}"
-    ></Modal>
+    >
+    <Backdrop area="drawer"></Backdrop>
+  </Modal>
     {/if}
   <Backdrop>
     <div

@@ -3,7 +3,7 @@ import {
   OnInit
 } from '@angular/core';
 
-import { linkManager } from '@luigi-project/client';
+import { linkManager, uxManager } from '@luigi-project/client';
 
 @Component({
   selector: 'app-drawer',
@@ -13,6 +13,7 @@ import { linkManager } from '@luigi-project/client';
 export class DrawerComponent implements OnInit {
 
   public linkManager = linkManager;
+  public uxManager = uxManager;
   public constructor() { }
 
   public ngOnInit() { }
