@@ -1,0 +1,24 @@
+:root {
+  --luigi__left-sidenav--width: auto !important;
+}
+
+
+.luigi-documentation .fd-nested-list__link:hover, .luigi-documentation .fd-nested-list__link.is-selected {
+  border-color: transparent !important;
+}
+
+.luigi-documentation .fd-nested-list__link{
+  border-top: none;
+}
+
+.luigi-documentation .fd-side-nav {
+  max-width: 320px !important;
+}
+
+// TO SIMULATE UI BUG WITH Luigi 1.5.0
+//.lui-fd-side-nav-wrapper {
+//  scrollbar-width: auto;
+//  &::-webkit-scrollbar  {
+//    width: 0;
+//  }
+//}

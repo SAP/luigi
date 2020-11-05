@@ -1,4 +1,9 @@
 import docsearch from 'docsearch.js';
+
+
+
+
+
 class DocSearch {
   init() {
     this.isDevelop = parseInt(window.location.port) === 4000;
@@ -48,7 +53,10 @@ class DocSearch {
   }
 
   initDocSearch() {
+    console.log("initDocSearch => start")
     const transformData = suggestions => {
+      console.log("transformData => start ",suggestions)
+
       return suggestions.map(sg => {
         if (this.isDevelop) {
           sg.url = sg.url.replace(
@@ -62,6 +70,8 @@ class DocSearch {
     };
 
     const handleSelected = (_, event) => {
+      console.log("handleSelected => start")
+
       if (
         !event ||
         !event._args ||
@@ -87,6 +97,8 @@ class DocSearch {
     };
 
     const createAlgoliaOptions = () => {
+      console.log("createAlgoliaOptions => start")
+
       const algoliaOptions = {
         hitsPerPage: 8
       };
@@ -107,13 +119,19 @@ class DocSearch {
         handleSelected
       };
     };
-    docsearch(createAlgoliaOptions());
+
+    let result = docsearch(createAlgoliaOptions());
+    alert("appId --> "+ result.appId);
   }
 
   attachHandlers() {
+    console.log("attachHandlers => start")
+
     const inputEl = document.getElementById('lui-search-field');
 
     const focusSearch = () => {
+      console.log("focusSearch => start")
+
       let inputField = document.getElementById('docsearch');
       if (this.inputActive) {
         setTimeout(() => {
@@ -125,6 +143,8 @@ class DocSearch {
     };
 
     const toggleInputActive = () => {
+      console.log("toggleInputActive => start")
+
       this.inputActive = !this.inputActive;
       const searchButton = document.getElementById('lui-search-button');
       searchButton.setAttribute('aria-hidden', this.inputActive);
@@ -132,9 +152,11 @@ class DocSearch {
       inputEl.setAttribute('aria-hidden', !this.inputActive);
     };
 
+
     document
       .getElementById('lui-search-button')
       .addEventListener('click', e => {
+        console.log('Click butttton')
         e.preventDefault();
         toggleInputActive();
         focusSearch();

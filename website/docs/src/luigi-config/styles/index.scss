@@ -104,7 +104,7 @@ $side-nav-width-mobile: 260px;
     span {
       font-weight: 600;
     }
-    
+
     .fd-shellbar__title {
       display: none;
     }
@@ -175,7 +175,7 @@ $side-nav-width-mobile: 260px;
           &[aria-selected=true] {
             color: $primary-color;
           }
-          
+
           .fd-menu__link {
             &.is-hover,
             &:hover {
@@ -248,9 +248,9 @@ $side-nav-width-mobile: 260px;
       height: 69px;
       padding-bottom: 41px;
       margin-bottom: -41px;
-  
+
       span {
-  
+
         &:not(.fd-top-nav__icon) {
           color: white;
           font-size: 18px;
@@ -261,13 +261,13 @@ $side-nav-width-mobile: 260px;
           transition: all .2s ease;
         }
       }
-  
+
       .fd-top-nav__icon {
         &:before {
           margin-top: 0 !important;
         }
       }
-  
+
       &:hover,
       &.is-selected {
         span {
@@ -278,7 +278,7 @@ $side-nav-width-mobile: 260px;
       }
     }
   }
-  
+
   .fd-app__sidebar,
   .iframeContainer {
     top: $height-shellbar-mobile;
@@ -440,7 +440,7 @@ $side-nav-width-mobile: 260px;
     }
 
   }
-  
+
   .lui-category {
     text-transform: uppercase;
     border: none;
@@ -506,14 +506,14 @@ $side-nav-width-mobile: 260px;
     .fd-side-nav {
       width: $side-nav-width-mobile;
     }
-  
+
     &.lui-simpleSlideInNav.lui-leftNavToggle {
       .fd-app__sidebar,
       .fd-side-nav {
         width: $side-nav-width-mobile;
       }
     }
-  
+
     &.lui-simpleSlideInNav .fd-app__sidebar {
       left: -$side-nav-width-mobile;
     }
@@ -530,3 +530,4 @@ $side-nav-width-mobile: 260px;
 
 
 @import './search';
+@import "./fix_upgrade";
