@@ -20,7 +20,7 @@ class AlgoliaSearcher{
         }
 
         hits = hits.map(this.transformUrls.bind(this)).map(this.transformContent)
-        console.log('hits for query '+query+" : ", hits);
+        console.debug('hits for query '+query+" : ", hits);
         Luigi.globalSearch().showSearchResult([query].concat(hits));
       })
 

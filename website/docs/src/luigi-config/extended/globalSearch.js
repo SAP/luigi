@@ -11,14 +11,12 @@ class GlobalSearch {
   searchProvider = {
 
     onInput: () => {
-      console.log("onInput ===> start")
       let query = Luigi.globalSearch().getSearchString();
       if (query.length < this.minSearchLength){
         //to short to be searched, please grow up
         return;
       }
 
-      console.log('algoliaSearcher ', algoliaSearcher)
       algoliaSearcher.executeSearch(query);
     },
 
