@@ -9,14 +9,12 @@ class GlobalSearch {
   }
 
   searchProvider = {
-
     onInput: () => {
       let query = Luigi.globalSearch().getSearchString();
       if (query.length < this.minSearchLength){
         //to short to be searched, please grow up
         return;
       }
-
       algoliaSearcher.executeSearch(query);
     },
 
@@ -29,8 +27,6 @@ class GlobalSearch {
       Luigi.globalSearch().clearSearchField();
     },
 
-
-
     customSearchResultRenderer: (searchResults, slot, searchApiObj) => {
       let query = searchResults.shift();
       let resultRender = new ResultRender(query, searchResults);
@@ -41,13 +37,7 @@ class GlobalSearch {
     disableInputHandlers: {
       type: false
     }
-
-
   }
-
-
-
-
 }
 
 export const globalSearch = new GlobalSearch();

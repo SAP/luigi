@@ -36,7 +36,6 @@ const empty =`
   </div>
   `;
 
-
 export default class ResultRender {
 
   constructor(query, results) {
@@ -54,7 +53,6 @@ export default class ResultRender {
 
     return domItems.container;
   }
-
 
   domResults(span){
     let template = Hogan.compile(suggestionTemplate);
@@ -75,9 +73,6 @@ export default class ResultRender {
     span.appendChild(searchItem);
   }
 
-
-
-
   shortDescription(description){
     let short = description;
     if (short.length > 80){
@@ -96,7 +91,6 @@ export default class ResultRender {
       title2: result.title2,
       title3: result.title3,
     };
-
     return data;
   }
 
@@ -128,7 +122,6 @@ export default class ResultRender {
       e.preventDefault();
       searchItem.classList.remove("ds-cursor");
     });
-
   }
 
   buildContainer(){
@@ -145,7 +138,6 @@ export default class ResultRender {
 
     let div_1 = this.createAttribute('div', {"class":"ds-dataset-1"});
     let span_11 = this.createAttribute('span', {"class": "ds-suggestions","style": "display: block;"});
-
     span.appendChild(span_);
     span_.appendChild(div_1);
     div_1.appendChild(span_11);
@@ -161,7 +153,6 @@ export default class ResultRender {
     if (!attributes){
       return elem;
     }
-
     Object.keys(attributes).forEach(key => elem.setAttribute(key, attributes[key]))
     return elem;
   }
@@ -182,6 +173,7 @@ export default class ResultRender {
       let combo = arr.join("");
       results.push(combo);
     }
+
     return results;
   }
 
@@ -194,7 +186,6 @@ export default class ResultRender {
     Object.keys(attributes).forEach(key => elem.setAttribute(key, attributes[key]))
     return elem;
   }
-
 
 }
 

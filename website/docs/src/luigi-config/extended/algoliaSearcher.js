@@ -1,6 +1,5 @@
 import algoliasearch from "algoliasearch";
 
-
 class AlgoliaSearcher{
 
   constructor() {
@@ -11,7 +10,6 @@ class AlgoliaSearcher{
     this.coreBaseUrl = window.location.origin;
   }
 
-
   executeSearch(query){
     this.index.search(query, {hitsPerPage:  this.searchResult })
       .then(({ hits }) => {
@@ -20,7 +18,6 @@ class AlgoliaSearcher{
         }
 
         hits = hits.map(this.transformUrls.bind(this)).map(this.transformContent)
-        console.debug('hits for query '+query+" : ", hits);
         Luigi.globalSearch().showSearchResult([query].concat(hits));
       })
 
@@ -46,7 +43,6 @@ class AlgoliaSearcher{
       }
       url = url.substring(0, url.indexOf("#"))
     }
-
     let title1 = hit.hierarchy['lvl0'];
     let title2 = hit.hierarchy['lvl1'] || hit.hierarchy['lvl0'];
     let title3 = hit.hierarchy['lvl2'] || hit.hierarchy['lvl0'];
@@ -63,10 +59,7 @@ class AlgoliaSearcher{
       title3: title3,
       hit: hit
     }
-
   }
-
-
 }
 
 
