@@ -80,8 +80,14 @@ export const projectDetailNavStructure = projectId => [
     viewUrl: '/sampleapp.html#/projects/' + projectId + '/drawer',
     drawer: {
       header: 'Test',
+      backdrop: true,
       size: 'l'
     }
+  },
+  {
+    pathSegment: 'pexit',
+    label: 'pexit',
+    viewUrl: 'http://localhost:8080/'
   },
   {
     pathSegment: 'on-node-activation',

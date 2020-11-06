@@ -367,6 +367,15 @@
           </li>
         </ul>
       </div>
+      <div class="fd-layout-panel__body">
+        <button class="fd-button" data-testid="add-backdrop" (click)="toggleModal()">
+          Add backdrop
+        </button>
+        <p>
+          <app-code-snippet data="uxManager().addBackdrop()"></app-code-snippet>
+          <app-code-snippet data="uxManager().removeBackdrop()"></app-code-snippet>
+        </p>
+      </div>
     </div>
 
     <div class="fd-layout-panel luigi__margin-bottom--small check-path">

@@ -6,9 +6,7 @@
     data-testid="modal-mf">
     {#if isModal || (isDrawer && settings.header)}
     <div class="fd-dialog__header fd-bar fd-bar--header">
-      {#if isDrawer}
-      <Backdrop area="drawer-header" on:stateChanged="{backdropStateChanged}"></Backdrop>
-      {/if}
+      <Backdrop on:stateChanged="{backdropStateChanged}"></Backdrop>
       <div class="fd-bar__left">
         <div class="fd-bar__element">
           {#if settings.title}

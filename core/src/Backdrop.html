@@ -14,6 +14,7 @@
   let wasBackdropActive = false;
   let options = {};
   export let area;
+  export let disable;
 
   const setBackdropClass = () => {
     const baseClasses = 'lui-backdrop ';
@@ -51,17 +52,19 @@
       setBackdropClass();
       EventListenerHelpers.addEventListener('message', e => {
         if (!IframeHelpers.getValidMessageSource(e)) return;
-        if ('luigi.add-backdrop' === e.data.msg) {
-          if (isValidForArea(e)) {
-            backdropActive = true;
-          } else {
-            backdropActive = false;
+        if (disable !== true) {
+          if ('luigi.add-backdrop' === e.data.msg) {
+            if (isValidForArea(e)) {
+              backdropActive = true;
+            } else {
+              backdropActive = false;
+            }
+            dispatch('stateChanged', { backdropActive: true });
           }
-          dispatch('stateChanged', { backdropActive: true });
-        }
-        if ('luigi.remove-backdrop' === e.data.msg) {
-          backdropActive = false;
-          dispatch('stateChanged', { backdropActive: false });
+          if ('luigi.remove-backdrop' === e.data.msg) {
+            backdropActive = false;
+            dispatch('stateChanged', { backdropActive: false });
+          }
         }
       });
     }

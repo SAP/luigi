@@ -29,13 +29,13 @@
     <Backdrop area="drawer"></Backdrop>
   </Modal>
     {/if}
-  <Backdrop>
+  <Backdrop disable="{disableBackdrop}">
     <div
       class="fd-page iframeContainer {mfSplitView.displayed?'lui-split-view':''} {mfSplitView.collapsed?'lui-collapsed':''}"
       tabindex="0"
       use:init
     >
-      <Backdrop area="main"></Backdrop>
+      <Backdrop area="main" disable="{disableBackdrop}"></Backdrop>
       <div class="wcContainer"></div>
     </div>
     {#if mfSplitView.displayed}
@@ -160,6 +160,7 @@
   let modalIframeData;
   let modal;
   let activeDrawer = false;
+  let disableBackdrop;
   let drawerIframe;
   let drawerIframeData;
   let drawer;
@@ -923,6 +924,7 @@
     mfDrawer.displayed = false;
     mfDrawer.nodepath = undefined;
     mfDrawer.settings = {};
+    disableBackdrop = false;
   };
 
   resetMicrofrontendDrawerData();
@@ -935,6 +937,9 @@
     mfDrawer.displayed = true;
     mfDrawer.nodepath = nodepath;
     mfDrawer.settings = settings;
+    if (mfDrawer.settings && mfDrawer.settings.backdrop) {
+      disableBackdrop = true;
+    }
   };
 
   const drawerIframeCreated = event => {
