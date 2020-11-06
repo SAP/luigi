@@ -302,16 +302,18 @@ describe('Iframe-helpers', () => {
         .returns([mockContainer('main_1'), mockContainer('main_2')])
         .withArgs('.iframeSplitViewCnt iframe') // 'split-view'
         .returns([mockContainer('split_1')])
-        .withArgs('.iframeModalCtn iframe') // 'modal'
-        .returns([mockContainer('modal')]);
+        .withArgs('.iframeModalCtn._modal iframe') // 'modal'
+        .returns([mockContainer('modal')])
+        .withArgs('.iframeModalCtn._drawer iframe') // 'modal'
+        .returns([mockContainer('drawer')]);
 
       GenericHelpers.isElementVisible.callsFake(container => {
         // second container is not active
         return container.luigi.id !== 'main_2';
       });
       const iframes = IframeHelpers.getMicrofrontendsInDom();
-      assert.equal(iframes.length, 4, 'total iframes');
-      assert.equal(iframes.filter(i => i.active).length, 3, 'active iframes');
+      assert.equal(iframes.length, 5, 'total iframes');
+      assert.equal(iframes.filter(i => i.active).length, 4, 'active iframes');
 
       const expectedKeys = ['id', 'container', 'active', 'type'];
       assert.deepEqual(
