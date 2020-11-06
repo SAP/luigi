@@ -26,7 +26,7 @@
       on:drawerState="{setDrawerState}"
       on:iframeCreated="{drawerIframeCreated}"
     >
-    <Backdrop area="drawer"></Backdrop>
+    <Backdrop area="drawer" disable="{disableBackdrop}"></Backdrop>
   </Modal>
     {/if}
   <Backdrop disable="{disableBackdrop}">
@@ -45,6 +45,7 @@
       nodepath="{mfSplitView.nodepath}"
       on:iframeCreated="{splitViewIframeCreated}"
       on:statusChanged="{splitViewStatusChanged}"
+      disableBackdrop="{disableBackdrop}"
     ></SplitView>
     {/if}
   </Backdrop>
