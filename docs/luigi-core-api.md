@@ -311,7 +311,7 @@ Luigi.auth().login();
 
 **Meta**
 
--   **since**: NEXTRELEASE
+-   **since**: 1.5.0
 
 #### logout
 
@@ -326,7 +326,7 @@ Luigi.auth().logout();
 
 **Meta**
 
--   **since**: NEXTRELEASE
+-   **since**: 1.5.0
 
 ### AuthorizationStore
 
@@ -868,6 +868,18 @@ Returns **any** a string, which is displayed in the tab.
 **Meta**
 
 -   **since**: 1.4.0
+
+#### collapseLeftSideNav
+
+Set the collapsed state of the left side navigation
+
+##### Parameters
+
+-   `state` **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)** 
+
+**Meta**
+
+-   **since**: 1.5.0
 
 ## Luigi.globalSearch()
 

@@ -114,14 +114,28 @@ class RoutingClass {
   }
 
   getHashPath(url = window.location.hash) {
+    // check for intent, if any
+    if (url && /\?intent=/i.test(url)) {
+      const hash = url.replace('#/#', '#'); // handle default hash and intent specific hash
+      const intentHash = RoutingHelpers.getIntentPath(hash.split('#')[1]);
+      if (intentHash) {
+        return intentHash;
+      }
+    }
+
     return url.split('#/')[1];
   }
 
   getModifiedPathname() {
+    // check for intent, if any
+    if (window.location.hash && /\?intent=/i.test(window.location.hash)) {
+      const hash = window.location.hash.replace('#/#', '').replace('#', '');
+      const intentPath = RoutingHelpers.getIntentPath(hash);
+      return intentPath ? intentPath : '/';
+    }
     const path =
       (window.history.state && window.history.state.path) ||
       window.location.pathname;
-
     return path
       .split('/')
       .slice(1)
@@ -129,6 +143,14 @@ class RoutingClass {
   }
 
   getCurrentPath() {
+    if (/\?intent=/i.test(window.location.hash)) {
+      const hash = window.location.hash.replace('#/#', '').replace('#', '');
+      const intentPath = RoutingHelpers.getIntentPath(hash);
+      if (intentPath) {
+        // if intent faulty or illegal then skip
+        return intentPath;
+      }
+    }
     return LuigiConfig.getConfigValue('routing.useHashRouting')
       ? window.location.hash.replace('#', '') // TODO: GenericHelpers.getPathWithoutHash(window.location.hash) fails in ContextSwitcher
       : window.location.search
