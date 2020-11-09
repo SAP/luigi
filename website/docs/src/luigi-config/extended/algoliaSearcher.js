@@ -1,7 +1,6 @@
 import algoliasearch from "algoliasearch";
 
 class AlgoliaSearcher{
-
   constructor() {
     this.client = algoliasearch("BH4D9OD16A", "5ab04e0673d89f07c964afcf1522ad3a");
     this.index = this.client.initIndex("luigi-project");
@@ -9,23 +8,16 @@ class AlgoliaSearcher{
     this.isDevelop = parseInt(window.location.port) === 4000;
     this.coreBaseUrl = window.location.origin;
   }
-
   executeSearch(query){
     this.index.search(query, {hitsPerPage:  this.searchResult })
       .then(({ hits }) => {
-        if (hits.length === 0){
-          Luigi.globalSearch().closeSearchResult();
-        }
-
         hits = hits.map(this.transformUrls.bind(this)).map(this.transformContent)
         Luigi.globalSearch().showSearchResult([query].concat(hits));
       })
-
       .catch(err => {
         console.log('Error in executing the query '+ err);
       });
   }
-
   transformUrls(hit){
     if (this.isDevelop) {
       hit.url = hit.url.replace('https://docs.luigi-project.io', '');
@@ -33,7 +25,6 @@ class AlgoliaSearcher{
     hit.url = hit.url.replace('/docu-microfrontend', '');
     return hit;
   }
-
   transformContent(hit) {
     let url = hit.url;
     let params = {};
@@ -46,7 +37,6 @@ class AlgoliaSearcher{
     let title1 = hit.hierarchy['lvl0'];
     let title2 = hit.hierarchy['lvl1'] || hit.hierarchy['lvl0'];
     let title3 = hit.hierarchy['lvl2'] || hit.hierarchy['lvl0'];
-
     return {
       pathObject: {
         link: url,
@@ -61,7 +51,6 @@ class AlgoliaSearcher{
     }
   }
 }
-
 
 export const algoliaSearcher = new AlgoliaSearcher();
 
