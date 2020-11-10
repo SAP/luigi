@@ -85,11 +85,6 @@ export const projectDetailNavStructure = projectId => [
     }
   },
   {
-    pathSegment: 'pexit',
-    label: 'pexit',
-    viewUrl: 'http://localhost:8080/'
-  },
-  {
     pathSegment: 'on-node-activation',
     label: 'Node with node activation hook',
     icon: 'activate',
