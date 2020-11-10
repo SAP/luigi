@@ -1,4 +1,3 @@
-
 import ResultRender from './resultRender'
 import {algoliaSearcher} from './algoliaSearcher'
 
@@ -21,9 +20,9 @@ class GlobalSearch {
       Luigi.globalSearch().clearSearchField();
     },
     customSearchResultRenderer: (searchResults, slot, searchApiObj) => {
-      let query = searchResults.shift();
-      let resultRender = new ResultRender(query, searchResults);
-      let resultSpan = resultRender.buildDomResults();
+      const query = searchResults.shift();
+      const resultRender = new ResultRender(query, searchResults);
+      const resultSpan = resultRender.buildDomResults();
       slot.appendChild(resultSpan);
     },
     disableInputHandlers: {

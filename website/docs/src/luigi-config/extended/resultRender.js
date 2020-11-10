@@ -43,13 +43,13 @@ export default class ResultRender {
   }
   buildDomResults(){
     this.cleanResults();
-    let domItems = this.buildContainer();
+    const { resultSpan, container } = this.buildContainer();
     if (this.results.length === 0) {
-      this.domEmpty(domItems.resultSpan);
+      this.domEmpty(resultSpan);
     }else{
-      this.domResults(domItems.resultSpan);
+      this.domResults(resultSpan);
     }
-    return domItems.container;
+    return container;
   }
   cleanResults(){
     let elem = document.querySelector('span.algolia-autocomplete');

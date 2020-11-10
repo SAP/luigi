@@ -1,8 +1,10 @@
 import algoliasearch from "algoliasearch";
+const appId="BH4D9OD16A"
+const apiKey="5ab04e0673d89f07c964afcf1522ad3a";
 
 class AlgoliaSearcher{
   constructor() {
-    this.client = algoliasearch("BH4D9OD16A", "5ab04e0673d89f07c964afcf1522ad3a");
+    this.client = algoliasearch(appId, apiKey);
     this.index = this.client.initIndex("luigi-project");
     this.searchResult = 10
     this.isDevelop = parseInt(window.location.port) === 4000;
