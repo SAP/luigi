@@ -13,7 +13,6 @@ class WebComponentSvcClass {
     if (wc_container && wc_container.contains(wcItemContainer)) {
       const wc = document.createElement(wc_id);
       wc.context = ctx;
-      wc.luigi = window.Luigi;
       const clientAPI = {
         linkManager: window.Luigi.navigation,
         uxManager: window.Luigi.ux
