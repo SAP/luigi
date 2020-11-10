@@ -7,7 +7,8 @@ import { WebComponentService } from '../../src/services/web-components';
 
 describe('WebComponentService', function() {
   describe('generate web component id', function() {
-    const someRandomString = 'dsfgljhbakjdfngb,mdcn vkjrzwero78to4     wfoasb    f,asndbf';
+    const someRandomString =
+      'dsfgljhbakjdfngb,mdcn vkjrzwero78to4     wfoasb    f,asndbf';
 
     it('check determinism', () => {
       let wcId = WebComponentService.generateWCId(someRandomString);
@@ -17,7 +18,9 @@ describe('WebComponentService', function() {
 
     it('check uniqueness', () => {
       let wcId = WebComponentService.generateWCId(someRandomString);
-      let wcId2 = WebComponentService.generateWCId('someOtherRandomString_9843utieuhfgiasdf');
+      let wcId2 = WebComponentService.generateWCId(
+        'someOtherRandomString_9843utieuhfgiasdf'
+      );
       expect(wcId).to.not.equal(wcId2);
     });
   });
@@ -25,14 +28,13 @@ describe('WebComponentService', function() {
   describe('attach web component', function() {
     const container = document.createElement('div');
     const itemContainer = document.createElement('div');
-    const ctx = { someValue: true};
+    const ctx = { someValue: true };
 
-    before(()=>{
-      window.Luigi = { mario: 'luigi', luigi: window.luigi };
-    });
-
-    after(()=>{
-      window.Luigi = window.Luigi.luigi;
+    before(() => {
+      window.Luigi = {
+        linkManager: undefined,
+        uxManager: undefined
+      };
     });
 
     it('check dom injection abort if container not attached', () => {
@@ -47,79 +49,90 @@ describe('WebComponentService', function() {
 
       const expectedCmp = itemContainer.children[0];
       expect(expectedCmp.context).to.equal(ctx);
-      expect(expectedCmp.luigi).to.equal(window.Luigi);
+      expect(expectedCmp.LuigiClient).to.deep.equal(window.Luigi);
     });
   });
 
   describe('register web component from url', function() {
     const sb = sinon.createSandbox();
 
-    afterEach(()=>{
+    afterEach(() => {
       sb.restore();
     });
 
-    it('check resolve', (done) => {
+    it('check resolve', done => {
       let definedId;
-      sb.stub(WebComponentService, 'dynamicImport').returns(new Promise((resolve, reject) => {
-        resolve({ default: {} });
-      }));
-      window.customElements = { define: (id, clazz)=>{
-        definedId = id;
-      }};
+      sb.stub(WebComponentService, 'dynamicImport').returns(
+        new Promise((resolve, reject) => {
+          resolve({ default: {} });
+        })
+      );
+      window.customElements = {
+        define: (id, clazz) => {
+          definedId = id;
+        }
+      };
 
-      WebComponentService.registerWCFromUrl('url', 'id').then(()=>{
+      WebComponentService.registerWCFromUrl('url', 'id').then(() => {
         expect(definedId).to.equal('id');
         done();
       });
     });
 
-    it('check reject', (done) => {
+    it('check reject', done => {
       let definedId;
-      sb.stub(WebComponentService, 'dynamicImport').returns(new Promise((resolve, reject) => {
-        reject({ default: {} });
-      }));
-      window.customElements = { define: (id, clazz)=>{
-        definedId = id;
-      }};
+      sb.stub(WebComponentService, 'dynamicImport').returns(
+        new Promise((resolve, reject) => {
+          reject({ default: {} });
+        })
+      );
+      window.customElements = {
+        define: (id, clazz) => {
+          definedId = id;
+        }
+      };
 
-      WebComponentService.registerWCFromUrl('url', 'id').then(()=>{
-        assert(false, "should not be here");
-        done();
-      }).catch(err=>{
-        expect(definedId).to.be.undefined;
-        done();
-      });
+      WebComponentService.registerWCFromUrl('url', 'id')
+        .then(() => {
+          assert(false, 'should not be here');
+          done();
+        })
+        .catch(err => {
+          expect(definedId).to.be.undefined;
+          done();
+        });
     });
   });
 
   describe('render web component', function() {
     const container = document.createElement('div');
-    const ctx = { someValue: true};
+    const ctx = { someValue: true };
     const viewUrl = 'someurl';
     const sb = sinon.createSandbox();
 
-    before(()=>{
+    before(() => {
       window.Luigi = { mario: 'luigi', luigi: window.luigi };
     });
 
-    after(()=>{
+    after(() => {
       window.Luigi = window.Luigi.luigi;
     });
 
-    beforeEach(()=>{
-      sb.stub(WebComponentService, 'dynamicImport').returns(new Promise((resolve, reject) => {
-        resolve({ default: {} });
-      }));
+    beforeEach(() => {
+      sb.stub(WebComponentService, 'dynamicImport').returns(
+        new Promise((resolve, reject) => {
+          resolve({ default: {} });
+        })
+      );
     });
 
-    afterEach(()=>{
+    afterEach(() => {
       sb.restore();
     });
 
-
-    it('check attachment of already existing wc', (done) => {
+    it('check attachment of already existing wc', done => {
       window.customElements = {
-        define: (id, clazz)=>{
+        define: (id, clazz) => {
           definedId = id;
         },
         get: () => {
@@ -127,24 +140,26 @@ describe('WebComponentService', function() {
         }
       };
 
-      sb.stub(WebComponentService, 'registerWCFromUrl').callsFake(()=>{
-        assert(false, "should not be here");
+      sb.stub(WebComponentService, 'registerWCFromUrl').callsFake(() => {
+        assert(false, 'should not be here');
       });
 
-      sb.stub(WebComponentService, 'attachWC').callsFake((id, iCnt, cnt, context)=>{
-        expect(cnt).to.equal(container);
-        expect(context).to.equal(ctx);
-        done();
-      });
+      sb.stub(WebComponentService, 'attachWC').callsFake(
+        (id, iCnt, cnt, context) => {
+          expect(cnt).to.equal(container);
+          expect(context).to.equal(ctx);
+          done();
+        }
+      );
 
       WebComponentService.renderWebComponent(viewUrl, container, ctx);
     });
 
-    it('check invocation of custom function', (done) => {
+    it('check invocation of custom function', done => {
       let definedId;
 
       window.customElements = {
-        define: (id, clazz)=>{
+        define: (id, clazz) => {
           definedId = id;
         },
         get: () => {
@@ -152,28 +167,30 @@ describe('WebComponentService', function() {
         }
       };
 
-      sb.stub(WebComponentService, 'registerWCFromUrl').callsFake(()=>{
-        assert(false, "should not be here");
+      sb.stub(WebComponentService, 'registerWCFromUrl').callsFake(() => {
+        assert(false, 'should not be here');
       });
 
-      sb.stub(WebComponentService, 'attachWC').callsFake((id, iCnt, cnt, context)=>{
-        expect(cnt).to.equal(container);
-        expect(context).to.equal(ctx);
-        done();
-      });
+      sb.stub(WebComponentService, 'attachWC').callsFake(
+        (id, iCnt, cnt, context) => {
+          expect(cnt).to.equal(container);
+          expect(context).to.equal(ctx);
+          done();
+        }
+      );
 
       window.luigiWCFn = (viewUrl, wc_id, wc_container, cb) => {
         cb();
-      }
+      };
 
       WebComponentService.renderWebComponent(viewUrl, container, ctx);
     });
 
-    it('check creation and attachment of new wc', (done) => {
+    it('check creation and attachment of new wc', done => {
       let definedId;
 
       window.customElements = {
-        define: (id, clazz)=>{
+        define: (id, clazz) => {
           definedId = id;
         },
         get: () => {
@@ -181,20 +198,21 @@ describe('WebComponentService', function() {
         }
       };
 
-      sb.stub(WebComponentService, 'registerWCFromUrl').callsFake(()=>{
+      sb.stub(WebComponentService, 'registerWCFromUrl').callsFake(() => {
         return new Promise((resolve, reject) => {
           resolve();
-        })
+        });
       });
 
-      sb.stub(WebComponentService, 'attachWC').callsFake((id, iCnt, cnt, context)=>{
-        expect(cnt).to.equal(container);
-        expect(context).to.equal(ctx);
-        done();
-      });
+      sb.stub(WebComponentService, 'attachWC').callsFake(
+        (id, iCnt, cnt, context) => {
+          expect(cnt).to.equal(container);
+          expect(context).to.equal(ctx);
+          done();
+        }
+      );
 
       WebComponentService.renderWebComponent(viewUrl, container, ctx);
     });
   });
 });
-
