@@ -87,10 +87,18 @@ describe('Luigi client linkManager', () => {
           .contains('Open webcomponent in splitView')
           .click();
         cy.get('.iframeSplitViewCnt>div>').then(container => {
-          const wcContent = container
-            .children()
-            .prevObject[0].shadowRoot.querySelector('p').innerText;
+          const root = container.children().prevObject[0].shadowRoot;
+          const wcContent = root.querySelector('p').innerText;
           expect(wcContent).to.equal('Hello WebComponent!');
+          root.querySelector('button').click();
+          cy.get('[data-testid=luigi-alert]').should(
+            'have.class',
+            'fd-message-strip--information'
+          );
+          cy.get('[data-testid=luigi-alert]').should(
+            'contain',
+            'Hello from uxManager in Web Component'
+          );
         });
         //navigate with intent
         cy.wrap($iframeBody)
