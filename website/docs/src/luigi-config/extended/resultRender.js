@@ -80,23 +80,21 @@ export default class ResultRender {
       let lastPost = short.substring(80).indexOf(" ") + 80;
       short = short.substring(0, lastPost)+".."
     }
-    return this.highlighKeywrokd(short);
+    return this.highlightKeyword(short);
   }
   dataTemplate(result){
-    let data = {
+    return {
       label: this.shortText(result.label),
       description: this.shortText(result.description),
       title1: this.shortText(result.title1),
       title2: this.shortText(result.title2),
       title3: this.shortText(result.title3),
     };
-    return data;
   }
   renderResult(template, data){
-    let output = template.render(data);
-    return output;
+    return template.render(data);
   }
-  highlighKeywrokd(text){
+  highlightKeyword(text){
     this.perm(this.query).forEach(subQ => {
       let replace = '<span class="algolia-docsearch-suggestion--highlight">'+ subQ+ '</span>';
       text = text.replaceAll(subQ, replace);

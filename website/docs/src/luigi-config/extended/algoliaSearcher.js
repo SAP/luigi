@@ -34,27 +34,22 @@ class AlgoliaSearcher{
       }
       url = url.substring(0, url.indexOf("#"))
     }
-    let title1 = hit.hierarchy['lvl0'];
-    let title2 = hit.hierarchy['lvl1'] || hit.hierarchy['lvl0'];
-    let title3 = hit.hierarchy['lvl2'] || hit.hierarchy['lvl0'];
+    const title1 = hit.hierarchy['lvl0'];
+    const title2 = hit.hierarchy['lvl1'] || hit.hierarchy['lvl0'];
+    const title3 = hit.hierarchy['lvl2'] || hit.hierarchy['lvl0'];
     return {
       pathObject: {
         link: url,
-        params: params
+        params
       },
       label: hit.hierarchy['lvl0'],
       description: hit.content,
-      title1: title1,
-      title2: title2,
-      title3: title3,
-      hit: hit
+      title1,
+      title2,
+      title3,
+      hit
     }
   }
 }
 
 export const algoliaSearcher = new AlgoliaSearcher();
-
-
-
-
-
