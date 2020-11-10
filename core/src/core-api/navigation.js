@@ -86,6 +86,7 @@ class LuigiNavigationManager {
    * @param {any} drawerSettings.header By default, the header is visible. Title is node label and 'x' is displayed to close the drawer view. The header could also be an object with a `title` attribute to specify an own title for the drawer component.
    * @param {boolean} drawerSettings.backdrop By default, it is set to `false`. If it is set to `true` the rest of the screen has a backdrop.
    * @param {('l'|'m'|'s'|'xs')} [drawerSettings.size="s"] size of the drawer
+   * @since NEXTRELEASE
    * @example
    * Luigi.navigation().openAsDrawer('projects/pr1/drawer', {header:true, backdrop:true, size:'s'});
    * Luigi.navigation().openAsDrawer('projects/pr1/drawer', {header:{title:'My drawer component'}, backdrop:true, size:'xs'});

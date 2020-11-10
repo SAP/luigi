@@ -449,6 +449,10 @@ Navigates to the given path in the application. It contains either a full absolu
     -   `splitViewSettings.title` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** split view title. By default, it is the node label. If there is no label, it is left empty
     -   `splitViewSettings.size` **[number](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number)** height of the split view in percent (optional, default `40`)
     -   `splitViewSettings.collapsed` **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)** opens split view in collapsed state (optional, default `false`)
+-   `drawerSettings` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)?** opens a view in a drawer. Use these settings to configure the header, backdrop and size of the drawer.
+    -   `drawerSettings.header` **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)** By default, the header is displayed and the title is the node label.
+    -   `drawerSettings.size` **[string](`"l"` \| `"m"` \| `"s"`\| `"xs"`)** size of the drawer (optional, default `"s"`)
+    -   `drawerSettings.backdrop` **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)** By default, there is no backdrop visible.
 
 ##### Examples
 
@@ -474,6 +478,28 @@ Opens a view in a modal. You can specify the modal's title and size. If you do n
 ```javascript
 Luigi.navigation().openAsModal('projects/pr1/users', {title:'Users', size:'m'});
 ```
+
+#### openAsDrawer
+
+Opens a view in a drawer. You can specify if the drawer has a header, a backdrop is active in the background and the size of the drawer. By default the header is shown. The backdrop is not visible and has to be set to `true`. The size of the drawer is by default set to `s` which means 25% of the micro frontend size. You can also use `l`(75%), `m`(50%) and `xs`(15.5%). Optionally, use it in combination with any of the navigation functions.
+
+##### Parameters
+
+-   `path` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** navigation path
+-   `drawerSettings` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)?** opens a view in a drawer. Use these settings to configure the header, backdrop and size of the drawer.
+    -   `drawerSettings.header` **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)** By default, the header is displayed and the title is the node label.
+    -   `drawerSettings.size` **[string](`"l"` \| `"m"` \| `"s"`\| `"xs"`)** size of the drawer (optional, default `"s"`)
+    -   `drawerSettings.backdrop` **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)** By default, there is no backdrop visible.
+
+##### Examples
+
+```javascript
+Luigi.navigation().openAsDrawer('projects/pr1/drawer', {header:true, backdrop:false, size:'m'});
+```
+
+**Meta**
+
+-   **since**: NEXTRELEASE
 
 #### openAsSplitView
 

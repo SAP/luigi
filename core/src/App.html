@@ -1,14 +1,7 @@
 <svelte:window on:resize="{onResize}" />
 <div id="app" class="{hideNav? 'no-nav' : ''} {hideSideNav? 'no-side-nav':''}">
-  {#if confirmationModal.displayed}
-  <ConfirmationModal
-    settings="{confirmationModal.settings}"
-    on:modalConfirm="{()=> handleModalResult(true)}"
-    on:modalDismiss="{() => handleModalResult(false)}"
-  ></ConfirmationModal>
-  {/if}
   {#if alerts && alerts.length}
-  <Alerts alertQueue="{alerts}" on:alertDismiss="{handleAlertDismissExternal}"></Alerts>
+    <Alerts alertQueue="{alerts}" on:alertDismiss="{handleAlertDismissExternal}"></Alerts>
   {/if}
   {#if mfModal.displayed}
     <Modal
@@ -26,9 +19,16 @@
       on:drawerState="{setDrawerState}"
       on:iframeCreated="{drawerIframeCreated}"
     >
-    <Backdrop area="drawer" disable="{disableBackdrop}"></Backdrop>
-  </Modal>
-    {/if}
+      <Backdrop area="drawer" disable="{disableBackdrop}"></Backdrop>
+    </Modal>
+  {/if}
+  {#if confirmationModal.displayed}
+    <ConfirmationModal
+      settings="{confirmationModal.settings}"
+      on:modalConfirm="{()=> handleModalResult(true)}"
+      on:modalDismiss="{() => handleModalResult(false)}"
+    ></ConfirmationModal>
+  {/if}
   <Backdrop disable="{disableBackdrop}">
     <div
       class="fd-page iframeContainer {mfSplitView.displayed?'lui-split-view':''} {mfSplitView.collapsed?'lui-collapsed':''}"
