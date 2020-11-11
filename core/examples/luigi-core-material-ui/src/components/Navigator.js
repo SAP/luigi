@@ -8,8 +8,6 @@ import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
 
-// import { Icon } from '@rmwc/icon';
-
 const styles = theme => ({
   categoryHeader: {
     paddingTop: theme.spacing(2),
@@ -80,30 +78,23 @@ function Navigator(props) {
               </ListItemText>
             </ListItem>
 
-            {children.map(
-              ({ label: childLabel, icon, active, pathSegment }) => (
-                <ListItem
-                  key={childLabel}
-                  button
-                  className={clsx(
-                    classes.item,
-                    active && classes.itemActiveItem
-                  )}
-                  selected={
-                    leftNav.leftNavData.selectedNode.label === childLabel
-                  }
-                  onClick={() => navigateTo(pathSegment)}
+            {children.map(({ label: childLabel, active, pathSegment }) => (
+              <ListItem
+                key={childLabel}
+                button
+                className={clsx(classes.item, active && classes.itemActiveItem)}
+                selected={leftNav.leftNavData.selectedNode.label === childLabel}
+                onClick={() => navigateTo(pathSegment)}
+              >
+                <ListItemText
+                  classes={{
+                    primary: classes.itemPrimary
+                  }}
                 >
-                  <ListItemText
-                    classes={{
-                      primary: classes.itemPrimary
-                    }}
-                  >
-                    {childLabel}
-                  </ListItemText>
-                </ListItem>
-              )
-            )}
+                  {childLabel}
+                </ListItemText>
+              </ListItem>
+            ))}
 
             <Divider className={classes.divider} />
           </div>
