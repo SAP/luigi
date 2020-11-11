@@ -103,7 +103,8 @@
         WebComponentService.renderWebComponent(
           nodeObject.viewUrl,
           document.querySelector('.iframeModalCtn'),
-          pathData.context
+          pathData.context,
+          nodeObject
         );
         dispatch('wcCreated', {
           modalWC: document.querySelector('.iframeModalCtn'),
