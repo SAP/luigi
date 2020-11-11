@@ -90,6 +90,10 @@ $height-shellbar-mobile: 95px;
 $side-nav-width-desktop: 320px;
 $side-nav-width-mobile: 260px;
 
+:root {
+  --luigi__left-sidenav--width: 320px;
+}
+
 .luigi-documentation {
 
   * {
@@ -403,12 +407,13 @@ $side-nav-width-mobile: 260px;
   }
 
   .fd-nested-list__link {
-    display: block;
+    //display: block;
     font-size: 15px;
     height: auto;
     padding: 1px 10px;
     border-left: 2px solid transparent;
     border-bottom: none;
+    border-top: none;
 
     &:hover,
     &.is-selected {
@@ -433,7 +438,14 @@ $side-nav-width-mobile: 260px;
       font-size: 15px;
       white-space: normal;
       text-overflow: unset;
+      width: auto;
     }
+
+    .sap-icon--action {
+      padding-left: 5px;
+    }
+
+
 
     .fd-nested-list__icon {
       display: none;
@@ -452,7 +464,6 @@ $side-nav-width-mobile: 260px;
   }
 
   .fd-side-nav {
-    width: $side-nav-width-desktop;
     background-color: transparent;
     border-right: none;
 
@@ -530,4 +541,3 @@ $side-nav-width-mobile: 260px;
 
 
 @import './search';
-@import "./fix_upgrade";
