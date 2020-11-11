@@ -353,12 +353,15 @@ export const projectDetailNavStructure = projectId => [
         icon: 'globe'
       },
       {
-        category: { label: 'User Management', icon: 'person-placeholder', collapsible: true },
+        category: {
+          label: 'User Management',
+          icon: 'person-placeholder',
+          collapsible: true
+        },
         pathSegment: 'users',
         label: 'Users and Groups',
         viewUrl: '/sampleapp.html#/projects/' + projectId + '/users',
-        icon: 'group',
-        
+        icon: 'group'
       },
       {
         category: 'User Management',
@@ -370,7 +373,7 @@ export const projectDetailNavStructure = projectId => [
           label: 'Number of developers',
           count: () => Math.floor(Math.random() * 100)
         }
-      },
+      }
     ]
   },
   {
@@ -403,12 +406,15 @@ export const projectDetailNavStructure = projectId => [
         icon: 'globe'
       },
       {
-        category: { label: 'User Management', icon: 'person-placeholder', collapsible: true },
+        category: {
+          label: 'User Management',
+          icon: 'person-placeholder',
+          collapsible: true
+        },
         pathSegment: 'users',
         label: 'Users and Groups',
         viewUrl: '/sampleapp.html#/projects/' + projectId + '/users',
-        icon: 'group',
-        
+        icon: 'group'
       },
       {
         category: 'User Management',
@@ -420,7 +426,7 @@ export const projectDetailNavStructure = projectId => [
           label: 'Number of developers',
           count: () => Math.floor(Math.random() * 100)
         }
-      },
+      }
     ]
-  },
+  }
 ];
