@@ -71,7 +71,7 @@ class StorageManager extends LuigiClientBase {
   }
 
   /**
-   * Asynchronously retrieve a value for a specific key.
+   * Synchronously retrieve a value for a specific key.
    * @param {string} key used to identify the value
    * @returns {Object} item retrieved from storage; it will launch an error if storage is no supported
    * @example
@@ -170,7 +170,9 @@ class StorageManager extends LuigiClientBase {
 
   /**
    * Get all the keys used in the storage
-   * @returns {string[]}
+   * @returns {string[]} keys currently present in the storage
+   * @example
+   * LuigiClient.storageManager().getAllKeys()
    */
   getAllKeys(){
     this.storageUtil.checkStorageBrowserSupport();

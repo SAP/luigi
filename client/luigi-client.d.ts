@@ -373,71 +373,108 @@ export declare interface LinkManager {
 
 export declare interface StorageManager {
   /**
-   * xxxxxxxx
-   * @param {string} .......
-   * @param {Object} .....
-   * @memberof StorageManager
+   * Asynchronously store a value for a specific key.
+   * @param {string} key used to identify the value
+   * @param {Object} object to store; object must be stringifyable
+   * @returns {Promise<void>} resolves an empty value when storage operation is over; it will launch an error if storage is no supported, value cannot be stringify or you are using a luigi reserved key
+   * @example
+   * LuigiClient.storageManager().setItem('keyExample','valueExample').then(() => console.log('Value stored'))
    */
   setItem: (key:string, value:Object) => Promise<void>;
 
   /**
-   * xxxxxxxx
-   * @param {string} .......
-   * @param {Object} .....
+   * Synchronously store a value for a specific key.
    * @memberof StorageManager
+   * @param {string} key used to identify the value
+   * @param {Object} object to store; object must be stringifyable
+   * @returns {void} it will launch an error if storage is no supported, value cannot be stringify or you using a luigi reserved key
+   * @since 1.6.0
+   * @example
+   * LuigiClient.storageManager().setItemSync('keyExample','valueExample')
    */
   setItemSync: (key:string, value:Object) => void;
 
   /**
-   * xxxxxxxx
-   * @param {string} .......
+   * Asynchronously retrieve a value for a specific key.
    * @memberof StorageManager
+   * @param {string} key used to identify the value
+   * @returns {Promise<Object>} resolves item retrieved from storage; it will launch an error if storage is no supported
+   * @since 1.6.0
+   * @example
+   * LuigiClient.storageManager().getItem('keyExample').then((value) => console.log);
    */
   getItem: (key:string) => Promise<Object>;
 
   /**
-   * xxxxxxxx
-   * @param {string} .......
+   * Synchronously retrieve a value for a specific key.
    * @memberof StorageManager
+   * @returns {Object} item retrieved from storage; it will launch an error if storage is no supported
+   * @since 1.6.0
+   * @example
+   * LuigiClient.storageManager().getItemSync('keyExample')
    */
   getItemSync: (key:string) => Object;
 
   /**
-   * xxxxxxxx
-   * @param {string} .......
+   * Asynchronously remove a value for a specific key.
    * @memberof StorageManager
+   * @param {string} key used to identify the value
+   * @returns {Promise<Object>} resolves item just removed from storage; it will launch an error if storage is no supported or you are using a luigi reserved key
+   * @since 1.6.0
+   * @example
+   * LuigiClient.storageManager().removeItem('keyExample').then((value) => console.log(value + ' just removed')
    */
   removeItem: (key:string) => Promise<Object>;
 
   /**
-   * xxxxxxxx
-   * @param {string} .......
+   * Synchronously remove a value for a specific key.
    * @memberof StorageManager
+   * @param {string} key used to identify the value
+   * @returns {Object}  item just removed from storage; it will launch an error if storage is no supported or you are using a luigi reserved key
+   * @since 1.6.0
+   * @example
+   * LuigiClient.storageManager().removeItemSync('keyExample')
    */
   removeItemSync: (key:string) => Object;
 
   /**
-   * xxxxxxxx
+   * Asynchronously clear all the storage key/values; all Luigi values used by core application will not be deleted
    * @memberof StorageManager
+   * @returns {Promise<void>} resolves when storage clear is over
+   * @since 1.6.0
+   * @example
+   * LuigiClient.storageManager().clear().then(() => console.log('storage cleared'))
    */
   clear: () => Promise<void>;
 
   /**
-   * xxxxxxxx
+   * Synchronously clear all the storage key/values; all Luigi values used by core application will not be deleted
    * @memberof StorageManager
+   * @returns {void}
+   * @since 1.6.0
+   * @example
+   * LuigiClient.storageManager().clearSync()
    */
   clearSync: () => void;
 
   /**
-   * xxxxxxxx
-   * @param {string} .......
+   * Check if a key is present in storage
    * @memberof StorageManager
+   * @param {string} key in the storage
+   * @returns {boolean} true if key is present, false if is not
+   * @since 1.6.0
+   * @example
+   * LuigiClient.storageManager().has()
    */
   has: (key:string) => boolean;
 
   /**
-   * xxxxxxxx
+   * Get all the keys used in the storage
    * @memberof StorageManager
+   * @since 1.6.0
+   * @returns {string[]} keys currently present in the storage
+   * @example
+   * LuigiClient.storageManager().getAllKeys()
    */
   getAllKeys: () => Array<String>;
 }
@@ -647,7 +684,7 @@ export type uxManager = () => UxManager;
 
 
 /**
- * Use the StorageManager to xxxxxxxx.
+ * Use the StorageManager to store/load/remove items from/to local storage.
  * @name storageManager
  */
 export function storageManager(): StorageManager;
