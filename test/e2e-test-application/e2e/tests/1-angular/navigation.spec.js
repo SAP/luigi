@@ -617,7 +617,8 @@ describe('Navigation', () => {
         cy.window().then(win => {
           const config = win.Luigi.getConfig();
           config.settings.responsiveNavigation = 'semiCollapsible';
-          win.Luigi.configChanged('settings');
+          win.Luigi.setConfig(config);
+          cy.wait(1000);
           cy.get('[data-testid="mobile-menu"]').click();
           cy.get('.fd-popover__body').within(() => {
             cy.get('[data-testid="projects_projects"]').click();
