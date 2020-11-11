@@ -325,7 +325,6 @@ export class ProjectComponent implements OnInit, OnDestroy {
     this.storageShowAlert('success','Clear all the storage');
   }
 
-
   public storage_has(){
     if (this.validateKey()){
       return;
@@ -339,11 +338,9 @@ export class ProjectComponent implements OnInit, OnDestroy {
 
   public storage_getAllKeys(){
       let keys = storageManager().getAllKeys();
-      let message = 'All keys present:<br/>' + keys.join('<br/>');
+      let message = 'All keys present:<br/><br/>' + keys.join('<br/>');
       this.storageShowAlert('info',message);
-
   }
-
 
   executeWithTimeout(promise, timeout, alertType, successFullyMessage){
     this.storageDemoOperation=true;

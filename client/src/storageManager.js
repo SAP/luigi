@@ -10,10 +10,8 @@ class StorageManager extends LuigiClientBase {
   /** @private */
   constructor() {
     super();
-
     this.storageValueValidator = new StorageValueValidator();
-    this.storageUtil = new StorageUtil();
-    this.browseSupported = this.storageUtil.supportLocalStorage();
+    this.storageUtil = new StorageUtil(this.storageValueValidator);
     this.storage = window.localStorage
   }
 
@@ -148,12 +146,10 @@ class StorageManager extends LuigiClientBase {
    */
   clearSync(){
     this.storageUtil.checkStorageBrowserSupport();
-    let luigiReserveStorageValues = this.storageUtil.getLuigiReserveStorageValues()
+    let luigiReserveStorageValues = this.storageUtil.getLuigiReserveStorageValues(this.storage)
     this.storage.clear();
     Object.keys(luigiReserveStorageValues)
       .forEach(key => this.storage.setItem(key, luigiReserveStorageValues[key]));
-
-
   }
 
   /**
@@ -178,19 +174,20 @@ class StorageManager extends LuigiClientBase {
     this.storageUtil.checkStorageBrowserSupport();
     return Object.keys(this.storage);
   }
-
 }
 
 class StorageUtil{
-
-  getLuigiReserveStorageValues(){
+  constructor(storageValueValidator) {
+    this.browseSupported = this.supportLocalStorage();
+    this.storageValueValidator = storageValueValidator;
+  }
+  getLuigiReserveStorageValues(storage){
     let reserveValues = {};
-    Object.keys(this.storage)
+    Object.keys(storage)
       .filter(key => this.storageValueValidator.isKeyIsReserved(key))
-      .forEach(key => reserveValues[key]=this.storage.getItem(key));
+      .forEach(key => reserveValues[key]=storage.getItem(key));
     return reserveValues;
   }
-
   checkStorageBrowserSupport(){
     if (!this.browseSupported){
       throw "Browser does not support local storage"
@@ -203,11 +200,9 @@ class StorageUtil{
       return false;
     }
   }
-
 }
 
 class StorageValueValidator{
-
   isValueString(value) {
     return typeof value === 'string' || value instanceof String;
   }
@@ -245,7 +240,6 @@ class StorageValueValidator{
   isKeyIsReserved(key){
     return reservedKey4Luigi.some(regex => regex.test(key));
   }
-
 }
 
 export const storageManager = new StorageManager();
