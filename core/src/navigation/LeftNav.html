@@ -10,6 +10,7 @@
   <nav
     class="fd-side-nav {isSemiCollapsed ? 'fd-side-nav--condensed' : ''}"
     on:keyup="{handleKey}"
+    data-testid="semiCollapsibleLeftNav"
   >
     {#if children && pathData.length > 1}
     <div class="fd-side-nav__main-navigation">
@@ -299,11 +300,17 @@
           }
         });
 
-        let sideNavAccordionModeOverride = selectedNode && selectedNode.sideNavAccordionMode || selectedNode && selectedNode.parent && selectedNode.parent.sideNavAccordionMode
-        if (typeof sideNavAccordionModeOverride !== 'undefined'){
-          sideNavAccordionMode = sideNavAccordionModeOverride
+        let sideNavAccordionModeOverride =
+          (selectedNode && selectedNode.sideNavAccordionMode) ||
+          (selectedNode &&
+            selectedNode.parent &&
+            selectedNode.parent.sideNavAccordionMode);
+        if (typeof sideNavAccordionModeOverride !== 'undefined') {
+          sideNavAccordionMode = sideNavAccordionModeOverride;
         } else {
-          sideNavAccordionMode = LuigiConfig.getConfigBooleanValue('navigation.defaults.sideNavAccordionMode')
+          sideNavAccordionMode = LuigiConfig.getConfigBooleanValue(
+            'navigation.defaults.sideNavAccordionMode'
+          );
         }
       }
     }
@@ -365,9 +372,6 @@
       previousPathData
     });
   };
-
-
-  
 
   onMount(() => {
     semiCollapsibleButton =
@@ -542,7 +546,7 @@
     if (SemiCollapsibleNavigation.getCollapsed()) {
       return;
     }
-    
+
     expandedCategories = NavigationHelpers.storeExpandedState(
       nodes.metaInfo.categoryUid,
       value,

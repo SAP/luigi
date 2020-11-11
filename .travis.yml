@@ -1,7 +1,7 @@
 version: ~> 1.0 # enables build config validation beta feature: https://docs.travis-ci.com/user/build-config-validation
 language: node_js
 node_js:
-  - '11.14' #TODO: change it to 'node' once Travis supports the newest version
+  - '12.18.4' #TODO: change it to 'node' once Travis supports the newest version
 dist: xenial
 cache:
   directories:
@@ -25,6 +25,7 @@ integration-testing: &integration-testing
   script:
     - export CYPRESS_CACHE_FOLDER=$TRAVIS_BUILD_DIR/cypress-binary-cache
     - ls $CYPRESS_CACHE_FOLDER
+    - npm install --prefix $TRAVIS_BUILD_DIR/test/e2e-test-application @babel/plugin-proposal-class-properties
     - bash ./test/e2e.sh
   addons:
     apt:
@@ -32,6 +33,18 @@ integration-testing: &integration-testing
         # Ubuntu 16+ does not install this dependency by default, so we need to install it ourselves
         - libgconf-2-4
         #- chromium-browser=79.0.3945.130-0ubuntu0.16.04.1 # update also if you upgrade from Xenial
+        # needed dependencies for cypress 5.3.0
+        - libgtk2.0-0
+        - libgtk-3-0
+        - libgbm-dev  
+        - libnotify-dev
+        - libgconf-2-4
+        - libnss3
+        - libxss1
+        - libasound2
+        - libxtst6
+        - xauth
+        - xvfb
     # chrome: beta
     chrome: stable
   before_install:
@@ -123,10 +136,6 @@ jobs:
     # ----- INTEGRATION -----
     - name: 'Integration Testing 1'
       <<: *integration-testing
-
-    - name: 'Integration Testing 2'
-      <<: *integration-testing
-
 
     # ----- NPM PUBLISH -----
     - stage: 'Publish'

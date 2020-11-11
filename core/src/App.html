@@ -21,6 +21,7 @@
   <Backdrop>
     <div
       class="fd-page iframeContainer {mfSplitView.displayed?'lui-split-view':''} {mfSplitView.collapsed?'lui-collapsed':''}"
+      tabindex="0"
       use:init
     >
       <Backdrop area="main"></Backdrop>
@@ -479,6 +480,9 @@
         n => navigationContext === n.navigationContext
       );
       path = Routing.concatenatePath(getSubPath(node), params.link);
+    } else if (params.intent) {
+      const intentPath = RoutingHelpers.getIntentPath(params.link);
+      path = intentPath ? intentPath : path;
     } else if (params.relative) {
       // relative
       path = Routing.concatenatePath(getSubPath(currentNode), params.link);
@@ -639,9 +643,10 @@
   //// SPLIT VIEW
   export const openSplitView = (nodepath, settings) => {
     if (mfSplitView.displayed) {
-      console.warn('Only one splitview can be oppened at a time');
+      console.warn('Only one splitview can be opened at a time');
       return;
     }
+    mfSplitView = SplitViewSvc.getDefaultData().mfSplitView;
     SplitViewSvc.open(getComponentWrapper(), nodepath, settings);
   };
 
@@ -1088,8 +1093,6 @@
           let path = buildPath(e.data.params);
           path = GenericHelpers.addLeadingSlash(path);
           contentNode = node;
-          mfSplitView = SplitViewSvc.getDefaultData().mfSplitView;
-
           openSplitView(path, e.data.params.splitView);
         } else {
           getUnsavedChangesModalPromise().then(() => {

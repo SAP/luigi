@@ -1,4 +1,3 @@
-Cypress.env('RETRIES', 1);
 describe('Luigi Client ux manager features', () => {
   let $iframeBody;
   beforeEach(() => {
@@ -82,32 +81,42 @@ describe('Luigi Client ux manager features', () => {
         .contains('Luigi confirmation modal has been dismissed');
     });
 
-    it('loading indicator', () => {
-      Cypress.currentTest.retries(3);
-      cy.get('[data-testid="misc"]').click();
+    it(
+      'loading indicator',
+      {
+        retries: {
+          runMode: 3,
+          openMode: 3
+        }
+      },
+      () => {
+        cy.get('[data-testid="misc"]').click();
 
-      cy.get('[data-testid="ext_externalpage"]')
-        .contains('External Page')
-        .click();
-
-      cy.get('[data-testid=luigi-loading-spinner]').should('exist');
-
-      cy.wait(250); // give it some time to hide
-
-      cy.get('[data-testid=luigi-loading-spinner]').should('not.be.visible');
-
-      // show loading indicator
-      cy.getIframeBody().then($iframeBody => {
-        cy.wrap($iframeBody)
-          .contains('Show loading indicator')
+        cy.get('[data-testid="ext_externalpage"]')
+          .contains('External Page')
           .click();
 
         cy.get('[data-testid=luigi-loading-spinner]').should('exist');
+
         cy.wait(250); // give it some time to hide
-        // wait for programmatic hide of loading indicator
+
         cy.get('[data-testid=luigi-loading-spinner]').should('not.be.visible');
-      });
-    });
+
+        // show loading indicator
+        cy.getIframeBody().then($iframeBody => {
+          cy.wrap($iframeBody)
+            .contains('Show loading indicator')
+            .click();
+
+          cy.get('[data-testid=luigi-loading-spinner]').should('exist');
+          cy.wait(250); // give it some time to hide
+          // wait for programmatic hide of loading indicator
+          cy.get('[data-testid=luigi-loading-spinner]').should(
+            'not.be.visible'
+          );
+        });
+      }
+    );
 
     describe('Unsaved changes', () => {
       it("shouldn't proceed when 'No' was pressed in modal", () => {

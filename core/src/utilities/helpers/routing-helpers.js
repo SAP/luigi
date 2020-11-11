@@ -172,8 +172,11 @@ class RoutingHelpersClass {
 
   getNodeHref(node, pathParams) {
     if (LuigiConfig.getConfigBooleanValue('navigation.addNavHrefs')) {
-      const link = RoutingHelpers.getRouteLink(node, pathParams,
-        LuigiConfig.getConfigValue('routing.useHashRouting')?"#":'');
+      const link = RoutingHelpers.getRouteLink(
+        node,
+        pathParams,
+        LuigiConfig.getConfigValue('routing.useHashRouting') ? '#' : ''
+      );
       return link.url || link;
     }
     return 'javascript:void(0)';
@@ -263,6 +266,131 @@ class RoutingHelpersClass {
     if (featureToggleList.length > 0 && featureToggleList[0] !== '') {
       featureToggleList.forEach(ft => LuigiFeatureToggles.setFeatureToggle(ft));
     }
+  }
+
+  /**
+   * This function takes an intentLink and parses it conforming certain limitations in characters usage.
+   * Limitations include:
+   *  - `semanticObject` allows only alphanumeric characters
+   *  - `action` allows alphanumeric characters and the '_' sign
+   *
+   * Example of resulting output:
+   * ```
+   *  {
+   *    semanticObject: "Sales",
+   *    action: "order",
+   *    params: [{param1: "value1"},{param2: "value2"}]
+   *  };
+   * ```
+   * @param {string} link  the intent link represents the semantic intent defined by the user
+   *                        i.e.: #?intent=semanticObject-action?param=value
+   */
+  getIntentObject(intentLink) {
+    const intentParams = intentLink.split('?intent=')[1];
+    if (intentParams) {
+      const elements = intentParams.split('-');
+      if (elements.length === 2) {
+        // avoids usage of '-' in semantic object and action
+        const semanticObject = elements[0];
+        const actionAndParams = elements[1].split('?');
+        // length 2 involves parameters, length 1 involves no parameters
+        if (actionAndParams.length === 2 || actionAndParams.length === 1) {
+          let action = actionAndParams[0];
+          let params = actionAndParams[1];
+          // parse parameters, if any
+          if (params) {
+            params = params.split('&');
+            let paramObjects = [];
+            params.forEach(item => {
+              const param = item.split('=');
+              param.length === 2 && paramObjects.push({ [param[0]]: param[1] });
+            });
+            params = paramObjects;
+          }
+          const alphanumeric = /^[0-9a-zA-Z]+$/;
+          const alphanumericOrUnderscores = /^[0-9a-zA-Z_]+$/;
+          // TODO: check for character size limit
+          if (
+            semanticObject.match(alphanumeric) &&
+            action.match(alphanumericOrUnderscores)
+          ) {
+            return {
+              semanticObject,
+              action,
+              params
+            };
+          } else {
+            console.warn(
+              'Intent found contains illegal characters. Semantic object must be alphanumeric, action must be (alphanumeric+underscore)'
+            );
+          }
+        }
+      }
+    }
+    return false;
+  }
+
+  /**
+   * This function compares the intentLink parameter with the configuration intentMapping
+   * and returns the path segment that is matched together with the parameters, if any
+   *
+   * Example:
+   *
+   * For intentLink = `#?intent=Sales-order?foo=bar`
+   * and Luigi configuration:
+   * ```
+   * intentMapping: [{
+   *                     semanticObject: 'Sales',
+   *                     action: 'order',
+   *                     pathSegment: '/projects/pr2/order'
+   * }]
+   * ```
+   * the given intentLink is matched with the configuration's same semanticObject and action,
+   * resulting in pathSegment `/projects/pr2/order` being returned. The parameter is also added in
+   * this case resulting in: `/projects/pr2/order?~foo=bar`
+   * @param {string} intentLink  the intentLink represents the semantic intent defined by the user
+   *                        i.e.: #?intent=semanticObject-action?param=value
+   */
+  getIntentPath(intentLink) {
+    const mappings = LuigiConfig.getConfigValue('navigation.intentMapping');
+    if (mappings && mappings.length > 0) {
+      const caseInsensitiveLink = intentLink.replace(/\?intent=/i, '?intent=');
+      const intentObject = this.getIntentObject(caseInsensitiveLink);
+      if (intentObject) {
+        let realPath = mappings.find(
+          item =>
+            item.semanticObject === intentObject.semanticObject &&
+            item.action === intentObject.action
+        );
+        if (!realPath) {
+          return false;
+        }
+        realPath = realPath.pathSegment;
+        if (intentObject.params) {
+          // get custom node param prefixes if any or default to ~
+          let nodeParamPrefix = LuigiConfig.getConfigValue(
+            'routing.nodeParamPrefix'
+          );
+          nodeParamPrefix = nodeParamPrefix ? nodeParamPrefix : '~';
+          realPath = realPath.concat(`?${nodeParamPrefix}`);
+          intentObject.params.forEach(param => {
+            realPath = realPath.concat(Object.keys(param)[0]); // append param name
+            realPath = realPath.concat('=');
+            // append param value and prefix in case of multiple params
+            realPath = realPath
+              .concat(param[Object.keys(param)[0]])
+              .concat(`&${nodeParamPrefix}`);
+          });
+          realPath = realPath.slice(0, -(nodeParamPrefix.length + 1)); // slice extra prefix
+        }
+        return realPath;
+      } else {
+        console.warn('Could not parse given intent link.');
+      }
+    } else {
+      console.warn('No intent mappings are defined in Luigi configuration.');
+    }
+    return false;
   }
 }
 

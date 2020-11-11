@@ -1,9 +1,8 @@
-Cypress.env('RETRIES', 1);
 describe('Navigation', () => {
   beforeEach(() => {
     cy.visitLoggedIn('/');
   });
-  
+
   describe('Core api navigation test', () => {
     it('Core API navigate', () => {
       cy.window().then(win => {
@@ -29,9 +28,10 @@ describe('Navigation', () => {
           size: '40',
           collapsed: false
         });
-        cy.get('#splitViewContainer').should('be.visible');
-        cy.expect(handle.exists()).to.be.true;
-
+        setTimeout(() => {
+          cy.get('#splitViewContainer').should('be.visible');
+          cy.expect(handle.exists()).to.be.true;
+        }, 0);
         // It is not totally clear why it is not working without timeout, but it seems like a race condition
         // TODO: Check stackoverflow for solution
         // https://stackoverflow.com/questions/60338487/cypress-executes-assertion-immediately-on-function-that-returns-a-handle
@@ -65,6 +65,22 @@ describe('Navigation', () => {
         });
         handle.expand();
         cy.expect(handle.isExpanded()).to.be.true;
+      });
+    });
+    it('Core API open collapsed splitview and check if expand container will disappear after navigation', () => {
+      cy.get('.fd-shellbar').should('be.visible');
+      cy.window().then(win => {
+        const handle = win.Luigi.navigation().openAsSplitView('/overview', {
+          title: 'Preserved Split View',
+          size: '40',
+          collapsed: true
+        });
+        cy.get('#splitViewContainer').should('be.visible');
+        cy.get('.fd-shellbar')
+          .contains('Projects')
+          .click();
+        cy.expectPathToBe('/projects');
+        cy.get('#splitViewContainer').should('not.be.visible');
       });
     });
     it('Core API navigate with params', () => {
@@ -192,7 +208,6 @@ describe('Navigation', () => {
           .contains('defaultChildNode')
           .click();
         cy.expectPathToBe('/projects/pr1/dps/dps2');
-
         cy.window().historyBack();
         cy.expectPathToBe('/overview');
       });
@@ -295,7 +310,7 @@ describe('Navigation', () => {
     cy.get('.fd-shellbar')
       .contains('Visible for all users')
       .should('exist');
-
+  
     cy.get('.fd-shellbar')
       .contains('Visible for anonymous users only')
       .should('not.exist');
@@ -303,39 +318,47 @@ describe('Navigation', () => {
   */
 
   describe('features', () => {
-    it('keepSelectedForChildren', () => {
-      // keep selected for children example
-      Cypress.currentTest.retries(3);
-      cy.get('.fd-shellbar')
-        .contains('Overview')
-        .click();
-
-      cy.wait(500);
-      // dig into the iframe
-
-      cy.getIframeBody().then($iframeBody => {
-        cy.wrap($iframeBody)
-          .find('.fd-list__item')
-          .contains('keepSelectedForChildren')
+    it(
+      'keepSelectedForChildren',
+      {
+        retries: {
+          runMode: 3,
+          openMode: 3
+        }
+      },
+      () => {
+        // keep selected for children example
+        cy.get('.fd-shellbar')
+          .contains('Overview')
           .click();
+
         cy.wait(500);
-      });
+        // dig into the iframe
 
-      cy.expectPathToBe('/projects/pr1/avengers');
+        cy.getIframeBody().then($iframeBody => {
+          cy.wrap($iframeBody)
+            .find('.fd-list__item')
+            .contains('keepSelectedForChildren')
+            .click();
+          cy.wait(500);
+        });
 
-      //the iframe is has been replaced with another one, we need to "get" it again
-      cy.getIframeBody().then($iframeBody => {
-        // wrap this body with cy so as to do cy actions inside iframe elements
-        cy.wrap($iframeBody)
-          .find('.fd-list__item')
-          .contains('Thor')
-          .click();
-        cy.wait(500);
-      });
-      cy.expectPathToBe('/projects/pr1/avengers/thor');
+        cy.expectPathToBe('/projects/pr1/avengers');
 
-      cy.get('.fd-app__sidebar').should('contain', 'Keep Selected Example');
-    });
+        //the iframe is has been replaced with another one, we need to "get" it again
+        cy.getIframeBody().then($iframeBody => {
+          // wrap this body with cy so as to do cy actions inside iframe elements
+          cy.wrap($iframeBody)
+            .find('.fd-list__item')
+            .contains('Thor')
+            .click();
+          cy.wait(500);
+        });
+        cy.expectPathToBe('/projects/pr1/avengers/thor');
+
+        cy.get('.fd-app__sidebar').should('contain', 'Keep Selected Example');
+      }
+    );
 
     it('Node with link to another node', () => {
       const goToAnotherNodeFeature = () => {
@@ -563,7 +586,7 @@ describe('Navigation', () => {
         cy.get('.luigi-tabsContainer').within(() => {
           cy.get('.fd-tabs__item')
             .contains('User Management')
-            .should('visible');
+            .should('be.visible');
           cy.get('.fd-tabs__item')
             .contains('Node with node activation hook')
             .should('not.visible');
@@ -575,7 +598,7 @@ describe('Navigation', () => {
         cy.get('.luigi-tabsContainer').within(() => {
           cy.get('.fd-tabs__item')
             .contains('Settings')
-            .should('visible');
+            .should('be.visible');
           cy.get('.fd-tabs__item')
             .contains('Settings')
             .click();
@@ -608,7 +631,7 @@ describe('Navigation', () => {
           cy.wait(1000);
           cy.get('.fd-tabs__item')
             .contains('Miscellaneous2')
-            .should('visible');
+            .should('be.visible');
         });
       });
     });
@@ -684,51 +707,92 @@ describe('Navigation', () => {
       cy.get('.fd-app__sidebar').should('contain', 'Project Settings 3');
     });
   });
-  describe('Collapsible Categories / Accordion',() => {
+  describe('Collapsible Categories / Accordion', () => {
     it('It should have multiple categories collapsed', () => {
       cy.visit('/projects/pr2/collapsibles');
-        
-      cy.get('li[data-testid="superusefulgithublinks"]>ul.fd-nested-list').should('not.be.visible')
-      cy.get('li[data-testid="usermanagement"]>ul.fd-nested-list').should('not.be.visible')
-      
-      cy.get('li[data-testid="superusefulgithublinks"] a[title="Super useful Github links"]').click()
-      cy.get('li[data-testid="usermanagement"] a[title="User Management"]').click()
 
-      cy.get('li[data-testid="superusefulgithublinks"]>ul.fd-nested-list').should('be.visible')
-      cy.get('li[data-testid="usermanagement"]>ul.fd-nested-list').should('be.visible')
+      cy.get(
+        'li[data-testid="superusefulgithublinks"]>ul.fd-nested-list'
+      ).should('not.be.visible');
+      cy.get('li[data-testid="usermanagement"]>ul.fd-nested-list').should(
+        'not.be.visible'
+      );
 
-      cy.get('li[data-testid="superusefulgithublinks"] a[title="Super useful Github links"]').click()
-      cy.get('li[data-testid="usermanagement"] a[title="User Management"]').click()
+      cy.get(
+        'li[data-testid="superusefulgithublinks"] a[title="Super useful Github links"]'
+      ).click();
+      cy.get(
+        'li[data-testid="usermanagement"] a[title="User Management"]'
+      ).click();
 
-      cy.get('li[data-testid="superusefulgithublinks"]>ul.fd-nested-list').should('not.be.visible')
-      cy.get('li[data-testid="usermanagement"]>ul.fd-nested-list').should('not.be.visible')
+      cy.get(
+        'li[data-testid="superusefulgithublinks"]>ul.fd-nested-list'
+      ).should('be.visible');
+      cy.get('li[data-testid="usermanagement"]>ul.fd-nested-list').should(
+        'be.visible'
+      );
+
+      cy.get(
+        'li[data-testid="superusefulgithublinks"] a[title="Super useful Github links"]'
+      ).click();
+      cy.get(
+        'li[data-testid="usermanagement"] a[title="User Management"]'
+      ).click();
+
+      cy.get(
+        'li[data-testid="superusefulgithublinks"]>ul.fd-nested-list'
+      ).should('not.be.visible');
+      cy.get('li[data-testid="usermanagement"]>ul.fd-nested-list').should(
+        'not.be.visible'
+      );
     });
-    
+
     it('It should have a local side nav accordion mode', () => {
       cy.visit('/projects/pr2/sidenavaccordionmode');
-      
-     
+
       // All is closed
-      cy.get('li[data-testid="superusefulgithublinks"]>ul.fd-nested-list').should('not.be.visible')
-      cy.get('li[data-testid="usermanagement"]>ul.fd-nested-list').should('not.be.visible')
-      
-      cy.get('li[data-testid="superusefulgithublinks"] a[title="Super useful Github links"]').click()
-      
+      cy.get(
+        'li[data-testid="superusefulgithublinks"]>ul.fd-nested-list'
+      ).should('not.be.visible');
+      cy.get('li[data-testid="usermanagement"]>ul.fd-nested-list').should(
+        'not.be.visible'
+      );
+
+      cy.get(
+        'li[data-testid="superusefulgithublinks"] a[title="Super useful Github links"]'
+      ).click();
+
       // First one is open only
-      cy.get('li[data-testid="superusefulgithublinks"]>ul.fd-nested-list').should('be.visible')
-      cy.get('li[data-testid="usermanagement"]>ul.fd-nested-list').should('not.be.visible')
-      
-      cy.get('li[data-testid="usermanagement"] a[title="User Management"]').click()
-      
-      // Second one is open only
-      cy.get('li[data-testid="superusefulgithublinks"]>ul.fd-nested-list').should('not.be.visible')
-      cy.get('li[data-testid="usermanagement"]>ul.fd-nested-list').should('be.visible')
+      cy.get(
+        'li[data-testid="superusefulgithublinks"]>ul.fd-nested-list'
+      ).should('be.visible');
+      cy.get('li[data-testid="usermanagement"]>ul.fd-nested-list').should(
+        'not.be.visible'
+      );
 
-      cy.get('li[data-testid="usermanagement"] a[title="User Management"]').click()
+      cy.get(
+        'li[data-testid="usermanagement"] a[title="User Management"]'
+      ).click();
+
+      // Second one is open only
+      cy.get(
+        'li[data-testid="superusefulgithublinks"]>ul.fd-nested-list'
+      ).should('not.be.visible');
+      cy.get('li[data-testid="usermanagement"]>ul.fd-nested-list').should(
+        'be.visible'
+      );
+
+      cy.get(
+        'li[data-testid="usermanagement"] a[title="User Management"]'
+      ).click();
 
       // All is closed
-      cy.get('li[data-testid="superusefulgithublinks"]>ul.fd-nested-list').should('not.be.visible')
-      cy.get('li[data-testid="usermanagement"]>ul.fd-nested-list').should('not.be.visible')
+      cy.get(
+        'li[data-testid="superusefulgithublinks"]>ul.fd-nested-list'
+      ).should('not.be.visible');
+      cy.get('li[data-testid="usermanagement"]>ul.fd-nested-list').should(
+        'not.be.visible'
+      );
     });
 
     it('It should have a global side nav accordion mode', () => {
@@ -737,33 +801,52 @@ describe('Navigation', () => {
         const config = win.Luigi.getConfig();
         config.navigation.defaults = {
           sideNavAccordionMode: true
-        }
+        };
         win.Luigi.configChanged('settings.navigation');
-         // All is closed
-        cy.get('li[data-testid="superusefulgithublinks"]>ul.fd-nested-list').should('not.be.visible')
-        cy.get('li[data-testid="usermanagement"]>ul.fd-nested-list').should('not.be.visible')
-        
-        cy.get('li[data-testid="superusefulgithublinks"] a[title="Super useful Github links"]').click()
-        
-        // First one is open only
-        cy.get('li[data-testid="superusefulgithublinks"]>ul.fd-nested-list').should('be.visible')
-        cy.get('li[data-testid="usermanagement"]>ul.fd-nested-list').should('not.be.visible')
-        
-        cy.get('li[data-testid="usermanagement"] a[title="User Management"]').click()
-        
-        // Second one is open only
-        cy.get('li[data-testid="superusefulgithublinks"]>ul.fd-nested-list').should('not.be.visible')
-        cy.get('li[data-testid="usermanagement"]>ul.fd-nested-list').should('be.visible')
+        // All is closed
+        cy.get(
+          'li[data-testid="superusefulgithublinks"]>ul.fd-nested-list'
+        ).should('not.be.visible');
+        cy.get('li[data-testid="usermanagement"]>ul.fd-nested-list').should(
+          'not.be.visible'
+        );
 
-        cy.get('li[data-testid="usermanagement"] a[title="User Management"]').click()
+        cy.get(
+          'li[data-testid="superusefulgithublinks"] a[title="Super useful Github links"]'
+        ).click();
+
+        // First one is open only
+        cy.get(
+          'li[data-testid="superusefulgithublinks"]>ul.fd-nested-list'
+        ).should('be.visible');
+        cy.get('li[data-testid="usermanagement"]>ul.fd-nested-list').should(
+          'not.be.visible'
+        );
+
+        cy.get(
+          'li[data-testid="usermanagement"] a[title="User Management"]'
+        ).click();
+
+        // Second one is open only
+        cy.get(
+          'li[data-testid="superusefulgithublinks"]>ul.fd-nested-list'
+        ).should('not.be.visible');
+        cy.get('li[data-testid="usermanagement"]>ul.fd-nested-list').should(
+          'be.visible'
+        );
+
+        cy.get(
+          'li[data-testid="usermanagement"] a[title="User Management"]'
+        ).click();
 
         // All is closed
-        cy.get('li[data-testid="superusefulgithublinks"]>ul.fd-nested-list').should('not.be.visible')
-        cy.get('li[data-testid="usermanagement"]>ul.fd-nested-list').should('not.be.visible')
-
-      })
+        cy.get(
+          'li[data-testid="superusefulgithublinks"]>ul.fd-nested-list'
+        ).should('not.be.visible');
+        cy.get('li[data-testid="usermanagement"]>ul.fd-nested-list').should(
+          'not.be.visible'
+        );
+      });
     });
-  })
-  
-
+  });
 });
