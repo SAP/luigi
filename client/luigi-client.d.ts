@@ -374,8 +374,9 @@ export declare interface LinkManager {
 export declare interface StorageManager {
   /**
    * Asynchronously store a value for a specific key.
-   * @param {string} key used to identify the value
-   * @param {Object} object to store; object must be stringifyable
+   * @memberof StorageManager
+   * @param {string} key: used to identify the item
+   * @param {Object} value: item to be stored; object must be stringifyable
    * @returns {Promise<void>} resolves an empty value when storage operation is over; it will launch an error if storage is no supported, value cannot be stringify or you are using a luigi reserved key
    * @example
    * LuigiClient.storageManager().setItem('keyExample','valueExample').then(() => console.log('Value stored'))
@@ -385,8 +386,8 @@ export declare interface StorageManager {
   /**
    * Synchronously store a value for a specific key.
    * @memberof StorageManager
-   * @param {string} key used to identify the value
-   * @param {Object} object to store; object must be stringifyable
+   * @param {string} key: used to identify the item
+   * @param {Object} value: item to be stored; object must be stringifyable
    * @returns {void} it will launch an error if storage is no supported, value cannot be stringify or you using a luigi reserved key
    * @since 1.6.0
    * @example
@@ -397,7 +398,7 @@ export declare interface StorageManager {
   /**
    * Asynchronously retrieve a value for a specific key.
    * @memberof StorageManager
-   * @param {string} key used to identify the value
+   * @param {string} key: used to identify the item
    * @returns {Promise<Object>} resolves item retrieved from storage; it will launch an error if storage is no supported
    * @since 1.6.0
    * @example
@@ -408,6 +409,7 @@ export declare interface StorageManager {
   /**
    * Synchronously retrieve a value for a specific key.
    * @memberof StorageManager
+   * @param {string} key: used to identify the item
    * @returns {Object} item retrieved from storage; it will launch an error if storage is no supported
    * @since 1.6.0
    * @example
@@ -418,7 +420,7 @@ export declare interface StorageManager {
   /**
    * Asynchronously remove a value for a specific key.
    * @memberof StorageManager
-   * @param {string} key used to identify the value
+   * @param {string} key: used to identify the item
    * @returns {Promise<Object>} resolves item just removed from storage; it will launch an error if storage is no supported or you are using a luigi reserved key
    * @since 1.6.0
    * @example
@@ -429,7 +431,7 @@ export declare interface StorageManager {
   /**
    * Synchronously remove a value for a specific key.
    * @memberof StorageManager
-   * @param {string} key used to identify the value
+   * @param {string} key: used to identify the item
    * @returns {Object}  item just removed from storage; it will launch an error if storage is no supported or you are using a luigi reserved key
    * @since 1.6.0
    * @example
@@ -460,7 +462,7 @@ export declare interface StorageManager {
   /**
    * Check if a key is present in storage
    * @memberof StorageManager
-   * @param {string} key in the storage
+   * @param {string} key: used to identify the item
    * @returns {boolean} true if key is present, false if is not
    * @since 1.6.0
    * @example

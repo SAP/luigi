@@ -1,9 +1,13 @@
 import { LuigiClientBase } from './baseClass';
 const maxValueSize = 32768;
 const reservedKey4Luigi = [/^luigi.auth$/,/^luigi.preferences/]
+import {lifecycleManager} from './lifecycleManager';
+import { helpers } from './helpers';
+
+
 
 /**
- * Storoge manager allows you to use browser local storage (key/value); Luigi is using some dedicated keys (for preferences and authentication): if you try to use them, you will get an error.
+ * Storage manager allows you to use browser local storage (key/value); Luigi is using some dedicated keys (for preferences and authentication): if you try to use them, you will get an error.
  * @name StorageManager
  */
 class StorageManager extends LuigiClientBase {
@@ -17,13 +21,20 @@ class StorageManager extends LuigiClientBase {
 
   /**
    * Asynchronously store a value for a specific key.
-   * @param {string} key used to identify the value
-   * @param {Object} object to store; object must be stringifyable
+   * @param {string} key: used to identify the item
+   * @param {Object} value: item to be stored; object must be stringifyable
    * @returns {Promise<void>} resolves an empty value when storage operation is over; it will launch an error if storage is no supported, value cannot be stringify or you are using a luigi reserved key
    * @example
    * LuigiClient.storageManager().setItem('keyExample','valueExample').then(() => console.log('Value stored'))
    */
   setItem(key, value) {
+
+
+    helpers.sendPostMessageToLuigiCore({
+
+    })
+
+
     return new Promise((resolve, reject) => {
         try{
           this.setItemSync(key, value);
@@ -34,21 +45,6 @@ class StorageManager extends LuigiClientBase {
     });
   }
 
-  /**
-   * Synchronously store a value for a specific key.
-   * @param {string} key used to identify the value
-   * @param {Object} object to store; object must be stringifyable
-   * @returns {void} it will launch an error if storage is no supported, value cannot be stringify or you using a luigi reserved key
-   * @example
-   * LuigiClient.storageManager().setItemSync('keyExample','valueExample')
-   */
-  setItemSync(key, value) {
-    this.storageValueValidator.checkIfKeyIsReserved(key);
-    this.storageUtil.checkStorageBrowserSupport();
-    const value2store = this.storageValueValidator.stringifyValue(value);
-    this.storageValueValidator.checkSize(value2store);
-    this.storage.setItem(key, value2store);
-  }
 
   /**
    * Asynchronously retrieve a value for a specific key.
@@ -69,23 +65,6 @@ class StorageManager extends LuigiClientBase {
   }
 
   /**
-   * Synchronously retrieve a value for a specific key.
-   * @param {string} key used to identify the value
-   * @returns {Object} item retrieved from storage; it will launch an error if storage is no supported
-   * @example
-   * LuigiClient.storageManager().getItemSync('keyExample')
-   */
-  getItemSync(key){
-    this.storageUtil.checkStorageBrowserSupport();
-    let item = this.storage.getItem(key);
-    if (item){
-      return this.storageValueValidator.parseJsonIfPossible(item);
-    }else{
-      return undefined;
-    }
-  }
-
-  /**
    * Asynchronously remove a value for a specific key.
    * @param {string} key used to identify the value
    * @returns {Promise<Object>} resolves item just removed from storage; it will launch an error if storage is no supported or you are using a luigi reserved key
@@ -103,23 +82,6 @@ class StorageManager extends LuigiClientBase {
     });
   }
 
-  /**
-   * Synchronously remove a value for a specific key.
-   * @param {string} key used to identify the value
-   * @returns {Object}  item just removed from storage; it will launch an error if storage is no supported or you are using a luigi reserved key
-   * @example
-   * LuigiClient.storageManager().removeItemSync('keyExample')
-   */
-  removeItemSync(key) {
-    this.storageUtil.checkStorageBrowserSupport();
-    this.storageValueValidator.checkIfKeyIsReserved(key);
-    let item = this.getItemSync(key);
-    if (!item){
-      return undefined;
-    }
-    this.storage.removeItem(key);
-    return item;
-  }
 
   /**
    * Asynchronously clear all the storage key/values; all Luigi values used by core application will not be deleted
@@ -139,21 +101,7 @@ class StorageManager extends LuigiClientBase {
   }
 
   /**
-   * Synchronously clear all the storage key/values; all Luigi values used by core application will not be deleted
-   * @returns {void}
-   * @example
-   * LuigiClient.storageManager().clearSync()
-   */
-  clearSync(){
-    this.storageUtil.checkStorageBrowserSupport();
-    let luigiReserveStorageValues = this.storageUtil.getLuigiReserveStorageValues(this.storage)
-    this.storage.clear();
-    Object.keys(luigiReserveStorageValues)
-      .forEach(key => this.storage.setItem(key, luigiReserveStorageValues[key]));
-  }
-
-  /**
-   * Check if a key is present in storage
+   * Asynchronously Check if a key is present in storage
    * @param {string} key in the storage
    * @returns {boolean} true if key is present, false if is not
    * @example
@@ -165,7 +113,7 @@ class StorageManager extends LuigiClientBase {
   }
 
   /**
-   * Get all the keys used in the storage
+   * Asynchronously Get all the keys used in the storage
    * @returns {string[]} keys currently present in the storage
    * @example
    * LuigiClient.storageManager().getAllKeys()
@@ -174,6 +122,7 @@ class StorageManager extends LuigiClientBase {
     this.storageUtil.checkStorageBrowserSupport();
     return Object.keys(this.storage);
   }
+
 }
 
 class StorageUtil{
