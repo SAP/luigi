@@ -6,19 +6,22 @@ import {
   ViewChild
 } from '@angular/core';
 import { ActivatedRoute, Params } from '@angular/router';
-import { Subscription } from 'rxjs';
+import { merge, Observable, Subscription, timer } from 'rxjs';
 import {
   linkManager,
   uxManager,
   getClientPermissions,
   addContextUpdateListener,
-  removeContextUpdateListener
+  removeContextUpdateListener,
+  storageManager
 } from '@luigi-project/client';
 import {
   IContextMessage,
   LuigiContextService
 } from '../services/luigi-context.service';
 import { NgForm } from '@angular/forms';
+import { fromPromise } from 'rxjs/internal-compatibility';
+import { delay, timeout } from 'rxjs/operators';
 
 @Component({
   selector: 'app-project',
@@ -43,6 +46,9 @@ export class ProjectComponent implements OnInit, OnDestroy {
   public splitViewHandle;
   public currentLocale = '';
   public canChangeLocale = false;
+  public storageDemoKey = '';
+  public storageDemoValue = '';
+  public storageDemoOperation= false;
 
   public constructor(
     private activatedRoute: ActivatedRoute,
@@ -242,4 +248,146 @@ export class ProjectComponent implements OnInit, OnDestroy {
       }
     });
   }
+
+  // Start Storage part
+  public storage_setItem(){
+    if (this.validateKeyAndValue()){
+      return;
+    }
+    const promiseStorage = storageManager().setItem(this.storageDemoKey, this.storageDemoValue);
+    this.executeWithTimeout(promiseStorage, 2000,
+      (result) => 'success',
+      (result) => 'Key ' + this.storageDemoKey+ 'successfully stored with value '+this.storageDemoValue)
+  }
+
+  public storage_setItemSync(){
+    if (this.validateKeyAndValue()){
+      return;
+    }
+
+    storageManager().setItemSync(this.storageDemoKey, this.storageDemoValue);
+    this.storageShowAlert('success','Key ' + this.storageDemoKey+ 'successfully stored with value '+this.storageDemoValue);
+  }
+
+  public storage_getItem(){
+    if (this.validateKey()){
+      return;
+    }
+    const promiseStorage = storageManager().getItem(this.storageDemoKey);
+    this.executeWithTimeout(promiseStorage, 2000,
+      (result) => result? 'info': 'warning',
+      (result) => result? 'Value for key ' + this.storageDemoKey+ ' is '+result: 'No value for key '+this.storageDemoKey);
+  }
+
+  public storage_getItemSync(){
+    if (this.validateKey()){
+      return;
+    }
+    const result = storageManager().getItemSync(this.storageDemoKey);
+    if (result){
+      this.storageShowAlert('info','Value for key ' + this.storageDemoKey+ ' is '+result)
+    }else{
+      this.storageShowAlert('warning','No value for key '+this.storageDemoKey)
+    }
+  }
+
+  public storage_removeItem(){
+    if (this.validateKey()){
+      return;
+    }
+    const promiseStorage = storageManager().removeItem(this.storageDemoKey);
+    this.executeWithTimeout(promiseStorage, 2000,
+      (result) => result? 'success': 'warning',
+      (result) => result? 'Value for key ' + this.storageDemoKey+ ' had been removed': 'Nothing to delete: we could not find any value for key '+this.storageDemoKey);
+  }
+
+  public storage_removeItemSync(){
+    if (this.validateKey()){
+      return;
+    }
+    const result = storageManager().removeItemSync(this.storageDemoKey);
+    if (result){
+      this.storageShowAlert('success','Value for key ' + this.storageDemoKey+ ' had been removed')
+    }else{
+      this.storageShowAlert('warning','Nothing to delete: we could not find any value for key '+this.storageDemoKey)
+    }
+  }
+
+  public storage_clear(){
+    const promiseStorage = storageManager().clear();
+    this.executeWithTimeout(promiseStorage, 2000,
+      (result) => 'success',
+      (result) => 'Clear all the storage')
+  }
+
+  public storage_clearSync(){
+    storageManager().clearSync();
+    this.storageShowAlert('success','Clear all the storage');
+  }
+
+
+  public storage_has(){
+    if (this.validateKey()){
+      return;
+    }
+    if (storageManager().has(this.storageDemoKey)){
+      this.storageShowAlert('info',this.storageDemoKey + ' is present in the storage')
+    }else{
+      this.storageShowAlert('warning',this.storageDemoKey + ' not present in the storage')
+    }
+  }
+
+  public storage_getAllKeys(){
+      let keys = storageManager().getAllKeys();
+      let message = 'All keys present:<br/>' + keys.join('<br/>');
+      this.storageShowAlert('info',message);
+
+  }
+
+
+  executeWithTimeout(promise, timeout, alertType, successFullyMessage){
+    this.storageDemoOperation=true;
+    uxManager().showLoadingIndicator();
+    fromPromise(promise).pipe(delay(timeout)).subscribe(
+      (result) => {
+        this.storageShowAlert(alertType(result), successFullyMessage(result));
+      },
+      error => {
+        this.storageDemoOperation=false;
+        uxManager().hideLoadingIndicator();
+        this.storageShowAlert('error', error);
+      },
+      () => {
+        this.storageDemoOperation=false;
+        uxManager().hideLoadingIndicator();
+      }
+    );
+  }
+
+  validateKeyAndValue(){
+    const notValidInput = !this.storageDemoKey || this.storageDemoKey.trim().length === 0
+          || !this.storageDemoValue || this.storageDemoValue.trim().length === 0
+    if (notValidInput){
+        this.storageShowAlert('error', 'Please fill Key and Value fields');
+    }
+    return notValidInput;
+  }
+
+  validateKey(){
+    const notValidInput = !this.storageDemoKey || this.storageDemoKey.trim().length === 0
+    if (notValidInput){
+      this.storageShowAlert('error', 'Please fill Key field');
+    }
+    return notValidInput;
+  }
+
+
+  storageShowAlert(type, text){
+    uxManager().showAlert({
+      type,
+      text
+    });
+  }
+
+
 }

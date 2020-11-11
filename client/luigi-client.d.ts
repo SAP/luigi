@@ -369,6 +369,80 @@ export declare interface LinkManager {
   withoutSync: () => this;
 }
 
+
+
+export declare interface StorageManager {
+  /**
+   * xxxxxxxx
+   * @param {string} .......
+   * @param {Object} .....
+   * @memberof StorageManager
+   */
+  setItem: (key:string, value:Object) => Promise<void>;
+
+  /**
+   * xxxxxxxx
+   * @param {string} .......
+   * @param {Object} .....
+   * @memberof StorageManager
+   */
+  setItemSync: (key:string, value:Object) => void;
+
+  /**
+   * xxxxxxxx
+   * @param {string} .......
+   * @memberof StorageManager
+   */
+  getItem: (key:string) => Promise<Object>;
+
+  /**
+   * xxxxxxxx
+   * @param {string} .......
+   * @memberof StorageManager
+   */
+  getItemSync: (key:string) => Object;
+
+  /**
+   * xxxxxxxx
+   * @param {string} .......
+   * @memberof StorageManager
+   */
+  removeItem: (key:string) => Promise<Object>;
+
+  /**
+   * xxxxxxxx
+   * @param {string} .......
+   * @memberof StorageManager
+   */
+  removeItemSync: (key:string) => Object;
+
+  /**
+   * xxxxxxxx
+   * @memberof StorageManager
+   */
+  clear: () => Promise<void>;
+
+  /**
+   * xxxxxxxx
+   * @memberof StorageManager
+   */
+  clearSync: () => void;
+
+  /**
+   * xxxxxxxx
+   * @param {string} .......
+   * @memberof StorageManager
+   */
+  has: (key:string) => boolean;
+
+  /**
+   * xxxxxxxx
+   * @memberof StorageManager
+   */
+  getAllKeys: () => Array<String>;
+}
+
+
 /**
  * Registers a listener called with the context object and the Luigi Core domain as soon as Luigi is instantiated. Defer your application bootstrap if you depend on authentication data coming from Luigi.
  * @param {Lifecycle~initListenerCallback} initFn the function that is called once Luigi is initialized, receives current context and origin as parameters
@@ -570,3 +644,11 @@ export type linkManager = () => LinkManager;
  */
 export function uxManager(): UxManager;
 export type uxManager = () => UxManager;
+
+
+/**
+ * Use the StorageManager to xxxxxxxx.
+ * @name storageManager
+ */
+export function storageManager(): StorageManager;
+export type storageManager = () => StorageManager;
