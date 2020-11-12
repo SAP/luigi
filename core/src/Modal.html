@@ -221,7 +221,7 @@
     }
 
     if ('luigi.close-modal' === e.data.msg) {
-      dispatch('close');
+      dispatch('close', { 'type': 'modal' });
     }
   };
 
