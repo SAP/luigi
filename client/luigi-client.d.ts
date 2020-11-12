@@ -373,7 +373,7 @@ export declare interface LinkManager {
 
 export declare interface StorageManager {
   /**
-   * Asynchronously store a value for a specific key.
+   * Store a value for a specific key.
    * @memberof StorageManager
    * @param {string} key: used to identify the item
    * @param {Object} value: item to be stored; object must be stringifyable
@@ -384,19 +384,7 @@ export declare interface StorageManager {
   setItem: (key:string, value:Object) => Promise<void>;
 
   /**
-   * Synchronously store a value for a specific key.
-   * @memberof StorageManager
-   * @param {string} key: used to identify the item
-   * @param {Object} value: item to be stored; object must be stringifyable
-   * @returns {void} it will launch an error if storage is no supported, value cannot be stringify or you using a luigi reserved key
-   * @since 1.6.0
-   * @example
-   * LuigiClient.storageManager().setItemSync('keyExample','valueExample')
-   */
-  setItemSync: (key:string, value:Object) => void;
-
-  /**
-   * Asynchronously retrieve a value for a specific key.
+   * Retrieve a value for a specific key.
    * @memberof StorageManager
    * @param {string} key: used to identify the item
    * @returns {Promise<Object>} resolves item retrieved from storage; it will launch an error if storage is no supported
@@ -407,18 +395,7 @@ export declare interface StorageManager {
   getItem: (key:string) => Promise<Object>;
 
   /**
-   * Synchronously retrieve a value for a specific key.
-   * @memberof StorageManager
-   * @param {string} key: used to identify the item
-   * @returns {Object} item retrieved from storage; it will launch an error if storage is no supported
-   * @since 1.6.0
-   * @example
-   * LuigiClient.storageManager().getItemSync('keyExample')
-   */
-  getItemSync: (key:string) => Object;
-
-  /**
-   * Asynchronously remove a value for a specific key.
+   * Remove a value for a specific key.
    * @memberof StorageManager
    * @param {string} key: used to identify the item
    * @returns {Promise<Object>} resolves item just removed from storage; it will launch an error if storage is no supported or you are using a luigi reserved key
@@ -429,18 +406,7 @@ export declare interface StorageManager {
   removeItem: (key:string) => Promise<Object>;
 
   /**
-   * Synchronously remove a value for a specific key.
-   * @memberof StorageManager
-   * @param {string} key: used to identify the item
-   * @returns {Object}  item just removed from storage; it will launch an error if storage is no supported or you are using a luigi reserved key
-   * @since 1.6.0
-   * @example
-   * LuigiClient.storageManager().removeItemSync('keyExample')
-   */
-  removeItemSync: (key:string) => Object;
-
-  /**
-   * Asynchronously clear all the storage key/values; all Luigi values used by core application will not be deleted
+   * Clear all the storage key/values; all Luigi values used by core application will not be deleted
    * @memberof StorageManager
    * @returns {Promise<void>} resolves when storage clear is over
    * @since 1.6.0
@@ -450,20 +416,10 @@ export declare interface StorageManager {
   clear: () => Promise<void>;
 
   /**
-   * Synchronously clear all the storage key/values; all Luigi values used by core application will not be deleted
-   * @memberof StorageManager
-   * @returns {void}
-   * @since 1.6.0
-   * @example
-   * LuigiClient.storageManager().clearSync()
-   */
-  clearSync: () => void;
-
-  /**
    * Check if a key is present in storage
    * @memberof StorageManager
    * @param {string} key: used to identify the item
-   * @returns {boolean} true if key is present, false if is not
+   * @returns {Promise<boolean>} true if key is present, false if is not
    * @since 1.6.0
    * @example
    * LuigiClient.storageManager().has()
@@ -474,7 +430,7 @@ export declare interface StorageManager {
    * Get all the keys used in the storage
    * @memberof StorageManager
    * @since 1.6.0
-   * @returns {string[]} keys currently present in the storage
+   * @returns {Promise<string[]>} keys currently present in the storage
    * @example
    * LuigiClient.storageManager().getAllKeys()
    */

@@ -708,7 +708,7 @@
         <div class="fd-form-item">
 
           <label class="fd-form-label" data-testid="luigi-current-locale">
-            Here below you can play with the API; async method will have a timeout of 2 seconds
+            Here below you can play with the API
           </label>
 
           <div class="fd-container fd-container--fluid">
@@ -730,44 +730,27 @@
             </div>
           </div>
 
-          <div class="fd-container fd-container--fluid" *ngIf="!storageDemoOperation" >
+          <label class="fd-form-label" data-testid="luigi-current-locale">
+            Async methods
+          </label>
+
+
+          <div class="fd-container fd-container--fluid" *ngIf="!storageDemoOperation">
             <div class="fd-col--2">
               <button class="fd-button w100per" (click)="storage_setItem()">
                 setItem
               </button>
             </div>
-
-            <div class="fd-col--2">
-              <button class="fd-button w100per" (click)="storage_setItemSync()">
-                setItemSync
-              </button>
-            </div>
-          </div>
-          <div class="fd-container fd-container--fluid" *ngIf="!storageDemoOperation">
             <div class="fd-col--2">
               <button class="fd-button w100per" (click)="storage_getItem()">
                 getItem
               </button>
             </div>
             <div class="fd-col--2">
-              <button class="fd-button w100per" (click)="storage_getItemSync()">
-                getItemSync
-              </button>
-            </div>
-          </div>
-          <div class="fd-container fd-container--fluid" *ngIf="!storageDemoOperation">
-            <div class="fd-col--2">
               <button class="fd-button w100per" (click)="storage_removeItem()">
                 removeItem
               </button>
             </div>
-
-            <div class="fd-col--2">
-              <button class="fd-button w100per" (click)="storage_removeItemSync()">
-                removeItemSync
-              </button>
-            </div>
-
           </div>
 
           <div class="fd-container fd-container--fluid" *ngIf="!storageDemoOperation">
@@ -776,27 +759,58 @@
                 clear
               </button>
             </div>
-
-            <div class="fd-col--2">
-              <button class="fd-button w100per" (click)="storage_clearSync()">
-                clearSync
-              </button>
-            </div>
-          </div>
-
-          <div class="fd-container fd-container--fluid" *ngIf="!storageDemoOperation">
             <div class="fd-col--2">
               <button class="fd-button w100per" (click)="storage_has()">
                 has
               </button>
             </div>
-
             <div class="fd-col--2">
               <button class="fd-button w100per" (click)="storage_getAllKeys()">
                 getAllKeys
               </button>
             </div>
           </div>
+
+          <label class="fd-form-label" data-testid="luigi-current-locale">
+           Sync methods
+          </label>
+
+<!--          <div class="fd-container fd-container&#45;&#45;fluid" *ngIf="!storageDemoOperation">-->
+<!--            <div class="fd-col&#45;&#45;2">-->
+<!--              <button class="fd-button w100per" (click)="storage_setItemSync()">-->
+<!--                setItemSync-->
+<!--              </button>-->
+<!--            </div>-->
+<!--            <div class="fd-col&#45;&#45;2">-->
+<!--              <button class="fd-button w100per" (click)="storage_getItemSync()">-->
+<!--                getItemSync-->
+<!--              </button>-->
+<!--            </div>-->
+<!--            <div class="fd-col&#45;&#45;2">-->
+<!--              <button class="fd-button w100per" (click)="storage_removeItemSync()">-->
+<!--                removeItemSync-->
+<!--              </button>-->
+<!--            </div>-->
+<!--          </div>-->
+
+<!--          <div class="fd-container fd-container&#45;&#45;fluid" *ngIf="!storageDemoOperation">-->
+<!--            <div class="fd-col&#45;&#45;2">-->
+<!--              <button class="fd-button w100per" (click)="storage_clearSync()">-->
+<!--                clearSync-->
+<!--              </button>-->
+<!--            </div>-->
+<!--            <div class="fd-col&#45;&#45;2">-->
+<!--              <button class="fd-button w100per" (click)="storage_hasSync()">-->
+<!--                hasSync-->
+<!--              </button>-->
+<!--            </div>-->
+<!--            <div class="fd-col&#45;&#45;2">-->
+<!--              <button class="fd-button w100per" (click)="storage_getAllKeysSync()">-->
+<!--                getAllKeysSync-->
+<!--              </button>-->
+<!--            </div>-->
+<!--          </div>-->
+
 
         </div>
       </div>

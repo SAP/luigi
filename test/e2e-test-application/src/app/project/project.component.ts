@@ -255,18 +255,9 @@ export class ProjectComponent implements OnInit, OnDestroy {
       return;
     }
     const promiseStorage = storageManager().setItem(this.storageDemoKey, this.storageDemoValue);
-    this.executeWithTimeout(promiseStorage, 2000,
+    this.executeWithTimeout(promiseStorage, 100,
       (result) => 'success',
       (result) => 'Key ' + this.storageDemoKey+ 'successfully stored with value '+this.storageDemoValue)
-  }
-
-  public storage_setItemSync(){
-    if (this.validateKeyAndValue()){
-      return;
-    }
-
-    storageManager().setItemSync(this.storageDemoKey, this.storageDemoValue);
-    this.storageShowAlert('success','Key ' + this.storageDemoKey+ 'successfully stored with value '+this.storageDemoValue);
   }
 
   public storage_getItem(){
@@ -274,72 +265,51 @@ export class ProjectComponent implements OnInit, OnDestroy {
       return;
     }
     const promiseStorage = storageManager().getItem(this.storageDemoKey);
-    this.executeWithTimeout(promiseStorage, 2000,
+    this.executeWithTimeout(promiseStorage, 100,
       (result) => result? 'info': 'warning',
       (result) => result? 'Value for key ' + this.storageDemoKey+ ' is '+result: 'No value for key '+this.storageDemoKey);
   }
 
-  public storage_getItemSync(){
-    if (this.validateKey()){
-      return;
-    }
-    const result = storageManager().getItemSync(this.storageDemoKey);
-    if (result){
-      this.storageShowAlert('info','Value for key ' + this.storageDemoKey+ ' is '+result)
-    }else{
-      this.storageShowAlert('warning','No value for key '+this.storageDemoKey)
-    }
-  }
 
   public storage_removeItem(){
     if (this.validateKey()){
       return;
     }
     const promiseStorage = storageManager().removeItem(this.storageDemoKey);
-    this.executeWithTimeout(promiseStorage, 2000,
-      (result) => result? 'success': 'warning',
-      (result) => result? 'Value for key ' + this.storageDemoKey+ ' had been removed': 'Nothing to delete: we could not find any value for key '+this.storageDemoKey);
-  }
+    const messageOk = 'Value for key ' + this.storageDemoKey+ ' had been removed';
+    const messageKo = 'Nothing to delete: we could not find any value for key '+this.storageDemoKey;
 
-  public storage_removeItemSync(){
-    if (this.validateKey()){
-      return;
-    }
-    const result = storageManager().removeItemSync(this.storageDemoKey);
-    if (result){
-      this.storageShowAlert('success','Value for key ' + this.storageDemoKey+ ' had been removed')
-    }else{
-      this.storageShowAlert('warning','Nothing to delete: we could not find any value for key '+this.storageDemoKey)
-    }
+    this.executeWithTimeout(promiseStorage, 100,
+      (result) => result? 'success': 'warning',
+      (result) => result? messageOk : messageKo);
   }
 
   public storage_clear(){
     const promiseStorage = storageManager().clear();
-    this.executeWithTimeout(promiseStorage, 2000,
+    this.executeWithTimeout(promiseStorage, 100,
       (result) => 'success',
       (result) => 'Clear all the storage')
-  }
-
-  public storage_clearSync(){
-    storageManager().clearSync();
-    this.storageShowAlert('success','Clear all the storage');
   }
 
   public storage_has(){
     if (this.validateKey()){
       return;
     }
-    if (storageManager().has(this.storageDemoKey)){
-      this.storageShowAlert('info',this.storageDemoKey + ' is present in the storage')
-    }else{
-      this.storageShowAlert('warning',this.storageDemoKey + ' not present in the storage')
-    }
+
+    const promiseStorage = storageManager().has(this.storageDemoKey);
+    const messageOk = this.storageDemoKey + ' is present in the storage';
+    const messageKo = this.storageDemoKey + ' not present in the storage';
+
+    this.executeWithTimeout(promiseStorage, 100,
+      (result) => result? 'info': 'warning',
+      (result) => result? messageOk : messageKo);
   }
 
   public storage_getAllKeys(){
-      let keys = storageManager().getAllKeys();
-      let message = 'All keys present:<br/><br/>' + keys.join('<br/>');
-      this.storageShowAlert('info',message);
+    let promiseStorage = storageManager().getAllKeys();
+    this.executeWithTimeout(promiseStorage, 100,
+      (result) =>  'info',
+      (keys) => 'All keys present:<br/><br/>' + keys.join('<br/>'));
   }
 
   executeWithTimeout(promise, timeout, alertType, successFullyMessage){
