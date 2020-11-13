@@ -1,5 +1,5 @@
 import algoliasearch from "algoliasearch";
-const appId="BH4D9OD16A"
+const appId="BH4D9OD16A";
 const apiKey="5ab04e0673d89f07c964afcf1522ad3a";
 
 class AlgoliaSearcher{

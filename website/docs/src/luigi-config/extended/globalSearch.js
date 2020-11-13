@@ -1,5 +1,5 @@
-import ResultRender from './resultRender'
-import {algoliaSearcher} from './algoliaSearcher'
+import ResultRender from './resultRender';
+import {algoliaSearcher} from './algoliaSearcher';
 
 class GlobalSearch {
   constructor() {
