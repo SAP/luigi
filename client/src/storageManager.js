@@ -4,8 +4,10 @@ import { helpers } from './helpers';
 const pendingOperation = new Map();
 
 /**
- * Storage manager allows you to use browser local storage (key/value); Luigi is using some dedicated keys (for preferences and authentication): if you try to use them, you will get an error.
- * @name StorageManager
+ * StorageManager allows you to use browser local storage (key/value); every storage operation is sent to managed by Luigi core.
+ * The idea is that different micro frontends can share/persist items using local storage.
+ * Since all storage operations are asynchronous (send vent to Luigi core that will reply once operation is finished), all the methods return Promises.
+ * @name storageManager
  */
 class StorageManager extends LuigiClientBase {
   /** @private */
@@ -18,9 +20,10 @@ class StorageManager extends LuigiClientBase {
   }
 
   /**
-   * Asynchronously store a value for a specific key.
-   * @param {string} key used to identify the value
-   * @param {Object} item to store; object must be stringifyable
+   * Store an item for a specific key.
+   * @memberof storageManager
+   * @param {string} key key used to identify the value
+   * @param {Object} value item to store; object must be stringifyable
    * @returns {Promise<void>} resolves an empty value when storage operation is over; it will launch an error if storage is no supported, value cannot be stringify or you are using a luigi reserved key
    * @example
    * LuigiClient.storageManager().setItem('keyExample','valueExample').then(() => console.log('Value stored'))
@@ -32,7 +35,8 @@ class StorageManager extends LuigiClientBase {
   }
 
   /**
-   * Asynchronously retrieve a value for a specific key.
+   * Retrieve an item for a specific key.
+   * @memberof storageManager
    * @param {string} key used to identify the value
    * @returns {Promise<Object>} resolves item retrieved from storage; it will launch an error if storage is no supported
    * @example
@@ -45,7 +49,8 @@ class StorageManager extends LuigiClientBase {
   }
 
   /**
-   * Asynchronously remove a value for a specific key.
+   * Remove an item for a specific key.
+   * @memberof storageManager
    * @param {string} key used to identify the value
    * @returns {Promise<Object>} resolves item just removed from storage; it will launch an error if storage is no supported or you are using a luigi reserved key
    * @example
@@ -58,7 +63,8 @@ class StorageManager extends LuigiClientBase {
   }
 
   /**
-   * Asynchronously clear all the storage key/values; all Luigi values used by core application will not be deleted
+   * Clear all the storage key/values.
+   * @memberof storageManager
    * @returns {Promise<void>} resolves when storage clear is over
    * @example
    * LuigiClient.storageManager().clear().then(() => console.log('storage cleared'))
@@ -70,7 +76,8 @@ class StorageManager extends LuigiClientBase {
   }
 
   /**
-   * Check if a key is present in storage
+   * Check if a key is present in storage.
+   * @memberof storageManager
    * @param {string} key in the storage
    * @returns {Promise<boolean>} true if key is present, false if is not
    * @example
@@ -83,7 +90,8 @@ class StorageManager extends LuigiClientBase {
   }
 
   /**
-   * Get all the keys used in the storage
+   * Get all the keys used in the storage.
+   * @memberof storageManager
    * @returns {Promise<string[]>} keys currently present in the storage
    * @example
    * LuigiClient.storageManager().getAllKeys().then((keys) => console.log('keys are '+keys))

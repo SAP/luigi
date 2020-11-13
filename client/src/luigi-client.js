@@ -3,8 +3,6 @@ import { linkManager } from './linkManager';
 import { uxManager } from './uxManager';
 import { storageManager } from './storageManager';
 
-
-
 /**
  * @name LuigiClient
  * @private

@@ -1,7 +1,6 @@
 import { IframeHelpers } from './iframe-helpers';
 
 class StorageHelperClass {
-
   constructor() {
     this.init=false;
     this.storage=undefined;
@@ -135,7 +134,6 @@ class StorageHelperClass {
     }
   }
 
-
   sendBackOperation(microfrontendId, id, status, result){
     let message = {
       msg: 'storage',
@@ -152,6 +150,5 @@ class StorageHelperClass {
   }
 
 }
-
 
 export const StorageHelper = new StorageHelperClass();
