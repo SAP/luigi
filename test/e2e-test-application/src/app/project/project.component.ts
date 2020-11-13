@@ -270,7 +270,6 @@ export class ProjectComponent implements OnInit, OnDestroy {
       (result) => result? 'Value for key ' + this.storageDemoKey+ ' is '+result: 'No value for key '+this.storageDemoKey);
   }
 
-
   public storage_removeItem(){
     if (this.validateKey()){
       return;
@@ -278,7 +277,6 @@ export class ProjectComponent implements OnInit, OnDestroy {
     const promiseStorage = storageManager().removeItem(this.storageDemoKey);
     const messageOk = 'Value for key ' + this.storageDemoKey+ ' had been removed';
     const messageKo = 'Nothing to delete: we could not find any value for key '+this.storageDemoKey;
-
     this.executeWithTimeout(promiseStorage, 100,
       (result) => result? 'success': 'warning',
       (result) => result? messageOk : messageKo);
@@ -295,11 +293,9 @@ export class ProjectComponent implements OnInit, OnDestroy {
     if (this.validateKey()){
       return;
     }
-
     const promiseStorage = storageManager().has(this.storageDemoKey);
     const messageOk = this.storageDemoKey + ' is present in the storage';
     const messageKo = this.storageDemoKey + ' not present in the storage';
-
     this.executeWithTimeout(promiseStorage, 100,
       (result) => result? 'info': 'warning',
       (result) => result? messageOk : messageKo);
@@ -313,22 +309,29 @@ export class ProjectComponent implements OnInit, OnDestroy {
   }
 
   executeWithTimeout(promise, timeout, alertType, successFullyMessage){
-    this.storageDemoOperation=true;
-    uxManager().showLoadingIndicator();
+    this.startStorageOperation();
     fromPromise(promise).pipe(delay(timeout)).subscribe(
       (result) => {
         this.storageShowAlert(alertType(result), successFullyMessage(result));
       },
       error => {
-        this.storageDemoOperation=false;
-        uxManager().hideLoadingIndicator();
         this.storageShowAlert('error', error);
+        this.finishStorageOperation();
       },
       () => {
-        this.storageDemoOperation=false;
-        uxManager().hideLoadingIndicator();
+        this.finishStorageOperation();
       }
     );
+  }
+
+  startStorageOperation(){
+    this.storageDemoOperation=true;
+    uxManager().showLoadingIndicator();
+  }
+
+  finishStorageOperation(){
+    this.storageDemoOperation=false;
+    uxManager().hideLoadingIndicator();
   }
 
   validateKeyAndValue(){
@@ -347,7 +350,6 @@ export class ProjectComponent implements OnInit, OnDestroy {
     }
     return notValidInput;
   }
-
 
   storageShowAlert(type, text){
     uxManager().showAlert({

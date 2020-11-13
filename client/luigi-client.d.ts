@@ -373,7 +373,7 @@ export declare interface LinkManager {
 
 export declare interface StorageManager {
   /**
-   * Store a value for a specific key.
+   * Asynchronously store a value for a specific key.
    * @memberof StorageManager
    * @param {string} key: used to identify the item
    * @param {Object} value: item to be stored; object must be stringifyable
@@ -384,7 +384,7 @@ export declare interface StorageManager {
   setItem: (key:string, value:Object) => Promise<void>;
 
   /**
-   * Retrieve a value for a specific key.
+   * Asynchronously retrieve a value for a specific key.
    * @memberof StorageManager
    * @param {string} key: used to identify the item
    * @returns {Promise<Object>} resolves item retrieved from storage; it will launch an error if storage is no supported
@@ -395,7 +395,7 @@ export declare interface StorageManager {
   getItem: (key:string) => Promise<Object>;
 
   /**
-   * Remove a value for a specific key.
+   * Asynchronously remove a value for a specific key.
    * @memberof StorageManager
    * @param {string} key: used to identify the item
    * @returns {Promise<Object>} resolves item just removed from storage; it will launch an error if storage is no supported or you are using a luigi reserved key
@@ -406,7 +406,7 @@ export declare interface StorageManager {
   removeItem: (key:string) => Promise<Object>;
 
   /**
-   * Clear all the storage key/values; all Luigi values used by core application will not be deleted
+   * Asynchronously clear all the storage key/values; all Luigi values used by core application will not be deleted
    * @memberof StorageManager
    * @returns {Promise<void>} resolves when storage clear is over
    * @since 1.6.0
@@ -416,25 +416,26 @@ export declare interface StorageManager {
   clear: () => Promise<void>;
 
   /**
-   * Check if a key is present in storage
+   * Asynchronously check if a key is present in storage
    * @memberof StorageManager
    * @param {string} key: used to identify the item
    * @returns {Promise<boolean>} true if key is present, false if is not
    * @since 1.6.0
    * @example
-   * LuigiClient.storageManager().has()
+   * LuigiClient.storageManager().has(key).then((present) => console.log('element is present: '+present));
    */
   has: (key:string) => boolean;
 
   /**
-   * Get all the keys used in the storage
+   * Asynchronously all the keys used in the storage
    * @memberof StorageManager
    * @since 1.6.0
    * @returns {Promise<string[]>} keys currently present in the storage
    * @example
-   * LuigiClient.storageManager().getAllKeys()
+   * LuigiClient.storageManager().getAllKeys().then((keys) => console.log('keys are : '+keys));
    */
   getAllKeys: () => Array<String>;
+
 }
 
 

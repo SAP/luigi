@@ -32,18 +32,6 @@ class StorageManager extends LuigiClientBase {
   }
 
   /**
-   * Synchronously store a value for a specific key.
-   * @param {string} key used to identify the value
-   * @param {Object} item to store; object must be stringifyable
-   * @returns {void} it will launch an error if storage is no supported, value cannot be stringify or you using a luigi reserved key
-   * @example
-   * LuigiClient.storageManager().setItemSync('keyExample','valueExample')
-   */
-  setItemSync(key, value) {
-  //  return await this.setItem(key, value);
-  }
-
-  /**
    * Asynchronously retrieve a value for a specific key.
    * @param {string} key used to identify the value
    * @returns {Promise<Object>} resolves item retrieved from storage; it will launch an error if storage is no supported
@@ -54,17 +42,6 @@ class StorageManager extends LuigiClientBase {
     return new Promise((resolve, reject) => {
       this.storageEventProcessor.execute(resolve, reject, 'getItem', {key});
     });
-  }
-
-  /**
-   * Synchronously retrieve a value for a specific key.
-   * @param {string} key used to identify the value
-   * @returns {Object} item retrieved from storage; it will launch an error if storage is no supported
-   * @example
-   * LuigiClient.storageManager().getItemSync('keyExample')
-   */
-  getItemSync(key){
-    //return await this.getItemSync(key);
   }
 
   /**
@@ -81,17 +58,6 @@ class StorageManager extends LuigiClientBase {
   }
 
   /**
-   * Synchronously remove a value for a specific key.
-   * @param {string} key used to identify the value
-   * @returns {Object}  item just removed from storage; it will launch an error if storage is no supported or you are using a luigi reserved key
-   * @example
-   * LuigiClient.storageManager().removeItemSync('keyExample')
-   */
-  removeItemSync(key) {
-    // return await this.removeItem(key);
-  }
-
-  /**
    * Asynchronously clear all the storage key/values; all Luigi values used by core application will not be deleted
    * @returns {Promise<void>} resolves when storage clear is over
    * @example
@@ -101,16 +67,6 @@ class StorageManager extends LuigiClientBase {
     return new Promise((resolve, reject) => {
       this.storageEventProcessor.execute(resolve, reject, 'clear', {});
     });
-  }
-
-  /**
-   * Synchronously clear all the storage key/values; all Luigi values used by core application will not be deleted
-   * @returns {void}
-   * @example
-   * LuigiClient.storageManager().clearSync()
-   */
-  clearSync(){
-    // return await this.clear();
   }
 
   /**
@@ -127,17 +83,6 @@ class StorageManager extends LuigiClientBase {
   }
 
   /**
-   * Synchronously check if a key is present in storage
-   * @param {string} key in the storage
-   * @returns {boolean} true if key is present, false if is not
-   * @example
-   * LuigiClient.storageManager().has(key)
-   */
-   has(key){
-    // return await this.has(key);
-  }
-
-  /**
    * Get all the keys used in the storage
    * @returns {Promise<string[]>} keys currently present in the storage
    * @example
@@ -149,15 +94,6 @@ class StorageManager extends LuigiClientBase {
     });
   }
 
-  /**
-   * Synchronously get all the keys used in the storage
-   * @returns {string[]} keys currently present in the storage
-   * @example
-   * LuigiClient.storageManager().getAllKeys()
-   */
-  getAllKeysSync(){
-    // return await this.getItemSync();
-  }
 }
 
 class StorageEventProcessor{

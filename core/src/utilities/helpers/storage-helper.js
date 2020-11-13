@@ -3,9 +3,18 @@ import { IframeHelpers } from './iframe-helpers';
 class StorageHelperClass {
 
   constructor() {
+    this.init=false;
+    this.storage=undefined;
+    this.browseSupported=undefined;
+  }
+
+  checkInit(){
+    if (this.init){
+      return;
+    }
     this.storage = window.localStorage
     this.browseSupported = this.supportLocalStorage();
-
+    this.init=true;
   }
 
   supportLocalStorage(){
@@ -22,9 +31,9 @@ class StorageHelperClass {
     }
   }
 
-
   process(microfrontendId, hostname, id, operation, params){
-      try{
+    try{
+        this.checkInit();
         this.checkStorageBrowserSupport();
         const operationFunction = this[operation];
         if (typeof operationFunction !== 'function'){
