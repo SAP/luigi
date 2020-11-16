@@ -435,7 +435,7 @@ The profile section is a configurable drop-down list available in the top naviga
   - **icon** is the name of an icon from the [OpenUI](https://openui5.hana.ondemand.com/1.40.10/iconExplorer.html) or a custom link (relative or absolute) to an image displayed next to the label or instead of it.
   - **altText** adds the HTML `alt` attribute to an icon. Note that this property only applies to icons with a defined absolute or relative path.
   - **link** defines an absolute link to a **node**.
-  - **openNodeInModal** configures the settings of a view which opens in a modal. Details are here [openNodeInModal](navigation-parameters-reference.md#openNodeInModal)
+  - **openNodeInModal** configures the settings of a view which opens in a modal. Details can be found here: [openNodeInModal](navigation-parameters-reference.md#openNodeInModal).
   - **externalLink** is an object which indicates that the node links to an external URL. If this parameter
  is defined, the **link** parameter
  is ignored. It has the following attributes:
