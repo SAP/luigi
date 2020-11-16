@@ -508,6 +508,7 @@ $side-nav-width-mobile: 260px;
 
         &:before {
           transform: rotateZ(-180deg);
+          display: block;
         }
       }
     }
