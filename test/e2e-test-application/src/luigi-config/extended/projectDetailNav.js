@@ -66,13 +66,23 @@ export const projectDetailNavStructure = projectId => [
     badgeCounter: {
       label: 'Number of developers',
       count: () => Math.floor(Math.random() * 100)
-    }
+    },
   },
   {
     pathSegment: 'clientPermissionsTets',
     label: 'ClientPermissionsTets',
     viewUrl: '/sampleapp.html#/projects/pr1',
     hideFromNav: true
+  },
+  {
+    pathSegment: 'drawer',
+    label: 'Drawer Example',
+    viewUrl: '/sampleapp.html#/projects/' + projectId + '/drawer',
+    drawer: {
+      header: 'Test',
+      backdrop: true,
+      size: 'l'
+    }
   },
   {
     pathSegment: 'on-node-activation',
@@ -361,7 +371,7 @@ export const projectDetailNavStructure = projectId => [
         pathSegment: 'users',
         label: 'Users and Groups',
         viewUrl: '/sampleapp.html#/projects/' + projectId + '/users',
-        icon: 'group'
+        icon: 'group',
       },
       {
         category: 'User Management',
@@ -414,7 +424,12 @@ export const projectDetailNavStructure = projectId => [
         pathSegment: 'users',
         label: 'Users and Groups',
         viewUrl: '/sampleapp.html#/projects/' + projectId + '/users',
+<<<<<<< HEAD
         icon: 'group'
+=======
+        icon: 'group',
+
+>>>>>>> master
       },
       {
         category: 'User Management',
