@@ -348,15 +348,6 @@ class Navigation {
   getProfileItems = () => {
     const items = [
       {
-        label: 'Settings',
-        icon: 'settings',
-        openNodeInModal: {
-          title: 'User Profile Settings',
-          size: 'm'
-        },
-        link: '/overview'
-      },
-      {
         label: 'Luigi in Github',
         externalLink: {
           url: 'https://github.com/SAP/luigi',

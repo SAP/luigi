@@ -55,6 +55,50 @@ class Settings {
       }
     };
   }; */
+  userSettingsNavigationEntry = {
+    label: 'My Settings',
+    icon: 'settings'
+  };
+  userSettingGroups = {
+    userAccount: {
+      label: 'User Account',
+      sublabel: 'username',
+      icon: 'icon.jpg',
+      title: 'title',
+      settings: {
+        name: { type: 'string', label: 'Name', isEditable: true },
+        email: { type: 'string', label: 'E-Mail', isEditable: false },
+        server: { type: 'string', label: 'Server', isEditable: false }
+      }
+    },
+    language: {
+      label: 'Language & Region',
+      sublabel: 'EN | Time Format: 12h',
+      icon: false,
+      title: 'Language & Region',
+      settings: {
+        language: {
+          type: 'enum',
+          label: 'Language and Region',
+          options: ['German', 'English', 'Spanish', 'French'],
+          description:
+            'After you save your settings, the browser will refresh for the new language to take effect.'
+        },
+        date: { type: 'string', label: 'Date Format' },
+        time: { type: 'enum', label: 'Time Format', options: ['12 h', '24 h'] }
+      }
+    },
+    privacy: {
+      label: 'Privacy',
+      title: 'Privacy',
+      settings: {
+        policy: {
+          type: 'string',
+          label: 'Privacy policy has not been defined.'
+        }
+      }
+    }
+  };
 }
 
 export const settings = new Settings();

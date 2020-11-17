@@ -69,6 +69,26 @@
         >{$getTranslation(profileNav.logout.label)}</span>
       </a>
     </li>
+    <li class="fd-menu__item">
+      <a aria-label="Settings" class="fd-menu__link">
+        {#if profileNav.settings.icon}
+        {#if hasOpenUIicon(profileNav.settings)}
+        <span
+          class="fd-top-nav__icon sap-icon--{profileNav.settings.icon}"
+        ></span>
+        {:else}
+        <img
+          class="fd-top-nav__icon nav-icon"
+          src="{profileNav.settings.icon}"
+          alt="{profileNav.settings.altText ? profileNav.settings.altText : ''}"
+        >
+        {/if}
+        {/if}
+        <span
+          class="fd-menu__title"
+        >{$getTranslation(profileNav.settings.label)}</span>
+      </a>
+    </li>
     {/if}
     {#if isAuthorizationEnabled && !isLoggedIn}
     <li class="fd-menu__item" on:click="{startAuthorization}">
@@ -102,9 +122,10 @@
   let idpProviderInstance;
   let userInfo;
   let isLoggedIn;
-  let profileNav = { logout: {}, items: [] };
+  let profileNav = { logout: {}, items: [], settings: {} };
   let isAuthorizationEnabled;
   let isProfileLogoutItem;
+  let isUserSettings;
   let navProfileListenerInstalled;
   let profileLogoutFnDefined;
   let store = getContext('store');
@@ -159,6 +180,17 @@
           const logoutItem = await LuigiConfig.getConfigValueAsync(
             'navigation.profile.logout'
           );
+          //check if the User Settings schema exist
+          const userSettings = await LuigiConfig.getConfigValueAsync(
+            'settings.userSettingGroups'
+          );
+          isUserSettings = Boolean(userSettings);
+          console.log('isUserSettings', isUserSettings);
+          //check if Settings dropdown is enabled for navigation in Shellbar
+          const userSettingsNavigationEntry = await LuigiConfig.getConfigValueAsync(
+            'settings.userSettingsNavigationEntry'
+          );
+
           const profileNavData = {
             items:
               (await LuigiConfig.getConfigValueAsync(
@@ -169,6 +201,12 @@
             ...TOP_NAV_DEFAULTS.logout,
             ...logoutItem
           };
+          if (isUserSettings) {
+            profileNavData['settings'] = {
+              ...TOP_NAV_DEFAULTS.userSettingsNavigationEntry,
+              ...userSettingsNavigationEntry
+            };
+          }
 
           isProfileLogoutItem = Boolean(logoutItem);
           profileLogoutFnDefined = false;
