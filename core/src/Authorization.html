@@ -69,8 +69,8 @@
         >{$getTranslation(profileNav.logout.label)}</span>
       </a>
     </li>
-    <li class="fd-menu__item">
-      <a aria-label="Settings" class="fd-menu__link">
+    <li class="fd-menu__item" on:click="{onUserSettingsClick}">
+      <a aria-label="User Settings" class="fd-menu__link">
         {#if profileNav.settings.icon}
         {#if hasOpenUIicon(profileNav.settings)}
         <span
@@ -104,7 +104,7 @@
 <script>
   import { AuthLayerSvc } from './services';
   import { createEventDispatcher, onMount, getContext } from 'svelte';
-  import { LuigiAuth, LuigiConfig } from './core-api';
+  import { LuigiAuth, LuigiConfig, LuigiClient } from './core-api';
   import {
     AuthHelpers,
     GenericHelpers,
@@ -185,7 +185,6 @@
             'settings.userSettingGroups'
           );
           isUserSettings = Boolean(userSettings);
-          console.log('isUserSettings', isUserSettings);
           //check if Settings dropdown is enabled for navigation in Shellbar
           const userSettingsNavigationEntry = await LuigiConfig.getConfigValueAsync(
             'settings.userSettingsNavigationEntry'
@@ -265,6 +264,15 @@
       } else {
         console.error('No IDP provider or profile.customLogoutFn is defined.');
       }
+    });
+  }
+
+  export function onUserSettingsClick() {
+    getUnsavedChangesModalPromise().then(() => {
+      LuigiClient.linkManager().openAsModal('projects/pr1/users', {
+        title: 'Users',
+        size: 'm'
+      });
     });
   }
 
