@@ -101,7 +101,7 @@ Web components allow you to include more than one micro frontend per page. This 
 
 It is possible to open a web component based micro frontend in a [modal](navigation-parameters-reference.md#opennodeinmodal) or a [splitView](luigi-client-api.md#splitview). You can use the [Luigi Client API](luigi-client-api.md) to configure web component based micro frontends in the same way as regular micro frontends.
 
-You can take a look at this [web components demo page](https://luigiwebcomponents.gitlab.io) or our [e2e example](https://github.com/SAP/luigi/tree/master/test/e2e-test-application) to see how web components can be used.
+You can take a look at our [e2e example](https://github.com/SAP/luigi/tree/master/test/e2e-test-application) to see how web components can be used.
 
 To use this feature, you need to include the `webcomponents` parameter in your navigation node, for example:
 
