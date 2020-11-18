@@ -20,6 +20,7 @@ meta -->
 - [Responsive application setup](#responsive-application-setup)
 - [App loading indicator](#app-loading-indicator)
 - [Collapsed left side navigation](#collapsed-left-side-navigation)
+- [Web component based micro frontends](#web-component-based-micro-frontends)
 
 ## Rendering of Luigi application in the DOM
 
@@ -87,8 +88,47 @@ Alternatively, to keep the loading indicator until the first micro frontend is u
 
 ## Collapsed left side navigation
 
-If you use **responsiveNavigation = 'semiCollapsible'**  or **'Fiori3'** mode in your settings, you can adjust collapsed state of the left side navigation by using the **collapseLeftSideNav** function. 
+If you use **responsiveNavigation = 'semiCollapsible'**  or **'Fiori3'** mode in your settings, you can adjust collapsed state of the left side navigation by using the **collapseLeftSideNav** function.
 
 * To close the left side navigation, execute **Luigi.ux().collapseLeftSideNav(true)** in Luigi Core once your initial micro frontend has finished loading. It will set the collapsed state to `true` in **Local Storage**. Which closes the left side navgation, by showing only icons.
 
-* Set the value to `false` if you want to make left side navigation to be open.
+* Set the value to `false` if you want to make left side navigation to be open.* Set the value to `false` if you want to make left side navigation to be open.
+
+
+## Web component based micro frontends
+
+Web components allow you to include more than one micro frontend per page. This can help you create more complex and modular UIs.
+
+It is possible to open a web component based micro frontend in a [modal](navigation-parameters-reference.md#opennodeinmodal) or a [splitView](luigi-client-api.md#splitview). You can use the [Luigi Client API](luigi-client-api.md) to configure web component based micro frontends in the same way as regular micro frontends.
+
+You can take a look at this [web components demo page](https://luigiwebcomponents.gitlab.io) or our [e2e example](https://github.com/SAP/luigi/tree/master/test/e2e-test-application) to see how web components can be used.
+
+To use this feature, you need to include the `webcomponents` parameter in your navigation node, for example:
+
+```javascript
+{
+    pathSegment: 'webcomponent',
+    label: 'Webcomponent',
+    icon: 'along-stacked-chart',
+    loadingIndicator: {
+      enabled: false
+    },
+    context: {
+      title: 'Hello WebComponent!'
+    },
+    viewUrl: '/helloWorldWC.js',
+    webcomponent: true,
+    openNodeInModal: true
+  },
+```
+
+Web components can also have additional attributes such as `id`, `type`, `selfRegistered` and `tagName`:
+
+```javascript
+webcomponent: {
+          id: 'my-web-component',
+          type: 'module'
+          selfRegistered: true
+          tagName: 'web-component'
+        },
+```
