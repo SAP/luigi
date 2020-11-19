@@ -1,20 +1,19 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { PreloadComponent } from './preload.component';
+import { LuigiPreloadComponent } from './luigi.preload.component';
 
 describe('ClientSupportAngularComponent', () => {
-  let component: PreloadComponent;
-  let fixture: ComponentFixture<PreloadComponent>;
+  let component: LuigiPreloadComponent;
+  let fixture: ComponentFixture<LuigiPreloadComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ PreloadComponent ]
-    })
-    .compileComponents();
+      declarations: [LuigiPreloadComponent]
+    }).compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(PreloadComponent);
+    fixture = TestBed.createComponent(LuigiPreloadComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

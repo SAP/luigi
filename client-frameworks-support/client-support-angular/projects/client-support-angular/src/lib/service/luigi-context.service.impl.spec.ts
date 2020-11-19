@@ -1,13 +1,12 @@
 import { TestBed } from '@angular/core/testing';
-
-import { LuigiContextService } from './luigi-context.service';
+import { LuigiContextServiceImpl } from 'client-support-angular';
 
 describe('LuigiContextService', () => {
-  let service: LuigiContextService;
+  let service: LuigiContextServiceImpl;
 
   beforeEach(() => {
     TestBed.configureTestingModule({});
-    service = TestBed.inject(LuigiContextService);
+    service = TestBed.inject(LuigiContextServiceImpl);
   });
 
   it('should be created', () => {
