@@ -6,7 +6,9 @@
     "start": "ng serve",
     "build": "ng build",
     "test": "ng test",
-    "lint": "ng lint"
+    "lint": "ng lint",
+    "build:lib": "ng build client-support-angular --prod",
+    "release": "npm run build:lib && cd dist/client-support-angular/ && npm publish"
   },
   "private": true,
   "dependencies": {

@@ -1,13 +1,14 @@
 import { ActivatedRouteSnapshot } from '@angular/router';
 
 export class LuigiActivatedRouteSnapshotHelper {
-  private static _current: ActivatedRouteSnapshot;
+  // tslint:disable-next-line:variable-name
+  private static _current: ActivatedRouteSnapshot = (null as unknown) as ActivatedRouteSnapshot;
 
   static getCurrent(): ActivatedRouteSnapshot {
-    return this._current;
+    return LuigiActivatedRouteSnapshotHelper._current;
   }
 
-  static setCurrent(current: ActivatedRouteSnapshot) {
-    this._current = current;
+  static setCurrent(current: ActivatedRouteSnapshot): void {
+    LuigiActivatedRouteSnapshotHelper._current = current;
   }
 }

@@ -18,7 +18,7 @@ export class LuigiContextServiceImpl implements LuigiContextService {
   private subject: ReplaySubject<IContextMessage> = new ReplaySubject<
     IContextMessage
   >(1);
-  private currentContext: IContextMessage;
+  private currentContext: IContextMessage = (null as unknown) as IContextMessage;
 
   constructor() {
     addInitListener(initContext => {
@@ -48,7 +48,7 @@ export class LuigiContextServiceImpl implements LuigiContextService {
     this.subject.next(obj);
   }
 
-  addListener(contextType: ILuigiContextTypes, context: Context) {
+  addListener(contextType: ILuigiContextTypes, context: Context): void {
     this.setContext({
       contextType,
       context

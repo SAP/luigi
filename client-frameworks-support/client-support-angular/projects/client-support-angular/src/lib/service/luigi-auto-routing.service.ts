@@ -1,6 +1,6 @@
 import { Injectable, OnDestroy } from '@angular/core';
-import { Subscription } from 'rxjs';
-import { NavigationEnd, Router } from '@angular/router';
+import { OperatorFunction, PartialObserver, Subscription } from 'rxjs';
+import { NavigationEnd, Router, RouterEvent } from '@angular/router';
 import { linkManager } from '@luigi-project/client';
 import { filter } from 'rxjs/operators';
 import { LuigiActivatedRouteSnapshotHelper } from '../route/luigi-activated-route-snapshot-helper';
@@ -13,13 +13,15 @@ export class LuigiAutoRoutingService implements OnDestroy {
 
   constructor(private router: Router) {
     this.subscription.add(
-      this.router.events.pipe(this.doFilter()).subscribe(this.doSubscription)
+      this.router.events
+        .pipe(this.doFilter())
+        .subscribe(this.doSubscription as () => void)
     );
   }
 
-  doFilter() {
-    return filter(event => {
-      return (
+  doFilter(): OperatorFunction<unknown, RouterEvent> {
+    return filter((event): event is RouterEvent => {
+      return !!(
         event instanceof NavigationEnd &&
         event.url &&
         event.url.length > 0 &&
@@ -29,14 +31,16 @@ export class LuigiAutoRoutingService implements OnDestroy {
   }
 
   /**
-   * This method will be take in consideration angular route that having in data object the paramter fromVirtualTreeRoot: true, here an example:
+   * This method will be take in consideration angular route that having in data object the paramter
+   * fromVirtualTreeRoot: true, here an example:
    * {path: 'demo', component: DemoComponent, data:{fromVirtualTreeRoot: true}}
-   * Another option is to specify the LuigiPath: if you add in route data luigiRoute:'/xxxx/xxx'; in the case we will update the path in LuigiCore navigation, here an example
+   * Another option is to specify the LuigiPath: if you add in route data luigiRoute:'/xxxx/xxx';
+   * in the case we will update the path in LuigiCore navigation, here an example
    * {path: 'demo', component: DemoComponent, data:{luigiRoute: '/home/demo''}}
    * @param event
    */
-  doSubscription(event: NavigationEnd) {
-    let current = LuigiActivatedRouteSnapshotHelper.getCurrent();
+  doSubscription(event: NavigationEnd): void {
+    const current = LuigiActivatedRouteSnapshotHelper.getCurrent();
     if (current.data.luigiRoute) {
       linkManager()
         .withoutSync()

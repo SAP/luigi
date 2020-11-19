@@ -38,7 +38,7 @@ export class LuigiReuseStrategy implements RouteReuseStrategy {
   retrieve(route: ActivatedRouteSnapshot): DetachedRouteHandle {
     LuigiActivatedRouteSnapshotHelper.setCurrent(route);
     if (!route.routeConfig || route.routeConfig.loadChildren) {
-      return null;
+      return (null as unknown) as DetachedRouteHandle;
     }
 
     return this.handlers[this.getUrl(route)];
@@ -63,7 +63,8 @@ export class LuigiReuseStrategy implements RouteReuseStrategy {
     if (route.routeConfig) {
       const url = route.routeConfig.path;
       console.debug('returning url', url);
-      return url;
+      return url as string;
     }
+    return (null as unknown) as string;
   }
 }

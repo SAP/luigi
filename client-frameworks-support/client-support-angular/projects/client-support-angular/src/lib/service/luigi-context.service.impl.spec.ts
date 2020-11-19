@@ -1,5 +1,5 @@
 import { TestBed } from '@angular/core/testing';
-import { LuigiContextServiceImpl } from 'client-support-angular';
+import { LuigiContextServiceImpl } from './luigi-context.service.impl';
 
 describe('LuigiContextService', () => {
   let service: LuigiContextServiceImpl;
