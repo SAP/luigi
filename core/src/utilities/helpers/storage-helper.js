@@ -39,7 +39,6 @@ class StorageHelperClass {
           throw operation + " is not a supported operation for the storage";
         }
         const result = operationFunction.bind(this, hostname, params)();
-        //const result = operationFunction(microfrontendId, params);
         this.sendBackOperation(microfrontendId, id, 'OK', result);
       }catch(error){
         console.log(error);
@@ -50,13 +49,13 @@ class StorageHelperClass {
   setItem(hostname, params) {
     this.checkKey(params);
     const value = this.stringifyValue(params.value);
-    const key =  "Luigi#"+hostname + "#"+ params.key.trim();
+    const key = this.buildKey(hostname, params.key);
     this.storage.setItem(key, value);
   }
 
   getItem(hostname, params){
     this.checkKey(params);
-    const key =  "Luigi#"+hostname + "#"+ params.key.trim();
+    const key = this.buildKey(hostname, params.key);
     const item = this.storage.getItem(key);
     if (item){
       return this.parseJsonIfPossible(item);
@@ -65,9 +64,17 @@ class StorageHelperClass {
     }
   }
 
+  buildKey(hostname, subKey){
+    return  this.buildPrefix(hostname) + subKey.trim();
+  }
+
+  buildPrefix(hostname){
+    return "Luigi#"+ hostname + "#";
+  }
+
   removeItem(hostname, params){
     this.checkKey(params);
-    const key =  "Luigi#"+hostname + "#"+ params.key.trim();
+    const key = this.buildKey(hostname, params.key);
     const item = this.storage.getItem(key);
     if (item){
       this.storage.removeItem(key);
@@ -78,7 +85,7 @@ class StorageHelperClass {
   }
 
   clear(hostname, params) {
-    const keyPrefix =  "Luigi#"+hostname + "#";
+    const keyPrefix =  this.buildPrefix(hostname);
     Object.keys(this.storage)
       .filter(key => key.startsWith(keyPrefix))
       .forEach(key => this.storage.removeItem(key));
@@ -86,7 +93,7 @@ class StorageHelperClass {
 
   has(hostname, params){
     this.checkKey(params);
-    const key = "Luigi#"+hostname + "#"+ params.key.trim();
+    const key = this.buildKey(hostname, params.key);
     const item = this.storage.getItem(key);
     if (item){
       return true;
@@ -96,7 +103,7 @@ class StorageHelperClass {
   }
 
   getAllKeys(hostname, params){
-    const keyPrefix =  "Luigi#"+hostname + "#";
+    const keyPrefix =  this.buildPrefix(hostname);
     return Object.keys(this.storage)
       .filter(key => key.startsWith(keyPrefix))
       .map(key=> key.substring(keyPrefix.length));
@@ -148,7 +155,6 @@ class StorageHelperClass {
       .map(microfrontendObj => microfrontendObj.container)
       .map(mfContainer => IframeHelpers.sendMessageToIframe(mfContainer,message ));
   }
-
 }
 
 export const StorageHelper = new StorageHelperClass();
