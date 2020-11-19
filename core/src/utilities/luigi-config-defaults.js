@@ -3,7 +3,7 @@ export const TOP_NAV_DEFAULTS = {
     label: 'Sign Out',
     icon: 'log'
   },
-  userSettingsNavigationEntry: {
+  userSettingsProfileMenuEntry: {
     label: 'Settings',
     icon: 'settings'
   }

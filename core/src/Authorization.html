@@ -1,4 +1,3 @@
-
 {#if !isHidden}
 <nav class="fd-menu">
   <ul class="fd-menu__list fd-menu__list--no-shadow">
@@ -43,6 +42,28 @@
       </a>
     </li>
     {/each}
+    {#if isUserSettings}
+    <li class="fd-menu__item" on:click="{onUserSettingsClick}" data-testid="{getTestId(profileNav.settings)}">
+      <a aria-label="User Settings" class="fd-menu__link" data-testid="settings-link">
+        {#if profileNav.settings.icon}
+        {#if hasOpenUIicon(profileNav.settings)}
+        <span
+          class="fd-top-nav__icon sap-icon--{profileNav.settings.icon}"
+        ></span>
+        {:else}
+        <img
+          class="fd-top-nav__icon nav-icon"
+          src="{profileNav.settings.icon}"
+          alt="{profileNav.settings.altText ? profileNav.settings.altText : ''}"
+        >
+        {/if}
+        {/if}
+        <span
+          class="fd-menu__title"
+        >{$getTranslation(profileNav.settings.label)}</span>
+      </a>
+    </li>
+    {/if}
     {#if isAuthorizationEnabled || isProfileLogoutItem}
     {#if isLoggedIn || !isAuthorizationEnabled && isProfileLogoutItem}
     <li
@@ -69,26 +90,6 @@
         >{$getTranslation(profileNav.logout.label)}</span>
       </a>
     </li>
-    <li class="fd-menu__item" on:click="{onUserSettingsClick}">
-      <a aria-label="User Settings" class="fd-menu__link">
-        {#if profileNav.settings.icon}
-        {#if hasOpenUIicon(profileNav.settings)}
-        <span
-          class="fd-top-nav__icon sap-icon--{profileNav.settings.icon}"
-        ></span>
-        {:else}
-        <img
-          class="fd-top-nav__icon nav-icon"
-          src="{profileNav.settings.icon}"
-          alt="{profileNav.settings.altText ? profileNav.settings.altText : ''}"
-        >
-        {/if}
-        {/if}
-        <span
-          class="fd-menu__title"
-        >{$getTranslation(profileNav.settings.label)}</span>
-      </a>
-    </li>
     {/if}
     {#if isAuthorizationEnabled && !isLoggedIn}
     <li class="fd-menu__item" on:click="{startAuthorization}">
@@ -104,7 +105,7 @@
 <script>
   import { AuthLayerSvc } from './services';
   import { createEventDispatcher, onMount, getContext } from 'svelte';
-  import { LuigiAuth, LuigiConfig, LuigiClient } from './core-api';
+  import { LuigiAuth, LuigiConfig, LuigiNavigation } from './core-api';
   import {
     AuthHelpers,
     GenericHelpers,
@@ -182,12 +183,12 @@
           );
           //check if the User Settings schema exist
           const userSettings = await LuigiConfig.getConfigValueAsync(
-            'settings.userSettingGroups'
+            'settings.userSettings'
           );
           isUserSettings = Boolean(userSettings);
           //check if Settings dropdown is enabled for navigation in Shellbar
-          const userSettingsNavigationEntry = await LuigiConfig.getConfigValueAsync(
-            'settings.userSettingsNavigationEntry'
+          const userSettingsProfileMenuEntry = await LuigiConfig.getConfigValueAsync(
+            'settings.userSettings.userSettingsProfileMenuEntry'
           );
 
           const profileNavData = {
@@ -196,17 +197,16 @@
                 'navigation.profile.items'
               )) || []
           };
+          if (isUserSettings) {
+            profileNavData['settings'] = {
+              ...TOP_NAV_DEFAULTS.userSettingsProfileMenuEntry,
+              ...userSettingsProfileMenuEntry
+            };
+          }
           profileNavData['logout'] = {
             ...TOP_NAV_DEFAULTS.logout,
             ...logoutItem
           };
-          if (isUserSettings) {
-            profileNavData['settings'] = {
-              ...TOP_NAV_DEFAULTS.userSettingsNavigationEntry,
-              ...userSettingsNavigationEntry
-            };
-          }
-
           isProfileLogoutItem = Boolean(logoutItem);
           profileLogoutFnDefined = false;
           AuthLayerSvc.setProfileLogoutFn(null);
@@ -269,7 +269,7 @@
 
   export function onUserSettingsClick() {
     getUnsavedChangesModalPromise().then(() => {
-      LuigiClient.linkManager().openAsModal('projects/pr1/users', {
+      LuigiNavigation.openAsModal('projects/pr1/users', {
         title: 'Users',
         size: 'm'
       });

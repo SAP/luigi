@@ -366,6 +366,43 @@ describe('Fiddle', () => {
 
         cy.contains('Login again');
       });
+      it('User settings in profile menu with custom label', () => {
+        newConfig.settings = {
+          userSettings: {
+            userSettingsProfileMenuEntry: {
+              label: 'My UserSettings',
+              icon: 'settings'
+            }
+          }
+        }
+        visitLoggedInWithAuthConfig('/', newConfig);
+        cy.get('[data-testid="luigi-topnav-profile"] button').click();
+        cy.get('[data-testid="settings-link"]').should('exist');
+        cy.get('[data-testid="settings-link"]').contains('My UserSettings')
+      });
+      it('User settings in profile menu with default label', () => {
+        newConfig.settings = {
+          userSettings: {}
+        }
+        visitLoggedInWithAuthConfig('/', newConfig);
+        cy.get('[data-testid="luigi-topnav-profile"] button').click();
+        cy.get('[data-testid="settings-link"]').should('exist');
+        cy.get('[data-testid="settings-link"]').contains('Settings')
+      });
+      it.only('TESTS', () => {
+        newConfig.navigation.profile = {
+          logout: {
+            label: 'Bye bye',
+            icon: 'sys-cancel'
+          }
+        };
+        newConfig.auth.disableAutoLogin = false;
+        visitLoggedInWithAuthConfig('/', newConfig);
+
+        cy.get('[data-testid="luigi-topnav-profile"] button').click();
+        logoutLink().should('exist');
+        cy.get('[data-testid="settings-link"]').should('not.exist');
+      });
     });
   });
 
