@@ -38,12 +38,16 @@ class StorageHelperClass {
         if (typeof operationFunction !== 'function'){
           throw operation + " is not a supported operation for the storage";
         }
-        const result = operationFunction.bind(this, hostname, params)();
+        const result = operationFunction.bind(this, this.cleanHostname(hostname), params)();
         this.sendBackOperation(microfrontendId, id, 'OK', result);
       }catch(error){
         console.log(error);
         this.sendBackOperation(microfrontendId, id, 'ERROR', error);
       }
+  }
+
+  cleanHostname(hostanme){
+    return hostanme.replace('http://','').replace("https://",'');
   }
 
   setItem(hostname, params) {
