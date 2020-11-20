@@ -1,11 +1,16 @@
-<svelte:window on:keydown="{handleKeydown}"/>
-<div class="fd-dialog fd-dialog--active" style="z-index:999">
-  <div class="fd-dialog__content lui-modal-mf" data-testid="modal-mf">
+<svelte:window on:keydown="{handleKeydown}" />
+<div class="{(isModal || (isDrawer && settings.backdrop))?'fd-dialog fd-dialog--active':'drawer-dialog'}"
+  style="{isModal?'z-index:1001':''}">
+  <div
+    class="fd-dialog__content {isDrawer? (settings.backdrop?'drawer drawer-dialog__content drawer__backdrop':'drawer drawer-dialog__content'):'lui-modal-mf'}"
+    data-testid="modal-mf">
+    {#if isModal || (isDrawer && settings.header)}
     <div class="fd-dialog__header fd-bar fd-bar--header">
+      <Backdrop on:stateChanged="{backdropStateChanged}"></Backdrop>
       <div class="fd-bar__left">
         <div class="fd-bar__element">
-          {#if modalSettings.title}
-          <h3 class="fd-dialog__title">{modalSettings.title}</h3>
+          {#if settings.title}
+          <h3 class="fd-dialog__title">{settings.title}</h3>
           {/if}
         </div>
       </div>
@@ -13,14 +18,18 @@
         <div class="fd-bar__element">
           <button
             class="fd-button fd-button--transparent fd-button--compact fd-dialog__close sap-icon--decline"
-            on:click="{() => dispatch('close')}"
+            on:click="{() => dispatch('close',{ activeDrawer: false })}"
             aria-label="close"
           ></button>
         </div>
       </div>
     </div>
+    {/if}
     <div class="fd-dialog__body">
-      <div class="iframeModalCtn"></div>
+      {#if isDrawer}
+      <slot></slot>
+      {/if}
+      <div class="iframeModalCtn {isDrawer?'_drawer':'_modal'}"></div>
     </div>
     {#if showLoadingIndicator}
     <div
@@ -46,6 +55,7 @@
 </div>
 
 <script>
+  import Backdrop from './Backdrop.html';
   import {
     afterUpdate,
     createEventDispatcher,
@@ -66,7 +76,7 @@
   import { KEYCODE_ESC } from './utilities/keycode.js';
   import { WebComponentService } from './services/web-components';
 
-  export let modalSettings;
+  export let settings;
   export let isDataPrepared = false;
   export let nodepath;
   let nodeObject;
@@ -75,6 +85,8 @@
   let iframeCreated = false;
   let wcCreated = false;
   let showLoadingIndicator = true;
+  let isDrawer = false;
+  let isModal = true;
 
   const prepareNodeData = async path => {
     const pathUrlRaw =
@@ -83,10 +95,28 @@
     nodeParams = RoutingHelpers.getNodeParams(params);
     const dataFromPath = await Navigation.extractDataFromPath(path);
     nodeObject = dataFromPath.nodeObject;
-    pathData = dataFromPath.pathData;
-    if (!modalSettings.title) {
-      modalSettings.title = nodeObject.label;
+    isDrawer = settings.isDrawer || typeof nodeObject.drawer === 'object';
+    if (isDrawer) {
+      isModal = false;
+      if (settings.header === undefined) {
+        settings.header = true;
+        settings.title = nodeObject.label;
+      } else if (settings.header && settings.header.title) {
+        settings.title = settings.header.title;
+      }
+      if (settings.backdrop === undefined || !settings.backdrop) {
+        settings.backdrop = false;
+        dispatch('drawerState', { activeDrawer: true });
+      }
+      if (!settings.size) {
+        settings.size = 's';
+      }
+    } else {
+      if (!settings.title) {
+        settings.title = nodeObject.label;
+      }
     }
+    pathData = dataFromPath.pathData;
 
     isDataPrepared = true;
   };
@@ -103,7 +133,8 @@
         WebComponentService.renderWebComponent(
           nodeObject.viewUrl,
           document.querySelector('.iframeModalCtn'),
-          pathData.context
+          pathData.context,
+          nodeObject
         );
         dispatch('wcCreated', {
           modalWC: document.querySelector('.iframeModalCtn'),
@@ -130,20 +161,26 @@
   const setModalSize = () => {
     const elem = document.getElementsByClassName('lui-modal-mf');
     let modalSize = '80%';
-    if (modalSettings.size) {
-      if (modalSettings.size === 'l') {
+    if (settings.size) {
+      if (settings.size === 'l') {
         modalSize = '80%';
-      } else if (modalSettings.size === 'm') {
+      } else if (settings.size === 'm') {
         modalSize = '60%';
-      } else if (modalSettings.size === 's') {
+      } else if (settings.size === 's') {
         modalSize = '40%';
-      }
+      };
     }
     elem[0].setAttribute('style', `width:${modalSize};height:${modalSize}`);
-  };
+  }
+
 
   const createIframeModal = async (viewUrl, componentData) => {
-    setModalSize();
+    if (isDrawer) {
+      await setDrawerSize();
+    } else {
+      setModalSize();
+    }
+
     if (viewUrl) {
       viewUrl = RoutingHelpers.substituteViewUrl(viewUrl, componentData);
     }
@@ -159,6 +196,29 @@
     iframeCtn.appendChild(iframe);
     return iframe;
   };
+
+  async function setDrawerSize(elem) {
+    let styleSettings = '';
+    const elemDrawer = document.getElementsByClassName('drawer');
+    const drawerDialog = document.getElementsByClassName('drawer-dialog');
+    if (settings.size) {
+      if (settings.size === 'l') {
+        styleSettings = `width:75%;`;
+      } else if (settings.size === 'm') {
+        styleSettings = `width:50%;`;
+      } else if (settings.size === 's') {
+        styleSettings = `width:25%;`;
+      } else if (settings.size === 'xs') {
+        styleSettings = `width:15.5%;`;
+      }
+    }
+    if (settings.backdrop) {
+      elemDrawer[0].setAttribute('style', styleSettings);
+    } else {
+      drawerDialog[0].setAttribute('style', styleSettings);
+      elemDrawer[0].setAttribute('style', 'width:100%');
+    }
+  }
 
   // [svelte-upgrade warning]
   // beforeUpdate and afterUpdate handlers behave
@@ -187,9 +247,15 @@
     }
 
     if ('luigi.close-modal' === e.data.msg) {
-      dispatch('close');
+      dispatch('close', { 'type': 'modal' });
     }
   };
+
+  const backdropStateChanged = (event) => {
+    if (event && event.detail && event.detail.backdropActive && event.detail.drawer) {
+      //renderBackdrop = false;
+    }
+  }
 
   onMount(() => {
     EventListenerHelpers.addEventListener('message', onMessage);
@@ -209,9 +275,32 @@
 </script>
 
 <style type="text/scss">
+  @import 'styles/variables';
+  .drawer-dialog{
+    position: absolute;
+    top: $topNavHeight;
+    bottom: 0;
+    width: 25%;
+    z-index: 3;
+    right: 0;
+  }
+
+  .drawer {
+    bottom:0;
+    width: 25vw;
+    overflow-y: auto;
+    left: auto;
+    right: 0;
+    height: 100%;
+  }
+
+  .drawer__backdrop{
+    top:$topNavHeight;
+  }
+
   .iframeModalCtn {
-    position: relative;
-    height: 70vh;
+    position: absolute;
+    height: 100%;
     width: 100%;
     overflow: auto;
     -webkit-overflow-scrolling: touch;
@@ -239,13 +328,30 @@
     width: 100%;
     height: 100%;
   }
-  .fd-dialog {
-    &__content {
-      width: 80%;
-    }
 
+  .drawer-dialog__content{
+    max-width: none;
+    max-height: none;
+    min-width: 0;
+  }
+
+  .drawer-dialog--active{
+    display:block;
+    background-color: transparent;
+  }
+
+  @media (max-width: 599px) {
+    .drawer-dialog__content:not(.fd-dialog__content--mobile) {
+        max-width: none;
+        min-width: 50vw;
+    }
+  }
+
+  .fd-dialog {
     &__body {
       overflow-wrap: break-word;
+      padding-top: 0;
+      padding-bottom: 0;
     }
   }
 </style>

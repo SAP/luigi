@@ -1,31 +1,42 @@
-<svelte:window on:resize="{onResize}"/>
+<svelte:window on:resize="{onResize}" />
 <div id="app" class="{hideNav? 'no-nav' : ''} {hideSideNav? 'no-side-nav':''}">
-  {#if confirmationModal.displayed}
-  <ConfirmationModal
-    settings="{confirmationModal.settings}"
-    on:modalConfirm="{()=> handleModalResult(true)}"
-    on:modalDismiss="{() => handleModalResult(false)}"
-  ></ConfirmationModal>
-  {/if}
   {#if alerts && alerts.length}
-  <Alerts alertQueue="{alerts}" on:alertDismiss="{handleAlertDismissExternal}"></Alerts>
+    <Alerts alertQueue="{alerts}" on:alertDismiss="{handleAlertDismissExternal}"></Alerts>
   {/if}
   {#if mfModal.displayed}
-  <Modal
-    modalSettings="{mfModal.modalSettings}"
-    nodepath="{mfModal.nodepath}"
-    on:close="{closeModal}"
-    on:iframeCreated="{modalIframeCreated}"
-    on:wcCreated="{modalWCCreated}"
-  ></Modal>
+    <Modal
+      settings="{mfModal.settings}"
+      nodepath="{mfModal.nodepath}"
+      on:close="{closeModal}"
+      on:iframeCreated="{modalIframeCreated}"
+      on:wcCreated="{modalWCCreated}"
+    ></Modal>
   {/if}
-  <Backdrop>
+  {#if mfDrawer.displayed && mfDrawer.settings.isDrawer}
+    <Modal
+      settings="{mfDrawer.settings}"
+      nodepath="{mfDrawer.nodepath}"
+      on:close="{closeDrawer}"
+      on:drawerState="{setDrawerState}"
+      on:iframeCreated="{drawerIframeCreated}"
+    >
+      <Backdrop area="drawer" disable="{disableBackdrop}"></Backdrop>
+    </Modal>
+  {/if}
+  {#if confirmationModal.displayed}
+    <ConfirmationModal
+      settings="{confirmationModal.settings}"
+      on:modalConfirm="{()=> handleModalResult(true)}"
+      on:modalDismiss="{() => handleModalResult(false)}"
+    ></ConfirmationModal>
+  {/if}
+  <Backdrop disable="{disableBackdrop}">
     <div
       class="fd-page iframeContainer {mfSplitView.displayed?'lui-split-view':''} {mfSplitView.collapsed?'lui-collapsed':''}"
       tabindex="0"
       use:init
     >
-      <Backdrop area="main"></Backdrop>
+      <Backdrop area="main" disable="{disableBackdrop}"></Backdrop>
       <div class="wcContainer"></div>
     </div>
     {#if mfSplitView.displayed}
@@ -36,6 +47,7 @@
       on:iframeCreated="{splitViewIframeCreated}"
       on:statusChanged="{splitViewStatusChanged}"
       on:wcCreated="{splitViewWCCreated}"
+      disableBackdrop="{disableBackdrop}"
     ></SplitView>
     {/if}
   </Backdrop>
@@ -152,6 +164,11 @@
   let modalWC;
   let modalWCData;
   let modal;
+  let activeDrawer = false;
+  let disableBackdrop;
+  let drawerIframe;
+  let drawerIframeData;
+  let drawer;
   let splitViewIframe;
   let splitViewIframeData;
   let splitViewWC;
@@ -301,7 +318,7 @@
             }
             resolve();
           },
-          () => {}
+          () => { }
         );
       } else {
         resolve();
@@ -423,8 +440,8 @@
         preservedViews = [];
         Iframe.removeInactiveIframes(node);
       }
-
       closeModal();
+
       closeSplitView();
 
       Routing.handleRouteChange(path, getComponentWrapper(), node, config);
@@ -502,6 +519,13 @@
         openViewInModal(
           route,
           node.openNodeInModal === true ? {} : node.openNodeInModal
+        );
+      } else if (node.drawer) {
+        const route = RoutingHelpers.buildRoute(node, `/${node.pathSegment}`);
+        node.drawer.isDrawer = true;
+        openViewInDrawer(
+          route,
+          node.drawer
         );
       } else {
         getComponentWrapper().set({ isNavigationSyncEnabled: true });
@@ -874,19 +898,19 @@
   const resetMicrofrontendModalData = () => {
     mfModal.displayed = false;
     mfModal.nodepath = undefined;
-    mfModal.modalSettings = {};
+    mfModal.settings = {};
   };
 
   resetMicrofrontendModalData();
 
-  const openViewInModal = async (nodepath, modalSettings) => {
+  const openViewInModal = async (nodepath, settings) => {
     const { nodeObject } = await Navigation.extractDataFromPath(nodepath);
     if (await Navigation.shouldPreventNavigation(nodeObject)) {
       return;
     }
     mfModal.displayed = true;
     mfModal.nodepath = nodepath;
-    mfModal.modalSettings = modalSettings;
+    mfModal.settings = settings;
   };
 
   const modalIframeCreated = event => {
@@ -899,7 +923,7 @@
     modalWCData = event.detail.modalWCData;
   };
 
-  const closeModal = () => {
+  const closeModal = (event) => {
     if (modalIframe) {
       getUnsavedChangesModalPromise(modalIframe.contentWindow).then(() => {
         resetMicrofrontendModalData();
@@ -910,6 +934,53 @@
   };
 
   setContext('openViewInModal', openViewInModal);
+
+  ///
+  let mfDrawer = {};
+
+  const resetMicrofrontendDrawerData = () => {
+    mfDrawer.displayed = false;
+    mfDrawer.nodepath = undefined;
+    mfDrawer.settings = {};
+    disableBackdrop = false;
+  };
+
+  resetMicrofrontendDrawerData();
+
+  const openViewInDrawer = async (nodepath, settings) => {
+    const { nodeObject } = await Navigation.extractDataFromPath(nodepath);
+    if (await Navigation.shouldPreventNavigation(nodeObject)) {
+      return;
+    }
+    mfDrawer.displayed = true;
+    mfDrawer.nodepath = nodepath;
+    mfDrawer.settings = settings;
+    if (mfDrawer.settings && mfDrawer.settings.backdrop) {
+      disableBackdrop = true;
+    }
+  };
+
+  const drawerIframeCreated = event => {
+    drawerIframe = event.detail.modalIframe;
+    drawerIframeData = event.detail.modalIframeData;
+  };
+
+  const setDrawerState = (event) => {
+    activeDrawer = event.detail.activeDrawer;
+  }
+
+  const closeDrawer = (event) => {
+    if (event && event.detail && event.detail.activeDrawer !== undefined) {
+      activeDrawer = event.detail.activeDrawer;
+    }
+    if (!activeDrawer || (event && event.detail && event.detail.type !== 'modal')) {
+      if (drawerIframe) {
+        getUnsavedChangesModalPromise(drawerIframe.contentWindow).then(() => {
+          resetMicrofrontendDrawerData();
+        });
+      }
+    }
+  };
 
   function init(node) {
     const isolateAllViews = LuigiConfig.getConfigValue(
@@ -1006,12 +1077,16 @@
       }
 
       if ('luigi.get-context' === e.data.msg) {
+
         config.iframe.luigi.clientVersion = e.data.clientVersion; // undefined for v0.x clients
         config.iframe.luigi.initOk = false; // get-context indication. used for handshake verification
 
         const specialIframeProps = {
           modalIframe,
           modalIframeData,
+          drawerIframe,
+          drawerIframeData,
+          drawer,
           modal,
           splitViewIframe,
           splitViewIframeData,
@@ -1031,6 +1106,7 @@
               pathParams: specialIframeProps[typ.dataKey].pathParams,
               nodeParams: specialIframeProps[typ.dataKey].nodeParams,
               modal: typ.iframeKey.startsWith('modal'),
+              drawer: typ.iframeKey.startsWith('drawer'),
               splitView: typ.iframeKey.startsWith('splitView')
             };
             await sendContextToClient(conf, {});
@@ -1086,12 +1162,20 @@
           path = GenericHelpers.addLeadingSlash(path);
           contentNode = node;
           openSplitView(path, e.data.params.splitView);
+        } else if (e.data.params.drawer !== undefined) {
+          let path = buildPath(e.data.params);
+          path = GenericHelpers.addLeadingSlash(path);
+          contentNode = node;
+          resetMicrofrontendDrawerData();
+          e.data.params.drawer.isDrawer = true;
+          openViewInDrawer(path, e.data.params.drawer);
         } else {
           getUnsavedChangesModalPromise().then(() => {
             isNavigationSyncEnabled = !e.data.params.withoutSync;
             handleNavigation(e.data, config);
             closeModal();
             closeSplitView();
+            closeDrawer();
           });
         }
       }
@@ -1105,6 +1189,15 @@
           });
         } else if (IframeHelpers.isMessageSource(e, splitViewIframe)) {
           closeSplitView();
+          await sendContextToClient(config, {
+            goBackContext:
+              e.data.goBackContext && JSON.parse(e.data.goBackContext)
+          });
+        } else if (IframeHelpers.isMessageSource(e, drawerIframe)) {
+          if (activeDrawer) {
+            activeDrawer = !activeDrawer;
+          }
+          closeDrawer();
           await sendContextToClient(config, {
             goBackContext:
               e.data.goBackContext && JSON.parse(e.data.goBackContext)
@@ -1295,7 +1388,7 @@
         thirdPartyCookieCheckIframe.src =
           thirdPartyCookiesCheck.thirdPartyCookieScriptLocation;
         document.body.appendChild(thirdPartyCookieCheckIframe);
-        thirdPartyCookieCheckIframe.onload = function() {
+        thirdPartyCookieCheckIframe.onload = function () {
           setTimeout(() => {
             if (thirdPartyCookiesStatus() === 'disabled') {
               tpcErrorHandling(thirdPartyCookiesCheck);
@@ -1307,7 +1400,7 @@
     }
   });
 
-  afterUpdate(() => {});
+  afterUpdate(() => { });
 </script>
 
 <style type="text/scss">
