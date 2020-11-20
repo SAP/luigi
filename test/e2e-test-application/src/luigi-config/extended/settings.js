@@ -61,12 +61,13 @@ class Settings {
       label: 'My Settings',
       icon: 'settings'
     },
-    writeToCustomStorage: (key, obj) => {
-      sessionStorage.setItem(key, JSON.stringify(obj));
-    },
-    readToCustomStorage: (key) => {
-      return JSON.parse(sessionStorage.getItem(key));
-    },
+    // functions to use a custom storage like sessionStorage
+    // writeToCustomStorage: (key, obj) => {
+    //   sessionStorage.setItem(key, JSON.stringify(obj));
+    // },
+    // readToCustomStorage: (key) => {
+    //   return JSON.parse(sessionStorage.getItem(key));
+    // },
     userSettingGroups: {
       userAccount: {
         label: 'User Account',
