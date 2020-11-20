@@ -161,16 +161,16 @@
   const setModalSize = () => {
     const elem = document.getElementsByClassName('lui-modal-mf');
     let modalSize = '80%';
-    if (modalSettings.size) {
-      if (modalSettings.size === 'l') {
+    if (settings.size) {
+      if (settings.size === 'l') {
         modalSize = '80%';
-      } else if (modalSettings.size === 'm') {
+      } else if (settings.size === 'm') {
         modalSize = '60%';
-      } else if (modalSettings.size === 's') {
+      } else if (settings.size === 's') {
         modalSize = '40%';
-        elem[0].setAttribute('style', `width:${modalSize};height:${modalSize}`);
       };
     }
+    elem[0].setAttribute('style', `width:${modalSize};height:${modalSize}`);
   }
 
 

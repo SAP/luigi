@@ -424,12 +424,7 @@ export const projectDetailNavStructure = projectId => [
         pathSegment: 'users',
         label: 'Users and Groups',
         viewUrl: '/sampleapp.html#/projects/' + projectId + '/users',
-<<<<<<< HEAD
         icon: 'group'
-=======
-        icon: 'group',
-
->>>>>>> master
       },
       {
         category: 'User Management',
