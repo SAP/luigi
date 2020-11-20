@@ -138,12 +138,12 @@ describe('Config', () => {
       sinon.restore();
       sinon.reset();
     });
-    const key = 'myStorageKey'
+    const key = 'myStorageKey';
     const userSettingsObj = {
       userSettings: {
-        some: "object"
+        userSettingGroups: {}
       }
-    }
+    };
     const myConfig = {
       writeToCustomStorage: () => {
         console.log('write');
@@ -178,4 +178,3 @@ describe('Config', () => {
     });
   });
 });
-
