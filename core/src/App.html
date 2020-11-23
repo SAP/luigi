@@ -1,34 +1,34 @@
-<svelte:window on:resize="{onResize}" />
+<svelte:window on:resize="{onResize}"/>
 <div id="app" class="{hideNav? 'no-nav' : ''} {hideSideNav? 'no-side-nav':''}">
   {#if alerts && alerts.length}
-    <Alerts alertQueue="{alerts}" on:alertDismiss="{handleAlertDismissExternal}"></Alerts>
+  <Alerts alertQueue="{alerts}" on:alertDismiss="{handleAlertDismissExternal}"></Alerts>
   {/if}
   {#if mfModal.displayed}
-    <Modal
-      settings="{mfModal.settings}"
-      nodepath="{mfModal.nodepath}"
-      on:close="{closeModal}"
-      on:iframeCreated="{modalIframeCreated}"
-      on:wcCreated="{modalWCCreated}"
-    ></Modal>
+  <Modal
+    settings="{mfModal.settings}"
+    nodepath="{mfModal.nodepath}"
+    on:close="{closeModal}"
+    on:iframeCreated="{modalIframeCreated}"
+    on:wcCreated="{modalWCCreated}"
+  ></Modal>
   {/if}
   {#if mfDrawer.displayed && mfDrawer.settings.isDrawer}
-    <Modal
-      settings="{mfDrawer.settings}"
-      nodepath="{mfDrawer.nodepath}"
-      on:close="{closeDrawer}"
-      on:drawerState="{setDrawerState}"
-      on:iframeCreated="{drawerIframeCreated}"
-    >
-      <Backdrop area="drawer" disable="{disableBackdrop}"></Backdrop>
-    </Modal>
+  <Modal
+    settings="{mfDrawer.settings}"
+    nodepath="{mfDrawer.nodepath}"
+    on:close="{closeDrawer}"
+    on:drawerState="{setDrawerState}"
+    on:iframeCreated="{drawerIframeCreated}"
+  >
+    <Backdrop area="drawer" disable="{disableBackdrop}"></Backdrop>
+  </Modal>
   {/if}
   {#if confirmationModal.displayed}
-    <ConfirmationModal
-      settings="{confirmationModal.settings}"
-      on:modalConfirm="{()=> handleModalResult(true)}"
-      on:modalDismiss="{() => handleModalResult(false)}"
-    ></ConfirmationModal>
+  <ConfirmationModal
+    settings="{confirmationModal.settings}"
+    on:modalConfirm="{()=> handleModalResult(true)}"
+    on:modalDismiss="{() => handleModalResult(false)}"
+  ></ConfirmationModal>
   {/if}
   <Backdrop disable="{disableBackdrop}">
     <div
@@ -318,7 +318,7 @@
             }
             resolve();
           },
-          () => { }
+          () => {}
         );
       } else {
         resolve();
@@ -523,10 +523,7 @@
       } else if (node.drawer) {
         const route = RoutingHelpers.buildRoute(node, `/${node.pathSegment}`);
         node.drawer.isDrawer = true;
-        openViewInDrawer(
-          route,
-          node.drawer
-        );
+        openViewInDrawer(route, node.drawer);
       } else {
         getComponentWrapper().set({ isNavigationSyncEnabled: true });
         Routing.handleRouteClick(node, getComponentWrapper());
@@ -923,7 +920,7 @@
     modalWCData = event.detail.modalWCData;
   };
 
-  const closeModal = (event) => {
+  const closeModal = event => {
     if (modalIframe) {
       getUnsavedChangesModalPromise(modalIframe.contentWindow).then(() => {
         resetMicrofrontendModalData();
@@ -965,15 +962,18 @@
     drawerIframeData = event.detail.modalIframeData;
   };
 
-  const setDrawerState = (event) => {
+  const setDrawerState = event => {
     activeDrawer = event.detail.activeDrawer;
-  }
+  };
 
-  const closeDrawer = (event) => {
+  const closeDrawer = event => {
     if (event && event.detail && event.detail.activeDrawer !== undefined) {
       activeDrawer = event.detail.activeDrawer;
     }
-    if (!activeDrawer || (event && event.detail && event.detail.type !== 'modal')) {
+    if (
+      !activeDrawer ||
+      (event && event.detail && event.detail.type !== 'modal')
+    ) {
       if (drawerIframe) {
         getUnsavedChangesModalPromise(drawerIframe.contentWindow).then(() => {
           resetMicrofrontendDrawerData();
@@ -1077,7 +1077,6 @@
       }
 
       if ('luigi.get-context' === e.data.msg) {
-
         config.iframe.luigi.clientVersion = e.data.clientVersion; // undefined for v0.x clients
         config.iframe.luigi.initOk = false; // get-context indication. used for handshake verification
 
@@ -1388,7 +1387,7 @@
         thirdPartyCookieCheckIframe.src =
           thirdPartyCookiesCheck.thirdPartyCookieScriptLocation;
         document.body.appendChild(thirdPartyCookieCheckIframe);
-        thirdPartyCookieCheckIframe.onload = function () {
+        thirdPartyCookieCheckIframe.onload = function() {
           setTimeout(() => {
             if (thirdPartyCookiesStatus() === 'disabled') {
               tpcErrorHandling(thirdPartyCookiesCheck);
@@ -1400,7 +1399,7 @@
     }
   });
 
-  afterUpdate(() => { });
+  afterUpdate(() => {});
 </script>
 
 <style type="text/scss">
@@ -1500,6 +1499,9 @@
     top: calc(#{$topNavHeight} + #{$topNavHeightTab});
   }
 
+  .iframeContainer:focus {
+    outline: none;
+  }
   .spinnerContainer {
     background: rgba(243, 244, 245, 0.8);
     display: flex;
