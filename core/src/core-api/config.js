@@ -234,7 +234,7 @@ class LuigiConfig {
   }
 
   /**
-   * Reads the user settings object from the localstorage. It is possible to choose a custom storage type by implementing the `settings.userSetting.readFromCustomStorage` function.
+   * Reads the user settings object from the **localStorage**. It is possible to choose a custom storage type by implementing the `settings.userSetting.readFromCustomStorage` function.
    * @memberof Configuration
    * @param {string} key used to identify the item in the storage.
    * @param {string} property the object traversal path where `readFromCustomStorage` function is implemented. Optional and only needed if there is a custom implementation of `readFromCustomStorage` function in the settings section of the luigi config to read a custom storage.
