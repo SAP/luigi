@@ -42,7 +42,7 @@
       </a>
     </li>
     {/each}
-    {#if isUserSettings}
+    {#if hasUserSettings}
     <li class="fd-menu__item" on:click="{onUserSettingsClick}" data-testid="{getTestId(profileNav.settings)}">
       <a aria-label="User Settings" class="fd-menu__link" data-testid="settings-link">
         {#if profileNav.settings.icon}
@@ -126,7 +126,7 @@
   let profileNav = { logout: {}, items: [], settings: {} };
   let isAuthorizationEnabled;
   let isProfileLogoutItem;
-  let isUserSettings;
+  let hasUserSettings;
   let navProfileListenerInstalled;
   let profileLogoutFnDefined;
   let store = getContext('store');
@@ -185,7 +185,7 @@
           const userSettings = await LuigiConfig.getConfigValueAsync(
             'settings.userSettings'
           );
-          isUserSettings = Boolean(userSettings);
+          hasUserSettings = Boolean(userSettings);
           //check if Settings dropdown is enabled for navigation in Shellbar
           const userSettingsProfileMenuEntry = await LuigiConfig.getConfigValueAsync(
             'settings.userSettings.userSettingsProfileMenuEntry'
@@ -197,7 +197,7 @@
                 'navigation.profile.items'
               )) || []
           };
-          if (isUserSettings) {
+          if (hasUserSettings) {
             profileNavData['settings'] = {
               ...TOP_NAV_DEFAULTS.userSettingsProfileMenuEntry,
               ...userSettingsProfileMenuEntry

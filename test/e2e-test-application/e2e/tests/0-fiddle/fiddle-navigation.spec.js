@@ -389,7 +389,7 @@ describe('Fiddle', () => {
         cy.get('[data-testid="settings-link"]').should('exist');
         cy.get('[data-testid="settings-link"]').contains('Settings')
       });
-      it.only('TESTS', () => {
+      it('User settings not in the profile menu, if not configured', () => {
         newConfig.navigation.profile = {
           logout: {
             label: 'Bye bye',
