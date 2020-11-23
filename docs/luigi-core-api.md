@@ -184,8 +184,8 @@ Reads the user settings object from the localstorage. It is possible to choose a
 ##### Examples
 
 ```javascript
-Luigi.writeUserSettings('key');
-Luigi.writeUserSettings('key', 'settings.userSettings');
+Luigi.readSettingsFromStorage('key');
+Luigi.readSettingsFromStorage('key', 'settings.userSettings');
 ```
 
 **Meta**
@@ -205,8 +205,8 @@ Writes the user settings object to the localstorage. It is possible to choose a 
 ##### Examples
 
 ```javascript
-Luigi.writeUserSettings('key', {object});
-Luigi.writeUserSettings('key', {object}, 'settings.userSettings');
+Luigi.writeSettingsToStorage('key', {object});
+Luigi.writeSettingsToStorage('key', {object}, 'settings.userSettings');
 ```
 
 **Meta**
