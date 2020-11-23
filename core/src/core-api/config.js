@@ -259,7 +259,7 @@ class LuigiConfig {
    * @memberof Configuration
    * @param {string} key used to identify the item in the storage.
    * @param {Object} settingsObject to store in the storage.
-   * @param {string} property the object traversal path where `writeToCustomStorage` function is implemented. Optional and only needed if there is a custom implementation of `writeToCustomStorage` function in the settings section of the luigi config to read a custom storage.
+   * @param {string} property the object traversal path where the `writeToCustomStorage` function is implemented. Optional and only needed if there is a custom implementation of a `writeToCustomStorage` function in the settings section of the Luigi configuration to read a custom storage.
    * @example
    * Luigi.writeUserSettings('key', {object});
    * Luigi.writeUserSettings('key', {object}, 'settings.userSettings');
