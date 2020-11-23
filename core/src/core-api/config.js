@@ -255,7 +255,7 @@ class LuigiConfig {
   }
 
   /**
-   * Writes the user settings object to the localstorage. It is possible to choose a custom storage type by implementing the `settings.userSetting.writeToCustomStorage` function.
+   * Writes the user settings object to the **localStorage**. It is possible to choose a custom storage type by implementing the `settings.userSetting.writeToCustomStorage` function.
    * @memberof Configuration
    * @param {string} key used to identify the item in the storage.
    * @param {Object} settingsObject to store in the storage.
