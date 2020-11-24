@@ -48,10 +48,6 @@ let allProjects = [
     name: 'Project Two'
   },
   {
-    id: 'storage',
-    name: 'Storage'
-  },
-  {
     id: 'tabNav',
     name: 'Horizontal Navigation Example'
   }
