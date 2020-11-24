@@ -125,7 +125,8 @@
     StateHelpers,
     RoutingHelpers,
     IframeHelpers,
-    AuthHelpers
+    AuthHelpers,
+    StorageHelper
   } from './utilities/helpers';
   import {
     LuigiI18N,
@@ -1295,6 +1296,12 @@
         if (e.data.tpc === 'disabled') {
           tpcErrorHandling(thirdPartyCookiesCheck);
         }
+      }
+
+      if ('storage' === e.data.msg) {
+        let getValidMessageSource = IframeHelpers.getValidMessageSource(e);
+        let microfrontendId = getValidMessageSource.luigi.id;
+        StorageHelper.process(microfrontendId, e.origin, e.data.data.id, e.data.data.operation, e.data.data.params);
       }
     });
 

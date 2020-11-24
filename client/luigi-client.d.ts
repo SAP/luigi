@@ -48,7 +48,7 @@ export declare interface SplitViewInstance {
 export declare interface DrawerSettings {
   header?: any;
   size?: 'l' | 'm' | 's' | 'xs';
-  backdrop?: boolean
+  backdrop?: boolean;
 }
 
 export declare interface Context {
@@ -390,6 +390,73 @@ export declare interface LinkManager {
   withoutSync: () => this;
 }
 
+export declare interface StorageManager {
+  /**
+   * Store an item for a specific key.
+   * @memberof storageManager
+   * @param {string} key: used to identify the item
+   * @param {Object} value: item to be stored; object must be stringifyable
+   * @returns {Promise<void>} resolves an empty value when storage operation is over; it will launch an error if storage is no supported, value cannot be stringify or you are using a luigi reserved key
+   * @example
+   * LuigiClient.storageManager().setItem('keyExample','valueExample').then(() => console.log('Value stored'))
+   * @since NEXTRELEASE
+   */
+  setItem: (key: string, value: Object) => Promise<void>;
+
+  /**
+   * Retrieve an item for a specific key.
+   * @memberof storageManager
+   * @param {string} key: used to identify the item
+   * @returns {Promise<Object>} resolves item retrieved from storage; it will launch an error if storage is no supported
+   * @since NEXTRELEASE
+   * @example
+   * LuigiClient.storageManager().getItem('keyExample').then((value) => console.log);
+   */
+  getItem: (key: string) => Promise<Object>;
+
+  /**
+   * Remove an item for a specific key.
+   * @memberof storageManager
+   * @param {string} key: used to identify the item
+   * @returns {Promise<Object>} resolves item just removed from storage; it will launch an error if storage is no supported or you are using a luigi reserved key
+   * @since NEXTRELEASE
+   * @example
+   * LuigiClient.storageManager().removeItem('keyExample').then((value) => console.log(value + ' just removed')
+   */
+  removeItem: (key: string) => Promise<Object>;
+
+  /**
+   * Clear all the storage key/values
+   * @memberof storageManager
+   * @returns {Promise<void>} resolves when storage clear is over
+   * @since NEXTRELEASE
+   * @example
+   * LuigiClient.storageManager().clear().then(() => console.log('storage cleared'))
+   */
+  clear: () => Promise<void>;
+
+  /**
+   * Check if a key is present in storage
+   * @memberof storageManager
+   * @param {string} key: used to identify the item
+   * @returns {Promise<boolean>} true if key is present, false if is not
+   * @since NEXTRELEASE
+   * @example
+   * LuigiClient.storageManager().has(key).then((present) => console.log('element is present: '+present));
+   */
+  has: (key: string) => boolean;
+
+  /**
+   * Retrieve all the keys used in the storage
+   * @memberof storageManager
+   * @returns {Promise<string[]>} keys currently present in the storage
+   * @since NEXTRELEASE
+   * @example
+   * LuigiClient.storageManager().getAllKeys().then((keys) => console.log('keys are : '+keys));
+   */
+  getAllKeys: () => Array<String>;
+}
+
 /**
  * Registers a listener called with the context object and the Luigi Core domain as soon as Luigi is instantiated. Defer your application bootstrap if you depend on authentication data coming from Luigi.
  * @param {Lifecycle~initListenerCallback} initFn the function that is called once Luigi is initialized, receives current context and origin as parameters
@@ -591,3 +658,11 @@ export type linkManager = () => LinkManager;
  */
 export function uxManager(): UxManager;
 export type uxManager = () => UxManager;
+
+/**
+ * Use the StorageManager to store/load/remove items from/to local storage.
+ * @name storageManager
+ * @since NEXTRELEASE
+ */
+export function storageManager(): StorageManager;
+export type storageManager = () => StorageManager;
