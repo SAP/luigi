@@ -14,8 +14,8 @@ class StorageManager extends LuigiClientBase {
   constructor() {
     super();
     this.storageEventProcessor = new StorageEventProcessor();
-    helpers.addEventListener('storage',
-      (evt, listenerId) => this.storageEventProcessor.processEvent(evt, listenerId)
+    helpers.addEventListener('storage', (evt, listenerId) =>
+      this.storageEventProcessor.processEvent(evt, listenerId)
     );
   }
 
@@ -27,10 +27,14 @@ class StorageManager extends LuigiClientBase {
    * @returns {Promise<void>} resolves an empty value when storage operation is over; it will launch an error if storage is no supported, value cannot be stringify or you are using a luigi reserved key
    * @example
    * LuigiClient.storageManager().setItem('keyExample','valueExample').then(() => console.log('Value stored'))
+   * @since NEXTRELEASE
    */
   setItem(key, value) {
     return new Promise((resolve, reject) => {
-      this.storageEventProcessor.execute(resolve, reject, 'setItem', {key, value});
+      this.storageEventProcessor.execute(resolve, reject, 'setItem', {
+        key,
+        value
+      });
     });
   }
 
@@ -41,10 +45,11 @@ class StorageManager extends LuigiClientBase {
    * @returns {Promise<Object>} resolves item retrieved from storage; it will launch an error if storage is no supported
    * @example
    * LuigiClient.storageManager().getItem('keyExample').then((value) => console.log);
+   * @since NEXTRELEASE
    */
-  getItem(key){
+  getItem(key) {
     return new Promise((resolve, reject) => {
-      this.storageEventProcessor.execute(resolve, reject, 'getItem', {key});
+      this.storageEventProcessor.execute(resolve, reject, 'getItem', { key });
     });
   }
 
@@ -55,10 +60,13 @@ class StorageManager extends LuigiClientBase {
    * @returns {Promise<Object>} resolves item just removed from storage; it will launch an error if storage is no supported or you are using a luigi reserved key
    * @example
    * LuigiClient.storageManager().removeItem('keyExample').then((value) => console.log(value + ' just removed')
+   * @since NEXTRELEASE
    */
-  removeItem(key){
+  removeItem(key) {
     return new Promise((resolve, reject) => {
-      this.storageEventProcessor.execute(resolve, reject, 'removeItem', {key});
+      this.storageEventProcessor.execute(resolve, reject, 'removeItem', {
+        key
+      });
     });
   }
 
@@ -68,6 +76,7 @@ class StorageManager extends LuigiClientBase {
    * @returns {Promise<void>} resolves when storage clear is over
    * @example
    * LuigiClient.storageManager().clear().then(() => console.log('storage cleared'))
+   * @since NEXTRELEASE
    */
   clear() {
     return new Promise((resolve, reject) => {
@@ -82,10 +91,11 @@ class StorageManager extends LuigiClientBase {
    * @returns {Promise<boolean>} true if key is present, false if is not
    * @example
    * LuigiClient.storageManager().has(key).then((present) => console.log('item is present '+present))
+   * @since NEXTRELEASE
    */
-  has(key){
+  has(key) {
     return new Promise((resolve, reject) => {
-      this.storageEventProcessor.execute(resolve, reject, 'has', {key});
+      this.storageEventProcessor.execute(resolve, reject, 'has', { key });
     });
   }
 
@@ -95,22 +105,21 @@ class StorageManager extends LuigiClientBase {
    * @returns {Promise<string[]>} keys currently present in the storage
    * @example
    * LuigiClient.storageManager().getAllKeys().then((keys) => console.log('keys are '+keys))
+   * @since NEXTRELEASE
    */
-  getAllKeys(){
+  getAllKeys() {
     return new Promise((resolve, reject) => {
       this.storageEventProcessor.execute(resolve, reject, 'getAllKeys', {});
     });
   }
-
 }
 
-class StorageEventProcessor{
-
-  processEvent(evt, listenerId){
+class StorageEventProcessor {
+  processEvent(evt, listenerId) {
     try {
       const data = evt.data.data;
       if (!pendingOperation.has(data.id)) {
-        console.log("Impossible to find Promise method for message " + data.id);
+        console.log('Impossible to find Promise method for message ' + data.id);
         return;
       }
       const promiseOperations = pendingOperation.get(data.id);
@@ -120,17 +129,17 @@ class StorageEventProcessor{
         promiseOperations.resolve(data.result);
       }
       pendingOperation.delete(data.id);
-    }catch (e){
+    } catch (e) {
       console.error(e);
     }
   }
 
-  waitForSyncResult(id){
+  waitForSyncResult(id) {
     let start = new Date().getTime();
-    while(!syncOperation.has(id)){
+    while (!syncOperation.has(id)) {
       let exec = new Date().getTime() - start;
-      if (exec > 10000){
-        throw "Storage operation is taking more than 1 second...Some problem with Luigi Core communication"
+      if (exec > 10000) {
+        throw 'Storage operation is taking more than 1 second...Some problem with Luigi Core communication';
       }
     }
     const result = syncOperation.get(id);
@@ -144,13 +153,13 @@ class StorageEventProcessor{
     this.sendMessage(id, operation, params);
   }
 
-  createPendingOperation(id, resolve, reject){
+  createPendingOperation(id, resolve, reject) {
     pendingOperation.set(id, {
       resolve,
       reject
     });
   }
-  sendMessage(id, operation, params){
+  sendMessage(id, operation, params) {
     helpers.sendPostMessageToLuigiCore({
       msg: 'storage',
       data: {
@@ -160,8 +169,6 @@ class StorageEventProcessor{
       }
     });
   }
-
 }
-
 
 export const storageManager = new StorageManager();

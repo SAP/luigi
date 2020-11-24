@@ -908,6 +908,10 @@ LuigiClient.storageManager().setItem('keyExample','valueExample').then(() => con
 
 Returns **[Promise](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise)&lt;void>** resolves an empty value when storage operation is over; it will launch an error if storage is no supported, value cannot be stringify or you are using a luigi reserved key
 
+**Meta**
+
+-   **since**: NEXTRELEASE
+
 #### getItem
 
 Retrieve an item for a specific key.
@@ -923,6 +927,10 @@ LuigiClient.storageManager().getItem('keyExample').then((value) => console.log);
 ```
 
 Returns **[Promise](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise)&lt;[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)>** resolves item retrieved from storage; it will launch an error if storage is no supported
+
+**Meta**
+
+-   **since**: NEXTRELEASE
 
 #### removeItem
 
@@ -940,6 +948,10 @@ LuigiClient.storageManager().removeItem('keyExample').then((value) => console.lo
 
 Returns **[Promise](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise)&lt;[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)>** resolves item just removed from storage; it will launch an error if storage is no supported or you are using a luigi reserved key
 
+**Meta**
+
+-   **since**: NEXTRELEASE
+
 #### clear
 
 Clear all the storage key/values.
@@ -951,6 +963,10 @@ LuigiClient.storageManager().clear().then(() => console.log('storage cleared'))
 ```
 
 Returns **[Promise](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise)&lt;void>** resolves when storage clear is over
+
+**Meta**
+
+-   **since**: NEXTRELEASE
 
 #### has
 
@@ -968,6 +984,10 @@ LuigiClient.storageManager().has(key).then((present) => console.log('item is pre
 
 Returns **[Promise](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise)&lt;[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)>** true if key is present, false if is not
 
+**Meta**
+
+-   **since**: NEXTRELEASE
+
 #### getAllKeys
 
 Get all the keys used in the storage.
@@ -979,3 +999,7 @@ LuigiClient.storageManager().getAllKeys().then((keys) => console.log('keys are '
 ```
 
 Returns **[Promise](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise)&lt;[Array](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array)&lt;[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)>>** keys currently present in the storage
+
+**Meta**
+
+-   **since**: NEXTRELEASE
