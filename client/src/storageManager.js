@@ -88,7 +88,7 @@ class StorageManager extends LuigiClientBase {
    * Check if a key is present in storage.
    * @memberof storageManager
    * @param {string} key in the storage
-   * @returns {Promise<boolean>} true if key is present, false if is not
+   * @returns {Promise<boolean>} `true` if key is present, `false` if it is not
    * @example
    * LuigiClient.storageManager().has(key).then((present) => console.log('item is present '+present))
    * @since NEXTRELEASE
