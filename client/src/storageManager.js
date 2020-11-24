@@ -24,7 +24,7 @@ class StorageManager extends LuigiClientBase {
    * @memberof storageManager
    * @param {string} key key used to identify the value
    * @param {Object} value item to store; object must be stringifyable
-   * @returns {Promise<void>} resolves an empty value when storage operation is over; it will launch an error if storage is no supported, value cannot be stringify or you are using a luigi reserved key
+   * @returns {Promise<void>} resolves an empty value when the storage operation is over. It will launch an error if storage is not supported, the value cannot be stringified, or if you are using a Luigi reserved key.
    * @example
    * LuigiClient.storageManager().setItem('keyExample','valueExample').then(() => console.log('Value stored'))
    * @since NEXTRELEASE
