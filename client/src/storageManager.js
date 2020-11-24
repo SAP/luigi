@@ -39,7 +39,7 @@ class StorageManager extends LuigiClientBase {
   }
 
   /**
-   * Retrieve an item for a specific key.
+   * Retrieves an item for a specific key.
    * @memberof storageManager
    * @param {string} key used to identify the value
    * @returns {Promise<Object>} resolves item retrieved from storage; it will launch an error if storage is no supported
