@@ -21,7 +21,7 @@ export class linkManager extends LuigiCoreAPIBase {
     };
   }
 
-  navigate(path, preserveView, modalSettings, splitViewSettings) {
+  navigate(path, preserveView, modalSettings, splitViewSettings, drawerSettings) {
     if (this.options.errorSkipNavigation) {
       this.options.errorSkipNavigation = false;
       return;
@@ -35,7 +35,8 @@ export class linkManager extends LuigiCoreAPIBase {
         link: path,
         relative: relativePath,
         modal: modalSettings,
-        splitView: splitViewSettings
+        splitView: splitViewSettings,
+        drawer: drawerSettings
       })
     };
 
@@ -44,6 +45,10 @@ export class linkManager extends LuigiCoreAPIBase {
 
   openAsModal(path, modalSettings = {}) {
     this.navigate(path, true, modalSettings);
+  }
+
+  openAsDrawer(path, drawerSettings = {}) {
+    this.navigate(path, true, undefined, undefined, drawerSettings);
   }
 
   fromContext(navigationContext) {
