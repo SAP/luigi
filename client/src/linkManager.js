@@ -43,20 +43,24 @@ export class linkManager extends LuigiClientBase {
    * @param {string} splitViewSettings.title split view title. By default, it is the node label. If there is no label, it is left empty
    * @param {number} [splitViewSettings.size=40] height of the split view in percent
    * @param {boolean} [splitViewSettings.collapsed=false] creates split view but leaves it closed initially
+   * @param {Object} drawerSettings opens a view in a drawer. Use these settings to configure if the drawer has a header, backdrop and size.
+   * @param {any} drawerSettings.header By default, the header is visible. The default title is the node label, but the header could also be an object with a `title` attribute allowing you to specify your own title.  An 'x' icon is displayed to close the drawer view.
+   * @param {boolean} drawerSettings.backdrop By default, it is set to `false`. If it is set to `true` the rest of the screen has a backdrop.
+   * @param {('l'|'m'|'s'|'xs')} [drawerSettings.size="s"] size of the drawer
    * @example
    * LuigiClient.linkManager().navigate('/overview')
    * LuigiClient.linkManager().navigate('users/groups/stakeholders')
    * LuigiClient.linkManager().navigate('/settings', null, true) // preserve view
    * LuigiClient.linkManager().navigate('#?Intent=Sales-order?id=13') // intent navigation
    */
-  navigate(path, sessionId, preserveView, modalSettings, splitViewSettings) {
+  navigate(path, sessionId, preserveView, modalSettings, splitViewSettings, drawerSettings) {
     if (this.options.errorSkipNavigation) {
       this.options.errorSkipNavigation = false;
       return;
     }
-    if (modalSettings && splitViewSettings) {
+    if (modalSettings && splitViewSettings && drawer) {
       console.warn(
-        'modalSettings and splitViewSettings cannot be used together. Only modal setting will be taken into account.'
+        'modalSettings, splitViewSettings and drawer cannot be used together. Only modal setting will be taken into account.'
       );
     }
 
@@ -71,7 +75,8 @@ export class linkManager extends LuigiClientBase {
         relative: relativePath,
         intent: hasIntent,
         modal: modalSettings,
-        splitView: splitViewSettings
+        splitView: splitViewSettings,
+        drawer: drawerSettings
       })
     };
     helpers.sendPostMessageToLuigiCore(navigationOpenMsg);
@@ -111,6 +116,23 @@ export class linkManager extends LuigiClientBase {
   }
 
   /**
+     * Opens a view in a drawer. You can specify the size of the drawer, whether the drawer has a header, and whether a backdrop is active in the background. By default, the header is shown. The backdrop is not visible and has to be activated. The size of the drawer is set to `s` by default, which means 25% of the micro frontend size. You can also use `l`(75%), `m`(50%) or `xs`(15.5%). Optionally, use it in combination with any of the navigation functions.
+     * @memberof linkManager
+     * @param {string} path navigation path
+     * @param {Object} drawerSettings opens a view in a drawer. Use these settings to configure if the drawer has a header, backdrop and size.
+     * @param {any} drawerSettings.header By default, the header is visible. The default title is the node label, but the header could also be an object with a `title` attribute allowing you to specify your own title.  An 'x' icon is displayed to close the drawer view.
+     * @param {boolean} drawerSettings.backdrop By default, it is set to `false`. If it is set to `true` the rest of the screen has a backdrop.
+     * @param {('l'|'m'|'s'|'xs')} [drawerSettings.size="s"] size of the drawer
+     * @since NEXTRELEASE
+     * @example
+     * LuigiClient.linkManager().openAsDrawer('projects/pr1/drawer', {header:true, backdrop:true, size:'s'});
+     * LuigiClient.linkManager().openAsDrawer('projects/pr1/drawer', {header:{title:'My drawer component'}, backdrop:true, size:'xs'});
+     */
+  openAsDrawer(path, drawerSettings = {}) {
+    this.navigate(path, 0, true, undefined, undefined, drawerSettings);
+  }
+
+  /**
    * Sets the current navigation context to that of a specific parent node which has the {@link navigation-configuration.md navigationContext} field declared in the navigation configuration. This navigation context is then used by the `navigate` function.
    * @memberof linkManager
    * @param {string} navigationContext
@@ -130,8 +152,8 @@ export class linkManager extends LuigiClientBase {
       this.options.errorSkipNavigation = true;
       console.error(
         'Navigation not possible, navigationContext ' +
-          navigationContext +
-          ' not found.'
+        navigationContext +
+        ' not found.'
       );
     }
     return this;
@@ -223,8 +245,8 @@ export class linkManager extends LuigiClientBase {
     const currentId = Date.now();
     const pathExistsPromises = this.getPromise('pathExistsPromises') || {};
     pathExistsPromises[currentId] = {
-      resolveFn: function() {},
-      then: function(resolveFn) {
+      resolveFn: function () { },
+      then: function (resolveFn) {
         this.resolveFn = resolveFn;
       }
     };
@@ -233,7 +255,7 @@ export class linkManager extends LuigiClientBase {
     // register event listener, which will be cleaned up after this usage
     helpers.addEventListener(
       'luigi.navigation.pathExists.answer',
-      function(e, listenerId) {
+      function (e, listenerId) {
         const data = e.data.data;
         const pathExistsPromises = this.getPromise('pathExistsPromises') || {};
         if (pathExistsPromises[data.correlationId]) {
