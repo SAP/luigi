@@ -1,6 +1,6 @@
 # ClientSupportAngular
 
-This library provides several features to run your angular application inside Luigi Micro-Frontend application.  
+This library provides several features to run your angular application inside Luigi Micro-Frontend framework.  
 If you want to know more about Luigi Framework, please have a look on [Luigi Homepage](https://luigi-project.io/)
 
 ## How to use the library
@@ -72,4 +72,40 @@ Please have a look at Luigi documenation about [Luigi Link Manager](https://docs
 To implement LuigiAutoRoutingService, this extension defines a new RouteReuseStrategy: LuigiRouteStrategy.  
 If in your project you need to define your own RouteReuseStrategy, please extend LuigiRouteStrategy and if you need to override method , do it in this way:
 
+ ```javascript
+  export class YouRouteStrategy extends LuigiRouteStrategy {
+
+   retrieve(route: ActivatedRouteSnapshot): DetachedRouteHandle {
+        super.retrieve(route);
+        // Your code
+    }
+
+  }
+ ```
+and define the provider:
+ ```javascript
+ {
+      provide: RouteReuseStrategy,
+      useClass: YouRouteStrategy
+ }
+ ```
+
+We also proivde an example how to extend LuigiRouteStrategy in class LuigiReuseRouteStrategy.  
+In this class we added the possibility to "reuse" a component and not init every time you load it (it could be useful to keep component state.)  
+LuigiReuseRouteStrategy uses this kind of configuration:
+ ```javascript
+{path: 'luigi-client-support-preload',component: Sample1Component,data: { reuse: true }},
+ ```
+
+If you want to use LuigiReuseRouteStrategy (it is  not enabled by default) you need to configure in your application:
+ ```javascript
+ {
+      provide: RouteReuseStrategy,
+      useClass: LuigiRouteStrategy
+ }
+ ```
+
+
+ 
+ 
 
