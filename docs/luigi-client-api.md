@@ -887,13 +887,13 @@ Returns **any** current themeObj
 
 ### storageManager
 
-StorageManager allows you to use browser local storage (key/value); every storage operation is sent to managed by Luigi core.
-The idea is that different micro frontends can share/persist items using local storage.
-Since all storage operations are asynchronous (send vent to Luigi core that will reply once operation is finished), all the methods return Promises.
+StorageManager allows you to use browser local storage of key/values. Every storage operation is sent to be managed by Luigi Core.
+The idea is that different micro frontends can share or persist items using local storage.
+Since all storage operations are asynchronous (sending an event to Luigi Core that will reply once operation is finished), all the methods return Promises.
 
 #### setItem
 
-Store an item for a specific key.
+Stores an item for a specific key.
 
 ##### Parameters
 
@@ -906,7 +906,7 @@ Store an item for a specific key.
 LuigiClient.storageManager().setItem('keyExample','valueExample').then(() => console.log('Value stored'))
 ```
 
-Returns **[Promise](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise)&lt;void>** resolves an empty value when storage operation is over; it will launch an error if storage is no supported, value cannot be stringify or you are using a luigi reserved key
+Returns **[Promise](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise)&lt;void>** resolves an empty value when the storage operation is over. It will launch an error if storage is not supported, the value cannot be stringified, or if you are using a Luigi reserved key.
 
 **Meta**
 
@@ -914,7 +914,7 @@ Returns **[Promise](https://developer.mozilla.org/docs/Web/JavaScript/Reference/
 
 #### getItem
 
-Retrieve an item for a specific key.
+Retrieves an item for a specific key.
 
 ##### Parameters
 
@@ -926,7 +926,7 @@ Retrieve an item for a specific key.
 LuigiClient.storageManager().getItem('keyExample').then((value) => console.log);
 ```
 
-Returns **[Promise](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise)&lt;[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)>** resolves item retrieved from storage; it will launch an error if storage is no supported
+Returns **[Promise](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise)&lt;[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)>** resolves an item retrieved from storage. It will launch an error if storage is not supported.
 
 **Meta**
 
@@ -934,7 +934,7 @@ Returns **[Promise](https://developer.mozilla.org/docs/Web/JavaScript/Reference/
 
 #### removeItem
 
-Remove an item for a specific key.
+Removes an item for a specific key.
 
 ##### Parameters
 
@@ -946,7 +946,7 @@ Remove an item for a specific key.
 LuigiClient.storageManager().removeItem('keyExample').then((value) => console.log(value + ' just removed')
 ```
 
-Returns **[Promise](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise)&lt;[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)>** resolves item just removed from storage; it will launch an error if storage is no supported or you are using a luigi reserved key
+Returns **[Promise](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise)&lt;[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)>** resolves an item just removed from storage. It will launch an error if storage is not supported or if you are using a Luigi reserved key.
 
 **Meta**
 
@@ -954,7 +954,7 @@ Returns **[Promise](https://developer.mozilla.org/docs/Web/JavaScript/Reference/
 
 #### clear
 
-Clear all the storage key/values.
+Clears all the storage key/values.
 
 ##### Examples
 
@@ -962,7 +962,7 @@ Clear all the storage key/values.
 LuigiClient.storageManager().clear().then(() => console.log('storage cleared'))
 ```
 
-Returns **[Promise](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise)&lt;void>** resolves when storage clear is over
+Returns **[Promise](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise)&lt;void>** resolves when storage clear is over.
 
 **Meta**
 
@@ -970,11 +970,11 @@ Returns **[Promise](https://developer.mozilla.org/docs/Web/JavaScript/Reference/
 
 #### has
 
-Check if a key is present in storage.
+Checks if a key is present in storage.
 
 ##### Parameters
 
--   `key` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** in the storage
+-   `key` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** key in the storage
 
 ##### Examples
 
@@ -982,7 +982,7 @@ Check if a key is present in storage.
 LuigiClient.storageManager().has(key).then((present) => console.log('item is present '+present))
 ```
 
-Returns **[Promise](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise)&lt;[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)>** true if key is present, false if is not
+Returns **[Promise](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise)&lt;[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)>** `true` if key is present, `false` if it is not
 
 **Meta**
 
@@ -990,7 +990,7 @@ Returns **[Promise](https://developer.mozilla.org/docs/Web/JavaScript/Reference/
 
 #### getAllKeys
 
-Get all the keys used in the storage.
+Gets all the keys used in the storage.
 
 ##### Examples
 
