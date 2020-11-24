@@ -100,7 +100,7 @@ class StorageManager extends LuigiClientBase {
   }
 
   /**
-   * Get all the keys used in the storage.
+   * Gets all the keys used in the storage.
    * @memberof storageManager
    * @returns {Promise<string[]>} keys currently present in the storage
    * @example
