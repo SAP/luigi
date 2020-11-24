@@ -20,7 +20,7 @@ class StorageManager extends LuigiClientBase {
   }
 
   /**
-   * Store an item for a specific key.
+   * Stores an item for a specific key.
    * @memberof storageManager
    * @param {string} key key used to identify the value
    * @param {Object} value item to store; object must be stringifyable
