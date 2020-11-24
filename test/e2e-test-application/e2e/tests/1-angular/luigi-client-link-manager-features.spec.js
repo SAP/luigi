@@ -277,4 +277,38 @@ describe('Luigi client linkManager', () => {
       cy.wrap($iframeBody).should('contain', $inputTypeModal);
     });
   });
+
+  describe('Drawer', () => {
+    let $iframeBody;
+    beforeEach(() => {
+      cy.visitLoggedIn('/projects/pr2');
+      cy.getIframeBody().then(result => {
+        $iframeBody = result;
+        cy.goToLinkManagerMethods($iframeBody);
+        cy.expectPathToBe('/projects/pr2');
+        cy.get('.drawer').should('not.exist');
+      });
+    });
+    it('Open and close drawer component with default settings', () => {
+      cy.wrap($iframeBody)
+        .contains('Open drawer with default settings')
+        .click();
+      cy.get('.drawer').should('exist');
+      cy.expectPathToBe('/projects/pr2');
+      cy.get('.drawer .fd-dialog__close').should('exist');
+      cy.get('.drawer .fd-dialog__close').click();
+      cy.get('.drawer .fd-dialog__close').should('not.exist');
+      cy.get('.drawer').should('not.exist');
+    });
+    it('Open and close drawer component with go back button', () => {
+      cy.wrap($iframeBody)
+        .contains('Open view in drawer component')
+        .click();
+      cy.get('.drawer').should('exist');
+      cy.expectPathToBe('/projects/pr2');
+      cy.get('.drawer .fd-dialog__close').should('not.exist');
+      cy.wrap($iframeBody).contains('go back: single iframe, standard history back').click();
+      cy.get('.drawer').should('not.exist');
+    });
+  });
 });
