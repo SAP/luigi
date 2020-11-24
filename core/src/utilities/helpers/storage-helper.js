@@ -119,10 +119,6 @@ class StorageHelperClass {
     }
   }
 
-  isValueString(value) {
-    return typeof value === 'string' || value instanceof String;
-  }
-
   parseJsonIfPossible(text){
     try {
       return JSON.parse(text);
@@ -135,7 +131,7 @@ class StorageHelperClass {
     if (!value){
       throw "Value is empty";
     }
-    if (this.isValueString(value)){
+    if (typeof value === 'string' || value instanceof String){
       return value;
     }
     try {
