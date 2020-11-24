@@ -85,7 +85,7 @@ class StorageManager extends LuigiClientBase {
   }
 
   /**
-   * Check if a key is present in storage.
+   * Checks if a key is present in storage.
    * @memberof storageManager
    * @param {string} key key in the storage
    * @returns {Promise<boolean>} `true` if key is present, `false` if it is not
