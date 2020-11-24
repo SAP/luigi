@@ -20,7 +20,7 @@ export const staticRoutes: Routes = [
     component: LuigiPreloadComponent,
     data: { luigiRoute: '/home/reload' }
   },
-  /** here an example if you want to reuse the component and not recreating every time you navigate to it (a singleton Component) */
+  /** here an example if you want to reuse the component and not recreating every time you navigate to it (a singleton Component) It requires in your module to redefine  */
   {
     path: 'luigi-client-support-preload=component',
     component: LuigiPreloadComponent,

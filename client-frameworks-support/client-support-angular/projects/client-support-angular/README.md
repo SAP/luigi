@@ -1,24 +1,75 @@
 # ClientSupportAngular
 
-This library was generated with [Angular CLI](https://github.com/angular/angular-cli) version 11.0.0.
+This library provides several features to run your angular application inside Luigi Micro-Frontend application.  
+If you want to know more about Luigi Framework, please have a look on [Luigi Homepage](https://luigi-project.io/)
 
-## Code scaffolding
+## How to use the library
+Using the library is pretty straightforward, you need to import import the library in the package.json:
+```javascript
+npm add -i @luigi-project/fundamental-ngx-sample-apps-master
+```
 
-Run `ng generate component component-name --project client-support-angular` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module --project client-support-angular`.
-> Note: Don't forget to add `--project client-support-angular` or else it will be added to the default project in your `angular.json` file. 
+Once the library is imported and saved in your anguar project, you will need to import the module LuigiAngularSupportModule:
 
-## Build
+```javascript
+imports: [
+  ........
+  ,LuigiAngularSupportModule
+],
+```
 
-Run `ng build client-support-angular` to build the project. The build artifacts will be stored in the `dist/` directory.
+## Features
+Here the main features provided by the library:
+* LuigiContextService
+* LuigiAutoRoutingService
 
-## Publishing
+### LuigiContextService
+You can inject this service inside your Angular items in order to:
+* Get the current Context (latest) that we received from Luigi Core
+* Provide an Observable<Context> where through subscribing, you can get any Context change     
+    
+LuigiContextService it is actually and abstract class: the implementation it is present in LuigiContextServiceImpl class.  
+If you need to change/extend the implementation, you can easily create your a new class extending LuigiContextServiceImpl:
 
-After building your library with `ng build client-support-angular`, go to the dist folder `cd dist/client-support-angular` and run `npm publish`.
+```javascript
+export class YourContextService extends  LuigiContextServiceImpl{
+    ....    
+}
 
-## Running unit tests
+```
+In you module you can redefine the provider like:
+ ```javascript
+providers: [
+    {
+        provide: LuigiContextService,
+        useClass: YourContextService
+    }
+]
+ ```
+    
+### LuigiAutoRoutingService
+This service you cannot directly use, but it will provide useful features how to synchronize your angular application with Luigi navigation.  
+It can happen that in your microfrontend, user can navigate thorough different components/pages.  
+With this feature we provide an easy way how to synchronize angular route with Luigi navigation; in angular route configuration, you can now configure in data these attributes:
 
-Run `ng test client-support-angular` to execute the unit tests via [Karma](https://karma-runner.github.io).
+ ```javascript
+{path: 'luigi-client-support-preload',component: Sample1Component,data: { fromVirtualTreeRoot: true }},
+{path: 'luigi-client-support-preload',component: Sample2Component,data: { luigiRoute: '/home/sample2' }}
+ ```
 
-## Further help
+with `data: { fromVirtualTreeRoot: true }`, once we load Sample1Component, we will call Luigi Cliente:
+ ```javascript
+  luigiClient.linkManager().fromVirtualTreeRoot().withoutSync().navigate({route url});
+ ```
+with `data: { luigiRoute: '/home/sample2'' }`, uses luigiClient API in this way:
+ ```javascript
+  luigiClient.linkManager().withoutSync().navigate(data.luigiRoute);
+ ```
+Please have a look at Luigi documenation about [Luigi Link Manager](https://docs.luigi-project.io/docs/luigi-client-api/?section=linkmanager) to know better what Link Manager is supposed to do.
 
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
+
+## LuigiRouteStrategy
+To implement LuigiAutoRoutingService, this extension defines a new RouteReuseStrategy: LuigiRouteStrategy.  
+If in your project you need to define your own RouteReuseStrategy, please extend LuigiRouteStrategy and if you need to override method , do it in this way:
+
+
