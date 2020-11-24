@@ -1,33 +1,33 @@
-<svelte:window on:resize="{onResize}" />
+<svelte:window on:resize="{onResize}"/>
 <div id="app" class="{hideNav? 'no-nav' : ''} {hideSideNav? 'no-side-nav':''}">
   {#if alerts && alerts.length}
-    <Alerts alertQueue="{alerts}" on:alertDismiss="{handleAlertDismissExternal}"></Alerts>
+  <Alerts alertQueue="{alerts}" on:alertDismiss="{handleAlertDismissExternal}"></Alerts>
   {/if}
   {#if mfModal.displayed}
-    <Modal
-      settings="{mfModal.settings}"
-      nodepath="{mfModal.nodepath}"
-      on:close="{closeModal}"
-      on:iframeCreated="{modalIframeCreated}"
-    ></Modal>
+  <Modal
+    settings="{mfModal.settings}"
+    nodepath="{mfModal.nodepath}"
+    on:close="{closeModal}"
+    on:iframeCreated="{modalIframeCreated}"
+  ></Modal>
   {/if}
   {#if mfDrawer.displayed && mfDrawer.settings.isDrawer}
-    <Modal
-      settings="{mfDrawer.settings}"
-      nodepath="{mfDrawer.nodepath}"
-      on:close="{closeDrawer}"
-      on:drawerState="{setDrawerState}"
-      on:iframeCreated="{drawerIframeCreated}"
-    >
-      <Backdrop area="drawer" disable="{disableBackdrop}"></Backdrop>
-    </Modal>
+  <Modal
+    settings="{mfDrawer.settings}"
+    nodepath="{mfDrawer.nodepath}"
+    on:close="{closeDrawer}"
+    on:drawerState="{setDrawerState}"
+    on:iframeCreated="{drawerIframeCreated}"
+  >
+    <Backdrop area="drawer" disable="{disableBackdrop}"></Backdrop>
+  </Modal>
   {/if}
   {#if confirmationModal.displayed}
-    <ConfirmationModal
-      settings="{confirmationModal.settings}"
-      on:modalConfirm="{()=> handleModalResult(true)}"
-      on:modalDismiss="{() => handleModalResult(false)}"
-    ></ConfirmationModal>
+  <ConfirmationModal
+    settings="{confirmationModal.settings}"
+    on:modalConfirm="{()=> handleModalResult(true)}"
+    on:modalDismiss="{() => handleModalResult(false)}"
+  ></ConfirmationModal>
   {/if}
   <Backdrop disable="{disableBackdrop}">
     <div
@@ -262,23 +262,28 @@
   const addPreserveView = (data, config) => {
     if (data.params.preserveView || data.params.viewgroup) {
       const nextPath = buildPath(data.params);
+
       $: preservedViews.push({
         path: Routing.getNodePath(currentNode, urlParamsRaw),
         nextPath: nextPath.startsWith('/') ? nextPath : '/' + nextPath,
         context
       });
-      //mark iframe with pv if there is a preserved view situation
+
+      // Mark iframe with pv if there is a preserved view situation
       config.iframe['pv'] = 'pv';
     }
   };
 
   const handleNavigation = (data, config) => {
     let path = buildPath(data.params);
+
     path = GenericHelpers.addLeadingSlash(path);
 
     addPreserveView(data, config);
 
-    Routing.navigateTo(path); //navigate to the raw path. Any errors/alerts are handled later
+    // Navigate to the raw path. Any errors/alerts are handled later.
+    // Make sure we use `replaceState` instead of `pushState` method if navigation sync is disabled.
+    Routing.navigateTo(path, isNavigationSyncEnabled);
   };
 
   const removeQueryParams = str => str.split('?')[0];
@@ -312,7 +317,7 @@
             }
             resolve();
           },
-          () => { }
+          () => {}
         );
       } else {
         resolve();
@@ -514,10 +519,7 @@
       } else if (node.drawer) {
         const route = RoutingHelpers.buildRoute(node, `/${node.pathSegment}`);
         node.drawer.isDrawer = true;
-        openViewInDrawer(
-          route,
-          node.drawer
-        );
+        openViewInDrawer(route, node.drawer);
       } else {
         getComponentWrapper().set({ isNavigationSyncEnabled: true });
         Routing.handleRouteClick(node, getComponentWrapper());
@@ -903,7 +905,7 @@
     modalIframeData = event.detail.modalIframeData;
   };
 
-  const closeModal = (event) => {
+  const closeModal = event => {
     if (modalIframe) {
       getUnsavedChangesModalPromise(modalIframe.contentWindow).then(() => {
         resetMicrofrontendModalData();
@@ -943,15 +945,18 @@
     drawerIframeData = event.detail.modalIframeData;
   };
 
-  const setDrawerState = (event) => {
+  const setDrawerState = event => {
     activeDrawer = event.detail.activeDrawer;
-  }
+  };
 
-  const closeDrawer = (event) => {
+  const closeDrawer = event => {
     if (event && event.detail && event.detail.activeDrawer !== undefined) {
       activeDrawer = event.detail.activeDrawer;
     }
-    if (!activeDrawer || (event && event.detail && event.detail.type !== 'modal')) {
+    if (
+      !activeDrawer ||
+      (event && event.detail && event.detail.type !== 'modal')
+    ) {
       if (drawerIframe) {
         getUnsavedChangesModalPromise(drawerIframe.contentWindow).then(() => {
           resetMicrofrontendDrawerData();
@@ -1055,7 +1060,6 @@
       }
 
       if ('luigi.get-context' === e.data.msg) {
-
         config.iframe.luigi.clientVersion = e.data.clientVersion; // undefined for v0.x clients
         config.iframe.luigi.initOk = false; // get-context indication. used for handshake verification
 
@@ -1366,7 +1370,7 @@
         thirdPartyCookieCheckIframe.src =
           thirdPartyCookiesCheck.thirdPartyCookieScriptLocation;
         document.body.appendChild(thirdPartyCookieCheckIframe);
-        thirdPartyCookieCheckIframe.onload = function () {
+        thirdPartyCookieCheckIframe.onload = function() {
           setTimeout(() => {
             if (thirdPartyCookiesStatus() === 'disabled') {
               tpcErrorHandling(thirdPartyCookiesCheck);
@@ -1378,7 +1382,7 @@
     }
   });
 
-  afterUpdate(() => { });
+  afterUpdate(() => {});
 </script>
 
 <style type="text/scss">
