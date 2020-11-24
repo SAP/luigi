@@ -44,5 +44,8 @@
       }
     }
   },
-  "defaultProject": "client-support-angular"
+  "defaultProject": "client-support-angular",
+  "cli": {
+    "analytics": "da3df460-fd96-44f3-a479-c5d699586dae"
+  }
 }

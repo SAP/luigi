@@ -1,11 +1,10 @@
 import {
-  RouteReuseStrategy,
   ActivatedRouteSnapshot,
   DetachedRouteHandle
 } from '@angular/router';
-import { LuigiActivatedRouteSnapshotHelper } from './luigi-activated-route-snapshot-helper';
+import {LuigiRouteStrategy} from "./luigi-route-strategy";
 
-export class LuigiReuseStrategy implements RouteReuseStrategy {
+export class LuigiReuseRouteStrategy extends LuigiRouteStrategy {
   private handlers: { [key: string]: DetachedRouteHandle } = {};
 
   shouldDetach(route: ActivatedRouteSnapshot): boolean {
@@ -36,7 +35,7 @@ export class LuigiReuseStrategy implements RouteReuseStrategy {
   }
 
   retrieve(route: ActivatedRouteSnapshot): DetachedRouteHandle {
-    LuigiActivatedRouteSnapshotHelper.setCurrent(route);
+    super.retrieve(route);
     if (!route.routeConfig || route.routeConfig.loadChildren) {
       return (null as unknown) as DetachedRouteHandle;
     }
@@ -48,14 +47,7 @@ export class LuigiReuseStrategy implements RouteReuseStrategy {
     future: ActivatedRouteSnapshot,
     current: ActivatedRouteSnapshot
   ): boolean {
-    let reUseUrl = false;
-    if (future.routeConfig) {
-      if (future.routeConfig.data) {
-        reUseUrl = future.routeConfig.data.reuse;
-      }
-    }
     const defaultReuse = future.routeConfig === current.routeConfig;
-    //return reUseUrl || defaultReuse;
     return defaultReuse;
   }
 

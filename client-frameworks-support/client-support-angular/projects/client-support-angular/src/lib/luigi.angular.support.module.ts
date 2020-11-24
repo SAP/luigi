@@ -1,10 +1,11 @@
 import { NgModule } from '@angular/core';
 import { RouteReuseStrategy, RouterModule, Routes } from '@angular/router';
-import { LuigiReuseStrategy } from './route/luigiReuseStrategy';
 import { LuigiPreloadComponent } from './component/luigi.preload.component';
 import { LuigiContextService } from './service/luigi-context-service';
 import { LuigiContextServiceImpl } from './service/luigi-context.service.impl';
 import { LuigiAutoRoutingService } from './service/luigi-auto-routing.service';
+import {LuigiReuseRouteStrategy} from "./route/luigi-reuse-route-strategy.ts";
+import {LuigiRouteStrategy} from "./route/luigi-route-strategy";
 
 export const staticRoutes: Routes = [
   /** here an example if you want to specify that this component is a virtualThree element in Luigi Core navigation*/
@@ -37,7 +38,7 @@ export const staticRoutes: Routes = [
     },
     {
       provide: RouteReuseStrategy,
-      useClass: LuigiReuseStrategy
+      useClass: LuigiRouteStrategy
     }
   ],
   exports: [LuigiPreloadComponent]
