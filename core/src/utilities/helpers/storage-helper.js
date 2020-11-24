@@ -46,8 +46,8 @@ class StorageHelperClass {
       }
   }
 
-  cleanHostname(hostanme){
-    return hostanme.replace('http://','').replace("https://",'');
+  cleanHostname(hostname){
+    return hostname.replace('http://','').replace("https://",'');
   }
 
   setItem(hostname, params) {
