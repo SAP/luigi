@@ -73,7 +73,7 @@ class StorageManager extends LuigiClientBase {
   /**
    * Clears all the storage key/values.
    * @memberof storageManager
-   * @returns {Promise<void>} resolves when storage clear is over
+   * @returns {Promise<void>} resolves when storage clear is over.
    * @example
    * LuigiClient.storageManager().clear().then(() => console.log('storage cleared'))
    * @since NEXTRELEASE
