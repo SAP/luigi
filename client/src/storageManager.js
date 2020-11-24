@@ -42,7 +42,7 @@ class StorageManager extends LuigiClientBase {
    * Retrieves an item for a specific key.
    * @memberof storageManager
    * @param {string} key used to identify the value
-   * @returns {Promise<Object>} resolves item retrieved from storage; it will launch an error if storage is no supported
+   * @returns {Promise<Object>} resolves an item retrieved from storage. It will launch an error if storage is not supported.
    * @example
    * LuigiClient.storageManager().getItem('keyExample').then((value) => console.log);
    * @since NEXTRELEASE
