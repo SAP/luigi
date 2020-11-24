@@ -333,6 +333,15 @@ class Navigation {
         link: '/projects/pr4'
       });
     }
+
+    // items.push({
+    //   icon:
+    //     'https://pbs.twimg.com/profile_images/1143452953858183170/QLk-HGmK_bigger.png',
+    //   label: 'Project Storage',
+    //   link: '/projects/storage'
+    // });
+    //
+
     return items;
   };
 
