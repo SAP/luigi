@@ -57,7 +57,7 @@ class StorageManager extends LuigiClientBase {
    * Remove an item for a specific key.
    * @memberof storageManager
    * @param {string} key used to identify the value
-   * @returns {Promise<Object>} resolves item just removed from storage; it will launch an error if storage is no supported or you are using a luigi reserved key
+   * @returns {Promise<Object>} resolves an item just removed from storage. It will launch an error if storage is not supported or if you are using a Luigi reserved key.
    * @example
    * LuigiClient.storageManager().removeItem('keyExample').then((value) => console.log(value + ' just removed')
    * @since NEXTRELEASE
