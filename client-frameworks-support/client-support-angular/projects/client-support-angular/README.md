@@ -4,7 +4,7 @@ This library provides several features to run your angular application inside Lu
 If you want to know more about Luigi Framework, please have a look on [Luigi Homepage](https://luigi-project.io/).
 
 ## How to use the library
-Using the library is pretty straightforward, you need to import import the library in the package.json:
+Using the library is pretty straightforward, you need to import the library in the package.json:
 ```javascript
 npm install @luigi-project/fundamental-ngx-sample-apps-master -s
 ```
