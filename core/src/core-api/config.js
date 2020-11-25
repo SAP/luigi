@@ -236,7 +236,7 @@ class LuigiConfig {
 
   /**
    * Reads the user settings object.
-   * You can choose a custom storage to read the user settings by implementing the `userSetting.writeUserSettings` function in the settings section of the Luigi configuration.
+   * You can choose a custom storage to read the user settings by implementing the `userSetting.readUserSettings` function in the settings section of the Luigi configuration.
    * By default, the user settings will be read from the **localStorage**
    * @memberof Configuration
    * @example
