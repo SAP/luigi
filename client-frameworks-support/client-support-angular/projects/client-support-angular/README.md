@@ -28,7 +28,7 @@ You can inject this service inside your Angular items in order to:
 * Get the current Context (latest) that we received from Luigi Core
 * Provide an Observable<Context> where through subscribing, you can get any Context change     
     
-LuigiContextService it is actually an abstract class: the implementation it is present in LuigiContextServiceImpl class.  
+LuigiContextService is an abstract class, its implementation is in LuigiContextServiceImpl class.  
 If you need to change/extend the implementation, you can easily create your a new class extending LuigiContextServiceImpl:
 
 ```javascript
