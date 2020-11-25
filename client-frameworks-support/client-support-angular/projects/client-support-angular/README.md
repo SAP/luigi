@@ -9,7 +9,7 @@ Using the library is pretty straightforward, you need to import the library in t
 npm install @luigi-project/fundamental-ngx-sample-apps-master -s
 ```
 
-Once the library is imported and saved in your anguar project, you will need to import the module LuigiAngularSupportModule:
+Once the library is imported and saved in your angular project, you will need to import the module LuigiAngularSupportModule:
 
 ```javascript
 imports: [
