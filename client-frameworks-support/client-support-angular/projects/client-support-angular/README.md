@@ -90,7 +90,7 @@ and define the provider:
  }
  ```
 
-We also proivde an example how to extend LuigiRouteStrategy in class LuigiReuseRouteStrategy.  
+We also provide an example of how to extend LuigiRouteStrategy in class LuigiReuseRouteStrategy.  
 In this class we added the possibility to "reuse" a component and not init every time you load it (it could be useful to keep component state.)  
 LuigiReuseRouteStrategy uses this kind of configuration:
  ```javascript
