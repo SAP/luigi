@@ -49,7 +49,8 @@ export class OverviewComponent implements OnInit {
     },
     {
       clickHandler: () => {
-        this.router.navigate(['projects/storage']);
+        //this.router.navigate(['projects/storage']);
+        this.linkManager().navigate('/projects/storage');
       },
       text: 'storageManager()',
       description: 'API to store, load, remove item in Browser local storage'

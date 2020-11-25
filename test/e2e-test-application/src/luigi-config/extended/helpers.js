@@ -50,6 +50,10 @@ let allProjects = [
   {
     id: 'tabNav',
     name: 'Horizontal Navigation Example'
+  },
+  {
+    id: 'storage',
+    name: 'storage'
   }
 ];
 
@@ -79,6 +83,10 @@ const getAllProjects = () =>
   new Promise(resolve => {
     resolve(allProjects);
   });
+
+export const getAllProjectsSync = () => {
+  return allProjects;
+};
 
 const projectDetailNavProviderFn = context =>
   new Promise(resolve => {
@@ -117,6 +125,8 @@ export const projectsCounterFn = context =>
 export const projectsNavProviderFn = context =>
   new Promise(resolve => {
     getAllProjects().then(function(result) {
+      console.log('Inside projectsNavProviderFn --> ', result);
+
       var children = [];
       result.forEach(function(project) {
         children.push({
