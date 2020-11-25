@@ -559,7 +559,7 @@ Luigi.navigation().openAsDrawer('projects/pr1/drawer', {header:{title:'My drawer
 
 **Meta**
 
--   **since**: NEXTRELEASE
+-   **since**: 1.6.0
 
 #### fromContext
 
