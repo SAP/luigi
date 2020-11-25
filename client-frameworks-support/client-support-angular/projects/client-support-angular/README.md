@@ -4,12 +4,12 @@ This library provides several features to run your angular application inside Lu
 If you want to know more about Luigi Framework, please have a look on [Luigi Homepage](https://luigi-project.io/).
 
 ## How to use the library
-Using the library is pretty straightforward, you need to import import the library in the package.json:
+Using the library is pretty straightforward, you need to import the library in the package.json:
 ```javascript
 npm install @luigi-project/fundamental-ngx-sample-apps-master -s
 ```
 
-Once the library is imported and saved in your anguar project, you will need to import the module LuigiAngularSupportModule:
+Once the library is imported and saved in your angular project, you will need to import the module LuigiAngularSupportModule:
 
 ```javascript
 imports: [
@@ -28,7 +28,7 @@ You can inject this service inside your Angular items in order to:
 * Get the current Context (latest) that we received from Luigi Core
 * Provide an Observable<Context> where through subscribing, you can get any Context change     
     
-LuigiContextService it is actually an abstract class: the implementation it is present in LuigiContextServiceImpl class.  
+LuigiContextService is an abstract class, its implementation is in LuigiContextServiceImpl class.  
 If you need to change/extend the implementation, you can easily create your a new class extending LuigiContextServiceImpl:
 
 ```javascript
@@ -65,12 +65,12 @@ with `data: { luigiRoute: '/home/sample2'' }`, uses luigiClient API in this way:
  ```javascript
   luigiClient.linkManager().withoutSync().navigate(data.luigiRoute);
  ```
-Please have a look at Luigi documenation about [Luigi Link Manager](https://docs.luigi-project.io/docs/luigi-client-api/?section=linkmanager) to know have more information about LinkManager.
+More information about linkManager can be found [here](https://docs.luigi-project.io/docs/luigi-client-api/?section=linkmanager).
 
 
 ## LuigiRouteStrategy
-To implement LuigiAutoRoutingService, this library defines a new RouteReuseStrategy: LuigiRouteStrategy.  
-If in your project you need to define your own RouteReuseStrategy, please extend LuigiRouteStrategy and if you need to override method in this way:
+To use LuigiAutoRoutingService, this library defines a new RouteReuseStrategy named LuigiRouteStrategy.  
+If you need to define your own RouteReuseStrategy, you can extend LuigiRouteStrategy by overriding it next way:
 
  ```javascript
 export class YouRouteStrategy extends LuigiRouteStrategy {

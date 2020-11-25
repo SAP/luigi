@@ -1,13 +1,10 @@
-import {
-  ActivatedRouteSnapshot,
-  DetachedRouteHandle,
-  RouteReuseStrategy
-} from '@angular/router';
-import { LuigiActivatedRouteSnapshotHelper } from './luigi-activated-route-snapshot-helper';
+import { ActivatedRouteSnapshot, DetachedRouteHandle, RouteReuseStrategy } from "@angular/router";
+import { LuigiActivatedRouteSnapshotHelper } from "./luigi-activated-route-snapshot-helper";
 
 export class LuigiRouteStrategy implements RouteReuseStrategy {
+
   shouldDetach(route: ActivatedRouteSnapshot): boolean {
-    return false;
+      return false;
   }
 
   store(route: ActivatedRouteSnapshot, handler: DetachedRouteHandle): void {}
@@ -21,10 +18,8 @@ export class LuigiRouteStrategy implements RouteReuseStrategy {
     return (null as unknown) as DetachedRouteHandle;
   }
 
-  shouldReuseRoute(
-    future: ActivatedRouteSnapshot,
-    current: ActivatedRouteSnapshot
-  ): boolean {
+  shouldReuseRoute(future: ActivatedRouteSnapshot, current: ActivatedRouteSnapshot): boolean {
     return future.routeConfig === current.routeConfig;
   }
+
 }
