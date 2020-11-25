@@ -172,41 +172,32 @@ Luigi.unload()
 
 -   **since**: 1.2.2
 
-#### readSettingsFromStorage
+#### readUserSettingsFromStorage
 
-Reads the user settings object from the localstorage. It is possible to choose a custom storage type by implementing the `settings.userSetting.readFromCustomStorage` function.
-
-##### Parameters
-
--   `key` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** used to identify the item in the storage.
--   `property` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** the object traversal path where `readFromCustomStorage` function is implemented. Optional and only needed if there is a custom implementation of `readFromCustomStorage` function in the settings section of the luigi config to read a custom storage.
+Reads the user settings object from the **localStorage**. It is possible to choose a custom storage type by implementing the `settings.userSetting.readFromCustomStorage` function.
 
 ##### Examples
 
 ```javascript
-Luigi.readSettingsFromStorage('key');
-Luigi.readSettingsFromStorage('key', 'settings.userSettings');
+Luigi.readUserSettingsFromStorage();
 ```
 
 **Meta**
 
 -   **since**: NEXTRELEASE
 
-#### writeSettingsToStorage
+#### writeUserSettingsToStorage
 
-Writes the user settings object to the localstorage. It is possible to choose a custom storage type by implementing the `settings.userSetting.writeToCustomStorage` function.
+Writes the user settings object to the **localStorage**. It is possible to choose a custom storage type by implementing the `settings.userSetting.writeToCustomStorage` function.
 
 ##### Parameters
 
--   `key` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** used to identify the item in the storage.
--   `settingsObject` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** to store in the storage.
--   `property` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** the object traversal path where `writeToCustomStorage` function is implemented. Optional and only needed if there is a custom implementation of `writeToCustomStorage` function in the settings section of the luigi config to read a custom storage.
+-   `userSettingsObj` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** to store in the storage.
 
 ##### Examples
 
 ```javascript
-Luigi.writeSettingsToStorage('key', {object});
-Luigi.writeSettingsToStorage('key', {object}, 'settings.userSettings');
+Luigi.writeUserSettingsToStorage(userSettingsobject);
 ```
 
 **Meta**

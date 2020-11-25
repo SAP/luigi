@@ -62,11 +62,11 @@ class Settings {
       icon: 'settings'
     },
     // functions to use a custom storage like sessionStorage
-    // writeToCustomStorage: (key, obj) => {
-    //   sessionStorage.setItem(key, JSON.stringify(obj));
+    // writeToCustomStorage: (obj) => {
+    //   sessionStorage.setItem('test', JSON.stringify(obj));
     // },
-    // readToCustomStorage: (key) => {
-    //   return JSON.parse(sessionStorage.getItem(key));
+    // readFromCustomStorage: () => {
+    //   return JSON.parse(sessionStorage.getItem('test'));
     // },
     userSettingGroups: {
       userAccount: {

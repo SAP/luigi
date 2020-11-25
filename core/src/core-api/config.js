@@ -17,6 +17,7 @@ class LuigiConfig {
   constructor() {
     this.configReadyCallback = function () { };
     this.initialized = false;
+    this.USER_SETTINGS_KEY = 'luigi.preferences.userSettings';
   }
 
   /**
@@ -236,45 +237,38 @@ class LuigiConfig {
   /**
    * Reads the user settings object from the **localStorage**. It is possible to choose a custom storage type by implementing the `settings.userSetting.readFromCustomStorage` function.
    * @memberof Configuration
-   * @param {string} key used to identify the item in the storage.
-   * @param {string} property the object traversal path where the `readFromCustomStorage` function is implemented. Optional and only needed if there is a custom implementation of a `readFromCustomStorage` function in the settings section of the Luigi configuration to read a custom storage.
    * @example
-   * Luigi.readSettingsFromStorage('key');
-   * Luigi.readSettingsFromStorage('key', 'settings.userSettings');
+   * Luigi.readUserSettingsFromStorage();
    * @since NEXTRELEASE
    */
-  async readSettingsFromStorage(key, property) {
-    if (property) {
-      const settings = await this.getConfigValueAsync(property);
-      if (settings && GenericHelpers.isFunction(settings.readFromCustomStorage)) {
-        return settings.readFromCustomStorage(key);
-      }
-    } else {
-      return JSON.parse(localStorage.getItem(key));
+  async readUserSettingsFromStorage() {
+    const userSettings = await this.getConfigValueAsync('settings.userSettings');
+    if (userSettings && GenericHelpers.isFunction(userSettings.readFromCustomStorage)) {
+      return userSettings.readFromCustomStorage();
+    }
+    else {
+      return JSON.parse(localStorage.getItem(this.USER_SETTINGS_KEY));
     }
   }
 
   /**
    * Writes the user settings object to the **localStorage**. It is possible to choose a custom storage type by implementing the `settings.userSetting.writeToCustomStorage` function.
    * @memberof Configuration
-   * @param {string} key used to identify the item in the storage.
-   * @param {Object} settingsObject to store in the storage.
-   * @param {string} property the object traversal path where the `writeToCustomStorage` function is implemented. Optional and only needed if there is a custom implementation of a `writeToCustomStorage` function in the settings section of the Luigi configuration to read a custom storage.
+   * @param {Object} userSettingsObj to store in the storage.
    * @example
-   * Luigi.writeSettingsToStorage('key', {object});
-   * Luigi.writeSettingsToStorage('key', {object}, 'settings.userSettings');
+   * Luigi.writeUserSettingsToStorage(userSettingsobject);
    * @since NEXTRELEASE
    */
-  async writeSettingsToStorage(key, settingsObject, property) {
-    if (property) {
-      const settings = await this.getConfigValueAsync(property);
-      if (settings && GenericHelpers.isFunction(settings.writeToCustomStorage)) {
-        settings.writeToCustomStorage(key, settingsObject);
-      }
-    } else {
-      localStorage.setItem(key, JSON.stringify(settingsObject));
+  async writeUserSettingsToStorage(userSettingsObj) {
+    const userSettings = await this.getConfigValueAsync('settings.userSettings');
+    if (userSettings && GenericHelpers.isFunction(userSettings.writeToCustomStorage)) {
+      userSettings.writeToCustomStorage(userSettingsObj);
+    }
+    else {
+      localStorage.setItem(this.USER_SETTINGS_KEY, JSON.stringify(userSettingsObj));
     }
   }
 }
+
 
 export const config = new LuigiConfig();
