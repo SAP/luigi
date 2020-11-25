@@ -5,7 +5,6 @@ import {
   sendCustomMessage,
   addCustomMessageListener
 } from '@luigi-project/client';
-import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-overview',
@@ -14,8 +13,6 @@ import { Router } from '@angular/router';
 })
 export class OverviewComponent implements OnInit {
   public linkManager = linkManager;
-
-  constructor(private router: Router) {}
 
   public luigiClientItems: any[] = [
     {
@@ -49,7 +46,6 @@ export class OverviewComponent implements OnInit {
     },
     {
       clickHandler: () => {
-        //this.router.navigate(['projects/storage']);
         this.linkManager().navigate('/projects/storage');
       },
       text: 'storageManager()',
