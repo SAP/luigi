@@ -65,7 +65,7 @@ with `data: { luigiRoute: '/home/sample2'' }`, uses luigiClient API in this way:
  ```javascript
   luigiClient.linkManager().withoutSync().navigate(data.luigiRoute);
  ```
-Please have a look at Luigi documenation about [Luigi Link Manager](https://docs.luigi-project.io/docs/luigi-client-api/?section=linkmanager) to know have more information about LinkManager.
+More information about linkManager can be found [here](https://docs.luigi-project.io/docs/luigi-client-api/?section=linkmanager).
 
 
 ## LuigiRouteStrategy
