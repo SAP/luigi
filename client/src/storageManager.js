@@ -27,7 +27,7 @@ class StorageManager extends LuigiClientBase {
    * @returns {Promise<void>} resolves an empty value when the storage operation is over. It will launch an error if storage is not supported, the value cannot be stringified, or if you are using a Luigi reserved key.
    * @example
    * LuigiClient.storageManager().setItem('keyExample','valueExample').then(() => console.log('Value stored'))
-   * @since NEXTRELEASE
+   * @since 1.6.0
    */
   setItem(key, value) {
     return new Promise((resolve, reject) => {
@@ -45,7 +45,7 @@ class StorageManager extends LuigiClientBase {
    * @returns {Promise<Object>} resolves an item retrieved from storage. It will launch an error if storage is not supported.
    * @example
    * LuigiClient.storageManager().getItem('keyExample').then((value) => console.log);
-   * @since NEXTRELEASE
+   * @since 1.6.0
    */
   getItem(key) {
     return new Promise((resolve, reject) => {
@@ -60,7 +60,7 @@ class StorageManager extends LuigiClientBase {
    * @returns {Promise<Object>} resolves an item just removed from storage. It will launch an error if storage is not supported or if you are using a Luigi reserved key.
    * @example
    * LuigiClient.storageManager().removeItem('keyExample').then((value) => console.log(value + ' just removed')
-   * @since NEXTRELEASE
+   * @since 1.6.0
    */
   removeItem(key) {
     return new Promise((resolve, reject) => {
@@ -76,7 +76,7 @@ class StorageManager extends LuigiClientBase {
    * @returns {Promise<void>} resolves when storage clear is over.
    * @example
    * LuigiClient.storageManager().clear().then(() => console.log('storage cleared'))
-   * @since NEXTRELEASE
+   * @since 1.6.0
    */
   clear() {
     return new Promise((resolve, reject) => {
@@ -91,7 +91,7 @@ class StorageManager extends LuigiClientBase {
    * @returns {Promise<boolean>} `true` if key is present, `false` if it is not
    * @example
    * LuigiClient.storageManager().has(key).then((present) => console.log('item is present '+present))
-   * @since NEXTRELEASE
+   * @since 1.6.0
    */
   has(key) {
     return new Promise((resolve, reject) => {
@@ -105,7 +105,7 @@ class StorageManager extends LuigiClientBase {
    * @returns {Promise<string[]>} keys currently present in the storage
    * @example
    * LuigiClient.storageManager().getAllKeys().then((keys) => console.log('keys are '+keys))
-   * @since NEXTRELEASE
+   * @since 1.6.0
    */
   getAllKeys() {
     return new Promise((resolve, reject) => {

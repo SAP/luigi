@@ -437,7 +437,7 @@ LuigiClient.linkManager().openAsDrawer('projects/pr1/drawer', {header:{title:'My
 
 **Meta**
 
--   **since**: NEXTRELEASE
+-   **since**: 1.6.0
 
 #### fromContext
 
@@ -910,7 +910,7 @@ Returns **[Promise](https://developer.mozilla.org/docs/Web/JavaScript/Reference/
 
 **Meta**
 
--   **since**: NEXTRELEASE
+-   **since**: 1.6.0
 
 #### getItem
 
@@ -930,7 +930,7 @@ Returns **[Promise](https://developer.mozilla.org/docs/Web/JavaScript/Reference/
 
 **Meta**
 
--   **since**: NEXTRELEASE
+-   **since**: 1.6.0
 
 #### removeItem
 
@@ -950,7 +950,7 @@ Returns **[Promise](https://developer.mozilla.org/docs/Web/JavaScript/Reference/
 
 **Meta**
 
--   **since**: NEXTRELEASE
+-   **since**: 1.6.0
 
 #### clear
 
@@ -966,7 +966,7 @@ Returns **[Promise](https://developer.mozilla.org/docs/Web/JavaScript/Reference/
 
 **Meta**
 
--   **since**: NEXTRELEASE
+-   **since**: 1.6.0
 
 #### has
 
@@ -986,7 +986,7 @@ Returns **[Promise](https://developer.mozilla.org/docs/Web/JavaScript/Reference/
 
 **Meta**
 
--   **since**: NEXTRELEASE
+-   **since**: 1.6.0
 
 #### getAllKeys
 
@@ -1002,4 +1002,4 @@ Returns **[Promise](https://developer.mozilla.org/docs/Web/JavaScript/Reference/
 
 **Meta**
 
--   **since**: NEXTRELEASE
+-   **since**: 1.6.0
