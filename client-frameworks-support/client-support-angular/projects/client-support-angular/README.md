@@ -32,7 +32,7 @@ LuigiContextService it is actually an abstract class: the implementation it is p
 If you need to change/extend the implementation, you can easily create your a new class extending LuigiContextServiceImpl:
 
 ```javascript
-export class YourContextService extends  LuigiContextServiceImpl{
+export class YourContextService extends  LuigiContextServiceImpl {
     ....    
 }
 
@@ -110,4 +110,3 @@ If you want to use LuigiReuseRouteStrategy (it is not enabled by default) you ne
 
  
  
-
