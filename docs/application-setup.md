@@ -27,7 +27,7 @@ All those steps are achieved through a single **installer** script which sets up
 Choose the framework to build your application:
 
 * [Application setup without a framework](#application-setup-without-a-framework)
-* [Angular 6](#application-setup-for-angular-6)
+* [Angular](#application-setup-for-angular)
 * [SAPUI5/OpenUI5](#application-setup-for-sapui5openui5)
 * [VUE.JS](#application-setup-for-vuejs)
 * [React](#application-setup-for-react)
