@@ -248,9 +248,7 @@ class LuigiConfig {
     if (userSettings && GenericHelpers.isFunction(userSettings.readUserSettings)) {
       return userSettings.readUserSettings();
     }
-    else {
-      return JSON.parse(localStorage.getItem(this.USER_SETTINGS_KEY));
-    }
+    return JSON.parse(localStorage.getItem(this.USER_SETTINGS_KEY));
   }
 
   /**
