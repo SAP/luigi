@@ -33,7 +33,7 @@ The lerna-changelog tool detects changes based on PR labels and maps them to sec
 * [#1659](https://github.com/SAP/luigi/pull/1659) Add drawer component ([@JohannesDoberer](https://github.com/JohannesDoberer))
 
 #### :bug: Fixed
-* [#1716](https://github.com/SAP/luigi/pull/1716) Remove default outline for iframeContainer#1713 ([@legteodav](https://github.com/legteodav))
+* [#1716](https://github.com/SAP/luigi/pull/1716) Remove default outline for iframeContainer ([@legteodav](https://github.com/legteodav))
 * [#1689](https://github.com/SAP/luigi/pull/1689) Safari bug with shellbar dropdowns blue outlie ([@UlianaMunich](https://github.com/UlianaMunich))
 
 
