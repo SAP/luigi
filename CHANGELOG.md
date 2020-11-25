@@ -25,6 +25,22 @@ The lerna-changelog tool detects changes based on PR labels and maps them to sec
 -->
 
 
+## [v1.6.0] (2020-11-25)
+
+#### :rocket: Added
+* [#1707](https://github.com/SAP/luigi/pull/1707) Simple storage api for micro frontends ([@legteodav](https://github.com/legteodav))
+* [#1704](https://github.com/SAP/luigi/pull/1704) Add openNodeInModal attribute to Profile section of the documentation ([@UlianaMunich](https://github.com/UlianaMunich))
+* [#1659](https://github.com/SAP/luigi/pull/1659) Add drawer component ([@JohannesDoberer](https://github.com/JohannesDoberer))
+
+#### :bug: Fixed
+* [#1716](https://github.com/SAP/luigi/pull/1716) Remove default outline for iframeContainer#1713 ([@legteodav](https://github.com/legteodav))
+* [#1689](https://github.com/SAP/luigi/pull/1689) Safari bug with shellbar dropdowns blue outlie ([@UlianaMunich](https://github.com/UlianaMunich))
+
+
+
+
+
+
 ## [v1.5.0] (2020-10-28)
 
 #### :rocket: Added
@@ -875,3 +891,4 @@ The lerna-changelog tool detects changes based on PR labels and maps them to sec
 [v1.3.1]: https://github.com/SAP/luigi/compare/v1.3.0...v1.3.1
 [v1.4.0]: https://github.com/SAP/luigi/compare/v1.3.1...v1.4.0
 [v1.5.0]: https://github.com/SAP/luigi/compare/v1.4.0...v1.5.0
+[v1.6.0]: https://github.com/SAP/luigi/compare/v1.5.0...v1.6.0
