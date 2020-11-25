@@ -145,35 +145,35 @@ describe('Config', () => {
       }
     };
     const myConfig = {
-      writeToCustomStorage: () => {
+      storeUserSettings: () => {
         console.log('write');
       },
-      readFromCustomStorage: () => {
+      readUserSettings: () => {
         console.log('read');
       }
     };
 
     it('write user settings to local storage', async () => {
-      await LuigiConfig.writeUserSettingsToStorage(userSettingsObj);
+      await LuigiConfig.storeUserSettings(userSettingsObj);
       sinon.assert.called(global.localStorage.setItem);
     });
     it('write user settings to custom storage', async () => {
       console.log = sinon.spy();
       sinon.stub(LuigiConfig, 'getConfigValueAsync').returns(myConfig);
       sinon.stub(GenericHelpers, 'isFunction').returns(true);
-      await LuigiConfig.writeUserSettingsToStorage(userSettingsObj);
+      await LuigiConfig.storeUserSettings(userSettingsObj);
       sinon.assert.calledOnce(console.log);
     });
     it('read user settings from local storage', async () => {
       sinon.stub(JSON, 'parse').returns(JSON.stringify(userSettingsObj));
-      await LuigiConfig.readUserSettingsFromStorage();
+      await LuigiConfig.readUserSettings();
       sinon.assert.called(global.localStorage.getItem);
     });
     it('read user settings from custom storage', async () => {
       console.log = sinon.spy();
       sinon.stub(LuigiConfig, 'getConfigValueAsync').returns(myConfig);
       sinon.stub(GenericHelpers, 'isFunction').returns(true);
-      await LuigiConfig.readUserSettingsFromStorage();
+      await LuigiConfig.readUserSettings();
       sinon.assert.calledOnce(console.log);
     });
   });

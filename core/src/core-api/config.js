@@ -235,16 +235,18 @@ class LuigiConfig {
   }
 
   /**
-   * Reads the user settings object from the **localStorage**. It is possible to choose a custom storage type by implementing the `settings.userSetting.readFromCustomStorage` function.
+   * Reads the user settings object.
+   * You can choose a custom storage to read the user settings by implementing the `userSetting.writeUserSettings` function in the settings section of the Luigi configuration.
+   * By default, the user settings will be read from the **localStorage**
    * @memberof Configuration
    * @example
-   * Luigi.readUserSettingsFromStorage();
+   * Luigi.readUserSettings();
    * @since NEXTRELEASE
    */
-  async readUserSettingsFromStorage() {
+  async readUserSettings() {
     const userSettings = await this.getConfigValueAsync('settings.userSettings');
-    if (userSettings && GenericHelpers.isFunction(userSettings.readFromCustomStorage)) {
-      return userSettings.readFromCustomStorage();
+    if (userSettings && GenericHelpers.isFunction(userSettings.readUserSettings)) {
+      return userSettings.readUserSettings();
     }
     else {
       return JSON.parse(localStorage.getItem(this.USER_SETTINGS_KEY));
@@ -252,17 +254,19 @@ class LuigiConfig {
   }
 
   /**
-   * Writes the user settings object to the **localStorage**. It is possible to choose a custom storage type by implementing the `settings.userSetting.writeToCustomStorage` function.
+   * Reads the user settings object.
+   * You can choose a custom storage to write the user settings by implementing the `userSetting.writeUserSettings` function in the settings section of the Luigi configuration
+   * By default, the user settings will be written from the **localStorage**
    * @memberof Configuration
    * @param {Object} userSettingsObj to store in the storage.
    * @example
-   * Luigi.writeUserSettingsToStorage(userSettingsobject);
+   * Luigi.storeUserSettings(userSettingsobject);
    * @since NEXTRELEASE
    */
-  async writeUserSettingsToStorage(userSettingsObj) {
+  async storeUserSettings(userSettingsObj) {
     const userSettings = await this.getConfigValueAsync('settings.userSettings');
-    if (userSettings && GenericHelpers.isFunction(userSettings.writeToCustomStorage)) {
-      userSettings.writeToCustomStorage(userSettingsObj);
+    if (userSettings && GenericHelpers.isFunction(userSettings.storeUserSettings)) {
+      userSettings.storeUserSettings(userSettingsObj);
     }
     else {
       localStorage.setItem(this.USER_SETTINGS_KEY, JSON.stringify(userSettingsObj));

@@ -172,23 +172,23 @@ Luigi.unload()
 
 -   **since**: 1.2.2
 
-#### readUserSettingsFromStorage
+#### readUserSettings
 
-Reads the user settings object from the **localStorage**. It is possible to choose a custom storage type by implementing the `settings.userSetting.readFromCustomStorage` function.
+Reads the user settings object from the **localStorage**. It is possible to choose a custom storage type by implementing the `settings.userSetting.readUserSettings` function.
 
 ##### Examples
 
 ```javascript
-Luigi.readUserSettingsFromStorage();
+Luigi.readUserSettings();
 ```
 
 **Meta**
 
 -   **since**: NEXTRELEASE
 
-#### writeUserSettingsToStorage
+#### storeUserSettings
 
-Writes the user settings object to the **localStorage**. It is possible to choose a custom storage type by implementing the `settings.userSetting.writeToCustomStorage` function.
+Writes the user settings object to the **localStorage**. It is possible to choose a custom storage type by implementing the `settings.userSetting.storeUserSettings` function.
 
 ##### Parameters
 
@@ -197,7 +197,7 @@ Writes the user settings object to the **localStorage**. It is possible to choos
 ##### Examples
 
 ```javascript
-Luigi.writeUserSettingsToStorage(userSettingsobject);
+Luigi.storeUserSettings(userSettingsobject);
 ```
 
 **Meta**
