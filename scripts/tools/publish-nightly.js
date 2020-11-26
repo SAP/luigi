@@ -37,13 +37,23 @@ const packagePaths = {
   core: ['core'],
   client: ['client'],
   oauth2: ['plugins', 'auth', 'src', 'auth-oauth2'],
-  oidc: ['plugins', 'auth', 'src', 'auth-oidc']
+  oidc: ['plugins', 'auth', 'src', 'auth-oidc'],
+  client_support_angular: [
+    'client-frameworks-support',
+    'client-support-angular'
+  ]
 };
 const publishPaths = {
   core: ['core', 'public'],
   client: ['client', 'public'],
   oauth2: ['plugins', 'auth', 'public', 'auth-oauth2'],
-  oidc: ['plugins', 'auth', 'public', 'auth-oidc']
+  oidc: ['plugins', 'auth', 'public', 'auth-oidc'],
+  client_support_angular: [
+    'client-frameworks-support',
+    'client-support-angular',
+    'dist',
+    'client-support-angular'
+  ]
 };
 
 function execTrim(cmd) {
