@@ -57,7 +57,7 @@ class Settings {
   }; */
 
   userSettings = {
-    userSettingsNavigationEntry: {
+    userSettingsProfileMenuEntry: {
       label: 'My Settings',
       icon: 'settings'
     },
