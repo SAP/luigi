@@ -29,6 +29,11 @@
       on:modalDismiss="{() => handleModalResult(false)}"
     ></ConfirmationModal>
   {/if}
+  {#if userSettings.displayed}
+  <UserSettingsDialog
+    on:close="{closeUserSettings}">
+  </UserSettingsDialog>
+  {/if}
   <Backdrop disable="{disableBackdrop}">
     <div
       class="fd-page iframeContainer {mfSplitView.displayed?'lui-split-view':''} {mfSplitView.collapsed?'lui-collapsed':''}"
@@ -106,6 +111,7 @@
   import Alerts from './Alerts.html';
   import ConfirmationModal from './ConfirmationModal.html';
   import Modal from './Modal.html';
+  import UserSettingsDialog from './UserSettingsDialog.html'
   import Backdrop from './Backdrop.html';
   import SplitView from './SplitView.html';
   import LeftNav from './navigation/LeftNav.html';
@@ -195,6 +201,7 @@
   let resizeTabNavToggle = false;
   let thirdPartyCookiesCheck;
   let searchProvider;
+  let userSettings;
   export let isSearchFieldVisible;
   export let inputElem;
   export let luigiCustomSearchRenderer__slot;
@@ -960,6 +967,16 @@
       }
     }
   };
+
+  //Dialog Box
+  userSettings = {};
+  export const openUserSettings = () => {
+    userSettings.displayed = true;
+  }
+
+  export const closeUserSettings = () => {
+    userSettings.displayed = false;
+  }
 
   function init(node) {
     const isolateAllViews = LuigiConfig.getConfigValue(

@@ -1,0 +1,73 @@
+<script>
+    import { onMount, afterUpdate, beforeUpdate, createEventDispatcher } from 'svelte';
+    export let userSettingsGroupSchema;
+    export let userSettings;
+    let settingsSchema;
+    beforeUpdate(() => {
+        settingsSchema = userSettingsGroupSchema[1].settings;
+    });
+
+    function updateSettingsObject() {
+        console.log('inputChange');
+        console.log('userSettings ', userSettings);
+    }
+</script>
+<div class="fd-page">
+    {#each Object.entries(settingsSchema) as [key, schemaItem]}
+    <div class="fd-form-group">
+            {#if schemaItem.type==='string'}
+                <div class="fd-form-item">
+                    <div class="fd-col fd-col-md--2">
+                        <label class="fd-form-label">{schemaItem.label}:</label>
+                    </div>
+                    <div class="fd-col fd-col-md--10">
+                        <input class="fd-input" type="text" placeholder="Enter First and Last Name"
+                            bind:value="{userSettings[userSettingsGroupSchema[0]].settings[key]}" disabled="{schemaItem.isEditable===undefined || schemaItem.isEditable?false:true}" on:change="{() => updateSettingsObject()}">
+                    </div>
+                </div>
+            {/if}
+            {#if schemaItem.type==='enum'}
+            <div style="height:700px">
+                <div class="fd-form-item">
+                  <label for="comboboxAsFormItem" class="fd-form-label">{schemaItem.label}</label>
+                  <div class="fd-popover">
+                    <div class="fd-popover__control" aria-controls="amsfiaufuaskhjd" aria-expanded="true" aria-haspopup="true" id="ansioda7dh" onclick="
+                                  toggleElAttrs('amsfiaufuaskhjd', ['aria-hidden']);
+                                  toggleElAttrs('ansioda7dh', ['aria-expanded']);
+                                  toggleElAttrs('ansid87arfgj', ['aria-expanded']);
+                              ">
+                      <div class="fd-input-group fd-input-group--control">
+                        <input type="text" class="fd-input fd-input-group__input" id="comboboxAsFormItem" placeholder="Select Fruit">
+                        <span class="fd-input-group__addon fd-input-group__addon--button">
+                                      <button
+                                          id="ansid87arfgj"
+                                          aria-label="show/hide fruit options"
+                                          aria-controls="amsfiaufuaskhjd"
+                                          aria-expanded="true"
+                                          aria-haspopup="true"
+                                          class="fd-input-group__button fd-button fd-button--transparent">
+                                          <i class="sap-icon--navigation-down-arrow"></i></button>
+                                  </span>
+                      </div>
+                    </div>
+                    <div class="fd-popover__body fd-popover__body--no-arrow fd-popover__body--dropdown fd-popover__body--dropdown-fill" aria-hidden="false" id="amsfiaufuaskhjd">
+                      <div class="fd-popover__wrapper docs-max-height">
+                        <ul aria-label="fruit options" class="fd-list fd-list--dropdown" role="listbox">
+                            <!-- TODO handle is selected -->
+                            {#each schemaItem.options as options}
+                                <li role="option" tabindex="0" class="fd-list__item">
+                                    <span class="fd-list__title">
+                                        <span class="fd-list__bold">{options}</span>
+                                    </span>
+                                </li>
+                            {/each}
+                        </ul>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            {/if}
+        </div>
+    {/each}
+</div>

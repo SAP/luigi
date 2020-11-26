@@ -105,7 +105,7 @@
 <script>
   import { AuthLayerSvc } from './services';
   import { createEventDispatcher, onMount, getContext } from 'svelte';
-  import { LuigiAuth, LuigiConfig, LuigiNavigation } from './core-api';
+  import { LuigiAuth, LuigiConfig, LuigiUX } from './core-api';
   import {
     AuthHelpers,
     GenericHelpers,
@@ -268,12 +268,7 @@
   }
 
   export function onUserSettingsClick() {
-    getUnsavedChangesModalPromise().then(() => {
-      LuigiNavigation.openAsModal('projects/pr1/users', {
-        title: 'Users',
-        size: 'm'
-      });
-    });
+    LuigiUX.openUserSettings();
   }
 
   export function logout() {

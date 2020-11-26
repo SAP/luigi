@@ -1,0 +1,195 @@
+<script>
+    import {
+        afterUpdate,
+        createEventDispatcher,
+        onMount,
+        onDestroy,
+        beforeUpdate
+    } from 'svelte';
+    import UserSettingsEditor from './UserSettingsEditor.html';
+    const dispatch = createEventDispatcher();
+    let userSettingsData = [];
+    let userSettingsCategory = [];
+    let userSettings = {}
+    let userSettingsSchema = {};
+    const temp = [];
+    let displayEditor = false;
+    const mockSettingsSchema = {
+        userSettingGroups: {
+            userAccount: {
+                label: 'User Account',
+                sublabel: 'username',
+                icon: 'icon.jpg',
+                title: 'title',
+                settings: {
+                    name: { type: 'string', label: 'Name', isEditable: true, value: 'Luigi' },
+                    email: { type: 'string', label: 'E-Mail', isEditable: false, value: 'luigi@luigi.de' },
+                    server: { type: 'string', label: 'Server', isEditable: false, value: 'luigi.server' }
+                }
+            },
+            language: {
+                label: 'Language & Region',
+                sublabel: 'EN | Time Format: 12h',
+                icon: false,
+                title: 'Language & Region',
+                settings: {
+                    language: {
+                        type: 'enum',
+                        label: 'Language and Region',
+                        options: ['German', 'English', 'Spanish', 'French', 'Italian'],
+                        description: 'After you save your settings, the browser will refresh for the new language to take effect.',
+                        value: 'Italian'
+                    },
+                    date: { type: 'string', label: 'Date Format' },
+                    time: { type: 'enum', label: 'Time Format', options: ['12 h', '24 h'], value: '12 h' }
+                }
+            },
+            privacy: {
+                label: 'Privacy',
+                title: 'Privacy',
+                settings: {
+                    policy: { type: 'string', label: 'Privacy policy has not been defined.' }
+                }
+            }
+        }
+    }
+
+    let mockUserSettings = {
+        userSettingGroups: {
+            userAccount: {
+                settings: {
+                    name: 'Luigi',
+                    email: 'luigi@luigi.de',
+                    server: 'luigi.server'
+                }
+            },
+            language: {
+                settings: {
+                    language: 'Italian',
+                    date: 'XXX?',
+                    time: '12 h'
+                }
+            },
+            privacy: {
+                label: 'Privacy',
+                title: 'Privacy',
+                settings: {
+                    policy: '??'
+                }
+            }
+        }
+    }
+
+    function prepareLeftNavData() {
+        let schemaObj = mockSettingsSchema.userSettingGroups;
+        if (schemaObj) {
+            for (const item in schemaObj) {
+                userSettingsCategory.push(item);
+                let innerObj = {};
+                innerObj[item] = schemaObj[item];
+                userSettingsData.push(innerObj);
+            }
+        }
+    }
+
+    beforeUpdate(() => {
+        prepareLeftNavData();
+    });
+
+    afterUpdate(() => { });
+
+    onMount(() => { });
+
+    function openView(category) {
+        console.log('openView ', category);
+        userSettingsSchema = category;
+        displayEditor = true;
+        userSettings = mockUserSettings.userSettingGroups;
+    }
+
+
+</script>
+
+<style>
+    .dialog-size {
+        width: 60vw;
+        height: 60vh;
+    }
+
+    .user-settings__leftnav {
+        position: absolute;
+        left: 0;
+        height: 100%;
+        width: 200px;
+    }
+
+    .user-settings__content {
+        overflow: auto;
+        position: absolute;
+        right: 0;
+        float: left;
+        height: 100%;
+        width: 75%;
+        overflow-wrap: break-word;
+    }
+</style>
+
+<div class="fd-dialog fd-dialog--active">
+    <div class="fd-dialog__content dialog-size">
+        <div class="fd-dialog__header fd-bar fd-bar--header">
+            <div class="fd-bar__left">
+                <div class="fd-bar__element">
+                    <h3 class="fd-dialog__title">UserSettings</h3>
+                </div>
+            </div>
+            <div class="fd-bar__right">
+                <div class="fd-bar__element">
+                    <button
+                        class="fd-button fd-button--transparent fd-button--compact fd-dialog__close sap-icon--decline"
+                        on:click="{() => dispatch('close')}" aria-label="close"></button>
+                </div>
+            </div>
+        </div>
+        <div class="fd-dialog__body">
+            <div class="user-settings__leftnav">
+                <div class="fd-side-nav">
+                    <div class="fd-side-nav__main-navigation">
+                        <div class="lui-fd-side-nav-wrapper">
+                            <ul class="fd-nested-list">
+                                <!-- {#each userSettingsCategory as category} -->
+                                {#each Object.entries(userSettingsData) as [key,item], index}
+                                    {#each Object.entries(item) as property}
+                                        <li class="fd-nested-list__item">
+                                            <a class="fd-nested-list__link" on:click="{() => openView(property)}">
+                                                <span class="fd-nested-list__title">
+                                                    {property[1].label}
+                                                </span>
+                                            </a>
+                                        </li>
+                                    {/each}
+                                {/each}
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="user-settings__content">
+                {#if displayEditor}
+                    <UserSettingsEditor userSettings={userSettings} userSettingsGroupSchema={userSettingsSchema}></UserSettingsEditor>
+                {/if}
+            </div>
+        </div>
+        <footer class="fd-dialog__footer fd-bar fd-bar--footer">
+            <div class="fd-bar__right">
+                <div class="fd-bar__element">
+                    <button on:click="{() => dispatch('save')}"
+                        class="fd-dialog__decisive-button fd-button fd-button--emphasized fd-button--compact confirm-button">Save</button>
+                </div>
+                <div class="fd-bar__element">
+                    <button on:click="{() => dispatch('close')}"
+                        class="fd-dialog__decisive-button fd-button fd-button--transparent fd-button--compact">Dismiss</button>
+                </div>
+            </div>
+        </footer>
+    </div>
+</div>
