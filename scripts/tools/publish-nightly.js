@@ -30,7 +30,7 @@ const logStep = (s1, s2, s3) => {
 
 /**
  * PATHS
- */
+ */ 9;
 const base = path.resolve(__dirname, '..', '..');
 
 const packagePaths = {

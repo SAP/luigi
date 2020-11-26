@@ -59,7 +59,7 @@ integration-testing: &integration-testing
 
 jobs:
   include:
-    - stage: 'Precache &pwd Unit Tests'
+    - stage: 'Precache & Unit Tests'
       script:
         - export CYPRESS_CACHE_FOLDER=$TRAVIS_BUILD_DIR/cypress-binary-cache
         - npm i -g lerna
