@@ -8,7 +8,6 @@
     "test": "ng test",
     "lint": "ng lint",
     "build:lib": "ng build client-support-angular --prod",
-    "release": "npm run build:lib && cd dist/client-support-angular/ && npm publish",
     "bundle": "ng build client-support-angular --prod",
     "bundle-develop": "ng build client-support-angular --watch"
   },
