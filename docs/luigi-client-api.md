@@ -22,6 +22,7 @@ This document outlines the features provided by the Luigi Client API. It covers 
 -   [Link manager](#linkmanager) - you can use the linkManager instead of an internal router
 -   [Split view](#splitview) - allows you to open a micro frontend in the lower part of the content area in a "split screen" view
 -   [uxManager](#uxmanager) - functions related to user interface
+-   [storageManager](#storagemanager) - Storage Manager API to store/retrieve objects from Luigi Core local storage
 
 ## API Reference
 
@@ -357,6 +358,10 @@ Navigates to the given path in the application hosted by Luigi. It contains eith
     -   `splitViewSettings.title` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** split view title. By default, it is the node label. If there is no label, it is left empty
     -   `splitViewSettings.size` **[number](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number)** height of the split view in percent (optional, default `40`)
     -   `splitViewSettings.collapsed` **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)** creates split view but leaves it closed initially (optional, default `false`)
+-   `drawerSettings` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** opens a view in a drawer. Use these settings to configure if the drawer has a header, backdrop and size.
+    -   `drawerSettings.header` **any** By default, the header is visible. The default title is the node label, but the header could also be an object with a `title` attribute allowing you to specify your own title.  An 'x' icon is displayed to close the drawer view.
+    -   `drawerSettings.backdrop` **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)** By default, it is set to `false`. If it is set to `true` the rest of the screen has a backdrop.
+    -   `drawerSettings.size` **(`"l"` \| `"m"` \| `"s"` \| `"xs"`)** size of the drawer (optional, default `"s"`)
 
 ##### Examples
 
@@ -410,6 +415,29 @@ Returns **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/G
 **Meta**
 
 -   **since**: 0.6.0
+
+#### openAsDrawer
+
+Opens a view in a drawer. You can specify the size of the drawer, whether the drawer has a header, and whether a backdrop is active in the background. By default, the header is shown. The backdrop is not visible and has to be activated. The size of the drawer is set to `s` by default, which means 25% of the micro frontend size. You can also use `l`(75%), `m`(50%) or `xs`(15.5%). Optionally, use it in combination with any of the navigation functions.
+
+##### Parameters
+
+-   `path` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** navigation path
+-   `drawerSettings` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** opens a view in a drawer. Use these settings to configure if the drawer has a header, backdrop and size. (optional, default `{}`)
+    -   `drawerSettings.header` **any** By default, the header is visible. The default title is the node label, but the header could also be an object with a `title` attribute allowing you to specify your own title.  An 'x' icon is displayed to close the drawer view.
+    -   `drawerSettings.backdrop` **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)** By default, it is set to `false`. If it is set to `true` the rest of the screen has a backdrop.
+    -   `drawerSettings.size` **(`"l"` \| `"m"` \| `"s"` \| `"xs"`)** size of the drawer (optional, default `"s"`)
+
+##### Examples
+
+```javascript
+LuigiClient.linkManager().openAsDrawer('projects/pr1/drawer', {header:true, backdrop:true, size:'s'});
+LuigiClient.linkManager().openAsDrawer('projects/pr1/drawer', {header:{title:'My drawer component'}, backdrop:true, size:'xs'});
+```
+
+**Meta**
+
+-   **since**: 1.6.0
 
 #### fromContext
 
@@ -856,3 +884,122 @@ Returns **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/
 Gets the current theme.
 
 Returns **any** current themeObj
+
+### storageManager
+
+StorageManager allows you to use browser local storage of key/values. Every storage operation is sent to be managed by Luigi Core.
+The idea is that different micro frontends can share or persist items using local storage.
+Since all storage operations are asynchronous (sending an event to Luigi Core that will reply once operation is finished), all the methods return Promises.
+
+#### setItem
+
+Stores an item for a specific key.
+
+##### Parameters
+
+-   `key` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** key used to identify the value
+-   `value` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** item to store; object must be stringifyable
+
+##### Examples
+
+```javascript
+LuigiClient.storageManager().setItem('keyExample','valueExample').then(() => console.log('Value stored'))
+```
+
+Returns **[Promise](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise)&lt;void>** resolves an empty value when the storage operation is over. It will launch an error if storage is not supported, the value cannot be stringified, or if you are using a Luigi reserved key.
+
+**Meta**
+
+-   **since**: 1.6.0
+
+#### getItem
+
+Retrieves an item for a specific key.
+
+##### Parameters
+
+-   `key` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** used to identify the value
+
+##### Examples
+
+```javascript
+LuigiClient.storageManager().getItem('keyExample').then((value) => console.log);
+```
+
+Returns **[Promise](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise)&lt;[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)>** resolves an item retrieved from storage. It will launch an error if storage is not supported.
+
+**Meta**
+
+-   **since**: 1.6.0
+
+#### removeItem
+
+Removes an item for a specific key.
+
+##### Parameters
+
+-   `key` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** used to identify the value
+
+##### Examples
+
+```javascript
+LuigiClient.storageManager().removeItem('keyExample').then((value) => console.log(value + ' just removed')
+```
+
+Returns **[Promise](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise)&lt;[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)>** resolves an item just removed from storage. It will launch an error if storage is not supported or if you are using a Luigi reserved key.
+
+**Meta**
+
+-   **since**: 1.6.0
+
+#### clear
+
+Clears all the storage key/values.
+
+##### Examples
+
+```javascript
+LuigiClient.storageManager().clear().then(() => console.log('storage cleared'))
+```
+
+Returns **[Promise](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise)&lt;void>** resolves when storage clear is over.
+
+**Meta**
+
+-   **since**: 1.6.0
+
+#### has
+
+Checks if a key is present in storage.
+
+##### Parameters
+
+-   `key` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** key in the storage
+
+##### Examples
+
+```javascript
+LuigiClient.storageManager().has(key).then((present) => console.log('item is present '+present))
+```
+
+Returns **[Promise](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise)&lt;[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)>** `true` if key is present, `false` if it is not
+
+**Meta**
+
+-   **since**: 1.6.0
+
+#### getAllKeys
+
+Gets all the keys used in the storage.
+
+##### Examples
+
+```javascript
+LuigiClient.storageManager().getAllKeys().then((keys) => console.log('keys are '+keys))
+```
+
+Returns **[Promise](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise)&lt;[Array](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array)&lt;[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)>>** keys currently present in the storage
+
+**Meta**
+
+-   **since**: 1.6.0

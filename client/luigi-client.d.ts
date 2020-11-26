@@ -45,6 +45,12 @@ export declare interface SplitViewInstance {
   isExpanded: () => boolean;
 }
 
+export declare interface DrawerSettings {
+  header?: any;
+  size?: 'l' | 'm' | 's' | 'xs';
+  backdrop?: boolean;
+}
+
 export declare interface Context {
   authData?: AuthData;
   context?: { parentNavigationContext?: string[] };
@@ -358,6 +364,21 @@ export declare interface LinkManager {
   ) => SplitViewInstance;
 
   /**
+   * Opens a view in a drawer. You can specify if the drawer has a header, if a backdrop is active in the background and configure the size of the drawer. By default the header is shown. The backdrop is not visible and has to be activated. The size of the drawer is by default set to `s` which means 25% of the micro frontend size. You can also use `l`(75%), `m`(50%) or `xs`(15.5%). Optionally, use it in combination with any of the navigation functions.
+   * @memberof linkManager
+   * @param {string} path navigation path
+   * @param {Object} [drawerSettings] opens a view in a drawer. Use these settings to configure if the drawer has a header, backdrop and size.
+   * @param {any} drawerSettings.header By default, the header is visible. Title is node label and 'x' is displayed to close the drawer view. The header could also be an object with a `title` attribute to specify an own title for the drawer component.
+   * @param {boolean} drawerSettings.backdrop By default, it is set to `false`. If it is set to `true` the rest of the screen has a backdrop.
+   * @param {('l'|'m'|'s'|'xs')} [drawerSettings.size="s"] size of the drawer
+   * @since 1.6.0
+   * @example
+   * LuigiClient.linkManager().openAsDrawer('projects/pr1/drawer', {header:true, backdrop:true, size:'s'});
+   * LuigiClient.linkManager().openAsDrawer('projects/pr1/drawer', {header:{title:'My drawer component'}, backdrop:true, size:'xs'});
+   */
+  openAsDrawer: (nodepath: string, drawerSettings?: DrawerSettings) => void;
+
+  /**
    * Disables the navigation handling for a single navigation request
    * It prevents Luigi Core from handling url change after `navigate()`.
    * Used for auto-navigation
@@ -367,6 +388,73 @@ export declare interface LinkManager {
    * LuigiClient.linkManager().withoutSync().fromClosestContext().navigate('settings');
    */
   withoutSync: () => this;
+}
+
+export declare interface StorageManager {
+  /**
+   * Store an item for a specific key.
+   * @memberof storageManager
+   * @param {string} key: used to identify the item
+   * @param {Object} value: item to be stored; object must be stringifyable
+   * @returns {Promise<void>} resolves an empty value when storage operation is over; it will launch an error if storage is no supported, value cannot be stringify or you are using a luigi reserved key
+   * @example
+   * LuigiClient.storageManager().setItem('keyExample','valueExample').then(() => console.log('Value stored'))
+   * @since 1.6.0
+   */
+  setItem: (key: string, value: Object) => Promise<void>;
+
+  /**
+   * Retrieve an item for a specific key.
+   * @memberof storageManager
+   * @param {string} key: used to identify the item
+   * @returns {Promise<Object>} resolves item retrieved from storage; it will launch an error if storage is no supported
+   * @since 1.6.0
+   * @example
+   * LuigiClient.storageManager().getItem('keyExample').then((value) => console.log);
+   */
+  getItem: (key: string) => Promise<Object>;
+
+  /**
+   * Remove an item for a specific key.
+   * @memberof storageManager
+   * @param {string} key: used to identify the item
+   * @returns {Promise<Object>} resolves item just removed from storage; it will launch an error if storage is no supported or you are using a luigi reserved key
+   * @since 1.6.0
+   * @example
+   * LuigiClient.storageManager().removeItem('keyExample').then((value) => console.log(value + ' just removed')
+   */
+  removeItem: (key: string) => Promise<Object>;
+
+  /**
+   * Clear all the storage key/values
+   * @memberof storageManager
+   * @returns {Promise<void>} resolves when storage clear is over
+   * @since 1.6.0
+   * @example
+   * LuigiClient.storageManager().clear().then(() => console.log('storage cleared'))
+   */
+  clear: () => Promise<void>;
+
+  /**
+   * Check if a key is present in storage
+   * @memberof storageManager
+   * @param {string} key: used to identify the item
+   * @returns {Promise<boolean>} true if key is present, false if is not
+   * @since 1.6.0
+   * @example
+   * LuigiClient.storageManager().has(key).then((present) => console.log('element is present: '+present));
+   */
+  has: (key: string) => boolean;
+
+  /**
+   * Retrieve all the keys used in the storage
+   * @memberof storageManager
+   * @returns {Promise<string[]>} keys currently present in the storage
+   * @since 1.6.0
+   * @example
+   * LuigiClient.storageManager().getAllKeys().then((keys) => console.log('keys are : '+keys));
+   */
+  getAllKeys: () => Array<String>;
 }
 
 /**
@@ -570,3 +658,11 @@ export type linkManager = () => LinkManager;
  */
 export function uxManager(): UxManager;
 export type uxManager = () => UxManager;
+
+/**
+ * Use the StorageManager to store/load/remove items from/to local storage.
+ * @name storageManager
+ * @since 1.6.0
+ */
+export function storageManager(): StorageManager;
+export type storageManager = () => StorageManager;
