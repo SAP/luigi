@@ -1,9 +1,11 @@
 const chai = require('chai');
 const assert = chai.assert;
 const sinon = require('sinon');
+const expect = chai.expect;
+const spy = sinon.spy;
 
 import { LuigiConfig } from '../../src/core-api';
-import { AsyncHelpers } from './../../src/utilities/helpers';
+import { AsyncHelpers, GenericHelpers } from './../../src/utilities/helpers';
 
 describe('Config', () => {
   describe('getConfigBooleanValue', () => {
@@ -110,7 +112,7 @@ describe('Config', () => {
         .returns(Promise.reject(new Error('rejected')));
       //given
       LuigiConfig.config = {
-        rejectFnAsync: (param1, param2) => {}
+        rejectFnAsync: (param1, param2) => { }
       };
 
       // second parameter throws an error and we want it to throw an error on failure
@@ -122,6 +124,57 @@ describe('Config', () => {
         res = error;
       }
       assert.equal(res.message, 'rejected', 'return error does not equal');
+    });
+  });
+
+  describe('User settings', () => {
+    before(() => {
+      global['localStorage'] = {
+        getItem: sinon.stub(),
+        setItem: sinon.stub()
+      };
+    });
+    afterEach(() => {
+      sinon.restore();
+      sinon.reset();
+    });
+    const key = 'myStorageKey';
+    const userSettingsObj = {
+      userSettings: {
+        userSettingGroups: {}
+      }
+    };
+    const myConfig = {
+      storeUserSettings: () => {
+        console.log('write');
+      },
+      readUserSettings: () => {
+        console.log('read');
+      }
+    };
+
+    it('write user settings to local storage', async () => {
+      await LuigiConfig.storeUserSettings(userSettingsObj);
+      sinon.assert.called(global.localStorage.setItem);
+    });
+    it('write user settings to custom storage', async () => {
+      console.log = sinon.spy();
+      sinon.stub(LuigiConfig, 'getConfigValueAsync').returns(myConfig);
+      sinon.stub(GenericHelpers, 'isFunction').returns(true);
+      await LuigiConfig.storeUserSettings(userSettingsObj);
+      sinon.assert.calledOnce(console.log);
+    });
+    it('read user settings from local storage', async () => {
+      sinon.stub(JSON, 'parse').returns(JSON.stringify(userSettingsObj));
+      await LuigiConfig.readUserSettings();
+      sinon.assert.called(global.localStorage.getItem);
+    });
+    it('read user settings from custom storage', async () => {
+      console.log = sinon.spy();
+      sinon.stub(LuigiConfig, 'getConfigValueAsync').returns(myConfig);
+      sinon.stub(GenericHelpers, 'isFunction').returns(true);
+      await LuigiConfig.readUserSettings();
+      sinon.assert.calledOnce(console.log);
     });
   });
 });

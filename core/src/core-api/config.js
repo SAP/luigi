@@ -15,8 +15,9 @@ class LuigiConfig {
    * @memberof Configuration
    */
   constructor() {
-    this.configReadyCallback = function() {};
+    this.configReadyCallback = function () { };
     this.initialized = false;
+    this.USER_SETTINGS_KEY = 'luigi.preferences.userSettings';
   }
 
   /**
@@ -232,6 +233,44 @@ class LuigiConfig {
       container.removeChild(container.lastChild);
     }
   }
+
+  /**
+   * Reads the user settings object.
+   * You can choose a custom storage to read the user settings by implementing the `userSetting.readUserSettings` function in the settings section of the Luigi configuration.
+   * By default, the user settings will be read from the **localStorage**
+   * @memberof Configuration
+   * @example
+   * Luigi.readUserSettings();
+   * @since NEXTRELEASE
+   */
+  async readUserSettings() {
+    const userSettings = await this.getConfigValueAsync('settings.userSettings');
+    if (userSettings && GenericHelpers.isFunction(userSettings.readUserSettings)) {
+      return userSettings.readUserSettings();
+    }
+    return JSON.parse(localStorage.getItem(this.USER_SETTINGS_KEY));
+  }
+
+  /**
+   * Reads the user settings object.
+   * You can choose a custom storage to write the user settings by implementing the `userSetting.storeUserSettings` function in the settings section of the Luigi configuration
+   * By default, the user settings will be written from the **localStorage**
+   * @memberof Configuration
+   * @param {Object} userSettingsObj to store in the storage.
+   * @example
+   * Luigi.storeUserSettings(userSettingsobject);
+   * @since NEXTRELEASE
+   */
+  async storeUserSettings(userSettingsObj) {
+    const userSettings = await this.getConfigValueAsync('settings.userSettings');
+    if (userSettings && GenericHelpers.isFunction(userSettings.storeUserSettings)) {
+      userSettings.storeUserSettings(userSettingsObj);
+    }
+    else {
+      localStorage.setItem(this.USER_SETTINGS_KEY, JSON.stringify(userSettingsObj));
+    }
+  }
 }
+
 
 export const config = new LuigiConfig();
