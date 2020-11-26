@@ -55,11 +55,19 @@ class Settings {
       }
     };
   }; */
+
   userSettings = {
     userSettingsProfileMenuEntry: {
       label: 'My Settings',
       icon: 'settings'
     },
+    // functions to use a custom storage like sessionStorage
+    // storeUserSettings: (obj) => {
+    //   sessionStorage.setItem('test', JSON.stringify(obj));
+    // },
+    // readUserSettings: () => {
+    //   return JSON.parse(sessionStorage.getItem('test'));
+    // },
     userSettingGroups: {
       userAccount: {
         label: 'User Account',
@@ -82,8 +90,7 @@ class Settings {
             type: 'enum',
             label: 'Language and Region',
             options: ['German', 'English', 'Spanish', 'French'],
-            description:
-              'After you save your settings, the browser will refresh for the new language to take effect.'
+            description: 'After you save your settings, the browser will refresh for the new language to take effect.'
           },
           date: { type: 'string', label: 'Date Format' },
           time: { type: 'enum', label: 'Time Format', options: ['12 h', '24 h'] }
@@ -93,10 +100,7 @@ class Settings {
         label: 'Privacy',
         title: 'Privacy',
         settings: {
-          policy: {
-            type: 'string',
-            label: 'Privacy policy has not been defined.'
-          }
+          policy: { type: 'string', label: 'Privacy policy has not been defined.' }
         }
       }
     }
