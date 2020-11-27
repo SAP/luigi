@@ -1,4 +1,5 @@
 import Hogan from 'hogan.js';
+import { get_current_component } from 'svelte/internal';
 
 const suggestionTemplate = `
        <div class="ds-suggestion" role="option" id="option-27550019" aria-selected="true">
@@ -36,12 +37,59 @@ const empty =`
   </div>
   `;
 
+const KEYCODE_ARROW_UP = 38;
+const KEYCODE_ARROW_DOWN = 40
+export const KEYCODE_ENTER = 13;
+
+let eventInit = false;
+let currentItems = []
+let currentPosition = 0;
+let lastQuery = '';
+function handleEvent(event){
+  if (event.keyCode == KEYCODE_ENTER && currentPosition!==0){
+    currentItems[currentPosition-1].click();
+    return;
+  }
+  if (event.keyCode !== KEYCODE_ARROW_DOWN && event.keyCode !== KEYCODE_ARROW_UP ){
+    return;
+  }
+
+  event.keyCode === KEYCODE_ARROW_DOWN?currentPosition++:currentPosition--;
+  if (currentPosition === -1){
+    currentPosition = currentItems.length;
+  }
+  currentPosition = currentPosition % (currentItems.length + 1);
+  keyElement();
+}
+
+function keyElement(){
+  currentItems.forEach(item => item.classList.remove("ds-cursor"));
+  if (currentPosition === 0){
+    return;
+  }
+  currentItems[currentPosition-1].classList.add("ds-cursor");
+}
+
 export default class ResultRender {
   constructor(query, results) {
     this.query = query;
     this.results = results;
+    this.addKeyEvent()
+  }
+  addKeyEvent(){
+    if (eventInit){
+      return;
+    }
+    let elem = document.querySelector('input.luigi-search__input');
+    elem.addEventListener('keyup', handleEvent);
+    eventInit=true;
   }
   buildDomResults(){
+    currentItems = [];
+    if (this.query !== lastQuery){
+      currentPosition = 0;
+      lastQuery = this.query;
+    }
     this.cleanResults();
     const { resultSpan, container } = this.buildContainer();
     if (this.results.length === 0) {
@@ -64,6 +112,7 @@ export default class ResultRender {
       let html = this.renderResult(template, data);
       let searchItem = this.htmlToElement(html);
       this.attachItemEvents(searchItem, result);
+      currentItems.push(searchItem);
       span.appendChild(searchItem);
     }
   }

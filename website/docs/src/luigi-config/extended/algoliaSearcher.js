@@ -6,7 +6,7 @@ class AlgoliaSearcher{
   constructor() {
     this.client = algoliasearch(appId, apiKey);
     this.index = this.client.initIndex("luigi-project");
-    this.searchResult = 10
+    this.searchResult = 8
     this.isDevelop = parseInt(window.location.port) === 4000;
     this.coreBaseUrl = window.location.origin;
   }
@@ -21,9 +21,7 @@ class AlgoliaSearcher{
       });
   }
   transformUrls(hit){
-    if (this.isDevelop) {
-      hit.url = hit.url.replace('https://docs.luigi-project.io', '');
-    }
+    hit.url = hit.url.replace('https://docs.luigi-project.io', '');
     hit.url = hit.url.replace('/docu-microfrontend', '');
     return hit;
   }
