@@ -180,9 +180,14 @@ export default class ResultRender {
     });
     let div_1 = this.createAttribute('div', {"class":"ds-dataset-1"});
     let span_11 = this.createAttribute('span', {"class": "ds-suggestions","style": "display: block;"});
+    let divLogo = this.htmlToElement('<div class="algolia-docsearch-footer">Search by <a class="algolia-docsearch-footer--logo" ' +
+      'href="https://www.algolia.com/docsearch">Algolia</a></div>')
+
     span.appendChild(span_);
     span_.appendChild(div_1);
     div_1.appendChild(span_11);
+    div_1.appendChild(divLogo);
+
     return {
       container: span,
       resultSpan : span_11
