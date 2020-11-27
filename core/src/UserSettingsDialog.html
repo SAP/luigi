@@ -7,56 +7,18 @@
         beforeUpdate
     } from 'svelte';
     import UserSettingsEditor from './UserSettingsEditor.html';
+    import { LuigiConfig } from './core-api';
     const dispatch = createEventDispatcher();
     let userSettingsData = [];
     let userSettingsCategory = [];
     let userSettings = {}
     let userSettingsSchema = {};
-    const temp = [];
     let displayEditor = false;
-    const mockSettingsSchema = {
-        userSettingGroups: {
-            userAccount: {
-                label: 'User Account',
-                sublabel: 'username',
-                icon: 'icon.jpg',
-                title: 'title',
-                settings: {
-                    name: { type: 'string', label: 'Name', isEditable: true, value: 'Luigi' },
-                    email: { type: 'string', label: 'E-Mail', isEditable: false, value: 'luigi@luigi.de' },
-                    server: { type: 'string', label: 'Server', isEditable: false, value: 'luigi.server' }
-                }
-            },
-            language: {
-                label: 'Language & Region',
-                sublabel: 'EN | Time Format: 12h',
-                icon: false,
-                title: 'Language & Region',
-                settings: {
-                    language: {
-                        type: 'enum',
-                        label: 'Language and Region',
-                        options: ['German', 'English', 'Spanish', 'French', 'Italian'],
-                        description: 'After you save your settings, the browser will refresh for the new language to take effect.',
-                        value: 'Italian'
-                    },
-                    date: { type: 'string', label: 'Date Format' },
-                    time: { type: 'enum', label: 'Time Format', options: ['12 h', '24 h'], value: '12 h' }
-                }
-            },
-            privacy: {
-                label: 'Privacy',
-                title: 'Privacy',
-                settings: {
-                    policy: { type: 'string', label: 'Privacy policy has not been defined.' }
-                }
-            }
-        }
-    }
 
     let mockUserSettings = {
         userSettingGroups: {
             userAccount: {
+                //TODO settings raus
                 settings: {
                     name: 'Luigi',
                     email: 'luigi@luigi.de',
@@ -80,8 +42,7 @@
         }
     }
 
-    function prepareLeftNavData() {
-        let schemaObj = mockSettingsSchema.userSettingGroups;
+    function prepareLeftNavData(schemaObj) {
         if (schemaObj) {
             for (const item in schemaObj) {
                 userSettingsCategory.push(item);
@@ -93,20 +54,44 @@
     }
 
     beforeUpdate(() => {
-        prepareLeftNavData();
+        const schemaObj = LuigiConfig.getConfigValue('settings.userSettings.userSettingGroups');
+        prepareLeftNavData(schemaObj);
+
     });
 
     afterUpdate(() => { });
 
-    onMount(() => { });
+    onMount(() => {
+        LuigiConfig.readUserSettings().then(userSettingsFromStorage => {
+            if (userSettings === null) {
+                createObjectBasedOnUserSettingsSchema();
+            } else {
+                userSettings = userSettingsFromStorage;
+            }
+        });
+    });
 
-    function openView(category) {
-        console.log('openView ', category);
+    //openEditor
+    function openEditor(category) {
         userSettingsSchema = category;
         displayEditor = true;
+    }
+
+    function createObjectBasedOnUserSettingsSchema() {
+        //TODO createEmptyObject
         userSettings = mockUserSettings.userSettingGroups;
     }
 
+    const updateSettingsObject = (event) => {
+        userSettings = event.detail.userSettings;
+    }
+
+    function storeUserSettings() {
+        LuigiConfig.storeUserSettings(userSettings).then(() => {
+            dispatch('close');
+            console.info('User settings stored');
+        });
+    }
 
 </script>
 
@@ -116,20 +101,20 @@
         height: 60vh;
     }
 
+    .user-settings__body {
+        position: relative;
+        padding-top: 0;
+        padding-bottom: 0;
+    }
+
     .user-settings__leftnav {
-        position: absolute;
-        left: 0;
         height: 100%;
-        width: 200px;
+        float: left;
     }
 
     .user-settings__content {
-        overflow: auto;
-        position: absolute;
-        right: 0;
-        float: left;
+        width: 100%;
         height: 100%;
-        width: 75%;
         overflow-wrap: break-word;
     }
 </style>
@@ -150,7 +135,7 @@
                 </div>
             </div>
         </div>
-        <div class="fd-dialog__body">
+        <div class="fd-dialog__body user-settings__body">
             <div class="user-settings__leftnav">
                 <div class="fd-side-nav">
                     <div class="fd-side-nav__main-navigation">
@@ -160,7 +145,7 @@
                                 {#each Object.entries(userSettingsData) as [key,item], index}
                                     {#each Object.entries(item) as property}
                                         <li class="fd-nested-list__item">
-                                            <a class="fd-nested-list__link" on:click="{() => openView(property)}">
+                                            <a class="fd-nested-list__link" on:click="{() => openEditor(property)}">
                                                 <span class="fd-nested-list__title">
                                                     {property[1].label}
                                                 </span>
@@ -175,14 +160,14 @@
             </div>
             <div class="user-settings__content">
                 {#if displayEditor}
-                    <UserSettingsEditor userSettings={userSettings} userSettingsGroupSchema={userSettingsSchema}></UserSettingsEditor>
+                    <UserSettingsEditor userSettings={userSettings} userSettingsGroupSchema={userSettingsSchema} on:updateSettingsObject="{updateSettingsObject}"></UserSettingsEditor>
                 {/if}
             </div>
         </div>
         <footer class="fd-dialog__footer fd-bar fd-bar--footer">
             <div class="fd-bar__right">
                 <div class="fd-bar__element">
-                    <button on:click="{() => dispatch('save')}"
+                    <button on:click="{() => storeUserSettings()}"
                         class="fd-dialog__decisive-button fd-button fd-button--emphasized fd-button--compact confirm-button">Save</button>
                 </div>
                 <div class="fd-bar__element">

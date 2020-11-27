@@ -2,58 +2,85 @@
     import { onMount, afterUpdate, beforeUpdate, createEventDispatcher } from 'svelte';
     export let userSettingsGroupSchema;
     export let userSettings;
+    const dispatch = createEventDispatcher();
     let settingsSchema;
+    let displayOptions;
     beforeUpdate(() => {
         settingsSchema = userSettingsGroupSchema[1].settings;
     });
 
-    function updateSettingsObject() {
-        console.log('inputChange');
-        console.log('userSettings ', userSettings);
+    export function updateSettingsObject() {
+        dispatch('updateSettingsObject', { userSettings })
     }
+
+    function closeAllCombos() {
+        console.log('closeAll');
+        document.querySelectorAll('.lui-userSettings-content .fd-popover__control').forEach(elem => {
+            setExpandedState(elem, false);
+        });
+    }
+
+    function toggleOptions(event) {
+        closeAllCombos();
+        const self = event.target.closest('.fd-popover__control');
+        const currentState = self.getAttribute('aria-expanded') === 'true';
+        setExpandedState(self, !currentState);
+    }
+
+    function setExpandedState(self, value) {
+        const indicatorBtn = self.querySelector('.fd-input-group__button');
+        const optionsPopOver = self.parentNode.querySelector('.fd-popover__body');
+        self.setAttribute('aria-expanded', value);
+        optionsPopOver.setAttribute('aria-hidden', !value);
+        indicatorBtn.setAttribute('aria-expanded', value);
+    }
+
 </script>
-<div class="fd-page">
-    {#each Object.entries(settingsSchema) as [key, schemaItem]}
-    <div class="fd-form-group">
+<!-- <div class="fd-container fd-form-layout-grid-container" style="max-width:1024px">
+    <div class="fd-row">
+      <div class="fd-col fd-col-md--2 fd-col-lg--4">
+        <label class="fd-form-label" for="input-2-name">Name:</label>
+      </div>
+      <div class="fd-col fd-col-md--10 fd-col-lg--8">
+        <input class="fd-input" type="text" id="input-2-name" placeholder="Enter First and Last Name" value="Amelia Perry">
+      </div>
+    </div> -->
+<div class="fd-page lui-userSettings-content">
+    <div class="fd-container fd-form-layout-grid-container" style="max-width:1024px">
+        {#each Object.entries(settingsSchema) as [key, schemaItem], i}
+    <div class="fd-row">
             {#if schemaItem.type==='string'}
-                <div class="fd-form-item">
-                    <div class="fd-col fd-col-md--2">
-                        <label class="fd-form-label">{schemaItem.label}:</label>
-                    </div>
-                    <div class="fd-col fd-col-md--10">
-                        <input class="fd-input" type="text" placeholder="Enter First and Last Name"
-                            bind:value="{userSettings[userSettingsGroupSchema[0]].settings[key]}" disabled="{schemaItem.isEditable===undefined || schemaItem.isEditable?false:true}" on:change="{() => updateSettingsObject()}">
-                    </div>
-                </div>
+            <div class="fd-col fd-col-md--2 fd-col-lg--4">
+                <label class="fd-form-label" for="input-07">{schemaItem.label}:</label>
+            </div>
+            <div class="fd-col fd-col-md--10 fd-col-lg--8">
+                <input class="fd-input" type="text" placeholder="Field placeholder text" aria-label="Image label"
+                bind:value="{userSettings[userSettingsGroupSchema[0]].settings[key]}" disabled="{schemaItem.isEditable===undefined || schemaItem.isEditable?false:true}" on:input="{() => updateSettingsObject()}">
+            </div>
             {/if}
             {#if schemaItem.type==='enum'}
-            <div style="height:700px">
+            <div>
                 <div class="fd-form-item">
                   <label for="comboboxAsFormItem" class="fd-form-label">{schemaItem.label}</label>
                   <div class="fd-popover">
-                    <div class="fd-popover__control" aria-controls="amsfiaufuaskhjd" aria-expanded="true" aria-haspopup="true" id="ansioda7dh" onclick="
-                                  toggleElAttrs('amsfiaufuaskhjd', ['aria-hidden']);
-                                  toggleElAttrs('ansioda7dh', ['aria-expanded']);
-                                  toggleElAttrs('ansid87arfgj', ['aria-expanded']);
-                              ">
+                    <div class="fd-popover__control" aria-expanded="" aria-haspopup="true"
+                     on:click|preventDefault="{()=>toggleOptions(event)}">
                       <div class="fd-input-group fd-input-group--control">
-                        <input type="text" class="fd-input fd-input-group__input" id="comboboxAsFormItem" placeholder="Select Fruit">
+                        <input type="text" class="fd-input fd-input-group__input" placeholder="Select Fruit">
                         <span class="fd-input-group__addon fd-input-group__addon--button">
-                                      <button
-                                          id="ansid87arfgj"
-                                          aria-label="show/hide fruit options"
-                                          aria-controls="amsfiaufuaskhjd"
-                                          aria-expanded="true"
-                                          aria-haspopup="true"
-                                          class="fd-input-group__button fd-button fd-button--transparent">
-                                          <i class="sap-icon--navigation-down-arrow"></i></button>
-                                  </span>
+                            <button
+                                aria-label="show/hide fruit options"
+                                aria-expanded=""
+                                aria-haspopup="true"
+                                class="fd-input-group__button fd-button fd-button--transparent">
+                                <i class="sap-icon--navigation-down-arrow"></i></button>
+                        </span>
                       </div>
                     </div>
-                    <div class="fd-popover__body fd-popover__body--no-arrow fd-popover__body--dropdown fd-popover__body--dropdown-fill" aria-hidden="false" id="amsfiaufuaskhjd">
+                    <div class="fd-popover__body fd-popover__body--no-arrow fd-popover__body--dropdown fd-popover__body--dropdown-fill" aria-hidden="">
                       <div class="fd-popover__wrapper docs-max-height">
                         <ul aria-label="fruit options" class="fd-list fd-list--dropdown" role="listbox">
-                            <!-- TODO handle is selected -->
+                            TODO handle is selected
                             {#each schemaItem.options as options}
                                 <li role="option" tabindex="0" class="fd-list__item">
                                     <span class="fd-list__title">
@@ -70,4 +97,5 @@
             {/if}
         </div>
     {/each}
+</div>
 </div>
