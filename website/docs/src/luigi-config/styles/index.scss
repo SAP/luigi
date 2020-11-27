@@ -399,6 +399,9 @@ $side-nav-width-mobile: 260px;
 
   .fd-nested-list__item {
     padding: 10px 0;
+    &:last-child {
+      border-bottom: none;
+    }
   }
 
   .fd-nested-list__group-header,
@@ -450,6 +453,12 @@ $side-nav-width-mobile: 260px;
       display: none;
     }
 
+  }
+  //disable the dotted line on deep-click
+  .fd-side-nav .fd-nested-list__link {
+    &:focus {
+      outline: none;
+    }
   }
 
   .lui-category {
