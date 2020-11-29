@@ -18,26 +18,18 @@
     let mockUserSettings = {
         userSettingGroups: {
             userAccount: {
-                //TODO settings raus
-                settings: {
-                    name: 'Luigi',
-                    email: 'luigi@luigi.de',
-                    server: 'luigi.server'
-                }
+                //TODO remove settings                 
+                name: 'Luigi',
+                email: 'luigi@luigi.de',
+                server: 'luigi.server'
             },
             language: {
-                settings: {
-                    language: 'Italian',
-                    date: 'XXX?',
-                    time: '12 h'
-                }
+                language: 'Italian',
+                date: 'XXX?',
+                time: '12 h'
             },
             privacy: {
-                label: 'Privacy',
-                title: 'Privacy',
-                settings: {
-                    policy: '??'
-                }
+                policy: '??'
             }
         }
     }
@@ -63,7 +55,8 @@
 
     onMount(() => {
         LuigiConfig.readUserSettings().then(userSettingsFromStorage => {
-            if (userSettings === null) {
+            console.log('resd');
+            if (userSettingsFromStorage === null) {
                 createObjectBasedOnUserSettingsSchema();
             } else {
                 userSettings = userSettingsFromStorage;
