@@ -100,7 +100,8 @@ class Settings {
         label: 'Privacy',
         title: 'Privacy',
         settings: {
-          policy: { type: 'string', label: 'Privacy policy has not been defined.' }
+          policy: { type: 'string', label: 'Privacy policy has not been defined.' },
+          time: { type: 'enum', label: 'Time Format', options: ['12 h', '24 h'] }
         }
       }
     }

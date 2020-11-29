@@ -18,8 +18,6 @@
     let mockUserSettings = {
         userSettingGroups: {
             userAccount: {
-                //TODO remove settings                 
-                name: 'Luigi',
                 email: 'luigi@luigi.de',
                 server: 'luigi.server'
             },
@@ -55,7 +53,6 @@
 
     onMount(() => {
         LuigiConfig.readUserSettings().then(userSettingsFromStorage => {
-            console.log('resd');
             if (userSettingsFromStorage === null) {
                 createObjectBasedOnUserSettingsSchema();
             } else {

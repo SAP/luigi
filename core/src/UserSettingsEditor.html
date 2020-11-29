@@ -1,11 +1,14 @@
+<!-- <svelte:window on:click="{closeAllCombos}"></svelte:window> -->
 <script>
     import { onMount, afterUpdate, beforeUpdate, createEventDispatcher } from 'svelte';
     export let userSettingsGroupSchema;
     export let userSettings;
     const dispatch = createEventDispatcher();
     let settingsSchema;
+    let userSettingGroup;
     let displayOptions;
     beforeUpdate(() => {
+        userSettingGroup = userSettingsGroupSchema[0];
         settingsSchema = userSettingsGroupSchema[1].settings;
     });
 
@@ -14,18 +17,19 @@
     }
 
     function closeAllCombos(self) {
+        //TODO Close if click on input
         document.querySelectorAll('.lui-userSettings-content .fd-popover__control').forEach(elem => {
             if (self !== elem) {
                 setExpandedState(elem, false);
             }
         });
+
     }
 
     function toggleOptions(event) {
         const self = event.target.closest('.fd-popover__control');
         closeAllCombos(self);
         const currentState = self.getAttribute('aria-expanded') === 'true';
-        console.log('test');
         setExpandedState(self, !currentState);
     }
 
@@ -37,9 +41,8 @@
         indicatorBtn.setAttribute('aria-expanded', value);
     }
 
-    function updateComboBox(schemaItem, key, option) {
-        console.log('updateComboBox');
-        userSettings[key] = option;
+    function updateComboBox(key, option) {
+        userSettings[userSettingGroup][key] = option;
         updateSettingsObject();
     }
 
@@ -81,7 +84,7 @@
                       <div class="fd-popover__wrapper docs-max-height">
                         <ul aria-label="fruit options" class="fd-list fd-list--dropdown" role="listbox">
                             {#each schemaItem.options as option}
-                                <li role="option" tabindex="0" class="fd-list__item" on:click="{() => updateComboBox(schemaItem, key,option)}">
+                                <li role="option" tabindex="0" class="fd-list__item" on:click="{() => updateComboBox(key,option)}">
                                     <span class="fd-list__title">
                                         <span class="fd-list__bold">{option}</span>
                                     </span>
