@@ -19,7 +19,7 @@ imports: [
 ```
 
 ## Features
-Here the main features provided by the library:
+Here the main features provided by the libraries:
 * LuigiContextService
 * LuigiAutoRoutingService
 
