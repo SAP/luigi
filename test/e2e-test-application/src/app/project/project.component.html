@@ -659,6 +659,164 @@
       </div>
     </div>
   </div>
+
+
+  <!-- Starting Storage Part -->
+  <div *ngIf="projectId === 'storage'">
+    <div class="fd-section__header">
+      <h1 class="fd-section__title">LuigiClient storageManager methods</h1>
+    </div>
+
+    <div class="fd-layout-panel luigi__margin-bottom--small">
+      <div class="fd-layout-panel__header">
+        <div class="fd-layout-panel__head">
+          <h3 class="fd-layout-panel__title">Browser Local Storage API</h3>
+        </div>
+      </div>
+
+      <div class="fd-layout-panel__body">
+        <div class="fd-form-item">
+          <label class="fd-form-label" data-testid="luigi-current-locale">
+            Storing an object using key/value
+          </label>
+
+          <p class="luigi__margin-bottom--small">
+            <app-code-snippet
+              data="storageManager().setItem(key, value)()"
+            ></app-code-snippet>
+          </p>
+
+          <label class="fd-form-label" data-testid="luigi-current-locale">
+            Load an object using a key
+          </label>
+
+          <p class="luigi__margin-bottom--small">
+            <app-code-snippet
+              data="storageManager().getItem(key)"
+            ></app-code-snippet>
+          </p>
+
+          <label class="fd-form-label" data-testid="luigi-current-locale">
+            Removing an object using a key
+          </label>
+
+          <p class="luigi__margin-bottom--small">
+            <app-code-snippet
+              data="storageManager().removeItem(key)"
+            ></app-code-snippet>
+          </p>
+
+          <label class="fd-form-label" data-testid="luigi-current-locale">
+            Clear storage
+          </label>
+
+          <p class="luigi__margin-bottom--small">
+            <app-code-snippet
+              data="storageManager().clear()"
+            ></app-code-snippet>
+          </p>
+
+          <label class="fd-form-label" data-testid="luigi-current-locale">
+            Check if an key is present in the storage
+          </label>
+
+          <p class="luigi__margin-bottom--small">
+            <app-code-snippet
+              data="storageManager().has()"
+            ></app-code-snippet>
+          </p>
+
+          <label class="fd-form-label" data-testid="luigi-current-locale">
+            Get all keys in the storage
+          </label>
+
+          <p class="luigi__margin-bottom--small">
+            <app-code-snippet
+              data="storageManager().getAllKeys()"
+            ></app-code-snippet>
+          </p>
+
+        </div>
+      </div>
+
+      <div class="fd-layout-panel__header">
+        <div class="fd-layout-panel__head">
+          <h3 class="fd-layout-panel__title">Demo time</h3>
+        </div>
+      </div>
+
+      <div class="fd-layout-panel__body">
+        <div class="fd-form-item">
+
+          <label class="fd-form-label" data-testid="luigi-current-locale">
+            Here below you can play with the API
+          </label>
+
+          <div class="fd-container fd-container--fluid">
+            <div class="fd-col--2">
+              <input
+                type="text"
+                class="fd-input fd-has-margin-none"
+                placeholder="Key"
+                [(ngModel)]="storageDemoKey"
+              />
+            </div>
+            <div class="fd-col--2">
+              <input
+                type="text"
+                class="fd-input fd-has-margin-none"
+                placeholder="Value"
+                [(ngModel)]="storageDemoValue"
+              />
+            </div>
+          </div>
+
+          <label class="fd-form-label" data-testid="luigi-current-locale">
+            Async methods
+          </label>
+
+          <div class="fd-container fd-container--fluid" style="padding-top: 5px;" *ngIf="!storageDemoOperation">
+            <div class="fd-col--2">
+              <button class="fd-button w100per" (click)="storage_setItem()">
+                setItem
+              </button>
+            </div>
+            <div class="fd-col--2">
+              <button class="fd-button w100per" (click)="storage_getItem()">
+                getItem
+              </button>
+            </div>
+            <div class="fd-col--2">
+              <button class="fd-button w100per" (click)="storage_removeItem()">
+                removeItem
+              </button>
+            </div>
+          </div>
+
+          <div class="fd-container fd-container--fluid" *ngIf="!storageDemoOperation">
+            <div class="fd-col--2">
+              <button class="fd-button w100per" (click)="storage_clear()">
+                clear
+              </button>
+            </div>
+            <div class="fd-col--2">
+              <button class="fd-button w100per" (click)="storage_has()">
+                has
+              </button>
+            </div>
+            <div class="fd-col--2">
+              <button class="fd-button w100per" (click)="storage_getAllKeys()">
+                getAllKeys
+              </button>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+  </div>
+
 </section>
 cc
 <app-modal
