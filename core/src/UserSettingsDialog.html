@@ -1,12 +1,12 @@
 <script>
     import {
-        afterUpdate,
         createEventDispatcher,
         onMount,
         onDestroy,
         beforeUpdate
     } from 'svelte';
     import UserSettingsEditor from './UserSettingsEditor.html';
+    import { CSS_BREAKPOINTS } from './utilities/constants';
     import { LuigiConfig } from './core-api';
     const dispatch = createEventDispatcher();
     export let schemaObj;
@@ -16,7 +16,18 @@
     let userSettingsSchema = {};
     let displayEditor = false;
     let previousUserSettings = {};
-    let leftNavCollapsed = true;
+
+    onMount(() => {
+        prepareLeftNavData(schemaObj);
+        openEditor([userSettingsCategory[0], userSettingsData[0][userSettingsCategory[0]]]);
+        LuigiConfig.readUserSettings().then(userSettingsFromStorage => {
+            previousUserSettings = JSON.parse(JSON.stringify(userSettingsFromStorage));
+            if (userSettingsFromStorage === null) {
+                return;
+            }
+            userSettings = userSettingsFromStorage;
+        });
+    });
 
     function prepareLeftNavData(schemaObj) {
         if (schemaObj) {
@@ -33,21 +44,6 @@
         prepareLeftNavData(schemaObj);
     });
 
-    afterUpdate(() => { });
-
-    onMount(() => {
-        prepareLeftNavData(schemaObj);
-        openEditor([userSettingsCategory[0], userSettingsData[0][userSettingsCategory[0]]]);
-        LuigiConfig.readUserSettings().then(userSettingsFromStorage => {
-            previousUserSettings = JSON.parse(JSON.stringify(userSettingsFromStorage));
-            if (userSettingsFromStorage === null) {
-                return;
-            }
-            userSettings = userSettingsFromStorage;
-        });
-    });
-
-    //openEditor
     function openEditor(category) {
         userSettingsSchema = category;
         displayEditor = true;
@@ -64,13 +60,12 @@
         });
     }
 
-    function burgerClickHandler() {
-        if (leftNavCollapsed) {
-            document.getElementsByClassName('fd-side-nav')[0].style.width = "100%";
-        } else {
-            document.getElementsByClassName('fd-side-nav')[0].style.width = "0";
-        }
-        leftNavCollapsed = !leftNavCollapsed;
+    function closeNavOnCategoryClickMobile() {
+        toggleNavMobile();
+    }
+
+    function toggleNavMobile() {
+        document.querySelector('.lui-usersettings-dialog').classList.toggle('usersettings-leftNavVisible');
     }
 
 </script>
@@ -82,44 +77,59 @@
     }
 
     .user-settings__body {
-        display: flex;
+        position: relative;
         padding-top: 0;
         padding-bottom: 0;
     }
 
     .user-settings__leftnav {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 200px;
         height: 100%;
         z-index: 1;
-
     }
 
     .fd-side-nav {
         height: 100%;
+        width: 100%;
     }
 
     .user-settings__content {
-        width: 100%;
+        position: absolute;
+        left: 201px;
+        top: 0;
         height: 100%;
+        right: 0;
         overflow-wrap: break-word;
         padding: 20px;
     }
 
-    .lui-burger {
+
+    .userSettings-lui-burger {
         margin-right: 16px;
         cursor: pointer;
         display: none;
     }
 
     @media (max-width: 600px) {
-        .lui-burger {
+        .userSettings-lui-burger {
             display: block;
             margin-left: 0px;
         }
 
-        .fd-side-nav {
+        :global(.usersettings-leftNavVisible) .user-settings__leftnav {
+            width: 200px;
+        }
+
+        .user-settings__content {
+            left: 0;
+        }
+
+        .user-settings__leftnav {
             width: 0;
             transition: 0.5s;
-            width: 0;
         }
 
         .fd-nested-list__title {
@@ -128,13 +138,13 @@
     }
 </style>
 
-<div class="fd-dialog fd-dialog--active">
+<div class="fd-dialog fd-dialog--active lui-usersettings-dialog">
     <div class="fd-dialog__content dialog-size">
         <div class="fd-dialog__header fd-bar fd-bar--header">
             <div class="fd-bar__left">
                 <div class="fd-bar__element">
-                    <button class="fd-shellbar__button fd-button sap-icon--menu2 lui-burger"
-                        on:click="{burgerClickHandler}" tabindex="0"></button>
+                    <button class="fd-shellbar__button fd-button sap-icon--menu2 userSettings-lui-burger"
+                        on:click="{toggleNavMobile}" tabindex="0"></button>
                 </div>
                 <div class="fd-bar__element">
                     <h3 class="fd-dialog__title">UserSettings</h3>

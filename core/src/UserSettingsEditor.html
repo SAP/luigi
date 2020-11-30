@@ -1,4 +1,4 @@
-<!-- <svelte:window on:click="{closeAllCombos}" on:blur="{closeAllCombos}"></svelte:window> -->
+<svelte:window on:click="{closeAllCombos}" on:blur="{closeAllCombos}"></svelte:window>
 <script>
     import { onMount, afterUpdate, beforeUpdate, createEventDispatcher } from 'svelte';
     export let userSettingsGroupSchema;
@@ -22,11 +22,8 @@
     }
 
     function closeAllCombos(self) {
-        //TODO Close if click on input
         document.querySelectorAll('.lui-userSettings-content .fd-popover__control').forEach(elem => {
-            if (self !== elem) {
-                setExpandedState(elem, false);
-            }
+            setExpandedState(elem, false);
         });
     }
 
@@ -48,32 +45,45 @@
 
     function updateComboBox(key, option) {
         userSettings[userSettingGroup][key] = option;
-        //updateSettingsObject();
     }
 
 </script>
+
+<style>
+    .lui-form-grid {
+        display: grid;
+        grid-template-columns: 1fr 2fr;
+    }
+
+    .lui-value-container {
+        grid-column: 2;
+    }
+
+    .lui-form-label {
+        grid-column: 1;
+        text-align: right;
+        padding-top: 4px;
+    }
+</style>
 <div class="lui-userSettings-content">
     <div class="fd-page">
         <div class="fd-page__content">
-            <div class="fd-container fd-form-layout-grid-container">
+            <div class="fd-container lui-form-grid">
                 {#each Object.entries(settingsSchema) as [key, schemaItem], i}
-                    <div class="fd-row">
+                    <div class="lui-form-label">
+                        <label class="fd-form-label" for="input-07">{schemaItem.label}:</label>
+                    </div>
+                    <div class="lui-value-container">
                         {#if schemaItem.type==='string'}
-                            <div class="fd-col fd-col-md--2 fd-col-lg--4">
-                                <label class="fd-form-label" for="input-07">{schemaItem.label}:</label>
-                            </div>
-                            <div class="fd-col fd-col-md--10 fd-col-lg--8">
                                 <input class="fd-input" type="text" placeholder="Field placeholder text" aria-label="Image label"
                                 bind:value="{userSettings[userSettingsGroupSchema[0]][key]}" disabled="{schemaItem.isEditable===undefined || schemaItem.isEditable?false:true}" on:input="{() => updateSettingsObject()}">
-                            </div>
                         {/if}
                         {#if schemaItem.type==='enum'}
                             <div>
                                 <div class="fd-form-item">
-                                    <label for="comboboxAsFormItem" class="fd-form-label">{schemaItem.label}</label>
                                     <div class="fd-popover">
                                         <div class="fd-popover__control" aria-expanded="false" aria-haspopup="true"
-                                            on:click|preventDefault="{()=>toggleOptions(event)}">
+                                            on:click|stopPropagation="{()=>toggleOptions(event)}">
                                             <div class="fd-input-group fd-input-group--control">
                                                 <input type="text" class="fd-input fd-input-group__input" placeholder="{userSettings[userSettingsGroupSchema[0]][key]}">
                                                 <span class="fd-input-group__addon fd-input-group__addon--button">
