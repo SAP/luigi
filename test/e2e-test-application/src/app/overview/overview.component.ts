@@ -43,6 +43,13 @@ export class OverviewComponent implements OnInit {
       text: 'sendCustomMessage()',
       description:
         'send a custom message that will execute some logic on the Luigi Core app if that app is properly configured for that'
+    },
+    {
+      clickHandler: () => {
+        this.linkManager().navigate('/projects/storage');
+      },
+      text: 'storageManager()',
+      description: 'API to store, load, remove item in Browser local storage'
     }
   ];
 

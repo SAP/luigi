@@ -32,6 +32,7 @@
     "mini-css-extract-plugin": "^0.8.0",
     "mkdirp": "^1.0.3",
     "mocha": "^7.1.1",
+    "mock-local-storage": "^1.1.15",
     "node-sass": "^4.14.1",
     "nyc": "^15.0.0",
     "oidc-client": "^1.5.2",
@@ -80,7 +81,7 @@
     },
     {
       "path": "./public-ie11/luigi-ie11.js",
-      "maxSize": "580 kB",
+      "maxSize": "590 kB",
       "compression": "none"
     },
     {
