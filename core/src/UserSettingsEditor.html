@@ -7,8 +7,10 @@
     let settingsSchema;
     let userSettingGroup;
     let displayOptions;
+    let title;
     beforeUpdate(() => {
         userSettingGroup = userSettingsGroupSchema[0];
+        title = userSettingsGroupSchema[1].label;
         settingsSchema = userSettingsGroupSchema[1].settings;
         if (!userSettings.hasOwnProperty(userSettingGroup)) {
             userSettings[userSettingGroup] = {};
@@ -30,7 +32,6 @@
     function toggleOptions(event) {
         const self = event.target.closest('.fd-popover__control');
         closeAllCombos(self);
-        console.log('toggle');
         const currentState = self.getAttribute('aria-expanded') === 'true';
         setExpandedState(self, !currentState);
     }
@@ -66,6 +67,9 @@
     }
 </style>
 <div class="lui-userSettings-content">
+
+    <h1>{title}</h1>
+
     <div class="fd-page">
         <div class="fd-page__content">
             <div class="fd-container lui-form-grid">

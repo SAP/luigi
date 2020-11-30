@@ -5,6 +5,7 @@
         onDestroy,
         beforeUpdate
     } from 'svelte';
+    import { NavigationHelpers } from './utilities/helpers';
     import UserSettingsEditor from './UserSettingsEditor.html';
     import { CSS_BREAKPOINTS } from './utilities/constants';
     import { LuigiConfig } from './core-api';
@@ -67,6 +68,9 @@
     function toggleNavMobile() {
         document.querySelector('.lui-usersettings-dialog').classList.toggle('usersettings-leftNavVisible');
     }
+    function hasOpenUIicon(node) {
+        return NavigationHelpers.isOpenUIiconName(node.icon);
+    }
 
 </script>
 
@@ -111,6 +115,52 @@
         margin-right: 16px;
         cursor: pointer;
         display: none;
+    }
+
+    .lui-usersettings-list-item-container {
+        height: 5rem;
+        display: flex;
+        -webkit-box-align: center;
+        align-items: center;
+        position: relative;
+        -webkit-box-flex: 1;
+        flex: 1 1 auto;
+        max-width: 100%;
+        padding: 0 1rem 0 1rem;
+    }
+
+    .lui-usersettings-list-item-info-container {
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        display: flex;
+        align-items: center;
+    }
+
+    .lui-usersettings-list-item-title-container {
+        display: flex;
+        flex-direction: column;
+        flex: auto;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    .lui-usersettings-list-item-title {
+        font-size: .875rem;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        flex: 1 1 auto;
+    }
+
+    .lui-usersettings-list-item-subtitle {
+        font-size: .5rem;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        flex: 1 1 auto;
+        padding-top: 0.875rem;
     }
 
     @media (max-width: 600px) {
@@ -166,12 +216,33 @@
                             <ul class="fd-nested-list">
                                 {#each Object.entries(userSettingsData) as [key,item], index}
                                     {#each Object.entries(item) as property}
-                                        <li class="fd-nested-list__item">
-                                            <a class="fd-nested-list__link" on:click="{() => openEditor(property)}">
+                                        <li class="fd-nested-list lui-usersettings-list-item-container">
+                                            <a class="lui-usersettings-list-item-info-container"  on:click="{() => openEditor(property)}">
+                                                {#if property[1].icon}
+                                                    {#if hasOpenUIicon(property[1])}
+                                                        <span class="fd-top-nav__icon sap-icon--{property[1].icon}"
+                                                    ></span>
+                                                    {:else}
+                                                        <img
+                                                        class="fd-top-nav__icon nav-icon"
+                                                        src="{property[1].icon}"
+                                                        alt="{property[1].altText ? property[1].altText : ''}"
+                                                        >
+                                                    {/if}
+                                                {/if}
+                                                <div class="lui-usersettings-list-item-title-container">
+                                                    <span class="lui-usersettings-list-item-title">{property[1].label}</span>
+                                                    <span class="lui-usersettings-list-item-subtitle">{property[1].sublabel}</span>
+                                                </div>
+                                            </a>
+                                            <!-- <a class="fd-nested-list__link_" on:click="{() => openEditor(property)}">
                                                 <span class="fd-nested-list__title">
                                                     {property[1].label}
                                                 </span>
-                                            </a>
+                                                <span class="fd-product-switch__subtitle_">
+                                                    {property[1].sublabel}
+                                                </span>
+                                            </a> -->
                                         </li>
                                     {/each}
                                 {/each}

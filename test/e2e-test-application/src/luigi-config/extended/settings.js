@@ -75,7 +75,7 @@ class Settings {
       userAccount: {
         label: 'User Account',
         sublabel: 'username',
-        icon: 'icon.jpg',
+        icon: 'settings',
         title: 'title',
         settings: {
           name: { type: 'string', label: 'Name', isEditable: true },
@@ -86,7 +86,7 @@ class Settings {
       language: {
         label: 'Language & Region',
         sublabel: 'EN | Time Format: 12h',
-        icon: false,
+        icon: 'settings',
         title: 'Language & Region',
         settings: {
           language: {
