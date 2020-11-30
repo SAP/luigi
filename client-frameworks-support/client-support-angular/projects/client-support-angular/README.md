@@ -25,7 +25,7 @@ Here the main features provided by the libraries:
 
 ### LuigiContextService
 You can inject this service inside your Angular items in order to:
-* Get the current Context (latest) that we received from Luigi Core
+* Get the current Context (latest) that received from Luigi Core
 * Provide an Observable<Context> where through subscribing, you can get any Context change     
     
 LuigiContextService is an abstract class, its implementation is in LuigiContextServiceImpl class.  
