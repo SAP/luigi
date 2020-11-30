@@ -29,9 +29,10 @@
       on:modalDismiss="{() => handleModalResult(false)}"
     ></ConfirmationModal>
   {/if}
-  {#if userSettings.displayed}
+  {#if userSettingsInternalObj.displayed}
   <UserSettingsDialog
-    on:close="{closeUserSettings}">
+    on:close="{closeUserSettings}"
+    schemaObj={userSettingsInternalObj.schema}>
   </UserSettingsDialog>
   {/if}
   <Backdrop disable="{disableBackdrop}">
@@ -201,7 +202,7 @@
   let resizeTabNavToggle = false;
   let thirdPartyCookiesCheck;
   let searchProvider;
-  let userSettings;
+  let userSettingsInternalObj;
   export let isSearchFieldVisible;
   export let inputElem;
   export let luigiCustomSearchRenderer__slot;
@@ -969,13 +970,17 @@
   };
 
   //Dialog Box
-  userSettings = {};
+  userSettingsInternalObj = {};
   export const openUserSettings = () => {
-    userSettings.displayed = true;
+    const userSettingsSchema = LuigiConfig.getConfigValue('settings.userSettings.userSettingGroups');
+    if (GenericHelpers.isObject(userSettingsSchema)) {
+      userSettingsInternalObj.schema = userSettingsSchema;
+    }
+    userSettingsInternalObj.displayed = true;
   }
 
   export const closeUserSettings = () => {
-    userSettings.displayed = false;
+    userSettingsInternalObj.displayed = false;
   }
 
   function init(node) {

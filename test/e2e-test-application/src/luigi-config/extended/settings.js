@@ -61,13 +61,16 @@ class Settings {
       label: 'My Settings',
       icon: 'settings'
     },
-    // functions to use a custom storage like sessionStorage
-    // storeUserSettings: (obj) => {
-    //   sessionStorage.setItem('test', JSON.stringify(obj));
-    // },
-    // readUserSettings: () => {
-    //   return JSON.parse(sessionStorage.getItem('test'));
-    // },
+    //functions to use a custom storage like sessionStorage
+    storeUserSettings: (obj, previous) => {
+      if (JSON.stringify(obj) !== JSON.stringify(previous)) {
+        alert('Are you sure');
+      }
+      sessionStorage.setItem('test', JSON.stringify(obj));
+    },
+    readUserSettings: () => {
+      return JSON.parse(sessionStorage.getItem('test'));
+    },
     userSettingGroups: {
       userAccount: {
         label: 'User Account',

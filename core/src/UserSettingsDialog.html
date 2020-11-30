@@ -9,28 +9,14 @@
     import UserSettingsEditor from './UserSettingsEditor.html';
     import { LuigiConfig } from './core-api';
     const dispatch = createEventDispatcher();
+    export let schemaObj;
     let userSettingsData = [];
     let userSettingsCategory = [];
     let userSettings = {}
     let userSettingsSchema = {};
     let displayEditor = false;
-
-    let mockUserSettings = {
-        userSettingGroups: {
-            userAccount: {
-                email: 'luigi@luigi.de',
-                server: 'luigi.server'
-            },
-            language: {
-                language: 'Italian',
-                date: 'XXX?',
-                time: '12 h'
-            },
-            privacy: {
-                policy: '??'
-            }
-        }
-    }
+    let previousUserSettings = {};
+    let leftNavCollapsed = true;
 
     function prepareLeftNavData(schemaObj) {
         if (schemaObj) {
@@ -44,20 +30,20 @@
     }
 
     beforeUpdate(() => {
-        const schemaObj = LuigiConfig.getConfigValue('settings.userSettings.userSettingGroups');
         prepareLeftNavData(schemaObj);
-
     });
 
     afterUpdate(() => { });
 
     onMount(() => {
+        prepareLeftNavData(schemaObj);
+        openEditor([userSettingsCategory[0], userSettingsData[0][userSettingsCategory[0]]]);
         LuigiConfig.readUserSettings().then(userSettingsFromStorage => {
+            previousUserSettings = JSON.parse(JSON.stringify(userSettingsFromStorage));
             if (userSettingsFromStorage === null) {
-                createObjectBasedOnUserSettingsSchema();
-            } else {
-                userSettings = userSettingsFromStorage;
+                return;
             }
+            userSettings = userSettingsFromStorage;
         });
     });
 
@@ -67,20 +53,24 @@
         displayEditor = true;
     }
 
-    function createObjectBasedOnUserSettingsSchema() {
-        //TODO createEmptyObject
-        userSettings = mockUserSettings.userSettingGroups;
-    }
-
     const updateSettingsObject = (event) => {
         userSettings = event.detail.userSettings;
     }
 
     function storeUserSettings() {
-        LuigiConfig.storeUserSettings(userSettings).then(() => {
+        LuigiConfig.storeUserSettings(userSettings, previousUserSettings).then(() => {
             dispatch('close');
             console.info('User settings stored');
         });
+    }
+
+    function burgerClickHandler() {
+        if (leftNavCollapsed) {
+            document.getElementsByClassName('fd-side-nav')[0].style.width = "100%";
+        } else {
+            document.getElementsByClassName('fd-side-nav')[0].style.width = "0";
+        }
+        leftNavCollapsed = !leftNavCollapsed;
     }
 
 </script>
@@ -92,20 +82,49 @@
     }
 
     .user-settings__body {
-        position: relative;
+        display: flex;
         padding-top: 0;
         padding-bottom: 0;
     }
 
     .user-settings__leftnav {
         height: 100%;
-        float: left;
+        z-index: 1;
+
+    }
+
+    .fd-side-nav {
+        height: 100%;
     }
 
     .user-settings__content {
         width: 100%;
         height: 100%;
         overflow-wrap: break-word;
+        padding: 20px;
+    }
+
+    .lui-burger {
+        margin-right: 16px;
+        cursor: pointer;
+        display: none;
+    }
+
+    @media (max-width: 600px) {
+        .lui-burger {
+            display: block;
+            margin-left: 0px;
+        }
+
+        .fd-side-nav {
+            width: 0;
+            transition: 0.5s;
+            width: 0;
+        }
+
+        .fd-nested-list__title {
+            padding-right: 0;
+        }
     }
 </style>
 
@@ -113,6 +132,10 @@
     <div class="fd-dialog__content dialog-size">
         <div class="fd-dialog__header fd-bar fd-bar--header">
             <div class="fd-bar__left">
+                <div class="fd-bar__element">
+                    <button class="fd-shellbar__button fd-button sap-icon--menu2 lui-burger"
+                        on:click="{burgerClickHandler}" tabindex="0"></button>
+                </div>
                 <div class="fd-bar__element">
                     <h3 class="fd-dialog__title">UserSettings</h3>
                 </div>
@@ -131,7 +154,6 @@
                     <div class="fd-side-nav__main-navigation">
                         <div class="lui-fd-side-nav-wrapper">
                             <ul class="fd-nested-list">
-                                <!-- {#each userSettingsCategory as category} -->
                                 {#each Object.entries(userSettingsData) as [key,item], index}
                                     {#each Object.entries(item) as property}
                                         <li class="fd-nested-list__item">

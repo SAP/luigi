@@ -269,6 +269,7 @@
 
   export function onUserSettingsClick() {
     LuigiUX.openUserSettings();
+    dispatch('toggleDropdownState');
   }
 
   export function logout() {

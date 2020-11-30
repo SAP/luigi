@@ -261,10 +261,10 @@ class LuigiConfig {
    * Luigi.storeUserSettings(userSettingsobject);
    * @since NEXTRELEASE
    */
-  async storeUserSettings(userSettingsObj) {
+  async storeUserSettings(userSettingsObj, previousUserSettingsObj) {
     const userSettings = await this.getConfigValueAsync('settings.userSettings');
     if (userSettings && GenericHelpers.isFunction(userSettings.storeUserSettings)) {
-      userSettings.storeUserSettings(userSettingsObj);
+      userSettings.storeUserSettings(userSettingsObj, previousUserSettingsObj);
     }
     else {
       localStorage.setItem(this.USER_SETTINGS_KEY, JSON.stringify(userSettingsObj));
