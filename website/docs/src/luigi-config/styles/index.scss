@@ -396,6 +396,10 @@ $side-nav-width-mobile: 260px;
   .sap-icon--github::before {
     content: "\61";
   }
+  
+  .fd-nested-list {
+    border-bottom: none;
+  }
 
   .fd-nested-list__item {
     padding: 10px 0;
