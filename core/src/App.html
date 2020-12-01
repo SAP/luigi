@@ -32,7 +32,7 @@
   {#if userSettingsInternalObj.displayed}
   <UserSettingsDialog
     on:close="{closeUserSettings}"
-    schemaObj={userSettingsInternalObj.schema}>
+    userSettingsData={userSettingsInternalObj.userSettingsData}>
   </UserSettingsDialog>
   {/if}
   <Backdrop disable="{disableBackdrop}">
@@ -974,9 +974,15 @@
   export const openUserSettings = () => {
     const userSettingsSchema = LuigiConfig.getConfigValue('settings.userSettings.userSettingGroups');
     if (GenericHelpers.isObject(userSettingsSchema)) {
-      userSettingsInternalObj.schema = userSettingsSchema;
+      const userSettingsData = [];
+      for (const item in userSettingsSchema) {
+        let innerObj = {};
+        innerObj[item] = userSettingsSchema[item];
+        userSettingsData.push(innerObj);
+      };
+      userSettingsInternalObj.userSettingsData = userSettingsData;
+      userSettingsInternalObj.displayed = true;
     }
-    userSettingsInternalObj.displayed = true;
   }
 
   export const closeUserSettings = () => {

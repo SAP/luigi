@@ -2,25 +2,19 @@
 <script>
     import { onMount, afterUpdate, beforeUpdate, createEventDispatcher } from 'svelte';
     export let userSettingsGroupSchema;
+    export let userSettingsGroupKey;
     export let userSettings;
     const dispatch = createEventDispatcher();
     let settingsSchema;
-    let userSettingGroup;
     let displayOptions;
-    let title;
     beforeUpdate(() => {
-        userSettingGroup = userSettingsGroupSchema[0];
-        title = userSettingsGroupSchema[1].label;
-        settingsSchema = userSettingsGroupSchema[1].settings;
-        if (!userSettings.hasOwnProperty(userSettingGroup)) {
-            userSettings[userSettingGroup] = {};
+        if (!userSettings.hasOwnProperty(userSettingsGroupSchema[0])) {
+            userSettings[userSettingsGroupSchema[0]] = {};
         }
     });
 
-    onMount(() => { });
-
     export function updateSettingsObject() {
-        //dispatch('updateSettingsObject', { userSettings })
+        dispatch('updateSettingsObject', { userSettings })
     }
 
     function closeAllCombos(self) {
@@ -45,7 +39,7 @@
     }
 
     function updateComboBox(key, option) {
-        userSettings[userSettingGroup][key] = option;
+        userSettings[userSettingsGroupSchema[0]][key] = option;
     }
 
 </script>
@@ -63,7 +57,7 @@
     .lui-form-label {
         grid-column: 1;
         text-align: right;
-        padding-top: 4px;
+        padding-top: 10px;
     }
 
     .lui-us-content-header-container {
@@ -91,12 +85,15 @@
 </style>
 <div class="lui-userSettings-content">
     <div class="lui-us-content-header-container">
-        <h1 class="lui-title lui-title--h1">{title?title:''}</h1>
+        <h1 class="lui-title lui-title--h1">
+            {userSettingsGroupSchema[1].title?userSettingsGroupSchema[1].title:''}
+        </h1>
     </div>
     <div class="fd-page">
         <div class="fd-page__content">
             <div class="fd-container lui-form-grid">
-                {#each Object.entries(settingsSchema) as [key, schemaItem], i}
+                {#each Object.entries(userSettingsGroupSchema[1].settings) as [key, schemaItem], i}
+
                     <div class="lui-form-label">
                         <label class="fd-form-label" for="input-07">{schemaItem.label}:</label>
                     </div>

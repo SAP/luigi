@@ -11,38 +11,28 @@
     import { LuigiConfig } from './core-api';
     const dispatch = createEventDispatcher();
     export let schemaObj;
-    let userSettingsData = [];
-    let userSettingsCategory = [];
-    let userSettings = {}
-    let userSettingsSchema = {};
+    export let userSettingsData;
+    let userSettingGroup;
+    let storedUserSettings = {};
+    let userSettingsGroupKey;
+    let userSettingsSchema;
     let displayEditor = false;
     let previousUserSettings = {};
 
     onMount(() => {
-        prepareLeftNavData(schemaObj);
-        openEditor([userSettingsCategory[0], userSettingsData[0][userSettingsCategory[0]]]);
+        let key;
+        for (let k in userSettingsData[0]) {
+            key = k;
+            break;
+        }
         LuigiConfig.readUserSettings().then(userSettingsFromStorage => {
             previousUserSettings = JSON.parse(JSON.stringify(userSettingsFromStorage));
             if (userSettingsFromStorage === null) {
                 return;
             }
-            userSettings = userSettingsFromStorage;
+            storedUserSettings = userSettingsFromStorage;
+            openEditor([key, userSettingsData[0][key]]);
         });
-    });
-
-    function prepareLeftNavData(schemaObj) {
-        if (schemaObj) {
-            for (const item in schemaObj) {
-                userSettingsCategory.push(item);
-                let innerObj = {};
-                innerObj[item] = schemaObj[item];
-                userSettingsData.push(innerObj);
-            }
-        }
-    }
-
-    beforeUpdate(() => {
-        prepareLeftNavData(schemaObj);
     });
 
     function openEditor(category, event) {
@@ -52,21 +42,22 @@
             });
             const link = event.target.closest('.fd-nested-list__link');
             link.classList.add("is-selected");
+            if (window.innerWidth < CSS_BREAKPOINTS.desktopMinWidth) {
+                closeNavOnCategoryClickMobile();
+            }
+        } else {
+            document.querySelectorAll('.lui-us-list .fd-nested-list__link')[0].classList.add("is-selected");
         }
         userSettingsSchema = category;
         displayEditor = true;
-        // if (window.innerWidth < CSS_BREAKPOINTS.desktopMinWidth) {
-        //     console.log('test');
-        //     closeNavOnCategoryClickMobile();
-        // }
     }
 
     const updateSettingsObject = (event) => {
-        userSettings = event.detail.userSettings;
+        storedUserSettings = event.detail.userSettings;
     }
 
     function storeUserSettings() {
-        LuigiConfig.storeUserSettings(userSettings, previousUserSettings).then(() => {
+        LuigiConfig.storeUserSettings(storedUserSettings, previousUserSettings).then(() => {
             dispatch('close');
             console.info('User settings stored');
         });
@@ -234,7 +225,7 @@
                     <div class="fd-side-nav__main-navigation">
                         <div class="lui-fd-side-nav-wrapper">
                             <ul class="fd-nested-list lui-us-list">
-                                {#each Object.entries(userSettingsData) as [key,item], index}
+                                {#each Object.entries(userSettingsData) as [key, item], index}
                                     {#each Object.entries(item) as property}
                                         <li class="fd-nested-list__item">
                                             <a class="fd-nested-list__link"  on:click|preventDefault="{() => openEditor(property, event)}">
@@ -266,7 +257,7 @@
             </div>
             <div class="user-settings__content">
                 {#if displayEditor}
-                    <UserSettingsEditor userSettings={userSettings} userSettingsGroupSchema={userSettingsSchema} on:updateSettingsObject="{updateSettingsObject}"></UserSettingsEditor>
+                    <UserSettingsEditor userSettings={storedUserSettings} userSettingsGroupSchema={userSettingsSchema} on:updateSettingsObject="{updateSettingsObject}"></UserSettingsEditor>
                 {/if}
             </div>
         </div>

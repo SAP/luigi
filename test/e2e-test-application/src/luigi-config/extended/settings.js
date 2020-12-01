@@ -76,7 +76,7 @@ class Settings {
         label: 'User Account',
         sublabel: 'username',
         icon: 'settings',
-        title: 'title',
+        title: 'User Account',
         settings: {
           name: { type: 'string', label: 'Name', isEditable: true },
           email: { type: 'string', label: 'E-Mail', isEditable: false },
@@ -103,7 +103,9 @@ class Settings {
         label: 'Privacy',
         title: 'Privacy',
         settings: {
-          policy: { type: 'string', label: 'Privacy policy has not been defined.' },
+          policy: {
+            type: 'string', label: 'Privacy policy has not been defined.'
+          },
           time: { type: 'enum', label: 'Time Format', options: ['12 h', '24 h'] }
         }
       }
