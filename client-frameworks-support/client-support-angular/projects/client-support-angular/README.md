@@ -73,7 +73,7 @@ To use LuigiAutoRoutingService, this library defines a new RouteReuseStrategy na
 If you need to define your own RouteReuseStrategy, you can extend LuigiRouteStrategy by overriding it next way:
 
  ```javascript
-export class YouRouteStrategy extends LuigiRouteStrategy {
+export class YourRouteStrategy extends LuigiRouteStrategy {
 
     retrieve(route: ActivatedRouteSnapshot): DetachedRouteHandle {
         super.retrieve(route);
