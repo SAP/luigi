@@ -37,7 +37,7 @@ export class YourContextService extends  LuigiContextServiceImpl {
 }
 
 ```
-Inside your module redefine the provider:
+Inside your module, redefine the provider:
  ```javascript
 providers: [
     {
