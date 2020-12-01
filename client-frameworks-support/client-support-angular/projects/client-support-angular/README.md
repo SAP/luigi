@@ -57,7 +57,7 @@ If the user navigates to different components or pages inside the micro frontend
 {path: 'luigi-client-support-preload',component: Sample2Component,data: { luigiRoute: '/home/sample2' }}
  ```
 
-with `data: { fromVirtualTreeRoot: true }`, once we load Sample1Component, we will call Luigi Client:
+With `data: { fromVirtualTreeRoot: true }`, once we load `Sample1Component`, we will call Luigi Client:
  ```javascript
   luigiClient.linkManager().fromVirtualTreeRoot().withoutSync().navigate({route url});
  ```
