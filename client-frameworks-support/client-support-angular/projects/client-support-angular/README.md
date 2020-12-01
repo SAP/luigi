@@ -9,7 +9,7 @@ If you want to know more about Luigi, please have a look at the [Luigi homepage]
 npm install @luigi-project/fundamental-ngx-sample-apps-master -s
 ```
 
-Once the library is imported and saved in your angular project, you will need to import the module LuigiAngularSupportModule:
+2. Once the library is imported and saved in your Angular project, you need to import the module `LuigiAngularSupportModule`:
 
 ```javascript
 imports: [
