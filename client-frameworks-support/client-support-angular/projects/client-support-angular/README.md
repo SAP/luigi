@@ -48,9 +48,9 @@ providers: [
  ```
     
 ### LuigiAutoRoutingService
-This service you cannot directly be used, but it will provide useful features how to synchronize your angular application with Luigi navigation.  
-It can happen that in your microfrontend, user can navigate through different components/pages.  
-With this feature we provide an easy way how to synchronize angular route with Luigi navigation; in angular route configuration, you can now add in data these attributes:
+This service cannot be referenced directly, but it will provide useful features for synchronizing your Angular application with Luigi navigation.
+
+If the user navigates to different components or pages inside the micro frontend, this feature allows you to detect it and synchronize the Angular route with your Luigi navigation. In the Angular route configuration, you can now add these attributes to the data:
 
  ```javascript
 {path: 'luigi-client-support-preload',component: Sample1Component,data: { fromVirtualTreeRoot: true }}
