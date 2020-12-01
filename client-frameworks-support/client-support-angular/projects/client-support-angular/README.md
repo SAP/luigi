@@ -4,7 +4,7 @@ This library provides several features to run your Angular application inside th
 If you want to know more about Luigi, please have a look at the [Luigi homepage](https://luigi-project.io/).
 
 ## How to use the library
-Using the library is pretty straightforward, you need to import the library in the package.json:
+1. Import the library in the `package.json`:
 ```javascript
 npm install @luigi-project/fundamental-ngx-sample-apps-master -s
 ```
