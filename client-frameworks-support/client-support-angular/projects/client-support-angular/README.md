@@ -97,7 +97,7 @@ LuigiReuseRouteStrategy uses this kind of configuration:
 {path: 'luigi-client-support-preload',component: Sample1Component,data: { reuse: true }}
  ```
 
-If you want to use LuigiReuseRouteStrategy (it is not enabled by default) you need to configure in your application:
+If you want to use **LuigiReuseRouteStrategy** (it is not enabled by default), you need to configure in your application:
  ```javascript
  {
       provide: RouteReuseStrategy,
