@@ -31,6 +31,8 @@ You can inject this service inside your Angular items in order to:
 **LuigiContextService** is an abstract class. Its implementation is in the **LuigiContextServiceImpl** class.  
 If you need to change or extend the implementation, you can easily create a new class extending **LuigiContextServiceImpl**:
 
+In this class, we added the possibility to "reuse" a component and not initialize it every time you load it (it could be useful to keep component state.)  
+
 ```javascript
 export class YourContextService extends  LuigiContextServiceImpl {
     ....    
