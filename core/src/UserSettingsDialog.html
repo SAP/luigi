@@ -225,25 +225,25 @@
                     <div class="fd-side-nav__main-navigation">
                         <div class="lui-fd-side-nav-wrapper">
                             <ul class="fd-nested-list lui-us-list">
-                                {#each Object.entries(userSettingsData) as [key, item], index}
-                                    {#each Object.entries(item) as property}
+                                {#each Object.entries(userSettingsData) as [key, userSettingsGroup], index}
+                                    {#each Object.entries(userSettingsGroup) as userSettingsGroupProperty}
                                         <li class="fd-nested-list__item">
-                                            <a class="fd-nested-list__link"  on:click|preventDefault="{() => openEditor(property, event)}">
+                                            <a class="fd-nested-list__link"  on:click|preventDefault="{() => openEditor(userSettingsGroupProperty, event)}">
                                                 <div class="us-lui-list-item-info-container">
-                                                    {#if property[1].icon}
-                                                        {#if hasOpenUIicon(property[1])}
-                                                            <span class="fd-nested-list__icon sap-icon--{property[1].icon}"></span>
+                                                    {#if userSettingsGroupProperty[1].icon}
+                                                        {#if hasOpenUIicon(userSettingsGroupProperty[1])}
+                                                            <span class="fd-nested-list__icon sap-icon--{userSettingsGroupProperty[1].icon}"></span>
                                                         {:else}
                                                         <span class="fd-nested-list__icon">
-                                                            <img src="{property[1].icon}" alt="{property[1].altText ? property[1].altText : ''}">
+                                                            <img src="{userSettingsGroupProperty[1].icon}" alt="{userSettingsGroupProperty[1].altText ? userSettingsGroupProperty[1].altText : ''}">
                                                         </span>
                                                         {/if}
                                                     {:else}
                                                     <span class="fd-nested-list__icon"></span>
                                                     {/if}
                                                     <div class="lui-usersettings-list-item-title-container">
-                                                        <span class="lui-usersettings-list-item-title">{property[1].label?property[1].label:''}</span>
-                                                        <span class="lui-usersettings-list-item-subtitle">{property[1].sublabel?property[1].sublabel:''}</span>
+                                                        <span class="lui-usersettings-list-item-title">{userSettingsGroupProperty[1].label?userSettingsGroupProperty[1].label:''}</span>
+                                                        <span class="lui-usersettings-list-item-subtitle">{userSettingsGroupProperty[1].sublabel?userSettingsGroupProperty[1].sublabel:''}</span>
                                                     </div>
                                                 </div>
                                             </a>
