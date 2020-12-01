@@ -598,6 +598,14 @@
     }
   };
 
+  export const setSearchInputPlaceHolder = placeholderString => {
+    if (checkSearchProvider(searchProvider)) {
+      if (inputElem) {
+        inputElem.placeholder = placeholderString;
+      }
+    }
+  };
+
   export const showSearchResult = arr => {
     if (checkSearchProvider(searchProvider)) {
       if (arr && arr.length > 0) {
@@ -1305,7 +1313,13 @@
       if ('storage' === e.data.msg) {
         let getValidMessageSource = IframeHelpers.getValidMessageSource(e);
         let microfrontendId = getValidMessageSource.luigi.id;
-        StorageHelper.process(microfrontendId, e.origin, e.data.data.id, e.data.data.operation, e.data.data.params);
+        StorageHelper.process(
+          microfrontendId,
+          e.origin,
+          e.data.data.id,
+          e.data.data.operation,
+          e.data.data.params
+        );
       }
     });
 

@@ -15,6 +15,11 @@ class GlobalSearch {
     // ) => {},
     // onSearchResultItemSelected: searchResultItem => {},
 
+    //    inputPlaceHolder: 'Digit here text to search....',
+    inputPlaceHolder: {
+      en: 'Digit here text to search....'
+    },
+
     onInput: () => {
       if (Luigi.globalSearch().getSearchString() === '') {
         this.searchResult = [];
