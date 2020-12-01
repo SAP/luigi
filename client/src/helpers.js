@@ -35,6 +35,13 @@ class Helpers {
     };
   }
 
+  convertStorageMessageToInternal(message) {
+    return {
+      msg: 'storage',
+      data: message
+    };
+  }
+
   /**
    * Registers a post message listener
    * Don't forget to remove the event listener at the end of
