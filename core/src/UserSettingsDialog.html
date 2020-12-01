@@ -3,23 +3,35 @@
         createEventDispatcher,
         onMount,
         onDestroy,
-        beforeUpdate
+        beforeUpdate,
+        getContext
     } from 'svelte';
     import { NavigationHelpers } from './utilities/helpers';
     import UserSettingsEditor from './UserSettingsEditor.html';
     import { CSS_BREAKPOINTS } from './utilities/constants';
     import { LuigiConfig } from './core-api';
-    const dispatch = createEventDispatcher();
+    import { TOP_NAV_DEFAULTS } from './utilities/luigi-config-defaults';
     export let schemaObj;
     export let userSettingsData;
+    const dispatch = createEventDispatcher();
     let userSettingGroup;
     let storedUserSettings = {};
     let userSettingsGroupKey;
     let userSettingsSchema;
     let displayEditor = false;
     let previousUserSettings = {};
+    let getTranslation = getContext('getTranslation');
+    let dialogHeader = TOP_NAV_DEFAULTS.userSettingsLocalizations.dialogHeader;
+    let saveBtn = TOP_NAV_DEFAULTS.userSettingsLocalizations.saveBtn;
+    let dismissBtn = TOP_NAV_DEFAULTS.userSettingsLocalizations.dismissBtn;
 
     onMount(() => {
+        const usLocalization = LuigiConfig.getConfigValue('settings.userSettings.userSettingsLocalization');
+        if (usLocalization) {
+            dialogHeader = usLocalization.dialogHeader ? usLocalization.dialogHeader : dialogHeader;
+            saveBtn = usLocalization.saveBtn ? usLocalization.saveBtn : saveBtn;
+            dismissBtn = usLocalization.dismissBtn ? usLocalization.dismissBtn : dismissBtn;
+        }
         let key;
         for (let k in userSettingsData[0]) {
             key = k;
@@ -28,9 +40,10 @@
         LuigiConfig.readUserSettings().then(userSettingsFromStorage => {
             previousUserSettings = JSON.parse(JSON.stringify(userSettingsFromStorage));
             if (userSettingsFromStorage === null) {
-                return;
+                storedUserSettings;
+            } else {
+                storedUserSettings = userSettingsFromStorage;
             }
-            storedUserSettings = userSettingsFromStorage;
             openEditor([key, userSettingsData[0][key]]);
         });
     });
@@ -73,7 +86,6 @@
     function hasOpenUIicon(node) {
         return NavigationHelpers.isOpenUIiconName(node.icon);
     }
-
 </script>
 
 <style>
@@ -94,7 +106,7 @@
         left: 0;
         width: 200px;
         height: 100%;
-        z-index: 1;
+        z-index: 2;
     }
 
     .fd-side-nav {
@@ -208,7 +220,7 @@
                         on:click="{toggleNavMobile}" tabindex="0"></button>
                 </div>
                 <div class="fd-bar__element">
-                    <h3 class="fd-dialog__title">UserSettings</h3>
+                    <h3 class="fd-dialog__title">{$getTranslation(dialogHeader)}</h3>
                 </div>
             </div>
             <div class="fd-bar__right">
@@ -242,8 +254,8 @@
                                                     <span class="fd-nested-list__icon"></span>
                                                     {/if}
                                                     <div class="lui-usersettings-list-item-title-container">
-                                                        <span class="lui-usersettings-list-item-title">{userSettingsGroupProperty[1].label?userSettingsGroupProperty[1].label:''}</span>
-                                                        <span class="lui-usersettings-list-item-subtitle">{userSettingsGroupProperty[1].sublabel?userSettingsGroupProperty[1].sublabel:''}</span>
+                                                        <span class="lui-usersettings-list-item-title">{$getTranslation(userSettingsGroupProperty[1].label?userSettingsGroupProperty[1].label:'')}</span>
+                                                        <span class="lui-usersettings-list-item-subtitle">{$getTranslation(userSettingsGroupProperty[1].sublabel?userSettingsGroupProperty[1].sublabel:'')}</span>
                                                     </div>
                                                 </div>
                                             </a>
@@ -265,11 +277,11 @@
             <div class="fd-bar__right">
                 <div class="fd-bar__element">
                     <button on:click="{() => storeUserSettings()}"
-                        class="fd-dialog__decisive-button fd-button fd-button--emphasized fd-button--compact confirm-button">Save</button>
+                        class="fd-dialog__decisive-button fd-button fd-button--emphasized fd-button--compact confirm-button">{$getTranslation(saveBtn)}</button>
                 </div>
                 <div class="fd-bar__element">
                     <button on:click="{() => dispatch('close')}"
-                        class="fd-dialog__decisive-button fd-button fd-button--transparent fd-button--compact">Dismiss</button>
+                        class="fd-dialog__decisive-button fd-button fd-button--transparent fd-button--compact">{$getTranslation(dismissBtn)}</button>
                 </div>
             </div>
         </footer>

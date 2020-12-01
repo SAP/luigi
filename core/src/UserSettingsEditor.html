@@ -1,12 +1,13 @@
 <svelte:window on:click="{closeAllCombos}" on:blur="{closeAllCombos}"></svelte:window>
 <script>
-    import { onMount, afterUpdate, beforeUpdate, createEventDispatcher } from 'svelte';
+    import { onMount, afterUpdate, beforeUpdate, createEventDispatcher, getContext } from 'svelte';
     export let userSettingsGroupSchema;
     export let userSettingsGroupKey;
     export let userSettings;
     const dispatch = createEventDispatcher();
     let settingsSchema;
     let displayOptions;
+    let getTranslation = getContext('getTranslation');
     beforeUpdate(() => {
         if (!userSettings.hasOwnProperty(userSettingsGroupSchema[0])) {
             userSettings[userSettingsGroupSchema[0]] = {};
@@ -47,7 +48,12 @@
 <style>
     .lui-form-grid {
         display: grid;
-        grid-template-columns: 1fr 2fr;
+        grid-template-columns: minmax(0, 1fr) 2fr;
+    }
+
+    .lui-userSettings-content {
+        overflow: auto;
+        height: 100%;
     }
 
     .lui-value-container {
@@ -58,6 +64,14 @@
         grid-column: 1;
         text-align: right;
         padding-top: 10px;
+        overflow: hidden;
+        min-width: 0;
+        word-break: break-word;
+        padding: 10px;
+    }
+
+    .fd-form-label {
+        white-space: pre-line;
     }
 
     .lui-us-content-header-container {
@@ -86,60 +100,57 @@
 <div class="lui-userSettings-content">
     <div class="lui-us-content-header-container">
         <h1 class="lui-title lui-title--h1">
-            {userSettingsGroupSchema[1].title?userSettingsGroupSchema[1].title:''}
+            {userSettingsGroupSchema[1].title?$getTranslation(userSettingsGroupSchema[1].title):''}
         </h1>
     </div>
-    <div class="fd-page">
-        <div class="fd-page__content">
-            <div class="fd-container lui-form-grid">
-                {#each Object.entries(userSettingsGroupSchema[1].settings) as [key, schemaItem], i}
-
-                    <div class="lui-form-label">
-                        <label class="fd-form-label" for="input-07">{schemaItem.label}:</label>
-                    </div>
-                    <div class="lui-value-container">
-                        {#if schemaItem.type==='string'}
-                                <input class="fd-input" type="text" placeholder="Field placeholder text" aria-label="Image label"
-                                bind:value="{userSettings[userSettingsGroupSchema[0]][key]}" disabled="{schemaItem.isEditable===undefined || schemaItem.isEditable?false:true}" on:input="{() => updateSettingsObject()}">
-                        {/if}
-                        {#if schemaItem.type==='enum'}
-                            <div>
-                                <div class="fd-form-item">
-                                    <div class="fd-popover">
-                                        <div class="fd-popover__control" aria-expanded="false" aria-haspopup="true"
-                                            on:click|stopPropagation="{()=>toggleOptions(event)}">
-                                            <div class="fd-input-group fd-input-group--control">
-                                                <input type="text" class="fd-input fd-input-group__input" placeholder="{userSettings[userSettingsGroupSchema[0]][key]}">
-                                                <span class="fd-input-group__addon fd-input-group__addon--button">
-                                                    <button
-                                                        aria-label="show/hide fruit options"
-                                                        aria-expanded="false"
-                                                        aria-haspopup="true"
-                                                        class="fd-input-group__button fd-button fd-button--transparent">
-                                                        <i class="sap-icon--navigation-down-arrow"></i></button>
-                                                </span>
-                                            </div>
+    <div class="fd-page__content">
+        <div class="fd-container lui-form-grid">
+            {#each Object.entries(userSettingsGroupSchema[1].settings) as [key, schemaItem], i}
+                <div class="lui-form-label">
+                    <label class="fd-form-label" >{$getTranslation(schemaItem.label)}:</label>
+                </div>
+                <div class="lui-value-container">
+                    {#if schemaItem.type==='string'}
+                            <input class="fd-input" type="text" placeholder="Field placeholder text" aria-label="Image label"
+                            bind:value="{userSettings[userSettingsGroupSchema[0]][key]}" disabled="{schemaItem.isEditable===undefined || schemaItem.isEditable?false:true}" on:input="{() => updateSettingsObject()}">
+                    {/if}
+                    {#if schemaItem.type==='enum'}
+                        <div>
+                            <div class="fd-form-item">
+                                <div class="fd-popover">
+                                    <div class="fd-popover__control" aria-expanded="false" aria-haspopup="true"
+                                        on:click|stopPropagation="{()=>toggleOptions(event)}">
+                                        <div class="fd-input-group fd-input-group--control">
+                                            <input type="text" class="fd-input fd-input-group__input" placeholder="{$getTranslation(userSettings[userSettingsGroupSchema[0]][key])}">
+                                            <span class="fd-input-group__addon fd-input-group__addon--button">
+                                                <button
+                                                    aria-label="show/hide fruit options"
+                                                    aria-expanded="false"
+                                                    aria-haspopup="true"
+                                                    class="fd-input-group__button fd-button fd-button--transparent">
+                                                    <i class="sap-icon--navigation-down-arrow"></i></button>
+                                            </span>
                                         </div>
-                                        <div class="fd-popover__body fd-popover__body--no-arrow fd-popover__body--dropdown fd-popover__body--dropdown-fill" aria-hidden="true">
-                                            <div class="fd-popover__wrapper docs-max-height">
-                                                <ul class="fd-list fd-list--dropdown" role="listbox">
-                                                    {#each schemaItem.options as option}
-                                                        <li role="option" tabindex="0" class="fd-list__item" on:click="{() => updateComboBox(key,option)}">
-                                                            <span class="fd-list__title">
-                                                                <span class="fd-list__bold">{option}</span>
-                                                            </span>
-                                                        </li>
-                                                    {/each}
-                                                </ul>
-                                            </div>
+                                    </div>
+                                    <div class="fd-popover__body fd-popover__body--no-arrow fd-popover__body--dropdown fd-popover__body--dropdown-fill" aria-hidden="true">
+                                        <div class="fd-popover__wrapper docs-max-height">
+                                            <ul class="fd-list fd-list--dropdown" role="listbox">
+                                                {#each schemaItem.options as option}
+                                                    <li role="option" tabindex="0" class="fd-list__item" on:click="{() => updateComboBox(key,option)}">
+                                                        <span class="fd-list__title">
+                                                            <span class="fd-list__bold">{$getTranslation(option)}</span>
+                                                        </span>
+                                                    </li>
+                                                {/each}
+                                            </ul>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                        {/if}
-                    </div>
-                {/each}
-            </div>
+                        </div>
+                    {/if}
+                </div>
+            {/each}
         </div>
     </div>
 </div>

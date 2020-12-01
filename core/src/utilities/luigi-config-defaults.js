@@ -6,6 +6,11 @@ export const TOP_NAV_DEFAULTS = {
   userSettingsProfileMenuEntry: {
     label: 'Settings',
     icon: 'settings'
+  },
+  userSettingsLocalizations: {
+    dialogHeader: 'User Settings',
+    saveBtn: 'Save',
+    dismissBtn: 'Dismiss'
   }
 };
 

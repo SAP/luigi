@@ -269,6 +269,7 @@ class LuigiConfig {
     else {
       localStorage.setItem(this.USER_SETTINGS_KEY, JSON.stringify(userSettingsObj));
     }
+    this.configChanged();
   }
 }
 

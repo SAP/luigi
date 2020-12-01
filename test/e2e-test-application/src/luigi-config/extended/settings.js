@@ -61,6 +61,11 @@ class Settings {
       label: 'My Settings',
       icon: 'settings'
     },
+    userSettingsLocalization: {
+      dialogHeader: 'My UserSettings',
+      saveBtn: 'SaveKaese',
+      dismissBtn: 'Abbreche'
+    },
     //functions to use a custom storage like sessionStorage
     storeUserSettings: (obj, previous) => {
       if (JSON.stringify(obj) !== JSON.stringify(previous)) {
@@ -86,7 +91,7 @@ class Settings {
       language: {
         label: 'Language & Region',
         sublabel: 'EN | Time Format: 12h',
-        icon: 'settings',
+        icon: '/assets/github-logo.png',
         title: 'Language & Region',
         settings: {
           language: {
