@@ -396,13 +396,16 @@ $side-nav-width-mobile: 260px;
   .sap-icon--github::before {
     content: "\61";
   }
-  
+
   .fd-nested-list {
     border-bottom: none;
   }
 
   .fd-nested-list__item {
     padding: 10px 0;
+    &:last-child {
+      border-bottom: none;
+    }
   }
 
   .fd-nested-list__group-header,
@@ -454,6 +457,12 @@ $side-nav-width-mobile: 260px;
       display: none;
     }
 
+  }
+  //disable the dotted line on deep-click
+  .fd-side-nav .fd-nested-list__link {
+    &:focus {
+      outline: none;
+    }
   }
 
   .lui-category {
@@ -544,13 +553,18 @@ $side-nav-width-mobile: 260px;
       }
     }
 
-    &.lui-simpleSlideInNav .fd-app__sidebar {
+    /*&.lui-simpleSlideInNav .fd-app__sidebar {
       left: -$side-nav-width-mobile;
-    }
+    }*/
 
     .lui-side-nav__footer{
       display: none;
     }
+
+    .algolia-autocomplete .ds-dropdown-menu {
+      box-shadow: none !important;
+    }
+
   }
 
   @media screen and (max-width: 1023px) {
