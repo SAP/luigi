@@ -92,7 +92,8 @@ and define the provider:
 
 We also provide an example of how to extend LuigiRouteStrategy in class LuigiReuseRouteStrategy.  
 In this class, we added the possibility to "reuse" a component without re-initializing it on load every time (it could be useful to keep the component state.)  
-LuigiReuseRouteStrategy uses this kind of configuration:
+
+**LuigiReuseRouteStrategy** can be configured in the following way:
  ```javascript
 {path: 'luigi-client-support-preload',component: Sample1Component,data: { reuse: true }}
  ```
