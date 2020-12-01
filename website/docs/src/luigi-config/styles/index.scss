@@ -396,7 +396,7 @@ $side-nav-width-mobile: 260px;
   .sap-icon--github::before {
     content: "\61";
   }
-  
+
   .fd-nested-list {
     border-bottom: none;
   }
@@ -560,6 +560,11 @@ $side-nav-width-mobile: 260px;
     .lui-side-nav__footer{
       display: none;
     }
+
+    .algolia-autocomplete .ds-dropdown-menu {
+      box-shadow: none !important;
+    }
+
   }
 
   @media screen and (max-width: 1023px) {
