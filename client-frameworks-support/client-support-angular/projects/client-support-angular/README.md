@@ -1,7 +1,7 @@
 # ClientSupportAngular
 
-This library provides several features to run your angular application inside Luigi Micro-Frontend framework.  
-If you want to know more about Luigi Framework, please have a look on [Luigi Homepage](https://luigi-project.io/).
+This library provides several features to run your Angular application inside the Luigi micro frontend framework.  
+If you want to know more about Luigi, please have a look at the [Luigi homepage](https://luigi-project.io/).
 
 ## How to use the library
 Using the library is pretty straightforward, you need to import the library in the package.json:
