@@ -48,20 +48,20 @@ providers: [
  ```
     
 ### LuigiAutoRoutingService
-This service cannot be referenced directly, but it will provide useful features for synchronizing your Angular application with Luigi navigation.
-
-If the user navigates to different components or pages inside the micro frontend, this feature allows you to detect it and synchronize the Angular route with your Luigi navigation. In the Angular route configuration, you can now add these attributes to the data:
+This service you cannot directly be used, but it will provide useful features how to synchronize your angular application with Luigi navigation.  
+It can happen that in your microfrontend, user can navigate through different components/pages.  
+With this feature we provide an easy way how to synchronize angular route with Luigi navigation; in angular route configuration, you can now add in data these attributes:
 
  ```javascript
 {path: 'luigi-client-support-preload',component: Sample1Component,data: { fromVirtualTreeRoot: true }}
 {path: 'luigi-client-support-preload',component: Sample2Component,data: { luigiRoute: '/home/sample2' }}
  ```
 
-With `data: { fromVirtualTreeRoot: true }`, once we load `Sample1Component`, we will call Luigi Client:
+with `data: { fromVirtualTreeRoot: true }`, once we load Sample1Component, we will call Luigi Client:
  ```javascript
   luigiClient.linkManager().fromVirtualTreeRoot().withoutSync().navigate({route url});
  ```
-With `data: { luigiRoute: '/home/sample2'' }`, the Luigi Client API is used in this way:
+with `data: { luigiRoute: '/home/sample2'' }`, uses luigiClient API in this way:
  ```javascript
   luigiClient.linkManager().withoutSync().navigate(data.luigiRoute);
  ```
@@ -69,11 +69,8 @@ More information about linkManager can be found [here](https://docs.luigi-projec
 
 
 ## LuigiRouteStrategy
-To use [LuigiAutoRoutingService](#LuigiAutoRoutingService), this library defines a new RouteReuseStrategy named **LuigiRouteStrategy**.  
-
-### Implementing a custom RouteReuseStrategy
-
-If you need to define your own RouteReuseStrategy, you can extend **LuigiRouteStrategy** by overriding it in the following way:
+To use LuigiAutoRoutingService, this library defines a new RouteReuseStrategy named LuigiRouteStrategy.  
+If you need to define your own RouteReuseStrategy, you can extend LuigiRouteStrategy by overriding it next way:
 
  ```javascript
 export class YourRouteStrategy extends LuigiRouteStrategy {
@@ -93,11 +90,8 @@ and define the provider:
  }
  ```
 
-
-### Example 
-
-We provide an example of how to extend **LuigiRouteStrategy** in the class **LuigiReuseRouteStrategy**.  
-In this class, we added the possibility to "reuse" a component without re-initializing it on load every time (it could be useful to keep the component state.)  
+We also provide an example of how to extend LuigiRouteStrategy in class LuigiReuseRouteStrategy.  
+In this class, we added the possibility to "reuse" a component and not initialize it every time you load it (it could be useful to keep component state.)  
 
 **LuigiReuseRouteStrategy** can be configured in the following way:
  ```javascript
