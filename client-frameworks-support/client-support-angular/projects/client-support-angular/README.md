@@ -19,17 +19,17 @@ imports: [
 ```
 
 ## Features
-Here the main features provided by the libraries:
-* LuigiContextService
-* LuigiAutoRoutingService
+These are the main features provided by the library:
+* [LuigiContextService](#LuigiContextService)
+* [LuigiAutoRoutingService](#LuigiAutoRoutingService) 
 
 ### LuigiContextService
 You can inject this service inside your Angular items in order to:
-* Get the current Context (latest) that received from Luigi Core
+* Get the current (latest) Context that we received from Luigi Core
 * Provide an Observable<Context> where through subscribing, you can get any Context change     
     
-LuigiContextService is an abstract class, its implementation is in LuigiContextServiceImpl class.  
-If you need to change/extend the implementation, you can easily create a new class via extending LuigiContextServiceImpl:
+**LuigiContextService** is an abstract class. Its implementation is in the **LuigiContextServiceImpl** class.  
+If you need to change or extend the implementation, you can easily create a new class extending **LuigiContextServiceImpl**:
 
 ```javascript
 export class YourContextService extends  LuigiContextServiceImpl {
