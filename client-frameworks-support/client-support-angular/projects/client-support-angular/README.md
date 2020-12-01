@@ -86,7 +86,7 @@ and define the provider:
  ```javascript
  {
       provide: RouteReuseStrategy,
-      useClass: YouRouteStrategy
+      useClass: YourRouteStrategy
  }
  ```
 
