@@ -45,9 +45,20 @@
         prepareLeftNavData(schemaObj);
     });
 
-    function openEditor(category) {
+    function openEditor(category, event) {
+        if (event) {
+            document.querySelectorAll('.lui-us-list .fd-nested-list__link').forEach(elem => {
+                elem.classList.remove('is-selected');
+            });
+            const link = event.target.closest('.fd-nested-list__link');
+            link.classList.add("is-selected");
+        }
         userSettingsSchema = category;
         displayEditor = true;
+        // if (window.innerWidth < CSS_BREAKPOINTS.desktopMinWidth) {
+        //     console.log('test');
+        //     closeNavOnCategoryClickMobile();
+        // }
     }
 
     const updateSettingsObject = (event) => {
@@ -98,6 +109,7 @@
     .fd-side-nav {
         height: 100%;
         width: 100%;
+        overflow-y: scroll;
     }
 
     .user-settings__content {
@@ -117,8 +129,7 @@
         display: none;
     }
 
-    .lui-usersettings-list-item-container {
-        height: 5rem;
+    .fd-nested-list__item {
         display: flex;
         -webkit-box-align: center;
         align-items: center;
@@ -126,10 +137,18 @@
         -webkit-box-flex: 1;
         flex: 1 1 auto;
         max-width: 100%;
-        padding: 0 1rem 0 1rem;
     }
 
-    .lui-usersettings-list-item-info-container {
+    .fd-nested-list__link {
+        height: 5rem;
+    }
+
+    .fd-nested-list__icon img {
+        max-width: 18px;
+        max-height: 18px;
+    }
+
+    .us-lui-list-item-info-container {
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
@@ -155,7 +174,8 @@
     }
 
     .lui-usersettings-list-item-subtitle {
-        font-size: .5rem;
+        font-size: .875rem;
+        color: #6a6d70;
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
@@ -213,36 +233,29 @@
                 <div class="fd-side-nav">
                     <div class="fd-side-nav__main-navigation">
                         <div class="lui-fd-side-nav-wrapper">
-                            <ul class="fd-nested-list">
+                            <ul class="fd-nested-list lui-us-list">
                                 {#each Object.entries(userSettingsData) as [key,item], index}
                                     {#each Object.entries(item) as property}
-                                        <li class="fd-nested-list lui-usersettings-list-item-container">
-                                            <a class="lui-usersettings-list-item-info-container"  on:click="{() => openEditor(property)}">
-                                                {#if property[1].icon}
-                                                    {#if hasOpenUIicon(property[1])}
-                                                        <span class="fd-top-nav__icon sap-icon--{property[1].icon}"
-                                                    ></span>
+                                        <li class="fd-nested-list__item">
+                                            <a class="fd-nested-list__link"  on:click|preventDefault="{() => openEditor(property, event)}">
+                                                <div class="us-lui-list-item-info-container">
+                                                    {#if property[1].icon}
+                                                        {#if hasOpenUIicon(property[1])}
+                                                            <span class="fd-nested-list__icon sap-icon--{property[1].icon}"></span>
+                                                        {:else}
+                                                        <span class="fd-nested-list__icon">
+                                                            <img src="{property[1].icon}" alt="{property[1].altText ? property[1].altText : ''}">
+                                                        </span>
+                                                        {/if}
                                                     {:else}
-                                                        <img
-                                                        class="fd-top-nav__icon nav-icon"
-                                                        src="{property[1].icon}"
-                                                        alt="{property[1].altText ? property[1].altText : ''}"
-                                                        >
+                                                    <span class="fd-nested-list__icon"></span>
                                                     {/if}
-                                                {/if}
-                                                <div class="lui-usersettings-list-item-title-container">
-                                                    <span class="lui-usersettings-list-item-title">{property[1].label}</span>
-                                                    <span class="lui-usersettings-list-item-subtitle">{property[1].sublabel}</span>
+                                                    <div class="lui-usersettings-list-item-title-container">
+                                                        <span class="lui-usersettings-list-item-title">{property[1].label?property[1].label:''}</span>
+                                                        <span class="lui-usersettings-list-item-subtitle">{property[1].sublabel?property[1].sublabel:''}</span>
+                                                    </div>
                                                 </div>
                                             </a>
-                                            <!-- <a class="fd-nested-list__link_" on:click="{() => openEditor(property)}">
-                                                <span class="fd-nested-list__title">
-                                                    {property[1].label}
-                                                </span>
-                                                <span class="fd-product-switch__subtitle_">
-                                                    {property[1].sublabel}
-                                                </span>
-                                            </a> -->
                                         </li>
                                     {/each}
                                 {/each}

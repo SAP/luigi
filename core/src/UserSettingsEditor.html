@@ -65,11 +65,34 @@
         text-align: right;
         padding-top: 4px;
     }
+
+    .lui-us-content-header-container {
+        width: 100%;
+        padding: 1.5rem 2rem;
+
+    }
+
+    .lui-title--h1 {
+        font-size: 2.25rem;
+        font-size: var(--sapFontHeader1Size, 2.25rem);
+    }
+
+    .lui-title {
+        line-height: var(--sapContent_LineHeight, 1.4);
+        font-family: var(--sapFontFamily, "72", "72full", Arial, Helvetica, sans-serif);
+        font-weight: 400;
+        -webkit-font-smoothing: antialiased;
+        box-sizing: border-box;
+        padding: 0;
+        margin: 0;
+        border: 0;
+        color: var(--sapTextColor, #32363a);
+    }
 </style>
 <div class="lui-userSettings-content">
-
-    <h1>{title}</h1>
-
+    <div class="lui-us-content-header-container">
+        <h1 class="lui-title lui-title--h1">{title?title:''}</h1>
+    </div>
     <div class="fd-page">
         <div class="fd-page__content">
             <div class="fd-container lui-form-grid">
