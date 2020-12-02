@@ -15,9 +15,20 @@ class GlobalSearch {
     // ) => {},
     // onSearchResultItemSelected: searchResultItem => {},
 
-    //    inputPlaceHolder: 'Digit here text to search....',
+    // inputPlaceHolder: 'Digit here text to search....',
+    // inputPlaceHolder: () => 'Digit here text to search....',
+
     inputPlaceHolder: {
       en: 'Digit here text to search....'
+    },
+
+    toggleSearch: (inputElem, fieldVisible) => {
+      // Luigi.showAlert({
+      //   text: `In toggleSearch: element visible=${fieldVisible}`,
+      //   type: 'info',
+      //   closeAfter: 1500
+      // });
+      inputElem.setAttribute('data-toggleSearch', fieldVisible?'open':'close');
     },
 
     onInput: () => {

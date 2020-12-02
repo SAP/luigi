@@ -293,6 +293,11 @@
       inputElem,
       luigiCustomSearchRenderer__slot
     });
+
+    if (GenericHelpers.isFunction(search.searchProvider.toggleSearch)) {
+      let fieldVisible= !!isSearchFieldVisible?!isSearchFieldVisible: true;
+      return search.searchProvider.toggleSearch(inputElem, fieldVisible);
+    }
   }
 </script>
 <style type="text/scss">
