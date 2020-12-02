@@ -1,9 +1,12 @@
-<svelte:window on:keydown="{handleKeydown}" />
-<div class="{(isModal || (isDrawer && settings.backdrop))?'fd-dialog fd-dialog--active':'drawer-dialog'}"
-  style="{isModal?'z-index:1001':''}">
+<svelte:window on:keydown="{handleKeydown}"/>
+<div
+  class="{(isModal || (isDrawer && settings.backdrop))?'fd-dialog fd-dialog--active':'drawer-dialog'}"
+  style="{isModal?'z-index:1001':''}"
+>
   <div
     class="fd-dialog__content {isDrawer? (settings.backdrop?'drawer drawer-dialog__content drawer__backdrop':'drawer drawer-dialog__content'):'lui-modal-mf'}"
-    data-testid="modal-mf">
+    data-testid="modal-mf"
+  >
     {#if isModal || (isDrawer && settings.header)}
     <div class="fd-dialog__header fd-bar fd-bar--header">
       <Backdrop on:stateChanged="{backdropStateChanged}"></Backdrop>
@@ -129,7 +132,7 @@
       if (nodeObject.webcomponent) {
         //"Workaround" because we need a webcomponent client api to hide/show the loadingIndicator
         showLoadingIndicator = false;
-        setModalSize();
+        await setModalSize();
         WebComponentService.renderWebComponent(
           nodeObject.viewUrl,
           document.querySelector('.iframeModalCtn'),
@@ -158,7 +161,7 @@
     }
   };
 
-  const setModalSize = () => {
+  const setModalSize = async () => {
     const elem = document.getElementsByClassName('lui-modal-mf');
     let modalSize = '80%';
     if (settings.size) {
@@ -168,19 +171,17 @@
         modalSize = '60%';
       } else if (settings.size === 's') {
         modalSize = '40%';
-      };
+      }
     }
     elem[0].setAttribute('style', `width:${modalSize};height:${modalSize}`);
-  }
-
+  };
 
   const createIframeModal = async (viewUrl, componentData) => {
     if (isDrawer) {
       await setDrawerSize();
     } else {
-      setModalSize();
+      await setModalSize();
     }
-
     if (viewUrl) {
       viewUrl = RoutingHelpers.substituteViewUrl(viewUrl, componentData);
     }
@@ -247,15 +248,20 @@
     }
 
     if ('luigi.close-modal' === e.data.msg) {
-      dispatch('close', { 'type': 'modal' });
+      dispatch('close', { type: 'modal' });
     }
   };
 
-  const backdropStateChanged = (event) => {
-    if (event && event.detail && event.detail.backdropActive && event.detail.drawer) {
+  const backdropStateChanged = event => {
+    if (
+      event &&
+      event.detail &&
+      event.detail.backdropActive &&
+      event.detail.drawer
+    ) {
       //renderBackdrop = false;
     }
-  }
+  };
 
   onMount(() => {
     EventListenerHelpers.addEventListener('message', onMessage);
@@ -276,7 +282,7 @@
 
 <style type="text/scss">
   @import 'styles/variables';
-  .drawer-dialog{
+  .drawer-dialog {
     position: absolute;
     top: $topNavHeight;
     bottom: 0;
@@ -286,7 +292,7 @@
   }
 
   .drawer {
-    bottom:0;
+    bottom: 0;
     width: 25vw;
     overflow-y: auto;
     left: auto;
@@ -294,8 +300,8 @@
     height: 100%;
   }
 
-  .drawer__backdrop{
-    top:$topNavHeight;
+  .drawer__backdrop {
+    top: $topNavHeight;
   }
 
   .iframeModalCtn {
@@ -329,21 +335,21 @@
     height: 100%;
   }
 
-  .drawer-dialog__content{
+  .drawer-dialog__content {
     max-width: none;
     max-height: none;
     min-width: 0;
   }
 
-  .drawer-dialog--active{
-    display:block;
+  .drawer-dialog--active {
+    display: block;
     background-color: transparent;
   }
 
   @media (max-width: 599px) {
     .drawer-dialog__content:not(.fd-dialog__content--mobile) {
-        max-width: none;
-        min-width: 50vw;
+      max-width: none;
+      min-width: 50vw;
     }
   }
 

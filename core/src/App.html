@@ -926,7 +926,7 @@
     modalWCData = event.detail.modalWCData;
   };
 
-  const closeModal = (event) => {
+  const closeModal = event => {
     if (modalIframe) {
       getUnsavedChangesModalPromise(modalIframe.contentWindow).then(() => {
         resetMicrofrontendModalData();
@@ -1327,7 +1327,13 @@
       if ('storage' === e.data.msg) {
         let getValidMessageSource = IframeHelpers.getValidMessageSource(e);
         let microfrontendId = getValidMessageSource.luigi.id;
-        StorageHelper.process(microfrontendId, e.origin, e.data.data.id, e.data.data.operation, e.data.data.params);
+        StorageHelper.process(
+          microfrontendId,
+          e.origin,
+          e.data.data.id,
+          e.data.data.operation,
+          e.data.data.params
+        );
       }
     });
 

@@ -84,10 +84,8 @@ class LuigiClient {
   /**
    * @private
    */
-  storageManager(){
+  storageManager() {
     return storageManager;
   }
-
-
 }
 export default LuigiClient = new LuigiClient();
