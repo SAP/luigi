@@ -6,7 +6,7 @@ If you want to know more about Luigi, please have a look at the [Luigi homepage]
 ## How to use the library
 1. Import the library in the `package.json`:
 ```javascript
-npm install @luigi-project/fundamental-ngx-sample-apps-master -s
+npm install @luigi-project/client-support-angular -s
 ```
 
 2. Once the library is imported and saved in your Angular project, you need to import the module `LuigiAngularSupportModule`:
