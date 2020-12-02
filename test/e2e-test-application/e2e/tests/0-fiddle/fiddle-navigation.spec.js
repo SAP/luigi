@@ -610,7 +610,7 @@ describe('Fiddle', () => {
       cy.window().then(win => {
         win.Luigi.ux().openUserSettings();
       });
-      cy.reload().wait(1000);
+      cy.wait(1000);
       cy.get('[data-testid="lui-us-header"]').should('be.visible');
       cy.get('[data-testid="lui-us-header"]').contains('User Settings');
 
