@@ -6,8 +6,7 @@ export const MICROFRONTEND_TYPES = [
   { type: 'main', selector: '.iframeContainer iframe' },
   { type: 'split-view', selector: '.iframeSplitViewCnt iframe' },
   { type: 'modal', selector: '.iframeModalCtn._modal iframe' },
-  { type: 'drawer', selector: '.iframeModalCtn._drawer iframe' },
-  { type: 'user-settings', selector: '.iframeDialogCtn iframe' },
+  { type: 'drawer', selector: '.iframeModalCtn._drawer iframe' }
 ];
 
 export const CUSTOM_LUIGI_CONTAINER = {
