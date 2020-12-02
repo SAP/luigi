@@ -378,7 +378,7 @@ describe('Fiddle', () => {
         visitLoggedInWithAuthConfig('/', newConfig);
         cy.get('[data-testid="luigi-topnav-profile"] button').click();
         cy.get('[data-testid="settings-link"]').should('exist');
-        cy.get('[data-testid="settings-link"]').contains('My UserSettings')
+        cy.get('[data-testid="settings-link"]').contains('My UserSettings');
       });
       it('User settings in profile menu with default label', () => {
         newConfig.settings = {
@@ -566,7 +566,6 @@ describe('Fiddle', () => {
   });
   describe('User settings dialog', () => {
     let newConfig;
-
     beforeEach(() => {
       newConfig = cloneDeep(fiddleConfig);
       newConfig.settings.userSettings = {
@@ -600,17 +599,13 @@ describe('Fiddle', () => {
           }
         },
       };
-      cy.window().then(win => {
-        win.Luigi.configChanged('settings');
-      });
-      cy.visitWithFiddleConfig('/', newConfig);
     });
     it('User settings dialog', () => {
       cy.visitWithFiddleConfig('/', newConfig);
+      cy.wait(1000);
       cy.window().then(win => {
         win.Luigi.ux().openUserSettings();
       });
-      cy.wait(1000);
       cy.get('[data-testid="lui-us-header"]').should('be.visible');
       cy.get('[data-testid="lui-us-header"]').contains('User Settings');
 
