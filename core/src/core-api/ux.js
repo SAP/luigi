@@ -140,6 +140,7 @@ class LuigiUX {
 
   /**
    * Open user settings dialog
+   * @memberof UX
    * @since NEXTRELEASE
    */
   openUserSettings() {
@@ -148,6 +149,7 @@ class LuigiUX {
 
   /**
    * Close user settings dialog
+   * @memberof UX
    * @since NEXTRELEASE
    */
   closeUserSettings() {
