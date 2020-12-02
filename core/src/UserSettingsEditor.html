@@ -111,7 +111,7 @@
                 </div>
                 <div class="lui-value-container">
                     {#if schemaItem.type==='string'}
-                            <input class="fd-input" type="text" placeholder="Field placeholder text" aria-label="Image label"
+                            <input class="fd-input" type="text" placeholder="Field placeholder text" aria-label="Image label" data-testid="lui-us-input{i}"
                             bind:value="{userSettings[userSettingsGroupSchema[0]][key]}" disabled="{schemaItem.isEditable===undefined || schemaItem.isEditable?false:true}" on:input="{() => updateSettingsObject()}">
                     {/if}
                     {#if schemaItem.type==='enum'}
@@ -121,7 +121,7 @@
                                     <div class="fd-popover__control" aria-expanded="false" aria-haspopup="true"
                                         on:click|stopPropagation="{()=>toggleOptions(event)}">
                                         <div class="fd-input-group fd-input-group--control">
-                                            <input type="text" class="fd-input fd-input-group__input" placeholder="{$getTranslation(userSettings[userSettingsGroupSchema[0]][key])}">
+                                            <input type="text" class="fd-input fd-input-group__input" placeholder="{$getTranslation(userSettings[userSettingsGroupSchema[0]][key])}" data-testid="lui-us-input{i}">
                                             <span class="fd-input-group__addon fd-input-group__addon--button">
                                                 <button
                                                     aria-label="show/hide fruit options"
@@ -135,8 +135,8 @@
                                     <div class="fd-popover__body fd-popover__body--no-arrow fd-popover__body--dropdown fd-popover__body--dropdown-fill" aria-hidden="true">
                                         <div class="fd-popover__wrapper docs-max-height">
                                             <ul class="fd-list fd-list--dropdown" role="listbox">
-                                                {#each schemaItem.options as option}
-                                                    <li role="option" tabindex="0" class="fd-list__item" on:click="{() => updateComboBox(key,option)}">
+                                                {#each schemaItem.options as option, optionIndex}
+                                                    <li role="option" tabindex="0" class="fd-list__item" data-testid="lui-us-option{i}_{optionIndex}" on:click="{() => updateComboBox(key,option)}">
                                                         <span class="fd-list__title">
                                                             <span class="fd-list__bold">{$getTranslation(option)}</span>
                                                         </span>

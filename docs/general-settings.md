@@ -113,3 +113,14 @@ There are two ways to check whether the user's browser supports third-party cook
   * `thirdPartyCookieErrorHandling` is a function where you could call an alert like `Luigi.ux().showAlert({})`.
   * **thirdPartyCookieScriptLocation** is the URL to the page containing third-party cookies support check.
 To detect whether the user's browser supports the mechanism, use the script in the [`third-party-cookies`](https://github.com/SAP/luigi/tree/master/core/third-party-cookies) catalog. Deploy this file on a domain different from your main application's and set `thirdPartyCookieScriptLocation` to the `init.html` file. During initialization, Luigi detects cookies support and produces an alert if cookies are disabled in the user's browser.
+
+### User settings
+
+* **userSettingsProfileMenuEntry.label** defines the profile navigation entry. By default it is `Settings`.
+* **userSettingsProfileMenuEntry.icon** defines the profile navigation entry icon. By default it is SAP icon `settings`.
+
+* **userSettingsDialog.dialogHeader** defines user settings dialog header. By default it is `User Settings`.
+* **userSettingsDialog.saveBtn** defines user settings dialog save button. By default it is `Save`.
+* **userSettingsDialog.dismissBtn** defines user settings dialog dismiss button. By default it is `Dismiss`.
+
+<!-- document the schema-->

@@ -61,7 +61,7 @@ class Settings {
       label: 'My Settings',
       icon: 'settings'
     },
-    userSettingsLocalization: {
+    userSettingsDialog: {
       dialogHeader: 'My UserSettings',
       saveBtn: 'SaveKaese',
       dismissBtn: 'Abbreche'

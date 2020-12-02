@@ -257,8 +257,9 @@ class LuigiConfig {
    * By default, the user settings will be written from the **localStorage**
    * @memberof Configuration
    * @param {Object} userSettingsObj to store in the storage.
+   * @param {Object} previousUserSettingsObj the previous object from storage.
    * @example
-   * Luigi.storeUserSettings(userSettingsobject);
+   * Luigi.storeUserSettings(userSettingsobject, previousUserSettingsObj);
    * @since NEXTRELEASE
    */
   async storeUserSettings(userSettingsObj, previousUserSettingsObj) {

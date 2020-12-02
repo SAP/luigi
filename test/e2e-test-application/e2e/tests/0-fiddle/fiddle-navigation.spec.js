@@ -564,4 +564,65 @@ describe('Fiddle', () => {
       );
     });
   });
+  describe('User settings dialog', () => {
+    let newConfig;
+
+    beforeEach(() => {
+      newConfig = cloneDeep(fiddleConfig);
+      newConfig.settings.userSettings = {
+        userSettingGroups: {
+          userAccount: {
+            label: 'User Account',
+            sublabel: 'username',
+            icon: 'settings',
+            title: 'User Account',
+            settings: {
+              name: { type: 'string', label: 'Name', isEditable: true },
+              email: { type: 'string', label: 'E-Mail', isEditable: false },
+              server: { type: 'string', label: 'Server', isEditable: false }
+            }
+          },
+          language: {
+            label: 'Language & Region',
+            sublabel: 'EN | Time Format: 12h',
+            icon: '/assets/github-logo.png',
+            title: 'Language & Region',
+            settings: {
+              language: {
+                type: 'enum',
+                label: 'Language and Region',
+                options: ['German', 'English', 'Spanish', 'French'],
+                description: 'After you save your settings, the browser will refresh for the new language to take effect.'
+              },
+              date: { type: 'string', label: 'Date Format' },
+              time: { type: 'enum', label: 'Time Format', options: ['12 h', '24 h'] }
+            }
+          }
+        },
+      };
+      cy.window().then(win => {
+        win.Luigi.configChanged('settings');
+      });
+      cy.visitWithFiddleConfig('/', newConfig);
+    });
+    it('User settings in profile menu with custom label', () => {
+      cy.visitWithFiddleConfig('/', newConfig);
+      cy.window().then(win => {
+        win.Luigi.ux().openUserSettings();
+      });
+      cy.get('[data-testid="lui-us-header"]').should('be.visible');
+      cy.get('[data-testid="lui-us-header"]').contains('User Settings');
+
+      cy.get('.user-settings__leftnav')
+        .contains('Language & Region')
+        .click();
+
+      cy.get('[data-testid="lui-us-input0"]').click();
+      cy.get('[data-testid="lui-us-option0_0"]').click();
+      cy.get('[data-testid="lui-us-input0"]').invoke('attr', 'placeholder').should('contain', 'German');
+
+      cy.get('[data-testid="lui-us-dismissBtn"]').click();
+      cy.get('[data-testid="lui-us-header"]').should('not.be.visible');
+    });
+  });
 });

@@ -7,7 +7,7 @@ export const TOP_NAV_DEFAULTS = {
     label: 'Settings',
     icon: 'settings'
   },
-  userSettingsLocalizations: {
+  userSettingsDialog: {
     dialogHeader: 'User Settings',
     saveBtn: 'Save',
     dismissBtn: 'Dismiss'
