@@ -605,7 +605,7 @@ describe('Fiddle', () => {
       });
       cy.visitWithFiddleConfig('/', newConfig);
     });
-    it('User settings in profile menu with custom label', () => {
+    it('User settings dialog', () => {
       cy.visitWithFiddleConfig('/', newConfig);
       cy.window().then(win => {
         win.Luigi.ux().openUserSettings();
