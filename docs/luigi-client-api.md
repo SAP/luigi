@@ -293,6 +293,18 @@ LuigiClient.sendCustomMessage({id: 'environment.created', data: environmentDataO
 
 -   **since**: 0.6.2
 
+#### getUserSettings
+
+Returns the currently user settings based on selected node.
+
+##### Examples
+
+```javascript
+const userSettings = LuigiClient.getUserSettings()
+```
+
+Returns **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** current user settings
+
 ### Lifecycle~initListenerCallback
 
 Callback of the addInitListener

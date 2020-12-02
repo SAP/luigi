@@ -61,6 +61,9 @@ class LuigiClient {
   setTargetOrigin(origin) {
     return lifecycleManager.setTargetOrigin(origin);
   }
+  getUserSettings() {
+    return lifecycleManager.getUserSettings();
+  }
   /**
    * @private
    */
@@ -84,10 +87,8 @@ class LuigiClient {
   /**
    * @private
    */
-  storageManager(){
+  storageManager() {
     return storageManager;
   }
-
-
 }
 export default LuigiClient = new LuigiClient();

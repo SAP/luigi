@@ -203,8 +203,10 @@
   export let searchResult;
   let featureToggleList;
 
-  const prepareInternalData = config => {
+  const prepareInternalData = async config => {
     const iframeConf = config.iframe.luigi;
+    const groupName = iframeConf.currentNode.userSettingsGroup;
+    const userSettingGroups = await LuigiConfig.readUserSettings();
     featureToggleList = LuigiFeatureToggles.getActiveFeatureToggleList();
     const internalData = {
       isNavigateBack,
@@ -214,7 +216,8 @@
       currentTheme: LuigiTheming.getCurrentTheme(),
       clientPermissions: iframeConf.nextViewUrl
         ? iframeConf.nextClientPermissions
-        : iframeConf.clientPermissions
+        : iframeConf.clientPermissions,
+      userSettings: userSettingGroups[groupName]
     };
 
     IframeHelpers.specialIframeTypes
@@ -231,7 +234,7 @@
       console.info('iframe does not exist, not able to send context.');
       return;
     }
-    const internal = prepareInternalData(config);
+    const internal = await prepareInternalData(config);
     const message = {
       msg: 'luigi.init',
       context: JSON.stringify(
@@ -1305,7 +1308,13 @@
       if ('storage' === e.data.msg) {
         let getValidMessageSource = IframeHelpers.getValidMessageSource(e);
         let microfrontendId = getValidMessageSource.luigi.id;
-        StorageHelper.process(microfrontendId, e.origin, e.data.data.id, e.data.data.operation, e.data.data.params);
+        StorageHelper.process(
+          microfrontendId,
+          e.origin,
+          e.data.data.id,
+          e.data.data.operation,
+          e.data.data.params
+        );
       }
     });
 

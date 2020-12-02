@@ -66,7 +66,7 @@ export const projectDetailNavStructure = projectId => [
     badgeCounter: {
       label: 'Number of developers',
       count: () => Math.floor(Math.random() * 100)
-    },
+    }
   },
   {
     pathSegment: 'clientPermissionsTets',
@@ -78,6 +78,7 @@ export const projectDetailNavStructure = projectId => [
     pathSegment: 'drawer',
     label: 'Drawer Example',
     viewUrl: '/sampleapp.html#/projects/' + projectId + '/drawer',
+    userSettingsGroup: 'language',
     drawer: {
       header: 'Test',
       backdrop: true,
@@ -159,6 +160,7 @@ export const projectDetailNavStructure = projectId => [
     label: 'Miscellaneous2',
     viewUrl: '/sampleapp.html#/projects/' + projectId + '/miscellaneous2',
     icon: 'sys-help',
+    userSettingsGroup: 'userAccount',
     openNodeInModal: true
   },
   {
@@ -166,6 +168,7 @@ export const projectDetailNavStructure = projectId => [
     label: 'Miscellaneous2 (Isolated View)',
     isolateView: true,
     viewUrl: '/sampleapp.html#/projects/' + projectId + '/miscellaneous2',
+    userSettingsGroup: 'privacy',
     icon: 'sys-help-2'
   },
   {
@@ -349,12 +352,15 @@ export const projectDetailNavStructure = projectId => [
         icon: 'globe'
       },
       {
-        category: { label: 'User Management', icon: 'person-placeholder', collapsible: true },
+        category: {
+          label: 'User Management',
+          icon: 'person-placeholder',
+          collapsible: true
+        },
         pathSegment: 'users',
         label: 'Users and Groups',
         viewUrl: '/sampleapp.html#/projects/' + projectId + '/users',
-        icon: 'group',
-
+        icon: 'group'
       },
       {
         category: 'User Management',
@@ -366,7 +372,7 @@ export const projectDetailNavStructure = projectId => [
           label: 'Number of developers',
           count: () => Math.floor(Math.random() * 100)
         }
-      },
+      }
     ]
   },
   {
@@ -399,12 +405,15 @@ export const projectDetailNavStructure = projectId => [
         icon: 'globe'
       },
       {
-        category: { label: 'User Management', icon: 'person-placeholder', collapsible: true },
+        category: {
+          label: 'User Management',
+          icon: 'person-placeholder',
+          collapsible: true
+        },
         pathSegment: 'users',
         label: 'Users and Groups',
         viewUrl: '/sampleapp.html#/projects/' + projectId + '/users',
-        icon: 'group',
-
+        icon: 'group'
       },
       {
         category: 'User Management',
@@ -416,7 +425,7 @@ export const projectDetailNavStructure = projectId => [
           label: 'Number of developers',
           count: () => Math.floor(Math.random() * 100)
         }
-      },
+      }
     ]
-  },
+  }
 ];

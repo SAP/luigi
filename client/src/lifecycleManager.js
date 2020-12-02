@@ -440,5 +440,16 @@ class LifecycleManager extends LuigiClientBase {
     );
     helpers.sendPostMessageToLuigiCore(customMessageInternal);
   }
+
+  /**
+   * Returns the currently user settings based on selected node.
+   * @returns {Object} current user settings
+   * @memberof Lifecycle
+   * @example
+   * const userSettings = LuigiClient.getUserSettings()
+   */
+  getUserSettings() {
+    return this.currentContext.internal.userSettings;
+  }
 }
 export const lifecycleManager = new LifecycleManager();
