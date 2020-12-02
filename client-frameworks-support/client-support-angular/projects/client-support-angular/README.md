@@ -72,7 +72,7 @@ More information about linkManager can be found [here](https://docs.luigi-projec
 
 ## LuigiRouteStrategy
 To use LuigiAutoRoutingService, this library defines a new RouteReuseStrategy named LuigiRouteStrategy.  
-If you need to define your own RouteReuseStrategy, you can extend LuigiRouteStrategy by overriding it next way:
+If you need to define your own RouteReuseStrategy, you can extend LuigiRouteStrategy by overriding it in this way:
 
  ```javascript
 export class YourRouteStrategy extends LuigiRouteStrategy {
