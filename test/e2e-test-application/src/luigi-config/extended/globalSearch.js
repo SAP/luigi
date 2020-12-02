@@ -1,5 +1,6 @@
 class GlobalSearch {
   constructor() {
+    pwd;
     this.searchResult = [];
   }
 
