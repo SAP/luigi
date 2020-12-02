@@ -16,7 +16,7 @@ export class LuigiElement extends HTMLElement {
    * @private
    */
   __postProcess(ctx, luigiClient, module_location_path) {
-    this.luigiClient = luigiClient;
+    this.LuigiClient = luigiClient;
     this.context = ctx;
     const template = document.createElement('template');
     template.innerHTML = this.render(ctx);
