@@ -63,9 +63,6 @@ class WebComponentSvcClass {
    * specified.
    * @returns a promise that gets resolved after successfull import */
   registerWCFromUrl(viewUrl, wc_id) {
-    console.log(
-      '################################## register#######################'
-    );
     return new Promise((resolve, reject) => {
       if (this.checkWCUrl(viewUrl)) {
         this.dynamicImport(viewUrl)

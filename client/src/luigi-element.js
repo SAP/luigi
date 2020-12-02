@@ -24,7 +24,6 @@ export class LuigiElement extends HTMLElement {
       this._shadowRoot.appendChild(template.content.cloneNode(true));
       Reflect.ownKeys(Reflect.getPrototypeOf(this)).forEach(el => {
         if (el.startsWith('$_')) {
-          console.log(el);
           this._shadowRoot[el] = this[el].bind(this);
         }
       });
