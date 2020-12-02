@@ -127,7 +127,8 @@
     StateHelpers,
     RoutingHelpers,
     IframeHelpers,
-    AuthHelpers
+    AuthHelpers,
+    StorageHelper
   } from './utilities/helpers';
   import {
     LuigiI18N,
@@ -268,23 +269,28 @@
   const addPreserveView = (data, config) => {
     if (data.params.preserveView || data.params.viewgroup) {
       const nextPath = buildPath(data.params);
+
       $: preservedViews.push({
         path: Routing.getNodePath(currentNode, urlParamsRaw),
         nextPath: nextPath.startsWith('/') ? nextPath : '/' + nextPath,
         context
       });
-      //mark iframe with pv if there is a preserved view situation
+
+      // Mark iframe with pv if there is a preserved view situation
       config.iframe['pv'] = 'pv';
     }
   };
 
   const handleNavigation = (data, config) => {
     let path = buildPath(data.params);
+
     path = GenericHelpers.addLeadingSlash(path);
 
     addPreserveView(data, config);
 
-    Routing.navigateTo(path); //navigate to the raw path. Any errors/alerts are handled later
+    // Navigate to the raw path. Any errors/alerts are handled later.
+    // Make sure we use `replaceState` instead of `pushState` method if navigation sync is disabled.
+    Routing.navigateTo(path, isNavigationSyncEnabled);
   };
 
   const removeQueryParams = str => str.split('?')[0];
@@ -1316,6 +1322,18 @@
         if (e.data.tpc === 'disabled') {
           tpcErrorHandling(thirdPartyCookiesCheck);
         }
+      }
+
+      if ('storage' === e.data.msg) {
+        let getValidMessageSource = IframeHelpers.getValidMessageSource(e);
+        let microfrontendId = getValidMessageSource.luigi.id;
+        StorageHelper.process(
+          microfrontendId,
+          e.origin,
+          e.data.data.id,
+          e.data.data.operation,
+          e.data.data.params
+        );
       }
     });
 
