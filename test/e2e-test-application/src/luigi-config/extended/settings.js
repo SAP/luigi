@@ -107,6 +107,7 @@ class Settings {
       privacy: {
         label: 'Privacy',
         title: 'Privacy',
+        icon: 'private',
         settings: {
           policy: {
             type: 'string', label: 'Privacy policy has not been defined.'
