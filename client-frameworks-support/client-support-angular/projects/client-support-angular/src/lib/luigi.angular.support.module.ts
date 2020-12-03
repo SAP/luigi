@@ -8,7 +8,7 @@ import {LuigiReuseRouteStrategy} from "./route/luigi-reuse-route-strategy.ts";
 import {LuigiRouteStrategy} from "./route/luigi-route-strategy";
 
 export const staticRoutes: Routes = [
-  /** here an example if you want to specify that this component is a virtualThree element in Luigi Core navigation*/
+  /** here an example if you want to specify that this component is a virtualTree element in Luigi Core navigation*/
   {
     path: 'luigi-client-support-preload',
     component: LuigiPreloadComponent,
