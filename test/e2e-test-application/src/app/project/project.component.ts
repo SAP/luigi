@@ -48,7 +48,7 @@ export class ProjectComponent implements OnInit, OnDestroy {
   public canChangeLocale = false;
   public storageDemoKey = '';
   public storageDemoValue = '';
-  public storageDemoOperation= false;
+  public storageDemoOperation = false;
 
   public constructor(
     private activatedRoute: ActivatedRoute,
@@ -250,113 +250,148 @@ export class ProjectComponent implements OnInit, OnDestroy {
   }
 
   // Start Storage part
-  public storage_setItem(){
-    if (this.validateKeyAndValue()){
+  public storage_setItem() {
+    if (this.validateKeyAndValue()) {
       return;
     }
-    const promiseStorage = storageManager().setItem(this.storageDemoKey, this.storageDemoValue);
-    this.executeWithTimeout(promiseStorage, 100,
-      (result) => 'success',
-      (result) => 'Key ' + this.storageDemoKey+ 'successfully stored with value '+this.storageDemoValue)
+    const promiseStorage = storageManager().setItem(
+      this.storageDemoKey,
+      this.storageDemoValue
+    );
+    this.executeWithTimeout(
+      promiseStorage,
+      100,
+      result => 'success',
+      result =>
+        'Key ' +
+        this.storageDemoKey +
+        'successfully stored with value ' +
+        this.storageDemoValue
+    );
   }
 
-  public storage_getItem(){
-    if (this.validateKey()){
+  public storage_getItem() {
+    if (this.validateKey()) {
       return;
     }
     const promiseStorage = storageManager().getItem(this.storageDemoKey);
-    this.executeWithTimeout(promiseStorage, 100,
-      (result) => result? 'info': 'warning',
-      (result) => result? 'Value for key ' + this.storageDemoKey+ ' is '+result: 'No value for key '+this.storageDemoKey);
+    this.executeWithTimeout(
+      promiseStorage,
+      100,
+      result => (result ? 'info' : 'warning'),
+      result =>
+        result
+          ? 'Value for key ' + this.storageDemoKey + ' is ' + result
+          : 'No value for key ' + this.storageDemoKey
+    );
   }
 
-  public storage_removeItem(){
-    if (this.validateKey()){
+  public storage_removeItem() {
+    if (this.validateKey()) {
       return;
     }
     const promiseStorage = storageManager().removeItem(this.storageDemoKey);
-    const messageOk = 'Value for key ' + this.storageDemoKey+ ' had been removed';
-    const messageKo = 'Nothing to delete: we could not find any value for key '+this.storageDemoKey;
-    this.executeWithTimeout(promiseStorage, 100,
-      (result) => result? 'success': 'warning',
-      (result) => result? messageOk : messageKo);
+    const messageOk =
+      'Value for key ' + this.storageDemoKey + ' had been removed';
+    const messageKo =
+      'Nothing to delete: we could not find any value for key ' +
+      this.storageDemoKey;
+    this.executeWithTimeout(
+      promiseStorage,
+      100,
+      result => (result ? 'success' : 'warning'),
+      result => (result ? messageOk : messageKo)
+    );
   }
 
-  public storage_clear(){
+  public storage_clear() {
     const promiseStorage = storageManager().clear();
-    this.executeWithTimeout(promiseStorage, 100,
-      (result) => 'success',
-      (result) => 'Clear all the storage')
+    this.executeWithTimeout(
+      promiseStorage,
+      100,
+      result => 'success',
+      result => 'Clear all the storage'
+    );
   }
 
-  public storage_has(){
-    if (this.validateKey()){
+  public storage_has() {
+    if (this.validateKey()) {
       return;
     }
     const promiseStorage = storageManager().has(this.storageDemoKey);
     const messageOk = this.storageDemoKey + ' is present in the storage';
     const messageKo = this.storageDemoKey + ' not present in the storage';
-    this.executeWithTimeout(promiseStorage, 100,
-      (result) => result? 'info': 'warning',
-      (result) => result? messageOk : messageKo);
-  }
-
-  public storage_getAllKeys(){
-    let promiseStorage = storageManager().getAllKeys();
-    this.executeWithTimeout(promiseStorage, 100,
-      (result) =>  'info',
-      (keys) => 'All keys present:<br/><br/>' + keys.join('<br/>'));
-  }
-
-  executeWithTimeout(promise, timeout, alertType, successFullyMessage){
-    this.startStorageOperation();
-    fromPromise(promise).pipe(delay(timeout)).subscribe(
-      (result) => {
-        this.storageShowAlert(alertType(result), successFullyMessage(result));
-      },
-      error => {
-        this.storageShowAlert('error', error);
-        this.finishStorageOperation();
-      },
-      () => {
-        this.finishStorageOperation();
-      }
+    this.executeWithTimeout(
+      promiseStorage,
+      100,
+      result => (result ? 'info' : 'warning'),
+      result => (result ? messageOk : messageKo)
     );
   }
 
-  startStorageOperation(){
-    this.storageDemoOperation=true;
+  public storage_getAllKeys() {
+    let promiseStorage = storageManager().getAllKeys();
+    this.executeWithTimeout(
+      promiseStorage,
+      100,
+      result => 'info',
+      keys => 'All keys present:<br/><br/>' + keys.join('<br/>')
+    );
+  }
+
+  executeWithTimeout(promise, timeout, alertType, successFullyMessage) {
+    this.startStorageOperation();
+    fromPromise(promise)
+      .pipe(delay(timeout))
+      .subscribe(
+        result => {
+          this.storageShowAlert(alertType(result), successFullyMessage(result));
+        },
+        error => {
+          this.storageShowAlert('error', error);
+          this.finishStorageOperation();
+        },
+        () => {
+          this.finishStorageOperation();
+        }
+      );
+  }
+
+  startStorageOperation() {
+    this.storageDemoOperation = true;
     uxManager().showLoadingIndicator();
   }
 
-  finishStorageOperation(){
-    this.storageDemoOperation=false;
+  finishStorageOperation() {
+    this.storageDemoOperation = false;
     uxManager().hideLoadingIndicator();
   }
 
-  validateKeyAndValue(){
-    const notValidInput = !this.storageDemoKey || this.storageDemoKey.trim().length === 0
-          || !this.storageDemoValue || this.storageDemoValue.trim().length === 0
-    if (notValidInput){
-        this.storageShowAlert('error', 'Please fill Key and Value fields');
+  validateKeyAndValue() {
+    const notValidInput =
+      !this.storageDemoKey ||
+      this.storageDemoKey.trim().length === 0 ||
+      !this.storageDemoValue ||
+      this.storageDemoValue.trim().length === 0;
+    if (notValidInput) {
+      this.storageShowAlert('error', 'Please fill Key and Value fields');
     }
     return notValidInput;
   }
 
-  validateKey(){
-    const notValidInput = !this.storageDemoKey || this.storageDemoKey.trim().length === 0
-    if (notValidInput){
+  validateKey() {
+    const notValidInput =
+      !this.storageDemoKey || this.storageDemoKey.trim().length === 0;
+    if (notValidInput) {
       this.storageShowAlert('error', 'Please fill Key field');
     }
     return notValidInput;
   }
 
-  storageShowAlert(type, text){
+  storageShowAlert(type, text) {
     uxManager().showAlert({
       type,
       text
     });
   }
-
-
 }
