@@ -80,7 +80,7 @@ class Settings {
       userAccount: {
         label: 'User Account',
         sublabel: 'username',
-        icon: 'settings',
+        icon: 'account',
         title: 'User Account',
         settings: {
           name: { type: 'string', label: 'Name', isEditable: true },
