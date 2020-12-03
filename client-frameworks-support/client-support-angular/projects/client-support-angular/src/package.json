@@ -1,0 +1,26 @@
+{
+  "name": "@m_bro_exp/client-support-angular",
+  "version": "0.0.4",
+  "license": "Apache-2.0",
+  "private": false,
+  "peerDependencies": {
+    "@angular/common": "^11.0.0",
+    "@angular/core": "^11.0.0",
+    "@m_bro_exp/client": "^1.5.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "ssh://github.com/SAP/luigi.git"
+  },
+  "dependencies": {
+    "tslib": "^2.0.0"
+  },
+  "main": "bundles/client-support-angular.umd.js",
+  "module": "fesm2015/client-support-angular.js",
+  "es2015": "fesm2015/client-support-angular.js",
+  "esm2015": "esm2015/client-support-angular.js",
+  "fesm2015": "fesm2015/client-support-angular.js",
+  "typings": "client-support-angular.d.ts",
+  "metadata": "client-support-angular.metadata.json",
+  "sideEffects": false
+}
