@@ -217,7 +217,7 @@
       clientPermissions: iframeConf.nextViewUrl
         ? iframeConf.nextClientPermissions
         : iframeConf.clientPermissions,
-      userSettings: userSettingGroups[groupName]
+      userSettings: userSettingGroups && userSettingGroups[groupName]
     };
 
     IframeHelpers.specialIframeTypes
