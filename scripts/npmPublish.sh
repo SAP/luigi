@@ -131,4 +131,10 @@ if ( prepublishCheck "plugins/auth/public/auth-oidc" ); then
   checkRequiredFiles "plugins/auth/public/auth-oidc" "plugin.js" "plugin-ie11.js" "README.md"
   publishPackage "plugins" "plugins/auth/public/auth-oidc"
 fi
+
+if ( prepublishCheck "client-frameworks-support/client-support-angular/dist/client-support-angular"); then
+  checkRequiredFiles "client-frameworks-support/client-support-angular/dist/client-support-angular" "public-api.d.ts" "README.md"
+  publishPackage "client-frameworks-support/client-support-angular" "client-frameworks-support/client-support-angular/dist/client-support-angular"
+fi
+
 removeNpmToken
