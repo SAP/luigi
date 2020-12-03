@@ -9,7 +9,7 @@
   Logging out...
   <script>
     window.onload = function () {
-      let href = window.location.href;
+      let href = encodeURI(window.location.href);
       const decodeChars = (string) => {
         return string.replace(/[<>'*+?^${}()|[\]\\]/g, '\\$&')
       }
