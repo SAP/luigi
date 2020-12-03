@@ -303,7 +303,6 @@ class Navigation {
       }
     ];
 
-    console.log('getProductSwitcherItems allProjects =>', getAllProjectsSync());
     getAllProjectsSync()
       .filter(project => project.id !== 'tabNav')
       .forEach(project => {

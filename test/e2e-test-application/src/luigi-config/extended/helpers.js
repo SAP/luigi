@@ -125,8 +125,6 @@ export const projectsCounterFn = context =>
 export const projectsNavProviderFn = context =>
   new Promise(resolve => {
     getAllProjects().then(function(result) {
-      console.log('Inside projectsNavProviderFn --> ', result);
-
       var children = [];
       result.forEach(function(project) {
         children.push({
