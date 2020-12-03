@@ -311,7 +311,7 @@ Luigi.auth().login();
 
 **Meta**
 
--   **since**: NEXTRELEASE
+-   **since**: 1.5.0
 
 #### logout
 
@@ -326,7 +326,7 @@ Luigi.auth().logout();
 
 **Meta**
 
--   **since**: NEXTRELEASE
+-   **since**: 1.5.0
 
 ### AuthorizationStore
 
@@ -449,6 +449,10 @@ Navigates to the given path in the application. It contains either a full absolu
     -   `splitViewSettings.title` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** split view title. By default, it is the node label. If there is no label, it is left empty
     -   `splitViewSettings.size` **[number](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number)** height of the split view in percent (optional, default `40`)
     -   `splitViewSettings.collapsed` **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)** opens split view in collapsed state (optional, default `false`)
+-   `drawerSettings` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** opens a view in a drawer. Use these settings to configure if the drawer has a header, backdrop and size.
+    -   `drawerSettings.header` **any** By default, the header is visible. The default title is the node label, but the header could also be an object with a `title` attribute allowing you to specify your own title.  An 'x' icon is displayed to close the drawer view.
+    -   `drawerSettings.backdrop` **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)** By default, it is set to `false`. If it is set to `true` the rest of the screen has a backdrop.
+    -   `drawerSettings.size` **(`"l"` \| `"m"` \| `"s"` \| `"xs"`)** size of the drawer (optional, default `"s"`)
 
 ##### Examples
 
@@ -501,6 +505,29 @@ Returns **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/G
 **Meta**
 
 -   **since**: 0.7.6
+
+#### openAsDrawer
+
+Opens a view in a drawer. You can specify if the drawer has a header, if a backdrop is active in the background and configure the size of the drawer. By default the header is shown. The backdrop is not visible and has to be activated. The size of the drawer is by default set to `s` which means 25% of the micro frontend size. You can also use `l`(75%), `m`(50%) or `xs`(15.5%). Optionally, use it in combination with any of the navigation functions.
+
+##### Parameters
+
+-   `path` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** navigation path
+-   `drawerSettings` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)?** opens a view in a drawer. Use these settings to configure if the drawer has a header, backdrop and size.
+    -   `drawerSettings.header` **any** By default, the header is visible. Title is node label and 'x' is displayed to close the drawer view. The header could also be an object with a `title` attribute to specify an own title for the drawer component.
+    -   `drawerSettings.backdrop` **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)** By default, it is set to `false`. If it is set to `true` the rest of the screen has a backdrop.
+    -   `drawerSettings.size` **(`"l"` \| `"m"` \| `"s"` \| `"xs"`)** size of the drawer (optional, default `"s"`)
+
+##### Examples
+
+```javascript
+Luigi.navigation().openAsDrawer('projects/pr1/drawer', {header:true, backdrop:true, size:'s'});
+Luigi.navigation().openAsDrawer('projects/pr1/drawer', {header:{title:'My drawer component'}, backdrop:true, size:'xs'});
+```
+
+**Meta**
+
+-   **since**: 1.6.0
 
 #### fromContext
 
@@ -868,6 +895,18 @@ Returns **any** a string, which is displayed in the tab.
 **Meta**
 
 -   **since**: 1.4.0
+
+#### collapseLeftSideNav
+
+Set the collapsed state of the left side navigation
+
+##### Parameters
+
+-   `state` **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)** 
+
+**Meta**
+
+-   **since**: 1.5.0
 
 ## Luigi.globalSearch()
 

@@ -1,6 +1,6 @@
 <svelte:window on:resize="{updateSizes}" />
 <div id="splitViewContainer" class="splitViewContainer {collapsed?'lui-collapsed':''}">
-  <Backdrop area="split-view" on:stateChanged="{backdropStateChanged}"></Backdrop>
+  <Backdrop area="split-view" disable="{disableBackdrop}" on:stateChanged="{backdropStateChanged}"></Backdrop>
   <div class="lui-split-view">
     {#if collapsed}
     <div id="splitViewDraggerCollapsed" class="splitViewSeparator isCollapsed">
@@ -60,10 +60,13 @@
   let messageHandler;
   let splitViewIframe;
   let splitViewIframeData;
+  let splitViewWC;
+  let splitViewWCData;
   export let nodepath;
   export let collapsed;
   export let splitViewSettings = {};
   export let isDataPrepared = false;
+  export let disableBackdrop;
   let wasDataPrepared = false;
   let getUnsavedChangesModalPromise = getContext(
     'getUnsavedChangesModalPromise'
@@ -82,7 +85,9 @@
           nodeParams,
           currentNode,
           splitViewIframe,
-          splitViewIframeData
+          splitViewIframeData,
+          splitViewWC,
+          splitViewWCData
         };
       },
       set: obj => {
@@ -106,6 +111,10 @@
               splitViewIframe = obj.splitViewIframe;
             } else if (prop === 'splitViewIframeData') {
               splitViewIframeData = obj.splitViewIframeData;
+            } else if (prop === 'splitViewWC') {
+              splitViewWC = obj.splitViewWC;
+            } else if (prop === 'splitViewWCData') {
+              splitViewWCData = obj.splitViewWCData;
             }
           });
         }

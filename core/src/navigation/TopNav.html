@@ -1,12 +1,16 @@
 <svelte:window on:click="{closeAllDropdowns}" on:blur="{closeAllDropdowns}"/>
 {#if showTopNav}
-<div class="fd-shellbar {hideNavComponent ? 'hideNavComponent' : ''}">
+<div
+  class="fd-shellbar {hideNavComponent ? 'hideNavComponent' : ''}"
+  tabindex="0"
+>
   <div class="fd-shellbar__group fd-shellbar__group--product">
     {#if responsiveNavSetting==="simple" || responsiveNavSetting==="simpleMobileOnly" || responsiveNavSetting==="Fiori3"}
-    <span
-      class="sap-icon--menu2 lui-burger"
+    <button
+      class="fd-shellbar__button fd-button sap-icon--menu2 lui-burger"
       on:click="{burgerClickHandler}"
-    ></span>
+      tabindex="0"
+    ></button>
     {/if}
     <LogoTitle
       pathData="{pathData}"
@@ -96,7 +100,6 @@
       <button
         title="{getNodeLabel(node)}"
         class="fd-shellbar__button fd-button {node === selectedNode ? 'is-selected' : ''}"
-        aria-controls="0AcWE812"
         aria-expanded="false"
         aria-haspopup="true"
         on:click="{() => handleClick(node)}"
@@ -627,6 +630,11 @@
 </script>
 
 <style type="text/scss">
+  //remove default outline of all dropdowns in shellbar
+  .fd-shellbar:focus {
+    outline: none;
+  }
+
   // Fix FD Styles for icons in Shellbar 0.11.2
   .fd-shellbar__button {
     .fd-top-nav__icon {

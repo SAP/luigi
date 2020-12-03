@@ -114,14 +114,28 @@ class RoutingClass {
   }
 
   getHashPath(url = window.location.hash) {
+    // check for intent, if any
+    if (url && /\?intent=/i.test(url)) {
+      const hash = url.replace('#/#', '#'); // handle default hash and intent specific hash
+      const intentHash = RoutingHelpers.getIntentPath(hash.split('#')[1]);
+      if (intentHash) {
+        return intentHash;
+      }
+    }
+
     return url.split('#/')[1];
   }
 
   getModifiedPathname() {
+    // check for intent, if any
+    if (window.location.hash && /\?intent=/i.test(window.location.hash)) {
+      const hash = window.location.hash.replace('#/#', '').replace('#', '');
+      const intentPath = RoutingHelpers.getIntentPath(hash);
+      return intentPath ? intentPath : '/';
+    }
     const path =
       (window.history.state && window.history.state.path) ||
       window.location.pathname;
-
     return path
       .split('/')
       .slice(1)
@@ -129,6 +143,14 @@ class RoutingClass {
   }
 
   getCurrentPath() {
+    if (/\?intent=/i.test(window.location.hash)) {
+      const hash = window.location.hash.replace('#/#', '').replace('#', '');
+      const intentPath = RoutingHelpers.getIntentPath(hash);
+      if (intentPath) {
+        // if intent faulty or illegal then skip
+        return intentPath;
+      }
+    }
     return LuigiConfig.getConfigValue('routing.useHashRouting')
       ? window.location.hash.replace('#', '') // TODO: GenericHelpers.getPathWithoutHash(window.location.hash) fails in ContextSwitcher
       : window.location.search
@@ -186,7 +208,7 @@ class RoutingClass {
       );
       const viewUrl = nodeObject.viewUrl || '';
 
-      if (!viewUrl) {
+      if (!viewUrl && !nodeObject.compound) {
         const defaultChildNode = await RoutingHelpers.getDefaultChildNode(
           pathData,
           async (node, ctx) => {
@@ -330,17 +352,16 @@ class RoutingClass {
           Navigation.onNodeChange(previousNode, currentNode);
         }
       }
-      if (nodeObject.webcomponent) {
+      if (nodeObject.compound && GenericHelpers.requestExperimentalFeature('webcomponents', true)) {
         if (iContainer) {
           iContainer.classList.add('lui-webComponent');
         }
-        this.navigateWebComponent(
-          config,
-          component,
-          iframeElement,
-          nodeObject,
-          iContainer
-        );
+        this.navigateWebComponentCompound(config, component, iframeElement, nodeObject, iContainer);
+      } else if (nodeObject.webcomponent && GenericHelpers.requestExperimentalFeature('webcomponents', true)) {
+        if (iContainer) {
+          iContainer.classList.add('lui-webComponent');
+        }
+        this.navigateWebComponent(config, component, iframeElement, nodeObject, iContainer);
       } else {
         if (iContainer) {
           iContainer.classList.remove('lui-webComponent');
@@ -505,8 +526,22 @@ class RoutingClass {
     WebComponentService.renderWebComponent(
       componentData.viewUrl,
       wc_container,
-      componentData.context
+      componentData.context,
+      navNode
     );
+  }
+
+
+
+  navigateWebComponentCompound(config, component, node, navNode, iframeContainer) {
+    const componentData = component.get();
+    const wc_container = document.querySelector('.wcContainer');
+
+    while (wc_container.lastChild) {
+      wc_container.lastChild.remove();
+    }
+
+    WebComponentService.renderWebComponentCompound(navNode, wc_container, componentData.context);
   }
 }
 

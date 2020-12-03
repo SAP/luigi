@@ -1,6 +1,7 @@
 import { lifecycleManager } from './lifecycleManager';
 import { linkManager } from './linkManager';
 import { uxManager } from './uxManager';
+import { storageManager } from './storageManager';
 
 /**
  * @name LuigiClient
@@ -79,6 +80,12 @@ class LuigiClient {
    */
   lifecycleManager() {
     return lifecycleManager;
+  }
+  /**
+   * @private
+   */
+  storageManager() {
+    return storageManager;
   }
 }
 export default LuigiClient = new LuigiClient();

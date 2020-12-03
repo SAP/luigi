@@ -21,6 +21,7 @@
     "copy-webpack-plugin": "^5.1.1",
     "core-js": "^3.2.1",
     "css-loader": "^3.0.0",
+    "esm": "^3.2.25",
     "file-loader": "^2.0.0",
     "fs-extra": "9.0.0",
     "fundamental-styles": "^0.11.0",
@@ -32,6 +33,7 @@
     "mini-css-extract-plugin": "^0.8.0",
     "mkdirp": "^1.0.3",
     "mocha": "^7.1.1",
+    "mock-local-storage": "^1.1.15",
     "node-sass": "^4.14.1",
     "nyc": "^15.0.0",
     "oidc-client": "^1.5.2",
@@ -60,7 +62,7 @@
     "bundle-develop": "npm run bundle-develop-evergreen",
     "bundle-develop-evergreen": "npm run bundle-evergreen -- -d --watch",
     "bundle-develop-ie11": "MINIFY=false webpack --display-error-details --config webpack-ie11.config.js --debug --devtool cheap-source-map --output-pathinfo --watch",
-    "test": "babel-node ./node_modules/nyc/bin/nyc.js mocha -- --recursive test",
+    "test": "babel-node ./node_modules/nyc/bin/nyc.js mocha -- --require esm --recursive test",
     "test:watch": "npm run test -- --watch",
     "bundlesize": "npm run bundle && bundlesize",
     "bundlesizeOnly": "bundlesize",
@@ -80,7 +82,7 @@
     },
     {
       "path": "./public-ie11/luigi-ie11.js",
-      "maxSize": "580 kB",
+      "maxSize": "600 kB",
       "compression": "none"
     },
     {

@@ -3,6 +3,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { UsersoverviewComponent } from './project/users/usersoverview/usersoverview.component';
 import { MiscellaneousComponent } from './project/miscellaneous/miscellaneous.component';
 import { DevelopersComponent } from './project/developers/developers.component';
+import { DrawerComponent } from './project/drawer/drawer.component';
 import { ProjectComponent } from './project/project.component';
 import { UsersComponent } from './project/users/users.component';
 import { SettingsComponent } from './project/settings/settings.component';
@@ -50,6 +51,7 @@ const routes: Routes = [
     component: DynamicComponent
   },
   { path: 'projects/:projectId/developers', component: DevelopersComponent },
+  { path: 'projects/:projectId/drawer', component: DrawerComponent },
   { path: 'projects/:projectId/settings', component: SettingsComponent },
   {
     path: 'projects/:projectId/miscellaneous',
@@ -121,4 +123,4 @@ const routes: Routes = [
   imports: [RouterModule.forRoot(routes, { useHash: true })],
   exports: [RouterModule]
 })
-export class AppRoutingModule {}
+export class AppRoutingModule { }

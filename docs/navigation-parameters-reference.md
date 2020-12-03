@@ -105,6 +105,15 @@ The navigation parameters allow you to configure **global** navigation settings 
   - **preloadUrl**(string): needs to be an absolute URL of a micro frontend belonging to a view group. It cannot be an URL of a node. It is recommended that you use a dedicated small, visually empty view, which imports Luigi Client and is fine with getting an empty context, for example, without an access token. The **preloadUrl** parameter
  is also required for view group caching in case you need a view group iframe to refresh whenever you navigate back to it.
 
+### intentMapping
+- **type**: array
+- **description**: contains an array of abstract intent objects that can be used to navigate through micro frontends through the [LuigiClient linkManager.navigate()](luigi-client-api.md#navigate) method. The attributes contained in each intent object of the array are abstract notations which can be used to define the target mapping of your desired intent navigation in a semantic way. 
+Check our [Advanced Scenarios](advanced-scenarios.md) page for an example.
+- **attributes**:
+  - **semanticObject**(string): may represent a business entity such as a sales order or a product. It enables navigating to such entities in an abstract implementation-independent way. It can only only contain alphanumerical characters.
+  - **action**(string): defines an operation, i.e.: `display`, `approve` or `edit`. The operation is intended to be performed on a **semanticObject** such as a sales order or a certain product. It can only contain alphanumerical characters but also the underscore character.
+  - **pathSegment**(string): represents the target of the navigation. In order to use it as a target link, it has to be defined under navigation nodes in the Luigi configuration.
+
 
 ## Node parameters
 Node parameters are all the parameters that can be added to an individual navigation node in the `nodes:` section of the Luigi configuration file.
@@ -426,6 +435,7 @@ The profile section is a configurable drop-down list available in the top naviga
   - **icon** is the name of an icon from the [OpenUI](https://openui5.hana.ondemand.com/1.40.10/iconExplorer.html) or a custom link (relative or absolute) to an image displayed next to the label or instead of it.
   - **altText** adds the HTML `alt` attribute to an icon. Note that this property only applies to icons with a defined absolute or relative path.
   - **link** defines an absolute link to a **node**.
+  - **openNodeInModal** configures the settings of a view which opens in a modal. Details can be found here: [openNodeInModal](navigation-parameters-reference.md#openNodeInModal).
   - **externalLink** is an object which indicates that the node links to an external URL. If this parameter
  is defined, the **link** parameter
  is ignored. It has the following attributes:
@@ -506,7 +516,7 @@ The global search is an input field available in the top navigation bar. The sea
 ### disableInputHandlers
 - **type**: boolean
 - **description**: disables the on:keyUp and other internal handlers on the search input field. It is a plain input field then, which can be used to attach your own handlers. If set to `true`, a **searchProvider** must be defined in order to show the search field, which can contain your custom logic. It is recommended to initialize your custom logic in the [**lifeCycle.luigiAfterInit**](lifecycle-hooks.md#luigiafterinit) hook.
-- **since**: NEXTRELEASE
+- **since**: 1.5.0
 
 ### searchProvider
 - **type**: Object

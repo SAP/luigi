@@ -1,5 +1,6 @@
 const chai = require('chai');
 const assert = chai.assert;
+const expect = chai.expect;
 const sinon = require('sinon');
 import { afterEach } from 'mocha';
 
@@ -108,6 +109,58 @@ describe('Iframe-helpers', () => {
       testNode.removeChild.calledWith('two'),
       'correct node child was deleted'
     );
+  });
+
+  describe('ie fix for domain check', () => {
+    const sb = sinon.createSandbox();
+    const href = 'https://luigi.url.com/sdf/sdf';
+
+    afterEach(() => {
+      sb.restore();
+    });
+
+    it('urlMatchesTheDomain', () => {
+      let domain = 'https://luigi.url.com/fd';
+      assert.isTrue(IframeHelpers.urlMatchesTheDomain(href, domain));
+    });
+
+    it('!urlMatchesTheDomain', () => {
+      let domain = 'http://luigi.url.com/fd';
+      assert.isFalse(IframeHelpers.urlMatchesTheDomain(href, domain));
+    });
+
+    it('ie11 urlMatchesTheDomain', () => {
+      let domain = 'https://luigi.url.com/bla/bli';
+      let a1 = document.createElement('a');
+      let a2 = document.createElement('a');
+      sb.stub(document, 'createElement')
+        .callThrough()
+        .withArgs('a')
+        .callsFake(() => {
+          if (a1.stubReturned) {
+            return a2;
+          } else {
+            a1.stubReturned = true;
+            return a1;
+          }
+        });
+      // Mimic IE11 behaviour
+      // no origin
+      sb.stub(a1, 'origin').value(undefined);
+      sb.stub(a2, 'origin').value(undefined);
+      // add port to https urls
+      sb.stub(a1, 'host').get(() => {
+        return a1.protocol === 'https:' ? a1.hostname + ':443' : a1.hostname;
+      });
+      sb.stub(a2, 'host').get(() => {
+        return a2.protocol === 'https:'
+          ? a2.hostname + ':443' + a2.port
+          : a2.hostname;
+      });
+      assert.isTrue(IframeHelpers.urlMatchesTheDomain(href, domain));
+      expect(a1.host).to.equal('luigi.url.com:443');
+      expect(a2.host).to.equal('luigi.url.com:443');
+    });
   });
 
   describe('canReuseIframe', () => {
@@ -258,17 +311,18 @@ describe('Iframe-helpers', () => {
         .returns([mockContainer('main_1'), mockContainer('main_2')])
         .withArgs('.iframeSplitViewCnt iframe') // 'split-view'
         .returns([mockContainer('split_1')])
-        .withArgs('.iframeModalCtn iframe') // 'modal'
-        .returns([mockContainer('modal')]);
+        .withArgs('.iframeModalCtn._modal iframe') // 'modal'
+        .returns([mockContainer('modal')])
+        .withArgs('.iframeModalCtn._drawer iframe') // 'modal'
+        .returns([mockContainer('drawer')]);
 
       GenericHelpers.isElementVisible.callsFake(container => {
         // second container is not active
         return container.luigi.id !== 'main_2';
       });
-
       const iframes = IframeHelpers.getMicrofrontendsInDom();
-      assert.equal(iframes.length, 4, 'total iframes');
-      assert.equal(iframes.filter(i => i.active).length, 3, 'active iframes');
+      assert.equal(iframes.length, 5, 'total iframes');
+      assert.equal(iframes.filter(i => i.active).length, 4, 'active iframes');
 
       const expectedKeys = ['id', 'container', 'active', 'type'];
       assert.deepEqual(

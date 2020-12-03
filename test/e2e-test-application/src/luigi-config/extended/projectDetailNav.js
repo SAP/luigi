@@ -66,13 +66,23 @@ export const projectDetailNavStructure = projectId => [
     badgeCounter: {
       label: 'Number of developers',
       count: () => Math.floor(Math.random() * 100)
-    }
+    },
   },
   {
     pathSegment: 'clientPermissionsTets',
     label: 'ClientPermissionsTets',
     viewUrl: '/sampleapp.html#/projects/pr1',
     hideFromNav: true
+  },
+  {
+    pathSegment: 'drawer',
+    label: 'Drawer Example',
+    viewUrl: '/sampleapp.html#/projects/' + projectId + '/drawer',
+    drawer: {
+      header: 'Test',
+      backdrop: true,
+      size: 'l'
+    }
   },
   {
     pathSegment: 'on-node-activation',
@@ -149,6 +159,20 @@ export const projectDetailNavStructure = projectId => [
     label: 'Miscellaneous2',
     viewUrl: '/sampleapp.html#/projects/' + projectId + '/miscellaneous2',
     icon: 'sys-help',
+    openNodeInModal: true
+  },
+  {
+    pathSegment: 'webcomponent',
+    label: 'Webcomponent',
+    icon: 'along-stacked-chart',
+    loadingIndicator: {
+      enabled: false
+    },
+    context: {
+      title: 'Hello WebComponent!'
+    },
+    viewUrl: '/assets/helloWorldWC.js',
+    webcomponent: true,
     openNodeInModal: true
   },
   {
@@ -339,12 +363,15 @@ export const projectDetailNavStructure = projectId => [
         icon: 'globe'
       },
       {
-        category: { label: 'User Management', icon: 'person-placeholder', collapsible: true },
+        category: {
+          label: 'User Management',
+          icon: 'person-placeholder',
+          collapsible: true
+        },
         pathSegment: 'users',
         label: 'Users and Groups',
         viewUrl: '/sampleapp.html#/projects/' + projectId + '/users',
         icon: 'group',
-        
       },
       {
         category: 'User Management',
@@ -356,7 +383,7 @@ export const projectDetailNavStructure = projectId => [
           label: 'Number of developers',
           count: () => Math.floor(Math.random() * 100)
         }
-      },
+      }
     ]
   },
   {
@@ -389,12 +416,15 @@ export const projectDetailNavStructure = projectId => [
         icon: 'globe'
       },
       {
-        category: { label: 'User Management', icon: 'person-placeholder', collapsible: true },
+        category: {
+          label: 'User Management',
+          icon: 'person-placeholder',
+          collapsible: true
+        },
         pathSegment: 'users',
         label: 'Users and Groups',
         viewUrl: '/sampleapp.html#/projects/' + projectId + '/users',
-        icon: 'group',
-        
+        icon: 'group'
       },
       {
         category: 'User Management',
@@ -406,7 +436,7 @@ export const projectDetailNavStructure = projectId => [
           label: 'Number of developers',
           count: () => Math.floor(Math.random() * 100)
         }
-      },
+      }
     ]
-  },
+  }
 ];

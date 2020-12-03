@@ -22,10 +22,10 @@
   font-family: 'icon-font';
   src: url('/fonts/icon-font/icon-font.eot');
   src: url('/fonts/icon-font/icon-font.eot?#iefix')
-      format('embedded-opentype'),
-    url('/fonts/icon-font/icon-font.woff') format('woff'),
-    url('/fonts/icon-font/icon-font.ttf') format('truetype'),
-    url('/fonts/icon-font/icon-font.svg#icon-font') format('svg');
+  format('embedded-opentype'),
+  url('/fonts/icon-font/icon-font.woff') format('woff'),
+  url('/fonts/icon-font/icon-font.ttf') format('truetype'),
+  url('/fonts/icon-font/icon-font.svg#icon-font') format('svg');
   font-weight: normal;
   font-style: normal;
 }
@@ -90,6 +90,10 @@ $height-shellbar-mobile: 95px;
 $side-nav-width-desktop: 320px;
 $side-nav-width-mobile: 260px;
 
+:root {
+  --luigi__left-sidenav--width: 320px;
+}
+
 .luigi-documentation {
 
   * {
@@ -104,7 +108,7 @@ $side-nav-width-mobile: 260px;
     span {
       font-weight: 600;
     }
-    
+
     .fd-shellbar__title {
       display: none;
     }
@@ -175,7 +179,7 @@ $side-nav-width-mobile: 260px;
           &[aria-selected=true] {
             color: $primary-color;
           }
-          
+
           .fd-menu__link {
             &.is-hover,
             &:hover {
@@ -248,9 +252,9 @@ $side-nav-width-mobile: 260px;
       height: 69px;
       padding-bottom: 41px;
       margin-bottom: -41px;
-  
+
       span {
-  
+
         &:not(.fd-top-nav__icon) {
           color: white;
           font-size: 18px;
@@ -261,13 +265,13 @@ $side-nav-width-mobile: 260px;
           transition: all .2s ease;
         }
       }
-  
+
       .fd-top-nav__icon {
         &:before {
           margin-top: 0 !important;
         }
       }
-  
+
       &:hover,
       &.is-selected {
         span {
@@ -278,7 +282,7 @@ $side-nav-width-mobile: 260px;
       }
     }
   }
-  
+
   .fd-app__sidebar,
   .iframeContainer {
     top: $height-shellbar-mobile;
@@ -393,8 +397,15 @@ $side-nav-width-mobile: 260px;
     content: "\61";
   }
 
+  .fd-nested-list {
+    border-bottom: none;
+  }
+
   .fd-nested-list__item {
     padding: 10px 0;
+    &:last-child {
+      border-bottom: none;
+    }
   }
 
   .fd-nested-list__group-header,
@@ -403,12 +414,12 @@ $side-nav-width-mobile: 260px;
   }
 
   .fd-nested-list__link {
-    display: block;
     font-size: 15px;
     height: auto;
     padding: 1px 10px;
     border-left: 2px solid transparent;
     border-bottom: none;
+    border-top: none;
 
     &:hover,
     &.is-selected {
@@ -433,14 +444,27 @@ $side-nav-width-mobile: 260px;
       font-size: 15px;
       white-space: normal;
       text-overflow: unset;
+      width: auto;
     }
+
+    .sap-icon--action {
+      padding-left: 5px;
+    }
+
+
 
     .fd-nested-list__icon {
       display: none;
     }
 
   }
-  
+  //disable the dotted line on deep-click
+  .fd-side-nav .fd-nested-list__link {
+    &:focus {
+      outline: none;
+    }
+  }
+
   .lui-category {
     text-transform: uppercase;
     border: none;
@@ -452,7 +476,6 @@ $side-nav-width-mobile: 260px;
   }
 
   .fd-side-nav {
-    width: $side-nav-width-desktop;
     background-color: transparent;
     border-right: none;
 
@@ -498,6 +521,7 @@ $side-nav-width-mobile: 260px;
 
         &:before {
           transform: rotateZ(-180deg);
+          display: block;
         }
       }
     }
@@ -506,17 +530,41 @@ $side-nav-width-mobile: 260px;
     .fd-side-nav {
       width: $side-nav-width-mobile;
     }
-  
+
     &.lui-simpleSlideInNav.lui-leftNavToggle {
       .fd-app__sidebar,
       .fd-side-nav {
         width: $side-nav-width-mobile;
       }
     }
-  
-    &.lui-simpleSlideInNav .fd-app__sidebar {
-      left: -$side-nav-width-mobile;
+
+    &.lui-simpleSlideInNav.lui-leftNavToggle {
+      .fd-app__sidebar,
+      .fd-side-nav {
+        width: $side-nav-width-mobile;
+      }
     }
+
+    &.lui-simpleSlideInNav.lui-leftNavToggle {
+      .fd-app__sidebar,
+      .fd-side-nav,
+      .lui-side-nav__footer{
+        display: flex;
+      }
+    }
+
+    /*&.lui-simpleSlideInNav .fd-app__sidebar {
+      left: -$side-nav-width-mobile;
+    }*/
+
+    .lui-side-nav__footer{
+      display: none;
+    }
+
+    .algolia-autocomplete .ds-dropdown-menu {
+      box-shadow: none !important;
+    }
+
   }
 
   @media screen and (max-width: 1023px) {
