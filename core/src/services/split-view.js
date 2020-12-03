@@ -5,6 +5,7 @@ import {
   IframeHelpers,
   RoutingHelpers
 } from '../utilities/helpers';
+import { WebComponentService } from './web-components';
 
 class SplitViewSvcClass {
   constructor() {
@@ -88,25 +89,43 @@ class SplitViewSvcClass {
   createAndSetView(component) {
     const { nodeParams, lastNode, pathData } = component.get();
 
-    const iframe = this.setIframe(
-      lastNode.viewUrl,
-      {
-        context: pathData.context,
-        pathParams: pathData.pathParams,
-        nodeParams
-      },
-      component
-    );
+    if (lastNode.webcomponent) {
+      WebComponentService.renderWebComponent(
+        lastNode.viewUrl,
+        document.querySelector('.iframeSplitViewCnt'),
+        pathData.context,
+        lastNode
+      );
+      const wcInfo = {
+        splitViewWC: document.querySelector('.iframeSplitViewCnt'),
+        splitViewWCData: { ...pathData, nodeParams }
+      };
+      component.set(wcInfo);
+      component.dispatch('wcCreated', {
+        ...wcInfo,
+        ...{ collapsed: false }
+      });
+    } else {
+      const iframe = this.setIframe(
+        lastNode.viewUrl,
+        {
+          context: pathData.context,
+          pathParams: pathData.pathParams,
+          nodeParams
+        },
+        component
+      );
 
-    const iframeInfo = {
-      splitViewIframe: iframe,
-      splitViewIframeData: { ...pathData, nodeParams }
-    };
-    component.set(iframeInfo);
-    component.dispatch('iframeCreated', {
-      ...iframeInfo,
-      ...{ collapsed: false }
-    });
+      const iframeInfo = {
+        splitViewIframe: iframe,
+        splitViewIframeData: { ...pathData, nodeParams }
+      };
+      component.set(iframeInfo);
+      component.dispatch('iframeCreated', {
+        ...iframeInfo,
+        ...{ collapsed: false }
+      });
+    }
 
     this.fixIOSscroll();
   }
@@ -208,9 +227,13 @@ class SplitViewSvcClass {
   }
 
   close(comp) {
-    if (comp.get().splitViewIframe) {
+    if (comp.get().splitViewIframe || comp.get().splitViewWC) {
       comp
-        .getUnsavedChangesModalPromise(comp.get().splitViewIframe.contentWindow)
+        .getUnsavedChangesModalPromise(
+          comp.get().splitViewWC
+            ? comp.get().splitViewWC
+            : comp.get().splitViewIframe.contentWindow
+        )
         .then(() => {
           if (comp.get().mfSplitView) {
             comp.get().mfSplitView.displayed = false;
@@ -250,9 +273,13 @@ class SplitViewSvcClass {
   }
 
   collapse(comp) {
-    if (comp.get().splitViewIframe) {
+    if (comp.get().splitViewIframe || comp.get().splitViewWC) {
       comp
-        .getUnsavedChangesModalPromise(comp.get().splitViewIframe.contentWindow)
+        .getUnsavedChangesModalPromise(
+          comp.get().splitViewWC
+            ? comp.get().splitViewWC
+            : comp.get().splitViewIframe.contentWindow
+        )
         .then(() => {
           this.sendMessageToClients('internal', {
             exists: true,

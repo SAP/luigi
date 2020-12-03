@@ -498,6 +498,37 @@
             <a
               href="javascript:void(0)"
               class="fd-link"
+              (click)="
+                linkManager().openAsModal('/projects/pr2/webcomponent', {
+                  title: 'Webcomponent in a modal',
+                  size: 'm'
+                })
+              ">Open webcomponent in a modal</a>
+            <app-code-snippet data="linkManager()
+              .openAsModal('/projects/pr2/webcomponent', {
+                title: 'Webcomponent in a modal',
+                size: 'm'
+              })">
+            </app-code-snippet>
+          </li>
+          <li class="fd-list__item">
+            <a href="javascript:void(0)" class="fd-link" (click)="
+                linkManager().openAsSplitView('/projects/pr2/webcomponent', {
+                  title: 'Webcomponent in a split view',
+                  size: '25'
+                })
+              ">Open webcomponent in splitView</a>
+            <app-code-snippet data="linkManager().openAsSplitView('/projects/pr2/webcomponent', {
+                title: 'Webcomponent in a split view',
+                size: '25'
+              })"
+            >
+            </app-code-snippet>
+          </li>
+          <li class="fd-list__item">
+            <a
+              href="javascript:void(0)"
+              class="fd-link"
               (click)="openSplitView()"
             >
               open view in split view with params</a
@@ -660,7 +691,6 @@
     </div>
   </div>
 
-
   <!-- Starting Storage Part -->
   <div *ngIf="projectId === 'storage'">
     <div class="fd-section__header">
@@ -721,9 +751,7 @@
           </label>
 
           <p class="luigi__margin-bottom--small">
-            <app-code-snippet
-              data="storageManager().has()"
-            ></app-code-snippet>
+            <app-code-snippet data="storageManager().has()"></app-code-snippet>
           </p>
 
           <label class="fd-form-label" data-testid="luigi-current-locale">
@@ -735,7 +763,6 @@
               data="storageManager().getAllKeys()"
             ></app-code-snippet>
           </p>
-
         </div>
       </div>
 
@@ -747,7 +774,6 @@
 
       <div class="fd-layout-panel__body">
         <div class="fd-form-item">
-
           <label class="fd-form-label" data-testid="luigi-current-locale">
             Here below you can play with the API
           </label>
@@ -775,7 +801,11 @@
             Async methods
           </label>
 
-          <div class="fd-container fd-container--fluid" style="padding-top: 5px;" *ngIf="!storageDemoOperation">
+          <div
+            class="fd-container fd-container--fluid"
+            style="padding-top: 5px;"
+            *ngIf="!storageDemoOperation"
+          >
             <div class="fd-col--2">
               <button class="fd-button w100per" (click)="storage_setItem()">
                 setItem
@@ -793,7 +823,10 @@
             </div>
           </div>
 
-          <div class="fd-container fd-container--fluid" *ngIf="!storageDemoOperation">
+          <div
+            class="fd-container fd-container--fluid"
+            *ngIf="!storageDemoOperation"
+          >
             <div class="fd-col--2">
               <button class="fd-button w100per" (click)="storage_clear()">
                 clear
@@ -810,17 +843,10 @@
               </button>
             </div>
           </div>
-
         </div>
       </div>
     </div>
-
   </div>
-
 </section>
-cc
-<app-modal
-  *ngIf="projectId === 'pr1'"
-  [modalActive]="modalActive"
-  (modalClosed)="toggleModal()"
-></app-modal>
+
+<app-modal *ngIf="projectId === 'pr1'" [modalActive]="modalActive" (modalClosed)="toggleModal()"></app-modal>
