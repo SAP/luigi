@@ -10,7 +10,7 @@ export const TOP_NAV_DEFAULTS = {
   userSettingsDialog: {
     dialogHeader: 'User Settings',
     saveBtn: 'Save',
-    dismissBtn: 'Dismiss'
+    dismissBtn: 'Cancel'
   }
 };
 
