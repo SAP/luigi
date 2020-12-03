@@ -63,7 +63,7 @@ with `data: { fromVirtualTreeRoot: true }`, once we load Sample1Component, we wi
  ```javascript
   luigiClient.linkManager().fromVirtualTreeRoot().withoutSync().navigate({route url});
  ```
-with `data: { luigiRoute: '/home/sample2'' }`, uses luigiClient API in this way:
+with `data: { luigiRoute: '/home/sample2' }`, uses luigiClient API in this way:
  ```javascript
   luigiClient.linkManager().withoutSync().navigate(data.luigiRoute);
  ```
