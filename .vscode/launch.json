@@ -1,0 +1,31 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+    {
+      "name": "test core",
+      "request": "launch",
+      "runtimeArgs": [
+        "run-script",
+        "test"
+      ],
+      "cwd": "${workspaceFolder}/core",
+      "runtimeExecutable": "npm",
+      "skipFiles": [
+        "<node_internals>/**"
+      ],
+      "type": "node"
+    },{
+      "name": "test core -watch",
+      "request": "launch",
+      "runtimeArgs": [
+        "run-script",
+        "test:watch"
+      ],
+      "cwd": "${workspaceFolder}/core",
+      "runtimeExecutable": "npm",
+      "skipFiles": [
+        "<node_internals>/**"
+      ],
+      "type": "node"
+    }]
+}

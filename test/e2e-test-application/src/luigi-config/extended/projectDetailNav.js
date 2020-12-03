@@ -162,6 +162,20 @@ export const projectDetailNavStructure = projectId => [
     openNodeInModal: true
   },
   {
+    pathSegment: 'webcomponent',
+    label: 'Webcomponent',
+    icon: 'along-stacked-chart',
+    loadingIndicator: {
+      enabled: false
+    },
+    context: {
+      title: 'Hello WebComponent!'
+    },
+    viewUrl: '/assets/helloWorldWC.js',
+    webcomponent: true,
+    openNodeInModal: true
+  },
+  {
     pathSegment: 'misc2-isolated',
     label: 'Miscellaneous2 (Isolated View)',
     isolateView: true,
@@ -349,12 +363,15 @@ export const projectDetailNavStructure = projectId => [
         icon: 'globe'
       },
       {
-        category: { label: 'User Management', icon: 'person-placeholder', collapsible: true },
+        category: {
+          label: 'User Management',
+          icon: 'person-placeholder',
+          collapsible: true
+        },
         pathSegment: 'users',
         label: 'Users and Groups',
         viewUrl: '/sampleapp.html#/projects/' + projectId + '/users',
         icon: 'group',
-
       },
       {
         category: 'User Management',
@@ -366,7 +383,7 @@ export const projectDetailNavStructure = projectId => [
           label: 'Number of developers',
           count: () => Math.floor(Math.random() * 100)
         }
-      },
+      }
     ]
   },
   {
@@ -399,12 +416,15 @@ export const projectDetailNavStructure = projectId => [
         icon: 'globe'
       },
       {
-        category: { label: 'User Management', icon: 'person-placeholder', collapsible: true },
+        category: {
+          label: 'User Management',
+          icon: 'person-placeholder',
+          collapsible: true
+        },
         pathSegment: 'users',
         label: 'Users and Groups',
         viewUrl: '/sampleapp.html#/projects/' + projectId + '/users',
-        icon: 'group',
-
+        icon: 'group'
       },
       {
         category: 'User Management',
@@ -416,7 +436,7 @@ export const projectDetailNavStructure = projectId => [
           label: 'Number of developers',
           count: () => Math.floor(Math.random() * 100)
         }
-      },
+      }
     ]
-  },
+  }
 ];
