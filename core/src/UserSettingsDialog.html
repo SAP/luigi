@@ -11,6 +11,7 @@
     import { CSS_BREAKPOINTS } from './utilities/constants';
     import { LuigiConfig } from './core-api';
     import { TOP_NAV_DEFAULTS } from './utilities/luigi-config-defaults';
+    import { KEYCODE_ESC } from './utilities/keycode.js';
     export let schemaObj;
     export let userSettingsData;
     const dispatch = createEventDispatcher();
@@ -85,6 +86,12 @@
     function hasOpenUIicon(node) {
         return NavigationHelpers.isOpenUIiconName(node.icon);
     }
+
+    export function handleKeydown(event) {
+        if (event.keyCode === KEYCODE_ESC) {
+            dispatch('close');
+        }
+    }
 </script>
 
 <style>
@@ -123,6 +130,7 @@
         overflow-wrap: break-word;
         padding: 20px;
     }
+
     .userSettings-lui-burger {
         margin-right: 16px;
         cursor: pointer;
@@ -207,7 +215,7 @@
         }
     }
 </style>
-
+<svelte:window on:keydown="{handleKeydown}" />
 <div class="fd-dialog fd-dialog--active lui-usersettings-dialog">
     <div class="fd-dialog__content dialog-size">
         <div class="fd-dialog__header fd-bar fd-bar--header">

@@ -1,4 +1,4 @@
-<svelte:window on:resize="{onResize}"/>
+<svelte:window on:resize="{onResize}" />
 <div id="app" class="{hideNav? 'no-nav' : ''} {hideSideNav? 'no-side-nav':''}">
   {#if alerts && alerts.length}
   <Alerts alertQueue="{alerts}" on:alertDismiss="{handleAlertDismissExternal}"></Alerts>
@@ -32,7 +32,7 @@
   {#if userSettingsInternalObj.displayed}
   <UserSettingsDialog
     on:close="{closeUserSettings}"
-    userSettingsData={userSettingsInternalObj.userSettingsData}>
+    userSettingsData={userSettingsInternalObj.preparedSchema}>
   </UserSettingsDialog>
   {/if}
   <Backdrop disable="{disableBackdrop}">
@@ -133,7 +133,8 @@
     RoutingHelpers,
     IframeHelpers,
     AuthHelpers,
-    StorageHelper
+    StorageHelper,
+    UserSettingsHelper
   } from './utilities/helpers';
   import {
     LuigiI18N,
@@ -326,7 +327,7 @@
             }
             resolve();
           },
-          () => {}
+          () => { }
         );
       } else {
         resolve();
@@ -977,18 +978,14 @@
   //Dialog Box
   userSettingsInternalObj = {};
   export const openUserSettings = () => {
-    const userSettingsSchema = LuigiConfig.getConfigValue('settings.userSettings.userSettingGroups');
-    if (GenericHelpers.isObject(userSettingsSchema)) {
-      const userSettingsData = [];
-      for (const item in userSettingsSchema) {
-        let innerObj = {};
-        innerObj[item] = userSettingsSchema[item];
-        userSettingsData.push(innerObj);
-      };
-      userSettingsInternalObj.userSettingsData = userSettingsData;
+
+    //check if empty array
+    const preparedSchema = UserSettingsHelper.prepareUserSettingsSchema();
+    if (Array.isArray(preparedSchema) && preparedSchema.length) {
+      userSettingsInternalObj.preparedSchema = [...preparedSchema];
       userSettingsInternalObj.displayed = true;
     } else {
-      console.info('There is no user settings schema defined.');
+      // show alert
     }
   }
 
@@ -1407,7 +1404,7 @@
         thirdPartyCookieCheckIframe.src =
           thirdPartyCookiesCheck.thirdPartyCookieScriptLocation;
         document.body.appendChild(thirdPartyCookieCheckIframe);
-        thirdPartyCookieCheckIframe.onload = function() {
+        thirdPartyCookieCheckIframe.onload = function () {
           setTimeout(() => {
             if (thirdPartyCookiesStatus() === 'disabled') {
               tpcErrorHandling(thirdPartyCookiesCheck);
@@ -1419,7 +1416,7 @@
     }
   });
 
-  afterUpdate(() => {});
+  afterUpdate(() => { });
 </script>
 
 <style type="text/scss">
