@@ -4,7 +4,7 @@ const sinon = require('sinon');
 import { UserSettingsHelper } from '../../../src/utilities/helpers';
 import { LuigiConfig } from '../../../src/core-api';
 
-describe.only('UserSettings-helpers', () => {
+describe('UserSettings-helpers', () => {
     const userSettingsSchema = {
         userSettingGroups: {
             userAccount: {
