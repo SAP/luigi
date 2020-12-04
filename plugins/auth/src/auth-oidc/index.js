@@ -96,7 +96,7 @@ export default class openIdConnect {
   logout(authData, authOnLogoutFn) {
     const signoutData = {
       id_token_hint: authData && authData.idToken,
-      state: window.location.href
+      state: encodeURI(window.location.href)
     };
 
     return this.client
@@ -105,7 +105,7 @@ export default class openIdConnect {
         authOnLogoutFn();
         window.location = req.url;
       })
-      .catch(function(err) {
+      .catch(function (err) {
         console.error('[OIDC] logout() Error', err);
         authOnLogoutFn();
       });
@@ -176,7 +176,7 @@ export default class openIdConnect {
             Luigi.auth().store.removeAuthData();
             resolve(response);
           })
-          .catch(function(err) {
+          .catch(function (err) {
             reject(response);
             console.error('[OIDC] Logout Error', err);
           });

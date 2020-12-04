@@ -54,13 +54,34 @@ const pkgJsonPaths = {
     'public',
     'auth-oidc',
     'package.json'
+  ),
+  client_support_angular: path.resolve(
+    base,
+    'client-frameworks-support',
+    'client-support-angular',
+    'dist',
+    'client-support-angular',
+    'package.json'
+  ),
+  client_support_angular_src: path.resolve(
+    base,
+    'client-frameworks-support',
+    'client-support-angular',
+    'projects',
+    'client-support-angular',
+    'package.json'
   )
 };
 
 const installPaths = {
   core: path.resolve(base, 'core'),
   client: path.resolve(base, 'client'),
-  plugins: path.resolve(base, 'plugins')
+  plugins: path.resolve(base, 'plugins'),
+  client_support_angular: path.resolve(
+    base,
+    'client-frameworks-support',
+    'client-support-angular'
+  )
 };
 
 /**
@@ -201,8 +222,8 @@ function addToChangelog(versionText, changelog, lastline) {
     let changelog = require('child_process')
       .execSync(
         base +
-          '/node_modules/lerna-changelog/bin/cli.js --ignoreCommiters --from ' +
-          prevVersion
+        '/node_modules/lerna-changelog/bin/cli.js --ignoreCommiters --from ' +
+        prevVersion
       )
       .toString()
       .replace('## Unreleased', versionText);
