@@ -1,12 +1,12 @@
 {
-  "name": "@m_bro_exp/client-support-angular",
-  "version": "0.0.4",
+  "name": "@luigi-project/client-support-angular",
+  "version": "1.7.0",
   "license": "Apache-2.0",
   "private": false,
   "peerDependencies": {
     "@angular/common": "^11.0.0",
     "@angular/core": "^11.0.0",
-    "@m_bro_exp/client": "^1.5.0"
+    "@luigi-project/client": "^1.5.0"
   },
   "repository": {
     "type": "git",
