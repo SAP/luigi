@@ -25,6 +25,24 @@ The lerna-changelog tool detects changes based on PR labels and maps them to sec
 -->
 
 
+## v1.7.0 (2020-12-04)
+
+#### :rocket: Added
+* [#1756](https://github.com/SAP/luigi/pull/1756) Feature - Angular supporting library ([@legteodav](https://github.com/legteodav))
+* [#1751](https://github.com/SAP/luigi/pull/1751) Feature - WebComponents support ([@hardl](https://github.com/hardl))
+
+#### :bug: Fixed
+* [#1720](https://github.com/SAP/luigi/pull/1720) Fix `withoutSync()` history behaviour ([@andrei-scripcaru](https://github.com/andrei-scripcaru))
+
+#### :house: Internal
+* [#1734](https://github.com/SAP/luigi/pull/1734) Documentation website using Luigi.globalSearch() API (#1690) ([@legteodav](https://github.com/legteodav))
+
+
+
+
+
+
+
 ## [v1.6.0] (2020-11-25)
 
 #### :rocket: Added
@@ -892,3 +910,4 @@ The lerna-changelog tool detects changes based on PR labels and maps them to sec
 [v1.4.0]: https://github.com/SAP/luigi/compare/v1.3.1...v1.4.0
 [v1.5.0]: https://github.com/SAP/luigi/compare/v1.4.0...v1.5.0
 [v1.6.0]: https://github.com/SAP/luigi/compare/v1.5.0...v1.6.0
+[v1.7.0]: https://github.com/SAP/luigi/compare/v1.6.0...v1.7.0
