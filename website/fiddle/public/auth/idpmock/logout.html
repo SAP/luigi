@@ -10,9 +10,7 @@
   <script>
     window.onload = function () {
       let href = encodeURI(window.location.href);
-      const decodeChars = (string) => {
-        return string.replace(/[<>'*+?^${}()|[\]\\]/g, '\\$&')
-      }
+      const decodeChars = (string) => string.replace(/[<>'*+?^${}()|[\]\\]/g, '\\$&');
       let redirectTo =
         decodeChars(decodeURIComponent(href.match(/post_logout_redirect_uri=(.*?)(&|$)/)[1]));
       if (!redirectTo.startsWith(window.location.origin)) {
