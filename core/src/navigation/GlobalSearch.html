@@ -126,7 +126,7 @@
     );
   });
 
-  function getSearchPlaceholder(search) {
+  function getSearchPlaceholder({ searchProvider }) {
     if (!search.searchProvider || !search.searchProvider.inputPlaceholder) {
       return undefined;
     }
