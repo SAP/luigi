@@ -5,73 +5,107 @@ describe('Global Search', () => {
 
   describe('Open search field ', () => {
     it('Click on field', () => {
-
       // Input should be not visible
-      cy.get('input[data-testid="luigi-search-input"]').should('not.be.visible');
+      cy.get('input[data-testid="luigi-search-input"]').should(
+        'not.be.visible'
+      );
 
       // Click on Search Button
-      cy.get('button[data-testid="luigi-search-btn-desktop"]').should('exist').click();
+      cy.get('button[data-testid="luigi-search-btn-desktop"]')
+        .should('exist')
+        .click();
 
       // Input should be visible
       cy.get('input[data-testid="luigi-search-input"]').should('be.visible');
 
       // Click on Search Button
-      cy.get('button[data-testid="luigi-search-btn-desktop"]').should('exist').click();
+      cy.get('button[data-testid="luigi-search-btn-desktop"]')
+        .should('exist')
+        .click();
 
       // Input should be not visible
-      cy.get('input[data-testid="luigi-search-input"]').should('not.be.visible');
+      cy.get('input[data-testid="luigi-search-input"]').should(
+        'not.be.visible'
+      );
     });
   });
 
   describe('Check Placeholder ', () => {
     it('Does it have placeholder?', () => {
-      // It shoudl have placeholder
-      cy.get('input[data-testid="luigi-search-input"]').should('have.attr', 'placeholder', 'Digit here text to search....');
+      // It should have placeholder
+      cy.get('input[data-testid="luigi-search-input"]').should(
+        'have.attr',
+        'placeholder',
+        'Digit here text to search....'
+      );
     });
   });
 
   describe('Check toggleSearch function ', () => {
     it('toggleSearch had been executed?', () => {
       // Click on Search Button
-      cy.get('button[data-testid="luigi-search-btn-desktop"]').should('exist').click();
+      cy.get('button[data-testid="luigi-search-btn-desktop"]')
+        .should('exist')
+        .click();
 
-      // toggleSearch function should had been executed...value open
-      cy.get('input[data-testid="luigi-search-input"]').should('have.attr', 'data-togglesearch', 'open');
+      // toggleSearch function should had been executed... input value should be open
+      cy.get('input[data-testid="luigi-search-input"]').should(
+        'have.attr',
+        'data-togglesearch',
+        'open'
+      );
 
       // Click on Search Button
-      cy.get('button[data-testid="luigi-search-btn-desktop"]').should('exist').click();
+      cy.get('button[data-testid="luigi-search-btn-desktop"]')
+        .should('exist')
+        .click();
 
-      // toggleSearch function should had been executed...value close
-      cy.get('input[data-testid="luigi-search-input"]').should('have.attr', 'data-togglesearch', 'close');
+      // toggleSearch function should had been executed...input value should be close
+      cy.get('input[data-testid="luigi-search-input"]').should(
+        'have.attr',
+        'data-togglesearch',
+        'close'
+      );
     });
   });
 
   describe('Get results', () => {
     it('Type something and get results', () => {
       // Click on Search Button
-      cy.get('button[data-testid="luigi-search-btn-desktop"]').should('exist').click();
+      cy.get('button[data-testid="luigi-search-btn-desktop"]')
+        .should('exist')
+        .click();
 
-      // Type Luigi
-      cy.get('input[data-testid="luigi-search-input"]').should('be.visible').type('Luigi');
+      // Type Luigi in search input textbox
+      cy.get('input[data-testid="luigi-search-input"]')
+        .should('be.visible')
+        .type('Luigi');
 
-      // We shoudl get 5 results
-      cy.get('.luigi-search-popover__body .fd-menu .fd-menu__list').should('be.visible').children().should('have.length', 5);
-
+      // We should get 5 results
+      cy.get('.luigi-search-popover__body .fd-menu .fd-menu__list')
+        .should('be.visible')
+        .children()
+        .should('have.length', 5);
     });
 
     it('Click on Projects result', () => {
       // Click on Search Button
-      cy.get('button[data-testid="luigi-search-btn-desktop"]').should('exist').click();
+      cy.get('button[data-testid="luigi-search-btn-desktop"]')
+        .should('exist')
+        .click();
 
-      // Type Luigi
-      cy.get('input[data-testid="luigi-search-input"]').should('be.visible').type('Luigi');
+      // Type Luigi in search input textbox
+      cy.get('input[data-testid="luigi-search-input"]')
+        .should('be.visible')
+        .type('Luigi');
 
       // Click on first result
-      cy.get('.luigi-search-popover__body .fd-menu .fd-menu__list').contains('Projects').click()
+      cy.get('.luigi-search-popover__body .fd-menu .fd-menu__list')
+        .contains('Projects')
+        .click();
 
       // Url should be changed
       cy.expectPathToBe('/projects');
     });
   });
-
 });
