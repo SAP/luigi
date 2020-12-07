@@ -1,0 +1,36 @@
+{
+   "js": {
+      "parser": "babel-flow",
+      "trailingComma": "es5",
+      "tabWidth": 3,
+      "singleQuote": true
+   },
+   "json": {
+      "parser": "json",
+      "trailingComma": "es5",
+      "tabWidth": 3
+   },
+   "ts": {
+      "parser": "typescript",
+      "trailingComma": "es5",
+      "tabWidth": 3,
+      "singleQuote": true
+   },
+   "html": {
+      "parser": "html",
+      "tabWidth": 3
+   },
+   "css": {
+      "parser": "css",
+      "trailingComma": "es5",
+      "tabWidth": 3
+   },
+   "scss": {
+      "parser": "scss",
+      "trailingComma": "es5",
+      "tabWidth": 3
+   },
+   "yaml": {
+      "parser": "yaml"
+   }
+}

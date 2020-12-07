@@ -1,0 +1,8 @@
+{
+  "extends": "standard",
+  "rules": {
+    "semi": [2, "always"],
+    "no-tabs": "off",
+    "indent": "off"
+  }
+}
