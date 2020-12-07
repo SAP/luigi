@@ -18,7 +18,7 @@ class GlobalSearch {
     // inputPlaceHolder: 'Digit here text to search....',
     // inputPlaceHolder: () => 'Digit here text to search....',
 
-    inputPlaceHolder: {
+    inputPlaceholder: {
       en: 'Digit here text to search....'
     },
 
