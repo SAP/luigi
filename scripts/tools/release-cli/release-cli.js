@@ -62,6 +62,14 @@ const pkgJsonPaths = {
     'dist',
     'client-support-angular',
     'package.json'
+  ),
+  client_support_angular_src: path.resolve(
+    base,
+    'client-frameworks-support',
+    'client-support-angular',
+    'projects',
+    'client-support-angular',
+    'package.json'
   )
 };
 
@@ -214,8 +222,8 @@ function addToChangelog(versionText, changelog, lastline) {
     let changelog = require('child_process')
       .execSync(
         base +
-          '/node_modules/lerna-changelog/bin/cli.js --ignoreCommiters --from ' +
-          prevVersion
+        '/node_modules/lerna-changelog/bin/cli.js --ignoreCommiters --from ' +
+        prevVersion
       )
       .toString()
       .replace('## Unreleased', versionText);
