@@ -36,7 +36,7 @@ const getAllFiles = dir => {
 const getChangedFiles = async () => {
    const committedGitFiles = await gitChangedFiles();
    return committedGitFiles.unCommittedFiles.filter(file =>
-      fs.existsSync(file)
+      fs.existsSync(file) && !file.endsWith('package-lock.json')
    );
 };
 
