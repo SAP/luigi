@@ -569,7 +569,7 @@ The global search is an input field available in the top navigation bar. The sea
      - **description**: Output of this function will be used as placeholder in the search input field.
    - **inputPlaceholder**
      - **type**: Object
-     - **description**: Key value Json object where key is the language and value is the text used as placeholder in the search input field. This function doesn't have any input parameter;
+     - **description**: Key value JSON object, where `key` is the language and `value` is the text used as placeholder in the search input field. This function doesn't have any input parameter.
    - **toggleSearch**
      - **type**: Function
      - **description**: This function will be executed very time you click on search icon.
