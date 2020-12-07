@@ -14,26 +14,36 @@ const getChangedFiles = async () => {
 
 const groupFilesByExtension = files => {
    return files.reduce((map, file) => {
-      if (file.startsWith('./') || file.indexOf('.') === -1) {
-         return undefined;
-      }
+      try {
+         if (file.startsWith('./') || file.indexOf('.') === -1) {
+            return map;
+         }
 
-      const extension = file.substring(file.lastIndexOf('.') + 1).toLowerCase();
-      const array = map[extension] || [];
-      array.push(file);
-      map[extension] = array;
-      return map;
+         const extension = file
+            .substring(file.lastIndexOf('.') + 1)
+            .toLowerCase();
+         const array = map[extension] || [];
+         array.push(file);
+         map[extension] = array;
+         return map;
+      } catch (e) {
+         console.error('error --> ', e);
+      }
    }, {});
 };
 
 const prettyFile = (file, config) => {
-   const text = fs.readFileSync(file).toString();
-   const pretty = prettier.format(text, config);
-   if (text === pretty) {
-      return;
+   try {
+      const text = fs.readFileSync(file).toString();
+      const pretty = prettier.format(text, config);
+      if (text === pretty) {
+         return;
+      }
+      console.log('We did prettier the file ' + file);
+      fs.writeFileSync(file, pretty);
+   } catch (error) {
+      console.log('Error in prettier the file ' + file + ': \n' + error);
    }
-
-   fs.writeFileSync(file, pretty);
 };
 
 const prettyFiles = filesByExtension => {
@@ -80,6 +90,7 @@ const eslintFiles = async files => {
    const files = await getChangedFiles();
    if (!files) {
       console.log("Couldn't find any file that hand been changed");
+      return;
    }
    console.log('File to be analyzed before commit:\n' + files.join('\n'));
    const filesByExtension = groupFilesByExtension(files);
@@ -108,3 +119,5 @@ const eslintFiles = async files => {
    console.log(err);
    process.exit(1);
 });
+
+module.exports = { eslintFiles, prettyFiles, groupFilesByExtension };
