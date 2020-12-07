@@ -127,18 +127,18 @@
   });
 
   function getSearchPlaceholder(search) {
-    if (!search.searchProvider || !search.searchProvider.inputPlaceHolder) {
+    if (!search.searchProvider || !search.searchProvider.inputPlaceholder) {
       return undefined;
     }
     const currentLocale = LuigiI18N.getCurrentLocale();
-    if (GenericHelpers.isFunction(search.searchProvider.inputPlaceHolder)) {
-      return search.searchProvider.inputPlaceHolder();
+    if (GenericHelpers.isFunction(search.searchProvider.inputPlaceholder)) {
+      return search.searchProvider.inputPlaceholder();
     }
-    if (typeof search.searchProvider.inputPlaceHolder === 'string') {
-      return search.searchProvider.inputPlaceHolder;
+    if (typeof search.searchProvider.inputPlaceholder === 'string') {
+      return search.searchProvider.inputPlaceholder;
     }
-    if (typeof search.searchProvider.inputPlaceHolder === 'object') {
-      let placeholder = search.searchProvider.inputPlaceHolder[currentLocale];
+    if (typeof search.searchProvider.inputPlaceholder === 'object') {
+      let placeholder = search.searchProvider.inputPlaceholder[currentLocale];
       return placeholder;
     }
   }
@@ -295,7 +295,7 @@
     });
 
     if (GenericHelpers.isFunction(search.searchProvider.toggleSearch)) {
-      let fieldVisible= !!isSearchFieldVisible?!isSearchFieldVisible: true;
+      let fieldVisible = !!isSearchFieldVisible ? !isSearchFieldVisible : true;
       return search.searchProvider.toggleSearch(inputElem, fieldVisible);
     }
   }
