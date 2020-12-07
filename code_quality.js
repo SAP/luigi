@@ -7,9 +7,32 @@ const fs = require('fs');
 const { ESLint } = require('eslint');
 const eslint = new ESLint({ fix: true });
 
+const getAllFiles = dir => {
+   let results = [];
+   const list = fs.readdirSync(dir);
+   list.forEach(function (file) {
+      file = dir + '/' + file;
+      const stat = fs.statSync(file);
+      if (file.endsWith('node_modules') || file.indexOf('.git') !== -1) {
+         return [];
+      }
+
+      if (stat && stat.isDirectory()) {
+         /* Recurse into a subdirectory */
+         results = results.concat(getAllFiles(file));
+      } else {
+         /* Is a file */
+         results.push(file);
+      }
+   });
+   return results;
+};
+
 const getChangedFiles = async () => {
    const committedGitFiles = await gitChangedFiles();
-   return committedGitFiles.unCommittedFiles;
+   return committedGitFiles.unCommittedFiles.filter(file =>
+      fs.existsSync(file)
+   );
 };
 
 const groupFilesByExtension = files => {
@@ -28,6 +51,7 @@ const groupFilesByExtension = files => {
          return map;
       } catch (e) {
          console.error('error --> ', e);
+         return {};
       }
    }, {});
 };
@@ -86,7 +110,7 @@ const eslintFiles = async files => {
    return { error, report };
 };
 
-(async () => {
+const preCommit = async () => {
    const files = await getChangedFiles();
    if (!files) {
       console.log("Couldn't find any file that hand been changed");
@@ -115,6 +139,58 @@ const eslintFiles = async files => {
          process.exit(1);
       }
    }
+};
+
+const full = async () => {
+   const files = getAllFiles(__dirname);
+   const filesByExtension = groupFilesByExtension(files);
+   // prettyFiles(filesByExtension);
+
+   let error = false;
+   let report = '';
+   const extensions = Object.keys(filesByExtension);
+   for (const extension of extensions.filter(
+      extension => extension === 'ts' || extension === 'js'
+   )) {
+      const eslintResult = await eslintFiles(filesByExtension[extension]);
+      error = error || eslintResult.error;
+      if (!!eslintResult.report && eslintResult.report.trim().length > 0) {
+         report += eslintResult.report;
+      }
+   }
+
+   if (error) {
+      console.log('Resume of ESLint analysis:\n' + report);
+   }
+};
+
+const getOptions = () => {
+   const options = {};
+
+   for (let i = 0; i < process.argv.length; i++) {
+      const arg = process.argv[i];
+      if (!arg.includes('=')) {
+         continue;
+      }
+
+      const key = process.argv[i].substring(0, process.argv[i].indexOf('='));
+      const value = process.argv[i].substring(process.argv[i].indexOf('=') + 1);
+      options[key] = value;
+   }
+   return options;
+};
+
+(async () => {
+   const options = getOptions();
+   if (options.mode === 'pre_commit') {
+      return await preCommit();
+   }
+
+   if (options.mode === 'full') {
+      return await full();
+   }
+
+   console.error('You need to pass application paramter -- mode=pre_commit|full');
 })().catch(err => {
    console.log(err);
    process.exit(1);

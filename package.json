@@ -2,7 +2,8 @@
    "private": true,
    "scripts": {
       "test:compatibility": "./scripts/testCompatibility.sh",
-      "code-quality": "node pre_commit.js"
+      "code-quality": "node code_quality.js -- mode=pre_commit",
+      "full-code-quality": "node code_quality.js -- mode=full"
    },
    "devDependencies": {
       "@starptech/prettyhtml": "^0.10.0",
